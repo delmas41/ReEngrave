@@ -1,0 +1,373 @@
+{
+ "id": "litolff-2-10b",
+ "provenance": {
+  "commit": "23f4fa9e45126be761da770b20e46972490dda42",
+  "dirty": true,
+  "settings": {
+   "env_overrides": {
+    "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+    "OMR_SURYA_KEEP_ALIVE": "0"
+   },
+   "args": {
+    "against": null,
+    "conf": 0.25,
+    "dpi": 600,
+    "imgsz": null,
+    "ink_rows": false,
+    "movements": null,
+    "no_roster": false,
+    "no_weight_routing": false,
+    "ocr": true,
+    "pages": "1-16",
+    "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+    "route_weights": true,
+    "sheet": null,
+    "surya": true,
+    "weights": "auto",
+    "work_id": null
+   }
+  }
+ },
+ "base": {
+  "n_new_verdicts": 0,
+  "reoffered_and_declined": {
+   "prior_is_decided": 72
+  },
+  "notes_not_written_total": 8584,
+  "notes_not_written": {
+   "ink_is_a_whole_rest": 105,
+   "not_a_notehead:too_narrow": 278,
+   "not_a_notehead:clipped_fragment": 344,
+   "duration_narrowed": 892,
+   "owner_not_read": 345,
+   "owned_by_another_staff": 985,
+   "not_a_rest:rest_is_a_duplicate_box": 111,
+   "rest_duration_narrowed": 35,
+   "rest_duration_abstained": 167,
+   "not_a_notehead:belongs_to_a_nearer_staff": 71,
+   "not_a_notehead:is_a_clef": 28,
+   "no_pitch": 471,
+   "staff_not_identified": 228,
+   "bar_does_not_add_up": 4524
+  },
+  "n_note_elements": 9070,
+  "balance": {
+   "events_in_log": 14530,
+   "noteheads_in_log": 11632,
+   "rests_in_log": 2898,
+   "events_written": 5946,
+   "rests_duplicated_across_voices": 9,
+   "notes_doubled_to_condensed_slot": 269,
+   "events_not_written": 8584,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": [
+   {
+    "staff": "staff/14/0/11",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": null,
+    "slot": 11,
+    "tally": {
+     "bass": 8
+    },
+    "n_independent_witnesses": 8,
+    "pitches_derived": 10
+   },
+   {
+    "staff": "staff/15/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 55
+   },
+   {
+    "staff": "staff/5/0/7",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 30
+   },
+   {
+    "staff": "staff/7/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 32
+   }
+  ]
+ },
+ "arm": {
+  "n_new_verdicts": 510,
+  "new_by_quantity": {
+   "clef": 8,
+   "pitch": 482,
+   "accidental": 20
+  },
+  "all_new_verdicts_are_labelled_or_derived": false,
+  "reevaluation": {
+   "fired": 502,
+   "by_rule": {
+    "restate_pitch": 358,
+    "move_glyph": 124,
+    "apply_printed_accidental": 20
+   }
+  },
+  "reoffered_and_declined": {
+   "prior_is_decided": 72
+  },
+  "notes_not_written_total": 8456,
+  "notes_not_written": {
+   "ink_is_a_whole_rest": 105,
+   "not_a_notehead:too_narrow": 278,
+   "not_a_notehead:clipped_fragment": 344,
+   "duration_narrowed": 914,
+   "owner_not_read": 362,
+   "owned_by_another_staff": 989,
+   "not_a_rest:rest_is_a_duplicate_box": 111,
+   "rest_duration_narrowed": 35,
+   "rest_duration_abstained": 167,
+   "not_a_notehead:belongs_to_a_nearer_staff": 71,
+   "not_a_notehead:is_a_clef": 28,
+   "no_pitch": 135,
+   "staff_not_identified": 228,
+   "bar_does_not_add_up": 4689
+  },
+  "n_note_elements": 9155,
+  "balance": {
+   "events_in_log": 14530,
+   "noteheads_in_log": 11632,
+   "rests_in_log": 2898,
+   "events_written": 6074,
+   "rests_duplicated_across_voices": 7,
+   "notes_doubled_to_condensed_slot": 269,
+   "events_not_written": 8456,
+   "balanced": true
+  },
+  "status_census_unaccounted": [],
+  "inferred_clefs": [
+   {
+    "staff": "staff/10/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 26,
+     "bass": 1
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 66
+   },
+   {
+    "staff": "staff/12/1/2",
+    "clef": "treble",
+    "reason": "clef_from_other_systems",
+    "instrument": "Clarinet",
+    "slot": 2,
+    "tally": {
+     "treble": 29
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 96
+   },
+   {
+    "staff": "staff/14/0/11",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": null,
+    "slot": 11,
+    "tally": {
+     "bass": 8
+    },
+    "n_independent_witnesses": 8,
+    "pitches_derived": 10
+   },
+   {
+    "staff": "staff/14/0/3",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": "Bassoon",
+    "slot": 3,
+    "tally": {
+     "bass": 24,
+     "tenor": 4
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 41
+   },
+   {
+    "staff": "staff/15/0/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 55
+   },
+   {
+    "staff": "staff/16/1/3",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": "Bassoon",
+    "slot": 3,
+    "tally": {
+     "bass": 24,
+     "tenor": 4
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 63
+   },
+   {
+    "staff": "staff/4/0/8",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 26,
+     "bass": 1
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 52
+   },
+   {
+    "staff": "staff/5/0/7",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 30
+   },
+   {
+    "staff": "staff/6/1/3",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": "Bassoon",
+    "slot": 3,
+    "tally": {
+     "bass": 24,
+     "tenor": 4
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 53
+   },
+   {
+    "staff": "staff/6/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": null,
+    "slot": 9,
+    "tally": {
+     "alto": 26,
+     "bass": 1
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 83
+   },
+   {
+    "staff": "staff/7/0/6",
+    "clef": "bass",
+    "reason": "clef_from_other_systems",
+    "instrument": "Timpani",
+    "slot": 6,
+    "tally": {
+     "bass": 22,
+     "tenor": 1
+    },
+    "n_independent_witnesses": 1,
+    "pitches_derived": 28
+   },
+   {
+    "staff": "staff/7/1/9",
+    "clef": "alto",
+    "reason": "clef_from_other_systems",
+    "instrument": "Viola",
+    "slot": 9,
+    "tally": {
+     "alto": 23,
+     "bass": 1
+    },
+    "n_independent_witnesses": 23,
+    "pitches_derived": 32
+   }
+  ]
+ },
+ "base_arm_is_deterministic": true,
+ "base_arm_export_equals_the_records_own_export": true,
+ "clef": {
+  "abstained_before": 1,
+  "inferred_by_other_systems": 0,
+  "inferred_by_instrument_convention": 0,
+  "still_abstained": [
+   [
+    "staff/14/1/9",
+    "abstained",
+    "no_candidates"
+   ]
+  ],
+  "decided_clefs_changed": []
+ },
+ "no_pitch": {
+  "before": 471,
+  "after": 135,
+  "by_system_before": {
+   "4/0": 70,
+   "5/0": 44,
+   "6/1": 102,
+   "7/0": 19,
+   "10/0": 52,
+   "12/0": 26,
+   "12/1": 52,
+   "14/0": 26,
+   "14/1": 33,
+   "16/1": 47
+  },
+  "by_system_after": {
+   "4/0": 32,
+   "5/0": 44,
+   "12/0": 26,
+   "14/1": 33
+  }
+ },
+ "notes": {
+  "before": 9070,
+  "after": 9155,
+  "delta": 85
+ },
+ "refusal_deltas": {
+  "bar_does_not_add_up": 165,
+  "duration_narrowed": 22,
+  "no_pitch": -336,
+  "owned_by_another_staff": 4,
+  "owner_not_read": 17
+ }
+}

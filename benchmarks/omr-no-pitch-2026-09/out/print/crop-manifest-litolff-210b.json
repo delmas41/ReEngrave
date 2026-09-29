@@ -1,0 +1,134 @@
+{
+  "crops": [
+    {
+      "file": "litolff-210b-p6-s1-st9-narrowed-alto.png",
+      "staff": "staff/6/1/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "prior_outcome": "narrowed",
+      "candidates": [
+        "treble",
+        "bass",
+        "alto"
+      ],
+      "slot": 9,
+      "instrument": null,
+      "tally": {
+        "alto": 26,
+        "bass": 1
+      },
+      "n_systems_read": 27,
+      "n_independent_witnesses": 1,
+      "page": 6,
+      "system": 1,
+      "staff_ordinal": 9,
+      "frame_contrast": 28.66,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-210b-p10-s0-st9-narrowed-alto.png",
+      "staff": "staff/10/0/9",
+      "inferred_clef": "alto",
+      "reason": "clef_from_other_systems",
+      "prior_outcome": "narrowed",
+      "candidates": [
+        "treble",
+        "bass",
+        "alto"
+      ],
+      "slot": 9,
+      "instrument": "Viola",
+      "tally": {
+        "alto": 26,
+        "bass": 1
+      },
+      "n_systems_read": 27,
+      "n_independent_witnesses": 1,
+      "page": 10,
+      "system": 0,
+      "staff_ordinal": 9,
+      "frame_contrast": 201.56,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-210b-p12-s1-st2-narrowed-treble.png",
+      "staff": "staff/12/1/2",
+      "inferred_clef": "treble",
+      "reason": "clef_from_other_systems",
+      "prior_outcome": "narrowed",
+      "candidates": [
+        "tenor",
+        "bass",
+        "alto",
+        "treble"
+      ],
+      "slot": 2,
+      "instrument": "Clarinet",
+      "tally": {
+        "treble": 29
+      },
+      "n_systems_read": 29,
+      "n_independent_witnesses": 1,
+      "page": 12,
+      "system": 1,
+      "staff_ordinal": 2,
+      "frame_contrast": 149.69,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-210b-p14-s0-st3-narrowed-bass.png",
+      "staff": "staff/14/0/3",
+      "inferred_clef": "bass",
+      "reason": "clef_from_other_systems",
+      "prior_outcome": "narrowed",
+      "candidates": [
+        "treble",
+        "tenor",
+        "bass"
+      ],
+      "slot": 3,
+      "instrument": "Bassoon",
+      "tally": {
+        "bass": 24,
+        "tenor": 4
+      },
+      "n_systems_read": 28,
+      "n_independent_witnesses": 1,
+      "page": 14,
+      "system": 0,
+      "staff_ordinal": 3,
+      "frame_contrast": 66.63,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    },
+    {
+      "file": "litolff-210b-p7-s0-st6-narrowed-bass.png",
+      "staff": "staff/7/0/6",
+      "inferred_clef": "bass",
+      "reason": "clef_from_other_systems",
+      "prior_outcome": "narrowed",
+      "candidates": [
+        "bass",
+        "alto"
+      ],
+      "slot": 6,
+      "instrument": "Timpani",
+      "tally": {
+        "bass": 22,
+        "tenor": 1
+      },
+      "n_systems_read": 23,
+      "n_independent_witnesses": 1,
+      "page": 7,
+      "system": 0,
+      "staff_ordinal": 6,
+      "frame_contrast": 214.9,
+      "dpi": 600,
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}

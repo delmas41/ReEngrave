@@ -291,18 +291,23 @@ class TestWhatItDeclines(unittest.TestCase):
         self.assertEqual(d.census()[d.staves[3].to_key()].outcome,
                          "declined_prior_is_decided")
 
-    def test_a_narrowed_clef_is_the_clef_readers_problem_not_this_rules(self):
-        """⚠️ `infer.INFERABLE` ADMITS A NARROWING AND THIS RULE STILL
-        DECLINES IT. A narrowed clef means `adjudicate_clef` read the staff
-        and could not separate two candidates under its own margin floor;
-        Sean's rule is about a clef that could not be read AT ALL, and
-        collapsing a contest from another system would be this rule quietly
-        overruling a margin decision it has no evidence about."""
-        d = _Doc(["alto", "alto", ("narrowed", "alto", "tenor")])
+    def test_a_narrowed_clef_whose_contest_never_saw_the_answer_stays_narrowed(self):
+        """⚠️ ROADMAP 2.10b NARROWED THIS TEST RATHER THAN DROPPING IT
+        (2.11b's own precedent, CLAUDE.md: "the test that pinned the old
+        behaviour is updated in place, not deleted"). Before 2.10b this rule
+        declined EVERY narrowed clef outright; now it may fill one, but only
+        from that contest's OWN candidates -- {alto, tenor} here -- and the
+        other systems agree on "treble", which is neither. Proposing it
+        would be widening the field (CLAUDE.md §4a), so it still declines,
+        now BY NAME (`declined_not_a_candidate`) rather than by the blanket
+        exclusion this test used to pin."""
+        d = _Doc(["treble", "treble", ("narrowed", "alto", "tenor")])
         d.infer()
         self.assertIs(d.clef(2).outcome, Outcome.NARROWED)
-        self.assertEqual(d.census()[d.staves[2].to_key()].outcome,
-                         "declined_prior_is_narrowed")
+        g = d.census()[d.staves[2].to_key()]
+        self.assertEqual(g.outcome, "declined_not_a_candidate")
+        self.assertEqual(g.detail["tier"], "other_systems")
+        self.assertEqual(set(g.detail["candidates"]), {"alto", "tenor"})
 
     def test_an_undecided_part_declines(self):
         d = _Doc(["alto", "alto", None], slot_outcome=Outcome.NARROWED)
@@ -333,6 +338,99 @@ class TestWhatItDeclines(unittest.TestCase):
         v = log.verdict(Q.CLEF, viola)
         self.assertEqual(v.value, "alto")       # the CONVENTION, not the bass
         self.assertEqual(v.reason, "clef_from_instrument_convention")
+
+
+class TestRoadmap210bTheNarrowedClefLadder(unittest.TestCase):
+    """A NARROWED clef may now be filled too, but ONLY from that contest's
+    OWN candidates (CLAUDE.md §4a) -- `benchmarks/omr-no-pitch-2026-09/
+    FINDINGS.md` §2's `staff/6/1/9`, on the Litolff whole-movement record,
+    narrowed to a genuine {treble, alto, tenor}-shaped tie under 2.11b's
+    off-staff discount and stayed `no_pitch` forever because the old
+    exclusion gave it nowhere to go. `_admit` (`infer.py`) would raise
+    `ValueNotAdmitted` if this rule ever proposed a value outside the
+    prior's candidates -- these tests are run RED first against the
+    pre-2.10b tree (git stash the `inferences.py`/`_CLEF_GAP_PRIORS` change
+    and re-run: `test_a_narrowed_viola_with_alto_on_its_other_systems_
+    takes_alto` fails, the census reads `declined_prior_is_narrowed`)."""
+
+    def test_a_narrowed_viola_with_alto_on_its_other_systems_takes_alto(self):
+        """The manager's own proof case: a narrowed {treble, alto} Viola
+        with alto DECIDED on its other systems fills to alto."""
+        d = _Doc(["alto", "alto", ("narrowed", "treble", "alto")],
+                 instrument="Viola")
+        d.infer()
+        v = d.clef(2)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "alto")
+        self.assertEqual(v.reason, "clef_from_other_systems")
+        self.assertTrue(infer.is_inferred(v))
+        self.assertEqual(v.detail["prior_outcome"], "narrowed")
+
+    def test_the_narrowed_prior_survives_underneath_with_its_candidates(self):
+        """⚠️ THE NARROWING IS NEVER OVERWRITTEN, ONLY SUPERSEDED. Its own
+        candidates -- the contest `adjudicate_clef` actually ran -- stay on
+        the record and travel FORWARD onto the inferred verdict too
+        (`infer._admit`), so a reader never has to walk back to see what was
+        rejected."""
+        d = _Doc(["alto", "alto", ("narrowed", "treble", "alto")])
+        before = d.clef(2).id
+        d.infer()
+        after = d.clef(2)
+        self.assertEqual(after.supersedes, before)
+        prior = d.log.row(before)
+        self.assertIs(prior.outcome, Outcome.NARROWED)
+        self.assertEqual(prior.reason, "margin_below_floor")
+        self.assertEqual({c.value for c in after.candidates},
+                         {"treble", "alto"})
+
+    def test_a_split_still_leaves_a_narrowed_clef_narrowed(self):
+        """Sean's *"a split abstains"* applies identically to a narrowed
+        prior: the document disagreeing with itself is not evidence for
+        EITHER of this staff's own candidates."""
+        d = _Doc(["treble", "alto", ("narrowed", "alto", "tenor")])
+        d.infer()
+        self.assertIs(d.clef(2).outcome, Outcome.NARROWED)
+        g = d.census()[d.staves[2].to_key()]
+        self.assertEqual(g.outcome, "split")
+        self.assertEqual(g.detail["tally"], {"alto": 1, "treble": 1})
+
+    def test_tier_three_the_convention_is_bounded_to_the_candidates_too(self):
+        """No other system decided this slot's clef, so tier (2) is silent
+        and the rule falls to (3) the instrument's convention -- Viola is
+        alto, and alto IS one of this contest's candidates, so it fills."""
+        d = _Doc([("narrowed", "alto", "tenor")], instrument="Viola")
+        d.infer()
+        v = d.clef(0)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, "alto")
+        self.assertEqual(v.reason, "clef_from_instrument_convention")
+
+    def test_tier_three_declines_when_the_convention_is_not_a_candidate(self):
+        """The SAME tier-(3) case, except the Viola's own contest narrowed
+        to {treble, tenor} -- alto is neither, so the convention may not
+        widen the field and the narrowing stands."""
+        d = _Doc([("narrowed", "treble", "tenor")], instrument="Viola")
+        d.infer()
+        self.assertIs(d.clef(0).outcome, Outcome.NARROWED)
+        g = d.census()[d.staves[0].to_key()]
+        self.assertEqual(g.outcome, "declined_not_a_candidate")
+        self.assertEqual(g.detail["tier"], "instrument_convention")
+        self.assertEqual(set(g.detail["candidates"]), {"treble", "tenor"})
+
+    def test_the_second_pass_reaches_the_pitch_of_a_filled_narrowing_too(self):
+        """⚠️ THE SAME ORDERING PROOF AS THE ABSTAINED CASE
+        (`TestTheSecondEvaluatePassReachesThePitches`), for the NARROWED
+        path: filling the clef is inert unless `evaluate.run_over` reaches
+        the pitches beneath it."""
+        d = _Doc(["alto", "alto", ("narrowed", "treble", "alto")],
+                 positions=[(0, 0, 0, 4), (2, 0, 0, 4)])
+        evaluate.run(d.log)
+        self.assertIsNone(d.log.verdict(Q.PITCH, _glyph(0, 2, 3, 0, 0)))
+        d.infer()
+        evaluate.run_over(d.log, infer.inferred_verdicts(d.log))
+        p = d.log.verdict(Q.PITCH, _glyph(0, 2, 3, 0, 0))
+        self.assertIsNotNone(p)
+        self.assertEqual(p.value, "C4")          # alto, middle line
 
 
 class TestItRunsAfterTheSlotRule(unittest.TestCase):

@@ -28,6 +28,12 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
 from .infer import (CLEF_GAP_SWITCH, FAMILY_BLOCK_SWITCH, Inference,
                     PART_KEY_SWITCH, Proposal, independent_groups, rule)
+# ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
+# stage, `# noqa: SLF001`): `_admit`'s own candidate-membership check for a
+# NARROWED prior is exactly the test roadmap 2.10b's declines need to make
+# BEFORE proposing, so a value the reader never admitted reads as a named
+# decline here rather than a `ValueNotAdmitted` crash in the harness.
+from .infer import _candidate_values, _same_value  # noqa: SLF001,E501
 from . import record as R
 from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
@@ -1020,16 +1026,26 @@ def collapse_slot_index_to_family_block(log: Log,
 # Rule 4 — the clef nobody could read, on a part the record has already placed
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: The prior outcomes this rule will speak into. ⚠️ ABSTAINED ONLY, AND
-#: `NARROWED` IS DELIBERATELY ABSENT even though `infer.INFERABLE` admits it.
-#: A NARROWED clef means `adjudicate_clef` READ the staff, scored two or more
-#: candidates and could not separate them under `MARGIN_FLOOR` -- that is the
-#: clef reader's own contest and its own floor, and collapsing it from another
-#: system would be this rule quietly overruling a margin decision it has no
-#: evidence about. Sean's rule is about a clef that could not be read AT ALL.
-#: The Litolff whole-movement record holds 15 narrowed clefs beside the 9
-#: abstained ones, so this is a live exclusion and not a hypothetical.
-_CLEF_GAP_PRIOR = Outcome.ABSTAINED
+#: The prior outcomes this rule will speak into.
+#:
+#: ⚠️⚠️ ROADMAP 2.10b WIDENED THIS FROM ABSTAINED-ONLY (`benchmarks/omr-no-
+#: pitch-2026-09/FINDINGS.md` §2: `staff/6/1/9` on the Litolff whole-movement
+#: record narrowed to a genuine 3-way tie under 2.11b and stayed `no_pitch`
+#: forever, because the old exclusion below gave it nowhere to go). A
+#: NARROWED clef means `adjudicate_clef` READ the staff, scored two or more
+#: candidates and could not separate them under `MARGIN_FLOOR` -- that
+#: contest, and its own floor, are NOT re-argued here. This rule still never
+#: overturns it by re-scoring; it only asks whether the SAME evidence ladder
+#: as the abstained case -- (2) the same part's clef DECIDED on other
+#: systems, (3) the instrument's conventional header clef -- lands on a value
+#: the contest ITSELF already kept as a candidate. Where it does not, the
+#: narrowing is declined exactly as before (CLAUDE.md §4a: INFER may collapse
+#: a NARROWED verdict only to one of that reader's OWN candidates, never
+#: overturn a DECIDED one, and never widen the field -- `infer._admit`
+#: enforces the second half by raising `ValueNotAdmitted`; this rule enforces
+#: the first half itself, by name, so a decline reads as a decline rather
+#: than crashing the stage).
+_CLEF_GAP_PRIORS: Tuple[Outcome, ...] = (Outcome.ABSTAINED, Outcome.NARROWED)
 
 
 @dataclass(frozen=True)
@@ -1106,7 +1122,8 @@ def _clef_reads_by_slot(log: Log) -> Dict[int, List[Verdict]]:
 
 
 def clef_gap_census(log: Log) -> List[_ClefGap]:
-    """Every staff whose clef ABSTAINED, and what this rule makes of it.
+    """Every staff whose clef ABSTAINED or NARROWED, and what this rule
+    makes of it (roadmap 2.10b widened this from abstained-only).
 
     ⚠️ THE RULE'S WHOLE BODY LIVES HERE and the rule below is only the part
     that turns fills into `Proposal`s. One function, so the probe and the rule
@@ -1123,14 +1140,21 @@ def clef_gap_census(log: Log) -> List[_ClefGap]:
         clef = log.verdict(Q.CLEF, staff)
         if clef is None:
             continue
-        if clef.outcome is not _CLEF_GAP_PRIOR:
+        if clef.outcome not in _CLEF_GAP_PRIORS:
             # ⚠️ A DECIDED clef is a READING and is never overruled (rule 3 of
-            # the stage, enforced again by `_admit`); a NARROWED one is the
-            # clef reader's own contest. Both are DECLINED here rather than
-            # left to the harness, so the census can name them.
+            # the stage, enforced again by `_admit`). DECLINED here rather
+            # than left to the harness, so the census can name it.
             out.append(_ClefGap(
                 staff, f"declined_prior_is_{clef.outcome.value}"))
             continue
+
+        # ⚠️⚠️ ROADMAP 2.10b. A NARROWED clef carries its own surviving
+        # candidates, and EVERY value this rule proposes below for such a
+        # staff must be one of them -- `admitted` is empty for an ABSTAINED
+        # prior (it kept none), which is exactly why the checks below only
+        # fire `if narrowed`.
+        narrowed = clef.outcome is Outcome.NARROWED
+        admitted = _candidate_values(clef) if narrowed else ()
 
         slot, name, part_rows = _part_of(log, staff)
         if slot is None:
@@ -1157,6 +1181,19 @@ def clef_gap_census(log: Log) -> List[_ClefGap]:
                                      "tally": tally}))
                 continue
             won = ranked[0][0]
+            if narrowed and not any(_same_value(won, v) for v in admitted):
+                # ⚠️⚠️ ROADMAP 2.10b, RULE 4 OF THE STAGE, ENFORCED HERE BY
+                # NAME rather than by letting `_admit` raise. The other
+                # systems agree on a clef this staff's OWN contest never kept
+                # as a candidate -- proposing it would be widening the field,
+                # which CLAUDE.md §4a reserves for ADJUDICATE. The narrowing
+                # stands, exactly as `declined_prior_is_narrowed` used to
+                # leave EVERY narrowed staff, except now it is named WHY.
+                out.append(_ClefGap(
+                    staff, "declined_not_a_candidate", won,
+                    {"slot": slot, "instrument": name, "tally": tally,
+                     "tier": "other_systems", "candidates": list(admitted)}))
+                continue
             witnesses = tuple(v.id for v in others if str(v.value) == won)
             out.append(_ClefGap(
                 staff, "clef_from_other_systems", won,
@@ -1180,8 +1217,18 @@ def clef_gap_census(log: Log) -> List[_ClefGap]:
             out.append(_ClefGap(staff, "declined_no_instrument_name",
                                 None, {"slot": slot, "name": name}))
             continue
+        conv = str(inst.default_clef)
+        if narrowed and not any(_same_value(conv, v) for v in admitted):
+            # ⚠️ Same guard as tier (2), roadmap 2.10b: a bare convention with
+            # no witness on the page is weaker evidence than the reader's own
+            # contest and may not widen it either.
+            out.append(_ClefGap(
+                staff, "declined_not_a_candidate", conv,
+                {"slot": slot, "instrument": inst.name,
+                 "tier": "instrument_convention", "candidates": list(admitted)}))
+            continue
         out.append(_ClefGap(
-            staff, "clef_from_instrument_convention", str(inst.default_clef),
+            staff, "clef_from_instrument_convention", conv,
             {"slot": slot, "instrument": inst.name,
              # ⚠️ NAMED AS A CONVENTION AND NOT AS A WITNESS. Nothing on this
              # page was read to reach this answer; the `instrument_header_clef`
@@ -1209,19 +1256,21 @@ def clef_gap_census(log: Log) -> List[_ClefGap]:
     scope=Kind.DOCUMENT,
     sideways=True,
     bound=(
-        "It speaks ONLY where `adjudicate_clef` ABSTAINED and the staff's "
-        "`Q.SLOT_INDEX` is DECIDED. A DECIDED clef is never touched and a "
-        "NARROWED one is declined outright -- a narrowing is the clef "
-        "reader's own contest under its own margin floor, not a gap. The "
-        "value is either (2) the MAJORITY of the clefs DECIDED on the same "
-        "slot on OTHER systems of this document -- a tie for top abstains, "
-        "and no other-system read means no tier-(2) answer -- or, where no "
-        "other system decided one, (3) the `default_clef` of the instrument "
-        "the record already named for that slot, read from "
-        "`tools/omr/instruments.py` and never typed here. It proposes one "
-        "clef per staff, invents no value, moves no glyph and writes no "
-        "pitch: the pitches are `restate_pitch`'s, reached by "
-        "`evaluate.run_over` over this verdict alone."),
+        "It speaks ONLY where `adjudicate_clef` ABSTAINED or NARROWED and "
+        "the staff's `Q.SLOT_INDEX` is DECIDED. A DECIDED clef is never "
+        "touched. A NARROWED clef's own contest is never re-argued -- "
+        "roadmap 2.10b bounds this rule's answer to that contest's OWN "
+        "surviving candidates (CLAUDE.md §4a); a tier's answer that is not "
+        "one of them is declined `declined_not_a_candidate` and the "
+        "narrowing stands. The value is either (2) the MAJORITY of the "
+        "clefs DECIDED on the same slot on OTHER systems of this document "
+        "-- a tie for top abstains, and no other-system read means no "
+        "tier-(2) answer -- or, where no other system decided one, (3) the "
+        "`default_clef` of the instrument the record already named for "
+        "that slot, read from `tools/omr/instruments.py` and never typed "
+        "here. It proposes one clef per staff, invents no value, moves no "
+        "glyph and writes no pitch: the pitches are `restate_pitch`'s, "
+        "reached by `evaluate.run_over` over this verdict alone."),
     why_witnesses_are_independent=(
         "Tier (2)'s witnesses are OTHER STAVES' `Q.CLEF` verdicts, one per "
         "system, each resting on that system's own header ink -- so "
@@ -1246,6 +1295,17 @@ def fill_clef_gap(log: Log, document: Subject) -> List[Proposal]:
 
     Sean, 2026-09-23: *"yes — viola staff with unreadable clef reads as alto
     and it should check other systems if the alto clef can be found"*.
+
+    ⚠️⚠️ ROADMAP 2.10b, `benchmarks/omr-no-pitch-2026-09/FINDINGS.md` §2. The
+    Litolff whole-movement `no_pitch` diagnosis found a NARROWED clef
+    (`staff/6/1/9`, a genuine 3-way tie under 2.11b's off-staff discount)
+    that this rule had never been ABLE to fill, structurally, because
+    `_CLEF_GAP_PRIORS` used to admit only an abstention. That staff's other
+    systems settle it outright, so the ladder now speaks to a NARROWED prior
+    too -- bounded, per `clef_gap_census`, to that contest's OWN surviving
+    candidates. A clef that could not be read AT ALL (abstained) and a clef
+    that was read into an unresolved tie (narrowed) reach the SAME two-tier
+    ladder here; only the bound they are each checked against differs.
 
     **Why it is an inference and not a reading.** On Litolff page 3 the alto
     C-clef is MERGED into the staff lines by the plate and the detector boxed

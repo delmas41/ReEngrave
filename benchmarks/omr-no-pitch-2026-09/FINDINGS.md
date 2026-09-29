@@ -118,3 +118,115 @@ python3 benchmarks/omr-no-pitch-2026-09/probe/diff_clefs.py <record-28.json> <re
 No pipeline code was touched; `staged.check` is unchanged at 247 and no
 test was added, because there is no connection fault here to pin with a
 RED→GREEN pair.
+
+## 2. ROADMAP 2.10b — the NARROWED clef gap, built and priced
+
+§4's recommendation (widen `fill_clef_gap` to a NARROWED prior, bounded to
+that contest's own candidates) is BUILT on `claude/clef-narrowed-gap-2.10b`,
+pushed, not merged.
+
+### 2.1 The change
+
+`inferences.clef_gap_census` (`tools/omr/staged/inferences.py`) widened
+`_CLEF_GAP_PRIOR` (now `_CLEF_GAP_PRIORS`) from `(ABSTAINED,)` to
+`(ABSTAINED, NARROWED)`. For a NARROWED clef, the SAME two-tier ladder as
+2.10 runs (2. the same part's clef DECIDED on other systems, majority, a
+split abstains; 3. the instrument's conventional header clef), but the
+ladder's answer is checked against that contest's OWN surviving candidates
+(`Candidate.value`, read straight off the standing verdict) before it may be
+proposed — `declined_not_a_candidate` names the case where it is not.
+`infer._admit` would raise `ValueNotAdmitted` if this guard were skipped (it
+already enforces rule 4 for every other INFER rule); this rule enforces the
+same bound itself, one level up, so the decline reads as a decline rather
+than crashing the stage. No new flag — `OMR_CLEF_GAP` (roadmap 2.10) already
+gates the whole rule and its semantics ("this rule's evidence ladder, on or
+off") cover the widened prior with no change of meaning.
+
+`staff/14/1/9`-type case (§2's own motivating example, an ABSTAINED clef
+with no placed part): unaffected structurally. It has no `Q.PART_PARTITION`
+and only a `narrowed` `Q.SLOT_INDEX`, so `_part_of` still returns `slot=None`
+and the rule still declines `declined_part_not_decided` before candidates
+ever enter the question — it does NOT follow, exactly as predicted.
+
+### 2.2 Tests, RED→GREEN
+
+`tools/omr/tests/test_infer_clef_gap.py`: one existing test
+(`test_a_narrowed_clef_is_the_clef_readers_problem_not_this_rules`) pinned
+the OLD blanket exclusion and is updated in place, not deleted (2.11b's own
+precedent) — its fixture now fills, so it moved into a new assertion
+(`test_a_narrowed_clef_whose_contest_never_saw_the_answer_stays_narrowed`,
+same shape, different candidates, still declines). Six new tests added in
+`TestRoadmap210bTheNarrowedClefLadder` covering exactly the three proof
+cases asked for (a narrowed {treble, alto} Viola with alto decided on its
+other systems → alto; a narrowed staff whose other-system answer is NOT a
+candidate → untouched; a split → untouched), plus tier (3) bounded the same
+way and the second-EVALUATE-pass ordering proof for a NARROWED fill. RED
+confirmed against `origin/main`'s `inferences.py` (swapped in temporarily,
+not committed): **7 of 43 failed** for the right reason (`declined_not_a_
+candidate` expected, `declined_prior_is_narrowed` — the old blanket
+exclusion — returned instead, or the clef stayed NARROWED where it should
+have filled). GREEN on the fix: 43/43. Fast tier: **3,748 passed** (main's
+3,742 + 6 new), 3 skipped — unchanged from main otherwise. `staged.check`
+**247**, unchanged.
+
+### 2.3 Priced in-process on the 09-29 Litolff record — no re-gather
+
+`benchmarks/omr-clef-gap-2026-09/probe/replay.py` (2.10's own base/arm
+instrument: rebuild the record's OWN rows — observations, abstentions AND
+verdicts, with their original ids — into a fresh `Log`, then re-run INFER +
+the bounded second EVALUATE with `OMR_CLEF_GAP` toggled) run unmodified
+against the 09-29T104646Z whole-movement record:
+
+- **Control passes**: 135,920 of 135,920 verdicts reproduce exactly, 0
+  differ, 0 extra; 189,981 of 189,981 observations replayed. The rebuild IS
+  the record.
+- **`decided_clefs_changed: []`** — 0, confirmed. Rule 3 held.
+- **11 narrowed clefs, 1 abstained clef, total on this document** (the
+  `OMR_CLEF_GAP=0` base reading). Of the 11 narrowed: **8 filled, all by
+  tier (2), 0 by tier (3)**; **3 correctly declined**
+  `declined_not_a_candidate` — real, not synthetic:
+
+  | staff | contest's candidates | other systems' majority | declined? |
+  |---|---|---|---|
+  | `staff/4/0/9` (Cello) | treble, tenor | bass (21 v 4) | **declined** — bass is not a candidate |
+  | `staff/5/0/6` (Violin) | tenor, bass, alto | treble (29/29) | **declined** — treble is not a candidate |
+  | `staff/12/0/10` | tenor, treble, alto | bass (21 v 4) | **declined** — bass is not a candidate |
+
+  The single abstained clef, `staff/14/1/9`, **still abstains** — no placed
+  part, exactly as predicted in §2.1.
+- **`no_pitch`: 471 → 135 (−336, −71%)** on this same record, INFER/EVALUATE
+  re-decided in-process, nothing else changed. By system, the shortfall
+  clears entirely on `6/1` (staff/6/1/9's own system) and shrinks on `4/0`
+  (70→32); `5/0`, `12/0` and `14/1` are untouched — exactly the three
+  declined staves plus the one abstained staff that could not follow.
+- **`refusal_deltas`**: `no_pitch` −336, `bar_does_not_add_up` +165,
+  `duration_narrowed` +22, `owned_by_another_staff` +4, `owner_not_read`
+  +17 — heads that used to die early at `no_pitch` now reach further into
+  the ladder and a fraction of them are caught by a LATER refusal instead
+  (the same reclassification shape §2's own diagnosis named, one stage
+  further downstream). `to_musicxml` did not raise `Unbalanced` on either
+  arm — the accounting equality holds. `base_arm_is_deterministic` and
+  `base_arm_export_equals_the_records_own_export` both `true`.
+
+The full summary is `benchmarks/omr-no-pitch-2026-09/out/210b-arm/litolff-2-
+10b-summary.json`; the ARM/BASE records and MusicXML themselves are
+regenerable in one command (`replay.py ... --write-arm`, ~1 minute) and are
+gitignored (600 MB each, unpooled — see `.gitignore`).
+
+Brahms: **skipped**, per the work order's own escape valve — the acceptance
+manifest's Brahms whole-movement record is 1.1 GB and `replay.py`'s rebuild
+alone (three full passes: control + base + arm) would multiply the Litolff
+rebuild cost several times over on a bigger document; not run.
+
+### 2.4 Crops
+
+Five header crops (clef + first bar), one per distinct instrument among the
+8 filled staves plus §2's own motivating subject
+(`benchmarks/omr-no-pitch-2026-09/probe/crop_filled_2_10b.py`, adapted from
+2.10's `crop_clef.py`, same frame control, same GREEN-staff/RED-bracket
+convention): `staff/6/1/9` (unnamed part, alto), `staff/10/0/9` (Viola,
+alto), `staff/12/1/2` (Clarinet, treble), `staff/14/0/3` (Bassoon, bass),
+`staff/7/0/6` (Timpani, bass) — under `benchmarks/omr-no-pitch-2026-09/
+out/print/`, manifest `crop-manifest-litolff-210b.json`,
+`VERDICT_none_yet: null` on every row, none refused (frame control passed
+on all five).
