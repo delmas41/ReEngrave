@@ -1,0 +1,2101 @@
+{
+ "heads": [
+  {
+   "band_rows": [
+    [
+     3.4540571732954546,
+     {
+      "candidate": "staff/10/1/0",
+      "own": true,
+      "position_in_candidate": 14.908114346590908
+     }
+    ],
+    [
+     1.018670099431818,
+     {
+      "candidate": "staff/10/1/1",
+      "own": false,
+      "position_in_candidate": -2.037340198863636
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     1551.0,
+     3687.0,
+     2146.0,
+     4072.0
+    ],
+    "cell_staff_space": [
+     94.75,
+     {
+      "half_step": 47.375,
+      "lines": 5
+     }
+    ],
+    "key": "cell/10/1/0/1"
+   },
+   "correct_staff": "staff/10/1/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      1965.873046875,
+      4042.31494140625,
+      2007.1279296875,
+      4071.658203125
+     ],
+     "category": "notehead",
+     "x_center_page": 1986.50048828125,
+     "y_center_page": 4056.986572265625
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     1428,
+     1223,
+     142,
+     101
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      1961.8056640625,
+      4025.7548828125,
+      2015.84375,
+      4030.69384765625
+     ],
+     "subject": "glyph/10/1/0/1/22",
+     "value": [
+      "ledgerLine",
+      1414,
+      1166,
+      186,
+      17
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1962.67724609375,
+      4024.09912109375,
+      2015.55322265625,
+      4029.619140625
+     ],
+     "subject": "glyph/10/1/1/1/12",
+     "value": [
+      "ledgerLine",
+      1417,
+      169,
+      182,
+      19
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1962.9677734375,
+      4052.861328125,
+      2015.84375,
+      4059.2529296875
+     ],
+     "subject": "glyph/10/1/1/1/18",
+     "value": [
+      "ledgerLine",
+      1418,
+      268,
+      182,
+      22
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/10/1/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/10/1/0": {
+     "staff_lines": [
+      3852,
+      3880,
+      3907,
+      3934,
+      3962
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/10/1/1": {
+     "staff_lines": [
+      4085,
+      4112,
+      4140,
+      4168,
+      4195
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/10/1/2": {
+     "staff_lines": [
+      4314,
+      4341,
+      4368,
+      4395,
+      4424
+     ],
+     "staff_spacing": 27.5
+    }
+   },
+   "subject": "glyph/10/1/0/1/1"
+  },
+  {
+   "band_rows": [
+    [
+     3.4049999999999936,
+     {
+      "candidate": "staff/10/1/0",
+      "own": true,
+      "position_in_candidate": 14.809999999999986
+     }
+    ],
+    [
+     1.0677272727272793,
+     {
+      "candidate": "staff/10/1/1",
+      "own": false,
+      "position_in_candidate": -2.1354545454545586
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     2146.0,
+     3687.0,
+     2584.0,
+     4072.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/10/1/0/2"
+   },
+   "correct_staff": "staff/10/1/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      2218.325,
+      4040.1,
+      2256.0,
+      4071.175
+     ],
+     "category": "notehead",
+     "x_center_page": 2237.1625,
+     "y_center_page": 4055.6375
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     263,
+     1284,
+     137,
+     113
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      2212.0,
+      4051.375,
+      2264.525,
+      4058.8
+     ],
+     "subject": "glyph/10/1/0/2/23",
+     "value": [
+      "ledgerLine",
+      240,
+      1325,
+      191,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2212.825,
+      3791.225,
+      2264.8,
+      3798.925
+     ],
+     "subject": "glyph/10/1/0/2/26",
+     "value": [
+      "ledgerLine",
+      243,
+      379,
+      189,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2370.675,
+      3818.725,
+      2416.6,
+      3828.625
+     ],
+     "subject": "glyph/10/1/0/2/30",
+     "value": [
+      "ledgerLine",
+      817,
+      479,
+      167,
+      36
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2213.1,
+      4023.875,
+      2263.425,
+      4031.575
+     ],
+     "subject": "glyph/10/1/0/2/34",
+     "value": [
+      "ledgerLine",
+      244,
+      1225,
+      183,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2369.575,
+      3787.65,
+      2422.925,
+      3795.625
+     ],
+     "subject": "glyph/10/1/0/2/35",
+     "value": [
+      "ledgerLine",
+      813,
+      366,
+      194,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2210.35,
+      4052.0,
+      2264.25,
+      4058.6
+     ],
+     "subject": "glyph/10/1/1/2/15",
+     "value": [
+      "ledgerLine",
+      234,
+      280,
+      196,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2368.475,
+      4051.175,
+      2416.875,
+      4057.775
+     ],
+     "subject": "glyph/10/1/1/2/17",
+     "value": [
+      "ledgerLine",
+      809,
+      277,
+      176,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/10/1/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/10/1/0": {
+     "staff_lines": [
+      3852,
+      3880,
+      3907,
+      3934,
+      3962
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/10/1/1": {
+     "staff_lines": [
+      4085,
+      4112,
+      4140,
+      4168,
+      4195
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/10/1/2": {
+     "staff_lines": [
+      4314,
+      4341,
+      4368,
+      4395,
+      4424
+     ],
+     "staff_spacing": 27.5
+    }
+   },
+   "subject": "glyph/10/1/0/2/8"
+  },
+  {
+   "band_rows": [
+    [
+     2.9099999999999993,
+     {
+      "candidate": "staff/16/0/0",
+      "own": true,
+      "position_in_candidate": 13.819999999999999
+     }
+    ],
+    [
+     0.9360360360360368,
+     {
+      "candidate": "staff/16/0/1",
+      "own": false,
+      "position_in_candidate": -1.8720720720720736
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     3167.0,
+     364.0,
+     3539.0,
+     749.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/16/0/0/6"
+   },
+   "correct_staff": "staff/16/0/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      3359.775,
+      703.625,
+      3400.75,
+      734.425
+     ],
+     "category": "notehead",
+     "x_center_page": 3380.2625,
+     "y_center_page": 719.025
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     701,
+     1235,
+     149,
+     112
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      3405.15,
+      713.8,
+      3457.125,
+      720.4000000000001
+     ],
+     "subject": "glyph/16/0/0/6/11",
+     "value": [
+      "ledgerLine",
+      866,
+      1272,
+      189,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3350.975,
+      686.0250000000001,
+      3406.25,
+      694.2750000000001
+     ],
+     "subject": "glyph/16/0/0/6/12",
+     "value": [
+      "ledgerLine",
+      669,
+      1171,
+      201,
+      30
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3410.645,
+      711.9775,
+      3460.595,
+      720.8575
+     ],
+     "subject": "glyph/16/0/1/6/17",
+     "value": [
+      "ledgerLine",
+      878,
+      281,
+      180,
+      32
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3442.0025,
+      768.31,
+      3538.0175,
+      777.4675
+     ],
+     "subject": "glyph/16/0/1/6/18",
+     "value": [
+      "ledgerLine",
+      991,
+      484,
+      346,
+      33
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3463.925,
+      709.48,
+      3516.3725,
+      722.5225
+     ],
+     "subject": "glyph/16/0/1/6/19",
+     "value": [
+      "ledgerLine",
+      1070,
+      272,
+      189,
+      47
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3356.255,
+      714.1975,
+      3408.1475,
+      723.0775
+     ],
+     "subject": "glyph/16/0/1/6/20",
+     "value": [
+      "ledgerLine",
+      682,
+      289,
+      187,
+      32
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3461.9825,
+      741.67,
+      3538.85,
+      750.8275
+     ],
+     "subject": "glyph/16/0/1/6/21",
+     "value": [
+      "ledgerLine",
+      1063,
+      388,
+      277,
+      33
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3334.3325,
+      741.67,
+      3432.5675,
+      750.8275
+     ],
+     "subject": "glyph/16/0/1/6/24",
+     "value": [
+      "ledgerLine",
+      603,
+      388,
+      354,
+      33
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/16/0/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/16/0/0": {
+     "staff_lines": [
+      529,
+      556,
+      583,
+      611,
+      639
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/16/0/1": {
+     "staff_lines": [
+      745,
+      772,
+      800,
+      828,
+      856
+     ],
+     "staff_spacing": 27.75
+    },
+    "staff/16/0/2": {
+     "staff_lines": [
+      969,
+      997,
+      1024,
+      1051,
+      1078
+     ],
+     "staff_spacing": 27.25
+    }
+   },
+   "subject": "glyph/16/0/0/6/5"
+  },
+  {
+   "band_rows": [
+    [
+     2.934999999999999,
+     {
+      "candidate": "staff/16/0/0",
+      "own": true,
+      "position_in_candidate": 13.87
+     }
+    ],
+    [
+     0.9112612612612621,
+     {
+      "candidate": "staff/16/0/1",
+      "own": false,
+      "position_in_candidate": -1.8225225225225241
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     3539.0,
+     364.0,
+     3869.0,
+     749.0
+    ],
+    "cell_staff_space": [
+     100.0,
+     {
+      "half_step": 50.0,
+      "lines": 5
+     }
+    ],
+    "key": "cell/16/0/0/7"
+   },
+   "correct_staff": "staff/16/0/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      3586.025,
+      703.625,
+      3627.0,
+      735.8
+     ],
+     "category": "notehead",
+     "x_center_page": 3606.5125,
+     "y_center_page": 719.7125
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     171,
+     1235,
+     149,
+     117
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      3577.225,
+      687.125,
+      3633.875,
+      694.0
+     ],
+     "subject": "glyph/16/0/0/7/5",
+     "value": [
+      "ledgerLine",
+      139,
+      1175,
+      206,
+      25
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3581.075,
+      742.125,
+      3633.875,
+      749.0
+     ],
+     "subject": "glyph/16/0/0/7/8",
+     "value": [
+      "ledgerLine",
+      153,
+      1375,
+      192,
+      25
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3579.975,
+      684.375,
+      3631.675,
+      692.9000000000001
+     ],
+     "subject": "glyph/16/0/0/7/11",
+     "value": [
+      "ledgerLine",
+      149,
+      1165,
+      188,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3576.4625,
+      718.36,
+      3633.6275,
+      725.02
+     ],
+     "subject": "glyph/16/0/1/7/18",
+     "value": [
+      "ledgerLine",
+      135,
+      304,
+      206,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3580.07,
+      682.5625,
+      3631.4075,
+      692.83
+     ],
+     "subject": "glyph/16/0/1/7/21",
+     "value": [
+      "ledgerLine",
+      148,
+      175,
+      185,
+      37
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3576.4625,
+      715.03,
+      3634.7375,
+      724.1875
+     ],
+     "subject": "glyph/16/0/1/7/23",
+     "value": [
+      "ledgerLine",
+      135,
+      292,
+      210,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3744.465,
+      988.8924999999999,
+      3863.82,
+      998.43
+     ],
+     "subject": "glyph/16/0/2/7/17",
+     "value": [
+      "ledgerLine",
+      754,
+      473,
+      438,
+      35
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3767.9,
+      1043.9375,
+      3868.9975,
+      1053.2024999999999
+     ],
+     "subject": "glyph/16/0/2/7/19",
+     "value": [
+      "ledgerLine",
+      840,
+      675,
+      371,
+      34
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/16/0/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/16/0/0": {
+     "staff_lines": [
+      529,
+      556,
+      583,
+      611,
+      639
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/16/0/1": {
+     "staff_lines": [
+      745,
+      772,
+      800,
+      828,
+      856
+     ],
+     "staff_spacing": 27.75
+    },
+    "staff/16/0/2": {
+     "staff_lines": [
+      969,
+      997,
+      1024,
+      1051,
+      1078
+     ],
+     "staff_spacing": 27.25
+    }
+   },
+   "subject": "glyph/16/0/0/7/4"
+  },
+  {
+   "band_rows": [
+    [
+     3.0079900568181817,
+     {
+      "candidate": "staff/18/0/0",
+      "own": true,
+      "position_in_candidate": 14.015980113636363
+     }
+    ],
+    [
+     0.9192826704545455,
+     {
+      "candidate": "staff/18/0/1",
+      "own": false,
+      "position_in_candidate": -1.838565340909091
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     2946.0,
+     366.0,
+     3556.0,
+     751.0
+    ],
+    "cell_staff_space": [
+     92.25,
+     {
+      "half_step": 46.125,
+      "lines": 5
+     }
+    ],
+    "key": "cell/18/0/0/3"
+   },
+   "correct_staff": "staff/18/0/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      3256.95703125,
+      707.6357421875,
+      3297.7626953125,
+      739.8037109375
+     ],
+     "category": "notehead",
+     "x_center_page": 3277.35986328125,
+     "y_center_page": 723.7197265625
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     1044,
+     1147,
+     137,
+     108
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      3253.3828125,
+      503.01171875,
+      3305.5068359375,
+      510.755859375
+     ],
+     "subject": "glyph/18/0/0/3/19",
+     "value": [
+      "ledgerLine",
+      1032,
+      460,
+      175,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2998.1240234375,
+      474.1201171875,
+      3050.5458984375,
+      482.162109375
+     ],
+     "subject": "glyph/18/0/0/3/20",
+     "value": [
+      "ledgerLine",
+      175,
+      363,
+      176,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2999.9111328125,
+      445.82421875,
+      3052.03515625,
+      454.4619140625
+     ],
+     "subject": "glyph/18/0/0/3/23",
+     "value": [
+      "ledgerLine",
+      181,
+      268,
+      175,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3253.0849609375,
+      422.8896484375,
+      3305.208984375,
+      429.14453125
+     ],
+     "subject": "glyph/18/0/0/3/24",
+     "value": [
+      "ledgerLine",
+      1031,
+      191,
+      175,
+      21
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3251.2978515625,
+      419.9111328125,
+      3305.8046875,
+      428.548828125
+     ],
+     "subject": "glyph/18/0/0/3/26",
+     "value": [
+      "ledgerLine",
+      1025,
+      181,
+      183,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3252.787109375,
+      445.5263671875,
+      3306.1025390625,
+      454.1640625
+     ],
+     "subject": "glyph/18/0/0/3/27",
+     "value": [
+      "ledgerLine",
+      1030,
+      267,
+      179,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3251.0,
+      690.0625,
+      3303.421875,
+      699.2958984375
+     ],
+     "subject": "glyph/18/0/0/3/30",
+     "value": [
+      "ledgerLine",
+      1024,
+      1088,
+      176,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3250.7021484375,
+      717.7626953125,
+      3302.826171875,
+      727.591796875
+     ],
+     "subject": "glyph/18/0/0/3/31",
+     "value": [
+      "ledgerLine",
+      1023,
+      1181,
+      175,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      2999.9111328125,
+      412.1669921875,
+      3054.1201171875,
+      421.99609375
+     ],
+     "subject": "glyph/18/0/0/3/32",
+     "value": [
+      "ledgerLine",
+      181,
+      155,
+      182,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3247.42578125,
+      475.9072265625,
+      3306.6982421875,
+      483.0556640625
+     ],
+     "subject": "glyph/18/0/0/3/33",
+     "value": [
+      "ledgerLine",
+      1012,
+      369,
+      199,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3250.7021484375,
+      691.7197265625,
+      3306.6982421875,
+      699.4638671875
+     ],
+     "subject": "glyph/18/0/1/3/18",
+     "value": [
+      "ledgerLine",
+      1023,
+      177,
+      188,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3251.0,
+      718.228515625,
+      3306.99609375,
+      727.4619140625
+     ],
+     "subject": "glyph/18/0/1/3/22",
+     "value": [
+      "ledgerLine",
+      1024,
+      266,
+      188,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3247.7236328125,
+      721.20703125,
+      3305.5068359375,
+      728.951171875
+     ],
+     "subject": "glyph/18/0/1/3/24",
+     "value": [
+      "ledgerLine",
+      1013,
+      276,
+      194,
+      26
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/18/0/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/18/0/0": {
+     "staff_lines": [
+      531,
+      559,
+      586,
+      613,
+      641
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/18/0/1": {
+     "staff_lines": [
+      749,
+      777,
+      804,
+      831,
+      859
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/18/0/2": {
+     "staff_lines": [
+      966,
+      994,
+      1020,
+      1047,
+      1075
+     ],
+     "staff_spacing": 27.25
+    }
+   },
+   "subject": "glyph/18/0/0/3/6"
+  },
+  {
+   "band_rows": [
+    [
+     3.115838068181818,
+     {
+      "candidate": "staff/18/0/0",
+      "own": true,
+      "position_in_candidate": 14.231676136363637
+     }
+    ],
+    [
+     0.8114346590909091,
+     {
+      "candidate": "staff/18/0/1",
+      "own": false,
+      "position_in_candidate": -1.6228693181818181
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     3556.0,
+     366.0,
+     4124.0,
+     751.0
+    ],
+    "cell_staff_space": [
+     99.0,
+     {
+      "half_step": 49.5,
+      "lines": 5
+     }
+    ],
+    "key": "cell/18/0/0/4"
+   },
+   "correct_staff": "staff/18/0/1",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      3593.44140625,
+      709.90625,
+      3636.4296875,
+      743.46484375
+     ],
+     "category": "notehead",
+     "x_center_page": 3614.935546875,
+     "y_center_page": 726.685546875
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     135,
+     1240,
+     155,
+     121
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      3587.89453125,
+      420.63671875,
+      3640.8671875,
+      428.40234375
+     ],
+     "subject": "glyph/18/0/0/4/18",
+     "value": [
+      "ledgerLine",
+      115,
+      197,
+      191,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3589.00390625,
+      504.39453125,
+      3642.25390625,
+      512.16015625
+     ],
+     "subject": "glyph/18/0/0/4/19",
+     "value": [
+      "ledgerLine",
+      119,
+      499,
+      192,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3828.90625,
+      474.99609375,
+      3906.5625,
+      484.1484375
+     ],
+     "subject": "glyph/18/0/0/4/20",
+     "value": [
+      "ledgerLine",
+      984,
+      393,
+      280,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3587.6171875,
+      721.83203125,
+      3645.3046875,
+      727.93359375
+     ],
+     "subject": "glyph/18/0/0/4/21",
+     "value": [
+      "ledgerLine",
+      114,
+      1283,
+      208,
+      22
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3847.765625,
+      692.15625,
+      3906.5625,
+      700.75390625
+     ],
+     "subject": "glyph/18/0/0/4/22",
+     "value": [
+      "ledgerLine",
+      1052,
+      1176,
+      212,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3846.1015625,
+      447.26171875,
+      3907.39453125,
+      455.3046875
+     ],
+     "subject": "glyph/18/0/0/4/23",
+     "value": [
+      "ledgerLine",
+      1046,
+      293,
+      221,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3588.171875,
+      474.1640625,
+      3644.47265625,
+      482.20703125
+     ],
+     "subject": "glyph/18/0/0/4/26",
+     "value": [
+      "ledgerLine",
+      116,
+      390,
+      203,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3588.7265625,
+      693.265625,
+      3645.02734375,
+      700.19921875
+     ],
+     "subject": "glyph/18/0/0/4/28",
+     "value": [
+      "ledgerLine",
+      118,
+      1180,
+      203,
+      25
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3589.55859375,
+      446.984375,
+      3640.3125,
+      455.02734375
+     ],
+     "subject": "glyph/18/0/0/4/29",
+     "value": [
+      "ledgerLine",
+      121,
+      292,
+      183,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3849.984375,
+      419.8046875,
+      3908.50390625,
+      430.06640625
+     ],
+     "subject": "glyph/18/0/0/4/33",
+     "value": [
+      "ledgerLine",
+      1060,
+      194,
+      211,
+      37
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3589.00390625,
+      693.9140625,
+      3644.47265625,
+      700.015625
+     ],
+     "subject": "glyph/18/0/1/4/11",
+     "value": [
+      "ledgerLine",
+      119,
+      198,
+      200,
+      22
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3587.89453125,
+      721.92578125,
+      3645.02734375,
+      727.47265625
+     ],
+     "subject": "glyph/18/0/1/4/13",
+     "value": [
+      "ledgerLine",
+      115,
+      299,
+      206,
+      20
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3588.7265625,
+      934.09375,
+      3640.03515625,
+      941.58203125
+     ],
+     "subject": "glyph/18/0/1/4/14",
+     "value": [
+      "ledgerLine",
+      118,
+      1064,
+      185,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3845.26953125,
+      691.97265625,
+      3906.83984375,
+      700.5703125
+     ],
+     "subject": "glyph/18/0/1/4/15",
+     "value": [
+      "ledgerLine",
+      1043,
+      191,
+      222,
+      31
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3848.04296875,
+      936.58984375,
+      3907.1171875,
+      945.7421875
+     ],
+     "subject": "glyph/18/0/1/4/19",
+     "value": [
+      "ledgerLine",
+      1053,
+      1073,
+      213,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3589.28125,
+      933.82421875,
+      3640.03515625,
+      942.14453125
+     ],
+     "subject": "glyph/18/0/2/4/8",
+     "value": [
+      "ledgerLine",
+      120,
+      277,
+      183,
+      30
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3846.93359375,
+      937.70703125,
+      3906.28515625,
+      945.1953125
+     ],
+     "subject": "glyph/18/0/2/4/9",
+     "value": [
+      "ledgerLine",
+      1049,
+      291,
+      214,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      3576.24609375,
+      965.44140625,
+      3671.375,
+      971.8203125
+     ],
+     "subject": "glyph/18/0/2/4/10",
+     "value": [
+      "ledgerLine",
+      73,
+      391,
+      343,
+      23
+     ],
+     "verdict": [
+      "decided",
+      true,
+      "inside_the_staff"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/18/0/1",
+    "ladder"
+   ],
+   "staves": {
+    "staff/18/0/0": {
+     "staff_lines": [
+      531,
+      559,
+      586,
+      613,
+      641
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/18/0/1": {
+     "staff_lines": [
+      749,
+      777,
+      804,
+      831,
+      859
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/18/0/2": {
+     "staff_lines": [
+      966,
+      994,
+      1020,
+      1047,
+      1075
+     ],
+     "staff_spacing": 27.25
+    }
+   },
+   "subject": "glyph/18/0/0/4/13"
+  },
+  {
+   "band_rows": [
+    [
+     1.51474609375,
+     {
+      "candidate": "staff/5/1/12",
+      "own": true,
+      "position_in_candidate": 11.0294921875
+     }
+    ],
+    [
+     2.9579811789772728,
+     {
+      "candidate": "staff/5/1/13",
+      "own": false,
+      "position_in_candidate": -5.9159623579545455
+     }
+    ]
+   ],
+   "cell": {
+    "cell_box": [
+     639.0,
+     6699.0,
+     1330.0,
+     7029.0
+    ],
+    "cell_staff_space": [
+     81.5,
+     {
+      "half_step": 40.75,
+      "lines": 5
+     }
+    ],
+    "key": "cell/5/1/12/0"
+   },
+   "correct_staff": "staff/5/1/12",
+   "glyph_box": {
+    "detail": {
+     "bbox_page_px": [
+      951.77197265625,
+      6942.94189453125,
+      990.5732421875,
+      6978.369140625
+     ],
+     "category": "notehead",
+     "x_center_page": 971.172607421875,
+     "y_center_page": 6960.655517578125
+    },
+    "value": [
+     "noteheadBlackOnLine",
+     927,
+     723,
+     115,
+     105
+    ]
+   },
+   "ledgers": [
+    {
+     "bbox_page_px": [
+      1148.14013671875,
+      6782.02392578125,
+      1208.19775390625,
+      6788.4345703125
+     ],
+     "subject": "glyph/5/1/11/0/19",
+     "value": [
+      "ledgerLine",
+      1509,
+      907,
+      178,
+      19
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1148.14013671875,
+      6778.9873046875,
+      1209.54736328125,
+      6788.77197265625
+     ],
+     "subject": "glyph/5/1/11/0/23",
+     "value": [
+      "ledgerLine",
+      1509,
+      898,
+      182,
+      29
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1069.86279296875,
+      6756.0439453125,
+      1129.92041015625,
+      6761.4423828125
+     ],
+     "subject": "glyph/5/1/11/0/24",
+     "value": [
+      "ledgerLine",
+      1277,
+      830,
+      178,
+      16
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1069.18798828125,
+      6986.466796875,
+      1125.5341796875,
+      6997.60107421875
+     ],
+     "subject": "glyph/5/1/12/0/22",
+     "value": [
+      "ledgerLine",
+      1275,
+      852,
+      167,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1148.14013671875,
+      6778.626953125,
+      1206.17333984375,
+      6788.07421875
+     ],
+     "subject": "glyph/5/1/12/0/24",
+     "value": [
+      "ledgerLine",
+      1509,
+      236,
+      172,
+      28
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      940.6376953125,
+      6955.76318359375,
+      998.6708984375,
+      6960.82421875
+     ],
+     "subject": "glyph/5/1/12/0/25",
+     "value": [
+      "ledgerLine",
+      894,
+      761,
+      172,
+      15
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1069.18798828125,
+      6986.12939453125,
+      1132.61962890625,
+      6995.2392578125
+     ],
+     "subject": "glyph/5/1/12/0/27",
+     "value": [
+      "ledgerLine",
+      1275,
+      851,
+      188,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      1149.48974609375,
+      7015.82080078125,
+      1208.19775390625,
+      7023.91845703125
+     ],
+     "subject": "glyph/5/1/12/0/28",
+     "value": [
+      "ledgerLine",
+      1513,
+      939,
+      174,
+      24
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      940.6376953125,
+      6984.29736328125,
+      996.646484375,
+      6993.4072265625
+     ],
+     "subject": "glyph/5/1/13/0/17",
+     "value": [
+      "ledgerLine",
+      894,
+      155,
+      166,
+      27
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    },
+    {
+     "bbox_page_px": [
+      939.962890625,
+      6955.6181640625,
+      999.345703125,
+      6966.75244140625
+     ],
+     "subject": "glyph/5/1/13/0/19",
+     "value": [
+      "ledgerLine",
+      892,
+      70,
+      176,
+      33
+     ],
+     "verdict": [
+      "decided",
+      false,
+      "ledger_line"
+     ]
+    }
+   ],
+   "notehead_class": "noteheadBlackOnLine",
+   "on_the_arm_record_before_2_6f": [
+    "decided",
+    "staff/5/1/12",
+    "ladder"
+   ],
+   "staves": {
+    "staff/5/1/11": {
+     "staff_lines": [
+      6586,
+      6614,
+      6641,
+      6668,
+      6696
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/5/1/12": {
+     "staff_lines": [
+      6809,
+      6836,
+      6863,
+      6890,
+      6919
+     ],
+     "staff_spacing": 27.5
+    },
+    "staff/5/1/13": {
+     "staff_lines": [
+      7042,
+      7070,
+      7096,
+      7123,
+      7152
+     ],
+     "staff_spacing": 27.5
+    }
+   },
+   "subject": "glyph/5/1/12/0/10"
+  }
+ ],
+ "made_by": "benchmarks/omr-owner-domain-2026-09/extract_shared_structure_fixture_2_6f.py",
+ "source": {
+  "breitkopf": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/brahms-arm.record.json"
+ }
+}

@@ -74,6 +74,10 @@ cell_rungs = _ledger.cell_rungs
 cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
 ladder_side = _ledger.ladder_side
 ledger_direction = _ledger.ledger_direction
+# ROADMAP 2.6f: the SAME two-pass discount `glyph_owner` uses, so a rung
+# that is another candidate's own ledger structure cannot be credited here
+# and refused there.
+ladder_sides_with_discount = _ledger.ladder_sides_with_discount
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Thresholds — IMPORTED from the legacy path, never restated, so the two
@@ -548,9 +552,9 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     cv_rows = ev.rows(Q.LEDGER_RUNG_INK)
     signal["cv_rung_ink_rows"] = len(cv_rows)
     rungs = cell_rungs(ev, (cell, near_cell)) + cv_rungs(ev)
-    filed_side = ladder_side(staff.to_key(), y, x0, x1, ys, sp, rungs)
-    near_side = ladder_side(near[1].to_key(), y, x0, x1, geo[0], geo[1],
-                            rungs)
+    filed_side, near_side = ladder_sides_with_discount((
+        (staff.to_key(), y, x0, x1, ys, sp, rungs),
+        (near[1].to_key(), y, x0, x1, geo[0], geo[1], rungs)))
     reading = ledger_direction((filed_side, near_side))
     signal["ledger"] = reading.summary()
     signal["kept_rungs_toward_filed"] = filed_side.n_toward
