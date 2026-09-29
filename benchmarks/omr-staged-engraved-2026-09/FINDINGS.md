@@ -297,3 +297,106 @@ question. **Nothing was checked against a print by eye; no crop was cut.** The 8
 beam-mate firings and the single `notehead_is_a_whole_rest` deletion on page 2
 are unverified. `dynamic_letter` precision and the spurious barline are measured
 and undiagnosed. **Nothing is proposed for any constant, flag or default.**
+
+## 13. ROADMAP 2.3a — the "quarter short" bars ARE §11.4's spurious barline, and it is the DETECTOR layer (STOP)
+
+**2026-09-29.** §11.4 named "the page-2 spurious barline" as unverified. It is
+this bug, and it is now fully traced — GATHER, not any STAGED stage.
+
+**Reproduced on today's tree first**, per the brief: re-decided the committed
+`out/engraved-p0p2.record.json` (provenance `7754d277`, dirty) with tonight's
+2.18/2.18b/2.18c/2.19/3.2b merges in effect (`tools.omr.staged.review.rerun`
+replays ADJUDICATE→EXPORT over the SAME GATHER rows — the fixed-GATHER blind
+spot is fine here, because the fault turns out to be IN the GATHER rows) and
+by summing `<duration>` directly in the committed `out/engraved-p0p2.musicxml`
+(byte-identical to what this tree exports today — `git diff main` on the
+benchmark directory is empty). Neither repair changed anything: bars 21 and 22
+still sum to 1 quarter each on 17 of 18 parts, Violin 1 (P14) exact at 2
+quarters. **Not fixed by tonight's merges — because the fault is upstream of
+every one of them.**
+
+**The mechanism, traced with `trace --subject` plus a direct re-run of
+`tools.omr.staged.pipeline.prepare_pages` on the fixture PDF (page 2, dpi 300,
+matching the record's own provenance):**
+
+`glyph/2/0/0/4/*` (Flute 1, "measure 21") holds one notehead and nothing else;
+`glyph/2/0/0/5/*` ("measure 22") holds a `fermataAbove` and a `restQuarter` and
+nothing else — for EVERY staff on the system, not just Flute 1. The truth
+(`fixture/…m1-24.musicxml`) says bar 21 is one quarter note **plus a
+fermata'd quarter rest** (one bar, 2/4, note-then-rest) on all 18 parts, and
+bar 22 is `rest8th, A, A, A` beamed. Comparing our own "measure 23" (P1: rest8th
++ 3 eighths, dur sums to 8/8 — a FULL bar) against the truth's bar 22 makes the
+shift explicit: **our "21" is truth's 21 note-half, our "22" is truth's 21
+rest-half, our "23" is truth's 22, our "24"/"25" are truth's 23/24 (the tied
+half note).** One bar became two, and every later bar on the page inherited the
++1. `measure_numbering` already said the count was off (`document_bars: 25`
+against the truth's 24) but named no cause.
+
+**The cause, found by calling `measure_extractor.detect_barlines` directly on
+this page:** page 2 / system 0 gets **10** accepted barline columns for a
+page that prints 8 bars (verified against the rendered SVG,
+`grep -c 'class="measure"'` = 8, and against a pixel scan of the PNG: exactly
+two full-staff-height ink columns bracket bar 21, at page x=1512 and x=1775 —
+no third). The extra column sits at **x=1598**, `n_votes=10` of 18 staves
+(`min_votes=9` — it clears the floor by ONE vote), **`connectivity=0.0`**,
+`accept_prong=vote_open_score`.
+
+That prong is the tell. `barlines_cross_gaps` — "do this system's own
+vote-passed columns mostly show ink bridging every inter-staff gap?" — is
+**False** for this system, because `_intersystem_connectivity` requires ink in
+**every one of the 17 gaps** between this system's 18 staves, and Verovio
+draws this bracketed full score's barlines broken PER INSTRUMENT FAMILY: even
+the two genuine barlines at x=1512 and x=1775 score **connectivity 0.0** (0 of
+17 gaps bridged — full stop, not a partial score below 0.4). With only 1 of 10
+vote-passed columns connected (x=226, the system's opening barline, at 1.0),
+`n_connected * 2 (=2) >= len(vote_passed) (=10)` is false, so the code
+concludes this is an OPEN SCORE (one-staff-per-voice, choir/keyboard writing,
+where real barlines legitimately never bridge a gap) and falls back to
+**votes alone, with the connectivity safety net switched off for the whole
+system** — exactly the branch whose own comment says *"the votes are the
+whole of the evidence."* Under that fallback, x=1598 — where ink from roughly
+half the staves (a fermata stroke, an accidental, a stem — not measured which)
+happens to line up — clears `min_votes` with zero connectivity and is accepted
+as a tenth "barline," bisecting bar 21.
+
+**This is `measure_extractor.py`, not any STAGED adjudicator.** It is listed
+in CLAUDE.md §3 as shared GATHER infrastructure (staff/system/barline/measure
+extraction), used by LEGACY and STAGED alike, and it runs before the first
+`Log.observe`. `adjudicate_measure_partition` staged-side does nothing wrong:
+all 18 staves DECIDE `9` because all 18 staves' own cells really were cut into
+9 — the STAGED record faithfully reports a wrong GATHER fact, and there is no
+witness anywhere in the record that could tell a downstream adjudicator the
+count is wrong (a "staves disagree" refusal cannot fire when every staff
+agrees). Per CLAUDE.md rule 6 (connect, never guess) there is no connection
+to make here — the value the exporter would need does not exist in the record
+at all, because it was never gathered. **STOPPING, per the brief's own
+instruction, rather than patching a STAGED stage to paper over a GATHER
+fault.**
+
+**Why it generalises beyond this one bar.** The `barlines_cross_gaps` gate's
+"open score" fallback exists for genuine one-staff-per-voice writing
+(Nottebohm, keyboard, vocal — CLAUDE.md's own `_choir_grouping_enabled`
+docstring). Here it fires on an 18-stave BRACKETED orchestral system because
+of a rendering-specific fact — **Verovio draws this full score's barlines
+broken between instrument families, so connectivity is 0.0 even at real
+barlines** — not because the page is open-score at all (`group_symbol=bracket`
+is decided for this very system). Once that fallback fires, EVERY column
+clearing bare vote count on this system is accepted with no further check,
+so the false positive at x=1598 is not a one-off: any Verovio-engraved
+orchestral fixture is exposed the same way at any column where a coincidental
+cross-staff alignment (fermata, accidental, dynamic, stem) clears
+`min_votes`. Whether real (LilyPond/Verovio-typeset) publisher plates share
+this connectivity signature, or whether it is specific to Verovio's barline
+drawing, is **not tested here** — the fix, if one is wanted, belongs to
+`measure_extractor._intersystem_connectivity` / `barlines_cross_gaps`
+(a per-family rather than per-adjacent-staff gap test, or a floor on
+`n_votes` well above the tiebreak-by-one seen here), and needs its own
+positive control (a genuine open score, run RED first) before it touches
+either pipeline.
+
+**What is NOT established.** Whether x=1598's ink is a fermata, an accidental,
+or a stem was not identified — only that it is not a barline. Whether this
+same failure recurs elsewhere on the 3-page fixture was not swept (§11's
+"page-2 spurious barline" already names one instance; this is a full trace
+of that instance, not a search for others). No crop was cut and shown to
+Sean. No code in `tools/` changed on this branch.
