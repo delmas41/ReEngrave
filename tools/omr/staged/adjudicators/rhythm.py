@@ -36,6 +36,13 @@ from ... import voicing as _legacy_voicing
 from .. import movements as _movements
 from ..record import (ABSTAIN, DOCUMENT, Kind, Outcome, Q, READERS, Scope,
                       State, Subject, meter_at)
+# ⚠️ ROADMAP 2.12l: ONLY the module-level threshold `METER_DIGIT_X_MAX_SPACES`
+# is read from here (`_meter_digit_witness_cells`'s own pre-filter, below) --
+# never `notehead_precision`'s VERDICT itself at this import site. Aliased
+# `_NP`, the same shape `notehead_precision.py` already uses for its own
+# sibling import (`from . import ownership as _ledger`); no circular import
+# (`notehead_precision.py` does not import `rhythm`).
+from . import notehead_precision as _NP
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -2463,6 +2470,150 @@ METER_CHANGE_GATES_OWN_SYSTEM = True
 METER_CHANGE_NOT_SYSTEM_WIDE = "meter_change_not_system_wide"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12l — A PRINTED CHANGE WHOSE DIGITS WERE BOXED AS NOTEHEADS.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §15b: on Breitkopf
+# 317803 pdf p1, system/1/0 cell 1 prints a 6/8 change on every staff, and
+# the detector boxes both digits as `noteheadWhole*`/`noteheadBlack*` --
+# `Q.METER_GLYPH` (`timeSig*` classes only) never fires there, so this
+# system's own `_meter_changes` loop above never even VISITS that cell (it
+# only walks `by_cell`, built from `Q.METER_GLYPH`). Nothing reads the
+# change; `system/1/0` stays 9/4 to its own end and hands that wrong value
+# on into `system/1/1`, whose own bars then refuse the carry outright.
+#
+# `notehead_precision.adjudicate_notehead_is_not_a_notehead` (ROADMAP 2.12l,
+# same item) now REFUSES those two boxes, reason `is_a_meter_digit` --
+# backed by a cross-staff quorum, so it fires only where the SAME pattern
+# repeats on most of the system's staves, never on one staff's own chord.
+# This file reads that refusal back as a WITNESS: a change IS printed at
+# that cell, its VALUE unread. CLAUDE.md rule 6 ("connect, never guess") and
+# rule 8 (a fallback never turns "cannot tell" into an answer) both apply --
+# so this never sets a numerator/denominator from the witness alone. Two
+# uses, both value-free:
+#
+#   1. `_meter_changes` files the cell into `declined_changes` (this
+#      system's OWN record of what it saw and refused, next to the
+#      corroboration failures ROADMAP 2.12d already keeps there) with NO
+#      numerator/denominator -- a witness, not a candidate.
+#   2. `_carry_meter` reads that same fact back off `src`'s own recorded
+#      value (`found.value["declined_changes"]`, already on the record from
+#      (1) -- no second query) and, where the carry is refused by `src`'s
+#      OWN later bars, relabels the generic `carry_outweighed_by_the_bars`/
+#      `carry_not_corroborated` to `meter_change_digits_misread` -- the SAME
+#      shape ROADMAP 2.12k already uses to LABEL a return the bars proved
+#      but the reader missed, applied to a different, specifically-known
+#      cause. It is still an ABSTENTION either way; only the word changes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `notehead_precision.METER_DIGIT_REASON`'s own spelling, cited rather than
+#: imported: that module already keeps its thresholds self-contained (see
+#: its own file docstring) and this file is the meter chain's home, not a
+#: dependency of the notehead decision. The two are the SAME LITERAL and a
+#: test asserts it (`test_staged_meter_digit_witness.py`), so a rename of
+#: one without the other fails loudly rather than reading as "nothing found".
+METER_DIGIT_REASON = "is_a_meter_digit"
+
+#: Filed on a `declined_changes` entry (this system's own, or read back off
+#: a carry source's) with NO numerator/denominator: a change is printed
+#: here, unread -- never a value, only a place. Also the abstain reason
+#: `_carry_meter` returns when a carry it would otherwise refuse generically
+#: is refused for exactly this known cause.
+METER_CHANGE_DIGITS_MISREAD = "meter_change_digits_misread"
+
+
+def _meter_digit_witness_cells(ev: Evidence,
+                               total_staves: Optional[int]) -> Dict[int, tuple]:
+    """ROADMAP 2.12l. `{cell_index: (staff, ...)}` for every cell of THIS
+    system where a QUORUM of staves carry a `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+    verdict reasoned `is_a_meter_digit` -- read back as a fact, never
+    re-derived (the notehead decision already did the cross-staff geometry;
+    this only counts how many staves it fired on).
+
+    ⚠️ THE SAME FLOOR A MID-SYSTEM METER FACT ALREADY NEEDS
+    (`_required_corroboration`, ROADMAP 2.12j), reused rather than a second
+    number that could drift from it -- "printed on the system" means the
+    same thing whether the witness is a read digit or a misread one.
+
+    ⚠️ ONE QUERY, `Scope.SELF_AND_DESCENDANTS` OFF `ev.subject` (the
+    SYSTEM this decision already scopes to) -- the SAME shape
+    `_last_cell_per_staff` already uses for `Q.MEASURE_PARTITION`, called
+    once per system, never per glyph.
+    """
+    # ⚠️⚠️ TWO PASSES, AND THE ORDER IS WHAT KEEPS THIS DECISION'S OWN
+    # FOOTPRINT HONEST. A first cut read `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+    # VERDICTS broadly (`ev.verdicts(..., scope=SELF_AND_DESCENDANTS)`) and
+    # was measured to break `test_stage_review_evidence.py` TWICE: every
+    # notehead verdict returned by that call is marked `considered` by THIS
+    # decision (`Evidence._seen`), so `adjudicate_meter` ended up
+    # transitively citing a human's confirm/refuse row on a glyph six staff
+    # spaces from any barline, in a system that prints no meter change at
+    # all -- `verdicts_that_named_it`/`basis_names_human` (review tooling
+    # that answers "which decisions would a human's correction touch")
+    # reported `adjudicate_meter` for EVERY notehead in the document, not
+    # the handful near a bar's own head.
+    #
+    # The fix is not a narrower SCOPE (any `SELF_AND_DESCENDANTS` sweep of a
+    # VERDICT marks everything it returns, however small the result) but a
+    # narrower QUERY: find candidates from OBSERVATIONS first (`Q.GLYPH_BOX`,
+    # `Q.CELL_STAFF_SPACE` -- plain detector/geometry rows, never a human's,
+    # so being marked `considered` here is inert for that tracking) filtered
+    # to the SAME near-barline x-window `notehead_precision` itself gates
+    # on, and only THEN ask each SURVIVING candidate's own verdict by EXACT
+    # subject (`ev.verdict`, not `ev.verdicts`) -- a handful of glyphs per
+    # system, never the population. `wants` still declares
+    # `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` (this file's own docstring said so
+    # first); it is read narrowly now, not left unread.
+    by_cell: Dict[int, set] = {}
+    spacing_by_cell: Dict[Tuple[int, int], float] = {}
+    for r in ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_DESCENDANTS):
+        st, ce = getattr(r.subject, "staff", None), getattr(r.subject, "cell", None)
+        if st is None or ce is None:
+            continue
+        try:
+            sp = float(r.value)
+        except (TypeError, ValueError):
+            continue
+        if sp > 0:
+            spacing_by_cell[(int(st), int(ce))] = sp
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS):
+        sub = r.subject
+        st, ce, gl = (getattr(sub, "staff", None), getattr(sub, "cell", None),
+                     getattr(sub, "glyph", None))
+        if st is None or ce is None or gl is None or int(ce) == 0:
+            continue                  # cell 0 is the OPENING, not a change
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if not str(v[0]).lower().startswith("notehead"):
+            continue
+        sp = spacing_by_cell.get((int(st), int(ce)))
+        if sp is None:
+            continue
+        if not (0.0 <= float(v[1]) / sp <= _NP.METER_DIGIT_X_MAX_SPACES):
+            continue                  # not near a barline -- not a candidate
+        found = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=sub)
+        if (found is not None and found.outcome is Outcome.DECIDED
+                and found.reason == METER_DIGIT_REASON):
+            by_cell.setdefault(int(ce), set()).add(int(st))
+    floor = _required_corroboration(total_staves)
+    return {c: tuple(sorted(sts)) for c, sts in by_cell.items()
+            if len(sts) >= floor}
+
+
+def _carry_source_digit_misread(value: Optional[dict]) -> Optional[dict]:
+    """The first `declined_changes` entry on a `Q.METER` VALUE (this
+    system's own, or a carry source's) filed `meter_change_digits_misread`,
+    or None. Reads a fact already on the record (filed by
+    `_meter_changes`/`_with_segments` below) -- no second query, no new
+    evidence."""
+    for c in (value or {}).get("declined_changes") or ():
+        if c.get("declined_reason") == METER_CHANGE_DIGITS_MISREAD:
+            return c
+    return None
+# ─────────────────────────────────────────────────────────────────────────────
+
+
 #: The meters the repertoire actually prints, from the template reader's own
 #: `DEFAULT_METERS` -- imported rather than restated so the two readers cannot
 #: drift apart about what a meter IS.
@@ -2742,7 +2893,8 @@ def _admit_template_consensus(readings: dict, at_this_bar: dict,
 
 def _meter_changes(ev: Evidence, opening: dict, bars: dict,
                    last_cell: dict, templates: Optional[dict] = None,
-                   total_staves: Optional[int] = None) -> tuple:
+                   total_staves: Optional[int] = None,
+                   digit_witnesses: Optional[dict] = None) -> tuple:
     """Every mid-system meter change this system's own evidence supports.
 
     Takes its facts as arguments — `opening`, `bars`, `last_cell` and
@@ -2775,7 +2927,16 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     ⚠️ 2.12j: "THE STAVES" IS NOW A FRACTION OF `total_staves`, NOT A BARE
     COUNT — see `_required_corroboration`. `None` (staff count undecided)
     falls back to the absolute floor alone, exactly as before this item.
+
+    ⚠️ 2.12l: `digit_witnesses` FOLLOWS THE SAME SHAPE, FOR THE SAME REASON
+    — `{cell_index: (staff, ...)}`, fetched by the caller
+    (`_meter_digit_witness_cells`, beside `_total_staff_count`) and passed
+    in rather than read here, or `inventory --check` reports `meter`'s own
+    `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` declaration as inert (the read would sit
+    one helper-frame deeper than `_never_read`'s depth-3 bound). `{}` where
+    the flag has nothing or the caller supplied none.
     """
+    digit_witnesses = digit_witnesses or {}
     rows = ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS)
     cautionaries: list = []
     declined: list = []
@@ -2821,6 +2982,14 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     # a threshold and there is nothing to tune: a segment identical to its
     # predecessor changes nothing, by the definition of `record.meter_at`.
     in_force = (opening.get("numerator"), opening.get("denominator"))
+    # ⚠️ ROADMAP 2.12l: CELLS THE MAIN LOOP ACTUALLY EVALUATED, NOT MERELY
+    # CELLS `by_cell` HAS A ROW FOR. A stray, unreadable `Q.METER_GLYPH`
+    # detection (one lone `timeSig1`, no stacked partner) puts a cell in
+    # `by_cell` without ever producing a `readings` entry -- measured on the
+    # Breitkopf fixture itself, staff 9 fires one at cell 1, the SAME cell
+    # the digit witness names -- and `by_cell`'s bare presence must not be
+    # allowed to silently shadow the far stronger cross-staff witness below.
+    cells_with_a_candidate: set = set()
     for cell in sorted(by_cell):
         per_staff = {}
         for r in by_cell[cell]:
@@ -2877,6 +3046,7 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         # ─── END template-at-bar consumer ────────────────────────────────────
         if not readings:
             continue
+        cells_with_a_candidate.add(cell)
 
         best = None
         for (num, den, raw), staves in sorted(readings.items()):
@@ -2962,6 +3132,30 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
             continue                      # a RESTATEMENT, not a change
         out.append(best)
         in_force = (best["numerator"], best["denominator"])
+    # ─── ROADMAP 2.12l: a printed change GATHER never proposed at all ──────
+    # ⚠️ AFTER THE MAIN LOOP, NOT INSIDE IT: a cell whose digits were boxed as
+    # noteheads has no `readings` for the loop above to visit, refuse or
+    # accept, which is exactly the gap this closes.
+    # ⚠️ `cells_with_a_candidate`, NEVER THE BARE `by_cell` -- a stray,
+    # unreadable `Q.METER_GLYPH` detection (no stacked partner: `loose`, not
+    # a `readings` entry) puts a cell in `by_cell` without the main loop ever
+    # having evaluated it, and that must not shadow a real cross-staff
+    # witness (measured: staff 9's lone `timeSig1` at cell 1 on the Breitkopf
+    # fixture is exactly this shape, at the SAME cell the digit witness
+    # names).
+    # ⚠️ NEVER A CELL THE MAIN LOOP ALREADY SPOKE FOR. `out`'s own from_cells
+    # are real, READ changes; a witness at or before the LAST of them is
+    # already governed by an actual value and must not be second-guessed by
+    # a weaker, value-free fact.
+    last_read_cell = max([0] + [c["from_cell"] for c in out])
+    for cell, staves in sorted(digit_witnesses.items()):
+        if cell in cells_with_a_candidate or cell <= last_read_cell:
+            continue
+        declined.append({"from_cell": cell, "numerator": None,
+                         "denominator": None, "raw": None,
+                         "declined_reason": METER_CHANGE_DIGITS_MISREAD,
+                         "staves_with_digit_witness": list(staves)})
+    # ─────────────────────────────────────────────────────────────────────────
     return out, cautionaries, declined
 
 
@@ -3001,11 +3195,15 @@ def _with_segments(ev: Evidence, opening: dict) -> dict:
     nothing changes -- so a consumer never has to ask whether this system is
     the special case. `record.meter_at` is how a bar's meter is read.
     """
+    total_staves = _total_staff_count(ev)
     changes, cautionaries, declined = _meter_changes(
         ev, opening, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
         _template_readings_at_bars(ev),
-        total_staves=_total_staff_count(ev))
+        total_staves=total_staves,
+        # ⚠️ ROADMAP 2.12l: fetched HERE, beside `total_staves`, not inside
+        # `_meter_changes` -- see that function's own docstring.
+        digit_witnesses=_meter_digit_witness_cells(ev, total_staves))
     # ⚠️ A-METER-6's flag rides along in `_segment_from_change`: a segment still
     # governs THIS system's bars through `record.meter_at` exactly as before,
     # and the flag is read only by `_meter_in_force_at_end`, on the way OFF.
@@ -3334,6 +3532,11 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
         # re-derives either.
         is_cautionary_source = (adjacent_caution is not None
                                 and adjacent_caution["source"] == src.to_key())
+        # ⚠️ ROADMAP 2.12l: `src`'s OWN recorded value, read back (no second
+        # query -- `_meter_changes` already filed it there). `None` where
+        # `src` printed no unread digit change, which is the common case.
+        digit_misread = (_carry_source_digit_misread(found.value)
+                         if not is_cautionary_source else None)
         # ⚠️⚠️ THE SECOND WITNESS, AND IT IS WHAT MAKES THE CARRY SAFE
         # WITHOUT A MOVEMENT DETECTOR. A carried meter is a CANDIDATE; this
         # system's own bars confirm or refuse it. A movement boundary needs no
@@ -3398,6 +3601,20 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
                                       skipped_uncorroborated=skipped_uncorroborated,
                                       at_cell=METER_RETURN_MARK_CELL,
                                       **check)
+            # ⚠️ ROADMAP 2.12l: THE SAME LABELLING 2.12k USES ABOVE, for a
+            # DIFFERENT, specifically-known cause -- `src` itself recorded a
+            # printed change its own digits could not be read at, so "too
+            # few bars to check the carry against" is not a generic gap here,
+            # it is the same gap that change witnessed.
+            if digit_misread is not None:
+                return Ruling.abstain(METER_CHANGE_DIGITS_MISREAD,
+                                      carried_from=src.to_key(),
+                                      pages_since_read=pages,
+                                      instead_of=instead_of,
+                                      carried_via_cautionary=is_cautionary_source,
+                                      skipped_uncorroborated=skipped_uncorroborated,
+                                      digit_misread_at_cell=digit_misread["from_cell"],
+                                      **check)
             return Ruling.abstain("carry_not_corroborated",
                                   carried_from=src.to_key(),
                                   pages_since_read=pages,
@@ -3444,6 +3661,13 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             if is_cautionary_source:
                 return Ruling.abstain(METER_RETURN_NOT_READ_REASON,
                                       at_cell=METER_RETURN_MARK_CELL, **detail)
+            # ⚠️ ROADMAP 2.12l: see the identical branch above -- `src` itself
+            # named the cause, so the generic "the bars outweighed it" is not
+            # the truest thing to say here either.
+            if digit_misread is not None:
+                return Ruling.abstain(
+                    METER_CHANGE_DIGITS_MISREAD,
+                    digit_misread_at_cell=digit_misread["from_cell"], **detail)
             return Ruling.abstain("carry_outweighed_by_the_bars", **detail)
         # ⚠️ A CARRIED METER IS STILL SUBJECT TO A CHANGE PRINTED ON THIS
         # SYSTEM. The carry says what the music was doing; a time signature
@@ -3621,11 +3845,14 @@ def _change_only(ev: Evidence, why: str, **detail) -> Ruling:
     nowhere to put the `3/4` its print states plainly at bar 155. As segments
     it says the true thing: *unknown until bar 8, 3/4 from there*.
     """
+    total_staves = _total_staff_count(ev)
     changes, cautionaries, declined = _meter_changes(
         ev, {}, _bar_lengths_for(ev), _last_cell_per_staff(ev),
         # ─── template-at-bar consumer: `{}` with the flag off ───
         _template_readings_at_bars(ev),
-        total_staves=_total_staff_count(ev))
+        total_staves=total_staves,
+        # ⚠️ ROADMAP 2.12l: see `_with_segments`'s identical fetch.
+        digit_witnesses=_meter_digit_witness_cells(ev, total_staves))
     if cautionaries:
         detail = dict(detail, cautionary=cautionaries[-1])
     if declined:
@@ -3700,12 +3927,20 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
     ),
     implicates=(Q.METER, Q.DURATION, Q.MEASURE_PARTITION),
     composed_from=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
-                   Q.DURATION),
+                   Q.DURATION,
+                   # ⚠️ ROADMAP 2.12l: `_meter_digit_witness_cells` finds its
+                   # candidates from `Q.GLYPH_BOX`/`Q.CELL_STAFF_SPACE` (plain
+                   # GATHER facts, read broadly and safely) and confirms only
+                   # the survivors against THIS decision's own verdict, one
+                   # subject at a time -- never a raster of its own.
+                   Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.SYSTEM,
     wants=(Q.METER_GLYPH, Q.METER_TEMPLATE, Q.METER_TEMPLATE_AT_BAR,
            Q.DURATION, Q.DOSSIER_FACT,
            Q.SYSTEM_STAFF_COUNT, Q.METER, Q.EVENT, Q.REST,
-           Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS),
+           Q.MEASURE_PARTITION, Q.MOVEMENT_SPANS,
+           Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("voted", "no_agreement", "no_evidence",
              "too_few_staves_read_it", "carried",
              "carry_not_corroborated", "carry_outweighed_by_the_bars",
@@ -3719,7 +3954,13 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
              # could not be sustained by this system's own bars -- an
              # ABSTENTION, still, just one that says a printed RETURN exists
              # and was not read rather than reading like any other refusal.
-             "meter_return_not_read"),
+             "meter_return_not_read",
+             # ⚠️ ROADMAP 2.12l. See `METER_CHANGE_DIGITS_MISREAD`'s block
+             # comment above `_meter_digit_witness_cells`: a printed change
+             # whose digits were boxed as noteheads, refused there and read
+             # back here -- an ABSTENTION naming the specific, known cause
+             # rather than the generic "the bars outweighed it."
+             "meter_change_digits_misread"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:

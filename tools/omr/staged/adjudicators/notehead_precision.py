@@ -219,6 +219,257 @@ NEARER_STAFF_NEAR_MAX_SPACES = 2.75
 OWN_LEDGER_MAX_SPACES = _OWN_LINE_MAX_SPACES
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12l — A PRINTED METER CHANGE'S DIGITS, BOXED AS NOTEHEADS.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §15b (ROADMAP 2.19):
+# on Breitkopf 317803 pdf p1 the 6/8 change at system/1/0 cell 1 is read by
+# NOTHING — `Q.METER_GLYPH` only ever fires on a `timeSig*`-classed box
+# (`gather._gather_meter_glyphs`), and on this plate the "6" and "8" are
+# boxed as `noteheadWhole*`/`noteheadBlack*` instead. 23 of the 26 `M`-only
+# held bars in FINDINGS §15c carry such a "head". Two failures compound: the
+# glyph is never a candidate for the meter reader AND, until this item, it
+# was WRITTEN as a real note in the exported file.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: how would a
+# human read this off the page? A printed meter change sits at ONE x, just
+# past a barline, and prints on EVERY staff of the system (CLAUDE.md §10) —
+# so two facts distinguish it from real ink: (1) on the STAFF that carries
+# it, the two digits sit close together in x (a template glyph, not two
+# independently-placed noteheads) and a SPECIFIC, narrow distance apart in y
+# (a fixed numeral pair, not a chosen interval); (2) the SAME pattern repeats
+# at the SAME cell on MOST OTHER staves of the system, because it is
+# engraving, not music -- a real chord's interval varies staff to staff (a
+# different chord for a different instrument), a time signature's does not.
+# Measured on the fixture above (`probe/meter_digit_2_12l.py`,
+# `benchmarks/omr-bar-sum-holdout-2026-09/out/print/meter-digit-2.12l-*`):
+# on 13 of 14 staves the "6" and "8" are boxed as two `noteheadWhole*`/
+# `noteheadBlack*` glyphs within 0.1 canonical staff spaces of each other in
+# x and 0.42-0.86 spaces apart in y, all within 0-2.2 spaces of the cell's
+# own left edge (the barline) -- staff 12's second digit falls under the
+# detector's confidence floor and is missed (a recall gap, not a shape
+# miss). ⚠️ THIS IS NOT THE "~2 spaces tall" HEIGHT THE BRIEF NAMED: the
+# detector's box is drawn around the ROUNDED PART of each digit it pattern-
+# matches to a hollow notehead template, not the numeral's full extent, and
+# measures 0.94-1.94 spaces tall on this fixture -- statistically the same as
+# a real notehead. Height is therefore NOT part of this rule; the position
+# pair (tight x, a specific narrow y-gap) and the cross-staff repetition are
+# what carry the whole claim. WHAT WOULD FALSIFY IT: a crop showing a real,
+# same-interval chord repeating at one x on most staves of a system (the
+# brief's own named risk) -- none seen on the two acceptance documents, but
+# not excluded by construction. NOT CONFIRMED WITH SEAN.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How close to the cell's own left edge (the barline) a meter-change digit
+#: sits, in canonical staff spaces. Measured 1.48-2.20 on the fixture above;
+#: this is a comfortable margin, not a fitted bound.
+METER_DIGIT_X_MAX_SPACES = 3.0
+
+#: The two digits of one meter change sit at nearly the SAME x -- a template
+#: glyph, not two independently-drawn noteheads. Measured x-gap 0.00-0.11.
+METER_DIGIT_PAIR_X_TOL_SPACES = 0.25
+
+#: ... and a SPECIFIC, narrow distance apart in y (centre to centre) -- the
+#: numeral pair's own fixed proportions. Measured 0.42-0.86 on 13 of 14
+#: staves of the one measured change; a real chord's interval is free to
+#: land here too (Sean's own risk, above), which is why this rule ALSO
+#: requires the cross-staff repetition below and never fires alone.
+METER_DIGIT_PAIR_Y_GAP_MIN_SPACES = 0.30
+METER_DIGIT_PAIR_Y_GAP_MAX_SPACES = 1.20
+
+#: How many OTHER staves of the system must show the same near-barline
+#: notehead-classed ink at this cell before the pattern counts as "printed
+#: on the system", not one staff's own chord. ⚠️ THE SAME SHAPE AS
+#: `rhythm._required_corroboration` (ROADMAP 2.12j) -- cited, not imported:
+#: this module already keeps its own thresholds self-contained (see the
+#: file docstring's "every threshold IMPORTED... never restated" for the
+#: LEGACY numbers, which this is not one of), and `rhythm.py` is the meter
+#: chain's own home, not a dependency this decision should carry.
+METER_DIGIT_QUORUM_MIN_STAVES = 2
+METER_DIGIT_QUORUM_COVERAGE = 0.5
+
+#: Reason a refused notehead carries when it is a printed meter change's own
+#: digit. Read back by `rhythm._meter_digit_witness_cells` (ROADMAP 2.12l)
+#: to file the position as a witness the meter chain can see -- never a
+#: value, only a place. Naming it here, once, is what keeps the two
+#: modules from restating the string and drifting apart.
+METER_DIGIT_REASON = "is_a_meter_digit"
+
+
+def _required_meter_digit_quorum(total_staves: Optional[int]) -> int:
+    """`METER_DIGIT_QUORUM_MIN_STAVES`, raised on a system large enough that
+    two staves are no longer a meaningful fraction of it. `None` (staff count
+    undecided) falls back to the absolute floor alone -- an absent count is
+    not evidence the system is large."""
+    if not total_staves:
+        return METER_DIGIT_QUORUM_MIN_STAVES
+    return max(METER_DIGIT_QUORUM_MIN_STAVES,
+              round(METER_DIGIT_QUORUM_COVERAGE * total_staves))
+
+
+def _cell_staff_space_at(ev: Evidence, subject) -> Optional[float]:
+    """`Q.CELL_STAFF_SPACE` at an EXPLICIT cell subject, not `ev.subject`'s
+    own ancestry -- the cross-staff check needs another staff's own unit,
+    never this glyph's."""
+    rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=subject)
+    if not rows:
+        return None
+    try:
+        v = float(rows[-1].value)
+    except (TypeError, ValueError):
+        return None
+    return v if v > 0 else None
+
+
+def _meter_digit_pair_partner(ev: Evidence, box_row, spacing_canonical: float,
+                              detail: Dict[str, Any]) -> Optional[Any]:
+    """A second `notehead*` box on THIS staff's SAME cell, close in x and a
+    narrow, specific distance apart in y -- the candidate's own half of the
+    stacked pair. Returns the partner's own `Q.GLYPH_BOX` row, or None.
+
+    ⚠️ CHEAP: this cell's own glyphs only (`Q.GLYPH_BOX` at
+    `Scope.SELF_AND_DESCENDANTS` off the CELL, the same population
+    `_ledger_rungs_in_cell` already walks for the identical reason), never
+    the page. Called for every notehead-classed glyph, but the x-window gate
+    below narrows the population that reaches the loop body to the few boxes
+    standing near a cell's own left edge.
+    """
+    name0, x0, y0, w0, h0 = box_row.value
+    x0_sp = x0 / spacing_canonical
+    if not (0.0 <= x0_sp <= METER_DIGIT_X_MAX_SPACES):
+        return None
+    yc0 = (y0 + h0 / 2.0) / spacing_canonical
+    cell = ev.subject.at(Kind.CELL)
+    me = ev.subject.to_key()
+    best = None
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject.to_key() == me:
+            continue
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        name1, x1, y1, w1, h1 = v
+        if not str(name1).lower().startswith("notehead"):
+            continue
+        x1_sp = x1 / spacing_canonical
+        if not (0.0 <= x1_sp <= METER_DIGIT_X_MAX_SPACES):
+            continue
+        if abs(x1_sp - x0_sp) > METER_DIGIT_PAIR_X_TOL_SPACES:
+            continue
+        yc1 = (y1 + h1 / 2.0) / spacing_canonical
+        y_gap = abs(yc1 - yc0)
+        if not (METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= y_gap
+                <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES):
+            continue
+        detail["meter_digit_pair_x_gap"] = round(abs(x1_sp - x0_sp), 3)
+        detail["meter_digit_pair_y_gap"] = round(y_gap, 3)
+        best = r
+        break
+    return best
+
+
+def _meter_digit_cross_staff_count(ev: Evidence) -> int:
+    """How many OTHER staves of this system show notehead-classed ink near
+    the LEFT edge of this glyph's own cell index -- the repetition
+    `_meter_digit_pair_partner`'s own staff cannot establish alone.
+
+    ⚠️ `Q.SYSTEM_STAFF_COUNT` ONLY, NEVER `ev.subjects(Kind.STAFF)`. The
+    latter walks the whole subject index and is cheap only where a decision
+    calls it once per SYSTEM (`ownership._belongs_to_a_nearer_staff`'s own
+    comment measures the cost of doing it per GLYPH); this decision runs on
+    every notehead-classed glyph in the document, so it never asks the index
+    at all -- `total_staves` bounds a plain `range()` instead, and a system
+    whose count is undecided is skipped outright (no guess at how many
+    staves to check) rather than answered from an unbounded walk.
+    """
+    staff = ev.subject.at(Kind.STAFF)
+    if staff is None:
+        return 0
+    system = ev.subject.at(Kind.SYSTEM)
+    total = ev.verdict(Q.SYSTEM_STAFF_COUNT, subject=system)
+    n = total.value if total is not None and total.value else None
+    if not n:
+        return 0
+    cell_index = ev.subject.cell
+    if cell_index is None:
+        return 0
+    count = 0
+    for st in range(int(n)):
+        if st == staff.staff:
+            continue
+        other_cell = R.cell(staff.page, staff.system, st, cell_index)
+        sp = _cell_staff_space_at(ev, other_cell)
+        if sp is None:
+            continue
+        # ⚠️⚠️ A STACKED PAIR, NOT "ANY NEAR-BARLINE NOTE" — measured wrong
+        # on the fixture this rule was built against: the loose test (any
+        # notehead-classed box near the barline, no partner required) let a
+        # staff's own ORDINARY first note of the bar count toward another
+        # staff's quorum on two cells with NO printed meter change at all
+        # (`benchmarks/omr-bar-sum-holdout-2026-09/out/print/meter-digit-
+        # 2.12l-*`, cells 3 and 5 -- one lone staff each, no repetition).
+        # "Printed on the system" (CLAUDE.md §10) means the SAME shape
+        # repeats, not merely that some other staff also has ink near a
+        # barline, which is the ordinary case on most bars.
+        boxes = []
+        for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=other_cell):
+            v = r.value
+            if not isinstance(v, (list, tuple)) or len(v) != 5:
+                continue
+            name1, x1, y1, w1, h1 = v
+            if not str(name1).lower().startswith("notehead"):
+                continue
+            x1_sp = x1 / sp
+            if 0.0 <= x1_sp <= METER_DIGIT_X_MAX_SPACES:
+                boxes.append((x1_sp, (y1 + h1 / 2.0) / sp))
+        if _has_a_stacked_pair(boxes):
+            count += 1
+    return count
+
+
+def _has_a_stacked_pair(boxes) -> bool:
+    """`True` where two of `boxes` (each `(x_sp, y_centre_sp)`, already
+    filtered to the near-barline window) sit close in x and a narrow,
+    specific distance apart in y -- the SAME test `_meter_digit_pair_partner`
+    applies to the candidate's own staff, applied here to ANOTHER staff's
+    cell so the cross-staff count only credits a REPEATED PAIR, never a
+    lone note that merely happens to stand near the same barline."""
+    for i in range(len(boxes)):
+        for j in range(i + 1, len(boxes)):
+            if abs(boxes[i][0] - boxes[j][0]) > METER_DIGIT_PAIR_X_TOL_SPACES:
+                continue
+            y_gap = abs(boxes[i][1] - boxes[j][1])
+            if (METER_DIGIT_PAIR_Y_GAP_MIN_SPACES <= y_gap
+                    <= METER_DIGIT_PAIR_Y_GAP_MAX_SPACES):
+                return True
+    return False
+
+
+def _is_a_meter_digit(ev: Evidence, box_row, spacing_canonical: float,
+                      detail: Dict[str, Any]) -> bool:
+    """ROADMAP 2.12l — see the module's own block comment above for the
+    signature and its measurement. Two gates, BOTH required: a stacked
+    partner on this glyph's OWN staff, and the same pattern repeated on a
+    QUORUM of the system's OTHER staves at the SAME cell (never on this
+    glyph's shape alone — CLAUDE.md's own guard against a real chord that
+    happens to repeat).
+    """
+    partner = _meter_digit_pair_partner(ev, box_row, spacing_canonical, detail)
+    if partner is None:
+        return False
+    others = _meter_digit_cross_staff_count(ev)
+    system = ev.subject.at(Kind.SYSTEM)
+    total = ev.verdict(Q.SYSTEM_STAFF_COUNT, subject=system)
+    total_staves = total.value if total is not None and total.value else None
+    detail["meter_digit_partner"] = partner.id
+    detail["meter_digit_other_staves"] = others
+    detail["meter_digit_quorum"] = _required_meter_digit_quorum(total_staves)
+    return others >= _required_meter_digit_quorum(total_staves)
+
+
 def _glyph_box_row(ev: Evidence):
     rows = ev.rows(Q.GLYPH_BOX)
     return rows[-1] if rows else None
@@ -720,16 +971,21 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
                   Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-                  Q.LEDGER_RUNG_INK),
+                  Q.LEDGER_RUNG_INK,
+                  # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
+                  # staves this system has, and nothing else this decision
+                  # already declares carries that fact.
+                  Q.SYSTEM_STAFF_COUNT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-          Q.LEDGER_RUNG_INK),
+          Q.LEDGER_RUNG_INK, Q.SYSTEM_STAFF_COUNT),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "belongs_to_a_nearer_staff",
+                                     "is_a_meter_digit",
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -864,6 +1120,21 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
+    # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
+    # not a note at all regardless of what else prints at this x) and BEFORE
+    # the ownership contest (a meter digit is nobody's note, so there is
+    # nothing for `glyph_owner` to arbitrate). See the module's own block
+    # comment above `METER_DIGIT_X_MAX_SPACES` for the signature and its
+    # measurement, and `detail` for what the two gates found either way.
+    meter_digit_detail: Dict[str, Any] = {}
+    if _is_a_meter_digit(ev, box_row, spacing, meter_digit_detail):
+        detail.update(meter_digit_detail)
+        partner_id = meter_digit_detail.get("meter_digit_partner")
+        return Ruling(value=True, reason="is_a_meter_digit",
+                      used=tuple(used + ([partner_id] if partner_id else [])),
+                      detail=detail)
+    if meter_digit_detail:
+        detail["meter_digit_signal"] = meter_digit_detail
     # ⚠️ ROADMAP 2.7b. AFTER THE SHAPE RULES: a sliver or a too-narrow box is
     # not a note at all, which is the load-bearing thing to say about it;
     # this rule says the ink IS a note, and another staff's. The contest
