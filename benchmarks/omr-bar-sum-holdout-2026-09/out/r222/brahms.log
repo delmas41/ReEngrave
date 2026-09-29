@@ -1,0 +1,8 @@
+[    1.0s] loading /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260929.record.json
+[   19.2s] loaded
+[   19.2s] own: export
+[   28.2s] own: exported, 4200 held captured; indexing
+[   28.8s] own: held 4200 (doubled 0) of 5973; captured 4200; control PASS; -> benchmarks/omr-bar-sum-holdout-2026-09/out/r222/brahms-own.held.json
+[   32.2s] redecide: rebuild_gather
+[   52.2s] redecide: run_stages
+[killed by hand at ~27 min of run_stages: Litolff's took 23 min and Brahms is ~4x its size; own verdicts used]

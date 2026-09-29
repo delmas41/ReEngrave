@@ -1,0 +1,142 @@
+{
+ "question": "QUESTION FOR SEAN (ROADMAP 2.22): on a system where no meter change is printed or read, and fewer than two bars can be summed by three staves, does the meter carried from the previous system HOLD (your 09-28 rule: a meter stays until a change is printed) -- so a lone whole rest there is marked as the bar? Today that meter ABSTAINS (carry_not_corroborated), size_measure_rest needs a DECIDED meter, and 608 Brahms 1/i whole-rest bars are held out although the FILE already writes 6/8 there.",
+ "answer_none_yet": null,
+ "crops": [
+  {
+   "n": 1,
+   "file": "held-mvt-2026-09-29-W-01-W-meter-abstains.png",
+   "cell": "cell/1/1/1/4",
+   "subjects_bracketed": [
+    "glyph/1/1/1/4/1"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 20,
+   "part": "P2",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 221.4,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "file": "held-mvt-2026-09-29-W-02-W-meter-abstains.png",
+   "cell": "cell/3/0/12/1",
+   "subjects_bracketed": [
+    "glyph/3/0/12/1/0"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 40,
+   "part": "P13",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 223.4,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "file": "held-mvt-2026-09-29-W-03-W-meter-abstains.png",
+   "cell": "cell/5/1/8/5",
+   "subjects_bracketed": [
+    "glyph/5/1/8/5/0"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 93,
+   "part": "P9",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 228.5,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "file": "held-mvt-2026-09-29-W-04-W-meter-abstains.png",
+   "cell": "cell/7/1/7/8",
+   "subjects_bracketed": [
+    "glyph/7/1/7/8/1"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_outweighed_by_the_bars); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 133,
+   "part": "P11",
+   "system_meter": [
+    "abstained",
+    "carry_outweighed_by_the_bars"
+   ],
+   "frame_contrast": 182.3,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 5,
+   "file": "held-mvt-2026-09-29-W-05-W-meter-abstains.png",
+   "cell": "cell/10/0/7/8",
+   "subjects_bracketed": [
+    "glyph/10/0/7/8/0"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 188,
+   "part": "P8",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 230.4,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 6,
+   "file": "held-mvt-2026-09-29-W-06-W-meter-abstains.png",
+   "cell": "cell/14/0/7/1",
+   "subjects_bracketed": [
+    "glyph/14/0/7/1/0"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 268,
+   "part": "P8",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 151.9,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 7,
+   "file": "held-mvt-2026-09-29-W-07-W-meter-abstains.png",
+   "cell": "cell/16/0/6/7",
+   "subjects_bracketed": [
+    "glyph/16/0/6/7/1"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 314,
+   "part": "P7",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 177.1,
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 8,
+   "file": "held-mvt-2026-09-29-W-08-W-meter-abstains.png",
+   "cell": "cell/18/1/7/5",
+   "subjects_bracketed": [
+    "glyph/18/1/7/5/0"
+   ],
+   "record_says": "One restWhole (read 4.0q), nothing else in the bar. Q.METER on this system ABSTAINS (carry_not_corroborated); the FILE writes 6/8 here anyway, so 2.8 sums 4.0 against 3.0 and HOLDS the bar. size_measure_rest needs a DECIDED meter to mark it.",
+   "measure_in_file": 352,
+   "part": "P8",
+   "system_meter": [
+    "abstained",
+    "carry_not_corroborated"
+   ],
+   "frame_contrast": 234.5,
+   "VERDICT_none_yet": null
+  }
+ ]
+}

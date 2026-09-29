@@ -152,12 +152,25 @@ class TestTheMeterResolvesWhatTheBeamsCouldNot(unittest.TestCase):
         self.assertEqual(now.value["beats"], 0.5)
         self.assertTrue(now.value["reconciled"])
 
-    def test_a_bar_that_already_fits_is_left_alone(self):
+    def test_a_bar_that_fits_ONLY_through_the_narrowing_settles_it(self):
+        """⚠️ CHANGED BY ROADMAP 2.22 (was `..._already_fits_is_left_alone`).
+
+        2.0 + 1.0 = 3.0 fits only if the narrowed note is the 1.0 reading;
+        its other candidate (0.5) does not. The old rule called that "already
+        fits" and left the note NARROWED -- and EXPORT, which refuses to
+        argmax a narrowing, then dropped the note and held the bar. The meter
+        has chosen among the note's own candidates exactly as it does in the
+        5/8 case above, so it DECIDES it. A bar whose notes are all DECIDED
+        and fit is still left alone (`test_staged_duration`)."""
         log, g = self._bar(meter=(3, 4), raw="3/4")   # 2.0 + 1.0 = 3.0
         adjudicate.run(log)
+        self.assertIs(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
         report = evaluate.run(log)
-        self.assertEqual([f for f in report.fired
-                          if f[0] == "reconcile_duration"], [])
+        self.assertTrue([f for f in report.fired
+                         if f[0] == "reconcile_duration"])
+        now = log.verdict(Q.DURATION, g)
+        self.assertIs(now.outcome, Outcome.DECIDED)
+        self.assertEqual(now.value["beats"], 1.0)
 
     def test_it_refuses_when_no_admitted_reading_lands_the_bar(self):
         """⚠️ An arithmetic +/-1 the STROKES DO NOT SUPPORT is no longer

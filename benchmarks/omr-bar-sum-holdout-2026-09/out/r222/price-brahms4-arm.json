@@ -1,0 +1,37 @@
+{
+ "bars_held_out_sum": [
+  570,
+  566
+ ],
+ "of_bars_with_events": [
+  786,
+  786
+ ],
+ "released": 4,
+ "newly_held": 0,
+ "newly_held_cells": [],
+ "notes_in_file": [
+  1322,
+  1334
+ ],
+ "notes_not_written_changed": {
+  "bar_does_not_add_up": [
+   2267,
+   2254
+  ],
+  "duration_narrowed": [
+   235,
+   232
+  ]
+ },
+ "written_changed": {
+  "notes": [
+   514,
+   524
+  ],
+  "rests": [
+   134,
+   140
+  ]
+ }
+}

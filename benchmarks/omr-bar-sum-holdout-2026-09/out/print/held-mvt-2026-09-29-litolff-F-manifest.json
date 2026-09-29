@@ -1,0 +1,128 @@
+[
+ {
+  "n": 1,
+  "file": "held-mvt-2026-09-29-litolff-F-01-F.png",
+  "cell": "cell/1/0/8/8",
+  "subjects_bracketed": [
+   "glyph/1/0/8/8/4",
+   "glyph/1/0/8/8/3"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@224)",
+  "measure_in_file": 9,
+  "part": "P9",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 140.4,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 2,
+  "file": "held-mvt-2026-09-29-litolff-F-02-F.png",
+  "cell": "cell/2/1/0/10",
+  "subjects_bracketed": [
+   "glyph/2/1/0/10/9",
+   "glyph/2/1/0/10/5"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [4.0]. READ: whole(2.0@193). REFUSED in cell: owned_by_another_staff",
+  "measure_in_file": 43,
+  "part": "P1",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   4.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 198.4,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 3,
+  "file": "held-mvt-2026-09-29-litolff-F-03-F.png",
+  "cell": "cell/3/0/10/4",
+  "subjects_bracketed": [
+   "glyph/3/0/10/4/1"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@325)",
+  "measure_in_file": 52,
+  "part": "P11",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 108.6,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 4,
+  "file": "held-mvt-2026-09-29-litolff-F-04-F.png",
+  "cell": "cell/4/1/2/7",
+  "subjects_bracketed": [
+   "glyph/4/1/2/7/1",
+   "glyph/4/1/2/7/2"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@488). REFUSED in cell: owned_by_another_staff",
+  "measure_in_file": 104,
+  "part": "P3",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 158.6,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 5,
+  "file": "held-mvt-2026-09-29-litolff-F-05-F.png",
+  "cell": "cell/5/0/5/5",
+  "subjects_bracketed": [
+   "glyph/5/0/5/5/1",
+   "glyph/5/0/5/5/0"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [1.0]. READ: quarter(1.0@200)",
+  "measure_in_file": 117,
+  "part": "P8",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 211.6,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 6,
+  "file": "held-mvt-2026-09-29-litolff-F-06-F.png",
+  "cell": "cell/6/0/8/3",
+  "subjects_bracketed": [
+   "glyph/6/0/8/3/4",
+   "glyph/6/0/8/3/7",
+   "glyph/6/0/8/3/1"
+  ],
+  "record_says": "class F; judged 2.0q; voice sums [1.0]. READ: quarter(2.0@227)",
+  "measure_in_file": 145,
+  "part": "P11",
+  "judged_quarters": 2.0,
+  "voice_sums": [
+   1.0
+  ],
+  "minimal": [
+   "F"
+  ],
+  "frame_contrast": 202.4,
+  "VERDICT_none_yet": null
+ }
+]

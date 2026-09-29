@@ -1,0 +1,66 @@
+{
+ "bars_held_out_sum": [
+  1591,
+  1522
+ ],
+ "of_bars_with_events": [
+  4726,
+  4758
+ ],
+ "released": 66,
+ "newly_held": 2,
+ "newly_held_cells": [
+  [
+   5,
+   0,
+   1,
+   2
+  ],
+  [
+   14,
+   0,
+   9,
+   8
+  ]
+ ],
+ "notes_in_file": [
+  9155,
+  9275
+ ],
+ "notes_not_written_changed": {
+  "bar_does_not_add_up": [
+   4689,
+   4558
+  ],
+  "duration_narrowed": [
+   914,
+   844
+  ],
+  "owned_by_another_staff": [
+   989,
+   982
+  ],
+  "owner_not_read": [
+   362,
+   369
+  ],
+  "staff_not_identified": [
+   228,
+   230
+  ]
+ },
+ "written_changed": {
+  "notes": [
+   4521,
+   4722
+  ],
+  "rests": [
+   656,
+   676
+  ],
+  "bars_with_events": [
+   4726,
+   4758
+  ]
+ }
+}
