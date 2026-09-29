@@ -1,0 +1,167 @@
+[
+ {
+  "n": 1,
+  "file": "voice-2026-09-29-01.png",
+  "cell": "cell/1/0/1/5",
+  "measure_in_file": 6,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/0/1/5/1",
+    "glyph/1/0/1/5/3"
+   ],
+   "1": [
+    "glyph/1/0/1/5/6",
+    "glyph/1/0/1/5/7"
+   ]
+  },
+  "record_says": "Time order by x: rest, rest, Db5(v2), Db5(v2), E4(v1). The two streams never sound together -- v1's only note comes AFTER v2's.",
+  "frame_contrast": 208.2,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 2,
+  "file": "voice-2026-09-29-02.png",
+  "cell": "cell/1/0/1/6",
+  "measure_in_file": 7,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/0/1/6/1",
+    "glyph/1/0/1/6/3"
+   ],
+   "1": [
+    "glyph/1/0/1/6/4",
+    "glyph/1/0/1/6/5"
+   ]
+  },
+  "record_says": "Time order by x: E4(v1), B4(v2), B4(v2), Db4(v1). One descent crossing back over itself; no shared x.",
+  "frame_contrast": 208.2,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 3,
+  "file": "voice-2026-09-29-03.png",
+  "cell": "cell/1/1/3/5",
+  "measure_in_file": 13,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/1/3/5/1",
+    "glyph/1/1/3/5/3",
+    "glyph/1/1/3/5/8"
+   ],
+   "1": [
+    "glyph/1/1/3/5/2",
+    "glyph/1/1/3/5/4",
+    "glyph/1/1/3/5/6"
+   ]
+  },
+  "record_says": "Time order by x: Ab3, G3, F3 (v2), then Eb3, Db3, Ab2 (v1) -- ONE continuous descending scale, split where the stem flips.",
+  "frame_contrast": 100.1,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 4,
+  "file": "voice-2026-09-29-04.png",
+  "cell": "cell/1/0/10/2",
+  "measure_in_file": 3,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/0/10/2/0",
+    "glyph/1/0/10/2/1",
+    "glyph/1/0/10/2/2",
+    "glyph/1/0/10/2/3",
+    "glyph/1/0/10/2/4"
+   ],
+   "1": [
+    "glyph/1/0/10/2/5"
+   ]
+  },
+  "record_says": "Time order by x: B4(v2), 3 shared rests, Ab4(v1), Ab4(v1). No note of v1 and v2 shares an x.",
+  "frame_contrast": 212.2,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 5,
+  "file": "voice-2026-09-29-05.png",
+  "cell": "cell/1/0/11/4",
+  "measure_in_file": 5,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/0/11/4/13",
+    "glyph/1/0/11/4/14",
+    "glyph/1/0/11/4/2",
+    "glyph/1/0/11/4/9"
+   ],
+   "1": [
+    "glyph/1/0/11/4/3",
+    "glyph/1/0/11/4/8"
+   ]
+  },
+  "record_says": "Time order by x: Ab3(v2), F4(v2), Ab3(v1), Ab3(v1), G3(v1), G3(v1). A leap around the middle line, not two lines sounding together.",
+  "frame_contrast": 213.3,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 6,
+  "file": "voice-2026-09-29-06.png",
+  "cell": "cell/1/1/10/3",
+  "measure_in_file": 11,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/1/10/3/5",
+    "glyph/1/1/10/3/7",
+    "glyph/1/1/10/3/8",
+    "glyph/1/1/10/3/9"
+   ],
+   "1": [
+    "glyph/1/1/10/3/11",
+    "glyph/1/1/10/3/28",
+    "glyph/1/1/10/3/4"
+   ]
+  },
+  "record_says": "Time order by x: F3(v1), D4(v1), C4(v2), Bb3(v1), Bb3(v1), C4+C4(v2). No shared x between v1 and v2.",
+  "frame_contrast": 60.9,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 7,
+  "file": "voice-2026-09-29-07.png",
+  "cell": "cell/1/1/11/0",
+  "measure_in_file": 8,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/1/11/0/1",
+    "glyph/1/1/11/0/2",
+    "glyph/1/1/11/0/4",
+    "glyph/1/1/11/0/5",
+    "glyph/1/1/11/0/9"
+   ],
+   "1": [
+    "glyph/1/1/11/0/16"
+   ]
+  },
+  "record_says": "Time order by x: Db3(v2), then FIVE repeats of Gb2(v1). v2's one note finishes before v1 starts.",
+  "frame_contrast": 67.9,
+  "VERDICT_none_yet": null
+ },
+ {
+  "n": 8,
+  "file": "voice-2026-09-29-08.png",
+  "cell": "cell/1/1/11/3",
+  "measure_in_file": 11,
+  "voices_glyphs": {
+   "0": [
+    "glyph/1/1/11/3/3",
+    "glyph/1/1/11/3/5",
+    "glyph/1/1/11/3/6",
+    "glyph/1/1/11/3/8"
+   ],
+   "1": [
+    "glyph/1/1/11/3/2",
+    "glyph/1/1/11/3/7"
+   ]
+  },
+  "record_says": "Time order by x: Bb2, Bb2, C3, D3 (v1), then D3, Eb3 (v2) -- one continuous ascending bass line.",
+  "frame_contrast": 67.9,
+  "VERDICT_none_yet": null
+ }
+]
