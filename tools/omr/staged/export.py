@@ -58,6 +58,8 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .. import export as _legacy
 from ..voicing import group_chords_in_measure
 from . import adjudicate as A
+from .adjudicators.rhythm import (METER_RETURN_MARK_CELL,
+                                  METER_RETURN_NOT_READ_REASON)
 from .record import Q, meter_at
 
 
@@ -2610,6 +2612,11 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
         # instead of crashing mid-file, which is the loud-but-recoverable end
         # of the same choice the whole-file refusal makes.
         base = None if offsets is None else offsets.get((run.page, run.system))
+        # ⚠️ ROADMAP 2.12k. Computed ONCE per run (a `Q.METER` lookup, not per
+        # bar) -- `None` on every staff but the system's own first
+        # (`_meter_return_marker`'s own `run.staff == 0` gate) and on every
+        # system whose meter was not abstained this exact way.
+        meter_return_cell = _meter_return_marker(rec, run)
         for i in range(run.n_measures):
             # ⚠️⚠️ THE METER IS READ PER BAR, AND FOR A LONG TIME IT WAS NOT.
             # This line used to sit outside the loop, one meter for the whole
@@ -2934,6 +2941,14 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     directions or None, "      ", counters=counters))
                 _count_directions(counters, directions)
             else:
+                # ⚠️ ROADMAP 2.12k. A bar WITH NOTES is never emptied for
+                # this -- "it is NOT a held-out bar" (the brief's own words)
+                # -- so the marker is prepended here, ahead of the bar's own
+                # directions, on the SAME staff/cell `_meter_return_marker`
+                # named when it was computed once for this run.
+                if meter_return_cell is not None and i == meter_return_cell:
+                    lines.append(_meter_return_direction_xml("      "))
+                    counters["meter_returns_not_read"] += 1
                 # ⚠️ AT THE HEAD OF THE BAR, AND THAT IS A DECLARED
                 # SIMPLIFICATION, NOT AN OVERSIGHT. The legacy events path
                 # places a dynamic against its NEAREST NOTE
@@ -3241,10 +3256,26 @@ UNREAD_BAR_MARK_REASON_UNREAD = "unread"
 #: read, and three stacked phrases over a crowded system were illegible. The
 #: REASON is not lost: it stays keyed here and in the accounting
 #: (`report["unread_bar_marks"]`, the web panel), just not printed.
+#: ROADMAP 2.12k. A DIFFERENT fact from the three above -- those are bars we
+#: emptied because we could not vouch for what is in them; this is a bar we
+#: WROTE AS READ, with its own real notes, that sits right after a printed
+#: meter change this document independently confirmed (a corroborated
+#: cautionary, `adjudicators.rhythm.METER_RETURN_NOT_READ_REASON`) and whose
+#: own printed RETURN we never read. It is put in this SAME table anyway
+#: (rather than a second one) per that table's own promise -- "a reader finds
+#: every word by reading this dict once" -- even though the render site that
+#: consumes it (`_meter_return_marker`/`_meter_return_direction_xml`, below)
+#: is not `_marked_empty_measure`, because this bar is not emptied.
+#:
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: `"meter?"`,
+#: like `UNREAD_BAR_MARK_COLOR`'s red, is a guess at what reads clearly to
+#: Sean (the brief itself offers `"meter?"` or `"unread meter"`) -- he may
+#: rename it.
 UNREAD_BAR_MARK_WORDS: Dict[str, str] = {
     UNREAD_BAR_MARK_REASON_UNREAD: "unread",
     _BAR_SUM_REFUSAL: "unread",
     _MARK_REFUSAL: "unread",
+    METER_RETURN_NOT_READ_REASON: "meter?",
 }
 
 
@@ -3298,6 +3329,57 @@ def _marked_empty_measure(reason: str, time_sig: Optional[Dict[str, Any]],
     if counters is not None:
         counters["unread_bar_marks_written"] += 1
     return [marker] + marked
+
+
+#: ROADMAP 2.12k. `_meter_return_marker` reads `Q.METER`'s FULL verdict (not
+#: `Record.value`, which returns `None` for anything but a decided outcome --
+#: this fact lives on an ABSTENTION and would be invisible through that
+#: door), so it goes through `Record.verdict` directly.
+def _meter_return_marker(rec: Record, run: "StaffRun") -> Optional[int]:
+    """The CELL index of this system's unread meter return, or None.
+
+    ⚠️ FIRST STAFF OF THE SYSTEM ONLY (`run.staff == 0`). Sean's convention
+    (CLAUDE.md SS10) prints a meter once per system, on every staff alike; a
+    fact ABOUT the system is marked once, at the top, the same way a single
+    rehearsal letter governs a whole system rather than being repeated on
+    each of a conductor's 12-14 staves. A caller on any other staff of the
+    same system gets `None` and renders that bar exactly as it would with no
+    finding at all.
+
+    ⚠️ RETURNS A CELL INDEX, NOT A METER. `adjudicators.rhythm` never asserts
+    what the return prints (rule 8) -- only that this system's own carry,
+    informed by a corroborated cautionary, could not be sustained past its
+    own confirmed opening (cell 0), so cell `METER_RETURN_MARK_CELL` is the
+    first bar our own reading does not cover.
+    """
+    if run.staff != 0:
+        return None
+    v = rec.verdict(Q.METER, f"system/{run.page}/{run.system}")
+    if not v or v.get("reason") != METER_RETURN_NOT_READ_REASON:
+        return None
+    detail = v.get("detail") or {}
+    at_cell = detail.get("at_cell")
+    return int(at_cell) if at_cell is not None else None
+
+
+def _meter_return_direction_xml(indent: str) -> str:
+    """The `<direction>` ROADMAP 2.12k prepends to a bar it does NOT empty.
+
+    ⚠️ NOT `_marked_empty_measure`. That helper post-processes `_legacy.
+    _mxl_empty_measure`'s OWN rest line -- there is no rest here to colour,
+    because this bar's real notes are written exactly as read (the brief's
+    own words: "if the bar has notes, add a marker without emptying it").
+    So only the `<direction>` half of that mechanism is reused; the word
+    comes from the SAME table (`UNREAD_BAR_MARK_WORDS`) so the two markers
+    can never print a different word for the same reason.
+    """
+    word = UNREAD_BAR_MARK_WORDS[METER_RETURN_NOT_READ_REASON]
+    return (f'{indent}<direction placement="above">\n'
+           f"{indent}  <direction-type>\n"
+           f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">'
+           f"{_legacy._xml_escape(word)}</words>\n"
+           f"{indent}  </direction-type>\n"
+           f"{indent}</direction>")
 
 
 def _event_units(ev: Dict[str, Any], divisions: int) -> int:
@@ -4053,6 +4135,13 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             "being refused" % (
                 _ubm["written"], _ubm["unread"], _ubm["held_out_sum"],
                 _ubm["held_out_unread_mark"], _ubm_expected))
+    # ⚠️ ROADMAP 2.12k. DELIBERATELY NOT FOLDED INTO `unread_bar_marks` OR
+    # ITS EQUALITY ABOVE: that equality is over bars this exporter EMPTIED,
+    # and this bar is not one of them -- "it is NOT a held-out bar" (the
+    # brief's own words). Its own count, so the accounting stays an
+    # equality over what it always was.
+    report["meter_returns_not_read"] = int(
+        counters.get("meter_returns_not_read", 0))
     # ⚠️ THE SAME REFUSALS, KEYED BY PRINTED SYSTEM. Written so the cleanup
     # artefact can ask its question one system at a time without holding a
     # second copy of the rule -- which is how `build_sheet.py`'s own

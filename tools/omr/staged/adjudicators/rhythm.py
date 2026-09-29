@@ -2813,6 +2813,48 @@ METER_SOURCE_REASONS = ("voted", "change_only")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.12k — A CHANGE HOLDS UNTIL A PRINTED CHANGE BACK, AND THE RETURN
+# IS ALWAYS PRINTED (Sean, 2026-09-28).
+#
+# A CORROBORATED CAUTIONARY (2.12h, above) is independent evidence that a
+# meter change is printed at `here`'s own opening (cell 0) -- corroborated on
+# several staves of the PRECEDING system, not a guess. So where `_carry_meter`
+# tries that change as `here`'s candidate and this system's OWN bars cannot
+# sustain it -- too few assessable to check at all, or enough to check and
+# net against it -- the honest reading is not "the change silently reverted",
+# it is "a printed RETURN exists somewhere in this system and we did not read
+# it": GATHER produced no glyph for it (measured on Brahms 1/i Breitkopf
+# `317803`, `system/1/0` cell 1 -- FINDINGS SS2.12h.b/PART 7 -- a clean, printed
+# `6/8` twelve of fourteen staves show by eye and the detector boxes on none).
+#
+# ⚠️ CONNECT, NEVER GUESS (CLAUDE.md rule 6). This does not name what the
+# return prints -- we do not know, and asserting a numerator/denominator we
+# never read would be exactly the "cannot tell converted into an answer"
+# rule 8 forbids. It renames ONLY the two abstentions `_carry_meter` already
+# reaches when `is_cautionary_source` is True, so the fact that a return is
+# MISSING is labelled instead of reading identically to any other unrelated
+# carry failure (sparse ink, an unrelated page).
+#
+# ⚠️ WHY §4a PUTS THIS IN ADJUDICATE AND NOT INFER. The carry-weighing this
+# rests on (`_carry_meter`/`_corroborate`) already lives here; INFER's own
+# harness (`infer._admit`) requires a PRIOR verdict of the SAME quantity at
+# the SAME subject to already exist before it may speak, and forces every
+# accepted proposal to `Outcome.DECIDED` with a concrete value -- exactly the
+# thing rule 4 and rule 8 both forbid once the value is "a meter we never
+# read". Staying an ABSTENTION, merely a more informative one, is what keeps
+# this an ADJUDICATE fact: "it can read it; else abstains" -- and this still
+# abstains, it just names WHY precisely enough for export to act on it.
+#
+# ⚠️ THE CELL IS ALWAYS 1, NOT A BRAHMS-SPECIFIC NUMBER.
+# `_adjacent_corroborated_cautionary` only ever names `here`'s own OPENING
+# (cell 0) -- see its own docstring -- so the first bar this system's
+# abstention does NOT independently confirm is always the very next one.
+METER_RETURN_NOT_READ_REASON = "meter_return_not_read"
+METER_RETURN_MARK_CELL = 1
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.12h — A CAUTIONARY NAMES THE VERY NEXT SYSTEM'S OPENING.
 #
 # A-METER-5 already reads and RECORDS a courtesy signature (`cautionary` on
@@ -3039,6 +3081,19 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             continue
         check = _corroborate(ev, carried)
         if "terms" not in check:
+            # ⚠️ ROADMAP 2.12k: TOO FEW BARS TO CHECK THE CAUTIONARY'S OWN
+            # CHANGE AGAINST IS STILL "the change could not be sustained
+            # here", not a different fact. See the block comment above
+            # `METER_RETURN_NOT_READ_REASON`.
+            if is_cautionary_source:
+                return Ruling.abstain(METER_RETURN_NOT_READ_REASON,
+                                      carried_from=src.to_key(),
+                                      pages_since_read=pages,
+                                      instead_of=instead_of,
+                                      carried_via_cautionary=is_cautionary_source,
+                                      skipped_uncorroborated=skipped_uncorroborated,
+                                      at_cell=METER_RETURN_MARK_CELL,
+                                      **check)
             return Ruling.abstain("carry_not_corroborated",
                                   carried_from=src.to_key(),
                                   pages_since_read=pages,
@@ -3077,6 +3132,14 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             # carry the bars outweighed, a carry with nothing to check against
             # and a page with no carry available are three different pages,
             # and a reader must be able to tell them apart.
+            #
+            # ⚠️ ROADMAP 2.12k: WHERE THE BARS THEMSELVES OUTWEIGH THE
+            # CAUTIONARY'S OWN CONFIRMED CHANGE, that is the literal case the
+            # roadmap item names -- "where the bars overturn a CARRIED meter
+            # change". See `METER_RETURN_NOT_READ_REASON`'s block comment.
+            if is_cautionary_source:
+                return Ruling.abstain(METER_RETURN_NOT_READ_REASON,
+                                      at_cell=METER_RETURN_MARK_CELL, **detail)
             return Ruling.abstain("carry_outweighed_by_the_bars", **detail)
         # ⚠️ A CARRIED METER IS STILL SUBJECT TO A CHANGE PRINTED ON THIS
         # SYSTEM. The carry says what the music was doing; a time signature
@@ -3345,7 +3408,14 @@ def _meter_fallbacks(ev: Evidence, why: str, **detail) -> Ruling:
              "carry_source_uncorroborated",
              "change_only", "derived_from_bars",
              "bars_name_a_length_without_a_form",
-             "opening_disagrees_with_prior_cautionary"),
+             "opening_disagrees_with_prior_cautionary",
+             # ⚠️ ROADMAP 2.12k. See `METER_RETURN_NOT_READ_REASON`'s block
+             # comment above `_carry_meter`: a corroborated cautionary
+             # confirmed a printed change into this system, and the change
+             # could not be sustained by this system's own bars -- an
+             # ABSTENTION, still, just one that says a printed RETURN exists
+             # and was not read rather than reading like any other refusal.
+             "meter_return_not_read"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_meter(ev: Evidence) -> Ruling:
