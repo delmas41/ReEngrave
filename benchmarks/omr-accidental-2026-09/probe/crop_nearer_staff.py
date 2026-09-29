@@ -189,13 +189,29 @@ def main() -> int:
         Z = 2
         crop = im.crop((cx0, cy0, cx1, cy1)).resize(
             ((cx1 - cx0) * Z, (cy1 - cy0) * Z), Image.LANCZOS)
+        # ⚠️ Sean, 2026-09-28: 2-px coloured lines were unreadable. Each
+        # staff is a TRANSLUCENT BAND with thick lines and a large boxed
+        # label inside it (the o26b style, `crop_losers_2_6b.make_crop`).
+        overlay = Image.new("RGBA", crop.size, (0, 0, 0, 0))
+        od = ImageDraw.Draw(overlay)
+        big = ImageFont.load_default(size=max(28, int(sp_f * Z * 0.8)))
+        for lines_, rgb, label in ((lf, (0, 160, 60), "GREEN - filed here"),
+                                   (ln, (240, 130, 0), "ORANGE - nearest other")):
+            if not lines_:
+                continue
+            top, bot = (min(lines_) - cy0) * Z, (max(lines_) - cy0) * Z
+            od.rectangle([0, top, crop.width, bot], fill=rgb + (60,))
+            for ly in lines_:
+                od.line([(0, (ly - cy0) * Z), (crop.width, (ly - cy0) * Z)],
+                        fill=rgb + (230,), width=5)
+            ty = max(0, top + (bot - top) / 2 - big.size / 2)
+            tw = od.textlength(label, font=big)
+            od.rectangle([30, ty - 4, 30 + tw + 12, ty + big.size + 6],
+                         fill=(255, 255, 255, 235), outline=rgb + (255,),
+                         width=4)
+            od.text((36, ty), label, fill=rgb + (255,), font=big)
+        crop = Image.alpha_composite(crop.convert("RGBA"), overlay).convert("RGB")
         dr = ImageDraw.Draw(crop)
-        for ly in lf:
-            dr.line([(0, (ly - cy0) * Z), (crop.width, (ly - cy0) * Z)],
-                    fill=(0, 160, 60), width=2)
-        for ly in ln:
-            dr.line([(0, (ly - cy0) * Z), (crop.width, (ly - cy0) * Z)],
-                    fill=(240, 130, 0), width=2)
         y, k = (min(lf) - cy0) * Z, 0
         step = sp_f * Z
         while y > 0:
@@ -208,8 +224,8 @@ def main() -> int:
         arm = max(8, int((bx1 - bx0) * 0.35))
         for (x, yy, dx, dy) in ((bx0, by0, 1, 1), (bx1, by0, -1, 1),
                                 (bx0, by1, 1, -1), (bx1, by1, -1, -1)):
-            dr.line([(x, yy), (x + dx * arm, yy)], fill=(0, 60, 230), width=4)
-            dr.line([(x, yy), (x, yy + dy * arm)], fill=(0, 60, 230), width=4)
+            dr.line([(x, yy), (x + dx * arm, yy)], fill=(0, 60, 230), width=7)
+            dr.line([(x, yy), (x, yy + dy * arm)], fill=(0, 60, 230), width=7)
         band_h = 112
         out_im = Image.new("RGB", (crop.width, crop.height + band_h), "white")
         out_im.paste(crop, (0, band_h))
