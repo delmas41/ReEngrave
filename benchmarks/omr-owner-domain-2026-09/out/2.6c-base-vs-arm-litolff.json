@@ -1,0 +1,37 @@
+{
+ "glyph_owner": {
+  "subjects": 6013,
+  "identical": 5195,
+  "changed": 818,
+  "value_changed": 419,
+  "value_changed_by_reason": {
+   "distance->far_no_rungs": 360,
+   "distance->ledger_direction": 29,
+   "range_veto->far_no_rungs": 26,
+   "ladder->ledger_direction": 4
+  },
+  "transitions": {
+   "distance->far_no_rungs": 360,
+   "ledger_direction->ladder": 250,
+   "distance->ledger_direction": 143,
+   "range_veto->ledger_direction": 28,
+   "range_veto->far_no_rungs": 26,
+   "ladder->ledger_direction": 4,
+   "tied->far_no_rungs": 3,
+   "hairpin_separates->ledger_direction": 2,
+   "ledger_direction->distance": 2
+  }
+ },
+ "notehead_is_not_a_notehead": {
+  "subjects": 1524,
+  "identical": 1518,
+  "changed": 6,
+  "value_changed": 6,
+  "value_changed_by_reason": {
+   "notehead->belongs_to_a_nearer_staff": 6
+  },
+  "transitions": {
+   "notehead->belongs_to_a_nearer_staff": 6
+  }
+ }
+}

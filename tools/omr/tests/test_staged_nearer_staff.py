@@ -112,6 +112,29 @@ def _rung_between_head_and_filed(head_key):
             "bbox_page_px": [x0 - 5.0, ry - 2.0, x1 + 5.0, ry + 2.0]}
 
 
+def _ladder_from_filed(head_key):
+    """Every rung from the filed staff's outer line to the head, one staff
+    space apart, x-overlapping it — a complete ladder (ROADMAP 2.6c)."""
+    from tools.omr.staged.gather import LEDGER_ROUND_UP
+    h = HEADS[head_key]
+    staff = "staff/" + "/".join(head_key.split("/")[1:4])
+    ys = sorted(FIXTURE["staves"][staff]["staff_lines"])
+    sp = FIXTURE["staves"][staff]["staff_spacing"]
+    x0, y0, x1, y1 = h["bbox_page_px"]
+    y = (y0 + y1) / 2.0
+    above = y < ys[0]
+    edge = ys[0] if above else ys[-1]
+    n = int(abs(edge - y) / sp + LEDGER_ROUND_UP)
+    parts = head_key.split("/")
+    out = []
+    for i in range(1, n + 1):
+        ry = edge - i * sp if above else edge + i * sp
+        out.append({"subject": "/".join(parts[:5] + [str(900 + i)]),
+                    "value": ["ledgerLine", 0, 0, 10, 2],
+                    "bbox_page_px": [x0 - 5.0, ry - 2.0, x1 + 5.0, ry + 2.0]})
+    return out
+
+
 class TestTheFixtureIsWhatSeanAdjudicated(unittest.TestCase):
 
     def test_five_decided_wrong_staff_heads_and_eighteen_confirmed(self):
@@ -175,12 +198,33 @@ class TestTheConfirmedHeadsAreKept(unittest.TestCase):
 
 class TestAKeptRungIsSeansException(unittest.TestCase):
 
-    def test_a_kept_rung_toward_the_filed_staff_keeps_the_head(self):
+    def test_a_kept_LADDER_toward_the_filed_staff_keeps_the_head(self):
+        """⚠️ ROADMAP 2.6c: the exception is a LADDER from the filed staff
+        that reaches the note (`ownership.ledger_direction`), not one rung —
+        every rung from the filed staff's outer line to the head, kept."""
+        k = sorted(FIVE)[0]
+        rungs = [dict(r, refused=False, reason=None)
+                 for r in _ladder_from_filed(k)]
+        v = _build(k, extra_ledgers=rungs)
+        self.assertIs(v.value, False)
+        sig = v.detail["nearer_staff_signal"]
+        self.assertEqual(sig["kept_rungs_toward_filed"], len(rungs))
+        self.assertEqual(sig["ledger"]["winner"],
+                         "staff/" + "/".join(k.split("/")[1:4]))
+
+    def test_ONE_kept_rung_is_not_a_ladder_and_no_longer_keeps_it(self):
+        """⚠️ ROADMAP 2.6c — the 2.7b cut kept a head on ANY kept rung between
+        it and the filed staff, and Sean's 2.7b.8 verdicts found three of six
+        such keeps wrong (#4, #22 a chord-mate's own ledger; #10 rungs ending
+        short of the 'head'). The first rung alone, with the rest of the
+        ladder to the head missing, does not name the filed staff. RED on
+        8100c9ff (kept, `kept_rungs_toward_filed == 1`)."""
         k = sorted(FIVE)[0]
         rung = dict(_rung_between_head_and_filed(k), refused=False,
                     reason=None)
         v = _build(k, extra_ledgers=[rung])
-        self.assertIs(v.value, False)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "belongs_to_a_nearer_staff")
         self.assertEqual(
             v.detail["nearer_staff_signal"]["kept_rungs_toward_filed"], 1)
 

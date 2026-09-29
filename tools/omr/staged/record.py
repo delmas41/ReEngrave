@@ -2343,7 +2343,7 @@ class Log:
     __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen",
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
-                 "_closure_cache", "_subjects_cache")
+                 "_closure_cache", "_subjects_cache", "_desc_prefix_cache")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -2384,6 +2384,15 @@ class Log:
         self._desc_index_builds: dict[str, int] = {}
         self._desc_result_builds = 0
         self._desc_result_hits = 0
+        # ⚠️ ROADMAP 2.6c. Per quantity, every ids list filed under a subject
+        # AND each of its ancestors, keyed by the ancestor's key, in the same
+        # order `_descendants_index` holds them -- so a descendants query at a
+        # NEW coarse subject is a dict lookup, not a containment test against
+        # every subject of the quantity. Measured before it: one first query
+        # per CELL against Litolff's 37,390 `Q.GLYPH_BOX` subjects cost 18 ms,
+        # and `glyph_owner`'s ledger reading asks it for every contested
+        # cell. Same version key as the index it is built from.
+        self._desc_prefix_cache: dict[str, tuple[int, dict[str, list[str]]]] = {}
         # `closure(row_id)` is a pure function of `row.basis`, which is set
         # once at row creation and never mutated (append-only log, no
         # `update`), so memoising it by id needs no invalidation at all --
@@ -2575,6 +2584,24 @@ class Log:
         self._desc_index_builds[quantity] = self._desc_index_builds.get(quantity, 0) + 1
         return index
 
+    def _descendants_by_ancestor(self, quantity: str) -> dict[str, list[str]]:
+        """`{subject_or_ancestor_key: ids}` over `_descendants_index`, in its
+        order -- exactly the lists `subject.contains(sub)` would select, since
+        `X.contains(S)` is `X == S or X in S.ancestors()`.
+        `test_staged_record.TestDescendantsCache.test_matches_the_naive_full_
+        scan_on_a_populated_log` holds it against the original full scan."""
+        version = self._quantity_version.get(quantity, 0)
+        cached = self._desc_prefix_cache.get(quantity)
+        if cached is not None and cached[0] == version:
+            return cached[1]
+        by_anc: dict[str, list[str]] = {}
+        for sub_obj, ids in self._descendants_index(quantity).values():
+            by_anc.setdefault(sub_obj.to_key(), []).extend(ids)
+            for anc in sub_obj.ancestors():
+                by_anc.setdefault(anc.to_key(), []).extend(ids)
+        self._desc_prefix_cache[quantity] = (version, by_anc)
+        return by_anc
+
     def _descendants_ids(self, quantity: str, subject: Subject) -> tuple[str, ...]:
         """The flattened, ORDER-PRESERVING answer for one exact descendants
         query, memoised so the Nth subject asking the SAME (quantity,
@@ -2589,12 +2616,8 @@ class Log:
         if cached is not None and cached[0] == version:
             self._desc_result_hits += 1
             return cached[1]
-        index = self._descendants_index(quantity)
-        out: list[str] = []
-        for sub_obj, ids in index.values():
-            if subject.contains(sub_obj):
-                out.extend(ids)
-        result = tuple(out)
+        result = tuple(self._descendants_by_ancestor(quantity).get(
+            subject.to_key(), ()))
         self._desc_result_cache[key] = (version, result)
         self._desc_result_builds += 1
         return result

@@ -862,4 +862,174 @@ Three consequences, none built in this pass:
    exception, so "which staff do these rungs point to" is answered in ONE
    place — flagged here as the follow-up `notehead_precision.py` needs next,
    not built in this pass (fenced off, and the correction landed too late in
-   the session to build and prove cheaply).
+   the session to build and prove cheaply). → BUILT in §2.6c.2 below.
+
+## §2.6c.2 — the second half: the ledger lines as a HARD rule, `far_no_rungs`, the rung-crediting bugs, one helper (2026-09-28, BUILT not merged)
+
+Branch `claude/ledger-hard-2.6c`. **Path: STAGED** (`adjudicators/ownership.py`,
+`adjudicators/notehead_precision.py`, `export.py`, a perf change in
+`record.py`). Sean, 2026-09-28: *"Nearer to the staff is not always going to
+be right but ledger lines will be. If it is not working out that way right
+now then the tests are off."* Proof budget per DECISIONS 2026-09-28: unit
+tests RED→GREEN, ONE saved-record read per document (no re-gather, no
+export), 8 crops.
+
+### The three rungs Sean said were wrongly credited — what they ARE
+
+Read off the two 27b arm records (`…start-here-questions-7d5637/…/27b/arm/`)
+with `record_io.load_record`; cut into `tools/omr/tests/fixtures/
+ledger_direction_2_6c.json` by `extract_ledger_fixture_2_6c.py`.
+
+| crop | head | the "rung toward the filed staff" 2.7b credited | what it is |
+|---|---|---|---|
+| #4 Litolff | `glyph/10/1/2/12/6`, 3.67 sp below staff 2, 0.97 above staff 3 (on staff 3's 1st ledger; that line never boxed) | `glyph/10/1/2/12/4`, 2.64 sp below staff 2 | the OWN LINE of the chord-mate `glyph/10/1/2/12/1`, which stands on staff 3's **2nd** ledger — a NEAR-staff rung lying beyond the head. Staff 2's rungs 1 and 2 are absent; the rung is 0.36 sp off staff 2's grid and on staff 3's. |
+| #22 Breitkopf | `glyph/4/1/2/8/31`, 5.45 sp below staff 2, 1.09 above staff 3 (on staff 3's 1st ledger, boxed: `4/1/3/8/21`) | `glyph/4/1/2/8/26`, 4.49 sp below staff 2 | the same shape: the chord-mate's own line (`4/1/2/8/3`, staff 3's 2nd ledger). Staff 2's rungs 1–3 absent. |
+| #10 Litolff | `glyph/8/0/6/12/7` — the `s` of *sempre* | `glyph/8/0/6/12/2` (staff 6's 1st ledger; the 2nd, `8/0/7/12/6`, is in staff 7's cell) | two REAL rungs of staff 6 — the ladder of the real note `glyph/8/0/7/12/3` standing on the 2nd (itself refused on staff 7 by 2.7b, correctly). The ladder ENDS 1.37 sp short of the `s`. |
+
+None is a staff-line fragment and none is a direction error. The bug is the
+**predicate**: 2.7b kept a head on ANY kept rung lying between it and the
+filed staff. A rung is evidence for a staff only as part of a LADDER from
+that staff that reaches the note. The three G heads Sean confirmed on the
+same sheet have exactly that — #1 `16/1/7/14/0`: 2 of 3 rungs, reaching to
+0.80 sp; #14 `12/0/11/14/1`: 3 of 3, head on the 3rd; brk-02 `9/0/11/0/1`:
+rung 1 never boxed, rung 2 and the head's own 3rd line boxed.
+
+### What was built
+
+1. **ONE helper**, `ownership.ledger_direction` over `ladder_side` (one per
+   candidate staff): walk off the staff's outer line one space per step with
+   GATHER's own arithmetic (`LEDGER_ROUND_UP`, half-space grid, x-overlap),
+   over the `ledgerLine` boxes of the head's cell and each candidate's
+   same-index cell (plus any rung GATHER's ladder rows named), reading their
+   3.4g-2 verdicts. A side **points** when it needs no rung, or has ≥ 1 rung
+   that is not the head's own line, ≤ `LADDER_MAX_MISSING` (1) missing, and
+   its outermost rung within `LADDER_REACH_SPACES` (1.0) of the head. Exactly
+   one side points → that staff. Where only GATHER's anonymous count exists
+   (an old record; a fixture with no page box) a side points only on a
+   COMPLETE ladder — the first half's `clean`, unchanged.
+2. **`glyph_owner` takes it as a GATE**: `human_owner` → `ledger_direction`
+   (returns before any term is summed; `W_LEDGER_DIRECTION` is deleted) →
+   [additive: hairpin, ladder, range veto, distance]. `TestTheHardGate` pins
+   the configuration that out-voted the additive +8.0 (hairpin +7 on the
+   rival plus a −6 veto on the ledger side).
+3. **`far_no_rungs`**: every candidate needs ≥ `FAR_MIN_RUNGS` (2) rungs (gap
+   ≥ 1.75 sp from every band) and no rung (own line excluded) was found
+   toward any → ABSTAIN, unless a hairpin speaks. A near miss (a candidate
+   needing 0–1) keeps today's tiers. **Downstream**: an abstained owner used
+   to fall through `is_relocated_copy(None) == False` and be WRITTEN on the
+   staff its cell was cut from — a guess. EXPORT now drops it under the named
+   refusal **`owner_not_read`** (`ownership.OWNER_NOT_READ_REASONS`); the
+   `Unbalanced` equality holds (`TestExportCountsAnUnreadOwner`).
+4. **2.7b calls the same helper**: `_belongs_to_a_nearer_staff`'s exception
+   is now "the ledger names the FILED staff", over the head's cell and the
+   near staff's same-index cell. `OWN_LEDGER_MAX_SPACES` now lives in
+   `ownership.OWN_LINE_MAX_SPACES` (re-exported under the old name).
+5. **`hairpin_separates` stays ADDITIVE (my call)**: it can no longer
+   override a ledger answer (that returns first — on the records below the
+   gate took 2 Litolff / 29 Breitkopf contests from `hairpin_separates`, 0 /
+   4 of them with a different winner); its
+   7.0 already beats a lone veto and any distance; the only mix that
+   out-votes it — a veto on its side PLUS a rival's genuinely complete
+   ladder — pits it against ledger evidence no crop has adjudicated, and a
+   gate there would be a rule without a crop.
+6. **Perf, `record.Log`**: a descendants query at a NEW subject was a
+   containment test against every subject of the quantity (18 ms per cell
+   against Litolff's 37,390 `Q.GLYPH_BOX` subjects); an ancestor-keyed index
+   answers it by lookup in the same order (`test_staged_record`'s naive-scan
+   equivalence, now also at STAFF and CELL). Whole-record `glyph_owner`
+   re-decision: Litolff 1.0 s → 2.3 s, Breitkopf 4.4 s → 7.8 s.
+7. `wiring.KNOWN_GAPS` loses `Q.GLYPH_LADDER.found` (the count fallback reads
+   it). ⚠️ `wiring.details` matches detail keys by bare substring, so the two
+   new imports of `ownership` are spelled as bare module imports — the
+   dotted path would read as a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-
+   staff flag that nothing is (CLAUDE.md §4d's third blind spot, hit twice
+   here and fixed at the import, not in the gap list).
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — the three ladder
+thresholds (header comment in `ownership.py`). ⚠️ **Not on a cliff**: over
+every side with a rung toward it, `missing` is 0:246 · 1:431 · 2:113 · 3:10 ·
+4:1 (Litolff) and 0:1812 · 1:747 · 2:214 · 3:75 · 4:32 · 5:9 (Breitkopf);
+`reach_spaces` in quarter bins falls off after the 1.0 bin on Breitkopf
+(197 → 14) but has NO gap on Litolff (0.75:264 · 1.0:118 · 1.25:68 · 1.5:64 ·
+1.75:81). The values are argued from the six crops, not measured.
+
+### RED → GREEN
+
+`tools/omr/tests/test_staged_ledger_direction.py` (18 tests), RED on
+`8100c9ff`: 13 failed / 5 passed. The real RED cases: #4 and #10 refused; #22
+no longer kept by the chord-mate's rung (it yields to the contest, which
+gives it to staff 3 on its complete ladder); `glyph_owner` #1 `distance`→8
+becomes `ledger_direction`→7, #14 `ladder`→10 becomes `ledger_direction`→11,
+brk-02 `tied` becomes `ledger_direction`→11 — all three Sean's G. Positive
+controls in the same class: brk-02 / #1 / #14 with the contest removed are
+KEPT by the helper (their value assertions hold on both trees; on 8100c9ff
+they fail only on the new `ledger` detail key); a near miss still decides by
+`distance`; a lone rung is not a ladder. `test_staged_nearer_staff.py`: the
+one-rung "exception" test is REPLACED by a complete-ladder keep plus a
+one-rung REFUSE (RED on 8100c9ff). Fast tier **3,584 passed**, 3 skipped.
+`staged.check` **250 → 249** (wiring 68 → 67).
+
+### The ONE saved-record read — base vs arm on ONE record
+
+`readjudicate_owner_2_6c.py` re-decides only `glyph_owner` (every contest)
+and `notehead_is_not_a_notehead` (every head the 2.7b signal reached) on each
+27b arm record, from its own GATHER rows plus its saved `ledger_is_not_a_
+ledger` / `instrument` / `clef` verdicts — run from an extracted 8100c9ff tree
+AND from this branch, then diffed subject by subject by `diff_base_arm_2_6c.
+py` (`out/2.6c-base-vs-arm-*.json`, `out/2.6c-readjudicate-*.json`). ~40 s
+per document. ⚠️ The arm records were gathered before 2.6/2.14; a re-gather
+would change the populations (not done — DECISIONS 2026-09-28).
+
+| | Litolff (6,013 contests) | Breitkopf (24,795) |
+|---|--:|--:|
+| **newly `far_no_rungs`** (was distance / range_veto / tied) | **389** (360 / 26 / 3) | **266** (219 / 39 / 8) |
+| **winner changed to another staff** | **33** (29 distance, 4 ladder → `ledger_direction`) | **115** (69 distance, 10 tied, 8 range_veto, 6 ladder, 4 hairpin → `ledger_direction`; 14 `ledger_direction` → the other staff; 4 `ledger_direction` → `range_veto`) |
+| same winner, reason relabelled | 399 | 1,252 |
+| identical | 5,195 | 23,170 |
+| 2.7b heads re-read / newly refused | 1,524 / **6** (incl. #4, #10) | 3,006 / **15** |
+| 2.7b refusals reversed | 0 | 0 |
+
+The three named heads: #4 → refused `belongs_to_a_nearer_staff` (was kept);
+#10 → refused (dropped; Sean's N — the reason word is the nearer-staff one,
+the outcome, not written, is right); #22 → still not refused by 2.7b (it
+yields) and `glyph_owner` gives it to staff 3 (`ladder`), as before.
+
+⚠️⚠️ **`far_no_rungs` costs notes, and the crops say why.** All 655
+abstentions are `nothing_boxed_at_any_step` — no ledger box, kept or
+refused, at any step toward any candidate. A head detected in two cells
+carries two contests, so this is up to ~195 / ~133 notes no longer written
+(counted `owner_not_read`) where distance wrote one copy before — and o26b
+found distance right 8/8. Several of the eight crops visibly show ledger
+lines the detector never boxed (e.g. Breitkopf -01, a chord on printed
+ledgers above the lower staff; -02, a run hanging under the upper staff).
+That is Sean's rule working as stated — *a far note with no rungs found
+either way is a reading gap* — and it points the next item at ledger
+RECALL (finding the rungs), not at the rule. Sean's call whether it ships
+before recall does.
+
+### Crops for Sean (`out/print/2.6c-far-{litolff,breitkopf}-0{1..4}.png`)
+
+8 newly-abstaining heads, 4 per document (seed 2026092826 over the
+far_no_rungs list), `crop_far_no_rungs_2_6c.py`. Banded: GREEN = the UPPER
+candidate, ORANGE = the LOWER — colour follows POSITION, not role (the 2.7b
+sheet's role colours swapped above/below). Frame control per crop: both
+staves' recorded lines must pass AND the same lines shifted half a space
+must FAIL (1 Litolff head refused); `--break-frame` alone refused 99 of the
+first 103 heads it tried. Manifests carry `VERDICT_none_yet: null`.
+Question: *GREEN / ORANGE / not a note — and are there ledger lines?*
+
+### Not done / open
+
+- `tied` abstentions are still WRITTEN on their filed staff at export (both
+  twins) — the same rule-8 shape fixed here for `far_no_rungs`,
+  pre-existing and outside this fence (`OWNER_NOT_READ_REASONS` excludes it
+  on purpose).
+- An `owner_not_read` head can still carry a decided `accidental_owner`
+  pairing; the accidental census counts it `unowned` (partition holds).
+- The Breitkopf 14 `ledger_direction` → other staff and 4 → `range_veto`
+  reversals (count-only ledger on base vs geometric today) are
+  unadjudicated.
+- No GATHER change: `Q.GLYPH_LADDER` still files an anonymous `found`;
+  both decisions now read the ledger boxes directly, so nothing needed it.
+- CLAUDE.md §4c's list of EXPORT refusals does not yet name `owner_not_read`
+  (left for whoever merges; this lane did not edit the spec).

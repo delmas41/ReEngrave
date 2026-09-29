@@ -287,8 +287,11 @@ class TestDescendantsCache(unittest.TestCase):
         """
         seen_quantities = {q for (q, _key) in self.log._by_subject}
         for quantity in seen_quantities:
+            # ⚠️ ROADMAP 2.6c: a STAFF and a CELL too -- the ancestor-keyed
+            # index answers every level, and `glyph_owner` asks at the cell.
             for kind_subject in (R.DOCUMENT, R.page(0), R.system(0, 0),
-                                 R.system(0, 1)):
+                                 R.system(0, 1), R.staff(0, 0, 1),
+                                 R.staff(0, 1, 3), R.cell(0, 0, 1, 0)):
                 got = self.log.rows(quantity, kind_subject,
                                     scope=Scope.SELF_AND_DESCENDANTS)
                 want = _naive_descendants_ids(self.log, quantity, kind_subject)
