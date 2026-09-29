@@ -733,6 +733,20 @@ def _print_accounting_summary(*, musicxml_report: Optional[dict],
     else:
         print("  staves held out: not computed", file=sys.stderr)
 
+    # ⚠️ ROADMAP 2.12k. Read from whichever report is present, same as
+    # `held_out_staves` above -- both exporters count it, neither is
+    # preferred, and it is NOT folded into `marks` above because this bar was
+    # never held out (see `staged.export.to_musicxml`'s own comment on why
+    # the two accountings stay apart).
+    for rpt in (musicxml_report, lilypond_report):
+        if rpt is not None and "meter_returns_not_read" in rpt:
+            print(f"  meter returns not read (\"meter?\", bar kept, not "
+                  f"held out): {rpt['meter_returns_not_read']} -- a "
+                  f"corroborated printed change this system's own bars "
+                  f"could not sustain; the printed RETURN was never read "
+                  f"(CLAUDE.md §10, roadmap 2.12k)", file=sys.stderr)
+            break
+
     census = (musicxml_report or lilypond_report or {}).get("status_census") or {}
     unaccounted = census.get("unaccounted")
     if unaccounted:

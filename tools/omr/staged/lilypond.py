@@ -149,6 +149,15 @@ class _Bar:
     #: SAME table `staged.export._marked_empty_measure` reads for MusicXML,
     #: so the two files can never print a different word for one bar.
     reason: Optional[str] = None
+    #: ROADMAP 2.12k. True on the ONE bar (first staff of the system only --
+    #: `SX._meter_return_marker`'s own gate) where a corroborated cautionary
+    #: confirmed a printed meter change this system's own bars could not
+    #: sustain, and whose printed RETURN was never read. Kept apart from
+    #: `reason` on purpose: this bar is `"single"` or `"two_voice"`, never
+    #: `"empty"` -- it is NOT a bar this reader refuses to vouch for, its
+    #: notes are written exactly as read (CLAUDE.md rule 8: cannot-tell is
+    #: never converted into an answer, including "empty").
+    meter_return: bool = False
 
 
 def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
@@ -286,6 +295,10 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
         run = maybe_run
         key = SX._key_dict(run.fifths)
         condensed = bool(run.condensed_from)
+        # ⚠️ ROADMAP 2.12k. Computed ONCE per run, the SAME call MusicXML's
+        # `_part_xml` makes -- `None` on every staff but the system's own
+        # first and on every system whose meter was not abstained this way.
+        meter_return_cell = SX._meter_return_marker(rec, run)
         for i in range(run.n_measures):
             meter = SX._meter_dict(meter_at(run.meter, i))
             # ⚠️⚠️ ROADMAP 2.8/3.5: THE METER A READER OF THIS FILE SEES, not
@@ -367,11 +380,21 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             # ⚠️ `streams` IS ALREADY COMPUTED, ABOVE, FOR THE HOLD-OUT CHECK
             # -- reused here rather than asking `_voice_split` a second time
             # over the same bar.
+            # ⚠️ ROADMAP 2.12k. `is` comparison against `None`, not truthy --
+            # cell 0 must be able to carry the marker too if a future rule
+            # ever names it (`METER_RETURN_MARK_CELL` is 1 today, not 0, but
+            # nothing here should assume that).
+            meter_return = (meter_return_cell is not None
+                           and i == meter_return_cell)
+            if meter_return:
+                counters["meter_returns_not_read"] += 1
+
             if streams is None:
                 lane0.extend(events)
                 bars.append(_Bar("single", meter, run.clef, key,
                                  events=events, directions=directions,
-                                 condensed=condensed))
+                                 condensed=condensed,
+                                 meter_return=meter_return))
                 continue
 
             counters["two_voice_bars"] += 1
@@ -385,7 +408,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                 1 for e in shared_rests if e.get("fermata"))
             bars.append(_Bar("two_voice", meter, run.clef, key,
                              streams=(v1, v2), directions=directions,
-                             condensed=condensed))
+                             condensed=condensed, meter_return=meter_return))
     return bars, lane0, lane1
 
 
@@ -421,9 +444,10 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
             return (f"\\once \\override {grob}.color = #red "
                    f'{rest}^\\markup {{ "{_ly_escape(word)}" }} |')
         return rest + " |"
+    prefix = _meter_return_prefix(bar, counters)
     if bar.kind == "single":
         _tally(bar.events, counters, bar.condensed)
-        return _legacy._lily_measure(bar.events, wedges) + " |"
+        return prefix + _legacy._lily_measure(bar.events, wedges) + " |"
     # two_voice
     v1, v2 = bar.streams
     _tally(v1, counters, bar.condensed)
@@ -441,7 +465,28 @@ def _render_bar(bar: _Bar, wedges: Dict[int, str],
     # STAFF-WIDE `<< \\new Voice {...} \\new Voice {...} >>` legacy builds,
     # because staged decides two-voice PER BAR (`Q.VOICES` is a `Kind.CELL`
     # verdict) and not per staff.
-    return f"<< {{ {inner1} }} \\\\ {{ {inner2} }} >> |"
+    return f"{prefix}<< {{ {inner1} }} \\\\ {{ {inner2} }} >> |"
+
+
+def _meter_return_prefix(bar: _Bar, counters: Dict[str, int]) -> str:
+    """ROADMAP 2.12k's marker, or `""`.
+
+    ⚠️ `\\mark \\markup {...}`, NOT `^\\markup` ATTACHED TO A NOTE. This bar's
+    own notes are written exactly as read (`_render_bar`'s `"single"`/
+    `"two_voice"` branches, never `_lily_measure_rest`) -- there is no rest
+    token to hang a postfix `^` marking off, and `bar.events`/`bar.streams`
+    are `_legacy._lily_measure`'s own frozen renderer's business, not this
+    module's to splice into. `\\mark` is a complete, self-contained musical
+    event that reads above the staff at the point it is written -- LilyPond's
+    own rehearsal-mark idiom -- so it is simply PREPENDED, exactly like
+    `\\once \\override ... .color` is for the empty-bar branch above, and
+    needs nothing from the bar's own rendered content.
+    """
+    if not bar.meter_return:
+        return ""
+    word = SX.UNREAD_BAR_MARK_WORDS[SX.METER_RETURN_NOT_READ_REASON]
+    counters["meter_returns_not_read_written"] += 1
+    return f'\\mark \\markup {{ \\with-color #red "{_ly_escape(word)}" }} '
 
 
 def _staff_block(rec: SX.Record, part: Sequence[SX.StaffRun], name: str,
@@ -642,6 +687,22 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             counters.get("bars_held_out_sum_on_a_doubled_staff", 0)),
         "noteheads_and_rests": int(counters.get("notes_held_out_sum", 0)),
     }
+    # ⚠️ ROADMAP 2.12k, THE LILYPOND TWIN OF `staged.export.to_musicxml`'s
+    # OWN `report["meter_returns_not_read"]`. DELIBERATELY NOT FOLDED INTO
+    # `unread_bar_marks` ABOVE, for the identical reason: this bar is not one
+    # this file emptied, so it does not belong in that equality. `written` is
+    # `_meter_return_prefix`'s own count of bars it actually prefixed,
+    # asserted equal to `_collect_bars`'s own count of bars it found this
+    # true of, so a marking bug here cannot silently miss or double-mark one
+    # either.
+    _mrn_found = int(counters.get("meter_returns_not_read", 0))
+    _mrn_written = int(counters.get("meter_returns_not_read_written", 0))
+    if _mrn_written != _mrn_found:
+        raise SX.Unbalanced(
+            "lilypond meter-return marks written (%d) do not equal bars "
+            "found (%d) -- a bar was found without being marked, or marked "
+            "without being found" % (_mrn_written, _mrn_found))
+    report["meter_returns_not_read"] = _mrn_found
     if out:
         pathlib.Path(out).write_text(text)
     return text, report

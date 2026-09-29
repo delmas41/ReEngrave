@@ -2383,3 +2383,162 @@ new and reaches nothing new).
 skipped. `python3 -m tools.omr.staged.check`: 251 (unchanged from main). No
 GATHER change; `tools/omr/staged/adjudicators/rhythm.py` is the only file
 touched besides the new test file and this benchmark's own crop script.
+
+
+# PART 9 — §2.12k: A PRINTED RETURN THE CARRY COULD NOT SUSTAIN IS LABELLED,
+NOT SILENTLY REVERTED
+
+*(branch `claude/meter-return-2.12k`, base `origin/main` `7e801df0`. Sean,
+2026-09-28: "Anytime the meter changes it must show a change back to the
+original meter or it stays at the new meter." Cheap proof only — RED→GREEN
+unit tests, ONE read of the saved whole-movement record, no runs.)*
+
+## The trace, on the ONE saved record
+
+`record_io.load_record` on
+`.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json`
+(1.59 GB, 15 s to load, 323,786 verdicts): `system/0/0`'s `Q.METER` verdict
+is `voted`/decided `6/8`, carrying a `cautionary` field — `{from_cell: 7,
+9/8, support: 26.5, staves_reading_it: 9 of 14, corroborated: true}` — a
+CONFIRMED printed change into the very next system's opening. `system/1/0`
+(the hemiola bar, m. 8) is **`abstained`, `reason="carry_not_corroborated"`**,
+`detail = {carried_from: "system/0/0", carried_via_cautionary: true,
+instead_of: "opening_disagrees_with_prior_cautionary", state:
+"too_few_assessable_bars", bars_assessable: 0}` — the carry tried the
+cautionary's own `9/8` (2.12h's fix) and found **zero** bars in the WHOLE
+system it could check it against, so it abstains outright rather than
+asserting anything. `system/1/1` (the very next system) is ALSO abstained,
+`carry_not_corroborated`, `carried_via_cautionary: false` (its own immediate
+predecessor, `system/1/0`, is not `Outcome.DECIDED`, so `_adjacent_
+corroborated_cautionary` correctly returns `None` for it), `bars_assessable:
+1` (one bar, agreeing with `6/8`) — one short of `METER_CARRY_MIN_BARS = 2`.
+
+So the mechanism named in the brief (`_carry_meter`/`_corroborate`) is
+exactly where this lives, and the FAILURE MODE on the real record is
+**`carry_not_corroborated`** (too little bar data to check the confirmed
+change against at all), not the `carry_outweighed_by_the_bars` the brief's
+own title phrase ("where the bars overturn a CARRIED meter change")
+suggested most directly. Both abstain sites are the same shape from Sean's
+convention's point of view — a confirmed change that could not be sustained
+past its own opening — and both are fixed here. Because `system/1/0`
+abstains, `run.meter` is `None` for every one of its own cells in the
+exporter, so `in_force` never moves off whatever `system/0/0` last declared
+(`6/8`) — the file's `6/8` "returns" at m. 9 only because nothing ever
+overwrote it with `9/8` in the first place, and the genuinely-confirmed `9/8`
+hemiola bar (m. 8, cell 0) is silently judged against `6/8` too, with no
+acknowledgment either way. 2.12h.b/2.12i already established, independently,
+that GATHER produced zero glyph evidence for the printed `6/8` at cell 1
+(the detector boxes it on 0 of 14 staves); this item does not re-measure
+that, only that the CONSEQUENCE — an unlabelled reversion — is real on the
+saved record.
+
+## The stage, by §4a
+
+INFER was considered first, per the brief's own preference and the roadmap
+item's own wording ("BEST, not FORCED"). It does not fit, structurally:
+`infer._admit` requires a PRIOR verdict of the SAME target quantity at the
+SAME subject before a rule may speak, and forces every accepted proposal to
+`Outcome.DECIDED` with a concrete value (`infer.py`'s own rule 3/4) — but the
+fact here ("a printed return exists and we did not read it") is precisely
+`_carry_meter`'s own ABSTAIN, not a candidate to collapse, and asserting a
+numerator/denominator we never read to satisfy INFER's `DECIDED` requirement
+would be rule 8's forbidden conversion (cannot-tell into an answer) by
+another name. The brief's own escape hatch applies: "a named ADJUDICATE
+reason if the tree's carry-weighing already sits there and moving it would
+be a larger change" — it does, in `_carry_meter`'s two existing abstain call
+sites, and it stays an ABSTENTION either way, merely a more informative one.
+`adjudicate_meter`'s `reasons=(...)` tuple gained one member,
+`"meter_return_not_read"` (`METER_RETURN_NOT_READ_REASON`, `rhythm.py`), and
+`_carry_meter` uses it instead of `carry_not_corroborated` /
+`carry_outweighed_by_the_bars` exactly where `is_cautionary_source` is True
+— i.e. exactly where a CORROBORATED cautionary named this system's own
+opening and the carry it would need could not be confirmed. The cell named
+(`METER_RETURN_MARK_CELL = 1`) is not measured or tuned: a cautionary only
+ever names `here`'s own cell 0 (`_adjacent_corroborated_cautionary`'s own
+docstring), so cell 1 is always the first bar this system's abstention does
+not independently cover, on any document.
+
+## The mark
+
+`staged/export.py`: `_meter_return_marker(rec, run)` reads the SYSTEM's full
+`Q.METER` verdict (via `Record.verdict`, not `.value`, which returns `None`
+for an abstention) and returns the `at_cell` detail only for `run.staff ==
+0` — Sean's convention marks a system-wide fact once, at the top, not once
+per staff. `_part_xml`'s normal (non-empty, non-held) bar branch prepends a
+`<direction placement="above"><words color="#D00000">meter?</words>...` —
+`3.5`'s own `UNREAD_BAR_MARK_WORDS` table, one new entry, per the brief
+("put the word in 3.5's ONE table"); CONVENTION ASSUMED, `"meter?"`, Sean may
+rename it. `staged/lilypond.py`: the same cell, on the same staff, gets a
+`\mark \markup { \with-color #red "meter?" }` PREFIX rather than a `^`
+postfix — there is no rest token to hang a postfix off, because (per the
+brief) the bar is NOT emptied; `\mark` is LilyPond's own self-contained
+rehearsal-mark idiom and needs nothing from the bar's own rendered notes.
+Both sides count what they marked (`report["meter_returns_not_read"]`,
+surfaced on the staged CLI's accounting line in `__main__.py`) and assert it
+equals what `_collect_bars`/`_part_xml` found, `raise Unbalanced` otherwise —
+kept OUT of `unread_bar_marks`'s own equality on purpose, because this bar is
+not one either exporter emptied.
+
+## Tests, RED→GREEN
+
+`tools/omr/tests/test_staged_meter_return_not_read.py`, 9 tests, two layers:
+
+- **`TestTheLabel`** (ADJUDICATE, `Log`/`adjudicate_one`, the same fixture
+  shape `test_staged_opening_meter.py` uses): a corroborated cautionary
+  confirms `9/8` into a destination whose own bars (from cell 1) read
+  `6/8`-worth → `abstained`, `reason == "meter_return_not_read"`,
+  `detail["at_cell"] == 1` (both the `too_few_assessable_bars` shape the real
+  record has, and, separately, an active-disagreement fixture exercising the
+  `carry_outweighed_by_the_bars` site the brief's own title names). **RED**
+  (`test_the_fix_is_reachable_RED_without_it`): `_adjacent_corroborated_
+  cautionary` monkeypatched to always return `None` — the exact pre-2.12h/
+  pre-2.12k answer every call site saw — reproduces the silent, unlabelled
+  `"carried"` `6/8` this item exists to stop. **Controls**: bars that FIT
+  the confirmed change carry it as an ordinary `"carried"`, unlabelled
+  (`test_CONTROL_bars_that_FIT_the_change_carry_it_unlabelled`); a return
+  GATHER actually read (a corroborated mid-system `Q.METER_GLYPH` change,
+  not a cautionary) is `"voted"`, switched, unlabelled, no `meter_return_
+  not_read` anywhere (`test_CONTROL_a_READ_return_is_switched_and_
+  unlabelled`).
+- **`TestTheMark`** (EXPORT, hand-built records, `test_staged_unread_bar_
+  marks.py`'s own style): a bar with real notes at the flagged cell keeps
+  every note, gains the red `above`-placed `"meter?"` direction (MusicXML)
+  or `\mark \markup{...}` (LilyPond), and is counted
+  (`report["meter_returns_not_read"] == 1`, `bars_held_out_sum` untouched).
+  **Control**: the same two bars with `Q.METER` plainly `"carried"` (decided,
+  not this abstention) carry no `"meter?"` word in either file — the OTHER,
+  unrelated 2.8 hold-out mark can still fire on the same bar (a `9/8`
+  judgment over `6/8`-worth notes does not add up), which is why the control
+  asserts absence of the WORD rather than of every `<direction>`.
+
+`pytest tools/omr/tests -m "not slow" -q -p no:warnings -x`: **3,555 passed,
+3 skipped** (exactly +9 over this branch's base, this item's own tests; 0
+regressions). Also run directly beforehand, isolated:
+`test_staged_opening_meter.py`, `test_staged_header_rhythm.py`,
+`test_staged_meter_no_phantom_common_time.py`, `test_staged_meter_system_
+agreement.py`: 113 passed, unaffected — the two existing tests that assert
+`carry_outweighed_by_the_bars`/`carry_not_corroborated` literally never have
+`is_cautionary_source == True`, checked by reading both fixtures directly
+rather than assumed. `python3 -m tools.omr.staged.check`: **250** (measured
+on this branch — unchanged from the brief's own stated main baseline).
+
+## What is open
+
+- The real record's `system/1/1` (the system right after the labelled one)
+  is a SEPARATE abstention (`carried_via_cautionary: false`, since its own
+  immediate predecessor never decided) and is untouched by this item — it is
+  not itself a "confirmed change, unsustained" case, and per the roadmap's
+  own scope this item does not chase every abstention downstream of one,
+  only the one directly informed by a corroborated cautionary.
+  `_meter_in_force_at_end`'s treatment of an ABSTAINED `meter_return_not_
+  read` source (it is skipped — `found.outcome is not Outcome.DECIDED` — the
+  same treatment any other abstention already gets) was read, not changed.
+- Not re-measured on the whole movement (no runs, per the proof budget):
+  whether relabelling changes `staged.check`'s `N` on a live re-adjudication,
+  or how many bars in the real record carry the new mark. The `check` number
+  above is the STATIC one (declared-reason / inventory / wiring), unaffected
+  by a record's own content.
+- CONVENTION ASSUMED / NOT CONFIRMED: `"meter?"`, and prepending `\mark`
+  rather than attaching to a note. Sean may rename either or ask for a
+  different placement.
+touched besides the new test file and this benchmark's own crop script.
