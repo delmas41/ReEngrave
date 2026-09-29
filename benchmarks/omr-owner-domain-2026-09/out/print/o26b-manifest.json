@@ -1,0 +1,710 @@
+{
+  "roadmap_item": "2.6b",
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json (re-decided on main f4168dfd; read-only, machine-local, not committed)",
+  "pdf": "library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "seed": 20260928,
+  "population": {
+    "total_losers": 3590,
+    "by_reason": {
+      "ladder": 1395,
+      "distance": 2046,
+      "range_veto": 149
+    },
+    "by_direction": {
+      "own_is_upper_lost_to_lower": 2162,
+      "own_is_lower_lost_to_upper": 1428
+    },
+    "by_reason_direction": {
+      "ladder|own_is_upper_lost_to_lower": 864,
+      "distance|own_is_upper_lost_to_lower": 1236,
+      "distance|own_is_lower_lost_to_upper": 810,
+      "range_veto|own_is_lower_lost_to_upper": 87,
+      "ladder|own_is_lower_lost_to_upper": 531,
+      "range_veto|own_is_upper_lost_to_lower": 62
+    }
+  },
+  "loser_targets": {
+    "distance|own_is_upper_lost_to_lower": 5,
+    "distance|own_is_lower_lost_to_upper": 4,
+    "ladder|own_is_upper_lost_to_lower": 4,
+    "ladder|own_is_lower_lost_to_upper": 3,
+    "range_veto|own_is_upper_lost_to_lower": 2,
+    "range_veto|own_is_lower_lost_to_upper": 2
+  },
+  "crops": [
+    {
+      "n": 1,
+      "file": "o26b-01.png",
+      "kind": "loser",
+      "subject": "glyph/25/1/0/7/3",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.817,
+      "filed_staff": "staff/25/1/0",
+      "winning_staff": "staff/25/1/1",
+      "deciding_term": "distance",
+      "margin": 5.7120454545454615,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/25/1/1/7/0",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 236.53,
+        "win_contrast": 227.48
+      },
+      "page_box": [
+        4177.4,
+        4671.8,
+        4216.4,
+        4704.5
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "o26b-02.png",
+      "kind": "loser",
+      "subject": "glyph/0/0/2/6/5",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.808,
+      "filed_staff": "staff/0/0/2",
+      "winning_staff": "staff/0/0/3",
+      "deciding_term": "distance",
+      "margin": 4.702519379844961,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/0/0/3/6/2",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 202.39,
+        "win_contrast": 196.49
+      },
+      "page_box": [
+        5275.6,
+        2640.1,
+        5314.8,
+        2674.5
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "o26b-03.png",
+      "kind": "loser",
+      "subject": "glyph/7/1/2/10/4",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.784,
+      "filed_staff": "staff/7/1/2",
+      "winning_staff": "staff/7/1/3",
+      "deciding_term": "distance",
+      "margin": 5.12128504672898,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/7/1/3/10/5",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 158.36,
+        "win_contrast": 129.38
+      },
+      "page_box": [
+        5012.6,
+        4807.6,
+        5049.8,
+        4838.4
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "o26b-04.png",
+      "kind": "loser",
+      "subject": "glyph/4/0/1/7/16",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.321,
+      "filed_staff": "staff/4/0/1",
+      "winning_staff": "staff/4/0/2",
+      "deciding_term": "distance",
+      "margin": 5.622886363636363,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/4/0/2/7/13",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 216.03,
+        "win_contrast": 213.93
+      },
+      "page_box": [
+        3880.8,
+        959.1,
+        3913.5,
+        975.4
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "o26b-05.png",
+      "kind": "loser",
+      "subject": "glyph/8/0/0/6/1",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.76,
+      "filed_staff": "staff/8/0/0",
+      "winning_staff": "staff/8/0/1",
+      "deciding_term": "distance",
+      "margin": 4.948048245614034,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/8/0/1/6/1",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 154.17,
+        "win_contrast": 79.54
+      },
+      "page_box": [
+        3223.1,
+        843.2,
+        3263.1,
+        862.9
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "o26b-06.png",
+      "kind": "loser",
+      "subject": "glyph/21/0/5/4/3",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.792,
+      "filed_staff": "staff/21/0/5",
+      "winning_staff": "staff/21/0/4",
+      "deciding_term": "distance",
+      "margin": 0.8435819000818991,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/21/0/4/4/2",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 247.07,
+        "win_contrast": 221.66
+      },
+      "page_box": [
+        3132.6,
+        1821.9,
+        3168.2,
+        1855.7
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "o26b-07.png",
+      "kind": "loser",
+      "subject": "glyph/20/0/6/6/6",
+      "detector_class": "noteheadHalfInSpace",
+      "detector_conf": 0.558,
+      "filed_staff": "staff/20/0/6",
+      "winning_staff": "staff/20/0/5",
+      "deciding_term": "distance",
+      "margin": 0.060500000000001775,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/20/0/5/6/2",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 173.32,
+        "win_contrast": 169.53
+      },
+      "page_box": [
+        3997.4,
+        1984.5,
+        4039.4,
+        2015.6
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "o26b-08.png",
+      "kind": "loser",
+      "subject": "glyph/16/0/10/2/7",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.367,
+      "filed_staff": "staff/16/0/10",
+      "winning_staff": "staff/16/0/9",
+      "deciding_term": "distance",
+      "margin": 1.613027522935783,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/16/0/9/2/0",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 139.2,
+        "win_contrast": 169.92
+      },
+      "page_box": [
+        1737.4,
+        2618.0,
+        1776.4,
+        2642.2
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 9,
+      "file": "o26b-09.png",
+      "kind": "loser",
+      "subject": "glyph/12/0/6/3/0",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.802,
+      "filed_staff": "staff/12/0/6",
+      "winning_staff": "staff/12/0/5",
+      "deciding_term": "distance",
+      "margin": 0.3360810810810837,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/12/0/5/3/0",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 203.8,
+        "win_contrast": 175.93
+      },
+      "page_box": [
+        2016.0,
+        1753.2,
+        2054.3,
+        1786.2
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 10,
+      "file": "o26b-10.png",
+      "kind": "loser",
+      "subject": "glyph/19/0/3/10/24",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.285,
+      "filed_staff": "staff/19/0/3",
+      "winning_staff": "staff/19/0/4",
+      "deciding_term": "ladder",
+      "margin": 4.0,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/19/0/4/10/3",
+      "twin_kept": false,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 185.07,
+        "win_contrast": 198.05
+      },
+      "page_box": [
+        5140.0,
+        1442.0,
+        5182.5,
+        1496.7
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 11,
+      "file": "o26b-11.png",
+      "kind": "loser",
+      "subject": "glyph/1/0/8/0/5",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.809,
+      "filed_staff": "staff/1/0/8",
+      "winning_staff": "staff/1/0/9",
+      "deciding_term": "ladder",
+      "margin": 9.335485055905963,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/1/0/9/0/5",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 234.15,
+        "win_contrast": 212.63
+      },
+      "page_box": [
+        1217.5,
+        2692.1,
+        1260.4,
+        2711.5
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 12,
+      "file": "o26b-12.png",
+      "kind": "loser",
+      "subject": "glyph/6/0/1/2/11",
+      "detector_class": "noteheadWholeOnLine",
+      "detector_conf": 0.283,
+      "filed_staff": "staff/6/0/1",
+      "winning_staff": "staff/6/0/2",
+      "deciding_term": "ladder",
+      "margin": 8.818691588785047,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/6/0/2/2/0",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 86.66,
+        "win_contrast": 112.35
+      },
+      "page_box": [
+        1937.2,
+        1055.6,
+        1987.5,
+        1082.0
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 13,
+      "file": "o26b-13.png",
+      "kind": "loser",
+      "subject": "glyph/2/0/1/2/3",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.812,
+      "filed_staff": "staff/2/0/1",
+      "winning_staff": "staff/2/0/2",
+      "deciding_term": "ladder",
+      "margin": 9.505514442373853,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/2/0/2/2/2",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 189.34,
+        "win_contrast": 189.14
+      },
+      "page_box": [
+        2726.4,
+        921.0,
+        2768.1,
+        957.2
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 14,
+      "file": "o26b-14.png",
+      "kind": "loser",
+      "subject": "glyph/9/1/11/4/8",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.53,
+      "filed_staff": "staff/9/1/11",
+      "winning_staff": "staff/9/1/10",
+      "deciding_term": "ladder",
+      "margin": 4.962979240512928,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/9/1/10/4/2",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 140.9,
+        "win_contrast": 124.43
+      },
+      "page_box": [
+        3136.3,
+        6627.0,
+        3172.2,
+        6645.9
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 15,
+      "file": "o26b-15.png",
+      "kind": "loser",
+      "subject": "glyph/6/0/3/4/13",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.357,
+      "filed_staff": "staff/6/0/3",
+      "winning_staff": "staff/6/0/2",
+      "deciding_term": "ladder",
+      "margin": 5.0753504672897165,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/6/0/2/4/2",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 88.76,
+        "win_contrast": 112.35
+      },
+      "page_box": [
+        3221.1,
+        1271.5,
+        3264.3,
+        1288.0
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 16,
+      "file": "o26b-16.png",
+      "kind": "loser",
+      "subject": "glyph/3/0/13/0/1",
+      "detector_class": "noteheadBlackOnLine",
+      "detector_conf": 0.801,
+      "filed_staff": "staff/3/0/13",
+      "winning_staff": "staff/3/0/12",
+      "deciding_term": "ladder",
+      "margin": 3.9749944813421374,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/3/0/12/0/4",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 235.64,
+        "win_contrast": 223.4
+      },
+      "page_box": [
+        962.1,
+        3560.5,
+        999.7,
+        3592.4
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 17,
+      "file": "o26b-17.png",
+      "kind": "loser",
+      "subject": "glyph/26/1/1/5/23",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.261,
+      "filed_staff": "staff/26/1/1",
+      "winning_staff": "staff/26/1/2",
+      "deciding_term": "range_veto",
+      "margin": 4.579128440366972,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/26/1/2/5/17",
+      "twin_kept": true,
+      "twin_reason": "range_veto",
+      "frame_contrast": {
+        "own_contrast": 217.58,
+        "win_contrast": 219.92
+      },
+      "page_box": [
+        3343.0,
+        4329.9,
+        3352.1,
+        4347.2
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 18,
+      "file": "o26b-18.png",
+      "kind": "loser",
+      "subject": "glyph/10/1/8/5/2",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.809,
+      "filed_staff": "staff/10/1/8",
+      "winning_staff": "staff/10/1/9",
+      "deciding_term": "range_veto",
+      "margin": 4.2864090909091,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/10/1/9/5/6",
+      "twin_kept": true,
+      "twin_reason": "range_veto",
+      "frame_contrast": {
+        "own_contrast": 241.92,
+        "win_contrast": 228.68
+      },
+      "page_box": [
+        4250.9,
+        5927.7,
+        4289.2,
+        5959.8
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 19,
+      "file": "o26b-19.png",
+      "kind": "loser",
+      "subject": "glyph/12/1/6/7/7",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.771,
+      "filed_staff": "staff/12/1/6",
+      "winning_staff": "staff/12/1/5",
+      "deciding_term": "range_veto",
+      "margin": 4.107837837837849,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/12/1/5/7/8",
+      "twin_kept": true,
+      "twin_reason": "range_veto",
+      "frame_contrast": {
+        "own_contrast": 96.54,
+        "win_contrast": 202.65
+      },
+      "page_box": [
+        4263.4,
+        5303.6,
+        4302.0,
+        5336.4
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 20,
+      "file": "o26b-20.png",
+      "kind": "loser",
+      "subject": "glyph/16/0/5/5/1",
+      "detector_class": "noteheadBlackInSpace",
+      "detector_conf": 0.839,
+      "filed_staff": "staff/16/0/5",
+      "winning_staff": "staff/16/0/4",
+      "deciding_term": "range_veto",
+      "margin": 4.440249999999998,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/16/0/4/5/1",
+      "twin_kept": true,
+      "twin_reason": "range_veto",
+      "frame_contrast": {
+        "own_contrast": 160.56,
+        "win_contrast": 174.54
+      },
+      "page_box": [
+        3086.6,
+        1609.3,
+        3124.7,
+        1642.3
+      ],
+      "question": "right staff dropped (correct) / wrong staff dropped (this staff's own note) / not a note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 21,
+      "file": "o26b-21.png",
+      "kind": "winner",
+      "subject": "glyph/25/1/1/7/0",
+      "kept_twin_of_loser_n": 1,
+      "kept_twin_of_subject": "glyph/25/1/0/7/3",
+      "filed_staff": "staff/25/1/1",
+      "winning_staff": "staff/25/1/1",
+      "deciding_term": "distance",
+      "margin": null,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/25/1/0/7/3",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 227.48,
+        "win_contrast": 236.53
+      },
+      "page_box": [
+        4177.4,
+        4672.1,
+        4216.7,
+        4705.6
+      ],
+      "question": "is this a duplicate of its paired loser, or a different note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 22,
+      "file": "o26b-22.png",
+      "kind": "winner",
+      "subject": "glyph/21/0/4/4/2",
+      "kept_twin_of_loser_n": 6,
+      "kept_twin_of_subject": "glyph/21/0/5/4/3",
+      "filed_staff": "staff/21/0/4",
+      "winning_staff": "staff/21/0/4",
+      "deciding_term": "distance",
+      "margin": null,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/21/0/5/4/3",
+      "twin_kept": true,
+      "twin_reason": "distance",
+      "frame_contrast": {
+        "own_contrast": 221.66,
+        "win_contrast": 247.07
+      },
+      "page_box": [
+        3133.1,
+        1824.1,
+        3168.6,
+        1855.4
+      ],
+      "question": "is this a duplicate of its paired loser, or a different note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 23,
+      "file": "o26b-23.png",
+      "kind": "winner",
+      "subject": "glyph/1/0/9/0/5",
+      "kept_twin_of_loser_n": 11,
+      "kept_twin_of_subject": "glyph/1/0/8/0/5",
+      "filed_staff": "staff/1/0/9",
+      "winning_staff": "staff/1/0/9",
+      "deciding_term": "ladder",
+      "margin": null,
+      "direction": "own_is_upper_lost_to_lower",
+      "twin_subject": "glyph/1/0/8/0/5",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 212.63,
+        "win_contrast": 234.15
+      },
+      "page_box": [
+        1216.9,
+        2692.5,
+        1260.4,
+        2726.7
+      ],
+      "question": "is this a duplicate of its paired loser, or a different note",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 24,
+      "file": "o26b-24.png",
+      "kind": "winner",
+      "subject": "glyph/9/1/10/4/2",
+      "kept_twin_of_loser_n": 14,
+      "kept_twin_of_subject": "glyph/9/1/11/4/8",
+      "filed_staff": "staff/9/1/10",
+      "winning_staff": "staff/9/1/10",
+      "deciding_term": "ladder",
+      "margin": null,
+      "direction": "own_is_lower_lost_to_upper",
+      "twin_subject": "glyph/9/1/11/4/8",
+      "twin_kept": true,
+      "twin_reason": "ladder",
+      "frame_contrast": {
+        "own_contrast": 124.43,
+        "win_contrast": 140.9
+      },
+      "page_box": [
+        3136.6,
+        6614.5,
+        3172.8,
+        6645.5
+      ],
+      "question": "is this a duplicate of its paired loser, or a different note",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
