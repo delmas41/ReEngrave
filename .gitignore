@@ -222,6 +222,15 @@ benchmarks/omr-clef-geometry-2026-09/out/*.musicxml
 benchmarks/omr-owner-domain-2026-09/out/real-p*-*.json
 benchmarks/omr-owner-domain-2026-09/out/real-p*-*.log
 
+# ROADMAP 2.10b (`benchmarks/omr-no-pitch-2026-09/`): the base/arm ARM
+# records `replay.py --write-arm` writes are ~600 MB each (a plain
+# `json.dumps`, unpooled — see `replay.py`'s own docstring) and reproducible
+# in-process from the same command against the cited record; the small
+# summary JSON beside them is what FINDINGS quotes and is tracked, and the
+# print crops go in `out/print/`, never `crops/`.
+benchmarks/omr-no-pitch-2026-09/out/210b-arm/*.record.json
+benchmarks/omr-no-pitch-2026-09/out/210b-arm/*.musicxml
+
 # ROADMAP 3.4g (`benchmarks/omr-family-refusals-2026-09/`): `ledger-rows-*`
 # is a 5.7 MB per-box CACHE that `probe/ledger_geometry.py` writes so a
 # tolerance can be re-priced without re-loading 900 MB of record, and
