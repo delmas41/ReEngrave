@@ -669,3 +669,197 @@ second refusal). (2) `range_veto` is the weak term — 2 of 3 wrong on a
 population of 149 — which is exactly where Sean's two conventions (ledger
 lines name the owner; a hairpin sits under its staff; DECISIONS 2026-09-28)
 should decide instead → 2.6c, narrowed to the range-veto population.
+
+## §2.6c — Sean's two conventions, applied where `range_veto` decides (2026-09-28, BUILT not merged)
+
+Branch `claude/owner-conventions-2.6c`. Cheap proof only (DECISIONS
+2026-09-28: *"build and wire, stop burning runs on proof"*): a ONE-TIME read
+of the real record via `record_io.load_record`, and unit tests. No re-gathers.
+
+### #19/#20 diagnosed against the real record
+
+Both crops are the SAME shape (`glyph/12/1/6/7/7` and `glyph/16/0/5/5/1`, one
+row read each via a throwaway script against
+`.../redecide-f4168dfd/out-redecide/brahms/amended.record.json`):
+
+- The "own" staff (Sean's correct answer, `staff/12/1/6` / `staff/16/0/5`,
+  both Horn/treble) sits 0.54 / 0.60 spaces above its own top line —
+  `gather._observe_ladder`'s `expected = int(gap/spacing + 0.25)` rounds that
+  to **0**, so no `Q.GLYPH_LADDER` row is ever filed for it. Not "no
+  evidence" in the ordinary sense: the note is close enough that a ledger
+  line would never be drawn there at all.
+- The rival ("unidentified"/"Contrabassoon" staff, distance 3.78 / 3.12
+  spaces) needs 4 / 3 rungs and `Q.GLYPH_LADDER` names **0 found** for both —
+  a real, filed row, genuinely broken.
+- Both resolve `MIDI 79 (G5)` under Horn/treble — 2 semitones above the
+  `written_range` table's assumed ceiling (`[41, 77]`, F5) — so `_range_veto`
+  fires on the CORRECT, near staff and hands the note to the rival, which is
+  never vetoed (its instrument abstained / doesn't cover that register).
+  `would_win_on_distance` already names the correct staff in both rows; only
+  the veto overrides it.
+
+**Neither convention, taken literally, is what fixes these two.** Convention
+1 ("ledger lines... between it and the staff it belongs to") describes rungs
+that are FOUND; here the correct side needs zero and the wrong side's are
+simply absent — not "found toward one, none toward the other" in the literal
+sense, but the *comparative* shape CLAUDE.md's 2026-09-23 precedent already
+named at a smaller radius (a note one space beyond a neighbour's outer line
+is that staff's, on its own first ledger line, while the far staff's
+three-rung ladder was never detected — there the near candidate's rung WAS
+found; here it needs none at all, one step further out). Convention 2 (the
+hairpin) never gets a chance to speak on either crop: `Q.WEDGE_BOX` has ZERO
+rows in page 12 system 1 or page 16 system 0 near either staff — checked
+directly against the real record, not assumed.
+
+### Did `glyph_owner`'s ladder term already use rung DIRECTION?
+
+Partially, and only per-candidate, never comparatively. `_observe_ladder`
+(2.14) already computes `expected`/`found` SEPARATELY toward each candidate
+(so it is directional in the sense that a note's ledger requirement toward
+staff A and toward staff B are two different numbers), and
+`_ladder_complete`'s existing `ladder_complete` term already credits
+whichever candidate's OWN run is complete. What it never did is COMPARE the
+two candidates' ladder states to each other — a candidate needing zero rungs
+and a rival needing several with none found were both simply "no term",
+indistinguishable from each other. That comparison is the new
+`_ledger_direction_winner`.
+
+### The terms added, and the order
+
+In `tools/omr/staged/adjudicators/ownership.py` (`adjudicate_glyph_owner`),
+two new ADDITIVE terms, both gated to fire only when they can be decisive and
+silent otherwise:
+
+1. **`ledger_direction`** (`_ledger_direction_winner`, weight `W_LEDGER_
+   DIRECTION = 8.0`, tag A-OWN-3). A candidate is "clean" if it needs no
+   rungs at all (no `Q.GLYPH_LADDER` row) OR its own ladder is genuinely
+   complete; "broken" if it has a real row that is incomplete. Fires for the
+   ONE clean candidate only when exactly one candidate is clean AND at least
+   one rival is broken — silent whenever more than one candidate is clean
+   (ambiguous, the same reasoning `tied` already applies) or none is.
+   ⚠️ **The weight had to beat `range_veto` on its own, not lean on
+   `ladder_complete`**: `4.0 (ladder_complete) - 6.0 (range_veto) = -2.0` is
+   still a net loss, so a genuinely complete ladder is NOT by itself decisive
+   against a veto — `test_a_genuinely_complete_ladder_still_needs_the_
+   convention_to_beat_a_veto` pins this arithmetic so it can't regress
+   silently. An earlier draft of this function refused to fire wherever ANY
+   candidate had a genuine complete ladder; that gate was WRONG (built on
+   the false assumption that `ladder_complete` alone was already decisive)
+   and was removed before landing.
+2. **`hairpin_separates`** (`_hairpin_separates`, weight `W_HAIRPIN_
+   SEPARATES = 7.0`). Reads `Q.STAFF_LINES` (candidate's own bottom line,
+   page px) and `Q.GLYPH_BOX` (this glyph's own `y_center_page` — newly added
+   to `wants`, since `Q.GLYPH_BAND_DISTANCE` never carries a page
+   coordinate) plus `Q.WEDGE_BOX` filed under the candidate
+   (`scope=SELF_AND_DESCENDANTS`, since a hairpin is a GLYPH-kind subject
+   under the STAFF). Fires when the head lies between the candidate's own
+   bottom line and a hairpin filed under it, in page pixels. A `DETECTOR`-
+   reader wedge (cell-frame only, no page box) is DECLINED, not defaulted
+   (CLAUDE.md §10). A witness from a different glyph family, reader and
+   quantity than the notehead's own rows, so it is never in the notehead's
+   correlated group by construction.
+
+Order realised via the reason-priority chain plus weight ordering:
+`human_owner` (unchanged) → `ledger_direction` (8.0) → `hairpin_separates`
+(7.0) → `ladder`/`range_veto` (±6.0/4.0, unchanged) → `distance` (0.5,
+unchanged). `Q.GLYPH_BOX`, `Q.WEDGE_BOX`, `Q.STAFF_LINES` added to `wants`/
+`composed_from`; `ledger_direction`/`hairpin_separates` added to `reasons`.
+
+### RED → GREEN
+
+New file `tools/omr/tests/test_staged_owner_conventions.py`, 10 tests:
+synthetic RED→GREEN for each convention (rungs toward one staff none toward
+the other; a hairpin below the head), two controls per convention (no
+evidence → unchanged; a hairpin *not* between the two → no effect; a
+DETECTOR-only wedge with no page frame → declined), the arithmetic pin above,
+and — as the real RED cases — #19 and #20 rebuilt from the exact rows in the
+committed record (`Log` + `adjudicate.adjudicate_one`, Verdicts injected
+directly for `Q.INSTRUMENT`/`Q.CLEF` to avoid re-deriving identity from
+scratch): both now decide `ledger_direction` → the Horn's own staff, matching
+Sean's `wrong_staff_dropped` verdicts.
+
+**⚠️ #19's own duplicate (`glyph/12/1/5/7/8`, the same ink filed under
+`staff/12/1/5`) is a DOCUMENTED RESIDUAL, not a regression.** On its own
+contest neither side is clean: `staff/12/1/5` needs 3 rungs (none found),
+`staff/12/1/6` needs 1 (none found) — two broken ladders, correctly silent
+per the "not evidence either way" rule, so it still decides `range_veto` →
+`staff/12/1/5`, unchanged and still wrong by Sean's #19 verdict. Recorded as
+`test_crop_19s_own_duplicate_stays_wrong_a_documented_residual`. #20's
+analogous duplicate (`glyph/16/0/4/5/1`) is NOT a residual: its own contest
+has `staff/16/0/4` broken (3 expected, 0 found) against `staff/16/0/5` clean
+(0 expected) — the same shape as #20 itself — so it independently converges
+on the SAME correct staff. Not asserted in the test file (out of the fenced
+scope's time budget) but confirmed by hand against the same record dump.
+
+**Two pre-existing tests broke and were repaired, not worked around.**
+`test_staged_ownership.py::test_a_broken_ladder_contributes_NOTHING_not_a_-
+penalty` and `test_staged_ladder_rungs.py::test_found_drops_and_the_ladder_-
+term_is_withdrawn` / `test_an_EMPTY_named_ladder_takes_the_same_path_as_old_-
+shape` all modelled a "nearer, closer" staff (1.0 space from its own band —
+`gather` would expect ONE real rung there) with NO `Q.GLYPH_LADDER` row at
+all, relying on the pre-2.6c fact that an absent row and a broken one were
+equally inert. `_ledger_direction_winner` reads an absent row as "no crossing
+needed", which is false for a candidate at 1.0 space — so each fixture now
+also files that candidate's OWN broken row (`expected=1, found=0`), matching
+what a real gather would produce and restoring each test's STATED intent
+(two broken ladders / an incomplete discount — no directional signal either
+way). The VALUE these tests assert never changed, only the reason a
+mislabelled fixture would have reported.
+
+### The 149-contest re-run: SKIPPED
+
+Not run. Re-deciding all 149 `range_veto` contests in-memory needs each
+one's full `Q.GLYPH_BAND_DISTANCE`/`Q.GLYPH_LADDER`/`Q.WEDGE_BOX`/
+`Q.STAFF_LINES`/`Q.INSTRUMENT`/`Q.CLEF` rows pulled from the 1.5 GB record and
+re-adjudicated per contest — more than the "one record read" the proof
+budget asks for, and the landing message narrowed this session to what is
+"done and tested" only. Whoever picks this up next: `record_io.load_record`
+once, filter `verdicts` where `quantity == "glyph_owner"` and
+`reason == "range_veto"`, and for each subject re-run
+`adjudicate.adjudicate_one` against the SAME frozen `Log` object the record
+loads into (no re-gather needed — GATHER's rows are already on the record).
+
+### OPEN — Sean's correction on nearness vs. the ledger (2026-09-28, not built)
+
+After landing was already underway, Sean corrected the framing directly:
+*"Nearer to the staff is not always going to be right but ledger lines will
+be. If it is not working out that way right now then the tests are off."*
+Three consequences, none built in this pass:
+
+1. **Ledger direction should run BEFORE `range_veto` and `distance` both**,
+   not merely score high enough to usually beat them additively. The current
+   implementation is a large ADDITIVE term (8.0), not a hard precedence
+   gate — it can in principle still lose to a large accumulation of other
+   terms, which a strict ordering would not allow.
+2. **A FAR note with no rungs found in either direction should ABSTAIN**, not
+   fall through to distance. Today's code, when neither side is "clean"
+   (both broken, or both far with nothing found), falls through to the OLD
+   tiers unchanged — which is right for a NEAR miss (a candidate needing 0–1
+   rungs is a hint, not a claim) but per Sean's correction is WRONG once both
+   candidates are genuinely FAR (needing several rungs) and neither's is
+   found: that should read as a reading gap, not a distance tie-break. The
+   cut for "far" needs to be measured from the record (candidate `expected`
+   at the point the vacuous zone ends, `int(x + 0.25) >= 1`, i.e. roughly one
+   space outside the band — cite the real distribution before picking a
+   number).
+3. **Three heads are evidence the RUNG-CREDITING is buggy, not the rule**:
+   Litolff `glyph/10/1/2/12/6`, Breitkopf `glyph/4/1/2/8/31` (both: `notehead_-
+   precision.belongs_to_a_nearer_staff`'s rung exception currently credits a
+   rung toward the FILED staff that Sean says is wrong — the far staff is the
+   real owner and something is naming the wrong rung, or its direction, or
+   its owner), and Litolff `glyph/8/0/6/12/7` (not a note at all). NOT
+   diagnosed in this pass — `notehead_precision.py` is fenced off this lane,
+   and the two 27b-arm records were not loaded (out of the cheap-proof/no-
+   extra-runs budget this close to landing). **Next step**: load
+   `.../27b/arm/litolff-arm.record.json` (and the Brahms arm beside it) OR
+   crop just these two heads' neighbourhoods from the PDF with rung boxes
+   drawn (`omr-owner-domain-2026-09/crop_losers_2_6b.py`'s banded style) and
+   read what the credited "rung" actually is — a staff-line fragment boxed
+   `ledgerLine`, a neighbouring head's own rung, a sign/direction error, or
+   the note's own line miscounted. Whatever the cause, it should be fixed by
+   calling `ownership._ledger_direction_winner` (or a shared helper factored
+   out of it) from `notehead_precision.belongs_to_a_nearer_staff`'s rung
+   exception, so "which staff do these rungs point to" is answered in ONE
+   place — flagged here as the follow-up `notehead_precision.py` needs next,
+   not built in this pass (fenced off, and the correction landed too late in
+   the session to build and prove cheaply).

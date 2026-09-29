@@ -13,7 +13,7 @@ adjudication reads a frozen record.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
@@ -25,6 +25,17 @@ from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
 W_LADDER_COMPLETE = 4.0     # an unbroken run of ledger rungs
 W_RANGE_IMPOSSIBLE = -6.0   # a veto on the IMPOSSIBLE, never on the unlikely
 W_DISTANCE = 0.5            # the tie-break, and only that
+
+# ⚠️ ASSUMED WEIGHTS (A-OWN-3), ROADMAP 2.6c (Sean's two conventions,
+# DECISIONS 2026-09-28: "ledger lines name the owner"; "a hairpin sits under
+# its staff"). Sized so each is DECISIVE against the tiers the brief names it
+# ahead of, and ordered ledger > hairpin > range veto > distance --
+# `W_LEDGER_DIRECTION` exceeds `abs(W_RANGE_IMPOSSIBLE)` and
+# `W_HAIRPIN_SEPARATES` sits between the two, so a contest where a convention
+# and the range veto both fire is decided by the convention. Neither weight
+# is measured, same as A-OWN-1.
+W_LEDGER_DIRECTION = 8.0    # rungs toward one staff, none toward the other
+W_HAIRPIN_SEPARATES = 7.0   # a hairpin sits under its own staff
 
 
 @decision(
@@ -38,14 +49,19 @@ W_DISTANCE = 0.5            # the tie-break, and only that
     # ⚠️ ROADMAP 2.14. `Q.LEDGER_IS_NOT_A_LEDGER` joins the composition: the
     # ladder tier's reliability now depends on a rung's own refusal verdict,
     # not only on GATHER's anonymous count.
+    # ⚠️ ROADMAP 2.6c adds `Q.GLYPH_BOX` (this glyph's own page box) and
+    # `Q.WEDGE_BOX`/`Q.STAFF_LINES` (a candidate's hairpins and staff lines,
+    # both read off ITS subject) for the hairpin-separator term.
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
-                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
+                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
+                   Q.WEDGE_BOX, Q.STAFF_LINES),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
-           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER),
-    reasons=("human_owner", "ladder", "range_veto", "distance", "no_contest",
-             "no_evidence", "tied"),
+           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
+           Q.WEDGE_BOX, Q.STAFF_LINES),
+    reasons=("human_owner", "ledger_direction", "hairpin_separates", "ladder",
+             "range_veto", "distance", "no_contest", "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
     # nothing to arbitrate, and a verdict per detection would bury 4,521 real
@@ -102,6 +118,22 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
+    # ⚠️ ROADMAP 2.6c, Sean's ledger-direction convention (DECISIONS
+    # 2026-09-28). This is a COMPARISON across the whole contest -- "rungs
+    # toward one staff, none toward the other" cannot be answered by looking
+    # at one candidate at a time -- so, like `_human_owner`, it is settled
+    # once before the per-candidate loop rather than folded into one
+    # candidate's own terms.
+    ledger_winner, ledger_basis = _ledger_direction_winner(ev, bands, ladders)
+
+    # ⚠️ ROADMAP 2.6c, this glyph's own PAGE box. `Q.GLYPH_BAND_DISTANCE`
+    # carries only the CANDIDATE-relative position (`position_in_candidate`),
+    # never a page coordinate, so the hairpin term -- which compares this
+    # head against a candidate's hairpins in the SAME page frame -- needs its
+    # own read of `Q.GLYPH_BOX`, the one row that carries `y_center_page`.
+    head_box = _own_glyph_box(ev)
+    head_y = head_box.get("y_center_page") if head_box else None
+
     scored = []
     ladder_discounts: Dict[str, Tuple[str, ...]] = {}
     for row in bands:
@@ -109,6 +141,16 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         if cand_key is None:
             continue
         terms = []
+
+        # ── tier 0a: the ledger direction (2.6c, decisive) ──────────────────
+        if cand_key == ledger_winner:
+            terms.append(Term("ledger_direction", W_LEDGER_DIRECTION,
+                              (row.id,) + ledger_basis))
+
+        # ── tier 0b: a hairpin under this staff (2.6c, decisive) ────────────
+        hairpin = _hairpin_separates(ev, cand_key, head_y)
+        if hairpin is not None:
+            terms.append(hairpin)
 
         # ── tier 1: the ledger ladder ───────────────────────────────────────
         lad = ladders.get(cand_key)
@@ -169,7 +211,17 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # to be a coin flip.
         return Ruling.abstain("tied")
 
-    if any(t.name == "ladder_complete" for t in top_terms):
+    # ⚠️ ROADMAP 2.6c: checked FIRST because either can carry a contest a
+    # genuinely complete ladder's own +4.0 cannot: `W_LADDER_COMPLETE` alone
+    # does not outweigh a range veto's -6.0, so `ledger_direction` can be the
+    # reason even where the winner's OWN ladder is genuinely (not vacuously)
+    # complete -- the winner still carries a `ladder_complete` term too, but
+    # the convention is what actually decided the contest.
+    if any(t.name == "ledger_direction" for t in top_terms):
+        reason = "ledger_direction"
+    elif any(t.name == "hairpin_separates" for t in top_terms):
+        reason = "hairpin_separates"
+    elif any(t.name == "ladder_complete" for t in top_terms):
         reason = "ladder"
     elif vetoed and by_distance[1] != top_key:
         reason = "range_veto"
@@ -241,6 +293,137 @@ def _ladder_complete(ev: Evidence, lad_row) -> Tuple[bool, Tuple[str, ...]]:
             continue
         kept += 1
     return kept == expected, tuple(discounted)
+
+
+def _ledger_direction_winner(
+    ev: Evidence, bands, ladders: Dict[str, Any],
+) -> Tuple[Optional[str], Tuple[str, ...]]:
+    """Sean's first convention (DECISIONS 2026-09-28): *"there have to be
+    ledger lines in between wherever that note is and the staff that it's
+    connected to"* — rungs toward one staff, none toward the other, decides
+    ahead of the range veto and distance.
+
+    Returns `(the winning candidate's staff key, the rungless rivals' basis
+    rows)`, or `(None, ())` if the contest does not speak this way.
+
+    ⚠️ NOT A RESTATEMENT OF `_ladder_complete`'S OWN TERM. That term credits a
+    candidate whose OWN ladder is a complete run of FOUND rungs. It is silent
+    whenever a candidate needs ZERO rungs to reach a staff at all --
+    `gather._observe_ladder` never even asks (`expected <= 0`, no
+    `Q.GLYPH_LADDER` row filed) -- because "nothing was required" is not the
+    same fact as "what was required was found". Sean's convention names that
+    silence too, read from the other side: a RIVAL who DOES need rungs and
+    has NONE of them is telling the contest "not this staff" as plainly as a
+    complete run tells it "this one". The 2026-09-23 precedent is the same
+    shape at a smaller radius (a note one space beyond a neighbour's outer
+    line is that staff's, on its OWN first ledger line, while the far
+    staff's three-rung ladder was never detected) -- there the near
+    candidate's own single rung WAS found, so the existing `ladder_complete`
+    term already decided it; here the near candidate needs no rung at all,
+    which is the gap this function closes.
+
+    ⚠️ "CLEAN" IS VACUOUS-OR-COMPLETE, ON PURPOSE, AND THIS DOES NOT DOUBLE
+    THE EXISTING TERM. A CANDIDATE WHOSE LADDER IS GENUINELY COMPLETE ALSO
+    QUALIFIES, because `W_LADDER_COMPLETE` (4.0) ALONE DOES NOT REACH "DECISIVE
+    AGAINST THE RANGE VETO" (-6.0) -- a genuinely laddered candidate can still
+    lose today (4.0 + -6.0 + a small distance edge for the rival is still a
+    net loss). This term's basis is the RIVAL's broken row, never the
+    candidate's own `ladder_complete` row, so the two terms share no row id,
+    land in no shared correlated group, and simply ADD when both apply to the
+    same winner -- which is correct, since a real rung toward it and the
+    rival's real absence are two independent facts, not one restated.
+
+    ⚠️ SILENT WHENEVER MORE THAN ONE CANDIDATE IS CLEAN. That is what keeps
+    this from steamrolling a genuine reading elsewhere: if a rival is ALSO
+    clean (vacuous or its own complete run), "which one" is exactly the
+    question `adjudicate_glyph_owner`'s own `tied` reason exists for, and
+    this stays silent rather than guess.
+    """
+    has_row: Dict[str, bool] = {}
+    complete: Dict[str, bool] = {}
+    for row in bands:
+        cand_key = row.detail.get("candidate")
+        if cand_key is None:
+            continue
+        lad = ladders.get(cand_key)
+        if lad is None:
+            has_row[cand_key] = False       # vacuous: no crossing was asked
+            complete[cand_key] = False
+        else:
+            has_row[cand_key] = True
+            complete[cand_key], _discounted = _ladder_complete(ev, lad)
+
+    clean = [k for k in has_row if not has_row[k] or complete[k]]
+    broken = [ladders[k].id for k in has_row if has_row[k] and not complete[k]]
+    if len(clean) == 1 and broken:
+        return clean[0], tuple(broken)
+    return None, ()
+
+
+def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:
+    """This contested glyph's own box, in PAGE pixels.
+
+    ⚠️ DECLINED, NEVER DEFAULTED, exactly as `adjudicate_wedge_anchor` and
+    `gather_glyph_families` already refuse a canonical-only box: a glyph
+    whose page position is unknown and one measured at page y 1841 are
+    different facts, and only the second may answer a cross-staff question
+    (CLAUDE.md §10). Returns `None` if `Q.GLYPH_BOX` has no page frame for
+    this subject.
+    """
+    rows = ev.rows(Q.GLYPH_BOX)
+    if not rows:
+        return None
+    y = (rows[0].detail or {}).get("y_center_page")
+    if y is None:
+        return None
+    return {"y_center_page": float(y)}
+
+
+def _hairpin_separates(ev: Evidence, cand_key: str,
+                       head_y: Optional[float]) -> Optional[Term]:
+    """Sean's second convention (DECISIONS 2026-09-28): a hairpin always
+    sits UNDER its staff, so a note between a staff and the hairpin beneath
+    it belongs to that staff — *"if the note is above the hairpin ... it
+    belongs to the staff that's between the hairpin and that staff"*.
+
+    A witness from a different glyph family than the notehead reading it
+    arbitrates, so it is never correlated with the notehead's own band-
+    distance or ladder rows (`Evidence.correlated_groups` buckets by
+    `(reader, frame, quantity)`, and a `Q.WEDGE_BOX` row shares none of the
+    three with a `Q.GLYPH_BAND_DISTANCE` or `Q.GLYPH_LADDER` row) — it forms
+    its own correlated group and is never discounted against them.
+
+    ⚠️ PAGE PIXELS ONLY. `gather_wedge_boxes`' DETECTOR reader files a
+    cell-frame box with no page coordinate at all (CLAUDE.md §10: a
+    canonical cell frame cannot answer a cross-staff question); only the
+    `cv_hairpins` reader, which searches one staff's band in page pixels,
+    carries `y_center_page`. A wedge row without it is DECLINED, not
+    defaulted to the candidate's own frame.
+
+    ⚠️ DIRECTIONAL BY CONSTRUCTION, and that is why this never has to ask
+    which staff sits above which. `gather._band_offset_spaces` and
+    `_in_hairpin_band` search only BELOW a staff's own bottom line for its
+    hairpins, so "a hairpin filed under `cand_key`" and "a hairpin further
+    down the page than `cand_key`'s own bottom line" are the same fact by
+    construction, and the only geometry this needs is: is the head below
+    `cand_key`'s bottom line, and above that hairpin's own centre.
+    """
+    if head_y is None:
+        return None
+    cand = R.Subject.from_key(cand_key)
+    lines = ev.rows(Q.STAFF_LINES, subject=cand)
+    if not lines or not lines[0].value:
+        return None
+    bottom = max(float(y) for y in lines[0].value)
+    if head_y <= bottom:
+        return None                         # the head is not below cand
+    for w in ev.rows(Q.WEDGE_BOX, subject=cand, scope=Scope.SELF_AND_DESCENDANTS):
+        wy = (w.detail or {}).get("y_center_page")
+        if wy is None:
+            continue                        # DECLINED: no page frame here
+        if bottom < head_y < float(wy):
+            return Term("hairpin_separates", W_HAIRPIN_SEPARATES, (w.id,))
+    return None
 
 
 def _human_owner(ev: Evidence):
