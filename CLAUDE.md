@@ -406,7 +406,7 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 `pytest tools/omr/tests` runs everything; `pytest -m "not slow"` is the fast
 tier (target under two minutes) derived from `tools/omr/tests/durations.json`
-— a new test file is fast by default. No new test may assert on module
+— a new test file is fast by default, UNLESS its text names `library/`, `omr-weights/`, a venv or a PDF path (even in a comment): then the WHOLE file goes slow silently — compare the passed count after a merge. No new test may assert on module
 source text (`inspect.getsource`, AST walks) except the flag-direction guard
 and a gather-shape check; `check` counts the rest. Mutation batteries were
 one-off proofs; their `FINDINGS.md` stand, the scripts are being archived
