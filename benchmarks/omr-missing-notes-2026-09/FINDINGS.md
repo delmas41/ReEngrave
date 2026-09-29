@@ -1044,3 +1044,247 @@ probe/out/beams_2_18b_after_p1.json   the same on 2.18b, and the 53-head missed-
 probe/out/price_2_18b_p1.json         the three arms' census + every changed duration
 out/print/beams-2.18b-0{1..8}.png, beams-2.18b-manifest.json
 ```
+
+## 12. ROADMAP 2.18c -- a second, CV witness for the missed-flag path: `Q.STEM_TIP_INK` (2026-09-29)
+
+PATH: STAGED. GATHER (`gather.stem_tip_ink`, `gather._observe_stem_tip_ink`,
+`gather._stem_tip_blockers`) + ADJUDICATE (`rhythm._stem_tip_flag_ink`,
+`adjudicate_duration`'s new `flag_ink_unread` branch). Two full re-gathers of
+Breitkopf 317803 pdf idx 1 (page 1) on this tree, `--no-surya --no-ocr
+--no-roster`, scan weights (`deepscoresv2-yolov8l-hollow-graft-shift09-
+2026-09-04.pt`), ~90 s each; 2.18/2.18b are already merged into this tree
+(`f3764c9c`, `63247979`), so the population measured here is FRESH, not a
+reuse of either lane's frozen record, and its counts do not match 2.18b's
+"53" (a different population, on a different gather, after both those
+fixes were already active).
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+CLAUDE.md SS10 already states a flag hangs from a stem's end. This item adds
+WHERE, relative to the tip, and on WHICH SIDE: Bravura's own flag glyphs run
+roughly 1.7-2.4 staff spaces from the stem to their far corner and sit to the
+stem's RIGHT whichever way the stem points -- an up-stem's flag hangs DOWN-
+right from the top tip, back toward the head; a down-stem's hangs UP-right
+from the bottom tip, likewise back toward the head. So the window tested
+walks INTO the stem's own body from either end, 1.0 to 2.5 staff spaces,
+never past the tip and never to the left (`gather.py`'s own
+`STEM_TIP_INK_NEAR_SPACES`/`FAR_SPACES` comment). Falsified by a print-
+confirmed flag whose hook sits entirely inside 1.0 space of its tip, reaches
+past 2.5, or hangs to the stem's LEFT. NOT CONFIRMED with Sean -- argued from
+CLAUDE.md's own convention and Bravura's published metrics, never measured
+against a crop before this session; **six real flags were then found and
+eye-confirmed inside exactly this window (SS12.5)**, which is evidence FOR
+the convention on this plate, not a substitute for asking him.
+
+The density floor (`STEM_TIP_INK_DENSE = 0.30`) and the background guard
+(`STEM_TIP_INK_BACKGROUND_MAX = 0.20`) are borrowed reasoning from
+`LEDGER_RUNG_INK_DENSE`, not measured for this mark family specifically --
+NOT CONFIRMED, and SS12.5 below finds one borderline case (right density
+0.2413) that by eye also looks like a real flag, i.e. a plausible
+false-negative AT the current floor. Not retuned on one crop (rule 5: no
+default flips on agreement with our own reading, and a sweep needs more than
+one data point).
+
+### 12.1 GATHER: `Q.STEM_TIP_INK`
+
+One row per (`Q.STEM` row, END), END in `{"top", "bottom"}` -- GATHER does
+not know which end is a stem's TRUE tip (that is `Q.STEM_DIRECTION`'s
+question, decided later in ADJUDICATE), so both ends are asked and ADJUDICATE
+picks the one matching the head's own decided side. `stem_tip_ink` reuses
+`ledger_rung_ink`'s shape exactly: a windowed density test off the staff-
+ERASED raster (CLAUDE.md SS9) with a background band for contrast -- here,
+the mirrored window on the stem's LEFT, since a flag never prints on both
+sides of one stem. `value` is `found` (bool); `detail` carries `stem_row_id`
+(joins the row back to its exact `Q.STEM` row), `end`, `right`/`left`
+densities and the page/canonical window. ABSTAINS -- never defaults --
+where the cell carries no `image_no_staff` (`NO_MASK`), no staff-space unit
+(`NO_STAFF_GEOMETRY`), or the window falls off the raster, or a BLOCKER
+already occupies the window (`OCCUPIED`, SS12.2).
+
+Registered: `record.Q.STEM_TIP_INK` (`CLAIM.MEASUREMENT`), `record.READERS.
+CV_STEM_TIP`, `capture.UNSCORED["STEM_TIP_INK"]` (RELATION, same family as
+`LEDGER_RUNG_INK`) + `capture.READER_RASTER["CV_STEM_TIP"]`, `Q.DURATION`'s
+own `wants`/`composed_from`/`reasons` (adds `flag_ink_unread`).
+`python3 -m tools.omr.staged.check`: **TOTAL 249 before and after** -- no
+new open finding anywhere (`inventory` 10, `wiring` 67, `gather_coverage`
+17, `capture` 18, `reach` 24 all unchanged).
+
+### 12.2 The blocker bug, found and fixed by the FIRST re-gather
+
+Built first with a blocker list of "every `Q.BEAM_STROKE` this cell read
+plus every OTHER detection the detector drew here" (a neighbour's head, an
+accidental, text, a slur/tie arc -- the brief's own list). Priced on the
+first gather: **0 heads narrowed**, against the ~6 the item's brief hoped
+for. Of 1,584 window attempts (792 stems x 2 ends), **1,380 abstained
+`occupied`** and only 204 were ever measured; of the 173 heads matching the
+target population (decided `head_and_marks`, `beam_evidence ==
+"none_over_this_note"`), only 8 were measured at all and the highest RIGHT
+density among them was 0.033 -- essentially blank. Checking the SIX exact
+subjects FINDINGS SS11.4b names as printing an unread flag
+(`glyph/1/0/9/5/1`, `/1/1/8/0/9`, `/1/1/8/1/11`, `/1/1/8/3/4`,
+`/1/1/9/1/23`, `/1/1/9/3/9`) directly: **all six abstained `occupied` at
+BOTH ends**, and the blocker in every case was a single detection box
+spanning the WHOLE SYSTEM's width (a `staff` classification box 2,047 px
+wide, or a `tie` box 2,043 px wide) that happened to sit at that y -- not a
+box that "explains" this window's ink in any local sense.
+
+**Fix**: `_stem_tip_blockers` borrows `_explaining_detections`'s own width
+cut (`direction_text.DEFAULT_BAND_CONFIG.max_blank_width_spaces`, 4.0 staff
+spaces) -- CLAUDE.md SS10's own reasoning, restated there for the same
+reason: "a `staff` box is 26.6 staff spaces wide and a `slur` box is the
+rectangle its arc travels through; both are mostly paper." Applied to the
+DETECTOR's classification boxes only, never to this reader's own (already
+narrow) beam strokes. `test_staged_stem_tip_ink.py`'s
+`TestStemTipBlockersWidthCut` (4 tests) checks a page-wide box is NOT a
+blocker, a genuinely local one still is, and a beam stroke blocks
+regardless of width.
+
+### 12.3 ADJUDICATE: `flag_ink_unread`
+
+`rhythm._stem_tip_flag_ink(ev, cell, own_stems, side)` reads ONLY the
+`Q.STEM_TIP_INK` row(s) whose `end` matches this head's OWN decided
+`stem_direction` (`side == "up"` -> `end == "top"`) AND whose
+`stem_row_id` is one of `own_stems`' ids (`_stems_on`, the same attachment
+test `_stem_joined` uses) -- reading the wrong end would ask the question
+of the wrong end of a DIFFERENT physical stem, exactly the fault
+`_own_stem_side` (2.18) already exists to keep out of the beam join. `None,
+()` -- no evidence -- where this head has no own stem, no own direction, or
+the matching end was never measured or fully abstained (an older record, or
+this window was `OCCUPIED`).
+
+In `adjudicate_duration`, reached ONLY where the fallthrough case would
+otherwise decide the head value from silence: `beam_evidence ==
+"none_over_this_note"` (the beam reader RAN over this cell and found
+nothing over this note -- not merely `"reader_declined"`, the *no reader
+ran* case) and no flag was attached (`not flag_levels`). Where `tip_ink` is
+`True`: NARROW between exactly two candidates -- the head value (support
+1.0) and ONE flag level up (support 2.0, since ink was positively read) --
+reason `flag_ink_unread`. Where `tip_ink` is `False`: unchanged, decides the
+head value as before. Where `tip_ink` is `None` (no evidence, including
+every record gathered before this item existed): unchanged. Never decides
+straight to eighth from ink alone -- narrowing between two candidates is the
+whole of rule 6's "connect, never guess" applied here: the ink says A hook
+exists, not how many.
+
+### 12.4 Priced (`probe/price_flag_2_18c.py`, two full re-gathers, same page)
+
+The control is the OFF arm: `RH._stem_tip_flag_ink` forced to `(None, ())`,
+which must decide EVERY duration identically to a record with no
+`Q.STEM_TIP_INK` on it at all, and every verdict this rule moves must have
+been OFF's own `decided:head_and_marks` -- **PASSED** on both the buggy-
+blocker gather and the fixed one.
+
+| | first gather (buggy blocker) | second gather (width-cut fix) |
+|---|--:|--:|
+| `Q.STEM_TIP_INK` observations / abstentions | 204 / 1,380 | 621 / 963 |
+| of which `found=True` | 6 | 27 |
+| heads newly NARROWED `flag_ink_unread` | **0** | **6** |
+| `duration_narrowed`, off -> on | 59 -> 59 | 59 -> **65** |
+| notes in file, off -> on | 1,225 -> 1,225 | 1,225 -> **1,219** |
+| `<note>`/rests/beams/bars-held-out-by-sum | unchanged | unchanged (85 bars, same as 2.18b) |
+
+Every `abstained` reason on `Q.STEM_TIP_INK` in the fixed gather is
+`occupied` by a LOCAL box under the new cut (963 of 1,584 attempts) -- no
+`NO_MASK`/`NO_STAFF_GEOMETRY` on this page, since every cell here carries
+an erased raster and a staff-space unit.
+
+### 12.5 Eye-check: 8 crops, `probe/crop_flag_2_18c.py`
+
+Style after `crop_2_18b.py`: the FILED staff a shaded labelled band, the
+head bracketed thick red, GREEN the head's own read stem, YELLOW the
+EXACT tested window (only the matching end), a staff-space ruler down the
+left. Frame control (staff lines darker than a half-space off them)
+**PASSED on all 8, none refused**. `out/print/flag-2.18c-0{1..8}.png`,
+manifest `flag-2.18c-manifest.json`, every row `VERDICT_none_yet: null`.
+
+**The six narrowed heads (`glyph/1/0/9/5/1`, `/1/1/8/0/9`, `/1/1/8/1/11`,
+`/1/1/8/3/4`, `/1/1/9/0/17`, `/1/1/9/3/9` -- five of six are the EXACT
+subjects FINDINGS SS11.4b named on the earlier frozen record; the sixth,
+`/1/1/9/0/17`, replaces `/1/1/9/1/23`, expected on an independent re-
+gather):**
+
+**6 of 6, by my own eye, print a real flag hanging from the stem inside the
+yellow window** -- crops #01 (a pizzicato passage), #02-#04, #06 all show
+an unmistakable eighth-flag hook curling right off the stem tip; #05 the
+same beside an `arco` direction word. Want, per the brief: "the ~6 caught,
+few clean quarters narrowed" -- met, with a 6/6 hit rate on this run (n=6,
+too small to be a precision figure on its own; see SS12.6).
+
+**2 control crops, heads the reader MEASURED clean (`tip_ink=False`):**
+crop #07 (`glyph/1/0/0/0/5`, right density 0.0007) is genuinely a plain
+quarter, no flag anywhere near the window -- the mechanism correctly leaves
+it decided. Crop #08 (`glyph/1/0/0/2/2`, right density 0.2413, background
+0.167) is BORDERLINE: by eye there is a small hook shape beside the stem
+tip that could be a flag feeding into the following tie/slur arc -- a
+plausible false negative sitting just under `STEM_TIP_INK_DENSE = 0.30`.
+Named, not retuned (see the CONVENTION note above).
+
+### 12.6 What this could not do
+
+* n=6 narrowed on one page is not a precision/recall figure; a whole-
+  movement or second-plate run would need its own re-gather and its own
+  crops, and Sean has asked NOT to burn whole-work runs for a per-change
+  check (CLAUDE.md, "build, don't burn runs").
+* The borderline crop #08 says the density floor may be slightly high;
+  not swept, not retuned -- one data point is not a calibration.
+* `STEM_TIP_INK_WIDTH_SPACES`/`NEAR_SPACES`/`FAR_SPACES` are argued from
+  Bravura's published metrics and CLAUDE.md's own convention, not measured
+  against a ruler on this plate before being built; the eye-check is
+  evidence for them, not a replacement for asking Sean.
+* Litolff (the MERGING plate) and the engraved fixture are untouched --
+  this item's window/threshold is tuned on ZERO Litolff or engraved crops.
+* The blocker bug (SS12.2) was found by this session, on this item's own
+  first re-gather; it is not known whether an equivalent "wide box hides
+  local ink" fault exists in any OTHER reader that filters by detection
+  overlap without `_explaining_detections`'s cut. Not audited.
+
+### 12.7 Tests
+
+`test_staged_stem_tip_ink.py` (15): `TestTheMeasurement` (7, `stem_tip_ink`
+on synthetic rasters -- a flag found, the POSITIVE CONTROL that a clean tip
+is NOT found, the background guard, top/bottom symmetry, off-raster/no-
+unit/no-raster all abstain), `TestStemTipBlockersWidthCut` (4, SS12.2's
+fix), `TestGatherIntegration` (4, `_observe_stem_tip_ink` files one row per
+end, a blocker abstains `occupied`, no mask, no unit). `test_staged_
+duration.py`'s new `TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding`
+(8): flag ink at the matching end NARROWS; the POSITIVE CONTROL (a clean
+tip still DECIDES the head value); an OLDER record with no `Q.STEM_TIP_INK`
+row is ALSO unchanged; ink at the WRONG end is not read; a down-stem reads
+its BOTTOM tip (symmetry); the guard stands down where a real flag already
+decided the note (`beam_evidence == "flag"`); it never decides straight to
+eighth (rule 6). **RUN RED FIRST**: with the new branch's condition
+short-circuited (`if False and ...`), the 3 tests that exercise the
+narrowing itself failed as expected and the 4 unchanged-behaviour/guard
+tests still passed (a positive-control discipline: a test that cannot fail
+is not a test) -- restored, all 91 pass together with the pre-existing
+`test_staged_duration.py` suite (73 -> 76 -> 91 across this session's
+edits, per CLAUDE.md SS6c's own concern; no `library/`/`omr-weights/`/venv
+path in either file, so neither moves to the slow tier).
+
+Gate: `pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider` --
+**3,654 passed, 3 skipped** (main: 3,632 -- +22 net, no drop, so no test
+file moved to the slow tier; this item's own two files add 23, +1 of
+"stray" is inside that noise and not investigated further);
+`python3 -m tools.omr.staged.check` **TOTAL 249** before, during (buggy
+blocker) and after (fixed) -- unchanged throughout.
+
+### 12.8 Files
+
+```
+tools/omr/staged/gather.py                new: stem_tip_ink, _stem_tip_blockers,
+                                           _observe_stem_tip_ink, and the
+                                           gather_cv_lines wiring
+tools/omr/staged/record.py                Q.STEM_TIP_INK, READERS.CV_STEM_TIP,
+                                           CLAIM["STEM_TIP_INK"]
+tools/omr/staged/capture.py               UNSCORED + READER_RASTER entries
+tools/omr/staged/adjudicators/rhythm.py   _stem_tip_flag_ink, the new
+                                           flag_ink_unread branch, wants/
+                                           composed_from/reasons on Q.DURATION
+tools/omr/tests/test_staged_stem_tip_ink.py         new, 15 tests
+tools/omr/tests/test_staged_duration.py             +8 tests
+benchmarks/omr-missing-notes-2026-09/probe/price_flag_2_18c.py    the pricing arm
+benchmarks/omr-missing-notes-2026-09/probe/crop_flag_2_18c.py     the 8 crops
+benchmarks/omr-missing-notes-2026-09/out/print/flag-2.18c-0{1..8}.png,
+    flag-2.18c-manifest.json
+```
+```

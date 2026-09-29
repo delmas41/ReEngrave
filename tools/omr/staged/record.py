@@ -505,6 +505,25 @@ class Q(_Vocab):
     #: landing together makes the reach measurement circular. Its first
     #: intended consumer is named in `wiring.KNOWN_GAPS`.
     VERTICAL_RUN = "vertical_run"
+    #: ROADMAP 2.18c. `benchmarks/omr-missing-notes-2026-09/FINDINGS.md`
+    #: SS11.4b: after 2.18b, 53 stemmed black heads on Breitkopf p1 stand at
+    #: their head value with no beam and no flag READ, and a by-eye pass
+    #: found ~6 of them print a flag nothing on the record witnesses -- a
+    #: `cannot tell` the pipeline was writing as `quarter` (rule 8). One row
+    #: per (`Q.STEM` row, END) -- GATHER does not know which end of a stem is
+    #: its TIP (that is `Q.STEM_DIRECTION`'s question, decided later in
+    #: ADJUDICATE), so both the box's top and its bottom are asked. `value`
+    #: is whether a window to the stem's RIGHT, walking 1.0-2.5 staff spaces
+    #: from that end back toward the body, reads densely inked while the
+    #: mirrored window on the LEFT does not -- read off the staff-ERASED
+    #: raster (CLAUDE.md SS9), reusing `ledger_rung_ink`'s own windowed-
+    #: density-with-background-contrast shape. `detail.stem_row_id` joins it
+    #: back to the exact `Q.STEM` row it measured; ABSTAINS -- never
+    #: defaults -- where the raster or the cell's staff-space unit is
+    #: missing, or a beam stroke or ANY other detection already occupies the
+    #: window (a neighbour's head, an accidental, text, a slur/tie arc --
+    #: ink this record can already name is not this quantity's to claim).
+    STEM_TIP_INK = "stem_tip_ink"
     FLAG = "flag"                            # detected flag
     AUG_DOT = "aug_dot"                      # dot offset from its notehead
     TUPLET_MARKER = "tuplet_marker"          # digit or bracket, with its span
@@ -1629,6 +1648,10 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 3.4g-3: an ink FRACTION under one ledger box -- a ruler
     #: reading off the erased raster, naming nothing.
     "LEDGER_INK_UNDER": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.18c: a windowed ink density test at a stem's tip, off the
+    #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
+    #: it says whether flag-shaped ink stands there, never that a flag does.
+    "STEM_TIP_INK": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -1915,6 +1938,13 @@ class READERS(_Vocab):
     #: horizontal rung at THIS expected step) with a different test
     #: (a windowed density ruler, not components or morphology).
     CV_LEDGER = "cv_ledger"                  # gather_ownership_evidence: rung ink
+    #: `gather._observe_stem_tip_ink` -- ROADMAP 2.18c. Reads the SAME
+    #: staff-erased raster `CV_LINES`/`CV_INK`/`CV_LEDGER` read
+    #: (`image_no_staff`), so it is NOT independent of any of them -- one
+    #: crop, one signal, per `CV_INK`'s own entry. Its own reader name
+    #: because it asks a different question (is there flag-shaped ink AT
+    #: THIS STEM'S TIP) with a different test from either.
+    CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

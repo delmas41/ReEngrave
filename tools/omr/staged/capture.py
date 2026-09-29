@@ -441,6 +441,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "space away — a relation between a located rung and the paper "
         "around it. Scoreless because it is a ruler reading, not a naming.",
         None),
+    "STEM_TIP_INK": (
+        RELATION,
+        "ROADMAP 2.18c: a windowed ink density test 1.0-2.5 staff spaces "
+        "past a stem's own TOP and BOTTOM (GATHER does not know which end "
+        "is the true tip), to the stem's right, off the staff-ERASED "
+        "raster, with the mirrored window on the left as background — a "
+        "relation between a located `Q.STEM` row and the paper beside it. "
+        "Scoreless, same reason as `LEDGER_RUNG_INK`.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -557,6 +566,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # `image_no_staff` only, same as `CV_INK` (erase for the CV consumer,
     # never the detector, CLAUDE.md §9).
     "CV_LEDGER": ("staged/gather.py", "_observe_ledger_rung_ink"),
+    # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_LEDGER` does.
+    "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
