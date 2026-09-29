@@ -1557,4 +1557,78 @@ tools/omr/tests/test_staged_duration.py
 benchmarks/omr-missing-notes-2026-09/out/print/beam-strokes-2.25-{litolff,
     brahms}-0{1..5,1..3}.png, and the two manifests
 ```
+
+### §13h. ROADMAP 2.25b -- the three named classes, as conceptual wiring
+(2026-09-29)
+
+PATH: STAGED. Branch `claude/beam-strokes-2.25b`, off `origin/main` `ae81a3e5`
+(2.25 merged). **Sean, mid-lane: no more pricing runs -- no gathers, no
+base-vs-arm re-adjudications, no crop batches.** This section is built and
+verified to that instruction: the wiring exists, proved by microscopic
+tests, and is NOT priced against a real page. An earlier exploratory pass
+DID run real pricing on Brahms p1/Litolff p3 and eye-checked ~10 crops
+before that instruction landed -- the finding worth carrying forward
+without the artefacts themselves: on Brahms, the `wedge_box` connection's
+`>= 2 stems` override did not reliably distinguish a real down-stemmed
+beam sitting under a hairpin (CLAUDE.md SS10: a hairpin sits UNDER its
+staff, the same territory a down-stem's beam occupies) from the hairpin's
+own ink, and 2 of 2 wedge-tagged crops looked like a real beam wrongly
+discounted. That run is NOT reproduced here and this paragraph is not a
+finding -- it is a flag for whoever next prices this on a real page.
+
+**Built**, all in `tools/omr/staged/adjudicators/rhythm.py`:
+
+- `_cell_frame(ev, cell)` -- `(origin_x, origin_y, up)` solving `page =
+  origin + canonical / up`, solved backward from any ONE `Q.GLYPH_BOX` row
+  in the cell that already carries both frames (no new quantity; there is
+  no persisted `upscale_factor` on a saved record). `_to_page`/
+  `_to_canonical` are its exact inverses. Declines (returns `None`, never
+  guesses) where no dual-frame row exists.
+- `_not_the_neighbours_beam` (class 1, `other_staff_via_pad`): a stroke
+  beyond THIS staff's own outer line (`Q.STAFF_LINES`) that overlaps, in
+  PAGE pixels, a `Q.STEM` filed on the neighbouring staff's own same-cell
+  subject, is that staff's beam -- unless THIS head's own attached stem
+  also reaches it (rule 6's override).
+- `_not_a_decided_arc` (class 2, `arc_box`): a stroke inside a glyph whose
+  `Q.ARC_KIND` verdict is DECIDED (tie/slur; runs before `duration` in
+  `adjudicate.ORDER`) is that arc's ink, unless the stroke joins >= 2 of
+  this cell's own `Q.STEM` rows (the manager's own positive control: a real
+  beam spanning several stems still counts).
+- `_not_inside_a_wedge` (class 3, `wedge_box`): the same shape, against
+  `Q.WEDGE_BOX`. `Q.WEDGE_ANCHOR` cannot gate it -- it runs AFTER
+  `duration` in `adjudicate.ORDER`, and there is no per-family refusal for
+  a hairpin the way 3.4g built one for ledger/arc/etc -- so the OBSERVED
+  row itself is the strongest available fact, exactly as the docstring
+  says.
+
+All three run right after `_not_a_ledger_line`, before 2.18/2.18b's
+side/tolerance filtering, additive-safe (drop only). `Q.ARC_BOX`,
+`Q.ARC_KIND`, `Q.WEDGE_BOX` joined `Q.DURATION`'s `wants`/`composed_from`;
+`Q.STEM` needed no new entry (a second SUBJECT of an already-declared
+quantity). `detail.beams_neighbour_staff`/`beams_decided_arc`/
+`beams_inside_wedge` carry each class's count.
+
+**Tests, RED first.** `TestCellFrameRoundTrips` (2: the round trip, and the
+decline with no dual-frame row), `TestANeighbourStaffsBeamThroughThePadIsNo
+tThisNotes` (3: the fix, the OWN-STEM positive control, the no-neighbour-
+stem ADDITIVE control), `TestAStrokeInsideADecidedArcIsThatArcNotABeam` (3:
+the fix, the >=2-stems positive control, the no-arc ADDITIVE control),
+`TestAStrokeInsideAWedgeBoxIsTheHairpinNotABeam` (3: same shape) -- **11
+new tests total**. Run against the unrepaired (2.25-only) tree first via
+stash-and-restore of `rhythm.py` alone: **11 of 11 failed** (2 `KeyError`
+on a detail key that does not exist pre-2.25b, 9 on the fix/control
+assertions). All 11 pass on the repaired tree; one bug was caught and
+fixed in flight by this same process -- the neighbour override first
+compared a BEAM's id against a set of STEM ids (never equal by
+construction), found by the override's OWN positive-control test failing
+where it should have passed.
+
+**Not measured, on purpose (Sean's instruction).** No real page was
+gathered or re-priced for this section; no `bar_sum_check`; no crops of a
+real subject. The three classes' real-page yield, and whether the wedge
+class in particular survives a print check, is unpriced and open.
+
+**Gates.** `pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`:
+**3,808 passed, 3 skipped** (main's 3,797 + 11 new, 0 failed).
+`python3 -m tools.omr.staged.check`: **TOTAL 247, unchanged.**
 ```
