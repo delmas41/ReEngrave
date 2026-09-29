@@ -948,9 +948,51 @@ of the bracketed note, and is any RED-X stroke this note's beam?*
   rule are exposed).
 * One page, one plate, no whole-movement run; the value judgements are mine.
 
+### 11.9 Controls asked for before merge: the engraved page and one Litolff page
+
+No re-gather. `probe/redecide_arm.py` re-decides a saved record with the code
+tree it sits in; a copy placed in `git archive origin/main` (`63247979`)
+runs MAIN's code on the same record, so base = origin/main, not a
+reconstruction of it. The CONTROL: the branch with the tolerance at 0 must
+equal main verdict for verdict (outcome, reason, beats, written, dots,
+levels) plus the census -- **PASSED on both records.**
+
+| | engraved p0 (`omr-staged-engraved-2026-09/out/engraved-p0.record.json`) | Litolff pdf idx 3 (acceptance record, page-3 rows only) |
+|---|--:|--:|
+| duration verdicts | 174 | 628 |
+| `duration_narrowed`, main -> branch | 0 -> 0 | 36 -> 36 |
+| notes written, main -> branch | 73 -> 73 | 381 -> 381 |
+| `<note>` in the file | 174 -> 174 | 560 -> 560 |
+| durations whose value changed | **0** | **1** |
+| heads the beyond-the-tip rule acted on | 0 | 3 (no value change) |
+| flags attached | 3 -> 3 | 5 -> 8 |
+
+**Engraved: 0 changed durations, so 0 to check against the Verovio page
+truth -- nothing is wrong there.** It is not vacuous for lack of input: the
+record carries 126 `Q.CELL_STAFF_SPACE`, 136 stems, 34 beam strokes and 3
+flags, so the tolerance was live; every engraved flag already overlaps its
+stem and no stroke lies past a tip unreached.
+
+**Litolff: the one change is the 16th-flag fault again.**
+`glyph/3/0/7/3/5` 0.5 -> 0.25: the detector boxed ONE mark at that stem
+twice, `flag8thUp` and `flag16thUp`; main attached only the overlapping
+one, the tolerance attaches both, and `_attached_flags` takes the MAX of
+their levels. Same mechanism as Breitkopf `glyph/1/1/9/0/13` (11.5). The
+printed value is not settled by the crop (my eye leans eighth); in either
+case the reading is a disagreement between two detections of one glyph, and
+taking the max is an argmax the stage should not make -- the fix is to
+NARROW where attached flags disagree on their level (`beams_ambiguous`-style
+candidates), not to revert the tolerance. Named here; NOT built in 2.18b.
+
+Reproduce: `git archive origin/main tools benchmarks/omr-missing-notes-2026-09/probe
+| tar -x -C <dir>`, copy `redecide_arm.py` in, then `python3
+<dir>/.../redecide_arm.py <record> [--page 3] --arm plain`, and on the branch
+`--arm off` / `--arm plain`. Outputs: `probe/out/controls_2_18b/{eng,lit}-{main,off,branch}.json`.
+
 ### 11.8 Files
 
 ```
+probe/redecide_arm.py                 one arm, one record, the tree it sits in (11.9)
 probe/beams_2_18b.py                  B/E/missed-flag measurement (--off = the 2.18 tree)
 probe/price_2_18b.py                  OFF / flag-only / ALL re-decision of one frozen record
 probe/crop_2_18b.py                   the eight crops
