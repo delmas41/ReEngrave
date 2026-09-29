@@ -111,25 +111,28 @@ Reads: `rest_experiment_results.json` (per-arm, per-epoch precision/recall),
 `rest_experiment_results.json` (the deployable-graft number), and the crop
 sheets above.
 
-## Known rig quirk (observed during the actual run, 2026-09-29)
+## Known rig quirk (observed during the actual run, 2026-09-29) -- INTERMITTENT, corrected below
 
-Every arm's training crashes on the LAST batch of the 5th (last) epoch with
+Arm A's training crashed on the LAST batch of the 5th (last) epoch with
 `RuntimeError: Trying to create tensor with negative dimension -1: [5, -1, 5]`
 inside `ultralytics/utils/loss.py`'s target-preprocessing (`get_assigned_targets_and_loss`
--> `preprocess`), triggered by the final PARTIAL batch (batch size 5, not 16 --
-none of these corpora's train-image counts divide evenly by 16). This is an
-ultralytics/MPS library issue, not a property of any specific corpus arm --
-arm A hit it first and reproduced identically on arm B. The driver's
-`|| log "!! TRAINING FAILED"` guard (added after this was first hit) catches
-it and moves on to the next arm rather than aborting the whole run.
-
-**Effect: every arm ends up with epoch0.pt through epoch3.pt (4 of the
-planned 5 checkpoints), missing only the LAST one (epoch4.pt).** This does
-NOT block the experiment's decision table -- `epoch0` is round 6's own
-primary reference point (least-collapsed, what its "e0" columns report) and
-is what gets grafted for the composability check. The per-epoch trajectory
-in `rest_experiment_results.json` will simply have 4 points instead of 5 for
-every arm, which is still enough to see whether a collapse is monotone.
+-> `preprocess`), plausibly triggered by the final PARTIAL batch (batch size
+5, not 16 -- none of these corpora's train-image counts divide evenly by 16).
+**Correction: this is NOT systematic.** An earlier version of this note
+claimed it "reproduced identically on arm B" -- that was written before arm
+B's run had actually finished and was wrong. Arm B in fact completed all 5
+epochs cleanly (`epoch0.pt` through `epoch4.pt` all present, no crash). So
+the failure mode is real but intermittent (an MPS/ultralytics race or
+memory-pressure issue, not a deterministic property of a partial last
+batch), and whether a given arm loses its epoch4 checkpoint has to be
+checked per arm rather than assumed. The driver's
+`|| log "!! TRAINING FAILED"` guard (added after arm A first hit this)
+catches it either way and moves on to the next arm rather than aborting the
+whole run -- an arm that DOES hit it ends up with epoch0.pt-epoch3.pt (4 of
+5), which still includes `epoch0`, round 6's own primary reference point and
+what gets grafted for the composability check, so the decision table is not
+blocked either way. Check `find runs -path "*<arm>*/weights/epoch4.pt"` per
+arm before trusting a 5-point trajectory for it.
 
 ## What this does NOT do
 
