@@ -796,6 +796,103 @@ class TestABeamLiesOnTheStemSIDEOfItsHead(unittest.TestCase):
         self.assertIn(sd.id, log.verdict(Q.DURATION, g).basis)
 
 
+class TestAStrokeOverAABoxedLedgerLineIsThatLedgerLineNotABeam(
+        unittest.TestCase):
+    """ROADMAP 2.25. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+    SS17c: a note on its own ledger ladder has a short, thick, roughly
+    horizontal run of ink at each rung that the CV/YOLO beam readers both
+    fire on, and the whole beam count for the note is one or two too high.
+    A stroke that overlaps a DETECTOR-boxed `ledgerLine` glyph in the SAME
+    cell is that ledger line, not this note's beam -- both readings are
+    already on the record (`Q.GLYPH_BOX`, the SAME canonical frame
+    `Q.BEAM_STROKE` uses), so this is a CONNECTION, not a new mark.
+    """
+
+    def _ledger_line(self, log, *, x, y, w=24, h=4, gi=500):
+        g = R.glyph(0, 0, 0, 0, gi)
+        return log.observe(g, Q.GLYPH_BOX, ("ledgerLine", x, y, w, h),
+                           reader=READERS.DETECTOR, frame="cell:0",
+                           score=0.85)
+
+    def test_a_stroke_over_a_boxed_ledger_line_does_not_count(self):
+        """The FIX. A note two ledger lines above the staff: the beam
+        reader also fires on both rungs, so without the connection the
+        note narrows or over-counts levels."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)         # the note's REAL beam
+        self._ledger_line(log, x=120, y=10, gi=500)   # rung 1 -- boxed
+        # a stray CV stroke sitting exactly on that rung, x-overlapping
+        # this head's column the same way a real beam level would
+        _beam(log, y=10, x0=100, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=8, h=90)             # reaches both strokes
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)   # ONE level, not two
+        self.assertEqual(v.detail["beams_ledger_line"], 1)
+        self.assertEqual(v.detail["beams_by_stem"], 1)
+
+    def test_the_POSITIVE_control_a_real_second_level_still_counts(self):
+        """Without a boxed ledger line at that y, the SAME two strokes are
+        two genuine beam levels and both count -- the connection drops a
+        stroke only where a ledger line is actually boxed there."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        _beam(log, y=10, x0=100, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=8, h=90)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.25)   # TWO levels
+        self.assertEqual(v.detail["beams_ledger_line"], 0)
+
+    def test_a_ledger_line_boxed_ELSEWHERE_in_x_does_not_touch_this_note(self):
+        """The overlap is a real BOX test, not a blanket per-cell veto: a
+        ledger line boxed under a DIFFERENT note's column leaves this
+        note's own strokes alone."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        self._ledger_line(log, x=300, y=40, gi=500)   # far away in x
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_ledger_line"], 0)
+
+    def test_no_boxed_ledger_line_at_all_changes_nothing(self):
+        """ADDITIVE: a cell where the detector never boxed a ledgerLine
+        glyph behaves exactly as it did before this rule existed."""
+        log = Log()
+        _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_ledger_line"], 0)
+
+
 class TestAFlagHangsFromItsStemWithinAMeasuredTolerance(unittest.TestCase):
     """ROADMAP 2.18b, the missed-flag path. ⚠️⚠️ A FLAG AND ITS STEM DO NOT
     TOUCH ON A SCAN. `_attached_flags` demanded box OVERLAP (zero tolerance,

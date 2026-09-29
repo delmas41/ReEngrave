@@ -1,0 +1,3283 @@
+[
+ {
+  "subject": "glyph/3/0/0/1/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     5.0,
+     513.0,
+     1111.0,
+     213.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/1/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     5.0,
+     513.0,
+     1111.0,
+     213.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/1/10",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     5.0,
+     513.0,
+     1111.0,
+     213.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/2/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     124.0,
+     471.0,
+     187.0,
+     26.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/2/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     124.0,
+     471.0,
+     187.0,
+     26.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/4/7",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "other_staff_via_pad",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     9.0,
+     1259.0,
+     198.0,
+     138.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   },
+   {
+    "reader": "yolo",
+    "box": [
+     21.0,
+     991.0,
+     1053.0,
+     34.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/4/8",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "other_staff_via_pad",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     9.0,
+     1259.0,
+     198.0,
+     138.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   },
+   {
+    "reader": "yolo",
+    "box": [
+     21.0,
+     991.0,
+     1053.0,
+     34.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/4/9",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "other_staff_via_pad",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     9.0,
+     1259.0,
+     198.0,
+     138.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   },
+   {
+    "reader": "yolo",
+    "box": [
+     21.0,
+     991.0,
+     1053.0,
+     34.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/5/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     29.0,
+     675.0,
+     1082.0,
+     34.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/5/12",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     29.0,
+     675.0,
+     1082.0,
+     34.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/0/9/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     105.0,
+     465.0,
+     174.0,
+     26.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/1/1/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     125.0,
+     146.0,
+     85.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/1/4/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     12.0,
+     128.0,
+     193.0,
+     123.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/2/1/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     202.0,
+     802.0,
+     874.0,
+     223.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/2/4/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     26.0,
+     792.0,
+     1024.0,
+     33.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/2/4/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     26.0,
+     792.0,
+     1024.0,
+     33.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/2/4/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     26.0,
+     792.0,
+     1024.0,
+     33.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/4/2/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     280.0,
+     163.0,
+     92.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/4/10/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     301.0,
+     650.0,
+     406.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/4/10/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     301.0,
+     650.0,
+     406.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/4/10/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     301.0,
+     650.0,
+     406.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/5/2/0",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     826.0,
+     223.0,
+     210.0,
+     51.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     700.0,
+     883.0,
+     380.0,
+     38.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/5/2/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     826.0,
+     223.0,
+     210.0,
+     51.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     700.0,
+     883.0,
+     380.0,
+     38.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/5/2/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     826.0,
+     223.0,
+     210.0,
+     51.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/5/2/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     826.0,
+     223.0,
+     210.0,
+     51.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/5/2/8",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     826.0,
+     223.0,
+     210.0,
+     51.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/6/2/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     807.0,
+     299.0,
+     242.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/6/2/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     807.0,
+     299.0,
+     242.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/6/2/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     807.0,
+     299.0,
+     242.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/0/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1133.0,
+     900.0,
+     550.0,
+     88.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/0/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1133.0,
+     900.0,
+     550.0,
+     88.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/0/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1133.0,
+     900.0,
+     550.0,
+     88.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/0/7",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1101.0,
+     532.0,
+     169.0,
+     25.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     1133.0,
+     900.0,
+     550.0,
+     88.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/1/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     358.0,
+     407.0,
+     662.0,
+     150.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/1/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     358.0,
+     407.0,
+     662.0,
+     150.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/1/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     358.0,
+     407.0,
+     662.0,
+     150.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/1/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     358.0,
+     407.0,
+     662.0,
+     150.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/1/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     358.0,
+     407.0,
+     662.0,
+     150.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/2/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     339.0,
+     700.0,
+     712.0,
+     132.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/2/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     339.0,
+     700.0,
+     712.0,
+     132.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     539.0,
+     1094.0,
+     537.0,
+     50.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/2/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     339.0,
+     700.0,
+     712.0,
+     132.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/2/4",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     339.0,
+     700.0,
+     712.0,
+     132.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     539.0,
+     1094.0,
+     537.0,
+     50.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/3/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     457.0,
+     769.0,
+     388.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/3/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     420.0,
+     394.0,
+     325.0,
+     25.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     457.0,
+     769.0,
+     388.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/3/4",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     420.0,
+     394.0,
+     325.0,
+     25.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     457.0,
+     769.0,
+     388.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/4/0",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     426.0,
+     475.0,
+     581.0,
+     44.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     458.0,
+     794.0,
+     412.0,
+     63.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/4/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     458.0,
+     794.0,
+     412.0,
+     63.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/4/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     426.0,
+     475.0,
+     581.0,
+     44.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     458.0,
+     794.0,
+     412.0,
+     63.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/4/13",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "ledger_line_box"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     458.0,
+     794.0,
+     412.0,
+     63.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/5/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     445.0,
+     957.0,
+     425.0,
+     68.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/5/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     445.0,
+     957.0,
+     425.0,
+     68.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/5/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     445.0,
+     957.0,
+     425.0,
+     68.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/2",
+  "tag": "litolff-p3",
+  "levels_certain": 3,
+  "n_counted": 3,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     401.0,
+     1088.0,
+     425.0,
+     37.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     483.0,
+     1188.0,
+     350.0,
+     37.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/4",
+  "tag": "litolff-p3",
+  "levels_certain": 3,
+  "n_counted": 3,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     401.0,
+     1088.0,
+     425.0,
+     37.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     483.0,
+     1188.0,
+     350.0,
+     37.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/10",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/7/6/11",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     601.0,
+     494.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/0/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1278.0,
+     355.0,
+     581.0,
+     116.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/0/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1278.0,
+     355.0,
+     581.0,
+     116.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/0/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1278.0,
+     355.0,
+     581.0,
+     116.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/0/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1278.0,
+     355.0,
+     581.0,
+     116.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/1/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     356.0,
+     420.0,
+     691.0,
+     148.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/1/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     356.0,
+     420.0,
+     691.0,
+     148.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/1/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     356.0,
+     420.0,
+     691.0,
+     148.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/1/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     356.0,
+     420.0,
+     691.0,
+     148.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/2/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     510.0,
+     741.0,
+     129.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     904.0,
+     567.0,
+     32.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/2/3",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     510.0,
+     741.0,
+     129.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     904.0,
+     567.0,
+     32.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/2/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     510.0,
+     741.0,
+     129.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/2/5",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     510.0,
+     741.0,
+     129.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     904.0,
+     567.0,
+     32.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/2/6",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     510.0,
+     741.0,
+     129.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     904.0,
+     567.0,
+     32.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/3/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     459.0,
+     781.0,
+     439.0,
+     71.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/3/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     459.0,
+     781.0,
+     439.0,
+     71.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/3/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     459.0,
+     781.0,
+     439.0,
+     71.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/4/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     608.0,
+     259.0,
+     406.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/4/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     608.0,
+     259.0,
+     406.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/4/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     608.0,
+     259.0,
+     406.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/5/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     459.0,
+     452.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/5/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     459.0,
+     452.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/5/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     569.0,
+     459.0,
+     452.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/0",
+  "tag": "litolff-p3",
+  "levels_certain": 3,
+  "n_counted": 3,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     517.0,
+     884.0,
+     336.0,
+     39.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     511.0,
+     1000.0,
+     354.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/2",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     517.0,
+     884.0,
+     336.0,
+     39.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/5",
+  "tag": "litolff-p3",
+  "levels_certain": 3,
+  "n_counted": 3,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     517.0,
+     884.0,
+     336.0,
+     39.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     511.0,
+     1000.0,
+     354.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/8",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/11",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     633.0,
+     284.0,
+     400.0,
+     65.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/12",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     517.0,
+     884.0,
+     336.0,
+     39.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     511.0,
+     1000.0,
+     354.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/8/6/17",
+  "tag": "litolff-p3",
+  "levels_certain": 2,
+  "n_counted": 2,
+  "labels": [
+   "ledger_line_box",
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     517.0,
+     884.0,
+     336.0,
+     39.0
+    ],
+    "labels": [
+     "ledger_line_box"
+    ]
+   },
+   {
+    "reader": "cv",
+    "box": [
+     511.0,
+     1000.0,
+     354.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/8",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/2/9",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     334.0,
+     475.0,
+     731.0,
+     69.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/8",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/10",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/9/3/11",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     233.0,
+     399.0,
+     840.0,
+     52.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/6",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/0/10/2/7",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     363.0,
+     343.0,
+     717.0,
+     114.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/0/8/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "other_staff_via_pad"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     225.0,
+     0.0,
+     313.0,
+     46.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/0/8/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "other_staff_via_pad"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     225.0,
+     0.0,
+     313.0,
+     46.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/1/4/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "other_staff_via_pad"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     171.0,
+     599.0,
+     215.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/1/4/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "other_staff_via_pad"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     171.0,
+     599.0,
+     215.0
+    ],
+    "labels": [
+     "other_staff_via_pad"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/4/13/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     391.0,
+     530.0,
+     221.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/4/13/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     0.0,
+     391.0,
+     530.0,
+     221.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/6/11/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "yolo",
+    "box": [
+     3.0,
+     223.0,
+     252.0,
+     132.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/0/3",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1576.0,
+     565.0,
+     381.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/0/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1576.0,
+     565.0,
+     381.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/0/5",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     1576.0,
+     565.0,
+     381.0,
+     64.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/4/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     401.0,
+     540.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/4/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     401.0,
+     540.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/4/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     401.0,
+     540.0,
+     419.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/8/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     446.0,
+     508.0,
+     387.0,
+     70.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/8/1",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     446.0,
+     508.0,
+     387.0,
+     70.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/8/2",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     446.0,
+     508.0,
+     387.0,
+     70.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/12/0",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     420.0,
+     426.0,
+     356.0,
+     63.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ },
+ {
+  "subject": "glyph/3/1/7/16/4",
+  "tag": "litolff-p3",
+  "levels_certain": 1,
+  "n_counted": 1,
+  "labels": [
+   "unexplained"
+  ],
+  "strokes": [
+   {
+    "reader": "cv",
+    "box": [
+     294.0,
+     984.0,
+     393.0,
+     57.0
+    ],
+    "labels": [
+     "unexplained"
+    ]
+   }
+  ]
+ }
+]

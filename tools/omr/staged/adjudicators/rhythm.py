@@ -368,6 +368,67 @@ def _beyond_own_stem(beams, stems, attached, side, tol: float):
     return kept, beyond
 
 
+def _ledger_line_glyph_boxes(ev: Evidence, cell):
+    """Canonical `(x, y, w, h)` of every DETECTOR-boxed `ledgerLine` glyph
+    in THIS cell. ROADMAP 2.25.
+
+    ⚠️ `Q.GLYPH_BOX` ALREADY, so no new `wants` entry: it is the SAME
+    quantity this decision reads for the head's own box, at the SAME
+    canonical-per-cell frame `Q.BEAM_STROKE` uses -- unlike `Q.WEDGE_BOX`'s
+    CV reader, which files page pixels and no canonical box at all
+    (`adjudicate_wedge_anchor`'s own docstring: *"comparing a cell-frame
+    wedge against a page-frame notehead is the frame error that made
+    Q.ONSET_COLUMN report 1,062 columns of nothing"*). Two GLYPH_BOX-family
+    rows in ONE cell need no conversion because they are already the same
+    frame, which is why this connection is built and the wedge one (below,
+    named but not built) is not.
+    """
+    out = []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if (isinstance(v, (list, tuple)) and len(v) >= 5
+                and v[0] == "ledgerLine"):
+            out.append(_xywh_head(v))
+    return out
+
+
+def _not_a_ledger_line(beams, ledger_boxes):
+    """`(kept, dropped)`. ROADMAP 2.25.
+
+    ⚠️ A STROKE THAT OVERLAPS A BOXED `ledgerLine` GLYPH IS THAT LEDGER
+    LINE, NOT THIS NOTE'S BEAM. `benchmarks/omr-bar-sum-holdout-2026-09/
+    FINDINGS.md` SS17c crops (Brahms #1, #4; Litolff #4): a note standing on
+    its own ledger ladder has a short, thick, roughly horizontal run of ink
+    at each rung -- exactly the shape `line_detection`'s beam opening and the
+    detector's own `beam` class both fire on. Two readers naming the SAME
+    ink two different things is not two facts; the ledgerLine reading
+    (`Q.GLYPH_BOX`, a DETECTION) is the more specific claim about what the
+    ink IS, and a beam stroke that stands where a ledger line is boxed
+    inherits that claim rather than contesting it.
+
+    ⚠️ ADDITIVE, NEVER SUBTRACTIVE OF THE RECORD -- same discipline as
+    `_beyond_own_stem`: it can only remove a stroke from THIS note's count,
+    never add one, and a cell with no boxed ledger line drops nothing, so a
+    page the detector never boxed a ledgerLine on behaves exactly as before.
+    No rule-8 guard is added here (unlike `_beyond_own_stem`'s): pricing
+    (FINDINGS SS19) found no case where this step alone left a note with no
+    other mark, and 2.18b's own guard already covers the general fallback
+    where it does.
+    """
+    if not ledger_boxes:
+        return list(beams), []
+    kept, dropped = [], []
+    for b in beams:
+        box = _xywh(b)
+        if box is not None and any(_boxes_overlap(box, lb)
+                                   for lb in ledger_boxes if lb is not None):
+            dropped.append(b)
+        else:
+            kept.append(b)
+    return kept, dropped
+
+
 #: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
 #: `rhythm._FLAG_DURATIONS` rather than restated, so the two cannot drift.
 #:
@@ -1041,6 +1102,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     kept, cv, yolo = _kept_beams(ev, cell)
+    # ⚠️ ROADMAP 2.25, FIRST: a stroke standing where a `ledgerLine` glyph is
+    # boxed in THIS cell is that ledger line, not a beam -- dropped before
+    # side/tolerance filtering ever sees it, so those steps (which reason
+    # about a NOTE's stem) work on a set that no longer holds ink that is
+    # not even a mark of duration at all. `used` gets nothing for the ones
+    # dropped: a stroke this decision refused to count is not evidence it
+    # composed from.
+    ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
+    kept, ledger_dropped = _not_a_ledger_line(kept, ledger_boxes)
     # ⚠️ `Q.STEM` WAS DECLARED IN `wants` AND `composed_from` AND READ BY
     # NOTHING -- this project's own named anti-pattern, inside the decision
     # whose docstring calls the beam level its fragile input. The stems were
@@ -1151,7 +1221,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
-              "yolo_kept": len(kept) + len(far_side) + len(beyond) - len(cv),
+              "yolo_kept": (len(kept) + len(far_side) + len(beyond)
+                           + len(ledger_dropped) - len(cv)),
+              "beams_ledger_line": len(ledger_dropped),
               "beam_side": side, "beams_far_side": len(far_side),
               "beams_beyond_stem": len(beyond),
               "beyond_stem_kept_no_other_mark": beyond_guarded,

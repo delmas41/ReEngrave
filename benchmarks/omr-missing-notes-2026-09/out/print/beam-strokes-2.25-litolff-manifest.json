@@ -1,0 +1,143 @@
+{
+  "roadmap_item": "2.25",
+  "record": "benchmarks/omr-missing-notes-2026-09/out/r225/litolff-p3.record.json",
+  "dpi": 600,
+  "crops": [
+    {
+      "n": 1,
+      "file": "beam-strokes-2.25-litolff-01.png",
+      "subject": "glyph/3/0/0/2/4",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 1.0,
+          "written": 1.0,
+          "dots": 0,
+          "beam_levels": 0
+        }
+      },
+      "frame_contrast": 187.21,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 5,
+      "strokes_kept": 0,
+      "page_box": [
+        830.0,
+        382.7,
+        853.9,
+        404.6
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "beam-strokes-2.25-litolff-02.png",
+      "subject": "glyph/3/0/0/2/9",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 1.0,
+          "written": 1.0,
+          "dots": 0,
+          "beam_levels": 0
+        }
+      },
+      "frame_contrast": 187.21,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 5,
+      "strokes_kept": 0,
+      "page_box": [
+        830.5,
+        397.9,
+        854.2,
+        417.8
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "beam-strokes-2.25-litolff-03.png",
+      "subject": "glyph/3/0/7/0/7",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 0.5,
+          "written": 0.5,
+          "dots": 0,
+          "beam_levels": 1
+        }
+      },
+      "frame_contrast": 184.67,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 3,
+      "strokes_kept": 1,
+      "page_box": [
+        523.0,
+        1456.7,
+        544.0,
+        1478.3
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "beam-strokes-2.25-litolff-04.png",
+      "subject": "glyph/3/0/7/3/1",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 0.5,
+          "written": 0.5,
+          "dots": 0,
+          "beam_levels": 1
+        }
+      },
+      "frame_contrast": 184.67,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 6,
+      "strokes_kept": 1,
+      "page_box": [
+        1124.5,
+        1427.0,
+        1151.4,
+        1448.7
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "beam-strokes-2.25-litolff-05.png",
+      "subject": "glyph/3/0/7/4/0",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 0.5,
+          "written": 0.5,
+          "dots": 0,
+          "beam_levels": 1
+        }
+      },
+      "frame_contrast": 184.67,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 5,
+      "strokes_kept": 1,
+      "page_box": [
+        1300.1,
+        1458.5,
+        1324.0,
+        1479.0
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
