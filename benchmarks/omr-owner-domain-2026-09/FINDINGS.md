@@ -1555,3 +1555,132 @@ byte-identical check on the engraved control. No re-gather, no whole-work
 run, no new flag, no new benchmark directory, no new derived check --
 `OWNER_NOT_READ_REASONS` already existed and this widens its tuple by two
 strings the mechanism it feeds was already built to consume.
+
+## §2.6c.3 — the 18 Breitkopf reversals §2.6c.2 left unadjudicated: 9 contests, all 9 look wrong (evidence lane, no pipeline change, 2026-09-29)
+
+**Path: STAGED.** §2.6c.2 closed listing, as open, "the Breitkopf 14
+`ledger_direction` → other staff and 4 → `range_veto` reversals (count-only
+ledger on base vs geometric today) are unadjudicated." Because
+`ledger_direction` is a HARD GATE (returns before any additive weight is
+summed), a wrongly-credited rung does not nudge a contest, it DECIDES the
+staff outright — exactly the failure mode §2.6d.3's pre-merge check looked
+for on a different page and found clean (0 of 12 false). This is that same
+check, run on the 18 subjects FINDINGS itself flagged as unlooked-at.
+
+### Method (no gather, one record read)
+
+The saved 27b arm Breitkopf record (`.../27b/arm/brahms-arm.record.json`,
+DPI 600, PDF `library/editions/brahms/symphony-1-op68/brahms--symphony-1-
+op68--breitkopf-hartel-brahms--imslp317803.pdf`) re-decided twice on the
+SAME record (CLAUDE.md §6b): once from an extracted `8100c9ff` tree (BASE,
+`ledger_direction` still §2.6c's first-half ADDITIVE +8.0 term) and once
+from today's main `721a8754` (ARM — the hard gate, plus §2.6d's CV rungs,
+inert on this pre-2.6d record, and §2.6e), both via
+`readjudicate_owner_2_6c.py --dump`, diffed subject-by-subject
+(`diff_base_arm_2_6c.py`) — reproduced the committed
+`out/2.6c-base-vs-arm-breitkopf.json` counts exactly (14 + 4). The 18
+subjects are **9 contests, not 18 notes**: a contest files its verdict on
+BOTH of its two candidate-staff subjects (CLAUDE.md §10, the padded cell
+reaches the neighbour's ink), and every pair here carries the identical
+winner. `crop_reversals_2_6c3.py` (new, this lane) re-adjudicates
+`glyph_owner` on ARM once more in-process to pull the LIVE `ledger` detail
+(credited rungs, their source, the excluded own-line rung) and cuts one
+banded crop per contest — GREEN = ARM's (today's) winner, BLUE = the other
+candidate (BASE's winner, in all 9) — with every rung `ledger_direction`
+counted `toward` a side boxed MAGENTA and labelled by source, and the
+excluded own-line rung boxed dashed GREY. Frame control (`_frame_ok`,
+reused): 9 attempted, 9 passed, 0 refused.
+
+### Read by eye, all 9: BASE was right, ARM flips to the WRONG staff — twice over
+
+Full readings: `out/print/2.6c-reversal-session-read-2026-09-29.json`
+(this session's own verdicts, kept separate from the manifest Sean
+annotates, precedent §2.6d.3's `session_read_2026_09_29`). Summary:
+
+| # | subjects | BASE (right) | ARM (wrong) | mechanism |
+|---|---|---|---|---|
+| 1 | `glyph/10/1/0/1/1` / `.../1/1/1/7` | staff/10/1/1 | staff/10/1/0 | false credited rung |
+| 2 | `glyph/10/1/0/2/8` / `.../1/1/2/1` | staff/10/1/1 | staff/10/1/0 | false credited rung |
+| 3 | `glyph/16/0/0/6/5` / `.../0/1/6/7` | staff/16/0/1 | staff/16/0/0 | false credited rung |
+| 4 | `glyph/16/0/0/7/4` / `.../0/1/7/11` | staff/16/0/1 | staff/16/0/0 | false credited rung |
+| 5 | `glyph/18/0/0/3/6` / `.../0/1/3/7` | staff/18/0/1 | staff/18/0/0 | false credited rung |
+| 6 | `glyph/18/0/0/4/13` / `.../0/1/4/10` | staff/18/0/1 | staff/18/0/0 | false credited rung |
+| 7 | `glyph/5/1/12/0/10` / `.../1/13/0/8` | staff/5/1/12 | staff/5/1/13 | false credited rung |
+| 8 | `glyph/18/1/4/3/2` / `.../1/5/3/2` | staff/18/1/5 | staff/18/1/4 | `range_veto` override |
+| 9 | `glyph/4/1/4/5/0` / `.../1/5/5/1` | staff/4/1/5 | staff/4/1/4 | `range_veto` override |
+
+**9 of 9: BASE right, ARM wrong.** Two distinct mechanisms, cleanly
+separated by which rows carry a `sources` entry:
+
+- **#1-7 (the 14 `ledger_direction`→`ledger_direction` subjects, 7
+  contests): the credited rung is not a second printed ledger line — it
+  is the SAME notehead's own ink, boxed twice.** Every one of the 7 shows
+  the identical signature: the note sits 0.01–0.09 spaces past its TRUE
+  staff's outer line (`reach_spaces`), i.e. exactly on that staff's own
+  first ledger — the single most common far-note shape in this corpus —
+  and the far, wrong staff's one `toward` rung sits within about one
+  notehead-height of that same position. Overlaying the credited box's
+  exact bbox on an UN-annotated render of the same page region (bypassing
+  every crop overlay) shows, in all 7, ONE notehead only: the detector
+  drew a `ledgerLine` box near its centre (correctly read as `stands_on`,
+  the note's own line, excluded by `OWN_LINE_MAX_SPACES`) AND a second one
+  at its far rim (top if the note sits above its staff, bottom if below),
+  which lands just past that exclusion radius and is counted `toward` the
+  OTHER candidate. `ladder_side`'s x-overlap/one-rung-per-step walk has no
+  test for "this step's rung is inside the head's own bounding box" — only
+  a distance-from-head-y test — so a notehead double-boxed at both rims
+  (measured nowhere yet; not counted across the whole record here) can
+  manufacture its own second rung and hand the contest to the wrong
+  staff, exactly because `ledger_direction` returns before anything else
+  is weighed.
+- **#8-9 (the 4 `ledger_direction`→`range_veto` subjects, 2 contests):
+  ledger_direction is NOT at fault.** Both correctly go SILENT (`toward=0`
+  on BOTH sides, so no magenta box exists on either crop). On #8 the far
+  staff has literally no rung anywhere (`found=0`, `missing=2`,
+  `reach=false`, 2.7 spaces away); on #9 the far staff DOES have a found
+  rung, but it is the SAME shared own-line rung both sides' `stands_on`
+  points at — essentially sitting on the head itself (`reach_spaces`
+  0.03), not a second, independent rung further out — so it correctly
+  earns no `toward` credit either. What flips both contests is the
+  additive `range_veto` term, which vetoes the NEAR staff (0.03–0.09
+  spaces past its own edge — the same first-ledger shape as #1-7 — tied
+  in from and out to same-staff neighbours on the wider raw render checked
+  in this session but not committed) in favour of a staff roughly twice
+  as far (2.7 sp on #8, 2.0 sp on #9) with no independent ink supporting
+  it there.
+
+⚠️⚠️ **Because `ledger_direction` is a HARD gate, this is not "7 notes
+moved" — it is 7 concrete instances of the exact risk §2.6d.3 checked for
+on a different page and cleared.** That check's 0-of-12 clean result does
+not generalize: it sampled ONE page's `Q.LEDGER_RUNG_INK` (CV) credits,
+never the detector-sourced credits this lane's 7 all are, and the failure
+mode here (a note's own rim double-boxed) is a GATHER/detector-recall
+shape entirely outside what a CV-ink calibration pass would ever see.
+
+### Not done / open
+
+- No count of how many notes on the whole Breitkopf record show a
+  notehead double-boxed at both rims as `ledgerLine` — this lane read 7
+  crops, not the population. The next lever this points at (not built
+  here, no pipeline code touched): `ladder_side` should refuse a rung
+  whose y falls within the head's own bbox span (or within one
+  notehead-height of the already-excluded own-line rung) as a step
+  `toward` ANY candidate, regardless of which side of
+  `OWN_LINE_MAX_SPACES` it lands on.
+- The `range_veto` term's written-range table was not inspected for #8/#9
+  — only the geometry and the surrounding print were checked. Rule 7 (a
+  control must be able to fail) suggests checking whether this veto has
+  EVER been right on a note this close to its own staff, not only
+  whether it fires; not done here.
+- Litolff was not re-run: FINDINGS §2.6c.2's base-vs-arm table shows 0
+  `ledger_direction`-reason value changes on Litolff (all 33 winner
+  changes there are `distance`/`ladder` → `ledger_direction`, one
+  direction only), so this shape may be Breitkopf-specific or may simply
+  not have been sampled there — not measured.
+- Crops, manifest (`VERDICT_none_yet: null` per crop, question "UPPER /
+  LOWER / not a note -- and are the drawn (MAGENTA) ledger lines real,
+  reaching this head from the staff they are credited toward?") and this
+  session's own reading committed under
+  `benchmarks/omr-owner-domain-2026-09/out/print/2.6c-reversal-*` and
+  `crop_reversals_2_6c3.py`, on `claude/owner-reversals-2.6c`, NOT merged
+  (evidence lane, no pipeline code changed).

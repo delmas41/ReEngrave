@@ -1,0 +1,80 @@
+{
+  "_purpose": "This session's OWN reading of the 9 crops in 2.6c-reversal-manifest.json, kept in a SEPARATE file from the manifest Sean annotates -- CLAUDE.md rule 3 / feedback_send_sean_the_crop precedent (2.6d.3's `session_read_2026_09_29`). The manifest's own VERDICT_none_yet slots are for Sean; do not read this file as his answer.",
+  "method": "Each crop opened and read by eye (Read tool on the PNG); for the 7 ledger_direction reversals, the credited rung's exact bbox was additionally overlaid on a fresh, un-annotated render of the same page region (no title band, no bands, just the raw PDF ink) to rule out an annotation artefact; for the 2 range_veto reversals, a wider raw crop (several staff-spaces, neighbouring notes) was pulled to check the surrounding print, since a range veto argues from the WHOLE part's written range, not local geometry alone.",
+  "reads": [
+    {
+      "n": 1,
+      "subjects": ["glyph/10/1/0/1/1", "glyph/10/1/1/1/7"],
+      "verdict": "LOWER (staff/10/1/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "The note (with a flat, tied to the next barline's note) sits ~0.03 sp above staff/10/1/1's top line -- exactly the note's own first-ledger position. The un-annotated render shows ONE notehead only; the MAGENTA 'credited' box lands squarely on the TOP RIM of that SAME notehead, not on a second, separate printed line. The detector boxed the note's own ink twice (once near its centre -- correctly excluded as `stands_on` own-line -- once at its upper rim, which escaped OWN_LINE_MAX_SPACES and got counted `toward` the far staff)."
+    },
+    {
+      "n": 2,
+      "subjects": ["glyph/10/1/0/2/8", "glyph/10/1/1/2/1"],
+      "verdict": "LOWER (staff/10/1/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Same page, same shape as #1: single note with a flat just above staff/10/1/1's edge, slur into the next system. The credited rung is again the same notehead's own upper rim."
+    },
+    {
+      "n": 3,
+      "subjects": ["glyph/16/0/0/6/5", "glyph/16/0/1/6/7"],
+      "verdict": "LOWER (staff/16/0/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Same shape again: a note with a flat sitting on staff/16/0/1's own first ledger, with two more notes visible immediately to its right at the same height (a short same-staff run). The credited rung is the note's own top rim."
+    },
+    {
+      "n": 4,
+      "subjects": ["glyph/16/0/0/7/4", "glyph/16/0/1/7/11"],
+      "verdict": "LOWER (staff/16/0/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Same page, same shape: a slur arcs down into this note from the left; it sits on staff/16/0/1's own ledger. Credited rung is the note's own top rim."
+    },
+    {
+      "n": 5,
+      "subjects": ["glyph/18/0/0/3/6", "glyph/18/0/1/3/7"],
+      "verdict": "LOWER (staff/18/0/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Same shape: a slurred note on staff/18/0/1's own ledger, two dot-like marks (likely a following note's accidental/dot) just to its right at a slightly higher position -- not part of this head. Credited rung is the note's own top rim."
+    },
+    {
+      "n": 6,
+      "subjects": ["glyph/18/0/0/4/13", "glyph/18/0/1/4/10"],
+      "verdict": "LOWER (staff/18/0/1) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Same page, same shape as #5, one cell over. Credited rung is again the same note's own top rim."
+    },
+    {
+      "n": 7,
+      "subjects": ["glyph/5/1/12/0/10", "glyph/5/1/13/0/8"],
+      "verdict": "UPPER (staff/5/1/12) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": false,
+      "why": "Mirror image of #1-6: this note sits ~0.09 sp BELOW staff/5/1/12's bottom line (its own first ledger downward), with staff/5/1/13 a further 3 sp below and disconnected. The credited rung sits on the note's own BOTTOM rim, not a second real ledger toward the far (lower) staff."
+    },
+    {
+      "n": 8,
+      "subjects": ["glyph/18/1/4/3/2", "glyph/18/1/5/3/2"],
+      "verdict": "LOWER (staff/18/1/5) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": null,
+      "why": "No rung is credited here at all -- ledger_direction correctly stayed SILENT (staff/18/1/4, the far staff, found ZERO rungs; missing=2, reach=false). The note sits ~0.06 sp above staff/18/1/5's top line, immediately after a barline, tied in from the left, followed by two more notes on the SAME staff (one with a flat) at the same height with stems into it. The far staff (2.7 sp away) carries no ink at all near this position on the wider render. `range_veto` overrode the obvious near-staff placement and assigned this to the far, silent staff -- that looks like the veto is wrong here, not the ledger reading."
+    },
+    {
+      "n": 9,
+      "subjects": ["glyph/4/1/4/5/0", "glyph/4/1/5/5/1"],
+      "verdict": "LOWER (staff/4/1/5) -- ARM is WRONG, BASE is right",
+      "credited_rung_real": null,
+      "why": "Same shape as #8: ledger_direction is silent (both sides' only found rung is their own line, toward=0 for both -- no spurious credit drawn). The note sits ~0.03-0.07 sp above staff/4/1/5's top line, tied in from a chord to its left on the same staff, followed by two rest-shaped marks on the same staff. `range_veto` again moved it to the far staff with no supporting ink nearby."
+    }
+  ],
+  "tally": {
+    "total_contests": 9,
+    "base_right_arm_wrong": 9,
+    "base_wrong_arm_right": 0,
+    "ambiguous_or_not_a_note": 0
+  },
+  "pattern_named": [
+    "7 of 9 (all `ledger_direction` reversals, #1-7): the SAME notehead's ink is boxed twice by the detector as `ledgerLine` -- once at/near its centre (correctly read as the note's OWN line and excluded by `OWN_LINE_MAX_SPACES`), once at its far rim (top if the note sits above its staff, bottom if below), which lands just past that exclusion radius and gets counted `toward` the OTHER, farther staff. This is not the 2.6c.2 'chord-mate's own line' shape (there is no chord-mate here, no second note) -- it is a single note's own notehead being read as if it contained TWO rungs. Every one of the 7 shows the identical signature: the near staff's `reach_spaces` is 0.01-0.09 (i.e. the note is essentially ON its true staff's first ledger), and the far staff's one credited rung sits within about one notehead-height of that same position.",
+    "2 of 9 (`range_veto` reversals, #8-9): ledger_direction is NOT at fault -- it correctly abstains from pointing (the far staff has zero rungs, `reach=false`). The flip comes from the additive `range_veto` term overriding a near-staff placement that both the geometry (note ~1 sp beyond the near staff's edge) and the surrounding print (tied to/from same-staff neighbours) support, in favour of a staff with no nearby ink at all."
+  ],
+  "next_fix_hypothesis_not_a_decision": "For the 7: `ladder_side` should not count a rung whose y falls between the head's own bbox top and bottom (or within roughly one notehead-height of the already-excluded own-line rung) as a step `toward` a candidate -- that band is the note's own ink, not a second ledger, regardless of which side of OWN_LINE_MAX_SPACES it lands on. For the 8/9 pair: `_range_veto` vetoing the staff the ledger geometry (and the surrounding print) both support needs a look at whatever written-range table produced the veto on this instrument at this pitch -- CLAUDE.md rule 7's control (a control must be able to fail) suggests checking whether this veto has EVER been right on a note this close to its own staff, not just whether it fires."
+}

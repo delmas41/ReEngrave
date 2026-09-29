@@ -1,0 +1,745 @@
+{
+  "roadmap_item": "2.6c.3",
+  "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-start-here-questions-7d5637/3707ff6b-4757-4644-b4c5-de906d20a7bb/scratchpad/27b/arm/brahms-arm.record.json",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "n_contests": 9,
+  "n_subjects": 18,
+  "crops": [
+    {
+      "n": 1,
+      "file": "2.6c-reversal-01.png",
+      "subjects": [
+        "glyph/10/1/0/1/1",
+        "glyph/10/1/1/1/7"
+      ],
+      "page": 10,
+      "base_winner": "staff/10/1/1",
+      "arm_winner": "staff/10/1/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/10/1/1",
+      "sides": {
+        "staff/10/1/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.034,
+          "stands_on": "glyph/10/1/1/1/18",
+          "sources": {
+            "glyph/10/1/1/1/12": "detector"
+          }
+        },
+        "staff/10/1/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.034,
+          "stands_on": "glyph/10/1/1/1/18"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            1962.7,
+            4024.1,
+            2015.6,
+            4029.6
+          ],
+          "toward": "staff/10/1/0",
+          "source": "detector",
+          "key": "glyph/10/1/1/1/12"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            1963.0,
+            4052.9,
+            2015.8,
+            4059.3
+          ],
+          "key": "glyph/10/1/1/1/18"
+        }
+      ],
+      "head_page_box": [
+        1965.9,
+        4041.5,
+        2007.1,
+        4072.6
+      ],
+      "frame_contrast": {
+        "staff/10/1/0": 230.3,
+        "staff/10/1/1": 187.2
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/0": -203.7,
+        "staff/10/1/1": -163.6
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "2.6c-reversal-02.png",
+      "subjects": [
+        "glyph/10/1/0/2/8",
+        "glyph/10/1/1/2/1"
+      ],
+      "page": 10,
+      "base_winner": "staff/10/1/1",
+      "arm_winner": "staff/10/1/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/10/1/1",
+      "sides": {
+        "staff/10/1/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.02,
+          "stands_on": "glyph/10/1/0/2/23",
+          "sources": {
+            "glyph/10/1/0/2/34": "detector"
+          }
+        },
+        "staff/10/1/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.012,
+          "stands_on": "glyph/10/1/1/2/15"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            2213.1,
+            4023.9,
+            2263.4,
+            4031.6
+          ],
+          "toward": "staff/10/1/0",
+          "source": "detector",
+          "key": "glyph/10/1/0/2/34"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            2212.0,
+            4051.4,
+            2264.5,
+            4058.8
+          ],
+          "key": "glyph/10/1/0/2/23"
+        },
+        {
+          "bbox": [
+            2210.3,
+            4052.0,
+            2264.2,
+            4058.6
+          ],
+          "key": "glyph/10/1/1/2/15"
+        }
+      ],
+      "head_page_box": [
+        2218.3,
+        4040.1,
+        2256.0,
+        4072.3
+      ],
+      "frame_contrast": {
+        "staff/10/1/0": 230.3,
+        "staff/10/1/1": 187.2
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/10/1/0": -203.7,
+        "staff/10/1/1": -163.6
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "2.6c-reversal-03.png",
+      "subjects": [
+        "glyph/16/0/0/6/5",
+        "glyph/16/0/1/6/7"
+      ],
+      "page": 16,
+      "base_winner": "staff/16/0/1",
+      "arm_winner": "staff/16/0/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/16/0/1",
+      "sides": {
+        "staff/16/0/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.014,
+          "stands_on": "glyph/16/0/1/6/20",
+          "sources": {
+            "glyph/16/0/0/6/12": "detector"
+          }
+        },
+        "staff/16/0/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.014,
+          "stands_on": "glyph/16/0/1/6/20"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            3351.0,
+            686.0,
+            3406.2,
+            694.3
+          ],
+          "toward": "staff/16/0/0",
+          "source": "detector",
+          "key": "glyph/16/0/0/6/12"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            3356.3,
+            714.2,
+            3408.1,
+            723.1
+          ],
+          "key": "glyph/16/0/1/6/20"
+        }
+      ],
+      "head_page_box": [
+        3358.5,
+        702.5,
+        3402.0,
+        735.0
+      ],
+      "frame_contrast": {
+        "staff/16/0/0": 238.5,
+        "staff/16/0/1": 220.9
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/16/0/0": -213.4,
+        "staff/16/0/1": -200.4
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "2.6c-reversal-04.png",
+      "subjects": [
+        "glyph/16/0/0/7/4",
+        "glyph/16/0/1/7/11"
+      ],
+      "page": 16,
+      "base_winner": "staff/16/0/1",
+      "arm_winner": "staff/16/0/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/16/0/1",
+      "sides": {
+        "staff/16/0/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.072,
+          "stands_on": "glyph/16/0/1/7/18",
+          "sources": {
+            "glyph/16/0/0/7/5": "detector"
+          }
+        },
+        "staff/16/0/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.004,
+          "stands_on": "glyph/16/0/1/7/23"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            3577.2,
+            687.1,
+            3633.9,
+            694.0
+          ],
+          "toward": "staff/16/0/0",
+          "source": "detector",
+          "key": "glyph/16/0/0/7/5"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            3576.5,
+            718.4,
+            3633.6,
+            725.0
+          ],
+          "key": "glyph/16/0/1/7/18"
+        },
+        {
+          "bbox": [
+            3576.5,
+            715.0,
+            3634.7,
+            724.2
+          ],
+          "key": "glyph/16/0/1/7/23"
+        }
+      ],
+      "head_page_box": [
+        3586.0,
+        703.4,
+        3627.0,
+        735.8
+      ],
+      "frame_contrast": {
+        "staff/16/0/0": 238.5,
+        "staff/16/0/1": 220.9
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/16/0/0": -213.4,
+        "staff/16/0/1": -200.4
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "2.6c-reversal-05.png",
+      "subjects": [
+        "glyph/18/0/0/3/6",
+        "glyph/18/0/1/3/7"
+      ],
+      "page": 18,
+      "base_winner": "staff/18/0/1",
+      "arm_winner": "staff/18/0/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/18/0/1",
+      "sides": {
+        "staff/18/0/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.032,
+          "stands_on": "glyph/18/0/1/3/22",
+          "sources": {
+            "glyph/18/0/1/3/18": "detector"
+          }
+        },
+        "staff/18/0/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.038,
+          "stands_on": "glyph/18/0/0/3/31"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            3250.7,
+            691.7,
+            3306.7,
+            699.5
+          ],
+          "toward": "staff/18/0/0",
+          "source": "detector",
+          "key": "glyph/18/0/1/3/18"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            3250.7,
+            717.8,
+            3302.8,
+            727.6
+          ],
+          "key": "glyph/18/0/0/3/31"
+        },
+        {
+          "bbox": [
+            3251.0,
+            718.2,
+            3307.0,
+            727.5
+          ],
+          "key": "glyph/18/0/1/3/22"
+        }
+      ],
+      "head_page_box": [
+        3257.0,
+        706.9,
+        3298.1,
+        740.3
+      ],
+      "frame_contrast": {
+        "staff/18/0/0": 219.5,
+        "staff/18/0/1": 197.8
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/18/0/0": -199.5,
+        "staff/18/0/1": -181.4
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "2.6c-reversal-06.png",
+      "subjects": [
+        "glyph/18/0/0/4/13",
+        "glyph/18/0/1/4/10"
+      ],
+      "page": 18,
+      "base_winner": "staff/18/0/1",
+      "arm_winner": "staff/18/0/0",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/18/0/1",
+      "sides": {
+        "staff/18/0/0": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.072,
+          "stands_on": "glyph/18/0/1/4/13",
+          "sources": {
+            "glyph/18/0/0/4/28": "detector"
+          }
+        },
+        "staff/18/0/1": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.072,
+          "stands_on": "glyph/18/0/1/4/13"
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            3588.7,
+            693.3,
+            3645.0,
+            700.2
+          ],
+          "toward": "staff/18/0/0",
+          "source": "detector",
+          "key": "glyph/18/0/0/4/28"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            3587.9,
+            721.9,
+            3645.0,
+            727.5
+          ],
+          "key": "glyph/18/0/1/4/13"
+        }
+      ],
+      "head_page_box": [
+        3593.4,
+        709.9,
+        3636.4,
+        743.5
+      ],
+      "frame_contrast": {
+        "staff/18/0/0": 219.5,
+        "staff/18/0/1": 197.8
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/18/0/0": -199.5,
+        "staff/18/0/1": -181.4
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "2.6c-reversal-07.png",
+      "subjects": [
+        "glyph/5/1/12/0/10",
+        "glyph/5/1/13/0/8"
+      ],
+      "page": 5,
+      "base_winner": "staff/5/1/12",
+      "arm_winner": "staff/5/1/13",
+      "arm_reason": "ledger_direction",
+      "ledger_word": "points",
+      "other_candidate": "staff/5/1/12",
+      "sides": {
+        "staff/5/1/12": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.086,
+          "stands_on": "glyph/5/1/12/0/25"
+        },
+        "staff/5/1/13": {
+          "expected": 3,
+          "found": 2,
+          "toward": 1,
+          "missing": 1,
+          "reach": true,
+          "points": true,
+          "frame": "page",
+          "reach_spaces": 0.086,
+          "stands_on": "glyph/5/1/12/0/25",
+          "sources": {
+            "glyph/5/1/13/0/17": "detector"
+          }
+        }
+      },
+      "credited_rungs": [
+        {
+          "bbox": [
+            940.6,
+            6984.3,
+            996.6,
+            6993.4
+          ],
+          "toward": "staff/5/1/13",
+          "source": "detector",
+          "key": "glyph/5/1/13/0/17"
+        }
+      ],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            940.6,
+            6955.8,
+            998.7,
+            6960.8
+          ],
+          "key": "glyph/5/1/12/0/25"
+        }
+      ],
+      "head_page_box": [
+        949.1,
+        6942.8,
+        990.9,
+        6978.6
+      ],
+      "frame_contrast": {
+        "staff/5/1/12": 200.3,
+        "staff/5/1/13": 198.1
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/5/1/12": -176.1,
+        "staff/5/1/13": -175.9
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "2.6c-reversal-08.png",
+      "subjects": [
+        "glyph/18/1/4/3/2",
+        "glyph/18/1/5/3/2"
+      ],
+      "page": 18,
+      "base_winner": "staff/18/1/5",
+      "arm_winner": "staff/18/1/4",
+      "arm_reason": "range_veto",
+      "ledger_word": "silent",
+      "other_candidate": "staff/18/1/5",
+      "sides": {
+        "staff/18/1/4": {
+          "expected": 2,
+          "found": 0,
+          "toward": 0,
+          "missing": 2,
+          "reach": false,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 2.69
+        },
+        "staff/18/1/5": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.064,
+          "stands_on": "glyph/18/1/5/3/8"
+        }
+      },
+      "credited_rungs": [],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            2633.3,
+            5071.4,
+            2690.8,
+            5079.7
+          ],
+          "key": "glyph/18/1/5/3/8"
+        }
+      ],
+      "head_page_box": [
+        2639.7,
+        5059.4,
+        2683.6,
+        5094.5
+      ],
+      "frame_contrast": {
+        "staff/18/1/4": 231.0,
+        "staff/18/1/5": 210.4
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/18/1/4": -208.2,
+        "staff/18/1/5": -192.8
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 9,
+      "file": "2.6c-reversal-09.png",
+      "subjects": [
+        "glyph/4/1/4/5/0",
+        "glyph/4/1/5/5/1"
+      ],
+      "page": 4,
+      "base_winner": "staff/4/1/5",
+      "arm_winner": "staff/4/1/4",
+      "arm_reason": "range_veto",
+      "ledger_word": "silent",
+      "other_candidate": "staff/4/1/5",
+      "sides": {
+        "staff/4/1/4": {
+          "expected": 2,
+          "found": 1,
+          "toward": 0,
+          "missing": 1,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.034,
+          "stands_on": "glyph/4/1/5/5/11"
+        },
+        "staff/4/1/5": {
+          "expected": 1,
+          "found": 1,
+          "toward": 0,
+          "missing": 0,
+          "reach": true,
+          "points": false,
+          "frame": "page",
+          "reach_spaces": 0.074,
+          "stands_on": "glyph/4/1/4/5/11"
+        }
+      },
+      "credited_rungs": [],
+      "own_line_rungs": [
+        {
+          "bbox": [
+            3397.5,
+            5193.8,
+            3455.8,
+            5203.6
+          ],
+          "key": "glyph/4/1/4/5/11"
+        },
+        {
+          "bbox": [
+            3398.7,
+            5191.7,
+            3455.3,
+            5199.7
+          ],
+          "key": "glyph/4/1/5/5/11"
+        }
+      ],
+      "head_page_box": [
+        3407.5,
+        5180.4,
+        3444.7,
+        5212.9
+      ],
+      "frame_contrast": {
+        "staff/4/1/4": 165.4,
+        "staff/4/1/5": 216.3
+      },
+      "frame_contrast_shifted_half_space": {
+        "staff/4/1/4": -149.9,
+        "staff/4/1/5": -188.4
+      },
+      "question": "UPPER / LOWER / not a note -- and are the MAGENTA-boxed credited ledger rungs real, reaching this head?",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
