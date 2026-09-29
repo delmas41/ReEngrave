@@ -119,6 +119,58 @@ def _boxes_overlap(a, b) -> bool:
             and ay <= by + bh and ay + ah >= by)
 
 
+#: How far a FLAG may stand from a head's read stem and still hang from it,
+#: and how far past that stem's tip a stroke must lie before it is out of the
+#: stem's reach -- in the cell's own staff spaces. (ROADMAP 2.18b)
+#:
+#: CONVENTION ASSUMED: a flag and a beam are drawn FROM the stem (CLAUDE.md
+#: §10, [C12]), so on the print they touch; a gap between their boxes is the
+#: READERS' error, not the engraving's. WHAT WOULD FALSIFY IT: a crop where a
+#: flag joined through this tolerance hangs from a different stem, or where a
+#: stroke dropped as beyond the tip is the note's own beam. NOT CONFIRMED with
+#: Sean.
+#:
+#: ⚠️⚠️ MEASURED, AND THE ENGRAVED ZERO ABOVE DOES NOT TRANSFER. On Breitkopf
+#: 317803 p1 (`benchmarks/omr-missing-notes-2026-09/FINDINGS.md` §11):
+#:   * every detected flag's nearest read stem is 0.00 (106), 0.01-0.32 (13)
+#:     or 1.31+ (15) spaces away -- **nothing between 0.33 and 1.30**;
+#:   * the strokes that stand over a head's own column on its stem side, which
+#:     this rule never judges, are **0.00-0.80** spaces from its read stem
+#:     (n = 101, max 0.80) -- so a stroke further than that past the tip is
+#:     further than any of this plate's own beams stand from their stems.
+#: 0.8 is the second population's maximum and lies inside the first's empty
+#: interval. In units of THIS cell's `Q.CELL_STAFF_SPACE`; a cell without one
+#: gets zero (flags back to overlap, and no beyond-the-tip rule at all).
+#:
+#: ⚠️ IT DOES NOT WIDEN THE STEM->BEAM JOIN -- measured and refused, see
+#: `_stem_joined`.
+STEM_JOIN_TOLERANCE_SPACES = 0.8
+
+
+def _box_gap(a, b) -> float:
+    """The gap between two (x, y, w, h) boxes: 0 where they overlap or touch,
+    else the LARGER of the x and y separations (so `<= tol` means both are).
+    `_box_gap(a, b) <= 0` is exactly `_boxes_overlap(a, b)`."""
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    gx = max(0.0, max(ax, bx) - min(ax + aw, bx + bw))
+    gy = max(0.0, max(ay, by) - min(ay + ah, by + bh))
+    return max(gx, gy)
+
+
+def _join_tolerance(ev: Evidence, cell) -> float:
+    """`STEM_JOIN_TOLERANCE_SPACES` in this cell's canonical pixels, or 0."""
+    rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=cell)
+    if not rows:
+        return 0.0
+    try:
+        space = float(rows[-1].value)
+    except (TypeError, ValueError):
+        return 0.0
+    return STEM_JOIN_TOLERANCE_SPACES * space if space > 0 else 0.0
+
+
 def _xywh(row) -> Optional[Tuple[float, float, float, float]]:
     v = row.value
     if not isinstance(v, (list, tuple)) or len(v) < 4:
@@ -184,6 +236,16 @@ def _stem_joined(beams, stems, head_box):
     refused -- same bars, but 60 narrowed against 16, because a head whose
     stem the CV missed then loses its beam entirely.
 
+    ⚠️⚠️ ROADMAP 2.18b MEASURED A TOLERANCE HERE AND REFUSED IT. On Breitkopf
+    p1 a head's stem misses strokes that stand over its own column by
+    0.00-0.80 spaces, continuously, and the 25 class-E strokes (stem side,
+    within reach, not touched) sit in the same band -- no empty interval to
+    put a tolerance in. Built anyway at 0.8 and priced, it turned narrowed
+    eighths into SIXTEENTHS and a 32nd: many of those strokes are a SECOND
+    READING of a beam the head already counts (two CV components 0.5 spaces
+    apart, one print beam), and joining them adds a level. So the join stays
+    at overlap and E stays NARROWED (FINDINGS §11).
+
     ⚠️ THE Y HALF OF THE OVERLAP IS UNEXERCISED BY THAT FIXTURE and is tested
     directly instead: on a clean engraving every beam sits at its stems' ends,
     so sweeping a y tolerance 0-64 px moves one row and no bar. It is kept
@@ -202,6 +264,51 @@ def _stem_joined(beams, stems, head_box):
         if box and any(_boxes_overlap(_xywh(s), box) for s in attached):
             joined.append(b)
     return joined, attached
+
+
+def _beyond_own_stem(beams, stems, attached, side, tol: float):
+    """`(strokes kept, strokes that are not this note's)`. ROADMAP 2.18b.
+
+    ⚠️ A BEAM IS DRAWN AT THE STEM'S END AND RUNS FROM THE FIRST STEM IT JOINS
+    TO THE LAST (CLAUDE.md §10). A stroke that lies past the tip of this
+    head's own read stem by more than the join tolerance, AND that no read
+    stem in the cell reaches within it, joins nothing: it is not this note's
+    beam. On Breitkopf p1 that is the detector's `beam` box on a hairpin or a
+    slur, and the next staff's beam through the cell's pad (FINDINGS §11).
+
+    ⚠️ BOTH HALVES, AND THE SECOND IS THE GUARD. "Past the tip" alone would
+    drop the real beam of a head whose stem the CV read SHORT (a shattered
+    stem), deciding it unbeamed -- `cannot tell` turned into an answer (rule
+    8). A real beam is joined by the other stems of its group; a stroke no
+    read stem reaches at all has nothing tying it to any note. Where this
+    head has no read stem, or no own stem direction, there is no tip and
+    every stroke stays -- and so it does where the cell has no staff-space
+    unit (`tol == 0`): "past the tip by more than the slack" cannot be asked
+    without the unit the slack is measured in.
+    """
+    if side is None or not attached or tol <= 0:
+        return list(beams), []
+    boxes = [_xywh(s) for s in attached if _xywh(s)]
+    if not boxes:
+        return list(beams), []
+    stem_boxes = [_xywh(s) for s in stems if _xywh(s)]
+    kept, beyond = [], []
+    for b in beams:
+        box = _xywh(b)
+        if box is None:
+            kept.append(b)
+            continue
+        if side == "up":
+            tip = min(sy for (_sx, sy, _sw, _sh) in boxes)
+            past = tip - (box[1] + box[3])
+        else:
+            tip = max(sy + sh for (_sx, sy, _sw, sh) in boxes)
+            past = box[1] - tip
+        if past > tol and all(_box_gap(sb, box) > tol for sb in stem_boxes):
+            beyond.append(b)
+        else:
+            kept.append(b)
+    return kept, beyond
 
 
 #: `flag8thUp` -> 1 level, `flag16thDown` -> 2, and so on. DERIVED from
@@ -309,7 +416,7 @@ def _flag_direction(ev: Evidence, flags) -> Dict[str, Any]:
     return out
 
 
-def _attached_flags(ev: Evidence, cell, attached_stems):
+def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
     """The flags on THIS notehead's stem: (rows, levels).
 
     ⚠️⚠️ `Q.FLAG` IS GATHERED ON THE FLAG'S OWN GLYPH SUBJECT AND WAS READ ON
@@ -355,7 +462,11 @@ def _attached_flags(ev: Evidence, cell, attached_stems):
         box = _xywh_head(box_row.value) if box_row else None
         if box is None:
             continue
-        if any(_boxes_overlap(_xywh(st), box) for st in attached_stems
+        # ⚠️ ROADMAP 2.18b: within `tol` (`STEM_JOIN_TOLERANCE_SPACES`), not
+        # overlap. 13 of 134 detected flags on Breitkopf p1 stood 0.01-0.32
+        # spaces off their stem and were never attached, so the note was
+        # written a QUARTER with the flag's own box on the record.
+        if any(_box_gap(_xywh(st), box) <= tol for st in attached_stems
                if _xywh(st)):
             out.append(f)
     # ⚠️ THE MAX, NOT THE SUM. Two flag detections on one stem are two
@@ -850,8 +961,30 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     kept, far_side = _on_stem_side(kept, head_box, side)
     if side_verdict is not None:
         used.append(side_verdict.id)
+    # ⚠️ ROADMAP 2.18b: `STEM_JOIN_TOLERANCE_SPACES` in THIS cell's pixels
+    # (0 where the cell has no unit). It sets the reach past the stem tip
+    # (`_beyond_own_stem`) and the flag attachment; the beam join itself
+    # stays at overlap (`_stem_joined`).
+    tol = _join_tolerance(ev, cell)
+    own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    kept_all = kept
+    kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
     joined, attached = _stem_joined(kept, stems, head_box)
     certain, possible = _beam_levels(kept, x_center, head_width, joined)
+    # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
+    # Where the strokes past the tip were the ONLY thing over this head, and
+    # its stem carries no beam and no flag once they go, the note would fall
+    # to its head value -- a decision made from ABSENCE. Priced on Breitkopf
+    # p1 (FINDINGS §11), 3 of the 6 judgeable notes that fell that way print
+    # a flag or a beam no reader read (against 10 of 69 across every stemmed
+    # head the page wrote at its head value), so the strokes stay and the
+    # reading stays what it was.
+    beyond_guarded = False
+    if beyond and not possible and not _attached_flags(
+            ev, cell, attached, tol)[1]:
+        kept, beyond, beyond_guarded = kept_all, [], True
+        joined, attached = _stem_joined(kept, stems, head_box)
+        certain, possible = _beam_levels(kept, x_center, head_width, joined)
     levels = certain
     used.extend(b.id for b in kept)
     used.extend(s.id for s in attached)
@@ -869,7 +1002,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     else:
         beam_evidence = "none_over_this_note"
 
-    flags, flag_levels = _attached_flags(ev, cell, attached)
+    flags, flag_levels = _attached_flags(ev, cell, attached, tol)
     if flag_levels and not levels:
         # A flag says the same thing a beam does for an unbeamed note.
         levels = flag_levels
@@ -907,8 +1040,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
-              "yolo_kept": len(kept) + len(far_side) - len(cv),
+              "yolo_kept": len(kept) + len(far_side) + len(beyond) - len(cv),
               "beam_side": side, "beams_far_side": len(far_side),
+              "beams_beyond_stem": len(beyond),
+              "beyond_stem_kept_no_other_mark": beyond_guarded,
+              "join_tolerance_px": round(tol, 2),
               "stems_attached": len(attached), "beams_by_stem": len(joined),
               "flags_attached": len(flags), "flag_levels": flag_levels,
               "dots_attached": n_dots,

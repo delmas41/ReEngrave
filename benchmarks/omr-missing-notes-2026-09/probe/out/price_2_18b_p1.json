@@ -1,0 +1,1481 @@
+{
+ "arms": {
+  "off": {
+   "notes_in_file": 455,
+   "duration_outcomes": {
+    "decided:head_and_marks": 876,
+    "narrowed:beams_ambiguous": 123,
+    "decided:rest_class": 315,
+    "abstained:rest_stands_where_no_rest_hangs": 23,
+    "abstained:unreadable_rest": 1,
+    "decided:whole_rest_means_the_bar": 11,
+    "decided:meter_reconciliation": 3,
+    "decided:the_neighbours_name_this_gap": 6,
+    "decided:the_neighbours_run_to_the_same_barline": 7
+   },
+   "beam_evidence": {
+    "read": 484,
+    "none_over_this_note": 178,
+    "null": 342,
+    "reader_declined": 133,
+    "flag": 81
+   },
+   "heads_with_beyond_stem": 0,
+   "notes_not_written": {
+    "owned_by_another_staff": 47,
+    "duration_narrowed": 66,
+    "owner_not_read": 1,
+    "not_a_notehead:clipped_fragment": 26,
+    "not_a_notehead:too_narrow": 225,
+    "rest_duration_abstained": 19,
+    "not_a_rest:rest_is_a_duplicate_box": 36,
+    "not_a_notehead:belongs_to_a_nearer_staff": 7,
+    "written_value_fits_no_note": 1,
+    "ink_is_a_whole_rest": 2,
+    "bar_does_not_add_up": 568
+   },
+   "written": {
+    "notes": 235,
+    "rests": 123,
+    "beams": 161,
+    "beamed_events": 150,
+    "bars_held_out_sum": 85,
+    "notes_held_out_sum": 568,
+    "bars_with_events": 201
+   },
+   "bars_held_by_sum": [
+    "1/0/0/0",
+    "1/0/0/1",
+    "1/0/0/2",
+    "1/0/0/3",
+    "1/0/0/4",
+    "1/0/0/5",
+    "1/0/0/6",
+    "1/0/1/0",
+    "1/0/1/1",
+    "1/0/1/2",
+    "1/0/1/3",
+    "1/0/1/4",
+    "1/0/1/5",
+    "1/0/1/6",
+    "1/0/10/0",
+    "1/0/10/1",
+    "1/0/10/2",
+    "1/0/10/3",
+    "1/0/10/4",
+    "1/0/10/5",
+    "1/0/10/6",
+    "1/0/11/0",
+    "1/0/11/1",
+    "1/0/11/2",
+    "1/0/11/3",
+    "1/0/11/4",
+    "1/0/11/5",
+    "1/0/11/6",
+    "1/0/12/0",
+    "1/0/12/2",
+    "1/0/12/3",
+    "1/0/12/4",
+    "1/0/12/5",
+    "1/0/12/6",
+    "1/0/13/0",
+    "1/0/13/1",
+    "1/0/13/2",
+    "1/0/13/3",
+    "1/0/13/4",
+    "1/0/13/5",
+    "1/0/13/6",
+    "1/0/2/0",
+    "1/0/2/1",
+    "1/0/2/2",
+    "1/0/2/3",
+    "1/0/2/5",
+    "1/0/2/6",
+    "1/0/3/0",
+    "1/0/3/1",
+    "1/0/3/2",
+    "1/0/3/3",
+    "1/0/3/4",
+    "1/0/3/5",
+    "1/0/3/6",
+    "1/0/4/0",
+    "1/0/4/1",
+    "1/0/4/2",
+    "1/0/4/3",
+    "1/0/4/4",
+    "1/0/4/5",
+    "1/0/5/0",
+    "1/0/5/1",
+    "1/0/5/2",
+    "1/0/5/3",
+    "1/0/5/5",
+    "1/0/6/0",
+    "1/0/6/1",
+    "1/0/6/2",
+    "1/0/6/4",
+    "1/0/7/0",
+    "1/0/7/1",
+    "1/0/7/2",
+    "1/0/7/3",
+    "1/0/7/4",
+    "1/0/7/5",
+    "1/0/7/6",
+    "1/0/8/0",
+    "1/0/8/3",
+    "1/0/9/0",
+    "1/0/9/1",
+    "1/0/9/2",
+    "1/0/9/3",
+    "1/0/9/4",
+    "1/0/9/5",
+    "1/0/9/6"
+   ]
+  },
+  "flag": {
+   "notes_in_file": 455,
+   "duration_outcomes": {
+    "decided:head_and_marks": 876,
+    "narrowed:beams_ambiguous": 123,
+    "decided:rest_class": 315,
+    "abstained:rest_stands_where_no_rest_hangs": 23,
+    "abstained:unreadable_rest": 1,
+    "decided:whole_rest_means_the_bar": 11,
+    "decided:meter_reconciliation": 3,
+    "decided:the_neighbours_name_this_gap": 6,
+    "decided:the_neighbours_run_to_the_same_barline": 7
+   },
+   "beam_evidence": {
+    "read": 484,
+    "none_over_this_note": 172,
+    "null": 342,
+    "reader_declined": 130,
+    "flag": 90
+   },
+   "heads_with_beyond_stem": 0,
+   "notes_not_written": {
+    "owned_by_another_staff": 47,
+    "duration_narrowed": 66,
+    "owner_not_read": 1,
+    "not_a_notehead:clipped_fragment": 26,
+    "not_a_notehead:too_narrow": 225,
+    "rest_duration_abstained": 19,
+    "not_a_rest:rest_is_a_duplicate_box": 36,
+    "not_a_notehead:belongs_to_a_nearer_staff": 7,
+    "written_value_fits_no_note": 1,
+    "ink_is_a_whole_rest": 2,
+    "bar_does_not_add_up": 568
+   },
+   "written": {
+    "notes": 235,
+    "rests": 123,
+    "beams": 162,
+    "beamed_events": 151,
+    "bars_held_out_sum": 85,
+    "notes_held_out_sum": 568,
+    "bars_with_events": 201
+   },
+   "bars_held_by_sum": [
+    "1/0/0/0",
+    "1/0/0/1",
+    "1/0/0/2",
+    "1/0/0/3",
+    "1/0/0/4",
+    "1/0/0/5",
+    "1/0/0/6",
+    "1/0/1/0",
+    "1/0/1/1",
+    "1/0/1/2",
+    "1/0/1/3",
+    "1/0/1/4",
+    "1/0/1/5",
+    "1/0/1/6",
+    "1/0/10/0",
+    "1/0/10/1",
+    "1/0/10/2",
+    "1/0/10/3",
+    "1/0/10/4",
+    "1/0/10/5",
+    "1/0/10/6",
+    "1/0/11/0",
+    "1/0/11/1",
+    "1/0/11/2",
+    "1/0/11/3",
+    "1/0/11/4",
+    "1/0/11/5",
+    "1/0/11/6",
+    "1/0/12/0",
+    "1/0/12/2",
+    "1/0/12/3",
+    "1/0/12/4",
+    "1/0/12/5",
+    "1/0/12/6",
+    "1/0/13/0",
+    "1/0/13/1",
+    "1/0/13/2",
+    "1/0/13/3",
+    "1/0/13/4",
+    "1/0/13/5",
+    "1/0/13/6",
+    "1/0/2/0",
+    "1/0/2/1",
+    "1/0/2/2",
+    "1/0/2/3",
+    "1/0/2/5",
+    "1/0/2/6",
+    "1/0/3/0",
+    "1/0/3/1",
+    "1/0/3/2",
+    "1/0/3/3",
+    "1/0/3/4",
+    "1/0/3/5",
+    "1/0/3/6",
+    "1/0/4/0",
+    "1/0/4/1",
+    "1/0/4/2",
+    "1/0/4/3",
+    "1/0/4/4",
+    "1/0/4/5",
+    "1/0/5/0",
+    "1/0/5/1",
+    "1/0/5/2",
+    "1/0/5/3",
+    "1/0/5/5",
+    "1/0/6/0",
+    "1/0/6/1",
+    "1/0/6/2",
+    "1/0/6/4",
+    "1/0/7/0",
+    "1/0/7/1",
+    "1/0/7/2",
+    "1/0/7/3",
+    "1/0/7/4",
+    "1/0/7/5",
+    "1/0/7/6",
+    "1/0/8/0",
+    "1/0/8/3",
+    "1/0/9/0",
+    "1/0/9/1",
+    "1/0/9/2",
+    "1/0/9/3",
+    "1/0/9/4",
+    "1/0/9/5",
+    "1/0/9/6"
+   ]
+  },
+  "all": {
+   "notes_in_file": 459,
+   "duration_outcomes": {
+    "decided:head_and_marks": 890,
+    "narrowed:beams_ambiguous": 113,
+    "decided:rest_class": 315,
+    "abstained:rest_stands_where_no_rest_hangs": 23,
+    "abstained:unreadable_rest": 1,
+    "decided:whole_rest_means_the_bar": 11,
+    "decided:meter_reconciliation": 3,
+    "decided:the_neighbours_name_this_gap": 1,
+    "decided:the_neighbours_run_to_the_same_barline": 8
+   },
+   "beam_evidence": {
+    "read": 487,
+    "none_over_this_note": 172,
+    "null": 338,
+    "reader_declined": 130,
+    "flag": 101
+   },
+   "heads_with_beyond_stem": 141,
+   "notes_not_written": {
+    "owned_by_another_staff": 47,
+    "duration_narrowed": 56,
+    "owner_not_read": 1,
+    "not_a_notehead:clipped_fragment": 26,
+    "not_a_notehead:too_narrow": 225,
+    "rest_duration_abstained": 19,
+    "not_a_rest:rest_is_a_duplicate_box": 36,
+    "not_a_notehead:belongs_to_a_nearer_staff": 7,
+    "written_value_fits_no_note": 1,
+    "ink_is_a_whole_rest": 2,
+    "bar_does_not_add_up": 574
+   },
+   "written": {
+    "notes": 239,
+    "rests": 123,
+    "beams": 164,
+    "beamed_events": 155,
+    "bars_held_out_sum": 85,
+    "notes_held_out_sum": 574,
+    "bars_with_events": 201
+   },
+   "bars_held_by_sum": [
+    "1/0/0/0",
+    "1/0/0/1",
+    "1/0/0/2",
+    "1/0/0/3",
+    "1/0/0/4",
+    "1/0/0/5",
+    "1/0/0/6",
+    "1/0/1/0",
+    "1/0/1/1",
+    "1/0/1/2",
+    "1/0/1/3",
+    "1/0/1/4",
+    "1/0/1/5",
+    "1/0/1/6",
+    "1/0/10/0",
+    "1/0/10/1",
+    "1/0/10/2",
+    "1/0/10/3",
+    "1/0/10/4",
+    "1/0/10/5",
+    "1/0/10/6",
+    "1/0/11/0",
+    "1/0/11/1",
+    "1/0/11/2",
+    "1/0/11/3",
+    "1/0/11/4",
+    "1/0/11/5",
+    "1/0/11/6",
+    "1/0/12/0",
+    "1/0/12/2",
+    "1/0/12/3",
+    "1/0/12/4",
+    "1/0/12/5",
+    "1/0/12/6",
+    "1/0/13/0",
+    "1/0/13/1",
+    "1/0/13/2",
+    "1/0/13/3",
+    "1/0/13/4",
+    "1/0/13/5",
+    "1/0/13/6",
+    "1/0/2/0",
+    "1/0/2/1",
+    "1/0/2/2",
+    "1/0/2/3",
+    "1/0/2/5",
+    "1/0/2/6",
+    "1/0/3/0",
+    "1/0/3/1",
+    "1/0/3/2",
+    "1/0/3/3",
+    "1/0/3/4",
+    "1/0/3/5",
+    "1/0/3/6",
+    "1/0/4/0",
+    "1/0/4/1",
+    "1/0/4/2",
+    "1/0/4/3",
+    "1/0/4/4",
+    "1/0/4/5",
+    "1/0/5/0",
+    "1/0/5/1",
+    "1/0/5/2",
+    "1/0/5/3",
+    "1/0/5/5",
+    "1/0/6/0",
+    "1/0/6/1",
+    "1/0/6/2",
+    "1/0/6/4",
+    "1/0/7/0",
+    "1/0/7/1",
+    "1/0/7/2",
+    "1/0/7/3",
+    "1/0/7/4",
+    "1/0/7/5",
+    "1/0/7/6",
+    "1/0/8/0",
+    "1/0/8/3",
+    "1/0/9/0",
+    "1/0/9/1",
+    "1/0/9/2",
+    "1/0/9/3",
+    "1/0/9/4",
+    "1/0/9/5",
+    "1/0/9/6"
+   ]
+  }
+ },
+ "changed_off_to_all": {
+  "glyph/1/0/0/4/9": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/2/0/4": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/5": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/2/0/9": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/10": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/12": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/16": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/20": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/25": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/2/0/33": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/35": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/2/0/41": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/3/1/3": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/3/3/14": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/4/1/0": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/4/5/0": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/5/0/14": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.1875
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.75
+   }
+  ],
+  "glyph/1/0/5/0/21": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.09375
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.375
+   }
+  ],
+  "glyph/1/0/6/1/0": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/6/1/17": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/6/1/20": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/9/0/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/9/0/8": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.375
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.75
+   }
+  ],
+  "glyph/1/0/9/0/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/9/0/12": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/9/0/13": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.375
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.75
+   }
+  ],
+  "glyph/1/0/9/4/8": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/10/3/1": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/10/3/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/10/4/18": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/0/4": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/11/0/10": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/0/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/12": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/11/0/13": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/0/14": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/16": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/18": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/11/0/19": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/0/21": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/22": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/28": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/11/0/32": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/11/0/33": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/0/11/3/2": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/3/4": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_run_to_the_same_barline",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/4/2": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/11/4/9": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/12/5/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/13/0/1": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/2": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/3": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/4": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/5": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/7": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/0/8": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.1875
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.375
+   }
+  ],
+  "glyph/1/0/13/0/14": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/0/13/4/3": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/1/3/0/7": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.0625
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   }
+  ],
+  "glyph/1/1/3/0/13": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/1/3/3/2": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/9/0/3": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/9/0/13": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/1/9/7/5": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/1/3": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/1/4": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/1/10": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/3/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/3/28": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/7/4": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/1/10/7/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.125
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.25
+   }
+  ],
+  "glyph/1/1/11/1/0": [
+   {
+    "outcome": "narrowed",
+    "reason": "beams_ambiguous",
+    "beats": null
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/9/2/2": [
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "beats": 0.5
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/0/5": [
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "beats": 0.5
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/1/11": [
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "beats": 0.5
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/3/8": [
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "beats": 0.5
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/11/2/4": [
+   {
+    "outcome": "decided",
+    "reason": "the_neighbours_name_this_gap",
+    "beats": 0.5
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ]
+ },
+ "changed_off_to_flag": {
+  "glyph/1/0/4/1/0": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/6/1/0": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/6/1/17": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/6/1/20": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/0/10/3/6": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/3/3/2": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/9/7/5": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/3/11": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ],
+  "glyph/1/1/10/3/28": [
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 1.0
+   },
+   {
+    "outcome": "decided",
+    "reason": "head_and_marks",
+    "beats": 0.5
+   }
+  ]
+ }
+}
