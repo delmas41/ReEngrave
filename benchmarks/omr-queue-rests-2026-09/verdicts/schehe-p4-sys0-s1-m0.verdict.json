@@ -1,24 +1,79 @@
 {
- "cell_id": "schehe-p4-sys0-s1-m0",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  },
-  {
-   "id": "D1",
-   "verdict": "TP"
-  },
-  {
-   "id": "D2",
-   "verdict": "TP"
-  },
-  {
-   "id": "D3",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "schehe-p4-sys0-s1-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:30:01+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1344,
+        "y": 263,
+        "w": 67,
+        "h": 177
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1159,
+        "y": 546,
+        "w": 61,
+        "h": 160
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "TP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1339,
+        "y": 509,
+        "w": 52,
+        "h": 191
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "TP",
+      "model_predicted_class": "restHalf",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1508,
+        "y": 380,
+        "w": 125,
+        "h": 43
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

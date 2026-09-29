@@ -1,24 +1,113 @@
 {
- "cell_id": "brahms1-p2-sys0-s1-m1",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  },
-  {
-   "id": "D1",
-   "verdict": "TP"
-  },
-  {
-   "id": "D2",
-   "verdict": "TP"
-  },
-  {
-   "id": "D3",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "brahms1-p2-sys0-s1-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:08:14+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1199,
+        "y": 448,
+        "w": 120,
+        "h": 287
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 761,
+        "y": 512,
+        "w": 134,
+        "h": 164
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1002,
+        "y": 513,
+        "w": 113,
+        "h": 154
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1751,
+        "y": 508,
+        "w": 116,
+        "h": 158
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D4",
+      "verdict": "TP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1,
+        "y": 816,
+        "w": 43,
+        "h": 201
+      },
+      "human_bbox": null,
+      "confidence": 0.506,
+      "notes": ""
+    },
+    {
+      "id": "D5",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1299,
+        "y": 0,
+        "w": 73,
+        "h": 256
+      },
+      "human_bbox": null,
+      "confidence": 0.326,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

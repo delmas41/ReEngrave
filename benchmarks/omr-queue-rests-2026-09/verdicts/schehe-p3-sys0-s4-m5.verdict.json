@@ -1,7 +1,28 @@
 {
- "cell_id": "schehe-p3-sys0-s4-m5",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "schehe-p3-sys0-s4-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:29:50+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1241,
+        "y": 1112,
+        "w": 40,
+        "h": 85
+      },
+      "human_bbox": null,
+      "confidence": 0.44,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

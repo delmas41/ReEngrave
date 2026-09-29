@@ -1,7 +1,28 @@
 {
- "cell_id": "dvorak9-p18-sys0-s25-m2",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "dvorak9-p18-sys0-s25-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:22:53+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 63,
+        "y": 0,
+        "w": 106,
+        "h": 194
+      },
+      "human_bbox": null,
+      "confidence": 0.455,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

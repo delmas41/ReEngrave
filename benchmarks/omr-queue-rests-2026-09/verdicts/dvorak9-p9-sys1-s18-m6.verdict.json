@@ -1,12 +1,45 @@
 {
- "cell_id": "dvorak9-p9-sys1-s18-m6",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "dvorak9-p9-sys1-s18-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:24:46+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 954,
+        "y": 592,
+        "w": 110,
+        "h": 57
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2020,
+        "y": 522,
+        "w": 28,
+        "h": 336
+      },
+      "human_bbox": null,
+      "confidence": 0.345,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

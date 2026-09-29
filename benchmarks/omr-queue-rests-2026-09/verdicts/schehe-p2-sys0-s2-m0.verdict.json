@@ -1,7 +1,62 @@
 {
- "cell_id": "schehe-p2-sys0-s2-m0",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "schehe-p2-sys0-s2-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:27:47+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1043,
+        "y": 396,
+        "w": 188,
+        "h": 122
+      },
+      "human_bbox": null,
+      "confidence": 0.56,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 716,
+        "y": 404,
+        "w": 117,
+        "h": 119
+      },
+      "human_bbox": null,
+      "confidence": 0.299,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "FP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 719,
+        "y": 298,
+        "w": 113,
+        "h": 225
+      },
+      "human_bbox": null,
+      "confidence": 0.254,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

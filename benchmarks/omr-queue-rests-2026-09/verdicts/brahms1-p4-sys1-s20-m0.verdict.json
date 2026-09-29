@@ -1,12 +1,45 @@
 {
- "cell_id": "brahms1-p4-sys1-s20-m0",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "brahms1-p4-sys1-s20-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:22:22+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1343,
+        "y": 373,
+        "w": 116,
+        "h": 37
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1347,
+        "y": 841,
+        "w": 100,
+        "h": 32
+      },
+      "human_bbox": null,
+      "confidence": 0.315,
+      "notes": "belongs to lower staff wrong staff"
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

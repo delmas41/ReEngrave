@@ -1,7 +1,28 @@
 {
- "cell_id": "lamer-p2-sys0-s5-m2",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "lamer-p2-sys0-s5-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:26:01+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "rest16th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1060,
+        "y": 947,
+        "w": 81,
+        "h": 137
+      },
+      "human_bbox": null,
+      "confidence": 0.281,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

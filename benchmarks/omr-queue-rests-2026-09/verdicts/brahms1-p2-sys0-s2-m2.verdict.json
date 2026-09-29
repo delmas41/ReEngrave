@@ -1,16 +1,79 @@
 {
- "cell_id": "brahms1-p2-sys0-s2-m2",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  },
-  {
-   "id": "D1",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "brahms1-p2-sys0-s2-m2",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:21:36+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 197,
+        "y": 695,
+        "w": 140,
+        "h": 199
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 210,
+        "y": 696,
+        "w": 107,
+        "h": 217
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "unsure",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 859,
+        "y": 0,
+        "w": 144,
+        "h": 34
+      },
+      "human_bbox": null,
+      "confidence": 0.57,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "unsure",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 860,
+        "y": 1,
+        "w": 144,
+        "h": 42
+      },
+      "human_bbox": null,
+      "confidence": 0.47,
+      "notes": "duplicate"
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

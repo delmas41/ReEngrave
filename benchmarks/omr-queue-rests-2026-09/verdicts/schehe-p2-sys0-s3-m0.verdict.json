@@ -1,7 +1,45 @@
 {
- "cell_id": "schehe-p2-sys0-s3-m0",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "schehe-p2-sys0-s3-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:28:07+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1042,
+        "y": 895,
+        "w": 143,
+        "h": 56
+      },
+      "human_bbox": null,
+      "confidence": 0.577,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": null,
+      "model_predicted_class": "restQuarter",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1679,
+        "y": 1221,
+        "w": 27,
+        "h": 156
+      },
+      "human_bbox": null,
+      "confidence": 0.409,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

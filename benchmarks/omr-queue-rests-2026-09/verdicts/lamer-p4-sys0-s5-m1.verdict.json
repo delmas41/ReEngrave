@@ -1,7 +1,45 @@
 {
- "cell_id": "lamer-p4-sys0-s5-m1",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "lamer-p4-sys0-s5-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:26:14+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1150,
+        "y": 814,
+        "w": 141,
+        "h": 42
+      },
+      "human_bbox": null,
+      "confidence": 0.684,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "FP",
+      "model_predicted_class": "restWhole",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1669,
+        "y": 808,
+        "w": 134,
+        "h": 40
+      },
+      "human_bbox": null,
+      "confidence": 0.301,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

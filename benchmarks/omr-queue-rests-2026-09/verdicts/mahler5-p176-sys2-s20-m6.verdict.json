@@ -1,7 +1,28 @@
 {
- "cell_id": "mahler5-p176-sys2-s20-m6",
- "schema_version": 2,
- "detections": [],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "mahler5-p176-sys2-s20-m6",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:27:13+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "FP",
+      "model_predicted_class": "restHBar",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 2,
+        "y": 454,
+        "w": 1878,
+        "h": 99
+      },
+      "human_bbox": null,
+      "confidence": 0.262,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }

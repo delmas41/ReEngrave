@@ -1,12 +1,79 @@
 {
- "cell_id": "brahms1-p2-sys0-s2-m5",
- "schema_version": 2,
- "detections": [
-  {
-   "id": "D0",
-   "verdict": "TP"
-  }
- ],
- "added_detections": [],
- "notes": "human family boxes pre-confirmed by build_family_queue"
+  "cell_id": "brahms1-p2-sys0-s2-m5",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-09-29T22:21:55+00:00",
+  "detections": [
+    {
+      "id": "D0",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 167,
+        "y": 471,
+        "w": 156,
+        "h": 198
+      },
+      "human_bbox": null,
+      "confidence": 1.0,
+      "notes": ""
+    },
+    {
+      "id": "D1",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 813,
+        "y": 1047,
+        "w": 110,
+        "h": 179
+      },
+      "human_bbox": null,
+      "confidence": 0.884,
+      "notes": ""
+    },
+    {
+      "id": "D2",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 1072,
+        "y": 1028,
+        "w": 113,
+        "h": 186
+      },
+      "human_bbox": null,
+      "confidence": 0.853,
+      "notes": ""
+    },
+    {
+      "id": "D3",
+      "verdict": "TP",
+      "model_predicted_class": "rest8th",
+      "human_corrected_class": null,
+      "model_predicted_category": "structural",
+      "human_corrected_category": null,
+      "model_bbox": {
+        "x": 567,
+        "y": 1040,
+        "w": 106,
+        "h": 181
+      },
+      "human_bbox": null,
+      "confidence": 0.797,
+      "notes": ""
+    }
+  ],
+  "added_detections": [],
+  "inspected_passes": [
+    "rests-reconcile"
+  ]
 }
