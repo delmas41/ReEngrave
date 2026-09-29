@@ -1,3 +1,13 @@
+⚠️ **2026-09-29 (ROADMAP 2.26): the live question — why 956 Brahms
+`staff_not_identified` heads survive on today's tree — is answered in the
+section `## ROADMAP 2.26` at the END of this file.** Everything below this
+notice is the ORIGINAL 2026-09-04 audit: measurement only, run against
+`a66f2569`, months before the STAGED pipeline's identity work (roadmap
+2.1/2.1b/2.9c), the cello/bass convention (DECISIONS 2026-09-22), or the
+short-system name-pairing rule existed. It is background, kept for the
+record per CLAUDE.md rule 1, and is not a claim about today's mechanism —
+read it by search, not as a work order.
+
 # What is this staff? — a multi-signal identity audit, measured
 
 2026-09-04. Based on `a66f2569` (the condensed-parts merge on the local
@@ -445,3 +455,211 @@ receives them. Dossiers are not read at all. The one place the reference feeds a
 truth field — clef, for the 125 staves works.json does not hand-read — is
 validated against the 24 that it does (24/24), and the same validation is what
 disqualified it for KEY.
+
+---
+
+## ROADMAP 2.26 (2026-09-29) — the 956 Brahms `staff_not_identified` heads
+
+STAGED. Branch `claude/staff-identity-2.26`. Records read exactly once each,
+via `record_io.load_record`, in `benchmarks/omr-staff-identity-2026-09/probe/`
+(`probe_2_26_holdout.py`), nohup'd, output a small JSON.
+`library/_shared-records/brahms1-breitkopf-mvt1-whole-20260929.record.json`
+(1.4 GB) and `.../beethoven5-litolff-mvt1-whole-20260929.record.json`
+(325 MB), both `commit=23f4fa9e`, `dirty=True` (the run's own untracked
+outputs, not a baseline concern).
+
+### 0. Brief (rule 1)
+
+`git log --all -S` on the reason strings below, `ls benchmarks | grep -i
+"slot\|part\|identity"`. The 2026-09-04 section above this one is a
+**withdrawn, pre-staged-pipeline investigation** — background only, no
+claim about today's mechanism. Read: ROADMAP 2.1/2.1b/2.9c, CLAUDE.md
+§4c/§10, DECISIONS 2026-09-22 (cello/bass), `omr-slot-index-2026-09/
+FINDINGS.md` (the short-system rule's own measurement history).
+
+### 1. Which staves are held out, and why
+
+**956 Brahms noteheads+rests, 42 staves, one mechanism, 100% of it.** Not
+one is the condensed `Violoncello e Basso` case CLAUDE.md §10 names — that
+mechanism (`inferences.collapse_slot_index_to_family_block`) fires **zero
+times** on this document (matches roadmap 2.1b: "Breitkopf — 0
+family_block inferences, 0 impact"). Every one of the 42 is a **HORN**
+staff, `Q.SLOT_INDEX` outcome `abstained` on all 42 (never `narrowed` —
+`slot_index_reason_histogram_over_held_out_staves = {"abstained": 42}`),
+in one of two shapes:
+
+| reason | staves | heads | rests | margin text (measured) |
+|---|---|---|---|---|
+| `ambiguous_pairing` | 22 | 305 | 216 | `"(C) Hr."` (21), `"(C) Hr"` (1) |
+| `unnamed_in_short_system` | 20 | 220 | 215 | `"(Es)"` (19), `"(C)"` (1) |
+
+**The mechanism.** Brahms 1 writes 4 horns on 2 braced staves, crooked in C
+and in Es. On the widest system (`system/2/1`, 14 staves — the reference
+lineup `adjudicate_slot_index` always picks against), OCR reads BOTH
+staves in full: `"(C) Hr."` (ordinal 5) and `"Hr. (Es)"` (ordinal 6), both
+decide `Horn` (alias `hr`). On every OTHER (short) system, the pair reads
+`"(C) Hr."` on the first staff (decides `Horn`) and a bare crook
+fragment — `"(Es)"`, once `"(C)"` — on the second, no instrument root at
+all. `adjudicate_instrument` correctly abstains `not_in_lexicon` on the
+bare fragment (a lone parenthetical names nothing on its own — CLAUDE.md
+§8: aliases are GLOBAL, and `"(Es)"` alone is also how a Clarinet or
+Trumpet crook prints). That is `unnamed_in_short_system`'s cause.
+
+`ambiguous_pairing`'s cause is one step earlier: `adjudicate_instrument`
+resolves `"(C) Hr."` to the bare family name `Horn`, **discarding the
+crook**. The reference prints `Horn` TWICE (5 and 6), so
+`_forced_pairing`'s name-matching correctly refuses to choose — its own
+docstring already predicted this shape and had measured it dormant on
+Litolff: *"the only name repeated in that reference is Violin, and no
+short system ever reads a violin label ... what is corrected is the claim
+that real pages exercise them"* (`identity.py`, `_forced_pairing`).
+`omr-slot-index-2026-09/FINDINGS.md` measured `ambiguous_pairing` at **0**
+on the 7-system Litolff corpus it was built against — this is a genuinely
+new population, first exercised at whole-movement, cross-publisher scale.
+
+**Is this a connection fault in 2.1b, or a regression?** Checked directly.
+No. `git log --oneline -S "ambiguous_pairing"` → `e391b164` (the
+short-system rule's own implementation); `-S "not_in_lexicon"` → `6d22e1c6`
+("wire margin labels and identity"). Both predate 2.1b (`ea193076`,
+2026-09-22) by weeks and are untouched by it. Structurally, 2.1b's rule is
+scoped to a TRAILING same-family block at the FOOT of a lineup
+(`_trailing_family_run`, deficit ≤ 1); the Horn pair sits at ordinals 5–6
+of 14, **mid-lineup**, so `_place_in_family_block`'s own guard (`if here <
+b0: return None` — "an interior unnamed staff ... gets no answer here")
+excludes it before the family-block machinery ever runs. Nothing for 2.1b
+to have connected wrong: this shape never reaches its code.
+
+### 2. Built vs asked — the split
+
+`ambiguous_pairing` (22 staves, 521 of 956, 54.5%) is a **connection
+fault, not a new convention**, and is built here. The crook that
+disambiguates the two reference Horn slots is not a guess about the plate
+— it is already on the record, on the SAME subject, gathered by the SAME
+reader (`Q.MARGIN_LABEL`'s raw OCR text), and thrown away when
+`adjudicate_instrument` reduces `"(C) Hr."` to the bare name `Horn`. The
+project's own recurring bug class: a value computed and unread
+(`feedback_find_export_gaps.md` / `project_value_computed_and_unread.md`).
+
+**Built** (`tools/omr/staged/adjudicators/identity.py`): `_margin_texts_
+by_system` (exactly `_names_by_system`'s recipe, reading the OBSERVATION
+instead of the reduced verdict) and `_crook_tokens` (extracts `(...)`
+fragments, uppercased). In `adjudicate_slot_index`'s `ambiguous_pairing`
+branch — reached only where `_forced_pairing` already found the name TIED
+between ≥ 2 reference slots — before abstaining: collect the tied
+candidates' own raw margin text (read at `Scope.SELF_AND_DESCENDANTS` off
+the document, the same pattern `_reference_instruments` already uses for
+`Q.INSTRUMENT`); if exactly ONE candidate's crook set intersects this
+staff's own crook set and no other candidate's does, DECIDE that slot,
+`reason="paired_by_crook"`. `Q.MARGIN_LABEL` added to `wants`/
+`composed_from`; `"paired_by_crook"` added to `reasons`. It may only
+narrow what `_forced_pairing` already tied — never invent a candidate, and
+it refuses the moment the tie carries no crook or the crook doesn't
+disambiguate cleanly (both cases have their own test, see §3).
+
+**Deliberately does NOT touch `unnamed_in_short_system`** (20 staves, 435
+of 956, 45.5%). That staff carries no instrument word at all; resolving it
+would need the assumption *"a bare crook with no root word always belongs
+to the SAME instrument as whichever staff is adjacent to it"* — a claim
+about how THIS plate's brace/label layout works, not something already
+decided on the record. That is the engraving-convention question CLAUDE.md
+rule 3 asks to confirm before code, and it is genuinely new: Sean's
+2026-09-22 cello/bass convention is about which of two ADJACENT SLOTS a
+short BLOCK covers, not about whether a label-less staff inherits an
+identity from a neighbour at all. Asked in §4, with crops.
+
+### 3. Proof — conceptual wiring + microscopic RED→GREEN tests
+
+Per Sean's steer (relayed 2026-09-29): no record-scale re-decide. The
+proof is the wiring statement above plus
+`tools/omr/tests/test_staged_slot_crook.py`, 11 tests built from a handful
+of real rows (the REAL Brahms margin text, `"(C) Hr."` / `"Hr. (Es)"` /
+`"(Es)"`, in a 2–3 system synthetic document via the same `_document`
+harness `test_staged_slot_by_name.py` already uses) — not a record.
+
+* `TestCrookTokens` (3): the extractor alone — parenthetical only, case/
+  whitespace-insensitive, empty on none.
+* `test_a_tied_name_is_settled_by_a_MATCHING_crook` /
+  `test_the_OTHER_crook_picks_the_OTHER_slot`: **the positive case**, real
+  text, both directions (crook `C` → slot 5, crook `Es` → slot 6).
+* `test_a_bare_crook_with_no_root_word_is_UNTOUCHED`: **the half not
+  claimed** — `"(Es)"` alone never reaches this branch at all (no name to
+  tie), asserts `reason != "paired_by_crook"` and outcome is not decided.
+* `test_no_crook_at_all_still_abstains`, `test_an_AMBIGUOUS_crook_still_
+  abstains`, `test_a_crook_matching_NEITHER_candidate_still_abstains`:
+  three ways the match can fail, each still refusing rather than picking.
+* `test_a_non_ambiguous_tied_name_case_is_UNCHANGED`: **the existing
+  positive control**, re-run — `test_staged_slot_by_name.py`'s own
+  `"Violino I"`/`"Tuba"` case (a single candidate, the OTHER abstention
+  shape) must not be touched (`cand_slots` there has length 1; the crook
+  branch never fires).
+* `test_the_full_system_is_UNCHANGED`: the equal-count population never
+  enters the short-system branch and must not move.
+
+**RED confirmed by construction**: `git apply -R` on this fix's own diff
+to `identity.py` (saved as a patch, re-applied immediately after) makes
+`test_staged_slot_crook.py` fail to even COLLECT (`_crook_tokens` does not
+exist) — i.e. every one of the 11 assertions is load-bearing on the code
+existing, not vacuous. Re-applied and GREEN: 11 passed.
+
+**What was NOT measured, on purpose (Sean's steer):** no whole-movement
+re-decide of Brahms or Litolff on the current tree — an `adjudicate.run`
++`evaluate.run` pass over Litolff alone measured **339 s + 639 s** and was
+killed mid-`evaluate.run` (`infer.run` not even reached) once the cost was
+clear; a machine already running a 21 GB `review.rerun --control` pass on
+this same Brahms record made a second whole-movement pass a real risk, not
+only a slow one. In its place, a **read-only, zero-rebuild check**
+(`/tmp` scratch, not committed — reads the ALREADY-GATHERED `Q.MARGIN_
+LABEL`/`Q.INSTRUMENT` rows off the loaded Brahms record with the exact
+matching rule this fix implements, no `Log`/`adjudicate.run`) confirms all
+22 real `ambiguous_pairing` staves' own crook (`"C"`) matches ONLY the
+reference's slot 5 (`"(C) Hr."`, crook `"C"`) and never slot 6 (`"Hr.
+(Es)"`, crook `"ES"`) — deterministic, hand-verifiable, and exactly what
+the unit-tested code path computes. The one thing genuinely measured at
+record scale — Litolff has **0** `ambiguous_pairing` staves at all (dead
+at zero, matching `_forced_pairing`'s own docstring prediction) — came from
+the `adjudicate.run`-only pass before it was stopped, and is a true
+negative control: this fix costs nothing where the shape does not occur.
+
+### 4. Crops and the question — `unnamed_in_short_system`
+
+8 crops, `benchmarks/omr-staff-identity-2026-09/out/print/o226-*.png`,
+manifest `o226-manifest.json`, `VERDICT_none_yet: null` on every row.
+Rendered at **600 DPI** — the gather's own raster DPI
+(`provenance.settings.args.dpi`), matching `Q.STAFF_LINES`'s coordinate
+space; the first draft rendered at 400 DPI and silently drew the Horn
+bands over "2.Viol."/"Br" — caught by eye, not by a control, worth a rule
+of its own (CLAUDE.md doesn't yet say "a crop's DPI must match the
+gather's").
+
+Covers every shape found: 4 clean pairs (ambiguous + unnamed) on
+different pages, 2 systems where only ONE Horn staff was gathered at all
+(no partner to eliminate against — this fix's own match still resolves
+these, from the crook alone), 1 system where BOTH staves read only a bare
+crook, and the reference system itself for comparison. Crop #1 shows a
+printed brace spanning both staves with a single `"Hr."` label roughly
+centred on it — visual support for the adjacency reading, not proof: one
+plate, one brace style, and a guess here would place one section's music
+on another's part, exactly as `_forced_pairing`'s own docstring warns
+against.
+
+**Question:** does a bare parenthetical crook (`"(C)"`/`"(Es)"`) with no
+instrument word, on a staff immediately below/paired with a decided Horn
+staff at the same slot region, ALWAYS mean "this staff is the Horn pair's
+other crook, continuing the label above it" — never an unrelated
+instrument's own independent crook annotation? If yes, `slot_index` can
+place it by the SAME crook-matching mechanism just built, never by
+guessing order.
+
+### 5. Gate
+
+`pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`: **3,804
+passed, 3 skipped** (main 3,793 + 11 new, 0 failed; one run raced a
+mid-flight edit to `brakes.py` and reported 1 false failure — reproduced
+clean on a fresh process, 3,804/0/3, and `test_staged_check.py` alone
+17/17). `python3 -m tools.omr.staged.check`: **247, status=ok** — closes
+`brakes.py`'s own pre-registered `("slot_index", "margin_label")` finding
+("OPEN, and NOT zero reach ... a staff whose instrument abstains loses the
+label too"), which this fix wires; nothing else moved. No `library/`,
+`omr-weights/`, venv, or PDF path in any test file (grepped). 2.25 (beam
+counting, `rhythm.py`) untouched. `.claude/worktrees/redecide-a9bdec8a`
+untouched.

@@ -7,6 +7,7 @@ mechanical rather than remembered.
 
 from __future__ import annotations
 
+import re
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
@@ -299,13 +300,13 @@ def _forced_pairing(system: List[Optional[str]],
     ),
     implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED),
+                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL),
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED),
-    reasons=("full_lineup", "named", "paired_by_name", "no_reference",
-             "no_ordinal", "reference_names_nothing", "unnamed_in_short_system",
-             "not_in_reference", "ambiguous_pairing",
+           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL),
+    reasons=("full_lineup", "named", "paired_by_name", "paired_by_crook",
+             "no_reference", "no_ordinal", "reference_names_nothing",
+             "unnamed_in_short_system", "not_in_reference", "ambiguous_pairing",
              "family_block", "family_block_not_forced",
              "forced_by_constraints"),
     mode=Mode.ADDITIVE,
@@ -408,6 +409,16 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
     mine = names.get(ev.subject.at(Kind.SYSTEM), [])
     here = int(ordinal.value)
     pairing = _forced_pairing(mine, ref_names)
+    # ⚠️ ROADMAP 2.26. Computed here, unconditionally, and cheaply --
+    # `_margin_texts_by_system` reads the same rows `_names_by_system`
+    # already scanned, and both `my_text`/`ref_texts` are None-filled lists
+    # a caller may index past their read length. Only used below where the
+    # name pairing is TIED, never to override a pairing that already forced
+    # an answer.
+    margin_texts = _margin_texts_by_system(ev, document)
+    mine_texts = margin_texts.get(ev.subject.at(Kind.SYSTEM), [])
+    my_text = mine_texts[here] if here < len(mine_texts) else None
+    ref_texts = margin_texts.get(ref_system, [])
     if here >= len(mine) or mine[here] is None:
         # ⚠️⚠️ THE BLANKET ABSTENTION HERE WAS A BRAKE WHOSE PREMISE EXPIRED.
         # It read as *"a staff with no name cannot be placed"*, and it was
@@ -437,6 +448,49 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
         # a wider lexicon or a re-read; a name the reference prints TWICE
         # wants a tie-break this decision does not have. Collapsing them sends
         # the next person to the wrong module.
+        if mine[here] in ref_names:
+            # ⚠️⚠️ ROADMAP 2.26, AND IT IS A MATCH, NOT A GUESS. Measured on
+            # Brahms 1/i (Breitkopf 317803, whole movement): 22 of 42
+            # `staff_not_identified` staves land here, ALL of them a Horn
+            # pair -- the reference prints `Horn` twice (`"(C) Hr."` and
+            # `"Hr. (Es)"`, both reduced to the bare name by
+            # `adjudicate_instrument`'s alias `hr`) and `_forced_pairing`
+            # correctly refuses to choose between the two identically-named
+            # slots. The crook that DOES distinguish them was never thrown
+            # away -- only never carried this far, because it lives on the
+            # raw `Q.MARGIN_LABEL` row and `_forced_pairing` only ever sees
+            # the reduced name. Comparing THIS staff's own crook against the
+            # SAME two reference candidates' own crook uses nothing this
+            # staff or the reference did not already carry -- it is
+            # `_forced_pairing`'s own uniqueness rule, run one field over.
+            #
+            # ⚠️ IT DOES NOT TOUCH `unnamed_in_short_system`. A staff with NO
+            # instrument word at all (a bare `"(Es)"`) still names nothing on
+            # its own; treating it as "whichever Horn slot is left" would be
+            # the adjacency GUESS roadmap 2.26's crops ask Sean about, not
+            # this match.
+            cand_slots = [j for j, n in enumerate(ref_names) if n == mine[here]]
+            my_crooks = _crook_tokens(my_text)
+            if my_crooks and len(cand_slots) > 1:
+                ref_crooks = [_crook_tokens(ref_texts[j] if j < len(ref_texts)
+                                            else None)
+                             for j in cand_slots]
+                matches = [j for j, ck in zip(cand_slots, ref_crooks)
+                          if my_crooks & ck]
+                clean = all(not (my_crooks & ck)
+                           for j, ck in zip(cand_slots, ref_crooks)
+                           if j not in matches)
+                if len(matches) == 1 and clean:
+                    return Ruling(
+                        value=int(matches[0]), reason="paired_by_crook",
+                        used=(ordinal.id,)
+                              + ((instrument.id,) if instrument else ()),
+                        detail={"instrument": mine[here], "ordinal": here,
+                               "n_staves": count.value,
+                               "reference": ref_system.to_key(),
+                               "reference_size": len(ref_names),
+                               "my_text": my_text, "crook": sorted(my_crooks),
+                               "candidates_considered": cand_slots})
         reason = ("not_in_reference" if mine[here] not in ref_names
                   else "ambiguous_pairing")
         return Ruling.abstain(reason, instrument=mine[here],
@@ -469,6 +523,46 @@ def _names_by_system(ev: Evidence, document) -> Dict[object, List[Optional[str]]
             row.append(None)
         row[sub.staff] = v.value.get("name")
     return out
+
+
+def _margin_texts_by_system(ev: Evidence, document) -> Dict[object, List[Optional[str]]]:
+    """`{system subject: [raw Q.MARGIN_LABEL text or None, by staff ordinal]}`.
+
+    ⚠️ ROADMAP 2.26. Mirrors `_names_by_system` exactly, but reads the
+    OBSERVATION rather than `adjudicate_instrument`'s reduced verdict. The
+    crook a tied name pairing needs (`"(C) Hr."` vs `"Hr. (Es)"` both
+    resolving to the bare family name `Horn`, alias `hr`) is IN the row and
+    was never carried into `Q.INSTRUMENT`'s value -- so a consumer stuck on
+    the reduced name has a second, unreduced witness sitting right beside it
+    on the very same subject, gathered by the same reader, at no new cost.
+    """
+    out: Dict[object, List[Optional[str]]] = {}
+    for r in ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=document):
+        sub = r.subject
+        if sub.kind is not Kind.STAFF:
+            continue
+        row = out.setdefault(sub.at(Kind.SYSTEM), [])
+        while len(row) <= sub.staff:
+            row.append(None)
+        # last observation wins, matching `Record.value`'s own rule
+        row[sub.staff] = r.value
+    return out
+
+
+def _crook_tokens(text: Optional[str]) -> frozenset:
+    """The parenthetical CROOK fragments of a margin reading, normalised.
+
+    ⚠️ ONLY the parenthetical content. `"(C) Hr."` -> `{"C"}`,
+    `"Hr. (Es)"` -> `{"ES"}` -- the crook, and nothing `adjudicate_instrument`
+    already used to name the instrument, so this can never re-decide what
+    that decision already decided; it only ever disambiguates BETWEEN two
+    slots that decision could not tell apart.
+    """
+    if not text:
+        return frozenset()
+    return frozenset(t.strip().upper() for t in re.findall(r"\(([^)]*)\)", text)
+                     if t.strip())
 
 
 def _pick_reference(sizes, widest, names):

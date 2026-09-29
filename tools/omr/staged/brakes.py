@@ -183,11 +183,15 @@ ACCOUNTED_READINGS: Dict[Tuple[str, str], str] = {
         "it did — 18 of 65 IMSLP PDFs carry a text layer and neither of ours "
         "is one."),
     ("slot_index", "text_layer"): "OPEN — same zero reach as instrument's.",
-    ("slot_index", "margin_label"): (
-        "OPEN, and NOT zero reach: 50 and 97 `margin_label` rows. "
-        "`adjudicate_slot_index` reaches the label only THROUGH `instrument`, "
-        "so a staff whose instrument abstains loses the label too — the "
-        "cascade Q2/Q3 measure at 25 of 25 on Beethoven."),
+    # ⚠️ ROADMAP 2.26 CLOSED THIS ONE — do not re-add it. `adjudicate_slot_index`
+    # now reads `Q.MARGIN_LABEL` directly (`_margin_texts_by_system`), not only
+    # through `instrument`, so a tied name pairing whose crook the `instrument`
+    # cascade already discarded (`"(C) Hr."` / `"Hr. (Es)"` both reducing to
+    # the bare name `Horn`) can still be settled from the raw text. It is still
+    # true that a staff whose `instrument` verdict abstains outright carries no
+    # NAME to pair by at all — that is `unnamed_in_short_system`'s population,
+    # untouched by this fix and asked of Sean instead
+    # (`benchmarks/omr-staff-identity-2026-09/FINDINGS.md`).
     ("part_partition", "text_layer"): "OPEN — same zero reach.",
     ("part_partition", "margin_label"): (
         "OPEN — same shape as slot_index's: reached only through `instrument` "
