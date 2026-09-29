@@ -408,3 +408,93 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
                               n for r, n in reasons.items()
                               if r in (ABSTAIN.NO_READING,
                                        ABSTAIN.NOT_IN_LEXICON))})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.13: the printed bar number
+# ─────────────────────────────────────────────────────────────────────────────
+
+import re as _re
+
+_BAR_NUMBER_DIGITS = _re.compile(r"\d+")
+
+
+def _bar_number_from_text(text: str) -> Optional[int]:
+    """The integer a printed numeral names, or `None` if `text` is not one.
+
+    ⚠️ A SECOND COPY OF `bar_number_text.bar_number_from_text`, DELIBERATELY.
+    ADJUDICATE reads a FROZEN log and may import nothing that touches a
+    raster or a subprocess -- `bar_number_text` imports `pytesseract` and
+    `PIL` at call time inside `read_crop`, which this module must never do.
+    The two are asserted equal by `test_staged_printed_bar_number.py` so they
+    cannot drift; duplicating the five-line predicate is cheaper than a
+    shared import that would make this decision's module graph reach a
+    subprocess-capable reader.
+    """
+    if not text:
+        return None
+    runs = _BAR_NUMBER_DIGITS.findall(text)
+    if len(runs) != 1:
+        return None
+    try:
+        n = int(runs[0])
+    except ValueError:
+        return None
+    if n <= 0 or n > 9999:
+        return None
+    return n
+
+
+@decision(
+    quantity=Q.PRINTED_BAR_NUMBER,
+    checkable=Checkable.UNCHECKABLE,
+    composed_from=(Q.PRINTED_BAR_NUMBER,),
+    scope=Kind.SYSTEM,
+    wants=(Q.PRINTED_BAR_NUMBER,),
+    reasons=("read", "no_reading", "not_numeric",
+             "ambiguous_multiple_readings"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_printed_bar_number(ev: Evidence) -> Ruling:
+    """What the numeral GATHER read above this system's first bar MEANS, as
+    an integer -- "what does this ONE thing mean, on what evidence" (ADJUDICATE,
+    CLAUDE.md §4a).
+
+    ⚠️ IT NEVER COMPARES AGAINST THE FILE'S OWN BAR COUNT. That comparison is
+    a fact about the DOCUMENT's joined parts (`tools.omr.staged.export.
+    _document_bar_offsets`), which does not exist until EXPORT -- this
+    decision runs over the GATHERED log alone, exactly like every other
+    ADJUDICATE decision, and reports only what the numeral itself says.
+    `_printed_bar_number_check` (`export.py`) is where the two facts meet,
+    and it NEVER renumbers or inserts a bar from the result -- see that
+    function's own docstring.
+
+    ⚠️ A REHEARSAL LETTER IS NOT THIS QUANTITY. Some editions print a
+    rehearsal letter in the same spot a bar number would occupy on another;
+    `_bar_number_from_text` refuses anything that is not EXACTLY one run of
+    digits, so `"A"`, `"12 3"` (two runs -- which one is the bar number is a
+    guess this refuses to make, CLAUDE.md rule 6) and an empty read all
+    abstain rather than being coerced into a number.
+    """
+    rows = ev.rows(Q.PRINTED_BAR_NUMBER)
+    if not rows:
+        refusals = ev.refusals(Q.PRINTED_BAR_NUMBER)
+        return Ruling.abstain("no_reading", n_refusals=len(refusals),
+                              reasons=sorted({str(a.reason) for a in refusals}))
+
+    numeric = [(row, _bar_number_from_text(str(row.value))) for row in rows]
+    numeric = [(row, n) for row, n in numeric if n is not None]
+    if not numeric:
+        return Ruling.abstain("not_numeric",
+                              texts=[str(row.value) for row in rows])
+
+    values = sorted({n for _row, n in numeric})
+    if len(values) > 1:
+        candidates = tuple(Candidate(value=n, support=1.0) for n in values)
+        return Ruling.narrow(candidates, "ambiguous_multiple_readings",
+                             used=tuple(row.id for row, _n in numeric),
+                             readings=values)
+
+    row, n = numeric[0]
+    return Ruling(value=n, reason="read", used=(row.id,),
+                  detail={"raw_text": str(row.value)})

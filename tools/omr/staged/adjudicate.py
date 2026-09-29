@@ -1058,6 +1058,11 @@ ORDER: Tuple[str, ...] = (
     # text
     Q.DYNAMIC,
     Q.DIRECTION,
+    # ⚠️ ROADMAP 2.13. Reads GATHER only (`Q.PRINTED_BAR_NUMBER`'s own
+    # Observations) -- nothing in ADJUDICATE depends on it and it depends on
+    # nothing here, so its position in this list is free; placed beside the
+    # other text-reading decisions because it is one.
+    Q.PRINTED_BAR_NUMBER,
 )
 
 
