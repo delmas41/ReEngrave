@@ -22,6 +22,9 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from ..gather import LEDGER_ROUND_UP
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
+# ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
+# pair" query -- see `structure.grand_staff_partner_staff`'s own docstring.
+from . import structure as _structure
 
 # ⚠️ ASSUMED WEIGHTS (A-OWN-1). Ordered to match the tiers the existing code
 # already applies in this order; none is measured.
@@ -2885,3 +2888,145 @@ def adjudicate_ornament_owner(ev: Evidence) -> Ruling:
                 "dx_notehead_widths": (dx / nh_width) if nh_width else None,
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.27d — pedal marks and octave brackets, gated on a decided brace.
+#
+# Neither family has a `record.Q` of its own to gather into
+# (`gather_coverage.FAMILY_TO_Q["keyboard"] = None`, `["ottava"] = None`), so
+# each declares its domain the way `family_precision.py`'s ledger/accidental/
+# arpeggiato decisions already do for the same reason: `subjects_from=
+# Q.GLYPH_BOX` narrowed by `subjects_classed`, the raw detector class rather
+# than a named quantity. Both are OWNERSHIP questions, not "is this real"
+# questions, so they belong here beside `articulation_owner`/`fermata_
+# owner`/`ornament_owner` rather than in `family_precision.py`.
+#
+# ⚠️ EXPORT DOES NOT YET READ EITHER VERDICT -- see `Q.PEDAL_OWNER`/
+# `Q.OTTAVA_OWNER`'s own docstrings in `record.py` and FINDINGS SS2.27d in
+# `benchmarks/omr-owner-domain-2026-09/FINDINGS.md`. Neither family fires on
+# this project's acceptance set (no keyboard/harp movement, no ottava
+# bracket measured yet), so leaving the `<pedal>`/`<octave-shift>` emission
+# unbuilt costs nothing there; building the OWNERSHIP half now means the
+# export gap is the ONLY thing left when a keyboard work enters the corpus,
+# rather than a fresh nearest-staff guess as well.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+@decision(
+    quantity=Q.PEDAL_OWNER,
+    checkable=Checkable.UNCHECKABLE,
+    # ⚠️ `Q.GLYPH_BOX` IS NOT HERE. It sets this decision's DOMAIN
+    # (`subjects_from`/`subjects_classed`, below) but its content -- the
+    # box's own x/y/w/h -- answers no question this decision asks; unlike
+    # `adjudicate_ottava_owner`, a pedal mark's OWN geometry is not read,
+    # only which staff it was filed on.
+    composed_from=(Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+    scope=Kind.GLYPH,
+    subjects_from=Q.GLYPH_BOX,
+    subjects_classed=("keyboardpedal",),
+    wants=(Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+    reasons=("grand_staff_lower_staff", "no_brace"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_pedal_owner(ev: Evidence) -> Ruling:
+    """A `keyboardPedalPed`/`keyboardPedalUp` glyph belongs to the LOWER
+    staff of the grand-staff pair it was detected on -- never to whichever
+    cell's pad happened to catch the ink, because the mark sits BELOW the
+    whole pair, not between its two hands (`PLACEMENT-CONVENTIONS.md`,
+    "Pedal marks": *"below the entire grand staff... never attributed to
+    the nearer one by distance"*).
+
+    Off a decided brace this ABSTAINS `no_brace` rather than guessing a
+    staff -- inert on every orchestral system, where no group's own
+    instrument family is ever keyboard/harp and `Q.GROUP_SYMBOL` never
+    decides "brace" at all.
+    """
+    home_sub = ev.subject.at(Kind.STAFF)
+    home = home_sub.to_key()
+    # ⚠️ ROADMAP 2.27d, READ DIRECTLY (not only through `structure`'s own
+    # query) so `wants`' declaration of both quantities is true of THIS
+    # body -- see `text._canonical_grand_staff_owner`'s identical note.
+    brace = ev.verdict(Q.GROUP_SYMBOL, subject=home_sub.at(Kind.SYSTEM))
+    if brace is None or brace.value != "brace":
+        return Ruling.abstain("no_brace")
+    own_group = ev.verdict(Q.STAFF_GROUP, subject=home_sub)
+    if own_group is None or own_group.value is None:
+        return Ruling.abstain("no_brace")
+    partner = _structure.grand_staff_partner_staff(ev, home)
+    if partner is None:
+        return Ruling.abstain("no_brace")
+    a, b = R.Subject.from_key(home), R.Subject.from_key(partner)
+    lower = home if a.staff >= b.staff else partner
+    return Ruling(value=lower, reason="grand_staff_lower_staff",
+                  used=(brace.id, own_group.id),
+                  detail={"pair": sorted([home, partner])})
+
+
+@decision(
+    quantity=Q.OTTAVA_OWNER,
+    checkable=Checkable.UNCHECKABLE,
+    composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES),
+    scope=Kind.GLYPH,
+    subjects_from=Q.GLYPH_BOX,
+    subjects_classed=("ottavabracket",),
+    wants=(Q.GLYPH_BOX, Q.STAFF_LINES),
+    reasons=("above", "below", "no_staff_lines"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_ottava_owner(ev: Evidence) -> Ruling:
+    """Which staff an `ottavaBracket` shifts, and which direction: the
+    bracket belongs to the staff it hugs, never to a neighbour across the
+    gap it is drawn in (`PLACEMENT-CONVENTIONS.md`, "Brace, bracket, ottava
+    bracket": *"an ottava bracket sits above (8va) or below (8vb) the
+    staff whose octave it shifts"*).
+
+    Geometry only, off THIS glyph's OWN cell -- an `ottavaBracket` box
+    whose vertical centre stands above this staff's own top line is an
+    8va for THIS staff (`"above"`); below the bottom line is an 8vb
+    (`"below"`). A box that falls inside the five-line band (a misread,
+    the class this decision's own domain never expects) abstains rather
+    than guessing a side.
+
+    ⚠️ THE MusicXML SIDE IS NOT THE SAME WORD AS THIS VALUE. An `above`
+    bracket is written `<octave-shift type="down" size="8">` and a
+    `below` one `type="up"` -- MusicXML's `type` names the direction of
+    the shift AWAY FROM the true (sounding) pitch, which is the OPPOSITE
+    of the printed line's side (verified 2026-09-29,
+    `usermanuals.musicxml.com/MusicXML/Content/EL-MusicXML-octave-
+    shift.htm`: *"up: ... such as 8va bassa"*, *"down: ... such as
+    8va"*). Written pitch is untouched: an `<octave-shift>` is a
+    `<direction>`, not a pitch rewrite, so nothing here or at EXPORT may
+    change a note's `<pitch>` for this reason -- see `Q.OTTAVA_OWNER`'s
+    own docstring in `record.py`.
+    """
+    # ⚠️ `ev.rows(Q.GLYPH_BOX)` DEFAULTS TO `subject=ev.subject`, so every
+    # row returned already names THIS glyph -- the last is taken as the
+    # freshest reading, the same convention `adjudicate_system_membership`
+    # and its siblings in `structure.py` use for a single-reader quantity.
+    rows = ev.rows(Q.GLYPH_BOX)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)) or len(rows[-1].value) < 5:
+        return Ruling.abstain("no_staff_lines")
+    _cls, _x, y, _w, h = rows[-1].value[:5]
+    yc = float(y) + float(h) / 2.0
+
+    home = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=home)
+    if not lines or not lines[-1].value:
+        return Ruling.abstain("no_staff_lines")
+    ys = [float(v) for v in lines[-1].value]
+    top, bottom = min(ys), max(ys)
+
+    if yc < top:
+        return Ruling(value={"staff": home.to_key(), "direction": "above",
+                             "musicxml_type": "down"}, reason="above",
+                      used=(rows[-1].id, lines[-1].id),
+                      detail={"y_center": yc, "staff_top": top})
+    if yc > bottom:
+        return Ruling(value={"staff": home.to_key(), "direction": "below",
+                             "musicxml_type": "up"}, reason="below",
+                      used=(rows[-1].id, lines[-1].id),
+                      detail={"y_center": yc, "staff_bottom": bottom})
+    return Ruling.abstain("no_staff_lines", y_center=yc, staff_top=top,
+                          staff_bottom=bottom)

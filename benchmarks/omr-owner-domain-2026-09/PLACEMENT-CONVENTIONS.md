@@ -336,13 +336,20 @@ lane's scope, named in "Rules safe to wire").
 - **Known exceptions:** **cross-staff beaming in keyboard music** — a note
   drawn on staff B for spacing reasons still LOGICALLY belongs to whichever
   staff was chosen as the beam's "home" voice; the visual staff and the
-  logical staff can disagree, and no rule here reads which was chosen.
-  Orchestral strings/winds/brass essentially never do this; it is a piano/
-  harp case.
+  logical staff can disagree. Orchestral strings/winds/brass essentially
+  never do this; it is a piano/harp case. **WIRED 2026-09-29 (ROADMAP
+  2.27d):** `_not_the_neighbours_beam` (`adjudicators/rhythm.py`) now
+  tracks WHICH neighbour staff each touched stem belongs to and keeps a
+  stroke where every staff it touches is a DECIDED brace partner
+  (`structure.grand_staff_partner_staff`) — the "home voice" question
+  itself (which of the pair's two staves the beam logically belongs to,
+  where that differs from where the notes are drawn) remains unread; only
+  the "is this really the neighbour's beam" discount is gated.
 - **Status:** MEASURED HERE (the shipped rule) + ESTABLISHED PRACTICE
   (secondary source — Finale/LilyPond/MuseScore/Soundslice documentation,
   not Gould's primary text) for the cross-staff exception.
-- **Registry ref:** `[C11]`, `[C12]`; cross-staff beaming — **GAP**.
+- **Registry ref:** `[C11]`, `[C12]`; cross-staff beaming — **GAP** (the
+  discount is wired; the registry entry itself is still not written).
 
 ### Stems
 `stem`
@@ -567,8 +574,13 @@ lane's scope, named in "Rules safe to wire").
 - **Known exceptions:** none recorded beyond the "always below, never
   between" placement itself.
 - **Status:** ESTABLISHED PRACTICE (secondary source — MuseScore/Dorico
-  forum documentation, not Gould's primary text); relevance to THIS
-  project is ASSUMED absent (flagged in Questions for Sean).
+  forum documentation, not Gould's primary text). **WIRED (ownership half)
+  2026-09-29, Sean's "build anyway" (ROADMAP 2.27d):** new decision `Q.
+  PEDAL_OWNER` (`adjudicators/ownership.py`) files the LOWER staff of a
+  DECIDED brace pair regardless of which cell detected the mark, abstains
+  `no_brace` off one. `<pedal>` MusicXML emission is NOT built — no
+  renderer for it exists anywhere in this repo; named as an export gap
+  (`export._grand_staff_family_gap`).
 - **Registry ref:** **GAP.**
 
 ### Dynamics on a grand staff (cross-cutting exception, not its own class)
@@ -581,7 +593,11 @@ lane's scope, named in "Rules safe to wire").
   will assign a shared mark to one hand." Not exercised by this project's
   current acceptance set (see Pedal marks).
 - **Status:** ESTABLISHED PRACTICE (Dorico/Steinberg help; strong
-  convention, not measured here).
+  convention, not measured here). **WIRED 2026-09-29 (ROADMAP 2.27d, "Rules
+  safe to wire" item B, below):** `adjudicate_dynamic`'s own `_canonical_
+  grand_staff_owner` (`adjudicators/text.py`) files a CONTESTED letter
+  (ink both staves' padded cells caught) onto the pair's upper staff once,
+  on a DECIDED brace only; an uncontested letter is never moved.
 - **Registry ref:** `[L54]`.
 
 ### Direction words, tempo/expression text, rehearsal marks
@@ -668,7 +684,18 @@ lane's scope, named in "Rules safe to wire").
 - **Known exceptions:** organ-with-pedal is three staves; celesta and
   accordion are also braced outside the piano/harp pair.
 - **Status:** SEAN-adjacent/MEASURED HERE for the brace-means-one-player
-  claim; ASSUMED for ottava bracket side.
+  claim; ASSUMED for ottava bracket side. **WIRED 2026-09-29 (ROADMAP
+  2.27d):** the pedal/grand-staff-dynamics gate now reads `Q.GROUP_SYMBOL`
+  DECIDED `"brace"` directly (`structure.grand_staff_partner_staff`,
+  `adjudicators/structure.py`) rather than `len(staves) == 2`, resolving
+  this row's own named unreliability for those two consumers — the
+  coarseness `Q.GROUP_SYMBOL` itself inherits (it decides "brace" for a
+  whole SYSTEM from the union of all its groups' instruments, so a system
+  holding BOTH a piano and an unrelated bracket pair would gate both) is
+  NOT fixed, only contained by the block-membership check (FINDINGS
+  §2.27d). Ottava OWNERSHIP (above/below, off the bracket's own geometry,
+  no brace needed) is also now wired, `Q.OTTAVA_OWNER`; the SIDE
+  convention itself is still ASSUMED, untested against a primary source.
 - **Registry ref:** `[C65]`; ottava bracket — **GAP.**
 
 ---
@@ -677,8 +704,9 @@ lane's scope, named in "Rules safe to wire").
 
 Only rows above that are SEAN-CONFIRMED or clearly ESTABLISHED, and
 DECISIVE (not a mere hint) for the specific question "a mark sits in the
-pad between staff A and staff B — which one is it." Two are already wired
-and kept here as precedent; three are not.
+pad between staff A and staff B — which one is it." Three are already
+wired and kept here as precedent; two are not (item C, and the ottava/
+pedal export emission named in item B's own update).
 
 ### Already wired (precedent, not a pending action)
 1. **Ledger lines are authoritative** (`glyph_owner`'s `ledger_direction`
@@ -689,6 +717,8 @@ and kept here as precedent; three are not.
    `glyph_owner` verdict is not this mark's to attach to**
    (`_owned_by_a_different_staff`, 2.27) — feeds `articulation_owner`,
    `fermata_owner`, `ornament_owner`.
+4. **Grand-staff dynamics are BOTH, not nearer** — item B below, WIRED
+   2026-09-29 (ROADMAP 2.27d) — feeds `adjudicate_dynamic`.
 
 ### Not yet wired — proposed
 
@@ -709,12 +739,29 @@ split with a 2.5-space empty gap between populations) → feeds
 **B. Grand-staff dynamics are BOTH, not nearer** (`[L54]`) → feeds
 `adjudicate_dynamic`, gated on a DECIDED brace verdict naming a
 piano/harp-shaped pair.
-- Test 1: on a braced two-staff pair with `instrument` decided as Piano,
-  a dynamic letter sitting between the two staves is filed as belonging
-  to BOTH, not routed through rule A at all.
-- Test 2 (negative control): the identical geometry on a non-braced pair
-  (e.g. two horn staves) is untouched by this rule and falls through to
-  rule A.
+
+**WIRED 2026-09-29 (ROADMAP 2.27d, `benchmarks/omr-owner-domain-2026-09/
+FINDINGS.md` §2.27d).** `_canonical_grand_staff_owner` (`adjudicators/
+text.py`) reads `structure.grand_staff_partner_staff`'s own `Q.GROUP_
+SYMBOL`/`Q.STAFF_GROUP` connection rather than a fresh Piano-specific
+check — same gate, phrased as "is this staff one half of a decided brace
+pair" rather than "is the instrument named Piano", which is the more
+general form `BRACE_FAMILIES = {keyboard, harp}` already states. Filed
+ONCE, on the pair's canonical (upper-ordinal) staff, not literally on
+"both" in the file — there is no MusicXML representation for a single
+direction shared by two `<part>`s on this exporter's current one-staff-
+one-part model, so "both" is expressed as "the part's own single copy,
+deterministically placed" rather than two written copies. Both test
+shapes below are BUILT, in `test_staged_grand_staff_2_27d.py`:
+- Test 1 (built as `TestDynamicsSharedOnceOnly::test_GREEN_...`): on a
+  braced pair with `Q.GROUP_SYMBOL` DECIDED `"brace"`, a `Q.GLYPH_OWNER`-
+  CONTESTED letter is filed on the upper staff, dropped from the lower as
+  a duplicate — not "routed through rule A" since rule A (the band
+  position rule) is a DIFFERENT, still-unwired mechanism (2.27c);
+- Test 2 (built as `..._RED_off_a_brace_...`, the negative control): the
+  identical fixture with the pair's instrument NOT keyboard/harp
+  (`family="brass"`) is untouched — the letter stays with whichever
+  staff `Q.GLYPH_OWNER` named, exactly as before this item.
 
 **C. `dot_role` gets the same `owned_by_another_staff` gate as 2.27**
 (mechanical parity, not a new convention — `[C50 + L31]` plus the 2.27
@@ -740,7 +787,9 @@ Every ASSUMED row above that matters to the gap question, one line each.
    staff beaming) — none of the four acceptance documents is a keyboard or
    harp part. Should these three rows be parked entirely until a keyboard
    work enters the corpus, rather than built speculatively now? (park /
-   build anyway)
+   build anyway) **ANSWERED 2026-09-29 (Sean, DECISIONS): build anyway —
+   WIRED, ROADMAP 2.27d, `FINDINGS.md` §2.27d.** MusicXML emission
+   (`<pedal>`) is still unbuilt, named as an export gap there.
 3. Bowing marks (`stringsDownBow/UpBow`) — should these be treated exactly
    like an articulation (notehead side, opposite stem, centred in x) by
    default, or is there a reason (e.g. always above regardless of stem,
@@ -762,3 +811,10 @@ Every ASSUMED row above that matters to the gap question, one line each.
    *something* in this position); no source was found confirming it
    directly. Worth a quick confirm, or is it out of scope (no ottava
    brackets fire on the acceptance corpus today)? (confirm / out of scope)
+   **ANSWERED 2026-09-29 (Sean, DECISIONS): occurs both above AND below on
+   the real corpus, so not out of scope — the above=8va/below=8vb SIDE
+   MAPPING itself remains ASSUMED (still no primary source), but OWNERSHIP
+   (which staff, geometry only) is now WIRED, `Q.OTTAVA_OWNER`, ROADMAP
+   2.27d, `FINDINGS.md` §2.27d — including the MusicXML `type` inversion,
+   checked against `usermanuals.musicxml.com` and recorded there. Span and
+   `<octave-shift>` emission remain unbuilt.**

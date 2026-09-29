@@ -6,7 +6,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision, is_relocated_copy)
-from ..record import ABSTAIN, Kind, Q, Scope, State
+from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
+from . import structure as _structure
 
 
 #: The 17 words MusicXML has a `<dynamics>` child element for. Anything else a
@@ -40,13 +41,69 @@ def _geometry(row: Any) -> Optional[Tuple[float, float, float]]:
     return float(box[0]), float(box[2]), (float(box[1]) + float(box[3])) / 2.0
 
 
+def _canonical_grand_staff_owner(ev: Evidence, owned_by: str) -> str:
+    """ROADMAP 2.27d, Sean, DECISIONS 2026-09-29 ("build anyway"):
+    *"a dynamic between its two staves belongs to BOTH staves (the part),
+    not one."* `owned_by` is `Q.GLYPH_OWNER`'s answer for one CONTESTED
+    letter -- ink caught by BOTH staves' padded cells, which is exactly
+    what makes it "between" them rather than merely detected once (an
+    UNCONTESTED letter never reaches this function -- see the call site,
+    inside `adjudicate_dynamic` below).
+
+    On a DECIDED brace pair this rewrites that answer to the pair's own
+    canonical member -- by convention the staff with the SMALLER staff
+    ordinal (the upper of the two, matching where a shared MusicXML
+    `<staves>` direction is filed by convention) -- so the SAME letter is
+    filed ONCE, on ONE staff: this function is pure and deterministic in
+    `owned_by`, so BOTH staves of the pair compute the identical canonical
+    answer when their own `adjudicate_dynamic` calls it, and the existing
+    `is_relocated_copy` dedupe (below) drops the copy cut from the other
+    cell exactly as it already drops a same-staff duplicate detection.
+
+    Off a decided brace (`grand_staff_partner_staff` returns `None`) this
+    returns `owned_by` unchanged -- inert on every orchestral system, and
+    on any letter that was never contested in the first place.
+
+    ⚠️ A SEPARATE FUNCTION, DELIBERATELY, so 2.27c's own edit to the band
+    rule in this same file touches neither this branch nor its call site.
+
+    ⚠️ THE CHEAP HALF OF THE GATE IS READ DIRECTLY, HERE, ON PURPOSE: the
+    common case on every orchestral system is that `owned_by`'s own SYSTEM
+    never decides `Q.GROUP_SYMBOL` "brace" at all, so checking that (and
+    `owned_by`'s own `Q.STAFF_GROUP`) before ever asking `structure` to
+    enumerate the system's other staves is a real short-circuit, not
+    ceremony -- and it is what makes `wants`' declaration of the two
+    quantities true of THIS file's own body, not only of `structure.py`'s.
+    """
+    home_sub = Subject.from_key(owned_by)
+    brace = ev.verdict(Q.GROUP_SYMBOL, subject=home_sub.at(Kind.SYSTEM))
+    if brace is None or brace.value != "brace":
+        return owned_by
+    own_group = ev.verdict(Q.STAFF_GROUP, subject=home_sub)
+    if own_group is None or own_group.value is None:
+        return owned_by
+    partner = _structure.grand_staff_partner_staff(ev, owned_by)
+    if partner is None:
+        return owned_by
+    a = Subject.from_key(owned_by)
+    b = Subject.from_key(partner)
+    return owned_by if a.staff <= b.staff else partner
+
+
 @decision(
     quantity=Q.DYNAMIC,
     checkable=Checkable.UNCHECKABLE,
+    # ⚠️ ROADMAP 2.27d ADDS `Q.GROUP_SYMBOL`/`Q.STAFF_GROUP`: a letter
+    # `Q.GLYPH_OWNER` DECIDED between two staves of a decided brace pair is
+    # canonicalised onto the pair's own staff (`_canonical_grand_staff_
+    # owner`, above) before the ownership test ever compares it against
+    # `mine` -- see that function's own docstring for why this is a
+    # SEPARATE branch from 2.27c's band-rule work in this same function.
     composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER,
-                   Q.DYNAMIC_IS_NOT_A_DYNAMIC),
+                   Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP),
     scope=Kind.CELL,
-    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_IS_NOT_A_DYNAMIC),
+    wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_IS_NOT_A_DYNAMIC,
+           Q.GROUP_SYMBOL, Q.STAFF_GROUP),
     # ⚠️ The subjects are the cells `Q.DYNAMIC_LETTER` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()` and an abstention is a row. That is what makes this
@@ -145,6 +202,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = 0
+    grand_staff_shared = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
             continue
@@ -163,6 +221,18 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
         owned_by = (owner.value if owner is not None and owner.value
                     else home)
+        if owner is not None and owner.value:
+            # ⚠️ ROADMAP 2.27d, ONLY THE CONTESTED CASE. `owner` exists
+            # here only for a letter `glyph_owner` actually adjudicated --
+            # i.e. one BOTH staves' padded cells caught, which is the
+            # ink this project's own convention calls "between" them
+            # (`PLACEMENT-CONVENTIONS.md`, "Dynamics on a grand staff").
+            # An uncontested letter (`owner is None`) is left alone: it
+            # was printed once, for one staff, and canonicalising it would
+            # RELOCATE a mark CLAUDE.md rule 6 says never to relocate from
+            # pad position alone.
+            owned_by = _canonical_grand_staff_owner(ev, owned_by)
+            grand_staff_shared += (owned_by != (owner.value or home))
         if owned_by != mine:
             moved_out += (home == mine)
             continue
@@ -236,6 +306,11 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # ⚠️ ROADMAP 3.4g. Letters a `Q.DYNAMIC_IS_NOT_A_DYNAMIC`
         # verdict refused, counted so a short word names its cause.
         "letters_refused_as_not_a_dynamic": not_a_letter,
+        # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
+        # owner` moved onto this staff (or off it) because they sit
+        # between the two staves of a decided brace pair -- zero on every
+        # system that never decides `Q.GROUP_SYMBOL` "brace".
+        "letters_shared_on_grand_staff": grand_staff_shared,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
     if unspellable and not any(w["spelled"] for w in words):

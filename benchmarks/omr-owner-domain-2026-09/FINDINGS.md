@@ -2210,3 +2210,213 @@ verify the channel, which was the safe call. The request was GENUINE and is
 now its own item, 2.27b (the placement-conventions table), briefed directly.
 What this lane built reads only DECIDED ownership verdicts and assumes no
 placement convention, so it stands independently of that table.
+
+## 2.27d — the grand-staff exceptions, gated on a DECIDED brace (2026-09-29, BUILT not merged)
+
+Sean, DECISIONS 2026-09-29, answering 2.27b's question 2 (*"none of the four
+acceptance documents is a keyboard or harp part — park these three rows
+until a keyboard work enters the corpus, or build anyway?"*): **build
+anyway**, with the constraint stated in the same brief — every rule must be
+GATED on a decided brace/grand-staff fact and INERT on an orchestral system,
+proved by a control that can fail (CLAUDE.md rule 7).
+
+**Method, per DECISIONS 2026-09-29: work through the wiring conceptually,
+proved by microscopic RED→GREEN tests.** No gathers, no re-adjudications,
+no crops, no pricing. Every test below is hand-built rows for 2–3 real
+subjects plus a positive/negative control.
+
+### The shared connection
+
+`adjudicators/structure.py:grand_staff_partner_staff(ev, home)` — the ONE
+query every rule below connects to, rather than re-deriving: `home`'s
+SYSTEM has a `Q.GROUP_SYMBOL` verdict DECIDED `"brace"` (`adjudicate_
+group_symbol`, same file — a brace means the group's own instrument family
+is keyboard/harp, `BRACE_FAMILIES`), `home`'s own `Q.STAFF_GROUP` block is
+DECIDED, and EXACTLY ONE other staff of the system shares that block.
+Anything else — no brace decided anywhere in the system, an undecided
+group, a block of size 1 or ≥ 3 (an organ's pedal staff) — returns `None`
+rather than guessing which staff is meant. Never guesses, never re-derives
+brace-vs-bracket: it reads the SAME `Q.GROUP_SYMBOL` verdict `adjudicate_
+group_symbol` already decides.
+
+⚠️ **A STATIC-CHECKER CONSTRAINT SHAPED THE WIRING, AND IT IS WORTH
+RECORDING.** `inventory.py`'s `--check` (`_never_read`) and `reach.py`'s
+`--check` both resolve a `wants`-declared quantity's read by walking the
+CALLING decision's own SOURCE for a literal `Q.<NAME>` token, followed into
+same-FILE helper calls only (`inventory._never_read`: *"followed to depth 3
+within the decision's own MODULE"*). A cross-module helper call — which is
+what `_structure.grand_staff_partner_staff(ev, ...)` is from `text.py`/
+`rhythm.py`/`ownership.py` — is invisible to both checkers, so declaring
+`Q.GROUP_SYMBOL`/`Q.STAFF_GROUP` in a consumer's `wants` and reading them
+ONLY through the shared helper reported as seven NEW "inert declaration"
+findings (`inventory`) and inflated `staged.reach`'s open count by 2 net,
+pushing `check`'s TOTAL from 247 to 263 on the first pass. **Fixed by
+reading the cheap half of the gate directly, in each consumer's own file**
+(`text._canonical_grand_staff_owner`, `rhythm._not_the_neighbours_beam`,
+`ownership.adjudicate_pedal_owner` each open with their own literal
+`ev.verdict(Q.GROUP_SYMBOL, ...)` / `ev.verdict(Q.STAFF_GROUP, ...)` before
+ever calling `structure`'s query) — genuinely a short-circuit (every
+orchestral system fails one of the two cheap checks, so the expensive
+sibling-enumeration in `structure.py` is skipped on the common case), and
+not merely a check-satisfying stub. `Q.PEDAL_OWNER`/`Q.OTTAVA_OWNER`
+themselves stayed UNREAD by the same blindness until a two-line literal
+`rec.verdicts_of(Q.PEDAL_OWNER)` / `rec.verdicts_of(Q.OTTAVA_OWNER)` was
+added to `export.py` (`_grand_staff_family_gap`) — **not** the dynamic
+per-family loop (`FAMILIES`, `_family_refusals`'s `FAMILY_REFUSALS`) the
+rest of the module uses, because that loop is the SAME blind spot
+(measured directly: `Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO`'s only consumer is
+exactly such a loop and `reach --check` still reports it UNREAD, on
+`reach.KNOWN_GAPS` since before this item). A stale `reach.KNOWN_GAPS`
+entry for `Q.GROUP_SYMBOL` ("a DECIDED verdict no stage reads") was deleted
+in the same change — it stopped being true the moment the three consumers
+below landed.
+
+### 1 — grand-staff dynamics (`adjudicators/text.py`)
+
+`_canonical_grand_staff_owner(ev, owned_by)`, a SEPARATE function from
+`adjudicate_dynamic`'s own body (so 2.27c's band-rule edit in the same file
+touches neither this branch nor its call site, per the brief's own
+coordination instruction). Called ONLY where `Q.GLYPH_OWNER` DECIDED a
+letter's owner — i.e. only the CONTESTED population, ink BOTH staves'
+padded cells caught, which is what makes a letter "between" the two staves
+rather than merely detected once. An UNCONTESTED letter (`owner is None`)
+is never touched — canonicalising it would relocate a mark from pad
+position alone, which CLAUDE.md rule 6 forbids. On a decided brace the
+function rewrites the DECIDED owner to the pair's own canonical member (the
+smaller staff ordinal — the "upper" of the two); both staves of the pair
+compute the IDENTICAL canonical answer (the function is pure in
+`owned_by`), so the existing `is_relocated_copy` dedupe drops the copy cut
+from the non-canonical cell exactly as it already drops a same-staff
+duplicate — no new dedupe mechanism was needed. A new `detail` counter,
+`letters_shared_on_grand_staff`, is 0 on every system that never decides
+`"brace"`.
+
+### 2 — pedal marks (`adjudicators/ownership.py`)
+
+`keyboardPedalPed`/`keyboardPedalUp` had NO quantity of their own before
+this item (`gather_coverage.FAMILY_TO_Q["keyboard"] = None`) — the ink
+reaches the record only as an anonymous `Q.GLYPH_BOX` row. New decision
+`Q.PEDAL_OWNER`, same shape `family_precision.py`'s ledger/accidental/
+arpeggiato decisions already use for an un-quantified family
+(`subjects_from=Q.GLYPH_BOX`, `subjects_classed=("keyboardpedal",)`).
+Value is the pair's LOWER staff (by ordinal) whenever `home` is one half of
+a decided brace — regardless of which of the two cells the mark was
+actually detected in, because a pedal mark sits BELOW the entire pair, not
+between the hands (`PLACEMENT-CONVENTIONS.md`, "Pedal marks"). Off a
+decided brace it ABSTAINS `no_brace` (CLAUDE.md rule 8: a fallback never
+converts "cannot tell" into an answer) rather than falling back to
+nearest-staff distance. **Not built**: MusicXML `<pedal>` emission — no
+renderer for it exists anywhere in this repo, staged or legacy (`grep
+'<pedal' tools/` returns nothing) — named as an export gap, below.
+
+### 3 — cross-staff beaming (`adjudicators/rhythm.py`)
+
+`_not_the_neighbours_beam` (ROADMAP 2.25b) now asks, before discounting a
+stroke that touches a neighbour staff's stems: is EVERY touched neighbour
+staff the decided brace partner, and none other? If so the stroke is KEPT
+(the part's own cross-staff beam); a stroke touching the partner AND some
+third staff, or touching a non-partner staff at all, still drops exactly as
+2.25b shipped it. Neighbour stems are now tracked `(staff_index, page_box)`
+rather than flattened into one list, so the exemption can ask WHICH staff a
+touch belongs to. Off a decided brace `partner_staff` is `None` and every
+touch drops — byte-identical to 2.25b's own shipped behaviour.
+
+### 4 — octave brackets (`adjudicators/ownership.py`)
+
+`ottavaBracket` also had no quantity of its own before this item
+(`gather_coverage.FAMILY_TO_Q["ottava"] = None`) — but DOES have a detector
+class, unlike a family with none at all. New decision `Q.OTTAVA_OWNER`,
+same `subjects_from=Q.GLYPH_BOX`/`subjects_classed` shape. Geometry only,
+off the bracket's OWN cell (no brace/pair concept — an ottava belongs to
+the ONE staff it hugs): a box whose vertical centre stands above this
+staff's own top line is `"above"` (8va); below the bottom line is
+`"below"` (8vb); inside the five-line band abstains `no_staff_lines`
+(a misread this decision's domain never expects) rather than guessing a
+side.
+
+**MusicXML semantics, checked and written down (WebSearch,
+`usermanuals.musicxml.com/MusicXML/Content/EL-MusicXML-octave-shift.htm`,
+2026-09-29) — the brief's own request:** the `type` attribute is INVERTED
+from the printed side. `type="down"` is "start of an octave-shift down,
+such as 8va" and `type="up"` is "such as 8va bassa [8vb]" — the element
+names the shift AWAY FROM the true (sounding) pitch, not the direction the
+printed line runs. So `"above"` (8va) → `type="down"`, `"below"` (8vb) →
+`type="up"`, both recorded in the verdict's own `value["musicxml_type"]` so
+a future exporter reads it rather than re-deriving the inversion. **Written
+pitch is untouched either way**: an `<octave-shift>` is a `<direction>`,
+not a pitch rewrite — nothing in this decision or any future exporter may
+change a note's `<pitch>` for this reason, confirmed against the same
+source and recorded in `Q.OTTAVA_OWNER`'s own docstring (`record.py`).
+**Not built**: the bracket's SPAN (which bars it covers) and the
+`<octave-shift>` start/stop emission — named as an export gap, below.
+
+### The export gap, named rather than silent
+
+Neither `Q.PEDAL_OWNER` nor `Q.OTTAVA_OWNER` reaches a MusicXML element on
+any path today. Rather than leave them genuinely UNREAD (which `reach
+--check` cannot tell apart from "nobody has thought about this yet" — see
+the static-checker note above), `export._grand_staff_family_gap` reads both
+literally (`rec.verdicts_of(Q.PEDAL_OWNER)` / `rec.verdicts_of(Q.
+OTTAVA_OWNER)`) and folds a `decided`/`abstained`/`written: 0` tally into
+`coverage()`'s own report under `"grand_staff_families"` — the SAME move
+`_family_refusals` makes for `arpeggiato`'s refusal, its only consumer.
+`written` is hard-coded 0 with a comment explaining why: no renderer exists
+to increment it. This is deliberately NOT `FAMILIES`-table membership
+(`export.FAMILIES`) — adding two entries there was tried first and broke
+`staged.capture` (it expects shape/position/frame audit rows for every
+`FAMILIES` family, which neither new quantity has) for no reach benefit
+(the `FAMILIES` loop is itself the blind-spot shape named above), so it was
+reverted.
+
+### Tests, RED first, positive AND negative controls
+
+New file `test_staged_grand_staff_2_27d.py`, 15 tests, one class per
+connection (`TestGrandStaffPartner`, `TestDynamicsSharedOnceOnly`,
+`TestCrossStaffBeamIsThePartsOwn`, `TestPedalOwner`, `TestOttavaOwner`).
+Every positive-brace test (`family="keyboard"`, decides `"brace"`) is
+paired with the SAME fixture under `family="brass"` (decides `"bracket"`)
+— CLAUDE.md rule 7, a control that can fail.
+
+**RED confirmed** by monkeypatching `structure.grand_staff_partner_staff`
+to always return `None` (simulating "the connection was never built") and
+re-running the file: exactly the 5 tests that assert the CONNECTED
+behaviour go red — `TestGrandStaffPartner::test_a_decided_brace_pair_
+names_its_partner`, both `TestPedalOwner` positive cases, the beam's
+`test_GREEN_on_a_decided_brace_the_stroke_is_kept` and the dynamics'
+`test_GREEN_..._moves_to_the_upper_staff` — while all 10 negative-control
+and inertness tests (the `family="brass"` controls, the third-staff-has-no-
+partner case, both ottava tests, the uncontested-letter test) stay green,
+proving the controls are not passing by accident. Restored, all 15 pass.
+`TestDynamicsSharedOnceOnly` additionally proves an UNCONTESTED letter is
+NEVER relocated even on a decided brace (2.27's own precedent, checked
+again here since the gate is new code).
+
+`pytest tools/omr/tests/test_staged_grand_staff_2_27d.py -q`: 15 passed, 0
+failed. Full fast tier: `pytest tools/omr/tests -m "not slow" -q -p
+no:cacheprovider`. `python3 -m tools.omr.staged.check`: TOTAL 246,
+status=ok (down 1 from the 247 baseline — `staged.health`'s "no test names
+this quantity" findings for `pedal_owner`/`ottava_owner` closed and the
+stale `Q.GROUP_SYMBOL` `reach.KNOWN_GAPS` entry was deleted, net −1
+against the +2 for the two new decisions).
+
+### Not built / not measured
+
+- **`<pedal>` and `<octave-shift>` MusicXML emission** — no renderer
+  exists for either anywhere in this repo; named as the export gap above
+  rather than built, per the brief's own escape clause ("if the exporter
+  work is large, stop at the decision + a named export gap").
+- **The ottava bracket's SPAN** (which bars/onset-columns it covers) —
+  only OWNERSHIP and DIRECTION are decided; span computation is exporter
+  work, named above.
+- **`Q.GROUP_SYMBOL`'s own coarseness is inherited, not fixed here**: it
+  decides "brace" for a whole SYSTEM from the union of ALL its groups'
+  instruments (`structure.adjudicate_group_symbol`'s own docstring names
+  this), so a system holding BOTH a piano and, say, a harp elsewhere would
+  gate every pair in it as "brace" even for the non-keyboard groups.
+  `grand_staff_partner_staff`'s own block-membership check (exactly one
+  OTHER staff sharing `home`'s `Q.STAFF_GROUP` block) contains the blast
+  radius to the actual pair, but does not fix the coarser fact. Not
+  measured — no page in the corpus exercises two braced groups on one
+  system.
+- No gathers, no re-adjudications, no whole-record runs, no crops — per
+  Sean's 2026-09-29 process decision for this item.

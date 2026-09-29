@@ -299,12 +299,14 @@ KNOWN_GAPS: Dict[str, str] = {
         "abstained at :130) and read by nothing anywhere. The measured tilt/bow "
         "that `OMR_CELL_LINE_TRACE` exists to correct is recorded and never "
         "consulted."),
-    Q.GROUP_SYMBOL: (
-        "⚠️ OPEN FINDING — a DECIDED verdict no stage reads. CLAUDE.md records "
-        "`<part-group>` as scoped and NOT built, with zero reach measured "
-        "(`no_identity` on 22 of 22 staves), so the state is known; what was "
-        "not reported by any instrument is that the verdict reaches no "
-        "consumer at all."),
+    # ⚠️ THE `Q.GROUP_SYMBOL` ENTRY THAT STOOD HERE LEFT 2026-09-29, ROADMAP
+    # 2.27d: `adjudicators/text.py` (`_canonical_grand_staff_owner`),
+    # `adjudicators/rhythm.py` (`_not_the_neighbours_beam`) and
+    # `adjudicators/ownership.py` (`adjudicate_pedal_owner`) each read the
+    # verdict directly to gate the grand-staff exceptions Sean asked to be
+    # built anyway (DECISIONS 2026-09-29). Deleted rather than left, per
+    # this file's own rule: "a closed gap must LEAVE the list or it stops
+    # describing the pipeline and starts describing its history."
     Q.SYSTEM_MEMBERSHIP: (
         "⚠️ OPEN FINDING — decision #0's verdict is read by nothing. It appears "
         "in `implicates`, in `DOWNHILL`, in `legacy.EXTRACTED_QUANTITIES` and "

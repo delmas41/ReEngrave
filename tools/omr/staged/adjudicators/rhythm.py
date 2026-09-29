@@ -43,6 +43,12 @@ from ..record import (ABSTAIN, DOCUMENT, Kind, Outcome, Q, READERS, Scope,
 # sibling import (`from . import ownership as _ledger`); no circular import
 # (`notehead_precision.py` does not import `rhythm`).
 from . import notehead_precision as _NP
+# ⚠️ ROADMAP 2.27d: `grand_staff_partner_staff` is the ONE query "is this
+# staff one half of a decided brace pair, and which staff is the other
+# half" -- shared with `adjudicators/text.py` and `adjudicators/ownership.py`
+# rather than re-derived here a third time (same shape as the `_NP` import
+# just above).
+from . import structure as _structure
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -528,6 +534,19 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
     own `_cell_frame` cannot be solved (no dual-frame glyph box in either)
     -- the stroke stays, exactly as `_not_a_ledger_line` leaves every
     stroke where the cell holds no boxed ledger line.
+
+    ⚠️ ROADMAP 2.27d: A STROKE TOUCHING ONLY THE PART'S OWN OTHER STAFF IS
+    NOT DROPPED. On a DECIDED brace pair (`Q.GROUP_SYMBOL` "brace", the same
+    fact `adjudicators/text.py`'s grand-staff dynamics rule connects to)
+    the OTHER staff of the pair is not "the neighbour" for this rule's
+    purpose -- a beam crossing from one hand's stems to the other's is ONE
+    beam of the PART. If a stroke touches BOTH the partner's stems and some
+    OTHER staff's (a three-staff crowd), it still drops: the exemption is
+    for the decided pair only, never a guess about which neighbour a mixed
+    touch means. Off a decided brace this is exactly the 2.25b rule,
+    unchanged -- inert on every orchestral system (control: a bracket of
+    two ordinary staves, e.g. two horns, never decides "brace" and every
+    touch there still drops, as before this roadmap item).
     """
     lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
                     subject=cell.at(Kind.STAFF))
@@ -537,7 +556,10 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
     ys = [float(y) for y in lines[-1].value]
     top, bottom = min(ys), max(ys)
 
-    neighbour_stems_page = []
+    # `(neighbour_staff_index, page_box)` -- kept per-staff, not flattened,
+    # so the brace exemption below can ask WHICH staff a touched stem
+    # belongs to rather than merely whether some neighbour has one there.
+    neighbour_stems_page: List[Tuple[int, Tuple[float, float, float, float]]] = []
     for delta in (-1, 1):
         st = cell.staff + delta if cell.staff is not None else None
         if st is None or st < 0:
@@ -550,9 +572,27 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
         for s in ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell):
             box = _xywh(s)
             if box is not None:
-                neighbour_stems_page.append(_to_page(box, nframe))
+                neighbour_stems_page.append((st, _to_page(box, nframe)))
     if not neighbour_stems_page:
         return list(beams), []
+
+    home_sub = Subject(Kind.STAFF, page=cell.page, system=cell.system,
+                       staff=cell.staff)
+    # ⚠️ ROADMAP 2.27d, THE CHEAP HALF READ DIRECTLY. Every orchestral
+    # system fails one of these two checks (no group ever decides
+    # `Q.GROUP_SYMBOL` "brace"), so confirming them here -- before asking
+    # `structure` to enumerate the system's other staves -- is a real
+    # short-circuit on the common case, and it is what makes `wants`'
+    # declaration of both quantities true of THIS file's own body.
+    partner_staff = None
+    brace = ev.verdict(Q.GROUP_SYMBOL, subject=home_sub.at(Kind.SYSTEM))
+    if brace is not None and brace.value == "brace":
+        own_group = ev.verdict(Q.STAFF_GROUP, subject=home_sub)
+        if own_group is not None and own_group.value is not None:
+            partner_key = _structure.grand_staff_partner_staff(
+                ev, home_sub.to_key())
+            if partner_key is not None:
+                partner_staff = Subject.from_key(partner_key).staff
 
     kept, dropped = [], []
     for b in beams:
@@ -571,9 +611,16 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
         page_box = _to_page(box, frame)
         pyc = page_box[1] + page_box[3] / 2.0
         beyond_outer = pyc < top or pyc > bottom
-        if beyond_outer and any(_boxes_overlap(page_box, nb)
-                                for nb in neighbour_stems_page):
-            dropped.append(b)
+        touching_staffs = {nst for nst, nb in neighbour_stems_page
+                           if _boxes_overlap(page_box, nb)}
+        if beyond_outer and touching_staffs:
+            if partner_staff is not None and touching_staffs <= {partner_staff}:
+                # ⚠️ ROADMAP 2.27d: every staff this stroke touches is the
+                # decided brace partner and none other -- the part's own
+                # cross-staff beam, kept.
+                kept.append(b)
+            else:
+                dropped.append(b)
         else:
             kept.append(b)
     return kept, dropped
@@ -1228,10 +1275,17 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     # and the VALUE this decision reaches for -- how many dots lengthen the
     # note -- depends on which of its rows the geometry actually placed as an
     # augmentation dot, not on which rows merely carry the class.
+    # ⚠️ `Q.GROUP_SYMBOL`/`Q.STAFF_GROUP` JOIN AT ROADMAP 2.27d, same reason
+    # `Q.ARC_BOX`/`Q.ARC_KIND` did at 2.25b: `_not_the_neighbours_beam` now
+    # asks whether the touched neighbour is a DECIDED brace partner before
+    # discounting a cross-staff stroke, so the OUTCOME can depend on a fact
+    # about the SYSTEM and the neighbour's own STAFF_GROUP, not only on this
+    # glyph's own cell.
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
-                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND),
+                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
+                   Q.GROUP_SYMBOL, Q.STAFF_GROUP),
     scope=Kind.GLYPH,
     # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
     # standing inside a DECIDED slur/tie's own box is discounted from this
@@ -1266,7 +1320,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
-           Q.ARC_BOX, Q.ARC_KIND),
+           Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "beam_discounted_uncertain",
              "head_fill_from_ink", "no_notehead",

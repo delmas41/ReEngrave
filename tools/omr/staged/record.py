@@ -1423,6 +1423,46 @@ class Q(_Vocab):
     #: regardless.
     ORNAMENT_OWNER = "ornament_owner"
     WEDGE_ANCHOR = "wedge_anchor"
+    #: ROADMAP 2.27d, Sean 2026-09-29 ("build anyway", pedal marks). Which
+    #: STAFF a `keyboardPedalPed`/`keyboardPedalUp` glyph belongs to.
+    #:
+    #: ⚠️ THE VALUE IS THE **LOWER** STAFF OF A DECIDED BRACE PAIR, NEVER
+    #: "whichever cell caught the ink" -- a pedal mark sits BELOW the whole
+    #: grand staff, not between its two hands, so nearest-staff distance is
+    #: structurally wrong here even before it is measured (`benchmarks/
+    #: omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`, "Pedal marks").
+    #: Off a decided brace this abstains (`no_brace`) rather than guessing a
+    #: staff -- inert on every orchestral system, where no group's
+    #: instrument family is ever keyboard/harp.
+    #:
+    #: ⚠️ EXPORT DOES NOT YET READ THIS. `gather_coverage.FAMILY_TO_Q["keyboard"]`
+    #: is `None` and no `<pedal>` direction is written anywhere on this path
+    #: (staged or legacy) -- this decision answers "whose is it", which is
+    #: the ownership half CLAUDE.md rule 6 asks for; the MusicXML `<pedal>`
+    #: emission is a separate, named export gap (`reach.KNOWN_GAPS`,
+    #: FINDINGS SS2.27d) because no acceptance document is a keyboard part.
+    PEDAL_OWNER = "pedal_owner"
+    #: ROADMAP 2.27d, Sean 2026-09-29 (octave brackets occur "both above
+    #: and below"). Which STAFF an `ottavaBracket` glyph shifts: the staff it
+    #: sits ABOVE (8va) or BELOW (8vb) -- never the neighbour on the other
+    #: side of that gap, because an ottava is drawn hugging the staff it
+    #: shifts, not centred in the pad between two staves.
+    #:
+    #: ⚠️ VALUE IS `{"staff": <key>, "direction": "above"|"below"}`. The
+    #: MusicXML side is the DIRECTION field, not a second guess: an `above`
+    #: bracket is `<octave-shift type="down" size="8">` and a `below`
+    #: bracket is `type="up"` -- MusicXML's own inversion (the `type`
+    #: names the shift FROM the true pitch, not the printed line's side;
+    #: `usermanuals.musicxml.com/MusicXML/Content/EL-MusicXML-octave-
+    #: shift.htm`, 2026-09-29). Written pitch is untouched either way: an
+    #: `<octave-shift>` is a `<direction>`, and `<pitch>` always states what
+    #: is printed.
+    #:
+    #: ⚠️ EXPORT DOES NOT YET READ THIS. The bracket's SPAN (which bars it
+    #: covers) and the `<octave-shift>` start/stop emission are a separate,
+    #: named export gap (`reach.KNOWN_GAPS`, FINDINGS SS2.27d) -- this
+    #: decision answers only "whose ink, which direction".
+    OTTAVA_OWNER = "ottava_owner"
     DYNAMIC = "dynamic"                      # the spelled word
     DIRECTION = "direction"                  # the accepted direction text
     INSTRUMENT = "instrument"
@@ -1809,6 +1849,8 @@ CLAIMS: "dict[str, str]" = {
     "FERMATA_OWNER": CLAIM.INTERPRETATION,
     "ORNAMENT_OWNER": CLAIM.INTERPRETATION,
     "WEDGE_ANCHOR": CLAIM.INTERPRETATION,
+    "PEDAL_OWNER": CLAIM.INTERPRETATION,
+    "OTTAVA_OWNER": CLAIM.INTERPRETATION,
     "DYNAMIC": CLAIM.INTERPRETATION,
     "DIRECTION": CLAIM.INTERPRETATION,
     "INSTRUMENT": CLAIM.INTERPRETATION,
