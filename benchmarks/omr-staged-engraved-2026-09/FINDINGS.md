@@ -400,3 +400,142 @@ same failure recurs elsewhere on the 3-page fixture was not swept (§11's
 "page-2 spurious barline" already names one instance; this is a full trace
 of that instance, not a search for others). No crop was cut and shown to
 Sean. No code in `tools/` changed on this branch.
+
+## 14. ROADMAP 2.3b — the open-score fallback fixed: two mechanisms, one that fires and one that (correctly) does not
+
+**2026-09-29, `claude/barline-open-score-2.3b`.** §13 diagnosed and stopped;
+this builds the fix in `tools/omr/measure_extractor.py` — shared GATHER
+infrastructure, not the YOLO detector, and a bug fix to it is within
+LEGACY's frozen-but-fixable scope.
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED WITH SEAN.**
+The coordinator relayed, not Sean directly: *a barline in a full score is
+drawn through each bracket GROUP / instrument family, broken between
+groups; a column of aligned stems or rests never bridges the gap between
+two staves.* **Falsified, in part, by this fixture** — measured directly
+before writing a line of the fix: `_assign_groups` finds no split at all on
+this 18-staff system (uniform `Staff.group_index`, the SAME "manufactured
+nothing to split on" fact `detect_barlines`' own cue-C comment already
+names for engraved/Verovio pages), and the two GENUINE barlines either side
+of §13's false one (x=1512, x=1775) score connectivity **0.0 on literally
+every one of the system's 17 gaps** — including the one between its own
+two Flute staves, same bracket, no blank space between them at all. The
+convention's OTHER half — real barlines drawn through the whole system
+falling to a coincidental cross-staff ink alignment's exact vote strength —
+is what needed fixing, not the family-grouping half; see mechanism 2.
+
+**Two mechanisms, kept deliberately separate:**
+
+1. **`_within_group_gap_indices`** (`measure_extractor.py`): inside prongs
+   A/B only, a candidate is now judged on the gaps a real barline in THIS
+   system's own bracket structure could be expected to cross
+   (`Staff.group_index`), not on every gap including ones between families
+   no real barline there ever bridges either. Returns `None` — no
+   restriction, byte-identical to today — for a single group or for every
+   staff its own group; only a genuine PARTIAL split changes anything.
+   **Deliberately does NOT feed the system-level `barlines_cross_gaps`
+   classification**, which stays computed on the unrestricted gaps exactly
+   as before this item. Cue C's own comment (`detect_barlines`, above its
+   call site) is the reason: trusting `group_index` for a SYSTEM-level flip
+   alone already cost this repo nine engraved works' real barlines (pooled
+   OMR-NED 0.1306 → 0.8560), and reusing that signal for the SAME kind of
+   decision here would risk the same failure by a different door. Proved
+   safe against that precedent's own shape: a system with a genuine
+   partial split but no OTHER evidence that connectivity means anything
+   here (`test_bracket_split_does_not_move_the_system_level_verdict`)
+   stays classified open-score, unmoved.
+
+   **Measured on this fixture: inert.** `group_index` comes back uniform
+   here (see above), so `_within_group_gap_indices` returns `None` and this
+   mechanism changes nothing on the bug it was suggested for. It is a real,
+   separately-tested architectural improvement for a system that DOES show
+   a genuine partial split (`test_family_broken_barline_rescued_by_group_
+   scoped_connectivity`: 12 singleton winds/brass/perc staves + one
+   6-staff bracketed string group, a real barline's FULL connectivity 5/17
+   = 0.29 under the 0.4 floor, GROUP-scoped connectivity 5/5 = 1.0 over it)
+   — just not the mechanism that fixes THIS roadmap item.
+
+2. **`VOTE_REGULARITY_FRACTION`** (0.65, `MIN_SAMPLE` 4): inside the
+   `vote_open_score` prong itself — reached exactly when `barlines_cross_
+   gaps` is False, so votes are the WHOLE of the evidence and nothing else
+   guards a candidate — a column must also not be an outlier against this
+   SAME system's own other vote-passed columns:
+   `n_votes >= ceil(0.65 * median(other columns' n_votes))`. **This is the
+   mechanism that fixes the diagnosed bug.** On the fixture: vote-passed
+   counts `[18,17,16,18,18,10,18,13,18,18]`, median 18, floor
+   `ceil(0.65*18)=12`; the false column's 10 is below it (10/18=0.556), the
+   weakest REAL barline's 13 is above it (13/18=0.722) — margin on both
+   sides, not a boundary case that happened to land right. `0.65` sits
+   strictly between those two ratios.
+
+**Proof, run RED first.** `tools/omr/tests/test_barline_open_score_2_3b.py`,
+6 tests, all synthetic (no PDF, no weights). Loaded `origin/main`'s
+`measure_extractor.py` as an isolated module (`git show origin/main:… `,
+`importlib`, `__package__` set to `tools.omr` so its relative imports
+resolve against the unchanged `system_grouping`/`types`) and ran the same
+file against it: **2 of 6 FAIL on `origin/main`** —
+`test_family_broken_barline_rescued_by_group_scoped_connectivity` (the
+family-broken real barlines are absent entirely, refused by the old
+all-gaps-or-none test) and `test_aligned_rest_column_refused_by_vote_
+regularity` (the vote-outlier column at exactly `min_votes` is accepted,
+5 barlines instead of 4). The other 4 — the two "does not move the
+system-level verdict" / "floor is not a second `min_votes`" guards, and the
+true-open-score regression pair with its own positive control
+(`test_true_open_score_rejects_a_disconnected_outlier_too`, CLAUDE.md rule
+7) — pass on BOTH trees, exactly as a regression guard should. All 6 pass
+on this branch.
+
+**Direct barline-count check, base vs arm, engraved fixture (page 2,
+dpi 300, the diagnosed system):**
+
+| | BASE (`origin/main`) | ARM (this branch) |
+|---|---|---|
+| barlines, system 0 | 10 | **9** |
+| n_measures, every staff | 9 | **8** (truth) |
+
+**One-page re-gathers, base vs arm, per-system barline counts (no code
+change to detector or weights — `measure_extractor.detect_barlines` called
+directly on freshly-detected staves, isolated from the two trees exactly as
+above; `--no-surya` equivalent since this check never reaches OCR):**
+
+| document | page | dpi | staves | BASE (system: count) | ARM (system: count) |
+|---|---|---|---|---|---|
+| Litolff `984073` (Beethoven 5, scan) | pdf idx 3 | 600 | 19 | `{0: 17, 1: 19}` | `{0: 17, 1: 19}` |
+| Breitkopf `317803` (Brahms 1, scan) | pdf idx 1 | 600 | 27 | `{0: 8, 1: 9}` | `{0: 8, 1: 9}` |
+
+**Zero barlines lost or gained on either scan control** — the blocker
+condition the manager set. Both control pages already show `barlines_cross_
+gaps=True` in their own connectivity-trusted systems (unlike the engraved
+fixture), so mechanism 2's floor is reached on neither of their systems at
+all in this check; a wider sweep of MORE pages, run through the full
+pipeline rather than `detect_barlines` alone, is the natural next step and
+is NOT done here (scope: one page each, per the brief).
+
+**Full end-to-end re-gather, engraved pages 0–2, this branch, `--no-surya`**
+(`benchmarks/omr-staged-engraved-2026-09/out/2.3b/`): `document_bars` 25 →
+**24** (truth). Every one of the 18 parts' bars 21 and 22 now sum to the
+full `8` divisions (2/4) — bar 21 exactly `('G',6) quarter + quarter rest`
+on Flute 1, bar 22 exactly `rest-eighth, A5, A5, A5` — both matching the
+truth file byte for byte in content, not just in total duration. Violin 1
+(P14, the one part §13 found already correct) is unaffected.
+
+**Gate.** `pytest tools/omr/tests -m "not slow"`: unaffected files
+unchanged, `test_barline_open_score_2_3b.py` and the existing
+`test_barline_evidence.py`/`test_measure_extractor.py`/
+`test_phase1_deletion_counters.py` (56 + 19 tests covering the touched
+module) all pass. `staged.check` TOTAL unchanged at 247/247 — this branch
+touches no staged adjudicator, no flag, no benchmark directory.
+
+**What is NOT established.** Whether `VOTE_REGULARITY_FRACTION=0.65` is the
+right constant for a real scan whose real barlines are UNIFORMLY sparse
+with high variance (the Bolero shape `min_votes` itself was tuned for) —
+not exercised by either control page's own `vote_open_score` systems here,
+because neither reaches that prong on the page checked. What ink actually
+sits at x=1598 (§13's own open item) is still not identified. Whether the
+family-broken-barline mechanism ever fires on a REAL page (as opposed to
+the synthetic fixture that proves it can) is not measured — it needs a
+page whose bracket groups are wide enough, relative to their own count,
+that full-system connectivity genuinely falls under 0.4 while a genuine
+partial split exists; neither control page here supplies one. The
+concurrent long nohup re-gather in `.claude/worktrees/regather-20260929`
+was left untouched, per instruction, and is not part of this evidence.

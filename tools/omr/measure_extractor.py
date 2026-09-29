@@ -97,6 +97,36 @@ BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
 # is wide enough that this is a description, not a tuned threshold.
 SPAN_MIN_INK = 0.9
 
+# ROADMAP 2.3b. In the "votes are the whole of the evidence" branch
+# (`barlines_cross_gaps=False`) NOTHING but the bare vote count guards a
+# column, unlike prongs A/B which also require connectivity — an asymmetry,
+# since the branch with LESS evidence used the SAME floor as the branch
+# with more. Diagnosed on `benchmarks/omr-staged-engraved-2026-09/`
+# (ROADMAP 2.3a): a coincidental cross-staff alignment of REST ink (every
+# part resting on the same beat, the failure mode this file's own Prong-A
+# comment already names for chord STEMS) cleared `min_votes` at 10 of 18
+# votes on a system whose nine OTHER accepted columns — the system's own
+# real barlines — carry 13-18 votes each (median 18). A candidate whose
+# vote count is an outlier against this SAME system's own trusted columns
+# is treated as a coincidence, not a barline: floor is
+# `ceil(VOTE_REGULARITY_FRACTION * median(votes of this system's OTHER
+# vote-passed columns))`, applied ONLY when there are enough columns
+# (`VOTE_REGULARITY_MIN_SAMPLE`) to make a median mean anything.
+# `0.65` sits strictly between the false column's own ratio to that median
+# (10/18 = 0.556) and the weakest REAL barline's (13/18 = 0.722) on the
+# fixture this exists to fix — margin on both sides, not a boundary case.
+# Self-calibrating per system, not a second global vote-count constant: a
+# system whose real barlines are UNIFORMLY sparse (Bolero-style, the reason
+# `min_votes` itself tops out at 50%) keeps every one of them near this
+# system's own median, so this floor does not re-litigate `min_votes` — it
+# only catches a column that disagrees with what THIS system's own strong
+# majority already established. Not yet measured against a real scan for
+# a false negative (a genuinely sparse system where the median itself is
+# thin and one further-thin real barline would be culled) — see
+# `benchmarks/omr-staged-engraved-2026-09/FINDINGS.md` §14 (ROADMAP 2.3b).
+VOTE_REGULARITY_FRACTION = 0.65
+VOTE_REGULARITY_MIN_SAMPLE = 4
+
 
 # ─── Deletion census ─────────────────────────────────────────────────────────
 #
@@ -142,6 +172,7 @@ _DETECT_BARLINES_COUNTER_KEYS = frozenset({
     "n_barline_candidates_dropped_too_close_on_staff",
     "n_barline_clusters_rejected_no_prong",
     "n_barlines_dropped_close_outlier",
+    "n_barline_clusters_rejected_vote_outlier",
 })
 _EXTRACT_MEASURES_COUNTER_KEYS = frozenset({
     "n_one_line_staves_excluded_from_cells",
@@ -415,6 +446,7 @@ def _intersystem_connectivity(
     x_tolerance: int = 5,
     *,
     x_by_staff: dict[int, int] | None = None,
+    gap_indices: list[int] | None = None,
 ) -> float:
     """Fraction of inter-staff gaps in this system that have continuous
     ink where this barline runs (within ±`x_tolerance` px).
@@ -442,14 +474,32 @@ def _intersystem_connectivity(
 
     For single-staff systems (no inter-staff gaps) returns 1.0 so the
     connectivity gate never rejects them.
+
+    `gap_indices` (ROADMAP 2.3b) restricts which of the `len(ordered) - 1`
+    gaps are examined — passed by `detect_barlines` as
+    `_within_group_gap_indices`'s answer, the gaps that lie WITHIN one
+    bracket GROUP (`Staff.group_index`) on a system that shows a genuine
+    PARTIAL split (some gaps within a group, some between). `None` (the
+    default, and the only value any caller outside `detect_barlines` ever
+    passes) examines every gap and returns EXACTLY what this function
+    always returned — no existing caller's numbers move. With a restriction,
+    the denominator is `len(gap_indices)`, not `len(ordered) - 1`, so the
+    number answers "of the gaps a real barline in THIS system's engraving
+    convention could be expected to bridge, how many did this column
+    bridge" rather than "of every gap including the ones between families
+    that no real barline here ever bridges either."
     """
     if len(staves) < 2:
         return 1.0
     ordered = sorted(staves, key=lambda s: s.top_y)
     n_gaps = len(ordered) - 1
+    considered = range(n_gaps) if gap_indices is None else gap_indices
+    denom = n_gaps if gap_indices is None else len(gap_indices)
+    if denom <= 0:
+        return 1.0
     n_connected = 0
     h, w = bin_img.shape
-    for i in range(n_gaps):
+    for i in considered:
         gap_top = ordered[i].bottom_y + 1
         gap_bot = ordered[i + 1].top_y
         if gap_bot <= gap_top:
@@ -471,7 +521,70 @@ def _intersystem_connectivity(
         col_ink_fraction = (gap_strip < 128).mean(axis=0)
         if col_ink_fraction.max() > 0.5:
             n_connected += 1
-    return n_connected / max(n_gaps, 1)
+    return n_connected / denom
+
+
+def _within_group_gap_indices(ordered: list[Staff]) -> list[int] | None:
+    """Gap indices (0-based, `ordered[i]`/`ordered[i + 1]`) where the two
+    staves share a bracket GROUP (`Staff.group_index`, from
+    `system_grouping._assign_groups`) — the gaps a real barline is drawn
+    through under the convention this function assumes (see below).
+
+    Returns `None` — "do not restrict; examine every gap, exactly as
+    `detect_barlines` always has" — for both cases that must never see a
+    different denominator than today's code: every staff its own group (no
+    bracket structure detected at all — the true-open-score signature) and
+    every staff the SAME group (nothing to exclude, restricting would be a
+    no-op that costs a call). Only a genuine PARTIAL split — some gaps
+    within a group, some between — returns a proper, non-empty, non-full
+    subset.
+
+    ⚠️ CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED WITH SEAN
+    (2026-09-29, relayed by the coordinator, not asked directly): *a
+    barline in a full score is drawn through each bracket GROUP /
+    instrument family, broken between groups; a column of aligned stems or
+    rests never bridges the gap between two staves.* FALSIFIED, in part, on
+    the very fixture ROADMAP 2.3a diagnosed
+    (`benchmarks/omr-staged-engraved-2026-09/`): `_assign_groups` finds NO
+    split at all on that 18-staff system (uniform `group_index`, matching
+    this repo's own prior finding that engraved/Verovio-and-LilyPond pages
+    can make `_assign_groups`' relative-bridging threshold see nothing to
+    split on — the same fact `detect_barlines`' cue-C comment names as
+    "FALSIFIED on the engraved benchmark... their uniformly-low bridging
+    counts"), and — measured directly, not inferred — the two GENUINE
+    barlines either side of that fixture's false one score connectivity
+    0.0 on literally every one of the system's 17 gaps, INCLUDING the one
+    between its own two Flute staves (same bracket, adjacent, no blank
+    space between them at all). So this function returns `None` there too,
+    correctly declining to manufacture a distinction the ink does not
+    support — see `VOTE_REGULARITY_FRACTION` for the mechanism that
+    actually repairs that fixture's false barline.
+
+    This function is deliberately NOT `_is_grouped_system` (used by cue C,
+    `OMR_CHOIR_GROUPING`) reused, and deliberately does not gate on
+    `_window_blind_systems`'s page-wide blind-gap test either — cue C uses
+    those two, TOGETHER, to decide whether to trust `group_index` enough to
+    FLIP a system's open-score verdict, precisely because `group_index`
+    ALONE was measured to manufacture groups out of jitter and cost nine
+    engraved works their real barlines (the comment above the cue C call
+    site). This function never flips that verdict — `detect_barlines`
+    computes the SYSTEM-level `barlines_cross_gaps` test on the unrestricted
+    gap set, unchanged, exactly as before this roadmap item; only once that
+    untouched test has ALREADY decided a system's connectivity is worth
+    trusting does a genuine partial group split get to say which of its
+    gaps a real barline could be expected to cross. A jitter-manufactured
+    split on a system connectivity already correctly distrusts therefore
+    changes nothing: `barlines_cross_gaps` stays False and this function's
+    answer is never consulted.
+    """
+    n_gaps = len(ordered) - 1
+    if n_gaps <= 0:
+        return None
+    gaps = [i for i in range(n_gaps)
+            if ordered[i].group_index == ordered[i + 1].group_index]
+    if not gaps or len(gaps) == n_gaps:
+        return None
+    return gaps
 
 
 def _window_blind_systems(bin_img: np.ndarray, staves: list[Staff]) -> set[int]:
@@ -685,10 +798,47 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             )
             for x, i in vote_passed
         } if n_staves >= 2 else {}
+        # ⚠️ THE SYSTEM-LEVEL VERDICT STAYS ON THE UNRESTRICTED GAPS, ON
+        # PURPOSE. `_within_group_gap_indices` only ever NARROWS a
+        # candidate's own connectivity test (below, in prongs A/B); it never
+        # feeds this classification. Cue C already measured the cost of
+        # trusting `group_index` for a SYSTEM-level flip alone (nine engraved
+        # works, pooled OMR-NED 0.1306 → 0.8560 — the comment below); reusing
+        # that same signal here, for the same kind of decision, would risk
+        # the same failure by a different door.
         n_connected = sum(1 for v in connectivity_of.values() if v >= 0.4)
         barlines_cross_gaps = (
             len(vote_passed) < 2 or n_connected * 2 >= len(vote_passed)
         )
+        # ROADMAP 2.3b. Restricted to the gaps a real barline in THIS
+        # system's own bracket structure could be expected to cross — `None`
+        # (examine every gap, identical to today) unless the system shows a
+        # genuine PARTIAL split. Computed unconditionally (cheap: a sort and
+        # a group-index comparison) but only ever CONSULTED inside prongs
+        # A/B below, and only once `barlines_cross_gaps` — untouched by this
+        # — has already decided this system's connectivity is worth reading
+        # at all. See `_within_group_gap_indices` for the convention this
+        # assumes, and where it was measured NOT to hold.
+        _ordered_by_y = sorted(staves, key=lambda s: s.top_y)
+        group_gap_indices = _within_group_gap_indices(_ordered_by_y)
+        group_connectivity_of = ({
+            x: _intersystem_connectivity(
+                bin_img, staves, x, x_by_staff=_x_by_staff(i),
+                gap_indices=group_gap_indices,
+            )
+            for x, i in vote_passed
+        } if group_gap_indices is not None and n_staves >= 2 else {})
+        # ROADMAP 2.3b. The "votes are the whole of the evidence" branch's
+        # own floor — see `VOTE_REGULARITY_FRACTION`'s comment for why it
+        # exists and what it must not do. Computed from THIS system's own
+        # vote-passed cluster sizes, never a second global constant.
+        _vote_counts_passed = [len(clusters[i]) for _x, i in vote_passed]
+        if len(_vote_counts_passed) >= VOTE_REGULARITY_MIN_SAMPLE:
+            vote_regularity_floor = int(np.ceil(
+                VOTE_REGULARITY_FRACTION * float(np.median(_vote_counts_passed))
+            ))
+        else:
+            vote_regularity_floor = 0
         # Cue C (opt-in, OMR_CHOIR_GROUPING): the open-score question is asked
         # of the COLUMNS — "are the vote-accepted x's mostly connected?" — and
         # a rhythmic-unison tutti answers it wrong: stems align across enough
@@ -794,8 +944,15 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                             span_ink=span)
                 continue
             if not barlines_cross_gaps:
-                # Open score: the votes are the whole of the evidence.
-                if n_votes >= min_votes:
+                # Open score: the votes are the whole of the evidence —
+                # ROADMAP 2.3b's `vote_regularity_floor` on top of the bare
+                # `min_votes` floor, for exactly the reason its own comment
+                # gives: this is the ONE branch with nothing else guarding
+                # it, so a coincidental cross-staff alignment that clears
+                # `min_votes` by one vote is no longer indistinguishable
+                # from this system's own real, repeatedly-corroborated
+                # barlines.
+                if n_votes >= min_votes and n_votes >= vote_regularity_floor:
                     accepted.append(x_mean)
                     # `connectivity` is deliberately left as whatever was
                     # computed for the open-score TEST (it may be a real
@@ -803,11 +960,21 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
                     # `barlines_cross_gaps=False` on the row is what says so.
                     _record(x_mean, "vote_open_score", n_votes,
                             connectivity=connectivity_of.get(x_mean))
+                else:
+                    _bump(counts, "n_barline_clusters_rejected_vote_outlier")
                 continue
-            connectivity = connectivity_of.get(x_mean)
+            # ROADMAP 2.3b: a genuine partial bracket-group split narrows the
+            # gaps this candidate is judged on to the ones a real barline in
+            # THIS system could be expected to cross; `group_connectivity_of`
+            # is empty (see above) on every system this changes nothing for.
+            connectivity = (
+                group_connectivity_of[x_mean] if x_mean in group_connectivity_of
+                else connectivity_of.get(x_mean)
+            )
             if connectivity is None:
                 connectivity = _intersystem_connectivity(
-                    bin_img, staves, x_mean, x_by_staff=_x_by_staff(cluster_index)
+                    bin_img, staves, x_mean, x_by_staff=_x_by_staff(cluster_index),
+                    gap_indices=group_gap_indices,
                 )
             # Prong A: vote-pass + connectivity sanity check.
             if n_votes >= min_votes and connectivity >= 0.4:
