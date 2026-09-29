@@ -1,0 +1,152 @@
+{
+  "roadmap_item": "2.18c",
+  "record": "benchmarks/omr-missing-notes-2026-09/out/flag-2.18c/arm2-p1.record.json",
+  "dpi": 600,
+  "crops": [
+    {
+      "n": 1,
+      "file": "flag-2.18c-01.png",
+      "subject": "glyph/1/0/9/5/1",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 212.63,
+      "page_box": [
+        4347.4,
+        2846.2,
+        4385.3,
+        2876.7
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "flag-2.18c-02.png",
+      "subject": "glyph/1/1/8/0/9",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 82.22,
+      "page_box": [
+        1375.8,
+        6071.4,
+        1415.5,
+        6102.1
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "flag-2.18c-03.png",
+      "subject": "glyph/1/1/8/1/11",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 82.22,
+      "page_box": [
+        1739.7,
+        6081.9,
+        1779.8,
+        6117.5
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 4,
+      "file": "flag-2.18c-04.png",
+      "subject": "glyph/1/1/8/3/4",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 82.22,
+      "page_box": [
+        3004.9,
+        6040.2,
+        3045.1,
+        6071.3
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 5,
+      "file": "flag-2.18c-05.png",
+      "subject": "glyph/1/1/9/0/17",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 80.26,
+      "page_box": [
+        950.8,
+        6342.0,
+        987.6,
+        6374.7
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 6,
+      "file": "flag-2.18c-06.png",
+      "subject": "glyph/1/1/9/3/9",
+      "why_chosen": "narrowed flag_ink_unread",
+      "stem_direction": "up",
+      "tip_ink": true,
+      "duration_verdict": "narrowed:flag_ink_unread",
+      "frame_contrast": 80.26,
+      "page_box": [
+        3009.5,
+        6321.1,
+        3045.4,
+        6354.7
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 7,
+      "file": "flag-2.18c-07.png",
+      "subject": "glyph/1/0/0/0/5",
+      "why_chosen": "clean tip, still decides quarter (control)",
+      "stem_direction": "down",
+      "tip_ink": false,
+      "duration_verdict": "decided:head_and_marks",
+      "frame_contrast": 205.29,
+      "page_box": [
+        1727.0,
+        516.1,
+        1768.8,
+        549.6
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 8,
+      "file": "flag-2.18c-08.png",
+      "subject": "glyph/1/0/0/2/2",
+      "why_chosen": "clean tip near the threshold (control)",
+      "stem_direction": "up",
+      "tip_ink": false,
+      "duration_verdict": "decided:head_and_marks",
+      "frame_contrast": 205.29,
+      "page_box": [
+        2849.6,
+        515.9,
+        2889.7,
+        549.4
+      ],
+      "question": "printed value of the bracketed note; does it print a flag hanging from the stem inside the yellow window",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}

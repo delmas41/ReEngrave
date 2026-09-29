@@ -2103,6 +2103,9 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # the strokes `detect_stems` returned; where there are fewer than two
         # of them no beam can be joined in this cell, whatever the page holds.
         n_stems = len(found.get("stems") or [])
+        # ROADMAP 2.18c: (stem detection, its own `Q.STEM` row id), so the
+        # tip-ink pass below can join back to the EXACT row it measured.
+        stem_rows_logged: List[Tuple[Any, str]] = []
         for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
             rows = found.get(kind) or []
             if not rows:
@@ -2121,7 +2124,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                             cell_n_stems=n_stems)
                 continue
             for d in rows:
-                log.observe(sub, quantity,
+                row = log.observe(sub, quantity,
                             (d.x_canonical, d.y_canonical,
                              d.width_canonical, d.height_canonical),
                             reader=READERS.CV_LINES, frame=frame,
@@ -2130,6 +2133,27 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                             y_center=d.y_center,
                             image="no_staff" if erased else "original",
                             staff_lines_erased=erased)
+                if quantity is Q.STEM:
+                    stem_rows_logged.append((d, row.id))
+
+        # ROADMAP 2.18c: a second, CV witness for flag ink the detector
+        # never boxed, at every stem this cell just filed. Blockers are
+        # every beam stroke this SAME call already read plus every OTHER
+        # LOCAL detection the detector drew in this cell (a neighbour's
+        # head, an accidental, text, a slur/tie arc) -- ink the record can
+        # already name is not this reader's to re-claim (CLAUDE.md rule 8).
+        if stem_rows_logged:
+            grid = _cell_grid(c)
+            space_c = grid[1] * 2.0 if grid is not None else None
+            blockers = _stem_tip_blockers(
+                found.get("beams") or (),
+                (detections or {}).get(sub.to_key()) or (), space_c)
+            for d, row_id in stem_rows_logged:
+                _observe_stem_tip_ink(
+                    log, sub, frame, c, row_id,
+                    (float(d.x_canonical), float(d.y_canonical),
+                     float(d.width_canonical), float(d.height_canonical)),
+                    blockers, space_c)
 
 
 def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
@@ -2146,6 +2170,207 @@ def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
             log.abstain(sub, quantity, reader=READERS.CV_LINES,
                         frame=frame_cell(c.measure_index),
                         reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.18c -- flag ink at a stem's tip the detector never boxed.
+#
+# `benchmarks/omr-missing-notes-2026-09/FINDINGS.md` SS11.4b: after 2.18b, 53
+# stemmed black heads on Breitkopf p1 stand at their head value with no beam
+# and no flag READ, and a by-eye pass found ~6 of them PRINT a flag nothing on
+# the record witnesses -- `duration_narrowed`'s own missing-flag path, sized
+# and left because no row said *ink hangs off this stem tip*. This is that
+# row: a SECOND witness, off the raster, for exactly the population the
+# detector's own flag boxes already witness for the other 106 (2.18b SS11.4a).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (2.18c). CLAUDE.
+#: md SS10 already states "a flag hangs from the stem's end"; the CONVENTION
+#: this item adds is WHERE, relative to the tip, and on WHICH SIDE. Bravura's
+#: own flag glyphs (the reference font `capture.py`'s exemplar already
+#: leans on) run roughly 1.7-2.4 staff spaces from the stem to their far
+#: corner and sit to the stem's RIGHT whichever way the stem points -- an
+#: up-stem's flag hangs DOWN-right from the top tip, back toward the head; a
+#: down-stem's hangs UP-right from the bottom tip, likewise back toward the
+#: head. So the window tested walks INTO the stem's own body from either
+#: end, 1.0 to 2.5 staff spaces, never past the tip and never to the left.
+#: Falsified by a print-confirmed flag whose hook sits entirely inside 1.0
+#: space of its tip, reaches past 2.5, or hangs to the stem's LEFT. NOT
+#: CONFIRMED -- argued from CLAUDE.md's own convention and from Bravura's
+#: published metrics, never measured against a Breitkopf flag crop.
+STEM_TIP_INK_NEAR_SPACES = 1.0
+STEM_TIP_INK_FAR_SPACES = 2.5
+#: The tested (and background) window's WIDTH, to the stem's right (and
+#: left), in the cell's own staff spaces. NOT CONFIRMED against a print --
+#: wide enough that a hook curling out by less than a head's own width
+#: (CLAUDE.md SS10: "a notehead is ~1.3 staff spaces wide") still falls
+#: inside it, narrow enough that it should not usually reach a neighbouring
+#: stem a beat away.
+STEM_TIP_INK_WIDTH_SPACES = 0.9
+#: A window at or above this ink fraction counts as inked. NOT CONFIRMED
+#: against a flag crop specifically; borrowed from `LEDGER_RUNG_INK_DENSE`'s
+#: own reasoning -- reads down for a lighter scan, not calibrated separately
+#: for this mark family.
+STEM_TIP_INK_DENSE = 0.30
+#: The BACKGROUND guard: the mirrored window on the stem's LEFT must read AT
+#: OR BELOW this fraction, or whatever inked the right side inked the left
+#: one too -- a flag never prints on both sides of one stem, so a page
+#: uniformly dirty at this y (bleed-through, a stain, a slur crossing both
+#: bands) must not be read as a flag. NOT CONFIRMED.
+STEM_TIP_INK_BACKGROUND_MAX = 0.20
+
+
+def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
+                 into_sign: float, space: float) -> Optional[Dict[str, Any]]:
+    """Is there flag-shaped ink to the RIGHT of a stem's tip, reaching back
+    toward the head? ROADMAP 2.18c.
+
+    `stem_x0`, `stem_x1`, `tip_y` and `space` are all in the SAME canonical
+    CELL pixels `Q.STEM`'s own box is in -- this function does no frame
+    conversion, the same contract `ledger_rung_ink` states for itself.
+    `into_sign` is `+1.0` to test the stem's TOP as its tip (walk DOWN, into
+    the body -- an up-stem's shape) or `-1.0` to test the BOTTOM (walk UP);
+    GATHER does not know which end is the true tip -- that is
+    `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE -- so the
+    caller asks both and files one row each.
+
+    Two bins: RIGHT (the tested band, must be densely inked) and LEFT (the
+    mirrored background band, must NOT be -- the guard against ink this
+    window did not cause, e.g. a stain or a shallow beam remnant the caller's
+    own blocker check missed).
+
+    Returns `None` -- declined, never defaulted -- where the raster or
+    either band falls entirely off it.
+    """
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    width = STEM_TIP_INK_WIDTH_SPACES * space
+    near = STEM_TIP_INK_NEAR_SPACES * space
+    far = STEM_TIP_INK_FAR_SPACES * space
+    y_near, y_far = tip_y + into_sign * near, tip_y + into_sign * far
+    y0, y1 = (y_near, y_far) if y_near <= y_far else (y_far, y_near)
+
+    def frac(x0: float, x1: float) -> Optional[float]:
+        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+        if ix1 <= ix0 or iy1 <= iy0:
+            return None
+        region = ink[iy0:iy1, ix0:ix1]
+        return float(region.sum()) / float(region.size)
+
+    right = frac(stem_x1, stem_x1 + width)
+    left = frac(stem_x0 - width, stem_x0)
+    if right is None or left is None:
+        return None
+    found = right >= STEM_TIP_INK_DENSE and left <= STEM_TIP_INK_BACKGROUND_MAX
+    return {
+        "found": bool(found), "right": round(right, 4), "left": round(left, 4),
+        "window_canonical": [round(stem_x1, 2), round(y0, 2),
+                             round(stem_x1 + width, 2), round(y1, 2)],
+    }
+
+
+def _rects_overlap(a: Tuple[float, float, float, float],
+                   b: Tuple[float, float, float, float]) -> bool:
+    """Two `(x0, y0, x1, y1)` CORNER boxes -- NOT `Q.STEM`'s own `[x, y, w,
+    h]` convention, so a caller must convert before calling this."""
+    ax0, ay0, ax1, ay1 = a
+    bx0, by0, bx1, by1 = b
+    return ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1
+
+
+def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
+                       space: Optional[float]
+                       ) -> List[Tuple[float, float, float, float]]:
+    """Every box (`x0, y0, x1, y1` corners) that already explains ink in
+    THIS cell, for `_observe_stem_tip_ink`'s window guard.
+
+    ⚠️⚠️ `_explaining_detections`'S OWN WIDTH CUT, BORROWED, NOT RESTATED --
+    applied to `other_dets` (the detector's classification boxes) and NOT
+    to `beams` (this reader's OWN CV strokes, already narrow by
+    construction). A `staff` box spans the whole system's width and a wide
+    `tie`/`slur` box is mostly paper (CLAUDE.md SS10); measured on a real
+    Breitkopf p1 gather, EVERY ONE of the six confirmed missed-flag heads
+    FINDINGS SS11.4b names sat under exactly such a box, and without this
+    cut 1380 of 1584 window attempts abstained `occupied` before any of
+    them was measured. A box this wide never "explains" one narrow window's
+    ink -- it explains the whole page.
+    """
+    out = [
+        (float(bd.x_canonical), float(bd.y_canonical),
+         float(bd.x_canonical) + float(bd.width_canonical),
+         float(bd.y_canonical) + float(bd.height_canonical))
+        for bd in beams]
+    if not space:
+        return out
+    from ..direction_text import DEFAULT_BAND_CONFIG
+    cut = DEFAULT_BAND_CONFIG.max_blank_width_spaces * space
+    out.extend(
+        (float(dd.x_canonical), float(dd.y_canonical),
+         float(dd.x_canonical) + float(dd.width_canonical),
+         float(dd.y_canonical) + float(dd.height_canonical))
+        for dd in other_dets if float(dd.width_canonical) <= cut)
+    return out
+
+
+def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
+                          stem_row_id: str,
+                          stem_box: Tuple[float, float, float, float],
+                          blockers: Sequence[Tuple[float, float, float, float]],
+                          space: Optional[float]) -> None:
+    """`Q.STEM_TIP_INK` -- one row per (`Q.STEM` row, end). ROADMAP 2.18c.
+
+    Reuses `ledger_rung_ink`'s own shape: a windowed density test off the
+    staff-ERASED raster (CLAUDE.md SS9 -- erase for the CV consumer, never
+    the detector), with a background band for contrast. `blockers` is every
+    `Q.BEAM_STROKE` box already read in this cell PLUS every OTHER detection
+    box the detector drew here (a neighbour's notehead, an accidental, text,
+    a slur/tie arc, a second flag reading) -- ink this record can already
+    name is not this quantity's to re-claim, so a window either overlaps is
+    ABSTAINED, never measured.
+    """
+    x0, y0, w, h = stem_box
+    x1, y1 = x0 + w, y0 + h
+    img = getattr(cell, "image_no_staff", None)
+    if img is None or getattr(img, "ndim", 0) != 2:
+        for end in ("top", "bottom"):
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        stem_row_id=stem_row_id, end=end,
+                        note="cell carries no image_no_staff")
+        return
+    if not space or space <= 0:
+        for end in ("top", "bottom"):
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        stem_row_id=stem_row_id, end=end,
+                        note="no cell staff-space unit")
+        return
+    for end, tip_y, into_sign in (("top", y0, 1.0), ("bottom", y1, -1.0)):
+        near, far = STEM_TIP_INK_NEAR_SPACES * space, STEM_TIP_INK_FAR_SPACES * space
+        width = STEM_TIP_INK_WIDTH_SPACES * space
+        wy0, wy1 = sorted((tip_y + into_sign * near, tip_y + into_sign * far))
+        window = (x1, wy0, x1 + width, wy1)
+        if any(_rects_overlap(window, b) for b in blockers):
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.OCCUPIED,
+                        stem_row_id=stem_row_id, end=end,
+                        note="a beam stroke or another detection already "
+                             "explains ink in this window")
+            continue
+        m = stem_tip_ink(img, x0, x1, tip_y, into_sign, space)
+        if m is None:
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        stem_row_id=stem_row_id, end=end,
+                        note="window off the raster")
+            continue
+        found = m.pop("found")
+        log.observe(sub, Q.STEM_TIP_INK, found,
+                    reader=READERS.CV_STEM_TIP, frame=frame,
+                    stem_row_id=stem_row_id, end=end, **m)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

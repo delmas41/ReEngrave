@@ -490,6 +490,15 @@ def _stem(log, *, x, y, w=4, h=60):
                        image="no_staff", staff_lines_erased=True)
 
 
+def _stem_tip_ink(log, *, stem_row_id, end, found=True):
+    """One `Q.STEM_TIP_INK` row -- ROADMAP 2.18c. The real row shape:
+    `gather._observe_stem_tip_ink` files `end` in `{"top", "bottom"}` and
+    `stem_row_id` naming the exact `Q.STEM` row it measured."""
+    return log.observe(CELL, Q.STEM_TIP_INK, bool(found),
+                       reader=READERS.CV_STEM_TIP, frame="cell:0",
+                       stem_row_id=stem_row_id, end=end)
+
+
 class TestANoteIsJoinedToItsBeamByItsSTEM(unittest.TestCase):
     """⚠️⚠️ THE FAULT: a beam stroke runs from the FIRST stem it joins to the
     LAST, and a stem stands at the SIDE of its notehead -- so the OUTER note
@@ -1003,6 +1012,130 @@ class TestAStrokeBeyondTheStemTipThatJoinsNOStemIsNotThisNotes(unittest.TestCase
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.value["beats"], 0.25)
         self.assertEqual(v.detail["beams_beyond_stem"], 0)
+
+
+class TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding(unittest.TestCase):
+    """ROADMAP 2.18c. ⚠️⚠️ RULE 8: a stemmed head with no beam and no flag
+    READ decides its head value TODAY -- `benchmarks/omr-missing-notes-
+    2026-09/FINDINGS.md` SS11.4b measured ~6 of 53 such heads on Breitkopf
+    p1 PRINTING a flag nothing on the record witnesses, i.e. `cannot tell`
+    written as `quarter`. `Q.STEM_TIP_INK` is a SECOND, CV witness at the
+    stem's own tip; where it reads flag-shaped ink, this narrows between the
+    head value and ONE flag level instead -- never straight to eighth,
+    which would guess the hook count from ink alone.
+    """
+
+    def _up_head_alone(self, log):
+        """A stem-up head (stem 38..98), nothing on ITS OWN column -- the
+        exact population this rule targets: no beam, no flag over THIS
+        head. ⚠️ A decoy beam far away in x, over no head at all, so
+        `Q.BEAM_STROKE`'s state on the cell is READ (the reader ran and
+        genuinely found nothing over this note) rather than ABSENT (the
+        reader never ran, `beam_evidence = "reader_declined"`) -- the same
+        distinction real cells make, since a measure with any beamed note
+        at all already puts a `Q.BEAM_STROKE` row somewhere in it."""
+        _staff_space(log)
+        _beam(log, y=2, x0=400, x1=460)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        s = _stem(log, x=135, y=38, h=60)
+        return g, s
+
+    def test_flag_ink_at_the_TOP_tip_of_an_up_stem_NARROWS(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.STEM_DIRECTION, g).value, "up")
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flag_ink_unread")
+        beats = sorted(c.value["beats"] for c in v.candidates)
+        self.assertEqual(beats, [0.5, 1.0])
+
+    def test_POSITIVE_CONTROL_a_clean_tip_still_DECIDES_the_head_value(self):
+        """⚠️ THE CONTROL: the identical head, but the reader found no ink at
+        the matching end -- today's behaviour, UNCHANGED."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_NO_STEM_TIP_INK_ROW_AT_ALL_is_ALSO_UNCHANGED(self):
+        """An OLDER record with no `Q.STEM_TIP_INK` on it: `(None, ())`, so
+        this head decides exactly as it did before this item existed."""
+        log = Log()
+        g, _s = self._up_head_alone(log)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_ink_at_the_WRONG_END_is_not_read(self):
+        """⚠️ Only the end THIS head's own stem points to. An up-stem's tip
+        is the TOP; a `found=True` row filed at the BOTTOM must not be read
+        as this head's evidence -- proves the join is by END, not merely by
+        presence of ANY row."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="bottom", found=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_DOWN_stem_reads_its_BOTTOM_tip(self):
+        """Symmetry: a down-stem head's tip is at the BOTTOM. The same
+        head/stem geometry `test_a_stem_DOWN_head_mirrors_it` already
+        proves reads as `"down"` (stem 100..184, falling from the head)."""
+        log = Log()
+        _staff_space(log)
+        _beam(log, y=2, x0=400, x1=460)           # decoy: state READ, far away
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        s = _stem(log, x=135, y=100, h=84)        # 100..184
+        _stem_tip_ink(log, stem_row_id=s.id, end="bottom", found=True)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.STEM_DIRECTION, g).value, "down")
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flag_ink_unread")
+
+    def test_it_NEVER_FIRES_where_a_real_flag_already_decided_the_note(self):
+        """⚠️ THE GUARD: `beam_evidence` is `"flag"`, not `"none_over_this_
+        note"`, so `Q.STEM_TIP_INK` is never even consulted -- the tip-ink
+        reading, though present and `found=True`, changes nothing."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _flag(log, gi=50, cls="flag8thUp", x=139, y=38)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beam_evidence"], "flag")
+
+    def test_it_NEVER_DECIDES_STRAIGHT_TO_EIGHTH(self):
+        """⚠️⚠️ CLAUDE.md rule 6: connect, never guess. Ink at the tip says A
+        hook is there, not how many -- the outcome must stay NARROWED, never
+        collapse to a single DECIDED eighth by itself."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotEqual(v.outcome, Outcome.DECIDED)
 
 
 class TestAMarkMustBeATTACHEDToItsNotehead(unittest.TestCase):

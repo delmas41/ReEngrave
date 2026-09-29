@@ -853,6 +853,34 @@ def _head_class(ev: Evidence) -> Optional[str]:
     return max(rows, key=lambda r: (r.score or 0.0)).value
 
 
+def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
+                       ) -> Tuple[Optional[bool], tuple]:
+    """Does THIS head's own stem tip carry flag-shaped ink the detector
+    never boxed? `(None, ())` -- no evidence either way -- where this head
+    has no own stem direction, no own stem, or `Q.STEM_TIP_INK` never
+    reached the matching end (an older record with no such row, every
+    reading here abstained, or the window was guarded off). ROADMAP 2.18c.
+
+    ⚠️ ONLY THE END THIS HEAD'S OWN STEM POINTS TO. `gather._observe_stem_
+    tip_ink` files a row for BOTH a stem's top and its bottom, because
+    GATHER does not know which is the true tip; reading the wrong one would
+    ask the question of the wrong end of the same physical stem -- exactly
+    the fault `_own_stem_side` (2.18) exists to keep out of the beam join,
+    asked again here of a different reader.
+    """
+    if side not in ("up", "down") or not own_stems:
+        return None, ()
+    end = "top" if side == "up" else "bottom"
+    ids = {s.id for s in own_stems}
+    rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=cell)
+    matched = tuple(r for r in rows if r.detail.get("end") == end
+                    and r.detail.get("stem_row_id") in ids)
+    if not matched:
+        return None, ()
+    return any(bool(r.value) for r in matched), matched
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -872,7 +900,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # augmentation dot, not on which rows merely carry the class.
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
-                   Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION),
+                   Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
+                   Q.STEM_TIP_INK),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_DIRECTION` JOINED `composed_from` AT ROADMAP 2.18. Under
     # 2.12e it was a `wants` only -- a flag's direction does not touch its
@@ -880,12 +909,17 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # strokes can be this note's (`_on_stem_side`), so the level, and with it
     # the value, now depends on it; declaring otherwise would hide the
     # dependence from `wiring` and `trace`.
+    # ⚠️ `Q.STEM_TIP_INK` JOINS IT AT ROADMAP 2.18c, for the same reason: a
+    # head that would otherwise DECIDE its head value NARROWS instead where
+    # its own stem's tip reads flag-shaped ink the detector never boxed
+    # (`_stem_tip_flag_ink`), so the OUTCOME, not only the value, depends on
+    # it.
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
-           Q.FLAG_IS_NOT_A_FLAG),
+           Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
-             "no_notehead",
+             "flag_ink_unread", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1113,6 +1147,41 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 # units and must never be normalised.
                 support=2.0 if level == certain else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
+                             **shared)
+
+    # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
+    # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,
+    # not `"reader_declined"` -- the reader ran and found no mark, which is
+    # different from never having run at all) -- so today's fallback is the
+    # head's own value, "quarter". `benchmarks/omr-missing-notes-2026-09/
+    # FINDINGS.md` SS11.4b: ~6 of 53 such heads on Breitkopf p1 PRINT a flag
+    # nothing on the record witnesses -- `cannot tell` written as an answer.
+    # `_stem_tip_flag_ink` is a SECOND, CV witness at the stem's own tip;
+    # where it reads flag-shaped ink, NARROW instead of deciding -- and only
+    # ever between the head value and ONE flag level. Never straight to
+    # eighth: the ink says a hook is there, not how many, and deciding a
+    # specific count from it would be exactly the guess rule 6 forbids.
+    tip_ink = tip_ink_rows = None
+    if beam_evidence == "none_over_this_note" and not flag_levels:
+        tip_ink, tip_ink_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+    if tip_ink:
+        used.extend(r.id for r in tip_ink_rows)
+        cands = []
+        for level in (0, 1):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                # ⚠️ SUPPORT, NOT PROBABILITY, same convention as
+                # `beams_ambiguous` above: the level the ink actually
+                # witnesses outranks the always-available head-value
+                # fallback, and the ORDER is the whole claim.
+                support=2.0 if level == 1 else 1.0))
+        return Ruling.narrow(cands, "flag_ink_unread", used=tuple(used),
                              **shared)
 
     return Ruling(value={"beats": scaled, "written": total,
