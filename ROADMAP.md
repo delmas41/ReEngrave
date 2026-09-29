@@ -85,9 +85,7 @@ revert, labelled; (2) markers → ANSWERED: one word, 'unread', for every reason
 2. ~~The m. 9 return to 6/8~~ — no longer binding: after 2.12j every held bar is judged at 6/8. Re-check only if a later record regresses.
 3. `owned_by_another_staff` (6,008 Brahms heads) — the largest missing-events
    cause; needs Sean's print check on 2.6's contest at scale first.
-4. The whole-work gate for 4.1/4.2: Beethoven 5, four movements, one
-   `reengrave import` run at the end of the batch (needs the movement page
-   ranges; the catalog has none — 4.2b detects them).
+4. **IN FLIGHT since 2026-09-28 17:17 on `bc17f9ce`**: the whole-work gate for 4.1/4.2/4.2b — `python3 -m tools.reengrave import beethoven--symphony-5 --edition 984073 --yes` with movements DETECTED (no `--movements`), from `.claude/worktrees/wholework-bc17f9ce` (driver `../wholework-bc17f9ce.sh`, log `../wholework-bc17f9ce.log`, run log `out-wholework.log`, files in `out/beethoven--symphony-5/`). Gate: four movements, four MusicXML + four PDFs, split at pdf pages 17 / 32 / 44 (4.2b's candidate spec, read off renders).
 5. Then 2.13 (printed bar number), 3.2 (port the legacy-only list), 3.3's
    default flip on acceptance parity.
 
