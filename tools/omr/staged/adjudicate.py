@@ -1035,19 +1035,53 @@ ORDER: Tuple[str, ...] = (
     # together and advance time once -- so anything that checks a bar against
     # a meter needs this first. Until 2026-09-09 the grouping existed ONLY in
     # `export._events`, at serialisation time, so every stage before EXPORT
-    # counted each chord member as a separate event.
+    # counted each chord member as a separate event. `Q.METER` itself wants
+    # `Q.EVENT` (a bar-sum-derived reading when the printed digits are
+    # ambiguous), which is WHY this cannot move earlier than `Q.EVENT` even
+    # though ROADMAP 2.21b wants `Q.METER` before `Q.VOICES` too -- a first
+    # attempt put `Q.METER` ahead of `Q.EVENT` and `inventory --check` caught
+    # it in one line ("meter wants the VERDICT event, which ORDER runs AFTER
+    # it").
     Q.EVENT,
-    # ⚠️ AFTER `EVENT`, because a voice is a stream OF events -- and it
-    # calls `voicing.split_events_into_voices` rather than restating the
-    # rule, so the staged and legacy paths cannot come to disagree about
-    # a file's `<backup>` arithmetic.
-    Q.VOICES,
+    # ⚠️⚠️ ROADMAP 2.21b, MOVED BEFORE `Q.VOICES` (and kept AFTER `Q.EVENT`,
+    # see above). Sean's voice-count convention (`docs/DECISIONS.md`
+    # 2026-09-29) needs the METER IN FORCE to test whether a line or a
+    # stream sums to a full bar, so `adjudicate_voices` now wants `Q.METER`
+    # -- and the old position, AFTER `Q.VOICES` (indeed after `Q.WEDGE_
+    # ANCHOR` too), would have hidden it every run, the exact `inventory
+    # --check` fault `Q.WEDGE_ANCHOR`'s own comment below names for a
+    # different quantity. Nothing between here and `Q.VOICES` wants `Q.METER`
+    # -- `Q.ONSET_COLUMN` wants only `Q.EVENT`, `Q.GLYPH_BOX`, `Q.STAFF_
+    # SPACING` -- so moving it here costs nothing beyond satisfying its own
+    # `Q.EVENT` dependency first.
+    Q.METER,
     # ⚠️ AFTER `EVENT`, because it consumes that verdict rather than
     # re-clustering the glyphs: within-staff simultaneity is decided per
     # cell, and this groups those decisions across the staves of one
     # system. Answering the same question twice would let the two
     # answers disagree.
+    #
+    # ⚠️⚠️ ROADMAP 2.21, MOVED BEFORE `Q.VOICES`. Neither wanted the other
+    # until 2.21 gated the naive stem-direction split on the two directions
+    # SOUNDING TOGETHER, which reads `Q.ONSET_COLUMN` when it is decided --
+    # so ONE of the two orderings now has a real dependency and the OTHER
+    # (`ONSET_COLUMN` after `VOICES`, the order this file carried until
+    # 2.21) would hand `adjudicate_voices` a `None` every run.
+    # `Q.ONSET_COLUMN` wants only `Q.EVENT`, `Q.GLYPH_BOX`, `Q.STAFF_SPACING`
+    # -- never `Q.VOICES` -- so moving it earlier costs nothing.
     Q.ONSET_COLUMN,
+    # ⚠️ AFTER `EVENT`, `METER` AND `ONSET_COLUMN` (ROADMAP 2.21/2.21b): a
+    # voice is a stream OF events, and it calls
+    # `voicing.split_events_into_voices` rather than restating the rule, so
+    # the staged and legacy paths cannot come to disagree about a file's
+    # `<backup>` arithmetic. Sean's 2026-09-29 convention
+    # (`benchmarks/omr-voice-split-2026-09/FINDINGS.md`) gates that split's
+    # own candidate on THREE tests in order: same-beat opposite stems decide
+    # two voices outright; else a single merged line summing to the METER IN
+    # FORCE is one voice; else two streams that EACH sum to the meter and sit
+    # in separate, non-overlapping bands on the staff are two voices; else
+    # this ABSTAINS (rule 8) rather than picking a side.
+    Q.VOICES,
     # ⚠️ ROADMAP 2.4c, AFTER `Q.ONSET_COLUMN` FOR THE SAME DEPENDENCY REASON
     # `Q.ONSET_COLUMN` ITSELF IS AFTER `Q.EVENT`: this decision reads the
     # column verdict rather than re-deriving cross-staff simultaneity, so it
@@ -1067,7 +1101,6 @@ ORDER: Tuple[str, ...] = (
     # test, because "one voice" and "voices unknown" produce the SAME ANSWER
     # on every page that has only one voice.
     Q.WEDGE_ANCHOR,
-    Q.METER,
     # text
     Q.DYNAMIC,
     Q.DIRECTION,

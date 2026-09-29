@@ -9,11 +9,23 @@ fixture since the CV rung was wired, and `gather_coverage` listed
 EMPTY `voice_of` map. Three rules present, none of them able to fire, and an
 inert rule is indistinguishable from one that ran and found nothing.
 
-⚠️ THE RULES ARE THE LEGACY ONES AND ARE CALLED RATHER THAN RESTATED —
+⚠️ THE SPLIT IS THE LEGACY ONE AND IS CALLED RATHER THAN RESTATED —
 `transcribe._stem_direction` for the projection test,
-`voicing.split_events_into_voices` for the split. Both were paid for by real
-regressions, and a second copy is how the staged and legacy paths would come
-to disagree about a file's `<backup>` arithmetic.
+`voicing.split_events_into_voices` for the candidate split. Both were paid
+for by real regressions, and a second copy is how the staged and legacy
+paths would come to disagree about a file's `<backup>` arithmetic.
+
+⚠️⚠️ ROADMAP 2.21b, `TestTheVoiceSplit`: Sean's convention (`docs/
+DECISIONS.md` 2026-09-29, answering `benchmarks/omr-voice-split-2026-09/
+QUESTION.md`) gates that candidate on THREE rules, in order -- same-beat
+opposite stems decide two voices outright; else a single merged line
+summing to the METER IN FORCE is one voice; else two streams that EACH sum
+to the meter AND sit in separate, vertically non-overlapping bands are two
+voices; else this ABSTAINS. The fixtures below inject `Q.STEM_DIRECTION`,
+`Q.DURATION`, `Q.METER` and `Q.NOTEHEAD_STAFF_POSITION` directly as already-
+DECIDED verdicts/observations (CLAUDE.md 2026-09-29: microscopic tests, not
+pricing runs) rather than driving the real geometric readers, so each test
+isolates `adjudicate_voices`'s OWN gate.
 """
 
 from __future__ import annotations
@@ -23,9 +35,11 @@ import unittest
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
 from tools.omr.staged import record as R
-from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.staged.record import Log, Outcome, Q, READERS, Verdict
 
 CELL = R.cell(0, 0, 0, 0)
+STAFF = R.staff(0, 0, 0)
+SYSTEM = R.system(0, 0)
 
 
 def _head(log, gi, x, y=0, w=20, h=16):
@@ -35,6 +49,22 @@ def _head(log, gi, x, y=0, w=20, h=16):
     log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, y, w, h),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9,
                 category="notehead")
+    return g
+
+
+def _head_pf(log, gi, x, y, page_x, page_y=0.0, w=20, h=16):
+    """`_head`, plus a PAGE-frame box -- what rule (1)'s same-beat test
+    reads. `page_x` is independent of the canonical `x` so a fixture can
+    hold two heads apart canonically (which is what makes `Q.EVENT` treat
+    them as separate events at all) while controlling, separately, whether
+    they sound together on the page."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR,
+                frame="cell:0", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, y, w, h),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                category="notehead",
+                bbox_page_px=[page_x, page_y, page_x + w, page_y + h])
     return g
 
 
@@ -80,6 +110,41 @@ def _stem(log, x, y, w=3, h=60):
     log.observe(CELL, Q.STEM, (x, y, w, h), reader=READERS.CV_LINES,
                 frame="cell:0", x0=x, x1=x + w, y_center=y + h / 2,
                 image="no_staff", staff_lines_erased=True)
+
+
+def _v(log, sub, q, outcome, value, reason="t", detail=None, candidates=()):
+    return log.record(Verdict(
+        id=log._next_id("vrd"), subject=sub, quantity=q, outcome=outcome,
+        value=value, decider="test", reason=reason, detail=detail or {},
+        candidates=candidates))
+
+
+def _direction(log, glyph, direction):
+    """Injects an already-DECIDED `Q.STEM_DIRECTION`, bypassing the real
+    stem-projection geometry (covered on its own in
+    `TestWhichWayTheStemPoints` below)."""
+    _v(log, glyph, Q.STEM_DIRECTION, Outcome.DECIDED, direction,
+       reason="test_direction")
+
+
+def _duration(log, glyph, beats):
+    _v(log, glyph, Q.DURATION, Outcome.DECIDED,
+       {"beats": beats, "written": beats, "dots": 0}, reason="test_duration")
+
+
+def _meter(log, num=4, den=4):
+    return _v(log, SYSTEM, Q.METER, Outcome.DECIDED,
+              {"numerator": num, "denominator": den, "raw": f"{num}/{den}"})
+
+
+def _spacing(log, staff=STAFF, px=10.0):
+    log.observe(staff, Q.STAFF_SPACING, px, reader=READERS.GEOMETRY,
+                frame="page")
+
+
+def _position(log, glyph, pos):
+    log.observe(glyph, Q.NOTEHEAD_STAFF_POSITION, pos, reader=READERS.GEOMETRY,
+                frame="cell:0")
 
 
 def _run(log, *order):
@@ -187,41 +252,174 @@ class TestWhichWayTheStemPoints(unittest.TestCase):
 
 
 class TestTheVoiceSplit(unittest.TestCase):
+    """ROADMAP 2.21b. Every fixture here injects `Q.STEM_DIRECTION` directly
+    and runs only `(Q.EVENT, Q.VOICES)` -- `Q.ONSET_COLUMN` is deliberately
+    never decided, so rule (1)'s same-beat test always takes the `raw_page_x`
+    fallback off this staff's own page frame, never the cross-staff
+    `onset_column` path (covered on a real record in `benchmarks/
+    omr-voice-split-2026-09/FINDINGS.md`, not re-proven here)."""
 
     def test_one_direction_is_ONE_voice(self):
+        """No candidate at all -- rule 8's question never arises."""
         log = Log()
         _head(log, 0, 90)
         _head(log, 1, 300)
-        _stem(log, 88, -60, h=64)
-        _stem(log, 298, -60, h=64)
-        v = _run(log).verdict(Q.VOICES, CELL)
+        _direction(log, R.glyph(0, 0, 0, 0, 0), "up")
+        _direction(log, R.glyph(0, 0, 0, 0, 1), "up")
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "one_voice")
         self.assertEqual(v.value["n_voices"], 1)
         self.assertEqual(v.value["rests_in_every_voice"], [])
 
-    def test_both_directions_at_different_x_are_TWO_voices(self):
+    def test_RULE_3_a_flipping_line_that_sums_to_the_bar_is_ONE_voice(self):
+        """Sean's crop shape, `docs/DECISIONS.md` 2026-09-29: *"those crops
+        would obviously be 1 voice because the measure math adds up to 1
+        measure."* Four quarters (4/4 -> 4.0), up/down stems alternating,
+        no two heads sharing a page x (rule 1 does not fire)."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
-        _stem(log, 88, -60, h=64)               # up
-        _stem(log, 298, 12, h=60)               # down
-        v = _run(log).verdict(Q.VOICES, CELL)
-        self.assertEqual(v.reason, "two_voices")
+        _spacing(log)
+        _meter(log, 4, 4)
+        xs = [90, 300, 500, 700]
+        dirs = ["up", "down", "up", "down"]
+        for gi, (x, d) in enumerate(zip(xs, dirs)):
+            g = _head_pf(log, gi, x, 0, page_x=x)
+            _direction(log, g, d)
+            _duration(log, g, 1.0)
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "one_voice_sums")
+        self.assertEqual(v.value["n_voices"], 1)
+        self.assertEqual(v.detail["merged_quarters"], 4.0)
+
+    def test_RULE_1_SAME_BEAT_opposite_stems_are_TWO_voices_no_meter_needed(self):
+        """Rule (1) decides OUTRIGHT: no `Q.METER` is injected at all, and
+        the two heads' own durations (0.5 + 0.5) do not sum to anything --
+        rule 1 must not need either fact to fire."""
+        log = Log()
+        _spacing(log)
+        g0 = _head_pf(log, 0, 90, 0, page_x=200)
+        g1 = _head_pf(log, 1, 300, 0, page_x=200)   # SAME page x -- overlap
+        _direction(log, g0, "up")
+        _direction(log, g1, "down")
+        _duration(log, g0, 0.5)
+        _duration(log, g1, 0.5)
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "two_voices_same_beat")
         self.assertEqual(v.value["voices"], [[0], [1]])
+        self.assertEqual(v.detail["rule_1_same_beat"]["source"], "raw_page_x")
+
+    def test_RULE_2_two_offset_full_streams_UPPER_ABOVE_LOWER_are_TWO_voices(self):
+        """Two lines NOT lined up (no shared page x, rule 1 does not fire),
+        each its own 4/4 bar (4 x 1.0), sitting in separate staff bands --
+        upper stream's positions [0.8, 1.2], lower's [4.8, 5.2], no overlap."""
+        log = Log()
+        _spacing(log)
+        _meter(log, 4, 4)
+        up_x = [90, 300, 500, 700]
+        up_pos = [1.0, 0.8, 1.2, 1.0]
+        down_x = [150, 350, 550, 750]
+        down_pos = [5.0, 4.8, 5.2, 5.0]
+        for gi, (x, p) in enumerate(zip(up_x, up_pos)):
+            g = _head_pf(log, gi, x, 0, page_x=x)
+            _direction(log, g, "up")
+            _duration(log, g, 1.0)
+            _position(log, g, p)
+        for gi, (x, p) in enumerate(zip(down_x, down_pos), start=4):
+            g = _head_pf(log, gi, x, 200, page_x=x, page_y=200)
+            _direction(log, g, "down")
+            _duration(log, g, 1.0)
+            _position(log, g, p)
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "two_voices_separated_and_full")
+        self.assertEqual(v.value["n_voices"], 2)
+        self.assertEqual(v.detail["stream_quarters"], [4.0, 4.0])
+        sep = v.detail["separation"]
+        self.assertEqual(sep["a_range"], [0.8, 1.2])
+        self.assertEqual(sep["b_range"], [4.8, 5.2])
+
+    def test_RULE_2_CONTROL_two_full_streams_INTERLEAVED_IN_HEIGHT_ABSTAINS(self):
+        """Sean's own positive control: both sides are a full 4/4 bar (rule
+        (2)'s FIRST test passes) but the two streams' staff positions
+        INTERLEAVE ([1,3] and [2,4] overlap) rather than sitting apart, so a
+        human would NOT recognise two voices here -- ABSTAIN, not a guess."""
+        log = Log()
+        _spacing(log)
+        _meter(log, 4, 4)
+        up_x = [90, 300, 500, 700]
+        up_pos = [1.0, 3.0, 1.0, 3.0]
+        down_x = [150, 350, 550, 750]
+        down_pos = [2.0, 4.0, 2.0, 4.0]
+        for gi, (x, p) in enumerate(zip(up_x, up_pos)):
+            g = _head_pf(log, gi, x, 0, page_x=x)
+            _direction(log, g, "up")
+            _duration(log, g, 1.0)
+            _position(log, g, p)
+        for gi, (x, p) in enumerate(zip(down_x, down_pos), start=4):
+            g = _head_pf(log, gi, x, 200, page_x=x, page_y=200)
+            _direction(log, g, "down")
+            _duration(log, g, 1.0)
+            _position(log, g, p)
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_voice_convention_fits")
+        self.assertEqual(v.detail["stream_quarters"], [4.0, 4.0])
+        self.assertEqual(v.detail["separation"]["a_range"], [1.0, 3.0])
+        self.assertEqual(v.detail["separation"]["b_range"], [2.0, 4.0])
+
+    def test_NEITHER_SUMS_ABSTAINS(self):
+        """No shared beat, the merged line falls short of the bar, and the
+        naive two-stream split ALSO falls short on each side -- none of the
+        three rules fits."""
+        log = Log()
+        _spacing(log)
+        _meter(log, 4, 4)
+        g0 = _head_pf(log, 0, 90, 0, page_x=90)
+        g1 = _head_pf(log, 1, 300, 0, page_x=300)
+        _direction(log, g0, "up")
+        _direction(log, g1, "down")
+        _duration(log, g0, 1.0)
+        _duration(log, g1, 1.0)                 # merged 2.0 != 4.0
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_voice_convention_fits")
+        self.assertEqual(v.detail["merged_quarters"], 2.0)
+        self.assertEqual(v.detail["target_quarters"], 4.0)
+
+    def test_NO_METER_ABSTAINS_before_rules_2_and_3_are_even_tried(self):
+        """Sean, 2026-09-29: *"no meter -> abstain"*. Rule (1) does not fire
+        (no shared beat) and no `Q.METER` was ever decided for this system,
+        so rules (2)/(3) have nothing to sum against."""
+        log = Log()
+        _spacing(log)
+        g0 = _head_pf(log, 0, 90, 0, page_x=90)
+        g1 = _head_pf(log, 1, 300, 0, page_x=300)
+        _direction(log, g0, "up")
+        _direction(log, g1, "down")
+        _duration(log, g0, 1.0)
+        _duration(log, g1, 1.0)
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_voice_convention_fits")
+        self.assertEqual(v.detail["why"], "no_meter")
 
     def test_a_REST_is_in_EVERY_voice_and_is_NAMED_as_such(self):
         """⚠️ THE ONE PLACE THE VALUE IS A COVER AND NOT A PARTITION. Each
         voice needs its own bar to sum, so `<rest>` is written once per voice
         — and a consumer counting glyphs would report the duplicate as a loss
-        unless the verdict says it is deliberate."""
+        unless the verdict says it is deliberate. Built on rule (1) (same
+        beat), which needs no meter or duration at all."""
         log = Log()
-        _head(log, 0, 90)
-        _head(log, 1, 300)
-        _rest(log, 2, 500)
-        _stem(log, 88, -60, h=64)
-        _stem(log, 298, 12, h=60)
-        v = _run(log).verdict(Q.VOICES, CELL)
+        _spacing(log)
+        g0 = _head_pf(log, 0, 90, 0, page_x=200)
+        g1 = _head_pf(log, 1, 300, 0, page_x=200)
+        r = _rest(log, 2, 500)
+        _direction(log, g0, "up")
+        _direction(log, g1, "down")
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
+        self.assertEqual(v.reason, "two_voices_same_beat")
         self.assertEqual(v.value["n_voices"], 2)
         self.assertIn(2, v.value["voices"][0])
         self.assertIn(2, v.value["voices"][1])
@@ -232,10 +430,10 @@ class TestTheVoiceSplit(unittest.TestCase):
         no duplication to declare, and a field that always listed the rests
         would read as a duplication that never happened."""
         log = Log()
-        _head(log, 0, 90)
+        g0 = _head(log, 0, 90)
         _rest(log, 1, 500)
-        _stem(log, 88, -60, h=64)
-        v = _run(log).verdict(Q.VOICES, CELL)
+        _direction(log, g0, "up")
+        v = _run(log, Q.EVENT, Q.VOICES).verdict(Q.VOICES, CELL)
         self.assertEqual(v.value["n_voices"], 1)
         self.assertEqual(v.value["rests_in_every_voice"], [])
 
@@ -244,18 +442,18 @@ class TestTheVoiceSplit(unittest.TestCase):
         one voice". Building shim events out of glyph boxes here would be a
         second grouping rule nothing forces to agree with `Q.EVENT`."""
         log = Log()
-        _head(log, 0, 90)
-        _stem(log, 88, -60, h=64)
-        log = _run(log, Q.STEM_DIRECTION, Q.VOICES)   # EVENT deliberately off
+        g0 = _head(log, 0, 90)
+        _direction(log, g0, "up")
+        log = _run(log, Q.VOICES)                     # EVENT deliberately off
         v = log.verdict(Q.VOICES, CELL)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "nothing_to_split")
 
-        log2 = Log()                                  # positive control
-        _head(log2, 0, 90)
-        _stem(log2, 88, -60, h=64)
-        self.assertIs(_run(log2).verdict(Q.VOICES, CELL).outcome,
-                      Outcome.DECIDED)
+        log2 = Log()                                   # positive control
+        g0b = _head(log2, 0, 90)
+        _direction(log2, g0b, "up")
+        self.assertIs(_run(log2, Q.EVENT, Q.VOICES).verdict(
+            Q.VOICES, CELL).outcome, Outcome.DECIDED)
 
 
 class TestDisplacedRestsJoinOneVoice(unittest.TestCase):

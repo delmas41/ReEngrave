@@ -5480,30 +5480,271 @@ def _rest_voice_side(ev: Evidence, glyph_indices: Sequence[int]
     return None
 
 
+def _event_page_x(ev: Evidence, cell: Subject, glyphs) -> Optional[float]:
+    """The PAGE-frame x centre of an event's glyphs, or `None`.
+
+    ⚠️ PAGE FRAME ONLY, NEVER THE CANONICAL x `Q.EVENT` SORTS BY. That frame
+    is rescaled PER CELL (CLAUDE.md SS10; `Q.ONSET_COLUMN`'s own history), so
+    comparing it to a tolerance measured in staff spaces would silently
+    compare two different units -- the exact fault `Q.ONSET_COLUMN`'s own
+    `_page_x_of` exists to avoid. `Q.GLYPH_BOX.detail.bbox_page_px` is that
+    same field.
+    """
+    xs = []
+    for g in glyphs:
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                      staff=cell.staff, cell=cell.cell, glyph=g)
+        for r in ev.rows(Q.GLYPH_BOX, subject=sub):
+            bp = (r.detail or {}).get("bbox_page_px")
+            if bp:
+                xs.append((float(bp[0]) + float(bp[2])) / 2.0)
+                break
+    return sum(xs) / len(xs) if xs else None
+
+
+def _voices_overlap_in_time(ev: Evidence, up_events, down_events
+                            ) -> Tuple[Optional[bool], Dict[str, Any]]:
+    """RULE (1) of Sean's convention (2026-09-29): does some up-stem event
+    share an onset with some down-stem event -- notes on the SAME BEAT with
+    stems in different directions are ALWAYS two voices.
+
+    Returns `(True, detail)` (a shared onset was found -- rule 1 decides two
+    voices OUTRIGHT), `(False, detail)` (both directions have a page frame
+    and NEITHER shares one -- rule 1 does not fire, fall through to rules 2
+    and 3), or `(None, detail)` -- the record cannot say either way, which is
+    ALSO "rule 1 does not fire": the caller falls through rather than
+    guessing, and only abstains if rules 2 and 3 fail too.
+
+    ⚠️ PREFERS `Q.ONSET_COLUMN` WHEN IT IS DECIDED FOR THIS BAR -- the
+    system's own measured, corroborated column list -- and falls back to
+    THIS STAFF'S OWN page x under the SAME tolerance
+    (`ONSET_COLUMN_TOLERANCE_SPACES`) only where that decision has nothing
+    for this cell. The fallback needs no cross-staff corroboration: two of
+    ONE staff's own events at the same page x are simultaneous regardless of
+    what any other staff read. Neither path restates a new number.
+    """
+    cell = ev.subject
+    up_x = [x for x in (_event_page_x(ev, cell, e["_glyphs"])
+                        for e in up_events) if x is not None]
+    down_x = [x for x in (_event_page_x(ev, cell, e["_glyphs"])
+                          for e in down_events) if x is not None]
+    if not up_x or not down_x:
+        return None, {"why": "no_page_frame",
+                      "up_with_frame": len(up_x), "down_with_frame": len(down_x)}
+
+    staff_subj = cell.at(Kind.STAFF)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff_subj)
+    sp = None
+    if space:
+        try:
+            sp = float(space[-1].value)
+        except (TypeError, ValueError):
+            sp = None
+    if not sp or sp <= 0:
+        return None, {"why": "no_staff_spacing"}
+    tol_px = sp * ONSET_COLUMN_TOLERANCE_SPACES
+
+    system_subj = cell.at(Kind.SYSTEM)
+    onset = ev.verdict(Q.ONSET_COLUMN, subject=system_subj)
+    if (onset is not None and onset.outcome is Outcome.DECIDED
+            and isinstance(onset.value, dict)):
+        bar = next((b for b in onset.value.get("bars", ())
+                   if b.get("measure") == cell.cell), None)
+        cols = [c["x_page"] for c in bar.get("columns", ())] if bar else []
+        if cols:
+            def _nearest(x):
+                best = min(cols, key=lambda c: abs(c - x))
+                return best if abs(best - x) <= tol_px else None
+            up_cols = {_nearest(x) for x in up_x} - {None}
+            down_cols = {_nearest(x) for x in down_x} - {None}
+            if up_cols and down_cols:
+                return bool(up_cols & down_cols), {
+                    "source": "onset_column",
+                    "tolerance_spaces": ONSET_COLUMN_TOLERANCE_SPACES,
+                    "up_columns": sorted(up_cols),
+                    "down_columns": sorted(down_cols)}
+
+    # Fallback: this staff's own page x, same tolerance, no cross-staff
+    # corroboration needed.
+    overlap = any(abs(u - d) <= tol_px for u in up_x for d in down_x)
+    return overlap, {"source": "raw_page_x",
+                     "tolerance_spaces": ONSET_COLUMN_TOLERANCE_SPACES,
+                     "up_x": [round(x, 1) for x in up_x],
+                     "down_x": [round(x, 1) for x in down_x]}
+
+
+#: A sum within this many quarter-notes of the meter's own length counts as
+#: "the bar" -- floating rational arithmetic on dotted/tuplet beats, not a
+#: musical tolerance. Microscopic tests are built with exact values, so this
+#: only guards float accumulation error over a real bar's many events.
+VOICE_SUM_EPSILON_QUARTERS = 1e-6
+
+
+def _meter_in_force(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """The `Q.METER` segment covering this cell, or `None`.
+
+    Read at the SYSTEM ancestor, DECIDED under ANY reason -- `voted` or
+    `carried` are both *"the meter is in force"*, Sean's own phrase (2026-09-
+    29). Resolved to the right segment with `meter_at` because a system may
+    print a change mid-system (CLAUDE.md SS10); the top-level `numerator`/
+    `denominator` on a MULTI-segment value describe only the FIRST segment
+    and would silently misjudge a bar past the change.
+
+    `None` where no meter is in force at all -- Sean: *"no meter -> abstain"*,
+    the same discipline `consequences.size_measure_rest` and `export.
+    _bar_holds_out` both already use.
+    """
+    cell = ev.subject
+    system_subj = cell.at(Kind.SYSTEM)
+    v = ev.verdict(Q.METER, subject=system_subj)
+    if v is None or v.outcome is not Outcome.DECIDED:
+        return None
+    return meter_at(v.value, cell.cell)
+
+
+def _meter_quarters(segment: Optional[Dict[str, Any]]) -> Optional[float]:
+    if not segment:
+        return None
+    num, den = segment.get("numerator"), segment.get("denominator")
+    if not num or not den:
+        return None
+    try:
+        return float(num) * 4.0 / float(den)
+    except (TypeError, ValueError, ZeroDivisionError):
+        return None
+
+
+def _sum_beats(ev: Evidence, cell: Subject, events) -> Optional[float]:
+    """The sum, in QUARTER-NOTE beats, of these events' `Q.DURATION`
+    verdicts -- ONE representative glyph per event (a chord's members share
+    one physical duration by construction; a rest is its own event). `None`
+    where any event's representative glyph has no DECIDED `Q.DURATION` --
+    rule 8: a bar with an unread duration cannot be said to sum OR not to.
+    """
+    total = 0.0
+    for e in events:
+        glyphs = sorted(e.get("_glyphs") or ())
+        if not glyphs:
+            continue
+        rep = glyphs[0]
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                      staff=cell.staff, cell=cell.cell, glyph=rep)
+        d = ev.verdict(Q.DURATION, subject=sub)
+        if d is None or d.outcome is not Outcome.DECIDED \
+                or not isinstance(d.value, dict):
+            return None
+        beats = d.value.get("beats")
+        if beats is None:
+            return None
+        total += float(beats)
+    return total
+
+
+def _sums_to(total: Optional[float], target: Optional[float]) -> bool:
+    return (total is not None and target is not None
+            and abs(total - target) <= VOICE_SUM_EPSILON_QUARTERS)
+
+
+def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
+                          ) -> Tuple[Optional[bool], Dict[str, Any]]:
+    """RULE (2)'s second test: are stream A and stream B in separate,
+    non-overlapping bands on the staff -- EVERY note of one entirely above
+    EVERY note of the other.
+
+    ⚠️ THE RANGE TEST, NOT THE MEAN. Sean offered both ("every up-stem head
+    higher than every down-stem head, or by mean position"); the range is
+    the stricter of the two -- a mean can agree while individual heads
+    interleave -- and 2.19/2.21's own history (a rung reading, a clef guess)
+    is full of cases where an aggregate hid a real exception. `Q.NOTEHEAD_
+    STAFF_POSITION` is the CLEF-FREE geometric measurement (staff steps from
+    the top line) built for exactly this: a page fact, not a pitch.
+
+    Rests carry no position and are skipped -- they are not evidence for or
+    against separation, only for or against the SUM (`_sum_beats`). `None`
+    where either stream has no positioned notehead to test at all.
+    """
+    def _range(stream):
+        vals = []
+        for e in stream:
+            if e.get("kind") != "chord":
+                continue
+            for g in e.get("_glyphs") or ():
+                sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                              staff=cell.staff, cell=cell.cell, glyph=g)
+                for r in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=sub):
+                    try:
+                        vals.append(float(r.value))
+                    except (TypeError, ValueError):
+                        pass
+        return (min(vals), max(vals)) if vals else None
+
+    ra, rb = _range(stream_a), _range(stream_b)
+    if ra is None or rb is None:
+        return None, {"why": "no_position"}
+    separated = ra[1] < rb[0] or rb[1] < ra[0]
+    return separated, {"a_range": [round(ra[0], 3), round(ra[1], 3)],
+                       "b_range": [round(rb[0], 3), round(rb[1], 3)]}
+
+
 @decision(
     quantity=Q.VOICES,
-    # ⚠️ ROADMAP 2.27c ADDS `Q.GLYPH_BOX`/`Q.STAFF_LINES`/`Q.STAFF_SPACING`:
-    # a displaced rest's OWN vertical position now decides which single
-    # voice it joins, rather than every rest defaulting into BOTH.
+    # ⚠️ 2.27c (displaced rests: `Q.STAFF_LINES` via `_rest_slot`) merged
+    # with 2.21b (Sean's voice convention: onsets, meter, durations,
+    # head positions).
     composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
-                   Q.STAFF_SPACING),
+                   Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
+                   Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
-           Q.STAFF_SPACING),
-    reasons=("one_voice", "two_voices", "nothing_to_split"),
+           Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
+           Q.NOTEHEAD_STAFF_POSITION),
+    reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
+             "two_voices_separated_and_full", "no_voice_convention_fits",
+             "nothing_to_split"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_voices(ev: Evidence) -> Ruling:
-    """How many voice streams this bar holds, and which glyph is in each.
+    """How many voice streams this bar holds, and which glyph is in each --
+    Sean's convention, `docs/DECISIONS.md` 2026-09-29, answering
+    `benchmarks/omr-voice-split-2026-09/QUESTION.md`'s 8 crops (all ONE
+    voice): *"those crops would obviously be 1 voice because the measure
+    math adds up to 1 measure."*
 
-    ⚠️ THE RULE IS `voicing.split_events_into_voices`'s AND IS CALLED, NOT
-    RESTATED: two streams only where BOTH directions appear, voice 1 taking
-    the stem-up events and the unknown-direction ones, voice 2 the stem-down,
-    and REST EVENTS APPEARING IN BOTH so each voice's bar can sum. Restating
-    that here is how the staged and legacy paths would come to disagree about
-    a file's `<backup>` arithmetic.
+    Three rules, in this order, over the candidate `voicing.
+    split_events_into_voices` would make from the up/down stem streams
+    (CALLED, not restated -- the same arithmetic the exporter's `<backup>`
+    depends on):
 
-    ⚠️ A COVER, NOT A PARTITION, because of that last clause. A rest is in
+    1. **Same beat, opposite stems, is ALWAYS two voices** (`_voices_
+       overlap_in_time`, unchanged from ROADMAP 2.21 -- some up-stem event
+       and some down-stem event share an onset column). Decides outright.
+    2. **One line whose durations sum to the METER IN FORCE is one voice**
+       (*"the measure math adds up to 1 measure"*) -- tried next because it
+       is the simpler, more committal claim: a bar that reads as ONE
+       complete measure has no unexplained second voice to posit.
+    3. **Two streams that are NOT lined up are still two voices where a
+       human would recognise them another way: EACH stream on its own sums
+       to a full measure AND the two sit in separate, vertically
+       non-overlapping bands on the staff** (`_vertically_separated`) --
+       *"two voices ... each line ... has a full measure of durations and
+       the two are spaced apart on the staff, one above and one below."*
+
+    Where none of the three fits -- no meter, an unread duration, sums that
+    do not close, or two full streams that interleave in height (Sean's own
+    positive control for "this is NOT two voices even though both sides are
+    full") -- this ABSTAINS (`no_voice_convention_fits`, rule 8) rather than
+    picking a side. `export._voice_split` already treats a non-decided
+    `Q.VOICES` verdict as one stream, so nothing downstream is left without
+    a fallback.
+
+    ⚠️ ROADMAP 2.27c (a separate, concurrent lane) adds displaced-rest
+    placement WITHIN an already-decided voice, in `export.py`. This decision
+    is confined to the voice COUNT, upstream of that; no file overlap is
+    expected, but both touch `voicing`-adjacent code and whichever lane
+    lands second should re-read the other's FINDINGS.
+
+    ⚠️ A COVER, NOT A PARTITION, once two voices ARE decided. A rest is in
     both streams and is written twice, so the exporter's note-accounting
     control has to know the duplicate is deliberate -- an equality that did
     not would raise `Unbalanced` for correct behaviour.
@@ -5559,7 +5800,65 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         events.append({"kind": kind, "x_position": float(e.get("x") or 0.0),
                        "stem_direction": direction, "_glyphs": glyphs})
 
-    streams = _legacy_voicing.split_events_into_voices(events)
+    rests = sorted(g for e in events if e["kind"] == "rest"
+                   for g in e["_glyphs"])
+    up_events = [e for e in events if e["kind"] == "chord"
+                and e["stem_direction"] == "up"]
+    down_events = [e for e in events if e["kind"] == "chord"
+                  and e["stem_direction"] == "down"]
+
+    if not up_events or not down_events:
+        # ⚠️ NO CANDIDATE TO GATE. `split_events_into_voices` would return
+        # `[events]` here too (its own guard, restated nowhere) -- this is
+        # the ordinary one-voice bar, not the convention question at all.
+        streams, reason, rule_detail = [events], "one_voice", {}
+    else:
+        cell = ev.subject
+        overlap, overlap_detail = _voices_overlap_in_time(ev, up_events,
+                                                           down_events)
+        rule_detail: Dict[str, Any] = {"rule_1_same_beat": overlap_detail}
+        if overlap:
+            # RULE (1): same beat, opposite stems -- ALWAYS two voices.
+            streams = _legacy_voicing.split_events_into_voices(events)
+            reason = "two_voices_same_beat"
+        else:
+            meter_segment = _meter_in_force(ev)
+            target = _meter_quarters(meter_segment)
+            rule_detail["meter"] = meter_segment
+            if target is None:
+                # No meter in force: rules (2)/(3) both need one to sum
+                # against, and rule (1) already did not fire.
+                return Ruling.abstain("no_voice_convention_fits",
+                                      why="no_meter", **rule_detail)
+
+            merged_sum = _sum_beats(ev, cell, events)
+            rule_detail["merged_quarters"] = merged_sum
+            rule_detail["target_quarters"] = target
+            if _sums_to(merged_sum, target):
+                # RULE (3): one line, and it sums to a full measure.
+                streams, reason = [events], "one_voice_sums"
+            else:
+                # RULE (2): two streams NOT lined up, each its own full
+                # measure, vertically separated.
+                candidate = _legacy_voicing.split_events_into_voices(events)
+                fits = False
+                if len(candidate) == 2:
+                    s0, s1 = candidate
+                    sum0 = _sum_beats(ev, cell, s0)
+                    sum1 = _sum_beats(ev, cell, s1)
+                    rule_detail["stream_quarters"] = [sum0, sum1]
+                    if _sums_to(sum0, target) and _sums_to(sum1, target):
+                        sep, sep_detail = _vertically_separated(
+                            ev, cell, s0, s1)
+                        rule_detail["separation"] = sep_detail
+                        fits = bool(sep)
+                if fits:
+                    streams = candidate
+                    reason = "two_voices_separated_and_full"
+                else:
+                    return Ruling.abstain("no_voice_convention_fits",
+                                          **rule_detail)
+
     # ⚠️ ROADMAP 2.27c: `split_events_into_voices` puts every rest in BOTH
     # streams unconditionally (its own docstring: "so each voice's bar can
     # sum"). Where exactly TWO streams exist and a rest's own ink sits
@@ -5585,8 +5884,6 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                     displaced[g] = "lower"
     voices = [sorted(g for e in s for g in e["_glyphs"]) for s in streams]
     n = len(voices)
-    rests = sorted(g for e in events if e["kind"] == "rest"
-                   for g in e["_glyphs"])
     # ⚠️ A DISPLACED REST HAS LEFT THE COVER: it is now in exactly one of
     # `voices`, not both, so it is no longer named here -- a consumer
     # counting glyphs across `voices` would otherwise double it AND find it
@@ -5601,7 +5898,8 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                # there is no duplication to declare.
                "rests_in_every_voice": covering if n > 1 else [],
                "rests_displaced_by_position": displaced},
-        reason="two_voices" if n > 1 else "one_voice",
+        reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),
-                "directions_read": read, "n_rests_displaced": len(displaced)})
+                "directions_read": read, "n_rests_displaced": len(displaced),
+                **rule_detail})
