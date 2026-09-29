@@ -147,6 +147,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Q, Scope
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
+                                 CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _human_not_a_symbol as _human_says_no)
 # ⚠️ ONE STAFF-STEP CONVENTION IN THE PIPELINE, IMPORTED NOT RESTATED. Bottom
 # line 0, top line 8, one step per half space, up positive, measured in PAGE
@@ -444,6 +445,315 @@ def _duplicate_box_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
         detail["duplicate_of"] = better.id
         return Ruling(value=True, reason="rest_is_a_duplicate_box",
                       used=(this_row.id, better.id), detail=detail)
+    return None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# §REST-PLACEMENT — ROADMAP 2.33. Sean, 2026-09-29
+# (`docs/DECISIONS.md`, `benchmarks/omr-owner-domain-2026-09/
+# PLACEMENT-CONVENTIONS.md` Rests row): *"whole and half [rests] will always
+# be found geometrically near the horizontal middle of the bar -- I saw some
+# false whole and half rests far off to one side"*, and *"I don't think rests
+# are found as high as note heads on the ledger lines."* Narrowed and
+# recalibrated across the same conversation, in order:
+#
+#   1. answering the first quote, Sean confirmed the CENTRING rule is for
+#      WHOLE rests only: *"a whole rest = the bar, centred"*. Half and
+#      smaller rests do NOT get a blanket off-centre refusal -- *"based upon
+#      the other notes in a measure there will be a limited space
+#      geometrically where the rest can be"*, i.e. a BEAT-SLOT rule keyed on
+#      the bar's other events, not a bar-wide fraction. That fuller rule is
+#      DESIGNED, not built -- see the docstring above
+#      `_rest_overlaps_notehead_refusal` below for what is built instead and
+#      why, and `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §20 for
+#      the design written out in full.
+#   2. answering the second quote with a numeric window (2.5 spaces beyond
+#      the outer line), Sean added a correction from his own observation:
+#      *"I did see some 8th note rests outside the staff but not nearly as
+#      far as note heads."* So the window is PER REST CLASS, not one number
+#      -- tight for whole/half/quarter (which this project has never seen
+#      leave the staff at all) and wider for 8th-and-smaller (which Sean has
+#      seen do it, displaced for a second voice, `REST_VOICE_DISPLACEMENT_
+#      MIN_STEPS` in `rhythm.py`). CALIBRATED TO SEAN'S OBSERVATION, NOT
+#      MEASURED -- no crop was pulled this pass (2026-09-29's process
+#      decision: conceptual wiring, no crop batches); both tiers are
+#      CONVENTION ASSUMED and are falsified by a print crop showing a
+#      tight-tier rest genuinely printed beyond its own window, or a
+#      wide-tier rest printed farther out than 2.5 spaces.
+#   3. a THIRD, independent cause Sean named from his own crops: *"a notehead
+#      looked a little bit like a whole note rest when the notehead was cut
+#      in half by the image crop -- all examples where the rests were in a
+#      staff above or below the main staff."* A notehead sliced by the
+#      cell's own top or bottom edge leaves a flat black rectangle -- exactly
+#      a `restWhole`/`restHBar` silhouette -- and it is a CROP ARTEFACT, not
+#      a placement question, so it gets its own direct-cause refusal
+#      (`_rest_clipped_by_crop_refusal`) rather than being folded into the
+#      vertical window. The two overlap in what they catch (a fragment flush
+#      against the edge is also, ordinarily, far beyond the staff), and both
+#      are kept: the window is the geometric backstop, the crop check is the
+#      named cause.
+#
+# ⚠️ ALL THREE RUN BEFORE `Q.GLYPH_OWNER`, STRUCTURALLY, NOT BY ANY GATE
+# WRITTEN HERE. `adjudicate.ORDER` schedules `Q.REST_IS_NOT_A_REST` before
+# `Q.GLYPH_OWNER` (the same slot `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` holds, and for
+# the same reason: a question about what a box IS must be settled before the
+# questions that assume the answer). So a rest this file refuses can never
+# have a DECIDED `Q.GLYPH_OWNER` verdict on the record yet to contradict --
+# there is nothing to fight, and no code here pretends otherwise by reading a
+# verdict that cannot exist. `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` is the one
+# exception: it runs BEFORE this file's rest checks (beside the ledger, ahead
+# of `Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL`/`Q.REST_IS_NOT_A_REST` in `ORDER`),
+# so `_rest_overlaps_notehead_refusal` below is a real CONNECTION to an
+# already-decided verdict, not a guess about one still in flight.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Rule 1 (restWhole only): how far a rest's centre may sit from the bar's
+#: own horizontal centre, as a fraction of the FULL bar width, before it is
+#: refused. 1/6 is "the middle third" stated geometrically -- the band
+#: [1/3, 2/3] of the bar has half-width 1/6 around the centre -- the smallest
+#: named fraction that reads as "near the middle" rather than a tuned number;
+#: CLAUDE.md rule 5 ("print before default") is not violated because nothing
+#: here defaults ON agreement with a reading, but see the module-level note
+#: above: no crop confirms this exact fraction, so it is CONVENTION ASSUMED.
+REST_WHOLE_CENTER_MAX_OFFSET_FRACTION = 1.0 / 6.0
+
+#: Rule 2 (every rest class): how far beyond the staff band (`_beyond_spaces`,
+#: the SAME "spaces past line 1 or line 5" measurement `_LEDGER` uses) a
+#: rest's centre may sit before it is refused as belonging to some OTHER
+#: staff's ink rather than a legitimate mark on this one. Two tiers:
+#:
+#:   TIGHT (1.0 space) -- whole/half/quarter and the two bar-filling long
+#:   rests (`restHNr`, `restHBar`): this project has never observed one of
+#:   these leave the printed staff at all; 1.0 is a small margin over "never"
+#:   for registration scatter, not a measured tail.
+#:   WIDE (2.5 spaces) -- 8th and smaller, per Sean's own correction
+#:   (*"I did see some 8th note rests outside the staff but not nearly as
+#:   far as note heads"*): far enough to admit a genuinely displaced-voice
+#:   8th/16th rest (`REST_VOICE_DISPLACEMENT_MIN_STEPS` in `rhythm.py`, which
+#:   never leaves the staff band at all -- a DIFFERENT, narrower convention
+#:   about which VOICE a rest belongs to, not which STAFF), and short of how
+#:   far a note on a ledger line goes (CLAUDE.md §10's Brahms C Horn 2, 4.5
+#:   spaces below its staff).
+#:
+#: Unknown/unlisted classes fall back to the TIGHT tier -- the conservative
+#: default matches "abstain rather than answer" only in spirit; here the
+#: geometry is not abstained, just held to the stricter of the two observed
+#: bounds until a class is actually seen wide.
+REST_VERTICAL_TIGHT_BEYOND_SPACES = 1.0
+REST_VERTICAL_WIDE_BEYOND_SPACES = 2.5
+REST_VERTICAL_WIDE_CLASSES = frozenset((
+    "rest8th", "rest16th", "rest32nd", "rest64th", "rest128th",
+))
+
+
+def _rest_vertical_limit_spaces(cls: Any) -> float:
+    name = str(cls).lower() if cls is not None else ""
+    for wide in REST_VERTICAL_WIDE_CLASSES:
+        if name == wide.lower():
+            return REST_VERTICAL_WIDE_BEYOND_SPACES
+    return REST_VERTICAL_TIGHT_BEYOND_SPACES
+
+
+#: Rule 3's overlap floor. NOT a new measurement -- the SAME test
+#: (`_rest_box_iou`, the SAME geometric fact: two detector boxes drawn on one
+#: mark) at the SAME floor `REST_DUPLICATE_IOU_MIN` was measured at (module
+#: docstring §REST-DUPLICATE): the empty gap between "genuinely unrelated"
+#: (IoU exactly 0.0) and the smallest crop-confirmed real pair holds for any
+#: pair of classes the test is applied to, not only a rest-vs-rest pair.
+REST_NOTEHEAD_OVERLAP_IOU_MIN = REST_DUPLICATE_IOU_MIN
+
+
+def _cell_box_page_px(ev: Evidence) -> Optional[List[float]]:
+    """This bar's own page-pixel rectangle, `(x0, y0, x1, y1)`, or `None`.
+
+    ⚠️ A DUPLICATE OF `notehead_precision._cell_box_page`, ON PURPOSE, THE
+    SAME SHAPE AS `_cell_staff_space` ALREADY DUPLICATED BETWEEN THE TWO
+    FILES. `inventory._never_read`'s AST walk follows a same-module helper
+    call, and (since 2.27c) one hop through a `from . import X` MODULE
+    import — but not a direct `from .module import name` NAME import, which
+    is what importing the function itself would be. A cross-module import
+    here would leave `Q.CELL_BOX` declared in `wants` and reported as never
+    read, exactly the "inert declaration" `inventory --check` exists to
+    catch — so the reader is one line, local, and real.
+    """
+    rows = ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_ANCESTORS)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)) \
+            or len(rows[-1].value) != 4:
+        return None
+    return [float(v) for v in rows[-1].value]
+
+
+def _rest_off_center_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
+                             ) -> Optional[Ruling]:
+    """Rule 1: is this WHOLE rest's centre far from the bar's own centre?
+
+    ⚠️ CALLER RESTRICTS TO `restWhole` -- see the section docstring, Sean's
+    own narrowing. This function does not re-check the class.
+
+    ⚠️ NO EVENT/VOICE READ, AND NONE IS NEEDED. `adjudicate.ORDER` places
+    `Q.REST_IS_NOT_A_REST` before `Q.EVENT` and `Q.VOICES` (both want
+    `Q.DURATION`, itself after this one), so this rule could not read either
+    even if the convention wanted it to -- and Sean's own narrowing says it
+    should not: a whole rest denoting one voice's silence for the WHOLE bar
+    is centred regardless of what another voice is doing (a second voice's
+    own rest is vertically, never horizontally, displaced -- rule 2 and
+    `rhythm.py`'s `_rest_voice_side`).
+
+    ⚠️ THE CELL FRAME HAS NO HORIZONTAL PAD. `measure_extractor`'s own cut
+    grows the cell VERTICALLY only (its own module docstring: "bounded by
+    adjacent barlines and the staff's vertical band (WITH SOME PADDING)" --
+    the padding is named for the vertical band alone), so `Q.CELL_BOX`'s own
+    [x0, x1] IS the bar's horizontal extent and no second measurement is
+    invented here.
+    """
+    cell_box = _cell_box_page_px(ev)
+    page_box = (this_row.detail or {}).get("bbox_page_px")
+    if cell_box is None or not page_box or len(page_box) != 4:
+        # ⚠️ DECLINED, NOT DEFAULTED -- no page frame for the bar or the
+        # glyph, no opinion (the same shape `_clipped_fragment` returns
+        # `False` for a missing frame).
+        return None
+    bx0, _by0, bx1, _by1 = cell_box
+    width = bx1 - bx0
+    if width <= 0:
+        return None
+    rx0, _ry0, rx1, _ry1 = page_box
+    centre = (rx0 + rx1) / 2.0
+    offset = abs(centre - (bx0 + bx1) / 2.0) / width
+    detail["bar_centre_offset_fraction"] = round(offset, 4)
+    if offset > REST_WHOLE_CENTER_MAX_OFFSET_FRACTION:
+        return Ruling(value=True, reason="rest_off_center",
+                      used=(this_row.id,), detail=detail)
+    return None
+
+
+def _rest_clipped_by_crop_refusal(ev: Evidence, this_row,
+                                  detail: Dict[str, Any]) -> Optional[Ruling]:
+    """Rule 3 (named third in the section docstring, checked first below):
+    is this box flush against the CELL's own crop edge?
+
+    ⚠️ THE EDGE TEST IS IMPORTED, NOT RESTATED -- `notehead_precision.
+    _clipped_fragment`'s own edge half, `CELL_EDGE_TOLERANCE_PAGE_PX` against
+    `_cell_box_page_px`'s page-pixel cell box (a duplicate reader, not a
+    duplicate constant -- see that function's own docstring for why).
+    That function ALSO gates on
+    height (a notehead sliver reads short); this one does not, because
+    Sean's own case is the opposite shape -- a notehead cut in HALF by the
+    crop can measure a NORMAL rest height while being pure crop artefact, so
+    a height gate here would let the exact case through. The edge test alone
+    is what a `restWhole`/`restHBar`-shaped fragment shares with the real
+    thing being cut.
+
+    ⚠️ NEVER RELOCATED. The neighbour staff's own cell holds its own
+    detection of the same ink (CLAUDE.md §10's ledger-line rule states this
+    for cross-staff ink generally); this refuses ON THIS STAFF and stops
+    there.
+    """
+    page_box = (this_row.detail or {}).get("bbox_page_px")
+    cell_box = _cell_box_page_px(ev)
+    if not page_box or len(page_box) != 4 or cell_box is None:
+        return None
+    py0, py1 = page_box[1], page_box[3]
+    cy0, cy1 = cell_box[1], cell_box[3]
+    dist = min(abs(py0 - cy0), abs(py1 - cy1))
+    detail["edge_distance_page_px"] = round(dist, 3)
+    if dist <= CELL_EDGE_TOLERANCE_PAGE_PX:
+        return Ruling(value=True, reason="rest_clipped_by_crop",
+                      used=(this_row.id,), detail=detail)
+    return None
+
+
+def _rest_vertical_window_refusal(ev: Evidence, this_row,
+                                  detail: Dict[str, Any]) -> Optional[Ruling]:
+    """Rule 2: is this rest's centre farther outside the staff band than its
+    own class is ever seen to go?
+
+    ⚠️ THE GEOMETRY IS SHARED WITH THE LEDGER, NOT COPIED FOR THIS RULE --
+    `_ledger_geometry` and `_beyond_spaces` measure "how many spaces past
+    line 1 or line 5", the identical question a ledger rung answers about
+    itself. A rest and a ledger box are read by the same ruler because they
+    ARE the same question about two different classes of ink.
+    """
+    step, geom_rows = _ledger_geometry(ev, this_row)
+    if step is None:
+        return None
+    beyond = _beyond_spaces(step)
+    detail["beyond_the_band_spaces"] = round(beyond, 4)
+    limit = _rest_vertical_limit_spaces(detail.get("class"))
+    detail["vertical_limit_spaces"] = limit
+    if beyond > limit:
+        return Ruling(value=True, reason="rest_outside_its_staff",
+                      used=(this_row.id,) + tuple(geom_rows), detail=detail)
+    return None
+
+
+def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every NOTEHEAD glyph's `Q.GLYPH_BOX` row in this cell, keyed by
+    subject. The mirror of `_cell_rest_boxes` above, over `Q.NOTEHEAD_CLASS`'s
+    domain instead of `Q.REST`'s."""
+    notehead_subjects = {r.subject for r in
+                         ev.rows(Q.NOTEHEAD_CLASS,
+                                scope=Scope.SELF_AND_DESCENDANTS,
+                                subject=cell)}
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject in notehead_subjects:
+            out[r.subject] = r
+    return out
+
+
+def _rest_overlaps_notehead_refusal(ev: Evidence, this_row,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """The decisive sub-rule Sean's beat-slot design (section docstring, item
+    1) reduces to WITHOUT waiting on `Q.EVENT`/`Q.VOICES`: this glyph's own
+    ink cannot simultaneously BE a rest (an absence of ink at that position)
+    and sit on top of a notehead's ink, in ANY voice -- overlapping detector
+    boxes on one cell are two readings of ONE mark (§REST-DUPLICATE's own
+    argument), never two symbols legitimately sharing one spot regardless of
+    which voice either belongs to. So this needs no voice count and no onset
+    column, and answers a narrower question than the full design: not "is
+    this rest's position explained by the bar's other events" but "is this
+    rest's BOX the same ink as a notehead's BOX" -- the one case the design
+    forces a verdict about today. The full beat-slot rule (a rest's onset
+    from its voice's preceding durations, checked against `Q.ONSET_COLUMN`
+    and the horizontal gap between neighbouring events) is NAMED, NOT BUILT
+    -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §20.
+
+    ⚠️ A NOTEHEAD ALREADY REFUSED PROVES NOTHING. If the overlapping box's
+    own `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict is DECIDED refused, its ink
+    might be the SAME misread mark this rest box also mis-boxed (two guesses
+    about one thing, not a rest sitting on a real note) -- CLAUDE.md rule 8,
+    a cannot-tell case is not converted into a refusal. Reading that verdict
+    here is safe only because `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` runs BEFORE this
+    decision in `adjudicate.ORDER` (see the section docstring); a verdict
+    read one line earlier in the same stage would be `None` regardless of
+    what the record eventually decides, and this function would then, and
+    only then, be guessing.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    overlapping: List[str] = []
+    for subj, row in _cell_notehead_boxes(ev, cell).items():
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if _rest_box_iou(this_val, other_val) < REST_NOTEHEAD_OVERLAP_IOU_MIN:
+            continue
+        refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=subj)
+        if (refusal is not None and refusal.outcome == "decided"
+                and refusal.value):
+            continue
+        overlapping.append(row.id)
+    if overlapping:
+        detail["rest_overlaps_notehead"] = list(overlapping)
+        return Ruling(value=True, reason="rest_overlaps_a_notehead",
+                      used=(this_row.id,) + tuple(overlapping), detail=detail)
     return None
 
 
@@ -966,28 +1276,55 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
 @decision(
     quantity=Q.REST_IS_NOT_A_REST,
     composed_from=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
+                   Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE),
+           Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
+           Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
-                                     "rest_is_a_duplicate_box"),
+                                     "rest_is_a_duplicate_box",
+                                     "rest_clipped_by_crop",
+                                     "rest_off_center",
+                                     "rest_outside_its_staff",
+                                     "rest_overlaps_a_notehead"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
     """Is this box the detector called a rest a symbol at all?
 
-    HUMAN WITNESS, THEN ROADMAP 2.15's GEOMETRY. ⚠️ NOT A SECOND REST-VALUE
-    GEOMETRY: the rest's SLOT (which LINE it hangs on, and so what it is
-    WORTH) is lane 2.12b-cal's open question (`rhythm.py`), and a rival copy
-    of that here would be the second reader of one fact this project keeps
-    paying for. 2.15's question is narrower and does not touch it: not
-    *what is this rest worth*, but *is this box the SAME PHYSICAL INK as
-    another rest box in this cell* -- answered from `Q.GLYPH_BOX`'s geometry
-    and `Q.REST`'s class, both already filed at GATHER, never from a slot
-    reading. `Q.REST` is read for the domain — every rest glyph and only
-    those.
+    HUMAN WITNESS, THEN ROADMAP 2.15's DUPLICATE-BOX GEOMETRY, THEN ROADMAP
+    2.33's THREE PLACEMENT REFUSALS (module docstring §REST-PLACEMENT, in
+    the order they are checked below):
+
+      1. `rest_clipped_by_crop`  -- flush against the cell's own crop edge
+                                    (a notehead sliced in half by the crop
+                                    reads as this shape; checked FIRST as
+                                    the direct, named cause).
+      2. `rest_off_center`       -- WHOLE rests only, far from the bar's own
+                                    horizontal centre.
+      3. `rest_outside_its_staff` -- any rest class, farther outside the
+                                    staff band than that class is ever seen
+                                    to go (a per-class window, tight for
+                                    whole/half/quarter, wider for 8th and
+                                    smaller).
+      4. `rest_overlaps_a_notehead` -- this box's ink is also a decided
+                                    notehead's ink; two symbols cannot share
+                                    one mark.
+
+    ⚠️ NOT A SECOND REST-VALUE GEOMETRY: the rest's SLOT (which LINE it hangs
+    on, and so what it is WORTH) is lane 2.12b-cal's open question
+    (`rhythm.py`), and a rival copy of that here would be the second reader
+    of one fact this project keeps paying for. 2.15's question, and 2.33's,
+    are narrower and do not touch it: not *what is this rest worth*, but *is
+    this box the SAME PHYSICAL INK as another mark*, or *is it geometrically
+    where this project has ever seen its class printed* -- answered from
+    `Q.GLYPH_BOX`'s geometry, `Q.REST`'s class and `Q.CELL_BOX`/`Q.STAFF_
+    LINES`/`Q.STAFF_SPACING`'s frame, all already filed at GATHER, never from
+    a slot reading. `Q.REST` is read for the domain — every rest glyph and
+    only those.
     """
     _ = ev.rows(Q.REST)       # the domain's own quantity, declared and read
     detail, used = _class_detail(ev)
@@ -999,6 +1336,19 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup
+        clipped = _rest_clipped_by_crop_refusal(ev, box_row, detail)
+        if clipped is not None:
+            return clipped
+        if str(detail.get("class")) == "restWhole":
+            off_center = _rest_off_center_refusal(ev, box_row, detail)
+            if off_center is not None:
+                return off_center
+        vertical = _rest_vertical_window_refusal(ev, box_row, detail)
+        if vertical is not None:
+            return vertical
+        overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
+        if overlap is not None:
+            return overlap
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

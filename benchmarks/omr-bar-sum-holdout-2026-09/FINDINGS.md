@@ -1883,3 +1883,217 @@ directly: 245 both ways. No gather, no crop, no pricing, per Sean's
   its helpers, and the module/decision docstrings (§19a's ranking, §19c's
   question).
 - `tools/omr/tests/test_staged_notehead_duplicate_box.py`: the tests.
+
+## 20. ROADMAP 2.33 — two rest placement refusals, a crop-clip refusal, and
+§19c's cross-family question, narrowed and answered (2026-09-29)
+
+PATH: STAGED. Branch `claude/rest-placement-2.33`, next to ROADMAP 2.15's
+duplicate-box rule in `adjudicators/family_precision.py`'s
+`adjudicate_rest_is_not_a_rest`. Per Sean's 2026-09-29 process decision:
+wiring proved by microscopic RED→GREEN fixtures, no gathers, no
+record-scale runs, no crop batches.
+
+### §20a. What Sean said, in the order he said it, and how each answer
+narrowed the last
+
+1. *"whole and half [rests] will always be found geometrically near the
+   horizontal middle of the bar — I saw some false whole and half rests
+   far off to one side of the bar."* Read as a work order for BOTH whole
+   and half rests, then narrowed by Sean himself once the design question
+   ("what happens when another voice's notes explain a half rest's
+   position") was put to him: *"the centring rule applies to WHOLE rests
+   only — a whole rest = the bar, centred."* For half and smaller: *"based
+   upon the other notes in a measure there will be a limited space
+   geometrically where the rest can be"* — a BEAT-SLOT rule keyed on the
+   bar's other events, not a bar-wide fraction. **Built: `rest_off_center`,
+   restWhole only** (§20b). **Designed, not built: the beat-slot rule**
+   (§20d) — `Q.EVENT`/`Q.VOICES`/`Q.ONSET_COLUMN` are not yet decided at
+   this point in `adjudicate.ORDER`, so the full rule cannot run here
+   without reordering the pipeline, which this item does not do.
+2. *"I don't think rests are found as high as note heads on the ledger
+   lines."* Read first as one number (2.5 spaces beyond the outer line),
+   then corrected by Sean from his own observation: *"I did see some 8th
+   note rests outside the staff but not nearly as far as note heads."*
+   **Built: `rest_outside_its_staff`, a PER-CLASS window** (§20c) — tight
+   (1.0 space) for whole/half/quarter/`restHNr`/`restHBar`, wide (2.5
+   spaces) for 8th-and-smaller, CALIBRATED TO SEAN'S OBSERVATION, NOT
+   MEASURED (no crop was pulled this pass).
+3. A third, independent cause, from Sean's own crops: *"a notehead looked
+   a little bit like a whole note rest when the notehead was cut in half
+   by the image crop — all examples where the rests were in a staff above
+   or below the main staff."* **Built: `rest_clipped_by_crop`** (§20e),
+   reusing `notehead_precision.py`'s own 2.4a edge test
+   (`CELL_EDGE_TOLERANCE_PAGE_PX`) rather than restating it.
+
+### §20b. `rest_off_center` — restWhole only
+
+`_rest_off_center_refusal`: a `restWhole` box's centre, compared against
+`Q.CELL_BOX`'s own `[x0, x1]` (the bar's horizontal extent — the cell frame
+has NO horizontal pad; `measure_extractor`'s own docstring names the
+padding for the vertical band alone, so `Q.CELL_BOX` needs no second
+measurement to stand in for "the bar"). Refused where the offset from the
+bar's centre exceeds `REST_WHOLE_CENTER_MAX_OFFSET_FRACTION = 1/6` of the
+FULL bar width — "the middle third" stated geometrically: the band
+`[1/3, 2/3]` of the bar has half-width `1/6` around the centre. No event or
+voice is read (none is decided yet at this point in `ORDER`, and per
+Sean's own narrowing none is needed: a whole rest denoting one voice's
+silence for the WHOLE bar is centred regardless of what another voice is
+doing — a second voice's own rest is displaced VERTICALLY, never
+horizontally, which is rule 2's job). CONVENTION ASSUMED / WHAT WOULD
+FALSIFY IT / NOT CONFIRMED: no crop confirms 1/6 exactly; falsified by a
+print crop showing a genuine, undisputed whole-bar rest centred outside
+that band.
+
+### §20c. `rest_outside_its_staff` — per-class vertical window
+
+`_rest_vertical_window_refusal` reuses `_ledger_geometry`/`_beyond_spaces`
+UNCHANGED — the SAME "how many spaces past line 1 or line 5" question the
+ledger rule already answers about a different class of ink. Two tiers:
+
+| tier | classes | max spaces beyond the band |
+|---|---|---|
+| TIGHT | `restDoubleWhole`, `restWhole`, `restHalf`, `restQuarter`, `restHNr`, `restHBar` | 1.0 |
+| WIDE | `rest8th`, `rest16th`, `rest32nd`, `rest64th`, `rest128th` | 2.5 |
+
+TIGHT is "a small margin over never" — this project has not observed one
+of those six classes leave the printed staff at all. WIDE admits a
+genuinely displaced-voice 8th/16th rest (`REST_VOICE_DISPLACEMENT_MIN_
+STEPS` in `rhythm.py`, ROADMAP 2.27c — a DIFFERENT, narrower convention
+about which VOICE a rest belongs to, and one that never leaves the staff
+band at all: its own reach is ±1.5 STEPS from the middle line, i.e. well
+inside the 0–8 step band this rule's window sits entirely outside of) and
+stops well short of how far a note on a ledger line goes (CLAUDE.md §10's
+Brahms C Horn 2, 4.5 spaces below its staff). CALIBRATED TO SEAN'S
+OBSERVATION, NOT MEASURED — falsified by a print crop showing a
+tight-tier rest genuinely printed beyond 1.0 space, or a wide-tier rest
+printed farther out than 2.5 spaces.
+
+⚠️ Both `rest_off_center` and `rest_outside_its_staff` run BEFORE
+`Q.GLYPH_OWNER` structurally, not by any gate written in this file's code:
+`adjudicate.ORDER` schedules `Q.REST_IS_NOT_A_REST` well before
+`Q.GLYPH_OWNER` (the same slot `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` already
+holds, for the same reason — a question about what a box IS must be
+settled before the questions that assume the answer). So neither rule can
+ever contradict a DECIDED owner verdict, because none exists yet when
+either runs; no code here pretends to check for one.
+
+### §20d. The beat-slot design for half-and-smaller rests — WRITTEN, NOT
+BUILT
+
+Sean's own words: *"based upon the other notes in a measure there will be
+a limited space geometrically where the rest can be."* Stated as a design:
+a non-whole rest occupies the horizontal GAP between its voice's
+neighbouring events, at the onset its own preceding durations imply within
+that voice, and — on a conductor's page — lines up with the OTHER staves'
+onset columns (`Q.ONSET_COLUMN`, already gathered and voted). Checking it
+in full needs `Q.EVENT` (which events precede and follow this one in the
+same voice), `Q.VOICES` (which voice this rest is in) and `Q.DURATION`
+(what those neighbours' onsets actually are) — all three decided AFTER
+`Q.REST_IS_NOT_A_REST` in `adjudicate.ORDER`, so the full rule cannot run
+inside `adjudicate_rest_is_not_a_rest` without moving it later in the
+pipeline, which is a bigger change than this item's brief (no gathers, no
+reordering) covers. Named as a ROADMAP follow-up, not scheduled.
+
+### §20e. The decisive sub-rule that DOES follow, without waiting on
+`Q.EVENT`/`Q.VOICES` — and §19c, answered
+
+§20d's design reduces to one case decidable from GATHER-level facts alone:
+this glyph's own ink cannot simultaneously BE a rest (an absence of ink at
+that position) and sit on top of a notehead's ink, in ANY voice —
+overlapping detector boxes on one cell are two readings of ONE mark
+(§14's own argument for two REST boxes), never two symbols legitimately
+sharing one spot regardless of which voice either belongs to. This is
+exactly **§19c's cross-family question, asked and left unanswered in
+ROADMAP 2.30** (*"where a rest-class box and a notehead-class box in one
+cell overlap at 2.15's measured IoU floor, is that the same
+one-mark-boxed-twice mechanism... or does it need its own measurement?"*):
+the answer built here is YES, the same mechanism, at the SAME measured
+floor (`REST_DUPLICATE_IOU_MIN`, reused as `REST_NOTEHEAD_OVERLAP_IOU_MIN`
+— not a new measurement, since it is the SAME geometric fact, "two
+detector boxes on one mark," applied to a different pair of classes).
+
+`_rest_overlaps_notehead_refusal` (reason `rest_overlaps_a_notehead`):
+over every `Q.NOTEHEAD_CLASS` glyph's `Q.GLYPH_BOX` in the same cell, an
+overlap at or above the floor refuses this rest — UNLESS the overlapping
+notehead's own `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict is already DECIDED
+refused, in which case the overlap proves nothing (a refused notehead's
+ink might be the SAME misread mark this rest box also mis-boxed — CLAUDE.md
+rule 8, cannot-tell is never converted into an answer). Reading that
+verdict back is safe, not a guess, because `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+is scheduled BEFORE `Q.REST_IS_NOT_A_REST` in `ORDER` (beside the ledger,
+ahead of the accidental/rest/arc/dynamic/articulation block) — the one
+quantity among this item's four new checks that IS a real connection to an
+already-decided verdict rather than one still in flight. §19c's own "not
+built here" note in `notehead_precision.py` stands corrected by this entry.
+The FULL beat-slot rule (§20d) remains the open item; this is the one
+piece of it that needed no voice count and no onset column.
+
+### §20f. `rest_clipped_by_crop`
+
+Sean, from his own crops: *"a notehead looked a little bit like a whole
+note rest when the notehead was cut in half by the image crop — all
+examples where the rests were in a staff above or below the main staff."*
+A notehead sliced by the cell's own top or bottom edge leaves a flat black
+rectangle — a `restWhole`/`restHBar` silhouette by shape alone.
+`_rest_clipped_by_crop_refusal` reuses (imports the CONSTANT, restates
+nothing) `notehead_precision.CELL_EDGE_TOLERANCE_PAGE_PX` (1 page px) —
+the SAME edge test `_clipped_fragment` uses for noteheads (2.4a) — against
+this glyph's own `bbox_page_px` and `Q.CELL_BOX`. ⚠️ NOT the height gate
+`_clipped_fragment` also carries: Sean's case is the opposite shape from a
+notehead sliver (short, at the edge) — a notehead cut in HALF by the crop
+can measure a perfectly ordinary rest height while still being pure crop
+artefact, so a height gate would let the exact case through. The edge test
+alone is what a `restWhole`/`restHBar`-shaped fragment shares with the
+real thing being cut. Never relocated: the neighbour staff's own cell
+holds its own detection of the same ink (CLAUDE.md §10's ledger-line rule
+states this for cross-staff ink generally); this refuses ON THIS STAFF and
+stops there. Checked FIRST among the four new rules (before `rest_off_
+center` and `rest_outside_its_staff`) because it is the DIRECT, named
+cause; the vertical window (§20c) usually catches the same fragments too
+(a notehead cut off by the top/bottom crop edge is, ordinarily, also far
+outside the staff band) — both are kept, one as the cause-level guard, one
+as the geometric backstop for whatever the cause-level guard misses (e.g.
+a fragment cut off by a LEFT/RIGHT crop edge on an unusually narrow cell,
+which the vertical rule cannot see and the edge rule can).
+
+### §20g. `inventory --check`'s AST blind spot, hit again and worked
+around the established way
+
+The first draft imported `notehead_precision._cell_box_page` directly
+(`from .notehead_precision import _cell_box_page`) to read `Q.CELL_BOX`.
+`inventory --check` reported `rest_is_not_a_rest declares 'cell_box' in
+wants and never reads it` — `_never_read`'s AST walk follows a same-module
+helper call, and (since ROADMAP 2.27c) one hop through a `from . import X`
+MODULE import, but not a direct `from .module import name` NAME import.
+Fixed the way `_cell_staff_space` already is between these same two
+files: a one-line local `_cell_box_page_px` in `family_precision.py`,
+duplicated rather than imported, so the AST walk sees a real read. Not a
+new pattern — an existing one, applied a second time.
+
+### §20h. Tests and gates
+
+`tools/omr/tests/test_staged_rest_placement_2_33.py`, 12 tests (3 off-
+centre, 4 vertical-window, 2 crop-clip, 3 notehead-overlap), one refusal
+and one control per rule, plus a control showing `rest_off_center` does
+NOT reach a `restHalf`. RED confirmed by swapping `family_precision.py`
+aside for `origin/main`'s copy (copy-aside/restore, never `git checkout`
+on the dirty tree) and re-running: the 5 refusal tests fail (`False is not
+True` — the old code returns `value=False, reason="rest"` for every one
+of them), the 7 controls stay green. GREEN 12/12 restored.
+
+`python3 -m tools.omr.staged.check`: **TOTAL 245, status=ok** (unchanged
+from the `origin/main` baseline this branch is off). `inventory --check`
+and `wiring --check` both closed clean after §20g's fix — no new entry on
+either, and no `KNOWN_GAPS` addition was needed.
+
+No gathers, no crop batches, no pricing runs, per Sean's 2026-09-29 process
+decision for this item.
+
+### §20i. Files
+
+- `tools/omr/staged/adjudicators/family_precision.py`: the four new
+  refusals, their constants and helpers (§REST-PLACEMENT), and the
+  updated `Q.REST_IS_NOT_A_REST` decision spec/docstring.
+- `tools/omr/tests/test_staged_rest_placement_2_33.py`: the tests.
+- `benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`: the
+  Rests row, updated to point here.
