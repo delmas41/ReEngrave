@@ -8,8 +8,9 @@
       "publisher": "Litolff",
       "record": {
         "root": "library",
-        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260928.record.json",
-        "md5": "719c57a6e06d1b3705091495e516a9ba"
+        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260929.record.json",
+        "md5": "d92379d9047e5ba67e216705264daf99",
+        "note": "RE-GATHERED 2026-09-29 on 23f4fa9e (overnight end-of-batch: 2.6c/d/e/f ownership, 2.13 printed bar number, 2.18/b/c durations, 2.19 measure rest, 3.2b ties), pages 1-16, driver 03:46:45-04:22:00 MST = 35 min. dirty=true is ONLY the run's own untracked outputs in the worktree (no tracked modification; checked `git status --porcelain | grep -v '^??'` empty) -- same as the 2026-09-28 records. Decisions merged after 23f4fa9e (2.3b GATHER barlines, 2.12l, 2.10b) are NOT in this record; acceptance exports verdicts, it does not re-adjudicate (1.3b)."
       },
       "pdf": {
         "root": "library",
@@ -37,8 +38,9 @@
       "publisher": "Breitkopf",
       "record": {
         "root": "library",
-        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json",
-        "md5": "862548d1a635537c6065102a45aa15a2"
+        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260929.record.json",
+        "md5": "f5323db26b4841c29cb8582e2684d36c",
+        "note": "RE-GATHERED 2026-09-29 on 23f4fa9e, pages 0-26, 04:24:46-06:48:12 MST = 2 h 23 m (under concurrent lane load). dirty=true is ONLY untracked run outputs (as Litolff). Decisions merged after 23f4fa9e (2.3b, 2.12l, 2.10b) are NOT in this record."
       },
       "pdf": {
         "root": "library",
@@ -65,9 +67,9 @@
       "publisher": null,
       "record": {
         "root": "repo",
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260928.record.json",
-        "md5": "2156d49eacbeda2b43c43df4d5cec645",
-        "note": "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order), driver bracket 04:04:28Z-04:07:02Z = 2 min 34 s wall over 3 pages. ⚠️ This record's own provenance carries dirty:true, as every acceptance-harness gather's provenance has since before this item (see benchmarks/acceptance/out/ is deliberately not gitignored, so its own sibling-document artefacts read as untracked files at export time -- CODE-tree cleanliness is what gather_movement.sh's own start-of-run guard checks, filtered exactly for that reason; the 09-23 record it replaces carries the same dirty:true). These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- 2.11b, 2.15, 2.4c (record-only) and 0.2b landed on main AFTER c19cbca7 and are NOT reflected here (roadmap 1.3b). Replaces benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json (md5 23c01008ee8087dcbed2fcbc921f91b4, gathered 2026-09-23 on f48a59ce), which stays on disk and was itself RE-GATHERED on a CLEAN tree (roadmap 2.9) to replace engraved-p0p2.record.json (md5 d349e3631f3a1737aa6fc2f15c13b374, gathered on 7754d277 with dirty=True and BEFORE the document-identity work, carrying no Q.INPUT_DOMAIN row -- roadmap 2.2's engraved-template tier could not fire and 0 of 54 key verdicts read `fitted_by_template_engraved`). Both superseded files stay on disk. benchmarks/omr-key-majority-2026-09/FINDINGS.md Sec.1a."
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929.record.json",
+        "md5": "02dc1608708e32f3b93434732dc169e3",
+        "note": "RE-GATHERED 2026-09-29 on baba1c76 (includes 2.3b: the spurious bar-21 barline gone, 24 bars = truth), pages 0-2. dirty=true is ONLY untracked run outputs in the regather worktree."
       },
       "pdf": {
         "root": "repo",
