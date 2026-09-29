@@ -1,0 +1,715 @@
+{
+  "label": "beams_ambiguous",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "dpi": 600,
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json",
+  "provenance": {
+    "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+    "dirty": true,
+    "settings": {
+      "env_overrides": {
+        "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+        "OMR_SURYA_KEEP_ALIVE": "0"
+      },
+      "args": {
+        "against": null,
+        "conf": 0.25,
+        "dpi": 600,
+        "imgsz": null,
+        "ink_rows": false,
+        "no_roster": false,
+        "no_weight_routing": false,
+        "ocr": true,
+        "pages": "0-26",
+        "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+        "route_weights": true,
+        "sheet": null,
+        "surya": true,
+        "weights": "auto",
+        "work_id": null
+      }
+    },
+    "review": {
+      "parent": {
+        "record": "library/_shared-records/brahms1-breitkopf-mvt1-whole-20260928.record.json",
+        "md5": "862548d1a635537c6065102a45aa15a2",
+        "provenance": {
+          "commit": "c19cbca7b7339d74e255a26b80e7fc3a385d428e",
+          "dirty": true,
+          "settings": {
+            "env_overrides": {
+              "OMR_DIRECTION_TEXT_SCAN_GATE": "1",
+              "OMR_SURYA_KEEP_ALIVE": "0"
+            },
+            "args": {
+              "against": null,
+              "conf": 0.25,
+              "dpi": 600,
+              "imgsz": null,
+              "ink_rows": false,
+              "no_roster": false,
+              "no_weight_routing": false,
+              "ocr": true,
+              "pages": "0-26",
+              "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+              "route_weights": true,
+              "sheet": null,
+              "surya": true,
+              "weights": "auto",
+              "work_id": null
+            }
+          }
+        }
+      },
+      "sidecar": {
+        "path": null,
+        "sha256": "7d357b0ef1f85ba71c5ccebb6671b0c34f4b3950f5b21d2af7b4a3d4e9dcd570",
+        "actions": 0,
+        "staff": null,
+        "record_named_by_sidecar": null
+      },
+      "amended_at": "2026-09-28T13:18:14.953367-07:00"
+    }
+  },
+  "tiles": [
+    {
+      "subject": "glyph/0/0/0/1/6",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        2545.7625,
+        1550.315,
+        2586.075,
+        1586.7575
+      ],
+      "file": "beams_ambiguous-0-0-0-1-6.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/0/0/0/1/15",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 0,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        2546.4075,
+        1586.7575,
+        2586.72,
+        1617.395
+      ],
+      "file": "beams_ambiguous-0-0-0-1-15.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/1/0/0/0/12",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 1,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 2,
+        "yolo_beams": 0,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 46.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        1470.50048828125,
+        745.55517578125,
+        1511.68701171875,
+        779.68115234375
+      ],
+      "file": "beams_ambiguous-1-0-0-0-12.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/1/0/0/0/21",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 1,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 2,
+        "yolo_beams": 0,
+        "yolo_kept": 0,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 46.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        1211.61376953125,
+        743.7900390625,
+        1251.03515625,
+        779.0927734375
+      ],
+      "file": "beams_ambiguous-1-0-0-0-21.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/2/0/0/1/11",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "candidates": [
+        {
+          "value": {
+            "beats": 6.0,
+            "written": 6.0,
+            "dots": 1,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 3.0,
+            "written": 3.0,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        },
+        {
+          "value": {
+            "beats": 1.5,
+            "written": 1.5,
+            "dots": 1,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadWholeOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 1,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 56.0,
+        "levels_certain": 0,
+        "levels_possible": 2
+      },
+      "bbox_page": [
+        1719.0966796875,
+        429.92529296875,
+        1764.94921875,
+        463.5830078125
+      ],
+      "file": "beams_ambiguous-2-0-0-1-11.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/2/0/0/2/0",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 2,
+      "system": 0,
+      "staff": 0,
+      "cell": 2,
+      "candidates": [
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.375,
+            "written": 0.375,
+            "dots": 1,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "read",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 89.5,
+        "levels_certain": 1,
+        "levels_possible": 2
+      },
+      "bbox_page": [
+        2727.32568359375,
+        722.00048828125,
+        2765.65478515625,
+        746.94482421875
+      ],
+      "file": "beams_ambiguous-2-0-0-2-0.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/0/5",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.5,
+            "written": 1.5,
+            "dots": 1,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 78.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        1220.13330078125,
+        449.294921875,
+        1261.31103515625,
+        483.01806640625
+      ],
+      "file": "beams_ambiguous-3-0-0-0-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/3/0/0/0/9",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 3,
+      "system": 0,
+      "staff": 0,
+      "cell": 0,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.5,
+            "written": 1.5,
+            "dots": 1,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 78.25,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        1228.65283203125,
+        480.17822265625,
+        1259.89111328125,
+        510.3515625
+      ],
+      "file": "beams_ambiguous-3-0-0-0-9.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/4/4/3",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 4,
+      "system": 0,
+      "staff": 4,
+      "cell": 4,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.5,
+            "written": 1.5,
+            "dots": 1,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 0,
+        "yolo_beams": 1,
+        "yolo_kept": 1,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        2552.525,
+        1686.325,
+        2590.2,
+        1711.9
+      ],
+      "file": "beams_ambiguous-4-0-4-4-3.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/4/0/4/5/4",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 4,
+      "system": 0,
+      "staff": 4,
+      "cell": 5,
+      "candidates": [
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.375,
+            "written": 0.375,
+            "dots": 1,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "read",
+        "cv_beams": 0,
+        "yolo_beams": 2,
+        "yolo_kept": 2,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 100.0,
+        "levels_certain": 1,
+        "levels_possible": 2
+      },
+      "bbox_page": [
+        2810.6,
+        1405.55,
+        2848.55,
+        1440.2
+      ],
+      "file": "beams_ambiguous-4-0-4-5-4.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/1/5",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 1,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.0,
+            "written": 1.0,
+            "dots": 0,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.5,
+            "written": 0.5,
+            "dots": 0,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        },
+        {
+          "value": {
+            "beats": 0.25,
+            "written": 0.25,
+            "dots": 0,
+            "beam_levels": 2
+          },
+          "support": 1.0
+        },
+        {
+          "value": {
+            "beats": 0.125,
+            "written": 0.125,
+            "dots": 0,
+            "beam_levels": 3
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackInSpace",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 2,
+        "yolo_beams": 6,
+        "yolo_kept": 3,
+        "stems_attached": 0,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 0,
+        "staff_space": 95.0,
+        "levels_certain": 0,
+        "levels_possible": 3
+      },
+      "bbox_page": [
+        1794.83056640625,
+        719.11083984375,
+        1834.6708984375,
+        747.486328125
+      ],
+      "file": "beams_ambiguous-5-0-0-1-5.png",
+      "VERDICT_none_yet": null
+    },
+    {
+      "subject": "glyph/5/0/0/2/0",
+      "cause": "duration_narrowed:beams_ambiguous",
+      "page": 5,
+      "system": 0,
+      "staff": 0,
+      "cell": 2,
+      "candidates": [
+        {
+          "value": {
+            "beats": 1.5,
+            "written": 1.5,
+            "dots": 1,
+            "beam_levels": 0
+          },
+          "support": 2.0
+        },
+        {
+          "value": {
+            "beats": 0.75,
+            "written": 0.75,
+            "dots": 1,
+            "beam_levels": 1
+          },
+          "support": 1.0
+        }
+      ],
+      "detail": {
+        "head": "noteheadBlackOnLine",
+        "beam_evidence": "none_over_this_note",
+        "cv_beams": 2,
+        "yolo_beams": 4,
+        "yolo_kept": 3,
+        "stems_attached": 1,
+        "beams_by_stem": 0,
+        "flags_attached": 0,
+        "flag_levels": 0,
+        "dots_attached": 1,
+        "staff_space": 100.0,
+        "levels_certain": 0,
+        "levels_possible": 1
+      },
+      "bbox_page": [
+        2068.785,
+        405.06,
+        2113.7475,
+        440.2125
+      ],
+      "file": "beams_ambiguous-5-0-0-2-0.png",
+      "VERDICT_none_yet": null
+    }
+  ]
+}
