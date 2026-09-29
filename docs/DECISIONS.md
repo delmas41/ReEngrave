@@ -399,3 +399,14 @@ Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
   measure math adds up to 1 measure"*) · the bar sum here is Sean's stated
   witness for VOICE COUNT, not a meter check — where neither one line nor two
   full, vertically separated lines add up, the voicing abstains (rule 8)
+- 2026-09-29 · Sean · **Biggest difference first; guard against scope creep.**
+  *"We're in phase 2 of a bigger plan … my main concern is that we're putting
+  our energy in things that actually make the biggest difference first."* ·
+  applied as the plan's own Phase 2 rule (plan §Phase 2: "work the funnel from
+  the top, largest loss first, and re-read the funnel after each item — the
+  ranking is the trace's"): every lane brief names the FUNNEL BUCKET it moves
+  and its size on the whole-movement records; an item that moves no top
+  bucket is PARKED on the roadmap, not built; the funnel is re-read (one
+  unattended script) after each batch. Parked by this: 2.28 page text,
+  pedal/ottava MusicXML output, bowing-mark research, and 2.31 except the
+  structural gaps that starve a top bucket
