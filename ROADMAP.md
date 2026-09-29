@@ -83,8 +83,15 @@ revert, labelled; (2) markers → ANSWERED: one word, 'unread', for every reason
 **Work order (build first):**
 1. ~~Read the Brahms re-decision~~ **read 2026-09-28 12:18** (re-decided on `92b6ab04`, 1 h 58 m): pitched notes written **965 → 1,410**, rests 1,255 → 1,380, bars held **4,513 → 4,494** — the 9/4 bucket is gone and bars judged at 3.0 rose 361 → 1,260, but **3,234 held bars are still judged against 4/4** → 2.12j. **Re-decided again on `f4168dfd` (after 2.12j), 15:21: pitched notes 965 → 1,410 → 3,529, notes held 18,629 → 15,406, and ALL 4,607 held bars are judged at 3.0 (6/8) — the meter chain is fixed end to end; what is still held is genuine under-reading (the funnel's missing / extra events and dots), not a wrong meter.** Record: `.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json`. The amended record is `.claude/worktrees/redecide-92b6ab04/out-redecide/brahms/amended.record.json` — point the viewer at it.
 2. ~~The m. 9 return to 6/8~~ — no longer binding: after 2.12j every held bar is judged at 6/8. Re-check only if a later record regresses.
-3. `owned_by_another_staff` (6,008 Brahms heads) — the largest missing-events
-   cause; needs Sean's print check on 2.6's contest at scale first. **Crops being cut 2026-09-28 (`claude/owner-crops-2.6b`); 2.12k waits on Sean's verdicts.**
+3. `owned_by_another_staff` (6,008 Brahms heads on an earlier revision; the
+   current `f4168dfd` record measures 3,590 notehead `glyph_owner` losers —
+   `benchmarks/omr-owner-domain-2026-09/FINDINGS.md` §12 could not reconcile
+   the two without an export run) — the largest missing-events cause; needs
+   Sean's print check on 2.6's contest at scale first. **Crops CUT
+   2026-09-28 (`claude/owner-crops-2.6b`, pushed): 20 losers stratified by
+   deciding term (`distance`/`ladder`/`range_veto`) × direction, + 4 kept
+   twins, contact sheet at `out/print/o26b-contact-sheet.png`. 2.12k waits on
+   Sean's verdicts (`out/print/o26b-manifest.json`, `VERDICT_none_yet`).**
 4. **IN FLIGHT since 2026-09-28 17:17 on `bc17f9ce`**: the whole-work gate for 4.1/4.2/4.2b — `python3 -m tools.reengrave import beethoven--symphony-5 --edition 984073 --yes` with movements DETECTED (no `--movements`), from `.claude/worktrees/wholework-bc17f9ce` (driver `../wholework-bc17f9ce.sh`, log `../wholework-bc17f9ce.log`, run log `out-wholework.log`, files in `out/beethoven--symphony-5/`). Gate: four movements, four MusicXML + four PDFs, split at pdf pages 17 / 32 / 44 (4.2b's candidate spec, read off renders).
 5. Then 2.13 (printed bar number), 3.2 (port the legacy-only list), 3.3's
    default flip on acceptance parity.

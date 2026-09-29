@@ -511,3 +511,133 @@ both of which name `transcribe.py:3290 _dedupe_cross_staff_detections` in their
 
 The two real-gather records are gitignored (7–8 MB each, two minutes to
 rebuild); everything the tables quote is in the committed JSON beside them.
+
+---
+
+## 12. §2.6b — the ownership losers at whole-movement scale, crops for Sean (2026-09-28)
+
+Roadmap item 2.6b. §9 print-checked 2.6's DOMAIN change on 18 crops, page
+scale, Litolff pp.1–4 only. Before the contest itself is touched, Sean asked
+to see a sample of its **losers** — noteheads whose `glyph_owner` verdict
+named the OTHER staff of the pair — at whole-movement scale, on the fresh
+Brahms 1/i record (main `f4168dfd`, re-decided
+`.claude/worktrees/redecide-f4168dfd/out-redecide/brahms/amended.record.json`,
+read-only, not committed, 1.6 GB / 440,057 observations / 323,786 verdicts).
+**No pipeline of any kind ran** — one `load_record`, one extraction pass, one
+crop pass, per DECISIONS 2026-09-28's proof budget.
+
+### The population
+
+Every `glyph_owner` verdict, `outcome == decided`, category `notehead`,
+current (not superseded by a later revision), whose `value` names a staff
+other than the one `Subject.at(Kind.STAFF)` gives the glyph itself — i.e. a
+candidate for `export.py`'s `owned_by_another_staff` drop
+(`is_relocated_copy`, `export.py:956`). By construction every one of these
+has a TWIN on the winning staff (the pair the contest is built from,
+`gather_ownership_evidence`); **3,590 of 3,590 losers resolved to a twin**
+re-derived independently here from `Q.GLYPH_BOX` (same category, IoU > 0.3,
+`gather.py`'s own `CONTEST_IOU`), confirming the docstring's claim
+mechanically rather than assuming it.
+
+| deciding term | own staff is upper (lost to the staff below) | own staff is lower (lost to the staff above) | total |
+|---|---:|---:|---:|
+| `distance` | 1,236 | 810 | 2,046 |
+| `ladder` | 864 | 531 | 1,395 |
+| `range_veto` | 62 | 87 | 149 |
+| **total** | **2,162** | **1,428** | **3,590** |
+
+`human_owner` and `tied`/`no_evidence` contribute 0 to this population (no
+review pass has touched Brahms yet; a tied contest carries no winner to lose
+to). Spread across all 27 pages of the movement (pdf idx 0–26), not
+concentrated on any one page.
+
+⚠️ **This is 3,590, not the 6,008 `ROADMAP.md:86` names** ("`owned_by_
+another_staff` (6,008 Brahms heads) — the largest missing-events cause").
+Checked directly: `glyph_owner` losers by category on THIS record are
+`structural` 7,686, `notehead` 3,590, `dynamic` 1,446, `ornament` 1,114,
+`accidental` 878, `flag` 227, `rest` 140, `clef` 53, `time_sig_digit` 11 — no
+single category or small combination lands on 6,008, and `export.py` checks
+`no_pitch` and an undecided `duration` BEFORE the owner check, so the true
+per-note `owned_by_another_staff` bucket can only be **at most** 3,590 on
+notehead-derived events, not more. The 6,008 figure most likely comes from an
+actual export run's `status_census` against an EARLIER revision of the Brahms
+record: `ROADMAP.md`'s own item 1 shows the pitched-note count on this
+document changing **965 → 1,410 → 3,529** across two re-decisions
+(`92b6ab04` then `f4168dfd`) on 2026-09-28 alone, a >3.5× swing driven by the
+meter-chain fix in 2.12j, and a duration/pitch change upstream of the owner
+check changes exactly which notes reach it. This pass reads only the record
+the brief named (`f4168dfd`, the current one); it does not run an export to
+reconcile the two numbers, and the gap is flagged, not chased.
+
+### The sample: 20 losers + 4 kept twins
+
+Stratified by (deciding term × direction) into the six cells above, at
+roughly the population's own proportions with every cell represented at
+least twice, picked round-robin by page within each cell so the 20 spread
+across the movement rather than cluster on one page (seed `20260928`,
+`crop_losers_2_6b.py`): **5 / 4 distance, 4 / 3 ladder, 2 / 2 range_veto**
+(upper/lower). Four more crops show the KEPT TWIN on the winning staff for
+one contest from each of the four largest cells, so Sean can compare the
+loser and the note that survived side by side — in all four, `twin_kept` is
+`True` (the twin's own `glyph_owner` verdict, where it has one, names its own
+staff; 3,585 of 3,590 twins in the whole population are `True`, 5 `False`,
+i.e. the twin itself lost a *different* contest — none of those 5 were drawn
+into this sample).
+
+Every crop draws **both** candidate staves' `Q.STAFF_LINES` — BLUE the staff
+the head was FILED on (and lost), GREEN the staff the record awards it to —
+never one alone, per Sean's 2026-09-23 correction that a crop in the gap
+between two staves commits to neither. The subject head is bracketed in RED
+on its exact `bbox_page_px`; a ruler down the left edge ticks staff spaces off
+the filed staff's top line. Cut from the PDF at the record's own 600 dpi.
+
+⚠️ **THE FRAME CONTROL CAN FAIL AND WAS RUN IN A STATE WHERE IT DOES**
+(CLAUDE.md rule 7). At the record's true geometry, 24 of 24 candidate crops
+passed on both staves (contrast well above the 8.0 margin on every one, no
+fallback needed). Shifting each FILED staff's lines by half a spacing and
+re-running the same check against the same 600 dpi render: **0 of 24 pass** —
+the control is not vacuously true.
+
+### The deliverable
+
+- `benchmarks/omr-owner-domain-2026-09/out/print/o26b-01.png` … `o26b-24.png`
+  — crops 01–20 are LOSERS, 21–24 are the paired WINNERS (twins).
+- `benchmarks/omr-owner-domain-2026-09/out/print/o26b-manifest.json` — one
+  row per crop: `subject`, `filed_staff`, `winning_staff`, `deciding_term`,
+  `margin`, `direction`, `twin_subject`/`twin_kept`/`twin_reason`,
+  `frame_contrast`, `page_box`, and `VERDICT_none_yet: null` for Sean to fill.
+  Nothing is blind here (unlike §9's shuffled batch) — the whole point is
+  Sean can see the term and margin as context while he reads the print.
+- `benchmarks/omr-owner-domain-2026-09/out/print/o26b-contact-sheet.png` — a
+  4×6 grid of all 24, numbered, so the batch can be scanned in one pass;
+  the individual PNG (via the manifest's `file`) is the one to zoom into
+  before answering.
+- `benchmarks/omr-owner-domain-2026-09/extract_losers_2_6b.py` reads the
+  record once and writes the committed `out/o26b-cache.json` (2.7 MB: the
+  3,590-row population, staff geometry, and every twin bbox);
+  `crop_losers_2_6b.py` and `contact_sheet_2_6b.py` reproduce the 24 crops
+  and the sheet from that cache alone, with no further record read.
+  `check_category_breakdown_2_6b.py` reproduces the by-category table above.
+
+```
+python3 benchmarks/omr-owner-domain-2026-09/extract_losers_2_6b.py
+python3 benchmarks/omr-owner-domain-2026-09/crop_losers_2_6b.py
+python3 benchmarks/omr-owner-domain-2026-09/contact_sheet_2_6b.py
+python3 benchmarks/omr-owner-domain-2026-09/check_category_breakdown_2_6b.py
+python3 benchmarks/omr-owner-domain-2026-09/check_frame_control_can_fail_2_6b.py
+```
+
+**The question on every crop, exactly**: *right staff dropped (correct) /
+wrong staff dropped (this staff's own note) / not a note?* — and for the four
+winners, *is this a duplicate of its paired loser, or a different note?*
+
+### What this pass does NOT establish
+
+Same caveat as §9, restated because it is load-bearing and not a formality:
+**no glyph here has been read against a print.** Every count above is a
+record measurement — what a verdict says and what term decided it — and a
+record measurement cannot say a note went to the right staff. `twin_kept`
+answers "did the OWNERSHIP decision also keep the twin," never "is the twin
+actually a real, correctly-read note" — that is exactly what crops 21–24 ask
+Sean. This pass does not touch `glyph_owner`, `is_relocated_copy`, or any
+other code; it reads one record and cuts crops.
