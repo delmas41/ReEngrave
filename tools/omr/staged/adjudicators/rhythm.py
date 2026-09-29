@@ -678,6 +678,63 @@ def _beam_levels(beams, x_center, width, joined=()):
             possible += 1
     return (certain, possible)
 
+
+def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
+    """The way THIS head's own stem points, or `(None, None)`.
+
+    ⚠️ ONLY `stem_projection` -- the direction read off a stem attached to
+    THIS head. `beam_mate` is borrowed from a neighbour on a stroke over this
+    head (BEST, not forced -- its own docstring says so), and using it to
+    choose among those same strokes would let the strokes vouch for
+    themselves. An abstained or absent direction gives no side, and the
+    column test then stands exactly as it was before 2.18.
+    """
+    v = ev.verdict(Q.STEM_DIRECTION)
+    if (v is None or v.outcome is not Outcome.DECIDED
+            or v.reason != "stem_projection" or v.value not in ("up", "down")):
+        return None, None
+    return str(v.value), v
+
+
+def _on_stem_side(beams, head_box, side):
+    """`(strokes on the stem side of this head, strokes on the far side)`.
+
+    ⚠️⚠️ ROADMAP 2.18: THE COLUMN TEST WAS BLIND IN Y. `_beam_levels` counts
+    a stroke by its x-range alone, so on a two-voice staff the OTHER voice's
+    beam under a stem-up head -- or, through the cell's 4-space pad, the next
+    staff's beam -- counted as this note's: CERTAIN where it covered the
+    column, POSSIBLE where it ended within a notehead's width. [C12]: a beam
+    joins STEM ENDS, so a note's beams stand on the side its stem points to;
+    a stroke whose centre is across the head's own centre from it cannot be
+    one of them. That FOLLOWS (it is forced by the engraving, given a stem
+    read off this head), so it belongs here and not in INFER.
+
+    Measured on Breitkopf 317803 p1 (`benchmarks/omr-missing-notes-2026-09/
+    FINDINGS.md` §10): 39 of the 104 heads EXPORT refuses as
+    `duration_narrowed` are narrowed ONLY by far-side strokes, and 29 carry a
+    far-side stroke among their CERTAIN levels too.
+
+    ⚠️ THE CENTRE OF THE HEAD, NOT ITS EDGE. A stroke lying THROUGH the head
+    (the CV opening fuses a row of heads into one horizontal run) sits within
+    a fraction of a space of the centre and lands on whichever side its own
+    centre happens to fall; this rule is NOT claimed as a fix for that fault,
+    which is a beam reader's false positive and not a question of side.
+    """
+    if side is None or head_box is None:
+        return list(beams), []
+    hyc = head_box[1] + head_box[3] / 2.0
+    sign = -1.0 if side == "up" else 1.0
+    near, far = [], []
+    for b in beams:
+        box = _xywh(b)
+        if box is None:
+            near.append(b)
+            continue
+        (near if ((box[1] + box[3] / 2.0) - hyc) * sign > 0
+         else far).append(b)
+    return near, far
+
+
 def _head_class(ev: Evidence) -> Optional[str]:
     rows = ev.rows(Q.NOTEHEAD_CLASS)
     if not rows:
@@ -704,14 +761,14 @@ def _head_class(ev: Evidence) -> Optional[str]:
     # augmentation dot, not on which rows merely carry the class.
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
-                   Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG),
+                   Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION),
     scope=Kind.GLYPH,
-    # ⚠️ `Q.STEM_DIRECTION` IS A `wants` AND NOT A `composed_from` (2.12e).
-    # A flag's class suffix names the way its stem points; the DURATION is
-    # composed from the flag's HOOK COUNT and is not touched by the direction
-    # at all. Declaring it as composing the value would claim a dependence
-    # that does not exist, and the gate for 2.12e is precisely that zero
-    # durations move.
+    # ⚠️ `Q.STEM_DIRECTION` JOINED `composed_from` AT ROADMAP 2.18. Under
+    # 2.12e it was a `wants` only -- a flag's direction does not touch its
+    # hook count, and zero durations moved. 2.18 makes it choose WHICH beam
+    # strokes can be this note's (`_on_stem_side`), so the level, and with it
+    # the value, now depends on it; declaring otherwise would hide the
+    # dependence from `wiring` and `trace`.
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
@@ -786,6 +843,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if box:
         hb = _xywh_head(box[-1].value)
         head_box = hb
+    # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
+    # to can be its beams (`_on_stem_side`). No own stem direction -> no side
+    # -> every stroke stays, exactly as before.
+    side, side_verdict = _own_stem_side(ev)
+    kept, far_side = _on_stem_side(kept, head_box, side)
+    if side_verdict is not None:
+        used.append(side_verdict.id)
     joined, attached = _stem_joined(kept, stems, head_box)
     certain, possible = _beam_levels(kept, x_center, head_width, joined)
     levels = certain
@@ -843,7 +907,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     shared = {"head": str(head), "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
-              "yolo_kept": len(kept) - len(cv),
+              "yolo_kept": len(kept) + len(far_side) - len(cv),
+              "beam_side": side, "beams_far_side": len(far_side),
               "stems_attached": len(attached), "beams_by_stem": len(joined),
               "flags_attached": len(flags), "flag_levels": flag_levels,
               "dots_attached": n_dots,
