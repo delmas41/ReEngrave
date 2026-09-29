@@ -1,0 +1,55 @@
+{
+ "cell_id": "mahler5-p177-sys1-s6-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 89,
+   "y": 279,
+   "w": 108,
+   "h": 314,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 565,
+   "y": 587,
+   "w": 108,
+   "h": 307,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1275,
+   "y": 363,
+   "w": 77,
+   "h": 280,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 996,
+   "y": 435,
+   "w": 89,
+   "h": 261,
+   "confidence": 1.0
+  },
+  {
+   "id": "D4",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 1549,
+   "y": 375,
+   "w": 80,
+   "h": 244,
+   "confidence": 1.0
+  }
+ ]
+}

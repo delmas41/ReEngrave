@@ -1,0 +1,12 @@
+{
+ "cell_id": "mahler5-p175-sys1-s13-m6",
+ "schema_version": 2,
+ "detections": [
+  {
+   "id": "D0",
+   "verdict": "TP"
+  }
+ ],
+ "added_detections": [],
+ "notes": "human family boxes pre-confirmed by build_family_queue"
+}

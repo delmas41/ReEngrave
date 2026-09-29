@@ -1,0 +1,9 @@
+{
+ "pass_name": "accidentals-reconcile",
+ "note": "adjudicate the teacher's unmatched accidental boxes: t = real, f = not (fix the class with c if the teacher named the wrong accidental class). Draw any accidental BOTH missed.",
+ "classes": [
+  "accidentalFlat",
+  "accidentalNatural",
+  "accidentalSharp"
+ ]
+}

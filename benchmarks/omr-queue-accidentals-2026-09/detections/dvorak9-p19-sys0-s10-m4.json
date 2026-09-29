@@ -1,0 +1,35 @@
+{
+ "cell_id": "dvorak9-p19-sys0-s10-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 119,
+   "y": 281,
+   "w": 89,
+   "h": 244,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 624,
+   "y": 134,
+   "w": 89,
+   "h": 244,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 138,
+   "y": 1311,
+   "w": 84,
+   "h": 189,
+   "confidence": 0.711
+  }
+ ]
+}

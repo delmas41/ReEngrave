@@ -1,0 +1,15 @@
+{
+ "cell_id": "schehe-p2-sys1-s12-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 254,
+   "y": 597,
+   "w": 110,
+   "h": 325,
+   "confidence": 0.624
+  }
+ ]
+}

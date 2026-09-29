@@ -1,0 +1,15 @@
+{
+ "cell_id": "elgar1-p100-sys0-s16-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1293,
+   "y": 1326,
+   "w": 201,
+   "h": 62,
+   "confidence": 0.357
+  }
+ ]
+}

@@ -1,0 +1,35 @@
+{
+ "cell_id": "brahms1-p4-sys1-s24-m9",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 755,
+   "y": 7,
+   "w": 98,
+   "h": 233,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 66,
+   "y": 439,
+   "w": 109,
+   "h": 327,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 766,
+   "y": 845,
+   "w": 96,
+   "h": 259,
+   "confidence": 0.882
+  }
+ ]
+}

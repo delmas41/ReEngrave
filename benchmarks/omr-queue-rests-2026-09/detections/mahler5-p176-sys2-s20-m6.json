@@ -1,0 +1,15 @@
+{
+ "cell_id": "mahler5-p176-sys2-s20-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restHBar",
+   "category": "structural",
+   "x": 2,
+   "y": 454,
+   "w": 1878,
+   "h": 99,
+   "confidence": 0.262
+  }
+ ]
+}

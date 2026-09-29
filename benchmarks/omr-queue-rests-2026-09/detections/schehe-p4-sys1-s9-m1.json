@@ -1,0 +1,15 @@
+{
+ "cell_id": "schehe-p4-sys1-s9-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 797,
+   "y": 981,
+   "w": 176,
+   "h": 80,
+   "confidence": 1.0
+  }
+ ]
+}

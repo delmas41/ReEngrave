@@ -1,0 +1,15 @@
+{
+ "cell_id": "brahms1-p2-sys1-s22-m0",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 738,
+   "y": 342,
+   "w": 123,
+   "h": 123,
+   "confidence": 1.0
+  }
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "cell_id": "mahler5-p178-sys0-s0-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 360,
+   "y": 638,
+   "w": 85,
+   "h": 303,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restHalf",
+   "category": "structural",
+   "x": 519,
+   "y": 717,
+   "w": 160,
+   "h": 70,
+   "confidence": 1.0
+  }
+ ]
+}

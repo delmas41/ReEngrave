@@ -1,0 +1,35 @@
+{
+ "cell_id": "mahler5-p175-sys0-s5-m7",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 651,
+   "y": 427,
+   "w": 110,
+   "h": 318,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 943,
+   "y": 480,
+   "w": 128,
+   "h": 192,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "restHalf",
+   "category": "structural",
+   "x": 114,
+   "y": 519,
+   "w": 156,
+   "h": 69,
+   "confidence": 1.0
+  }
+ ]
+}

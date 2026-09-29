@@ -1,0 +1,25 @@
+{
+ "cell_id": "brahms1-p2-sys0-s0-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 368,
+   "y": 530,
+   "w": 81,
+   "h": 280,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1402,
+   "y": 236,
+   "w": 88,
+   "h": 276,
+   "confidence": 1.0
+  }
+ ]
+}

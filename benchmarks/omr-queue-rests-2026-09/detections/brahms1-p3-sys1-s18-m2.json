@@ -1,0 +1,15 @@
+{
+ "cell_id": "brahms1-p3-sys1-s18-m2",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 834,
+   "y": 500,
+   "w": 211,
+   "h": 71,
+   "confidence": 1.0
+  }
+ ]
+}

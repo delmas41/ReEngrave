@@ -1,0 +1,25 @@
+{
+ "cell_id": "schehe-p2-sys0-s6-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1165,
+   "y": 127,
+   "w": 24,
+   "h": 81,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "rest16th",
+   "category": "structural",
+   "x": 976,
+   "y": 294,
+   "w": 38,
+   "h": 55,
+   "confidence": 0.482
+  }
+ ]
+}

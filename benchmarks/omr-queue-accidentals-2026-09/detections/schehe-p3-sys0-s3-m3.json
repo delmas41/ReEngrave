@@ -1,0 +1,25 @@
+{
+ "cell_id": "schehe-p3-sys0-s3-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 9,
+   "y": 605,
+   "w": 128,
+   "h": 293,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 1518,
+   "y": 708,
+   "w": 111,
+   "h": 300,
+   "confidence": 1.0
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "cell_id": "elgar1-p105-sys0-s24-m4",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 0,
+   "y": 2,
+   "w": 91,
+   "h": 163,
+   "confidence": 0.733
+  }
+ ]
+}

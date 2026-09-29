@@ -1,0 +1,25 @@
+{
+ "cell_id": "beet5hr-p49-sys0-s4-m3",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 743,
+   "y": 561,
+   "w": 104,
+   "h": 257,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 1115,
+   "y": 418,
+   "w": 106,
+   "h": 247,
+   "confidence": 1.0
+  }
+ ]
+}

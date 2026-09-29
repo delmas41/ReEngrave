@@ -1,0 +1,65 @@
+{
+ "cell_id": "brahms1-p2-sys0-s1-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1199,
+   "y": 448,
+   "w": 120,
+   "h": 287,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 761,
+   "y": 512,
+   "w": 134,
+   "h": 164,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 1002,
+   "y": 513,
+   "w": 113,
+   "h": 154,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "rest8th",
+   "category": "structural",
+   "x": 1751,
+   "y": 508,
+   "w": 116,
+   "h": 158,
+   "confidence": 1.0
+  },
+  {
+   "id": "D4",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1,
+   "y": 816,
+   "w": 43,
+   "h": 201,
+   "confidence": 0.506
+  },
+  {
+   "id": "D5",
+   "smufl_name": "restQuarter",
+   "category": "structural",
+   "x": 1299,
+   "y": 0,
+   "w": 73,
+   "h": 256,
+   "confidence": 0.326
+  }
+ ]
+}

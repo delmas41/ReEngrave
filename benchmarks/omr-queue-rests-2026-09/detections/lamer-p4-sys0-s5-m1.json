@@ -1,0 +1,25 @@
+{
+ "cell_id": "lamer-p4-sys0-s5-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1150,
+   "y": 814,
+   "w": 141,
+   "h": 42,
+   "confidence": 0.684
+  },
+  {
+   "id": "D1",
+   "smufl_name": "restWhole",
+   "category": "structural",
+   "x": 1669,
+   "y": 808,
+   "w": 134,
+   "h": 40,
+   "confidence": 0.301
+  }
+ ]
+}

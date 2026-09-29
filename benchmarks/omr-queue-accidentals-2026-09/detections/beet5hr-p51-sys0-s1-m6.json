@@ -1,0 +1,45 @@
+{
+ "cell_id": "beet5hr-p51-sys0-s1-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 590,
+   "y": 181,
+   "w": 106,
+   "h": 260,
+   "confidence": 1.0
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 602,
+   "y": 550,
+   "w": 102,
+   "h": 273,
+   "confidence": 1.0
+  },
+  {
+   "id": "D2",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 1402,
+   "y": 157,
+   "w": 88,
+   "h": 252,
+   "confidence": 1.0
+  },
+  {
+   "id": "D3",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 1395,
+   "y": 546,
+   "w": 123,
+   "h": 226,
+   "confidence": 1.0
+  }
+ ]
+}

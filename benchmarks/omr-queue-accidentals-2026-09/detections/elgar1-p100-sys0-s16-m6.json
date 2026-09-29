@@ -1,0 +1,15 @@
+{
+ "cell_id": "elgar1-p100-sys0-s16-m6",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalNatural",
+   "category": "structural",
+   "x": 1209,
+   "y": 1131,
+   "w": 87,
+   "h": 265,
+   "confidence": 0.701
+  }
+ ]
+}

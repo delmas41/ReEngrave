@@ -1,0 +1,25 @@
+{
+ "cell_id": "dvorak9-p19-sys1-s21-m1",
+ "detections": [
+  {
+   "id": "D0",
+   "smufl_name": "accidentalSharp",
+   "category": "structural",
+   "x": 521,
+   "y": 0,
+   "w": 80,
+   "h": 188,
+   "confidence": 0.891
+  },
+  {
+   "id": "D1",
+   "smufl_name": "accidentalFlat",
+   "category": "structural",
+   "x": 554,
+   "y": 866,
+   "w": 71,
+   "h": 167,
+   "confidence": 0.724
+  }
+ ]
+}
