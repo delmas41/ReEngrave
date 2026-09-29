@@ -161,3 +161,51 @@ consumer lands") — `movement_start` is now that consumer, so the entry
 (and the module docstring line naming it) were removed rather than left to
 report `stale gap entries` (which `reach --check` scores as BROKEN, not
 merely open). No other check moved.
+
+## 6. Manager review before merge — false-positive control on the acceptance records
+
+2026-09-28. Concern: the 2-of-4 threshold might fire on a mid-movement
+formal tempo/meter change (named worked case: Brahms 1/i, `Un poco
+sostenuto` [6/8] → `Allegro` [2/2]), which is not a movement boundary.
+
+Ran `adjudicate_movement_start` ALONE (never a full re-decision) over the
+frozen GATHER log of each single-movement acceptance record —
+`record_io.load_record`, a fresh `Log` populated from `observations`/
+`abstentions` only, `adjudicate.adjudicate_one(log, spec, DOCUMENT)`
+(`probe/check_false_positives.py`):
+
+| record | systems checked | systems firing ≥1 cue | verdict |
+|---|---|---|---|
+| `brahms1-breitkopf-mvt1-whole-20260928` | 52 | 1 (`system/7/0`: `wider_indent`) | abstained, `no_boundary_detected` |
+| `beethoven5-litolff-mvt1-whole-20260928` | 30 | 2 (`system/14/0`, `system/4/0`: `wider_indent`) | abstained, `no_boundary_detected` |
+| `engraved-p0p2-20260928` | 2 | 0 | abstained, `no_boundary_detected` |
+
+**0 boundaries on all three, before AND after the tightening below** — no
+system in any record ever fired more than one cue (always `wider_indent`
+alone), so the untightened 2-of-4 rule never actually crossed threshold on
+this evidence. In particular `tempo_word` never fires anywhere in the
+Brahms record at all — Un poco sostenuto → Allegro does not reach this
+decision as a corroborating pair on THIS gather (OCR/attachment-dependent,
+not a property of the rule). That means the concern is real but not
+demonstrated live, and the fix has to be a synthetic unit test rather than
+a change to any of the three real per-record counts above (unchanged
+before/after: 52/1, 30/2, 2/0, all still abstained).
+
+**Tightened anyway**, because the risk is structural rather than an
+artefact of what one gather's OCR happened to accept:
+`is_movement_start` now REQUIRES `label_reset` to be one of the fired
+cues, not merely one of an interchangeable four. Full instrument names are
+reprinted at a movement's own opening and never for a formal section
+change within one movement — the one cue of the four that is genuinely
+movement-specific, whereas `tempo_word` + `meter_statement` together are
+exactly what a formal tempo/meter change prints too. The Litolff 16→17
+boundary still fires (`label_reset` was already one of its three fired
+cues: `tempo_word`, `label_reset`, `wider_indent`) — unchanged.
+
+New test `TestATempoAndMeterChangeInsideAMovementIsNotAStart`
+(`tools/omr/tests/test_staged_movement_start.py`): a synthetic system
+firing `tempo_word` + `meter_statement` (Brahms's own shape) with neither
+`label_reset` nor `wider_indent` — abstains under the tightened rule, and
+is shown explicitly to have crossed the OLD 2-of-4 threshold
+(`test_the_untightened_rule_would_have_fired`). `staged.check` unchanged
+at 250; fast tier still green.

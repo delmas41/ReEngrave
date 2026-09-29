@@ -143,8 +143,21 @@ class TestPureCues(unittest.TestCase):
             {"tempo_word": True, "meter_statement": False,
              "label_reset": False, "wider_indent": False}))
         self.assertTrue(MOV.is_movement_start(
+            {"tempo_word": True, "meter_statement": False,
+             "label_reset": True, "wider_indent": False}))
+
+    def test_is_movement_start_requires_label_reset_specifically(self):
+        """⚠️ TIGHTENED 2026-09-28 (manager review): 2 of 4 is not enough on
+        its own -- `label_reset` must be one of the two. `tempo_word` +
+        `meter_statement` is exactly the shape a mid-movement formal
+        section change prints (Brahms 1/i's `Un poco sostenuto` ->
+        `Allegro`), and must not be mistaken for a movement boundary."""
+        self.assertFalse(MOV.is_movement_start(
             {"tempo_word": True, "meter_statement": True,
              "label_reset": False, "wider_indent": False}))
+        self.assertFalse(MOV.is_movement_start(
+            {"tempo_word": True, "meter_statement": True,
+             "label_reset": False, "wider_indent": True}))
 
     def test_spans_from_boundaries_matches_the_movements_spec_shape(self):
         systems = [R.system(0, 0), R.system(0, 1), R.system(1, 0)]
@@ -219,6 +232,52 @@ class TestATempoWordAloneIsNotAStart(unittest.TestCase):
         self.assertTrue(cues["tempo_word"])
         self.assertFalse(cues["meter_statement"])
         self.assertFalse(cues["label_reset"])
+
+
+class TestATempoAndMeterChangeInsideAMovementIsNotAStart(unittest.TestCase):
+    """⚠️ THE SECOND CONTROL THAT CAN FAIL, added on manager review before
+    merge (2026-09-28). Brahms 1/i's own `Un poco sostenuto` [6/8] ->
+    `Allegro` [2/2] is a real, worked, MID-MOVEMENT case that prints BOTH a
+    tempo word AND a fresh meter statement at the new formal section's own
+    system -- exactly two of the four cues, the shipped `MIN_CUES_REQUIRED`.
+    Full instrument names are never reprinted for a formal section change
+    (only for a new movement), so this system carries no `label_reset` --
+    and per `is_movement_start`'s own tightening, that must abstain even
+    though 2 of 4 cues fired. An implementation that counted cues without
+    requiring `label_reset` among them fails this test and only this test
+    (the same shape `TestATempoWordAloneIsNotAStart` checks for a single
+    cue, one level up)."""
+
+    def _build(self):
+        log = Log()
+        _staff_lines(log, 0, 0, 3)
+        _staff_lines(log, 0, 1, 3)
+        _tempo_word(log, 0, 1, text="Allegro")
+        _meter_statement(log, 0, 1, 3, glyph="timeSigCommon")
+        # No margin-label reset, no wider indent -- a formal section change
+        # within the movement, not a movement boundary.
+        return log
+
+    def test_it_abstains_rather_than_declaring_a_second_movement(self):
+        v = _decide(self._build())
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_boundary_detected")
+
+    def test_both_cues_are_visible_in_the_refusal(self):
+        v = _decide(self._build())
+        cues = v.detail["cues_by_system"][R.system(0, 1).to_key()]
+        self.assertTrue(cues["tempo_word"])
+        self.assertTrue(cues["meter_statement"])
+        self.assertFalse(cues["label_reset"])
+        self.assertFalse(cues["wider_indent"])
+
+    def test_the_untightened_rule_would_have_fired(self):
+        """Proves the control CAN fail: without the `label_reset`
+        requirement, 2 of 4 cues is exactly the shipped threshold."""
+        cues = {"tempo_word": True, "meter_statement": True,
+               "label_reset": False, "wider_indent": False}
+        self.assertEqual(sum(cues.values()), MOV.MIN_CUES_REQUIRED)
+        self.assertFalse(MOV.is_movement_start(cues))
 
 
 class TestHumanMovementsOverridesDetection(unittest.TestCase):

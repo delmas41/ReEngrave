@@ -14,14 +14,21 @@ CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (CLAUDE.md rule 3
     "Tempo I." plus a new meter on every staff, as a MID-MOVEMENT case this
     convention must not trip on). This module requires at least
     `MIN_CUES_REQUIRED` (2) of the 4 cues below before it will call a system
-    a boundary.
+    a boundary, AND `label_reset` MUST be one of the two (`is_movement_
+    start`'s own docstring) -- tightened 2026-09-28 on manager review before
+    merge: `tempo_word` + `meter_statement` together are the exact shape a
+    mid-movement formal tempo/meter change prints too (Brahms 1/i's own `Un
+    poco sostenuto` [6/8] -> `Allegro` [2/2]), and reprinting FULL
+    instrument names is the one cue that is genuinely movement-specific.
 
-    WHAT WOULD FALSIFY IT: a real movement-2 opening that fires fewer than 2
-    of these 4 cues (the brief's own worked example, Beethoven 5 / Litolff
-    `imslp984073`, is the first check -- see
-    `benchmarks/omr-movements-2026-09/FINDINGS.md`). A system that fires 2+
-    cues but is NOT a movement start (a corroborated false positive on a
-    second work) would also falsify the threshold.
+    WHAT WOULD FALSIFY IT: a real movement-2 opening that fires `label_
+    reset` plus fewer than one other cue (the brief's own worked example,
+    Beethoven 5 / Litolff `imslp984073`, is the first check -- see
+    `benchmarks/omr-movements-2026-09/FINDINGS.md`). A system that fires
+    `label_reset` plus 1+ more but is NOT a movement start (a corroborated
+    false positive on a second work) would also falsify the rule; so would
+    a real movement start that never reprints full names at all (not
+    observed on either acceptance record checked 2026-09-28).
 
     NOT CONFIRMED: the exact thresholds below (`METER_STATEMENT_MAJORITY`,
     `LABEL_COVERAGE_MIN`, `LABEL_LENGTH_RATIO`, `LABEL_LENGTH_DELTA`,
@@ -226,6 +233,38 @@ def cues_for_system(*, direction_word_rows: Sequence[Observation],
 
 def is_movement_start(cues: Dict[str, bool], *,
                       min_cues: int = MIN_CUES_REQUIRED) -> bool:
+    """⚠️ TIGHTENED 2026-09-28, manager review before merge. `tempo_word` +
+    `meter_statement` together are NOT movement-specific: a mid-movement
+    formal tempo/meter change prints both (Brahms 1/i's own `Un poco
+    sostenuto` [6/8] -> `Allegro` [2/2] is the named worked case, and
+    Beethoven 5's own Scherzo -> Finale bridge is the same shape one system
+    later). `label_reset` is the one cue that IS movement-specific: full
+    instrument names are reprinted at a movement's own opening and never
+    mid-movement (players do not need re-announcing between formal
+    sections) -- CLAUDE.md itself: "the clef and key signature are
+    reprinted at the head of EVERY system", never the FULL name. So
+    `label_reset` is now REQUIRED, not merely one of an interchangeable
+    four -- `min_cues` still gates the total (a lone label reset, with
+    nothing else, is still too little), but the two-of-four count can no
+    longer be satisfied by {tempo_word, meter_statement, wider_indent}
+    alone.
+
+    Measured against this item's own acceptance records before shipping
+    this tightening (`adjudicate_movement_start` run alone, GATHER only,
+    over each record's frozen log -- never a full re-decision):
+    `brahms1-breitkopf-mvt1-whole-20260928` (52 systems) and
+    `beethoven5-litolff-mvt1-whole-20260928` (30 systems) each already
+    abstained under the OLD (untightened) rule too -- the only cue either
+    ever fires alone anywhere in either whole movement is `wider_indent`,
+    never paired with a second -- so this tightening changes no PAST
+    verdict on file; see `benchmarks/omr-movements-2026-09/FINDINGS.md`
+    §6. It exists for the case those two records happen not to exercise:
+    a reader that DOES accept a `tempo_word` together with a real
+    `meter_statement`, at a system that starts a formal section rather
+    than a movement.
+    """
+    if not cues.get("label_reset"):
+        return False
     return sum(1 for v in cues.values() if v) >= min_cues
 
 
