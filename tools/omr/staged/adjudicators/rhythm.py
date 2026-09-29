@@ -884,7 +884,8 @@ def _head_class(ev: Evidence) -> Optional[str]:
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG),
-    reasons=("head_and_marks", "beams_ambiguous", "no_notehead",
+    reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
+             "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1003,11 +1004,25 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         beam_evidence = "none_over_this_note"
 
     flags, flag_levels = _attached_flags(ev, cell, attached, tol)
+    # ⚠️⚠️ ROADMAP 2.18b, RULE 8: FLAGS THAT DISAGREE NARROW. `_attached_flags`
+    # returns the MAX of its flags' levels, which is right while they agree
+    # (two boxes, one glyph). Where one mark is boxed as `flag8th*` AND
+    # `flag16th*` (Breitkopf p1 `glyph/1/1/9/0/13`, Litolff idx 3
+    # `glyph/3/0/7/3/5`, both reached through the join tolerance) the max is
+    # an argmax over a disagreement. A box an existing verdict refuses never
+    # got here (`_attached_flags` skips it), so it does not vote.
+    flag_level_votes: Dict[int, int] = {}
+    for f in flags:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            flag_level_votes[lv] = flag_level_votes.get(lv, 0) + 1
+    flags_disagree = False
     if flag_levels and not levels:
         # A flag says the same thing a beam does for an unbeamed note.
         levels = flag_levels
         used.extend(r.id for r in flags)
         beam_evidence = "flag"
+        flags_disagree = len(flag_level_votes) > 1
     beats = base / (2 ** levels) if levels else base
 
     # dots lengthen: each adds half of what stands so far.
@@ -1062,6 +1077,25 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # not a weaker answer than deciding -- it is the true one, and it is what
     # lets `reconcile_duration` search ADMITTED levels instead of arithmetic
     # +/-1. A note whose strokes are unambiguous still DECIDES.
+    if flags_disagree:
+        cands = []
+        for level in sorted(flag_level_votes):
+            b = base / (2 ** level)
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                # ⚠️ SUPPORT = how many attached boxes name this level; no
+                # other ordering is claimed.
+                support=float(flag_level_votes[level])))
+        return Ruling.narrow(cands, "flags_disagree", used=tuple(used),
+                             **shared, flag_level_votes={
+                                 str(k): v for k, v in
+                                 sorted(flag_level_votes.items())})
+
     if possible > certain and beam_evidence in ("read", "none_over_this_note"):
         cands = []
         for level in range(certain, possible + 1):

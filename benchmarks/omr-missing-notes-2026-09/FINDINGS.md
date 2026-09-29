@@ -989,6 +989,49 @@ Reproduce: `git archive origin/main tools benchmarks/omr-missing-notes-2026-09/p
 <dir>/.../redecide_arm.py <record> [--page 3] --arm plain`, and on the branch
 `--arm off` / `--arm plain`. Outputs: `probe/out/controls_2_18b/{eng,lit}-{main,off,branch}.json`.
 
+### 11.10 Flags that disagree on their level NARROW (manager decision, rule 8)
+
+**Built.** In `adjudicate_duration`, where the flags attached to one stem
+name more than one level (a `flag8th*` and a `flag16th*` box on one mark),
+the duration NARROWS, reason `flags_disagree`, one candidate per level named,
+support = how many attached boxes name it. It used to take the MAX. A box an
+existing verdict refuses (`Q.FLAG_IS_NOT_A_FLAG`, incl. a human's) is
+skipped by `_attached_flags` and does not vote. Tests
+`TestFlagsThatDISAGREEOnTheirLevelNarrow`: the fix assertion ran RED on the
+prior branch head; the positive control (two agreeing boxes decide 0.5) and
+the refused-box case (the 16th refused -> 0.5 decides) pass on both.
+
+Re-priced with `probe/redecide_arm.py`, base = origin/main's own code
+(`63247979`) on each saved record:
+
+| | Breitkopf p1 | Litolff idx 3 | engraved p0 |
+|---|--:|--:|--:|
+| `duration_narrowed`, main -> branch | 66 -> **59** | 36 -> 37 | 0 -> 0 |
+| notes written | 235 -> **238** | 381 -> 380 | 73 -> 73 |
+| `<note>` in the file | 455 -> 458 | 560 -> 559 | 174 -> 174 |
+| bars held out by the sum | 85 -> 85 | 0 -> 0 (page slice) | 0 -> 0 |
+| durations changed vs main | 84 | 1 | **0** |
+| of which now `flags_disagree` | 4 | 1 | 0 |
+
+* **Litolff `glyph/3/0/7/3/5`**: 0.5 (main) -> NARROWED `flags_disagree`
+  {0.5, 0.25}. The wrong-looking 0.25 of 11.9 no longer reaches the file;
+  the note is refused, which is the price of the disagreement.
+* **Breitkopf**: `glyph/1/1/9/0/13` (the 11.5 regression, 0.25) is now
+  refused as `flags_disagree`, so the 11.5 by-eye tally becomes **9 right,
+  4 still wrong, 0 refused -> wrong, 0 right -> wrong**. Three more heads
+  that main decided 0.25 through a max over disagreeing flags now narrow:
+  `glyph/1/0/10/4/11`, `/1/0/3/3/0`, `/1/1/8/1/3`.
+* **Engraved: 0 changed durations -- nothing to check against the truth.**
+
+**The control, restated.** With the tolerance at 0 the branch equals main
+verdict for verdict on engraved and Litolff; on Breitkopf it differs in
+exactly ONE row, `glyph/1/1/8/1/3`, which reads `flags_disagree` -- two
+flags that already OVERLAPPED the stem on main and disagreed, i.e. this
+rule acting independently of the tolerance. Every other row reproduces.
+
+Outputs: `probe/out/controls_2_18b/{brk,eng,lit}-{main,off,branch}.json`.
+Gate: `pytest -m "not slow"` 3,603 passed; `staged.check` TOTAL 249.
+
 ### 11.8 Files
 
 ```

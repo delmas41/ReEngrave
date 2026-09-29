@@ -3,9 +3,9 @@
  "arm": "plain",
  "page": 3,
  "root": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a386ca11af8149e82",
- "notes_in_file": 560,
+ "notes_in_file": 559,
  "notes_not_written": {
-  "duration_narrowed": 36,
+  "duration_narrowed": 37,
   "not_a_notehead:too_narrow": 6,
   "ink_is_a_whole_rest": 5,
   "not_a_notehead:clipped_fragment": 17,
@@ -17,7 +17,7 @@
   "not_a_notehead:belongs_to_a_nearer_staff": 1,
   "rest_duration_narrowed": 1
  },
- "written_notes": 381,
+ "written_notes": 380,
  "bars_held_out_sum": 0,
  "durations": {
   "glyph/3/0/0/0/8": {
@@ -2211,12 +2211,12 @@
    "beams_beyond_stem": 0
   },
   "glyph/3/0/7/3/5": {
-   "outcome": "decided",
-   "reason": "head_and_marks",
-   "beats": 0.25,
-   "written": 0.25,
-   "dots": 0,
-   "beam_levels": 2,
+   "outcome": "narrowed",
+   "reason": "flags_disagree",
+   "beats": null,
+   "written": null,
+   "dots": null,
+   "beam_levels": null,
    "flags_attached": 2,
    "beams_beyond_stem": 0
   },

@@ -811,6 +811,60 @@ class TestAFlagHangsFromItsStemWithinAMeasuredTolerance(unittest.TestCase):
         self.assertEqual(log.verdict(Q.DURATION, g).value["beats"], 1.0)
 
 
+class TestFlagsThatDISAGREEOnTheirLevelNarrow(unittest.TestCase):
+    """ROADMAP 2.18b (manager decision, rule 8). ⚠️ Two flag boxes on one stem
+    are two readings of ONE glyph; where they name different levels (an
+    `flag8thUp` and a `flag16thUp` on one mark -- Breitkopf p1
+    `glyph/1/1/9/0/13`, Litolff idx 3 `glyph/3/0/7/3/5`) taking the MAX is
+    an argmax this stage may not make. The duration NARROWS to the levels
+    the flags name. A box an existing verdict refuses is not a reading and
+    does not vote.
+    """
+
+    def _stemmed(self, log):
+        g = _note(log, 0, "noteheadBlack", x=X)
+        _stem(log, x=X - 10, y=8, h=60)                 # 90..94
+        return g
+
+    def test_an_8th_and_a_16th_flag_on_one_stem_NARROW(self):
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        _flag(log, gi=51, cls="flag16thUp", x=X - 10, y=38)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flags_disagree")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.25, 0.5])
+
+    def test_two_AGREEING_flags_still_decide(self):
+        """⚠️ THE POSITIVE CONTROL: two boxes, one level -> one answer."""
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        _flag(log, gi=51, cls="flag8thDown", x=X - 10, y=38)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_REFUSED_box_does_not_vote(self):
+        """The disagreeing 16th is refused by a verdict (here a human's
+        `not_a_symbol`): one reading is left, and it decides."""
+        log = Log()
+        g = self._stemmed(log)
+        _flag(log, gi=50, cls="flag8thUp", x=X - 10, y=40)
+        f16 = _flag(log, gi=51, cls="flag16thUp", x=X - 10, y=38)
+        log.observe(f16.subject, Q.HUMAN_BOX_VERDICT, "not_a_symbol",
+                    reader=READERS.SEAN, frame="review:box",
+                    sidecar="t.json", action="act-0001")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+
 class TestTheBEAMJoinIsNOTWidened(unittest.TestCase):
     """ROADMAP 2.18b, class E -- MEASURED AND REFUSED, so this is a guard, not
     a fix. A stem tip half a space short of a stroke over the group stays a
