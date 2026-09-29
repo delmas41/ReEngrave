@@ -1,0 +1,19 @@
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'accidental_is_not_an_accidental': 209, 'accidental_owner': 147, 'arc_is_not_an_arc': 686, 'arc_kind': 686, 'arc_owner': 686, 'arpeggiato_is_not_an_arpeggiato': 86, 'articulation_is_not_an_articulation': 3, 'articulation_owner': 1, 'clef': 27, 'direction': 202, 'dot_role': 47, 'duration': 1208, 'dynamic': 192, 'dynamic_is_not_a_dynamic': 204, 'event': 201, 'flag_is_not_a_flag': 138, 'glyph_owner': 1228, 'key_signature': 23, 'keysig_marker_is_not_a_marker': 33, 'ledger_is_not_a_ledger': 218, 'measure_partition': 27, 'meter': 1, 'notehead_is_a_whole_rest': 1015, 'notehead_is_not_a_notehead': 1015, 'onset_column': 2, 'ornament_owner': 4, 'part_key': 1, 'part_partition': 1, 'printed_bar_number': 1, 'rest_is_not_a_rest': 350, 'slot_index': 14, 'staff_group': 27, 'staff_ordinal': 27, 'stem_direction': 669, 'system_membership': 2, 'system_staff_count': 2, 'tie_pair': 101, 'voices': 201, 'wedge_anchor': 39}
+  abstained: {'accidental_owner': {'no_candidate': 44, 'is_a_key_signature_marker': 17, 'ambiguous_height': 1}, 'articulation_owner': {'no_notehead': 2}, 'dot_role': {'dot_role_ambiguous': 21}, 'duration': {'beams_ambiguous': 122, 'rest_stands_where_no_rest_hangs': 23, 'flags_disagree': 4, 'flag_ink_unread': 7, 'unreadable_rest': 1}, 'dynamic': {'unspellable': 10}, 'glyph_owner': {'far_no_rungs': 10}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 27}, 'key_signature': {'mixed_marker_kinds': 4}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 1}, 'meter': {'meter_change_digits_misread': 1}, 'movement_spans': {'no_boundary_detected': 1}, 'ornament_owner': {'no_notehead': 2}, 'printed_bar_number': {'no_reading': 1}, 'slot_index': {'reference_names_nothing': 13}, 'stem_direction': {'no_stem': 339, 'stems_disagree': 7}, 'system_key': {'no_staff_read_a_key': 2}, 'tie_pair': {'more_than_one_pair': 51, 'not_a_tie': 162, 'no_pair_at_one_position': 9, 'spans_a_whole_bar': 249, 'runs_off_the_system': 22, 'no_head_near_the_arc': 38, 'no_stop_head': 3, 'no_start_head': 38, 'enters_from_previous_system': 13}, 'unread_mark': {'no_ink_component_rows': 202}, 'voices': {'nothing_to_split': 1}, 'wedge_anchor': {'no_page_frame': 1}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 15 facts, 0 witnesses, 15 uninformative, {'none': 15, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 15 facts, 23 witnesses, 15 uninformative, {'none': 5, 'single': 10, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 27 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 10 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 15 facts, 27 witnesses, 15 uninformative, {'none': 1, 'single': 14, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 2089 fired, 6884 skipped
+── INFER: 11 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences
+wrote benchmarks/omr-missing-notes-2026-09/out/r225/brahms-p1.record.json
+BRAHMS_DONE=0

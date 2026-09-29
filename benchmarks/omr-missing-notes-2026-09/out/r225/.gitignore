@@ -1,0 +1,10 @@
+# ROADMAP 2.25. The gathered records (46 MB / 12 MB), the exported
+# MusicXML (regenerable from the pricing command in FINDINGS.md §13c) and
+# the `git archive origin/main` scratch copy of the whole tree (used to run
+# the base arm) do not belong in git -- everything here reproduces from the
+# gather/price commands FINDINGS.md §13 names. The small summaries
+# (*-strokes.json, *.json pricing summaries, logs, staged-check.txt,
+# pytest-fast.txt) are kept.
+basetree/
+*.record.json
+*.musicxml

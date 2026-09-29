@@ -1287,4 +1287,274 @@ benchmarks/omr-missing-notes-2026-09/probe/crop_flag_2_18c.py     the 8 crops
 benchmarks/omr-missing-notes-2026-09/out/print/flag-2.18c-0{1..8}.png,
     flag-2.18c-manifest.json
 ```
+
+## 13. ROADMAP 2.25 -- strokes that are not this note's beam are not counted
+as its beam (2026-09-29)
+
+PATH: STAGED. Branch `claude/beam-strokes-2.25`, off `origin/main` `df61ed08`
+(2.18/2.18b already in the tree). Question from `benchmarks/omr-bar-sum-
+holdout-2026-09/FINDINGS.md` §17f item 4: at WHOLE-MOVEMENT scale, 2.22's
+`G` classes (168 Brahms + 73 Litolff bars, plus much of the unmodelled
+remainder, §17c) name ledger lines, hairpins and other staves' beams
+entering the beam count -- what is left after 2.18 (far-side strokes
+dropped) and 2.18b (strokes past the stem tip with no stem reaching them)?
+
+### CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+
+CLAUDE.md §10: a beam runs from the first stem it joins to the last, and a
+whole rest means the bar whatever the meter. This item adds no new
+engraving convention -- it claims only that a beam-shaped stroke standing
+exactly where the DETECTOR ALSO boxed a `ledgerLine` glyph is that ledger
+line, i.e. two readers named the same ink two different things. Falsified
+by a crop where a RED-X stroke this rule drops is genuinely the bracketed
+note's own beam and the YELLOW `ledgerLine` box under it is a detector
+false positive on real beam ink. NOT CONFIRMED with Sean -- the 8 crops
+below are for him.
+
+### §13a. Diagnosis: fresh gathers, one page each plate
+
+Breitkopf `317803` pdf idx 1 (Brahms 1/i) and Litolff `984073` pdf idx 3
+(Beethoven 5/i, the count page), both gathered fresh on this tree,
+`--no-surya --no-ocr --no-roster`, scan weights
+(`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt`), ~75-90 s each
+(`out/r225/gather-{brahms-p1,litolff-p3}.log`). Not committed -- 46 MB and
+12 MB, regenerable from the command in this section.
+
+`probe/beam_stroke_sources_2_25.py` rebuilds each record's GATHER rows
+(`record_io.load_record` + `review.rerun.rebuild_gather`) and, for every
+`Q.DURATION` verdict whose own `detail.beam_evidence == "read"` (at least
+one beam level was actually COUNTED, narrowed or decided), re-derives the
+counted strokes through `adjudicate_duration`'s own current helpers
+(`_kept_beams`, `_own_stem_side`, `_on_stem_side`, `_beyond_own_stem`, the
+rule-8 guard, `_stem_joined`, `_beam_levels`) -- so the population
+classified is exactly what 2.18/2.18b already count, not a re-invented one.
+
+**CONTROL, and it failed once before it passed.** `rebuild_gather`'s own
+docstring: *"Verdicts are NOT replayed."* The first pass therefore always
+saw `Q.STEM_DIRECTION` as unread, `_own_stem_side` always returned `None`,
+and the re-derived `certain` disagreed with the verdict's own
+`detail.levels_certain` on 89 of 555 Brahms heads (466/555). Fixed by
+reading the record's OWN saved `Q.STEM_DIRECTION` verdicts by subject key
+instead of through `ev.verdict` on the rebuilt (verdict-less) log --
+**555 of 555 (Brahms) and 128 of 128 (Litolff) re-derived exactly, after
+the fix.** A control that reproduces for the wrong reason and is caught by
+its own arithmetic (CLAUDE.md §2 rule 7) rather than trusted on the first
+green number.
+
+For every COUNTED stroke of every such head, does its canonical box
+(`_boxes_overlap`) coincide with: a DETECTOR-boxed `ledgerLine` glyph in the
+same cell (`Q.GLYPH_BOX`, same frame, no conversion needed); a decided-found
+`Q.LEDGER_RUNG_INK` window on THIS head (page pixels, converted to
+canonical through an `up` factor solved algebraically from any co-located
+detector `Q.GLYPH_BOX` row that carries both frames -- the same arithmetic
+`gather._page_box` computes forward, never a guess); a `Q.WEDGE_BOX` (same
+conversion, either reader); a `Q.ARC_BOX` (slur/tie ink, already canonical);
+or ink sitting more than 2.5 staff spaces outside THIS cell's own
+`Q.STAFF_LINES` band (`other_staff_via_pad`, a label only -- a genuinely
+elevated note's own ledger-line beam can sit that far out too, so this
+label is NOT by itself evidence of a cross-staff mistake).
+
+**Ranked, per HEAD (a head may carry more than one label):**
+
+| label | Brahms p1 (555 heads) | Litolff p3 (128 heads) |
+|---|--:|--:|
+| `unexplained` (a stroke matching none of the below -- most likely a real beam) | 349 | 113 |
+| `other_staff_via_pad` | 150 | 7 |
+| `arc_box` | 139 | 0 |
+| `wedge_box` | 68 | 0 |
+| `ledger_line_box` | 7 | 21 |
+| `ledger_rung_ink` | 0 | 0 |
+
+`ledger_rung_ink` reads zero on both pages -- not because no ledger-line
+stroke is real, but because a `Q.LEDGER_RUNG_INK` window is a THIN band a
+few px either side of the expected rung y, and it is common for the CV/YOLO
+beam opening to box a wider run than that window covers, or for the rung to
+be ABSTAINED (state, not value) rather than decided-found. Named, not
+chased further within this item's budget.
+
+`arc_box` and `wedge_box` are measured by BOUNDING-BOX overlap only. A
+slur or a hairpin is drawn as a curve or a pair of converging lines, and
+its box can span a whole phrase; a stroke can sit inside that box without
+the stroke and the mark's actual ink ever touching. These two numbers are
+therefore an UPPER BOUND on how often the stated mechanism (CLAUDE.md §10:
+"An arc is drawn OVER its notes, a hairpin BETWEEN them") is the true
+cause, not a count of confirmed cases -- eye-checking a sample of both
+before building anything against either was out of this item's budget.
+Named as the top TWO unbuilt classes below.
+
+### §13b. Built: a stroke over a boxed `ledgerLine` glyph is that ledger
+line, not this note's beam
+
+Of the five candidate causes, ONLY the ledger-line connection is built,
+for one reason: it is the only one where BOTH sides of the comparison are
+already the SAME canonical per-cell frame `Q.GLYPH_BOX` and `Q.BEAM_STROKE`
+both use, so no conversion, and no chance of the `Q.ONSET_COLUMN` frame
+error (`adjudicate_wedge_anchor`'s own docstring: *"comparing a cell-frame
+wedge against a page-frame notehead is the frame error that made
+Q.ONSET_COLUMN report 1,062 columns of nothing"*), is needed. `wedge_box`
+is the larger number on Brahms (68 heads) but every wedge reading that
+matters on a scan comes from `cv_hairpins`, which files PAGE pixels only
+(CLAUDE.md §6b precedent, `ownership.py`'s own wedge-anchor rule: *"a row
+without them abstains"*) -- building it would need the SAME `up`-factor
+conversion my diagnostic script uses, and that is named here (§13c) for the
+next lane rather than rushed into `tools/`.
+
+**The fix** (`rhythm._ledger_line_glyph_boxes`, `_not_a_ledger_line`,
+`adjudicators/rhythm.py`): right after `_kept_beams` returns the cell's
+candidate strokes and BEFORE any stem-side/tolerance filtering, every
+stroke that overlaps a DETECTOR-boxed `ledgerLine` glyph in the SAME cell
+is dropped. No new `wants`/`composed_from` entry: `Q.GLYPH_BOX` is already
+read for the head's own box. ADDITIVE, never subtractive of the record --
+a cell where the detector never boxed a `ledgerLine` drops nothing, so a
+page without one behaves exactly as before. No rule-8 guard was added:
+pricing (§13d) found no case where this step alone left a note with no
+other mark, and 2.18b's own guard on `_beyond_own_stem` already covers the
+general fallback where dropping a stroke would.
+
+Stage: ADJUDICATE, not INFER. Two readers (the CV/YOLO beam opening and the
+DETECTOR's own class head) already named the SAME ink; this is a
+CONNECTION between two existing GATHER facts, not a choice between two
+readings of one fact -- it FOLLOWS, it does not merely fit better.
+
+**RED -> GREEN.** `tools/omr/tests/test_staged_duration.py::
+TestAStrokeOverAABoxedLedgerLineIsThatLedgerLineNotABeam`, 4 tests. Run RED
+against the unrepaired tree first (stash-and-restore of `rhythm.py` alone,
+tests kept): **4 of 4 failed** -- two on the fix assertion itself (a note
+whose only "second beam level" is a boxed ledger line decides at the LOWER
+value, `beams_ledger_line == 1`), two on the new `detail.beams_ledger_line`
+key not existing yet. The POSITIVE control (`test_the_POSITIVE_control_a_
+real_second_level_still_counts`): the SAME two strokes with no ledger line
+boxed at that y are two genuine levels and BOTH count. A third test
+(`test_a_ledger_line_boxed_ELSEWHERE_in_x...`) checks the overlap is a real
+box test, not a per-cell veto: a ledger line under a DIFFERENT note's
+column leaves this note alone. A fourth (`test_no_boxed_ledger_line_at_
+all_changes_nothing`) is the ADDITIVE control. All 4 pass on the repaired
+tree.
+
+### §13c. Priced: base (`git archive origin/main`) vs arm, same records,
+re-decided in-process
+
+`probe/price_2_25.py` (`RR.rebuild_gather` + `RR.run_stages` +
+`RR.export_with_subjects`, the `redecide_arm.py` §11.9 precedent -- base
+runs origin/main's OWN `rhythm.py` on the SAME gather, arm runs this
+tree's). Independent control: `benchmarks/omr-bar-sum-holdout-2026-09/
+probe/bar_sum_check.py` against the exported FILE, never against the
+exporter's own arithmetic.
+
+| | engraved p0-p2 (control) | Litolff p3 (single page, no meter carried in) | Brahms p1 (single page) |
+|---|--:|--:|--:|
+| heads touched by the rule | 0 | 37 | 66 |
+| ...of which the VALUE changed | -- | 18 | 7 |
+| `duration_narrowed`, base -> arm | 1 -> 1 | 37 -> 35 | 65 -> 60 |
+| notes written, base -> arm | 341 -> 341 | 380 -> 382 | 229 -> 231 |
+| `<note>` in file, base -> arm | 658 -> 658 | 559 -> 561 | 445 -> 447 |
+| `bars_held_out_sum`, base -> arm | -- | 0 -> 0 | 74 -> 74 (the SAME bars) |
+| `bar_sum_check`, base / arm | 432/432 exact / 432/432 exact | **DEAD AT ZERO both arms** (320 unassessable -- a single mid-movement page carries no meter of its own) | 98/98 exact / 98/98 exact |
+
+**The engraved control moves nothing** -- a clean engraving has no
+detector-boxed `ledgerLine` glyph sitting under a beam stroke, so the rule
+is inert there exactly as it should be. **Litolff's bar-sum control is
+DEAD, not passing** -- pdf idx 3 alone, gathered with no prior page to
+carry a meter in, corroborates zero bars on EITHER arm; that is a property
+of testing one mid-movement page in isolation (CLAUDE.md §6b: "an arm that
+moves nothing because it is inert and one that moves nothing because the
+page holds nothing to move are the same number" -- named here so it is not
+mistaken for a pass). **Brahms's bar-sum control is the real one and it
+holds: 98 of 98 exact on both arms**, and `bars_held_out_sum` is the
+IDENTICAL 74 bars before and after -- the fix moves accounting inside
+already-held or already-written bars, never which bars are held (the same
+invariant §17d's `reconcile_duration` fix reports).
+
+**18 of 37 Litolff heads and 7 of 66 Brahms heads change VALUE**, every one
+by exactly one beam level (a duplicated reading of the note's own ledger
+rung was doubling or quadrupling the apparent subdivision -- e.g.
+0.25 -> 0.5, 0.5 -> 1.0 -- or holding a note NARROWED that now decides).
+The remaining touched heads keep their prior outcome: the dropped stroke
+was a redundant second reading of ink a real beam or stem already
+accounted for, so removing it changes nothing written. `owned_by_another_
+staff` moves by 1 on Brahms (45 -> 46) and `bar_does_not_add_up` by 2
+(540 -> 542) with `bars_held_out_sum` unchanged -- the SAME ripple §17d's
+own pricing table names: "a decided duration changes the events a contest
+sees."
+
+### §13d. Crops for Sean
+
+`benchmarks/omr-missing-notes-2026-09/out/print/beam-strokes-2.25-{litolff,
+brahms}-0{1..5,1..3}.png` (5 Litolff + 3 Brahms = 8), manifests
+`beam-strokes-2.25-{litolff,brahms}-manifest.json`, every row
+`VERDICT_none_yet: null`, cut by `probe/crop_2_25.py` at 600 dpi in the
+2.18b style: the filed staff a shaded labelled band over its own
+`Q.STAFF_LINES`, the head bracketed thick red, a staff-space ruler down the
+left. GREEN = the head's own read stem, BLUE = a kept stroke, RED X = a
+stroke dropped by 2.25, YELLOW = the boxed `ledgerLine` glyph that did the
+dropping. Frame control passed on all 8 (none refused). Chosen from the
+heads whose VALUE changed (§13c), spanning both plates: Litolff #1
+(`glyph/3/0/0/2/4`, 0.5 -> 1.0), #4 (`glyph/3/0/7/3/1`, narrowed ->
+decided 0.5); Brahms #2 (`glyph/1/0/9/0/4`, narrowed -> decided 0.125). My
+own eye-check on #1 (Litolff) is convincing: a single stemmed head sitting
+on ONE ledger line above the staff, the YELLOW box drawn exactly on that
+rung, the note reading 1.0 (a plain quarter) after the fix where before it
+read as a doubled value from the same rung counted as a second beam level.
+Question on each: *the printed value of the bracketed note, and is any
+RED-X stroke this note's beam, or is it the ledger rung under a YELLOW
+box?*
+
+### §13e. Ranked next
+
+1. **`wedge_box`, 68 Brahms heads** -- the larger of the two unbuilt
+   classes. Needs the `up`-factor page->canonical conversion this item's
+   diagnostic script already implements for `cv_hairpins` rows, ported
+   into `rhythm.py` and eye-checked on a sample first (§13a's bounding-box
+   caveat) before it is trusted the way the ledger-line connection was.
+2. **`arc_box`, 139 Brahms heads** -- the largest unbuilt class by count,
+   and the one with the WEAKEST evidence of the five: a slur/tie bounding
+   box is the least reliable proxy for where its ink actually is. Eye-check
+   a sample before building anything.
+3. **`other_staff_via_pad`, 150 Brahms / 7 Litolff heads** -- NOT the same
+   claim 2.18b's own `glyph_owner`-routing suggestion measured and found
+   zero reach for (that was about which STAFF a stroke's OWNER contest
+   awards; this is a raw geometric distance from the cell's own staff
+   band). Confounded with genuinely elevated notes whose own ledger-line
+   beam legitimately sits far from the band -- untangling the two needs a
+   print check, not a threshold.
+4. **`ledger_rung_ink`, measured at zero** -- the CV rung's window may be
+   narrower than the stroke it should explain, or the rung is commonly
+   ABSTAINED rather than decided-found where it would matter most. Worth a
+   look before trusting `ledger_line_box` alone as the whole ledger-line
+   story at whole-movement scale.
+5. **Whole-movement pricing** -- not run (Sean, 2026-09-28: no whole-work
+   runs without asking; this item priced two single pages only). §17b/§17c's
+   168/73-bar `G` figures are NOT re-measured against this fix.
+
+### §13f. Gates
+
+`pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`: **3,797
+passed, 3 skipped** (main's own 3,793 + 4 new, 0 failed;
+`out/r225/pytest-fast.txt`). No `library/`/`omr-weights/`/venv/PDF path in
+`test_staged_duration.py`'s new class. `python3 -m tools.omr.staged.check`:
+**TOTAL 247, unchanged** (`out/r225/staged-check.txt`).
+
+### §13g. Files
+
+```
+benchmarks/omr-missing-notes-2026-09/probe/beam_stroke_sources_2_25.py
+    the diagnosis (§13a): per-head ranked stroke-source census, control
+    555/555 + 128/128
+benchmarks/omr-missing-notes-2026-09/probe/price_2_25.py
+    base-vs-arm pricing over a fixed gather (§13c)
+benchmarks/omr-missing-notes-2026-09/probe/crop_2_25.py
+    the 8 crops (§13d)
+benchmarks/omr-missing-notes-2026-09/out/r225/
+    brahms-p1.record.json, litolff-p3.record.json (gathers, not committed,
+    46 MB / 12 MB), brahms-p1-strokes.json, litolff-p3-strokes.json (the
+    census), {eng,litolff,brahms}-{base,arm}.json/.musicxml (pricing),
+    staged-check.txt
+tools/omr/staged/adjudicators/rhythm.py
+    _ledger_line_glyph_boxes, _not_a_ledger_line, wired into
+    adjudicate_duration right after _kept_beams; detail.beams_ledger_line
+tools/omr/tests/test_staged_duration.py
+    +4 tests, TestAStrokeOverAABoxedLedgerLineIsThatLedgerLineNotABeam
+benchmarks/omr-missing-notes-2026-09/out/print/beam-strokes-2.25-{litolff,
+    brahms}-0{1..5,1..3}.png, and the two manifests
+```
 ```

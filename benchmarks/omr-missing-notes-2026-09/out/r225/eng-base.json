@@ -1,0 +1,6910 @@
+{
+ "record": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929.record.json",
+ "root": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a0809d32b4a62faad/benchmarks/omr-missing-notes-2026-09/out/r225/basetree",
+ "page": null,
+ "notes_in_file": 658,
+ "notes_not_written": {
+  "not_a_notehead:clipped_fragment": 7,
+  "owned_by_another_staff": 4,
+  "owner_not_read": 11,
+  "duration_narrowed": 1,
+  "bar_does_not_add_up": 12
+ },
+ "written_notes": 341,
+ "bars_held_out_sum": 4,
+ "balanced": null,
+ "n_heads_ledger_line_touched": 0,
+ "ledger_line_touched": {},
+ "durations": {
+  "glyph/0/0/4/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/0/7": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/4/0/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/0/10": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/4/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/4/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/0/7": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/5/0/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/0/10": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/5/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/5/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/6/6/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/7/6/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/0/8": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/13/0/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/0/11": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/0/12": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/2/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/13/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/13/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/0/10": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/0/11": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/0/14": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/0/15": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/14/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/2/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/14/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/5/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/5/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/14/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/5/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/14/6/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/0/10": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/15/0/13": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/0/14": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/0/15": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/15/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/6/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/6/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/6/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/15/6/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/16/0/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/0/11": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/0/12": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/16/0/13": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/2/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/16/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/16/6/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/0/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/0/10": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/0/11": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/17/0/13": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/17/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/3/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/17/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/5/0/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 4.0,
+   "written": 4.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/0/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 4.0,
+   "written": 4.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/6/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/7/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/0/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/13/0/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/0/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/0/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/2/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/13/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/4/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/13/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/6/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/6/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/6/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/7/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/8/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/8/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/13/8/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/3/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/6/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/7/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/7/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/7/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/7/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/14/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/0/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 4.0,
+   "written": 4.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/2/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/15/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/3/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/3/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/15/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/3/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/7/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/7/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/7/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/15/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/1/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/5/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/1/0/16/8/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/1/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/1/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/1/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/1/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/3/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/3/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/4/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/4/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/4/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/5/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/5/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/0/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/1/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/4/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/5/7": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/1/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/1/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/1/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/3/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/3/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/5/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/2/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/1/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/4/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/5/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/5/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/3/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/1/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/1/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/4/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/5/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/5/8": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/4/7/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/1/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/1/7": {
+   "outcome": "narrowed",
+   "reason": "beams_ambiguous",
+   "beats": null,
+   "written": null,
+   "dots": null,
+   "beam_levels": null,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/1/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/1/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/4/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/5/8": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/5/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/0/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/1/9": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 4.0,
+   "written": 4.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/6/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/6/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/6/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/6/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/5/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/5/7": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/6/5/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/6/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/0/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/7/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/7/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/4/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/7/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/7/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/7/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/1/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/4/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/4/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/5/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/8/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/1/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/2/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/5/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/5/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/5/9": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/6/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/9/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/1/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/2/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/10/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/1/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/11/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/1/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/1/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/1/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/2/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/12/4/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/2/4": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/13/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/13/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/3/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/3/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/4/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/13/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/13/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/0/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/0/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/0/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/0/10": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/14/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/2/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/2/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/14/3/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/3/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/3/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/3/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/14/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/4/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/4/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/14/5/7": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/14/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/0/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/0/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/0/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/0/8": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/1/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.5,
+   "written": 1.5,
+   "dots": 1,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/2/3": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/15/2/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/15/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/15/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/4/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/15/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/15/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/0/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/1/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/1/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/2/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/16/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/16/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/16/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/16/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/16/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/1/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/1/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/1/5": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/1/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/2/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/2/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/3/1": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/3/2": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/4/2": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/4/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/5/3": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/5/4": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/5/5": {
+   "outcome": "decided",
+   "reason": "rest_class",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/5/6": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/6/0": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/2/0/17/7/1": {
+   "outcome": "decided",
+   "reason": "head_and_marks",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": 0
+  },
+  "glyph/0/0/0/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/0/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/1/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/2/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/3/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/4/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/4/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/5/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/5/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/0/8": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/6/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/7/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/0/4": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/8/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/0/4": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/9/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/10/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/11/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/0/7": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/1/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/3/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/4/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/12/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/13/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/13/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/15/5/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/16/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/17/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/0/0/17/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/0/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/1/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/2/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/3/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/0/3": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/4/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/0/3": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/5/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/0/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/8/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/0/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/9/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/10/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/11/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/12/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/13/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/1/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/2/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/3/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/4/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/5/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/6/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/7/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/1/0/17/8/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/1/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/2/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/3/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/4/0/3": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/5/0/4": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/8/0/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/9/0/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/5/3": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/6/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/10/7/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/6/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/11/7/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/5/1": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/6/0": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/7/2": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/17/0/5": {
+   "outcome": "decided",
+   "reason": "whole_rest_means_the_bar",
+   "beats": 2.0,
+   "written": 2.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/0/1/6": {
+   "outcome": "decided",
+   "reason": "meter_reconciliation",
+   "beats": 0.5,
+   "written": 0.5,
+   "dots": 0,
+   "beam_levels": 1,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  },
+  "glyph/2/0/12/1/6": {
+   "outcome": "decided",
+   "reason": "meter_reconciliation",
+   "beats": 1.0,
+   "written": 1.0,
+   "dots": 0,
+   "beam_levels": 0,
+   "beams_ledger_line": null,
+   "beams_beyond_stem": null
+  }
+ }
+}

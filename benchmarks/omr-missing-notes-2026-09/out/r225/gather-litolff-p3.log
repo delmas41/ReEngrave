@@ -1,0 +1,19 @@
+
+── ADJUDICATE ─────────────────────────────────────────
+  decided:   {'accidental_is_not_an_accidental': 74, 'accidental_owner': 43, 'arc_is_not_an_arc': 251, 'arc_kind': 251, 'arc_owner': 251, 'arpeggiato_is_not_an_arpeggiato': 77, 'clef': 19, 'direction': 320, 'dot_role': 3, 'duration': 574, 'dynamic': 318, 'dynamic_is_not_a_dynamic': 77, 'event': 300, 'flag_is_not_a_flag': 6, 'glyph_owner': 233, 'key_signature': 13, 'keysig_marker_is_not_a_marker': 45, 'ledger_is_not_a_ledger': 496, 'measure_partition': 19, 'notehead_is_a_whole_rest': 474, 'notehead_is_not_a_notehead': 474, 'onset_column': 2, 'part_key': 1, 'part_partition': 1, 'printed_bar_number': 2, 'rest_is_not_a_rest': 154, 'slot_index': 11, 'staff_group': 19, 'staff_ordinal': 19, 'stem_direction': 350, 'system_membership': 2, 'system_staff_count': 2, 'tie_pair': 35, 'voices': 300}
+  abstained: {'accidental_owner': {'is_a_key_signature_marker': 8, 'no_candidate': 22, 'head_belongs_to_a_nearer_staff': 1}, 'dot_role': {'dot_role_ambiguous': 11, 'no_notehead_or_rest_in_cell': 1}, 'duration': {'beams_ambiguous': 46, 'flags_disagree': 1, 'rest_stands_where_no_rest_hangs': 6, 'rest_slot_contradicts_class': 1}, 'dynamic': {'unspellable': 2}, 'glyph_owner': {'far_no_rungs': 14}, 'group_symbol': {'no_identity': 2}, 'instrument': {'no_evidence': 19}, 'key_signature': {'mixed_marker_kinds': 2, 'no_evidence': 3, 'run_fits_no_slot_table': 1}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 4}, 'meter': {'bars_name_a_length_without_a_form': 2}, 'movement_spans': {'no_boundary_detected': 1}, 'slot_index': {'reference_names_nothing': 8}, 'stem_direction': {'no_stem': 118, 'stems_disagree': 6}, 'system_key': {'no_staff_read_a_key': 2}, 'tie_pair': {'not_a_tie': 116, 'enters_from_previous_system': 7, 'more_than_one_pair': 10, 'no_head_near_the_arc': 17, 'no_pair_at_one_position': 16, 'spans_a_whole_bar': 20, 'no_stop_head': 9, 'no_start_head': 19, 'runs_off_the_system': 2}, 'unread_mark': {'no_ink_component_rows': 320}, 'voices': {'nothing_to_split': 20}}
+── GROUPS ─────────────────────────────────────────────
+  clef_across_systems: 12 facts, 19 witnesses, 12 uninformative, {'none': 1, 'single': 11, 'unanimous': 0, 'majority': 0, 'split': 0}
+  instrument_across_systems: 12 facts, 0 witnesses, 12 uninformative, {'none': 12, 'single': 0, 'unanimous': 0, 'majority': 0, 'split': 0}
+  key_signature_across_systems: 12 facts, 13 witnesses, 12 uninformative, {'none': 5, 'single': 7, 'unanimous': 0, 'majority': 0, 'split': 0}
+  measure_count_across_staves: 2 facts, 19 witnesses, 0 uninformative, {'none': 0, 'single': 0, 'unanimous': 2, 'majority': 0, 'split': 0}
+  meter_across_staves: 2 facts, 4 witnesses, 1 uninformative, {'none': 1, 'single': 0, 'unanimous': 1, 'majority': 0, 'split': 0}
+  staff_group_across_systems: 12 facts, 19 witnesses, 12 uninformative, {'none': 1, 'single': 11, 'unanimous': 0, 'majority': 0, 'split': 0}
+  ⚠️ witnessed_by_nobody (no witness spoke): ['instrument_across_systems']
+  ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'staff_group_across_systems']
+  ⚠️ DISAGREEMENTS: 0 (each implicates its WHOLE group, not its dissenter)
+── EVALUATE: 777 fired, 4261 skipped
+── INFER: 3 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+── DECLARED STUBS: 0 decisions, 1 consequences
+wrote benchmarks/omr-missing-notes-2026-09/out/r225/litolff-p3.record.json
+LITOLFF_DONE=0

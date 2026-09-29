@@ -1,0 +1,89 @@
+{
+  "roadmap_item": "2.25",
+  "record": "benchmarks/omr-missing-notes-2026-09/out/r225/brahms-p1.record.json",
+  "dpi": 600,
+  "crops": [
+    {
+      "n": 1,
+      "file": "beam-strokes-2.25-brahms-01.png",
+      "subject": "glyph/1/0/1/0/18",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 0.125,
+          "written": 0.125,
+          "dots": 0,
+          "beam_levels": 3
+        }
+      },
+      "frame_contrast": 208.16,
+      "strokes_dropped_as_ledger_line": 1,
+      "ledger_line_boxes_in_cell": 18,
+      "strokes_kept": 5,
+      "page_box": [
+        1565.8,
+        744.9,
+        1605.8,
+        779.7
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 2,
+      "file": "beam-strokes-2.25-brahms-02.png",
+      "subject": "glyph/1/0/9/0/4",
+      "stem_direction": "down",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 0.125,
+          "written": 0.125,
+          "dots": 0,
+          "beam_levels": 3
+        }
+      },
+      "frame_contrast": 212.63,
+      "strokes_dropped_as_ledger_line": 2,
+      "ledger_line_boxes_in_cell": 2,
+      "strokes_kept": 3,
+      "page_box": [
+        1266.9,
+        2664.9,
+        1307.5,
+        2699.0
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    },
+    {
+      "n": 3,
+      "file": "beam-strokes-2.25-brahms-03.png",
+      "subject": "glyph/1/1/9/6/1",
+      "stem_direction": "up",
+      "after_2_25": {
+        "outcome": "decided",
+        "value": {
+          "beats": 1.5,
+          "written": 1.5,
+          "dots": 1,
+          "beam_levels": 0
+        }
+      },
+      "frame_contrast": 80.26,
+      "strokes_dropped_as_ledger_line": 2,
+      "ledger_line_boxes_in_cell": 3,
+      "strokes_kept": 0,
+      "page_box": [
+        4803.2,
+        6282.3,
+        4841.9,
+        6315.0
+      ],
+      "question": "printed value of the bracketed note; is any RED-X stroke this note's beam, or is it the ledger rung under a YELLOW box",
+      "VERDICT_none_yet": null
+    }
+  ],
+  "refused": []
+}
