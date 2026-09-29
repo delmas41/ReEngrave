@@ -133,6 +133,120 @@ def _mark(log, *, gi, cls, x, y, w=4, h=8):
     return d
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.27c: a candidate `glyph_owner` has DECIDED belongs to the
+# neighbour is not this staff's dot to attach -- the SAME shape 2.27 fixed
+# for `articulation_owner`/`fermata_owner`/`ornament_owner`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+HOME = R.staff(0, 0, 0)
+NEIGHBOUR = R.staff(0, 0, 1)
+
+
+def _owned_by_the_neighbour(log, glyph, *, near=1.0, far=4.0):
+    """A real cross-staff contest `glyph_owner` DECIDES for `NEIGHBOUR` --
+    filed on `glyph`'s OWN subject exactly as `test_staged_articulation_
+    owner._owned_by_the_neighbour` proves the identical composition: two
+    `Q.GLYPH_BAND_DISTANCE` rows, near the winning candidate and far from
+    the losing one. `glyph` itself stays filed under HOME's own cell (`_note`
+    always writes `R.glyph(0, 0, 0, 0, gi)`), exactly as a real padded-cell
+    ghost is -- the contest, not the subject's address, is what names the
+    true owner."""
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, far, reader=READERS.GEOMETRY,
+                frame="page", candidate=HOME.to_key(), own=True,
+                position_in_candidate=2.0)
+    log.observe(glyph, Q.GLYPH_BAND_DISTANCE, near, reader=READERS.GEOMETRY,
+                frame="page", candidate=NEIGHBOUR.to_key(), own=False,
+                position_in_candidate=2.0)
+
+
+class TestGlyphOwnerPrecedesDotRoleAndDurationInORDER(unittest.TestCase):
+    """The new read is safe only because ADJUDICATE reads a FROZEN log and
+    `Q.GLYPH_OWNER` is already decided before either consumer runs
+    (CLAUDE.md rule: ADJUDICATE reads a frozen log, so ordering here is a
+    dependency, not a preference). `Q.DOT_ROLE`'s own ORDER comment calls
+    itself needing "no verdict of any kind" -- true of ITS OWN pre-2.27c
+    evidence, and unaffected by this: the new read does not move it, it
+    only becomes possible because `Q.GLYPH_OWNER` already precedes it."""
+
+    def test_glyph_owner_precedes_dot_role(self):
+        self.assertLess(adjudicate.ORDER.index(Q.GLYPH_OWNER),
+                        adjudicate.ORDER.index(Q.DOT_ROLE))
+
+    def test_glyph_owner_precedes_duration(self):
+        self.assertLess(adjudicate.ORDER.index(Q.GLYPH_OWNER),
+                        adjudicate.ORDER.index(Q.DURATION))
+
+
+class TestDotRoleRespectsADecidedOwner(unittest.TestCase):
+    """⚠️ THE FIX. Remove the `_owned_by_a_different_staff` filter from
+    `adjudicate_dot_role` and
+    `test_the_only_candidate_owned_by_the_neighbour_does_not_admit_the_dot`
+    goes RED -- the ghost's box, alone in the cell, still admits the
+    augmentation window and the role is wrongly decided `augmentation`."""
+
+    def test_the_only_candidate_owned_by_the_neighbour_does_not_admit_the_dot(self):
+        log = Log()
+        _staff_space(log)
+        ghost = _note(log, 0, "noteheadHalf")
+        _owned_by_the_neighbour(log, ghost)
+        _mark(log, gi=1, cls="augmentationDot", x=X + 12, y=4)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.GLYPH_OWNER, ghost).value,
+                         NEIGHBOUR.to_key())
+        role = log.verdict(Q.DOT_ROLE, R.glyph(0, 0, 0, 0, 1))
+        self.assertEqual(role.outcome, Outcome.ABSTAINED)
+        self.assertEqual(role.reason, "owned_by_another_staff")
+        self.assertEqual(role.detail["n_candidates"], 1)
+
+    def test_POSITIVE_CONTROL_an_uncontested_candidate_still_admits_the_dot(self):
+        """The identical page, minus the contest -- an uncontested candidate
+        is untouched, so the abstention above is not passing by refusing
+        everything."""
+        log = Log()
+        _staff_space(log)
+        _note(log, 0, "noteheadHalf")
+        _mark(log, gi=1, cls="augmentationDot", x=X + 12, y=4)
+        adjudicate.run(log)
+        role = log.verdict(Q.DOT_ROLE, R.glyph(0, 0, 0, 0, 1))
+        self.assertEqual(role.value, "augmentation")
+
+
+class TestAttachedDotsRespectsADecidedOwner(unittest.TestCase):
+    """⚠️ THE FIX. Remove the `_owned_by_a_different_staff` filter from
+    `_attached_dots` and `test_a_closer_ghost_does_not_steal_the_dot` goes
+    RED -- the ghost's box, being CLOSER to the mark, wins the reciprocal
+    nearest-candidate search and the real note's own duration stays
+    undotted."""
+
+    def test_a_closer_ghost_does_not_steal_the_dot(self):
+        log = Log()
+        _staff_space(log)
+        real = _note(log, 0, "noteheadHalf", x=X)
+        ghost = _note(log, 1, "noteheadBlack", x=X + 4)   # closer to the mark
+        _owned_by_the_neighbour(log, ghost)
+        _mark(log, gi=2, cls="augmentationDot", x=X + 14, y=4)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.GLYPH_OWNER, ghost).value,
+                         NEIGHBOUR.to_key())
+        duration = log.verdict(Q.DURATION, real)
+        self.assertEqual(duration.value["dots"], 1)
+        self.assertEqual(duration.value["beats"], 3.0)   # 2.0 + half
+
+    def test_POSITIVE_CONTROL_an_uncontested_closer_head_still_wins(self):
+        """Without the neighbour contest the closer head is legitimately the
+        best candidate, and this filter existing must not change that --
+        the reciprocal-nearest rule 2.12c measured is untouched."""
+        log = Log()
+        _staff_space(log)
+        near = _note(log, 0, "noteheadHalf", x=X + 4)
+        far = _note(log, 1, "noteheadHalf", x=X)
+        _mark(log, gi=2, cls="augmentationDot", x=X + 14, y=4)
+        adjudicate.run(log)
+        self.assertEqual(log.verdict(Q.DURATION, near).value["dots"], 1)
+        self.assertEqual(log.verdict(Q.DURATION, far).value["dots"], 0)
+
+
 class TestDotRoleComesFromPosition(unittest.TestCase):
     def test_RED_a_staccato_class_box_right_of_the_head_is_an_augmentation(self):
         """43 + 9 measured on the acceptance records (FINDINGS Sec.2.12c):

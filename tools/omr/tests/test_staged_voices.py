@@ -48,6 +48,34 @@ def _rest(log, gi, x, y=0):
     return g
 
 
+STAFF = R.staff(0, 0, 0)
+
+
+def _staff_geometry(log, *, bottom=80.0, spacing=20.0):
+    """Five staff lines 20px apart, bottom line at y=80 -- `_rest_slot`'s own
+    frame (bottom line step 0, one step per HALF space), where the MIDDLE
+    line (y=40) sits at step 4.0."""
+    log.observe(STAFF, Q.STAFF_LINES, [0.0, 20.0, 40.0, 60.0, 80.0],
+                reader=READERS.GEOMETRY, frame="page")
+    log.observe(STAFF, Q.STAFF_SPACING, spacing,
+                reader=READERS.GEOMETRY, frame="page")
+
+
+def _rest_positioned(log, gi, x, center_y, *, w=20.0, h=16.0):
+    """A rest with PAGE-PIXEL geometry, the frame `_rest_slot` reads (via
+    `detail["bbox_page_px"]`) -- unlike the shared `_rest` helper above,
+    which only ever needed the cell-frame box `adjudicate_voices`'s
+    pre-2.27c evidence read."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.REST, "restQuarter", reader=READERS.DETECTOR,
+                frame="cell:0", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, ("restQuarter", x, center_y - h / 2, w, h),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9,
+                category="rest",
+                bbox_page_px=[x, center_y - h / 2, x + w, center_y + h / 2])
+    return g
+
+
 def _stem(log, x, y, w=3, h=60):
     log.observe(CELL, Q.STEM, (x, y, w, h), reader=READERS.CV_LINES,
                 frame="cell:0", x0=x, x1=x + w, y_center=y + h / 2,
@@ -228,6 +256,114 @@ class TestTheVoiceSplit(unittest.TestCase):
         _stem(log2, 88, -60, h=64)
         self.assertIs(_run(log2).verdict(Q.VOICES, CELL).outcome,
                       Outcome.DECIDED)
+
+
+class TestDisplacedRestsJoinOneVoice(unittest.TestCase):
+    """ROADMAP 2.27c, Sean 2026-09-29 answering `PLACEMENT-CONVENTIONS.md`'s
+    Rests row question 1: "displaced rests in multi-voice bars DO occur in
+    this orchestral corpus" (two players sharing a staff, e.g. Fl. 1/2) --
+    wire it. A rest pushed above the staff's own MIDDLE LINE belongs to the
+    stem-up (voice 1) stream, one pushed below to the stem-down (voice 2)
+    stream, rather than defaulting into BOTH the way `split_events_into_
+    voices` otherwise always puts a rest.
+
+    ⚠️ THE FIX. Revert `REST_VOICE_DISPLACEMENT_MIN_STEPS` to something the
+    fixtures below cannot reach (e.g. 100) and
+    `test_a_rest_pushed_ABOVE_centre_joins_voice_1_only` goes RED -- the rest
+    reappears in BOTH `voices` lists, exactly the un-displaced default.
+    """
+
+    def test_a_rest_pushed_ABOVE_centre_joins_voice_1_only(self):
+        log = Log()
+        _head(log, 0, 90)
+        _head(log, 1, 300)
+        _staff_geometry(log)
+        _rest_positioned(log, 2, 500, center_y=20.0)    # step 6.0 -- upper
+        _stem(log, 88, -60, h=64)                        # up  -> voice 1
+        _stem(log, 298, 12, h=60)                        # down -> voice 2
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertEqual(v.value["n_voices"], 2)
+        self.assertIn(2, v.value["voices"][0])
+        self.assertNotIn(2, v.value["voices"][1])
+        self.assertNotIn(2, v.value["rests_in_every_voice"])
+        self.assertEqual(v.value["rests_displaced_by_position"], {2: "upper"})
+
+    def test_a_rest_pushed_BELOW_centre_joins_voice_2_only(self):
+        log = Log()
+        _head(log, 0, 90)
+        _head(log, 1, 300)
+        _staff_geometry(log)
+        _rest_positioned(log, 2, 500, center_y=60.0)    # step 2.0 -- lower
+        _stem(log, 88, -60, h=64)                        # up  -> voice 1
+        _stem(log, 298, 12, h=60)                        # down -> voice 2
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertEqual(v.value["n_voices"], 2)
+        self.assertNotIn(2, v.value["voices"][0])
+        self.assertIn(2, v.value["voices"][1])
+        self.assertNotIn(2, v.value["rests_in_every_voice"])
+        self.assertEqual(v.value["rests_displaced_by_position"], {2: "lower"})
+
+    def test_POSITIVE_CONTROL_a_CENTRED_rest_stays_in_BOTH_voices(self):
+        """The mirror -- a rest sitting on the staff's own middle line is
+        the ORDINARY, undisplaced case and must still cover both streams
+        exactly as `test_a_REST_is_in_EVERY_voice_and_is_NAMED_as_such`
+        (above) already pins, so this filter existing does not itself widen
+        who counts as "displaced"."""
+        log = Log()
+        _head(log, 0, 90)
+        _head(log, 1, 300)
+        _staff_geometry(log)
+        _rest_positioned(log, 2, 500, center_y=40.0)    # step 4.0 -- centred
+        _stem(log, 88, -60, h=64)
+        _stem(log, 298, 12, h=60)
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertIn(2, v.value["voices"][0])
+        self.assertIn(2, v.value["voices"][1])
+        self.assertEqual(v.value["rests_in_every_voice"], [2])
+        self.assertEqual(v.value["rests_displaced_by_position"], {})
+
+    def test_POSITIVE_CONTROL_a_ONE_VOICE_bar_is_UNAFFECTED(self):
+        """A rest in a single-voice bar has no split to join at all --
+        unchanged, whatever its own vertical position, exactly as before
+        this item (`test_a_one_voice_bar_names_NO_duplicated_rest` above)."""
+        log = Log()
+        _head(log, 0, 90)
+        _staff_geometry(log)
+        _rest_positioned(log, 1, 500, center_y=20.0)    # would read "upper"
+        _stem(log, 88, -60, h=64)
+        v = _run(log).verdict(Q.VOICES, CELL)
+        self.assertEqual(v.value["n_voices"], 1)
+        self.assertEqual(v.value["rests_in_every_voice"], [])
+        self.assertEqual(v.value["rests_displaced_by_position"], {})
+
+    def test_a_displaced_rest_never_moves_to_the_NEIGHBOUR_STAFF(self):
+        """CLAUDE.md §10: a displaced rest stays on ITS OWN staff -- only
+        its VOICE within that one staff is decided here. ⚠️ NOT a source-text
+        assertion (CLAUDE.md §6c reserves `inspect.getsource` for the
+        flag-direction guard and a gather-shape check) -- this checks the
+        DECLARATION the harness itself enforces: `Q.GLYPH_OWNER` (the
+        cross-staff ownership contest) is not in `Q.VOICES`'s `wants`, so
+        `Evidence._check` would raise `UndeclaredEvidence` before the
+        decision could ever read it, whatever the function body does."""
+        spec = adjudicate.REGISTRY[Q.VOICES]
+        self.assertNotIn(Q.GLYPH_OWNER, spec.wants)
+
+    def test_a_displaced_rest_stays_on_the_SAME_staff_it_was_gathered_on(self):
+        """The behavioural half of the control above: the rest's own glyph
+        key (`page/system/staff/cell/glyph`) is identical before and after
+        it is pulled into one voice stream -- nothing here ever constructs a
+        subject naming a different staff."""
+        log = Log()
+        _head(log, 0, 90)
+        _head(log, 1, 300)
+        _staff_geometry(log)
+        rest = _rest_positioned(log, 2, 500, center_y=20.0)   # "upper"
+        _stem(log, 88, -60, h=64)
+        _stem(log, 298, 12, h=60)
+        v = _run(log).verdict(Q.VOICES, CELL)
+        only_voice = [i for i, vs in enumerate(v.value["voices"]) if 2 in vs]
+        self.assertEqual(only_voice, [0])
+        self.assertEqual(rest.staff, CELL.staff)
 
 
 class TestTheExporterReadsIt(unittest.TestCase):

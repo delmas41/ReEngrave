@@ -24,7 +24,7 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           Term, decision, tally)
@@ -49,6 +49,10 @@ from . import notehead_precision as _NP
 # rather than re-derived here a third time (same shape as the `_NP` import
 # just above).
 from . import structure as _structure
+# ⚠️ ROADMAP 2.27c: the SAME sibling-import shape, for `_owned_by_a_
+# different_staff` -- `ownership.py` imports neither `rhythm` nor
+# `notehead_precision`, so this is not a new circular-import risk.
+from . import ownership as _own
 
 
 #: Notehead class -> written value in beats, before dots and beams.
@@ -975,9 +979,24 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     if head_box is None or not space:
         return []
     boxes = _cell_boxes(ev, cell)
+    # ⚠️ ROADMAP 2.27c, the SAME shape 2.27 fixed for articulation/fermata/
+    # ornament owners: `cell`'s own `Q.NOTEHEAD_CLASS`/`Q.REST` rows can hold
+    # a head that is really the NEIGHBOUR staff's, filed here only because
+    # the padded cell's crop reached into its ink. A candidate `glyph_owner`
+    # has already DECIDED belongs elsewhere is dropped before it can win the
+    # dot -- except `mine`'s OWN row, which is never dropped for THIS test:
+    # `mine` may itself be such a ghost (duration is read for every note
+    # regardless of ownership, per the 2.27 map's own note that EXPORT, not
+    # this decision, is where a ghost is finally held out), and dropping it
+    # here would silently take away its ability to claim its own dot.
+    mine_key = ev.subject.to_key()
+    home = cell.at(Kind.STAFF).to_key()
     heads = []
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+            if (r.subject.to_key() != mine_key
+                    and _own._owned_by_a_different_staff(ev, r, home)):
+                continue
             box_row = boxes.get(r.subject.to_key())
             b = _xywh_head(box_row.value) if box_row else None
             if b is not None:
@@ -1022,14 +1041,21 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
 @decision(
     quantity=Q.DOT_ROLE,
     checkable=Checkable.UNCHECKABLE,
+    # ⚠️ ROADMAP 2.27c ADDS `Q.GLYPH_OWNER`: a candidate notehead/rest already
+    # DECIDED to belong to another staff must not win this dot. `Q.GLYPH_
+    # OWNER` is decided well before `Q.DOT_ROLE` in `adjudicate.ORDER`
+    # (beside `Q.ARC_OWNER`, long before the rhythm block), so this reads a
+    # settled verdict, never a hole -- `test_staged_dot_role.py`'s
+    # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
-                   Q.CELL_STAFF_SPACE),
+                   Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
-           Q.CELL_STAFF_SPACE),
+           Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "no_glyph_box", "no_cell_staff_space",
-             "no_notehead_or_rest_in_cell", "dot_role_ambiguous"),
+             "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
+             "owned_by_another_staff"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -1087,10 +1113,22 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_cell_staff_space")
 
     boxes = _cell_boxes(ev, cell)
+    # ⚠️ ROADMAP 2.27c: the dot itself has no staff of its own to defend (it
+    # is `ev.subject`, not a candidate), so unlike `_attached_dots` above
+    # there is no self-reference to protect -- every candidate that
+    # `glyph_owner` has already DECIDED belongs to another staff is simply
+    # excluded, the same filter 2.27 built for articulation/fermata/ornament
+    # owners.
+    home = cell.at(Kind.STAFF).to_key()
     all_targets = []                    # heads AND rests, for the aug window
     note_targets = []                   # noteheads only, for the staccato one
+    n_raw = n_excluded = 0
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+            n_raw += 1
+            if _own._owned_by_a_different_staff(ev, r, home):
+                n_excluded += 1
+                continue
             box_row = boxes.get(r.subject.to_key())
             b = _xywh_head(box_row.value) if box_row else None
             if b is None:
@@ -1099,6 +1137,11 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
             if q == Q.NOTEHEAD_CLASS:
                 note_targets.append((r.subject.to_key(), b))
     if not all_targets:
+        # ⚠️ Apart from a genuinely empty cell, so a stray dot with nothing
+        # of its own to attach to can be told from one whose only candidates
+        # were the neighbour's ink.
+        if n_excluded and n_excluded == n_raw:
+            return Ruling.abstain("owned_by_another_staff", n_candidates=n_raw)
         return Ruling.abstain("no_notehead_or_rest_in_cell")
 
     used = (row.id, box_rows[-1].id) + ((space_row[-1].id,) if space_row
@@ -1285,7 +1328,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
-                   Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+                   Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
     # standing inside a DECIDED slur/tie's own box is discounted from this
@@ -1320,7 +1363,8 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
-           Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+           Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
+           Q.GLYPH_OWNER),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "beam_discounted_uncertain",
              "head_fill_from_ink", "no_notehead",
@@ -5384,11 +5428,68 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
                   used=tuple(used), detail=detail)
 
 
+#: ROADMAP 2.27c, Sean 2026-09-29 answering `PLACEMENT-CONVENTIONS.md`'s
+#: Rests row question 1: "displaced rests in multi-voice bars DO occur in
+#: this orchestral corpus" (two players sharing a staff, e.g. Fl. 1/2) --
+#: ESTABLISHED practice, a rest pushed above the staff's own MIDDLE LINE
+#: belongs to the upper (stem-up) voice, one pushed below to the lower
+#: (stem-down) voice. `_staff_step`'s own frame puts the middle line at
+#: step 4.0 (bottom line 0, top line 8).
+STAFF_MIDDLE_LINE_STEP = 4.0
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: Sean's answer
+#: confirms displaced rests occur and should be wired, not a numeric
+#: threshold -- no crop was adjudicated this pass (2026-09-29's process
+#: decision: conceptual wiring, no crop batches). Falsified by a print crop
+#: where a rest this close to the middle line is centred (not
+#: voice-displaced), or one further out that is not. Set well inside the
+#: "outside its own staff" bound `_rest_slot` already reports (step < 0 or
+#: > 8), so a genuinely displaced rest is never confused with cross-staff
+#: bleed -- CLAUDE.md's own rule that a displaced rest stays on its OWN
+#: staff, never read as the neighbour's.
+REST_VOICE_DISPLACEMENT_MIN_STEPS = 1.5
+
+
+def _rest_voice_side(ev: Evidence, glyph_indices: Sequence[int]
+                     ) -> Optional[str]:
+    """"upper" or "lower" where this rest sits DECISIVELY off the staff's
+    own middle line; `None` where it is centred (the ordinary, undisplaced
+    case) or its geometry could not be read.
+
+    ⚠️ `_rest_slot` IS CALLED, NOT COPIED -- the same reader `Q.NOTEHEAD_IS_
+    A_WHOLE_REST` and `adjudicate_duration`'s own rest branch measure a
+    rest's position with, so a rest's vertical reading cannot drift between
+    consumers. `ev.subject.at(Kind.STAFF)` inside it resolves to THIS bar's
+    own staff regardless of which rest glyph's box is passed in, because
+    every rest considered here shares one cell and therefore one staff.
+    """
+    for gi in glyph_indices:
+        sub = Subject(Kind.GLYPH, page=ev.subject.page,
+                      system=ev.subject.system, staff=ev.subject.staff,
+                      cell=ev.subject.cell, glyph=gi)
+        box_rows = ev.rows(Q.GLYPH_BOX, subject=sub)
+        if not box_rows:
+            continue
+        step, _detail, _used = _rest_slot(ev, box_rows)
+        if step is None:
+            continue
+        if step >= STAFF_MIDDLE_LINE_STEP + REST_VOICE_DISPLACEMENT_MIN_STEPS:
+            return "upper"
+        if step <= STAFF_MIDDLE_LINE_STEP - REST_VOICE_DISPLACEMENT_MIN_STEPS:
+            return "lower"
+    return None
+
+
 @decision(
     quantity=Q.VOICES,
-    composed_from=(Q.STEM_DIRECTION, Q.EVENT),
+    # ⚠️ ROADMAP 2.27c ADDS `Q.GLYPH_BOX`/`Q.STAFF_LINES`/`Q.STAFF_SPACING`:
+    # a displaced rest's OWN vertical position now decides which single
+    # voice it joins, rather than every rest defaulting into BOTH.
+    composed_from=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
+                   Q.STAFF_SPACING),
     scope=Kind.CELL,
-    wants=(Q.STEM_DIRECTION, Q.EVENT),
+    wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
+           Q.STAFF_SPACING),
     reasons=("one_voice", "two_voices", "nothing_to_split"),
     mode=Mode.ADDITIVE,
 )
@@ -5459,18 +5560,48 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                        "stem_direction": direction, "_glyphs": glyphs})
 
     streams = _legacy_voicing.split_events_into_voices(events)
+    # ⚠️ ROADMAP 2.27c: `split_events_into_voices` puts every rest in BOTH
+    # streams unconditionally (its own docstring: "so each voice's bar can
+    # sum"). Where exactly TWO streams exist and a rest's own ink sits
+    # DECISIVELY off the staff's middle line, it is pulled OUT of the
+    # stream it does not belong to -- the displaced rest joins ONE voice,
+    # never both, and never the neighbour STAFF (this stays entirely within
+    # `ev.subject`'s own cell; `Q.GLYPH_OWNER` is never read here). A
+    # centred rest, or one whose geometry could not be read, is left exactly
+    # as the legacy rule already had it.
+    displaced: Dict[int, str] = {}
+    if len(streams) > 1:
+        for e in events:
+            if e["kind"] != "rest":
+                continue
+            side = _rest_voice_side(ev, e["_glyphs"])
+            if side == "upper":
+                streams[1] = [o for o in streams[1] if o is not e]
+                for g in e["_glyphs"]:
+                    displaced[g] = "upper"
+            elif side == "lower":
+                streams[0] = [o for o in streams[0] if o is not e]
+                for g in e["_glyphs"]:
+                    displaced[g] = "lower"
     voices = [sorted(g for e in s for g in e["_glyphs"]) for s in streams]
     n = len(voices)
     rests = sorted(g for e in events if e["kind"] == "rest"
                    for g in e["_glyphs"])
+    # ⚠️ A DISPLACED REST HAS LEFT THE COVER: it is now in exactly one of
+    # `voices`, not both, so it is no longer named here -- a consumer
+    # counting glyphs across `voices` would otherwise double it AND find it
+    # in `rests_in_every_voice`, over-reporting the duplication this field
+    # exists to declare.
+    covering = sorted(g for g in rests if g not in displaced)
     return Ruling(
         value={"n_voices": n, "voices": voices,
                # ⚠️ NAMED, because a rest in EVERY stream is the one place this
                # value is not a partition and a consumer counting glyphs would
                # otherwise report a loss. Empty in the one-voice case, where
                # there is no duplication to declare.
-               "rests_in_every_voice": rests if n > 1 else []},
+               "rests_in_every_voice": covering if n > 1 else [],
+               "rests_displaced_by_position": displaced},
         reason="two_voices" if n > 1 else "one_voice",
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),
-                "directions_read": read})
+                "directions_read": read, "n_rests_displaced": len(displaced)})

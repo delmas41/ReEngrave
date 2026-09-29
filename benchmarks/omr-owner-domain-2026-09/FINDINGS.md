@@ -2420,3 +2420,200 @@ against the +2 for the two new decisions).
   system.
 - No gathers, no re-adjudications, no whole-record runs, no crops — per
   Sean's 2026-09-29 process decision for this item.
+## 2.27c — three of 2.27b's "safe to wire" rows, plus displaced rests (2026-09-29)
+
+PATH: STAGED. Branch `claude/placement-wiring-2.27c`, off `origin/main`
+`86c6b02f`. Per DECISIONS 2026-09-29 ("work through the wiring conceptually,
+proved by MICROSCOPIC tests"): no gathers, no record-scale re-adjudications,
+no crop batches, no pricing runs. Every connection below is proved with
+hand-built `Log` fixtures, RED→GREEN, each with a positive control.
+
+### A — dynamic letters between staves
+
+`Q.DYNAMIC_BAND_POSITION` (`[C46 + L53]`) is gathered (`gather.
+gather_band_positions`, promoted from `Q.DYNAMIC_LETTER`'s own detail) but
+`adjudicate_dynamic` never read it. The gap it closes is item (a) from 2.27's
+own map: `Q.GLYPH_OWNER` only ever sees the CONTESTED population
+(`subjects_from=Q.GLYPH_BAND_DISTANCE`), so a letter whose twin was never
+independently re-detected in the neighbour's own cell reaches `adjudicate_
+dynamic` as `owner is None` and falls back to `home` unchanged — right for
+73% of the measured population, wrong for the 24% that stand in the band of
+the staff immediately above (a measured empty interval of -3.04..-0.52
+spaces between the two populations, `capture.py`'s own "UNREAD-POSITION
+Q.DYNAMIC_BAND_POSITION" note).
+
+**Wired** (`adjudicators/text.py`): only where `Q.GLYPH_OWNER` left
+`owned_by == home` (no DECIDED contest — never overrides one that exists) is
+`Q.DYNAMIC_BAND_POSITION` read as a SEPARATE, independently-scored quantity
+(`READERS.GEOMETRY`, never folded into the letter's own detector term —
+CLAUDE.md's `correlated_groups` rule). A reading at or below
+`DYNAMIC_ABOVE_BAND_MAX_SPACES` (-3.04) reassigns `owned_by` to the staff
+immediately above home (`staff - 1`, same system); the measured empty gap
+between the two populations, and a home staff with no staff above it, are
+left exactly as they stood — CLAUDE.md rule 8, a fallback never turns
+"cannot tell" into an answer. A rescue is never treated as a duplicate:
+`is_relocated_copy`'s "drop, don't move" logic assumes `owned_by` came from
+a genuine `Q.GLYPH_OWNER` contest (which structurally guarantees a twin on
+the winning staff); a band-position rescue fires only in the UNCONTESTED
+case, where no twin exists to be a duplicate of, so the dup-check is
+skipped for exactly that path (`moved_by_band`).
+
+Tests (`test_staged_dynamics.py::TestBandPositionRescuesAnUntwinnedLetter`,
+4 new): a decisively-above reading moves an uncontested letter from `LOWER`
+to `UPPER` (RED confirmed by disabling the threshold check — the letter
+stays on `LOWER`); a decisively-own-band reading stays put (positive
+control); a reading inside the measured empty gap stays put (negative
+control); a genuinely DECIDED contest is never overridden by a band row
+that would otherwise say "own band" (the ownership query runs first, and
+this code path is only reached when it already left `owned_by == home`).
+
+### C — `dot_role` and duration's dot search inherit `Q.GLYPH_OWNER`
+
+2.27's own follow-up: `adjudicate_dot_role` and `_attached_dots` (called
+from inside `adjudicate_duration`) both pick a candidate notehead/rest from
+every `Q.NOTEHEAD_CLASS`/`Q.REST` row in the CELL — which, because a
+measure cell is padded 4-6 staff spaces into the neighbour's own air, can
+include a head `glyph_owner` has already DECIDED belongs elsewhere. Neither
+read `Q.GLYPH_OWNER` at all before this item.
+
+`Q.DOT_ROLE`'s own ORDER comment calls its evidence "GATHER rows only... it
+needs no verdict of any kind" — true of its PRE-2.27c evidence
+(`Q.AUG_DOT`, `Q.GLYPH_BOX`, `Q.NOTEHEAD_CLASS`, `Q.REST`, `Q.CELL_STAFF_
+SPACE`) and unrelated to whether it COULD read one: `adjudicate.ORDER`
+already runs `Q.GLYPH_OWNER` (beside `Q.ARC_OWNER`, long before the rhythm
+block) well before both `Q.DOT_ROLE` and `Q.DURATION` — no reordering was
+needed, asserted directly (`TestGlyphOwnerPrecedesDotRoleAndDurationInORDER`,
+checking `adjudicate.ORDER.index(...)` rather than source text).
+
+**Wired** (`adjudicators/rhythm.py`): both now filter their candidate pool
+through the SAME shared helper 2.27 built (`ownership._owned_by_a_different_
+staff`), imported via the sibling-import shape `notehead_precision.py`
+already uses (`from . import ownership as _own`; no circular import).
+`adjudicate_dot_role` excludes every filtered candidate (new reason
+`owned_by_another_staff`, reported apart from `no_notehead_or_rest_in_cell`
+so a genuinely empty cell can be told from one whose only candidate was the
+neighbour's). `_attached_dots` excludes every candidate EXCEPT its own
+subject (`mine`) — unlike a mark's own owner search, `_attached_dots` is
+called once PER NOTE to ask "is this dot mine", so the note under
+evaluation must remain its own candidate even where its own `Q.GLYPH_OWNER`
+verdict is itself DECIDED for another staff (duration is a property of the
+glyph and travels with whichever copy EXPORT ultimately places — 2.27's own
+map). Never relocates a glyph, never decides ownership from pad position
+alone.
+
+Tests (`test_staged_dot_role.py`, 6 new): a lone candidate `glyph_owner` has
+DECIDED belongs to the neighbour no longer admits the augmentation window
+(`dot_role` abstains `owned_by_another_staff` rather than deciding
+`augmentation`) — RED confirmed by reverting the filter, the ghost alone
+admits it wrongly; an uncontested candidate is unaffected (positive
+control). A ghost head CLOSER to a dot than the real note no longer steals
+it via `_attached_dots`'s reciprocal-nearest search (RED confirmed: the real
+note's own duration stays undotted with the filter reverted); the identical
+uncontested case is unaffected (positive control).
+
+⚠️ **A tool blind spot, found and fixed, not documented around.**
+`inventory --check`'s `_never_read` follows a decision's own helper calls to
+depth 3, but — before this item — only WITHIN the decision's own module
+(`ast.parse` of `inspect.getfile(spec.fn)` alone), so `rhythm.py` calling
+`ownership.py`'s helper was invisible to it: `dot_role`/`duration` reported
+declaring `Q.GLYPH_OWNER` and never reading it, even though they do, at
+runtime, through the shared `ev` object — the SAME call, made from INSIDE
+`ownership.py` for `articulation_owner`/`fermata_owner`/`ornament_owner`
+(2.27), was already found fine there. Rather than paper over this with a
+`KNOWN_GAPS` entry (which would have left `staged.check`'s TOTAL at 248,
+over the 247 gate), `inventory._never_read` was extended one hop: it now
+also resolves calls through a `from . import X [as alias]` sibling import
+(the exact shape `notehead_precision.py`/`rhythm.py` already use), keyed
+`"alias.name"`, and follows that sibling function's own `Q.` references —
+never chasing a THIRD module away. This is a strict improvement (it can
+only remove false positives, never introduce one: it adds candidate "reads"
+resolution, it never subtracts). Confirmed no other `KNOWN_GAPS` entry went
+stale as a side effect (`inventory.unaccounted`/`stale_gaps` both empty
+after the change).
+
+### Sean's answer 1 — displaced rests in multi-voice bars
+
+Sean, 2026-09-29, answering PLACEMENT-CONVENTIONS.md's Rests-row question:
+*"displaced rests in multi-voice bars DO occur in this orchestral corpus"*
+(two players on one staff, e.g. Fl. 1/2) — ESTABLISHED practice: a rest
+pushed above the staff's own MIDDLE LINE belongs to the upper (stem-up)
+voice, one pushed below to the lower (stem-down) voice.
+
+`adjudicate_voices` (`rhythm.py`) calls `voicing.split_events_into_voices`,
+whose own docstring says a rest is put in BOTH streams unconditionally "so
+each voice's bar can sum" — the shipped default, and the ONLY behaviour
+before this item. **Wired**: where the split produces exactly two streams,
+each rest event's own vertical position is read (`_rest_slot`, the SAME
+function `Q.NOTEHEAD_IS_A_WHOLE_REST` and `adjudicate_duration`'s rest
+branch already measure a rest's position with — no third spelling of the
+reader) against the staff's own middle line (`_staff_step`'s frame: bottom
+line 0, top line 8, middle 4.0). A reading at or beyond
+`REST_VOICE_DISPLACEMENT_MIN_STEPS` (1.5 steps, CONVENTION ASSUMED — Sean's
+answer confirms the convention, not a numeric threshold; no crop was
+adjudicated this pass) pulls the rest OUT of the stream on the wrong side,
+so it joins exactly one voice rather than covering both; a centred rest, or
+one whose geometry is unread, is left exactly as the legacy rule already had
+it. `rests_in_every_voice` (the cover-not-partition field) and the new
+`rests_displaced_by_position` detail are adjusted so a displaced rest is
+named once, not twice.
+
+This composes cleanly with EXISTING consumers with no changes there:
+`export._voice_split` already treats a rest hitting exactly one stream as an
+ordinary single-voice event (`len(hit) > 1 and not indices <= in_both` is
+the only refusal test, and a displaced rest now has `len(hit) == 1`);
+`export._measure_events_xml`'s `rests_duplicated_across_voices` counter is
+derived from which EXPORTER events are the SAME object reference in both of
+ITS OWN streams, so a rest the record now places in only one voice is
+automatically counted once, keeping the note-accounting equality intact
+with no export-side edit; `ownership.adjudicate_wedge_anchor`'s `voice_of`
+map (`set(glyphs) - in_both`) now assigns a decisively-displaced rest a real
+voice number too, where before a duplicated rest never got one — an
+improvement this item did not have to build.
+
+**Never reads `Q.GLYPH_OWNER`, and cannot relocate a rest onto the
+neighbour staff** — the displaced-rest rule operates entirely within
+`ev.subject`'s own cell; it only chooses which of ITS OWN staff's two
+voice streams a rest joins.
+
+Tests (`test_staged_voices.py::TestDisplacedRestsJoinOneVoice`, 7 new): a
+rest pushed above centre joins voice 1 only (RED confirmed: reverting the
+threshold to an unreachable value puts it back in both); one pushed below
+joins voice 2 only; a centred rest stays in both (positive control,
+matching the pre-existing `test_a_REST_is_in_EVERY_voice_and_is_NAMED_as_
+such`); a one-voice bar is unaffected regardless of the rest's position
+(positive control); the declared `wants` for `Q.VOICES` does not include
+`Q.GLYPH_OWNER` at all (`Evidence._check` would raise `UndeclaredEvidence`
+before the decision could read it even if the body tried — a structural
+check, not a source-text one, per CLAUDE.md §6c's restriction on new
+`inspect.getsource` tests); the rest's own staff key is unchanged before and
+after the split.
+
+### Sean's answer 5 — grace notes and fingerings: NOT built, no adjudicator exists
+
+Sean's answer batched grace-note/fingering ownership-inheritance with
+`dot_role`'s fix ("batch them"), asking for the SAME mechanical fix (inherit
+the target note's DECIDED `Q.GLYPH_OWNER`) applied to those two families
+too. **Not built**: unlike augmentation dots, articulations, fermatas and
+ornaments, there is no `Q.GRACE_NOTE*`/`Q.FINGERING*` quantity, no gather
+site, and no adjudicator in the staged pipeline for either family at all
+(`grep -n "GRACE\|FINGERING" tools/omr/staged/record.py` returns nothing;
+`fingering3` is folded into `Q.TUPLET_MARKER` via `_TUPLET_CLASSES`, a
+digit-ROLE question unrelated to ownership, and `fingering0/1/2/4/5-9` and
+every `graceNote*` class reach no staged quantity of their own). "Wire the
+same gate `dot_role` got" presumes a candidate-search decision to wire it
+INTO, and none exists — building one is a GATHER-side change (a new
+quantity, a new gather site, a new decision registered in `adjudicate.
+ORDER`), which is a materially bigger, roadmap-worthy item of its own, not
+a microscopic wiring pass. Left as a named follow-up.
+
+### Gate
+
+`pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`: 3,866
+passed (3,849 baseline + 17 new), 3 skipped, 0 failed — confirmed on a
+CLEAN tree (an earlier run, corrupted by a concurrent `git stash` mid-run,
+is not evidence; CLAUDE.md §6c's own warning about editing `tools/` while a
+suite runs). `python3 -m tools.omr.staged.check`: TOTAL **246** (247
+baseline − 1, the `reach.py` `Q.DYNAMIC_BAND_POSITION` entry genuinely
+graduating — see item A — with `inventory` and every other check unchanged
+at baseline), status=ok. No `library/`, `omr-weights/`, venv, or PDF path
+appears in any new test file.
