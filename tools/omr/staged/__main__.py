@@ -134,7 +134,15 @@ def _provenance() -> dict:
         # value -- no magic string like "unknown", which two failing machines
         # would share.
         commit = git("rev-parse", "HEAD")
-        dirty = bool(git("status", "--porcelain"))
+        # ⚠️ 2026-09-29: DIRTY MEANS "WHAT RAN IS NOT THE COMMIT" -- a TRACKED
+        # modification, or an untracked `.py` (new code nobody committed).
+        # The run's own untracked OUTPUTS (log, coverage, musicxml beside the
+        # record) cannot change what ran, and counting them stamped every
+        # acceptance record of 09-28 and 09-29 dirty.
+        tracked = git("status", "--porcelain", "--untracked-files=no")
+        new_code = git("ls-files", "--others", "--exclude-standard",
+                       "--", "*.py")
+        dirty = bool(tracked or new_code)
         out["commit"], out["dirty"] = commit, dirty
     except Exception as exc:                       # noqa: BLE001
         out = {"commit": None, "dirty": None,

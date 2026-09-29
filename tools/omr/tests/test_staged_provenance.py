@@ -84,6 +84,49 @@ class TestTheFallbackBranchesNobodyExercises(unittest.TestCase):
         self.assertIsNone(p["commit"], "a half-named tree is not a named tree")
         self.assertIsNone(p["dirty"])
 
+    def test_the_runs_own_untracked_OUTPUTS_do_not_make_the_tree_dirty(self):
+        """⚠️ 2026-09-29: every acceptance record was stamped dirty because
+        the run's own untracked log / coverage / musicxml sat in the worktree.
+        Untracked non-code files cannot change what ran; a tracked
+        modification or an untracked `.py` can."""
+        def fake(args, **k):
+            if args[1] == "rev-parse":
+                return b"deadbeef" * 5 + b"\n"
+            if args[1] == "status":
+                if "--untracked-files=no" in args:
+                    return b""                   # no TRACKED modification
+                return b"?? benchmarks/x/out/run.log\n"   # only the outputs
+            if args[1] == "ls-files":
+                return b""                       # no untracked .py
+            raise AssertionError(f"unexpected git call {args}")
+        p = self._under(fake)
+        self.assertIs(p["dirty"], False)
+
+    def test_an_untracked_py_file_DOES_make_the_tree_dirty(self):
+        """The control: new code nobody committed changes what ran."""
+        def fake(args, **k):
+            if args[1] == "rev-parse":
+                return b"deadbeef" * 5 + b"\n"
+            if args[1] == "status":
+                return b""
+            if args[1] == "ls-files":
+                return b"tools/omr/staged/new_rule.py\n"
+            raise AssertionError(f"unexpected git call {args}")
+        p = self._under(fake)
+        self.assertIs(p["dirty"], True)
+
+    def test_a_tracked_modification_makes_the_tree_dirty(self):
+        def fake(args, **k):
+            if args[1] == "rev-parse":
+                return b"deadbeef" * 5 + b"\n"
+            if args[1] == "status":
+                return b" M tools/omr/staged/export.py\n"
+            if args[1] == "ls-files":
+                return b""
+            raise AssertionError(f"unexpected git call {args}")
+        p = self._under(fake)
+        self.assertIs(p["dirty"], True)
+
     def test_the_settings_stamp_records_only_OMR_overrides(self):
         """⚠️ `OMR_`-PREFIXED ONLY. Stamping the whole environment would put
         credentials into every record this repo writes."""

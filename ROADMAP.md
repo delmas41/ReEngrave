@@ -80,10 +80,10 @@ paired in ADJUDICATE, `Q.TIE_PAIR`). Evidence merged: missing-notes funnel,
 **Instrument notes learned tonight:** a test file whose TEXT names
 `library/`, `omr-weights/`, a venv or a PDF path (even in a comment) goes
 slow silently (CLAUDE.md §6c) — compare the passed count after every merge.
-Every acceptance record is stamped `dirty:true` because `__main__`'s stamp
-counts the run's own UNTRACKED outputs (`git status --porcelain`); no
-tracked file was modified — a one-line fix (`--untracked-files=no`, or
-ignore `benchmarks/acceptance/out/`) is unbuilt.
+Every acceptance record of 09-28/29 is stamped `dirty:true` only because
+the stamp counted the run's own UNTRACKED outputs; FIXED on main after the
+adoption (`__main__._provenance`: tracked modifications or an untracked
+`.py` only) — the next gather stamps honestly.
 
 **The viewer:** `python3 -m tools.omr.staged.review.server --record <a
 RE-DECIDED record> --pdf <pdf> --staff staff/3/0/9` →
