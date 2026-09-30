@@ -1,9 +1,9 @@
 {
-  "tree": "a05873601eed77a162b186df5b4ccee3b82b50c7",
+  "tree": "0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf",
   "dirty": false,
-  "date": "2026-09-30T19:10:01Z",
-  "manifest_md5": "265a36ac4971e664269c749df40f196b",
-  "wall_time_s": 55.68,
+  "date": "2026-09-30T21:19:50Z",
+  "manifest_md5": "5ecded726ccfd6be802648bcaae190d4",
+  "wall_time_s": 57.6,
   "documents": {
     "beethoven5-litolff": {
       "id": "beethoven5-litolff",
@@ -46,7 +46,7 @@
       "export": {
         "ok": true,
         "bytes": 2330745,
-        "wall_time_s": 9.031,
+        "wall_time_s": 9.262,
         "report": {
           "families": [
             {
@@ -41598,7 +41598,7 @@
       "export": {
         "ok": true,
         "bytes": 3496398,
-        "wall_time_s": 32.127,
+        "wall_time_s": 37.528,
         "report": {
           "families": [
             {
@@ -149919,11 +149919,11 @@
       "kind": "engraved",
       "label": "Beethoven 5 mvt 1 bars 1-24, Verovio render, 18 parts (engraved, exact page truth)",
       "record": {
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929b.record.json",
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930b.record.json",
         "root": "repo",
-        "md5": "6c946ac1758554d4c6f3025a5a5f5407",
+        "md5": "ceaa59ee3980f7b48fe31c4ec3a68926",
         "provenance": {
-          "commit": "8c652d897ee36fa0813bf32402071dbfc0e8d5d1",
+          "commit": "e81fce68babab33115c96755b3189b1413e13969",
           "dirty": false,
           "settings": {
             "env_overrides": {
@@ -149944,6 +149944,7 @@
               "route_weights": false,
               "sheet": null,
               "surya": true,
+              "through": "infer",
               "weights": "tools/omr/training/data/weights/deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt",
               "work_id": null
             }
@@ -149952,8 +149953,8 @@
       },
       "export": {
         "ok": true,
-        "bytes": 165502,
-        "wall_time_s": 0.243,
+        "bytes": 167948,
+        "wall_time_s": 0.272,
         "report": {
           "families": [
             {
@@ -149962,7 +149963,7 @@
               "detector_glyphs": 23,
               "cv_glyphs": 23,
               "ink_rows": 46,
-              "written": 18,
+              "written": 20,
               "decided": 20,
               "abstained": {
                 "no_candidate": 3
@@ -150049,8 +150050,8 @@
               "detector_glyphs": 372,
               "cv_glyphs": 0,
               "ink_rows": 372,
-              "written": 341,
-              "decided": 445,
+              "written": 354,
+              "decided": 451,
               "abstained": {},
               "produced_by": "evaluate",
               "status": "emitted"
@@ -150075,7 +150076,7 @@
               "detector_glyphs": 317,
               "cv_glyphs": 0,
               "ink_rows": 317,
-              "written": 313,
+              "written": 316,
               "decided": 0,
               "abstained": {},
               "produced_by": "evaluate",
@@ -150149,7 +150150,7 @@
             "key_signature_glyphs_detected_and_owned_elsewhere": 133,
             "gathered": 23,
             "owner_decided": 20,
-            "applied": 18,
+            "applied": 20,
             "abstained_ambiguous": 0,
             "no_candidate": 3,
             "no_unit": 0,
@@ -150161,9 +150162,9 @@
             "heads_contradicted": 0,
             "owners_sharing_a_head": 0,
             "applied_on_a_doubled_copy": 0,
-            "unowned": 2,
+            "unowned": 0,
             "carried_in_bar": 11,
-            "pitches_altered_by_the_key": 94,
+            "pitches_altered_by_the_key": 96,
             "printed_glyphs_read_into_a_verdict": 31,
             "heads_balanced": true,
             "unaccounted": 0
@@ -150228,9 +150229,11 @@
               "balanced": true
             },
             "rest_is_not_a_rest": {
-              "refused": {},
-              "refused_total": 0,
-              "kept": 317,
+              "refused": {
+                "rest_clipped_by_crop": 1
+              },
+              "refused_total": 1,
+              "kept": 316,
               "abstained": 0,
               "abstained_reasons": {},
               "verdicts": 317,
@@ -150314,7 +150317,7 @@
           },
           "inferred_clefs": [],
           "written": {
-            "arc_notes_reachable_at_a_stem": 320,
+            "arc_notes_reachable_at_a_stem": 325,
             "tie_links_marked": 44,
             "tie_links_crossing_a_barline": 44,
             "tie_chains_marked": 35,
@@ -150330,21 +150333,20 @@
             "bars_judged_by_a_carried_meter": 0,
             "measure_rests_read": 215,
             "fermatas": 76,
-            "rests": 98,
-            "notes": 341,
+            "rests": 101,
+            "notes": 354,
             "articulations": 0,
             "dot_role_articulations": 0,
             "ornaments": 0,
-            "beams": 173,
-            "beamed_events": 173,
-            "pitches_altered_by_the_key": 94,
+            "beams": 183,
+            "beamed_events": 183,
+            "pitches_altered_by_the_key": 96,
             "ties": 44,
-            "bars_held_out_sum": 4,
-            "notes_held_out_sum": 12,
-            "unread_bar_marks_written": 4,
             "dynamics": 75,
-            "accidentals_printed": 18,
+            "accidentals_printed": 20,
             "slurs": 3,
+            "bars_held_out_sum": 0,
+            "notes_held_out_sum": 0,
             "empty_bars_sized_by_a_carried_meter": 0,
             "bars_held_out_sum_on_a_doubled_staff": 0,
             "bars_held_out_unread_mark": 0,
@@ -150450,114 +150452,21 @@
           },
           "notes_not_written": {
             "not_a_notehead:clipped_fragment": 7,
-            "owned_by_another_staff": 4,
-            "owner_not_read": 11,
-            "duration_narrowed": 1,
-            "bar_does_not_add_up": 12
+            "owned_by_another_staff": 7,
+            "duration_narrowed": 3,
+            "not_a_rest:rest_clipped_by_crop": 1,
+            "owner_not_read": 1
           },
-          "notes_not_written_total": 35,
+          "notes_not_written_total": 19,
           "bars_held_out_sum": {
-            "bars": 4,
+            "bars": 0,
             "bars_on_a_doubled_staff": 0,
             "of_bars_with_events": 432,
             "bars_with_events_without_a_meter": 0,
             "bars_judged_by_a_carried_meter": 0,
-            "fraction": 0.009259259259259259,
-            "noteheads_and_rests": 12,
-            "held": [
-              {
-                "page": 2,
-                "system": 0,
-                "staff": 1,
-                "cell": 1,
-                "measure": 18,
-                "part": "P2",
-                "events": 3,
-                "noteheads_and_rests": 3,
-                "meter_carried_in_file": false,
-                "want_units": 8,
-                "want_quarters": 2.0,
-                "divisions": 4,
-                "voices": [
-                  {
-                    "units": 6,
-                    "is_the_bar": false
-                  }
-                ],
-                "quarters": [
-                  1.5
-                ]
-              },
-              {
-                "page": 2,
-                "system": 0,
-                "staff": 1,
-                "cell": 3,
-                "measure": 20,
-                "part": "P2",
-                "events": 1,
-                "noteheads_and_rests": 1,
-                "meter_carried_in_file": false,
-                "want_units": 8,
-                "want_quarters": 2.0,
-                "divisions": 4,
-                "voices": [
-                  {
-                    "units": 4,
-                    "is_the_bar": false
-                  }
-                ],
-                "quarters": [
-                  1.0
-                ]
-              },
-              {
-                "page": 2,
-                "system": 0,
-                "staff": 5,
-                "cell": 1,
-                "measure": 18,
-                "part": "P6",
-                "events": 3,
-                "noteheads_and_rests": 3,
-                "meter_carried_in_file": false,
-                "want_units": 8,
-                "want_quarters": 2.0,
-                "divisions": 4,
-                "voices": [
-                  {
-                    "units": 6,
-                    "is_the_bar": false
-                  }
-                ],
-                "quarters": [
-                  1.5
-                ]
-              },
-              {
-                "page": 2,
-                "system": 0,
-                "staff": 6,
-                "cell": 1,
-                "measure": 18,
-                "part": "P7",
-                "events": 5,
-                "noteheads_and_rests": 5,
-                "meter_carried_in_file": false,
-                "want_units": 8,
-                "want_quarters": 2.0,
-                "divisions": 4,
-                "voices": [
-                  {
-                    "units": 24,
-                    "is_the_bar": false
-                  }
-                ],
-                "quarters": [
-                  6.0
-                ]
-              }
-            ]
+            "fraction": 0.0,
+            "noteheads_and_rests": 0,
+            "held": []
           },
           "possibly_unread_mark": {
             "bars": 0,
@@ -150582,9 +150491,9 @@
             },
             "color": "#D00000",
             "unread": 0,
-            "held_out_sum": 4,
+            "held_out_sum": 0,
             "held_out_unread_mark": 0,
-            "written": 4
+            "written": 0
           },
           "meter_returns_not_read": 0,
           "notes_not_written_by_system": {
@@ -150592,11 +150501,11 @@
               "not_a_notehead:clipped_fragment": 3
             },
             "2/0": {
-              "owned_by_another_staff": 4,
-              "owner_not_read": 11,
+              "owned_by_another_staff": 7,
+              "duration_narrowed": 3,
               "not_a_notehead:clipped_fragment": 4,
-              "duration_narrowed": 1,
-              "bar_does_not_add_up": 12
+              "not_a_rest:rest_clipped_by_crop": 1,
+              "owner_not_read": 1
             }
           },
           "arcs_not_written": {
@@ -151078,10 +150987,10 @@
             "events_in_log": 689,
             "noteheads_in_log": 372,
             "rests_in_log": 317,
-            "events_written": 654,
+            "events_written": 670,
             "rests_duplicated_across_voices": 0,
             "notes_doubled_to_condensed_slot": 0,
-            "events_not_written": 35,
+            "events_not_written": 19,
             "balanced": true
           }
         },
@@ -151089,18 +150998,18 @@
       },
       "machine_proxies": {
         "notes_reaching_file": {
-          "n": 341,
+          "n": 354,
           "of": 372,
-          "fraction": 0.9166666666666666
+          "fraction": 0.9516129032258065
         },
         "bars_held_out_sum": {
-          "n": 4,
+          "n": 0,
           "of": 432,
-          "fraction": 0.009259259259259259,
-          "noteheads_and_rests": 12,
+          "fraction": 0.0,
+          "noteheads_and_rests": 0,
           "bars_on_a_doubled_staff": 0,
           "bars_with_events_without_a_meter": 0,
-          "named_in_the_export_report": 4
+          "named_in_the_export_report": 0
         },
         "bars_add_up_control": {
           "exact": 432,
@@ -151153,18 +151062,18 @@
         },
         "notes_doubled_to_condensed_slot": 0,
         "named_drop_reasons": {
-          "duration_narrowed": 1,
+          "duration_narrowed": 3,
           "no_pitch": 0,
           "staff_not_identified": 0,
-          "owned_by_another_staff": 4,
+          "owned_by_another_staff": 7,
           "ink_is_a_whole_rest": 0
         },
         "all_drop_reasons": {
           "not_a_notehead:clipped_fragment": 7,
-          "owned_by_another_staff": 4,
-          "owner_not_read": 11,
-          "duration_narrowed": 1,
-          "bar_does_not_add_up": 12
+          "owned_by_another_staff": 7,
+          "duration_narrowed": 3,
+          "not_a_rest:rest_clipped_by_crop": 1,
+          "owner_not_read": 1
         },
         "balanced": true
       },
@@ -151519,7 +151428,7 @@
           "glyph_box_rows_other_pages": 1226,
           "dropped_no_page_box": 0,
           "apply_ownership": true,
-          "ownership_verdicts": 154,
+          "ownership_verdicts": 219,
           "dropped_owned_by_another_staff": 18,
           "detections_placed": 501,
           "staff_spacing_rows": 18,
@@ -151535,22 +151444,19 @@
         "name": "acceptance",
         "pred": "benchmarks/acceptance/out/beethoven5-engraved/beethoven5-engraved.musicxml",
         "truth": "benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-m1-24.musicxml",
-        "omr_ned": 0.09971945932160163,
-        "omr_ed": 391,
-        "pred_symbols": 1878,
+        "omr_ned": 0.08055908513341804,
+        "omr_ed": 317,
+        "pred_symbols": 1892,
         "truth_symbols": 2043,
         "categories": {
-          "wrong note": 23,
-          "wrong note head": 4,
-          "wrong flag/beam": 2,
           "wrong tie": 6,
           "wrong ornament": 4,
           "wrong lyric": 42,
           "wrong tempo": 1,
-          "wrong direction": 130,
-          "wrong dynamic": 104,
+          "wrong direction": 124,
+          "wrong dynamic": 105,
           "wrong slur": 1,
-          "entire measure insert/delete": 74
+          "entire measure insert/delete": 34
         }
       },
       "lilypond": {
@@ -151659,8 +151565,8 @@
               "detector_glyphs": 372,
               "cv_glyphs": 0,
               "ink_rows": 372,
-              "written": 341,
-              "decided": 445,
+              "written": 354,
+              "decided": 451,
               "abstained": {},
               "produced_by": "evaluate",
               "status": "emitted"
@@ -151685,7 +151591,7 @@
               "detector_glyphs": 317,
               "cv_glyphs": 0,
               "ink_rows": 317,
-              "written": 313,
+              "written": 316,
               "decided": 0,
               "abstained": {},
               "produced_by": "evaluate",
@@ -151841,9 +151747,11 @@
               "balanced": true
             },
             "rest_is_not_a_rest": {
-              "refused": {},
-              "refused_total": 0,
-              "kept": 317,
+              "refused": {
+                "rest_clipped_by_crop": 1
+              },
+              "refused_total": 1,
+              "kept": 316,
               "abstained": 0,
               "abstained_reasons": {},
               "verdicts": 317,
@@ -151927,7 +151835,7 @@
           },
           "inferred_clefs": [],
           "written": {
-            "arc_notes_reachable_at_a_stem": 320,
+            "arc_notes_reachable_at_a_stem": 325,
             "tie_links_marked": 44,
             "tie_links_crossing_a_barline": 44,
             "tie_chains_marked": 35,
@@ -151937,15 +151845,12 @@
             "tie_arcs_naming_an_already_named_pair": 12,
             "measure_rests_read": 215,
             "fermatas": 76,
-            "rests": 98,
-            "notes": 341,
+            "rests": 101,
+            "notes": 354,
             "articulation_marks_on_chord_members": 0,
             "articulations": 0,
             "ties": 44,
-            "bars_held_out_sum": 4,
-            "notes_held_out_sum": 12,
             "dynamics_not_renderable": 75,
-            "unread_bar_marks_written": 4,
             "slurs": 3,
             "parts": 18
           },
@@ -151968,11 +151873,12 @@
           },
           "notes_not_written": {
             "not_a_notehead:clipped_fragment": 7,
-            "owned_by_another_staff": 4,
-            "owner_not_read": 11,
-            "duration_narrowed": 1
+            "owned_by_another_staff": 7,
+            "duration_narrowed": 3,
+            "not_a_rest:rest_clipped_by_crop": 1,
+            "owner_not_read": 1
           },
-          "notes_not_written_total": 23,
+          "notes_not_written_total": 19,
           "arcs_not_written": {
             "tie_spelling_differs": 3,
             "tie_pair_runs_off_the_system": 7,
@@ -152006,13 +151912,13 @@
             },
             "color": "#D00000",
             "unread": 0,
-            "held_out_sum": 4,
-            "written": 4
+            "held_out_sum": 0,
+            "written": 0
           },
           "bars_held_out_sum": {
-            "bars": 4,
+            "bars": 0,
             "bars_on_a_doubled_staff": 0,
-            "noteheads_and_rests": 12
+            "noteheads_and_rests": 0
           },
           "meter_returns_not_read": 0
         }
@@ -152153,18 +152059,18 @@
     "beethoven5-engraved": {
       "status": "ok",
       "notes_reaching_file": {
-        "n": 341,
+        "n": 354,
         "of": 372,
-        "fraction": 0.9166666666666666
+        "fraction": 0.9516129032258065
       },
       "bars_held_out_sum": {
-        "n": 4,
+        "n": 0,
         "of": 432,
-        "fraction": 0.009259259259259259,
-        "noteheads_and_rests": 12,
+        "fraction": 0.0,
+        "noteheads_and_rests": 0,
         "bars_on_a_doubled_staff": 0,
         "bars_with_events_without_a_meter": 0,
-        "named_in_the_export_report": 4
+        "named_in_the_export_report": 0
       },
       "bars_add_up_control": {
         "exact": 432,
@@ -152212,7 +152118,7 @@
         "tacet_bars_not_padded_without_meter": 0
       },
       "reading_pooled_f1": 0.9514563106796117,
-      "omr_ned": 0.09971945932160163
+      "omr_ned": 0.08055908513341804
     }
   }
 }
