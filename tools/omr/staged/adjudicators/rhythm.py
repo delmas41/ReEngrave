@@ -4499,7 +4499,28 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
             # printed change its own digits could not be read at, so "too
             # few bars to check the carry against" is not a generic gap here,
             # it is the same gap that change witnessed.
-            if digit_misread is not None:
+            #
+            # ⚠️⚠️ ROADMAP 2.46: THIS MUST NOT FIRE WHERE `here`'S OWN (too
+            # few to reach `_corroborate`'s floor) BARS ALREADY AGREE WITH
+            # THE CARRY AND NONE DISAGREE. CLAUDE.md §10: "the carry is
+            # WEIGHED by the bars, not gated" -- a witness on `src`, however
+            # many systems back, is evidence about the SOURCE's own next bar,
+            # not a standing veto over every later system regardless of what
+            # its own ink says. Measured on the whole-movement Brahms record
+            # (`benchmarks/omr-meter-digits-2026-09/FINDINGS.md` ROADMAP
+            # 2.46): before this gate, `system/1/1` (`bars_agree: 1,
+            # bars_disagree: 0`) and `system/6/0` (same) were abstained
+            # `meter_change_digits_misread` citing a witness on `system/0/0`
+            # -- 25+ systems back -- despite their OWN one assessable bar
+            # fitting the carry 1-for-1. `clean_here` is exactly the test
+            # `METER_RETURN_NOT_READ_REASON`'s own sibling branch below
+            # already uses for "no vote against the carry" (`not
+            # check.get("bars_disagree")`), tightened to also require at
+            # least one bar that DID agree -- a page with literally nothing
+            # to say falls through to 2.22b's `carried_uncontested`, not to
+            # silence being read as corroboration for THIS branch specifically.
+            clean_here = bool(check.get("bars_agree")) and not check.get("bars_disagree")
+            if digit_misread is not None and not clean_here:
                 # ⚠️ ROADMAP 2.29: THE OCR CANDIDATE RIDES ALONG, STILL NOT
                 # DECIDED. `digit_misread["ocr_candidate"]` (absent, not
                 # `None`, where the OCR reader never read this cell -- see

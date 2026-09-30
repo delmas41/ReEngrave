@@ -331,3 +331,9 @@ out/2.42/**/*.log
 # `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21c; the crop under
 # `out/print/2.45/` IS the durable record and is committed.
 out/2.45/
+
+# ROADMAP 2.46: the two-page GATHER+ADJUDICATE re-gather dump (regenerable
+# by the command in `benchmarks/omr-meter-digits-2026-09/FINDINGS.md`
+# "ROADMAP 2.46") and its log; the crops under `out/print/2.46/` ARE the
+# durable record and are committed.
+out/2.46/
