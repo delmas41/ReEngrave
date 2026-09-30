@@ -613,6 +613,169 @@ NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES = 0.25
 NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.40 — `same_side_second`. DECISIONS 2026-09-30, Sean: *"a second is
+# always on opposite sides of the stem"* (also `docs/engraving-conventions.md`
+# `[L19]`: a chordal second straddles the stem, higher right / lower left).
+# So two SAME-CLASS, OVERLAPPING notehead boxes on the SAME side of the ONE
+# stem they both attach to are never a real chord second -- a real second
+# always straddles -- and are one physical head boxed twice, the mechanism
+# Sean read on Litolff p3 ("it would often print 2 notes either on top of
+# each other or a second apart... a double box on a single note").
+#
+# ⚠️ NOT 2.30 WIDENED IN PLACE, AND THE STEM TEST IS WHY. 2.30's
+# `_same_mark_centres` has no stem at all -- it is a pure geometry gate (dy <
+# 0.25 sp, dx < half a head width) that cannot tell "one mark" from "a real
+# close interval" past that radius, so it stops at 0.25 sp on purpose (its
+# own docstring: 0.25 is the midpoint between one mark and the closest real
+# interval print uses -- a second, at 0.5 sp). This rule reaches further (up
+# to 0.75 sp, the midpoint between a second and a third) ONLY because the
+# stem test supplies the second, independent witness 2.30 does not have: a
+# real second's two heads are on OPPOSITE sides of their shared stem, by the
+# convention above, so "same side" is never a real interval at ANY distance
+# up to a third -- it is always one mark. Manager-checked crops A06 (dy
+# 0.53), A09 (0.32), A10 (0.745), A11 (0.49) are single heads boxed twice
+# read this way; A07 (dy 0.985, a real third) and A14/A16/A17/A18 (real
+# adjacent notes, no box overlap) stand, because 2.30/this rule both require
+# overlapping boxes and A07/A14-18 have none reaching the 0.75 sp gate or
+# lack it.
+#
+# ⚠️ WHERE THE STEM SIDE IS UNKNOWN (no `Q.STEM` row overlaps this glyph's own
+# box), THIS RULE DOES NOT REFUSE. A missing stem is a missing witness, not a
+# same-side one (CLAUDE.md rule 8: a fallback never converts "cannot tell"
+# into an answer) -- `_same_side_second` records the case in
+# `detail["same_side_signal"]` either way, so it is COUNTED rather than
+# silently dropped from the record.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Halfway between a second (0.5 sp) and a third (1.0 sp), in half-steps: 1.5
+#: half-steps = 0.75 staff spaces. Sean set the boundary ("opposite sides of
+#: the stem") rather than measuring it on this population, so this is the
+#: stated midpoint, not a fitted bound.
+NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES = 0.75
+
+#: Reason a refused box carries under this rule -- kept apart from 2.30's
+#: `notehead_is_a_duplicate_box` so a census can tell the two mechanisms
+#: apart (CLAUDE.md §4d: `N must go down`, per named reason).
+NOTEHEAD_SAME_SIDE_REASON = "same_side_second"
+
+
+def _stem_xywh(row) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.STEM`'s own value shape, `[x, y, w, h]` -- `rhythm._xywh`'s exact
+    arithmetic, RESTATED rather than imported: `rhythm.py` already imports
+    THIS module (`from . import notehead_precision as _NP`), so the reverse
+    import would be a cycle -- the same reason `_notehead_box_iou` above
+    restates `family_precision`'s instead of importing it."""
+    v = row.value
+    if not isinstance(v, (list, tuple)) or len(v) < 4:
+        return None
+    return (float(v[0]), float(v[1]), float(v[2]), float(v[3]))
+
+
+def _stem_box_overlap(a, b) -> bool:
+    """`rhythm._boxes_overlap`'s exact test, restated for the same reason."""
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _stem_rows_on(box_xywh, stems) -> List[Any]:
+    """Every `Q.STEM` row (reduced to `(x, y, w, h)`) whose box overlaps
+    `box_xywh` -- `rhythm._stems_on`'s own test, over rows this module
+    already pulled for the cell rather than re-querying."""
+    out = []
+    for row in stems:
+        box = _stem_xywh(row)
+        if box is not None and _stem_box_overlap(box, box_xywh):
+            out.append((row, box))
+    return out
+
+
+def _notehead_same_side_second_refusal(ev: Evidence, this_row,
+                                       spacing_canonical: float,
+                                       detail: Dict[str, Any]
+                                       ) -> Optional[Ruling]:
+    """ROADMAP 2.40: two same-class, overlapping notehead boxes on the SAME
+    side of the ONE stem they both attach to, within
+    `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES`, are one physical mark boxed
+    twice. See the module block comment above for why this reaches further
+    than 2.30's `_notehead_duplicate_box_refusal` and why a missing stem
+    abstains rather than refuses.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+    this_xywh = (float(this_val[1]), float(this_val[2]),
+                float(this_val[3]), float(this_val[4]))
+
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    my_stems = _stem_rows_on(this_xywh, stems)
+    if not my_stems:
+        # ⚠️ COUNTED, NOT REFUSED. The stem side cannot be read at all for
+        # this glyph, so the widening has nothing to stand on (rule 8).
+        detail["same_side_signal"] = {"no_stem_read": True}
+        return None
+
+    this_priority = _notehead_duplicate_priority(this_row)
+    this_cx = this_xywh[0] + this_xywh[2] / 2.0
+    this_cy = this_xywh[1] + this_xywh[3] / 2.0
+
+    better = None
+    better_stem = None
+    checked = 0
+    for subj, row in _cell_notehead_boxes(ev, cell).items():
+        if subj == ev.subject:
+            continue
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(this_val, other_val) <= 0.0:
+            continue        # boxes must share pixels -- an overlap, not a gap
+        other_xywh = (float(other_val[1]), float(other_val[2]),
+                     float(other_val[3]), float(other_val[4]))
+        shared = None
+        for stem_row, stem_box in my_stems:
+            if _stem_box_overlap(stem_box, other_xywh):
+                shared = (stem_row, stem_box)
+                break
+        if shared is None:
+            continue         # no ONE stem joins both heads -- not this rule
+        stem_row, stem_box = shared
+        scx = stem_box[0] + stem_box[2] / 2.0
+        other_cx = other_xywh[0] + other_xywh[2] / 2.0
+        this_side = this_cx >= scx
+        other_side = other_cx >= scx
+        if this_side != other_side:
+            continue          # opposite sides -- a real second, straddling
+        other_cy = other_xywh[1] + other_xywh[3] / 2.0
+        dy_spaces = abs(this_cy - other_cy) / spacing_canonical
+        if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
+            continue
+        checked += 1
+        if _notehead_duplicate_priority(row) > this_priority:
+            better, better_stem = row, stem_row
+            detail["same_side_dy_spaces"] = round(dy_spaces, 3)
+
+    detail.setdefault("same_side_signal", {"candidates_checked": checked})
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        # ⚠️ LITERAL, NOT THE CONSTANT: `brakes.vocabulary_gap` reads the
+        # `reason=` slot's AST (module docstring, "THE TWO REASONS ARE
+        # RETURNED AS LITERALS"); a name reference makes the whole MODULE
+        # read UNRESOLVED.
+        return Ruling(value=True, reason="same_side_second",
+                      used=(this_row.id, better.id, better_stem.id),
+                      detail=detail)
+    return None
+
+
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
     SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
@@ -1165,17 +1328,22 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
-                  Q.SYSTEM_STAFF_COUNT),
+                  Q.SYSTEM_STAFF_COUNT,
+                  # ⚠️ ROADMAP 2.40: which side of a shared stem two
+                  # overlapping heads stand on.
+                  Q.STEM),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT),
+          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
+          Q.STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
                                      "notehead_is_a_duplicate_box",
+                                     NOTEHEAD_SAME_SIDE_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      "notehead",
@@ -1254,6 +1422,17 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
        CONFIRMED, and not built — see the module docstring's question to
        Sean.
+    2d. `same_side_second` (ROADMAP 2.40, SHIPS) — DECISIONS 2026-09-30, Sean:
+       "a second is always on opposite sides of the stem." Widens 2.30 for
+       this ONE case only: two same-class, overlapping boxes that share ONE
+       `Q.STEM` row and stand on the SAME side of it, within
+       `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` (0.75 sp, the midpoint between
+       a second and a third), are one mark boxed twice — a real second always
+       straddles, so "same side" is never a real interval here. Where the
+       stem side cannot be read (no `Q.STEM` row meets this glyph), THE RULE
+       DOES NOT REFUSE — it records the case in `detail["same_side_signal"]`
+       and abstains from the widening alone (rule 8), never converting a
+       missing witness into an answer.
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1344,6 +1523,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
     if dup is not None:
         return dup
+    # ⚠️ ROADMAP 2.40. AFTER 2.30's narrower same-mark test (which already
+    # caught the dy < 0.25 sp case above and returned) and BEFORE the meter-
+    # digit / ownership rules below, for the same reason 2.30 runs there: this
+    # only asks whether the ink is the SAME mark, never what it means.
+    same_side = _notehead_same_side_second_refusal(ev, box_row, spacing, detail)
+    if same_side is not None:
+        return same_side
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is

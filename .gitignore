@@ -288,3 +288,12 @@ out/print/beam-stem-ink-2.38/*.log
 # under `out/print/2.39/` ARE the durable record and are committed.
 out/2.39/*.json
 out/2.39/*.log
+
+# ROADMAP 2.40: the one-page GATHER(+ADJUDICATE[+EVALUATE]) dumps used for
+# the A/B proof and the missed-dyad extraction, regenerable by the commands
+# in `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` "ROADMAP 2.40";
+# the crops under `benchmarks/omr-notehead-precision-2026-09/out/print/
+# missed-dyads-2.40/` and `.../same-side-second-survey-2.40/` ARE the
+# durable record and are committed.
+out/2.40/*.json
+out/2.40/*.log

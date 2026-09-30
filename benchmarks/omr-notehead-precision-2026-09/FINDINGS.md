@@ -251,3 +251,114 @@ rather than guessed.
 - `out/dyads-pairs-a.json`, `out/dyads-pairs-a-extended.json`,
   `out/dyads-chord-pairs.json`, `out/dyads-pop-b.json` -- the full
   record-level extracts behind every count in this section.
+
+---
+
+## ROADMAP 2.40 — same-side second (widened duplicate-box rule) + missed-dyad measurement
+
+DECISIONS 2026-09-30, Sean: *"a second is always on opposite sides of the
+stem."* Built `notehead_precision._notehead_same_side_second_refusal`
+(reason `same_side_second`): two same-class, OVERLAPPING notehead boxes
+that share ONE `Q.STEM` row and stand on the SAME side of it, within 0.75
+staff spaces (the stated midpoint between a second, 0.5 sp, and a third,
+1.0 sp), are one physical head boxed twice. Runs immediately after 2.30's
+narrower same-mark test (dy < 0.25 sp), so the two mechanisms are disjoint
+by construction and counted separately. Where no `Q.STEM` row meets the
+glyph the rule DOES NOT refuse -- it records `detail["same_side_signal"] =
+{"no_stem_read": True}` on the final verdict so the case is counted
+(CLAUDE.md rule 8), never silently dropped.
+
+### Manager finding addressed before completing the build
+
+Mid-build, a manager review of `glyph/3/0/0/2/4` + `glyph/3/0/0/2/9`
+(Litolff p3) found a REAL printed third whose over-tall detector boxes
+overlap (staff spacing on that staff ~15.5 page px, box height ~22 px,
+overlap ~7 px) and whose rounded pitches (`restate_pitch`) come out F6/E6 --
+a SECOND -- even though the print shows two distinct heads a third apart.
+This is exactly the population the 0.75 sp gate exists to protect: dy on
+this pair is ~0.9 sp, past the gate, so the rule does not fire on it.
+Added `test_a_real_third_with_tall_overlapping_boxes_stands` (mirroring the
+measured geometry) to `test_staged_notehead_same_side_second.py` as a
+permanent regression control; it passes on the built rule.
+
+**Follow-up measurement (report only, no fix built):** surveyed every
+same-class, same-stem, same-side pair on Litolff p3 whose two `Q.PITCH`
+verdicts are exactly a diatonic SECOND apart (`probe/2.40/same_side_second_
+survey.py`) -- by Sean's convention this is never a real printed interval,
+so each such pair is either a duplicate box or a mis-rounded third.
+**18 such pairs** on the page. Cropped 6 (`out/print/same-side-second-
+survey-2.40/`, `S1`-`S6`) plus the manager's own reported pair (`S1`) and
+judged each against the print:
+
+| tag | cell | verdict | judged |
+|---|---|---|---|
+| S1 | `cell/3/0/0/2` | both stand (manager's pair) | REAL THIRD -- two distinct ink blobs, correctly NOT refused |
+| S2 | `cell/3/0/9/0` | 1 stands, 2 refused `same_side_second` | ONE real mark, three overlapping boxes -- correctly refused |
+| S3 | `cell/3/1/2/9` | 1 stands, 1 refused | ONE real mark (elongated bass-clef ink) -- correctly refused |
+| S4 | `cell/3/1/4/12` | both stand (neither refused) | AMBIGUOUS -- only one ink blob is visible under both boxes in this crop, yet the pair fell outside the rule's gate (same stem/side not established, or dy ≥0.75); flagged as a possible residual false-negative, NOT investigated further |
+| S5 | `cell/3/1/7/17` | 2 refused | ONE real mark -- correctly refused |
+| S6 | `cell/3/0/8/7` | 1 stands, 1 refused | ONE real mark straddling a staff line -- correctly refused |
+
+**Of the 6 sampled: 1 real third correctly left standing, 4 real duplicates
+correctly refused, 1 ambiguous case where the rule did NOT refuse a pair
+that looks in the crop like one mark** (ROADMAP note for a future lane,
+not built here — the population is `same_side_second_survey.json`, re-run
+`probe/2.40/same_side_second_survey.py` against a fresh record to re-derive
+it). No case among the 6 shows the rule wrongly refusing a real interval.
+
+### Part 2 — missed-dyad measurement (no code)
+
+Compared the reference encoding (`library/reference/beethoven/symphony-5/
+beethoven--symphony-5--mvt1--gradus.mxl`, 18 parts) against our export
+(`benchmarks/acceptance/out/beethoven5-litolff/beethoven5-litolff.musicxml`,
+12 parts) for bars 49-82, condensed wind families only (Litolff prints two
+players per staff for Flute/Oboe/Clarinet/Bassoon/Horn/Trumpet; our export
+holds one part per family, so a reference pair sounding two DIFFERENT
+pitches at one onset is the condensed staff's own chord event).
+`probe/2.40/dyad_measure.py`: **204 of 204 family-bars comparable** (both
+sides hold at least one note), **49 onsets** where the reference shows two
+different pitches and our export shows at most one -- filtered to the
+**13** where our export shows exactly one note (not zero, which is more
+likely a wholly separate missing-passage fault than a notehead-box one).
+
+Picked 8 (one per family/bar spread across the range), extracted the
+GATHER+ADJUDICATE state for each cell from a fresh `--through evaluate` run
+(`out/2.40/litolff-p3-evaluate.json`, `--weights auto`), cropped at 600 dpi
+with staff lines and every notehead-class box in the cell drawn (green =
+stands, red = refused) (`out/print/missed-dyads-2.40/`, `probe/2.40/
+extract_candidates.py` + `crop_dyad_candidates.py`), and judged each
+against the print:
+
+| tag | family / bar | notehead boxes in cell | judged |
+|---|---|---|---|
+| M01 | Oboe 49 | 1 | Only one head visible in the ink; the second is genuinely absent -- **no box at all** |
+| M02 | Oboe 53 | 4 (2 stand, 1 refused `same_side_second`, 1 `clipped_fragment`) | **Both real heads are correctly boxed and kept** (a tied note above the staff + a note on the top line); the extra duplicate is correctly refused. The bar's export still writes only ONE pitch -- **lost downstream of ADJUDICATE**, not a notehead-box fault |
+| M03 | Clarinet 49 | 3 (all stand) | Two real, closely-stacked heads visible and both kept -- **lost downstream**, boxes are fine |
+| M04 | Clarinet 54 | 0 | A tied note's ink is visible (ties curve in/out) but the detector drew NO notehead box in this cell at all -- **no box, for either head** |
+| M05 | Bassoon 49 | 2 (different classes, both stand) | Two real, distinct heads (Whole-on-line + Half-in-space) both correctly kept -- **lost downstream** |
+| M06 | Bassoon 67 | 1 | Only one head visible in the (possibly too-narrow) crop window -- **inconclusive**, likely a box the crop cuts off or a genuine miss; not resolved |
+| M07 | Horn 49 | 2 (different classes, both stand) | Two real heads side by side, both correctly kept -- **lost downstream** |
+| M08 | Trumpet 51 | 5 (3 stand, 1 refused `same_side_second`, +1 unrelated stands) | Two ordinary single notes plus one genuinely doubled box correctly refused -- **not a missed dyad at all**, a correctly-handled duplicate |
+
+**Of the 8: 2 clear "real missed dyad, second head never boxed" (M01, M04);
+1 inconclusive (M06); 5 show BOTH real heads correctly boxed and
+adjudicated, with the loss happening at EXPORT's chord/voice grouping, not
+at notehead precision** -- a different mechanism than this benchmark's own
+name, worth a roadmap item of its own (grouping two same-onset, different-
+pitch, different-class notes into one chord event) rather than a notehead
+rule. Not built here (Part 2 is measurement only, per the brief).
+
+### Files
+
+- `tools/omr/staged/adjudicators/notehead_precision.py` --
+  `_notehead_same_side_second_refusal`, `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_
+  SPACES = 0.75`, reason `same_side_second`.
+- `tools/omr/tests/test_staged_notehead_same_side_second.py` -- RED-first,
+  6 tests (refusal, the 0.75 sp control, non-overlap control, no-stem
+  control + count, the manager's real-third control, reason-name
+  isolation).
+- `docs/engraving-conventions.md` `[C92]` -- the convention, cited from
+  DECISIONS 2026-09-30.
+- `probe/2.40/*.py`, `out/dyad-candidates-2.40.json`, `out/same-side-
+  second-survey-2.40.json`, `out/print/missed-dyads-2.40/`, `out/print/
+  same-side-second-survey-2.40/`.

@@ -1,0 +1,289 @@
+[
+ {
+  "tag": "M01",
+  "file": "M01-Oboe-bar49.png",
+  "family": "Oboe",
+  "bar": 49,
+  "n_notehead_boxes": 1,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/1/0/10",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     509.1625,
+     576.3125,
+     528.3775,
+     595.0550000000001
+    ],
+    "refused": false,
+    "reason": "notehead"
+   }
+  ]
+ },
+ {
+  "tag": "M02",
+  "file": "M02-Oboe-bar53.png",
+  "family": "Oboe",
+  "bar": 53,
+  "n_notehead_boxes": 4,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/1/4/6",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     1188.5775,
+     712.865,
+     1207.4775,
+     722.0
+    ],
+    "refused": true,
+    "reason": "clipped_fragment"
+   },
+   {
+    "subject": "glyph/3/0/1/4/10",
+    "cls": "noteheadHalfOnLine",
+    "box_page": [
+     1192.9875,
+     597.575,
+     1214.7225,
+     610.8050000000001
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/1/4/12",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     1188.2625,
+     581.6675,
+     1212.36,
+     597.575
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/1/4/13",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     1188.735,
+     574.895,
+     1207.4775,
+     590.645
+    ],
+    "refused": true,
+    "reason": "same_side_second"
+   }
+  ]
+ },
+ {
+  "tag": "M03",
+  "file": "M03-Clarinet-bar49.png",
+  "family": "Clarinet",
+  "bar": 49,
+  "n_notehead_boxes": 3,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/2/0/9",
+    "cls": "noteheadHalfOnLine",
+    "box_page": [
+     510.895,
+     759.2325,
+     535.15,
+     778.92
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/2/0/10",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     512.9425,
+     774.6675,
+     535.6225,
+     799.08
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/2/0/11",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     510.58000000000004,
+     759.075,
+     534.9925000000001,
+     778.92
+    ],
+    "refused": false,
+    "reason": "notehead"
+   }
+  ]
+ },
+ {
+  "tag": "M04",
+  "file": "M04-Clarinet-bar54.png",
+  "family": "Clarinet",
+  "bar": 54,
+  "n_notehead_boxes": 0,
+  "glyphs": []
+ },
+ {
+  "tag": "M05",
+  "file": "M05-Bassoon-bar49.png",
+  "family": "Bassoon",
+  "bar": 49,
+  "n_notehead_boxes": 2,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/3/0/9",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     514.2025,
+     901.1225,
+     538.9300000000001,
+     926.165
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/3/0/14",
+    "cls": "noteheadWholeOnLine",
+    "box_page": [
+     480.97,
+     871.5125,
+     524.5975,
+     885.3725
+    ],
+    "refused": false,
+    "reason": "notehead"
+   }
+  ]
+ },
+ {
+  "tag": "M06",
+  "file": "M06-Bassoon-bar67.png",
+  "family": "Bassoon",
+  "bar": 67,
+  "n_notehead_boxes": 1,
+  "glyphs": [
+   {
+    "subject": "glyph/3/1/2/2/3",
+    "cls": "noteheadHalfInSpace",
+    "box_page": [
+     785.265,
+     2626.08,
+     809.135,
+     2661.575
+    ],
+    "refused": false,
+    "reason": "notehead"
+   }
+  ]
+ },
+ {
+  "tag": "M07",
+  "file": "M07-Horn-bar49.png",
+  "family": "Horn",
+  "bar": 49,
+  "n_notehead_boxes": 2,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/4/0/5",
+    "cls": "noteheadBlackInSpace",
+    "box_page": [
+     520.6,
+     1026.16,
+     538.6800000000001,
+     1041.04
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/4/0/9",
+    "cls": "noteheadHalfOnLine",
+    "box_page": [
+     491.0,
+     1027.28,
+     515.0,
+     1050.0
+    ],
+    "refused": false,
+    "reason": "notehead"
+   }
+  ]
+ },
+ {
+  "tag": "M08",
+  "file": "M08-Trumpet-bar51.png",
+  "family": "Trumpet",
+  "bar": 51,
+  "n_notehead_boxes": 5,
+  "glyphs": [
+   {
+    "subject": "glyph/3/0/5/2/0",
+    "cls": "noteheadBlackOnLine",
+    "box_page": [
+     951.4825000000001,
+     1223.1425,
+     976.525,
+     1243.46
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/5/2/2",
+    "cls": "noteheadBlackOnLine",
+    "box_page": [
+     919.9825,
+     1224.56,
+     943.135,
+     1245.665
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/5/2/3",
+    "cls": "noteheadBlackInSpace",
+    "box_page": [
+     951.01,
+     1169.9075,
+     972.4300000000001,
+     1188.65
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/5/2/7",
+    "cls": "noteheadBlackInSpace",
+    "box_page": [
+     921.715,
+     1159.67,
+     943.765,
+     1190.225
+    ],
+    "refused": false,
+    "reason": "notehead"
+   },
+   {
+    "subject": "glyph/3/0/5/2/8",
+    "cls": "noteheadBlackInSpace",
+    "box_page": [
+     921.8725,
+     1169.5925,
+     943.2925,
+     1189.91
+    ],
+    "refused": true,
+    "reason": "same_side_second"
+   }
+  ]
+ }
+]
