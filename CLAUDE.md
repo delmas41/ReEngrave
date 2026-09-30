@@ -546,7 +546,11 @@ Each of these has cost at least one lane and is still true.
   from its staff has ledger lines TOWARD its own staff and none toward the
   other. Nearness is only a hint and never overrides them; where a ledger
   reading disagrees with the print, the RUNG FINDING is wrong, not the rule;
-  a far note with no rungs found either way is a reading gap — abstain. A
+  **there is no such thing as a far note with no ledger line** (Sean,
+  2026-09-29), so "no rungs found either way" is always OUR failure — a
+  missed rung, a misread head, or a note that is not far: abstain and count
+  it, and a clean empty reading at a step the owner would need refutes that
+  owner. A
   hairpin sits UNDER its staff, so a note between a staff and the hairpin
   beneath it belongs to that staff.
 - **A cell index restarts per system**; key a bar on (page, system, cell).
