@@ -1018,7 +1018,7 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     detail["duplicate_of"] = best_row.id
     detail["stacked_head_this_ink"] = (fdetail or {}).get("ink")
     detail["stacked_head_other_ink"] = best_ink
-    return Ruling(value=True, reason=STACKED_HEAD_REASON,
+    return Ruling(value=True, reason="stacked_head_duplicate",
                   used=(this_row.id, fit.id, best_row.id), detail=detail)
 
 
@@ -1662,11 +1662,6 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
                   Q.SYSTEM_STAFF_COUNT,
-                  # ⚠️ ROADMAP 2.40: which side of a shared stem two
-                  # overlapping heads stand on, and which of the two the
-                  # ink (not detector score) supports -- see
-                  # `_notehead_ink_net`'s own docstring (manager review, S6).
-                  Q.STEM, Q.NOTEHEAD_INK,
                   # ⚠️ ROADMAP 2.39b: `_belongs_to_a_nearer_staff`'s ladder
                   # x-window re-centres on GATHER's own matched-window
                   # search where one exists (`Q.GLYPH_BOX`'s own detector
@@ -1674,11 +1669,16 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   Q.NOTEHEAD_RECENTRE,
                   # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
                   # stacked group -- see `_stacked_head_duplicate_refusal`'s
-                  # own docstring. Supersedes 2.40's pair-wise use of
-                  # `Q.STEM`/`Q.NOTEHEAD_INK` above for the KEEP decision
-                  # (both quantities stay declared: `_notehead_same_side_
-                  # second_refusal` itself is retained, unwired, for its own
-                  # tests).
+                  # own docstring. SUPERSEDES 2.40's pair-wise use of
+                  # `Q.STEM`/`Q.NOTEHEAD_INK` here -- both are DROPPED from
+                  # this decision's own declaration (2.40's function that
+                  # read them directly is retained but no longer CALLED from
+                  # this body, so the two would otherwise be dead
+                  # declarations -- `staged.inventory`'s own "inert
+                  # declaration" test, corrected rather than excused). 2.40's
+                  # own unit tests still exercise `_notehead_same_side_
+                  # second_refusal` directly, with its own `Evidence`, which
+                  # declares them itself.
                   Q.STACKED_HEAD_FIT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
@@ -1686,7 +1686,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.STEM, Q.NOTEHEAD_INK, Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT),
+          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
@@ -1771,23 +1771,27 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
        CONFIRMED, and not built — see the module docstring's question to
        Sean.
-    2d. `same_side_second` (ROADMAP 2.40, SHIPS) — DECISIONS 2026-09-30, Sean:
-       "a second is always on opposite sides of the stem." Widens 2.30 for
-       this ONE case only: two same-class, overlapping boxes that share ONE
-       `Q.STEM` row and stand on the SAME side of it, within
-       `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` (0.75 sp, the midpoint between
-       a second and a third), are one mark boxed twice — a real second always
-       straddles, so "same side" is never a real interval here. Where the
-       stem side cannot be read (no `Q.STEM` row meets this glyph), THE RULE
-       DOES NOT REFUSE — it records the case in `detail["same_side_signal"]`
-       and abstains from the widening alone (rule 8), never converting a
-       missing witness into an answer. **The KEEP CHOICE reads INK, never
-       detector score** (manager review, S6 `cell/3/0/8/7`: the score-based
-       first build kept an empty box over the real head): `Q.NOTEHEAD_INK`'s
-       staff-line-erased fill (`ink_net.best`) decides which of the pair
-       survives; where either box carries no ink witness, NEITHER is
-       refused (rule 8) and the pair is counted (`same_side_signal.
-       no_ink_witness`).
+    2d. `same_side_second` (ROADMAP 2.40, SUPERSEDED BY 2.42, NOT CALLED) —
+       DECISIONS 2026-09-30, Sean: "a second is always on opposite sides of
+       the stem." Widened 2.30 for the ONE case of two same-class,
+       overlapping boxes sharing a stem's SAME side. Its function
+       (`_notehead_same_side_second_refusal`) is RETAINED, unwired, for its
+       own print-checked regression tests; see 2e below for what replaced it
+       in production and why (`cell/3/1/2/9`'s four-box group has no
+       consistent PAIR-WISE answer).
+    2e. `stacked_head_duplicate` (ROADMAP 2.42, SHIPS) — how many heads does
+       a whole GROUP of overlapping same-stem boxes hold, decided ONCE in
+       GATHER (`gather.gather_stacked_head_fit`, `Q.STACKED_HEAD_FIT` — a
+       bounded 1/2/3-head ink fit over the group's own standard-head-box
+       template, the fewest count that explains the ink with a stated
+       margin) and read here, never re-measured. Where more than one box in
+       the group maps to the SAME fitted head, the one with MORE ink
+       (`Q.STACKED_HEAD_FIT.detail["ink"]`, `notehead_ink_under`'s own
+       staff-line-erased fill — 2.40's ink-not-score keep rule, ported) is
+       kept and the rest refused; where either box in a contested slot
+       carries no ink witness, NEITHER is refused (rule 8). A slot held by
+       only one box is untouched. See `_stacked_head_duplicate_refusal`'s
+       own docstring and the module's 2.42 section comment.
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1985,7 +1989,7 @@ def adjudicate_stacked_head_position(ev: Evidence) -> Ruling:
         return Ruling.abstain(ABSTAIN.STACKED_HEAD_REFUSED,
                               refused_reason=refused.reason)
     k, slot, pos_float, margin = val
-    return Ruling(value=float(pos_float), reason=STACKED_HEAD_POSITION_REASON,
+    return Ruling(value=float(pos_float), reason="stacked_head_fit",
                   used=(fit.id,) + ((refused.id,) if refused is not None
                                     else ()),
                   detail={"k": k, "slot": slot, "margin": margin})
