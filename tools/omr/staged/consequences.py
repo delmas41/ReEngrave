@@ -46,23 +46,45 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-#: ROADMAP 2.44. A far head's position from `Q.LEDGER_PRINTED_POSITION`
-#: (read from the ACTUAL printed ledgers, CLAUDE.md §10 — a note's position
-#: outside the staff IS the ledger count) is FORCED where it exists — Sean's
-#: own convention, not a best guess among readings — so the substitution
-#: belongs in EVALUATE, not INFER: EVALUATE never chooses between two
-#: answers that both fit, and there is only ever one printed ledger geometry
-#: a head can sit in. But a ledger reading that disagrees with the staff's
-#: own extrapolated rounding by MORE than one step is not a second opinion
-#: to average against the first — it is a sign one of the two readers
-#: misread the page (a merged plate's ink, a mis-centred head, a ledger
-#: found on the wrong side) — so the substitution itself abstains there
-#: (CLAUDE.md rule 8: a fallback never converts "cannot tell" into an
-#: answer) and the extrapolated position stands, UNCHANGED, exactly as
-#: before this rule existed. The conflict is counted in the pitch verdict's
-#: own `reason` (`position_and_clef_ledger_conflict`), never silently
-#: dropped — `trace --subject`/`--family note` surfaces it.
-LEDGER_PRINTED_POSITION_MAX_DISAGREEMENT_STEPS = 1
+#: ⚠️⚠️ ROADMAP 2.44, REDESIGNED 2026-09-30 (Sean, replacing the first
+#: "substitute within one step" rule after the manager's review found it
+#: wrong on two heads): *"Start with geometry since it gets most of them
+#: correct, then measure back down to the staff through the ledger lines
+#: as a check; the geometry will be close and the ledger lines can rule
+#: out the confusion."*
+#:
+#: GEOMETRY (the staff's own extrapolated rounding) STANDS BY DEFAULT. The
+#: raw `Q.NOTEHEAD_STAFF_POSITION` is confident everywhere EXCEPT near its
+#: own rounding boundary (`.5`, where a one-pixel measurement error flips
+#: the rounded integer) — measured over every far head on both acceptance
+#: pages (`benchmarks/omr-ledger-extrapolation-2026-09/FINDINGS.md` §10):
+#: Sean's own wrong head (`glyph/3/0/0/2/9`, confirmed D6, geometry wrote
+#: E6) sits **0.06** from the boundary; the two heads the first version of
+#: this rule broke (`glyph/3/0/0/4/8`, `/5/12`, confirmed C6, geometry
+#: already right) sit **0.44** / **0.48** — confident, nowhere near it.
+#: `0.15` sits in the gap between those two populations (22.7%/16.7% of
+#: Litolff/Brahms far heads fall within 0.1 of the boundary, 29.4%/22.3%
+#: within 0.15) and comfortably separates the one confirmed miss from the
+#: two confirmed hits.
+#:
+#: ONLY inside that margin does the ledger reading get a say, and even
+#: then it may choose ONLY between the TWO slots the boundary sits
+#: between (`floor(raw)`, `floor(raw) + 1`) — never move a head further
+#: than its own immediate neighbour, because a ledger reading is a
+#: SECOND, independent ruler for exactly this one decision, not a licence
+#: to re-place the head anywhere its own scan happens to land. Where the
+#: ledger reading is absent, or names neither neighbour (a Litolff
+#: merging-plate scan artefact, same shape the first version's own
+#: conflict case hit), geometry stands and the case is COUNTED in the
+#: pitch verdict's own `reason` rather than dropped.
+LEDGER_PRINTED_POSITION_BOUNDARY_MARGIN = 0.15
+
+
+def _boundary_distance(raw: float) -> float:
+    """0 AT the rounding boundary (`.5`, maximally ambiguous), 0.5 at an
+    exact integer (maximally confident) -- Sean's own ruler, restated so
+    every call site names it once."""
+    return 0.5 - abs(raw - round(raw))
 
 
 @rule(consequence=Consequence.RESTATE_PITCH,
@@ -71,11 +93,13 @@ LEDGER_PRINTED_POSITION_MAX_DISAGREEMENT_STEPS = 1
             "NOT already carry a pitch. Adds no notehead, deletes none, and "
             "re-reads no geometry. A staff whose clef ABSTAINED produces no "
             "pitches at all -- it does not fall back to treble. ROADMAP "
-            "2.44: where a head also carries a `Q.LEDGER_PRINTED_POSITION` "
-            "row, that MEASURED position is substituted for the staff's own "
-            "extrapolated rounding -- never a second vote, and never where "
-            "the two disagree by more than one step, which the rule "
-            "abstains from rather than averages.")
+            "2.44: geometry (the extrapolated rounding) stands by default; "
+            "only within 0.15 of its own rounding boundary does a "
+            "`Q.LEDGER_PRINTED_POSITION` row get a say, and even then it "
+            "may choose only between the two neighbouring slots the "
+            "boundary sits between -- never move a head further, and "
+            "never where the reading is absent or names neither "
+            "neighbour, which the rule counts rather than drops.")
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -104,13 +128,14 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     spacing drifts ~4 px by the third ledger) -- which is exactly what
     ROADMAP 2.44, below, fixes.
 
-    ⚠️ ROADMAP 2.44's substitution is a SUBSTITUTION, never a second vote.
-    `Q.NOTEHEAD_STAFF_POSITION` stays the row every pitch is keyed to
-    (`row.subject`, `row.id` in the basis) and the staff's own spacing stays
-    what a head ON or just outside the staff is read from -- the printed-
-    ledger row only ever exists at all for a head far enough out to need
-    one, and even there it REPLACES the rounded integer used below, not the
-    row itself.
+    ⚠️ ROADMAP 2.44, REDESIGNED (Sean, 2026-09-30): geometry FIRST, the
+    ledger reading only as a NEAR-BOUNDARY TIEBREAK between the two slots
+    the raw position already sits between -- see `_boundary_distance`'s own
+    note for the measurement that set the 0.15 margin. `Q.NOTEHEAD_STAFF_
+    POSITION` stays the row every pitch is keyed to (`row.subject`, `row.id`
+    in the basis); the printed-ledger row only ever exists for a head far
+    enough out to need one, and even inside the margin it can only pick
+    the OTHER of the two integers the boundary sits between, never a third.
     """
     from ..pitch_resolver import _pitch_from_position
 
@@ -137,30 +162,46 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # which is how this was found: the whole arm died on
             # `glyph/2/1/9/6/2`.
             continue
-        pos = int(round(float(row.value)))
+        raw = float(row.value)
+        pos = int(round(raw))
         reason = "position_and_clef"
         basis_ids: Tuple[Any, ...] = (row.id, clef.id)
-        # ⚠️ ROADMAP 2.44. `Q.LEDGER_PRINTED_POSITION` is filed on the SAME
-        # glyph subject `row.subject` names (`gather.gather_ledger_printed_
-        # position`'s own subject construction), never a second lookup keyed
-        # differently -- `log.rows` with no `scope` reads exactly this
-        # subject's own rows, which is correct here: the ledger reader never
-        # files on a descendant.
-        ledger_rows = log.rows(Q.LEDGER_PRINTED_POSITION, row.subject)
-        if ledger_rows:
-            ledger_pos = int(round(float(ledger_rows[-1].value)))
-            if abs(ledger_pos - pos) <= LEDGER_PRINTED_POSITION_MAX_DISAGREEMENT_STEPS:
-                pos = ledger_pos
-                reason = "position_and_clef_ledger"
-                basis_ids = (row.id, clef.id, ledger_rows[-1].id)
+        # ⚠️ ROADMAP 2.44 (Sean's redesign). Geometry stands UNLESS the raw
+        # position sits within the margin of its own rounding boundary --
+        # `_boundary_distance`'s own note has the measurement. Outside the
+        # margin the ledger reading is never even consulted: it has no say
+        # over a confident geometric read, by design.
+        if _boundary_distance(raw) <= LEDGER_PRINTED_POSITION_BOUNDARY_MARGIN:
+            # ⚠️ `Q.LEDGER_PRINTED_POSITION` is filed on the SAME glyph
+            # subject `row.subject` names (`gather.gather_ledger_printed_
+            # position`'s own subject construction), never a second lookup
+            # keyed differently -- `log.rows` with no `scope` reads exactly
+            # this subject's own rows, which is correct here: the ledger
+            # reader never files on a descendant.
+            ledger_rows = log.rows(Q.LEDGER_PRINTED_POSITION, row.subject)
+            neighbours = (int(raw // 1), int(raw // 1) + 1)   # floor, ceil
+            if ledger_rows:
+                ledger_pos = int(round(float(ledger_rows[-1].value)))
+                if ledger_pos in neighbours and ledger_pos != pos:
+                    # ⚠️ NEVER MOVE A HEAD FURTHER THAN ITS OWN IMMEDIATE
+                    # NEIGHBOUR -- the ledger reading is a TIEBREAK between
+                    # the two slots the boundary already sits between, not
+                    # a licence to re-place the head anywhere its own scan
+                    # lands (CLAUDE.md rule 6: connect, never guess).
+                    pos = ledger_pos
+                    reason = "position_and_clef_ledger"
+                    basis_ids = (row.id, clef.id, ledger_rows[-1].id)
+                else:
+                    # The ledger reading names neither neighbour (or
+                    # agrees with geometry already) -- geometry stands,
+                    # COUNTED in the reason rather than dropped.
+                    reason = "position_and_clef_ledger_conflict"
+                    basis_ids = (row.id, clef.id, ledger_rows[-1].id)
             else:
-                # CLAUDE.md rule 8: the two readings disagree by more than
-                # the bound this rule declares, which is a sign one of them
-                # misread the page -- never averaged, never guessed between.
-                # The staff's own extrapolated `pos` stands, unchanged, and
-                # the conflict is COUNTED in the reason rather than dropped.
-                reason = "position_and_clef_ledger_conflict"
-                basis_ids = (row.id, clef.id, ledger_rows[-1].id)
+                # Near the boundary with no ledger reading to consult at
+                # all -- geometry stands, and this too is a counted case
+                # (CLAUDE.md rule 8: absence is not evidence either way).
+                reason = "position_and_clef_ledger_absent"
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The

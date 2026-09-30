@@ -2065,6 +2065,70 @@ def gather_ledger_printed_position(log: Log, cells: Sequence[Any],
                 log, g, d, line_top, line_bottom, spacing, img, thickness)
 
 
+#: ⚠️⚠️ MANAGER REVIEW 2026-09-30 (`5f12cd24`): two real Litolff p3 heads
+#: (`glyph/3/0/0/4/8`, `glyph/3/0/0/5/12`) were measured wrong -- C6 in
+#: print, written B5 -- because the ON/BETWEEN/BEYOND bracket was tested
+#: against the STANDARD HEAD BOX (`_standard_head_box`, centred on the
+#: detector's own box, which sits ~7 px low on these two heads) rather
+#: than the head's own MEASURED ink. A ledger that truly runs through the
+#: head's own ink reads as "beyond" it when the assumed box is shifted
+#: enough to move the middle-third test past the ledger. Fixed below:
+#: `_true_head_ink_y_span` measures the actual ink rows in the head's own
+#: column, ledger rows excluded, and THAT extent -- not the standard box --
+#: decides ON/BETWEEN/BEYOND.
+LEDGER_PRINTED_POSITION_INK_SEARCH_MARGIN_SPACES = 1.3
+#: A row counts as the head's own ink at or above this fraction -- lower
+#: than `LEDGER_RUNG_INK_DENSE` (0.55) because a hollow ring's own rim is
+#: thinner than a filled head across the SAME x-span this tests (the head's
+#: standard width, not just the rim's own thickness).
+LEDGER_PRINTED_POSITION_INK_ROW_DENSE = 0.35
+#: A measured ink extent taller than this many staff spaces is not one
+#: head's own ink -- it is fused with a neighbour (a Litolff MERGING-plate
+#: stack, CLAUDE.md §10) and the bracket cannot be read from it.
+LEDGER_PRINTED_POSITION_MAX_HEIGHT_SPACES = 2.2
+
+
+def _true_head_ink_y_span(ink: Any, x0: float, x1: float, y_center: float,
+                          spacing: float, rung_ys: Sequence[float],
+                          rung_half_h: float, W: int, H: int
+                          ) -> Optional[Tuple[float, float]]:
+    """The head's own TRUE ink row-extent in `[x0, x1)` -- a bounded window
+    around the detector's own `y_center` (wide enough to absorb a
+    mis-centred detector box, never so wide it reaches a neighbour's ink by
+    construction alone), with every row within `rung_half_h` of an already-
+    FOUND ledger (`rung_ys`) excluded before the extent is taken -- a
+    ledger's own ink must never extend or replace the head's measured
+    extent, and a ring broken by a ledger through its hollow centre (the
+    `4/8` case) is exactly what excluding those rows, then taking the
+    overall min/max of what is left, is for: the gap does not have to be
+    contiguous.
+
+    Returns `None` -- never a guessed extent -- where nothing in the window
+    clears the density floor at all.
+    """
+    margin = LEDGER_PRINTED_POSITION_INK_SEARCH_MARGIN_SPACES * spacing
+    iy0 = max(0, int(round(y_center - margin)))
+    iy1 = min(H, int(round(y_center + margin)))
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    if iy1 <= iy0 or ix1 <= ix0:
+        return None
+    region = ink[iy0:iy1, ix0:ix1]
+    if region.size == 0:
+        return None
+    row_frac = region.mean(axis=1)
+    excluded = set()
+    for ry in rung_ys:
+        lo = max(iy0, int(round(ry - rung_half_h)))
+        hi = min(iy1 - 1, int(round(ry + rung_half_h)))
+        excluded.update(range(lo, hi + 1))
+    hit_rows = [iy0 + i for i, f in enumerate(row_frac)
+               if f >= LEDGER_PRINTED_POSITION_INK_ROW_DENSE
+               and (iy0 + i) not in excluded]
+    if not hit_rows:
+        return None
+    return float(min(hit_rows)), float(max(hit_rows) + 1)
+
+
 def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
                                      line_top: float, line_bottom: float,
                                      spacing: float, img: Any,
@@ -2112,6 +2176,23 @@ def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
     scan_end_sp = head_far_sp + LEDGER_PRINTED_POSITION_SCAN_MARGIN_SPACES
     step_sp = LEDGER_PRINTED_POSITION_SCAN_STEP_SPACES
 
+    # ⚠️⚠️ MANAGER REVIEW 2026-09-30, SECOND FINDING: the SCAN itself, not
+    # only the final bracket, was reading the wrong exclusion box. A rung
+    # sitting INSIDE the head's own TRUE ink (the `4/8`/`5/12` shape: a
+    # ledger through a hollow ring's middle) tests its `adjacent` guard
+    # against `hy0`/`hy1` -- the STANDARD box at the DETECTOR's own
+    # (possibly mis-centred) `cy` -- and where that box is too SHORT to
+    # cover the head's real rim, the rim's own ink reads as a stray thick
+    # stroke blocking the very rung that runs through it. The exclusion
+    # passed to the scan is widened to the same generous search margin
+    # `_true_head_ink_y_span` itself uses -- never narrower than the
+    # standard box, so a real beam/stray stroke just outside a small head
+    # is still caught; only the head's OWN territory is given more room to
+    # be wrong about.
+    ink_margin = LEDGER_PRINTED_POSITION_INK_SEARCH_MARGIN_SPACES * spacing
+    scan_hy0 = min(hy0, cy - ink_margin)
+    scan_hy1 = max(hy1, cy + ink_margin)
+
     hits: List[Tuple[float, float]] = []
     i = 0
     while True:
@@ -2121,7 +2202,7 @@ def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
         i += 1
         y = (edge - d_sp * spacing) if above else (edge + d_sp * spacing)
         m = ledger_rung_ink(img, hx0, hx1, y, spacing, thick,
-                           head_y0=hy0, head_y1=hy1)
+                           head_y0=scan_hy0, head_y1=scan_hy1)
         if m is not None and m["found"]:
             hits.append((y, m["center"]))
 
@@ -2143,8 +2224,33 @@ def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
     rungs = [rungs[i] for i in order]
     rung_dists = [_dist(r) for r in rungs]
 
-    third = (hy1 - hy0) * LEDGER_PRINTED_POSITION_ON_THIRD
-    on_idx = [k for k, r in enumerate(rungs) if (hy0 + third) <= r <= (hy1 - third)]
+    # ⚠️⚠️ MANAGER REVIEW 2026-09-30: the bracket is decided against the
+    # head's own MEASURED ink extent, never the standard box -- see
+    # `_true_head_ink_y_span`'s own note. `hx0`/`hx1` (the STANDARD box's
+    # x-span) stays the column tested; only the Y extent is re-measured.
+    ink_arr = (img == 0)
+    H_img, W_img = ink_arr.shape
+    half_h = thick / 2.0 + LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * spacing
+    ink_span = _true_head_ink_y_span(ink_arr, hx0, hx1, cy, spacing, rungs,
+                                     half_h, W_img, H_img)
+    if ink_span is None:
+        log.abstain(g, Q.LEDGER_PRINTED_POSITION, reader=READERS.CV_LEDGER,
+                    frame=frame, reason=ABSTAIN.HEAD_EDGE_UNREADABLE,
+                    note="no ink found in the head's own column to measure "
+                        "its true extent")
+        return
+    iy0, iy1 = ink_span
+    if (iy1 - iy0) > LEDGER_PRINTED_POSITION_MAX_HEIGHT_SPACES * spacing:
+        log.abstain(g, Q.LEDGER_PRINTED_POSITION, reader=READERS.CV_LEDGER,
+                    frame=frame, reason=ABSTAIN.HEAD_EDGE_UNREADABLE,
+                    note=f"measured ink extent {round(iy1 - iy0, 1)} px "
+                        f"exceeds {LEDGER_PRINTED_POSITION_MAX_HEIGHT_SPACES}"
+                        f" staff spaces -- likely fused with a neighbour")
+        return
+    ink_centre = (iy0 + iy1) / 2.0
+
+    third = (iy1 - iy0) * LEDGER_PRINTED_POSITION_ON_THIRD
+    on_idx = [k for k, r in enumerate(rungs) if (iy0 + third) <= r <= (iy1 - third)]
     if len(on_idx) > 1:
         log.abstain(g, Q.LEDGER_PRINTED_POSITION, reader=READERS.CV_LEDGER,
                     frame=frame, reason=ABSTAIN.LEDGERS_IRREGULAR,
@@ -2157,7 +2263,7 @@ def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
         steps = 2 * (k + 1)
         bracket = "on"
     else:
-        head_dist = _dist(cy)
+        head_dist = _dist(ink_centre)
         k_near = None
         for k, rd in enumerate(rung_dists):
             if rd < head_dist:
@@ -2182,7 +2288,9 @@ def _observe_ledger_printed_position(log: Log, g: Subject, d: Any,
     log.observe(g, Q.LEDGER_PRINTED_POSITION, int(pos),
                 reader=READERS.CV_LEDGER, frame=frame, bracket=bracket,
                 note=f"rungs (canonical y) {[round(r, 2) for r in rungs]}, "
-                    f"head centre {round(cy, 2)}")
+                    f"head ink rows {round(iy0, 2)}-{round(iy1, 2)} "
+                    f"(centre {round(ink_centre, 2)}; detector centre "
+                    f"{round(cy, 2)})")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
