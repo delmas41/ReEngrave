@@ -17,6 +17,32 @@ re-enter.
 
 ---
 
+## START HERE — 2026-09-30 morning (session of 09-29 evening; main ≥ `04dd4662`)
+
+**First:** an overnight re-gather of both acceptance scans ran on `04dd4662`
+(`benchmarks/acceptance/overnight/regather_20260930.sh`; records
+`library/_shared-records/*-mvt1-whole-20260930.record.json`; summary at
+`library/_shared-records/overnight-20260930/summary.txt`). Check exit codes,
+then adopt them into `benchmarks/acceptance/manifest.json` and run
+`python3 -m tools.omr.acceptance` on a clean tree — they carry 2.29, 2.30,
+2.33, 2.36, 2.37, 2.38, 2.38b, none of which the 20260929b numbers below see.
+
+**Landed 09-29 evening:** the weights question answered (FINDINGS
+`omr-weights-ab-2026-09` §5 — class deletion is last-layer only; production
+is round 5's own design; Sean confirmed the crops); 2.36 (chord-mate
+duration); 2.38 + 2.38b (beam joins its stem, by ink; print-checked 32/32;
+certain strokes the ink disputes go back to narrowed); 2.37 (ledger
+OWNERSHIP by a two-sided ink comparison — Sean: pitch outside the staff is
+geometric, the ledger read is only for which staff owns a note; 0 false
+picks). 2.35 dropped (Sean). Fast tier 4,030; `check` 245.
+
+**Next, in order:** adopt the overnight records → re-read the funnel;
+2.39 (a standard notehead box from staff spacing, Sean); the residual
+duration faults 2.38b named (both witnesses agreeing on a wrong stroke; the
+19 zero-beam decisions, one a clef boxed as a head); 2.37's Litolff ledger
+reach (merging plate). **Ask Sean simply**: one plain question, say what
+each colour on a crop means, no tables.
+
 ## START HERE — state at the end of the session of 2026-09-28 → 29 (overnight + the day)
 
 Main is at or past `b5f5fe21`. The tree is the record; this block is the
