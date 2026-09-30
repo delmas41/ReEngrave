@@ -52,6 +52,14 @@ class Consequence(str, Enum):
     #: what the engraver drew, in place of what the key would have given them.
     APPLY_PRINTED_ACCIDENTAL = "apply_printed_accidental"
     RECONCILE_DURATION = "reconcile_duration"  # meter settled
+    #: ROADMAP 2.36. A chord's members share one stem and one duration, so a
+    #: NARROWED note settles to a DECIDED stem-mate's own beam count -- a
+    #: different cause in substance (a sibling glyph's verdict, not the
+    #: meter) from `RECONCILE_DURATION` even though both sit under `Q.METER`
+    #: in `DOWNHILL`, so it is its own tag rather than a second rule hiding
+    #: under the first's name (`test_the_rule_is_downhill_and_carries_a_bound`
+    #: picks `RULES` by consequence and expects exactly one).
+    RECONCILE_CHORD_DURATION = "reconcile_chord_duration"
     MOVE_GLYPH = "move_glyph"                # ownership settled
     JOIN_PARTS = "join_parts"                # part boundaries settled
     NAME_PART = "name_part"                  # instrument settled

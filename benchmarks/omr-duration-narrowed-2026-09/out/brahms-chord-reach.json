@@ -1,0 +1,51 @@
+{
+  "label": "brahms",
+  "n_narrowed_notes": 3200,
+  "n_with_own_stem_in_used": 1783,
+  "n_with_a_decided_stem_mate": 63,
+  "n_with_a_UNIQUE_decided_stem_mate": 40,
+  "n_where_mate_level_is_one_of_its_own_candidates (WOULD BE DECIDED)": 37,
+  "by_reason_resolved": [
+    [
+      "beams_ambiguous",
+      37
+    ]
+  ],
+  "examples": [
+    {
+      "narrowed_subject": "glyph/3/0/10/6/2",
+      "narrowed_reason": "beams_ambiguous",
+      "mate_subject": "glyph/3/0/10/6/1",
+      "mate_beam_levels": 1
+    },
+    {
+      "narrowed_subject": "glyph/5/0/2/5/9",
+      "narrowed_reason": "beams_ambiguous",
+      "mate_subject": "glyph/5/0/2/5/20",
+      "mate_beam_levels": 2
+    },
+    {
+      "narrowed_subject": "glyph/6/1/3/3/0",
+      "narrowed_reason": "beams_ambiguous",
+      "mate_subject": "glyph/6/1/3/3/18",
+      "mate_beam_levels": 1
+    },
+    {
+      "narrowed_subject": "glyph/6/1/3/3/6",
+      "narrowed_reason": "beams_ambiguous",
+      "mate_subject": "glyph/6/1/3/3/18",
+      "mate_beam_levels": 1
+    },
+    {
+      "narrowed_subject": "glyph/7/1/8/5/9",
+      "narrowed_reason": "beams_ambiguous",
+      "mate_subject": "glyph/7/1/8/5/11",
+      "mate_beam_levels": 0
+    }
+  ],
+  "timing_s": {
+    "json_parse": 22.3,
+    "collect_stem_ids": 0.0,
+    "group_by_cell": 0.1
+  }
+}

@@ -1,0 +1,308 @@
+wrote benchmarks/omr-duration-narrowed-2026-09/out/litolff.json
+{
+  "label": "litolff",
+  "path": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20260929b.record.json",
+  "n_duration_verdicts": 15977,
+  "n_decided": 14618,
+  "n_narrowed": 1187,
+  "n_narrowed_notes": 1149,
+  "n_narrowed_rests": 38,
+  "by_reason": [
+    [
+      "beams_ambiguous",
+      779
+    ],
+    [
+      "beam_discounted_uncertain",
+      320
+    ],
+    [
+      "rest_slot_contradicts_class",
+      38
+    ],
+    [
+      "flag_ink_unread",
+      23
+    ],
+    [
+      "head_fill_from_ink",
+      22
+    ],
+    [
+      "flags_disagree",
+      5
+    ]
+  ],
+  "by_candidate_set": [
+    [
+      "{quarter, eighth}",
+      393
+    ],
+    [
+      "{eighth, quarter}",
+      221
+    ],
+    [
+      "{quarter, half}",
+      121
+    ],
+    [
+      "{eighth, 16th}",
+      120
+    ],
+    [
+      "{half, quarter}",
+      109
+    ],
+    [
+      "{16th, 32nd}",
+      48
+    ],
+    [
+      "{quarter, eighth, 16th}",
+      38
+    ],
+    [
+      "{half, whole}",
+      38
+    ],
+    [
+      "{half, quarter, whole}",
+      22
+    ],
+    [
+      "{32nd, 64th}",
+      22
+    ],
+    [
+      "{half, quarter, eighth}",
+      14
+    ],
+    [
+      "{eighth, 16th, 32nd}",
+      13
+    ],
+    [
+      "{whole, half}",
+      7
+    ],
+    [
+      "{quarter, eighth, 16th, 32nd}",
+      6
+    ],
+    [
+      "{16th, 32nd, 64th}",
+      3
+    ],
+    [
+      "{half, quarter, eighth, 16th}",
+      2
+    ],
+    [
+      "{eighth, 16th, 32nd, 64th}",
+      2
+    ],
+    [
+      "{quarter, eighth, 16th, 32nd, 64th}",
+      2
+    ],
+    [
+      "{dotted-eighth, dotted-quarter}",
+      1
+    ],
+    [
+      "{dotted-eighth, dotted-16th}",
+      1
+    ]
+  ],
+  "by_disagreement_class": [
+    [
+      "beam_count_certain=0_possible=1",
+      495
+    ],
+    [
+      "beam_discounted_by_2.25b(neighbour_or_arc)",
+      320
+    ],
+    [
+      "beam_count_certain=1_possible=2",
+      132
+    ],
+    [
+      "beam_count_certain=0_possible=2",
+      51
+    ],
+    [
+      "beam_count_certain=2_possible=3",
+      48
+    ],
+    [
+      "rest_slot_vs_detector_class(slot_prefers=restHalf)",
+      38
+    ],
+    [
+      "stem_tip_ink_says_flag_but_no_box",
+      23
+    ],
+    [
+      "beam_count_certain=3_possible=4",
+      22
+    ],
+    [
+      "beam_count_certain=1_possible=3",
+      14
+    ],
+    [
+      "beam_count_certain=0_possible=3",
+      8
+    ],
+    [
+      "flag_boxes_disagree(levels=['1', '2'])",
+      5
+    ],
+    [
+      "beam_count_certain=2_possible=4",
+      3
+    ],
+    [
+      "beam_count_certain=1_possible=4",
+      2
+    ],
+    [
+      "beam_count_certain=0_possible=4",
+      2
+    ],
+    [
+      "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.9256, 'best_window': 'ring', 'windows': {'center': 0.4509, 'ring': 0.9256}}, 'ink_net': {'best': 0.8512, 'best_window': 'ring', 'windows': {'center': 0.4509, 'ring': 0.8512}}})",
+      1
+    ],
+    [
+      "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.5793, 'best_window': 'ring', 'windows': {'center': 0.4676, 'ring': 0.5793}}, 'ink_net': {'best': 0.5206, 'best_window': 'ring', 'windows': {'center': 0.261, 'ring': 0.5206}}})",
+      1
+    ],
+    [
+      "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.6878, 'best_window': 'ring', 'windows': {'center': 0.4698, 'ring': 0.6878}}, 'ink_net': {'best': 0.486, 'best_window': 'ring', 'windows': {'center': 0.0202, 'ring': 0.486}}})",
+      1
+    ],
+    [
+      "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.5922, 'best_window': 'ring', 'windows': {'center': 0.4723, 'ring': 0.5922}}, 'ink_net': {'best': 0.4288, 'best_window': 'ring', 'windows': {'center': 0.3053, 'ring': 0.4288}}})",
+      1
+    ],
+    [
+      "beam_count_certain=4_possible=5",
+      1
+    ],
+    [
+      "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.5905, 'best_window': 'ring', 'windows': {'center': 0.5251, 'ring': 0.5905}}, 'ink_net': {'best': 0.3713, 'best_window': 'ring', 'windows': {'center': 0.2352, 'ring': 0.3713}}})",
+      1
+    ]
+  ],
+  "examples_by_reason": {
+    "beams_ambiguous": [
+      {
+        "subject": "glyph/1/0/3/7/2",
+        "candidates": "{quarter, eighth}",
+        "disagreement": "beam_count_certain=1_possible=2"
+      },
+      {
+        "subject": "glyph/1/0/7/11/1",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "beam_count_certain=1_possible=2"
+      },
+      {
+        "subject": "glyph/1/0/7/11/3",
+        "candidates": "{quarter, eighth}",
+        "disagreement": "beam_count_certain=0_possible=1"
+      }
+    ],
+    "beam_discounted_uncertain": [
+      {
+        "subject": "glyph/1/0/8/6/1",
+        "candidates": "{quarter, half}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      },
+      {
+        "subject": "glyph/1/0/8/6/3",
+        "candidates": "{quarter, half}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      },
+      {
+        "subject": "glyph/1/0/8/10/2",
+        "candidates": "{quarter, half}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      }
+    ],
+    "rest_slot_contradicts_class": [
+      {
+        "subject": "glyph/2/0/1/2/9",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      },
+      {
+        "subject": "glyph/2/1/10/0/13",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      },
+      {
+        "subject": "glyph/2/1/10/1/3",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      }
+    ],
+    "head_fill_from_ink": [
+      {
+        "subject": "glyph/2/1/3/13/4",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.9256, 'best_window': 'ring', 'windows': {'center': 0.4509, 'ring': 0.9256}}, 'ink_net': {'best': 0.8512, 'best_window': 'ring', 'windows': {'center': 0.4509, 'ring': 0.8512}}})"
+      },
+      {
+        "subject": "glyph/4/0/3/9/8",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.5793, 'best_window': 'ring', 'windows': {'center': 0.4676, 'ring': 0.5793}}, 'ink_net': {'best': 0.5206, 'best_window': 'ring', 'windows': {'center': 0.261, 'ring': 0.5206}}})"
+      },
+      {
+        "subject": "glyph/4/0/7/7/11",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.6878, 'best_window': 'ring', 'windows': {'center': 0.4698, 'ring': 0.6878}}, 'ink_net': {'best': 0.486, 'best_window': 'ring', 'windows': {'center': 0.0202, 'ring': 0.486}}})"
+      }
+    ],
+    "flags_disagree": [
+      {
+        "subject": "glyph/3/0/7/3/5",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      },
+      {
+        "subject": "glyph/7/0/8/16/4",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      },
+      {
+        "subject": "glyph/7/0/8/16/8",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      }
+    ],
+    "flag_ink_unread": [
+      {
+        "subject": "glyph/4/1/3/13/8",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      },
+      {
+        "subject": "glyph/4/1/8/3/0",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      },
+      {
+        "subject": "glyph/8/1/9/0/7",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      }
+    ]
+  },
+  "timing_s": {
+    "json_parse": 5.6,
+    "filter_duration_rows": 0.0
+  }
+}

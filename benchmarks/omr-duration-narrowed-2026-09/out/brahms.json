@@ -1,0 +1,307 @@
+{
+  "label": "brahms",
+  "path": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-mvt1-whole-20260929b.record.json",
+  "n_duration_verdicts": 33261,
+  "n_decided": 29800,
+  "n_narrowed": 3211,
+  "n_narrowed_notes": 3200,
+  "n_narrowed_rests": 11,
+  "by_reason": [
+    [
+      "beams_ambiguous",
+      1960
+    ],
+    [
+      "beam_discounted_uncertain",
+      1102
+    ],
+    [
+      "flags_disagree",
+      75
+    ],
+    [
+      "flag_ink_unread",
+      54
+    ],
+    [
+      "rest_slot_contradicts_class",
+      11
+    ],
+    [
+      "head_fill_from_ink",
+      9
+    ]
+  ],
+  "by_candidate_set": [
+    [
+      "{quarter, eighth}",
+      801
+    ],
+    [
+      "{eighth, quarter}",
+      599
+    ],
+    [
+      "{dotted-eighth, dotted-quarter}",
+      430
+    ],
+    [
+      "{eighth, 16th}",
+      263
+    ],
+    [
+      "{quarter, eighth, 16th}",
+      183
+    ],
+    [
+      "{dotted-quarter, dotted-eighth}",
+      170
+    ],
+    [
+      "{16th, 32nd}",
+      97
+    ],
+    [
+      "{dotted-quarter, dotted-half}",
+      69
+    ],
+    [
+      "{eighth, 16th, 32nd}",
+      62
+    ],
+    [
+      "{dotted-quarter, dotted-eighth, dotted-16th}",
+      44
+    ],
+    [
+      "{quarter, eighth, 16th, 32nd}",
+      44
+    ],
+    [
+      "{dotted-eighth, dotted-16th}",
+      41
+    ],
+    [
+      "{quarter, half}",
+      39
+    ],
+    [
+      "{32nd, 64th}",
+      34
+    ],
+    [
+      "{16th, 32nd, 64th}",
+      32
+    ],
+    [
+      "{dotted-16th, beats=0.1875}",
+      24
+    ],
+    [
+      "{64th, beats=0.03125}",
+      21
+    ],
+    [
+      "{dotted-half, dotted-quarter}",
+      19
+    ],
+    [
+      "{half, whole}",
+      17
+    ],
+    [
+      "{half, quarter}",
+      15
+    ]
+  ],
+  "by_disagreement_class": [
+    [
+      "beam_discounted_by_2.25b(neighbour_or_arc)",
+      1102
+    ],
+    [
+      "beam_count_certain=0_possible=1",
+      1003
+    ],
+    [
+      "beam_count_certain=0_possible=2",
+      247
+    ],
+    [
+      "beam_count_certain=1_possible=2",
+      234
+    ],
+    [
+      "beam_count_certain=2_possible=3",
+      128
+    ],
+    [
+      "flag_boxes_disagree(levels=['1', '2'])",
+      75
+    ],
+    [
+      "beam_count_certain=1_possible=3",
+      67
+    ],
+    [
+      "stem_tip_ink_says_flag_but_no_box",
+      54
+    ],
+    [
+      "beam_count_certain=0_possible=3",
+      49
+    ],
+    [
+      "beam_count_certain=3_possible=4",
+      46
+    ],
+    [
+      "beam_count_certain=2_possible=4",
+      45
+    ],
+    [
+      "beam_count_certain=4_possible=5",
+      32
+    ],
+    [
+      "beam_count_certain=5_possible=6",
+      17
+    ],
+    [
+      "beam_count_certain=3_possible=5",
+      13
+    ],
+    [
+      "beam_count_certain=2_possible=5",
+      12
+    ],
+    [
+      "beam_count_certain=1_possible=4",
+      12
+    ],
+    [
+      "rest_slot_vs_detector_class(slot_prefers=restHalf)",
+      11
+    ],
+    [
+      "beam_count_certain=0_possible=4",
+      11
+    ],
+    [
+      "beam_count_certain=4_possible=6",
+      7
+    ],
+    [
+      "beam_count_certain=0_possible=5",
+      6
+    ]
+  ],
+  "examples_by_reason": {
+    "beam_discounted_uncertain": [
+      {
+        "subject": "glyph/0/0/0/1/4",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      },
+      {
+        "subject": "glyph/0/0/0/1/7",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      },
+      {
+        "subject": "glyph/0/0/2/0/4",
+        "candidates": "{dotted-eighth, dotted-quarter}",
+        "disagreement": "beam_discounted_by_2.25b(neighbour_or_arc)"
+      }
+    ],
+    "beams_ambiguous": [
+      {
+        "subject": "glyph/0/0/0/4/1",
+        "candidates": "{quarter, eighth}",
+        "disagreement": "beam_count_certain=0_possible=1"
+      },
+      {
+        "subject": "glyph/0/0/0/4/11",
+        "candidates": "{quarter, eighth}",
+        "disagreement": "beam_count_certain=0_possible=1"
+      },
+      {
+        "subject": "glyph/0/0/0/5/4",
+        "candidates": "{quarter, eighth}",
+        "disagreement": "beam_count_certain=0_possible=1"
+      }
+    ],
+    "rest_slot_contradicts_class": [
+      {
+        "subject": "glyph/0/0/4/5/5",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      },
+      {
+        "subject": "glyph/0/0/4/6/6",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      },
+      {
+        "subject": "glyph/11/1/8/8/14",
+        "candidates": "{half, whole}",
+        "disagreement": "rest_slot_vs_detector_class(slot_prefers=restHalf)"
+      }
+    ],
+    "flags_disagree": [
+      {
+        "subject": "glyph/0/0/11/6/14",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      },
+      {
+        "subject": "glyph/1/0/3/3/0",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      },
+      {
+        "subject": "glyph/1/0/10/4/11",
+        "candidates": "{eighth, 16th}",
+        "disagreement": "flag_boxes_disagree(levels=['1', '2'])"
+      }
+    ],
+    "flag_ink_unread": [
+      {
+        "subject": "glyph/1/0/9/5/1",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      },
+      {
+        "subject": "glyph/1/1/8/0/9",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      },
+      {
+        "subject": "glyph/1/1/8/1/11",
+        "candidates": "{eighth, quarter}",
+        "disagreement": "stem_tip_ink_says_flag_but_no_box"
+      }
+    ],
+    "head_fill_from_ink": [
+      {
+        "subject": "glyph/3/0/6/0/19",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.6901, 'best_window': 'ring', 'windows': {'center': 0.3267, 'ring': 0.6901}}, 'ink_net': {'best': 0.6711, 'best_window': 'ring', 'windows': {'center': 0.3267, 'ring': 0.6711}}})"
+      },
+      {
+        "subject": "glyph/11/0/1/8/20",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.6558, 'best_window': 'ring', 'windows': {'center': 0.4901, 'ring': 0.6558}}, 'ink_net': {'best': 0.6558, 'best_window': 'ring', 'windows': {'center': 0.4901, 'ring': 0.6558}}})"
+      },
+      {
+        "subject": "glyph/12/1/2/5/19",
+        "candidates": "{half, quarter, whole}",
+        "disagreement": "notehead_ink_vs_detector_class(fill={'ink_raw': {'best': 0.6922, 'best_window': 'ring', 'windows': {'center': 0.4969, 'ring': 0.6922}}, 'ink_net': {'best': 0.6922, 'best_window': 'ring', 'windows': {'center': 0.4969, 'ring': 0.6922}}})"
+      }
+    ]
+  },
+  "timing_s": {
+    "json_parse": 22.2,
+    "filter_duration_rows": 0.1
+  }
+}
