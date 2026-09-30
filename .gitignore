@@ -281,3 +281,10 @@ benchmarks/omr-weights-ab-2026-09/out/**/rec-*.json
 # durable record and are committed.
 out/print/beam-stem-ink-2.38/*.record.json
 out/print/beam-stem-ink-2.38/*.log
+
+# ROADMAP 2.39: the base/new GATHER-through-ADJUDICATE dumps and their
+# small recentre-probe summaries, regenerable by the commands in
+# `benchmarks/omr-notehead-width-2026-09/FINDINGS.md` Sec.2.39; the crops
+# under `out/print/2.39/` ARE the durable record and are committed.
+out/2.39/*.json
+out/2.39/*.log
