@@ -48,19 +48,34 @@ def _stem(log, *, x_c, y_c, w_c=20.0, h_c=200.0):
                reader=READERS.CV_LINES, frame="cell:0")
 
 
+def _ink(log, g, *, net_best):
+    """`Q.NOTEHEAD_INK` on glyph `g`, carrying ONLY the `ink_net.best`
+    field `_notehead_ink_net` reads -- the staff-line-ERASED fill fraction
+    (manager review, S6: the KEEP choice reads this, never detector
+    score)."""
+    log.observe(g, Q.NOTEHEAD_INK, net_best, reader=READERS.CV_NOTEHEAD_INK,
+               frame="cell:0", ink_net={"best": net_best}, ink_raw=None)
+
+
 class TestNoteheadSameSideSecond(unittest.TestCase):
     """`_notehead_same_side_second_refusal`, in isolation."""
 
     def test_same_side_overlapping_pair_past_2_30s_gate_is_refused(self):
         """Two boxes 0.5 sp apart (past 2.30's 0.25 sp centre gate, so 2.30
         itself does not fire), overlapping in ink, sharing ONE stem, BOTH
-        centres on the same side of it. One mark boxed twice."""
+        centres on the same side of it. One mark boxed twice -- `hi` carries
+        the real head ink (`ink_net.best` 0.85) and survives; `lo` sits
+        mostly on blank paper (0.10) and is refused, REGARDLESS of `lo`
+        having the lower detector confidence too (score is not read here at
+        all, manager review S6)."""
         log = Log()
         _cell_geometry(log)
         lo = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
                       y_c=200.0, w_c=140.0, h_c=100.0, conf=0.5)
         hi = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
                       y_c=250.0, w_c=140.0, h_c=100.0, conf=0.6)  # dy=0.5 sp
+        _ink(log, lo, net_best=0.10)
+        _ink(log, hi, net_best=0.85)
         # Stem spans both heads' y-range and sits inside both x-ranges
         # (200-340); both centres (270) fall on its right, i.e. the SAME
         # side.
@@ -76,6 +91,55 @@ class TestNoteheadSameSideSecond(unittest.TestCase):
         self.assertEqual(v_hi.outcome, Outcome.DECIDED)
         self.assertIs(v_hi.value, False)
         self.assertEqual(v_hi.reason, "notehead")
+
+    def test_the_higher_score_box_on_blank_paper_is_the_one_refused(self):
+        """⚠️ MANAGER FINDING, S6 (`cell/3/0/8/7`): the first build chose the
+        survivor by DETECTOR SCORE and kept an EMPTY box over the real head.
+        RED against that build: `hi_score` (conf 0.9) sits on blank paper
+        (`ink_net.best` 0.08, S6's own shape -- mostly white paper plus one
+        staff line) while `lo_score` (conf 0.3) carries the real ink (0.90).
+        The higher-score, blank-paper box MUST be the one refused."""
+        log = Log()
+        _cell_geometry(log)
+        hi_score = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
+                            y_c=200.0, w_c=140.0, h_c=100.0, conf=0.9)
+        lo_score = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                            y_c=250.0, w_c=140.0, h_c=100.0, conf=0.3)
+        _ink(log, hi_score, net_best=0.08)
+        _ink(log, lo_score, net_best=0.90)
+        _stem(log, x_c=260.0, y_c=190.0, w_c=20.0, h_c=200.0)
+        log = _run(log)
+
+        v_hi_score = _verdict(log, hi_score)
+        v_lo_score = _verdict(log, lo_score)
+        self.assertIs(v_hi_score.value, True,
+                      "the blank-paper box (higher score) must be refused")
+        self.assertEqual(v_hi_score.reason, "same_side_second")
+        self.assertIs(v_lo_score.value, False,
+                      "the real-ink box (lower score) must stand")
+
+    def test_no_ink_witness_does_not_refuse_but_is_counted(self):
+        """The SAME overlapping, same-side, same-stem pair as the first
+        test, but neither glyph carries a `Q.NOTEHEAD_INK` row at all
+        (S6's lesson generalised: with no ink witness for the pair, rule 8
+        applies exactly as it does for a missing stem) -- refuse NEITHER,
+        but still count the case rather than silently drop it."""
+        log = Log()
+        _cell_geometry(log)
+        a = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
+                     y_c=200.0, w_c=140.0, h_c=100.0, conf=0.5)
+        b = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                     y_c=250.0, w_c=140.0, h_c=100.0, conf=0.6)
+        _stem(log, x_c=260.0, y_c=190.0, w_c=20.0, h_c=200.0)
+        log = _run(log)
+
+        v_a = _verdict(log, a)
+        v_b = _verdict(log, b)
+        self.assertIs(v_a.value, False)
+        self.assertIs(v_b.value, False)
+        signal = (v_a.detail or {}).get("same_side_signal")
+        self.assertIsNotNone(signal)
+        self.assertTrue(signal.get("no_ink_witness"))
 
     def test_same_side_pair_past_the_0_75_sp_gate_stands(self):
         """⚠️ THE CONTROL THAT CAN FAIL (dy=1.0 sp, a real third). Overlapping
