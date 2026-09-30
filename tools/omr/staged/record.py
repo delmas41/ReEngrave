@@ -524,6 +524,41 @@ class Q(_Vocab):
     #: window (a neighbour's head, an accidental, text, a slur/tie arc --
     #: ink this record can already name is not this quantity's to claim).
     STEM_TIP_INK = "stem_tip_ink"
+    #: ROADMAP 2.38. `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`
+    #: SS2: the single biggest `duration_narrowed` class -- `beams_ambiguous`,
+    #: certain=0/possible=1, "nothing certainly covers this note, but one
+    #: stroke MIGHT" (495 of 1,187 narrowed Litolff notes, 1,003 of 3,211
+    #: Brahms) -- had no second witness at all: a first-hand geometric
+    #: judgement about ONE stroke's relationship to ONE note
+    #: (`rhythm._beam_levels`'s own padded column test), and nothing else on
+    #: the record spoke to the same fact from a different angle. This is
+    #: that second witness. One row per (`Q.STEM` row, `Q.BEAM_STROKE` row,
+    #: END) -- GATHER does not know which end of a stem is its TIP (that is
+    #: `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE), so both
+    #: ends are asked, same shape as `Q.STEM_TIP_INK`. `value` is whether the
+    #: CANDIDATE STROKE horizontally reaches this stem (⚠️ manager print
+    #: check of 3c748f45 on Brahms p1: a far-away DIFFERENT group's beam,
+    #: 4-10 staff spaces to the side, shares a y-height with THIS stem's own
+    #: real beam often enough that skipping this check let the continuity
+    #: scan below credit that OTHER stroke with THIS stem's own ink -- a
+    #: stroke that does not cover the stem, within the same measured
+    #: tolerance, is NOT JOINED by construction, checked FIRST, before any
+    #: pixel is read) AND, if so, whether the stem's OWN ink, in its own
+    #: x-range, runs CONTINUOUSLY from that end into ink at or past the
+    #: candidate stroke's own near edge -- the stem ending INSIDE the
+    #: stroke's own box is joined with no gap to walk; a gap that stays
+    #: inked within one measured staff-line thickness is a shattered-plate
+    #: junction and still joined. ⚠️ A stroke that reaches the stem
+    #: horizontally but neither reaches the tip nor stands cleanly past it
+    #: (manager review of 024bdc7c: a SECONDARY beam attaching along the
+    #: stem's body just inside the primary, or a `Q.STEM` box that
+    #: overshoots its own beam, sit here exactly as a slur/arc crossing
+    #: mid-length would, and position cannot tell them apart) ABSTAINS --
+    #: it is NOT read as "not joined": rule 8 forbids turning cannot-tell
+    #: into an answer, and doing so once dropped a real secondary beam's
+    #: only candidate stroke. Also ABSTAINS where the raster or the cell's
+    #: staff-space unit is missing, or the stem carries no usable x-range.
+    BEAM_STEM_JOIN = "beam_stem_join"
     FLAG = "flag"                            # detected flag
     AUG_DOT = "aug_dot"                      # dot offset from its notehead
     TUPLET_MARKER = "tuplet_marker"          # digit or bracket, with its span
@@ -1756,6 +1791,11 @@ CLAIMS: "dict[str, str]" = {
     #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
     #: it says whether flag-shaped ink stands there, never that a flag does.
     "STEM_TIP_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.38: a windowed ink-continuity test between a stem's own tip
+    #: and a candidate beam stroke, off the erased raster -- a ruler
+    #: reading, same reason as `STEM_TIP_INK`; it says whether ink runs
+    #: unbroken between the two, never that the stroke IS this note's beam.
+    "BEAM_STEM_JOIN": CLAIM.MEASUREMENT,
     #: ROADMAP 2.23: an ink fraction inside a notehead's OWN detected box, on
     #: two rasters -- a ruler reading, same reason as `LEDGER_INK_UNDER`; it
     #: says whether dark pixels stand there, never that the head is filled.
@@ -2056,6 +2096,24 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: `gather._observe_beam_stem_join` -- ROADMAP 2.38. Reads the SAME
+    #: staff-erased raster `CV_LINES`/`CV_INK`/`CV_LEDGER`/`CV_STEM_TIP` read
+    #: (`image_no_staff`), so it is not independent of them in the "one crop,
+    #: one signal" sense those entries state. But `Evidence.correlated_
+    #: groups`'s own test buckets two Observations together only on the
+    #: exact SAME `(reader, frame, quantity)` key -- and this reader's name
+    #: and `Q.BEAM_STEM_JOIN` are both new, so it does NOT bucket with
+    #: `CV_LINES`'s own `Q.BEAM_STROKE`/`Q.STEM` rows mechanically, and the
+    #: question is genuinely a different one: not "does this stroke's BOX
+    #: cover this note's column" (`rhythm._beam_levels`'s morphology-derived
+    #: geometry) but "does the stem's own ink run UNBROKEN into the
+    #: stroke's ink at the tip" (a pixel-continuity scan at one specific
+    #: junction). See `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`
+    #: SS6 for why that makes it a genuine second witness and not a
+    #: restatement -- and for the honest caveat this convention shares with
+    #: `CV_STEM_TIP`: reading the same raster, a systematic plate defect
+    #: (bleed-through, a torn scan) could still fail both readers together.
+    CV_BEAM_JOIN = "cv_beam_join"            # gather: stem-to-beam ink continuity
     #: `gather.gather_notehead_ink` -- ROADMAP 2.23 (ported, GATHER half
     #: only, from `claude/no-ink-head-2.6h`). Reads TWO rasters: `cell.
     #: image_no_staff` (shared with `CV_INK`/`CV_LEDGER`/`CV_STEM_TIP`) AND

@@ -1177,7 +1177,7 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
-def _beam_levels(beams, x_center, width, joined=()):
+def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
@@ -1190,6 +1190,20 @@ def _beam_levels(beams, x_center, width, joined=()):
     of counting here. **Keeping the measurement is not sufficient** -- the
     strokes were on the record and intact -- if the INTERPRETATION collapses at
     the first opportunity.
+
+    ⚠️ ROADMAP 2.38: `join_witness` (`{stroke id: True/False/None}`, from
+    `_beam_join_witness`) is consulted ONLY for a stroke this test would
+    otherwise count as merely POSSIBLE (the padded column match, never the
+    exact-overlap or stem-joined ones -- CERTAIN stays certain on box
+    geometry alone, whatever the ink says, the positive control this rule
+    must never move). Where the ink-continuity reader says the stem's own
+    ink DOES run into this stroke, it is promoted to CERTAIN; where it says
+    it does NOT, the stroke is dropped from the count entirely (neither
+    certain nor possible -- rule 8's "count the level"/"drop it", never a
+    silent guess); where the reader never reached it (`None`), the stroke
+    stays exactly as box geometry alone would have called it, and the note
+    stays narrowed -- the same "declined never defaults" rule 8 states for
+    every other ink witness in this module.
     """
     joined_ids = {b.id for b in joined}
     if x_center is None:
@@ -1206,8 +1220,66 @@ def _beam_levels(beams, x_center, width, joined=()):
             certain += 1
             possible += 1
         elif x0 - pad <= x_center <= x1 + pad:
-            possible += 1
+            witness = (join_witness or {}).get(b.id)
+            if witness is True:
+                certain += 1
+                possible += 1
+            elif witness is False:
+                continue
+            else:
+                possible += 1
     return (certain, possible)
+
+
+def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
+                       ) -> Tuple[Dict[str, Optional[bool]], tuple]:
+    """`({stroke id: True/False/None}, the rows read)`. ROADMAP 2.38.
+
+    For every candidate stroke in `kept`, does THIS head's OWN stem's ink
+    run continuously into it at the tip, per `Q.BEAM_STEM_JOIN`? `None` --
+    no evidence either way -- where this head has no own stem direction, no
+    own stem, or the quantity never reached the matching (stem, stroke,
+    end) triple.
+
+    ⚠️ ONLY THE END THIS HEAD'S OWN STEM POINTS TO, same reason
+    `_stem_tip_flag_ink` (2.18c) gives: GATHER files a row for both a
+    stem's top and its bottom because it does not know the true tip;
+    reading the wrong end asks the question of the wrong physical
+    junction.
+
+    ⚠️ MULTIPLE OWN STEMS (a chord sharing one physical stem should not
+    produce more than one `Q.STEM` row, but nothing enforces that upstream)
+    are folded with `any()`: if ink shows a join from ANY of this head's own
+    stems to a stroke, that stroke counts as joined for this head. A
+    disagreement between two of this head's own stems is not a case this
+    lane's own two documents present, and folding rather than refusing
+    keeps the common one-stem case simple; a future disagreement would be
+    silently resolved in the JOINED direction, which is the more permissive
+    reading, not the more cautious one -- named here rather than hidden.
+    """
+    if side not in ("up", "down") or not own_stems or not kept:
+        return {}, ()
+    end = "top" if side == "up" else "bottom"
+    stem_ids = {s.id for s in own_stems}
+    rows = ev.rows(Q.BEAM_STEM_JOIN, scope=Scope.SELF_AND_ANCESTORS,
+                   subject=cell)
+    by_stroke: Dict[str, list] = {}
+    for r in rows:
+        if r.detail.get("end") != end:
+            continue
+        if r.detail.get("stem_row_id") not in stem_ids:
+            continue
+        by_stroke.setdefault(r.detail.get("beam_row_id"), []).append(r)
+    witness: Dict[str, Optional[bool]] = {}
+    used: list = []
+    for b in kept:
+        matched = by_stroke.get(b.id)
+        if not matched:
+            witness[b.id] = None
+            continue
+        witness[b.id] = any(bool(m.value) for m in matched)
+        used.extend(matched)
+    return witness, tuple(used)
 
 
 def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
@@ -1328,7 +1400,8 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
-                   Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER),
+                   Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
+                   Q.BEAM_STEM_JOIN),
     scope=Kind.GLYPH,
     # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
     # standing inside a DECIDED slur/tie's own box is discounted from this
@@ -1359,12 +1432,18 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     # NARROWS instead where the ink under its OWN box reads decisively
     # hollow against the detector's BLACK class (`_ink_reads_decisively_
     # hollow`).
+    # ⚠️ `Q.BEAM_STEM_JOIN` JOINS IT AT ROADMAP 2.38: a stroke `_beam_levels`
+    # would otherwise count as merely POSSIBLE (`beams_ambiguous`) is
+    # promoted to CERTAIN, or dropped outright, by `_beam_join_witness`'s
+    # ink-continuity reading -- so the OUTCOME, not only the value, depends
+    # on it, same reason `Q.STEM_TIP_INK` is declared above rather than left
+    # a bare `wants`.
     wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER),
+           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "beam_discounted_uncertain",
              "head_fill_from_ink", "no_notehead",
@@ -1488,7 +1567,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     kept_all = kept
     kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
     joined, attached = _stem_joined(kept, stems, head_box)
-    certain, possible = _beam_levels(kept, x_center, head_width, joined)
+    # ⚠️ ROADMAP 2.38: the ink-continuity witness for whatever this pass's
+    # OWN `kept` set turns out to be -- recomputed below too, since the
+    # rule-8 guard can restore `kept_all` and change which strokes are
+    # merely POSSIBLE (the only ones the witness is ever consulted for).
+    join_witness, join_used = _beam_join_witness(ev, cell, kept, own_stems,
+                                                 side)
+    used.extend(r.id for r in join_used)
+    certain, possible = _beam_levels(kept, x_center, head_width, joined,
+                                     join_witness)
     # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
     # Where the strokes past the tip were the ONLY thing over this head, and
     # its stem carries no beam and no flag once they go, the note would fall
@@ -1502,7 +1589,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             ev, cell, attached, tol)[1]:
         kept, beyond, beyond_guarded = kept_all, [], True
         joined, attached = _stem_joined(kept, stems, head_box)
-        certain, possible = _beam_levels(kept, x_center, head_width, joined)
+        join_witness, join_used = _beam_join_witness(ev, cell, kept,
+                                                      own_stems, side)
+        used.extend(r.id for r in join_used)
+        certain, possible = _beam_levels(kept, x_center, head_width, joined,
+                                         join_witness)
     levels = certain
     used.extend(b.id for b in kept)
     used.extend(s.id for s in attached)
