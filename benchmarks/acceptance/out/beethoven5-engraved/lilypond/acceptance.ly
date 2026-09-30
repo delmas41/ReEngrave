@@ -61,9 +61,9 @@
       r2 |
       r2 |
       r2 |
-      \once \override Rest.color = #red r2^\markup { "unread" } |
+      r8 d'''8 d'''8 d'''8 |
       c'''4 r4 |
-      \once \override Rest.color = #red r2^\markup { "unread" } |
+      c'''4 r4 |
       b''4 r4\fermata |
       r8 aes''8 aes''8 aes''8 |
       f''2~ |
@@ -185,7 +185,7 @@
       r2 |
       r2 |
       r2 |
-      \once \override Rest.color = #red r2^\markup { "unread" } |
+      r8 a8 cis'8 e'8 |
       f'4 r4 |
       d'4 r4 |
       cis'4 r4\fermata |
@@ -216,7 +216,7 @@
       c'2 |
       b2 |
       c'2 |
-      \once \override Rest.color = #red r2^\markup { "unread" } |
+      b8 b8 b8 b8 |
       c'4 r4 |
       aes,4 r4 |
       g,4 r4\fermata |
@@ -435,7 +435,7 @@
       ees''2( |
       d''8) g''8 g''8 f''8 |
       ees''4 r4 |
-      <fis' c''>4 r4 |
+      <aes fis' c''>4 r4 |
       g''2\fermata |
       r8 aes'8 aes'8 aes'8 |
       f'2~ |
@@ -467,7 +467,7 @@
       g'8 d''8 d''8 g'8 |
       <c' g' ees''>4 r4 |
       <aes fis' c''>4 r4 |
-      <d' b'>4 r4\fermata |
+      <g d' b'>4 r4\fermata |
       r8 aes'8 aes'8 aes'8 |
       f'2~ |
       f'2\fermata |
