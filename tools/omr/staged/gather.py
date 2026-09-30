@@ -1200,8 +1200,41 @@ def _true_ink_span(ink: Any, x0: float, x1: float, y0: float, y1: float,
     return float(ix0 + li), float(ix0 + ri + 1)
 
 
+#: ⚠️⚠️ ROADMAP 2.37 (manager print check, round 2, 2026-09-29). Tabulated
+#: per failing `det_all` row (detector boxed every expected rung) which
+#: named condition actually blocked it: `wide_adjacent` (the ORIGINAL,
+#: head-centred `adjacent` guard) dominates -- 32 of 37 rows on Litolff
+#: p3, 84 of 119 on Brahms p1, both re-gathered fresh with this branch.
+#: Manager's hypothesis, confirmed: the guard's "one band above/below"
+#: reaches into the HEAD'S OWN box for the rung nearest it (through the
+#: head, or one space below/above it) -- the head is not a stray blob to
+#: guard against, it is `ev.subject`, ALREADY KNOWN, and its own ink must
+#: not count as "thick" evidence against its own rung. Excluded from every
+#: adjacent test (wide AND per-side), never loosened.
+def _exclude_head_box(y0: float, y1: float, head_y0: Optional[float],
+                      head_y1: Optional[float]) -> Optional[Tuple[float, float]]:
+    """`[y0, y1)` with the portion inside `[head_y0, head_y1)` removed --
+    keeping whichever side survives (a band only ever overlaps the head on
+    ONE side, since the head sits at `y_center`'s own row and a band is
+    tested strictly above or strictly below it). `None` where the head
+    covers the whole band (nothing left to test, never treated as "thick"
+    -- see the call site). Passed through unchanged where the head's own
+    box is not known (`head_y0`/`head_y1` `None`, an old caller)."""
+    if head_y0 is None or head_y1 is None or head_y1 <= head_y0:
+        return (y0, y1)
+    if head_y1 <= y0 or head_y0 >= y1:
+        return (y0, y1)
+    if head_y0 <= y0 and head_y1 >= y1:
+        return None
+    if head_y0 > y0:
+        return (y0, min(y1, head_y0))
+    return (max(y0, head_y1), y1)
+
+
 def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
-                    space: float, thickness_px: Optional[float]
+                    space: float, thickness_px: Optional[float],
+                    head_y0: Optional[float] = None,
+                    head_y1: Optional[float] = None
                     ) -> Optional[Dict[str, Any]]:
     """Is there a thin horizontal ink run at `y_center`, crossing the head's
     `[head_x0, head_x1]` and reaching past it on AT LEAST ONE side? ROADMAP
@@ -1286,8 +1319,23 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     right = frac(right_x0, right_x1, y0, y1)
     if center is None or left is None or right is None:
         return None
-    above = frac(cx - ww / 2.0, cx + ww / 2.0, y0 - 2 * half_h, y0)
-    below = frac(cx - ww / 2.0, cx + ww / 2.0, y1, y1 + 2 * half_h)
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, round 2). Every adjacent test
+    # below (wide AND per-side) excludes the HEAD'S OWN box from the band
+    # it reads -- tabulated on a fresh re-gather of both plates with this
+    # branch's own code: `wide_adjacent` (this wide, head-centred test) was
+    # the dominant failing condition on 32 of 37 Litolff `det_all` rows and
+    # 84 of 119 Brahms -- the rung nearest the head (through it, or one
+    # space beyond) has the head's OWN solid ink sitting inside "one band
+    # further away", read as a false "thick" signal against its own real,
+    # thin rung. The head is not a stray blob to guard against: it is
+    # `ev.subject`, already known, and `_exclude_head_box` removes exactly
+    # its own rows, never any other ink, from the tested band.
+    above_span = _exclude_head_box(y0 - 2 * half_h, y0, head_y0, head_y1)
+    below_span = _exclude_head_box(y1, y1 + 2 * half_h, head_y0, head_y1)
+    above = frac(cx - ww / 2.0, cx + ww / 2.0, *above_span) if above_span \
+        else None
+    below = frac(cx - ww / 2.0, cx + ww / 2.0, *below_span) if below_span \
+        else None
     adjacent_vals = [v for v in (above, below) if v is not None]
     adjacent = max(adjacent_vals) if adjacent_vals else None
     # ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). Real Brahms p1
@@ -1308,8 +1356,8 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     # wide `ww`-centred one) -- a stem is vertical and reads dense one
     # thickness away in the SAME narrow x-range a wing does not.
     def _side_adjacent(x0: float, x1: float) -> Optional[float]:
-        a = frac(x0, x1, y0 - 2 * half_h, y0)
-        b = frac(x0, x1, y1, y1 + 2 * half_h)
+        a = frac(x0, x1, *above_span) if above_span else None
+        b = frac(x0, x1, *below_span) if below_span else None
         vs = [v for v in (a, b) if v is not None]
         return max(vs) if vs else None
 
@@ -1342,6 +1390,12 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         "right_adjacent": None if right_adjacent is None else round(right_adjacent, 4),
         "slant": None if slant is None else round(slant, 3),
         "adjacent": None if adjacent is None else round(adjacent, 4),
+        # ⚠️ ROADMAP 2.37: the wide adjacent test's own two components,
+        # named separately so a failure can be tabulated as `above` or
+        # `below` rather than collapsed into one number -- exactly the
+        # split the manager's own diagnosis needed.
+        "adjacent_above": None if above is None else round(above, 4),
+        "adjacent_below": None if below is None else round(below, 4),
         "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
                              round(y0, 2), round(y1, 2)],
     }
@@ -1412,11 +1466,17 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     space_c = grid[1] * 2.0
     hx0_c = (box[0] - cbox[0]) * up
     hx1_c = (box[2] - cbox[0]) * up
+    # ⚠️ ROADMAP 2.37 (manager print check, round 2): the head's OWN
+    # canonical y-extent, so the adjacent guards can exclude its known box
+    # rather than mistaking its own bulk for a thick, non-rung stroke.
+    hy0_c = (box[1] - cbox[1]) * up
+    hy1_c = (box[3] - cbox[1]) * up
     thick_c = (float(thickness_px) * up) if thickness_px else None
     for k in range(1, expected + 1):
         want = (edge - k * spacing) if above else (edge + k * spacing)
         want_c = (want - cbox[1]) * up
-        m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c)
+        m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c,
+                           head_y0=hy0_c, head_y1=hy1_c)
         if m is None:
             log.abstain(g, Q.LEDGER_RUNG_INK, reader=READERS.CV_LEDGER,
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,

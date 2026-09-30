@@ -2962,3 +2962,104 @@ Gate (same tree, re-run after this addendum, full fast tier both times):
 3,943 → **3,953** passed (10 new: 4 `TestOneSidedWing` + 6 `TestSeans
 ThreeStates`), 3 skipped, 2,249 deselected, 0 failed. `python3 -m
 tools.omr.staged.check`: **245**, unchanged.
+
+### §2.37 addendum, round 2 — manager print check: a REAL re-gather, not a replay, and the adjacent guard was the dominant blocker
+
+Manager: "1/33 → 3/33 is not a fix... a replay is not the pipeline's
+raster." Correct. This round re-gathers the two count pages FOR REAL with
+this branch (`python3 -m tools.omr.staged <pdf> --pages <n> --weights
+omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+--no-surya --through adjudicate`, ~2 min each, `out/print/ledger-cv-
+first-2.37/{brahms-p1,litolff-p3}.record.json` and `-v2` after the fix) —
+no replay, no Otsu approximation, the pipeline's own staff-erased raster.
+
+**Failing-condition tabulation, BEFORE any further change** (every NOT-
+found row in a `det_all` pair, which of `center` / `left_dense` /
+`right_dense` / `left_adjacent` / `right_adjacent` / `wide_adjacent`
+actually blocked it — a row can fail more than one):
+
+| plate | det_all pairs | rows | center | left_dense | right_dense | left_adj | right_adj | **wide_adjacent** |
+|---|---|---|---|---|---|---|---|---|
+| Litolff p3 | 23 | 37 | 0 | 27 | 23 | 0 | 4 | **32** |
+| Brahms p1 | 82 | 119 | 0 | 45 | 42 | 0 | 3 | **84** |
+
+`wide_adjacent` (the ORIGINAL, head-centred `adjacent` guard — one
+thickness-band above/below a `ww`-wide, head-centred span) dominates on
+BOTH plates, confirming the manager's own hypothesis by direct count, not
+inference from crops: for the rung through the head or one space beyond
+it, the head's own solid ink sits inside "one band further away" and
+reads as false "thick" evidence against its own real, thin rung.
+
+**Fix** (`gather.ledger_rung_ink`/new `_exclude_head_box`, my exclusive
+area): every adjacent test — the wide one AND both new per-side ones —
+now excludes the portion of its own tested band that falls inside the
+HEAD'S OWN known box (`head_y0`/`head_y1`, threaded through from
+`_observe_ledger_rung_ink`'s own `box` param, canonical frame). The head
+is never a stray blob to guard against — it is `ev.subject`, already on
+the record — so its own ink is removed from the band, never counted
+either for or against a real rung's thinness. A band fully covered by the
+head returns no evidence (`None`, same as "nothing here", never "thick").
+`above`/`below` are now also carried separately in the row detail
+(`adjacent_above`/`adjacent_below`), so a future tabulation does not have
+to collapse them to guess which side was the blocker.
+
+**Measured, same two pages, before vs after this fix, on the REAL
+re-gather (not a replay):**
+
+| plate | det_all pairs | ANY step found BEFORE | ANY step found AFTER | rows found BEFORE | rows found AFTER | confound-control FPs BEFORE | confound-control FPs AFTER |
+|---|---|---|---|---|---|---|---|
+| Litolff p3 | 23 | 1 | 2 | 1/37 | 2/37 | 0/0 | 0/0 |
+| Brahms p1 | 82 | 19 | **43** | 22/119 | 62/119 | 0/11 | **2/11** |
+
+Brahms more than doubled (19 → 43 of 82 pairs, 23% → 52%) — the adjacent-
+exclusion fix is real and large, not a rounding artefact. **Litolff barely
+moved** (1 → 2 of 23): the remaining blocker there is `left_dense`/
+`right_dense` directly (28/23 of 37 rows, `wide_adjacent` dropped 32→20
+but the DENSITY itself still fails on most rows) — visual inspection of 8
+still-failing Litolff crops (`out/print/ledger-cv-first-2.37/litolff_
+still_failing.png`) shows several that look like a note very close to its
+own staff's outer line with only faint or no visible ledger at the tested
+band, distinct in kind from the Breitkopf short-wing shape this lane
+fixed — **flagged as a separate, not-yet-understood question for the
+MERGING plate, not force-fixed by loosening a threshold with no positive
+control for it.**
+
+**Confound-control regressed slightly**: 0 → 2 false positives of 11 on
+Brahms (own-staff distance ≈ 0, tested toward a neighbour — should stay
+clean). Both are at the OUTERMOST step of a 4-rung ladder, where
+`left_adjacent`/`right_adjacent`/`adjacent` all read `None` (the tested
+band falls where NO evidence could be gathered, treated as "cannot rule
+out thick" → passes by default rather than by a genuine thin-rung
+reading) combined with `left`/`right` both independently clearing
+`DENSE`. This is a `None`-defaults-to-pass gap the OR-relaxation (this
+lane, round 1) made easier to hit by needing only one side, not a new
+exclusion-guard bug — **flagged, not fixed**, since CLAUDE.md rule 8 says
+a fix here needs its own positive control, not a same-session patch under
+time pressure.
+
+Tests: `test_staged_ledger_rung_ink.py::TestAdjacentExcludesTheHeadsOwnBox`,
+6 new (RED by construction — `_exclude_head_box`/the `head_y0`/`head_y1`
+parameters do not exist before this round) — the four pure boundary cases
+(no overlap, full cover, overlap-near, overlap-far, no head box known) and
+one end-to-end case: a real rung through a TALL synthetic head is refused
+without the exclusion and found with it, on the identical ink.
+
+Gate: fast tier 3,953 → **3,959** (6 new), 0 failed. `staged.check`:
+**245**, unchanged.
+
+**Crops read by eye, both plates, 8 still-failing rows each** (`out/print/
+ledger-cv-first-2.37/{litolff,brahms}_still_failing.png` — committed;
+the 4 `.record.json`/`.log` files these were cut from are NOT, machine-
+local scratch same as every other lane's `out/print/*.record.json`):
+Litolff's 8 mostly show a note close to its own outer staff line with
+faint or no visible separate ledger at the tested band — a different
+shape from the Breitkopf short-wing this lane fixed. Brahms's 8 mostly DO
+show a real short stroke at the tested band (several visibly extend a
+little past the head on screen) yet still read left/right density under
+0.55 — center is consistently high (0.93–0.96), so these look like
+GENUINELY very short or crowded wings (adjacent noteheads squeezed close
+enough that `_true_ink_span`'s shrink or the overhang test itself may be
+reaching into a neighbour's own ink) rather than the adjacent-guard shape
+this round fixed. **Left for a follow-up round**, not force-fixed here:
+CLAUDE.md rule 5, reach before accuracy, and this round's budget was the
+one hypothesis the manager named.

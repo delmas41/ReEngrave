@@ -179,6 +179,67 @@ REAL_RUNG_SPACE_C = 100.0
 REAL_RUNG_THICKNESS_C = 29.357798165137616
 
 
+class TestAdjacentExcludesTheHeadsOwnBox(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, ROUND 2, 2026-09-29). A fresh
+    re-gather of both acceptance-set pages with THIS branch tabulated,
+    per failing `det_all` row (detector boxed every expected rung), which
+    named condition actually blocked it: `wide_adjacent` (the ORIGINAL,
+    head-centred guard) was the dominant failure -- 32 of 37 Litolff p3
+    rows, 84 of 119 Brahms p1. Manager's hypothesis, confirmed: for the
+    rung THROUGH the head or one space beyond it, the head's OWN solid
+    ink sits inside "one band further away", read as false "thick"
+    evidence against its own real, thin rung. The head is `ev.subject`,
+    already known -- `_exclude_head_box` removes exactly its own rows
+    from every adjacent test (wide and per-side), never any other ink.
+    Re-gathered after the fix: Brahms p1 `det_all` pairs with ANY step
+    found rose 19/82 -> 43/82; Litolff p3 barely moved (1/23 -> 2/23,
+    left/right DENSE itself is the remaining blocker there, a SEPARATE,
+    not-yet-understood question for the MERGING plate)."""
+
+    def test_no_overlap_is_unchanged(self):
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 50.0, 60.0),
+                         (100.0, 110.0))
+
+    def test_head_fully_covers_the_band_is_none(self):
+        self.assertIsNone(gather._exclude_head_box(100.0, 110.0, 90.0, 120.0))
+
+    def test_head_overlaps_the_near_side_keeps_the_far_side(self):
+        """The head's box starts inside the band (its bottom, say, sits a
+        little into the band tested just below it) -- only the portion
+        BEYOND the head survives."""
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 80.0, 104.0),
+                         (104.0, 110.0))
+
+    def test_head_overlaps_the_far_side_keeps_the_near_side(self):
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 106.0, 130.0),
+                         (100.0, 106.0))
+
+    def test_no_head_box_known_is_unchanged(self):
+        """An old caller, or one with no page geometry for the head, still
+        gets exactly the un-excluded band -- never a crash, never a
+        different answer where the exclusion cannot be computed."""
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, None, None),
+                         (100.0, 110.0))
+
+    def test_a_rung_through_the_head_is_now_found(self):
+        """RED before this round: the head's own tall body sat inside the
+        wide adjacent band above AND below a rung tested at its own
+        centre, so a real, thin, fully-overhanging rung was refused as
+        'thick'. The head's box is passed and excluded; the SAME ink is
+        now found."""
+        img = _paper(h=400, w=400)
+        # the head: a tall solid block (200x30), simulating its own body
+        _draw(img, 185, 185, 215, 215)
+        # the rung: thin, at the head's OWN centre, crossing well past it
+        _draw(img, 175, 197, 225, 203)
+        head_y0, head_y1 = 185.0, 215.0
+        without = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        withh = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None,
+                                       head_y0=head_y0, head_y1=head_y1)
+        self.assertFalse(without["found"])
+        self.assertTrue(withh["found"])
+
+
 class TestOneSidedWing(unittest.TestCase):
     """ROADMAP 2.37 (manager print check, 2026-09-29): real Brahms p1 crops
     (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of 39
