@@ -298,3 +298,23 @@ beams (the raw fine-tune's zero is a real deletion). Both §5 claims now
 rest on Sean, not on a count. The Breitkopf ledger crop (scan side) was not
 shown to him; its "mostly staff lines" reading is still the manager's.
 
+**Scan side, Sean on `breitkopf_ledger_prod_vs_prehollow.png`:** *"the first
+2 are in the staff, the second 2 are actual ledger lines in blue."* So the
+older weights both over-fire (staff lines) AND find some real ledgers
+production misses — "no scan loss" above was too strong. Split over all
+110 cells (`split_ledger.py`, geometry only: a ledger lies OUTSIDE the five
+lines by definition; an unmatched box centred inside the staff ± 0.3 space
+is a staff line; matched = IoU ≥ 0.3):
+
+| | both find | only older weights | only production |
+|---|--:|--:|--:|
+| outside the staff (candidate real ledger) | 173 | 37 | **54** |
+| inside the staff (a staff line — false) | | **58** | 16 |
+
+On scans production misses ~37 candidate ledgers the older weights find,
+and finds ~54 they miss, with a quarter of their staff-line false boxes.
+"Candidate" because outside-the-staff is necessary, not sufficient (a
+beam or hairpin end could sit there) — the 37 and 54 are not adjudicated.
+Net: no case for routing scans back to the older weights on ledger lines;
+both miss some, which is why 2.6d reads ledger rungs from the ink too.
+
