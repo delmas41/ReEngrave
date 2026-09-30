@@ -294,5 +294,69 @@ class TestLedgerOwnerComparisonHelper(unittest.TestCase):
         self.assertAlmostEqual(detail["ratio"], 16.0, places=1)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.39b -- `_observe_ledger_owner_density`'s own box (this reader's
+# copy of the standard box `_observe_ledger_rung_ink` also builds) is
+# RE-CENTRED where `g`'s own `Q.NOTEHEAD_RECENTRE` row exists.
+#
+# ⚠️ RUN RED FIRST: `_observe_ledger_owner_density` read no `Q.NOTEHEAD_
+# RECENTRE` row before this round, so `cy` (and therefore the step search
+# and `want_y_page`) never moved -- `test_a_recentre_row_moves_the_
+# informative_step` fails (`want_y_page == 90.0`, `step == 1`, both calls)
+# against the pre-2.39b tree.
+# ─────────────────────────────────────────────────────────────────────────────
+
+class FakeCellForOwnerDensity:
+    def __init__(self, *, image_no_staff, bbox_page_px, upscale_factor,
+                staff_line_ys_canonical):
+        self.image_no_staff = image_no_staff
+        self.bbox_page_px = bbox_page_px
+        self.upscale_factor = upscale_factor
+        self.staff_line_ys_canonical = staff_line_ys_canonical
+
+
+class TestRecentreMovesTheInformativeStep(unittest.TestCase):
+    """A head 2.4 spaces above the candidate's own top line -- one rung is
+    informative at step 1, want_y_page 90.0. Shifting the search's own `cy`
+    UP by half a space (dy_sp -0.5) pushes the head to 2.9 spaces above,
+    moving the informative step to 2 (want_y_page 80.0) -- ink is painted
+    at every candidate step so a step change is visible regardless of
+    which one gets asked."""
+
+    def _cell(self):
+        import numpy as np
+        img = _paper()
+        for step in range(1, 6):
+            y = 100 - step * 10
+            img[int(y) - 1:int(y) + 2, 150:250] = 0
+        return FakeCellForOwnerDensity(
+            image_no_staff=img, bbox_page_px=[0.0, 0.0, 1000.0, 1000.0],
+            upscale_factor=1.0,
+            staff_line_ys_canonical=[0.0, 10.0, 20.0, 30.0, 40.0])
+
+    def test_a_recentre_row_moves_the_informative_step(self):
+        head_box = (190.0, 71.0, 210.0, 81.0)   # y_center 76.0
+        cell_by_key = {(0, 0, 0, 0): self._cell()}
+
+        baseline_log = Log()
+        gather._observe_ledger_owner_density(
+            baseline_log, HEAD, head_box, UP.to_key(), UP_LINES, 10.0,
+            cell_by_key, None)
+        base_row = baseline_log.rows(Q.LEDGER_OWNER_DENSITY, HEAD)[0]
+        self.assertEqual(base_row.detail["step"], 1)
+        self.assertAlmostEqual(base_row.detail["want_y_page"], 90.0)
+
+        shifted_log = Log()
+        shifted_log.observe(HEAD, Q.NOTEHEAD_RECENTRE, [0.0, -0.5],
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame="page",
+                           fill=0.9, margin=0.2, runner_up=0.6)
+        gather._observe_ledger_owner_density(
+            shifted_log, HEAD, head_box, UP.to_key(), UP_LINES, 10.0,
+            cell_by_key, None)
+        shifted_row = shifted_log.rows(Q.LEDGER_OWNER_DENSITY, HEAD)[0]
+        self.assertEqual(shifted_row.detail["step"], 2)
+        self.assertAlmostEqual(shifted_row.detail["want_y_page"], 80.0)
+
+
 if __name__ == "__main__":
     unittest.main()

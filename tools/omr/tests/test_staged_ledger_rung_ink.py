@@ -782,5 +782,65 @@ class TestStandardBoxForRegularNoteheads(unittest.TestCase):
         self.assertEqual(self._head_args(None), (190.0, 210.0, 80.0, 90.0))
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.39b -- the standard box above is RE-CENTRED where GATHER's own
+# matched-window search accepted an offset for this head.
+#
+# ⚠️ RUN RED FIRST: `_observe_ledger_rung_ink` read no `Q.NOTEHEAD_RECENTRE`
+# row before this round -- `test_a_recentre_row_shifts_the_standard_box`
+# fails with an unshifted box (identical to `test_regular_black_head_uses_
+# the_standard_box_not_the_raw_one`'s own numbers) against the pre-2.39b
+# tree.
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestRecentreShiftsTheStandardBox(TestStandardBoxForRegularNoteheads):
+    """Same spy harness as its parent; the only difference is a
+    `Q.NOTEHEAD_RECENTRE` row filed on `G` before the call."""
+
+    def _head_args_with_recentre(self, class_name, dx_sp, dy_sp):
+        calls = []
+        real = gather.ledger_rung_ink
+
+        def spy(img, head_x0, head_x1, y_center, space, thickness_px,
+               head_y0=None, head_y1=None):
+            calls.append((head_x0, head_x1, head_y0, head_y1))
+            return real(img, head_x0, head_x1, y_center, space, thickness_px,
+                        head_y0=head_y0, head_y1=head_y1)
+
+        gather.ledger_rung_ink = spy
+        try:
+            cell_by_key = {(0, 0, 1, 0): _candidate_cell()}
+            log = Log()
+            log.observe(G, Q.NOTEHEAD_RECENTRE, [dx_sp, dy_sp],
+                       reader=READERS.CV_NOTEHEAD_RECENTRE, frame="page",
+                       fill=0.9, margin=0.2, runner_up=0.6)
+            gather._observe_ledger_rung_ink(
+                log, G, HEAD_BOX_PAGE, CAND_KEY, CAND_LINES, CAND_SPACING,
+                cell_by_key, None, class_name=class_name)
+        finally:
+            gather.ledger_rung_ink = real
+        self.assertEqual(len(calls), 1)
+        return calls[0]
+
+    def test_a_recentre_row_shifts_the_standard_box(self):
+        std = self._head_args("noteheadBlack")   # no recentre row: baseline
+        shifted = self._head_args_with_recentre("noteheadBlack", 0.3, -0.2)
+        std_x0, std_x1, std_y0, std_y1 = std
+        sx0, sx1, sy0, sy1 = shifted
+        # CAND_SPACING = 10 page-px/space: 0.3 sp = 3 px, -0.2 sp = -2 px.
+        self.assertAlmostEqual(sx0 - std_x0, 3.0)
+        self.assertAlmostEqual(sx1 - std_x1, 3.0)
+        self.assertAlmostEqual(sy0 - std_y0, -2.0)
+        self.assertAlmostEqual(sy1 - std_y1, -2.0)
+
+    def test_a_whole_note_ignores_the_recentre_row_too(self):
+        """The recentre gate is `is_regular_notehead`, unconditionally --
+        a class this round never re-centres never reads the row either,
+        even where one happens to exist on this subject."""
+        self.assertEqual(
+            self._head_args_with_recentre("noteheadWhole", 0.3, -0.2),
+            self._head_args_with_recentre(None, 0.3, -0.2))
+
+
 if __name__ == "__main__":
     unittest.main()
