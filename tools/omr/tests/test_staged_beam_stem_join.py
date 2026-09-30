@@ -416,41 +416,58 @@ class TestBeamLevelsWitness(unittest.TestCase):
 
     def test_no_witness_is_the_UNCHANGED_baseline(self):
         b = _padded_only_row()
-        certain, possible = rhythm._beam_levels([b], 150, 20, ())
-        self.assertEqual((certain, possible), (0, 1))
+        certain, possible, conflicts = rhythm._beam_levels([b], 150, 20, ())
+        self.assertEqual((certain, possible, conflicts), (0, 1, ()))
 
     def test_a_JOINED_witness_promotes_the_possible_stroke_to_certain(self):
         b = _padded_only_row()
-        certain, possible = rhythm._beam_levels(
+        certain, possible, conflicts = rhythm._beam_levels(
             [b], 150, 20, (), join_witness={"b1": True})
-        self.assertEqual((certain, possible), (1, 1))
+        self.assertEqual((certain, possible, conflicts), (1, 1, ()))
 
     def test_a_NOT_JOINED_witness_drops_the_stroke_entirely(self):
         b = _padded_only_row()
-        certain, possible = rhythm._beam_levels(
+        certain, possible, conflicts = rhythm._beam_levels(
             [b], 150, 20, (), join_witness={"b1": False})
-        self.assertEqual((certain, possible), (0, 0))
+        self.assertEqual((certain, possible, conflicts), (0, 0, ()))
 
     def test_a_DECLINED_witness_None_leaves_it_possible(self):
         b = _padded_only_row()
-        certain, possible = rhythm._beam_levels(
+        certain, possible, conflicts = rhythm._beam_levels(
             [b], 150, 20, (), join_witness={"b1": None})
-        self.assertEqual((certain, possible), (0, 1))
+        self.assertEqual((certain, possible, conflicts), (0, 1, ()))
 
-    def test_POSITIVE_CONTROL_an_already_CERTAIN_stroke_is_UNAFFECTED(self):
+    def test_POSITIVE_CONTROL_an_already_CERTAIN_stroke_COUNT_is_UNAFFECTED(self):
         """⚠️ THE CONTROL. A stroke whose box already covers the centre, or
-        that a stem already joins, must not move whatever the witness says
-        -- box-geometry certainty is never overridden by this reader."""
+        that a stem already joins, must not move its COUNT whatever the
+        witness says -- box-geometry certainty is never silently overridden
+        (dropped or promoted) by this reader. A NOT-JOINED reading is
+        instead flagged in `certain_conflicts` (ROADMAP 2.38b) for the
+        caller to turn into a NARROW, never a count change here."""
         exact = _Row("b1", 100, 200)          # covers x_center=150 exactly
-        certain, possible = rhythm._beam_levels(
+        certain, possible, conflicts = rhythm._beam_levels(
             [exact], 150, 20, (), join_witness={"b1": False})
         self.assertEqual((certain, possible), (1, 1))
+        self.assertEqual(conflicts, ("b1",))
 
         stem_joined = _Row("b2", 400, 500)    # box FAR from the centre...
-        certain, possible = rhythm._beam_levels(
+        certain, possible, conflicts = rhythm._beam_levels(
             [stem_joined], 150, 20, (stem_joined,),   # ...but stem-joined
             join_witness={"b2": False})
         self.assertEqual((certain, possible), (1, 1))
+        self.assertEqual(conflicts, ("b2",))
+
+    def test_a_CERTAIN_stroke_JOINED_has_no_conflict(self):
+        exact = _Row("b1", 100, 200)
+        certain, possible, conflicts = rhythm._beam_levels(
+            [exact], 150, 20, (), join_witness={"b1": True})
+        self.assertEqual((certain, possible, conflicts), (1, 1, ()))
+
+    def test_a_CERTAIN_stroke_DECLINED_has_no_conflict(self):
+        exact = _Row("b1", 100, 200)
+        certain, possible, conflicts = rhythm._beam_levels(
+            [exact], 150, 20, (), join_witness={"b1": None})
+        self.assertEqual((certain, possible, conflicts), (1, 1, ()))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -559,12 +576,16 @@ class TestBeamStemJoinWiresIntoDuration(unittest.TestCase):
         adjudicate.run(log)
         self.assertIn(join_row.id, log.verdict(Q.DURATION, g).basis)
 
-    def test_POSITIVE_CONTROL_a_box_CERTAIN_join_is_unmoved_by_the_ink(self):
-        """⚠️ THE POSITIVE CONTROL. The identical stroke, but the stem now
-        physically reaches it (box overlap) -- already CERTAIN before this
-        lane existed -- and a CONTRADICTING ink witness (`found=False`) must
-        not move it: box-geometry certainty is never overridden by the ink
-        reader."""
+    def test_a_CERTAIN_join_the_ink_reads_NOT_JOINED_is_NARROWED(self):
+        """⚠️⚠️ THE BUG, ROADMAP 2.38b (manager print check of 3a5bbb67 /
+        b2aa2fd1 merged 2.38: Brahms p1, ~50 of 165 `duration` verdicts
+        decided using only a NOT-JOINED witness read the wrong
+        `beam_levels`). Before 2.38b this exact fixture DECIDED at the
+        CERTAIN count unconditionally -- a stroke a stem's own box happens
+        to overlap is not proof the ink agrees, and where it does not, the
+        box-only count may itself be the wrong one (a stray overlap with a
+        stroke that is not this stem's). Two witnesses disagreeing about a
+        CERTAIN stroke must NARROW, never decide either way (rule 8)."""
         log = Log()
         beam_row = _beam(log, y=40, x0=60, x1=140)
         g = R.glyph(0, 0, 0, 0, 0)
@@ -575,6 +596,46 @@ class TestBeamStemJoinWiresIntoDuration(unittest.TestCase):
         stem_row = _stem(log, x=135, y=38, h=60)     # 38..98: meets y=40
         _beam_stem_join(log, stem_row_id=stem_row.id, beam_row_id=beam_row.id,
                         end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beam_certain_not_joined")
+        self.assertEqual(v.detail["certain_conflicts"], 1)
+        levels = sorted(c.value["beam_levels"] for c in v.candidates)
+        self.assertEqual(levels, [0, 1])   # with the stroke, and without it
+
+    def test_POSITIVE_CONTROL_a_CERTAIN_join_the_ink_JOINS_is_DECIDED(self):
+        """The same fixture, but the ink AGREES (`found=True`) -- no
+        disagreement, decides exactly as it always did."""
+        log = Log()
+        beam_row = _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        stem_row = _stem(log, x=135, y=38, h=60)
+        _beam_stem_join(log, stem_row_id=stem_row.id, beam_row_id=beam_row.id,
+                        end="top", found=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["levels_certain"], 1)
+
+    def test_POSITIVE_CONTROL_a_CERTAIN_join_NO_WITNESS_is_DECIDED(self):
+        """The same fixture, but GATHER never reached this pair (no
+        `Q.BEAM_STEM_JOIN` row at all, declined/absent) -- no evidence
+        either way, so box geometry alone still decides, same as always
+        (rule 8: declined never defaults, in EITHER direction)."""
+        log = Log()
+        beam_row = _beam(log, y=40, x0=60, x1=140)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.outcome, Outcome.DECIDED)

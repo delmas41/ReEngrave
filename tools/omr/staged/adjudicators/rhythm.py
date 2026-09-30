@@ -1192,33 +1192,50 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
     the first opportunity.
 
     ⚠️ ROADMAP 2.38: `join_witness` (`{stroke id: True/False/None}`, from
-    `_beam_join_witness`) is consulted ONLY for a stroke this test would
-    otherwise count as merely POSSIBLE (the padded column match, never the
-    exact-overlap or stem-joined ones -- CERTAIN stays certain on box
-    geometry alone, whatever the ink says, the positive control this rule
-    must never move). Where the ink-continuity reader says the stem's own
-    ink DOES run into this stroke, it is promoted to CERTAIN; where it says
-    it does NOT, the stroke is dropped from the count entirely (neither
-    certain nor possible -- rule 8's "count the level"/"drop it", never a
-    silent guess); where the reader never reached it (`None`), the stroke
-    stays exactly as box geometry alone would have called it, and the note
-    stays narrowed -- the same "declined never defaults" rule 8 states for
-    every other ink witness in this module.
+    `_beam_join_witness`) is consulted for a stroke this test would
+    otherwise count as merely POSSIBLE (the padded column match). Where the
+    ink-continuity reader says the stem's own ink DOES run into this
+    stroke, it is promoted to CERTAIN; where it says it does NOT, the
+    stroke is dropped from the count entirely (neither certain nor
+    possible -- rule 8's "count the level"/"drop it", never a silent
+    guess); where the reader never reached it (`None`), the stroke stays
+    exactly as box geometry alone would have called it, and the note stays
+    narrowed -- the same "declined never defaults" rule 8 states for every
+    other ink witness in this module.
+
+    ⚠️⚠️ ROADMAP 2.38b: A CERTAIN stroke (exact column overlap, or already
+    stem-joined by box) is NEVER dropped for a NOT-JOINED ink reading --
+    that was measured and refused (Brahms p1 print check: `duration`
+    verdicts DECIDED using only a NOT-JOINED witness read the wrong level
+    ~50 of 165 times, because dropping a CERTAIN stroke silently promoted
+    a WRONG box-only count -- some certain attributions were already wrong
+    before this lane existed, box overlap with a stroke that is not this
+    stem's, and only stayed NARROWED before because an extra, now-correctly
+    -dropped POSSIBLE stroke kept `possible > certain`). A certain stroke
+    the ink reads NOT JOINED is instead returned in `certain_conflicts` --
+    a DISAGREEMENT between two witnesses, which `adjudicate_duration`
+    turns into a NARROW (`beam_certain_not_joined`), never a silent count
+    change here. JOINED or declined (`None`) leaves a certain stroke
+    exactly as before -- unaffected, the positive control this rule must
+    never move.
     """
     joined_ids = {b.id for b in joined}
     if x_center is None:
         # ⚠️ No box means no head to attach a stem to either, so `joined` is
         # empty here by construction -- it is read rather than assumed zero so
         # the two callers cannot drift apart.
-        return (len(joined_ids), len(joined_ids))
+        return (len(joined_ids), len(joined_ids), ())
     pad = (width or 0.0) * BEAM_EDGE_TOLERANCE_WIDTHS
     certain = possible = 0
+    certain_conflicts = []
     for b in beams:
         x0 = b.detail.get("x0", 0)
         x1 = b.detail.get("x1", 0)
         if b.id in joined_ids or x0 <= x_center <= x1:
             certain += 1
             possible += 1
+            if (join_witness or {}).get(b.id) is False:
+                certain_conflicts.append(b.id)
         elif x0 - pad <= x_center <= x1 + pad:
             witness = (join_witness or {}).get(b.id)
             if witness is True:
@@ -1228,7 +1245,7 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
                 continue
             else:
                 possible += 1
-    return (certain, possible)
+    return (certain, possible, tuple(certain_conflicts))
 
 
 def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
@@ -1446,6 +1463,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "beam_discounted_uncertain",
+             "beam_certain_not_joined",
              "head_fill_from_ink", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
@@ -1574,8 +1592,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     join_witness, join_used = _beam_join_witness(ev, cell, kept, own_stems,
                                                  side)
     used.extend(r.id for r in join_used)
-    certain, possible = _beam_levels(kept, x_center, head_width, joined,
-                                     join_witness)
+    certain, possible, certain_conflicts = _beam_levels(
+        kept, x_center, head_width, joined, join_witness)
     # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
     # Where the strokes past the tip were the ONLY thing over this head, and
     # its stem carries no beam and no flag once they go, the note would fall
@@ -1592,8 +1610,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         join_witness, join_used = _beam_join_witness(ev, cell, kept,
                                                       own_stems, side)
         used.extend(r.id for r in join_used)
-        certain, possible = _beam_levels(kept, x_center, head_width, joined,
-                                         join_witness)
+        certain, possible, certain_conflicts = _beam_levels(
+            kept, x_center, head_width, joined, join_witness)
     levels = certain
     used.extend(b.id for b in kept)
     used.extend(s.id for s in attached)
@@ -1686,6 +1704,33 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # head carries no flag, so a reader cannot mistake *no flag* for
               # *a flag with no direction*.
               **_flag_direction(ev, flags)}
+
+    # ⚠️⚠️ ROADMAP 2.38b, RULE 8, CHECKED FIRST. A CERTAIN stroke (box
+    # geometry) the ink reads NOT JOINED is a DISAGREEMENT between two
+    # independent witnesses, not a count to silently correct in either
+    # direction -- `_beam_levels`'s own docstring has the measured
+    # argument (Brahms p1: ~50 of 165 NOT-JOINED-only decisions were wrong
+    # beam_levels). NARROW between the level AS BOX GEOMETRY ALONE COUNTS
+    # IT (`certain`, unchanged) and the level WITHOUT the disputed
+    # stroke(s) (`certain` minus however many disagree) -- never straight
+    # to either, and EQUAL support: nothing here says which witness is
+    # right, only that they disagree.
+    if certain_conflicts:
+        disputed = len(certain_conflicts)
+        cands = []
+        for level in sorted({certain, max(certain - disputed, 0)}):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": level},
+                support=1.0))
+        return Ruling.narrow(cands, "beam_certain_not_joined",
+                             used=tuple(used), **shared,
+                             certain_conflicts=len(certain_conflicts))
 
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is
     # not a weaker answer than deciding -- it is the true one, and it is what
