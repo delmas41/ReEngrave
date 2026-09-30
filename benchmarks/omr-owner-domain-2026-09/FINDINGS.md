@@ -3144,3 +3144,129 @@ negative, never a decline).
 
 Gate: fast tier 3,959 → **3,962** (3 new), 0 failed. `staged.check`:
 **245**, unchanged.
+
+### §2.37 round 4 — STOPPED, per Sean's redirect (not shipped)
+
+An absolute width-comparison redesign (find the row-band's own contiguous
+ink run, compare its width to the head's own measured ink width read away
+from the rung) was built in response to the manager's round-4 brief, but
+Sean's OWN redirect arrived mid-implementation and superseded the
+question this whole width-test line was answering. Per his instruction
+("stop the width-test round where it is; commit what's working"), the
+round-4 rewrite was **reverted before commit** (`git show HEAD:... >
+gather.py`, back to round 3's committed state, `94a35971`) rather than
+shipped half-tested — it broke 9 of round 3's own pinned tests
+(`center`/`left`/`right` fields it removed, and it flipped `TestARealPrintedRung`'s
+deliberately-unresolved calibration case) and Sean's reasoning made the
+whole absolute-threshold approach moot anyway (see round 5 below). The
+attempt is not committed; this paragraph is its only record.
+
+### §2.37 round 5 — Sean's redirect: ownership only needs a RELATIVE comparison
+
+Sean, quoted (via the coordinator, redirecting away from every absolute-
+threshold round above): *"pitch is geometric — staff spacing tells line
+vs space for any note outside the staff; ledger lines always exist
+between the note and its own staff. Pitch already works that way
+(`restate_pitch` from `Q.NOTEHEAD_STAFF_POSITION`, no ledger read). So
+the ledger reader is ONLY needed for OWNERSHIP of a note between two
+staves, and for that we do not need to read every rung with absolute
+thresholds."*
+
+**Design, one comparison per contested head**: `gather.
+_ledger_owner_informative_step` names the ONE ledger position adjacent to
+the head toward each candidate, from geometry alone (the SAME `_ledger_
+expected`-style arithmetic) — a head resting IN a space samples that
+space's own ledger; a head standing ON a ledger is uninformative there
+(the row is the head's own ink) and the step one further out is sampled
+instead; a candidate needing no ledger at all is not tested.
+`gather.ledger_owner_ink_density` reads the RAW ink fraction there — no
+found/not-found threshold, the SAME window shape as `ledger_rung_ink`,
+off the staff-erased raster, the head's box excluded. Filed as a NEW
+quantity, `Q.LEDGER_OWNER_DENSITY` (added next to `Q.LEDGER_RUNG_INK` per
+the lane's own fence; reusing `LEDGER_RUNG_INK` was rejected because the
+value TYPE differs — a raw float density, never a bool — and conflating
+them risked an existing consumer reading a density as a found/not-found
+verdict). `ownership._ledger_owner_comparison` (ADJUDICATE) compares the
+TWO candidates' own readings against EACH OTHER — self-calibrating per
+plate, never a fixed floor across documents — deciding only where the
+winning side clears a low floor (0.15) AND beats the other by at least
+2×; comparable or both near-empty declines (a genuine reading gap).
+
+**Wired as a witness, not a replacement**: asked FIRST in `adjudicate_
+glyph_owner`, ahead of the existing completeness-based `ledger_direction`
+(kept as a CORROBORATING witness, unchanged). Where the density
+comparison decides AND the detector ladder ALSO has an opinion (`points`)
+that DISAGREES, the glyph declines outright (`ledger_witnesses_disagree`,
+added to `OWNER_NOT_READ_REASONS`) — neither witness is trusted alone.
+Where they agree, or the ladder is silent, the density comparison's
+answer stands.
+
+**The all-rungs elimination rule (built rounds 2-3 on this branch) is
+left OFF/unwired**, per Sean's instruction: `_contest_ledger_reading` no
+longer computes or passes `refuted` to `ledger_direction`, so `_eliminate`
+(still defined, for a possible future round) never fires
+(`if not refuted: return fallback`). Three existing tests that pinned the
+wired behaviour were updated to pin the UN-wired one instead (a plain
+`far_no_rungs` gap where they used to expect `ledger_refuted`/`ledger_
+all_refuted`) — noted in each test's own docstring so a future re-wiring
+shows as a visible text diff, not a silent behaviour change.
+
+**Measured on a fresh re-gather of both pages (`-v4`, real pipeline, not
+a replay)**:
+
+| plate | det_all 2-candidate pairs | agree | disagree | declined | confound-control heads | picked neighbour |
+|---|---|---|---|---|---|---|
+| Litolff p3 | 8 | **7 (87.5%)** | **0** | 1 | 0 | 0 |
+| Brahms p1 | 39 | 10 (25.6%) | **0** | 29 | 77 | **0** |
+
+**Zero disagreements and zero false picks on either plate** — the
+mechanism is never wrong where it speaks, only sometimes silent. Litolff
+(the MERGING plate) improves dramatically over every absolute-threshold
+round before it (round 3's best was 2 of 23 det_all pairs, 9%; this is
+7 of 8, 87.5%, on the pairs this comparison could even be run on — the
+domains differ, det_all here requires a genuine 2-candidate contest).
+Brahms declines far more often (29 of 39): 8 crops read by eye
+(`out/print/ledger-cv-first-2.37/brahms_owner_density.png`) show why —
+these are heads CROWDED between other noteheads on both sides in a dense
+passage, and BOTH sampled positions read high density (0.68-0.86) because
+neighbouring noteheads' own ink sits near both candidate positions, not
+because a real ledger is ambiguous. The comparison correctly declines
+rather than guessing between two contaminated readings — CLAUDE.md rule
+8, and arguably the CORRECT behaviour for this plate's own texture, not a
+regression to fix. 8 Litolff crops (`..._owner_density.png`) mostly show a
+clean win: one clearly-inked position, one clean paper position.
+
+Tests: `test_staged_ledger_owner_density.py`, 15 new (RED by construction
+-- `Q.LEDGER_OWNER_DENSITY`, every new function and `ownership._ledger_
+owner_comparison` do not exist before this round): the geometry
+(on-ledger vs in-space vs no-ledger-needed, both directions), the raw
+density measurement (a real stroke, nothing, off-raster), and the full
+`glyph_owner` decision (a clear ratio decides; comparable ink and both-
+near-empty are NOT decided by density, unaffected existing tiers still
+apply; disagreement with a genuinely complete detector ladder declines;
+agreement still decides; fewer than two readings never decides).
+
+Also fixed along the way: `Q.LEDGER_OWNER_DENSITY` needed a `capture.
+UNSCORED` classification (a NEW-UNCLASSIFIED finding `staged.capture`
+correctly caught) — filed next to `LEDGER_RUNG_INK`'s own entry, same
+shape (a scoreless RELATION, a ruler reading off the erased raster).
+
+Gate: fast tier 3,962 → **3,977** (15 new), 0 failed. `staged.check`:
+**245**, unchanged (the capture fix keeps it there; without it the check
+would have gone to 246, `status=broken`).
+
+### Questions for Sean (round 5)
+
+1. Brahms's crowded passages (8 crops) decline correctly by this
+   mechanism's own logic — is that the right call for those specific
+   printed positions, or does the crowding itself need a narrower x-span
+   than "head width ± a little" to separate a real rung from a
+   neighbour's ink?
+2. The confound-control (own-staff heads tested toward a neighbour) never
+   picked wrong on either plate (0 of 77 Brahms, 0 of 0 Litolff — none
+   qualified there) — is 77 a large enough sample to trust this at scale,
+   or does it want a whole-movement re-gather before landing?
+3. Should the un-wired elimination rule (`_eliminate`/`_ink_refutes_
+   side`) be deleted outright now, or kept dormant for a future round
+   that might re-purpose it (e.g. as a THIRD witness alongside density
+   and the detector ladder)?

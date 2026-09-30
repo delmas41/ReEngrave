@@ -963,6 +963,13 @@ def _gather_owner_candidates(log: Log, placed_item, others: set,
             _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
                                      spacing, cell_by_key,
                                      thickness_by_key.get(cand_key))
+            # ⚠️ ROADMAP 2.37 (Sean's redirect): the relative OWNERSHIP
+            # witness, filed alongside the per-step ladder reader (still
+            # gathered as a corroborating witness) rather than replacing
+            # it -- `adjudicate_glyph_owner` decides which to trust.
+            _observe_ledger_owner_density(log, g, box, cand_key, line_ys,
+                                          spacing, cell_by_key,
+                                          thickness_by_key.get(cand_key))
 
 
 def _ledger_index(
@@ -1507,6 +1514,164 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
                              round(y0, 2), round(y1, 2)],
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted via the coordinator,
+# stopping the absolute-threshold width-test round where it stood):
+#
+# "pitch is geometric -- staff spacing tells line vs space for any note
+# outside the staff; ledger lines always exist between the note and its
+# own staff. Pitch already works that way (`restate_pitch` from `Q.
+# NOTEHEAD_STAFF_POSITION`, no ledger read). So the ledger reader is ONLY
+# needed for OWNERSHIP of a note between two staves, and for that we do
+# not need to read every rung with absolute thresholds."
+#
+# One comparison per contested head: the ONE ledger position adjacent to
+# the head on each candidate side, ink density read raw (no found/not-
+# found threshold), the OWNER decided by `glyph_owner` from the RATIO
+# between the two candidates' own readings -- self-calibrating per plate
+# (merging vs shattering) because nothing is ever compared to a fixed
+# floor across documents, only the two candidates against each other.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A candidate's reading must beat the other's by at least this ratio to
+#: decide ownership -- "clearly more", not merely more.
+LEDGER_OWNER_RATIO_MIN = 2.0
+#: ...and the WINNING side's own reading must clear this floor, or two
+#: near-empty readings could satisfy the ratio by noise alone.
+LEDGER_OWNER_FLOOR = 0.15
+#: The tested x-span is the head's own true ink width (`_true_ink_span`),
+#: widened by this fraction each side -- "the same x-span" both candidates
+#: are read over, Sean's own words ("head ink width ± a little").
+LEDGER_OWNER_WIDTH_PAD_FRAC = 0.15
+#: A step whose position is within this many spaces of an INTEGER (the
+#: head sits almost exactly ON that rung's own row) is the head's own ink,
+#: not an independent witness -- sample one step further out instead.
+LEDGER_OWNER_ON_TOLERANCE_SPACES = 0.15
+
+
+def _ledger_owner_informative_step(gap: float, spacing: float
+                                   ) -> Optional[int]:
+    """ROADMAP 2.37 (Sean's redirect). Which step (1-based, from the
+    candidate's own outer line) is the ONE informative rung position
+    toward this candidate: the rung immediately adjacent to the head --
+    UNLESS the head itself sits (within `LEDGER_OWNER_ON_TOLERANCE_
+    SPACES`) almost exactly ON that rung's own row, in which case that
+    row IS the head's own ink and uninformative; the step one further out
+    (one more space toward the staff) is sampled instead. `None` where
+    the candidate needs no ledger at all (within the staff or its exempt
+    first space -- the SAME `LEDGER_ROUND_UP` boundary `_ledger_expected`
+    itself uses), or where the only rung coincides with the head and
+    there is no further step to fall back to."""
+    if not spacing or spacing <= 0:
+        return None
+    steps = gap / spacing
+    expected = int(steps + LEDGER_ROUND_UP)
+    if expected <= 0:
+        return None
+    on_ledger = abs(steps - round(steps)) <= LEDGER_OWNER_ON_TOLERANCE_SPACES
+    if on_ledger:
+        return expected - 1 if expected >= 2 else None
+    return expected
+
+
+def ledger_owner_ink_density(img: Any, head_x0: float, head_x1: float,
+                             y_center: float, space: float,
+                             thickness_px: Optional[float]
+                             ) -> Optional[float]:
+    """ROADMAP 2.37 (Sean's redirect). The raw ink fraction in a thin band
+    (the SAME `half_h` shape `ledger_rung_ink` itself uses) at `y_center`,
+    over the head's OWN true ink width (`_true_ink_span`) widened by
+    `LEDGER_OWNER_WIDTH_PAD_FRAC` each side. NO threshold, NO found/not-
+    found verdict -- `adjudicate_glyph_owner` compares this number against
+    the OTHER candidate's own reading, never a fixed floor across
+    documents. `None` -- declined -- where the window falls off the
+    raster."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space \
+            or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    head_w = head_x1 - head_x0
+    if head_w <= 0:
+        return None
+    thickness = float(thickness_px) if thickness_px else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * space
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * space
+    half_h = thickness / 2.0 + pad
+    y0, y1 = y_center - half_h, y_center + half_h
+    true_x0, true_x1 = _true_ink_span(ink, head_x0, head_x1, y0, y1, W, H)
+    wpad = LEDGER_OWNER_WIDTH_PAD_FRAC * head_w
+    x0, x1 = true_x0 - wpad, true_x1 + wpad
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return None
+    region = ink[iy0:iy1, ix0:ix1]
+    return float(region.sum()) / float(region.size)
+
+
+def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
+                                  line_ys: Sequence[float], spacing: float,
+                                  cell_by_key: Dict[Tuple[int, int, int, int], Any],
+                                  thickness_px: Optional[float]) -> None:
+    """`Q.LEDGER_OWNER_DENSITY` -- ROADMAP 2.37 (Sean's redirect): one row,
+    the ONE informative rung position toward `cand_key`."""
+    g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
+    y = (box[1] + box[3]) / 2.0
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OFF_STAFF,
+                    candidate=cand_key,
+                    note="within this candidate's own staff: no ledger question")
+        return
+    above = y < top
+    edge = top if above else bottom
+    gap = (edge - y) if above else (y - edge)
+    step = _ledger_owner_informative_step(gap, spacing)
+    if step is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key,
+                    note="no informative rung position toward this candidate")
+        return
+    want = (edge - step * spacing) if above else (edge + step * spacing)
+    cand = R.Subject.from_key(cand_key)
+    cell = cell_by_key.get((g.page, g.system, cand.staff, g.cell))
+    if cell is None or getattr(cell, "image_no_staff", None) is None:
+        cell = cell_by_key.get((g.page, g.system, g.staff, g.cell))
+    img = getattr(cell, "image_no_staff", None) if cell is not None else None
+    cbox = getattr(cell, "bbox_page_px", None) if cell is not None else None
+    up = getattr(cell, "upscale_factor", None) if cell is not None else None
+    grid = _cell_grid(cell) if cell is not None else None
+    if cell is None or img is None or getattr(img, "ndim", 0) != 2:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_MASK,
+                    candidate=cand_key, step=step, note="no cell raster")
+        return
+    if not cbox or len(cbox) != 4 or not up or grid is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key, step=step,
+                    note="no page box, upscale factor or cell grid")
+        return
+    space_c = grid[1] * 2.0
+    hx0_c = (box[0] - cbox[0]) * up
+    hx1_c = (box[2] - cbox[0]) * up
+    want_c = (want - cbox[1]) * up
+    thick_c = (float(thickness_px) * up) if thickness_px else None
+    d = ledger_owner_ink_density(img, hx0_c, hx1_c, want_c, space_c, thick_c)
+    if d is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key, step=step, want_y_page=round(want, 2),
+                    note="window off the raster")
+        return
+    log.observe(g, Q.LEDGER_OWNER_DENSITY, round(d, 4),
+                reader=READERS.CV_LEDGER, frame=FRAME_PAGE,
+                candidate=cand_key, step=step, want_y_page=round(want, 2))
 
 
 def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,

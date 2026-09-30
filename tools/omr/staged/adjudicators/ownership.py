@@ -171,8 +171,60 @@ OWN_STRUCTURE_TOLERANCE_SPACES = 0.2
 #: candidate's ladder was cleanly refuted by the ink, not merely unread --
 #: a reader failure, held out exactly like a reading gap, but counted
 #: apart from `far_no_rungs` so the two are never conflated.
+#: ROADMAP 2.37 (Sean's redirect) adds `ledger_witnesses_disagree`: the
+#: relative density comparison and the detector-based ladder each have an
+#: opinion and they DISAGREE -- neither is trusted alone, held out exactly
+#: like a reading gap.
 OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence",
-                          "ledger_all_refuted")
+                          "ledger_all_refuted", "ledger_witnesses_disagree")
+
+#: A candidate's `Q.LEDGER_OWNER_DENSITY` reading must beat the OTHER
+#: candidate's own reading by at least this ratio to decide ownership --
+#: "clearly more", not merely more. Self-calibrating per plate: the ratio
+#: is between the two candidates' OWN readings, never a fixed floor
+#: compared across documents (Sean's redirect, 2026-09-29).
+LEDGER_OWNER_RATIO_MIN = 2.0
+#: ...and the WINNING side's own reading must clear this floor, or two
+#: near-empty readings could satisfy the ratio by noise alone.
+LEDGER_OWNER_FLOOR = 0.15
+
+
+def _ledger_owner_comparison(ev: Evidence, cand_keys: Sequence[Optional[str]]
+                             ) -> Optional[Tuple[str, Dict[str, Any]]]:
+    """ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted at `gather.
+    gather_ownership_evidence`'s own note): `Q.LEDGER_OWNER_DENSITY`
+    readings for this contest's candidates -- a RATIO comparison, never
+    an absolute floor. Returns `(winner_staff, detail)`, or `None` where
+    fewer than exactly two candidates have a reading (this mechanism is
+    Sean's own two-candidate case, "staff A above, B below"; a contest
+    with more sides is left to the existing tiers), where the winning
+    side does not clear `LEDGER_OWNER_FLOOR`, or where the two are not
+    CLEARLY different (`LEDGER_OWNER_RATIO_MIN`) -- comparable or both
+    near-empty is a genuine reading gap, not a guess either way."""
+    readings: Dict[str, float] = {}
+    for row in ev.rows(Q.LEDGER_OWNER_DENSITY):
+        cand = (row.detail or {}).get("candidate")
+        if cand in cand_keys and cand not in readings:
+            try:
+                readings[cand] = float(row.value)
+            except (TypeError, ValueError):
+                continue
+    if len(readings) != 2:
+        return None
+    (ka, da), (kb, db) = sorted(readings.items())
+    if da >= db:
+        hi_k, hi_v, lo_v = ka, da, db
+    else:
+        hi_k, hi_v, lo_v = kb, db, da
+    if hi_v < LEDGER_OWNER_FLOOR:
+        return None
+    ratio = float("inf") if lo_v <= 0 else hi_v / lo_v
+    if ratio < LEDGER_OWNER_RATIO_MIN:
+        return None
+    return hi_k, {
+        "readings": {k: round(v, 4) for k, v in readings.items()},
+        "ratio": None if ratio == float("inf") else round(ratio, 3),
+    }
 
 
 @decision(
@@ -196,19 +248,24 @@ OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence",
     # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: a SECOND reader of the same
     # ladder, for a step the detector drew no `ledgerLine` box on
     # (`cv_rungs`).
+    # ⚠️ ROADMAP 2.37 (Sean's redirect) adds `Q.LEDGER_OWNER_DENSITY`: the
+    # RELATIVE ownership witness (`_ledger_owner_comparison`), read BEFORE
+    # the completeness-based `ledger_direction` -- see that function's own
+    # note on how the two combine.
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
-                   Q.LEDGER_RUNG_INK),
+                   Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
-           Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK),
-    reasons=("human_owner", "ledger_direction", "ledger_refuted",
-             "hairpin_separates", "far_no_rungs", "ledger_all_refuted",
-             "ladder", "range_veto", "distance", "no_contest",
-             "no_evidence", "tied"),
+           Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
+           Q.LEDGER_OWNER_DENSITY),
+    reasons=("human_owner", "ledger_owner_density", "ledger_witnesses_disagree",
+             "ledger_direction", "ledger_refuted", "hairpin_separates",
+             "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
+             "distance", "no_contest", "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
     # nothing to arbitrate, and a verdict per detection would bury 4,521 real
@@ -265,15 +322,29 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
 
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
-    # ⚠️⚠️ ROADMAP 2.6c (second half) — THE LEDGER LINES DECIDE, OUTRIGHT.
-    # Sean, 2026-09-28: *"Nearer to the staff is not always going to be right
-    # but ledger lines will be."* A COMPARISON across the whole contest
-    # ("rungs toward one staff, none toward the other"), settled once, before
-    # a single term is summed: where the rungs name one candidate this
-    # returns, and nothing after it -- hairpin, ladder weight, range veto,
-    # distance -- is ever consulted. `ledger_direction` is the SAME helper
-    # 2.7b's `belongs_to_a_nearer_staff` asks, so the two cannot disagree.
+    # ⚠️⚠️ ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted): pitch is
+    # already geometric and never reads a ledger; the ledger reader is
+    # needed ONLY for OWNERSHIP, and for that one RELATIVE comparison
+    # (which candidate has more ink at the ONE informative rung position)
+    # is enough -- self-calibrating per plate, never an absolute floor
+    # read against every rung. Asked FIRST: the detector-based ladder
+    # (`ledger_direction`, below) is kept as a CORROBORATING witness --
+    # where it also has an opinion and DISAGREES, that is not evidence
+    # either way and this glyph declines outright, rather than trusting
+    # either witness alone.
     ledger = _contest_ledger_reading(ev, bands, ladders)
+    density = _ledger_owner_comparison(
+        ev, [r.detail.get("candidate") for r in bands])
+    if density is not None:
+        winner, detail = density
+        if (ledger is not None and ledger.winner is not None
+                and ledger.winner != winner):
+            return Ruling.abstain("ledger_witnesses_disagree",
+                                  ledger_owner_density=detail,
+                                  ledger=ledger.summary())
+        return Ruling(value=winner, reason="ledger_owner_density",
+                      used=tuple(r.id for r in bands),
+                      detail={"ledger_owner_density": detail})
     if ledger is not None and ledger.winner is not None:
         # ⚠️ ROADMAP 2.37: an ELIMINATED winner (every rival's ladder
         # cleanly refuted, never merely broken) is named apart from a
@@ -1068,17 +1139,16 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
         for pos, built in zip(page_positions,
                               ladder_sides_with_discount(page_specs)):
             sides[pos] = built
-    # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted at `gather.
-    # gather_ownership_evidence`'s own note): a side whose `expected` rungs
-    # were EVERY one of them read cleanly (never declined) and NEVER found
-    # is REFUTED as that note's owner outright -- the print always carries
-    # them toward the true staff. `ledger_direction` turns that into a
-    # DECIDED winner where it eliminates every side but one, and a new,
-    # separate abstention (never `far_no_rungs`) where it eliminates all of
-    # them -- a reader failure, counted apart from a legitimate gap.
-    refuted = {s.staff: _ink_refutes_side(ev, s.staff, s.expected)
-              for s in sides if s is not None and s.staff}
-    return ledger_direction(sides, refuted=refuted)
+    # ⚠️⚠️ ROADMAP 2.37 (Sean's redirect, 2026-09-29): the all-rungs
+    # elimination rule (`_ink_refutes_side`, built in an earlier round on
+    # this same branch) is left OFF/unwired here -- `refuted` is not
+    # computed and not passed, so `_eliminate` (still defined below, for a
+    # future round) never fires (`if not refuted: return fallback`). Sean's
+    # own redirect: the ledger reader is needed for OWNERSHIP only, and for
+    # that a RELATIVE comparison (`_ledger_owner_comparison`, asked earlier
+    # in `adjudicate_glyph_owner`) replaces reading every rung against an
+    # absolute floor.
+    return ledger_direction(sides)
 
 
 def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:

@@ -317,28 +317,35 @@ def _contest(head_y, *, up_cv=None, down_cv=None):
 class TestElimination(unittest.TestCase):
     """`ownership._eliminate`/`_ink_refutes_side`, through the REAL
     `glyph_owner` decision -- head at 176.0: 3.6 spaces below UP (needs 3
-    rungs), 2.4 above DOWN (needs 2); both `>= FAR_MIN_RUNGS`."""
+    rungs), 2.4 above DOWN (needs 2); both `>= FAR_MIN_RUNGS`.
+
+    ⚠️ ROADMAP 2.37, SEAN'S REDIRECT (2026-09-29, quoted): the all-rungs
+    elimination rule this class originally pinned is left OFF/unwired as
+    of that redirect -- `_contest_ledger_reading` no longer computes or
+    passes `refuted` to `ledger_direction`. `_eliminate`/`_ink_refutes_
+    side` remain defined (a future round may re-wire them) but never
+    fire through the real decision any more; the two tests that used to
+    pin a DECIDED-by-elimination/`ledger_all_refuted` outcome now pin the
+    PRE-elimination behaviour instead (a plain `far_no_rungs` reading
+    gap), so a future accidental re-wiring is visible as a text diff, not
+    a silent behaviour change."""
 
     def test_one_side_fully_refuted_the_other_survives_decides_by_elimination(self):
-        """UP's all 3 required steps are read CLEANLY and find nothing --
-        REFUTED outright. DOWN has no ink coverage at all (an ordinary
-        reading gap, not a refutation): it is the only survivor and
-        FOLLOWS, not a guess."""
+        """Elimination unwired: UP reading all-clean-negative no longer
+        eliminates it -- neither side points, both `>= FAR_MIN_RUNGS`,
+        neither has a `toward` rung: the plain `far_no_rungs` gap."""
         v = _contest(176.0, up_cv={1: False, 2: False, 3: False})
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value, DOWN.to_key())
-        self.assertEqual(v.reason, "ledger_refuted")
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "far_no_rungs")
 
     def test_both_sides_fully_refuted_abstains_as_a_reader_failure(self):
-        """Both ladders read CLEANLY and find nothing -- Sean, 2026-09-29:
-        this is never a legitimate `far_no_rungs` gap, it is a READER
-        FAILURE, and it is exported exactly like one (`OWNER_NOT_READ_
-        REASONS`) but counted under its own name."""
+        """Elimination unwired: both sides all-clean-negative is STILL the
+        plain `far_no_rungs` gap, not the (now unwired) `ledger_all_
+        refuted` reader-failure word."""
         v = _contest(176.0, up_cv={1: False, 2: False, 3: False},
                     down_cv={1: False, 2: False})
         self.assertEqual(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "ledger_all_refuted")
-        self.assertNotEqual(v.reason, "far_no_rungs")
+        self.assertEqual(v.reason, "far_no_rungs")
 
     def test_an_incomplete_reading_never_refutes(self):
         """UP has two of its three steps read False and the THIRD
@@ -361,7 +368,15 @@ class TestElimination(unittest.TestCase):
 
 class TestSingleCandidateElimination(unittest.TestCase):
     """ROADMAP 2.37's own degenerate case -- a far note with NO rival at
-    all (the reach fix in Part 2), exercised through the full harness."""
+    all (the reach fix in Part 2), exercised through the full harness.
+
+    ⚠️ SEAN'S REDIRECT (2026-09-29): the elimination rule is unwired (see
+    `TestElimination`'s own note) -- a refuted single candidate no longer
+    abstains specially; it falls through to the SAME ordinary (no-rival)
+    scoring the not-refuted case always used, so both tests below now
+    pin the SAME outcome. The GATHER-side reach fix (every off-staff
+    notehead's own ladder is still walked, contest or not) is unaffected
+    by this redirect and is not what this class tests."""
 
     def _single(self, *, up_cv):
         log = Log()
@@ -389,12 +404,14 @@ class TestSingleCandidateElimination(unittest.TestCase):
         return adjudicate.adjudicate_one(
             log, adjudicate.REGISTRY[Q.GLYPH_OWNER], HEAD)
 
-    def test_refuted_with_no_rival_abstains_rather_than_writing_a_guess(self):
-        """No candidate to hand it to, and its OWN staff is refuted --
-        CLAUDE.md rule 8: abstain, never invent an owner."""
+    def test_refuted_with_no_rival_is_decided_now_elimination_is_unwired(self):
+        """Elimination unwired: an all-clean-negative single candidate is
+        no longer specially caught -- it decides onto its own staff
+        exactly like the not-refuted case, since there is no rival to
+        lose to either way."""
         v = self._single(up_cv={1: False, 2: False, 3: False})
-        self.assertEqual(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "ledger_all_refuted")
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, UP.to_key())
 
     def test_not_refuted_with_no_rival_is_decided_exactly_as_before(self):
         """POSITIVE CONTROL: the ordinary (no-contest) scoring already

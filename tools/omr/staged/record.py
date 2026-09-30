@@ -380,6 +380,21 @@ class Q(_Vocab):
     #: page window, so a crop can be cut from it. ABSTAINS, never defaults,
     #: where the raster or the staff unit is missing.
     LEDGER_RUNG_INK = "ledger_rung_ink"
+    #: ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted): pitch is already
+    #: geometric (line vs space, staff spacing -- `restate_pitch` never
+    #: reads a ledger), so the ledger reader is needed ONLY for OWNERSHIP
+    #: of a note contested between two staves -- and for THAT question one
+    #: RELATIVE comparison (which candidate has more ledger ink at the ONE
+    #: informative rung position adjacent to the head) is enough, never an
+    #: absolute density floor read against every rung. One row per (head
+    #: glyph, candidate staff): the raw ink density (`value`, a float, NOT
+    #: a found/not-found bool -- `adjudicate_glyph_owner` compares the TWO
+    #: candidates' own rows against EACH OTHER, self-calibrating per plate,
+    #: rather than against a fixed threshold). ABSTAINS where the geometry
+    #: names no informative step (the candidate needs no ledger, or the
+    #: only one coincides with the head's own row) or the raster is
+    #: missing.
+    LEDGER_OWNER_DENSITY = "ledger_owner_density"
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
@@ -1779,6 +1794,7 @@ CLAIMS: "dict[str, str]" = {
     #: `LEDGER_INK_UNDER`; what would make it wrong is the ruler (the window,
     #: the thickness assumed) or the raster, never what the ink IS.
     "LEDGER_RUNG_INK": CLAIM.MEASUREMENT,
+    "LEDGER_OWNER_DENSITY": CLAIM.MEASUREMENT,
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
