@@ -298,6 +298,133 @@ def _event_totals(log: Log, subject: Subject, notes, current) -> Optional[float]
     return total
 
 
+def _stem_ids_used(log: Log, v: Verdict) -> "set":
+    """The `Q.STEM` observation ids THIS duration verdict actually attached
+    to, read from its own `used` -- ROADMAP 2.36.
+
+    ⚠️ `used`, NEVER `considered`/`basis`. `adjudicate_duration` reads
+    `ev.rows(Q.STEM, scope=SELF_AND_ANCESTORS, subject=cell)` -- EVERY stem
+    in the cell -- so `considered` (and the `basis` closure over it) holds
+    every stem the cell has, the same set for every note in the bar and
+    useless for telling one chord's stem from the next. `used` is narrower
+    by construction (`rhythm.py`'s `Ruling.used`, filled by
+    `used.extend(s.id for s in attached)` where `attached` is
+    `_stem_joined`'s own overlap test between THIS head's box and the
+    stem rows) -- the exact id or ids this glyph's own box touched.
+    """
+    out: set = set()
+    for rid in v.used:
+        row = log.row(rid)
+        if row is not None and row.quantity == Q.STEM:
+            out.add(rid)
+    return out
+
+
+def _chord_duration_also_reads(log: Log, subject: Subject,
+                               meter: Verdict) -> List[str]:
+    """Declared for `run_over`, exactly as `size_measure_rest`/
+    `reconcile_duration` declare their own extra reads: every OTHER
+    standing `Q.DURATION` verdict in this cell, since this rule's real
+    cause -- a chord mate's own decided reading -- is not the meter this
+    quantity is registered under."""
+    return [v.id for v in _standing(log, subject, Q.DURATION)]
+
+
+@rule(consequence=Consequence.RECONCILE_CHORD_DURATION,
+      cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
+      reads_beyond_cause=_chord_duration_also_reads,
+      bound="Fires on a NARROWED note only where exactly ONE other glyph in "
+            "the same cell is DECIDED and its duration verdict's `used` "
+            "names the exact SAME `Q.STEM` observation id (not merely an "
+            "overlapping box -- the identical row `_stem_joined` attached to "
+            "both heads), and only where that mate's OWN `beam_levels` is "
+            "one of the narrowed note's OWN candidates -- never a value it "
+            "did not already offer. Two or more decided stem-mates that "
+            "disagree, or a level the narrowing does not carry, refuse "
+            "rather than choose. Touches no rest (`_is_rest` excludes them --"
+            " a rest carries no stem) and revises at most the glyphs this "
+            "cell's narrowed notes name, one each.")
+def reconcile_chord_duration(log: Log, subject: Subject,
+                             meter: Verdict) -> List[Verdict]:
+    """A chord's heads are struck on ONE stem, so they carry ONE duration.
+
+    ⚠️⚠️ ROADMAP 2.36. `duration_narrowed` is EXPORT's second-largest
+    refusal (Brahms ~2,559, Litolff ~902 on the 2026-09-29 acceptance
+    records), and its single biggest reason is `beams_ambiguous` -- a
+    stroke only POSSIBLY covers this note, so its own beam count is a
+    range (`benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`). Most of
+    that ambiguity is genuinely undecidable from what is filed (measured:
+    the biggest single class, "no certain beam, one possible", has no
+    other reader's row to connect to and would need a NEW one -- not built
+    here, rule 6). But where the SAME notehead's stem also carries another
+    head the record has already DECIDED, the note is not ambiguous on its
+    own terms at all: the two glyphs are one note EVENT, struck together,
+    and the sibling's already-settled beam count is what this note's own
+    ink was always going to agree with -- this FOLLOWS from two facts
+    already on the record (two `Q.DURATION` verdicts sharing one `Q.STEM`
+    row), not a guess (rule 6).
+
+    ⚠️ MEASURED, NOT ASSUMED, AND THE REACH IS MODEST: `chord_reach.py`
+    against both 2026-09-29 acceptance records finds 32 of 1,149 narrowed
+    Litolff notes and 37 of 3,200 narrowed Brahms notes qualify (a decided
+    stem-mate whose level the narrowing already admits) -- about 2% and
+    1%. This is the connection that FOLLOWS, not the biggest bucket; the
+    biggest bucket needs a reader this roadmap item does not build (see
+    the module docstring above and `FINDINGS.md`).
+
+    ⚠️ NEVER GUESSES PAST ITS OWN NARROWING, same discipline as
+    `reconcile_duration`'s own meter search: the mate's beam level only
+    settles this note when that EXACT level is one of the narrowing's own
+    candidates. A `head_fill_from_ink` narrowing (three candidates that
+    all carry `beam_levels: 0`) is a case in point -- more than one of its
+    own candidates would match a beam_levels-0 mate, so `len(admitted) !=
+    1` and this refuses rather than picking one: the mate speaks to BEAM
+    COUNT, not to notehead fill, and conflating the two would be exactly
+    the guess rule 6 forbids.
+    """
+    notes = [v for v in _standing(log, subject, Q.DURATION) if not _is_rest(v)]
+    decided = [v for v in notes if v.outcome is Outcome.DECIDED]
+    narrowed = [v for v in notes if v.outcome is Outcome.NARROWED]
+    if not decided or not narrowed:
+        return []
+
+    decided_stems = [(v, _stem_ids_used(log, v)) for v in decided]
+    decided_stems = [(v, s) for v, s in decided_stems if s]
+    if not decided_stems:
+        return []
+
+    out: List[Verdict] = []
+    for n in narrowed:
+        n_stems = _stem_ids_used(log, n)
+        if not n_stems:
+            continue
+        mates = [v for v, s in decided_stems if s & n_stems]
+        if len(mates) != 1:
+            # zero: no decided stem-mate yet. more than one: which stem is
+            # this note's own is no longer a single fact -- refuse (rule 8).
+            continue
+        mate = mates[0]
+        mate_levels = (mate.value or {}).get("beam_levels")
+        if mate_levels is None:
+            continue
+        admitted = [c for c in n.candidates
+                   if isinstance(c.value, dict)
+                   and c.value.get("beam_levels") == mate_levels]
+        if len(admitted) != 1:
+            continue
+        option = admitted[0].value
+        out.append(log.record(Verdict(
+            id=log._next_id("vrd"), subject=n.subject, quantity=Q.DURATION,
+            outcome=Outcome.DECIDED,
+            value={**option, "reconciled_by_chord_mate": True},
+            decider="reconcile_chord_duration",
+            reason="chord_mate_shares_the_stem",
+            considered=(n.id, mate.id), used=(n.id, mate.id),
+            basis=(n.id, mate.id),
+            supersedes=n.id)))
+    return out
+
+
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       bound="Searches only the levels a note ADMITS -- its own narrowed "
