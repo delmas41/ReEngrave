@@ -1,0 +1,537 @@
+{
+  "families": [
+    {
+      "family": "accidental",
+      "quantity": "accidental_owner",
+      "detector_glyphs": 209,
+      "cv_glyphs": 209,
+      "ink_rows": 418,
+      "written": 0,
+      "decided": 146,
+      "abstained": {
+        "no_candidate": 45,
+        "is_a_key_signature_marker": 17,
+        "ambiguous_height": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`accidental_owner` decided 146 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "detector_glyphs": 22,
+      "cv_glyphs": 0,
+      "ink_rows": 22,
+      "written": 0,
+      "decided": 1,
+      "abstained": {
+        "no_notehead": 1,
+        "owned_by_another_staff": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`articulation_owner` decided 1 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "detector_glyphs": 50,
+      "cv_glyphs": 0,
+      "ink_rows": 50,
+      "written": 0,
+      "decided": 27,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "out_of_scope": 202
+      },
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "detector_glyphs": 204,
+      "cv_glyphs": 0,
+      "ink_rows": 204,
+      "written": 0,
+      "decided": 192,
+      "abstained": {
+        "unspellable": 10
+      },
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`dynamic` decided 192 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "fermata",
+      "quantity": "fermata_owner",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "detector_glyphs": 36,
+      "cv_glyphs": 0,
+      "ink_rows": 36,
+      "written": 0,
+      "decided": 27,
+      "abstained": {
+        "mixed_marker_kinds": 4,
+        "disagrees_with_document": 5
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "detector_glyphs": 1015,
+      "cv_glyphs": 0,
+      "ink_rows": 1015,
+      "written": 9,
+      "decided": 1632,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "emitted"
+    },
+    {
+      "family": "ornament",
+      "quantity": "ornament_owner",
+      "detector_glyphs": 6,
+      "cv_glyphs": 0,
+      "ink_rows": 6,
+      "written": 0,
+      "decided": 4,
+      "abstained": {
+        "no_notehead": 2
+      },
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`ornament_owner` decided 4 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "rest",
+      "quantity": "rest",
+      "detector_glyphs": 350,
+      "cv_glyphs": 0,
+      "ink_rows": 350,
+      "written": 37,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "abstained"
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "detector_glyphs": 162,
+      "cv_glyphs": 0,
+      "ink_rows": 162,
+      "written": 0,
+      "abstentions_name_no_family": true,
+      "decided": 162,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`arc_kind` decided 162 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "detector_glyphs": 524,
+      "cv_glyphs": 0,
+      "ink_rows": 524,
+      "written": 0,
+      "abstentions_name_no_family": true,
+      "decided": 524,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`arc_kind` decided 524 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "detector_glyphs": 40,
+      "cv_glyphs": 0,
+      "ink_rows": 40,
+      "written": 0,
+      "decided": 1,
+      "abstained": {
+        "meter_change_digits_misread": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "detector_glyphs": 1,
+      "cv_glyphs": 39,
+      "ink_rows": 40,
+      "written": 0,
+      "decided": 39,
+      "abstained": {
+        "no_page_frame": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "decided_but_unwritten",
+      "why": "`wedge_anchor` decided 39 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+    }
+  ],
+  "accidental_reading": {
+    "printed_glyphs_detected": 209,
+    "key_signature_glyphs_detected_and_owned_elsewhere": 36,
+    "gathered": 209,
+    "owner_decided": 146,
+    "applied": 0,
+    "abstained_ambiguous": 1,
+    "no_candidate": 45,
+    "no_unit": 0,
+    "no_evidence": 0,
+    "refused_not_an_accidental": 0,
+    "is_a_key_signature_marker": 17,
+    "head_belongs_to_a_nearer_staff": 0,
+    "heads_owned": 116,
+    "heads_contradicted": 25,
+    "owners_sharing_a_head": 30,
+    "applied_on_a_doubled_copy": 0,
+    "unowned": 91,
+    "carried_in_bar": 76,
+    "pitches_altered_by_the_key": 0,
+    "printed_glyphs_read_into_a_verdict": 170,
+    "heads_balanced": true,
+    "unaccounted": 0
+  },
+  "unclaimed_classes": {
+    "arpeggiato": 86,
+    "caesura": 1
+  },
+  "detected_and_unrepresented": {},
+  "detected_and_unrepresented_total": 0,
+  "decided_and_unwritten": {
+    "accidental": 418,
+    "articulation": 22,
+    "dynamic": 204,
+    "ornament": 6,
+    "slur": 162,
+    "tie": 524,
+    "wedge": 40
+  },
+  "decided_and_unwritten_total": 1376,
+  "decided_uncounted": [],
+  "abstained_without_a_family": {},
+  "status_census": {
+    "emitted": [
+      "clef",
+      "key",
+      "note",
+      "time"
+    ],
+    "decided_but_unwritten": [
+      "accidental",
+      "articulation",
+      "dynamic",
+      "ornament",
+      "slur",
+      "tie",
+      "wedge"
+    ],
+    "decided_uncounted": [],
+    "abstained": [
+      "direction",
+      "fermata",
+      "rest",
+      "tuplet"
+    ],
+    "stub": [],
+    "starved": [],
+    "NO_QUANTITY": [],
+    "unaccounted": [],
+    "n_families": 15,
+    "n_filed": 15,
+    "balanced": true
+  },
+  "family_refusals": {
+    "ledger_is_not_a_ledger": {
+      "refused": {
+        "on_a_staff_line": 16,
+        "inside_the_staff": 64
+      },
+      "refused_total": 80,
+      "kept": 138,
+      "abstained": 1,
+      "abstained_reasons": {
+        "rung_without_boxed_head": 1
+      },
+      "verdicts": 219,
+      "balanced": true
+    },
+    "accidental_is_not_an_accidental": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 209,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 209,
+      "balanced": true
+    },
+    "rest_is_not_a_rest": {
+      "refused": {
+        "rest_clipped_by_crop": 47,
+        "rest_outside_its_staff": 17,
+        "rest_is_a_duplicate_box": 36,
+        "rest_has_a_stem": 1,
+        "rest_touches_two_staff_lines": 2
+      },
+      "refused_total": 103,
+      "kept": 247,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 350,
+      "balanced": true
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 86,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 86,
+      "balanced": true
+    },
+    "arc_is_not_an_arc": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 686,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 686,
+      "balanced": true
+    },
+    "dynamic_is_not_a_dynamic": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 204,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 204,
+      "balanced": true
+    },
+    "articulation_is_not_an_articulation": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 3,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 3,
+      "balanced": true
+    },
+    "flag_is_not_a_flag": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 138,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 138,
+      "balanced": true
+    },
+    "keysig_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 33,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 33,
+      "balanced": true
+    },
+    "tuplet_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 0,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 0,
+      "balanced": true
+    }
+  },
+  "grand_staff_families": {
+    "pedal_owner": {
+      "decided": 0,
+      "abstained": 3,
+      "written": 0
+    },
+    "ottava_owner": {
+      "decided": 0,
+      "abstained": 0,
+      "written": 0
+    }
+  },
+  "inferred_clefs": [],
+  "written": {
+    "arc_notes_reachable_at_a_stem": 427,
+    "tie_links_marked": 36,
+    "tie_links_crossing_a_barline": 7,
+    "tie_chains_marked": 34,
+    "tie_chains_over_two_notes": 2,
+    "tie_spans_marked": 36,
+    "slur_spans_marked": 77,
+    "tie_arcs_naming_an_already_named_pair": 30,
+    "bars_held_out_sum": 151,
+    "notes_held_out_sum": 696,
+    "dynamics_not_renderable": 51,
+    "unread_bar_marks_written": 154,
+    "measure_rests_read": 29,
+    "empty_bars_padded": 3,
+    "empty_bars_padded_without_meter": 0,
+    "tacet_bars_not_padded_without_meter": 24,
+    "notes": 9,
+    "articulation_marks_on_chord_members": 0,
+    "articulations": 0,
+    "rests": 8,
+    "parts": 14
+  },
+  "part_join": {
+    "unidentified_parts": [],
+    "held_out_staves": 2,
+    "join_decided": "slot",
+    "join_used": "slot",
+    "join_reason": "slot",
+    "systems": [
+      "1/0",
+      "1/1"
+    ],
+    "staves_per_system": [
+      13,
+      14
+    ],
+    "parts": 14,
+    "fragmented": false,
+    "slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "stranded": 2,
+    "condensed_doubling": []
+  },
+  "notes_not_written": {
+    "owned_by_another_staff": 42,
+    "duration_narrowed": 151,
+    "not_a_notehead:clipped_fragment": 26,
+    "not_a_notehead:is_a_meter_digit": 30,
+    "not_a_notehead:too_narrow": 225,
+    "not_a_rest:rest_clipped_by_crop": 47,
+    "not_a_notehead:notehead_is_a_duplicate_box": 4,
+    "rest_duration_abstained": 6,
+    "not_a_notehead:stacked_head_duplicate": 12,
+    "not_a_rest:rest_outside_its_staff": 17,
+    "not_a_rest:rest_is_a_duplicate_box": 36,
+    "not_a_rest:rest_has_a_stem": 1,
+    "not_a_notehead:belongs_to_a_nearer_staff": 5,
+    "ink_is_a_whole_rest": 2,
+    "staff_not_identified": 17,
+    "not_a_rest:rest_touches_two_staff_lines": 2
+  },
+  "notes_not_written_total": 623,
+  "arcs_not_written": {
+    "arc_binds_fewer_than_two_notes": 61,
+    "tie_ends_in_two_voices": 3,
+    "tie_spelling_differs": 5,
+    "tie_pitch_contradiction": 2,
+    "tie_pair_narrowed": 49,
+    "tie_pair_no_pair_at_one_position": 10,
+    "tie_pair_spans_a_whole_bar": 249,
+    "tie_pair_runs_off_the_system": 22,
+    "tie_pair_no_head_near_the_arc": 38,
+    "tie_pair_no_stop_head": 2,
+    "tie_pair_no_start_head": 38,
+    "tie_pair_enters_from_previous_system": 13,
+    "tie_end_not_in_file": 27
+  },
+  "arcs_not_written_total": 519,
+  "wedges_not_written": {
+    "wedge_anchor_note_not_written": 14,
+    "wedge_neither_anchor_written": 5
+  },
+  "wedges_not_written_total": 19,
+  "articulations_not_written": {
+    "artic_no_notehead": 1,
+    "artic_owned_by_another_staff": 1,
+    "artic_owning_notehead_not_written": 1
+  },
+  "fermatas_not_written": {},
+  "ornaments_not_written": {
+    "ornament_owning_notehead_not_written": 2,
+    "ornament_no_notehead": 2
+  },
+  "lilypond": {
+    "ornaments_not_renderable": 0,
+    "direction_words_not_renderable": 0,
+    "dynamics_not_renderable": 51,
+    "articulation_marks_collapsed_per_chord": 0,
+    "cross_system_arcs_and_wedges": "handled, not dropped -- see module docstring",
+    "two_voice_bars": 0,
+    "version": "2.24.4"
+  },
+  "unread_bar_marks": {
+    "words": {
+      "unread": "unread",
+      "bar_does_not_add_up": "unread",
+      "possibly_unread_mark": "unread",
+      "meter_return_not_read": "meter?"
+    },
+    "color": "#D00000",
+    "unread": 3,
+    "held_out_sum": 151,
+    "written": 154
+  },
+  "bars_held_out_sum": {
+    "bars": 151,
+    "bars_on_a_doubled_staff": 0,
+    "noteheads_and_rests": 696
+  },
+  "meter_returns_not_read": 0
+}

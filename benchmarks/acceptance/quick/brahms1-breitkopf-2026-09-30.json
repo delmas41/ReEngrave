@@ -1,0 +1,604 @@
+{
+  "id": "brahms1-breitkopf",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 138.339,
+    "page_index": 1,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json",
+    "xml_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.musicxml",
+    "ly_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.ly",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.pdf",
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.gather.log",
+    "log_tail": "'tie_chains_marked': 34, 'tie_chains_over_two_notes': 2, 'tie_spans_marked': 36, 'slur_spans_marked': 77, 'tie_arcs_naming_an_already_named_pair': 30, 'bars_held_out_sum': 151, 'notes_held_out_sum': 696, 'dynamics_not_renderable': 51, 'unread_bar_marks_written': 154, 'measure_rests_read': 29, 'empty_bars_padded': 3, 'empty_bars_padded_without_meter': 0, 'tacet_bars_not_padded_without_meter': 24, 'notes': 9, 'articulation_marks_on_chord_members': 0, 'articulations': 0, 'rests': 8, 'parts': 14}\n  lilypond-only: {'ornaments_not_renderable': 0, 'direction_words_not_renderable': 0, 'dynamics_not_renderable': 51, 'articulation_marks_collapsed_per_chord': 0, 'cross_system_arcs_and_wedges': 'handled, not dropped -- see module docstring', 'two_voice_bars': 0, 'version': '2.24.4'}\n  \u26a0\ufe0f notes the record holds and the file does not: 623 {'owned_by_another_staff': 42, 'duration_narrowed': 151, 'not_a_notehead:clipped_fragment': 26, 'not_a_notehead:is_a_meter_digit': 30, 'not_a_notehead:too_narrow': 225, 'not_a_rest:rest_clipped_by_crop': 47, 'not_a_notehead:notehead_is_a_duplicate_box': 4, 'rest_duration_abstained': 6, 'not_a_notehead:stacked_head_duplicate': 12, 'not_a_rest:rest_outside_its_staff': 17, 'not_a_rest:rest_is_a_duplicate_box': 36, 'not_a_rest:rest_has_a_stem': 1, 'not_a_notehead:belongs_to_a_nearer_staff': 5, 'ink_is_a_whole_rest': 2, 'staff_not_identified': 17, 'not_a_rest:rest_touches_two_staff_lines': 2}\n\n\u2500\u2500 ACCOUNTING (CLAUDE.md \u00a71: every unread bar is MARKED, never invented) \u2500\u2500\n  unread bars (\"unread\", read NOTHING): 3\n  held-out bars (\"unread\"): 151\n  total bars marked red in the file: 154 (colour #D00000)\n  staves held out: 2 (the part join could not NAME them, so they are held out of the file and counted, never silently dropped -- OMR_HOLD_OUT_UNIDENTIFIED)\n  meter returns not read (\"meter?\", bar kept, not held out): 0 -- a corroborated printed change this system's own bars could not sustain; the printed RETURN was never read (CLAUDE.md \u00a710, roadmap 2.12k)\n"
+  },
+  "machine_proxies": {
+    "notes_reaching_file": {
+      "n": 9,
+      "of": 1015,
+      "fraction": 0.008866995073891626
+    },
+    "bars_held_out_sum": {
+      "n": 151,
+      "of": 183,
+      "fraction": 0.825136612021858,
+      "noteheads_and_rests": 696,
+      "bars_on_a_doubled_staff": 0,
+      "bars_with_events_without_a_meter": 0,
+      "named_in_the_export_report": 151
+    },
+    "bars_add_up_control": {
+      "exact": 186,
+      "short": 0,
+      "overfull": 0,
+      "empty": 0,
+      "unassessable": 0,
+      "n": 186,
+      "of": 186,
+      "fraction": 1.0
+    },
+    "parts_named": {
+      "n": 12,
+      "of": 14,
+      "fraction": 0.8571428571428571,
+      "names": [
+        "Flute",
+        "Oboe",
+        "Clarinet",
+        "Bassoon",
+        "Contrabassoon",
+        "Staff p1-s0-5",
+        "Staff p1-s0-6",
+        "Trumpet",
+        "Timpani",
+        "Violin",
+        "Violin",
+        "Viola",
+        "Cello",
+        "Contrabass"
+      ]
+    },
+    "held_out": {
+      "staff_not_identified": 17,
+      "of_noteheads_in_log": 1015,
+      "fraction": 0.016748768472906402
+    },
+    "unread_bars": {
+      "empty_bars_padded": 3,
+      "empty_bars_padded_without_meter": 0,
+      "tacet_bars_not_padded_without_meter": 24
+    },
+    "transpose_parts": {
+      "n": 0,
+      "of": 14
+    },
+    "notes_doubled_to_condensed_slot": 0,
+    "named_drop_reasons": {
+      "duration_narrowed": 151,
+      "no_pitch": 0,
+      "staff_not_identified": 17,
+      "owned_by_another_staff": 42,
+      "ink_is_a_whole_rest": 2
+    },
+    "all_drop_reasons": {
+      "owned_by_another_staff": 42,
+      "duration_narrowed": 151,
+      "not_a_notehead:clipped_fragment": 26,
+      "not_a_notehead:is_a_meter_digit": 30,
+      "not_a_notehead:too_narrow": 225,
+      "not_a_rest:rest_clipped_by_crop": 47,
+      "not_a_notehead:notehead_is_a_duplicate_box": 4,
+      "rest_duration_abstained": 6,
+      "not_a_notehead:stacked_head_duplicate": 12,
+      "not_a_rest:rest_outside_its_staff": 17,
+      "not_a_rest:rest_is_a_duplicate_box": 36,
+      "not_a_rest:rest_has_a_stem": 1,
+      "not_a_notehead:belongs_to_a_nearer_staff": 5,
+      "ink_is_a_whole_rest": 2,
+      "staff_not_identified": 17,
+      "not_a_rest:rest_touches_two_staff_lines": 2,
+      "bar_does_not_add_up": 696
+    },
+    "balanced": true
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.readout.html"
+  },
+  "side_by_side": {
+    "print": {
+      "built": true,
+      "path": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/print.png",
+      "dpi": 150,
+      "page_index": 1
+    },
+    "ours": {
+      "built": true,
+      "svg": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/ours.svg",
+      "png": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/ours.png",
+      "first_bar": 8,
+      "last_bar": 22
+    }
+  },
+  "bar_score": {
+    "status": "ok",
+    "bar_range": [
+      8,
+      22
+    ],
+    "comparable_cells": 5,
+    "skipped_cells": 205,
+    "totals": {
+      "ref_n": 18,
+      "our_n": 9,
+      "matched_exact": 0,
+      "duration_wrong": 0,
+      "pitch_wrong": 0,
+      "missing": 18,
+      "extra": 9
+    },
+    "per_family": {
+      "Flute": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Oboe": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Clarinet": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Bassoon": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Contrabassoon": {
+        "comparable_bars": 1,
+        "skipped_bars": 14,
+        "skipped": [
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 9,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 9,
+          "extra": 0
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 9,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 9,
+            "extra": 0
+          }
+        }
+      },
+      "Horn (C)": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Horn (Es)": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Trumpet": {
+        "comparable_bars": 2,
+        "skipped_bars": 13,
+        "skipped": [
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 0,
+          "our_n": 5,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 0,
+          "extra": 5
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 0,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 3
+          },
+          "9": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          }
+        }
+      },
+      "Timpani": {
+        "comparable_bars": 1,
+        "skipped_bars": 14,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21"
+        ],
+        "total": {
+          "ref_n": 6,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 6,
+          "extra": 0
+        },
+        "by_bar": {
+          "22": {
+            "ref_n": 6,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 6,
+            "extra": 0
+          }
+        }
+      },
+      "Violin I": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Violin II": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Viola": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Violoncello": {
+        "comparable_bars": 1,
+        "skipped_bars": 14,
+        "skipped": [
+          "8",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 3,
+          "our_n": 4,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 3,
+          "extra": 4
+        },
+        "by_bar": {
+          "9": {
+            "ref_n": 3,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 4
+          }
+        }
+      },
+      "Contrabass": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      }
+    },
+    "worst_10": [
+      {
+        "family": "Contrabassoon",
+        "bar": "8",
+        "n_wrong": 9,
+        "ref_n": 9,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 9,
+        "extra": 0
+      },
+      {
+        "family": "Violoncello",
+        "bar": "9",
+        "n_wrong": 7,
+        "ref_n": 3,
+        "our_n": 4,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 3,
+        "extra": 4
+      },
+      {
+        "family": "Timpani",
+        "bar": "22",
+        "n_wrong": 6,
+        "ref_n": 6,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 6,
+        "extra": 0
+      },
+      {
+        "family": "Trumpet",
+        "bar": "8",
+        "n_wrong": 3,
+        "ref_n": 0,
+        "our_n": 3,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 0,
+        "extra": 3
+      },
+      {
+        "family": "Trumpet",
+        "bar": "9",
+        "n_wrong": 2,
+        "ref_n": 0,
+        "our_n": 2,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 0,
+        "extra": 2
+      }
+    ]
+  },
+  "status": "ok"
+}

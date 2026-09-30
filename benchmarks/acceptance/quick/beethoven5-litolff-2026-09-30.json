@@ -1,0 +1,4798 @@
+{
+  "id": "beethoven5-litolff",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 63.791,
+    "page_index": 3,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json",
+    "xml_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.musicxml",
+    "ly_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.ly",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.pdf",
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.gather.log",
+    "log_tail": "\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  written: {'arc_notes_reachable_at_a_stem': 268, 'slur_spans_marked': 19, 'tie_links_marked': 9, 'tie_links_crossing_a_barline': 9, 'tie_chains_marked': 8, 'tie_spans_marked': 9, 'tie_chains_over_two_notes': 1, 'tie_arcs_naming_an_already_named_pair': 17, 'empty_bars_padded': 40, 'empty_bars_padded_without_meter': 40, 'dynamics_not_renderable': 33, 'notes': 346, 'ties': 9, 'articulation_marks_on_chord_members': 0, 'articulations': 0, 'rests': 128, 'unread_bar_marks_written': 40, 'slurs': 9, 'tacet_bars_not_padded_without_meter': 54, 'parts': 11}\n  lilypond-only: {'ornaments_not_renderable': 0, 'direction_words_not_renderable': 0, 'dynamics_not_renderable': 33, 'articulation_marks_collapsed_per_chord': 0, 'cross_system_arcs_and_wedges': 'handled, not dropped -- see module docstring', 'two_voice_bars': 0, 'version': '2.24.4'}\n  \u26a0\ufe0f notes the record holds and the file does not: 154 {'not_a_notehead:stacked_head_duplicate': 50, 'not_a_notehead:notehead_is_a_duplicate_box': 7, 'duration_narrowed': 19, 'not_a_notehead:too_narrow': 6, 'ink_is_a_whole_rest': 5, 'not_a_rest:rest_off_center': 4, 'not_a_notehead:clipped_fragment': 17, 'not_a_rest:rest_touches_two_staff_lines': 8, 'not_a_rest:rest_is_a_duplicate_box': 2, 'owned_by_another_staff': 21, 'not_a_rest:rest_has_a_stem': 6, 'not_a_notehead:is_a_clef': 2, 'rest_duration_abstained': 6, 'not_a_notehead:belongs_to_a_nearer_staff': 1}\n\n\u2500\u2500 ACCOUNTING (CLAUDE.md \u00a71: every unread bar is MARKED, never invented) \u2500\u2500\n  unread bars (\"unread\", read NOTHING): 40\n  held-out bars (\"unread\"): 0\n  total bars marked red in the file: 40 (colour #D00000)\n  staves held out: 0 (the part join could not NAME them, so they are held out of the file and counted, never silently dropped -- OMR_HOLD_OUT_UNIDENTIFIED)\n  meter returns not read (\"meter?\", bar kept, not held out): 0 -- a corroborated printed change this system's own bars could not sustain; the printed RETURN was never read (CLAUDE.md \u00a710, roadmap 2.12k)\n"
+  },
+  "machine_proxies": {
+    "notes_reaching_file": {
+      "n": 346,
+      "of": 474,
+      "fraction": 0.729957805907173
+    },
+    "bars_held_out_sum": {
+      "n": 0,
+      "of": 280,
+      "fraction": 0.0,
+      "noteheads_and_rests": 0,
+      "bars_on_a_doubled_staff": 0,
+      "bars_with_events_without_a_meter": 280,
+      "named_in_the_export_report": 0
+    },
+    "bars_add_up_control": {
+      "exact": 0,
+      "short": 0,
+      "overfull": 0,
+      "empty": 0,
+      "unassessable": 320,
+      "n": 0,
+      "of": 0,
+      "fraction": null
+    },
+    "parts_named": {
+      "n": 7,
+      "of": 11,
+      "fraction": 0.6363636363636364,
+      "names": [
+        "Flute",
+        "Oboe",
+        "Clarinet",
+        "Bassoon",
+        "Horn",
+        "Trumpet",
+        "Timpani",
+        "Staff p3-s0-7",
+        "Staff p3-s0-8",
+        "Staff p3-s0-9",
+        "Staff p3-s0-10"
+      ]
+    },
+    "held_out": {
+      "staff_not_identified": 0,
+      "of_noteheads_in_log": 474,
+      "fraction": 0.0
+    },
+    "unread_bars": {
+      "empty_bars_padded": 40,
+      "empty_bars_padded_without_meter": 40,
+      "tacet_bars_not_padded_without_meter": 54
+    },
+    "transpose_parts": {
+      "n": 0,
+      "of": 11
+    },
+    "notes_doubled_to_condensed_slot": 0,
+    "named_drop_reasons": {
+      "duration_narrowed": 19,
+      "no_pitch": 0,
+      "staff_not_identified": 0,
+      "owned_by_another_staff": 21,
+      "ink_is_a_whole_rest": 5
+    },
+    "all_drop_reasons": {
+      "not_a_notehead:stacked_head_duplicate": 50,
+      "not_a_notehead:notehead_is_a_duplicate_box": 7,
+      "duration_narrowed": 19,
+      "not_a_notehead:too_narrow": 6,
+      "ink_is_a_whole_rest": 5,
+      "not_a_rest:rest_off_center": 4,
+      "not_a_notehead:clipped_fragment": 17,
+      "not_a_rest:rest_touches_two_staff_lines": 8,
+      "not_a_rest:rest_is_a_duplicate_box": 2,
+      "owned_by_another_staff": 21,
+      "not_a_rest:rest_has_a_stem": 6,
+      "not_a_notehead:is_a_clef": 2,
+      "rest_duration_abstained": 6,
+      "not_a_notehead:belongs_to_a_nearer_staff": 1
+    },
+    "balanced": true
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.readout.html"
+  },
+  "side_by_side": {
+    "print": {
+      "built": true,
+      "path": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/print.png",
+      "dpi": 150,
+      "page_index": 3
+    },
+    "ours": {
+      "built": true,
+      "svg": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/ours.svg",
+      "png": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/ours.png",
+      "first_bar": 49,
+      "last_bar": 82
+    }
+  },
+  "bar_score": {
+    "status": "ok",
+    "bar_range": [
+      49,
+      82
+    ],
+    "comparable_cells": 199,
+    "skipped_cells": 175,
+    "totals": {
+      "ref_n": 442,
+      "our_n": 346,
+      "matched_exact": 224,
+      "duration_wrong": 18,
+      "pitch_wrong": 61,
+      "missing": 139,
+      "extra": 43
+    },
+    "per_family": {
+      "Flute": {
+        "comparable_bars": 13,
+        "skipped_bars": 21,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 28,
+          "our_n": 24,
+          "matched_exact": 12,
+          "duration_wrong": 1,
+          "pitch_wrong": 10,
+          "missing": 5,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Oboe": {
+        "comparable_bars": 9,
+        "skipped_bars": 25,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 20,
+          "our_n": 18,
+          "matched_exact": 11,
+          "duration_wrong": 0,
+          "pitch_wrong": 3,
+          "missing": 6,
+          "extra": 4
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 2
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Clarinet": {
+        "comparable_bars": 13,
+        "skipped_bars": 21,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 28,
+          "our_n": 21,
+          "matched_exact": 15,
+          "duration_wrong": 1,
+          "pitch_wrong": 4,
+          "missing": 8,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Bassoon": {
+        "comparable_bars": 25,
+        "skipped_bars": 9,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66"
+        ],
+        "total": {
+          "ref_n": 52,
+          "our_n": 40,
+          "matched_exact": 22,
+          "duration_wrong": 0,
+          "pitch_wrong": 16,
+          "missing": 14,
+          "extra": 2
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 2,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "79": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          }
+        }
+      },
+      "Horn": {
+        "comparable_bars": 25,
+        "skipped_bars": 9,
+        "skipped": [
+          "57",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 56,
+          "our_n": 31,
+          "matched_exact": 19,
+          "duration_wrong": 3,
+          "pitch_wrong": 3,
+          "missing": 31,
+          "extra": 6
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 3
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "59": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 4,
+            "extra": 1
+          },
+          "60": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "61": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "62": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          }
+        }
+      },
+      "Trumpet": {
+        "comparable_bars": 6,
+        "skipped_bars": 28,
+        "skipped": [
+          "49",
+          "50",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 14,
+          "our_n": 10,
+          "matched_exact": 6,
+          "duration_wrong": 2,
+          "pitch_wrong": 0,
+          "missing": 6,
+          "extra": 2
+        },
+        "by_bar": {
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 2
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Timpani": {
+        "comparable_bars": 6,
+        "skipped_bars": 28,
+        "skipped": [
+          "49",
+          "50",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 7,
+          "our_n": 6,
+          "matched_exact": 5,
+          "duration_wrong": 0,
+          "pitch_wrong": 1,
+          "missing": 1,
+          "extra": 0
+        },
+        "by_bar": {
+          "51": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violin I": {
+        "comparable_bars": 25,
+        "skipped_bars": 9,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "67",
+          "68",
+          "69",
+          "70"
+        ],
+        "total": {
+          "ref_n": 68,
+          "our_n": 63,
+          "matched_exact": 41,
+          "duration_wrong": 7,
+          "pitch_wrong": 4,
+          "missing": 16,
+          "extra": 11
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 2,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 2
+          },
+          "52": {
+            "ref_n": 4,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 4,
+            "our_n": 5,
+            "matched_exact": 1,
+            "duration_wrong": 2,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 2
+          },
+          "54": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 7,
+            "our_n": 7,
+            "matched_exact": 2,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 4,
+            "extra": 4
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 3,
+            "our_n": 4,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "63": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "79": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violin II": {
+        "comparable_bars": 29,
+        "skipped_bars": 5,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62"
+        ],
+        "total": {
+          "ref_n": 56,
+          "our_n": 57,
+          "matched_exact": 37,
+          "duration_wrong": 3,
+          "pitch_wrong": 8,
+          "missing": 8,
+          "extra": 9
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 1
+          },
+          "52": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 4,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 7,
+            "our_n": 7,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 4,
+            "extra": 4
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 3,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "66": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 1,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 2
+          },
+          "69": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "79": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "81": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Viola": {
+        "comparable_bars": 29,
+        "skipped_bars": 5,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62"
+        ],
+        "total": {
+          "ref_n": 49,
+          "our_n": 46,
+          "matched_exact": 31,
+          "duration_wrong": 1,
+          "pitch_wrong": 10,
+          "missing": 7,
+          "extra": 4
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 8,
+            "our_n": 6,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 2,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 8,
+            "our_n": 7,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "65": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "78": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "79": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violoncello e Basso": {
+        "comparable_bars": 19,
+        "skipped_bars": 15,
+        "skipped": [
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "67",
+          "68",
+          "71",
+          "72",
+          "75",
+          "76",
+          "79",
+          "80"
+        ],
+        "total": {
+          "ref_n": 64,
+          "our_n": 30,
+          "matched_exact": 25,
+          "duration_wrong": 0,
+          "pitch_wrong": 2,
+          "missing": 37,
+          "extra": 3
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 8,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 4,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "69": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 6,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 5,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 6,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 6,
+            "extra": 1
+          },
+          "82": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          }
+        }
+      }
+    },
+    "worst_10": [
+      {
+        "family": "Violin II",
+        "bar": "55",
+        "n_wrong": 10,
+        "ref_n": 7,
+        "our_n": 7,
+        "matched_exact": 1,
+        "duration_wrong": 0,
+        "pitch_wrong": 2,
+        "missing": 4,
+        "extra": 4
+      },
+      {
+        "family": "Violin I",
+        "bar": "55",
+        "n_wrong": 9,
+        "ref_n": 7,
+        "our_n": 7,
+        "matched_exact": 2,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 4,
+        "extra": 4
+      },
+      {
+        "family": "Horn",
+        "bar": "51",
+        "n_wrong": 7,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 0,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 3,
+        "extra": 3
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "81",
+        "n_wrong": 7,
+        "ref_n": 6,
+        "our_n": 1,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 6,
+        "extra": 1
+      },
+      {
+        "family": "Horn",
+        "bar": "59",
+        "n_wrong": 5,
+        "ref_n": 6,
+        "our_n": 3,
+        "matched_exact": 2,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 4,
+        "extra": 1
+      },
+      {
+        "family": "Trumpet",
+        "bar": "51",
+        "n_wrong": 5,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 1,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 2,
+        "extra": 2
+      },
+      {
+        "family": "Violin I",
+        "bar": "51",
+        "n_wrong": 5,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 1,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 2,
+        "extra": 2
+      },
+      {
+        "family": "Violin I",
+        "bar": "53",
+        "n_wrong": 5,
+        "ref_n": 4,
+        "our_n": 5,
+        "matched_exact": 1,
+        "duration_wrong": 2,
+        "pitch_wrong": 0,
+        "missing": 1,
+        "extra": 2
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "77",
+        "n_wrong": 5,
+        "ref_n": 6,
+        "our_n": 1,
+        "matched_exact": 1,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 5,
+        "extra": 0
+      },
+      {
+        "family": "Oboe",
+        "bar": "51",
+        "n_wrong": 4,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 2,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 2,
+        "extra": 2
+      }
+    ]
+  },
+  "against": {
+    "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-acceptance-measure-notehead-box-e75821/2c34bf69-0e00-4748-a821-6f4862e751be/scratchpad/litolff_base.record.json",
+    "readout_diff": {
+      "ok": true,
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-afd16fe4b975112f2/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.diff.html"
+    },
+    "machine_proxies": {
+      "notes_reaching_file": {
+        "n": 346,
+        "of": 474,
+        "fraction": 0.729957805907173
+      },
+      "bars_held_out_sum": {
+        "n": 0,
+        "of": 280,
+        "fraction": 0.0,
+        "noteheads_and_rests": 0,
+        "bars_on_a_doubled_staff": 0,
+        "bars_with_events_without_a_meter": 280,
+        "named_in_the_export_report": 0
+      },
+      "bars_add_up_control": {
+        "exact": 0,
+        "short": 0,
+        "overfull": 0,
+        "empty": 0,
+        "unassessable": 320,
+        "n": 0,
+        "of": 0,
+        "fraction": null
+      },
+      "parts_named": {
+        "n": 7,
+        "of": 11,
+        "fraction": 0.6363636363636364,
+        "names": [
+          "Flute",
+          "Oboe",
+          "Clarinet",
+          "Bassoon",
+          "Horn",
+          "Trumpet",
+          "Timpani",
+          "Staff p3-s0-7",
+          "Staff p3-s0-8",
+          "Staff p3-s0-9",
+          "Staff p3-s0-10"
+        ]
+      },
+      "held_out": {
+        "staff_not_identified": 0,
+        "of_noteheads_in_log": 474,
+        "fraction": 0.0
+      },
+      "unread_bars": {
+        "empty_bars_padded": 40,
+        "empty_bars_padded_without_meter": 40,
+        "tacet_bars_not_padded_without_meter": 54
+      },
+      "transpose_parts": {
+        "n": 0,
+        "of": 11
+      },
+      "notes_doubled_to_condensed_slot": 0,
+      "named_drop_reasons": {
+        "duration_narrowed": 19,
+        "no_pitch": 0,
+        "staff_not_identified": 0,
+        "owned_by_another_staff": 21,
+        "ink_is_a_whole_rest": 5
+      },
+      "all_drop_reasons": {
+        "not_a_notehead:stacked_head_duplicate": 50,
+        "not_a_notehead:notehead_is_a_duplicate_box": 7,
+        "duration_narrowed": 19,
+        "not_a_notehead:too_narrow": 6,
+        "ink_is_a_whole_rest": 5,
+        "not_a_rest:rest_off_center": 4,
+        "not_a_notehead:clipped_fragment": 17,
+        "not_a_rest:rest_touches_two_staff_lines": 8,
+        "not_a_rest:rest_is_a_duplicate_box": 2,
+        "owned_by_another_staff": 21,
+        "not_a_rest:rest_has_a_stem": 6,
+        "not_a_notehead:is_a_clef": 2,
+        "rest_duration_abstained": 6,
+        "not_a_notehead:belongs_to_a_nearer_staff": 1
+      },
+      "balanced": true
+    },
+    "bar_score": {
+      "status": "ok",
+      "bar_range": [
+        49,
+        82
+      ],
+      "comparable_cells": 199,
+      "skipped_cells": 175,
+      "totals": {
+        "ref_n": 442,
+        "our_n": 346,
+        "matched_exact": 224,
+        "duration_wrong": 18,
+        "pitch_wrong": 61,
+        "missing": 139,
+        "extra": 43
+      },
+      "per_family": {
+        "Flute": {
+          "comparable_bars": 13,
+          "skipped_bars": 21,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 28,
+            "our_n": 24,
+            "matched_exact": 12,
+            "duration_wrong": 1,
+            "pitch_wrong": 10,
+            "missing": 5,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Oboe": {
+          "comparable_bars": 9,
+          "skipped_bars": 25,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 20,
+            "our_n": 18,
+            "matched_exact": 11,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 6,
+            "extra": 4
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 2
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Clarinet": {
+          "comparable_bars": 13,
+          "skipped_bars": 21,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 28,
+            "our_n": 21,
+            "matched_exact": 15,
+            "duration_wrong": 1,
+            "pitch_wrong": 4,
+            "missing": 8,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Bassoon": {
+          "comparable_bars": 25,
+          "skipped_bars": 9,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66"
+          ],
+          "total": {
+            "ref_n": 52,
+            "our_n": 40,
+            "matched_exact": 22,
+            "duration_wrong": 0,
+            "pitch_wrong": 16,
+            "missing": 14,
+            "extra": 2
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 2,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "79": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            }
+          }
+        },
+        "Horn": {
+          "comparable_bars": 25,
+          "skipped_bars": 9,
+          "skipped": [
+            "57",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 56,
+            "our_n": 31,
+            "matched_exact": 19,
+            "duration_wrong": 3,
+            "pitch_wrong": 3,
+            "missing": 31,
+            "extra": 6
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 3
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "59": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 4,
+              "extra": 1
+            },
+            "60": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "61": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "62": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            }
+          }
+        },
+        "Trumpet": {
+          "comparable_bars": 6,
+          "skipped_bars": 28,
+          "skipped": [
+            "49",
+            "50",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 14,
+            "our_n": 10,
+            "matched_exact": 6,
+            "duration_wrong": 2,
+            "pitch_wrong": 0,
+            "missing": 6,
+            "extra": 2
+          },
+          "by_bar": {
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 2
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Timpani": {
+          "comparable_bars": 6,
+          "skipped_bars": 28,
+          "skipped": [
+            "49",
+            "50",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 7,
+            "our_n": 6,
+            "matched_exact": 5,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "by_bar": {
+            "51": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violin I": {
+          "comparable_bars": 25,
+          "skipped_bars": 9,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "67",
+            "68",
+            "69",
+            "70"
+          ],
+          "total": {
+            "ref_n": 68,
+            "our_n": 63,
+            "matched_exact": 41,
+            "duration_wrong": 7,
+            "pitch_wrong": 4,
+            "missing": 16,
+            "extra": 11
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 2,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 2
+            },
+            "52": {
+              "ref_n": 4,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 4,
+              "our_n": 5,
+              "matched_exact": 1,
+              "duration_wrong": 2,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 2
+            },
+            "54": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 7,
+              "our_n": 7,
+              "matched_exact": 2,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 4,
+              "extra": 4
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 3,
+              "our_n": 4,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "63": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "79": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violin II": {
+          "comparable_bars": 29,
+          "skipped_bars": 5,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62"
+          ],
+          "total": {
+            "ref_n": 56,
+            "our_n": 57,
+            "matched_exact": 37,
+            "duration_wrong": 3,
+            "pitch_wrong": 8,
+            "missing": 8,
+            "extra": 9
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 1
+            },
+            "52": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 4,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 7,
+              "our_n": 7,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 4,
+              "extra": 4
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 3,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "66": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 1,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 2
+            },
+            "69": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "79": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "81": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Viola": {
+          "comparable_bars": 29,
+          "skipped_bars": 5,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62"
+          ],
+          "total": {
+            "ref_n": 49,
+            "our_n": 46,
+            "matched_exact": 31,
+            "duration_wrong": 1,
+            "pitch_wrong": 10,
+            "missing": 7,
+            "extra": 4
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 8,
+              "our_n": 6,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 2,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 8,
+              "our_n": 7,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "65": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "78": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "79": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violoncello e Basso": {
+          "comparable_bars": 19,
+          "skipped_bars": 15,
+          "skipped": [
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "67",
+            "68",
+            "71",
+            "72",
+            "75",
+            "76",
+            "79",
+            "80"
+          ],
+          "total": {
+            "ref_n": 64,
+            "our_n": 30,
+            "matched_exact": 25,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 37,
+            "extra": 3
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 8,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 4,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "69": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 6,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 5,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 6,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 6,
+              "extra": 1
+            },
+            "82": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            }
+          }
+        }
+      },
+      "worst_10": [
+        {
+          "family": "Violin II",
+          "bar": "55",
+          "n_wrong": 10,
+          "ref_n": 7,
+          "our_n": 7,
+          "matched_exact": 1,
+          "duration_wrong": 0,
+          "pitch_wrong": 2,
+          "missing": 4,
+          "extra": 4
+        },
+        {
+          "family": "Violin I",
+          "bar": "55",
+          "n_wrong": 9,
+          "ref_n": 7,
+          "our_n": 7,
+          "matched_exact": 2,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 4,
+          "extra": 4
+        },
+        {
+          "family": "Horn",
+          "bar": "51",
+          "n_wrong": 7,
+          "ref_n": 4,
+          "our_n": 4,
+          "matched_exact": 0,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 3,
+          "extra": 3
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "81",
+          "n_wrong": 7,
+          "ref_n": 6,
+          "our_n": 1,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 6,
+          "extra": 1
+        },
+        {
+          "family": "Horn",
+          "bar": "59",
+          "n_wrong": 5,
+          "ref_n": 6,
+          "our_n": 3,
+          "matched_exact": 2,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 4,
+          "extra": 1
+        },
+        {
+          "family": "Trumpet",
+          "bar": "51",
+          "n_wrong": 5,
+          "ref_n": 4,
+          "our_n": 4,
+          "matched_exact": 1,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 2,
+          "extra": 2
+        },
+        {
+          "family": "Violin I",
+          "bar": "51",
+          "n_wrong": 5,
+          "ref_n": 4,
+          "our_n": 4,
+          "matched_exact": 1,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 2,
+          "extra": 2
+        },
+        {
+          "family": "Violin I",
+          "bar": "53",
+          "n_wrong": 5,
+          "ref_n": 4,
+          "our_n": 5,
+          "matched_exact": 1,
+          "duration_wrong": 2,
+          "pitch_wrong": 0,
+          "missing": 1,
+          "extra": 2
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "77",
+          "n_wrong": 5,
+          "ref_n": 6,
+          "our_n": 1,
+          "matched_exact": 1,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 5,
+          "extra": 0
+        },
+        {
+          "family": "Oboe",
+          "bar": "51",
+          "n_wrong": 4,
+          "ref_n": 4,
+          "our_n": 4,
+          "matched_exact": 2,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 2,
+          "extra": 2
+        }
+      ]
+    }
+  },
+  "status": "ok"
+}
