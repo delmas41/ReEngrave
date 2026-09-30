@@ -1021,3 +1021,98 @@ variance unrelated to this round; neither run had a failure).
   today's tree (independently, by the same "biggest `notehead_ink` swing"
   measurement), not a re-crop of the original subject.
 - The dy-histogram boundary saturation (§18a) is reported, not resolved.
+
+## 19. Manager review of `fa700001` (2/2): withdrawals, the size gate, re-run
+
+⚠️⚠️ **§18b's `litolff-glyph-owner-far-no-rungs.png` caption was WRONG,
+manager caught it: the RE-CENTRED (green) box is the one that is wrong,
+not the raw (red) one.** Red already sat on the real head; green moved
+DOWN, off the head, into stem/beam junction ink below it — the exact
+opposite of what §18b claimed ("a more accurate box"). That phrase is
+withdrawn. **`litolff-random-2.png`, looked at again with the same
+scepticism**: the rounder, more head-like blob sits ABOVE both boxes,
+between two staff lines; the boxed region (where red and green coincide,
+`dx=dy=0.0` — the search found no shift at all here) sits on the LOWER
+part of a mass merged with the stem. It is genuinely unclear whether
+this glyph's true head is the boxed ink or the blob above; since the
+search found zero shift either way, this crop never demonstrated a
+moved box and should not have been read as a confirmed "well-centred"
+example — that reading was overconfident.
+
+**The rule the two crops support**: a detector box already close to the
+standard head's SIZE has a trustworthy CENTRE; only a box clearly
+SMALLER than standard (a sliver) has a centre worth distrusting. Gated
+in `4b20912d` — `RECENTRE_BOX_SIZE_GATE = 0.7`, chosen from this round's
+own box-size ratio distribution (§ commit message; median ~1.0 on both
+pages, genuine slivers in the bottom decile, the flagged head's ratio
+0.79 sits clear of it). Tests run RED first (`TestRecentreBoxSizeGate`).
+
+**Re-run, gated, both consumers**:
+
+| | population observed | declined `box_already_head_sized` | `glyph_owner` changed | `notehead_ink` changed | `ledger_owner_density` changed | `ledger_rung_ink` changed | `duration` changed |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| Litolff (was 451/18/210/60/15/1) | **34** | 435 | **5** | **19** | **14** | **2** | **0** |
+| Brahms (was 765/9/92/93/28/1) | **86** | 690 | **0** | **57** | **30** | **3** | **0** |
+
+The flagged head (`glyph/3/0/6/4/3`) now abstains `box_already_head_sized`
+(ratios 1.836/0.791) and is NO LONGER in the `glyph_owner` diff at all —
+confirmed back to the detector centre, both in the record and by
+re-cropping it (`out/print/2.39b/gated/litolff-far-no-rungs-GATED.png`:
+red and green now coincide, both on the real head).
+
+⚠️⚠️ **THE BRAHMS SWING HEAD IS ALSO NOW GATED OUT, CONTRADICTING THE
+EXPECTATION THAT IT MUST STILL MOVE.** `glyph/1/0/7/0/12`'s raw box
+measures 1.196x standard width, 1.099x standard height — both above
+0.7, so it abstains `box_already_head_sized` and keeps the (visibly
+wrong) detector centre. Re-examined at
+`out/print/2.39b/gated/brahms-swing-GATED.png`: the unmoved box sits
+mostly on the STEM below the real head, which is clearly visible just
+above the box's top edge — this is a genuine counter-example to "box
+size alone predicts a trustworthy centre": a box can be close to
+standard SIZE and still be badly CENTRED (Brahms shattering merges the
+head with the stem asymmetrically, pulling the detector's box down
+without shrinking it). A same-shape observation, not acted on this
+round (no budget to re-measure a second gate dimension): the flagged
+Litolff box was WIDE and SHORT (aspect 2.95 against the standard's
+1.27); the Brahms swing box's aspect (1.39) is close to standard — an
+aspect-ratio distortion may be the sharper signal than absolute size,
+but this is a lead, not a result.
+
+4 random re-centred heads per page (**seed 701**, from the smaller
+gated population): Litolff 3 of 4 are genuine sliver corrections onto
+real ink (`litolff-random4-1/3/4.png`), 1 ambiguous (a curled mark, not
+clearly a round head, `-2.png`). **Brahms 4 of 4 show NO visible
+notehead at all** — every one is a stem/barline crossing staff lines,
+the same pre-existing misdetection class §18b already named; the gate
+does not touch this (out of scope) but it means the Brahms population
+that still passes the gate skews toward exactly this contamination.
+
+### 19a. Staff-position swing, print-checked (item 4)
+
+8 random subjects per page (**seed 239**, from the gated `would_change`
+set), ink measured numerically at OLD and NEW before viewing, staff
+lines drawn, crops at >=60px head width
+(`out/print/2.39b/position-swing/`):
+
+| | would-change pop. | NEW confirmed | OLD confirmed | misdetection / no head | ambiguous (real ink, position undecidable) |
+|---|--:|--:|--:|--:|--:|
+| Litolff | 27 of 34 | 3 of 8 | 1 of 8 | 1 of 8 | 3 of 8 |
+| Brahms | 48 of 86 | 2 of 8 | 3 of 8 | 3 of 8 | 0 of 8 |
+
+⚠️⚠️ **THIS WITHDRAWS §18c's UNQUALIFIED "34.4%/14.9% WOULD CHANGE"
+HEADLINE.** Printed evidence shows NEW and OLD roughly split (5 NEW, 4
+OLD across 16 sampled), with a third of the sample not even a real,
+single notehead (a numeral, stems with no head, a diagonal beam where
+the position question does not apply). The swing measurement is real
+(the arithmetic is right) but it is NOT evidence that re-centring would
+improve pitch accuracy on this population — it is evidence that the
+population needs a shape filter before anyone reads it that way.
+
+### 19b. Commits vs the brief
+
+3 commits (`f96e9bf2`, `912eabd8`, `5c4380dc`) rather than one per
+consumer, because `gather.py`'s edits for connections 1/2/3/5 are
+non-adjacent but landed together for time; the coordinator confirmed
+this is fine given each connection still has its own dedicated RED/GREEN
+test. This round's gate and re-run are 1 further commit
+(`4b20912d`) plus this FINDINGS update.
