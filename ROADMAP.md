@@ -17,6 +17,37 @@ re-enter.
 
 ---
 
+## START HERE — 2026-09-30 evening (main ≥ this commit)
+
+**Records:** acceptance now reads the `20260930b` re-gathers (on `2718c450`,
+WITH weights; the overnight `20260930` ones had none and are renamed
+`*.NO-WEIGHTS`). `current.json` on a clean tree: Litolff notes 4,480, held
+1,732; Brahms 5,225, held 4,283; engraved F1 0.951 — the drop vs 20260929b is
+mostly 2.33's `rest_has_a_stem` (932 / 1,338 rests), fixed today as 2.33b
+but NOT yet in any record (acceptance exports a record's stored verdicts).
+**First:** re-gather both scans overnight (`TAG=… bash
+benchmarks/acceptance/overnight/regather_20260930.sh`) so 2.33b, 2.39b,
+2.42, 2.43 (and 2.44 if merged) reach the numbers.
+
+**Landed today (all STAGED):** 1.5 stage readout (`python3 -m
+tools.omr.staged.readout show|diff|html`) — Sean: every initial test
+compares GATHER+ADJUDICATE only (CLAUDE.md §6b); 2.33b; 2.39 + 2.39b
+(standard head box; re-centre only slivers; pitch NOT wired); 2.42
+(extra boxes on one head refused; no pitch change); 2.43 (open heads take
+no beam level — Sean; a YOLO beam must lie over the head's own stem:
+Litolff p3 narrowed 49 → 25). Findings only: 2.38c, 2.41. 1.4 cleanup count
+DEFERRED (Sean). Fast tier 4,142 + 2 xfail; `check` 245.
+
+**In flight:** 2.44 — a head outside the staff takes its position from the
+PRINTED ledgers (Sean: they are unevenly spaced, 18/13/20 vs 15.75), branch
+of an agent worktree; Sean's F6/D6 flute chords are its xfail tests.
+**Next:** export's chord/voice grouping loses 5 of 8 missed dyads whose heads
+ADJUDICATE kept (2.40 FINDINGS); Brahms `rest_clipped_by_crop` 545, unchecked;
+Sean saw ties "almost nonexistent" (most "ties" on Litolff p3 are slurs).
+**Lesson:** every lane today made at least one false print-check claim —
+the manager re-cuts and reads a sample of every lane's crops, with a ruler
+for any pitch claim, before merging.
+
 ## START HERE — 2026-09-30 morning (session of 09-29 evening; main ≥ `04dd4662`)
 
 ⚠️ **Correction 09-30 (morning session): the overnight records are INVALID.**
