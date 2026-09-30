@@ -314,3 +314,5 @@ out/2.40/*.log
 # the crops under `out/print/2.42/` ARE the durable record and are committed.
 out/2.42/*.json
 out/2.42/*.log
+out/2.42/**/*.json
+out/2.42/**/*.log

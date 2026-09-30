@@ -630,21 +630,54 @@ have caught) — every other reason unchanged, 0 lost/gained across 1015.
 1,555 notehead subjects carry a pitch in both arms; **7 pitches changed**.
 No `ambiguous` abstentions on this page (0 of however many groups formed).
 
-### `glyph/3/0/0/2/4` + `/9` — Sean's own confirmed case, fixed
+### ⚠️⚠️ WITHDRAWN — `glyph/3/0/0/2/4` + `/9`: the original "G6/E6, print-checked, confirmed" claim was WRONG
 
-DECISIONS 2026-09-30, Sean, on this exact crop: *"Those are simple 3rds."*
-Base arm: both boxes stand, pitches F6 / E6 — **a second**, the bug. New
-arm: GATHER's fit finds k=2 at positions -8/-6 (2 half-steps apart = a
-THIRD in `Q.NOTEHEAD_STAFF_POSITION`'s own units), both boxes SURVIVE
-(different slots, nothing refused) and EVALUATE now reads the fitted
-positions: `/2/4` F6 -> **G6**, `/2/9` stays **E6** — G6/E6 IS a third
-(skip F). **Print-checked**
-(`out/print/2.42/litolff-pitch-only/P02-glyph-3-0-0-2-right.png`): two
-real, touching/merged noteheads stacked directly on one stem, both
-crosshairs land on real ink, exactly the shape Sean named. `glyph/3/0/0/2/1`
-+ `/3` (the OTHER pair the brief names, F6/D6, a third already) are
-confirmed UNCHANGED across both arms — they were never wrongly collapsed
-and this item does not regress them.
+**Manager review (2026-09-30), real ruler measurement against a fresh 600
+dpi binary render of Litolff p3**: staff `staff/3/0/0`'s lines sit at page y
+449.5/465.0/480.5/496.5/512.5 (spacing 15.75, half-step 7.875); ledger
+strokes at A5 (~434), C6 (~418), E6 (~402); the chord's own ink rows run
+385-433. Read against that ruler, the upper head sits in the space ABOVE
+the E6 ledger (= **F6**) and the lower head sits BETWEEN the E6 and C6
+ledgers (= **D6**). **The print is F6 + D6, not G6/E6.** Both heads in the
+originally-reported result were shifted UP one diatonic step from the
+truth — the "print-checked, confirmed" claim in the first version of this
+section was false and is withdrawn here, visibly, rather than edited away.
+
+**Root cause, found and fixed**: on this MERGING plate the chord's own ink
+is one continuous blob, and `notehead_ink_under`'s `best` fill rounds to 4
+decimals, so candidate positions -8/-7/-6/-5 all scored EXACTLY `1.0` —
+a genuine, exact tie. `itertools.combinations` enumerates pairs
+lexicographically, and the fit's own `total > best[1]` (strict greater-than)
+kept the FIRST-GENERATED tied pair, `(-8, -6)`, never comparing it against
+the print-true `(-7, -5)` on any actual evidence — both are real THIRDS
+(gap 2), so the bug was invisible to the gap/margin tests and shifted BOTH
+heads by one step with no signal marking it wrong. The raw DETECTOR
+centres for this exact cell (`Q.NOTEHEAD_STAFF_POSITION`: -7.4 / -5.56)
+were already close to the truth throughout — the fit's own tie-break is
+what threw them off, not the ink measurement, the gap logic, or the
+detector.
+
+**Fix** (`gather.py`): `_stacked_best_combo` and the single-position choice
+in `fit_stacked_head_count` now collect EVERY combo/position within
+`TIE_SCORE_EPS` of the top score, and where more than one is tied, the one
+whose positions sit closest to `observed` (the group's own raw detector
+centres — real evidence, never invented) wins. `test_staged_stacked_head_
+fit.py` gained two pinned regression tests: one on the EXACT scored dict
+read back off this real cell (confirms `(-8,-6)` without `observed`,
+`(-7,-5)` with it — RED against the pre-fix code, both literally verified
+by running the unfixed function), and one building the same shape from the
+manager's own ruler numbers (top line 449.5, spacing 15.75) end to end
+through `fit_stacked_head_count`.
+
+**Re-run after the fix** (same A/B protocol, both arms regenerated from the
+CURRENT tree — see "Re-run after 2.43 merge" below): `glyph/3/0/0/2/4` now
+reads **F6** (unchanged from the base arm — this head was never wrong),
+`glyph/3/0/0/2/9` moves base E6 -> new **D6**, matching
+the manager's ruler exactly. `glyph/3/0/0/2/1` + `/3` (the second pair
+named) were ALREADY F6/D6 in both arms, before and after the fix — never
+wrongly collapsed, confirmed unaffected by either the bug or the repair.
+Ruler crop: `out/print/2.42/ruler-litolff/9-3-0-0-2.png` (staff + ledger
+lines labelled with pitch names, fitted centre marked, `base:E6 / new:D6`).
 
 ### `cell/3/1/2/9` — NOT newly resolved, and that is reported not hidden
 
@@ -663,6 +696,36 @@ with round 3's own finding. Two independent mechanisms agreeing is
 suggestive but is NOT the second, independent witness CLAUDE.md §10 requires
 (both read the SAME ink) — reported as corroboration, not resolution; still
 flagged for Sean.
+
+### Re-run after the tie-break fix (and after merging ROADMAP 2.43)
+
+Both arms regenerated from scratch (base arm re-pulled from `claude/
+acceptance-measure-notehead-box-e75821`'s current tip, which now carries
+2.43; this branch merged 2.43 too). Refusal histograms are BIT-IDENTICAL to
+the pre-fix run (the tie-break only changes WHICH position a slot lands on,
+never which boxes contest a slot): Litolff 50 `stacked_head_duplicate`
+moves, Brahms 12, every other reason unchanged, 0 lost/gained on either
+page. Pitch diff: **Litolff 51 changed** (was 53 pre-fix — two of the
+original 53 are cases the tie-break itself corrected back toward the
+detector's own reading), **Brahms 6 changed** (was 7). Every changed pitch
+on BOTH pages is now cropped WITH A RULER (staff + ledger lines labelled
+with pitch names via the exact `_pitch_from_position` anchor
+`restate_pitch` itself uses, fitted centre marked, label reads `base:X /
+new:Y`, ink-row span measured numerically): `out/print/2.42/ruler-litolff/`
+(51 crops), `out/print/2.42/ruler-brahms/` (6 crops),
+`probe/stacked_head_2.42/crop_ruler.py`. The headline cell
+(`glyph/3/0/0/2/9`) now reads `base:E6 / new:D6`, `ink_rows=364-660` on its
+own crop — matching the manager's independent ruler exactly.
+
+### Duplicate-box census (kept separate from the position fix, per request)
+
+Of every CONTESTED slot (>=2 boxes mapped to one fitted head) on Litolff
+p3, **49 of 49 kept boxes have a decided `Q.STACKED_HEAD_FIT.detail["ink"]`
+> 0.5** (`probe/stacked_head_2.42/kept_census.py`); Brahms p1: **15 of 15**.
+This is a NUMERIC PROXY (a fill-fraction floor), not a per-box human read of
+all 64 — 6 of them were also visually confirmed correct earlier in this
+document (S6's cell, two Brahms single-head refusals, a near-tie, a 3-note
+chord). 0 kept boxes fall at or below the floor on either page.
 
 ### Print check
 
