@@ -113,6 +113,24 @@ class TestRestOffCenter(unittest.TestCase):
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "rest")
 
+    def test_whole_rest_centred_after_a_system_header_is_kept(self):
+        """Manager check 2026-09-30: on the engraved fixture ALL 35 refused
+        whole rests sat in a system's FIRST bar, whose cell also holds the
+        clef/key/meter header -- the rest is centred in the space AFTER the
+        header, not in the cell. Bar 400..800; a clef and a meter end at
+        x=560; the rest is centred on 680 = the middle of 560..800 (offset
+        0.2 of the whole cell, past the 1/6 limit, but 0.0 of the playable
+        span)."""
+        log = Log()
+        _bar_box(log)
+        from tools.omr.tests.test_staged_family_refusals import _box
+        _box(log, 1, "clefG", page_box=[410.0, 950.0, 470.0, 1150.0])
+        _box(log, 2, "timeSig4", page_box=[520.0, 1000.0, 560.0, 1080.0])
+        g = _rest(log, 0, "restWhole", page_box=[660.0, 1000.0, 700.0, 1040.0])
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+
     def test_off_center_rule_does_not_apply_to_half_rests(self):
         """Sean's own narrowing (`family_precision.py` §REST-PLACEMENT,
         item 1): the blanket centring refusal is for WHOLE rests only. A

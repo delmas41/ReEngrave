@@ -640,10 +640,28 @@ def _rest_off_center_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
         # `False` for a missing frame).
         return None
     bx0, _by0, bx1, _by1 = cell_box
+    rx0, _ry0, rx1, _ry1 = page_box
+    # ⚠️ Manager check 2026-09-30: a system's FIRST bar also holds the
+    # clef/key/meter header, and a whole rest is centred in the space AFTER
+    # it (all 35 refusals on the engraved fixture were first bars). The
+    # playable span starts at the right edge of the last header glyph that
+    # lies left of this rest.
+    cell = ev.subject.at(Kind.CELL)
+    if cell is not None:
+        for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                           subject=cell):
+            val = row.value
+            hb = (row.detail or {}).get("bbox_page_px")
+            if not isinstance(val, (list, tuple)) or not val or not hb \
+                    or len(hb) != 4:
+                continue
+            if str(val[0]).startswith(("clef", "key", "timeSig")) \
+                    and float(hb[2]) <= rx0:
+                bx0 = max(bx0, float(hb[2]))
+        detail["playable_x0_page_px"] = round(bx0, 2)
     width = bx1 - bx0
     if width <= 0:
         return None
-    rx0, _ry0, rx1, _ry1 = page_box
     centre = (rx0 + rx1) / 2.0
     offset = abs(centre - (bx0 + bx1) / 2.0) / width
     detail["bar_centre_offset_fraction"] = round(offset, 4)
