@@ -3063,3 +3063,84 @@ reaching into a neighbour's own ink) rather than the adjacent-guard shape
 this round fixed. **Left for a follow-up round**, not force-fixed here:
 CLAUDE.md rule 5, reach before accuracy, and this round's budget was the
 one hypothesis the manager named.
+
+### §2.37 addendum, round 3 — manager print check: Litolff tabulation, the rule-8 decline fix, and the slur hypothesis NOT shipped
+
+**Litolff failing-condition tabulation** (per NOT-found `det_all` row,
+same method as round 2's table, on a fresh `-v3` re-gather with round 3's
+own code): 35 not-found rows total. **8 rows** match the manager's exact
+hypothesis (one side clears `DENSE` — e.g. `right=0.70–0.79` — but is
+blocked by its own `right_adjacent`/the wide `adjacent`, both reading
+0.71–1.0). **23 rows** fail density directly on BOTH sides (`left`/
+`right` both under 0.55) — center is consistently high (0.68–1.0) so
+these look like a real rung crossing the head, but neither overhang band
+clears the floor by any measure this lane has — a DIFFERENT, harder
+question (Litolff's own MERGING plate, CLAUDE.md §10) that a slur guard
+cannot touch. 4 rows are otherwise (a mix, not double-counted).
+
+**Rule-8 decline fix, shipped** (`gather.ledger_rung_ink`, my exclusive
+area): `_band_state` now distinguishes a band that is `None` because the
+head's OWN box covers it entirely (`_exclude_head_box` — a KNOWN, SAFE
+exclusion, e.g. a rung genuinely through the head) from a band that is
+`None` because the raster genuinely has nothing there (a real gap,
+`off_raster=True`). A side whose OWN density clears `DENSE` but whose
+supporting adjacent evidence is a genuine gap on BOTH its bands is
+`"unknown"`, not `"clean"` — and where no OTHER side clears outright, the
+whole STEP now DECLINES (`ledger_rung_ink` returns `None`, the same
+"cannot tell" signal `_observe_ledger_rung_ink` already turns into an
+abstention) instead of asserting `found=True` from missing evidence.
+
+**Measured**: of the two confound-control false positives round 2
+introduced, **1 of 2 is now gone** (`glyph/1/1/3/6/0` toward
+`staff/1/1/4`, step 4 — every adjacent read was genuinely `None`, exactly
+the hole this fix closes). **The other (`glyph/1/1/0/6/0` toward
+`staff/1/1/1`, step 4) remains** — read directly, its adjacent evidence is
+NOT missing: `left_adjacent=0.0`, `right_adjacent=0.0`, `adjacent=0.0206`,
+all cleanly read and genuinely low, with `left=0.723`/`right=0.53` both
+clearing `DENSE`. This is not a rule-8 hole — the fix cannot decline over
+evidence that is actually present and clean. It is a DIFFERENT, deeper
+question (this is the OUTERMOST step of a 4-rung-deep ladder; whether a
+walk this far from the note should be trusted at all, or whether the
+confound-control's own premise — "no ledger toward an irrelevant
+neighbour" — still holds at this depth) — **flagged, not solved**, out of
+this round's budget.
+
+**Slur-vs-beam hypothesis: investigated, NOT shipped.** Built `_within_
+band_level` exactly as suggested (split one adjacent band at its own
+x-midpoint, compare the two halves' row centroids, the same ruler the
+existing cross-band slant check already uses). Wiring it to EXEMPT a
+"not level" band from blocking flips the ONE real positive control this
+lane has — `test_staged_ledger_rung_ink.py::TestARealPrintedRung`'s own
+pinned, deliberately-unresolved step-1 finding (`ledger_rung_ink_brk_p22_
+real.png`, a 2.6d fixture already documented as ambiguous ink, "the
+staff itself, or ink the erasure left behind") — from a correct, cautious
+`found=False` to an unverified `found=True`, using a within-band centroid
+gap of 0.30 half-heights against the existing 0.2 threshold. There is no
+confirmed real SLUR crop on either plate to calibrate the other
+direction, and CLAUDE.md rule 7 ("who says it's right?") is exactly
+against guessing that boundary under time pressure. `_within_band_level`
+is built, documented, and its own note names precisely what a future
+round needs (a confirmed slur crop) — but it does NOT gate `blocks`
+this round; the adjacent guard is otherwise unchanged from round 2
+(density-only). The 8 hypothesis-matching Litolff rows are therefore
+**still blocked**, honestly reported rather than shipped on a guess.
+
+**Net det_all rates, round 3 vs round 2** (real re-gather both times):
+Litolff p3 unchanged at 2/23 (9%); Brahms p1 unchanged at 43/82 (52%) --
+round 3 changed NOTHING density- or blocking-wise, only the decline path,
+which by construction only ever turns a `found=True` into a decline
+(never adds a new found). **Neither plate reaches the ≥80% finish line.**
+Litolff's gap is dominated by genuine density failures on both sides (23
+of 35 rows) — a GATHER-level question (is there really no usable wing at
+these positions, or does `_true_ink_span`/the overhang anchor need
+further work specific to Litolff's MERGING plate) that this round's
+budget did not reach.
+
+Tests: `test_staged_ledger_rung_ink.py::TestDeclineOnUnreadableAdjacent`,
+3 new (a real rung whose adjacent bands are genuinely off a too-short
+raster declines; the SAME geometry with the head's box declared over
+those same bands is found, not declined; a confirmed thick blob is a
+negative, never a decline).
+
+Gate: fast tier 3,959 → **3,962** (3 new), 0 failed. `staged.check`:
+**245**, unchanged.

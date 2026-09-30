@@ -240,6 +240,60 @@ class TestAdjacentExcludesTheHeadsOwnBox(unittest.TestCase):
         self.assertTrue(withh["found"])
 
 
+class TestDeclineOnUnreadableAdjacent(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, round 3, 2026-09-29): a step
+    whose density looked like a real rung but whose ADJACENT evidence
+    (wide or per-side) could not be read AT ALL -- off the raster, never
+    the head's own KNOWN, safely-excluded box -- must DECLINE (`None`,
+    the same "cannot tell" signal a caller already treats as an
+    abstention), not silently default a missing "cannot rule out thick"
+    into "clean". Measured against the real re-gather: both confound-
+    control false positives round 2 introduced were exactly this shape
+    (`left_adjacent`/`right_adjacent`/`adjacent` all `None`, density alone
+    cleared)."""
+
+    def test_declines_when_the_raster_cannot_test_adjacent_at_all(self):
+        """A real, dense, fully-overhanging rung -- but the raster is only
+        as tall as the tested band itself, so NEITHER the above nor the
+        below comparison band has anywhere left to read (genuinely off
+        the raster, no head box declared at all). RED before this round:
+        the OLD `adjacent is None` fallback defaulted this straight to
+        `found=True`."""
+        img = _paper(h=7, w=400)
+        half_h = gather.LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * SP / 2.0 \
+            + gather.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * SP
+        cy = half_h + 0.2       # the tightest fit that still lets y0 round to 0
+        _draw(img, 175, cy - half_h, 225, cy + half_h)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, cy, SP, None)
+        self.assertIsNone(m)
+
+    def test_a_rung_through_the_head_is_not_declined_over_the_SAME_raster(self):
+        """POSITIVE CONTROL: identical geometry (the adjacent bands reach
+        off the SAME short raster), but this time the head's own box is
+        declared and covers those bands -- a KNOWN, safe exclusion, not
+        "cannot tell". This must still be FOUND, never declined."""
+        img = _paper(h=7, w=400)
+        half_h = gather.LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * SP / 2.0 \
+            + gather.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * SP
+        cy = half_h + 0.2
+        _draw(img, 175, cy - half_h, 225, cy + half_h)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, cy, SP, None,
+                                   head_y0=-1000.0, head_y1=1000.0)
+        self.assertIsNotNone(m)
+        self.assertTrue(m["found"])
+
+    def test_a_confirmed_thick_stroke_is_a_negative_not_a_decline(self):
+        """POSITIVE CONTROL: the adjacent band IS readable and genuinely
+        dense (a real thick blob) -- a confirmed block is `found=False`,
+        never a decline; declining is for MISSING evidence only, not for
+        evidence that positively says "thick"."""
+        img = _paper()
+        _draw(img, 182, 185, 218, 215)     # tall, dwarfing the window
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertIsNotNone(m)
+        self.assertFalse(m["found"])
+
+
 class TestOneSidedWing(unittest.TestCase):
     """ROADMAP 2.37 (manager print check, 2026-09-29): real Brahms p1 crops
     (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of 39

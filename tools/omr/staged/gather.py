@@ -1247,7 +1247,11 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     the SAME canonical pixels as `img` -- the caller's job, not this
     function's; it does no frame conversion. `img` is the cell's staff-
     ERASED raster, 0 = ink. Returns `None` -- declined, never defaulted --
-    where the window (or a comparison band) falls entirely off the raster.
+    where the window (or a comparison band) falls entirely off the raster,
+    AND (ROADMAP 2.37 round 3, manager print check) where density alone
+    would pass but the adjacent evidence needed to clear or block it could
+    not be read at all -- CLAUDE.md rule 8, *cannot tell* never becomes
+    *clean*.
 
     Bins at the tested y: CENTER (over the head's own x-span, must be
     inked -- a rung passes under or over the notehead it serves), LEFT and
@@ -1303,6 +1307,94 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         rows = np.arange(iy0, iy1, dtype=float)
         return float((rows * weights).sum() / total)
 
+    def _within_band_level(x0: float, x1: float, y0: float, y1: float
+                          ) -> Optional[bool]:
+        """ROADMAP 2.37 (manager print check, round 3). Is the ink IN THIS
+        ONE BAND level (a straight, PARALLEL stroke -- a beam, a second
+        staff line) rather than curved or slanted (a slur passing
+        through)? Splits the band at its own x-midpoint and compares the
+        two halves' ink-weighted row centroids -- the SAME idea the
+        existing left/right slant ruler uses across two SEPARATE bands,
+        applied within one. `None` -- never guessed either way -- where a
+        half has nothing to weigh.
+
+        ⚠️ RECORDED ONLY, NOT YET A GATE. Measured against the one real
+        positive control this lane has (`ledger_rung_ink_brk_p22_real.png`,
+        step 1's own "below" band, the ROADMAP 2.6d fixture's own
+        documented OPEN finding -- ink close enough to the staff that this
+        guard already rejects it, and the rejection is deliberately NOT
+        resolved): its within-band centroid gap is 0.30 half-heights,
+        comfortably inside `LEDGER_RUNG_INK_SLANT_MAX_HALF_H` (0.2)'s own
+        margin below the confirmed BEAM's cross-band ratio (~0.42-0.45,
+        that constant's own note) -- i.e. reusing 0.2 here would call this
+        ambiguous, deliberately-unresolved ink "confirmed curved" and
+        credit it, which is exactly the guess CLAUDE.md rule 7 refuses
+        without a real slur crop to calibrate the OTHER direction. NOT
+        CONFIRMED against one: the value is computed and carried in
+        `detail` for a future round's tabulation, but does not (yet)
+        change `blocks` below."""
+        if x1 <= x0 or y1 <= y0:
+            return None
+        mid = (x0 + x1) / 2.0
+        lcy = row_centroid(x0, mid, y0, y1)
+        rcy = row_centroid(mid, x1, y0, y1)
+        if lcy is None or rcy is None:
+            return None
+        return abs(lcy - rcy) <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
+
+    def _band_state(x0: float, x1: float,
+                    span: Optional[Tuple[float, float]]
+                    ) -> Tuple[Optional[float], bool, bool]:
+        """`(density, blocks, off_raster)` for one adjacent band.
+        `density` is `None` where the band cannot be read: either the
+        head's OWN box covers it entirely (`_exclude_head_box` -- a KNOWN,
+        SAFE exclusion, `off_raster=False`) or the raster genuinely has
+        nothing there (`off_raster=True`) -- the distinction the decline
+        logic below needs, because a rung genuinely THROUGH the head has
+        its adjacent bands wholly excluded on purpose and must NOT decline
+        over that, while a band that is simply unreadable is the rule-8
+        hole. `blocks` is density-only (`> ADJACENT_MAX`) -- see
+        `_within_band_level`'s own note on why levelness is not yet a
+        gate here."""
+        if span is None:
+            return None, False, False
+        d = frac(x0, x1, *span)
+        if d is None:
+            return None, False, True
+        return d, d > LEDGER_RUNG_INK_ADJACENT_MAX, False
+
+    def _side_state(x0: float, x1: float
+                    ) -> Tuple[Optional[float], bool, bool]:
+        """`(density, unreadable, blocks)` for one side's own adjacent
+        test, over BOTH bands (above, below). `unreadable` is true only
+        where NEITHER band gave a density AND at least one of them was a
+        genuine raster gap -- a side wholly excluded by the head's own box
+        (both bands `None` via `_exclude_head_box`) is NOT unreadable, it
+        is a known, safe non-finding."""
+        a_d, a_blocks, a_off = _band_state(x0, x1, above_span)
+        b_d, b_blocks, b_off = _band_state(x0, x1, below_span)
+        vals = [v for v in (a_d, b_d) if v is not None]
+        unreadable = not vals and (a_off or b_off)
+        return (max(vals) if vals else None), unreadable, (a_blocks or b_blocks)
+
+    def _side_verdict(dense_val: Optional[float], unreadable: bool,
+                      blocks: bool) -> str:
+        """ROADMAP 2.37 round 3 (manager print check): `"not_dense"` is a
+        genuine, fully-read NEGATIVE (never declined over -- CLAUDE.md
+        rule 8 does not apply to a real measurement); `"blocked"` is a
+        CONFIRMED thick parallel stroke, also a real negative; `"unknown"`
+        is the rule-8 hole itself -- density passed but the evidence that
+        would clear or block it could not be read at all, so the row must
+        DECLINE rather than default to "clean"; `"clear"` is a real,
+        fully-read positive."""
+        if dense_val is None or dense_val < LEDGER_RUNG_INK_DENSE:
+            return "not_dense"
+        if blocks:
+            return "blocked"
+        if unreadable:
+            return "unknown"
+        return "clear"
+
     y0, y1 = y_center - half_h, y_center + half_h
     # ⚠️ ROADMAP 2.37: anchor on the TRUE ink edge in THIS row band, not
     # the (possibly padded) box edge -- see `_true_ink_span`'s own note.
@@ -1332,12 +1424,18 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     # its own rows, never any other ink, from the tested band.
     above_span = _exclude_head_box(y0 - 2 * half_h, y0, head_y0, head_y1)
     below_span = _exclude_head_box(y1, y1 + 2 * half_h, head_y0, head_y1)
-    above = frac(cx - ww / 2.0, cx + ww / 2.0, *above_span) if above_span \
-        else None
-    below = frac(cx - ww / 2.0, cx + ww / 2.0, *below_span) if below_span \
-        else None
+    above, above_blocks, above_off = _band_state(
+        cx - ww / 2.0, cx + ww / 2.0, above_span)
+    below, below_blocks, below_off = _band_state(
+        cx - ww / 2.0, cx + ww / 2.0, below_span)
     adjacent_vals = [v for v in (above, below) if v is not None]
     adjacent = max(adjacent_vals) if adjacent_vals else None
+    # ⚠️ ROADMAP 2.37 round 3: unreadable only where NEITHER band gave a
+    # density AND at least one was a genuine raster gap -- both wholly
+    # excluded by the head's own box (a rung genuinely through it) is a
+    # known, safe non-finding, not "cannot tell" -- see `_side_state`.
+    wide_unreadable = not adjacent_vals and (above_off or below_off)
+    wide_blocks = above_blocks or below_blocks
     # ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). Real Brahms p1
     # crops (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of
     # 39 `det_all` pairs -- the detector boxed EVERY expected rung, yet
@@ -1355,20 +1453,10 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     # *and* not also tall (its own one-thickness-band above/below, not the
     # wide `ww`-centred one) -- a stem is vertical and reads dense one
     # thickness away in the SAME narrow x-range a wing does not.
-    def _side_adjacent(x0: float, x1: float) -> Optional[float]:
-        a = frac(x0, x1, *above_span) if above_span else None
-        b = frac(x0, x1, *below_span) if below_span else None
-        vs = [v for v in (a, b) if v is not None]
-        return max(vs) if vs else None
-
-    left_adjacent = _side_adjacent(left_x0, left_x1)
-    right_adjacent = _side_adjacent(right_x0, right_x1)
-    left_ok = (left >= LEDGER_RUNG_INK_DENSE
-              and (left_adjacent is None
-                   or left_adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX))
-    right_ok = (right >= LEDGER_RUNG_INK_DENSE
-               and (right_adjacent is None
-                    or right_adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX))
+    left_adjacent, left_unreadable, left_blocks = _side_state(left_x0, left_x1)
+    right_adjacent, right_unreadable, right_blocks = _side_state(right_x0, right_x1)
+    left_v = _side_verdict(left, left_unreadable, left_blocks)
+    right_v = _side_verdict(right, right_unreadable, right_blocks)
     # ⚠️ THE LEVEL GUARD -- see `LEDGER_RUNG_INK_SLANT_MAX_HALF_H`'s comment.
     # A band with no ink to weigh (already failing DENSE) reports no slant;
     # `extends` fails on the density test regardless, so this never turns a
@@ -1378,10 +1466,30 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     slant = (abs(left_cy - right_cy)
             if left_cy is not None and right_cy is not None else None)
     level = slant is None or slant <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
-    extends = (center >= LEDGER_RUNG_INK_DENSE
-              and (left_ok or right_ok)
-              and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX)
-              and level)
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, round 3): CLAUDE.md rule 8,
+    # "cannot tell" may never become an answer. A side whose OWN density
+    # clears DENSE but whose supporting adjacent evidence could not be
+    # read AT ALL (off the raster, or wholly the head's own excluded box)
+    # is `"unknown"`, not `"clean"` -- and where no OTHER side clears
+    # outright, the whole STEP declines (`None`, the same signal a caller
+    # already treats as "cannot tell") rather than asserting `found=True`
+    # from missing evidence. Measured: this is exactly the shape of both
+    # confound-control false positives round 2 introduced (`left_adjacent`/
+    # `right_adjacent`/`adjacent` all `None` while density alone cleared).
+    decline = False
+    if center < LEDGER_RUNG_INK_DENSE:
+        extends = False
+    elif left_v == "clear" or right_v == "clear":
+        if wide_unreadable:
+            decline = True
+            extends = False
+        else:
+            extends = (not wide_blocks) and level
+    else:
+        decline = left_v == "unknown" or right_v == "unknown"
+        extends = False
+    if decline:
+        return None
     return {
         "found": bool(extends),
         "center": round(center, 4), "left": round(left, 4),
@@ -1478,10 +1586,19 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
         m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c,
                            head_y0=hy0_c, head_y1=hy1_c)
         if m is None:
+            # ⚠️ ROADMAP 2.37 (manager print check, round 3): `None` now
+            # ALSO means "density passed but the adjacent evidence needed
+            # to clear or block it could not be read at all" -- CLAUDE.md
+            # rule 8, declined rather than defaulted to "clean". Both
+            # causes share one reason word; `ledger_rung_ink` itself is
+            # where the distinction is made, and it is not asked to carry
+            # a reason string back through its plain `Optional[Dict]`
+            # return.
             log.abstain(g, Q.LEDGER_RUNG_INK, reader=READERS.CV_LEDGER,
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                         candidate=cand_key, step=k,
-                        note="window off the raster")
+                        note="window off the raster, or dense but the "
+                             "adjacent band could not be read")
             continue
         found = m.pop("found")
         win = m.pop("window_canonical")
