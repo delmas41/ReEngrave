@@ -603,7 +603,8 @@ asked the raw detector box CLAUDE.md Sec.10 already says is untrustworthy
   CV, `OMR_STEM_NOTEHEAD_GATE`) — its own commit, last, because this one can
   move stem/beam results and the other three cannot.
 
-Five commits on `claude/acceptance-measure-notehead-box-e75821`, one per
+Five commits on `worktree-agent-abaec0246921f0daf` (corrected — an earlier
+draft of this section misnamed the branch), one per
 connection plus the promotion. Each was proven RED then GREEN by stashing
 just that commit's `gather.py`/`notehead_precision.py` change and
 re-running its own new test (recorded in each commit message). `staged.check`
@@ -634,8 +635,8 @@ Litolff pdf-index 3, Brahms pdf-index 1. Diffed with `probe/diff_2.39_ab.py`
 | consumer | quantity | Litolff p3 changed | Brahms p1 changed |
 |---|---|---:|---:|
 | 1 (ledger rung ink) | `ledger_rung_ink` obs | 20 subjects | 38 subjects |
-| 2 (notehead ink) | `notehead_ink` obs | 232 subjects | 294 subjects |
-| 2 → `duration` verdict | `duration` | **1** (decided→narrowed, `head_fill_from_ink`) | **87** (same shape) |
+| 2 (notehead ink) — ⚠️ **REVERTED, Sec.18** | `notehead_ink` obs | 232 subjects | 294 subjects |
+| 2 → `duration` verdict — ⚠️ **REVERTED, Sec.18** | `duration` | **1** (decided→narrowed, `head_fill_from_ink`) | **87** (same shape) |
 | 3 (nearer staff) | `notehead_is_not_a_notehead` | 0 | 0 |
 | 3 → `glyph_owner` | `glyph_owner` | 0 | **4** (all same STAFF; 3 basis `distance`→`ledger_direction`, 1 **abstained→decided**) |
 | 4 (stem/beam gate) | `stem` / `beam_stroke` obs | **0 / 0** | **0 / 0** |
@@ -652,14 +653,15 @@ every one of those four moved toward MORE evidence, never less (one
 basis from the coarse distance tie-break to the ledger read, still landing
 on the SAME staff). Connection 2's ink readings moved on roughly half the
 regular noteheads on both pages (a `Q.NOTEHEAD_INK` value is continuous, so
-any box-size change moves it), but only narrowed — never wrongly decided —
-a small `duration` population (1 of ~573 Litolff bars' worth, 87 of Brahms's
-larger, more merged/shattered population), always the same direction
-(`decided` → `narrowed`, reason `head_fill_from_ink`): the box now catches a
-disagreement between the detector's class and the ink that a raw sliver or
-merged box used to hide or manufacture. INFER's duration-narrowing rules
-(off by default, ROADMAP 2.3) are the next stage that could resolve these;
-none of the 88 narrowed rows was measured through INFER this round.
+any box-size change moves it) and narrowed a `duration` population (1 of
+~573 Litolff bars' worth, 87 of Brahms's larger, more merged/shattered
+population) — ⚠️⚠️ **WITHDRAWN, Sec.18: this was read as "only narrowed,
+never wrongly decided" and as catching a real disagreement.** It was
+neither. The narrowing is a SYMPTOM of the same sliver flaw that produced
+the swing crop: a box built on a sliver's off-centre "centre" reads
+differently from the raw sliver, which is why the row moves at all, not
+because it now sees a genuine disagreement. Connection 2 is reverted
+(Sec.18); this row is a measurement of the bug's reach, not a result.
 
 ## 15. Print check (CLAUDE.md Sec.6b) — 5 crops, `out/print/2.39/`
 
@@ -681,15 +683,27 @@ own centre (unchanged by this round on every consumer).
 - `brahms-notehead-ink-swing.png` (connection 2, the biggest ink swing
   measured, 0.914→0.185): the raw detector box is **6.5 px tall against a
   27.25 px spacing (0.24 staff spaces)** — a textbook Brahms sliver
-  (CLAUDE.md Sec.10's own number) that the standard (green) box corrects to
-  cover the real head.
+  (CLAUDE.md Sec.10's own number). ⚠️⚠️ **WITHDRAWN, MANAGER REVIEW OF
+  `c889c700`:** this section's first draft said the standard (green) box
+  "corrects to cover the real head" — **FALSE.** The sliver sits across
+  the TOP EDGE of the real head, so the detector's own CENTRE (the blue
+  cross) is on that edge, not the head's true centre; the standard box,
+  built around that wrong centre, covers mostly blank paper ABOVE the
+  head. We now read a solid BLACK head as HOLLOW — the opposite of a
+  correction. See Sec.18.
 - `brahms-glyph-owner-flip.png` (connection 3's abstain→decided head): a
   hollow head several spaces below its staff with visible printed ledger
   lines in the crop between it and the staff above — consistent with the
   new DECIDED verdict, and with Sean's *"there is no such thing as a far
-  note with no ledger line"* (2026-09-29).
+  note with no ledger line"* (2026-09-29). Its raw box is **1.65×1.22
+  staff spaces — not a sliver** — and the standard box nearly coincides
+  with it (`brahms-glyph-owner-basis-2.png`, a second connection-3 crop,
+  1.52×1.22 sp, same result). Connections 1 and 3's own changed rows do
+  NOT show the sliver/off-centre flaw connection 2 did — see Sec.18.
 
-**No crop shows the new answer wrong.** Nothing was reverted.
+**Corrected: one crop (`brahms-notehead-ink-swing.png`) showed the new
+answer WRONG.** Connection 2 (`gather_notehead_ink`) was reverted — see
+Sec.18. Connections 1, 3 and 4 stand.
 
 ## 16. Re-centre measurement (item 4) — MEASURED, NOT WIRED
 
@@ -735,3 +749,56 @@ density.py` + `test_staged_ledger_cv_first_2_37.py` +
 `test_staged_ledger_direction.py` (104), `test_stem_notehead_gate.py` (25),
 `test_vertical_runs.py` + `test_staged_beam_stem_join.py` +
 `test_staged_event.py` (116) — every one green, zero regressions.
+
+## 18. Manager review of `c889c700` — connection 2 reverted
+
+Caught: §15's `brahms-notehead-ink-swing.png` caption was wrong. Sean's
+convention (2026-09-29) is to trust the detector's own CENTRE unconditionally
+and distrust only its width/height. That holds for a box that is merely the
+WRONG SIZE. It does not hold for a box that is a SLIVER, because a sliver's
+centre is not a size error — it is a POSITION error: the detector found only
+a fragment of the head's ink, so the fragment's own centre has no reason to
+land on the head's true centre. `brahms-notehead-ink-swing.png`'s raw box
+(0.24 sp tall) sits on the head's top edge; the standard box built around
+that edge's centre covers mostly blank paper above the real head and reads
+a solid BLACK head as HOLLOW (0.914 → 0.185) — the reader's exact opposite.
+
+**8 of 87 Brahms `head_fill_from_ink` narrowings, random sample, seed 2039**
+(`probe/sample87.py`, crops in `out/print/2.39/sample8/`): every one of the
+8 raw boxes is the SAME shape of sliver (width 0.29–0.4 staff spaces against
+the standard 1.4), and **7 of 8 sit in dense, merged ink** (a beam group, a
+chord, a slur crossing the stem) with **no single isolated head visible** —
+`probe/inspect_component.py` confirms three of them: the raw box's centre
+pixel belongs to a connected ink blob of 3,300–5,000 px², several times a
+single head's ~900 px² standard-box area. This reader's own population is
+disproportionately the sliver/merged-ink case, not an unlucky one-off.
+
+**Decision: reverted, not repaired.** A bounded re-centre (find the ink blob
+under the box on `image_no_staff`, centre the standard box on it, bounded to
+~0.6 sp of shift, decline where the blob exceeds ~2 head areas — the
+manager's own proposed design) was considered. But 7 of the 8 sampled rows
+already exceed a 2-head-area threshold, so that decline clause would fire on
+most of this reader's own population and hand back the raw box anyway —
+which is not a small, cheaply-verified fix to build and trust in the time
+remaining this session. `git revert 2cac8b997938938d7fe6952ce95cee012ee54c85`
+(`c8bbd3a5`) is the safe default: CLAUDE.md rule 7, *"a control must be able
+to fail"* — this one did.
+
+**Connections 1 and 3 checked for the same flaw, 2 crops each — not found.**
+`litolff-ledger-rung-1.png`/`-2.png` (connection 1): raw boxes 1.57×1.20 and
+1.31×1.43 staff spaces. `brahms-glyph-owner-flip.png`/`brahms-glyph-owner-
+basis-2.png` (connection 3): raw boxes 1.65×1.22 and 1.52×1.22 staff spaces.
+None is a sliver; every standard box nearly coincides with its raw one.
+Connections 1, 3 and 4 stand, unchanged by this section.
+
+**ROADMAP 2.37's ledger-owner-density reader, already on `main`
+(`gather._observe_ledger_owner_density`, `LEDGER_OWNER_HEAD_WIDTH_SPACES`),
+centres its own standard box on the SAME raw-detector centre and carries the
+identical exposure to a sliver.** Not changed here — it is out of this
+lane's scope and 2.37 already shipped and was measured on its own terms
+(0 false picks on both count pages) — named so a future session does not
+have to re-derive this.
+
+Corrected branch name throughout this file and ROADMAP.md: the five (now
+six, after this revert, seven) commits are on `worktree-agent-abaec0246921f0daf`,
+not `claude/acceptance-measure-notehead-box-e75821`.
