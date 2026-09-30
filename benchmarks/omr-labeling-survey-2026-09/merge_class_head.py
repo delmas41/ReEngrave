@@ -10,20 +10,47 @@ head against a corpus that says those classes are absent.
 But a YOLOv8 detect head is per-class in its LAST layer: `model.22.cv3.{0,1,2}.2`
 is a 1x1 convolution whose output channels are the 208 classes, one row of
 weights and one bias each. A class this corpus never labels has exactly one
-place its "this is absent" evidence can live — and the base checkpoint still
-holds the right values for that row. So take the fine-tune, and for every class
-the training labels do not contain, put the BASE's row back.
+place its "this is absent" evidence can live — and the fine-tune still knows
+the right values for the class(es) its OWN corpus taught it. So the graft
+starts from BASE — every tensor, unconditionally — and moves onto it only the
+KEPT classes' rows of that one 1x1 conv, from the fine-tune. Nothing else
+about base moves: not the backbone, not the neck, not the shared
+box-regression branch (`model.22.cv2.*`), not the DFL layer, and not any
+OTHER class's row of `cv3`. `--keep`/`--min-labels` say which classes are
+"kept" (grafted FROM the fine-tune); every class not kept is simply base's row,
+untouched — the naming is about the DONOR, `restore` never described a
+direction of copy on this repo's tree, only an outcome.
 
-⚠️ **This is not free and is not the same as never having trained.** The
-features feeding the head drift too, so a restored row is the base's opinion
-applied to slightly different features. Whether that recovers the class is an
-empirical question — which is the point of doing it as a cheap local step with a
-screen behind it, rather than as another GPU arm.
+⚠️ **A grafted row is not free and is not the same as never having trained
+that class.** The row was learned against the fine-tune's own (possibly
+drifted, if `model.22` was not frozen during its training) features, and it
+now reads through BASE's features instead. Whether that recovers the class is
+an empirical question — which is the point of doing it as a cheap local step
+with a screen behind it, rather than as another GPU arm.
 
-⚠️ **Only classes with ZERO labels are restored by default.** A class the corpus
-labels a little is a class the fine-tune was meant to change; restoring it would
-undo the training that was wanted. `--min-labels` moves that line and prints
-what it moved.
+⚠️ **Bug fixed 2026-09-29 (`benchmarks/omr-weights-ab-2026-09/`):** earlier
+versions of this tool did the graft backwards — they started from the
+FINE-TUNE'S entire state dict and patched only the NON-kept classes' rows
+from base, leaving `model.22.cv2.*` (box regression), the DFL layer, the
+whole backbone/neck, and every OTHER class's row of `cv3` as the
+FINE-TUNE'S, not base's. A tensor-level diff of the shipped production graft
+(`hollow-graft-shift09-2026-09-04.pt`, commit `0e9f005b`) against its
+recorded base (`hollow-ft-2026-09-03.pt`) and its donor fine-tune
+(`round5-sweep/distill25/epoch0.pt`) confirms production was built this way:
+589 of 595 tensors are bit-identical to the FINE-TUNE (including every
+`model.22.cv2.*` and every backbone/neck conv), and only 187 happen to equal
+base (mostly BatchNorm buffers that coincide numerically) — the box-placement
+network every symbol reads through in production today is `distill25`'s, not
+`hollow-ft-2026-09-03`'s. `transplant_class_rows.py` was already built the
+correct way round (base-anchored) and did not share this bug; `--import-rows`
+below was also already base-anchored. Only the plain `--ft`/`--base` (no
+`--import-rows`) path had the direction backwards, and it is what
+`compose_specialists.sh` and the shipped graft both called.
+
+⚠️ **Only classes with ZERO labels are grafted by default's complement** — a
+class the corpus labels a little is a class the fine-tune was meant to
+change; grafting it in is the point. `--min-labels` moves that line and
+prints what it moved.
 
     python3 .../merge_class_head.py --ft <ft.pt> --base <base.pt> --out <out.pt>
     python3 .../merge_class_head.py ... --labels-root data/user-labeled-distill
@@ -184,6 +211,15 @@ def main() -> int:
               f"({[names[i] for i in kept]}) -> {a.export_rows} ({sz/1024:.0f} KB)")
         return 0
 
+    # The graft is anchored on BASE, unconditionally, for every tensor.
+    # Only the KEPT classes' rows of the per-class 1x1 convs move, from the
+    # fine-tune, onto base's own state dict. Everything else — backbone,
+    # neck, the shared box-regression branch (model.22.cv2.*), the DFL
+    # layer, and every NON-kept class's own row — is base's, bit-exact,
+    # because it is simply never written. (Fixed 2026-09-29: this used to
+    # start from `ft` and patch the restored classes from base, which left
+    # box regression and every other shared tensor as the fine-tune's own,
+    # drifted, values — see the module docstring.)
     base = torch.load(str(a.base), map_location="cpu", weights_only=False)
     base_sd = base["model"].state_dict()
 
@@ -198,17 +234,20 @@ def main() -> int:
                 print(f"  SHAPE MISMATCH {k}: {tuple(ft_sd[k].shape)} vs "
                       f"{tuple(base_sd[k].shape)}")
                 return 2
-            for c in restore:
-                ft_sd[k][c] = base_sd[k][c].clone()
+            for c in kept:
+                base_sd[k][c] = ft_sd[k][c].clone()
                 moved += 1
-    print(f"restored {moved} per-class parameter rows across "
-          f"{len(CLS_LAYERS)} head scales")
+    print(f"grafted {moved} per-class parameter rows across "
+          f"{len(CLS_LAYERS)} head scales onto --base — every other tensor "
+          f"(backbone, neck, model.22.cv2.* box regression, DFL, and the "
+          f"{len(restore)} non-kept classes' own rows) stays bit-exact to "
+          f"--base")
 
     if a.bias_shift:
         for layer in CLS_LAYERS:
             k = f"{layer}.bias"
             for c in kept:
-                ft_sd[k][c] -= a.bias_shift
+                base_sd[k][c] -= a.bias_shift
         print(f"shifted the bias of {len(kept)} kept classes by "
               f"-{a.bias_shift} across {len(CLS_LAYERS)} scales — a "
               f"conf 0.25 detection of those classes now needs "
@@ -217,9 +256,9 @@ def main() -> int:
 
     if a.dry_run:
         return 0
-    ft["model"].load_state_dict(ft_sd)
+    base["model"].load_state_dict(base_sd)
     a.out.parent.mkdir(parents=True, exist_ok=True)
-    torch.save(ft, str(a.out))
+    torch.save(base, str(a.out))
     print("wrote ->", a.out)
     return 0
 
