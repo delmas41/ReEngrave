@@ -138,6 +138,14 @@ benchmarks/acceptance/out/**/*.pdf
 benchmarks/acceptance/out/**/*.record.json
 benchmarks/acceptance/out/**/*.record.json.md5
 
+# ROADMAP 1.6, the SMALL re-gather (`tools.omr.acceptance_quick`) — same
+# reasoning as `benchmarks/acceptance/out/` immediately above: a single-page
+# gather's own record is still tens of MB and is NOT committable, but the
+# derived MusicXML/LilyPond/coverage-report/log and the JSON summary/HTML
+# index beside it are small and are the point of running the tool.
+benchmarks/acceptance/quick/out/**/*.record.json
+benchmarks/acceptance/quick/out/**/*.pdf
+
 # Transcribe output kept beside a benchmark run. Regenerable from the PDF and
 # the weights, and enormous: eleven of these reached main in the 2026-08-28
 # clef/key-signature merge and cost 30 MB between them — a single Mahler page

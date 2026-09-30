@@ -316,6 +316,7 @@ python3 -m tools.omr.staged.readout diff base.json arm.json --arm code|weights [
 python3 -m tools.omr.staged.readout html arm.json [--against base.json] --out page.html        # the print, coloured per stage
 python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
 python3 -m tools.omr.factsheet show sheet.json
+python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff [--against other.record.json]  # the SMALL re-gather (ROADMAP 1.6)
 ```
 
 `readout` (ROADMAP 1.5) only reads a record: it refuses one whose GATHER holds
@@ -386,6 +387,15 @@ filed as evidence in the record). The `claude_vision` OMR engine
   pages, ROADMAP 1.6) runs during the day while we work; the FULL re-gather
   of both movements (`benchmarks/acceptance/overnight/regather_20260930.sh`,
   `TAG=...`) runs overnight and is what the acceptance numbers are built on.
+  Run the small one with `python3 -m tools.omr.acceptance_quick --doc
+  <beethoven5-litolff|brahms1-breitkopf> [--against other.record.json]` — it
+  gathers from the movement's first page through the count page (never the
+  count page alone — a lone page loses the meter/key carry from earlier
+  pages and misreports the hold-out count in both directions), in minutes,
+  and writes the page proxies, the
+  stage readout, print-vs-ours, and a per-part per-bar score against the
+  reference encoding to `benchmarks/acceptance/quick/`. ITERATION ONLY: it
+  never writes `current.json` and never substitutes for the overnight run.
 - **Initial tests compare GATHER + ADJUDICATE only** (Sean, 2026-09-30):
   `--through adjudicate` on both arms, read with the stage readout (ROADMAP
   1.5), never the exported file first — too many later steps can change or

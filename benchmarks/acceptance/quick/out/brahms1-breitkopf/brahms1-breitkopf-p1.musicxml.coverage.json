@@ -1,0 +1,5945 @@
+{
+  "families": [
+    {
+      "family": "accidental",
+      "quantity": "accidental_owner",
+      "detector_glyphs": 278,
+      "cv_glyphs": 278,
+      "ink_rows": 556,
+      "written": 26,
+      "decided": 200,
+      "abstained": {
+        "is_a_key_signature_marker": 21,
+        "ambiguous_height": 3,
+        "no_candidate": 54
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "articulation",
+      "quantity": "articulation_owner",
+      "detector_glyphs": 23,
+      "cv_glyphs": 0,
+      "ink_rows": 23,
+      "written": 1,
+      "decided": 2,
+      "abstained": {
+        "no_notehead": 1,
+        "owned_by_another_staff": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "clef",
+      "quantity": "clef",
+      "detector_glyphs": 68,
+      "cv_glyphs": 0,
+      "ink_rows": 68,
+      "written": 0,
+      "decided": 41,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "direction",
+      "quantity": "direction",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {
+        "out_of_scope": 314
+      },
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "dynamic",
+      "quantity": "dynamic",
+      "detector_glyphs": 266,
+      "cv_glyphs": 0,
+      "ink_rows": 266,
+      "written": 86,
+      "decided": 304,
+      "abstained": {
+        "unspellable": 10
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "fermata",
+      "quantity": "fermata_owner",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "key",
+      "quantity": "key_signature",
+      "detector_glyphs": 64,
+      "cv_glyphs": 0,
+      "ink_rows": 64,
+      "written": 0,
+      "decided": 41,
+      "abstained": {
+        "mixed_marker_kinds": 4,
+        "disagrees_with_part": 1,
+        "disagrees_with_document": 5
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "note",
+      "quantity": "pitch",
+      "detector_glyphs": 1502,
+      "cv_glyphs": 0,
+      "ink_rows": 1502,
+      "written": 319,
+      "decided": 2216,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "emitted"
+    },
+    {
+      "family": "ornament",
+      "quantity": "ornament_owner",
+      "detector_glyphs": 6,
+      "cv_glyphs": 0,
+      "ink_rows": 6,
+      "written": 1,
+      "decided": 4,
+      "abstained": {
+        "no_notehead": 2
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "rest",
+      "quantity": "rest",
+      "detector_glyphs": 371,
+      "cv_glyphs": 0,
+      "ink_rows": 371,
+      "written": 63,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "evaluate",
+      "status": "abstained"
+    },
+    {
+      "family": "slur",
+      "quantity": "arc_kind",
+      "detector_glyphs": 317,
+      "cv_glyphs": 0,
+      "ink_rows": 317,
+      "written": 54,
+      "abstentions_name_no_family": true,
+      "decided": 317,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tie",
+      "quantity": "arc_kind",
+      "detector_glyphs": 717,
+      "cv_glyphs": 0,
+      "ink_rows": 717,
+      "written": 24,
+      "abstentions_name_no_family": true,
+      "decided": 717,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "time",
+      "quantity": "meter",
+      "detector_glyphs": 104,
+      "cv_glyphs": 0,
+      "ink_rows": 104,
+      "written": 0,
+      "decided": 1,
+      "abstained": {
+        "meter_return_not_read": 1,
+        "meter_change_digits_misread": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    },
+    {
+      "family": "tuplet",
+      "quantity": "tuplet_ratio",
+      "detector_glyphs": 0,
+      "cv_glyphs": 0,
+      "ink_rows": 0,
+      "written": 0,
+      "decided": 0,
+      "abstained": {},
+      "produced_by": "adjudicate",
+      "status": "abstained"
+    },
+    {
+      "family": "wedge",
+      "quantity": "wedge_anchor",
+      "detector_glyphs": 1,
+      "cv_glyphs": 41,
+      "ink_rows": 42,
+      "written": 2,
+      "decided": 41,
+      "abstained": {
+        "no_page_frame": 1
+      },
+      "produced_by": "adjudicate",
+      "status": "emitted"
+    }
+  ],
+  "accidental_reading": {
+    "printed_glyphs_detected": 278,
+    "key_signature_glyphs_detected_and_owned_elsewhere": 64,
+    "gathered": 278,
+    "owner_decided": 200,
+    "applied": 26,
+    "abstained_ambiguous": 3,
+    "no_candidate": 54,
+    "no_unit": 0,
+    "no_evidence": 0,
+    "refused_not_an_accidental": 0,
+    "is_a_key_signature_marker": 21,
+    "head_belongs_to_a_nearer_staff": 0,
+    "heads_owned": 158,
+    "heads_contradicted": 37,
+    "owners_sharing_a_head": 42,
+    "applied_on_a_doubled_copy": 0,
+    "unowned": 95,
+    "carried_in_bar": 81,
+    "pitches_altered_by_the_key": 134,
+    "printed_glyphs_read_into_a_verdict": 205,
+    "heads_balanced": true,
+    "unaccounted": 0
+  },
+  "unclaimed_classes": {
+    "arpeggiato": 88,
+    "caesura": 1
+  },
+  "detected_and_unrepresented": {},
+  "detected_and_unrepresented_total": 0,
+  "decided_and_unwritten": {},
+  "decided_and_unwritten_total": 0,
+  "decided_uncounted": [],
+  "abstained_without_a_family": {},
+  "status_census": {
+    "emitted": [
+      "accidental",
+      "articulation",
+      "clef",
+      "dynamic",
+      "key",
+      "note",
+      "ornament",
+      "slur",
+      "tie",
+      "time",
+      "wedge"
+    ],
+    "decided_but_unwritten": [],
+    "decided_uncounted": [],
+    "abstained": [
+      "direction",
+      "fermata",
+      "rest",
+      "tuplet"
+    ],
+    "stub": [],
+    "starved": [],
+    "NO_QUANTITY": [],
+    "unaccounted": [],
+    "n_families": 15,
+    "n_filed": 15,
+    "balanced": true
+  },
+  "family_refusals": {
+    "ledger_is_not_a_ledger": {
+      "refused": {
+        "inside_the_staff": 96,
+        "on_a_staff_line": 21
+      },
+      "refused_total": 117,
+      "kept": 332,
+      "abstained": 1,
+      "abstained_reasons": {
+        "rung_without_boxed_head": 1
+      },
+      "verdicts": 450,
+      "balanced": true
+    },
+    "accidental_is_not_an_accidental": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 278,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 278,
+      "balanced": true
+    },
+    "rest_is_not_a_rest": {
+      "refused": {
+        "rest_has_a_stem": 2,
+        "rest_off_center": 1,
+        "rest_is_a_duplicate_box": 37,
+        "rest_clipped_by_crop": 47,
+        "rest_outside_its_staff": 17,
+        "rest_touches_two_staff_lines": 2
+      },
+      "refused_total": 106,
+      "kept": 265,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 371,
+      "balanced": true
+    },
+    "arpeggiato_is_not_an_arpeggiato": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 88,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 88,
+      "balanced": true
+    },
+    "arc_is_not_an_arc": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 1034,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 1034,
+      "balanced": true
+    },
+    "dynamic_is_not_a_dynamic": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 266,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 266,
+      "balanced": true
+    },
+    "articulation_is_not_an_articulation": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 4,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 4,
+      "balanced": true
+    },
+    "flag_is_not_a_flag": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 185,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 185,
+      "balanced": true
+    },
+    "keysig_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 61,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 61,
+      "balanced": true
+    },
+    "tuplet_marker_is_not_a_marker": {
+      "refused": {},
+      "refused_total": 0,
+      "kept": 0,
+      "abstained": 0,
+      "abstained_reasons": {},
+      "verdicts": 0,
+      "balanced": true
+    }
+  },
+  "grand_staff_families": {
+    "pedal_owner": {
+      "decided": 0,
+      "abstained": 3,
+      "written": 0
+    },
+    "ottava_owner": {
+      "decided": 0,
+      "abstained": 0,
+      "written": 0
+    }
+  },
+  "inferred_clefs": [],
+  "written": {
+    "arc_notes_reachable_at_a_stem": 692,
+    "slur_spans_marked": 165,
+    "tie_links_marked": 56,
+    "tie_links_crossing_a_barline": 21,
+    "tie_chains_marked": 54,
+    "tie_chains_over_two_notes": 2,
+    "tie_spans_marked": 56,
+    "tie_arcs_naming_an_already_named_pair": 36,
+    "tacet_bars_padded": 0,
+    "tacet_bars_not_padded_without_meter": 24,
+    "tacet_spans_declined_unidentified_part": 0,
+    "bars_with_events": 285,
+    "bars_with_events_without_a_meter": 0,
+    "bars_judged_by_a_carried_meter": 183,
+    "dynamics": 86,
+    "notes": 319,
+    "articulations": 1,
+    "dot_role_articulations": 2,
+    "ornaments": 1,
+    "slurs": 54,
+    "beams": 222,
+    "pitches_altered_by_the_key": 134,
+    "bars_held_out_sum": 198,
+    "notes_held_out_sum": 756,
+    "unread_bar_marks_written": 211,
+    "empty_bars_padded": 13,
+    "empty_bars_padded_without_meter": 0,
+    "empty_bars_sized_by_a_carried_meter": 3,
+    "accidentals_printed": 26,
+    "rests": 54,
+    "ties": 24,
+    "beamed_events": 185,
+    "tie_starts_on_an_upper_chord_note": 3,
+    "two_voice_bars_held_out_by_sum": 3,
+    "two_voice_bars_refused_event_straddles_two_streams": 4,
+    "beam_cells_without_a_frame_ruler": 9,
+    "measure_rests_read": 9,
+    "tie_stops_on_an_upper_chord_note": 1,
+    "wedges": 2,
+    "bars_held_out_sum_on_a_doubled_staff": 0,
+    "bars_held_out_unread_mark": 0,
+    "notes_held_out_unread_mark": 0,
+    "bars_held_out_unread_mark_on_a_doubled_staff": 0,
+    "two_voice_bars_held_out_by_unread_mark": 0,
+    "bars_with_a_possible_unread_mark": 0,
+    "parts": 14,
+    "divisions": 32
+  },
+  "part_join": {
+    "unidentified_parts": [],
+    "held_out_staves": 2,
+    "join_decided": "slot",
+    "join_used": "slot",
+    "join_reason": "slot",
+    "systems": [
+      "0/0",
+      "1/0",
+      "1/1"
+    ],
+    "staves_per_system": [
+      13,
+      14
+    ],
+    "parts": 14,
+    "fragmented": false,
+    "slots": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13
+    ],
+    "stranded": 2,
+    "condensed_doubling": []
+  },
+  "measure_numbering": {
+    "systems": [
+      {
+        "system": "0/0",
+        "page": 0,
+        "system_index": 0,
+        "bars": 8,
+        "staves_deciding": 14,
+        "readings": [
+          8
+        ],
+        "offset": 0
+      },
+      {
+        "system": "1/0",
+        "page": 1,
+        "system_index": 0,
+        "bars": 7,
+        "staves_deciding": 14,
+        "readings": [
+          7
+        ],
+        "offset": 8
+      },
+      {
+        "system": "1/1",
+        "page": 1,
+        "system_index": 1,
+        "bars": 8,
+        "staves_deciding": 11,
+        "readings": [
+          8
+        ],
+        "offset": 15
+      }
+    ],
+    "document_bars": 23,
+    "scheme": "document",
+    "printed_bar_check": {
+      "systems": [
+        {
+          "system": "0/0",
+          "printed": null,
+          "file_number": null,
+          "state": "abstained",
+          "reason": "no_reading"
+        },
+        {
+          "system": "1/0",
+          "printed": 8,
+          "file_number": 9,
+          "state": "disagree",
+          "delta": -1
+        },
+        {
+          "system": "1/1",
+          "printed": null,
+          "file_number": null,
+          "state": "abstained",
+          "reason": "no_reading"
+        }
+      ],
+      "agree": 0,
+      "disagree": 1,
+      "abstained": 2
+    }
+  },
+  "tacet_padding": {
+    "tacet_bar_total": 24,
+    "parts_tacet_somewhere": 3,
+    "bars_padded": 0,
+    "bars_not_padded_without_meter": 24,
+    "bars_not_padded_without_a_number": 0,
+    "balanced": true,
+    "spans": [
+      {
+        "part": "P6",
+        "systems": [
+          "1/1"
+        ],
+        "bars": 8
+      },
+      {
+        "part": "P7",
+        "systems": [
+          "1/1"
+        ],
+        "bars": 8
+      },
+      {
+        "part": "P8",
+        "systems": [
+          "1/1"
+        ],
+        "bars": 8
+      }
+    ]
+  },
+  "notes_not_written": {
+    "duration_narrowed": 193,
+    "not_a_notehead:is_a_meter_digit": 44,
+    "not_a_notehead:too_narrow": 244,
+    "not_a_notehead:stacked_head_duplicate": 28,
+    "owned_by_another_staff": 45,
+    "not_a_notehead:clipped_fragment": 36,
+    "not_a_notehead:notehead_is_a_duplicate_box": 8,
+    "not_a_rest:rest_has_a_stem": 2,
+    "not_a_rest:rest_off_center": 1,
+    "not_a_rest:rest_is_a_duplicate_box": 37,
+    "rest_duration_abstained": 7,
+    "not_a_rest:rest_clipped_by_crop": 47,
+    "not_a_rest:rest_outside_its_staff": 17,
+    "not_a_notehead:belongs_to_a_nearer_staff": 5,
+    "ink_is_a_whole_rest": 2,
+    "staff_not_identified": 17,
+    "not_a_rest:rest_touches_two_staff_lines": 2,
+    "bar_does_not_add_up": 756
+  },
+  "notes_not_written_total": 1491,
+  "bars_held_out_sum": {
+    "bars": 198,
+    "bars_on_a_doubled_staff": 0,
+    "of_bars_with_events": 285,
+    "bars_with_events_without_a_meter": 0,
+    "bars_judged_by_a_carried_meter": 183,
+    "fraction": 0.6947368421052632,
+    "noteheads_and_rests": 756,
+    "held": [
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 1,
+        "measure": 2,
+        "part": "P1",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 2,
+        "measure": 3,
+        "part": "P1",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.75
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 3,
+        "measure": 4,
+        "part": "P1",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 4,
+        "measure": 5,
+        "part": "P1",
+        "events": 3,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 5,
+        "measure": 6,
+        "part": "P1",
+        "events": 3,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 0,
+        "cell": 6,
+        "measure": 7,
+        "part": "P1",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 0,
+        "measure": 9,
+        "part": "P1",
+        "events": 10,
+        "noteheads_and_rests": 18,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 320,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          10.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 1,
+        "measure": 10,
+        "part": "P1",
+        "events": 9,
+        "noteheads_and_rests": 10,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 224,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 3,
+        "measure": 12,
+        "part": "P1",
+        "events": 6,
+        "noteheads_and_rests": 10,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 4,
+        "measure": 13,
+        "part": "P1",
+        "events": 6,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 192,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 5,
+        "measure": 14,
+        "part": "P1",
+        "events": 8,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 176,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 0,
+        "cell": 6,
+        "measure": 15,
+        "part": "P1",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 0,
+        "cell": 1,
+        "measure": 17,
+        "part": "P1",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 0,
+        "cell": 7,
+        "measure": 23,
+        "part": "P1",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 1,
+        "cell": 0,
+        "measure": 1,
+        "part": "P2",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 224,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 1,
+        "cell": 1,
+        "measure": 2,
+        "part": "P2",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 28,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.875
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 1,
+        "cell": 3,
+        "measure": 4,
+        "part": "P2",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 1,
+        "cell": 5,
+        "measure": 6,
+        "part": "P2",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 72,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "cell": 0,
+        "measure": 9,
+        "part": "P2",
+        "events": 3,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 136,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "cell": 1,
+        "measure": 10,
+        "part": "P2",
+        "events": 8,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 192,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "cell": 3,
+        "measure": 12,
+        "part": "P2",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "cell": 4,
+        "measure": 13,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 1,
+        "cell": 5,
+        "measure": 14,
+        "part": "P2",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 1,
+        "measure": 17,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 2,
+        "measure": 18,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 3,
+        "measure": 19,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 4,
+        "measure": 20,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 5,
+        "measure": 21,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 6,
+        "measure": 22,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 1,
+        "cell": 7,
+        "measure": 23,
+        "part": "P2",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 0,
+        "measure": 1,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 1,
+        "measure": 2,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 56,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.75
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 3,
+        "measure": 4,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 4,
+        "measure": 5,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 56,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.75
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 5,
+        "measure": 6,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 2,
+        "cell": 6,
+        "measure": 7,
+        "part": "P3",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 0,
+        "measure": 9,
+        "part": "P3",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 1,
+        "measure": 10,
+        "part": "P3",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          },
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0,
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 2,
+        "measure": 11,
+        "part": "P3",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 176,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 4,
+        "measure": 13,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 5,
+        "measure": 14,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 2,
+        "cell": 6,
+        "measure": 15,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 1,
+        "measure": 17,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 2,
+        "measure": 18,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 3,
+        "measure": 19,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 4,
+        "measure": 20,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 5,
+        "measure": 21,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 6,
+        "measure": 22,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 2,
+        "cell": 7,
+        "measure": 23,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 0,
+        "measure": 1,
+        "part": "P4",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 176,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 1,
+        "measure": 2,
+        "part": "P4",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 3,
+        "measure": 4,
+        "part": "P4",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 5,
+        "measure": 6,
+        "part": "P4",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 6,
+        "measure": 7,
+        "part": "P4",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 3,
+        "cell": 7,
+        "measure": 8,
+        "part": "P4",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 0,
+        "measure": 9,
+        "part": "P4",
+        "events": 5,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 164,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.125
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 1,
+        "measure": 10,
+        "part": "P4",
+        "events": 3,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          },
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5,
+          0.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 2,
+        "measure": 11,
+        "part": "P4",
+        "events": 5,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 3,
+        "measure": 12,
+        "part": "P4",
+        "events": 5,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 104,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 4,
+        "measure": 13,
+        "part": "P4",
+        "events": 8,
+        "noteheads_and_rests": 13,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 160,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 5,
+        "measure": 14,
+        "part": "P4",
+        "events": 5,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 6,
+        "measure": 15,
+        "part": "P4",
+        "events": 2,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 0,
+        "measure": 16,
+        "part": "P4",
+        "events": 3,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 28,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.875
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 1,
+        "measure": 17,
+        "part": "P4",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 2,
+        "measure": 18,
+        "part": "P4",
+        "events": 8,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 192,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 4,
+        "measure": 20,
+        "part": "P4",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 136,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 6,
+        "measure": 22,
+        "part": "P4",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 3,
+        "cell": 7,
+        "measure": 23,
+        "part": "P4",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 0,
+        "measure": 1,
+        "part": "P5",
+        "events": 7,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 224,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 1,
+        "measure": 2,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 2,
+        "measure": 3,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 3,
+        "measure": 4,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 6,
+        "measure": 7,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 4,
+        "cell": 7,
+        "measure": 8,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 2,
+        "measure": 11,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 3,
+        "measure": 12,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 4,
+        "measure": 13,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 5,
+        "measure": 14,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 6,
+        "measure": 15,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 0,
+        "measure": 16,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 1,
+        "measure": 17,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 2,
+        "measure": 18,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 3,
+        "measure": 19,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 4,
+        "measure": 20,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 5,
+        "measure": 21,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 6,
+        "measure": 22,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 4,
+        "cell": 7,
+        "measure": 23,
+        "part": "P5",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 5,
+        "cell": 6,
+        "measure": 7,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 5,
+        "cell": 7,
+        "measure": 8,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 0,
+        "measure": 9,
+        "part": "P6",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 240,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 1,
+        "measure": 10,
+        "part": "P6",
+        "events": 7,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 136,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 2,
+        "measure": 11,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 3,
+        "measure": 12,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 4,
+        "measure": 13,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 5,
+        "measure": 14,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 5,
+        "cell": 6,
+        "measure": 15,
+        "part": "P6",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 6,
+        "cell": 0,
+        "measure": 1,
+        "part": "P7",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 6,
+        "cell": 1,
+        "measure": 2,
+        "part": "P7",
+        "events": 4,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 6,
+        "cell": 2,
+        "measure": 3,
+        "part": "P7",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 6,
+        "cell": 3,
+        "measure": 4,
+        "part": "P7",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 0,
+        "measure": 9,
+        "part": "P7",
+        "events": 8,
+        "noteheads_and_rests": 11,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 264,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          8.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 1,
+        "measure": 10,
+        "part": "P7",
+        "events": 6,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 224,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 2,
+        "measure": 11,
+        "part": "P7",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 3,
+        "measure": 12,
+        "part": "P7",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 4,
+        "measure": 13,
+        "part": "P7",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 5,
+        "measure": 14,
+        "part": "P7",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 6,
+        "measure": 15,
+        "part": "P7",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 0,
+        "measure": 9,
+        "part": "P8",
+        "events": 3,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 272,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          8.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 1,
+        "measure": 10,
+        "part": "P8",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 304,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          9.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 2,
+        "measure": 11,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 3,
+        "measure": 12,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 4,
+        "measure": 13,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 5,
+        "measure": 14,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 7,
+        "cell": 6,
+        "measure": 15,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 8,
+        "cell": 1,
+        "measure": 2,
+        "part": "P9",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 8,
+        "cell": 3,
+        "measure": 4,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 8,
+        "cell": 5,
+        "measure": 6,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 0,
+        "measure": 9,
+        "part": "P9",
+        "events": 10,
+        "noteheads_and_rests": 10,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 176,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 1,
+        "measure": 10,
+        "part": "P9",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 160,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 2,
+        "measure": 11,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 3,
+        "measure": 12,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 4,
+        "measure": 13,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 5,
+        "measure": 14,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 8,
+        "cell": 6,
+        "measure": 15,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 7,
+        "cell": 0,
+        "measure": 16,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 7,
+        "cell": 1,
+        "measure": 17,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 7,
+        "cell": 2,
+        "measure": 18,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 7,
+        "cell": 4,
+        "measure": 20,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 7,
+        "cell": 5,
+        "measure": 21,
+        "part": "P9",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "cell": 0,
+        "measure": 1,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 224,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          7.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "cell": 2,
+        "measure": 3,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 28,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.875
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "cell": 3,
+        "measure": 4,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "cell": 6,
+        "measure": 7,
+        "part": "P10",
+        "events": 9,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 72,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.25
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 9,
+        "cell": 7,
+        "measure": 8,
+        "part": "P10",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 0,
+        "measure": 9,
+        "part": "P10",
+        "events": 3,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 138,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.3125
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 1,
+        "measure": 10,
+        "part": "P10",
+        "events": 6,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 3,
+        "measure": 12,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 36,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.125
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 4,
+        "measure": 13,
+        "part": "P10",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 36,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.125
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 5,
+        "measure": 14,
+        "part": "P10",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 9,
+        "cell": 6,
+        "measure": 15,
+        "part": "P10",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 8,
+        "cell": 0,
+        "measure": 16,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 8,
+        "cell": 1,
+        "measure": 17,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 8,
+        "cell": 2,
+        "measure": 18,
+        "part": "P10",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 8,
+        "cell": 3,
+        "measure": 19,
+        "part": "P10",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 10,
+        "cell": 0,
+        "measure": 1,
+        "part": "P11",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 10,
+        "cell": 1,
+        "measure": 2,
+        "part": "P11",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 136,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.25
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 10,
+        "cell": 2,
+        "measure": 3,
+        "part": "P11",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 10,
+        "cell": 3,
+        "measure": 4,
+        "part": "P11",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 10,
+        "cell": 0,
+        "measure": 9,
+        "part": "P11",
+        "events": 9,
+        "noteheads_and_rests": 11,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 272,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          8.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 10,
+        "cell": 1,
+        "measure": 10,
+        "part": "P11",
+        "events": 6,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 10,
+        "cell": 3,
+        "measure": 12,
+        "part": "P11",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 56,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.75
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 10,
+        "cell": 4,
+        "measure": 13,
+        "part": "P11",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 9,
+        "cell": 0,
+        "measure": 16,
+        "part": "P11",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 9,
+        "cell": 1,
+        "measure": 17,
+        "part": "P11",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 9,
+        "cell": 2,
+        "measure": 18,
+        "part": "P11",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 9,
+        "cell": 3,
+        "measure": 19,
+        "part": "P11",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 9,
+        "cell": 5,
+        "measure": 21,
+        "part": "P11",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 160,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 0,
+        "measure": 1,
+        "part": "P12",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 1,
+        "measure": 2,
+        "part": "P12",
+        "events": 3,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 72,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.25
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 2,
+        "measure": 3,
+        "part": "P12",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 3,
+        "measure": 4,
+        "part": "P12",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 48,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 5,
+        "measure": 6,
+        "part": "P12",
+        "events": 4,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 11,
+        "cell": 7,
+        "measure": 8,
+        "part": "P12",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 11,
+        "cell": 0,
+        "measure": 9,
+        "part": "P12",
+        "events": 4,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 138,
+            "is_the_bar": false
+          },
+          {
+            "units": 1,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.3125,
+          0.03125
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 11,
+        "cell": 1,
+        "measure": 10,
+        "part": "P12",
+        "events": 7,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 11,
+        "cell": 3,
+        "measure": 12,
+        "part": "P12",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 56,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.75
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 11,
+        "cell": 5,
+        "measure": 14,
+        "part": "P12",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 10,
+        "cell": 0,
+        "measure": 16,
+        "part": "P12",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 66,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.0625
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 10,
+        "cell": 2,
+        "measure": 18,
+        "part": "P12",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 10,
+        "cell": 5,
+        "measure": 21,
+        "part": "P12",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 10,
+        "cell": 6,
+        "measure": 22,
+        "part": "P12",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 10,
+        "cell": 7,
+        "measure": 23,
+        "part": "P12",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 72,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.25
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 12,
+        "cell": 2,
+        "measure": 3,
+        "part": "P13",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 56,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.75
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 12,
+        "cell": 3,
+        "measure": 4,
+        "part": "P13",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 0,
+        "measure": 9,
+        "part": "P13",
+        "events": 2,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 130,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0625
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 1,
+        "measure": 10,
+        "part": "P13",
+        "events": 9,
+        "noteheads_and_rests": 9,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 352,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          11.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 2,
+        "measure": 11,
+        "part": "P13",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 4,
+        "measure": 13,
+        "part": "P13",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 32,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 5,
+        "measure": 14,
+        "part": "P13",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 12,
+        "cell": 6,
+        "measure": 15,
+        "part": "P13",
+        "events": 6,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 112,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          3.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 11,
+        "cell": 1,
+        "measure": 17,
+        "part": "P13",
+        "events": 8,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 192,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 11,
+        "cell": 5,
+        "measure": 21,
+        "part": "P13",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 11,
+        "cell": 6,
+        "measure": 22,
+        "part": "P13",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 144,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 11,
+        "cell": 7,
+        "measure": 23,
+        "part": "P13",
+        "events": 5,
+        "noteheads_and_rests": 5,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 0,
+        "system": 0,
+        "staff": 13,
+        "cell": 7,
+        "measure": 8,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 0,
+        "measure": 9,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 1,
+        "measure": 10,
+        "part": "P14",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 256,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          8.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 2,
+        "measure": 11,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 3,
+        "measure": 12,
+        "part": "P14",
+        "events": 8,
+        "noteheads_and_rests": 8,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 192,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          6.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 4,
+        "measure": 13,
+        "part": "P14",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 28,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          0.875
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 5,
+        "measure": 14,
+        "part": "P14",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 13,
+        "cell": 6,
+        "measure": 15,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 2,
+        "measure": 18,
+        "part": "P14",
+        "events": 7,
+        "noteheads_and_rests": 7,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 3,
+        "measure": 19,
+        "part": "P14",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 40,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.25
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 4,
+        "measure": 20,
+        "part": "P14",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.5
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 5,
+        "measure": 21,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 6,
+        "measure": 22,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 1,
+        "staff": 12,
+        "cell": 7,
+        "measure": 23,
+        "part": "P14",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": true,
+        "want_units": 96,
+        "want_quarters": 3.0,
+        "divisions": 32,
+        "voices": [
+          {
+            "units": 128,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      }
+    ]
+  },
+  "possibly_unread_mark": {
+    "bars": 0,
+    "holds_out": false,
+    "of_bars_with_events": 285,
+    "marked": []
+  },
+  "bars_held_out_unread_mark": {
+    "bars": 0,
+    "bars_on_a_doubled_staff": 0,
+    "of_bars_with_events": 285,
+    "fraction": 0.0,
+    "noteheads_and_rests": 0,
+    "held": []
+  },
+  "unread_bar_marks": {
+    "words": {
+      "unread": "unread",
+      "bar_does_not_add_up": "unread",
+      "possibly_unread_mark": "unread",
+      "meter_return_not_read": "meter?"
+    },
+    "color": "#D00000",
+    "unread": 13,
+    "held_out_sum": 198,
+    "held_out_unread_mark": 0,
+    "written": 211
+  },
+  "meter_returns_not_read": 0,
+  "notes_not_written_by_system": {
+    "0/0": {
+      "duration_narrowed": 41,
+      "not_a_notehead:is_a_meter_digit": 14,
+      "not_a_notehead:too_narrow": 19,
+      "not_a_notehead:stacked_head_duplicate": 16,
+      "owned_by_another_staff": 3,
+      "not_a_notehead:clipped_fragment": 10,
+      "not_a_notehead:notehead_is_a_duplicate_box": 4,
+      "not_a_rest:rest_has_a_stem": 1,
+      "not_a_rest:rest_off_center": 1,
+      "not_a_rest:rest_is_a_duplicate_box": 1,
+      "rest_duration_abstained": 1,
+      "bar_does_not_add_up": 225
+    },
+    "1/0": {
+      "owned_by_another_staff": 26,
+      "duration_narrowed": 128,
+      "not_a_notehead:clipped_fragment": 14,
+      "not_a_notehead:is_a_meter_digit": 30,
+      "not_a_notehead:too_narrow": 140,
+      "not_a_rest:rest_clipped_by_crop": 27,
+      "not_a_notehead:notehead_is_a_duplicate_box": 3,
+      "rest_duration_abstained": 4,
+      "not_a_notehead:stacked_head_duplicate": 8,
+      "not_a_rest:rest_outside_its_staff": 12,
+      "not_a_rest:rest_is_a_duplicate_box": 19,
+      "not_a_rest:rest_has_a_stem": 1,
+      "not_a_notehead:belongs_to_a_nearer_staff": 1,
+      "ink_is_a_whole_rest": 1,
+      "bar_does_not_add_up": 377
+    },
+    "1/1": {
+      "rest_duration_abstained": 2,
+      "not_a_rest:rest_is_a_duplicate_box": 17,
+      "not_a_notehead:too_narrow": 85,
+      "not_a_rest:rest_outside_its_staff": 5,
+      "not_a_rest:rest_clipped_by_crop": 20,
+      "not_a_notehead:clipped_fragment": 12,
+      "owned_by_another_staff": 16,
+      "not_a_notehead:stacked_head_duplicate": 4,
+      "duration_narrowed": 24,
+      "not_a_notehead:belongs_to_a_nearer_staff": 4,
+      "staff_not_identified": 17,
+      "ink_is_a_whole_rest": 1,
+      "not_a_rest:rest_touches_two_staff_lines": 2,
+      "not_a_notehead:notehead_is_a_duplicate_box": 1,
+      "bar_does_not_add_up": 154
+    }
+  },
+  "arcs_not_written": {
+    "arc_binds_fewer_than_two_notes": 93,
+    "tie_ends_in_two_voices": 3,
+    "tie_spelling_differs": 7,
+    "tie_pitch_contradiction": 3,
+    "tie_pair_no_pair_at_one_position": 24,
+    "tie_pair_enters_from_previous_system": 22,
+    "tie_pair_spans_a_whole_bar": 333,
+    "tie_pair_narrowed": 54,
+    "tie_pair_no_head_near_the_arc": 57,
+    "tie_pair_no_stop_head": 11,
+    "tie_pair_no_start_head": 58,
+    "tie_pair_runs_off_the_system": 22,
+    "tie_end_not_in_file": 31,
+    "bar_does_not_add_up": 133,
+    "arc_ends_in_one_chord": 10
+  },
+  "tie_pairing": "record",
+  "tie_contradictions": [
+    {
+      "start": "glyph/1/0/2/5/9",
+      "stop": "glyph/1/0/2/6/20",
+      "pitches": [
+        "Eb4",
+        "E4"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/0/2/5/15"
+      ]
+    },
+    {
+      "start": "glyph/1/0/3/5/9",
+      "stop": "glyph/1/0/3/6/9",
+      "pitches": [
+        "E#3",
+        "Eb3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/0/3/5/22",
+        "glyph/1/0/3/5/31"
+      ]
+    },
+    {
+      "start": "glyph/1/1/3/1/27",
+      "stop": "glyph/1/1/3/2/5",
+      "pitches": [
+        "Gb3",
+        "G3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/1/2/1/14",
+        "glyph/1/1/3/1/29"
+      ]
+    },
+    {
+      "start": "glyph/1/1/3/3/2",
+      "stop": "glyph/1/1/3/4/1",
+      "pitches": [
+        "Eb4",
+        "D4"
+      ],
+      "kind": "tie_pitch_contradiction",
+      "arcs": [
+        "glyph/1/1/2/4/5",
+        "glyph/1/1/3/3/22",
+        "glyph/1/1/3/4/7"
+      ]
+    },
+    {
+      "start": "glyph/0/0/5/4/15",
+      "stop": "glyph/0/0/5/5/12",
+      "pitches": [
+        "B3",
+        "C4"
+      ],
+      "kind": "tie_pitch_contradiction",
+      "arcs": [
+        "glyph/0/0/5/4/7"
+      ]
+    },
+    {
+      "start": "glyph/0/0/10/0/17",
+      "stop": "glyph/0/0/10/1/5",
+      "pitches": [
+        "C#5",
+        "C5"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/0/0/10/1/11"
+      ]
+    },
+    {
+      "start": "glyph/0/0/10/2/5",
+      "stop": "glyph/0/0/10/3/3",
+      "pitches": [
+        "A5",
+        "Ab5"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/0/0/10/2/14"
+      ]
+    },
+    {
+      "start": "glyph/1/0/10/0/24",
+      "stop": "glyph/1/0/10/0/11",
+      "pitches": [
+        "G4",
+        "Ab4"
+      ],
+      "kind": "tie_pitch_contradiction",
+      "arcs": [
+        "glyph/1/0/10/0/8"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/3/1",
+      "stop": "glyph/1/1/9/4/5",
+      "pitches": [
+        "D4",
+        "Db4"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/1/9/4/7"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/0/8",
+      "stop": "glyph/1/1/10/1/4",
+      "pitches": [
+        "Db3",
+        "D3"
+      ],
+      "kind": "tie_spelling_differs",
+      "arcs": [
+        "glyph/1/1/10/1/21"
+      ]
+    }
+  ],
+  "tie_links": [
+    {
+      "start": "glyph/1/0/0/0/11",
+      "stop": "glyph/1/0/0/0/8",
+      "pitch": "C6",
+      "arcs": [
+        "glyph/1/0/0/0/17"
+      ]
+    },
+    {
+      "start": "glyph/1/0/0/1/12",
+      "stop": "glyph/1/0/0/1/11",
+      "pitch": "Ab6",
+      "arcs": [
+        "glyph/1/0/0/1/27"
+      ]
+    },
+    {
+      "start": "glyph/1/1/0/2/4",
+      "stop": "glyph/1/1/0/3/4",
+      "pitch": "Ab5",
+      "arcs": [
+        "glyph/1/1/0/2/11",
+        "glyph/1/1/0/3/15"
+      ]
+    },
+    {
+      "start": "glyph/1/1/0/2/4",
+      "stop": "glyph/1/1/0/3/6",
+      "pitch": "Ab5",
+      "arcs": [
+        "glyph/1/1/0/3/27"
+      ]
+    },
+    {
+      "start": "glyph/1/1/0/3/3",
+      "stop": "glyph/1/1/0/4/1",
+      "pitch": "Ab6",
+      "arcs": [
+        "glyph/1/1/0/4/10"
+      ]
+    },
+    {
+      "start": "glyph/0/0/1/5/5",
+      "stop": "glyph/0/0/1/6/3",
+      "pitch": "Ab5",
+      "arcs": [
+        "glyph/0/0/0/5/17"
+      ]
+    },
+    {
+      "start": "glyph/0/0/1/4/8",
+      "stop": "glyph/0/0/1/4/11",
+      "pitch": "D5",
+      "arcs": [
+        "glyph/0/0/1/4/15"
+      ]
+    },
+    {
+      "start": "glyph/1/0/1/1/3",
+      "stop": "glyph/1/0/1/1/9",
+      "pitch": "Ab5",
+      "arcs": [
+        "glyph/1/0/1/1/35"
+      ]
+    },
+    {
+      "start": "glyph/1/0/1/6/5",
+      "stop": "glyph/1/0/1/6/4",
+      "pitch": "Bb4",
+      "arcs": [
+        "glyph/1/0/1/6/14"
+      ]
+    },
+    {
+      "start": "glyph/1/0/2/2/4",
+      "stop": "glyph/1/0/2/2/3",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/0/2/2/17"
+      ]
+    },
+    {
+      "start": "glyph/1/0/3/2/0",
+      "stop": "glyph/1/0/3/2/2",
+      "pitch": "F3",
+      "arcs": [
+        "glyph/1/0/3/2/9"
+      ]
+    },
+    {
+      "start": "glyph/1/0/3/5/11",
+      "stop": "glyph/1/0/3/5/5",
+      "pitch": "Db4",
+      "arcs": [
+        "glyph/1/0/3/5/26",
+        "glyph/1/0/3/5/28",
+        "glyph/1/0/3/5/32"
+      ]
+    },
+    {
+      "start": "glyph/1/1/3/1/13",
+      "stop": "glyph/1/1/3/1/11",
+      "pitch": "E#3",
+      "arcs": [
+        "glyph/1/1/3/1/10"
+      ]
+    },
+    {
+      "start": "glyph/1/1/3/2/4",
+      "stop": "glyph/1/1/3/2/1",
+      "pitch": "F3",
+      "arcs": [
+        "glyph/1/1/3/2/15"
+      ]
+    },
+    {
+      "start": "glyph/1/1/3/2/6",
+      "stop": "glyph/1/1/3/2/1",
+      "pitch": "F3",
+      "arcs": [
+        "glyph/1/1/3/2/16"
+      ]
+    },
+    {
+      "start": "glyph/0/0/5/0/13",
+      "stop": "glyph/0/0/5/1/16",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/0/0/5/1/13"
+      ]
+    },
+    {
+      "start": "glyph/0/0/5/5/12",
+      "stop": "glyph/0/0/5/6/13",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/0/0/5/5/3",
+        "glyph/0/0/5/5/10",
+        "glyph/0/0/5/6/11"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/0/3",
+      "stop": "glyph/1/0/6/0/5",
+      "pitch": "C5",
+      "arcs": [
+        "glyph/1/0/6/0/22",
+        "glyph/1/0/6/0/39"
+      ]
+    },
+    {
+      "start": "glyph/1/0/6/0/15",
+      "stop": "glyph/1/0/6/0/2",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/0/6/0/31"
+      ]
+    },
+    {
+      "start": "glyph/0/0/7/0/14",
+      "stop": "glyph/0/0/7/0/11",
+      "pitch": "C5",
+      "arcs": [
+        "glyph/0/0/7/0/16"
+      ]
+    },
+    {
+      "start": "glyph/0/0/9/3/2",
+      "stop": "glyph/0/0/9/3/5",
+      "pitch": "Bb6",
+      "arcs": [
+        "glyph/0/0/8/3/4"
+      ]
+    },
+    {
+      "start": "glyph/0/0/9/1/9",
+      "stop": "glyph/0/0/9/2/4",
+      "pitch": "G6",
+      "arcs": [
+        "glyph/0/0/9/1/12"
+      ]
+    },
+    {
+      "start": "glyph/0/0/9/4/4",
+      "stop": "glyph/0/0/9/5/2",
+      "pitch": "F6",
+      "arcs": [
+        "glyph/0/0/9/4/8"
+      ]
+    },
+    {
+      "start": "glyph/1/1/8/0/12",
+      "stop": "glyph/1/1/8/0/11",
+      "pitch": "Fb4",
+      "arcs": [
+        "glyph/1/1/8/0/5"
+      ]
+    },
+    {
+      "start": "glyph/1/1/8/2/11",
+      "stop": "glyph/1/1/8/2/5",
+      "pitch": "F#4",
+      "arcs": [
+        "glyph/1/1/8/2/1",
+        "glyph/1/1/9/2/16"
+      ]
+    },
+    {
+      "start": "glyph/1/1/8/2/0",
+      "stop": "glyph/1/1/8/2/4",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/1/8/2/20"
+      ]
+    },
+    {
+      "start": "glyph/1/1/8/3/2",
+      "stop": "glyph/1/1/8/3/1",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/1/1/8/3/16"
+      ]
+    },
+    {
+      "start": "glyph/0/0/10/1/0",
+      "stop": "glyph/0/0/10/2/2",
+      "pitch": "G5",
+      "arcs": [
+        "glyph/0/0/10/1/9"
+      ]
+    },
+    {
+      "start": "glyph/0/0/10/4/7",
+      "stop": "glyph/0/0/10/5/1",
+      "pitch": "F5",
+      "arcs": [
+        "glyph/0/0/10/4/8",
+        "glyph/0/0/10/5/15"
+      ]
+    },
+    {
+      "start": "glyph/0/0/10/5/3",
+      "stop": "glyph/0/0/10/6/1",
+      "pitch": "D5",
+      "arcs": [
+        "glyph/0/0/10/5/13"
+      ]
+    },
+    {
+      "start": "glyph/1/0/10/3/6",
+      "stop": "glyph/1/0/10/4/8",
+      "pitch": "Ab4",
+      "arcs": [
+        "glyph/1/0/10/4/22"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/0/15",
+      "stop": "glyph/1/1/9/0/3",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/1/9/0/11",
+        "glyph/1/1/10/0/35"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/1/23",
+      "stop": "glyph/1/1/9/1/1",
+      "pitch": "Db4",
+      "arcs": [
+        "glyph/1/1/9/1/10"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/1/5",
+      "stop": "glyph/1/1/9/2/1",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/1/9/1/29",
+        "glyph/1/1/9/2/19"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/3/12",
+      "stop": "glyph/1/1/9/3/7",
+      "pitch": "F4",
+      "arcs": [
+        "glyph/1/1/9/3/13"
+      ]
+    },
+    {
+      "start": "glyph/1/1/9/7/0",
+      "stop": "glyph/1/1/9/7/5",
+      "pitch": "Eb4",
+      "arcs": [
+        "glyph/1/1/10/7/12"
+      ]
+    },
+    {
+      "start": "glyph/0/0/11/2/4",
+      "stop": "glyph/0/0/11/3/11",
+      "pitch": "D4",
+      "arcs": [
+        "glyph/0/0/11/2/16"
+      ]
+    },
+    {
+      "start": "glyph/1/0/11/3/5",
+      "stop": "glyph/1/0/11/3/2",
+      "pitch": "Ab3",
+      "arcs": [
+        "glyph/1/0/11/3/12",
+        "glyph/1/0/11/3/24"
+      ]
+    },
+    {
+      "start": "glyph/1/0/11/4/2",
+      "stop": "glyph/1/0/11/4/9",
+      "pitch": "Ab3",
+      "arcs": [
+        "glyph/1/0/11/4/20"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/0/0",
+      "stop": "glyph/1/1/10/0/5",
+      "pitch": "Db3",
+      "arcs": [
+        "glyph/1/1/10/0/11",
+        "glyph/1/1/11/0/11"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/1/10",
+      "stop": "glyph/1/1/10/1/11",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/1/10/1/15"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/2/5",
+      "stop": "glyph/1/1/10/2/0",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/1/1/10/2/13"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/1/3",
+      "stop": "glyph/1/1/10/2/2",
+      "pitch": "Eb3",
+      "arcs": [
+        "glyph/1/1/10/2/16"
+      ]
+    },
+    {
+      "start": "glyph/1/1/10/2/1",
+      "stop": "glyph/1/1/10/3/8",
+      "pitch": "F3",
+      "arcs": [
+        "glyph/1/1/10/3/25"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/2/2",
+      "stop": "glyph/0/0/12/2/5",
+      "pitch": "Ab4",
+      "arcs": [
+        "glyph/0/0/11/2/9",
+        "glyph/0/0/12/2/14"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/0/4",
+      "stop": "glyph/0/0/12/0/9",
+      "pitch": "C4",
+      "arcs": [
+        "glyph/0/0/12/0/20"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/1/1",
+      "stop": "glyph/0/0/12/2/1",
+      "pitch": "G4",
+      "arcs": [
+        "glyph/0/0/12/1/7"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/3/3",
+      "stop": "glyph/0/0/12/4/2",
+      "pitch": "Ab4",
+      "arcs": [
+        "glyph/0/0/12/3/13"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/4/6",
+      "stop": "glyph/0/0/12/5/7",
+      "pitch": "F4",
+      "arcs": [
+        "glyph/0/0/12/4/16",
+        "glyph/0/0/12/5/23"
+      ]
+    },
+    {
+      "start": "glyph/0/0/12/5/0",
+      "stop": "glyph/0/0/12/6/1",
+      "pitch": "Ab4",
+      "arcs": [
+        "glyph/0/0/12/5/15"
+      ]
+    },
+    {
+      "start": "glyph/1/0/12/3/1",
+      "stop": "glyph/1/0/12/3/2",
+      "pitch": "Db3",
+      "arcs": [
+        "glyph/1/0/12/3/15",
+        "glyph/1/0/12/3/18"
+      ]
+    },
+    {
+      "start": "glyph/1/1/11/0/9",
+      "stop": "glyph/1/1/11/0/2",
+      "pitch": "Gb2",
+      "arcs": [
+        "glyph/1/1/11/0/26"
+      ]
+    },
+    {
+      "start": "glyph/1/1/11/2/2",
+      "stop": "glyph/1/1/11/2/3",
+      "pitch": "Bb2",
+      "arcs": [
+        "glyph/1/1/11/2/15"
+      ]
+    },
+    {
+      "start": "glyph/0/0/13/0/13",
+      "stop": "glyph/0/0/13/0/17",
+      "pitch": "C3",
+      "arcs": [
+        "glyph/0/0/13/0/23"
+      ]
+    },
+    {
+      "start": "glyph/0/0/13/4/2",
+      "stop": "glyph/0/0/13/5/0",
+      "pitch": "C3",
+      "arcs": [
+        "glyph/0/0/13/5/2"
+      ]
+    },
+    {
+      "start": "glyph/1/0/13/3/3",
+      "stop": "glyph/1/0/13/3/1",
+      "pitch": "D3",
+      "arcs": [
+        "glyph/1/0/13/3/16"
+      ]
+    }
+  ],
+  "arcs_not_written_total": 861,
+  "articulations_not_written": {
+    "artic_no_notehead": 1,
+    "artic_owned_by_another_staff": 1,
+    "artic_owning_notehead_not_written": 1
+  },
+  "articulations_not_written_total": 3,
+  "articulation_balance": {
+    "marks_in_log": 4,
+    "written": 1,
+    "not_written": 3,
+    "balanced": true
+  },
+  "dot_role_not_placed": {
+    "abstained_dot_role_ambiguous": 37,
+    "staccato_owning_notehead_not_written": 4,
+    "bar_does_not_add_up": 14
+  },
+  "dot_role_not_placed_total": 55,
+  "dot_role_balance": {
+    "population": 207,
+    "attached_augmentation": 150,
+    "written_staccato": 2,
+    "attached_staccato_before_hold_out": 16,
+    "not_placed": 55,
+    "balanced": true
+  },
+  "ornaments_not_written": {
+    "ornament_owning_notehead_not_written": 2,
+    "ornament_no_notehead": 2,
+    "bar_does_not_add_up": 1
+  },
+  "ornaments_not_written_total": 5,
+  "ornament_balance": {
+    "marks_in_log": 6,
+    "written": 1,
+    "not_written": 5,
+    "balanced": true
+  },
+  "wedges_not_written": {
+    "wedge_neither_anchor_written": 7,
+    "wedge_anchor_note_not_written": 15,
+    "bar_does_not_add_up": 17
+  },
+  "wedges_not_written_total": 39,
+  "wedge_balance": {
+    "rows_in_log": 42,
+    "decided": 41,
+    "abstained": 1,
+    "written": 2,
+    "not_written": 39,
+    "balanced": true
+  },
+  "direction_words_not_written": {
+    "cell_not_in_any_part": 0,
+    "placed_but_not_rendered": 0
+  },
+  "direction_words_not_written_total": 0,
+  "direction_balance": {
+    "words_decided": 0,
+    "placed": 0,
+    "written": 0,
+    "not_written": 0,
+    "balanced": true
+  },
+  "fermatas_not_written": {},
+  "fermatas_not_written_total": 0,
+  "fermata_balance": {
+    "marks_in_log": 0,
+    "written": 0,
+    "duplicated_across_voices": 0,
+    "not_written": 0,
+    "absorbed_by_a_shared_event": 0,
+    "balanced": true
+  },
+  "balance": {
+    "events_in_log": 1873,
+    "noteheads_in_log": 1502,
+    "rests_in_log": 371,
+    "events_written": 382,
+    "rests_duplicated_across_voices": 0,
+    "notes_doubled_to_condensed_slot": 0,
+    "events_not_written": 1491,
+    "balanced": true
+  }
+}
