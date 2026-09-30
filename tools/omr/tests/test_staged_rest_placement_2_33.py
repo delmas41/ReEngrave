@@ -34,6 +34,11 @@ import unittest
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
+from tools.omr.staged import record as R
+from tools.omr.staged.adjudicate import Evidence
+from tools.omr.staged.adjudicators.family_precision import (
+    _rest_overlaps_notehead_refusal,
+)
 from tools.omr.staged.record import Log, Outcome, Q, READERS
 from tools.omr.tests.test_staged_family_refusals import (
     CELL, _box, _page_box_at_step, _staff_geometry,
@@ -60,6 +65,15 @@ def _rest(log, gi, cls, *, page_box):
 
 def _notehead(log, gi, cls, *, page_box):
     return _box(log, gi, cls, quantity=Q.NOTEHEAD_CLASS, page_box=page_box)
+
+
+def _stem(log, gi, *, x, y, w=10.0, h=100.0):
+    """One `Q.STEM` box, CELL canonical `(x, y, w, h)` — no class name, no
+    page fields at all (`gather.py`'s own comment on the quantity)."""
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.STEM, (x, y, w, h), reader=READERS.DETECTOR,
+                frame="cell:0", score=0.8, category="stem")
+    return g
 
 
 def _run(log, *quantities):
@@ -102,15 +116,17 @@ class TestRestOffCenter(unittest.TestCase):
     def test_off_center_rule_does_not_apply_to_half_rests(self):
         """Sean's own narrowing (`family_precision.py` §REST-PLACEMENT,
         item 1): the blanket centring refusal is for WHOLE rests only. A
-        `restHalf` at the SAME far-off-centre position as the refused
-        `restWhole` above is NOT refused by this rule (nothing else in this
-        fixture can refuse it either: it is inside the staff band and
-        overlaps no notehead)."""
+        `restHalf` at the SAME far-off-centre x as the refused `restWhole`
+        above, but shaped as a genuine half rest (sitting ON one staff
+        line — y-range [1030, 1050], centred on line 1040, touching no
+        OTHER line — rule 3's own `one_line` shape, never `two_lines`) is
+        NOT refused by this rule, nor by rule 3, nor by anything else in
+        this fixture."""
         log = Log()
         _bar_box(log)
         _staff_geometry(log)
         g = _rest(log, 0, "restHalf",
-                 page_box=[400.0, 1000.0, 440.0, 1040.0])
+                 page_box=[400.0, 1030.0, 440.0, 1050.0])
         _run(log, Q.REST_IS_NOT_A_REST)
         v = log.verdict(Q.REST_IS_NOT_A_REST, g)
         self.assertIs(v.value, False)
@@ -125,8 +141,10 @@ class TestRestVerticalWindow(unittest.TestCase):
 
     def test_whole_rest_far_outside_the_staff_is_refused(self):
         """A `restWhole` 2.0 spaces above the top line (step 8 + 2*2 = 12)
-        — past the TIGHT 1.0-space window whole/half/quarter never
-        observed exceeding."""
+        — past the MEDIUM 1.5-space window whole/half/`restHBar` get after
+        recalibration (manager review, 2026-09-29: a displaced whole/half
+        rest hangs a full space above the staff, so the original 1.0-space
+        TIGHT tier was too tight — see the module CONVENTION header)."""
         log = Log()
         _staff_geometry(log)
         g = _rest(log, 0, "restWhole", page_box=_page_box_at_step(12.0))
@@ -136,12 +154,29 @@ class TestRestVerticalWindow(unittest.TestCase):
         self.assertIs(v.value, True)
         self.assertEqual(v.reason, "rest_outside_its_staff")
 
-    def test_quarter_rest_inside_the_tight_window_is_kept(self):
-        """⚠️ THE CONTROL THAT CAN FAIL. A `restQuarter` 0.5 spaces above the
-        top line — inside the 1.0-space TIGHT window."""
+    def test_whole_rest_one_space_above_the_staff_is_kept(self):
+        """⚠️ THE CONTROL THAT CAN FAIL, added on manager review: a displaced
+        `restWhole` hanging ONE space clear above the top line (a real
+        two-voice shape, not registration noise) — inside the 1.5-space
+        MEDIUM window, where the original 1.0-space TIGHT tier would have
+        refused it."""
         log = Log()
         _staff_geometry(log)
-        g = _rest(log, 0, "restQuarter", page_box=_page_box_at_step(9.0))
+        g = _rest(log, 0, "restWhole", page_box=_page_box_at_step(10.0))
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+    def test_quarter_rest_now_gets_the_wide_window_is_kept(self):
+        """⚠️ THE CONTROL THAT CAN FAIL. `restQuarter` moved from the TIGHT
+        tier to the WIDE (2.5-space) one on manager review — a quarter rest
+        is displaced for a second voice exactly as an 8th rest is, and needs
+        the same room. 2.0 spaces above the top line: past the original
+        1.0-space tier, inside the 2.5-space one it gets now."""
+        log = Log()
+        _staff_geometry(log)
+        g = _rest(log, 0, "restQuarter", page_box=_page_box_at_step(12.0))
         _run(log, Q.REST_IS_NOT_A_REST)
         v = log.verdict(Q.REST_IS_NOT_A_REST, g)
         self.assertIs(v.value, False)
@@ -150,8 +185,9 @@ class TestRestVerticalWindow(unittest.TestCase):
     def test_8th_rest_moderately_outside_the_staff_is_kept(self):
         """Sean's own correction: *"I did see some 8th note rests outside
         the staff but not nearly as far as note heads."* An `rest8th`
-        centred 1.75 spaces above the top line — outside the TIGHT window
-        but well inside the 2.5-space WIDE one the smaller classes get."""
+        centred 1.75 spaces above the top line — outside the MEDIUM window
+        but well inside the 2.5-space WIDE one 8th-and-smaller (and now
+        `restQuarter`) get."""
         log = Log()
         _staff_geometry(log)
         g = _rest(log, 0, "rest8th", page_box=_page_box_at_step(11.5))
@@ -211,7 +247,100 @@ class TestRestClippedByCrop(unittest.TestCase):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Rule 4 — `rest_overlaps_a_notehead`
+# (c) — `rest_has_a_stem`
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestRestHasAStem(unittest.TestCase):
+
+    def test_rest_with_an_overlapping_stem_is_refused(self):
+        """Sean: *"if there is a stem attached... that helps"* — a rest
+        never has a stem. A `Q.STEM` box overlapping this `restWhole`'s own
+        canonical box (`_rest`'s default (200, 200, 140, 20)) refuses it,
+        for EVERY rest class."""
+        log = Log()
+        g = _rest(log, 0, "restWhole", page_box=_page_box_at_step(4.0))
+        _stem(log, 1, x=250.0, y=190.0, w=5.0, h=100.0)
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "rest_has_a_stem")
+
+    def test_rest_with_no_stem_nearby_is_kept(self):
+        """⚠️ THE CONTROL THAT CAN FAIL. A `restWhole` with a `Q.STEM` box
+        FAR from its own — no overlap — is unaffected."""
+        log = Log()
+        g = _rest(log, 0, "restWhole", page_box=_page_box_at_step(4.0))
+        _stem(log, 1, x=900.0, y=900.0, w=5.0, h=100.0)
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# (a) — `rest_touches_two_staff_lines` (restWhole/restHalf only)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestRestTouchesTwoStaffLines(unittest.TestCase):
+
+    def test_restwhole_spanning_two_lines_is_refused(self):
+        """Sean, DECISIONS 2026-09-29: *"a common mistake was a black
+        notehead called a whole or half rest. The rest should never touch
+        2 different staff lines."* A box whose top edge sits on line 1000
+        and bottom edge sits on line 1020 (LINE_YS default, tol 5 px) fills
+        a whole space — a notehead's own shape."""
+        log = Log()
+        _staff_geometry(log)
+        g = _rest(log, 0, "restWhole", page_box=[500.0, 1000.0, 560.0, 1020.0])
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertIs(v.value, True)
+        self.assertEqual(v.reason, "rest_touches_two_staff_lines")
+
+    def test_restwhole_hanging_from_one_line_is_kept(self):
+        """⚠️ THE CONTROL THAT CAN FAIL. A genuine WHOLE rest: top edge on
+        line 1000, bottom edge 10 px below (well short of line 1020,
+        10 px > the 5 px tolerance) — touches exactly ONE line."""
+        log = Log()
+        _staff_geometry(log)
+        g = _rest(log, 0, "restWhole", page_box=[500.0, 1000.0, 560.0, 1010.0])
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+    def test_resthalf_sitting_on_one_line_is_kept(self):
+        """⚠️ THE CONTROL THAT CAN FAIL. A genuine HALF rest: centred ON
+        line 1040 (y-range [1030, 1050]), touching no OTHER line."""
+        log = Log()
+        _staff_geometry(log)
+        g = _rest(log, 0, "restHalf", page_box=[500.0, 1030.0, 560.0, 1050.0])
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+    def test_two_line_rule_does_not_apply_to_quarter_rests(self):
+        """`restQuarter` is excluded (§REST-VS-NOTEHEAD: quarter/8th/etc.
+        legitimately span more than one line/space by their own shape).
+        The SAME two-line geometry that refused the `restWhole` above,
+        this time on a `restQuarter`, is NOT refused by this rule (nor by
+        anything else in this fixture)."""
+        log = Log()
+        _staff_geometry(log)
+        g = _rest(log, 0, "restQuarter",
+                 page_box=[500.0, 1000.0, 560.0, 1020.0])
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 4 — `rest_overlaps_a_notehead`, and (b)'s resolution for
+# restWhole/restHalf
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestRestOverlapsNotehead(unittest.TestCase):
@@ -222,6 +351,7 @@ class TestRestOverlapsNotehead(unittest.TestCase):
         own `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict is DECIDED `False` (kept,
         a live candidate), so the overlap is decisive."""
         log = Log()
+        _staff_geometry(log)   # Q.CELL_STAFF_SPACE, for `_same_mark_centres`
         rest = _rest(log, 0, "rest8th", page_box=_page_box_at_step(4.0))
         # ⚠️ `_notehead` (== `_box`) defaults its CANONICAL box to the exact
         # same (x_c=200, y_c=200, w_c=140, h_c=20) `_rest` used above -- one
@@ -244,6 +374,7 @@ class TestRestOverlapsNotehead(unittest.TestCase):
         refused verdict is visible to it (the exact connection the section
         docstring names)."""
         log = Log()
+        _staff_geometry(log)   # Q.CELL_STAFF_SPACE, for `_same_mark_centres`
         rest = _rest(log, 0, "rest8th", page_box=_page_box_at_step(4.0))
         head = _notehead(log, 1, "noteheadBlack",
                          page_box=_page_box_at_step(4.0))
@@ -253,6 +384,34 @@ class TestRestOverlapsNotehead(unittest.TestCase):
         _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
         head_v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, head)
         self.assertIs(head_v.value, True)   # the notehead itself IS refused
+        v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+
+    def test_displaced_voice_rest_touching_the_other_voices_notehead_is_kept(
+            self):
+        """⚠️ THE CONTROL THAT CAN FAIL, added on manager review: a displaced
+        voice-2 rest and a voice-1 notehead, boxes TOUCHING (IoU ~0.05 —
+        above the old 0.02 duplicate floor, comfortably below the new 0.3
+        substantial-overlap floor) but centres a full staff space apart
+        (dy_spaces 0.9, past `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES` 0.25)
+        — a real two-voice shape, never one mark. Kept on EITHER gate
+        alone; both are checked."""
+        log = Log()
+        _staff_geometry(log)
+        rest = _rest(log, 0, "rest8th",
+                    page_box=_page_box_at_step(4.0))
+        log.observe(rest, Q.GLYPH_BOX,
+                    ("rest8th", 200.0, 200.0, 140.0, 100.0),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.7,
+                    category="rest", bbox_page_px=_page_box_at_step(4.0))
+        head = _notehead(log, 1, "noteheadBlack",
+                         page_box=_page_box_at_step(4.0))
+        log.observe(head, Q.GLYPH_BOX,
+                    ("noteheadBlack", 200.0, 290.0, 140.0, 100.0),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.8,
+                    category="notehead", bbox_page_px=_page_box_at_step(4.0))
+        _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
         v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "rest")
@@ -267,6 +426,72 @@ class TestRestOverlapsNotehead(unittest.TestCase):
         v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "rest")
+
+    # ─────────────────────────────────────────────────────────────────────
+    # (b): for restWhole/restHalf, rule (a)'s shape RESOLVES an overlap
+    # instead of always refusing the rest. Three outcomes.
+    # ─────────────────────────────────────────────────────────────────────
+
+    def test_overlap_resolved_one_line_the_rest_stands(self):
+        """A `restWhole` overlapping a live notehead (same canonical box,
+        so IoU/centres match trivially) whose OWN page shape is a genuine
+        one-line whole rest (top edge on line 1000, bottom 10 px below —
+        rule (a)'s `one_line`, never `two_lines`): the rest STANDS (kept),
+        and the resolution is recorded so a future EVALUATE consequence has
+        an address to read (§REST-VS-NOTEHEAD's own named next step)."""
+        log = Log()
+        _staff_geometry(log)
+        rest = _rest(log, 0, "restWhole",
+                    page_box=[500.0, 1000.0, 640.0, 1010.0])
+        _notehead(log, 1, "noteheadBlack",
+                 page_box=[500.0, 1000.0, 640.0, 1010.0])
+        _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+        self.assertEqual(v.detail.get("rest_overlaps_notehead_resolved"),
+                         "rest_stands")
+        self.assertTrue(v.detail.get("notehead_reading_should_be_dropped"))
+
+    def test_overlap_resolved_cannot_tell_refuses_neither(self):
+        """⚠️ THE CONTROL THAT CAN FAIL. The SAME overlap, but with NO
+        `Q.STAFF_LINES`/`Q.STAFF_SPACING` at all (only `Q.CELL_STAFF_SPACE`,
+        via `_staff_geometry(log, line_ys=None, spacing=None)`) — rule
+        (a)'s shape test cannot run, so it reads `cannot_tell`. Rule 8:
+        a cannot-tell case refuses NEITHER reading."""
+        log = Log()
+        _staff_geometry(log, line_ys=None, spacing=None)
+        rest = _rest(log, 0, "restWhole",
+                    page_box=[500.0, 1000.0, 640.0, 1010.0])
+        _notehead(log, 1, "noteheadBlack",
+                 page_box=[500.0, 1000.0, 640.0, 1010.0])
+        _run(log, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, rest)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "rest")
+        self.assertEqual(v.detail.get("rest_overlaps_notehead_resolved"),
+                         "cannot_tell")
+        self.assertTrue(v.detail.get("rest_overlaps_notehead_ambiguous"))
+
+    def test_overlap_resolution_two_lines_branch_direct(self):
+        """The `two_lines` branch inside the OVERLAP resolution itself is
+        unreachable through the full ladder (rule (a) runs earlier and
+        would already have refused — the production docstring's own
+        claim); this calls `_rest_overlaps_notehead_refusal` DIRECTLY with
+        `detail["line_shape"]` pre-seeded, so the defensive branch is
+        exercised rather than merely asserted dead."""
+        log = Log()
+        _staff_geometry(log)
+        rest = _rest(log, 0, "restWhole", page_box=_page_box_at_step(4.0))
+        _notehead(log, 1, "noteheadBlack", page_box=_page_box_at_step(4.0))
+        log.freeze()
+        ev = Evidence(log, rest, adjudicate.REGISTRY[Q.REST_IS_NOT_A_REST])
+        box_row = ev.rows(Q.GLYPH_BOX)[-1]
+        detail = {"class": "restWhole", "line_shape": "two_lines"}
+        result = _rest_overlaps_notehead_refusal(ev, box_row, detail)
+        self.assertIsNotNone(result)
+        self.assertIs(result.value, True)
+        self.assertEqual(result.reason, "rest_touches_two_staff_lines")
 
 
 if __name__ == "__main__":

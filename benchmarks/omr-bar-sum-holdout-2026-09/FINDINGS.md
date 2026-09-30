@@ -1948,25 +1948,32 @@ that band.
 
 `_rest_vertical_window_refusal` reuses `_ledger_geometry`/`_beyond_spaces`
 UNCHANGED — the SAME "how many spaces past line 1 or line 5" question the
-ledger rule already answers about a different class of ink. Two tiers:
+ledger rule already answers about a different class of ink.
+
+**RECALIBRATED on manager review before merge** (two problems in the first
+cut): a QUARTER rest is displaced for a second voice exactly as an 8th
+rest is and needs the same room, and a displaced WHOLE/HALF rest in a
+two-voice bar hangs a full space clear of the staff, not merely to the
+band's own edge. Now two tiers, one class moved and one number raised:
 
 | tier | classes | max spaces beyond the band |
 |---|---|---|
-| TIGHT | `restDoubleWhole`, `restWhole`, `restHalf`, `restQuarter`, `restHNr`, `restHBar` | 1.0 |
-| WIDE | `rest8th`, `rest16th`, `rest32nd`, `rest64th`, `rest128th` | 2.5 |
+| MEDIUM | `restDoubleWhole`, `restWhole`, `restHalf`, `restHNr`, `restHBar` | 1.5 (was 1.0) |
+| WIDE | `rest8th`, `rest16th`, `rest32nd`, `rest64th`, `rest128th`, `restQuarter` (moved from the tight/medium tier) | 2.5 |
 
-TIGHT is "a small margin over never" — this project has not observed one
-of those six classes leave the printed staff at all. WIDE admits a
-genuinely displaced-voice 8th/16th rest (`REST_VOICE_DISPLACEMENT_MIN_
-STEPS` in `rhythm.py`, ROADMAP 2.27c — a DIFFERENT, narrower convention
-about which VOICE a rest belongs to, and one that never leaves the staff
-band at all: its own reach is ±1.5 STEPS from the middle line, i.e. well
-inside the 0–8 step band this rule's window sits entirely outside of) and
-stops well short of how far a note on a ledger line goes (CLAUDE.md §10's
-Brahms C Horn 2, 4.5 spaces below its staff). CALIBRATED TO SEAN'S
-OBSERVATION, NOT MEASURED — falsified by a print crop showing a
-tight-tier rest genuinely printed beyond 1.0 space, or a wide-tier rest
-printed farther out than 2.5 spaces.
+MEDIUM is "a small margin over never observed leaving the staff, plus room
+for a displaced whole/half rest hanging one space clear." WIDE admits a
+genuinely displaced-voice rest (`REST_VOICE_DISPLACEMENT_MIN_STEPS` in
+`rhythm.py`, ROADMAP 2.27c — a DIFFERENT, narrower convention about which
+VOICE a rest belongs to, and one that never leaves the staff band at all:
+its own reach is ±1.5 STEPS from the middle line, i.e. well inside the
+0–8 step band this rule's window sits entirely outside of) and stops well
+short of how far a note on a ledger line goes (CLAUDE.md §10's Brahms C
+Horn 2, 4.5 spaces below its staff). CALIBRATED TO SEAN'S OBSERVATION, NOT
+MEASURED — falsified by a print crop showing a MEDIUM-tier rest genuinely
+printed beyond 1.5 spaces, or a WIDE-tier rest printed farther out than
+2.5 spaces. Unlisted classes fall back to MEDIUM, the tightest tier still
+named now that `restQuarter` has moved to WIDE.
 
 ⚠️ Both `rest_off_center` and `rest_outside_its_staff` run BEFORE
 `Q.GLYPH_OWNER` structurally, not by any gate written in this file's code:
@@ -2022,11 +2029,27 @@ rule 8, cannot-tell is never converted into an answer). Reading that
 verdict back is safe, not a guess, because `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
 is scheduled BEFORE `Q.REST_IS_NOT_A_REST` in `ORDER` (beside the ledger,
 ahead of the accidental/rest/arc/dynamic/articulation block) — the one
-quantity among this item's four new checks that IS a real connection to an
+quantity among this item's new checks that IS a real connection to an
 already-decided verdict rather than one still in flight. §19c's own "not
 built here" note in `notehead_precision.py` stands corrected by this entry.
 The FULL beat-slot rule (§20d) remains the open item; this is the one
 piece of it that needed no voice count and no onset column.
+
+**RECALIBRATED on manager review before merge — the IoU floor alone was
+UNSAFE.** `REST_DUPLICATE_IOU_MIN` (0.02) is a REST-DUPLICATE floor, tuned
+for two boxes fragmenting ONE mark on a SHATTERING plate; it is unsafe for
+a rest-vs-notehead pair because a displaced VOICE's rest can legitimately
+sit right next to the OTHER voice's notehead, boxes touching, without
+being one mark at all. Fixed the way ROADMAP 2.30 (§19a) fixed the same
+shape of problem for a notehead/notehead pair: `_same_mark_centres`
+(`notehead_precision.py`, imported not restated) is now a SECOND,
+mandatory gate — both boxes' centres must sit within
+`NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES` (0.25 space) vertically and
+`NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS` (0.5 head widths) horizontally,
+in addition to a raised, substantial IoU floor (`REST_NOTEHEAD_OVERLAP_
+IOU_MIN` 0.02 → **0.3**). A control was added: a displaced voice-2 rest
+touching a voice-1 notehead (IoU ≈0.05, centres a full staff space apart)
+is kept on EITHER gate alone.
 
 ### §20f. `rest_clipped_by_crop`
 
@@ -2070,30 +2093,121 @@ files: a one-line local `_cell_box_page_px` in `family_precision.py`,
 duplicated rather than imported, so the AST walk sees a real read. Not a
 new pattern — an existing one, applied a second time.
 
-### §20h. Tests and gates
+### §20h. Two more witnesses, and the overlap RESOLVED instead of always
+refusing the rest (manager review, second round, both citing Sean)
 
-`tools/omr/tests/test_staged_rest_placement_2_33.py`, 12 tests (3 off-
-centre, 4 vertical-window, 2 crop-clip, 3 notehead-overlap), one refusal
-and one control per rule, plus a control showing `rest_off_center` does
-NOT reach a `restHalf`. RED confirmed by swapping `family_precision.py`
-aside for `origin/main`'s copy (copy-aside/restore, never `git checkout`
-on the dirty tree) and re-running: the 5 refusal tests fail (`False is not
-True` — the old code returns `value=False, reason="rest"` for every one
-of them), the 7 controls stay green. GREEN 12/12 restored.
+Sean, `docs/DECISIONS.md` (2026-09-29, last entry on `origin/main` at the
+time): *"it went both ways but a common mistake was a black notehead
+called a whole or half rest. The rest should never touch 2 different
+staff lines."* Asked what else helps tell the two readings apart: *"if
+there is a stem attached or the bar sum needs the notehead then those
+also help."* Three witnesses now, checked in this order (§REST-VS-NOTEHEAD
+in `family_precision.py` has the full docstring):
+
+1. **`rest_has_a_stem`** (every rest class, checked FIRST). A rest never
+   has a stem. `_rest_has_a_stem_refusal` reuses `rhythm._stems_on`'s own
+   box-overlap test — the SAME one `adjudicate_stem_direction` uses to
+   find a notehead's stem — against `Q.STEM`'s boxes in this cell. Any
+   overlap refuses the rest outright, whatever class it was boxed as.
+2. **`rest_touches_two_staff_lines`** (`restWhole`/`restHalf` ONLY —
+   quarter/8th/etc. legitimately span more than one line/space by their
+   own printed shape, so the test says nothing about them).
+   `_rest_line_shape` measures how many staff lines this box's ink
+   TOUCHES (an edge within `ON_A_STAFF_LINE_TOL_SPACES` of a line — REUSED
+   from the ledger's own tolerance, not a new number — OR a line running
+   through the box's y-range, the half-rest shape): **two** touched lines
+   is a box spanning a whole space, a notehead's own shape, refused;
+   **one** is a genuine whole rest (top edge on a line) or half rest (one
+   line through the middle), kept; **zero**, or no staff geometry at all,
+   is `"cannot_tell"`, also kept (rule 8).
+3. **The overlap RESOLUTION** — for `restWhole`/`restHalf` ONLY, where
+   this box also overlaps a live notehead (§20e's own mechanism):
+   `_rest_overlaps_notehead_refusal` now reads `_rest_line_shape`'s
+   verdict instead of always refusing. `"two_lines"` cannot be read here
+   in PRACTICE (witness 2 above runs earlier in the same ladder and would
+   already have refused — the branch is written explicitly anyway, in
+   case a future reordering changes that invariant, and is exercised
+   directly by a unit test that pre-seeds `detail["line_shape"]`).
+   `"one_line"` means the rest reading has POSITIVE shape evidence, so the
+   rest STANDS (not refused) — `detail["notehead_reading_should_be_
+   dropped"]` records which notehead rows a future consequence should
+   revise. `"cannot_tell"` refuses NEITHER (rule 8). Every OTHER rest class
+   keeps the OLD behaviour unconditionally: an overlap always refuses the
+   rest, because witness 2 has no opinion on those classes at all.
+
+⚠️⚠️ THE NOTEHEAD SIDE DOES NOT YET LEARN "ONE_LINE" ON ITS OWN — NAMED,
+NOT BUILT, AND FOR THE SAME REASON THROUGHOUT THIS ITEM. `Q.NOTEHEAD_IS_
+NOT_A_NOTEHEAD` runs BEFORE `Q.REST_IS_NOT_A_REST` in `adjudicate.ORDER`,
+so by the time ADJUDICATE could say "the rest reading won, drop the
+competing notehead" the notehead's own verdict is already frozen on the
+log; only EVALUATE can revise an earlier ADJUDICATE verdict (the same
+shape `move_glyph`/`respell_accidental` already use). Recorded on the
+record (`notehead_reading_should_be_dropped`) so the connection point
+exists even though nothing reads it yet.
+
+### §20i. (d) — the bar sum as a fourth witness: named, not built
+
+Sean's fourth witness — *"if... the bar sum needs the notehead then those
+also help"* — belongs in EVALUATE, not ADJUDICATE (the bar sum is not
+known until then). Assessed rather than built: wiring
+`consequences.reconcile_duration` to try BOTH readings of a `"cannot_
+tell"` mark (this glyph counted as a rest vs. counted as a pitched note)
+and keep whichever makes the bar's own sum land exactly needs (1) a
+Q.-level fact naming which glyphs are in this ambiguous state (today only
+in `detail`, not a quantity `EVALUATE` can read), (2) a way for that
+consequence to not just re-read a DURATION but flip a NOTEHEAD/REST
+identity — reaching into `Q.EVENT`'s grouping and the export-side pitch
+path, not merely a duration re-reading — and (3) a rule for what happens
+to the LOSING reading's own verdict, which is the exact revise-an-earlier-
+verdict problem §20h's `notehead_reading_should_be_dropped` is already
+waiting on. This is materially MORE than a small connection (the explicit
+bar this item's brief draws: build (c)/(a)/(b) now, name (d) if it is
+more), so it is the next ROADMAP item, not built here.
+
+### §20j. Tests and gates
+
+`tools/omr/tests/test_staged_rest_placement_2_33.py`, grown across three
+review rounds to **23 tests**: the original 12 (off-centre×3,
+vertical-window×4, crop-clip×2, notehead-overlap×3, one of which —
+`test_off_center_rule_does_not_apply_to_half_rests` — was re-shaped in
+round 2 to a genuine one-line half-rest fixture once the two-staff-line
+rule made its original geometry a real `two_lines` case), plus round 1's
+window recalibration (`test_whole_rest_one_space_above_the_staff_is_kept`,
+`test_quarter_rest_now_gets_the_wide_window_is_kept`, and the displaced-
+voice-touches-a-notehead control, net +3), and round 2's stem witness (2),
+two-staff-line witness (4, incl. the quarter-rest exclusion control), and
+three-outcome overlap resolution (3, incl. one direct unit-level call for
+the `"two_lines"` defensive branch the full ladder cannot reach) — net
++9 more. One refusal and one control per rule throughout; RED confirmed
+at each round by swapping `family_precision.py` aside for `origin/main`'s
+or the prior round's copy (copy-aside/restore, never `git checkout` on
+the dirty tree). A genuine fixture collision was found and fixed along
+the way, not papered over: `test_staged_family_refusals.py`'s shared
+`_pair` helper placed every family's own test box at the SAME canonical
+position as its "for the ledger's sake" notehead anchor, which the new
+overlap rule (round 1) correctly read as one mark and refused — `_pair`
+grew an `own_x_c` parameter (default unchanged, so the other nine
+families are untouched) and the rest test alone passes a separated
+position.
 
 `python3 -m tools.omr.staged.check`: **TOTAL 245, status=ok** (unchanged
-from the `origin/main` baseline this branch is off). `inventory --check`
-and `wiring --check` both closed clean after §20g's fix — no new entry on
-either, and no `KNOWN_GAPS` addition was needed.
+from the `origin/main` baseline this branch is off) at every round.
+`inventory --check` and `wiring --check` both closed clean after §20g's
+fix — no new entry on either, and no `KNOWN_GAPS` addition was needed.
+`pytest tools/omr/tests -m "not slow"`: **3910 passed, 3 skipped, 0
+failed** after all three rounds (base 3899 after round 1 + 11 net new
+tests from rounds 2/3).
 
 No gathers, no crop batches, no pricing runs, per Sean's 2026-09-29 process
 decision for this item.
 
-### §20i. Files
+### §20k. Files
 
-- `tools/omr/staged/adjudicators/family_precision.py`: the four new
-  refusals, their constants and helpers (§REST-PLACEMENT), and the
-  updated `Q.REST_IS_NOT_A_REST` decision spec/docstring.
+- `tools/omr/staged/adjudicators/family_precision.py`: the six refusals
+  (§REST-PLACEMENT, §REST-VS-NOTEHEAD), their constants and helpers, and
+  the updated `Q.REST_IS_NOT_A_REST` decision spec/docstring.
 - `tools/omr/tests/test_staged_rest_placement_2_33.py`: the tests.
+- `tools/omr/tests/test_staged_family_refusals.py`: the `_pair` fixture
+  fix (§20j).
 - `benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`: the
   Rests row, updated to point here.
