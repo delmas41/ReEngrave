@@ -2621,7 +2621,7 @@ def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
 
 
 def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
-                             sub) -> Optional[list]:
+                             sub, cell: Any = None) -> Optional[list]:
     """This cell's detected notehead boxes, in CANONICAL cell coordinates.
 
     ⚠️ `None` when the caller supplied no detection map at all (no gate) and
@@ -2633,15 +2633,34 @@ def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
     cell and a stroke's box is canonical; a page-pixel head box compared with
     a canonical stroke box is the frame error `Q.ONSET_COLUMN` already paid
     for — it would silently protect nothing and read as *the gate is inert*.
+
+    ⚠️ ROADMAP 2.39, LAST OF THE FIVE CONNECTIONS AND ITS OWN COMMIT: this
+    box GATES stem/beam detection (`OMR_STEM_NOTEHEAD_GATE`), so changing
+    its extent can move stem/beam results (ROADMAP 2.38/2.38b), unlike the
+    other four consumers, which only ever read the ink under a box. For a
+    REGULAR notehead (`geometry.is_regular_notehead`) with `cell`'s own
+    canonical staff spacing available (`_cell_grid`), the STANDARD box is
+    used; otherwise (no `cell`, no staff-line geometry on it, or a whole
+    note / grace-cue head) the raw detector box is unchanged from before
+    this round -- never a new gate where none existed, never a default
+    spacing.
     """
     if detections is None:
         return None
+    grid = _cell_grid(cell) if cell is not None else None
+    space_canonical = grid[1] * 2.0 if grid and grid[1] else None
     heads = []
     for d in detections.get(sub.to_key()) or ():
-        if "notehead" not in str(getattr(d, "smufl_name", "")).lower():
+        name = str(getattr(d, "smufl_name", ""))
+        if "notehead" not in name.lower():
             continue
-        heads.append((float(d.x_canonical), float(d.y_canonical),
-                      float(d.width_canonical), float(d.height_canonical)))
+        if space_canonical and is_regular_notehead(name):
+            bx0, bx1, by0, by1 = _standard_head_box(
+                d.x_center, d.y_center, space_canonical)
+            heads.append((bx0, by0, bx1 - bx0, by1 - by0))
+        else:
+            heads.append((float(d.x_canonical), float(d.y_canonical),
+                          float(d.width_canonical), float(d.height_canonical)))
     return heads
 
 
@@ -2693,7 +2712,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # the boxes change nothing at all. ⚠️ `detections is None` (a run with
         # no detector, which `gather_detections` supports on purpose) gives
         # `None` and therefore no gate, never an empty one.
-        heads = _notehead_boxes_for_cell(detections, sub)
+        heads = _notehead_boxes_for_cell(detections, sub, c)
         try:
             found = detect_lines(c, candidates_out=runs, noteheads=heads)
         except Exception as exc:                              # noqa: BLE001

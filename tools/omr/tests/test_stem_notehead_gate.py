@@ -400,3 +400,93 @@ class TestTheSurvivorsOfTheFixedBattery:
         assert len(heads) == 1, (
             f"only the notehead may protect a stroke; got {len(heads)} boxes "
             f"from 4 detections of which 1 is a notehead")
+
+
+class TestStandardHeadBoxGatesTheStroke:
+    """ROADMAP 2.39, the LAST of the five connections: this box GATES
+    stem/beam detection, so it gets its own commit and its effect is
+    reported separately (unlike the other four consumers, which only read
+    ink under a box). No `cell` argument (the pre-2.39 call shape,
+    `_notehead_boxes_for_cell(dets, sub)`) is UNCHANGED -- the raw box is
+    used exactly as before, which is what every OTHER test in this file
+    relies on.
+
+    ⚠️ RUN RED FIRST: `_notehead_boxes_for_cell` took no `cell` keyword
+    before this round -- `test_a_regular_head_with_a_staff_unit_gets_the_
+    standard_box` raised `TypeError` against the pre-change tree.
+    """
+
+    def _det(self, name, x, y, w, h):
+        class _D:
+            def __init__(self):
+                self.smufl_name = name
+                self.x_canonical, self.y_canonical = x, y
+                self.width_canonical, self.height_canonical = w, h
+
+            @property
+            def x_center(self):
+                return self.x_canonical + self.width_canonical / 2.0
+
+            @property
+            def y_center(self):
+                return self.y_canonical + self.height_canonical / 2.0
+        return _D()
+
+    def test_no_cell_argument_is_the_raw_box_unchanged(self):
+        from tools.omr.staged.gather import _notehead_boxes_for_cell, R
+        sub = R.cell(0, 0, 0, 0)
+        raw = (100.0, 100.0, 50.0, 40.0)
+        dets = {sub.to_key(): [self._det("noteheadBlackOnLine", *raw)]}
+        heads = _notehead_boxes_for_cell(dets, sub)
+        assert heads == [raw]
+
+    def test_a_regular_head_with_a_staff_unit_gets_the_standard_box(self):
+        from tools.omr.staged.gather import _notehead_boxes_for_cell, R
+        from tools.omr.types import MeasureCell
+        sub = R.cell(0, 0, 0, 0)
+        raw = (100.0, 100.0, 50.0, 40.0)   # centre (125, 120)
+        dets = {sub.to_key(): [self._det("noteheadBlackOnLine", *raw)]}
+        cell = MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=None, image_no_staff=None, bbox_page_px=(0, 0, 900, 900),
+            staff_line_ys_canonical=[100, 200, 300, 400, 500],
+            upscale_factor=1.0)
+        heads = _notehead_boxes_for_cell(dets, sub, cell)
+        assert heads != [raw]
+        x, y, w, h = heads[0]
+        assert x + w / 2.0 == 125.0 and y + h / 2.0 == 120.0   # same centre
+        # ⚠️ `1.1 * 100` computed directly (110.00000000000001) is not
+        # bit-identical to `geometry.standard_head_box`'s own path (halve,
+        # then double back via two additions to `cy`, which happens to
+        # land on the clean float here) -- compare with a tolerance rather
+        # than assert float bit-equality.
+        assert abs(w - 1.4 * 100) < 1e-9
+        assert abs(h - 1.1 * 100) < 1e-9
+
+    def test_a_whole_note_keeps_the_raw_box_even_with_a_staff_unit(self):
+        """ROADMAP 2.39 item 5: a different, wider Bravura shape."""
+        from tools.omr.staged.gather import _notehead_boxes_for_cell, R
+        from tools.omr.types import MeasureCell
+        sub = R.cell(0, 0, 0, 0)
+        raw = (100.0, 100.0, 50.0, 40.0)
+        dets = {sub.to_key(): [self._det("noteheadWhole", *raw)]}
+        cell = MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=None, image_no_staff=None, bbox_page_px=(0, 0, 900, 900),
+            staff_line_ys_canonical=[100, 200, 300, 400, 500],
+            upscale_factor=1.0)
+        heads = _notehead_boxes_for_cell(dets, sub, cell)
+        assert heads == [raw]
+
+    def test_a_cell_with_no_staff_geometry_falls_back_to_the_raw_box(self):
+        from tools.omr.staged.gather import _notehead_boxes_for_cell, R
+        from tools.omr.types import MeasureCell
+        sub = R.cell(0, 0, 0, 0)
+        raw = (100.0, 100.0, 50.0, 40.0)
+        dets = {sub.to_key(): [self._det("noteheadBlackOnLine", *raw)]}
+        cell = MeasureCell(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            image=None, image_no_staff=None, bbox_page_px=(0, 0, 900, 900),
+            staff_line_ys_canonical=[], upscale_factor=1.0)
+        heads = _notehead_boxes_for_cell(dets, sub, cell)
+        assert heads == [raw]
