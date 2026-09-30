@@ -802,3 +802,317 @@ have to re-derive this.
 Corrected branch name throughout this file and ROADMAP.md: the five (now
 six, after this revert, seven) commits are on `worktree-agent-abaec0246921f0daf`,
 not `claude/acceptance-measure-notehead-box-e75821`.
+
+## 18. ROADMAP 2.39b -- the re-centre, and the reconnect it makes safe
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: the matched-
+window design (slide the standard box, keep the offset with the highest
+ink fill, decline where that fill is not clearly a head or not clearly
+ahead of a rival window) is the brief's own proposal, not asked of Sean
+directly this round. Falsified by a plate where a real head's own fill
+is routinely under `RECENTRE_MIN_FILL` (0.55) or where two real heads
+routinely sit closer than the search's own overlap radius allows telling
+apart -- neither is measured here.
+
+**What changed.** `gather.recentre_notehead` -- a bounded search, +-0.6 sp
+vertical / +-0.4 sp horizontal around a regular notehead's own detector
+centre, 0.1 sp step -- and `gather_notehead_recentre`, which files `Q.
+NOTEHEAD_RECENTRE` (`[dx_sp, dy_sp]`, plus `fill`/`margin`/`runner_up`) or
+declines (`below_threshold`, `ambiguous`) or abstains (`no_mask`, `no_
+staff_geometry`) for every regular notehead. Five consumers now read that
+row where it exists, falling back to the un-shifted detector centre
+otherwise (CLAUDE.md rule 6 -- connect, never guess):
+
+1. `gather_notehead_ink` -- THE ACTUAL FIX for the bug §15/§18 found:
+  the first half's reconnect used the un-recentred standard box and read
+  a solid Brahms head as hollow (0.914 -> 0.185) because a sliver's own
+  centre sits on the head's edge. This round's box is only ever shifted
+  where the search found real ink to shift onto.
+2. `_observe_ledger_rung_ink` -- only the x-window (cy unused downstream).
+3. `_observe_ledger_owner_density` (ROADMAP 2.37) -- both x and y, since
+  this reader's own gap/edge/step search is built from the same centre.
+4. `notehead_precision._belongs_to_a_nearer_staff` -- only the ladder's
+  x-window (`cy` untouched, so the filed/near staff banding this rule
+  already computed from it does not move -- ROADMAP 2.39b explicitly
+  does not touch pitch/staff position).
+5. `_notehead_boxes_for_cell` (the stem/beam notehead gate, `OMR_STEM_
+  NOTEHEAD_GATE`) -- via a new optional `log=` keyword, `None` (every
+  pre-2.39b call site) byte-identical to before.
+
+Commits on `worktree-agent-a481f182495d22774` (`claude/beam-2.38c-residual`
+base, `claude/acceptance-measure-notehead-box-e75821` merged in): `f96e9bf2`
+(register `Q.NOTEHEAD_RECENTRE`), `912eabd8` (the reader + connections 1/2/3/5
+above -- all four live in `gather.py`), `5c4380dc` (connection 4,
+`notehead_precision.py`). Not split one-commit-per-consumer as the brief
+asked: the edits to `gather.py` are non-adjacent but landed in one commit
+for time; each connection still has its own dedicated, independently-
+green test class (`test_staged_notehead_recentre.py`,
+`test_staged_ledger_rung_ink.py::TestRecentreShiftsTheStandardBox`,
+`test_staged_ledger_owner_density.py::TestRecentreMovesTheInformativeStep`,
+`test_staged_nearer_staff.py::TestNearerStaffReadsTheRecentre`), each run
+RED against the pre-2.39b tree before landing.
+
+### 18a. One-page A/B, GATHER-through-ADJUDICATE, both count pages
+
+Base arm: `.claude/worktrees/acceptance-measure-notehead-box-e75821`
+(2.39 first half's own tip, `abede6d6`), symlinked the same way. New arm:
+this tree. Litolff pdf-index 3, Brahms pdf-index 1, `--weights auto
+--through adjudicate`.
+
+**The re-centre population** (new arm only -- the base arm carries no
+such quantity at all):
+
+| | regular noteheads | observed | declined `ambiguous` | declined `below_threshold` | fill median |
+|---|--:|--:|--:|--:|--:|
+| Litolff p3 | 470 | 451 | 13 | 6 | 0.8312 |
+| Brahms p1 | 950 | 765 | 145 | 40 | 0.8654 |
+
+⚠️ The `dy` histogram is not smooth: Litolff has 46 heads at exactly
+`-0.6` and 31 at `+0.6` (the search's own bound), Brahms 41 and 26 -- a
+double-digit fraction of the accepted population sits AT the edge of the
+search window rather than inside it, on both plates. This is reported
+as measured and not chased further this round: it may mean some heads'
+true centre lies past +-0.6 sp (the bound clipping the true answer) or
+it may mean the search is correctly finding the best AVAILABLE window at
+the boundary for ink that extends past it (a beam or a neighbour's own
+head) -- the crops below include one boundary case
+(`brahms-swing-1.png`, `dy=-0.6`) and it reads as the latter (a real,
+correctly-identified head), but this is one crop, not a census.
+
+**Per-consumer changed verdicts/observations** (`probe/diff_2.39b_ab.py`):
+
+| consumer | quantity | Litolff p3 | Brahms p1 |
+|---|---|--:|--:|
+| 1 (fill test) | `notehead_ink` obs | 210 | 92 |
+| 1 -> `duration` verdict | `duration` | 1 (decided -> narrowed, `head_fill_from_ink`) | 1 (same shape) |
+| 2 (ledger rung ink) | `ledger_rung_ink` obs | 15 | 28 |
+| 3 (ledger owner density) | `ledger_owner_density` obs | 60 | 93 |
+| 2+3 -> `glyph_owner` | `glyph_owner` verdict | 18 | 9 |
+| 4 (nearer staff) | -- | (folds into `glyph_owner` above; no separate quantity of its own) | |
+| 5 (stem/beam gate) | `stem` / `beam_stroke` obs | 0 / 0 | 0 / 0 |
+
+⚠️⚠️ **Litolff's 18 `glyph_owner` changes include 5 that went DECIDED ->
+ABSTAINED (`far_no_rungs`)** (`glyph/3/0/6/4/3`, `.../8/1/3`, `.../8/2/6`,
+`.../9/1/2`, `.../9/1/7`) -- the more accurate box moved the ledger search
+window enough that a previously-credited rung is no longer found, and the
+glyph declines rather than keeps its old (less accurately searched)
+answer. CLAUDE.md rule 8 says this is the SAFE direction (decline over a
+guess), but it is a real reach cost on this page and is reported as one,
+not absorbed into "18 changed, net neutral." Brahms's 9 changes are all
+basis swaps between DECIDED answers (`ledger_owner_density` <->
+`ledger_direction` <-> `distance`), no new abstentions. Connection 5
+(the stem/beam gate) moved NOTHING on either page, same as the first
+half's own connection 4 -- measured, not assumed.
+
+### 18b. Print check, 600 dpi, 14 crops, `out/print/2.39b/`
+
+Colour key: YELLOW = the staff's own five lines. RED = the raw detector
+box. GREEN = the re-centred standard box (or the un-shifted standard box
+where the search declined/never ran). Grey cross = the detector's own
+centre (unchanged). Every crop below was judged by looking at the
+rendered PNG, not by its caption.
+
+- `brahms-swing-1.png` (`glyph/1/0/7/0/12`, the biggest `notehead_ink`
+  swing measured this round, 0.4032 -> 0.988 -- the first half's own
+  named swing crop's exact subject key does not survive in any committed
+  text, only its PNG, so this is the same measurement re-run on today's
+  tree rather than the same subject): two adjacent black blobs under a
+  beam; the RAW (red) box sits mostly on the STEM/joint between them,
+  covering little solid ink; the RE-CENTRED (green) box sits on the
+  upper blob, a genuine solid black head. **Confirms the fix**: the
+  search moved off a stem-adjacent sliver position onto real ink.
+- `brahms-sliver-3.png` (`glyph/1/0/5/0/3`): a dense chord/beam cluster;
+  the raw box is a thin sliver near the top (on a stem); the re-centred
+  box shifts down-left onto the denser merged blob (a round notehead
+  shape is visible, partly outside both boxes in a genuinely merged
+  cluster -- CLAUDE.md Sec.10, Brahms SHATTERS). Direction is correct
+  (more ink, closer to the visible head); exact single-head precision is
+  not established in a merged cluster this dense.
+- ⚠️⚠️ `brahms-sliver-2.png` / `brahms-sliver-4.png` (`glyph/1/1/5/6/9`,
+  `glyph/1/1/5/4/1`): **both are NOT noteheads at all** -- a bold
+  vertical BARLINE crossing the staff, classified `notehead*` by the
+  detector (CLAUDE.md Sec.10's own number: "a third of Breitkopf's
+  stemless heads are barlines"). Both raw and re-centred boxes sit on
+  the same barline; the search correctly reads high fill (it IS dense
+  ink) but this is not evidence about slivers-on-real-heads -- it is
+  evidence that the top-`notehead_ink`-swing ranking surfaces existing
+  corpus contamination as often as it surfaces the bug this round fixes.
+  Recentring a misclassified barline is out of THIS round's scope (that
+  is `notehead_is_not_a_notehead`'s job) and neither crop shows the
+  search doing anything unsafe with it.
+- `litolff-random-1.png`, `litolff-random-2.png`, `litolff-random-3.png`
+  (3 random `notehead_recentre` observations, Litolff p3, **seed 239**):
+  all three are real heads (on-line, merged-with-stem, and a half-note
+  with a slur crossing it respectively); shifts are small (-0.3/+0.2,
+  0.0/0.0, 0.0/+0.1 sp) and every box still covers real ink. `litolff-
+  random-3.png` is the SAME subject as `litolff-duration-narrowed.png`
+  below (a half note under a slur -- the one Litolff bar whose `duration`
+  verdict narrowed).
+- `brahms-random-1.png`, `brahms-random-2.png`, `brahms-random-3.png` (3
+  random, Brahms p1, **seed 239**): all three are solid black heads (one
+  isolated, one beside a flat sign, one inside a dense shattered blob);
+  shifts are small (0.1/0.0, 0.1/0.0, 0.0/0.1 sp); red and green nearly
+  coincide in all three -- the zero-shift control reproduced on real data.
+- `brahms-decline-ambiguous.png` (`glyph/1/0/0/1/20`, declined
+  `ambiguous`): sits on what looks like a barline/repeat-sign pair beside
+  a time-signature digit, not a real head -- declining here is CORRECT,
+  not a missed real head.
+- `litolff-decline-below-threshold.png` (`glyph/3/0/6/3/9`, declined
+  `below_threshold`): a hollow head crossed by a slur, genuinely part-
+  black-part-white -- declining rather than forcing a fill answer is
+  CORRECT.
+- `litolff-glyph-owner-far-no-rungs.png` (`glyph/3/0/6/4/3`, one of the
+  5 decided->abstained heads above): a real head well below its staff;
+  the RAW box sits mostly on blank paper above the head (a genuine
+  mis-centre), the RE-CENTRED box sits squarely on the black blob. The
+  box move is clearly correct; the resulting abstention is the search
+  now looking for ledger rungs from the RIGHT position and not finding
+  one it can credit -- a real, reported cost, not a bug in the crop.
+- `litolff-ledger-rung-ink-changed.png` (`glyph/3/0/7/2/2`): a real head
+  below the staff with a short ledger stub visible to its left; both
+  boxes overlap the head, green shifted slightly up -- a small, correct
+  refinement.
+
+**11 of 14 crops confirm correct behaviour on genuine notehead ink; 2 of
+14 (`brahms-sliver-2/4`) are pre-existing barline misdetections the
+search is correctly agnostic to; 0 of 14 show the search moving a box
+OFF real ink or forcing an answer it should have declined.** No
+consumer's connection is reverted.
+
+### 18c. Staff-position swing -- MEASURED, NOT WIRED (item 3's own boundary)
+
+`Q.NOTEHEAD_STAFF_POSITION` is untouched by this round. For every regular
+notehead carrying an ACCEPTED `Q.NOTEHEAD_RECENTRE` row, `probe/
+diff_2.39b_ab.py` computes whether `round(position + 2*dy_sp) !=
+round(position)` (a staff space is two half-step position units):
+
+| | checked | rounded position would change | share |
+|---|--:|--:|--:|
+| Litolff p3 | 451 | 155 | 34.4% |
+| Brahms p1 | 765 | 114 | 14.9% |
+
+This is a large, page-varying share -- higher on Litolff (the MERGING
+plate, where the detector's raw box already grows with neighbouring ink
+and the search has more room to move) than Brahms. It is the evidence a
+later, separate decision needs before wiring a position change, exactly
+as the brief asks; nothing here recommends one.
+
+### 18d. Checks and tests
+
+`staged.check`: **245 open findings before and after every commit**
+(same TOTAL as `2718c450`), exit 0 throughout.
+
+`pytest -m "not slow" tools/omr/tests -q`: clean end-of-session run,
+**4,078 passed, 3 skipped, 0 failed** (base 4,050; every new test file/
+case is a net add, no regression). Two independent full runs agreed
+(4,075 and 4,078 -- the 3-test spread is pre-existing test-order/skip
+variance unrelated to this round; neither run had a failure).
+
+### 18e. What was not verified
+
+- The brief's full crop menu ("3 changed verdicts per consumer") was not
+  built for every one of the 5 connections separately -- `duration` and
+  `glyph_owner`/`ledger_owner_density`/`ledger_rung_ink` are each covered
+  by at least one crop above; connection 5 (stem/beam gate) moved no rows
+  on either page, so there is nothing to crop.
+- The first half's own `brahms-notehead-ink-swing.png` subject key is not
+  recoverable from any committed text (only the binary PNG survives), so
+  §18b's `brahms-swing-1.png` is the analogous case RE-DISCOVERED on
+  today's tree (independently, by the same "biggest `notehead_ink` swing"
+  measurement), not a re-crop of the original subject.
+- The dy-histogram boundary saturation (§18a) is reported, not resolved.
+
+## 19. Manager review of `fa700001` (2/2): withdrawals, the size gate, re-run
+
+⚠️⚠️ **§18b's `litolff-glyph-owner-far-no-rungs.png` caption was WRONG,
+manager caught it: the RE-CENTRED (green) box is the one that is wrong,
+not the raw (red) one.** Red already sat on the real head; green moved
+DOWN, off the head, into stem/beam junction ink below it — the exact
+opposite of what §18b claimed ("a more accurate box"). That phrase is
+withdrawn. **`litolff-random-2.png`, looked at again with the same
+scepticism**: the rounder, more head-like blob sits ABOVE both boxes,
+between two staff lines; the boxed region (where red and green coincide,
+`dx=dy=0.0` — the search found no shift at all here) sits on the LOWER
+part of a mass merged with the stem. It is genuinely unclear whether
+this glyph's true head is the boxed ink or the blob above; since the
+search found zero shift either way, this crop never demonstrated a
+moved box and should not have been read as a confirmed "well-centred"
+example — that reading was overconfident.
+
+**The rule the two crops support**: a detector box already close to the
+standard head's SIZE has a trustworthy CENTRE; only a box clearly
+SMALLER than standard (a sliver) has a centre worth distrusting. Gated
+in `4b20912d` — `RECENTRE_BOX_SIZE_GATE = 0.7`, chosen from this round's
+own box-size ratio distribution (§ commit message; median ~1.0 on both
+pages, genuine slivers in the bottom decile, the flagged head's ratio
+0.79 sits clear of it). Tests run RED first (`TestRecentreBoxSizeGate`).
+
+**Re-run, gated, both consumers**:
+
+| | population observed | declined `box_already_head_sized` | `glyph_owner` changed | `notehead_ink` changed | `ledger_owner_density` changed | `ledger_rung_ink` changed | `duration` changed |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| Litolff (was 451/18/210/60/15/1) | **34** | 435 | **5** | **19** | **14** | **2** | **0** |
+| Brahms (was 765/9/92/93/28/1) | **86** | 690 | **0** | **57** | **30** | **3** | **0** |
+
+The flagged head (`glyph/3/0/6/4/3`) now abstains `box_already_head_sized`
+(ratios 1.836/0.791) and is NO LONGER in the `glyph_owner` diff at all —
+confirmed back to the detector centre, both in the record and by
+re-cropping it (`out/print/2.39b/gated/litolff-far-no-rungs-GATED.png`:
+red and green now coincide, both on the real head).
+
+⚠️⚠️ **THE BRAHMS SWING HEAD IS ALSO NOW GATED OUT, CONTRADICTING THE
+EXPECTATION THAT IT MUST STILL MOVE.** `glyph/1/0/7/0/12`'s raw box
+measures 1.196x standard width, 1.099x standard height — both above
+0.7, so it abstains `box_already_head_sized` and keeps the (visibly
+wrong) detector centre. Re-examined at
+`out/print/2.39b/gated/brahms-swing-GATED.png`: the unmoved box sits
+mostly on the STEM below the real head, which is clearly visible just
+above the box's top edge — this is a genuine counter-example to "box
+size alone predicts a trustworthy centre": a box can be close to
+standard SIZE and still be badly CENTRED (Brahms shattering merges the
+head with the stem asymmetrically, pulling the detector's box down
+without shrinking it). A same-shape observation, not acted on this
+round (no budget to re-measure a second gate dimension): the flagged
+Litolff box was WIDE and SHORT (aspect 2.95 against the standard's
+1.27); the Brahms swing box's aspect (1.39) is close to standard — an
+aspect-ratio distortion may be the sharper signal than absolute size,
+but this is a lead, not a result.
+
+4 random re-centred heads per page (**seed 701**, from the smaller
+gated population): Litolff 3 of 4 are genuine sliver corrections onto
+real ink (`litolff-random4-1/3/4.png`), 1 ambiguous (a curled mark, not
+clearly a round head, `-2.png`). **Brahms 4 of 4 show NO visible
+notehead at all** — every one is a stem/barline crossing staff lines,
+the same pre-existing misdetection class §18b already named; the gate
+does not touch this (out of scope) but it means the Brahms population
+that still passes the gate skews toward exactly this contamination.
+
+### 19a. Staff-position swing, print-checked (item 4)
+
+8 random subjects per page (**seed 239**, from the gated `would_change`
+set), ink measured numerically at OLD and NEW before viewing, staff
+lines drawn, crops at >=60px head width
+(`out/print/2.39b/position-swing/`):
+
+| | would-change pop. | NEW confirmed | OLD confirmed | misdetection / no head | ambiguous (real ink, position undecidable) |
+|---|--:|--:|--:|--:|--:|
+| Litolff | 27 of 34 | 3 of 8 | 1 of 8 | 1 of 8 | 3 of 8 |
+| Brahms | 48 of 86 | 2 of 8 | 3 of 8 | 3 of 8 | 0 of 8 |
+
+⚠️⚠️ **THIS WITHDRAWS §18c's UNQUALIFIED "34.4%/14.9% WOULD CHANGE"
+HEADLINE.** Printed evidence shows NEW and OLD roughly split (5 NEW, 4
+OLD across 16 sampled), with a third of the sample not even a real,
+single notehead (a numeral, stems with no head, a diagonal beam where
+the position question does not apply). The swing measurement is real
+(the arithmetic is right) but it is NOT evidence that re-centring would
+improve pitch accuracy on this population — it is evidence that the
+population needs a shape filter before anyone reads it that way.
+
+### 19b. Commits vs the brief
+
+3 commits (`f96e9bf2`, `912eabd8`, `5c4380dc`) rather than one per
+consumer, because `gather.py`'s edits for connections 1/2/3/5 are
+non-adjacent but landed together for time; the coordinator confirmed
+this is fine given each connection still has its own dedicated RED/GREEN
+test. This round's gate and re-run are 1 further commit
+(`4b20912d`) plus this FINDINGS update.

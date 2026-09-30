@@ -481,6 +481,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "and the paper directly under it. Scoreless because it is a ruler "
         "reading, not a naming.",
         None),
+    "NOTEHEAD_RECENTRE": (
+        RELATION,
+        "ROADMAP 2.39b: a bounded MATCHED-WINDOW search, off the staff-"
+        "ERASED raster, for the offset of the STANDARD head box (2.39, "
+        "first half) with the highest ink fill around a regular head's "
+        "own detector centre — a relation between a located notehead box "
+        "and the paper it actually stands on. Scoreless, same reason as "
+        "`NOTEHEAD_INK`: it names no head, only where the fill is best.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -618,6 +627,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # roadmap item, and this reader's own two-raster design is spelled out
     # in full on `Q.NOTEHEAD_INK`'s own docstring and `gather_notehead_ink`.
     "CV_NOTEHEAD_INK": ("staged/gather.py", "gather_notehead_ink"),
+    # ⚠️ ROADMAP 2.39b. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
+    "CV_NOTEHEAD_RECENTRE": ("staged/gather.py", "gather_notehead_recentre"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
