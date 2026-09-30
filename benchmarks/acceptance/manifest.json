@@ -67,9 +67,9 @@
       "publisher": null,
       "record": {
         "root": "repo",
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930.record.json",
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930b.record.json",
         "md5": null,
-        "note": "RE-GATHERED 2026-09-30 evening on a5c7c42c (main: 2.33b, 2.39/2.39b, 2.42, 2.43 in), pages 0-2, 300 dpi, engraved weights, 3 min, dirty=false. Replaces 20260929b (kept, md5 6c946ac1758554d4c6f3025a5a5f5407)."
+        "note": "RE-GATHERED 2026-09-30 evening on main + 2.33c (2.33b, 2.33c, 2.39/2.39b, 2.42, 2.43 in), pages 0-2, 300 dpi, engraved weights, 3 min, dirty=false. Replaces 20260929b (kept, md5 6c946ac1758554d4c6f3025a5a5f5407). An intermediate a5c7c42c gather (before 2.33c) refused 35 real whole rests and was discarded."
       },
       "pdf": {
         "root": "repo",
