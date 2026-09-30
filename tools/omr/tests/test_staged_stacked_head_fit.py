@@ -109,6 +109,76 @@ class TestFitStackedHeadCountPure(unittest.TestCase):
         self.assertEqual(fit["k"], 2)
         self.assertEqual(fit["positions"], (2, 4))
 
+    def test_saturated_merged_ink_ties_break_toward_the_observed_boxes(self):
+        """⚠️ MANAGER REVIEW (real Litolff p3 ruler measurement,
+        `glyph/3/0/0/2/4`+`/9`, 2026-09-30): the print's own two heads are
+        at positions -7 (F6) and -5 (D6), 15.75 px staff spacing, top line
+        449.5 -- confirmed by hand against the ledger strokes (A5 ~434,
+        C6 ~418, E6 ~402) and the ink rows (385-433). The shipped fit
+        WITHOUT this test's own fix wrote (-8, -6) = G6/E6 instead --
+        BOTH heads shifted up one diatonic step -- because the real ink is
+        one continuous MERGING-plate blob: `notehead_ink_under` rounds
+        `best` to 4 decimals and positions -8/-7/-6/-5 all score EXACTLY
+        1.0, and `itertools.combinations`' lexicographic order handed the
+        tie to `(-8, -6)` (generated before `(-7, -5)`) with no evidence
+        behind the choice at all. This is the EXACT scored dict read back
+        off that real record (`out/2.42/litolff-p3-new.json`,
+        `glyph/3/0/0/2/4`'s own `Q.STACKED_HEAD_FIT` row).
+
+        RUN RED against the tree before this fix: the same scores, with NO
+        `observed` argument (or before `_stacked_best_combo`/`fit_stacked_
+        head_count` read one at all), return `(-8, -6)`.
+        """
+        scored_from_the_real_record = {
+            -9: 0.2631, -8: 1.0, -7: 1.0, -6: 1.0, -5: 1.0, -4: 0.8182}
+        # The SAME raw detector centres this real cell's own
+        # `Q.NOTEHEAD_STAFF_POSITION` rows carry (canonical-frame, GATHER's
+        # own units) -- real evidence, not invented for the test.
+        observed = [-7.4, -5.56]
+        combo = gather._stacked_best_combo(
+            scored_from_the_real_record, 2, observed)
+        self.assertEqual(combo, ((-7, -5), 2.0),
+                        "the tie must break toward the OBSERVED boxes, "
+                        "not the lexicographically-first tied combo")
+        # And with NO observed evidence, the old (still legitimate, when
+        # there is truly nothing else to go on) behaviour stands --
+        # lexicographically first.
+        combo_no_evidence = gather._stacked_best_combo(
+            scored_from_the_real_record, 2)
+        self.assertEqual(combo_no_evidence, ((-8, -6), 2.0))
+
+    def test_real_litolff_ruler_measurement_pins_f6_d6(self):
+        """The SAME case end to end through `fit_stacked_head_count`,
+        built from the manager's own ruler numbers (top line 449.5 PAGE px,
+        spacing 15.75, heads centred ~393 and ~409 PAGE px -- this test
+        works in the SAME single frame throughout, since the function is
+        frame-agnostic (`_standard_head_box`'s own docstring) -- treating
+        these as "canonical" changes nothing). `393` -> position
+        `(393-449.5)/7.875 = -7.17`, `409` -> `(409-449.5)/7.875 = -5.14` --
+        matching the real record's own observed centres (-7.4, -5.56)
+        closely enough to be the same real evidence, not a coincidence.
+        Ink is painted SATURATED (one merged blob, the real plate's own
+        shape) across the whole -8..-5 span so the tie this fix exists for
+        is REPRODUCED, not sidestepped."""
+        top_y, half_step, spacing = 449.5, 7.875, 15.75
+        img, cx = _painted_ink([-8, -7, -6, -5], top_y=top_y,
+                               half_step=half_step, spacing=spacing,
+                               h=700, w=200)
+        # Extend the paint down to -4 too, so the merged blob's own shape
+        # (four-plus adjacent positions all solid) matches the real
+        # record's tie across -8..-5 -- a single ellipse per position
+        # already overlaps its neighbours at this spacing/size, so no
+        # further painting is needed to saturate the middle of the range.
+        observed = [-7.17, -5.14]
+        fit = gather.fit_stacked_head_count(
+            img, cx, list(range(-9, -3)), top_y, half_step, spacing,
+            n_boxes=2, observed=observed)
+        self.assertIsNotNone(fit)
+        self.assertFalse(fit["ambiguous"])
+        self.assertEqual(fit["k"], 2)
+        self.assertEqual(fit["positions"], (-7, -5),
+                        "F6/D6, not G6/E6 -- the manager's own ruler read")
+
     def test_off_raster_search_window_is_none(self):
         """Every candidate position falls OFF the raster entirely (the
         image is far too small for the requested window) -- `None`, the

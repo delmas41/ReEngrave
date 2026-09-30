@@ -4409,30 +4409,79 @@ def _stacked_side(stem_xywh: Tuple[float, float, float, float],
     return "right" if cx >= scx else "left"
 
 
-def _stacked_best_combo(scored: Dict[int, float], k: int
+#: ⚠️⚠️ MANAGER REVIEW (real Litolff p3 ruler measurement, `glyph/3/0/0/2/4`
+#: + `/9`): a floating-point score comparison (`>`) is not the same test as
+#: "equal within rounding", and the gap between them was the whole bug. On a
+#: MERGING plate (CLAUDE.md §10) a chord's ink is often one continuous
+#: blob, and `notehead_ink_under` rounds its `best` fill to 4 decimals, so
+#: SEVERAL adjacent candidate positions score EXACTLY 1.0 -- on this real
+#: cell, -8/-7/-6/-5 all did. `itertools.combinations` enumerates pairs
+#: lexicographically (every pair starting `-9,-8,...` before any starting
+#: `-7,...`), so `total > best[1]` (strict) kept the FIRST-GENERATED tied
+#: pair, `(-8, -6)`, not the print-true `(-7, -5)` -- both are real
+#: THIRDS (gap 2), so the bug was invisible to the gap/margin tests and
+#: silently shifted BOTH heads up one diatonic step (F6/D6 -> G6/E6). The
+#: raw DETECTOR centres for this exact cell (`Q.NOTEHEAD_STAFF_POSITION`
+#: -7.4 / -5.56) were already close to the truth -- the fit's own tie-break
+#: is what threw them off, not the ink measurement or the gap logic.
+TIE_SCORE_EPS = 1e-6
+
+
+def _closest_assignment_cost(positions: Tuple[int, ...],
+                             observed: Sequence[float]) -> float:
+    """Sum, over every OBSERVED (raw detector) position in this group, of
+    its distance to the nearest position in `positions` -- a real-evidence
+    tie-break (CLAUDE.md rule 6: connect to what the detector already
+    localised, never guess) for combos that score identically."""
+    if not observed:
+        return 0.0
+    return sum(min(abs(o - p) for p in positions) for o in observed)
+
+
+def _stacked_best_combo(scored: Dict[int, float], k: int,
+                        observed: Sequence[float] = ()
                         ) -> Optional[Tuple[Tuple[int, ...], float]]:
     """The best `k` positions from `scored`'s own keys, pairwise at least
     `STACKED_HEAD_MIN_GAP_POSITIONS` apart, maximising total score. Brute
     force over `itertools.combinations` -- safe here because a stacked
     group's own candidate-position window is small (bounded by
     `STACKED_HEAD_SEARCH_MARGIN_POSITIONS` around a handful of overlapping
-    boxes, never the whole staff) and `k` never exceeds 3."""
+    boxes, never the whole staff) and `k` never exceeds 3.
+
+    ⚠️ EVERY COMBO WITHIN `TIE_SCORE_EPS` OF THE TOP SCORE IS COLLECTED,
+    not just the first found -- see `TIE_SCORE_EPS`'s own comment. Among
+    those tied, the one whose positions sit CLOSEST to `observed` (the
+    group's own raw detector-box positions, real evidence, never a guess)
+    wins; with no `observed` given, or only one tied candidate, the
+    lexicographically-first stands (unchanged behaviour where there is no
+    tie to break).
+    """
     import itertools
     keys = sorted(scored)
-    best = None
+    best_total: Optional[float] = None
+    tied: List[Tuple[int, ...]] = []
     for combo in itertools.combinations(keys, k):
         if any(combo[i + 1] - combo[i] < STACKED_HEAD_MIN_GAP_POSITIONS
                for i in range(len(combo) - 1)):
             continue
         total = sum(scored[p] for p in combo)
-        if best is None or total > best[1]:
-            best = (combo, total)
-    return best
+        if best_total is None or total > best_total + TIE_SCORE_EPS:
+            best_total = total
+            tied = [combo]
+        elif abs(total - best_total) <= TIE_SCORE_EPS:
+            tied.append(combo)
+    if not tied or best_total is None:
+        return None
+    if len(tied) == 1 or not observed:
+        return (tied[0], best_total)
+    chosen = min(tied, key=lambda c: _closest_assignment_cost(c, observed))
+    return (chosen, best_total)
 
 
 def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
                           top_y: float, half_step: float, spacing: float,
-                          n_boxes: int) -> Optional[Dict[str, Any]]:
+                          n_boxes: int, observed: Sequence[float] = ()
+                          ) -> Optional[Dict[str, Any]]:
     """PURE -- score a standard head-box template at every candidate
     position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
     units), then pick the FEWEST head count (1, 2 or 3, never more than
@@ -4465,6 +4514,17 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     gates, or `None` at k=1 with no second head considered), `ambiguous`
     (True where the next head's own evidence sits inside the margin band
     -- the caller abstains rather than choosing a count).
+
+    ⚠️⚠️ MANAGER REVIEW (real Litolff p3 ruler measurement): `observed` is
+    the group's own RAW detector-box positions (`Q.NOTEHEAD_STAFF_
+    POSITION`'s own units, one per member box) -- real evidence, passed
+    through to `_stacked_best_combo`'s own tie-break and used here too,
+    NEVER to choose a count or a score, only to break an EXACT tie among
+    positions/combos that already scored identically (see `TIE_SCORE_EPS`).
+    Omitted, ties resolve to the lexicographically/numerically first
+    candidate, exactly as before this fix -- which is what silently shifted
+    a real pair by one whole diatonic step on a MERGING-plate chord whose
+    ink saturates across several adjacent candidate slots.
     """
     scored: Dict[int, float] = {}
     for p in positions:
@@ -4491,7 +4551,13 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     # real explanatory power). Both gates must clear the SAME stated
     # margin on EITHER side of their own threshold before the fit commits;
     # inside that band it is `ambiguous` rather than guessed (rule 8).
-    best1_pos = max(scored, key=scored.get)
+    top_score = max(scored.values())
+    tied1 = [p for p, v in scored.items() if abs(v - top_score) <= TIE_SCORE_EPS]
+    if len(tied1) == 1 or not observed:
+        best1_pos = tied1[0]
+    else:
+        mean_obs = sum(observed) / len(observed)
+        best1_pos = min(tied1, key=lambda p: abs(p - mean_obs))
     best1 = scored[best1_pos]
     chosen_k, chosen_positions, chosen_mean = 1, (best1_pos,), best1
     margin: Optional[float] = None
@@ -4501,7 +4567,7 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     for k, n_needed in ((2, 2), (3, 3)):
         if ambiguous or n_boxes < n_needed or chosen_k != k - 1:
             break
-        combo = _stacked_best_combo(scored, k)
+        combo = _stacked_best_combo(scored, k, observed)
         if combo is None:
             break
         positions_k, total_k = combo
@@ -4614,7 +4680,7 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
 
             fit = fit_stacked_head_count(
                 img, cx, list(range(lo, hi + 1)), top_y, half_step, spacing,
-                len(members))
+                len(members), observed=positions_seen)
             if fit is None:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
