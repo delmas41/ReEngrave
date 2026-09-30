@@ -214,7 +214,7 @@ class TestTheCheckGoesRed(unittest.TestCase):
         self.assertIn("COUNT DISAGREES", self._problem_kinds(broken))
 
     def test_a_drifted_category_count_is_a_finding(self) -> None:
-        broken = TEXT.replace("| Stems & beams | 18 | 9 |",
+        broken = TEXT.replace("| Stems & beams | 19 | 9 |",
                               "| Stems & beams | 17 | 9 |", 1)
         self.assertIn("COUNT DISAGREES", self._problem_kinds(broken))
 

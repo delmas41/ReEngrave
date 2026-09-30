@@ -251,3 +251,285 @@ rather than guessed.
 - `out/dyads-pairs-a.json`, `out/dyads-pairs-a-extended.json`,
   `out/dyads-chord-pairs.json`, `out/dyads-pop-b.json` -- the full
   record-level extracts behind every count in this section.
+
+---
+
+## ROADMAP 2.40 — same-side second (widened duplicate-box rule) + missed-dyad measurement
+
+DECISIONS 2026-09-30, Sean: *"a second is always on opposite sides of the
+stem."* Built `notehead_precision._notehead_same_side_second_refusal`
+(reason `same_side_second`): two same-class, OVERLAPPING notehead boxes
+that share ONE `Q.STEM` row and stand on the SAME side of it, within 0.75
+staff spaces (the stated midpoint between a second, 0.5 sp, and a third,
+1.0 sp), are one physical head boxed twice. Runs immediately after 2.30's
+narrower same-mark test (dy < 0.25 sp), so the two mechanisms are disjoint
+by construction and counted separately. Where no `Q.STEM` row meets the
+glyph the rule DOES NOT refuse -- it records `detail["same_side_signal"] =
+{"no_stem_read": True}` on the final verdict so the case is counted
+(CLAUDE.md rule 8), never silently dropped.
+
+### Manager finding addressed before completing the build
+
+Mid-build, a manager review of `glyph/3/0/0/2/4` + `glyph/3/0/0/2/9`
+(Litolff p3) found a REAL printed third whose over-tall detector boxes
+overlap (staff spacing on that staff ~15.5 page px, box height ~22 px,
+overlap ~7 px) and whose rounded pitches (`restate_pitch`) come out F6/E6 --
+a SECOND -- even though the print shows two distinct heads a third apart.
+This is exactly the population the 0.75 sp gate exists to protect: dy on
+this pair is ~0.9 sp, past the gate, so the rule does not fire on it.
+Added `test_a_real_third_with_tall_overlapping_boxes_stands` (mirroring the
+measured geometry) to `test_staged_notehead_same_side_second.py` as a
+permanent regression control; it passes on the built rule.
+
+**Follow-up measurement (report only, no fix built):** surveyed every
+same-class, same-stem, same-side pair on Litolff p3 whose two `Q.PITCH`
+verdicts are exactly a diatonic SECOND apart (`probe/2.40/same_side_second_
+survey.py`) -- by Sean's convention this is never a real printed interval,
+so each such pair is either a duplicate box or a mis-rounded third.
+**18 such pairs** on the page. Cropped 6 (`out/print/same-side-second-
+survey-2.40/`, `S1`-`S6`) plus the manager's own reported pair (`S1`) and
+judged each against the print:
+
+| tag | cell | verdict | judged |
+|---|---|---|---|
+| S1 | `cell/3/0/0/2` | both stand (manager's pair) | REAL THIRD -- two distinct ink blobs, correctly NOT refused |
+| S2 | `cell/3/0/9/0` | 1 stands, 2 refused `same_side_second` | ONE real mark, three overlapping boxes -- correctly refused |
+| S3 | `cell/3/1/2/9` | 1 stands, 1 refused | ONE real mark (elongated bass-clef ink) -- correctly refused |
+| S4 | `cell/3/1/4/12` | both stand (neither refused) | AMBIGUOUS -- only one ink blob is visible under both boxes in this crop, yet the pair fell outside the rule's gate (same stem/side not established, or dy ≥0.75); flagged as a possible residual false-negative, NOT investigated further |
+| S5 | `cell/3/1/7/17` | 2 refused | ONE real mark -- correctly refused |
+| S6 | `cell/3/0/8/7` | 1 stands, 1 refused | ~~ONE real mark straddling a staff line -- correctly refused~~ **WITHDRAWN — SEE "Manager review round 2" BELOW: this call was WRONG.** |
+
+⚠️⚠️ **S6's verdict above is WITHDRAWN (manager review round 2).** At 3x
+zoom the REFUSED (red) box sat on solid black head ink and the KEPT
+(green) box below it covered mostly white paper plus one staff line --
+the exact opposite of "correctly refused". The cause: the first build
+chose the SURVIVOR by detector score, and score says nothing about which
+box the ink supports. **Fixed** by reading `Q.NOTEHEAD_INK` instead — see
+below. Of the original 6 sampled, only S1 (the manager's own real-third
+control) and S2/S3/S5 hold up; S6 was wrong and S4 remains ambiguous.
+
+### Part 2 — missed-dyad measurement (no code)
+
+Compared the reference encoding (`library/reference/beethoven/symphony-5/
+beethoven--symphony-5--mvt1--gradus.mxl`, 18 parts) against our export
+(`benchmarks/acceptance/out/beethoven5-litolff/beethoven5-litolff.musicxml`,
+12 parts) for bars 49-82, condensed wind families only (Litolff prints two
+players per staff for Flute/Oboe/Clarinet/Bassoon/Horn/Trumpet; our export
+holds one part per family, so a reference pair sounding two DIFFERENT
+pitches at one onset is the condensed staff's own chord event).
+`probe/2.40/dyad_measure.py`: **204 of 204 family-bars comparable** (both
+sides hold at least one note), **49 onsets** where the reference shows two
+different pitches and our export shows at most one -- filtered to the
+**13** where our export shows exactly one note (not zero, which is more
+likely a wholly separate missing-passage fault than a notehead-box one).
+
+Picked 8 (one per family/bar spread across the range), extracted the
+GATHER+ADJUDICATE state for each cell from a fresh `--through evaluate` run
+(`out/2.40/litolff-p3-evaluate.json`, `--weights auto`), cropped at 600 dpi
+with staff lines and every notehead-class box in the cell drawn (green =
+stands, red = refused) (`out/print/missed-dyads-2.40/`, `probe/2.40/
+extract_candidates.py` + `crop_dyad_candidates.py`), and judged each
+against the print:
+
+| tag | family / bar | notehead boxes in cell | judged |
+|---|---|---|---|
+| M01 | Oboe 49 | 1 | Only one head visible in the ink; the second is genuinely absent -- **no box at all** |
+| M02 | Oboe 53 | 4 (2 stand, 1 refused `same_side_second`, 1 `clipped_fragment`) | **Both real heads are correctly boxed and kept** (a tied note above the staff + a note on the top line); the extra duplicate is correctly refused. The bar's export still writes only ONE pitch -- **lost downstream of ADJUDICATE**, not a notehead-box fault |
+| M03 | Clarinet 49 | 3 (all stand) | Two real, closely-stacked heads visible and both kept -- **lost downstream**, boxes are fine |
+| M04 | Clarinet 54 | 0 | A tied note's ink is visible (ties curve in/out) but the detector drew NO notehead box in this cell at all -- **no box, for either head** |
+| M05 | Bassoon 49 | 2 (different classes, both stand) | Two real, distinct heads (Whole-on-line + Half-in-space) both correctly kept -- **lost downstream** |
+| M06 | Bassoon 67 | 1 | Only one head visible in the (possibly too-narrow) crop window -- **inconclusive**, likely a box the crop cuts off or a genuine miss; not resolved |
+| M07 | Horn 49 | 2 (different classes, both stand) | Two real heads side by side, both correctly kept -- **lost downstream** |
+| M08 | Trumpet 51 | 5 (3 stand, 1 refused `same_side_second`, +1 unrelated stands) | Two ordinary single notes plus one genuinely doubled box correctly refused -- **not a missed dyad at all**, a correctly-handled duplicate |
+
+**Of the 8: 2 clear "real missed dyad, second head never boxed" (M01, M04);
+1 inconclusive (M06); 5 show BOTH real heads correctly boxed and
+adjudicated, with the loss happening at EXPORT's chord/voice grouping, not
+at notehead precision** -- a different mechanism than this benchmark's own
+name, worth a roadmap item of its own (grouping two same-onset, different-
+pitch, different-class notes into one chord event) rather than a notehead
+rule. Not built here (Part 2 is measurement only, per the brief).
+
+### Files
+
+- `tools/omr/staged/adjudicators/notehead_precision.py` --
+  `_notehead_same_side_second_refusal`, `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_
+  SPACES = 0.75`, reason `same_side_second`.
+- `tools/omr/tests/test_staged_notehead_same_side_second.py` -- RED-first,
+  6 tests (refusal, the 0.75 sp control, non-overlap control, no-stem
+  control + count, the manager's real-third control, reason-name
+  isolation).
+- `docs/engraving-conventions.md` `[C92]` -- the convention, cited from
+  DECISIONS 2026-09-30.
+- `probe/2.40/*.py`, `out/dyad-candidates-2.40.json`, `out/same-side-
+  second-survey-2.40.json`, `out/print/missed-dyads-2.40/`, `out/print/
+  same-side-second-survey-2.40/`.
+
+### Manager review round 2 (post-merge) — keep choice fixed to read INK, not score; full re-crop of every refusal
+
+**The bug (S6, `cell/3/0/8/7`):** the first build's "keep" choice was
+`_notehead_duplicate_priority` -- detector CONFIDENCE, then glyph index.
+A score says nothing about which of two overlapping boxes the real ink
+sits under, and S6 proved it: the higher-score box covered blank paper
+(plus one staff line) while the lower-score box sat on the real head.
+
+**The fix:** `_notehead_same_side_second_refusal` now reads
+`Q.NOTEHEAD_INK` -- specifically `detail.ink_net.best`, the fill fraction
+on the staff-line-ERASED raster (`cell.image_no_staff`), so a bare staff
+line under an empty box is never counted as ink (a plain `Q.NOTEHEAD_INK.
+value` would be unsafe here, since it takes `max(raw, net)` and CAN be
+inflated by a staff line alone). `Q.NOTEHEAD_INK` is already GATHERED once
+per notehead-classed glyph (2.23/2.39b), at that glyph's own re-centred box
+where 2.39b found one -- read, never re-derived (rule 6). **Where either
+box of a candidate pair carries no ink witness at all, NEITHER is refused**
+(rule 8) and the case is counted in `same_side_signal.no_ink_witness`
+rather than falling back to score. New helper `_notehead_ink_net`; `Q.
+NOTEHEAD_INK` added to `composed_from`/`wants`.
+
+**RED test written first**, `test_the_higher_score_box_on_blank_paper_is_
+the_one_refused` (S6's own shape: conf 0.9/ink 0.08 vs conf 0.3/ink 0.90):
+run against the pre-fix (score-based) code it fails exactly as S6 failed
+on the print (`assertIs(v_hi_score.value, True)` -- the blank-paper box
+was NOT refused). Passes on the fixed code. A second new test,
+`test_no_ink_witness_does_not_refuse_but_is_counted`, covers the missing-
+witness case. 8 tests total now (was 6).
+
+**Rebased** onto `claude/acceptance-measure-notehead-box-e75821` (now past
+2.39b, `Q.NOTEHEAD_RECENTRE`) by `git merge`; the only conflict was the
+`composed_from`/`wants` tuples in `adjudicate_notehead_is_not_a_notehead`
+(2.39b added `Q.NOTEHEAD_RECENTRE` beside 2.40's `Q.STEM` there) --
+resolved by keeping both additions.
+
+**Re-ran the p3 A/B** (GATHER+ADJUDICATE+EVALUATE, `--weights auto`,
+`out/2.40/litolff-p3-evaluate-v2.json`): **17 `same_side_second` refusals**
+now (was 13 under the score-based keep -- the ink read changes which
+member of several clusters is judged the duplicate, and surfaces a few
+additional genuine pairs the score ordering had been masking). `0`
+`no_ink_witness` cases on this page (every candidate pair had an ink
+reading on both sides).
+
+**Re-cropped ALL 17** (not a sample), one crop per CELL (14 crops, several
+cells hold more than one refusal), at 3x zoom with staff lines, every
+notehead box in the group, and both `ink_net` readings labelled
+(`out/print/same-side-second-v2-2.40/`, `V01`-`V14`,
+`probe/2.40/crop_all_refusals_v2.py`). Cross-checked programmatically
+against every OTHER decided verdict in each cell (not just the pair) to
+see whether a real note is actually represented afterward:
+
+| cell(s) | outcome |
+|---|---|
+| `3/0/1/4`, `3/0/5/2`, `3/0/8/7` (S6, FIXED), `3/0/9/0`, `3/0/9/6`, `3/1/2/8`, `3/1/2/11`, `3/1/3/2`, `3/1/7/17` (9 cells, 11 of the 17 refusals) | kept box sits on the real head ink, refused box is the duplicate/blank fragment -- **correct**, confirmed at 3x zoom |
+| `3/1/2/9` (V11, a 3-box cluster: 2 close-but-distinct-looking heads plus one over-tall box spanning both) | collapses to ONE survivor; **AMBIGUOUS** -- the crop shows what may be one merged mark or two real heads ~0.6 sp apart under one over-tall box (the SAME failure mode the manager's own `glyph/3/0/0/2` example diagnosed). Not resolved; needs Sean's read of the crop |
+| `3/0/0/0`, `3/0/4/6`, `3/0/10/6` (V01, V04, V03 -- 3 cells, 3 of the 17 refusals) | **A NEW BUG, found only by this full review, DIFFERENT from S6's:** the rule's chosen "better" partner is ITSELF refused by a SEPARATE rule in the same pass (2.30's `notehead_is_a_duplicate_box` in 2 cases, 2.4a's `too_narrow` in 1) -- so BOTH boxes of that one physical mark are refused and it has NO surviving box at all. This is a cross-rule consistency gap, not an ink-reading error: `_notehead_same_side_second_refusal` (like 2.30's own documented limitation for human verdicts) does not check that its chosen "better" box will itself survive every OTHER decision running in the same ADJUDICATE pass. **Not fixed here** -- named for a follow-up connection, same shape as 2.30's own "THIS DECISION DOES NOT CHECK THAT THE TWIN SURVIVES" caveat, now confirmed to also apply cross-rule |
+
+**Net on this page**: of 17 refusals, 11 are confirmed-correct duplicate
+resolutions (a real survivor sits on real ink), 3 are a newly-found
+"neither box survives" defect (not an ink-read error), and 1 (the 3-box
+cluster) is ambiguous. **This is a narrower, more honest result than the
+original report's "5 of 6 correct, 1 ambiguous" sample claimed** -- the
+full review the manager asked for surfaced two failure classes a 6-crop
+sample did not reach.
+
+**Missed-dyad finding (Part 2) stands, and is the most load-bearing result
+here**: 5 of the 8 candidates show BOTH real heads of a printed chord
+correctly boxed and kept through ADJUDICATE, with the loss happening
+downstream in EXPORT's chord/voice grouping --
+
+- `glyph/3/0/1/4/10` + `glyph/3/0/1/4/12` (Oboe bar 53)
+- `glyph/3/0/2/0/9`, `glyph/3/0/2/0/10`, `glyph/3/0/2/0/11` (Clarinet bar 49)
+- `glyph/3/0/3/0/9` + `glyph/3/0/3/0/14` (Bassoon bar 49)
+- `glyph/3/0/4/0/5` + `glyph/3/0/4/0/9` (Horn bar 49)
+- (Trumpet bar 51's cell shows a correctly-refused duplicate alongside two
+  ordinary single notes -- not a missed dyad at all, M08)
+
+None of these five subjects appear among the 17 `same_side_second`
+refusals above -- the chord/voice grouping gap is independent of this
+roadmap item's own mechanism.
+
+### Files (round 2 additions)
+
+- `tools/omr/staged/adjudicators/notehead_precision.py` --
+  `_notehead_ink_net`, ink-based keep choice, `no_ink_witness` counting.
+- `tools/omr/tests/test_staged_notehead_same_side_second.py` -- 2 new
+  tests (RED-confirmed against the score-based build).
+- `out/2.40/litolff-p3-evaluate-v2.json` (gitignored, regenerable),
+  `out/print/same-side-second-v2-2.40/` (14 crops + manifest, committed),
+  `probe/2.40/crop_all_refusals_v2.py`.
+
+### Manager review round 3 — a refused box's "better" partner must itself survive (2.30, 2.4a, AND a second same-side hop)
+
+**The bug (round 2's own finding):** 3 cells (`3/0/0/0`, `3/0/4/6`,
+`3/0/10/6`) each refused a box in favour of a "better" partner that was
+ITSELF refused by a DIFFERENT rule -- deleting a real note, worse than the
+doubled box this rule exists to fix.
+
+**First attempt (rejected by the framework, and rightly):** read the
+partner's own `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict via `ev.verdict`.
+`Evidence._admit`'s circularity guard refuses ANY read of a decision's own
+quantity unless that quantity has a registered `READINGS` entry (this one
+has none, by design) -- confirmed by instrumenting a real run: the read
+always came back `None`, and reproducing it with a raw log bypass would
+make the answer depend on which of a pair `adjudicate.run`'s per-subject
+iteration happens to reach first, an ORDERING ACCIDENT and not a fact
+about the page (proved directly: swapping two test glyphs' indices alone
+flipped the outcome).
+
+**The fix:** two new PURE, subject-independent re-checks, calling none of
+2.30/2.4a's own machinery through `Evidence` at all:
+`_would_lose_to_2_30s_duplicate_rule` (2.30's own IoU/centre/priority
+gates, re-run against the candidate partner) and `_would_survive_as_a_
+duplicate` (recurses the WHOLE chain: too_narrow, then 2.30, then this
+rule's OWN same-side/ink gate against a THIRD box, with a visited-set
+cycle guard). A partner is only accepted as the keeper if the recursion
+confirms SOME box at the end of its own chain survives everything.
+
+**Why recursion was needed, not just the one 2.30/2.4a hop:** `cell/3/1/2/9`
+(the round-2 "ambiguous 3-box cluster") turned out to be a SECOND-HOP
+case: glyph 2's chosen partner (glyph 5) itself loses a same-side/ink
+comparison to glyph 3 -- glyph 5 is refused too, but the MARK still has a
+survivor (glyph 3), so refusing glyph 2 is correct; a one-hop check alone
+would have blocked it unnecessarily. Round 3 handles this by walking the
+whole chain rather than checking one link.
+
+**RED test first**, `test_a_partner_thats_itself_refused_is_never_the_keeper`
+(one of the 3 real cases' shape: a genuine too-narrow sliver with
+deliberately HIGHER ink than the real head next to it) -- fails against
+round 2's code exactly as the real cells failed, passes on the fix.
+
+**Re-ran the p3 A/B**: **13 `same_side_second` refusals** (same shape as
+round 1's count, now for the right reason -- `partner_refused` blocks 4
+of what would otherwise have been 17). **Page-wide orphan check** (not
+just this rule's own pairs -- every notehead-classed glyph on the page,
+unioned by EITHER 2.30's or this rule's own duplicate links into
+clusters): **0 clusters with zero surviving boxes**
+(`probe/2.40/check_no_orphans.py`). The 3 previously-broken cells now each
+keep a real survivor (`glyph/3/0/0/0/8`, `glyph/3/0/4/6/4`,
+`glyph/3/0/10/6/2` all decide `False`, `partner_refused` counted instead
+of a wrongful refusal).
+
+**`cell/3/1/2/9` clean crop** (`out/print/same-side-second-v2-2.40/
+V-CLUSTER-cell-3-1-2-9-clean.png`, ≥60 px per head, one colour per box):
+glyph 1 (blue, `noteheadHalfOnLine`) and glyph 3 (green, `noteheadHalfInSpace`)
+sit at nearly identical positions -- a DIFFERENT class pair (2.12g's own
+"role twin" case, left alone by both 2.30 and this rule on purpose) --
+both stand. Glyph 2 (red) and glyph 5 (orange, an over-tall box spanning
+both 2's and 3's y-range) are same-class and refused by this rule, chained
+down to glyph 3 as the cluster's one surviving `noteheadHalfInSpace`. **My
+rule keeps glyph 3.** The print itself is genuinely hard to call from this
+crop -- it may be one merged mark or two real heads a small interval
+apart under one over-tall box, the SAME shape as the manager's own
+original diagnosis case; sent to Sean, not resolved here.
+
+`pytest -m "not slow"`: 4,091 passed, 3 skipped (was 4,090). `staged.check`:
+TOTAL 245, unchanged.
+
+### Files (round 3 additions)
+
+- `tools/omr/staged/adjudicators/notehead_precision.py` --
+  `_same_side_candidates`, `_same_side_beater`, `_would_survive_as_a_
+  duplicate`, `_would_lose_to_2_30s_duplicate_rule`.
+- `tools/omr/tests/test_staged_notehead_same_side_second.py` -- 1 new
+  RED-first test.
+- `probe/2.40/check_no_orphans.py` (page-wide zero-survivor check),
+  `probe/2.40/crop_cluster_3129.py`, `out/print/same-side-second-v2-2.40/
+  V-CLUSTER-cell-3-1-2-9-clean.png`.

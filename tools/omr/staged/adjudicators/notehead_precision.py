@@ -613,6 +613,311 @@ NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES = 0.25
 NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.40 — `same_side_second`. DECISIONS 2026-09-30, Sean: *"a second is
+# always on opposite sides of the stem"* (also `docs/engraving-conventions.md`
+# `[L19]`: a chordal second straddles the stem, higher right / lower left).
+# So two SAME-CLASS, OVERLAPPING notehead boxes on the SAME side of the ONE
+# stem they both attach to are never a real chord second -- a real second
+# always straddles -- and are one physical head boxed twice, the mechanism
+# Sean read on Litolff p3 ("it would often print 2 notes either on top of
+# each other or a second apart... a double box on a single note").
+#
+# ⚠️ NOT 2.30 WIDENED IN PLACE, AND THE STEM TEST IS WHY. 2.30's
+# `_same_mark_centres` has no stem at all -- it is a pure geometry gate (dy <
+# 0.25 sp, dx < half a head width) that cannot tell "one mark" from "a real
+# close interval" past that radius, so it stops at 0.25 sp on purpose (its
+# own docstring: 0.25 is the midpoint between one mark and the closest real
+# interval print uses -- a second, at 0.5 sp). This rule reaches further (up
+# to 0.75 sp, the midpoint between a second and a third) ONLY because the
+# stem test supplies the second, independent witness 2.30 does not have: a
+# real second's two heads are on OPPOSITE sides of their shared stem, by the
+# convention above, so "same side" is never a real interval at ANY distance
+# up to a third -- it is always one mark. Manager-checked crops A06 (dy
+# 0.53), A09 (0.32), A10 (0.745), A11 (0.49) are single heads boxed twice
+# read this way; A07 (dy 0.985, a real third) and A14/A16/A17/A18 (real
+# adjacent notes, no box overlap) stand, because 2.30/this rule both require
+# overlapping boxes and A07/A14-18 have none reaching the 0.75 sp gate or
+# lack it.
+#
+# ⚠️ WHERE THE STEM SIDE IS UNKNOWN (no `Q.STEM` row overlaps this glyph's own
+# box), THIS RULE DOES NOT REFUSE. A missing stem is a missing witness, not a
+# same-side one (CLAUDE.md rule 8: a fallback never converts "cannot tell"
+# into an answer) -- `_same_side_second` records the case in
+# `detail["same_side_signal"]` either way, so it is COUNTED rather than
+# silently dropped from the record.
+#
+# ⚠️⚠️ MANAGER REVIEW, POST-MERGE (S6, `cell/3/0/8/7`): THE FIRST BUILD CHOSE
+# THE SURVIVOR BY DETECTOR SCORE, AND THAT WAS WRONG. At 3x zoom the REFUSED
+# box sat on solid head ink and the KEPT box covered mostly blank paper plus
+# one staff line -- a score says nothing about which box the ink actually
+# supports. Fixed: the keep choice reads `Q.NOTEHEAD_INK`'s ERASED-raster
+# fill (`ink_net.best`, off `cell.image_no_staff` -- a staff line alone never
+# counts as ink there, unlike the combined `Q.NOTEHEAD_INK.value`) for BOTH
+# boxes and keeps the one with MORE head ink. Where either box carries no
+# ink witness at all, NEITHER is refused (rule 8) -- counted in
+# `same_side_signal.no_ink_witness`, never decided by falling back to score.
+# See `_notehead_ink_net`'s own docstring.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Halfway between a second (0.5 sp) and a third (1.0 sp), in half-steps: 1.5
+#: half-steps = 0.75 staff spaces. Sean set the boundary ("opposite sides of
+#: the stem") rather than measuring it on this population, so this is the
+#: stated midpoint, not a fitted bound.
+NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES = 0.75
+
+#: Reason a refused box carries under this rule -- kept apart from 2.30's
+#: `notehead_is_a_duplicate_box` so a census can tell the two mechanisms
+#: apart (CLAUDE.md §4d: `N must go down`, per named reason).
+NOTEHEAD_SAME_SIDE_REASON = "same_side_second"
+
+
+def _stem_xywh(row) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.STEM`'s own value shape, `[x, y, w, h]` -- `rhythm._xywh`'s exact
+    arithmetic, RESTATED rather than imported: `rhythm.py` already imports
+    THIS module (`from . import notehead_precision as _NP`), so the reverse
+    import would be a cycle -- the same reason `_notehead_box_iou` above
+    restates `family_precision`'s instead of importing it."""
+    v = row.value
+    if not isinstance(v, (list, tuple)) or len(v) < 4:
+        return None
+    return (float(v[0]), float(v[1]), float(v[2]), float(v[3]))
+
+
+def _stem_box_overlap(a, b) -> bool:
+    """`rhythm._boxes_overlap`'s exact test, restated for the same reason."""
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _stem_rows_on(box_xywh, stems) -> List[Any]:
+    """Every `Q.STEM` row (reduced to `(x, y, w, h)`) whose box overlaps
+    `box_xywh` -- `rhythm._stems_on`'s own test, over rows this module
+    already pulled for the cell rather than re-querying."""
+    out = []
+    for row in stems:
+        box = _stem_xywh(row)
+        if box is not None and _stem_box_overlap(box, box_xywh):
+            out.append((row, box))
+    return out
+
+
+def _same_side_candidates(ev: Evidence, cell, this_class: str, row,
+                          spacing_canonical: float):
+    """ROADMAP 2.40 ROUND 3 — the search body of `_notehead_same_side_
+    second_refusal`, EXTRACTED so it can be run on ANY box in the cell, not
+    only `ev.subject`'s own. `_would_survive_as_a_duplicate` below calls it
+    on a candidate's PARTNER to see whether the partner itself has a
+    same-side beater, without ever reading a verdict (rule 6: the same
+    pure re-check `_would_lose_to_2_30s_duplicate_rule` uses for 2.30).
+
+    Yields `(subj, other_row, other_ink, stem_row)` for every same-class,
+    overlapping, same-stem, same-side, within-gate candidate -- exactly
+    `_notehead_same_side_second_refusal`'s own filter chain, unchanged.
+    """
+    val = row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return
+    xywh = (float(val[1]), float(val[2]), float(val[3]), float(val[4]))
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    my_stems = _stem_rows_on(xywh, stems)
+    if not my_stems:
+        return
+    cx = xywh[0] + xywh[2] / 2.0
+    cy = xywh[1] + xywh[3] / 2.0
+    for subj, other_row in _cell_notehead_boxes(ev, cell).items():
+        if subj == row.subject:
+            continue
+        other_val = other_row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(val, other_val) <= 0.0:
+            continue
+        other_xywh = (float(other_val[1]), float(other_val[2]),
+                     float(other_val[3]), float(other_val[4]))
+        shared = None
+        for stem_row, stem_box in my_stems:
+            if _stem_box_overlap(stem_box, other_xywh):
+                shared = (stem_row, stem_box)
+                break
+        if shared is None:
+            continue
+        stem_row, stem_box = shared
+        scx = stem_box[0] + stem_box[2] / 2.0
+        this_side = cx >= scx
+        other_side = (other_xywh[0] + other_xywh[2] / 2.0) >= scx
+        if this_side != other_side:
+            continue
+        other_cy = other_xywh[1] + other_xywh[3] / 2.0
+        dy_spaces = abs(cy - other_cy) / spacing_canonical
+        if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
+            continue
+        other_ink = _notehead_ink_net(ev, subj)
+        yield subj, other_row, other_ink, stem_row, dy_spaces
+
+
+def _same_side_beater(ev: Evidence, cell, this_class: str, row,
+                      spacing_canonical: float):
+    """The `(row, stem_row)` this rule would keep OVER `row` -- the
+    same-side candidate with strictly more ink -- or `None`. `row`'s own
+    ink must also be readable; a missing witness on EITHER side answers
+    `None` here (the caller's own `no_ink_witness` counting happens once,
+    at the top level, not on every recursive hop)."""
+    this_ink = _notehead_ink_net(ev, row.subject)
+    if this_ink is None:
+        return None
+    best = None
+    for subj, other_row, other_ink, stem_row, _dy in _same_side_candidates(
+            ev, cell, this_class, row, spacing_canonical):
+        if other_ink is None:
+            continue
+        if other_ink > this_ink and (best is None or other_ink > best[2]):
+            best = (other_row, stem_row, other_ink)
+    return best
+
+
+def _would_survive_as_a_duplicate(ev: Evidence, cell, this_class: str, row,
+                                  spacing_canonical: float,
+                                  _seen: Optional[frozenset] = None) -> bool:
+    """ROADMAP 2.40 ROUND 3 — CONNECT ALL THE WAY DOWN, NOT ONE HOP. The
+    round-2 fix asked "is my chosen partner refused by 2.30 or 2.4a" but
+    missed a partner refused by a SECOND `same_side_second` hop against a
+    THIRD box (`cell/3/1/2/9`: glyph 2 lost to glyph 5, which itself lost
+    to glyph 3) -- round 2's fix let glyph 2 be refused anyway, because
+    glyph 5's OWN loss was never checked. This recurses the SAME pure
+    re-checks (2.30's gate, `too_narrow`, and this rule's own same-side
+    gate) along the whole chain, with a visited-set guard against a cycle
+    (two boxes each preferring the other on some third path -- unobserved
+    here, but a pure recursion must not spin forever on one if a future
+    page has one).
+    """
+    if _too_narrow(row, spacing_canonical, {}):
+        return False
+    if _would_lose_to_2_30s_duplicate_rule(ev, cell, this_class, row,
+                                           spacing_canonical):
+        return False
+    seen = _seen or frozenset()
+    if row.subject in seen:
+        return False        # a cycle -- cannot confirm either side survives
+    beater = _same_side_beater(ev, cell, this_class, row, spacing_canonical)
+    if beater is None:
+        return True
+    better_row, _stem_row, _ink = beater
+    return _would_survive_as_a_duplicate(
+        ev, cell, this_class, better_row, spacing_canonical,
+        seen | {row.subject})
+
+
+def _notehead_same_side_second_refusal(ev: Evidence, this_row,
+                                       spacing_canonical: float,
+                                       detail: Dict[str, Any]
+                                       ) -> Optional[Ruling]:
+    """ROADMAP 2.40: two same-class, overlapping notehead boxes on the SAME
+    side of the ONE stem they both attach to, within
+    `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES`, are one physical mark boxed
+    twice. See the module block comment above for why this reaches further
+    than 2.30's `_notehead_duplicate_box_refusal` and why a missing stem
+    abstains rather than refuses.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+    this_class = this_val[0]
+
+    my_stems = _stem_rows_on(
+        (float(this_val[1]), float(this_val[2]), float(this_val[3]),
+         float(this_val[4])),
+        ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
+    if not my_stems:
+        # ⚠️ COUNTED, NOT REFUSED. The stem side cannot be read at all for
+        # this glyph, so the widening has nothing to stand on (rule 8).
+        detail["same_side_signal"] = {"no_stem_read": True}
+        return None
+
+    # ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6): the KEEP CHOICE reads INK, never
+    # detector score -- see `_notehead_ink_net`'s own docstring for why a
+    # score fallback is unsafe (it kept an empty box over a real head on
+    # the print). `this_ink` is fetched ONCE; a candidate with no ink
+    # witness on either side of the pair counts as `no_ink_witness` and is
+    # never refused (rule 8) -- the search still runs so the case is seen
+    # and recorded, it just decides nothing.
+    this_ink = _notehead_ink_net(ev, ev.subject)
+
+    better = None
+    better_stem = None
+    checked = 0
+    no_ink_witness = 0
+    partner_refused = 0
+    for subj, row, other_ink, stem_row, dy_spaces in _same_side_candidates(
+            ev, cell, this_class, this_row, spacing_canonical):
+        checked += 1
+        if this_ink is None or other_ink is None:
+            no_ink_witness += 1
+            continue         # no witness for this pair -- refuse neither
+        if other_ink > this_ink:
+            # ⚠️ MANAGER REVIEW ROUND 3 — CONNECT, DON'T GUESS (rule 6). The
+            # 3 real cases found in round 2 (`3/0/0/0`, `3/0/4/6`,
+            # `3/0/10/6`) each refused THIS box in favour of a "better"
+            # partner that was ITSELF refused by a DIFFERENT rule (2.30's
+            # `notehead_is_a_duplicate_box` or 2.4a's `too_narrow`) --
+            # leaving the one real mark with NO surviving box, worse than
+            # the doubled box this rule exists to fix.
+            #
+            # ⚠️⚠️ NOT `ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=
+            # subj)` -- TRIED FIRST, AND REFUSED BY THE FRAMEWORK'S OWN
+            # CIRCULARITY GUARD FOR GOOD REASON. `Evidence._admit` treats
+            # ANY read of this decision's OWN quantity as circular unless
+            # `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` has a registered `READINGS`
+            # entry (it has none, by design -- this quantity has no single
+            # "direct reading"), so the read always came back `None` --
+            # and reproducing it with a raw `ev.log.verdict()` bypass would
+            # make the answer depend on which of the pair `adjudicate.run`'s
+            # per-subject iteration happens to reach FIRST, which is an
+            # ORDERING ACCIDENT, not a fact about the page (confirmed while
+            # building the RED test: swapping the two glyphs' indices alone
+            # flipped the outcome). So this asks the SAME QUESTION 2.30 and
+            # 2.4a already answer, via their own PURE, subject-independent
+            # predicates instead of their composed verdicts --
+            # `_would_lose_to_2_30s_duplicate_rule` and `_too_narrow` --
+            # which give the identical answer regardless of iteration
+            # order, because neither reads anything through `Evidence` at
+            # all. ⚠️ ONE HOP WAS NOT ENOUGH (`cell/3/1/2/9`: a partner that
+            # itself loses a SECOND same-side hop to a third box) --
+            # `_would_survive_as_a_duplicate` recurses the whole chain.
+            if not _would_survive_as_a_duplicate(
+                    ev, cell, this_class, row, spacing_canonical):
+                partner_refused += 1
+                continue
+            better, better_stem = row, stem_row
+            detail["same_side_dy_spaces"] = round(dy_spaces, 3)
+            detail["same_side_this_ink"] = round(this_ink, 4)
+            detail["same_side_other_ink"] = round(other_ink, 4)
+
+    signal = {"candidates_checked": checked}
+    if no_ink_witness:
+        signal["no_ink_witness"] = no_ink_witness
+    if partner_refused:
+        signal["partner_refused"] = partner_refused
+    detail.setdefault("same_side_signal", signal)
+    if better is not None:
+        detail["duplicate_of"] = better.id
+        # ⚠️ LITERAL, NOT THE CONSTANT: `brakes.vocabulary_gap` reads the
+        # `reason=` slot's AST (module docstring, "THE TWO REASONS ARE
+        # RETURNED AS LITERALS"); a name reference makes the whole MODULE
+        # read UNRESOLVED.
+        return Ruling(value=True, reason="same_side_second",
+                      used=(this_row.id, better.id, better_stem.id),
+                      detail=detail)
+    return None
+
+
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
     SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
@@ -636,6 +941,39 @@ def _notehead_duplicate_priority(row) -> Tuple[float, int]:
     score = row.score if row.score is not None else 0.0
     idx = row.subject.glyph if row.subject.glyph is not None else 0
     return (score, -idx)
+
+
+def _notehead_ink_net(ev: Evidence, subject) -> Optional[float]:
+    """The staff-line-ERASED ink fraction (`Q.NOTEHEAD_INK.detail.ink_net.
+    best`) inside THIS glyph's own box, or `None` where no such witness is
+    on the record.
+
+    ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6, `cell/3/0/8/7`): the KEPT box read
+    mostly blank paper while the REFUSED box sat on the real head, because
+    the first build chose by DETECTOR SCORE -- a score says nothing about
+    which box the ink actually supports, and a staff line under an empty
+    box can look like "something is there" on the RAW raster. `ink_net` is
+    `Q.NOTEHEAD_INK`'s own ERASED-raster reading (`cell.image_no_staff`,
+    `gather.gather_notehead_ink`'s own two-raster discipline) -- a staff
+    line crossing an otherwise blank box is never counted as ink here,
+    unlike `Q.NOTEHEAD_INK.value` itself, which takes `max(raw, net)` and
+    so CAN be inflated by a staff line alone.
+
+    ⚠️ READ, NEVER RE-DERIVED (CLAUDE.md rule 6): `Q.NOTEHEAD_INK` is
+    GATHERED once per notehead-classed glyph, at that glyph's own
+    (re-centred, where 2.39b found one) box -- exactly the box this rule
+    is asking about. No second ink measurement is taken here.
+    """
+    rows = ev.rows(Q.NOTEHEAD_INK, subject=subject)
+    if not rows:
+        return None
+    net = (rows[-1].detail or {}).get("ink_net")
+    if not isinstance(net, dict) or net.get("best") is None:
+        return None
+    try:
+        return float(net["best"])
+    except (TypeError, ValueError):
+        return None
 
 
 def _same_mark_centres(a: Any, b: Any, spacing_canonical: float) -> bool:
@@ -727,6 +1065,44 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
         return Ruling(value=True, reason="notehead_is_a_duplicate_box",
                       used=(this_row.id, better.id), detail=detail)
     return None
+
+
+def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
+                                        candidate_row, spacing_canonical: float
+                                        ) -> bool:
+    """ROADMAP 2.40 ROUND 3 — would `_notehead_duplicate_box_refusal` (2.30)
+    refuse `candidate_row` against SOME OTHER same-class box in this cell?
+
+    A PURE re-check, not a query of 2.30's own composed verdict: it re-runs
+    2.30's own gates (`_notehead_box_iou` ≥ `NOTEHEAD_DUPLICATE_IOU_MIN`,
+    `_same_mark_centres`) and priority (`_notehead_duplicate_priority`) --
+    the SAME functions 2.30 itself calls, cited not restated -- against
+    `candidate_row` directly, so the answer does not depend on whether
+    `candidate_row`'s own subject has been PROCESSED yet in this quantity's
+    per-subject iteration (see `_notehead_same_side_second_refusal`'s own
+    comment on why a verdict read would be order-dependent here).
+    `candidate_row.subject` is excluded from its own search, matching 2.30's
+    own `if subj == ev.subject: continue`.
+    """
+    cand_val = candidate_row.value
+    if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
+        return False
+    cand_priority = _notehead_duplicate_priority(candidate_row)
+    for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
+        if subj2 == candidate_row.subject:
+            continue
+        val2 = row2.value
+        if not isinstance(val2, (list, tuple)) or len(val2) != 5:
+            continue
+        if val2[0] != this_class:
+            continue
+        if _notehead_box_iou(cand_val, val2) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(cand_val, val2, spacing_canonical):
+            continue
+        if _notehead_duplicate_priority(row2) > cand_priority:
+            return True
+    return False
 
 
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
@@ -1182,6 +1558,11 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
                   Q.SYSTEM_STAFF_COUNT,
+                  # ⚠️ ROADMAP 2.40: which side of a shared stem two
+                  # overlapping heads stand on, and which of the two the
+                  # ink (not detector score) supports -- see
+                  # `_notehead_ink_net`'s own docstring (manager review, S6).
+                  Q.STEM, Q.NOTEHEAD_INK,
                   # ⚠️ ROADMAP 2.39b: `_belongs_to_a_nearer_staff`'s ladder
                   # x-window re-centres on GATHER's own matched-window
                   # search where one exists (`Q.GLYPH_BOX`'s own detector
@@ -1193,11 +1574,12 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.NOTEHEAD_RECENTRE),
+          Q.STEM, Q.NOTEHEAD_INK, Q.NOTEHEAD_RECENTRE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
                                      "notehead_is_a_duplicate_box",
+                                     NOTEHEAD_SAME_SIDE_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      "notehead",
@@ -1276,6 +1658,23 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        a notehead box on one mark) is the same phenomenon is ASSUMED, NOT
        CONFIRMED, and not built — see the module docstring's question to
        Sean.
+    2d. `same_side_second` (ROADMAP 2.40, SHIPS) — DECISIONS 2026-09-30, Sean:
+       "a second is always on opposite sides of the stem." Widens 2.30 for
+       this ONE case only: two same-class, overlapping boxes that share ONE
+       `Q.STEM` row and stand on the SAME side of it, within
+       `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` (0.75 sp, the midpoint between
+       a second and a third), are one mark boxed twice — a real second always
+       straddles, so "same side" is never a real interval here. Where the
+       stem side cannot be read (no `Q.STEM` row meets this glyph), THE RULE
+       DOES NOT REFUSE — it records the case in `detail["same_side_signal"]`
+       and abstains from the widening alone (rule 8), never converting a
+       missing witness into an answer. **The KEEP CHOICE reads INK, never
+       detector score** (manager review, S6 `cell/3/0/8/7`: the score-based
+       first build kept an empty box over the real head): `Q.NOTEHEAD_INK`'s
+       staff-line-erased fill (`ink_net.best`) decides which of the pair
+       survives; where either box carries no ink witness, NEITHER is
+       refused (rule 8) and the pair is counted (`same_side_signal.
+       no_ink_witness`).
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1366,6 +1765,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
     if dup is not None:
         return dup
+    # ⚠️ ROADMAP 2.40. AFTER 2.30's narrower same-mark test (which already
+    # caught the dy < 0.25 sp case above and returned) and BEFORE the meter-
+    # digit / ownership rules below, for the same reason 2.30 runs there: this
+    # only asks whether the ink is the SAME mark, never what it means.
+    same_side = _notehead_same_side_second_refusal(ev, box_row, spacing, detail)
+    if same_side is not None:
+        return same_side
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is

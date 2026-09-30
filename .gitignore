@@ -298,3 +298,19 @@ benchmarks/omr-notehead-width-2026-09/out/2.41/*.json
 benchmarks/omr-notehead-width-2026-09/out/2.41/*.log
 !benchmarks/omr-notehead-width-2026-09/out/2.41/measure-*.json
 !benchmarks/omr-notehead-width-2026-09/out/2.41/*-sample-*.json
+
+# ROADMAP 2.40: the one-page GATHER(+ADJUDICATE[+EVALUATE]) dumps used for
+# the A/B proof and the missed-dyad extraction, regenerable by the commands
+# in `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` "ROADMAP 2.40";
+# the crops under `benchmarks/omr-notehead-precision-2026-09/out/print/
+# missed-dyads-2.40/` and `.../same-side-second-survey-2.40/` ARE the
+# durable record and are committed.
+out/2.40/*.json
+out/2.40/*.log
+
+# ROADMAP 2.42: the one-page GATHER+ADJUDICATE+EVALUATE dumps used for the
+# stacked-head A/B on Litolff p3 and Brahms p1, regenerable by the commands
+# in `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` "ROADMAP 2.42";
+# the crops under `out/print/2.42/` ARE the durable record and are committed.
+out/2.42/*.json
+out/2.42/*.log
