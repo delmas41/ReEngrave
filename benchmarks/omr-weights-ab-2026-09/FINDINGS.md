@@ -288,3 +288,13 @@ two-thirds of its reading passes the screen.
 anything but hollow heads. Option A (stages 1–2, same pipeline, only the
 weights differ) is the instrument for that, and it passes rule 7 where its
 truth is the reference encoding or Sean's verdicts.
+
+**Sean's verdict on the crops (2026-09-29, same evening):** *"the first one
+had actual ledger lines that it was highlighting, the second one [were]
+beams of eighth and 16th notes."* — i.e. `wtc_ledger_prod_vs_prehollow.png`:
+the pre-hollow's boxes are real ledger lines (production's misses are real
+misses); `wtc_beams_prod_vs_raw.png`: production's boxes are real 8th/16th
+beams (the raw fine-tune's zero is a real deletion). Both §5 claims now
+rest on Sean, not on a count. The Breitkopf ledger crop (scan side) was not
+shown to him; its "mostly staff lines" reading is still the manager's.
+
