@@ -382,6 +382,10 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 ### 6b. How to A/B without fooling yourself
 
+- **Two re-gathers** (Sean, 2026-09-30): the SMALL re-gather (the two count
+  pages, ROADMAP 1.6) runs during the day while we work; the FULL re-gather
+  of both movements (`benchmarks/acceptance/overnight/regather_20260930.sh`,
+  `TAG=...`) runs overnight and is what the acceptance numbers are built on.
 - **Initial tests compare GATHER + ADJUDICATE only** (Sean, 2026-09-30):
   `--through adjudicate` on both arms, read with the stage readout (ROADMAP
   1.5), never the exported file first — too many later steps can change or
