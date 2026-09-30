@@ -1,0 +1,36 @@
+{
+  "tag": "candidate-intended-2026-09-29",
+  "weights": "omr-weights/candidates/hollow-graft-intended-2026-09-29.pt",
+  "hollow_histogram": {
+    "hollow_total": 17,
+    "noteheadWholeInSpace": 2,
+    "black_total": 79,
+    "noteheadHalfOnLine": 3,
+    "noteheadHalfInSpace": 12
+  },
+  "pooled": {
+    "exact": {
+      "truth": 147,
+      "omr": 96,
+      "matched": 73,
+      "recall": 0.4966,
+      "precision": 0.7604
+    },
+    "step": {
+      "truth": 147,
+      "omr": 96,
+      "matched": 89,
+      "recall": 0.6054,
+      "precision": 0.9271
+    },
+    "with_duration": {
+      "truth": 147,
+      "omr": 96,
+      "matched": 55,
+      "recall": 0.3741,
+      "precision": 0.5729
+    }
+  },
+  "clef_accuracy": "11/12",
+  "measures_omr": 16
+}
