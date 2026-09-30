@@ -972,6 +972,22 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     class_name = box_row.value[0] if box_row.value else None
     if _geom.is_regular_notehead(class_name):
         cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+        # ⚠️ ROADMAP 2.39b: GATHER's own matched-window search, read (never
+        # re-run -- CLAUDE.md rule 6) and applied to the SAME `sp` this
+        # staff's own spacing already is -- `dx_spaces`/`dy_spaces` are
+        # frame-agnostic ratios, so multiplying by THIS frame's own
+        # spacing carries them correctly from the canonical frame the
+        # search ran in to this page-frame `cx`. Only `cx` moves here: the
+        # ladder x-window is the only thing this rule reads off the
+        # returned box (`_, _` below), so a `dy` shift would move nothing
+        # a caller can see and is left out rather than computed for no
+        # reason. A head whose search declined or never ran (no measured
+        # line grid, not a regular class) keeps the un-shifted detector
+        # centre, exactly as before this round.
+        recentred = ev.rows(Q.NOTEHEAD_RECENTRE)
+        if recentred:
+            dx_sp = recentred[-1].value[0]
+            cx = cx + dx_sp * sp
         x0, x1, _, _ = _geom.standard_head_box(cx, y, sp)
     else:
         x0, x1 = float(page_box[0]), float(page_box[2])
@@ -1165,13 +1181,19 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ⚠️ ROADMAP 2.12l: the cross-staff quorum reads how many
                   # staves this system has, and nothing else this decision
                   # already declares carries that fact.
-                  Q.SYSTEM_STAFF_COUNT),
+                  Q.SYSTEM_STAFF_COUNT,
+                  # ⚠️ ROADMAP 2.39b: `_belongs_to_a_nearer_staff`'s ladder
+                  # x-window re-centres on GATHER's own matched-window
+                  # search where one exists (`Q.GLYPH_BOX`'s own detector
+                  # centre otherwise) -- see its own comment.
+                  Q.NOTEHEAD_RECENTRE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
-          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT),
+          Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
+          Q.NOTEHEAD_RECENTRE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",

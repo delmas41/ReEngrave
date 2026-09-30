@@ -51,8 +51,16 @@ def _verdict(log, subject, quantity, value, *, reason="fixture"):
         outcome=R.Outcome.DECIDED, value=value, decider="t", reason=reason))
 
 
-def _build(head_key, *, extra_ledgers=(), drop_bands=False, bands=None):
-    """A log holding exactly what the record held for this head."""
+def _build(head_key, *, extra_ledgers=(), drop_bands=False, bands=None,
+          recentre=None):
+    """A log holding exactly what the record held for this head.
+
+    `recentre` (ROADMAP 2.39b) — `None` (every existing caller) files no
+    `Q.NOTEHEAD_RECENTRE` row at all, byte-identical to before this
+    parameter existed; `(dx_sp, dy_sp)` files GATHER's own observation, the
+    shape `test_staged_notehead_recentre.py` exercises against this same
+    fixture.
+    """
     h = HEADS[head_key]
     g = Subject.from_key(head_key)
     log = Log()
@@ -75,6 +83,12 @@ def _build(head_key, *, extra_ledgers=(), drop_bands=False, bands=None):
                 bbox_page_px=h["bbox_page_px"])
     log.observe(g, Q.NOTEHEAD_CLASS, h["value"][0], reader=READERS.DETECTOR,
                 frame=f"cell:{g.cell}", score=0.9)
+    if recentre is not None:
+        dx_sp, dy_sp = recentre
+        log.observe(g, Q.NOTEHEAD_RECENTRE, [dx_sp, dy_sp],
+                    reader=READERS.CV_NOTEHEAD_RECENTRE,
+                    frame=f"cell:{g.cell}", fill=0.9, margin=0.2,
+                    runner_up=0.7)
     for value, cand in (bands if bands is not None else
                         ([] if drop_bands else h["band_rows"])):
         log.observe(g, Q.GLYPH_BAND_DISTANCE, value, reader=READERS.GEOMETRY,
@@ -247,6 +261,65 @@ class TestTheConfirmedHeadsAreKept(unittest.TestCase):
         k = next(h["subject"] for h in FIXTURE["heads"]
                  if h["sean"] == "not_a_head")
         self.assertEqual(_build(k).reason, "too_narrow")
+
+
+class TestNearerStaffReadsTheRecentre(unittest.TestCase):
+    """ROADMAP 2.39b -- the standard box `TestNearerStaffUsesTheStandardHead
+    Box` proved is wired is now RE-CENTRED where GATHER's own `Q.NOTEHEAD_
+    RECENTRE` row exists for this head.
+
+    ⚠️ RUN RED FIRST: `_build`'s `recentre=` keyword did not exist before
+    this round, and `_belongs_to_a_nearer_staff` read no such row --
+    `test_a_recentre_row_shifts_the_ladder_x_window` fails asserting
+    `assertNotEqual` (the shifted and un-shifted windows were equal)
+    against the pre-2.39b tree.
+    """
+
+    def _filed_x_window(self, head_key, *, recentre=None):
+        import tools.omr.staged.adjudicators.notehead_precision as NP
+        calls = []
+        real = NP.ladder_sides_with_discount
+
+        def spy(pair):
+            calls.append(pair)
+            return real(pair)
+
+        NP.ladder_sides_with_discount = spy
+        try:
+            _build(head_key, recentre=recentre)
+        finally:
+            NP.ladder_sides_with_discount = real
+        self.assertEqual(len(calls), 1, head_key)
+        filed_side = calls[0][0]
+        return filed_side[2], filed_side[3]
+
+    def test_a_recentre_row_shifts_the_ladder_x_window(self):
+        k = sorted(FIVE)[0]
+        staff = "staff/" + "/".join(k.split("/")[1:4])
+        sp = FIXTURE["staves"][staff]["staff_spacing"]
+        baseline = self._filed_x_window(k)
+        shifted = self._filed_x_window(k, recentre=(0.25, 0.0))
+        self.assertNotEqual(baseline, shifted)
+        self.assertAlmostEqual(shifted[0] - baseline[0], 0.25 * sp, places=3)
+        self.assertAlmostEqual(shifted[1] - baseline[1], 0.25 * sp, places=3)
+
+    def test_zero_shift_is_the_control(self):
+        """⚠️ THE CONTROL: a row that exists but carries no real offset
+        must not move the window at all."""
+        k = sorted(FIVE)[0]
+        baseline = self._filed_x_window(k)
+        zero = self._filed_x_window(k, recentre=(0.0, 0.0))
+        self.assertEqual(baseline, zero)
+
+    def test_every_confirmed_head_is_still_kept_with_a_small_recentre(self):
+        """⚠️ THE OTHER CONTROL, over the whole positive-control set: a
+        modest re-centre (well inside the search's own +-0.6/+-0.4 sp
+        bound) must not flip a single genuinely-confirmed head."""
+        for k in sorted(CONFIRMED):
+            with self.subTest(head=k):
+                v = _build(k, recentre=(0.1, -0.1))
+                self.assertEqual(v.outcome, Outcome.DECIDED)
+                self.assertIs(v.value, False)
 
 
 class TestAKeptRungIsSeansException(unittest.TestCase):
