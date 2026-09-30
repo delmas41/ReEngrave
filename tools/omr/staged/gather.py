@@ -1679,7 +1679,19 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
                                   cell_by_key: Dict[Tuple[int, int, int, int], Any],
                                   thickness_px: Optional[float]) -> None:
     """`Q.LEDGER_OWNER_DENSITY` -- ROADMAP 2.37 (Sean's redirect): one row,
-    the ONE informative rung position toward `cand_key`."""
+    the ONE informative rung position toward `cand_key`.
+
+    ⚠️ ROADMAP 2.39b: the standard box below is RE-CENTRED on `g`'s own
+    `Q.NOTEHEAD_RECENTRE` row where GATHER's matched-window search
+    accepted one -- `gather_notehead_recentre` only ever files that row
+    for a REGULAR notehead, so this reader needs no class-name gate of
+    its own to stay inside item 5's boundary; a class the search never
+    measures simply has no row to read and keeps the un-shifted detector
+    centre, exactly as ROADMAP 2.37 shipped it (`benchmarks/omr-notehead-
+    width-2026-09/FINDINGS.md` §18 names this reader as carrying the
+    identical sliver exposure `gather_notehead_ink` did before item 2's
+    reconnect).
+    """
     g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
     # ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29): a STANDARD head extent centred
     # on the detector box's own CENTRE, never its raw width/height -- see
@@ -1690,6 +1702,11 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
     # location.
     cx = (box[0] + box[2]) / 2.0
     cy = (box[1] + box[3]) / 2.0
+    recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+    if recentred:
+        dx_sp, dy_sp = recentred[-1].value
+        cx = cx + dx_sp * spacing
+        cy = cy + dy_sp * spacing
     shx0, shx1, shy0, shy1 = _standard_head_box(cx, cy, spacing)
     top, bottom = min(line_ys), max(line_ys)
     if top <= cy <= bottom:
@@ -1790,6 +1807,12 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     `class_name` is `None` for a caller that predates this change (the
     geometry-only fallback below), which keeps the raw box, same as
     before.
+
+    ⚠️ ROADMAP 2.39b. The standard box above is RE-CENTRED on `g`'s own
+    `Q.NOTEHEAD_RECENTRE` row (GATHER's matched-window search, read never
+    re-run) where the search accepted one; where it declined, never ran,
+    or `g` is outside the regular-head gate, the box stays centred on the
+    detector's own centre, exactly as ROADMAP 2.39 shipped it.
     """
     # ⚠️ RECONSTRUCTED, NOT PASSED THROUGH -- `wiring._SubjectKinds` resolves
     # a subject's Kind from the CONSTRUCTOR EXPRESSION at the site
@@ -1850,6 +1873,19 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     if spacing and is_regular_notehead(class_name):
         cx = (box[0] + box[2]) / 2.0
         cy = (box[1] + box[3]) / 2.0
+        # ⚠️ ROADMAP 2.39b: GATHER's own matched-window re-centre, read
+        # (never re-run -- CLAUDE.md rule 6) off `g`'s own `Q.NOTEHEAD_
+        # RECENTRE` row where the search accepted one. `dx_sp`/`dy_sp` are
+        # frame-agnostic ratios, so multiplying by THIS call's own
+        # `spacing` (page frame) carries them correctly from the canonical
+        # frame the search ran in. A head whose search declined, never
+        # ran, or is outside the regular-head gate keeps the un-shifted
+        # detector centre, exactly as before this round.
+        recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+        if recentred:
+            dx_sp, dy_sp = recentred[-1].value
+            cx = cx + dx_sp * spacing
+            cy = cy + dy_sp * spacing
         bx0, bx1, by0, by1 = _standard_head_box(cx, cy, spacing)
     else:
         bx0, by0, bx1, by1 = box
@@ -2621,7 +2657,8 @@ def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
 
 
 def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
-                             sub, cell: Any = None) -> Optional[list]:
+                             sub, cell: Any = None,
+                             log: Optional[Log] = None) -> Optional[list]:
     """This cell's detected notehead boxes, in CANONICAL cell coordinates.
 
     ⚠️ `None` when the caller supplied no detection map at all (no gate) and
@@ -2644,19 +2681,35 @@ def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
     note / grace-cue head) the raw detector box is unchanged from before
     this round -- never a new gate where none existed, never a default
     spacing.
+
+    ⚠️ ROADMAP 2.39b: where `log` is supplied (the caller's own GATHER log,
+    ALREADY carrying `gather_notehead_recentre`'s rows -- see the pipeline
+    ordering comment at its call site), the standard box above is RE-
+    CENTRED on the matched-window search's own winning offset for a regular
+    head whose search accepted one; a head whose search declined, never ran,
+    or is outside the regular-head gate keeps the un-shifted standard box,
+    exactly as before this round. `log=None` (every existing caller, every
+    existing test) is BYTE-IDENTICAL to before -- CONNECT, never guess.
     """
     if detections is None:
         return None
     grid = _cell_grid(cell) if cell is not None else None
     space_canonical = grid[1] * 2.0 if grid and grid[1] else None
     heads = []
-    for d in detections.get(sub.to_key()) or ():
+    for gi, d in enumerate(detections.get(sub.to_key()) or ()):
         name = str(getattr(d, "smufl_name", ""))
         if "notehead" not in name.lower():
             continue
         if space_canonical and is_regular_notehead(name):
-            bx0, bx1, by0, by1 = _standard_head_box(
-                d.x_center, d.y_center, space_canonical)
+            cx, cy = d.x_center, d.y_center
+            if log is not None:
+                g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+                recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+                if recentred:
+                    dx_sp, dy_sp = recentred[-1].value
+                    cx = cx + dx_sp * space_canonical
+                    cy = cy + dy_sp * space_canonical
+            bx0, bx1, by0, by1 = _standard_head_box(cx, cy, space_canonical)
             heads.append((bx0, by0, bx1 - bx0, by1 - by0))
         else:
             heads.append((float(d.x_canonical), float(d.y_canonical),
@@ -2712,7 +2765,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # the boxes change nothing at all. ⚠️ `detections is None` (a run with
         # no detector, which `gather_detections` supports on purpose) gives
         # `None` and therefore no gate, never an empty one.
-        heads = _notehead_boxes_for_cell(detections, sub, c)
+        heads = _notehead_boxes_for_cell(detections, sub, c, log=log)
         try:
             found = detect_lines(c, candidates_out=runs, noteheads=heads)
         except Exception as exc:                              # noqa: BLE001
@@ -3868,6 +3921,239 @@ def gather_ledger_ink(log: Log, cells: Sequence[Any],
                         ink_background_windows=m["background_windows"])
 
 
+#: ROADMAP 2.39b — the bounded search around the detector's own centre, in
+#: staff spaces (Sean's own bound: "at most +-0.6 sp vertically and +-0.4 sp
+#: horizontally"). Not grown past what a measured sliver needs
+#: (`benchmarks/omr-notehead-width-2026-09/FINDINGS.md` §18: the 8-of-8
+#: sampled slivers are 0.29-0.4 sp wide against the standard 1.4, so their
+#: true centre is at most a fraction of a space from the detector's own).
+RECENTRE_MAX_DY_SPACES = 0.6
+RECENTRE_MAX_DX_SPACES = 0.4
+#: The search grid's own step. Fine enough that a real head's peak fill is
+#: not skipped between two tested offsets; coarse enough that the ~2,347-
+#: 3,337 regular noteheads per count page stay cheap (13 x 9 = 117 windows
+#: per head, each one array-slice-and-sum).
+RECENTRE_STEP_SPACES = 0.1
+#: A winning window's own ink fill must clear this to be "clearly a head" —
+#: CLAUDE.md rule 7, a control must be able to fail. Below it, DECLINE
+#: rather than guess (rule 8): a thin stem fills a head-sized window only
+#: ~15-20%, and a hollow head's own interior reads comparably sparse, so
+#: neither should be read as "the standard box found its head" just because
+#: it was the best of a bad set.
+RECENTRE_MIN_FILL = 0.55
+#: The winning window's own lead over the best NON-OVERLAPPING rival window
+#: — so a tie between two chord noteheads' own windows (each a real, dense
+#: head) DECLINES rather than picking one arbitrarily.
+RECENTRE_MIN_MARGIN = 0.08
+#: Two candidate windows are the "same" head once their boxes share more
+#: than this fraction of the smaller one's own area — the runner-up search
+#: skips these so it is not comparing the winner against a one-pixel shift
+#: of itself.
+RECENTRE_OVERLAP_FRAC = 0.30
+
+
+def _recentre_window_fill(ink: Any, x0: float, x1: float, y0: float,
+                          y1: float) -> Optional[float]:
+    """Ink fraction inside `(x0, x1, y0, y1)` (canonical px, corners) on a
+    `True == ink` boolean raster. `None` off the raster or a degenerate box
+    — declined, never defaulted."""
+    H, W = ink.shape
+    ix0 = max(0, int(round(x0)))
+    iy0 = max(0, int(round(y0)))
+    ix1 = min(W, int(round(x1)))
+    iy1 = min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return None
+    region = ink[iy0:iy1, ix0:ix1]
+    if region.size == 0:
+        return None
+    return float(region.sum()) / float(region.size)
+
+
+def _recentre_boxes_overlap(a: Tuple[float, float, float, float],
+                            b: Tuple[float, float, float, float],
+                            frac: float) -> bool:
+    """`True` where `a` and `b` (each `(x0, x1, y0, y1)`) share more than
+    `frac` of the SMALLER box's own area."""
+    ax0, ax1, ay0, ay1 = a
+    bx0, bx1, by0, by1 = b
+    ix0, ix1 = max(ax0, bx0), min(ax1, bx1)
+    iy0, iy1 = max(ay0, by0), min(ay1, by1)
+    if ix1 <= ix0 or iy1 <= iy0:
+        return False
+    inter = (ix1 - ix0) * (iy1 - iy0)
+    a_area = max(1e-9, (ax1 - ax0) * (ay1 - ay0))
+    b_area = max(1e-9, (bx1 - bx0) * (by1 - by0))
+    return (inter / min(a_area, b_area)) > frac
+
+
+def recentre_notehead(img: Any, cx: float, cy: float, spacing: float
+                      ) -> Optional[Dict[str, Any]]:
+    """The matched-window re-centre search — ROADMAP 2.39b (`Q.NOTEHEAD_
+    RECENTRE`'s own docstring has the full design). `img` is a cell's
+    `image_no_staff` (0 == ink); `cx`, `cy`, `spacing` are the detector's
+    own centre and this staff's own measured spacing, all in `img`'s frame.
+
+    `None` off the raster or a degenerate spacing — the caller abstains
+    `no_mask`/`no_staff_geometry`. Otherwise a dict carrying the WINNING
+    offset (in staff spaces, from the detector's own centre), its fill and
+    its margin over the best non-overlapping rival, and `decline_reason`
+    (`None` where the search accepts its own winner).
+    """
+    if img is None or getattr(img, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    ink = (img == 0)
+    n_dy = int(round(RECENTRE_MAX_DY_SPACES / RECENTRE_STEP_SPACES))
+    n_dx = int(round(RECENTRE_MAX_DX_SPACES / RECENTRE_STEP_SPACES))
+    candidates: List[Tuple[float, float, float,
+                          Tuple[float, float, float, float]]] = []
+    for iy in range(-n_dy, n_dy + 1):
+        dy_sp = iy * RECENTRE_STEP_SPACES
+        for ix in range(-n_dx, n_dx + 1):
+            dx_sp = ix * RECENTRE_STEP_SPACES
+            ncx = cx + dx_sp * spacing
+            ncy = cy + dy_sp * spacing
+            box = _standard_head_box(ncx, ncy, spacing)
+            fill = _recentre_window_fill(ink, *box)
+            if fill is None:
+                continue
+            candidates.append((dx_sp, dy_sp, fill, box))
+    if not candidates:
+        return None
+    best = max(candidates, key=lambda c: c[2])
+    rivals = [c for c in candidates
+             if not _recentre_boxes_overlap(c[3], best[3],
+                                            RECENTRE_OVERLAP_FRAC)]
+    runner_up = max((c[2] for c in rivals), default=0.0)
+    margin = best[2] - runner_up
+    decline_reason = None
+    if best[2] < RECENTRE_MIN_FILL:
+        decline_reason = ABSTAIN.BELOW_THRESHOLD
+    elif margin < RECENTRE_MIN_MARGIN:
+        decline_reason = ABSTAIN.AMBIGUOUS
+    return {
+        "dx_sp": round(best[0], 3), "dy_sp": round(best[1], 3),
+        "fill": round(best[2], 4), "runner_up": round(runner_up, 4),
+        "margin": round(margin, 4), "decline_reason": decline_reason,
+    }
+
+
+#: ROADMAP 2.39b (manager review of `fa700001`, commit `fa700001`'s own
+#: crops caught this): `litolff-glyph-owner-far-no-rungs.png` showed the
+#: search moving a box that was ALREADY ON THE HEAD down into stem/beam
+#: junction ink below it -- a Litolff box 1.84x the standard WIDTH and
+#: 0.79x the standard HEIGHT, not a sliver, and the "densest window near
+#: a head" on a MERGING plate is routinely the stem/beam junction, not
+#: the head itself. The rule the crops support: a box already close to
+#: the standard head's own size has a TRUSTWORTHY centre (CLAUDE.md's own
+#: convention -- distrust the box's SIZE, never its CENTRE, unless the
+#: box is too small to BE a head). Only a box clearly SMALLER than the
+#: standard extent, in width OR height, is a candidate for re-centring.
+#:
+#: 0.7 chosen from this round's own box-size distribution (`width_
+#: canonical / (STANDARD_HEAD_WIDTH_SPACES * spacing)`, `height_canonical
+#: / (STANDARD_HEAD_HEIGHT_SPACES * spacing)`, the smaller of the two,
+#: over every REGULAR notehead the un-gated search had accepted): the
+#: population's own median sits at ~1.0 (a box already head-sized) on
+#: both count pages, and only the bottom decile -- 7.5% of Litolff's 451,
+#: 11.2% of Brahms's 765 -- falls under 0.7. That decile is where the
+#: genuine slivers CLAUDE.md §10 names live (a confirmed Brahms sliver
+#: measured 0.24 sp tall against a 1.1 sp standard height, ratio 0.22);
+#: the flagged head above (ratio 0.79) sits well clear of it.
+RECENTRE_BOX_SIZE_GATE = 0.7
+
+
+def gather_notehead_recentre(log: Log, cells: Sequence[Any],
+                             local: Dict[int, Tuple[int, int]],
+                             detections: Dict[str, List[Any]]) -> None:
+    """`Q.NOTEHEAD_RECENTRE` — ROADMAP 2.39b, one row per REGULAR notehead
+    (`geometry.is_regular_notehead`) — a whole note, grace/cue head or any
+    other class this round did not measure gets NO ROW AT ALL, the same
+    gate every other `geometry.standard_head_box` consumer uses; never a
+    guessed re-centre for a shape this round never measured.
+
+    ⚠️ ROADMAP 2.39b (manager review, `RECENTRE_BOX_SIZE_GATE`'s own
+    comment): the search runs ONLY where the detector's OWN box is
+    clearly smaller than the standard extent (width OR height under the
+    gate) -- a box already close to head-sized keeps the detector centre
+    UNCONDITIONALLY, abstained `box_already_head_sized`, and the search
+    never even runs on it.
+
+    Reads `cell.image_no_staff` — the SAME staff-erased raster `Q.INK`/
+    `Q.LEDGER_RUNG_INK`/`Q.STEM_TIP_INK`/`Q.BEAM_STEM_JOIN` read — so it is
+    not an independent witness of any of them (`READERS.CV_NOTEHEAD_
+    RECENTRE`'s own entry says so); it asks a different question (a bounded
+    matched-window search for peak fill) with a different test.
+    """
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        space_canonical = grid[1] * 2.0 if grid and grid[1] else None
+        img = getattr(c, "image_no_staff", None)
+        for gi, d in enumerate(dets):
+            name = str(getattr(d, "smufl_name", ""))
+            if not is_regular_notehead(name):
+                continue
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if space_canonical is None:
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                           note="cell carries no measured line grid")
+                continue
+            std_w = STANDARD_HEAD_WIDTH_SPACES * space_canonical
+            std_h = STANDARD_HEAD_HEIGHT_SPACES * space_canonical
+            w_ratio = float(d.width_canonical) / std_w if std_w else None
+            h_ratio = float(d.height_canonical) / std_h if std_h else None
+            if (w_ratio is not None and h_ratio is not None
+                    and w_ratio >= RECENTRE_BOX_SIZE_GATE
+                    and h_ratio >= RECENTRE_BOX_SIZE_GATE):
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=ABSTAIN.BOX_ALREADY_HEAD_SIZED,
+                           note=f"detector box is already close to the "
+                                f"standard head's own size "
+                                f"(width_ratio={w_ratio:.3f}, "
+                                f"height_ratio={h_ratio:.3f}); its centre "
+                                f"is trusted unconditionally, never "
+                                f"searched")
+                continue
+            if img is None or getattr(img, "ndim", 0) != 2:
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=ABSTAIN.NO_MASK,
+                           note="cell carries no image_no_staff")
+                continue
+            result = recentre_notehead(img, float(d.x_center),
+                                       float(d.y_center), space_canonical)
+            if result is None:
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                           note="search window off the raster")
+                continue
+            if result["decline_reason"] is not None:
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=result["decline_reason"],
+                           fill=result["fill"], margin=result["margin"],
+                           runner_up=result["runner_up"],
+                           note="best window is not clearly a head, or not "
+                                "clearly ahead of a rival window")
+                continue
+            log.observe(g, Q.NOTEHEAD_RECENTRE,
+                       [result["dx_sp"], result["dy_sp"]],
+                       reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                       fill=result["fill"], margin=result["margin"],
+                       runner_up=result["runner_up"])
+
+
 #: The interior of a notehead's OWN box is shrunk by this fraction on every
 #: side to make the `center` window. Dense for a filled BLACK head; near-
 #: empty for a HOLLOW one (half/whole) by construction — which is exactly
@@ -3989,8 +4275,20 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
     `detail["ink_raw"]`/`detail["ink_net"]` carry each `notehead_ink_under`
     reading whole, never collapsed to one number.
 
-    ⚠️ NO STAFF UNIT NEEDED, so this reader never abstains
+    ⚠️ NO STAFF UNIT NEEDED FOR THE RAW BOX, so this reader never abstains
     `no_staff_geometry` — only `no_mask` where BOTH rasters are missing.
+
+    ⚠️⚠️ ROADMAP 2.39b — THE WINDOW IS THE RE-CENTRED STANDARD BOX WHERE ONE
+    EXISTS. `gather_notehead_recentre` runs earlier in this same GATHER pass
+    and files `Q.NOTEHEAD_RECENTRE` for every REGULAR notehead whose
+    matched-window search found (not merely assumed) where the head's own
+    ink actually peaks; this reader READS that row (CLAUDE.md rule 6 —
+    connect, never re-derive) rather than calling the search a second time.
+    Falls back to the RAW detector box — never the un-re-centred standard
+    box `benchmarks/omr-notehead-width-2026-09/FINDINGS.md` §18 measured
+    reading a solid Brahms head as hollow — wherever the re-centre declined,
+    never ran (no measured line grid) or does not apply (a whole note,
+    grace/cue head, or any class outside `geometry.is_regular_notehead`).
     """
     for c in cells:
         key = local.get(c.staff_index)
@@ -4005,11 +4303,22 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
         frame = frame_cell(c.measure_index)
         raw_img = getattr(c, "binary", None)
         net_img = getattr(c, "image_no_staff", None)
+        grid = _cell_grid(c)
+        space_canonical = grid[1] * 2.0 if grid and grid[1] else None
         for gi in idx:
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
             d = dets[gi]
             box = (d.x_canonical, d.y_canonical,
                   d.width_canonical, d.height_canonical)
+            if space_canonical and is_regular_notehead(str(d.smufl_name)):
+                recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+                if recentred:
+                    dx_sp, dy_sp = recentred[-1].value
+                    ncx = float(d.x_center) + dx_sp * space_canonical
+                    ncy = float(d.y_center) + dy_sp * space_canonical
+                    bx0, bx1, by0, by1 = _standard_head_box(
+                        ncx, ncy, space_canonical)
+                    box = (bx0, by0, bx1 - bx0, by1 - by0)
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
             m_net = notehead_ink_under(net_img, box) \
@@ -6502,6 +6811,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             log, cells, local, detector=detector,
             conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
 
+        # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
+        # OF ITS FOUR CONSUMERS: the matched-window re-centre search files
+        # `Q.NOTEHEAD_RECENTRE` per regular notehead, and `gather_ownership_
+        # evidence` (the ledger-rung-ink and ledger-owner-density readers),
+        # `gather_cv_lines` (the stem/beam notehead gate) and `gather_
+        # notehead_ink` (the fill test) below all READ that row (CLAUDE.md
+        # rule 6, connect never guess) rather than re-deriving it -- so this
+        # position is load-bearing, not cosmetic.
+        gather_notehead_recentre(log, cells, local, detections)
         gather_notehead_positions(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid

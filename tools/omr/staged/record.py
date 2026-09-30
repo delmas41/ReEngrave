@@ -706,6 +706,41 @@ class Q(_Vocab):
     #: nothing.
     NOTEHEAD_INK = "notehead_ink"
 
+    #: ⚠️⚠️ ROADMAP 2.39b — WHERE A REGULAR HEAD'S OWN INK ACTUALLY SITS,
+    #: SEPARATE FROM THE DETECTOR'S CENTRE. `geometry.standard_head_box`
+    #: (2.39, first half) keeps the detector's centre unconditionally and
+    #: only replaces its width/height — sound where the box is merely the
+    #: WRONG SIZE (a Litolff merge), unsound where it is a SLIVER (a
+    #: Breitkopf shattered fragment): a sliver's own centre sits on the
+    #: head's EDGE, not its middle, so a standard box built around it covers
+    #: mostly blank paper (`benchmarks/omr-notehead-width-2026-09/
+    #: FINDINGS.md` §15/§18, the reverted `c889c700`, `0.914 -> 0.185` on
+    #: one measured head). One row per REGULAR notehead
+    #: (`geometry.is_regular_notehead`): a MATCHED-WINDOW search slides the
+    #: standard box over `cell.image_no_staff` within a bounded offset
+    #: (`RECENTRE_MAX_DY_SPACES` vertical, `RECENTRE_MAX_DX_SPACES`
+    #: horizontal) and keeps the offset with the highest ink fill, WHERE
+    #: that fill is clearly a head (`RECENTRE_MIN_FILL`) and clearly ahead
+    #: of the next-best NON-OVERLAPPING offset (`RECENTRE_MIN_MARGIN`) --
+    #: both gates a control must be able to fail (CLAUDE.md rule 7): a
+    #: hollow head or a tie between two chord noteheads DECLINES rather
+    #: than guessing (CLAUDE.md rule 8). `value` is `[dx_spaces,
+    #: dy_spaces]`, the shift from the detector's own centre to the
+    #: winning window's centre, both in staff spaces (`spacing` the SAME
+    #: staff's own measured `Q.STAFF_SPACING`/`Q.CELL_STAFF_SPACE`, never a
+    #: fixed constant); `detail` carries `fill` (the winning window's ink
+    #: fraction), `margin` (its lead over the next-best non-overlapping
+    #: offset) and `runner_up`. A RELATION between a located notehead box
+    #: and the paper it actually stands on -- scoreless, same reason as
+    #: `NOTEHEAD_INK` -- it says where the ink's own centre is, never that
+    #: the head IS there. Read by nothing yet outside `gather_notehead_ink`
+    #: (item 2 of the roadmap line's second half); items 3/1/4's other
+    #: consumers of `geometry.standard_head_box` are switched to it where
+    #: a row exists, falling back to the detector centre where one does
+    #: not (declined or off the regular-head gate) -- CLAUDE.md rule 6, a
+    #: wiring change may CONNECT a decision, never let one guess.
+    NOTEHEAD_RECENTRE = "notehead_recentre"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -1815,6 +1850,11 @@ CLAIMS: "dict[str, str]" = {
     #: two rasters -- a ruler reading, same reason as `LEDGER_INK_UNDER`; it
     #: says whether dark pixels stand there, never that the head is filled.
     "NOTEHEAD_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.39b: a matched-window search for where a regular head's own
+    #: ink sits, bounded around the detector's centre -- a ruler reading,
+    #: same reason as `NOTEHEAD_INK`; it says where the fill is highest,
+    #: never that a head stands there.
+    "NOTEHEAD_RECENTRE": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -2140,6 +2180,14 @@ class READERS(_Vocab):
     #: notehead's OWN box, on either raster) with a test neither of the
     #: other three windowed-density readers runs.
     CV_NOTEHEAD_INK = "cv_notehead_ink"      # gather: ink under a notehead box
+    #: `gather.gather_notehead_recentre` -- ROADMAP 2.39b. Reads the SAME
+    #: staff-erased raster `CV_INK`/`CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN`
+    #: read (`image_no_staff`), so it is NOT independent of them -- one
+    #: crop, one signal, per `CV_INK`'s own entry. Its own reader name
+    #: because it asks a different question (a bounded MATCHED-WINDOW
+    #: search for the offset with the highest ink fill) with a different
+    #: test from `CV_NOTEHEAD_INK`'s fixed-box center/ring read.
+    CV_NOTEHEAD_RECENTRE = "cv_notehead_recentre"  # gather: matched-window re-centre
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -2274,6 +2322,13 @@ class ABSTAIN(_Vocab):
     # readers that will not guess
     BELOW_THRESHOLD = "below_threshold"
     AMBIGUOUS = "ambiguous"
+    #: ROADMAP 2.39b (manager review of `fa700001`): a detector box already
+    #: close to the standard head's own width AND height is a box whose
+    #: CENTRE is trustworthy -- only a box too small to be a head (a
+    #: sliver) has a centre the search should distrust. The re-centre
+    #: search never RUNS on a box this size; it abstains and the detector
+    #: centre stands, exactly as before ROADMAP 2.39b existed.
+    BOX_ALREADY_HEAD_SIZED = "box_already_head_sized"
     NOT_IN_LEXICON = "not_in_lexicon"
     #: An OCR rung ran over a crop and returned NO CHARACTERS AT ALL. ⚠️ A
     #: DIFFERENT FACT FROM `NOT_IN_LEXICON`, and the direction reader is why:

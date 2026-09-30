@@ -646,6 +646,18 @@ NOTEHEAD_DUPLICATE_MAX_DX_HEAD_WIDTHS = 0.5
 # into an answer) -- `_same_side_second` records the case in
 # `detail["same_side_signal"]` either way, so it is COUNTED rather than
 # silently dropped from the record.
+#
+# ⚠️⚠️ MANAGER REVIEW, POST-MERGE (S6, `cell/3/0/8/7`): THE FIRST BUILD CHOSE
+# THE SURVIVOR BY DETECTOR SCORE, AND THAT WAS WRONG. At 3x zoom the REFUSED
+# box sat on solid head ink and the KEPT box covered mostly blank paper plus
+# one staff line -- a score says nothing about which box the ink actually
+# supports. Fixed: the keep choice reads `Q.NOTEHEAD_INK`'s ERASED-raster
+# fill (`ink_net.best`, off `cell.image_no_staff` -- a staff line alone never
+# counts as ink there, unlike the combined `Q.NOTEHEAD_INK.value`) for BOTH
+# boxes and keeps the one with MORE head ink. Where either box carries no
+# ink witness at all, NEITHER is refused (rule 8) -- counted in
+# `same_side_signal.no_ink_witness`, never decided by falling back to score.
+# See `_notehead_ink_net`'s own docstring.
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: Halfway between a second (0.5 sp) and a third (1.0 sp), in half-steps: 1.5
@@ -721,13 +733,21 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
         detail["same_side_signal"] = {"no_stem_read": True}
         return None
 
-    this_priority = _notehead_duplicate_priority(this_row)
     this_cx = this_xywh[0] + this_xywh[2] / 2.0
     this_cy = this_xywh[1] + this_xywh[3] / 2.0
+    # ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6): the KEEP CHOICE reads INK, never
+    # detector score -- see `_notehead_ink_net`'s own docstring for why a
+    # score fallback is unsafe (it kept an empty box over a real head on
+    # the print). `this_ink` is fetched ONCE; a candidate with no ink
+    # witness on either side of the pair counts as `no_ink_witness` and is
+    # never refused (rule 8) -- the search still runs so the case is seen
+    # and recorded, it just decides nothing.
+    this_ink = _notehead_ink_net(ev, ev.subject)
 
     better = None
     better_stem = None
     checked = 0
+    no_ink_witness = 0
     for subj, row in _cell_notehead_boxes(ev, cell).items():
         if subj == ev.subject:
             continue
@@ -759,11 +779,20 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
         if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
             continue
         checked += 1
-        if _notehead_duplicate_priority(row) > this_priority:
+        other_ink = _notehead_ink_net(ev, subj)
+        if this_ink is None or other_ink is None:
+            no_ink_witness += 1
+            continue         # no witness for this pair -- refuse neither
+        if other_ink > this_ink:
             better, better_stem = row, stem_row
             detail["same_side_dy_spaces"] = round(dy_spaces, 3)
+            detail["same_side_this_ink"] = round(this_ink, 4)
+            detail["same_side_other_ink"] = round(other_ink, 4)
 
-    detail.setdefault("same_side_signal", {"candidates_checked": checked})
+    signal = {"candidates_checked": checked}
+    if no_ink_witness:
+        signal["no_ink_witness"] = no_ink_witness
+    detail.setdefault("same_side_signal", signal)
     if better is not None:
         detail["duplicate_of"] = better.id
         # ⚠️ LITERAL, NOT THE CONSTANT: `brakes.vocabulary_gap` reads the
@@ -799,6 +828,39 @@ def _notehead_duplicate_priority(row) -> Tuple[float, int]:
     score = row.score if row.score is not None else 0.0
     idx = row.subject.glyph if row.subject.glyph is not None else 0
     return (score, -idx)
+
+
+def _notehead_ink_net(ev: Evidence, subject) -> Optional[float]:
+    """The staff-line-ERASED ink fraction (`Q.NOTEHEAD_INK.detail.ink_net.
+    best`) inside THIS glyph's own box, or `None` where no such witness is
+    on the record.
+
+    ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6, `cell/3/0/8/7`): the KEPT box read
+    mostly blank paper while the REFUSED box sat on the real head, because
+    the first build chose by DETECTOR SCORE -- a score says nothing about
+    which box the ink actually supports, and a staff line under an empty
+    box can look like "something is there" on the RAW raster. `ink_net` is
+    `Q.NOTEHEAD_INK`'s own ERASED-raster reading (`cell.image_no_staff`,
+    `gather.gather_notehead_ink`'s own two-raster discipline) -- a staff
+    line crossing an otherwise blank box is never counted as ink here,
+    unlike `Q.NOTEHEAD_INK.value` itself, which takes `max(raw, net)` and
+    so CAN be inflated by a staff line alone.
+
+    ⚠️ READ, NEVER RE-DERIVED (CLAUDE.md rule 6): `Q.NOTEHEAD_INK` is
+    GATHERED once per notehead-classed glyph, at that glyph's own
+    (re-centred, where 2.39b found one) box -- exactly the box this rule
+    is asking about. No second ink measurement is taken here.
+    """
+    rows = ev.rows(Q.NOTEHEAD_INK, subject=subject)
+    if not rows:
+        return None
+    net = (rows[-1].detail or {}).get("ink_net")
+    if not isinstance(net, dict) or net.get("best") is None:
+        return None
+    try:
+        return float(net["best"])
+    except (TypeError, ValueError):
+        return None
 
 
 def _same_mark_centres(a: Any, b: Any, spacing_canonical: float) -> bool:
@@ -1135,6 +1197,22 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     class_name = box_row.value[0] if box_row.value else None
     if _geom.is_regular_notehead(class_name):
         cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+        # ⚠️ ROADMAP 2.39b: GATHER's own matched-window search, read (never
+        # re-run -- CLAUDE.md rule 6) and applied to the SAME `sp` this
+        # staff's own spacing already is -- `dx_spaces`/`dy_spaces` are
+        # frame-agnostic ratios, so multiplying by THIS frame's own
+        # spacing carries them correctly from the canonical frame the
+        # search ran in to this page-frame `cx`. Only `cx` moves here: the
+        # ladder x-window is the only thing this rule reads off the
+        # returned box (`_, _` below), so a `dy` shift would move nothing
+        # a caller can see and is left out rather than computed for no
+        # reason. A head whose search declined or never ran (no measured
+        # line grid, not a regular class) keeps the un-shifted detector
+        # centre, exactly as before this round.
+        recentred = ev.rows(Q.NOTEHEAD_RECENTRE)
+        if recentred:
+            dx_sp = recentred[-1].value[0]
+            cx = cx + dx_sp * sp
         x0, x1, _, _ = _geom.standard_head_box(cx, y, sp)
     else:
         x0, x1 = float(page_box[0]), float(page_box[2])
@@ -1330,15 +1408,22 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # already declares carries that fact.
                   Q.SYSTEM_STAFF_COUNT,
                   # ⚠️ ROADMAP 2.40: which side of a shared stem two
-                  # overlapping heads stand on.
-                  Q.STEM),
+                  # overlapping heads stand on, and which of the two the
+                  # ink (not detector score) supports -- see
+                  # `_notehead_ink_net`'s own docstring (manager review, S6).
+                  Q.STEM, Q.NOTEHEAD_INK,
+                  # ⚠️ ROADMAP 2.39b: `_belongs_to_a_nearer_staff`'s ladder
+                  # x-window re-centres on GATHER's own matched-window
+                  # search where one exists (`Q.GLYPH_BOX`'s own detector
+                  # centre otherwise) -- see its own comment.
+                  Q.NOTEHEAD_RECENTRE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.STEM),
+          Q.STEM, Q.NOTEHEAD_INK, Q.NOTEHEAD_RECENTRE),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
@@ -1432,7 +1517,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        stem side cannot be read (no `Q.STEM` row meets this glyph), THE RULE
        DOES NOT REFUSE — it records the case in `detail["same_side_signal"]`
        and abstains from the widening alone (rule 8), never converting a
-       missing witness into an answer.
+       missing witness into an answer. **The KEEP CHOICE reads INK, never
+       detector score** (manager review, S6 `cell/3/0/8/7`: the score-based
+       first build kept an empty box over the real head): `Q.NOTEHEAD_INK`'s
+       staff-line-erased fill (`ink_net.best`) decides which of the pair
+       survives; where either box carries no ink witness, NEITHER is
+       refused (rule 8) and the pair is counted (`same_side_signal.
+       no_ink_witness`).
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
