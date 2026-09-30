@@ -145,15 +145,12 @@ class _FakeCell:
     page_index = 0
     measure_index = 0
 
-    def __init__(self, staff_index=0, *, binary=None, image_no_staff=None,
-                staff_line_ys_canonical=None):
+    def __init__(self, staff_index=0, *, binary=None, image_no_staff=None):
         self.staff_index = staff_index
         if binary is not None:
             self.binary = binary
         if image_no_staff is not None:
             self.image_no_staff = image_no_staff
-        if staff_line_ys_canonical is not None:
-            self.staff_line_ys_canonical = staff_line_ys_canonical
 
 
 class _FakeDetection:
@@ -161,14 +158,6 @@ class _FakeDetection:
         self.smufl_name = smufl_name
         (self.x_canonical, self.y_canonical,
          self.width_canonical, self.height_canonical) = box
-
-    @property
-    def x_center(self):
-        return self.x_canonical + self.width_canonical / 2.0
-
-    @property
-    def y_center(self):
-        return self.y_canonical + self.height_canonical / 2.0
 
 
 class TestGatherNoteheadInk(unittest.TestCase):
@@ -217,79 +206,6 @@ class TestGatherNoteheadInk(unittest.TestCase):
     def test_neither_raster_present_abstains_no_mask(self):
         log, g = self._run(binary=None, image_no_staff=None)
         self.assertEqual(log.state(Q.NOTEHEAD_INK, g), R.State.DECLINED)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.39 -- the standard head box, where the cell has a staff unit
-# ─────────────────────────────────────────────────────────────────────────────
-#
-# ⚠️ RUN RED FIRST: `_FakeCell(staff_line_ys_canonical=...)`, `_FakeDetection
-# .x_center`/`.y_center` did not exist before this round -- every test below
-# either raised `AttributeError` or (once those were added, as this file's
-# other classes need them too) asserted a `box` argument
-# `gather.notehead_ink_under` never received before this change.
-
-class TestGatherNoteheadInkStandardBox(unittest.TestCase):
-    """Spies on `gather.notehead_ink_under` (not `detail`, which nothing
-    else would read -- `wiring --check`'s own rule) to see which `box`
-    `gather_notehead_ink` actually asked it to measure."""
-
-    def _boxes_used(self, *, cls, staff_line_ys_canonical=None):
-        box = _box()      # 52 x 40 canonical, centred (100, 100)
-        raw = _paper()
-        _fill_ellipse(raw, box)
-        c = _FakeCell(binary=raw, image_no_staff=_paper(),
-                     staff_line_ys_canonical=staff_line_ys_canonical)
-        local = {0: (0, 0)}
-        sub = R.cell(0, 0, 0, 0)
-        detections = {sub.to_key(): [_FakeDetection(cls, box)]}
-        seen = []
-        real = gather.notehead_ink_under
-
-        def spy(img, box):
-            seen.append(box)
-            return real(img, box)
-
-        gather.notehead_ink_under = spy
-        try:
-            log = Log()
-            gather.gather_notehead_ink(log, [c], local, detections)
-        finally:
-            gather.notehead_ink_under = real
-        return seen, box     # (boxes actually used, the raw detector box)
-
-    def test_no_staff_geometry_falls_back_to_the_detector_box(self):
-        """The pre-2.39 invariant: this reader never needs a staff unit."""
-        seen, raw_box = self._boxes_used(cls="noteheadBlackOnLine",
-                                         staff_line_ys_canonical=None)
-        self.assertTrue(all(b == raw_box for b in seen))
-
-    def test_regular_head_with_staff_geometry_uses_the_standard_box(self):
-        seen, raw_box = self._boxes_used(
-            cls="noteheadBlackOnLine",
-            staff_line_ys_canonical=[0.0, 20.0, 40.0, 60.0, 80.0])
-        self.assertTrue(all(b != raw_box for b in seen))
-        # centred the same (100, 100); 1.4 x 1.1 spaces at spacing 20 ==
-        # 28 x 22, not the raw box's 52 x 40.
-        x, y, w, h = seen[0]
-        self.assertAlmostEqual(x + w / 2.0, 100.0)
-        self.assertAlmostEqual(y + h / 2.0, 100.0)
-        self.assertAlmostEqual(w, 28.0)
-        self.assertAlmostEqual(h, 22.0)
-
-    def test_whole_note_keeps_the_detector_box_even_with_staff_geometry(self):
-        """ROADMAP 2.39 item 5: a whole note is a different, wider Bravura
-        shape this round did not measure."""
-        seen, raw_box = self._boxes_used(
-            cls="noteheadWhole",
-            staff_line_ys_canonical=[0.0, 20.0, 40.0, 60.0, 80.0])
-        self.assertTrue(all(b == raw_box for b in seen))
-
-    def test_small_grace_cue_head_keeps_the_detector_box(self):
-        seen, raw_box = self._boxes_used(
-            cls="noteheadBlackSmall",
-            staff_line_ys_canonical=[0.0, 20.0, 40.0, 60.0, 80.0])
-        self.assertTrue(all(b == raw_box for b in seen))
 
 
 if __name__ == "__main__":

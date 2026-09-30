@@ -3989,22 +3989,8 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
     `detail["ink_raw"]`/`detail["ink_net"]` carry each `notehead_ink_under`
     reading whole, never collapsed to one number.
 
-    ⚠️ NO STAFF UNIT NEEDED, so this reader never ABSTAINS
+    ⚠️ NO STAFF UNIT NEEDED, so this reader never abstains
     `no_staff_geometry` — only `no_mask` where BOTH rasters are missing.
-    ROADMAP 2.39 keeps that invariant: for a REGULAR notehead
-    (`geometry.is_regular_notehead`) it asks the cell's OWN canonical
-    spacing (`_cell_grid`) for the STANDARD box (detector CENTRE, staff-
-    spacing extent — the same reasoning as `_observe_ledger_owner_
-    density`/`_observe_ledger_rung_ink`: a Brahms sliver or Litolff merged
-    box is not the head's true ink width), but where the cell carries no
-    staff-line geometry at all this reader FALLS BACK to the raw detector
-    box rather than abstaining -- a genuinely optional refinement, not a
-    requirement this reader did not have before. A whole note or grace/cue
-    head always keeps the raw box (ROADMAP 2.39 item 5). Not filed as its
-    own detail key (`wiring --check`'s own rule: a written, never-read
-    detail key is a finding) -- `test_staged_notehead_ink.py`'s
-    `TestGatherNoteheadInkStandardBox` proves which box was used by
-    spying on `notehead_ink_under`'s own `box` argument instead.
     """
     for c in cells:
         key = local.get(c.staff_index)
@@ -4019,18 +4005,11 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
         frame = frame_cell(c.measure_index)
         raw_img = getattr(c, "binary", None)
         net_img = getattr(c, "image_no_staff", None)
-        grid = _cell_grid(c)
-        space_canonical = grid[1] * 2.0 if grid and grid[1] else None
         for gi in idx:
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
             d = dets[gi]
-            if space_canonical and is_regular_notehead(d.smufl_name):
-                bx0, bx1, by0, by1 = _standard_head_box(
-                    d.x_center, d.y_center, space_canonical)
-                box = (bx0, by0, bx1 - bx0, by1 - by0)
-            else:
-                box = (d.x_canonical, d.y_canonical,
-                      d.width_canonical, d.height_canonical)
+            box = (d.x_canonical, d.y_canonical,
+                  d.width_canonical, d.height_canonical)
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
             m_net = notehead_ink_under(net_img, box) \
