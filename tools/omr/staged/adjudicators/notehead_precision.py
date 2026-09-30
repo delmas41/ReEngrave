@@ -918,6 +918,110 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
     return None
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.42 -- stacked heads on one stem: how many, and where.
+#
+# SUPERSEDES 2.40's `same_side_second` above (which the composed decision no
+# longer calls -- see `adjudicate_notehead_is_not_a_notehead`'s own call
+# site). 2.40 could only ask "is THIS box the SAME mark as ONE other box";
+# on `cell/3/1/2/9` (four overlapping boxes on one stem, two real heads a
+# third apart) that pair-wise question has no consistent answer -- box 2
+# loses to box 5, which itself loses to box 3, and round 2's fix needed a
+# whole recursive chain (`_would_survive_as_a_duplicate`) just to stop a
+# real head losing its only surviving box. 2.42 asks the question Sean's own
+# brief poses directly: *how many heads does this GROUP'S ink actually
+# support*, decided ONCE per group in GATHER (`gather.gather_stacked_head_
+# fit`, `Q.STACKED_HEAD_FIT`) and read here, never re-measured.
+#
+# 2.40's function above is RETAINED, UNWIRED: its own tests
+# (`test_staged_notehead_same_side_second.py`) are a real, print-checked
+# regression suite of the pair-wise mechanism and stay green as a record of
+# what was measured (CLAUDE.md §6c's mutation-battery precedent -- the
+# finding stands, the code is not deleted out from under its own proof).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Reason a refused box carries under ROADMAP 2.42 -- kept apart from 2.30's
+#: and 2.40's own reasons so a census can tell all three mechanisms apart
+#: (CLAUDE.md §4d: `N must go down`, per named reason).
+STACKED_HEAD_REASON = "stacked_head_duplicate"
+
+
+def _stacked_head_group_rows(ev: Evidence, cell, stem_id: str, side: str,
+                             slot: int):
+    """Every OTHER notehead glyph in this cell whose own `Q.STACKED_HEAD_FIT`
+    row names the SAME (stem, side, slot) -- the population competing to be
+    the one surviving box for that fitted head."""
+    out = []
+    for r in ev.rows(Q.STACKED_HEAD_FIT, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        rd = r.detail or {}
+        if rd.get("stem") != stem_id or rd.get("side") != side:
+            continue
+        rv = r.value
+        if not isinstance(rv, (list, tuple)) or len(rv) != 4:
+            continue
+        if rv[1] != slot:
+            continue
+        out.append(r)
+    return out
+
+
+def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """ROADMAP 2.42 -- is this box one of SEVERAL mapped to the SAME fitted
+    head slot in its stacked group, and not the one the ink best supports?
+
+    `Q.STACKED_HEAD_FIT` (GATHER) already decided how many heads the group
+    holds and matched every box in it to its nearest fitted slot; this
+    decision's whole job is the KEEP CHOICE among boxes sharing one slot --
+    exactly 2.40's own ink-not-score rule (manager review, S6), ported
+    rather than restated: `detail["ink"]` on each `Q.STACKED_HEAD_FIT` row
+    IS `notehead_ink_under`'s `best` fill at that box's own detected box,
+    filed once by GATHER, read never re-derived here (CLAUDE.md rule 6).
+
+    ⚠️ A GROUP WHERE THIS GLYPH'S OWN SLOT HOLDS ONLY ONE BOX never refuses
+    it -- that box already IS the fitted head's own keeper, whether or not
+    any OTHER slot in the group lost boxes. ⚠️ WHERE EITHER BOX IN A
+    CONTESTED SLOT CARRIES NO INK WITNESS, NEITHER IS REFUSED (rule 8) --
+    counted in `detail["stacked_head_signal"]["no_ink_witness"]`, never
+    decided by falling back to score or to glyph index.
+    """
+    fit_rows = ev.rows(Q.STACKED_HEAD_FIT)
+    if not fit_rows:
+        return None
+    fit = fit_rows[-1]
+    val = fit.value
+    if not isinstance(val, (list, tuple)) or len(val) != 4:
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    k, slot, pos_float, margin = val
+    fdetail = fit.detail or {}
+    stem_id = fdetail.get("stem")
+    side = fdetail.get("side")
+    group_rows = _stacked_head_group_rows(ev, cell, stem_id, side, slot)
+    signal: Dict[str, Any] = {
+        "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
+        "margin": margin, "candidates_at_slot": len(group_rows)}
+    detail["stacked_head_signal"] = signal
+    if len(group_rows) <= 1:
+        return None                 # the only box mapped to this slot
+    inks = [((r.detail or {}).get("ink"), r) for r in group_rows]
+    if any(i is None for i, _r in inks):
+        signal["no_ink_witness"] = True
+        return None                 # cannot tell -- refuse neither (rule 8)
+    best_ink, best_row = max(inks, key=lambda t: t[0])
+    if best_row.subject == ev.subject:
+        return None                 # this box IS the slot's own keeper
+    detail["duplicate_of"] = best_row.id
+    detail["stacked_head_this_ink"] = (fdetail or {}).get("ink")
+    detail["stacked_head_other_ink"] = best_ink
+    return Ruling(value=True, reason=STACKED_HEAD_REASON,
+                  used=(this_row.id, fit.id, best_row.id), detail=detail)
+
+
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
     SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
@@ -1567,19 +1671,28 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # x-window re-centres on GATHER's own matched-window
                   # search where one exists (`Q.GLYPH_BOX`'s own detector
                   # centre otherwise) -- see its own comment.
-                  Q.NOTEHEAD_RECENTRE),
+                  Q.NOTEHEAD_RECENTRE,
+                  # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
+                  # stacked group -- see `_stacked_head_duplicate_refusal`'s
+                  # own docstring. Supersedes 2.40's pair-wise use of
+                  # `Q.STEM`/`Q.NOTEHEAD_INK` above for the KEEP decision
+                  # (both quantities stay declared: `_notehead_same_side_
+                  # second_refusal` itself is retained, unwired, for its own
+                  # tests).
+                  Q.STACKED_HEAD_FIT),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.STEM, Q.NOTEHEAD_INK, Q.NOTEHEAD_RECENTRE),
+          Q.STEM, Q.NOTEHEAD_INK, Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
+                                     STACKED_HEAD_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      "notehead",
@@ -1765,13 +1878,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
     if dup is not None:
         return dup
-    # ⚠️ ROADMAP 2.40. AFTER 2.30's narrower same-mark test (which already
+    # ⚠️ ROADMAP 2.42. AFTER 2.30's narrower same-mark test (which already
     # caught the dy < 0.25 sp case above and returned) and BEFORE the meter-
     # digit / ownership rules below, for the same reason 2.30 runs there: this
     # only asks whether the ink is the SAME mark, never what it means.
-    same_side = _notehead_same_side_second_refusal(ev, box_row, spacing, detail)
-    if same_side is not None:
-        return same_side
+    # SUPERSEDES 2.40's pair-wise `same_side_second` (no longer called here --
+    # see `_stacked_head_duplicate_refusal`'s own module-section comment for
+    # why one group rule replaces it rather than the two competing).
+    stacked = _stacked_head_duplicate_refusal(ev, box_row, detail)
+    if stacked is not None:
+        return stacked
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is
@@ -1805,3 +1921,71 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="notehead", used=tuple(used),
                   detail=detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.42 -- the EVALUATE connection's ADJUDICATE half: a decided
+# position witness beside the raw detector-centre `Q.NOTEHEAD_STAFF_
+# POSITION`, for a notehead that SURVIVES a stacked-head group.
+# ─────────────────────────────────────────────────────────────────────────────
+
+STACKED_HEAD_POSITION_REASON = "stacked_head_fit"
+
+
+@decision(
+    quantity=Q.STACKED_HEAD_POSITION,
+    composed_from=(Q.STACKED_HEAD_FIT, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+    scope=Kind.GLYPH,
+    wants=(Q.STACKED_HEAD_FIT, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+    subjects_from=Q.STACKED_HEAD_FIT,
+    reasons=(STACKED_HEAD_POSITION_REASON, ABSTAIN.AMBIGUOUS,
+            ABSTAIN.NO_MASK, ABSTAIN.STACKED_HEAD_REFUSED,
+            ABSTAIN.NO_STAFF_GEOMETRY),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_stacked_head_position(ev: Evidence) -> Ruling:
+    """ROADMAP 2.42 -- the fitted slot position, for a glyph GATHER's
+    stacked-head fit named a decided head count and position for, and that
+    `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` did not refuse.
+
+    ⚠️ A WITNESS, NEVER A RE-DERIVATION. `Q.STACKED_HEAD_FIT.value[2]` IS
+    the fitted position, in `Q.NOTEHEAD_STAFF_POSITION`'s own units
+    (clef-free half-steps, top line = 0) -- computed once, in GATHER, off
+    the group's own ink; this decision reads it back, unchanged.
+
+    ⚠️ RUNS AFTER `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` (`adjudicate.ORDER`), so a
+    box this SAME stage already refused (most often
+    `notehead_precision.STACKED_HEAD_REASON` itself, but any other reason is
+    just as disqualifying -- a refused box has no pitch to contribute
+    regardless of why) is read here, not guessed around: `STACKED_HEAD_
+    REFUSED` says so rather than silently filing a position for ink nothing
+    downstream will read as a note.
+
+    ⚠️ `_stacked_head_duplicate_refusal` ITSELF ALSO ABSTAINS the group's
+    fit was `ambiguous` at GATHER time (no row at all -- `Q.STACKED_HEAD_
+    FIT` only fires where GATHER decided a count) or the fit carried no
+    valid value shape -- both surfaced here as their own named reasons so a
+    census can tell "refused elsewhere" apart from "GATHER itself could not
+    decide".
+    """
+    fit_rows = ev.rows(Q.STACKED_HEAD_FIT)
+    if not fit_rows:
+        # ⚠️ GATHER ITSELF DECLINED (`ambiguous`/`no_mask`) -- its own
+        # abstention reason is read back, never re-guessed, so a census can
+        # tell the two apart.
+        declines = ev.refusals(Q.STACKED_HEAD_FIT)
+        reason = declines[-1].reason if declines else ABSTAIN.AMBIGUOUS
+        return Ruling.abstain(reason)
+    fit = fit_rows[-1]
+    val = fit.value
+    if not isinstance(val, (list, tuple)) or len(val) != 4:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    refused = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
+    if refused is not None and refused.value is True:
+        return Ruling.abstain(ABSTAIN.STACKED_HEAD_REFUSED,
+                              refused_reason=refused.reason)
+    k, slot, pos_float, margin = val
+    return Ruling(value=float(pos_float), reason=STACKED_HEAD_POSITION_REASON,
+                  used=(fit.id,) + ((refused.id,) if refused is not None
+                                    else ()),
+                  detail={"k": k, "slot": slot, "margin": margin})

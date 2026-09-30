@@ -51,7 +51,12 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
       bound="One pitch per notehead that already has a POSITION row and does "
             "NOT already carry a pitch. Adds no notehead, deletes none, and "
             "re-reads no geometry. A staff whose clef ABSTAINED produces no "
-            "pitches at all -- it does not fall back to treble.")
+            "pitches at all -- it does not fall back to treble. ROADMAP "
+            "2.42: where a DECIDED Q.STACKED_HEAD_POSITION stands for this "
+            "same notehead, its value is rounded INSTEAD of the raw "
+            "detector-centre position -- a substitution, not a second "
+            "source of positions: a lone head outside any stacked group "
+            "never carries that verdict and is unaffected.")
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -68,6 +73,15 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     time and indistinguishable from a reading. Producing nothing is worse for
     a naive metric and better for a reader who needs to know what we do not
     know.
+
+    ⚠️ ROADMAP 2.42 -- THE FIT WINS ONLY IN A STACKED GROUP, NEVER FOR A LONE
+    HEAD. `adjudicate_stacked_head_position` (`notehead_precision.py`)
+    DECIDES a fitted position only for a notehead GATHER's stacked-head fit
+    named a decided head count for AND that survived `Q.NOTEHEAD_IS_NOT_A_
+    NOTEHEAD`; every other glyph carries no such verdict at all, so `log.
+    verdict` returns `None` and the raw detector-centre `row.value` is used
+    exactly as before this roadmap item existed -- a substitution at the ONE
+    population it applies to, never a second, competing source of positions.
     """
     from ..pitch_resolver import _pitch_from_position
 
@@ -94,7 +108,18 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # which is how this was found: the whole arm died on
             # `glyph/2/1/9/6/2`.
             continue
-        pos = int(round(float(row.value)))
+        # ⚠️ ROADMAP 2.42 -- THE STACKED-HEAD FIT'S OWN DECIDED POSITION WINS
+        # OVER THE RAW DETECTOR CENTRE, AND ONLY WHERE ONE STANDS. See the
+        # rule's own `bound` and this function's module docstring above for
+        # why this is a substitution at one population, never a second
+        # source of positions.
+        basis_ids = [row.id]
+        stacked = log.verdict(Q.STACKED_HEAD_POSITION, row.subject)
+        if stacked is not None and stacked.value is not None:
+            pos = int(round(float(stacked.value)))
+            basis_ids.append(stacked.id)
+        else:
+            pos = int(round(float(row.value)))
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -103,7 +128,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
             decider="restate_pitch", reason="position_and_clef",
-            basis=(row.id, clef.id)))
+            basis=tuple(basis_ids) + (clef.id,)))
     return out
 
 

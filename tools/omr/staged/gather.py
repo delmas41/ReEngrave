@@ -4334,6 +4334,265 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                        ink_raw=m_raw, ink_net=m_net)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.42 -- stacked heads on one stem: how many, and where.
+#
+# Supersedes 2.40's pair-wise `same_side_second` rule (which could refuse a
+# duplicate box but had no way to answer "how many heads does this whole
+# group hold" -- `cell/3/1/2/9`, four overlapping boxes on one stem, two real
+# heads) and absorbs 2.41's measurement-only two-head fit
+# (`benchmarks/omr-notehead-width-2026-09/probe/measure_2.41.py`'s
+# `two_head_fit`), generalised to 1/2/3 heads and wired for real. See
+# `Q.STACKED_HEAD_FIT`'s own docstring in `record.py` for the full design.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A third or more (2 half-step position units) -- Sean, 2026-09-30: "a
+#: second is always on opposite sides of the stem", so two heads on the
+#: SAME side of one stem are never a second; the smallest real interval
+#: same-side is a third. `notehead_precision.NOTEHEAD_SAME_SIDE_MAX_DY_
+#: STAFF_SPACES` (0.75 sp = 1.5 position units) is the SAME boundary stated
+#: in staff spaces; this is the position-unit form the fit's integer grid
+#: needs, restated (not imported -- `notehead_precision` imports THIS
+#: module, so the reverse import would be a cycle, the same reason
+#: `notehead_precision._stem_xywh` restates `rhythm._xywh`).
+STACKED_HEAD_MIN_GAP_POSITIONS = 2
+
+#: The fit does not move to `k+1` heads unless the MEAN per-head ink score at
+#: `k+1` beats the mean score at `k` by more than this. Sean set the
+#: same-side/opposite-side boundary by convention (DECISIONS 2026-09-30),
+#: not a fitted margin on this population; this number is the SAME stated
+#: margin discipline `Q.NOTEHEAD_RECENTRE`'s own `RECENTRE_MIN_MARGIN` uses
+#: for an analogous "is the winner clearly ahead" test, not independently
+#: fitted here. Where two counts are within this margin of each other, the
+#: fit ABSTAINS `ambiguous` (CLAUDE.md §4a) rather than guessing.
+STACKED_HEAD_FIT_MARGIN = 0.05
+
+#: How many candidate half-step positions the search adds on EITHER side of
+#: the group's own observed box span -- a bounded search around the group's
+#: own ink, never an unbounded scan of the staff (the same discipline
+#: `reading_c`'s own comment gives for the identical reason: an unbounded
+#: search reaches a different note entirely).
+STACKED_HEAD_SEARCH_MARGIN_POSITIONS = 1
+
+
+def _stacked_stem_xywh(value: Any) -> Optional[Tuple[float, float, float, float]]:
+    """`Q.STEM`'s own value shape, `[x, y, w, h]` -- restated (not imported)
+    from `notehead_precision._stem_xywh` for the same reason that module
+    restates `rhythm._xywh`: the reverse import would be a cycle
+    (`notehead_precision` imports `gather`, inline, already)."""
+    if not isinstance(value, (list, tuple)) or len(value) < 4:
+        return None
+    return (float(value[0]), float(value[1]), float(value[2]), float(value[3]))
+
+
+def _stacked_boxes_overlap(a: Tuple[float, float, float, float],
+                          b: Tuple[float, float, float, float]) -> bool:
+    ax, ay, aw, ah = a
+    bx, by, bw, bh = b
+    return (ax <= bx + bw and ax + aw >= bx
+            and ay <= by + bh and ay + ah >= by)
+
+
+def _stacked_side(stem_xywh: Tuple[float, float, float, float],
+                  box_xywh: Tuple[float, float, float, float]) -> str:
+    """Which side of the stem's OWN centre x this box's centre sits on --
+    `notehead_precision._same_side_candidates`'s exact test, restated."""
+    scx = stem_xywh[0] + stem_xywh[2] / 2.0
+    cx = box_xywh[0] + box_xywh[2] / 2.0
+    return "right" if cx >= scx else "left"
+
+
+def _stacked_best_combo(scored: Dict[int, float], k: int
+                        ) -> Optional[Tuple[Tuple[int, ...], float]]:
+    """The best `k` positions from `scored`'s own keys, pairwise at least
+    `STACKED_HEAD_MIN_GAP_POSITIONS` apart, maximising total score. Brute
+    force over `itertools.combinations` -- safe here because a stacked
+    group's own candidate-position window is small (bounded by
+    `STACKED_HEAD_SEARCH_MARGIN_POSITIONS` around a handful of overlapping
+    boxes, never the whole staff) and `k` never exceeds 3."""
+    import itertools
+    keys = sorted(scored)
+    best = None
+    for combo in itertools.combinations(keys, k):
+        if any(combo[i + 1] - combo[i] < STACKED_HEAD_MIN_GAP_POSITIONS
+               for i in range(len(combo) - 1)):
+            continue
+        total = sum(scored[p] for p in combo)
+        if best is None or total > best[1]:
+            best = (combo, total)
+    return best
+
+
+def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
+                            local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]]) -> None:
+    """`Q.STACKED_HEAD_FIT` -- ROADMAP 2.42. GATHER's half only: how many
+    heads does a stem's own overlapping-box GROUP hold, and where -- never a
+    keep/refuse decision (`notehead_precision._stacked_head_duplicate_
+    refusal` owns that, reading this row rather than re-measuring anything).
+
+    ⚠️ ONE GROUP = ONE STEM'S OWN BOX + ONE SIDE OF IT. Two notehead-classed
+    boxes (any class, black or hollow -- ROADMAP 2.42's own brief) that both
+    overlap the SAME `Q.STEM` row and stand on the SAME side of its centre x
+    are one candidate group; a box with no stem reaching it, or alone on its
+    own side, gets no row at all (2.40's own "no_stem_read"/lone-head
+    convention, restated here rather than re-derived).
+
+    ⚠️ WHOLE NOTES (no stem) ARE NOT BUILT. Every fixed proof case this
+    roadmap item measured is a stemmed group; see the roadmap row.
+    """
+    import math
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        nh_idx = [gi for gi, d in enumerate(dets)
+                 if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if len(nh_idx) < 2:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        img = getattr(c, "image_no_staff", None)
+        stem_rows = log.rows(Q.STEM, sub)
+        if grid is None or img is None or getattr(img, "ndim", 0) != 2 \
+                or not stem_rows:
+            # ⚠️ NO ROW AT ALL -- not an abstention. No unit, no raster or no
+            # stem read in this cell means this quantity has NOTHING to say
+            # about any glyph here; every consumer's fallback to the raw
+            # detector centre is the honest default, not a guess this rule
+            # made and hid.
+            continue
+        top_y, half_step = grid
+        spacing = half_step * 2.0
+
+        # ⚠️ GROUP BY (stem row id, side) -- `notehead_precision._same_side_
+        # candidates`'s exact filter chain (shared stem box overlap, same
+        # side of its centre x), restated here because GATHER has no
+        # `Evidence` object to read that decision's helper through (the
+        # reverse import would be a cycle -- `notehead_precision` already
+        # imports THIS module inline).
+        groups: Dict[Tuple[str, str], List[int]] = {}
+        for gi in nh_idx:
+            d = dets[gi]
+            box_xywh = (float(d.x_canonical), float(d.y_canonical),
+                       float(d.width_canonical), float(d.height_canonical))
+            my_stem = None
+            for sr in stem_rows:
+                srow = _stacked_stem_xywh(sr.value)
+                if srow is not None and _stacked_boxes_overlap(srow, box_xywh):
+                    my_stem = (sr, srow)
+                    break
+            if my_stem is None:
+                continue
+            sr, srow = my_stem
+            side = _stacked_side(srow, box_xywh)
+            groups.setdefault((sr.id, side), []).append(gi)
+
+        for (stem_id, side), members in groups.items():
+            if len(members) < 2:
+                continue  # a lone head on its own side -- no row, unchanged
+            # ⚠️ NO SEPARATE HOLLOW/BLACK TEMPLATE: `notehead_ink_under`'s
+            # own `best = max(center, ring)` already picks whichever window
+            # actually holds the ink (a filled head's dense centre, or a
+            # hollow head's ring) -- the SAME reader every other notehead-ink
+            # consumer in this file already trusts, restated here rather
+            # than adding a second, class-gated scoring path.
+            xs = [float(dets[gi].x_center) for gi in members]
+            positions_seen = [(float(dets[gi].y_center) - top_y) / half_step
+                              for gi in members]
+            cx = sum(xs) / len(xs)
+            lo = int(math.floor(min(positions_seen))) \
+                - STACKED_HEAD_SEARCH_MARGIN_POSITIONS
+            hi = int(math.ceil(max(positions_seen))) \
+                + STACKED_HEAD_SEARCH_MARGIN_POSITIONS
+
+            scored: Dict[int, float] = {}
+            for p in range(lo, hi + 1):
+                ccy = top_y + p * half_step
+                box = _standard_head_box(cx, ccy, spacing)
+                box_xywh = (box[0], box[2], box[1] - box[0], box[3] - box[2])
+                m = notehead_ink_under(img, box_xywh)
+                if m is not None:
+                    scored[p] = m["best"]
+            if not scored:
+                for gi in members:
+                    g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+                    log.abstain(g, Q.STACKED_HEAD_FIT,
+                               reader=READERS.CV_STACKED_HEAD_FIT, frame=frame,
+                               reason=ABSTAIN.NO_MASK,
+                               note="no ink score at any candidate slot")
+                continue
+
+            best1_pos = max(scored, key=scored.get)
+            best1 = scored[best1_pos]
+            chosen_k, chosen_positions, chosen_mean = 1, (best1_pos,), best1
+            margin: Optional[float] = None
+            ambiguous = False
+            n_boxes = len(members)
+            if n_boxes >= 2:
+                combo2 = _stacked_best_combo(scored, 2)
+                if combo2 is not None:
+                    pos2, total2 = combo2
+                    mean2 = total2 / 2.0
+                    m12 = mean2 - best1
+                    if m12 > STACKED_HEAD_FIT_MARGIN:
+                        chosen_k, chosen_positions, chosen_mean = 2, pos2, mean2
+                        margin = m12
+                    elif abs(m12) <= STACKED_HEAD_FIT_MARGIN:
+                        ambiguous = True
+                        margin = m12
+                    if not ambiguous and chosen_k == 2 and n_boxes >= 3:
+                        combo3 = _stacked_best_combo(scored, 3)
+                        if combo3 is not None:
+                            pos3, total3 = combo3
+                            mean3 = total3 / 3.0
+                            m23 = mean3 - mean2
+                            if m23 > STACKED_HEAD_FIT_MARGIN:
+                                chosen_k = 3
+                                chosen_positions = pos3
+                                chosen_mean = mean3
+                                margin = m23
+                            elif abs(m23) <= STACKED_HEAD_FIT_MARGIN:
+                                ambiguous = True
+                                margin = m23
+
+            candidates_detail = {"scores": {str(p): round(v, 4)
+                                            for p, v in scored.items()}}
+            if ambiguous:
+                for gi in members:
+                    g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+                    log.abstain(g, Q.STACKED_HEAD_FIT,
+                               reader=READERS.CV_STACKED_HEAD_FIT, frame=frame,
+                               reason=ABSTAIN.AMBIGUOUS,
+                               margin=round(margin, 4) if margin is not None
+                               else None,
+                               **candidates_detail,
+                               note="two head-counts are within the margin "
+                                    "of each other")
+                continue
+
+            chosen_sorted = sorted(chosen_positions)
+            for gi in members:
+                d = dets[gi]
+                g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+                pos_float = (float(d.y_center) - top_y) / half_step
+                slot_idx = min(range(len(chosen_sorted)),
+                              key=lambda i: abs(chosen_sorted[i] - pos_float))
+                slot_pos = float(chosen_sorted[slot_idx])
+                box_xywh = (d.x_canonical, d.y_canonical,
+                           d.width_canonical, d.height_canonical)
+                my_ink = notehead_ink_under(img, box_xywh)
+                log.observe(g, Q.STACKED_HEAD_FIT,
+                           [chosen_k, slot_idx, slot_pos,
+                            round(margin, 4) if margin is not None else None],
+                           reader=READERS.CV_STACKED_HEAD_FIT, frame=frame,
+                           side=side, stem=stem_id,
+                           ink=(my_ink["best"] if my_ink else None),
+                           **candidates_detail)
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -6861,6 +7120,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # reading `cell.image_no_staff` in common with it and `cell.binary`
         # besides.
         gather_notehead_ink(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.42, AFTER `gather_notehead_ink` AND `gather_cv_lines`:
+        # the stacked-head fit reads THIS cell's own `Q.STEM` rows (already
+        # filed by `gather_cv_lines`, above) and re-derives the same
+        # standard-head-box ink test `gather_notehead_ink` uses (CLAUDE.md
+        # rule 6 would prefer reading `Q.NOTEHEAD_INK` directly, but that
+        # quantity is filed at each box's OWN centre, never at a candidate
+        # SLOT a stacked fit is testing, which is a different position this
+        # rule must score for itself).
+        gather_stacked_head_fit(log, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

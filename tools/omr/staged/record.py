@@ -741,6 +741,60 @@ class Q(_Vocab):
     #: wiring change may CONNECT a decision, never let one guess.
     NOTEHEAD_RECENTRE = "notehead_recentre"
 
+    #: ⚠️⚠️ ROADMAP 2.42 — HOW MANY HEADS ARE STACKED ON ONE STEM, AND WHERE.
+    #: Supersedes 2.40's pair-wise `same_side_second` (widened duplicate-box)
+    #: rule and absorbs 2.41's two-head fit (`benchmarks/omr-notehead-width-
+    #: 2026-09/probe/measure_2.41.py`'s `two_head_fit`, generalised here to
+    #: 1/2/3 heads and wired for real rather than measured off-line).
+    #: GATHER, one row per notehead-classed glyph that shares a `Q.STEM` box
+    #: with at least one OTHER notehead-classed box on the SAME side of that
+    #: stem (a lone head on its own side gets NO row at all — 2.39b's own
+    #: convention for "this measurement does not apply here", never a
+    #: guessed answer). `value` is `[k, my_slot_index, my_pos_float,
+    #: margin]`: `k` the number of heads the GATHER-time fit thinks this
+    #: side's ink supports (1, 2 or 3 — the fewest that explain the ink,
+    #: gather._fit_stacked_head_count's own margin test), `my_slot_index`
+    #: which of the `k` fitted positions (0 = highest on the page) this BOX's
+    #: own centre is nearest to, `my_pos_float` that slot's own fitted
+    #: position in `Q.NOTEHEAD_STAFF_POSITION`'s exact units (clef-free
+    #: half-steps, top line = 0), and `margin` the score gap between `k` and
+    #: the next coarser/finer count considered — the SAME "how sure is this"
+    #: number 2.39b's `Q.NOTEHEAD_RECENTRE` already carries. `detail` carries
+    #: `side` (`"left"`/`"right"` of the shared stem), `stem` (that
+    #: `Q.STEM` row's id), `ink` (THIS box's own fill under its matched
+    #: slot, `gather.notehead_ink_under`'s `best` — read by ADJUDICATE to
+    #: choose which of several boxes mapped to the SAME slot survives,
+    #: exactly 2.40's own ink-not-score keep rule, ported rather than
+    #: restated) and `candidates` (every `k` this side's own ink was scored
+    #: at, so a later session can see what the fit rejected, not only what it
+    #: chose). ABSTAINS `ambiguous` where two head-counts are within the
+    #: margin of each other (CLAUDE.md §4a: EVALUATE/ADJUDICATE goes silent
+    #: where two answers both fit — the row still carries `candidates` so
+    #: the case is counted, never silently dropped) and `no_mask`/
+    #: `no_staff_geometry` exactly as `Q.NOTEHEAD_RECENTRE`'s own reasons.
+    #:
+    #: ⚠️ WHOLE NOTES (no stem at all) ARE NOT BUILT HERE — ROADMAP 2.42's own
+    #: brief names them but every fixed proof case measured is a stemmed
+    #: group; see the roadmap row and `benchmarks/omr-notehead-precision-
+    #: 2026-09/FINDINGS.md` "ROADMAP 2.42" for what this leaves open.
+    STACKED_HEAD_FIT = "stacked_head_fit"
+
+    #: ⚠️⚠️ ROADMAP 2.42 — ADJUDICATE's decided witness beside the raw
+    #: detector-centre `Q.NOTEHEAD_STAFF_POSITION`, for a notehead that
+    #: SURVIVES a stacked-head group (i.e. is the kept box for one of the
+    #: group's fitted slots). `value` is the fitted slot's own `pos_float`
+    #: (`Q.STACKED_HEAD_FIT.value[2]`, read never re-derived — CLAUDE.md
+    #: rule 6) — the SAME units `restate_pitch` already rounds
+    #: `Q.NOTEHEAD_STAFF_POSITION` to, so the EVALUATE connection is a
+    #: straight substitution, not a new arithmetic. DECIDED only where
+    #: `Q.STACKED_HEAD_FIT` did not abstain `ambiguous` and this glyph is
+    #: the group's own kept box for its slot — a glyph the group refuses
+    #: (`stacked_head_duplicate`) or a lone head outside any group carries
+    #: NO row here at all, so `restate_pitch`'s fallback to the raw
+    #: detector-centre position is silent and correct for every case this
+    #: quantity does not apply to.
+    STACKED_HEAD_POSITION = "stacked_head_position"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -2188,6 +2242,13 @@ class READERS(_Vocab):
     #: search for the offset with the highest ink fill) with a different
     #: test from `CV_NOTEHEAD_INK`'s fixed-box center/ring read.
     CV_NOTEHEAD_RECENTRE = "cv_notehead_recentre"  # gather: matched-window re-centre
+    #: `gather.gather_stacked_head_fit` -- ROADMAP 2.42. Reads `cell.
+    #: image_no_staff` in common with `CV_NOTEHEAD_INK`/`CV_NOTEHEAD_
+    #: RECENTRE` (one crop, one signal, per `CV_INK`'s own entry) but asks a
+    #: THIRD question of it: how many standard-head-sized fill peaks does a
+    #: STACK of overlapping same-stem boxes actually support, at 1, 2 or 3
+    #: candidate slots, not merely where one box's own centre sits.
+    CV_STACKED_HEAD_FIT = "cv_stacked_head_fit"  # gather: 1/2/3-head fit on a stem
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -2271,6 +2332,12 @@ class ABSTAIN(_Vocab):
     ONLY_DEBRIS = "only_debris"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
+    #: ROADMAP 2.42 -- `Q.STACKED_HEAD_POSITION` abstains this where the SAME
+    #: glyph's `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict already refused it (most
+    #: often `stacked_head_duplicate` itself): a box that does not survive
+    #: has no fitted pitch position to contribute, and this says so rather
+    #: than silently filing one anyway.
+    STACKED_HEAD_REFUSED = "stacked_head_refused"
 
     # readers with nothing to read
     #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.

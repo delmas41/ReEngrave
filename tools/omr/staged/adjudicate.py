@@ -943,6 +943,11 @@ ORDER: Tuple[str, ...] = (
     # would let a staff-line fragment vouch for a note.
     Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    # ⚠️ ROADMAP 2.42, IMMEDIATELY AFTER: `adjudicate_stacked_head_position`
+    # reads THIS decision's own VERDICT (a refused box has no fitted pitch
+    # to contribute) -- ADJUDICATE reads a frozen log, so it must already
+    # have run.
+    Q.STACKED_HEAD_POSITION,
     # ⚠️ THESE DEPEND ON NOTHING, and nothing in ADJUDICATE depends on most of
     # them EXCEPT `Q.DYNAMIC`, `Q.DURATION` and `Q.TUPLET_RATIO` -- each of
     # which must not read ink a human struck out -- so they stand here,
