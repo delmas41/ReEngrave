@@ -211,3 +211,80 @@ its GATHER quantity to `diff_records.FAMILY_GATHER_QUANTITY` and (if it
 has one) its "is not a real X" quantity to `surviving_rests`'s pattern --
 not built for families beyond `rest` here, since Sean's brief named rests
 first and this was proven on one page, not priced across families.
+
+## 5. Sean's question, answered: does "fine-tuning deletes classes" survive rule 7? (2026-09-29, evening)
+
+Round 5's claim was measured with the class-inventory screen
+(`HOW-THE-TESTS-JUDGE.md` §2): a before/after COUNT on 30 held-out cells,
+with no truth. Re-checked here with the raw data still on disk and the
+print as the umpire. Nothing trained; ~2 minutes of detector time.
+
+**1. Where production differs from the raw fine-tune — tensor diff,
+read-only.** `hollow-graft-shift09-2026-09-04.pt` vs
+`round5-sweep/distill25/epoch0.pt`: **6 of 595 tensors differ, and they
+are exactly `model.22.cv3.{0,1,2}.2.{weight,bias}`** — the per-class output
+rows. Within them, 201 of 208 rows equal `hollow-ft-2026-09-03`'s and the 7
+notehead rows are the fine-tune's with the 0.9 bias shift. Every feature
+(backbone, neck, box regression) is the fine-tune's.
+
+**2. What the two read — `probe_class_inventory.py`, 30 held-out cells,
+reproduced today.**
+
+| class | production | raw fine-tune | 09-03 base | pre-hollow |
+|---|--:|--:|--:|--:|
+| beam | 127 | **0** | 126 | 127 |
+| tie | 19 | **0** | 19 | 24 |
+| accidentalSharp | 15 | **0** | 15 | 15 |
+| augmentationDot | 13 | **0** | 12 | 12 |
+| rest8th | 12 | **0** | 12 | 12 |
+| clefG | 11 | **0** | 12 | 10 |
+| ledgerLine | 11 | 11 | 31 | 57 |
+| noteheadBlack (both) | 266 | 266 | 267 | 269 |
+
+**3. Who says it's right: the print.** `out/print/weights-question-2026-09-29/wtc_beams_prod_vs_raw.png`
+— same cell, production's beam/tie/sharp/dot boxes on the left, the raw
+fine-tune on the right. The beams, ties and dots are on the page; the raw
+fine-tune draws none of them. **Class deletion is real, and it is confined
+to the last layer**: two checkpoints with identical features, differing
+only in those 6 tensors, read 127 beams vs 0. The fine-tune's features
+still carry beams — its class rows were taught "absent".
+
+**4. So the two 09-29 findings reconcile, they do not conflict.** The
+fine-tune improved the EYES (option A: hollow heads 31 vs 17 of 68 on
+Beethoven 5 p1) and wiped the VOCABULARY of every class the corpus never
+boxed. Production = fine-tuned eyes + the base's vocabulary restored for
+201 classes. That is the recipe that works.
+
+**5. "The tool was backwards" was backwards about the design.**
+`ROUND5_METHOD_2026-09-04.md` §3 designs exactly what the 09-04 tool did:
+*"take the fine-tune and put the base's rows back for every class the
+corpus does not teach"* (its table: "keep 7 notehead classes, restore
+201"). Round 5's measurements measured the object that shipped. What was
+wrong was a LATER summary — CLAUDE.md §9 said "graft the fine-tuned rows
+onto the production checkpoint" — and the 09-29 "fix" made the tool match
+the summary. Option A then showed the summary's direction is the worse
+one. ⚠️ Consequence: the fixed tool no longer builds production's shape in
+one command. Equivalent: `--base <fine-tune> --ft <old production> --keep
+<every class the corpus does NOT teach>` — but `--bias-shift` then lands on
+the restored rows, not the taught ones, so a shifted build needs a second
+pass. Not built; no re-ship is pending.
+
+**6. One real loss, and it does not reach the product.** `ledgerLine` did
+NOT come back when its row was restored (11 prod = 11 raw vs 31 base / 57
+pre-hollow): for this class the fine-tune's FEATURES moved, not just its
+row. The 30 cells are engraved WTC plates
+(`wtc_ledger_prod_vs_prehollow.png`: pre-hollow boxes the ledger lines,
+production mostly does not) — but engraved pages route to the pre-hollow
+weights (`imgsz2048-ft-30ep.pt` is byte-identical to the PRE-HOLLOW file),
+so production never reads them. On SCANS (110 Breitkopf cells,
+`breitkopf_ledger_prod_vs_prehollow.png`) the counts are 240 vs 268 and
+the most-different cells show the pre-hollow's extras are mostly STAFF
+LINES boxed as ledgers (which `family_precision` already refuses). No
+scan-side loss seen. The screen missed the engraved loss because its
+threshold is "< 25% of baseline" and 11/31 is 35% — a class losing
+two-thirds of its reading passes the screen.
+
+**What this does not answer:** whether the fine-tune's eyes are better on
+anything but hollow heads. Option A (stages 1–2, same pipeline, only the
+weights differ) is the instrument for that, and it passes rule 7 where its
+truth is the reference encoding or Sean's verdicts.

@@ -479,11 +479,14 @@ The detector is the foundation every stage stands on and the one thing no
 stage can repair: a box it never drew has no subject. Facts that govern
 design here:
 
-- **Fine-tuning on the label corpus DELETES classes** (measured eleven
-  ways). The recipe that works is head surgery: graft the fine-tuned head
-  rows for the classes the corpus teaches onto the production checkpoint
-  (`merge_class_head.py`), with a per-class bias floor. Gate every
-  candidate on the three axes in `benchmarks/omr-labeling-survey-2026-09/`.
+- **Fine-tuning on the label corpus DELETES classes — in the last layer
+  only** (re-checked against the print 2026-09-29: production and its raw
+  fine-tune differ in exactly the six `cv3.*.2` tensors and read 127 vs 0
+  beams). The fine-tune's features are kept; the base's class rows are put
+  back for every class the corpus does not teach — that is production, and
+  it reads hollow heads better than the reverse graft (option A). Test new
+  weights Sean's way: `--through adjudicate` A/B against a copy of
+  production (`benchmarks/omr-weights-ab-2026-09/`, FINDINGS §5).
 - **Never erase staff lines before the detector** (costs 7–13 reading
   points and up to a third of the noteheads). Erase for the CV consumers,
   bound the search for everyone else.

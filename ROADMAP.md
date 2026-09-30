@@ -58,7 +58,17 @@ duplicate heads, 2.33 rest placement — a re-gather picks them up.
 - Sean labels: a real symbol ANYWHERE in the crop is `t` (the pipeline decides
   the staff later); a second box on one mark is `f`; `unsure` is excluded.
 
-### FIRST ITEM NEXT SESSION — Sean's question: how were the weight-training results being measured?
+### Sean's weights question — ANSWERED 2026-09-29 evening (`benchmarks/omr-weights-ab-2026-09/FINDINGS.md` §5)
+Class deletion is real and lives ONLY in the six per-class output tensors:
+production and its raw fine-tune share every other tensor and read 127 vs 0
+beams on the same cells, against the print. Production = fine-tuned eyes +
+the base's class rows restored — exactly round 5's own design; the "backwards"
+label described a later summary, and the 09-29 tool fix now builds the worse
+direction by default. ledgerLine lost 2/3 in the fine-tune's features, on
+engraved cells only — which route to the pre-hollow weights. No scan loss seen.
+The original question, kept for the record:
+
+#### (was) FIRST ITEM — how were the weight-training results being measured?
 Today overturned two training-era conclusions and exposed a shipped mistake:
 1. **Round 6 ("specialists delete their own class") — WITHDRAWN.** It does not
    reproduce under its own recipe and instrument; its raw outputs were deleted
