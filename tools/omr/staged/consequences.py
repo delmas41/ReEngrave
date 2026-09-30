@@ -19,7 +19,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from . import record as R
 from .evaluate import Consequence, rule
-from .record import ABSTAIN, Kind, Log, Outcome, Q, READERS, Scope, Subject, Verdict
+from .record import (ABSTAIN, Kind, Log, Outcome, Q, READERS, Scope, Subject,
+                     Verdict, meter_at)
 
 
 def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
@@ -498,6 +499,336 @@ def _admitted(note: Verdict) -> List[dict]:
         out.append({**note.value, "beats": beats, "written": beats,
                     "beam_levels": level})
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# REST BEAT-SLOT -- ROADMAP 2.35. Sean, 2026-09-29 (`docs/DECISIONS.md`,
+# quoted in full at ROADMAP 2.33 / `benchmarks/omr-bar-sum-holdout-2026-09/
+# FINDINGS.md` §20d): *"based upon the other notes in a measure there will be
+# a limited space geometrically where the rest can be."* A half-or-smaller
+# rest occupies the horizontal GAP between its voice's neighbouring events, at
+# the onset its own preceding durations imply within that voice.
+#
+# ⚠️⚠️ WHY EVALUATE AND NOT `adjudicate_rest_is_not_a_rest`. The three
+# quantities this needs -- `Q.EVENT` (which glyphs sound together), `Q.VOICES`
+# (which voice this glyph is in) and `Q.DURATION` (the neighbours' onsets) --
+# are all decided AFTER `Q.REST_IS_NOT_A_REST` in `adjudicate.ORDER`
+# (`family_precision.py`'s own module docstring states the same fact for
+# EVERY refusal in that file). A question that needs a NOT-YET-DECIDED fact
+# cannot honestly be asked in ADJUDICATE; EVALUATE exists precisely for a
+# consequence of a fact that settles LATER, so this is `size_measure_rest`'s
+# shape (cause=meter, a CELL-scoped fact) applied to a GLYPH-scoped effect
+# that happens to revise an ADJUDICATE verdict -- the same shape
+# `apply_printed_accidental` already uses to supersede `Q.ACCIDENTAL`.
+#
+# ⚠️ TWO FORCED SUB-RULES, NOT THE FULL DESIGN. §20d's design also covers a
+# conductor's page lining up against `Q.ONSET_COLUMN` (cross-staff, already
+# gathered and voted) and an INFER-shaped "best explanation" choice between
+# competing readings -- CLAUDE.md §4a: EVALUATE goes silent where the answer
+# is merely BEST, never where it must choose between two that both fit, and
+# `Q.ONSET_COLUMN`/an argmax over candidates is exactly that choice. What
+# FOLLOWS without choosing, from `Q.EVENT`/`Q.VOICES`/`Q.DURATION` alone:
+#
+#   (A) this glyph's own ink cannot occupy a horizontal span another event of
+#       the SAME VOICE already occupies -- no gap exists there, so the "rest"
+#       reading is contradicted by the print itself, not by a preference
+#       between readings (`rest_shares_a_beat_slot`).
+#   (B) the events of this voice strictly BEFORE this rest (by print
+#       position) already sum, in DECIDED beats, to the bar's own METER --
+#       so by the time this rest is reached there is no time left in the bar
+#       for it to occupy, which is what "the onset order its events imply"
+#       forces once every input is DECIDED (`rest_after_the_bar_ends`).
+#
+# ⚠️ SCOPE: SINGLE-VOICE BARS ONLY, AND THAT IS A LINE DRAWN, NOT A GAP LEFT
+# OPEN. A multi-voice bar's rest placement is ROADMAP 2.27c's own convention
+# (`_rest_voice_side` in `adjudicators/rhythm.py`, ADJUDICATE-side, decided
+# WITHIN `Q.VOICES` itself) -- a displaced voice-2 rest legitimately sits
+# beside a voice-1 note, which is exactly the shape (A) must not condemn, and
+# re-adjudicating which VOICE a rest belongs to is not this item's brief.
+# `_rest_beat_slot_context` returns `None` -- no verdict, the rest stands --
+# wherever `Q.VOICES` decided more than one stream, rather than trying to
+# pick the "right" voice's neighbours to check against.
+#
+# ⚠️ CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: excluding
+# `restDoubleWhole`/`restHNr`/`restHBar` alongside `restWhole` (ROADMAP 2.33's
+# own scope) is READ OFF Sean's words -- "a whole rest = the bar, centred" --
+# rather than separately measured: these three mean "the whole bar" in a
+# longer or shorter meter exactly as `restWhole` does, so a bar holding one of
+# them beside OTHER notes of the same voice is not a case this project has
+# seen. Falsified by a print crop showing one of the three sharing a bar with
+# other same-voice notes, which is the one case this scoping would wrongly
+# admit to the beat-slot check instead of leaving it to a `size_measure_rest`
+# -style rule.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: See the CONVENTION ASSUMED note above.
+REST_BEAT_SLOT_WHOLE_LIKE_CLASSES = frozenset((
+    "restWhole", "restDoubleWhole", "restHNr", "restHBar",
+))
+
+#: The same float slack `reconcile_duration` uses for "landed exactly".
+REST_BEAT_SLOT_EPSILON_QUARTERS = 1e-6
+
+
+def _rest_beat_slot_box(log: Log, subject: Subject) -> Optional[Tuple[float, float]]:
+    """This glyph's own `Q.GLYPH_BOX` as `(x0, x1)` in its cell's canonical
+    frame, or `None` -- the same shape `family_precision._glyph_box_row`
+    reads, duplicated rather than imported across an ADJUDICATE/EVALUATE
+    module boundary for the same reason `_cell_box_page_px` already is there.
+    """
+    rows = log.rows(Q.GLYPH_BOX, subject)
+    if not rows:
+        return None
+    v = rows[-1].value
+    if not isinstance(v, (list, tuple)) or len(v) != 5:
+        return None
+    try:
+        x0 = float(v[1])
+        return x0, x0 + float(v[3])
+    except (TypeError, ValueError):
+        return None
+
+
+def _rest_beat_slot_event_extent(log: Log, cell: Subject, glyphs
+                                 ) -> Optional[Tuple[float, float]]:
+    """The union `(x0, x1)` of every named glyph's own box, in `cell` -- a
+    chord's own horizontal footprint, or a rest's. `None` where none of the
+    named glyphs has a box (rule 8: no measurement, no verdict)."""
+    x0s: List[float] = []
+    x1s: List[float] = []
+    for g in glyphs:
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                      staff=cell.staff, cell=cell.cell, glyph=g)
+        box = _rest_beat_slot_box(log, sub)
+        if box is None:
+            continue
+        x0s.append(box[0])
+        x1s.append(box[1])
+    if not x0s:
+        return None
+    return min(x0s), max(x1s)
+
+
+def _rest_beat_slot_context(log: Log, subject: Subject) -> Optional[dict]:
+    """Every fact `rest_beat_slot` needs, gathered ONCE -- shared with its own
+    `reads_beyond_cause` declaration so the two can never disagree about what
+    was read (the same discipline `_size_measure_rest_also_reads` follows
+    with `_standing`/`_left_the_bar`).
+
+    `None` wherever the connection cannot run at all: not a rest, a
+    whole-bar-filling class, already refused (or not yet DECIDED-false),
+    outside a single-voice bar, or `Q.EVENT` has not grouped this cell --
+    CLAUDE.md rule 8, silence rather than a guess.
+    """
+    if subject.glyph is None:
+        return None
+    if not log.rows(Q.REST, subject):
+        return None
+    box_rows = log.rows(Q.GLYPH_BOX, subject)
+    if not box_rows or not isinstance(box_rows[-1].value, (list, tuple)) \
+            or len(box_rows[-1].value) != 5:
+        return None
+    cls = str(box_rows[-1].value[0])
+    if cls in REST_BEAT_SLOT_WHOLE_LIKE_CLASSES:
+        return None
+
+    cur = log.verdict(Q.REST_IS_NOT_A_REST, subject)
+    if cur is None or cur.outcome is not Outcome.DECIDED or cur.value is not False:
+        # ⚠️ NEVER RE-DECIDES ONE ALREADY REFUSED, and never touches one whose
+        # own verdict has not settled -- there is nothing to supersede safely.
+        return None
+
+    cell = subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    voices = log.verdict(Q.VOICES, cell)
+    if voices is None or voices.outcome is not Outcome.DECIDED \
+            or not isinstance(voices.value, dict):
+        return None
+    streams = voices.value.get("voices") or []
+    if voices.value.get("n_voices") != 1 or len(streams) != 1:
+        # ⚠️ SCOPE, NOT AN ABSTENTION -- see the module note above: a
+        # multi-voice bar's rest placement is ROADMAP 2.27c's own question.
+        return None
+    voice_glyphs = set(streams[0])
+    if subject.glyph not in voice_glyphs:
+        # ⚠️ A COVERING REST (`rests_in_every_voice`) never reaches here in a
+        # single-voice bar -- `n_voices == 1` means there is no cover to be
+        # in -- but the check stays explicit rather than assumed.
+        return None
+
+    grouping = log.verdict(Q.EVENT, cell)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED \
+            or not isinstance(grouping.value, dict):
+        return None
+    raw_events = grouping.value.get("events") or []
+    events = sorted(
+        (e for e in raw_events if set(e.get("glyphs") or ()) & voice_glyphs),
+        key=lambda e: (float(e.get("x") or 0.0), min(e.get("glyphs") or (0,))))
+    rest_idx = None
+    for i, e in enumerate(events):
+        if subject.glyph in (e.get("glyphs") or ()):
+            rest_idx = i
+            break
+    if rest_idx is None:
+        return None
+
+    return {"cell": cell, "cls": cls, "cur": cur, "voices": voices,
+            "grouping": grouping, "events": events, "rest_idx": rest_idx}
+
+
+def _rest_beat_slot_overlap(log: Log, ctx: dict, rest_box: Tuple[float, float]
+                            ) -> bool:
+    """(A): does this rest's own box share horizontal space with ANOTHER
+    event of the same voice -- no gap exists there, whatever the meter says.
+    """
+    rx0, rx1 = rest_box
+    for i, e in enumerate(ctx["events"]):
+        if i == ctx["rest_idx"]:
+            continue
+        extent = _rest_beat_slot_event_extent(log, ctx["cell"],
+                                              e.get("glyphs") or ())
+        if extent is None:
+            continue
+        ex0, ex1 = extent
+        if min(rx1, ex1) - max(rx0, ex0) > 0.0:
+            return True
+    return False
+
+
+def _rest_beat_slot_onset(log: Log, ctx: dict
+                          ) -> Optional[Tuple[bool, float, float, Verdict,
+                                              List[Verdict]]]:
+    """(B): the running onset, in DECIDED beats, of every event of this voice
+    strictly BEFORE this rest (by print position) -- and whether it already
+    reaches or passes the bar's own METER, in which case the print order
+    contradicts what those durations imply: there is no time left for this
+    rest to occupy. `None` wherever a prerequisite (a neighbour's duration,
+    or the meter in force) is not DECIDED -- rule 8, cannot-tell is never an
+    answer.
+    """
+    cell = ctx["cell"]
+    onset = 0.0
+    used: List[Verdict] = []
+    for e in ctx["events"][:ctx["rest_idx"]]:
+        glyphs = sorted(e.get("glyphs") or ())
+        if not glyphs:
+            return None
+        rep = glyphs[0]
+        sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system,
+                      staff=cell.staff, cell=cell.cell, glyph=rep)
+        d = log.verdict(Q.DURATION, sub)
+        if d is None or d.outcome is not Outcome.DECIDED \
+                or not isinstance(d.value, dict):
+            return None
+        beats = d.value.get("beats")
+        if beats is None:
+            return None
+        onset += float(beats)
+        used.append(d)
+
+    meter_v = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter_v is None or meter_v.outcome is not Outcome.DECIDED:
+        return None
+    segment = meter_at(meter_v.value, cell.cell)
+    if not segment:
+        return None
+    num, den = segment.get("numerator"), segment.get("denominator")
+    if not num or not den:
+        return None
+    try:
+        target = float(num) * 4.0 / float(den)
+    except (TypeError, ValueError, ZeroDivisionError):
+        return None
+    overflow = onset >= target - REST_BEAT_SLOT_EPSILON_QUARTERS
+    return overflow, onset, target, meter_v, used
+
+
+def _rest_beat_slot_also_reads(log: Log, subject: Subject,
+                               voices: Verdict) -> List[str]:
+    """Declared for `evaluate.run_over`, exactly as `_size_measure_rest_also_
+    reads` is: `Q.EVENT`'s grouping, and -- where (B)'s prerequisites are met
+    at all -- the meter and every neighbour's duration it actually reads.
+    Shares `_rest_beat_slot_context`/`_rest_beat_slot_onset` with the rule
+    body so the two can never disagree about what was read."""
+    ctx = _rest_beat_slot_context(log, subject)
+    if ctx is None:
+        return []
+    out = [ctx["grouping"].id]
+    onset = _rest_beat_slot_onset(log, ctx)
+    if onset is not None:
+        _overflow, _onset, _target, meter_v, used = onset
+        out.append(meter_v.id)
+        out.extend(d.id for d in used)
+    return out
+
+
+@rule(consequence=Consequence.REST_BEAT_SLOT,
+      cause=Q.VOICES, effect=Q.REST_IS_NOT_A_REST, scope=Kind.GLYPH,
+      reads_beyond_cause=_rest_beat_slot_also_reads,
+      bound="Fires on at most the one glyph it is called for, and only where "
+            "that glyph carries a Q.REST row, is not a whole-bar-filling "
+            "class, and its Q.REST_IS_NOT_A_REST verdict is still DECIDED "
+            "false -- it never re-decides one already refused. Restricted to "
+            "a SINGLE-VOICE bar (a multi-voice bar's rest placement is "
+            "ROADMAP 2.27c's own question, left untouched). Reads only "
+            "DECIDED verdicts for the neighbours it sums or measures -- a "
+            "NARROWED or ABSTAINED Q.EVENT/Q.VOICES/Q.METER/Q.DURATION along "
+            "the way makes it return [] rather than guess. Adds no glyph, "
+            "deletes none, and touches no OTHER glyph's verdict.")
+def rest_beat_slot(log: Log, subject: Subject, voices: Verdict) -> List[Verdict]:
+    """Sean's beat-slot convention, the two sub-rules that FOLLOW without
+    waiting on INFER -- see the module note above for the full design and
+    what is deliberately NOT built here (`Q.ONSET_COLUMN`, a multi-voice bar,
+    an argmax between competing readings).
+
+    ⚠️ IT SUPERSEDES, IT DOES NOT DELETE -- exactly `apply_printed_accidental`'s
+    own shape for revising an ADJUDICATE verdict from EVALUATE. The refused
+    verdict's `basis` names the ADJUDICATE verdict it replaces plus every row
+    this rule actually read, so a reviewer can see the contest rather than a
+    changed number with no history.
+    """
+    ctx = _rest_beat_slot_context(log, subject)
+    if ctx is None:
+        return []
+    rest_box = _rest_beat_slot_box(log, subject)
+    if rest_box is None:
+        return []
+
+    cur = ctx["cur"]
+    grouping = ctx["grouping"]
+
+    if _rest_beat_slot_overlap(log, ctx, rest_box):
+        basis = (cur.id, voices.id, grouping.id)
+        out = Verdict(
+            id=log._next_id("vrd"), subject=subject,
+            quantity=Q.REST_IS_NOT_A_REST, outcome=Outcome.DECIDED,
+            value=True, decider="rest_beat_slot",
+            reason="rest_shares_a_beat_slot",
+            considered=basis, basis=basis,
+            detail={"class": ctx["cls"], "rest_idx": ctx["rest_idx"]},
+            supersedes=cur.id)
+        return [log.record(out)]
+
+    onset = _rest_beat_slot_onset(log, ctx)
+    if onset is not None:
+        overflow, onset_beats, target, meter_v, used = onset
+        if overflow:
+            basis = (cur.id, voices.id, grouping.id, meter_v.id,
+                     *(d.id for d in used))
+            out = Verdict(
+                id=log._next_id("vrd"), subject=subject,
+                quantity=Q.REST_IS_NOT_A_REST, outcome=Outcome.DECIDED,
+                value=True, decider="rest_beat_slot",
+                reason="rest_after_the_bar_ends",
+                considered=basis, basis=basis,
+                detail={"class": ctx["cls"], "rest_idx": ctx["rest_idx"],
+                       "onset_before_rest": round(onset_beats, 4),
+                       "bar_beats": target},
+                supersedes=cur.id)
+            return [log.record(out)]
+
+    return []
 
 
 def _move_glyph_also_reads(log: Log, subject: Subject,

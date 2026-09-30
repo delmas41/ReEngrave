@@ -2211,3 +2211,138 @@ decision for this item.
   fix (§20j).
 - `benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`: the
   Rests row, updated to point here.
+
+## 21. ROADMAP 2.35 — the rest beat-slot connection, the part that FOLLOWS
+(2026-09-29)
+
+PATH: STAGED. Branch `claude/rest-beat-slot-2.35`, off `origin/main`
+(5173d91c). Sean, 2026-09-29 (`docs/DECISIONS.md`, quoted in full at §20d
+above): *"based upon the other notes in a measure there will be a limited
+space geometrically where the rest can be."* §20d named this design and left
+it WRITTEN, NOT BUILT because `Q.EVENT`/`Q.VOICES`/`Q.DURATION` are all
+decided AFTER `Q.REST_IS_NOT_A_REST` in `adjudicate.ORDER` — this item builds
+the part of it that FOLLOWS.
+
+### §21a. Where it lives, and why
+
+`consequences.rest_beat_slot` — a NEW **EVALUATE** rule
+(`Consequence.REST_BEAT_SLOT`, cause `Q.VOICES`, effect
+`Q.REST_IS_NOT_A_REST`), not an edit to `adjudicate_rest_is_not_a_rest`. The
+three quantities the design needs are all EVALUATE-stage facts by the time
+they exist on the record — ADJUDICATE has already frozen a False (`"rest"`)
+verdict for every rest this rule might still refuse — so the only place a
+change built FROM them can run is a stage that revises an earlier one.
+`apply_printed_accidental` is the model: it supersedes `Q.ACCIDENTAL` from
+EVALUATE exactly as this supersedes `Q.REST_IS_NOT_A_REST`. `Q.VOICES` and
+`Q.REST_IS_NOT_A_REST` are new entries in `evaluate.DOWNHILL`, inserted
+BEFORE `Q.METER`/`Q.DURATION` (not after) so `rest_beat_slot` fires earlier in
+the SAME EVALUATE pass than `size_measure_rest`/`reconcile_duration` — a rest
+this rule refuses is already out of the bar by the time either of those sums
+it, the same ordering argument `_LEAVES_THE_BAR` makes for an ADJUDICATE
+refusal, applied to one decided mid-EVALUATE instead.
+
+### §21b. The two sub-rules built, and what is deliberately NOT
+
+Two FORCED checks, either one refusing outright (reason word each):
+
+1. **`rest_shares_a_beat_slot`** — this rest's own box shares horizontal
+   space with ANOTHER event of its own voice (their canonical x-ranges
+   overlap) — no gap exists there, so the "rest" reading is contradicted by
+   the print itself.
+2. **`rest_after_the_bar_ends`** — the events of this voice strictly BEFORE
+   this rest (by print position, all DECIDED) already sum, in beats, to the
+   bar's own METER — there is no time left in the bar for this rest to
+   occupy, which is what "the onset order its events imply" forces once
+   every input is DECIDED.
+
+NOT built, and named rather than guessed at: `Q.ONSET_COLUMN` (the
+cross-staff, already-gathered-and-voted witness §20d's design also names) and
+any argmax between two readings that both fit — CLAUDE.md §4a reserves that
+choice for INFER, which this item's brief keeps out of scope. Multi-voice
+bars are ALSO out of scope, by a scope line rather than a gap left open:
+ROADMAP 2.27c's own convention (`_rest_voice_side`, decided INSIDE
+`Q.VOICES`) already owns which voice a rest belongs to and where a displaced
+one may legitimately sit beside another voice's note; re-adjudicating that is
+not this item's brief. `_rest_beat_slot_context` returns `None` — no verdict,
+the rest stands — wherever `Q.VOICES` decided more than one stream.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: excluding
+`restDoubleWhole`/`restHNr`/`restHBar` alongside `restWhole` (ROADMAP 2.33's
+own scope) is READ OFF Sean's words rather than separately measured — these
+three mean "the whole bar" in a longer or shorter meter exactly as
+`restWhole` does. Falsified by a print crop showing one of the three sharing
+a bar with other same-voice notes, which is the one case this scoping would
+wrongly admit.
+
+### §21c. Reaching EXPORT through the existing accounting
+
+`export.py:838` already reads `Q.REST_IS_NOT_A_REST` through
+`rec.verdict(...)` (supersession-resolved) and drops the glyph under
+`f"not_a_rest:{reason}"` — the SAME accounting 2.33's six refusals already
+use. No export-side change was needed: a rest `rest_beat_slot` refuses is
+counted `not_a_rest:rest_shares_a_beat_slot` /
+`not_a_rest:rest_after_the_bar_ends` and never reaches `to_musicxml`'s
+`Unbalanced` equality as an unaccounted note, exactly like every other named
+rest refusal.
+
+### §21d. Tests, RED → GREEN
+
+`tools/omr/tests/test_staged_rest_beat_slot_2_35.py`, 10 tests, one call per
+test directly against `consequences.rest_beat_slot(log, glyph, voices)` (the
+same style `test_staged_reconcile_what_is_in_the_bar.py` and
+`test_staged_measure_rest_left_the_bar.py` use — no gather, no
+`evaluate.run()`, hand-built `Log` fixtures via `record.glyph`/`cell`/
+`system`):
+
+- 2 RED→GREEN, one per sub-rule (`TestCheckA_Overlap`,
+  `TestCheckB_OnsetOverflow`) — confirmed RED by copying `origin/main`'s
+  `consequences.py`/`evaluate.py` over the working tree (copy-aside/restore,
+  never `git checkout` on the dirty tree) and re-running: all 10 tests fail
+  with `AttributeError: module 'tools.omr.staged.consequences' has no
+  attribute 'rest_beat_slot'`, confirming the connection did not exist before
+  this item, not merely that one assertion was wrong.
+- 2 positive controls, Sean's own two named in the brief: a legitimate rest
+  in a real gap with room left in the bar is KEPT; a displaced voice-2 rest
+  touching a voice-1 note is KEPT (the multi-voice scope line, §21b).
+- 3 abstain cases: an ABSTAINED `Q.VOICES` (the harness's own pre-filter,
+  exercised directly); a NARROWED neighbour duration (check (B) cannot sum
+  the bar and returns `[]` rather than guess); an ABSTAINED meter (same).
+- 3 scope/supersession: an already-refused rest is left alone (never
+  re-decided); a `restWhole` that WOULD overlap is out of scope even then
+  (2.33 already owns it); the basis names the contest (`Q.VOICES`, `Q.EVENT`,
+  the prior ADJUDICATE verdict).
+
+### §21e. Gates
+
+`pytest tools/omr/tests/test_staged_rest_beat_slot_2_35.py`: 10 passed.
+`pytest -m "not slow" tools/omr/tests -q -p no:cacheprovider`: **3,933 passed,
+3 skipped** on this branch, **3,923 passed, 3 skipped** on `origin/main`
+(measured directly, copy-aside/restore) — the +10 is exactly this item's own
+test file, run clean twice. `python3 -m tools.omr.staged.check`: **TOTAL 245**
+both on `origin/main` and on this branch (same per-check breakdown:
+inventory 10, health 0, wiring 67, gather_coverage 15, capture 18, reach 22,
+brakes 9, trace 3, source_text_tests 46, mutation_batteries_live 55) —
+unchanged. `inventory --check`/`wiring --check`: no new
+entry — `rest_beat_slot` writes a raw `Verdict` (like `apply_printed_
+accidental`) rather than an ADJUDICATE `Ruling`, so its two new reason words
+are not read by `brakes._reasons_constructible`'s AST walk over
+`family_precision.py` and were deliberately NOT added to `Q.REST_IS_NOT_A_
+REST`'s own `reasons=` tuple there (adding them would make that check fail —
+no `Ruling(reason=...)` site in that module constructs them).
+
+### §21f. Asked, not built
+
+Whether a print crop would confirm the `restDoubleWhole`/`restHNr`/
+`restHBar` scoping (§21b's CONVENTION ASSUMED) — no crop was pulled this pass
+per Sean's 2026-09-28/29 process decision (wiring proved by fixtures, no crop
+batches). Whether `Q.ONSET_COLUMN`'s cross-staff witness should join this
+connection on a conductor's page — named in §20d, not this item's brief.
+
+### §21g. Files
+
+- `tools/omr/staged/consequences.py`: `rest_beat_slot` and its helpers
+  (`_rest_beat_slot_context`, `_rest_beat_slot_overlap`,
+  `_rest_beat_slot_onset`, `_rest_beat_slot_also_reads`).
+- `tools/omr/staged/evaluate.py`: `Consequence.REST_BEAT_SLOT`; `Q.VOICES`
+  and `Q.REST_IS_NOT_A_REST` added to `DOWNHILL`.
+- `tools/omr/tests/test_staged_rest_beat_slot_2_35.py`: the tests.

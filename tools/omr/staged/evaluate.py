@@ -56,6 +56,12 @@ class Consequence(str, Enum):
     JOIN_PARTS = "join_parts"                # part boundaries settled
     NAME_PART = "name_part"                  # instrument settled
     SIZE_MEASURE_REST = "size_measure_rest"  # meter settled, over a silent bar
+    #: ROADMAP 2.35. The voice a rest belongs to settled, so its beat-slot
+    #: placement -- does another event of that voice already occupy this
+    #: horizontal space, or has that voice's own time already run out before
+    #: it -- can now be checked and, where it fails, the rest reading is
+    #: superseded.
+    REST_BEAT_SLOT = "rest_beat_slot"
 
 
 @dataclass(frozen=True)
@@ -126,6 +132,17 @@ DOWNHILL: Tuple[str, ...] = (
     # `restate_pitch`'s job and would be a second spelling of it.
     Q.ACCIDENTAL_OWNER,
     Q.ACCIDENTAL,
+    # ⚠️ ROADMAP 2.35, BOTH NEW AND BOTH BEFORE `Q.METER`/`Q.DURATION` --
+    # DELIBERATELY, so `rest_beat_slot` fires BEFORE `size_measure_rest`/
+    # `reconcile_duration` in the SAME pass (`_pass` sorts registered rules
+    # by the DOWNHILL index of their cause) and a rest it refuses is already
+    # OUT of the bar by the time either of those sums it -- the same
+    # ordering argument `_LEAVES_THE_BAR` makes for an ADJUDICATE refusal,
+    # applied to one decided mid-EVALUATE instead. `Q.VOICES` is the cause
+    # (the fact whose settling triggers the check); `Q.REST_IS_NOT_A_REST`
+    # is the effect it may supersede.
+    Q.VOICES,
+    Q.REST_IS_NOT_A_REST,
     Q.METER,
     Q.DURATION,
 )
