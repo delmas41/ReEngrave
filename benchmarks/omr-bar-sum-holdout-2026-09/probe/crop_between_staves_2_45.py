@@ -113,11 +113,11 @@ def main() -> int:
         gi = sub.rsplit("/", 1)[1]
         dr.text((bx0, by0 - 22), f"g{gi}", fill=(220, 0, 0))
 
-    band_h = 150
+    band_h = 190
     out_im = Image.new("RGB", (crop.width, crop.height + band_h), "white")
     out_im.paste(crop, (0, band_h))
     cd = ImageDraw.Draw(out_im)
-    cd.text((6, 4), "Brahms 1/i Breitkopf p1, system 0, bar 5 -- "
+    cd.text((6, 4), "Brahms 1/i Breitkopf p1, system 0, printed bar 13 -- "
                     "3 printed eighth rests between staves 2 and 3",
             fill=(0, 0, 0))
     cd.text((6, 22), "BLUE = staff 2 (upper, violin/oboe register) own lines "
@@ -131,15 +131,20 @@ def main() -> int:
     cd.text((6, 78), "missing an eighth at each of these three onsets "
                     "without them -- the rests belong to the LOWER "
                     "(green) staff.", fill=(0, 0, 0))
-    cd.text((6, 100), "Automated bar-sum check (this build): staff 2's own "
-                    "bar sums 5.0 of 9.0 (9/4) even after excluding the "
-                    "rests and every", fill=(0, 0, 0))
-    cd.text((6, 116), "contest-relocated notehead; staff 3's sums 4.5 of "
-                    "9.0. Neither shortfall equals exactly one rest's own "
-                    "0.5 beats -- this bar", fill=(0, 0, 0))
-    cd.text((6, 132), "holds OTHER undetected ink besides these 3 rests, so "
-                    "the exact-match rule correctly declines rather than "
-                    "guess (rule 8).", fill=(0, 0, 0))
+    cd.text((6, 100), "BLOCKER 1 (named, not built): Q.VOICES correctly "
+                    "decides 2 voices on BOTH staves, but Q.METER decides "
+                    "9/4 for this whole system", fill=(0, 0, 0))
+    cd.text((6, 116), "(from printed bar 8's 9/8 hemiola, 2.12h/2.12l/2.29's "
+                    "own unrepaired misread) where the plate prints 6/8 -- "
+                    "the rule uses the DECIDED", fill=(0, 0, 0))
+    cd.text((6, 132), "meter only, never guesses 6/8, so 2 voices x 9.0 "
+                    "cannot land near the group's 1.5-beat gap.", fill=(0, 0, 0))
+    cd.text((6, 150), "BLOCKER 2: even with 6/8 injected, staff 2 (upper) "
+                    "sums 5.0 of the expected 6.0 -- a SEPARATE ~1.0-beat "
+                    "gap unrelated to these", fill=(0, 0, 0))
+    cd.text((6, 166), "three rests, named not diagnosed here -- against the "
+                    "DECIDED 9/4, staff 2's own bar sums 5.0 of 18.0 and "
+                    "staff 3's sums 4.5 of 18.0.", fill=(0, 0, 0))
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     out_im.save(a.out)

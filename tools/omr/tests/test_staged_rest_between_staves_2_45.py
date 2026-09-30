@@ -13,27 +13,28 @@ rests were lost):
     crosses as they both jump up higher. If the 8th note rests didn't belong
     to the lower staff then it would be missing a voice."
 
-`consequences.reinstate_rest_between_staves` (EVALUATE, cause `Q.METER`,
-effect `Q.REST_IS_NOT_A_REST`) reinstates the ONE twin whose own staff's bar
-is short exactly this rest's own length, once every currently-refused glyph
-is excluded (`_bar_total_excluding_refused`, built from `reconcile_duration`'s
-own `_standing`/`_left_the_bar`/`_event_totals` preamble) -- provided every
-OTHER contested staff is already complete without it. This is a bar-sum
-reading, not `Q.VOICES` itself: `adjudicate_event` reads `Q.REST`, never
-`Q.REST_IS_NOT_A_REST`, so a rest's ADJUDICATE-time refusal never removes it
-from `Q.EVENT`/`Q.VOICES` at all and that quantity's OUTCOME cannot tell a
-staff that needs the rest from one that does not.
+⚠️⚠️ MANAGER CORRECTION 2026-09-30 to the first build of this file, which
+fired ZERO times on Sean's own shape. Fixed here:
 
-The fixtures below construct TWO cells at the same (page, system, cell) --
-different staves, matching CLAUDE.md's "a bar is keyed on (page, system,
-cell)" -- each with its own `Q.DURATION`/`Q.EVENT`, a `Q.METER` at the shared
-system, and a `Q.GLYPH_BAND_DISTANCE` contest linking the two staves' own
-copies of the same ink, exactly as `gather._gather_owner_candidates` already
-writes it (this rule reads that row; nothing in GATHER changed). This is
-entirely new behaviour, so RED is simply the function's absence on the
-unrepaired tree -- confirmed by moving `reinstate_rest_between_staves` and
-its helper aside and re-running: `AttributeError`, all 12 tests below fail to
-collect. Restoring the file returns every test to green.
+  1. A staff's expected total is VOICES x bar length, not one bar length --
+     `_voice_count` reads `Q.VOICES` where decided, else counts DECIDED
+     `Q.STEM_DIRECTION`s exactly as `adjudicate_voices` (2.21) counts them
+     at its own first rule.
+  2. The three contested rests are ONE GROUP per bar against one neighbour
+     staff (`_contest_group`), not three independent 0.5-beat tests -- a
+     staff's shortfall must equal the GROUP's own total length.
+  3. The meter read is whatever `Q.METER` DECIDED, never a better guess.
+     `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` SS21c names the
+     real blocker on the actual Brahms p1 record (a persisting 2.12h
+     mis-metering on this exact bar); these fixtures inject a CORRECT
+     meter directly, per Sean's 2026-09-29 process convention (microscopic
+     tests, no re-gather), to prove the mechanism itself.
+
+RED is the function's total absence on the unrepaired tree (confirmed by
+moving `reinstate_rest_between_staves`/`_bar_total_excluding`/
+`_contest_group`/`_group_length`/`_voice_count` out of `consequences.py`
+and re-running: `AttributeError`, every test below fails to collect;
+restoring returns every test to green).
 """
 from __future__ import annotations
 
@@ -73,9 +74,21 @@ def _events(log, cell, *glyph_groups):
        {"events": [{"glyphs": list(g)} for g in glyph_groups]})
 
 
-def _meter(log, num=2, den=4):
+def _meter(log, num=6, den=8):
     return _v(log, R.system(PAGE, SYSTEM), Q.METER, Outcome.DECIDED,
               {"numerator": num, "denominator": den, "raw": f"{num}/{den}"})
+
+
+def _voices(log, cell, n):
+    _v(log, cell, Q.VOICES, Outcome.DECIDED,
+       {"n_voices": n, "voices": [], "rests_in_every_voice": [],
+        "rests_displaced_by_position": {}})
+
+
+def _stem_dir(log, staff, gi, direction):
+    sub = R.glyph(PAGE, SYSTEM, staff, CELL_IDX, gi)
+    _v(log, sub, Q.STEM_DIRECTION, Outcome.DECIDED, direction)
+    return sub
 
 
 def _refused_rest(log, staff, gi, beats, *, other_staff_key, own_key,
@@ -100,68 +113,105 @@ def _fire(log, glyph, meter):
 
 
 class TestSeansCase(unittest.TestCase):
-    """RED on the unrepaired tree (the rule does not exist at all)."""
+    """Sean's own shape: 2 voices per staff, 6/8, one group of 3 eighth
+    rests. RED on the unrepaired tree."""
 
-    def _build(self, *, lower_note_beats=1.5, upper_notes=(1.0, 1.0),
-              rest_beats=0.5):
+    def _build(self):
         log = Log()
-        meter = _meter(log)
-        # Lower staff: one decided note short of 2/4 by exactly the rest.
-        n = _decided_duration(log, LOWER_STAFF, 0, lower_note_beats)
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, rest_beats,
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
-        # Upper staff: two decided notes that already sum to 2/4, plus its
-        # own independently-detected (and independently refused) copy of
-        # the SAME physical ink.
-        u0 = _decided_duration(log, UPPER_STAFF, 0, upper_notes[0])
-        u1 = _decided_duration(log, UPPER_STAFF, 1, upper_notes[1])
-        rest_upper = _refused_rest(log, UPPER_STAFF, 2, rest_beats,
-                                   other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [u0], [u1], [rest_upper])
-        return log, meter, rest_lower, rest_upper
+        meter = _meter(log, 6, 8)                      # bar_len = 3.0
+        _voices(log, LOWER_CELL, 2)                     # expected 6.0
+        _voices(log, UPPER_CELL, 2)                     # expected 6.0
 
-    def test_the_lower_staffs_own_copy_is_reinstated_RED(self):
-        log, meter, rest_lower, _ = self._build()
-        out = _fire(log, rest_lower, meter)
-        self.assertEqual(len(out), 1)
-        v = out[0]
-        self.assertIs(v.outcome, Outcome.DECIDED)
-        self.assertIs(v.value, False)
-        self.assertEqual(v.reason, "rest_reinstated_missing_voice")
-        self.assertEqual(v.supersedes,
-                         log.verdicts(Q.REST_IS_NOT_A_REST, rest_lower)[0].id)
-        # The record now reads it as live, not refused.
-        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, rest_lower).value,
-                     False)
+        # Lower staff: one decided note (4.5) + the 3-rest group (1.5) =
+        # 6.0 once the group is reinstated; 4.5 while it is excluded.
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)
+        lo_rests = [
+            _refused_rest(log, LOWER_STAFF, gi, 0.5,
+                         other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+            for gi in (1, 2, 3)]
+        _events(log, LOWER_CELL, [n_lo], *([r] for r in lo_rests))
 
-    def test_the_upper_staffs_own_copy_stays_refused_RED(self):
+        # Upper staff: already complete at 6.0 without its own (spurious)
+        # copies of the same three rests.
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 6.0)
+        up_rests = [
+            _refused_rest(log, UPPER_STAFF, gi, 0.5,
+                         other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+            for gi in (11, 12, 13)]
+        _events(log, UPPER_CELL, [n_up], *([r] for r in up_rests))
+
+        return log, meter, lo_rests, up_rests
+
+    def test_the_whole_group_reinstates_on_the_lower_staff_RED(self):
+        log, meter, lo_rests, up_rests = self._build()
+        for r in lo_rests:
+            out = _fire(log, r, meter)
+            self.assertEqual(len(out), 1, msg=f"{r.to_key()} did not fire")
+            v = out[0]
+            self.assertIs(v.outcome, Outcome.DECIDED)
+            self.assertIs(v.value, False)
+            self.assertEqual(v.reason, "rest_reinstated_missing_voice")
+            self.assertAlmostEqual(v.detail["group_len_beats"], 1.5)
+            self.assertEqual(v.detail["own_voices"], 2)
+            self.assertEqual(v.detail["candidate_voices"], 2)
+        for r in lo_rests:
+            self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, r).value, False)
+
+    def test_the_upper_staffs_own_copies_stay_refused_RED(self):
         """The control this rule must NOT trip: the upper staff is already
-        complete without the rest (2.0 == target), so ITS OWN copy's
-        shortfall is zero, not 0.5, and nothing fires for it."""
-        log, meter, _, rest_upper = self._build()
-        out = _fire(log, rest_upper, meter)
-        self.assertEqual(out, [])
-        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, rest_upper).value,
-                     True)
+        complete (6.0 == 2 voices x 3.0) without the group, so its own
+        shortfall is zero, not 1.5, and nothing fires for it."""
+        log, meter, _, up_rests = self._build()
+        for r in up_rests:
+            self.assertEqual(_fire(log, r, meter), [])
+            self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, r).value, True)
+
+    def test_voice_count_by_stem_direction_when_Q_VOICES_is_undecided(self):
+        """The same mechanism, but neither cell has a `Q.VOICES` verdict at
+        all -- the own staff's voice count comes from two DECIDED, opposite
+        `Q.STEM_DIRECTION`s (2.21's own first rule), the candidate's from a
+        single direction (one voice)."""
+        log = Log()
+        meter = _meter(log, 2, 4)                       # bar_len = 2.0
+        _stem_dir(log, LOWER_STAFF, 50, "up")
+        _stem_dir(log, LOWER_STAFF, 51, "down")          # own: 2 voices
+        _stem_dir(log, UPPER_STAFF, 60, "up")            # candidate: 1 voice
+
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 3.5)  # short by 0.5
+        rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                             other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [rest])
+
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 2.0)  # complete at 2.0
+        ghost = _refused_rest(log, UPPER_STAFF, 1, 0.5,
+                              other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+        _events(log, UPPER_CELL, [n_up], [ghost])
+
+        out = _fire(log, rest, meter)
+        self.assertEqual(len(out), 1)
+        self.assertEqual(out[0].detail["own_voices"], 2)
+        self.assertEqual(out[0].detail["candidate_voices"], 1)
 
 
 class TestControls(unittest.TestCase):
     """GREEN before and after -- every shape this rule must leave alone."""
 
-    def test_not_refused_at_all_is_untouched(self):
+    def _two_voice_66_build(self):
         log = Log()
-        meter = _meter(log)
+        meter = _meter(log, 6, 8)
+        _voices(log, LOWER_CELL, 2)
+        _voices(log, UPPER_CELL, 2)
+        return log, meter
+
+    def test_not_refused_at_all_is_untouched(self):
+        log, meter = self._two_voice_66_build()
         sub = R.glyph(PAGE, SYSTEM, LOWER_STAFF, CELL_IDX, 0)
         _v(log, sub, Q.REST_IS_NOT_A_REST, Outcome.DECIDED, False,
            reason="rest")
         self.assertEqual(_fire(log, sub, meter), [])
 
     def test_refused_for_a_DIFFERENT_reason_is_untouched(self):
-        """A stem, a duplicate box, an off-centre whole rest -- none of
-        these is the between-staves case and this rule has no opinion."""
-        log = Log()
-        meter = _meter(log)
+        log, meter = self._two_voice_66_build()
         sub = R.glyph(PAGE, SYSTEM, LOWER_STAFF, CELL_IDX, 0)
         _v(log, sub, Q.REST_IS_NOT_A_REST, Outcome.DECIDED, True,
            reason="rest_has_a_stem")
@@ -170,120 +220,121 @@ class TestControls(unittest.TestCase):
         self.assertEqual(_fire(log, sub, meter), [])
 
     def test_no_contest_at_all_is_untouched(self):
-        """Refused `rest_outside_its_staff` with no twin on any neighbour
-        staff -- an ordinary off-staff rest, not this case."""
-        log = Log()
-        meter = _meter(log)
+        log, meter = self._two_voice_66_build()
         sub = R.glyph(PAGE, SYSTEM, LOWER_STAFF, CELL_IDX, 0)
         _v(log, sub, Q.DURATION, Outcome.DECIDED, _dur(0.5))
         _v(log, sub, Q.REST_IS_NOT_A_REST, Outcome.DECIDED, True,
            reason="rest_outside_its_staff")
         self.assertEqual(_fire(log, sub, meter), [])
 
+    def test_voice_count_undecided_is_untouched(self):
+        """No `Q.VOICES` and no `Q.STEM_DIRECTION` at all on the own staff:
+        rule 8 -- never assume a voice count nobody gave."""
+        log = Log()
+        meter = _meter(log, 6, 8)
+        n = _decided_duration(log, LOWER_STAFF, 0, 4.5)
+        rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                             other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n], [rest])
+        _voices(log, UPPER_CELL, 2)
+        self.assertEqual(_fire(log, rest, meter), [])
+
     def test_both_staves_already_complete_is_untouched(self):
         """A duplicate detection of a rest that genuinely belongs to ONE
-        staff which already accounts for it in full: neither staff is short,
-        so this is not a missing-voice case and nothing should be guessed."""
-        log = Log()
-        meter = _meter(log)
-        n = _decided_duration(log, LOWER_STAFF, 0, 2.0)   # already complete
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, 0.5,
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
-        u = _decided_duration(log, UPPER_STAFF, 0, 2.0)   # also complete
-        rest_upper = _refused_rest(log, UPPER_STAFF, 1, 0.5,
-                                   other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [u], [rest_upper])
-        self.assertEqual(_fire(log, rest_lower, meter), [])
-        self.assertEqual(_fire(log, rest_upper, meter), [])
+        staff which already accounts for it in full at its own voice count:
+        neither staff is short, so nothing should be guessed."""
+        log, meter = self._two_voice_66_build()
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 6.0)   # complete
+        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [lo_rest])
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 6.0)   # complete
+        up_rest = _refused_rest(log, UPPER_STAFF, 1, 0.5,
+                                other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+        _events(log, UPPER_CELL, [n_up], [up_rest])
+        self.assertEqual(_fire(log, lo_rest, meter), [])
+        self.assertEqual(_fire(log, up_rest, meter), [])
 
     def test_both_staves_missing_something_is_untouched(self):
-        """Neither candidate is complete: the shortfall on one staff matches
-        the rest's own length, but the OTHER staff is not itself whole, so
-        this is genuinely ambiguous and rule 8 applies."""
-        log = Log()
-        meter = _meter(log)
-        n = _decided_duration(log, LOWER_STAFF, 0, 1.5)
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, 0.5,
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
-        u = _decided_duration(log, UPPER_STAFF, 0, 1.0)   # short by 1.0, not
-        rest_upper = _refused_rest(log, UPPER_STAFF, 1, 0.5,           # 0.5
-                                   other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [u], [rest_upper])
-        self.assertEqual(_fire(log, rest_lower, meter), [])
+        """The lower staff's own shortfall matches the group's length, but
+        the candidate (upper) staff is NOT itself complete -- genuinely
+        ambiguous, rule 8."""
+        log, meter = self._two_voice_66_build()
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)   # short by 1.5
+        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [lo_rest])
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 5.0)   # short by 1.0,
+        up_rest = _refused_rest(log, UPPER_STAFF, 1, 0.5,            # not 0
+                                other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+        _events(log, UPPER_CELL, [n_up], [up_rest])
+        self.assertEqual(_fire(log, lo_rest, meter), [])
 
-    def test_shortfall_does_not_match_the_rests_own_length(self):
-        """The own staff IS short, but not by exactly this rest's length --
-        something else is wrong in the bar, and this rule only ever closes
-        the ONE gap its own missing ink explains."""
-        log = Log()
-        meter = _meter(log)
-        n = _decided_duration(log, LOWER_STAFF, 0, 1.0)   # short by 1.0
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, 0.5,     # not 0.5
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
-        u = _decided_duration(log, UPPER_STAFF, 0, 2.0)
-        rest_upper = _refused_rest(log, UPPER_STAFF, 1, 0.5,
-                                   other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [u], [rest_upper])
-        self.assertEqual(_fire(log, rest_lower, meter), [])
+    def test_shortfall_does_not_match_the_groups_own_length(self):
+        """The own staff IS short, but not by exactly the group's own
+        length -- something else is wrong in the bar, and this rule only
+        ever closes the gap its own missing ink explains."""
+        log, meter = self._two_voice_66_build()
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.0)   # short by 2.0,
+        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,       # not 0.5
+                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [lo_rest])
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 6.0)
+        up_rest = _refused_rest(log, UPPER_STAFF, 1, 0.5,
+                                other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+        _events(log, UPPER_CELL, [n_up], [up_rest])
+        self.assertEqual(_fire(log, lo_rest, meter), [])
 
     def test_candidate_staffs_own_bar_is_undecided(self):
-        """The neighbour staff has no standing `Q.EVENT` at all -- an
-        undecided candidate is not evidence either way (rule 8)."""
-        log = Log()
-        meter = _meter(log)
-        n = _decided_duration(log, LOWER_STAFF, 0, 1.5)
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, 0.5,
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
+        log, meter = self._two_voice_66_build()
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)
+        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [lo_rest])
         # No Q.EVENT / Q.DURATION at all on UPPER_CELL.
-        self.assertEqual(_fire(log, rest_lower, meter), [])
+        self.assertEqual(_fire(log, lo_rest, meter), [])
 
     def test_no_meter_is_untouched(self):
         log = Log()
-        n = _decided_duration(log, LOWER_STAFF, 0, 1.5)
-        rest_lower = _refused_rest(log, LOWER_STAFF, 1, 0.5,
-                                   other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n], [rest_lower])
+        _voices(log, LOWER_CELL, 2)
+        _voices(log, UPPER_CELL, 2)
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)
+        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
+                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+        _events(log, LOWER_CELL, [n_lo], [lo_rest])
         undecided = _v(log, R.system(PAGE, SYSTEM), Q.METER,
                        Outcome.ABSTAINED, None, reason="carry_not_corroborated")
-        self.assertEqual(_fire(log, rest_lower, undecided), [])
+        self.assertEqual(_fire(log, lo_rest, undecided), [])
 
     def test_a_whole_rest_twin_kept_on_its_own_staff_is_untouched(self):
         """One copy KEPT (not refused) on the staff it truly belongs to, the
         other copy refused on the neighbour -- but the neighbour's own bar
-        is already complete without it (the true owner's copy already
-        carries the duration), so the refused twin's shortfall is zero and
-        nothing fires. Mirrors 2.33b's '8 whole rests kept on their own
-        staff' shape."""
-        log = Log()
-        meter = _meter(log)
+        is already complete without it, so nothing fires. Mirrors 2.33b's
+        '8 whole rests kept on their own staff' shape."""
+        log, meter = self._two_voice_66_build()
         kept = R.glyph(PAGE, SYSTEM, LOWER_STAFF, CELL_IDX, 0)
-        _v(log, kept, Q.DURATION, Outcome.DECIDED, _dur(2.0))
+        _v(log, kept, Q.DURATION, Outcome.DECIDED, _dur(6.0))
         _v(log, kept, Q.REST_IS_NOT_A_REST, Outcome.DECIDED, False,
            reason="rest")
         _events(log, LOWER_CELL, [kept])
-        n = _decided_duration(log, UPPER_STAFF, 0, 2.0)  # already whole
-        ghost = _refused_rest(log, UPPER_STAFF, 1, 2.0,
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 6.0)  # already whole
+        ghost = _refused_rest(log, UPPER_STAFF, 1, 6.0,
                               other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [n], [ghost])
+        _events(log, UPPER_CELL, [n_up], [ghost])
         self.assertEqual(_fire(log, ghost, meter), [])
 
     def test_rest_duration_not_decided_is_untouched(self):
-        log = Log()
-        meter = _meter(log)
-        n = _decided_duration(log, LOWER_STAFF, 0, 1.5)
+        log, meter = self._two_voice_66_build()
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)
         sub = R.glyph(PAGE, SYSTEM, LOWER_STAFF, CELL_IDX, 1)
         _v(log, sub, Q.REST_IS_NOT_A_REST, Outcome.DECIDED, True,
            reason="rest_outside_its_staff")
         log.observe(sub, Q.GLYPH_BAND_DISTANCE, 3.2, reader=READERS.GEOMETRY,
                    frame="page", candidate=UPPER_KEY, own=False)
         # No Q.DURATION for `sub` at all.
-        _events(log, LOWER_CELL, [n], [sub])
-        u = _decided_duration(log, UPPER_STAFF, 0, 2.0)
-        _events(log, UPPER_CELL, [u])
+        _events(log, LOWER_CELL, [n_lo], [sub])
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 6.0)
+        _events(log, UPPER_CELL, [n_up])
         self.assertEqual(_fire(log, sub, meter), [])
 
 
