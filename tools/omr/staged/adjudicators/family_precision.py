@@ -726,8 +726,8 @@ def _rest_vertical_window_refusal(ev: Evidence, this_row,
 #       `Q.STEM` box overlaps this mark's own box (the SAME test
 #       `adjudicate_stem_direction` uses to find a notehead's stem,
 #       imported), the notehead reading stands and this box is refused
-#       outright, for EVERY rest class -- a stem is disqualifying whatever
-#       shape the ink is boxed as.
+#       outright -- for `restWhole`/`restHalf` ONLY since 2026-09-30
+#       (ROADMAP 2.33b: a quarter/8th rest's own stroke reads as a stem).
 #   (a) TWO STAFF LINES (`_rest_touches_two_staff_lines_refusal`) --
 #       `restWhole`/`restHalf` ONLY (quarter/8th/etc. legitimately span
 #       more than one line/space by their own printed shape, so the test
@@ -793,11 +793,17 @@ REST_LINE_TOUCH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
 def _rest_has_a_stem_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
                              ) -> Optional[Ruling]:
     """(c): a rest never has a stem. Checked FIRST among the three
-    rest-vs-notehead witnesses, and for EVERY rest class -- unlike (a), a
-    stem is disqualifying whatever shape the ink was boxed as.
+    rest-vs-notehead witnesses, for the block rests only (ROADMAP 2.33b):
+    a quarter/8th rest's own printed stroke reads as a `Q.STEM`.
     """
     val = this_row.value
     if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return None
+    # ⚠️ Manager print check 2026-09-30: 6 of 8 random refusals on the
+    # Litolff whole movement were REAL quarter rests -- `Q.STEM`'s CV reader
+    # finds a quarter/8th rest's OWN vertical stroke. Like (a), the witness
+    # speaks only for the block rests, whose printed shape has no stroke.
+    if str(val[0]) not in REST_LINE_SHAPE_CLASSES:
         return None
     head_box = (float(val[1]), float(val[2]), float(val[3]), float(val[4]))
     cell = ev.subject.at(Kind.CELL)
