@@ -28,7 +28,7 @@
         "gathered_on": "c19cbca7",
         "gather_started": "2026-09-28T06:36:32Z (driver bracket 06:36:32Z-07:08:53Z)",
         "wall_hours": 0.54,
-        "note": "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order; the 2.7b/2.14/3.4f/2.9c fixes landed after the 09-23 gather now apply). 32 min 21 s wall, 16 pages -- against the 09-23 record's 12.8 h on the same page range (pre-1.2 cost fixes); see ROADMAP 1.2b. \u26a0\ufe0f These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- the 2.11b, 2.15, 2.4c (record-only) and 0.2b merges that landed on main AFTER c19cbca7 are NOT reflected (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b). Was 'unpooled record form (predates dbc9962b)', gathered_on 6b7dd3a3, 12.8 h -- record kept on disk as beethoven5-litolff-mvt1-whole-20260923.record.json (md5 7dbee148868c39634a20d5881143d3ee). That record replaced the 4-page _shared-records/beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae5908288c76baaa502054a37d43)."
+        "note": "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order; the 2.7b/2.14/3.4f/2.9c fixes landed after the 09-23 gather now apply). 32 min 21 s wall, 16 pages -- against the 09-23 record's 12.8 h on the same page range (pre-1.2 cost fixes); see ROADMAP 1.2b. ⚠️ These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- the 2.11b, 2.15, 2.4c (record-only) and 0.2b merges that landed on main AFTER c19cbca7 are NOT reflected (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b). Was 'unpooled record form (predates dbc9962b)', gathered_on 6b7dd3a3, 12.8 h -- record kept on disk as beethoven5-litolff-mvt1-whole-20260923.record.json (md5 7dbee148868c39634a20d5881143d3ee). That record replaced the 4-page _shared-records/beethoven5-p1-p4-ink-identity.record.json (md5 ea80ae5908288c76baaa502054a37d43)."
       }
     },
     {
@@ -38,9 +38,9 @@
       "publisher": "Breitkopf",
       "record": {
         "root": "library",
-        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260929b.record.json",
-        "md5": "6a9e8851a3fade44f7fb61eff3167736",
-        "note": "RE-GATHERED 2026-09-29 afternoon on 8c652d89, pages 0-26, 2 h 40 m under lane load. dirty=false. Not in it: 2.29, 2.30, 2.33."
+        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.record.json",
+        "md5": null,
+        "note": "RE-GATHERED 2026-09-30 on 2718c450 (same pipeline code as 04dd4662) with --weights auto, pages 0-26, 165 min under lane load, exit 0 and the script's no-duration guard passed, dirty=false. Adds 2.29, 2.30, 2.33, 2.36, 2.37, 2.38, 2.38b over 20260929b (kept, md5 6a9e8851a3fade44f7fb61eff3167736). The first 09-30 run had NO weights and is renamed *.NO-WEIGHTS."
       },
       "pdf": {
         "root": "library",
@@ -55,7 +55,7 @@
       "truth": null,
       "caveats": [
         "Whole movement, pdf pages 0-26 (27 pages). The movement boundary was VERIFIED against the plate, not assumed: pdf page 27 opens 'Andante sostenuto', which is movement 2, so movement 1 ends at page 26.",
-        "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order), driver bracket 04:07:02Z-06:36:32Z = 2 h 29 m 30 s wall -- SLOWER than the 09-23 run (1 h 11 m) on the SAME 27 pages; the machine ran under heavy contention from other sessions that night (see ROADMAP.md 1.2b/3.3), not a regression in the pipeline. \u26a0\ufe0f These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- 2.11b, 2.15, 2.4c (record-only) and 0.2b landed on main AFTER c19cbca7 and are NOT reflected here (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b).",
+        "RE-GATHERED 2026-09-28 on c19cbca7 (ROADMAP 0 work order), driver bracket 04:07:02Z-06:36:32Z = 2 h 29 m 30 s wall -- SLOWER than the 09-23 run (1 h 11 m) on the SAME 27 pages; the machine ran under heavy contention from other sessions that night (see ROADMAP.md 1.2b/3.3), not a regression in the pipeline. ⚠️ These verdicts are exactly ADJUDICATE/EVALUATE/INFER as decided at c19cbca7 -- 2.11b, 2.15, 2.4c (record-only) and 0.2b landed on main AFTER c19cbca7 and are NOT reflected here (tools.omr.acceptance exports existing verdicts, it does not re-adjudicate; roadmap 1.3b).",
         "Gathered 2026-09-23 on commit 275641c0 with a clean tree, 1 h 11 m wall (GATHER ~28 min, ADJUDICATE ~33 min, GROUPS+EVALUATE ~5 min, INFER+EXPORT the rest) -- the first whole-movement run after roadmap 1.2 bounded the deciding stages. Record kept on disk as brahms1-breitkopf-mvt1-whole-20260923.record.json (md5 e5561c8b7bc80a03311294afae8eccf4).",
         "SUPERSEDES the 4-page p0-p3 record this entry pointed at (_shared-records/brahms1-breitkopf-p0-p3-ink.record.json), which stays on disk."
       ]
