@@ -4,7 +4,7 @@ GATHER, ADJUDICATE or EVALUATE, and prove the default is untouched.
 Sean: *"if we try grafting weights can we do that in the first 2 stages of
 production … where it just handles gathering ink and boxing and identifying
 before it goes to all of the other stages?"* This is the plumbing that lets
-`benchmarks/omr-weights-ab-2026-09/`'s A/B harness price a graft at
+the weights A/B harness (ROADMAP 2.34) price a graft at
 GATHER+ADJUDICATE alone, with no EVALUATE consequence able to restate a
 value the two arms would otherwise have to agree on for a different reason.
 
