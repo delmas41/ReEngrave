@@ -965,7 +965,8 @@ def _gather_owner_candidates(log: Log, placed_item, others: set,
                             ledgers)
             _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
                                      spacing, cell_by_key,
-                                     thickness_by_key.get(cand_key))
+                                     thickness_by_key.get(cand_key),
+                                     class_name=det.smufl_name)
             # ⚠️ ROADMAP 2.37 (Sean's redirect): the relative OWNERSHIP
             # witness, filed alongside the per-step ladder reader (still
             # gathered as a corroborating witness) rather than replacing
@@ -1762,7 +1763,8 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
 def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
                              line_ys: Sequence[float], spacing: float,
                              cell_by_key: Dict[Tuple[int, int, int, int], Any],
-                             thickness_px: Optional[float]) -> None:
+                             thickness_px: Optional[float],
+                             class_name: Optional[str] = None) -> None:
     """`Q.LEDGER_RUNG_INK` -- one row per (head glyph, `cand_key`, step).
 
     ⚠️ THE SAME STEP ARITHMETIC AS `_observe_ladder` (same `LEDGER_ROUND_UP`,
@@ -1776,6 +1778,18 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     candidate's carries no raster (a system's outermost staff, say). ABSTAINS
     -- never guesses -- where neither cell has an erased raster or a staff
     unit, or a step's window falls off the raster.
+
+    ⚠️ ROADMAP 2.39. The head's x-window (`hx0_c`/`hx1_c` below) and the
+    y-band excluded from the adjacent-stroke guard (`hy0_c`/`hy1_c`) are
+    this reader's sibling `_observe_ledger_owner_density`'s own STANDARD
+    box (`geometry.standard_head_box`), not the raw detector extent --
+    same reasoning: a Brahms sliver or a Litolff merged box is not the
+    head's true ink width. Only for a REGULAR notehead
+    (`geometry.is_regular_notehead(class_name)`) -- a whole note or a
+    grace/cue head keeps the detector's own box, unmeasured this round.
+    `class_name` is `None` for a caller that predates this change (the
+    geometry-only fallback below), which keeps the raw box, same as
+    before.
     """
     # ⚠️ RECONSTRUCTED, NOT PASSED THROUGH -- `wiring._SubjectKinds` resolves
     # a subject's Kind from the CONSTRUCTOR EXPRESSION at the site
@@ -1822,13 +1836,32 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
                     note=note)
         return
     space_c = grid[1] * 2.0
-    hx0_c = (box[0] - cbox[0]) * up
-    hx1_c = (box[2] - cbox[0]) * up
+    # ⚠️ ROADMAP 2.39: a REGULAR notehead's ink window is the STANDARD box
+    # (detector centre, staff-spacing extent), never the raw detector box
+    # -- see this function's own docstring. Anything else (whole note,
+    # grace/cue, or a caller with no class name) keeps the detector box,
+    # unchanged from before this round. ⚠️ `box` is `(x0, y0, x1, y1)`;
+    # `geometry.standard_head_box` returns `(x0, x1, y0, y1)` -- the two
+    # are NOT the same tuple shape, so they are unpacked into named
+    # variables immediately rather than indexed as one interchangeable
+    # `ink_box` (the bug a first draft of this change shipped: `test_
+    # regular_black_head_uses_the_standard_box_not_the_raw_one` caught it
+    # red before this fix).
+    if spacing and is_regular_notehead(class_name):
+        cx = (box[0] + box[2]) / 2.0
+        cy = (box[1] + box[3]) / 2.0
+        bx0, bx1, by0, by1 = _standard_head_box(cx, cy, spacing)
+    else:
+        bx0, by0, bx1, by1 = box
+    hx0_c = (bx0 - cbox[0]) * up
+    hx1_c = (bx1 - cbox[0]) * up
     # ⚠️ ROADMAP 2.37 (manager print check, round 2): the head's OWN
     # canonical y-extent, so the adjacent guards can exclude its known box
     # rather than mistaking its own bulk for a thick, non-rung stroke.
-    hy0_c = (box[1] - cbox[1]) * up
-    hy1_c = (box[3] - cbox[1]) * up
+    # ROADMAP 2.39: now the STANDARD box's y-extent for a regular head --
+    # see above.
+    hy0_c = (by0 - cbox[1]) * up
+    hy1_c = (by1 - cbox[1]) * up
     thick_c = (float(thickness_px) * up) if thickness_px else None
     for k in range(1, expected + 1):
         want = (edge - k * spacing) if above else (edge + k * spacing)

@@ -705,5 +705,82 @@ class TestBelongsToANearerStaffAsksTheSameHelper(unittest.TestCase):
         self.assertEqual(v.reason, "belongs_to_a_nearer_staff")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Part 5 — ROADMAP 2.39: the STANDARD box for a REGULAR notehead
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# ⚠️ RUN RED FIRST: `_observe_ledger_rung_ink` took no `class_name` keyword
+# before this round, so `TestStandardBoxForRegularNoteheads` below raised
+# `TypeError: _observe_ledger_rung_ink() got an unexpected keyword argument
+# 'class_name'` on every test in this section.
+
+class TestStandardBoxForRegularNoteheads(unittest.TestCase):
+    """A CONNECTION test, not a raster one: patches `gather.ledger_rung_ink`
+    to record its own `head_x0`/`head_x1`/`head_y0`/`head_y1` arguments
+    (the pure ink-density function this reader delegates to) rather than
+    reading a synthetic raster -- avoids the unrelated overlap sensitivity
+    of `HEAD_BOX_PAGE`'s own 1-space gap to the tested rung, which is a
+    property of `ledger_rung_ink`'s OWN exclusion logic, not of this
+    change. `HEAD_BOX_PAGE` is 2 spaces wide x 1 space tall
+    (`CAND_SPACING` = 10 page-px/space) -- NOT the standard 1.4 x 1.1
+    spaces, so a switch to the standard box is visible in the recorded
+    arguments regardless of what the raster holds."""
+
+    def _head_args(self, class_name):
+        calls = []
+        real = gather.ledger_rung_ink
+
+        def spy(img, head_x0, head_x1, y_center, space, thickness_px,
+               head_y0=None, head_y1=None):
+            calls.append((head_x0, head_x1, head_y0, head_y1))
+            return real(img, head_x0, head_x1, y_center, space, thickness_px,
+                        head_y0=head_y0, head_y1=head_y1)
+
+        gather.ledger_rung_ink = spy
+        try:
+            cell_by_key = {(0, 0, 1, 0): _candidate_cell()}
+            log = Log()
+            gather._observe_ledger_rung_ink(
+                log, G, HEAD_BOX_PAGE, CAND_KEY, CAND_LINES, CAND_SPACING,
+                cell_by_key, None, class_name=class_name)
+        finally:
+            gather.ledger_rung_ink = real
+        self.assertEqual(len(calls), 1)     # expected == 1 step here
+        return calls[0]
+
+    def test_regular_black_head_uses_the_standard_box_not_the_raw_one(self):
+        raw_x0, raw_x1, raw_y0, raw_y1 = self._head_args(None)
+        std_x0, std_x1, std_y0, std_y1 = self._head_args("noteheadBlack")
+        self.assertEqual((raw_x0, raw_x1), (190.0, 210.0))    # the raw box
+        self.assertAlmostEqual(std_x0, 193.0)     # 200 centre -/+ 7 (1.4sp/2)
+        self.assertAlmostEqual(std_x1, 207.0)
+        self.assertAlmostEqual(std_y0, 79.5)      # 85 centre -/+ 5.5 (1.1sp/2)
+        self.assertAlmostEqual(std_y1, 90.5)
+        self.assertNotEqual((raw_x0, raw_x1, raw_y0, raw_y1),
+                            (std_x0, std_x1, std_y0, std_y1))
+
+    def test_regular_half_head_also_uses_the_standard_box(self):
+        std = self._head_args("noteheadHalfInSpace")
+        raw = self._head_args(None)
+        self.assertNotEqual(std, raw)
+
+    def test_whole_note_keeps_the_raw_detector_box(self):
+        """ROADMAP 2.39 item 5: a whole note is a different, wider Bravura
+        shape this round did not measure -- left on the detector's own
+        box, unchanged."""
+        self.assertEqual(self._head_args("noteheadWhole"),
+                        self._head_args(None))
+
+    def test_small_grace_cue_head_keeps_the_raw_detector_box(self):
+        self.assertEqual(self._head_args("noteheadBlackSmall"),
+                        self._head_args(None))
+
+    def test_no_class_name_keeps_the_raw_detector_box(self):
+        """The default (`class_name=None`, every pre-2.39 call site) is
+        UNCHANGED -- the control every OTHER test in this file already
+        runs without passing `class_name` at all."""
+        self.assertEqual(self._head_args(None), (190.0, 210.0, 80.0, 90.0))
+
+
 if __name__ == "__main__":
     unittest.main()
