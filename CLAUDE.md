@@ -67,7 +67,10 @@ Every session, every lane, every brief.
    not let one guess. Guessing lives in INFER and is labelled.
 7. **A control must be able to fail.** Run it in a state where it fails
    before trusting it where it passes. A number that is exactly another
-   number is a computation, not a measurement.
+   number is a computation, not a measurement. **Before trusting any
+   result, ask who says it's right:** Sean, the print or the reference
+   encoding is evidence; a model's own output, or a result whose raw data
+   is gone, is not (2026-09-29).
 8. **A fallback never converts "cannot tell" into an answer** — not into
    "same", not into "clean", not into a whole rest that means silence.
 9. **No new flag, benchmark directory, derived check or handoff without a
