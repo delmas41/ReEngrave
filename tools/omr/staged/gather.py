@@ -4367,6 +4367,13 @@ STACKED_HEAD_MIN_GAP_POSITIONS = 2
 #: fit ABSTAINS `ambiguous` (CLAUDE.md §4a) rather than guessing.
 STACKED_HEAD_FIT_MARGIN = 0.05
 
+#: An additional head's own fitted slot must score above this absolute fill
+#: fraction to count as real ink, not blank paper -- `benchmarks/omr-
+#: notehead-width-2026-09/probe/measure_2.41.py`'s `two_head_fit`'s own
+#: `0.4` floor for `supports_two_heads`, cited rather than re-measured here
+#: (this item did not re-run that probe's own calibration).
+STACKED_HEAD_MIN_SLOT_FILL = 0.4
+
 #: How many candidate half-step positions the search adds on EITHER side of
 #: the group's own observed box span -- a bounded search around the group's
 #: own ink, never an unbounded scan of the staff (the same discipline
@@ -4429,17 +4436,35 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     """PURE -- score a standard head-box template at every candidate
     position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
     units), then pick the FEWEST head count (1, 2 or 3, never more than
-    `n_boxes`) whose mean per-head score is not clearly beaten by one more
-    head (`STACKED_HEAD_FIT_MARGIN` -- the same "is the winner clearly
-    ahead" discipline `Q.NOTEHEAD_RECENTRE` already uses).
+    `n_boxes`) that explains the ink.
 
-    Returns `None` where no candidate position scores at all (the caller
-    abstains `no_mask`). Otherwise a dict: `scored` (every candidate
-    position's own score), `k` (the chosen count), `positions` (that
-    count's own chosen head positions, ascending), `margin` (the score gap
-    between `k` and the next count considered, or `None` at k=1 with no
-    n_boxes>=2 comparison), `ambiguous` (True where two counts are within
-    the margin of each other -- the caller abstains rather than choosing).
+    ⚠️ NOT "does k+1's MEAN beat k's mean" -- that test is measured WRONG
+    on a real two-head fixture (kept as `test_staged_stacked_head_fit.
+    TestFitStackedHeadCountPure`'s own comment): the single BEST-scoring
+    position is, by construction, one member of whatever pair a genuine
+    dyad's own two heads form, so the pair's mean is never CLEARLY better
+    than the lone best score, only AS good -- a "k+1 beats k" test would
+    never fire on a real dyad. The working test is 2.41's own `two_head_
+    fit.supports_two_heads` (`benchmarks/omr-notehead-width-2026-09/probe/
+    measure_2.41.py`), cited and generalised to a third head: an
+    additional head is real where ITS OWN fitted slot clears an absolute
+    fill floor (`STACKED_HEAD_MIN_SLOT_FILL` -- real ink, not blank paper)
+    AND the group's new mean has not dropped by more than the stated
+    margin (adding it did not cost real explanatory power). Both gates
+    must clear the SAME margin on either side of their own threshold
+    before the fit commits to the extra head; inside that band it
+    ABSTAINS `ambiguous` rather than guessing (CLAUDE.md rule 8).
+
+    Returns `None` where no candidate position scores at all -- the window
+    itself was off the raster (the caller abstains `no_mask`); a real,
+    on-raster window over blank paper scores a genuine `0.0`, which is a
+    valid answer here (k=1, zero fill), not a `None`. Otherwise a dict:
+    `scored` (every candidate position's own score), `k` (the chosen
+    count), `positions` (that count's own chosen head positions,
+    ascending), `margin` (how far the LAST accepted head cleared its own
+    gates, or `None` at k=1 with no second head considered), `ambiguous`
+    (True where the next head's own evidence sits inside the margin band
+    -- the caller abstains rather than choosing a count).
     """
     scored: Dict[int, float] = {}
     for p in positions:
@@ -4452,37 +4477,49 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     if not scored:
         return None
 
+    # ⚠️⚠️ NOT "does k+1's MEAN beat k's mean" -- measured WRONG on a
+    # synthetic two-head fixture before this comment was written: the
+    # single BEST position is, by construction, one member of whatever
+    # pair a real dyad's own two heads form, so a genuine second head's
+    # mean is never CLEARLY better than the lone best score, only AS good.
+    # The test that actually works is 2.41's own `two_head_fit.
+    # supports_two_heads` (`benchmarks/omr-notehead-width-2026-09/probe/
+    # measure_2.41.py`), cited and generalised to a third head here: an
+    # additional head is real where its own slot clears an absolute FILL
+    # FLOOR (this is genuine ink, not a blank-paper guess) AND the group's
+    # mean does not drop by more than the margin (adding it did not cost
+    # real explanatory power). Both gates must clear the SAME stated
+    # margin on EITHER side of their own threshold before the fit commits;
+    # inside that band it is `ambiguous` rather than guessed (rule 8).
     best1_pos = max(scored, key=scored.get)
     best1 = scored[best1_pos]
     chosen_k, chosen_positions, chosen_mean = 1, (best1_pos,), best1
     margin: Optional[float] = None
     ambiguous = False
-    if n_boxes >= 2:
-        combo2 = _stacked_best_combo(scored, 2)
-        if combo2 is not None:
-            pos2, total2 = combo2
-            mean2 = total2 / 2.0
-            m12 = mean2 - best1
-            if m12 > STACKED_HEAD_FIT_MARGIN:
-                chosen_k, chosen_positions, chosen_mean = 2, pos2, mean2
-                margin = m12
-            elif abs(m12) <= STACKED_HEAD_FIT_MARGIN:
-                ambiguous = True
-                margin = m12
-            if not ambiguous and chosen_k == 2 and n_boxes >= 3:
-                combo3 = _stacked_best_combo(scored, 3)
-                if combo3 is not None:
-                    pos3, total3 = combo3
-                    mean3 = total3 / 3.0
-                    m23 = mean3 - mean2
-                    if m23 > STACKED_HEAD_FIT_MARGIN:
-                        chosen_k = 3
-                        chosen_positions = pos3
-                        chosen_mean = mean3
-                        margin = m23
-                    elif abs(m23) <= STACKED_HEAD_FIT_MARGIN:
-                        ambiguous = True
-                        margin = m23
+    prev_mean = best1
+    prev_positions = (best1_pos,)
+    for k, n_needed in ((2, 2), (3, 3)):
+        if ambiguous or n_boxes < n_needed or chosen_k != k - 1:
+            break
+        combo = _stacked_best_combo(scored, k)
+        if combo is None:
+            break
+        positions_k, total_k = combo
+        mean_k = total_k / k
+        min_slot = min(scored[p] for p in positions_k)
+        fill_gap = min_slot - STACKED_HEAD_MIN_SLOT_FILL
+        mean_gap = mean_k - prev_mean
+        if (fill_gap > STACKED_HEAD_FIT_MARGIN
+                and mean_gap > -STACKED_HEAD_FIT_MARGIN):
+            chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
+            margin = min(fill_gap, mean_gap if mean_gap < fill_gap else fill_gap)
+            prev_mean, prev_positions = mean_k, positions_k
+        elif (abs(fill_gap) <= STACKED_HEAD_FIT_MARGIN
+              or (fill_gap > 0 and abs(mean_gap) <= STACKED_HEAD_FIT_MARGIN)):
+            ambiguous = True
+            margin = fill_gap
+        else:
+            break   # clearly not a real additional head -- stop at k-1
     return {
         "scored": scored, "k": chosen_k,
         "positions": tuple(sorted(chosen_positions)),

@@ -13,6 +13,18 @@ refused` fails because `_notehead_same_side_second_refusal` does not exist
 and the pair (dy 0.5 sp, past 2.30's 0.25 sp gate) comes back
 `value=False, reason="notehead"` on both boxes.
 
+⚠️⚠️ ROADMAP 2.42 SUPERSEDED THIS RULE IN PRODUCTION (`notehead_precision.
+adjudicate_notehead_is_not_a_notehead` no longer calls `_notehead_same_side_
+second_refusal` at all -- `_stacked_head_duplicate_refusal` does the KEEP/
+REFUSE job now, reading GATHER's own `Q.STACKED_HEAD_FIT` group fit instead
+of this rule's pair-wise geometry). This file is RETAINED as a print-checked
+regression record of the SUPERSEDED mechanism and now calls `_notehead_
+same_side_second_refusal` DIRECTLY, building its own minimal `Evidence`
+rather than going through `adjudicate.run`/the composed decision -- the
+function still exists, unchanged, and is still exactly what these fixtures
+proved; only the WIRING moved. See `test_staged_stacked_head_fit.py` for
+2.42's own equivalent tests.
+
 ⚠️ THE POSITIVE CONTROLS (CLAUDE.md §6b), each failing for a DIFFERENT
 reason a sloppy rule could pass on:
   - `test_same_side_pair_past_the_0_75_sp_gate_stands` -- a real third
@@ -33,10 +45,73 @@ from __future__ import annotations
 
 import unittest
 
-from tools.omr.staged.record import Outcome, Q, READERS
+from tools.omr.staged import adjudicate
+from tools.omr.staged.adjudicate import DecisionSpec, Evidence, Mode
+from tools.omr.staged.record import Kind, Outcome, Q, READERS
 from tools.omr.staged.adjudicators import notehead_precision as NP
 from tools.omr.tests.test_staged_notehead_precision import (
-    CELL, Log, _cell_geometry, _notehead, _run, _verdict)
+    CELL, Log, _cell_geometry, _notehead)
+
+
+class _FakeVerdict:
+    """A stand-in for `Verdict` carrying only what these tests read --
+    `_notehead_same_side_second_refusal` is called DIRECTLY now (ROADMAP
+    2.42 unwired it from the composed decision), so there is no real
+    `adjudicate.run` producing an actual `Verdict` to fetch."""
+    __slots__ = ("outcome", "value", "reason", "detail")
+
+    def __init__(self, outcome, value, reason, detail):
+        self.outcome = outcome
+        self.value = value
+        self.reason = reason
+        self.detail = detail
+
+
+#: A throwaway spec, NEVER registered, declaring exactly the evidence
+#: `_notehead_same_side_second_refusal` itself reads (`Q.STEM`, `Q.NOTEHEAD_
+#: INK`) plus what `_glyph_box_row`/`_cell_staff_space` need -- the
+#: production spec (`adjudicate.REGISTRY[Q.NOTEHEAD_IS_NOT_A_NOTEHEAD]`) no
+#: longer declares the first two (2.42 dropped them as inert, since the
+#: composed decision itself no longer calls this function), so building
+#: `Evidence` from the real spec would raise `UndeclaredEvidence` the moment
+#: this function tried to read either one.
+_TEST_SPEC = DecisionSpec(
+    name="test_same_side_second_direct", quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    scope=Kind.GLYPH,
+    wants=(Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.STEM, Q.NOTEHEAD_INK,
+          Q.NOTEHEAD_CLASS),
+    reasons=("same_side_second", "notehead"), mode=Mode.ADDITIVE,
+    margin_floor=None, excludes_tiers=(), revises=None, stub=False,
+    fn=lambda ev: None)
+
+
+def _run(log):
+    log.freeze()
+    return log
+
+
+def _verdict(log, g):
+    """⚠️ RUNS `_too_narrow` (2.4a) BEFORE the rule under test, exactly as
+    `adjudicate_notehead_is_not_a_notehead`'s own real ordering does (2.30,
+    then 2.4a's shape rules, then this one) -- one fixture below
+    (`test_a_partner_thats_itself_refused_is_never_the_keeper`) depends on
+    seeing a GENUINELY too-narrow partner refused for that reason, not on
+    this rule alone."""
+    ev = Evidence(log, g, _TEST_SPEC)
+    box_row = NP._glyph_box_row(ev)
+    spacing = NP._cell_staff_space(ev)
+    if box_row is None or spacing is None:
+        return _FakeVerdict(Outcome.ABSTAINED, None, None, {})
+    detail = {}
+    if NP._too_narrow(box_row, spacing, detail):
+        return _FakeVerdict(Outcome.DECIDED, True, "too_narrow", detail)
+    detail = {}
+    ruling = NP._notehead_same_side_second_refusal(ev, box_row, spacing,
+                                                   detail)
+    if ruling is None:
+        return _FakeVerdict(Outcome.DECIDED, False, "notehead", detail)
+    return _FakeVerdict(Outcome.DECIDED, ruling.value, ruling.reason,
+                        ruling.detail)
 
 
 def _stem(log, *, x_c, y_c, w_c=20.0, h_c=200.0):
