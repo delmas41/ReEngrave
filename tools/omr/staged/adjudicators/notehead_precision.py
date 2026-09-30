@@ -1976,10 +1976,15 @@ def adjudicate_stacked_head_position(ev: Evidence) -> Ruling:
     if not fit_rows:
         # ⚠️ GATHER ITSELF DECLINED (`ambiguous`/`no_mask`) -- its own
         # abstention reason is read back, never re-guessed, so a census can
-        # tell the two apart.
+        # tell the two apart. ⚠️ BOTH BRANCHES RETURN A LITERAL, not the
+        # variable the lookup handed back (`brakes.vocabulary_gap`'s own
+        # AST scan needs a literal at the `Ruling.abstain(...)` site -- see
+        # `adjudicate_notehead_is_not_a_notehead`'s own comment on the
+        # identical constraint).
         declines = ev.refusals(Q.STACKED_HEAD_FIT)
-        reason = declines[-1].reason if declines else ABSTAIN.AMBIGUOUS
-        return Ruling.abstain(reason)
+        if declines and declines[-1].reason == ABSTAIN.NO_MASK:
+            return Ruling.abstain(ABSTAIN.NO_MASK)
+        return Ruling.abstain(ABSTAIN.AMBIGUOUS)
     fit = fit_rows[-1]
     val = fit.value
     if not isinstance(val, (list, tuple)) or len(val) != 4:

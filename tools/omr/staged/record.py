@@ -1909,6 +1909,13 @@ CLAIMS: "dict[str, str]" = {
     #: same reason as `NOTEHEAD_INK`; it says where the fill is highest,
     #: never that a head stands there.
     "NOTEHEAD_RECENTRE": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.42: a bounded 1/2/3-head ink fit over a stacked group's own
+    #: standard-head-box template -- a ruler reading, same reason as
+    #: `NOTEHEAD_RECENTRE`; it says how many fill peaks the ink supports and
+    #: where, never that a head stands at any one of them (that is
+    #: ADJUDICATE's `stacked_head_duplicate`/`stacked_head_fit`, both
+    #: INTERPRETATION -- see `Q.STACKED_HEAD_POSITION` below).
+    "STACKED_HEAD_FIT": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -1991,6 +1998,12 @@ CLAIMS: "dict[str, str]" = {
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_NOT_A_NOTEHEAD": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.42: ADJUDICATE's own pick among `Q.STACKED_HEAD_FIT`'s
+    #: measured candidates -- which fitted slot THIS surviving box stands
+    #: for, weighing the group's own ink scores and `Q.NOTEHEAD_IS_NOT_A_
+    #: NOTEHEAD`'s verdict together. Wrong if either input was wrong, the
+    #: same INTERPRETATION reason `PITCH`/`DURATION` are filed this way.
+    "STACKED_HEAD_POSITION": CLAIM.INTERPRETATION,
     # ── roadmap 3.4g, the same claim once per gathered family ──────────────
     "LEDGER_IS_NOT_A_LEDGER": CLAIM.INTERPRETATION,
     "ACCIDENTAL_IS_NOT_AN_ACCIDENTAL": CLAIM.INTERPRETATION,
