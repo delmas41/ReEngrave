@@ -249,3 +249,122 @@ to the detection: that cell prints its four rungs at −2.37 / −4.49 / −6.46
   reach.
 * The Litolff record was gathered on a **dirty tree** (`9d4ccc85`, `dirty:
   true`); the Breitkopf one is the committed shared record.
+
+## 11. (2026-09-30) THE TWO LEDGER READERS SIDE BY SIDE, THEN: HOW OFTEN IS PLAIN GEOMETRY WRONG NEAR THE BOUNDARY?
+
+Numbered 11 because ROADMAP 2.44's own §10 lives on its unmerged branch
+(`worktree-agent-ab56d1d321c30c4bd`, 5f12cd24). STAGED path throughout, GATHER
+→ EVALUATE on that branch's code. Measurement only: no reader is merged here
+(Sean decides WITH the manager). One gather per page, `--weights`
+= production scan weights, same populations 2.44 reported (Litolff p3: 119 far
+heads; Breitkopf p1: 300).
+
+### 11a. 2.44 vs `measure_ledger_rungs`, on the same cells (`probe_two_ledger_readers.py`)
+
+* **2.44 files below-staff positions in the wrong origin.** It returns
+  `+steps` counted from the BOTTOM line; `Q.NOTEHEAD_STAFF_POSITION` counts
+  from the TOP. Control: 2.44's own Litolff fixture mirrored below the staff
+  → 2.44 says **5**, truth **13** (ledger_grid says 13). So every below-staff
+  observation (16 Litolff, 43 Breitkopf) lands in `_ledger_conflict` and
+  none can ever substitute. All 2.44 tests are above the staff.
+* **2.44 numbers whatever rungs it found 1..n from the staff**: a missed near
+  ledger shifts the head 2 steps per miss (`1/0/5/0/1`: found ledgers 3-4
+  only, wrote 13 for 17 — the §8 failure). It has no stop at the next
+  staff (`1/0/2/6/18`, `1/1/2/4/1` read the neighbour staff's lines).
+  23 of 41 / 41 of 121 of its observations sit ≥2 steps from the
+  extrapolation.
+* **ledger_grid** (edge-anchored walk, 0.65–1.35 pitch window) is never
+  more than 1 step from the extrapolation and reaches further (70/119,
+  125/300 measured inside its own `2n+1` reach), but reads a FILLED head
+  (≥1.30 sp wide, thin at its equator) or a ledger fused into a head as a
+  rung through it, one step outward (`1/0/5/1/0`, `1/0/5/0/1`). Its tuning
+  corpus was hollow heads only.
+* **The ledgers are NOT erased by staff removal** (hypothesis from the
+  acceptance session): on every rung ledger_grid found, the overhang columns
+  inked in `cell.image` are still inked in `image_no_staff` (142/142,
+  247/247). Control that can fail: the same test on the staff-line rows drops
+  1.00 → 0.19 / 0.13. 2.44's `no_ledger_found` is its own guards, not ink.
+
+### 11b. Geometry on the near-boundary heads, measured on the 600 dpi page binary (`probe_geometry_near_boundary.py`)
+
+Near-boundary = fractional `NOTEHEAD_STAFF_POSITION` within 0.5 ± 0.15.
+Geometry = `round()` of it. The print's slot is MEASURED on
+`pws.page.binary` (canonical→page mapping checked by cross-correlation:
+0 px shift, r 0.96–0.99): the five staff lines beside the head; ledgers as
+THIN vertical ink runs in the columns just past the head's own left/right
+ink edges (the acceptance session's method — it reproduces Sean's measured
+Litolff ledgers 431.5 / 418.5 / 398.5 as 431.8 / 418.0 / 399.5); the head's
+ink rows. A line inside the head's middle third → ON it; else the space the
+head sits in, or the space just past the last line it touches. A two-head
+stack is split either by a ladder line in its middle third (a third) or at
+its narrowest row (heads on two lines). Unreadable = not guessed: staff lines
+not evenly measured, head not separable, or a head floating past the last
+ledger found. Every READABLE head was then reviewed on its crop; one
+(`1/0/3/1/18`) is the dynamic **f** and is removed by hand.
+
+| page | near-boundary | readable | geometry right | geometry wrong | 2.44 right / wrong / none | ledger_grid right / wrong / none | C (clean-ledger count) right / wrong / none |
+|---|---|---|---|---|---|---|---|
+| Breitkopf p1 | 67 | 14 | **12** | **2** | 11 / 1 / 2 | 12 / 1 / 1 | 13 / 0 / 1 |
+| Litolff p3 | 35 | 10 | 5 | 5 | 0 / 4 / 6 | 7 / 1 / 2 | 8 / 0 / 2 |
+
+**The control** (10 random far heads with geometry within 0.1 of an
+integer, per page): Breitkopf **8 of 8 readable agree with geometry** — the
+measurement is trustworthy there. Litolff **1 of 3 readable disagrees**
+(`3/0/8/6/10`): on a MERGING plate a fat slanted head's widest row
+overhangs its own body by ~2 px and real ledgers by ~3–4 px (0.2 sp at
+15.75 px/space), so a single head beyond the staff cannot be measured
+reliably at this resolution. **The Litolff single-head verdicts are
+suspect and are not a rate**; the Litolff chord verdicts, where the ledger
+overhang is 7 px, are firmer.
+
+Unreadable, Breitkopf 53: 37 detector boxes on a barline/stem/text (the
+system barlines at five x positions carry most), 12 heads with no ledger
+between them and the staff (a missed ledger, or not this staff's note),
+3 merged, 1 the letter f. Litolff 25: 12 no-ledger-between, 7 merged,
+6 staff lines not measured (one alto staff).
+
+**Geometry wrong** (crops in `out/print/2.44-geometry/`, one staff, ≥1000 px,
+lines and ledgers named):
+
+| subject | print | geometry | 2.44 | ledger_grid | C |
+|---|---|---|---|---|---|
+| Breitkopf `1/0/0/2/16` | B5 (space above the A5 ledger) | C6 | — | C6 ✗ | B5 ✓ |
+| Breitkopf `1/1/3/3/2` | D4 (space above the C4 ledger) | E4 | D4 ✓ | D4 ✓ | D4 ✓ |
+| Litolff `3/0/0/2/9` | D6 (third split by the E6 ledger) | E6 | — | — | D6 ✓ |
+| Litolff `3/0/0/2/3` | C6 (on the C6 ledger) ⚠️ | D6 | B5 ✗ | C6 | C6 |
+| Litolff `3/0/0/7/2` | A5 (on the A5 ledger) † | B5 | — | A5 | A5 |
+| Litolff `3/0/8/9/0` | B3 (hangs under the C4 ledger) | A3 | — | B3 ✓ | B3 ✓ |
+| Litolff `3/0/9/2/4` | C3 † | D3 | D3 | D3 | — |
+
+† single Litolff head — suspect per the control. (`1/0/0/2/16` and
+`/2/22` are two detector boxes on ONE head; geometry reads them C6 and B5.)
+
+**Sean's confirmed heads** (DECISIONS 2026-09-30, "Confirm D and F"):
+chord x≈842 `/2/4` + `/2/9` measures **F6 over D6** — agrees with Sean
+(geometry writes `/2/9` E6; C gives D6; ledger_grid and 2.44 give none /
+C6). ⚠️ Chord x≈931 `/2/1` + `/2/3` measures **E6 over C6**: its own ledgers
+sit at 433.2 / 413.3 / 396.6 — 5 px higher than the x≈842 chord's — and
+pass through the MIDDLE of each head (7 px overhang, unambiguous), while
+geometry (and Sean's confirmation) say F6 / D6. Not overruled here: the
+two chords' heads sit at nearly the same height and their ledgers do not.
+Crops `lit3-sean-*.png` — one look from Sean settles which is the fact.
+
+⚠️ C and this measurement are NOT independent: C is computed from the same
+measured ladder and head rows, and differs only in reading the near edge
+against the last clean ledger rather than the head's middle third. Its
+13/13 and 8/8 say the two readings agree, not that C is right.
+ledger_grid reads the canonical cell raster with its own rung finder and is
+the more independent comparison.
+
+### 11c. What this does and does not say
+
+* **Breitkopf: geometry is right on 12 of 14 measurable near-boundary
+  heads**; the two misses are one step each, and C gets both, ledger_grid
+  one. n is small; 53 of 67 "near-boundary heads" were not measurable, 38
+  of them not heads at all.
+* **Litolff: not established.** The control fails on single heads. The one
+  firm Litolff geometry error is Sean's own `/2/9`, which C and the
+  measurement both fix.
+* 2.44's reader answers ≥2 steps off on most of what it reads; under the
+  geometry-first rule those answers fall outside {lower, upper} and are
+  ignored, which makes it harmless and mostly silent, not right.

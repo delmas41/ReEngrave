@@ -1,0 +1,2007 @@
+[
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/1/10",
+  "staff_pos": -4.6,
+  "geometry": -5,
+  "lo": -5,
+  "hi": -4,
+  "side": "above",
+  "px": 675.2,
+  "py": 416.4,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    437.0,
+    424.0,
+    412.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    452.0,
+    467.0,
+    483.0,
+    499.0,
+    514.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    379,
+    421
+   ],
+   "head_h_sp": 2.75,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 43 px = 2.75 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -5,
+  "pitch_verdict": "D6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/2/3",
+  "staff_pos": -4.64,
+  "geometry": -5,
+  "lo": -5,
+  "hi": -4,
+  "side": "above",
+  "px": 930.8,
+  "py": 414.5,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    433.2,
+    413.3,
+    396.7
+   ],
+   "thick_bands": [],
+   "staff": [
+    450.5,
+    465.5,
+    481.5,
+    497.5,
+    513.5
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    405,
+    424
+   ],
+   "head_h_sp": 1.27,
+   "stack_part": "near",
+   "step": -4,
+   "words": "on line y=413.3",
+   "C": -4,
+   "C_why": "1 clean ledger(s); near edge 0.59 sp past y=433.2 -> on the next ledger"
+  },
+  "A_raw": -3,
+  "A": -3,
+  "B": -4,
+  "pitch_verdict": "D6",
+  "sean": "D6"
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/2/4",
+  "staff_pos": -7.4,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 841.9,
+  "py": 394.7,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    431.8,
+    418.0,
+    399.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    451.5,
+    467.0,
+    483.0,
+    498.5,
+    514.5
+   ],
+   "stacked": "line",
+   "head_rows": [
+    383,
+    396
+   ],
+   "head_h_sp": 0.89,
+   "stack_part": "far",
+   "step": -7,
+   "words": "stack split by the line y=399.5: in the space ABOVE it",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": -4,
+  "A": -4,
+  "B": null,
+  "pitch_verdict": "F6",
+  "sean": "F6"
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/2/9",
+  "staff_pos": -5.56,
+  "geometry": -6,
+  "lo": -6,
+  "hi": -5,
+  "side": "above",
+  "px": 842.3,
+  "py": 408.9,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    431.8,
+    418.2,
+    399.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    451.5,
+    467.0,
+    483.0,
+    498.5,
+    514.5
+   ],
+   "stacked": "line",
+   "head_rows": [
+    403,
+    421
+   ],
+   "head_h_sp": 1.21,
+   "stack_part": "near",
+   "step": -5,
+   "words": "stack split by the line y=399.5: in the space BELOW it",
+   "C": -5,
+   "C_why": "2 clean ledger(s); near edge touches y=418.2 (-0.18 sp) -> space beyond it"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E6",
+  "sean": "D6"
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/6/2",
+  "staff_pos": -5.44,
+  "geometry": -5,
+  "lo": -6,
+  "hi": -5,
+  "side": "above",
+  "px": 1545.9,
+  "py": 407.3,
+  "sp": 15.88,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    433.8,
+    414.5,
+    398.0,
+    379.2
+   ],
+   "thick_bands": [],
+   "staff": [
+    448.5,
+    464.0,
+    480.5,
+    496.5,
+    512.0
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    402,
+    427
+   ],
+   "head_h_sp": 1.64,
+   "stack_part": "near",
+   "verdict": "unreadable",
+   "why": "head ink 26 px = 1.64 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -5,
+  "pitch_verdict": "D6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/7/2",
+  "staff_pos": -2.62,
+  "geometry": -3,
+  "lo": -3,
+  "hi": -2,
+  "side": "above",
+  "px": 1728.6,
+  "py": 427.7,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    427.9,
+    410.0,
+    395.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    447.5,
+    463.5,
+    479.0,
+    494.5,
+    510.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    418,
+    437
+   ],
+   "head_h_sp": 1.27,
+   "stack_part": null,
+   "step": -2,
+   "words": "on line y=427.9",
+   "C": -2,
+   "C_why": "0 clean ledger(s); near edge 0.67 sp past y=447.5 -> on the next ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -2,
+  "pitch_verdict": "B5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/0/9/1",
+  "staff_pos": -3.54,
+  "geometry": -4,
+  "lo": -4,
+  "hi": -3,
+  "side": "above",
+  "px": 1911.9,
+  "py": 420.1,
+  "sp": 15.88,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    430.6
+   ],
+   "thick_bands": [],
+   "staff": [
+    447.0,
+    462.5,
+    478.5,
+    494.5,
+    510.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    411,
+    434
+   ],
+   "head_h_sp": 1.51,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 24 px = 1.51 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -3,
+  "pitch_verdict": "C6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/1/4/6",
+  "staff_pos": 15.42,
+  "geometry": 15,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 1199.6,
+  "py": 726.4,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    595.5,
+    611.5,
+    627.5,
+    642.5,
+    658.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    713,
+    735
+   ],
+   "head_h_sp": 1.46,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.46 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.46 sp from y=658.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/1/5/5",
+  "staff_pos": 15.46,
+  "geometry": 15,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 1380.8,
+  "py": 723.5,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    595.5,
+    611.0,
+    627.5,
+    642.5,
+    658.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    714,
+    736
+   ],
+   "head_h_sp": 1.46,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.52 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.52 sp from y=658.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/1/6/4",
+  "staff_pos": 15.46,
+  "geometry": 15,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 1550.9,
+  "py": 726.7,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    596.0,
+    611.5,
+    627.5,
+    643.0,
+    659.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    714,
+    736
+   ],
+   "head_h_sp": 1.46,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.49 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.49 sp from y=659.0: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/1/7/4",
+  "staff_pos": 15.54,
+  "geometry": 16,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 1726.0,
+  "py": 727.3,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    595.5,
+    611.5,
+    627.5,
+    643.0,
+    658.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    715,
+    735
+   ],
+   "head_h_sp": 1.33,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.59 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.59 sp from y=658.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "D3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/1/7/6",
+  "staff_pos": 15.54,
+  "geometry": 16,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 1726.0,
+  "py": 727.4,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    595.5,
+    611.5,
+    627.5,
+    643.0,
+    658.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    715,
+    735
+   ],
+   "head_h_sp": 1.33,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.59 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.59 sp from y=658.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/6/2/2",
+  "staff_pos": -7.6,
+  "geometry": -8,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 930.9,
+  "py": 1231.2,
+  "sp": 15.75,
+  "clef": "bass",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1300.5,
+    1316.0,
+    1332.0,
+    1347.5,
+    1363.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1224,
+    1245
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.52 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.52 sp from y=1300.5: neither touching nor half a space"
+  },
+  "A_raw": -3,
+  "A": -3,
+  "B": null,
+  "pitch_verdict": "B3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/6/3/4",
+  "staff_pos": 17.48,
+  "geometry": 17,
+  "lo": 17,
+  "hi": 18,
+  "side": "below",
+  "px": 1137.6,
+  "py": 1437.2,
+  "sp": 15.75,
+  "clef": "bass",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1299.5,
+    1314.5,
+    1330.5,
+    1346.5,
+    1362.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1427,
+    1448
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 4.10 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +4.10 sp from y=1362.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/6/3/5",
+  "staff_pos": 17.56,
+  "geometry": 18,
+  "lo": 17,
+  "hi": 18,
+  "side": "below",
+  "px": 1078.2,
+  "py": 1438.8,
+  "sp": 15.88,
+  "clef": "bass",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1300.0,
+    1315.5,
+    1331.5,
+    1347.5,
+    1363.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1428,
+    1449
+   ],
+   "head_h_sp": 1.39,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 4.06 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +4.06 sp from y=1363.5: neither touching nor half a space"
+  },
+  "A_raw": 3,
+  "A": 11,
+  "B": null,
+  "pitch_verdict": "E6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/6/3/6",
+  "staff_pos": 17.6,
+  "geometry": 18,
+  "lo": 17,
+  "hi": 18,
+  "side": "below",
+  "px": 1105.9,
+  "py": 1438.1,
+  "sp": 15.75,
+  "clef": "bass",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1299.5,
+    1315.5,
+    1330.5,
+    1346.5,
+    1362.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1428,
+    1449
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 4.16 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +4.16 sp from y=1362.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/7/2/2",
+  "staff_pos": 11.42,
+  "geometry": 11,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 906.0,
+  "py": 1579.9,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1567.1
+   ],
+   "thick_bands": [],
+   "staff": [
+    1489.5,
+    1509.0,
+    1520.5,
+    1536.5,
+    1552.0
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [19.5, 11.5, 16.0, 15.5])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": 3,
+  "A": 11,
+  "B": 11,
+  "pitch_verdict": "B3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/7/4/0",
+  "staff_pos": -2.4,
+  "geometry": -2,
+  "lo": -3,
+  "hi": -2,
+  "side": "above",
+  "px": 1312.0,
+  "py": 1468.3,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1468.3
+   ],
+   "thick_bands": [],
+   "staff": [
+    1488.5,
+    1504.5,
+    1520.0,
+    1535.5,
+    1551.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1459,
+    1479
+   ],
+   "head_h_sp": 1.33,
+   "stack_part": null,
+   "step": -2,
+   "words": "on line y=1468.3",
+   "C": -2,
+   "C_why": "0 clean ledger(s); near edge 0.60 sp past y=1488.5 -> on the next ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -2,
+  "pitch_verdict": "A5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/7/9/0",
+  "staff_pos": 11.62,
+  "geometry": 12,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 1915.0,
+  "py": 1577.0,
+  "sp": 15.88,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1563.7
+   ],
+   "thick_bands": [],
+   "staff": [
+    1484.5,
+    1500.5,
+    1516.5,
+    1532.0,
+    1548.0
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    1572,
+    1588
+   ],
+   "head_h_sp": 1.07,
+   "stack_part": "far",
+   "verdict": "unreadable",
+   "why": "head sits 0.52 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": 3,
+  "A": 11,
+  "B": 12,
+  "pitch_verdict": "A3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/8/1/1",
+  "staff_pos": 13.36,
+  "geometry": 13,
+  "lo": 13,
+  "hi": 14,
+  "side": "below",
+  "px": 760.7,
+  "py": 1750.7,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1723.8,
+    1740.9
+   ],
+   "thick_bands": [],
+   "staff": [
+    1647.0,
+    1658.0,
+    1679.0,
+    1694.0,
+    1710.0
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [11.0, 21.0, 15.0, 16.0])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 13,
+  "pitch_verdict": "G3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/8/2/6",
+  "staff_pos": 11.56,
+  "geometry": 12,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 908.4,
+  "py": 1735.1,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1723.8,
+    1739.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    1645.5,
+    1669.5,
+    1669.5,
+    1692.5,
+    1708.5
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [24.0, 0.0, 23.0, 16.0])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": 3,
+  "A": 11,
+  "B": 11,
+  "pitch_verdict": "A3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/8/7/0",
+  "staff_pos": 12.5,
+  "geometry": 12,
+  "lo": 12,
+  "hi": 13,
+  "side": "below",
+  "px": 1728.4,
+  "py": 1739.5,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1720.0,
+    1738.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    1642.5,
+    1658.0,
+    1681.5,
+    1681.5,
+    1705.0
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [15.5, 23.5, 0.0, 23.5])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 12,
+  "pitch_verdict": "A3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/8/9/0",
+  "staff_pos": 11.64,
+  "geometry": 12,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 1915.9,
+  "py": 1731.8,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1722.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    1641.5,
+    1657.0,
+    1673.0,
+    1688.0,
+    1704.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    1725,
+    1744
+   ],
+   "head_h_sp": 1.28,
+   "stack_part": null,
+   "step": 11,
+   "words": "in space just past the last line y=1722.0 (touches it)",
+   "C": 11,
+   "C_why": "1 clean ledger(s); near edge touches y=1722.0 (+0.19 sp) -> space beyond it"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 11,
+  "pitch_verdict": "A3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/0/7",
+  "staff_pos": 9.6,
+  "geometry": 10,
+  "lo": 9,
+  "hi": 10,
+  "side": "below",
+  "px": 538.9,
+  "py": 1882.7,
+  "sp": 15.75,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1807.0,
+    1822.5,
+    1838.5,
+    1854.0,
+    1870.0
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    1874,
+    1900
+   ],
+   "head_h_sp": 1.71,
+   "stack_part": "far",
+   "verdict": "unreadable",
+   "why": "head ink 27 px = 1.71 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 9,
+  "pitch_verdict": "D3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/2/0",
+  "staff_pos": 11.52,
+  "geometry": 12,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 938.2,
+  "py": 1894.2,
+  "sp": 18.75,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1803.5,
+    1816.5,
+    1835.5,
+    1850.5,
+    1878.5
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [13.0, 19.0, 15.0, 28.0])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 12,
+  "pitch_verdict": "B2",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/2/4",
+  "staff_pos": 10.5,
+  "geometry": 10,
+  "lo": 10,
+  "hi": 11,
+  "side": "below",
+  "px": 858.2,
+  "py": 1887.7,
+  "sp": 15.62,
+  "clef": "alto",
+  "measured": {
+   "ladder": [
+    1884.3
+   ],
+   "thick_bands": [],
+   "staff": [
+    1805.0,
+    1818.5,
+    1837.0,
+    1852.5,
+    1867.5
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    1879,
+    1896
+   ],
+   "head_h_sp": 1.15,
+   "stack_part": "far",
+   "step": 11,
+   "words": "in space just past the last line y=1884.3 (touches it)",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": 2,
+  "A": 10,
+  "B": 10,
+  "pitch_verdict": "D3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/2/5",
+  "staff_pos": 11.4,
+  "geometry": 11,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 966.4,
+  "py": 1893.4,
+  "sp": 18.0,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1803.5,
+    1816.5,
+    1835.0,
+    1850.5,
+    1875.5
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [13.0, 18.5, 15.5, 25.0])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 12,
+  "pitch_verdict": "C3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/6/1",
+  "staff_pos": -7.42,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 1661.0,
+  "py": 1732.6,
+  "sp": 15.75,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1800.5,
+    1816.5,
+    1832.0,
+    1847.5,
+    1863.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1727,
+    1748
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.33 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.33 sp from y=1800.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/9/9/4",
+  "staff_pos": -7.44,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 1915.3,
+  "py": 1730.6,
+  "sp": 15.75,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1798.5,
+    1814.5,
+    1830.0,
+    1845.5,
+    1861.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1720,
+    1744
+   ],
+   "head_h_sp": 1.59,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 25 px = 1.59 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G5",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/0/10/2/10",
+  "staff_pos": -8.4,
+  "geometry": -8,
+  "lo": -9,
+  "hi": -8,
+  "side": "above",
+  "px": 854.5,
+  "py": 1887.0,
+  "sp": 15.88,
+  "clef": "bass",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1962.5,
+    1978.5,
+    1994.5,
+    2009.5,
+    2026.0
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    1879,
+    1896
+   ],
+   "head_h_sp": 1.13,
+   "stack_part": "near",
+   "verdict": "unreadable",
+   "why": "head sits 4.19 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +4.19 sp from y=1962.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "B4",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/1/0/6/0",
+  "staff_pos": -6.5,
+  "geometry": -6,
+  "lo": -7,
+  "hi": -6,
+  "side": "above",
+  "px": 1310.9,
+  "py": 2269.9,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    2302.5,
+    2286.0,
+    2269.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    2321.0,
+    2337.0,
+    2352.5,
+    2368.5,
+    2384.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    2260,
+    2280
+   ],
+   "head_h_sp": 1.33,
+   "stack_part": null,
+   "step": -6,
+   "words": "on line y=2269.5",
+   "C": -6,
+   "C_why": "2 clean ledger(s); near edge 0.38 sp past y=2286.0 -> on the next ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -6,
+  "pitch_verdict": "E6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/1/0/7/0",
+  "staff_pos": -6.36,
+  "geometry": -6,
+  "lo": -7,
+  "hi": -6,
+  "side": "above",
+  "px": 1418.5,
+  "py": 2269.9,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    2301.5,
+    2285.5,
+    2269.6
+   ],
+   "thick_bands": [],
+   "staff": [
+    2320.0,
+    2335.5,
+    2351.5,
+    2367.5,
+    2383.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    2259,
+    2280
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "step": -6,
+   "words": "on line y=2269.6",
+   "C": -6,
+   "C_why": "2 clean ledger(s); near edge 0.35 sp past y=2285.5 -> on the next ledger"
+  },
+  "A_raw": -2,
+  "A": -2,
+  "B": -6,
+  "pitch_verdict": "E6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/1/0/8/2",
+  "staff_pos": -7.46,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 1492.1,
+  "py": 2261.3,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    2300.2,
+    2284.8,
+    2270.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    2320.0,
+    2335.5,
+    2351.5,
+    2367.0,
+    2383.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    2251,
+    2267
+   ],
+   "head_h_sp": 1.08,
+   "stack_part": null,
+   "step": -7,
+   "words": "in space just past the last line y=2270.0 (touches it)",
+   "C": -7,
+   "C_why": "3 clean ledger(s); near edge touches y=2270.0 (+0.19 sp) -> space beyond it"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -7,
+  "pitch_verdict": "F6",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/1/1/17/0",
+  "staff_pos": 15.46,
+  "geometry": 15,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 2511.2,
+  "py": 2615.2,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    2485.5,
+    2501.0,
+    2517.0,
+    2532.5,
+    2548.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    2604,
+    2646
+   ],
+   "head_h_sp": 2.73,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 43 px = 2.73 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E3",
+  "sean": null
+ },
+ {
+  "group": "near",
+  "subject": "glyph/3/1/1/17/2",
+  "staff_pos": 15.48,
+  "geometry": 15,
+  "lo": 15,
+  "hi": 16,
+  "side": "below",
+  "px": 2511.1,
+  "py": 2615.3,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    2485.5,
+    2501.0,
+    2517.0,
+    2532.5,
+    2548.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    2604,
+    2646
+   ],
+   "head_h_sp": 2.73,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 43 px = 2.73 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E3",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/8/2/2",
+  "staff_pos": 10.06,
+  "geometry": 10,
+  "lo": 10,
+  "hi": 11,
+  "side": "below",
+  "px": 970.1,
+  "py": 1723.3,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1722.8
+   ],
+   "thick_bands": [],
+   "staff": [
+    1645.5,
+    1661.5,
+    1673.0,
+    1692.5,
+    1708.5
+   ],
+   "verdict": "unreadable",
+   "why": "staff lines not measured (gaps [16.0, 11.5, 19.5, 16.0])",
+   "C": null,
+   "C_why": "staff lines not measured"
+  },
+  "A_raw": 2,
+  "A": 10,
+  "B": 10,
+  "pitch_verdict": "C4",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/7/4/1",
+  "staff_pos": -2.06,
+  "geometry": -2,
+  "lo": -3,
+  "hi": -2,
+  "side": "above",
+  "px": 1283.1,
+  "py": 1471.1,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1488.5,
+    1504.5,
+    1521.5,
+    1535.5,
+    1551.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1461,
+    1482
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 0.41 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": -2,
+   "C_why": "0 clean ledger(s); near edge 0.41 sp past y=1488.5 -> on the next ledger"
+  },
+  "A_raw": -2,
+  "A": -2,
+  "B": -2,
+  "pitch_verdict": "A5",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/9/6/4",
+  "staff_pos": -7.08,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 1603.2,
+  "py": 1744.7,
+  "sp": 15.75,
+  "clef": "alto",
+  "measured": {
+   "ladder": [],
+   "thick_bands": [],
+   "staff": [
+    1800.5,
+    1816.5,
+    1832.0,
+    1847.5,
+    1863.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1732,
+    1752
+   ],
+   "head_h_sp": 1.33,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head sits 3.08 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "0 clean ledger(s); near edge +3.08 sp from y=1800.5: neither touching nor half a space"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "G3",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/5/2/2",
+  "staff_pos": 10.04,
+  "geometry": 10,
+  "lo": 10,
+  "hi": 11,
+  "side": "below",
+  "px": 931.6,
+  "py": 1234.6,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1233.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    1155.5,
+    1171.0,
+    1187.0,
+    1202.5,
+    1218.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1224,
+    1245
+   ],
+   "head_h_sp": 1.4,
+   "stack_part": null,
+   "step": 10,
+   "words": "on line y=1233.0",
+   "C": 10,
+   "C_why": "0 clean ledger(s); near edge 0.35 sp past y=1218.5 -> on the next ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 10,
+  "pitch_verdict": "C4",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/7/0/7",
+  "staff_pos": -2.94,
+  "geometry": -3,
+  "lo": -3,
+  "hi": -2,
+  "side": "above",
+  "px": 533.5,
+  "py": 1467.6,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1476.9
+   ],
+   "thick_bands": [],
+   "staff": [
+    1492.0,
+    1507.5,
+    1523.5,
+    1539.0,
+    1555.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    1457,
+    1474
+   ],
+   "head_h_sp": 1.14,
+   "stack_part": null,
+   "step": -3,
+   "words": "in space just past the last line y=1476.9 (touches it)",
+   "C": -3,
+   "C_why": "1 clean ledger(s); near edge touches y=1476.9 (+0.18 sp) -> space beyond it"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": -3,
+  "pitch_verdict": "B5",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/8/6/10",
+  "staff_pos": 10.92,
+  "geometry": 11,
+  "lo": 10,
+  "hi": 11,
+  "side": "below",
+  "px": 1551.5,
+  "py": 1728.2,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1725.3
+   ],
+   "thick_bands": [],
+   "staff": [
+    1643.5,
+    1659.0,
+    1675.0,
+    1690.0,
+    1706.0
+   ],
+   "stacked": null,
+   "head_rows": [
+    1717,
+    1738
+   ],
+   "head_h_sp": 1.41,
+   "stack_part": null,
+   "step": 10,
+   "words": "on line y=1725.3",
+   "C": 10,
+   "C_why": "0 clean ledger(s); near edge 0.70 sp past y=1706.0 -> on the next ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": 10,
+  "pitch_verdict": "B3",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/8/1/3",
+  "staff_pos": 11.06,
+  "geometry": 11,
+  "lo": 11,
+  "hi": 12,
+  "side": "below",
+  "px": 728.6,
+  "py": 1733.3,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1722.2
+   ],
+   "thick_bands": [],
+   "staff": [
+    1647.5,
+    1660.5,
+    1678.5,
+    1694.5,
+    1710.0
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    1730,
+    1746
+   ],
+   "head_h_sp": 1.09,
+   "stack_part": "far",
+   "verdict": "unreadable",
+   "why": "head sits 0.50 sp past the last found line with no ledger between -- a missed ledger, or not this staff's note",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "B3",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/0/0/8",
+  "staff_pos": -8.04,
+  "geometry": -8,
+  "lo": -9,
+  "hi": -8,
+  "side": "above",
+  "px": 517.9,
+  "py": 390.8,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    437.6,
+    424.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    453.0,
+    468.0,
+    484.0,
+    499.5,
+    515.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    381,
+    450
+   ],
+   "head_h_sp": 4.48,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 70 px = 4.48 sp tall -- vertical stroke through the mapped centre (not a separable head)",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": -2,
+  "A": -2,
+  "B": -8,
+  "pitch_verdict": "G6",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/0/0/15",
+  "staff_pos": -4.98,
+  "geometry": -5,
+  "lo": -5,
+  "hi": -4,
+  "side": "above",
+  "px": 520.9,
+  "py": 414.4,
+  "sp": 15.62,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    437.6,
+    424.5,
+    402.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    453.0,
+    468.0,
+    484.0,
+    499.5,
+    515.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    381,
+    422
+   ],
+   "head_h_sp": 2.69,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 42 px = 2.69 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": -4,
+  "A": -4,
+  "B": -6,
+  "pitch_verdict": "D6",
+  "sean": null
+ },
+ {
+  "group": "control",
+  "subject": "glyph/3/0/5/4/5",
+  "staff_pos": 10.0,
+  "geometry": 10,
+  "lo": 10,
+  "hi": 10,
+  "side": "below",
+  "px": 1202.7,
+  "py": 1233.2,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    1234.2,
+    1252.0
+   ],
+   "thick_bands": [],
+   "staff": [
+    1154.5,
+    1170.0,
+    1186.0,
+    1201.5,
+    1217.5
+   ],
+   "stacked": null,
+   "head_rows": [
+    1223,
+    1246
+   ],
+   "head_h_sp": 1.52,
+   "stack_part": null,
+   "verdict": "unreadable",
+   "why": "head ink 24 px = 1.52 sp tall -- merged/fragmented",
+   "C": null,
+   "C_why": "head not separable"
+  },
+  "A_raw": 2,
+  "A": 10,
+  "B": 10,
+  "pitch_verdict": "C4",
+  "sean": null
+ },
+ {
+  "group": "sean",
+  "subject": "glyph/3/0/0/2/1",
+  "staff_pos": -6.88,
+  "geometry": -7,
+  "lo": -7,
+  "hi": -6,
+  "side": "above",
+  "px": 931.1,
+  "py": 397.2,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    433.2,
+    413.4,
+    396.6
+   ],
+   "thick_bands": [],
+   "staff": [
+    450.5,
+    465.5,
+    481.5,
+    497.5,
+    513.5
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    388,
+    403
+   ],
+   "head_h_sp": 1.02,
+   "stack_part": "far",
+   "step": -6,
+   "words": "on line y=396.6",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": -3,
+  "A": -3,
+  "B": -6,
+  "pitch_verdict": "F6",
+  "sean": "F6"
+ },
+ {
+  "group": "sean",
+  "subject": "glyph/3/0/0/2/3",
+  "staff_pos": -4.64,
+  "geometry": -5,
+  "lo": -5,
+  "hi": -4,
+  "side": "above",
+  "px": 930.8,
+  "py": 414.5,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    433.2,
+    413.3,
+    396.7
+   ],
+   "thick_bands": [],
+   "staff": [
+    450.5,
+    465.5,
+    481.5,
+    497.5,
+    513.5
+   ],
+   "stacked": "waist",
+   "head_rows": [
+    405,
+    424
+   ],
+   "head_h_sp": 1.27,
+   "stack_part": "near",
+   "step": -4,
+   "words": "on line y=413.3",
+   "C": -4,
+   "C_why": "1 clean ledger(s); near edge 0.59 sp past y=433.2 -> on the next ledger"
+  },
+  "A_raw": -3,
+  "A": -3,
+  "B": -4,
+  "pitch_verdict": "D6",
+  "sean": "D6"
+ },
+ {
+  "group": "sean",
+  "subject": "glyph/3/0/0/2/4",
+  "staff_pos": -7.4,
+  "geometry": -7,
+  "lo": -8,
+  "hi": -7,
+  "side": "above",
+  "px": 841.9,
+  "py": 394.7,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    431.8,
+    418.0,
+    399.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    451.5,
+    467.0,
+    483.0,
+    498.5,
+    514.5
+   ],
+   "stacked": "line",
+   "head_rows": [
+    383,
+    396
+   ],
+   "head_h_sp": 0.89,
+   "stack_part": "far",
+   "step": -7,
+   "words": "stack split by the line y=399.5: in the space ABOVE it",
+   "C": null,
+   "C_why": "far head of a stack: its near edge is the other head, not a ledger"
+  },
+  "A_raw": -4,
+  "A": -4,
+  "B": null,
+  "pitch_verdict": "F6",
+  "sean": "F6"
+ },
+ {
+  "group": "sean",
+  "subject": "glyph/3/0/0/2/9",
+  "staff_pos": -5.56,
+  "geometry": -6,
+  "lo": -6,
+  "hi": -5,
+  "side": "above",
+  "px": 842.3,
+  "py": 408.9,
+  "sp": 15.75,
+  "clef": "treble",
+  "measured": {
+   "ladder": [
+    431.8,
+    418.2,
+    399.5
+   ],
+   "thick_bands": [],
+   "staff": [
+    451.5,
+    467.0,
+    483.0,
+    498.5,
+    514.5
+   ],
+   "stacked": "line",
+   "head_rows": [
+    403,
+    421
+   ],
+   "head_h_sp": 1.21,
+   "stack_part": "near",
+   "step": -5,
+   "words": "stack split by the line y=399.5: in the space BELOW it",
+   "C": -5,
+   "C_why": "2 clean ledger(s); near edge touches y=418.2 (-0.18 sp) -> space beyond it"
+  },
+  "A_raw": null,
+  "A": null,
+  "B": null,
+  "pitch_verdict": "E6",
+  "sean": "D6"
+ }
+]
