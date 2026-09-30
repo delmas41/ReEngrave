@@ -680,3 +680,128 @@ other test file touched). `python3 -m tools.omr.staged.check`: **TOTAL
 new reason word `beam_certain_not_joined` is declared in `Q.DURATION`'s
 own `reasons=(...)` tuple, same convention as every sibling reason.
 
+### ROADMAP 2.38c -- the two residuals named by 2.38b, chased and NOT built
+
+2.38b named two populations of residual duration faults and left both
+unchased: (A) 165 `duration` verdicts DECIDED using ONLY NOT-JOINED beam
+witnesses, of which level-0 (19, "about half wrong") was a SEPARATE
+mechanism from the certain/possible join test 2.38b itself fixes; and (B)
+the ~6 that remained wrong at level >=2 AFTER 2.38b landed, where box
+geometry and the ink-continuity witness (`Q.BEAM_STEM_JOIN`) AGREE on a
+stroke the print says is not this stem's. This item re-gathered Brahms p1
+fresh on today's tree (`--through adjudicate --weights auto`,
+`beam_certain_not_joined` fires 102x, matching 2.38b's own count exactly)
+and traced every member of both populations against the print, per
+CLAUDE.md rule 1 ("brief from the tree") and rule 7 ("a control must be
+able to fail" -- re-derived, not read off the prior FINDINGS text).
+
+**Method.** `out/print/2.38c/{01..16}-*.png`: 600 dpi crops, staff lines
+drawn in (cut straight from the PDF, no re-render), a green corner
+bracket on the exact detected box, one caption line under each giving OUR
+decided value and what the print shows it should be. 16 of the 25
+subjects (19 in A, 6 in B) were print-checked by eye; the rest were
+triaged by their own `used`/`detail` rows (beam-stroke x-ranges vs the
+stem's own x-range, `beams_far_side`, `beams_ledger_line`,
+`beams_decided_arc`) rather than cropped one by one, once the pattern in
+the eye-checked sample repeated. Scripts (`crop_subjects.py`,
+`final_crops.py`, `list_subjects.py`, `dump_verdict.py`,
+`tip_ink_check.py`) are throwaway triage, not committed (CLAUDE.md rule
+9 -- no new derived check without a roadmap item; these are not one).
+
+**Population A (level-0, 19 notes) -- TWO causes, NEITHER in ADJUDICATE:**
+
+1. **The CV beam-stroke reader stops short of the stem it should reach**
+   (5 of 8 eye-checked, crops 01-05: `glyph/1/0/0/0/10`, `/24`, `/28`,
+   `glyph/1/0/0/3/12`, `glyph/1/1/3/2/1`). Every one of these sits INSIDE
+   a continuous beamed run on the print -- the beam bar visibly passes
+   over the notehead's own column -- yet `Q.BEAM_STROKE`'s CV rows for
+   that cell cover only PART of the run: e.g. `glyph/1/0/0/0/10`'s stem
+   sits at x=1600-1613 (canonical, this cell's own units) while the two
+   CV strokes on record end at x1=1013 and x1=1452 -- a gap of ~150px,
+   3.2 staff spaces, ~40x `BEAM_EDGE_TOLERANCE_WIDTHS`'s own pad.
+   `glyph/1/0/0/3/12` gaps 3.15 spaces the same way. `yolo_beams` is 0 in
+   both cells -- the DETECTOR never boxed a beam glyph there either, so
+   there is no second candidate to fall back on. `Q.STEM_TIP_INK`
+   (2.18c's own ink witness, already wired into `adjudicate_duration`
+   for exactly this shape of gap) does not save these: it ABSTAINS
+   "where a beam or another detection already occupies the window" by
+   its own docstring, and in these dense cells nearly every stem's
+   window IS occupied by a neighbour's ink or box -- checked directly,
+   `cell/1/0/0/0` (4 wrong notes) carries exactly ONE `stem_tip_ink` row
+   for the WHOLE cell, filed against a different stem than any of the
+   four. **This is a GATHER gap** (the CV line reader's segmentation
+   length, or `Q.STEM_TIP_INK`'s reach in a crowded cell), not a
+   connection ADJUDICATE can make -- nothing on the record names the
+   right beam count for these notes, so deciding one would be exactly
+   the guess rule 6 forbids. **Not built, per the brief's own
+   permission to stop at diagnosis.**
+
+2. **A detector false-positive notehead sitting on blank paper between
+   two real beam groups** (3 of 8 eye-checked, crops 08-10:
+   `glyph/1/0/0/0/31`, `/32`, `glyph/1/1/3/1/11`). Each box is empty --
+   no ink at all inside it, or ink belonging to a flat sign a few px
+   away -- and each still gets a `duration` DECIDED (quarter, since no
+   stroke's column reaches an empty box either). **This is a
+   `notehead_is_not_a_notehead` / detector-precision gap**
+   (`notehead_precision.py`, `gather.py`) -- explicitly fenced off from
+   this lane (ROADMAP 2.39 is editing both files right now) and not
+   built here regardless.
+
+   2 of 8 eye-checked (crops 06-07, `glyph/1/0/0/0/5`,
+   `glyph/1/1/9/7/4`) look CORRECT: genuinely isolated notes, no ink of
+   either cause nearby. This roughly matches 2.38b's own "about half
+   wrong" estimate once the false-notehead half is folded in with the
+   CV-gap half.
+
+**Population B (level >=2 after 2.38b, 6 notes) -- THREE causes, same
+verdict:**
+
+1. **The same false-positive notehead fault as A2** (3 of 6, crops
+   11-13: `glyph/1/0/9/3/3` on a flat sign, `glyph/1/0/9/3/11` on a
+   stray mark at a barline, `glyph/1/1/10/0/8` on blank paper between
+   two 16th-groups). Each sits in the cell's own pad zone between two
+   REAL beamed groups, so both the detector's box-column test and the
+   ink-continuity witness "agree" on a stroke -- one from whichever
+   neighbour happens to be closer -- because there is no real note
+   there to disagree about. Box geometry and ink both being off the
+   SAME non-existent subject is not a second witness (CLAUDE.md §10:
+   "two witnesses off the same raster fall silent together"). Same
+   fenced-off fix as A2.
+2. **A real, isolated note wrongly attributed a NEIGHBOURING beamed
+   run's strokes** (1 of 6, crop 15, `glyph/1/1/3/0/7`): the print shows
+   this note standing alone with no beam or flag touching it at all: a
+   separate 2-note 16th group starts two notes to its right. Decided
+   32nd (3 beams). Both the box-column pad and `Q.BEAM_STEM_JOIN` read
+   the far group's strokes as this stem's own -- a genuine
+   cross-attribution, not a duplicate-detection artefact. **Only 1
+   confirmed instance on this page** -- short of the brief's own "at
+   least 4 notes" floor for a build, and building a general
+   cross-attribution filter from n=1 would be exactly the untested
+   generalisation rule 7 warns against.
+3. **Plausibly correct** (1 of 6, crop 14, `glyph/1/1/3/0/10`: second
+   note of a real 2-note 16th group, 2 beams matches the print) and
+   **one borderline** (1 of 6, crop 16, `glyph/1/0/11/3/5`: a real note
+   at the edge of a beamed run -- ask Sean, CLAUDE.md rule 3).
+
+**Verdict: nothing built.** Every wrong member of both populations traces
+to GATHER (CV beam-stroke reach, or a false-positive notehead in
+`notehead_precision`'s remit) or to a single-instance cross-attribution
+too small to generalise from -- none is a >=4-note ADJUDICATE/EVALUATE
+connection that does not guess (CLAUDE.md rule 6, this item's own brief
+§3). `staged.check` TOTAL **245, unchanged** (no code touched);
+`pytest -m "not slow" tools/omr/tests` unchanged from origin/main (no
+code touched, ran as a control only -- see below).
+
+**Question for Sean** (crop 16, `out/print/2.38c/16-B-borderline.png`):
+the green box is a real notehead at the edge of a beamed run; I read 2
+beams there but I'm not certain against the print at this zoom -- is it
+2 or 1? (Green = the detected notehead box; no other colour used, this
+crop has no beam/stem overlay.)
+
+**Also flagged, not this lane's fix:** 6 of the 25 subjects across both
+populations (a quarter of the residual) are false-positive notehead
+detections sitting on blank paper or another glyph between two real beam
+groups -- worth a `notehead_precision` item once 2.39's own work on that
+file lands, since two lanes editing the same detection logic at once was
+the reason this lane was fenced off it.
+
