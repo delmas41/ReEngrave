@@ -73,9 +73,18 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
     """⚠️ THE PREMISE, RUN RATHER THAN RESTATED.
 
     This is the case the rewritten `TestOwnershipResolvesTheContest` fixture
-    used to assert the opposite of: a lone glyph produces NO band-distance row,
-    so it is never handed to another staff, so the sole-evidence "rescue" the
-    dynamics docstring credited is structurally unreachable on this path.
+    used to assert the opposite of: a lone glyph is never handed to ANOTHER
+    staff, so the sole-evidence "rescue" the dynamics docstring credited is
+    structurally unreachable on this path.
+
+    ⚠️ ROADMAP 2.37 (2026-09-29) SUPERSEDES "a lone glyph produces NO
+    band-distance row": Sean's convention ("there is no such thing as a far
+    note with no ledger line") means a lone off-staff notehead now gets its
+    OWN ladder walked too (`gather.gather_ownership_evidence`'s own-staff-
+    only pass), so a row exists. The safety property this class actually
+    protects -- `is_relocated_copy` can never fire on a lone glyph, because
+    nothing here ever names a candidate OTHER than its own filed staff --
+    still holds and is what the tests below now assert directly.
     """
 
     def _band_rows(self, layout):
@@ -103,7 +112,13 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
                 if getattr(r, "quantity", None) == Q.GLYPH_BAND_DISTANCE]
 
     def test_ONE_copy_yields_no_contest(self):
-        self.assertEqual(self._band_rows({0: 1}), [])
+        """ROADMAP 2.37: a row now exists (this note's own ladder is asked
+        regardless), but it names only staff 0 -- never a contest, never a
+        different candidate."""
+        rows = self._band_rows({0: 1})
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail.get("candidate"), "staff/0/0/0")
+        self.assertTrue(rows[0].detail.get("own"))
 
     def test_TWO_copies_ON_DIFFERENT_STAVES_DO_yield_a_contest(self):
         """⚠️ THE POSITIVE CONTROL IN THE SAME CLASS. Without it the test above
@@ -122,8 +137,15 @@ class TestOneLetterIsNeverContested(unittest.TestCase):
         Found by a mutation arm: deleting the `gi.staff == gj.staff` guard
         survived the battery's first run, because every fixture had at most one
         copy per staff.
+
+        ⚠️ ROADMAP 2.37: each copy still gets its OWN ladder walked
+        individually (two rows now, not zero), but neither ever names the
+        other -- still not a contest.
         """
-        self.assertEqual(self._band_rows({0: 2}), [])
+        rows = self._band_rows({0: 2})
+        self.assertEqual(len(rows), 2)
+        self.assertTrue(all(r.detail.get("candidate") == "staff/0/0/0"
+                            for r in rows))
 
 
 class _Det:

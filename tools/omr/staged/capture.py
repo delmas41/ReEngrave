@@ -433,6 +433,17 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "relation between the head, the candidate's geometry and the paper "
         "between them; scoreless, same reason as `LEDGER_INK_UNDER`.",
         None),
+    "LEDGER_OWNER_DENSITY": (
+        RELATION,
+        "ROADMAP 2.37 (Sean's redirect): the RAW ink density at the ONE "
+        "ledger position adjacent to a head, toward one candidate staff "
+        "in a contest -- off the staff-ERASED raster, no found/not-found "
+        "threshold. A relation between the head, one candidate's "
+        "geometry and the paper between them, exactly `LEDGER_RUNG_INK`'s "
+        "own shape; scoreless for the same reason -- a ruler reading, "
+        "not a naming, and `adjudicate_glyph_owner` compares it against "
+        "the OTHER candidate's own reading, never a fixed floor.",
+        None),
     "LEDGER_INK_UNDER": (
         RELATION,
         "ROADMAP 3.4g-3: the ink fraction in a notehead-sized window ON a "

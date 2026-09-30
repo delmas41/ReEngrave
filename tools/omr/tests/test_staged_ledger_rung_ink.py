@@ -179,6 +179,173 @@ REAL_RUNG_SPACE_C = 100.0
 REAL_RUNG_THICKNESS_C = 29.357798165137616
 
 
+class TestAdjacentExcludesTheHeadsOwnBox(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, ROUND 2, 2026-09-29). A fresh
+    re-gather of both acceptance-set pages with THIS branch tabulated,
+    per failing `det_all` row (detector boxed every expected rung), which
+    named condition actually blocked it: `wide_adjacent` (the ORIGINAL,
+    head-centred guard) was the dominant failure -- 32 of 37 Litolff p3
+    rows, 84 of 119 Brahms p1. Manager's hypothesis, confirmed: for the
+    rung THROUGH the head or one space beyond it, the head's OWN solid
+    ink sits inside "one band further away", read as false "thick"
+    evidence against its own real, thin rung. The head is `ev.subject`,
+    already known -- `_exclude_head_box` removes exactly its own rows
+    from every adjacent test (wide and per-side), never any other ink.
+    Re-gathered after the fix: Brahms p1 `det_all` pairs with ANY step
+    found rose 19/82 -> 43/82; Litolff p3 barely moved (1/23 -> 2/23,
+    left/right DENSE itself is the remaining blocker there, a SEPARATE,
+    not-yet-understood question for the MERGING plate)."""
+
+    def test_no_overlap_is_unchanged(self):
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 50.0, 60.0),
+                         (100.0, 110.0))
+
+    def test_head_fully_covers_the_band_is_none(self):
+        self.assertIsNone(gather._exclude_head_box(100.0, 110.0, 90.0, 120.0))
+
+    def test_head_overlaps_the_near_side_keeps_the_far_side(self):
+        """The head's box starts inside the band (its bottom, say, sits a
+        little into the band tested just below it) -- only the portion
+        BEYOND the head survives."""
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 80.0, 104.0),
+                         (104.0, 110.0))
+
+    def test_head_overlaps_the_far_side_keeps_the_near_side(self):
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, 106.0, 130.0),
+                         (100.0, 106.0))
+
+    def test_no_head_box_known_is_unchanged(self):
+        """An old caller, or one with no page geometry for the head, still
+        gets exactly the un-excluded band -- never a crash, never a
+        different answer where the exclusion cannot be computed."""
+        self.assertEqual(gather._exclude_head_box(100.0, 110.0, None, None),
+                         (100.0, 110.0))
+
+    def test_a_rung_through_the_head_is_now_found(self):
+        """RED before this round: the head's own tall body sat inside the
+        wide adjacent band above AND below a rung tested at its own
+        centre, so a real, thin, fully-overhanging rung was refused as
+        'thick'. The head's box is passed and excluded; the SAME ink is
+        now found."""
+        img = _paper(h=400, w=400)
+        # the head: a tall solid block (200x30), simulating its own body
+        _draw(img, 185, 185, 215, 215)
+        # the rung: thin, at the head's OWN centre, crossing well past it
+        _draw(img, 175, 197, 225, 203)
+        head_y0, head_y1 = 185.0, 215.0
+        without = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        withh = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None,
+                                       head_y0=head_y0, head_y1=head_y1)
+        self.assertFalse(without["found"])
+        self.assertTrue(withh["found"])
+
+
+class TestDeclineOnUnreadableAdjacent(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, round 3, 2026-09-29): a step
+    whose density looked like a real rung but whose ADJACENT evidence
+    (wide or per-side) could not be read AT ALL -- off the raster, never
+    the head's own KNOWN, safely-excluded box -- must DECLINE (`None`,
+    the same "cannot tell" signal a caller already treats as an
+    abstention), not silently default a missing "cannot rule out thick"
+    into "clean". Measured against the real re-gather: both confound-
+    control false positives round 2 introduced were exactly this shape
+    (`left_adjacent`/`right_adjacent`/`adjacent` all `None`, density alone
+    cleared)."""
+
+    def test_declines_when_the_raster_cannot_test_adjacent_at_all(self):
+        """A real, dense, fully-overhanging rung -- but the raster is only
+        as tall as the tested band itself, so NEITHER the above nor the
+        below comparison band has anywhere left to read (genuinely off
+        the raster, no head box declared at all). RED before this round:
+        the OLD `adjacent is None` fallback defaulted this straight to
+        `found=True`."""
+        img = _paper(h=7, w=400)
+        half_h = gather.LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * SP / 2.0 \
+            + gather.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * SP
+        cy = half_h + 0.2       # the tightest fit that still lets y0 round to 0
+        _draw(img, 175, cy - half_h, 225, cy + half_h)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, cy, SP, None)
+        self.assertIsNone(m)
+
+    def test_a_rung_through_the_head_is_not_declined_over_the_SAME_raster(self):
+        """POSITIVE CONTROL: identical geometry (the adjacent bands reach
+        off the SAME short raster), but this time the head's own box is
+        declared and covers those bands -- a KNOWN, safe exclusion, not
+        "cannot tell". This must still be FOUND, never declined."""
+        img = _paper(h=7, w=400)
+        half_h = gather.LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * SP / 2.0 \
+            + gather.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * SP
+        cy = half_h + 0.2
+        _draw(img, 175, cy - half_h, 225, cy + half_h)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, cy, SP, None,
+                                   head_y0=-1000.0, head_y1=1000.0)
+        self.assertIsNotNone(m)
+        self.assertTrue(m["found"])
+
+    def test_a_confirmed_thick_stroke_is_a_negative_not_a_decline(self):
+        """POSITIVE CONTROL: the adjacent band IS readable and genuinely
+        dense (a real thick blob) -- a confirmed block is `found=False`,
+        never a decline; declining is for MISSING evidence only, not for
+        evidence that positively says "thick"."""
+        img = _paper()
+        _draw(img, 182, 185, 218, 215)     # tall, dwarfing the window
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertIsNotNone(m)
+        self.assertFalse(m["found"])
+
+
+class TestOneSidedWing(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, 2026-09-29): real Brahms p1 crops
+    (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of 39
+    `det_all` pairs -- the detector boxed EVERY expected rung, yet this
+    reader found none) measured a genuine wing reading dense on the side
+    it actually extends (0.558-0.622) and weak on the other (0.266-0.371)
+    -- a short, asymmetric wing, not a stem. RED before this change: the
+    ORIGINAL predicate (`center and left and right`) refuses a real wing
+    that only clears the `DENSE` floor on ONE side."""
+
+    def test_a_wing_on_only_the_right_is_found(self):
+        img = _paper()
+        _draw(img, 190, 197, 218, 203)      # crosses centre, extends RIGHT
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertTrue(m["found"])
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertLess(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+
+    def test_a_wing_on_only_the_left_is_found(self):
+        img = _paper()
+        _draw(img, 182, 197, 210, 203)      # crosses centre, extends LEFT
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertTrue(m["found"])
+        self.assertGreaterEqual(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertLess(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+
+    def test_POSITIVE_CONTROL_neither_side_still_refuses(self):
+        """The same centre-only ink as `test_a_stem_only_does_not_reach_
+        past_the_head`, restated here as this class's own negative
+        control: no overhang on EITHER side must still refuse."""
+        img = _paper()
+        _draw(img, 195, 197, 205, 203)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertFalse(m["found"])
+
+    def test_a_tall_stroke_on_one_side_still_refuses_that_side(self):
+        """A TALL stroke attached at the head's right edge (a stem, not a
+        wing): dense at `right` but ALSO dense one thickness further up
+        and down IN THAT SAME narrow x-range -- the PER-SIDE guard, not
+        the wide `adjacent` one (which only tests the head-centred `ww`
+        span and would not by itself catch a stem sitting just outside
+        it), is what must refuse this."""
+        img = _paper()
+        _draw(img, 190, 197, 210, 203)       # the centre, dense
+        _draw(img, 210, 150, 214, 250)        # a tall stroke at the RIGHT band
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertFalse(m["found"])
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreater(m["right_adjacent"],
+                           gather.LEDGER_RUNG_INK_ADJACENT_MAX)
+
+
 class TestARealPrintedRung(unittest.TestCase):
     """`benchmarks/omr-owner-domain-2026-09/out/print/2.6c-far-breitkopf-03.
     png` shows it; this is the ink itself, byte-identical to what

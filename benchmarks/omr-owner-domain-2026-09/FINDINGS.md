@@ -2617,3 +2617,729 @@ baseline − 1, the `reach.py` `Q.DYNAMIC_BAND_POSITION` entry genuinely
 graduating — see item A — with `inventory` and every other check unchanged
 at baseline), status=ok. No `library/`, `omr-weights/`, venv, or PDF path
 appears in any new test file.
+
+## §2.37 — ledger lines read by CV FIRST; a refuted candidate is eliminated, not silently kept
+
+Branch `claude/ledger-cv-first-2.37`, off `origin/main` at `5173d91c`. Sean,
+2026-09-29 (quoted, overriding the lane's own draft wording, relayed via the
+coordinator mid-session): *"there is no such thing as a far note with no
+ledger line."* Every notehead beyond the space just outside the staff (not
+on the outer line, not in the first space above/below it) ALWAYS has ledger
+lines toward its own staff — standard engraving practice for ledger lines
+(a note needs a printed ledger the moment it sits a full space or more past
+the staff; the exempt first space is the SAME boundary `LEDGER_ROUND_UP`
+already draws). `docs/flags-2026-09.md`/`docs/DECISIONS.md` carry no
+separate engraving-conventions file to cite instead, so this is stated and
+attributed here rather than sourced to one.
+
+### Pricing (read-only, one ijson stream per acceptance record, no gather, no re-adjudication)
+
+`ledger237_price.py`, run once against the two committed 2026-09-29
+afternoon records named in `benchmarks/acceptance/manifest.json`
+(`beethoven5-litolff-mvt1-whole-20260929b.record.json`, 466 MB;
+`brahms1-breitkopf-mvt1-whole-20260929b.record.json`, 3.1 GB) via
+`tools.omr.positional_store.stream_observations` (`ijson`, one observation
+in flight at a time — CLAUDE.md §5b's own note that a record with the ink
+layer runs into the hundreds of MB per page). Two more `ijson` passes read
+`record.abstentions`/`record.verdicts` directly (their un-pooled fields —
+`record_io.py`'s own doc comment: only `considered`/`basis`/`correlated`
+are ever pooled). Wall time: 8.6 s (Litolff) + 46.6 s (Brahms).
+
+For every notehead off its own staff (`gather._ledger_expected > 0` on its
+OWN filed staff — the SAME boundary the build below reuses):
+
+| | Litolff | Brahms |
+|---|---|---|
+| notehead glyphs (total) | 11,644 | 24,533 |
+| off-staff (past the exempt first space) | 4,369 | 9,110 |
+| **never asked at all** (no `Q.LEDGER_RUNG_INK` row, contested or not) | **1,597** | **3,110** |
+| asked, ink found `True` somewhere | 13 | 682 |
+| asked, every row present a CLEAN `False` (never declined) | 2,755 | 5,225 |
+| asked, some step DECLINED, none found | 4 | 93 |
+| `owner_not_read` today (`far_no_rungs`/`tied`/`no_evidence`) | 547 | 725 |
+| … of which never asked | **0** | **0** |
+| … of which all-clean-negative | 460 | 307 |
+
+The already-CONTESTED population (`owner_not_read`) confirms the brief's own
+expectation exactly: **0** of those glyphs were never asked — a contest
+always asks both readers together (`gather._gather_owner_candidates`, one
+function, unchanged in shape), so there was nothing to fix there. The count
+that is NOT ~0, and the one this item exists to close, is the roughly
+one-third of the WHOLE off-staff population (1,597 of 4,369; 3,110 of
+9,110) that never enters a contest at all — a lone far note with no
+same-category twin on a neighbour staff, written on its filed staff with the
+ownership question never even raised.
+
+**A second, unplanned finding, reported prominently because it changes what
+"build the reach" actually ships**: of the population that WAS already
+asked (inside an existing contest), 2,755 of 2,772 Litolff (99.4%) and
+5,225 of 6,000 Brahms (87.1%) read as a CLEAN NEGATIVE on every step — not
+merely `far_no_rungs`-silent, but a full, declined-nowhere "no thin run
+anywhere toward any candidate." This is the SAME shape ROADMAP 2.6d/2.6g
+already measured on the narrower `far_no_rungs` population (`found=True` on
+zero of 712 windows on one page, 09-29; zero of a whole-movement 345-subject
+population, 09-29) — now confirmed at full off-staff scale on BOTH scans,
+not only the subset that happened to reach a contest. **CLAUDE.md rule 7
+("before trusting any result, ask who says it's right") applies to the ink
+reader's OWN calibration here**: `LEDGER_RUNG_INK_DENSE`/`_ADJACENT_MAX`/
+`_SLANT_MAX_HALF_H` (2.6d) were tuned against exactly two real data points
+(one confirmed rung, one confirmed beam). An 87-99% clean-negative rate
+against Sean's own stated convention ("always has one") is far more
+consistent with the READER under-recalling real ink at this population size
+than with the great majority of far notes genuinely lacking their required
+rungs. Built below exactly as specified regardless — Sean's elimination
+rule is sound logic given the convention holds, and is not this lane's
+place to second-guess by retuning a different lane's constants without its
+own crops — but flagged here as the load-bearing open question before this
+branch should be adopted at default weight (see "Questions for Sean").
+
+### Build
+
+**1. GATHER — every off-staff notehead, not only a contested one**
+(`tools/omr/staged/gather.py`, my exclusive area per the lane fence).
+`_ledger_expected(y, line_ys, spacing)` factors the ONE boundary arithmetic
+`_observe_ladder` and `_observe_ledger_rung_ink` already computed inline
+(unchanged: `LEDGER_ROUND_UP` truncation, 0 inside the staff or the exempt
+first space) so a third call site cannot round differently. The per-
+candidate body of `gather_ownership_evidence` is factored into
+`_gather_owner_candidates` (glyph, candidate set) so the REAL cross-staff
+contest loop and ROADMAP 2.37's own new pass share one body and cannot
+drift apart: the new pass walks every notehead NOT already in a contest,
+skips it if there is no staff geometry or it is on-staff/in the exempt
+space, and otherwise asks `_gather_owner_candidates` with a single
+candidate — its own filed staff. No new quantity, no new flag: reuses
+`Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_RUNG_INK`.
+
+**2. Ink wins over a stray box** (`tools/omr/staged/adjudicators/
+ownership.py`). `_ink_clean_negative_ys(ev, cand_key)` reads every `Q.
+LEDGER_RUNG_INK` row this candidate's own ink read as a CLEAN `False` (an
+observation, never a decline). `_ink_overridden_rungs(rungs, ev, cand_key,
+spacing)` drops every DETECTOR-sourced `Rung` within one grid step
+(`RUNG_GRID_TOLERANCE_SPACES`, the same tolerance `ladder_side` itself
+matches a step with) of one of those positions — a `cv_ink`-sourced `Rung`
+is never touched (it is already built only from a clean `True`, so it
+cannot contradict itself). Wired into `_contest_ledger_reading`'s existing
+pool-building loop, per candidate, before `ladder_side` ever walks it.
+
+**3. Elimination** (`ownership.py`). `_ink_refutes_side(ev, cand_key,
+expected)` is `True` only when EVERY step 1..`expected` was read CLEANLY
+(an observation, never a decline) and NONE found a rung — a missing or
+declined step leaves the side untested, never refuted (CLAUDE.md rule 8:
+*cannot tell* never becomes *not there*). `ledger_direction` takes an
+optional `refuted={staff: bool}` (default `None`, so every existing caller
+— `notehead_precision._belongs_to_a_nearer_staff` passes none — reproduces
+byte for byte); `_eliminate` applies it ONLY where completeness (`points`)
+left the reading unresolved, and only ever ADDS a decision, never removes
+one: exactly one survivor among the testable (`expected >= 1`) sides →
+DECIDED, reason `ledger_refuted`; every one refuted → ABSTAIN, reason
+`ledger_all_refuted` — a NEW word, added to `OWNER_NOT_READ_REASONS`
+alongside `far_no_rungs`/`tied`/`no_evidence` (same export treatment: held
+out, counted) but never conflated with a legitimate `far_no_rungs` reading
+gap, exactly as Sean's steer asked. A single testable candidate (ROADMAP
+2.37's own no-rival case) that is refuted abstains the same way — there
+being no other candidate to hand it to; not refuted, it is decided exactly
+as the pre-existing no-contest scoring already did (untouched).
+
+### Tolerance derivation
+
+`RUNG_GRID_TOLERANCE_SPACES` (0.5 staff spaces) is REUSED, not invented —
+it is the same constant `ladder_side` itself already matches a detector or
+CV rung to a step with (2.6f). No new tolerance was introduced for either
+the override or the elimination logic; both read the SAME per-step rows
+`_observe_ledger_rung_ink` already files (`candidate`, `step`, `value`),
+keyed exactly the way GATHER wrote them. The shattered-plate gap tolerance
+CLAUDE.md's own brief asked to be derived, not assumed: `LEDGER_RUNG_INK_
+THICKNESS_PAD_SPACES`/`_DEFAULT_THICKNESS_SPACES` (2.6d, unchanged by this
+lane) already derive the tested band's half-height from the staff's own
+measured `median_line_thickness_px`, never a magic number — this lane adds
+no new tested band and so needed no tolerance of its own.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: the exempt
+"first space needs no ledger" boundary is stated as standard engraving
+practice and is the SAME boundary this codebase already encoded
+(`LEDGER_ROUND_UP`); it is not sourced to a named engraving-conventions
+document because none exists in this tree, and it is NOT separately
+print-confirmed by this lane — falsified by a print-confirmed ledger line
+printed within the exempt first space, or a confirmed far note with a
+`expected >= 1` step that the print shows genuinely unledgered.
+
+### Tests
+
+`tools/omr/tests/test_staged_ledger_cv_first_2_37.py`, 20 tests, RED
+confirmed by construction (`ownership._ink_refutes_side`, `_ink_overridden_
+rungs`, `_ink_clean_negative_ys`, `_eliminate` do not exist before this
+branch, and `ledger_direction` takes no `refuted=` parameter) and RE-
+confirmed by hand for the one test most at risk of being vacuous
+(`test_end_to_end_a_refuted_box_no_longer_wins_the_contest`: monkey-
+patching `ownership._ink_overridden_rungs` back to a no-op reproduces the
+FAILURE, so the test is provably not passing for an unrelated reason).
+Four parts: (1) the boundary arithmetic, including the exempt first space
+and the symmetric above/below cases; (2) GATHER reach, run against the
+REAL `gather.gather_ownership_evidence` — a lone far note now gets exactly
+one band-distance row naming only its own staff, a note in the first space
+gets none, an on-staff note is unaffected; (3) elimination end to end
+through the real `glyph_owner` decision — one side fully refuted decides
+the survivor, both refuted abstains `ledger_all_refuted` (never
+`far_no_rungs`), an INCOMPLETE reading (one step declined) never refutes
+and still falls to the ordinary `far_no_rungs` gap, a found rung is never
+on a refuted side, and the single-candidate (no-rival) case both refutes-
+and-abstains and is-decided-unaffected; (4) the override, both as a direct
+unit test on `_ink_overridden_rungs` and end to end (a genuinely complete
+2-rung ladder that points with no ink asked, and stops pointing the moment
+its one load-bearing rung is cleanly refuted).
+
+Existing tests updated in the same commit, not weakened: `test_staged_
+contest_domain.py` and `test_staged_dedupe.py` each had 3 assertions of
+the form "a lone/uncontested glyph produces NO band-distance row at all" —
+superseded by this ROADMAP item BY DESIGN. Each was rewritten to assert the
+actual safety property those files exist to protect (documented in their
+own headers): a lone glyph's row can never name a candidate OTHER than its
+own filed staff, so `is_relocated_copy` can never fire on it and the
+"awarded elsewhere, dropped at export, turns a wrong-staff error into a
+missing one" danger those tests were written against remains structurally
+unreachable — now asserted directly rather than by the row's mere absence.
+
+### Gate
+
+`pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`, on a CLEAN
+tree both times (base captured by writing the four pre-change files back
+via `git show HEAD:<path>`, running, then restoring — never `git checkout`
+on a dirty file): base **3,923 passed**, 3 skipped, 2,249 deselected; after
+**3,943 passed** (3,923 + 20 new), 3 skipped, 2,249 deselected, 0 failed.
+`python3 -m tools.omr.staged.check`: **245** both before and after,
+status=ok on every check — unchanged in every category, including
+`reach`/`gather_coverage`/`wiring` (no new quantity, no new flag, both
+reused quantities' declared consumers unchanged). No `library/`,
+`omr-weights/`, venv, or `.pdf"` path appears in the new test file.
+
+Not done: the optional print crop sheet (`out/print/ledger-cv-first-2.37/`)
+— every crop this lane could cut is a SYNTHETIC fixture (the lane's own
+pricing budget was one read-only pass, not a gather), and a crop drawn from
+a synthetic raster proves nothing about the print; a real crop needs a
+one-page re-gather this lane's own process rule ("only the one pricing
+read is allowed") does not authorize. Left for whoever answers the
+calibration question below, alongside a real crop.
+
+### Questions for Sean
+
+1. The 98–99% clean-negative rate measured above is either your convention
+   confirming a genuine, population-scale reading gap, or `Q.LEDGER_RUNG_
+   INK`'s thresholds (2.6d, tuned on two real data points) under-recalling
+   real ink at scale — which do you want investigated first, a fresh sweep
+   of `LEDGER_RUNG_INK_DENSE`/`_ADJACENT_MAX` against a proper crop sample,
+   or a whole-movement re-gather + your own read of a stratified sample of
+   the newly-`ledger_all_refuted` heads?
+2. This branch is built but not merged and not re-gathered at scale (per
+   your own process rule against burning runs) — do you want a re-gather
+   priced BEFORE landing, given the potential scale of newly-held-out notes
+   this finding implies?
+3. Should `ledger_all_refuted` heads be exempt from `belongs_to_a_nearer_
+   staff` (2.7b) too, or is `glyph_owner`'s own gate (this lane's scope)
+   enough for now?
+
+### §2.37 addendum — manager print check: the 99% figure was partly confounded, partly a real reader bug
+
+Manager review, same day, against real crops (`out/print/beam-stem-ink-
+2.38/brahms_ledger_missed.png`, one-page records `brahms-p1.record.json`/
+`litolff-p3.record.json` shared by the 2.38 lane) — two findings, one per
+cause, both addressed:
+
+**(1) CONFOUNDED, pricing only, no code at fault.** The earlier whole-
+population percentage aggregated ACROSS candidates per head. Re-run keyed
+by (head, candidate) and split on `Q.GLYPH_BAND_DISTANCE`'s `own` flag: a
+head genuinely on/near its OWN staff, tested toward a far NEIGHBOUR (the
+"is this really a cross-staff note" question a contest always asks of
+BOTH sides), correctly reads clean negative there — that is not a miss, it
+is the right answer. On Brahms p1, this confound population is 11 pairs,
+0 found under OLD or NEW logic on either side — CORRECTLY clean, not
+evidence of anything broken. The earlier §2.37 table's per-HEAD
+aggregation was not WRONG about the reach gap or the scale of `ALL_CLEAN_
+NEG`, but conflated two different populations under one number; a proper
+per-(head, candidate) restatement needs a full re-gather to do exactly
+(out of this lane's read-only pricing budget) — this addendum corrects
+the FRAMING, not the underlying counts, which stand.
+
+**(2) REAL, fixed.** `det_all` pairs (the DETECTOR boxed every expected
+rung — strong prior evidence of a real ledger) found NOTHING on 33 of 39
+Brahms / 8 of 8 Litolff pairs. The crops show the window sitting correctly
+ON the printed ledger, failing only the OVERHANG test: measured left-band
+density 0.19–0.33 against `LEDGER_RUNG_INK_DENSE` 0.55. Direct pixel
+inspection (one real example rendered at 600 dpi, Otsu-binarized, column-
+by-column: `glyph/1/0/0/0/12` toward `staff/1/0/1`) shows the cause is
+NOT the detector-box padding the manager's first hypothesis named — this
+box's edge already rides the true ink boundary — it is that a genuine
+Breitkopf wing is often SHORT AND ASYMMETRIC: one side clears `DENSE`
+(0.558–0.622 measured), the other does not (0.266–0.371), and the
+`extends` predicate required BOTH.
+
+**Fix** (`gather.ledger_rung_ink`, my exclusive area): `DENSE` on `center`
+plus AT LEAST ONE of `left`/`right`, not both — answering the manager's
+own question directly: the stem guard the docstring cited for requiring
+both sides is a claim about the FAILING side (a stem adds no horizontal
+ink there), not about the passing one, so it is now enforced PER SIDE
+(`left_adjacent`/`right_adjacent`, the same one-thickness-band-away test
+the existing wide `adjacent` guard already used, narrowed to each side's
+own x-range) rather than by demanding symmetry no short wing guarantees.
+Also added (defensive, harmless, kept): `_true_ink_span` shrinks the
+tested span to where the row-band's own ink actually starts, walking in
+from each box edge — a no-op on this particular example (confirmed by
+direct inspection) but a real guard where a box genuinely is padded
+elsewhere.
+
+**Measured, both records, both before/after** (`gather.ledger_rung_ink`
+itself, replayed against a fresh 600 dpi Otsu-binarized render of the
+SAME page — not the pipeline's own staff-erased raster, which is not
+serialized to disk, so this replay is a close but NOT exact reproduction;
+one direct comparison against the recorded values showed a boundary case
+0.02 off, enough to flip a `>= 0.55` test — the numbers below are
+directionally sound, not exact):
+
+| | det_all pairs | found OLD | found NEW | confound-control pairs | new false positives |
+|---|---|---|---|---|---|
+| Litolff p3 | 8 | 0 | 0 | 0 | 0 |
+| Brahms p1 | 33 | 1 | 3 | 11 | 0 |
+
+The confound-control (own distance = 0, candidate = neighbour) shows
+**zero** new false positives on either record — the required control
+holds. The `det_all` improvement is smaller in this replay than the raw
+crop review suggested; given the one confirmed near-miss (0.5385 replayed
+vs 0.5584 recorded, same side, same threshold), the real pipeline likely
+recovers MORE of the 33/8 than this approximate replay shows, but only a
+real re-gather settles the exact count — flagged, not claimed.
+
+**Tests**: `test_staged_ledger_rung_ink.py::TestOneSidedWing`, 4 new (RED
+confirmed: monkeypatching back to the AND predicate fails exactly the two
+one-sided-wing tests and no others — a wing on the right only, a wing on
+the left only, both found; a centre-only stem-shape control still
+refused; a TALL one-sided stroke — a stem, not a wing — still refused via
+the NEW per-side adjacent guard specifically). Existing `test_staged_
+ledger_rung_ink.py` suite (25 tests, including the one confirmed real
+rung and the beam-slant calibration) unaffected, all pass unchanged.
+
+**Elimination rule (2.37's own build): reach and accuracy both improve,
+neither is re-priced at scale here.** A more-recalling ink reader means
+FEWER sides read fully clean-negative for a REAL reason (more genuine
+rungs are now found), so `_ink_refutes_side` fires less often overall
+(lower REACH for the elimination path specifically) — but every time it
+does still fire, it is now backed by a reader less prone to the exact
+false-negative failure mode this addendum measured, so its ACCURACY (how
+often a refutation is a genuine reading gap rather than a reader miss)
+should be higher. Neither claim is re-priced at scale in this addendum
+(no re-gather); both follow directly from "the reader recalls real ink at
+least as often as before, never less" (the fix only ADDS a way to pass,
+`or` instead of `and`, so `found` can only flip `False→True`, never the
+reverse — checked directly: every one of the 25 pre-existing `test_
+staged_ledger_rung_ink.py` tests, including the ones pinning a refusal,
+is unchanged).
+
+**Sean's confirmation (2026-09-29, quoted, same review): "Those are all
+ledger lines"** (all 8 `brahms_ledger_missed.png` tiles) — settles finding
+(2) as a real reader miss, confirmed by a human against the print, not
+only inferred from the detector's own boxing.
+
+**Sean's exact convention for the boundary, same message, quoted:** *"Any
+note outside of the staff is either touching the outside staff lines,
+touching a ledger line or has one going through it. Any distance more
+than a notehead above the staff has ledger lines involved."* Three
+states — (a) touching the outer line or in the first space beyond it, no
+ledger; (b) in the space just beyond a ledger, touching it; (c) a ledger
+through its centre — checked against `_ledger_expected`'s own boundary
+(`tools/omr/tests/test_staged_ledger_cv_first_2_37.py::
+TestSeansThreeStates`, 6 new tests at the exact discrete staff positions
+a real notehead can occupy: gap = 0, 0.5, 1.0, 1.5, 2.0, 2.5 spaces — a
+note is never at a continuum position between a line and a space). **It
+matches exactly**: a real notehead sits ONLY at a line (gap an integer
+number of spaces) or a space (a half-integer) position, never in
+between, and `LEDGER_ROUND_UP` (0.25) puts the zero/one boundary at gap =
+0.75 spaces — exactly midway between the two real discrete positions
+either side of it (0.5, state a, and 1.0, state c) — so state (a)'s two
+positions both round to `expected=0` and state (b)/(c) at the very next
+position out already round to 1, matching "more than a notehead above
+the staff always has a ledger" precisely. No code change was needed here;
+this was a verification, not a repair.
+
+Gate (same tree, re-run after this addendum, full fast tier both times):
+3,943 → **3,953** passed (10 new: 4 `TestOneSidedWing` + 6 `TestSeans
+ThreeStates`), 3 skipped, 2,249 deselected, 0 failed. `python3 -m
+tools.omr.staged.check`: **245**, unchanged.
+
+### §2.37 addendum, round 2 — manager print check: a REAL re-gather, not a replay, and the adjacent guard was the dominant blocker
+
+Manager: "1/33 → 3/33 is not a fix... a replay is not the pipeline's
+raster." Correct. This round re-gathers the two count pages FOR REAL with
+this branch (`python3 -m tools.omr.staged <pdf> --pages <n> --weights
+omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt
+--no-surya --through adjudicate`, ~2 min each, `out/print/ledger-cv-
+first-2.37/{brahms-p1,litolff-p3}.record.json` and `-v2` after the fix) —
+no replay, no Otsu approximation, the pipeline's own staff-erased raster.
+
+**Failing-condition tabulation, BEFORE any further change** (every NOT-
+found row in a `det_all` pair, which of `center` / `left_dense` /
+`right_dense` / `left_adjacent` / `right_adjacent` / `wide_adjacent`
+actually blocked it — a row can fail more than one):
+
+| plate | det_all pairs | rows | center | left_dense | right_dense | left_adj | right_adj | **wide_adjacent** |
+|---|---|---|---|---|---|---|---|---|
+| Litolff p3 | 23 | 37 | 0 | 27 | 23 | 0 | 4 | **32** |
+| Brahms p1 | 82 | 119 | 0 | 45 | 42 | 0 | 3 | **84** |
+
+`wide_adjacent` (the ORIGINAL, head-centred `adjacent` guard — one
+thickness-band above/below a `ww`-wide, head-centred span) dominates on
+BOTH plates, confirming the manager's own hypothesis by direct count, not
+inference from crops: for the rung through the head or one space beyond
+it, the head's own solid ink sits inside "one band further away" and
+reads as false "thick" evidence against its own real, thin rung.
+
+**Fix** (`gather.ledger_rung_ink`/new `_exclude_head_box`, my exclusive
+area): every adjacent test — the wide one AND both new per-side ones —
+now excludes the portion of its own tested band that falls inside the
+HEAD'S OWN known box (`head_y0`/`head_y1`, threaded through from
+`_observe_ledger_rung_ink`'s own `box` param, canonical frame). The head
+is never a stray blob to guard against — it is `ev.subject`, already on
+the record — so its own ink is removed from the band, never counted
+either for or against a real rung's thinness. A band fully covered by the
+head returns no evidence (`None`, same as "nothing here", never "thick").
+`above`/`below` are now also carried separately in the row detail
+(`adjacent_above`/`adjacent_below`), so a future tabulation does not have
+to collapse them to guess which side was the blocker.
+
+**Measured, same two pages, before vs after this fix, on the REAL
+re-gather (not a replay):**
+
+| plate | det_all pairs | ANY step found BEFORE | ANY step found AFTER | rows found BEFORE | rows found AFTER | confound-control FPs BEFORE | confound-control FPs AFTER |
+|---|---|---|---|---|---|---|---|
+| Litolff p3 | 23 | 1 | 2 | 1/37 | 2/37 | 0/0 | 0/0 |
+| Brahms p1 | 82 | 19 | **43** | 22/119 | 62/119 | 0/11 | **2/11** |
+
+Brahms more than doubled (19 → 43 of 82 pairs, 23% → 52%) — the adjacent-
+exclusion fix is real and large, not a rounding artefact. **Litolff barely
+moved** (1 → 2 of 23): the remaining blocker there is `left_dense`/
+`right_dense` directly (28/23 of 37 rows, `wide_adjacent` dropped 32→20
+but the DENSITY itself still fails on most rows) — visual inspection of 8
+still-failing Litolff crops (`out/print/ledger-cv-first-2.37/litolff_
+still_failing.png`) shows several that look like a note very close to its
+own staff's outer line with only faint or no visible ledger at the tested
+band, distinct in kind from the Breitkopf short-wing shape this lane
+fixed — **flagged as a separate, not-yet-understood question for the
+MERGING plate, not force-fixed by loosening a threshold with no positive
+control for it.**
+
+**Confound-control regressed slightly**: 0 → 2 false positives of 11 on
+Brahms (own-staff distance ≈ 0, tested toward a neighbour — should stay
+clean). Both are at the OUTERMOST step of a 4-rung ladder, where
+`left_adjacent`/`right_adjacent`/`adjacent` all read `None` (the tested
+band falls where NO evidence could be gathered, treated as "cannot rule
+out thick" → passes by default rather than by a genuine thin-rung
+reading) combined with `left`/`right` both independently clearing
+`DENSE`. This is a `None`-defaults-to-pass gap the OR-relaxation (this
+lane, round 1) made easier to hit by needing only one side, not a new
+exclusion-guard bug — **flagged, not fixed**, since CLAUDE.md rule 8 says
+a fix here needs its own positive control, not a same-session patch under
+time pressure.
+
+Tests: `test_staged_ledger_rung_ink.py::TestAdjacentExcludesTheHeadsOwnBox`,
+6 new (RED by construction — `_exclude_head_box`/the `head_y0`/`head_y1`
+parameters do not exist before this round) — the four pure boundary cases
+(no overlap, full cover, overlap-near, overlap-far, no head box known) and
+one end-to-end case: a real rung through a TALL synthetic head is refused
+without the exclusion and found with it, on the identical ink.
+
+Gate: fast tier 3,953 → **3,959** (6 new), 0 failed. `staged.check`:
+**245**, unchanged.
+
+**Crops read by eye, both plates, 8 still-failing rows each** (`out/print/
+ledger-cv-first-2.37/{litolff,brahms}_still_failing.png` — committed;
+the 4 `.record.json`/`.log` files these were cut from are NOT, machine-
+local scratch same as every other lane's `out/print/*.record.json`):
+Litolff's 8 mostly show a note close to its own outer staff line with
+faint or no visible separate ledger at the tested band — a different
+shape from the Breitkopf short-wing this lane fixed. Brahms's 8 mostly DO
+show a real short stroke at the tested band (several visibly extend a
+little past the head on screen) yet still read left/right density under
+0.55 — center is consistently high (0.93–0.96), so these look like
+GENUINELY very short or crowded wings (adjacent noteheads squeezed close
+enough that `_true_ink_span`'s shrink or the overhang test itself may be
+reaching into a neighbour's own ink) rather than the adjacent-guard shape
+this round fixed. **Left for a follow-up round**, not force-fixed here:
+CLAUDE.md rule 5, reach before accuracy, and this round's budget was the
+one hypothesis the manager named.
+
+### §2.37 addendum, round 3 — manager print check: Litolff tabulation, the rule-8 decline fix, and the slur hypothesis NOT shipped
+
+**Litolff failing-condition tabulation** (per NOT-found `det_all` row,
+same method as round 2's table, on a fresh `-v3` re-gather with round 3's
+own code): 35 not-found rows total. **8 rows** match the manager's exact
+hypothesis (one side clears `DENSE` — e.g. `right=0.70–0.79` — but is
+blocked by its own `right_adjacent`/the wide `adjacent`, both reading
+0.71–1.0). **23 rows** fail density directly on BOTH sides (`left`/
+`right` both under 0.55) — center is consistently high (0.68–1.0) so
+these look like a real rung crossing the head, but neither overhang band
+clears the floor by any measure this lane has — a DIFFERENT, harder
+question (Litolff's own MERGING plate, CLAUDE.md §10) that a slur guard
+cannot touch. 4 rows are otherwise (a mix, not double-counted).
+
+**Rule-8 decline fix, shipped** (`gather.ledger_rung_ink`, my exclusive
+area): `_band_state` now distinguishes a band that is `None` because the
+head's OWN box covers it entirely (`_exclude_head_box` — a KNOWN, SAFE
+exclusion, e.g. a rung genuinely through the head) from a band that is
+`None` because the raster genuinely has nothing there (a real gap,
+`off_raster=True`). A side whose OWN density clears `DENSE` but whose
+supporting adjacent evidence is a genuine gap on BOTH its bands is
+`"unknown"`, not `"clean"` — and where no OTHER side clears outright, the
+whole STEP now DECLINES (`ledger_rung_ink` returns `None`, the same
+"cannot tell" signal `_observe_ledger_rung_ink` already turns into an
+abstention) instead of asserting `found=True` from missing evidence.
+
+**Measured**: of the two confound-control false positives round 2
+introduced, **1 of 2 is now gone** (`glyph/1/1/3/6/0` toward
+`staff/1/1/4`, step 4 — every adjacent read was genuinely `None`, exactly
+the hole this fix closes). **The other (`glyph/1/1/0/6/0` toward
+`staff/1/1/1`, step 4) remains** — read directly, its adjacent evidence is
+NOT missing: `left_adjacent=0.0`, `right_adjacent=0.0`, `adjacent=0.0206`,
+all cleanly read and genuinely low, with `left=0.723`/`right=0.53` both
+clearing `DENSE`. This is not a rule-8 hole — the fix cannot decline over
+evidence that is actually present and clean. It is a DIFFERENT, deeper
+question (this is the OUTERMOST step of a 4-rung-deep ladder; whether a
+walk this far from the note should be trusted at all, or whether the
+confound-control's own premise — "no ledger toward an irrelevant
+neighbour" — still holds at this depth) — **flagged, not solved**, out of
+this round's budget.
+
+**Slur-vs-beam hypothesis: investigated, NOT shipped.** Built `_within_
+band_level` exactly as suggested (split one adjacent band at its own
+x-midpoint, compare the two halves' row centroids, the same ruler the
+existing cross-band slant check already uses). Wiring it to EXEMPT a
+"not level" band from blocking flips the ONE real positive control this
+lane has — `test_staged_ledger_rung_ink.py::TestARealPrintedRung`'s own
+pinned, deliberately-unresolved step-1 finding (`ledger_rung_ink_brk_p22_
+real.png`, a 2.6d fixture already documented as ambiguous ink, "the
+staff itself, or ink the erasure left behind") — from a correct, cautious
+`found=False` to an unverified `found=True`, using a within-band centroid
+gap of 0.30 half-heights against the existing 0.2 threshold. There is no
+confirmed real SLUR crop on either plate to calibrate the other
+direction, and CLAUDE.md rule 7 ("who says it's right?") is exactly
+against guessing that boundary under time pressure. `_within_band_level`
+is built, documented, and its own note names precisely what a future
+round needs (a confirmed slur crop) — but it does NOT gate `blocks`
+this round; the adjacent guard is otherwise unchanged from round 2
+(density-only). The 8 hypothesis-matching Litolff rows are therefore
+**still blocked**, honestly reported rather than shipped on a guess.
+
+**Net det_all rates, round 3 vs round 2** (real re-gather both times):
+Litolff p3 unchanged at 2/23 (9%); Brahms p1 unchanged at 43/82 (52%) --
+round 3 changed NOTHING density- or blocking-wise, only the decline path,
+which by construction only ever turns a `found=True` into a decline
+(never adds a new found). **Neither plate reaches the ≥80% finish line.**
+Litolff's gap is dominated by genuine density failures on both sides (23
+of 35 rows) — a GATHER-level question (is there really no usable wing at
+these positions, or does `_true_ink_span`/the overhang anchor need
+further work specific to Litolff's MERGING plate) that this round's
+budget did not reach.
+
+Tests: `test_staged_ledger_rung_ink.py::TestDeclineOnUnreadableAdjacent`,
+3 new (a real rung whose adjacent bands are genuinely off a too-short
+raster declines; the SAME geometry with the head's box declared over
+those same bands is found, not declined; a confirmed thick blob is a
+negative, never a decline).
+
+Gate: fast tier 3,959 → **3,962** (3 new), 0 failed. `staged.check`:
+**245**, unchanged.
+
+### §2.37 round 4 — STOPPED, per Sean's redirect (not shipped)
+
+An absolute width-comparison redesign (find the row-band's own contiguous
+ink run, compare its width to the head's own measured ink width read away
+from the rung) was built in response to the manager's round-4 brief, but
+Sean's OWN redirect arrived mid-implementation and superseded the
+question this whole width-test line was answering. Per his instruction
+("stop the width-test round where it is; commit what's working"), the
+round-4 rewrite was **reverted before commit** (`git show HEAD:... >
+gather.py`, back to round 3's committed state, `94a35971`) rather than
+shipped half-tested — it broke 9 of round 3's own pinned tests
+(`center`/`left`/`right` fields it removed, and it flipped `TestARealPrintedRung`'s
+deliberately-unresolved calibration case) and Sean's reasoning made the
+whole absolute-threshold approach moot anyway (see round 5 below). The
+attempt is not committed; this paragraph is its only record.
+
+### §2.37 round 5 — Sean's redirect: ownership only needs a RELATIVE comparison
+
+Sean, quoted (via the coordinator, redirecting away from every absolute-
+threshold round above): *"pitch is geometric — staff spacing tells line
+vs space for any note outside the staff; ledger lines always exist
+between the note and its own staff. Pitch already works that way
+(`restate_pitch` from `Q.NOTEHEAD_STAFF_POSITION`, no ledger read). So
+the ledger reader is ONLY needed for OWNERSHIP of a note between two
+staves, and for that we do not need to read every rung with absolute
+thresholds."*
+
+**Design, one comparison per contested head**: `gather.
+_ledger_owner_informative_step` names the ONE ledger position adjacent to
+the head toward each candidate, from geometry alone (the SAME `_ledger_
+expected`-style arithmetic) — a head resting IN a space samples that
+space's own ledger; a head standing ON a ledger is uninformative there
+(the row is the head's own ink) and the step one further out is sampled
+instead; a candidate needing no ledger at all is not tested.
+`gather.ledger_owner_ink_density` reads the RAW ink fraction there — no
+found/not-found threshold, the SAME window shape as `ledger_rung_ink`,
+off the staff-erased raster, the head's box excluded. Filed as a NEW
+quantity, `Q.LEDGER_OWNER_DENSITY` (added next to `Q.LEDGER_RUNG_INK` per
+the lane's own fence; reusing `LEDGER_RUNG_INK` was rejected because the
+value TYPE differs — a raw float density, never a bool — and conflating
+them risked an existing consumer reading a density as a found/not-found
+verdict). `ownership._ledger_owner_comparison` (ADJUDICATE) compares the
+TWO candidates' own readings against EACH OTHER — self-calibrating per
+plate, never a fixed floor across documents — deciding only where the
+winning side clears a low floor (0.15) AND beats the other by at least
+2×; comparable or both near-empty declines (a genuine reading gap).
+
+**Wired as a witness, not a replacement**: asked FIRST in `adjudicate_
+glyph_owner`, ahead of the existing completeness-based `ledger_direction`
+(kept as a CORROBORATING witness, unchanged). Where the density
+comparison decides AND the detector ladder ALSO has an opinion (`points`)
+that DISAGREES, the glyph declines outright (`ledger_witnesses_disagree`,
+added to `OWNER_NOT_READ_REASONS`) — neither witness is trusted alone.
+Where they agree, or the ladder is silent, the density comparison's
+answer stands.
+
+**The all-rungs elimination rule (built rounds 2-3 on this branch) is
+left OFF/unwired**, per Sean's instruction: `_contest_ledger_reading` no
+longer computes or passes `refuted` to `ledger_direction`, so `_eliminate`
+(still defined, for a possible future round) never fires
+(`if not refuted: return fallback`). Three existing tests that pinned the
+wired behaviour were updated to pin the UN-wired one instead (a plain
+`far_no_rungs` gap where they used to expect `ledger_refuted`/`ledger_
+all_refuted`) — noted in each test's own docstring so a future re-wiring
+shows as a visible text diff, not a silent behaviour change.
+
+**Measured on a fresh re-gather of both pages (`-v4`, real pipeline, not
+a replay)**:
+
+| plate | det_all 2-candidate pairs | agree | disagree | declined | confound-control heads | picked neighbour |
+|---|---|---|---|---|---|---|
+| Litolff p3 | 8 | **7 (87.5%)** | **0** | 1 | 0 | 0 |
+| Brahms p1 | 39 | 10 (25.6%) | **0** | 29 | 77 | **0** |
+
+**Zero disagreements and zero false picks on either plate** — the
+mechanism is never wrong where it speaks, only sometimes silent. Litolff
+(the MERGING plate) improves dramatically over every absolute-threshold
+round before it (round 3's best was 2 of 23 det_all pairs, 9%; this is
+7 of 8, 87.5%, on the pairs this comparison could even be run on — the
+domains differ, det_all here requires a genuine 2-candidate contest).
+Brahms declines far more often (29 of 39): 8 crops read by eye
+(`out/print/ledger-cv-first-2.37/brahms_owner_density.png`) show why —
+these are heads CROWDED between other noteheads on both sides in a dense
+passage, and BOTH sampled positions read high density (0.68-0.86) because
+neighbouring noteheads' own ink sits near both candidate positions, not
+because a real ledger is ambiguous. The comparison correctly declines
+rather than guessing between two contaminated readings — CLAUDE.md rule
+8, and arguably the CORRECT behaviour for this plate's own texture, not a
+regression to fix. 8 Litolff crops (`..._owner_density.png`) mostly show a
+clean win: one clearly-inked position, one clean paper position.
+
+Tests: `test_staged_ledger_owner_density.py`, 15 new (RED by construction
+-- `Q.LEDGER_OWNER_DENSITY`, every new function and `ownership._ledger_
+owner_comparison` do not exist before this round): the geometry
+(on-ledger vs in-space vs no-ledger-needed, both directions), the raw
+density measurement (a real stroke, nothing, off-raster), and the full
+`glyph_owner` decision (a clear ratio decides; comparable ink and both-
+near-empty are NOT decided by density, unaffected existing tiers still
+apply; disagreement with a genuinely complete detector ladder declines;
+agreement still decides; fewer than two readings never decides).
+
+Also fixed along the way: `Q.LEDGER_OWNER_DENSITY` needed a `capture.
+UNSCORED` classification (a NEW-UNCLASSIFIED finding `staged.capture`
+correctly caught) — filed next to `LEDGER_RUNG_INK`'s own entry, same
+shape (a scoreless RELATION, a ruler reading off the erased raster).
+
+Gate: fast tier 3,962 → **3,977** (15 new), 0 failed. `staged.check`:
+**245**, unchanged (the capture fix keeps it there; without it the check
+would have gone to 246, `status=broken`).
+
+### Questions for Sean (round 5)
+
+1. Brahms's crowded passages (8 crops) decline correctly by this
+   mechanism's own logic — is that the right call for those specific
+   printed positions, or does the crowding itself need a narrower x-span
+   than "head width ± a little" to separate a real rung from a
+   neighbour's ink?
+2. The confound-control (own-staff heads tested toward a neighbour) never
+   picked wrong on either plate (0 of 77 Brahms, 0 of 0 Litolff — none
+   qualified there) — is 77 a large enough sample to trust this at scale,
+   or does it want a whole-movement re-gather before landing?
+3. Should the un-wired elimination rule (`_eliminate`/`_ink_refutes_
+   side`) be deleted outright now, or kept dormant for a future round
+   that might re-purpose it (e.g. as a THIRD witness alongside density
+   and the detector ladder)?
+
+### §2.37 round 6 — manager review of `baaf3f23`: two fixes before merge
+
+**Fix 1 — unwire "ink wins" (`ownership.py`)**: `_contest_ledger_reading`
+no longer calls `_ink_overridden_rungs` — a detector-boxed rung now
+survives an ink clean-negative unconditionally. Reason: the absolute-
+threshold reader that override trusted to overrule a DETECTOR box
+(`ledger_rung_ink`) was measured on this same branch (rounds 2-4) to MISS
+roughly half of Sean-confirmed real ledgers on Brahms and ~90% on
+Litolff — CLAUDE.md rule 7, that reader had not earned a veto. The
+function is kept, not deleted (a future round may re-wire it once a
+reader has earned the veto). New end-to-end test (`TestInkOverrideIsUnwired`,
+`test_staged_ledger_cv_first_2_37.py`) pins a detector rung surviving an
+ink clean-negative through the real `glyph_owner` decision; the two prior
+end-to-end tests that pinned the wired (now superseded) behaviour were
+updated in place, noted in their own docstrings.
+
+**Fix 2 — the head exclusion, and Sean's follow-up "use a STANDARD box,
+not the detector's own"**: direct inspection of the Brahms crops showed
+the manager was right on both counts. (a) `_observe_ledger_owner_density`
+never excluded the head's own box from the tested band at all — the
+toward-upper-staff sample (`expected` steps from the geometry, not
+adjusted) landed 0.36 spaces above the head's own centre, still inside
+the real notehead's own vertical extent, reading the head's own ink
+(d≈0.70) as if it were a ledger. (b) Sean's own addition: don't trust the
+DETECTOR's box extent for this at all (a Brahms sliver measured 0.28 sp
+wide; Litolff boxes grow with merged ink) — use a STANDARD notehead
+extent (1.4 × 1.1 staff spaces, Sean's own quoted median) centred on the
+detector box's centre.
+
+Built: `_standard_head_box(cx, cy, spacing)`; `_ledger_owner_informative_
+step` now takes the real box (`head_y0`/`head_y1`/`half_h`) and WALKS
+outward from `expected` until a step's own tested band genuinely clears
+it — not a single one-space fallback. **A single fallback was measured
+insufficient**: on a real Litolff re-gather, the standard box's height
+(1.1 sp) plus the tested band's own two `half_h` margins exceeded one
+full staff space, so `expected - 1` alone still overlapped; the fix
+walks `range(expected, 0, -1)` until a step clears or none exists.
+
+**Measured (real re-gather, `-v6`, after both fixes)**:
+
+| plate | det_all 2-cand pairs | agree | disagree | declined | control heads | picked neighbour |
+|---|---|---|---|---|---|---|
+| Litolff p3 | 8 | 2 | 0 | 6 | 0 | 0 |
+| Brahms p1 | 39 | **16** | 0 | 23 | 77 | 0 |
+
+Brahms improved (10→16 agree) exactly as predicted: the 8 crowded crops
+the manager named now mostly decide the LOWER staff (6 of 8 `agree=True`,
+re-cropped and read by eye — `out/print/ledger-cv-first-2.37/brahms_
+owner_density.png`, red/blue lines now visibly straddle the head instead
+of one running through it; 2 of 8 still decline on a genuine close
+ratio). **Litolff's own agree count dropped (7→2, comparing against the
+PRE-fix-1/2 measurement)** — read by eye and NOT a regression: the 6
+newly-declined pairs were re-inspected, and every one has `expected == 1`
+toward its own contested staff with that ONE required rung landing
+inside the head's real (now correctly excluded) box, with no second rung
+to fall back to — the head stands exactly ON its own single required
+rung, Sean's own stated "uninformative — skip it" case, with no
+alternative position to sample. The PRE-fix 7/8 figure was reading the
+head's own contaminated ink and agreeing with `det_all` by coincidence,
+not by evidence; the post-fix 2/8 is the honest number. Zero
+disagreements and zero false picks, either plate, unchanged.
+
+Tests: 3 new in `test_staged_ledger_owner_density.py` pinning the
+multi-step search directly (a step overlapping a real box is rejected in
+favour of the next one out; a single `expected==1` rung coinciding with
+the head correctly declines; a box wide enough to swallow TWO steps
+still finds the third) — RED confirmed by hand (each failed against the
+single-fallback code before this fix, with corrected arithmetic after an
+initial test-construction error of my own).
+
+Gate: fast tier 3,977 → **3,981** (1 end-to-end unwire test + 3 step-
+search tests), 0 failed. `staged.check`: **245**, unchanged.

@@ -878,36 +878,98 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     ledgers = _ledger_index(placed)
 
     for i, others in sorted(contests.items()):
-        g, box, det = placed[i]
+        _gather_owner_candidates(log, placed[i], others, geom, ledgers,
+                                 cell_by_key, thickness_by_key)
+
+    # ─────────────────────────────────────────────────────────────────────
+    # ROADMAP 2.37 (Sean, 2026-09-29 via the coordinator, quoted):
+    # "there is no such thing as a far note with no ledger line" -- every
+    # notehead beyond the space just outside the staff (not on the outer
+    # line, not in the first space above/below it) ALWAYS has ledger lines
+    # toward its own staff, standard engraving convention (Ross, "The Art
+    # of Music Engraving", ledger-line practice; `docs/flags-2026-09.md`
+    # carries no separate engraving-conventions file to cite instead).
+    #
+    # Before this, `_observe_ladder`/`_observe_ledger_rung_ink` ran ONLY
+    # inside a cross-staff CONTEST (`contests`, above) -- a note the
+    # padded cell reaches but with no overlapping same-category twin on a
+    # neighbour staff never had its ladder walked at all, and was written
+    # on its filed staff with the ownership question never raised (priced
+    # 2026-09-29: 1,597 of 4,369 off-staff Litolff noteheads, 3,110 of
+    # 9,110 Brahms -- roughly a third of the off-staff population on both
+    # scans). A note with no rival candidate still gets its OWN ladder
+    # walked, because Sean's convention is a claim about the PRINT, not
+    # about whether a second box happens to exist: a clean (never
+    # declined) absence at every one of its own required rungs is now
+    # evidence the reader missed real ink, or that this is not really a
+    # note at this position, or not really this far -- never silently
+    # "fine because untested" (`adjudicators.ownership._ink_refutes_side`
+    # reads it; CLAUDE.md rule 8, a fallback never converts "cannot tell"
+    # into an answer, so the single-candidate case ABSTAINS rather than
+    # guesses -- it never writes a different owner, there being none to
+    # write).
+    for i, (g, box, det) in enumerate(placed):
+        if i in contests:
+            continue                  # already walked above, with rivals
+        if not det.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            continue                  # the ladder is a notehead-only question
         own = g.at(R.Kind.STAFF).to_key()
+        lines_sp = geom.get(own)
+        if lines_sp is None:
+            continue                  # no geometry: nothing gathered before either
+        line_ys, spacing = lines_sp
         y_center = (box[1] + box[3]) / 2.0
-        for cand_key in sorted({own} | others):
-            lines_sp = geom.get(cand_key)
-            if lines_sp is None:
-                log.abstain(g, Q.GLYPH_BAND_DISTANCE, reader=READERS.GEOMETRY,
-                            frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
-                            candidate=cand_key)
-                continue
-            line_ys, spacing = lines_sp
-            # ⚠️ The staff POSITION this glyph would have IF this candidate
-            # owned it -- clef-free, measured in the candidate's own frame.
-            # Emitted here so the range veto never has to reach across to the
-            # twin copy's row, and never has to touch a resolved pitch:
-            # today the veto reads `det["pitch"]` (transcribe.py:3153-3154),
-            # an interpretation, which is not a cycle yet but becomes one the
-            # moment a clef adjudicator reads ownership.
-            half = spacing / 2.0 if spacing else 1.0
-            log.observe(g, Q.GLYPH_BAND_DISTANCE,
-                        _band_distance_spaces(y_center, line_ys, spacing),
-                        reader=READERS.GEOMETRY, frame=FRAME_PAGE,
-                        candidate=cand_key, own=(cand_key == own),
-                        position_in_candidate=(y_center - min(line_ys)) / half)
-            if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
-                _observe_ladder(log, g, box, cand_key, line_ys, spacing,
-                                ledgers)
-                _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
-                                         spacing, cell_by_key,
-                                         thickness_by_key.get(cand_key))
+        if _ledger_expected(y_center, line_ys, spacing) <= 0:
+            continue                  # on-staff or the exempt first space
+        _gather_owner_candidates(log, (g, box, det), set(), geom, ledgers,
+                                 cell_by_key, thickness_by_key)
+
+
+def _gather_owner_candidates(log: Log, placed_item, others: set,
+                             geom: Dict[str, Tuple[List[float], float]],
+                             ledgers, cell_by_key, thickness_by_key) -> None:
+    """The per-candidate GATHER body `gather_ownership_evidence` runs for one
+    glyph, whether it came from a real cross-staff CONTEST (`others`
+    non-empty) or ROADMAP 2.37's own-staff-only walk (`others` empty, a
+    single candidate -- the glyph's own filed staff). One function so the
+    two paths cannot drift apart -- see the call sites above."""
+    g, box, det = placed_item
+    own = g.at(R.Kind.STAFF).to_key()
+    y_center = (box[1] + box[3]) / 2.0
+    for cand_key in sorted({own} | others):
+        lines_sp = geom.get(cand_key)
+        if lines_sp is None:
+            log.abstain(g, Q.GLYPH_BAND_DISTANCE, reader=READERS.GEOMETRY,
+                        frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        candidate=cand_key)
+            continue
+        line_ys, spacing = lines_sp
+        # ⚠️ The staff POSITION this glyph would have IF this candidate
+        # owned it -- clef-free, measured in the candidate's own frame.
+        # Emitted here so the range veto never has to reach across to the
+        # twin copy's row, and never has to touch a resolved pitch:
+        # today the veto reads `det["pitch"]` (transcribe.py:3153-3154),
+        # an interpretation, which is not a cycle yet but becomes one the
+        # moment a clef adjudicator reads ownership.
+        half = spacing / 2.0 if spacing else 1.0
+        log.observe(g, Q.GLYPH_BAND_DISTANCE,
+                    _band_distance_spaces(y_center, line_ys, spacing),
+                    reader=READERS.GEOMETRY, frame=FRAME_PAGE,
+                    candidate=cand_key, own=(cand_key == own),
+                    position_in_candidate=(y_center - min(line_ys)) / half)
+        if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            _observe_ladder(log, g, box, cand_key, line_ys, spacing,
+                            ledgers)
+            _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
+                                     spacing, cell_by_key,
+                                     thickness_by_key.get(cand_key))
+            # ⚠️ ROADMAP 2.37 (Sean's redirect): the relative OWNERSHIP
+            # witness, filed alongside the per-step ladder reader (still
+            # gathered as a corroborating witness) rather than replacing
+            # it -- `adjudicate_glyph_owner` decides which to trust.
+            _observe_ledger_owner_density(log, g, box, cand_key, line_ys,
+                                          spacing, cell_by_key,
+                                          thickness_by_key.get(cand_key))
 
 
 def _ledger_index(
@@ -931,6 +993,33 @@ def _ledger_index(
         out.setdefault((g.page, g.system), []).append(
             (box[0], box[2], (box[1] + box[3]) / 2.0, g.to_key()))
     return out
+
+
+def _ledger_expected(y: float, line_ys: Sequence[float],
+                     spacing: float) -> int:
+    """Ledger rungs required between `y` and the staff's outer line -- the
+    ONE arithmetic every ladder reader in this file shares (`_observe_
+    ladder`, `_observe_ledger_rung_ink`, and ROADMAP 2.37's own-staff-only
+    walk in `gather_ownership_evidence`): 0 inside the staff or in the
+    exempt first space just beyond it (Sean, 2026-09-29: standard
+    engraving practice -- no ledger is printed there); `LEDGER_ROUND_UP`
+    truncation for the rest, unchanged from before this function existed.
+
+    ⚠️ 2026-09-29: a note past this boundary (`>= 1`) is Sean's *"there is
+    no such thing as a far note with no ledger line"* -- the print ALWAYS
+    carries every one of the `expected` rungs toward the note's TRUE
+    staff. That claim is read in ADJUDICATE (`ownership._ink_refutes_
+    side`), not here; this function only draws the SAME boundary GATHER
+    already drew, factored so the new call site cannot compute it
+    differently by a rounding slip.
+    """
+    if not spacing:
+        return 0
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        return 0
+    gap = (top - y) if y < top else (y - bottom)
+    return int(gap / spacing + LEDGER_ROUND_UP)
 
 
 def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
@@ -957,10 +1046,7 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
     """
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
-    if top <= y <= bottom:
-        return                       # inside the staff: no ladder to have
-    gap = (top - y) if y < top else (y - bottom)
-    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    expected = _ledger_expected(y, line_ys, spacing)
     if expected <= 0:
         return
     rungs = ledgers.get((g.page, g.system), [])
@@ -1074,27 +1160,115 @@ LEDGER_RUNG_INK_ADJACENT_MAX = 0.35
 #: only two data points this lane has.
 LEDGER_RUNG_INK_SLANT_MAX_HALF_H = 0.2
 
+#: ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). The detector's own
+#: box is PADDED past the head's real ink -- confirmed on 33 of 39 Brahms /
+#: 8 of 8 Litolff (head, candidate) pairs where the detector boxed EVERY
+#: expected rung (`Q.GLYPH_LADDER` complete) yet this reader found none:
+#: the crops (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`) show
+#: the window sitting ON the printed ledger, failing the OVERHANG test
+#: only because it was anchored at the padded box edge -- measured left-
+#: band density 0.19-0.33 against the 0.55 floor -- past where a
+#: genuinely short Breitkopf wing (CLAUDE.md §10: "a little wider than the
+#: head") already ends. A column at or above this ink fraction, in the
+#: SAME row band the overhang test itself reads, still counts as the
+#: head's own ink; walking in from each padded edge toward the centre
+#: until a column crosses it finds where the padding ends and the real
+#: ink begins.
+LEDGER_RUNG_INK_TRUE_EDGE_DENSE = 0.5
+
+
+def _true_ink_span(ink: Any, x0: float, x1: float, y0: float, y1: float,
+                   W: int, H: int) -> Tuple[float, float]:
+    """Shrink `[x0, x1)` to the actual ink run in row-band `[y0, y1)`: walk
+    inward from each edge toward the centre while that column's own ink
+    fraction is BELOW `LEDGER_RUNG_INK_TRUE_EDGE_DENSE` (padding), stopping
+    at the first column that reads solid. Never WIDENS the span, and
+    returns it UNCHANGED where nothing in it is solid at all (a blank box,
+    or one already tight) -- the density test downstream is what declines
+    that case, not this one guessing an edge back in."""
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return x0, x1
+    region = ink[iy0:iy1, ix0:ix1]
+    if region.size == 0:
+        return x0, x1
+    col_frac = region.mean(axis=0)
+    n = len(col_frac)
+    thr = LEDGER_RUNG_INK_TRUE_EDGE_DENSE
+    li = 0
+    while li < n and col_frac[li] < thr:
+        li += 1
+    ri = n - 1
+    while ri >= 0 and col_frac[ri] < thr:
+        ri -= 1
+    if li > ri:
+        return x0, x1
+    return float(ix0 + li), float(ix0 + ri + 1)
+
+
+#: ⚠️⚠️ ROADMAP 2.37 (manager print check, round 2, 2026-09-29). Tabulated
+#: per failing `det_all` row (detector boxed every expected rung) which
+#: named condition actually blocked it: `wide_adjacent` (the ORIGINAL,
+#: head-centred `adjacent` guard) dominates -- 32 of 37 rows on Litolff
+#: p3, 84 of 119 on Brahms p1, both re-gathered fresh with this branch.
+#: Manager's hypothesis, confirmed: the guard's "one band above/below"
+#: reaches into the HEAD'S OWN box for the rung nearest it (through the
+#: head, or one space below/above it) -- the head is not a stray blob to
+#: guard against, it is `ev.subject`, ALREADY KNOWN, and its own ink must
+#: not count as "thick" evidence against its own rung. Excluded from every
+#: adjacent test (wide AND per-side), never loosened.
+def _exclude_head_box(y0: float, y1: float, head_y0: Optional[float],
+                      head_y1: Optional[float]) -> Optional[Tuple[float, float]]:
+    """`[y0, y1)` with the portion inside `[head_y0, head_y1)` removed --
+    keeping whichever side survives (a band only ever overlaps the head on
+    ONE side, since the head sits at `y_center`'s own row and a band is
+    tested strictly above or strictly below it). `None` where the head
+    covers the whole band (nothing left to test, never treated as "thick"
+    -- see the call site). Passed through unchanged where the head's own
+    box is not known (`head_y0`/`head_y1` `None`, an old caller)."""
+    if head_y0 is None or head_y1 is None or head_y1 <= head_y0:
+        return (y0, y1)
+    if head_y1 <= y0 or head_y0 >= y1:
+        return (y0, y1)
+    if head_y0 <= y0 and head_y1 >= y1:
+        return None
+    if head_y0 > y0:
+        return (y0, min(y1, head_y0))
+    return (max(y0, head_y1), y1)
+
 
 def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
-                    space: float, thickness_px: Optional[float]
+                    space: float, thickness_px: Optional[float],
+                    head_y0: Optional[float] = None,
+                    head_y1: Optional[float] = None
                     ) -> Optional[Dict[str, Any]]:
     """Is there a thin horizontal ink run at `y_center`, crossing the head's
-    `[head_x0, head_x1]` and reaching past it on BOTH sides? ROADMAP 2.6d --
-    the same fact a boxed `ledgerLine` witnesses for `Q.GLYPH_LADDER`, asked
-    here of the raster where the detector drew no box.
+    `[head_x0, head_x1]` and reaching past it on AT LEAST ONE side? ROADMAP
+    2.6d -- the same fact a boxed `ledgerLine` witnesses for `Q.GLYPH_
+    LADDER`, asked here of the raster where the detector drew no box.
+    ROADMAP 2.37 (manager print check, 2026-09-29) loosened BOTH sides to
+    ONE, per-side stem-guarded -- see that constant's own note.
 
     All of `head_x0`, `head_x1`, `y_center`, `space` and `thickness_px` are in
     the SAME canonical pixels as `img` -- the caller's job, not this
     function's; it does no frame conversion. `img` is the cell's staff-
     ERASED raster, 0 = ink. Returns `None` -- declined, never defaulted --
-    where the window (or a comparison band) falls entirely off the raster.
+    where the window (or a comparison band) falls entirely off the raster,
+    AND (ROADMAP 2.37 round 3, manager print check) where density alone
+    would pass but the adjacent evidence needed to clear or block it could
+    not be read at all -- CLAUDE.md rule 8, *cannot tell* never becomes
+    *clean*.
 
-    Three bins at the tested y: CENTER (over the head's own x-span, must be
+    Bins at the tested y: CENTER (over the head's own x-span, must be
     inked -- a rung passes under or over the notehead it serves), LEFT and
-    RIGHT (the overhang past the head's edges, both must be inked -- the
-    guard against the note's own STEM, which does not reach past the head).
-    ADJACENT (the same x-range one band above and below) must NOT also be
-    densely inked, or the stroke found is thick, not thin -- a partial guard
+    RIGHT (the overhang past the head's edges -- at least ONE must be
+    inked AND not tall in that same narrow x-range, the guard against the
+    note's own STEM, which adds ink on the side it attaches to but does
+    not reach past the head, so it fails ITS side's own adjacency test
+    even where the OTHER side is a genuine wing). ADJACENT (the wider
+    head-centred x-range, one band above and below) must NOT also be
+    densely inked, or the stroke found is thick, not thin -- a guard
     against a beam.
     """
     import numpy as np
@@ -1140,21 +1314,156 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         rows = np.arange(iy0, iy1, dtype=float)
         return float((rows * weights).sum() / total)
 
+    def _within_band_level(x0: float, x1: float, y0: float, y1: float
+                          ) -> Optional[bool]:
+        """ROADMAP 2.37 (manager print check, round 3). Is the ink IN THIS
+        ONE BAND level (a straight, PARALLEL stroke -- a beam, a second
+        staff line) rather than curved or slanted (a slur passing
+        through)? Splits the band at its own x-midpoint and compares the
+        two halves' ink-weighted row centroids -- the SAME idea the
+        existing left/right slant ruler uses across two SEPARATE bands,
+        applied within one. `None` -- never guessed either way -- where a
+        half has nothing to weigh.
+
+        ⚠️ RECORDED ONLY, NOT YET A GATE. Measured against the one real
+        positive control this lane has (`ledger_rung_ink_brk_p22_real.png`,
+        step 1's own "below" band, the ROADMAP 2.6d fixture's own
+        documented OPEN finding -- ink close enough to the staff that this
+        guard already rejects it, and the rejection is deliberately NOT
+        resolved): its within-band centroid gap is 0.30 half-heights,
+        comfortably inside `LEDGER_RUNG_INK_SLANT_MAX_HALF_H` (0.2)'s own
+        margin below the confirmed BEAM's cross-band ratio (~0.42-0.45,
+        that constant's own note) -- i.e. reusing 0.2 here would call this
+        ambiguous, deliberately-unresolved ink "confirmed curved" and
+        credit it, which is exactly the guess CLAUDE.md rule 7 refuses
+        without a real slur crop to calibrate the OTHER direction. NOT
+        CONFIRMED against one: the value is computed and carried in
+        `detail` for a future round's tabulation, but does not (yet)
+        change `blocks` below."""
+        if x1 <= x0 or y1 <= y0:
+            return None
+        mid = (x0 + x1) / 2.0
+        lcy = row_centroid(x0, mid, y0, y1)
+        rcy = row_centroid(mid, x1, y0, y1)
+        if lcy is None or rcy is None:
+            return None
+        return abs(lcy - rcy) <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
+
+    def _band_state(x0: float, x1: float,
+                    span: Optional[Tuple[float, float]]
+                    ) -> Tuple[Optional[float], bool, bool]:
+        """`(density, blocks, off_raster)` for one adjacent band.
+        `density` is `None` where the band cannot be read: either the
+        head's OWN box covers it entirely (`_exclude_head_box` -- a KNOWN,
+        SAFE exclusion, `off_raster=False`) or the raster genuinely has
+        nothing there (`off_raster=True`) -- the distinction the decline
+        logic below needs, because a rung genuinely THROUGH the head has
+        its adjacent bands wholly excluded on purpose and must NOT decline
+        over that, while a band that is simply unreadable is the rule-8
+        hole. `blocks` is density-only (`> ADJACENT_MAX`) -- see
+        `_within_band_level`'s own note on why levelness is not yet a
+        gate here."""
+        if span is None:
+            return None, False, False
+        d = frac(x0, x1, *span)
+        if d is None:
+            return None, False, True
+        return d, d > LEDGER_RUNG_INK_ADJACENT_MAX, False
+
+    def _side_state(x0: float, x1: float
+                    ) -> Tuple[Optional[float], bool, bool]:
+        """`(density, unreadable, blocks)` for one side's own adjacent
+        test, over BOTH bands (above, below). `unreadable` is true only
+        where NEITHER band gave a density AND at least one of them was a
+        genuine raster gap -- a side wholly excluded by the head's own box
+        (both bands `None` via `_exclude_head_box`) is NOT unreadable, it
+        is a known, safe non-finding."""
+        a_d, a_blocks, a_off = _band_state(x0, x1, above_span)
+        b_d, b_blocks, b_off = _band_state(x0, x1, below_span)
+        vals = [v for v in (a_d, b_d) if v is not None]
+        unreadable = not vals and (a_off or b_off)
+        return (max(vals) if vals else None), unreadable, (a_blocks or b_blocks)
+
+    def _side_verdict(dense_val: Optional[float], unreadable: bool,
+                      blocks: bool) -> str:
+        """ROADMAP 2.37 round 3 (manager print check): `"not_dense"` is a
+        genuine, fully-read NEGATIVE (never declined over -- CLAUDE.md
+        rule 8 does not apply to a real measurement); `"blocked"` is a
+        CONFIRMED thick parallel stroke, also a real negative; `"unknown"`
+        is the rule-8 hole itself -- density passed but the evidence that
+        would clear or block it could not be read at all, so the row must
+        DECLINE rather than default to "clean"; `"clear"` is a real,
+        fully-read positive."""
+        if dense_val is None or dense_val < LEDGER_RUNG_INK_DENSE:
+            return "not_dense"
+        if blocks:
+            return "blocked"
+        if unreadable:
+            return "unknown"
+        return "clear"
+
     y0, y1 = y_center - half_h, y_center + half_h
-    center = frac(head_x0, head_x1, y0, y1)
+    # ⚠️ ROADMAP 2.37: anchor on the TRUE ink edge in THIS row band, not
+    # the (possibly padded) box edge -- see `_true_ink_span`'s own note.
+    # Only ever shrinks `[head_x0, head_x1]`, never widens it, so a box
+    # that was already tight is untouched.
+    true_x0, true_x1 = _true_ink_span(ink, head_x0, head_x1, y0, y1, W, H)
+    center = frac(true_x0, true_x1, y0, y1)
     # ⚠️ THE OVERHANG TEST IS A NARROW BAND AT THE EDGE, NOT THE WHOLE
     # CONTEXT WINDOW -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC`'s comment.
     overhang_w = LEDGER_RUNG_INK_OVERHANG_TEST_FRAC * head_w
-    left_x0, left_x1 = head_x0 - overhang_w, head_x0
-    right_x0, right_x1 = head_x1, head_x1 + overhang_w
+    left_x0, left_x1 = true_x0 - overhang_w, true_x0
+    right_x0, right_x1 = true_x1, true_x1 + overhang_w
     left = frac(left_x0, left_x1, y0, y1)
     right = frac(right_x0, right_x1, y0, y1)
     if center is None or left is None or right is None:
         return None
-    above = frac(cx - ww / 2.0, cx + ww / 2.0, y0 - 2 * half_h, y0)
-    below = frac(cx - ww / 2.0, cx + ww / 2.0, y1, y1 + 2 * half_h)
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, round 2). Every adjacent test
+    # below (wide AND per-side) excludes the HEAD'S OWN box from the band
+    # it reads -- tabulated on a fresh re-gather of both plates with this
+    # branch's own code: `wide_adjacent` (this wide, head-centred test) was
+    # the dominant failing condition on 32 of 37 Litolff `det_all` rows and
+    # 84 of 119 Brahms -- the rung nearest the head (through it, or one
+    # space beyond) has the head's OWN solid ink sitting inside "one band
+    # further away", read as a false "thick" signal against its own real,
+    # thin rung. The head is not a stray blob to guard against: it is
+    # `ev.subject`, already known, and `_exclude_head_box` removes exactly
+    # its own rows, never any other ink, from the tested band.
+    above_span = _exclude_head_box(y0 - 2 * half_h, y0, head_y0, head_y1)
+    below_span = _exclude_head_box(y1, y1 + 2 * half_h, head_y0, head_y1)
+    above, above_blocks, above_off = _band_state(
+        cx - ww / 2.0, cx + ww / 2.0, above_span)
+    below, below_blocks, below_off = _band_state(
+        cx - ww / 2.0, cx + ww / 2.0, below_span)
     adjacent_vals = [v for v in (above, below) if v is not None]
     adjacent = max(adjacent_vals) if adjacent_vals else None
+    # ⚠️ ROADMAP 2.37 round 3: unreadable only where NEITHER band gave a
+    # density AND at least one was a genuine raster gap -- both wholly
+    # excluded by the head's own box (a rung genuinely through it) is a
+    # known, safe non-finding, not "cannot tell" -- see `_side_state`.
+    wide_unreadable = not adjacent_vals and (above_off or below_off)
+    wide_blocks = above_blocks or below_blocks
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). Real Brahms p1
+    # crops (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of
+    # 39 `det_all` pairs -- the detector boxed EVERY expected rung, yet
+    # this reader found none) measured BOTH sides required where only ONE
+    # needed to be: a genuine short Breitkopf wing reads dense on the side
+    # it actually extends (0.558-0.622, clearing `DENSE`) and weak on the
+    # other (0.266-0.371) -- not because nothing is there, but because
+    # engraved wings are not always symmetric and a short one can be
+    # crowded by neighbouring ink on one side. The docstring's own
+    # justification for BOTH sides was the STEM guard ("a vertical stroke
+    # adds no horizontal ink past the head"), which is a claim about ONE
+    # side lacking ink, not about the side that DOES having to match the
+    # other -- so it is answered by a guard ON THE PASSING SIDE, not by
+    # requiring both. Per-side: `left`/`right` must independently be DENSE
+    # *and* not also tall (its own one-thickness-band above/below, not the
+    # wide `ww`-centred one) -- a stem is vertical and reads dense one
+    # thickness away in the SAME narrow x-range a wing does not.
+    left_adjacent, left_unreadable, left_blocks = _side_state(left_x0, left_x1)
+    right_adjacent, right_unreadable, right_blocks = _side_state(right_x0, right_x1)
+    left_v = _side_verdict(left, left_unreadable, left_blocks)
+    right_v = _side_verdict(right, right_unreadable, right_blocks)
     # ⚠️ THE LEVEL GUARD -- see `LEDGER_RUNG_INK_SLANT_MAX_HALF_H`'s comment.
     # A band with no ink to weigh (already failing DENSE) reports no slant;
     # `extends` fails on the density test regardless, so this never turns a
@@ -1164,20 +1473,294 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     slant = (abs(left_cy - right_cy)
             if left_cy is not None and right_cy is not None else None)
     level = slant is None or slant <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
-    extends = (center >= LEDGER_RUNG_INK_DENSE
-              and left >= LEDGER_RUNG_INK_DENSE
-              and right >= LEDGER_RUNG_INK_DENSE
-              and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX)
-              and level)
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, round 3): CLAUDE.md rule 8,
+    # "cannot tell" may never become an answer. A side whose OWN density
+    # clears DENSE but whose supporting adjacent evidence could not be
+    # read AT ALL (off the raster, or wholly the head's own excluded box)
+    # is `"unknown"`, not `"clean"` -- and where no OTHER side clears
+    # outright, the whole STEP declines (`None`, the same signal a caller
+    # already treats as "cannot tell") rather than asserting `found=True`
+    # from missing evidence. Measured: this is exactly the shape of both
+    # confound-control false positives round 2 introduced (`left_adjacent`/
+    # `right_adjacent`/`adjacent` all `None` while density alone cleared).
+    decline = False
+    if center < LEDGER_RUNG_INK_DENSE:
+        extends = False
+    elif left_v == "clear" or right_v == "clear":
+        if wide_unreadable:
+            decline = True
+            extends = False
+        else:
+            extends = (not wide_blocks) and level
+    else:
+        decline = left_v == "unknown" or right_v == "unknown"
+        extends = False
+    if decline:
+        return None
     return {
         "found": bool(extends),
         "center": round(center, 4), "left": round(left, 4),
         "right": round(right, 4),
+        "left_adjacent": None if left_adjacent is None else round(left_adjacent, 4),
+        "right_adjacent": None if right_adjacent is None else round(right_adjacent, 4),
         "slant": None if slant is None else round(slant, 3),
         "adjacent": None if adjacent is None else round(adjacent, 4),
+        # ⚠️ ROADMAP 2.37: the wide adjacent test's own two components,
+        # named separately so a failure can be tabulated as `above` or
+        # `below` rather than collapsed into one number -- exactly the
+        # split the manager's own diagnosis needed.
+        "adjacent_above": None if above is None else round(above, 4),
+        "adjacent_below": None if below is None else round(below, 4),
         "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
                              round(y0, 2), round(y1, 2)],
     }
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted via the coordinator,
+# stopping the absolute-threshold width-test round where it stood):
+#
+# "pitch is geometric -- staff spacing tells line vs space for any note
+# outside the staff; ledger lines always exist between the note and its
+# own staff. Pitch already works that way (`restate_pitch` from `Q.
+# NOTEHEAD_STAFF_POSITION`, no ledger read). So the ledger reader is ONLY
+# needed for OWNERSHIP of a note between two staves, and for that we do
+# not need to read every rung with absolute thresholds."
+#
+# One comparison per contested head: the ONE ledger position adjacent to
+# the head on each candidate side, ink density read raw (no found/not-
+# found threshold), the OWNER decided by `glyph_owner` from the RATIO
+# between the two candidates' own readings -- self-calibrating per plate
+# (merging vs shattering) because nothing is ever compared to a fixed
+# floor across documents, only the two candidates against each other.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A candidate's reading must beat the other's by at least this ratio to
+#: decide ownership -- "clearly more", not merely more.
+LEDGER_OWNER_RATIO_MIN = 2.0
+#: ...and the WINNING side's own reading must clear this floor, or two
+#: near-empty readings could satisfy the ratio by noise alone.
+LEDGER_OWNER_FLOOR = 0.15
+#: The tested x-span is the head's own true ink width (`_true_ink_span`),
+#: widened by this fraction each side -- "the same x-span" both candidates
+#: are read over, Sean's own words ("head ink width ± a little").
+LEDGER_OWNER_WIDTH_PAD_FRAC = 0.15
+#: A step whose position is within this many spaces of an INTEGER (the
+#: head sits almost exactly ON that rung's own row) is the head's own ink,
+#: not an independent witness -- sample one step further out instead.
+LEDGER_OWNER_ON_TOLERANCE_SPACES = 0.15
+
+
+#: ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted): "All regular noteheads are
+#: the same size so the box should be predictable." Measured on the count
+#: pages: median notehead box ~= 1.4 x 1.1-1.3 staff spaces -- NOT the
+#: DETECTOR's own box extent, which this reader must not trust: a Brahms
+#: black-in-space measured 0.28 sp wide (a sliver) and Litolff boxes grow
+#: with merged ink (CLAUDE.md §10). CONVENTION ASSUMED / WHAT WOULD
+#: FALSIFY IT / NOT CONFIRMED: Sean's own quoted figure, not a per-page
+#: median (a whole-page pre-pass over every notehead is a separate,
+#: bigger change than this round's budget) -- falsified by a plate whose
+#: real noteheads are reliably smaller or larger than this. LOCAL TO THIS
+#: READER ONLY: a general standard head box for every consumer is
+#: ROADMAP 2.39, not this one.
+LEDGER_OWNER_HEAD_WIDTH_SPACES = 1.4
+LEDGER_OWNER_HEAD_HEIGHT_SPACES = 1.1
+
+
+def _standard_head_box(cx: float, cy: float, spacing: float
+                       ) -> Tuple[float, float, float, float]:
+    """`(x0, x1, y0, y1)` -- a STANDARD notehead extent centred on `(cx,
+    cy)` -- the detector box's own CENTRE, never its raw width or height
+    -- sized from the staff's own measured spacing. See
+    `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note."""
+    hw = LEDGER_OWNER_HEAD_WIDTH_SPACES * spacing / 2.0
+    hh = LEDGER_OWNER_HEAD_HEIGHT_SPACES * spacing / 2.0
+    return cx - hw, cx + hw, cy - hh, cy + hh
+
+
+def _ledger_owner_informative_step(gap: float, spacing: float, *,
+                                   edge: Optional[float] = None,
+                                   above: Optional[bool] = None,
+                                   head_y0: Optional[float] = None,
+                                   head_y1: Optional[float] = None,
+                                   half_h: Optional[float] = None
+                                   ) -> Optional[int]:
+    """ROADMAP 2.37 (Sean's redirect; the overlap check added on manager
+    review of `baaf3f23`). Which step (1-based, from the candidate's own
+    outer line) is the ONE informative rung position toward this
+    candidate: the rung immediately adjacent to the head -- UNLESS its
+    OWN tested band (`half_h` either side, the SAME band `ledger_owner_
+    ink_density` reads) overlaps the head's KNOWN box, in which case that
+    row would read the head's own ink, not an independent witness; the
+    step one further out (one more space toward the staff) is sampled
+    instead. `None` where the candidate needs no ledger at all (within
+    the staff or its exempt first space -- the SAME `LEDGER_ROUND_UP`
+    boundary `_ledger_expected` itself uses), or where even the further
+    step still overlaps the head and there is nowhere left to sample.
+
+    ⚠️⚠️ MEASURED BUG (manager review): the geometry-only fallback below
+    (used when `head_y0`/`head_y1`/`half_h` are not given -- every
+    pre-existing pure test of this function) approximates "on the
+    candidate's own ledger" by asking whether `gap/spacing` is close to
+    an INTEGER (within `LEDGER_OWNER_ON_TOLERANCE_SPACES`, 0.15 spaces).
+    On a real Brahms re-gather this under-shifted: a head whose OWN
+    measured position was 3.36 spacings out (0.36 spaces short of the
+    tolerance) still had its `half_h`-tall tested band overlap the
+    head's real box, because a real notehead's own vertical extent is
+    close to a FULL staff space tall -- much wider than a 0.15-space
+    tolerance admits. The REAL call site (`_observe_ledger_owner_
+    density`) now passes the head's own box and tests the ACTUAL overlap
+    instead of approximating it."""
+    if not spacing or spacing <= 0:
+        return None
+    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    if expected <= 0:
+        return None
+    if (edge is None or above is None or head_y0 is None
+            or head_y1 is None or half_h is None):
+        # geometry-only fallback -- NOT CONFIRMED against a real box;
+        # kept for callers with no page geometry at all.
+        steps = gap / spacing
+        on_ledger = (abs(steps - round(steps))
+                    <= LEDGER_OWNER_ON_TOLERANCE_SPACES)
+        if on_ledger:
+            return expected - 1 if expected >= 2 else None
+        return expected
+    # ⚠️⚠️ MEASURED (manager review, round 2): a single one-space shift
+    # is not always enough. The FORBIDDEN zone a step must clear is the
+    # standard head's own height PLUS the tested band reaching `half_h`
+    # past each edge -- `LEDGER_OWNER_HEAD_HEIGHT_SPACES` (1.1) plus
+    # `half_h`'s own two thickness-and-pad margins can exceed a single
+    # full staff space, so `expected - 1` alone still overlapped on a
+    # real Litolff re-gather. Walk OUTWARD (decreasing k) until a step
+    # clears, or there is none.
+    for k in range(expected, 0, -1):
+        want = (edge - k * spacing) if above else (edge + k * spacing)
+        if want + half_h <= head_y0 or want - half_h >= head_y1:
+            return k
+    return None
+
+
+def ledger_owner_ink_density(img: Any, head_x0: float, head_x1: float,
+                             y_center: float, space: float,
+                             thickness_px: Optional[float]
+                             ) -> Optional[float]:
+    """ROADMAP 2.37 (Sean's redirect). The raw ink fraction in a thin band
+    (the SAME `half_h` shape `ledger_rung_ink` itself uses) at `y_center`,
+    over the head's OWN true ink width (`_true_ink_span`) widened by
+    `LEDGER_OWNER_WIDTH_PAD_FRAC` each side. NO threshold, NO found/not-
+    found verdict -- `adjudicate_glyph_owner` compares this number against
+    the OTHER candidate's own reading, never a fixed floor across
+    documents. `None` -- declined -- where the window falls off the
+    raster."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space \
+            or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    head_w = head_x1 - head_x0
+    if head_w <= 0:
+        return None
+    thickness = float(thickness_px) if thickness_px else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * space
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * space
+    half_h = thickness / 2.0 + pad
+    y0, y1 = y_center - half_h, y_center + half_h
+    true_x0, true_x1 = _true_ink_span(ink, head_x0, head_x1, y0, y1, W, H)
+    wpad = LEDGER_OWNER_WIDTH_PAD_FRAC * head_w
+    x0, x1 = true_x0 - wpad, true_x1 + wpad
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return None
+    region = ink[iy0:iy1, ix0:ix1]
+    return float(region.sum()) / float(region.size)
+
+
+def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
+                                  line_ys: Sequence[float], spacing: float,
+                                  cell_by_key: Dict[Tuple[int, int, int, int], Any],
+                                  thickness_px: Optional[float]) -> None:
+    """`Q.LEDGER_OWNER_DENSITY` -- ROADMAP 2.37 (Sean's redirect): one row,
+    the ONE informative rung position toward `cand_key`."""
+    g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
+    # ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29): a STANDARD head extent centred
+    # on the detector box's own CENTRE, never its raw width/height -- see
+    # `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note (a Brahms sliver
+    # measured 0.28 sp wide; Litolff boxes grow with merged ink). `cy` is
+    # the SAME centre used throughout below (the gap to the staff, the
+    # step search) -- only the box's ASSUMED size changes, never its
+    # location.
+    cx = (box[0] + box[2]) / 2.0
+    cy = (box[1] + box[3]) / 2.0
+    shx0, shx1, shy0, shy1 = _standard_head_box(cx, cy, spacing)
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= cy <= bottom:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.OFF_STAFF,
+                    candidate=cand_key,
+                    note="within this candidate's own staff: no ledger question")
+        return
+    above = cy < top
+    edge = top if above else bottom
+    gap = (edge - cy) if above else (cy - edge)
+    # ⚠️ ROADMAP 2.37 (manager review of `baaf3f23`): the SAME `half_h`
+    # band `ledger_owner_ink_density` itself tests, computed here so the
+    # step search can check the REAL overlap with the head's own STANDARD
+    # box (never the raw detector one) rather than an approximate "close
+    # to an integer" heuristic -- see `_ledger_owner_informative_step`'s
+    # own note on the bug this replaces.
+    thickness = float(thickness_px) if thickness_px else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * spacing
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * spacing
+    half_h = thickness / 2.0 + pad
+    step = _ledger_owner_informative_step(
+        gap, spacing, edge=edge, above=above, head_y0=shy0,
+        head_y1=shy1, half_h=half_h)
+    if step is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key,
+                    note="no informative rung position clear of the "
+                        "head's own box")
+        return
+    want = (edge - step * spacing) if above else (edge + step * spacing)
+    cand = R.Subject.from_key(cand_key)
+    cell = cell_by_key.get((g.page, g.system, cand.staff, g.cell))
+    if cell is None or getattr(cell, "image_no_staff", None) is None:
+        cell = cell_by_key.get((g.page, g.system, g.staff, g.cell))
+    img = getattr(cell, "image_no_staff", None) if cell is not None else None
+    cbox = getattr(cell, "bbox_page_px", None) if cell is not None else None
+    up = getattr(cell, "upscale_factor", None) if cell is not None else None
+    grid = _cell_grid(cell) if cell is not None else None
+    if cell is None or img is None or getattr(img, "ndim", 0) != 2:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_MASK,
+                    candidate=cand_key, step=step, note="no cell raster")
+        return
+    if not cbox or len(cbox) != 4 or not up or grid is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key, step=step,
+                    note="no page box, upscale factor or cell grid")
+        return
+    space_c = grid[1] * 2.0
+    # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): the STANDARD head span, not the
+    # raw detector box -- see `_standard_head_box`'s own note.
+    hx0_c = (shx0 - cbox[0]) * up
+    hx1_c = (shx1 - cbox[0]) * up
+    want_c = (want - cbox[1]) * up
+    thick_c = (float(thickness_px) * up) if thickness_px else None
+    d = ledger_owner_ink_density(img, hx0_c, hx1_c, want_c, space_c, thick_c)
+    if d is None:
+        log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
+                    frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    candidate=cand_key, step=step, want_y_page=round(want, 2),
+                    note="window off the raster")
+        return
+    log.observe(g, Q.LEDGER_OWNER_DENSITY, round(d, 4),
+                reader=READERS.CV_LEDGER, frame=FRAME_PAGE,
+                candidate=cand_key, step=step, want_y_page=round(want, 2))
 
 
 def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
@@ -1209,12 +1792,9 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
-    if top <= y <= bottom:
-        return                       # inside the staff: no ladder to have
     above = y < top
     edge = top if above else bottom
-    gap = (edge - y) if above else (y - edge)
-    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    expected = _ledger_expected(y, line_ys, spacing)
     if expected <= 0:
         return
     cand = R.Subject.from_key(cand_key)
@@ -1248,16 +1828,31 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     space_c = grid[1] * 2.0
     hx0_c = (box[0] - cbox[0]) * up
     hx1_c = (box[2] - cbox[0]) * up
+    # ⚠️ ROADMAP 2.37 (manager print check, round 2): the head's OWN
+    # canonical y-extent, so the adjacent guards can exclude its known box
+    # rather than mistaking its own bulk for a thick, non-rung stroke.
+    hy0_c = (box[1] - cbox[1]) * up
+    hy1_c = (box[3] - cbox[1]) * up
     thick_c = (float(thickness_px) * up) if thickness_px else None
     for k in range(1, expected + 1):
         want = (edge - k * spacing) if above else (edge + k * spacing)
         want_c = (want - cbox[1]) * up
-        m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c)
+        m = ledger_rung_ink(img, hx0_c, hx1_c, want_c, space_c, thick_c,
+                           head_y0=hy0_c, head_y1=hy1_c)
         if m is None:
+            # ⚠️ ROADMAP 2.37 (manager print check, round 3): `None` now
+            # ALSO means "density passed but the adjacent evidence needed
+            # to clear or block it could not be read at all" -- CLAUDE.md
+            # rule 8, declined rather than defaulted to "clean". Both
+            # causes share one reason word; `ledger_rung_ink` itself is
+            # where the distinction is made, and it is not asked to carry
+            # a reason string back through its plain `Optional[Dict]`
+            # return.
             log.abstain(g, Q.LEDGER_RUNG_INK, reader=READERS.CV_LEDGER,
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                         candidate=cand_key, step=k,
-                        note="window off the raster")
+                        note="window off the raster, or dense but the "
+                             "adjacent band could not be read")
             continue
         found = m.pop("found")
         win = m.pop("window_canonical")
