@@ -1115,6 +1115,19 @@ def join_parts(log, subject, partition) -> List[Verdict]:
 #      (Sean's process convention: microscopic fixtures, no re-gather) rather
 #      than only against the mis-metered real record.
 #
+# ⚠️⚠️ MANAGER CORRECTION 2026-09-30, SECOND ROUND, after the first fix's A/B
+# still fired zero times -- this time correctly diagnosed as blocked by the
+# meter (§21c), but the manager caught a FOURTH fault the meter blocker was
+# masking: the candidate staff was required to be COMPLETE (shortfall zero),
+# when it only needs to be UNABLE TO EXPLAIN THIS GROUP (its own shortfall
+# not equal to the group's length). Sean's upper staff carries its own
+# unrelated ~1-beat gap in the same bar; that gap must never block the lower
+# staff's own exact match. Fixed: the candidate test now compares its own
+# shortfall to the GROUP's length, not to zero -- see the comment at the
+# call site below. Both staves matching the group (genuinely ambiguous) or
+# neither matching still refuses (rule 8); one match and one unrelated
+# non-match does not.
+#
 # ⚠️ WHY THIS READS THE BAR SUM AND NOT `Q.VOICES`'S OWN GROUPING. `Q.VOICES`
 # (`adjudicators/rhythm.py`) is decided from `Q.EVENT`'s grouping, and
 # `adjudicate_event` reads `Q.REST` -- a GATHER-level class fact -- never
@@ -1258,14 +1271,15 @@ def _voice_count(log: Log, cell_subject: Subject) -> Optional[int]:
             "rows naming another staff), as part of a GROUP of such glyphs "
             "against the same neighbour. Reinstates the WHOLE GROUP on ITS "
             "OWN staff only, never moves it, and only where that staff's "
-            "own (VOICE COUNT x bar length) total is short EXACTLY the "
-            "group's own total length once every currently-refused glyph is "
-            "excluded AND every other contested staff's own "
-            "(voices x bar length) total is already complete without the "
-            "group. Any other shape -- no contest, an undecided voice count "
-            "or candidate, a shortfall that is zero or does not match, a "
-            "candidate staff that is not itself complete -- changes nothing "
-            "(rule 8).")
+            "own (VOICE COUNT x bar length) shortfall EQUALS the group's "
+            "own total length once every currently-refused glyph is "
+            "excluded, AND the other contested staff's own shortfall does "
+            "NOT also equal the group's length -- the other staff need not "
+            "be COMPLETE, only unable to explain the SAME group. Any other "
+            "shape -- no contest, an undecided voice count or candidate, "
+            "a shortfall that does not match on the own staff, BOTH "
+            "staves' shortfalls matching the group (ambiguous) or NEITHER "
+            "matching -- changes nothing (rule 8).")
 def reinstate_rest_between_staves(log: Log, subject: Subject,
                                   meter: Verdict) -> List[Verdict]:
     """A GROUP of rests doubly refused `rest_outside_its_staff` is
@@ -1342,11 +1356,19 @@ def reinstate_rest_between_staves(log: Log, subject: Subject,
         cand_total = _bar_total_excluding(log, cand_cell, frozenset(cand_group))
         if cand_total is None:
             return []
-        if abs(cand_expected - cand_total) > REST_BAR_SUM_EPS:
-            # The other staff is not complete either: both or neither is
-            # missing a voice here, which is not a case this rule may guess
-            # at (rule 8 -- a fallback never converts "cannot tell" into an
-            # answer).
+        cand_shortfall = cand_expected - cand_total
+        # ⚠️⚠️ MANAGER CORRECTION 2026-09-30 (second round). The other staff
+        # does NOT have to be COMPLETE -- it only has to be UNABLE to take
+        # the group itself, i.e. ITS OWN shortfall must not also equal the
+        # group's length. An unrelated gap of some OTHER size on the other
+        # staff (Sean's own upper-staff ~1-beat gap, unconnected to these
+        # rests) is not evidence either way and must never block the one
+        # staff whose shortfall DOES match. Only when BOTH staves' own
+        # shortfalls equal the group's length (genuinely ambiguous -- the
+        # group could belong to either) or NEITHER does is this refused
+        # (rule 8 -- a fallback never converts "cannot tell" into an
+        # answer); one match and one non-match is not ambiguous.
+        if abs(cand_shortfall - group_len) <= REST_BAR_SUM_EPS:
             continue
 
         out = Verdict(
@@ -1358,6 +1380,7 @@ def reinstate_rest_between_staves(log: Log, subject: Subject,
             considered=(refusal.id, meter.id),
             basis=(refusal.id, meter.id),
             detail={"own_shortfall_beats": round(own_shortfall, 6),
+                    "candidate_shortfall_beats": round(cand_shortfall, 6),
                     "group_len_beats": round(group_len, 6),
                     "own_voices": own_voices, "candidate_voices": cand_voices,
                     "group": [g.to_key() for g in group],

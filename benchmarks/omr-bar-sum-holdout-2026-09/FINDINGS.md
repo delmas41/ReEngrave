@@ -2231,7 +2231,12 @@ first build fired zero times on Sean's own case, for two design faults plus
 one page-specific blocker it had mis-stated. All three are fixed/named
 below.
 
-### 21a. What was wrong the first time, and the fix
+⚠️ **Second manager correction, 2026-09-30**, after the first fix's A/B was
+correctly diagnosed as blocked by the meter (§21c) but the fix itself still
+carried a FOURTH fault (§21a.4): the candidate staff was required to be
+COMPLETE, when it only needs to be unable to explain the SAME group.
+
+### 21a. What was wrong, and the fix
 
 1. **A staff's expected total is VOICES × bar length, not one bar length.**
    Sean reasons per voice: a staff carrying two simultaneous voices must
@@ -2254,6 +2259,15 @@ below.
    own report mis-stated the bar as generically "9/4" without naming which
    known defect that is. Named precisely below (§21c): it is ROADMAP
    2.12h/2.12l/2.29's own still-unrepaired chain on this exact system.
+4. **The candidate staff need not be COMPLETE, only unable to explain the
+   SAME group** (second correction). The first fix required the candidate's
+   own shortfall to be exactly zero; Sean's own upper staff carries a
+   separate, unrelated ~1-beat gap in this same bar (§21c), and that gap
+   must never block the lower staff's own exact match. The candidate test
+   now compares the candidate's own shortfall to the GROUP's length, not
+   to zero — a candidate whose shortfall equals the group's length too is
+   ambiguous (refused, rule 8); any OTHER shortfall on the candidate is not
+   evidence either way and does not block.
 
 `_bar_total_excluding` (renamed from `_bar_total_excluding_refused`) now
 takes a `force_exclude` set so a GROUP is excluded as one group,
@@ -2274,37 +2288,37 @@ COUNT) — `adjudicate_event` reads `Q.REST`, never `Q.REST_IS_NOT_A_REST`,
 so a rest's refusal never leaves that grouping at all; `_bar_total_
 excluding` is the one reader that does respect it.
 
-### 21b. Tests — RED→GREEN, 14 tests, no gathers
+### 21b. Tests — RED→GREEN, 15 tests, no gathers
 
 `tools/omr/tests/test_staged_rest_between_staves_2_45.py`, rebuilt around
 Sean's actual shape: 2 voices per staff (`Q.VOICES` DECIDED), a 6/8 meter
 (bar length 3.0), one group of three eighth rests (1.5 beats total).
 
-- **`TestSeansCase`** (3 tests): the WHOLE GROUP reinstates on the lower
-  staff (each of the three glyphs fires independently and agrees on the
-  same group/voice-count/shortfall detail); the upper staff's own three
-  copies of the same group stay refused (already complete at 2×3.0=6.0
-  without them); the identical mechanism resolved via the
-  `Q.STEM_DIRECTION` fallback where neither cell has `Q.VOICES` at all
-  (own voice count 2 from opposing decided directions, candidate voice
-  count 1 from a single direction).
+- **`TestSeansCase`** (4 tests): the WHOLE GROUP reinstates on the lower
+  staff; the upper staff's own three copies of the same group stay refused
+  (already complete at 2×3.0=6.0 without them); **the candidate need not
+  be complete, only unable to match (second correction) — the lower staff
+  is short exactly the group's length (1.5), the upper staff has its OWN
+  unrelated shortfall of 1.0 (not 0, not 1.5), and the group still
+  resolves to the lower staff**; the identical mechanism resolved via the
+  `Q.STEM_DIRECTION` fallback where neither cell has `Q.VOICES` at all.
 - **`TestControls`** (11 tests): not refused at all; refused for a
-  different reason; no contest at all; **voice count undecided on the own
-  staff (new control for fault 1)**; both staves already complete at their
-  own voice count; both staves short (genuinely ambiguous); a shortfall
-  that does not match the GROUP's own length (new: a single rest's 0.5 no
-  longer matches by accident once grouping is required); an undecided
+  different reason; no contest at all; voice count undecided on the own
+  staff; **both staves match the group EQUALLY (genuinely ambiguous,
+  rule 8 — re-shaped from the first correction's "candidate not complete"
+  control, which the second correction makes moot)**; a shortfall that
+  does not match the GROUP's own length on the own staff; an undecided
   candidate bar; no meter; a whole-rest twin kept on its own staff; the
   rest's own duration undecided.
 
-RED confirmed by moving `reinstate_rest_between_staves`,
+RED confirmed twice: moving `reinstate_rest_between_staves`,
 `_bar_total_excluding`, `_contest_group`, `_group_length` and
-`_voice_count` out of `consequences.py`: all 14 tests fail
-(`AttributeError`). Restored → 14 passed. `pytest -m "not slow"
-tools/omr/tests`: 4157 passed (+14 over the `origin/main` baseline, two
-more than the first build's 12 since the group/voice-count controls grew
-the file), 0 failed. `python3 -m tools.omr.staged.check`: TOTAL **245,
-unchanged**.
+`_voice_count` out of `consequences.py` fails all 15; reverting only the
+candidate-shortfall comparison to its first-correction form (`shortfall ==
+0` instead of `shortfall == group_len`) fails exactly the one new test and
+none of the other 14. Restored both ways → 15 passed. `pytest -m "not
+slow" tools/omr/tests`: 4158 passed (+15 over the `origin/main` baseline),
+0 failed. `python3 -m tools.omr.staged.check`: TOTAL **245, unchanged**.
 
 ### 21c. A/B through EVALUATE, Brahms p1 — reach is STILL zero, and now precisely diagnosed
 
@@ -2319,42 +2333,53 @@ page.** `Q.VOICES` is DECIDED on both cells of this exact bar: `cell/1/0/2/5`
 `_voice_count` reads both correctly; the rule reaches the meter/bar-sum
 test on every one of the six glyphs.
 
-**The remaining blocker is the meter, named precisely.** `Q.PRINTED_BAR_
-NUMBER` at `system/1/0` is DECIDED `8`: this system's first bar is printed
-measure 8, so cell index 5 (the bar in question) is **printed measure 13**,
-and cell index 1 is printed measure 9 — matching ROADMAP 2.12h/2.12i/
-2.12l/2.29's own repeated citation of "the m. 8 hemiola bar" and "the m. 9
-return to 6/8" as the SAME system. The plate prints **6/8** at measure 13
-(the main Allegro metre, per 2.12h's own finding; the m. 8 hemiola bar
-alone prints 9/8). `Q.METER` at `system/1/0`, on this record, is **DECIDED
-`9/4`** (`segments: [{9/4, from_cell: 0}]`, i.e. the misread hemiola value
-carried across the WHOLE system with no accepted mid-system correction —
-five `declined_changes` at cells 1–5, all `meter_change_digits_misread` or
-`meter_change_not_system_wide`). This is 2.12h/2.12l/2.29's own
-still-unrepaired chain, reproduced exactly on today's `origin/main`; this
-item may not repair it (CLAUDE.md rule 6 — connect, never guess a better
-meter) and reports it as the blocker.
+**CORRECTED (manager, third round): the DECIDED `9/4` was an artefact of
+gathering page 1 ALONE, and is NOT what the pipeline decides once the
+meter/key carry has the context to read.** `Q.PRINTED_BAR_NUMBER` at
+`system/1/0` is DECIDED `8`, so the bar in question (cell index 5) is
+**printed measure 13** and cell index 1 is measure 9 — ROADMAP 2.12h/
+2.12i/2.12l/2.29's own "m. 8 hemiola" / "m. 9 return to 6/8" system. Two
+independent checks, neither a single-page artefact:
 
-Against the DECIDED (wrong) `9/4` (bar length 9.0), the own-staff test
-needs `2 × 9.0 = 18.0` and the lower staff's own total excluding the group
-is 4.5 — a shortfall of 13.5, nothing near the group's 1.5. **Zero
-reinstated**, exactly as the meter must produce.
+- Re-gathered with `--pages 0-1` (the movement's own first two pages, so
+  the carry has SOME context): `Q.METER` at `system/1/0` is now
+  **ABSTAINED**, `reason="meter_return_not_read"` — NOT `9/4`.
+- Read directly (no re-gather) from the committed whole-movement record
+  `library/_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.
+  record.json`: the SAME single verdict, `Q.METER` at `system/1/0`
+  **ABSTAINED**, `reason="meter_return_not_read"`, value `null`.
 
-**A second, independent blocker, found by computing what a CORRECT 6/8
-would give on this same data (not applied — the rule never does this; a
-hand check only, for the report).** With bar length 3.0 and 2 voices: the
-lower staff's own expected total is 6.0, actual (excluding the group) is
-4.5 — shortfall 1.5, exactly the group's length, a MATCH. But the upper
-staff's own expected total is also 6.0, and its actual (excluding its own
-copies of the group) is 5.0 — a shortfall of 1.0, NOT zero, so the
-candidate-completeness test would still fail even with the meter
-corrected. This staff holds roughly one quarter-note of separately
-unaccounted ink in this same bar (unchanged from the first build's own
-finding: three contest-relocated noteheads and one crop-clipped fragment
-are already excluded correctly; something else, most plausibly
-undetected at GATHER, remains missing). **This second gap is out of this
-roadmap item's scope and is named, not built** — closing it does not
-follow from anything this item is about.
+So `9/4` was never the pipeline's real answer on this system — it is what
+a context-starved single page falls back to, and every wider gather
+correctly ABSTAINS instead (2.12l's own unread mid-system return, still
+open). The manager's own cited "4,283 bars judged against 3.0 quarters
+(6/8)" is the ACCEPTANCE FUNNEL's *external reference-encoding* target
+(FINDINGS §2, "the meter in force is the FILE's, not the record's"), not
+`Q.METER`'s own DECIDED value — this pipeline never asserts 6/8 here at
+all. **Zero reinstated**, correctly: `evaluate._pass` skips a subject
+whose cause is ABSTAINED (`cause_abstained`), so this rule never even
+reaches the bar-sum test — exactly rule 8's own shape, not a computed
+mismatch.
+
+**If `Q.METER` were DECIDED 6/8 here (it is not — it ABSTAINS), the case
+WOULD resolve to the lower staff.** Manager correction (second round): the
+candidate staff need not be COMPLETE, only unable to explain the SAME
+group — its own shortfall must not also equal the group's length.
+Hand-checked with 6/8 substituted for the ABSTAINED meter, using the real
+gathered totals (unchanged across every re-gather of this bar — single
+page, two pages, and the whole-movement record all measure the same ink):
+bar length 3.0, 2 voices on both cells. Lower staff — expected
+`2 × 3.0 = 6.0`, actual (excluding the group) 4.5, shortfall **1.5,
+exactly the group's length: a match.** Upper staff — expected 6.0, actual
+(excluding its own copies of the group) 5.0, shortfall **1.0 — NOT 1.5, so
+it cannot explain this group** (its own, unrelated ~1-beat gap, most
+plausibly an undetected GATHER-side miss in this same bar, named not
+diagnosed here). One match, one non-match: **the corrected rule would
+resolve the group to the LOWER staff**, exactly as Sean read it. This
+remains a hand check only — this rule never substitutes a meter itself,
+and reading the m. 9 return to 6/8 (`meter_return_not_read`) is
+2.12h/2.12i/2.12l/2.29's own open follow-up; this item's own rule needs no
+further change once that lands.
 
 **Litolff p3 is unchanged from the first build**: zero between-staff rest
 contests exist on that page at all (not re-run this round — nothing in
@@ -2390,14 +2415,19 @@ states the rule in voice terms and needs no correction.)
 
 ### 21f. What this item leaves open, named not built
 
-- **The meter misread on Brahms 1/i Breitkopf p1's `system/1/0`**
-  (printed 6/8, decided 9/4, carried from the printed-bar-8 hemiola with
-  no accepted mid-system correction) — a 2.12h/2.12l/2.29 follow-up, not
-  this item's scope. This item's rule will resolve Sean's exact case
-  automatically once that meter reads correctly, with no further change
-  needed here (demonstrated by §21b's tests).
+- **`Q.METER` ABSTAINS on Brahms 1/i Breitkopf p1's `system/1/0`**
+  (`meter_return_not_read` — confirmed identically on a `--pages 0-1`
+  re-gather and on the committed whole-movement record, so the plate's
+  6/8 is never a DECIDED value this pipeline can read here; a single-page
+  gather's `9/4` was a context-starved artefact, not the real blocker) —
+  a 2.12h/2.12i/2.12l/2.29 follow-up, not this item's scope. This item's
+  rule will resolve Sean's exact case automatically once that meter reads
+  correctly, with no further change needed here (demonstrated by §21b's
+  tests and the §21c hand check).
 - **The upper staff's own separate ~1-beat gap** in the same bar (§21c),
-  likely a GATHER-side detection miss, undiagnosed.
+  likely a GATHER-side detection miss, undiagnosed — no longer a blocker
+  to THIS item's own resolution (second correction), but still real and
+  unexplained.
 - `reads_beyond_cause` is not declared for this rule, so a second EVALUATE
   pass bounded to an INFER-produced verdict (`evaluate.run_over`) will not
   re-fire it even where a later-filled meter would newly unlock the
@@ -2412,7 +2442,7 @@ states the rule in voice terms and needs no correction.)
 - `tools/omr/staged/consequences.py`: `_bar_total_excluding`,
   `_contest_group`, `_group_length`, `_voice_count`,
   `reinstate_rest_between_staves`, `REST_BAR_SUM_EPS`.
-- `tools/omr/tests/test_staged_rest_between_staves_2_45.py`: the 14 tests.
+- `tools/omr/tests/test_staged_rest_between_staves_2_45.py`: the 15 tests.
 - `docs/engraving-conventions.md`: `C94` + bookkeeping.
 - `benchmarks/omr-bar-sum-holdout-2026-09/probe/crop_between_staves_2_45.py`,
   `out/print/2.45/brahms-p1-bar5-between-staves.png`: the print check.

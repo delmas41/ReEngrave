@@ -131,20 +131,24 @@ def main() -> int:
     cd.text((6, 78), "missing an eighth at each of these three onsets "
                     "without them -- the rests belong to the LOWER "
                     "(green) staff.", fill=(0, 0, 0))
-    cd.text((6, 100), "BLOCKER 1 (named, not built): Q.VOICES correctly "
-                    "decides 2 voices on BOTH staves, but Q.METER decides "
-                    "9/4 for this whole system", fill=(0, 0, 0))
-    cd.text((6, 116), "(from printed bar 8's 9/8 hemiola, 2.12h/2.12l/2.29's "
-                    "own unrepaired misread) where the plate prints 6/8 -- "
-                    "the rule uses the DECIDED", fill=(0, 0, 0))
-    cd.text((6, 132), "meter only, never guesses 6/8, so 2 voices x 9.0 "
-                    "cannot land near the group's 1.5-beat gap.", fill=(0, 0, 0))
-    cd.text((6, 150), "BLOCKER 2: even with 6/8 injected, staff 2 (upper) "
-                    "sums 5.0 of the expected 6.0 -- a SEPARATE ~1.0-beat "
-                    "gap unrelated to these", fill=(0, 0, 0))
-    cd.text((6, 166), "three rests, named not diagnosed here -- against the "
-                    "DECIDED 9/4, staff 2's own bar sums 5.0 of 18.0 and "
-                    "staff 3's sums 4.5 of 18.0.", fill=(0, 0, 0))
+    cd.text((6, 100), "BLOCKER (named, not built): Q.VOICES correctly "
+                    "decides 2 voices on BOTH staves, but Q.METER ABSTAINS "
+                    "here (meter_return_not_read)", fill=(0, 0, 0))
+    cd.text((6, 116), "-- confirmed on a --pages 0-1 re-gather AND on the "
+                    "committed whole-movement record, so this is not a "
+                    "single-page artefact. The plate", fill=(0, 0, 0))
+    cd.text((6, 132), "prints 6/8 (2.12h/2.12i/2.12l/2.29's own m.8 hemiola / "
+                    "m.9 return system); the rule reads the DECIDED meter "
+                    "only and never guesses,", fill=(0, 0, 0))
+    cd.text((6, 148), "so an ABSTAINED cause means the rule never runs at "
+                    "all here (rule 8) -- zero reinstated, not a computed "
+                    "mismatch.", fill=(0, 0, 0))
+    cd.text((6, 166), "Hand-checked with a hypothetical DECIDED 6/8 (real "
+                    "totals): staff 3 (lower) is short 1.5 = the group, "
+                    "exactly; staff 2's own separate", fill=(0, 0, 0))
+    cd.text((6, 182), "~1.0 gap does not match and does not block -- the "
+                    "case WOULD RESOLVE TO THE LOWER STAFF once the m.9 "
+                    "return is read.", fill=(0, 0, 0))
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     out_im.save(a.out)

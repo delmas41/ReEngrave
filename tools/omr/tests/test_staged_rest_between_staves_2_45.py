@@ -166,6 +166,41 @@ class TestSeansCase(unittest.TestCase):
             self.assertEqual(_fire(log, r, meter), [])
             self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, r).value, True)
 
+    def test_candidate_need_not_be_complete_only_unable_to_match_RED(self):
+        """MANAGER CORRECTION (second round): the lower staff is short
+        exactly the group's own length (1.5); the upper staff has its OWN
+        unrelated shortfall of 1.0 -- not zero, not complete, but also not
+        1.5. The group still resolves to the lower staff: the upper only
+        has to be UNABLE to explain this same group, never COMPLETE."""
+        log = Log()
+        meter = _meter(log, 6, 8)                        # bar_len = 3.0
+        _voices(log, LOWER_CELL, 2)                       # expected 6.0
+        _voices(log, UPPER_CELL, 2)                       # expected 6.0
+
+        n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)   # short by 1.5
+        lo_rests = [
+            _refused_rest(log, LOWER_STAFF, gi, 0.5,
+                         other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+            for gi in (1, 2, 3)]
+        _events(log, LOWER_CELL, [n_lo], *([r] for r in lo_rests))
+
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 5.0)   # short by 1.0,
+        up_rests = [                                         # unrelated,
+            _refused_rest(log, UPPER_STAFF, gi, 0.5,          # NOT 1.5
+                         other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+            for gi in (11, 12, 13)]
+        _events(log, UPPER_CELL, [n_up], *([r] for r in up_rests))
+
+        for r in lo_rests:
+            out = _fire(log, r, meter)
+            self.assertEqual(len(out), 1, msg=f"{r.to_key()} did not fire")
+            self.assertIs(out[0].value, False)
+            self.assertAlmostEqual(out[0].detail["candidate_shortfall_beats"],
+                                   1.0)
+        for r in up_rests:
+            self.assertEqual(_fire(log, r, meter), [])
+            self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, r).value, True)
+
     def test_voice_count_by_stem_direction_when_Q_VOICES_is_undecided(self):
         """The same mechanism, but neither cell has a `Q.VOICES` verdict at
         all -- the own staff's voice count comes from two DECIDED, opposite
@@ -255,20 +290,26 @@ class TestControls(unittest.TestCase):
         self.assertEqual(_fire(log, lo_rest, meter), [])
         self.assertEqual(_fire(log, up_rest, meter), [])
 
-    def test_both_staves_missing_something_is_untouched(self):
-        """The lower staff's own shortfall matches the group's length, but
-        the candidate (upper) staff is NOT itself complete -- genuinely
-        ambiguous, rule 8."""
+    def test_both_staves_match_the_group_equally_is_untouched(self):
+        """MANAGER CORRECTION (second round): the candidate need not be
+        COMPLETE, only unable to explain the SAME group -- but where BOTH
+        staves' own shortfalls equal the group's own length, the group
+        could belong to either and this is genuinely ambiguous (rule 8)."""
         log, meter = self._two_voice_66_build()
         n_lo = _decided_duration(log, LOWER_STAFF, 0, 4.5)   # short by 1.5
-        lo_rest = _refused_rest(log, LOWER_STAFF, 1, 0.5,
-                                other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
-        _events(log, LOWER_CELL, [n_lo], [lo_rest])
-        n_up = _decided_duration(log, UPPER_STAFF, 0, 5.0)   # short by 1.0,
-        up_rest = _refused_rest(log, UPPER_STAFF, 1, 0.5,            # not 0
-                                other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
-        _events(log, UPPER_CELL, [n_up], [up_rest])
-        self.assertEqual(_fire(log, lo_rest, meter), [])
+        lo_rests = [
+            _refused_rest(log, LOWER_STAFF, gi, 0.5,
+                         other_staff_key=UPPER_KEY, own_key=LOWER_KEY)
+            for gi in (1, 2, 3)]
+        _events(log, LOWER_CELL, [n_lo], *([r] for r in lo_rests))
+        n_up = _decided_duration(log, UPPER_STAFF, 0, 4.5)   # ALSO short 1.5
+        up_rests = [
+            _refused_rest(log, UPPER_STAFF, gi, 0.5,
+                         other_staff_key=LOWER_KEY, own_key=UPPER_KEY)
+            for gi in (11, 12, 13)]
+        _events(log, UPPER_CELL, [n_up], *([r] for r in up_rests))
+        for r in lo_rests + up_rests:
+            self.assertEqual(_fire(log, r, meter), [])
 
     def test_shortfall_does_not_match_the_groups_own_length(self):
         """The own staff IS short, but not by exactly the group's own
