@@ -88,6 +88,49 @@ def read_versions(root: Path) -> list[str]:
     return out
 
 
+def verify_graft(out_path, base_path, allowed_rows, names) -> int:
+    """SELF-CHECK (Sean, 2026-09-29): prove the written file IS what the
+    recipe says -- every tensor bit-identical to --base except the per-class
+    head rows of the classes this run chose to graft. Printed every build;
+    returns 3 (and says why) if anything else changed. Added after the
+    2026-09-04 ship was found to be almost the whole fine-tune (589 of 595
+    tensors) with nobody having looked."""
+    import torch
+    out_sd = torch.load(str(out_path), map_location="cpu",
+                        weights_only=False)["model"].state_dict()
+    base_sd = torch.load(str(base_path), map_location="cpu",
+                         weights_only=False)["model"].state_dict()
+    allowed = set(allowed_rows)
+    head_keys = {f"{l}.{s}" for l in CLS_LAYERS for s in ("weight", "bias")}
+    same, changed, bad = 0, [], []
+    for k, v in base_sd.items():
+        w = out_sd.get(k)
+        if w is None or w.shape != v.shape:
+            bad.append(f"{k}: missing or reshaped")
+            continue
+        if torch.equal(w, v):
+            same += 1
+            continue
+        changed.append(k)
+        if k not in head_keys:
+            bad.append(f"{k}: not a per-class head row, yet it changed")
+            continue
+        rows = {i for i in range(v.shape[0]) if not torch.equal(w[i], v[i])}
+        if not rows <= allowed:
+            bad.append(f"{k}: rows {sorted(rows - allowed)[:8]} changed "
+                       "but were not grafted")
+    print(f"SELF-CHECK: {same} of {len(base_sd)} tensors identical to --base; "
+          f"{len(changed)} changed, only in the rows of "
+          f"{sorted(names[i] for i in allowed)}")
+    if bad:
+        print("SELF-CHECK FAILED -- the file is not what the recipe says:")
+        for b in bad[:20]:
+            print("  ", b)
+        return 3
+    print("SELF-CHECK PASSED")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ft", type=Path, default=None,
@@ -190,7 +233,7 @@ def main() -> int:
         a.out.parent.mkdir(parents=True, exist_ok=True)
         torch.save(base, str(a.out))
         print("wrote ->", a.out)
-        return 0
+        return verify_graft(a.out, a.base, idx, names)
 
     if a.ft is None:
         print("--ft is required unless --import-rows is given")
@@ -260,7 +303,7 @@ def main() -> int:
     a.out.parent.mkdir(parents=True, exist_ok=True)
     torch.save(base, str(a.out))
     print("wrote ->", a.out)
-    return 0
+    return verify_graft(a.out, a.base, kept, names)
 
 
 if __name__ == "__main__":

@@ -229,5 +229,29 @@ class MergeClassHeadDirectionTest(unittest.TestCase):
                 self.assertAlmostEqual(b[1].item(), 2001.0 - 0.9, places=3)
 
 
+class SelfCheckTest(unittest.TestCase):
+    """The graft tool's own SELF-CHECK (2026-09-29) must be able to fail
+    (CLAUDE.md rule 7): a file where a NON-head tensor moved is refused."""
+
+    def setUp(self):
+        self.mcg = _load_merge_class_head()
+
+    def test_self_check_passes_on_a_correct_graft_and_fails_on_a_drifted_one(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            d = Path(d)
+            names = _write_class_names(d / "classes.json")
+            base = d / "base.pt"
+            _save_ckpt(FakeYoloHead(tag=1000.0), base)
+            # correct: identical to base -> passes with no rows grafted
+            good = d / "good.pt"
+            _save_ckpt(FakeYoloHead(tag=1000.0), good)
+            self.assertEqual(self.mcg.verify_graft(good, base, [], names), 0)
+            # drifted: the whole model from a different checkpoint -> refused
+            bad = d / "bad.pt"
+            _save_ckpt(FakeYoloHead(tag=2000.0), bad)
+            self.assertEqual(self.mcg.verify_graft(bad, base, [0], names), 3)
+
+
 if __name__ == "__main__":
     unittest.main()
