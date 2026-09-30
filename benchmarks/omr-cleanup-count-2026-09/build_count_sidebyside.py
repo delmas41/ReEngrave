@@ -265,8 +265,22 @@ def build_doc(doc: dict) -> Path:
 
 
 def main() -> int:
+    """`build_count_sidebyside.py [DOC_ID DATE RECORD]` -- no args rebuilds
+    all three as of `TODAY`; with args, one document from the named record
+    (under the library) dated DATE, e.g. `beethoven5-litolff 2026-09-30
+    _shared-records/beethoven5-litolff-mvt1-whole-20260930b.record.json`.
+    The MusicXML is still whatever `tools.omr.acceptance` last exported."""
+    global TODAY
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    for doc in DOCS:
+    docs = DOCS
+    if len(sys.argv) == 4:
+        doc_id, TODAY, rec = sys.argv[1:]
+        docs = [dict(d, record=LIB / rec) for d in DOCS if d["id"] == doc_id]
+        if not docs:
+            raise SystemExit(f"unknown doc {doc_id}")
+    elif len(sys.argv) != 1:
+        raise SystemExit(main.__doc__)
+    for doc in docs:
         out_path = build_doc(doc)
         print(f"wrote {out_path.relative_to(ROOT)}")
     return 0
