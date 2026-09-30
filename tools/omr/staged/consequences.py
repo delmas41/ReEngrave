@@ -68,6 +68,20 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     time and indistinguishable from a reading. Producing nothing is worse for
     a naive metric and better for a reader who needs to know what we do not
     know.
+
+    ⚠️⚠️ ROADMAP 2.42 (Sean, scope change): NO STACKED-HEAD CONNECTION HERE,
+    AND THERE WILL NOT BE ONE FROM THIS ITEM. The ink-fit position
+    (`Q.STACKED_HEAD_FIT`) was briefly read here via a withdrawn
+    `Q.STACKED_HEAD_POSITION`, then replaced with a narrow same-side-second
+    rounding-residual rule -- BOTH withdrawn. The real cause of the wrong
+    pitches above the staff is that printed LEDGER LINES are not evenly
+    spaced (measured: Litolff p3 staff/3/0/0's own ledgers sit 18/13/20 px
+    apart against a 15.75 px staff spacing -- extrapolating the staff's own
+    spacing drifts ~4 px by the third ledger). Fixing that needs positions
+    read from the printed ledgers themselves, a SEPARATE roadmap item
+    (2.44), not this one. This function reads the raw `Q.NOTEHEAD_STAFF_
+    POSITION` centre for EVERY notehead, exactly as before ROADMAP 2.42 ever
+    existed.
     """
     from ..pitch_resolver import _pitch_from_position
 

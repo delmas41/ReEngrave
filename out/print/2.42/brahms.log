@@ -1,0 +1,14 @@
+rendering page 1 at 600 dpi ...
+G01-glyph-1-0-2-0-left ['g5:kept:decided=1.00/raw=80%', 'g35:REFUSED:decided=0.94/raw=97%']
+G02-glyph-1-1-2-0-right ['g18:kept:decided=1.00/raw=83%', 'g26:REFUSED:decided=1.00/raw=83%']
+G03-glyph-1-0-1-0-right ['g7:kept:decided=1.00/raw=80%', 'g22:kept:decided=1.00/raw=90%']
+G04-glyph-1-0-5-0-left ['g14:kept:decided=0.81/raw=69%', 'g21:kept:decided=0.73/raw=66%']
+G05-glyph-1-0-0-4-right ['g15:kept:decided=1.00/raw=87%', 'g35:kept:decided=0.90/raw=68%']
+G06-glyph-1-0-2-0-left ['g4:kept:decided=1.00/raw=80%', 'g33:kept:decided=1.00/raw=96%']
+G07-glyph-1-0-0-1-left ['g13:kept:decided=1.00/raw=87%', 'g24:kept:decided=1.00/raw=93%']
+G08-glyph-1-0-3-0-right ['g5:kept:decided=1.00/raw=76%', 'g17:kept:decided=0.84/raw=89%']
+G09-glyph-1-0-0-0-right ['g11:kept:decided=1.00/raw=76%', 'g43:kept:decided=1.00/raw=93%']
+G10-glyph-1-0-0-0-right ['g5:kept:decided=1.00/raw=81%', 'g31:kept:decided=1.00/raw=94%']
+G11-glyph-1-0-0-2-left ['g16:kept:decided=1.00/raw=84%', 'g22:REFUSED:decided=1.00/raw=83%']
+G12-glyph-1-0-3-0-right ['g11:kept:decided=1.00/raw=80%', 'g25:kept:decided=0.92/raw=92%']
+12 crops written to out/print/2.42/brahms

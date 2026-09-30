@@ -1,0 +1,522 @@
+{
+ "comparable_bars": 204,
+ "total_bars_checked": 204,
+ "candidates": [
+  {
+   "family": "Flute",
+   "bar": 49,
+   "onset": 0,
+   "ref_pitches": [
+    "D06",
+    "F06"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Flute",
+   "bar": 52,
+   "onset": 0,
+   "ref_pitches": [
+    "C06",
+    "E-16"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Flute",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "C06",
+    "E-16"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Flute",
+   "bar": 54,
+   "onset": 0,
+   "ref_pitches": [
+    "C06",
+    "E-16"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Flute",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "C06",
+    "E-16"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Flute",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "A05",
+    "G-16"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 49,
+   "onset": 0,
+   "ref_pitches": [
+    "F05",
+    "G05"
+   ],
+   "our_pitches": [
+    "F05"
+   ]
+  },
+  {
+   "family": "Oboe",
+   "bar": 50,
+   "onset": 0,
+   "ref_pitches": [
+    "F05",
+    "G05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 51,
+   "onset": 0,
+   "ref_pitches": [
+    "F05",
+    "G05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 51,
+   "onset": 4,
+   "ref_pitches": [
+    "E-15",
+    "G05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 52,
+   "onset": 0,
+   "ref_pitches": [
+    "E-15",
+    "G-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "E-15",
+    "G-15"
+   ],
+   "our_pitches": [
+    "G05"
+   ]
+  },
+  {
+   "family": "Oboe",
+   "bar": 54,
+   "onset": 0,
+   "ref_pitches": [
+    "E-15",
+    "G-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "E-15",
+    "G-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "E-15",
+    "G-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Oboe",
+   "bar": 58,
+   "onset": 0,
+   "ref_pitches": [
+    "B-14",
+    "F05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Clarinet",
+   "bar": 49,
+   "onset": 0,
+   "ref_pitches": [
+    "E04",
+    "G04"
+   ],
+   "our_pitches": [
+    "A04"
+   ]
+  },
+  {
+   "family": "Clarinet",
+   "bar": 52,
+   "onset": 0,
+   "ref_pitches": [
+    "A-14",
+    "F05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Clarinet",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "A-14",
+    "F05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Clarinet",
+   "bar": 54,
+   "onset": 0,
+   "ref_pitches": [
+    "A-14",
+    "F05"
+   ],
+   "our_pitches": [
+    "F05"
+   ]
+  },
+  {
+   "family": "Clarinet",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "A-14",
+    "F05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Clarinet",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "A-14",
+    "F05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 49,
+   "onset": 0,
+   "ref_pitches": [
+    "B02",
+    "D03"
+   ],
+   "our_pitches": [
+    "B-12"
+   ]
+  },
+  {
+   "family": "Bassoon",
+   "bar": 50,
+   "onset": 0,
+   "ref_pitches": [
+    "B02",
+    "D03"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "A03",
+    "E-13"
+   ],
+   "our_pitches": [
+    "A-13"
+   ]
+  },
+  {
+   "family": "Bassoon",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "A03",
+    "E-13"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "A03",
+    "E-13"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 58,
+   "onset": 0,
+   "ref_pitches": [
+    "D03",
+    "F03"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 67,
+   "onset": 0,
+   "ref_pitches": [
+    "B-13",
+    "G03"
+   ],
+   "our_pitches": [
+    "B-13"
+   ]
+  },
+  {
+   "family": "Bassoon",
+   "bar": 76,
+   "onset": 0,
+   "ref_pitches": [
+    "E03",
+    "G03"
+   ],
+   "our_pitches": [
+    "D03"
+   ]
+  },
+  {
+   "family": "Bassoon",
+   "bar": 78,
+   "onset": 0,
+   "ref_pitches": [
+    "A-13",
+    "F03"
+   ],
+   "our_pitches": [
+    "A-13"
+   ]
+  },
+  {
+   "family": "Bassoon",
+   "bar": 81,
+   "onset": 0,
+   "ref_pitches": [
+    "E-13",
+    "G03"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Bassoon",
+   "bar": 82,
+   "onset": 0,
+   "ref_pitches": [
+    "A-13",
+    "C04"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 49,
+   "onset": 0,
+   "ref_pitches": [
+    "D05",
+    "E05"
+   ],
+   "our_pitches": [
+    "E05"
+   ]
+  },
+  {
+   "family": "Horn",
+   "bar": 50,
+   "onset": 0,
+   "ref_pitches": [
+    "D05",
+    "E05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 51,
+   "onset": 0,
+   "ref_pitches": [
+    "D05",
+    "E05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 51,
+   "onset": 4,
+   "ref_pitches": [
+    "C05",
+    "E05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 52,
+   "onset": 0,
+   "ref_pitches": [
+    "C05",
+    "E-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "C05",
+    "E-15"
+   ],
+   "our_pitches": [
+    "E05"
+   ]
+  },
+  {
+   "family": "Horn",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "C05",
+    "E-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "C05",
+    "E-15"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Horn",
+   "bar": 58,
+   "onset": 0,
+   "ref_pitches": [
+    "D05",
+    "G04"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Trumpet",
+   "bar": 51,
+   "onset": 4,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": [
+    "C04"
+   ]
+  },
+  {
+   "family": "Trumpet",
+   "bar": 51,
+   "onset": 6,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Trumpet",
+   "bar": 52,
+   "onset": 0,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Trumpet",
+   "bar": 53,
+   "onset": 0,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Trumpet",
+   "bar": 54,
+   "onset": 0,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": [
+    "C04"
+   ]
+  },
+  {
+   "family": "Trumpet",
+   "bar": 55,
+   "onset": 0,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": []
+  },
+  {
+   "family": "Trumpet",
+   "bar": 56,
+   "onset": 0,
+   "ref_pitches": [
+    "C04",
+    "C05"
+   ],
+   "our_pitches": []
+  }
+ ]
+}

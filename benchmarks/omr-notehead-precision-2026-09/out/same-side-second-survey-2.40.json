@@ -1,0 +1,434 @@
+[
+ {
+  "cell": "cell/3/0/0/2",
+  "a": "glyph/3/0/0/2/4",
+  "b": "glyph/3/0/0/2/9",
+  "pitch_a": "F6",
+  "pitch_b": "E6",
+  "refused_a": false,
+  "refused_b": false,
+  "reason_a": "notehead",
+  "reason_b": "notehead",
+  "box_a": [
+   142,
+   166,
+   154,
+   141
+  ],
+  "box_b": [
+   145,
+   264,
+   153,
+   128
+  ],
+  "stem": "cell/3/0/0/2"
+ },
+ {
+  "cell": "cell/3/0/1/4",
+  "a": "glyph/3/0/1/4/12",
+  "b": "glyph/3/0/1/4/13",
+  "pitch_a": "G5",
+  "pitch_b": "A5",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   135,
+   309,
+   153,
+   101
+  ],
+  "box_b": [
+   138,
+   266,
+   119,
+   100
+  ],
+  "stem": "cell/3/0/1/4"
+ },
+ {
+  "cell": "cell/3/0/5/2",
+  "a": "glyph/3/0/5/2/7",
+  "b": "glyph/3/0/5/2/8",
+  "pitch_a": "D5",
+  "pitch_b": "C5",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   722,
+   436,
+   140,
+   194
+  ],
+  "box_b": [
+   723,
+   499,
+   136,
+   129
+  ],
+  "stem": "cell/3/0/5/2"
+ },
+ {
+  "cell": "cell/3/0/8/7",
+  "a": "glyph/3/0/8/7/8",
+  "b": "glyph/3/0/8/7/9",
+  "pitch_a": "G4",
+  "pitch_b": "A4",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   176,
+   598,
+   142,
+   237
+  ],
+  "box_b": [
+   174,
+   595,
+   144,
+   117
+  ],
+  "stem": "cell/3/0/8/7"
+ },
+ {
+  "cell": "cell/3/0/9/0",
+  "a": "glyph/3/0/9/0/1",
+  "b": "glyph/3/0/9/0/6",
+  "pitch_a": "C4",
+  "pitch_b": "B3",
+  "refused_a": true,
+  "refused_b": true,
+  "reason_a": "is_a_clef",
+  "reason_b": "is_a_clef",
+  "box_a": [
+   289,
+   579,
+   169,
+   139
+  ],
+  "box_b": [
+   287,
+   582,
+   175,
+   209
+  ],
+  "stem": "cell/3/0/9/0"
+ },
+ {
+  "cell": "cell/3/0/9/0",
+  "a": "glyph/3/0/9/0/7",
+  "b": "glyph/3/0/9/0/9",
+  "pitch_a": "D3",
+  "pitch_b": "C3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   1161,
+   849,
+   166,
+   151
+  ],
+  "box_b": [
+   1162,
+   915,
+   148,
+   124
+  ],
+  "stem": "cell/3/0/9/0"
+ },
+ {
+  "cell": "cell/3/0/9/0",
+  "a": "glyph/3/0/9/0/9",
+  "b": "glyph/3/0/9/0/12",
+  "pitch_a": "C3",
+  "pitch_b": "D3",
+  "refused_a": true,
+  "refused_b": true,
+  "reason_a": "same_side_second",
+  "reason_b": "same_side_second",
+  "box_a": [
+   1162,
+   915,
+   148,
+   124
+  ],
+  "box_b": [
+   1161,
+   866,
+   161,
+   171
+  ],
+  "stem": "cell/3/0/9/0"
+ },
+ {
+  "cell": "cell/3/0/9/6",
+  "a": "glyph/3/0/9/6/5",
+  "b": "glyph/3/0/9/6/7",
+  "pitch_a": "E3",
+  "pitch_b": "F3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   196,
+   802,
+   161,
+   120
+  ],
+  "box_b": [
+   197,
+   721,
+   162,
+   203
+  ],
+  "stem": "cell/3/0/9/6"
+ },
+ {
+  "cell": "cell/3/0/10/6",
+  "a": "glyph/3/0/10/6/2",
+  "b": "glyph/3/0/10/6/4",
+  "pitch_a": "B3",
+  "pitch_b": "A3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "too_narrow",
+  "box_a": [
+   230,
+   294,
+   166,
+   159
+  ],
+  "box_b": [
+   231,
+   345,
+   89,
+   112
+  ],
+  "stem": "cell/3/0/10/6"
+ },
+ {
+  "cell": "cell/3/1/0/7",
+  "a": "glyph/3/1/0/7/1",
+  "b": "glyph/3/1/0/7/4",
+  "pitch_a": "E6",
+  "pitch_b": "D6",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   136,
+   268,
+   133,
+   130
+  ],
+  "box_b": [
+   122,
+   319,
+   150,
+   92
+  ],
+  "stem": "cell/3/1/0/7"
+ },
+ {
+  "cell": "cell/3/1/2/8",
+  "a": "glyph/3/1/2/8/9",
+  "b": "glyph/3/1/2/8/10",
+  "pitch_a": "B2",
+  "pitch_b": "C3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   114,
+   684,
+   168,
+   94
+  ],
+  "box_b": [
+   112,
+   607,
+   141,
+   99
+  ],
+  "stem": "cell/3/1/2/8"
+ },
+ {
+  "cell": "cell/3/1/2/9",
+  "a": "glyph/3/1/2/9/2",
+  "b": "glyph/3/1/2/9/5",
+  "pitch_a": "E3",
+  "pitch_b": "F3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   162,
+   450,
+   165,
+   172
+  ],
+  "box_b": [
+   165,
+   381,
+   163,
+   240
+  ],
+  "stem": "cell/3/1/2/9"
+ },
+ {
+  "cell": "cell/3/1/2/9",
+  "a": "glyph/3/1/2/9/3",
+  "b": "glyph/3/1/2/9/5",
+  "pitch_a": "G3",
+  "pitch_b": "F3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   155,
+   371,
+   168,
+   142
+  ],
+  "box_b": [
+   165,
+   381,
+   163,
+   240
+  ],
+  "stem": "cell/3/1/2/9"
+ },
+ {
+  "cell": "cell/3/1/2/11",
+  "a": "glyph/3/1/2/11/2",
+  "b": "glyph/3/1/2/11/3",
+  "pitch_a": "E3",
+  "pitch_b": "F3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   191,
+   500,
+   153,
+   110
+  ],
+  "box_b": [
+   184,
+   374,
+   160,
+   236
+  ],
+  "stem": "cell/3/1/2/11"
+ },
+ {
+  "cell": "cell/3/1/3/2",
+  "a": "glyph/3/1/3/2/3",
+  "b": "glyph/3/1/3/2/4",
+  "pitch_a": "G4",
+  "pitch_b": "F4",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   119,
+   833,
+   165,
+   135
+  ],
+  "box_b": [
+   122,
+   899,
+   156,
+   100
+  ],
+  "stem": "cell/3/1/3/2"
+ },
+ {
+  "cell": "cell/3/1/4/12",
+  "a": "glyph/3/1/4/12/2",
+  "b": "glyph/3/1/4/12/3",
+  "pitch_a": "C5",
+  "pitch_b": "B4",
+  "refused_a": false,
+  "refused_b": false,
+  "reason_a": "notehead",
+  "reason_b": "notehead",
+  "box_a": [
+   486,
+   675,
+   155,
+   119
+  ],
+  "box_b": [
+   486,
+   675,
+   151,
+   280
+  ],
+  "stem": "cell/3/1/4/12"
+ },
+ {
+  "cell": "cell/3/1/7/17",
+  "a": "glyph/3/1/7/17/3",
+  "b": "glyph/3/1/7/17/5",
+  "pitch_a": "B3",
+  "pitch_b": "A3",
+  "refused_a": false,
+  "refused_b": true,
+  "reason_a": "notehead",
+  "reason_b": "same_side_second",
+  "box_a": [
+   630,
+   445,
+   159,
+   121
+  ],
+  "box_b": [
+   630,
+   453,
+   158,
+   161
+  ],
+  "stem": "cell/3/1/7/17"
+ },
+ {
+  "cell": "cell/3/1/7/17",
+  "a": "glyph/3/1/7/17/5",
+  "b": "glyph/3/1/7/17/6",
+  "pitch_a": "A3",
+  "pitch_b": "G3",
+  "refused_a": true,
+  "refused_b": true,
+  "reason_a": "same_side_second",
+  "reason_b": "same_side_second",
+  "box_a": [
+   630,
+   453,
+   158,
+   161
+  ],
+  "box_b": [
+   634,
+   520,
+   154,
+   94
+  ],
+  "stem": "cell/3/1/7/17"
+ }
+]
