@@ -1116,3 +1116,211 @@ non-adjacent but landed together for time; the coordinator confirmed
 this is fine given each connection still has its own dedicated RED/GREEN
 test. This round's gate and re-run are 1 further commit
 (`4b20912d`) plus this FINDINGS update.
+
+## 20. ROADMAP 2.41 — three readings of a notehead's centre, side by side
+
+**The question (Sean, 2026-09-30, verbatim):** *"I am worried that the
+ledger lines and other ink are not as reliable as pure geometry. If the
+center of each note head can be determined by the ink of the note head,
+it could be measured from the center of the staff. I'm not sure if that
+is more reliable or not."*
+
+MEASUREMENT ONLY. Nothing under `tools/` is touched or wired.
+`benchmarks/omr-notehead-width-2026-09/probe/measure_2.41.py` (new, this
+round) reads a fresh GATHER+ADJUDICATE record via `record_io.load_record`
+ONLY, for `glyph_box`/`staff_lines`/`staff_spacing` — all already in PAGE
+PIXEL frame (`Q.STAFF_LINES`'s own comment), so no cell/canonical-frame
+conversion is needed anywhere. The ink raster for readings B and C is a
+fresh 600 dpi render of the same page via PyMuPDF (the record's own
+`cell.image_no_staff` array is never serialised — CLAUDE.md §4b/§9), with
+a LOCAL staff-line suppression (a wide horizontal `binary_opening`
+confined to a few px around each FILED line y — a long thin run is a
+staff line, a notehead blob is not, so a notehead's own ink survives even
+where it touches a line).
+
+### 20a. The three readings, as built
+
+- **A (today):** `Q.NOTEHEAD_STAFF_POSITION`'s own arithmetic
+  ((detector box y-centre − top line) / half-step), rounded.
+- **B:** a bounded search (±0.6 sp vertical, ±0.4 sp horizontal, 0.05 sp
+  step — finer than 2.39b's shipped 0.1 sp step, since this round asks
+  about precision, not a binary accept/decline) around the detector's
+  own centre. At each offset, score the mean ink fill under a tilted
+  (18°, CONVENTION ASSUMED — no notehead tilt entry exists in
+  `tools/omr/conventions.py`, checked) filled ellipse (black heads,
+  1.18×1.0 sp) or ellipse RING (hollow heads, inner radius 0.55× the
+  outer), with a thin central vertical stripe (0.15 sp) excluded from
+  both the fill sum and the area so a stem does not win outright. Take
+  the best-scoring offset.
+- **C:** the same template, scored ONLY at the staff's own discrete
+  line/space positions (half-step integers), bounded to ±4 half-steps
+  (2 sp) around the detector's OWN rough position — ⚠️ an early version
+  scanned a FIXED absolute range from the staff's top line and picked up
+  a completely different staff's ink (measured: position −8/+13 against
+  a detector centre of +9); bounding the discrete search around the
+  note's own neighbourhood, not the page's absolute grid, fixed this.
+  "Ambiguous" when the top two candidates are within 0.05 fill of each
+  other.
+- **Two-head fit:** for a named stacked pair, jointly place two templates
+  at staff-grid slots ≥2 apart (a third or more) on the SAME x column and
+  compare the summed two-head score against the best single-template
+  score over the same y-range.
+
+Code: `benchmarks/omr-notehead-width-2026-09/probe/measure_2.41.py`
+(readings + page measurement), `probe/crop_2.41.py` (the print check),
+`probe/parity_check_2.41.py` (§20c).
+
+### 20b. Records and populations measured
+
+Fresh GATHER+ADJUDICATE, `--weights auto --through adjudicate --dpi 600`,
+this session (not reused from an earlier round — CLAUDE.md §6b, one tree):
+`benchmarks/omr-notehead-width-2026-09/out/2.41/litolff-p3.json`,
+`.../brahms-p1.json`. 470 / 950 regular noteheads (`geometry.
+is_regular_notehead`).
+
+| | A/B/C all agree | disagree | inside/black | inside/hollow | ledger/black | ledger/hollow |
+|---|---:|---:|---:|---:|---:|---:|
+| Litolff p3 | 199 (42.3%) | 271 | 77/164 agree | 66/137 agree | 59/119 agree | 14/50 agree |
+| Brahms p1 | 453 (47.7%) | 497 | 307/568 agree | 7/11 agree | 200/361 agree | 6/10 agree |
+
+Within the disagreements: `bc_agree_a_diff` (B and C agree with each
+other, away from A) is the LARGEST single pattern on both pages (152 of
+254 Litolff non-trivial disagreements, 166 of 430 Brahms) — B and C share
+the same ink raster and the same template, so their agreement is not two
+independent witnesses (CLAUDE.md: *"two witnesses off the same raster
+fall silent together"*).
+
+### 20c. A large-sample proxy control: does the reading's PARITY match the detector's own shape class?
+
+The detector's `OnLine`/`InSpace` suffix is a SEPARATE output channel
+from the box's y-coordinate (shape classification, not position) and
+gives a page-wide, cheap expectation: a line position is even, a space
+position is odd (position 0 = the staff's own top line). Not full ground
+truth — it is still the same detector, on the same raster — but cheap
+enough to run on the WHOLE population, reported next to the crop-based
+judgement below, never instead of it (`probe/parity_check_2.41.py`):
+
+| | A matches its own class | B matches | C matches |
+|---|---:|---:|---:|
+| Litolff p3 | 295/470 = **62.8%** | 282/470 = 60.0% | 277/470 = 58.9% |
+| Brahms p1 | 777/950 = **81.8%** | 671/950 = 70.6% | 640/950 = 67.4% |
+
+Reading A is ahead of B and C on BOTH plates by this proxy, most sharply
+on Brahms (11–15 points). This is a CONTROL THAT CAN FAIL (rule 7): a
+plate or reading where B/C's continuous search tracked the print better
+would show the opposite gap, and did not.
+
+### 20d. Print check — crops, `out/print/2.41/`
+
+Cut at 600 dpi with `probe/crop_2.41.py` (RED = A, BLUE = B, GREEN = C,
+crosses not boxes — the question is centre, not extent; YELLOW = the
+filed staff lines). Sampled disagreements, seed 241, 12 per page
+(`out/print/2.41/{litolff,brahms}-dis/`); all-agree control, same seed,
+12 per page (`.../{litolff,brahms}-agree/`). Judged by zooming into the
+rendered crop and reading the ink directly, per CLAUDE.md §6b's "the
+previous two lanes misjudged crops by eye on a downscaled image."
+
+**Litolff p3 (MERGING plate), 11 of 12 sampled disagreements reviewed**
+(1 not reached this session — time):
+
+| crop | verdict |
+|---|---|
+| 1 (`glyph/3/1/2/6/3`, hollow) | A/B correct; C lands on the tie curve above the head |
+| 2 (`glyph/3/0/9/2/6`, merged blob) | lean A (sits in the rounded mass); B/C drift toward the stem-adjacent neck |
+| 3 (`glyph/3/1/2/14/3`, hollow) | A correct (on the visible ring); B/C land on a flat sign above |
+| 4 (`glyph/3/0/1/6/4`, hollow, ledger) | **counter-example: B/C correct** — A's detector box centre sits on blank paper above a visible ring the ink search found |
+| 5 (`glyph/3/0/7/2/2`) | A/B agree, both centred; C borderline, 1 position off |
+| 6 (`glyph/3/1/6/3/1`, hollow, on-line) | A correct (matches the printed on-line ring); B/C one position off, wrong parity |
+| 7 (`glyph/3/1/2/8/4`, hollow) | A/B correct; C jumps to a different, adjacent notehead entirely |
+| 8 (`glyph/3/1/4/10/0`) | borderline — both crosses sit inside one small round blob, sub-position call |
+| 9 (`glyph/3/1/2/9/2`, hollow) | A correct; B/C one position off (adjacent space) |
+| 10 (`glyph/3/0/1/2/1`) | lean A (on the line, matching class); B/C slightly high but still on the blob |
+| 12 (`glyph/3/0/9/7/3`) | borderline, B/C very close to A, same blob |
+
+**Tally: A alone or tied-correct in 9 of 11; B/C alone correct in 1 of
+11 (a genuine sliver counter-example); 1 of 11 too close to call.**
+
+**Brahms p1 (SHATTERING plate), 5 of 12 sampled disagreements reviewed**
+(the remainder not reached this session — time; 3 of the 5 reviewed
+turned out to be corpus contamination, not a centring question):
+
+| crop | verdict |
+|---|---|
+| 1, 2, 5 | **not real noteheads** — bare vertical barline strokes boxed `noteheadBlackInSpace` (CLAUDE.md §10: *"a third of Breitkopf's stemless heads are barlines"*); none of A/B/C is "correct" because there is no head to centre on |
+| 8 | real head, on the line; A sits closer to the visual centre of the round blob, B/C near its bottom edge |
+| 9 (via a targeted `bc_agree_a_diff` sample, not the seeded 12) | A sits exactly on the printed line through the head's centre; B/C both pulled upward onto an adjoining tie curve |
+
+**All-agree control** (both readings independently land on the print):
+2 crops reviewed in depth (`litolff-agree/12`, isolated in-space black
+head, all three coincide correctly; `brahms-agree/9`, all three give the
+correct Y position, though B's fitted X drifts onto an adjacent stem
+column — a reminder that B's window can lock onto the wrong AXIS even
+when its answer is numerically "correct"). Not exhaustively re-checked
+to 12/12 per page this session (time) — reported honestly as partial.
+
+### 20e. Sean's thirds, as fixed cases
+
+Both pairs Sean named (DECISIONS 2026-09-30) are on this session's fresh
+record, at the same positions:
+
+- **`glyph/3/0/0/2/1` + `/3`** (the x≈920 pair, clean, NOT merged):
+  A = −7 / −5, B = −7 / −5, C = −7 / −5 — **all three agree, and agree
+  with each other on a THIRD (2 half-steps apart)**, fill 1.0/1.0 on
+  every reading. Crop confirms two cleanly separated round heads.
+- **`glyph/3/0/0/2/4` + `/9`** (the MERGED pair, one fused ink blob):
+  A = −7 / −5 (a THIRD, matching Sean's *"those are simple 3rds"*),
+  B = −8 / −5 (a FOURTH — wrong interval), **C = −5 / −5 (collision: C
+  conflates the two heads onto ONE position)** — reading C's
+  independent per-glyph search, run separately for each glyph, is not
+  told the other head exists and both searches converge on the same
+  peak in the fused blob. The two-head fit (`two_head_fit`, jointly
+  searching for a PAIR of positions ≥2 apart on this same stem's x)
+  recovers **exactly (−7, −5), `supports_two_heads=True`** — the
+  interval Sean confirmed, where the single independent reads (A's own
+  rounding aside) do not all agree.
+
+**On this named case: A already gives the right interval; C fails
+outright (collapses a third to a unison); a joint two-head search (built
+this round, not wired) recovers what C alone could not.**
+
+### 20f. What this does and does not establish
+
+- On the two count pages sampled, and on the crops actually judged this
+  session, **reading A (the existing detector-centre-then-round
+  arithmetic) matches the print MORE OFTEN than either continuous
+  template reading (B) or the discrete grid reading (C)**, by three
+  independent-ish signals pointing the same way: the parity control
+  (§20c, whole-population, both plates), the print check (§20d, 9/11
+  Litolff, small Brahms sample), and Sean's own named thirds (§20e, C
+  actively wrong, A already right).
+- **This does NOT mean geometry never helps.** One clear counter-example
+  was found and is reported, not discarded (`glyph/3/0/1/6/4`, §20d
+  crop 4): a detector box whose own centre sits on blank paper while the
+  ink search finds the real head. 2.39b's `RECENTRE_BOX_SIZE_GATE`
+  (search only where the detector's OWN box is under 0.7 of the standard
+  size) already exists on this branch for exactly this population and
+  was not re-measured against these new templates this round.
+- **Why B/C lose more often than they win, on the crops reviewed:** the
+  continuous/discrete template searches are vulnerable to nearby,
+  denser, unrelated ink — a tie or slur curve attaching just above the
+  head, an accidental sign, a stem/beam junction, or (worst) a
+  neighbouring notehead on the SAME stem — pulling the peak-fill window
+  off the true head. The detector's own centre, even on a box whose
+  SIZE is untrustworthy (CLAUDE.md §10), is apparently less often
+  fooled this way than a fresh, un-informed ink search is, on THIS
+  corpus.
+- **NOT VERIFIED THIS SESSION:** the full 12/12 print-check sample on
+  both pages (11/12 and 5/12 done, rest not reached — time); whether a
+  narrower/rotated template, a different tilt angle, or excluding
+  tie/slur ink specifically (rather than only a thin stem stripe) would
+  close B/C's gap — this round tested ONE template design, not a sweep;
+  whether the Brahms barline-contamination population (3 of 5 sampled
+  "disagreements" were not real noteheads at all) has the same rate in
+  the FULL disagreement pool or is over-represented in this seed's
+  sample.
+- **Recommend nothing beyond what the counts support**, per the brief:
+  the two-head fit's recovery of Sean's confirmed third (§20e) is the
+  one result here that argues FOR building something (a joint fit for
+  stacked-on-one-stem candidates, replacing per-glyph independent reads
+  for that population specifically) — everything else argues for
+  leaving `Q.NOTEHEAD_STAFF_POSITION` on reading A.
