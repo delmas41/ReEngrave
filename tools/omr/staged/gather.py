@@ -4423,6 +4423,73 @@ def _stacked_best_combo(scored: Dict[int, float], k: int
     return best
 
 
+def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
+                          top_y: float, half_step: float, spacing: float,
+                          n_boxes: int) -> Optional[Dict[str, Any]]:
+    """PURE -- score a standard head-box template at every candidate
+    position (an integer half-step grid, `Q.NOTEHEAD_STAFF_POSITION`'s own
+    units), then pick the FEWEST head count (1, 2 or 3, never more than
+    `n_boxes`) whose mean per-head score is not clearly beaten by one more
+    head (`STACKED_HEAD_FIT_MARGIN` -- the same "is the winner clearly
+    ahead" discipline `Q.NOTEHEAD_RECENTRE` already uses).
+
+    Returns `None` where no candidate position scores at all (the caller
+    abstains `no_mask`). Otherwise a dict: `scored` (every candidate
+    position's own score), `k` (the chosen count), `positions` (that
+    count's own chosen head positions, ascending), `margin` (the score gap
+    between `k` and the next count considered, or `None` at k=1 with no
+    n_boxes>=2 comparison), `ambiguous` (True where two counts are within
+    the margin of each other -- the caller abstains rather than choosing).
+    """
+    scored: Dict[int, float] = {}
+    for p in positions:
+        ccy = top_y + p * half_step
+        box = _standard_head_box(cx, ccy, spacing)
+        box_xywh = (box[0], box[2], box[1] - box[0], box[3] - box[2])
+        m = notehead_ink_under(img, box_xywh)
+        if m is not None:
+            scored[p] = m["best"]
+    if not scored:
+        return None
+
+    best1_pos = max(scored, key=scored.get)
+    best1 = scored[best1_pos]
+    chosen_k, chosen_positions, chosen_mean = 1, (best1_pos,), best1
+    margin: Optional[float] = None
+    ambiguous = False
+    if n_boxes >= 2:
+        combo2 = _stacked_best_combo(scored, 2)
+        if combo2 is not None:
+            pos2, total2 = combo2
+            mean2 = total2 / 2.0
+            m12 = mean2 - best1
+            if m12 > STACKED_HEAD_FIT_MARGIN:
+                chosen_k, chosen_positions, chosen_mean = 2, pos2, mean2
+                margin = m12
+            elif abs(m12) <= STACKED_HEAD_FIT_MARGIN:
+                ambiguous = True
+                margin = m12
+            if not ambiguous and chosen_k == 2 and n_boxes >= 3:
+                combo3 = _stacked_best_combo(scored, 3)
+                if combo3 is not None:
+                    pos3, total3 = combo3
+                    mean3 = total3 / 3.0
+                    m23 = mean3 - mean2
+                    if m23 > STACKED_HEAD_FIT_MARGIN:
+                        chosen_k = 3
+                        chosen_positions = pos3
+                        chosen_mean = mean3
+                        margin = m23
+                    elif abs(m23) <= STACKED_HEAD_FIT_MARGIN:
+                        ambiguous = True
+                        margin = m23
+    return {
+        "scored": scored, "k": chosen_k,
+        "positions": tuple(sorted(chosen_positions)),
+        "mean": chosen_mean, "margin": margin, "ambiguous": ambiguous,
+    }
+
+
 def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                             local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]]) -> None:
@@ -4508,15 +4575,10 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
             hi = int(math.ceil(max(positions_seen))) \
                 + STACKED_HEAD_SEARCH_MARGIN_POSITIONS
 
-            scored: Dict[int, float] = {}
-            for p in range(lo, hi + 1):
-                ccy = top_y + p * half_step
-                box = _standard_head_box(cx, ccy, spacing)
-                box_xywh = (box[0], box[2], box[1] - box[0], box[3] - box[2])
-                m = notehead_ink_under(img, box_xywh)
-                if m is not None:
-                    scored[p] = m["best"]
-            if not scored:
+            fit = fit_stacked_head_count(
+                img, cx, list(range(lo, hi + 1)), top_y, half_step, spacing,
+                len(members))
+            if fit is None:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
                     log.abstain(g, Q.STACKED_HEAD_FIT,
@@ -4525,42 +4587,10 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                                note="no ink score at any candidate slot")
                 continue
 
-            best1_pos = max(scored, key=scored.get)
-            best1 = scored[best1_pos]
-            chosen_k, chosen_positions, chosen_mean = 1, (best1_pos,), best1
-            margin: Optional[float] = None
-            ambiguous = False
-            n_boxes = len(members)
-            if n_boxes >= 2:
-                combo2 = _stacked_best_combo(scored, 2)
-                if combo2 is not None:
-                    pos2, total2 = combo2
-                    mean2 = total2 / 2.0
-                    m12 = mean2 - best1
-                    if m12 > STACKED_HEAD_FIT_MARGIN:
-                        chosen_k, chosen_positions, chosen_mean = 2, pos2, mean2
-                        margin = m12
-                    elif abs(m12) <= STACKED_HEAD_FIT_MARGIN:
-                        ambiguous = True
-                        margin = m12
-                    if not ambiguous and chosen_k == 2 and n_boxes >= 3:
-                        combo3 = _stacked_best_combo(scored, 3)
-                        if combo3 is not None:
-                            pos3, total3 = combo3
-                            mean3 = total3 / 3.0
-                            m23 = mean3 - mean2
-                            if m23 > STACKED_HEAD_FIT_MARGIN:
-                                chosen_k = 3
-                                chosen_positions = pos3
-                                chosen_mean = mean3
-                                margin = m23
-                            elif abs(m23) <= STACKED_HEAD_FIT_MARGIN:
-                                ambiguous = True
-                                margin = m23
-
             candidates_detail = {"scores": {str(p): round(v, 4)
-                                            for p, v in scored.items()}}
-            if ambiguous:
+                                            for p, v in fit["scored"].items()}}
+            margin = fit["margin"]
+            if fit["ambiguous"]:
                 for gi in members:
                     g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
                     log.abstain(g, Q.STACKED_HEAD_FIT,
@@ -4573,7 +4603,8 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                                     "of each other")
                 continue
 
-            chosen_sorted = sorted(chosen_positions)
+            chosen_sorted = fit["positions"]
+            chosen_k = fit["k"]
             for gi in members:
                 d = dets[gi]
                 g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
