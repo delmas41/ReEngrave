@@ -536,20 +536,28 @@ class Q(_Vocab):
     #: END) -- GATHER does not know which end of a stem is its TIP (that is
     #: `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE), so both
     #: ends are asked, same shape as `Q.STEM_TIP_INK`. `value` is whether the
-    #: stem's OWN ink, in its own x-range, runs CONTINUOUSLY from that end
-    #: into ink at or past the candidate stroke's own near edge -- the stem
-    #: ending INSIDE the stroke's own box is joined with no gap to walk; a
-    #: gap that stays inked within one measured staff-line thickness is a
-    #: shattered-plate junction and still joined. ⚠️ A stroke that neither
-    #: reaches the tip nor stands cleanly past it (manager review of
-    #: 024bdc7c: a SECONDARY beam attaching along the stem's body just
-    #: inside the primary, or a `Q.STEM` box that overshoots its own beam,
-    #: sit here exactly as a slur/arc crossing mid-length would, and
-    #: position cannot tell them apart) ABSTAINS -- it is NOT read as "not
-    #: joined": rule 8 forbids turning cannot-tell into an answer, and
-    #: doing so once dropped a real secondary beam's only candidate stroke.
-    #: Also ABSTAINS where the raster or the cell's staff-space unit is
-    #: missing, or the stem carries no usable x-range.
+    #: CANDIDATE STROKE horizontally reaches this stem (⚠️ manager print
+    #: check of 3c748f45 on Brahms p1: a far-away DIFFERENT group's beam,
+    #: 4-10 staff spaces to the side, shares a y-height with THIS stem's own
+    #: real beam often enough that skipping this check let the continuity
+    #: scan below credit that OTHER stroke with THIS stem's own ink -- a
+    #: stroke that does not cover the stem, within the same measured
+    #: tolerance, is NOT JOINED by construction, checked FIRST, before any
+    #: pixel is read) AND, if so, whether the stem's OWN ink, in its own
+    #: x-range, runs CONTINUOUSLY from that end into ink at or past the
+    #: candidate stroke's own near edge -- the stem ending INSIDE the
+    #: stroke's own box is joined with no gap to walk; a gap that stays
+    #: inked within one measured staff-line thickness is a shattered-plate
+    #: junction and still joined. ⚠️ A stroke that reaches the stem
+    #: horizontally but neither reaches the tip nor stands cleanly past it
+    #: (manager review of 024bdc7c: a SECONDARY beam attaching along the
+    #: stem's body just inside the primary, or a `Q.STEM` box that
+    #: overshoots its own beam, sit here exactly as a slur/arc crossing
+    #: mid-length would, and position cannot tell them apart) ABSTAINS --
+    #: it is NOT read as "not joined": rule 8 forbids turning cannot-tell
+    #: into an answer, and doing so once dropped a real secondary beam's
+    #: only candidate stroke. Also ABSTAINS where the raster or the cell's
+    #: staff-space unit is missing, or the stem carries no usable x-range.
     BEAM_STEM_JOIN = "beam_stem_join"
     FLAG = "flag"                            # detected flag
     AUG_DOT = "aug_dot"                      # dot offset from its notehead

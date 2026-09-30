@@ -59,7 +59,8 @@ class TestTheMeasurement(unittest.TestCase):
         there is no gap to walk."""
         img = _paper()
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      90.0, 105.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 90.0, 105.0,
+                                      gap_tolerance_px=4.0)
         self.assertTrue(m["found"])
         self.assertEqual(m["gap_px"], 0.0)
 
@@ -69,7 +70,8 @@ class TestTheMeasurement(unittest.TestCase):
         # at y=[76, 80] -- nothing drawn in the gap [80, 100).
         _draw(img, 190.0, 76.0, 194.0, 80.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      76.0, 80.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
         self.assertFalse(m["found"])
         self.assertEqual(m["gap_px"], 20.0)
         self.assertEqual(m["max_blank_run_px"], 20)
@@ -84,7 +86,8 @@ class TestTheMeasurement(unittest.TestCase):
         _draw(img, 190.0, 80.0, 194.0, 90.0)
         _draw(img, 190.0, 91.0, 194.0, 100.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      76.0, 80.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
         self.assertTrue(m["found"])
         self.assertEqual(m["max_blank_run_px"], 1)
 
@@ -94,7 +97,8 @@ class TestTheMeasurement(unittest.TestCase):
         _draw(img, 190.0, 80.0, 194.0, 90.0)
         _draw(img, 190.0, 95.0, 194.0, 100.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      76.0, 80.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
         self.assertFalse(m["found"])
         self.assertEqual(m["max_blank_run_px"], 5)
 
@@ -115,7 +119,8 @@ class TestTheMeasurement(unittest.TestCase):
         # stem's own body -- and the test must still decline, not read it.
         _draw(img, 190.0, 100.0, 194.0, 200.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      145.0, 150.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 145.0, 150.0,
+                                      gap_tolerance_px=4.0)
         self.assertIsNone(m)
 
     def test_a_SECONDARY_beam_one_beam_gap_inside_the_primary_is_DECLINED(self):
@@ -132,7 +137,8 @@ class TestTheMeasurement(unittest.TestCase):
         # tip (top) at y=100; secondary stroke at y=[112, 116], one gap
         # inside the body -- neither reaches 100 nor stands past it.
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      112.0, 116.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 112.0, 116.0,
+                                      gap_tolerance_px=4.0)
         self.assertIsNone(m)
 
     def test_a_stem_box_that_OVERSHOOTS_its_own_beam_is_DECLINED(self):
@@ -147,7 +153,8 @@ class TestTheMeasurement(unittest.TestCase):
         # reported tip (top) at y=80 -- past the real beam, which sits at
         # y=[100, 104], well inside the reported stem's own extent.
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 80.0, "top",
-                                      100.0, 104.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 100.0, 104.0,
+                                      gap_tolerance_px=4.0)
         self.assertIsNone(m)
 
     def test_the_BOTTOM_tip_is_symmetric(self):
@@ -156,26 +163,60 @@ class TestTheMeasurement(unittest.TestCase):
         # stroke's own near edge at y=210.
         _draw(img, 190.0, 200.0, 194.0, 210.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 200.0, "bottom",
-                                      210.0, 214.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 210.0, 214.0,
+                                      gap_tolerance_px=4.0)
+        self.assertTrue(m["found"])
+
+    def test_a_FAR_stroke_at_the_SAME_y_as_the_stems_own_beam_is_NOT_joined(self):
+        """⚠️⚠️ THE BUG, PRINT-CHECK CONFIRMED (manager review of 3c748f45,
+        Brahms p1: 3 of 4 JOINED crops were WRONG, a different group's beam
+        4-10 staff spaces to the side, 8th promoted to 16th). The scan
+        below walks the STEM's OWN x-range, and THIS stem's own real beam
+        sits right there -- but the CANDIDATE stroke under test is far
+        away in x and must not be credited with ink that is not its own."""
+        img = _paper()
+        _draw(img, 190.0, 76.0, 194.0, 100.0)    # this stem's OWN real beam
+        # a candidate far to the side (400-500), at the SAME height as the
+        # real beam above -- if the horizontal check did not run first, the
+        # scan would find the ink above and wrongly call this JOINED.
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      400.0, 500.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
+        self.assertFalse(m["found"])
+        self.assertEqual(m["reason"], "stroke_does_not_reach_stem_horizontally")
+
+    def test_a_stroke_COVERING_the_stem_is_UNCHANGED(self):
+        """The positive control for the fix above: a stroke whose x-range
+        genuinely spans the stem (a real beam, wider than the stem it
+        serves) is unaffected -- the horizontal check passes and the
+        existing vertical logic decides exactly as before."""
+        img = _paper()
+        _draw(img, 190.0, 76.0, 194.0, 100.0)
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      100.0, 300.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
         self.assertTrue(m["found"])
 
     def test_window_off_the_raster_is_none(self):
         img = _paper(h=50, w=50)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
-                                      70.0, 76.0, gap_tolerance_px=4.0)
+                                      180.0, 210.0, 70.0, 76.0,
+                                      gap_tolerance_px=4.0)
         self.assertIsNone(m)
 
     def test_no_raster_is_none(self):
         self.assertIsNone(
             gather.beam_stem_join_ink(None, 190.0, 194.0, 100.0, "top",
-                                      70.0, 76.0, gap_tolerance_px=4.0))
+                                      180.0, 210.0, 70.0, 76.0,
+                                      gap_tolerance_px=4.0))
 
     def test_stem_x_unknown_is_none(self):
         img = _paper()
         # x1 <= x0 -- no usable x-range.
         self.assertIsNone(
             gather.beam_stem_join_ink(img, 194.0, 194.0, 100.0, "top",
-                                      70.0, 76.0, gap_tolerance_px=4.0))
+                                      180.0, 210.0, 70.0, 76.0,
+                                      gap_tolerance_px=4.0))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

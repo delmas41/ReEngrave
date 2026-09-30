@@ -2468,25 +2468,52 @@ def _beam_stem_beyond_tip(tip_y: float, end: str, stroke_y0: float,
     return stroke_y0 >= tip_y
 
 
+def _beam_stem_horizontally_reaches(stem_x0: float, stem_x1: float,
+                                    stroke_x0: float, stroke_x1: float,
+                                    tol: float) -> bool:
+    """Does this candidate stroke's own horizontal extent COVER the stem's
+    (within `tol`)? ROADMAP 2.38, second post-review fix.
+
+    ⚠️⚠️ THE BUG (Brahms p1 print check, manager review of 3c748f45): the
+    continuity scan below walks the STEM's OWN x-range vertically, and nowhere
+    checked that the CANDIDATE stroke it was asked about is even horizontally
+    near that stem. A stroke belonging to a DIFFERENT group -- 4-10 staff
+    spaces to the side -- can share a y-height with THIS stem's own real
+    beam (drawn directly above/below the tip, in the stem's own column); the
+    scan then finds THAT ink, wrongly credits it to the far-away candidate,
+    and reports JOINED for a stroke that never touches this stem at all. A
+    stroke that does not reach the stem horizontally is NOT this stem's
+    stroke BY CONSTRUCTION -- a fact about the two boxes, not the raster --
+    so it is checked FIRST, before any pixel is read.
+    """
+    return stroke_x0 <= stem_x1 + tol and stroke_x1 >= stem_x0 - tol
+
+
 def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
-                       tip_y: float, end: str, stroke_y0: float,
+                       tip_y: float, end: str, stroke_x0: float,
+                       stroke_x1: float, stroke_y0: float,
                        stroke_y1: float, gap_tolerance_px: float
                        ) -> Optional[Dict[str, Any]]:
     """Does this stem's own ink, in its own x-range, run CONTINUOUSLY from
-    `tip_y` into ink at or past the candidate stroke's near edge? ROADMAP
-    2.38.
+    `tip_y` into ink at or past the candidate stroke's near edge -- AND does
+    that candidate stroke horizontally reach the stem at all? ROADMAP 2.38.
 
-    All of `stem_x0`, `stem_x1`, `tip_y`, `stroke_y0`, `stroke_y1` and
-    `gap_tolerance_px` are in the SAME canonical CELL pixels `Q.STEM`'s own
-    box is in -- this function does no frame conversion, the same contract
-    `stem_tip_ink`/`ledger_rung_ink` state for themselves. `end` is `"top"`
-    (this stem's TOP is the tip under test, the stroke is expected ABOVE
-    it) or `"bottom"` (the reverse) -- GATHER does not know which end is the
-    true tip, so the caller asks both and files one row each.
+    All of `stem_x0`, `stem_x1`, `tip_y`, `stroke_x0`, `stroke_x1`,
+    `stroke_y0`, `stroke_y1` and `gap_tolerance_px` are in the SAME
+    canonical CELL pixels `Q.STEM`'s own box is in -- this function does no
+    frame conversion, the same contract `stem_tip_ink`/`ledger_rung_ink`
+    state for themselves. `end` is `"top"` (this stem's TOP is the tip
+    under test, the stroke is expected ABOVE it) or `"bottom"` (the
+    reverse) -- GATHER does not know which end is the true tip, so the
+    caller asks both and files one row each.
 
-    Two outcomes, not three (post-review fix, `_beam_stem_beyond_tip`'s own
-    docstring has the argument):
+    Three outcomes:
 
+    * the candidate's own x-range does not reach the stem's, within
+      `gap_tolerance_px` -- NOT JOINED, a real answer settled by the two
+      boxes alone: a stroke that does not cover the stem cannot be its
+      beam, by construction (post-review fix, `_beam_stem_horizontally_
+      reaches`'s own docstring has the argument);
     * the tip already sits INSIDE the stroke's own y-range -- the stem
       ends IN the beam, joined with no gap to walk;
     * the stroke stands cleanly past the tip (the whole stroke is on the
@@ -2509,6 +2536,14 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
     ix0, ix1 = max(0, int(round(stem_x0))), min(W, int(round(stem_x1)))
     if ix1 <= ix0:
         return None
+    if not _beam_stem_horizontally_reaches(stem_x0, stem_x1, stroke_x0,
+                                           stroke_x1, gap_tolerance_px):
+        # NOT JOINED -- a real answer, not a decline (rule 6: the two boxes
+        # alone settle this, no ink need be read at all).
+        return {"found": False, "gap_px": None, "max_blank_run_px": None,
+                "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+                "window_canonical": None,
+                "reason": "stroke_does_not_reach_stem_horizontally"}
     if not _beam_stem_beyond_tip(tip_y, end, stroke_y0, stroke_y1):
         return None
 
@@ -2585,6 +2620,8 @@ def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
         sy1 = sy0 + float(stem_d.height_canonical)
         no_x = sx1 <= sx0
         for beam_d, beam_id in beam_rows_logged:
+            bx0 = float(beam_d.x_canonical)
+            bx1 = bx0 + float(beam_d.width_canonical)
             by0 = float(beam_d.y_canonical)
             by1 = by0 + float(beam_d.height_canonical)
             for end, tip_y in (("top", sy0), ("bottom", sy1)):
@@ -2603,7 +2640,7 @@ def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
                                 end=end, note="no cell staff-space unit")
                     continue
                 m = beam_stem_join_ink(img, sx0, sx1, tip_y, end,
-                                      by0, by1, tol)
+                                      bx0, bx1, by0, by1, tol)
                 if m is None:
                     if _beam_stem_beyond_tip(tip_y, end, by0, by1):
                         reason = ABSTAIN.NO_STAFF_GEOMETRY

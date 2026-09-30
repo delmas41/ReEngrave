@@ -300,6 +300,78 @@ correct "declined stays possible" ADJUDICATE-side path either way) --
 named honestly rather than claimed as a second RED proof. All 28 pass on
 the fixed tree.
 
+### Manager print check, 3c748f45: the horizontal-reach bug
+
+Manager print check on a real page (Brahms p1, `--through adjudicate`,
+`out/print/beam-stem-ink-2.38/brahms-p1.record.json` + `crops.py`). The
+witness settled 583 duration verdicts (359 JOINED->decided, 224 NOT
+JOINED->decided); **3 of 4 sampled JOINED crops were WRONG**: the
+candidate stroke was a DIFFERENT group's beam, 4-10 staff spaces to the
+side of the stem, promoting an 8th to a 16th.
+
+**The bug**: `beam_stem_join_ink`'s continuity scan walks the STEM's OWN
+x-range vertically between the tip and the candidate's near edge, and
+nowhere checked that the candidate stroke is even horizontally near that
+stem. THIS stem's own real beam sits directly above/below its tip, in
+its own column; where a far-away, unrelated stroke's y-range happened to
+land near that same height, the scan found the STEM's OWN ink and
+credited it to the wrong candidate. Measured on the pre-fix Brahms p1
+record: of 338 (stem, stroke) pairs a duration verdict actually USED with
+`value=True`, the two boxes' horizontal gap ranged 0-1,406 canonical px
+(median staff space on this page ~91-100px), and **109 of 338 (32%) had
+a gap over 200px** (roughly 2+ staff spaces) -- not a rare edge case.
+
+**Fix**: `beam_stem_join_ink` gained `stroke_x0`/`stroke_x1` parameters and
+a new gate, `_beam_stem_horizontally_reaches` (stroke x0 <= stem x1 + tol
+and stroke x1 >= stem x0 - tol, tol = the same measured-thickness
+tolerance already used vertically), checked FIRST, before any pixel is
+read. A stroke that does not cover the stem is NOT JOINED -- a real
+answer settled by the two boxes alone, not a decline (rule 6: the
+geometry alone decides this, no ink need be read). `_observe_beam_stem_
+join` now extracts the beam's own `x_canonical`/`width_canonical` and
+passes them through.
+
+**Re-gathered Brahms p1 with the fix** (`--through adjudicate`, ~2 min):
+new used-counts, `{(False, 'decided'): 562, (True, 'decided'): 213,
+(False, 'narrowed'): 29, (True, 'narrowed'): 1}` -- JOINED 359->214, NOT
+JOINED 224->591 (many pairs that were silently ambiguous before now get a
+definite NOT JOINED from the horizontal check firing before the vertical
+ambiguity check ever runs). Measured on the FIXED record: of the (stem,
+stroke) pairs a duration verdict used with `value=True`, the horizontal
+gap is now 0-17px, ALL under the tolerance -- **zero** over 50px, against
+109 of 338 over 200px before. `out/print/beam-stem-ink-2.38/
+brahms_beam_join_used.png` (regenerated): all 4 JOINED crops now show the
+green (stem) bracket directly touching the blue-boxed candidate stroke;
+all 4 NOT JOINED crops show the red bracket nowhere near the highlighted
+stroke (a hairpin, another group's beam) -- both families read correctly
+by eye.
+
+**Does `_beam_levels`'s padded-column test admit strokes several staff
+spaces off?** Asked, not changed (manager: only change it if trivially
+wrong -- it is not). Measured on the pre-fix record's own USED population:
+beam-stroke widths ranged 123-1,382 canonical px, median ~345px (~3.5
+staff spaces) -- a SINGLE beam stroke commonly spans several notes, so
+its box can genuinely overlap (or come within one notehead-width pad of)
+a note's centre column while its FAR end sits many staff spaces away
+across an adjacent group. That is not the pad being too generous (the pad
+itself is one notehead width, ~1.3 staff spaces, per `BEAM_EDGE_TOLERANCE_
+WIDTHS`); it is the column test having no way to know a wide stroke
+spanning close to this note does not physically belong to it -- exactly
+the ambiguity `Q.BEAM_STEM_JOIN` exists to resolve with a second,
+independent reading. Not trivially wrong; not changed.
+
+2 new tests (30 total): a far stroke at the stem's own beam's height ->
+NOT JOINED (`test_a_FAR_stroke_at_the_SAME_y_as_the_stems_own_beam_is_
+NOT_joined`); a stroke covering the stem -> unchanged (`test_a_stroke_
+COVERING_the_stem_is_UNCHANGED`), the positive control. RED confirmed
+against the pre-fix (3c748f45) `gather.py`: all 13 pure-measurement tests
+fail (the two new tests on the actual bug; the other 11 on the now-wider
+call signature, `TypeError`), 17 still pass (`_observe_beam_stem_join`
+GATHER-integration and end-to-end ADJUDICATE tests, unaffected by this
+particular signature change). All 30 pass fixed.
+
+No further crops or gathers run beyond the one page this review asked for.
+
 ### Independence, argued (CLAUDE.md §4b)
 
 The two witnesses read the SAME staff-erased raster (`image_no_staff`) --
@@ -363,6 +435,15 @@ file). `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged from
 base** -- confirmed again after the fix (reusing the already-vocabuled
 `ABSTAIN.AMBIGUOUS` rather than adding a new reason word kept `wiring`
 untouched).
+
+**Post-print-check update (third commit, the horizontal-reach fix in
+"Manager print check, 3c748f45" above): 30 tests** in this file (2 net
+new). `pytest -m "not slow" tools/omr/tests`: **3,965 passed / 3
+skipped** = `origin/main`'s own 3,935 + 30, same subtraction logic, no
+other test file touched. `python3 -m tools.omr.staged.check`: **TOTAL
+245, unchanged from base** yet again (no new quantity, reader or
+detail-key gap -- `stroke_x0`/`stroke_x1` are ordinary parameters, not
+observation kwargs).
 
 Original first-commit numbers, for the record: `pytest -m "not slow"
 tools/omr/tests`: **3,959 passed / 3 skipped** on this branch, clean (0

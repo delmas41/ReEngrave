@@ -272,3 +272,12 @@ benchmarks/omr-head-fill-2026-09/out/records/
 # dump per weights file -- regenerable by `run_ab.sh` from the tree, weights
 # and pdf named in `summary.json`/`TABLE.md`, which ARE the durable record.
 benchmarks/omr-weights-ab-2026-09/out/**/rec-*.json
+
+# ROADMAP 2.38 (manager print check, `out/print/beam-stem-ink-2.38/`): the
+# Brahms p1 `--through adjudicate` record is a 56 MB one-page GATHER+
+# ADJUDICATE dump, regenerable by the command in `benchmarks/omr-duration-
+# narrowed-2026-09/FINDINGS.md` ("Manager print check, 3c748f45") in ~2 min;
+# `crops.py` and the crop it produced (`brahms_beam_join_used.png`) ARE the
+# durable record and are committed.
+out/print/beam-stem-ink-2.38/*.record.json
+out/print/beam-stem-ink-2.38/*.log
