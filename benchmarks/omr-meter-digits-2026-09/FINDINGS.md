@@ -164,3 +164,126 @@ denominator_confidence) / 100.0`, the same convention
   against a real plate (stated in the reader's own docstring).
 - Grace notes/fingerings, bowing marks, and every other named-but-parked
   item from 2.27b/2.27c are untouched; this lane is scoped to 2.29 alone.
+
+## ROADMAP 2.46 — the 36-abstention cascade, diagnosed and fixed
+
+Manager's finding (2026-09-30): the full whole-movement Brahms record
+(`library/_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.record.json`,
+through INFER, commit `2718c450`) showed `Q.METER` DECIDED on only 16 of 53
+systems, 37 ABSTAINED (36 `meter_change_digits_misread`, 1
+`meter_return_not_read`) — refining GATHER+ADJUDICATE per Sean's priority.
+
+### The 36 all trace to 5 underlying witness cells
+
+`rhythm._meter_digit_witness_cells` files a `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+refusal (reason `is_a_meter_digit`, ROADMAP 2.12l) back as a per-CELL witness
+on the record. Every one of the 36 abstentions on the whole-movement record
+traces to exactly 5 such cells (`_carry_meter` never chains a carry onto a
+carry — only a `voted` system is a source, so every abstained system that
+walked back landed on the SAME source, `system/0/0`, or on its own local
+witness):
+
+| cell | staves w/ the pattern | coverage | REAL printed meter change? |
+|---|---|---|---|
+| `page/0 system/0 cell/3` | 8 of 14 | 0.571 | **NO** — crop shows a barline then an ordinary note-plus-dot(s) figure repeated across the tutti (`out/print/2.46/w_p0_s0_c3_staff*.png`); no digit ink anywhere |
+| `page/1 system/0 cell/1` | 13 of 14 | 0.929 | **YES** — the already-documented 6/8 return (2.12h/2.12i/2.12l), a clean stacked "6" over "8" (`w_p1_s0_c1_staff0.png`) |
+| `page/4 system/1 cell/5` | 8 of 14 | 0.571 | **NO** — the identical note-plus-dot/accent figure, with an `sf` beneath it (`w_p4_s1_c5_staff0.png`) |
+| `page/6 system/0 cell/0` | 1 of 12 | 0.083 | already sub-floor either way; crop (`w_p6_s0_c0_staff8.png`) shows a system-opening clef/key-signature (flats), not digits |
+| `page/6 system/1 cell/0` | 5 of 11 | 0.455 | already sub-floor either way; crop (`w_p6_s1_c0_staff0.png`) shows a rehearsal number ("106") + clef/key-signature at a system's own opening |
+
+Crops rendered from `library/editions/brahms/symphony-1-op68/brahms--symphony
+-1-op68--breitkopf-hartel-brahms--imslp317803.pdf` at 600 dpi (pdf pages
+1, 2, 5, 7 = record pages 0, 1, 4, 6), measured against the actual ink, not
+a downscaled thumbnail; every crop ≥1280 px wide. **Verdict: 1 of 5 real, 4
+of 5 false** (2 of the 4 false ones were the only ones actually reaching the
+old floor and doing the damage; the other 2 were already sub-floor).
+
+### The mechanism: `is_a_meter_digit`'s own docstring named the exact gap
+
+`notehead_precision.py`'s ROADMAP 2.12l comment named the falsifying case
+explicitly and marked it "NOT CONFIRMED WITH SEAN": *"a crop showing a real,
+same-interval chord repeating at one x on most staves of a system."* The
+false witnesses above are exactly that case — a repeated note-plus-articulation
+figure whose y-gap (0.98–1.15 staff spaces, measured) happens to fall inside
+the digit pair's own narrow window (0.30–1.20 spaces), on enough staves
+(57%) to clear the OLD floor (`METER_DIGIT_QUORUM_COVERAGE = 0.5`, borrowed
+from `rhythm._required_corroboration`, a floor sized for a VALUE candidate
+that has a SECOND, independent check (bar-length fit) backing it up). A
+digit witness has no such second check — cross-staff repetition is the
+WHOLE of its evidence — so it must lean on that evidence harder.
+
+**Fix 1** (`tools/omr/staged/adjudicators/notehead_precision.py`):
+`METER_DIGIT_QUORUM_COVERAGE` raised 0.5 → 0.8 (CONVENTION ASSUMED, citing
+CLAUDE.md §10's "printed... on EVERY staff of the system" for the closest
+confirmed analogue, a key change; no numbered convention entry exists yet
+for meter specifically — NOT CONFIRMED WITH SEAN). 0.571 and 0.929 are far
+enough apart that the exact cut does not matter; margin on both sides.
+
+**Fix 2** (`tools/omr/staged/adjudicators/rhythm.py`, `_carry_meter`): even
+after Fix 1, a genuinely real witness on a source system must not veto
+every later system regardless of that system's OWN bars — CLAUDE.md §10:
+"the carry is weighed by the bars, not gated." Before this fix, the
+"too few assessable bars" branch abstained `meter_change_digits_misread`
+unconditionally whenever the SOURCE carried a witness, even where `here`'s
+own one assessable bar agreed with the carry 1-for-1 (`bars_agree: 1,
+bars_disagree: 0` — exactly `system/1/1` and `system/6/0` on the real
+record). New `clean_here` gate: the digit-misread abstention only fires
+where `here`'s own (too-few-to-decide) bars do NOT cleanly corroborate;
+where they do, the SAME `carried_uncontested` path ROADMAP 2.22b already
+built for "no vote against the carry" takes over. This never loosens the
+DISAGREEING case (a bar that contradicts the carry still abstains, labelled
+by the witness exactly as before) — only the previously-unconditional VETO
+on a system with clean, if sparse, corroboration.
+
+### Proof
+
+RED→GREEN, `tools/omr/tests/test_staged_meter_digit_witness.py`:
+- Pre-existing 17 tests: 3 updated as a straightforward CONSEQUENCE of the
+  coverage constant moving (the toy fixture's own floor changed; not a
+  regression in their own claim) — `TestIsAMeterDigitFiresOnlyWithCrossStaffQuorum`
+  raised from 4 to 10 staves so "bare quorum" (9/10) and "below quorum"
+  (8/10, the exact real-world false-positive shape) stay distinguishable.
+- 2 new tests: `test_ONE_clean_agreeing_bar_is_no_longer_vetoed_by_a_stale_witness`
+  (RED confirmed via `git stash` of both production files: fails
+  `AssertionError: ABSTAINED is not DECIDED` on the unrepaired tree) and its
+  CONTROL, `test_CONTROL_one_bar_that_DISAGREES_still_abstains_digits_misread`
+  (passes on both trees — the gate must never loosen the disagreeing case).
+- 19/19 pass on the repaired tree.
+
+`pytest -m "not slow" tools/omr/tests`: **4,176 passed, 3 skipped, 2
+xfailed, 0 failed** (base + 2). `python3 -m tools.omr.staged.check`:
+**TOTAL 245, status=ok** — unchanged.
+
+### Priced: Brahms pdf pages 0-1 (record pages 0-1), GATHER+ADJUDICATE, `--weights auto --route-weights`
+
+| system | `Q.METER` before | `Q.METER` after |
+|---|---|---|
+| `system/0/0` | DECIDED `voted` 6/8 (declined_changes carried a false `meter_change_digits_misread` witness at cell 3) | DECIDED `voted` 6/8 (declined_changes now empty of that false witness) |
+| `system/1/0` | ABSTAINED `meter_return_not_read` | ABSTAINED `meter_return_not_read` — **unchanged, correctly**: this is the real m.9 return, a genuine reading gap, not this item's bug |
+| `system/1/1` | ABSTAINED `meter_change_digits_misread` (citing the stale `system/0/0` cell-3 witness, despite `bars_agree: 1, bars_disagree: 0` of its own) | **DECIDED `carried_uncontested` 6/8** (`bars_agree: 1, bars_disagree: 0`) |
+
+This is the SAME system ROADMAP 2.45 named as the blocker for its own
+far-rest fix (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21):
+2.45's own hand check predicted that a DECIDED 6/8 at this system would
+resolve the 3-rest group to the lower staff — now DECIDED, not hypothetical.
+
+A full whole-movement re-adjudication (all 53 systems) was NOT run here
+(proof budget, CLAUDE.md §6b — "build and wire," a scoped re-gather over
+the two pages holding the real and both floor-clearing false witnesses is
+the proof this item needs); the manager's own next whole-movement re-gather
+is the instrument that confirms the predicted collapse of the other ~33
+abstentions sharing the same `system/0/0` source.
+
+### Not done, named rather than hidden
+
+- No whole-movement re-adjudication was run; the prediction that most of
+  the remaining ~33 `meter_change_digits_misread` abstentions collapse to
+  `carried_uncontested` (since they share the SAME now-clean source) is
+  UNMEASURED past pages 0-1.
+- No convention-registry entry exists for "a meter change prints on every
+  staff of the system" (the key-signature analogue is cited, not a numbered
+  meter entry) — CONVENTION ASSUMED, not confirmed with Sean.
+- The `is_a_meter_digit` geometry test itself (tight x, 0.30-1.20-space
+  y-gap) is untouched; only the CROSS-STAFF COVERAGE floor moved. A future
+  false positive at ≥0.8 coverage (a genuinely orchestra-wide unison
+  note-plus-dot figure) is not excluded by construction.

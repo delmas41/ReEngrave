@@ -124,10 +124,12 @@ def _v(log, staff, cell, gi):
 
 
 class TestIsAMeterDigitFiresOnlyWithCrossStaffQuorum(unittest.TestCase):
-    """4 staves; `_required_corroboration(4) == 2` OTHER staves, so 3 of 4
-    showing the pattern clears it and 1 of 4 does not."""
+    """10 staves; `_required_meter_digit_quorum(10) == 8` OTHER staves
+    (ROADMAP 2.46 raised `METER_DIGIT_QUORUM_COVERAGE` 0.5 -> 0.8 --
+    `round(0.8 * 10) == 8`), so 9 of 10 showing the pattern clears it and
+    8 of 10 does not."""
 
-    N_STAVES = 4
+    N_STAVES = 10
 
     def _system(self, log):
         sysj = R.system(0, 0)
@@ -156,11 +158,11 @@ class TestIsAMeterDigitFiresOnlyWithCrossStaffQuorum(unittest.TestCase):
                 self.assertEqual(v.reason, "is_a_meter_digit")
 
     def test_the_pair_repeated_on_a_bare_quorum_is_refused(self):
-        """3 of 4 staves (this candidate's own + 2 others) — exactly the
-        floor `_required_corroboration(4)` computes."""
+        """9 of 10 staves (this candidate's own + 8 others) — exactly the
+        floor `_required_meter_digit_quorum(10)` computes."""
         log = Log()
         self._system(log)
-        for st in (0, 1, 2):
+        for st in range(9):
             _digit_pair(log, st, 1)
         _run_notehead(log)
         v = _v(log, 0, 1, 0)
@@ -184,11 +186,15 @@ class TestIsAMeterDigitFiresOnlyWithCrossStaffQuorum(unittest.TestCase):
         self.assertIn("meter_digit_signal", v.detail)
 
     def test_CONTROL_below_quorum_is_kept(self):
-        """Only 2 of 4 staves (this one's own + ONE other) — under the
-        floor of 2 OTHER staves."""
+        """8 of 10 staves (this one's own + 7 others) — one short of the
+        floor of 8 OTHER staves. This is the EXACT real-world shape ROADMAP
+        2.46 measured and print-verified as a false positive: two whole-
+        movement Brahms cells showed this pattern on 8 of 14 staves (0.571
+        coverage) with no printed meter change at all -- see the block
+        comment above `METER_DIGIT_QUORUM_COVERAGE`."""
         log = Log()
         self._system(log)
-        for st in (0, 1):
+        for st in range(8):
             _digit_pair(log, st, 1)
         _run_notehead(log)
         v = _v(log, 0, 1, 0)
@@ -466,6 +472,42 @@ class TestTheCarryIsLabelled(unittest.TestCase):
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
+
+    # ── ROADMAP 2.46: a source's witness is WEIGHED, never a standing veto ──
+
+    def test_ONE_clean_agreeing_bar_is_no_longer_vetoed_by_a_stale_witness(self):
+        """⚠️ RED-BEFORE (`git stash` the `clean_here` gate in
+        `rhythm._carry_meter`): a destination with exactly ONE assessable
+        bar -- below `METER_CARRY_MIN_BARS` so `_corroborate` returns
+        `"too_few_assessable_bars"` -- that bar agrees with the carried 9/4
+        1-for-1 (`bars_agree: 1, bars_disagree: 0`), the SAME shape measured
+        on the real Brahms record (`system/1/1`, `system/6/0`,
+        `benchmarks/omr-meter-digits-2026-09/FINDINGS.md` ROADMAP 2.46) —
+        before the fix this was abstained `meter_change_digits_misread`
+        citing the SOURCE's own witness regardless; CLAUDE.md §10 says the
+        carry is weighed by the bars, not gated, and one clean agreeing bar
+        is exactly 2.22b's own `carried_uncontested` case."""
+        log, src = _source(witness_staves=(0, 1, 2))       # a real witness
+        dst = _destination(log, n_cells=2, bar_beats=9.0)   # ONE bar, 9/4-worth
+        _run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, rhythm_mod.METER_CARRIED_UNCONTESTED)
+        self.assertEqual((v.value["numerator"], v.value["denominator"]),
+                         (9, 4))
+
+    def test_CONTROL_one_bar_that_DISAGREES_still_abstains_digits_misread(self):
+        """Control for the same gate: ONE assessable bar that does NOT
+        match the carry (`bars_agree: 0, bars_disagree: 1`) is not "clean"
+        and must still be labelled by the source's witness — the gate only
+        widens the CLEAN case, it never loosens the disagreeing one."""
+        log, src = _source(witness_staves=(0, 1, 2))
+        dst = _destination(log, n_cells=2, bar_beats=3.0)   # ONE bar, 6/8-worth
+        _run(log)
+        v = log.verdict(Q.METER, dst)
+        self.assertIs(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, rhythm_mod.METER_CHANGE_DIGITS_MISREAD)
+        self.assertEqual(v.detail["digit_misread_at_cell"], 1)
 
 
 if __name__ == "__main__":

@@ -306,14 +306,49 @@ METER_DIGIT_PAIR_Y_GAP_MAX_SPACES = 1.20
 
 #: How many OTHER staves of the system must show the same near-barline
 #: notehead-classed ink at this cell before the pattern counts as "printed
-#: on the system", not one staff's own chord. ⚠️ THE SAME SHAPE AS
-#: `rhythm._required_corroboration` (ROADMAP 2.12j) -- cited, not imported:
-#: this module already keeps its own thresholds self-contained (see the
-#: file docstring's "every threshold IMPORTED... never restated" for the
-#: LEGACY numbers, which this is not one of), and `rhythm.py` is the meter
-#: chain's own home, not a dependency this decision should carry.
+#: on the system", not one staff's own chord.
+#:
+#: ─────────────────────────────────────────────────────────────────────────
+#: ROADMAP 2.46. THIS WAS THE BARE-MAJORITY FLOOR `rhythm._required_
+#: corroboration` (2.12j) USES FOR A VALUE CANDIDATE, CITED HERE FOR A
+#: WITNESS -- AND THE TWO ARE NOT THE SAME QUESTION. A value candidate has a
+#: SECOND, independent check backing it (the bars either fit its length or
+#: they don't); a digit witness has none -- cross-staff repetition is the
+#: WHOLE of its evidence, so it must lean on that evidence harder, not
+#: borrow a floor sized for a claim that gets corroborated twice over.
+#:
+#: The module docstring above named the exact falsifying case and marked it
+#: "NOT CONFIRMED WITH SEAN": *"a real, same-interval chord repeating at one
+#: x on most staves of a system."* `benchmarks/omr-meter-digits-2026-09/
+#: FINDINGS.md` ROADMAP 2.46 now measures it, print-verified, on the SAME
+#: whole-movement Brahms record `_meter_digit_witness_cells` reads
+#: (`library/_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.record
+#: .json`): of 5 distinct cells where this rule's geometry (tight x, a
+#: 0.30-1.20-space y-gap) recurred across a cross-staff quorum, only ONE is
+#: a real printed meter change (`page/1 system/0 cell/1`, the already-
+#: documented 6/8 return, 13 of 14 staves = 0.929 coverage) -- the other
+#: FOUR are a repeated note-plus-dot figure at `page/0 system/0 cell/3`
+#: (crop: `out/print/2.46/w_p0_s0_c3_staff*.png`, no digit ink of any kind,
+#: 8 of 14 = 0.571), the identical figure at `page/4 system/1 cell/5`
+#: (`w_p4_s1_c5_staff*.png`, 8 of 14 = 0.571), and two sub-floor candidates
+#: at a system's own opening ink (clef/key-signature accidentals,
+#: `w_p6_s0_c0_staff8.png`/`w_p6_s1_c0_staff0.png`, 1 of 12 and 5 of 11 --
+#: already excluded by EITHER floor, cited for completeness).
+#:
+#: 0.571 and 0.929 are far enough apart that the exact cut does not matter;
+#: `METER_DIGIT_QUORUM_COVERAGE` moves from the bare majority to 0.8 (a
+#: system-wide near-unanimity, matching CLAUDE.md §10's "printed... on
+#: EVERY staff of the system" for the closest confirmed analogue, a key
+#: change -- CONVENTION ASSUMED for METER specifically, no numbered entry
+#: for it yet in `docs/engraving-conventions.md`; WHAT WOULD FALSIFY IT: a
+#: genuinely narrower orchestra (a chamber reduction, most staves silent at
+#: a real meter change) where the true coverage is inherently lower than
+#: 0.8 -- not seen on either acceptance document; NOT CONFIRMED WITH SEAN).
+#: This keeps the one real witness (0.929) and excludes both real-world
+#: false ones (0.571) with margin on both sides.
+#: ─────────────────────────────────────────────────────────────────────────
 METER_DIGIT_QUORUM_MIN_STAVES = 2
-METER_DIGIT_QUORUM_COVERAGE = 0.5
+METER_DIGIT_QUORUM_COVERAGE = 0.8
 
 #: Reason a refused notehead carries when it is a printed meter change's own
 #: digit. Read back by `rhythm._meter_digit_witness_cells` (ROADMAP 2.12l)
