@@ -6,11 +6,18 @@
 # OMR_DIRECTION_TEXT_SCAN_GATE=1, OMR_SURYA_KEEP_ALIVE=0), writes NEW
 # records beside the old ones (never overwrites), then a small summary.
 # Adopting them into manifest.json is a deliberate step for the next session.
+#
+# ⚠️ 2026-09-30: the first run of this script OMITTED `--weights auto`, so the
+# detector never ran (every cell READER_UNAVAILABLE; 0 notes exported) and
+# both runs exited 0. Those records were renamed *.NO-WEIGHTS.record.json.
+# Fixed below, tagged by $TAG, and a run with no duration decisions now
+# exits 3 instead of 0 (a control that can fail).
 set -uo pipefail
+TAG=${TAG:-20260930b}
 M=/Users/seanjohnson/Desktop/ReEngrave
-WT=$M/.claude/worktrees/overnight-20260930
+WT=$M/.claude/worktrees/overnight-$TAG
 OUT=$M/library/_shared-records
-LOG=$M/library/_shared-records/overnight-20260930
+LOG=$M/library/_shared-records/overnight-$TAG
 mkdir -p "$LOG"
 cd "$M"
 git fetch -q origin
@@ -23,8 +30,10 @@ export OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 OMRNED_PYTHON=$M/.v
 echo "commit $(git rev-parse HEAD) start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
 run() {  # id pdf pages
   local t0=$(date +%s)
-  python3 -m tools.omr.staged "$2" --pages "$3" --out "$OUT/$1-mvt1-whole-20260930.record.json" > "$LOG/$1.log" 2>&1
+  python3 -m tools.omr.staged "$2" --pages "$3" --weights auto --out "$OUT/$1-mvt1-whole-$TAG.record.json" > "$LOG/$1.log" 2>&1
   local rc=$?
+  # a gather whose detector never fired still exits 0 -- refuse it here
+  grep -q "'duration':" "$LOG/$1.log" || rc=3
   echo "$1 pages $3 exit $rc wall $(( ($(date +%s)-t0)/60 )) min" >> "$LOG/summary.txt"
 }
 run beethoven5-litolff $M/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf 1-16
