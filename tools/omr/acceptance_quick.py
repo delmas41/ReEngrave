@@ -192,22 +192,55 @@ def _bar_range(works_row: Dict[str, Any]) -> Tuple[int, int]:
     return int(lo), int(hi)
 
 
+_PDF_PAGES_RE = __import__("re").compile(r"pdf pages? (\d+)-(\d+)")
+
+
+def first_movement_page(doc: Dict[str, Any]) -> int:
+    """The PDF page index the document's MOVEMENT starts on — never the
+    count page itself. Read from the manifest, never guessed: Litolff
+    names it structurally (`doc["whole_movement"]["pages"]`, e.g.
+    `"1-16"`); Brahms names it only in prose inside `caveats` (e.g. "Whole
+    movement, pdf pages 0-26 (27 pages)"), so that is parsed as a fallback.
+    Manager review, 2026-09-30: a lone count page loses the meter/key CARRY
+    from earlier pages (DECISIONS 2026-09-28: a meter or key prints at the
+    movement's start and HOLDS) — gathering from here through the count
+    page is the fix, not a cosmetic change."""
+    wm = doc.get("whole_movement") or {}
+    pages = wm.get("pages")
+    if pages and "-" in pages:
+        return int(pages.split("-")[0])
+    for cav in doc.get("caveats") or ():
+        m = _PDF_PAGES_RE.search(cav)
+        if m:
+            return int(m.group(1))
+    raise QuickError(f"{doc['id']!r} names no movement start page in the "
+                     "manifest (whole_movement.pages or a caveats line)")
+
+
 # ─────────────────────────────────────────────────────────────────────────
-# step 1: gather ONLY the count page
+# step 1: gather from the MOVEMENT'S FIRST PAGE through the count page
 # ─────────────────────────────────────────────────────────────────────────
 
 def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
                       weights: str = "auto",
                       step_timeout_s: float = DEFAULT_STEP_TIMEOUT_S
                       ) -> Dict[str, Any]:
-    """`python3 -m tools.omr.staged <pdf> --pages <count page> --weights
-    auto --out/--musicxml/--lilypond/--pdf`, timed. The SAME CLI the FULL
-    re-gather and `tools.omr.acceptance` both build on — nothing here
-    re-implements a gather."""
+    """`python3 -m tools.omr.staged <pdf> --pages <first_page>-<count page>
+    --weights auto --out/--musicxml/--lilypond/--pdf`, timed. NOT just the
+    count page alone (that was this tool's first version, and it is wrong:
+    a lone page's `Q.METER`/`Q.KEY_SIGNATURE` have no carry to read, so the
+    exporter either falsely holds out nothing where the whole movement
+    holds out plenty, or falsely holds out everything — manager review,
+    2026-09-30, proved against the committed whole-movement records). The
+    SAME CLI the FULL re-gather and `tools.omr.acceptance` both build on —
+    nothing here re-implements a gather; only the `--pages` range differs
+    from a single-page run."""
     pdf_path = ACC.resolve_path(doc["pdf"])
     if pdf_path is None or not pdf_path.is_file():
         raise QuickError(f"no PDF at {doc.get('pdf')}")
     page_index = doc["count_page"]["pdf_page_index"]
+    start_page = first_movement_page(doc)
+    pages_spec = f"{start_page}-{page_index}" if start_page != page_index else str(page_index)
     out_dir.mkdir(parents=True, exist_ok=True)
     stem = f"{doc['id']}-p{page_index}"
     record_path = out_dir / f"{stem}.record.json"
@@ -216,7 +249,7 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
     pdf_out_path = out_dir / f"{stem}.pdf"
 
     cmd = [sys.executable, "-m", "tools.omr.staged", str(pdf_path),
-           "--pages", str(page_index), "--weights", weights,
+           "--pages", pages_spec, "--weights", weights,
            "--out", str(record_path), "--musicxml", str(xml_path),
            "--lilypond", str(ly_path), "--pdf", str(pdf_out_path)]
     env = dict(os.environ)
@@ -233,6 +266,7 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
     ok = proc.returncode == 0 and record_path.is_file() and xml_path.is_file()
     return {
         "ok": ok, "wall_time_s": wall_time_s, "page_index": page_index,
+        "start_page": start_page, "pages_gathered": pages_spec,
         "returncode": proc.returncode,
         "record_path": str(record_path), "xml_path": str(xml_path),
         "ly_path": str(ly_path) if ly_path.is_file() else None,
@@ -247,7 +281,21 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
 # ─────────────────────────────────────────────────────────────────────────
 
 def score_document(doc_id: str, xml_text: str, works_row: Dict[str, Any],
-                   export_report: Dict[str, Any]) -> Dict[str, Any]:
+                   export_report: Dict[str, Any], *,
+                   absolute_numbering: bool = True) -> Dict[str, Any]:
+    """`absolute_numbering=True` (the default, and what `run_quick` always
+    uses since the fix below): the gather ran from the MOVEMENT'S FIRST
+    PAGE through the count page, so MusicXML's own `<measure number="N">`
+    already IS the reference's bar number — a measure count is never lost
+    or restarted mid-movement, so no offset arithmetic is needed or safe to
+    guess. `absolute_numbering=False` is kept only for scoring an EXISTING
+    export that was built some other way (e.g. a whole-movement record's
+    own musicxml, which is ALSO absolute — see the docstring note below —
+    or, historically, a lone-page-only gather whose local numbering
+    restarts at 1 and needs `bar_lo - 1` added back; that lone-page mode
+    was found to silently drop the meter/key CARRY from earlier pages
+    (DECISIONS 2026-09-30, manager review) and `run_quick` no longer uses
+    it)."""
     family_map = _FAMILY_MAPS.get(doc_id)
     if family_map is None:
         return {"status": "skipped",
@@ -270,9 +318,10 @@ def score_document(doc_id: str, xml_text: str, works_row: Dict[str, Any],
         if part is not None and measure is not None:
             held_by_part.setdefault(part, set()).add(str(measure))
 
-    # our local bar numbers start at 1 for the count page; the reference's
-    # own numbering is the page's PRINTED bar number (works.json's window).
-    offset = bar_lo - 1  # our bar N == reference bar N + offset
+    # `offset`: our bar N == reference bar N + offset. Zero under absolute
+    # numbering (the movement's own bar count, unbroken from page 1); only
+    # the deprecated lone-page mode needs `bar_lo - 1` added back.
+    offset = 0 if absolute_numbering else (bar_lo - 1)
 
     per_family: Dict[str, Any] = {}
     all_scores = []
@@ -340,7 +389,12 @@ def _readout_diff(base_record: str, arm_record: str, out_path: Path
     argv = ["diff", base_record, arm_record, "--force", "--out", str(out_path)]
     try:
         rc = RD.main(argv)
-        return {"ok": rc == 0, "path": str(out_path) if out_path.is_file() else None}
+        # `readout diff`'s own convention (`_cmd_diff`): 0 = no differences,
+        # 1 = differences found (the USUAL, expected case for two different
+        # trees), 2 = a hard refusal (NoGatheredGlyphs/ProvenanceRefused).
+        # Only 2 is a failure here.
+        return {"ok": rc in (0, 1), "differences_found": rc == 1,
+               "path": str(out_path) if out_path.is_file() else None}
     except Exception as exc:  # noqa: BLE001
         return {"ok": False, "reason": f"{type(exc).__name__}: {exc}"}
 
@@ -410,8 +464,25 @@ def run_quick(doc_id: str, *, weights: str = "auto",
             base_xml, base_report = X.to_musicxml(base_result)
             result["against"]["machine_proxies"] = ACC.machine_proxies(
                 base_xml, base_report)
+            # `--against` records built by an OLDER tree may predate this
+            # fix and be a lone-page gather (local numbering restarts at
+            # 1); detect that from the base record's OWN recorded --pages
+            # rather than assume — a base gathered from the movement's
+            # first page scores under `absolute_numbering=True` like the
+            # arm; anything else falls back to the pre-fix offset, flagged.
+            base_pages = (base_result.get("provenance", {}).get("settings", {})
+                         .get("args", {}).get("pages"))
+            base_absolute = (base_pages is not None
+                            and str(base_pages).startswith(str(first_movement_page(doc))))
             result["against"]["bar_score"] = score_document(
-                doc_id, base_xml, works_row, base_report)
+                doc_id, base_xml, works_row, base_report,
+                absolute_numbering=base_absolute)
+            if not base_absolute:
+                result["against"]["caveats"] = [
+                    f"base record's own --pages was {base_pages!r}, not "
+                    "starting at the movement's first page — scored with "
+                    "the lone-page offset (absolute_numbering=False), not "
+                    "directly comparable bar-for-bar to the arm's totals"]
         except Exception as exc:  # noqa: BLE001
             result["against"]["error"] = f"{type(exc).__name__}: {exc}"
 

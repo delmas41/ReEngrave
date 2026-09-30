@@ -389,7 +389,10 @@ filed as evidence in the record). The `claude_vision` OMR engine
   `TAG=...`) runs overnight and is what the acceptance numbers are built on.
   Run the small one with `python3 -m tools.omr.acceptance_quick --doc
   <beethoven5-litolff|brahms1-breitkopf> [--against other.record.json]` — it
-  gathers ONLY the count page, in minutes, and writes the page proxies, the
+  gathers from the movement's first page through the count page (never the
+  count page alone — a lone page loses the meter/key carry from earlier
+  pages and misreports the hold-out count in both directions), in minutes,
+  and writes the page proxies, the
   stage readout, print-vs-ours, and a per-part per-bar score against the
   reference encoding to `benchmarks/acceptance/quick/`. ITERATION ONLY: it
   never writes `current.json` and never substitutes for the overnight run.
