@@ -2211,3 +2211,241 @@ decision for this item.
   fix (§20j).
 - `benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`: the
   Rests row, updated to point here.
+## 21. ROADMAP 2.45 — a rest between two staves belongs to the staff whose voice would otherwise be missing (2026-09-30)
+
+Sean, DECISIONS 2026-09-30, on Brahms 1/i Breitkopf p1 system 0, printed
+bar 13 (`Q.PRINTED_BAR_NUMBER` at `system/1/0` = 8, this bar is cell index
+5), three printed eighth rests between staves 2 and 3, each detected once
+per staff (`glyph/1/0/2/5/{0,3,10}` and `glyph/1/0/3/5/{0,1,2}`, one
+physical rest per pair), all six refused `rest_outside_its_staff` by
+2.33's per-class vertical window:
+
+> "They belong to the lower staff. I was able to determine that based on
+> the amount of voices in each of the staffs. The one above has 2 voices
+> and both the voices are accounted for. The one below has a voice that
+> crosses as they both jump up higher. If the 8th note rests didn't belong
+> to the lower staff then it would be missing a voice."
+
+⚠️ **Manager correction, 2026-09-30, to the FIRST build of this item.** The
+first build fired zero times on Sean's own case, for two design faults plus
+one page-specific blocker it had mis-stated. All three are fixed/named
+below.
+
+⚠️ **Second manager correction, 2026-09-30**, after the first fix's A/B was
+correctly diagnosed as blocked by the meter (§21c) but the fix itself still
+carried a FOURTH fault (§21a.4): the candidate staff was required to be
+COMPLETE, when it only needs to be unable to explain the SAME group.
+
+### 21a. What was wrong, and the fix
+
+1. **A staff's expected total is VOICES × bar length, not one bar length.**
+   Sean reasons per voice: a staff carrying two simultaneous voices must
+   sum to TWICE the bar, because each voice independently spans the whole
+   bar. New helper `_voice_count(log, cell_subject)` reads `Q.VOICES`
+   where DECIDED (its own `n_voices` field), else counts DECIDED
+   `Q.STEM_DIRECTION`s exactly as `adjudicate_voices` counts them at its
+   own first rule (ROADMAP 2.21) — two that disagree is two voices, one
+   direction only is one voice, neither decided is UNDECIDED and this rule
+   abstains (rule 8) rather than assume one.
+2. **The contested rests are ONE GROUP per bar against one neighbour
+   staff, not independent per-rest tests.** New helper `_contest_group`
+   collects every glyph in a cell that is ALSO refused
+   `rest_outside_its_staff` against the SAME neighbour staff; a staff's
+   shortfall must equal the GROUP's own total length (`_group_length`),
+   never one rest's own duration. Sean's three eighth rests are one group
+   of 1.5 beats.
+3. **The meter read is whatever `Q.METER` DECIDED, never a better guess**
+   — unchanged in principle from the first build, but the first build's
+   own report mis-stated the bar as generically "9/4" without naming which
+   known defect that is. Named precisely below (§21c): it is ROADMAP
+   2.12h/2.12l/2.29's own still-unrepaired chain on this exact system.
+4. **The candidate staff need not be COMPLETE, only unable to explain the
+   SAME group** (second correction). The first fix required the candidate's
+   own shortfall to be exactly zero; Sean's own upper staff carries a
+   separate, unrelated ~1-beat gap in this same bar (§21c), and that gap
+   must never block the lower staff's own exact match. The candidate test
+   now compares the candidate's own shortfall to the GROUP's length, not
+   to zero — a candidate whose shortfall equals the group's length too is
+   ambiguous (refused, rule 8); any OTHER shortfall on the candidate is not
+   evidence either way and does not block.
+
+`_bar_total_excluding` (renamed from `_bar_total_excluding_refused`) now
+takes a `force_exclude` set so a GROUP is excluded as one group,
+order-independently: this rule runs once per glyph, so a group's members
+are visited one at a time within the same EVALUATE pass, and
+`_left_the_bar` alone would report a growing total mid-pass once an
+earlier group member is reinstated. Naming every group member up front
+(from the ORIGINAL ADJUDICATE state, never from what this rule has
+written so far this pass) keeps every member's own test answering the
+same question regardless of visit order.
+
+`Q.REST_IS_NOT_A_REST` stays in `evaluate.DOWNHILL` after `Q.DURATION`
+(cause `Q.METER`), for the same reason as before: whether a rest is
+reinstated follows from a fact about the BAR, which only exists once
+ADJUDICATE has settled duration, ownership and refusals. It deliberately
+still does not read `Q.VOICES`'s own grouping for the TOTAL (only for the
+COUNT) — `adjudicate_event` reads `Q.REST`, never `Q.REST_IS_NOT_A_REST`,
+so a rest's refusal never leaves that grouping at all; `_bar_total_
+excluding` is the one reader that does respect it.
+
+### 21b. Tests — RED→GREEN, 15 tests, no gathers
+
+`tools/omr/tests/test_staged_rest_between_staves_2_45.py`, rebuilt around
+Sean's actual shape: 2 voices per staff (`Q.VOICES` DECIDED), a 6/8 meter
+(bar length 3.0), one group of three eighth rests (1.5 beats total).
+
+- **`TestSeansCase`** (4 tests): the WHOLE GROUP reinstates on the lower
+  staff; the upper staff's own three copies of the same group stay refused
+  (already complete at 2×3.0=6.0 without them); **the candidate need not
+  be complete, only unable to match (second correction) — the lower staff
+  is short exactly the group's length (1.5), the upper staff has its OWN
+  unrelated shortfall of 1.0 (not 0, not 1.5), and the group still
+  resolves to the lower staff**; the identical mechanism resolved via the
+  `Q.STEM_DIRECTION` fallback where neither cell has `Q.VOICES` at all.
+- **`TestControls`** (11 tests): not refused at all; refused for a
+  different reason; no contest at all; voice count undecided on the own
+  staff; **both staves match the group EQUALLY (genuinely ambiguous,
+  rule 8 — re-shaped from the first correction's "candidate not complete"
+  control, which the second correction makes moot)**; a shortfall that
+  does not match the GROUP's own length on the own staff; an undecided
+  candidate bar; no meter; a whole-rest twin kept on its own staff; the
+  rest's own duration undecided.
+
+RED confirmed twice: moving `reinstate_rest_between_staves`,
+`_bar_total_excluding`, `_contest_group`, `_group_length` and
+`_voice_count` out of `consequences.py` fails all 15; reverting only the
+candidate-shortfall comparison to its first-correction form (`shortfall ==
+0` instead of `shortfall == group_len`) fails exactly the one new test and
+none of the other 14. Restored both ways → 15 passed. `pytest -m "not
+slow" tools/omr/tests`: 4158 passed (+15 over the `origin/main` baseline),
+0 failed. `python3 -m tools.omr.staged.check`: TOTAL **245, unchanged**.
+
+### 21c. A/B through EVALUATE, Brahms p1 — reach is STILL zero, and now precisely diagnosed
+
+Base = `origin/main` (`ed389862f`, a separate `git worktree`). Arm = this
+branch. `python3 -m tools.omr.staged <pdf> --pages 1 --weights auto
+--route-weights --through evaluate --out <rec>`.
+
+**The voice-count fault is confirmed FIXED and is NOT the blocker on this
+page.** `Q.VOICES` is DECIDED on both cells of this exact bar: `cell/1/0/2/5`
+(upper) `n_voices=2` (`two_voices_same_beat`), `cell/1/0/3/5` (lower)
+`n_voices=2` (`two_voices_same_beat`) — exactly matching Sean's own count.
+`_voice_count` reads both correctly; the rule reaches the meter/bar-sum
+test on every one of the six glyphs.
+
+**CORRECTED (manager, third round): the DECIDED `9/4` was an artefact of
+gathering page 1 ALONE, and is NOT what the pipeline decides once the
+meter/key carry has the context to read.** `Q.PRINTED_BAR_NUMBER` at
+`system/1/0` is DECIDED `8`, so the bar in question (cell index 5) is
+**printed measure 13** and cell index 1 is measure 9 — ROADMAP 2.12h/
+2.12i/2.12l/2.29's own "m. 8 hemiola" / "m. 9 return to 6/8" system. Two
+independent checks, neither a single-page artefact:
+
+- Re-gathered with `--pages 0-1` (the movement's own first two pages, so
+  the carry has SOME context): `Q.METER` at `system/1/0` is now
+  **ABSTAINED**, `reason="meter_return_not_read"` — NOT `9/4`.
+- Read directly (no re-gather) from the committed whole-movement record
+  `library/_shared-records/brahms1-breitkopf-mvt1-whole-20260930b.
+  record.json`: the SAME single verdict, `Q.METER` at `system/1/0`
+  **ABSTAINED**, `reason="meter_return_not_read"`, value `null`.
+
+So `9/4` was never the pipeline's real answer on this system — it is what
+a context-starved single page falls back to, and every wider gather
+correctly ABSTAINS instead (2.12l's own unread mid-system return, still
+open). The manager's own cited "4,283 bars judged against 3.0 quarters
+(6/8)" is the ACCEPTANCE FUNNEL's *external reference-encoding* target
+(FINDINGS §2, "the meter in force is the FILE's, not the record's"), not
+`Q.METER`'s own DECIDED value — this pipeline never asserts 6/8 here at
+all. **Zero reinstated**, correctly: `evaluate._pass` skips a subject
+whose cause is ABSTAINED (`cause_abstained`), so this rule never even
+reaches the bar-sum test — exactly rule 8's own shape, not a computed
+mismatch.
+
+**If `Q.METER` were DECIDED 6/8 here (it is not — it ABSTAINS), the case
+WOULD resolve to the lower staff.** Manager correction (second round): the
+candidate staff need not be COMPLETE, only unable to explain the SAME
+group — its own shortfall must not also equal the group's length.
+Hand-checked with 6/8 substituted for the ABSTAINED meter, using the real
+gathered totals (unchanged across every re-gather of this bar — single
+page, two pages, and the whole-movement record all measure the same ink):
+bar length 3.0, 2 voices on both cells. Lower staff — expected
+`2 × 3.0 = 6.0`, actual (excluding the group) 4.5, shortfall **1.5,
+exactly the group's length: a match.** Upper staff — expected 6.0, actual
+(excluding its own copies of the group) 5.0, shortfall **1.0 — NOT 1.5, so
+it cannot explain this group** (its own, unrelated ~1-beat gap, most
+plausibly an undetected GATHER-side miss in this same bar, named not
+diagnosed here). One match, one non-match: **the corrected rule would
+resolve the group to the LOWER staff**, exactly as Sean read it. This
+remains a hand check only — this rule never substitutes a meter itself,
+and reading the m. 9 return to 6/8 (`meter_return_not_read`) is
+2.12h/2.12i/2.12l/2.29's own open follow-up; this item's own rule needs no
+further change once that lands.
+
+**Litolff p3 is unchanged from the first build**: zero between-staff rest
+contests exist on that page at all (not re-run this round — nothing in
+the mechanism touches contest DETECTION, only how a found contest is
+resolved, and Litolff has none).
+
+**Per CLAUDE.md §6b** ("an arm prints its population first and exits
+non-zero declaring itself DEAD at zero"): population = 1 contest (one
+group of 3 rests); resolved = 0; blocked by (1) a known, named,
+unrepaired meter misread on this exact bar and (2) a second, independent,
+undiagnosed ~1-beat gap on the candidate staff. The mechanism itself is
+demonstrated correct by the 14 unit tests, which inject the correct meter
+directly and show the exact resolution Sean describes.
+
+### 21d. Print check
+
+`out/print/2.45/brahms-p1-bar5-between-staves.png` (1095×1813, 600 dpi,
+frame control passed: staff 2 contrast 134.2, staff 3 contrast 205.5).
+Staff 2's five lines drawn in blue, staff 3's in green, the three rests
+boxed in red. Caption states Sean's reading (the rests belong to the
+lower/green staff), and both blockers in words with the exact numbers
+above. Script:
+`benchmarks/omr-bar-sum-holdout-2026-09/probe/crop_between_staves_2_45.py`.
+
+### 21e. Convention registry
+
+`docs/engraving-conventions.md` `C94` — "A rest between two staves belongs
+to the staff whose voice would otherwise be missing" — filed under *Rests &
+bar filling* (73 MEASURED HERE, 121 registry entries total). `python3 -c
+"from tools.omr import conventions as CV; assert not CV.load().problems()"`
+passes. (Not re-edited this round — the convention's own text already
+states the rule in voice terms and needs no correction.)
+
+### 21f. What this item leaves open, named not built
+
+- **`Q.METER` ABSTAINS on Brahms 1/i Breitkopf p1's `system/1/0`**
+  (`meter_return_not_read` — confirmed identically on a `--pages 0-1`
+  re-gather and on the committed whole-movement record, so the plate's
+  6/8 is never a DECIDED value this pipeline can read here; a single-page
+  gather's `9/4` was a context-starved artefact, not the real blocker) —
+  a 2.12h/2.12i/2.12l/2.29 follow-up, not this item's scope. This item's
+  rule will resolve Sean's exact case automatically once that meter reads
+  correctly, with no further change needed here (demonstrated by §21b's
+  tests and the §21c hand check).
+- **The upper staff's own separate ~1-beat gap** in the same bar (§21c),
+  likely a GATHER-side detection miss, undiagnosed — no longer a blocker
+  to THIS item's own resolution (second correction), but still real and
+  unexplained.
+- `reads_beyond_cause` is not declared for this rule, so a second EVALUATE
+  pass bounded to an INFER-produced verdict (`evaluate.run_over`) will not
+  re-fire it even where a later-filled meter would newly unlock the
+  equality. No test currently depends on that interaction; named here so
+  a future INFER rule touching `Q.METER` does not assume this rule is
+  reachable from it.
+
+### 21g. Files
+
+- `tools/omr/staged/evaluate.py`: `Consequence.REINSTATE_REST_BETWEEN_STAVES`,
+  `DOWNHILL` (adds `Q.REST_IS_NOT_A_REST`).
+- `tools/omr/staged/consequences.py`: `_bar_total_excluding`,
+  `_contest_group`, `_group_length`, `_voice_count`,
+  `reinstate_rest_between_staves`, `REST_BAR_SUM_EPS`.
+- `tools/omr/tests/test_staged_rest_between_staves_2_45.py`: the 15 tests.
+- `docs/engraving-conventions.md`: `C94` + bookkeeping.
+- `benchmarks/omr-bar-sum-holdout-2026-09/probe/crop_between_staves_2_45.py`,
+  `out/print/2.45/brahms-p1-bar5-between-staves.png`: the print check.
+- `out/2.45/*.json`, `*.log`: the A/B records (arm/base × Brahms p1,
+  `--through evaluate`, `--weights auto --route-weights`) plus scratch
+  analysis scripts, not committed — `.gitignore`'s `out/2.45/` rule.

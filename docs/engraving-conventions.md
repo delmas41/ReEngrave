@@ -40,7 +40,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**120 registry entries**, from 172 source entries (167 compiled, plus `C89`, `C90`, `C91`, `C92` and `C93` written straight into this registry).
+**121 registry entries**, from 173 source entries (167 compiled, plus `C89`, `C90`, `C91`, `C92`, `C93` and `C94` written straight into this registry).
 
 ⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
 staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
@@ -74,9 +74,15 @@ doubled-head diagnosis crops and written straight into this registry by
 roadmap 2.40, for the same reason as `C89`–`C92`. Renumbered from `C92` on
 merge with ROADMAP 2.43, which took that id first on `main`'s own branch.
 
+⚠️ **`C94`** (*A rest between two staves belongs to the staff whose voice
+would otherwise be missing*) is Sean's convention of 2026-09-30
+(`docs/DECISIONS.md`), stated on three eighth rests refused on BOTH staves
+of Brahms 1/i Breitkopf p1 bar 5, and written straight into this registry by
+roadmap 2.45, for the same reason as `C89`–`C93`.
+
 | status | n |
 |---|--:|
-| **MEASURED HERE** | 72 |
+| **MEASURED HERE** | 73 |
 | **LITERATURE ONLY (untested here)** | 27 |
 | **ASSERTED (untested here)** | 14 |
 | **REFUTED HERE** | 5 |
@@ -86,7 +92,7 @@ merge with ROADMAP 2.43, which took that id first on `main`'s own branch.
 |---|--:|--:|
 | Staff & pitch geometry | 16 | 6 |
 | Stems & beams | 20 | 9 |
-| Rests & bar filling | 8 | 3 |
+| Rests & bar filling | 9 | 3 |
 | Accidentals & key signatures | 10 | 1 |
 | Time signatures & meter | 8 | 0 |
 | Slurs, ties & phrasing | 12 | 2 |
@@ -121,7 +127,7 @@ directly on this repertoire.
 - [Where the two sources DISAGREE](#where-the-two-sources-disagree)
 - [Staff & pitch geometry](#staff--pitch-geometry) — 16
 - [Stems & beams](#stems--beams) — 20
-- [Rests & bar filling](#rests--bar-filling) — 8
+- [Rests & bar filling](#rests--bar-filling) — 9
 - [Accidentals & key signatures](#accidentals--key-signatures) — 10
 - [Time signatures & meter](#time-signatures--meter) — 8
 - [Slurs, ties & phrasing](#slurs-ties--phrasing) — 12
@@ -947,6 +953,20 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Would be falsified by:** a plate whose multi-bar rests are drawn at beam thickness.
 - **Known exceptions:** older editions use church-rest stacks rather than an H-bar. MOLA requires the number range to be printed and multi-bar rests to be broken at rehearsal landmarks.
 - **Code:** the abstention is at `tools/omr/staged/adjudicators/rhythm.py` (`unreadable_rest`). No consumer for the bar-count consequence.
+
+### A rest between two staves belongs to the staff whose voice would otherwise be missing
+`[C94]`
+
+- **Says:** Sean, 2026-09-30 (`docs/DECISIONS.md`), on three printed eighth rests between staves 2 and 3 of Brahms 1/i Breitkopf p1 system 0 bar 5, refused on BOTH staves (`rest_outside_its_staff`): *"They belong to the lower staff. I was able to determine that based on the amount of voices in each of the staffs. The one above has 2 voices and both the voices are accounted for. The one below has a voice that crosses as they both jump up higher. If the 8th note rests didn't belong to the lower staff then it would be missing a voice."* A rest whose ink sits farther from both staves' bands than either staff's own window (2.33's `rest_outside_its_staff`) is not evidence it belongs to neither — it is resolved by which staff's bar the rest's own length would otherwise leave incomplete.
+- **Predicts (mechanically):** where a same-category, overlapping-box contest exists between two staves for one rest (`Q.GLYPH_BAND_DISTANCE`, already gathered for any cross-staff contest, not only noteheads), exactly ONE of the two staves' bars is short by exactly this rest's own length once every currently-refused glyph is excluded, and the OTHER is already complete without it. Reinstating on the short staff, and only there, closes the gap; the twin copy on the complete staff is never written.
+- **Numbers:** none of its own — the test is an EXACT equality (`REST_BAR_SUM_EPS = 1e-6`) between a bar's own standing total and its meter target, not a fitted threshold.
+- **Literature:** not stated as a rule anywhere surveyed; it follows from the more basic fact that a printed bar's voices must each account for the meter in force, which every rest, note and voice convention already assumes.
+- **Measured here:** unit-level, RED→GREEN (`tools/omr/tests/test_staged_rest_between_staves_2_45.py`, 12 tests: the lower staff's own copy reinstated, the upper staff's own copy left refused, and controls for no contest, a different refusal reason, both staves already complete, both staves short, a shortfall that does not match the rest's own length, an undecided candidate, no meter, a whole-rest twin already kept on its own staff, and an undecided rest duration). A/B through EVALUATE on Brahms p1 and Litolff p3 recorded in `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §2.45.
+- **Status:** MEASURED HERE (the mechanism; Sean's own case is the falsifying/confirming print instance)
+- **Rigid or publisher-dependent:** RIGID as engraving (a printed bar's voices must add up); the READING abstains wherever either staff's bar cannot be summed at all, or where the shortfall does not land on exactly one candidate.
+- **Would be falsified by:** a genuine between-staves rest whose owning staff's bar sum, once correctly reconciled, is NOT short by exactly that rest's own length — which would mean some other glyph in that bar is also misread, not that this convention is wrong.
+- **Known exceptions:** a contest where both staves are already complete, or both still short, or a candidate's own bar cannot be decided at all — left refused and counted, never guessed (rule 8).
+- **Code:** `tools/omr/staged/consequences.py` `reinstate_rest_between_staves`, `_bar_total_excluding_refused`; `tools/omr/staged/evaluate.py` `Consequence.REINSTATE_REST_BETWEEN_STAVES`, `DOWNHILL`.
 
 ---
 
@@ -2080,16 +2100,17 @@ not be placed; the unplaced list is empty.**
     46  merged entries
   + 42  repo-only entries
   + 27  literature-only entries
-  +  5  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
+  +  6  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
                                               C90 + C91, 2026-09-24, roadmap 3.4g-2;
                                               C92, 2026-09-30, roadmap 2.43;
-                                              C93, 2026-09-30, roadmap 2.40)
+                                              C93, 2026-09-30, roadmap 2.40;
+                                              C94, 2026-09-30, roadmap 2.45)
 ─────
- 120  registry entries
+ 121  registry entries
 ```
 
 **Check both ways:** repo side `46 + 42 = 88` ✅ · literature side `52 + 27 = 79` ✅ ·
-output `46 + 42 + 27 + 5 = 120` ✅.
+output `46 + 42 + 27 + 6 = 121` ✅.
 
 ⚠️ **C89 IS NOT IN `from-this-repo.md` AND ITS 88 IS NOT BUMPED.** That file is a
 compilation whose stated scope is *"only conventions this tree has evidence
@@ -2197,7 +2218,7 @@ instead, so the ledger still accounts for every id an entry carries.
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
 | C88 | A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge | *(same title)* | kept standalone — ⚠️ added 2026-09-23 (ROADMAP 2.11), after the merge |
 
-### Written straight into this registry — 5
+### Written straight into this registry — 6
 
 ⚠️ Not from either source file. See the arithmetic above.
 
@@ -2208,8 +2229,9 @@ instead, so the ledger still accounts for every id an entry carries.
 | C91 | A ledger line exists only where there is a NOTE on it | *(same title)* | kept standalone — Sean, 2026-09-24, written straight into this registry (roadmap 3.4g-2) |
 | C92 | Open noteheads are never beamed, except tremolo | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.43) |
 | C93 | A second is always on opposite sides of the stem — never the same side, at any distance | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.40), renumbered from `C92` on merge with 2.43 |
+| C94 | A rest between two staves belongs to the staff whose voice would otherwise be missing | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.45) |
 
-**Repo tally: 46 merged + 42 standalone = 88** ✅
+**Repo tally: 46 merged + 43 standalone = 89** ✅
 
 ### `from-the-literature.md` — all 79
 

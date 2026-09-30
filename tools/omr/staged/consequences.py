@@ -15,7 +15,7 @@ a startup failure rather than a run that does not terminate.
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from . import record as R
 from .evaluate import Consequence, rule
@@ -1065,4 +1065,326 @@ def join_parts(log, subject, partition) -> List[Verdict]:
     wiring it before that abstention is priced would be building on the one
     result we know to be wrong.
     """
+    return []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.45. A rest refused on BOTH staves it was detected on belongs to
+# whichever staff's own bar is missing it. Sean, DECISIONS 2026-09-30 (found
+# on Brahms 1/i Breitkopf p1, bar 5, three printed eighth rests between
+# staves 2 and 3 of system 0, `glyph/1/0/2/5/{0,3,10}` and
+# `glyph/1/0/3/5/{1,0,2}`, all six refused `rest_outside_its_staff`):
+#
+#   *"They belong to the lower staff. I was able to determine that based on
+#   the amount of voices in each of the staffs. The one above has 2 voices
+#   and both the voices are accounted for. The one below has a voice that
+#   crosses as they both jump up higher. If the 8th note rests didn't belong
+#   to the lower staff then it would be missing a voice."*
+#
+# ⚠️⚠️ MANAGER CORRECTION 2026-09-30, after the first build's A/B fired zero
+# times on Sean's own case. Three faults, all in the FIRST build, all fixed
+# here:
+#
+#   1. **A staff's expected total is VOICES × bar length, not one bar
+#      length.** Sean reasons per VOICE ("the one above has 2 voices and
+#      both are accounted for"): a staff carrying two simultaneous voices
+#      must sum to TWICE the bar, because each voice independently spans the
+#      whole bar. `_voice_count` (below) reads `Q.VOICES` where decided, else
+#      counts by stem direction exactly as `adjudicate_voices` (ROADMAP 2.21)
+#      does at its own first rule -- two DECIDED `Q.STEM_DIRECTION`s that
+#      disagree is two voices; one direction only is one voice; neither
+#      decided is UNDECIDED, and this rule then abstains (rule 8) rather
+#      than assume one.
+#   2. **The contested rests are ONE GROUP per bar, not six independent
+#      0.5-beat tests.** `_contest_group` (below) collects every glyph in
+#      one cell that is ALSO refused `rest_outside_its_staff` against the
+#      SAME neighbour staff, and the group's own total length (not one
+#      rest's own `Q.DURATION`) is what a staff's shortfall must equal.
+#      Sean's three eighth rests are one group of 1.5 beats, not three
+#      separate 0.5-beat questions -- his own reasoning is about the VOICE
+#      being short, not about any one rest in isolation.
+#   3. **The meter it reads is whatever `Q.METER` DECIDED, never a better
+#      guess.** ROADMAP 2.12h records this exact system (Brahms 1/i
+#      Breitkopf p1, `system/1/0`) misreading its opening meter as `9/4`
+#      where the plate prints `6/8` (with one `9/8` hemiola bar, m. 8) --
+#      and on the record this item measures against, the misread persists
+#      for the bar in question (§21c in FINDINGS names the bar, the printed
+#      meter and the DECIDED verdict). This rule may not repair that; it is
+#      a BLOCKER on this specific bar, named not built, and is why the tests
+#      below exercise the mechanism with a CORRECT meter injected directly
+#      (Sean's process convention: microscopic fixtures, no re-gather) rather
+#      than only against the mis-metered real record.
+#
+# ⚠️⚠️ MANAGER CORRECTION 2026-09-30, SECOND ROUND, after the first fix's A/B
+# still fired zero times -- this time correctly diagnosed as blocked by the
+# meter (§21c), but the manager caught a FOURTH fault the meter blocker was
+# masking: the candidate staff was required to be COMPLETE (shortfall zero),
+# when it only needs to be UNABLE TO EXPLAIN THIS GROUP (its own shortfall
+# not equal to the group's length). Sean's upper staff carries its own
+# unrelated ~1-beat gap in the same bar; that gap must never block the lower
+# staff's own exact match. Fixed: the candidate test now compares its own
+# shortfall to the GROUP's length, not to zero -- see the comment at the
+# call site below. Both staves matching the group (genuinely ambiguous) or
+# neither matching still refuses (rule 8); one match and one unrelated
+# non-match does not.
+#
+# ⚠️ WHY THIS READS THE BAR SUM AND NOT `Q.VOICES`'S OWN GROUPING. `Q.VOICES`
+# (`adjudicators/rhythm.py`) is decided from `Q.EVENT`'s grouping, and
+# `adjudicate_event` reads `Q.REST` -- a GATHER-level class fact -- never
+# `Q.REST_IS_NOT_A_REST`. So a rest's own ADJUDICATE-time refusal never
+# removes it from its cell's `Q.EVENT`/`Q.VOICES` computation at all: BOTH
+# staves' voice splits already "see" their own local copy of the ink,
+# refused or not, and the grouping cannot tell a staff that NEEDS the rest
+# from one that does not. `Q.VOICES`'s own `n_voices` COUNT is still read
+# (fault 1's fix) -- it is only the per-bar TOTAL that must come from
+# `_bar_total_excluding_refused` (below, built from `reconcile_duration`'s
+# own `_standing`/`_left_the_bar`/`_event_totals`), because that is the one
+# reader in the tree that DOES respect a DECIDED `Q.REST_IS_NOT_A_REST`.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Two floating-point bar sums (target vs. standing total) are compared
+#: exactly, the same tolerance `reconcile_duration`'s own landing test uses.
+REST_BAR_SUM_EPS = 1e-6
+
+
+def _bar_total_excluding(log: Log, cell_subject: Subject,
+                        force_exclude: frozenset) -> Optional[float]:
+    """This bar's own length, RIGHT NOW: every standing duration under
+    `cell_subject`, excluding anything `_left_the_bar` already took out (a
+    DECIDED not-a-notehead, not-a-rest or another-staff verdict) OR named in
+    `force_exclude` -- `None` where the bar cannot be summed at all (no
+    standing duration, an undecided `Q.EVENT`, or a still-NARROWED note with
+    no candidates).
+
+    ⚠️ `force_exclude` EXISTS SO A GROUP IS EXCLUDED AS ONE GROUP, ORDER
+    -INDEPENDENTLY. This rule runs once per GLYPH (`evaluate.run`'s own
+    loop), so a group's members are visited one at a time within the same
+    EVALUATE pass; `_left_the_bar` alone would report a DIFFERENT total for
+    the second member visited than the first, once the first has already
+    been reinstated (superseded) -- the total would silently grow mid-pass
+    and the second member's own equality test would be answering a different
+    question than the first member's. Naming every group member here, once,
+    up front (computed from the group's members as GATHER/ADJUDICATE left
+    them, never from what THIS rule has written so far this pass) keeps the
+    same bar total for every member's own test regardless of visiting order.
+
+    ⚠️ THE SAME QUESTION `reconcile_duration` ASKS, ANSWERED THE SAME WAY,
+    on purpose: its own preamble (this function's body, before the landing
+    search) is not restated here, it is CALLED — `_standing`, `_left_the_bar`
+    and `_event_totals` are each already paid for and each already correct
+    about which boxes a bar still holds.
+    """
+    notes = []
+    for v in _standing(log, cell_subject, Q.DURATION):
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            continue
+        if v.subject in force_exclude:
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        notes.append(v)
+    if not notes:
+        return None
+
+    def _current(v: Verdict):
+        if v.outcome is Outcome.DECIDED:
+            return v.value
+        return v.candidates[0].value if v.candidates else None
+
+    current = {v.id: _current(v) for v in notes}
+    if any(c is None for c in current.values()):
+        return None
+    return _event_totals(log, cell_subject, notes, current)
+
+
+def _contest_group(log: Log, cell_subject: Subject, partner_key: str
+                   ) -> List[Subject]:
+    """Every glyph under `cell_subject` that is ITSELF refused
+    `rest_outside_its_staff` (its ORIGINAL ADJUDICATE verdict, never a
+    verdict this rule already wrote — `decider` excludes this rule's own
+    name, so a group computed mid-pass, after an earlier sibling in the
+    SAME group has already been reinstated, still names the whole original
+    group) AND contests THIS SAME neighbour staff (`Q.GLYPH_BAND_DISTANCE`
+    naming `partner_key`). Sean's three eighth rests are one call to this
+    function, not three.
+    """
+    out = []
+    for v in log.verdicts(Q.REST_IS_NOT_A_REST, cell_subject,
+                         scope=Scope.SELF_AND_DESCENDANTS):
+        if (v.outcome is not Outcome.DECIDED or v.value is not True
+                or v.reason != "rest_outside_its_staff"
+                or v.decider == "reinstate_rest_between_staves"):
+            continue
+        bands = log.rows(Q.GLYPH_BAND_DISTANCE, v.subject)
+        keys = {str(r.detail.get("candidate")) for r in bands
+               if r.detail and r.detail.get("candidate") is not None}
+        if partner_key in keys:
+            out.append(v.subject)
+    return out
+
+
+def _group_length(log: Log, group: Sequence[Subject]) -> Optional[float]:
+    """The group's own total length, from each member's OWN `Q.DURATION` --
+    `None` if any member's length is not itself settled."""
+    total = 0.0
+    for g in group:
+        dur = log.verdict(Q.DURATION, g)
+        if dur is None or dur.outcome is not Outcome.DECIDED:
+            return None
+        beats = (dur.value or {}).get("beats")
+        if beats is None:
+            return None
+        total += float(beats)
+    return total
+
+
+def _voice_count(log: Log, cell_subject: Subject) -> Optional[int]:
+    """How many voices this bar carries, read `Q.VOICES` first (2.21's own
+    decision), else counted by stem direction exactly as `adjudicate_voices`
+    counts it at its own first rule -- two DECIDED `Q.STEM_DIRECTION`s that
+    disagree is two voices, one direction only (at least one DECIDED) is
+    one voice. `None` where neither is decided (rule 8 -- this rule must
+    never assume a voice count it was not given).
+    """
+    voices = log.verdict(Q.VOICES, cell_subject)
+    if voices is not None and voices.outcome is Outcome.DECIDED:
+        n = (voices.value or {}).get("n_voices")
+        if isinstance(n, int) and n > 0:
+            return n
+
+    directions = set()
+    for v in log.verdicts(Q.STEM_DIRECTION, cell_subject,
+                         scope=Scope.SELF_AND_DESCENDANTS):
+        if v.outcome is Outcome.DECIDED and _left_the_bar(log, v.subject) is None:
+            directions.add(v.value)
+    if "up" in directions and "down" in directions:
+        return 2
+    if directions:
+        return 1
+    return None
+
+
+@rule(consequence=Consequence.REINSTATE_REST_BETWEEN_STAVES,
+      cause=Q.METER, effect=Q.REST_IS_NOT_A_REST, scope=Kind.GLYPH,
+      bound="Fires only on a glyph DECIDED `rest_outside_its_staff` that is "
+            "also in a genuine cross-staff contest (`Q.GLYPH_BAND_DISTANCE` "
+            "rows naming another staff), as part of a GROUP of such glyphs "
+            "against the same neighbour. Reinstates the WHOLE GROUP on ITS "
+            "OWN staff only, never moves it, and only where that staff's "
+            "own (VOICE COUNT x bar length) shortfall EQUALS the group's "
+            "own total length once every currently-refused glyph is "
+            "excluded, AND the other contested staff's own shortfall does "
+            "NOT also equal the group's length -- the other staff need not "
+            "be COMPLETE, only unable to explain the SAME group. Any other "
+            "shape -- no contest, an undecided voice count or candidate, "
+            "a shortfall that does not match on the own staff, BOTH "
+            "staves' shortfalls matching the group (ambiguous) or NEITHER "
+            "matching -- changes nothing (rule 8).")
+def reinstate_rest_between_staves(log: Log, subject: Subject,
+                                  meter: Verdict) -> List[Verdict]:
+    """A GROUP of rests doubly refused `rest_outside_its_staff` is
+    reinstated on the one staff whose voice it completes.
+
+    ⚠️ NEVER RELOCATED, NEVER DUPLICATED. Every glyph in the group already
+    sits on its own staff's own cell -- the neighbour staff's padded cell
+    independently detected its own twin copies, separate glyph subjects with
+    their own verdicts, untouched here. Superseding each of THIS staff's own
+    group members is the entire repair; the sibling copies on the other
+    staff stay refused because nothing about THEM changed (that staff's own
+    total is not short by this amount).
+
+    ⚠️ SYMMETRIC BY CONSTRUCTION, NOT BY A SPECIAL CASE. This rule runs once
+    per glyph, so every member of both staves' copies of one group is
+    offered the same test independently, and each recomputes the SAME group
+    (`_contest_group`) and the SAME two bar totals regardless of visit
+    order (`_bar_total_excluding`'s `force_exclude`). Only the staff whose
+    total is actually short by the group's own length reinstates; the other
+    staff's own equality fails and the function returns `[]` for it.
+    """
+    refusal = log.verdict(Q.REST_IS_NOT_A_REST, subject)
+    if (refusal is None or refusal.outcome is not Outcome.DECIDED
+            or refusal.value is not True
+            or refusal.reason != "rest_outside_its_staff"):
+        return []
+
+    own_key = subject.at(Kind.STAFF).to_key()
+    bands = log.rows(Q.GLYPH_BAND_DISTANCE, subject)
+    others = sorted({str(r.detail.get("candidate")) for r in bands
+                     if r.detail and r.detail.get("candidate") is not None
+                     and str(r.detail.get("candidate")) != own_key})
+    if not others:
+        return []          # not a cross-staff contest at all -- an ordinary
+                            # off-staff refusal, untouched
+
+    value = meter.value or {}
+    num, den = value.get("numerator"), value.get("denominator")
+    if not num or not den:
+        return []
+    bar_len = float(num) * 4.0 / float(den)
+
+    own_cell = subject.at(Kind.CELL)
+    own_voices = _voice_count(log, own_cell)
+    if own_voices is None:
+        return []           # this staff's own voice count is undecided
+    own_expected = own_voices * bar_len
+
+    for partner_key in others:
+        group = _contest_group(log, own_cell, partner_key)
+        if subject not in group:
+            continue        # this glyph's own contest partner, not this one
+        group_len = _group_length(log, group)
+        if group_len is None:
+            return []
+        own_total = _bar_total_excluding(log, own_cell, frozenset(group))
+        if own_total is None:
+            return []
+        own_shortfall = own_expected - own_total
+        if abs(own_shortfall - group_len) > REST_BAR_SUM_EPS:
+            # Zero (already complete without the group), negative (already
+            # over -- something ELSE is wrong here), or a shortfall that does
+            # not match the GROUP's own length: not this group's own gap.
+            continue
+
+        cand_staff = Subject.from_key(partner_key)
+        cand_cell = R.cell(cand_staff.page, cand_staff.system,
+                          cand_staff.staff, subject.cell)
+        cand_voices = _voice_count(log, cand_cell)
+        if cand_voices is None:
+            return []
+        cand_expected = cand_voices * bar_len
+        cand_group = _contest_group(log, cand_cell, own_key)
+        cand_total = _bar_total_excluding(log, cand_cell, frozenset(cand_group))
+        if cand_total is None:
+            return []
+        cand_shortfall = cand_expected - cand_total
+        # ⚠️⚠️ MANAGER CORRECTION 2026-09-30 (second round). The other staff
+        # does NOT have to be COMPLETE -- it only has to be UNABLE to take
+        # the group itself, i.e. ITS OWN shortfall must not also equal the
+        # group's length. An unrelated gap of some OTHER size on the other
+        # staff (Sean's own upper-staff ~1-beat gap, unconnected to these
+        # rests) is not evidence either way and must never block the one
+        # staff whose shortfall DOES match. Only when BOTH staves' own
+        # shortfalls equal the group's length (genuinely ambiguous -- the
+        # group could belong to either) or NEITHER does is this refused
+        # (rule 8 -- a fallback never converts "cannot tell" into an
+        # answer); one match and one non-match is not ambiguous.
+        if abs(cand_shortfall - group_len) <= REST_BAR_SUM_EPS:
+            continue
+
+        out = Verdict(
+            id=log._next_id("vrd"), subject=subject,
+            quantity=Q.REST_IS_NOT_A_REST,
+            outcome=Outcome.DECIDED, value=False,
+            decider="reinstate_rest_between_staves",
+            reason="rest_reinstated_missing_voice",
+            considered=(refusal.id, meter.id),
+            basis=(refusal.id, meter.id),
+            detail={"own_shortfall_beats": round(own_shortfall, 6),
+                    "candidate_shortfall_beats": round(cand_shortfall, 6),
+                    "group_len_beats": round(group_len, 6),
+                    "own_voices": own_voices, "candidate_voices": cand_voices,
+                    "group": [g.to_key() for g in group],
+                    "candidate": partner_key},
+            supersedes=refusal.id)
+        return [log.record(out)]
     return []

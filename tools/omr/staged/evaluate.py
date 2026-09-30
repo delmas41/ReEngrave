@@ -64,6 +64,15 @@ class Consequence(str, Enum):
     JOIN_PARTS = "join_parts"                # part boundaries settled
     NAME_PART = "name_part"                  # instrument settled
     SIZE_MEASURE_REST = "size_measure_rest"  # meter settled, over a silent bar
+    #: ROADMAP 2.45. A rest refused on BOTH staves it was detected on
+    #: (`rest_outside_its_staff`) is reinstated on the ONE staff whose bar is
+    #: short exactly its own length, once every currently-refused glyph is
+    #: excluded -- provided every other contested staff's bar is already
+    #: complete without it (Sean, DECISIONS 2026-09-30). Cause is the METER,
+    #: exactly as `reconcile_duration`'s own bar-sum reading is -- this asks
+    #: no new question about "is a bar complete", only WHICH staff a doubly
+    #: refused box's ink belongs to.
+    REINSTATE_REST_BETWEEN_STAVES = "reinstate_rest_between_staves"
 
 
 @dataclass(frozen=True)
@@ -136,6 +145,13 @@ DOWNHILL: Tuple[str, ...] = (
     Q.ACCIDENTAL,
     Q.METER,
     Q.DURATION,
+    # ⚠️ ROADMAP 2.45. Downhill of `Q.DURATION` on purpose: the rule that
+    # writes here reads the bar's OWN completeness, which is exactly what
+    # `reconcile_duration`'s pass over `Q.DURATION` may just have settled
+    # (a beam level re-read by +/-1 can be what makes a bar's total land, or
+    # not). Placing this any earlier would let it fire on a total
+    # `reconcile_duration` was about to correct.
+    Q.REST_IS_NOT_A_REST,
 )
 
 
