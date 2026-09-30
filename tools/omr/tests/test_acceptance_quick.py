@@ -2,8 +2,11 @@
 does not need a gather, a shared record, or the score library — just the
 manifest-parsing helper the manager review of ff8afcb8 (2026-09-30) added.
 
-CLAUDE.md §6c: no `library/`, `omr-weights`, venv or `.pdf"` string appears
-in this file, so it stays in the fast tier.
+CLAUDE.md §6c: a test file's text must not contain certain path fragments
+(the score store's directory name, the weights directory name, a venv, or
+a quoted document-extension path) or the whole file goes slow silently —
+none of those fragments are spelled out literally anywhere in this file,
+including this docstring, so it stays in the fast tier.
 """
 import unittest
 

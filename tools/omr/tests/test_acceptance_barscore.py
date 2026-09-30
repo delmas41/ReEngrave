@@ -1,10 +1,11 @@
 """Fast unit tests for `tools.omr.acceptance_barscore` (ROADMAP 1.6).
 
-No score PDF, no shared record, no library file — every fixture is an
+No score PDF, no shared record, no score-store file — every fixture is an
 inline MusicXML `<part>` fragment built from a literal string. CLAUDE.md
-§6c: a fast test file must not name a `library/`, `omr-weights` or a
-venv/`.pdf"` path, or the whole file goes slow silently; there is nothing
-of the kind here.
+§6c: a fast test file's text must not contain certain path fragments (the
+score store's directory name, the weights directory name, a venv, or a
+quoted document-extension path) or the whole file goes slow silently —
+none of those fragments are spelled out literally anywhere in this file.
 
 CLAUDE.md rule 7 ("a control must be able to fail"): the SELF control scores
 a part against an unmodified copy of itself and must come back all
