@@ -316,7 +316,7 @@ python3 -m tools.omr.staged.readout diff base.json arm.json --arm code|weights [
 python3 -m tools.omr.staged.readout html arm.json [--against base.json] --out page.html        # the print, coloured per stage
 python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
 python3 -m tools.omr.factsheet show sheet.json
-python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff [--against other.record.json]  # the SMALL re-gather (ROADMAP 1.6)
+python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff [--against other.record.json]  # the SMALL re-gather (ROADMAP 1.6/1.6b): default = GATHER+ADJUDICATE only, per-family stage summary; add --full for the exported second view
 ```
 
 `readout` (ROADMAP 1.5) only reads a record: it refuses one whose GATHER holds
@@ -384,24 +384,38 @@ filed as evidence in the record). The `claude_vision` OMR engine
 ### 6b. How to A/B without fooling yourself
 
 - **Two re-gathers** (Sean, 2026-09-30): the SMALL re-gather (the two count
-  pages, ROADMAP 1.6) runs during the day while we work; the FULL re-gather
-  of both movements (`benchmarks/acceptance/overnight/regather_20260930.sh`,
-  `TAG=...`) runs overnight, only as far as the stage being refined
-  (`THROUGH=adjudicate` by default; later nights add stages progressively).
-  The acceptance numbers need a through-infer full re-gather.
-  Run the small one with `python3 -m tools.omr.acceptance_quick --doc
+  pages, ROADMAP 1.6/1.6b) runs during the day while we work; the FULL
+  re-gather of both movements
+  (`benchmarks/acceptance/overnight/regather_20260930.sh`, `TAG=...`) runs
+  overnight, only as far as the stage being refined (`THROUGH=adjudicate` by
+  default; later nights add stages progressively). The acceptance numbers
+  need a through-infer full re-gather. Run the small
+  one with `python3 -m tools.omr.acceptance_quick --doc
   <beethoven5-litolff|brahms1-breitkopf> [--against other.record.json]` — it
   gathers from the movement's first page through the count page (never the
   count page alone — a lone page loses the meter/key carry from earlier
-  pages and misreports the hold-out count in both directions), in minutes,
-  and writes the page proxies, the
-  stage readout, print-vs-ours, and a per-part per-bar score against the
-  reference encoding to `benchmarks/acceptance/quick/`. ITERATION ONLY: it
-  never writes `current.json` and never substitutes for the overnight run.
-- **Initial tests compare GATHER + ADJUDICATE only** (Sean, 2026-09-30):
-  `--through adjudicate` on both arms, read with the stage readout (ROADMAP
-  1.5), never the exported file first — too many later steps can change or
-  lose a thing to tell which one did.
+  pages and misreports the hold-out count in both directions), in minutes.
+  ITERATION ONLY: it never writes `current.json` and never substitutes for
+  the overnight run.
+- **The small re-gather's DEFAULT is GATHER+ADJUDICATE only** (ROADMAP 1.6b,
+  Sean 2026-09-30: *"I don't want to chase down where it is getting lost
+  before we refine what we are reading in the first 2 stages"* and *"for all
+  of our initial tests I want to be comparing the output of just the first
+  two stages"*): the gather itself stops `--through adjudicate` (no
+  EVALUATE/INFER/EXPORT), and the tool reports, per symbol family, gathered
+  boxes, kept vs refused (with each refusal reason and its count), noteheads'
+  owner and duration decided/narrowed/abstained by reason, staff position
+  observed/abstained, the clef decided on each staff, and meter per system
+  decided/abstained with its reason — all counted off `tools.omr.staged.
+  readout`'s own `Run`/`adjudicate_status`, never re-derived, with the
+  `readout html` page alongside it. `--against other.record.json` diffs the
+  two records at GATHER+ADJUDICATE with `readout diff`, same as before. Only
+  `--full` runs through INFER, exports a file, and additionally reports the
+  page proxies, print-vs-ours and the per-part per-bar score against the
+  reference encoding (this is what ROADMAP 1.6 always did; it is now the
+  SECOND view, for once a change looks right at the first two stages, not
+  where an initial test should start) — written to
+  `benchmarks/acceptance/quick/`.
 - **Base vs arm on ONE tree.** The committed verdicts of the shared records
   under `library/_shared-records/` no longer reproduce on today's tree
   (`readjudicate --control` 2,760 of 2,993); they are inputs, not baselines.

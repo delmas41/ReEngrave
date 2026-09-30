@@ -1,8 +1,9 @@
-"""ROADMAP 1.6 — the SMALL re-gather (Sean 2026-09-30, CLAUDE.md §6b).
+"""ROADMAP 1.6 / 1.6b — the SMALL re-gather (Sean 2026-09-30, CLAUDE.md §6b).
 
     python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff
     python3 -m tools.omr.acceptance_quick --doc brahms1-breitkopf
     python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff --against <record.json>
+    python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff --full
     python3 -m tools.omr.acceptance_quick --self-control
     python3 -m tools.omr.acceptance_quick --corrupted-control
 
@@ -10,47 +11,62 @@ ITERATION ONLY. A whole-movement re-gather (the FULL re-gather,
 `benchmarks/acceptance/overnight/regather_20260930.sh`) takes hours and is
 the only thing that feeds `benchmarks/acceptance/current.json`
 (`tools.omr.acceptance`, roadmap 1.3) — carries, identity and roster effects
-only show up there. This tool gathers ONLY the fixed count page of one
-acceptance scan document (Litolff p3 or Breitkopf p1, `manifest.json`'s
-`count_page.pdf_page_index`) on the CURRENT tree, in minutes, so a lane can
-tell whether a change helped BEFORE spending a whole-movement run on it —
-Sean, 2026-09-30: *"a 1 page test like we just did (short engraved) on a
-scanned score ... instead of a full regather of a movement ... find issues
-quicker."*
+only show up there. This tool gathers from one acceptance scan document's
+movement's FIRST PAGE through its fixed count page (Litolff p3 or Breitkopf
+p1, `manifest.json`'s `count_page.pdf_page_index`) on the CURRENT tree, in
+minutes, so a lane can tell whether a change helped BEFORE spending a
+whole-movement run on it.
 
-WHAT IT DOES, per document:
-    1. gather ONLY the count page, through INFER, with `--weights auto`
-       (CLAUDE.md §5b: omitted, the detector never runs), timed;
-    2. export MusicXML + LilyPond + a compiled PDF with the SAME CLI the
-       gather step already ran (`tools.omr.staged`'s own `--musicxml
-       --lilypond --pdf`) — nothing here re-implements the exporter;
-    3. the page proxies, reusing `tools.omr.acceptance.machine_proxies`
-       against the export's own coverage report — never re-derived;
-    4. the stage-readout HTML for the page (ROADMAP 1.5,
-       `tools.omr.staged.readout html`), GATHER+ADJUDICATE only per
-       DECISIONS 2026-09-30;
-    5. print vs ours for the page's systems, reusing
-       `tools.omr.acceptance.build_side_by_side`;
-    6. a per-part, per-bar score against the reference encoding for the
-       page's printed bar range (`tools.omr.acceptance_barscore`), using the
-       family map declared below for this document and the bar window
-       `benchmarks/omr-scan-e2e-2026-09/works.json` already names.
+DEFAULT MODE (ROADMAP 1.6b, Sean 2026-09-30): *"I don't want to chase down
+where it is getting lost before we refine what we are reading in the first
+2 stages"* and *"for all of our initial tests I want to be comparing the
+output of just the first two stages."* The gather stops `--through
+adjudicate` — no EVALUATE, no INFER, no EXPORT — and this tool reports, for
+the COUNT PAGE only, what GATHER and ADJUDICATE read and decided, per symbol
+family: gathered boxes; kept vs refused, with each refusal reason and its
+count; for noteheads, owner decided/abstained and duration decided/narrowed/
+abstained by reason; staff position observed/abstained and the clef decided
+on each staff; meter per system, decided/abstained with its reason. The
+counting is `tools.omr.staged.readout`'s own `Run`/`Glyph`/`adjudicate_status`
+— this module aggregates their answers, it does not re-read the record.
+The picture page is `readout html`, unmodified. Nothing here exports a file
+or touches the reference encoding.
+
+`--full` (ROADMAP 1.6's original shape): once a change looks right at the
+first two stages, `--full` re-gathers through INFER, exports MusicXML +
+LilyPond + a compiled PDF with the SAME CLI (`tools.omr.staged`'s own
+`--musicxml --lilypond --pdf`), and additionally reports:
+    (a) the page proxies, reusing `tools.omr.acceptance.machine_proxies`
+        against the export's own coverage report — never re-derived;
+    (b) the stage-readout HTML for the page (ROADMAP 1.5);
+    (c) print vs ours for the page's systems, reusing
+        `tools.omr.acceptance.build_side_by_side`;
+    (d) a per-part, per-bar score against the reference encoding for the
+        page's printed bar range (`tools.omr.acceptance_barscore`).
+This is the second view, for after the first-two-stages read is trusted —
+not where an initial test of a change should start (DECISIONS 2026-09-30).
 
 `--against <record.json>` reads a SECOND already-built record for the SAME
-page (from another tree/commit — built by a second `--doc ... ` run whose
-`--out` you point here) and adds: the GATTHER+ADJUDICATE readout diff
-(ROADMAP 1.5, `--force` since the two records come from different commits —
-provenance is reported, never silently assumed equal), and the change in the
-page proxies and the per-bar score.
+page (from another tree/commit — built by a second `--doc ...` run, or an
+older tree's own `tools.omr.staged` CLI, whose `--out` you point here) and
+adds the GATHER+ADJUDICATE readout diff (ROADMAP 1.5, `--force` since the
+two records come from different commits — provenance is reported, never
+silently assumed equal). In default mode both records being compared are
+GATHER+ADJUDICATE (this tool's arm always is; the base may go further and
+the diff simply never reads past ADJUDICATE). `--full --against` additionally
+reports the change in the page proxies and the per-bar score, as before.
 
 Writes `benchmarks/acceptance/quick/<doc>-<date>.json` and one HTML index
-linking the readout, the side-by-side and the per-bar report. Never writes
-`benchmarks/acceptance/current.json` — that number is the FULL re-gather's,
-only (`tools.omr.acceptance`, roadmap 1.3).
+linking the readout, the side-by-side (full mode) and the per-bar report
+(full mode). Never writes `benchmarks/acceptance/current.json` — that number
+is the FULL RE-GATHER's, only (`tools.omr.acceptance`, roadmap 1.3) — not to
+be confused with this module's `--full`, which is still the SMALL re-gather,
+just carried one page further than the default.
 """
 from __future__ import annotations
 
 import argparse
+import collections
 import datetime as _dt
 import json
 import os
@@ -71,6 +87,7 @@ from tools.omr.acceptance_barscore import (  # noqa: E402
     align_and_score, parse_part_bars, sum_scores,
 )
 from tools.omr.staged import readout as RD  # noqa: E402
+from tools.omr.staged.record import Q  # noqa: E402
 
 QUICK_DIR = REPO / "benchmarks" / "acceptance" / "quick"
 WORKS_JSON_PATH = REPO / "benchmarks" / "omr-scan-e2e-2026-09" / "works.json"
@@ -218,23 +235,169 @@ def first_movement_page(doc: Dict[str, Any]) -> int:
 
 
 # ─────────────────────────────────────────────────────────────────────────
+# ROADMAP 1.6b: the GATHER+ADJUDICATE stage summary, per symbol family
+#
+# Built entirely on `tools.omr.staged.readout`'s own reading of a record
+# (`Run`, `Glyph`, `adjudicate_status`) — this aggregates what that module
+# already exposes, it never re-parses `record.json` (CLAUDE.md rule 9: no
+# derived check restates a record's own counting). The picture page for the
+# same record is `readout html`, unmodified.
+# ─────────────────────────────────────────────────────────────────────────
+
+def _key_nums(key: str) -> Tuple[int, ...]:
+    """Sort subjects numerically (`staff/3/0/10` after `staff/3/0/2`),
+    without reaching into `readout`'s own private sort helper."""
+    try:
+        return tuple(int(p) for p in key.split("/")[1:])
+    except ValueError:
+        return ()
+
+
+def _verdict_brief(v: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if v is None:
+        return {"outcome": "no_verdict"}
+    return {"outcome": v.get("outcome"), "value": v.get("value"),
+           "reason": v.get("reason")}
+
+
+def stage_summary(run: RD.Run, page_index: int) -> Dict[str, Any]:
+    """What GATHER + ADJUDICATE read and decided for ONE page, per symbol
+    family, plus the two decisions a family count cannot show: the clef on
+    each staff and the meter on each system (both filed on the STAFF/SYSTEM
+    subject, never the glyph).
+    """
+    where = RD.Where(page=page_index)
+    glyphs = [g for g in run.glyphs.values() if where.admits(g.key)]
+
+    by_family: Dict[str, List[RD.Glyph]] = collections.defaultdict(list)
+    for g in glyphs:
+        by_family[g.family or f"class:{g.cls}"].append(g)
+
+    families: Dict[str, Any] = {}
+    for family, gs in sorted(by_family.items()):
+        status_counts: collections.Counter = collections.Counter()
+        reasons: collections.Counter = collections.Counter()
+        for g in gs:
+            status, why = RD.adjudicate_status(run, g)
+            status_counts[status] += 1
+            if status != RD.KEPT:
+                reasons[(status, why[0] if why else "(no reason given)")] += 1
+        entry: Dict[str, Any] = {
+            "gathered": len(gs),
+            "status": dict(sorted(status_counts.items())),
+            "reasons": {f"{s}: {r}": n
+                       for (s, r), n in sorted(reasons.items(),
+                                               key=lambda kv: -kv[1])},
+        }
+        if family == "note":
+            owner = collections.Counter()
+            owner_reasons: collections.Counter = collections.Counter()
+            duration = collections.Counter()
+            duration_reasons: collections.Counter = collections.Counter()
+            position = collections.Counter()
+            position_reasons: collections.Counter = collections.Counter()
+            for g in gs:
+                own = run.standing(g.key, Q.GLYPH_OWNER, "ADJUDICATE")
+                oc = own["outcome"] if own else "no_verdict"
+                owner[oc] += 1
+                if own and oc != "decided":
+                    owner_reasons[own.get("reason")] += 1
+                dur = run.standing(g.key, Q.DURATION, "ADJUDICATE")
+                dc = dur["outcome"] if dur else "no_verdict"
+                duration[dc] += 1
+                if dur and dc != "decided":
+                    duration_reasons[dur.get("reason")] += 1
+                obs = run.obs_at(g.key, Q.NOTEHEAD_STAFF_POSITION)
+                abst = [r for s, k, r in run.rows_at(g.key)
+                       if s == "GATHER" and k == "abstention"
+                       and r["quantity"] == Q.NOTEHEAD_STAFF_POSITION]
+                if obs:
+                    position["observed"] += 1
+                elif abst:
+                    position["abstained"] += 1
+                    position_reasons[abst[0].get("reason")] += 1
+                else:
+                    position["no_reading"] += 1
+            entry["owner"] = {"by_outcome": dict(owner),
+                              "reasons": dict(owner_reasons)}
+            entry["duration"] = {"by_outcome": dict(duration),
+                                 "reasons": dict(duration_reasons)}
+            entry["staff_position"] = {"by_outcome": dict(position),
+                                       "reasons": dict(position_reasons)}
+        families[family] = entry
+
+    staff_keys = sorted({g.staff_key for g in glyphs}, key=_key_nums)
+    clef_by_staff = {sk: _verdict_brief(run.standing(sk, Q.CLEF, "ADJUDICATE"))
+                     for sk in staff_keys}
+
+    system_keys = sorted({f"system/{g.page}/{g.system}" for g in glyphs},
+                        key=_key_nums)
+    meter_by_system = {sk: _verdict_brief(run.standing(sk, Q.METER, "ADJUDICATE"))
+                       for sk in system_keys}
+
+    return {"page": page_index, "gathered_total": len(glyphs),
+           "families": families, "clef_by_staff": clef_by_staff,
+           "meter_by_system": meter_by_system}
+
+
+def render_stage_table(doc_id: str, summary: Dict[str, Any]) -> str:
+    """A compact text table — one line per family, then clef/meter."""
+    L = [f"GATHER+ADJUDICATE stage summary -- {doc_id} page {summary['page']}"
+        f" ({summary['gathered_total']} boxes gathered)",
+        f"{'family':<14}{'gathered':>9}{'kept':>7}{'refused':>9}"
+        f"{'narrowed':>10}{'abstained':>11}{'given_away':>12}{'undecided':>11}"]
+    for family, entry in sorted(summary["families"].items()):
+        st = entry["status"]
+        L.append(f"{family:<14}{entry['gathered']:>9}{st.get(RD.KEPT, 0):>7}"
+                f"{st.get(RD.REFUSED, 0):>9}{st.get(RD.NARROWED, 0):>10}"
+                f"{st.get(RD.ABSTAINED, 0):>11}{st.get(RD.GIVEN_AWAY, 0):>12}"
+                f"{st.get(RD.UNDECIDED, 0):>11}")
+        for reason, n in entry["reasons"].items():
+            L.append(f"    {n:>4}x  {reason}")
+    note = summary["families"].get("note")
+    if note:
+        L.append("")
+        L.append(f"note owner:    {note['owner']['by_outcome']}"
+                f"  reasons {note['owner']['reasons']}")
+        L.append(f"note duration: {note['duration']['by_outcome']}"
+                f"  reasons {note['duration']['reasons']}")
+        L.append(f"note position: {note['staff_position']['by_outcome']}"
+                f"  reasons {note['staff_position']['reasons']}")
+    L.append("")
+    L.append("clef by staff:")
+    for sk, v in summary["clef_by_staff"].items():
+        L.append(f"  {sk}: {v}")
+    L.append("meter by system:")
+    for sk, v in summary["meter_by_system"].items():
+        L.append(f"  {sk}: {v}")
+    return "\n".join(L) + "\n"
+
+
+# ─────────────────────────────────────────────────────────────────────────
 # step 1: gather from the MOVEMENT'S FIRST PAGE through the count page
 # ─────────────────────────────────────────────────────────────────────────
 
 def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
                       weights: str = "auto",
-                      step_timeout_s: float = DEFAULT_STEP_TIMEOUT_S
+                      step_timeout_s: float = DEFAULT_STEP_TIMEOUT_S,
+                      full: bool = False,
                       ) -> Dict[str, Any]:
     """`python3 -m tools.omr.staged <pdf> --pages <first_page>-<count page>
-    --weights auto --out/--musicxml/--lilypond/--pdf`, timed. NOT just the
-    count page alone (that was this tool's first version, and it is wrong:
-    a lone page's `Q.METER`/`Q.KEY_SIGNATURE` have no carry to read, so the
-    exporter either falsely holds out nothing where the whole movement
-    holds out plenty, or falsely holds out everything — manager review,
-    2026-09-30, proved against the committed whole-movement records). The
-    SAME CLI the FULL re-gather and `tools.omr.acceptance` both build on —
-    nothing here re-implements a gather; only the `--pages` range differs
-    from a single-page run."""
+    --weights auto --out [--musicxml --lilypond --pdf | --through adjudicate]`,
+    timed. NOT just the count page alone (that was this tool's first
+    version, and it is wrong: a lone page's `Q.METER`/`Q.KEY_SIGNATURE` have
+    no carry to read, so the exporter either falsely holds out nothing where
+    the whole movement holds out plenty, or falsely holds out everything —
+    manager review, 2026-09-30, proved against the committed whole-movement
+    records). The SAME CLI the FULL re-gather and `tools.omr.acceptance`
+    both build on — nothing here re-implements a gather.
+
+    `full=False` (the default, ROADMAP 1.6b, Sean 2026-09-30: *"for all of
+    our initial tests I want to be comparing the output of just the first
+    two stages"*): `--through adjudicate` — no EVALUATE/INFER/EXPORT, so no
+    `--musicxml`/`--lilypond`/`--pdf` (the CLI refuses those together with
+    `--through`). `full=True`: today's whole-pipeline gather plus export,
+    exactly as this tool's first (1.6) version always ran."""
     pdf_path = ACC.resolve_path(doc["pdf"])
     if pdf_path is None or not pdf_path.is_file():
         raise QuickError(f"no PDF at {doc.get('pdf')}")
@@ -250,8 +413,12 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
 
     cmd = [sys.executable, "-m", "tools.omr.staged", str(pdf_path),
            "--pages", pages_spec, "--weights", weights,
-           "--out", str(record_path), "--musicxml", str(xml_path),
-           "--lilypond", str(ly_path), "--pdf", str(pdf_out_path)]
+           "--out", str(record_path)]
+    if full:
+        cmd += ["--musicxml", str(xml_path), "--lilypond", str(ly_path),
+               "--pdf", str(pdf_out_path)]
+    else:
+        cmd += ["--through", "adjudicate"]
     env = dict(os.environ)
     env.setdefault("OMR_DIRECTION_TEXT_SCAN_GATE", "1")
     env.setdefault("OMR_SURYA_KEEP_ALIVE", "0")
@@ -263,14 +430,16 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
     log_path = out_dir / f"{stem}.gather.log"
     log_path.write_text((proc.stdout or "") + "\n" + (proc.stderr or ""))
 
-    ok = proc.returncode == 0 and record_path.is_file() and xml_path.is_file()
+    ok = proc.returncode == 0 and record_path.is_file() and (
+        not full or xml_path.is_file())
     return {
         "ok": ok, "wall_time_s": wall_time_s, "page_index": page_index,
-        "start_page": start_page, "pages_gathered": pages_spec,
+        "start_page": start_page, "pages_gathered": pages_spec, "full": full,
         "returncode": proc.returncode,
-        "record_path": str(record_path), "xml_path": str(xml_path),
-        "ly_path": str(ly_path) if ly_path.is_file() else None,
-        "pdf_path": str(pdf_out_path) if pdf_out_path.is_file() else None,
+        "record_path": str(record_path),
+        "xml_path": str(xml_path) if full and xml_path.is_file() else None,
+        "ly_path": str(ly_path) if full and ly_path.is_file() else None,
+        "pdf_path": str(pdf_out_path) if full and pdf_out_path.is_file() else None,
         "log_path": str(log_path),
         "log_tail": ((proc.stdout or "") + (proc.stderr or ""))[-2000:],
     }
@@ -402,7 +571,12 @@ def _readout_diff(base_record: str, arm_record: str, out_path: Path
 def run_quick(doc_id: str, *, weights: str = "auto",
              against_record: Optional[str] = None,
              step_timeout_s: float = DEFAULT_STEP_TIMEOUT_S,
-             out_root: Path = QUICK_DIR) -> Dict[str, Any]:
+             out_root: Path = QUICK_DIR,
+             full: bool = False) -> Dict[str, Any]:
+    """`full=False` (the default, ROADMAP 1.6b): GATHER+ADJUDICATE only —
+    `stage_summary` plus the readout HTML/diff, nothing exported. `full=True`
+    (ROADMAP 1.6's original shape): also exports and reports the page
+    proxies, print-vs-ours and the per-part per-bar score."""
     manifest = ACC.load_manifest()
     doc = next((d for d in manifest["documents"] if d["id"] == doc_id), None)
     if doc is None:
@@ -414,14 +588,42 @@ def run_quick(doc_id: str, *, weights: str = "auto",
     works_row_id = doc["count_page"].get("works_row_id")
     if not works_row_id:
         raise QuickError(f"{doc_id!r} has no works_row_id in the manifest")
-    works_row = _load_works_row(works_row_id)
+    works_row = _load_works_row(works_row_id) if full else None
 
     out_dir = out_root / "out" / doc_id
     gather = gather_count_page(doc, out_dir, weights=weights,
-                               step_timeout_s=step_timeout_s)
-    result: Dict[str, Any] = {"id": doc_id, "gather": gather}
+                               step_timeout_s=step_timeout_s, full=full)
+    result: Dict[str, Any] = {"id": doc_id, "gather": gather, "full": full}
     if not gather["ok"]:
         result["status"] = "error"
+        return result
+
+    page_index = gather["page_index"]
+    run = RD.load_run(gather["record_path"])
+    result["stage_summary"] = stage_summary(run, page_index)
+
+    readout_path = out_dir / f"{doc_id}-p{page_index}.readout.html"
+    result["readout_html"] = _readout_html(gather["record_path"], page_index,
+                                           readout_path,
+                                           against=against_record)
+
+    if against_record:
+        diff_path = out_dir / f"{doc_id}-p{page_index}.diff.html"
+        result["against"] = {
+            "record": against_record,
+            "readout_diff": _readout_diff(against_record, gather["record_path"],
+                                          diff_path),
+        }
+        try:
+            base_run = RD.load_run(against_record)
+            result["against"]["stage_summary"] = stage_summary(
+                base_run, page_index)
+        except Exception as exc:  # noqa: BLE001
+            result["against"]["stage_summary_error"] = (
+                f"{type(exc).__name__}: {exc}")
+
+    if not full:
+        result["status"] = "ok"
         return result
 
     xml_text = Path(gather["xml_path"]).read_text()
@@ -429,12 +631,6 @@ def run_quick(doc_id: str, *, weights: str = "auto",
         Path(gather["xml_path"]).name + ".coverage.json")).read_text())
 
     result["machine_proxies"] = ACC.machine_proxies(xml_text, report)
-
-    page_index = gather["page_index"]
-    readout_path = out_dir / f"{doc_id}-p{page_index}.readout.html"
-    result["readout_html"] = _readout_html(gather["record_path"], page_index,
-                                           readout_path,
-                                           against=against_record)
 
     sbs_dir = out_dir / "side-by-side"
     try:
@@ -450,12 +646,6 @@ def run_quick(doc_id: str, *, weights: str = "auto",
                                "reason": f"{type(exc).__name__}: {exc}"}
 
     if against_record:
-        diff_path = out_dir / f"{doc_id}-p{page_index}.diff.html"
-        result["against"] = {
-            "record": against_record,
-            "readout_diff": _readout_diff(against_record, gather["record_path"],
-                                          diff_path),
-        }
         try:
             base_result_mod = __import__("tools.omr.staged.record_io",
                                          fromlist=["load_record"])
@@ -499,35 +689,41 @@ def build_index_html(doc_id: str, result: Dict[str, Any], out_path: Path) -> Non
         except ValueError:
             return str(p)
 
-    bs = result.get("bar_score", {})
-    totals = bs.get("totals") or {}
-    mp = result.get("machine_proxies", {})
-    nrf = mp.get("notes_reaching_file", {})
+    full = result.get("full", False)
     parts = [
-        f"<h1>small re-gather — {doc_id}</h1>",
+        f"<h1>small re-gather — {doc_id} ({'full' if full else 'GATHER+ADJUDICATE'})</h1>",
         f"<p>gather wall time: {result['gather']['wall_time_s']}s, "
         f"page index {result['gather']['page_index']}</p>",
-        "<h2>(a) page proxies</h2>",
-        f"<p>notes reaching file: {nrf.get('n')} / {nrf.get('of')} "
-        f"({nrf.get('fraction')})</p>",
-        f"<p>held out: {mp.get('held_out', {})}</p>",
-        f"<p>unread bars: {mp.get('unread_bars', {})}</p>",
-        f"<p>parts named: {mp.get('parts_named', {})}</p>",
-        "<h2>(b) stage readout</h2>",
+        "<h2>stage summary (GATHER+ADJUDICATE)</h2>",
+        f"<pre>{render_stage_table(doc_id, result['stage_summary'])}</pre>",
+        "<h2>stage readout</h2>",
         f"<p><a href='{rel(result.get('readout_html', {}).get('path'))}'>readout.html</a></p>",
-        "<h2>(c) print vs ours</h2>",
-        f"<p>{result.get('side_by_side')}</p>",
-        "<h2>(d) per-part per-bar score vs reference encoding</h2>",
-        f"<p>bar range {bs.get('bar_range')}, comparable cells "
-        f"{bs.get('comparable_cells')}, skipped {bs.get('skipped_cells')}</p>",
-        f"<p>totals: {totals}</p>",
-        "<h3>worst 10 cells</h3>",
-        "<ul>" + "".join(f"<li>{w}</li>" for w in bs.get("worst_10", [])) + "</ul>",
     ]
     if "against" in result:
         parts.append("<h2>--against diff</h2>")
         parts.append(f"<p><a href='{rel(result['against']['readout_diff'].get('path'))}'>"
                     "diff.html</a></p>")
+    if full:
+        bs = result.get("bar_score", {})
+        totals = bs.get("totals") or {}
+        mp = result.get("machine_proxies", {})
+        nrf = mp.get("notes_reaching_file", {})
+        parts += [
+            "<h2>(a) page proxies</h2>",
+            f"<p>notes reaching file: {nrf.get('n')} / {nrf.get('of')} "
+            f"({nrf.get('fraction')})</p>",
+            f"<p>held out: {mp.get('held_out', {})}</p>",
+            f"<p>unread bars: {mp.get('unread_bars', {})}</p>",
+            f"<p>parts named: {mp.get('parts_named', {})}</p>",
+            "<h2>(c) print vs ours</h2>",
+            f"<p>{result.get('side_by_side')}</p>",
+            "<h2>(d) per-part per-bar score vs reference encoding</h2>",
+            f"<p>bar range {bs.get('bar_range')}, comparable cells "
+            f"{bs.get('comparable_cells')}, skipped {bs.get('skipped_cells')}</p>",
+            f"<p>totals: {totals}</p>",
+            "<h3>worst 10 cells</h3>",
+            "<ul>" + "".join(f"<li>{w}</li>" for w in bs.get("worst_10", [])) + "</ul>",
+        ]
     out_path.write_text("\n".join(parts))
 
 
@@ -598,6 +794,16 @@ def main(argv: Optional[List[str]] = None) -> int:
                     help="a second already-built record for the SAME page, "
                          "from another tree/commit")
     ap.add_argument("--weights", default="auto")
+    ap.add_argument("--full", action="store_true",
+                    help="run through INFER and export a file, reporting the "
+                         "page proxies, print-vs-ours and the per-part "
+                         "per-bar score against the reference encoding, as "
+                         "a SECOND view -- for AFTER a change looks right at "
+                         "the default GATHER+ADJUDICATE stage summary "
+                         "(ROADMAP 1.6b, DECISIONS 2026-09-30); whole-"
+                         "movement effects (carries, identity, roster) still "
+                         "need the overnight FULL re-gather, a different "
+                         "thing from this flag's name")
     ap.add_argument("--self-control", action="store_true",
                     help="score the reference encoding against itself (needs --doc)")
     ap.add_argument("--corrupted-control", action="store_true",
@@ -633,7 +839,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         result = run_quick(args.doc, weights=args.weights,
                            against_record=args.against,
                            step_timeout_s=args.step_timeout,
-                           out_root=args.out_root)
+                           out_root=args.out_root, full=args.full)
     except QuickError as exc:
         print(f"REFUSED: {exc}", file=sys.stderr)
         return 2
@@ -646,10 +852,20 @@ def main(argv: Optional[List[str]] = None) -> int:
     index_path = args.out_root / "out" / args.doc / f"{args.doc}-index.html"
     build_index_html(args.doc, result, index_path)
 
+    print(f"gather: {result['gather']['wall_time_s']}s "
+         f"(pages {result['gather'].get('pages_gathered')}, "
+         f"{'full' if args.full else 'GATHER+ADJUDICATE only'})")
+    if "stage_summary" in result:
+        print(render_stage_table(args.doc, result["stage_summary"]))
+    if "against" in result and "stage_summary" in result["against"]:
+        print(render_stage_table(f"{args.doc} (--against base)",
+                                 result["against"]["stage_summary"]))
     print(f"wrote {summary_path}")
     print(f"wrote {index_path}")
-    print(json.dumps({k: v for k, v in result.items()
-                      if k not in ("gather",)}, indent=2, default=str)[:4000])
+    if args.full:
+        print(json.dumps({k: v for k, v in result.items()
+                          if k not in ("gather", "stage_summary")},
+                         indent=2, default=str)[:4000])
     return 0 if result.get("status") == "ok" else 1
 
 
