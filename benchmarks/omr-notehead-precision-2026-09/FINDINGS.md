@@ -455,3 +455,81 @@ roadmap item's own mechanism.
 - `out/2.40/litolff-p3-evaluate-v2.json` (gitignored, regenerable),
   `out/print/same-side-second-v2-2.40/` (14 crops + manifest, committed),
   `probe/2.40/crop_all_refusals_v2.py`.
+
+### Manager review round 3 — a refused box's "better" partner must itself survive (2.30, 2.4a, AND a second same-side hop)
+
+**The bug (round 2's own finding):** 3 cells (`3/0/0/0`, `3/0/4/6`,
+`3/0/10/6`) each refused a box in favour of a "better" partner that was
+ITSELF refused by a DIFFERENT rule -- deleting a real note, worse than the
+doubled box this rule exists to fix.
+
+**First attempt (rejected by the framework, and rightly):** read the
+partner's own `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict via `ev.verdict`.
+`Evidence._admit`'s circularity guard refuses ANY read of a decision's own
+quantity unless that quantity has a registered `READINGS` entry (this one
+has none, by design) -- confirmed by instrumenting a real run: the read
+always came back `None`, and reproducing it with a raw log bypass would
+make the answer depend on which of a pair `adjudicate.run`'s per-subject
+iteration happens to reach first, an ORDERING ACCIDENT and not a fact
+about the page (proved directly: swapping two test glyphs' indices alone
+flipped the outcome).
+
+**The fix:** two new PURE, subject-independent re-checks, calling none of
+2.30/2.4a's own machinery through `Evidence` at all:
+`_would_lose_to_2_30s_duplicate_rule` (2.30's own IoU/centre/priority
+gates, re-run against the candidate partner) and `_would_survive_as_a_
+duplicate` (recurses the WHOLE chain: too_narrow, then 2.30, then this
+rule's OWN same-side/ink gate against a THIRD box, with a visited-set
+cycle guard). A partner is only accepted as the keeper if the recursion
+confirms SOME box at the end of its own chain survives everything.
+
+**Why recursion was needed, not just the one 2.30/2.4a hop:** `cell/3/1/2/9`
+(the round-2 "ambiguous 3-box cluster") turned out to be a SECOND-HOP
+case: glyph 2's chosen partner (glyph 5) itself loses a same-side/ink
+comparison to glyph 3 -- glyph 5 is refused too, but the MARK still has a
+survivor (glyph 3), so refusing glyph 2 is correct; a one-hop check alone
+would have blocked it unnecessarily. Round 3 handles this by walking the
+whole chain rather than checking one link.
+
+**RED test first**, `test_a_partner_thats_itself_refused_is_never_the_keeper`
+(one of the 3 real cases' shape: a genuine too-narrow sliver with
+deliberately HIGHER ink than the real head next to it) -- fails against
+round 2's code exactly as the real cells failed, passes on the fix.
+
+**Re-ran the p3 A/B**: **13 `same_side_second` refusals** (same shape as
+round 1's count, now for the right reason -- `partner_refused` blocks 4
+of what would otherwise have been 17). **Page-wide orphan check** (not
+just this rule's own pairs -- every notehead-classed glyph on the page,
+unioned by EITHER 2.30's or this rule's own duplicate links into
+clusters): **0 clusters with zero surviving boxes**
+(`probe/2.40/check_no_orphans.py`). The 3 previously-broken cells now each
+keep a real survivor (`glyph/3/0/0/0/8`, `glyph/3/0/4/6/4`,
+`glyph/3/0/10/6/2` all decide `False`, `partner_refused` counted instead
+of a wrongful refusal).
+
+**`cell/3/1/2/9` clean crop** (`out/print/same-side-second-v2-2.40/
+V-CLUSTER-cell-3-1-2-9-clean.png`, ≥60 px per head, one colour per box):
+glyph 1 (blue, `noteheadHalfOnLine`) and glyph 3 (green, `noteheadHalfInSpace`)
+sit at nearly identical positions -- a DIFFERENT class pair (2.12g's own
+"role twin" case, left alone by both 2.30 and this rule on purpose) --
+both stand. Glyph 2 (red) and glyph 5 (orange, an over-tall box spanning
+both 2's and 3's y-range) are same-class and refused by this rule, chained
+down to glyph 3 as the cluster's one surviving `noteheadHalfInSpace`. **My
+rule keeps glyph 3.** The print itself is genuinely hard to call from this
+crop -- it may be one merged mark or two real heads a small interval
+apart under one over-tall box, the SAME shape as the manager's own
+original diagnosis case; sent to Sean, not resolved here.
+
+`pytest -m "not slow"`: 4,091 passed, 3 skipped (was 4,090). `staged.check`:
+TOTAL 245, unchanged.
+
+### Files (round 3 additions)
+
+- `tools/omr/staged/adjudicators/notehead_precision.py` --
+  `_same_side_candidates`, `_same_side_beater`, `_would_survive_as_a_
+  duplicate`, `_would_lose_to_2_30s_duplicate_rule`.
+- `tools/omr/tests/test_staged_notehead_same_side_second.py` -- 1 new
+  RED-first test.
+- `probe/2.40/check_no_orphans.py` (page-wide zero-survivor check),
+  `probe/2.40/crop_cluster_3129.py`, `out/print/same-side-second-v2-2.40/
+  V-CLUSTER-cell-3-1-2-9-clean.png`.

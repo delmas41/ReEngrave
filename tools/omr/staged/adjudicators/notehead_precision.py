@@ -704,6 +704,114 @@ def _stem_rows_on(box_xywh, stems) -> List[Any]:
     return out
 
 
+def _same_side_candidates(ev: Evidence, cell, this_class: str, row,
+                          spacing_canonical: float):
+    """ROADMAP 2.40 ROUND 3 — the search body of `_notehead_same_side_
+    second_refusal`, EXTRACTED so it can be run on ANY box in the cell, not
+    only `ev.subject`'s own. `_would_survive_as_a_duplicate` below calls it
+    on a candidate's PARTNER to see whether the partner itself has a
+    same-side beater, without ever reading a verdict (rule 6: the same
+    pure re-check `_would_lose_to_2_30s_duplicate_rule` uses for 2.30).
+
+    Yields `(subj, other_row, other_ink, stem_row)` for every same-class,
+    overlapping, same-stem, same-side, within-gate candidate -- exactly
+    `_notehead_same_side_second_refusal`'s own filter chain, unchanged.
+    """
+    val = row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return
+    xywh = (float(val[1]), float(val[2]), float(val[3]), float(val[4]))
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    my_stems = _stem_rows_on(xywh, stems)
+    if not my_stems:
+        return
+    cx = xywh[0] + xywh[2] / 2.0
+    cy = xywh[1] + xywh[3] / 2.0
+    for subj, other_row in _cell_notehead_boxes(ev, cell).items():
+        if subj == row.subject:
+            continue
+        other_val = other_row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        if other_val[0] != this_class:
+            continue
+        if _notehead_box_iou(val, other_val) <= 0.0:
+            continue
+        other_xywh = (float(other_val[1]), float(other_val[2]),
+                     float(other_val[3]), float(other_val[4]))
+        shared = None
+        for stem_row, stem_box in my_stems:
+            if _stem_box_overlap(stem_box, other_xywh):
+                shared = (stem_row, stem_box)
+                break
+        if shared is None:
+            continue
+        stem_row, stem_box = shared
+        scx = stem_box[0] + stem_box[2] / 2.0
+        this_side = cx >= scx
+        other_side = (other_xywh[0] + other_xywh[2] / 2.0) >= scx
+        if this_side != other_side:
+            continue
+        other_cy = other_xywh[1] + other_xywh[3] / 2.0
+        dy_spaces = abs(cy - other_cy) / spacing_canonical
+        if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
+            continue
+        other_ink = _notehead_ink_net(ev, subj)
+        yield subj, other_row, other_ink, stem_row, dy_spaces
+
+
+def _same_side_beater(ev: Evidence, cell, this_class: str, row,
+                      spacing_canonical: float):
+    """The `(row, stem_row)` this rule would keep OVER `row` -- the
+    same-side candidate with strictly more ink -- or `None`. `row`'s own
+    ink must also be readable; a missing witness on EITHER side answers
+    `None` here (the caller's own `no_ink_witness` counting happens once,
+    at the top level, not on every recursive hop)."""
+    this_ink = _notehead_ink_net(ev, row.subject)
+    if this_ink is None:
+        return None
+    best = None
+    for subj, other_row, other_ink, stem_row, _dy in _same_side_candidates(
+            ev, cell, this_class, row, spacing_canonical):
+        if other_ink is None:
+            continue
+        if other_ink > this_ink and (best is None or other_ink > best[2]):
+            best = (other_row, stem_row, other_ink)
+    return best
+
+
+def _would_survive_as_a_duplicate(ev: Evidence, cell, this_class: str, row,
+                                  spacing_canonical: float,
+                                  _seen: Optional[frozenset] = None) -> bool:
+    """ROADMAP 2.40 ROUND 3 — CONNECT ALL THE WAY DOWN, NOT ONE HOP. The
+    round-2 fix asked "is my chosen partner refused by 2.30 or 2.4a" but
+    missed a partner refused by a SECOND `same_side_second` hop against a
+    THIRD box (`cell/3/1/2/9`: glyph 2 lost to glyph 5, which itself lost
+    to glyph 3) -- round 2's fix let glyph 2 be refused anyway, because
+    glyph 5's OWN loss was never checked. This recurses the SAME pure
+    re-checks (2.30's gate, `too_narrow`, and this rule's own same-side
+    gate) along the whole chain, with a visited-set guard against a cycle
+    (two boxes each preferring the other on some third path -- unobserved
+    here, but a pure recursion must not spin forever on one if a future
+    page has one).
+    """
+    if _too_narrow(row, spacing_canonical, {}):
+        return False
+    if _would_lose_to_2_30s_duplicate_rule(ev, cell, this_class, row,
+                                           spacing_canonical):
+        return False
+    seen = _seen or frozenset()
+    if row.subject in seen:
+        return False        # a cycle -- cannot confirm either side survives
+    beater = _same_side_beater(ev, cell, this_class, row, spacing_canonical)
+    if beater is None:
+        return True
+    better_row, _stem_row, _ink = beater
+    return _would_survive_as_a_duplicate(
+        ev, cell, this_class, better_row, spacing_canonical,
+        seen | {row.subject})
+
+
 def _notehead_same_side_second_refusal(ev: Evidence, this_row,
                                        spacing_canonical: float,
                                        detail: Dict[str, Any]
@@ -722,19 +830,17 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
     if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
         return None
     this_class = this_val[0]
-    this_xywh = (float(this_val[1]), float(this_val[2]),
-                float(this_val[3]), float(this_val[4]))
 
-    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
-    my_stems = _stem_rows_on(this_xywh, stems)
+    my_stems = _stem_rows_on(
+        (float(this_val[1]), float(this_val[2]), float(this_val[3]),
+         float(this_val[4])),
+        ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
     if not my_stems:
         # ⚠️ COUNTED, NOT REFUSED. The stem side cannot be read at all for
         # this glyph, so the widening has nothing to stand on (rule 8).
         detail["same_side_signal"] = {"no_stem_read": True}
         return None
 
-    this_cx = this_xywh[0] + this_xywh[2] / 2.0
-    this_cy = this_xywh[1] + this_xywh[3] / 2.0
     # ⚠️ ROADMAP 2.40, MANAGER REVIEW (S6): the KEEP CHOICE reads INK, never
     # detector score -- see `_notehead_ink_net`'s own docstring for why a
     # score fallback is unsafe (it kept an empty box over a real head on
@@ -748,42 +854,47 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
     better_stem = None
     checked = 0
     no_ink_witness = 0
-    for subj, row in _cell_notehead_boxes(ev, cell).items():
-        if subj == ev.subject:
-            continue
-        other_val = row.value
-        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
-            continue
-        if other_val[0] != this_class:
-            continue
-        if _notehead_box_iou(this_val, other_val) <= 0.0:
-            continue        # boxes must share pixels -- an overlap, not a gap
-        other_xywh = (float(other_val[1]), float(other_val[2]),
-                     float(other_val[3]), float(other_val[4]))
-        shared = None
-        for stem_row, stem_box in my_stems:
-            if _stem_box_overlap(stem_box, other_xywh):
-                shared = (stem_row, stem_box)
-                break
-        if shared is None:
-            continue         # no ONE stem joins both heads -- not this rule
-        stem_row, stem_box = shared
-        scx = stem_box[0] + stem_box[2] / 2.0
-        other_cx = other_xywh[0] + other_xywh[2] / 2.0
-        this_side = this_cx >= scx
-        other_side = other_cx >= scx
-        if this_side != other_side:
-            continue          # opposite sides -- a real second, straddling
-        other_cy = other_xywh[1] + other_xywh[3] / 2.0
-        dy_spaces = abs(this_cy - other_cy) / spacing_canonical
-        if dy_spaces >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES:
-            continue
+    partner_refused = 0
+    for subj, row, other_ink, stem_row, dy_spaces in _same_side_candidates(
+            ev, cell, this_class, this_row, spacing_canonical):
         checked += 1
-        other_ink = _notehead_ink_net(ev, subj)
         if this_ink is None or other_ink is None:
             no_ink_witness += 1
             continue         # no witness for this pair -- refuse neither
         if other_ink > this_ink:
+            # ⚠️ MANAGER REVIEW ROUND 3 — CONNECT, DON'T GUESS (rule 6). The
+            # 3 real cases found in round 2 (`3/0/0/0`, `3/0/4/6`,
+            # `3/0/10/6`) each refused THIS box in favour of a "better"
+            # partner that was ITSELF refused by a DIFFERENT rule (2.30's
+            # `notehead_is_a_duplicate_box` or 2.4a's `too_narrow`) --
+            # leaving the one real mark with NO surviving box, worse than
+            # the doubled box this rule exists to fix.
+            #
+            # ⚠️⚠️ NOT `ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=
+            # subj)` -- TRIED FIRST, AND REFUSED BY THE FRAMEWORK'S OWN
+            # CIRCULARITY GUARD FOR GOOD REASON. `Evidence._admit` treats
+            # ANY read of this decision's OWN quantity as circular unless
+            # `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` has a registered `READINGS`
+            # entry (it has none, by design -- this quantity has no single
+            # "direct reading"), so the read always came back `None` --
+            # and reproducing it with a raw `ev.log.verdict()` bypass would
+            # make the answer depend on which of the pair `adjudicate.run`'s
+            # per-subject iteration happens to reach FIRST, which is an
+            # ORDERING ACCIDENT, not a fact about the page (confirmed while
+            # building the RED test: swapping the two glyphs' indices alone
+            # flipped the outcome). So this asks the SAME QUESTION 2.30 and
+            # 2.4a already answer, via their own PURE, subject-independent
+            # predicates instead of their composed verdicts --
+            # `_would_lose_to_2_30s_duplicate_rule` and `_too_narrow` --
+            # which give the identical answer regardless of iteration
+            # order, because neither reads anything through `Evidence` at
+            # all. ⚠️ ONE HOP WAS NOT ENOUGH (`cell/3/1/2/9`: a partner that
+            # itself loses a SECOND same-side hop to a third box) --
+            # `_would_survive_as_a_duplicate` recurses the whole chain.
+            if not _would_survive_as_a_duplicate(
+                    ev, cell, this_class, row, spacing_canonical):
+                partner_refused += 1
+                continue
             better, better_stem = row, stem_row
             detail["same_side_dy_spaces"] = round(dy_spaces, 3)
             detail["same_side_this_ink"] = round(this_ink, 4)
@@ -792,6 +903,8 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
     signal = {"candidates_checked": checked}
     if no_ink_witness:
         signal["no_ink_witness"] = no_ink_witness
+    if partner_refused:
+        signal["partner_refused"] = partner_refused
     detail.setdefault("same_side_signal", signal)
     if better is not None:
         detail["duplicate_of"] = better.id
@@ -952,6 +1065,44 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
         return Ruling(value=True, reason="notehead_is_a_duplicate_box",
                       used=(this_row.id, better.id), detail=detail)
     return None
+
+
+def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
+                                        candidate_row, spacing_canonical: float
+                                        ) -> bool:
+    """ROADMAP 2.40 ROUND 3 — would `_notehead_duplicate_box_refusal` (2.30)
+    refuse `candidate_row` against SOME OTHER same-class box in this cell?
+
+    A PURE re-check, not a query of 2.30's own composed verdict: it re-runs
+    2.30's own gates (`_notehead_box_iou` ≥ `NOTEHEAD_DUPLICATE_IOU_MIN`,
+    `_same_mark_centres`) and priority (`_notehead_duplicate_priority`) --
+    the SAME functions 2.30 itself calls, cited not restated -- against
+    `candidate_row` directly, so the answer does not depend on whether
+    `candidate_row`'s own subject has been PROCESSED yet in this quantity's
+    per-subject iteration (see `_notehead_same_side_second_refusal`'s own
+    comment on why a verdict read would be order-dependent here).
+    `candidate_row.subject` is excluded from its own search, matching 2.30's
+    own `if subj == ev.subject: continue`.
+    """
+    cand_val = candidate_row.value
+    if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
+        return False
+    cand_priority = _notehead_duplicate_priority(candidate_row)
+    for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
+        if subj2 == candidate_row.subject:
+            continue
+        val2 = row2.value
+        if not isinstance(val2, (list, tuple)) or len(val2) != 5:
+            continue
+        if val2[0] != this_class:
+            continue
+        if _notehead_box_iou(cand_val, val2) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(cand_val, val2, spacing_canonical):
+            continue
+        if _notehead_duplicate_priority(row2) > cand_priority:
+            return True
+    return False
 
 
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:

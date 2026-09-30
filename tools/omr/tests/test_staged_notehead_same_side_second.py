@@ -67,13 +67,17 @@ class TestNoteheadSameSideSecond(unittest.TestCase):
         the real head ink (`ink_net.best` 0.85) and survives; `lo` sits
         mostly on blank paper (0.10) and is refused, REGARDLESS of `lo`
         having the lower detector confidence too (score is not read here at
-        all, manager review S6)."""
+        all, manager review S6). ⚠️ `hi` is glyph 0 (processed FIRST by
+        `subjects_for`'s ascending-subject sort) so its own verdict is
+        DECIDED `False` before `lo` (glyph 1) is evaluated -- round 3's
+        partner-survival check (`same_side_signal.partner_refused`) needs
+        the partner ALREADY decided to let a real refusal through at all."""
         log = Log()
         _cell_geometry(log)
-        lo = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
-                      y_c=200.0, w_c=140.0, h_c=100.0, conf=0.5)
-        hi = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+        hi = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
                       y_c=250.0, w_c=140.0, h_c=100.0, conf=0.6)  # dy=0.5 sp
+        lo = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                      y_c=200.0, w_c=140.0, h_c=100.0, conf=0.5)
         _ink(log, lo, net_best=0.10)
         _ink(log, hi, net_best=0.85)
         # Stem spans both heads' y-range and sits inside both x-ranges
@@ -98,13 +102,16 @@ class TestNoteheadSameSideSecond(unittest.TestCase):
         RED against that build: `hi_score` (conf 0.9) sits on blank paper
         (`ink_net.best` 0.08, S6's own shape -- mostly white paper plus one
         staff line) while `lo_score` (conf 0.3) carries the real ink (0.90).
-        The higher-score, blank-paper box MUST be the one refused."""
+        The higher-score, blank-paper box MUST be the one refused. ⚠️
+        `lo_score` is glyph 0 (processed FIRST) so it is DECIDED `False`
+        before `hi_score` (glyph 1) is evaluated -- round 3's partner-
+        survival check needs the partner already decided."""
         log = Log()
         _cell_geometry(log)
-        hi_score = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
-                            y_c=200.0, w_c=140.0, h_c=100.0, conf=0.9)
-        lo_score = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+        lo_score = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
                             y_c=250.0, w_c=140.0, h_c=100.0, conf=0.3)
+        hi_score = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                            y_c=200.0, w_c=140.0, h_c=100.0, conf=0.9)
         _ink(log, hi_score, net_best=0.08)
         _ink(log, lo_score, net_best=0.90)
         _stem(log, x_c=260.0, y_c=190.0, w_c=20.0, h_c=200.0)
@@ -219,6 +226,50 @@ class TestNoteheadSameSideSecond(unittest.TestCase):
 
         self.assertIs(_verdict(log, lo).value, False)
         self.assertIs(_verdict(log, hi).value, False)
+
+    def test_a_partner_thats_itself_refused_is_never_the_keeper(self):
+        """⚠️ MANAGER REVIEW ROUND 3, one of the 3 real cases found on
+        Litolff p3 (`cell/3/0/10/6`): the rule's chosen "better" partner
+        (higher ink) was a genuinely TOO-NARROW sliver -- itself refused by
+        2.4a's `too_narrow` -- so BOTH boxes of one real mark ended up
+        refused and it had NO surviving box at all, worse than the doubled
+        box this rule exists to fix.
+
+        `partner` (glyph 0, processed FIRST -- `subjects_for` sorts by
+        subject, ascending glyph index) is a genuine sliver: width 0.5 sp,
+        under `TOO_NARROW_MIN_SPACES` (1.0), so 2.4a refuses it as
+        `too_narrow` regardless of ink -- and its `ink_net.best` (0.95) is
+        deliberately HIGHER than `this`'s (0.30), which is exactly the
+        shape that made the first build refuse `this` in the partner's
+        favour. `this` (glyph 1) must NOT be refused: its only same-side
+        candidate is a box that will not survive, so rule 6/8 says count
+        it and leave both alone."""
+        log = Log()
+        _cell_geometry(log)
+        partner = _notehead(log, 0, cls="noteheadBlackInSpace", x_c=200.0,
+                           y_c=200.0, w_c=50.0, h_c=100.0, conf=0.6)
+        this = _notehead(log, 1, cls="noteheadBlackInSpace", x_c=200.0,
+                        y_c=250.0, w_c=140.0, h_c=100.0, conf=0.6)  # dy=0.5sp
+        _ink(log, partner, net_best=0.95)
+        _ink(log, this, net_best=0.30)
+        # Stem sits at the LEFT edge both boxes share (x 205-215) so both
+        # centres (225, 270) fall on its right -- the SAME side -- despite
+        # the two boxes having very different widths.
+        _stem(log, x_c=205.0, y_c=190.0, w_c=10.0, h_c=200.0)
+        log = _run(log)
+
+        v_partner = _verdict(log, partner)
+        v_this = _verdict(log, this)
+        self.assertIs(v_partner.value, True)
+        self.assertEqual(v_partner.reason, "too_narrow")
+
+        self.assertIs(v_this.value, False,
+                      "must not be refused in favour of a partner that "
+                      "does not survive")
+        self.assertEqual(v_this.reason, "notehead")
+        signal = (v_this.detail or {}).get("same_side_signal")
+        self.assertIsNotNone(signal)
+        self.assertTrue(signal.get("partner_refused"))
 
     def test_the_reason_is_named_apart_from_2_30s(self):
         """The two mechanisms stay tellable apart on a census (CLAUDE.md
