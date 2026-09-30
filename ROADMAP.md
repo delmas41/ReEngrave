@@ -17,88 +17,107 @@ re-enter.
 
 ---
 
-## START HERE — state at the end of the overnight session 2026-09-28 → 29
+## START HERE — state at the end of the session of 2026-09-28 → 29 (overnight + the day)
 
-Main is at or past `2a8c36b2`. The tree is the record; this block is the
-pointer. Read CLAUDE.md, then this block, then DECISIONS' 2026-09-28
-entries (Sean's steer is unchanged: build and wire, cheap proof, reading and
-deciding before export, no whole-work runs).
+Main is at or past `b5f5fe21`. The tree is the record; this block is the
+pointer. Read CLAUDE.md (rule 7 gained a line today), then this block, then
+`docs/DECISIONS.md`'s 2026-09-29 entries — most are Sean's and they steer
+everything below.
 
-**Where the product is (acceptance, `benchmarks/acceptance/current.json`,
-clean tree, records re-gathered tonight — scans on `23f4fa9e`, engraved on
-`baba1c76`):**
+### Where the product is (acceptance, `benchmarks/acceptance/current.json`, clean tree, records re-gathered 09-29 afternoon on `8c652d89`, all `dirty:false`)
 
 | | Litolff 5/i | Brahms 1/i | engraved |
 |---|---|---|---|
-| pitched notes written | 3,867 → **4,407** | 3,529 → **4,247** | 331 → 341 of 372 |
-| bars held out (2.8) | 1,857 → **1,576** | 4,607 → **4,200** | 36 → **4** |
-| other | `no_pitch` 471 → 135 after 2.10b (not yet in the record) | `staff_not_identified` 956 | F1 0.951 (=), LilyPond bar-check failures 17 → **0** |
+| pitched notes written | 3,867 (09-28) → **4,885** | 3,529 → **5,501** | 331 → 341 of 372 |
+| bars held out (2.8) | 1,857 → **1,499** | 4,607 → **4,195** | 36 → **4** |
+| staff not identified | 228 | 956 → **59** (horns, 2.26/b) | 0 |
+| other | `no_pitch` 471 → 135 (2.10b) | — | F1 0.951, LilyPond bar-check 17 → **0** |
 
-**Landed overnight** (each merged on a verified tree; fast tier 3,565 →
-3,748, `staged.check` 250 → 247): 2.6c second half (ledger direction a HARD
-gate, `far_no_rungs` → `owner_not_read`), 2.6d (ledger rungs read from the
-INK too), 2.6e (`tied` owners counted, not written twice), 2.6f (a far-side
-"rung" that is the head's own ink double-boxed is discounted — 7 of Sean's
-kind of reversals revert), 2.10b (INFER settles a NARROWED clef among its
-own candidates), 2.12l (meter-change digits boxed as noteheads refused,
-filed as a witness), 2.13 (printed bar number read, compared, never
-applied), 2.17 (measured), 2.18/2.18b/2.18c (beam count reads the stem's
-side; strokes past the tip; flags that disagree NARROW; flag ink at a bare
-stem tip NARROWS), 2.19 (a lone whole rest sizes the bar when the other
-glyphs were decided away), 2.20 (diagnosis), 2.3a/2.3b (the engraved
-bar-21 fault was a spurious BARLINE; vote-only fallback fixed), 3.2b (ties
-paired in ADJUDICATE, `Q.TIE_PAIR`). Evidence merged: missing-notes funnel,
-2.6c.3 reversals, 2.6g. **Not merged, on branches:** 3.2c (dead at zero),
-2.6h (dead at zero), **2.21 voice split — BUILT under CONVENTION ASSUMED on
-`claude/voice-split-2.21` `59250029`, held for Sean's answer.**
+Not yet in those records (merged after `8c652d89`): 2.29 meter digits, 2.30
+duplicate heads, 2.33 rest placement — a re-gather picks them up.
 
-**Landed the morning of 09-29** (fast tier 3,837, `check` 247): 2.22 + 2.22b
-(whole-movement held-bar funnel; `reconcile_duration` reads what is in the
-bar; a carried meter HOLDS where the bars are silent), 2.23 (head fill from
-the ink narrows), 2.24 (dot class diagnosed: mostly a classifier artefact),
-2.25/2.25b (strokes that are a ledger line, the neighbour's beam or inside a
-decided arc are not this note's beam; a bared stem NARROWS), 2.26/2.26b (the
-956 Brahms held-out heads are HORN staves: crook read off the label, bare
-`(Es)` placed via the document's own crook labels — research in
-`benchmarks/omr-staff-identity-2026-09/HORN-CROOK-RESEARCH.md`), 2.27 (three
-owners read a decided `glyph_owner`), provenance `dirty` fixed. Re-decided on
-`a9bdec8a` (before 2.23/2.25/2.26): Litolff notes **4,722**, held 1,522;
-Brahms notes **4,358**, held 4,145. **Process (Sean, DECISIONS 09-29): lanes
-prove wiring with microscopic tests, no pricing runs; machine-time nohup runs
-are fine.** Open: 2.27b placement-conventions table (doc, then Sean's answers).
+### How to work (all Sean, DECISIONS 2026-09-28/29)
+- **Wiring and structure, proved by minimal tests** (one RED→GREEN per
+  connection + one control) from a few real rows. No gathers, re-adjudications
+  or crop batches per lane. **Machine time is free; context and tokens are
+  not** — long runs are unattended nohup scripts that write a small summary.
+- **Biggest difference first:** every lane names the funnel bucket it moves;
+  what moves no top bucket is PARKED (2.28 page text, pedal/ottava output,
+  bowing research).
+- **Lanes run on Sonnet** (`model: "sonnet"`), max two at a time.
+- **CLAUDE.md rule 7, new line: before trusting any result, ask who says it's
+  right** — Sean, the print or the reference encoding is evidence; a model's
+  own output, or a result whose raw data is gone, is not.
+- **New weights are tested Sean's way:** graft into a COPY of production and
+  compare the two on GATHER+ADJUDICATE only — `python3 -m tools.omr.staged
+  … --through adjudicate`; harness `benchmarks/omr-weights-ab-2026-09/run_ab.sh`
+  (P-vs-P control = zero differences). The graft tool
+  (`benchmarks/omr-labeling-survey-2026-09/merge_class_head.py`) is FIXED and
+  prints a SELF-CHECK on every build (refuses if anything but the grafted rows
+  moved).
+- Sean labels: a real symbol ANYWHERE in the crop is `t` (the pipeline decides
+  the staff later); a second box on one mark is `f`; `unsure` is excluded.
 
-**Waiting on Sean — answer these first (one line each):**
-1. **The voice-split question**, `benchmarks/omr-voice-split-2026-09/QUESTION.md`
-   (8 crops): when do opposite stems on one staff mean TWO voices, and when
-   is it one line whose stems flip at the middle line? If "only when they
-   overlap in time", merge `claude/voice-split-2.21` as is.
-2. Crops with `VERDICT_none_yet: null` from tonight: `2.6c-reversal-*` (9 —
-   the lane read 9/9 base right), `2.6c-far-*` (8), `2.6d-changed-*` (12),
-   `owner-not-read-litolff-*` (14), `beams-2.18-*`/`beams-2.18b-*` (16),
-   `flag-2.18c-*`, `stem_gap-*` (24), `beams_ambiguous-*` (12, missing
-   notes), `held-2026-09-29-*` (8), `meter-digit-2.12l-*` (5), tie crops
-   (`benchmarks/omr-tie-pairing-2026-09/out/print/`, 8 — crop 3 is a staff
-   line read as a tie), 2.10b filled clefs (5), 2.13 bar numbers (4) — plus
-   everything the 09-28 block listed.
+### FIRST ITEM NEXT SESSION — Sean's question: how were the weight-training results being measured?
+Today overturned two training-era conclusions and exposed a shipped mistake:
+1. **Round 6 ("specialists delete their own class") — WITHDRAWN.** It does not
+   reproduce under its own recipe and instrument; its raw outputs were deleted
+   (`REST_SPECIALIST_EXPERIMENT.md`).
+2. **"41% of rests/accidentals unboxed" — ~2× inflated** (true ~20%): the
+   probe used the DETECTOR as judge; key-signature class mix-ups and detector
+   false positives were charged to Sean (`UNBOXED-AUDIT.md`).
+3. **Production is not what it was believed to be.** The 09-04 "hollow
+   graft" is 589/595 tensors the fine-tune (the tool grafted backwards). And
+   option A showed that accidental fine-tune reads hollow heads BETTER than
+   the intended graft (Beethoven 5 p1: 31 vs 17 of 68 half notes; pitch recall
+   0.63 vs 0.50) — so the fine-tuned "eyes" carry the gain, and **"fine-tuning
+   deletes classes" (round 5, "measured eleven ways") needs the same re-check.**
+Start from `benchmarks/omr-labeling-survey-2026-09/HOW-THE-TESTS-JUDGE.md`
+(what each training test treats as truth). Known: the forgetting axis's truth
+is Sean's verdicts on an OLDER model's detections (anything that model never
+boxed is absent from truth); the hollow axis is the reference encoding on ONE
+page; the specialist screen's matching is documented there. Sean's checked
+rest verdicts (`benchmarks/omr-queue-rests-2026-09/verdicts/`, 265 real / 84
+not / 7 unsure) are now a clean truth for rests. Answer his question
+conceptually first; re-open round 5 only with a truth source that passes
+rule 7.
 
-**Work order next (reading/deciding):**
-1. Whatever 2.22 (the WHOLE-movement held-bar funnel, below) names as the
-   top cause.
-2. Re-decide the two scan records on today's main once (2.10b, 2.12l and
-   the 2.3b barline fix are not in them; 2.3b needs a re-gather).
-3. `owner_not_read` (Litolff 345, Brahms 225): 330 sit at the 2-rung
-   boundary and 306 vanish entirely; 0 of 14 crops showed a missed printed
-   rung — Sean's verdicts on `owner-not-read-litolff-*` decide whether the
-   "far" threshold is wrong.
-4. `staff_not_identified` on Brahms (956 heads) — untouched tonight.
+### Then (reading, funnel order)
+- Held bars remain the top loss. The whole-movement funnel (2.22, FINDINGS §17)
+  ranks them; rests' false positives now have 2.33's rules — re-read the funnel
+  after the next re-gather.
+- 2.33's named next items: the rest beat-slot rule (a rest sits in its voice's
+  gap at the onset its preceding durations imply), and the bar-sum tie-break
+  for an undecided rest/notehead mark (EVALUATE).
+- `duration_narrowed` (Brahms 2,559, Litolff 902) is the second bucket.
+- `owner_not_read` (Litolff 373, Brahms 232) — far notes with no ledger rungs.
 
-**Instrument notes learned tonight:** a test file whose TEXT names
-`library/`, `omr-weights/`, a venv or a PDF path (even in a comment) goes
-slow silently (CLAUDE.md §6c) — compare the passed count after every merge.
-Every acceptance record of 09-28/29 is stamped `dirty:true` only because
-the stamp counted the run's own UNTRACKED outputs; FIXED on main after the
-adoption (`__main__._provenance`: tracked modifications or an untracked
-`.py` only) — the next gather stamps honestly.
+### Waiting on Sean
+- Accidentals review queue (106 candidates, ~35 min) — only if the weight
+  question says labels matter: `python3 -m tools.omr.annotate.recut_cells
+  --bench-dir benchmarks/omr-queue-accidentals-2026-09` then `python3 -m
+  tools.omr.annotate.server --bench-dir benchmarks/omr-queue-accidentals-2026-09 --port 5050`.
+- Crops with `VERDICT_none_yet: null` from 09-29 (not blocking): 2.6c-reversal,
+  2.6c-far, 2.6d-changed, owner-not-read-litolff, beams-2.18/2.18b, flag-2.18c,
+  stem_gap, beams_ambiguous, held-2026-09-29, held-mvt W, meter-digit-2.12l,
+  tie pairing, 2.10b clefs, 2.13 bar numbers, o226 horns, rest-experiment sheets.
+
+### Landed 2026-09-28 → 29 (each merged on a verified tree; fast tier 3,565 → 3,923; `staged.check` 250 → 245)
+2.6c (hard ledger gate) / 2.6d (ledger rungs from the ink) / 2.6e (tied owners
+counted) / 2.6f (own-rim rung) / 2.27 / 2.27c / 2.27d (placement: owners read
+decided ownership; dynamic band; dots follow their note; displaced rests; grand
+staff; ottava), 2.10b (narrowed clef settled by INFER), 2.12l (meter digits
+boxed as heads), 2.13 (printed bar number), 2.17/2.18/2.18b/2.18c (beams, flags,
+stem-tip ink), 2.19/2.22/2.22b (held-bar funnel, measure rest, carried meter
+holds), 2.21b (Sean's voice convention), 2.23 (head fill from ink), 2.25/2.25b
+(strokes that are not this note's beam), 2.26/2.26b (horn crooks), 2.29 (meter
+digit OCR), 2.30 (duplicate heads), 2.33 (rest placement: crop edge, whole rest
+centred, per-class vertical window, stem, two staff lines), 2.34 (graft tool
+fix, `--through`, A/B harness), 3.2b (ties), 2.3a/2.3b (engraved barline);
+provenance `dirty` fixed; 3.2c and 2.6h built but dead at zero (not merged).
+Evidence merged: missing-notes funnel, 2.6c.3 reversals, 2.6g, 2.20, 2.24,
+2.27b placement conventions, unboxed audit, graft training-set audit, rest
+experiment, option A.
 
 **The viewer:** `python3 -m tools.omr.staged.review.server --record <a
 RE-DECIDED record> --pdf <pdf> --staff staff/3/0/9` →
