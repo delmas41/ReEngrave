@@ -88,6 +88,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
+from .. import geometry as _geom
 from .. import record as R
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
@@ -956,7 +957,24 @@ def _belongs_to_a_nearer_staff(ev: Evidence, box_row, contested_by,
     # of a LADDER from that staff that reaches the note (FINDINGS §2.6c.2).
     # Rungs are read from the head's cell AND the near staff's same-index
     # cell -- one bar, both pads -- with their 3.4g-2 verdicts.
-    x0, x1 = float(page_box[0]), float(page_box[2])
+    #
+    # ⚠️ ROADMAP 2.39: for a REGULAR notehead (`geometry.is_regular_
+    # notehead`), the x-window used to search for a ladder is the STANDARD
+    # box (this staff's OWN spacing `sp`, already read above by
+    # `_staff_geometry` -- never re-derived, never defaulted), not the raw
+    # detector box -- the same reasoning as GATHER's ledger readers: a
+    # Brahms sliver or a Litolff merged box is not the head's true ink
+    # width. A whole note, grace/cue head, or any class this round did not
+    # measure keeps the raw box (item 5). `sp` is guaranteed non-None here
+    # (`mine = _staff_geometry(...)` above already returned `None` --
+    # abstain-equivalent -- otherwise), so this never needs its own
+    # fallback.
+    class_name = box_row.value[0] if box_row.value else None
+    if _geom.is_regular_notehead(class_name):
+        cx = (float(page_box[0]) + float(page_box[2])) / 2.0
+        x0, x1, _, _ = _geom.standard_head_box(cx, y, sp)
+    else:
+        x0, x1 = float(page_box[0]), float(page_box[2])
     cell = ev.subject.at(Kind.CELL)
     near_cell = R.cell(cell.page, cell.system, near[1].staff, cell.cell)
     # ⚠️ ROADMAP 2.6d: `cv_rungs` is the SAME second reader `glyph_owner`
