@@ -533,3 +533,204 @@ TOTAL 245, unchanged.
 - `probe/2.40/check_no_orphans.py` (page-wide zero-survivor check),
   `probe/2.40/crop_cluster_3129.py`, `out/print/same-side-second-v2-2.40/
   V-CLUSTER-cell-3-1-2-9-clean.png`.
+
+---
+
+## ROADMAP 2.42 — stacked heads on one stem: how many, and where
+
+Supersedes 2.40's pair-wise `same_side_second` rule and absorbs 2.41's
+measurement-only two-head fit (`benchmarks/omr-notehead-width-2026-09/
+FINDINGS.md` §2.41). Branch `claude/stacked-notehead-2.42`, from
+`claude/acceptance-measure-notehead-box-e75821` merged with 2.40's unmerged
+work (`worktree-agent-a212d008990c6b49a`).
+
+### Where it lives
+
+- **GATHER** (`tools/omr/staged/gather.py`): `gather_stacked_head_fit`,
+  `fit_stacked_head_count` (pure), `Q.STACKED_HEAD_FIT`. Groups overlapping
+  notehead-classed boxes (any class) by (shared `Q.STEM` row, same side of
+  its centre x); for each group of >=2 boxes, fits a standard-head-box ink
+  template (`notehead_ink_under`, the SAME reader `gather_notehead_ink`
+  already trusts) at candidate half-step positions, and picks the fewest
+  head count (1-3) that explains the ink. **The decision criterion is NOT
+  "does k+1 beat k's mean"** — measured wrong on a real two-head fixture
+  before shipping (kept as `test_staged_stacked_head_fit.
+  TestFitStackedHeadCountPure`'s own comment): the single best-scoring
+  position is, by construction, one member of a real dyad's own pair, so
+  the pair's mean is never CLEARLY ahead of the lone best score, only AS
+  good — a "beats" test never fires on a genuine dyad. The working
+  criterion, generalised from 2.41's own `two_head_fit.supports_two_heads`:
+  an additional head is real where its own slot clears an absolute fill
+  floor (`STACKED_HEAD_MIN_SLOT_FILL = 0.4`, 2.41's own number, cited) AND
+  the group's mean has not dropped by more than the stated margin
+  (`STACKED_HEAD_FIT_MARGIN = 0.05`). Inside that band: ABSTAIN
+  `ambiguous`, never guess.
+- **ADJUDICATE** (`tools/omr/staged/adjudicators/notehead_precision.py`):
+  `_stacked_head_duplicate_refusal` (reason `stacked_head_duplicate`,
+  composed into `adjudicate_notehead_is_not_a_notehead` in place of the
+  now-unwired `_notehead_same_side_second_refusal`) picks the keeper among
+  boxes sharing one fitted slot by INK (`Q.STACKED_HEAD_FIT.detail["ink"]`,
+  read never re-derived — the ported 2.40 keep-by-ink rule); a slot held by
+  one box, or a contest with no ink witness on either side, is untouched
+  (rule 8). `adjudicate_stacked_head_position` (new decision,
+  `Q.STACKED_HEAD_POSITION`) files the fitted slot's own position as a
+  DECIDED witness for every surviving glyph, abstaining
+  `stacked_head_refused` where the same-stage refusal already condemned it.
+- **EVALUATE** (`tools/omr/staged/consequences.py`): `restate_pitch` reads
+  `Q.STACKED_HEAD_POSITION` first and falls back to the raw
+  `Q.NOTEHEAD_STAFF_POSITION` — a substitution at the ONE population this
+  applies to (a decided verdict only exists for a glyph GATHER's fit named
+  a slot for), never a second source of positions for a lone head.
+- 2.40's own function (`_notehead_same_side_second_refusal`) is RETAINED,
+  UNWIRED — its own tests (`test_staged_notehead_same_side_second.py`) now
+  call it DIRECTLY (a throwaway `DecisionSpec`/`Evidence`, not the
+  production one, which no longer declares `Q.STEM`/`Q.NOTEHEAD_INK` since
+  nothing in the composed decision reads them any more) rather than through
+  `adjudicate.run`, so the print-checked regression record stays green.
+
+### Fixed cases (RED-first, `tools/omr/tests/test_staged_stacked_head_fit.py`, 21 tests)
+
+Synthetic, no `library/`/`omr-weights`/`.pdf"` strings (fast tier):
+a lone single head unchanged (no row at all); two heads a third apart, both
+survive, lower kept at its own slot; a real second straddling one stem
+(opposite sides) stands, untouched; two notes on separate stems never
+group; S6's own shape (one head, two boxes, the inked one survives
+regardless of detector score); no-ink-witness and ambiguous-GATHER-fit
+abstentions counted, never guessed; the EVALUATE connection (decided
+position wins only in a stacked group, never for a lone head).
+
+### One-page A/B, GATHER+ADJUDICATE+EVALUATE, `--weights auto`
+
+Base arm: `claude/acceptance-measure-notehead-box-e75821` (the worktree
+already checked out at that branch — no separate clone needed). Command,
+both arms: `python3 -m tools.omr.staged <pdf> --pages N --weights auto
+--through evaluate --out <rec>.json`.
+
+**Litolff p3** (pdf idx 3): `notehead_is_not_a_notehead` reason histogram —
+base `{notehead: 441, clipped_fragment: 17, notehead_is_a_duplicate_box: 7,
+too_narrow: 6, is_a_clef: 2, belongs_to_a_nearer_staff: 1}` (474 total,
+IDENTICAL to the pre-2.42 tree); new arm moves EXACTLY the 50 boxes that
+were plain `notehead` into `stacked_head_duplicate` — every other reason's
+count is bit-identical. 72 stacked groups found; 106 glyphs decided a
+fitted slot (`Q.STACKED_HEAD_POSITION`), 58 abstained
+`stacked_head_refused` (the group's own loser), 5 abstained `ambiguous`
+(GATHER declined to pick a count). 562 notehead subjects carry a pitch in
+both arms; **53 pitches changed**, 0 lost, 0 gained. `pytest -m "not slow"`:
+4,136 passed / 3 skipped (was 4,091 before this branch); `staged.check`
+TOTAL 245 (unchanged from baseline — inventory/wiring/capture/brakes each
+needed a registration fix to stay flat, see commits).
+
+**Brahms p1** (pdf idx 1): reason histogram — base `{notehead: 724,
+too_narrow: 225, is_a_meter_digit: 30, clipped_fragment: 26,
+belongs_to_a_nearer_staff: 6, notehead_is_a_duplicate_box: 4}` (1015
+total); new arm: `notehead` 724->713, `stacked_head_duplicate` +12,
+`belongs_to_a_nearer_staff` 6->5 (one glyph this rule now catches FIRST,
+earlier in the decision's own order, that the later rule would otherwise
+have caught) — every other reason unchanged, 0 lost/gained across 1015.
+1,555 notehead subjects carry a pitch in both arms; **7 pitches changed**.
+No `ambiguous` abstentions on this page (0 of however many groups formed).
+
+### `glyph/3/0/0/2/4` + `/9` — Sean's own confirmed case, fixed
+
+DECISIONS 2026-09-30, Sean, on this exact crop: *"Those are simple 3rds."*
+Base arm: both boxes stand, pitches F6 / E6 — **a second**, the bug. New
+arm: GATHER's fit finds k=2 at positions -8/-6 (2 half-steps apart = a
+THIRD in `Q.NOTEHEAD_STAFF_POSITION`'s own units), both boxes SURVIVE
+(different slots, nothing refused) and EVALUATE now reads the fitted
+positions: `/2/4` F6 -> **G6**, `/2/9` stays **E6** — G6/E6 IS a third
+(skip F). **Print-checked**
+(`out/print/2.42/litolff-pitch-only/P02-glyph-3-0-0-2-right.png`): two
+real, touching/merged noteheads stacked directly on one stem, both
+crosshairs land on real ink, exactly the shape Sean named. `glyph/3/0/0/2/1`
++ `/3` (the OTHER pair the brief names, F6/D6, a third already) are
+confirmed UNCHANGED across both arms — they were never wrongly collapsed
+and this item does not regress them.
+
+### `cell/3/1/2/9` — NOT newly resolved, and that is reported not hidden
+
+2.40's own round 3 (above) already found this 4-box group collapses to ONE
+surviving box (glyph 3, kept) via its OWN pair-wise chain, and sent a clean
+crop to Sean unresolved ("may be one merged mark or two real heads"). 2.42's
+independent, GATHER-side ink fit reaches the SAME answer by a DIFFERENT
+mechanism (`k=1`, ink scores at the candidate positions do not clear the
+floor for a second head): glyphs 1, 2 and 5 refused `stacked_head_duplicate`,
+glyph 3 kept and its OWN pitch moves G3 -> A3 (the fitted slot's own
+position, not the raw box centre's rounding). Print-checked
+(`out/print/2.42/litolff/G22-glyph-3-1-2-9-left.png`): a diagonal,
+MERGING-plate ink stroke that genuinely could be one slanted head or two
+touching ones — **still not confirmable from the print alone**, consistent
+with round 3's own finding. Two independent mechanisms agreeing is
+suggestive but is NOT the second, independent witness CLAUDE.md §10 requires
+(both read the SAME ink) — reported as corroboration, not resolution; still
+flagged for Sean.
+
+### Print check
+
+**Litolff p3**: every group with >=1 refusal (41, `out/print/2.42/litolff/`)
+plus every group with a pitch change but no refusal (17,
+`out/print/2.42/litolff-pitch-only/`) = 58 of 72 groups found, covering
+every behavioural change on the page. **Brahms p1**: 12 random groups,
+seed 2042 (`out/print/2.42/brahms/`, `crop_groups.py --sample 12 --seed
+2042`).
+
+⚠️ NOT ALL 70 CROPS WERE INDIVIDUALLY JUDGED (time budget) — 9 were,
+spanning both pages and k=1/k=2/k=3 groups: **7 of 9 clearly correct**
+(S6's own cell; the confirmed-third case; a clean single-head Brahms
+refusal; a near-tie Brahms refusal where both candidates score `ink=1.00`
+and the ARBITRARY winner is still the CORRECT outcome, since either box
+names the same one real mark; a genuine 3-note chord, all three kept and
+well-centred). **2 of 9 genuinely ambiguous**, both on Litolff's own
+merging plate (diagonal ink a print alone cannot settle, one of them
+`cell/3/1/2/9` above) — **0 of 9 clearly wrong**. The legend on every crop
+reports TWO numbers per box, labelled apart, after a mid-build check caught
+them disagreeing in direction on a real case (`glyph/1/0/2/0/35`): the
+script's own crude raw-darkness measure over the full detector box (a
+rough visual cross-check only) and `decided` — `Q.STACKED_HEAD_FIT.
+detail["ink"]`, the ACTUAL staff-line-erased fill the keep/refuse choice
+read, measured at the FITTED standard box rather than the raw one. The
+`decided` number is always consistent with which box survived; the raw
+one is not, and reporting only the raw one first made a correct refusal
+look wrong.
+
+### Open, not built
+
+- **Whole notes (no stem)** are out of scope — every fixed case and every
+  A/B finding above is a stemmed group. Named in the roadmap row; not
+  measured here.
+- **Exact ties** (`Q.STACKED_HEAD_FIT.detail["ink"]` equal to the last
+  decimal on both contested boxes, observed on Brahms p1) are broken by
+  iteration order, not evidence. Harmless where either box names the same
+  real mark (observed case); unmeasured where it would not be.
+- `cell/3/1/2/9` (above) is unresolved by construction — CONVENTION
+  ASSUMED / NOT CONFIRMED that two mechanisms agreeing on the SAME ink is
+  worth anything beyond what one alone was.
+- `check_no_orphans.py`-style page-wide zero-survivor check (2.40's own
+  round 3 instrument) was NOT re-run against the stacked-head population
+  specifically — the per-slot "a slot with one box is untouched" guarantee
+  and the keep-by-ink logic are the same shape 2.40's own round 3 proved
+  safe, but a fresh page-wide sweep on THIS rule's own refusals is future
+  work, not built here (time).
+
+### Files
+
+- `tools/omr/staged/record.py` — `Q.STACKED_HEAD_FIT`,
+  `Q.STACKED_HEAD_POSITION`, `READERS.CV_STACKED_HEAD_FIT`,
+  `ABSTAIN.STACKED_HEAD_REFUSED`, `CLAIMS` entries for both quantities.
+- `tools/omr/staged/gather.py` — `gather_stacked_head_fit`,
+  `fit_stacked_head_count`, `_stacked_best_combo`, `_stacked_stem_xywh`,
+  `_stacked_boxes_overlap`, `_stacked_side`.
+- `tools/omr/staged/adjudicate.py` — `Q.STACKED_HEAD_POSITION` added to
+  `ORDER`, immediately after `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`.
+- `tools/omr/staged/adjudicators/notehead_precision.py` —
+  `_stacked_head_duplicate_refusal`, `_stacked_head_group_rows`,
+  `adjudicate_stacked_head_position`; `adjudicate_notehead_is_not_a_
+  notehead`'s own call site and declarations updated.
+- `tools/omr/staged/consequences.py` — `restate_pitch` reads
+  `Q.STACKED_HEAD_POSITION` first.
+- `tools/omr/staged/capture.py` — `UNSCORED`/`READER_RASTER` entries for
+  the new quantity/reader.
+- `tools/omr/tests/test_staged_stacked_head_fit.py` (new, 21 tests),
+  `tools/omr/tests/test_staged_notehead_same_side_second.py` (rewired to
+  call the retained function directly).
+- `benchmarks/omr-notehead-precision-2026-09/probe/stacked_head_2.42/
+  crop_groups.py`, `crop_pitch_only.py`; crops under `out/print/2.42/`.
