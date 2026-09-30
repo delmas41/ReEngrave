@@ -316,3 +316,12 @@ out/2.42/*.json
 out/2.42/*.log
 out/2.42/**/*.json
 out/2.42/**/*.log
+
+# ROADMAP 2.44: the one-page GATHER+ADJUDICATE+EVALUATE dumps used for the
+# ledger-position A/B on Litolff p3 and Brahms p1, regenerable by the
+# commands in `benchmarks/omr-ledger-extrapolation-2026-09/FINDINGS.md`
+# §10; the crops (and the script that cuts them) under `out/print/2.44/`
+# ARE the durable record and are committed.
+out/2.44/*.json
+out/2.44/*.log
+out/2.44/*.marker

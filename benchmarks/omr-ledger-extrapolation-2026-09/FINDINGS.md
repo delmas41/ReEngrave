@@ -249,3 +249,104 @@ to the detection: that cell prints its four rungs at −2.37 / −4.49 / −6.46
   reach.
 * The Litolff record was gathered on a **dirty tree** (`9d4ccc85`, `dirty:
   true`); the Breitkopf one is the committed shared record.
+
+## 10. ROADMAP 2.44 BUILT (2026-09-30) — GATHER + EVALUATE, one Sonnet lane
+
+**Built, not just measured.** `Q.LEDGER_PRINTED_POSITION`
+(`gather.gather_ledger_printed_position` / `_observe_ledger_printed_position`,
+`tools/omr/staged/gather.py`): for every REGULAR notehead outside its own
+staff, reuses `ledger_rung_ink` (ROADMAP 2.37) UNCHANGED at a fine scan
+(0.08 staff spaces) of candidate y from just past the exempt first space out
+to past the head's own far edge, clusters the `found=True` hits into actual
+printed ledger lines, and brackets the head's own ink centre against them
+(ON its own middle third / BETWEEN two found rungs / BEYOND the farthest
+found). `consequences.restate_pitch` (EVALUATE) substitutes this reading for
+the staff's own extrapolated rounding where the two agree within one step;
+where they disagree by more, the substitution itself ABSTAINS (CLAUDE.md
+rule 8) and the extrapolated position stands, with the conflict counted in
+the pitch verdict's own `reason` (`position_and_clef_ledger_conflict`) rather
+than dropped.
+
+⚠️ **PRIOR ART NOT PORTED, FOUND LATE.** `tools/omr/annotate/ledger_grid.py`'s
+`measure_ledger_rungs` already solves a close relative of this exact problem
+for the labeling UI — publisher-aware ratio window (0.65–1.35 of the local
+pitch), white-gap bridging for a rung broken by a hollow head's own counter,
+and a peak-span thinness test — and this section's own §8 already named
+porting it as the unbuilt fix. This lane did not find it before writing a
+NEW scan (`_observe_ledger_printed_position`'s own clustering, built from
+`ledger_rung_ink` rather than from this reader), which is exactly the rule-1
+miss CLAUDE.md warns about ("a withdrawn investigation ... open the
+benchmark directory named after the thing" — this one). The two are
+DIFFERENT mechanisms answering the same question at different confidence:
+`measure_ledger_rungs` was tuned against 356 hand-labeled noteheads over 9
+publishers; `_observe_ledger_printed_position` is tuned against 2 real
+positive rungs (2.6d/2.37's own calibration) plus this session's own crops.
+**Not reconciled here** — a follow-up should compare the two against the
+same real cells before either is preferred.
+
+**Population, GATHER+ADJUDICATE+EVALUATE (`--through evaluate --weights
+auto`), one-page each:**
+
+| | Litolff p3 (pdf idx 3) | Brahms p1 (pdf idx 1) |
+|---|---|---|
+| heads outside the staff (`Q.LEDGER_PRINTED_POSITION` rows) | 119 | 300 |
+| — observed (a rung found) | 41 | 121 |
+| — abstained `no_ledger_found` | 74 | 168 |
+| — abstained `ledgers_irregular` | 4 | 11 |
+| bracket, of the 41/121 observed | on 15, between 2, beyond 24 | on 67, between 2, beyond 52 |
+| `restate_pitch` reason `..._ledger` (substituted) | 8 | 57 |
+| `restate_pitch` reason `..._ledger_conflict` (declined) | 33 | 64 |
+| **pitch value actually CHANGED** by the substitution | **6** | **1** |
+
+`no_ledger_found` dominates on both pages (CLAUDE.md §10's own convention
+says this is always a reading gap on THIS reader's part, never a page fact)
+— reach is the limiting factor, not false positives; `ledgers_irregular` is
+rare (4/11).
+
+**Sean's own confirmed chord** (`glyph/3/0/0/2/4`+`/9`, `/1`+`/3`, DECISIONS
+2026-09-30, "Confirm D and F"): all four subjects end DECIDED correctly
+(F6/D6 both pairs). `/9` and (by the xfail fixture's own numbers) `/3` are
+substituted genuinely correctly (measured ledgers land on D6); `/4` and `/1`
+disagree with this reader's own ledger measurement by more than one step (a
+Litolff MERGING-plate scan artefact — see below) and are protected by the
+conflict guard, keeping the correct value from the staff's own extrapolation
+rather than being overwritten wrongly.
+
+**Print check** (`out/print/2.44/`, 600 dpi, `crop_2_44.py`; extrapolated
+staff edge in YELLOW, this reader's own measured ledgers in RED, head boxed
+in BLUE): of the 7 total changed pitches across both pages —
+- `litolff-2-9-D6.png` (Sean's own confirmed D6): **clearly right** — the two
+  measured red lines visibly bracket ledgers A5/C6, the head sits cleanly in
+  the space beyond them, matching the print.
+- `litolff-1-0-9-0.png`: **clearly right** — head sits cleanly between two
+  visibly separate measured ledgers.
+- `litolff-7-3-1.png` / `litolff-7-3-4.png`: **plausibly right** — two real
+  ledgers visible, head placed beyond them, but the crop is tighter and the
+  exact row the head's ink centre falls in is harder to call with certainty
+  by eye.
+- `litolff-4-8.png` / `litolff-5-12.png`: **NOT CONFIRMED** — Litolff's own
+  MERGING convention (CLAUDE.md §10) has this chord's ink fused with a
+  neighbour; only ONE ledger was found in the scan and the crop is too
+  cramped to judge the bracket by eye.
+- `brahms-1-3-3-2.png`: **NOT CONFIRMED** — the crop shows a large ink mass
+  above the measured ledger (possibly a slur or brace, not a notehead) that
+  this reader's own scan did not have to distinguish from, so the single
+  found rung here is not yet trusted without a wider crop.
+- `litolff-2-4-CONFLICT.png`: the reader's own raw ledger reading (B5) is
+  very likely WRONG (Sean confirmed F6) — exactly the case the conflict
+  guard exists for, and it worked: the final decided pitch is unaffected.
+
+**Conclusion**: the mechanism is proven correct on the two cleanest cases
+(including Sean's own headline chord note) and safely INERT (never
+corrupting a pitch) on the two where its own measurement looks wrong,
+because the disagreement guard caught it. Three cases are genuinely
+unconfirmed by eye and are named as such, not claimed. No wrong FINAL pitch
+was found on either page.
+
+Tests: 11 new (`tools/omr/tests/test_staged_ledger_printed_position_2_44.py`),
+RED before this change, reproducing Sean's own measured Litolff numbers
+(431.5/418.5/398.5 px, gaps 18/13/20) plus controls (in-staff unchanged,
+no-ledger-found abstains and changes nothing, unevenly-spaced ledgers read
+correctly where extrapolation would not, a large ledger/staff disagreement
+abstains the substitution rather than averaging). `staged.check` 245,
+unchanged. `pytest -m "not slow"` — see the lane's own final count.
