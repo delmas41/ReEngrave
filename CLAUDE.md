@@ -375,6 +375,10 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 ### 6b. How to A/B without fooling yourself
 
+- **Initial tests compare GATHER + ADJUDICATE only** (Sean, 2026-09-30):
+  `--through adjudicate` on both arms, read with the stage readout (ROADMAP
+  1.5), never the exported file first — too many later steps can change or
+  lose a thing to tell which one did.
 - **Base vs arm on ONE tree.** The committed verdicts of the shared records
   under `library/_shared-records/` no longer reproduce on today's tree
   (`readjudicate --control` 2,760 of 2,993); they are inputs, not baselines.
