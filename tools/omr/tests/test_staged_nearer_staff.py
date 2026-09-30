@@ -178,6 +178,59 @@ class TestSeansFiveAreRefusedOnTheStaffTheyWereFiledOn(unittest.TestCase):
             self.assertEqual(near, filed - 1, k)
 
 
+class TestNearerStaffUsesTheStandardHeadBox(unittest.TestCase):
+    """ROADMAP 2.39 -- the x-window `_belongs_to_a_nearer_staff` hands to
+    `ladder_sides_with_discount` (which then searches for a ladder) is the
+    STANDARD box for a REGULAR notehead (every head in this fixture is
+    `noteheadBlackOnLine`/`noteheadBlackInSpace`/`noteheadHalfInSpace`),
+    not the raw detector box CLAUDE.md Sec.10 says a MERGING plate (this
+    fixture's own Litolff) inflates. `TestSeansFiveAreRefusedOnTheStaffThey
+    WereFiledOn`/`TestTheConfirmedHeadsAreKept` above are the POSITIVE
+    CONTROLS this change must not move -- both classes still pass
+    unchanged with the standard box wired in.
+
+    ⚠️ RUN RED FIRST: `notehead_precision.ladder_sides_with_discount` was
+    called with the raw `bbox_page_px` x0/x1 before this change -- this
+    test failed asserting `assertNotEqual` (they WERE equal) against the
+    pre-change tree.
+    """
+
+    def _filed_x_window(self, head_key):
+        import tools.omr.staged.adjudicators.notehead_precision as NP
+        calls = []
+        real = NP.ladder_sides_with_discount
+
+        def spy(pair):
+            calls.append(pair)
+            return real(pair)
+
+        NP.ladder_sides_with_discount = spy
+        try:
+            _build(head_key)
+        finally:
+            NP.ladder_sides_with_discount = real
+        self.assertEqual(len(calls), 1, head_key)
+        filed_side = calls[0][0]      # (staff_key, y, x0, x1, ys, sp, rungs)
+        return filed_side[2], filed_side[3]
+
+    def test_a_regular_head_gets_the_standard_box_not_the_raw_one(self):
+        from tools.omr.staged import geometry as G
+        for k in sorted(FIVE):
+            with self.subTest(head=k):
+                h = HEADS[k]
+                self.assertTrue(G.is_regular_notehead(h["value"][0]), k)
+                raw_x0, y0, raw_x1, y1 = h["bbox_page_px"]
+                x0, x1 = self._filed_x_window(k)
+                self.assertNotEqual((x0, x1), (raw_x0, raw_x1))
+                staff = "staff/" + "/".join(k.split("/")[1:4])
+                sp = FIXTURE["staves"][staff]["staff_spacing"]
+                cx = (raw_x0 + raw_x1) / 2.0
+                cy = (y0 + y1) / 2.0
+                std_x0, std_x1, _, _ = G.standard_head_box(cx, cy, sp)
+                self.assertAlmostEqual(x0, std_x0, places=3)
+                self.assertAlmostEqual(x1, std_x1, places=3)
+
+
 class TestTheConfirmedHeadsAreKept(unittest.TestCase):
     """The positive controls, all of them."""
 

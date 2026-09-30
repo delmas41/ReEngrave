@@ -32,6 +32,9 @@ import os
 from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
+from .geometry import standard_head_box as _standard_head_box_general
+from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
+                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
 from .record import ABSTAIN, Log, Q, READERS, Subject
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
@@ -962,7 +965,8 @@ def _gather_owner_candidates(log: Log, placed_item, others: set,
                             ledgers)
             _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
                                      spacing, cell_by_key,
-                                     thickness_by_key.get(cand_key))
+                                     thickness_by_key.get(cand_key),
+                                     class_name=det.smufl_name)
             # ⚠️ ROADMAP 2.37 (Sean's redirect): the relative OWNERSHIP
             # witness, filed alongside the per-step ladder reader (still
             # gathered as a corroborating witness) rather than replacing
@@ -1551,31 +1555,24 @@ LEDGER_OWNER_WIDTH_PAD_FRAC = 0.15
 LEDGER_OWNER_ON_TOLERANCE_SPACES = 0.15
 
 
-#: ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted): "All regular noteheads are
-#: the same size so the box should be predictable." Measured on the count
-#: pages: median notehead box ~= 1.4 x 1.1-1.3 staff spaces -- NOT the
-#: DETECTOR's own box extent, which this reader must not trust: a Brahms
-#: black-in-space measured 0.28 sp wide (a sliver) and Litolff boxes grow
-#: with merged ink (CLAUDE.md §10). CONVENTION ASSUMED / WHAT WOULD
-#: FALSIFY IT / NOT CONFIRMED: Sean's own quoted figure, not a per-page
-#: median (a whole-page pre-pass over every notehead is a separate,
-#: bigger change than this round's budget) -- falsified by a plate whose
-#: real noteheads are reliably smaller or larger than this. LOCAL TO THIS
-#: READER ONLY: a general standard head box for every consumer is
-#: ROADMAP 2.39, not this one.
-LEDGER_OWNER_HEAD_WIDTH_SPACES = 1.4
-LEDGER_OWNER_HEAD_HEIGHT_SPACES = 1.1
+#: ⚠️ ROADMAP 2.39 PROMOTED THIS. Sean, 2026-09-29, quoted: "All regular
+#: noteheads are the same size so the box should be predictable." These
+#: two names and `_standard_head_box` below are kept as ALIASES ONLY --
+#: nothing in this file reads them back; every real definition now lives
+#: in `geometry.py`, shared with the ADJUDICATE-stage consumer
+#: (`adjudicators/notehead_precision.py`) so the two stages cannot size the
+#: box differently. See `geometry`'s own module docstring for the
+#: measurement, its scope, and the CONVENTION ASSUMED note.
+LEDGER_OWNER_HEAD_WIDTH_SPACES = STANDARD_HEAD_WIDTH_SPACES
+LEDGER_OWNER_HEAD_HEIGHT_SPACES = STANDARD_HEAD_HEIGHT_SPACES
 
 
 def _standard_head_box(cx: float, cy: float, spacing: float
                        ) -> Tuple[float, float, float, float]:
-    """`(x0, x1, y0, y1)` -- a STANDARD notehead extent centred on `(cx,
-    cy)` -- the detector box's own CENTRE, never its raw width or height
-    -- sized from the staff's own measured spacing. See
-    `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note."""
-    hw = LEDGER_OWNER_HEAD_WIDTH_SPACES * spacing / 2.0
-    hh = LEDGER_OWNER_HEAD_HEIGHT_SPACES * spacing / 2.0
-    return cx - hw, cx + hw, cy - hh, cy + hh
+    """Alias for `geometry.standard_head_box` -- kept so this file's own
+    call sites (predating ROADMAP 2.39's promotion) need no rewrite. See
+    `geometry.standard_head_box`'s own docstring."""
+    return _standard_head_box_general(cx, cy, spacing)
 
 
 def _ledger_owner_informative_step(gap: float, spacing: float, *,
@@ -1766,7 +1763,8 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
 def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
                              line_ys: Sequence[float], spacing: float,
                              cell_by_key: Dict[Tuple[int, int, int, int], Any],
-                             thickness_px: Optional[float]) -> None:
+                             thickness_px: Optional[float],
+                             class_name: Optional[str] = None) -> None:
     """`Q.LEDGER_RUNG_INK` -- one row per (head glyph, `cand_key`, step).
 
     ⚠️ THE SAME STEP ARITHMETIC AS `_observe_ladder` (same `LEDGER_ROUND_UP`,
@@ -1780,6 +1778,18 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     candidate's carries no raster (a system's outermost staff, say). ABSTAINS
     -- never guesses -- where neither cell has an erased raster or a staff
     unit, or a step's window falls off the raster.
+
+    ⚠️ ROADMAP 2.39. The head's x-window (`hx0_c`/`hx1_c` below) and the
+    y-band excluded from the adjacent-stroke guard (`hy0_c`/`hy1_c`) are
+    this reader's sibling `_observe_ledger_owner_density`'s own STANDARD
+    box (`geometry.standard_head_box`), not the raw detector extent --
+    same reasoning: a Brahms sliver or a Litolff merged box is not the
+    head's true ink width. Only for a REGULAR notehead
+    (`geometry.is_regular_notehead(class_name)`) -- a whole note or a
+    grace/cue head keeps the detector's own box, unmeasured this round.
+    `class_name` is `None` for a caller that predates this change (the
+    geometry-only fallback below), which keeps the raw box, same as
+    before.
     """
     # ⚠️ RECONSTRUCTED, NOT PASSED THROUGH -- `wiring._SubjectKinds` resolves
     # a subject's Kind from the CONSTRUCTOR EXPRESSION at the site
@@ -1826,13 +1836,32 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
                     note=note)
         return
     space_c = grid[1] * 2.0
-    hx0_c = (box[0] - cbox[0]) * up
-    hx1_c = (box[2] - cbox[0]) * up
+    # ⚠️ ROADMAP 2.39: a REGULAR notehead's ink window is the STANDARD box
+    # (detector centre, staff-spacing extent), never the raw detector box
+    # -- see this function's own docstring. Anything else (whole note,
+    # grace/cue, or a caller with no class name) keeps the detector box,
+    # unchanged from before this round. ⚠️ `box` is `(x0, y0, x1, y1)`;
+    # `geometry.standard_head_box` returns `(x0, x1, y0, y1)` -- the two
+    # are NOT the same tuple shape, so they are unpacked into named
+    # variables immediately rather than indexed as one interchangeable
+    # `ink_box` (the bug a first draft of this change shipped: `test_
+    # regular_black_head_uses_the_standard_box_not_the_raw_one` caught it
+    # red before this fix).
+    if spacing and is_regular_notehead(class_name):
+        cx = (box[0] + box[2]) / 2.0
+        cy = (box[1] + box[3]) / 2.0
+        bx0, bx1, by0, by1 = _standard_head_box(cx, cy, spacing)
+    else:
+        bx0, by0, bx1, by1 = box
+    hx0_c = (bx0 - cbox[0]) * up
+    hx1_c = (bx1 - cbox[0]) * up
     # ⚠️ ROADMAP 2.37 (manager print check, round 2): the head's OWN
     # canonical y-extent, so the adjacent guards can exclude its known box
     # rather than mistaking its own bulk for a thick, non-rung stroke.
-    hy0_c = (box[1] - cbox[1]) * up
-    hy1_c = (box[3] - cbox[1]) * up
+    # ROADMAP 2.39: now the STANDARD box's y-extent for a regular head --
+    # see above.
+    hy0_c = (by0 - cbox[1]) * up
+    hy1_c = (by1 - cbox[1]) * up
     thick_c = (float(thickness_px) * up) if thickness_px else None
     for k in range(1, expected + 1):
         want = (edge - k * spacing) if above else (edge + k * spacing)
@@ -2592,7 +2621,7 @@ def _emit_vertical_runs(log: Log, cell: Any, sub, frame, sys_idx: int,
 
 
 def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
-                             sub) -> Optional[list]:
+                             sub, cell: Any = None) -> Optional[list]:
     """This cell's detected notehead boxes, in CANONICAL cell coordinates.
 
     ⚠️ `None` when the caller supplied no detection map at all (no gate) and
@@ -2604,15 +2633,34 @@ def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
     cell and a stroke's box is canonical; a page-pixel head box compared with
     a canonical stroke box is the frame error `Q.ONSET_COLUMN` already paid
     for — it would silently protect nothing and read as *the gate is inert*.
+
+    ⚠️ ROADMAP 2.39, LAST OF THE FIVE CONNECTIONS AND ITS OWN COMMIT: this
+    box GATES stem/beam detection (`OMR_STEM_NOTEHEAD_GATE`), so changing
+    its extent can move stem/beam results (ROADMAP 2.38/2.38b), unlike the
+    other four consumers, which only ever read the ink under a box. For a
+    REGULAR notehead (`geometry.is_regular_notehead`) with `cell`'s own
+    canonical staff spacing available (`_cell_grid`), the STANDARD box is
+    used; otherwise (no `cell`, no staff-line geometry on it, or a whole
+    note / grace-cue head) the raw detector box is unchanged from before
+    this round -- never a new gate where none existed, never a default
+    spacing.
     """
     if detections is None:
         return None
+    grid = _cell_grid(cell) if cell is not None else None
+    space_canonical = grid[1] * 2.0 if grid and grid[1] else None
     heads = []
     for d in detections.get(sub.to_key()) or ():
-        if "notehead" not in str(getattr(d, "smufl_name", "")).lower():
+        name = str(getattr(d, "smufl_name", ""))
+        if "notehead" not in name.lower():
             continue
-        heads.append((float(d.x_canonical), float(d.y_canonical),
-                      float(d.width_canonical), float(d.height_canonical)))
+        if space_canonical and is_regular_notehead(name):
+            bx0, bx1, by0, by1 = _standard_head_box(
+                d.x_center, d.y_center, space_canonical)
+            heads.append((bx0, by0, bx1 - bx0, by1 - by0))
+        else:
+            heads.append((float(d.x_canonical), float(d.y_canonical),
+                          float(d.width_canonical), float(d.height_canonical)))
     return heads
 
 
@@ -2664,7 +2712,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # the boxes change nothing at all. ⚠️ `detections is None` (a run with
         # no detector, which `gather_detections` supports on purpose) gives
         # `None` and therefore no gate, never an empty one.
-        heads = _notehead_boxes_for_cell(detections, sub)
+        heads = _notehead_boxes_for_cell(detections, sub, c)
         try:
             found = detect_lines(c, candidates_out=runs, noteheads=heads)
         except Exception as exc:                              # noqa: BLE001

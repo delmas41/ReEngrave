@@ -500,6 +500,15 @@ NOT_A_STAGE = frozenset({
     # `.py` trips `unaccounted_modules()`, the guard that caught
     # `positions.py` on arrival.
     "budget.py",
+    # ⚠️ ROADMAP 2.39. `geometry.py` is the shared STANDARD-notehead-box
+    # helper (constants + pure arithmetic), imported by both GATHER
+    # (`gather.py`) and ADJUDICATE (`adjudicators/notehead_precision.py`) so
+    # the box's size cannot drift between the two stages. It reads no
+    # `Q.*` quantity and touches no `Record`/`Log`/`Evidence` at all --
+    # `standard_head_box`'s only inputs are three floats a CALLER already
+    # read off the record. Registered here for the reason every entry above
+    # gives: an unregistered staged `.py` trips `unaccounted_modules()`.
+    "geometry.py",
 })
 
 

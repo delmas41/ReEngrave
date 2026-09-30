@@ -576,3 +576,229 @@ consumer should carry its own row.
   `noteheadWhole*` class is 16 of 17 class-FALSE against the print and decides
   a stem on 1 box in 10, so the class cannot falsify the convention. The
   falsifier still needs whole notes identified from the PRINT.*
+
+## 13. ROADMAP 2.39 — the standard box, promoted and wired into GATHER/ADJUDICATE
+
+**What changed.** `tools/omr/staged/geometry.py` is new: `standard_head_box`
+(the arithmetic ROADMAP 2.37 built local to `gather._observe_ledger_owner_
+density`, now general) and `is_regular_notehead` (the gate: `noteheadBlack*`/
+`noteheadHalf*` only, never a `*Small` grace/cue head or `noteheadWhole*`/
+`noteheadDoubleWhole*`, which item 5 leaves on the detector's own box —
+unmeasured this round). Four consumers now ask for the STANDARD box —
+detector CENTRE, extent from the STAFF'S OWN spacing — where before each
+asked the raw detector box CLAUDE.md Sec.10 already says is untrustworthy
+(a Brahms sliver, a Litolff merged box):
+
+1. `gather._observe_ledger_rung_ink` (the sibling of 2.37's own ledger-owner
+  reader) — the head x-window and the y-band excluded from the thick-stroke
+  guard.
+2. `gather.notehead_ink_under` / `gather_notehead_ink` (`Q.NOTEHEAD_INK`) —
+  the black/hollow fill test's interior/ring windows. Falls back to the raw
+  box where the cell carries no staff-line geometry, keeping this reader's
+  own "no staff unit needed" invariant.
+3. `adjudicators.notehead_precision._belongs_to_a_nearer_staff` — the
+  x-window searched for a ladder, sized from the FILED staff's own spacing
+  the function already reads (never re-derived, never defaulted).
+4. `gather._notehead_boxes_for_cell` (feeding `gather_cv_lines`'s stem/beam
+  CV, `OMR_STEM_NOTEHEAD_GATE`) — its own commit, last, because this one can
+  move stem/beam results and the other three cannot.
+
+Five commits on `worktree-agent-abaec0246921f0daf` (corrected — an earlier
+draft of this section misnamed the branch), one per
+connection plus the promotion. Each was proven RED then GREEN by stashing
+just that commit's `gather.py`/`notehead_precision.py` change and
+re-running its own new test (recorded in each commit message). `staged.check`
+held at **245 open findings** (the pre-existing baseline) after every one of
+the five commits — a first draft of connection 3 that added a
+`detail["box_source"]` key pushed `staged.wiring` 67→68 (TOTAL 245→246) and
+was caught and reverted before commit (spy on `notehead_ink_under`'s own
+`box` argument instead — CLAUDE.md's "a written, never-read detail key is a
+finding").
+
+## 14. One-page before/after, GATHER-through-ADJUDICATE, both count pages
+
+Base arm: `git worktree add --detach ../2.39-base-arm 2718c450` (the commit
+before this round's five), symlinked exactly as this worktree. New arm: this
+tree, all five commits landed. Same command, same weights, both arms:
+
+```bash
+export OMRNED_PYTHON=.../.venv-omrned/bin/python OMR_SURYA_KEEP_ALIVE=0 \
+       OMR_DIRECTION_TEXT_SCAN_GATE=1
+python3 -m tools.omr.staged <pdf> --pages <N> --weights auto --route-weights \
+  --through adjudicate --out <arm>-<doc>-p<N>.json
+```
+
+Litolff pdf-index 3, Brahms pdf-index 1. Diffed with `probe/diff_2.39_ab.py`
+(verdicts by `(subject, quantity)`; GATHER observations by subject for
+`ledger_rung_ink`/`notehead_ink`/`stem`/`beam_stroke`):
+
+| consumer | quantity | Litolff p3 changed | Brahms p1 changed |
+|---|---|---:|---:|
+| 1 (ledger rung ink) | `ledger_rung_ink` obs | 20 subjects | 38 subjects |
+| 2 (notehead ink) — ⚠️ **REVERTED, Sec.18** | `notehead_ink` obs | 232 subjects | 294 subjects |
+| 2 → `duration` verdict — ⚠️ **REVERTED, Sec.18** | `duration` | **1** (decided→narrowed, `head_fill_from_ink`) | **87** (same shape) |
+| 3 (nearer staff) | `notehead_is_not_a_notehead` | 0 | 0 |
+| 3 → `glyph_owner` | `glyph_owner` | 0 | **4** (all same STAFF; 3 basis `distance`→`ledger_direction`, 1 **abstained→decided**) |
+| 4 (stem/beam gate) | `stem` / `beam_stroke` obs | **0 / 0** | **0 / 0** |
+
+**Reach before accuracy, and the population that moved is the one the design
+predicted.** Connection 4 (the stem-gate box) changed NOTHING on either
+count page — measured, not assumed; its risk (moving 2.38/2.38b's stem/beam
+results) did not materialize on these two pages, though a page with more
+gated pairs could still show it. Connection 1's raw witness values shift
+(20/38 subjects) but never once flipped a `glyph_owner` verdict alone — the
+verdicts that DID move all trace to connection 3's own ladder search, and
+every one of those four moved toward MORE evidence, never less (one
+`far_no_rungs` abstention became a decided owner; three swapped their
+basis from the coarse distance tie-break to the ledger read, still landing
+on the SAME staff). Connection 2's ink readings moved on roughly half the
+regular noteheads on both pages (a `Q.NOTEHEAD_INK` value is continuous, so
+any box-size change moves it) and narrowed a `duration` population (1 of
+~573 Litolff bars' worth, 87 of Brahms's larger, more merged/shattered
+population) — ⚠️⚠️ **WITHDRAWN, Sec.18: this was read as "only narrowed,
+never wrongly decided" and as catching a real disagreement.** It was
+neither. The narrowing is a SYMPTOM of the same sliver flaw that produced
+the swing crop: a box built on a sliver's off-centre "centre" reads
+differently from the raw sliver, which is why the row moves at all, not
+because it now sees a genuine disagreement. Connection 2 is reverted
+(Sec.18); this row is a measurement of the bug's reach, not a result.
+
+## 15. Print check (CLAUDE.md Sec.6b) — 5 crops, `out/print/2.39/`
+
+Cut from each PDF at 600 dpi with `probe/crop_2.39.py`. **YELLOW** = the
+staff's own five lines (names which staff the subject is filed on).
+**RED** = the raw detector box — what every consumer used before this
+round. **GREEN** = the standard box. **BLUE** corner-cross = the detector's
+own centre (unchanged by this round on every consumer).
+
+- `litolff-ledger-rung-1.png`, `litolff-ledger-rung-2.png` (connection 1):
+  one Litolff head with two heads' ink merged under one raw box (red wider
+  than green, MERGING plate, CLAUDE.md Sec.10) and one clean isolated head
+  where the two boxes nearly coincide — both read correctly either way.
+- `litolff-duration-1.png` (connection 2's `duration` narrowing): a head
+  sitting on a staff line with a slur crossing it; the standard (green) box
+  is tighter and excludes more of the crossing slur ink than the raw (red)
+  one — plausibly the CORRECT direction (less contamination), which is why
+  the row now narrows instead of asserting a class-only answer.
+- `brahms-notehead-ink-swing.png` (connection 2, the biggest ink swing
+  measured, 0.914→0.185): the raw detector box is **6.5 px tall against a
+  27.25 px spacing (0.24 staff spaces)** — a textbook Brahms sliver
+  (CLAUDE.md Sec.10's own number). ⚠️⚠️ **WITHDRAWN, MANAGER REVIEW OF
+  `c889c700`:** this section's first draft said the standard (green) box
+  "corrects to cover the real head" — **FALSE.** The sliver sits across
+  the TOP EDGE of the real head, so the detector's own CENTRE (the blue
+  cross) is on that edge, not the head's true centre; the standard box,
+  built around that wrong centre, covers mostly blank paper ABOVE the
+  head. We now read a solid BLACK head as HOLLOW — the opposite of a
+  correction. See Sec.18.
+- `brahms-glyph-owner-flip.png` (connection 3's abstain→decided head): a
+  hollow head several spaces below its staff with visible printed ledger
+  lines in the crop between it and the staff above — consistent with the
+  new DECIDED verdict, and with Sean's *"there is no such thing as a far
+  note with no ledger line"* (2026-09-29). Its raw box is **1.65×1.22
+  staff spaces — not a sliver** — and the standard box nearly coincides
+  with it (`brahms-glyph-owner-basis-2.png`, a second connection-3 crop,
+  1.52×1.22 sp, same result). Connections 1 and 3's own changed rows do
+  NOT show the sliver/off-centre flaw connection 2 did — see Sec.18.
+
+**Corrected: one crop (`brahms-notehead-ink-swing.png`) showed the new
+answer WRONG.** Connection 2 (`gather_notehead_ink`) was reverted — see
+Sec.18. Connections 1, 3 and 4 stand.
+
+## 16. Re-centre measurement (item 4) — MEASURED, NOT WIRED
+
+Per the roadmap line's own second half ("re-centre on the head's own ink")
+and the brief's explicit instruction: measured only.
+`probe/recentre_probe_2.39.py` runs GATHER alone (no ADJUDICATE) for one
+page, and for every REGULAR notehead computes the ink centroid inside the
+STANDARD box on `cell.image_no_staff` (0 = ink), compared with the
+detector's own centre — never wired into `gather_notehead_positions` /
+`Q.NOTEHEAD_STAFF_POSITION`, which stays on the detector centre because a
+re-centre changes PITCH (explicitly out of scope, item 4).
+
+| page | regular noteheads | with a computable centroid | \|Δy\| > 0.25 sp | of those, rounded staff position would also change |
+|---|---:|---:|---:|---:|
+| Litolff p3 (MERGING) | 470 | 456 | **62** | **62** |
+| Brahms p1 (SHATTERING) | 950 | 949 | **5** | **5** |
+
+Every head whose ink centroid clears the 0.25-space threshold ALSO crosses
+a half-step rounding boundary on both pages — the threshold is not being
+tripped by noise near a boundary the rounding ignores. Litolff (the MERGING
+plate, where boxes grow with neighbouring ink) shows twelve times Brahms's
+rate. This is the population a future re-centring step would have to move
+without breaking pitch on the 456+949-62-5 heads that do NOT need it —
+flagged here as the input to that step, not taken further.
+
+## 17. Checks and tests
+
+`staged.check`: **245 open findings before and after all five commits**
+(same TOTAL as the tree's own pre-2.39 baseline, `2718c450`), exit 0
+throughout.
+
+`pytest -m "not slow" tools/omr/tests -q`: base tree (`2718c450`, no 2.39
+changes) — not separately re-measured after landing (five commits ran
+their own full new/changed test files plus every directly-adjacent file
+green, see below); a clean end-of-session run is the number in this
+session's final report.
+
+Full regression run on the directly-touched files after all five commits:
+`test_staged_notehead_standard_box.py` (10), `test_staged_ledger_rung_ink.py`
+(43), `test_staged_notehead_ink.py` (18), `test_staged_nearer_staff.py` (26),
+`test_staged_notehead_precision.py` (23), `test_staged_ledger_owner_
+density.py` + `test_staged_ledger_cv_first_2_37.py` +
+`test_staged_ledger_direction.py` (104), `test_stem_notehead_gate.py` (25),
+`test_vertical_runs.py` + `test_staged_beam_stem_join.py` +
+`test_staged_event.py` (116) — every one green, zero regressions.
+
+## 18. Manager review of `c889c700` — connection 2 reverted
+
+Caught: §15's `brahms-notehead-ink-swing.png` caption was wrong. Sean's
+convention (2026-09-29) is to trust the detector's own CENTRE unconditionally
+and distrust only its width/height. That holds for a box that is merely the
+WRONG SIZE. It does not hold for a box that is a SLIVER, because a sliver's
+centre is not a size error — it is a POSITION error: the detector found only
+a fragment of the head's ink, so the fragment's own centre has no reason to
+land on the head's true centre. `brahms-notehead-ink-swing.png`'s raw box
+(0.24 sp tall) sits on the head's top edge; the standard box built around
+that edge's centre covers mostly blank paper above the real head and reads
+a solid BLACK head as HOLLOW (0.914 → 0.185) — the reader's exact opposite.
+
+**8 of 87 Brahms `head_fill_from_ink` narrowings, random sample, seed 2039**
+(`probe/sample87.py`, crops in `out/print/2.39/sample8/`): every one of the
+8 raw boxes is the SAME shape of sliver (width 0.29–0.4 staff spaces against
+the standard 1.4), and **7 of 8 sit in dense, merged ink** (a beam group, a
+chord, a slur crossing the stem) with **no single isolated head visible** —
+`probe/inspect_component.py` confirms three of them: the raw box's centre
+pixel belongs to a connected ink blob of 3,300–5,000 px², several times a
+single head's ~900 px² standard-box area. This reader's own population is
+disproportionately the sliver/merged-ink case, not an unlucky one-off.
+
+**Decision: reverted, not repaired.** A bounded re-centre (find the ink blob
+under the box on `image_no_staff`, centre the standard box on it, bounded to
+~0.6 sp of shift, decline where the blob exceeds ~2 head areas — the
+manager's own proposed design) was considered. But 7 of the 8 sampled rows
+already exceed a 2-head-area threshold, so that decline clause would fire on
+most of this reader's own population and hand back the raw box anyway —
+which is not a small, cheaply-verified fix to build and trust in the time
+remaining this session. `git revert 2cac8b997938938d7fe6952ce95cee012ee54c85`
+(`c8bbd3a5`) is the safe default: CLAUDE.md rule 7, *"a control must be able
+to fail"* — this one did.
+
+**Connections 1 and 3 checked for the same flaw, 2 crops each — not found.**
+`litolff-ledger-rung-1.png`/`-2.png` (connection 1): raw boxes 1.57×1.20 and
+1.31×1.43 staff spaces. `brahms-glyph-owner-flip.png`/`brahms-glyph-owner-
+basis-2.png` (connection 3): raw boxes 1.65×1.22 and 1.52×1.22 staff spaces.
+None is a sliver; every standard box nearly coincides with its raw one.
+Connections 1, 3 and 4 stand, unchanged by this section.
+
+**ROADMAP 2.37's ledger-owner-density reader, already on `main`
+(`gather._observe_ledger_owner_density`, `LEDGER_OWNER_HEAD_WIDTH_SPACES`),
+centres its own standard box on the SAME raw-detector centre and carries the
+identical exposure to a sliver.** Not changed here — it is out of this
+lane's scope and 2.37 already shipped and was measured on its own terms
+(0 false picks on both count pages) — named so a future session does not
+have to re-derive this.
+
+Corrected branch name throughout this file and ROADMAP.md: the five (now
+six, after this revert, seven) commits are on `worktree-agent-abaec0246921f0daf`,
+not `claude/acceptance-measure-notehead-box-e75821`.
