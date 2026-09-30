@@ -167,7 +167,12 @@ OWN_STRUCTURE_TOLERANCE_SPACES = 0.2
 #: and is fixed alongside it, though it was measured to occur zero times on
 #: the Litolff acceptance record (`benchmarks/omr-owner-domain-2026-09/
 #: FINDINGS.md` §2.6e) -- CLAUDE.md rule 8 draws no line at "rare".
-OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence")
+#: ROADMAP 2.37 adds `ledger_all_refuted` (Sean, 2026-09-29): every
+#: candidate's ladder was cleanly refuted by the ink, not merely unread --
+#: a reader failure, held out exactly like a reading gap, but counted
+#: apart from `far_no_rungs` so the two are never conflated.
+OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence",
+                          "ledger_all_refuted")
 
 
 @decision(
@@ -200,8 +205,9 @@ OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence")
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK),
-    reasons=("human_owner", "ledger_direction", "hairpin_separates",
-             "far_no_rungs", "ladder", "range_veto", "distance", "no_contest",
+    reasons=("human_owner", "ledger_direction", "ledger_refuted",
+             "hairpin_separates", "far_no_rungs", "ledger_all_refuted",
+             "ladder", "range_veto", "distance", "no_contest",
              "no_evidence", "tied"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
@@ -269,7 +275,13 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # 2.7b's `belongs_to_a_nearer_staff` asks, so the two cannot disagree.
     ledger = _contest_ledger_reading(ev, bands, ladders)
     if ledger is not None and ledger.winner is not None:
-        return Ruling(value=ledger.winner, reason="ledger_direction",
+        # ⚠️ ROADMAP 2.37: an ELIMINATED winner (every rival's ladder
+        # cleanly refuted, never merely broken) is named apart from a
+        # completeness-decided one -- the two are different evidence and
+        # `trace`/a count must be able to tell them apart.
+        reason = ("ledger_refuted" if ledger.word == "ledger_refuted"
+                  else "ledger_direction")
+        return Ruling(value=ledger.winner, reason=reason,
                       used=tuple(r.id for r in bands) + ledger.row_ids,
                       detail={"ledger": ledger.summary()})
 
@@ -349,6 +361,16 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # (`OWNER_NOT_READ_REASONS`) and never writes it at a guess.
     if ledger is not None and ledger.word == "far_no_rungs" and not hairpins:
         return Ruling.abstain("far_no_rungs", ledger=ledger.summary())
+
+    # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): every candidate this glyph could
+    # belong to had its ladder CLEANLY refuted (not merely unread) -- a
+    # READER FAILURE (a missed rung, a misread head, or a note that is not
+    # really this far), never a legitimate "no ledger printed" gap. Kept
+    # apart from `far_no_rungs` in `OWNER_NOT_READ_REASONS` so the count
+    # never conflates the two.
+    if ledger is not None and ledger.word == "ledger_all_refuted" \
+            and not hairpins:
+        return Ruling.abstain("ledger_all_refuted", ledger=ledger.summary())
 
     scored.sort(key=lambda t: (-t[0], t[1]))
     top_score, top_key, top_terms, _d = scored[0]
@@ -737,7 +759,9 @@ def ladder_sides_with_discount(specs: Sequence[LadderSpec]
     return tuple(rebuilt)
 
 
-def ledger_direction(sides: Sequence[LadderSide]) -> LedgerReading:
+def ledger_direction(sides: Sequence[LadderSide],
+                     refuted: Optional[Dict[str, bool]] = None
+                     ) -> LedgerReading:
     """Sean's convention (DECISIONS 2026-09-28): the ledger lines name the
     owner -- *rungs toward one staff, none toward the other*.
 
@@ -747,17 +771,56 @@ def ledger_direction(sides: Sequence[LadderSide]) -> LedgerReading:
     `silent`, and the caller's own tiers decide. Every side FAR
     (`FAR_MIN_RUNGS`) with no rung toward any: `far_no_rungs`, a reading
     gap the caller must not paper over with distance.
-    """
+
+    `refuted` (ROADMAP 2.37, Sean 2026-09-29, optional -- `None` reproduces
+    every caller from before this parameter existed, byte for byte):
+    `{staff: is this side REFUTED}`, from `_ink_refutes_side`. Asked only
+    where completeness left the reading unresolved (never overrides
+    `points`, which a refuted side can never itself satisfy -- see that
+    function's own note): where it eliminates every side but one, that
+    side FOLLOWS (`ledger_refuted`, a DECIDED winner, not a guess); where
+    it eliminates every side, that is a READER FAILURE, not a legitimate
+    gap (`ledger_all_refuted`) -- kept apart from `far_no_rungs` so the two
+    are never confused in a count."""
     sides = tuple(sides)
     if len(sides) < 2:
-        return LedgerReading(None, "silent", sides)
+        return _eliminate(sides, refuted, LedgerReading(None, "silent", sides))
     pointing = [s for s in sides if s.points]
     if len(pointing) == 1:
         return LedgerReading(pointing[0].staff, "points", sides)
     if (not pointing and all(s.expected >= FAR_MIN_RUNGS for s in sides)
             and all(s.n_toward == 0 for s in sides)):
-        return LedgerReading(None, "far_no_rungs", sides)
-    return LedgerReading(None, "silent", sides)
+        return _eliminate(sides, refuted,
+                          LedgerReading(None, "far_no_rungs", sides))
+    return _eliminate(sides, refuted, LedgerReading(None, "silent", sides))
+
+
+def _eliminate(sides: Sequence[LadderSide], refuted: Optional[Dict[str, bool]],
+              fallback: LedgerReading) -> LedgerReading:
+    """ROADMAP 2.37. `fallback` unless `refuted` narrows the field to
+    exactly one survivor (decide it) or none (abstain, a reader failure) --
+    see `ledger_direction`'s own note for the two new words. A side with
+    `expected == 0` needs no rung at all and cannot be tested either way
+    (and would already have satisfied `points` above, so it never reaches
+    here with company still undecided); it is left out of the count."""
+    if not refuted:
+        return fallback
+    testable = [s for s in sides if s.expected >= 1]
+    if not testable:
+        return fallback
+    survivors = [s for s in testable if not refuted.get(s.staff, False)]
+    if len(testable) == 1:
+        # No rival at all (ROADMAP 2.37's own-staff-only walk). Refuted:
+        # a reader failure with nothing else to decide TO. Not refuted:
+        # nothing new to say -- the caller's ordinary (no-contest) scoring
+        # already decides this the way it always has.
+        return (LedgerReading(None, "ledger_all_refuted", sides)
+                if not survivors else fallback)
+    if len(survivors) == 1:
+        return LedgerReading(survivors[0].staff, "ledger_refuted", sides)
+    if not survivors:
+        return LedgerReading(None, "ledger_all_refuted", sides)
+    return fallback
 
 
 def cell_rungs(ev: Evidence, cells: Iterable[R.Subject],
@@ -834,6 +897,69 @@ def cv_rungs(ev: Evidence) -> List[Rung]:
                         x1=float(win[2]), y=float(y), refused=None,
                         row_id=row.id, source="cv_ink"))
     return out
+
+
+def _ink_clean_negative_ys(ev: Evidence, cand_key: str) -> List[float]:
+    """ROADMAP 2.37. Every `want_y_page` `Q.LEDGER_RUNG_INK` read as a
+    CLEAN `False` (an OBSERVATION, never a decline) for `cand_key` -- CV's
+    own definite *no thin run here*, never a *cannot tell*. Used both to
+    veto a detector box at the same Y (`_ink_overridden_rungs`) and to
+    test a whole side for Sean's elimination (`_ink_refutes_side`)."""
+    out: List[float] = []
+    for row in ev.rows(Q.LEDGER_RUNG_INK):
+        d = row.detail or {}
+        if d.get("candidate") != cand_key or row.value is not False:
+            continue
+        y = d.get("want_y_page")
+        if y is not None:
+            out.append(float(y))
+    return out
+
+
+def _ink_overridden_rungs(rungs: Sequence[Rung], ev: Evidence, cand_key: str,
+                          spacing: float) -> List[Rung]:
+    """ROADMAP 2.37 (Sean, 2026-09-29): *"where a box landed but the ink
+    says no thin run, the ink wins"*. `rungs` with every DETECTOR-sourced
+    entry dropped that sits within one grid step (`RUNG_GRID_TOLERANCE_
+    SPACES`, the SAME tolerance `ladder_side` itself matches a step with)
+    of a Y this candidate's own ink cleanly read as NOT a thin run --
+    regardless of what `Q.LEDGER_IS_NOT_A_LEDGER` said or never ran. A
+    `cv_ink`-sourced Rung is never dropped here: it is ALREADY only ever
+    built from a clean `True` (`cv_rungs`), so it cannot contradict
+    itself."""
+    refuted = _ink_clean_negative_ys(ev, cand_key)
+    if not refuted:
+        return list(rungs)
+    tol = RUNG_GRID_TOLERANCE_SPACES * spacing
+    return [r for r in rungs
+            if r.source != "detector"
+            or all(abs(r.y - ry) > tol for ry in refuted)]
+
+
+def _ink_refutes_side(ev: Evidence, cand_key: str, expected: int) -> bool:
+    """ROADMAP 2.37 (Sean, 2026-09-29, quoted at `gather.
+    gather_ownership_evidence`): every notehead past the exempt first
+    space ALWAYS has every one of its `expected` rungs printed toward its
+    TRUE staff -- so `cand_key` is REFUTED as that staff only when EVERY
+    step 1..`expected` was read CLEANLY (an observation, never a decline)
+    and NONE of them found a rung. A missing or declined step leaves the
+    question open (CLAUDE.md rule 8: *cannot tell* never becomes *not
+    there*) -- refutation needs FULL coverage of the ladder, not merely no
+    hits among however much of it happened to be asked, or an untested
+    step would count as proof of absence."""
+    if expected <= 0:
+        return False
+    read: Dict[int, bool] = {}
+    for row in ev.rows(Q.LEDGER_RUNG_INK):
+        d = row.detail or {}
+        if d.get("candidate") != cand_key:
+            continue
+        step = d.get("step")
+        if isinstance(step, int):
+            read[step] = bool(row.value)
+    if any(read.get(k) for k in range(1, expected + 1)):
+        return False
+    return all(k in read for k in range(1, expected + 1))
 
 
 def staff_geometry(ev: Evidence, staff: R.Subject
@@ -913,8 +1039,18 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
                 rungs = (cell_rungs(ev, list(dict.fromkeys(cells)), named)
                         + cv_rungs(ev))
             page_positions.append(len(sides))
+            # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): "where a box landed but
+            # the ink says no thin run, the ink wins" -- a DETECTOR-sourced
+            # Rung at a Y this candidate's OWN ink cleanly read (never
+            # declined) as NOT a thin run is dropped before the ladder is
+            # even walked, so a false `ledgerLine` box (measured: an older
+            # checkpoint boxed 58 of 110 sampled Breitkopf STAFF LINES as
+            # ledgers, `benchmarks/omr-weights-ab-2026-09/FINDINGS.md` §5)
+            # cannot be credited just because `Q.LEDGER_IS_NOT_A_LEDGER`
+            # never ran on it or abstained.
+            cand_rungs = _ink_overridden_rungs(rungs, ev, cand_key, geo[1])
             page_specs.append((cand_key, head[2], head[0], head[1],
-                               geo[0], geo[1], rungs))
+                               geo[0], geo[1], cand_rungs))
             sides.append(None)
         elif lad is None:
             sides.append(LadderSide(staff=cand_key, expected=0, found=0,
@@ -932,7 +1068,17 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
         for pos, built in zip(page_positions,
                               ladder_sides_with_discount(page_specs)):
             sides[pos] = built
-    return ledger_direction(sides)
+    # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted at `gather.
+    # gather_ownership_evidence`'s own note): a side whose `expected` rungs
+    # were EVERY one of them read cleanly (never declined) and NEVER found
+    # is REFUTED as that note's owner outright -- the print always carries
+    # them toward the true staff. `ledger_direction` turns that into a
+    # DECIDED winner where it eliminates every side but one, and a new,
+    # separate abstention (never `far_no_rungs`) where it eliminates all of
+    # them -- a reader failure, counted apart from a legitimate gap.
+    refuted = {s.staff: _ink_refutes_side(ev, s.staff, s.expected)
+              for s in sides if s is not None and s.staff}
+    return ledger_direction(sides, refuted=refuted)
 
 
 def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:

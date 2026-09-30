@@ -878,36 +878,91 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     ledgers = _ledger_index(placed)
 
     for i, others in sorted(contests.items()):
-        g, box, det = placed[i]
+        _gather_owner_candidates(log, placed[i], others, geom, ledgers,
+                                 cell_by_key, thickness_by_key)
+
+    # ─────────────────────────────────────────────────────────────────────
+    # ROADMAP 2.37 (Sean, 2026-09-29 via the coordinator, quoted):
+    # "there is no such thing as a far note with no ledger line" -- every
+    # notehead beyond the space just outside the staff (not on the outer
+    # line, not in the first space above/below it) ALWAYS has ledger lines
+    # toward its own staff, standard engraving convention (Ross, "The Art
+    # of Music Engraving", ledger-line practice; `docs/flags-2026-09.md`
+    # carries no separate engraving-conventions file to cite instead).
+    #
+    # Before this, `_observe_ladder`/`_observe_ledger_rung_ink` ran ONLY
+    # inside a cross-staff CONTEST (`contests`, above) -- a note the
+    # padded cell reaches but with no overlapping same-category twin on a
+    # neighbour staff never had its ladder walked at all, and was written
+    # on its filed staff with the ownership question never raised (priced
+    # 2026-09-29: 1,597 of 4,369 off-staff Litolff noteheads, 3,110 of
+    # 9,110 Brahms -- roughly a third of the off-staff population on both
+    # scans). A note with no rival candidate still gets its OWN ladder
+    # walked, because Sean's convention is a claim about the PRINT, not
+    # about whether a second box happens to exist: a clean (never
+    # declined) absence at every one of its own required rungs is now
+    # evidence the reader missed real ink, or that this is not really a
+    # note at this position, or not really this far -- never silently
+    # "fine because untested" (`adjudicators.ownership._ink_refutes_side`
+    # reads it; CLAUDE.md rule 8, a fallback never converts "cannot tell"
+    # into an answer, so the single-candidate case ABSTAINS rather than
+    # guesses -- it never writes a different owner, there being none to
+    # write).
+    for i, (g, box, det) in enumerate(placed):
+        if i in contests:
+            continue                  # already walked above, with rivals
+        if not det.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            continue                  # the ladder is a notehead-only question
         own = g.at(R.Kind.STAFF).to_key()
+        lines_sp = geom.get(own)
+        if lines_sp is None:
+            continue                  # no geometry: nothing gathered before either
+        line_ys, spacing = lines_sp
         y_center = (box[1] + box[3]) / 2.0
-        for cand_key in sorted({own} | others):
-            lines_sp = geom.get(cand_key)
-            if lines_sp is None:
-                log.abstain(g, Q.GLYPH_BAND_DISTANCE, reader=READERS.GEOMETRY,
-                            frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
-                            candidate=cand_key)
-                continue
-            line_ys, spacing = lines_sp
-            # ⚠️ The staff POSITION this glyph would have IF this candidate
-            # owned it -- clef-free, measured in the candidate's own frame.
-            # Emitted here so the range veto never has to reach across to the
-            # twin copy's row, and never has to touch a resolved pitch:
-            # today the veto reads `det["pitch"]` (transcribe.py:3153-3154),
-            # an interpretation, which is not a cycle yet but becomes one the
-            # moment a clef adjudicator reads ownership.
-            half = spacing / 2.0 if spacing else 1.0
-            log.observe(g, Q.GLYPH_BAND_DISTANCE,
-                        _band_distance_spaces(y_center, line_ys, spacing),
-                        reader=READERS.GEOMETRY, frame=FRAME_PAGE,
-                        candidate=cand_key, own=(cand_key == own),
-                        position_in_candidate=(y_center - min(line_ys)) / half)
-            if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
-                _observe_ladder(log, g, box, cand_key, line_ys, spacing,
-                                ledgers)
-                _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
-                                         spacing, cell_by_key,
-                                         thickness_by_key.get(cand_key))
+        if _ledger_expected(y_center, line_ys, spacing) <= 0:
+            continue                  # on-staff or the exempt first space
+        _gather_owner_candidates(log, (g, box, det), set(), geom, ledgers,
+                                 cell_by_key, thickness_by_key)
+
+
+def _gather_owner_candidates(log: Log, placed_item, others: set,
+                             geom: Dict[str, Tuple[List[float], float]],
+                             ledgers, cell_by_key, thickness_by_key) -> None:
+    """The per-candidate GATHER body `gather_ownership_evidence` runs for one
+    glyph, whether it came from a real cross-staff CONTEST (`others`
+    non-empty) or ROADMAP 2.37's own-staff-only walk (`others` empty, a
+    single candidate -- the glyph's own filed staff). One function so the
+    two paths cannot drift apart -- see the call sites above."""
+    g, box, det = placed_item
+    own = g.at(R.Kind.STAFF).to_key()
+    y_center = (box[1] + box[3]) / 2.0
+    for cand_key in sorted({own} | others):
+        lines_sp = geom.get(cand_key)
+        if lines_sp is None:
+            log.abstain(g, Q.GLYPH_BAND_DISTANCE, reader=READERS.GEOMETRY,
+                        frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        candidate=cand_key)
+            continue
+        line_ys, spacing = lines_sp
+        # ⚠️ The staff POSITION this glyph would have IF this candidate
+        # owned it -- clef-free, measured in the candidate's own frame.
+        # Emitted here so the range veto never has to reach across to the
+        # twin copy's row, and never has to touch a resolved pitch:
+        # today the veto reads `det["pitch"]` (transcribe.py:3153-3154),
+        # an interpretation, which is not a cycle yet but becomes one the
+        # moment a clef adjudicator reads ownership.
+        half = spacing / 2.0 if spacing else 1.0
+        log.observe(g, Q.GLYPH_BAND_DISTANCE,
+                    _band_distance_spaces(y_center, line_ys, spacing),
+                    reader=READERS.GEOMETRY, frame=FRAME_PAGE,
+                    candidate=cand_key, own=(cand_key == own),
+                    position_in_candidate=(y_center - min(line_ys)) / half)
+        if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
+            _observe_ladder(log, g, box, cand_key, line_ys, spacing,
+                            ledgers)
+            _observe_ledger_rung_ink(log, g, box, cand_key, line_ys,
+                                     spacing, cell_by_key,
+                                     thickness_by_key.get(cand_key))
 
 
 def _ledger_index(
@@ -931,6 +986,33 @@ def _ledger_index(
         out.setdefault((g.page, g.system), []).append(
             (box[0], box[2], (box[1] + box[3]) / 2.0, g.to_key()))
     return out
+
+
+def _ledger_expected(y: float, line_ys: Sequence[float],
+                     spacing: float) -> int:
+    """Ledger rungs required between `y` and the staff's outer line -- the
+    ONE arithmetic every ladder reader in this file shares (`_observe_
+    ladder`, `_observe_ledger_rung_ink`, and ROADMAP 2.37's own-staff-only
+    walk in `gather_ownership_evidence`): 0 inside the staff or in the
+    exempt first space just beyond it (Sean, 2026-09-29: standard
+    engraving practice -- no ledger is printed there); `LEDGER_ROUND_UP`
+    truncation for the rest, unchanged from before this function existed.
+
+    ⚠️ 2026-09-29: a note past this boundary (`>= 1`) is Sean's *"there is
+    no such thing as a far note with no ledger line"* -- the print ALWAYS
+    carries every one of the `expected` rungs toward the note's TRUE
+    staff. That claim is read in ADJUDICATE (`ownership._ink_refutes_
+    side`), not here; this function only draws the SAME boundary GATHER
+    already drew, factored so the new call site cannot compute it
+    differently by a rounding slip.
+    """
+    if not spacing:
+        return 0
+    top, bottom = min(line_ys), max(line_ys)
+    if top <= y <= bottom:
+        return 0
+    gap = (top - y) if y < top else (y - bottom)
+    return int(gap / spacing + LEDGER_ROUND_UP)
 
 
 def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
@@ -957,10 +1039,7 @@ def _observe_ladder(log: Log, g: Subject, box, cand_key: str,
     """
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
-    if top <= y <= bottom:
-        return                       # inside the staff: no ladder to have
-    gap = (top - y) if y < top else (y - bottom)
-    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    expected = _ledger_expected(y, line_ys, spacing)
     if expected <= 0:
         return
     rungs = ledgers.get((g.page, g.system), [])
@@ -1209,12 +1288,9 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
     g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
     y = (box[1] + box[3]) / 2.0
     top, bottom = min(line_ys), max(line_ys)
-    if top <= y <= bottom:
-        return                       # inside the staff: no ladder to have
     above = y < top
     edge = top if above else bottom
-    gap = (edge - y) if above else (y - edge)
-    expected = int(gap / spacing + LEDGER_ROUND_UP)
+    expected = _ledger_expected(y, line_ys, spacing)
     if expected <= 0:
         return
     cand = R.Subject.from_key(cand_key)

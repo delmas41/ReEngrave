@@ -158,13 +158,19 @@ class TestTheIdentityTestIsNotTheDisputedQuantity(unittest.TestCase):
     def test_two_DIFFERENT_CATEGORIES_are_NOT_a_contest(self):
         """⚠️ THE NEGATIVE CONTROL THE WIDENING NEEDS. A dynamic letter and a
         notehead overlapping across the gap are two pieces of ink, not one, and
-        resolving them would DROP one of them."""
-        self.assertEqual(
-            _band_rows(
-                {0: [_Det("noteheadBlackOnLine", 200.0, 1200.0, 20.0, _H)],
-                 1: [_Det("dynamicF", 200.0, 1200.0 + _DY_0_35, 20.0, _H,
-                          category="dynamic")]}),
-            [])
+        resolving them would DROP one of them.
+
+        ⚠️ ROADMAP 2.37 (2026-09-29): the notehead still gets its OWN
+        band-distance row (Sean's convention asks its ladder regardless of
+        a rival), but it names only its OWN staff, never the dynamic's --
+        still not a contest. The dynamic (not a notehead) gets none."""
+        rows = _band_rows(
+            {0: [_Det("noteheadBlackOnLine", 200.0, 1200.0, 20.0, _H)],
+             1: [_Det("dynamicF", 200.0, 1200.0 + _DY_0_35, 20.0, _H,
+                      category="dynamic")]})
+        self.assertEqual({r.subject.staff for r in rows}, {0})
+        self.assertTrue(all(r.detail.get("candidate") == "staff/0/0/0"
+                            for r in rows))
 
     def test_the_same_geometry_with_ONE_category_IS_a_contest(self):
         """The positive control for the test above: identical boxes, identical
@@ -191,29 +197,49 @@ class TestTheFloor(unittest.TestCase):
     def test_a_pair_BELOW_the_swept_floor_is_NOT_a_contest(self):
         """⚠️ 0.20 is under 0.3, and 0.25 was measured MERGING genuinely
         distinct neighbours and dropping three correctly-matched notes on
-        Brahms. A clipped copy is not a contest anyone can win."""
-        self.assertEqual(_band_rows(self._pair_at(_DY_0_20)), [])
+        Brahms. A clipped copy is not a contest anyone can win.
+
+        ⚠️ ROADMAP 2.37 (2026-09-29): each note still gets its OWN ladder
+        walked (a row per staff), but never the other's -- still not a
+        contest between them."""
+        rows = _band_rows(self._pair_at(_DY_0_20))
+        self.assertEqual(
+            {(r.subject.staff, r.detail.get("candidate")) for r in rows},
+            {(0, "staff/0/0/0"), (1, "staff/0/0/1")})
 
     def test_two_copies_on_ONE_staff_are_still_NOT_a_contest(self):
         """⚠️ The same-cell duplicate is the detector's NMS question and
         ownership never speaks about it. Widening the CLASS test must not have
-        widened this."""
-        self.assertEqual(
-            _band_rows({0: [_Det("noteheadBlackOnLine", 200.0, 1200.0,
-                                 20.0, _H),
-                            _Det("noteheadBlackInSpace", 200.0,
-                                 1200.0 + _DY_0_35, 20.0, _H)]}),
-            [])
+        widened this.
+
+        ⚠️ ROADMAP 2.37: both copies still get their OWN ladder walked
+        individually, never naming each other -- still not a contest."""
+        rows = _band_rows(
+            {0: [_Det("noteheadBlackOnLine", 200.0, 1200.0, 20.0, _H),
+                 _Det("noteheadBlackInSpace", 200.0,
+                      1200.0 + _DY_0_35, 20.0, _H)]})
+        self.assertEqual(len(rows), 2)
+        self.assertTrue(all(r.detail.get("candidate") == "staff/0/0/0"
+                            for r in rows))
 
     def test_a_lone_glyph_is_never_handed_in(self):
         """⚠️ THE CONSTRAINT §10 CALLS THE ONE PLACE A PLAUSIBLE FIX IS THE
-        WRONG ONE. A glyph with no twin must NOT enter the contest: awarded
+        WRONG ONE. A glyph with no twin must NOT enter the CONTEST: awarded
         elsewhere it would be DROPPED at export and the note would vanish,
-        turning a wrong-staff error into a missing one."""
-        self.assertEqual(
-            _band_rows({0: [_Det("noteheadBlackOnLine", 200.0, 1200.0,
-                                 20.0, _H)]}),
-            [])
+        turning a wrong-staff error into a missing one.
+
+        ⚠️ ROADMAP 2.37 (2026-09-29): it still gets its OWN ladder walked
+        (Sean's convention: every far note has one, contest or not), but the
+        row names only ITS OWN staff -- `is_relocated_copy` can never fire
+        off it, so the danger this test pins is still unreachable; a
+        refuted single candidate ABSTAINS (`ledger_all_refuted`, held out
+        like a reading gap) rather than being handed to a candidate that
+        does not exist."""
+        rows = _band_rows({0: [_Det("noteheadBlackOnLine", 200.0, 1200.0,
+                                    20.0, _H)]})
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail.get("candidate"), "staff/0/0/0")
+        self.assertTrue(rows[0].detail.get("own"))
 
 
 if __name__ == "__main__":

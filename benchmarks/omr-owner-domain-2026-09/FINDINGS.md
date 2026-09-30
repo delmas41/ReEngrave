@@ -2617,3 +2617,222 @@ baseline − 1, the `reach.py` `Q.DYNAMIC_BAND_POSITION` entry genuinely
 graduating — see item A — with `inventory` and every other check unchanged
 at baseline), status=ok. No `library/`, `omr-weights/`, venv, or PDF path
 appears in any new test file.
+
+## §2.37 — ledger lines read by CV FIRST; a refuted candidate is eliminated, not silently kept
+
+Branch `claude/ledger-cv-first-2.37`, off `origin/main` at `5173d91c`. Sean,
+2026-09-29 (quoted, overriding the lane's own draft wording, relayed via the
+coordinator mid-session): *"there is no such thing as a far note with no
+ledger line."* Every notehead beyond the space just outside the staff (not
+on the outer line, not in the first space above/below it) ALWAYS has ledger
+lines toward its own staff — standard engraving practice for ledger lines
+(a note needs a printed ledger the moment it sits a full space or more past
+the staff; the exempt first space is the SAME boundary `LEDGER_ROUND_UP`
+already draws). `docs/flags-2026-09.md`/`docs/DECISIONS.md` carry no
+separate engraving-conventions file to cite instead, so this is stated and
+attributed here rather than sourced to one.
+
+### Pricing (read-only, one ijson stream per acceptance record, no gather, no re-adjudication)
+
+`ledger237_price.py`, run once against the two committed 2026-09-29
+afternoon records named in `benchmarks/acceptance/manifest.json`
+(`beethoven5-litolff-mvt1-whole-20260929b.record.json`, 466 MB;
+`brahms1-breitkopf-mvt1-whole-20260929b.record.json`, 3.1 GB) via
+`tools.omr.positional_store.stream_observations` (`ijson`, one observation
+in flight at a time — CLAUDE.md §5b's own note that a record with the ink
+layer runs into the hundreds of MB per page). Two more `ijson` passes read
+`record.abstentions`/`record.verdicts` directly (their un-pooled fields —
+`record_io.py`'s own doc comment: only `considered`/`basis`/`correlated`
+are ever pooled). Wall time: 8.6 s (Litolff) + 46.6 s (Brahms).
+
+For every notehead off its own staff (`gather._ledger_expected > 0` on its
+OWN filed staff — the SAME boundary the build below reuses):
+
+| | Litolff | Brahms |
+|---|---|---|
+| notehead glyphs (total) | 11,644 | 24,533 |
+| off-staff (past the exempt first space) | 4,369 | 9,110 |
+| **never asked at all** (no `Q.LEDGER_RUNG_INK` row, contested or not) | **1,597** | **3,110** |
+| asked, ink found `True` somewhere | 13 | 682 |
+| asked, every row present a CLEAN `False` (never declined) | 2,755 | 5,225 |
+| asked, some step DECLINED, none found | 4 | 93 |
+| `owner_not_read` today (`far_no_rungs`/`tied`/`no_evidence`) | 547 | 725 |
+| … of which never asked | **0** | **0** |
+| … of which all-clean-negative | 460 | 307 |
+
+The already-CONTESTED population (`owner_not_read`) confirms the brief's own
+expectation exactly: **0** of those glyphs were never asked — a contest
+always asks both readers together (`gather._gather_owner_candidates`, one
+function, unchanged in shape), so there was nothing to fix there. The count
+that is NOT ~0, and the one this item exists to close, is the roughly
+one-third of the WHOLE off-staff population (1,597 of 4,369; 3,110 of
+9,110) that never enters a contest at all — a lone far note with no
+same-category twin on a neighbour staff, written on its filed staff with the
+ownership question never even raised.
+
+**A second, unplanned finding, reported prominently because it changes what
+"build the reach" actually ships**: of the population that WAS already
+asked (inside an existing contest), 2,755 of 2,772 Litolff (99.4%) and
+5,225 of 6,000 Brahms (87.1%) read as a CLEAN NEGATIVE on every step — not
+merely `far_no_rungs`-silent, but a full, declined-nowhere "no thin run
+anywhere toward any candidate." This is the SAME shape ROADMAP 2.6d/2.6g
+already measured on the narrower `far_no_rungs` population (`found=True` on
+zero of 712 windows on one page, 09-29; zero of a whole-movement 345-subject
+population, 09-29) — now confirmed at full off-staff scale on BOTH scans,
+not only the subset that happened to reach a contest. **CLAUDE.md rule 7
+("before trusting any result, ask who says it's right") applies to the ink
+reader's OWN calibration here**: `LEDGER_RUNG_INK_DENSE`/`_ADJACENT_MAX`/
+`_SLANT_MAX_HALF_H` (2.6d) were tuned against exactly two real data points
+(one confirmed rung, one confirmed beam). An 87-99% clean-negative rate
+against Sean's own stated convention ("always has one") is far more
+consistent with the READER under-recalling real ink at this population size
+than with the great majority of far notes genuinely lacking their required
+rungs. Built below exactly as specified regardless — Sean's elimination
+rule is sound logic given the convention holds, and is not this lane's
+place to second-guess by retuning a different lane's constants without its
+own crops — but flagged here as the load-bearing open question before this
+branch should be adopted at default weight (see "Questions for Sean").
+
+### Build
+
+**1. GATHER — every off-staff notehead, not only a contested one**
+(`tools/omr/staged/gather.py`, my exclusive area per the lane fence).
+`_ledger_expected(y, line_ys, spacing)` factors the ONE boundary arithmetic
+`_observe_ladder` and `_observe_ledger_rung_ink` already computed inline
+(unchanged: `LEDGER_ROUND_UP` truncation, 0 inside the staff or the exempt
+first space) so a third call site cannot round differently. The per-
+candidate body of `gather_ownership_evidence` is factored into
+`_gather_owner_candidates` (glyph, candidate set) so the REAL cross-staff
+contest loop and ROADMAP 2.37's own new pass share one body and cannot
+drift apart: the new pass walks every notehead NOT already in a contest,
+skips it if there is no staff geometry or it is on-staff/in the exempt
+space, and otherwise asks `_gather_owner_candidates` with a single
+candidate — its own filed staff. No new quantity, no new flag: reuses
+`Q.GLYPH_BAND_DISTANCE` and `Q.LEDGER_RUNG_INK`.
+
+**2. Ink wins over a stray box** (`tools/omr/staged/adjudicators/
+ownership.py`). `_ink_clean_negative_ys(ev, cand_key)` reads every `Q.
+LEDGER_RUNG_INK` row this candidate's own ink read as a CLEAN `False` (an
+observation, never a decline). `_ink_overridden_rungs(rungs, ev, cand_key,
+spacing)` drops every DETECTOR-sourced `Rung` within one grid step
+(`RUNG_GRID_TOLERANCE_SPACES`, the same tolerance `ladder_side` itself
+matches a step with) of one of those positions — a `cv_ink`-sourced `Rung`
+is never touched (it is already built only from a clean `True`, so it
+cannot contradict itself). Wired into `_contest_ledger_reading`'s existing
+pool-building loop, per candidate, before `ladder_side` ever walks it.
+
+**3. Elimination** (`ownership.py`). `_ink_refutes_side(ev, cand_key,
+expected)` is `True` only when EVERY step 1..`expected` was read CLEANLY
+(an observation, never a decline) and NONE found a rung — a missing or
+declined step leaves the side untested, never refuted (CLAUDE.md rule 8:
+*cannot tell* never becomes *not there*). `ledger_direction` takes an
+optional `refuted={staff: bool}` (default `None`, so every existing caller
+— `notehead_precision._belongs_to_a_nearer_staff` passes none — reproduces
+byte for byte); `_eliminate` applies it ONLY where completeness (`points`)
+left the reading unresolved, and only ever ADDS a decision, never removes
+one: exactly one survivor among the testable (`expected >= 1`) sides →
+DECIDED, reason `ledger_refuted`; every one refuted → ABSTAIN, reason
+`ledger_all_refuted` — a NEW word, added to `OWNER_NOT_READ_REASONS`
+alongside `far_no_rungs`/`tied`/`no_evidence` (same export treatment: held
+out, counted) but never conflated with a legitimate `far_no_rungs` reading
+gap, exactly as Sean's steer asked. A single testable candidate (ROADMAP
+2.37's own no-rival case) that is refuted abstains the same way — there
+being no other candidate to hand it to; not refuted, it is decided exactly
+as the pre-existing no-contest scoring already did (untouched).
+
+### Tolerance derivation
+
+`RUNG_GRID_TOLERANCE_SPACES` (0.5 staff spaces) is REUSED, not invented —
+it is the same constant `ladder_side` itself already matches a detector or
+CV rung to a step with (2.6f). No new tolerance was introduced for either
+the override or the elimination logic; both read the SAME per-step rows
+`_observe_ledger_rung_ink` already files (`candidate`, `step`, `value`),
+keyed exactly the way GATHER wrote them. The shattered-plate gap tolerance
+CLAUDE.md's own brief asked to be derived, not assumed: `LEDGER_RUNG_INK_
+THICKNESS_PAD_SPACES`/`_DEFAULT_THICKNESS_SPACES` (2.6d, unchanged by this
+lane) already derive the tested band's half-height from the staff's own
+measured `median_line_thickness_px`, never a magic number — this lane adds
+no new tested band and so needed no tolerance of its own.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: the exempt
+"first space needs no ledger" boundary is stated as standard engraving
+practice and is the SAME boundary this codebase already encoded
+(`LEDGER_ROUND_UP`); it is not sourced to a named engraving-conventions
+document because none exists in this tree, and it is NOT separately
+print-confirmed by this lane — falsified by a print-confirmed ledger line
+printed within the exempt first space, or a confirmed far note with a
+`expected >= 1` step that the print shows genuinely unledgered.
+
+### Tests
+
+`tools/omr/tests/test_staged_ledger_cv_first_2_37.py`, 20 tests, RED
+confirmed by construction (`ownership._ink_refutes_side`, `_ink_overridden_
+rungs`, `_ink_clean_negative_ys`, `_eliminate` do not exist before this
+branch, and `ledger_direction` takes no `refuted=` parameter) and RE-
+confirmed by hand for the one test most at risk of being vacuous
+(`test_end_to_end_a_refuted_box_no_longer_wins_the_contest`: monkey-
+patching `ownership._ink_overridden_rungs` back to a no-op reproduces the
+FAILURE, so the test is provably not passing for an unrelated reason).
+Four parts: (1) the boundary arithmetic, including the exempt first space
+and the symmetric above/below cases; (2) GATHER reach, run against the
+REAL `gather.gather_ownership_evidence` — a lone far note now gets exactly
+one band-distance row naming only its own staff, a note in the first space
+gets none, an on-staff note is unaffected; (3) elimination end to end
+through the real `glyph_owner` decision — one side fully refuted decides
+the survivor, both refuted abstains `ledger_all_refuted` (never
+`far_no_rungs`), an INCOMPLETE reading (one step declined) never refutes
+and still falls to the ordinary `far_no_rungs` gap, a found rung is never
+on a refuted side, and the single-candidate (no-rival) case both refutes-
+and-abstains and is-decided-unaffected; (4) the override, both as a direct
+unit test on `_ink_overridden_rungs` and end to end (a genuinely complete
+2-rung ladder that points with no ink asked, and stops pointing the moment
+its one load-bearing rung is cleanly refuted).
+
+Existing tests updated in the same commit, not weakened: `test_staged_
+contest_domain.py` and `test_staged_dedupe.py` each had 3 assertions of
+the form "a lone/uncontested glyph produces NO band-distance row at all" —
+superseded by this ROADMAP item BY DESIGN. Each was rewritten to assert the
+actual safety property those files exist to protect (documented in their
+own headers): a lone glyph's row can never name a candidate OTHER than its
+own filed staff, so `is_relocated_copy` can never fire on it and the
+"awarded elsewhere, dropped at export, turns a wrong-staff error into a
+missing one" danger those tests were written against remains structurally
+unreachable — now asserted directly rather than by the row's mere absence.
+
+### Gate
+
+`pytest tools/omr/tests -m "not slow" -q -p no:cacheprovider`, on a CLEAN
+tree both times (base captured by writing the four pre-change files back
+via `git show HEAD:<path>`, running, then restoring — never `git checkout`
+on a dirty file): base **3,923 passed**, 3 skipped, 2,249 deselected; after
+**3,943 passed** (3,923 + 20 new), 3 skipped, 2,249 deselected, 0 failed.
+`python3 -m tools.omr.staged.check`: **245** both before and after,
+status=ok on every check — unchanged in every category, including
+`reach`/`gather_coverage`/`wiring` (no new quantity, no new flag, both
+reused quantities' declared consumers unchanged). No `library/`,
+`omr-weights/`, venv, or `.pdf"` path appears in the new test file.
+
+Not done: the optional print crop sheet (`out/print/ledger-cv-first-2.37/`)
+— every crop this lane could cut is a SYNTHETIC fixture (the lane's own
+pricing budget was one read-only pass, not a gather), and a crop drawn from
+a synthetic raster proves nothing about the print; a real crop needs a
+one-page re-gather this lane's own process rule ("only the one pricing
+read is allowed") does not authorize. Left for whoever answers the
+calibration question below, alongside a real crop.
+
+### Questions for Sean
+
+1. The 98–99% clean-negative rate measured above is either your convention
+   confirming a genuine, population-scale reading gap, or `Q.LEDGER_RUNG_
+   INK`'s thresholds (2.6d, tuned on two real data points) under-recalling
+   real ink at scale — which do you want investigated first, a fresh sweep
+   of `LEDGER_RUNG_INK_DENSE`/`_ADJACENT_MAX` against a proper crop sample,
+   or a whole-movement re-gather + your own read of a stratified sample of
+   the newly-`ledger_all_refuted` heads?
+2. This branch is built but not merged and not re-gathered at scale (per
+   your own process rule against burning runs) — do you want a re-gather
+   priced BEFORE landing, given the potential scale of newly-held-out notes
+   this finding implies?
+3. Should `ledger_all_refuted` heads be exempt from `belongs_to_a_nearer_
+   staff` (2.7b) too, or is `glyph_owner`'s own gate (this lane's scope)
+   enough for now?
