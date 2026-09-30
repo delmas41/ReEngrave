@@ -2836,3 +2836,129 @@ calibration question below, alongside a real crop.
 3. Should `ledger_all_refuted` heads be exempt from `belongs_to_a_nearer_
    staff` (2.7b) too, or is `glyph_owner`'s own gate (this lane's scope)
    enough for now?
+
+### §2.37 addendum — manager print check: the 99% figure was partly confounded, partly a real reader bug
+
+Manager review, same day, against real crops (`out/print/beam-stem-ink-
+2.38/brahms_ledger_missed.png`, one-page records `brahms-p1.record.json`/
+`litolff-p3.record.json` shared by the 2.38 lane) — two findings, one per
+cause, both addressed:
+
+**(1) CONFOUNDED, pricing only, no code at fault.** The earlier whole-
+population percentage aggregated ACROSS candidates per head. Re-run keyed
+by (head, candidate) and split on `Q.GLYPH_BAND_DISTANCE`'s `own` flag: a
+head genuinely on/near its OWN staff, tested toward a far NEIGHBOUR (the
+"is this really a cross-staff note" question a contest always asks of
+BOTH sides), correctly reads clean negative there — that is not a miss, it
+is the right answer. On Brahms p1, this confound population is 11 pairs,
+0 found under OLD or NEW logic on either side — CORRECTLY clean, not
+evidence of anything broken. The earlier §2.37 table's per-HEAD
+aggregation was not WRONG about the reach gap or the scale of `ALL_CLEAN_
+NEG`, but conflated two different populations under one number; a proper
+per-(head, candidate) restatement needs a full re-gather to do exactly
+(out of this lane's read-only pricing budget) — this addendum corrects
+the FRAMING, not the underlying counts, which stand.
+
+**(2) REAL, fixed.** `det_all` pairs (the DETECTOR boxed every expected
+rung — strong prior evidence of a real ledger) found NOTHING on 33 of 39
+Brahms / 8 of 8 Litolff pairs. The crops show the window sitting correctly
+ON the printed ledger, failing only the OVERHANG test: measured left-band
+density 0.19–0.33 against `LEDGER_RUNG_INK_DENSE` 0.55. Direct pixel
+inspection (one real example rendered at 600 dpi, Otsu-binarized, column-
+by-column: `glyph/1/0/0/0/12` toward `staff/1/0/1`) shows the cause is
+NOT the detector-box padding the manager's first hypothesis named — this
+box's edge already rides the true ink boundary — it is that a genuine
+Breitkopf wing is often SHORT AND ASYMMETRIC: one side clears `DENSE`
+(0.558–0.622 measured), the other does not (0.266–0.371), and the
+`extends` predicate required BOTH.
+
+**Fix** (`gather.ledger_rung_ink`, my exclusive area): `DENSE` on `center`
+plus AT LEAST ONE of `left`/`right`, not both — answering the manager's
+own question directly: the stem guard the docstring cited for requiring
+both sides is a claim about the FAILING side (a stem adds no horizontal
+ink there), not about the passing one, so it is now enforced PER SIDE
+(`left_adjacent`/`right_adjacent`, the same one-thickness-band-away test
+the existing wide `adjacent` guard already used, narrowed to each side's
+own x-range) rather than by demanding symmetry no short wing guarantees.
+Also added (defensive, harmless, kept): `_true_ink_span` shrinks the
+tested span to where the row-band's own ink actually starts, walking in
+from each box edge — a no-op on this particular example (confirmed by
+direct inspection) but a real guard where a box genuinely is padded
+elsewhere.
+
+**Measured, both records, both before/after** (`gather.ledger_rung_ink`
+itself, replayed against a fresh 600 dpi Otsu-binarized render of the
+SAME page — not the pipeline's own staff-erased raster, which is not
+serialized to disk, so this replay is a close but NOT exact reproduction;
+one direct comparison against the recorded values showed a boundary case
+0.02 off, enough to flip a `>= 0.55` test — the numbers below are
+directionally sound, not exact):
+
+| | det_all pairs | found OLD | found NEW | confound-control pairs | new false positives |
+|---|---|---|---|---|---|
+| Litolff p3 | 8 | 0 | 0 | 0 | 0 |
+| Brahms p1 | 33 | 1 | 3 | 11 | 0 |
+
+The confound-control (own distance = 0, candidate = neighbour) shows
+**zero** new false positives on either record — the required control
+holds. The `det_all` improvement is smaller in this replay than the raw
+crop review suggested; given the one confirmed near-miss (0.5385 replayed
+vs 0.5584 recorded, same side, same threshold), the real pipeline likely
+recovers MORE of the 33/8 than this approximate replay shows, but only a
+real re-gather settles the exact count — flagged, not claimed.
+
+**Tests**: `test_staged_ledger_rung_ink.py::TestOneSidedWing`, 4 new (RED
+confirmed: monkeypatching back to the AND predicate fails exactly the two
+one-sided-wing tests and no others — a wing on the right only, a wing on
+the left only, both found; a centre-only stem-shape control still
+refused; a TALL one-sided stroke — a stem, not a wing — still refused via
+the NEW per-side adjacent guard specifically). Existing `test_staged_
+ledger_rung_ink.py` suite (25 tests, including the one confirmed real
+rung and the beam-slant calibration) unaffected, all pass unchanged.
+
+**Elimination rule (2.37's own build): reach and accuracy both improve,
+neither is re-priced at scale here.** A more-recalling ink reader means
+FEWER sides read fully clean-negative for a REAL reason (more genuine
+rungs are now found), so `_ink_refutes_side` fires less often overall
+(lower REACH for the elimination path specifically) — but every time it
+does still fire, it is now backed by a reader less prone to the exact
+false-negative failure mode this addendum measured, so its ACCURACY (how
+often a refutation is a genuine reading gap rather than a reader miss)
+should be higher. Neither claim is re-priced at scale in this addendum
+(no re-gather); both follow directly from "the reader recalls real ink at
+least as often as before, never less" (the fix only ADDS a way to pass,
+`or` instead of `and`, so `found` can only flip `False→True`, never the
+reverse — checked directly: every one of the 25 pre-existing `test_
+staged_ledger_rung_ink.py` tests, including the ones pinning a refusal,
+is unchanged).
+
+**Sean's confirmation (2026-09-29, quoted, same review): "Those are all
+ledger lines"** (all 8 `brahms_ledger_missed.png` tiles) — settles finding
+(2) as a real reader miss, confirmed by a human against the print, not
+only inferred from the detector's own boxing.
+
+**Sean's exact convention for the boundary, same message, quoted:** *"Any
+note outside of the staff is either touching the outside staff lines,
+touching a ledger line or has one going through it. Any distance more
+than a notehead above the staff has ledger lines involved."* Three
+states — (a) touching the outer line or in the first space beyond it, no
+ledger; (b) in the space just beyond a ledger, touching it; (c) a ledger
+through its centre — checked against `_ledger_expected`'s own boundary
+(`tools/omr/tests/test_staged_ledger_cv_first_2_37.py::
+TestSeansThreeStates`, 6 new tests at the exact discrete staff positions
+a real notehead can occupy: gap = 0, 0.5, 1.0, 1.5, 2.0, 2.5 spaces — a
+note is never at a continuum position between a line and a space). **It
+matches exactly**: a real notehead sits ONLY at a line (gap an integer
+number of spaces) or a space (a half-integer) position, never in
+between, and `LEDGER_ROUND_UP` (0.25) puts the zero/one boundary at gap =
+0.75 spaces — exactly midway between the two real discrete positions
+either side of it (0.5, state a, and 1.0, state c) — so state (a)'s two
+positions both round to `expected=0` and state (b)/(c) at the very next
+position out already round to 1, matching "more than a notehead above
+the staff always has a ledger" precisely. No code change was needed here;
+this was a verification, not a repair.
+
+Gate (same tree, re-run after this addendum, full fast tier both times):
+3,943 → **3,953** passed (10 new: 4 `TestOneSidedWing` + 6 `TestSeans
+ThreeStates`), 3 skipped, 2,249 deselected, 0 failed. `python3 -m
+tools.omr.staged.check`: **245**, unchanged.

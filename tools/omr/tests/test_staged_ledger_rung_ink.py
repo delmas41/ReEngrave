@@ -179,6 +179,58 @@ REAL_RUNG_SPACE_C = 100.0
 REAL_RUNG_THICKNESS_C = 29.357798165137616
 
 
+class TestOneSidedWing(unittest.TestCase):
+    """ROADMAP 2.37 (manager print check, 2026-09-29): real Brahms p1 crops
+    (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of 39
+    `det_all` pairs -- the detector boxed EVERY expected rung, yet this
+    reader found none) measured a genuine wing reading dense on the side
+    it actually extends (0.558-0.622) and weak on the other (0.266-0.371)
+    -- a short, asymmetric wing, not a stem. RED before this change: the
+    ORIGINAL predicate (`center and left and right`) refuses a real wing
+    that only clears the `DENSE` floor on ONE side."""
+
+    def test_a_wing_on_only_the_right_is_found(self):
+        img = _paper()
+        _draw(img, 190, 197, 218, 203)      # crosses centre, extends RIGHT
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertTrue(m["found"])
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertLess(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+
+    def test_a_wing_on_only_the_left_is_found(self):
+        img = _paper()
+        _draw(img, 182, 197, 210, 203)      # crosses centre, extends LEFT
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertTrue(m["found"])
+        self.assertGreaterEqual(m["left"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertLess(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+
+    def test_POSITIVE_CONTROL_neither_side_still_refuses(self):
+        """The same centre-only ink as `test_a_stem_only_does_not_reach_
+        past_the_head`, restated here as this class's own negative
+        control: no overhang on EITHER side must still refuse."""
+        img = _paper()
+        _draw(img, 195, 197, 205, 203)
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertFalse(m["found"])
+
+    def test_a_tall_stroke_on_one_side_still_refuses_that_side(self):
+        """A TALL stroke attached at the head's right edge (a stem, not a
+        wing): dense at `right` but ALSO dense one thickness further up
+        and down IN THAT SAME narrow x-range -- the PER-SIDE guard, not
+        the wide `adjacent` one (which only tests the head-centred `ww`
+        span and would not by itself catch a stem sitting just outside
+        it), is what must refuse this."""
+        img = _paper()
+        _draw(img, 190, 197, 210, 203)       # the centre, dense
+        _draw(img, 210, 150, 214, 250)        # a tall stroke at the RIGHT band
+        m = gather.ledger_rung_ink(img, HEAD_X0, HEAD_X1, CY, SP, None)
+        self.assertFalse(m["found"])
+        self.assertGreaterEqual(m["right"], gather.LEDGER_RUNG_INK_DENSE)
+        self.assertGreater(m["right_adjacent"],
+                           gather.LEDGER_RUNG_INK_ADJACENT_MAX)
+
+
 class TestARealPrintedRung(unittest.TestCase):
     """`benchmarks/omr-owner-domain-2026-09/out/print/2.6c-far-breitkopf-03.
     png` shows it; this is the ink itself, byte-identical to what

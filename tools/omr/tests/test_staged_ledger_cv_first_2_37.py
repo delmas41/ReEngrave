@@ -98,6 +98,56 @@ class TestLedgerExpectedBoundary(unittest.TestCase):
         self.assertEqual(G._ledger_expected(90.0, self.LINES, self.SP), 1)
 
 
+class TestSeansThreeStates(unittest.TestCase):
+    """Sean, 2026-09-29 (quoted, relayed via the coordinator): *"Any note
+    outside of the staff is either touching the outside staff lines,
+    touching a ledger line or has one going through it. Any distance more
+    than a notehead above the staff has ledger lines involved."* Three
+    states, and only the first needs zero ledgers:
+
+      (a) touching the outer staff line, or in the first space outside it
+          -- NO ledger. A real notehead sits only at a LINE or a SPACE
+          position (gap an integer or half-integer multiple of a staff
+          space) -- never in between -- so this state is exactly the two
+          discrete positions gap=0 (on the line) and gap=0.5 spaces (the
+          first space), never a continuum.
+      (b) sitting in the space just beyond a ledger, touching it -- gap =
+          1.5, 2.5, ... spaces (an odd half-integer): needs exactly as
+          many ledgers as the one it rests against.
+      (c) a ledger through its centre -- gap = 1.0, 2.0, ... spaces (a
+          whole integer): needs exactly that many.
+
+    `_ledger_expected`'s own `+ LEDGER_ROUND_UP` (0.25) rounding puts its
+    zero/one boundary at gap = 0.75 spaces -- exactly midway between the
+    two REAL discrete positions on either side of it (0.5 and 1.0), so it
+    reproduces Sean's three states exactly: state (a)'s two positions both
+    round to 0, and both halves of state (b)/(c) at the very next position
+    out (1.0 exactly, 1.5) already round to 1 -- "any distance more than a
+    notehead" (~1 space) above the staff always lands past this boundary.
+    """
+
+    LINES = [100.0, 110.0, 120.0, 130.0, 140.0]     # spacing 10, outer=140
+    SP = 10.0
+
+    def test_state_a_on_the_line(self):
+        self.assertEqual(G._ledger_expected(140.0, self.LINES, self.SP), 0)
+
+    def test_state_a_first_space(self):
+        self.assertEqual(G._ledger_expected(145.0, self.LINES, self.SP), 0)
+
+    def test_state_c_through_its_centre_first_ledger(self):
+        self.assertEqual(G._ledger_expected(150.0, self.LINES, self.SP), 1)
+
+    def test_state_b_space_just_beyond_the_first_ledger(self):
+        self.assertEqual(G._ledger_expected(155.0, self.LINES, self.SP), 1)
+
+    def test_state_c_through_its_centre_second_ledger(self):
+        self.assertEqual(G._ledger_expected(160.0, self.LINES, self.SP), 2)
+
+    def test_state_b_space_just_beyond_the_second_ledger(self):
+        self.assertEqual(G._ledger_expected(165.0, self.LINES, self.SP), 2)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Part 2 — GATHER reach: every off-staff notehead, contested or not.
 # ─────────────────────────────────────────────────────────────────────────────

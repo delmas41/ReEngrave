@@ -1153,14 +1153,62 @@ LEDGER_RUNG_INK_ADJACENT_MAX = 0.35
 #: only two data points this lane has.
 LEDGER_RUNG_INK_SLANT_MAX_HALF_H = 0.2
 
+#: ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). The detector's own
+#: box is PADDED past the head's real ink -- confirmed on 33 of 39 Brahms /
+#: 8 of 8 Litolff (head, candidate) pairs where the detector boxed EVERY
+#: expected rung (`Q.GLYPH_LADDER` complete) yet this reader found none:
+#: the crops (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`) show
+#: the window sitting ON the printed ledger, failing the OVERHANG test
+#: only because it was anchored at the padded box edge -- measured left-
+#: band density 0.19-0.33 against the 0.55 floor -- past where a
+#: genuinely short Breitkopf wing (CLAUDE.md §10: "a little wider than the
+#: head") already ends. A column at or above this ink fraction, in the
+#: SAME row band the overhang test itself reads, still counts as the
+#: head's own ink; walking in from each padded edge toward the centre
+#: until a column crosses it finds where the padding ends and the real
+#: ink begins.
+LEDGER_RUNG_INK_TRUE_EDGE_DENSE = 0.5
+
+
+def _true_ink_span(ink: Any, x0: float, x1: float, y0: float, y1: float,
+                   W: int, H: int) -> Tuple[float, float]:
+    """Shrink `[x0, x1)` to the actual ink run in row-band `[y0, y1)`: walk
+    inward from each edge toward the centre while that column's own ink
+    fraction is BELOW `LEDGER_RUNG_INK_TRUE_EDGE_DENSE` (padding), stopping
+    at the first column that reads solid. Never WIDENS the span, and
+    returns it UNCHANGED where nothing in it is solid at all (a blank box,
+    or one already tight) -- the density test downstream is what declines
+    that case, not this one guessing an edge back in."""
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return x0, x1
+    region = ink[iy0:iy1, ix0:ix1]
+    if region.size == 0:
+        return x0, x1
+    col_frac = region.mean(axis=0)
+    n = len(col_frac)
+    thr = LEDGER_RUNG_INK_TRUE_EDGE_DENSE
+    li = 0
+    while li < n and col_frac[li] < thr:
+        li += 1
+    ri = n - 1
+    while ri >= 0 and col_frac[ri] < thr:
+        ri -= 1
+    if li > ri:
+        return x0, x1
+    return float(ix0 + li), float(ix0 + ri + 1)
+
 
 def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
                     space: float, thickness_px: Optional[float]
                     ) -> Optional[Dict[str, Any]]:
     """Is there a thin horizontal ink run at `y_center`, crossing the head's
-    `[head_x0, head_x1]` and reaching past it on BOTH sides? ROADMAP 2.6d --
-    the same fact a boxed `ledgerLine` witnesses for `Q.GLYPH_LADDER`, asked
-    here of the raster where the detector drew no box.
+    `[head_x0, head_x1]` and reaching past it on AT LEAST ONE side? ROADMAP
+    2.6d -- the same fact a boxed `ledgerLine` witnesses for `Q.GLYPH_
+    LADDER`, asked here of the raster where the detector drew no box.
+    ROADMAP 2.37 (manager print check, 2026-09-29) loosened BOTH sides to
+    ONE, per-side stem-guarded -- see that constant's own note.
 
     All of `head_x0`, `head_x1`, `y_center`, `space` and `thickness_px` are in
     the SAME canonical pixels as `img` -- the caller's job, not this
@@ -1168,12 +1216,15 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     ERASED raster, 0 = ink. Returns `None` -- declined, never defaulted --
     where the window (or a comparison band) falls entirely off the raster.
 
-    Three bins at the tested y: CENTER (over the head's own x-span, must be
+    Bins at the tested y: CENTER (over the head's own x-span, must be
     inked -- a rung passes under or over the notehead it serves), LEFT and
-    RIGHT (the overhang past the head's edges, both must be inked -- the
-    guard against the note's own STEM, which does not reach past the head).
-    ADJACENT (the same x-range one band above and below) must NOT also be
-    densely inked, or the stroke found is thick, not thin -- a partial guard
+    RIGHT (the overhang past the head's edges -- at least ONE must be
+    inked AND not tall in that same narrow x-range, the guard against the
+    note's own STEM, which adds ink on the side it attaches to but does
+    not reach past the head, so it fails ITS side's own adjacency test
+    even where the OTHER side is a genuine wing). ADJACENT (the wider
+    head-centred x-range, one band above and below) must NOT also be
+    densely inked, or the stroke found is thick, not thin -- a guard
     against a beam.
     """
     import numpy as np
@@ -1220,12 +1271,17 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
         return float((rows * weights).sum() / total)
 
     y0, y1 = y_center - half_h, y_center + half_h
-    center = frac(head_x0, head_x1, y0, y1)
+    # ⚠️ ROADMAP 2.37: anchor on the TRUE ink edge in THIS row band, not
+    # the (possibly padded) box edge -- see `_true_ink_span`'s own note.
+    # Only ever shrinks `[head_x0, head_x1]`, never widens it, so a box
+    # that was already tight is untouched.
+    true_x0, true_x1 = _true_ink_span(ink, head_x0, head_x1, y0, y1, W, H)
+    center = frac(true_x0, true_x1, y0, y1)
     # ⚠️ THE OVERHANG TEST IS A NARROW BAND AT THE EDGE, NOT THE WHOLE
     # CONTEXT WINDOW -- see `LEDGER_RUNG_INK_OVERHANG_TEST_FRAC`'s comment.
     overhang_w = LEDGER_RUNG_INK_OVERHANG_TEST_FRAC * head_w
-    left_x0, left_x1 = head_x0 - overhang_w, head_x0
-    right_x0, right_x1 = head_x1, head_x1 + overhang_w
+    left_x0, left_x1 = true_x0 - overhang_w, true_x0
+    right_x0, right_x1 = true_x1, true_x1 + overhang_w
     left = frac(left_x0, left_x1, y0, y1)
     right = frac(right_x0, right_x1, y0, y1)
     if center is None or left is None or right is None:
@@ -1234,6 +1290,37 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
     below = frac(cx - ww / 2.0, cx + ww / 2.0, y1, y1 + 2 * half_h)
     adjacent_vals = [v for v in (above, below) if v is not None]
     adjacent = max(adjacent_vals) if adjacent_vals else None
+    # ⚠️⚠️ ROADMAP 2.37 (manager print check, 2026-09-29). Real Brahms p1
+    # crops (`out/print/beam-stem-ink-2.38/brahms_ledger_missed.png`, 33 of
+    # 39 `det_all` pairs -- the detector boxed EVERY expected rung, yet
+    # this reader found none) measured BOTH sides required where only ONE
+    # needed to be: a genuine short Breitkopf wing reads dense on the side
+    # it actually extends (0.558-0.622, clearing `DENSE`) and weak on the
+    # other (0.266-0.371) -- not because nothing is there, but because
+    # engraved wings are not always symmetric and a short one can be
+    # crowded by neighbouring ink on one side. The docstring's own
+    # justification for BOTH sides was the STEM guard ("a vertical stroke
+    # adds no horizontal ink past the head"), which is a claim about ONE
+    # side lacking ink, not about the side that DOES having to match the
+    # other -- so it is answered by a guard ON THE PASSING SIDE, not by
+    # requiring both. Per-side: `left`/`right` must independently be DENSE
+    # *and* not also tall (its own one-thickness-band above/below, not the
+    # wide `ww`-centred one) -- a stem is vertical and reads dense one
+    # thickness away in the SAME narrow x-range a wing does not.
+    def _side_adjacent(x0: float, x1: float) -> Optional[float]:
+        a = frac(x0, x1, y0 - 2 * half_h, y0)
+        b = frac(x0, x1, y1, y1 + 2 * half_h)
+        vs = [v for v in (a, b) if v is not None]
+        return max(vs) if vs else None
+
+    left_adjacent = _side_adjacent(left_x0, left_x1)
+    right_adjacent = _side_adjacent(right_x0, right_x1)
+    left_ok = (left >= LEDGER_RUNG_INK_DENSE
+              and (left_adjacent is None
+                   or left_adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX))
+    right_ok = (right >= LEDGER_RUNG_INK_DENSE
+               and (right_adjacent is None
+                    or right_adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX))
     # ⚠️ THE LEVEL GUARD -- see `LEDGER_RUNG_INK_SLANT_MAX_HALF_H`'s comment.
     # A band with no ink to weigh (already failing DENSE) reports no slant;
     # `extends` fails on the density test regardless, so this never turns a
@@ -1244,14 +1331,15 @@ def ledger_rung_ink(img: Any, head_x0: float, head_x1: float, y_center: float,
             if left_cy is not None and right_cy is not None else None)
     level = slant is None or slant <= LEDGER_RUNG_INK_SLANT_MAX_HALF_H * half_h
     extends = (center >= LEDGER_RUNG_INK_DENSE
-              and left >= LEDGER_RUNG_INK_DENSE
-              and right >= LEDGER_RUNG_INK_DENSE
+              and (left_ok or right_ok)
               and (adjacent is None or adjacent <= LEDGER_RUNG_INK_ADJACENT_MAX)
               and level)
     return {
         "found": bool(extends),
         "center": round(center, 4), "left": round(left, 4),
         "right": round(right, 4),
+        "left_adjacent": None if left_adjacent is None else round(left_adjacent, 4),
+        "right_adjacent": None if right_adjacent is None else round(right_adjacent, 4),
         "slant": None if slant is None else round(slant, 3),
         "adjacent": None if adjacent is None else round(adjacent, 4),
         "window_canonical": [round(cx - ww / 2.0, 2), round(cx + ww / 2.0, 2),
