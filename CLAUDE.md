@@ -547,7 +547,9 @@ Each of these has cost at least one lane and is still true.
   other. Nearness is only a hint and never overrides them; where a ledger
   reading disagrees with the print, the RUNG FINDING is wrong, not the rule;
   **there is no such thing as a far note with no ledger line** (Sean,
-  2026-09-29), so "no rungs found either way" is always OUR failure — a
+  2026-09-29: a head outside the staff touches the outer line, touches a
+  ledger, or has one through it; farther than one notehead always has
+  ledgers), so "no rungs found either way" is always OUR failure — a
   missed rung, a misread head, or a note that is not far: abstain and count
   it, and a clean empty reading at a step the owner would need refutes that
   owner. A
