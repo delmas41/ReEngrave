@@ -288,3 +288,13 @@ out/print/beam-stem-ink-2.38/*.log
 # under `out/print/2.39/` ARE the durable record and are committed.
 out/2.39/*.json
 out/2.39/*.log
+
+# ROADMAP 2.41: the raw GATHER-through-ADJUDICATE dumps (litolff-p3.json,
+# brahms-p1.json, tens of MB each), regenerable by the commands in
+# `benchmarks/omr-notehead-width-2026-09/FINDINGS.md` Sec.20; the small
+# `measure-*.json`/`*-sample-*.json` summaries and the crops under
+# `out/print/2.41/` ARE the durable record and are committed.
+benchmarks/omr-notehead-width-2026-09/out/2.41/*.json
+benchmarks/omr-notehead-width-2026-09/out/2.41/*.log
+!benchmarks/omr-notehead-width-2026-09/out/2.41/measure-*.json
+!benchmarks/omr-notehead-width-2026-09/out/2.41/*-sample-*.json
