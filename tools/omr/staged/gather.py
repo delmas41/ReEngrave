@@ -32,6 +32,9 @@ import os
 from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
+from .geometry import standard_head_box as _standard_head_box_general
+from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
+                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
 from .record import ABSTAIN, Log, Q, READERS, Subject
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
@@ -1551,31 +1554,24 @@ LEDGER_OWNER_WIDTH_PAD_FRAC = 0.15
 LEDGER_OWNER_ON_TOLERANCE_SPACES = 0.15
 
 
-#: ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted): "All regular noteheads are
-#: the same size so the box should be predictable." Measured on the count
-#: pages: median notehead box ~= 1.4 x 1.1-1.3 staff spaces -- NOT the
-#: DETECTOR's own box extent, which this reader must not trust: a Brahms
-#: black-in-space measured 0.28 sp wide (a sliver) and Litolff boxes grow
-#: with merged ink (CLAUDE.md §10). CONVENTION ASSUMED / WHAT WOULD
-#: FALSIFY IT / NOT CONFIRMED: Sean's own quoted figure, not a per-page
-#: median (a whole-page pre-pass over every notehead is a separate,
-#: bigger change than this round's budget) -- falsified by a plate whose
-#: real noteheads are reliably smaller or larger than this. LOCAL TO THIS
-#: READER ONLY: a general standard head box for every consumer is
-#: ROADMAP 2.39, not this one.
-LEDGER_OWNER_HEAD_WIDTH_SPACES = 1.4
-LEDGER_OWNER_HEAD_HEIGHT_SPACES = 1.1
+#: ⚠️ ROADMAP 2.39 PROMOTED THIS. Sean, 2026-09-29, quoted: "All regular
+#: noteheads are the same size so the box should be predictable." These
+#: two names and `_standard_head_box` below are kept as ALIASES ONLY --
+#: nothing in this file reads them back; every real definition now lives
+#: in `geometry.py`, shared with the ADJUDICATE-stage consumer
+#: (`adjudicators/notehead_precision.py`) so the two stages cannot size the
+#: box differently. See `geometry`'s own module docstring for the
+#: measurement, its scope, and the CONVENTION ASSUMED note.
+LEDGER_OWNER_HEAD_WIDTH_SPACES = STANDARD_HEAD_WIDTH_SPACES
+LEDGER_OWNER_HEAD_HEIGHT_SPACES = STANDARD_HEAD_HEIGHT_SPACES
 
 
 def _standard_head_box(cx: float, cy: float, spacing: float
                        ) -> Tuple[float, float, float, float]:
-    """`(x0, x1, y0, y1)` -- a STANDARD notehead extent centred on `(cx,
-    cy)` -- the detector box's own CENTRE, never its raw width or height
-    -- sized from the staff's own measured spacing. See
-    `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note."""
-    hw = LEDGER_OWNER_HEAD_WIDTH_SPACES * spacing / 2.0
-    hh = LEDGER_OWNER_HEAD_HEIGHT_SPACES * spacing / 2.0
-    return cx - hw, cx + hw, cy - hh, cy + hh
+    """Alias for `geometry.standard_head_box` -- kept so this file's own
+    call sites (predating ROADMAP 2.39's promotion) need no rewrite. See
+    `geometry.standard_head_box`'s own docstring."""
+    return _standard_head_box_general(cx, cy, spacing)
 
 
 def _ledger_owner_informative_step(gap: float, spacing: float, *,
