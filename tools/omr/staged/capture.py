@@ -500,6 +500,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "and the paper it actually stands on. Scoreless, same reason as "
         "`NOTEHEAD_INK`: it names no head, only where the fill is best.",
         None),
+    "STACKED_HEAD_FIT": (
+        RELATION,
+        "ROADMAP 2.42: a bounded 1/2/3-head template fit over a stacked "
+        "group's own ink, off the staff-ERASED raster, at candidate "
+        "positions around the group's own observed boxes — a relation "
+        "between a located notehead GROUP and the paper it stands on, the "
+        "same shape as `NOTEHEAD_RECENTRE` extended to more than one head. "
+        "Scoreless: it names no head count as CORRECT, only which slot "
+        "count and position the ink best supports.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -640,6 +650,11 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.39b. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_NOTEHEAD_RECENTRE": ("staged/gather.py", "gather_notehead_recentre"),
+    # ⚠️ ROADMAP 2.42. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_NOTEHEAD_RECENTRE` does (the standard-head-box
+    # fill test it calls, `notehead_ink_under`, is `CV_NOTEHEAD_INK`'s own
+    # function, called here rather than re-derived).
+    "CV_STACKED_HEAD_FIT": ("staged/gather.py", "gather_stacked_head_fit"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),

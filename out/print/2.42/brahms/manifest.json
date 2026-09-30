@@ -1,0 +1,266 @@
+[
+ {
+  "tag": "G01-glyph-1-0-2-0-left",
+  "file": "out/print/2.42/brahms/G01-glyph-1-0-2-0-left.png",
+  "members": [
+   "glyph/1/0/2/0/5",
+   "glyph/1/0/2/0/35"
+  ],
+  "ink": {
+   "glyph/1/0/2/0/5": {
+    "raw_box_pct": 80.15151515151516,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/2/0/35": {
+    "raw_box_pct": 97.22222222222221,
+    "decided_ink": 0.9408
+   }
+  },
+  "legend": [
+   "g5:kept:decided=1.00/raw=80%",
+   "g35:REFUSED:decided=0.94/raw=97%"
+  ]
+ },
+ {
+  "tag": "G02-glyph-1-1-2-0-right",
+  "file": "out/print/2.42/brahms/G02-glyph-1-1-2-0-right.png",
+  "members": [
+   "glyph/1/1/2/0/18",
+   "glyph/1/1/2/0/26"
+  ],
+  "ink": {
+   "glyph/1/1/2/0/18": {
+    "raw_box_pct": 82.91245791245791,
+    "decided_ink": 1.0
+   },
+   "glyph/1/1/2/0/26": {
+    "raw_box_pct": 82.91245791245791,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g18:kept:decided=1.00/raw=83%",
+   "g26:REFUSED:decided=1.00/raw=83%"
+  ]
+ },
+ {
+  "tag": "G03-glyph-1-0-1-0-right",
+  "file": "out/print/2.42/brahms/G03-glyph-1-0-1-0-right.png",
+  "members": [
+   "glyph/1/0/1/0/7",
+   "glyph/1/0/1/0/22"
+  ],
+  "ink": {
+   "glyph/1/0/1/0/7": {
+    "raw_box_pct": 80.06802721088435,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/1/0/22": {
+    "raw_box_pct": 90.29411764705883,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g7:kept:decided=1.00/raw=80%",
+   "g22:kept:decided=1.00/raw=90%"
+  ]
+ },
+ {
+  "tag": "G04-glyph-1-0-5-0-left",
+  "file": "out/print/2.42/brahms/G04-glyph-1-0-5-0-left.png",
+  "members": [
+   "glyph/1/0/5/0/14",
+   "glyph/1/0/5/0/21"
+  ],
+  "ink": {
+   "glyph/1/0/5/0/14": {
+    "raw_box_pct": 69.47835738068812,
+    "decided_ink": 0.8116
+   },
+   "glyph/1/0/5/0/21": {
+    "raw_box_pct": 66.33986928104575,
+    "decided_ink": 0.7323
+   }
+  },
+  "legend": [
+   "g14:kept:decided=0.81/raw=69%",
+   "g21:kept:decided=0.73/raw=66%"
+  ]
+ },
+ {
+  "tag": "G05-glyph-1-0-0-4-right",
+  "file": "out/print/2.42/brahms/G05-glyph-1-0-0-4-right.png",
+  "members": [
+   "glyph/1/0/0/4/15",
+   "glyph/1/0/0/4/35"
+  ],
+  "ink": {
+   "glyph/1/0/0/4/15": {
+    "raw_box_pct": 87.0708546384222,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/0/4/35": {
+    "raw_box_pct": 67.74193548387096,
+    "decided_ink": 0.8979
+   }
+  },
+  "legend": [
+   "g15:kept:decided=1.00/raw=87%",
+   "g35:kept:decided=0.90/raw=68%"
+  ]
+ },
+ {
+  "tag": "G06-glyph-1-0-2-0-left",
+  "file": "out/print/2.42/brahms/G06-glyph-1-0-2-0-left.png",
+  "members": [
+   "glyph/1/0/2/0/4",
+   "glyph/1/0/2/0/33"
+  ],
+  "ink": {
+   "glyph/1/0/2/0/4": {
+    "raw_box_pct": 79.57142857142857,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/2/0/33": {
+    "raw_box_pct": 95.66755083996463,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g4:kept:decided=1.00/raw=80%",
+   "g33:kept:decided=1.00/raw=96%"
+  ]
+ },
+ {
+  "tag": "G07-glyph-1-0-0-1-left",
+  "file": "out/print/2.42/brahms/G07-glyph-1-0-0-1-left.png",
+  "members": [
+   "glyph/1/0/0/1/13",
+   "glyph/1/0/0/1/24"
+  ],
+  "ink": {
+   "glyph/1/0/0/1/13": {
+    "raw_box_pct": 86.64546899841018,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/0/1/24": {
+    "raw_box_pct": 93.08469308469309,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g13:kept:decided=1.00/raw=87%",
+   "g24:kept:decided=1.00/raw=93%"
+  ]
+ },
+ {
+  "tag": "G08-glyph-1-0-3-0-right",
+  "file": "out/print/2.42/brahms/G08-glyph-1-0-3-0-right.png",
+  "members": [
+   "glyph/1/0/3/0/5",
+   "glyph/1/0/3/0/17"
+  ],
+  "ink": {
+   "glyph/1/0/3/0/5": {
+    "raw_box_pct": 75.60975609756098,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/3/0/17": {
+    "raw_box_pct": 88.90625,
+    "decided_ink": 0.8406
+   }
+  },
+  "legend": [
+   "g5:kept:decided=1.00/raw=76%",
+   "g17:kept:decided=0.84/raw=89%"
+  ]
+ },
+ {
+  "tag": "G09-glyph-1-0-0-0-right",
+  "file": "out/print/2.42/brahms/G09-glyph-1-0-0-0-right.png",
+  "members": [
+   "glyph/1/0/0/0/11",
+   "glyph/1/0/0/0/43"
+  ],
+  "ink": {
+   "glyph/1/0/0/0/11": {
+    "raw_box_pct": 75.58823529411765,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/0/0/43": {
+    "raw_box_pct": 93.2088285229202,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g11:kept:decided=1.00/raw=76%",
+   "g43:kept:decided=1.00/raw=93%"
+  ]
+ },
+ {
+  "tag": "G10-glyph-1-0-0-0-right",
+  "file": "out/print/2.42/brahms/G10-glyph-1-0-0-0-right.png",
+  "members": [
+   "glyph/1/0/0/0/5",
+   "glyph/1/0/0/0/31"
+  ],
+  "ink": {
+   "glyph/1/0/0/0/5": {
+    "raw_box_pct": 80.70953436807096,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/0/0/31": {
+    "raw_box_pct": 94.0548780487805,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g5:kept:decided=1.00/raw=81%",
+   "g31:kept:decided=1.00/raw=94%"
+  ]
+ },
+ {
+  "tag": "G11-glyph-1-0-0-2-left",
+  "file": "out/print/2.42/brahms/G11-glyph-1-0-0-2-left.png",
+  "members": [
+   "glyph/1/0/0/2/16",
+   "glyph/1/0/0/2/22"
+  ],
+  "ink": {
+   "glyph/1/0/0/2/16": {
+    "raw_box_pct": 84.27800269905534,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/0/2/22": {
+    "raw_box_pct": 82.82051282051283,
+    "decided_ink": 1.0
+   }
+  },
+  "legend": [
+   "g16:kept:decided=1.00/raw=84%",
+   "g22:REFUSED:decided=1.00/raw=83%"
+  ]
+ },
+ {
+  "tag": "G12-glyph-1-0-3-0-right",
+  "file": "out/print/2.42/brahms/G12-glyph-1-0-3-0-right.png",
+  "members": [
+   "glyph/1/0/3/0/11",
+   "glyph/1/0/3/0/25"
+  ],
+  "ink": {
+   "glyph/1/0/3/0/11": {
+    "raw_box_pct": 79.50558213716108,
+    "decided_ink": 1.0
+   },
+   "glyph/1/0/3/0/25": {
+    "raw_box_pct": 92.31950844854072,
+    "decided_ink": 0.9224
+   }
+  },
+  "legend": [
+   "g11:kept:decided=1.00/raw=80%",
+   "g25:kept:decided=0.92/raw=92%"
+  ]
+ }
+]

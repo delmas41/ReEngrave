@@ -1,0 +1,62 @@
+[
+ {
+  "subject": "glyph/1/0/0/0/43",
+  "base": "E5",
+  "new": "F5",
+  "ink_rows": [
+   452,
+   925
+  ],
+  "file": "out/print/2.42/ruler-brahms/43-1-0-0-0.png"
+ },
+ {
+  "subject": "glyph/1/0/0/2/16",
+  "base": "C6",
+  "new": "B5",
+  "ink_rows": [
+   436,
+   905
+  ],
+  "file": "out/print/2.42/ruler-brahms/16-1-0-0-2.png"
+ },
+ {
+  "subject": "glyph/1/0/2/0/10",
+  "base": "F4",
+  "new": "E4",
+  "ink_rows": [
+   898,
+   1412
+  ],
+  "file": "out/print/2.42/ruler-brahms/10-1-0-2-0.png"
+ },
+ {
+  "subject": "glyph/1/0/2/0/9",
+  "base": "D4",
+  "new": "C4",
+  "ink_rows": [
+   898,
+   1412
+  ],
+  "file": "out/print/2.42/ruler-brahms/9-1-0-2-0.png"
+ },
+ {
+  "subject": "glyph/1/0/3/0/20",
+  "base": "E3",
+  "new": "D3",
+  "ink_rows": [
+   1211,
+   1717
+  ],
+  "file": "out/print/2.42/ruler-brahms/20-1-0-3-0.png"
+ },
+ {
+  "subject": "glyph/1/0/5/0/21",
+  "base": "C3",
+  "new": "D3",
+  "ink_rows": [
+   1609,
+   2123
+  ],
+  "file": "out/print/2.42/ruler-brahms/21-1-0-5-0.png"
+ }
+]

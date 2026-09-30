@@ -1,0 +1,59 @@
+[
+ {
+  "tag": "S1",
+  "cell": "cell/3/0/0/2",
+  "file": "S1-cell-3-0-0-2.png",
+  "subjects": [
+   "glyph/3/0/0/2/4",
+   "glyph/3/0/0/2/9"
+  ]
+ },
+ {
+  "tag": "S2",
+  "cell": "cell/3/0/9/0",
+  "file": "S2-cell-3-0-9-0.png",
+  "subjects": [
+   "glyph/3/0/9/0/7",
+   "glyph/3/0/9/0/9",
+   "glyph/3/0/9/0/12"
+  ]
+ },
+ {
+  "tag": "S3",
+  "cell": "cell/3/1/2/9",
+  "file": "S3-cell-3-1-2-9.png",
+  "subjects": [
+   "glyph/3/1/2/9/2",
+   "glyph/3/1/2/9/3",
+   "glyph/3/1/2/9/5"
+  ]
+ },
+ {
+  "tag": "S4",
+  "cell": "cell/3/1/4/12",
+  "file": "S4-cell-3-1-4-12.png",
+  "subjects": [
+   "glyph/3/1/4/12/2",
+   "glyph/3/1/4/12/3"
+  ]
+ },
+ {
+  "tag": "S5",
+  "cell": "cell/3/1/7/17",
+  "file": "S5-cell-3-1-7-17.png",
+  "subjects": [
+   "glyph/3/1/7/17/3",
+   "glyph/3/1/7/17/5",
+   "glyph/3/1/7/17/6"
+  ]
+ },
+ {
+  "tag": "S6",
+  "cell": "cell/3/0/8/7",
+  "file": "S6-cell-3-0-8-7.png",
+  "subjects": [
+   "glyph/3/0/8/7/8",
+   "glyph/3/0/8/7/9"
+  ]
+ }
+]
