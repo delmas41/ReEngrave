@@ -1,9 +1,9 @@
 {
-  "tree": "f659ba2d4d5c9d14517adb03290a608004342352",
-  "dirty": true,
-  "date": "2026-09-30T01:35:31Z",
+  "tree": "5996bc9a6b87b5af6bdb1fd1fa99c65f2096edff",
+  "dirty": false,
+  "date": "2026-09-30T01:36:33Z",
   "manifest_md5": "23f960c8de4dae98f98760fa9341c180",
-  "wall_time_s": 55.663,
+  "wall_time_s": 54.778,
   "documents": {
     "beethoven5-litolff": {
       "id": "beethoven5-litolff",
@@ -45,7 +45,7 @@
       "export": {
         "ok": true,
         "bytes": 2367770,
-        "wall_time_s": 9.158,
+        "wall_time_s": 9.136,
         "report": {
           "families": [
             {
@@ -36341,7 +36341,7 @@
       "export": {
         "ok": true,
         "bytes": 3621515,
-        "wall_time_s": 31.526,
+        "wall_time_s": 31.995,
         "report": {
           "families": [
             {
@@ -142721,7 +142721,7 @@
       "export": {
         "ok": true,
         "bytes": 165502,
-        "wall_time_s": 0.22,
+        "wall_time_s": 0.221,
         "report": {
           "families": [
             {
