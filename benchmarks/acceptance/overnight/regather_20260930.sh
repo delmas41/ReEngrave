@@ -12,8 +12,15 @@
 # both runs exited 0. Those records were renamed *.NO-WEIGHTS.record.json.
 # Fixed below, tagged by $TAG, and a run with no duration decisions now
 # exits 3 instead of 0 (a control that can fail).
+#
+# THROUGH (Sean, 2026-09-30): the full re-gather runs only as far as the
+# stage currently being refined, and later nights add stages progressively
+# (adjudicate -> evaluate -> infer). Default: adjudicate (the first two
+# stages). A through-adjudicate record is read with `tools.omr.staged.readout`;
+# `tools.omr.acceptance` needs a through-infer record.
 set -uo pipefail
 TAG=${TAG:-20260930b}
+THROUGH=${THROUGH:-adjudicate}
 M=/Users/seanjohnson/Desktop/ReEngrave
 WT=$M/.claude/worktrees/overnight-$TAG
 OUT=$M/library/_shared-records
@@ -27,10 +34,10 @@ cd "$WT"
 ln -sfn $M/.venv-surya .venv-surya; ln -sfn $M/.venv-omrned .venv-omrned; ln -sfn $M/omr-weights omr-weights
 mkdir -p tools/omr/training/data && ln -sfn $M/tools/omr/training/data/weights tools/omr/training/data/weights
 export OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 OMRNED_PYTHON=$M/.venv-omrned/bin/python
-echo "commit $(git rev-parse HEAD) start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
+echo "commit $(git rev-parse HEAD) through $THROUGH start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
 run() {  # id pdf pages
   local t0=$(date +%s)
-  python3 -m tools.omr.staged "$2" --pages "$3" --weights auto --out "$OUT/$1-mvt1-whole-$TAG.record.json" > "$LOG/$1.log" 2>&1
+  python3 -m tools.omr.staged "$2" --pages "$3" --weights auto --through "$THROUGH" --out "$OUT/$1-mvt1-whole-$TAG.record.json" > "$LOG/$1.log" 2>&1
   local rc=$?
   # a gather whose detector never fired still exits 0 -- refuse it here
   grep -q "'duration':" "$LOG/$1.log" || rc=3
