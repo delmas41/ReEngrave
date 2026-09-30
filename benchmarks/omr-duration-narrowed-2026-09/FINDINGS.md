@@ -594,5 +594,89 @@ OWN beam at that height) → the stroke must cover the stem's x. `3a5bbb67`:
 passed THROUGH the own beam) → a stem joins the FIRST stroke it meets.
 `1ad1c1ca`: Brahms p1 8/8 JOINED + 8/8 NOT JOINED correct (seed 11);
 Litolff p3 8/8 + 8/8 correct. Used counts, Brahms p1: joined→decided 209,
-not joined→decided 566; Litolff p3: 42 / 11. Not yet Sean-confirmed.
+not joined→decided 566; Litolff p3: 42 / 11. Sean confirmed the 32 crops;
+merged to main `b2aa2fd1`.
+
+### ROADMAP 2.38b — certain strokes get the join check too
+
+A FOLLOW-UP print check after the 2.38 merge (`levels_check.py`,
+`levels_check_12.py`, `out/print/beam-stem-ink-2.38/brahms_levels_check*
+.png`) found a consequence 2.38's own print checks never asked about: of
+165 `duration` verdicts DECIDED using ONLY NOT-JOINED beam witnesses, the
+final `beam_levels` were wrong at almost every count above 1 -- level 1
+→106 (≈11/12 right), level 2 →14 (6/6 WRONG, single-beam 8ths read as
+16ths), level 3-4 →26 (nearly all WRONG, 8ths/16ths read as 32nds), level
+0 →19 (≈half wrong, one a bass clef boxed as a head).
+
+**Cause**: `_beam_levels` never consulted `Q.BEAM_STEM_JOIN` for a
+CERTAIN stroke (exact column overlap, or already stem-joined by box) --
+by design, so the ink reader could never override box-geometry certainty
+(the positive control 2.38's own tests protect). But box-only certainty
+can itself be wrong: a stroke whose box happens to overlap this stem's
+column or `_stem_joined`'s box test is not proof it is THIS stem's own
+mark. Before 2.38, an extra POSSIBLE stroke often kept `possible >
+certain`, so the note stayed NARROWED (held) despite the wrong certain
+count sitting underneath, unseen; 2.38's own NOT-JOINED fixes correctly
+dropped those extra possible strokes, and doing so surfaced the
+underlying wrong certain counts as DECIDED, wrong, durations.
+
+**Fix** (`claude/beam-certain-join-2.38b`, off `origin/main`/`b2aa2fd1`,
+not merged): `_beam_levels` now returns a third element,
+`certain_conflicts` -- the ids of any CERTAIN stroke whose `Q.BEAM_STEM_
+JOIN` witness reads NOT JOINED. GATHER already files a row per (stem,
+stroke, end) for the WHOLE cross product in a cell (`_observe_beam_stem_
+join`, unconditional on whether ADJUDICATE will call a given pair
+certain or possible), and `_beam_join_witness` already builds its
+witness dict over every stroke in `kept` regardless of branch, so no
+GATHER change was needed -- only reading the witness that was already
+being computed and thrown away for the certain branch. In
+`adjudicate_duration`, any non-empty `certain_conflicts` NARROWS
+(`beam_certain_not_joined`, checked first, before `flags_disagree`)
+between the level AS BOX GEOMETRY COUNTS IT and the level WITHOUT the
+disputed stroke(s), EQUAL support (rule 8: nothing says which witness is
+right, only that they disagree) -- never decided either way, and the
+certain stroke is NEVER dropped outright (`_beam_levels` still counts it
+in `certain`/`possible` exactly as before; only the disagreement is
+surfaced).
+
+**Re-gathered Brahms p1** (`--through adjudicate`, same command, ~2 min):
+`beam_certain_not_joined` now abstains 102 `duration` verdicts. The
+NOT-JOINED-only population's own `beam_levels` distribution: level 1
+106→98, level 2 **14→3**, level 3-4 **26→3** (`levels_check.py`:
+`{'zero': 19, 'three+': 3}`; `levels_check_12.py`: `{'0': 19, '1': 98,
+'2': 3, '3': 2, '4': 1}`) -- total population 165→123. Level 0 is
+UNCHANGED (19) -- a different mechanism entirely (a possible-only stroke
+dropped by the ORIGINAL 2.38 fix, never a certain-branch conflict), out
+of this lane's scope; the one named bad case (a bass clef boxed as a
+notehead) is a detector-precision fault, not a beam-count one.
+
+**Eye-checked both regenerated crop sheets.** Level-1 crops (12): the
+large majority show a correctly single-beamed 8th, box on a real note
+inside that group. Level-2 crops (3, all that remain): still show what
+look like single-beam 8th groups by eye -- a SMALL RESIDUAL not caught by
+this fix, because these are not witness DISAGREEMENTS: box and ink
+apparently AGREE (both certain, both joined or declined) on what still
+looks like the wrong count by eye. That is a different, harder fault
+(both witnesses reading off the same raster and failing together --
+CLAUDE.md's own warning about two witnesses off one plate) and is named,
+not chased further here. Level 3-4 crops (3) show the same shape.
+
+**Tests**: 4 new/changed in `test_staged_beam_stem_join.py` (was 33, now
+37) -- `_beam_levels` unit tests updated to the 3-tuple and two new ones
+added (a certain stroke JOINED/DECLINED carries no conflict); at the full
+`adjudicate_duration` level, the EXISTING positive control (`test_
+POSITIVE_CONTROL_a_box_CERTAIN_join_is_unmoved_by_the_ink`) was ITSELF
+the bug, renamed and its assertion corrected to NARROWED with the new
+reason word, and two new positive controls added (certain+JOINED,
+certain+no-witness, both still DECIDED unchanged). RED confirmed against
+`b2aa2fd1`: 8 of 37 fail (7 on the widened `_beam_levels` return
+signature, 1 -- the renamed bug test -- on the actual behaviour, DECIDED
+where NARROWED is now required).
+
+`pytest -m "not slow" tools/omr/tests`: **3,972 passed / 3 skipped** on
+this branch (`origin/main`'s own 3,968 + this file's 4 net new tests, no
+other test file touched). `python3 -m tools.omr.staged.check`: **TOTAL
+245, unchanged from base** -- no new quantity, reader or detail key; the
+new reason word `beam_certain_not_joined` is declared in `Q.DURATION`'s
+own `reasons=(...)` tuple, same convention as every sibling reason.
 
