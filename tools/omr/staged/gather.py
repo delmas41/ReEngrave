@@ -2489,14 +2489,73 @@ def _beam_stem_horizontally_reaches(stem_x0: float, stem_x1: float,
     return stroke_x0 <= stem_x1 + tol and stroke_x1 >= stem_x0 - tol
 
 
+def _beam_stem_intervening_stroke(ink: Any, ix0: int, ix1: int, iy0: int,
+                                  iy1: int, stem_width_px: float,
+                                  thickness_px: float) -> bool:
+    """Between the tip and the candidate's own near edge, does the walked
+    column pass through a DIFFERENT stroke first? ROADMAP 2.38, third
+    post-review fix.
+
+    ⚠️⚠️ THE BUG (Brahms p1 re-check, manager review of 3a5bbb67, seed 7):
+    2 of 4 JOINED crops were still wrong -- the candidate is a long THIN
+    line (a slur/hairpin the detector boxed as a beam stroke) lying just
+    beyond the stem's OWN real beam. The blank-run scan measures only
+    whether the column is UNBROKEN; it does not ask WHOSE ink that is, so
+    the stem's own genuinely-attached beam (thick, immediate, right at the
+    tip) reads as "continuing on" toward the far candidate, and the small
+    gap between the beam's own far edge and the thin line's near edge
+    passes the same tolerance meant for a shattered PLATE seam.
+
+    ⚠️⚠️ THE PRINCIPLE (engraving, stated by the manager): a stem is
+    joined to the FIRST stroke its column meets past the tip, never to one
+    beyond another stroke. A beam is drawn far WIDER than the stem it
+    serves (it reaches sideways to every note it covers); a stem's own ink
+    is not. So: at each row in the walked window, does ink reach past the
+    stem's own column by more than one STEM WIDTH on at least one side,
+    sustained over a run of rows at least one measured staff-line
+    thickness long (a single wide pixel is noise; a beam's own vertical
+    stroke height is not)? That shape is a DIFFERENT stroke lying in the
+    path, whatever it is -- the walk must not treat what lies past it as
+    still reaching the stem.
+
+    ⚠️ A KNOWN LIMITATION, NAMED NOT SOLVED: a genuinely continuous single
+    beam that happens to be split into two adjacent CV-detected boxes (the
+    "candidate" being the tail end of the SAME physical stroke the window
+    itself is already wide with) would also trip this guard -- the check
+    cannot distinguish "another stroke" from "the same stroke, re-boxed"
+    by shape alone. Not measured against a real case of that shape; if one
+    turns up, the fix is a subject-identity join, not a wider window here.
+    """
+    if iy1 <= iy0:
+        return False
+    H, W = ink.shape
+    margin = max(1, int(round(stem_width_px)))
+    probe = max(2, int(round(thickness_px)))
+    left_x0, left_x1 = max(0, ix0 - margin - probe), max(0, ix0 - margin)
+    right_x0, right_x1 = min(W, ix1 + margin), min(W, ix1 + margin + probe)
+    min_run = max(1, int(round(thickness_px)))
+    run = 0
+    for y in range(iy0, iy1):
+        wide = ((left_x1 > left_x0 and ink[y, left_x0:left_x1].any())
+                or (right_x1 > right_x0 and ink[y, right_x0:right_x1].any()))
+        if wide:
+            run += 1
+            if run >= min_run:
+                return True
+        else:
+            run = 0
+    return False
+
+
 def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
                        tip_y: float, end: str, stroke_x0: float,
                        stroke_x1: float, stroke_y0: float,
                        stroke_y1: float, gap_tolerance_px: float
                        ) -> Optional[Dict[str, Any]]:
     """Does this stem's own ink, in its own x-range, run CONTINUOUSLY from
-    `tip_y` into ink at or past the candidate stroke's near edge -- AND does
-    that candidate stroke horizontally reach the stem at all? ROADMAP 2.38.
+    `tip_y` into ink at or past the candidate stroke's near edge -- with no
+    OTHER stroke lying in the path -- AND does that candidate stroke
+    horizontally reach the stem at all? ROADMAP 2.38.
 
     All of `stem_x0`, `stem_x1`, `tip_y`, `stroke_x0`, `stroke_x1`,
     `stroke_y0`, `stroke_y1` and `gap_tolerance_px` are in the SAME
@@ -2507,7 +2566,7 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
     reverse) -- GATHER does not know which end is the true tip, so the
     caller asks both and files one row each.
 
-    Three outcomes:
+    Outcomes:
 
     * the candidate's own x-range does not reach the stem's, within
       `gap_tolerance_px` -- NOT JOINED, a real answer settled by the two
@@ -2518,8 +2577,12 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
       ends IN the beam, joined with no gap to walk;
     * the stroke stands cleanly past the tip (the whole stroke is on the
       tip's own far side) -- walk the stem's own x-range from the tip to
-      the stroke's near edge and look for the LONGEST unbroken blank run;
-      joined iff it never exceeds `gap_tolerance_px`.
+      the stroke's near edge: if a DIFFERENT, wider stroke lies in that
+      path first, NOT JOINED (`_beam_stem_intervening_stroke`'s own
+      docstring has the argument -- a stem joins the FIRST stroke its
+      column meets, never one beyond another); otherwise look for the
+      LONGEST unbroken blank run and join iff it never exceeds
+      `gap_tolerance_px`.
 
     Returns `None` -- DECLINED, never defaulted -- where the raster or the
     stem's own x-range is missing, the scanned window falls entirely off
@@ -2565,6 +2628,18 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
     iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
     if iy1 <= iy0:
         return None
+    if _beam_stem_intervening_stroke(ink, ix0, ix1, iy0, iy1,
+                                     stem_x1 - stem_x0, gap_tolerance_px):
+        # NOT JOINED -- the walk meets a DIFFERENT, wider stroke (this
+        # stem's own already-attached beam, most often) before it ever
+        # reaches the candidate; a stem joins the FIRST stroke past its
+        # tip, never one beyond another.
+        return {"found": False, "gap_px": round(float(y1 - y0), 2),
+                "max_blank_run_px": None,
+                "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+                "window_canonical": [round(stem_x0, 2), round(y0, 2),
+                                     round(stem_x1, 2), round(y1, 2)],
+                "reason": "intervening_stroke"}
     region = ink[iy0:iy1, ix0:ix1]
     row_ink = region.any(axis=1)
     max_blank = 0

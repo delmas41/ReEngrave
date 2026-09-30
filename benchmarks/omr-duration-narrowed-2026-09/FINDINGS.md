@@ -372,6 +372,71 @@ particular signature change). All 30 pass fixed.
 
 No further crops or gathers run beyond the one page this review asked for.
 
+### Manager re-check, 3a5bbb67: the intervening-stroke bug
+
+Re-check with more samples (`crops.py` re-seeded to 7, 8 NOT JOINED / 4
+JOINED). NOT JOINED: 8/8 correct (far groups' beams, hairpins). **JOINED:
+2 of 4 still WRONG** -- the candidate is a long THIN line (a slur/hairpin
+the detector boxed as a beam stroke) lying just beyond the stem's OWN
+real beam. The continuity walk goes from the tip up THROUGH the stem's
+own beam ink (ink genuinely in the stem's own column) and reaches the
+thin line within tolerance, crediting it as a level.
+
+**The bug**: the blank-run scan asks only whether the column is
+UNBROKEN, never WHOSE ink it is reading. The stem's own real beam (thick,
+immediate, right at the tip) fills most of the walked window; the small
+gap between that beam's own far edge and the thin line's near edge passes
+the same tolerance meant for a shattered PLATE seam.
+
+**The principle** (engraving, stated by the manager): a stem is joined to
+the FIRST stroke its column meets past the tip, never to one beyond
+another stroke.
+
+**Fix**: `_beam_stem_intervening_stroke`, checked during the walk before
+the blank-run scan. At each row in the walked window, does ink reach past
+the stem's own column by more than one STEM WIDTH on at least one side,
+sustained over a contiguous run of rows at least one measured staff-line
+thickness long? A beam is drawn far wider than the stem it serves (it
+reaches every note it covers); a stem's own ink is not. Where such a band
+is found, the candidate is NOT JOINED -- the walk met a different stroke
+first.
+
+**The optional thin-candidate-thickness guard was NOT built.** Checked
+for cleanliness first: several of this lane's own existing tests draw a
+candidate's thickness equal to the tolerance value itself (both derived
+from the same synthetic `gap_tolerance_px=4.0`), so a 1.5x-thickness
+floor would have failed those pre-existing "real beam" fixtures and
+required reworking their geometry to stay above the new floor -- not a
+clean addition on top of the required fix, only a parallel one. The
+wide-band walk-time check above already resolves the confirmed bug on
+its own (a genuine beam's own width is what the check detects, whatever
+the candidate's own thickness is), so the second guard was skipped.
+
+**Re-gathered Brahms p1, re-ran `crops.py`** (same seed 7, 8 NOT JOINED /
+4 JOINED): new used-counts `{(False, 'decided'): 566, (True, 'decided'):
+209, (False, 'narrowed'): 29, (True, 'narrowed'): 1}` -- JOINED 214->210,
+NOT JOINED 591->595 (four more false positives caught). Eye-checked all
+12 crops on the regenerated `brahms_beam_join_used.png`: all 4 JOINED
+crops now show the green (stem) bracket directly touching the
+blue-boxed candidate with no visible intervening ink; all 8 NOT JOINED
+crops correctly point at unrelated ink (hairpins, other groups' beams,
+none touching the stem's own bracket).
+
+3 new tests (33 total): a thin line past the stem's own real beam -> NOT
+JOINED (the confirmed bug, RED first); tip directly in the candidate ->
+JOINED unchanged (positive control, trivial branch untouched); a
+shattered-seam blank gap under tolerance -> JOINED unchanged (positive
+control, window too short for the new run-length threshold to fire). RED
+confirmed against pre-fix (3a5bbb67) `gather.py`: exactly 1 of 33 fails
+(the bug test) -- the two positive controls pass on both trees, as
+designed. All 33 pass fixed.
+
+A known limitation is named, not solved, in `_beam_stem_intervening_
+stroke`'s own docstring: a genuinely continuous single beam physically
+split into two adjacent CV-detected boxes would also trip this guard,
+since shape alone cannot tell "another stroke" from "the same stroke,
+re-boxed". Not measured against a real instance of that shape.
+
 ### Independence, argued (CLAUDE.md §4b)
 
 The two witnesses read the SAME staff-erased raster (`image_no_staff`) --
@@ -444,6 +509,13 @@ other test file touched. `python3 -m tools.omr.staged.check`: **TOTAL
 245, unchanged from base** yet again (no new quantity, reader or
 detail-key gap -- `stroke_x0`/`stroke_x1` are ordinary parameters, not
 observation kwargs).
+
+**Post-re-check update (fourth commit, the intervening-stroke fix in
+"Manager re-check, 3a5bbb67" above): 33 tests** in this file (3 net new).
+`pytest -m "not slow" tools/omr/tests`: **3,968 passed / 3 skipped** =
+`origin/main`'s own 3,935 + 33, same subtraction logic, no other test
+file touched. `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged
+from base** yet again -- no new quantity, reader or detail key.
 
 Original first-commit numbers, for the record: `pytest -m "not slow"
 tools/omr/tests`: **3,959 passed / 3 skipped** on this branch, clean (0

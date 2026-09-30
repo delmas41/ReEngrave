@@ -197,6 +197,56 @@ class TestTheMeasurement(unittest.TestCase):
                                       gap_tolerance_px=4.0)
         self.assertTrue(m["found"])
 
+    def test_a_THIN_LINE_past_the_stems_OWN_beam_is_NOT_joined(self):
+        """⚠️⚠️ THE BUG, RE-CHECK CONFIRMED (manager review of 3a5bbb67,
+        Brahms p1 crops seed 7: 2 of 4 JOINED crops still wrong). The
+        candidate is a long thin line (a slur/hairpin the detector boxed
+        as a beam stroke) lying just PAST the stem's own real beam --
+        drawn right at the tip, WIDE (spans far beyond the stem's own
+        column, a real beam's shape). The blank gap between the real
+        beam's own far edge (y=92) and the thin line's near edge (y=90) is
+        only 2px -- WITHIN tolerance, which is exactly why the pre-fix
+        code (a bare blank-run scan, blind to WHOSE ink it was reading)
+        called this JOINED. The walk from the tip must stop at the FIRST
+        stroke it meets -- the stem's own real beam -- never credit one
+        beyond it."""
+        img = _paper()
+        # this stem's OWN real beam: WIDE (x 100-300, far past the stem's
+        # own 190-194 column), touching the tip (y 92-100).
+        _draw(img, 100.0, 92.0, 300.0, 100.0)
+        # the thin line (candidate under test): narrow, 2px past the
+        # beam's own far edge (90 vs 92) -- within the 4px tolerance.
+        _draw(img, 185.0, 86.0, 200.0, 90.0)
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      185.0, 200.0, 86.0, 90.0,
+                                      gap_tolerance_px=4.0)
+        self.assertFalse(m["found"])
+        self.assertEqual(m["reason"], "intervening_stroke")
+
+    def test_tip_DIRECTLY_IN_the_candidate_is_JOINED_unchanged(self):
+        """The first positive control the manager asked for: the trivial
+        "ends in the beam" case is untouched by the new walk-time check
+        (it never reaches the walk at all)."""
+        img = _paper()
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      180.0, 210.0, 90.0, 105.0,
+                                      gap_tolerance_px=4.0)
+        self.assertTrue(m["found"])
+        self.assertEqual(m["gap_px"], 0.0)
+
+    def test_tip_BLANK_GAP_under_tolerance_candidate_is_JOINED_unchanged(self):
+        """The second positive control: a genuine shattered-plate seam (no
+        other stroke in the walked path, just a short unexplained blank
+        run) still joins exactly as before -- the window is far too short
+        for the new intervening-stroke run-length threshold to fire."""
+        img = _paper()
+        _draw(img, 190.0, 80.0, 194.0, 90.0)
+        _draw(img, 190.0, 91.0, 194.0, 100.0)
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      180.0, 210.0, 76.0, 80.0,
+                                      gap_tolerance_px=4.0)
+        self.assertTrue(m["found"])
+
     def test_window_off_the_raster_is_none(self):
         img = _paper(h=50, w=50)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
