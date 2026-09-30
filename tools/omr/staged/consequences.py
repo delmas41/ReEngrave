@@ -1066,3 +1066,175 @@ def join_parts(log, subject, partition) -> List[Verdict]:
     result we know to be wrong.
     """
     return []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.45. A rest refused on BOTH staves it was detected on belongs to
+# whichever staff's own bar is missing it. Sean, DECISIONS 2026-09-30 (found
+# on Brahms 1/i Breitkopf p1, bar 5, three printed eighth rests between
+# staves 2 and 3 of system 0, `glyph/1/0/2/5/{0,3,10}` and
+# `glyph/1/0/3/5/{1,0,2}`, all six refused `rest_outside_its_staff`):
+#
+#   *"They belong to the lower staff. I was able to determine that based on
+#   the amount of voices in each of the staffs. The one above has 2 voices
+#   and both the voices are accounted for. The one below has a voice that
+#   crosses as they both jump up higher. If the 8th note rests didn't belong
+#   to the lower staff then it would be missing a voice."*
+#
+# ⚠️ WHY THIS READS THE BAR SUM AND NOT `Q.VOICES` DIRECTLY. `Q.VOICES`
+# (`adjudicators/rhythm.py`) is decided from `Q.EVENT`'s grouping, and
+# `adjudicate_event` reads `Q.REST` -- a GATHER-level class fact -- never
+# `Q.REST_IS_NOT_A_REST`. So a rest's own ADJUDICATE-time refusal never
+# removes it from its cell's `Q.EVENT`/`Q.VOICES` computation at all: BOTH
+# staves' voice splits already "see" their own local copy of the ink,
+# refused or not, and a verdict computed that way cannot tell a staff that
+# NEEDS this rest from one that does not. `_bar_total_excluding_refused`
+# (below) is built from the same three readers `reconcile_duration` already
+# uses to answer "what does this bar still hold" (`_standing`,
+# `_left_the_bar`, `_event_totals`) -- and those DO respect a DECIDED
+# `Q.REST_IS_NOT_A_REST`, because `_left_the_bar` reads it directly. Reusing
+# them, rather than building a second "is the bar complete" reader under
+# `Q.VOICES`, is the point: the two staves' bar-sum answers are what changes
+# between "the rest is still refused here" and "it isn't", and nothing about
+# `Q.EVENT`'s grouping needs to move for that to be true.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Two floating-point bar sums (target vs. standing total) are compared
+#: exactly, the same tolerance `reconcile_duration`'s own landing test uses.
+REST_BAR_SUM_EPS = 1e-6
+
+
+def _bar_total_excluding_refused(log: Log, cell_subject: Subject
+                                 ) -> Optional[float]:
+    """This bar's own length, RIGHT NOW: every standing duration under
+    `cell_subject`, excluding anything `_left_the_bar` already took out (a
+    DECIDED not-a-notehead, not-a-rest or another-staff verdict) -- `None`
+    where the bar cannot be summed at all (no standing duration, an
+    undecided `Q.EVENT`, or a still-NARROWED note with no candidates).
+
+    ⚠️ THE SAME QUESTION `reconcile_duration` ASKS, ANSWERED THE SAME WAY,
+    on purpose: its own preamble (this function's body, before the landing
+    search) is not restated here, it is CALLED — `_standing`, `_left_the_bar`
+    and `_event_totals` are each already paid for and each already correct
+    about which boxes a bar still holds.
+    """
+    notes = []
+    for v in _standing(log, cell_subject, Q.DURATION):
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        notes.append(v)
+    if not notes:
+        return None
+
+    def _current(v: Verdict):
+        if v.outcome is Outcome.DECIDED:
+            return v.value
+        return v.candidates[0].value if v.candidates else None
+
+    current = {v.id: _current(v) for v in notes}
+    if any(c is None for c in current.values()):
+        return None
+    return _event_totals(log, cell_subject, notes, current)
+
+
+@rule(consequence=Consequence.REINSTATE_REST_BETWEEN_STAVES,
+      cause=Q.METER, effect=Q.REST_IS_NOT_A_REST, scope=Kind.GLYPH,
+      bound="Fires only on a glyph DECIDED `rest_outside_its_staff` that is "
+            "also in a genuine cross-staff contest (`Q.GLYPH_BAND_DISTANCE` "
+            "rows naming another staff). Reinstates it on ITS OWN staff "
+            "only, never moves it, and only where that staff's bar is short "
+            "EXACTLY this rest's own length once every currently-refused "
+            "glyph is excluded AND every other contested staff's bar is "
+            "already complete without it. Any other shape -- no contest, an "
+            "undecided candidate, a shortfall that is zero or does not match, "
+            "a candidate staff that is not itself complete -- changes "
+            "nothing (rule 8).")
+def reinstate_rest_between_staves(log: Log, subject: Subject,
+                                  meter: Verdict) -> List[Verdict]:
+    """A rest doubly refused `rest_outside_its_staff` is reinstated on the
+    one staff whose voice it completes.
+
+    ⚠️ NEVER RELOCATED, NEVER DUPLICATED. This glyph already sits on its own
+    staff's own cell -- the twin copy the neighbour staff's padded cell
+    independently detected is a SEPARATE glyph subject with its own verdict,
+    untouched here. Superseding THIS glyph's own refusal is the entire
+    repair; the sibling copy stays refused because nothing about IT changed
+    (its own staff's bar is not short by this amount).
+
+    ⚠️ SYMMETRIC BY CONSTRUCTION, NOT BY A SPECIAL CASE. This rule runs once
+    per glyph (`evaluate.run`'s own loop, `scope=Kind.GLYPH`), so both twins
+    of a physical rest are offered the same test independently. Only the
+    twin on the staff whose bar is actually short reinstates; the other
+    staff's own bar-sum check fails the equality and the function returns
+    `[]` for it, which is what makes this safe to run unconditionally over
+    every refused rest in the document rather than needing to be told which
+    glyph is "the" owner in advance.
+    """
+    refusal = log.verdict(Q.REST_IS_NOT_A_REST, subject)
+    if (refusal is None or refusal.outcome is not Outcome.DECIDED
+            or refusal.value is not True
+            or refusal.reason != "rest_outside_its_staff"):
+        return []
+
+    own_key = subject.at(Kind.STAFF).to_key()
+    bands = log.rows(Q.GLYPH_BAND_DISTANCE, subject)
+    others = sorted({str(r.detail.get("candidate")) for r in bands
+                     if r.detail and r.detail.get("candidate") is not None
+                     and str(r.detail.get("candidate")) != own_key})
+    if not others:
+        return []          # not a cross-staff contest at all -- an ordinary
+                            # off-staff refusal, untouched
+
+    value = meter.value or {}
+    num, den = value.get("numerator"), value.get("denominator")
+    if not num or not den:
+        return []
+    target = float(num) * 4.0 / float(den)
+
+    own_cell = subject.at(Kind.CELL)
+    own_total = _bar_total_excluding_refused(log, own_cell)
+    if own_total is None:
+        return []
+    own_shortfall = target - own_total
+
+    rest_dur = log.verdict(Q.DURATION, subject)
+    if rest_dur is None or rest_dur.outcome is not Outcome.DECIDED:
+        return []          # the rest's own length is not settled -- rule 8
+    rest_beats = (rest_dur.value or {}).get("beats")
+    if rest_beats is None:
+        return []
+    rest_beats = float(rest_beats)
+
+    if abs(own_shortfall - rest_beats) > REST_BAR_SUM_EPS:
+        # Zero (this staff is already complete without it), negative
+        # (already over target -- something ELSE is wrong here), or a
+        # shortfall of some other size: not this rest's own gap.
+        return []
+
+    for cand_key in others:
+        cand_staff = Subject.from_key(cand_key)
+        cand_cell = R.cell(cand_staff.page, cand_staff.system,
+                          cand_staff.staff, subject.cell)
+        cand_total = _bar_total_excluding_refused(log, cand_cell)
+        if cand_total is None:
+            return []       # the candidate's own bar is undecided -- abstain
+        if abs(target - cand_total) > REST_BAR_SUM_EPS:
+            # The other staff is not complete either: both or neither is
+            # missing a voice here, which is not a case this rule may guess
+            # at (rule 8 -- a fallback never converts "cannot tell" into an
+            # answer).
+            return []
+
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.REST_IS_NOT_A_REST,
+        outcome=Outcome.DECIDED, value=False,
+        decider="reinstate_rest_between_staves",
+        reason="rest_reinstated_missing_voice",
+        considered=(refusal.id, meter.id, rest_dur.id),
+        basis=(refusal.id, meter.id, rest_dur.id),
+        detail={"own_shortfall_beats": round(own_shortfall, 6),
+                "candidates": others},
+        supersedes=refusal.id)
+    return [log.record(out)]

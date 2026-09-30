@@ -316,3 +316,10 @@ out/2.42/*.json
 out/2.42/*.log
 out/2.42/**/*.json
 out/2.42/**/*.log
+
+# ROADMAP 2.45: the one-page GATHER+ADJUDICATE+EVALUATE dumps (and scratch
+# analysis scripts) used for the between-staves-rest A/B on Litolff p3 and
+# Brahms p1, regenerable by the commands in
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21c; the crop under
+# `out/print/2.45/` IS the durable record and is committed.
+out/2.45/
