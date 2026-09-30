@@ -450,6 +450,15 @@ NOT_A_STAGE = frozenset({
     # exits 0. That is the guard the brake audit's mutation arm asked for,
     # doing its job on the next module to arrive.
     "trace.py",
+    # ⚠️ ROADMAP 1.5. `readout.py` is the STAGE READOUT: it READS a saved
+    # record and prints what one stage produced per symbol, diffs two records
+    # at GATHER+ADJUDICATE, and draws the page over the print. It runs no
+    # stage and decides nothing -- the stage of a verdict is `trace`'s own
+    # `stage_of_decider` -- and it names quantities only to show them, so it
+    # declares `DERIVED_CHECK = True` like `trace.py`. Registered here because
+    # the guard above tripped on it on arrival (`reach --check`: "UNREGISTERED
+    # MODULE readout.py").
+    "readout.py",
     # ⚠️ `check.py` (2026-09-22, plan §5 Phase 0.4b) is the tenth derived
     # check and folds the other nine plus `conventions.py`, `no_producer.py`,
     # `export_coverage.py` and `accuracy_record.py` into one open-findings

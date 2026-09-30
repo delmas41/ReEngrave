@@ -311,9 +311,16 @@ python3 -m tools.omr.staged.check                     # every derived check, one
 python3 -m tools.omr.staged.export rec.json --out out.musicxml
 python3 -m tools.omr.staged.trace --run rec.json --subject glyph/1/0/2/4/1
 python3 -m tools.omr.staged.trace --run rec.json --family note
+python3 -m tools.omr.staged.readout show rec.json --page 3 --staff 2 --cell 4 [--through gather] [--format jsonl|csv]
+python3 -m tools.omr.staged.readout diff base.json arm.json --arm code|weights [--family note]   # GATHER+ADJUDICATE only
+python3 -m tools.omr.staged.readout html arm.json [--against base.json] --out page.html        # the print, coloured per stage
 python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
 python3 -m tools.omr.factsheet show sheet.json
 ```
+
+`readout` (ROADMAP 1.5) only reads a record: it refuses one whose GATHER holds
+no glyph (a gather run without `--weights auto`) and matches two runs' symbols
+by box overlap, never by glyph index.
 
 **One command (ROADMAP 4.1, BUILT not merged):** `python3 -m tools.reengrave
 import <work_id> [--edition ID] [--movements SPEC] [--yes] [--dry-run]` ranks
