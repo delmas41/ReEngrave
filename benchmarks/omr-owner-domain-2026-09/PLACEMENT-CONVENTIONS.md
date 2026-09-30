@@ -71,7 +71,8 @@ lane's scope, named in "Rules safe to wire").
 `restDoubleWhole/Whole/Half/Quarter/8th/16th/32nd/64th/128th/HNr/HBar`
 
 - **Relative to its staff:** INSIDE — centred on or about the middle line;
-  a whole rest hangs under the 4th line.
+  a whole rest hangs under the 4th line; a WHOLE rest is additionally
+  centred HORIZONTALLY in its bar (ROADMAP 2.33, below).
 - **Distance:** 0.
 - **Attaches to:** nothing (it is itself the note's stand-in); a lone whole
   rest can absorb a whole bar regardless of meter.
@@ -80,13 +81,93 @@ lane's scope, named in "Rules safe to wire").
   notehead category for the contest). A whole-rest carrier is also the
   majority case for fermatas (see Fermatas).
 - **Known exceptions:** in multi-voice bars a rest can be DISPLACED off the
-  centre line to avoid a collision with the other voice's notes — this
-  project has not measured or modelled displaced-rest position at all
-  (ASSUMED gap; see Questions for Sean).
+  centre line to avoid a collision with the other voice's notes — Sean
+  confirmed 2026-09-29 this occurs in this orchestral corpus, and it is now
+  WIRED: `adjudicate_voices` (`rhythm.py`, ROADMAP 2.27c) reads a rest's own
+  position against the staff's middle line and, where it is decisively off
+  (≥1.5 STEPS = 0.75 spaces, `REST_VOICE_DISPLACEMENT_MIN_STEPS`, CONVENTION
+  ASSUMED — the threshold, not the convention, is unconfirmed), joins it to
+  one voice stream instead of both. This is a VOICE question and never
+  leaves the staff band (max reach ±0.75 spaces from the middle line, well
+  inside the 0–8 step band) — it does not overlap ROADMAP 2.33's own
+  vertical-window refusal below, which asks a different question (does this
+  ink belong to THIS STAFF at all) at a much wider, per-class bound.
 - **Status:** SEAN-CONFIRMED (whole-bar rule) — CLAUDE.md §10: *"A whole
-  rest means the BAR whatever the meter."* Displacement: ASSUMED.
+  rest means the BAR whatever the meter."* Displacement: SEAN-CONFIRMED it
+  occurs (2026-09-29); the 1.5-step threshold is CONVENTION ASSUMED, no
+  crop was pulled.
 - **Registry ref:** `[L28]` (whole-bar rest centred), `[C84]`-adjacent
-  entries in "Rests & bar filling"; displaced rests — **GAP**.
+  entries in "Rests & bar filling"; displaced rests — GAP no longer open
+  for the WIRING (2.27c), still open for the threshold's own confirmation.
+
+**ROADMAP 2.33 (2026-09-29), six refusals added to `adjudicate_rest_is_
+not_a_rest` (`family_precision.py`, next to 2.15's duplicate-box rule) —
+BUILT, on `claude/rest-placement-2.33`, not merged, across three review
+rounds. `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §20 has the
+full record; the summary that belongs on THIS row:**
+
+- **`rest_off_center`, WHOLE rests only** (Sean narrowed this mid-lane from
+  "whole and half": *"a whole rest = the bar, centred"*) — refused where the
+  box's centre sits farther than 1/6 of the bar's own width (`Q.CELL_BOX`;
+  the cell frame has no horizontal pad) from the bar's own centre. For half
+  and smaller, Sean gave a DIFFERENT, unbuilt design instead: *"based upon
+  the other notes in a measure there will be a limited space geometrically
+  where the rest can be"* — a beat-slot rule keyed on `Q.EVENT`/`Q.VOICES`/
+  `Q.ONSET_COLUMN`, all decided AFTER `Q.REST_IS_NOT_A_REST` in
+  `adjudicate.ORDER`, so it is WRITTEN (FINDINGS §20d) and not built.
+- **`rest_outside_its_staff`, every rest class, a PER-CLASS vertical
+  window** — reuses the ledger's own `_beyond_spaces` ruler. RECALIBRATED
+  on review: MEDIUM (1.5 spaces beyond the band, was 1.0) for
+  whole/half/`restHNr`/`restHBar`; WIDE (2.5 spaces) for quarter-and-smaller
+  (quarter moved here on review — it is displaced for a second voice the
+  same way an 8th rest is), per Sean's own correction: *"I did see some 8th
+  note rests outside the staff but not nearly as far as note heads."*
+  CALIBRATED TO SEAN'S OBSERVATION, NOT MEASURED.
+- **`rest_clipped_by_crop`** — a box flush against the CELL's own crop edge
+  (reuses `notehead_precision`'s 2.4a edge test, not restated): Sean's own
+  crop-cause finding, *"a notehead looked a little bit like a whole note
+  rest when the notehead was cut in half by the image crop... in a staff
+  above or below the main staff."* Never relocated — the neighbour staff's
+  own cell holds its own detection of the same ink.
+- **`rest_has_a_stem`, every rest class** — a rest never has a stem; a
+  `Q.STEM` box overlapping this mark's own box refuses it outright (reuses
+  `rhythm._stems_on`, the same test `adjudicate_stem_direction` uses).
+  Sean, on what else tells the two readings apart: *"if there is a stem
+  attached... that helps."*
+- **`rest_touches_two_staff_lines`, `restWhole`/`restHalf` ONLY** — Sean:
+  *"a common mistake was a black notehead called a whole or half rest. The
+  rest should never touch 2 different staff lines."* Ink whose top and
+  bottom edges each sit on a DIFFERENT staff line (an edge-touch tolerance
+  reused from the ledger's own `ON_A_STAFF_LINE_TOL_SPACES`) is a
+  notehead's shape filling a whole space, not a rest hanging from (whole)
+  or sitting on (half) exactly one line. Not applied to quarter/8th/etc. —
+  their own printed shapes legitimately span more than one line.
+- **`rest_overlaps_a_notehead`** — this glyph's ink cannot be a rest AND
+  sit on a decided notehead's ink. RECALIBRATED on review: the floor is now
+  a SUBSTANTIAL IoU (0.3, raised from a reused 0.02 duplicate floor that
+  was unsafe — a displaced voice's rest can legitimately touch the OTHER
+  voice's notehead) AND `_same_mark_centres` (imported from
+  `notehead_precision`, ROADMAP 2.30's own second gate). For
+  `restWhole`/`restHalf`, `rest_touches_two_staff_lines`'s own shape
+  verdict RESOLVES the pair instead of always refusing the rest:
+  `"one_line"` → the rest STANDS (dropping the competing notehead reading
+  is a named next connection, since `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` is
+  already frozen by the time this quantity decides); `"cannot_tell"` →
+  refuses neither (rule 8). For every other class the overlap still always
+  refuses the rest. This ANSWERS the cross-family question this document's
+  own §2.27 map, and ROADMAP 2.30's §19c, both left open ("is a rest-box /
+  notehead-box overlap the same one-mark-boxed-twice mechanism 2.15 already
+  measures for two rest boxes?") — YES, built here.
+- **Named, not built**: Sean's fourth witness, the BAR SUM (*"if... the bar
+  sum needs the notehead then those also help"*) — belongs in EVALUATE
+  (`consequences.reconcile_duration`), assessed as more than a small
+  connection (needs an identity-flip, not merely a duration re-reading, and
+  a losing-reading revision rule) — next ROADMAP item, per the brief's own
+  escape valve.
+- All six run structurally BEFORE `Q.GLYPH_OWNER` (`Q.REST_IS_NOT_A_REST`'s
+  own slot in `adjudicate.ORDER`, shared with `Q.NOTEHEAD_IS_NOT_A_
+  NOTEHEAD`), so none can contradict a decided owner verdict — none exists
+  yet when any of them run.
 
 ### Accidentals & key-signature markers
 `accidentalFlat/Natural/Sharp/DoubleSharp/DoubleFlat{,Small}`,

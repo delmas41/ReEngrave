@@ -1176,8 +1176,21 @@ class TestTheSidecarLearnsOtherStaff(unittest.TestCase):
 
 class TestEachFamilyByName(unittest.TestCase):
 
-    def _pair(self, quantity, cls, extra):
-        """`(the refused verdict, the kept control)` for one family."""
+    def _pair(self, quantity, cls, extra, *, own_x_c=LEDGER_X_CANONICAL):
+        """`(the refused verdict, the kept control)` for one family.
+
+        ⚠️ `own_x_c` DEFAULTS TO THE SAME CANONICAL X AS THE LEDGER'S OWN
+        HEAD ANCHOR, unchanged for every family this helper served before
+        ROADMAP 2.33. `Q.REST_IS_NOT_A_REST` alone now reads a notehead's
+        box for `rest_overlaps_a_notehead` (family_precision.py), and a
+        rest glyph placed pixel-identically on top of the "for the
+        ledger's sake" notehead anchor below reads as one mark under two
+        classes, refusing the KEPT control for the wrong reason (a fixture
+        collision, not a human-witness question). `test_rest_is_not_a_rest`
+        passes a separated `own_x_c` so its own box shares this cell with
+        the anchor notehead without occupying its ink — every other
+        family's call is untouched.
+        """
         out = []
         for value in (f"owner:{HE.OWNER_OTHER}", None):
             log = Log()
@@ -1189,7 +1202,7 @@ class TestEachFamilyByName(unittest.TestCase):
                  page_box=_page_box_at_step(-2.0), w_c=26.0, h_c=18.0,
                  x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL)
             g = _box(log, 0, cls, quantity=extra,
-                     x_c=LEDGER_X_CANONICAL, y_c=LEDGER_Y_CANONICAL,
+                     x_c=own_x_c, y_c=LEDGER_Y_CANONICAL,
                      page_box=_page_box_at_step(-2.0))
             if value is not None:
                 _human(log, g, value)
@@ -1230,7 +1243,10 @@ class TestEachFamilyByName(unittest.TestCase):
         self.assertEqual(kept.detail["class"], "accidentalFlat")
 
     def test_rest_is_not_a_rest(self):
-        refused, kept = self._pair(Q.REST_IS_NOT_A_REST, "restQuarter", Q.REST)
+        # own_x_c separated from the ledger's anchor notehead (ROADMAP
+        # 2.33's `rest_overlaps_a_notehead` — see `_pair`'s own docstring).
+        refused, kept = self._pair(Q.REST_IS_NOT_A_REST, "restQuarter", Q.REST,
+                                   own_x_c=LEDGER_X_CANONICAL + 400.0)
         self.assertEqual(refused.outcome, Outcome.DECIDED)
         self.assertIs(refused.value, True)
         self.assertEqual(refused.reason, "human_other_staff")
