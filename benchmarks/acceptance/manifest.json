@@ -8,9 +8,9 @@
       "publisher": "Litolff",
       "record": {
         "root": "library",
-        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260929.record.json",
-        "md5": "d92379d9047e5ba67e216705264daf99",
-        "note": "RE-GATHERED 2026-09-29 on 23f4fa9e (overnight end-of-batch: 2.6c/d/e/f ownership, 2.13 printed bar number, 2.18/b/c durations, 2.19 measure rest, 3.2b ties), pages 1-16, driver 03:46:45-04:22:00 MST = 35 min. dirty=true is ONLY the run's own untracked outputs in the worktree (no tracked modification; checked `git status --porcelain | grep -v '^??'` empty) -- same as the 2026-09-28 records. Decisions merged after 23f4fa9e (2.3b GATHER barlines, 2.12l, 2.10b) are NOT in this record; acceptance exports verdicts, it does not re-adjudicate (1.3b)."
+        "path": "_shared-records/beethoven5-litolff-mvt1-whole-20260929b.record.json",
+        "md5": "996351563acf6449a946540f8af27271",
+        "note": "RE-GATHERED 2026-09-29 afternoon on 8c652d89 (adds 2.21b voices, 2.22/2.22b, 2.23 head fill, 2.25/b beams, 2.26/b horns, 2.27/c/d placement, 2.3b barlines), pages 1-16, 42 min. dirty=false (provenance fix 49d6b819). Decisions merged after 8c652d89 (2.29, 2.30, 2.33) are not in it."
       },
       "pdf": {
         "root": "library",
@@ -38,9 +38,9 @@
       "publisher": "Breitkopf",
       "record": {
         "root": "library",
-        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260929.record.json",
-        "md5": "f5323db26b4841c29cb8582e2684d36c",
-        "note": "RE-GATHERED 2026-09-29 on 23f4fa9e, pages 0-26, 04:24:46-06:48:12 MST = 2 h 23 m (under concurrent lane load). dirty=true is ONLY untracked run outputs (as Litolff). Decisions merged after 23f4fa9e (2.3b, 2.12l, 2.10b) are NOT in this record."
+        "path": "_shared-records/brahms1-breitkopf-mvt1-whole-20260929b.record.json",
+        "md5": "6a9e8851a3fade44f7fb61eff3167736",
+        "note": "RE-GATHERED 2026-09-29 afternoon on 8c652d89, pages 0-26, 2 h 40 m under lane load. dirty=false. Not in it: 2.29, 2.30, 2.33."
       },
       "pdf": {
         "root": "library",
@@ -67,9 +67,9 @@
       "publisher": null,
       "record": {
         "root": "repo",
-        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929.record.json",
-        "md5": "02dc1608708e32f3b93434732dc169e3",
-        "note": "RE-GATHERED 2026-09-29 on baba1c76 (includes 2.3b: the spurious bar-21 barline gone, 24 bars = truth), pages 0-2. dirty=true is ONLY untracked run outputs in the regather worktree."
+        "path": "benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929b.record.json",
+        "md5": "6c946ac1758554d4c6f3025a5a5f5407",
+        "note": "RE-GATHERED 2026-09-29 afternoon on 8c652d89, pages 0-2. dirty=false."
       },
       "pdf": {
         "root": "repo",
