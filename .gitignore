@@ -266,3 +266,9 @@ benchmarks/omr-family-refusals-2026-09/out/sean-viola-p3-after*/*.musicxml
 # dumps, same reason as the clef-geometry/no-pitch entries above -- the
 # FINDINGS.md and the crops under out/print/ are the durable record.
 benchmarks/omr-head-fill-2026-09/out/records/
+
+# ROADMAP 2.34 (`benchmarks/omr-weights-ab-2026-09/`): each arm's own
+# `--through adjudicate` record is a ~53 MB whole-page GATHER+ADJUDICATE
+# dump per weights file -- regenerable by `run_ab.sh` from the tree, weights
+# and pdf named in `summary.json`/`TABLE.md`, which ARE the durable record.
+benchmarks/omr-weights-ab-2026-09/out/**/rec-*.json

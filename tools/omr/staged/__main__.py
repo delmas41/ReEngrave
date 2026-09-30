@@ -19,6 +19,11 @@
     python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> \
         --against legacy.omr.json
 
+    # GATHER + ADJUDICATE ONLY (ROADMAP 2.34) -- no GROUPS/EVALUATE/INFER,
+    # no --musicxml/--lilypond/--pdf (refused together with this)
+    python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> \
+        --through adjudicate --out staged.json
+
 ⚠️ THIS RUNS NO BENCHMARK AND SCORES NOTHING. The divergence table is a
 POPULATION, not a result: every `differ` row needs a human against the print
 before it is a win or a loss.
@@ -319,7 +324,33 @@ def main(argv=None) -> int:
                          "`tools/omr/positional_store.py` needs the "
                          "per-component form; pass this when feeding it.")
     ap.add_argument("--progress", action="store_true")
+    # ⚠️ ROADMAP 2.34, Sean: *"if we try grafting weights can we do that in
+    # the first 2 stages of production … where it just handles gathering
+    # ink and boxing and identifying before it goes to all of the other
+    # stages?"* -- a CLI OPTION (read once per run), not an `OMR_*` flag,
+    # exactly like `--movements`/`--sheet` above. Default `"infer"` runs
+    # every stage this CLI has always run; `--through adjudicate` is the
+    # one Sean asked for -- GATHER + ADJUDICATE, no GROUPS, no EVALUATE, no
+    # INFER, and (checked below) no EXPORT, since EXPORT reads pitches and
+    # durations EVALUATE derives.
+    ap.add_argument("--through", choices=("gather", "adjudicate", "evaluate",
+                                          "infer"),
+                    default="infer",
+                    help="stop after this stage; 'infer' (the default) "
+                         "runs the whole pipeline exactly as before this "
+                         "option existed. Refuses --musicxml/--lilypond/"
+                         "--pdf when set to anything but 'infer', since "
+                         "EXPORT needs what EVALUATE (and, if it ran, "
+                         "INFER) derive.")
     args = ap.parse_args(argv)
+
+    if args.through != "infer" and (args.musicxml or args.lilypond
+                                    or args.pdf_out):
+        print(f"--through {args.through} stops before EXPORT can run, so "
+              f"--musicxml/--lilypond/--pdf are refused together with it "
+              f"-- gather+adjudicate a record with --out, then export a "
+              f"SEPARATE full run if you need a file.", file=sys.stderr)
+        return 2
 
     from . import legacy, pipeline
     from . import movements as movements_mod
@@ -398,7 +429,7 @@ def main(argv=None) -> int:
         input_domain_classification=input_domain_classification,
         movements=movement_spans,
         legacy=legacy.load(args.against) if args.against else None,
-        progress=args.progress)
+        progress=args.progress, through=args.through)
     result["weight_routing"] = weight_routing
 
     # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
@@ -669,9 +700,13 @@ def _report(result: dict) -> None:
         print(f"  ⚠️ DISAGREEMENTS: {ag['n_disagreements']} "
               f"(each implicates its WHOLE group, not its dissenter)",
               file=sys.stderr)
-    ev = result["evaluation"]
-    print(f"── EVALUATE: {ev['counts']['fired']} fired, "
-          f"{ev['counts']['skipped']} skipped", file=sys.stderr)
+    # ⚠️ ROADMAP 2.34: `.get`, not `[...]`. `--through gather`/`adjudicate`
+    # stops before EVALUATE runs at all, and the key is ABSENT then, the
+    # same "off means absent" convention `inference` below already uses.
+    ev = result.get("evaluation")
+    if ev is not None:
+        print(f"── EVALUATE: {ev['counts']['fired']} fired, "
+              f"{ev['counts']['skipped']} skipped", file=sys.stderr)
     # ⚠️ GUARDED ON THE KEY'S PRESENCE, NOT ON THE FLAG. With INFER off the
     # key is absent and nothing is printed, so the stderr report of a
     # flag-off run is identical to one from a tree with no INFER at all.
@@ -686,6 +721,9 @@ def _report(result: dict) -> None:
           f"{len(result['stubs']['consequences'])} consequences", file=sys.stderr)
     if "divergence" in result:
         print(f"── DIVERGENCE: {result['divergence']['counts']}", file=sys.stderr)
+    if result.get("stopped_after"):
+        print(f"── STOPPED AFTER: {result['stopped_after']} "
+              f"(--through {result['stopped_after']}) ──", file=sys.stderr)
 
 
 def _print_accounting_summary(*, musicxml_report: Optional[dict],

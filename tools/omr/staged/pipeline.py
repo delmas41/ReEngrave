@@ -117,7 +117,20 @@ def _rung_header(surya_fallback: bool, ocr_fallback: bool) -> str:
             f" tesseract={_state('staff_labels_tesseract', directions_on)}")
 
 
-def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
+#: The stages `decide()` can be asked to stop AFTER, in order. `"gather"` is
+#: listed for `run_staged`/`run_staged_on`'s benefit (it never reaches
+#: `decide()`, which always starts by running ADJUDICATE) — see
+#: `--through` on the CLI and ROADMAP 2.34.
+STAGES: tuple = ("gather", "adjudicate", "evaluate", "infer")
+
+
+def _stage_allowed(through: str, stage: str) -> bool:
+    """True if `stage` is at or before the `through` ceiling."""
+    return STAGES.index(stage) <= STAGES.index(through)
+
+
+def decide(log, *, progress: bool = False, after_adjudicate=None,
+           through: str = "infer") -> dict:
     """THE ONE DECIDING SEQUENCE: ADJUDICATE → GROUPS → EVALUATE → INFER →
     the bounded second EVALUATE over what INFER wrote.
 
@@ -132,7 +145,27 @@ def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
     `after_adjudicate(log)` runs on the log between ADJUDICATE and GROUPS
     (the A/B divergence needs exactly that point) and its result is
     returned as `divergence`.
+
+    ⚠️ ROADMAP 2.34, Sean: *"if we try grafting weights can we do that in
+    the first 2 stages of production … where it just handles gathering ink
+    and boxing and identifying before it goes to all of the other
+    stages?"* -- `through` is the ceiling ADJUDICATE, EVALUATE or INFER may
+    not run past. The default, `"infer"`, is every stage exactly as before
+    this parameter existed -- `rerun.py`'s call site passes none of this and
+    is unaffected. `through="adjudicate"` returns right after ADJUDICATE
+    (and the A/B divergence table, which is computed at that same point
+    regardless): no GROUPS, no EVALUATE, no INFER, and the returned dict's
+    `"agreement"`/`"evaluation"`/`"inference"`/`"reevaluation"` are all
+    `None` -- the same "absent means the stage did not run" convention
+    `inference` already used, extended upward. `stopped_after` names the
+    ceiling actually hit, or `None` on a full run, so a consumer never has
+    to infer it from which keys are missing.
     """
+    if through not in STAGES or through == "gather":
+        raise ValueError(
+            f"decide() always runs ADJUDICATE; through={through!r} must be "
+            f"one of {STAGES[1:]!r}. A 'gather'-only stop is handled by the "
+            f"caller, before decide() is ever invoked.")
     if progress:
         print("ADJUDICATE")
     verdicts = adjudicate.run(log, progress=progress)
@@ -143,6 +176,11 @@ def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
     # sequence and knows nothing about a legacy file.
     divergence_report = None if after_adjudicate is None \
         else after_adjudicate(log)
+
+    if not _stage_allowed(through, "evaluate"):
+        return {"verdicts": verdicts, "agreement": None, "evaluation": None,
+                "inference": None, "reevaluation": None,
+                "divergence": divergence_report, "stopped_after": "adjudicate"}
 
     # ⚠️ BETWEEN ADJUDICATE AND EVALUATE, and the position is the claim: the
     # verdict-sourced groups need the decisions to have run, and running
@@ -155,6 +193,12 @@ def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
     if progress:
         print("EVALUATE")
     report = evaluate.run(log, progress=progress)
+
+    if not _stage_allowed(through, "infer"):
+        return {"verdicts": verdicts, "agreement": agreement,
+                "evaluation": report, "inference": None,
+                "reevaluation": None, "divergence": divergence_report,
+                "stopped_after": "evaluate"}
 
     # ⚠️⚠️ INFER — AFTER EVALUATE, BEFORE EXPORT, AND OFF BY DEFAULT.
     #
@@ -206,7 +250,7 @@ def decide(log, *, progress: bool = False, after_adjudicate=None) -> dict:
     return {"verdicts": verdicts, "agreement": agreement,
             "evaluation": report, "inference": inference_report,
             "reevaluation": reevaluation_report,
-            "divergence": divergence_report}
+            "divergence": divergence_report, "stopped_after": None}
 
 
 def run_staged(pdf_path: str, pages: Sequence[int], *,
@@ -218,8 +262,12 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                input_domain_classification: Any = None,
                movements: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
-               progress: bool = False) -> Dict[str, Any]:
+               progress: bool = False, through: str = "infer") -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
+
+    `through` (ROADMAP 2.34) stops the run after `"gather"`, `"adjudicate"`
+    or `"evaluate"` — see `decide()`'s docstring. The default, `"infer"`,
+    is unchanged from before this parameter existed.
 
     `legacy` is `{quantity: {subject_key: value}}` from `legacy.load`. Pass it
     here rather than gathering a second time to build the divergence table --
@@ -249,7 +297,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                          ink_component_rows=ink_component_rows,
                          input_domain_classification=input_domain_classification,
                          movements=movements,
-                         legacy=legacy, progress=progress)
+                         legacy=legacy, progress=progress, through=through)
 
 
 def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
@@ -260,6 +308,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   ink_component_rows: bool = False,
                   input_domain_classification: Any = None,
                   movements: Any = None,
+                  through: str = "infer",
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                   progress: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
@@ -318,8 +367,22 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                             movements=movements,
                             progress=progress)
 
+    # ⚠️ ROADMAP 2.34. `through="gather"` never calls `decide()` at all --
+    # ADJUDICATE, GROUPS, EVALUATE and INFER all sit inside it, and
+    # `decide()` itself refuses to be asked to stop before ADJUDICATE (see
+    # its docstring). `log` is already frozen by `gather.gather()` above,
+    # exactly as it is on every other path.
+    if through == "gather":
+        return {
+            "record": log.to_json(),
+            "summary": log.summary(),
+            "adjudication": _adjudication_report(log, ()),
+            "stubs": {"decisions": [], "consequences": []},
+            "stopped_after": "gather",
+        }
+
     decided = decide(
-        log, progress=progress,
+        log, progress=progress, through=through,
         after_adjudicate=None if legacy is None
         else (lambda lg: divergence(lg, legacy)))
     verdicts = decided["verdicts"]
@@ -328,6 +391,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     inference_report = decided["inference"]
     reevaluation_report = decided["reevaluation"]
     divergence_report = decided["divergence"]
+    stopped_after = decided["stopped_after"]
 
     return {
         "record": log.to_json(),
@@ -338,14 +402,21 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
         # witnesses disagree is one job and acting on it is another. Surfaced
         # here rather than kept internal so it cannot become the ninth
         # complete recorder that recorded nothing.
-        "agreement": agreement.to_json(),
-        "evaluation": report.to_json(),
+        #
+        # ⚠️ ABSENT, NOT NULL, WHEN `through="adjudicate"` STOPPED BEFORE
+        # GROUPS EVER RAN (ROADMAP 2.34) -- the same "off means absent"
+        # convention `inference` below already used, extended upward so a
+        # record from a `through="infer"` (the default, unchanged) run is
+        # byte-identical to one from a tree without this parameter at all.
+        **({} if agreement is None else {"agreement": agreement.to_json()}),
+        **({} if report is None else {"evaluation": report.to_json()}),
         "stubs": {
             "decisions": list(adjudicate.stubs()),
-            "consequences": sorted(set(report.stubs)),
+            "consequences": [] if report is None else sorted(set(report.stubs)),
         },
         **({} if divergence_report is None
            else {"divergence": divergence_report}),
+        **({} if stopped_after is None else {"stopped_after": stopped_after}),
         # ⚠️ The bounded second EVALUATE pass rides INSIDE `inference` and is
         # NOT a second top-level key. Two reasons, and the first is a property
         # a test already pins: `test_infer_bypass` asserts that turning the
