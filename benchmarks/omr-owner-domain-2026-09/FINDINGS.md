@@ -3270,3 +3270,76 @@ would have gone to 246, `status=broken`).
    side`) be deleted outright now, or kept dormant for a future round
    that might re-purpose it (e.g. as a THIRD witness alongside density
    and the detector ladder)?
+
+### §2.37 round 6 — manager review of `baaf3f23`: two fixes before merge
+
+**Fix 1 — unwire "ink wins" (`ownership.py`)**: `_contest_ledger_reading`
+no longer calls `_ink_overridden_rungs` — a detector-boxed rung now
+survives an ink clean-negative unconditionally. Reason: the absolute-
+threshold reader that override trusted to overrule a DETECTOR box
+(`ledger_rung_ink`) was measured on this same branch (rounds 2-4) to MISS
+roughly half of Sean-confirmed real ledgers on Brahms and ~90% on
+Litolff — CLAUDE.md rule 7, that reader had not earned a veto. The
+function is kept, not deleted (a future round may re-wire it once a
+reader has earned the veto). New end-to-end test (`TestInkOverrideIsUnwired`,
+`test_staged_ledger_cv_first_2_37.py`) pins a detector rung surviving an
+ink clean-negative through the real `glyph_owner` decision; the two prior
+end-to-end tests that pinned the wired (now superseded) behaviour were
+updated in place, noted in their own docstrings.
+
+**Fix 2 — the head exclusion, and Sean's follow-up "use a STANDARD box,
+not the detector's own"**: direct inspection of the Brahms crops showed
+the manager was right on both counts. (a) `_observe_ledger_owner_density`
+never excluded the head's own box from the tested band at all — the
+toward-upper-staff sample (`expected` steps from the geometry, not
+adjusted) landed 0.36 spaces above the head's own centre, still inside
+the real notehead's own vertical extent, reading the head's own ink
+(d≈0.70) as if it were a ledger. (b) Sean's own addition: don't trust the
+DETECTOR's box extent for this at all (a Brahms sliver measured 0.28 sp
+wide; Litolff boxes grow with merged ink) — use a STANDARD notehead
+extent (1.4 × 1.1 staff spaces, Sean's own quoted median) centred on the
+detector box's centre.
+
+Built: `_standard_head_box(cx, cy, spacing)`; `_ledger_owner_informative_
+step` now takes the real box (`head_y0`/`head_y1`/`half_h`) and WALKS
+outward from `expected` until a step's own tested band genuinely clears
+it — not a single one-space fallback. **A single fallback was measured
+insufficient**: on a real Litolff re-gather, the standard box's height
+(1.1 sp) plus the tested band's own two `half_h` margins exceeded one
+full staff space, so `expected - 1` alone still overlapped; the fix
+walks `range(expected, 0, -1)` until a step clears or none exists.
+
+**Measured (real re-gather, `-v6`, after both fixes)**:
+
+| plate | det_all 2-cand pairs | agree | disagree | declined | control heads | picked neighbour |
+|---|---|---|---|---|---|---|
+| Litolff p3 | 8 | 2 | 0 | 6 | 0 | 0 |
+| Brahms p1 | 39 | **16** | 0 | 23 | 77 | 0 |
+
+Brahms improved (10→16 agree) exactly as predicted: the 8 crowded crops
+the manager named now mostly decide the LOWER staff (6 of 8 `agree=True`,
+re-cropped and read by eye — `out/print/ledger-cv-first-2.37/brahms_
+owner_density.png`, red/blue lines now visibly straddle the head instead
+of one running through it; 2 of 8 still decline on a genuine close
+ratio). **Litolff's own agree count dropped (7→2, comparing against the
+PRE-fix-1/2 measurement)** — read by eye and NOT a regression: the 6
+newly-declined pairs were re-inspected, and every one has `expected == 1`
+toward its own contested staff with that ONE required rung landing
+inside the head's real (now correctly excluded) box, with no second rung
+to fall back to — the head stands exactly ON its own single required
+rung, Sean's own stated "uninformative — skip it" case, with no
+alternative position to sample. The PRE-fix 7/8 figure was reading the
+head's own contaminated ink and agreeing with `det_all` by coincidence,
+not by evidence; the post-fix 2/8 is the honest number. Zero
+disagreements and zero false picks, either plate, unchanged.
+
+Tests: 3 new in `test_staged_ledger_owner_density.py` pinning the
+multi-step search directly (a step overlapping a real box is rejected in
+favour of the next one out; a single `expected==1` rung coinciding with
+the head correctly declines; a box wide enough to swallow TWO steps
+still finds the third) — RED confirmed by hand (each failed against the
+single-fallback code before this fix, with corrected arithmetic after an
+initial test-construction error of my own).
+
+Gate: fast tier 3,977 → **3,981** (1 end-to-end unwire test + 3 step-
+search tests), 0 failed. `staged.check`: **245**, unchanged.

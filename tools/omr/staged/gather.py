@@ -1551,29 +1551,94 @@ LEDGER_OWNER_WIDTH_PAD_FRAC = 0.15
 LEDGER_OWNER_ON_TOLERANCE_SPACES = 0.15
 
 
-def _ledger_owner_informative_step(gap: float, spacing: float
+#: ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29, quoted): "All regular noteheads are
+#: the same size so the box should be predictable." Measured on the count
+#: pages: median notehead box ~= 1.4 x 1.1-1.3 staff spaces -- NOT the
+#: DETECTOR's own box extent, which this reader must not trust: a Brahms
+#: black-in-space measured 0.28 sp wide (a sliver) and Litolff boxes grow
+#: with merged ink (CLAUDE.md §10). CONVENTION ASSUMED / WHAT WOULD
+#: FALSIFY IT / NOT CONFIRMED: Sean's own quoted figure, not a per-page
+#: median (a whole-page pre-pass over every notehead is a separate,
+#: bigger change than this round's budget) -- falsified by a plate whose
+#: real noteheads are reliably smaller or larger than this. LOCAL TO THIS
+#: READER ONLY: a general standard head box for every consumer is
+#: ROADMAP 2.39, not this one.
+LEDGER_OWNER_HEAD_WIDTH_SPACES = 1.4
+LEDGER_OWNER_HEAD_HEIGHT_SPACES = 1.1
+
+
+def _standard_head_box(cx: float, cy: float, spacing: float
+                       ) -> Tuple[float, float, float, float]:
+    """`(x0, x1, y0, y1)` -- a STANDARD notehead extent centred on `(cx,
+    cy)` -- the detector box's own CENTRE, never its raw width or height
+    -- sized from the staff's own measured spacing. See
+    `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note."""
+    hw = LEDGER_OWNER_HEAD_WIDTH_SPACES * spacing / 2.0
+    hh = LEDGER_OWNER_HEAD_HEIGHT_SPACES * spacing / 2.0
+    return cx - hw, cx + hw, cy - hh, cy + hh
+
+
+def _ledger_owner_informative_step(gap: float, spacing: float, *,
+                                   edge: Optional[float] = None,
+                                   above: Optional[bool] = None,
+                                   head_y0: Optional[float] = None,
+                                   head_y1: Optional[float] = None,
+                                   half_h: Optional[float] = None
                                    ) -> Optional[int]:
-    """ROADMAP 2.37 (Sean's redirect). Which step (1-based, from the
-    candidate's own outer line) is the ONE informative rung position
-    toward this candidate: the rung immediately adjacent to the head --
-    UNLESS the head itself sits (within `LEDGER_OWNER_ON_TOLERANCE_
-    SPACES`) almost exactly ON that rung's own row, in which case that
-    row IS the head's own ink and uninformative; the step one further out
-    (one more space toward the staff) is sampled instead. `None` where
-    the candidate needs no ledger at all (within the staff or its exempt
-    first space -- the SAME `LEDGER_ROUND_UP` boundary `_ledger_expected`
-    itself uses), or where the only rung coincides with the head and
-    there is no further step to fall back to."""
+    """ROADMAP 2.37 (Sean's redirect; the overlap check added on manager
+    review of `baaf3f23`). Which step (1-based, from the candidate's own
+    outer line) is the ONE informative rung position toward this
+    candidate: the rung immediately adjacent to the head -- UNLESS its
+    OWN tested band (`half_h` either side, the SAME band `ledger_owner_
+    ink_density` reads) overlaps the head's KNOWN box, in which case that
+    row would read the head's own ink, not an independent witness; the
+    step one further out (one more space toward the staff) is sampled
+    instead. `None` where the candidate needs no ledger at all (within
+    the staff or its exempt first space -- the SAME `LEDGER_ROUND_UP`
+    boundary `_ledger_expected` itself uses), or where even the further
+    step still overlaps the head and there is nowhere left to sample.
+
+    ⚠️⚠️ MEASURED BUG (manager review): the geometry-only fallback below
+    (used when `head_y0`/`head_y1`/`half_h` are not given -- every
+    pre-existing pure test of this function) approximates "on the
+    candidate's own ledger" by asking whether `gap/spacing` is close to
+    an INTEGER (within `LEDGER_OWNER_ON_TOLERANCE_SPACES`, 0.15 spaces).
+    On a real Brahms re-gather this under-shifted: a head whose OWN
+    measured position was 3.36 spacings out (0.36 spaces short of the
+    tolerance) still had its `half_h`-tall tested band overlap the
+    head's real box, because a real notehead's own vertical extent is
+    close to a FULL staff space tall -- much wider than a 0.15-space
+    tolerance admits. The REAL call site (`_observe_ledger_owner_
+    density`) now passes the head's own box and tests the ACTUAL overlap
+    instead of approximating it."""
     if not spacing or spacing <= 0:
         return None
-    steps = gap / spacing
-    expected = int(steps + LEDGER_ROUND_UP)
+    expected = int(gap / spacing + LEDGER_ROUND_UP)
     if expected <= 0:
         return None
-    on_ledger = abs(steps - round(steps)) <= LEDGER_OWNER_ON_TOLERANCE_SPACES
-    if on_ledger:
-        return expected - 1 if expected >= 2 else None
-    return expected
+    if (edge is None or above is None or head_y0 is None
+            or head_y1 is None or half_h is None):
+        # geometry-only fallback -- NOT CONFIRMED against a real box;
+        # kept for callers with no page geometry at all.
+        steps = gap / spacing
+        on_ledger = (abs(steps - round(steps))
+                    <= LEDGER_OWNER_ON_TOLERANCE_SPACES)
+        if on_ledger:
+            return expected - 1 if expected >= 2 else None
+        return expected
+    # ⚠️⚠️ MEASURED (manager review, round 2): a single one-space shift
+    # is not always enough. The FORBIDDEN zone a step must clear is the
+    # standard head's own height PLUS the tested band reaching `half_h`
+    # past each edge -- `LEDGER_OWNER_HEAD_HEIGHT_SPACES` (1.1) plus
+    # `half_h`'s own two thickness-and-pad margins can exceed a single
+    # full staff space, so `expected - 1` alone still overlapped on a
+    # real Litolff re-gather. Walk OUTWARD (decreasing k) until a step
+    # clears, or there is none.
+    for k in range(expected, 0, -1):
+        want = (edge - k * spacing) if above else (edge + k * spacing)
+        if want + half_h <= head_y0 or want - half_h >= head_y1:
+            return k
+    return None
 
 
 def ledger_owner_ink_density(img: Any, head_x0: float, head_x1: float,
@@ -1619,23 +1684,45 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
     """`Q.LEDGER_OWNER_DENSITY` -- ROADMAP 2.37 (Sean's redirect): one row,
     the ONE informative rung position toward `cand_key`."""
     g = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
-    y = (box[1] + box[3]) / 2.0
+    # ⚠️⚠️ ROADMAP 2.37 (Sean, 2026-09-29): a STANDARD head extent centred
+    # on the detector box's own CENTRE, never its raw width/height -- see
+    # `LEDGER_OWNER_HEAD_WIDTH_SPACES`'s own note (a Brahms sliver
+    # measured 0.28 sp wide; Litolff boxes grow with merged ink). `cy` is
+    # the SAME centre used throughout below (the gap to the staff, the
+    # step search) -- only the box's ASSUMED size changes, never its
+    # location.
+    cx = (box[0] + box[2]) / 2.0
+    cy = (box[1] + box[3]) / 2.0
+    shx0, shx1, shy0, shy1 = _standard_head_box(cx, cy, spacing)
     top, bottom = min(line_ys), max(line_ys)
-    if top <= y <= bottom:
+    if top <= cy <= bottom:
         log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
                     frame=FRAME_PAGE, reason=ABSTAIN.OFF_STAFF,
                     candidate=cand_key,
                     note="within this candidate's own staff: no ledger question")
         return
-    above = y < top
+    above = cy < top
     edge = top if above else bottom
-    gap = (edge - y) if above else (y - edge)
-    step = _ledger_owner_informative_step(gap, spacing)
+    gap = (edge - cy) if above else (cy - edge)
+    # ⚠️ ROADMAP 2.37 (manager review of `baaf3f23`): the SAME `half_h`
+    # band `ledger_owner_ink_density` itself tests, computed here so the
+    # step search can check the REAL overlap with the head's own STANDARD
+    # box (never the raw detector one) rather than an approximate "close
+    # to an integer" heuristic -- see `_ledger_owner_informative_step`'s
+    # own note on the bug this replaces.
+    thickness = float(thickness_px) if thickness_px else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * spacing
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * spacing
+    half_h = thickness / 2.0 + pad
+    step = _ledger_owner_informative_step(
+        gap, spacing, edge=edge, above=above, head_y0=shy0,
+        head_y1=shy1, half_h=half_h)
     if step is None:
         log.abstain(g, Q.LEDGER_OWNER_DENSITY, reader=READERS.CV_LEDGER,
                     frame=FRAME_PAGE, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                     candidate=cand_key,
-                    note="no informative rung position toward this candidate")
+                    note="no informative rung position clear of the "
+                        "head's own box")
         return
     want = (edge - step * spacing) if above else (edge + step * spacing)
     cand = R.Subject.from_key(cand_key)
@@ -1658,8 +1745,10 @@ def _observe_ledger_owner_density(log: Log, g: Subject, box, cand_key: str,
                     note="no page box, upscale factor or cell grid")
         return
     space_c = grid[1] * 2.0
-    hx0_c = (box[0] - cbox[0]) * up
-    hx1_c = (box[2] - cbox[0]) * up
+    # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): the STANDARD head span, not the
+    # raw detector box -- see `_standard_head_box`'s own note.
+    hx0_c = (shx0 - cbox[0]) * up
+    hx1_c = (shx1 - cbox[0]) * up
     want_c = (want - cbox[1]) * up
     thick_c = (float(thickness_px) * up) if thickness_px else None
     d = ledger_owner_ink_density(img, hx0_c, hx1_c, want_c, space_c, thick_c)

@@ -1110,18 +1110,22 @@ def _contest_ledger_reading(ev: Evidence, bands, ladders: Dict[str, Any]
                 rungs = (cell_rungs(ev, list(dict.fromkeys(cells)), named)
                         + cv_rungs(ev))
             page_positions.append(len(sides))
-            # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): "where a box landed but
-            # the ink says no thin run, the ink wins" -- a DETECTOR-sourced
-            # Rung at a Y this candidate's OWN ink cleanly read (never
-            # declined) as NOT a thin run is dropped before the ladder is
-            # even walked, so a false `ledgerLine` box (measured: an older
-            # checkpoint boxed 58 of 110 sampled Breitkopf STAFF LINES as
-            # ledgers, `benchmarks/omr-weights-ab-2026-09/FINDINGS.md` §5)
-            # cannot be credited just because `Q.LEDGER_IS_NOT_A_LEDGER`
-            # never ran on it or abstained.
-            cand_rungs = _ink_overridden_rungs(rungs, ev, cand_key, geo[1])
+            # ⚠️⚠️ ROADMAP 2.37 (manager review of `baaf3f23`): "ink wins"
+            # (`_ink_overridden_rungs`, ROADMAP 2.37 round 2) is UNWIRED
+            # here, not merely unused -- kept defined for a future round
+            # with a reader that has earned the veto, per CLAUDE.md rule
+            # 7. The absolute-threshold ink reader (`ledger_rung_ink`)
+            # this override trusted to overrule a DETECTOR box was
+            # measured (this same branch, rounds 2-4) to MISS roughly half
+            # of Sean-CONFIRMED real ledgers on Brahms and ~90% on
+            # Litolff -- a reader that wrong that often has not earned a
+            # veto over a detector-boxed rung; wiring it dropped real
+            # ledgers on the strength of a false "clean negative". A
+            # detector-sourced `Rung` now survives an ink clean-negative
+            # unconditionally (`test_staged_ledger_cv_first_2_37.py::
+            # TestInkOverrideIsUnwired`).
             page_specs.append((cand_key, head[2], head[0], head[1],
-                               geo[0], geo[1], cand_rungs))
+                               geo[0], geo[1], rungs))
             sides.append(None)
         elif lad is None:
             sides.append(LadderSide(staff=cand_key, expected=0, found=0,

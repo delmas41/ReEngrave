@@ -73,6 +73,56 @@ class TestInformativeStep(unittest.TestCase):
         self.assertEqual(gather._ledger_owner_informative_step(25.0, SP), 2)
 
 
+class TestInformativeStepAgainstARealHeadBox(unittest.TestCase):
+    """ROADMAP 2.37 (manager review, round 2 -- Sean's own addition): the
+    step search must check the REAL standard head box, not the
+    approximate "close to an integer" heuristic above (which is kept
+    only as a geometry-only fallback for callers with no box)."""
+
+    def test_a_step_overlapping_the_real_box_is_rejected(self):
+        """The geometry-only heuristic would call 3.62 spaces 'not on a
+        ledger' (0.38 spaces from an integer, over its own 0.15
+        tolerance) and sample step 3 directly (want = 3 * SP = 30.0) --
+        but with a real head box centred there, step 3 still falls
+        inside it. The search must find step 2 instead."""
+        edge = 0.0
+        gap = 3.62 * SP           # steps=3.62, expected=int(3.87)=3
+        head_y0, head_y1 = 30.0 - 8.0, 30.0 + 8.0   # centred on step 3's own y
+        step = gather._ledger_owner_informative_step(
+            gap, SP, edge=edge, above=False, head_y0=head_y0,
+            head_y1=head_y1, half_h=1.0)
+        self.assertEqual(step, 2)
+
+    def test_a_single_expected_rung_coinciding_with_the_head_declines(self):
+        """MEASURED on a real Litolff re-gather: `expected == 1` and that
+        ONE rung's own position falls inside the head's real box, with no
+        second rung to fall back to -- correctly declines (the head
+        stands exactly on its own single required rung, per Sean's own
+        convention "uninformative -- skip it"; there is nothing else to
+        sample toward THIS candidate)."""
+        edge = 0.0
+        gap = 1.225 * SP          # steps=1.225, expected=int(1.475)=1
+        step = gather._ledger_owner_informative_step(
+            gap, SP, edge=edge, above=False, head_y0=gap - 8.66,
+            head_y1=gap + 8.66, half_h=2.59)
+        self.assertIsNone(step)
+
+    def test_a_step_two_out_still_overlapping_keeps_searching(self):
+        """A wider standard box (or a smaller staff space) can still
+        overlap ONE step out -- the search must not stop after a single
+        fallback; it walks all the way to a step that genuinely clears,
+        or to none."""
+        edge = 0.0
+        gap = 5.0 * SP            # expected=5
+        # step 5 wants 5*SP=50, step 4 wants 4*SP=40, step 3 wants 30 --
+        # a box wide enough to swallow 50 AND 40, but not 30.
+        head_y0, head_y1 = 3.5 * SP, 5.5 * SP
+        step = gather._ledger_owner_informative_step(
+            gap, SP, edge=edge, above=False, head_y0=head_y0,
+            head_y1=head_y1, half_h=0.01)
+        self.assertEqual(step, 3)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Part 2 -- the raw density measurement
 # ─────────────────────────────────────────────────────────────────────────────

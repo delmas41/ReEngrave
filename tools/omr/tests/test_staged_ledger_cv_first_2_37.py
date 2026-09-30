@@ -427,6 +427,17 @@ class TestSingleCandidateElimination(unittest.TestCase):
 # ─────────────────────────────────────────────────────────────────────────────
 
 class TestInkOverridesAStrayDetectorBox(unittest.TestCase):
+    """`ownership._ink_overridden_rungs` in ISOLATION only -- ROADMAP 2.37
+    (manager review of `baaf3f23`): the function is kept (a future round
+    may re-wire it once the ink reader has earned the veto -- CLAUDE.md
+    rule 7), but `_contest_ledger_reading` no longer CALLS it. The
+    absolute-threshold ink reader (`ledger_rung_ink`) it trusted to
+    overrule a detector box was measured, on this same branch, to MISS
+    roughly half of Sean-confirmed real ledgers on Brahms and ~90% on
+    Litolff -- wiring it dropped real, detector-confirmed ledgers on the
+    strength of a false "clean negative". `TestInkOverrideIsUnwired`
+    below is the end-to-end proof; these three stay as unit tests of the
+    dormant function itself."""
 
     def test_a_clean_negative_drops_the_detector_rung_at_that_y(self):
         log = Log()
@@ -514,15 +525,15 @@ class TestInkOverridesAStrayDetectorBox(unittest.TestCase):
         return adjudicate.adjudicate_one(
             log, adjudicate.REGISTRY[Q.GLYPH_OWNER], HEAD)
 
-    def test_end_to_end_a_refuted_box_no_longer_wins_the_contest(self):
-        """The SAME two boxes as the control below, but the ink cleanly
-        refutes the one rung that actually matters (step 1) -- UP's
-        ladder is no longer complete (found=1, and that one is only its
-        OWN line), so it never `points`, unlike the control."""
+    def test_a_refuted_box_STILL_wins_the_contest_override_unwired(self):
+        """ROADMAP 2.37 (manager review of `baaf3f23`): the override is
+        UNWIRED -- the ink cleanly refuting step 1 no longer removes the
+        detector's own box there. UP's ladder is still complete (2 of 2)
+        and still `points`, exactly as the no-ink-reading control does."""
         v = self._two_rung_contest(refute_step1=True)
-        self.assertFalse(v.outcome == Outcome.DECIDED and v.value == UP.to_key()
-                         and v.reason in ("ladder", "ledger_direction"),
-                         f"UP must not win off the refuted box: {v}")
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, UP.to_key())
+        self.assertEqual(v.reason, "ledger_direction")
 
     def test_CONTROL_the_same_two_boxes_with_no_ink_reading_DOES_win(self):
         """POSITIVE CONTROL: identical geometry, the SAME two boxes, but no
@@ -530,6 +541,51 @@ class TestInkOverridesAStrayDetectorBox(unittest.TestCase):
         complete (2 of 2, one of them its own line, one genuinely
         `toward`), and it points, exactly as before this lane."""
         v = self._two_rung_contest(refute_step1=False)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value, UP.to_key())
+        self.assertEqual(v.reason, "ledger_direction")
+
+
+class TestInkOverrideIsUnwired(unittest.TestCase):
+    """ROADMAP 2.37 (manager review of `baaf3f23`), the end-to-end proof:
+    a detector-boxed rung survives an ink clean-negative through the REAL
+    `glyph_owner` decision. RED before this fix (the override was still
+    wired): `test_a_refuted_box_STILL_wins_the_contest_override_unwired`
+    above pins the identical scenario and would have failed with the
+    override in place (it did, before this commit)."""
+
+    def test_detector_rung_survives_ink_clean_negative(self):
+        log = Log()
+        for st, lines in ((UP, UP_LINES), (DOWN, DOWN_LINES)):
+            log.observe(st, Q.STAFF_LINES, list(lines),
+                        reader=READERS.GEOMETRY, frame="page")
+            log.observe(st, Q.STAFF_SPACING, SP, reader=READERS.GEOMETRY,
+                        frame="page")
+        head_y = 160.0
+        log.observe(HEAD, Q.GLYPH_BOX,
+                    ("noteheadBlackInSpace", 0, 0, 10, 10),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.8,
+                    bbox_page_px=[500.0, head_y - 5.0, 512.0, head_y + 5.0],
+                    x_center_page=506.0, y_center_page=head_y)
+        for st, lines in ((UP, UP_LINES), (DOWN, DOWN_LINES)):
+            top, bottom = min(lines), max(lines)
+            gap = (top - head_y) if head_y < top else (head_y - bottom)
+            log.observe(HEAD, Q.GLYPH_BAND_DISTANCE, max(0.0, gap / SP),
+                        reader=READERS.GEOMETRY, frame="page",
+                        candidate=st.to_key(), own=(st == UP),
+                        position_in_candidate=(head_y - top) / (SP / 2))
+        for gi, y in ((1, 150.0), (2, 160.0)):
+            log.observe(R.glyph(0, 0, 0, 0, gi), Q.GLYPH_BOX,
+                        ("ledgerLine", 0, 0, 10, 2), reader=READERS.DETECTOR,
+                        frame="cell:0", score=0.8,
+                        bbox_page_px=[494.0, y - 1.0, 518.0, y + 1.0],
+                        category="ledgerLine")
+        _cv_row(log, candidate=UP.to_key(), step=1, want_y=150.0,
+               found=False)
+        log.freeze()
+        adjudicate._ensure_decisions()
+        v = adjudicate.adjudicate_one(
+            log, adjudicate.REGISTRY[Q.GLYPH_OWNER], HEAD)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, UP.to_key())
         self.assertEqual(v.reason, "ledger_direction")
