@@ -2110,7 +2110,11 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         n_stems = len(found.get("stems") or [])
         # ROADMAP 2.18c: (stem detection, its own `Q.STEM` row id), so the
         # tip-ink pass below can join back to the EXACT row it measured.
+        # ROADMAP 2.38: the same for `Q.BEAM_STROKE` -- the beam-join pass
+        # needs the EXACT row id of every candidate stroke too, for the same
+        # reason.
         stem_rows_logged: List[Tuple[Any, str]] = []
+        beam_rows_logged: List[Tuple[Any, str]] = []
         for quantity, kind in ((Q.STEM, "stems"), (Q.BEAM_STROKE, "beams")):
             rows = found.get(kind) or []
             if not rows:
@@ -2140,6 +2144,8 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                             staff_lines_erased=erased)
                 if quantity is Q.STEM:
                     stem_rows_logged.append((d, row.id))
+                elif quantity is Q.BEAM_STROKE:
+                    beam_rows_logged.append((d, row.id))
 
         # ROADMAP 2.18c: a second, CV witness for flag ink the detector
         # never boxed, at every stem this cell just filed. Blockers are
@@ -2147,6 +2153,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # LOCAL detection the detector drew in this cell (a neighbour's
         # head, an accidental, text, a slur/tie arc) -- ink the record can
         # already name is not this reader's to re-claim (CLAUDE.md rule 8).
+        space_c = None
         if stem_rows_logged:
             grid = _cell_grid(c)
             space_c = grid[1] * 2.0 if grid is not None else None
@@ -2159,6 +2166,18 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                     (float(d.x_canonical), float(d.y_canonical),
                      float(d.width_canonical), float(d.height_canonical)),
                     blockers, space_c)
+
+        # ROADMAP 2.38: a second, independent witness for the beams_
+        # ambiguous population -- does THIS stem's own ink run unbroken
+        # into THIS candidate stroke's ink at the tip? One pair at a time,
+        # both ends, every stem against every stroke this cell just filed.
+        if stem_rows_logged and beam_rows_logged:
+            if space_c is None:
+                grid = _cell_grid(c)
+                space_c = grid[1] * 2.0 if grid is not None else None
+            _observe_beam_stem_join(
+                log, sub, frame, c, stem_rows_logged, beam_rows_logged,
+                space_c)
 
 
 def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
@@ -2376,6 +2395,211 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         log.observe(sub, Q.STEM_TIP_INK, found,
                     reader=READERS.CV_STEM_TIP, frame=frame,
                     stem_row_id=stem_row_id, end=end, **m)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.38 -- a second witness for `beams_ambiguous`: does a stem's own
+# ink run unbroken into a candidate stroke's ink at the tip?
+#
+# `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md` SS2: the single
+# biggest `duration_narrowed` class -- certain=0/possible=1, "nothing
+# certainly covers this note, but one stroke MIGHT" -- had no connection at
+# all, because `rhythm._beam_levels`'s column test is the ONLY witness to the
+# fact and it is a first-hand geometric judgement, not a second reading. This
+# is that second reading: a pixel-continuity scan at the exact junction,
+# independent of the stroke's own bounding box the way `Q.STEM_TIP_INK` is
+# independent of `Q.FLAG`'s own detected box (2.18c).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (2.38). A
+#: beamed stem's own ink is continuous with its beam at the tip -- the two
+#: are drawn as one connected mark on a clean plate. Litolff MERGES and
+#: Breitkopf SHATTERS (CLAUDE.md SS10), so a shattered junction may show a
+#: thin blank seam at the exact join even where the stem and the beam are
+#: the SAME mark -- the tolerance below exists for exactly that seam, not
+#: for a genuinely separate stroke standing apart. Falsified by a print-
+#: confirmed join whose seam is wider than one measured staff-line
+#: thickness, or a print-confirmed NON-join (an unrelated stroke) whose gap
+#: is narrower than one. NOT CONFIRMED -- argued from CLAUDE.md's own
+#: shattering/merging finding, never measured against a beam-junction crop.
+#:
+#: WHY A STAFF-LINE THICKNESS, AND NOT A MAGIC PIXEL COUNT: it is the one
+#: linear measurement already made of THIS PLATE's own ink erosion --
+#: `cell.staff_line_thickness_canonical` (`measure_extractor.py`, scaled by
+#: `gather_geometry` into the SAME canonical frame `image_no_staff` is in) --
+#: so the tolerance scales with the plate instead of being one number for
+#: every scan at every DPI. A staff line and a beam stroke are drawn with
+#: comparable engraving weight, so a break the width of ONE line is the
+#: largest gap a shattering plate plausibly puts in a mark that is really
+#: continuous; a break wider than that is a genuinely separate piece of ink.
+BEAM_STEM_JOIN_GAP_TOLERANCE_THICKNESS_MULT = 1.0
+#: Where a cell's own line thickness was never traced (mirrors `LEDGER_
+#: RUNG_INK_DEFAULT_THICKNESS_SPACES` -- same fallback, same reason: no cell
+#: on either of this lane's own documents needed it). NOT CONFIRMED.
+BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES = 0.09
+
+
+def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
+                       tip_y: float, end: str, stroke_y0: float,
+                       stroke_y1: float, gap_tolerance_px: float
+                       ) -> Optional[Dict[str, Any]]:
+    """Does this stem's own ink, in its own x-range, run CONTINUOUSLY from
+    `tip_y` into ink at or past the candidate stroke's near edge? ROADMAP
+    2.38.
+
+    All of `stem_x0`, `stem_x1`, `tip_y`, `stroke_y0`, `stroke_y1` and
+    `gap_tolerance_px` are in the SAME canonical CELL pixels `Q.STEM`'s own
+    box is in -- this function does no frame conversion, the same contract
+    `stem_tip_ink`/`ledger_rung_ink` state for themselves. `end` is `"top"`
+    (this stem's TOP is the tip under test, the stroke is expected ABOVE
+    it) or `"bottom"` (the reverse) -- GATHER does not know which end is the
+    true tip, so the caller asks both and files one row each.
+
+    Three outcomes, not two:
+
+    * the tip already sits INSIDE the stroke's own y-range -- the stem
+      ends IN the beam, joined with no gap to walk;
+    * the stroke stands cleanly past the tip (the whole stroke is on the
+      tip's own far side) -- walk the stem's own x-range from the tip to
+      the stroke's near edge and look for the LONGEST unbroken blank run;
+      joined iff it never exceeds `gap_tolerance_px`;
+    * neither -- the stroke neither reaches the tip nor stands cleanly
+      past it (a slur/arc crossing the stem's own body mid-length, or a
+      stroke on the WRONG side) -- read as NOT joined outright. This is a
+      real answer, not a decline: nothing about a mid-length crossing
+      speaks to whether THIS tip has a beam.
+
+    Returns `None` -- declined, never defaulted -- where the raster or the
+    stem's own x-range is missing, or the scanned window falls entirely
+    off the raster.
+    """
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    if stem_x1 <= stem_x0 or stroke_y1 < stroke_y0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    ix0, ix1 = max(0, int(round(stem_x0))), min(W, int(round(stem_x1)))
+    if ix1 <= ix0:
+        return None
+
+    # ⚠️ `gap_tolerance_px` IS ECHOED INTO EVERY RETURN, NEVER PASSED AS ITS
+    # OWN NAMED KEYWORD AT THE CALL SITE -- the same shape `stem_tip_ink`'s
+    # own diagnostic fields use (`**m`, not a hand-spelled kwarg), which is
+    # what keeps a single detail key from needing its own `wiring.KNOWN_GAPS`
+    # entry: `wiring.details`'s AST walk only tracks a LITERAL keyword at the
+    # `log.observe`/`log.abstain` call, not a name inside a dict spread.
+    if stroke_y0 <= tip_y <= stroke_y1:
+        # The stem ends IN the beam -- no gap, nothing to walk.
+        return {"found": True, "gap_px": 0.0, "max_blank_run_px": 0,
+                "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+                "window_canonical": [round(stem_x0, 2), round(tip_y, 2),
+                                     round(stem_x1, 2), round(tip_y, 2)]}
+
+    if end == "top":
+        beyond = stroke_y1 <= tip_y
+        near_edge = stroke_y1
+    else:
+        beyond = stroke_y0 >= tip_y
+        near_edge = stroke_y0
+    if not beyond:
+        # Neither reaches the tip nor stands cleanly past it -- a
+        # mid-length crossing, not a candidate for THIS end at all. A real
+        # answer (rule 6: never guess), not a decline.
+        return {"found": False, "gap_px": None, "max_blank_run_px": None,
+                "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+                "window_canonical": None, "reason": "not_beyond_tip"}
+
+    y0, y1 = sorted((tip_y, near_edge))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if iy1 <= iy0:
+        return None
+    region = ink[iy0:iy1, ix0:ix1]
+    row_ink = region.any(axis=1)
+    max_blank = 0
+    run = 0
+    for v in row_ink:
+        if v:
+            run = 0
+        else:
+            run += 1
+            if run > max_blank:
+                max_blank = run
+    found = max_blank <= gap_tolerance_px
+    return {"found": bool(found), "gap_px": round(float(y1 - y0), 2),
+            "max_blank_run_px": int(max_blank),
+            "gap_tolerance_px": round(float(gap_tolerance_px), 2),
+            "window_canonical": [round(stem_x0, 2), round(y0, 2),
+                                 round(stem_x1, 2), round(y1, 2)]}
+
+
+def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
+                            stem_rows_logged: Sequence[Tuple[Any, str]],
+                            beam_rows_logged: Sequence[Tuple[Any, str]],
+                            space: Optional[float]) -> None:
+    """`Q.BEAM_STEM_JOIN` -- one row per (`Q.STEM` row, `Q.BEAM_STROKE` row,
+    end). ROADMAP 2.38.
+
+    Every stem in this cell against every candidate stroke in this cell,
+    both ends -- the pairing ADJUDICATE needs is decided later (which end
+    is the true tip, `Q.STEM_DIRECTION`; which stroke is even a candidate,
+    `rhythm._beam_levels`'s own column test), so GATHER files the whole
+    small cross product rather than guessing which pairs will matter.
+    """
+    img = getattr(cell, "image_no_staff", None)
+    if img is None or getattr(img, "ndim", 0) != 2:
+        for _sd, stem_id in stem_rows_logged:
+            for _bd, beam_id in beam_rows_logged:
+                for end in ("top", "bottom"):
+                    log.abstain(sub, Q.BEAM_STEM_JOIN,
+                                reader=READERS.CV_BEAM_JOIN, frame=frame,
+                                reason=ABSTAIN.NO_MASK,
+                                stem_row_id=stem_id, beam_row_id=beam_id,
+                                end=end,
+                                note="cell carries no image_no_staff")
+        return
+    thickness = getattr(cell, "staff_line_thickness_canonical", None)
+    tol = ((float(thickness) if thickness else
+           BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES * space) *
+          BEAM_STEM_JOIN_GAP_TOLERANCE_THICKNESS_MULT) if space else None
+    for stem_d, stem_id in stem_rows_logged:
+        sx0 = float(stem_d.x_canonical)
+        sx1 = sx0 + float(stem_d.width_canonical)
+        sy0 = float(stem_d.y_canonical)
+        sy1 = sy0 + float(stem_d.height_canonical)
+        no_x = sx1 <= sx0
+        for beam_d, beam_id in beam_rows_logged:
+            by0 = float(beam_d.y_canonical)
+            by1 = by0 + float(beam_d.height_canonical)
+            for end, tip_y in (("top", sy0), ("bottom", sy1)):
+                if no_x:
+                    log.abstain(sub, Q.BEAM_STEM_JOIN,
+                                reader=READERS.CV_BEAM_JOIN, frame=frame,
+                                reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                                stem_row_id=stem_id, beam_row_id=beam_id,
+                                end=end, note="stem carries no x-range")
+                    continue
+                if tol is None:
+                    log.abstain(sub, Q.BEAM_STEM_JOIN,
+                                reader=READERS.CV_BEAM_JOIN, frame=frame,
+                                reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                                stem_row_id=stem_id, beam_row_id=beam_id,
+                                end=end, note="no cell staff-space unit")
+                    continue
+                m = beam_stem_join_ink(img, sx0, sx1, tip_y, end,
+                                      by0, by1, tol)
+                if m is None:
+                    log.abstain(sub, Q.BEAM_STEM_JOIN,
+                                reader=READERS.CV_BEAM_JOIN, frame=frame,
+                                reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                                stem_row_id=stem_id, beam_row_id=beam_id,
+                                end=end, note="window off the raster")
+                    continue
+                found = m.pop("found")
+                log.observe(sub, Q.BEAM_STEM_JOIN, found,
+                            reader=READERS.CV_BEAM_JOIN, frame=frame,
+                            stem_row_id=stem_id, beam_row_id=beam_id,
+                            end=end, **m)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

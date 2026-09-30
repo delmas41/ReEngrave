@@ -450,6 +450,17 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),
+    "BEAM_STEM_JOIN": (
+        RELATION,
+        "ROADMAP 2.38: a SECOND witness for one candidate beam stroke's "
+        "membership in this note's beam, independent of the box-geometry "
+        "column test `rhythm._beam_levels` runs — a pixel-continuity scan "
+        "between a stem's own tip (GATHER does not know which end is the "
+        "true tip, so both are asked) and the stroke's own ink, off the "
+        "staff-ERASED raster. A relation between a located `Q.STEM` row "
+        "and a located `Q.BEAM_STROKE` row; scoreless, same reason as "
+        "`STEM_TIP_INK`.",
+        None),
     "NOTEHEAD_INK": (
         RELATION,
         "ROADMAP 2.23 (ported, GATHER half, from claude/no-ink-head-2.6h): "
@@ -578,6 +589,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
+    # ⚠️ ROADMAP 2.38. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_LEDGER`/`CV_STEM_TIP` do.
+    "CV_BEAM_JOIN": ("staged/gather.py", "_observe_beam_stem_join"),
     # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half
     # only). Also `staged/gather.py`, and `_raster_of`'s FOUR-WORD
     # vocabulary (ERASED / INTACT / ERASED_ELSE_INTACT / OWN_ERASURE) has no
