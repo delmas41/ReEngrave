@@ -40,7 +40,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**119 registry entries**, from 171 source entries (167 compiled, plus `C89`, `C90`, `C91` and `C92` written straight into this registry).
+**120 registry entries**, from 172 source entries (167 compiled, plus `C89`, `C90`, `C91`, `C92` and `C93` written straight into this registry).
 
 ⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
 staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
@@ -63,14 +63,20 @@ crops and written straight into this registry by roadmap 3.4g-2, for the same
 reason as `C89`: `from-this-repo.md` is a dated compilation and is not
 re-opened to take them.
 
-⚠️ **`C92`** (*A second is always on opposite sides of the stem…*) is Sean's
+⚠️ **`C92`** (*Open noteheads are never beamed, except tremolo*) is Sean's
+2026-09-30 convention (`docs/DECISIONS.md`), on the ROADMAP 2.43 stage
+readout of Litolff p3, written straight into this registry for the same
+reason as `C89`–`C91`.
+
+⚠️ **`C93`** (*A second is always on opposite sides of the stem…*) is Sean's
 convention of 2026-09-30 (`docs/DECISIONS.md`), stated on the Litolff p3
 doubled-head diagnosis crops and written straight into this registry by
-roadmap 2.40, for the same reason as `C89`–`C91`.
+roadmap 2.40, for the same reason as `C89`–`C92`. Renumbered from `C92` on
+merge with ROADMAP 2.43, which took that id first on `main`'s own branch.
 
 | status | n |
 |---|--:|
-| **MEASURED HERE** | 71 |
+| **MEASURED HERE** | 72 |
 | **LITERATURE ONLY (untested here)** | 27 |
 | **ASSERTED (untested here)** | 14 |
 | **REFUTED HERE** | 5 |
@@ -79,7 +85,7 @@ roadmap 2.40, for the same reason as `C89`–`C91`.
 | category | entries | of which literature-only |
 |---|--:|--:|
 | Staff & pitch geometry | 16 | 6 |
-| Stems & beams | 19 | 9 |
+| Stems & beams | 20 | 9 |
 | Rests & bar filling | 8 | 3 |
 | Accidentals & key signatures | 10 | 1 |
 | Time signatures & meter | 8 | 0 |
@@ -114,7 +120,7 @@ directly on this repertoire.
 - [Conventions that FAILED here](#conventions-that-failed-here) — read this first
 - [Where the two sources DISAGREE](#where-the-two-sources-disagree)
 - [Staff & pitch geometry](#staff--pitch-geometry) — 16
-- [Stems & beams](#stems--beams) — 19
+- [Stems & beams](#stems--beams) — 20
 - [Rests & bar filling](#rests--bar-filling) — 8
 - [Accidentals & key signatures](#accidentals--key-signatures) — 10
 - [Time signatures & meter](#time-signatures--meter) — 8
@@ -602,6 +608,20 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Known exceptions:** on the scan **54 readings go wrong → right and 26 go RIGHT → wrong** — a 2:1 trade, where on the engraving every move went one way.
 - **Code:** `tools/omr/staged/adjudicators/rhythm.py:164` `_stem_joined`, `:366` `_beam_levels`, `:102` `BEAM_EDGE_TOLERANCE_WIDTHS = 1.0`. The same argument for arcs: `tools/omr/export.py` (stem probes).
 
+### Open noteheads are never beamed, except tremolo
+`[C92]`
+
+- **Says:** Sean, 2026-09-30 (`docs/DECISIONS.md`), confirming a lane's reading of the stage readout: *"Correct, open noteheads are never beamed except tremolo."* A hollow (`noteheadHalf`/`noteheadWhole`/`noteheadDoubleWhole`) head's duration is never lengthened by a beam-shaped reading; a stroke through a hollow head's stem is a TREMOLO mark, a different symbol, not a beam level.
+- **Predicts (mechanically):** a hollow head's beam level is fixed at zero — computed from its head, stem, dots and any actually-ATTACHED flag only, never from a beam stroke's column match, however certain or possible that match would otherwise read. A YOLO `beam` box standing in a hollow head's cell, joined to its stem or not, is not this note's mark.
+- **Numbers:** none of its own.
+- **Literature:** not covered directly as a prohibition; it follows from the shapes of *Gould* and *Bravura*'s own glyph catalogues, neither of which draws a combined open-notehead-plus-beam glyph outside the tremolo family.
+- **Measured here:** on a fresh GATHER+ADJUDICATE record of Litolff p3 (`--through adjudicate`), 49 durations were NARROWED with `beam_evidence: none_over_this_note` and a YOLO `beam` box elsewhere in the cell — 28 of them hollow heads narrowed "half, or quarter with one beam" this way. `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`.
+- **Status:** MEASURED HERE (the population) / stated directly by Sean, not independently re-derived from a corpus of confirmed tremolo marks.
+- **Rigid or publisher-dependent:** RIGID — a property of standard notation, not of any one plate.
+- **Would be falsified by:** a printed hollow head whose duration is genuinely shortened by an attached beam (no such engraving exists outside tremolo, which this rule explicitly carves out and does not itself model).
+- **Known exceptions:** a tremolo stroke through a hollow head's stem — named, out of scope, NOT built (no tremolo reading exists in this tree).
+- **Code:** `tools/omr/staged/adjudicators/rhythm.py` `_head_is_open`, `adjudicate_duration` (hollow override); `docs/DECISIONS.md` 2026-09-30.
+
 ### A stem is one octave long by default — and as long as the music needs it to be
 `[C13 + L11]`
 
@@ -771,7 +791,7 @@ the repo file's rule is that **the tree outranks the ledger**:
 - **Code:** no consumer found.
 
 ### A second is always on opposite sides of the stem — never the same side, at any distance
-`[C92]`
+`[C93]`
 
 - **Says:** Sean, 2026-09-30 (`docs/DECISIONS.md`), on Litolff p3's doubled-head complaint (*"most of those would show as one for us and then when it was a single note it would often print 2 notes either on top of each other or a second apart... It looked like a double box on a single note issue"*): *"a second is always on opposite sides of the stem"* — the converse of `[L19]` above, read as a NEGATIVE test. Two same-class notehead boxes on the SAME side of the ONE stem they both attach to are never a real chordal interval, at any distance up to a third — they are one physical head boxed twice.
 - **Predicts (mechanically):** where a SHATTERING plate fragments one filled notehead into two overlapping same-class boxes (the mechanism ROADMAP 2.30 already ships for the narrower, dy < 0.25 sp case), the stem test supplies a SECOND, independent witness the narrower rule lacks — a real second's two heads straddle the stem by definition, so "same side" rules out the real-interval reading at any distance this rule tests, letting the refusal reach further (0.75 sp, the stated midpoint between a second at 0.5 sp and a third at 1.0 sp) without also catching a real chord member.
@@ -2060,15 +2080,16 @@ not be placed; the unplaced list is empty.**
     46  merged entries
   + 42  repo-only entries
   + 27  literature-only entries
-  +  4  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
+  +  5  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
                                               C90 + C91, 2026-09-24, roadmap 3.4g-2;
-                                              C92, 2026-09-30, roadmap 2.40)
+                                              C92, 2026-09-30, roadmap 2.43;
+                                              C93, 2026-09-30, roadmap 2.40)
 ─────
- 119  registry entries
+ 120  registry entries
 ```
 
 **Check both ways:** repo side `46 + 42 = 88` ✅ · literature side `52 + 27 = 79` ✅ ·
-output `46 + 42 + 27 + 4 = 119` ✅.
+output `46 + 42 + 27 + 5 = 120` ✅.
 
 ⚠️ **C89 IS NOT IN `from-this-repo.md` AND ITS 88 IS NOT BUMPED.** That file is a
 compilation whose stated scope is *"only conventions this tree has evidence
@@ -2176,7 +2197,7 @@ instead, so the ledger still accounts for every id an entry carries.
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
 | C88 | A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge | *(same title)* | kept standalone — ⚠️ added 2026-09-23 (ROADMAP 2.11), after the merge |
 
-### Written straight into this registry — 4
+### Written straight into this registry — 5
 
 ⚠️ Not from either source file. See the arithmetic above.
 
@@ -2185,9 +2206,10 @@ instead, so the ledger still accounts for every id an entry carries.
 | C89 | An instrument's HEADER CLEF is a property of the instrument, not of the page | *(same title)* | kept standalone — written straight into this registry (roadmap 2.10) |
 | C90 | A ledger line is only ever OUTSIDE the staff | *(same title)* | kept standalone — Sean, 2026-09-24, written straight into this registry (roadmap 3.4g-2) |
 | C91 | A ledger line exists only where there is a NOTE on it | *(same title)* | kept standalone — Sean, 2026-09-24, written straight into this registry (roadmap 3.4g-2) |
-| C92 | A second is always on opposite sides of the stem — never the same side, at any distance | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.40) |
+| C92 | Open noteheads are never beamed, except tremolo | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.43) |
+| C93 | A second is always on opposite sides of the stem — never the same side, at any distance | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.40), renumbered from `C92` on merge with 2.43 |
 
-**Repo tally: 46 merged + 41 standalone = 87** ✅
+**Repo tally: 46 merged + 42 standalone = 88** ✅
 
 ### `from-the-literature.md` — all 79
 

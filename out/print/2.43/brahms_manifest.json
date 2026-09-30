@@ -1,0 +1,57 @@
+[
+  {
+    "subject": "glyph/1/0/0/4/35",
+    "was": "narrowed:[{\"beam_levels\": 1, \"beats\": 2.0, \"dots\": 0, \"written\": 2....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 4.0, \"dots\": 0, \"written\": 4.0}"
+  },
+  {
+    "subject": "glyph/1/0/2/6/18",
+    "was": "narrowed:[{\"beam_levels\": 1, \"beats\": 1.0, \"dots\": 0, \"written\": 1....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}"
+  },
+  {
+    "subject": "glyph/1/0/2/6/20",
+    "was": "narrowed:[{\"beam_levels\": 1, \"beats\": 1.0, \"dots\": 0, \"written\": 1....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"written\": 2.0}"
+  },
+  {
+    "subject": "glyph/1/0/3/2/12",
+    "was": "decided:{\"beam_levels\": 1, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 3.0, \"dots\": 1, \"written\": 3.0}"
+  },
+  {
+    "subject": "glyph/1/0/3/6/12",
+    "was": "narrowed:[{\"beam_levels\": 1, \"beats\": 1.5, \"dots\": 1, \"written\": 1....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 3.0, \"dots\": 1, \"written\": 3.0}"
+  },
+  {
+    "subject": "glyph/1/0/5/0/14",
+    "was": "decided:{\"beam_levels\": 1, \"beats\": 3.0, \"dots\": 1, \"written\": 3.0}",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 6.0, \"dots\": 1, \"written\": 6.0}"
+  },
+  {
+    "subject": "glyph/1/0/5/0/21",
+    "was": "decided:{\"beam_levels\": 1, \"beats\": 1.5, \"dots\": 1, \"written\": 1.5}",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 3.0, \"dots\": 1, \"written\": 3.0}"
+  },
+  {
+    "subject": "glyph/1/0/7/0/12",
+    "was": "decided:{\"beam_levels\": 4, \"beats\": 0.062, \"dots\": 0, \"written\": 0....",
+    "now": "narrowed:[{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"head_fill\": ..."
+  },
+  {
+    "subject": "glyph/1/0/7/0/14",
+    "was": "decided:{\"beam_levels\": 4, \"beats\": 0.062, \"dots\": 0, \"written\": 0....",
+    "now": "narrowed:[{\"beam_levels\": 0, \"beats\": 2.0, \"dots\": 0, \"head_fill\": ..."
+  },
+  {
+    "subject": "glyph/1/1/7/7/3",
+    "was": "narrowed:[{\"beam_levels\": 1, \"beats\": 1.5, \"dots\": 1, \"written\": 1....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 3.0, \"dots\": 1, \"written\": 3.0}"
+  },
+  {
+    "subject": "glyph/1/1/11/1/23",
+    "was": "narrowed:[{\"beam_levels\": 0, \"beats\": 4.0, \"dots\": 0, \"written\": 4....",
+    "now": "decided:{\"beam_levels\": 0, \"beats\": 4.0, \"dots\": 0, \"written\": 4.0}"
+  }
+]

@@ -2000,3 +2000,191 @@ class TestADottedRestIsDotted(unittest.TestCase):
         adjudicate.run(log)
         self.assertEqual(log.verdict(Q.DURATION, note).value["dots"], 1)
         self.assertEqual(log.verdict(Q.DURATION, rest).value["dots"], 0)
+
+
+class TestOpenNoteheadsAreNeverBeamed(unittest.TestCase):
+    """ROADMAP 2.43, DECISIONS 2026-09-30 (Sean): *"Correct, open noteheads
+    are never beamed except tremolo."* A hollow head's beam level is FIXED
+    AT ZERO, whatever the beam-reading machinery would otherwise count --
+    even a stroke that lies squarely over the head's own, correctly JOINED
+    stem. Found by Sean on the stage readout: 28 of 49 undecided lengths on
+    Litolff p3 were clear half notes narrowed by a stray detector `beam` box
+    the ink said was not over the note.
+    """
+
+    def test_a_half_note_with_a_stem_and_a_beam_box_DECIDES_half(self):
+        """The exact shape Sean saw: a clear hollow head, its own stem, and
+        a stray box that -- before this rule -- would narrow it between
+        half and quarter-with-one-beam."""
+        log = Log()
+        _staff_space(log)
+        g = _note(log, 0, head="noteheadHalf", levels=1)
+        _stem(log, x=X - 10, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 2.0)
+        self.assertEqual(v.value["beam_levels"], 0)
+        self.assertEqual(v.detail["beam_evidence"], "none_over_this_note")
+        self.assertTrue(v.detail["head_is_open"])
+
+    def test_a_whole_note_with_a_beam_box_DECIDES_whole(self):
+        """Whole heads carry no stem at all, so the OLD side/reach filters
+        never touched them -- the override must still hold with no stem in
+        the picture."""
+        log = Log()
+        g = _note(log, 0, head="noteheadWhole", levels=1)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 4.0)
+        self.assertTrue(v.detail["head_is_open"])
+
+    def test_CONTROL_the_identical_shape_on_a_BLACK_head_still_NARROWS(self):
+        """⚠️ THE POSITIVE CONTROL. The very same stem+beam shape on a BLACK
+        head is untouched -- proving the override is about the HEAD, not a
+        general weakening of beam reading. (This box sits ON the stem and
+        centred on the head, so it is CERTAIN -- a real, joined beam -- and
+        a black head with one certain beam level DECIDES the eighth, it
+        does not narrow; the narrowing shape is covered by the stem-column
+        tests below.)
+        """
+        log = Log()
+        _staff_space(log)
+        g = _note(log, 0, head="noteheadBlack", levels=1)
+        _stem(log, x=X - 10, y=38, h=60)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertFalse(v.detail["head_is_open"])
+
+    def test_a_real_beamed_eighth_PAIR_stays_eighths(self):
+        """⚠️ CONTROL: an ordinary beamed BLACK pair is unaffected end to
+        end -- the rule must never touch a real beam on a real black head.
+        """
+        log = Log()
+        _staff_space(log)
+        _beam(log, y=40, x0=60, x1=200)
+        g1 = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g1, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g1, Q.GLYPH_BOX, ("noteheadBlack", 70, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=70, y=38, h=60)
+        g2 = R.glyph(0, 0, 0, 0, 1)
+        log.observe(g2, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g2, Q.GLYPH_BOX, ("noteheadBlack", 180, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=180, y=38, h=60)
+        adjudicate.run(log)
+        for g in (g1, g2):
+            v = log.verdict(Q.DURATION, g)
+            self.assertEqual(v.outcome, Outcome.DECIDED)
+            self.assertEqual(v.value["beats"], 0.5)
+            self.assertFalse(v.detail["head_is_open"])
+
+    def test_ink_decided_hollow_zeroes_a_BLACK_CLASS_heads_beam_too(self):
+        """The SECOND witness (2.23's ink reading) settles it exactly as
+        the class does: a detector class of BLACK whose own ink reads
+        decisively hollow is an open head by the OTHER witness, and a
+        stray beam over it must not narrow or decide it beamed either --
+        it falls through to the pre-existing `head_fill_from_ink` narrow
+        (black/half/whole), unchanged by this rule.
+        """
+        log = Log()
+        _beam(log, y=2, x0=400, x1=460)           # decoy: state READ, far away
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _notehead_ink(log, g, center=0.1, ring=0.55)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertTrue(v.detail["head_is_open"])
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
+
+class TestAPossibleBeamMustLieOverThisNotesOwnStem(unittest.TestCase):
+    """ROADMAP 2.43: the padded "possible" column match in `_beam_levels`
+    tested only the HEAD's own centre, with a full notehead-width of
+    slack on each side -- nothing about the STEM. A YOLO `beam` box the ink
+    reader itself could only mark `none_over_this_note` (no CV stroke, no
+    stem join) still counted as a POSSIBLE witness for a note whenever it
+    fell within that slack of the head, wherever the note's own stem
+    actually stood. DECISIONS 2026-09-30 (Sean): 21 black Litolff p3 heads
+    narrowed this exact way, every one `cv_beams: 0`, `beams_by_stem: 0`.
+    """
+
+    def _black_head_with_an_offstem_box(self, log, *, box_x0, box_x1,
+                                        box_y=40):
+        """A BLACK head, its own stem at x=135-139, and a YOLO `beam` box
+        whose x-range is chosen by the caller -- close enough to the
+        head's centre (145) to clear the old head-width pad test, but not
+        necessarily anywhere near the stem."""
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=38, h=60)
+        log.observe(R.cell(0, 0, 0, 0), Q.BEAM_STROKE,
+                    (box_x0, box_y, box_x1 - box_x0, 4),
+                    reader=READERS.DETECTOR, frame="cell:0",
+                    x0=box_x0, x1=box_x1, y_center=box_y)
+        return g
+
+    def test_a_box_off_the_stem_column_DECIDES_instead_of_narrowing(self):
+        """The box clears the old head-width pad (145 is within 20 px of
+        [160, 210]) but stands nowhere near the stem's own column
+        (135-139): no longer a witness for this note at all."""
+        log = Log()
+        g = self._black_head_with_an_offstem_box(log, box_x0=160, box_x1=210)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.detail["beam_evidence"], "none_over_this_note")
+        self.assertEqual(v.detail["levels_possible"], 0)
+
+    def test_CONTROL_a_box_that_DOES_lie_over_the_stem_still_NARROWS(self):
+        """⚠️ THE POSITIVE CONTROL. Move the very same box to stand over
+        the stem's own column (it still does not touch the head's centre,
+        so it is not CERTAIN, and no CV join witness ran, so it is not
+        promoted or dropped) -- it stays exactly what it was: a possible
+        beam level, NARROWED against the head value."""
+        log = Log()
+        _staff_space(log)
+        # ⚠️ y=26, h=4 -- just short of the stem's own tip (38) by 8 px, well
+        # inside the join tolerance (0.8 sp = 12.8 px here) so it is not
+        # dropped as "beyond the tip", but NOT overlapping the stem's own
+        # box in y either, so `_stem_joined`'s box-overlap test does not
+        # fire and this stays a mere POSSIBLE match, not a real join.
+        g = self._black_head_with_an_offstem_box(log, box_x0=130, box_x1=142,
+                                                 box_y=26)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beams_ambiguous")
+        self.assertEqual(v.detail["levels_possible"], 1)
+        self.assertEqual(v.detail["levels_certain"], 0)
+
+    def test_NO_OWN_STEM_is_UNCHANGED(self):
+        """Where this head has no own stem read at all, there is no stem
+        column to test against -- the old head-centre pad test applies
+        exactly as before (2.18's own "no side -> every stroke stays")."""
+        log = Log()
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(R.cell(0, 0, 0, 0), Q.BEAM_STROKE, (160, 40, 50, 4),
+                    reader=READERS.DETECTOR, frame="cell:0",
+                    x0=160, x1=210, y_center=40)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beams_ambiguous")

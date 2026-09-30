@@ -266,6 +266,20 @@ class TestRestHasAStem(unittest.TestCase):
         self.assertIs(v.value, True)
         self.assertEqual(v.reason, "rest_has_a_stem")
 
+    def test_quarter_rest_touching_a_stem_row_is_kept(self):
+        """Manager print check 2026-09-30: 6 of 8 random `rest_has_a_stem`
+        refusals on the Litolff whole movement were REAL quarter rests --
+        the CV stem reader finds a quarter rest's own vertical stroke. A
+        quarter rest's printed shape legitimately carries a vertical stroke
+        (the same reason (a) excludes it), so the stem witness speaks for
+        `restWhole`/`restHalf` only."""
+        log = Log()
+        g = _rest(log, 0, "restQuarter", page_box=_page_box_at_step(4.0))
+        _stem(log, 1, x=250.0, y=190.0, w=5.0, h=100.0)
+        _run(log, Q.REST_IS_NOT_A_REST)
+        v = log.verdict(Q.REST_IS_NOT_A_REST, g)
+        self.assertNotEqual(getattr(v, "reason", None), "rest_has_a_stem")
+
     def test_rest_with_no_stem_nearby_is_kept(self):
         """⚠️ THE CONTROL THAT CAN FAIL. A `restWhole` with a `Q.STEM` box
         FAR from its own — no overlap — is unaffected."""
