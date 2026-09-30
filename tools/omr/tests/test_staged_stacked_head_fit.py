@@ -15,22 +15,29 @@ notehead_recentre.py`:
      synthetic `MeasureCell`s -- confirms the GROUPING (shared stem, same
      side) and the no-row cases (lone head, different stems, no stem at
      all).
-  C. `notehead_precision._stacked_head_duplicate_refusal` /
-     `adjudicate_stacked_head_position` -- ADJUDICATE's keep/refuse and the
-     decided position witness, with `Q.STACKED_HEAD_FIT` rows injected
-     directly (the same style `test_staged_notehead_same_side_second.py`
-     injects `Q.STEM`/`Q.NOTEHEAD_INK`) -- isolates the KEEP CHOICE from the
+  C. `notehead_precision._stacked_head_duplicate_refusal` -- ADJUDICATE's
+     keep/refuse choice, with `Q.STACKED_HEAD_FIT` rows injected directly
+     (the same style `test_staged_notehead_same_side_second.py` injects
+     `Q.STEM`/`Q.NOTEHEAD_INK`) -- isolates the KEEP CHOICE from the
      ink-fit arithmetic layer A already covers.
-  D. `consequences.restate_pitch` -- the EVALUATE connection: a DECIDED
-     `Q.STACKED_HEAD_POSITION` wins over the raw detector-centre position,
-     and ONLY there.
+
+⚠️⚠️ SEAN, SCOPE CHANGE: THIS ITEM DECIDES NO PITCH, PERIOD. Two attempts
+were made and BOTH withdrawn -- a whole-group ink fit (`Q.STACKED_HEAD_
+POSITION`, wrong on real ruler measurement) and a narrow same-side-second
+rounding-residual correction (also withdrawn, unneeded once the real cause
+was found: printed LEDGER LINES above the staff are not evenly spaced, so
+extrapolating the staff's own spacing drifts -- a SEPARATE roadmap item,
+2.44, reads positions from the ledgers themselves). `restate_pitch` reads
+the raw `Q.NOTEHEAD_STAFF_POSITION` centre exactly as before this roadmap
+item existed. `Q.STACKED_HEAD_FIT` stays -- 2.30's duplicate-box refusal
+still reads its group/slot/ink fields -- but nothing reads its POSITION
+component, and nothing should until 2.44.
 
 ⚠️ RUN RED FIRST: `gather.fit_stacked_head_count`/`gather.
-gather_stacked_head_fit`, `Q.STACKED_HEAD_FIT`, `Q.STACKED_HEAD_POSITION`,
-`notehead_precision._stacked_head_duplicate_refusal` and `notehead_
-precision.adjudicate_stacked_head_position` do not exist on the tree before
-this round -- every reference below raises `AttributeError` and the
-`adjudicate.run` calls raise `KeyError` (nothing in `ORDER`).
+gather_stacked_head_fit`, `Q.STACKED_HEAD_FIT`,
+`notehead_precision._stacked_head_duplicate_refusal` do not exist on the
+tree before this round -- every reference below raises `AttributeError` and
+the `adjudicate.run` calls raise `KeyError` (nothing in `ORDER`).
 
 ⚠️ NO TEST HERE ASSERTS ON MODULE SOURCE TEXT (CLAUDE.md §6c).
 """
@@ -388,8 +395,7 @@ def _fit_row(log, g, *, k, slot, pos_float, margin=0.2, side="right",
 def _run_notehead_and_position(log):
     log.freeze()
     adjudicate._ensure_decisions()
-    adjudicate.run(log, order=(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-                              Q.STACKED_HEAD_POSITION))
+    adjudicate.run(log, order=(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,))
     return log
 
 
@@ -500,114 +506,6 @@ class TestStackedHeadDuplicateRefusal(unittest.TestCase):
         self.assertNotEqual(NP.STACKED_HEAD_REASON,
                             "notehead_is_a_duplicate_box")
         self.assertNotEqual(NP.STACKED_HEAD_REASON, "same_side_second")
-
-
-class TestStackedHeadPosition(unittest.TestCase):
-    """`adjudicate_stacked_head_position` -- the decided witness."""
-
-    def test_a_surviving_box_gets_its_fitted_position(self):
-        log = Log()
-        _cell_geometry(log)
-        lower = _notehead(log, 0, cls="noteheadHalfInSpace", pos_float=3.6)
-        _fit_row(log, lower, k=2, slot=1, pos_float=4.0, ink=0.9)
-        # A slot-0 partner so the group has >=2 members (matches GATHER's
-        # own "no row for a lone box" convention -- irrelevant to this test
-        # beyond making the fixture realistic).
-        upper = _notehead(log, 1, cls="noteheadHalfOnLine", pos_float=1.6)
-        _fit_row(log, upper, k=2, slot=0, pos_float=2.0, ink=0.9)
-        log = _run_notehead_and_position(log)
-
-        v = log.verdict(Q.STACKED_HEAD_POSITION, lower)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.reason, "stacked_head_fit")
-        self.assertAlmostEqual(v.value, 4.0)
-        self.assertEqual(v.detail.get("slot"), 1)
-        self.assertEqual(v.detail.get("k"), 2)
-        self.assertEqual(len(v.used), 2, "the fit row AND the notehead_is_"
-                                        "not_a_notehead verdict it checked "
-                                        "(value=False here, but the read "
-                                        "itself is part of the basis)")
-
-    def test_a_refused_box_abstains_stacked_head_refused(self):
-        log = Log()
-        _cell_geometry(log)
-        blank = _notehead(log, 0, cls="noteheadBlackInSpace", conf=0.9)
-        inked = _notehead(log, 1, cls="noteheadBlackInSpace", conf=0.3)
-        _fit_row(log, blank, k=1, slot=0, pos_float=4.0, ink=0.08)
-        _fit_row(log, inked, k=1, slot=0, pos_float=4.0, ink=0.90)
-        log = _run_notehead_and_position(log)
-
-        v = log.verdict(Q.STACKED_HEAD_POSITION, blank)
-        self.assertEqual(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, ABSTAIN.STACKED_HEAD_REFUSED)
-
-    def test_an_ambiguous_gather_fit_leaves_no_decided_position(self):
-        """GATHER itself declined (`ambiguous`) -- no `Q.STACKED_HEAD_FIT`
-        OBSERVATION exists, only an abstention; this decision must not
-        invent a position from nothing."""
-        log = Log()
-        _cell_geometry(log)
-        a = _notehead(log, 0, cls="noteheadHalfInSpace", pos_float=4.0)
-        log.observe(CELL, Q.CELL_STAFF_SPACE, 100.0,  # already set, harmless
-                   reader=READERS.GEOMETRY, frame="cell:0")
-        log.abstain(a, Q.STACKED_HEAD_FIT,
-                   reader=READERS.CV_STACKED_HEAD_FIT, frame="cell:0",
-                   reason=ABSTAIN.AMBIGUOUS)
-        log = _run_notehead_and_position(log)
-        v = log.verdict(Q.STACKED_HEAD_POSITION, a)
-        self.assertEqual(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, ABSTAIN.AMBIGUOUS)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# D. EVALUATE -- `restate_pitch` reads the decided position where one stands
-# ─────────────────────────────────────────────────────────────────────────────
-
-
-class TestRestatePitchConnection(unittest.TestCase):
-    """The fit wins ONLY in a stacked group, never for a lone head."""
-
-    def _clef_verdict(self, log, staff):
-        return log.record(R.Verdict(
-            id=log._next_id("vrd"), subject=staff, quantity=Q.CLEF,
-            outcome=R.Outcome.DECIDED, value="treble", decider="test",
-            reason="test", considered=(), basis=()))
-
-    def test_a_stacked_survivor_is_pitched_from_the_fitted_position(self):
-        staff = R.staff(0, 0, 0)
-        g = R.glyph(0, 0, 0, 0, 0)
-        log = Log()
-        # Raw detector position says 3 (a step off); the fit says 4 --
-        # EXACTLY the shape this connection exists for (a rounding-off
-        # third/second the detector box alone would mis-round).
-        log.observe(g, Q.NOTEHEAD_STAFF_POSITION, 3.0,
-                   reader=READERS.GEOMETRY, frame="cell:0")
-        log.record(R.Verdict(
-            id=log._next_id("vrd"), subject=g, quantity=Q.STACKED_HEAD_POSITION,
-            outcome=R.Outcome.DECIDED, value=4.0, decider="test",
-            reason="stacked_head_fit", considered=(), basis=()))
-        clef = self._clef_verdict(log, staff)
-        out = consequences.restate_pitch(log, staff, clef)
-        self.assertEqual(len(out), 1)
-        # Position 4 on a treble clef: same anchor `_pitch_from_position`
-        # already gives every other test in this suite -- the point here is
-        # WHICH position won, not the pitch name's own spelling.
-        from tools.omr.pitch_resolver import _pitch_from_position
-        self.assertEqual(out[0].value, _pitch_from_position(4, "treble"))
-
-    def test_a_lone_head_is_unaffected(self):
-        """No `Q.STACKED_HEAD_POSITION` verdict at all -- the raw detector
-        position is used exactly as before this roadmap item existed."""
-        staff = R.staff(0, 0, 0)
-        g = R.glyph(0, 0, 0, 0, 0)
-        log = Log()
-        log.observe(g, Q.NOTEHEAD_STAFF_POSITION, 3.0,
-                   reader=READERS.GEOMETRY, frame="cell:0")
-        clef = self._clef_verdict(log, staff)
-        out = consequences.restate_pitch(log, staff, clef)
-        self.assertEqual(len(out), 1)
-        from tools.omr.pitch_resolver import _pitch_from_position
-        self.assertEqual(out[0].value, _pitch_from_position(3, "treble"))
 
 
 if __name__ == "__main__":

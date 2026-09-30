@@ -779,21 +779,17 @@ class Q(_Vocab):
     #: 2026-09/FINDINGS.md` "ROADMAP 2.42" for what this leaves open.
     STACKED_HEAD_FIT = "stacked_head_fit"
 
-    #: ⚠️⚠️ ROADMAP 2.42 — ADJUDICATE's decided witness beside the raw
-    #: detector-centre `Q.NOTEHEAD_STAFF_POSITION`, for a notehead that
-    #: SURVIVES a stacked-head group (i.e. is the kept box for one of the
-    #: group's fitted slots). `value` is the fitted slot's own `pos_float`
-    #: (`Q.STACKED_HEAD_FIT.value[2]`, read never re-derived — CLAUDE.md
-    #: rule 6) — the SAME units `restate_pitch` already rounds
-    #: `Q.NOTEHEAD_STAFF_POSITION` to, so the EVALUATE connection is a
-    #: straight substitution, not a new arithmetic. DECIDED only where
-    #: `Q.STACKED_HEAD_FIT` did not abstain `ambiguous` and this glyph is
-    #: the group's own kept box for its slot — a glyph the group refuses
-    #: (`stacked_head_duplicate`) or a lone head outside any group carries
-    #: NO row here at all, so `restate_pitch`'s fallback to the raw
-    #: detector-centre position is silent and correct for every case this
-    #: quantity does not apply to.
-    STACKED_HEAD_POSITION = "stacked_head_position"
+    #: ⚠️⚠️⚠️ REMOVED, TWICE — Sean, scope change: the whole-group ink fit
+    #: does not decide pitch, AND NEITHER DOES A ROUNDING-RESIDUAL RULE. The
+    #: real cause of the wrong pitches above the staff is that printed
+    #: LEDGER LINES are not evenly spaced (measured, Litolff p3
+    #: staff/3/0/0: ledgers at 18/13/20 px gaps against a 15.75 px staff
+    #: spacing — extrapolated staff spacing drifts ~4 px by the third
+    #: ledger). That needs positions read from the printed ledgers
+    #: themselves — ROADMAP 2.44, a separate item. `Q.STACKED_HEAD_FIT`
+    #: stays (2.30's duplicate-box refusal still reads its group/slot/ink
+    #: fields); nothing reads its position component any more, and nothing
+    #: should until 2.44 builds the real fix.
 
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
@@ -1913,8 +1909,9 @@ CLAIMS: "dict[str, str]" = {
     #: standard-head-box template -- a ruler reading, same reason as
     #: `NOTEHEAD_RECENTRE`; it says how many fill peaks the ink supports and
     #: where, never that a head stands at any one of them (that is
-    #: ADJUDICATE's `stacked_head_duplicate`/`stacked_head_fit`, both
-    #: INTERPRETATION -- see `Q.STACKED_HEAD_POSITION` below).
+    #: ADJUDICATE's `stacked_head_duplicate`, INTERPRETATION). ⚠️ Sean: its
+    #: position component decides NOTHING about pitch -- see the quantity's
+    #: own docstring above.
     "STACKED_HEAD_FIT": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
@@ -1998,12 +1995,6 @@ CLAIMS: "dict[str, str]" = {
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_NOT_A_NOTEHEAD": CLAIM.INTERPRETATION,
-    #: ROADMAP 2.42: ADJUDICATE's own pick among `Q.STACKED_HEAD_FIT`'s
-    #: measured candidates -- which fitted slot THIS surviving box stands
-    #: for, weighing the group's own ink scores and `Q.NOTEHEAD_IS_NOT_A_
-    #: NOTEHEAD`'s verdict together. Wrong if either input was wrong, the
-    #: same INTERPRETATION reason `PITCH`/`DURATION` are filed this way.
-    "STACKED_HEAD_POSITION": CLAIM.INTERPRETATION,
     # ── roadmap 3.4g, the same claim once per gathered family ──────────────
     "LEDGER_IS_NOT_A_LEDGER": CLAIM.INTERPRETATION,
     "ACCIDENTAL_IS_NOT_AN_ACCIDENTAL": CLAIM.INTERPRETATION,
@@ -2345,12 +2336,6 @@ class ABSTAIN(_Vocab):
     ONLY_DEBRIS = "only_debris"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
-    #: ROADMAP 2.42 -- `Q.STACKED_HEAD_POSITION` abstains this where the SAME
-    #: glyph's `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict already refused it (most
-    #: often `stacked_head_duplicate` itself): a box that does not survive
-    #: has no fitted pitch position to contribute, and this says so rather
-    #: than silently filing one anyway.
-    STACKED_HEAD_REFUSED = "stacked_head_refused"
 
     # readers with nothing to read
     #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.

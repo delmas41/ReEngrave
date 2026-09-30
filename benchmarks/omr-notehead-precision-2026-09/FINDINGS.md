@@ -727,6 +727,44 @@ all 64 — 6 of them were also visually confirmed correct earlier in this
 document (S6's cell, two Brahms single-head refusals, a near-tie, a 3-note
 chord). 0 kept boxes fall at or below the floor on either page.
 
+### ⚠️⚠️⚠️ SCOPE CHANGE (Sean) — ALL PITCH WORK DROPPED FROM 2.42
+
+The same-side-second rounding-residual rule (the replacement for the
+withdrawn ink-fit pitch connection, described above as fixing Sean's own
+`glyph/3/0/0/2/4`+`/9`/`/1`+`/3` pair) is ALSO WITHDRAWN, before landing.
+Root cause of the wrong pitches above the staff, found by the manager: the
+printed LEDGER LINES themselves are not evenly spaced. On Litolff p3,
+`staff/3/0/0`'s own ledgers sit at page y 431.5 / 418.5 / 398.5 (gaps 18,
+13, 20 px) against a 15.75 px staff spacing — extrapolating the staff's own
+spacing from the top line drifts ~4 px by the third ledger, which is
+exactly the systematic error both withdrawn mechanisms were chasing with
+the wrong instrument (ink fit, then rounding residual — neither reads a
+ledger line at all). **Fixing this needs positions read from the PRINTED
+LEDGERS themselves — ROADMAP 2.44, a separate item, not built here.**
+
+`restate_pitch` is reverted to EXACTLY its pre-2.42 form (raw `Q.NOTEHEAD_
+STAFF_POSITION`, rounded, everywhere — no stacked-group or same-side
+connection of any kind). `Q.STACKED_HEAD_POSITION`, `Q.SAME_SIDE_SECOND_
+RESIDUAL` and both EVALUATE rules that fed them are REMOVED from the tree
+entirely (not merely unwired) — `Q.STACKED_HEAD_FIT` stays, since 2.30's
+own `stacked_head_duplicate` refusal still reads its group/slot/ink fields
+for the keep/refuse choice, which is UNCHANGED and UNAFFECTED by any of
+this. Re-verified against the ALREADY-GATHERED records (ADJUDICATE-level
+facts are identical whether or not the now-removed EVALUATE rule ever
+existed, so no re-gather was needed): Litolff 50 `stacked_head_duplicate`
+moves, Brahms 12, 0 pitch changes on either page (no rule reads or revises
+`Q.PITCH` beyond stock `restate_pitch` any more). Kept-box ink census
+re-confirmed identical: 49/49 (Litolff), 15/15 (Brahms).
+
+Sean confirmed (relay) BOTH named chords print F6/D6. Pinned as XFAIL,
+per instruction, in `tools/omr/tests/test_staged_ledger_position_xfail_
+2_44.py`: `/2/4`+`/9` (positions -7.4/-5.56) is a KNOWN, CONFIRMED MISS —
+plain rounding gives F6/E6 (a second), still wrong, until 2.44 lands.
+`/1`+`/3` (positions -6.88/-4.64) happens to already round 2 apart (a
+third) and would PASS today, but is marked xfail anyway per instruction,
+since nothing GUARANTEES it across the population until 2.44 reads the
+real ledgers.
+
 ### Print check
 
 **Litolff p3**: every group with >=1 refusal (41, `out/print/2.42/litolff/`)

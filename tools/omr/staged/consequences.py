@@ -51,12 +51,7 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
       bound="One pitch per notehead that already has a POSITION row and does "
             "NOT already carry a pitch. Adds no notehead, deletes none, and "
             "re-reads no geometry. A staff whose clef ABSTAINED produces no "
-            "pitches at all -- it does not fall back to treble. ROADMAP "
-            "2.42: where a DECIDED Q.STACKED_HEAD_POSITION stands for this "
-            "same notehead, its value is rounded INSTEAD of the raw "
-            "detector-centre position -- a substitution, not a second "
-            "source of positions: a lone head outside any stacked group "
-            "never carries that verdict and is unaffected.")
+            "pitches at all -- it does not fall back to treble.")
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -74,14 +69,19 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     a naive metric and better for a reader who needs to know what we do not
     know.
 
-    ⚠️ ROADMAP 2.42 -- THE FIT WINS ONLY IN A STACKED GROUP, NEVER FOR A LONE
-    HEAD. `adjudicate_stacked_head_position` (`notehead_precision.py`)
-    DECIDES a fitted position only for a notehead GATHER's stacked-head fit
-    named a decided head count for AND that survived `Q.NOTEHEAD_IS_NOT_A_
-    NOTEHEAD`; every other glyph carries no such verdict at all, so `log.
-    verdict` returns `None` and the raw detector-centre `row.value` is used
-    exactly as before this roadmap item existed -- a substitution at the ONE
-    population it applies to, never a second, competing source of positions.
+    ⚠️⚠️ ROADMAP 2.42 (Sean, scope change): NO STACKED-HEAD CONNECTION HERE,
+    AND THERE WILL NOT BE ONE FROM THIS ITEM. The ink-fit position
+    (`Q.STACKED_HEAD_FIT`) was briefly read here via a withdrawn
+    `Q.STACKED_HEAD_POSITION`, then replaced with a narrow same-side-second
+    rounding-residual rule -- BOTH withdrawn. The real cause of the wrong
+    pitches above the staff is that printed LEDGER LINES are not evenly
+    spaced (measured: Litolff p3 staff/3/0/0's own ledgers sit 18/13/20 px
+    apart against a 15.75 px staff spacing -- extrapolating the staff's own
+    spacing drifts ~4 px by the third ledger). Fixing that needs positions
+    read from the printed ledgers themselves, a SEPARATE roadmap item
+    (2.44), not this one. This function reads the raw `Q.NOTEHEAD_STAFF_
+    POSITION` centre for EVERY notehead, exactly as before ROADMAP 2.42 ever
+    existed.
     """
     from ..pitch_resolver import _pitch_from_position
 
@@ -108,18 +108,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # which is how this was found: the whole arm died on
             # `glyph/2/1/9/6/2`.
             continue
-        # ⚠️ ROADMAP 2.42 -- THE STACKED-HEAD FIT'S OWN DECIDED POSITION WINS
-        # OVER THE RAW DETECTOR CENTRE, AND ONLY WHERE ONE STANDS. See the
-        # rule's own `bound` and this function's module docstring above for
-        # why this is a substitution at one population, never a second
-        # source of positions.
-        basis_ids = [row.id]
-        stacked = log.verdict(Q.STACKED_HEAD_POSITION, row.subject)
-        if stacked is not None and stacked.value is not None:
-            pos = int(round(float(stacked.value)))
-            basis_ids.append(stacked.id)
-        else:
-            pos = int(round(float(row.value)))
+        pos = int(round(float(row.value)))
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -128,7 +117,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
             decider="restate_pitch", reason="position_and_clef",
-            basis=tuple(basis_ids) + (clef.id,)))
+            basis=(row.id, clef.id)))
     return out
 
 
