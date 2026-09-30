@@ -46,12 +46,36 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+#: ROADMAP 2.44. A far head's position from `Q.LEDGER_PRINTED_POSITION`
+#: (read from the ACTUAL printed ledgers, CLAUDE.md §10 — a note's position
+#: outside the staff IS the ledger count) is FORCED where it exists — Sean's
+#: own convention, not a best guess among readings — so the substitution
+#: belongs in EVALUATE, not INFER: EVALUATE never chooses between two
+#: answers that both fit, and there is only ever one printed ledger geometry
+#: a head can sit in. But a ledger reading that disagrees with the staff's
+#: own extrapolated rounding by MORE than one step is not a second opinion
+#: to average against the first — it is a sign one of the two readers
+#: misread the page (a merged plate's ink, a mis-centred head, a ledger
+#: found on the wrong side) — so the substitution itself abstains there
+#: (CLAUDE.md rule 8: a fallback never converts "cannot tell" into an
+#: answer) and the extrapolated position stands, UNCHANGED, exactly as
+#: before this rule existed. The conflict is counted in the pitch verdict's
+#: own `reason` (`position_and_clef_ledger_conflict`), never silently
+#: dropped — `trace --subject`/`--family note` surfaces it.
+LEDGER_PRINTED_POSITION_MAX_DISAGREEMENT_STEPS = 1
+
+
 @rule(consequence=Consequence.RESTATE_PITCH,
       cause=Q.CLEF, effect=Q.PITCH, scope=Kind.STAFF,
       bound="One pitch per notehead that already has a POSITION row and does "
             "NOT already carry a pitch. Adds no notehead, deletes none, and "
             "re-reads no geometry. A staff whose clef ABSTAINED produces no "
-            "pitches at all -- it does not fall back to treble.")
+            "pitches at all -- it does not fall back to treble. ROADMAP "
+            "2.44: where a head also carries a `Q.LEDGER_PRINTED_POSITION` "
+            "row, that MEASURED position is substituted for the staff's own "
+            "extrapolated rounding -- never a second vote, and never where "
+            "the two disagree by more than one step, which the rule "
+            "abstains from rather than averages.")
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -68,6 +92,14 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     time and indistinguishable from a reading. Producing nothing is worse for
     a naive metric and better for a reader who needs to know what we do not
     know.
+
+    ⚠️ ROADMAP 2.44's substitution is a SUBSTITUTION, never a second vote.
+    `Q.NOTEHEAD_STAFF_POSITION` stays the row every pitch is keyed to
+    (`row.subject`, `row.id` in the basis) and the staff's own spacing stays
+    what a head ON or just outside the staff is read from -- the printed-
+    ledger row only ever exists at all for a head far enough out to need
+    one, and even there it REPLACES the rounded integer used below, not the
+    row itself.
     """
     from ..pitch_resolver import _pitch_from_position
 
@@ -95,6 +127,29 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # `glyph/2/1/9/6/2`.
             continue
         pos = int(round(float(row.value)))
+        reason = "position_and_clef"
+        basis_ids: Tuple[Any, ...] = (row.id, clef.id)
+        # ⚠️ ROADMAP 2.44. `Q.LEDGER_PRINTED_POSITION` is filed on the SAME
+        # glyph subject `row.subject` names (`gather.gather_ledger_printed_
+        # position`'s own subject construction), never a second lookup keyed
+        # differently -- `log.rows` with no `scope` reads exactly this
+        # subject's own rows, which is correct here: the ledger reader never
+        # files on a descendant.
+        ledger_rows = log.rows(Q.LEDGER_PRINTED_POSITION, row.subject)
+        if ledger_rows:
+            ledger_pos = int(round(float(ledger_rows[-1].value)))
+            if abs(ledger_pos - pos) <= LEDGER_PRINTED_POSITION_MAX_DISAGREEMENT_STEPS:
+                pos = ledger_pos
+                reason = "position_and_clef_ledger"
+                basis_ids = (row.id, clef.id, ledger_rows[-1].id)
+            else:
+                # CLAUDE.md rule 8: the two readings disagree by more than
+                # the bound this rule declares, which is a sign one of them
+                # misread the page -- never averaged, never guessed between.
+                # The staff's own extrapolated `pos` stands, unchanged, and
+                # the conflict is COUNTED in the reason rather than dropped.
+                reason = "position_and_clef_ledger_conflict"
+                basis_ids = (row.id, clef.id, ledger_rows[-1].id)
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -102,8 +157,8 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             continue
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
-            decider="restate_pitch", reason="position_and_clef",
-            basis=(row.id, clef.id)))
+            decider="restate_pitch", reason=reason,
+            basis=basis_ids))
     return out
 
 

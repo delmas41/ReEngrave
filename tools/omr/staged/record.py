@@ -395,6 +395,28 @@ class Q(_Vocab):
     #: only one coincides with the head's own row) or the raster is
     #: missing.
     LEDGER_OWNER_DENSITY = "ledger_owner_density"
+    #: ROADMAP 2.44 (Sean, 2026-09-30: printed ledgers are measured NOT
+    #: evenly spaced -- Litolff p3's own three above staff/3/0/0 sit at
+    #: gaps 18 / 13 / 20 px against a staff spacing of 15.75, so
+    #: extrapolating the staff's own spacing past its outer line writes the
+    #: wrong step by the THIRD rung). One row per notehead OUTSIDE its own
+    #: staff by more than half a space: the head's staff position, in the
+    #: SAME half-step units as `NOTEHEAD_STAFF_POSITION` (signed, 0 at the
+    #: staff's own outer line), read from the ACTUAL PRINTED ledger
+    #: strokes found beside the head (`gather.ledger_printed_position`,
+    #: `READERS.CV_LEDGER`) rather than from the staff's spacing carried
+    #: past its own lines. `detail.bracket` names which of ON / BETWEEN /
+    #: BEYOND the head's own ink centre fell into; `detail.note` carries the
+    #: measured y (cell-canonical) of every found ledger as free text, for a
+    #: human reading `trace`, never a machine consumer. ABSTAINS -- never
+    #: defaults -- with `no_ledger_found` (the
+    #: scan reached past the head and found no ledger-shaped ink at all --
+    #: CLAUDE.md §10: "there is no such thing as a far note with no ledger
+    #: line", so this is always a reading gap, never a page fact),
+    #: `ledgers_irregular` (the found rungs do not bracket the head in a
+    #: single, unambiguous way) or `head_edge_unreadable` (the head's own
+    #: ink span could not be measured).
+    LEDGER_PRINTED_POSITION = "ledger_printed_position"
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
@@ -1875,6 +1897,11 @@ CLAIMS: "dict[str, str]" = {
     #: the thickness assumed) or the raster, never what the ink IS.
     "LEDGER_RUNG_INK": CLAIM.MEASUREMENT,
     "LEDGER_OWNER_DENSITY": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.44: a ruler reading of the printed ledger strokes beside a
+    #: far head, same footing as `NOTEHEAD_STAFF_POSITION` below -- what
+    #: would make it wrong is the ruler (the scan window, the bracket it
+    #: measured the head into), never what the note IS.
+    "LEDGER_PRINTED_POSITION": CLAIM.MEASUREMENT,
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
@@ -2329,6 +2356,21 @@ class ABSTAIN(_Vocab):
     #: search never RUNS on a box this size; it abstains and the detector
     #: centre stands, exactly as before ROADMAP 2.39b existed.
     BOX_ALREADY_HEAD_SIZED = "box_already_head_sized"
+    #: ROADMAP 2.44. The printed-ledger position scan reached past a far
+    #: head and found no ledger-shaped ink at ANY step -- CLAUDE.md §10
+    #: (Sean, 2026-09-29): "there is no such thing as a far note with no
+    #: ledger line", so this is always a reading gap (a missed rung, a
+    #: misread head, or a note that is not really this far), never a page
+    #: fact to write a position from.
+    NO_LEDGER_FOUND = "no_ledger_found"
+    #: The printed-ledger scan found rungs, but they do not bracket the
+    #: head's own ink centre in one unambiguous ON/BETWEEN/BEYOND reading
+    #: (e.g. two candidate rungs both claim the head's middle third).
+    LEDGERS_IRREGULAR = "ledgers_irregular"
+    #: The head's own ink span (the same measurement `_true_ink_span`/
+    #: `geometry.standard_head_box` already make) could not be read, so
+    #: there is no "middle third" to test a found rung against.
+    HEAD_EDGE_UNREADABLE = "head_edge_unreadable"
     NOT_IN_LEXICON = "not_in_lexicon"
     #: An OCR rung ran over a crop and returned NO CHARACTERS AT ALL. ⚠️ A
     #: DIFFERENT FACT FROM `NOT_IN_LEXICON`, and the direction reader is why:

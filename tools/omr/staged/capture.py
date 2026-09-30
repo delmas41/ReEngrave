@@ -258,6 +258,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "measured line grid, carrying `residual` and `rounded`. Consumed by "
         "`consequences.restate_pitch` together with the clef.",
         "note"),
+    "LEDGER_PRINTED_POSITION": (
+        STAFF_GRID_POSITION,
+        "ROADMAP 2.44: the SAME grid and units as `NOTEHEAD_STAFF_POSITION` "
+        "for a head OUTSIDE the staff, read from the ACTUAL printed ledger "
+        "strokes beside it (Sean, 2026-09-30: measured ledgers are NOT "
+        "evenly spaced, so carrying the staff's own spacing past its lines "
+        "writes the wrong step) rather than the grid's own spacing carried "
+        "past the outer line. Consumed by `consequences.restate_pitch` as "
+        "a SUBSTITUTE for the extrapolated reading, never a second vote.",
+        "note"),
     "CLEF_POSITION": (
         STAFF_GRID_POSITION,
         "the same measurement from the same grid for a clef glyph, and a "
