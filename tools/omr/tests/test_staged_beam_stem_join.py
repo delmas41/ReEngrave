@@ -98,22 +98,57 @@ class TestTheMeasurement(unittest.TestCase):
         self.assertFalse(m["found"])
         self.assertEqual(m["max_blank_run_px"], 5)
 
-    def test_a_slur_arc_touching_the_stem_MID_LENGTH_is_NOT_joined(self):
-        """⚠️ THE GUARD THAT IS NOT A GAP SCAN AT ALL. A candidate whose own
+    def test_a_slur_arc_touching_the_stem_MID_LENGTH_is_DECLINED(self):
+        """⚠️⚠️ THE FIX (manager review of 024bdc7c). A candidate whose own
         y-range sits well inside the stem's own body -- neither reaching the
-        tip nor standing cleanly past it -- is not evidence about THIS tip,
-        whatever ink happens to be drawn between the two: a stem is one
-        continuous mark along its own length, and walking that span would
-        always read as "joined" for the wrong reason."""
+        tip nor standing cleanly past it -- used to read `found=False`
+        ("not joined"), and `_beam_levels` DROPS a `found=False` stroke
+        entirely (neither certain nor possible). That is wrong: position
+        alone cannot tell a slur crossing the stem apart from a SECONDARY
+        beam attaching just inside the primary, or a `Q.STEM` box that
+        overshoots its own beam (see the three tests below) -- all three
+        put a stroke in exactly this spot. Rule 8: cannot tell is never an
+        answer, so this DECLINES (`None`), not "not joined"."""
         img = _paper()
         # the WHOLE region between the tip (100) and the "stroke" (145..150,
         # deep inside the stem's own 100..200 extent) is solid ink -- the
-        # stem's own body -- and the test must still refuse it.
+        # stem's own body -- and the test must still decline, not read it.
         _draw(img, 190.0, 100.0, 194.0, 200.0)
         m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
                                       145.0, 150.0, gap_tolerance_px=4.0)
-        self.assertFalse(m["found"])
-        self.assertEqual(m["reason"], "not_beyond_tip")
+        self.assertIsNone(m)
+
+    def test_a_SECONDARY_beam_one_beam_gap_inside_the_primary_is_DECLINED(self):
+        """Manager review of 024bdc7c, case (1). A 16th note: the PRIMARY
+        beam sits at the stem's own tip (not this test's concern), and the
+        SECONDARY sits further into the stem's body, one small gap inside
+        it -- exactly the shape a real Brahms 234 `certain=1, possible=2`
+        note has. The secondary's own y-range does not reach the tip and
+        does not stand past it (it is BEYOND the tip in the wrong
+        direction, further into the body) -- DECLINED, not "not joined",
+        so `_beam_levels` leaves it POSSIBLE rather than dropping it."""
+        img = _paper()
+        _draw(img, 190.0, 100.0, 194.0, 130.0)   # continuous stem ink
+        # tip (top) at y=100; secondary stroke at y=[112, 116], one gap
+        # inside the body -- neither reaches 100 nor stands past it.
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 100.0, "top",
+                                      112.0, 116.0, gap_tolerance_px=4.0)
+        self.assertIsNone(m)
+
+    def test_a_stem_box_that_OVERSHOOTS_its_own_beam_is_DECLINED(self):
+        """Manager review of 024bdc7c, case (2). The CV `Q.STEM` box ran on
+        through the beam (a common shape on a thick print) and reports a
+        tip PAST where the beam actually is -- so the real, PRIMARY beam
+        now sits in the same "inside the reported tip" position case (1)
+        does. Declined for the identical reason: the ink alone cannot
+        tell an overshot stem from a secondary beam from a slur."""
+        img = _paper()
+        _draw(img, 190.0, 80.0, 194.0, 120.0)    # the (overshot) stem's ink
+        # reported tip (top) at y=80 -- past the real beam, which sits at
+        # y=[100, 104], well inside the reported stem's own extent.
+        m = gather.beam_stem_join_ink(img, 190.0, 194.0, 80.0, "top",
+                                      100.0, 104.0, gap_tolerance_px=4.0)
+        self.assertIsNone(m)
 
     def test_the_BOTTOM_tip_is_symmetric(self):
         img = _paper()
@@ -174,6 +209,10 @@ def _joined_cell():
 class TestGatherIntegration(unittest.TestCase):
 
     def test_files_one_row_per_stem_stroke_end_triple(self):
+        """The TOP end (the stroke's own side) reads as an Observation; the
+        BOTTOM end -- where this stroke is nowhere near either the tip or
+        cleanly past it, ROADMAP 2.38's post-review fix -- ABSTAINS rather
+        than filing a false `found=False` row."""
         log = Log()
         stem = (_Det(190.0, 100.0, 4.0, 100.0), "obs:stem-1")
         beam = (_Det(190.0, 90.0, 4.0, 6.0), "obs:beam-1")   # y 90..96
@@ -181,13 +220,17 @@ class TestGatherIntegration(unittest.TestCase):
                                        [stem], [beam], SP)
         log.freeze()
         rows = log.rows(Q.BEAM_STEM_JOIN, SUB)
-        self.assertEqual(len(rows), 2)          # top and bottom
-        by_end = {r.detail["end"]: r for r in rows}
-        self.assertTrue(by_end["top"].value)
-        for r in rows:
-            self.assertEqual(r.reader, READERS.CV_BEAM_JOIN)
-            self.assertEqual(r.detail["stem_row_id"], "obs:stem-1")
-            self.assertEqual(r.detail["beam_row_id"], "obs:beam-1")
+        self.assertEqual(len(rows), 1)
+        top = rows[0]
+        self.assertEqual(top.detail["end"], "top")
+        self.assertTrue(top.value)
+        self.assertEqual(top.reader, READERS.CV_BEAM_JOIN)
+        self.assertEqual(top.detail["stem_row_id"], "obs:stem-1")
+        self.assertEqual(top.detail["beam_row_id"], "obs:beam-1")
+        bottom = [a for a in log.refusals(Q.BEAM_STEM_JOIN, SUB)
+                  if a.detail["end"] == "bottom"]
+        self.assertEqual(len(bottom), 1)
+        self.assertEqual(bottom[0].reason, ABSTAIN.AMBIGUOUS)
 
     def test_no_image_no_staff_abstains_no_mask(self):
         log = Log()
@@ -224,6 +267,24 @@ class TestGatherIntegration(unittest.TestCase):
         self.assertEqual(len(abst), 2)
         self.assertTrue(
             all(a.reason == ABSTAIN.NO_STAFF_GEOMETRY for a in abst))
+
+    def test_a_mid_length_crossing_abstains_AMBIGUOUS_not_a_false_observation(self):
+        """⚠️⚠️ THE FIX, AT THE GATHER-INTEGRATION LEVEL (manager review of
+        024bdc7c). A stroke sitting well inside the stem's own reported
+        extent -- neither end's tip -- must ABSTAIN with a NAMED reason
+        (`AMBIGUOUS`), never file a `found=False` Observation: a False
+        observation is what `_beam_levels` reads as "drop this candidate
+        entirely", which is the bug this fix closes."""
+        log = Log()
+        stem = (_Det(190.0, 100.0, 4.0, 100.0), "obs:stem-1")  # y 100..200
+        beam = (_Det(190.0, 150.0, 4.0, 6.0), "obs:beam-1")    # y 150..156
+        gather._observe_beam_stem_join(log, SUB, "cell:0", _joined_cell(),
+                                       [stem], [beam], SP)
+        log.freeze()
+        self.assertEqual(len(log.rows(Q.BEAM_STEM_JOIN, SUB)), 0)
+        abst = log.refusals(Q.BEAM_STEM_JOIN, SUB)
+        self.assertEqual(len(abst), 2)              # top and bottom
+        self.assertTrue(all(a.reason == ABSTAIN.AMBIGUOUS for a in abst))
 
     def test_falls_back_to_the_default_thickness_fraction(self):
         """No `staff_line_thickness_canonical` on the cell -- the tolerance
@@ -428,6 +489,34 @@ class TestBeamStemJoinWiresIntoDuration(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 0.5)
         self.assertEqual(v.detail["levels_certain"], 1)
+
+    def test_a_REAL_SECONDARY_beam_stays_POSSIBLE_not_DROPPED(self):
+        """⚠️⚠️ THE BUG, END TO END (manager review of 024bdc7c). A 16th
+        note: the PRIMARY beam is CERTAIN (its box covers the centre), the
+        SECONDARY sits one gap further into the stem's body -- padded-only
+        by the column test, exactly `certain=1, possible=2`, the shape a
+        real Brahms 234 note has. No `Q.BEAM_STEM_JOIN` row exists for the
+        secondary (GATHER would ABSTAIN `AMBIGUOUS` here, per the gather-
+        level test above) -- so the fixed code must leave it POSSIBLE, not
+        drop it to `possible=1` the way the pre-fix `found=False` read did.
+        """
+        log = Log()
+        _beam(log, y=40, x0=100, x1=200)                 # covers centre=145
+        _beam(log, y=52, x0=160, x1=260)                 # padded-only
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _stem(log, x=135, y=40, h=60)                    # up-stem, tip=40
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beams_ambiguous")
+        self.assertEqual(v.detail["levels_certain"], 1)
+        self.assertEqual(v.detail["levels_possible"], 2)
+        levels = sorted(c.value["beam_levels"] for c in v.candidates)
+        self.assertEqual(levels, [1, 2])
 
 
 if __name__ == "__main__":

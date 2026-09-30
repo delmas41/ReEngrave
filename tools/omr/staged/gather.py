@@ -2439,6 +2439,35 @@ BEAM_STEM_JOIN_GAP_TOLERANCE_THICKNESS_MULT = 1.0
 BEAM_STEM_JOIN_DEFAULT_THICKNESS_SPACES = 0.09
 
 
+def _beam_stem_beyond_tip(tip_y: float, end: str, stroke_y0: float,
+                          stroke_y1: float) -> bool:
+    """Is this candidate stroke resolvable relative to the tip -- either
+    ending IN it, or standing CLEANLY past it -- rather than crossing the
+    stem's own body somewhere in between? ROADMAP 2.38, post-review fix.
+
+    ⚠️⚠️ THE THIRD CASE IS NOT "NOT JOINED", IT IS "CANNOT TELL" (manager
+    review of 024bdc7c). A stroke whose near edge sits neither at-or-past
+    the tip nor inside the stroke's own range is exactly the shape of THREE
+    different real things, and ink position alone cannot separate them:
+    (1) a SECONDARY beam (16th/32nd) attaching along the stem's body just
+    inside the PRIMARY -- on a real `certain=1, possible=2` note this is
+    usually the second level, not an intruder; (2) a `Q.STEM` box that
+    overshoots its own beam (the CV stem read past the ink it should have
+    stopped at), which puts the PRIMARY itself in this same position; (3) a
+    slur/arc crossing the stem, which is the only one of the three this
+    function's own name originally meant. The ink test cannot tell (1)/(2)
+    from (3) -- reading it as "not joined" DROPPED a real secondary beam's
+    only candidate stroke, which is the bug this fix closes. Shared by
+    `beam_stem_join_ink`'s own gate and `_observe_beam_stem_join`'s abstain
+    reason, so the two cannot drift apart.
+    """
+    if stroke_y0 <= tip_y <= stroke_y1:
+        return True                  # ends IN it -- unambiguous
+    if end == "top":
+        return stroke_y1 <= tip_y
+    return stroke_y0 >= tip_y
+
+
 def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
                        tip_y: float, end: str, stroke_y0: float,
                        stroke_y1: float, gap_tolerance_px: float
@@ -2455,23 +2484,21 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
     it) or `"bottom"` (the reverse) -- GATHER does not know which end is the
     true tip, so the caller asks both and files one row each.
 
-    Three outcomes, not two:
+    Two outcomes, not three (post-review fix, `_beam_stem_beyond_tip`'s own
+    docstring has the argument):
 
     * the tip already sits INSIDE the stroke's own y-range -- the stem
       ends IN the beam, joined with no gap to walk;
     * the stroke stands cleanly past the tip (the whole stroke is on the
       tip's own far side) -- walk the stem's own x-range from the tip to
       the stroke's near edge and look for the LONGEST unbroken blank run;
-      joined iff it never exceeds `gap_tolerance_px`;
-    * neither -- the stroke neither reaches the tip nor stands cleanly
-      past it (a slur/arc crossing the stem's own body mid-length, or a
-      stroke on the WRONG side) -- read as NOT joined outright. This is a
-      real answer, not a decline: nothing about a mid-length crossing
-      speaks to whether THIS tip has a beam.
+      joined iff it never exceeds `gap_tolerance_px`.
 
-    Returns `None` -- declined, never defaulted -- where the raster or the
-    stem's own x-range is missing, or the scanned window falls entirely
-    off the raster.
+    Returns `None` -- DECLINED, never defaulted -- where the raster or the
+    stem's own x-range is missing, the scanned window falls entirely off
+    the raster, OR the stroke neither reaches the tip nor stands cleanly
+    past it (rule 8: cannot tell is never an answer, so the note stays
+    NARROWED rather than losing this candidate outright).
     """
     if img is None or getattr(img, "ndim", 0) != 2:
         return None
@@ -2481,6 +2508,8 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
     H, W = ink.shape
     ix0, ix1 = max(0, int(round(stem_x0))), min(W, int(round(stem_x1)))
     if ix1 <= ix0:
+        return None
+    if not _beam_stem_beyond_tip(tip_y, end, stroke_y0, stroke_y1):
         return None
 
     # ⚠️ `gap_tolerance_px` IS ECHOED INTO EVERY RETURN, NEVER PASSED AS ITS
@@ -2496,20 +2525,7 @@ def beam_stem_join_ink(img: Any, stem_x0: float, stem_x1: float,
                 "window_canonical": [round(stem_x0, 2), round(tip_y, 2),
                                      round(stem_x1, 2), round(tip_y, 2)]}
 
-    if end == "top":
-        beyond = stroke_y1 <= tip_y
-        near_edge = stroke_y1
-    else:
-        beyond = stroke_y0 >= tip_y
-        near_edge = stroke_y0
-    if not beyond:
-        # Neither reaches the tip nor stands cleanly past it -- a
-        # mid-length crossing, not a candidate for THIS end at all. A real
-        # answer (rule 6: never guess), not a decline.
-        return {"found": False, "gap_px": None, "max_blank_run_px": None,
-                "gap_tolerance_px": round(float(gap_tolerance_px), 2),
-                "window_canonical": None, "reason": "not_beyond_tip"}
-
+    near_edge = stroke_y1 if end == "top" else stroke_y0
     y0, y1 = sorted((tip_y, near_edge))
     iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
     if iy1 <= iy0:
@@ -2589,11 +2605,27 @@ def _observe_beam_stem_join(log: Log, sub: Subject, frame: str, cell: Any,
                 m = beam_stem_join_ink(img, sx0, sx1, tip_y, end,
                                       by0, by1, tol)
                 if m is None:
+                    if _beam_stem_beyond_tip(tip_y, end, by0, by1):
+                        reason = ABSTAIN.NO_STAFF_GEOMETRY
+                        note = "window off the raster"
+                    else:
+                        # ⚠️ THE FIX (manager review of 024bdc7c): this
+                        # candidate neither reaches the tip nor stands
+                        # cleanly past it -- a secondary beam, an overshot
+                        # stem box, or a slur can each put a stroke here,
+                        # and position alone cannot tell them apart. Named,
+                        # not silently folded into the raster-missing
+                        # reason above.
+                        reason = ABSTAIN.AMBIGUOUS
+                        note = ("stroke neither reaches the tip nor stands "
+                                "cleanly past it -- a mid-length crossing "
+                                "(secondary beam, overshot stem box, or a "
+                                "slur) cannot be told apart by position")
                     log.abstain(sub, Q.BEAM_STEM_JOIN,
                                 reader=READERS.CV_BEAM_JOIN, frame=frame,
-                                reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                                reason=reason,
                                 stem_row_id=stem_id, beam_row_id=beam_id,
-                                end=end, note="window off the raster")
+                                end=end, note=note)
                     continue
                 found = m.pop("found")
                 log.observe(sub, Q.BEAM_STEM_JOIN, found,

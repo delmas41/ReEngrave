@@ -187,11 +187,15 @@ past the candidate stroke's own near edge:
 - the stroke stands cleanly past the tip -- walk the stem's x-range for the
   LONGEST unbroken blank run between the two; joined iff it never exceeds
   the tolerance;
-- neither (a slur/arc crossing the stem's own body mid-length, or a stroke
-  on the wrong side) -- read as NOT joined outright. This is a real answer,
-  not a decline: nothing about a mid-length crossing speaks to whether
-  THIS tip has a beam, and reading the stem's own continuous body-ink as if
-  it answered the question would be exactly the guess rule 6 forbids.
+- neither (a slur/arc crossing the stem's own body mid-length, an
+  overshot stem box, or a secondary beam sitting just inside a primary) --
+  ⚠️ **CORRECTED IN PLACE, manager review of the first commit (024bdc7c) --
+  see "Manager review, 024bdc7c" below.** This was first built as a real
+  answer ("NOT joined outright"), which was WRONG: `_beam_levels` drops a
+  `found=False` stroke entirely, and this position is exactly the shape a
+  real secondary beam or an overshot stem box takes, not only a slur. It
+  DECLINES (`None`), never a "not joined" answer -- rule 8, cannot tell is
+  never an answer.
 
 ABSTAINS -- never defaults -- where the raster or the cell's staff-space
 unit is missing, or the stem carries no usable x-range.
@@ -233,6 +237,68 @@ discipline `_stem_tip_flag_ink` (2.18c) already states for itself.
 
 `Q.BEAM_STEM_JOIN` joins `Q.DURATION`'s `wants`/`composed_from`: the
 OUTCOME, not only the value, now depends on it.
+
+### Manager review, 024bdc7c: the third case was a false NOT JOINED
+
+The first landing (`024bdc7c`) gave `beam_stem_join_ink` THREE outcomes:
+ends-in-the-beam (joined), cleanly-past-the-tip (measured), and "neither"
+-- a stroke that neither reaches the tip nor stands cleanly past it --
+which read as `found=False`, i.e. NOT JOINED, and `_beam_levels` DROPS a
+`found=False` stroke entirely (neither certain nor possible). **That third
+case is wrong for real music**, caught in review before this landed
+further: a stroke sitting inside the stem's own reported extent, neither
+at the tip nor past it, is the exact shape THREE different things take,
+and position alone cannot separate them --
+
+1. a SECONDARY beam (16th/32nd) attaching along the stem's body just
+   inside the PRIMARY -- on a real `certain=1, possible=2` note (Brahms
+   234 was the example given) the possible stroke is usually exactly this
+   second level, and the old rule would have dropped its only candidate;
+2. a `Q.STEM` box that OVERSHOOTS its own beam (the CV stem read past the
+   ink it should have stopped at) puts the PRIMARY itself in this same
+   position;
+3. a slur/arc crossing the stem is the only one of the three this case
+   was originally meant to name, and the ink cannot tell it apart from
+   (1)/(2) with this test.
+
+**Fix**: the "neither" case now returns `None` -- DECLINED, rule 8, cannot
+tell is never an answer -- so the note stays NARROWED rather than losing
+the candidate. `_beam_stem_beyond_tip` is the shared gate (used by both
+`beam_stem_join_ink`'s own check and `_observe_beam_stem_join`'s abstain
+reason, so the two cannot drift apart); `_observe_beam_stem_join` now
+abstains this case under its OWN word, `ABSTAIN.AMBIGUOUS`, rather than
+folding it into `NO_STAFF_GEOMETRY`'s "the raster is missing" sense.
+
+**What NOT JOINED (`found=False`) rests on, after the fix**: exactly one
+case -- the stroke stands CLEANLY past the tip (the whole stroke is on the
+tip's own far side, position unambiguous) AND the longest unbroken blank
+run between the tip and the stroke's near edge exceeds the measured
+tolerance. Every other outcome is either JOINED (ends in the beam, or a
+clean gap within tolerance) or DECLINED (raster/geometry missing, or the
+position is ambiguous per the three cases above).
+
+**The optional stacked-level rule (a crossing stroke within one beam-gap
+of an already-JOINED/CERTAIN stroke on this stem, ink continuous between
+them, promoted to JOINED as a stacked level) was NOT built** -- named as
+optional in review, and building it correctly requires deriving the
+expected beam-to-beam spacing from this cell's own MEASURED strokes (not
+a constant), which is its own small design problem and its own tests; the
+required fix above (declining rather than guessing) is sufficient to stop
+the drop, and leaves the secondary NARROWED rather than silently right.
+Left as a named follow-on, not built here.
+
+4 new tests added for this fix (RED confirmed against the pre-fix
+`024bdc7c` gather.py: 5 of 5 tests touching the changed behaviour fail --
+3 pure-function shapes matching cases (1)/(2)/(3) above, one GATHER-
+integration test confirming `ABSTAIN.AMBIGUOUS` rather than a false
+Observation, and one existing test whose fixture happened to exercise a
+now-ambiguous BOTTOM end and needed its own assertion corrected, not just
+loosened); one further end-to-end test of the realistic `certain=1,
+possible=2` shape was added for documentation and does not by itself
+regress against the bug (it does not gather, so it exercises the ALREADY-
+correct "declined stays possible" ADJUDICATE-side path either way) --
+named honestly rather than claimed as a second RED proof. All 28 pass on
+the fixed tree.
 
 ### Independence, argued (CLAUDE.md §4b)
 
@@ -287,17 +353,29 @@ baseline_stays_NARROWED`) that assert the PRE-EXISTING behaviour this lane
 builds on top of, not the new code -- they are supposed to pass on both
 trees. Restoring the edited files returns all 24 to GREEN.
 
-`pytest -m "not slow" tools/omr/tests`: **3,959 passed / 3 skipped** on
-this branch, clean (0 failed, a full run confirmed after an EARLIER run
-raced against this lane's own RED/GREEN file-swapping and reported 4
-spurious failures -- diagnosed as transient, not a code fault, and
-re-confirmed clean on a settled tree). This lane's source edits touch no
-test file, so the whole delta from `origin/main` is its own 24 new tests:
-**3,935 passed / 3 skipped is `origin/main`'s own count**, by subtraction
-(3,959 − 24), not a separately re-run number -- the sibling files this
-lane's change reaches directly (`test_staged_duration.py` +
-`test_staged_stem_tip_ink.py`, 114 tests) were re-run explicitly and are
-unchanged. `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged
+**Post-review update (second commit, the fix above): 28 tests** in this
+file (4 net new -- 3 pure-function shapes + 1 GATHER-integration test for
+the fix, described in "Manager review, 024bdc7c" above). `pytest -m "not
+slow" tools/omr/tests`: **3,963 passed / 3 skipped**, clean (0 failed),
+= `origin/main`'s own 3,935 + this file's 28, by the same subtraction
+logic as the first commit (this lane's edits still touch no OTHER test
+file). `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged from
+base** -- confirmed again after the fix (reusing the already-vocabuled
+`ABSTAIN.AMBIGUOUS` rather than adding a new reason word kept `wiring`
+untouched).
+
+Original first-commit numbers, for the record: `pytest -m "not slow"
+tools/omr/tests`: **3,959 passed / 3 skipped** on this branch, clean (0
+failed, a full run confirmed after an EARLIER run raced against this
+lane's own RED/GREEN file-swapping and reported 4 spurious failures --
+diagnosed as transient, not a code fault, and re-confirmed clean on a
+settled tree). This lane's source edits touch no test file, so the whole
+delta from `origin/main` is its own 24 new tests: **3,935 passed / 3
+skipped is `origin/main`'s own count**, by subtraction (3,959 − 24), not a
+separately re-run number -- the sibling files this lane's change reaches
+directly (`test_staged_duration.py` + `test_staged_stem_tip_ink.py`, 114
+tests) were re-run explicitly and are unchanged. `python3 -m tools.omr.
+staged.check`: **TOTAL 245, unchanged
 from base** (`staged.wiring` 67 and
 `staged.capture` 18, both unchanged) -- the new quantity's own diagnostic
 detail fields (`gap_px`, `max_blank_run_px`, `window_canonical`) are folded
