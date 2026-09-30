@@ -580,3 +580,19 @@ reader is not reported as an unresolved raster question.
   whether the bucket actually moves?
 - Is `beam_discounted_uncertain` (§7) worth the same connection as a
   follow-on lane, now that the witness exists?
+
+### §4 manager print check (2026-09-29) — what the crops showed at each fix
+
+Fresh `--through adjudicate` gathers of the two count pages, crops cut at
+600 dpi from the PDF (`out/print/beam-stem-ink-2.38/crops.py`, stem =
+corner bracket, candidate stroke = blue box, only rows a duration verdict
+USED). `024bdc7c`: a stroke crossing the stem's body read NOT JOINED —
+drops a real secondary beam → now declines. `3c748f45`: 3 of 4 JOINED were
+another group's beam several spaces to the side (the walk found the stem's
+OWN beam at that height) → the stroke must cover the stem's x. `3a5bbb67`:
+2 of 4 JOINED were a slur/hairpin just beyond the stem's own beam (the walk
+passed THROUGH the own beam) → a stem joins the FIRST stroke it meets.
+`1ad1c1ca`: Brahms p1 8/8 JOINED + 8/8 NOT JOINED correct (seed 11);
+Litolff p3 8/8 + 8/8 correct. Used counts, Brahms p1: joined→decided 209,
+not joined→decided 566; Litolff p3: 42 / 11. Not yet Sean-confirmed.
+

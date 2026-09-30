@@ -81,11 +81,11 @@ for v in r['verdicts']:
         if o and o['quantity'] == 'beam_stem_join':
             used[(o['value'], v['outcome'])] += 1; rows.append((o, v))
 print(tag, 'beam_stem_join rows used by a duration verdict:', dict(used))
-random.seed(7)
+random.seed(11)
 tiles = []
 for val in (True, False):
     sel = [x for x in rows if x[0]['value'] is val]
-    for o, v in random.sample(sel, min(8 if val is False else 4, len(sel))):
+    for o, v in random.sample(sel, min(8, len(sel))):
         ck = o['subject'].split('/', 1)[1]
         aff = cell_affine(ck)
         if not aff: continue
