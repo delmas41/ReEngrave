@@ -2322,6 +2322,13 @@ class ABSTAIN(_Vocab):
     # readers that will not guess
     BELOW_THRESHOLD = "below_threshold"
     AMBIGUOUS = "ambiguous"
+    #: ROADMAP 2.39b (manager review of `fa700001`): a detector box already
+    #: close to the standard head's own width AND height is a box whose
+    #: CENTRE is trustworthy -- only a box too small to be a head (a
+    #: sliver) has a centre the search should distrust. The re-centre
+    #: search never RUNS on a box this size; it abstains and the detector
+    #: centre stands, exactly as before ROADMAP 2.39b existed.
+    BOX_ALREADY_HEAD_SIZED = "box_already_head_sized"
     NOT_IN_LEXICON = "not_in_lexicon"
     #: An OCR rung ran over a crop and returned NO CHARACTERS AT ALL. ⚠️ A
     #: DIFFERENT FACT FROM `NOT_IN_LEXICON`, and the direction reader is why:

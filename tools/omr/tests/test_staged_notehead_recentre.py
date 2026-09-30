@@ -171,10 +171,10 @@ class TestGatherNoteheadRecentreWiring(unittest.TestCase):
     """`gather.gather_notehead_recentre` -- the reader wired into a Log."""
 
     def _run(self, img, name="noteheadBlackInSpace", cx=150.0, cy=150.0,
-            staff_lines=(100.0, 140.0, 180.0, 220.0, 260.0)):
+            staff_lines=(100.0, 140.0, 180.0, 220.0, 260.0), w=None, h=None):
         cell = _cell(img, staff_lines=staff_lines)
         sub = R.cell(0, 0, 0, 0)
-        d = _detection(name, cx, cy)
+        d = _detection(name, cx, cy, w=w, h=h)
         log = Log()
         gather.gather_notehead_recentre(log, [cell], {0: (0, 0)},
                                         {sub.to_key(): [d]})
@@ -182,10 +182,16 @@ class TestGatherNoteheadRecentreWiring(unittest.TestCase):
         return log, g
 
     def test_a_well_centred_regular_head_is_observed(self):
+        """A detector box that is itself a SLIVER (height 0.3x standard,
+        under `RECENTRE_BOX_SIZE_GATE`) sitting on a properly-sized, well-
+        centred real head: the search must run (the gate does not block
+        it) and find a near-zero shift."""
         img = _paper()
         _fill_ellipse(img, 150.0, 150.0, gather.STANDARD_HEAD_WIDTH_SPACES * 20,
                      gather.STANDARD_HEAD_HEIGHT_SPACES * 20)
-        log, g = self._run(img, staff_lines=(50.0, 70.0, 90.0, 110.0, 130.0))
+        sliver_h = 0.3 * gather.STANDARD_HEAD_HEIGHT_SPACES * 20
+        log, g = self._run(img, staff_lines=(50.0, 70.0, 90.0, 110.0, 130.0),
+                           h=sliver_h)
         self.assertEqual(log.state(Q.NOTEHEAD_RECENTRE, g), State.READ)
         row = log.rows(Q.NOTEHEAD_RECENTRE, g)[0]
         self.assertEqual(row.reader, READERS.CV_NOTEHEAD_RECENTRE)
@@ -208,13 +214,16 @@ class TestGatherNoteheadRecentreWiring(unittest.TestCase):
         self.assertEqual(reason, ABSTAIN.NO_STAFF_GEOMETRY)
 
     def test_no_mask_abstains(self):
+        """A sliver-shaped box (clears the size gate) on a cell with no
+        raster at all: NO_MASK, not the size gate."""
         cell = MeasureCell(
             page_index=0, system_index=0, staff_index=0, measure_index=0,
             image=None, image_no_staff=None, bbox_page_px=(0, 0, 300, 300),
             staff_line_ys_canonical=[100.0, 140.0, 180.0, 220.0, 260.0],
             upscale_factor=1.0)
         sub = R.cell(0, 0, 0, 0)
-        d = _detection("noteheadBlackInSpace", 150.0, 150.0)
+        sliver_h = 0.3 * gather.STANDARD_HEAD_HEIGHT_SPACES * 20.0
+        d = _detection("noteheadBlackInSpace", 150.0, 150.0, h=sliver_h)
         log = Log()
         gather.gather_notehead_recentre(log, [cell], {0: (0, 0)},
                                         {sub.to_key(): [d]})
@@ -222,6 +231,82 @@ class TestGatherNoteheadRecentreWiring(unittest.TestCase):
         self.assertEqual(log.state(Q.NOTEHEAD_RECENTRE, g), State.DECLINED)
         self.assertEqual(log.refusals(Q.NOTEHEAD_RECENTRE, g)[0].reason,
                         ABSTAIN.NO_MASK)
+
+
+class TestRecentreBoxSizeGate(unittest.TestCase):
+    """ROADMAP 2.39b (manager review of `fa700001`): `litolff-glyph-owner-
+    far-no-rungs.png` showed the search move a box that was ALREADY ON
+    THE HEAD down into stem/beam junction ink below it -- a Litolff box
+    1.84x the standard width and 0.79x the standard height, not a
+    sliver. The rule: a box already close to the standard head's own
+    size (width AND height both >= `RECENTRE_BOX_SIZE_GATE`) never runs
+    the search at all -- its centre is trusted unconditionally.
+
+    ⚠️ RUN RED FIRST: `RECENTRE_BOX_SIZE_GATE`/`ABSTAIN.BOX_ALREADY_HEAD_
+    SIZED` did not exist before this round -- `test_a_head_sized_box_
+    never_runs_the_search` fails (`State.READ`, a real shift) against the
+    pre-gate tree, on a box a beam/stem junction would produce exactly
+    this shape of false invitation to re-centre.
+    """
+
+    def _run(self, w, h, *, paint_offset=True):
+        img = _paper()
+        # Real ink at the detector's OWN centre (150, 150) -- if the gate
+        # is bypassed and the search runs anyway, painting ink elsewhere
+        # would make a moved result look like a coincidence rather than a
+        # gate failure; painting it AT the centre means a moved result
+        # can ONLY come from the search running on a box it should not
+        # have searched from.
+        _fill_ellipse(img, 150.0, 150.0, gather.STANDARD_HEAD_WIDTH_SPACES * 20,
+                     gather.STANDARD_HEAD_HEIGHT_SPACES * 20)
+        cell = _cell(img, staff_lines=(50.0, 70.0, 90.0, 110.0, 130.0))
+        sub = R.cell(0, 0, 0, 0)
+        d = _detection("noteheadBlackInSpace", 150.0, 150.0, w=w, h=h)
+        log = Log()
+        gather.gather_notehead_recentre(log, [cell], {0: (0, 0)},
+                                        {sub.to_key(): [d]})
+        return log, R.glyph(0, 0, 0, 0, 0)
+
+    def test_a_head_sized_box_never_runs_the_search(self):
+        """⚠️ THE CONTROL: a box at the standard size (ratio 1.0 on both
+        axes -- the shape `litolff-glyph-owner-far-no-rungs.png`'s box
+        actually was, once its real width is measured against ITS OWN
+        wide-merged shape rather than assumed tall-and-thin) must not
+        move at all."""
+        w = gather.STANDARD_HEAD_WIDTH_SPACES * 20.0
+        h = gather.STANDARD_HEAD_HEIGHT_SPACES * 20.0
+        log, g = self._run(w, h)
+        self.assertEqual(log.state(Q.NOTEHEAD_RECENTRE, g), State.DECLINED)
+        row = log.refusals(Q.NOTEHEAD_RECENTRE, g)[0]
+        self.assertEqual(row.reason, ABSTAIN.BOX_ALREADY_HEAD_SIZED)
+        self.assertIn("width_ratio=1.0", row.detail["note"])
+        self.assertIn("height_ratio=1.0", row.detail["note"])
+
+    def test_a_box_just_over_the_gate_in_both_dims_does_not_search(self):
+        """A box at exactly `RECENTRE_BOX_SIZE_GATE` on both axes is
+        '>=' the gate -- still trusted, still no search."""
+        w = gather.RECENTRE_BOX_SIZE_GATE * gather.STANDARD_HEAD_WIDTH_SPACES * 20.0
+        h = gather.RECENTRE_BOX_SIZE_GATE * gather.STANDARD_HEAD_HEIGHT_SPACES * 20.0
+        log, g = self._run(w, h)
+        self.assertEqual(log.refusals(Q.NOTEHEAD_RECENTRE, g)[0].reason,
+                        ABSTAIN.BOX_ALREADY_HEAD_SIZED)
+
+    def test_a_sliver_box_still_searches(self):
+        """⚠️ THE OTHER CONTROL: a box clearly under the gate in height
+        (a Litolff/Brahms sliver shape) must still run the search and
+        find the real head."""
+        w = gather.STANDARD_HEAD_WIDTH_SPACES * 20.0
+        h = 0.3 * gather.STANDARD_HEAD_HEIGHT_SPACES * 20.0
+        log, g = self._run(w, h)
+        self.assertEqual(log.state(Q.NOTEHEAD_RECENTRE, g), State.READ)
+
+    def test_a_box_under_the_gate_in_EITHER_dimension_searches(self):
+        """Narrow but tall (small width, tall height) also searches --
+        the gate is OR, not AND, on which dimension is small."""
+        w = 0.3 * gather.STANDARD_HEAD_WIDTH_SPACES * 20.0
+        h = gather.STANDARD_HEAD_HEIGHT_SPACES * 20.0
+        log, g = self._run(w, h)
+        self.assertEqual(log.state(Q.NOTEHEAD_RECENTRE, g), State.READ)
 
 
 class TestReconnectedFillTest(unittest.TestCase):

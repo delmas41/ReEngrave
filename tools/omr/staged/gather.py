@@ -4039,6 +4039,31 @@ def recentre_notehead(img: Any, cx: float, cy: float, spacing: float
     }
 
 
+#: ROADMAP 2.39b (manager review of `fa700001`, commit `fa700001`'s own
+#: crops caught this): `litolff-glyph-owner-far-no-rungs.png` showed the
+#: search moving a box that was ALREADY ON THE HEAD down into stem/beam
+#: junction ink below it -- a Litolff box 1.84x the standard WIDTH and
+#: 0.79x the standard HEIGHT, not a sliver, and the "densest window near
+#: a head" on a MERGING plate is routinely the stem/beam junction, not
+#: the head itself. The rule the crops support: a box already close to
+#: the standard head's own size has a TRUSTWORTHY centre (CLAUDE.md's own
+#: convention -- distrust the box's SIZE, never its CENTRE, unless the
+#: box is too small to BE a head). Only a box clearly SMALLER than the
+#: standard extent, in width OR height, is a candidate for re-centring.
+#:
+#: 0.7 chosen from this round's own box-size distribution (`width_
+#: canonical / (STANDARD_HEAD_WIDTH_SPACES * spacing)`, `height_canonical
+#: / (STANDARD_HEAD_HEIGHT_SPACES * spacing)`, the smaller of the two,
+#: over every REGULAR notehead the un-gated search had accepted): the
+#: population's own median sits at ~1.0 (a box already head-sized) on
+#: both count pages, and only the bottom decile -- 7.5% of Litolff's 451,
+#: 11.2% of Brahms's 765 -- falls under 0.7. That decile is where the
+#: genuine slivers CLAUDE.md §10 names live (a confirmed Brahms sliver
+#: measured 0.24 sp tall against a 1.1 sp standard height, ratio 0.22);
+#: the flagged head above (ratio 0.79) sits well clear of it.
+RECENTRE_BOX_SIZE_GATE = 0.7
+
+
 def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                              local: Dict[int, Tuple[int, int]],
                              detections: Dict[str, List[Any]]) -> None:
@@ -4047,6 +4072,13 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
     other class this round did not measure gets NO ROW AT ALL, the same
     gate every other `geometry.standard_head_box` consumer uses; never a
     guessed re-centre for a shape this round never measured.
+
+    ⚠️ ROADMAP 2.39b (manager review, `RECENTRE_BOX_SIZE_GATE`'s own
+    comment): the search runs ONLY where the detector's OWN box is
+    clearly smaller than the standard extent (width OR height under the
+    gate) -- a box already close to head-sized keeps the detector centre
+    UNCONDITIONALLY, abstained `box_already_head_sized`, and the search
+    never even runs on it.
 
     Reads `cell.image_no_staff` — the SAME staff-erased raster `Q.INK`/
     `Q.LEDGER_RUNG_INK`/`Q.STEM_TIP_INK`/`Q.BEAM_STEM_JOIN` read — so it is
@@ -4074,6 +4106,23 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                            reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
                            reason=ABSTAIN.NO_STAFF_GEOMETRY,
                            note="cell carries no measured line grid")
+                continue
+            std_w = STANDARD_HEAD_WIDTH_SPACES * space_canonical
+            std_h = STANDARD_HEAD_HEIGHT_SPACES * space_canonical
+            w_ratio = float(d.width_canonical) / std_w if std_w else None
+            h_ratio = float(d.height_canonical) / std_h if std_h else None
+            if (w_ratio is not None and h_ratio is not None
+                    and w_ratio >= RECENTRE_BOX_SIZE_GATE
+                    and h_ratio >= RECENTRE_BOX_SIZE_GATE):
+                log.abstain(g, Q.NOTEHEAD_RECENTRE,
+                           reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
+                           reason=ABSTAIN.BOX_ALREADY_HEAD_SIZED,
+                           note=f"detector box is already close to the "
+                                f"standard head's own size "
+                                f"(width_ratio={w_ratio:.3f}, "
+                                f"height_ratio={h_ratio:.3f}); its centre "
+                                f"is trusted unconditionally, never "
+                                f"searched")
                 continue
             if img is None or getattr(img, "ndim", 0) != 2:
                 log.abstain(g, Q.NOTEHEAD_RECENTRE,
