@@ -2211,3 +2211,121 @@ decision for this item.
   fix (§20j).
 - `benchmarks/omr-owner-domain-2026-09/PLACEMENT-CONVENTIONS.md`: the
   Rests row, updated to point here.
+
+## 21. DIAGNOSIS — the +1.0-quarter bucket of Brahms's bar-sum hold-out (2026-09-30)
+
+PATH: STAGED, diagnosis only. No code under `tools/` changed. Worked from
+the whole-movement acceptance record `brahms1-breitkopf-mvt1-whole-
+20260930b.record.json` (`benchmarks/acceptance/current.json`) plus a SMALL
+re-gather of pages 0-1 (`tools.omr.acceptance_quick --doc
+brahms1-breitkopf`, `--weights auto`, ~4 min) to get a live record to
+`trace`. Brief: of 4,283 bars `bars_held_out_sum` holds out, the (voice
+total − 3.0) distribution's single biggest bucket is **+1.0 quarter,
+1,051 bars (24.5%)** — one quarter too many, uniformly. Per the manager's
+2026-09-30 redirect, this names the ADJUDICATE-stage decision, not an
+EXPORT fix.
+
+### §21a. The dominant cause: `Q.METER` abstains, so `size_measure_rest` never fires (≈90% of the sample)
+
+Sampling the +1.0 bucket restricted to single-event bars (957 of 1,051 —
+the great majority), 66 of 73 checked have `Q.METER` **ABSTAINED** at their
+system (`adjudicate_meter`, reasons `meter_return_not_read` or
+`meter_change_digits_misread`), against a file that still carries 6/8 into
+them (`meter_carried_in_file: True`, EXPORT's own separate carry-forward —
+`bars_judged_by_a_carried_meter` is 4,225 of 4,283 held bars, i.e. nearly
+none of this population sits on a system whose OWN `Q.METER` decided).
+Traced four of these bars end to end (`glyph/1/0/1/4/2`,
+`glyph/1/1/0/1/3`, `glyph/1/1/1/1/3`, `glyph/1/1/0/7/0`): each holds
+exactly ONE standing duration in its bar, `adjudicate_duration` DECIDED it
+`rest_class` → `restWhole`, `dots: 0`, `beats: 4.0` — the exact shape
+`evaluate.consequences.size_measure_rest` exists to catch (a lone
+undotted `restWhole`, meter DECIDED ⇒ rewrite to the bar's length). But
+`evaluate._pass`'s `_cause_for` finds `Q.METER` ABSTAINED at the system and
+skips the rule (`cause_abstained`) for every cell in it — `size_measure_
+rest` never runs, so the glyph's raw "whole rest = 4 beats" reading
+survives into export uncorrected. EXPORT judges the bar against 6/8
+anyway (its own carried-forward `judged` value, computed independently of
+`Q.METER`'s outcome), so the bar reads as 4.0 against a want of 3.0: **+1.0,
+exactly the bucket**. This CONFIRMS finding §17's `W` bucket (2026-09-29,
+706 bars, "a lone whole rest not sized", 681 on an abstaining system) still
+holds on the 2026-09-30b re-gather and is by far its largest single
+contributor to the +1.0 shape specifically.
+
+Digging one level further, on `system/1/1` the abstention chains back to
+`system/0/0`: that system's OWN meter reading recorded a `declined_changes`
+entry at cell 3 (`meter_change_digits_misread`, 8 staves saw a digit
+neither could read) — a printed change partway through system 0 that
+nothing could read. `_carry_meter` (rhythm.py) treats ANY source with an
+unread digit as untrustworthy for every later system, even a system whose
+OWN one assessable bar agrees with the carry 1-for-1 (`bars_agree: 1,
+bars_disagree: 0`, recorded in the abstained verdict's own `detail`) — it
+is outvoted by `too_few_assessable_bars` combined with the tainted-source
+penalty, not by disagreement. CLAUDE.md §10 / ROADMAP 2.22b already state
+the opposite intent — *"too few assessable bars is not a vote against the
+carry -- it is no vote"* — so this reads as the carry's own floor/taint
+logic being MORE conservative here than that decided convention, not as a
+new convention question. Named but not built (rule 9): a fix belongs to
+whoever owns `_carry_meter`'s `digit_misread`/`too_few_assessable_bars`
+interaction, and is a CONNECTION (reading facts already on the record:
+`bars_agree`/`bars_disagree` from the system's own bars) rather than a
+guess. **Print-verified 4 of 4** crops (`out/print/brahms-plus1/
+A_rest_meter_return_not_read_m13_P2.png`, `B_rest_digits_misread_m17_P1.png`,
+`C_rest_digits_misread_m17_P2.png`, `F_rest_digits_misread_m23_P1.png`, all
+600 dpi, staff lines native to the print, the subject boxed red): every one
+is a genuine centred whole-rest hanging alone in its bar, exactly the
+convention CLAUDE.md §10 describes.
+
+### §21b. A second, minor cause: a meter digit's ink boxed TWICE, once as a notehead (≈10% of the sample)
+
+The remaining 7 of 73 sampled bars sit on `system/0/0`, whose `Q.METER` IS
+decided (`voted`, 6/8) — a different mechanism. Traced `glyph/0/0/3/7/3`:
+`adjudicate_duration` DECIDED it `head_and_marks` → `noteheadWholeInSpace`,
+`beats: 4.0`, at detector confidence **0.267** (`stems_attached: 0,
+dots_attached: 0` — an open head with nothing else read, the fallback
+duration for that shape). Its box is `[5425.09, 2836.96, 5471.85, 2867.92]`
+page-px. The SAME cell also carries `glyph/0/0/3/7/2`, box
+`[5425.09, 2836.32, 5471.53, 2868.24]` — **the identical ink**, this time
+correctly read as `timeSig8` at confidence 0.663 — and, above it,
+`glyph/0/0/3/7/{0,1}` read `timeSig8`/`timeSig9`, together spelling the
+`9/8` CAUTIONARY signature `system/0/0`'s own meter verdict already
+records at this cell (`cautionary: {from_cell: 7, numerator: 9,
+denominator: 8, ...}`). So this is a DUPLICATE box the detector drew twice
+on one glyph's ink, one copy correctly classed `timeSig8` and the other
+misclassed `noteheadWholeInSpace` — and the existing duplicate-box
+refusals (`not_a_notehead:stacked_head_duplicate`,
+`not_a_rest:rest_is_a_duplicate_box`, both seen elsewhere in this same
+record) evidently compare only WITHIN a family, never against a `timeSig*`
+box at the same location, so this cross-family duplicate is never refused.
+It is a distinct pattern from ROADMAP 2.12l's fix (§16): 2.12l catches a
+digit PAIR read as two noteheads near a cell's LEFT edge (an ordinary
+change, just past a barline); this is a CAUTIONARY signature sitting near
+a cell's RIGHT edge (just before the barline it warns ahead of), and only
+ONE of the pair's two digits (`8`, not `9`) got the spurious second box.
+GATHER-stage (the detector drew the extra box) meeting ADJUDICATE (nothing
+refuses it as a duplicate of a same-position `timeSig*` verdict) — a
+CONNECTION (the duplicate-box family already exists; it needs to look
+across families at the SAME box, not a new mechanism). **Print-verified 1
+of 1**: `out/print/brahms-plus1/E_wholenote_decided_meter_m8_P4.png` shows
+the boxed "glyph" sitting exactly on the `9/8` cautionary signature at the
+double barline, not a notehead of any kind.
+
+### §21c. Sean's question
+
+None needed to NAME the cause — both are connections, not conventions.
+One open question if EITHER is picked up as the next roadmap item: for
+§21a, does a system with exactly one assessable bar that agrees 1-for-1
+with the carry (`bars_agree=1, bars_disagree=0`) count as sufficient
+support under ROADMAP 2.22b's *"weighed by the bars, not gated"*, or is
+the `too_few_assessable_bars` floor deliberately stricter than that for
+some reason not written down? Crops A/B/C/F (`out/print/brahms-plus1/`):
+red box = the print's whole-rest glyph; caption gives PRINT (what the bar
+should sum to) vs OURS (what we currently read and why).
+
+### §21d. Not verified / out of scope here
+
+The remaining ~16% of the sampled +1.0 bucket (multi-event bars, 94 of
+1,051 total) was not traced — CLAUDE.md's own `WX`/`WE` letters (§17b:
+"a whole rest plus one stray box") suggest at least some of it is a THIRD
+combination of the two causes above rather than a new one, but this was
+not measured. No EXPORT or held-bar-accounting change is proposed
+anywhere in this section, per brief.
