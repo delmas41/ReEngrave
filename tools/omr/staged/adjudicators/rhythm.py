@@ -1177,7 +1177,8 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
-def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
+def _beam_levels(beams, x_center, width, joined=(), join_witness=None,
+                 stem_x=None):
     """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
 
     ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
@@ -1218,6 +1219,27 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
     change here. JOINED or declined (`None`) leaves a certain stroke
     exactly as before -- unaffected, the positive control this rule must
     never move.
+
+    ⚠️⚠️ ROADMAP 2.43: `stem_x`, THIS HEAD'S OWN STEM'S PADDED X-SPAN
+    (`_own_stem_x_span`), GATES THE PADDED-COLUMN "POSSIBLE" BRANCH.
+    Before this, the branch asked only *is this stroke within one
+    notehead-width of the HEAD's own centre* -- nothing about the STEM, so
+    a YOLO `beam` box standing nowhere near this note's stem (a hairpin, a
+    slur, a neighbour's mark the earlier discount tiers did not name, or
+    plain noise) still counted as POSSIBLE whenever it happened to fall
+    within that width, `join_witness` or no `join_witness` -- a stroke the
+    ink reader itself could only mark `declined`/never-reached stayed a
+    witness for THIS note regardless. [C12]/2.18's own words: *"a note's
+    beams stand on the side its stem points to"* -- by the same logic they
+    stand at its STEM's column, not merely near its head. DECISIONS
+    2026-09-30 (Sean), on the stage readout: 28 hollow + 21 black Litolff
+    p3 heads narrowed this exact way, every one `cv_beams: 0`,
+    `beams_by_stem: 0`, `beam_evidence: none_over_this_note` -- the stray
+    box was never joined, never even ink-witnessed, and stood over no read
+    stem of this note's, yet still made the length undecided. Where this
+    head has no own stem (`stem_x is None`), the test is unchanged -- 2.18's
+    own "no side -> every stroke stays" rule extended once more: there is
+    no stem column to ask the question of.
     """
     joined_ids = {b.id for b in joined}
     if x_center is None:
@@ -1237,6 +1259,21 @@ def _beam_levels(beams, x_center, width, joined=(), join_witness=None):
             if (join_witness or {}).get(b.id) is False:
                 certain_conflicts.append(b.id)
         elif x0 - pad <= x_center <= x1 + pad:
+            # ⚠️ YOLO-SOURCED STROKES ONLY. A CV stroke (`READERS.CV_LINES`)
+            # is real ink continuity the raster itself shows near this
+            # head -- a beamlet ending short of this note's own stem (a
+            # genuine secondary-beam shape, `TestANeighbourStaffsBeamThrough
+            # ThePad`'s and 2.38's own sibling tests) is real evidence this
+            # column test already exists to hold as a genuine MAYBE, and
+            # this gate must not drop it. A YOLO `beam` DETECTION with no CV
+            # counterpart, past `_kept_beams`'s own dedup, is the population
+            # DECISIONS 2026-09-30 actually names -- a box the detector drew
+            # that stands nowhere near this note's stem at all.
+            if (stem_x is not None and b.reader == READERS.DETECTOR
+                    and not (x0 <= stem_x[1] and x1 >= stem_x[0])):
+                # Not over THIS note's own stem column -- not a witness for
+                # this note, whatever else it is.
+                continue
             witness = (join_witness or {}).get(b.id)
             if witness is True:
                 certain += 1
@@ -1360,6 +1397,52 @@ def _head_class(ev: Evidence) -> Optional[str]:
     if not rows:
         return None
     return max(rows, key=lambda r: (r.score or 0.0)).value
+
+
+def _head_is_open(base: Optional[float], ev: Evidence) -> bool:
+    """Is THIS glyph's own notehead OPEN (hollow)? ROADMAP 2.43, DECISIONS
+    2026-09-30 (Sean): *"Correct, open noteheads are never beamed except
+    tremolo."*
+
+    Two independent witnesses, either one enough: (a) the detector's own
+    CLASS already says so -- every `_HEAD_BEATS` entry but `noteheadBlack`
+    (`noteheadHalf*`, `noteheadWhole*`, `noteheadDoubleWhole*`) is drawn
+    hollow and none of them is ever beamed, so `base` (the head's own beat
+    value before any mark) not being the black head's own `1.0` already
+    settles it; (b) a decisively hollow `Q.NOTEHEAD_INK` reading on THIS
+    glyph (2.23's `_ink_reads_decisively_hollow`) settles it even where the
+    detector's class reads BLACK.
+
+    ⚠️ A TREMOLO STROKE THROUGH A HOLLOW HEAD'S STEM IS A TREMOLO, NOT A
+    BEAM LEVEL (Sean, same line) -- out of scope here, named only: this
+    function only answers *is the head open*, and `adjudicate_duration` is
+    the one that must not let a beam-shaped reading narrow it.
+    """
+    if base is not None and base != _HEAD_BEATS["noteheadBlack"]:
+        return True
+    for row in ev.rows(Q.NOTEHEAD_INK):
+        if _ink_reads_decisively_hollow(row.detail or {}):
+            return True
+    return False
+
+
+def _own_stem_x_span(own_stems, tol: float) -> Optional[Tuple[float, float]]:
+    """The x-span THIS head's own stem(s) occupy, padded by `tol` -- or
+    `None` where this head has no own stem to test a stroke's column
+    against. ROADMAP 2.43.
+
+    ⚠️ REUSES `tol` (`STEM_JOIN_TOLERANCE_SPACES`, already the slack past a
+    stem's TIP) rather than inventing a second, untested number for the
+    slack across its WIDTH -- CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a
+    real beam whose box, at this tolerance, still does not overlap its own
+    stem's padded x-span / NOT CONFIRMED with Sean.
+    """
+    boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
+    if not boxes:
+        return None
+    x0 = min(b[0] for b in boxes) - tol
+    x1 = max(b[0] + b[2] for b in boxes) + tol
+    return (x0, x1)
 
 
 def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
@@ -1511,6 +1594,24 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if base is None:
         return Ruling.abstain("unknown_head", head=str(head))
 
+    # ⚠️⚠️ ROADMAP 2.43, DECISIONS 2026-09-30 (Sean): "open noteheads are
+    # never beamed except tremolo" -- computed once, up front, and read at
+    # every beam-shaped narrowing below (never the flag branches: a flag
+    # box actually attached to an open head is a contradiction the tree
+    # already handles unchanged, not this rule's business).
+    hollow = _head_is_open(base, ev)
+    # ⚠️ NARROWER THAN `hollow`, AND DELIBERATELY SO: the detector's CLASS
+    # alone, with NO ink witness folded in. `_stem_tip_flag_ink` (2.18c)
+    # infers an unread FLAG from CV ink at the stem's own tip; a
+    # detector-class HALF/WHOLE/DOUBLE-WHOLE head can never carry one
+    # either (same convention), so that inference is skipped there too --
+    # but a BLACK-classed head whose ink separately reads decisively
+    # hollow (2.23) is `_head_fill_from_ink`'s OWN, already-ordered
+    # territory (`test_it_NEVER_FIRES_where_stem_tip_ink_ALREADY_narrowed`
+    # depends on `flag_ink_unread` still being TRIED first there), so
+    # `hollow`'s ink half must not also gate it.
+    open_by_class = base is not None and base != _HEAD_BEATS["noteheadBlack"]
+
     used = [r.id for r in ev.rows(Q.NOTEHEAD_CLASS)]
 
     box = ev.rows(Q.GLYPH_BOX)
@@ -1585,6 +1686,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     kept_all = kept
     kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
     joined, attached = _stem_joined(kept, stems, head_box)
+    # ⚠️ ROADMAP 2.43: THIS HEAD'S OWN STEM'S PADDED X-SPAN, gating
+    # `_beam_levels`'s merely-POSSIBLE column match (`None` where this head
+    # has no own stem -- unchanged there).
+    stem_x = _own_stem_x_span(own_stems, tol)
     # ⚠️ ROADMAP 2.38: the ink-continuity witness for whatever this pass's
     # OWN `kept` set turns out to be -- recomputed below too, since the
     # rule-8 guard can restore `kept_all` and change which strokes are
@@ -1593,7 +1698,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                                  side)
     used.extend(r.id for r in join_used)
     certain, possible, certain_conflicts = _beam_levels(
-        kept, x_center, head_width, joined, join_witness)
+        kept, x_center, head_width, joined, join_witness, stem_x=stem_x)
     # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
     # Where the strokes past the tip were the ONLY thing over this head, and
     # its stem carries no beam and no flag once they go, the note would fall
@@ -1611,7 +1716,19 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                                       own_stems, side)
         used.extend(r.id for r in join_used)
         certain, possible, certain_conflicts = _beam_levels(
-            kept, x_center, head_width, joined, join_witness)
+            kept, x_center, head_width, joined, join_witness, stem_x=stem_x)
+    # ⚠️⚠️ ROADMAP 2.43, DECISIONS 2026-09-30 (Sean): "open noteheads are
+    # never beamed except tremolo" -- a hollow head's beam levels are FIXED
+    # AT ZERO, whatever `_beam_levels` (or a stray YOLO `beam` box in its
+    # cell) would otherwise have counted. Overridden here, AFTER every
+    # geometric filter above has already run (so `yolo_kept`/`beams_far_
+    # side`/etc. below still report what the cell actually held, for
+    # tracing), and BEFORE `levels` and `beam_evidence` are read from it, so
+    # every branch downstream (`beams_ambiguous`, `beam_certain_not_joined`,
+    # `beam_discounted_uncertain`) sees an unambiguous zero and never fires.
+    if hollow:
+        certain = possible = 0
+        certain_conflicts = ()
     levels = certain
     used.extend(b.id for b in kept)
     used.extend(s.id for s in attached)
@@ -1679,7 +1796,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
-    shared = {"head": str(head), "beam_evidence": beam_evidence,
+    shared = {"head": str(head), "head_is_open": hollow,
+              "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
                            + len(ledger_dropped) + len(neighbour_dropped)
@@ -1785,8 +1903,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # `flag_ink_unread` shape below: never straight to a specific count,
     # because the discount says nothing about HOW MANY levels the ink
     # would have been.
+    # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
+    # DECISIONS 2026-09-30), so a discount that removed its candidate
+    # strokes must not narrow it toward one anyway.
     if (discount_removed_all_marks and own_stems and beam_evidence
-            == "none_over_this_note" and not flag_levels):
+            == "none_over_this_note" and not flag_levels and not hollow):
         cands = []
         for level in (0, 1):
             b = base / (2 ** level) if level else base
@@ -1813,8 +1934,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ever between the head value and ONE flag level. Never straight to
     # eighth: the ink says a hook is there, not how many, and deciding a
     # specific count from it would be exactly the guess rule 6 forbids.
+    # ⚠️ ROADMAP 2.43: `not open_by_class` -- there is no such notation as an
+    # open head carrying a flag, so a detector-class HALF/WHOLE/DOUBLE-WHOLE
+    # head's stem tip is never asked this question either. NOT `hollow`'s
+    # ink half: an ink-decided-hollow BLACK-classed head is `head_fill_
+    # from_ink`'s own territory below, tried in this ORDER on purpose
+    # (`test_it_NEVER_FIRES_where_stem_tip_ink_ALREADY_narrowed`).
     tip_ink = tip_ink_rows = None
-    if beam_evidence == "none_over_this_note" and not flag_levels:
+    if beam_evidence == "none_over_this_note" and not flag_levels \
+            and not open_by_class:
         tip_ink, tip_ink_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
     if tip_ink:
         used.extend(r.id for r in tip_ink_rows)

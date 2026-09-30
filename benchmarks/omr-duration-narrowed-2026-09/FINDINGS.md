@@ -834,3 +834,178 @@ section made and withdrew was never real -- there is currently NO known
 `notehead_precision` gap on this page from this lane's own work; that
 earlier flag is retracted along with the claim it was based on.
 
+## ROADMAP 2.43 -- a stray "beam" box must not make a clear note's length undecided
+
+Sean, on the stage readout of Litolff p3 (`docs/DECISIONS.md` 2026-09-30):
+*"many of the noteheads were thrown out due to ambiguous duration... the
+note heads are clear and in some cases they are attached to a stem of the
+correct duration"*. A fresh GATHER+ADJUDICATE record of Litolff p3 held
+**49 NARROWED durations** (matching his own count exactly): 28 hollow heads
+narrowed "half, or quarter with one beam", 21 black heads narrowed "quarter,
+or eighth with one beam" -- almost all `beam_evidence: none_over_this_note`,
+`cv_beams: 0`, a YOLO `beam` box elsewhere in the cell, `levels_possible 1,
+levels_certain 0, beams_by_stem 0`.
+
+### 1. Hollow heads: DECISIONS 2026-09-30 (Sean), *"open noteheads are never
+beamed except tremolo"*
+
+Built `rhythm._head_is_open(base, ev)`: True where the detector's own class
+says hollow (every `_HEAD_BEATS` entry but `noteheadBlack`) OR 2.23's own
+`_ink_reads_decisively_hollow` reads True on this glyph's `Q.NOTEHEAD_INK`
+row, even where the class says BLACK. `adjudicate_duration` computes it
+once, up front, and after every existing geometric filter has run (so the
+`yolo_kept`/`beams_far_side`/etc. diagnostics still report what the cell
+actually held, for `trace`), forces `certain = possible = 0,
+certain_conflicts = ()` where the head is open -- so `beams_ambiguous`,
+`beam_certain_not_joined` and `beam_discounted_uncertain` never fire for
+it, whatever a stray box in the cell would otherwise have counted.
+2.18c's stem-tip flag-ink inference (`flag_ink_unread`) is ALSO skipped for
+a detector-class-hollow head (there is no such notation as a half note with
+a flag) -- gated on a NARROWER flag, `open_by_class` (class only, no ink),
+because an ink-decided-hollow BLACK-classed head is 2.23's own
+`head_fill_from_ink` territory and an existing test
+(`test_it_NEVER_FIRES_where_stem_tip_ink_ALREADY_narrowed`) depends on
+`flag_ink_unread` still being tried first there -- widening the gate to the
+ink half of `hollow` broke it (RED, confirmed, then narrowed back).
+
+**Keep the existing refusals for a hollow head with a FLAG** (an ACTUAL
+attached `Q.FLAG` box, a contradiction on the page): untouched. Nothing in
+this build reads or filters `Q.FLAG`/`_attached_flags`'s own output for a
+hollow head -- `flags_disagree` and the head-value-from-flag branch
+(`beam_evidence = "flag"`) run exactly as before. No such case was found on
+either count page (no `Q.FLAG` row ever attached to a class-hollow head on
+Litolff p3 or Brahms p1), so this is reported, not measured.
+
+Added `[C92]` to the conventions registry (`docs/engraving-conventions.md`,
+Stems & beams section, beside `[C12]`'s own beam-stem entry), citing
+DECISIONS 2026-09-30.
+
+### 2. Black heads: the stray box was never over the note's own STEM
+
+`Name the line`: `rhythm._beam_levels`'s `elif x0 - pad <= x_center <= x1 +
+pad:` branch (the "possible" column match) tested only the HEAD's own
+centre, padded by a full notehead width (`BEAM_EDGE_TOLERANCE_WIDTHS =
+1.0`) on each side -- nothing about the STEM. Every other 2.18-lineage
+filter (`_on_stem_side`, `_beyond_own_stem`, `_beam_join_witness`) reasons
+about this note's own stem; this one test did not, so a YOLO `beam` box
+standing nowhere near the stem, but within one head-width of the head's
+own centre, still counted as a witness -- even where `Q.BEAM_STEM_JOIN`
+itself never reached it (no CV stem-tip ink to ask the question of) and
+left it at box-geometry's own loose call.
+
+Built `rhythm._own_stem_x_span(own_stems, tol)` (the padded x-range this
+head's own stem(s) occupy, `None` where the head has no own stem) and
+threaded it into `_beam_levels` as `stem_x`: a stroke reaching the "possible"
+branch is now required to overlap `stem_x` in x -- **but only when the
+stroke is YOLO-sourced** (`b.reader == READERS.DETECTOR`). A CV stroke
+(`READERS.CV_LINES`) is real ink continuity the raster itself shows near
+the head; a genuine secondary beamlet ending short of this note's own stem
+is real evidence the column test already existed to hold as a genuine MAYBE
+(`TestABeamLiesOnTheStemSIDEOfItsHead.test_the_SAME_stroke_on_the_stem_
+side_still_narrows`, `TestBeamStemJoinWiresIntoDuration.test_a_REAL_
+SECONDARY_beam_stays_POSSIBLE_not_DROPPED` -- both RED against the
+unscoped version, both restored GREEN once the gate was narrowed to YOLO
+only). Where the stroke IS a YOLO box and does not reach the stem's own
+column, it is dropped from the count entirely (`continue`) -- not certain,
+not possible; where this head has no own stem at all, `stem_x` is `None`
+and the test is exactly what it was before (2.18's own "no side -> every
+stroke stays" rule, extended once more).
+
+### Proof
+
+8 new tests, RED-first (verified by stashing the `rhythm.py` diff alone
+and re-running -- 6 of 8 hollow-head tests and both stem-column tests failed
+against the unmodified code; both POSITIVE CONTROLS -- the identical shape
+on a black head, and a box that genuinely lies over the stem's own column
+-- passed on BOTH trees, proving they test the rule and not an accident of
+the fixture):
+
+- `TestOpenNoteheadsAreNeverBeamed` (5): a half note with its own stem and
+  a stray beam box DECIDES half; a whole note (no stem at all) with a beam
+  box DECIDES whole; the identical stem+beam shape on a BLACK head still
+  DECIDES the eighth (control -- the override is about the head, not a
+  general weakening); a real beamed eighth PAIR stays eighths (control);
+  an ink-decided-hollow BLACK-classed head still falls through to
+  `head_fill_from_ink` unchanged (control for the `open_by_class` narrowing).
+- `TestAPossibleBeamMustLieOverThisNotesOwnStem` (3): a box off the stem's
+  own column DECIDES instead of narrowing; the identical box moved onto the
+  stem's own column (not touching it in y, so no real join fires) still
+  NARROWS (control); no own stem at all leaves the old head-centre test
+  unchanged (control).
+
+### A/B, Litolff p3 and Brahms p1, GATHER+ADJUDICATE only (`--through
+adjudicate`, `--weights auto`)
+
+Base = `claude/acceptance-measure-notehead-box-e75821` in its own worktree
+(the branch this lane's own tree fast-forwards from); arm = this branch.
+`readout diff base.json arm.json --arm code --family note`:
+
+**Litolff p3** (474 notes gathered both arms, 474 matched): 34 duration
+verdicts changed answer. Litolff's own `narrowed` population 49 -> 25
+(`beams_ambiguous` 34->17, `beam_discounted_uncertain` 13->5,
+`flags_disagree`/`rest_slot_contradicts_class` unchanged at 1 each, plus
+one NEW `head_fill_from_ink` narrow -- see below). By direction: 15
+narrowed->decided at the SAME value (a note already reachable as the top
+candidate now decides outright instead of being held narrowed/exported as
+a fallback); 10 narrowed(quarter-vs-eighth-with-one-beam)->decided half; 5
+decided-wrong-quarter->decided half; 3 decided-wrong-16th (`beam_levels:
+2`)->decided half; 1 decided-wrong-eighth->decided half. **1 changed the
+OTHER direction**: `glyph/3/1/0/8/4` was wrongly DECIDED eighth (a stray
+box happened to sit exactly over this glyph's own centre with no stem at
+all -- `stem_direction` abstains `no_stem`, and this glyph is ALSO decided
+`notehead_is_a_whole_rest: True` elsewhere on the same record, i.e. it is
+plausibly not a real note-with-beam at all) and is now correctly NARROWED
+between black/half/whole via 2.23's own ink-fill branch, its `ink_net`
+reading (the staff-erased raster) crossing the decisive-hollow gap even
+though `ink_raw` reads dense.
+
+**Brahms p1** (1,015 notes gathered both arms, 1,015 matched): 11 duration
+verdicts changed answer. Brahms's own `narrowed` population 206 -> 202
+(`beams_ambiguous` 65->64, `beam_discounted_uncertain` 27->23,
+`beam_certain_not_joined`/`flags_disagree`/`flag_ink_unread` UNCHANGED at
+101 or 102/4/8 -- none of this lane's two connections touch that
+mechanism). Two of the eleven are a striking catch: `glyph/1/0/7/0/12` and
+`glyph/1/0/7/0/14` were wrongly DECIDED a **64th note** (`beam_levels: 4,
+beats: 0.062`) by the old loose column test picking up unrelated ink; both
+are now correctly NARROWED black/half/whole via the ink branch. The rest
+follow the same shape as Litolff (narrowed-wrong-value -> decided-half or
+decided-dotted-half at the value the ink and stem actually support).
+
+### Print check
+
+Every one of the 34 Litolff changes and all 11 Brahms changes were
+cropped at 600 dpi with staff lines drawn, the head marked with a corner
+bracket, this cell's own stem(s) in green and beam stroke(s) in blue, and
+the base/arm value printed on the tile (`out/print/2.43/litolff_changed.
+png`, `out/print/2.43/brahms_changed.png`, `*_manifest.json`). Three
+subjects were additionally zoomed 4-5x directly off the raster to settle
+fill by eye rather than by the ink reader's own number
+(`litolff_zoom_black_check.png` -- the three 16th->half corrections;
+`litolff_zoom_309.png` -- the merged-ink case; `brahms_zoom_64th.png` -- the
+two 64th->narrowed corrections). **45 of 45 right**: every changed head is
+genuinely open (a visible hollow interior, including on Litolff's MERGING
+plate where the ring partially fuses with crossing ink) where the new
+value says half/whole, and the one reversed Litolff case is plausibly not
+a real notehead at all (whole-rest verdict on the same glyph, no stem).
+Two controls from the test suite (a real beamed eighth pair; a black head
+whose beam box lies over its stem but has no CV join) were not additionally
+print-checked -- they are unit tests against synthetic fixtures, not a
+population on either count page.
+
+### Gates
+
+`staged.check` TOTAL **245, unchanged** (before and after).
+`pytest -m "not slow" tools/omr/tests`: **4,115 passed, 3 skipped** (base
+4,107 + 8 new tests from this lane). One PRE-EXISTING, unrelated test,
+`test_conventions.py::test_a_drifted_category_count_is_a_finding`, hard-
+coded the registry's old "Stems & beams | 18 | 9" row text and needed its
+literal string updated to "19" after `[C92]` joined that category --
+fixed, not loosened.
+
+**Not chased**: tremolo (named by Sean's own sentence, explicitly out of
+scope, no tremolo reading exists anywhere in this tree); a flag actually
+attached to a hollow head (no such case reached on either count page);
+Litolff's residual 25 narrowed durations and Brahms's 202 (dominated by
+`beam_certain_not_joined`, a working, unrelated mechanism) are left open
+for a future item.
+
