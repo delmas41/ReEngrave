@@ -886,3 +886,14 @@ middle, nearest-outer) score identically on both plates, because the
 drift between them is itself sub-pixel: on these two scores there is no
 winner to declare, and nothing here suggests warping is the right next
 lever.
+
+### 16a. Like-for-like, and isolating the ink-centring effect
+
+(1) Plain geometry on the SAME robust-local-covered subset: Litolff 27/39
+(69%) vs robust local's 30/39 (77%) — still an 8pp gain, not an artefact
+of a smaller/easier population. Brahms 7/7 (100%) both ways.
+
+(2) Ink-centre alone, against the GLOBAL cell grid (no local staff fit),
+on all 47/11: Litolff 29/47 (62%), Brahms 9/11 (82%) — WORSE than plain
+geometry (66%, 100%) on both pages. The gain is not ink-centring by
+itself; it needs the local staff fit too.
