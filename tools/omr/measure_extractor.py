@@ -90,6 +90,12 @@ BARLINE_MIN_HEIGHT_FRAC = 0.80
 # measures downstream.
 BARLINE_MAX_WIDTH_LINESPACINGS = 0.7  # stems are typically ~0.3 line-spacing wide
 BARLINE_MIN_DISTANCE_PX = 60      # neighbouring barlines must be ≥60px apart
+# ROADMAP 2.47. How close a candidate's own top/bottom must land to the
+# staff band's actual top/bottom edge to count as "spans the staff" in
+# `_dedup_barline_candidates(prefer="spanning")` — a real barline is drawn
+# to the line, not a fraction short of it; a few px covers anti-aliasing
+# and line thickness without admitting a stem that merely runs long.
+SPAN_TOUCH_TOLERANCE_PX = 6
 
 # How much of the weakest band of a column must be ink before it counts as
 # spanning the system (`_spans_system`). Measured over four braced piano systems
@@ -257,7 +263,8 @@ def _detect_barlines_in_window(
     vertical = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
     n_labels, labels, stats, _ = cv2.connectedComponentsWithStats(vertical, connectivity=8)
-    found: list[tuple[int, int]] = []          # (x_centre, height)
+    band_height = band.shape[0]
+    found: list[tuple[int, int, int, int]] = []  # (x_centre, height, top_gap, bottom_gap)
     for i in range(1, n_labels):
         x_l, y_l, w_l, h_l, area = stats[i]
         # Three independent shape rejections, counted apart because they are
@@ -274,7 +281,9 @@ def _detect_barlines_in_window(
             _bump(counts, "n_barline_components_dropped_not_skinny")
             continue           # not skinny enough
         x_center = x0 + x_l + w_l // 2
-        found.append((int(x_center), int(h_l)))
+        top_gap = int(y_l)
+        bottom_gap = int(band_height - (y_l + h_l))
+        found.append((int(x_center), int(h_l), top_gap, bottom_gap))
     found.sort()
     return _dedup_barline_candidates(found, prefer=prefer, counts=counts)
 
@@ -303,6 +312,27 @@ def _dedup_barline_candidates(
     the stem, so only 2 of 6 real votes reach the caller's vote gate, one short
     of its floor. Height is the discriminator the shape test already computes
     and then discards: a barline spans the staff, a stem usually stops short.
+    Used only by the LOCAL resegmentation of an already-flagged fused cell
+    (`_find_internal_barline_candidates`), where a competing stem is the norm.
+
+    `prefer="spanning"` (ROADMAP 2.47, ⚠️ the global per-staff pass's own
+    default since 2026-09-30) is `tallest` narrowed by a control `tallest`
+    alone fails: a stem can be the TALLER of two candidates yet not be the
+    barline (measured on Litolff p2 system 0, x~870: the real barline is
+    59px against a 52px stem only 35px to its left — tallest happens to pick
+    right there, but a stem that runs long past its notehead, into ledger
+    territory, can exceed a genuine barline's own height while touching
+    neither the staff's top line nor its bottom line). A barline is drawn
+    FROM the top line TO the bottom line; a stem is anchored at one end only.
+    So: among the group, candidates whose `top_gap` and `bottom_gap` (the
+    pixels left over before actually reaching the band's own top/bottom edge
+    — anti-aliasing and line thickness mean a real barline is not exactly 0,
+    not a fixed fraction of a different staff's spacing) are each at most
+    `SPAN_TOUCH_TOLERANCE_PX` are "spanning"; among those, the tallest wins,
+    ties broken by the smaller total gap then leftmost. **If no candidate in
+    the group spans both ends, this falls back to `leftmost` for that group
+    only** — spanning is a narrower claim than tallest and must not invent a
+    winner tallest wouldn't have needed to.
 
     The window is ANCHORED on the candidate that opens it rather than sliding
     with each one kept. A sliding anchor lets a dense stem-and-ornament region
@@ -319,12 +349,24 @@ def _dedup_barline_candidates(
             j += 1
         group = found[i:j + 1]
         # ⚠️ The site that loses a real barline to a note stem — the whole
-        # reason `prefer="tallest"` exists. A high count here on a page whose
-        # bar count came out short is the first place to look.
+        # reason `prefer="tallest"`/`prefer="spanning"` exist. A high count
+        # here on a page whose bar count came out short is the first place
+        # to look.
         _bump(counts, "n_barline_candidates_dropped_too_close_on_staff",
               len(group) - 1)
         if prefer == "tallest":
             out.append(max(group, key=lambda c: (c[1], -c[0]))[0])
+        elif prefer == "spanning":
+            spanning = [c for c in group
+                        if c[2] <= SPAN_TOUCH_TOLERANCE_PX
+                        and c[3] <= SPAN_TOUCH_TOLERANCE_PX]
+            if spanning:
+                out.append(min(
+                    spanning,
+                    key=lambda c: (-c[1], c[2] + c[3], c[0]),
+                )[0])
+            else:
+                out.append(group[0][0])  # no candidate spans — fall back
         else:
             out.append(group[0][0])
         i = j + 1
@@ -342,10 +384,18 @@ def _detect_barlines_per_staff(
     isn't actually attached to them. Over-detection on very dense
     orchestral pages is handled at the system level via gap-bipartition
     outlier rejection (see _drop_close_outliers).
+
+    ROADMAP 2.47 (2026-09-30, scoped A/B, Sean's authorization): was
+    `prefer="leftmost"` (the implicit default), now `"spanning"` — see
+    `_dedup_barline_candidates` for why. Confirmed case: Litolff 984073
+    p2 system 0, x~870 — a real barline 0-6px short of each staff's own
+    top/bottom line, discarded in favour of a note stem ~35px to its left
+    on 9 of 11 staves because the stem is also tall enough to clear the
+    shape gate and sits first (leftmost).
     """
     return _detect_barlines_in_window(
         bin_img, staff, staff.x_start, staff.x_end + 1, BARLINE_MIN_HEIGHT_FRAC,
-        counts=counts,
+        prefer="spanning", counts=counts,
     )
 
 
