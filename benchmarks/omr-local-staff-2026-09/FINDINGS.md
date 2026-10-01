@@ -460,3 +460,39 @@ untouched.
 **Conclusion for Sean**: the worsening is visible already at GATHER, under
 a judge whose pairing cannot itself be moved by the comb -- it is in the
 measurement, not a later stage. Recommendation unchanged: do not merge.
+
+## 2026-10-01: compensating-bias measurement (Sean's hypothesis)
+
+GATHER+ADJUDICATE only (`compensating_bias.py`). "Clean" = no chord-mate
+within 1.5 spaces, no overlapping box, ink fraction in [0.12, 0.85] within
+the detector's own box. Litolff 251 qualified, Brahms 100.
+
+| | Litolff mean / std (px) | Brahms mean / std (px) |
+|---|---|---|
+| line bias (base grid - ink centre) | -0.94 / 3.45 (n=226) | +1.02 / 5.93 (n=231) |
+| line bias (comb - ink centre) | -0.25 / 1.06 (n=83) | +0.01 / 0.28 (n=14) |
+| head bias (box centre - head ink centre) | +0.43 / 3.04 (n=251) | +0.51 / 4.53 (n=100) |
+| &nbsp;&nbsp;open / filled heads | +0.14 / +0.64 | -0.02 / +0.95 |
+| &nbsp;&nbsp;on-line / in-space | +0.04 / +0.76 | +0.92 / +0.27 |
+
+**Do the two errors cancel today? No, not reliably.** Cancellation needs
+line bias and head bias to share SIGN and SIZE (error = head_bias -
+line_bias). On Litolff the signs are OPPOSITE (line -0.94, head +0.43) --
+the two errors ADD (~1.4px), they do not cancel. On Brahms the signs
+happen to MATCH (line +1.02, head +0.51) -- partial cancellation there,
+by coincidence, not by any structural relationship. Every number above
+also carries a standard deviation several times its own mean (n in the
+hundreds, so the means are measured, not noise, but the underlying spread
+is large and real) -- there is no clean, page-independent compensating
+relationship to find. The comb's own line bias is small on both pages
+(-0.25, +0.01px) -- it is reading closer to true ink centre than the base
+grid is, as designed.
+
+**Per the manager's own conditional (build a corrected-judge arm only if
+line and head bias share sign and size): that condition is not met**
+(opposite signs on the page this mechanism was built against), so the
+"comb lines + head ink centre" / "base lines + head ink centre" arms were
+not built or scored this round.
+
+4 crops at `out/print/bias/` (base grid=orange, comb=green where it did
+not decline, head centre=magenta cross, detector box=red).

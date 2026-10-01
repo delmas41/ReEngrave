@@ -1,0 +1,3553 @@
+{
+  "id": "brahms1-breitkopf",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 227.052,
+    "page_index": 1,
+    "start_page": 0,
+    "pages_gathered": "0-1",
+    "full": true,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json",
+    "xml_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.musicxml",
+    "ly_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.ly",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.pdf",
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.gather.log",
+    "log_tail": "es': 3, 'tie_spans_marked': 61, 'tie_arcs_naming_an_already_named_pair': 41, 'bars_held_out_sum': 160, 'notes_held_out_sum': 700, 'empty_bars_padded': 11, 'empty_bars_padded_without_meter': 0, 'measure_rests_read': 43, 'dynamics_not_renderable': 86, 'notes': 355, 'articulation_marks_on_chord_members': 1, 'articulations': 1, 'slurs': 63, 'unread_bar_marks_written': 171, 'rests': 58, 'ties': 28, 'ornaments': 1, 'tacet_bars_padded': 24, 'wedges': 3, 'parts': 14}\n  lilypond-only: {'ornaments_not_renderable': 0, 'direction_words_not_renderable': 0, 'dynamics_not_renderable': 86, 'articulation_marks_collapsed_per_chord': 0, 'cross_system_arcs_and_wedges': 'handled, not dropped -- see module docstring', 'two_voice_bars': 0, 'version': '2.24.4'}\n  \u26a0\ufe0f notes the record holds and the file does not: 717 {'duration_narrowed': 189, 'not_a_notehead:too_narrow': 244, 'not_a_notehead:stacked_head_duplicate': 28, 'owned_by_another_staff': 45, 'not_a_notehead:clipped_fragment': 36, 'not_a_notehead:notehead_is_a_duplicate_box': 8, 'not_a_rest:rest_has_a_stem': 2, 'not_a_rest:rest_off_center': 1, 'not_a_rest:rest_is_a_duplicate_box': 37, 'rest_duration_abstained': 7, 'not_a_notehead:is_a_meter_digit': 30, 'not_a_rest:rest_clipped_by_crop': 47, 'not_a_rest:rest_outside_its_staff': 17, 'not_a_notehead:belongs_to_a_nearer_staff': 5, 'ink_is_a_whole_rest': 2, 'staff_not_identified': 17, 'not_a_rest:rest_touches_two_staff_lines': 2}\n\n\u2500\u2500 ACCOUNTING (CLAUDE.md \u00a71: every unread bar is MARKED, never invented) \u2500\u2500\n  unread bars (\"unread\", read NOTHING): 11\n  held-out bars (\"unread\"): 160\n  total bars marked red in the file: 171 (colour #D00000)\n  staves held out: 2 (the part join could not NAME them, so they are held out of the file and counted, never silently dropped -- OMR_HOLD_OUT_UNIDENTIFIED)\n  meter returns not read (\"meter?\", bar kept, not held out): 0 -- a corroborated printed change this system's own bars could not sustain; the printed RETURN was never read (CLAUDE.md \u00a710, roadmap 2.12k)\n"
+  },
+  "full": true,
+  "stage_summary": {
+    "page": 1,
+    "gathered_total": 3951,
+    "families": {
+      "accidental": {
+        "gathered": 209,
+        "status": {
+          "given_away": 15,
+          "kept": 194
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "articulation": {
+        "gathered": 22,
+        "status": {
+          "given_away": 4,
+          "kept": 18
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+        }
+      },
+      "class:arpeggiato": {
+        "gathered": 86,
+        "status": {
+          "kept": 86
+        },
+        "reasons": {}
+      },
+      "class:augmentationDot": {
+        "gathered": 49,
+        "status": {
+          "given_away": 4,
+          "kept": 45
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1
+        }
+      },
+      "class:beam": {
+        "gathered": 731,
+        "status": {
+          "given_away": 247,
+          "kept": 222,
+          "undecided": 262
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 262,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 25,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 25,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 20,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 16,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 13,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 12,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 12,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 12,
+          "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 11,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 11,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 9,
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 7,
+          "given_away: given to staff/1/0/13 (distance); this copy is dropped": 6,
+          "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/9 (distance); this copy is dropped": 1
+        }
+      },
+      "class:caesura": {
+        "gathered": 1,
+        "status": {
+          "undecided": 1
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 1
+        }
+      },
+      "class:fingering1": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      },
+      "class:flag16thDown": {
+        "gathered": 2,
+        "status": {
+          "given_away": 1,
+          "kept": 1
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:flag16thUp": {
+        "gathered": 13,
+        "status": {
+          "given_away": 5,
+          "kept": 8
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1
+        }
+      },
+      "class:flag8thDown": {
+        "gathered": 57,
+        "status": {
+          "given_away": 5,
+          "kept": 52
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:flag8thUp": {
+        "gathered": 66,
+        "status": {
+          "given_away": 3,
+          "kept": 63
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1
+        }
+      },
+      "class:ledgerLine": {
+        "gathered": 219,
+        "status": {
+          "given_away": 18,
+          "kept": 121,
+          "refused": 80
+        },
+        "reasons": {
+          "refused: not a ledger -- inside the staff": 64,
+          "refused: not a ledger -- on a staff line": 16,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:staff": {
+        "gathered": 101,
+        "status": {
+          "given_away": 7,
+          "kept": 1,
+          "undecided": 93
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 93,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 1
+        }
+      },
+      "class:stem": {
+        "gathered": 5,
+        "status": {
+          "undecided": 5
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 5
+        }
+      },
+      "clef": {
+        "gathered": 50,
+        "status": {
+          "given_away": 8,
+          "kept": 7,
+          "undecided": 35
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 35,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 1
+        }
+      },
+      "dynamic": {
+        "gathered": 204,
+        "status": {
+          "given_away": 82,
+          "kept": 122
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 8,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 4,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/6 (range veto); this copy is dropped": 3,
+          "given_away: given to staff/1/1/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "key": {
+        "gathered": 36,
+        "status": {
+          "given_away": 1,
+          "kept": 35
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "note": {
+        "gathered": 1015,
+        "status": {
+          "given_away": 52,
+          "kept": 517,
+          "narrowed": 142,
+          "refused": 304
+        },
+        "reasons": {
+          "refused: not a notehead -- too narrow": 225,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beam certain not joined": 32,
+          "narrowed: length still open: eighth (0.5 beats) | 32nd (0.125 beats) -- beam certain not joined": 32,
+          "refused: not a notehead -- is a meter digit": 30,
+          "refused: not a notehead -- clipped fragment": 26,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 17,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beam certain not joined": 15,
+          "refused: not a notehead -- stacked head duplicate": 12,
+          "given_away: given to staff/1/1/11 (ledger direction); this copy is dropped": 9,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beams ambiguous": 7,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- flag ink unread": 7,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beam certain not joined": 6,
+          "given_away: given to staff/1/0/3 (ledger direction); this copy is dropped": 5,
+          "refused: not a notehead -- belongs to a nearer staff": 5,
+          "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) -- beam certain not joined": 5,
+          "given_away: given to staff/1/0/1 (ledger owner density); this copy is dropped": 4,
+          "refused: not a notehead -- notehead is a duplicate box": 4,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 4,
+          "given_away: given to staff/1/0/9 (ledger direction); this copy is dropped": 4,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+          "given_away: given to staff/1/0/1 (ledger direction); this copy is dropped": 3,
+          "narrowed: length still open: quarter (1 beat) | sixteenth (0.25 beats) -- beam certain not joined": 3,
+          "given_away: given to staff/1/1/3 (ledger direction); this copy is dropped": 3,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) | 64th (0.0625 beats) -- beams ambiguous": 2,
+          "given_away: given to staff/1/0/3 (ledger owner density); this copy is dropped": 2,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain": 2,
+          "given_away: given to staff/1/0/4 (ledger direction); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (ladder); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "narrowed: length still open: 1.5-beat (1.5 beats) | 0.75-beat (0.75 beats) -- beam certain not joined": 2,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 2,
+          "narrowed: length still open: 1.5-beat (1.5 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 2,
+          "refused: read as a whole rest, not a notehead -- shape and position agree": 2,
+          "given_away: given to staff/1/1/8 (ledger owner density); this copy is dropped": 2,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+          "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) | 0.03125-beat (0.03125 beats) -- beams ambiguous": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (ledger owner density); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 1,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 1,
+          "given_away: given to staff/1/0/12 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (ledger owner density); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (ladder); this copy is dropped": 1,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- flag ink unread": 1,
+          "given_away: given to staff/1/1/8 (ledger direction); this copy is dropped": 1
+        },
+        "owner": {
+          "by_outcome": {
+            "no_verdict": 671,
+            "decided": 335,
+            "abstained": 9
+          },
+          "reasons": {
+            "far_no_rungs": 9
+          }
+        },
+        "duration": {
+          "by_outcome": {
+            "decided": 813,
+            "narrowed": 202
+          },
+          "reasons": {
+            "beams_ambiguous": 64,
+            "beam_certain_not_joined": 101,
+            "beam_discounted_uncertain": 23,
+            "flags_disagree": 4,
+            "head_fill_from_ink": 2,
+            "flag_ink_unread": 8
+          }
+        },
+        "staff_position": {
+          "by_outcome": {
+            "observed": 1015
+          },
+          "reasons": {}
+        }
+      },
+      "ornament": {
+        "gathered": 6,
+        "status": {
+          "given_away": 2,
+          "kept": 4
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/9 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+        }
+      },
+      "rest": {
+        "gathered": 350,
+        "status": {
+          "abstained": 6,
+          "kept": 241,
+          "refused": 103
+        },
+        "reasons": {
+          "refused: not a rest -- rest clipped by crop": 47,
+          "refused: not a rest -- rest is a duplicate box": 36,
+          "refused: not a rest -- rest outside its staff": 17,
+          "abstained: length could not be read -- rest stands where no rest hangs": 5,
+          "refused: not a rest -- rest touches two staff lines": 2,
+          "refused: not a rest -- rest has a stem": 1,
+          "abstained: length could not be read -- unreadable rest": 1
+        }
+      },
+      "slur": {
+        "gathered": 162,
+        "status": {
+          "given_away": 51,
+          "kept": 111
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 7,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 6,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 1
+        }
+      },
+      "tie": {
+        "gathered": 524,
+        "status": {
+          "given_away": 61,
+          "kept": 463
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/13 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/4 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "time": {
+        "gathered": 40,
+        "status": {
+          "given_away": 2,
+          "kept": 2,
+          "undecided": 36
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 36,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1
+        }
+      },
+      "wedge": {
+        "gathered": 1,
+        "status": {
+          "kept": 1
+        },
+        "reasons": {}
+      }
+    },
+    "clef_by_staff": {
+      "staff/1/0/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/4": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/6": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/7": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/8": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/9": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/10": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/11": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/1/0/12": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/13": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/4": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/6": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/7": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/8": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/9": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/10": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/1/1/11": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/12": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      }
+    },
+    "meter_by_system": {
+      "system/1/0": {
+        "outcome": "abstained",
+        "value": null,
+        "reason": "meter_return_not_read"
+      },
+      "system/1/1": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 6,
+          "denominator": 8,
+          "raw": "6/8",
+          "segments": [
+            {
+              "numerator": 6,
+              "denominator": 8,
+              "raw": "6/8",
+              "from_cell": 0
+            }
+          ],
+          "declined_changes": [
+            {
+              "from_cell": 4,
+              "numerator": 4,
+              "denominator": 4,
+              "raw": "4/4",
+              "support": 3.0,
+              "staves_reading_it": [
+                7
+              ],
+              "staves_reading_a_meter": 1,
+              "corroborated": false,
+              "bars_fit": 0,
+              "bars_contradict": 1,
+              "loose_digits": 2,
+              "declined_reason": "meter_change_not_system_wide"
+            }
+          ]
+        },
+        "reason": "carried_uncontested"
+      }
+    }
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.readout.html"
+  },
+  "against": {
+    "record": "/tmp/base-248-run-3/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json",
+    "readout_diff": {
+      "ok": true,
+      "differences_found": true,
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.diff.html"
+    },
+    "stage_summary": {
+      "page": 1,
+      "gathered_total": 3951,
+      "families": {
+        "accidental": {
+          "gathered": 209,
+          "status": {
+            "given_away": 15,
+            "kept": 194
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+          }
+        },
+        "articulation": {
+          "gathered": 22,
+          "status": {
+            "given_away": 4,
+            "kept": 18
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+          }
+        },
+        "class:arpeggiato": {
+          "gathered": 86,
+          "status": {
+            "kept": 86
+          },
+          "reasons": {}
+        },
+        "class:augmentationDot": {
+          "gathered": 49,
+          "status": {
+            "given_away": 4,
+            "kept": 45
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1
+          }
+        },
+        "class:beam": {
+          "gathered": 731,
+          "status": {
+            "given_away": 247,
+            "kept": 222,
+            "undecided": 262
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 262,
+            "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 25,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 25,
+            "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 20,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 16,
+            "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 13,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 12,
+            "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 12,
+            "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 12,
+            "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 11,
+            "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 11,
+            "given_away: given to staff/1/0/4 (distance); this copy is dropped": 9,
+            "given_away: given to staff/1/1/0 (distance); this copy is dropped": 7,
+            "given_away: given to staff/1/0/13 (distance); this copy is dropped": 6,
+            "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 6,
+            "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 5,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 5,
+            "given_away: given to staff/1/0/2 (distance); this copy is dropped": 4,
+            "given_away: given to staff/1/1/11 (distance); this copy is dropped": 4,
+            "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/12 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/10 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/0/12 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/0/6 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/4 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/1/9 (distance); this copy is dropped": 1
+          }
+        },
+        "class:caesura": {
+          "gathered": 1,
+          "status": {
+            "undecided": 1
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 1
+          }
+        },
+        "class:fingering1": {
+          "gathered": 2,
+          "status": {
+            "undecided": 2
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 2
+          }
+        },
+        "class:flag16thDown": {
+          "gathered": 2,
+          "status": {
+            "given_away": 1,
+            "kept": 1
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 1
+          }
+        },
+        "class:flag16thUp": {
+          "gathered": 13,
+          "status": {
+            "given_away": 5,
+            "kept": 8
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/1 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1
+          }
+        },
+        "class:flag8thDown": {
+          "gathered": 57,
+          "status": {
+            "given_away": 5,
+            "kept": 52
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+          }
+        },
+        "class:flag8thUp": {
+          "gathered": 66,
+          "status": {
+            "given_away": 3,
+            "kept": 63
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1
+          }
+        },
+        "class:ledgerLine": {
+          "gathered": 219,
+          "status": {
+            "given_away": 18,
+            "kept": 121,
+            "refused": 80
+          },
+          "reasons": {
+            "refused: not a ledger -- inside the staff": 64,
+            "refused: not a ledger -- on a staff line": 16,
+            "given_away: given to staff/1/0/1 (distance); this copy is dropped": 4,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1
+          }
+        },
+        "class:staff": {
+          "gathered": 101,
+          "status": {
+            "given_away": 7,
+            "kept": 1,
+            "undecided": 93
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 93,
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/7 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/12 (distance); this copy is dropped": 1
+          }
+        },
+        "class:stem": {
+          "gathered": 5,
+          "status": {
+            "undecided": 5
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 5
+          }
+        },
+        "clef": {
+          "gathered": 50,
+          "status": {
+            "given_away": 8,
+            "kept": 7,
+            "undecided": 35
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 35,
+            "given_away: given to staff/1/1/5 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/0 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/6 (distance); this copy is dropped": 1
+          }
+        },
+        "dynamic": {
+          "gathered": 204,
+          "status": {
+            "given_away": 82,
+            "kept": 122
+          },
+          "reasons": {
+            "given_away: given to staff/1/1/0 (distance); this copy is dropped": 8,
+            "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 6,
+            "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 6,
+            "given_away: given to staff/1/0/2 (distance); this copy is dropped": 5,
+            "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 5,
+            "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 5,
+            "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 4,
+            "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/0/10 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/6 (range veto); this copy is dropped": 3,
+            "given_away: given to staff/1/1/7 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/0/2 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 1
+          }
+        },
+        "key": {
+          "gathered": 36,
+          "status": {
+            "given_away": 1,
+            "kept": 35
+          },
+          "reasons": {
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+          }
+        },
+        "note": {
+          "gathered": 1015,
+          "status": {
+            "given_away": 52,
+            "kept": 517,
+            "narrowed": 142,
+            "refused": 304
+          },
+          "reasons": {
+            "refused: not a notehead -- too narrow": 225,
+            "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beam certain not joined": 32,
+            "narrowed: length still open: eighth (0.5 beats) | 32nd (0.125 beats) -- beam certain not joined": 32,
+            "refused: not a notehead -- is a meter digit": 30,
+            "refused: not a notehead -- clipped fragment": 26,
+            "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 17,
+            "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beam certain not joined": 15,
+            "refused: not a notehead -- stacked head duplicate": 12,
+            "given_away: given to staff/1/1/11 (ledger direction); this copy is dropped": 9,
+            "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beams ambiguous": 7,
+            "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- flag ink unread": 7,
+            "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beam certain not joined": 6,
+            "given_away: given to staff/1/0/3 (ledger direction); this copy is dropped": 5,
+            "refused: not a notehead -- belongs to a nearer staff": 5,
+            "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) -- beam certain not joined": 5,
+            "given_away: given to staff/1/0/1 (ledger owner density); this copy is dropped": 4,
+            "refused: not a notehead -- notehead is a duplicate box": 4,
+            "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 4,
+            "given_away: given to staff/1/0/9 (ledger direction); this copy is dropped": 4,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+            "given_away: given to staff/1/0/1 (ledger direction); this copy is dropped": 3,
+            "narrowed: length still open: quarter (1 beat) | sixteenth (0.25 beats) -- beam certain not joined": 3,
+            "given_away: given to staff/1/1/3 (ledger direction); this copy is dropped": 3,
+            "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) | 64th (0.0625 beats) -- beams ambiguous": 2,
+            "given_away: given to staff/1/0/3 (ledger owner density); this copy is dropped": 2,
+            "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain": 2,
+            "given_away: given to staff/1/0/4 (ledger direction); this copy is dropped": 2,
+            "given_away: given to staff/1/0/9 (ladder); this copy is dropped": 2,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+            "narrowed: length still open: 1.5-beat (1.5 beats) | 0.75-beat (0.75 beats) -- beam certain not joined": 2,
+            "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 2,
+            "narrowed: length still open: 1.5-beat (1.5 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 2,
+            "refused: read as a whole rest, not a notehead -- shape and position agree": 2,
+            "given_away: given to staff/1/1/8 (ledger owner density); this copy is dropped": 2,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+            "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) | 0.03125-beat (0.03125 beats) -- beams ambiguous": 1,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/5 (ledger direction); this copy is dropped": 1,
+            "given_away: given to staff/1/0/5 (ledger owner density); this copy is dropped": 1,
+            "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+            "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 1,
+            "narrowed: length still open: 0.75-beat (0.75 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 1,
+            "given_away: given to staff/1/0/12 (ledger direction); this copy is dropped": 1,
+            "given_away: given to staff/1/1/1 (ledger direction); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (ledger owner density); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (ladder); this copy is dropped": 1,
+            "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- flag ink unread": 1,
+            "given_away: given to staff/1/1/8 (ledger direction); this copy is dropped": 1
+          },
+          "owner": {
+            "by_outcome": {
+              "no_verdict": 671,
+              "decided": 335,
+              "abstained": 9
+            },
+            "reasons": {
+              "far_no_rungs": 9
+            }
+          },
+          "duration": {
+            "by_outcome": {
+              "decided": 813,
+              "narrowed": 202
+            },
+            "reasons": {
+              "beams_ambiguous": 64,
+              "beam_certain_not_joined": 101,
+              "beam_discounted_uncertain": 23,
+              "flags_disagree": 4,
+              "head_fill_from_ink": 2,
+              "flag_ink_unread": 8
+            }
+          },
+          "staff_position": {
+            "by_outcome": {
+              "observed": 1015
+            },
+            "reasons": {}
+          }
+        },
+        "ornament": {
+          "gathered": 6,
+          "status": {
+            "given_away": 2,
+            "kept": 4
+          },
+          "reasons": {
+            "given_away: given to staff/1/0/9 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+          }
+        },
+        "rest": {
+          "gathered": 350,
+          "status": {
+            "abstained": 6,
+            "kept": 241,
+            "refused": 103
+          },
+          "reasons": {
+            "refused: not a rest -- rest clipped by crop": 47,
+            "refused: not a rest -- rest is a duplicate box": 36,
+            "refused: not a rest -- rest outside its staff": 17,
+            "abstained: length could not be read -- rest stands where no rest hangs": 5,
+            "refused: not a rest -- rest touches two staff lines": 2,
+            "refused: not a rest -- rest has a stem": 1,
+            "abstained: length could not be read -- unreadable rest": 1
+          }
+        },
+        "slur": {
+          "gathered": 162,
+          "status": {
+            "given_away": 51,
+            "kept": 111
+          },
+          "reasons": {
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 7,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 6,
+            "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 5,
+            "given_away: given to staff/1/0/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/5 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/1/11 (distance); this copy is dropped": 1
+          }
+        },
+        "tie": {
+          "gathered": 524,
+          "status": {
+            "given_away": 61,
+            "kept": 463
+          },
+          "reasons": {
+            "given_away: given to staff/1/1/5 (distance); this copy is dropped": 5,
+            "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+            "given_away: given to staff/1/1/12 (distance); this copy is dropped": 4,
+            "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/6 (distance); this copy is dropped": 3,
+            "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 3,
+            "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/0/2 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/4 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/0/13 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/4 (distance); this copy is dropped": 2,
+            "given_away: given to staff/1/1/4 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 2,
+            "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 2,
+            "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+            "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+          }
+        },
+        "time": {
+          "gathered": 40,
+          "status": {
+            "given_away": 2,
+            "kept": 2,
+            "undecided": 36
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 36,
+            "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+            "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1
+          }
+        },
+        "wedge": {
+          "gathered": 1,
+          "status": {
+            "kept": 1
+          },
+          "reasons": {}
+        }
+      },
+      "clef_by_staff": {
+        "staff/1/0/0": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/1": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/2": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/3": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/0/4": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/0/5": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/6": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/7": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/8": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/0/9": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/10": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/0/11": {
+          "outcome": "decided",
+          "value": "alto",
+          "reason": "scored"
+        },
+        "staff/1/0/12": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/0/13": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/1/0": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/1": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/2": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/3": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/1/4": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/1/5": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/6": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/7": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/1/8": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/9": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/1/1/10": {
+          "outcome": "decided",
+          "value": "alto",
+          "reason": "scored"
+        },
+        "staff/1/1/11": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/1/1/12": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        }
+      },
+      "meter_by_system": {
+        "system/1/0": {
+          "outcome": "abstained",
+          "value": null,
+          "reason": "meter_return_not_read"
+        },
+        "system/1/1": {
+          "outcome": "decided",
+          "value": {
+            "numerator": 6,
+            "denominator": 8,
+            "raw": "6/8",
+            "segments": [
+              {
+                "numerator": 6,
+                "denominator": 8,
+                "raw": "6/8",
+                "from_cell": 0
+              }
+            ],
+            "declined_changes": [
+              {
+                "from_cell": 4,
+                "numerator": 4,
+                "denominator": 4,
+                "raw": "4/4",
+                "support": 3.0,
+                "staves_reading_it": [
+                  7
+                ],
+                "staves_reading_a_meter": 1,
+                "corroborated": false,
+                "bars_fit": 0,
+                "bars_contradict": 1,
+                "loose_digits": 2,
+                "declined_reason": "meter_change_not_system_wide"
+              }
+            ]
+          },
+          "reason": "carried_uncontested"
+        }
+      }
+    },
+    "machine_proxies": {
+      "notes_reaching_file": {
+        "n": 355,
+        "of": 1502,
+        "fraction": 0.23635153129161118
+      },
+      "bars_held_out_sum": {
+        "n": 160,
+        "of": 287,
+        "fraction": 0.5574912891986062,
+        "noteheads_and_rests": 700,
+        "bars_on_a_doubled_staff": 0,
+        "bars_with_events_without_a_meter": 0,
+        "named_in_the_export_report": 160
+      },
+      "bars_add_up_control": {
+        "exact": 322,
+        "short": 0,
+        "overfull": 0,
+        "empty": 0,
+        "unassessable": 0,
+        "n": 322,
+        "of": 322,
+        "fraction": 1.0
+      },
+      "parts_named": {
+        "n": 13,
+        "of": 14,
+        "fraction": 0.9285714285714286,
+        "names": [
+          "Flute",
+          "Oboe",
+          "Clarinet",
+          "Bassoon",
+          "Contrabassoon",
+          "Staff p0-s0-5",
+          "Horn",
+          "Trumpet",
+          "Timpani",
+          "Violin",
+          "Violin",
+          "Viola",
+          "Cello",
+          "Contrabass"
+        ]
+      },
+      "held_out": {
+        "staff_not_identified": 17,
+        "of_noteheads_in_log": 1502,
+        "fraction": 0.011318242343541944
+      },
+      "unread_bars": {
+        "empty_bars_padded": 11,
+        "empty_bars_padded_without_meter": 0,
+        "tacet_bars_not_padded_without_meter": 0
+      },
+      "transpose_parts": {
+        "n": 0,
+        "of": 14
+      },
+      "notes_doubled_to_condensed_slot": 0,
+      "named_drop_reasons": {
+        "duration_narrowed": 189,
+        "no_pitch": 0,
+        "staff_not_identified": 17,
+        "owned_by_another_staff": 45,
+        "ink_is_a_whole_rest": 2
+      },
+      "all_drop_reasons": {
+        "duration_narrowed": 189,
+        "not_a_notehead:too_narrow": 244,
+        "not_a_notehead:stacked_head_duplicate": 28,
+        "owned_by_another_staff": 45,
+        "not_a_notehead:clipped_fragment": 36,
+        "not_a_notehead:notehead_is_a_duplicate_box": 8,
+        "not_a_rest:rest_has_a_stem": 2,
+        "not_a_rest:rest_off_center": 1,
+        "not_a_rest:rest_is_a_duplicate_box": 37,
+        "rest_duration_abstained": 7,
+        "not_a_notehead:is_a_meter_digit": 30,
+        "not_a_rest:rest_clipped_by_crop": 47,
+        "not_a_rest:rest_outside_its_staff": 17,
+        "not_a_notehead:belongs_to_a_nearer_staff": 5,
+        "ink_is_a_whole_rest": 2,
+        "staff_not_identified": 17,
+        "not_a_rest:rest_touches_two_staff_lines": 2,
+        "bar_does_not_add_up": 700
+      },
+      "balanced": true
+    },
+    "bar_score": {
+      "status": "ok",
+      "bar_range": [
+        8,
+        22
+      ],
+      "comparable_cells": 53,
+      "skipped_cells": 157,
+      "totals": {
+        "ref_n": 240,
+        "our_n": 158,
+        "matched_exact": 2,
+        "duration_wrong": 3,
+        "pitch_wrong": 101,
+        "missing": 134,
+        "extra": 52
+      },
+      "per_family": {
+        "Flute": {
+          "comparable_bars": 9,
+          "skipped_bars": 6,
+          "skipped": [
+            "9",
+            "10",
+            "12",
+            "13",
+            "14",
+            "15"
+          ],
+          "total": {
+            "ref_n": 46,
+            "our_n": 25,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 18,
+            "missing": 28,
+            "extra": 7
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 18,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 18,
+              "extra": 0
+            },
+            "11": {
+              "ref_n": 9,
+              "our_n": 4,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 4,
+              "missing": 5,
+              "extra": 0
+            },
+            "16": {
+              "ref_n": 0,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "17": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "18": {
+              "ref_n": 5,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 4,
+              "extra": 0
+            },
+            "19": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "20": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "21": {
+              "ref_n": 1,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 5
+            },
+            "22": {
+              "ref_n": 0,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            }
+          }
+        },
+        "Oboe": {
+          "comparable_bars": 4,
+          "skipped_bars": 11,
+          "skipped": [
+            "9",
+            "10",
+            "12",
+            "13",
+            "14",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": {
+            "ref_n": 20,
+            "our_n": 9,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 18,
+            "extra": 7
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 18,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 18,
+              "extra": 0
+            },
+            "11": {
+              "ref_n": 1,
+              "our_n": 4,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 3
+            },
+            "15": {
+              "ref_n": 1,
+              "our_n": 4,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 3
+            },
+            "16": {
+              "ref_n": 0,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            }
+          }
+        },
+        "Clarinet": {
+          "comparable_bars": 3,
+          "skipped_bars": 12,
+          "skipped": [
+            "9",
+            "10",
+            "11",
+            "13",
+            "14",
+            "15",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": {
+            "ref_n": 18,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 18,
+            "extra": 4
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 18,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 18,
+              "extra": 0
+            },
+            "12": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            },
+            "16": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            }
+          }
+        },
+        "Bassoon": {
+          "comparable_bars": 2,
+          "skipped_bars": 13,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "20",
+            "22"
+          ],
+          "total": {
+            "ref_n": 7,
+            "our_n": 12,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 7,
+            "missing": 0,
+            "extra": 5
+          },
+          "by_bar": {
+            "19": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "21": {
+              "ref_n": 1,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 5
+            }
+          }
+        },
+        "Contrabassoon": {
+          "comparable_bars": 1,
+          "skipped_bars": 14,
+          "skipped": [
+            "8",
+            "9",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          },
+          "by_bar": {
+            "10": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            }
+          }
+        },
+        "Horn (C)": {
+          "comparable_bars": 0,
+          "skipped_bars": 15,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": null,
+          "by_bar": {}
+        },
+        "Horn (Es)": {
+          "comparable_bars": 3,
+          "skipped_bars": 12,
+          "skipped": [
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"
+          ],
+          "total": {
+            "ref_n": 10,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 10,
+            "extra": 0
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 8,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 8,
+              "extra": 0
+            },
+            "21": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "22": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            }
+          }
+        },
+        "Trumpet": {
+          "comparable_bars": 0,
+          "skipped_bars": 15,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": null,
+          "by_bar": {}
+        },
+        "Timpani": {
+          "comparable_bars": 3,
+          "skipped_bars": 12,
+          "skipped": [
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "17",
+            "18",
+            "19",
+            "20"
+          ],
+          "total": {
+            "ref_n": 21,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 20,
+            "extra": 0
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 9,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 9,
+              "extra": 0
+            },
+            "21": {
+              "ref_n": 6,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 6,
+              "extra": 0
+            },
+            "22": {
+              "ref_n": 6,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 5,
+              "extra": 0
+            }
+          }
+        },
+        "Violin I": {
+          "comparable_bars": 5,
+          "skipped_bars": 10,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "12",
+            "13",
+            "14",
+            "15",
+            "17",
+            "18",
+            "19"
+          ],
+          "total": {
+            "ref_n": 24,
+            "our_n": 22,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 16,
+            "missing": 6,
+            "extra": 4
+          },
+          "by_bar": {
+            "11": {
+              "ref_n": 4,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 2,
+              "extra": 1
+            },
+            "16": {
+              "ref_n": 6,
+              "our_n": 4,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 4,
+              "missing": 2,
+              "extra": 0
+            },
+            "20": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "21": {
+              "ref_n": 3,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 0,
+              "extra": 3
+            },
+            "22": {
+              "ref_n": 5,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 1,
+              "missing": 2,
+              "extra": 0
+            }
+          }
+        },
+        "Violin II": {
+          "comparable_bars": 7,
+          "skipped_bars": 8,
+          "skipped": [
+            "9",
+            "10",
+            "12",
+            "13",
+            "16",
+            "17",
+            "18",
+            "21"
+          ],
+          "total": {
+            "ref_n": 29,
+            "our_n": 20,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 12,
+            "missing": 15,
+            "extra": 6
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 10,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 10,
+              "extra": 0
+            },
+            "11": {
+              "ref_n": 5,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 2,
+              "extra": 0
+            },
+            "14": {
+              "ref_n": 3,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 0,
+              "extra": 0
+            },
+            "15": {
+              "ref_n": 4,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 1,
+              "extra": 0
+            },
+            "19": {
+              "ref_n": 2,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 4
+            },
+            "20": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            },
+            "22": {
+              "ref_n": 5,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 1,
+              "pitch_wrong": 1,
+              "missing": 2,
+              "extra": 0
+            }
+          }
+        },
+        "Viola": {
+          "comparable_bars": 7,
+          "skipped_bars": 8,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "12",
+            "14",
+            "16",
+            "18",
+            "22"
+          ],
+          "total": {
+            "ref_n": 22,
+            "our_n": 26,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 15,
+            "missing": 7,
+            "extra": 11
+          },
+          "by_bar": {
+            "11": {
+              "ref_n": 4,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 2,
+              "extra": 1
+            },
+            "13": {
+              "ref_n": 4,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 4,
+              "missing": 0,
+              "extra": 2
+            },
+            "15": {
+              "ref_n": 3,
+              "our_n": 3,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 2,
+              "extra": 2
+            },
+            "17": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "19": {
+              "ref_n": 2,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 4
+            },
+            "20": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            },
+            "21": {
+              "ref_n": 3,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            }
+          }
+        },
+        "Violoncello": {
+          "comparable_bars": 7,
+          "skipped_bars": 8,
+          "skipped": [
+            "9",
+            "10",
+            "11",
+            "13",
+            "14",
+            "15",
+            "17",
+            "22"
+          ],
+          "total": {
+            "ref_n": 31,
+            "our_n": 26,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 20,
+            "missing": 11,
+            "extra": 6
+          },
+          "by_bar": {
+            "8": {
+              "ref_n": 8,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 8,
+              "extra": 0
+            },
+            "12": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "16": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "18": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            },
+            "19": {
+              "ref_n": 2,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 4
+            },
+            "20": {
+              "ref_n": 0,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 2
+            },
+            "21": {
+              "ref_n": 3,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            }
+          }
+        },
+        "Contrabass": {
+          "comparable_bars": 2,
+          "skipped_bars": 13,
+          "skipped": [
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "18",
+            "19",
+            "20",
+            "21",
+            "22"
+          ],
+          "total": {
+            "ref_n": 12,
+            "our_n": 11,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 11,
+            "missing": 1,
+            "extra": 0
+          },
+          "by_bar": {
+            "16": {
+              "ref_n": 6,
+              "our_n": 5,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 5,
+              "missing": 1,
+              "extra": 0
+            },
+            "17": {
+              "ref_n": 6,
+              "our_n": 6,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 6,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        }
+      },
+      "worst_10": [
+        {
+          "family": "Flute",
+          "bar": "8",
+          "n_wrong": 18,
+          "ref_n": 18,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 18,
+          "extra": 0
+        },
+        {
+          "family": "Oboe",
+          "bar": "8",
+          "n_wrong": 18,
+          "ref_n": 18,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 18,
+          "extra": 0
+        },
+        {
+          "family": "Clarinet",
+          "bar": "8",
+          "n_wrong": 18,
+          "ref_n": 18,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 18,
+          "extra": 0
+        },
+        {
+          "family": "Violin II",
+          "bar": "8",
+          "n_wrong": 10,
+          "ref_n": 10,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 10,
+          "extra": 0
+        },
+        {
+          "family": "Flute",
+          "bar": "11",
+          "n_wrong": 9,
+          "ref_n": 9,
+          "our_n": 4,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 4,
+          "missing": 5,
+          "extra": 0
+        },
+        {
+          "family": "Timpani",
+          "bar": "8",
+          "n_wrong": 9,
+          "ref_n": 9,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 9,
+          "extra": 0
+        },
+        {
+          "family": "Horn (Es)",
+          "bar": "8",
+          "n_wrong": 8,
+          "ref_n": 8,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 8,
+          "extra": 0
+        },
+        {
+          "family": "Violoncello",
+          "bar": "8",
+          "n_wrong": 8,
+          "ref_n": 8,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 8,
+          "extra": 0
+        },
+        {
+          "family": "Flute",
+          "bar": "19",
+          "n_wrong": 6,
+          "ref_n": 6,
+          "our_n": 6,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 6,
+          "missing": 0,
+          "extra": 0
+        },
+        {
+          "family": "Flute",
+          "bar": "20",
+          "n_wrong": 6,
+          "ref_n": 6,
+          "our_n": 6,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 6,
+          "missing": 0,
+          "extra": 0
+        }
+      ]
+    }
+  },
+  "machine_proxies": {
+    "notes_reaching_file": {
+      "n": 355,
+      "of": 1502,
+      "fraction": 0.23635153129161118
+    },
+    "bars_held_out_sum": {
+      "n": 160,
+      "of": 287,
+      "fraction": 0.5574912891986062,
+      "noteheads_and_rests": 700,
+      "bars_on_a_doubled_staff": 0,
+      "bars_with_events_without_a_meter": 0,
+      "named_in_the_export_report": 160
+    },
+    "bars_add_up_control": {
+      "exact": 322,
+      "short": 0,
+      "overfull": 0,
+      "empty": 0,
+      "unassessable": 0,
+      "n": 322,
+      "of": 322,
+      "fraction": 1.0
+    },
+    "parts_named": {
+      "n": 13,
+      "of": 14,
+      "fraction": 0.9285714285714286,
+      "names": [
+        "Flute",
+        "Oboe",
+        "Clarinet",
+        "Bassoon",
+        "Contrabassoon",
+        "Staff p0-s0-5",
+        "Horn",
+        "Trumpet",
+        "Timpani",
+        "Violin",
+        "Violin",
+        "Viola",
+        "Cello",
+        "Contrabass"
+      ]
+    },
+    "held_out": {
+      "staff_not_identified": 17,
+      "of_noteheads_in_log": 1502,
+      "fraction": 0.011318242343541944
+    },
+    "unread_bars": {
+      "empty_bars_padded": 11,
+      "empty_bars_padded_without_meter": 0,
+      "tacet_bars_not_padded_without_meter": 0
+    },
+    "transpose_parts": {
+      "n": 0,
+      "of": 14
+    },
+    "notes_doubled_to_condensed_slot": 0,
+    "named_drop_reasons": {
+      "duration_narrowed": 189,
+      "no_pitch": 0,
+      "staff_not_identified": 17,
+      "owned_by_another_staff": 45,
+      "ink_is_a_whole_rest": 2
+    },
+    "all_drop_reasons": {
+      "duration_narrowed": 189,
+      "not_a_notehead:too_narrow": 244,
+      "not_a_notehead:stacked_head_duplicate": 28,
+      "owned_by_another_staff": 45,
+      "not_a_notehead:clipped_fragment": 36,
+      "not_a_notehead:notehead_is_a_duplicate_box": 8,
+      "not_a_rest:rest_has_a_stem": 2,
+      "not_a_rest:rest_off_center": 1,
+      "not_a_rest:rest_is_a_duplicate_box": 37,
+      "rest_duration_abstained": 7,
+      "not_a_notehead:is_a_meter_digit": 30,
+      "not_a_rest:rest_clipped_by_crop": 47,
+      "not_a_rest:rest_outside_its_staff": 17,
+      "not_a_notehead:belongs_to_a_nearer_staff": 5,
+      "ink_is_a_whole_rest": 2,
+      "staff_not_identified": 17,
+      "not_a_rest:rest_touches_two_staff_lines": 2,
+      "bar_does_not_add_up": 700
+    },
+    "balanced": true
+  },
+  "side_by_side": {
+    "print": {
+      "built": true,
+      "path": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/print.png",
+      "dpi": 150,
+      "page_index": 1
+    },
+    "ours": {
+      "built": true,
+      "svg": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/ours.svg",
+      "png": "benchmarks/acceptance/quick/out/brahms1-breitkopf/side-by-side/ours.png",
+      "first_bar": 8,
+      "last_bar": 22
+    }
+  },
+  "bar_score": {
+    "status": "ok",
+    "bar_range": [
+      8,
+      22
+    ],
+    "comparable_cells": 53,
+    "skipped_cells": 157,
+    "totals": {
+      "ref_n": 240,
+      "our_n": 158,
+      "matched_exact": 2,
+      "duration_wrong": 2,
+      "pitch_wrong": 102,
+      "missing": 134,
+      "extra": 52
+    },
+    "per_family": {
+      "Flute": {
+        "comparable_bars": 9,
+        "skipped_bars": 6,
+        "skipped": [
+          "9",
+          "10",
+          "12",
+          "13",
+          "14",
+          "15"
+        ],
+        "total": {
+          "ref_n": 46,
+          "our_n": 25,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 18,
+          "missing": 28,
+          "extra": 7
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 18,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 18,
+            "extra": 0
+          },
+          "11": {
+            "ref_n": 9,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 4,
+            "missing": 5,
+            "extra": 0
+          },
+          "16": {
+            "ref_n": 0,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "17": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "18": {
+            "ref_n": 5,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 4,
+            "extra": 0
+          },
+          "19": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "20": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "21": {
+            "ref_n": 1,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 5
+          },
+          "22": {
+            "ref_n": 0,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          }
+        }
+      },
+      "Oboe": {
+        "comparable_bars": 4,
+        "skipped_bars": 11,
+        "skipped": [
+          "9",
+          "10",
+          "12",
+          "13",
+          "14",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 20,
+          "our_n": 9,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 2,
+          "missing": 18,
+          "extra": 7
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 18,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 18,
+            "extra": 0
+          },
+          "11": {
+            "ref_n": 1,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 3
+          },
+          "15": {
+            "ref_n": 1,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 3
+          },
+          "16": {
+            "ref_n": 0,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          }
+        }
+      },
+      "Clarinet": {
+        "comparable_bars": 3,
+        "skipped_bars": 12,
+        "skipped": [
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 18,
+          "our_n": 4,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 18,
+          "extra": 4
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 18,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 18,
+            "extra": 0
+          },
+          "12": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          },
+          "16": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          }
+        }
+      },
+      "Bassoon": {
+        "comparable_bars": 2,
+        "skipped_bars": 13,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "20",
+          "22"
+        ],
+        "total": {
+          "ref_n": 7,
+          "our_n": 12,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 7,
+          "missing": 0,
+          "extra": 5
+        },
+        "by_bar": {
+          "19": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "21": {
+            "ref_n": 1,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 5
+          }
+        }
+      },
+      "Contrabassoon": {
+        "comparable_bars": 1,
+        "skipped_bars": 14,
+        "skipped": [
+          "8",
+          "9",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 0,
+          "our_n": 2,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 0,
+          "extra": 2
+        },
+        "by_bar": {
+          "10": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          }
+        }
+      },
+      "Horn (C)": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Horn (Es)": {
+        "comparable_bars": 3,
+        "skipped_bars": 12,
+        "skipped": [
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "total": {
+          "ref_n": 10,
+          "our_n": 0,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 10,
+          "extra": 0
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 8,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 8,
+            "extra": 0
+          },
+          "21": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "22": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          }
+        }
+      },
+      "Trumpet": {
+        "comparable_bars": 0,
+        "skipped_bars": 15,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": null,
+        "by_bar": {}
+      },
+      "Timpani": {
+        "comparable_bars": 3,
+        "skipped_bars": 12,
+        "skipped": [
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20"
+        ],
+        "total": {
+          "ref_n": 21,
+          "our_n": 1,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 1,
+          "missing": 20,
+          "extra": 0
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 9,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 9,
+            "extra": 0
+          },
+          "21": {
+            "ref_n": 6,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 6,
+            "extra": 0
+          },
+          "22": {
+            "ref_n": 6,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 5,
+            "extra": 0
+          }
+        }
+      },
+      "Violin I": {
+        "comparable_bars": 5,
+        "skipped_bars": 10,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "12",
+          "13",
+          "14",
+          "15",
+          "17",
+          "18",
+          "19"
+        ],
+        "total": {
+          "ref_n": 24,
+          "our_n": 22,
+          "matched_exact": 1,
+          "duration_wrong": 1,
+          "pitch_wrong": 16,
+          "missing": 6,
+          "extra": 4
+        },
+        "by_bar": {
+          "11": {
+            "ref_n": 4,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 2,
+            "extra": 1
+          },
+          "16": {
+            "ref_n": 6,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 4,
+            "missing": 2,
+            "extra": 0
+          },
+          "20": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "21": {
+            "ref_n": 3,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 0,
+            "extra": 3
+          },
+          "22": {
+            "ref_n": 5,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 1,
+            "missing": 2,
+            "extra": 0
+          }
+        }
+      },
+      "Violin II": {
+        "comparable_bars": 7,
+        "skipped_bars": 8,
+        "skipped": [
+          "9",
+          "10",
+          "12",
+          "13",
+          "16",
+          "17",
+          "18",
+          "21"
+        ],
+        "total": {
+          "ref_n": 29,
+          "our_n": 20,
+          "matched_exact": 1,
+          "duration_wrong": 1,
+          "pitch_wrong": 12,
+          "missing": 15,
+          "extra": 6
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 10,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 10,
+            "extra": 0
+          },
+          "11": {
+            "ref_n": 5,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 2,
+            "extra": 0
+          },
+          "14": {
+            "ref_n": 3,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 0,
+            "extra": 0
+          },
+          "15": {
+            "ref_n": 4,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 1,
+            "extra": 0
+          },
+          "19": {
+            "ref_n": 2,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 4
+          },
+          "20": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          },
+          "22": {
+            "ref_n": 5,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 1,
+            "pitch_wrong": 1,
+            "missing": 2,
+            "extra": 0
+          }
+        }
+      },
+      "Viola": {
+        "comparable_bars": 7,
+        "skipped_bars": 8,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "12",
+          "14",
+          "16",
+          "18",
+          "22"
+        ],
+        "total": {
+          "ref_n": 22,
+          "our_n": 26,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 15,
+          "missing": 7,
+          "extra": 11
+        },
+        "by_bar": {
+          "11": {
+            "ref_n": 4,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 2,
+            "extra": 1
+          },
+          "13": {
+            "ref_n": 4,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 4,
+            "missing": 0,
+            "extra": 2
+          },
+          "15": {
+            "ref_n": 3,
+            "our_n": 3,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 2,
+            "extra": 2
+          },
+          "17": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "19": {
+            "ref_n": 2,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 4
+          },
+          "20": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          },
+          "21": {
+            "ref_n": 3,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          }
+        }
+      },
+      "Violoncello": {
+        "comparable_bars": 7,
+        "skipped_bars": 8,
+        "skipped": [
+          "9",
+          "10",
+          "11",
+          "13",
+          "14",
+          "15",
+          "17",
+          "22"
+        ],
+        "total": {
+          "ref_n": 31,
+          "our_n": 26,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 20,
+          "missing": 11,
+          "extra": 6
+        },
+        "by_bar": {
+          "8": {
+            "ref_n": 8,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 8,
+            "extra": 0
+          },
+          "12": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "16": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "18": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          },
+          "19": {
+            "ref_n": 2,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 4
+          },
+          "20": {
+            "ref_n": 0,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 2
+          },
+          "21": {
+            "ref_n": 3,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          }
+        }
+      },
+      "Contrabass": {
+        "comparable_bars": 2,
+        "skipped_bars": 13,
+        "skipped": [
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22"
+        ],
+        "total": {
+          "ref_n": 12,
+          "our_n": 11,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 11,
+          "missing": 1,
+          "extra": 0
+        },
+        "by_bar": {
+          "16": {
+            "ref_n": 6,
+            "our_n": 5,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 5,
+            "missing": 1,
+            "extra": 0
+          },
+          "17": {
+            "ref_n": 6,
+            "our_n": 6,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 6,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      }
+    },
+    "worst_10": [
+      {
+        "family": "Flute",
+        "bar": "8",
+        "n_wrong": 18,
+        "ref_n": 18,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 18,
+        "extra": 0
+      },
+      {
+        "family": "Oboe",
+        "bar": "8",
+        "n_wrong": 18,
+        "ref_n": 18,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 18,
+        "extra": 0
+      },
+      {
+        "family": "Clarinet",
+        "bar": "8",
+        "n_wrong": 18,
+        "ref_n": 18,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 18,
+        "extra": 0
+      },
+      {
+        "family": "Violin II",
+        "bar": "8",
+        "n_wrong": 10,
+        "ref_n": 10,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 10,
+        "extra": 0
+      },
+      {
+        "family": "Flute",
+        "bar": "11",
+        "n_wrong": 9,
+        "ref_n": 9,
+        "our_n": 4,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 4,
+        "missing": 5,
+        "extra": 0
+      },
+      {
+        "family": "Timpani",
+        "bar": "8",
+        "n_wrong": 9,
+        "ref_n": 9,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 9,
+        "extra": 0
+      },
+      {
+        "family": "Horn (Es)",
+        "bar": "8",
+        "n_wrong": 8,
+        "ref_n": 8,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 8,
+        "extra": 0
+      },
+      {
+        "family": "Violoncello",
+        "bar": "8",
+        "n_wrong": 8,
+        "ref_n": 8,
+        "our_n": 0,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 8,
+        "extra": 0
+      },
+      {
+        "family": "Flute",
+        "bar": "19",
+        "n_wrong": 6,
+        "ref_n": 6,
+        "our_n": 6,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 6,
+        "missing": 0,
+        "extra": 0
+      },
+      {
+        "family": "Flute",
+        "bar": "20",
+        "n_wrong": 6,
+        "ref_n": 6,
+        "our_n": 6,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 6,
+        "missing": 0,
+        "extra": 0
+      }
+    ]
+  },
+  "status": "ok"
+}

@@ -3,30 +3,32 @@
     {
       "family": "accidental",
       "quantity": "accidental_owner",
-      "detector_glyphs": 155,
-      "cv_glyphs": 155,
-      "ink_rows": 310,
+      "detector_glyphs": 139,
+      "cv_glyphs": 139,
+      "ink_rows": 278,
       "written": 0,
-      "decided": 63,
+      "decided": 55,
       "abstained": {
-        "no_candidate": 66,
-        "is_a_key_signature_marker": 22,
-        "ambiguous_height": 3,
+        "no_candidate": 62,
+        "is_a_key_signature_marker": 19,
+        "ambiguous_height": 2,
         "head_belongs_to_a_nearer_staff": 1
       },
       "produced_by": "adjudicate",
       "status": "decided_but_unwritten",
-      "why": "`accidental_owner` decided 63 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+      "why": "`accidental_owner` decided 55 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
     },
     {
       "family": "articulation",
       "quantity": "articulation_owner",
-      "detector_glyphs": 24,
+      "detector_glyphs": 26,
       "cv_glyphs": 0,
-      "ink_rows": 24,
+      "ink_rows": 26,
       "written": 0,
       "decided": 1,
-      "abstained": {},
+      "abstained": {
+        "no_notehead": 1
+      },
       "produced_by": "adjudicate",
       "status": "decided_but_unwritten",
       "why": "`articulation_owner` decided 1 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
@@ -34,9 +36,9 @@
     {
       "family": "clef",
       "quantity": "clef",
-      "detector_glyphs": 84,
+      "detector_glyphs": 87,
       "cv_glyphs": 0,
-      "ink_rows": 84,
+      "ink_rows": 87,
       "written": 0,
       "decided": 53,
       "abstained": {},
@@ -52,7 +54,7 @@
       "written": 0,
       "decided": 0,
       "abstained": {
-        "out_of_scope": 853
+        "out_of_scope": 864
       },
       "produced_by": "adjudicate",
       "status": "abstained"
@@ -60,17 +62,17 @@
     {
       "family": "dynamic",
       "quantity": "dynamic",
-      "detector_glyphs": 395,
+      "detector_glyphs": 396,
       "cv_glyphs": 0,
-      "ink_rows": 395,
+      "ink_rows": 396,
       "written": 0,
-      "decided": 845,
+      "decided": 856,
       "abstained": {
         "unspellable": 8
       },
       "produced_by": "adjudicate",
       "status": "decided_but_unwritten",
-      "why": "`dynamic` decided 845 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
+      "why": "`dynamic` decided 856 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
     },
     {
       "family": "fermata",
@@ -78,7 +80,7 @@
       "detector_glyphs": 63,
       "cv_glyphs": 0,
       "ink_rows": 63,
-      "written": 30,
+      "written": 31,
       "decided": 51,
       "abstained": {
         "no_carrier": 12
@@ -89,16 +91,16 @@
     {
       "family": "key",
       "quantity": "key_signature",
-      "detector_glyphs": 92,
+      "detector_glyphs": 96,
       "cv_glyphs": 0,
-      "ink_rows": 92,
+      "ink_rows": 96,
       "written": 0,
       "decided": 53,
       "abstained": {
-        "disagrees_with_document": 13,
-        "disagrees_with_system": 4,
+        "disagrees_with_document": 15,
+        "disagrees_with_system": 5,
+        "mixed_marker_kinds": 4,
         "no_evidence": 5,
-        "mixed_marker_kinds": 3,
         "run_fits_no_slot_table": 1
       },
       "produced_by": "adjudicate",
@@ -107,11 +109,11 @@
     {
       "family": "note",
       "quantity": "pitch",
-      "detector_glyphs": 1339,
+      "detector_glyphs": 1330,
       "cv_glyphs": 0,
-      "ink_rows": 1339,
-      "written": 718,
-      "decided": 1807,
+      "ink_rows": 1330,
+      "written": 731,
+      "decided": 1804,
       "abstained": {},
       "produced_by": "evaluate",
       "status": "emitted"
@@ -131,10 +133,10 @@
     {
       "family": "rest",
       "quantity": "rest",
-      "detector_glyphs": 524,
+      "detector_glyphs": 521,
       "cv_glyphs": 0,
-      "ink_rows": 524,
-      "written": 395,
+      "ink_rows": 521,
+      "written": 408,
       "decided": 0,
       "abstained": {},
       "produced_by": "evaluate",
@@ -143,12 +145,12 @@
     {
       "family": "slur",
       "quantity": "arc_kind",
-      "detector_glyphs": 244,
+      "detector_glyphs": 246,
       "cv_glyphs": 0,
-      "ink_rows": 244,
-      "written": 18,
+      "ink_rows": 246,
+      "written": 17,
       "abstentions_name_no_family": true,
-      "decided": 244,
+      "decided": 246,
       "abstained": {},
       "produced_by": "adjudicate",
       "status": "emitted"
@@ -156,12 +158,12 @@
     {
       "family": "tie",
       "quantity": "arc_kind",
-      "detector_glyphs": 270,
+      "detector_glyphs": 266,
       "cv_glyphs": 0,
-      "ink_rows": 270,
-      "written": 16,
+      "ink_rows": 266,
+      "written": 19,
       "abstentions_name_no_family": true,
-      "decided": 270,
+      "decided": 266,
       "abstained": {},
       "produced_by": "adjudicate",
       "status": "emitted"
@@ -169,9 +171,9 @@
     {
       "family": "time",
       "quantity": "meter",
-      "detector_glyphs": 20,
+      "detector_glyphs": 16,
       "cv_glyphs": 0,
-      "ink_rows": 20,
+      "ink_rows": 16,
       "written": 0,
       "decided": 5,
       "abstained": {},
@@ -181,14 +183,14 @@
     {
       "family": "tuplet",
       "quantity": "tuplet_ratio",
-      "detector_glyphs": 1,
+      "detector_glyphs": 0,
       "cv_glyphs": 0,
-      "ink_rows": 1,
+      "ink_rows": 0,
       "written": 0,
-      "decided": 1,
+      "decided": 0,
       "abstained": {},
       "produced_by": "adjudicate",
-      "status": "emitted"
+      "status": "abstained"
     },
     {
       "family": "wedge",
@@ -204,41 +206,40 @@
     }
   ],
   "accidental_reading": {
-    "printed_glyphs_detected": 155,
-    "key_signature_glyphs_detected_and_owned_elsewhere": 92,
-    "gathered": 155,
-    "owner_decided": 63,
+    "printed_glyphs_detected": 139,
+    "key_signature_glyphs_detected_and_owned_elsewhere": 96,
+    "gathered": 139,
+    "owner_decided": 55,
     "applied": 0,
-    "abstained_ambiguous": 3,
-    "no_candidate": 66,
+    "abstained_ambiguous": 2,
+    "no_candidate": 62,
     "no_unit": 0,
     "no_evidence": 0,
     "refused_not_an_accidental": 0,
-    "is_a_key_signature_marker": 22,
+    "is_a_key_signature_marker": 19,
     "head_belongs_to_a_nearer_staff": 1,
-    "heads_owned": 53,
-    "heads_contradicted": 7,
-    "owners_sharing_a_head": 10,
+    "heads_owned": 47,
+    "heads_contradicted": 5,
+    "owners_sharing_a_head": 8,
     "applied_on_a_doubled_copy": 0,
-    "unowned": 46,
-    "carried_in_bar": 22,
+    "unowned": 42,
+    "carried_in_bar": 24,
     "pitches_altered_by_the_key": 0,
-    "printed_glyphs_read_into_a_verdict": 71,
+    "printed_glyphs_read_into_a_verdict": 69,
     "heads_balanced": true,
     "unaccounted": 0
   },
   "unclaimed_classes": {
-    "arpeggiato": 212,
-    "stringsDownBow": 1
+    "arpeggiato": 205
   },
   "detected_and_unrepresented": {},
   "detected_and_unrepresented_total": 0,
   "decided_and_unwritten": {
-    "accidental": 310,
-    "articulation": 24,
-    "dynamic": 395
+    "accidental": 278,
+    "articulation": 26,
+    "dynamic": 396
   },
-  "decided_and_unwritten_total": 729,
+  "decided_and_unwritten_total": 700,
   "decided_uncounted": [],
   "abstained_without_a_family": {},
   "status_census": {
@@ -249,8 +250,7 @@
       "note",
       "slur",
       "tie",
-      "time",
-      "tuplet"
+      "time"
     ],
     "decided_but_unwritten": [
       "accidental",
@@ -262,6 +262,7 @@
       "direction",
       "ornament",
       "rest",
+      "tuplet",
       "wedge"
     ],
     "stub": [],
@@ -275,113 +276,114 @@
   "family_refusals": {
     "ledger_is_not_a_ledger": {
       "refused": {
-        "inside_the_staff": 906,
-        "on_a_staff_line": 92,
+        "inside_the_staff": 929,
+        "on_a_staff_line": 98,
         "tall_not_a_rung": 1,
-        "no_head_on_the_rung": 4
+        "no_head_on_the_rung": 3
       },
-      "refused_total": 1003,
-      "kept": 194,
-      "abstained": 5,
+      "refused_total": 1031,
+      "kept": 187,
+      "abstained": 4,
       "abstained_reasons": {
-        "rung_without_boxed_head": 5
+        "rung_without_boxed_head": 4
       },
-      "verdicts": 1202,
+      "verdicts": 1222,
       "balanced": true
     },
     "accidental_is_not_an_accidental": {
       "refused": {},
       "refused_total": 0,
-      "kept": 155,
+      "kept": 139,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 155,
+      "verdicts": 139,
       "balanced": true
     },
     "rest_is_not_a_rest": {
       "refused": {
-        "rest_off_center": 14,
-        "rest_touches_two_staff_lines": 16,
-        "rest_has_a_stem": 16,
-        "rest_is_a_duplicate_box": 15,
-        "rest_clipped_by_crop": 6,
-        "rest_outside_its_staff": 1
+        "rest_off_center": 13,
+        "rest_touches_two_staff_lines": 13,
+        "rest_has_a_stem": 14,
+        "rest_is_a_duplicate_box": 16,
+        "rest_clipped_by_crop": 5,
+        "rest_outside_its_staff": 2,
+        "rest_overlaps_a_notehead": 2
       },
-      "refused_total": 68,
+      "refused_total": 65,
       "kept": 456,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 524,
+      "verdicts": 521,
       "balanced": true
     },
     "arpeggiato_is_not_an_arpeggiato": {
       "refused": {},
       "refused_total": 0,
-      "kept": 212,
+      "kept": 205,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 212,
+      "verdicts": 205,
       "balanced": true
     },
     "arc_is_not_an_arc": {
       "refused": {},
       "refused_total": 0,
-      "kept": 514,
+      "kept": 512,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 514,
+      "verdicts": 512,
       "balanced": true
     },
     "dynamic_is_not_a_dynamic": {
       "refused": {},
       "refused_total": 0,
-      "kept": 395,
+      "kept": 396,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 395,
+      "verdicts": 396,
       "balanced": true
     },
     "articulation_is_not_an_articulation": {
       "refused": {},
       "refused_total": 0,
-      "kept": 1,
+      "kept": 2,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 1,
+      "verdicts": 2,
       "balanced": true
     },
     "flag_is_not_a_flag": {
       "refused": {},
       "refused_total": 0,
-      "kept": 20,
+      "kept": 17,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 20,
+      "verdicts": 17,
       "balanced": true
     },
     "keysig_marker_is_not_a_marker": {
       "refused": {},
       "refused_total": 0,
-      "kept": 92,
+      "kept": 95,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 92,
+      "verdicts": 95,
       "balanced": true
     },
     "tuplet_marker_is_not_a_marker": {
       "refused": {},
       "refused_total": 0,
-      "kept": 1,
+      "kept": 0,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 1,
+      "verdicts": 0,
       "balanced": true
     }
   },
   "grand_staff_families": {
     "pedal_owner": {
       "decided": 0,
-      "abstained": 0,
+      "abstained": 1,
       "written": 0
     },
     "ottava_owner": {
@@ -392,34 +394,34 @@
   },
   "inferred_clefs": [],
   "written": {
-    "arc_notes_reachable_at_a_stem": 729,
-    "tie_links_marked": 20,
-    "tie_links_crossing_a_barline": 18,
-    "tie_chains_marked": 17,
-    "tie_spans_marked": 20,
-    "slur_spans_marked": 44,
-    "tie_chains_over_two_notes": 2,
-    "tie_arcs_naming_an_already_named_pair": 22,
-    "bars_held_out_sum": 155,
-    "notes_held_out_sum": 390,
+    "arc_notes_reachable_at_a_stem": 733,
+    "tie_links_marked": 21,
+    "tie_links_crossing_a_barline": 20,
+    "tie_chains_marked": 20,
+    "tie_spans_marked": 21,
+    "slur_spans_marked": 49,
+    "tie_chains_over_two_notes": 1,
+    "tie_arcs_naming_an_already_named_pair": 20,
+    "bars_held_out_sum": 148,
+    "notes_held_out_sum": 366,
     "measure_rests_read": 288,
-    "empty_bars_padded": 107,
+    "empty_bars_padded": 102,
     "empty_bars_padded_without_meter": 0,
-    "dynamics_not_renderable": 143,
-    "unread_bar_marks_written": 262,
-    "fermatas": 30,
-    "notes": 718,
+    "dynamics_not_renderable": 148,
+    "unread_bar_marks_written": 250,
+    "fermatas": 31,
+    "notes": 731,
     "articulation_marks_on_chord_members": 0,
     "articulations": 0,
-    "rests": 107,
-    "ties": 16,
-    "slurs": 18,
+    "rests": 120,
+    "ties": 19,
+    "slurs": 17,
     "tacet_bars_padded": 54,
-    "two_voice_bars": 2,
-    "rests_duplicated_across_voices": 2,
+    "two_voice_bars": 1,
+    "rests_duplicated_across_voices": 1,
     "fermatas_duplicated_across_voices": 0,
-    "bars_held_out_sum_on_a_doubled_staff": 12,
-    "notes_doubled_to_condensed_slot": 95,
+    "bars_held_out_sum_on_a_doubled_staff": 10,
+    "notes_doubled_to_condensed_slot": 101,
     "parts": 12
   },
   "part_join": {
@@ -481,55 +483,58 @@
     ]
   },
   "notes_not_written": {
-    "not_a_rest:rest_off_center": 14,
-    "ink_is_a_whole_rest": 14,
-    "not_a_notehead:too_narrow": 26,
-    "not_a_rest:rest_touches_two_staff_lines": 16,
-    "not_a_notehead:clipped_fragment": 48,
-    "not_a_notehead:stacked_head_duplicate": 106,
-    "owned_by_another_staff": 107,
-    "not_a_rest:rest_has_a_stem": 16,
-    "not_a_notehead:notehead_is_a_duplicate_box": 16,
-    "not_a_rest:rest_is_a_duplicate_box": 15,
-    "duration_narrowed": 44,
-    "rest_duration_abstained": 14,
-    "not_a_rest:rest_clipped_by_crop": 6,
-    "owner_not_read": 6,
-    "not_a_rest:rest_outside_its_staff": 1,
-    "not_a_notehead:belongs_to_a_nearer_staff": 5,
+    "not_a_rest:rest_off_center": 13,
+    "ink_is_a_whole_rest": 16,
+    "not_a_notehead:too_narrow": 20,
+    "not_a_rest:rest_touches_two_staff_lines": 13,
+    "not_a_notehead:clipped_fragment": 51,
+    "not_a_notehead:stacked_head_duplicate": 113,
+    "owned_by_another_staff": 101,
+    "not_a_rest:rest_has_a_stem": 14,
+    "not_a_notehead:notehead_is_a_duplicate_box": 20,
+    "not_a_rest:rest_is_a_duplicate_box": 16,
+    "duration_narrowed": 36,
+    "rest_duration_abstained": 12,
+    "not_a_rest:rest_clipped_by_crop": 5,
+    "owner_not_read": 4,
+    "not_a_rest:rest_outside_its_staff": 2,
+    "not_a_rest:rest_overlaps_a_notehead": 2,
+    "not_a_notehead:belongs_to_a_nearer_staff": 7,
     "not_a_notehead:is_a_clef": 3
   },
-  "notes_not_written_total": 457,
+  "notes_not_written_total": 448,
   "arcs_not_written": {
-    "arc_binds_fewer_than_two_notes": 171,
+    "arc_binds_fewer_than_two_notes": 173,
     "tie_pitch_contradiction": 9,
     "tie_spelling_differs": 1,
-    "tie_pair_no_start_head": 38,
-    "tie_pair_no_head_near_the_arc": 43,
-    "tie_pair_spans_a_whole_bar": 51,
-    "tie_pair_no_pair_at_one_position": 28,
-    "tie_pair_no_stop_head": 17,
-    "tie_pair_enters_from_previous_system": 20,
-    "tie_pair_runs_off_the_system": 9,
-    "tie_pair_narrowed": 10,
-    "tie_end_not_in_file": 2
+    "tie_pair_no_start_head": 41,
+    "tie_pair_no_head_near_the_arc": 36,
+    "tie_pair_spans_a_whole_bar": 43,
+    "tie_pair_no_pair_at_one_position": 32,
+    "tie_pair_no_stop_head": 16,
+    "tie_pair_enters_from_previous_system": 22,
+    "tie_pair_runs_off_the_system": 10,
+    "tie_pair_narrowed": 14,
+    "tie_end_not_in_file": 1
   },
-  "arcs_not_written_total": 399,
+  "arcs_not_written_total": 398,
   "wedges_not_written": {},
   "wedges_not_written_total": 0,
-  "articulations_not_written": {},
+  "articulations_not_written": {
+    "artic_no_notehead": 1
+  },
   "fermatas_not_written": {
     "fermata_no_carrier": 12,
-    "fermata_owning_glyph_not_written": 5
+    "fermata_owning_glyph_not_written": 4
   },
   "ornaments_not_written": {},
   "lilypond": {
     "ornaments_not_renderable": 0,
     "direction_words_not_renderable": 0,
-    "dynamics_not_renderable": 143,
+    "dynamics_not_renderable": 148,
     "articulation_marks_collapsed_per_chord": 0,
     "cross_system_arcs_and_wedges": "handled, not dropped -- see module docstring",
-    "two_voice_bars": 2,
+    "two_voice_bars": 1,
     "version": "2.24.4"
   },
   "unread_bar_marks": {
@@ -540,14 +545,14 @@
       "meter_return_not_read": "meter?"
     },
     "color": "#D00000",
-    "unread": 107,
-    "held_out_sum": 155,
-    "written": 262
+    "unread": 102,
+    "held_out_sum": 148,
+    "written": 250
   },
   "bars_held_out_sum": {
-    "bars": 155,
-    "bars_on_a_doubled_staff": 12,
-    "noteheads_and_rests": 390
+    "bars": 148,
+    "bars_on_a_doubled_staff": 10,
+    "noteheads_and_rests": 366
   },
   "meter_returns_not_read": 0
 }

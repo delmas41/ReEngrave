@@ -1,0 +1,5083 @@
+{
+  "id": "beethoven5-litolff",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 202.845,
+    "page_index": 3,
+    "start_page": 1,
+    "pages_gathered": "1-3",
+    "full": true,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json",
+    "xml_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.musicxml",
+    "ly_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.ly",
+    "pdf_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.pdf",
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.gather.log",
+    "log_tail": "out_meter': 0, 'dynamics_not_renderable': 148, 'unread_bar_marks_written': 250, 'fermatas': 31, 'notes': 731, 'articulation_marks_on_chord_members': 0, 'articulations': 0, 'rests': 120, 'ties': 19, 'slurs': 17, 'tacet_bars_padded': 54, 'two_voice_bars': 1, 'rests_duplicated_across_voices': 1, 'fermatas_duplicated_across_voices': 0, 'bars_held_out_sum_on_a_doubled_staff': 10, 'notes_doubled_to_condensed_slot': 101, 'parts': 12}\n  lilypond-only: {'ornaments_not_renderable': 0, 'direction_words_not_renderable': 0, 'dynamics_not_renderable': 148, 'articulation_marks_collapsed_per_chord': 0, 'cross_system_arcs_and_wedges': 'handled, not dropped -- see module docstring', 'two_voice_bars': 1, 'version': '2.24.4'}\n  \u26a0\ufe0f notes the record holds and the file does not: 448 {'not_a_rest:rest_off_center': 13, 'ink_is_a_whole_rest': 16, 'not_a_notehead:too_narrow': 20, 'not_a_rest:rest_touches_two_staff_lines': 13, 'not_a_notehead:clipped_fragment': 51, 'not_a_notehead:stacked_head_duplicate': 113, 'owned_by_another_staff': 101, 'not_a_rest:rest_has_a_stem': 14, 'not_a_notehead:notehead_is_a_duplicate_box': 20, 'not_a_rest:rest_is_a_duplicate_box': 16, 'duration_narrowed': 36, 'rest_duration_abstained': 12, 'not_a_rest:rest_clipped_by_crop': 5, 'owner_not_read': 4, 'not_a_rest:rest_outside_its_staff': 2, 'not_a_rest:rest_overlaps_a_notehead': 2, 'not_a_notehead:belongs_to_a_nearer_staff': 7, 'not_a_notehead:is_a_clef': 3}\n\n\u2500\u2500 ACCOUNTING (CLAUDE.md \u00a71: every unread bar is MARKED, never invented) \u2500\u2500\n  unread bars (\"unread\", read NOTHING): 102\n  held-out bars (\"unread\"): 148\n  total bars marked red in the file: 250 (colour #D00000)\n  staves held out: 0 (the part join could not NAME them, so they are held out of the file and counted, never silently dropped -- OMR_HOLD_OUT_UNIDENTIFIED)\n  meter returns not read (\"meter?\", bar kept, not held out): 0 -- a corroborated printed change this system's own bars could not sustain; the printed RETURN was never read (CLAUDE.md \u00a710, roadmap 2.12k)\n"
+  },
+  "full": true,
+  "stage_summary": {
+    "page": 3,
+    "gathered_total": 1938,
+    "families": {
+      "accidental": {
+        "gathered": 67,
+        "status": {
+          "given_away": 7,
+          "kept": 60
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1
+        }
+      },
+      "articulation": {
+        "gathered": 10,
+        "status": {
+          "kept": 10
+        },
+        "reasons": {}
+      },
+      "class:arpeggiato": {
+        "gathered": 75,
+        "status": {
+          "kept": 75
+        },
+        "reasons": {}
+      },
+      "class:augmentationDot": {
+        "gathered": 6,
+        "status": {
+          "kept": 6
+        },
+        "reasons": {}
+      },
+      "class:beam": {
+        "gathered": 98,
+        "status": {
+          "given_away": 19,
+          "kept": 15,
+          "undecided": 64
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 64,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 6,
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "class:brace": {
+        "gathered": 1,
+        "status": {
+          "undecided": 1
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 1
+        }
+      },
+      "class:flag16thUp": {
+        "gathered": 1,
+        "status": {
+          "kept": 1
+        },
+        "reasons": {}
+      },
+      "class:flag8thDown": {
+        "gathered": 3,
+        "status": {
+          "kept": 3
+        },
+        "reasons": {}
+      },
+      "class:flag8thUp": {
+        "gathered": 3,
+        "status": {
+          "kept": 3
+        },
+        "reasons": {}
+      },
+      "class:ledgerLine": {
+        "gathered": 506,
+        "status": {
+          "given_away": 1,
+          "kept": 74,
+          "refused": 431
+        },
+        "reasons": {
+          "refused: not a ledger -- inside the staff": 392,
+          "refused: not a ledger -- on a staff line": 37,
+          "refused: not a ledger -- no head on the rung": 2,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 1
+        }
+      },
+      "class:staff": {
+        "gathered": 125,
+        "status": {
+          "undecided": 125
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 125
+        }
+      },
+      "class:stem": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      },
+      "clef": {
+        "gathered": 30,
+        "status": {
+          "undecided": 30
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 30
+        }
+      },
+      "dynamic": {
+        "gathered": 78,
+        "status": {
+          "given_away": 29,
+          "kept": 49
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/4 (distance); this copy is dropped": 10,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/10 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/0/5 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "key": {
+        "gathered": 45,
+        "status": {
+          "given_away": 2,
+          "kept": 43
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "note": {
+        "gathered": 481,
+        "status": {
+          "given_away": 21,
+          "kept": 349,
+          "narrowed": 13,
+          "refused": 98
+        },
+        "reasons": {
+          "refused: not a notehead -- stacked head duplicate": 57,
+          "refused: not a notehead -- clipped fragment": 19,
+          "given_away: given to staff/3/0/7 (ledger owner density); this copy is dropped": 9,
+          "refused: not a notehead -- notehead is a duplicate box": 8,
+          "given_away: given to staff/3/0/8 (ledger owner density); this copy is dropped": 7,
+          "refused: read as a whole rest, not a notehead -- shape and position agree": 6,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 6,
+          "refused: not a notehead -- too narrow": 5,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 4,
+          "given_away: given to staff/3/0/9 (distance); this copy is dropped": 3,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 2,
+          "refused: not a notehead -- is a clef": 2,
+          "given_away: given to staff/3/0/5 (ladder); this copy is dropped": 1,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 1,
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+          "refused: not a notehead -- belongs to a nearer staff": 1
+        },
+        "owner": {
+          "by_outcome": {
+            "decided": 127,
+            "no_verdict": 352,
+            "abstained": 2
+          },
+          "reasons": {
+            "far_no_rungs": 2
+          }
+        },
+        "duration": {
+          "by_outcome": {
+            "decided": 460,
+            "narrowed": 21
+          },
+          "reasons": {
+            "beams_ambiguous": 15,
+            "flags_disagree": 1,
+            "beam_discounted_uncertain": 4,
+            "head_fill_from_ink": 1
+          }
+        },
+        "staff_position": {
+          "by_outcome": {
+            "observed": 481
+          },
+          "reasons": {}
+        }
+      },
+      "rest": {
+        "gathered": 152,
+        "status": {
+          "abstained": 5,
+          "kept": 129,
+          "refused": 18
+        },
+        "reasons": {
+          "refused: not a rest -- rest touches two staff lines": 8,
+          "refused: not a rest -- rest has a stem": 6,
+          "abstained: length could not be read -- rest stands where no rest hangs": 5,
+          "refused: not a rest -- rest off center": 2,
+          "refused: not a rest -- rest is a duplicate box": 2
+        }
+      },
+      "slur": {
+        "gathered": 119,
+        "status": {
+          "given_away": 23,
+          "kept": 96
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "tie": {
+        "gathered": 134,
+        "status": {
+          "given_away": 9,
+          "kept": 125
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/0/2 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/3 (distance); this copy is dropped": 1
+        }
+      },
+      "time": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      }
+    },
+    "clef_by_staff": {
+      "staff/3/0/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/0/4": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/6": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/0/7": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/8": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/9": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/3/0/10": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/1/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/2": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/1/3": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/4": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/6": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/3/1/7": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      }
+    },
+    "meter_by_system": {
+      "system/3/0": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "segments": [
+            {
+              "numerator": 2,
+              "denominator": 4,
+              "raw": "2/4",
+              "from_cell": 0
+            }
+          ]
+        },
+        "reason": "carried"
+      },
+      "system/3/1": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "segments": [
+            {
+              "numerator": 2,
+              "denominator": 4,
+              "raw": "2/4",
+              "from_cell": 0
+            }
+          ]
+        },
+        "reason": "carried"
+      }
+    }
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.readout.html"
+  },
+  "against": {
+    "record": "/tmp/base-248-run-3/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json",
+    "readout_diff": {
+      "ok": true,
+      "differences_found": true,
+      "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.diff.html"
+    },
+    "stage_summary": {
+      "page": 3,
+      "gathered_total": 1938,
+      "families": {
+        "accidental": {
+          "gathered": 67,
+          "status": {
+            "given_away": 7,
+            "kept": 60
+          },
+          "reasons": {
+            "given_away: given to staff/3/0/7 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1
+          }
+        },
+        "articulation": {
+          "gathered": 10,
+          "status": {
+            "kept": 10
+          },
+          "reasons": {}
+        },
+        "class:arpeggiato": {
+          "gathered": 75,
+          "status": {
+            "kept": 75
+          },
+          "reasons": {}
+        },
+        "class:augmentationDot": {
+          "gathered": 6,
+          "status": {
+            "kept": 6
+          },
+          "reasons": {}
+        },
+        "class:beam": {
+          "gathered": 98,
+          "status": {
+            "given_away": 19,
+            "kept": 15,
+            "undecided": 64
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 64,
+            "given_away: given to staff/3/0/2 (distance); this copy is dropped": 6,
+            "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+            "given_away: given to staff/3/1/1 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/5 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+          }
+        },
+        "class:brace": {
+          "gathered": 1,
+          "status": {
+            "undecided": 1
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 1
+          }
+        },
+        "class:flag16thUp": {
+          "gathered": 1,
+          "status": {
+            "kept": 1
+          },
+          "reasons": {}
+        },
+        "class:flag8thDown": {
+          "gathered": 3,
+          "status": {
+            "kept": 3
+          },
+          "reasons": {}
+        },
+        "class:flag8thUp": {
+          "gathered": 3,
+          "status": {
+            "kept": 3
+          },
+          "reasons": {}
+        },
+        "class:ledgerLine": {
+          "gathered": 506,
+          "status": {
+            "given_away": 1,
+            "kept": 74,
+            "refused": 431
+          },
+          "reasons": {
+            "refused: not a ledger -- inside the staff": 392,
+            "refused: not a ledger -- on a staff line": 37,
+            "refused: not a ledger -- no head on the rung": 2,
+            "given_away: given to staff/3/0/8 (distance); this copy is dropped": 1
+          }
+        },
+        "class:staff": {
+          "gathered": 125,
+          "status": {
+            "undecided": 125
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 125
+          }
+        },
+        "class:stem": {
+          "gathered": 2,
+          "status": {
+            "undecided": 2
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 2
+          }
+        },
+        "clef": {
+          "gathered": 30,
+          "status": {
+            "undecided": 30
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 30
+          }
+        },
+        "dynamic": {
+          "gathered": 78,
+          "status": {
+            "given_away": 29,
+            "kept": 49
+          },
+          "reasons": {
+            "given_away: given to staff/3/0/4 (distance); this copy is dropped": 10,
+            "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/0/3 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/0/10 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/1/1 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/0/5 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/0/5 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+          }
+        },
+        "key": {
+          "gathered": 45,
+          "status": {
+            "given_away": 2,
+            "kept": 43
+          },
+          "reasons": {
+            "given_away: given to staff/3/0/3 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1
+          }
+        },
+        "note": {
+          "gathered": 481,
+          "status": {
+            "given_away": 21,
+            "kept": 349,
+            "narrowed": 13,
+            "refused": 98
+          },
+          "reasons": {
+            "refused: not a notehead -- stacked head duplicate": 57,
+            "refused: not a notehead -- clipped fragment": 19,
+            "given_away: given to staff/3/0/7 (ledger owner density); this copy is dropped": 9,
+            "refused: not a notehead -- notehead is a duplicate box": 8,
+            "given_away: given to staff/3/0/8 (ledger owner density); this copy is dropped": 7,
+            "refused: read as a whole rest, not a notehead -- shape and position agree": 6,
+            "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 6,
+            "refused: not a notehead -- too narrow": 5,
+            "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 4,
+            "given_away: given to staff/3/0/9 (distance); this copy is dropped": 3,
+            "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 2,
+            "refused: not a notehead -- is a clef": 2,
+            "given_away: given to staff/3/0/5 (ladder); this copy is dropped": 1,
+            "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 1,
+            "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+            "refused: not a notehead -- belongs to a nearer staff": 1
+          },
+          "owner": {
+            "by_outcome": {
+              "decided": 127,
+              "no_verdict": 352,
+              "abstained": 2
+            },
+            "reasons": {
+              "far_no_rungs": 2
+            }
+          },
+          "duration": {
+            "by_outcome": {
+              "decided": 460,
+              "narrowed": 21
+            },
+            "reasons": {
+              "beams_ambiguous": 15,
+              "flags_disagree": 1,
+              "beam_discounted_uncertain": 4,
+              "head_fill_from_ink": 1
+            }
+          },
+          "staff_position": {
+            "by_outcome": {
+              "observed": 481
+            },
+            "reasons": {}
+          }
+        },
+        "rest": {
+          "gathered": 152,
+          "status": {
+            "abstained": 5,
+            "kept": 129,
+            "refused": 18
+          },
+          "reasons": {
+            "refused: not a rest -- rest touches two staff lines": 8,
+            "refused: not a rest -- rest has a stem": 6,
+            "abstained: length could not be read -- rest stands where no rest hangs": 5,
+            "refused: not a rest -- rest off center": 2,
+            "refused: not a rest -- rest is a duplicate box": 2
+          }
+        },
+        "slur": {
+          "gathered": 119,
+          "status": {
+            "given_away": 23,
+            "kept": 96
+          },
+          "reasons": {
+            "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+            "given_away: given to staff/3/0/5 (distance); this copy is dropped": 4,
+            "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/3 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+            "given_away: given to staff/3/0/4 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/1/3 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+          }
+        },
+        "tie": {
+          "gathered": 134,
+          "status": {
+            "given_away": 9,
+            "kept": 125
+          },
+          "reasons": {
+            "given_away: given to staff/3/0/2 (distance); this copy is dropped": 2,
+            "given_away: given to staff/3/0/1 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/3/0/2 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/3/1/1 (range veto); this copy is dropped": 1,
+            "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1,
+            "given_away: given to staff/3/1/3 (distance); this copy is dropped": 1
+          }
+        },
+        "time": {
+          "gathered": 2,
+          "status": {
+            "undecided": 2
+          },
+          "reasons": {
+            "undecided: ADJUDICATE filed nothing on this box": 2
+          }
+        }
+      },
+      "clef_by_staff": {
+        "staff/3/0/0": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/1": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/2": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/3": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/3/0/4": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/5": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/6": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/3/0/7": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/8": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/0/9": {
+          "outcome": "decided",
+          "value": "alto",
+          "reason": "scored"
+        },
+        "staff/3/0/10": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/3/1/0": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/1/1": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/1/2": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        },
+        "staff/3/1/3": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/1/4": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/1/5": {
+          "outcome": "decided",
+          "value": "treble",
+          "reason": "scored"
+        },
+        "staff/3/1/6": {
+          "outcome": "decided",
+          "value": "alto",
+          "reason": "scored"
+        },
+        "staff/3/1/7": {
+          "outcome": "decided",
+          "value": "bass",
+          "reason": "scored"
+        }
+      },
+      "meter_by_system": {
+        "system/3/0": {
+          "outcome": "decided",
+          "value": {
+            "numerator": 2,
+            "denominator": 4,
+            "raw": "2/4",
+            "segments": [
+              {
+                "numerator": 2,
+                "denominator": 4,
+                "raw": "2/4",
+                "from_cell": 0
+              }
+            ]
+          },
+          "reason": "carried"
+        },
+        "system/3/1": {
+          "outcome": "decided",
+          "value": {
+            "numerator": 2,
+            "denominator": 4,
+            "raw": "2/4",
+            "segments": [
+              {
+                "numerator": 2,
+                "denominator": 4,
+                "raw": "2/4",
+                "from_cell": 0
+              }
+            ]
+          },
+          "reason": "carried"
+        }
+      }
+    },
+    "machine_proxies": {
+      "notes_reaching_file": {
+        "n": 731,
+        "of": 1330,
+        "fraction": 0.5496240601503759
+      },
+      "bars_held_out_sum": {
+        "n": 148,
+        "of": 828,
+        "fraction": 0.178743961352657,
+        "noteheads_and_rests": 366,
+        "bars_on_a_doubled_staff": 10,
+        "bars_with_events_without_a_meter": 0,
+        "named_in_the_export_report": 138
+      },
+      "bars_add_up_control": {
+        "exact": 984,
+        "short": 0,
+        "overfull": 0,
+        "empty": 0,
+        "unassessable": 0,
+        "n": 984,
+        "of": 984,
+        "fraction": 1.0
+      },
+      "parts_named": {
+        "n": 12,
+        "of": 12,
+        "fraction": 1.0,
+        "names": [
+          "Flute",
+          "Oboe",
+          "Clarinet",
+          "Bassoon",
+          "Horn",
+          "Trumpet",
+          "Timpani",
+          "Violin",
+          "Violin",
+          "Viola",
+          "Cello",
+          "Contrabass"
+        ]
+      },
+      "held_out": {
+        "staff_not_identified": 0,
+        "of_noteheads_in_log": 1330,
+        "fraction": 0.0
+      },
+      "unread_bars": {
+        "empty_bars_padded": 102,
+        "empty_bars_padded_without_meter": 0,
+        "tacet_bars_not_padded_without_meter": 0
+      },
+      "transpose_parts": {
+        "n": 1,
+        "of": 12
+      },
+      "notes_doubled_to_condensed_slot": 101,
+      "named_drop_reasons": {
+        "duration_narrowed": 36,
+        "no_pitch": 0,
+        "staff_not_identified": 0,
+        "owned_by_another_staff": 101,
+        "ink_is_a_whole_rest": 16
+      },
+      "all_drop_reasons": {
+        "not_a_rest:rest_off_center": 13,
+        "ink_is_a_whole_rest": 16,
+        "not_a_notehead:too_narrow": 20,
+        "not_a_rest:rest_touches_two_staff_lines": 13,
+        "not_a_notehead:clipped_fragment": 51,
+        "not_a_notehead:stacked_head_duplicate": 113,
+        "owned_by_another_staff": 101,
+        "not_a_rest:rest_has_a_stem": 14,
+        "not_a_notehead:notehead_is_a_duplicate_box": 20,
+        "not_a_rest:rest_is_a_duplicate_box": 16,
+        "duration_narrowed": 36,
+        "rest_duration_abstained": 12,
+        "not_a_rest:rest_clipped_by_crop": 5,
+        "owner_not_read": 4,
+        "not_a_rest:rest_outside_its_staff": 2,
+        "not_a_rest:rest_overlaps_a_notehead": 2,
+        "not_a_notehead:belongs_to_a_nearer_staff": 7,
+        "not_a_notehead:is_a_clef": 3,
+        "bar_does_not_add_up": 366
+      },
+      "balanced": true
+    },
+    "bar_score": {
+      "status": "ok",
+      "bar_range": [
+        49,
+        82
+      ],
+      "comparable_cells": 165,
+      "skipped_cells": 209,
+      "totals": {
+        "ref_n": 330,
+        "our_n": 259,
+        "matched_exact": 198,
+        "duration_wrong": 2,
+        "pitch_wrong": 49,
+        "missing": 81,
+        "extra": 10
+      },
+      "per_family": {
+        "Flute": {
+          "comparable_bars": 11,
+          "skipped_bars": 23,
+          "skipped": [
+            "55",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "73",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 24,
+            "our_n": 23,
+            "matched_exact": 12,
+            "duration_wrong": 0,
+            "pitch_wrong": 9,
+            "missing": 3,
+            "extra": 2
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Oboe": {
+          "comparable_bars": 6,
+          "skipped_bars": 28,
+          "skipped": [
+            "50",
+            "51",
+            "52",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 12,
+            "our_n": 8,
+            "matched_exact": 6,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 4,
+            "extra": 0
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Clarinet": {
+          "comparable_bars": 11,
+          "skipped_bars": 23,
+          "skipped": [
+            "54",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "69",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 24,
+            "our_n": 18,
+            "matched_exact": 13,
+            "duration_wrong": 0,
+            "pitch_wrong": 5,
+            "missing": 6,
+            "extra": 0
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Bassoon": {
+          "comparable_bars": 24,
+          "skipped_bars": 10,
+          "skipped": [
+            "51",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66"
+          ],
+          "total": {
+            "ref_n": 48,
+            "our_n": 39,
+            "matched_exact": 24,
+            "duration_wrong": 0,
+            "pitch_wrong": 14,
+            "missing": 10,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 2,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 2,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "79": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            }
+          }
+        },
+        "Horn": {
+          "comparable_bars": 21,
+          "skipped_bars": 13,
+          "skipped": [
+            "51",
+            "52",
+            "57",
+            "59",
+            "61",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 42,
+            "our_n": 22,
+            "matched_exact": 17,
+            "duration_wrong": 1,
+            "pitch_wrong": 3,
+            "missing": 21,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "60": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "62": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 1,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            }
+          }
+        },
+        "Trumpet": {
+          "comparable_bars": 5,
+          "skipped_bars": 29,
+          "skipped": [
+            "49",
+            "50",
+            "51",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 10,
+            "our_n": 6,
+            "matched_exact": 6,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 4,
+            "extra": 0
+          },
+          "by_bar": {
+            "52": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Timpani": {
+          "comparable_bars": 6,
+          "skipped_bars": 28,
+          "skipped": [
+            "49",
+            "50",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 7,
+            "our_n": 7,
+            "matched_exact": 6,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "by_bar": {
+            "51": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "55": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violin I": {
+          "comparable_bars": 18,
+          "skipped_bars": 16,
+          "skipped": [
+            "49",
+            "51",
+            "53",
+            "55",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "67",
+            "68",
+            "69",
+            "70",
+            "78",
+            "79",
+            "81"
+          ],
+          "total": {
+            "ref_n": 43,
+            "our_n": 42,
+            "matched_exact": 38,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 2,
+            "extra": 1
+          },
+          "by_bar": {
+            "50": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 3,
+              "our_n": 4,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "63": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violin II": {
+          "comparable_bars": 22,
+          "skipped_bars": 12,
+          "skipped": [
+            "50",
+            "51",
+            "53",
+            "55",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "65",
+            "68",
+            "78"
+          ],
+          "total": {
+            "ref_n": 34,
+            "our_n": 34,
+            "matched_exact": 30,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 1,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 4,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 3,
+              "our_n": 3,
+              "matched_exact": 2,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "79": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 1
+            },
+            "81": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Viola": {
+          "comparable_bars": 26,
+          "skipped_bars": 8,
+          "skipped": [
+            "50",
+            "51",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "65"
+          ],
+          "total": {
+            "ref_n": 38,
+            "our_n": 34,
+            "matched_exact": 24,
+            "duration_wrong": 0,
+            "pitch_wrong": 9,
+            "missing": 5,
+            "extra": 1
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 8,
+              "our_n": 7,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 3,
+              "missing": 1,
+              "extra": 0
+            },
+            "53": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "63": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "64": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "67": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "68": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "69": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "71": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "72": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "75": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "76": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "77": {
+              "ref_n": 1,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 1
+            },
+            "78": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "79": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "80": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            },
+            "81": {
+              "ref_n": 1,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "82": {
+              "ref_n": 1,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 0,
+              "extra": 0
+            }
+          }
+        },
+        "Violoncello e Basso": {
+          "comparable_bars": 15,
+          "skipped_bars": 19,
+          "skipped": [
+            "53",
+            "57",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "67",
+            "68",
+            "71",
+            "72",
+            "75",
+            "76",
+            "77",
+            "79",
+            "80",
+            "81",
+            "82"
+          ],
+          "total": {
+            "ref_n": 48,
+            "our_n": 26,
+            "matched_exact": 22,
+            "duration_wrong": 1,
+            "pitch_wrong": 1,
+            "missing": 24,
+            "extra": 2
+          },
+          "by_bar": {
+            "49": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "50": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "51": {
+              "ref_n": 8,
+              "our_n": 4,
+              "matched_exact": 4,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 4,
+              "extra": 0
+            },
+            "52": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 1,
+              "missing": 0,
+              "extra": 0
+            },
+            "54": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 0,
+              "duration_wrong": 1,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "55": {
+              "ref_n": 2,
+              "our_n": 0,
+              "matched_exact": 0,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 2,
+              "extra": 0
+            },
+            "56": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "58": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "65": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "66": {
+              "ref_n": 2,
+              "our_n": 2,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 1
+            },
+            "69": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "70": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "73": {
+              "ref_n": 6,
+              "our_n": 3,
+              "matched_exact": 3,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 3,
+              "extra": 0
+            },
+            "74": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            },
+            "78": {
+              "ref_n": 2,
+              "our_n": 1,
+              "matched_exact": 1,
+              "duration_wrong": 0,
+              "pitch_wrong": 0,
+              "missing": 1,
+              "extra": 0
+            }
+          }
+        }
+      },
+      "worst_10": [
+        {
+          "family": "Viola",
+          "bar": "52",
+          "n_wrong": 4,
+          "ref_n": 8,
+          "our_n": 7,
+          "matched_exact": 4,
+          "duration_wrong": 0,
+          "pitch_wrong": 3,
+          "missing": 1,
+          "extra": 0
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "51",
+          "n_wrong": 4,
+          "ref_n": 8,
+          "our_n": 4,
+          "matched_exact": 4,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 4,
+          "extra": 0
+        },
+        {
+          "family": "Flute",
+          "bar": "51",
+          "n_wrong": 3,
+          "ref_n": 4,
+          "our_n": 4,
+          "matched_exact": 1,
+          "duration_wrong": 0,
+          "pitch_wrong": 3,
+          "missing": 0,
+          "extra": 0
+        },
+        {
+          "family": "Horn",
+          "bar": "49",
+          "n_wrong": 3,
+          "ref_n": 2,
+          "our_n": 2,
+          "matched_exact": 0,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 1,
+          "extra": 1
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "54",
+          "n_wrong": 3,
+          "ref_n": 2,
+          "our_n": 2,
+          "matched_exact": 0,
+          "duration_wrong": 1,
+          "pitch_wrong": 0,
+          "missing": 1,
+          "extra": 1
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "65",
+          "n_wrong": 3,
+          "ref_n": 6,
+          "our_n": 3,
+          "matched_exact": 3,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 3,
+          "extra": 0
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "69",
+          "n_wrong": 3,
+          "ref_n": 6,
+          "our_n": 3,
+          "matched_exact": 3,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 3,
+          "extra": 0
+        },
+        {
+          "family": "Violoncello e Basso",
+          "bar": "73",
+          "n_wrong": 3,
+          "ref_n": 6,
+          "our_n": 3,
+          "matched_exact": 3,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 3,
+          "extra": 0
+        },
+        {
+          "family": "Flute",
+          "bar": "50",
+          "n_wrong": 2,
+          "ref_n": 2,
+          "our_n": 3,
+          "matched_exact": 1,
+          "duration_wrong": 0,
+          "pitch_wrong": 1,
+          "missing": 0,
+          "extra": 1
+        },
+        {
+          "family": "Flute",
+          "bar": "56",
+          "n_wrong": 2,
+          "ref_n": 2,
+          "our_n": 2,
+          "matched_exact": 0,
+          "duration_wrong": 0,
+          "pitch_wrong": 2,
+          "missing": 0,
+          "extra": 0
+        }
+      ]
+    }
+  },
+  "machine_proxies": {
+    "notes_reaching_file": {
+      "n": 731,
+      "of": 1330,
+      "fraction": 0.5496240601503759
+    },
+    "bars_held_out_sum": {
+      "n": 148,
+      "of": 828,
+      "fraction": 0.178743961352657,
+      "noteheads_and_rests": 366,
+      "bars_on_a_doubled_staff": 10,
+      "bars_with_events_without_a_meter": 0,
+      "named_in_the_export_report": 138
+    },
+    "bars_add_up_control": {
+      "exact": 984,
+      "short": 0,
+      "overfull": 0,
+      "empty": 0,
+      "unassessable": 0,
+      "n": 984,
+      "of": 984,
+      "fraction": 1.0
+    },
+    "parts_named": {
+      "n": 12,
+      "of": 12,
+      "fraction": 1.0,
+      "names": [
+        "Flute",
+        "Oboe",
+        "Clarinet",
+        "Bassoon",
+        "Horn",
+        "Trumpet",
+        "Timpani",
+        "Violin",
+        "Violin",
+        "Viola",
+        "Cello",
+        "Contrabass"
+      ]
+    },
+    "held_out": {
+      "staff_not_identified": 0,
+      "of_noteheads_in_log": 1330,
+      "fraction": 0.0
+    },
+    "unread_bars": {
+      "empty_bars_padded": 102,
+      "empty_bars_padded_without_meter": 0,
+      "tacet_bars_not_padded_without_meter": 0
+    },
+    "transpose_parts": {
+      "n": 1,
+      "of": 12
+    },
+    "notes_doubled_to_condensed_slot": 101,
+    "named_drop_reasons": {
+      "duration_narrowed": 36,
+      "no_pitch": 0,
+      "staff_not_identified": 0,
+      "owned_by_another_staff": 101,
+      "ink_is_a_whole_rest": 16
+    },
+    "all_drop_reasons": {
+      "not_a_rest:rest_off_center": 13,
+      "ink_is_a_whole_rest": 16,
+      "not_a_notehead:too_narrow": 20,
+      "not_a_rest:rest_touches_two_staff_lines": 13,
+      "not_a_notehead:clipped_fragment": 51,
+      "not_a_notehead:stacked_head_duplicate": 113,
+      "owned_by_another_staff": 101,
+      "not_a_rest:rest_has_a_stem": 14,
+      "not_a_notehead:notehead_is_a_duplicate_box": 20,
+      "not_a_rest:rest_is_a_duplicate_box": 16,
+      "duration_narrowed": 36,
+      "rest_duration_abstained": 12,
+      "not_a_rest:rest_clipped_by_crop": 5,
+      "owner_not_read": 4,
+      "not_a_rest:rest_outside_its_staff": 2,
+      "not_a_rest:rest_overlaps_a_notehead": 2,
+      "not_a_notehead:belongs_to_a_nearer_staff": 7,
+      "not_a_notehead:is_a_clef": 3,
+      "bar_does_not_add_up": 366
+    },
+    "balanced": true
+  },
+  "side_by_side": {
+    "print": {
+      "built": true,
+      "path": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/print.png",
+      "dpi": 150,
+      "page_index": 3
+    },
+    "ours": {
+      "built": true,
+      "svg": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/ours.svg",
+      "png": "benchmarks/acceptance/quick/out/beethoven5-litolff/side-by-side/ours.png",
+      "first_bar": 49,
+      "last_bar": 82
+    }
+  },
+  "bar_score": {
+    "status": "ok",
+    "bar_range": [
+      49,
+      82
+    ],
+    "comparable_cells": 165,
+    "skipped_cells": 209,
+    "totals": {
+      "ref_n": 330,
+      "our_n": 259,
+      "matched_exact": 171,
+      "duration_wrong": 2,
+      "pitch_wrong": 76,
+      "missing": 81,
+      "extra": 10
+    },
+    "per_family": {
+      "Flute": {
+        "comparable_bars": 11,
+        "skipped_bars": 23,
+        "skipped": [
+          "55",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "73",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 24,
+          "our_n": 23,
+          "matched_exact": 10,
+          "duration_wrong": 0,
+          "pitch_wrong": 11,
+          "missing": 3,
+          "extra": 2
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 4,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Oboe": {
+        "comparable_bars": 6,
+        "skipped_bars": 28,
+        "skipped": [
+          "50",
+          "51",
+          "52",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 12,
+          "our_n": 8,
+          "matched_exact": 6,
+          "duration_wrong": 0,
+          "pitch_wrong": 2,
+          "missing": 4,
+          "extra": 0
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Clarinet": {
+        "comparable_bars": 11,
+        "skipped_bars": 23,
+        "skipped": [
+          "54",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "69",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 24,
+          "our_n": 18,
+          "matched_exact": 10,
+          "duration_wrong": 0,
+          "pitch_wrong": 8,
+          "missing": 6,
+          "extra": 0
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Bassoon": {
+        "comparable_bars": 24,
+        "skipped_bars": 10,
+        "skipped": [
+          "51",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66"
+        ],
+        "total": {
+          "ref_n": 48,
+          "our_n": 39,
+          "matched_exact": 20,
+          "duration_wrong": 0,
+          "pitch_wrong": 18,
+          "missing": 10,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 2,
+            "our_n": 3,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "79": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          }
+        }
+      },
+      "Horn": {
+        "comparable_bars": 21,
+        "skipped_bars": 13,
+        "skipped": [
+          "51",
+          "52",
+          "57",
+          "59",
+          "61",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 42,
+          "our_n": 22,
+          "matched_exact": 16,
+          "duration_wrong": 1,
+          "pitch_wrong": 4,
+          "missing": 21,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "60": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "62": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          }
+        }
+      },
+      "Trumpet": {
+        "comparable_bars": 5,
+        "skipped_bars": 29,
+        "skipped": [
+          "49",
+          "50",
+          "51",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 10,
+          "our_n": 6,
+          "matched_exact": 6,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 4,
+          "extra": 0
+        },
+        "by_bar": {
+          "52": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Timpani": {
+        "comparable_bars": 6,
+        "skipped_bars": 28,
+        "skipped": [
+          "49",
+          "50",
+          "57",
+          "58",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "65",
+          "66",
+          "67",
+          "68",
+          "69",
+          "70",
+          "71",
+          "72",
+          "73",
+          "74",
+          "75",
+          "76",
+          "77",
+          "78",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 7,
+          "our_n": 7,
+          "matched_exact": 6,
+          "duration_wrong": 0,
+          "pitch_wrong": 0,
+          "missing": 1,
+          "extra": 1
+        },
+        "by_bar": {
+          "51": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "55": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violin I": {
+        "comparable_bars": 18,
+        "skipped_bars": 16,
+        "skipped": [
+          "49",
+          "51",
+          "53",
+          "55",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "67",
+          "68",
+          "69",
+          "70",
+          "78",
+          "79",
+          "81"
+        ],
+        "total": {
+          "ref_n": 43,
+          "our_n": 42,
+          "matched_exact": 34,
+          "duration_wrong": 0,
+          "pitch_wrong": 7,
+          "missing": 2,
+          "extra": 1
+        },
+        "by_bar": {
+          "50": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 3,
+            "our_n": 4,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "63": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 2,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violin II": {
+        "comparable_bars": 22,
+        "skipped_bars": 12,
+        "skipped": [
+          "50",
+          "51",
+          "53",
+          "55",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "65",
+          "68",
+          "78"
+        ],
+        "total": {
+          "ref_n": 34,
+          "our_n": 34,
+          "matched_exact": 25,
+          "duration_wrong": 0,
+          "pitch_wrong": 8,
+          "missing": 1,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 4,
+            "missing": 0,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 4,
+            "our_n": 4,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 3,
+            "our_n": 3,
+            "matched_exact": 2,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "79": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 1
+          },
+          "81": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Viola": {
+        "comparable_bars": 26,
+        "skipped_bars": 8,
+        "skipped": [
+          "50",
+          "51",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "65"
+        ],
+        "total": {
+          "ref_n": 38,
+          "our_n": 34,
+          "matched_exact": 22,
+          "duration_wrong": 0,
+          "pitch_wrong": 11,
+          "missing": 5,
+          "extra": 1
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 8,
+            "our_n": 7,
+            "matched_exact": 4,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 1,
+            "extra": 0
+          },
+          "53": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "63": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "64": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "67": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "68": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "69": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "71": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "72": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "75": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "76": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "77": {
+            "ref_n": 1,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 1
+          },
+          "78": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "79": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "80": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          },
+          "81": {
+            "ref_n": 1,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "82": {
+            "ref_n": 1,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 0,
+            "extra": 0
+          }
+        }
+      },
+      "Violoncello e Basso": {
+        "comparable_bars": 15,
+        "skipped_bars": 19,
+        "skipped": [
+          "53",
+          "57",
+          "59",
+          "60",
+          "61",
+          "62",
+          "63",
+          "64",
+          "67",
+          "68",
+          "71",
+          "72",
+          "75",
+          "76",
+          "77",
+          "79",
+          "80",
+          "81",
+          "82"
+        ],
+        "total": {
+          "ref_n": 48,
+          "our_n": 26,
+          "matched_exact": 16,
+          "duration_wrong": 1,
+          "pitch_wrong": 7,
+          "missing": 24,
+          "extra": 2
+        },
+        "by_bar": {
+          "49": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "50": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "51": {
+            "ref_n": 8,
+            "our_n": 4,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 3,
+            "missing": 4,
+            "extra": 0
+          },
+          "52": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 0,
+            "extra": 0
+          },
+          "54": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 0,
+            "duration_wrong": 1,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "55": {
+            "ref_n": 2,
+            "our_n": 0,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 2,
+            "extra": 0
+          },
+          "56": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "58": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "65": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "66": {
+            "ref_n": 2,
+            "our_n": 2,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 1
+          },
+          "69": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "70": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 1,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 1,
+            "extra": 0
+          },
+          "73": {
+            "ref_n": 6,
+            "our_n": 3,
+            "matched_exact": 3,
+            "duration_wrong": 0,
+            "pitch_wrong": 0,
+            "missing": 3,
+            "extra": 0
+          },
+          "74": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          },
+          "78": {
+            "ref_n": 2,
+            "our_n": 1,
+            "matched_exact": 0,
+            "duration_wrong": 0,
+            "pitch_wrong": 1,
+            "missing": 1,
+            "extra": 0
+          }
+        }
+      }
+    },
+    "worst_10": [
+      {
+        "family": "Violoncello e Basso",
+        "bar": "51",
+        "n_wrong": 7,
+        "ref_n": 8,
+        "our_n": 4,
+        "matched_exact": 1,
+        "duration_wrong": 0,
+        "pitch_wrong": 3,
+        "missing": 4,
+        "extra": 0
+      },
+      {
+        "family": "Flute",
+        "bar": "51",
+        "n_wrong": 4,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 4,
+        "missing": 0,
+        "extra": 0
+      },
+      {
+        "family": "Violin II",
+        "bar": "49",
+        "n_wrong": 4,
+        "ref_n": 4,
+        "our_n": 4,
+        "matched_exact": 0,
+        "duration_wrong": 0,
+        "pitch_wrong": 4,
+        "missing": 0,
+        "extra": 0
+      },
+      {
+        "family": "Viola",
+        "bar": "52",
+        "n_wrong": 4,
+        "ref_n": 8,
+        "our_n": 7,
+        "matched_exact": 4,
+        "duration_wrong": 0,
+        "pitch_wrong": 3,
+        "missing": 1,
+        "extra": 0
+      },
+      {
+        "family": "Horn",
+        "bar": "49",
+        "n_wrong": 3,
+        "ref_n": 2,
+        "our_n": 2,
+        "matched_exact": 0,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 1,
+        "extra": 1
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "54",
+        "n_wrong": 3,
+        "ref_n": 2,
+        "our_n": 2,
+        "matched_exact": 0,
+        "duration_wrong": 1,
+        "pitch_wrong": 0,
+        "missing": 1,
+        "extra": 1
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "65",
+        "n_wrong": 3,
+        "ref_n": 6,
+        "our_n": 3,
+        "matched_exact": 3,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 3,
+        "extra": 0
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "69",
+        "n_wrong": 3,
+        "ref_n": 6,
+        "our_n": 3,
+        "matched_exact": 3,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 3,
+        "extra": 0
+      },
+      {
+        "family": "Violoncello e Basso",
+        "bar": "73",
+        "n_wrong": 3,
+        "ref_n": 6,
+        "our_n": 3,
+        "matched_exact": 3,
+        "duration_wrong": 0,
+        "pitch_wrong": 0,
+        "missing": 3,
+        "extra": 0
+      },
+      {
+        "family": "Flute",
+        "bar": "50",
+        "n_wrong": 2,
+        "ref_n": 2,
+        "our_n": 3,
+        "matched_exact": 1,
+        "duration_wrong": 0,
+        "pitch_wrong": 1,
+        "missing": 0,
+        "extra": 1
+      }
+    ]
+  },
+  "status": "ok"
+}

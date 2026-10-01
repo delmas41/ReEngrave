@@ -3,15 +3,15 @@
     {
       "family": "accidental",
       "quantity": "accidental_owner",
-      "detector_glyphs": 155,
-      "cv_glyphs": 155,
-      "ink_rows": 310,
-      "written": 29,
-      "decided": 63,
+      "detector_glyphs": 139,
+      "cv_glyphs": 139,
+      "ink_rows": 278,
+      "written": 27,
+      "decided": 55,
       "abstained": {
-        "no_candidate": 66,
-        "is_a_key_signature_marker": 22,
-        "ambiguous_height": 3,
+        "no_candidate": 62,
+        "is_a_key_signature_marker": 19,
+        "ambiguous_height": 2,
         "head_belongs_to_a_nearer_staff": 1
       },
       "produced_by": "adjudicate",
@@ -20,12 +20,14 @@
     {
       "family": "articulation",
       "quantity": "articulation_owner",
-      "detector_glyphs": 24,
+      "detector_glyphs": 26,
       "cv_glyphs": 0,
-      "ink_rows": 24,
+      "ink_rows": 26,
       "written": 0,
       "decided": 1,
-      "abstained": {},
+      "abstained": {
+        "no_notehead": 1
+      },
       "produced_by": "adjudicate",
       "status": "decided_but_unwritten",
       "why": "`articulation_owner` decided 1 times and the exporter wrote none of this family \u2014 the record carries it and the FILE does not, which is an exporter gap, not a reading one"
@@ -33,9 +35,9 @@
     {
       "family": "clef",
       "quantity": "clef",
-      "detector_glyphs": 84,
+      "detector_glyphs": 87,
       "cv_glyphs": 0,
-      "ink_rows": 84,
+      "ink_rows": 87,
       "written": 0,
       "decided": 53,
       "abstained": {},
@@ -51,7 +53,7 @@
       "written": 0,
       "decided": 0,
       "abstained": {
-        "out_of_scope": 853
+        "out_of_scope": 864
       },
       "produced_by": "adjudicate",
       "status": "abstained"
@@ -59,11 +61,11 @@
     {
       "family": "dynamic",
       "quantity": "dynamic",
-      "detector_glyphs": 395,
+      "detector_glyphs": 396,
       "cv_glyphs": 0,
-      "ink_rows": 395,
-      "written": 143,
-      "decided": 845,
+      "ink_rows": 396,
+      "written": 148,
+      "decided": 856,
       "abstained": {
         "unspellable": 8
       },
@@ -76,7 +78,7 @@
       "detector_glyphs": 63,
       "cv_glyphs": 0,
       "ink_rows": 63,
-      "written": 30,
+      "written": 31,
       "decided": 51,
       "abstained": {
         "no_carrier": 12
@@ -87,16 +89,16 @@
     {
       "family": "key",
       "quantity": "key_signature",
-      "detector_glyphs": 92,
+      "detector_glyphs": 96,
       "cv_glyphs": 0,
-      "ink_rows": 92,
+      "ink_rows": 96,
       "written": 0,
       "decided": 53,
       "abstained": {
-        "disagrees_with_document": 13,
-        "disagrees_with_system": 4,
+        "disagrees_with_document": 15,
+        "disagrees_with_system": 5,
+        "mixed_marker_kinds": 4,
         "no_evidence": 5,
-        "mixed_marker_kinds": 3,
         "run_fits_no_slot_table": 1
       },
       "produced_by": "adjudicate",
@@ -105,11 +107,11 @@
     {
       "family": "note",
       "quantity": "pitch",
-      "detector_glyphs": 1339,
+      "detector_glyphs": 1330,
       "cv_glyphs": 0,
-      "ink_rows": 1339,
-      "written": 718,
-      "decided": 1807,
+      "ink_rows": 1330,
+      "written": 731,
+      "decided": 1804,
       "abstained": {},
       "produced_by": "evaluate",
       "status": "emitted"
@@ -129,10 +131,10 @@
     {
       "family": "rest",
       "quantity": "rest",
-      "detector_glyphs": 524,
+      "detector_glyphs": 521,
       "cv_glyphs": 0,
-      "ink_rows": 524,
-      "written": 395,
+      "ink_rows": 521,
+      "written": 408,
       "decided": 0,
       "abstained": {},
       "produced_by": "evaluate",
@@ -141,12 +143,12 @@
     {
       "family": "slur",
       "quantity": "arc_kind",
-      "detector_glyphs": 244,
+      "detector_glyphs": 246,
       "cv_glyphs": 0,
-      "ink_rows": 244,
-      "written": 18,
+      "ink_rows": 246,
+      "written": 17,
       "abstentions_name_no_family": true,
-      "decided": 244,
+      "decided": 246,
       "abstained": {},
       "produced_by": "adjudicate",
       "status": "emitted"
@@ -154,12 +156,12 @@
     {
       "family": "tie",
       "quantity": "arc_kind",
-      "detector_glyphs": 270,
+      "detector_glyphs": 266,
       "cv_glyphs": 0,
-      "ink_rows": 270,
-      "written": 16,
+      "ink_rows": 266,
+      "written": 19,
       "abstentions_name_no_family": true,
-      "decided": 270,
+      "decided": 266,
       "abstained": {},
       "produced_by": "adjudicate",
       "status": "emitted"
@@ -167,9 +169,9 @@
     {
       "family": "time",
       "quantity": "meter",
-      "detector_glyphs": 20,
+      "detector_glyphs": 16,
       "cv_glyphs": 0,
-      "ink_rows": 20,
+      "ink_rows": 16,
       "written": 0,
       "decided": 5,
       "abstained": {},
@@ -179,14 +181,14 @@
     {
       "family": "tuplet",
       "quantity": "tuplet_ratio",
-      "detector_glyphs": 1,
+      "detector_glyphs": 0,
       "cv_glyphs": 0,
-      "ink_rows": 1,
+      "ink_rows": 0,
       "written": 0,
-      "decided": 1,
+      "decided": 0,
       "abstained": {},
       "produced_by": "adjudicate",
-      "status": "emitted"
+      "status": "abstained"
     },
     {
       "family": "wedge",
@@ -202,39 +204,38 @@
     }
   ],
   "accidental_reading": {
-    "printed_glyphs_detected": 155,
-    "key_signature_glyphs_detected_and_owned_elsewhere": 92,
-    "gathered": 155,
-    "owner_decided": 63,
-    "applied": 29,
-    "abstained_ambiguous": 3,
-    "no_candidate": 66,
+    "printed_glyphs_detected": 139,
+    "key_signature_glyphs_detected_and_owned_elsewhere": 96,
+    "gathered": 139,
+    "owner_decided": 55,
+    "applied": 27,
+    "abstained_ambiguous": 2,
+    "no_candidate": 62,
     "no_unit": 0,
     "no_evidence": 0,
     "refused_not_an_accidental": 0,
-    "is_a_key_signature_marker": 22,
+    "is_a_key_signature_marker": 19,
     "head_belongs_to_a_nearer_staff": 1,
-    "heads_owned": 53,
-    "heads_contradicted": 7,
-    "owners_sharing_a_head": 10,
+    "heads_owned": 47,
+    "heads_contradicted": 5,
+    "owners_sharing_a_head": 8,
     "applied_on_a_doubled_copy": 1,
-    "unowned": 18,
-    "carried_in_bar": 22,
-    "pitches_altered_by_the_key": 251,
-    "printed_glyphs_read_into_a_verdict": 71,
+    "unowned": 16,
+    "carried_in_bar": 24,
+    "pitches_altered_by_the_key": 269,
+    "printed_glyphs_read_into_a_verdict": 69,
     "heads_balanced": true,
     "unaccounted": 0
   },
   "unclaimed_classes": {
-    "arpeggiato": 212,
-    "stringsDownBow": 1
+    "arpeggiato": 205
   },
   "detected_and_unrepresented": {},
   "detected_and_unrepresented_total": 0,
   "decided_and_unwritten": {
-    "articulation": 24
+    "articulation": 26
   },
-  "decided_and_unwritten_total": 24,
+  "decided_and_unwritten_total": 26,
   "decided_uncounted": [],
   "abstained_without_a_family": {},
   "status_census": {
@@ -247,8 +248,7 @@
       "note",
       "slur",
       "tie",
-      "time",
-      "tuplet"
+      "time"
     ],
     "decided_but_unwritten": [
       "articulation"
@@ -258,6 +258,7 @@
       "direction",
       "ornament",
       "rest",
+      "tuplet",
       "wedge"
     ],
     "stub": [],
@@ -271,113 +272,114 @@
   "family_refusals": {
     "ledger_is_not_a_ledger": {
       "refused": {
-        "inside_the_staff": 906,
-        "on_a_staff_line": 92,
+        "inside_the_staff": 929,
+        "on_a_staff_line": 98,
         "tall_not_a_rung": 1,
-        "no_head_on_the_rung": 4
+        "no_head_on_the_rung": 3
       },
-      "refused_total": 1003,
-      "kept": 194,
-      "abstained": 5,
+      "refused_total": 1031,
+      "kept": 187,
+      "abstained": 4,
       "abstained_reasons": {
-        "rung_without_boxed_head": 5
+        "rung_without_boxed_head": 4
       },
-      "verdicts": 1202,
+      "verdicts": 1222,
       "balanced": true
     },
     "accidental_is_not_an_accidental": {
       "refused": {},
       "refused_total": 0,
-      "kept": 155,
+      "kept": 139,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 155,
+      "verdicts": 139,
       "balanced": true
     },
     "rest_is_not_a_rest": {
       "refused": {
-        "rest_off_center": 14,
-        "rest_touches_two_staff_lines": 16,
-        "rest_has_a_stem": 16,
-        "rest_is_a_duplicate_box": 15,
-        "rest_clipped_by_crop": 6,
-        "rest_outside_its_staff": 1
+        "rest_off_center": 13,
+        "rest_touches_two_staff_lines": 13,
+        "rest_has_a_stem": 14,
+        "rest_is_a_duplicate_box": 16,
+        "rest_clipped_by_crop": 5,
+        "rest_outside_its_staff": 2,
+        "rest_overlaps_a_notehead": 2
       },
-      "refused_total": 68,
+      "refused_total": 65,
       "kept": 456,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 524,
+      "verdicts": 521,
       "balanced": true
     },
     "arpeggiato_is_not_an_arpeggiato": {
       "refused": {},
       "refused_total": 0,
-      "kept": 212,
+      "kept": 205,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 212,
+      "verdicts": 205,
       "balanced": true
     },
     "arc_is_not_an_arc": {
       "refused": {},
       "refused_total": 0,
-      "kept": 514,
+      "kept": 512,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 514,
+      "verdicts": 512,
       "balanced": true
     },
     "dynamic_is_not_a_dynamic": {
       "refused": {},
       "refused_total": 0,
-      "kept": 395,
+      "kept": 396,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 395,
+      "verdicts": 396,
       "balanced": true
     },
     "articulation_is_not_an_articulation": {
       "refused": {},
       "refused_total": 0,
-      "kept": 1,
+      "kept": 2,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 1,
+      "verdicts": 2,
       "balanced": true
     },
     "flag_is_not_a_flag": {
       "refused": {},
       "refused_total": 0,
-      "kept": 20,
+      "kept": 17,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 20,
+      "verdicts": 17,
       "balanced": true
     },
     "keysig_marker_is_not_a_marker": {
       "refused": {},
       "refused_total": 0,
-      "kept": 92,
+      "kept": 95,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 92,
+      "verdicts": 95,
       "balanced": true
     },
     "tuplet_marker_is_not_a_marker": {
       "refused": {},
       "refused_total": 0,
-      "kept": 1,
+      "kept": 0,
       "abstained": 0,
       "abstained_reasons": {},
-      "verdicts": 1,
+      "verdicts": 0,
       "balanced": true
     }
   },
   "grand_staff_families": {
     "pedal_owner": {
       "decided": 0,
-      "abstained": 0,
+      "abstained": 1,
       "written": 0
     },
     "ottava_owner": {
@@ -388,58 +390,58 @@
   },
   "inferred_clefs": [],
   "written": {
-    "arc_notes_reachable_at_a_stem": 729,
-    "tie_links_marked": 20,
-    "tie_links_crossing_a_barline": 18,
-    "tie_chains_marked": 17,
-    "tie_spans_marked": 20,
-    "slur_spans_marked": 44,
-    "tie_chains_over_two_notes": 2,
-    "tie_arcs_naming_an_already_named_pair": 22,
+    "arc_notes_reachable_at_a_stem": 733,
+    "tie_links_marked": 21,
+    "tie_links_crossing_a_barline": 20,
+    "tie_chains_marked": 20,
+    "tie_spans_marked": 21,
+    "slur_spans_marked": 49,
+    "tie_chains_over_two_notes": 1,
+    "tie_arcs_naming_an_already_named_pair": 20,
     "tacet_bars_padded": 54,
     "tacet_bars_not_padded_without_meter": 0,
     "tacet_spans_declined_unidentified_part": 0,
-    "bars_with_events": 811,
+    "bars_with_events": 828,
     "bars_with_events_without_a_meter": 0,
     "bars_judged_by_a_carried_meter": 0,
-    "bars_held_out_sum": 155,
-    "notes_held_out_sum": 390,
-    "unread_bar_marks_written": 262,
+    "bars_held_out_sum": 148,
+    "notes_held_out_sum": 366,
+    "unread_bar_marks_written": 250,
     "measure_rests_read": 288,
-    "fermatas": 30,
-    "beam_cells_without_a_frame_ruler": 71,
-    "empty_bars_padded": 107,
-    "empty_bars_padded_without_meter": 0,
-    "empty_bars_sized_by_a_carried_meter": 0,
-    "dynamics": 143,
-    "notes": 718,
+    "fermatas": 31,
+    "beam_cells_without_a_frame_ruler": 69,
+    "dynamics": 148,
+    "notes": 731,
     "articulations": 0,
     "dot_role_articulations": 11,
     "ornaments": 0,
-    "accidentals_printed": 29,
-    "beams": 256,
-    "pitches_altered_by_the_key": 251,
-    "rests": 107,
-    "ties": 16,
-    "slurs": 18,
-    "tie_stops_on_an_upper_chord_note": 1,
-    "tie_starts_on_an_upper_chord_note": 2,
-    "beamed_events": 254,
-    "two_voice_bars": 2,
-    "rests_duplicated_across_voices": 2,
-    "fermatas_duplicated_across_voices": 0,
+    "beams": 238,
+    "rests": 120,
+    "pitches_altered_by_the_key": 269,
+    "empty_bars_padded": 102,
+    "empty_bars_padded_without_meter": 0,
+    "empty_bars_sized_by_a_carried_meter": 0,
+    "accidentals_printed": 27,
+    "ties": 19,
+    "slurs": 17,
+    "tie_starts_on_an_upper_chord_note": 1,
+    "beamed_events": 236,
+    "two_voice_bars_held_out_by_sum": 1,
     "two_voice_bars_refused_event_straddles_two_streams": 1,
-    "bars_held_out_sum_on_a_doubled_staff": 12,
+    "two_voice_bars": 1,
+    "rests_duplicated_across_voices": 1,
+    "fermatas_duplicated_across_voices": 0,
+    "notes_doubled_to_condensed_slot": 101,
     "two_voice_bars_refused_a_stream_has_no_written_note": 1,
-    "notes_doubled_to_condensed_slot": 95,
     "accidentals_printed_on_a_doubled_copy": 1,
+    "bars_held_out_sum_on_a_doubled_staff": 10,
     "bars_held_out_unread_mark": 0,
     "notes_held_out_unread_mark": 0,
     "bars_held_out_unread_mark_on_a_doubled_staff": 0,
     "two_voice_bars_held_out_by_unread_mark": 0,
     "bars_with_a_possible_unread_mark": 0,
     "parts": 12,
-    "divisions": 8
+    "divisions": 16
   },
   "part_join": {
     "unidentified_parts": [],
@@ -516,10 +518,10 @@
         "system": "2/0",
         "page": 2,
         "system_index": 0,
-        "bars": 16,
+        "bars": 17,
         "staves_deciding": 12,
         "readings": [
-          16
+          17
         ],
         "offset": 16
       },
@@ -532,7 +534,7 @@
         "readings": [
           15
         ],
-        "offset": 32
+        "offset": 33
       },
       {
         "system": "3/0",
@@ -543,7 +545,7 @@
         "readings": [
           16
         ],
-        "offset": 47
+        "offset": 48
       },
       {
         "system": "3/1",
@@ -554,10 +556,10 @@
         "readings": [
           18
         ],
-        "offset": 63
+        "offset": 64
       }
     ],
-    "document_bars": 81,
+    "document_bars": 82,
     "scheme": "document",
     "printed_bar_check": {
       "systems": [
@@ -577,27 +579,25 @@
         {
           "system": "2/1",
           "printed": 4,
-          "file_number": 33,
+          "file_number": 34,
           "state": "disagree",
-          "delta": -29
+          "delta": -30
         },
         {
           "system": "3/0",
           "printed": 49,
-          "file_number": 48,
-          "state": "disagree",
-          "delta": 1
+          "file_number": 49,
+          "state": "agree"
         },
         {
           "system": "3/1",
           "printed": 65,
-          "file_number": 64,
-          "state": "disagree",
-          "delta": 1
+          "file_number": 65,
+          "state": "agree"
         }
       ],
-      "agree": 1,
-      "disagree": 4,
+      "agree": 3,
+      "disagree": 2,
       "abstained": 0
     }
   },
@@ -633,34 +633,35 @@
     ]
   },
   "notes_not_written": {
-    "not_a_rest:rest_off_center": 14,
-    "ink_is_a_whole_rest": 14,
-    "not_a_notehead:too_narrow": 26,
-    "not_a_rest:rest_touches_two_staff_lines": 16,
-    "not_a_notehead:clipped_fragment": 48,
-    "not_a_notehead:stacked_head_duplicate": 106,
-    "owned_by_another_staff": 107,
-    "not_a_rest:rest_has_a_stem": 16,
-    "not_a_notehead:notehead_is_a_duplicate_box": 16,
-    "not_a_rest:rest_is_a_duplicate_box": 15,
-    "duration_narrowed": 44,
-    "rest_duration_abstained": 14,
-    "not_a_rest:rest_clipped_by_crop": 6,
-    "owner_not_read": 6,
-    "not_a_rest:rest_outside_its_staff": 1,
-    "not_a_notehead:belongs_to_a_nearer_staff": 5,
+    "not_a_rest:rest_off_center": 13,
+    "ink_is_a_whole_rest": 16,
+    "not_a_notehead:too_narrow": 20,
+    "not_a_rest:rest_touches_two_staff_lines": 13,
+    "not_a_notehead:clipped_fragment": 51,
+    "not_a_notehead:stacked_head_duplicate": 113,
+    "owned_by_another_staff": 101,
+    "not_a_rest:rest_has_a_stem": 14,
+    "not_a_notehead:notehead_is_a_duplicate_box": 20,
+    "not_a_rest:rest_is_a_duplicate_box": 16,
+    "duration_narrowed": 36,
+    "rest_duration_abstained": 12,
+    "not_a_rest:rest_clipped_by_crop": 5,
+    "owner_not_read": 4,
+    "not_a_rest:rest_outside_its_staff": 2,
+    "not_a_rest:rest_overlaps_a_notehead": 2,
+    "not_a_notehead:belongs_to_a_nearer_staff": 7,
     "not_a_notehead:is_a_clef": 3,
-    "bar_does_not_add_up": 390
+    "bar_does_not_add_up": 366
   },
-  "notes_not_written_total": 847,
+  "notes_not_written_total": 814,
   "bars_held_out_sum": {
-    "bars": 155,
-    "bars_on_a_doubled_staff": 12,
-    "of_bars_with_events": 811,
+    "bars": 148,
+    "bars_on_a_doubled_staff": 10,
+    "of_bars_with_events": 828,
     "bars_with_events_without_a_meter": 0,
     "bars_judged_by_a_carried_meter": 0,
-    "fraction": 0.19112207151664612,
-    "noteheads_and_rests": 390,
+    "fraction": 0.178743961352657,
+    "noteheads_and_rests": 366,
     "held": [
       {
         "page": 1,
@@ -672,12 +673,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -695,12 +696,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 48,
+            "units": 96,
             "is_the_bar": false
           }
         ],
@@ -718,12 +719,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -741,12 +742,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -762,14 +763,14 @@
         "measure": 18,
         "part": "P1",
         "events": 3,
-        "noteheads_and_rests": 8,
+        "noteheads_and_rests": 6,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -781,38 +782,15 @@
         "page": 2,
         "system": 0,
         "staff": 0,
-        "cell": 2,
-        "measure": 19,
-        "part": "P1",
-        "events": 3,
-        "noteheads_and_rests": 5,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 24,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          3.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 0,
-        "cell": 4,
-        "measure": 21,
+        "cell": 5,
+        "measure": 22,
         "part": "P1",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
             "units": 2,
@@ -820,25 +798,25 @@
           }
         ],
         "quarters": [
-          0.25
+          0.125
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 0,
-        "cell": 10,
-        "measure": 27,
+        "cell": 11,
+        "measure": 28,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -851,17 +829,17 @@
         "system": 1,
         "staff": 0,
         "cell": 5,
-        "measure": 38,
+        "measure": 39,
         "part": "P1",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 48,
+            "units": 96,
             "is_the_bar": false
           }
         ],
@@ -874,17 +852,17 @@
         "system": 1,
         "staff": 0,
         "cell": 6,
-        "measure": 39,
+        "measure": 40,
         "part": "P1",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 26,
+            "units": 52,
             "is_the_bar": false
           }
         ],
@@ -897,17 +875,17 @@
         "system": 1,
         "staff": 0,
         "cell": 8,
-        "measure": 41,
+        "measure": 42,
         "part": "P1",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -919,64 +897,41 @@
         "page": 2,
         "system": 1,
         "staff": 0,
-        "cell": 10,
-        "measure": 43,
-        "part": "P1",
-        "events": 1,
-        "noteheads_and_rests": 2,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 32,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 0,
         "cell": 11,
-        "measure": 44,
+        "measure": 45,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          0.5
+          1.0
         ]
       },
       {
         "page": 2,
         "system": 1,
         "staff": 0,
-        "cell": 13,
+        "cell": 12,
         "measure": 46,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -989,17 +944,17 @@
         "system": 0,
         "staff": 0,
         "cell": 6,
-        "measure": 54,
+        "measure": 55,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1012,17 +967,17 @@
         "system": 0,
         "staff": 0,
         "cell": 10,
-        "measure": 58,
+        "measure": 59,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -1035,17 +990,17 @@
         "system": 1,
         "staff": 0,
         "cell": 8,
-        "measure": 72,
+        "measure": 73,
         "part": "P1",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -1063,12 +1018,12 @@
         "events": 2,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1083,61 +1038,84 @@
         "cell": 2,
         "measure": 19,
         "part": "P2",
-        "events": 4,
-        "noteheads_and_rests": 5,
+        "events": 3,
+        "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 48,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          4.0
+          3.0
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 1,
-        "cell": 4,
-        "measure": 21,
+        "cell": 3,
+        "measure": 20,
         "part": "P2",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 6,
+            "units": 36,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          0.75
+          2.25
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 1,
-        "cell": 14,
-        "measure": 31,
+        "cell": 5,
+        "measure": 22,
+        "part": "P2",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 1,
+        "cell": 15,
+        "measure": 32,
         "part": "P2",
         "events": 5,
         "noteheads_and_rests": 6,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 28,
+            "units": 56,
             "is_the_bar": false
           }
         ],
@@ -1150,17 +1128,17 @@
         "system": 1,
         "staff": 1,
         "cell": 5,
-        "measure": 38,
+        "measure": 39,
         "part": "P2",
         "events": 3,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 48,
+            "units": 96,
             "is_the_bar": false
           }
         ],
@@ -1173,17 +1151,17 @@
         "system": 1,
         "staff": 1,
         "cell": 14,
-        "measure": 47,
+        "measure": 48,
         "part": "P2",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -1196,17 +1174,17 @@
         "system": 0,
         "staff": 1,
         "cell": 1,
-        "measure": 49,
+        "measure": 50,
         "part": "P2",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -1219,17 +1197,17 @@
         "system": 0,
         "staff": 1,
         "cell": 2,
-        "measure": 50,
+        "measure": 51,
         "part": "P2",
         "events": 3,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -1242,17 +1220,17 @@
         "system": 0,
         "staff": 1,
         "cell": 3,
-        "measure": 51,
+        "measure": 52,
         "part": "P2",
         "events": 1,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1270,12 +1248,12 @@
         "events": 7,
         "noteheads_and_rests": 7,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 36,
+            "units": 72,
             "is_the_bar": false
           }
         ],
@@ -1293,12 +1271,12 @@
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 10,
+            "units": 20,
             "is_the_bar": false
           }
         ],
@@ -1316,12 +1294,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -1336,38 +1314,61 @@
         "cell": 2,
         "measure": 19,
         "part": "P3",
-        "events": 4,
-        "noteheads_and_rests": 6,
+        "events": 1,
+        "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          4.0
+          1.0
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 2,
-        "cell": 4,
-        "measure": 21,
+        "cell": 3,
+        "measure": 20,
+        "part": "P3",
+        "events": 3,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 36,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          2.25
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 2,
+        "cell": 5,
+        "measure": 22,
         "part": "P3",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 6,
+            "units": 12,
             "is_the_bar": false
           }
         ],
@@ -1379,18 +1380,18 @@
         "page": 2,
         "system": 0,
         "staff": 2,
-        "cell": 14,
-        "measure": 31,
+        "cell": 15,
+        "measure": 32,
         "part": "P3",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1403,17 +1404,17 @@
         "system": 1,
         "staff": 2,
         "cell": 9,
-        "measure": 42,
+        "measure": 43,
         "part": "P3",
         "events": 3,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -1423,20 +1424,43 @@
       },
       {
         "page": 3,
-        "system": 1,
-        "staff": 1,
-        "cell": 4,
-        "measure": 68,
+        "system": 0,
+        "staff": 2,
+        "cell": 5,
+        "measure": 54,
         "part": "P3",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 3,
+        "system": 1,
+        "staff": 1,
+        "cell": 4,
+        "measure": 69,
+        "part": "P3",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -1454,17 +1478,40 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
         "quarters": [
           3.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 3,
+        "cell": 14,
+        "measure": 15,
+        "part": "P4",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
         ]
       },
       {
@@ -1477,12 +1524,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1498,57 +1545,11 @@
         "measure": 18,
         "part": "P4",
         "events": 3,
-        "noteheads_and_rests": 4,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 34,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.25
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 3,
-        "cell": 2,
-        "measure": 19,
-        "part": "P4",
-        "events": 4,
-        "noteheads_and_rests": 4,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 32,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 3,
-        "cell": 4,
-        "measure": 21,
-        "part": "P4",
-        "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
             "units": 6,
@@ -1556,7 +1557,30 @@
           }
         ],
         "quarters": [
-          0.75
+          0.375
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 3,
+        "cell": 5,
+        "measure": 22,
+        "part": "P4",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 20,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.25
         ]
       },
       {
@@ -1564,17 +1588,17 @@
         "system": 1,
         "staff": 3,
         "cell": 0,
-        "measure": 33,
+        "measure": 34,
         "part": "P4",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -1586,41 +1610,18 @@
         "page": 2,
         "system": 1,
         "staff": 3,
-        "cell": 4,
-        "measure": 37,
-        "part": "P4",
-        "events": 3,
-        "noteheads_and_rests": 3,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 24,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          3.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 3,
         "cell": 11,
-        "measure": 44,
+        "measure": 45,
         "part": "P4",
         "events": 1,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1632,41 +1633,18 @@
         "page": 3,
         "system": 0,
         "staff": 3,
-        "cell": 0,
-        "measure": 48,
-        "part": "P4",
-        "events": 2,
-        "noteheads_and_rests": 2,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 48,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          6.0
-        ]
-      },
-      {
-        "page": 3,
-        "system": 0,
-        "staff": 3,
         "cell": 2,
-        "measure": 50,
+        "measure": 51,
         "part": "P4",
         "events": 1,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1684,12 +1662,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1707,12 +1685,35 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 4,
+        "cell": 14,
+        "measure": 15,
+        "part": "P5",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -1730,12 +1731,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -1747,41 +1748,18 @@
         "page": 2,
         "system": 0,
         "staff": 4,
-        "cell": 2,
-        "measure": 19,
-        "part": "P5",
-        "events": 4,
-        "noteheads_and_rests": 5,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 32,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 4,
-        "cell": 4,
-        "measure": 21,
+        "cell": 5,
+        "measure": 22,
         "part": "P5",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 6,
+            "units": 12,
             "is_the_bar": false
           }
         ],
@@ -1794,17 +1772,17 @@
         "system": 1,
         "staff": 4,
         "cell": 1,
-        "measure": 34,
+        "measure": 35,
         "part": "P5",
         "events": 2,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -1813,67 +1791,21 @@
         ]
       },
       {
-        "page": 2,
-        "system": 1,
-        "staff": 4,
-        "cell": 9,
-        "measure": 42,
-        "part": "P5",
-        "events": 1,
-        "noteheads_and_rests": 1,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 4,
-        "cell": 13,
-        "measure": 46,
-        "part": "P5",
-        "events": 2,
-        "noteheads_and_rests": 2,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 48,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          6.0
-        ]
-      },
-      {
         "page": 3,
         "system": 0,
         "staff": 4,
         "cell": 2,
-        "measure": 50,
+        "measure": 51,
         "part": "P5",
         "events": 3,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 20,
+            "units": 40,
             "is_the_bar": false
           }
         ],
@@ -1886,17 +1818,17 @@
         "system": 0,
         "staff": 4,
         "cell": 3,
-        "measure": 51,
+        "measure": 52,
         "part": "P5",
         "events": 1,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1909,17 +1841,17 @@
         "system": 0,
         "staff": 4,
         "cell": 10,
-        "measure": 58,
+        "measure": 59,
         "part": "P5",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -1932,17 +1864,17 @@
         "system": 0,
         "staff": 4,
         "cell": 12,
-        "measure": 60,
+        "measure": 61,
         "part": "P5",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1960,12 +1892,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -1983,63 +1915,40 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
         "quarters": [
           4.0
-        ]
-      },
-      {
-        "page": 1,
-        "system": 0,
-        "staff": 5,
-        "cell": 14,
-        "measure": 15,
-        "part": "P6",
-        "events": 2,
-        "noteheads_and_rests": 2,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 40,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          5.0
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 5,
-        "cell": 2,
-        "measure": 19,
+        "cell": 1,
+        "measure": 18,
         "part": "P6",
-        "events": 4,
-        "noteheads_and_rests": 7,
+        "events": 3,
+        "noteheads_and_rests": 6,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 24,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          4.0
+          1.5
         ]
       },
       {
@@ -2047,40 +1956,17 @@
         "system": 1,
         "staff": 5,
         "cell": 9,
-        "measure": 42,
+        "measure": 43,
         "part": "P6",
-        "events": 1,
-        "noteheads_and_rests": 1,
+        "events": 2,
+        "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 3,
-        "system": 0,
-        "staff": 5,
-        "cell": 2,
-        "measure": 50,
-        "part": "P6",
-        "events": 3,
-        "noteheads_and_rests": 5,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2092,23 +1978,23 @@
         "page": 3,
         "system": 0,
         "staff": 5,
-        "cell": 6,
-        "measure": 54,
+        "cell": 2,
+        "measure": 51,
         "part": "P6",
-        "events": 1,
-        "noteheads_and_rests": 1,
+        "events": 3,
+        "noteheads_and_rests": 5,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 24,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          1.0
+          1.5
         ]
       },
       {
@@ -2116,17 +2002,17 @@
         "system": 0,
         "staff": 5,
         "cell": 11,
-        "measure": 59,
+        "measure": 60,
         "part": "P6",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -2144,12 +2030,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -2167,12 +2053,35 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          5.0
+        ]
+      },
+      {
+        "page": 1,
+        "system": 0,
+        "staff": 6,
+        "cell": 14,
+        "measure": 15,
+        "part": "P7",
+        "events": 2,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -2190,12 +2099,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2205,25 +2114,30 @@
       },
       {
         "page": 2,
-        "system": 0,
+        "system": 1,
         "staff": 6,
-        "cell": 2,
-        "measure": 19,
+        "cell": 9,
+        "measure": 43,
         "part": "P7",
-        "events": 4,
-        "noteheads_and_rests": 4,
+        "events": 2,
+        "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
             "units": 32,
             "is_the_bar": false
+          },
+          {
+            "units": 16,
+            "is_the_bar": false
           }
         ],
         "quarters": [
-          4.0
+          2.0,
+          1.0
         ]
       },
       {
@@ -2231,63 +2145,17 @@
         "system": 1,
         "staff": 6,
         "cell": 12,
-        "measure": 45,
-        "part": "P7",
-        "events": 1,
-        "noteheads_and_rests": 1,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 6,
-        "cell": 13,
         "measure": 46,
         "part": "P7",
-        "events": 2,
-        "noteheads_and_rests": 2,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 3,
-        "system": 0,
-        "staff": 6,
-        "cell": 5,
-        "measure": 53,
-        "part": "P7",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2300,17 +2168,17 @@
         "system": 0,
         "staff": 6,
         "cell": 13,
-        "measure": 61,
+        "measure": 62,
         "part": "P7",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -2328,12 +2196,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 8,
             "is_the_bar": false
           }
         ],
@@ -2351,12 +2219,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2374,12 +2242,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2391,18 +2259,64 @@
         "page": 2,
         "system": 0,
         "staff": 7,
-        "cell": 4,
-        "measure": 21,
+        "cell": 1,
+        "measure": 18,
+        "part": "P8",
+        "events": 3,
+        "noteheads_and_rests": 6,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 7,
+        "cell": 3,
+        "measure": 20,
+        "part": "P8",
+        "events": 1,
+        "noteheads_and_rests": 2,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 7,
+        "cell": 5,
+        "measure": 22,
         "part": "P8",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2414,18 +2328,18 @@
         "page": 2,
         "system": 0,
         "staff": 7,
-        "cell": 7,
-        "measure": 24,
+        "cell": 8,
+        "measure": 25,
         "part": "P8",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2437,18 +2351,18 @@
         "page": 2,
         "system": 0,
         "staff": 7,
-        "cell": 11,
-        "measure": 28,
+        "cell": 12,
+        "measure": 29,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 18,
+            "units": 36,
             "is_the_bar": false
           }
         ],
@@ -2460,18 +2374,18 @@
         "page": 2,
         "system": 0,
         "staff": 7,
-        "cell": 14,
-        "measure": 31,
+        "cell": 15,
+        "measure": 32,
         "part": "P8",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2484,17 +2398,17 @@
         "system": 1,
         "staff": 7,
         "cell": 8,
-        "measure": 41,
+        "measure": 42,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -2507,40 +2421,17 @@
         "system": 1,
         "staff": 7,
         "cell": 12,
-        "measure": 45,
+        "measure": 46,
         "part": "P8",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.5
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 7,
-        "cell": 13,
-        "measure": 46,
-        "part": "P8",
-        "events": 3,
-        "noteheads_and_rests": 4,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2553,17 +2444,17 @@
         "system": 0,
         "staff": 7,
         "cell": 0,
-        "measure": 48,
+        "measure": 49,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 28,
+            "units": 56,
             "is_the_bar": false
           }
         ],
@@ -2576,17 +2467,17 @@
         "system": 0,
         "staff": 7,
         "cell": 2,
-        "measure": 50,
+        "measure": 51,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2599,17 +2490,17 @@
         "system": 0,
         "staff": 7,
         "cell": 4,
-        "measure": 52,
+        "measure": 53,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 5,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -2622,17 +2513,17 @@
         "system": 0,
         "staff": 7,
         "cell": 6,
-        "measure": 54,
+        "measure": 55,
         "part": "P8",
         "events": 4,
         "noteheads_and_rests": 7,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 10,
+            "units": 20,
             "is_the_bar": false
           }
         ],
@@ -2645,17 +2536,17 @@
         "system": 1,
         "staff": 4,
         "cell": 13,
-        "measure": 77,
+        "measure": 78,
         "part": "P8",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2668,17 +2559,17 @@
         "system": 1,
         "staff": 4,
         "cell": 14,
-        "measure": 78,
+        "measure": 79,
         "part": "P8",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2691,17 +2582,17 @@
         "system": 1,
         "staff": 4,
         "cell": 16,
-        "measure": 80,
+        "measure": 81,
         "part": "P8",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2719,12 +2610,12 @@
         "events": 5,
         "noteheads_and_rests": 5,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -2742,12 +2633,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2765,40 +2656,17 @@
         "events": 1,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
           1.0
-        ]
-      },
-      {
-        "page": 1,
-        "system": 0,
-        "staff": 8,
-        "cell": 14,
-        "measure": 15,
-        "part": "P9",
-        "events": 3,
-        "noteheads_and_rests": 3,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 12,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.5
         ]
       },
       {
@@ -2811,12 +2679,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2828,41 +2696,41 @@
         "page": 2,
         "system": 0,
         "staff": 8,
-        "cell": 2,
-        "measure": 19,
+        "cell": 3,
+        "measure": 20,
         "part": "P9",
-        "events": 4,
-        "noteheads_and_rests": 7,
+        "events": 1,
+        "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          4.0
+          1.0
         ]
       },
       {
         "page": 2,
         "system": 0,
         "staff": 8,
-        "cell": 4,
-        "measure": 21,
+        "cell": 5,
+        "measure": 22,
         "part": "P9",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2874,18 +2742,18 @@
         "page": 2,
         "system": 0,
         "staff": 8,
-        "cell": 14,
-        "measure": 31,
+        "cell": 15,
+        "measure": 32,
         "part": "P9",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2898,17 +2766,17 @@
         "system": 1,
         "staff": 8,
         "cell": 0,
-        "measure": 33,
+        "measure": 34,
         "part": "P9",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -2921,17 +2789,17 @@
         "system": 1,
         "staff": 8,
         "cell": 1,
-        "measure": 34,
+        "measure": 35,
         "part": "P9",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2944,40 +2812,17 @@
         "system": 1,
         "staff": 8,
         "cell": 6,
-        "measure": 39,
+        "measure": 40,
         "part": "P9",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 20,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          2.5
-        ]
-      },
-      {
-        "page": 2,
-        "system": 1,
-        "staff": 8,
-        "cell": 8,
-        "measure": 41,
-        "part": "P9",
-        "events": 3,
-        "noteheads_and_rests": 3,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -2986,21 +2831,67 @@
         ]
       },
       {
+        "page": 2,
+        "system": 1,
+        "staff": 8,
+        "cell": 8,
+        "measure": 42,
+        "part": "P9",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
         "page": 3,
         "system": 0,
         "staff": 8,
-        "cell": 2,
+        "cell": 1,
         "measure": 50,
         "part": "P9",
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 10,
+            "units": 64,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          4.0
+        ]
+      },
+      {
+        "page": 3,
+        "system": 0,
+        "staff": 8,
+        "cell": 2,
+        "measure": 51,
+        "part": "P9",
+        "events": 4,
+        "noteheads_and_rests": 4,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 20,
             "is_the_bar": false
           }
         ],
@@ -3013,17 +2904,17 @@
         "system": 0,
         "staff": 8,
         "cell": 4,
-        "measure": 52,
+        "measure": 53,
         "part": "P9",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3036,17 +2927,17 @@
         "system": 0,
         "staff": 8,
         "cell": 6,
-        "measure": 54,
+        "measure": 55,
         "part": "P9",
         "events": 4,
         "noteheads_and_rests": 7,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 18,
+            "units": 36,
             "is_the_bar": false
           }
         ],
@@ -3059,17 +2950,17 @@
         "system": 1,
         "staff": 5,
         "cell": 0,
-        "measure": 64,
+        "measure": 65,
         "part": "P9",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 20,
+            "units": 40,
             "is_the_bar": false
           }
         ],
@@ -3081,41 +2972,18 @@
         "page": 3,
         "system": 1,
         "staff": 5,
-        "cell": 1,
-        "measure": 65,
-        "part": "P9",
-        "events": 1,
-        "noteheads_and_rests": 1,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 3,
-        "system": 1,
-        "staff": 5,
         "cell": 3,
-        "measure": 67,
+        "measure": 68,
         "part": "P9",
         "events": 2,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 32,
+            "units": 64,
             "is_the_bar": false
           }
         ],
@@ -3128,17 +2996,17 @@
         "system": 1,
         "staff": 5,
         "cell": 13,
-        "measure": 77,
+        "measure": 78,
         "part": "P9",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3156,12 +3024,12 @@
         "events": 4,
         "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 28,
+            "units": 56,
             "is_the_bar": false
           }
         ],
@@ -3179,12 +3047,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3202,12 +3070,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3225,17 +3093,40 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
           1.0
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 9,
+        "cell": 0,
+        "measure": 17,
+        "part": "P10",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
         ]
       },
       {
@@ -3248,40 +3139,17 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          1.5
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 9,
-        "cell": 2,
-        "measure": 19,
-        "part": "P10",
-        "events": 4,
-        "noteheads_and_rests": 4,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 32,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.0
+          1.0
         ]
       },
       {
@@ -3294,12 +3162,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3314,20 +3182,20 @@
         "cell": 4,
         "measure": 21,
         "part": "P10",
-        "events": 3,
-        "noteheads_and_rests": 3,
+        "events": 1,
+        "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          1.5
+          1.0
         ]
       },
       {
@@ -3337,20 +3205,20 @@
         "cell": 5,
         "measure": 22,
         "part": "P10",
-        "events": 1,
-        "noteheads_and_rests": 1,
+        "events": 3,
+        "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 24,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          1.0
+          1.5
         ]
       },
       {
@@ -3363,12 +3231,12 @@
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3380,18 +3248,41 @@
         "page": 2,
         "system": 0,
         "staff": 9,
-        "cell": 9,
-        "measure": 26,
+        "cell": 7,
+        "measure": 24,
+        "part": "P10",
+        "events": 1,
+        "noteheads_and_rests": 1,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 16,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.0
+        ]
+      },
+      {
+        "page": 2,
+        "system": 0,
+        "staff": 9,
+        "cell": 10,
+        "measure": 27,
         "part": "P10",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3403,18 +3294,18 @@
         "page": 2,
         "system": 0,
         "staff": 9,
-        "cell": 13,
-        "measure": 30,
+        "cell": 14,
+        "measure": 31,
         "part": "P10",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3427,17 +3318,17 @@
         "system": 1,
         "staff": 9,
         "cell": 4,
-        "measure": 37,
+        "measure": 38,
         "part": "P10",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 10,
+            "units": 20,
             "is_the_bar": false
           }
         ],
@@ -3449,18 +3340,64 @@
         "page": 2,
         "system": 1,
         "staff": 9,
-        "cell": 10,
+        "cell": 7,
+        "measure": 41,
+        "part": "P10",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 1,
+        "staff": 9,
+        "cell": 9,
         "measure": 43,
+        "part": "P10",
+        "events": 3,
+        "noteheads_and_rests": 3,
+        "meter_carried_in_file": false,
+        "want_units": 32,
+        "want_quarters": 2.0,
+        "divisions": 16,
+        "voices": [
+          {
+            "units": 24,
+            "is_the_bar": false
+          }
+        ],
+        "quarters": [
+          1.5
+        ]
+      },
+      {
+        "page": 2,
+        "system": 1,
+        "staff": 9,
+        "cell": 10,
+        "measure": 44,
         "part": "P10",
         "events": 4,
         "noteheads_and_rests": 7,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 28,
+            "units": 56,
             "is_the_bar": false
           }
         ],
@@ -3473,17 +3410,17 @@
         "system": 1,
         "staff": 9,
         "cell": 11,
-        "measure": 44,
+        "measure": 45,
         "part": "P10",
         "events": 2,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 20,
+            "units": 40,
             "is_the_bar": false
           }
         ],
@@ -3495,18 +3432,18 @@
         "page": 2,
         "system": 1,
         "staff": 9,
-        "cell": 13,
-        "measure": 46,
+        "cell": 14,
+        "measure": 48,
         "part": "P10",
         "events": 1,
-        "noteheads_and_rests": 1,
+        "noteheads_and_rests": 4,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3515,21 +3452,21 @@
         ]
       },
       {
-        "page": 2,
-        "system": 1,
+        "page": 3,
+        "system": 0,
         "staff": 9,
-        "cell": 14,
-        "measure": 47,
+        "cell": 1,
+        "measure": 50,
         "part": "P10",
         "events": 1,
-        "noteheads_and_rests": 4,
+        "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3542,17 +3479,17 @@
         "system": 0,
         "staff": 9,
         "cell": 2,
-        "measure": 50,
+        "measure": 51,
         "part": "P10",
         "events": 3,
         "noteheads_and_rests": 6,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3565,17 +3502,17 @@
         "system": 0,
         "staff": 9,
         "cell": 11,
-        "measure": 59,
+        "measure": 60,
         "part": "P10",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -3588,17 +3525,17 @@
         "system": 1,
         "staff": 6,
         "cell": 0,
-        "measure": 64,
+        "measure": 65,
         "part": "P10",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3616,12 +3553,12 @@
         "events": 5,
         "noteheads_and_rests": 5,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 24,
+            "units": 48,
             "is_the_bar": false
           }
         ],
@@ -3639,12 +3576,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3656,46 +3593,23 @@
         "page": 2,
         "system": 0,
         "staff": 10,
-        "cell": 0,
-        "measure": 17,
+        "cell": 5,
+        "measure": 22,
         "part": "P11",
-        "events": 3,
-        "noteheads_and_rests": 3,
+        "events": 2,
+        "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 20,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          2.5
-        ]
-      },
-      {
-        "page": 2,
-        "system": 0,
-        "staff": 10,
-        "cell": 2,
-        "measure": 19,
-        "part": "P11",
-        "events": 4,
-        "noteheads_and_rests": 4,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 32,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          4.0
+          1.0
         ]
       },
       {
@@ -3703,17 +3617,17 @@
         "system": 1,
         "staff": 10,
         "cell": 0,
-        "measure": 33,
+        "measure": 34,
         "part": "P11",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3726,17 +3640,17 @@
         "system": 1,
         "staff": 10,
         "cell": 1,
-        "measure": 34,
+        "measure": 35,
         "part": "P11",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3749,17 +3663,17 @@
         "system": 1,
         "staff": 10,
         "cell": 2,
-        "measure": 35,
+        "measure": 36,
         "part": "P11",
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3772,17 +3686,17 @@
         "system": 0,
         "staff": 10,
         "cell": 4,
-        "measure": 52,
+        "measure": 53,
         "part": "P11",
         "events": 1,
         "noteheads_and_rests": 1,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3795,17 +3709,17 @@
         "system": 0,
         "staff": 10,
         "cell": 11,
-        "measure": 59,
+        "measure": 60,
         "part": "P11",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -3817,41 +3731,18 @@
         "page": 3,
         "system": 1,
         "staff": 7,
-        "cell": 5,
-        "measure": 69,
-        "part": "P11",
-        "events": 1,
-        "noteheads_and_rests": 1,
-        "meter_carried_in_file": false,
-        "want_units": 16,
-        "want_quarters": 2.0,
-        "divisions": 8,
-        "voices": [
-          {
-            "units": 8,
-            "is_the_bar": false
-          }
-        ],
-        "quarters": [
-          1.0
-        ]
-      },
-      {
-        "page": 3,
-        "system": 1,
-        "staff": 7,
         "cell": 12,
-        "measure": 76,
+        "measure": 77,
         "part": "P11",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 8,
+            "units": 16,
             "is_the_bar": false
           }
         ],
@@ -3864,22 +3755,22 @@
         "system": 1,
         "staff": 7,
         "cell": 16,
-        "measure": 80,
+        "measure": 81,
         "part": "P11",
-        "events": 1,
-        "noteheads_and_rests": 1,
+        "events": 2,
+        "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 4,
+            "units": 16,
             "is_the_bar": false
           }
         ],
         "quarters": [
-          0.5
+          1.0
         ]
       },
       {
@@ -3887,17 +3778,17 @@
         "system": 1,
         "staff": 7,
         "cell": 17,
-        "measure": 81,
+        "measure": 82,
         "part": "P11",
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 40,
+            "units": 80,
             "is_the_bar": false
           }
         ],
@@ -3915,12 +3806,12 @@
         "events": 3,
         "noteheads_and_rests": 3,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 12,
+            "units": 24,
             "is_the_bar": false
           }
         ],
@@ -3938,12 +3829,12 @@
         "events": 2,
         "noteheads_and_rests": 2,
         "meter_carried_in_file": false,
-        "want_units": 16,
+        "want_units": 32,
         "want_quarters": 2.0,
-        "divisions": 8,
+        "divisions": 16,
         "voices": [
           {
-            "units": 64,
+            "units": 128,
             "is_the_bar": false
           }
         ],
@@ -3956,13 +3847,13 @@
   "possibly_unread_mark": {
     "bars": 0,
     "holds_out": false,
-    "of_bars_with_events": 811,
+    "of_bars_with_events": 828,
     "marked": []
   },
   "bars_held_out_unread_mark": {
     "bars": 0,
     "bars_on_a_doubled_staff": 0,
-    "of_bars_with_events": 811,
+    "of_bars_with_events": 828,
     "fraction": 0.0,
     "noteheads_and_rests": 0,
     "held": []
@@ -3975,10 +3866,10 @@
       "meter_return_not_read": "meter?"
     },
     "color": "#D00000",
-    "unread": 107,
-    "held_out_sum": 155,
+    "unread": 102,
+    "held_out_sum": 148,
     "held_out_unread_mark": 0,
-    "written": 262
+    "written": 250
   },
   "meter_returns_not_read": 0,
   "notes_not_written_by_system": {
@@ -3988,113 +3879,99 @@
       "not_a_notehead:too_narrow": 3,
       "not_a_rest:rest_touches_two_staff_lines": 2,
       "not_a_notehead:clipped_fragment": 10,
-      "not_a_notehead:stacked_head_duplicate": 10,
-      "owned_by_another_staff": 4,
+      "not_a_notehead:stacked_head_duplicate": 8,
+      "owned_by_another_staff": 2,
       "not_a_rest:rest_has_a_stem": 1,
-      "not_a_notehead:notehead_is_a_duplicate_box": 1,
+      "not_a_notehead:notehead_is_a_duplicate_box": 2,
       "not_a_rest:rest_is_a_duplicate_box": 2,
       "bar_does_not_add_up": 74
     },
     "2/0": {
       "not_a_notehead:clipped_fragment": 10,
-      "not_a_notehead:too_narrow": 7,
-      "not_a_notehead:notehead_is_a_duplicate_box": 4,
+      "not_a_rest:rest_is_a_duplicate_box": 7,
       "owned_by_another_staff": 24,
-      "duration_narrowed": 14,
-      "not_a_notehead:stacked_head_duplicate": 24,
+      "duration_narrowed": 13,
+      "not_a_notehead:stacked_head_duplicate": 28,
       "ink_is_a_whole_rest": 4,
-      "not_a_rest:rest_is_a_duplicate_box": 4,
-      "not_a_rest:rest_touches_two_staff_lines": 5,
-      "not_a_rest:rest_has_a_stem": 3,
-      "rest_duration_abstained": 5,
-      "not_a_rest:rest_clipped_by_crop": 3,
-      "owner_not_read": 5,
-      "not_a_rest:rest_outside_its_staff": 1,
-      "not_a_rest:rest_off_center": 1,
+      "not_a_notehead:notehead_is_a_duplicate_box": 5,
+      "rest_duration_abstained": 4,
+      "not_a_rest:rest_clipped_by_crop": 4,
+      "not_a_rest:rest_has_a_stem": 2,
+      "not_a_rest:rest_touches_two_staff_lines": 3,
+      "owner_not_read": 4,
+      "not_a_rest:rest_outside_its_staff": 2,
+      "not_a_notehead:too_narrow": 5,
+      "not_a_rest:rest_off_center": 2,
+      "not_a_rest:rest_overlaps_a_notehead": 2,
       "not_a_notehead:belongs_to_a_nearer_staff": 2,
-      "bar_does_not_add_up": 127
+      "bar_does_not_add_up": 106
     },
     "2/1": {
-      "not_a_rest:rest_is_a_duplicate_box": 7,
-      "owned_by_another_staff": 58,
-      "ink_is_a_whole_rest": 2,
+      "not_a_rest:rest_is_a_duplicate_box": 5,
+      "owned_by_another_staff": 57,
+      "ink_is_a_whole_rest": 3,
       "rest_duration_abstained": 3,
-      "not_a_notehead:clipped_fragment": 11,
-      "not_a_notehead:belongs_to_a_nearer_staff": 2,
-      "duration_narrowed": 14,
-      "not_a_notehead:too_narrow": 10,
-      "not_a_notehead:stacked_head_duplicate": 22,
-      "not_a_notehead:notehead_is_a_duplicate_box": 4,
+      "not_a_notehead:belongs_to_a_nearer_staff": 4,
+      "not_a_notehead:clipped_fragment": 12,
+      "duration_narrowed": 9,
+      "not_a_notehead:stacked_head_duplicate": 20,
+      "not_a_notehead:notehead_is_a_duplicate_box": 5,
+      "not_a_notehead:too_narrow": 7,
       "not_a_rest:rest_off_center": 2,
-      "not_a_rest:rest_has_a_stem": 6,
-      "not_a_rest:rest_clipped_by_crop": 3,
-      "not_a_rest:rest_touches_two_staff_lines": 1,
-      "owner_not_read": 1,
+      "not_a_rest:rest_clipped_by_crop": 1,
+      "not_a_rest:rest_has_a_stem": 5,
       "not_a_notehead:is_a_clef": 1,
-      "bar_does_not_add_up": 87
+      "bar_does_not_add_up": 83
     },
     "3/0": {
-      "not_a_notehead:stacked_head_duplicate": 23,
-      "not_a_notehead:notehead_is_a_duplicate_box": 4,
-      "not_a_notehead:too_narrow": 5,
-      "duration_narrowed": 12,
-      "ink_is_a_whole_rest": 4,
-      "not_a_rest:rest_off_center": 4,
-      "not_a_notehead:clipped_fragment": 15,
+      "not_a_notehead:stacked_head_duplicate": 26,
+      "not_a_notehead:too_narrow": 4,
+      "duration_narrowed": 10,
+      "ink_is_a_whole_rest": 5,
+      "not_a_notehead:clipped_fragment": 17,
       "not_a_rest:rest_touches_two_staff_lines": 3,
+      "not_a_notehead:notehead_is_a_duplicate_box": 5,
+      "not_a_rest:rest_off_center": 2,
       "not_a_rest:rest_is_a_duplicate_box": 2,
-      "owned_by_another_staff": 21,
+      "owned_by_another_staff": 18,
       "not_a_rest:rest_has_a_stem": 1,
       "not_a_notehead:is_a_clef": 2,
-      "bar_does_not_add_up": 82
+      "bar_does_not_add_up": 84
     },
     "3/1": {
       "not_a_rest:rest_touches_two_staff_lines": 5,
-      "rest_duration_abstained": 6,
+      "rest_duration_abstained": 5,
       "duration_narrowed": 4,
       "ink_is_a_whole_rest": 1,
       "not_a_notehead:belongs_to_a_nearer_staff": 1,
       "not_a_notehead:clipped_fragment": 2,
-      "not_a_notehead:stacked_head_duplicate": 27,
+      "not_a_notehead:stacked_head_duplicate": 31,
       "not_a_notehead:notehead_is_a_duplicate_box": 3,
       "not_a_rest:rest_has_a_stem": 5,
       "not_a_notehead:too_narrow": 1,
-      "bar_does_not_add_up": 20
+      "bar_does_not_add_up": 19
     }
   },
   "arcs_not_written": {
-    "arc_binds_fewer_than_two_notes": 171,
+    "arc_binds_fewer_than_two_notes": 173,
     "tie_pitch_contradiction": 9,
     "tie_spelling_differs": 1,
-    "tie_pair_no_start_head": 38,
-    "tie_pair_no_head_near_the_arc": 43,
-    "tie_pair_spans_a_whole_bar": 51,
-    "tie_pair_no_pair_at_one_position": 28,
-    "tie_pair_no_stop_head": 17,
-    "tie_pair_enters_from_previous_system": 20,
-    "tie_pair_runs_off_the_system": 9,
-    "tie_pair_narrowed": 10,
-    "tie_end_not_in_file": 2,
-    "bar_does_not_add_up": 11,
-    "arc_ends_in_one_chord": 19
+    "tie_pair_no_start_head": 41,
+    "tie_pair_no_head_near_the_arc": 36,
+    "tie_pair_spans_a_whole_bar": 43,
+    "tie_pair_no_pair_at_one_position": 32,
+    "tie_pair_no_stop_head": 16,
+    "tie_pair_enters_from_previous_system": 22,
+    "tie_pair_runs_off_the_system": 10,
+    "tie_pair_narrowed": 14,
+    "tie_end_not_in_file": 1,
+    "bar_does_not_add_up": 9,
+    "arc_ends_in_one_chord": 25
   },
   "tie_pairing": "record",
   "tie_contradictions": [
     {
-      "start": "glyph/2/1/1/12/2",
-      "stop": "glyph/2/1/1/13/0",
-      "pitches": [
-        "G5",
-        "Ab5"
-      ],
-      "kind": "tie_pitch_contradiction",
-      "arcs": [
-        "glyph/2/1/1/12/3",
-        "glyph/2/1/1/13/2"
-      ]
-    },
-    {
-      "start": "glyph/2/1/1/13/0",
+      "start": "glyph/2/1/1/13/1",
       "stop": "glyph/2/1/1/14/2",
       "pitches": [
         "Ab5",
@@ -4102,7 +3979,7 @@
       ],
       "kind": "tie_pitch_contradiction",
       "arcs": [
-        "glyph/2/1/1/13/1"
+        "glyph/2/1/1/13/0"
       ]
     },
     {
@@ -4117,20 +3994,6 @@
         "glyph/3/0/1/3/1",
         "glyph/3/0/1/3/7",
         "glyph/3/0/1/3/9"
-      ]
-    },
-    {
-      "start": "glyph/3/0/1/4/13",
-      "stop": "glyph/3/0/1/5/7",
-      "pitches": [
-        "Ab5",
-        "G5"
-      ],
-      "kind": "tie_pitch_contradiction",
-      "arcs": [
-        "glyph/3/0/1/4/7",
-        "glyph/3/0/1/4/8",
-        "glyph/3/0/1/4/11"
       ]
     },
     {
@@ -4159,8 +4022,21 @@
       ]
     },
     {
+      "start": "glyph/1/0/3/12/2",
+      "stop": "glyph/1/0/3/13/0",
+      "pitches": [
+        "Bb3",
+        "C4"
+      ],
+      "kind": "tie_pitch_contradiction",
+      "arcs": [
+        "glyph/1/0/3/12/1",
+        "glyph/1/0/3/13/1"
+      ]
+    },
+    {
       "start": "glyph/3/0/3/4/4",
-      "stop": "glyph/3/0/3/5/10",
+      "stop": "glyph/3/0/3/5/11",
       "pitches": [
         "Bb3",
         "Ab3"
@@ -4184,58 +4060,69 @@
       ]
     },
     {
-      "start": "glyph/3/1/3/1/1",
-      "stop": "glyph/3/1/3/2/4",
+      "start": "glyph/2/0/8/4/2",
+      "stop": "glyph/2/0/8/5/6",
       "pitches": [
-        "G4",
-        "F4"
+        "Bb4",
+        "Ab4"
       ],
       "kind": "tie_pitch_contradiction",
       "arcs": [
-        "glyph/3/1/3/2/6"
+        "glyph/2/0/8/4/5"
       ]
     },
     {
-      "start": "glyph/3/1/5/5/2",
-      "stop": "glyph/3/1/5/6/2",
+      "start": "glyph/2/1/10/11/1",
+      "stop": "glyph/2/1/10/12/1",
       "pitches": [
-        "Ab4",
-        "G4"
+        "C3",
+        "Bb2"
       ],
       "kind": "tie_pitch_contradiction",
       "arcs": [
-        "glyph/3/1/5/5/1"
+        "glyph/2/1/10/11/0"
+      ]
+    },
+    {
+      "start": "glyph/3/0/10/0/5",
+      "stop": "glyph/3/0/10/1/3",
+      "pitches": [
+        "F2",
+        "G2"
+      ],
+      "kind": "tie_pitch_contradiction",
+      "arcs": [
+        "glyph/3/0/10/0/11"
       ]
     }
   ],
   "tie_links": [
     {
       "start": "glyph/3/0/0/0/15",
-      "stop": "glyph/3/0/0/1/10",
+      "stop": "glyph/3/0/0/1/8",
       "pitch": "D6",
       "arcs": [
-        "glyph/3/0/0/0/7",
-        "glyph/3/0/0/0/12",
-        "glyph/3/0/0/0/14"
+        "glyph/3/0/0/0/5",
+        "glyph/3/0/0/0/16",
+        "glyph/3/0/0/0/19"
       ]
     },
     {
-      "start": "glyph/2/0/1/5/1",
-      "stop": "glyph/2/0/1/6/6",
+      "start": "glyph/2/0/1/6/1",
+      "stop": "glyph/2/0/1/7/6",
       "pitch": "F5",
       "arcs": [
-        "glyph/2/0/0/6/1",
-        "glyph/2/0/1/5/0",
-        "glyph/2/0/1/5/2"
+        "glyph/2/0/0/7/1",
+        "glyph/2/0/1/6/0",
+        "glyph/2/0/1/6/2"
       ]
     },
     {
-      "start": "glyph/3/0/1/5/7",
+      "start": "glyph/3/0/1/5/10",
       "stop": "glyph/3/0/1/6/3",
-      "pitch": "G5",
+      "pitch": "Eb5",
       "arcs": [
-        "glyph/3/0/1/5/2",
-        "glyph/3/0/1/5/6",
+        "glyph/3/0/1/5/8",
         "glyph/3/0/1/5/9"
       ]
     },
@@ -4248,11 +4135,19 @@
       ]
     },
     {
-      "start": "glyph/2/1/3/10/7",
-      "stop": "glyph/2/1/3/11/8",
+      "start": "glyph/1/0/3/11/1",
+      "stop": "glyph/1/0/3/12/2",
       "pitch": "Bb3",
       "arcs": [
-        "glyph/2/1/3/10/9"
+        "glyph/1/0/3/11/3"
+      ]
+    },
+    {
+      "start": "glyph/2/1/3/10/6",
+      "stop": "glyph/2/1/3/11/7",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/2/1/3/10/7"
       ]
     },
     {
@@ -4264,24 +4159,42 @@
       ]
     },
     {
-      "start": "glyph/3/0/3/5/10",
-      "stop": "glyph/3/0/3/6/2",
+      "start": "glyph/3/0/3/5/11",
+      "stop": "glyph/3/0/3/6/1",
       "pitch": "Ab3",
       "arcs": [
-        "glyph/3/0/3/5/3",
         "glyph/3/0/3/5/4",
         "glyph/3/0/3/5/5",
         "glyph/3/0/3/5/6",
-        "glyph/3/0/3/5/7",
-        "glyph/3/0/3/5/11"
+        "glyph/3/0/3/5/8",
+        "glyph/3/0/3/5/12"
       ]
     },
     {
-      "start": "glyph/2/1/4/13/1",
-      "stop": "glyph/2/1/4/14/9",
-      "pitch": "E5",
+      "start": "glyph/3/1/2/2/9",
+      "stop": "glyph/3/1/2/3/0",
+      "pitch": "Ab3",
       "arcs": [
-        "glyph/2/1/4/13/0"
+        "glyph/3/1/2/2/3",
+        "glyph/3/1/2/2/7"
+      ]
+    },
+    {
+      "start": "glyph/2/1/4/11/1",
+      "stop": "glyph/2/1/4/12/5",
+      "pitch": "C5",
+      "arcs": [
+        "glyph/2/1/4/11/4",
+        "glyph/2/1/4/12/2"
+      ]
+    },
+    {
+      "start": "glyph/2/1/4/12/5",
+      "stop": "glyph/2/1/4/13/3",
+      "pitch": "C5",
+      "arcs": [
+        "glyph/2/1/4/12/4",
+        "glyph/2/1/4/12/6"
       ]
     },
     {
@@ -4289,40 +4202,23 @@
       "stop": "glyph/3/0/4/2/3",
       "pitch": "E5",
       "arcs": [
-        "glyph/3/0/4/1/1",
-        "glyph/3/0/4/1/6"
+        "glyph/3/0/4/1/1"
       ]
     },
     {
-      "start": "glyph/3/1/3/2/3",
-      "stop": "glyph/3/1/3/3/2",
+      "start": "glyph/3/0/4/13/2",
+      "stop": "glyph/3/0/4/14/2",
       "pitch": "G4",
       "arcs": [
-        "glyph/3/1/3/2/1"
+        "glyph/3/0/4/13/5"
       ]
     },
     {
-      "start": "glyph/3/0/5/4/5",
-      "stop": "glyph/3/0/5/5/7",
-      "pitch": "C4",
-      "arcs": [
-        "glyph/3/0/5/5/4"
-      ]
-    },
-    {
-      "start": "glyph/3/0/5/5/7",
-      "stop": "glyph/3/0/5/6/4",
+      "start": "glyph/3/0/5/5/4",
+      "stop": "glyph/3/0/5/6/2",
       "pitch": "C4",
       "arcs": [
         "glyph/3/0/5/6/1"
-      ]
-    },
-    {
-      "start": "glyph/2/1/6/13/2",
-      "stop": "glyph/2/1/6/13/1",
-      "pitch": "C3",
-      "arcs": [
-        "glyph/2/1/6/13/10"
       ]
     },
     {
@@ -4330,7 +4226,7 @@
       "stop": "glyph/3/0/6/7/0",
       "pitch": "C3",
       "arcs": [
-        "glyph/3/0/6/6/2"
+        "glyph/3/0/6/6/4"
       ]
     },
     {
@@ -4350,15 +4246,23 @@
       ]
     },
     {
-      "start": "glyph/1/0/10/11/2",
-      "stop": "glyph/1/0/10/12/0",
-      "pitch": "Bb3",
+      "start": "glyph/3/1/5/5/4",
+      "stop": "glyph/3/1/5/6/2",
+      "pitch": "G4",
       "arcs": [
-        "glyph/1/0/10/11/1"
+        "glyph/3/1/5/5/2"
       ]
     },
     {
-      "start": "glyph/2/1/10/10/11",
+      "start": "glyph/1/0/10/11/1",
+      "stop": "glyph/1/0/10/12/0",
+      "pitch": "Bb3",
+      "arcs": [
+        "glyph/1/0/10/11/0"
+      ]
+    },
+    {
+      "start": "glyph/2/1/10/10/9",
       "stop": "glyph/2/1/10/11/1",
       "pitch": "C3",
       "arcs": [
@@ -4366,47 +4270,42 @@
       ]
     },
     {
-      "start": "glyph/2/1/10/11/1",
-      "stop": "glyph/2/1/10/12/2",
-      "pitch": "C3",
-      "arcs": [
-        "glyph/2/1/10/11/0"
-      ]
-    },
-    {
-      "start": "glyph/2/1/10/12/2",
+      "start": "glyph/2/1/10/12/1",
       "stop": "glyph/2/1/10/13/3",
-      "pitch": "C3",
+      "pitch": "Bb2",
       "arcs": [
-        "glyph/2/1/10/12/1",
-        "glyph/2/1/10/12/3"
+        "glyph/2/1/10/12/2",
+        "glyph/2/1/10/12/4",
+        "glyph/2/1/10/12/12",
+        "glyph/2/1/10/12/13"
       ]
     }
   ],
-  "arcs_not_written_total": 429,
+  "arcs_not_written_total": 432,
   "articulations_not_written": {
+    "artic_no_notehead": 1,
     "bar_does_not_add_up": 1
   },
-  "articulations_not_written_total": 1,
+  "articulations_not_written_total": 2,
   "articulation_balance": {
-    "marks_in_log": 1,
+    "marks_in_log": 2,
     "written": 0,
-    "not_written": 1,
+    "not_written": 2,
     "balanced": true
   },
   "dot_role_not_placed": {
-    "abstained_dot_role_ambiguous": 25,
+    "abstained_dot_role_ambiguous": 22,
     "staccato_owning_notehead_not_written": 2,
-    "abstained_no_notehead_or_rest_in_cell": 1,
-    "bar_does_not_add_up": 2
+    "abstained_no_notehead_or_rest_in_cell": 3,
+    "bar_does_not_add_up": 4
   },
-  "dot_role_not_placed_total": 30,
+  "dot_role_not_placed_total": 31,
   "dot_role_balance": {
-    "population": 43,
-    "attached_augmentation": 2,
+    "population": 45,
+    "attached_augmentation": 3,
     "written_staccato": 11,
-    "attached_staccato_before_hold_out": 13,
-    "not_placed": 30,
+    "attached_staccato_before_hold_out": 15,
+    "not_placed": 31,
     "balanced": true
   },
   "ornaments_not_written": {},
@@ -4441,26 +4340,26 @@
   },
   "fermatas_not_written": {
     "fermata_no_carrier": 12,
-    "fermata_owning_glyph_not_written": 5,
+    "fermata_owning_glyph_not_written": 4,
     "bar_does_not_add_up": 4
   },
-  "fermatas_not_written_total": 21,
+  "fermatas_not_written_total": 20,
   "fermata_balance": {
     "marks_in_log": 63,
-    "written": 30,
+    "written": 31,
     "duplicated_across_voices": 0,
-    "not_written": 21,
+    "not_written": 20,
     "absorbed_by_a_shared_event": 12,
     "balanced": true
   },
   "balance": {
-    "events_in_log": 1863,
-    "noteheads_in_log": 1339,
-    "rests_in_log": 524,
-    "events_written": 1016,
-    "rests_duplicated_across_voices": 2,
-    "notes_doubled_to_condensed_slot": 95,
-    "events_not_written": 847,
+    "events_in_log": 1851,
+    "noteheads_in_log": 1330,
+    "rests_in_log": 521,
+    "events_written": 1037,
+    "rests_duplicated_across_voices": 1,
+    "notes_doubled_to_condensed_slot": 101,
+    "events_not_written": 814,
     "balanced": true
   }
 }
