@@ -617,3 +617,117 @@ on this broader, reference-backed count — still well above geometry's bare
 `pytest -m "not slow" tools/omr/tests`: **4,199 passed, 3 skipped, 2
 xfailed** (+4 over §12f, the new sibling-bleed test file; nothing else
 moved). `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged.**
+
+## 14. (2026-10-01) THE JUDGE WAS WRONG — ONSET-EXACT MATCHING, VALIDATED
+## AGAINST EVERY HAND-MEASURED HEAD
+
+Manager review of §13 (f93c7257): the BAR-LEVEL truth set let a wrong
+reading hit some OTHER pitch sounding later/earlier in the same bar (its
+own shifted-copy control passed 10-12% of the time), and it CONTRADICTED
+the hand measurement (`claude/affectionate-mendeleev-db20a1` FINDINGS §11:
+geometry right on 12 of 14 readable near-boundary Brahms heads) by calling
+geometry wrong on 44%/40% of all far heads. Fixing the judge, not the
+readers, came first.
+
+### 14a. Onset-exact matching
+
+Reuses `Q.EVENT` (`adjudicate_event`'s own chord grouping, one row per
+cell, `{"events": [{"glyphs": [...]}]}`, x-ordered) rather than
+re-deriving onsets: a far head's own event's INDEX among its cell's
+non-rest events is compared POSITIONALLY to the reference's own
+distinct-onset groups for that (family, bar); the two counts must match or
+the WHOLE bar is UNSCORED (no guessing which of several misaligned onsets
+a head belongs to). Where the matched group's SIZE also matches, the
+truth pitch is picked by STACK ORDER (page-canonical y ascending vs the
+reference group sorted by height descending); a size mismatch there is
+ALSO unscored — no membership fallback, the stricter standard this
+revision commits to. Population drops hard under this stricter standard:
+**87 of 401 Litolff scored (was 182), 55 of 486 Brahms (was 217)** — most
+far heads sit in a bar whose own onset count our cell's `Q.EVENT` cannot
+match, or in a chord whose size disagrees; UNSCORED, never guessed.
+
+### 14b. Validated against every hand-measured head the manager named
+
+| subject | hand truth | onset-exact truth | agree? |
+|---|---|---|---|
+| `glyph/3/0/0/2/4` (Sean chord 1 upper) | F6 | F6 | ✓ |
+| `glyph/3/0/0/2/9` (Sean chord 1 lower) | D6 | D6 | ✓ |
+| `glyph/3/0/0/2/1` (Sean chord 2 upper) | E6 | E6 | ✓ |
+| `glyph/3/0/0/2/3` (Sean chord 2 lower) | C6 | C6 | ✓ |
+| `glyph/3/0/0/7/2` (§11, geometry wrong) | A5 | A5 | ✓ |
+| `glyph/3/0/8/9/0` (§11, geometry wrong) | B3 | B3 | ✓ |
+| `glyph/3/0/0/4/8` (manager msg, bar 53) | C6 | UNSCORED | — |
+| `glyph/3/0/9/2/4` (§11, single-head suspect) | C3 | UNSCORED | — |
+| `glyph/1/0/0/2/16` (§11 Brahms, geom wrong) | B5 | UNSCORED | — |
+| `glyph/1/1/3/3/2` (§11 Brahms, geom wrong) | D4 | UNSCORED | — |
+
+**Zero disagreements.** Every head the onset-exact judge actually scores
+agrees with the hand measurement, including all four of Sean's confirmed
+pitches — the chord case §13c's refinement loop could not reach is now
+independently confirmed by a second, different method (hand crop vs
+reference encoding) rather than resting on one crop review. The four
+UNSCORED heads are not contradictions: `/0/4/8` and `/0/9/2/4` never reach
+`Q.PITCH`'s own exporter path at all (`Q.DURATION` is `narrowed`, not
+`decided`, so `export.build()` never places them in a `Cell` and this
+script has no bar/family for them — a real, separate gap, not a judge
+fault); the two Brahms heads' own cell `Q.EVENT` onset count does not
+match the reference bar's, so the stricter standard declines rather than
+guess which onset they belong to (the FIRST version's bar-level match
+HAPPENED to agree with the hand reading there by chance, which is exactly
+the kind of agreement the manager's review was right not to trust).
+
+### 14c. Shifted-copy control, re-run at onset-group granularity
+
+Both self-control and corrupted-control (§13a) are re-defined on ONE
+ONSET GROUP, not a whole bar: self-control (every pitch is a member of
+its OWN onset group) stays clean, 0 failures on both documents.
+Corrupted-control (every pitch's octave bumped by +1, checked against its
+OWN unshifted onset group) **falls to 9.2% (Litolff, 926/10,029) and 7.5%
+(Brahms, 1,328/17,825)** — down from 10-12% but NOT near zero, and this is
+reported rather than smoothed over: the residual is octave-doubled
+pitches genuinely present WITHIN one onset group (two flute parts, or a
+melody doubled an octave down in the same chord — a real musical feature
+of orchestral writing, not a scope leak), confirmed by spot-checking five
+Litolff onset groups with the shift: all five residual "passes" are
+chords that already span an octave on the SAME pitch class. The control
+can still fail, and does, on a known and much smaller population than
+before.
+
+### 14d. Re-scored, full table, onset-exact judge
+
+| Litolff (n=87) | right | wrong | abstain | precision |
+|---|--:|--:|--:|--:|
+| geometry | 53 | 34 | — | 61% |
+| reader 1 (after sibling-bleed fix) | 11 | 16 | 60 | 41% |
+| reader 2 | 63 | 13 | 11 | 83% |
+| agreement | 10 | 1 | 76 | 91% |
+| option B | 56 | 31 | — | 64% |
+| local geometry | 25 | 24 | 38 | 51% |
+
+| Brahms (n=55) | right | wrong | abstain | precision |
+|---|--:|--:|--:|--:|
+| geometry | 17 | 38 | — | 31% |
+| reader 1 (after sibling-bleed fix) | 7 | 3 | 45 | 70% |
+| reader 2 | 17 | 36 | 2 | 32% |
+| agreement | 6 | 0 | 49 | 100% |
+| option B | 18 | 37 | — | 33% |
+| local geometry | 11 | 9 | 35 | 55% |
+
+**Geometry's precision is much lower under the honest judge than the §13
+bar-level number (61%/31% vs 56%/60%), and lower than the hand sample's
+near-boundary 85.7% on Brahms — these are NOT in conflict.** The hand
+sample was deliberately restricted to near-boundary heads (within 0.15 of
+an integer), the easiest case for rounding; the onset-exact population is
+every far head regardless of distance, where CLAUDE.md §10's own measured
+mechanism (ledger lines not evenly spaced, extrapolation error growing
+with distance) has more room to act. **Reader 2 and agreement remain the
+strongest signals** (83%/91% Litolff, 32%/100% Brahms, though Brahms
+agreement's n=6 is too small to read as a rate). **Option B still barely
+moves the needle over geometry** (+3/+1 Litolff, +1/+1 Brahms) for the
+same reason as before: agreement is rare. Sibling-bleed fix KEPT (§13c);
+nothing new wired.
+
+### 14e. Checks
+
+`pytest -m "not slow"` and `staged.check`: unchanged from §13f (no
+production code touched this item, only the measurement script).

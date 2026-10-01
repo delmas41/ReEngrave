@@ -17,21 +17,27 @@ pipeline, no new flag, no record mutation. Run from the repo root:
 
 SCOPE, STATED UP FRONT (CLAUDE.md's own "what is not established" habit):
 
-  * Matching is BAR-LEVEL, not onset-level. `tools.omr.acceptance_quick`'s
-    own per-bar scorer (`acceptance_barscore.score_bar`) aligns onsets
-    inside a bar for a FULL note-for-note diff; building that same
-    alignment per INDIVIDUAL far-ledger glyph (rather than per exported
-    bar) needs the exporter's own onset/event grouping threaded back to
-    each glyph subject, which does not exist as a public mapping today.
-    Instead: a SINGLE far head is scored as "truth-consistent" if its
-    pitch (letter+octave, accidentals folded from the key exactly as
-    `_sounding_pitch` does) is a MEMBER of the reference's pitch set for
-    that (family, bar) -- not pinned to one onset. A CHORD CLUSTER (two or
-    more far heads sharing one `glyph_owner`-decided staff, one cell, and
-    nearly the same page x -- the stem they share) is ranked top-to-bottom
-    by page y and compared against the reference's DISTINCT pitch set for
-    that bar in descending order, ONLY where the two counts match; a size
-    mismatch is UNSCORED, never guessed.
+  * ⚠️ REVISION 2026-10-01 (manager review of the first version, f93c7257):
+    the first cut of this script matched at BAR level (member of the
+    bar's whole pitch set) and was shown to disagree with the hand
+    measurement (branch `claude/affectionate-mendeleev-db20a1` FINDINGS
+    §11) on far more heads than a trustworthy judge should, and its own
+    shifted-copy control passed 10-12% of the time. Matching is now
+    ONSET-EXACT, reusing the SAME ingredient `tools.omr.staged.adjudicate_
+    event`/`Q.EVENT` already computed (one row per cell, `{"events": [...
+    {"glyphs": [...]}]}`, ordered by x — the exporter's own chord
+    grouping, not a re-derivation): a far head's own event's INDEX among
+    its cell's non-rest events is compared POSITIONALLY to the index of
+    the reference's own distinct-onset groups for that (family, bar),
+    ascending. The two counts must match (same number of onset groups in
+    our cell and in the reference bar) or the WHOLE bar is UNSCORED for
+    every head in it — no guessing at which of several misaligned onsets a
+    head belongs to. Within an aligned group, if its SIZE (chord member
+    count) also matches, the head's truth pitch is picked by STACK ORDER
+    (page-canonical y ascending = top of stack = highest pitch, matched to
+    the reference group's own pitches sorted by height descending); a size
+    mismatch there is also UNSCORED, never a membership fallback — this is
+    the stricter standard this revision commits to over the old one.
   * The family maps are `tools.omr.acceptance_quick._FAMILY_MAPS`, hand
     built on an EARLIER export. The current Litolff export shows 12 parts
     (Cello and Contrabass split, where the map still has one combined
@@ -152,6 +158,88 @@ def _ref_pitch_set(ref_bars: Dict[str, List], bar: str) -> List[Tuple[str, int]]
         if p is not None:
             out.append(p)
     return out
+
+
+_LETTER_ORDER = {"C": 0, "D": 1, "E": 2, "F": 3, "G": 4, "A": 5, "B": 6}
+
+
+def _pitch_height(p: Tuple[str, int]) -> int:
+    return p[1] * 7 + _LETTER_ORDER.get(p[0], 0)
+
+
+def _truth_onset_groups(ref_bars: Dict[str, List], bar: str
+                        ) -> List[List[Tuple[str, int]]]:
+    """This bar's DISTINCT onsets (any voice), ascending, each its own
+    pitch list (rests dropped) -- the reference's own version of `Q.EVENT`'s
+    ordering, so it can be compared to it POSITIONALLY."""
+    by_onset: Dict[Any, List[Tuple[str, int]]] = {}
+    for ev in ref_bars.get(bar, ()):
+        if ev.pitch is None:
+            continue
+        p = _parse_pitch_letter_octave(ev.pitch)
+        if p is None:
+            continue
+        by_onset.setdefault(ev.onset, []).append(p)
+    return [by_onset[k] for k in sorted(by_onset)]
+
+
+def _our_cell_events(rec: EXP.Record, cell_key: str) -> Optional[List[Dict[str, Any]]]:
+    v = rec.verdict(Q.EVENT, cell_key)
+    if v is None or v.get("outcome") != "decided" or not isinstance(v.get("value"), dict):
+        return None
+    return [e for e in (v["value"].get("events") or ()) if e.get("kind") != "rest"]
+
+
+def _our_event_for_glyph(events: Sequence[Dict[str, Any]], glyph_i: int
+                         ) -> Optional[Tuple[int, List[int]]]:
+    for i, e in enumerate(events):
+        if glyph_i in (e.get("glyphs") or ()):
+            return i, list(e.get("glyphs") or ())
+    return None
+
+
+def onset_exact_truth(rec: EXP.Record, doc_id: str, family: Optional[str],
+                      bar: Optional[int], ref_root: ET.Element,
+                      page: int, system: int, staff: int, cell: int,
+                      glyph_i: int) -> Optional[List[Tuple[str, int]]]:
+    """The SINGLE reference pitch this exact head's own onset (and, where
+    its chord size also matches, its own stack rank) names -- or `None`
+    (UNSCORED) where the bar's own onset count disagrees with the
+    reference's, or a matched onset's chord size does not. Never a
+    membership fallback (manager review, 2026-10-01): a wrong alignment
+    counted as right by coincidence is exactly what the bar-level judge
+    got caught doing."""
+    if family is None or bar is None:
+        return None
+    cell_key = f"cell/{page}/{system}/{staff}/{cell}"
+    our_events = _our_cell_events(rec, cell_key)
+    if not our_events:
+        return None
+    found = _our_event_for_glyph(our_events, glyph_i)
+    if found is None:
+        return None
+    our_idx, our_glyphs = found
+    _, ref_ids = _FAMILY_MAPS[doc_id][family]
+    ref_bars = _union_bars(ref_ids, ref_root)
+    truth_groups = _truth_onset_groups(ref_bars, str(bar))
+    if len(our_events) != len(truth_groups) or not (0 <= our_idx < len(truth_groups)):
+        return None
+    truth_pitches = truth_groups[our_idx]
+    if len(our_glyphs) != len(truth_pitches):
+        return None
+    if len(our_glyphs) == 1:
+        return [truth_pitches[0]]
+    ys: Dict[int, float] = {}
+    for gi in our_glyphs:
+        box_obs = rec.obs(Q.GLYPH_BOX, f"glyph/{page}/{system}/{staff}/{cell}/{gi}")
+        if box_obs:
+            ys[gi] = float(box_obs[-1]["value"][2])   # y_canonical
+    if len(ys) != len(our_glyphs):
+        return None
+    order = sorted(our_glyphs, key=lambda gi: ys[gi])      # top of stack first
+    truth_sorted = sorted(truth_pitches, key=_pitch_height, reverse=True)
+    rank = order.index(glyph_i)
+    return [truth_sorted[rank]]
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -318,7 +406,7 @@ def build_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
     rows: List[Dict[str, Any]] = []
     for sub in _far_head_subjects(rec):
         parts_of_sub = sub.split("/")
-        page, system, staff, cell = (int(x) for x in parts_of_sub[1:5])
+        page, system, staff, cell, glyph_i = (int(x) for x in parts_of_sub[1:6])
         staff_key = f"staff/{page}/{system}/{staff}"
         clef_v = rec.value(Q.CLEF, staff_key)
         pos_obs = rec.obs(Q.NOTEHEAD_STAFF_POSITION, sub)
@@ -369,11 +457,9 @@ def build_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
             if off is not None:
                 bar = off + det["cell"] + 1 + loaded["bar_correction"]
 
-        truth_pitches: List[Tuple[str, int]] = []
-        if family is not None and bar is not None:
-            _, ref_ids = _FAMILY_MAPS[doc_id][family]
-            ref_bars = _union_bars(ref_ids, ref_root)
-            truth_pitches = _ref_pitch_set(ref_bars, str(bar))
+        truth_pitches = onset_exact_truth(
+            rec, doc_id, family, bar, ref_root, page, system, staff, cell,
+            glyph_i) or []
 
         rows.append(dict(
             subject=sub, staff_key=staff_key, family=family, bar=bar,
@@ -417,46 +503,42 @@ def score_rows(rows: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
 
 
 def self_control(doc_id: str, loaded: Dict[str, Any]) -> Dict[str, int]:
-    """The reference encoding scored against ITSELF (CLAUDE.md §6b: "a
-    control must be able to fail -- run it in a state where it fails
-    before trusting it where it passes"): every bar's own pitch set must
-    trivially contain every one of its own notes' (letter, octave)."""
+    """The reference encoding scored against ITSELF, at ONSET-GROUP level
+    (manager review, 2026-10-01: the judge must be re-validated at the
+    same granularity it now scores far heads at, not the old bar-level
+    one): every pitch must trivially be a member of its OWN onset group,
+    never the whole bar's pooled set (CLAUDE.md §6b: "a control must be
+    able to fail")."""
     ok = bad = 0
     for family, (_our, ref_ids) in _FAMILY_MAPS[doc_id].items():
         ref_bars = _union_bars(ref_ids, loaded["ref_root"])
-        for bar, events in ref_bars.items():
-            pitch_set = _ref_pitch_set(ref_bars, bar)
-            for ev in events:
-                if ev.pitch is None:
-                    continue
-                p = _parse_pitch_letter_octave(ev.pitch)
-                if p in pitch_set:
-                    ok += 1
-                else:
-                    bad += 1
+        for bar in ref_bars:
+            for group in _truth_onset_groups(ref_bars, bar):
+                for p in group:
+                    if p in group:
+                        ok += 1
+                    else:
+                        bad += 1
     return {"ok": ok, "bad": bad}
 
 
 def corrupted_control(doc_id: str, loaded: Dict[str, Any]) -> Dict[str, int]:
-    """CLAUDE.md §6b's other half: the self-control's negative. Every
-    note's octave bumped by +1 must now almost always MISS its own bar's
-    (unshifted) pitch set."""
+    """CLAUDE.md §6b's other half, at the SAME onset-group granularity:
+    every pitch's octave bumped by +1 must almost always miss its OWN
+    onset group's (unshifted) pitch set -- the false-pass rate the manager
+    asked to see fall near zero now that the group is one onset, not a
+    whole bar."""
     ok = bad = 0
     for family, (_our, ref_ids) in _FAMILY_MAPS[doc_id].items():
         ref_bars = _union_bars(ref_ids, loaded["ref_root"])
-        for bar, events in ref_bars.items():
-            pitch_set = _ref_pitch_set(ref_bars, bar)
-            for ev in events:
-                if ev.pitch is None:
-                    continue
-                p = _parse_pitch_letter_octave(ev.pitch)
-                if p is None:
-                    continue
-                shifted = (p[0], p[1] + 1)
-                if shifted in pitch_set:
-                    ok += 1
-                else:
-                    bad += 1
+        for bar in ref_bars:
+            for group in _truth_onset_groups(ref_bars, bar):
+                for p in group:
+                    shifted = (p[0], p[1] + 1)
+                    if shifted in group:
+                        ok += 1
+                    else:
+                        bad += 1
     return {"ok": ok, "bad": bad}
 
 
