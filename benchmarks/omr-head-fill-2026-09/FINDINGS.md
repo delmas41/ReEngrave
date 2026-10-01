@@ -265,3 +265,91 @@ problem, not this rule).
    second pass over the SAME re-gather would show whether this rule's one
    narrowed case actually resolves once the meter is decided.
 
+
+## Sec.7. `head_fill_from_ink` 9 -> 92 (Brahms), 22 -> 48 (Litolff) between the 20260930b and 20261001 overnight re-gathers
+
+2026-10-01, branch `lane-2.48-classify` (day-manager lane). STAGED,
+ADJUDICATE only. Commits bracketed: `2718c450` (20260930b gather) ..
+`342ec624` (20261001 gather).
+
+**Which commit(s) changed it**: `git log 2718c450..342ec624 -S
+"head_fill_from_ink" -- tools/omr` names exactly one —
+`9b7798d9f` "ROADMAP 2.43: a stray detector beam box must not make a clear
+note's length undecided." It does NOT touch the `head_fill_from_ink` branch
+itself (`adjudicate_duration`'s ink-override, 2.23); it changes
+`_beam_levels` to gate the merely-POSSIBLE beam-column match on THIS head's
+own stem's x-span (`_own_stem_x_span`), so a YOLO `beam` box standing over
+neither this note's head nor its stem no longer counts as ambiguous beam
+evidence for it.
+
+**The mechanism, read from the full `adjudicate` reason buckets (both
+overnight logs, `library/_shared-records/overnight-*/brahms1-breitkopf.log`)**:
+Brahms `duration` non-DECIDED reasons, 20260930b -> 20261001:
+`beams_ambiguous` 1884 -> 1693 (-191), `beam_discounted_uncertain` 1102 ->
+991 (-111), `head_fill_from_ink` 9 -> 92 (+83). **Total non-DECIDED duration
+fell 3,762 -> 3,530 (-232)** — 2.43 is a net reduction in ambiguity, exactly
+as its own commit measured. `head_fill_from_ink`'s rise is heads that used
+to be stuck "ambiguous beam" on a stray, off-stem YOLO box; once 2.43
+correctly discounts that box, `beam_evidence` becomes `none_over_this_note`
+and these heads reach the OLDER (2.23) ink-fill check for the first time.
+**`export.py` (confirmed by reading it, not inferred) treats every NARROWED
+duration identically regardless of reason** — `to_musicxml` writes nothing
+and counts it under the single generic `duration_narrowed` refusal
+(`export.py` ~939). So this reclassification, by itself, changes no
+exported note; both the old and the new reason were already NARROWED,
+already held out.
+
+**Litolff shows the same pattern**: `beams_ambiguous` 700 -> 525 (-175),
+`head_fill_from_ink` 22 -> 48 (+26), confirming the mechanism is the
+`_beam_levels` change, not something Brahms-specific.
+
+**Sampled 8 of the 84 Brahms subjects newly carrying `head_fill_from_ink`
+in 20261001 but not present in 20260930b's own 9** (`random.seed(42)` over
+the diff-by-subject set), cropped each at the gather's own 600 dpi with the
+exact glyph box bracketed (`out/print/head-fill/head_<page>_<system>_
+<staff>_<cell>_<glyph>.png`). Verdict by eye against each crop:
+
+| subject | top candidate | by eye |
+|---|---|---|
+| `glyph/25/0/1/8/0` | half (hollow) | **NOT A NOTE** — the box sits on the printed direction text "poco a poco" |
+| `glyph/8/0/6/9/13` | half (hollow) | **NOT A NOTE** — the box covers empty space between two real eighth notes; no ink there at all |
+| `glyph/11/0/11/5/4` | half (hollow) | **NOT A NOTE** — empty space to the right of a real note group |
+| `glyph/5/0/2/4/26` | half (hollow) | genuinely covers ink, but the box is tall/thin (147x282 canonical, ~1:2) straddling what reads as a SOLID black head by eye — **solid, not hollow** |
+| `glyph/2/0/5/2/18`, `glyph/5/0/0/2/16`, `glyph/5/1/0/5/14`, `glyph/11/1/1/9/7` | half (hollow) | box sits immediately beside (not centred on) a clearly SOLID black head — most plausibly boxing an augmentation dot or a stray ink fragment next to the real head, not the head itself; **not a clean read either way** |
+
+**0 of 8 confirm a genuine hollow head correctly caught.** At least 3 of 8
+are detector false positives riding on non-notehead ink (text, empty
+space) that happen to carry the `noteheadBlack*` class from GATHER; the
+rest are ambiguous small marks beside a real, solid head. This is NOT the
+population 2.23's own convention was written for (`CONVENTION ASSUMED`:
+"a hollow notehead's own interior stays near-empty... a genuinely filled
+BLACK head shows the opposite" — the crops here are not testing a real
+head's own fill at all).
+
+### Verdict: neither clean-good nor a new refusal of readable heads — it's a mislabel, surfaced by an unrelated fix
+
+The rise is **not** "the reader correctly refusing heads it used to guess"
+(rule 8) in the sense the fix's own commit intended (that credit belongs to
+the `beams_ambiguous`/`beam_discounted_uncertain` drop, which this session's
+sample does not contradict). It is also **not** "newly refusing readable
+heads" in a way that costs the export anything — every sampled case was
+already going to be held out under its OLD reason, and `export.py`'s own
+`duration_narrowed` bucket does not distinguish by reason. What it IS: 2.43
+removed an unrelated ambiguous-beam shield that happened to be catching some
+detector false positives (text, empty-space glyphs wrongly classed
+`noteheadBlack*` at GATHER) before they reached 2.23's ink-fill check, and
+that check's own "decisively hollow" test fires on these regardless —
+producing a reason label (`head_fill_from_ink`, with a phantom "half note"
+candidate) that does not describe what is actually there.
+
+**Flagged, not fixed here** (CLAUDE.md: a bug found but out of THIS item's
+own scope needs its own RED-first lane, not a drive-by patch): `_ink_reads
+_decisively_hollow`/the `head_fill_from_ink` branch in
+`tools/omr/staged/adjudicators/rhythm.py` has no notehead-plausibility gate
+— it runs on any `noteheadBlack*`-classed glyph with no beam evidence,
+including a glyph whose own `Q.GLYPH_BOX` sits on text or empty raster. A
+fix would gate the branch on the SAME detector-confidence / ink-presence
+floor `notehead_precision.py` already uses elsewhere (`gather_coverage`
+names the population), not invent a new one. No code changed in this
+session; `pytest -m "not slow"` and `staged.check` are therefore unaffected
+and were not re-run for this item.

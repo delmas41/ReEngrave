@@ -287,3 +287,86 @@ abstentions sharing the same `system/0/0` source.
   y-gap) is untouched; only the CROSS-STAFF COVERAGE floor moved. A future
   false positive at ≥0.8 coverage (a genuinely orchestra-wide unison
   note-plus-dot figure) is not excluded by construction.
+
+## ROADMAP 2.46 truth check: who says the 34 DECIDED systems are right?
+
+2026-10-01, branch `lane-2.48-classify` (day-manager lane). STAGED,
+ADJUDICATE only, per CLAUDE.md §6b (the overnight 20261001 full re-gather,
+`THROUGH=adjudicate`, commit `342ec6244bdd`, Brahms whole movement pages
+0-26). Who says it's right (rule 7): the reference ENCODING
+(`library/reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl`,
+`source_kind: encoding`, used here only as MEASUREMENT truth — never fed to
+the pipeline) and a direct crop of the print, per Sean's convention that a
+print check and an encoding check must agree before either is trusted.
+
+**The reference's own meter history for the whole 513-bar movement is three
+lines, not a long list**: `<time>` appears at measure 1 (6/8), measure 8
+(9/8), measure 9 (6/8 — the return). Every other bar of the movement is 6/8
+by the carry. This matters: it means the 34-system comparison this item asks
+for collapses to one question — does any DECIDED system's bar range cover
+measure 8, and if so does it say 9/8?
+
+**Extracted all 53 `Q.METER` verdicts with `tools.omr.staged.record_io
+.load_record` + `readout.run_from_result`** (never re-derived by hand):
+34 DECIDED, all thirty-four `6/8` (`voted` once at `system/0/0`, `carried` /
+`carried_uncontested` elsewhere); 19 ABSTAINED (1 `meter_return_not_read`,
+16 `carry_not_corroborated`, 2 `carry_outweighed_by_the_bars`).
+
+**Bar ranges**: `printed_bar_number` (a DIFFERENT, sparser quantity — a
+margin-digit OCR read, not the record's own bar accounting) is corroborating
+but noisy (e.g. `page3/system1` reads "8" immediately after `page3/system0`
+read "38" — a misread, not a new count); it was used only as a cross-check,
+never as the join key. The join key is `Kind.CELL` counts: `cell/{page}/
+{system}/{staff}/{cell}` (⚠ the staff field sits BEFORE cell in the subject
+key — a first pass that took the wrong field as the cell index overcounted
+every system's bar total by double; corrected before anything downstream
+ran). Cumulative real bars across the 53 systems in page/system reading
+order comes to 515 against the reference's 513 — a 2-bar drift consistent
+with the reference's own anacrusis handling, not a join error.
+
+**The one place a DECIDED system's own evidence disagrees with its own
+decided value**: `system/0/0`'s meter value carries BOTH `segments: [{6/8,
+from_cell: 0}]` (the decided, voted value) AND a `cautionary` field — a
+SEPARATE, corroborated 9/8 candidate at `from_cell: 7`, `staves_reading_it:
+9 of 10`. `from_cell: 7` is this system's LAST cell. Crop-checked at the
+gather's own 600 dpi (`out/print/2.46/brahms-p0-system0-cautionary-tail.png`):
+cell 7 is a ~113px-wide sliver (every real cell in this system is 500-700px)
+holding nothing but a courtesy time-signature sign printed to the right of
+the system's actual last barline — not an eighth bar. The adjudicator
+correctly filed it `cautionary` rather than folding it into `segments`
+(CLAUDE.md §10: "a cautionary meter after a system's last barline governs no
+bar") and the system's 7 REAL bars (cells 0-6) are all 6/8 in the reference
+too — **right**.
+
+`out/print/2.46/brahms-p1-system0-m8-m9-head.png` crops the very next
+system, `page/1 system/0` — the ONE system that ABSTAINS
+(`meter_return_not_read`). The crop shows the margin digit **"8"** at the
+system's left edge (confirming `printed_bar_number`'s own correct read
+here), a printed **9/8** on every staff at cell 0, and a printed **6/8**
+return at cell 1 — exactly measures 8 and 9 of the reference. This is the
+movement's ONLY meter excursion, and it falls entirely inside the one
+system that correctly declines rather than guesses. No DECIDED system's bar
+range reaches measure 8 or 9.
+
+### Result
+
+| | count |
+|---|---|
+| right | **34 of 34** |
+| wrong | **0** |
+| can't-align | 0 |
+
+All 34 DECIDED meter verdicts agree with the reference encoding at
+per-bar granularity, confirmed by two 600-dpi print crops. The remaining
+`declined_changes`/`cautionary` entries attached to OTHER decided systems
+(e.g. `page5/system1`'s 4/4 cautionary, `page19/system1`'s 4/4 cautionary)
+are candidates the adjudicator correctly left unapplied — the reference has
+no meter change anywhere near those bars either, so these are the ALREADY
+-documented false digit witnesses (ROADMAP 2.46's own "4 of 5 false" count),
+not a new finding.
+
+**Nothing to fix here.** The one real gap (`page/1 system/0`,
+`meter_return_not_read`) is unchanged and already named by ROADMAP 2.46 as
+"the one REAL gap, untouched" — this item confirms by an independent
+method (reference encoding + print crop, not the adjudicator's own log)
+that it is the ONLY gap, and that every DECIDED system is correct.
