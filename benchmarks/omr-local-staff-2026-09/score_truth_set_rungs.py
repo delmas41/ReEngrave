@@ -138,6 +138,40 @@ def reader_absolute_position(
     return edge_pos + int(sign * step["offset"]), step["reason"]
 
 
+def ledger_measured_position(
+    gray, global_lines: Sequence[float], box: Sequence[float],
+    subject: str, page_notehead_boxes: Sequence[Tuple[str, tuple]],
+    geom_pos: int,
+) -> Tuple[Optional[int], str, bool]:
+    """The THIRD reader (`ledger_grid.ledger_measured_geometry`): places
+    the box CENTRE on the ladder of measured ledgers by interpolation,
+    falling back to plain `geom_pos` (and counting it) where no ledger
+    is readable at all. Returns (position, reason, is_fallback)."""
+    ys = sorted(float(v) for v in global_lines)
+    if len(ys) < 2:
+        return geom_pos, "no_staff_lines", True
+    spacing = (ys[-1] - ys[0]) / 4.0
+    if spacing <= 0:
+        return geom_pos, "bad_spacing", True
+    top, bottom = ys[0], ys[-1]
+    x0, y0, x1, y1 = box
+    cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    if cy < top:
+        side, edge, sign, edge_pos = "above", top, -1.0, 0
+    else:
+        side, edge, sign, edge_pos = "below", bottom, 1.0, 8
+
+    others = [b for (s, b) in page_notehead_boxes if s != subject]
+    items = lg.measure_ledger_rungs(
+        gray, ys, cx, head_y=cy, exclude_boxes=others,
+        head_box_x=(x0, x1),
+    ).get(side, [])
+    result = lg.ledger_measured_geometry(items, edge, sign, cy, spacing)
+    if result["offset"] is None:
+        return geom_pos, result["reason"], True
+    return edge_pos + int(sign * result["offset"]), result["reason"], False
+
+
 # ─────────────────────────────────────────────────────────────────────────
 
 def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -214,6 +248,13 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
     per_head: List[Dict[str, Any]] = []
 
     for row in rows:
+        if row["subject"] == "glyph/1/0/10/14/1":
+            # DECISIONS 2026-10-01 (Sean, on the both-wrong sheet): this
+            # head's REFERENCE pairing is wrong (it is -2, the first
+            # ledger; both readers already agree) -- not a miss by
+            # either reader, excluded from scoring rather than counted
+            # against either one.
+            continue
         truth_p = row["truth_pitches"]
         if not truth_p:
             continue  # unscored bar -- same exclusion truth_set_2_44c uses
@@ -239,6 +280,10 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
             gray, global_lines, box, row["subject"],
             boxes_by_page.get(row["page"], [])
         )
+        ledger_pos, ledger_reason, ledger_is_fallback = ledger_measured_position(
+            gray, global_lines, box, row["subject"],
+            boxes_by_page.get(row["page"], []), geom_pos,
+        )
 
         def verdict(pos: Optional[int]) -> str:
             if pos is None:
@@ -246,12 +291,15 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
             return "right" if pos in truth_pos else "wrong"
 
         v_geom, v_after = verdict(geom_pos), verdict(after_pos)
+        v_ledger = ("fallback" if ledger_is_fallback else verdict(ledger_pos))
         tally["geometry"][v_geom] += 1
         tally["rungs_after"][v_after] += 1
+        tally["ledger_measured"][v_ledger] += 1
         per_head.append(dict(
             subject=row["subject"], staff_key=staff_key, page=row["page"],
             truth_pos=sorted(truth_pos), geom_pos=geom_pos, v_geom=v_geom,
             after_pos=after_pos, v_after=v_after, reason=reason,
+            ledger_pos=ledger_pos, v_ledger=v_ledger, ledger_reason=ledger_reason,
         ))
 
     return dict(tally={k: dict(v) for k, v in tally.items()}, per_head=per_head)
@@ -264,14 +312,26 @@ def main() -> int:
         r = score_doc(doc_id)
         results[doc_id] = r
         n_far_total = len(_far_head_rows(doc_id, ts.load_doc(doc_id)))
-        print(f"  far-head population (gate applied): {n_far_total}")
-        for key in ("geometry", "rungs_after"):
+        print(f"  far-head population (gate applied): {n_far_total}  "
+             f"(glyph/1/0/10/14/1 excluded from scoring -- reference wrong there, Sean)")
+        for key in ("geometry", "rungs_after", "ledger_measured"):
             t = r["tally"].get(key, {})
             n = sum(t.values())
-            print(f"  {key:<14} right={t.get('right',0):>3} wrong={t.get('wrong',0):>3} "
-                 f"abstain={t.get('abstain',0):>3}  (n={n})")
+            print(f"  {key:<16} right={t.get('right',0):>3} wrong={t.get('wrong',0):>3} "
+                 f"abstain={t.get('abstain',0):>3} fallback={t.get('fallback',0):>3}  (n={n})")
         wrong_or_abstain = [h for h in r["per_head"] if h["v_after"] != "right"]
         print(f"  rungs-after wrong or abstaining: {len(wrong_or_abstain)} of {len(r['per_head'])} scored heads")
+
+        agree = [h for h in r["per_head"]
+                if h["v_ledger"] != "fallback" and h["ledger_pos"] == h["after_pos"]]
+        disagree = [h for h in r["per_head"]
+                   if h["v_ledger"] != "fallback" and h["ledger_pos"] != h["after_pos"]]
+        agree_right = sum(1 for h in agree if h["v_ledger"] == "right")
+        print(f"  agree (ledger-measured == rungs, n={len(agree)}): right {agree_right}")
+        dis_ledger_right = sum(1 for h in disagree if h["v_ledger"] == "right")
+        dis_rungs_right = sum(1 for h in disagree if h["v_after"] == "right")
+        print(f"  disagree (n={len(disagree)}): ledger-measured right {dis_ledger_right}, "
+             f"rungs right {dis_rungs_right}")
         print()
 
     # --- control that can fail: shift every head's y by one half-step   ---
@@ -283,7 +343,10 @@ def main() -> int:
         pages = PageCache(loaded["cfg"])
         boxes_by_page = _notehead_boxes_by_page(rec)
         right = wrong = abst = 0
+        right_l = wrong_l = fb_l = 0
         for row in rows:
+            if row["subject"] == "glyph/1/0/10/14/1":
+                continue
             truth_p = row["truth_pitches"]
             if not truth_p:
                 continue
@@ -315,7 +378,19 @@ def main() -> int:
                 right += 1
             else:
                 wrong += 1
-        print(f"  {doc_id:<24} right={right} wrong={wrong} abstain={abst}")
+            geom_pos = int(round(row["raw_pos"]))
+            lpos, _lreason, lfb = ledger_measured_position(
+                gray, global_lines, broken_box, row["subject"],
+                boxes_by_page.get(row["page"], []), geom_pos,
+            )
+            if lfb:
+                fb_l += 1
+            elif lpos in truth_pos:
+                right_l += 1
+            else:
+                wrong_l += 1
+        print(f"  {doc_id:<24} rungs: right={right} wrong={wrong} abstain={abst}  "
+             f"ledger-measured: right={right_l} wrong={wrong_l} fallback={fb_l}")
 
     return 0
 

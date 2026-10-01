@@ -572,3 +572,68 @@ def derive_far_head_step(
     return dict(offset=None, kind=None,
                reason=f"ambiguous gap {gap_spaces:.2f} sp "
                       f"(between touching and half a space)")
+
+
+def ledger_measured_geometry(
+    rungs_y: "list[float]", edge_y: float, sign: float, box_center_y: float,
+    spacing: float,
+) -> dict:
+    """A THIRD far-head reader (2026-10-01, Sean on the outward-bias
+    measurement: hand-drawn ledgers print wider than the staff spacing,
+    so dividing a far head's raw pixel distance by the staff spacing
+    overshoots outward by one step on every measured miss). Builds a
+    ladder of KNOWN steps from the outer staff line (step 0) through each
+    measured ledger (`rungs_y`, nearest-first -- step 2, 4, 6, ... by the
+    ladder's own construction, never re-measured from raw pixels, same
+    reasoning as `derive_far_head_step`'s own count-not-distance fix),
+    then places the head's box CENTRE on that ladder by LINEAR
+    INTERPOLATION between the two nearest measured rows -- never by
+    dividing its distance by the nominal staff spacing. A head beyond the
+    last measured ledger is placed by EXTRAPOLATING the LAST measured
+    gap, not the staff spacing (the same fact that motivated the
+    interpolation in the first place: a later gap is not reliably the
+    same width as an earlier one, let alone the staff's own spacing).
+
+    `rungs_y` must already reflect Sean's own rules for a real rung
+    (both-side stubs beyond the head's own box, another head's ink is
+    never a stub) -- i.e. the SAME list `measure_ledger_rungs(...,
+    exclude_boxes=..., head_box_x=...)` returns; this function does no
+    ink reading of its own, only the ladder arithmetic.
+
+    No ledgers measured at all -> `offset=None`, reason `no_ledger_
+    ladder` -- the caller falls back to plain geometry and counts it;
+    never guessed.
+    """
+    if not rungs_y:
+        return dict(offset=None, reason="no_ledger_ladder")
+    ladder_y = [edge_y] + list(rungs_y)
+    ladder_step = [2 * i for i in range(len(ladder_y))]
+    dist = [sign * (y - edge_y) for y in ladder_y]
+    target = sign * (box_center_y - edge_y)
+
+    if target <= dist[-1]:
+        for i in range(len(dist) - 1):
+            if dist[i] <= target <= dist[i + 1]:
+                if dist[i + 1] != dist[i]:
+                    frac = (target - dist[i]) / (dist[i + 1] - dist[i])
+                else:
+                    frac = 0.0
+                step = ladder_step[i] + frac * (ladder_step[i + 1] - ladder_step[i])
+                return dict(offset=int(round(step)),
+                           reason=f"interpolated between measured step "
+                                  f"{ladder_step[i]} and {ladder_step[i + 1]}")
+        # target is before the edge itself (an on-staff box centre) --
+        # clamp to the edge rather than guess a negative ladder index.
+        return dict(offset=0, reason="target at or before the staff edge")
+
+    # Beyond the last measured ledger: extrapolate by the LAST measured
+    # gap, never the nominal staff spacing.
+    last_gap = dist[-1] - dist[-2] if len(dist) >= 2 else dist[-1]
+    if last_gap <= 0:
+        return dict(offset=ladder_step[-1],
+                   reason="degenerate last gap -- cannot extrapolate")
+    extra_steps = (target - dist[-1]) / last_gap * 2.0
+    step = ladder_step[-1] + extra_steps
+    return dict(offset=int(round(step)),
+               reason=f"extrapolated beyond the last measured ledger "
+                      f"(gap {last_gap:.1f}px, {extra_steps:.2f} steps out)")

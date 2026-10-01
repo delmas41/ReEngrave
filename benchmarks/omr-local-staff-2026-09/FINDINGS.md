@@ -1565,3 +1565,67 @@ staff spacing: 7 of 10.
 gap ratios, box-ink offset, stepped position). 3 crops under
 `out/print/ledgers/outward/` (pixel-row checked, all OK). Not interpreted
 further here, per the brief.
+
+## lane-ledger-rungs: third reader, "ledger-measured geometry" (2026-10-01)
+
+Sean approved building on the outward-bias measurement. New function
+`ledger_grid.ledger_measured_geometry(rungs_y, edge_y, sign, box_center_y,
+spacing)` -- pure arithmetic, no image reading of its own. Reuses
+`measure_ledger_rungs`'s own, already-fixed ledger list (both-side stubs
+beyond the box, lateral-only exclusion of other heads' ink) and places
+the head's box CENTRE on a ladder of KNOWN steps (outer staff line = step
+0, each measured ledger = the next even step) by LINEAR INTERPOLATION
+between the two nearest measured rows; beyond the last measured ledger it
+extrapolates by the LAST measured gap, never the staff spacing. No
+ledger readable at all -> falls back to plain geometry, counted
+separately (`fallback`), never silently folded into right/wrong.
+
+Not wired into the product path; no default touched.
+
+### RED -> GREEN
+
+`tools/omr/tests/test_ledger_measured_geometry_2026_10_01.py`, 6 tests:
+wide (1.2x) hand-drawn gap landing a head exactly on / half a step short
+of the 2nd ledger; evenly-spaced control matching plain nominal-spacing
+geometry exactly; extrapolation beyond the last ledger using ITS gap
+(1.3x), proved to differ from using nominal spacing; no-ledger fallback;
+a below-the-staff mirror. Confirmed RED (`ImportError`) against the
+pre-build file, all green after. Fast tier `-k ledger`: 240 passed
+(234 + 6).
+
+### Scoring — glyph/1/0/10/14/1 dropped
+
+Sean confirmed this head's REFERENCE pairing is wrong (it is -2, the
+first ledger; both readers already agreed) — excluded from scoring
+entirely (not counted for or against any reader), rather than left in
+as a miss neither reader can fix.
+
+| doc | metric | right | wrong | abstain | fallback | n |
+|---|---|---|---|---|---|---|
+| Litolff | geometry | 30 | 14 | 0 | 0 | 44 |
+| Litolff | rungs | 30 | 8 | 6 | 0 | 44 |
+| Litolff | ledger-measured | 28 | 12 | 0 | 4 | 44 |
+| Brahms | geometry | 11 | 0 | 0 | 0 | 11 |
+| Brahms | rungs | 7 | 3 | 1 | 0 | 11 |
+| Brahms | ledger-measured | 7 | 3 | 0 | 1 | 11 |
+
+Half-step control (every box shifted by one half-step) scores clearly
+worse for ledger-measured too: Litolff right=3/wrong=36/fallback=5 (vs
+28/12/4); Brahms right=0/wrong=10/fallback=1 (vs 7/3/1).
+
+Agree check (ledger-measured vs rungs, excluding fallback): Litolff
+agree n=26, right 22; disagree n=14, ledger-measured right 6 / rungs
+right 8. Brahms agree n=9, right 7; disagree n=1, neither right.
+
+19 heads change answer vs plain geometry (16 Litolff + 3 Brahms): 6
+become right (were wrong under geometry), 13 become wrong (10 Litolff +
+3 Brahms were RIGHT under geometry and are wrong under ledger-measured;
+2 Litolff were already wrong and changed to a different wrong value).
+Net: ledger-measured scores a few points BELOW plain geometry and rungs
+on this sample — reported as measured, not glossed over. On the 10
+confirmed both-wrong heads specifically: 3 become right, 3 stay wrong
+(different value), 4 fall back to plain geometry (no ledger found there
+either).
+
+`out/print/ledgers/measured/` (19 crops) + `out/print/ledgers/
+measured_sheet.png` (contact sheet), same style as prior rounds.
