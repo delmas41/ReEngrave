@@ -4727,6 +4727,153 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                            **candidates_detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.49 -- a notehead-classed box whose own ink crosses BOTH sides of
+# the one stem it overlaps is a TREMOLO SLASH, never a notehead (Sean,
+# DECISIONS 2026-10-01: a notehead's ink lies on ONE side of its stem). This
+# is GATHER's half only, the measurement: how much ink stands on each side,
+# split at the stem's own centre x. `notehead_precision._tremolo_slash_
+# crosses_stem` owns the floor and the refusal.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Pixels of clearance kept beyond the stem's OWN half-width on either side
+#: of the split -- the stem stroke's own ink must never be mistaken for ink
+#: on "the other side" of itself. A whole pixel, not a fraction of the stem
+#: width: `Q.STEM` boxes run 2-4 canonical px wide on both acceptance
+#: documents, and a sub-pixel guard would leave the split line sitting
+#: inside the stem's own anti-aliased edge.
+NOTEHEAD_STEM_CROSS_GUARD_PX = 1.0
+
+
+def _stem_cross_regions(box: Tuple[float, float, float, float],
+                        stem_xywh: Tuple[float, float, float, float],
+                        guard_px: float = NOTEHEAD_STEM_CROSS_GUARD_PX
+                        ) -> Optional[Tuple[Tuple[float, float, float, float],
+                                            Tuple[float, float, float, float]]]:
+    """The LEFT and RIGHT sub-boxes of `box` on either side of `stem_xywh`'s
+    own centre x, each stopped short of the stem's own half-width plus
+    `guard_px` -- so the stem's own stroke is never counted as "ink on the
+    other side" of itself. `None` where either side has no area left at all
+    (the box does not reach past the stem far enough on that side to ask the
+    question, e.g. a normal head whose box runs only from the stem's own
+    edge outward)."""
+    x, y, w, h = box
+    sx, sy, sw, sh = stem_xywh
+    scx = sx + sw / 2.0
+    half = sw / 2.0 + guard_px
+    left_x1 = scx - half
+    right_x0 = scx + half
+    if left_x1 <= x or right_x0 >= x + w:
+        return None
+    return (x, y, left_x1 - x, h), (right_x0, y, (x + w) - right_x0, h)
+
+
+def _region_ink_fraction(img: Any, box: Tuple[float, float, float, float],
+                         exclude_boxes: Sequence[Tuple[float, float, float,
+                                                       float]] = ()
+                         ) -> Optional[float]:
+    """The plain ink fraction of `box` in `img` (0 = ink) -- NO sub-window
+    shrink, unlike `notehead_ink_under`'s `center`/`ring` windows: those are
+    sized against a WHOLE head's own box and degenerate to `None` on the
+    narrow left/right strips `_stem_cross_regions` produces. This is the
+    same `ink.sum() / ink.size` arithmetic `notehead_ink_under`'s own
+    preamble computes, restated at the region's own full extent because
+    that preamble has no unshrunk-whole-region mode to call instead.
+
+    ⚠️ ROADMAP 2.49, MANAGER REVIEW (real Litolff re-gather, pages 1-3):
+    `exclude_boxes` blanks out every pixel under a `Q.BEAM_STROKE` box
+    BEFORE the fraction is taken -- Sean's own convention states it ("a beam
+    may cross, but only joined to another stem at the stem's end"), and a
+    real beam box runs far WIDER than a notehead's own (measured ~500 px vs
+    ~150 px on this plate), so it trivially reaches BOTH sides of a stem
+    whenever its own y-range overlaps the head's box at all. Without this,
+    3 of 4 sampled false positives on the real re-gather were beamed groups,
+    not tremolo slashes -- crops in `out/print/2.49/`."""
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    x, y, w, h = (float(v) for v in box)
+    x0 = max(0, int(round(x)))
+    y0 = max(0, int(round(y)))
+    x1 = min(W, int(round(x + w)))
+    y1 = min(H, int(round(y + h)))
+    if x1 <= x0 or y1 <= y0:
+        return None
+    region = ink[y0:y1, x0:x1].copy()
+    for ex, ey, ew, eh in exclude_boxes:
+        ex0 = max(x0, int(round(ex)))
+        ey0 = max(y0, int(round(ey)))
+        ex1 = min(x1, int(round(ex + ew)))
+        ey1 = min(y1, int(round(ey + eh)))
+        if ex1 > ex0 and ey1 > ey0:
+            region[ey0 - y0:ey1 - y0, ex0 - x0:ex1 - x0] = False
+    if region.size == 0:
+        return None
+    return round(float(region.sum()) / float(region.size), 4)
+
+
+def gather_notehead_stem_cross_ink(log: Log, cells: Sequence[Any],
+                                   local: Dict[int, Tuple[int, int]],
+                                   detections: Dict[str, List[Any]]) -> None:
+    """`Q.NOTEHEAD_STEM_CROSS_INK` -- ROADMAP 2.49. See the quantity's own
+    docstring in `record.py`. Reads `cell.image_no_staff` (the SAME erased
+    raster `gather_notehead_ink`/`gather_stacked_head_fit` already read) and
+    this cell's own `Q.STEM`/`Q.BEAM_STROKE` rows (filed earlier by
+    `gather_cv_lines`) -- nothing here is re-detected.
+
+    ⚠️ BEAM INK IS EXCLUDED FROM THE SPLIT (manager review, real re-gather):
+    a `Q.BEAM_STROKE` box runs far wider than a notehead's own and reaches
+    both sides of a stem whenever it overlaps the head's box at all, which
+    is the common case for any head under a beam -- see `_region_ink_
+    fraction`'s own docstring. Sean's own convention carves this out
+    directly ("a beam may cross, but only joined to another stem at the
+    stem's end"); excluding beam-classed ink is how that exception is kept
+    without re-deriving which beam joins which stem a second time here.
+    """
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        nh_idx = [gi for gi, d in enumerate(dets)
+                 if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not nh_idx:
+            continue
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        stem_rows = log.rows(Q.STEM, sub)
+        if img is None or getattr(img, "ndim", 0) != 2 or not stem_rows:
+            continue
+        beam_boxes = [bb for bb in (_stacked_stem_xywh(br.value)
+                                    for br in log.rows(Q.BEAM_STROKE, sub))
+                     if bb is not None]
+        for gi in nh_idx:
+            d = dets[gi]
+            box = (float(d.x_canonical), float(d.y_canonical),
+                  float(d.width_canonical), float(d.height_canonical))
+            my_stem = None
+            for sr in stem_rows:
+                srow = _stacked_stem_xywh(sr.value)
+                if srow is not None and _stacked_boxes_overlap(srow, box):
+                    my_stem = (sr, srow)
+                    break
+            if my_stem is None:
+                continue
+            sr, srow = my_stem
+            regions = _stem_cross_regions(box, srow)
+            if regions is None:
+                continue
+            left_box, right_box = regions
+            left_ink = _region_ink_fraction(img, left_box, beam_boxes)
+            right_ink = _region_ink_fraction(img, right_box, beam_boxes)
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            log.observe(g, Q.NOTEHEAD_STEM_CROSS_INK, [left_ink, right_ink],
+                       reader=READERS.CV_NOTEHEAD_STEM_CROSS_INK, frame=frame,
+                       stem=sr.id, left=left_ink, right=right_ink)
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -7263,6 +7410,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # SLOT a stacked fit is testing, which is a different position this
         # rule must score for itself).
         gather_stacked_head_fit(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.49, BESIDE `gather_stacked_head_fit` for the same
+        # reason it sits beside `gather_notehead_ink`: the sibling witness
+        # for a tremolo slash boxed as a notehead, reading the SAME erased
+        # raster and this cell's own `Q.STEM` rows, already filed by
+        # `gather_cv_lines` above.
+        gather_notehead_stem_cross_ink(log, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

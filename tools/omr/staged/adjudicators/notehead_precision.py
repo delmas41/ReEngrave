@@ -980,6 +980,149 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
 STACKED_HEAD_REASON = "stacked_head_duplicate"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.49 -- a stroke crossing a stem is a tremolo slash, not a
+# notehead (Sean, DECISIONS 2026-10-01: "a single notehead can't extend on
+# either side of the stem ... any time a stem has a diagonal ink slash that
+# could be confused with a notehead it must land on one side of the stem").
+# `gather.gather_notehead_stem_cross_ink` already measured, per
+# notehead-classed box, how much ink stands on either side of its matched
+# `Q.STEM` row's own centre x (`Q.NOTEHEAD_STEM_CROSS_INK`); this is
+# ADJUDICATE's half -- the floor, and the refusal.
+#
+# ⚠️ FOUND ON THE TREE (manager, 2026-10-01, Litolff `glyph/13/1/8/13/5`):
+# 2.42's own stacked-head keep-choice can pick a SLASH over the real open
+# head it crosses, because the slash's thin diagonal ink can out-score a
+# hollow head's own faint ring under `notehead_ink_under`. `_stacked_head_
+# group_rows`'s own callers below drop a tremolo-flagged candidate from the
+# group BEFORE the ink comparison, so a slash can never be chosen as the
+# slot's keeper and never costs a real head its only surviving box.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Both sides of the split must clear this fraction for the box to read as
+#: crossing its stem. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a real
+#: tremolo slash's own thin diagonal stroke was measured on the two fixed
+#: Litolff cases (`glyph/13/1/10/2/0`, `glyph/13/1/8/13/5`) to clear it on
+#: both sides while every control (a head beside its stem, a beam joining
+#: two stems at their ends, a chord second with heads on opposite sides of
+#: the stem) does not; NOT CONFIRMED against a wider corpus. A future
+#: session that finds a real head or beam clearing this floor on both
+#: sides should lower it or add a second witness, never raise it to patch
+#: one case (CLAUDE.md rule 5: no default flips on agreement with our own
+#: reading).
+TREMOLO_SLASH_INK_FLOOR = 0.12
+
+#: ⚠️⚠️ MEASURED NET NEGATIVE ON REAL DATA AND HELD BACK, same shape as
+#: `UNLADDERED_SHIPS` above. The small re-gather (`acceptance_quick --doc
+#: beethoven5-litolff`, pages 1-3 through the count page, 2026-10-01) DOES
+#: refuse both fixed cases correctly -- `glyph/13/1/10/2/0` flags directly
+#: (left 0.83/right 0.43), and on the stacked shape the real open head
+#: (verified by index on that re-gather as the slot's SOLE survivor once its
+#: slash co-occupant is dropped) comes out kept while its slash competitor is
+#: refused `tremolo_slash_crosses_stem` -- but it ALSO refuses 121-132 of 481
+#: notehead-classed glyphs on the count page ALONE (~25%), an order of
+#: magnitude past the ~2 real tremolos on the page. 10 crops under
+#: `out/print/2.49/` were looked at by hand: every false positive sampled is
+#: a dense beamed run or chord on this MERGING plate (CLAUDE.md §10), where
+#: another glyph's own ink -- most often a WIDE beam stroke crossing near the
+#: box, sometimes a neighbouring head/stem close enough to bleed across the
+#: split line -- lands on both sides of the stem without being a slash at
+#: all. Excluding `Q.BEAM_STROKE` ink from the split (the convention's own
+#: named exception) only moved the count page from 132 to 121: beam
+#: contamination is real but NOT the dominant cause, so a tighter floor or a
+#: second beam-only fix would not be enough on its own. The open question for
+#: a future session is ATTRIBUTION -- telling "ink from a diagonal slash"
+#: apart from "ink from the NEXT note's own stem/body" on a plate this
+#: dense -- not the floor. The SIGNAL (`detail["tremolo_slash_signal"]`) is
+#: still computed and recorded on every notehead-classed glyph that reaches
+#: a `Q.STEM` box; it never sets `value=True` while this is `False`.
+TREMOLO_SLASH_SHIPS = False
+
+#: Reason a refused box carries under ROADMAP 2.49 -- kept apart from every
+#: other mechanism here so a census can tell them apart (CLAUDE.md §4d).
+TREMOLO_SLASH_REASON = "tremolo_slash_crosses_stem"
+
+
+def _notehead_stem_cross_ink(ev: Evidence, subject) -> Optional[Tuple[
+        Optional[float], Optional[float]]]:
+    """`Q.NOTEHEAD_STEM_CROSS_INK`'s own `[left, right]` for `subject`, or
+    `None` where GATHER filed no row (no overlapping stem, or no area to
+    split -- see the quantity's own docstring). Read, never re-derived
+    (CLAUDE.md rule 6): the raster split already happened in GATHER."""
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=subject)
+    if not rows:
+        return None
+    val = rows[-1].value
+    if not isinstance(val, (list, tuple)) or len(val) != 2:
+        return None
+    return val[0], val[1]
+
+
+def _is_tremolo_slash(ev: Evidence, subject) -> bool:
+    """Does `subject`'s own `Q.NOTEHEAD_STEM_CROSS_INK` row clear
+    `TREMOLO_SLASH_INK_FLOOR` on BOTH sides -- the same test `_tremolo_
+    slash_crosses_stem` makes for `ev.subject`, asked here of any OTHER
+    glyph in a stacked group so a slash can never be chosen as that group's
+    keeper (see the module-section comment above).
+
+    ⚠️ `TREMOLO_SLASH_SHIPS` GATES THIS TOO, not only the direct refusal --
+    the whole mechanism is held back to a true no-op while the signal is
+    measured net negative (see that constant's own docstring); a stacked
+    group's keep-choice must not quietly change on an unshipped signal.
+    """
+    if not TREMOLO_SLASH_SHIPS:
+        return False
+    sides = _notehead_stem_cross_ink(ev, subject)
+    if sides is None:
+        return False
+    left, right = sides
+    if left is None or right is None:
+        return False
+    return left >= TREMOLO_SLASH_INK_FLOOR and right >= TREMOLO_SLASH_INK_FLOOR
+
+
+def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
+                                detail: Dict[str, Any]
+                                ) -> Optional[Ruling]:
+    """ROADMAP 2.49 -- is THIS box's own ink standing on both sides of the
+    one stem it overlaps, by more than a diagonal slash's own stroke width
+    would explain away as noise?
+
+    Reads `Q.NOTEHEAD_STEM_CROSS_INK` (GATHER) and applies
+    `TREMOLO_SLASH_INK_FLOOR` to both sides -- never re-measures the raster.
+    `None` where GATHER filed no row at all (no stem reached this box, or
+    the box does not extend far enough past the stem on one side to ask the
+    question): a box this rule cannot address is not a box it clears.
+
+    ⚠️ `TREMOLO_SLASH_SHIPS = False` (see its own docstring): the SIGNAL is
+    computed and recorded on every call that reaches it, exactly as
+    `_unladdered` does; it never sets `value=True` while the constant is
+    `False`. These tests assert the SIGNAL, not a refusal, the same
+    discipline `TestUnladdered` uses.
+    """
+    sides = _notehead_stem_cross_ink(ev, this_row.subject)
+    if sides is None:
+        return None
+    left, right = sides
+    would_fire = (left is not None and right is not None
+                 and left >= TREMOLO_SLASH_INK_FLOOR
+                 and right >= TREMOLO_SLASH_INK_FLOOR)
+    detail["tremolo_slash_signal"] = {"left": left, "right": right,
+                                      "floor": TREMOLO_SLASH_INK_FLOOR,
+                                      "would_fire": would_fire}
+    if not would_fire or not TREMOLO_SLASH_SHIPS:
+        return None
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=this_row.subject)
+    used = (this_row.id, rows[-1].id) if rows else (this_row.id,)
+    # ⚠️ LITERAL, NOT THE CONSTANT ABOVE — `brakes.vocabulary_gap`'s AST
+    # walk over `reason=` needs a string literal to resolve every reason a
+    # `Ruling` here can carry; `STACKED_HEAD_REASON`/`NOTEHEAD_SAME_SIDE_
+    # REASON` keep the same split (constant for the `reasons=` DECLARATION,
+    # literal at the return) for the same reason.
+    return Ruling(value=True, reason="tremolo_slash_crosses_stem", used=used,
+                  detail=detail)
+
+
 def _stacked_head_group_rows(ev: Evidence, cell, stem_id: str, side: str,
                              slot: int):
     """Every OTHER notehead glyph in this cell whose own `Q.STACKED_HEAD_FIT`
@@ -1036,6 +1179,13 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     stem_id = fdetail.get("stem")
     side = fdetail.get("side")
     group_rows = _stacked_head_group_rows(ev, cell, stem_id, side, slot)
+    # ⚠️ ROADMAP 2.49 -- a TREMOLO SLASH is dropped from the group BEFORE the
+    # ink comparison below, so it can never be chosen as this slot's keeper
+    # (manager, Litolff `glyph/13/1/8/13/5`: the slash's own ink out-scored
+    # the real open head it crossed). The slash itself is refused earlier,
+    # by `_tremolo_slash_crosses_stem`, on its OWN pass through the decision
+    # -- this filter only protects the OTHER members of its group.
+    group_rows = [r for r in group_rows if not _is_tremolo_slash(ev, r.subject)]
     signal: Dict[str, Any] = {
         "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
         "margin": margin, "candidates_at_slot": len(group_rows)}
@@ -1713,17 +1863,22 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # own unit tests still exercise `_notehead_same_side_
                   # second_refusal` directly, with its own `Evidence`, which
                   # declares them itself.
-                  Q.STACKED_HEAD_FIT),
+                  Q.STACKED_HEAD_FIT,
+                  # ⚠️ ROADMAP 2.49: GATHER's own ink split by stem x -- see
+                  # `_tremolo_slash_crosses_stem`'s own docstring.
+                  Q.NOTEHEAD_STEM_CROSS_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT),
+          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
+          Q.NOTEHEAD_STEM_CROSS_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
+                                     TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
                                      STACKED_HEAD_REASON,
@@ -1907,6 +2062,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
+    # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
+    # box is not a note regardless of what else is in the cell) and BEFORE
+    # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
+    # mark as another notehead box", it is not a notehead AT ALL, and must
+    # be refused on its own ink before the stacked-head keep-choice ever
+    # gets a chance to pick it over the real head it crosses (manager,
+    # Litolff `glyph/13/1/8/13/5`).
+    tremolo = _tremolo_slash_crosses_stem(ev, box_row, detail)
+    if tremolo is not None:
+        return tremolo
     # ⚠️ ROADMAP 2.30. AFTER THE SHAPE RULES (a sliver or too-narrow box is
     # not a note regardless of what else is in the cell) and BEFORE the
     # meter-digit / ownership rules below, which both ask what this ink
