@@ -340,3 +340,89 @@ adjudicate` A/B of `prefer="tallest"` on the per-staff pass (scoped to this
 one call site) against the acceptance set, or is there a narrower condition
 (e.g. only override leftmost when the discarded candidate's height margin
 over the kept one exceeds some bound) you'd rather see first?**
+
+## 9. (Sean authorised) BUILT: `prefer="spanning"` -- RED-first, A/B'd
+
+### 9a. The fix
+
+`_dedup_barline_candidates` gained `prefer="spanning"`: among a group of
+candidates within `BARLINE_MIN_DISTANCE_PX`, those whose `top_gap` and
+`bottom_gap` (pixels short of the staff's OWN top/bottom line) are each
+<= `SPAN_TOUCH_TOLERANCE_PX=6` are "spanning"; height decides among those;
+if none spans, falls back to `leftmost` (never `tallest`) so the narrower
+claim invents no winner. `_detect_barlines_per_staff` (the global pass
+`Q.MEASURE_PARTITION` reads) now passes `prefer="spanning"`; the LOCAL
+resegmentation path (`_find_internal_barline_candidates`) is untouched,
+still `prefer="tallest"`.
+
+`prefer="tallest"` alone was checked and REJECTED by the required control:
+a stem that runs long past its notehead can be taller, in raw px, than a
+genuine but shorter barline while reaching only ONE staff line, not both.
+
+RED-first: `tools/omr/tests/test_span_touch_dedup_2_47.py` -- Sean's exact
+measured geometry (barline 59px/top_gap6/bottom_gap0 beside a stem
+52px/top_gap6/bottom_gap7, 35px apart) and the control (a 74px non-spanning
+stem must not beat a 71px spanning barline) both FAILED against the
+pre-fix tree (confirmed by temporarily restoring `measure_extractor.py`
+from HEAD and re-running) and pass after the fix. A third test pins the
+no-candidate-spans fallback to leftmost. 66 + 44 pre-existing tests
+unaffected.
+
+### 9b. A/B, GATHER+ADJUDICATE, all 8 pages (base=origin/main worktree,
+arm=this branch, `--through adjudicate --weights auto --route-weights`)
+
+| page | system | base | arm | truth | match (arm) |
+|---|---|--:|--:|--:|---|
+| litolff p1 | 0 | 16 | 16 | 16 (window) | yes |
+| litolff p2 | 0 | 16 | **17** | 17 (pbn 17->34, content) | **yes -- FIXED** |
+| litolff p2 | 1 | 15 | 15 | 15 | yes |
+| litolff p3 | 0 | 16 | 16 | pbn 49->65 confirms 16 | yes |
+| litolff p3 | 1 | 18 | 18 | (49+16=65 printed) | yes |
+| litolff p4 | 0 | 15 | 15 | (98-15=83 start) | yes |
+| litolff p4 | 1 | 15 | 15 | pbn 98 confirms | yes |
+| brahms p0 | 0 | 8 | 8 | 7 verified -- still UNFIXED (different bug, section 0a) | n/a, other mechanism |
+| brahms p1(idx1) | 0 | 7 | 7 | pbn 8 confirms | yes |
+| brahms p1(idx1) | 1 | 8 | 8 | (7+8=15 window) | yes |
+| brahms p2(idx2) | 0 | 6 | 6 | pbn 29 confirms (23+6) | yes |
+| brahms p2(idx2) | 1 | 9 | 9 | window 15 total | yes |
+| brahms p3(idx3) | 0 | 10 | 10 | pbn 38 confirms | yes |
+| brahms p3(idx3) | 1 | 11 | 11 | window 21 total | yes |
+
+**Every system matches base except Litolff p2 system 0, which moves 16->17
+-- exactly and only the confirmed fix, no new phantom bars anywhere.**
+Brahms p0 is untouched (expected: that page's bug is the tail-threshold
+miscalibration in `_measure_x_boundaries`, section 0a -- a different
+mechanism this fix does not touch).
+
+`printed_bar_number` readings are byte-identical base vs arm on every page
+(the fix changes which barline COLUMN is kept, not how digits are read).
+
+### 9c. Readout diff, Litolff p2 (full page, both systems)
+
+`n_barline_candidates_dropped_too_close_on_staff`: base 244, arm **244**
+(unchanged -- this counts COLLISIONS, not which side of each collision is
+kept). `n_barline_clusters_rejected_no_prong` (the system-level vote/
+connectivity gate, downstream of the per-staff fix): base 55, arm **48** --
+7 fewer system-level rejections, consistent with more of the per-staff
+candidate pool now being the real barline rather than a competing stem.
+
+Classified 10 of the arm's 200 remaining per-staff collision groups on this
+page (`random.seed(42)`), by their recorded geometry rather than a fresh
+crop for each (time): **0 of 10 are a lost barline.** 2 of 10 dropped a
+non-spanning stem (gaps like `(4,7)`, `(0,8)`) -- correctly excluded. 8 of 10
+dropped a SECOND spanning candidate 14-56px from the kept one -- too close
+for either to be a distinct measure (the page's own real bars run
+100-300px) given the already-confirmed accurate system totals above, so
+these are the same physical rule read as two (or three) thin components
+(anti-aliasing splitting one stroke, or a close double-bar), correctly
+merged to one barline either way.
+
+### 9d. What this does not establish
+
+- Only Litolff p2 and the 8-page sample were A/B'd; `prefer="spanning"`'s
+  effect on the other 287 editions, or even the rest of these two movements,
+  is unmeasured.
+- The 10-sample classification used recorded geometry, not a fresh print
+  crop per case -- consistent with section 1's totals already matching, not
+  independently crop-verified here.
+- Not merged anywhere; scoped to this branch per Sean's authorization.
