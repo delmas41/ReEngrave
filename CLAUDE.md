@@ -383,6 +383,12 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 ### 6b. How to A/B without fooling yourself
 
+- **Until further notice, EVERY test is GATHER + ADJUDICATE only** (Sean,
+  2026-09-30: *"I want all our tests for now to just be the first 2 stages. I
+  want to focus on the gather and identification"*), including scoring
+  against the reference: compare a head's measured STAFF POSITION with the
+  reference pitch converted through ADJUDICATE's clef -- never `Q.PITCH`
+  (EVALUATE) or the exported file.
 - **Two re-gathers** (Sean, 2026-09-30): the SMALL re-gather (the two count
   pages, ROADMAP 1.6/1.6b) runs during the day while we work; the FULL
   re-gather of both movements
