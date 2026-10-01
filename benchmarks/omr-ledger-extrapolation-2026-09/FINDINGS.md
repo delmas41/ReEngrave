@@ -249,3 +249,146 @@ to the detection: that cell prints its four rungs at −2.37 / −4.49 / −6.46
   reach.
 * The Litolff record was gathered on a **dirty tree** (`9d4ccc85`, `dirty:
   true`); the Breitkopf one is the committed shared record.
+
+## 12. (2026-09-30 evening) TWO READERS BUILT ON SEAN'S OPTION B — WIRED, A/B'd, PRINT-CHECKED
+
+Numbered 12 because ROADMAP 2.44's own §10 (first reader) and §11 (reconciliation
+measurement) live on unmerged branches (`worktree-agent-ab56d1d321c30c4bd`,
+`claude/affectionate-mendeleev-db20a1`) this session's own tree does not carry.
+This section is the build on `claude/acceptance-measure-notehead-box-e75821`,
+based on `origin/main` `4a599ca9` (Sean's own option B decision).
+
+### 12a. What was built
+
+Two GATHER readers, each its own `Q` and `READERS` name (CLAUDE.md §10: two
+rows from one reader on one raster are one signal; these are two mechanisms
+over the SAME staff-erased raster, which is the only kind of "independent"
+available without a second raster to read):
+
+* **Reader 1, `Q.LEDGER_CLEAN_COUNT_POSITION`** (`gather.
+  gather_ledger_clean_count_position`): Sean's own rule — scan outward from
+  the staff's own edge, reusing `ledger_rung_ink` (ROADMAP 2.37) unchanged at
+  a fine (0.08 staff-space) step, cluster the hits into actual rungs, and
+  place the head ON the one rung whose middle third its ink touches, or in
+  the space beyond the nearest one it does not. Fixes the WITHDRAWN first
+  2.44 reader's below-staff bug (FINDINGS §11a: it counted steps from the
+  BOTTOM line while `Q.NOTEHEAD_STAFF_POSITION` counts from the TOP) by
+  converting explicitly: `pos = -steps` above, `pos = staff_half_steps +
+  steps` below.
+* **Reader 2, `Q.LEDGER_RUNG_GRID_POSITION`** (`gather.
+  gather_ledger_rung_grid_position`): wraps `tools/omr/annotate/ledger_grid.
+  measure_ledger_rungs` + `server.snap_to_staff` UNCHANGED (Sean: "reuse it;
+  don't fork or copy it") — `snap_to_staff`'s own step is already top-line
+  origin, so no conversion needed here.
+
+`consequences.restate_pitch`: for a head outside its staff, where BOTH
+readers have a row for that exact glyph AND agree, their shared position
+overrides the raw rounded geometry (`reason=ledger_reader_agreement`); where
+they disagree, geometry stands and the verdict is tagged
+`position_and_clef_ledger_conflict`; where only one reader produced a row,
+`position_and_clef_ledger_one_sided`. All three reasons are new and
+queryable — "counted" (CLAUDE.md rule 8) means a distinguishable reason on
+the record, not a separate ledger file.
+
+10 new tests, `test_staged_ledger_two_readers_2_44.py`, RED-first against
+fixture rows (no gather, following CLAUDE.md §6b and the 2026-09-29 rule
+against pricing runs for unit proof): Sean's two confirmed chords, a head on
+a ledger above and below the staff, and four controls (disagree, one-sided,
+both-abstain, in-staff-untouched). The existing pinned
+`test_staged_ledger_position_xfail_2_44.py` is UNCHANGED and still xfails —
+its fixture sets only `Q.NOTEHEAD_STAFF_POSITION`, no ledger-reader rows, so
+under option B geometry correctly stands there too; it is not evidence
+against this build, it tests a different (ledger-blind) scenario.
+
+### 12b. A/B on the real raster — reach before accuracy
+
+`--through adjudicate` (GATHER+ADJUDICATE only, CLAUDE.md §6b) on Litolff p3
+and Brahms p1, base = `origin/main` `4a599ca9` in a separate worktree, arm =
+this branch, both `--weights auto`: `readout diff --force` reports **256
+differences, every one a new GATHER row from the two readers** (`glyph_box`,
+every other verdict byte-identical) — the mechanism is additive and inert
+until EVALUATE reads it.
+
+### 12c. Population, then pitches
+
+`--through evaluate`, same base/arm:
+
+| page | far heads | reader 1 obs/abst | reader 2 obs/abst | both present | AGREE |
+|---|--:|--:|--:|--:|--:|
+| Litolff p3 | 401 | 129 / 272 | 199 / 202 | 72 | 29 |
+| Brahms p1 | 486 | 156 / 330 | 307 / 179 | 129 | 91 |
+
+Reader 1's abstentions are overwhelmingly `no_ledger_found` (236 of 272 on
+Litolff, 313 of 330 on Brahms); reader 2 abstains only `no_ledger_found`
+(202, 179) — `measure_ledger_rungs` either finds a usable ladder or nothing,
+it has no second abstain reason. The 29/72 and 91/129 agreement rates land
+almost exactly on the `ledger_reader_agreement` PITCH-verdict counts (29,
+91) — a direct cross-check that every agreement actually reaches
+`restate_pitch`.
+
+Pitches actually CHANGED from the base's own rounding: **Litolff 7 of 1,675
+compared pitches; Brahms 2 of 2,130**. One Brahms change
+(`glyph/1/1/3/3/2`, E4 → D4) is the EXACT case `190619f7` FINDINGS §11b
+measured by hand off the page binary (both the clean-count reading "C" and
+`measure_ledger_rungs` gave D4 there; print is D4) — same answer, reached
+this time by the wired mechanism instead of a probe script.
+
+### 12d. Print check — 600 dpi, measured lines, no extrapolated ruler
+
+Every changed pitch cropped (`out/print/2.44b/`, script kept at
+`out/print/2.44b/crop_2_44_print_check.py`): the page rendered directly from
+the PDF at 600 dpi (PyMuPDF, matching the gather's own DPI), the staff's
+OWN measured `Q.STAFF_LINES` (page px) drawn grey, and each reader's own
+measured ledger rungs — read from its `detail.rungs` (canonical cell y) and
+converted to page px via the cell's own measured `up = Q.CELL_STAFF_SPACE /
+(page staff spacing)`, never an assumed constant — drawn in that reader's
+own colour (orange = clean-count, green = rung-grid) and labelled with the
+pitch name the position implies.
+
+**8 of 9 changed pitches are clearly right by eye**: in every one the head's
+own ink sits ON or just past the drawn rung exactly as the new pitch claims.
+**1 is ambiguous** (`glyph/3/0/0/4/8`, Litolff): the "head" sits inside a
+cluttered region that also carries a decorative dynamic-mark flourish, and
+whether the boxed ink is a clean notehead at all is not obvious from the
+crop — reported, not claimed either way, and not counted as wrong. **0
+confirmed-wrong new pitches.**
+
+### 12e. Sean's two named chords — still unreached, and WHY (crop-by-crop)
+
+`glyph/3/0/0/2/4`+`/9` (chord 1, print F6/D6) and `glyph/3/0/0/2/1`+`/3`
+(chord 2, print E6/C6) are **UNCHANGED by this build** — all four verdicts
+carry `position_and_clef_ledger_conflict`. This is the honest result, not a
+bug in the wiring:
+
+| subject | print | geometry (stands) | reader 1 | reader 2 |
+|---|---|---|---|---|
+| `/2/4` (chord 1 upper) | F6 | F6 ✓ | B5 ✗ | F6 ✓ |
+| `/2/9` (chord 1 lower) | D6 | E6 ✗ | **D6 ✓** | E6 ✗ |
+| `/2/1` (chord 2 upper) | E6 | F6 ✗ | B5 ✗ | **E6 ✓** |
+| `/2/3` (chord 2 lower) | C6 | D6 ✗ | B5 ✗ | **C6 ✓** |
+
+On three of the four heads ONE reader lands on the exact print pitch and the
+OTHER does not — never the same one twice — so every pair conflicts and the
+rule correctly refuses to guess, leaving geometry's own two wrong answers
+(`/2/9` E6, `/2/1` and `/2/3` both already wrong before this item) standing.
+Reader 1 reads `B5` on both chord-2 heads (`/2/1`, `/2/3`) — the same wrong
+answer twice in one dense three-chord cluster, suggesting its clean-ledger
+scan is picking up ink from the adjacent chord rather than this head's own
+column; reader 2 is right on 3 of these 4 subjects. This matches `190619f7`
+FINDINGS §11b's own caution that "the Litolff single-head verdicts are
+suspect and are not a rate" and extends it: even the CHORD verdicts, said
+there to be "firmer", are not reliable enough on this merging plate for
+reader 1 alone, and the two readers' required agreement — exactly Sean's
+own safety margin — is what is costing the headline case, not a wiring
+fault. Fixing reader 1's apparent cross-chord bleed is future work, not
+done here (no roadmap item taken for it; flagged for a future lane).
+
+### 12f. Checks
+
+`pytest -m "not slow" tools/omr/tests`: 4,195 passed, 3 skipped, 2 xfailed
+(unchanged from before this item — the xfail file is untouched and still
+correctly xfails under option B's own semantics, §12a). `python3 -m
+tools.omr.staged.check`: TOTAL 245, unchanged (required three registrations
+to stay flat: `capture.py`'s `CLAIMS`, `UNSCORED` and `READER_RASTER`
+tables, and a `docs/engraving-conventions.md` count-arithmetic fix after
+adding `[C95]`).

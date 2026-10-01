@@ -73,15 +73,27 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     AND THERE WILL NOT BE ONE FROM THIS ITEM. The ink-fit position
     (`Q.STACKED_HEAD_FIT`) was briefly read here via a withdrawn
     `Q.STACKED_HEAD_POSITION`, then replaced with a narrow same-side-second
-    rounding-residual rule -- BOTH withdrawn. The real cause of the wrong
-    pitches above the staff is that printed LEDGER LINES are not evenly
-    spaced (measured: Litolff p3 staff/3/0/0's own ledgers sit 18/13/20 px
-    apart against a 15.75 px staff spacing -- extrapolating the staff's own
-    spacing drifts ~4 px by the third ledger). Fixing that needs positions
-    read from the printed ledgers themselves, a SEPARATE roadmap item
-    (2.44), not this one. This function reads the raw `Q.NOTEHEAD_STAFF_
-    POSITION` centre for EVERY notehead, exactly as before ROADMAP 2.42 ever
-    existed.
+    rounding-residual rule -- BOTH withdrawn. This function reads the raw
+    `Q.NOTEHEAD_STAFF_POSITION` centre for EVERY notehead, exactly as before
+    ROADMAP 2.42 ever existed -- EXCEPT where ROADMAP 2.44 (below) says
+    otherwise.
+
+    ⚠️⚠️ ROADMAP 2.44 (Sean's option B, DECISIONS 2026-09-30): for a head
+    OUTSIDE its staff, where BOTH `Q.LEDGER_CLEAN_COUNT_POSITION` (Sean's
+    own count-the-clean-ledgers rule) and `Q.LEDGER_RUNG_GRID_POSITION`
+    (`ledger_grid.measure_ledger_rungs`) carry a row for this exact glyph
+    AND AGREE with each other, their shared position is used instead of the
+    raw rounded geometry -- even where the geometry is confident (Sean's
+    own example: the second flute chord reads F6 by geometry at 0.38 from
+    the rounding boundary, but both ledger readers and the print agree on
+    E6). Where either reader abstained, or the two disagree, GEOMETRY
+    STANDS and the case is COUNTED by a distinguishable `reason` on the
+    verdict (CLAUDE.md rule 8: a fallback never converts "cannot tell" into
+    an answer -- geometry here is the EXISTING answer, not a new guess, and
+    the disagreement is never silently dropped). The printed ledgers never
+    override an IN-STAFF position: both readers only ever produce a row for
+    a head their own gate judged outside the staff, so the mere presence of
+    a row from either is itself that gate.
     """
     from ..pitch_resolver import _pitch_from_position
 
@@ -109,6 +121,31 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # `glyph/2/1/9/6/2`.
             continue
         pos = int(round(float(row.value)))
+        reason = "position_and_clef"
+        basis: Tuple[str, ...] = (row.id, clef.id)
+
+        # ── ROADMAP 2.44: two ledger readers must AGREE to override geometry
+        clean_rows = log.rows(Q.LEDGER_CLEAN_COUNT_POSITION, row.subject)
+        grid_rows = log.rows(Q.LEDGER_RUNG_GRID_POSITION, row.subject)
+        if clean_rows and grid_rows:
+            clean_pos = int(round(float(clean_rows[-1].value)))
+            grid_pos = int(round(float(grid_rows[-1].value)))
+            if clean_pos == grid_pos:
+                pos = clean_pos
+                reason = "ledger_reader_agreement"
+                basis = (row.id, clef.id, clean_rows[-1].id, grid_rows[-1].id)
+            else:
+                # Disagreement -- geometry stands, but the case is COUNTED
+                # (CLAUDE.md rule 8) rather than silently falling back.
+                reason = "position_and_clef_ledger_conflict"
+                basis = (row.id, clef.id, clean_rows[-1].id, grid_rows[-1].id)
+        elif clean_rows or grid_rows:
+            # Only one reader could read this far head -- not an agreement,
+            # geometry stands, counted as a one-sided reading.
+            reason = "position_and_clef_ledger_one_sided"
+            one = clean_rows[-1] if clean_rows else grid_rows[-1]
+            basis = (row.id, clef.id, one.id)
+
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -116,8 +153,8 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             continue
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
-            decider="restate_pitch", reason="position_and_clef",
-            basis=(row.id, clef.id)))
+            decider="restate_pitch", reason=reason,
+            basis=basis))
     return out
 
 

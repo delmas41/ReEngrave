@@ -282,6 +282,20 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "`KEYSIG_RUN_POSITION`, which measures the SIGNATURE's `key*` glyphs "
         "in the header; this one excludes them by class.",
         "accidental"),
+    "LEDGER_CLEAN_COUNT_POSITION": (
+        STAFF_GRID_POSITION,
+        "ROADMAP 2.44, reader 1 of 2: Sean's own count-the-clean-ledgers "
+        "rule, in `Q.NOTEHEAD_STAFF_POSITION`'s own top-line-origin units. "
+        "Consumed by `consequences.restate_pitch`, together with reader 2 "
+        "and the raw geometric position -- a head's own ink, same family "
+        "as `NOTEHEAD_STAFF_POSITION`, not a second copy of it.",
+        "note"),
+    "LEDGER_RUNG_GRID_POSITION": (
+        STAFF_GRID_POSITION,
+        "ROADMAP 2.44, reader 2 of 2: `ledger_grid.measure_ledger_rungs` + "
+        "`snap_to_staff`, reused unchanged. Same units, same family, same "
+        "consumer as `Q.LEDGER_CLEAN_COUNT_POSITION`.",
+        "note"),
 
     # ── the eleven that answered it, 2026-09-17 ─────────────────────────────
     # ⚠️ SYMBOL-SPECIFIC BY INSTRUCTION, not one schema eleven times. Produced
@@ -616,6 +630,18 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # `image_no_staff` only, same as `CV_INK` (erase for the CV consumer,
     # never the detector, CLAUDE.md §9).
     "CV_LEDGER": ("staged/gather.py", "_observe_ledger_rung_ink"),
+    # ⚠️ ROADMAP 2.44, reader 1 of 2. Also `staged/gather.py` -- reads
+    # `image_no_staff` only, same reason `CV_LEDGER` does (it reuses that
+    # reader's own `ledger_rung_ink` call at a finer scan).
+    "LEDGER_CLEAN_COUNT": ("staged/gather.py",
+                          "_observe_ledger_clean_count_position"),
+    # ⚠️ ROADMAP 2.44, reader 2 of 2. REUSES (never forks)
+    # `tools.omr.annotate.ledger_grid.measure_ledger_rungs`, which also reads
+    # `image_no_staff` -- the SAME raster `LEDGER_CLEAN_COUNT`/`CV_LEDGER`
+    # read, by a different mechanism (see `Q.LEDGER_RUNG_GRID_POSITION`'s
+    # own docstring for why that still makes the two readers' AGREEMENT
+    # meaningful under Sean's option B).
+    "LEDGER_RUNG_GRID": ("annotate/ledger_grid.py", "measure_ledger_rungs"),
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),

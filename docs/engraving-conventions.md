@@ -40,7 +40,7 @@ a system from a group* (floors at 8 sp under compression, by construction).
 
 ## Counts
 
-**121 registry entries**, from 173 source entries (167 compiled, plus `C89`, `C90`, `C91`, `C92`, `C93` and `C94` written straight into this registry).
+**122 registry entries**, from 174 source entries (167 compiled, plus `C89`, `C90`, `C91`, `C92`, `C93`, `C94` and `C95` written straight into this registry).
 
 ⚠️ **The 167th source entry is `C88`** (*A clef's SIZE is consistent with its
 staff…*), added 2026-09-23 under ROADMAP 2.11. It is the first entry added
@@ -80,9 +80,15 @@ would otherwise be missing*) is Sean's convention of 2026-09-30
 of Brahms 1/i Breitkopf p1 bar 5, and written straight into this registry by
 roadmap 2.45, for the same reason as `C89`–`C93`.
 
+⚠️ **`C95`** (*A reader places a far note by counting the clean ledgers,
+then line-or-space off the last one*) is Sean's convention of 2026-09-30
+(`docs/DECISIONS.md`), stated on how a human reads ledger lines, and written
+straight into this registry by roadmap 2.44, for the same reason as
+`C89`–`C94`.
+
 | status | n |
 |---|--:|
-| **MEASURED HERE** | 73 |
+| **MEASURED HERE** | 74 |
 | **LITERATURE ONLY (untested here)** | 27 |
 | **ASSERTED (untested here)** | 14 |
 | **REFUTED HERE** | 5 |
@@ -2100,17 +2106,18 @@ not be placed; the unplaced list is empty.**
     46  merged entries
   + 42  repo-only entries
   + 27  literature-only entries
-  +  6  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
+  +  7  written straight into this registry (C89, 2026-09-23, roadmap 2.10;
                                               C90 + C91, 2026-09-24, roadmap 3.4g-2;
                                               C92, 2026-09-30, roadmap 2.43;
                                               C93, 2026-09-30, roadmap 2.40;
-                                              C94, 2026-09-30, roadmap 2.45)
+                                              C94, 2026-09-30, roadmap 2.45;
+                                              C95, 2026-09-30, roadmap 2.44)
 ─────
- 121  registry entries
+ 122  registry entries
 ```
 
 **Check both ways:** repo side `46 + 42 = 88` ✅ · literature side `52 + 27 = 79` ✅ ·
-output `46 + 42 + 27 + 6 = 121` ✅.
+output `46 + 42 + 27 + 7 = 122` ✅.
 
 ⚠️ **C89 IS NOT IN `from-this-repo.md` AND ITS 88 IS NOT BUMPED.** That file is a
 compilation whose stated scope is *"only conventions this tree has evidence
@@ -2218,7 +2225,7 @@ instead, so the ledger still accounts for every id an entry carries.
 | C87 | A TRILL, TURN or MORDENT is printed clear ABOVE its note, centred on it | *(same title)* | kept standalone |
 | C88 | A clef's SIZE is consistent with its staff, and it stands at the system's first-measure edge | *(same title)* | kept standalone — ⚠️ added 2026-09-23 (ROADMAP 2.11), after the merge |
 
-### Written straight into this registry — 6
+### Written straight into this registry — 7
 
 ⚠️ Not from either source file. See the arithmetic above.
 
@@ -2230,8 +2237,9 @@ instead, so the ledger still accounts for every id an entry carries.
 | C92 | Open noteheads are never beamed, except tremolo | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.43) |
 | C93 | A second is always on opposite sides of the stem — never the same side, at any distance | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.40), renumbered from `C92` on merge with 2.43 |
 | C94 | A rest between two staves belongs to the staff whose voice would otherwise be missing | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.45) |
+| C95 | A reader places a far note by counting the clean ledgers, then line-or-space off the last one | *(same title)* | kept standalone — Sean, 2026-09-30, written straight into this registry (roadmap 2.44) |
 
-**Repo tally: 46 merged + 43 standalone = 89** ✅
+**Repo tally: 46 merged + 44 standalone = 90** ✅
 
 ### `from-the-literature.md` — all 79
 
@@ -2339,6 +2347,22 @@ Numbered `L1–L79` in that file's own document order.
    above the staff by default* (`L62`, unsourced for the "above" half; its
    GEOMETRY is sourced). **None was promoted on the strength of the merge
    alone.**
+
+---
+
+### A reader places a far note by COUNTING the clean ledgers, then line-or-space off the last one
+`[C95]`
+
+- **Says:** Sean, 2026-09-30 (`docs/DECISIONS.md`): *"we look to see how many lines that don't have notes on it between the staff and where the note is … then we see if it looks like it's on a line or a space … it's not the individual line that is important as much as the context of the other lines."* A human never extrapolates the staff's own spacing past its outer line, and never reads a ledger THROUGH the note sitting on it.
+- **Predicts (mechanically):** for a notehead outside its staff, count the CLEAN ledger rungs (no note on them) between the staff's outer line and the head, sampling the overhang just past the head's own stem-free ink edge. If the head's near ink edge TOUCHES the last clean ledger it sits ON that line; about half a space off, it is in the SPACE beyond. Two readers built this way, by different mechanisms over the same staff-erased raster, must AGREE before overriding geometry's own rounding — a single reader's reading of "clean" ink is not by itself independent of the raster it shares with every other ledger reader (CLAUDE.md §10).
+- **Numbers:** scan window 0.55–(head far edge + 1.1) staff spaces past the staff's outer line, step 0.08 spaces (fine enough for Sean's own measured Litolff gaps of 18/13/20 px against a 15.75 px staff spacing); a found rung counts as ON the head only inside the head's own middle third.
+- **Literature:** not stated as a counting procedure; the adjacent geometry is *Ledger-line pitch is NOT the staff spacing* `[L5]` and *A note outside the staff is joined to it by an unbroken ladder* `[C4]`.
+- **Measured here:** `benchmarks/omr-ledger-extrapolation-2026-09/FINDINGS.md` §11b: on the near-boundary population where plain geometry and this count disagree, Breitkopf 13 of 14 readable agree with geometry (the one firm case, `1/1/3/3/2`, both C and `measure_ledger_rungs` give D4 against geometry's wrong E4); Litolff is NOT established on single heads (a merging-plate overhang confound), but on Sean's two confirmed flute chords (DECISIONS 2026-09-30) the count reading and `measure_ledger_rungs` AGREE with the print on both — F6/D6 (`glyph/3/0/0/2/4`+`/9`) and E6/C6 (`glyph/3/0/0/2/1`+`/3`) — where plain rounding gets both wrong (F6/E6 and F6/D6).
+- **Status:** MEASURED HERE, on the acceptance pages; general reach not yet re-gathered.
+- **Rigid or publisher-dependent:** the COUNTING PROCEDURE is rigid; the underlying ledger PITCH is publisher-dependent (`[L5]`), which is exactly why extrapolation fails and this convention exists.
+- **Would be falsified by:** a confirmed print reading where both readers agree with each other and disagree with the plate.
+- **Known exceptions:** a wide filled head, or a ledger fused into a head, can be read by `measure_ledger_rungs` as a rung THROUGH the head (pushing its own answer one step outward) — the known fault this convention's own two-reader-agreement requirement exists to catch, not to repair.
+- **Code:** `tools/omr/staged/gather.py` `gather_ledger_clean_count_position` (`Q.LEDGER_CLEAN_COUNT_POSITION`) and `gather_ledger_rung_grid_position` (`Q.LEDGER_RUNG_GRID_POSITION`, wrapping `tools/omr/annotate/ledger_grid.py` unchanged); `tools/omr/staged/consequences.py` `restate_pitch` (the agreement test and substitution).
 
 ---
 

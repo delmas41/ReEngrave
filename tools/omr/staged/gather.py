@@ -1934,6 +1934,369 @@ def _observe_ledger_rung_ink(log: Log, g: Subject, box, cand_key: str,
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.44 (Sean, option B, DECISIONS 2026-09-30): a notehead OUTSIDE its
+# staff takes its position from geometry UNLESS two INDEPENDENT ledger
+# readers agree on a different one. Two readers, two GATHER rows each --
+# EVALUATE's `restate_pitch` is where the agreement test and the
+# substitution happen (CLAUDE.md §4a: the fact FOLLOWS once both readers
+# agree, so that belongs in EVALUATE, not here).
+#
+# ⚠️ BOTH READERS READ THE SAME RASTER (`cell.image_no_staff`) -- CLAUDE.md
+# §10: "two witnesses off the same raster fall silent together" -- so their
+# agreement is not an independent confirmation in the strongest sense; it IS
+# two different MECHANISMS over that one raster (a windowed-density clean-
+# ledger count vs a publisher-tuned thin-band rung walk), which is the sense
+# Sean asked for and the only one available without a second raster to read.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A found rung counts as ON the head (rather than bracketing it from
+#: BETWEEN two rungs) only where it falls in the MIDDLE THIRD of the head's
+#: own measured ink span -- Sean's own convention for a printed ledger
+#: (CLAUDE.md §10: it runs THROUGH its note, not beside it).
+LEDGER_CLEAN_COUNT_ON_THIRD = 1.0 / 3.0
+#: The scan starts this many STAFF SPACES past the staff's own outer line --
+#: just inside where a first ledger could ever print (one full space out),
+#: leaving a margin rather than starting exactly at the boundary
+#: `_ledger_expected` itself draws.
+LEDGER_CLEAN_COUNT_SCAN_START_SPACES = 0.55
+#: ...and continues this many STAFF SPACES past the head's own FAR edge, so
+#: a rung printed just beyond a head sitting in the last space is still
+#: found, and "no rung beyond the head" is a measured absence rather than
+#: an unscanned one.
+LEDGER_CLEAN_COUNT_SCAN_MARGIN_SPACES = 1.1
+#: The scan's own step, in STAFF SPACES -- fine enough that an unevenly
+#: spaced rung (Sean's own Litolff measurement: gaps of 18/13/20 px against
+#: a 15.75 px spacing, i.e. residuals up to ~0.3 spaces from the staff's own
+#: arithmetic) is never stepped over.
+LEDGER_CLEAN_COUNT_SCAN_STEP_SPACES = 0.08
+
+
+def _cluster_found_rungs(hits: List[Tuple[float, float]],
+                         gap_tol: float) -> List[float]:
+    """Contiguous scanned `(y, center_density)` pairs within `gap_tol` of
+    each other are ONE printed rung -- the scan necessarily reads several
+    consecutive steps across any real rung's own thickness-plus-pad band --
+    collapsed to that rung's density-weighted mean y. `hits` arrives walking
+    OUTWARD from the staff (the caller's own scan order), so the returned
+    list is nearest-to-farthest, unchanged."""
+    if not hits:
+        return []
+    clusters: List[List[Tuple[float, float]]] = [[hits[0]]]
+    for y, dens in hits[1:]:
+        if abs(y - clusters[-1][-1][0]) <= gap_tol:
+            clusters[-1].append((y, dens))
+        else:
+            clusters.append([(y, dens)])
+    out: List[float] = []
+    for c in clusters:
+        w = sum(dens for _, dens in c)
+        out.append(sum(y * dens for y, dens in c) / w if w > 0
+                  else sum(y for y, _ in c) / len(c))
+    return out
+
+
+def gather_ledger_clean_count_position(log: Log, cells: Sequence[Any],
+                                       local: Dict[int, Tuple[int, int]],
+                                       detections: Dict[str, List[Any]]
+                                       ) -> None:
+    """`Q.LEDGER_CLEAN_COUNT_POSITION` -- ROADMAP 2.44, reader 1 of 2.
+
+    Sean, 2026-09-30: *"we look to see how many lines that don't have notes
+    on it between the staff and where the note is … then we see if it
+    looks like it's on a line or a space … it's not the individual line
+    that is important as much as the context of the other lines."*
+
+    For every REGULAR notehead filed outside its own staff (beyond the
+    exempt first space -- the SAME boundary `_ledger_expected` draws for
+    every other ladder reader in this file), scans the cell's own staff-
+    erased raster at fine resolution from just past the staff's outer line
+    out to past the head's own far edge, reusing `ledger_rung_ink`
+    (ROADMAP 2.37) UNCHANGED at each candidate y -- so a position is only
+    ever read off ink this repo already knows how to call a printed rung,
+    never a new density rule. Found rungs are CLUSTERED into actual printed
+    ledger lines (the CLEAN ledgers Sean's rule counts), and the head's
+    position is read OFF THOSE MEASURED ROWS, in the SAME half-step units
+    `gather_notehead_positions` files under `Q.NOTEHEAD_STAFF_POSITION`
+    (TOP LINE = 0, signed, positive downward) -- the withdrawn first 2.44
+    reader counted BELOW-staff steps from the bottom line instead and so
+    could never be compared against anything above the staff; this reader
+    converts BOTH sides to that one shared origin before filing.
+
+    ⚠️ NEVER READS A LEDGER THROUGH THE HEAD (Sean's third rule): a found
+    rung counts as the head's OWN line only where it crosses the head's
+    measured middle third; otherwise the head is in the space beyond the
+    nearest clean rung it does not touch.
+
+    ⚠️ DOES NOT TOUCH `gather_notehead_positions`. That row is unchanged and
+    stays the geometry CONTROL (CLAUDE.md §6a) this reader is measured
+    against; `consequences.restate_pitch` substitutes a ledger-agreed
+    reading for it only where BOTH ledger readers agree with each other --
+    see that rule's own docstring (ROADMAP 2.44, Sean's option B).
+    """
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        grid = _cell_grid(c)
+        if grid is None or len(lines) < 2:
+            continue     # no staff geometry: `gather_notehead_positions`
+                         # already records this gap on `Q.CELL_STAFF_SPACE`
+        _, half_step = grid
+        spacing = half_step * 2.0
+        line_top, line_bottom = min(lines), max(lines)
+        staff_half_steps = (line_bottom - line_top) / half_step
+        img = getattr(c, "image_no_staff", None)
+        thickness = getattr(c, "staff_line_thickness_canonical", None)
+        for gi, d in enumerate(dets):
+            if not is_regular_notehead(d.smufl_name):
+                continue    # ROADMAP 2.39's own gate: a whole note or a
+                           # grace/cue head is not measured this round
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            _observe_ledger_clean_count_position(
+                log, g, d, line_top, line_bottom, spacing, staff_half_steps,
+                img, thickness)
+
+
+def _observe_ledger_clean_count_position(log: Log, g: Subject, d: Any,
+                                         line_top: float, line_bottom: float,
+                                         spacing: float,
+                                         staff_half_steps: float,
+                                         img: Any,
+                                         thickness: Optional[float]) -> None:
+    frame = frame_cell(g.cell)
+    cx = float(d.x_canonical) + float(d.width_canonical) / 2.0
+    cy = float(d.y_canonical) + float(d.height_canonical) / 2.0
+    # ⚠️ ROADMAP 2.39b: the SAME re-centre row every sibling ledger reader
+    # reads (never re-run -- CLAUDE.md rule 6).
+    recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+    if recentred:
+        dx_sp, dy_sp = recentred[-1].value
+        cx = cx + dx_sp * spacing
+        cy = cy + dy_sp * spacing
+
+    if not spacing or line_top <= cy <= line_bottom:
+        return    # on the staff: nothing to measure here
+    above = cy < line_top
+    edge = line_top if above else line_bottom
+    if _ledger_expected(cy, [line_top, line_bottom], spacing) <= 0:
+        return    # the exempt first space -- no ledger ever prints there
+
+    if img is None or getattr(img, "ndim", 0) != 2:
+        log.abstain(g, Q.LEDGER_CLEAN_COUNT_POSITION,
+                    reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                    reason=ABSTAIN.NO_MASK,
+                    note="cell carries no image_no_staff")
+        return
+
+    # ⚠️ ROADMAP 2.39: the STANDARD head box, not the raw detector extent --
+    # same reasoning as every sibling ledger reader (a Brahms sliver or a
+    # Litolff merged box is not the head's true ink width).
+    hx0, hx1, hy0, hy1 = _standard_head_box(cx, cy, spacing)
+    if hy1 <= hy0 or hx1 <= hx0:
+        log.abstain(g, Q.LEDGER_CLEAN_COUNT_POSITION,
+                    reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                    reason=ABSTAIN.HEAD_EDGE_UNREADABLE,
+                    note="standard head box degenerate")
+        return
+
+    thick = float(thickness) if thickness else \
+        LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * spacing
+
+    head_far_edge = hy0 if above else hy1
+    head_far_sp = abs(head_far_edge - edge) / spacing
+    scan_start_sp = LEDGER_CLEAN_COUNT_SCAN_START_SPACES
+    scan_end_sp = head_far_sp + LEDGER_CLEAN_COUNT_SCAN_MARGIN_SPACES
+    step_sp = LEDGER_CLEAN_COUNT_SCAN_STEP_SPACES
+
+    hits: List[Tuple[float, float]] = []
+    i = 0
+    while True:
+        d_sp = scan_start_sp + i * step_sp
+        if d_sp > scan_end_sp:
+            break
+        i += 1
+        y = (edge - d_sp * spacing) if above else (edge + d_sp * spacing)
+        m = ledger_rung_ink(img, hx0, hx1, y, spacing, thick,
+                           head_y0=hy0, head_y1=hy1)
+        if m is not None and m["found"]:
+            hits.append((y, m["center"]))
+
+    if not hits:
+        log.abstain(g, Q.LEDGER_CLEAN_COUNT_POSITION,
+                    reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                    reason=ABSTAIN.NO_LEDGER_FOUND,
+                    note=f"scanned {round(scan_start_sp, 2)}-"
+                        f"{round(scan_end_sp, 2)} staff spaces past the "
+                        f"outer line, found no rung")
+        return
+
+    gap_tol = max(step_sp * 2.5, 0.12) * spacing
+    rungs = _cluster_found_rungs(hits, gap_tol)
+
+    def _dist(y: float) -> float:
+        return (edge - y) if above else (y - edge)
+
+    order = sorted(range(len(rungs)), key=lambda i: _dist(rungs[i]))
+    rungs = [rungs[i] for i in order]
+    rung_dists = [_dist(r) for r in rungs]
+
+    third = (hy1 - hy0) * LEDGER_CLEAN_COUNT_ON_THIRD
+    on_idx = [k for k, r in enumerate(rungs)
+             if (hy0 + third) <= r <= (hy1 - third)]
+    if len(on_idx) > 1:
+        log.abstain(g, Q.LEDGER_CLEAN_COUNT_POSITION,
+                    reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                    reason=ABSTAIN.LEDGERS_IRREGULAR,
+                    note=f"more than one found rung inside the head's own "
+                        f"middle third: {[round(r, 2) for r in rungs]}")
+        return
+
+    if on_idx:
+        k = on_idx[0]
+        steps = 2 * (k + 1)
+        bracket = "on"
+    else:
+        head_dist = _dist(cy)
+        k_near = None
+        for k, rd in enumerate(rung_dists):
+            if rd < head_dist:
+                k_near = k
+            else:
+                break
+        if k_near is None:
+            log.abstain(g, Q.LEDGER_CLEAN_COUNT_POSITION,
+                        reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                        reason=ABSTAIN.LEDGERS_IRREGULAR,
+                        note=f"head sits nearer the staff than the nearest "
+                            f"found ledger: {[round(r, 2) for r in rungs]}")
+            return
+        n = len(rungs)
+        if k_near == n - 1:
+            steps = 2 * n + 1
+            bracket = "beyond"
+        else:
+            steps = 2 * (k_near + 1) + 1
+            bracket = "between"
+
+    # ⚠️ CONVERT TO THE SHARED, TOP-LINE-ORIGIN UNIT (`Q.NOTEHEAD_STAFF_
+    # POSITION`'s own convention). `steps` above counts half-steps OUTWARD
+    # from THIS side's own near edge; above the staff that edge IS the top
+    # line (origin 0), so `-steps` is already correct, but below the staff
+    # the near edge is the BOTTOM line, `staff_half_steps` (normally 8, a
+    # 5-line staff) below the top -- the withdrawn first 2.44 reader filed
+    # `steps` directly there and so disagreed with everything above the
+    # staff by this exact offset.
+    pos = -steps if above else (staff_half_steps + steps)
+    log.observe(g, Q.LEDGER_CLEAN_COUNT_POSITION, int(round(pos)),
+                reader=READERS.LEDGER_CLEAN_COUNT, frame=frame,
+                bracket=bracket,
+                rungs=[round(r, 2) for r in rungs],
+                note=f"rungs (canonical y) {[round(r, 2) for r in rungs]}, "
+                    f"head centre {round(cy, 2)}")
+
+
+def gather_ledger_rung_grid_position(log: Log, cells: Sequence[Any],
+                                     local: Dict[int, Tuple[int, int]],
+                                     detections: Dict[str, List[Any]]
+                                     ) -> None:
+    """`Q.LEDGER_RUNG_GRID_POSITION` -- ROADMAP 2.44, reader 2 of 2.
+
+    Wraps `tools.omr.annotate.ledger_grid.measure_ledger_rungs` and that
+    module's own `server.snap_to_staff`, REUSED UNCHANGED (Sean's brief:
+    "reuse it; don't fork or copy it") rather than reimplemented -- an
+    existing, publisher-tuned reader built on 356 hand-labelled heads for
+    the labelling UI. Same population as `gather_ledger_clean_count_
+    position` (every regular notehead outside its own staff, past the
+    exempt first space); `snap_to_staff`'s own "half-spaces down from the
+    TOP line" step is already `Q.NOTEHEAD_STAFF_POSITION`'s own unit and
+    origin, so no conversion is needed here (unlike reader 1, which has to
+    convert its own below-staff count).
+
+    Known fault (measured, `benchmarks/omr-ledger-extrapolation-2026-09/
+    FINDINGS.md` §11a): a wide filled head, or a ledger fused into a head,
+    reads as a rung THROUGH it, pushing the snapped step one outward --
+    exactly why Sean's option B needs this reader to AGREE with reader 1
+    rather than stand alone.
+    """
+    import numpy as np
+    from tools.omr.annotate.ledger_grid import measure_ledger_rungs
+    from tools.omr.annotate.server import snap_to_staff
+
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        lines = sorted(float(v) for v in
+                       (getattr(c, "staff_line_ys_canonical", None) or []))
+        if len(lines) < 2:
+            continue
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        _, half_step = grid
+        spacing = half_step * 2.0
+        img = getattr(c, "image_no_staff", None)
+        recentre_cache: Dict[int, Any] = {}
+        for gi, d in enumerate(dets):
+            if not is_regular_notehead(d.smufl_name):
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            frame = frame_cell(g.cell)
+            if img is None or getattr(img, "ndim", 0) != 2:
+                log.abstain(g, Q.LEDGER_RUNG_GRID_POSITION,
+                            reader=READERS.LEDGER_RUNG_GRID, frame=frame,
+                            reason=ABSTAIN.NO_MASK,
+                            note="cell carries no image_no_staff")
+                continue
+            cx = float(d.x_canonical) + float(d.width_canonical) / 2.0
+            cy = float(d.y_canonical) + float(d.height_canonical) / 2.0
+            recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+            if recentred:
+                dx_sp, dy_sp = recentred[-1].value
+                cx = cx + dx_sp * spacing
+                cy = cy + dy_sp * spacing
+            if lines[0] <= cy <= lines[-1]:
+                continue    # on the staff: nothing to measure here
+            if _ledger_expected(cy, [lines[0], lines[-1]], spacing) <= 0:
+                continue    # the exempt first space
+            gray = img if img.ndim == 2 else img.mean(axis=2).astype(np.uint8)
+            rungs = measure_ledger_rungs(gray, lines, cx)
+            snapped = snap_to_staff(lines, cy, rungs)
+            if snapped is None:
+                log.abstain(g, Q.LEDGER_RUNG_GRID_POSITION,
+                            reader=READERS.LEDGER_RUNG_GRID, frame=frame,
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="snap_to_staff found no usable grid")
+                continue
+            side = "above" if cy < lines[0] else "below"
+            if not (rungs.get(side) or []):
+                log.abstain(g, Q.LEDGER_RUNG_GRID_POSITION,
+                            reader=READERS.LEDGER_RUNG_GRID, frame=frame,
+                            reason=ABSTAIN.NO_LEDGER_FOUND,
+                            note=f"measure_ledger_rungs found no {side} rung")
+                continue
+            log.observe(g, Q.LEDGER_RUNG_GRID_POSITION,
+                        int(snapped["step"]),
+                        reader=READERS.LEDGER_RUNG_GRID, frame=frame,
+                        rungs=rungs.get(side))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Rhythm marks -- MEASUREMENTS. The duration they compose into is a VERDICT.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -7223,6 +7586,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # than a naming of it.
         gather_accidental_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
+        # ⚠️ ROADMAP 2.44. Reads `Q.NOTEHEAD_RECENTRE` (already gathered
+        # above) and needs nothing `gather_ownership_evidence` produces --
+        # placed beside it because it is the SAME ledger-ink machinery
+        # (`ledger_rung_ink`, ROADMAP 2.37) asked a different question (a
+        # head's OWN staff position, not cross-staff ownership).
+        gather_ledger_clean_count_position(log, cells, local, detections)
+        gather_ledger_rung_grid_position(log, cells, local, detections)
         gather_rhythm_marks(log, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge

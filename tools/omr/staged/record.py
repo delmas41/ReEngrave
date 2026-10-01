@@ -791,6 +791,67 @@ class Q(_Vocab):
     #: fields); nothing reads its position component any more, and nothing
     #: should until 2.44 builds the real fix.
 
+    #: ⚠️ ROADMAP 2.44, READER 1 OF 2 (Sean, 2026-09-30, the "count the clean
+    #: ledgers" rule): *"we look to see how many lines that don't have
+    #: notes on it between the staff and where the note is … then we see
+    #: if it looks like it's on a line or a space"*. One row per REGULAR
+    #: notehead glyph sitting OUTSIDE its own staff, past the exempt first
+    #: space (`gather._ledger_expected`'s own boundary — no ledger ever
+    #: prints there). Scans the cell's staff-erased raster outward from the
+    #: staff's near edge, reusing `ledger_rung_ink` (ROADMAP 2.37) UNCHANGED
+    #: at a fine step, clusters the hits into actual printed rungs (CLAUDE.md
+    #: §10, Sean 2026-09-29: "there is no such thing as a far note with no
+    #: ledger line" — a clean scan that finds nothing is a reading gap, not
+    #: a page fact), then places the head either ON the one rung whose own
+    #: middle third its ink touches, or in the SPACE beyond the nearest rung
+    #: it does not touch — never by reading a rung through the head itself.
+    #: `value` is the position in `Q.NOTEHEAD_STAFF_POSITION`'s own units
+    #: (clef-free half-steps, TOP LINE = 0, positive downward) — the SAME
+    #: origin and sign for both sides of the staff, so a consumer never
+    #: converts. `detail` carries `rungs` (measured canonical y of each
+    #: clustered rung, nearest first) and `bracket` (`"on"` / `"between"`,
+    #: the hidden-under-the-head case half a space past the last clean
+    #: rung). Abstains `no_ledger_found` (the scan found no qualifying ink
+    #: at all — CLAUDE.md rule 8, never defaulted to geometry here; that
+    #: happens one stage up, in `consequences.restate_pitch`), `ledgers_
+    #: irregular` (more than one found rung sits inside the head's own
+    #: middle third, or the head sits nearer the staff than the nearest
+    #: rung found — a reading the ladder itself cannot resolve), `no_mask`
+    #: (no `image_no_staff`) and `head_edge_unreadable` (a degenerate
+    #: standard head box). Reads the SAME staff-erased raster `Q.LEDGER_
+    #: RUNG_INK`/`CV_INK`/`CV_LEDGER` read — CLAUDE.md §10: "two witnesses
+    #: off the same raster fall silent together" — so this is a MEASUREMENT
+    #: on that one raster, never claimed as independent of it; what makes it
+    #: a genuinely SECOND reading for `Q.LEDGER_RUNG_GRID_POSITION`'s own
+    #: purpose (Sean's option B, DECISIONS 2026-09-30) is that the two
+    #: readers run a DIFFERENT mechanism over it (a clean-ledger count vs a
+    #: publisher-tuned rung-and-grid walk), not a different crop.
+    LEDGER_CLEAN_COUNT_POSITION = "ledger_clean_count_position"
+
+    #: ⚠️ ROADMAP 2.44, READER 2 OF 2: `tools/omr/annotate/ledger_grid.
+    #: measure_ledger_rungs` (an existing, publisher-tuned reader built on
+    #: 356 hand-labelled heads for the labelling UI) plus that module's own
+    #: `server.snap_to_staff`, REUSED here unchanged rather than forked or
+    #: copied (Sean's brief). One row per regular notehead glyph outside its
+    #: own staff, same population and units as `Q.LEDGER_CLEAN_COUNT_
+    #: POSITION` (`snap_to_staff`'s own "half-spaces down from the TOP
+    #: line" is already that convention — no conversion needed, unlike the
+    #: withdrawn first 2.44 reader, which counted below-staff steps from the
+    #: BOTTOM line and so could never agree with anything above it).
+    #: `detail` carries `rungs` (the measured `{"above": [...], "below":
+    #: [...]}` dict). Abstains `no_ledger_found` where `measure_ledger_
+    #: rungs` returns no rungs on this side and `snap_to_staff` therefore
+    #: has nothing beyond the plain in-staff grid to anchor on, `no_mask`
+    #: (no `image_no_staff`) and `no_staff_geometry` (fewer than two staff
+    #: lines). Known fault (measured, `benchmarks/omr-ledger-extrapolation-
+    #: 2026-09/FINDINGS.md` §11a): a wide filled head, or a ledger fused
+    #: into a head, reads as a rung THROUGH it, pushing the snapped step one
+    #: outward — a reason this reader needs Reader 1's agreement rather than
+    #: standing alone. Reads `cell.image_no_staff`, the SAME raster `Q.
+    #: LEDGER_CLEAN_COUNT_POSITION` reads — see that quantity's own note on
+    #: why that does not collapse the two into one witness.
+    LEDGER_RUNG_GRID_POSITION = "ledger_rung_grid_position"
+
     # ── EVERY FAMILY'S OWN POSITION (measurements, scoreless) ───────────────
     #
     # ⚠️⚠️ ELEVEN FAMILIES HAD NO POSITION FACT AT ALL, and `capture.py`'s
@@ -1913,6 +1974,17 @@ CLAIMS: "dict[str, str]" = {
     #: position component decides NOTHING about pitch -- see the quantity's
     #: own docstring above.
     "STACKED_HEAD_FIT": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.44: Sean's count-the-clean-ledgers reading of a far head's
+    #: position -- a ruler reading off the staff-erased raster, same reason
+    #: as `LEDGER_RUNG_INK`; it says where the printed rungs and the head's
+    #: own ink sit relative to each other, never that the head IS a
+    #: particular pitch (EVALUATE's `restate_pitch` makes that claim).
+    "LEDGER_CLEAN_COUNT_POSITION": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.44: `ledger_grid.measure_ledger_rungs` + `snap_to_staff`'s
+    #: own reading of a far head's position -- a ruler reading, same reason
+    #: as `LEDGER_CLEAN_COUNT_POSITION`, off the same raster by a different
+    #: mechanism.
+    "LEDGER_RUNG_GRID_POSITION": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -2203,6 +2275,25 @@ class READERS(_Vocab):
     #: horizontal rung at THIS expected step) with a different test
     #: (a windowed density ruler, not components or morphology).
     CV_LEDGER = "cv_ledger"                  # gather_ownership_evidence: rung ink
+    #: `gather.gather_ledger_clean_count_position` -- ROADMAP 2.44, Sean's
+    #: own rule (count the clean ledgers, then line-or-space off the last
+    #: one). Reads the SAME staff-erased raster `CV_LEDGER` reads via the
+    #: SAME `ledger_rung_ink` call -- not independent of it in the "one
+    #: crop, one signal" sense (`CV_INK`'s own entry); its own reader name
+    #: because it asks a FOURTH question of that raster (a far head's own
+    #: staff position, scanning outward from the staff rather than toward a
+    #: specific candidate step).
+    LEDGER_CLEAN_COUNT = "ledger_clean_count"
+    #: `tools.omr.annotate.ledger_grid.measure_ledger_rungs` +
+    #: `server.snap_to_staff` -- ROADMAP 2.44, Sean's option B second
+    #: witness: an EXISTING, publisher-tuned reader (356 hand-labelled
+    #: heads), reused unchanged. Reads the SAME staff-erased raster
+    #: `LEDGER_CLEAN_COUNT`/`CV_LEDGER` read, by its OWN mechanism (a
+    #: thin-band walk at fixed pitch windows, not `ledger_rung_ink`'s
+    #: windowed density ruler) -- see `Q.LEDGER_RUNG_GRID_POSITION`'s own
+    #: note for why the two readers' agreement is still meaningful despite
+    #: sharing a raster.
+    LEDGER_RUNG_GRID = "ledger_rung_grid"
     #: `gather._observe_stem_tip_ink` -- ROADMAP 2.18c. Reads the SAME
     #: staff-erased raster `CV_LINES`/`CV_INK`/`CV_LEDGER` read
     #: (`image_no_staff`), so it is NOT independent of any of them -- one
@@ -2336,6 +2427,21 @@ class ABSTAIN(_Vocab):
     ONLY_DEBRIS = "only_debris"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
+
+    # ROADMAP 2.44 -- the two ledger-position readers
+    #: Scanned (or walked) its full reach and found no qualifying rung ink
+    #: at all. CLAUDE.md §10 (Sean, 2026-09-29): "there is no such thing as
+    #: a far note with no ledger line" -- so this is always a reading gap
+    #: (a missed rung, a misread head, a note not actually far), never
+    #: treated as "clean" or defaulted.
+    NO_LEDGER_FOUND = "no_ledger_found"
+    #: More than one found rung sits inside the head's own middle third, or
+    #: the head sits nearer the staff than the nearest rung found -- a
+    #: reading the ladder itself cannot resolve.
+    LEDGERS_IRREGULAR = "ledgers_irregular"
+    #: The standard head box (ROADMAP 2.39) is degenerate for this glyph --
+    #: nothing to anchor the scan on.
+    HEAD_EDGE_UNREADABLE = "head_edge_unreadable"
 
     # readers with nothing to read
     #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.
