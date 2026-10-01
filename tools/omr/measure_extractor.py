@@ -1701,24 +1701,38 @@ def _is_barline_column(binary: np.ndarray, x: int, top_y: float,
 
 def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
                      x0: int, x1: int, spacing: float,
-                     line_thickness_px: float | None = None
+                     line_thickness_px: float | None = None,
+                     seed_shift_px: float = 0.0,
                      ) -> np.ndarray | None:
     """The comb's ONE shift from `nominal_ys`, per page-column from `x0` to
     `x1`, walked along x and smoothed -- or `None` where the band is too
     narrow to take even one step.
 
-    The comb starts at shift 0 (the rigid, already-measured `nominal_ys`)
-    and is updated as ONE SHAPE: a step's candidate shift is the MEDIAN of
-    whichever lines found a CLEAN run (`_measure_line_run_mid` -- its own
+    ⚠️ SEEDED 2026-10-01 (Sean: "let's use the current process to start
+    where the comb starts -- so the green line should take a cue from the
+    orange lines so it can't get lost and then it should tilt with the ink
+    as it does"). The comb starts at `seed_shift_px` -- the cell's own
+    `_cell_line_offset` ("orange") shift when that reader could read it, 0
+    (today's unseeded course, `nominal_ys` unchanged) when it abstained --
+    never at a raw, un-localized 0 by default. The one-head trace
+    (`benchmarks/omr-local-staff-2026-09/FINDINGS.md`, 2026-10-01) found
+    the previous unseeded comb silently reporting the raw, unshifted lines
+    whenever a busy cell (stems, a beam) never let it commit a move of its
+    own -- orange had already found the real shift there and the comb threw
+    it away by starting from scratch. Seeding fixes exactly that: a cell
+    that never commits now HOLDS at the seed, not at a guessed zero.
+
+    The comb is updated as ONE SHAPE: a step's candidate shift is the MEDIAN
+    of whichever lines found a CLEAN run (`_measure_line_run_mid` -- its own
     thickness close to the staff's, never a barline column or its
     neighbours), outliers beyond `CELL_LINE_WALK_OUTLIER_PX` of that median
     dropped. The comb only COMMITS to moving after
     `CELL_LINE_WALK_MIN_CONSISTENT_RUN` consecutive such steps agree with
     each other, by at most `CELL_LINE_WALK_MAX_STEP_SPACES` of a space per
-    commit and `CELL_LINE_WALK_MAX_TOTAL_SPACES` in total. Anywhere a step
-    is dirty or disagrees, the pending run resets and the comb HOLDS its
-    current course -- the staff's own measured direction up to that point,
-    never a guess at covered ink.
+    commit and `CELL_LINE_WALK_MAX_TOTAL_SPACES` FROM THE SEED in total.
+    Anywhere a step is dirty or disagrees, the pending run resets and the
+    comb HOLDS its current course -- the seed's own direction up to that
+    point, never a guess at covered ink.
     """
     if spacing <= 0:
         return None
@@ -1734,7 +1748,7 @@ def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
     xs = list(range(x0, x1, step_px))
     if not xs:
         return None
-    shift = 0.0
+    shift = float(seed_shift_px)
     shifts: list[float] = []
     pending: list[float] = []     # candidate new_shift values, a run so far
     for xi in xs:
@@ -1769,12 +1783,16 @@ def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
                 commit = sum(pending) / len(pending)
                 delta = max(-max_step_px, min(max_step_px, commit - shift))
                 proposed = shift + delta
-                # The TOTAL course is bounded against the staff's own rigid
-                # line_ys, not only the per-step change -- an update that
-                # would walk the comb past this bound is refused outright
-                # (held), because past it the "ink" three-of-five agreed on
-                # is more likely a neighbouring line than this one.
-                if abs(proposed) <= max_total_px:
+                # The TOTAL course is bounded against the SEED (today's
+                # per-bar grid where it has one, the staff's own rigid
+                # line_ys otherwise) -- not against a raw zero -- so a
+                # seeded cell is still free to tilt up to this much FURTHER
+                # from where it started, never from an unrelated origin. An
+                # update that would walk the comb past this bound is
+                # refused outright (held), because past it the "ink"
+                # three-of-five agreed on is more likely a neighbouring
+                # line than this one.
+                if abs(proposed - seed_shift_px) <= max_total_px:
                     shift = proposed
                 pending = []       # the run has been spent, start a fresh one
         shifts.append(shift)
@@ -1792,12 +1810,17 @@ def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
 
 
 def _trace_cell_local_lines(
-    pws: PageWithStaves, staff: Staff, x0: int, x1: int
+    pws: PageWithStaves, staff: Staff, x0: int, x1: int,
+    seed_shift_px: float = 0.0,
 ) -> list | None:
     """The staff's 5 lines, walked along this cell's own x-band:
     `[path_0, ..., path_4]`, each a `np.ndarray` of page-y, one entry per
     page column from `x0` (inclusive) to `x1` (exclusive) -- or `None` when
     the band is too narrow to walk at all.
+
+    `seed_shift_px` is this cell's own `_cell_line_offset` ("orange") shift
+    where the caller has one, 0 otherwise (2026-10-01, Sean) -- see
+    `_walk_comb_shift`'s docstring for why.
 
     One shift for all five lines (`_walk_comb_shift`), not five independent
     traces -- see the section comment above for why, and what the previous
@@ -1812,7 +1835,8 @@ def _trace_cell_local_lines(
     if hi - lo < 2:
         return None
     shift = _walk_comb_shift(binary, ys, lo, hi, spacing,
-                             line_thickness_px=staff.median_line_thickness_px)
+                             line_thickness_px=staff.median_line_thickness_px,
+                             seed_shift_px=seed_shift_px)
     if shift is None:
         return None
     return [np.full(hi - lo, y, dtype=float) + shift for y in ys]
@@ -1941,7 +1965,15 @@ def _build_measure_cell(
     # "local_line_paths_px", None)`, the same dynamic-attribute pattern as
     # `staff_line_spacing_canonical` above.
     if len(staff.line_ys) >= 5:
-        local_paths = _trace_cell_local_lines(pws, staff, x0, x1)
+        # Seed the comb with THIS CELL's own `_cell_line_offset` shift
+        # ("orange") where it has one, never with a raw, un-localized 0
+        # (2026-10-01, Sean: "the green line should take a cue from the
+        # orange lines so it can't get lost"). Where orange abstained for
+        # this cell, the seed stays 0 -- today's unseeded course -- rather
+        # than inventing a value from nothing (rule 8).
+        seed_px = float(line_offset[0]) if line_offset is not None else 0.0
+        local_paths = _trace_cell_local_lines(pws, staff, x0, x1,
+                                              seed_shift_px=seed_px)
         if local_paths is not None:
             cell.__dict__["local_line_paths_px"] = (x0, local_paths)
     # A ONE-LINE staff's cell carries one row, so every consumer that derives

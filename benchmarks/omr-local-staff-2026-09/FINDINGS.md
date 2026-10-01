@@ -737,3 +737,100 @@ chord head (`glyph/2/0/3/0/5`) was not re-traced this round (time-boxed,
 Sean: no batteries).
 
 STILL NOT MERGED.
+
+## 2026-10-01: the comb SEEDED from orange -- fixes the busy-cell cluster, no new regressions
+
+Sean's design (DECISIONS 2026-10-01): *"let's use the current process to
+start where the comb starts -- so the green line should take a cue from the
+orange lines so it can't get lost and then it should tilt with the ink as it
+does."* `_walk_comb_shift` (and `_trace_cell_local_lines`,
+`_build_measure_cell`) now take `seed_shift_px`: the comb starts at this
+cell's own `_cell_line_offset` ("orange") shift when that reader measured
+one, 0 (today's unseeded course) when it abstained for this cell -- never
+invented. The total-drift bound (`CELL_LINE_WALK_MAX_TOTAL_SPACES`) is now
+measured FROM THE SEED, not from a raw zero, so a seeded cell can still
+tilt the same 0.3 spaces further from where it started.
+
+**Unit tests, RED->GREEN** (`tools/omr/tests/test_local_staff_lines.py`,
+class `TestCombSeededFromOrange`): (a) a cell solid with ink top-to-bottom
+(no clean line anywhere -- the real bar-49 shape) that never commits: FAILS
+on the pre-fix code (`seed_shift_px` doesn't exist; confirmed RED by
+swapping in the parent commit's `measure_extractor.py` and re-running --
+3/3 new tests fail) and PASSES after, holding the SEED (6px) instead of 0;
+(b) a clean tilted staff still bends with the real ink from a seed that
+matches neither end; (c) `_build_measure_cell`'s own wiring stores a local
+grid at orange's shift when the comb never commits, not at the raw lines.
+Full fast suite: `pytest tools/omr/tests -m "not slow" -q` -- 4190 passed,
+3 skipped, 2 xfailed, 0 failed.
+
+**Small real check, NO re-gather** (`recheck_2_48_seeded.py`, reusing the
+one-head lane's recipe -- duck-typed `Staff`/`PageWithStaves` from the
+committed arm record's own `staff_lines`/`staff_spacing`/`staff_skew`, a
+fresh `render_page`+`deskew`, `_cell_line_offset`/`_trace_cell_local_lines`
+called DIRECTLY, no gather): the 15 heads `trace_14_heads.py` traced plus
+10 control heads on the same page (Litolff p3), TODAY (orange/flat grid) vs
+OLD unseeded comb vs SEEDED comb, against the reference position via the
+staff's decided clef. 5 of 15 traced + 6 of 10 controls paired against the
+reference (the rest "unscored" -- box-count-vs-truth-count mismatch in that
+bar, same as the real judge). Of the 5 scored traced heads: the 4 bar-49
+heads (`glyph/3/0/8/0/3,0/4,0/5,0/8`) that the OLD comb got wrong
+(never-committed, held at the raw lines) are now RIGHT under the seeded
+comb, matching TODAY exactly (4.07->4.10, 6.09->6.12, 7.11->7.27,
+7.03->7.10, all still rounding the same way). The other 2 scored traced
+heads (`glyph/3/0/0/2/4`, `glyph/3/1/0/6/0`) are UNCHANGED by seeding --
+these are the already-documented "comb commits to a real but
+disagreeing tilt" cases (the prior trace section's dominant cause, a
+different failure mode seeding does not touch) and were wrong under the old
+comb too. **All 10 control heads unchanged** (today/old/seeded identical).
+No new right->wrong anywhere in the 25.
+
+**Crop + pixel-row frame check** (`crop_2_48_seeded.py`,
+`out/print/2.48/seeded/staff8_bar49_head1_seeded.png`): draws PRODUCTION's
+own byte-exact arrays (orange's rigid shift, the seeded comb's path), never
+a re-walked illustration. A clean vertical strip near the head (off its own
+ink) measured real ink-row peaks directly: orange's predicted rows
+([1649, 1665, 1680, 1696, 1711]) land inside the real peaks 5/5; the seeded
+comb's rows at that x (1648.7 .. 1710.7, confirming it never moved off the
+seed in this cell) land in the same 5/5. A deliberately broken +5px offset
+control correctly fails (0/5 peaks hit) -- the control can fail (rule 7).
+
+**Full count-page re-gather** (step 4, since the small check was clean): a
+clean `origin/main` worktree (0719f18d, confirmed zero `_trace_cell_local_lines`/
+`_walk_comb_shift` in `measure_extractor.py` -- pure today/orange-only
+production) as BASE vs this branch as ARM, both
+`python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff`
+(GATHER+ADJUDICATE only, default mode), then `--against` for the
+GATHER+ADJUDICATE readout diff. Per-family GATHER/ADJUDICATE status counts
+(kept/refused/narrowed/abstained/given_away/undecided for every family) are
+IDENTICAL between base and arm -- expected, since seeding touches no GATHER
+quantity. 600 of 1330 `notehead_staff_position` values changed at the raw
+float (comb now active on some cells that previously fell back to the flat
+grid; most deltas are sub-0.2, i.e. sub-pixel). Scored against the
+reference (same pairing as `gather_only_judge.py`, 149 of 1330 noteheads on
+this page pair cleanly): **right->wrong=2, wrong->right=0** -- the SAME 2
+heads (`glyph/3/0/0/2/4`, `glyph/3/1/0/6/0`) the small check already found,
+not new, and not fixed by seeding (a different, already-documented failure
+mode: the comb commits to a real ink tilt that disagrees with the correct
+flat grid, amplified by the heads' own distance from a clean reference
+column). **No new regression at full-page scale beyond the small check's
+own two.**
+
+**Conclusion**: seeding fixes exactly the mechanism it targeted (a busy
+cell's comb silently holding a wrong raw-lines default instead of orange's
+measured shift) and introduces zero new regressions, at both the 25-head
+small-check scale and the full count-page scale. It does NOT fix the
+separate, already-documented "comb finds a real but wrong tilt" failure
+mode (2/149 here) -- that remains open and is a different mechanism from
+this lane's own scope. Given CLAUDE.md's "N must go down" bar is about
+derived-check findings, not this page's note-level score, and this script
+is NOT a new derived check (rule 9) -- it is this lane's own iteration
+tool, kept in the benchmark directory per convention.
+
+STILL NOT MERGED -- the net effect at the scored population here is a pure
+improvement (4 wrong->right against the old comb, 0 new wrong), but the
+2/149 pre-existing regression (unrelated to this fix) means the comb as a
+whole has not yet cleared the keep bar from the original A/B
+(`score_2_48.py`'s right->wrong~0 target). Next: crop-check the 2 remaining
+heads (`glyph/3/0/0/2/4`, `glyph/3/1/0/6/0`) the way the earlier trace did
+for the bar-49 cluster, to see whether the SAME seeding idea (or a
+different one) can close them too.

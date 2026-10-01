@@ -406,3 +406,94 @@ class TestGatherNoteheadPositionsPrefersLocal:
         rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
         assert len(rows) == 1
         assert rows[0].value == pytest.approx(2.0, abs=1e-6)
+
+
+# ─── 2026-10-01: the comb is SEEDED from today's per-bar grid ("orange") ─────
+#
+# DECISIONS 2026-10-01 (Sean): "let's use the current process to start where
+# the comb starts -- so the green line should take a cue from the orange
+# lines so it can't get lost and then it should tilt with the ink as it
+# does." The one-head trace (FINDINGS.md, same date) found the UNSEEDED
+# comb silently answering the raw, unshifted lines (shift 0) on a busy cell
+# (Litolff p3 bar 49) where `_cell_line_offset` ("orange") had already found
+# a real +6px shift -- "could not tell" was being read as "zero" (rule 8).
+
+class TestCombSeededFromOrange:
+    def test_a_cell_that_never_commits_holds_the_seed_not_zero(self):
+        """RED on the unseeded comb (`benchmarks/omr-local-staff-2026-09/
+        FINDINGS.md`, 2026-10-01 one-head trace): a cell solid with ink top
+        to bottom (six stems and a beam, in the real bar) never finds a
+        single CLEAN run anywhere, so it never commits a move and holds its
+        starting value for the whole band. Unseeded, that start is 0 -- the
+        raw, un-localized lines, wrong whenever orange had already measured
+        a real shift. Seeded with orange's own +6px, the held value is +6,
+        not 0."""
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        top = min(NOMINAL_YS) - 5
+        bottom = max(NOMINAL_YS) + 6 + 5
+        binary[top:bottom, X_START:X_END] = 0  # solid ink: no clean line anywhere
+
+        shift_unseeded = me._walk_comb_shift(
+            binary, [float(y) for y in NOMINAL_YS],
+            X_START + 5, X_END - 5, float(SPACING))
+        assert shift_unseeded is not None
+        assert np.allclose(shift_unseeded, 0.0), shift_unseeded  # today's bug
+
+        shift_seeded = me._walk_comb_shift(
+            binary, [float(y) for y in NOMINAL_YS],
+            X_START + 5, X_END - 5, float(SPACING), seed_shift_px=6.0)
+        assert shift_seeded is not None
+        assert np.allclose(shift_seeded, 6.0), shift_seeded
+
+    def test_tilted_clean_staff_still_bends_with_the_ink_from_the_seed(self):
+        """A clean, printed tilt (0px drift at the left end, 4px at the
+        right -- well under the 6px/0.3-space total bound FROM THE SEED)
+        with a seed of 2px (an orange answer that is neither end's true
+        value): the comb must still find and follow the REAL ink at each
+        end, not freeze at the seed -- seeding must not turn off bending."""
+        pws = _pws(_draw_staff(ramp_px=4))
+        staff = pws.staves[0]
+        shift = me._walk_comb_shift(
+            pws.page.binary, [float(y) for y in NOMINAL_YS],
+            X_START + 10, X_END - 10, float(SPACING), seed_shift_px=2.0)
+        assert shift is not None
+        left = shift[5]
+        right = shift[-5]
+        assert abs(left - 0.0) <= 2.0, left
+        assert abs(right - 4.0) <= 2.0, right
+
+    def test_build_measure_cell_seeds_from_its_own_orange_shift(self):
+        """`_build_measure_cell` must pass THIS cell's own `_cell_line_offset`
+        shift into the comb as its seed, not call it unseeded -- the wiring
+        this lane adds. A busy cell (solid ink) that never commits must
+        store a local grid at orange's own shift, matching the stored flat
+        grid (`line_grid_localized`) exactly, never at the raw unlocalized
+        lines."""
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        thickness = 3
+        for x in range(X_START, X_END):
+            for y in NOMINAL_YS:
+                top_y = y + 6 - thickness // 2
+                binary[top_y:top_y + thickness, x] = 0
+        # A dense busy patch covering most of the cell's own width so the
+        # comb (searching a narrow window right around the seed) finds
+        # clean ink only in a thin margin -- not enough to ever commit a
+        # move of its own, but orange (which scores the WHOLE cell at once)
+        # still finds the +6px rigid shift.
+        busy_lo, busy_hi = X_START + 20, X_END - 20
+        top = min(NOMINAL_YS) - 2
+        bottom = max(NOMINAL_YS) + 6 + 2
+        binary[top:bottom, busy_lo:busy_hi] = 0
+        pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
+        staff = pws.staves[0]
+        cell = me._build_measure_cell(pws, staff, 0, X_START + 5, X_END - 5, 0)
+        assert cell is not None
+        line_prov = cell.__dict__.get("line_grid_localized")
+        assert line_prov is not None, "orange should have measured this cell's shift"
+        assert line_prov["offset_px"] == 6
+        local = getattr(cell, "local_line_paths_px", None)
+        assert local is not None, "the comb should still trace (even if it never commits)"
+        _, paths = local
+        # The comb never finds a commit-worthy clean run in this busy cell,
+        # so every column holds its start -- which must be orange's +6, not 0.
+        assert np.allclose(paths[0], NOMINAL_YS[0] + 6, atol=0.5), paths[0][:5]

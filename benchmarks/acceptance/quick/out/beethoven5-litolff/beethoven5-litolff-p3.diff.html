@@ -1,9 +1,9 @@
-READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
-                                      B=/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-2.48-check/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+                                      B=/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-adab8a9161091b917/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! PROVENANCE: the two records differ in
-!!   code      commit: A='8f1b2228a8b30f2b37d041049345526747e650e8'  B='c47ad18a38257909767444338e4c8b2976448657'
+!!   code      commit: A='0719f18d9e4ad1c2348d531a5e60acd296cccbc0'  B='48b6d0451daf09553b024d33d445580e48c6d990'
 !!   code      dirty: A=False  B=True
 !! WARNING: B was built from a DIRTY tree: a SHA cannot name uncommitted edits
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -12,9 +12,6 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
    classes no export family claims: {'ledgerLine': 1222, 'staff': 396, 'beam': 325, 'arpeggiato': 205, 'augmentationDot': 21, 'flag8thDown': 8, 'brace': 7, 'stem': 7} ...
 
 == family accidental: gathered A 139 / B 139; matched 139 (0 in another bar); only A 0, only B 0
-   ADJUDICATE accidental_owner: 1 of 139 changed answer
-           1  decided:"glyph/2/1/7/14/3" -> abstained:null
-   e.g. accidental_owner: glyph/2/1/7/14/2 ~ glyph/2/1/7/14/2
 
 == family articulation: gathered A 26 / B 26; matched 26 (0 in another bar); only A 0, only B 0
 
@@ -27,14 +24,14 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
 == family key: gathered A 96 / B 96; matched 96 (0 in another bar); only A 0, only B 0
 
 == family note: gathered A 1330 / B 1330; matched 1330 (0 in another bar); only A 0, only B 0
-   GATHER     notehead_staff_position: 853 of 1330 changed
-          16  6.0 -> 6.1
-          10  5.0 -> 5.1
-           7  5.1 -> 5.0
-           7  8.0 -> 8.1
-           7  4.0 -> 4.1
-           7  6.1 -> 6.0
-   e.g. notehead_staff_position: glyph/1/0/2/0/5 ~ glyph/1/0/2/0/5, glyph/1/0/2/0/9 ~ glyph/1/0/2/0/9, glyph/1/0/2/0/11 ~ glyph/1/0/2/0/11, glyph/1/0/2/0/14 ~ glyph/1/0/2/0/14, glyph/1/0/2/2/0 ~ glyph/1/0/2/2/0
+   GATHER     notehead_staff_position: 600 of 1330 changed
+          18  6.0 -> 6.1
+          11  5.0 -> 5.1
+           9  6.1 -> 6.0
+           8  8.0 -> 8.1
+           8  4.0 -> 4.1
+           8  3.0 -> 3.1
+   e.g. notehead_staff_position: glyph/1/0/2/0/5 ~ glyph/1/0/2/0/5, glyph/1/0/2/0/11 ~ glyph/1/0/2/0/11, glyph/1/0/2/2/0 ~ glyph/1/0/2/2/0, glyph/1/0/2/2/1 ~ glyph/1/0/2/2/1, glyph/1/0/2/2/2 ~ glyph/1/0/2/2/2
 
 == family rest: gathered A 521 / B 521; matched 521 (0 in another bar); only A 0, only B 0
 
@@ -44,11 +41,9 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
 
 == family time: gathered A 16 / B 16; matched 16 (0 in another bar); only A 0, only B 0
 
-== matched glyphs that changed (40 shown of 854)
+== matched glyphs that changed (40 shown of 600)
    glyph/1/0/2/0/5 ~ glyph/1/0/2/0/5 (iou 1.0): GATHER notehead_staff_position: 5.0 -> 4.9
-   glyph/1/0/2/0/9 ~ glyph/1/0/2/0/9 (iou 1.0): GATHER notehead_staff_position: 5.7 -> 5.5
    glyph/1/0/2/0/11 ~ glyph/1/0/2/0/11 (iou 1.0): GATHER notehead_staff_position: 5.1 -> 5.0
-   glyph/1/0/2/0/14 ~ glyph/1/0/2/0/14 (iou 1.0): GATHER notehead_staff_position: 4.5 -> 4.4
    glyph/1/0/2/2/0 ~ glyph/1/0/2/2/0 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
    glyph/1/0/2/2/1 ~ glyph/1/0/2/2/1 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
    glyph/1/0/2/2/2 ~ glyph/1/0/2/2/2 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
@@ -56,13 +51,10 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
    glyph/1/0/2/4/1 ~ glyph/1/0/2/4/1 (iou 1.0): GATHER notehead_staff_position: 7.4 -> 7.5
    glyph/1/0/2/15/5 ~ glyph/1/0/2/15/5 (iou 1.0): GATHER notehead_staff_position: 2.6 -> 2.5
    glyph/1/0/3/0/8 ~ glyph/1/0/3/0/8 (iou 1.0): GATHER notehead_staff_position: 0.8 -> 0.9
-   glyph/1/0/3/3/2 ~ glyph/1/0/3/3/2 (iou 1.0): GATHER notehead_staff_position: 19.5 -> 19.6
    glyph/1/0/3/8/1 ~ glyph/1/0/3/8/1 (iou 1.0): GATHER notehead_staff_position: -2.5 -> -2.4
    glyph/1/0/3/9/3 ~ glyph/1/0/3/9/3 (iou 1.0): GATHER notehead_staff_position: -2.9 -> -3.0
-   glyph/1/0/3/11/1 ~ glyph/1/0/3/11/1 (iou 1.0): GATHER notehead_staff_position: -1.4 -> -1.3
    glyph/1/0/3/13/0 ~ glyph/1/0/3/13/0 (iou 1.0): GATHER notehead_staff_position: -1.6 -> -1.5
    glyph/1/0/3/15/1 ~ glyph/1/0/3/15/1 (iou 1.0): GATHER notehead_staff_position: -1.6 -> -1.4
-   glyph/1/0/6/6/1 ~ glyph/1/0/6/6/1 (iou 1.0): GATHER notehead_staff_position: 7.9 -> 7.8
    glyph/1/0/7/0/4 ~ glyph/1/0/7/0/4 (iou 1.0): GATHER notehead_staff_position: 5.9 -> 6.0
    glyph/1/0/7/0/5 ~ glyph/1/0/7/0/5 (iou 1.0): GATHER notehead_staff_position: 5.9 -> 6.0
    glyph/1/0/7/7/2 ~ glyph/1/0/7/7/2 (iou 1.0): GATHER notehead_staff_position: 1.1 -> 1.0
@@ -71,13 +63,12 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
    glyph/1/0/7/11/0 ~ glyph/1/0/7/11/0 (iou 1.0): GATHER notehead_staff_position: 0.0 -> -0.0
    glyph/1/0/7/11/1 ~ glyph/1/0/7/11/1 (iou 1.0): GATHER notehead_staff_position: 0.0 -> -0.0
    glyph/1/0/7/11/2 ~ glyph/1/0/7/11/2 (iou 1.0): GATHER notehead_staff_position: 0.0 -> -0.0
-   glyph/1/0/7/11/3 ~ glyph/1/0/7/11/3 (iou 1.0): GATHER notehead_staff_position: 3.2 -> 3.1
-   glyph/1/0/7/12/1 ~ glyph/1/0/7/12/1 (iou 1.0): GATHER notehead_staff_position: 1.7 -> 1.4
+   glyph/1/0/7/12/1 ~ glyph/1/0/7/12/1 (iou 1.0): GATHER notehead_staff_position: 1.7 -> 1.6
    glyph/1/0/7/13/1 ~ glyph/1/0/7/13/1 (iou 1.0): GATHER notehead_staff_position: -1.3 -> -1.1
    glyph/1/0/7/13/3 ~ glyph/1/0/7/13/3 (iou 1.0): GATHER notehead_staff_position: 2.0 -> 2.1
    glyph/1/0/7/15/0 ~ glyph/1/0/7/15/0 (iou 1.0): GATHER notehead_staff_position: -1.3 -> -1.1
    glyph/1/0/7/15/1 ~ glyph/1/0/7/15/1 (iou 1.0): GATHER notehead_staff_position: -1.2 -> -1.1
-   glyph/1/0/7/15/2 ~ glyph/1/0/7/15/2 (iou 1.0): GATHER notehead_staff_position: 1.8 -> 2.1
+   glyph/1/0/7/15/2 ~ glyph/1/0/7/15/2 (iou 1.0): GATHER notehead_staff_position: 1.8 -> 1.9
    glyph/1/0/8/0/5 ~ glyph/1/0/8/0/5 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
    glyph/1/0/8/0/7 ~ glyph/1/0/8/0/7 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
    glyph/1/0/8/3/2 ~ glyph/1/0/8/3/2 (iou 1.0): GATHER notehead_staff_position: 9.4 -> 9.5
@@ -85,5 +76,11 @@ READOUT DIFF at GATHER + ADJUDICATE   A=/tmp/base-248-run-3/benchmarks/acceptanc
    glyph/1/0/8/6/3 ~ glyph/1/0/8/6/3 (iou 1.0): GATHER notehead_staff_position: 8.4 -> 8.3
    glyph/1/0/8/9/1 ~ glyph/1/0/8/9/1 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
    glyph/1/0/8/9/3 ~ glyph/1/0/8/9/3 (iou 1.0): GATHER notehead_staff_position: 6.0 -> 6.1
+   glyph/1/0/8/10/2 ~ glyph/1/0/8/10/2 (iou 1.0): GATHER notehead_staff_position: 9.5 -> 9.4
+   glyph/1/0/8/14/0 ~ glyph/1/0/8/14/0 (iou 1.0): GATHER notehead_staff_position: 5.9 -> 6.0
+   glyph/1/0/8/14/1 ~ glyph/1/0/8/14/1 (iou 1.0): GATHER notehead_staff_position: 8.0 -> 8.1
+   glyph/1/0/8/14/5 ~ glyph/1/0/8/14/5 (iou 1.0): GATHER notehead_staff_position: 7.1 -> 7.0
+   glyph/1/0/9/0/8 ~ glyph/1/0/9/0/8 (iou 1.0): GATHER notehead_staff_position: 7.1 -> 7.0
+   glyph/1/0/9/1/2 ~ glyph/1/0/9/1/2 (iou 1.0): GATHER notehead_staff_position: 9.3 -> 9.2
 
-854 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).
+600 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).
