@@ -201,3 +201,92 @@ yet the right thing on real ink.
   committed to the tree (ran from a scratch location); the counts above are
   read directly from it and are reproducible by re-running the adapter
   script against the same two record pairs.
+
+## REBUILD 2026-10-01: Sean's own design -- the comb walked along the ink, replacing the independent per-line trace
+
+Sean's instruction, verbatim: *"As it works currently a straight line is
+aligned with the 5 staff lines. Once the straight lines are laid out, can
+it be measured against the ink, and where they begin to differ the straight
+line starts to change direction to match what the ink is doing?"*
+
+Built as specified in `measure_extractor._walk_comb_shift` /
+`_trace_cell_local_lines` (same signature, same callers -- `gather.py`
+needed NO changes this round): the comb starts at the staff's own rigid,
+already-measured `line_ys` (shift 0). Walked along x in quarter-space steps
+(`CELL_LINE_WALK_STEP_SPACES`). At each step every one of the 5 lines is
+checked in a NARROW window (+-0.25 space) around where the comb CURRENTLY
+predicts it (an ink-weighted centroid, `_measure_ink_centroid`) -- not the
+withdrawn design's widened 0.35+ space search. The comb updates as ONE
+SHAPE: the median candidate shift across whichever lines found clean ink,
+outliers beyond 1px dropped, and the comb only moves where >=3 of 5 still
+agree (Sean's own floor); fewer agree and it HOLDS its last course exactly.
+Per-step change is capped and the whole course is smoothed with a running
+median. 14 unit tests, including two built specifically to prove the new
+rules: an outlier line's own 6px displacement never moves the comb (follows
+the other 4), and a blob covering 4 of 5 lines' windows holds the comb
+exactly rather than drifting toward it. Sean's D6 reproduction and the
+flat-staff control are unchanged.
+
+**Real test, same proof as the withdrawn attempt** (`acceptance_quick
+--full`, base = `origin/main` `8f1b2228` in its own worktree, arm = this
+branch `f21e8d71`):
+
+| doc | bucket | base (right/wrong/unscored) | arm (right/wrong/unscored) |
+|---|---|---|---|
+| Litolff p3 | far | 121 / 42 / 350 | 102 / 60 / 365 |
+| Litolff p3 | in-staff | 289 / 16 / 512 | 246 / 60 / 497 |
+| Brahms p1 | far | 16 / 0 / 589 | 15 / 2 / 596 |
+| Brahms p1 | in-staff | 114 / 0 / 783 | 97 / 16 / 776 |
+
+**Per-head changes**: Litolff 66 right->wrong, 4 wrong->right; Brahms 18
+right->wrong, 0 wrong->right. **Combined: 84 regressions against 4
+improvements.** Better than the withdrawn independent-trace design (134/11)
+-- roughly 37% fewer regressions -- but **still a clear net loss, failing
+the "right->wrong ~0" bar** this rebuild was asked to clear.
+GATHER+ADJUDICATE readout diff: 847 differences (was 1065), 844 of 1330
+notehead positions changed on Litolff (was 1058).
+
+**Crops, 8 of them** (`benchmarks/omr-local-staff-2026-09/out/print/`,
+drawn at 600 dpi: orange = the base's flat per-staff comb, green = the new
+walked comb, red = the head's own detector box), 4 heads the base got
+wrong and 4 the WITHDRAWN independent-trace design broke:
+
+- `base_wrong_1.png`, `base_wrong_2.png`: the new comb sits a small,
+  plausible distance below the flat comb and tracks it closely -- ordinary,
+  unremarkable corrections.
+- `base_wrong_3_now_fixed.png`, `base_wrong_4_now_fixed.png`: the head sits
+  right at a line/space boundary; the new comb's small offset is exactly
+  what flips its pitch to match the reference (both are among the 4
+  wrong->right head-by-head above).
+- `prev_attempt_regression_1.png`..`_3.png`: green and orange are nearly
+  identical here -- the withdrawn design's own failure on these heads does
+  NOT reproduce with the new comb.
+- **`prev_attempt_regression_4_still_wrong.png`: the new comb is VISIBLY,
+  CONFIRMED WRONG** -- it diverges from the true printed lines by close to
+  a full staff space over a short stretch, exactly where three noteheads
+  sit close together as a dense chord cluster. This is the SAME x-region
+  (`glyph/1/0/8/0/5`, `/0/6`, `/0/7`, page x~912-988) driving 3 of the 66
+  Litolff regressions, and it is now CROP-CONFIRMED, not merely suspected:
+  dense chord ink in the narrow +-0.25-space search window produces enough
+  agreeing "ink" across >=3 lines to satisfy the update rule even though
+  that ink is the CHORD's, not the staff's -- the per-step cap slows the
+  drift but does not stop it from accumulating across many steps through a
+  wide dense region.
+
+**Recommendation: still do not merge.** The specific failure mode asked
+about last time (one outlier line dragging the comb) is fixed and proved
+fixed by a dedicated test; the mechanism is visibly better-behaved in
+ordinary ink. But a NEW, confirmed failure mode replaces it: sustained
+dense ink (a chord cluster, not a single stray mark) can still walk the
+comb away from the true lines, because the >=3-of-5 agreement rule cannot
+tell "3 lines agreeing on the true staff" from "3 lines agreeing on the
+same wrong ink" -- CLAUDE.md rule 7 again: the mechanism measures
+something, and this time it is visibly closer, but still not reliably the
+right thing on real ink. Next step, not attempted here (time): bound the
+comb's TOTAL drift against the page's own globally-measured spacing/skew
+(e.g. refuse an update that would move the comb further from the staff's
+own `_cell_line_offset` baseline than the measured wander ever reaches,
+~0.5 spaces), rather than only capping the PER-STEP change.
+
+`pytest -m "not slow"` 4,190 passed (unaffected). `staged.check` TOTAL 245,
+unchanged. No new flag.
