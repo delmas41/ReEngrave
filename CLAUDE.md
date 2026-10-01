@@ -597,6 +597,13 @@ Each of these has cost at least one lane and is still true.
   owner. A
   hairpin sits UNDER its staff, so a note between a staff and the hairpin
   beneath it belongs to that staff.
+- **Measure against the staff LOCALLY** (Sean, 2026-09-30: *"scans will shift the
+  geometry, and therefore anything that uses geometry compared to the staff
+  needs to be measuring locally instead of globally"*): a scanned staff tilts
+  and changes spacing across a system (Litolff p3: 7 px of wander, ~5% in
+  spacing), and ~1 px at the head decides a near-boundary pitch. Any position
+  relative to the staff reads the staff lines AT THE SUBJECT'S x, never a
+  staff-wide or bar-wide value (ROADMAP 2.48).
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.
