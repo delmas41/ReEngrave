@@ -971,3 +971,114 @@ precision fixes a position measured from the wrong box. Not built here
 
 `pytest`/`staged.check` not run (no production code touched -- measurement
 scripts only, both under `benchmarks/omr-local-staff-2026-09/`).
+
+## 2026-10-01: two-candidate head fit by ideal-head ink coverage -- CONTROL FAILS, STOPPED before scoring (lane-2.48-headfit)
+
+Sean's design (DECISIONS 2026-10-01, queued behind the boundary-distance
+check): for a head within ~2px of a rounding boundary only, place an IDEAL
+head (2.39's `geometry.standard_head_box`, reused not re-derived) at EACH
+of the two candidate staff-position steps either side of the boundary, at
+the head's own x, vertical centre exactly on that candidate's line/space y
+from TODAY'S per-bar grid (`_cell_line_offset` -- the comb is a separate,
+unmerged mechanism, deliberately not used here). Score = fraction of the
+ideal box that is inked, with the real staff-line rows masked out
+identically for both candidates. `headfit.py`, GATHER+ADJUDICATE-only, no
+re-gather -- reuses `boundary_measure.py`'s own dist-to-boundary-labelled
+349-head population and `recheck_2_48_seeded.py`'s duck-typed-record
+recipe for 3 named merged-blob subjects.
+
+**MARGIN RULE, stated in the script before any result was looked at**:
+decide for the higher-coverage candidate only when it beats the other by
+>= 0.15 (15 points of box area) AND its own coverage is >= 0.30; else
+ABSTAIN and keep today's reading, counted.
+
+### Step 1 controls -- (a) and (b) FAIL; (c) and (d) behave
+
+**(a) 15 clean heads, >3px from any boundary, true step = today's own
+reading**: **6/15** picked today's step (bar was >=14/15). **FAIL.**
+
+**(b) same 15 heads, box y shifted +3px / -3px (fit must use the
+candidate positions, not the box centre)**: **15/30** trials still picked
+the true step (bar was >=90%, i.e. >=27/30). **FAIL** -- expected, since a
+method that already cannot discriminate at zero perturbation (a) cannot be
+expected to survive a further 3px nudge; this control's failure is
+downstream of (a)'s, not a separate defect.
+
+**(c) same 15 heads, staff LINES shifted a half-step (deliberately
+broken)**: **10/15** failed visibly (wrong or abstained). **PASSES** (bar
+was "most"). Control can fail and does: `pytest`-free, the half-step break
+moves each candidate onto what was the OTHER candidate's true-ink zone, so
+most heads land on no good ink and the fit either picks wrong or abstains,
+exactly as the broken-state signature predicts.
+
+**(d) 3 named merged/dense-ink subjects** (`glyph/3/0/0/2/9`,
+`glyph/3/0/9/2/6`, `glyph/3/1/2/9/2`): **2/3 abstained** as expected
+(`glyph/3/0/0/2/9` scores 0.987/0.992 -- indistinguishable, correctly
+abstained; `glyph/3/1/2/9/2` 0.636/0.602 -- correctly abstained). The
+third, `glyph/3/0/9/2/6`, DECIDED (0.742 vs 0.321) -- its own crop (below)
+shows the decided candidate does sit on real ink, so this subject may not
+actually be the "two merged heads under one box" case its citing FINDINGS
+line described (that line was about three ink-centring METHODS
+disagreeing, not necessarily two physically merged heads) -- reported as
+a correction to this lane's own subject choice, not a control failure.
+
+**GATE: (a) FAIL, (b) FAIL, (c) PASS, (d) effectively PASS (2/3, the third
+not a clean abstain case by its own crop). Per the brief ("if (a)-(c) do
+not behave, STOP and report why -- no scoring"): STOPPED. Step 2 was not
+run.**
+
+### Why (a) fails -- diagnosed, not just measured, with 3 crops at `out/print/2.48/headfit/`
+
+`glyph/3/0/0/5/12_control_a_near_tie.png`: the two candidate boxes
+(lower=-5 score 0.802, upper=-4 score 0.803, diff 0.001) sit inside ONE
+dense ink mass -- a far note above the staff sitting against a beam group
+with adjacent chord ink -- and BOTH ideal boxes are almost entirely black.
+The real geometric cause: a candidate step is exactly `half_step_px` (one
+HALF of a staff space) away from its neighbour, but `standard_head_box`'s
+own height is `STANDARD_HEAD_HEIGHT_SPACES=1.1` of a FULL staff space --
+so two adjacent candidates' boxes overlap by ~55% of their own height by
+construction, before any contamination. On a page where the real printed
+ink routinely fills more than half a staff space vertically (beams, chord
+stacks, stems), the non-overlapping ~45% sliver each candidate owns is not
+enough margin to clear 0.15 reliably. A follow-up probe (not the main
+instrument, diagnostic only) narrowed the box's WIDTH to 60%/40%/25% of
+standard to reduce horizontal contamination from neighbouring glyphs:
+control (a) moved from 6/15 to only 7/15 at every narrower width -- so
+width is not the dominant cause; the HEIGHT overlap inherent to adjacent
+half-step candidates is.
+
+`glyph/3/0/0/0/0/15_control_a_miss.png` (bar 49, the SAME busy cell
+`cell/3/0/8/0` this FINDINGS line's own 2026-10-01 sections already
+diagnosed as "the comb never commits ... six stems and a beam"): the
+detector's own box here sits on a DIAGONAL BEAM/FLAG stroke, not a round
+notehead at all -- both ideal boxes fill with diagonal beam ink almost
+identically (0.727 vs 0.642). This corroborates `boundary_measure.py`'s
+own Hypothesis 2 conclusion (box-centre error ~5x the line-geometry
+effect): the box itself, not just the rounding line, is frequently the
+wrong shape or the wrong subject for an ink-coverage test on this plate.
+
+### Conclusion
+
+**The two-candidate ideal-head coverage fit, as specified, does not
+reliably discriminate adjacent rounding candidates on this plate** -- not
+because of a scoring-threshold tuning issue (the margin rule was stated
+before looking, and no amount of width-narrowing moved the control's
+pass rate), but because (1) two adjacent half-step candidates' standard
+head boxes overlap by construction (~55% of their own height, since the
+standard head is 1.1 staff-spaces tall and candidates are 0.5 spaces
+apart), and (2) on a MERGING/dense plate (CLAUDE.md §10) the surrounding
+ink -- beams, chord members, flags -- frequently fills both candidates'
+windows almost identically, consistent with `boundary_measure.py`'s own
+earlier finding that the detector's BOX, not the line geometry, is this
+page's dominant source of near-boundary error. **Recommendation: do not
+build this instrument further as specified; before any next attempt, the
+box-shape problem flagged by the boundary lane (2.48's own queued next
+step, "the detector's own BOX ... needs the same kind of scrutiny 2.39/
+2.39b gave head sizing") needs addressing FIRST, since a box test run on
+a wrong-shaped or wrong-subject box (as `glyph/3/0/0/0/15` shows directly)
+cannot be rescued by any margin rule.** No production code touched; this
+lane's own scripts (`headfit.py`, `crop_headfit.py`) and 3 crops are
+committed under this benchmark directory, per convention.
+
+`pytest`/`staged.check` not run (measurement scripts only, no production
+code touched).
