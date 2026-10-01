@@ -823,3 +823,66 @@ score the reference against itself, never this script's own bar
 alignment) — still 0 bad / 9.2% / 7.5%.
 
 Checks: unchanged (measurement script only).
+
+## 16. (2026-10-01) "COULD THE GEOMETRY BE OFF BECAUSE THE STAFF HAS SHIFTED?"
+
+Sean, via manager. Measured directly (`drift_analysis_2_44c.py`, measurement
+only): for every §15-scored far head, the staff's own 5 lines are
+re-measured ROBUSTLY at the head's own x (search outward column by column
+up to 4 head-widths either side; a column counts only where all five lines
+read as a THIN run within tolerance of the global read, correctly spaced,
+with nothing else inked between them; median of the nearest >=5 clean
+columns). Too few clean columns: Litolff 8/47, Brahms 4/11 (reported, not
+guessed past).
+
+**Drift is tiny and does not explain the misses.** Top-line drift:
+Litolff right-heads mean +0.87 px, wrong-heads mean -0.44 px (n=27/12);
+Brahms +(-0.71) px, all right (n=7, 0 wrong to compare). Middle-line
+drift: Litolff +0.68/-0.06 px; spacing deviation under 0.2 px either way
+on both pages — all far below one staff space (~15.5/~14 px). A
+drift-plus-spacing-deviation prediction model explains **0 of 12**
+Litolff misses (sign mismatch or >1 step off every time): the staff is
+not meaningfully shifted at these heads, so geometry's remaining errors
+are NOT a staff-shift artefact.
+
+**Three robust local-geometry variants** (Sean: anchor at the local TOP
+line, local MIDDLE line, or the local OUTER line NEAREST the note; all
+three share the SAME measured note-ink-centre — 46 of 47 Litolff heads
+measured by ink, 1 fallback to the box centre; 7/7 Brahms by ink) score
+**identically on both pages**: Litolff 30/39 right (77%, 8 unscored for
+too-few-columns), hist `{0:30, +1:5/6, +2:1-2, octave:1, -1:1}`; Brahms
+7/7 (100%). The three anchors are indistinguishable here because the
+drift between them is itself sub-pixel — choosing top vs. middle vs.
+nearest-outer cannot matter when the staff barely bends at all on these
+two plates.
+
+### Table (right/wrong/abstain or unscored)
+
+| Litolff | n | right | wrong | note |
+|---|--:|--:|--:|---|
+| geometry (global) | 47 | 31 | 16 | §15 |
+| robust local, top | 39 | 30 | 9 | 8 too-few-columns |
+| robust local, middle | 39 | 30 | 9 | " |
+| robust local, nearest-outer | 39 | 30 | 9 | " |
+
+| Brahms | n | right | wrong | note |
+|---|--:|--:|--:|---|
+| geometry (global) | 11 | 11 | 0 | §15 |
+| robust local, all 3 anchors | 7 | 7 | 0 | 4 too-few-columns |
+
+### Answer to Sean
+
+No — the staff has not meaningfully shifted at these heads. Measured
+directly (robust column search, median of >=5 clean columns), the local
+staff's top line, middle line and spacing all sit within about a pixel of
+the global read on both plates, and a drift-based error model explains
+none of geometry's actual misses (wrong direction or too large, every
+time). A robust local re-fit DOES modestly beat plain geometry on Litolff
+(77% vs 66% of a slightly smaller, honestly-scored population) — so local
+measurement helps a little — but the gain is not because the staff moved;
+it is a small, separate ink-centring effect, and on Brahms all three
+anchors tie geometry exactly at 100%. All three anchor choices (top,
+middle, nearest-outer) score identically on both plates, because the
+drift between them is itself sub-pixel: on these two scores there is no
+winner to declare, and nothing here suggests warping is the right next
+lever.
