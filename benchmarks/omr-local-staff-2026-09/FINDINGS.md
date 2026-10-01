@@ -1349,3 +1349,100 @@ position in the filename's companion console line); not adjudicated here.
 - Small sample (75 + 16 scored heads, not the full 47+11 of the earlier
   entry) — population difference explained above, not reconciled.
 - No re-gather of any kind was run; STAGED's own record is untouched.
+
+## lane-ledger-rungs round 2 (2026-10-01) — manager crop review, four fixes
+
+Sean approved round 1's reader fixes (wide-gap walk, first-space rule,
+stub requirement). The manager then read two page-3 crops against the
+print and found round 1's own SCORING PROCESS (not the reader) was
+largely at fault for rungs-after scoring worse than geometry, plus two
+real gaps. Four fixes, all in `tools/omr/annotate/ledger_grid.py` +
+`benchmarks/omr-local-staff-2026-09/score_truth_set_rungs.py` (the
+stand-alone CV reader and its measurement harness — STAGED's own
+production reader, `gather._observe_ledger_rung_ink`, is untouched):
+
+1. **Scoring gate.** `score_truth_set_rungs._far_head_rows` now applies
+   `far_head_needs_ledger_read` to the far-head gate (it previously used
+   plain `pos < 0 or pos > 8`, which is exactly round 1's own
+   "first-space population bug", 27 of 52 round-1 review crops).
+   Far-head population after the fix: Litolff 45 scored (2.44c: ~47),
+   Brahms 11 scored (2.44c: 11, EXACT match).
+2. **Gap-to-last-rung conversion** — new `ledger_grid.
+   derive_far_head_step(rungs_y, edge_y, sign, head_near_y, spacing)`,
+   replacing the old "match the head to a rung within a generic +-1
+   half-step tolerance" with Sean's convention: the gap, in staff spaces,
+   between the LAST clean rung found and the head's own NEAR edge (the
+   side of its box closest to the staff, never its centre).
+   `TOUCH_TOL_SPACES=0.20` -> the space just beyond the last rung;
+   `HALF_LEDGER_TOL_SPACES=0.35` or more -> on the NEXT ledger, hidden
+   under the head; between the two -> ABSTAIN (never guessed). Calibrated
+   against the manager's own two measured gaps (`glyph/3/0/9/2/5`, ref
+   11: gap 0.12 sp -> touching, matches; `glyph/3/0/7/6/2`, ref 12: gap
+   0.39 sp -> next ledger, matches) rather than the literal "about half a
+   space" wording, which overshoots the second example once box/ink
+   measurement slop (2.39b) is accounted for.
+3. **Stub exclusion.** `measure_ledger_rungs(..., exclude_boxes=...)`
+   blanks out every OTHER notehead's own `Q.GLYPH_BOX` before any span is
+   measured, so a neighbouring head's ink can no longer supply one side
+   of a "both sides" stub (`glyph/3/0/9/2/5`'s spurious second rung, left
+   stub = the neighbouring stacked head `glyph/3/0/9/2/0`'s own ink).
+4. **Per-page frame.** Round 1 rendered only the ONE PDF page
+   `truth_set_2_44c.DOCS[doc_id]["pdf_page_index"]` names (the count
+   page) and read every far head's ink off it regardless of which GATHER
+   page that head's own subject names — wrong raster for any head on a
+   different page of the same small-regather window. New `PageCache`
+   renders and caches per page, keyed by the subject's own page number.
+   Confirmed fixed: every Litolff `glyph/1/0/...` (PDF page 1) crop this
+   round passes its pixel-row check with 0 MISS, where round 1's did not.
+   (3 Brahms crops still show low-coverage staff lines at their own
+   count page, y~5990-6097 — a separate, smaller, unexplained gap, not
+   the cross-page bug; flagged, not fixed, not chased further.)
+
+### RED -> GREEN
+
+`tools/omr/tests/test_ledger_rungs_conversion_round2_2026_10_01.py`, 9
+tests, confirmed RED against the pre-round-2 file (`ImportError: cannot
+import name 'derive_far_head_step'` — collection fails outright). All 9
+green after. Fast tier `-k ledger`: 227 passed (218 + 9 new), unchanged
+elsewhere. Full fast suite (`pytest -m "not slow"`) run once, unchanged
+pass count outside this lane's own new tests.
+
+### Re-scored: geometry vs rungs-after, staff position
+
+| doc | metric | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry | 30 | 15 | 0 | 45 |
+| Litolff | rungs-after | 26 | 13 | 6 | 45 |
+| Brahms | geometry | 11 | 0 | 0 | 11 |
+| Brahms | rungs-after | 8 | 2 | 1 | 11 |
+
+Control (every head's box shifted by one half-step before reading) scores
+clearly worse on both docs: Litolff 9/31/5 (vs 26/13/6), Brahms 5/5/1 (vs
+8/2/1) — the judge can still fail.
+
+Rungs-after remains below geometry in raw rights on this still-small
+sample (26/45 vs 30/45; 8/11 vs 11/11), reported as measured, not
+oversold; the population-size fix is the headline result of this round,
+not a reader improvement claim.
+
+### Redrawn crops, round 2
+
+`out/print/ledgers/review2/` (22 crops + `index.md`): every head still
+wrong (15) or abstaining (7) after all four fixes. Cause counts:
+11 "through-head match lands on the wrong ledger" (count/walk off by one
+rung), 4 "abstain — no rungs found", 3 "classified as touching but
+reference disagrees", 3 "abstain — ambiguous gap" (the 0.20/0.35 band),
+1 "classified as on-the-next-ledger but reference disagrees". Not judged
+here — for Sean.
+
+### Not done / open
+
+- round 1's own `review_crops.py` / `crop_disagree_rungs.py` call
+  `score_truth_set_rungs._load_before_module`/`lg_after`, both removed in
+  this round's rewrite (no "before" comparison was asked for this round)
+  — those two scripts are historical (their committed output stands) and
+  will not re-run as-is; not restored, per CLAUDE.md's one-off-script
+  convention.
+- the 3 Brahms page-1 pixel-check MISSes above, unexplained.
+- `TOUCH_TOL_SPACES`/`HALF_LEDGER_TOL_SPACES` are calibrated on exactly
+  two measured examples; not swept.

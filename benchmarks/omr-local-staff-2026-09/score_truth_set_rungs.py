@@ -1,27 +1,37 @@
 #!/usr/bin/env python3
-"""lane-ledger-rungs (2026-10-01) -- score `measure_ledger_rungs`
-(`tools/omr/annotate/ledger_grid.py`), BEFORE and AFTER the wide-gap /
-first-space / stub fixes (DECISIONS 2026-10-01 a/b/c), against 2.44c's
-reference-backed far-head truth set (Litolff n=47, Brahms n=11).
+"""lane-ledger-rungs (2026-10-01, round 2) -- score `measure_ledger_rungs`
++ `derive_far_head_step` (`tools/omr/annotate/ledger_grid.py`) against
+2.44c's reference-backed far-head truth set, at STAFF POSITION, never
+pitch (CLAUDE.md Sec6b).
 
-MEASUREMENT ONLY — writes nothing back into the pipeline. Reuses
-`truth_set_2_44c`'s own doc loading, far-head population and onset-exact
-judge UNCHANGED (CLAUDE.md rule 9: derive, don't re-list); the only new
-thing here is the METRIC: CLAUDE.md §6b ("Until further notice, EVERY
-test is GATHER + ADJUDICATE only ... compare a head's measured STAFF
-POSITION with the reference pitch converted through ADJUDICATE's clef --
-never Q.PITCH or the exported file") — so this script scores POSITION,
-never pitch, for geometry and both rung-reader states.
+Round 2 fixes four things the manager found reading two page-3 crops
+against the print (DECISIONS 2026-10-01):
 
-"Before" is the committed pre-lane reader (`8232c1866`, loaded from a
-scratch copy so the committed fix in this working tree is never touched
-or reverted) -- a real second implementation, not a flag toggle, so the
-comparison cannot be gamed by this lane's own code.
+  1. The far-head GATE now applies `far_head_needs_ledger_read` -- a
+     first-space head (-1/9, on-staff per rule b) is scored as geometry,
+     never sent to the reader at all. This also fixes the truth-set size
+     (round 1's own bug): it should land near 2.44c's own 47/11.
+  2. The reader's own position arithmetic is `ledger_grid.
+     derive_far_head_step` -- the gap, in staff spaces, from the head's
+     NEAR edge to the last clean rung -- replacing the old generic
+     distance-tolerance match.
+  3. `exclude_boxes` -- every OTHER notehead's own box on the page is
+     masked out of the ink before a rung's stubs are checked, so a
+     neighbouring head's ink can no longer fake one side of a stub.
+  4. Per-PAGE rendering: a far head's subject names its own GATHER page,
+     which is not always the one PDF page `truth_set_2_44c.DOCS` names
+     for the count page -- round 1 read every head's ink off that ONE
+     rendered page regardless, which is simply the wrong raster for any
+     head on a different page (confirmed: round 1's page-1 crops had
+     staff lines with ~0 ink coverage). Rendered per page now, cached.
+
+MEASUREMENT ONLY -- writes nothing back into the pipeline. Reuses
+`truth_set_2_44c`'s own doc loading, far-head truth-matching
+(`onset_exact_truth`) and family maps UNCHANGED (CLAUDE.md rule 9).
 """
 from __future__ import annotations
 
 import collections
-import importlib.util
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
@@ -34,29 +44,7 @@ import truth_set_2_44c as ts  # noqa: E402
 from tools.omr.staged import export as EXP  # noqa: E402
 from tools.omr.staged.record import Q  # noqa: E402
 from tools.omr.pitch_resolver import _CLEF_ANCHORS, diatonic_index  # noqa: E402
-from tools.omr.annotate import ledger_grid as lg_after  # noqa: E402
-
-# The commit immediately before this lane touched `ledger_grid.py` --
-# `git log --oneline -- tools/omr/annotate/ledger_grid.py` names it as the
-# file's most recent change before this lane's own. Regenerated via `git
-# show` each run (not committed) so this script stays reproducible after
-# the lane merges, rather than depending on a scratch file.
-_BEFORE_COMMIT = "8232c1866"
-_BEFORE_PATH = REPO / "out" / "print" / "ledgers" / "_ledger_grid_before.py"
-
-
-def _load_before_module():
-    import subprocess
-    content = subprocess.run(
-        ["git", "show", f"{_BEFORE_COMMIT}:tools/omr/annotate/ledger_grid.py"],
-        cwd=str(REPO), check=True, capture_output=True, text=True,
-    ).stdout
-    _BEFORE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    _BEFORE_PATH.write_text(content)
-    spec = importlib.util.spec_from_file_location("ledger_grid_before", _BEFORE_PATH)
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)  # type: ignore[union-attr]
-    return mod
+from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -80,67 +68,86 @@ def truth_positions(truth_pitches: Sequence[Tuple[str, int]], clef: str) -> List
 
 
 # ─────────────────────────────────────────────────────────────────────────
-# the reader's own absolute-position derivation (Sean's clean-count rule,
-# DECISIONS 2026-09-30 / rungs_sheet.classify_far_head's same arithmetic,
-# corrected here to an ABSOLUTE position for both sides -- rungs_sheet.py
-# only ever draws "above" heads on the 15-head sheet, so its own relative
-# step display was never exercised on a "below" head)
+# fix 4: a far head's own GATHER page names the PDF page to render -- not
+# necessarily `DOCS[doc_id]["pdf_page_index"]` (the count page only)
+# ─────────────────────────────────────────────────────────────────────────
+
+class PageCache:
+    def __init__(self, cfg: Dict[str, Any]):
+        self._cfg = cfg
+        self._cache: Dict[int, Any] = {}
+
+    def get(self, page_index: int):
+        if page_index not in self._cache:
+            self._cache[page_index] = ts._render_page_gray(
+                self._cfg["pdf"], page_index, self._cfg["dpi"]
+            )
+        return self._cache[page_index]
+
+
+def _notehead_boxes_by_page(rec: EXP.Record) -> Dict[int, List[Tuple[str, tuple]]]:
+    out: Dict[int, List[Tuple[str, tuple]]] = collections.defaultdict(list)
+    for o in rec.observations:
+        if o["quantity"] != Q.NOTEHEAD_STAFF_POSITION:
+            continue
+        sub = o["subject"]
+        page = int(sub.split("/")[1])
+        box_obs = rec.obs(Q.GLYPH_BOX, sub)
+        if not box_obs:
+            continue
+        detail = box_obs[-1].get("detail") or {}
+        pb = detail.get("bbox_page_px")
+        if pb:
+            out[page].append((sub, tuple(float(v) for v in pb)))
+    return out
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# the reader's own absolute-position derivation
 # ─────────────────────────────────────────────────────────────────────────
 
 def reader_absolute_position(
-    lg_module, gray, global_lines: Sequence[float], cx: float, cy: float,
-    pass_target: bool,
-) -> Optional[int]:
+    gray, global_lines: Sequence[float], box: Sequence[float],
+    subject: str, page_notehead_boxes: Sequence[Tuple[str, tuple]],
+) -> Tuple[Optional[int], str]:
+    """Returns (absolute position or None, reason). Fixes 2 + 3."""
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
-        return None
+        return None, "no_staff_lines"
     spacing = (ys[-1] - ys[0]) / 4.0
     if spacing <= 0:
-        return None
-    half_step = spacing / 2.0
+        return None, "bad_spacing"
     top, bottom = ys[0], ys[-1]
+    x0, y0, x1, y1 = box
+    cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
     if cy < top:
-        side, edge, sign, edge_pos = "above", top, -1.0, 0
+        side, edge, sign, edge_pos, near_y = "above", top, -1.0, 0, y1
     else:
-        side, edge, sign, edge_pos = "below", bottom, 1.0, 8
+        side, edge, sign, edge_pos, near_y = "below", bottom, 1.0, 8, y0
 
-    kwargs = {}
-    if pass_target:
-        kwargs["head_y"] = cy
-    items = lg_module.measure_ledger_rungs(gray, ys, cx, **kwargs).get(side, [])
-    if not items:
-        return None
-
-    head_dist_units = sign * (cy - edge) / half_step
-    occ_idx = None
-    for i, ry in enumerate(items, start=1):
-        dist_units = sign * (ry - edge) / half_step
-        if abs(dist_units - head_dist_units) <= 1.0:
-            occ_idx = i
-            break
-    if occ_idx is not None:
-        offset = 2 * occ_idx
-    else:
-        clean_before = sum(
-            1 for i, ry in enumerate(items, start=1)
-            if sign * (ry - edge) / half_step < head_dist_units
-        )
-        offset = 2 * clean_before + 1
-    return edge_pos + int(sign * offset) if side == "above" else edge_pos + offset
+    # exclude every OTHER notehead's own box, by SUBJECT -- never by box
+    # value, which float round-trips could coincidentally match or miss.
+    others = [b for (s, b) in page_notehead_boxes if s != subject]
+    items = lg.measure_ledger_rungs(
+        gray, ys, cx, head_y=cy, exclude_boxes=others
+    ).get(side, [])
+    step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
+    if step["offset"] is None:
+        return None, step["reason"]
+    return edge_pos + int(sign * step["offset"]), step["reason"]
 
 
 # ─────────────────────────────────────────────────────────────────────────
 
 def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
     """`truth_set_2_44c.build_rows`'s own population + truth-matching,
-    reused UNCHANGED (CLAUDE.md rule 9) -- except the far-head GATE, which
-    that module reads off `Q.LEDGER_CLEAN_COUNT_POSITION`/`Q.LEDGER_RUNG_
-    GRID_POSITION` (a later, unmerged reader's own quantities, not present
-    on this record's schema). The gate those quantities apply is the SAME
-    one this lane's `is_far` has used throughout (`_ledger_expected > 0`,
-    i.e. "outside the staff's own 5 lines, position < 0 or > 8") -- read
-    here directly off `Q.NOTEHEAD_STAFF_POSITION` instead, reproducing the
-    same population rather than a different one."""
+    reused UNCHANGED (CLAUDE.md rule 9). The far-head GATE is read off
+    `Q.NOTEHEAD_STAFF_POSITION` (that quantity's own values, not the
+    unmerged `Q.LEDGER_CLEAN_COUNT_POSITION`/`Q.LEDGER_RUNG_GRID_POSITION`
+    2.44c itself reads, absent on this record's schema) and now applies
+    `far_head_needs_ledger_read` (fix 1, round 2) -- a first-space head
+    is NOT in this population at all; it is scored as on-staff geometry
+    directly by the caller."""
     rec: EXP.Record = loaded["rec"]
     offsets = loaded["offsets"]
     detmap = ts._subject_detections(loaded["parts"])
@@ -152,7 +159,7 @@ def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
         if o["quantity"] != Q.NOTEHEAD_STAFF_POSITION:
             continue
         pos = int(round(float(o["value"])))
-        if pos < 0 or pos > 8:
+        if lg.far_head_needs_ledger_read(pos):
             far_subs.append(o["subject"])
     far_subs = sorted(set(far_subs))
 
@@ -187,17 +194,18 @@ def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
                 cell, glyph_i) or []
 
         rows.append(dict(
-            subject=sub, staff_key=staff_key, raw_pos=raw_pos,
+            subject=sub, staff_key=staff_key, raw_pos=raw_pos, page=page,
             page_box=page_box, truth_pitches=truth_pitches,
         ))
     return rows
 
 
-def score_doc(doc_id: str, lg_before, lg_after_mod) -> Dict[str, Any]:
+def score_doc(doc_id: str) -> Dict[str, Any]:
     loaded = ts.load_doc(doc_id)
     rows = _far_head_rows(doc_id, loaded)
     rec = loaded["rec"]
-    gray = loaded["gray"]
+    pages = PageCache(loaded["cfg"])
+    boxes_by_page = _notehead_boxes_by_page(rec)
 
     tally: Dict[str, "collections.Counter[str]"] = collections.defaultdict(
         collections.Counter
@@ -219,20 +227,16 @@ def score_doc(doc_id: str, lg_before, lg_after_mod) -> Dict[str, Any]:
         box = row["page_box"]
         if not box:
             continue
-        x0, y0, x1, y1 = box
-        cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
         line_rows = rec.obs(Q.STAFF_LINES, staff_key)
         if not line_rows:
             continue
         global_lines = [float(y) for y in line_rows[-1]["value"]]
+        gray = pages.get(row["page"])
 
         geom_pos = int(round(row["raw_pos"]))
-
-        before_pos = reader_absolute_position(
-            lg_before, gray, global_lines, cx, cy, pass_target=False
-        )
-        after_pos = reader_absolute_position(
-            lg_after_mod, gray, global_lines, cx, cy, pass_target=True
+        after_pos, reason = reader_absolute_position(
+            gray, global_lines, box, row["subject"],
+            boxes_by_page.get(row["page"], [])
         )
 
         def verdict(pos: Optional[int]) -> str:
@@ -240,51 +244,43 @@ def score_doc(doc_id: str, lg_before, lg_after_mod) -> Dict[str, Any]:
                 return "abstain"
             return "right" if pos in truth_pos else "wrong"
 
-        v_geom, v_before, v_after = (
-            verdict(geom_pos), verdict(before_pos), verdict(after_pos),
-        )
+        v_geom, v_after = verdict(geom_pos), verdict(after_pos)
         tally["geometry"][v_geom] += 1
-        tally["rungs_before"][v_before] += 1
         tally["rungs_after"][v_after] += 1
         per_head.append(dict(
-            subject=row["subject"], staff_key=staff_key,
+            subject=row["subject"], staff_key=staff_key, page=row["page"],
             truth_pos=sorted(truth_pos), geom_pos=geom_pos, v_geom=v_geom,
-            before_pos=before_pos, v_before=v_before,
-            after_pos=after_pos, v_after=v_after,
+            after_pos=after_pos, v_after=v_after, reason=reason,
         ))
 
     return dict(tally={k: dict(v) for k, v in tally.items()}, per_head=per_head)
 
 
 def main() -> int:
-    lg_before = _load_before_module()
     results = {}
     for doc_id in ts.DOCS:
         print(f"=== {doc_id} ===")
-        r = score_doc(doc_id, lg_before, lg_after)
+        r = score_doc(doc_id)
         results[doc_id] = r
-        for key in ("geometry", "rungs_before", "rungs_after"):
+        n_far_total = len(_far_head_rows(doc_id, ts.load_doc(doc_id)))
+        print(f"  far-head population (gate applied): {n_far_total}")
+        for key in ("geometry", "rungs_after"):
             t = r["tally"].get(key, {})
             n = sum(t.values())
             print(f"  {key:<14} right={t.get('right',0):>3} wrong={t.get('wrong',0):>3} "
                  f"abstain={t.get('abstain',0):>3}  (n={n})")
-        disagree = [h for h in r["per_head"] if h["v_after"] != h["v_before"]]
-        print(f"  before/after disagree on {len(disagree)} of {len(r['per_head'])} scored heads")
-        for h in disagree:
-            print(f"    {h['subject']:<24} truth={h['truth_pos']} "
-                 f"before={h['before_pos']}({h['v_before']}) "
-                 f"after={h['after_pos']}({h['v_after']}) geom={h['geom_pos']}({h['v_geom']})")
+        wrong_or_abstain = [h for h in r["per_head"] if h["v_after"] != "right"]
+        print(f"  rungs-after wrong or abstaining: {len(wrong_or_abstain)} of {len(r['per_head'])} scored heads")
         print()
 
     # --- control that can fail: shift every head's y by one half-step   ---
-    # before measuring -- this must score clearly WORSE than the real read,
-    # or the judge/metric itself cannot be trusted (CLAUDE.md rule 7).
     print("=== control: head y offset by one half-step (must score worse) ===")
     for doc_id in ts.DOCS:
         loaded = ts.load_doc(doc_id)
         rows = _far_head_rows(doc_id, loaded)
         rec = loaded["rec"]
-        gray = loaded["gray"]
+        pages = PageCache(loaded["cfg"])
+        boxes_by_page = _notehead_boxes_by_page(rec)
         right = wrong = abst = 0
         for row in rows:
             truth_p = row["truth_pitches"]
@@ -300,16 +296,17 @@ def main() -> int:
             box = row["page_box"]
             if not box:
                 continue
-            x0, y0, x1, y1 = box
-            cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
             line_rows = rec.obs(Q.STAFF_LINES, staff_key)
             if not line_rows:
                 continue
             global_lines = [float(y) for y in line_rows[-1]["value"]]
             spacing = (max(global_lines) - min(global_lines)) / 4.0
-            broken_cy = cy + spacing / 2.0  # one half-step offset
-            pos = reader_absolute_position(
-                lg_after, gray, global_lines, cx, broken_cy, pass_target=True
+            x0, y0, x1, y1 = box
+            broken_box = (x0, y0 + spacing / 2.0, x1, y1 + spacing / 2.0)
+            gray = pages.get(row["page"])
+            pos, _reason = reader_absolute_position(
+                gray, global_lines, broken_box, row["subject"],
+                boxes_by_page.get(row["page"], [])
             )
             if pos is None:
                 abst += 1

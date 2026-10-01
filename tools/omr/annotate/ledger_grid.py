@@ -89,6 +89,20 @@ RUNG_STUB_MIN_SPACES = 0.15
 # space between the lower ledger lines and the one right underneath the
 # note").
 TARGET_SLACK_SPACES = 0.5
+# Sean's 2026-10-01 convention for turning a rung count into a step: the
+# head is placed by the GAP between the last CLEAN rung found and the
+# head's own NEAR edge (the side of its box closest to the staff), not by
+# matching the head's centre to a rung within a generic tolerance. Gaps
+# this small (in staff spaces) are "touching" the last rung -> the head
+# sits in the space just beyond it. Calibrated against Sean's two crop
+# readings (`glyph/3/0/9/2/5`, ref 11: measured gap 0.12 sp -> touching;
+# `glyph/3/0/7/6/2`, ref 12: measured gap 0.39 sp -> on the next ledger)
+# rather than the literal "about half a space" wording, which overshoots
+# the second example -- box/ink measurement slop (2.39b) means "about
+# half" reads closer to a third in practice.
+TOUCH_TOL_SPACES = 0.20
+# Gaps at or beyond this are "on the next ledger, hidden under the head".
+HALF_LEDGER_TOL_SPACES = 0.35
 
 
 def _otsu_threshold(values: np.ndarray) -> int:
@@ -269,6 +283,7 @@ def far_head_needs_ledger_read(pos_half_steps: float) -> bool:
 def measure_ledger_rungs(
     img_gray: np.ndarray, staff_line_ys: list[float], x: float,
     head_y: float | None = None,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
 
@@ -281,6 +296,14 @@ def measure_ledger_rungs(
     walk on the side the head actually sits on (DECISIONS 2026-10-01, the
     wide-gap fix in `_walk_ladder`) so the walk does not give up before
     reaching that head; it never invents a rung the ink does not show.
+
+    `exclude_boxes`, when given, is a list of OTHER noteheads' own boxes
+    (x0, y0, x1, y1, same frame) -- their ink is blanked out before any
+    span is measured, so a neighbouring head's ink can no longer supply
+    one side of a "both sides" stub (DECISIONS 2026-10-01, Sean: "a
+    second rung... accepted because its left stub is the neighbouring
+    head's ink"). Never includes the subject's own box -- that is real
+    evidence, not noise.
     """
     ys = sorted(float(v) for v in staff_line_ys or [])
     if len(ys) < 2 or img_gray.ndim != 2:
@@ -308,6 +331,13 @@ def measure_ledger_rungs(
         if yy1 - yy0 < 2:
             continue
         window = img_gray[yy0:yy1, x0:x1]
+        if exclude_boxes:
+            window = window.copy()
+            for (bx0, by0, bx1, by1) in exclude_boxes:
+                ex0, ey0 = max(int(bx0), x0), max(int(by0), yy0)
+                ex1, ey1 = min(int(bx1) + 1, x1), min(int(by1) + 1, yy1)
+                if ex1 > ex0 and ey1 > ey0:
+                    window[ey0 - yy0:ey1 - yy0, ex0 - x0:ex1 - x0] = 255
         thr = _otsu_threshold(window)
         ink = window <= thr  # <=: Otsu labels the threshold bin itself ink (a
         # binary image splits at t=0, and `<` would then select nothing)
@@ -318,3 +348,59 @@ def measure_ledger_rungs(
         )
         out[side] = _walk_ladder(edge_y, sign, bands, spacing, side_target)
     return out
+
+
+def derive_far_head_step(
+    rungs_y: "list[float]", edge_y: float, sign: float, head_near_y: float,
+    spacing: float,
+) -> dict:
+    """Sean's 2026-10-01 convention for turning a rung count into a step.
+
+    `rungs_y` is one side's list from `measure_ledger_rungs` (nearest-edge
+    first). `head_near_y` is the edge of the head's OWN box closest to the
+    staff (its bottom for a head ABOVE the staff, its top for a head
+    BELOW) -- never its centre; the gap is measured from there, not from
+    wherever the box happens to be centred.
+
+    Walks the SAME ladder arithmetic the reader already uses (2 half-steps
+    per rung from the edge) and places the head by the gap, in staff
+    spaces, between the LAST rung found and that near edge:
+
+      * no rung found at all -> ABSTAIN (nothing to count from).
+      * the last rung is beyond the near edge by `TOUCH_TOL_SPACES` or
+        less (the rung passes through the head's own ink, not merely
+        near it) -> the head sits ON that rung.
+      * the near edge sits within `TOUCH_TOL_SPACES` of the last rung,
+        on the staff side -> "touching" -> the head sits in the SPACE
+        just beyond that rung.
+      * the near edge is `HALF_LEDGER_TOL_SPACES` or more beyond the last
+        rung -> the head is on the NEXT ledger line, hidden under it.
+      * anything between the two tolerances is ambiguous -> ABSTAIN,
+        never guessed (CLAUDE.md rule 8).
+
+    Returns `{"offset": int|None, "kind": "line"|"space"|None,
+    "reason": str}`. `offset` is in half-steps outward from the edge; the
+    caller adds it to (or subtracts it from, by `sign`) the edge's own
+    staff position.
+    """
+    if not rungs_y or spacing <= 0:
+        return dict(offset=None, kind=None, reason="no_rungs")
+    half_step = spacing / 2.0
+    last = rungs_y[-1]
+    last_half_steps = int(round(abs(last - edge_y) / half_step))
+    gap_spaces = (sign * (head_near_y - last)) / spacing
+    if gap_spaces <= -TOUCH_TOL_SPACES:
+        return dict(offset=last_half_steps, kind="line",
+                   reason=f"last rung passes through the head itself "
+                          f"(gap {gap_spaces:.2f} sp)")
+    if gap_spaces <= TOUCH_TOL_SPACES:
+        return dict(offset=last_half_steps + 1, kind="space",
+                   reason=f"touching the last clean rung (gap "
+                          f"{gap_spaces:.2f} sp)")
+    if gap_spaces >= HALF_LEDGER_TOL_SPACES:
+        return dict(offset=last_half_steps + 2, kind="line",
+                   reason=f"{gap_spaces:.2f} sp beyond the last clean rung "
+                          f"-- on the next ledger, hidden under the head")
+    return dict(offset=None, kind=None,
+               reason=f"ambiguous gap {gap_spaces:.2f} sp "
+                      f"(between touching and half a space)")
