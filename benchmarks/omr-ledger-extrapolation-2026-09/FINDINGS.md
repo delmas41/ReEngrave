@@ -731,3 +731,95 @@ nothing new wired.
 
 `pytest -m "not slow"` and `staged.check`: unchanged from §13f (no
 production code touched this item, only the measurement script).
+
+## 15. (2026-10-01) THE JUDGE HAD A SECOND BUG — A MISCOUNTED PAGE, NOT BAD GEOMETRY
+
+Manager review of §14: geometry right on only 31% of Brahms far heads
+needs explaining (extrapolation error should cost about one step, not
+two-thirds of heads). Per-page histogram of (geometry − truth) in
+diatonic steps found the answer immediately: **all 21 of Brahms's
+out-of-[-2,2] errors are on PDF page 0; all 34 scored on page 1 (the
+count page) are within one step.** By family the errors cluster at a
+FIXED +3/+4 in Flute, Oboe and Bassoon — not noise.
+
+**Cause**: `works.json` carries a VERIFIED window for every page of each
+count document, not only the count page — `brahms-sym1-mvt1-317803-p1`
+(PDF page 0) is verified at 7 bars (mm 1-7), but this gather's own
+`Q.MEASURE_PARTITION` decides **8**, unanimously across all 14 staves —
+a real miscount (an extra barline, or one bar split in two) upstream of
+this script. §13/§14's single additive `bar_correction`, calibrated at
+the count page's own anchor, cancels a uniform document-wide offset but
+cannot repair a LOCAL miscount earlier in the gather: every far head on
+page 0 was being compared against the WRONG reference bar. The identical
+check on Litolff finds page 2 one bar short (31 decided vs 32 verified,
+`beethoven-sym5-mvt1-984073-p2`) — smaller and less pervasive (2 of 40
+page-2 heads affected) but the same class of fact.
+
+**Fix** (`truth_set_2_44c.py`, `_bad_bar_count_pages`): every page this
+gather covers whose own works.json window exists is checked against this
+gather's own unanimous bar count for that page; a disagreeing page has
+EVERY far head on it UNSCORED, by page (the miscount cannot be localised
+to one cell), never guessed at. Litolff page 1 (16/16) and page 3 (the
+count page itself, independently anchored) stay clean; Brahms page 1
+(the count page) stays clean. Re-validated against every hand-measured
+head: unchanged, still ZERO disagreements (all six scorable targets are
+on the count pages, never page 0 or Litolff's page 2).
+
+**Transposition, checked directly (manager's item 3)**: both documents'
+reference encodings DO carry `<transpose>` for Clarinet (-1 diatonic),
+Horn (-5 diatonic, Litolff; octave-change only, Brahms Horn (Es)),
+Contrabassoon/Contrabass/Violoncello-e-Basso-P18 (octave-change -1).
+MusicXML's own `<pitch>` is WRITTEN pitch regardless of a part's
+`<transpose>` (the element tells a RENDERER how to compute sounding
+pitch; it is never applied by a reader of the raw element) — this
+script's `_pitch_key`/`parse_part_bars` never applies it, and neither
+does OMR's own `Q.PITCH` (read directly off the page, always written) —
+so both sides are written pitch, no transposition mismatch exists. This
+is confirmed by the data too: none of the by-family error buckets after
+the page-0/page-2 exclusion fall on a transposing part (Horn, Clarinet
+both show 0 wrong on both pages); if written/sounding were confused,
+Horn's own 5-diatonic-step transpose would appear as a near-universal
+5-step error there, and it does not.
+
+**Three Brahms geometry-wrong heads, crop-verdict (word form, no files
+cropped this round — time; the pattern is unambiguous from the raw rows
+and is reported honestly as such, not claimed crop-confirmed)**: none
+remain. After excluding page 0, **Brahms geometry scores 11/11 (100%)**
+on the 11 far heads this stricter judge can place at all — every
+remaining "wrong" case from §14 was a page-0 bar-misalignment artefact,
+not a geometry error. This is a SMALL n and not a rate; it says the
+JUDGE no longer manufactures wrongness, not that geometry is perfect on
+Brahms.
+
+### 15a. Re-scored, full table
+
+| Litolff (n=47) | right | wrong | abstain | precision |
+|---|--:|--:|--:|--:|
+| geometry | 31 | 16 | — | 66% |
+| reader 1 | 5 | 12 | 30 | 29% |
+| reader 2 | 36 | 10 | 1 | 78% |
+| agreement | 4 | 0 | 43 | 100% |
+| option B | 31 | 16 | — | 66% |
+| local geometry | 23 | 21 | 3 | 52% |
+
+| Brahms (n=11) | right | wrong | abstain | precision |
+|---|--:|--:|--:|--:|
+| geometry | 11 | 0 | — | 100% |
+| reader 1 | 5 | 2 | 4 | 71% |
+| reader 2 | 11 | 0 | 0 | 100% |
+| agreement | 5 | 0 | 6 | 100% |
+| option B | 11 | 0 | — | 100% |
+| local geometry | 11 | 0 | 0 | 100% |
+
+n is now very small (47, 11) — this is the honest cost of a judge that
+refuses to guess across a miscounted page, not a new problem. Litolff's
+own histogram after the fix: `{+1: 11, 0: 31, -1: 4, octave: 1}` — one
+isolated octave slip (Trumpet) aside, every remaining error is a single
+diatonic step, exactly the extrapolation-error magnitude the manager
+expected and the earlier, buggy judge had obscured.
+
+Self-control and corrupted-control (§14c) are unchanged by this fix (they
+score the reference against itself, never this script's own bar
+alignment) — still 0 bad / 9.2% / 7.5%.
+
+Checks: unchanged (measurement script only).

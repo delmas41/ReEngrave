@@ -87,6 +87,8 @@ DOCS: Dict[str, Dict[str, Any]] = {
                                "-verlag-1870--imslp984073.pdf",
         "pdf_page_index": 3,
         "dpi": 600,
+        "row_prefix": "beethoven-sym5-mvt1-984073",
+        "movement_start_page": 1,
     },
     "brahms1-breitkopf": {
         "record": REPO / "benchmarks/acceptance/quick/out/brahms1-breitkopf"
@@ -97,6 +99,8 @@ DOCS: Dict[str, Dict[str, Any]] = {
                                "-brahms--imslp317803.pdf",
         "pdf_page_index": 1,
         "dpi": 600,
+        "row_prefix": "brahms-sym1-mvt1-317803",
+        "movement_start_page": 0,
     },
 }
 
@@ -345,9 +349,90 @@ def load_doc(doc_id: str) -> Dict[str, Any]:
     if first_ref_measure is not None and doc_bar_of_first_cell is not None:
         bar_correction = int(first_ref_measure) - (doc_bar_of_first_cell + 1)
 
+    # ⚠️⚠️ MANAGER REVIEW 2026-10-01: geometry read "wrong" on 69% of
+    # Brahms heads, far more than extrapolation error should ever produce,
+    # and the errors were NOT small (diatonic diff +3/+4, clustered by
+    # family). Traced to a SECOND verified fact this script had not yet
+    # used: `works.json` carries a window for EVERY page of each count
+    # document, not only the count page itself -- `brahms-sym1-mvt1-
+    # 317803-p1` (PDF page 0) is VERIFIED at 7 bars (mm 1-7), but this
+    # gather's own `Q.MEASURE_PARTITION` decides 8 bars, UNANIMOUSLY,
+    # across all 14 staves on that page -- a real miscount (an extra
+    # barline, or one bar split in two) this script's own single additive
+    # `bar_correction` cannot repair, because it is calibrated at the
+    # COUNT PAGE's own anchor and only cancels a uniform document-wide
+    # offset, not a LOCAL miscount earlier in the gather. Every bar number
+    # computed for a glyph on page 0 is consequently unreliable past
+    # whatever cell holds the extra split (which one is not known) --
+    # confirmed empirically: of 21 Brahms far heads scoring a diatonic
+    # diff outside [-2, 2], ALL 21 are on page 0; of 34 scoring page 1
+    # (the count page itself, independently anchored), 0 do. The SAME
+    # check on Litolff finds page 2 (PDF) under by one bar (31 decided vs
+    # 32 verified, `beethoven-sym5-mvt1-984073-p2`) -- a smaller, less
+    # pervasive miscount (2 of 40 page-2 far heads affected) but the same
+    # class of fact, checked and excluded for the same reason. Page 1
+    # (16 vs 16) and the count page itself (independently anchored, zero
+    # disagreements against every hand-measured head) are clean.
+    #
+    # Fix: every page this gather covers whose OWN verified works.json
+    # window exists is checked against this gather's own unanimous
+    # `Q.MEASURE_PARTITION` count for that page; a page that disagrees has
+    # EVERY far head on it UNSCORED here, by page, not guessed at the
+    # per-cell level the mismatch cannot be localised to.
+    bad_pages = _bad_bar_count_pages(rec, cfg, offsets or {})
+
     return dict(cfg=cfg, rec=rec, parts=parts, offsets=offsets or {},
                works_row=works_row, ref_root=ref_root, gray=gray,
-               bar_correction=bar_correction)
+               bar_correction=bar_correction, bad_pages=bad_pages)
+
+
+def _bad_bar_count_pages(rec: EXP.Record, cfg: Dict[str, Any],
+                         offsets: Dict[Tuple[int, int], int]
+                         ) -> Dict[int, str]:
+    """`{pdf_page_index: reason}` for every page this gather covers whose
+    OWN works.json window exists and disagrees with this gather's own
+    unanimous `Q.MEASURE_PARTITION` bar count for that page. Declines
+    (omits a page) wherever no verified row exists for it, or this
+    gather's own staves do not unanimously agree on a count -- it reports
+    a MEASURED disagreement, never a guessed one."""
+    start = first_movement_page_from_whole_movement(cfg)
+    pages = sorted({p for (p, _s) in offsets})
+    out: Dict[int, str] = {}
+    for p in pages:
+        suffix = p - start + 1
+        row_id = f"{cfg['row_prefix']}-p{suffix}"
+        try:
+            row = _load_works_row(row_id)
+        except Exception:
+            continue
+        window = row.get("window") or {}
+        lo, hi = window.get("first_ref_measure"), window.get("last_ref_measure")
+        if lo is None or hi is None:
+            continue
+        verified_bars = int(hi) - int(lo) + 1
+        by_system: Dict[int, set] = {}
+        for v in rec.verdicts_of(Q.MEASURE_PARTITION):
+            s = v["subject"].split("/")
+            if int(s[1]) != p or v.get("outcome") != "decided":
+                continue
+            by_system.setdefault(int(s[2]), set()).add(int(v["value"]))
+        if not by_system or any(len(vs) != 1 for vs in by_system.values()):
+            continue    # no unanimous count to compare -- declined, not flagged
+        our_bars = sum(next(iter(vs)) for vs in by_system.values())
+        if our_bars != verified_bars:
+            out[p] = (f"page {p}: gather decides {our_bars} bars, "
+                     f"works.json {row_id!r} verifies {verified_bars} "
+                     f"(mm {lo}-{hi})")
+    return out
+
+
+def first_movement_page_from_whole_movement(cfg: Dict[str, Any]) -> int:
+    """Mirrors `tools.omr.acceptance_quick.first_movement_page`'s own
+    `whole_movement.pages` parsing, for a document entry that is this
+    script's own (simpler) `DOCS` dict rather than `benchmarks/acceptance/
+    manifest.json`'s -- both documents here start their movement at a
+    fixed, already-known PDF page, named directly rather than re-parsed."""
+    return cfg["movement_start_page"]
 
 
 def _subject_detections(parts) -> Dict[str, Dict[str, Any]]:
@@ -402,6 +487,7 @@ def build_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
     detmap = _subject_detections(loaded["parts"])
     gray = loaded["gray"]
     ref_root = loaded["ref_root"]
+    bad_pages = loaded.get("bad_pages") or {}
 
     rows: List[Dict[str, Any]] = []
     for sub in _far_head_subjects(rec):
@@ -457,9 +543,18 @@ def build_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
             if off is not None:
                 bar = off + det["cell"] + 1 + loaded["bar_correction"]
 
-        truth_pitches = onset_exact_truth(
-            rec, doc_id, family, bar, ref_root, page, system, staff, cell,
-            glyph_i) or []
+        if page in bad_pages:
+            # ⚠️ A verified works.json window disagrees with this gather's
+            # own bar count for this page (`_bad_bar_count_pages`) -- every
+            # bar number computed above is unreliable, by PAGE, not by the
+            # one cell the miscount cannot be localised to. UNSCORED, not
+            # guessed; the row is still reported (population, geometry's
+            # raw answer) so the exclusion itself stays visible.
+            truth_pitches: List[Tuple[str, int]] = []
+        else:
+            truth_pitches = onset_exact_truth(
+                rec, doc_id, family, bar, ref_root, page, system, staff,
+                cell, glyph_i) or []
 
         rows.append(dict(
             subject=sub, staff_key=staff_key, family=family, bar=bar,
