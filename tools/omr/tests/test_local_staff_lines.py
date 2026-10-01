@@ -94,14 +94,70 @@ class TestTraceFollowsTheRampAtTheSubjectsOwnX:
         for i, y in enumerate(NOMINAL_YS):
             assert np.max(np.abs(paths[i] - y)) < 1.5, (i, paths[i])
 
-    def test_abstains_with_no_staff_ink_under_the_band(self):
-        """A control that can fail (CLAUDE.md §2 rule 7): no printed lines at
-        all, so there is nothing to trace and the model must say so rather
-        than inventing a row."""
+    def test_no_ink_anywhere_holds_at_the_nominal_comb(self):
+        """Sean's design: the comb only moves where ink CONFIRMS it; with no
+        ink at all, every step holds, so the walk never updates away from
+        the nominal (unshifted) rigid comb it started at -- not an
+        abstention, because nothing here CONTRADICTS the starting comb
+        either (compare test_abstains_when_the_band_is_too_narrow_to_walk,
+        a control that CAN fail)."""
         binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
         pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
-        got = me._trace_cell_local_lines(pws, pws.staves[0], 200, 400)
+        paths = me._trace_cell_local_lines(pws, pws.staves[0], 200, 400)
+        assert paths is not None
+        for i, y in enumerate(NOMINAL_YS):
+            assert np.all(paths[i] == y), (i, paths[i])
+
+    def test_abstains_when_the_band_is_too_narrow_to_walk(self):
+        """A control that CAN fail: a band narrower than a single step has
+        no column to take even one step over, so the walk must say so
+        rather than inventing a one-point course."""
+        pws = _pws(_draw_staff(ramp_px=0))
+        got = me._trace_cell_local_lines(pws, pws.staves[0], 200, 200)
         assert got is None, got
+
+
+class TestCombMovesAsOneShape:
+    """Sean's design, proved directly against `_walk_comb_shift`: the comb
+    moves only where >=3 of 5 lines agree within ~1px, a single outlier
+    line never drags it, and a stretch with too little ink simply HOLDS the
+    comb's last course."""
+
+    def test_an_outlier_line_never_moves_the_comb(self):
+        """Four lines straight, ONE line's own ink displaced by 6px (a
+        beam, a slur, a stray mark sitting where that line should be) --
+        the comb must follow the FOUR, not average in the fifth."""
+        binary = _draw_staff(ramp_px=0)
+        # Displace line index 2 (y=140) by +6px over the whole band.
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        for x in range(X_START, X_END):
+            for i, y in enumerate(NOMINAL_YS):
+                yy = y + (6 if i == 2 else 0)
+                binary[yy - 1:yy + 2, x] = 0
+        pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
+        shift = me._walk_comb_shift(binary, [float(y) for y in NOMINAL_YS],
+                                    X_START + 5, X_END - 5, float(SPACING))
+        assert shift is not None
+        # The outlier's own +6px never pulls the comb more than a tiny
+        # fraction of the way there.
+        assert np.max(np.abs(shift)) < 1.0, shift
+
+    def test_a_blob_covering_most_lines_holds_the_comb(self):
+        """A dense blob (a chord, several ledger lines) covers 4 of 5
+        lines' own narrow search windows over one stretch -- fewer than 3
+        can still find clean ink there, so the comb must HOLD exactly the
+        course it already had, not drift toward the blob's own ink."""
+        binary = _draw_staff(ramp_px=0)
+        blob_x0, blob_x1 = 300, 340
+        binary[90:170, blob_x0:blob_x1] = 0   # solid ink over 4 of 5 lines
+        shift = me._walk_comb_shift(binary, [float(y) for y in NOMINAL_YS],
+                                    X_START + 5, X_END - 5, float(SPACING))
+        assert shift is not None
+        all_cols = np.arange(X_START + 5, X_END - 5)
+        in_blob = (all_cols >= blob_x0) & (all_cols < blob_x1)
+        before = shift[np.where(all_cols < blob_x0)[0][-1]]
+        # Inside the blob's own columns, the comb holds -- it does not jump.
+        assert np.allclose(shift[in_blob], before, atol=0.5), shift[in_blob]
 
 
 # ─── the cell carries the model, and a consumer reads it at its own x ────────

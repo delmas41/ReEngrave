@@ -25,8 +25,8 @@ from collections import Counter
 
 import cv2
 import numpy as np
+from scipy.ndimage import median_filter
 
-from .header_ink import trace_staff_line
 from .system_grouping import _choir_grouping_enabled, gap_bridging_counts
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 
@@ -1503,7 +1503,7 @@ def _cell_line_offset(
     }
 
 
-# ─── A local staff-line MODEL: lines traced at the subject's own x ──────────
+# ─── A local staff-line MODEL: the rigid comb, WALKED along the ink ─────────
 #
 # `_cell_line_offset` slides the whole five-line comb by ONE shift for the
 # whole cell — a scan that tilts or stretches WITHIN a measure (Litolff p3
@@ -1512,69 +1512,157 @@ def _cell_line_offset(
 # §10 (2026-09-30, Sean): "any position relative to the staff reads the staff
 # lines AT THE SUBJECT'S x, never a staff-wide or bar-wide value."
 #
-# This does not re-derive a tracer. `header_ink.trace_staff_line` already
-# follows one printed line across a mask, column by column, filling the
-# columns a glyph sits on from its neighbours — exactly what a per-x model
-# needs, and already proven (staff-line erasure has run it since 2026-09).
-# Reused here, once per line, over the CELL's own x-band (never the whole
-# staff — a local measurement does not need the staff's full width, and a
-# narrower band is cheaper to trace and more exact near the cell it describes).
-#
-# ⚠️ NO FLAG. CLAUDE.md rule 9: no new flag without a roadmap item, and the
-# roadmap item (2.48) asks for the model, not for an on/off switch on it. The
-# behaviour is either right (unconditional) or not merged -- there is no
-# approved arm that needs an off position to compare against.
+# ⚠️ REBUILT 2026-10-01 (manager review of the first cut, `86d0bf68`):
+# tracing each of the 5 lines INDEPENDENTLY, column by column
+# (`header_ink.trace_staff_line`, one call per line, no line checking any
+# other), measured a NET REGRESSION against the 2.44c reference truth set --
+# 134 right-to-wrong against 11 wrong-to-right. No cross-line agreement
+# check meant a line could lock onto nearby glyph ink (a stem, a beam, a
+# ledger) instead of the printed staff line, and nothing in that design
+# could tell the difference. Sean's own design, which this is: *"As it works
+# currently a straight line is aligned with the 5 staff lines. Once the
+# straight lines are laid out, can it be measured against the ink, and where
+# they begin to differ the straight line starts to change direction to match
+# what the ink is doing?"* -- the comb starts straight (the staff's own
+# measured `line_ys`) and is walked along x as ONE SHAPE, never one line at
+# a time: at each step every line is checked in a NARROW window around
+# where the comb currently predicts it, and the comb only moves where AT
+# LEAST THREE of five agree. A single wandering line can never drag the
+# comb off the staff; a stretch of ink-covered columns (a chord, a beam)
+# simply holds the comb's last course, which is itself the staff's own
+# measured direction up to that point -- never a guess at what covered ink
+# might have said.
+CELL_LINE_WALK_STEP_SPACES = 0.25     # Sean: "small x steps ... quarter of a
+                                       # staff space"
+CELL_LINE_WALK_SEARCH_HALF_SPACES = 0.25   # a NARROW window around the
+                                            # comb's CURRENT prediction, not
+                                            # the widened 0.35+ the withdrawn
+                                            # independent tracer used
+CELL_LINE_WALK_MIN_COVERAGE = 0.5     # a step's window must be mostly inked
+                                       # to count as "found clean ink" there
+CELL_LINE_WALK_MIN_LINES_AGREE = 3    # of 5 -- Sean's own floor
+CELL_LINE_WALK_OUTLIER_PX = 1.0       # "agreeing ... within ~1 px"
+CELL_LINE_WALK_MAX_STEP_SPACES = 0.08 # the comb's per-step change is capped
+                                       # -- real tilt/stretch accrues slowly
+                                       # over a staff's whole width (Litolff's
+                                       # worst measured case is ~0.44 spaces
+                                       # over an entire system, many steps),
+                                       # a notehead is a local blob and must
+                                       # not move the comb in one step
+
+
+def _measure_ink_centroid(binary: np.ndarray, x0: int, x1: int,
+                          y_lo: float, y_hi: float) -> float | None:
+    """The ink-weighted centroid row in `[y_lo, y_hi)` over columns
+    `[x0, x1)`, or `None` where too few of those columns carry ink in that
+    band to trust it (a note, a stem or a beam covering the window, or the
+    window straying off a line because the comb's own prediction is already
+    wrong there -- the caller's job to notice, not this function's).
+    """
+    y_lo_i, y_hi_i = int(round(y_lo)), int(round(y_hi))
+    if y_hi_i <= y_lo_i or x1 <= x0:
+        return None
+    height, width = binary.shape[:2]
+    y_lo_i, y_hi_i = max(0, y_lo_i), min(height, y_hi_i)
+    x0, x1 = max(0, x0), min(width, x1)
+    if y_hi_i <= y_lo_i or x1 <= x0:
+        return None
+    ink = binary[y_lo_i:y_hi_i, x0:x1] == 0           # 0 = ink (Phase 1)
+    if ink.size == 0:
+        return None
+    coverage = float(ink.any(axis=0).mean())
+    if coverage < CELL_LINE_WALK_MIN_COVERAGE:
+        return None
+    row_counts = ink.sum(axis=1).astype(float)
+    total = float(row_counts.sum())
+    if total <= 0:
+        return None
+    rows = np.arange(y_lo_i, y_hi_i, dtype=float)
+    return float((rows * row_counts).sum() / total)
+
+
+def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
+                     x0: int, x1: int, spacing: float
+                     ) -> np.ndarray | None:
+    """The comb's ONE shift from `nominal_ys`, per page-column from `x0` to
+    `x1`, walked along x and smoothed -- or `None` where the band is too
+    narrow to take even one step.
+
+    The comb starts at shift 0 (the rigid, already-measured `nominal_ys`)
+    and is updated as ONE SHAPE: a step's candidate shift is the MEDIAN of
+    whichever lines found clean ink in their own narrow window, outliers
+    beyond `CELL_LINE_WALK_OUTLIER_PX` of that median dropped, and the comb
+    only moves where at least `CELL_LINE_WALK_MIN_LINES_AGREE` still agree,
+    by at most `CELL_LINE_WALK_MAX_STEP_SPACES` of a space. Anywhere fewer
+    agree, the comb HOLDS its current course -- the staff's own measured
+    direction up to that point, never a guess at covered ink.
+    """
+    if spacing <= 0:
+        return None
+    step_px = max(1, int(round(CELL_LINE_WALK_STEP_SPACES * spacing)))
+    search_half_px = CELL_LINE_WALK_SEARCH_HALF_SPACES * spacing
+    max_step_px = CELL_LINE_WALK_MAX_STEP_SPACES * spacing
+    xs = list(range(x0, x1, step_px))
+    if not xs:
+        return None
+    shift = 0.0
+    shifts: list[float] = []
+    for xi in xs:
+        xw0, xw1 = xi, min(x1, xi + step_px)
+        candidates = []
+        for ny in nominal_ys:
+            py = ny + shift
+            found = _measure_ink_centroid(
+                binary, xw0, xw1, py - search_half_px, py + search_half_px)
+            if found is not None:
+                candidates.append(found - ny)
+        if len(candidates) >= CELL_LINE_WALK_MIN_LINES_AGREE:
+            med = sorted(candidates)[len(candidates) // 2]
+            inliers = [c for c in candidates
+                      if abs(c - med) <= CELL_LINE_WALK_OUTLIER_PX]
+            if len(inliers) >= CELL_LINE_WALK_MIN_LINES_AGREE:
+                new_shift = sum(inliers) / len(inliers)
+                delta = max(-max_step_px, min(max_step_px, new_shift - shift))
+                shift = shift + delta
+        # else: HOLD -- `shift` is left exactly as it was.
+        shifts.append(shift)
+    xs_arr = np.array(xs, dtype=float)
+    shifts_arr = np.array(shifts, dtype=float)
+    all_cols = np.arange(x0, x1, dtype=float)
+    per_col = np.interp(all_cols, xs_arr, shifts_arr)
+    # A running median along x, same pattern (and the same reasoning) as
+    # `trace_staff_line`'s own smoothing: a few steps that update on
+    # noise cannot kink the course.
+    k = max(3, (int(round(0.5 * spacing / step_px)) | 1))
+    if k > 1 and per_col.size > k:
+        per_col = median_filter(per_col, size=k, mode="nearest")
+    return per_col
+
+
 def _trace_cell_local_lines(
     pws: PageWithStaves, staff: Staff, x0: int, x1: int
 ) -> list | None:
-    """Follow each of the staff's 5 printed lines across this cell's own
-    x-band: `[path_0, ..., path_4]`, each a `np.ndarray` of page-y, one entry
-    per page column from `x0` (inclusive) to `x1` (exclusive) -- or `None`
-    when any one of the five could not be traced.
+    """The staff's 5 lines, walked along this cell's own x-band:
+    `[path_0, ..., path_4]`, each a `np.ndarray` of page-y, one entry per
+    page column from `x0` (inclusive) to `x1` (exclusive) -- or `None` when
+    the band is too narrow to walk at all.
 
-    ALL FIVE OR NOTHING, the same policy as `measure_line_geometry`: a
-    partial model would not tell its caller WHICH line is missing, so a
-    consumer reading it would be silently mixing a measured line with an
-    absent one. The caller (`_build_measure_cell`) falls back to the
-    existing per-cell flat grid on `None` -- never silently further, and the
-    choice is recorded (`gather._local_cell_grid_at`'s caller tags its
-    observation `local_staff_lines=False`).
+    One shift for all five lines (`_walk_comb_shift`), not five independent
+    traces -- see the section comment above for why, and what the previous
+    (withdrawn) design cost.
     """
     binary = pws.page.binary
-    ys = [int(y) for y in staff.line_ys]
+    ys = [float(y) for y in staff.line_ys]
     spacing = float(staff.line_spacing_px)
     if len(ys) < 5 or spacing <= 0:
         return None
-    height, width = binary.shape[:2]
-    lo, hi = max(0, int(x0)), min(width, int(x1))
+    lo, hi = max(0, int(x0)), min(binary.shape[1], int(x1))
     if hi - lo < 2:
         return None
-    limit = int(round(CELL_LINE_MAX_SHIFT_SPACES * spacing))
-    band_lo = max(0, min(ys) - limit - 2)
-    band_hi = min(height, max(ys) + limit + 3)
-    if band_hi - band_lo < 5:
+    shift = _walk_comb_shift(binary, ys, lo, hi, spacing)
+    if shift is None:
         return None
-    # Phase 1's binary is 0=ink; `trace_staff_line` wants 255=ink -- the same
-    # conversion `_cell_line_offset` uses on the same band shape.
-    mask = np.where(binary[band_lo:band_hi, lo:hi] == 0, 255, 0).astype(np.uint8)
-    # `trace_staff_line`'s own default search window (0.35 spaces) is
-    # narrower than the displacement this model exists to follow: Litolff
-    # p3's measured wander alone is 0.44 spaces, more than `_cell_line_offset`
-    # already tolerates as a single rigid shift (`CELL_LINE_MAX_SHIFT_SPACES`
-    # = 0.75). A per-column trace must tolerate at least as much, or it
-    # clips the very drift it is built to follow -- measured on this file's
-    # own 14px/0.7-space synthetic ramp, the default window undershoots the
-    # far end by half the ramp.
-    search_spaces = CELL_LINE_MAX_SHIFT_SPACES
-    paths = []
-    for y in ys:
-        traced = trace_staff_line(mask, float(y - band_lo), spacing,
-                                   search_spaces=search_spaces)
-        if traced is None:
-            return None  # all five or nothing -- see the docstring
-        centres, _thickness = traced
-        paths.append(centres + float(band_lo))  # back to page-y
-    return paths
+    return [np.full(hi - lo, y, dtype=float) + shift for y in ys]
 
 
 def _build_measure_cell(
