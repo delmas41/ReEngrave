@@ -1446,3 +1446,98 @@ here — for Sean.
 - the 3 Brahms page-1 pixel-check MISSes above, unexplained.
 - `TOUCH_TOL_SPACES`/`HALF_LEDGER_TOL_SPACES` are calibrated on exactly
   two measured examples; not swept.
+
+## lane-ledger-rungs round 3 (2026-10-01) — off-by-one, box-relative stub
+
+From Sean's reading of the round-2 review crops (DECISIONS 2026-10-01):
+
+**1. Off-by-one, `glyph/3/0/0/2/3` (his C6, ref -4).** Both ledgers were
+found, the last one passing through the head, but the answer was -5.
+Cause, found at `derive_far_head_step`'s `last_half_steps = int(round(
+abs(last - edge_y) / half_step))`: this RE-MEASURED the last rung's own
+step from its raw pixel distance to the edge, rounding against the
+NOMINAL half-step spacing. Hand-drawn ledgers are not evenly spaced (the
+same fact that motivated the wide-gap walk fix in round 1), so a rung the
+walk correctly placed as the 2nd one out measured 4.9 half-steps from the
+edge and rounded up to 5. Fixed: `last_half_steps = 2 * len(rungs_y)` --
+the walk already knows each rung's own step by construction (2 half-steps
+per rung found); trust the COUNT, never a re-measurement.
+
+**2. A head's own ink is not a rung, `glyph/3/0/9/2/0` (ref 11).** Two
+sub-problems:
+
+- **(a)** a through-head span now must be LONGER than the subject's own
+  box width by `RUNG_BEYOND_BOX_MIN_SPACES` (0.05 spaces) to count --
+  checked on the PEAK band's own measured length (never folded into the
+  row-qualifying floor: that regressed peak-selection in a dense chord,
+  see "Dead ends" below). The fake span at `glyph/3/0/9/2/0` measured
+  ~20px against its own 21px box (box-width, no real overhang); the real
+  ledger between the two heads measured 31px. Measured in a DEDICATED,
+  wider crop (`_rung_row_clears_box`, `RUNG_BOX_VISIBILITY_SPACES=0.85`)
+  around the box, never the narrow candidate-finding window, which
+  clips a genuine overhang short (a real 28px overhang on
+  `glyph/3/0/0/2/3` measured 23px once clipped there -- just under the
+  box+margin floor).
+- **(b)** `exclude_boxes` masking is now LATERAL-ONLY inside the
+  box-clearing check: a box with no x-overlap with the subject's own box.
+  A chord stacks several noteheads at nearly the same x on one stem, and
+  excluding one of those (sitting just above/below, not beside) wiped out
+  the subject's own real ledger ink across the shared column. Scoped to
+  the box-clearing check ONLY -- applying the same lateral-only rule to
+  the main candidate-finding window's own exclusion was tried and
+  reverted: it restored a different, already-fixed head's third, spurious
+  rung (`glyph/3/0/0/2/3`, `-6` instead of `-4`). The two exclusions now
+  answer two different questions (what counts as a candidate at all, vs
+  does a particular candidate clear my own box) and are tuned separately.
+
+### RED -> GREEN
+
+`tools/omr/tests/test_ledger_rungs_round3_2026_10_01.py`, 6 tests.
+Confirmed RED against the pre-round-3 file (`TypeError: measure_ledger_
+rungs() got an unexpected keyword argument 'head_box_x'` / wrong offset).
+All 6 green after. Fast tier `-k ledger`: 233 passed (227 + 6).
+
+### Dead ends (worth recording so they are not retried)
+
+- Boosting the row-qualifying `min_len` to the box-aware floor (instead
+  of checking the peak's own length afterward) silently dropped the
+  shorter rows a genuine peak's own floor test anchors on, breaking peak
+  selection entirely in a dense chord (zero rungs found, including the
+  real one).
+- Widening the candidate-finding window itself (not just the later
+  verification crop) to see a box's overhang pulls in enough unrelated
+  ink in a dense chord that a real rung's own row-span grows too TALL
+  across consecutive rows and fails the thinness test instead.
+- A POSITION-based stub check (span edges must clear the box edges by a
+  fixed margin, the first thing tried) measured far worse than the
+  LENGTH-based one shipped: a detector box is not always centred on the
+  ink it bounds (2.39b), so a real rung's span can sit entirely inside a
+  slightly-wider-than-its-ink box on one side while genuinely overhanging
+  on the other -- length doesn't care where the overhang falls.
+- Applying the lateral-only exclusion rule to the MAIN window (not just
+  the box-clearing verification) regressed a different, already-correct
+  head.
+
+### Re-scored: geometry vs rungs-after, staff position
+
+| doc | metric | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry | 30 | 15 | 0 | 45 |
+| Litolff | rungs-after | 30 | 9 | 6 | 45 |
+| Brahms | geometry | 11 | 0 | 0 | 11 |
+| Brahms | rungs-after | 7 | 3 | 1 | 11 |
+
+Rungs-after now MATCHES geometry's right count on Litolff (30/45, up from
+round 2's 26/45) and is close on Brahms (7/11 vs 11/11, down 1 from round
+2's 8). Control (every head's box shifted one half-step) scores clearly
+worse on both docs: Litolff 12/27/6, Brahms 3/7/1.
+
+### Redrawn crops, round 3
+
+`out/print/ledgers/review3/` (19 crops + `index.md`): every head still
+wrong (15) or abstaining (4). Cause counts: 8 "through-head match lands
+on the wrong ledger", 5 "abstain -- no rungs found", 3 "touching but
+reference disagrees", 2 "abstain -- ambiguous gap", 1 "next-ledger but
+reference disagrees". 4 crops still show the pre-existing, unexplained
+Brahms count-page pixel-check MISS noted in round 2 (not a new
+regression, not chased further here).

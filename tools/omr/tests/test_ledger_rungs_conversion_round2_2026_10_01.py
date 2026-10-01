@@ -75,10 +75,14 @@ def test_half_space_beyond_is_the_next_ledger_hidden_under_the_head() -> None:
 @pytest.mark.omr_annotate
 def test_rung_passing_through_the_head_itself() -> None:
     """The last rung sits BEYOND the near edge (on the far side of the
-    head) -- the head is ON that very rung, not the next one out."""
+    head) -- the head is ON that very rung, not the next one out. The
+    rung's own step is its COUNT in the walk (one rung found = 2
+    half-steps), never a re-measurement of its raw pixel position
+    (round 3 fix -- a re-measurement is exactly what stepped one too far
+    on real, unevenly-spaced ledgers)."""
     out = derive_far_head_step([150.0], 300.0, -1.0, 200.0, 100.0)
     assert out["kind"] == "line"
-    assert out["offset"] == 3  # the found rung's own offset, unchanged
+    assert out["offset"] == 2  # the one found rung's own COUNT-based offset
 
 
 @pytest.mark.omr_annotate

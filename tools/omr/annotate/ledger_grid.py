@@ -81,6 +81,29 @@ CROSS_HALF_WIDTH_SPACES = 0.1
 # whose near-side stub was short but genuinely present, not merely a
 # brush from one side (see FINDINGS).
 RUNG_STUB_MIN_SPACES = 0.15
+# A through-head rung's stub must extend this far BEYOND the subject's
+# OWN detector box edges on each side (DECISIONS 2026-10-01, round 2,
+# Sean on `glyph/3/0/9/2/0`: a rung was invented from the head's own
+# widest row, which does not extend past its own box at all). Used only
+# where the caller supplies the subject's own box (`head_box_local`).
+# 0.25 (near the old cx-relative RUNG_STUB_MIN_SPACES margin) measured
+# FAR worse on 2.44c's truth set -- real boxes already vary in width
+# with the plate (Litolff merges, Breitkopf shatters, 2.39 standard-vs-
+# raw box), and requiring clearance past the WIDEST of those on top of
+# the box's own width abstained most real far heads. A real ledger only
+# needs to poke a short, genuine amount past the note it runs through,
+# not a further quarter space past whatever the box itself measures;
+# small enough only to refuse ink that is merely coextensive with (or
+# narrower than) the box -- the exact shape of the head's own widest row.
+RUNG_BEYOND_BOX_MIN_SPACES = 0.05
+# How far past the subject's own box the search window extends when
+# `head_box_x` is given (round 3) -- sized to the largest genuine
+# overhang measured in this lane's own data (~0.65 spaces) plus slack,
+# not a second full probe window (`WINDOW_HALF_WIDTH_SPACES`): that was
+# tried and refused -- in a dense chord it pulls in enough unrelated ink
+# that a real rung's row-span grows too tall across consecutive rows and
+# fails the thinness test instead.
+RUNG_BOX_VISIBILITY_SPACES = 0.85
 # When the walk cannot find the next rung within WALK_WINDOW of the
 # current anchor but the head it is reading FOR is still farther out than
 # that window reaches, the window is widened up to the head's own
@@ -125,7 +148,7 @@ def _otsu_threshold(values: np.ndarray) -> int:
 
 
 def _band_centers(
-    ink: np.ndarray, cx_local: float, spacing: float, y_offset: int
+    ink: np.ndarray, cx_local: float, spacing: float, y_offset: int,
 ) -> list[float]:
     """Thin bands of long ink spans crossing x=cx_local. Returns centre ys
     in image coordinates (y_offset is the window's top row).
@@ -280,10 +303,107 @@ def far_head_needs_ledger_read(pos_half_steps: float) -> bool:
     return pos_half_steps < -1 or pos_half_steps > 9
 
 
+def _rung_row_clears_box(
+    img_gray: np.ndarray, y: float, x: float,
+    head_box_x: "tuple[float, float]", spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> bool:
+    """Does the ink crossing (y, x) extend past the subject's OWN box
+    (`head_box_x`) by `RUNG_BEYOND_BOX_MIN_SPACES` on top of the box's
+    own width? Measured in a DEDICATED, generously wide crop around the
+    box -- never the narrow window the candidate-finding walk uses to
+    locate rungs in the first place, which routinely clips a real rung's
+    true extent a few px short of a length test (round 3: a genuine 28px
+    overhang measured 23px once clipped there). Widening THAT window
+    instead, so one pass could do both jobs, was tried and refused: in a
+    dense chord it pulls in neighbouring stems/beams and makes a real
+    rung's own row-span too TALL across consecutive rows, failing peak
+    selection's thinness test before this check is ever reached.
+    """
+    h, w = img_gray.shape
+    bx0, bx1 = head_box_x
+    box_w = bx1 - bx0
+    pad = RUNG_BOX_VISIBILITY_SPACES * spacing
+    cx0 = max(0, int(bx0 - pad))
+    cx1 = min(w, int(bx1 + pad))
+    y_i = int(round(y))
+    y0, y1 = max(0, y_i - 1), min(h, y_i + 2)
+    if cx1 <= cx0 or y1 <= y0:
+        return False
+    window = img_gray[y0:y1, cx0:cx1]
+    thr = _otsu_threshold(window)
+    ink = window <= thr
+    if exclude_boxes:
+        # Another head's ink reaching into this verification crop (the
+        # crop is wider than the main probe window specifically to see a
+        # real overhang) can bridge into a false "clears the box" result
+        # exactly as it could fake a stub in the main window -- same
+        # exclusion, same reason (DECISIONS 2026-10-01, round 2 + 3).
+        ink = _exclude_other_heads_ink(ink, exclude_boxes, cx0, y0, spacing)
+    ink_cols = ink.any(axis=0)
+    bridge = int(round(RUNG_BRIDGE_GAP_SPACES * spacing))
+    runs: list[list[int]] = []
+    n = len(ink_cols)
+    i = 0
+    while i < n:
+        if ink_cols[i]:
+            j = i
+            while j < n and ink_cols[j]:
+                j += 1
+            if runs and i - runs[-1][1] <= bridge:
+                runs[-1][1] = j
+            else:
+                runs.append([i, j])
+            i = j
+        else:
+            i += 1
+    probe_col = int(round(x)) - cx0
+    containing = [r for r in runs if r[0] <= probe_col < r[1]]
+    if not containing:
+        return False
+    s, e = containing[0]
+    return (e - s) >= box_w + 2 * RUNG_BEYOND_BOX_MIN_SPACES * spacing
+
+
+def _exclude_other_heads_ink(
+    ink: np.ndarray, exclude_boxes: "list[tuple[float, float, float, float]]",
+    x0: int, yy0: int, spacing: float,
+) -> np.ndarray:
+    """Remove another notehead's own ink from `ink` (boolean, already
+    thresholded) -- but NEVER a ledger row that continues past that
+    notehead's box on BOTH sides (DECISIONS 2026-10-01, round 2: masking
+    the whole box erased the real ledger printed straight through a
+    neighbouring head). A row is "continuing" if ink is present in a
+    short band immediately outside the box on both the left and the
+    right; only then is it left alone. Otherwise (the head's own ink,
+    which does not reach past its own box) it is blanked, as before.
+    """
+    out = ink.copy()
+    check_px = max(2, int(round(0.10 * spacing)))
+    h, w = out.shape
+    for (bx0, by0, bx1, by1) in exclude_boxes:
+        ex0, ey0 = max(int(bx0), x0), max(int(by0), yy0)
+        ex1, ey1 = min(int(bx1) + 1, x0 + w), min(int(by1) + 1, yy0 + h)
+        if ex1 <= ex0 or ey1 <= ey0:
+            continue
+        col0, col1 = ex0 - x0, ex1 - x0
+        row0, row1 = ey0 - yy0, ey1 - yy0
+        left_lo = max(0, col0 - check_px)
+        right_hi = min(w, col1 + check_px)
+        for r in range(row0, row1):
+            has_left = col0 > left_lo and out[r, left_lo:col0].any()
+            has_right = right_hi > col1 and out[r, col1:right_hi].any()
+            if has_left and has_right:
+                continue  # a real ledger continuing on both sides -- keep it
+            out[r, col0:col1] = False
+    return out
+
+
 def measure_ledger_rungs(
     img_gray: np.ndarray, staff_line_ys: list[float], x: float,
     head_y: float | None = None,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_box_x: "tuple[float, float] | None" = None,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
 
@@ -298,12 +418,30 @@ def measure_ledger_rungs(
     reaching that head; it never invents a rung the ink does not show.
 
     `exclude_boxes`, when given, is a list of OTHER noteheads' own boxes
-    (x0, y0, x1, y1, same frame) -- their ink is blanked out before any
-    span is measured, so a neighbouring head's ink can no longer supply
-    one side of a "both sides" stub (DECISIONS 2026-10-01, Sean: "a
-    second rung... accepted because its left stub is the neighbouring
-    head's ink"). Never includes the subject's own box -- that is real
-    evidence, not noise.
+    (x0, y0, x1, y1, same frame) -- their ink is removed before any span
+    is measured, so a neighbouring head's ink can no longer supply one
+    side of a "both sides" stub (DECISIONS 2026-10-01, Sean: "a second
+    rung... accepted because its left stub is the neighbouring head's
+    ink"). A row whose ink continues past that OTHER box on both sides
+    (a real ledger drawn straight through it) is left alone (round 2:
+    the whole-box blank used to erase exactly such a ledger). Never
+    includes the subject's own box -- that is real evidence, not noise.
+
+    `head_box_x`, when given, is the SUBJECT's own box (x0, x1), same
+    frame. Every rung this function finds is then re-checked (round 3,
+    DECISIONS 2026-10-01, Sean on `glyph/3/0/9/2/0`): its own row-span,
+    measured generously wide (never clipped to the narrow probe window
+    that finds candidate rungs in the first place -- clipping it there
+    was tried and refused, see `_rung_row_clears_box`'s own docstring),
+    must be LONGER than the subject's box width by
+    `RUNG_BEYOND_BOX_MIN_SPACES` on each side combined -- otherwise it is
+    simply the head's own widest row (which, by definition, reaches no
+    wider than its own box) and is dropped, never counted as a rung.
+    Checked AFTER candidate-finding, not folded into the stub/min-length
+    test that finds candidates: boosting that test's own floor was tried
+    first and refused -- in a dense chord it silently drops the shorter
+    rows a genuine peak's own floor test depends on, breaking peak
+    selection for a real, taller rung nearby (see FINDINGS).
     """
     ys = sorted(float(v) for v in staff_line_ys or [])
     if len(ys) < 2 or img_gray.ndim != 2:
@@ -331,22 +469,39 @@ def measure_ledger_rungs(
         if yy1 - yy0 < 2:
             continue
         window = img_gray[yy0:yy1, x0:x1]
-        if exclude_boxes:
-            window = window.copy()
-            for (bx0, by0, bx1, by1) in exclude_boxes:
-                ex0, ey0 = max(int(bx0), x0), max(int(by0), yy0)
-                ex1, ey1 = min(int(bx1) + 1, x1), min(int(by1) + 1, yy1)
-                if ex1 > ex0 and ey1 > ey0:
-                    window[ey0 - yy0:ey1 - yy0, ex0 - x0:ex1 - x0] = 255
         thr = _otsu_threshold(window)
         ink = window <= thr  # <=: Otsu labels the threshold bin itself ink (a
         # binary image splits at t=0, and `<` would then select nothing)
+        if exclude_boxes:
+            ink = _exclude_other_heads_ink(ink, exclude_boxes, x0, yy0, spacing)
         bands = _band_centers(ink, x - x0, spacing, yy0)
         side_target = (
             head_y if head_y is not None and sign * (head_y - edge_y) > 0
             else None
         )
-        out[side] = _walk_ladder(edge_y, sign, bands, spacing, side_target)
+        rungs = _walk_ladder(edge_y, sign, bands, spacing, side_target)
+        if head_box_x is not None:
+            # Only a LATERAL neighbour (no x-overlap with the subject's
+            # own box) is excluded from this verification crop -- a
+            # chord stacks several noteheads at nearly the SAME x on one
+            # stem, and one of those sitting just above/below the
+            # subject is not "a neighbour's ink beside the rung" (what
+            # exclusion exists for); blindly excluding it can wipe out
+            # the subject's own real ledger ink across the whole shared
+            # column (round 3, found verifying `glyph/3/0/9/2/0`'s real
+            # ledger). The MAIN window's own exclusion (above) is
+            # unaffected -- narrowing it the same way regressed a
+            # different, already-fixed head (`glyph/3/0/0/2/3`).
+            lateral = [
+                b for b in (exclude_boxes or [])
+                if b[2] <= head_box_x[0] or b[0] >= head_box_x[1]
+            ]
+            rungs = [
+                ry for ry in rungs
+                if _rung_row_clears_box(img_gray, ry, x, head_box_x, spacing,
+                                        lateral)
+            ]
+        out[side] = rungs
     return out
 
 
@@ -387,7 +542,20 @@ def derive_far_head_step(
         return dict(offset=None, kind=None, reason="no_rungs")
     half_step = spacing / 2.0
     last = rungs_y[-1]
-    last_half_steps = int(round(abs(last - edge_y) / half_step))
+    # ROUND 2 BUG (DECISIONS 2026-10-01, Sean on `glyph/3/0/0/2/3`, his C6:
+    # "Fix the one line change that allowed the code to step further out"):
+    # this used to RECOMPUTE the last rung's own step from its raw pixel
+    # distance to the edge (`round(abs(last-edge_y)/half_step)`), rounding
+    # against the NOMINAL half-step -- but hand-drawn ledgers are not
+    # evenly spaced (same fact that motivated the wide-gap walk fix), so a
+    # rung the walk correctly placed as the 2nd one out could measure
+    # 4.9 half-steps from the edge instead of 4, and round UP to 5,
+    # stepping one further out than the rung the walk actually found.
+    # `_walk_ladder` already KNOWS each rung's step: it is simply 2
+    # half-steps per rung, by the ladder's own construction (one rung per
+    # staff space) -- the COUNT of rungs found, not a re-measurement of
+    # the last one's raw position, is what must be trusted here.
+    last_half_steps = 2 * len(rungs_y)
     gap_spaces = (sign * (head_near_y - last)) / spacing
     if gap_spaces <= -TOUCH_TOL_SPACES:
         return dict(offset=last_half_steps, kind="line",

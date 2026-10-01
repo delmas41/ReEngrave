@@ -129,7 +129,8 @@ def reader_absolute_position(
     # value, which float round-trips could coincidentally match or miss.
     others = [b for (s, b) in page_notehead_boxes if s != subject]
     items = lg.measure_ledger_rungs(
-        gray, ys, cx, head_y=cy, exclude_boxes=others
+        gray, ys, cx, head_y=cy, exclude_boxes=others,
+        head_box_x=(x0, x1),
     ).get(side, [])
     step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
     if step["offset"] is None:
