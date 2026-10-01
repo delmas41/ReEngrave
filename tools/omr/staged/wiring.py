@@ -580,19 +580,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "the half-step the spacing was doubled from. The duration reader "
         "consumes the SPACING; the half-step is the intermediate it came "
         "from, kept so a reader can check the doubling."),
-    "DETAIL Q.NOTEHEAD_STAFF_POSITION.local_staff_lines": (
-        "ROADMAP 2.48: whether THIS row's position came from the staff lines "
-        "traced AT THE HEAD'S OWN x (`gather._local_cell_grid_at`, True) or "
-        "from the cell's one flat grid (`_cell_grid`, False -- the local "
-        "trace declined: a narrow cell, faint lines, or the flag off). "
-        "`readout._position_words` SHOWS it (a `DERIVED_CHECK` sibling "
-        "instrument, so naming it there does not count as consuming it, by "
-        "this file's own fourth exclusion) -- there is no DECISION reader "
-        "yet. WORTH OPENING: a consumer auditing a near-boundary pitch "
-        "should prefer a row with this True, exactly the distinction "
-        "`Q.CLEF_LOCATED.line_source` makes for a clef's line; 2.48 leaves "
-        "that for its own next step rather than widening this round's scope "
-        "(Sean, 2026-09-29: build what was asked, not more)."),
     "DETAIL Q.CLEF_LOCATED.line_source": (
         "whether the clef's LINE was measured or defaulted — which is the "
         "distinction `clef_geometry` exists to make. ⚠️ WORTH OPENING: a "

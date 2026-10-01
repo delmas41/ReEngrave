@@ -1519,18 +1519,11 @@ def _cell_line_offset(
 # Reused here, once per line, over the CELL's own x-band (never the whole
 # staff — a local measurement does not need the staff's full width, and a
 # narrower band is cheaper to trace and more exact near the cell it describes).
-ENV_LOCAL_STAFF_LINES = "OMR_LOCAL_STAFF_LINES"
-
-
-def _local_staff_lines_enabled() -> bool:
-    """`OMR_LOCAL_STAFF_LINES` env; ON by default (ROADMAP 2.48). Set
-    0/false/no/off to disable -- the per-cell flat grid (`_cell_line_offset`,
-    or the staff-wide `Staff.line_ys` where that too declines) is what a
-    disabled or declining trace falls back to; nothing falls back further."""
-    raw = os.environ.get(ENV_LOCAL_STAFF_LINES, "").strip().lower()
-    return raw not in {"0", "false", "no", "off"}
-
-
+#
+# ⚠️ NO FLAG. CLAUDE.md rule 9: no new flag without a roadmap item, and the
+# roadmap item (2.48) asks for the model, not for an on/off switch on it. The
+# behaviour is either right (unconditional) or not merged -- there is no
+# approved arm that needs an off position to compare against.
 def _trace_cell_local_lines(
     pws: PageWithStaves, staff: Staff, x0: int, x1: int
 ) -> list | None:
@@ -1706,7 +1699,7 @@ def _build_measure_cell(
     # declined; a consumer reads it with `getattr(cell,
     # "local_line_paths_px", None)`, the same dynamic-attribute pattern as
     # `staff_line_spacing_canonical` above.
-    if _local_staff_lines_enabled() and len(staff.line_ys) >= 5:
+    if len(staff.line_ys) >= 5:
         local_paths = _trace_cell_local_lines(pws, staff, x0, x1)
         if local_paths is not None:
             cell.__dict__["local_line_paths_px"] = (x0, local_paths)

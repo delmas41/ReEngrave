@@ -1238,21 +1238,10 @@ def _position_words(run: Run, g: Glyph) -> Optional[str]:
     kind = "line" if p % 2 == 0 else "space"
     if 0 <= p <= 8:
         where = f"{kind} {5 - p // 2}" if kind == "line" else f"space {4 - p // 2}"
-        words = f"on {where} (counted from the bottom)"
-    else:
-        steps = -p if p < 0 else p - 8
-        side = "above" if p < 0 else "below"
-        words = f"{steps} step{'s' if steps != 1 else ''} {side} the staff"
-    # ⚠️ WHICH GRID ANSWERED, SHOWN NOT ASSUMED (CLAUDE.md §10, ROADMAP 2.48,
-    # DECISIONS 2026-09-30 'the green staff lines are not lined up with the
-    # staff lines'): a reading aid built on the cell's one flat grid is a
-    # different claim from one read at the head's own x, and Sean's rule is
-    # never to show a ruler whose lines are not the ones actually measured.
-    if pos[0].get("detail", {}).get("local_staff_lines"):
-        words += " -- staff lines traced at this head's own x"
-    else:
-        words += " -- the cell's flat grid (no local trace here)"
-    return words
+        return f"on {where} (counted from the bottom)"
+    steps = -p if p < 0 else p - 8
+    side = "above" if p < 0 else "below"
+    return f"{steps} step{'s' if steps != 1 else ''} {side} the staff"
 
 
 def _hover(run: Run, g: Glyph, *, stage: str, label: str = "") -> str:

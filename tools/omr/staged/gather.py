@@ -521,28 +521,38 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                         list(getattr(c, "staff_line_ys_canonical", None) or [])))
         bbox = getattr(c, "bbox_page_px", None)
         scale = getattr(c, "upscale_factor", None)
+        # ⚠️ ONLY A MEASURED FLAT GRID IS A FALLBACK; THE STAFF-WIDE ONE IS
+        # NOT (CLAUDE.md §10, ROADMAP 2.48). `_cell_grid(c)` above answers
+        # from `c.staff_line_ys_canonical` whatever its provenance -- this
+        # cell's own measured offset (`line_grid_localized` present, set by
+        # `_cell_line_offset`) OR, where that declined, the raw staff-wide
+        # `Staff.line_ys` copied in unchanged by `_build_measure_cell`. A
+        # head whose own-x trace also declines must not fall through to the
+        # second kind silently: it abstains, counted, rather than reporting
+        # a position this cell never actually measured.
+        cell_grid_is_measured = getattr(c, "line_grid_localized", None) is not None
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
-            # ⚠️ LOCAL FIRST, THE CELL'S FLAT GRID AS THE ONLY FALLBACK
-            # (CLAUDE.md §10, ROADMAP 2.48). The head's own x, carried back to
-            # page pixels, is where a scan's tilt or stretch is read off the
-            # PRINT rather than off one shift for the whole cell -- never
-            # silently: `local_staff_lines` records which grid answered.
-            head_top_y, head_half_step, used_local = top_y, half_step, False
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            head_top_y, head_half_step = None, None
             if bbox is not None and scale:
                 page_x = bbox[0] + d.x_center / scale
                 local_grid = _local_cell_grid_at(c, page_x)
                 if local_grid is not None:
                     head_top_y, head_half_step = local_grid
-                    used_local = True
+            if head_top_y is None and cell_grid_is_measured:
+                head_top_y, head_half_step = top_y, half_step
+            if head_top_y is None:
+                log.abstain(g, Q.NOTEHEAD_STAFF_POSITION,
+                            reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+                            reason=ABSTAIN.GRID_NOT_LOCALIZED)
+                continue
             pos_float = (d.y_center - head_top_y) / head_half_step
-            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
-                        rounded=int(round(pos_float)),
-                        local_staff_lines=used_local)
+                        rounded=int(round(pos_float)))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

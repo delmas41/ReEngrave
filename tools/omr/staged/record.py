@@ -2315,6 +2315,12 @@ class ABSTAIN(_Vocab):
     NO_COLUMN_EVIDENCE = "no_column_evidence"    # _assign_groups :611
     NO_SYSTEM = "no_system"                      # assign_systems :672
     NO_STAFF_GEOMETRY = "no_staff_geometry"
+    #: ROADMAP 2.48: a head's own-x local trace declined AND the cell's flat
+    #: grid is not this cell's own measured offset (`_cell_line_offset`
+    #: declined too, so `staff_line_ys_canonical` is the raw staff-wide
+    #: `Staff.line_ys` copied in unchanged) -- CLAUDE.md §10 forbids reporting
+    #: a position off a grid that was never actually measured for this cell.
+    GRID_NOT_LOCALIZED = "grid_not_localized"
     NO_BARLINE = "no_barline"
 
     # ⚠️ The CV clef locator's own rejecting branches, spelled EXACTLY as the

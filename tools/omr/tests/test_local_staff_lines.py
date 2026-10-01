@@ -118,14 +118,6 @@ class TestBuildMeasureCellStoresTheLocalModel:
         assert x0 == X_START + 10
         assert len(paths) == 5 and len(paths[0]) == (X_END - 10) - (X_START + 10)
 
-    def test_disabled_by_flag_carries_nothing(self, monkeypatch):
-        monkeypatch.setenv("OMR_LOCAL_STAFF_LINES", "0")
-        pws = _pws(_draw_staff(ramp_px=14))
-        staff = pws.staves[0]
-        cell = me._build_measure_cell(pws, staff, 0, X_START + 10, X_END - 10, 0)
-        assert cell is not None
-        assert getattr(cell, "local_line_paths_px", None) is None
-
 
 # ─── gather._local_cell_grid_at: Sean's confirmed D6, with his real numbers ──
 
@@ -181,18 +173,25 @@ class _FakeDet:
 
 
 class TestGatherNoteheadPositionsPrefersLocal:
-    def test_uses_local_grid_when_present_and_tags_the_row(self):
+    def _cell(self, **overrides):
+        base = dict(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            staff_line_ys_canonical=[0, 20, 40, 60, 80],  # flat, no drift
+            bbox_page_px=(900, 0, 1000, 100),
+            upscale_factor=1.0,
+        )
+        base.update(overrides)
+        return SimpleNamespace(**base)
+
+    def test_uses_local_grid_when_present(self):
         from tools.omr.staged import record as R
         from tools.omr.staged.record import Log, Q
 
         # A cell whose flat grid (staff_line_ys_canonical) is WRONG relative
         # to the local trace at the glyph's own x — the exact fault this
         # roadmap item exists to fix.
-        cell = SimpleNamespace(
-            page_index=0, system_index=0, staff_index=0, measure_index=0,
-            staff_line_ys_canonical=[0, 20, 40, 60, 80],  # flat, no drift
-            bbox_page_px=(900, 0, 1000, 100),
-            upscale_factor=1.0,
+        cell = self._cell(
+            line_grid_localized={"offset_px": 0},  # this cell's own grid IS measured
             local_line_paths_px=(900, [np.array([5.0] * 100),
                                         np.array([25.0] * 100),
                                         np.array([45.0] * 100),
@@ -207,6 +206,44 @@ class TestGatherNoteheadPositionsPrefersLocal:
         glyph_sub = R.glyph(0, 0, 0, 0, 0)
         rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
         assert len(rows) == 1
-        assert rows[0].detail.get("local_staff_lines") is True
-        # On the LOCAL grid the head sits exactly on the top line: pos 0.
+        # On the LOCAL grid the head sits exactly on the top line: pos 0,
+        # NOT the flat grid's answer (which would be (5-0)/10 = 0.5).
         assert rows[0].value == pytest.approx(0.0, abs=1e-6)
+
+    def test_falls_back_to_a_measured_flat_grid_when_local_declines(self):
+        """No local trace on this cell, but its OWN flat grid came from
+        `_cell_line_offset`'s measured shift (`line_grid_localized` set) --
+        CLAUDE.md §10 allows this fallback, the one short of staff-wide."""
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q
+
+        cell = self._cell(line_grid_localized={"offset_px": 3})
+        det = _FakeDet(x_center=10, y_center=20)  # on the flat grid's 2nd line
+        log = Log()
+        cell_key = R.cell(0, 0, 0, 0).to_key()
+        g.gather_notehead_positions(
+            log, [cell], {0: (0, 0)}, {cell_key: [det]})
+        glyph_sub = R.glyph(0, 0, 0, 0, 0)
+        rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
+        assert len(rows) == 1
+        assert rows[0].value == pytest.approx(2.0, abs=1e-6)
+
+    def test_abstains_rather_than_the_staff_wide_fallback(self):
+        """No local trace AND the cell's own flat grid is NOT this cell's
+        measured offset (no `line_grid_localized`) -- i.e. `_cell_grid(c)`
+        would answer off the raw staff-wide `Staff.line_ys`. CLAUDE.md §10:
+        that must never happen silently, so this abstains instead, counted."""
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import ABSTAIN, Log, Q
+
+        cell = self._cell()  # no line_grid_localized, no local_line_paths_px
+        det = _FakeDet(x_center=10, y_center=20)
+        log = Log()
+        cell_key = R.cell(0, 0, 0, 0).to_key()
+        g.gather_notehead_positions(
+            log, [cell], {0: (0, 0)}, {cell_key: [det]})
+        glyph_sub = R.glyph(0, 0, 0, 0, 0)
+        assert log.rows(Q.NOTEHEAD_STAFF_POSITION, glyph_sub) == ()
+        refusals = log.refusals(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
+        assert len(refusals) == 1
+        assert refusals[0].reason == ABSTAIN.GRID_NOT_LOCALIZED
