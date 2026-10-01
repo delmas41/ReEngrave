@@ -38,40 +38,24 @@ PARTITION itself promoting that signature block to a phantom bar 8 because
 its width (113px) narrowly failed to read as "blank tail" against this
 system's own measure-width scale.
 
-### 0b. Beethoven 5/i, Litolff 984073, PDF page 2, system 1 -- MISSING bar
-(15 decided where 16 is needed to reach 32 across the page; 31 vs 32
-verified)
+### 0b. [WITHDRAWN 2026-09-30, manager review -- see section 6] Beethoven
+5/i, Litolff 984073, PDF page 2, system 1 -- MISSING bar (15 decided where
+16 is needed to reach 32 across the page; 31 vs 32 verified)
 
-System 0 on this page is clean and crop-confirmed: 16 cells (15 interior +
-a 150px tail against a 139px median, nowhere near the 27.8px absorb
-threshold -- `out/print/2.47/litolff-p2-sys0-tail-end-x2300-2650.png` shows
-the system's own closing double-bar sitting right at the measured `x_end`,
-no spurious or swallowed content). That is bars 17-32, 16 bars, exactly
-matching `works.json`.
-
-System 1 is where the deficit is, and it is **not a tail/threshold
-artefact** -- `dropped_at_edge=2` (a normal open+close pair), tail/threshold
-margin 551% (nowhere near a near-miss). The printed bar number at this
-system's own start, read directly off the plate
-(`out/print/2.47/litolff-p2-sys1-printed-bar-number-zoom.png`, 600dpi,
-4x zoom): **"34."** Not 33. System 0 ends at bar 32; this system's own
-engraved numeral skips straight to 34 -- the plate itself has no bar 33
-anywhere between them, by its own numbering, independent of anything our
-barline geometry does. Our gather's own `printed_bar_number` adjudicator
-misreads this as "4" (drops the leading digit; a known class, 2.46), which
-is a separate, smaller bug (the OCR crop is too tight) and not why the
-count is short.
-
-**This is not clearly a partition bug.** The geometrically-detected bars on
-this system are all normal width (109-293px against a page where 100-300px
-is the typical range) and none looks doubled or halved. The most likely
-explanation is that this 1870 Litolff plate has an engraving numbering slip
-(32 to 34, no 33) that the modern reference encoding `works.json` was
-verified against does not carry -- i.e. `works.json`'s "32 verified" may
-itself be the thing that needs re-checking against the PLATE's own
-numerals, not our partition. **I could not establish which side is wrong
-without print access Sean already has and I don't** -- see section 4, the
-one question.
+**This whole subsection's conclusion is WRONG and is kept only so the
+correction in section 6 is visible against what it corrects.** I originally
+wrote: "System 0 on this page is clean and crop-confirmed: 16 cells ...
+That is bars 17-32, 16 bars, exactly matching `works.json`" and concluded
+the plate's own numbering skips 33 (no bug on our side). The manager refuted
+this by reference content: our exported bars 32/33/34 match the
+REFERENCE's bars 33/34/35 (a one-bar lag already present by bar 33), so
+**system 0 really holds 17 bars (17-33), not 16, and `works.json`'s "32
+verified" is correct.** The printed "34" at system 1's start that I read as
+evidence of a plate numbering slip is in fact exactly what a CORRECT
+17-bar system 0 should produce (17+17=34) -- I had the arithmetic backwards.
+The actual deficit is a barline DROPPED somewhere inside system 0's own 16
+decided cells. See section 6 for where I narrowed it and section 4's
+question, which is now a different, narrower one.
 
 ## 1. How widespread -- 6 more systems, all pages with a `works.json` window
 
@@ -165,28 +149,141 @@ Neither mechanism is that:
   numeral, or `works.json`'s verified window) is right, which is rule 3's
   "ask first," not rule 6's "connect."
 
-## 4. One question for Sean
+## 4. One question for Sean [REVISED after section 6's correction]
 
-On Litolff 984073 page 2 (`out/print/2.47/litolff-p2-sys1-start-printed-bar-34.png`,
-the whole system-1 opening, and
-`out/print/2.47/litolff-p2-sys1-printed-bar-number-zoom.png`, a tight 4x zoom
-on just the numeral): **the plate's own printed bar number at the start of
-this system reads "34," with system 0 (confirmed clean, 16 bars) ending at
-32 right before it -- no bar 33 anywhere on the page by the plate's own
-count.** `benchmarks/omr-scan-e2e-2026-09/works.json` has this page verified
-at 32 measures (continuous 17-48). Is this an original 1870 engraving slip
-(the plate really skips from 32 to 34, and our 31-bar read is correct), or
-is there a bar 33 I'm not seeing that the plate numbers differently? If it's
-the former, the `works.json` window for this row needs re-verifying against
-the plate rather than the reference encoding's continuous numbering.
+**Superseded.** The original question here (whether the plate skips bar 33)
+was based on the now-withdrawn section 0b and had the arithmetic backwards
+-- see section 6. The live question is narrower: on Litolff 984073 page 2
+system 0, bars 19-31 (by our own, now-known-short numbering) are a
+crescendo build-up with dense tremolo/chord figuration where our own
+duration reader mostly abstains (exports as rests) and where I could find
+no candidate column, among the barline detector's own rejects, that shows
+real inter-staff ink under a 4x zoom (section 6a; crops
+`out/print/2.47/litolff-p2-sys0-x838-gap-zoom.png`,
+`-x838-x918-strings-gap-zoom.png`, `-x1147-gap-zoom.png`,
+`-full-bars18-21-candidates.png`). **Can Sean place the missing barline by
+eye in that span on the original plate** -- is there a thin/broken rule
+visible there that bitonal scanning lost, or is the true bar boundary
+somewhere I haven't marked at all?
 
 ## 5. What I could not verify
 
-- Whether the Litolff "33" is truly absent from the plate or whether I am
-  missing it (I looked at the full system-0-tail crop and the system-1-start
-  crop and found no candidate bar between them, but I have not compared
-  against a second Litolff-family copy or the Breitkopf/Gutmann editions of
-  the same passage).
+- Exactly which single barline inside Litolff p2 system 0 (bars 19-31) is
+  missing -- narrowed to "somewhere in this 7-bar crescendo span," not to a
+  specific x. Every geometric candidate I found and checked failed a direct
+  ink-gap zoom (section 6a).
 - Whether the Brahms tail-threshold near-miss recurs anywhere in the other
   287 library editions -- the survey here covers 8 pages of 2 works only,
   per the brief's scope.
+- Whether the dropped-barline mechanism (ink loss before any candidate
+  forms) recurs elsewhere in Litolff's dense tutti passages beyond this one
+  confirmed instance -- section 7's printed-number cross-check found no
+  second case in this 8-page sample, but a 1870 bitonal scan's ink loss is
+  plausibly correlated with dynamic level (f/ff passages), which this
+  sample under-represents.
+
+## 6. RETRACTION (manager review) -- "system 0 is clean" was WRONG
+
+The manager refuted section 0b's "system 0, confirmed clean, 16 bars" by
+reference content: our export's bar 32/33/34 (E4 G4 C5 C5 / C5 half / B4 B4
+B4 D5) match the REFERENCE's bar 33/34/35, a one-bar lag that starts at or
+before bar 33, not at system 1. **The printed "34" at system 1's start is
+correct AND consistent with system 0 holding 17 bars (17-33), not 16.**
+`works.json`'s window is right; my section 0b was wrong and is withdrawn.
+
+### 6a. Narrowing the missing barline inside system 0
+
+Printed-number cross-check (new, see section 7): system 0 opens at printed
+"17" (crop-confirmed, unchanged) and system 1 opens at printed "34"
+(crop-confirmed) -- so system 0 is 17 bars by the plate's own numbers,
+against our 16 decided. Content alignment against the reference (Violin I,
+`P8` in our export vs `P14` in the reference .mxl) confirms bars 17-18 are
+NOT shifted (our bar 18 = `D5 G5 F4 F4`, reference bar 18 = `D5 G5 G5 F5` --
+same 4-note chord shape, two pitch misreads, no bar offset). Bars 19-31 in
+our export are mostly exported as `R` (rest) for Violin I -- the
+duration/rhythm reader abstains through this whole passage (a crescendo
+buildup with dense tremolo/chord figuration in the lower strings, "cresc...
+f...ff" per the print), which makes content-matching unusable there; the
+shift is confirmed again only once clean content resumes at bar 32→33.
+
+**I could not visually confirm which single barline inside bars 19-31 is
+missing.** `measure_extractor`'s own candidate-cluster log for this system
+(reconstructed by calling `_detect_barlines_per_staff` + the same
+clustering/voting code standalone) lists every REJECTED column with
+votes>=4: `x=838 (9/11 votes, connectivity 0.000)`, `x=918 (7/11,
+connectivity 0.200)`, `x=1147 (6/11, connectivity 0.500)`, `x=712 (5/11,
+connectivity 0.400)`, `x=1050 (6/11, connectivity 0.000)`. x=838 carries
+almost as many votes as a real accepted barline (the real ones run 8-11/11
+on this system) -- the single strongest-by-vote candidate for a missed
+barline. But a tight 4x zoom directly on the inter-staff GAP at x=838, at
+two different staff pairs (flute/oboe gap and the two violin staves' own
+gap, `out/print/2.47/litolff-p2-sys0-x838-gap-zoom.png`), shows clean white
+paper -- no connecting ink at all, at either gap. The same zoom check on
+x=1147 (`out/print/2.47/litolff-p2-sys0-x1147-gap-zoom.png`) shows a beam
+crossing the column on both staves it was checked against -- a stem/beam
+alignment, not a barline. None of the five rejected candidates survives a
+direct look at the print.
+
+**My honest conclusion: the missing barline's ink did not survive page
+preparation at all** -- it never fired as a per-staff candidate on enough
+staves even to form a weak cluster, rather than firing and being wrongly
+filtered by vote/connectivity. That is a THIRD class, distinct from both
+Brahms's tail-threshold miscalibration (section 0a, a correctly-detected
+column mis-classified) and a vote/connectivity misfire (section 0b's
+original, now-wrong hypothesis) -- a genuine non-detection, most likely tied
+to Litolff's known bitonal ink loss in dense figuration (CLAUDE.md section
+10: "Litolff MERGES... ink components are not marks on the plate," 46 of
+180 sampled "notehead" boxes were not noteheads). **I do not have a crop
+that shows the missing barline's own ink**, because by this reading there
+isn't any left to show -- only crops showing where it should be and isn't.
+This needs Sean's eye on the original PDF at this location
+(`out/print/2.47/litolff-p2-sys0-full-bars18-21-candidates.png`, the full
+615-1220 span with all five rejects marked) more than it needs another
+automated pass.
+
+## 7. Generality, using printed bar numbers + content alignment
+
+Printed-number cross-check at every system boundary readable across the
+8-page sample (`Q.PRINTED_BAR_NUMBER`, compared against the RUNNING total
+from the previous system's decided count):
+
+| page | sys0 start (printed) | sys0 decided | expected sys1 start | sys1 start (printed) | match |
+|---|---|---|---|---|---|
+| litolff p1 | (none printed, bar 1) | 16 | -- | -- | n/a (1 system) |
+| litolff p2 | 17 (confirmed) | 16 | 33 | **34** | **MISMATCH -- the dropped-barline case** |
+| litolff p3 | 49 (confirmed) | 16 | 65 | 65 (confirmed) | match |
+| litolff p4 | abstained | 15 | 98 | 98 (confirmed) | match |
+| brahms p0 | abstained (bar 1) | 8 | -- | -- | n/a (1 system) |
+| brahms p1 | 8 (confirmed) | 7 | 15 | abstained | can't confirm (but total matched independently) |
+| brahms p2 | abstained | 6 | 29 | 29 (confirmed) | match |
+| brahms p3 | 38 (confirmed) | 10 | 48 | "8" (misread of 48, digit-drop class) | consistent once corrected |
+
+**6 of 7 checkable system-to-system transitions match exactly; the one
+mismatch is the Litolff p2 case already known.** This matters beyond the
+earlier (weaker) total-sum check in section 1: a total-sum match per PAGE
+cannot rule out two offsetting per-system errors (e.g. sys0 short by one,
+sys1 long by one) -- litolff p3 and p4's per-system printed numbers now
+positively CONFIRM both systems' individual counts are correct, not just
+their sum. **Both mechanisms -- the Brahms phantom-tail and this Litolff
+dropped-barline -- occur in exactly 1 of 15 systems checked, each
+independently confirmed by the plate's own printed numbers.** Neither
+recurs elsewhere in this 8-page sample once checked this way.
+
+### What makes each happen
+
+- **Phantom tail (Brahms p0):** a correctly-DETECTED column (the real final
+  barline, 14/14 votes) is followed by a narrow-but-non-blank strip (a
+  cautionary signature) whose width (113px) clears
+  `_measure_x_boundaries`' 20%-of-median absorb floor by 1%. Triggered by
+  width ARITHMETIC on a correctly-read page.
+- **Dropped barline (Litolff p2):** no column was ever detected with enough
+  staff agreement to be a candidate at all, inside a dense tremolo/chord
+  build-up on a bitonal scan already known to lose ink (CLAUDE.md section
+  10). Triggered by INK LOSS before any threshold logic runs.
+
+These are different failure classes with different likely rates elsewhere:
+the tail-threshold miss is a reproducible arithmetic coincidence (any score
+whose final cautionary signature happens to sit near 20% of that system's
+own median bar width); the dropped barline is tied to a specific plate's
+scan quality in a specific dense passage and is much harder to predict from
+geometry alone.
