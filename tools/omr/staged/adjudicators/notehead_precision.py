@@ -980,6 +980,267 @@ def _notehead_same_side_second_refusal(ev: Evidence, this_row,
 STACKED_HEAD_REASON = "stacked_head_duplicate"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.49 -- a stroke crossing a stem is a tremolo slash, not a
+# notehead (Sean, DECISIONS 2026-10-01: "a single notehead can't extend on
+# either side of the stem ... any time a stem has a diagonal ink slash that
+# could be confused with a notehead it must land on one side of the stem").
+# `gather.gather_notehead_stem_cross_ink` already measured, per
+# notehead-classed box, how much ink stands on either side of its matched
+# `Q.STEM` row's own centre x (`Q.NOTEHEAD_STEM_CROSS_INK`); this is
+# ADJUDICATE's half -- the floor, and the refusal.
+#
+# ⚠️ FOUND ON THE TREE (manager, 2026-10-01, Litolff `glyph/13/1/8/13/5`):
+# 2.42's own stacked-head keep-choice can pick a SLASH over the real open
+# head it crosses, because the slash's thin diagonal ink can out-score a
+# hollow head's own faint ring under `notehead_ink_under`. `_stacked_head_
+# group_rows`'s own callers below drop a tremolo-flagged candidate from the
+# group BEFORE the ink comparison, so a slash can never be chosen as the
+# slot's keeper and never costs a real head its only surviving box.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️⚠️ ROADMAP 2.49 REDESIGN (Sean, DECISIONS 2026-10-01, on manager crop
+#: `glyph/3/0/8/6/12`, a plain filled head whose own round oval pokes past
+#: its own attached stem): *"it should first be recognized as a thick
+#: diagonal line that crosses both sides of the stem significantly ...
+#: Those [false positives look like] a notehead and a ledger line. Those
+#: are at the end of a stem -- a trem slash wouldn't be and they primarily
+#: are on one side of the stem with a tiny bleed. Not to mention that it is
+#: round not a diagonal thick line."* Three tests, ALL required, in THIS
+#: order (shape first -- a round blob or a thin horizontal/vertical line is
+#: never a slash whatever its ink distribution says):
+#:
+#:   1. SHAPE   `_tremolo_shape_ok` -- the glyph's own ink (whole box,
+#:      beam-excluded) is a THICK DIAGONAL stroke: its principal-axis angle
+#:      sits well off both horizontal (a ledger) and vertical (a stem
+#:      fragment), it is clearly ELONGATED (not round), and it does not
+#:      FILL its own box the way a solid oval does.
+#:   2. CROSSING `_tremolo_crossing_ok` -- each side of the stem (beyond the
+#:      stem's own edges, never its centre line) holds a REAL SHARE of the
+#:      glyph's OWN total ink, not merely a dense fraction of a possibly
+#:      tiny sliver -- "a tiny bleed" must fail even where the sliver
+#:      itself reads 100% full.
+#:   3. POSITION `_tremolo_position_ok` -- the box sits on the stem's own
+#:      SHAFT, away from BOTH ends; a head always sits AT one end (where it
+#:      attaches), so a box centred near either end fails regardless of
+#:      shape or crossing.
+#: ─────────────────────────────────────────────────────────────────────────────
+
+#: Degrees off HORIZONTAL the stroke's own principal axis must clear on
+#: BOTH sides -- `[MIN, MAX]` keeps a thin horizontal ledger (angle ~0) and
+#: a near-vertical stem fragment (angle ~90) out, symmetric around a 45°
+#: diagonal. MEASURED on synthetic strokes built to the real proportions
+#: (`test_staged_tremolo_slash.py`): a 45°, thickness-24px/length-140px
+#: diagonal reads 44.3°; a horizontal ledger-like stroke reads 0.0°; a
+#: vertical stem-like stroke reads 89.2° -- the band is wide because a
+#: real slash is drawn at varying steepness, never because it was fitted
+#: to patch one case.
+SHAPE_ANGLE_MIN_DEG = 20.0
+SHAPE_ANGLE_MAX_DEG = 70.0
+
+#: sqrt(major variance / minor variance) of the ink mask. MEASURED on a
+#: clean synthetic stroke: a round filled notehead reads 1.3; a 45°,
+#: thickness-24px diagonal reads 5.87. ⚠️ REAL SCANNED INK READS LOWER ON
+#: BOTH SIDES than the clean synthetic (manager review, Litolff real
+#: re-gather): the confirmed-by-crop real slash `glyph/13/1/10/2/0` reads
+#: only 1.9 (anti-aliasing and fusion with nearby chord ink flatten it),
+#: and the real heads sampled read ~1.08-1.33. 1.8 sits just below the
+#: lowest confirmed real slash and above every confirmed real head
+#: measured so far -- a narrower real margin than the synthetic one, which
+#: is why CROSSING and POSITION carry real weight too rather than SHAPE
+#: alone.
+SHAPE_MIN_ELONGATION = 1.8
+
+#: ink pixels / the WHOLE box's own area. MEASURED: the same filled
+#: notehead reads 0.73 (a solid oval fills most of its own box); the
+#: diagonal stroke reads 0.22 (a thin stroke drawn inside a box sized to
+#: the DETECTOR's extent, not to the stroke's own width, fills much less of
+#: it). Set below the head's own number with real margin, above the
+#: stroke's.
+SHAPE_MAX_FILL = 0.55
+
+#: Each side (beyond the stem's own edges) must hold at least this SHARE of
+#: the glyph's own TOTAL ink (not a fraction of that side's own small area)
+#: -- Sean: "a tiny bleed" must fail even where the sliver itself is dense.
+#: A real slash splits roughly evenly across the stem it crosses; 0.30
+#: requires each side to carry close to a third of the whole stroke, far
+#: above what a round head's own curve pokes past its attached edge.
+CROSSING_MIN_SHARE = 0.30
+
+#: The box's own centre must sit at least this many BOX HEIGHTS from the
+#: NEAREST end of the matched `Q.STEM` row -- a notehead's own box is
+#: centred AT the end it attaches to (distance ~0); a slash sits along the
+#: shaft, clearly away from both ends. One box-height is the same unit
+#: `NOTEHEAD_DUPLICATE_MAX_DY_STAFF_SPACES`-style rules already use (the
+#: glyph's own detected size), not a separately fitted pixel count.
+POSITION_MIN_END_RATIO_BOX_HEIGHTS = 0.5
+
+#: Reason a refused box carries under ROADMAP 2.49 -- kept apart from every
+#: other mechanism here so a census can tell them apart (CLAUDE.md §4d).
+TREMOLO_SLASH_REASON = "tremolo_slash_crosses_stem"
+
+#: ON since 2026-10-01 (Sean: "Switch it on"), after he read every firing
+#: of the three-test rule on Litolff pp.1-3 plus his two named page-13 cases:
+#: 7 of 7 real slashes, a real head as control did not fire (DECISIONS
+#: 2026-10-01, ROADMAP 2.49). The signal stays recorded on every
+#: notehead-classed glyph that reaches a `Q.STEM` box
+#: (`detail["tremolo_slash_signal"]`).
+TREMOLO_SLASH_SHIPS = True
+
+
+def _notehead_stem_cross_detail(ev: Evidence, subject) -> Optional[Dict[str, Any]]:
+    """`Q.NOTEHEAD_STEM_CROSS_INK`'s own `detail` for `subject`, or `None`
+    where GATHER filed no row (no overlapping stem, or no area to split --
+    see the quantity's own docstring). Read, never re-derived (CLAUDE.md
+    rule 6): the raster split and the shape read both already happened in
+    GATHER."""
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=subject)
+    if not rows:
+        return None
+    return rows[-1].detail or {}
+
+
+def _tremolo_shape_ok(cross_detail: Dict[str, Any]) -> Optional[bool]:
+    """TEST 1, SHAPE: a thick diagonal stroke, not round, not a thin
+    horizontal/vertical line. `None` (not False) where GATHER could not
+    read a shape at all (too little ink, `SHAPE_MIN_INK_PX`) -- a shape
+    this test cannot read is not one it clears."""
+    angle = cross_detail.get("angle_deg")
+    elong = cross_detail.get("elongation")
+    fill = cross_detail.get("fill")
+    if angle is None or elong is None or fill is None:
+        return None
+    return (SHAPE_ANGLE_MIN_DEG <= angle <= SHAPE_ANGLE_MAX_DEG
+           and elong >= SHAPE_MIN_ELONGATION
+           and fill <= SHAPE_MAX_FILL)
+
+
+def _tremolo_crossing_ok(cross_detail: Dict[str, Any]) -> Optional[bool]:
+    """TEST 2, CROSSING: each side holds a real SHARE of the glyph's own
+    total ink -- never a fraction of that side's own (possibly tiny) area.
+    `None` where GATHER found no ink to share at all."""
+    left_share = cross_detail.get("left_share")
+    right_share = cross_detail.get("right_share")
+    if left_share is None or right_share is None:
+        return None
+    return (left_share >= CROSSING_MIN_SHARE
+           and right_share >= CROSSING_MIN_SHARE)
+
+
+def _tremolo_position_ok(box_xywh: Tuple[float, float, float, float],
+                         stem_xywh: Tuple[float, float, float, float]
+                         ) -> Optional[bool]:
+    """TEST 3, POSITION: away from BOTH ends of the matched stem, in box
+    heights. `None` where the box carries no height to measure against."""
+    x, y, w, h = box_xywh
+    sx, sy, sw, sh = stem_xywh
+    if h <= 0:
+        return None
+    cy = y + h / 2.0
+    dist_top = cy - sy
+    dist_bottom = (sy + sh) - cy
+    nearest = min(dist_top, dist_bottom)
+    return (nearest / h) >= POSITION_MIN_END_RATIO_BOX_HEIGHTS
+
+
+def _tremolo_stem_box(ev: Evidence, cell, stem_id: Optional[str]
+                      ) -> Optional[Tuple[float, float, float, float]]:
+    """The exact `Q.STEM` row GATHER matched (named by id in the cross-ink
+    row's own `detail["stem"]`), read back from this cell's rows -- never
+    re-matched by overlap a second time (CLAUDE.md rule 6)."""
+    if stem_id is None:
+        return None
+    for r in ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if r.id == stem_id:
+            return _stem_xywh(r)
+    return None
+
+
+def _is_tremolo_slash(ev: Evidence, subject) -> bool:
+    """Do ALL THREE of `subject`'s own tests pass -- the same tests
+    `_tremolo_slash_crosses_stem` makes for `ev.subject`, asked here of any
+    OTHER glyph in a stacked group so a slash can never be chosen as that
+    group's keeper (see the module-section comment above).
+
+    ⚠️ `TREMOLO_SLASH_SHIPS` GATES THIS TOO, not only the direct refusal --
+    the whole mechanism is held back to a true no-op while unshipped (see
+    that constant's own docstring); a stacked group's keep-choice must not
+    quietly change on a signal nobody has agreed to trust yet.
+    """
+    if not TREMOLO_SLASH_SHIPS:
+        return False
+    cross_detail = _notehead_stem_cross_detail(ev, subject)
+    if cross_detail is None:
+        return False
+    box_row = None
+    for r in ev.rows(Q.GLYPH_BOX, subject=subject):
+        box_row = r
+    if box_row is None or not isinstance(box_row.value, (list, tuple)) \
+            or len(box_row.value) != 5:
+        return False
+    box_xywh = tuple(float(v) for v in box_row.value[1:])
+    cell = subject.at(Kind.CELL)
+    stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
+    if stem_xywh is None:
+        return False
+    shape_ok = _tremolo_shape_ok(cross_detail)
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    position_ok = _tremolo_position_ok(box_xywh, stem_xywh)
+    return bool(shape_ok and crossing_ok and position_ok)
+
+
+def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
+                                detail: Dict[str, Any]
+                                ) -> Optional[Ruling]:
+    """ROADMAP 2.49 -- all three tests (SHAPE, CROSSING, POSITION), in that
+    order, over THIS box's own ink and its matched `Q.STEM` row. Reads
+    `Q.NOTEHEAD_STEM_CROSS_INK`/`Q.STEM` (GATHER) -- never re-measures the
+    raster. `None` where GATHER filed no cross-ink row at all (no stem
+    reached this box, or the box does not extend far enough past the stem
+    on one side to ask the question): a box this rule cannot address is
+    not a box it clears.
+
+    ⚠️ `TREMOLO_SLASH_SHIPS = False` (see its own docstring): the SIGNAL is
+    computed and recorded on every call that reaches it, exactly as
+    `_unladdered` does; it never sets `value=True` while the constant is
+    `False`. These tests assert the SIGNAL, not a refusal, the same
+    discipline `TestUnladdered` uses.
+    """
+    cross_detail = _notehead_stem_cross_detail(ev, this_row.subject)
+    if cross_detail is None:
+        return None
+    shape_ok = _tremolo_shape_ok(cross_detail)
+    crossing_ok = _tremolo_crossing_ok(cross_detail)
+    box_row = this_row
+    box_xywh = tuple(float(v) for v in box_row.value[1:]) \
+        if isinstance(box_row.value, (list, tuple)) and len(box_row.value) == 5 \
+        else None
+    cell = this_row.subject.at(Kind.CELL)
+    stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
+    position_ok = (_tremolo_position_ok(box_xywh, stem_xywh)
+                  if box_xywh is not None and stem_xywh is not None else None)
+    would_fire = bool(shape_ok and crossing_ok and position_ok)
+    detail["tremolo_slash_signal"] = {
+        "angle_deg": cross_detail.get("angle_deg"),
+        "elongation": cross_detail.get("elongation"),
+        "fill": cross_detail.get("fill"),
+        "left_share": cross_detail.get("left_share"),
+        "right_share": cross_detail.get("right_share"),
+        "shape_ok": shape_ok, "crossing_ok": crossing_ok,
+        "position_ok": position_ok, "would_fire": would_fire}
+    if not would_fire or not TREMOLO_SLASH_SHIPS:
+        return None
+    rows = ev.rows(Q.NOTEHEAD_STEM_CROSS_INK, subject=this_row.subject)
+    used = (this_row.id, rows[-1].id) if rows else (this_row.id,)
+    # ⚠️ LITERAL, NOT THE CONSTANT ABOVE — `brakes.vocabulary_gap`'s AST
+    # walk over `reason=` needs a string literal to resolve every reason a
+    # `Ruling` here can carry; `STACKED_HEAD_REASON`/`NOTEHEAD_SAME_SIDE_
+    # REASON` keep the same split (constant for the `reasons=` DECLARATION,
+    # literal at the return) for the same reason.
+    return Ruling(value=True, reason="tremolo_slash_crosses_stem", used=used,
+                  detail=detail)
+
+
 def _stacked_head_group_rows(ev: Evidence, cell, stem_id: str, side: str,
                              slot: int):
     """Every OTHER notehead glyph in this cell whose own `Q.STACKED_HEAD_FIT`
@@ -1036,6 +1297,13 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     stem_id = fdetail.get("stem")
     side = fdetail.get("side")
     group_rows = _stacked_head_group_rows(ev, cell, stem_id, side, slot)
+    # ⚠️ ROADMAP 2.49 -- a TREMOLO SLASH is dropped from the group BEFORE the
+    # ink comparison below, so it can never be chosen as this slot's keeper
+    # (manager, Litolff `glyph/13/1/8/13/5`: the slash's own ink out-scored
+    # the real open head it crossed). The slash itself is refused earlier,
+    # by `_tremolo_slash_crosses_stem`, on its OWN pass through the decision
+    # -- this filter only protects the OTHER members of its group.
+    group_rows = [r for r in group_rows if not _is_tremolo_slash(ev, r.subject)]
     signal: Dict[str, Any] = {
         "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
         "margin": margin, "candidates_at_slot": len(group_rows)}
@@ -1058,18 +1326,11 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
 
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
-    SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
-    arithmetic, restated rather than imported (see the module constant's
-    own note on why)."""
-    _, x0a, y0a, wa, ha = a
-    _, x0b, y0b, wb, hb = b
-    x1a, y1a = x0a + wa, y0a + ha
-    x1b, y1b = x0b + wb, y0b + hb
-    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
-    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
-    inter = iw * ih
-    union = wa * ha + wb * hb - inter
-    return inter / union if union > 0 else 0.0
+    SAME cell's canonical frame. ROADMAP 2.47bc: the arithmetic itself now
+    lives once, in `geometry.box_iou` (shared with `structure.py` — see that
+    module's own section comment); kept under this name here because 2.30's
+    same-class rule and existing tests both call it this way."""
+    return _geom.box_iou(a, b)
 
 
 def _notehead_duplicate_priority(row) -> Tuple[float, int]:
@@ -1241,6 +1502,117 @@ def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
         if _notehead_duplicate_priority(row2) > cand_priority:
             return True
     return False
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.47c — THE SAME INK, BOXED ONCE AS A `timeSig*` DIGIT AND AGAIN AS
+# A NOTEHEAD.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b (crop-verified,
+# `out/print/brahms-plus1/E_wholenote_decided_meter_m8_P4.png`) and
+# `benchmarks/omr-measure-partition-2026-09/FINDINGS.md` §10c/§11c
+# (crop-verified twice, `out/print/2.47b/brahms-p0-sys0-staff3-tail-dup.png`
+# and the current-gather `brahms-p0-sys0-tail-20261001.png`) both name the
+# SAME mechanism on Brahms 1/i p0's cautionary "9/8": one digit's ink is
+# boxed TWICE by the detector, once correctly as `timeSig8` (confidence
+# 0.663-0.9+) and again as `noteheadWholeInSpace` (confidence as low as
+# 0.267 — the open-bowl shape a round numeral shares with a hollow head),
+# at IoU 0.94-0.96 both times measured. This is distinct from 2.30's
+# same-CLASS duplicate (`_notehead_duplicate_box_refusal`, which never
+# compares against a different class) and from 2.12l's `is_a_meter_digit`
+# (a PAIR of notehead-classed boxes near a cell's LEFT edge forming the two
+# digits of a change — this is ONE box, cross-FAMILY, and the duplicate can
+# sit anywhere in the cell, including the RIGHT edge where a cautionary
+# change prints just ahead of the barline it warns about).
+#
+# The module docstring above (ROADMAP 2.30 section) already named this exact
+# question for a REST/notehead pair and left it "ASSUMED, NOT CONFIRMED,
+# NOT BUILT" pending a crop. For a notehead/`timeSig*` pair the crop already
+# exists, twice over, from unrelated lanes measuring something else and
+# landing on the same ink — so this is not a guess (rule 6): the convention
+# ("one printed digit, one box drawn twice") is established by print, not
+# assumed to make a rule fire.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a real
+# notehead standing near a meter digit (e.g. the first note of the bar,
+# printed just after a cautionary signature) is a DIFFERENT box on
+# DIFFERENT ink and so shares little area with the digit's own box — IoU
+# alone, at a high floor, is the only gate this rule needs for that reason,
+# unlike 2.30 which also needs a centre test to tell a duplicate from a
+# real chord second (two SAME-class heads deliberately placed close
+# together). A `timeSig*` box and a real notehead box are never placed to
+# overlap on purpose, so no second gate is built here. NOT CONFIRMED WITH
+# SEAN: whether this generalises to a `clef*` or `keySignature*` box
+# boxed twice as a notehead the same way (no crop yet shows that pairing).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ROADMAP 2.47bc: this constant and the IoU arithmetic it gates both moved
+#: to `geometry.py` (`TIMESIG_DIGIT_DUPLICATE_IOU_MIN`, `box_iou`,
+#: `is_timesig_digit_ink`) so `structure._trailing_cell_is_cautionary_only`
+#: (ROADMAP 2.47b) can ask the SAME question without importing this module
+#: (see `geometry.py`'s own section comment for why that import would
+#: cycle). Re-exported under its original name here -- nothing below, and
+#: no existing test, needs to change which name it reads.
+TIMESIG_DIGIT_DUPLICATE_IOU_MIN = _geom.TIMESIG_DIGIT_DUPLICATE_IOU_MIN
+
+#: Reason a refused notehead carries when it is a `timeSig*` box's own ink,
+#: boxed twice — kept apart from `notehead_is_a_duplicate_box` (2.30, SAME
+#: class only) and `is_a_meter_digit` (2.12l, a PAIR of notehead-classed
+#: boxes) so a census can tell the three mechanisms apart (CLAUDE.md §4d).
+TIMESIG_DIGIT_DUPLICATE_REASON = "is_a_time_signature_digit"
+
+
+def _cell_timesig_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every `timeSig*`-classed glyph's `Q.GLYPH_BOX` row in THIS glyph's own
+    cell, keyed by subject. `_cell_notehead_boxes`'s rule, ported for the
+    other family: SAME CELL ONLY (the cell this glyph's own box is filed on
+    is the SAME staff's own cell — a `timeSig*` box elsewhere never enters
+    this search)."""
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if not str(v[0]).lower().startswith("timesig"):
+            continue
+        out[r.subject] = r
+    return out
+
+
+def _timesig_digit_duplicate_refusal(ev: Evidence, this_row,
+                                     detail: Dict[str, Any]
+                                     ) -> Optional[Ruling]:
+    """ROADMAP 2.47c: is this notehead-classed box the SAME ink as a
+    `timeSig*`-classed box the detector drew in this glyph's own cell? See
+    the module section comment above for the measurement and why IoU alone
+    (no centre test, unlike 2.30) is the whole gate.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+
+    best = None
+    best_iou = 0.0
+    for subj, row in _cell_timesig_boxes(ev, cell).items():
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        iou = _notehead_box_iou(this_val, other_val)
+        if iou > best_iou:
+            best_iou = iou
+            best = row
+
+    if best is None or best_iou <= TIMESIG_DIGIT_DUPLICATE_IOU_MIN:
+        return None
+    detail["timesig_digit_of"] = best.id
+    detail["timesig_digit_iou"] = round(best_iou, 3)
+    detail["timesig_digit_class"] = best.value[0]
+    return Ruling(value=True, reason="is_a_time_signature_digit",
+                  used=(this_row.id, best.id), detail=detail)
 
 
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
@@ -1713,22 +2085,35 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # own unit tests still exercise `_notehead_same_side_
                   # second_refusal` directly, with its own `Evidence`, which
                   # declares them itself.
-                  Q.STACKED_HEAD_FIT),
+                  Q.STACKED_HEAD_FIT,
+                  # ⚠️ ROADMAP 2.49: GATHER's own ink split by stem x -- see
+                  # `_tremolo_slash_crosses_stem`'s own docstring.
+                  Q.NOTEHEAD_STEM_CROSS_INK,
+                  # ⚠️ ROADMAP 2.49 REDESIGN -- RE-ADDED. 2.42's own comment
+                  # above notes `Q.STEM` was dropped when 2.40's pair-wise
+                  # rule was superseded; the POSITION test
+                  # (`_tremolo_position_ok`) now reads the matched `Q.STEM`
+                  # row's own canonical box directly (`_tremolo_stem_box`),
+                  # so the declaration is live again, for a different reader.
+                  Q.STEM),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
-          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT),
+          Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow",
+                                     TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
                                      STACKED_HEAD_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
+                                     TIMESIG_DIGIT_DUPLICATE_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -1826,6 +2211,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        carries no ink witness, NEITHER is refused (rule 8). A slot held by
        only one box is untouched. See `_stacked_head_duplicate_refusal`'s
        own docstring and the module's 2.42 section comment.
+    2f. `is_a_time_signature_digit` (ROADMAP 2.47c, SHIPS) — a notehead-
+       classed box at IoU > `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` (0.9) against
+       a `timeSig*`-classed box in the SAME cell is that digit's own ink,
+       boxed twice, not a head (CLAUDE.md §10's SHATTERING-plate shape,
+       here cross-FAMILY rather than 2.30's same-class notehead pair).
+       IoU alone is the whole gate — unlike 2.30, no centre test is needed,
+       because a `timeSig*` box and a real nearby notehead are never drawn
+       to share 90% of their area by chance. Crop-verified twice, on two
+       unrelated lanes that independently landed on the same Brahms p0
+       cautionary 9/8 (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+       §21b, `benchmarks/omr-measure-partition-2026-09/FINDINGS.md`
+       §10c/§11c). See the module's own 2.47c section comment for the
+       measurement and what is NOT yet confirmed (a `clef*`/`keySignature*`
+       pairing, generalising past `timeSig*`).
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1907,6 +2306,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
                       used=tuple(used), detail=detail)
+    # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
+    # box is not a note regardless of what else is in the cell) and BEFORE
+    # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
+    # mark as another notehead box", it is not a notehead AT ALL, and must
+    # be refused on its own ink before the stacked-head keep-choice ever
+    # gets a chance to pick it over the real head it crosses (manager,
+    # Litolff `glyph/13/1/8/13/5`).
+    tremolo = _tremolo_slash_crosses_stem(ev, box_row, detail)
+    if tremolo is not None:
+        return tremolo
     # ⚠️ ROADMAP 2.30. AFTER THE SHAPE RULES (a sliver or too-narrow box is
     # not a note regardless of what else is in the cell) and BEFORE the
     # meter-digit / ownership rules below, which both ask what this ink
@@ -1926,6 +2335,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     stacked = _stacked_head_duplicate_refusal(ev, box_row, detail)
     if stacked is not None:
         return stacked
+    # ⚠️ ROADMAP 2.47c. AFTER 2.30/2.42's same-FAMILY same-mark tests
+    # (which both only compare within the notehead class) and BEFORE
+    # 2.12l's meter-digit PAIR test below — this is a third, narrower
+    # same-ink question: is this box the SAME ink as a `timeSig*` box
+    # drawn in this cell, never what either box MEANS. See the module's
+    # own section comment above `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` for the
+    # crop evidence (two independent lanes, same Brahms p0 cautionary 9/8).
+    timesig_dup = _timesig_digit_duplicate_refusal(ev, box_row, detail)
+    if timesig_dup is not None:
+        return timesig_dup
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is

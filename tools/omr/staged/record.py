@@ -779,6 +779,36 @@ class Q(_Vocab):
     #: 2026-09/FINDINGS.md` "ROADMAP 2.42" for what this leaves open.
     STACKED_HEAD_FIT = "stacked_head_fit"
 
+    #: ⚠️⚠️ ROADMAP 2.49 — DOES THIS NOTEHEAD-CLASSED BOX'S OWN INK STAND ON
+    #: BOTH SIDES OF THE ONE `Q.STEM` BOX IT OVERLAPS? Sean, DECISIONS
+    #: 2026-10-01: a notehead's ink lies on ONE side of its stem; a stroke
+    #: crossing it (ink on both sides, not joined to another stem at THIS
+    #: stem's END) is a TREMOLO SLASH, never a notehead. GATHER, one row per
+    #: notehead-classed glyph that overlaps a `Q.STEM` box -- a lone measured
+    #: fact, not a verdict: `value` is `[left, right]`, the ink fraction
+    #: (`gather.notehead_ink_under`'s raster, staff-line-erased) in the
+    #: glyph's own box on either side of the stem's own centre x, each
+    #: stopped short of the stem's own half-width plus a guard so the
+    #: stem's own stroke is never read as "ink on the other side" of
+    #: itself (`gather._stem_cross_regions`). `Q.BEAM_STROKE` ink is
+    #: EXCLUDED from both sides before the fraction is taken (manager
+    #: review, real re-gather: a beam box reaches far past a notehead's own
+    #: on both sides whenever it overlaps the box at all, which is the
+    #: convention's own named exception -- "a beam may cross, but only
+    #: joined to another stem at the stem's end"). `detail["stem"]` names the
+    #: `Q.STEM` row it split against. ADJUDICATE's `notehead_precision.
+    #: _tremolo_slash_crosses_stem` is the only reader and owns the floor
+    #: both sides must clear to call it a slash; this row carries the
+    #: measurement whether or not that floor is met, so the tremolo witness
+    #: stays on the record even where the box is kept as a real head.
+    #:
+    #: ⚠️ NO ROW AT ALL where the glyph has no overlapping `Q.STEM` box, or
+    #: where the stem's own half-width leaves no area on one side to split
+    #: -- not an abstention, the same "this measurement does not apply here"
+    #: convention `Q.STACKED_HEAD_FIT` states for a lone head on its own
+    #: side.
+    NOTEHEAD_STEM_CROSS_INK = "notehead_stem_cross_ink"
+
     #: ⚠️⚠️⚠️ REMOVED, TWICE — Sean, scope change: the whole-group ink fit
     #: does not decide pitch, AND NEITHER DOES A ROUNDING-RESIDUAL RULE. The
     #: real cause of the wrong pitches above the staff is that printed
@@ -1914,6 +1944,12 @@ CLAIMS: "dict[str, str]" = {
     #: own docstring above.
     "STACKED_HEAD_FIT": CLAIM.MEASUREMENT,
 
+    #: ROADMAP 2.49: a ruler reading of each side's own ink fill, same
+    #: reason as `STACKED_HEAD_FIT` -- it says what the ink shows, never
+    #: that the box is a slash (that is ADJUDICATE's `tremolo_slash_
+    #: crosses_stem`, INTERPRETATION).
+    "NOTEHEAD_STEM_CROSS_INK": CLAIM.MEASUREMENT,
+
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
     #: `UNSCORED` files both this and `GLYPH_LADDER` as `relation`. A distance
@@ -2253,6 +2289,12 @@ class READERS(_Vocab):
     #: STACK of overlapping same-stem boxes actually support, at 1, 2 or 3
     #: candidate slots, not merely where one box's own centre sits.
     CV_STACKED_HEAD_FIT = "cv_stacked_head_fit"  # gather: 1/2/3-head fit on a stem
+    #: `gather.gather_notehead_stem_cross_ink` -- ROADMAP 2.49. Reads the
+    #: SAME `cell.image_no_staff` raster as `CV_NOTEHEAD_INK`/`CV_STACKED_
+    #: HEAD_FIT` (one crop, one signal) but splits the glyph's own box by
+    #: its matched `Q.STEM` row's centre x rather than asking where the
+    #: box's own fill peaks.
+    CV_NOTEHEAD_STEM_CROSS_INK = "cv_notehead_stem_cross_ink"  # gather: ink split by stem x
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

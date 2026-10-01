@@ -33,7 +33,7 @@ distinct whole-note constant is future work, not assumed here.
 
 from __future__ import annotations
 
-from typing import Optional, Tuple
+from typing import Any, Iterable, Optional, Tuple
 
 #: See this module's own docstring for the measurement and its scope.
 STANDARD_HEAD_WIDTH_SPACES = 1.4
@@ -76,3 +76,71 @@ def standard_head_box(cx: float, cy: float, spacing: float
     hw = STANDARD_HEAD_WIDTH_SPACES * spacing / 2.0
     hh = STANDARD_HEAD_HEIGHT_SPACES * spacing / 2.0
     return cx - hw, cx + hw, cy - hh, cy + hh
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.47bc -- "the SAME ink, boxed twice" moved here, ONE constant and
+# ONE function, so the two decisions that both need it agree without either
+# importing the other.
+#
+# `notehead_precision.adjudicate_notehead_is_not_a_notehead` (ADJUDICATE, keys
+# `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`, ROADMAP 2.47c) and `structure._trailing_
+# cell_is_cautionary_only` (ADJUDICATE, keys `Q.MEASURE_PARTITION`, ROADMAP
+# 2.47b) both ask the identical geometric question -- is this notehead-classed
+# box the SAME ink the detector also boxed as a `timeSig*` class, at IoU
+# measured 0.94-0.96 on the two crop-verified Brahms p0 instances
+# (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` SS21b,
+# `benchmarks/omr-measure-partition-2026-09/FINDINGS.md` SS10c/SS11c). Before
+# this round each module answered it with its own copy of the arithmetic and
+# its own copy of 0.9; now both read the one answer here.
+#
+# `structure.py` cannot import `notehead_precision` directly: `adjudicators.
+# __init__` loads `structure` before `ownership`, and `notehead_precision`
+# itself imports `ownership` (`from . import ownership as _ledger`), so
+# `structure -> notehead_precision -> ownership -> structure` would cycle.
+# This module already carries the project's other shared-but-cycle-free
+# geometry (`standard_head_box`, ROADMAP 2.39's own note on the same
+# constraint) and imports nothing from either adjudicator module, so it is
+# the one place both sides can reach.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How much of the two boxes' union the intersection must cover before a box
+#: is read as another box's own ink, boxed a second time under a different
+#: class. Measured 0.94-0.96 on the two crop-verified instances above; 0.9
+#: leaves margin below both without reaching into the range two independently
+#: drawn, merely-nearby boxes could share by chance.
+TIMESIG_DIGIT_DUPLICATE_IOU_MIN = 0.9
+
+
+def box_iou(a: Any, b: Any) -> float:
+    """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the SAME
+    cell's canonical frame. Pure geometry -- the class slot (`a[0]`/`b[0]`) is
+    never read here; the caller decides which classes are worth comparing."""
+    _, x0a, y0a, wa, ha = a
+    _, x0b, y0b, wb, hb = b
+    x1a, y1a = x0a + wa, y0a + ha
+    x1b, y1b = x0b + wb, y0b + hb
+    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
+    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
+    inter = iw * ih
+    union = wa * ha + wb * hb - inter
+    return inter / union if union > 0 else 0.0
+
+
+def is_timesig_digit_ink(box_value: Any, timesig_box_values: Iterable[Any]
+                         ) -> bool:
+    """True when `box_value` is the SAME ink as one of `timesig_box_values`
+    -- IoU strictly greater than `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` against at
+    least one of them. `box_value` is any `Q.GLYPH_BOX` value tuple; this
+    does not check its class -- only that it shares a box with something the
+    caller already knows is a `timeSig*`-classed row. Malformed tuples (not a
+    5-tuple) answer `False` rather than raising, matching the two callers'
+    own existing shape guards."""
+    if not isinstance(box_value, (list, tuple)) or len(box_value) != 5:
+        return False
+    for ts_val in timesig_box_values:
+        if not isinstance(ts_val, (list, tuple)) or len(ts_val) != 5:
+            continue
+        if box_iou(box_value, ts_val) > TIMESIG_DIGIT_DUPLICATE_IOU_MIN:
+            return True
+    return False

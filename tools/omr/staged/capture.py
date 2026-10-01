@@ -500,6 +500,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "Scoreless: it names no head count as CORRECT, only which slot "
         "count and position the ink best supports.",
         None),
+    "NOTEHEAD_STEM_CROSS_INK": (
+        RELATION,
+        "ROADMAP 2.49: the ink fraction inside a notehead's OWN detected "
+        "box on either side of its matched `Q.STEM` row's own centre x, "
+        "off the staff-ERASED raster — a relation between a located "
+        "notehead box and the stem it overlaps, the same shape as "
+        "`NOTEHEAD_INK` split by a line instead of a window. Scoreless: "
+        "it names no box a tremolo slash, only how much ink stands on "
+        "each side of the split.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -645,6 +655,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # fill test it calls, `notehead_ink_under`, is `CV_NOTEHEAD_INK`'s own
     # function, called here rather than re-derived).
     "CV_STACKED_HEAD_FIT": ("staged/gather.py", "gather_stacked_head_fit"),
+    # ⚠️ ROADMAP 2.49. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_NOTEHEAD_RECENTRE`/`CV_STACKED_HEAD_FIT` do.
+    "CV_NOTEHEAD_STEM_CROSS_INK": ("staged/gather.py",
+                                   "gather_notehead_stem_cross_ink"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
