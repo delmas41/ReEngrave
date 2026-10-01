@@ -30,15 +30,13 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       des''8 r8 r8 r4 r8 |
-      \time 6/8
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
       r4 r8 r4 aes''8~\trill |
       aes''8 g''8 aes''8( aes''8 g''8) aes'''8~ |
       aes'''8 g'''8 f'''8 ees'''8 des'''8 bes''8 |
       aes''8 g''8 f''8 ees''8 des''8 aes'8 |
       g'4 r8 r4 r8 |
-      \time 6/8
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Oboe"
@@ -62,15 +60,15 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       ees'8 bes'4~( bes'8) des'4 |
-      des'8 r8 r8 r4 r8 |
       \time 6/8
+      des'8 r8 r8 r4 r8 |
+      r2. |
+      r2. |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Clarinet"
@@ -81,7 +79,7 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       <e'' g''>4.( <d'' f''>4.) |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      <c'' e''>4.( <c' e'>8 <d' f'>8 <e' g'>8) |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
@@ -95,14 +93,13 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       <ees' c''>8 r8 r8 r4 r8 |
-      \time 6/8
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Bassoon"
@@ -113,7 +110,7 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       <d f>4.( <c ees>4.) |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      <bes, d>4.~(\=2( <bes, d>8 <c ees>8 <d f>8)\=2) |
       <b, d>4.( <b, d>8 <c ees>8 <d f>8) |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
@@ -128,13 +125,11 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      aes8) g8 aes8(\=2(\=3(\=4( aes8\=2)\=4) g8)\=3) ees'8 |
-      \time 6/8
+      aes8) g8 aes8(\=2(\=3(\=4( aes8\=2)\=4) g8)\=3) d'8~ |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       aes8 g8 f8 ees8 des8 aes,8 |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Contrabassoon"
@@ -158,14 +153,14 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Staff p0-s0-5"
@@ -175,9 +170,9 @@
       \time 6/8
       <c c'>2.~ |
       c'2. |
-      <c b>2. |
+      <c b>2.~ |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      <c b>2. |
+      <c c'>2.~ |
       c'2.~ |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
@@ -188,6 +183,14 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Horn"
@@ -198,7 +201,7 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      <g' b'>4 r8 r4 r8 |
       r2. |
       r2. |
       r2. |
@@ -210,6 +213,14 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Trumpet"
@@ -232,6 +243,14 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
+      r2. |
     }
     \new Staff \with {
       instrumentName = "Timpani"
@@ -254,14 +273,13 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
       g,2. |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
     }
     \new Staff \with {
@@ -286,7 +304,7 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r8 fes'4~(\=2(\< fes'8\! ees'8)\=2) fes'8 |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
@@ -321,9 +339,8 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      d'8 f'8~ ees'8( f'8 f'8) ees'8 |
       des'8 des'8 r8 r4 r8 |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       g4( ees'8) g'4. |
       ees'8~( g8 ees'8 g'4 ees'8) |
@@ -337,8 +354,8 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      <bis d'>4.\=4)( <bis d'>8\=2(\=3( <c' ees'>8 <d' f'>8\=2) |
+      <bes d'>4.\=2(\=3( <bes d'>8 <c' ees'>8\=3) <d' f'>8)\=2)\=3( |
+      <bis d'>4.\=3)( <bis d'>8\=2(\=3( <c' ees'>8 <d' f'>8\=2) |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       c''4(\=2(\=3(\=4( d''8 <c' e''>4 <d' f''>8--)\=2)\=3)\=4) |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
@@ -354,12 +371,10 @@
       \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       d8 bes8 bes8~(\=2( bes8\> aes8)\=2)\! ees8~ |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       f8 d'8 c'8( bes8 bes8) c'8 |
       aes8 aes8 r8 r4 r8 |
-      \time 6/8
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
     }
@@ -387,13 +402,11 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       des8 ges,8~(\=2( ges,8 ges,8 ges,8 ges,8)\=2) |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       ais,8 ais,8 ais,8 bes,8 bes,8~ bes,8 |
       bes,8 bes,8 c8 d8 d8 ees8 |
       f8 f8 r8 r4 r8 |
-      \time 6/8
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
     }
@@ -420,13 +433,12 @@
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       r8 ges,8( ges,8 ges,8 ges,8 ges,8) |
       g,8 g,8 g,8 aes,8 aes,8 aes,8 |
-      \time 6/8
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
       \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
-      \once \override Rest.color = #red r2.^\markup { "unread" } |
+      r2. |
+      r2. |
+      r2. |
     }
   >>
   \layout { }

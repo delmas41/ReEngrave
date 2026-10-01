@@ -673,7 +673,7 @@
       bes''8(\=2( g''8)\=2) g''8 bes''8 |
       \once \override Rest.color = #red r2^\markup { "unread" } |
       d'''8 b''8 b''8 ees'''8 |
-      d'''8 f'''8 f'''8 f'''8 |
+      c'''8 f'''8 f'''8 f'''8 |
       d'''8 g''8 g''8 g''8 |
       \once \override Rest.color = #red r2^\markup { "unread" } |
       \once \override Rest.color = #red r2^\markup { "unread" } |
@@ -758,7 +758,7 @@
       aes'8 aes'8 aes'8 f'8 |
       bes'8 bes'8 bes'8 g'8 |
       \once \override Rest.color = #red r2^\markup { "unread" } |
-      ees'8 ees'8 ees'8 aes8 |
+      ees'8 ees'8 ees'8 bes8 |
       \once \override Rest.color = #red r2^\markup { "unread" } |
       aes'8 aes'8 aes'8 f'8 |
       g'8 <ees' c''>8 <ees' c''>8 <ees' c''>8 |

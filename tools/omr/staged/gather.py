@@ -2055,14 +2055,34 @@ def gather_ledger_clean_count_position(log: Log, cells: Sequence[Any],
         staff_half_steps = (line_bottom - line_top) / half_step
         img = getattr(c, "image_no_staff", None)
         thickness = getattr(c, "staff_line_thickness_canonical", None)
+        # ⚠️ ROADMAP 2.44c (cross-chord ink bleed, FINDINGS §12e): a chord's
+        # OTHER heads sit in the SAME cell, often at close to the SAME x (a
+        # shared stem) and close in y (a third or a second apart) -- so a
+        # scan step hunting for THIS head's own ledger can land inside a
+        # NEIGHBOUR head's own ink and misread it as a found rung (its
+        # round body can present a dense centre with the two edges reading
+        # as left/right "overhang" when the neighbour sits a little to one
+        # side, exactly the engraving convention for a one-step dyad: Sean,
+        # 2026-09-30, "a second is always on opposite sides of the stem").
+        # Pre-compute every regular notehead's own STANDARD box once per
+        # cell so each head's own scan can treat every OTHER head's box as
+        # off-limits, the same way it already treats its OWN box.
+        head_boxes_by_index: Dict[int, Tuple[float, float, float, float]] = {}
+        for j, d in enumerate(dets):
+            if not is_regular_notehead(d.smufl_name):
+                continue
+            scx = float(d.x_canonical) + float(d.width_canonical) / 2.0
+            scy = float(d.y_canonical) + float(d.height_canonical) / 2.0
+            head_boxes_by_index[j] = _standard_head_box(scx, scy, spacing)
         for gi, d in enumerate(dets):
             if not is_regular_notehead(d.smufl_name):
                 continue    # ROADMAP 2.39's own gate: a whole note or a
                            # grace/cue head is not measured this round
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            others = [b for j, b in head_boxes_by_index.items() if j != gi]
             _observe_ledger_clean_count_position(
                 log, g, d, line_top, line_bottom, spacing, staff_half_steps,
-                img, thickness)
+                img, thickness, sibling_boxes=others)
 
 
 def _observe_ledger_clean_count_position(log: Log, g: Subject, d: Any,
@@ -2070,7 +2090,10 @@ def _observe_ledger_clean_count_position(log: Log, g: Subject, d: Any,
                                          spacing: float,
                                          staff_half_steps: float,
                                          img: Any,
-                                         thickness: Optional[float]) -> None:
+                                         thickness: Optional[float],
+                                         sibling_boxes: Sequence[
+                                             Tuple[float, float, float, float]
+                                         ] = ()) -> None:
     frame = frame_cell(g.cell)
     cx = float(d.x_canonical) + float(d.width_canonical) / 2.0
     cy = float(d.y_canonical) + float(d.height_canonical) / 2.0
@@ -2116,6 +2139,31 @@ def _observe_ledger_clean_count_position(log: Log, g: Subject, d: Any,
     scan_end_sp = head_far_sp + LEDGER_CLEAN_COUNT_SCAN_MARGIN_SPACES
     step_sp = LEDGER_CLEAN_COUNT_SCAN_STEP_SPACES
 
+    # ⚠️ ROADMAP 2.44c: the x-window `ledger_rung_ink` actually TESTS at
+    # each candidate y (its own `ww`, the overhang bands reach past `hx0,
+    # hx1` by `LEDGER_RUNG_INK_OVERHANG_HEAD_FRAC` of the head's width) --
+    # computed the SAME way here so a candidate y whose test window would
+    # fall inside a CHORD-MATE'S own ink is skipped before it can be
+    # misread as that neighbour's notehead being a found rung (FINDINGS
+    # §12e: both chord-2 heads on Litolff p3 read the same wrong B5 from
+    # exactly this bleed).
+    head_w = hx1 - hx0
+    scan_overhang = LEDGER_RUNG_INK_OVERHANG_HEAD_FRAC * head_w
+    scan_ww = max(head_w * LEDGER_RUNG_INK_WIDTH_HEAD_MULT,
+                 head_w + 2 * scan_overhang)
+    scan_half_h = thick / 2.0 + LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * spacing
+
+    def _blocked_by_sibling(y: float) -> bool:
+        y0, y1 = y - scan_half_h, y + scan_half_h
+        x0, x1 = cx - scan_ww / 2.0, cx + scan_ww / 2.0
+        for sx0, sx1, sy0, sy1 in sibling_boxes:
+            if sx1 <= x0 or sx0 >= x1:
+                continue    # no horizontal overlap with the tested window
+            if sy1 <= y0 or sy0 >= y1:
+                continue    # no vertical overlap with the tested band
+            return True
+        return False
+
     hits: List[Tuple[float, float]] = []
     i = 0
     while True:
@@ -2124,6 +2172,9 @@ def _observe_ledger_clean_count_position(log: Log, g: Subject, d: Any,
             break
         i += 1
         y = (edge - d_sp * spacing) if above else (edge + d_sp * spacing)
+        if _blocked_by_sibling(y):
+            continue    # a chord-mate's own ink sits here -- not a scan
+                       # point, never a found rung (never a miss either)
         m = ledger_rung_ink(img, hx0, hx1, y, spacing, thick,
                            head_y0=hy0, head_y1=hy1)
         if m is not None and m["found"]:

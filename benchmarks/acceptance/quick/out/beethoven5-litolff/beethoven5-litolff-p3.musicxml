@@ -8483,7 +8483,7 @@
       </direction>
       <note>
         <pitch>
-          <step>D</step>
+          <step>C</step>
           <octave>6</octave>
         </pitch>
         <duration>4</duration>
@@ -10182,7 +10182,7 @@
       </note>
       <note>
         <pitch>
-          <step>A</step>
+          <step>B</step>
           <alter>-1</alter>
           <octave>3</octave>
         </pitch>

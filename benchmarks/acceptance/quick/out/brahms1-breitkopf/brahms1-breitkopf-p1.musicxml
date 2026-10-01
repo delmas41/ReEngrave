@@ -339,6 +339,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
       <note>
         <pitch>
           <step>D</step>
@@ -376,12 +390,7 @@
       </note>
     </measure>
     <measure number="17">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -693,12 +702,7 @@
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -1219,6 +1223,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
       <note>
         <pitch>
           <step>D</step>
@@ -1256,24 +1274,14 @@
       </note>
     </measure>
     <measure number="17">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="18">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -1292,48 +1300,28 @@
       </note>
     </measure>
     <measure number="20">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="22">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -1441,15 +1429,92 @@
       </note>
     </measure>
     <measure number="4">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>48</duration>
         <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+        <notations>
+          <slur number="1" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>48</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">begin</beam>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">end</beam>
+        <notations>
+          <slur number="1" type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="5">
@@ -1634,6 +1699,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-1</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
       <note>
         <pitch>
           <step>E</step>
@@ -1681,84 +1760,49 @@
       </note>
     </measure>
     <measure number="17">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="18">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="19">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="20">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="22">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -1867,15 +1911,103 @@
       </note>
     </measure>
     <measure number="4">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>B</step>
+          <alter>-1</alter>
+          <octave>2</octave>
+        </pitch>
+        <duration>48</duration>
         <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+        <notations>
+          <slur number="1" type="start"/>
+          <slur number="2" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>D</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>48</duration>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+        <notations>
+          <tied type="start"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <alter>-1</alter>
+          <octave>2</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">begin</beam>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>D</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <alter>-1</alter>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <tie type="stop"/>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">end</beam>
+        <notations>
+          <tied type="stop"/>
+          <slur number="1" type="stop"/>
+          <slur number="2" type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>F</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="5">
@@ -2110,6 +2242,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
       <direction placement="above">
         <direction-type>
           <words>unread</words>
@@ -2227,13 +2373,16 @@
       </note>
       <note>
         <pitch>
-          <step>E</step>
-          <alter>-1</alter>
+          <step>D</step>
           <octave>4</octave>
         </pitch>
         <duration>16</duration>
+        <tie type="start"/>
         <voice>1</voice>
         <type>eighth</type>
+        <notations>
+          <tied type="start"/>
+        </notations>
       </note>
     </measure>
     <measure number="20">
@@ -2333,12 +2482,7 @@
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -2587,96 +2731,70 @@
       </note>
     </measure>
     <measure number="16">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="17">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="18">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="19">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="20">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="22">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -2765,8 +2883,12 @@
           <octave>3</octave>
         </pitch>
         <duration>64</duration>
+        <tie type="start"/>
         <voice>1</voice>
         <type>half</type>
+        <notations>
+          <tied type="start"/>
+        </notations>
       </note>
     </measure>
     <measure number="4">
@@ -2795,18 +2917,6 @@
       <note>
         <chord/>
         <pitch>
-          <step>B</step>
-          <octave>3</octave>
-        </pitch>
-        <duration>96</duration>
-        <voice>1</voice>
-        <type>half</type>
-        <dot/>
-      </note>
-    </measure>
-    <measure number="6">
-      <note>
-        <pitch>
           <step>C</step>
           <octave>4</octave>
         </pitch>
@@ -2816,6 +2926,24 @@
         <type>half</type>
         <dot/>
         <notations>
+          <tied type="start"/>
+        </notations>
+      </note>
+    </measure>
+    <measure number="6">
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>96</duration>
+        <tie type="stop"/>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>half</type>
+        <dot/>
+        <notations>
+          <tied type="stop"/>
           <tied type="start"/>
         </notations>
       </note>
@@ -2938,6 +3066,62 @@
         <voice>1</voice>
       </note>
     </measure>
+    <measure number="16">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="17">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="18">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="19">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="20">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="21">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="22">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="23">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
   </part>
   <part id="P7">
     <measure number="1">
@@ -3002,15 +3186,42 @@
       </note>
     </measure>
     <measure number="4">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>32</duration>
         <voice>1</voice>
+        <type>quarter</type>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>32</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+      </note>
+      <note>
+        <rest/>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <rest/>
+        <duration>32</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+      </note>
+      <note>
+        <rest/>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="5">
@@ -3150,6 +3361,62 @@
         </direction-type>
       </direction>
       <note color="#D00000">
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="16">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="17">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="18">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="19">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="20">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="21">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="22">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="23">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -3392,6 +3659,62 @@
         </direction-type>
       </direction>
       <note color="#D00000">
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="16">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="17">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="18">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="19">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="20">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="21">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="22">
+      <note>
+        <rest measure="yes"/>
+        <duration>96</duration>
+        <voice>1</voice>
+      </note>
+    </measure>
+    <measure number="23">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -3665,36 +3988,35 @@
       </note>
     </measure>
     <measure number="16">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <attributes>
+        <key>
+          <fifths>0</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="17">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="18">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -3713,24 +4035,14 @@
       </note>
     </measure>
     <measure number="20">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -4231,15 +4543,92 @@
       </note>
     </measure>
     <measure number="16">
-      <direction placement="above">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
+      <note>
+        <rest/>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <direction placement="below">
         <direction-type>
-          <words>unread</words>
+          <wedge number="1" type="crescendo"/>
         </direction-type>
       </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>F</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>32</duration>
+        <tie type="start"/>
         <voice>1</voice>
+        <type>quarter</type>
+        <accidental>flat</accidental>
+        <notations>
+          <tied type="start"/>
+          <slur number="1" type="start"/>
+          <slur number="2" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <tie type="stop"/>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">begin</beam>
+        <notations>
+          <tied type="stop"/>
+        </notations>
+      </note>
+      <direction placement="below">
+        <direction-type>
+          <wedge number="1" type="stop"/>
+        </direction-type>
+      </direction>
+      <note>
+        <pitch>
+          <step>E</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">end</beam>
+        <notations>
+          <slur number="1" type="stop"/>
+          <slur number="2" type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="17">
@@ -5138,6 +5527,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>G</sign>
+          <line>2</line>
+        </clef>
+      </attributes>
       <direction placement="above">
         <direction-type>
           <words>unread</words>
@@ -5179,20 +5582,89 @@
       </note>
     </measure>
     <measure number="19">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
       <direction placement="below">
         <direction-type>
           <dynamics><f/></dynamics>
         </direction-type>
       </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <tie type="stop"/>
         <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">begin</beam>
+        <notations>
+          <tied type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <tie type="start"/>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+        <notations>
+          <tied type="start"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+        <notations>
+          <slur number="1" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <tie type="stop"/>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+        <notations>
+          <tied type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">end</beam>
+        <notations>
+          <slur number="1" type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="20">
@@ -5425,15 +5897,105 @@
       </note>
     </measure>
     <measure number="4">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
-        <rest measure="yes"/>
-        <duration>96</duration>
+      <note>
+        <pitch>
+          <step>B</step>
+          <alter>-1</alter>
+          <octave>3</octave>
+        </pitch>
+        <duration>48</duration>
         <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+        <notations>
+          <slur number="2" type="start"/>
+          <slur number="3" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>48</duration>
+        <tie type="stop"/>
+        <voice>1</voice>
+        <type>quarter</type>
+        <dot/>
+        <notations>
+          <tied type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <alter>-1</alter>
+          <octave>3</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">begin</beam>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">continue</beam>
+        <notations>
+          <slur number="3" type="stop"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>E</step>
+          <alter>-1</alter>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
+        <beam number="1">end</beam>
+        <notations>
+          <slur number="1" type="stop"/>
+          <slur number="2" type="stop"/>
+          <slur number="3" type="start"/>
+        </notations>
+      </note>
+      <note>
+        <chord/>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>16</duration>
+        <voice>1</voice>
+        <type>eighth</type>
       </note>
     </measure>
     <measure number="5">
@@ -5450,7 +6012,7 @@
         <accidental>sharp</accidental>
         <notations>
           <slur number="1" type="start"/>
-          <slur number="4" type="stop"/>
+          <slur number="3" type="stop"/>
         </notations>
       </note>
       <note>
@@ -5903,6 +6465,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>C</sign>
+          <line>3</line>
+        </clef>
+      </attributes>
       <direction placement="above">
         <direction-type>
           <words>unread</words>
@@ -6140,12 +6716,7 @@
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -6866,6 +7437,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
       <note>
         <pitch>
           <step>D</step>
@@ -7143,12 +7728,7 @@
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
@@ -7506,6 +8086,20 @@
       </note>
     </measure>
     <measure number="16">
+      <attributes>
+        <key>
+          <fifths>-3</fifths>
+          <mode>major</mode>
+        </key>
+        <time>
+          <beats>6</beats>
+          <beat-type>8</beat-type>
+        </time>
+        <clef>
+          <sign>F</sign>
+          <line>4</line>
+        </clef>
+      </attributes>
       <direction placement="below">
         <direction-type>
           <dynamics><p/></dynamics>
@@ -7687,36 +8281,21 @@
       </note>
     </measure>
     <measure number="21">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="22">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>
       </note>
     </measure>
     <measure number="23">
-      <direction placement="above">
-        <direction-type>
-          <words>unread</words>
-        </direction-type>
-      </direction>
-      <note color="#D00000">
+      <note>
         <rest measure="yes"/>
         <duration>96</duration>
         <voice>1</voice>

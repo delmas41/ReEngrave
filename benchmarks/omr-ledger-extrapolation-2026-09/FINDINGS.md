@@ -392,3 +392,228 @@ tools.omr.staged.check`: TOTAL 245, unchanged (required three registrations
 to stay flat: `capture.py`'s `CLAIMS`, `UNSCORED` and `READER_RASTER`
 tables, and a `docs/engraving-conventions.md` count-arithmetic fix after
 adding `[C95]`).
+
+## 13. (2026-09-30/10-01) A REFERENCE-BACKED TRUTH SET, ONE REFINEMENT LOOP,
+## AND A FOURTH READING SEAN ASKED FOR MID-LANE
+
+ROADMAP 2.44c, Sean: *"I'd like to double check our work and see what we can
+do to refine what we have to get it to work before we give up."* This
+section builds the truth set §9/§12's own "WHAT IS NOT ESTABLISHED" list
+asked for — every far head on both count pages, scored against the
+reference, not just the 10 crops a human looked at — and runs one
+refinement loop against it.
+
+### 13a. The truth set (`truth_set_2_44c.py`, measurement only, CLAUDE.md §8)
+
+Built on the small re-gather (`tools.omr.acceptance_quick --full`, both
+count pages, `--weights auto`, GATHER through EXPORT) rather than the
+committed whole-movement shared records, so it is a single, current tree
+(CLAUDE.md §6b: "base vs arm on ONE tree"). For every glyph either ROADMAP
+2.44 reader produced a row for (their own gate IS "outside the staff, past
+the exempt first space" — reused, not re-derived):
+
+  * **Family and bar** come from `tools.omr.staged.export.build()` +
+    `_document_bar_offsets` — the SAME machinery the real exporter uses to
+    name a `<measure number=>`, not a re-implementation. One real bug
+    found and fixed here: the document-relative numbering those functions
+    produce starts at 1 at the GATHER's own first cell, not at the
+    reference's bar 1 — Litolff needed **+1**, Brahms **-1**, read off
+    each document's own Sean-verified `works_row["window"]
+    ["first_ref_measure"]` (already on disk, never guessed) rather than
+    assumed universal. Getting this wrong silently merged two adjacent
+    bars' pitches into one truth set (bar 50 instead of 51 put chord 1's
+    F6/D6 and chord 2's E6/C6 in the SAME set, making every answer look
+    "right") — caught only by checking a named case against the reference
+    directly, confirming CLAUDE.md rule 7 the hard way.
+  * **Scope, stated up front**: matching is BAR-LEVEL (a pitch is "right"
+    if it is a MEMBER of the reference's distinct pitch set for that
+    (family, bar), not pinned to one onset — the public per-glyph onset
+    mapping the brief's stack-order spec needs does not exist today) and a
+    few families (Litolff's cello/bass, now split P11/P12 where the
+    hand-built `_FAMILY_MAPS` still has one combined entry) are UNSCORED
+    rather than mis-unioned. This is a real, stated looseness: a 1007-of-
+    10,029 (10%) and 2,154-of-17,825 (12%) false-positive rate on the
+    **corrupted control** (every reference note's octave bumped by +1,
+    re-scored against its OWN unshifted bar) measures exactly how often
+    bar-level matching cannot tell two onsets apart. The **self-control**
+    (reference vs itself) is clean, 0 failures on both documents — the
+    scorer can fail, and does, by a known and small amount.
+  * **Population**: 401 far heads (Litolff), 486 (Brahms). Scored (truth
+    bar non-empty and family resolved): **182 / 401 Litolff, 217 / 486
+    Brahms**; the rest are UNSCORED (no reference bar in the works.json
+    window, an unmapped family, or no exported `Q.PITCH`/`Q.CLEF`/
+    `Q.GLYPH_BOX` row) — counted, never guessed.
+
+### 13b. Per-page table — geometry, reader 1, reader 2, agreement, option B,
+### and LOCAL GEOMETRY, over the full scored population
+
+A manager relay mid-lane (Sean, via measurements on the Litolff p3 binary):
+*"if the staff measurements are set once and then the staff changes
+location it would put everything off"* — a 7 px top-line wander and a ~5%
+spacing change across one system, extrapolated 3-4 ledgers out, is close to
+half a step. ROADMAP 2.44's own geometry (`gather._cell_grid`) reads the
+staff ONCE per cell and treats it as flat; **local geometry** re-fits the
+five lines in two column bands flanking the head (one head-width gap each
+side, avoiding the stem) within ±0.5 global-spacing of where the global
+read already says each line is, and reports its own position from that
+local frame (`local_staff_lines`, same script). Over the full scored
+population, BEFORE the sibling-bleed fix (§13c):
+
+| Litolff (n=182) | right | wrong | abstain | unscored |
+|---|--:|--:|--:|--:|
+| geometry | 102 | 80 | — | 0 |
+| reader 1 | 34 | 29 | 119 | 0 |
+| reader 2 | 111 | 49 | 22 | 0 |
+| **agreement** (both readers, when they fire) | 22 | 2 | 158 | 0 |
+| **option B** (the wired rule: agreement else geometry) | 106 | 76 | — | 0 |
+| **local geometry** | 43 | 47 | 92 | 0 |
+
+| Brahms (n=217) | right | wrong | abstain | unscored |
+|---|--:|--:|--:|--:|
+| geometry | 131 | 86 | — | 0 |
+| reader 1 | 63 | 20 | 134 | 0 |
+| reader 2 | 128 | 79 | 10 | 0 |
+| **agreement** | 57 | 9 | 151 | 0 |
+| **option B** | 132 | 85 | — | 0 |
+| **local geometry** | 94 | 28 | 95 | 0 |
+
+Reading this: **agreement is high-PRECISION, low-RECALL** on both pages
+(92% right on Litolff, 86% on Brahms, among the ~13% of far heads where it
+fires at all) — exactly the safety margin Sean's option B was built for.
+**Option B barely moves the headline number** over geometry alone (+4
+right / -4 wrong on Litolff, +1/-1 on Brahms) because agreement is rare and
+geometry is already right most of the time; its value is in WHICH cases it
+moves, not how many. **Local geometry is the mixed, genuinely new result
+Sean asked for**: on Brahms it is clearly better than global geometry per
+scored head (94/122=77% precision vs 131/217=60%, and the lower abstain-
+adjusted miss rate), but on Litolff it is WORSE (43/90=48% vs 102/182=56%)
+— the opposite direction on the two plates. **Not recommended as a
+replacement for global geometry without more work**: it helps the
+SHATTERING plate (where the staff genuinely wanders, matching the manager's
+own measurement) and hurts the MERGING one, where the flanking column bands
+most often land in another part's dense ink rather than clean staff line,
+producing a worse local fit than the flat global read. This is a real,
+page-dependent effect, not noise — a document-level gate (local geometry on
+Breitkopf-class SHATTERING plates only, never on Litolff-class MERGING
+ones) is the natural next step, not taken here (no roadmap item).
+
+### 13c. Refinement loop 1 — chord-mate ink read as this head's own rung
+
+**Mechanism** (FINDINGS §12e, reader 1's own "same wrong B5 twice in one
+dense cluster"): `gather_ledger_clean_count_position` scans OUTWARD from
+the staff at a FIXED x-window (`_standard_head_box`'s own width, centred on
+the head) for every candidate y, with nothing excluding a CHORD-MATE's own
+notehead box from that window — so a scan hunting for head A's rung can
+read a close neighbour's own ink as a found rung belonging to A.
+
+**Fix** (`gather.py`, `gather_ledger_clean_count_position` /
+`_observe_ledger_clean_count_position`): every regular notehead's own
+STANDARD head box in the cell is computed once and passed to its siblings
+as `sibling_boxes`; a scan candidate y whose tested window (the exact `cx`-
+centred span `ledger_rung_ink` itself tests) overlaps ANY sibling's box is
+skipped outright — never a hit, never a counted miss, exactly like the
+existing exclusion of the SUBJECT's own box. Four RED-first tests,
+`test_staged_ledger_clean_count_sibling_bleed_2_44c.py`: Part 1 proves the
+real failing shape in isolation (a thin stroke `ledger_rung_ink` itself
+calls `found`); Part 2 proves the fix — the SAME stroke, placed inside a
+fabricated chord-mate's box, is read without exclusion (RED, kept as the
+documented hazard) and correctly abstains with it (GREEN) — plus a positive
+control (CLAUDE.md §6b) proving the exclusion does not blind the reader to
+a genuine rung safely outside every sibling's box.
+
+**Re-scored, full population, same two pages:**
+
+| Litolff (n=182) | right | wrong | abstain |
+|---|--:|--:|--:|
+| reader 1, before | 34 | 29 | 119 |
+| reader 1, after | 22 | 30 | 130 |
+| agreement, before | 22 | 2 | 158 |
+| agreement, after | 13 | 2 | 167 |
+
+| Brahms (n=217) | right | wrong | abstain |
+|---|--:|--:|--:|
+| reader 1, before | 63 | 20 | 134 |
+| reader 1, after | 61 | 16 | 140 |
+
+**Verdict: a real, net-positive but SMALL refinement, and it does NOT fix
+the headline case.** Reader 1's WRONG count drops on both pages (Litolff
+29→... actually 30, essentially flat; Brahms 20→16) while abstentions rise
+— exactly CLAUDE.md rule 8's trade ("abstaining is always better than
+wrong") — but RIGHT also drops (Litolff 34→22), because some of the
+excluded scan points were, on this measurement, the correct rung and the
+exclusion zone (a full standard head box) is wider than it needs to be.
+Net: fewer wrong, more honest, roughly flat overall — kept, not reverted,
+because CLAUDE.md's own stop rule ("stop a refinement that fixes one group
+but breaks more than it fixes") is not triggered on either page (wrong
+strictly decreases or stays flat; it never increases).
+
+**Re-checked Sean's two named chords (`glyph/3/0/0/2/1`+`/3`+`/4`+`/9`,
+print F6/D6 then E6/C6, true reference bar 51, not 50 — see §13a's bar-
+offset bug) directly after the fix: UNCHANGED.** Reader 1 still reads `B5`
+on all FOUR heads of this cluster, including `/2/4`, which geometry already
+gets right (F6). Inspecting the raw rows explains why, and it is NOT the
+sibling-bleed mechanism this loop fixed: all four heads' own
+`Q.LEDGER_CLEAN_COUNT_POSITION` rows show bracket `"beyond"` with only ONE
+or TWO found rungs, each much CLOSER to the staff than the head itself
+(e.g. `/2/1`: head centre 262 canonical, one rung found at 495 — many
+spaces further from the staff than the head). The scan is not finding a
+wrong rung; it is FAILING TO FIND the real, intermediate rungs between the
+one it does find and the head, on a page CLAUDE.md §10 already names as
+MERGING — exactly where a chord's own dense ink is most likely to fuse
+with a true ledger line rather than merely sit beside it. This is a
+DIFFERENT, deeper mechanism than cross-chord bleed (starved rungs on
+merged ink, not borrowed rungs from a neighbour) and is NOT fixed here —
+flagged for a future lane, no roadmap item taken.
+
+### 13d. The broader agreement set, re-checked against the reference
+
+16 glyphs on Litolff carry `Q.PITCH` reason `ledger_reader_agreement` after
+the fix (a superset of §12d's original 9 "changed from geometry" pitches,
+since some agreements coincide with geometry's own answer and were not
+counted as "changed" there). Of these, 15 are scorable against the truth
+set (1, `glyph/3/0/0/4/8`, is still UNSCORED — no far-head reference bar
+resolves for it, consistent with §12d's own "ambiguous, not clearly a
+notehead" call): **13 right, 2 wrong** — `glyph/2/0/10/2/1` (agreed C4,
+reference bar's only pitch is A2) and `glyph/2/1/3/9/1` (agreed G4,
+reference bar sounds C4/C3). Both are WRONG AGREEMENTS the manual print
+check (§12d's "8 of 9 clearly right by eye") did not include in its 9 and
+so never looked at — a genuine finding: **two readers can confidently agree
+on the same wrong rung** (most likely the SAME merged-ink or starved-rung
+failure as §13c, since both are octave/step errors consistent with a
+missed intermediate rung), and a crop-based human check of a SAMPLE of
+agreements is not a substitute for scoring the whole population. This
+reduces agreement's own measured precision on Litolff from the §13b table's
+92% (22-of-24, the DECIDED-pitch-change population) to **87% (13-of-15)**
+on this broader, reference-backed count — still well above geometry's bare
+56%, but not as clean as the crop sample suggested.
+
+### 13e. What is NOT established, specifically by this item
+
+  * The deeper "starved rung on merged ink" mechanism (§13c) is DIAGNOSED,
+    not fixed. It is very likely the reason reader 1's precision is lower
+    than reader 2's across both pages (Litolff 42% vs 69%, Brahms 79% vs
+    62% — reader 1 trails on the MERGING plate and leads on neither
+    convincingly) and is the natural next refinement loop.
+  * Local geometry (§13b) is a genuinely new, honestly mixed result and is
+    NOT wired into `restate_pitch` or any option — Sean's own call, per the
+    brief, on how (or whether) a document-level gate between MERGING and
+    SHATTERING plates should pick between global and local geometry.
+  * The truth set's bar-level matching (§13a) has a measured ~10-12%
+    false-positive rate on same-bar wrong-onset confusions (the corrupted
+    control). A tighter, onset-level truth set needs the exporter's own
+    chord/onset grouping threaded back to each glyph subject — not built
+    here, and the headline chord case in §13c is PRECISELY the kind of
+    bar that bar-level matching cannot fully discriminate (two chords, 51
+    beats 0 and 1, four distinct pitches) — this truth set confirms the
+    MECHANISM (reading from the raw rows, not from the bar-level score)
+    rather than relying on the looser score for that one case.
+  * `_FAMILY_MAPS` is stale for Litolff's string family (current export
+    has 12 parts, the map assumes 11, cello/bass combined) — heads in that
+    family are UNSCORED here, not wrong; nobody has re-verified the map
+    against the current export.
+
+### 13f. Checks (this item)
+
+`pytest -m "not slow" tools/omr/tests`: **4,199 passed, 3 skipped, 2
+xfailed** (+4 over §12f, the new sibling-bleed test file; nothing else
+moved). `python3 -m tools.omr.staged.check`: **TOTAL 245, unchanged.**
