@@ -591,3 +591,102 @@ real pages.
   but building it is explicitly out of this item's scope (a GATHER-
   adjacent change, needs two full re-gathers to price) and is not
   attempted here.
+
+## 11. Verification lane (lane-2.47b-verify) -- the real cross-staff rule
+
+fires ZERO times on real data; section 10d's "10 signature-only candidates"
+were a per-staff approximation artifact
+
+Manager-dispatched verification of the branch built in section 10, against
+CLAUDE.md rule 7 ("a control must be able to fail"). Rebased cleanly onto
+`main` (`fd396df0`) with no conflicts (`CLAUDE.md`/`DECISIONS.md` edits
+this branch carried were already superseded upstream) -- head is `de50e63d`.
+
+### 11a. Tests and check, unchanged
+
+`pytest tools/omr/tests -m "not slow" -q`: **4,199 passed, 3 skipped, 2
+xfailed, 0 failed** -- matches section 10b's own claim exactly, re-measured
+on the rebased tree. `python3 -m tools.omr.staged.check`: **TOTAL 245**,
+unchanged.
+
+### 11b. The real decision is CROSS-STAFF, and that changes the headline count
+
+Section 10d's generality streamer approximated the rule PER STAFF (its own
+last cell's glyphs alone) and said so explicitly ("does not itself re-run
+the cross-staff ALL-of-system check the real decision makes... over-counts
+signature-only candidates"). This lane built the REAL check: two-pass
+`ijson` streamer (no full-record expand; Brahms 3.47 GB stayed under 250 MB
+RSS) that, per system, pools every staff's `Q.GLYPH_BOX` rows filed at the
+shared last-cell index -- exactly what
+`_trailing_cell_is_cautionary_only`'s `Scope.SELF_AND_DESCENDANTS` query
+over the SYSTEM does -- before classifying.
+
+Run over **both whole movements, both available gather generations**
+(`library/_shared-records/{beethoven5-litolff,brahms1-breitkopf}-mvt1-
+whole-{20260930b,20261001}.record.json` -- 20261001 is the current overnight
+run named in ROADMAP's 10-01 start-here):
+
+| record | staves decided | **demoted (candidates)** | mixed (sig+note, left alone) | real final bar (left alone) | empty (left alone) |
+|---|--:|--:|--:|--:|--:|
+| Litolff 20260930b (47 pp) | 331 | **0** | 84 | 247 | 0 |
+| Litolff 20261001 (47 pp) | 331 | **0** | 95 | 236 | 0 |
+| Brahms 20260930b (53 pp) | 691 | **0** | 395 | 296 | 0 |
+| Brahms 20261001 (53 pp) | 691 | **0** | 408 | 283 | 0 |
+
+**Zero demotions, on either document, on either gather.** Every one of
+section 10d's 10 "signature-only" per-staff candidates (the Litolff
+`page/15 system/0 staff/4` instance named there and 9 unnamed Brahms ones)
+dissolves once the OTHER staves of its own system are pooled in, exactly as
+section 10d itself warned it might. Confirmed directly against the real
+branch code (not the reimplementation) by loading the raw observations for
+two sample pages into an actual `Log` and calling
+`adjudicate.adjudicate_one(..., REGISTRY[Q.MEASURE_PARTITION], ...)`:
+`staff/15/0/4` (the named Litolff candidate) decides `22, "read"` -- not
+demoted -- and all 14 Brahms p0/sys0 staves decide `8, "read"`, matching
+section 10c's own finding on the newer gather too.
+
+### 11c. Crop-verified, both directions, on the CURRENT (20261001) gather
+
+- **`out/print/2.47b/brahms-p0-sys0-tail-20261001.png`** (2027x5527, 600
+  dpi, all 14 staves, cell 7 boxed): BY EYE every staff's final cell is
+  still unambiguously a cautionary "9/8" and nothing else -- confirming
+  section 10c's diagnosis is still current on the newest gather -- but the
+  same duplicate-class contamination persists (`timeSig8, timeSig5` /
+  `ledgerLine, note...` captions on several staves, the identical
+  same-ink-two-classes shape), so the system-wide all-signature-only test
+  still correctly declines to fire. The detector defect named out-of-scope
+  in section 10c has NOT been fixed by any work since.
+- **`out/print/2.47b/litolff-p15-sys0-tail.png`** (1100x1826, 600 dpi, all
+  11 staves, cell 21 boxed): a genuine real final bar -- four staves hold
+  only a `restWhole` (the shortest possible content short of silence) and
+  the rest hold real noteheads/articulations/ties -- correctly decided
+  `22, "read"` on every staff. This doubles as the brief's "a real short
+  final bar is NOT demoted" control: the `restWhole`-only staves are as
+  minimal as a real bar gets and are rightly left alone.
+
+### 11d. What could NOT be verified: a true positive on real data
+
+Per CLAUDE.md rule 7, a control must be able to fail; the brief also asked
+to confirm at least one demotion actually fires on real data. **None does,
+anywhere in the measured acceptance set, on either gather generation** --
+11b is exhaustive over both whole movements. The only verified firing
+remains the committed synthetic RED-first unit test
+(`test_cautionary_tail_is_not_counted_as_a_bar`). This is a genuine gap
+against the brief, not a success to report quietly: **as shipped, this
+connection has fired zero times on real data in six months of corpus and
+cannot yet be said to help**, though it has also never produced a false
+positive across 1,022 staff-decisions measured twice over. Its entire
+payoff is gated on the pre-existing, separately-scoped detector
+duplicate-class defect (section 10c, `gather.py`'s own documented
+same-ink-two-classes behaviour) -- a GATHER-level fix, needs two full
+re-gathers to price (rule 6b), out of this item's scope.
+
+### 11e. Recommendation
+
+Merge-safe on the evidence measured: tests and `check` unchanged, zero
+false positives across both documents and both gather generations, the
+connection is correctly scoped (cross-staff, abstains on empty, leaves
+`n_cells < 2` alone) and fully covered by RED-first tests. Flag for
+ROADMAP: this item earns nothing until the duplicate-class detector defect
+is fixed, which is a GATHER change and its own roadmap item, not a
+follow-up inside 2.47b.
