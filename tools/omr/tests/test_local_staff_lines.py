@@ -497,3 +497,166 @@ class TestCombSeededFromOrange:
         # The comb never finds a commit-worthy clean run in this busy cell,
         # so every column holds its start -- which must be orange's +6, not 0.
         assert np.allclose(paths[0], NOMINAL_YS[0] + 6, atol=0.5), paths[0][:5]
+
+
+# ─── pinned per-system comb (ROADMAP 2.48, Sean's design #3, 2026-10-01) ────
+#
+# DECISIONS.md, 2026-10-01, Sean on the seeded comb's crops (both remaining
+# right->wrong heads were rounding-boundary coin-flips, 0.13 and 0.03 of a
+# step): "Currently I feel like the comb changes too much. Can it be more
+# gradual? Like pinned at the ends and a few points in between a system?"
+# All four tests below are RED on `lane-2.48-seeded`: `me._pinned_system_
+# shifts` does not exist there at all (confirmed by running this class
+# against that branch's measure_extractor.py -- AttributeError on every
+# test). A system here spans [X_START, X_END) = [50, 850); with
+# `PINNED_COMB_N_INTERIOR_PINS` = 3, the 5 pins land at x = 50, 250, 450,
+# 650, 850, each measured in a window of `PINNED_COMB_WINDOW_HALF_SPACES`
+# (1.5 spaces = 30px here) either side.
+
+def _draw_tilted_staff_with_busy_patch(
+    ramp_px: float, busy_x0: int, busy_x1: int, busy_extra_px: float,
+) -> np.ndarray:
+    """The true, clean, linearly-tilted staff (0 at X_START, `ramp_px` at
+    X_END) everywhere EXCEPT `[busy_x0, busy_x1)`, where a second set of
+    five THIN "ghost" lines (same thickness as the real staff -- a chord's
+    stems and beam can line up this way) stands in for a busy bar, sitting
+    `busy_extra_px` further down than the true line at that x. Thin and at
+    the staff's own thickness so it PASSES the clean-run test and can
+    legitimately pull a per-cell walk toward it -- a solid ink block (tried
+    first) is instead declined outright as too-thick, which does not
+    reproduce the real failure mode (`benchmarks/omr-local-staff-2026-09/
+    FINDINGS.md`, 2026-10-01 one-head trace: the comb aliasing onto a
+    neighbouring line's ink through a long enough dense passage)."""
+    binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+    thickness = 3
+    for x in range(X_START, X_END):
+        if busy_x0 <= x < busy_x1:
+            continue
+        frac = (x - X_START) / float(X_END - X_START)
+        drift = ramp_px * frac
+        for y in NOMINAL_YS:
+            top = int(round(y + drift)) - thickness // 2
+            binary[top:top + thickness, x] = 0
+    if busy_x1 > busy_x0:
+        frac_lo = (busy_x0 - X_START) / float(X_END - X_START)
+        frac_hi = (busy_x1 - X_START) / float(X_END - X_START)
+        mid_frac = (frac_lo + frac_hi) / 2.0
+        wrong_shift = ramp_px * mid_frac + busy_extra_px
+        for x in range(busy_x0, busy_x1):
+            for y in NOMINAL_YS:
+                top = int(round(y + wrong_shift)) - thickness // 2
+                binary[top:top + thickness, x] = 0
+    return binary
+
+
+def _ramp_at(x: float, ramp_px: float) -> float:
+    return ramp_px * (x - X_START) / float(X_END - X_START)
+
+
+class TestPinnedSystemComb:
+    """Design #3: a per-(staff, SYSTEM) model, pinned at both system ends
+    and a few interior points, linearly interpolated between -- replacing
+    the per-cell seeded walk."""
+
+    def test_follows_the_tilt_through_a_busy_bar_with_no_local_excursion(self):
+        """(a) A flat, clean staff (true shift 0 everywhere) with one busy
+        bar sitting BETWEEN two pins (300-360, clear of the pin windows at
+        220-280 and 420-480): the pinned model must still read 0 through
+        the busy bar's own x-range, because it never measures inside a
+        busy bar at all -- only at its pins, interpolated between them.
+        Contrast: the per-cell seeded walk, run on a cell spanning exactly
+        the busy bar and seeded with the TRUE local shift (0, the fairest
+        seed it could be given), is pulled toward the foreign "ghost"
+        lines inside it -- the local excursion the pinned model is built
+        to avoid."""
+        busy_x0, busy_x1 = 300, 360
+        binary = _draw_tilted_staff_with_busy_patch(
+            0.0, busy_x0, busy_x1, busy_extra_px=4.0)
+        pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
+        staff = pws.staves[0]
+
+        shifts = me._pinned_system_shifts(pws, staff, X_START, X_END)
+        assert shifts is not None
+        busy_mid = (busy_x0 + busy_x1) // 2
+        got = shifts[busy_mid - X_START]
+        assert abs(got - 0.0) < 1.0, got
+
+        walked = me._walk_comb_shift(
+            binary, [float(y) for y in NOMINAL_YS], busy_x0, busy_x1,
+            float(SPACING), seed_shift_px=0.0)
+        assert walked is not None
+        walked_mid = walked[len(walked) // 2]
+        assert abs(walked_mid - 0.0) > 2.0, (
+            "expected the seeded per-cell walk to be pulled toward the "
+            "foreign ghost lines; it held at the true (seeded) position "
+            "instead", walked_mid)
+
+    def test_seeded_comb_bends_toward_foreign_ink_pinned_model_does_not(self):
+        """(b) Same construction, read the other way: the seeded comb's OWN
+        per-cell answer for the busy bar lands near the foreign ghost
+        lines' own offset (it "bends toward" it), while the pinned model's
+        answer for the identical x-range stays at the true, flat position
+        -- both mechanisms scored on the SAME bar."""
+        busy_x0, busy_x1 = 300, 360
+        ghost_offset = 4.0
+        binary = _draw_tilted_staff_with_busy_patch(
+            0.0, busy_x0, busy_x1, busy_extra_px=ghost_offset)
+        pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
+        staff = pws.staves[0]
+
+        pinned = me._pinned_system_shifts(pws, staff, X_START, X_END)
+        assert pinned is not None
+        busy_mid = (busy_x0 + busy_x1) // 2
+        pinned_got = pinned[busy_mid - X_START]
+
+        seeded_got = me._walk_comb_shift(
+            binary, [float(y) for y in NOMINAL_YS], busy_x0, busy_x1,
+            float(SPACING), seed_shift_px=0.0)
+        assert seeded_got is not None
+        seeded_mid = seeded_got[len(seeded_got) // 2]
+
+        assert abs(pinned_got - 0.0) < 1.0, pinned_got
+        assert abs(seeded_mid - ghost_offset) < 1.5, (
+            "expected the seeded comb to bend toward the foreign ink's "
+            "own offset", seeded_mid, ghost_offset)
+
+    def test_flat_clean_staff_unchanged_from_today(self):
+        """(c) Control: a flat, clean staff with no printed drift must read
+        0 everywhere under the pinned model too -- the case it must be a
+        no-op on, same as the per-cell walk's own control."""
+        pws = _pws(_draw_staff(ramp_px=0.0))
+        staff = pws.staves[0]
+        shifts = me._pinned_system_shifts(pws, staff, X_START, X_END)
+        assert shifts is not None
+        assert np.max(np.abs(shifts)) < 1.5, shifts
+
+    def test_unmeasurable_pins_keep_todays_per_bar_grid(self):
+        """(d) Four of the five pins (50, 250, 450, 650) sit under solid,
+        unreadable ink (no clean column anywhere in their window) -- only 1
+        of 5 survives, under `PINNED_COMB_MIN_PINS` (2), so the model must
+        be dropped (`None`) rather than built from a single point (rule 8:
+        a pin that cannot be measured is dropped, never defaulted). The
+        caller (`_build_measure_cell`) then falls back to exactly today's
+        per-cell seeded walk, unaffected."""
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        thickness = 3
+        for x in range(X_START, X_END):
+            for y in NOMINAL_YS:
+                top = y - thickness // 2
+                binary[top:top + thickness, x] = 0
+        half_px = int(round(me.PINNED_COMB_WINDOW_HALF_SPACES * SPACING))
+        for px in (50, 250, 450, 650):
+            lo = max(0, px - half_px - 5)
+            hi = min(PAGE_W, px + half_px + 5)
+            binary[min(NOMINAL_YS) - 3:max(NOMINAL_YS) + 4, lo:hi] = 0
+        pws = PageWithStaves(page=_page(binary), staves=[_staff()], barlines=[])
+        staff = pws.staves[0]
+
+        shifts = me._pinned_system_shifts(pws, staff, X_START, X_END)
+        assert shifts is None, "expected fewer than PINNED_COMB_MIN_PINS pins"
+
+        cell = me._build_measure_cell(
+            pws, staff, 0, X_START + 5, X_START + 100, 0, pinned_shifts=None)
+        assert cell is not None
+        local = getattr(cell, "local_line_paths_px", None)
+        assert local is not None, "today's per-cell seeded walk must still run"

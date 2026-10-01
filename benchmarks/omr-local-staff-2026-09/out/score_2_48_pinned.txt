@@ -1,0 +1,17 @@
+=== beethoven5-litolff ===
+  base (lane-2.48-seeded, this tree): {'unscored': 1039, 'wrong': 136, 'right': 145}
+  arm  (lane-2.48-pinned):             {'unscored': 1039, 'wrong': 139, 'right': 142}
+  changed: 13  right->wrong: 8  wrong->right: 5
+    ('glyph/1/0/7/1/1', 'wrong', 'right')
+    ('glyph/1/0/8/1/6', 'wrong', 'right')
+    ('glyph/2/0/0/5/5', 'right', 'wrong')
+    ('glyph/2/0/3/0/5', 'right', 'wrong')
+    ('glyph/2/0/3/0/7', 'right', 'wrong')
+    ('glyph/2/0/7/10/3', 'wrong', 'right')
+    ('glyph/3/0/0/2/4', 'wrong', 'right')
+    ('glyph/3/0/4/12/3', 'right', 'wrong')
+    ('glyph/3/0/4/13/6', 'right', 'wrong')
+    ('glyph/3/0/8/0/5', 'right', 'wrong')
+    ('glyph/3/0/8/1/0', 'right', 'wrong')
+    ('glyph/3/0/8/1/3', 'right', 'wrong')
+    ('glyph/3/1/0/6/0', 'wrong', 'right')

@@ -834,3 +834,182 @@ whole has not yet cleared the keep bar from the original A/B
 heads (`glyph/3/0/0/2/4`, `glyph/3/1/0/6/0`) the way the earlier trace did
 for the bar-49 cluster, to see whether the SAME seeding idea (or a
 different one) can close them too.
+
+## 2026-10-01: PINNED per-system comb (Sean's design #3) -- fixes the seeded comb's last 2 right->wrong, 0 new regressions on the scored heads
+
+Sean, on the seeded comb's own crops (both remaining right->wrong heads are
+rounding-boundary coin-flips, 0.13 and 0.03 of a step apart, DECISIONS.md
+2026-10-01): *"Currently I feel like the comb changes too much. Can it be
+more gradual? Like pinned at the ends and a few points in between a
+system?"* STAGED/shared (`tools/omr/measure_extractor.py`, read by both
+readers per CLAUDE.md §3): replaces the per-CELL seeded walk with one
+smooth model per (staff, SYSTEM) -- `_pinned_system_shifts` pins the
+five-line comb's shift at BOTH system ends and `PINNED_COMB_N_INTERIOR_PINS`
+= 3 points evenly spaced between (5 pins total, a small FIXED count rather
+than a per-space density, so a short system is not starved and a long one
+does not accumulate an unbounded number of commit decisions), measures each
+pin as a robust MEDIAN over the existing clean-column test
+(`_measure_line_run_mid`, reused unchanged) in a window of
+`PINNED_COMB_WINDOW_HALF_SPACES` = 1.5 staff spaces either side, then
+interpolates LINEARLY between surviving pins (`np.interp`) -- no new degree
+of freedom beyond the single per-pin shift the per-cell walk already used.
+A pin that cannot be measured (fewer than `CELL_LINE_WALK_MIN_LINES_AGREE`
+= 3 of 5 lines agreeing anywhere in its window) is DROPPED, never
+defaulted (rule 8); fewer than `PINNED_COMB_MIN_PINS` = 2 surviving pins and
+the whole staff keeps TODAY's per-cell seeded walk, byte-identical to the
+lane-2.48-seeded course. Wired into `_build_measure_cell` behind the SAME
+existing code path (`local_line_paths_px`, no new flag, rule 9):
+`extract_measures` computes the pinned array ONCE per (staff, system) over
+the system's own full x-span (`xb[0][0]`..`xb[-1][1]`) and passes it down;
+`_build_measure_cell` prefers it, slicing the cell's own x-band out of the
+precomputed array, and only falls back to the per-cell seeded walk when the
+caller passed none or the staff's own model came back `None`.
+
+**Unit tests, RED->GREEN** (`tools/omr/tests/test_local_staff_lines.py`,
+class `TestPinnedSystemComb`, 4 tests, confirmed RED on `lane-2.48-seeded`
+`62116487` by swapping in that commit's `measure_extractor.py` and
+re-running -- `AttributeError: _pinned_system_shifts` on all 4, since the
+function does not exist there at all): (a) a flat clean staff with one busy
+bar BETWEEN two pins (foreign "ghost" lines at the staff's own thickness,
+so they pass the clean-run test and could legitimately mislead a walk,
+unlike a solid ink block which the clean-thickness gate simply declines) --
+the pinned model reads the true (0) shift straight through the busy bar
+because it never measures inside one, while the per-cell seeded walk,
+seeded with the TRUE local shift (the fairest seed it could be given), is
+still pulled toward the foreign lines (>2px, vs <1px for the pinned model);
+(b) the same fixture scored the other way -- the seeded walk lands within
+1.5px of the foreign lines' own offset (it "bends toward" them) while the
+pinned model stays within 1px of the true, flat position; (c) control: a
+flat clean staff with no busy ink reads 0 everywhere under the pinned
+model too; (d) 4 of 5 pins blotted with unreadable solid ink (only the
+system's own right end stays clean) -- `_pinned_system_shifts` returns
+`None` (rule 8), and `_build_measure_cell(..., pinned_shifts=None)` still
+produces a local trace via today's per-cell seeded walk, unaffected. Full
+fast suite: `pytest tools/omr/tests -m "not slow" -q` -- 4190 passed, 3
+skipped, 2 xfailed, 0 failed (IDENTICAL to the seeded lane's own count --
+`test_local_staff_lines.py` is already in the slow tier via its
+pre-existing `"synthetic.pdf"` path match, so the 4 new tests run under a
+direct file invocation: `pytest tools/omr/tests/test_local_staff_lines.py`
+-- 26 passed, up from 22).
+
+**Small real check, NO re-gather** (`recheck_2_48_pinned.py`, reusing
+`recheck_2_48_seeded.py`'s own recipe and subject list verbatim): the 15
+traced heads + 10 controls + the 2 heads still right->wrong under the
+seeded comb (`crop_2_48_broken.py`'s own `SUBJECTS` -- both of which turn
+out to already be members of the 15 traced, so 25 UNIQUE heads total, not
+27) against TODAY / SEEDED COMB / PINNED COMB, same reference pairing as
+`gather_only_judge.score_doc`. Of the 23 heads with a reference pairing
+(13 traced + 10 control, excluding the 2 broken): **right->wrong=0,
+wrong->right=0 for the pinned model against today, identical to the
+seeded comb's own 0/0 on the same 23** -- no new regression anywhere
+scored. On the 2 previously-broken heads: **the pinned model matches
+TODAY exactly where the seeded comb did not**
+(`glyph/3/0/0/2/4`: today -7.40, seeded -7.52 [wrong, rounds -8], pinned
+-7.40 [right]; `glyph/3/1/0/6/0`: today -6.49, seeded -6.52 [wrong, rounds
+-7], pinned -6.48 [right]) -- the pinned model fixes BOTH of the seeded
+comb's own remaining regressions, net 0 right->wrong / 0 wrong->right
+against today over all 25 scored/unscored heads together, where the
+seeded comb was 0/0 on the 23 scored and 2/0 wrong on the 2 broken.
+
+**Open question, not yet resolved**: per-staff max deviation of each
+model from a straight line through its own two system-endpoint values (the
+"how much it changes" number Sean asked for) --
+
+| staff | seeded (px) | pinned (px) |
+|---|---|---|
+| staff/1/0/7 | 3.89 | 3.36 |
+| staff/1/0/8 | 4.54 | 3.88 |
+| staff/2/0/2 | 3.57 | **9.07** |
+| staff/2/0/3 | 3.89 | **8.64** |
+| staff/2/0/7 | 3.59 | **9.34** |
+| staff/3/0/0 | 3.92 | 3.87 |
+| staff/3/0/1 | 4.86 | 5.16 |
+| staff/3/0/10 | 4.33 | 3.64 |
+| staff/3/0/2 | 4.83 | 5.06 |
+| staff/3/0/8 | 4.40 | 3.91 |
+| staff/3/1/0 | 4.39 | 3.32 |
+
+On 8 of 11 staves the pinned model is AS gradual as or more gradual than
+the seeded comb (exactly the design's own goal). On 3 (staff/2/0/2,
+staff/2/0/3, staff/2/0/7 -- the SAME system that carries the already-
+documented "comb commits to a real but disagreeing tilt" cluster from the
+2026-10-01 trace section above, `glyph/2/0/3/0/5` etc.), the pinned
+model's own deviation is more than double the seeded comb's. None of
+these 3 staves' traced heads have a reference pairing in this check
+(`expected=None` for all 7), so this is NOT a measured regression -- it is
+an open question about whether the pins are finding a genuinely larger
+printed tilt on this system (plausible: this is the same system the
+seeded comb's own unfixed failure mode lives on) or aliasing onto nearby
+ink in a denser orchestral system, and it should be crop-checked before
+this model is trusted on that system specifically. Not resolved this
+session (time-boxed).
+
+**Crop + pixel-row frame check**
+(`crop_2_48_pinned_system.py`,
+`out/print/2.48/pinned/staff_3_0_8_whole_system.png`): the WHOLE system
+for `staff/3/0/8` (the bar-49 system every earlier 2.48 crop in this
+benchmark has examined), orange (today's per-cell grid, drawn as its own
+step function) vs the pinned model (drawn continuously, pins ticked) full
+width. Verified against real ink-row centres at 3 clean columns picked by
+actual ink count (x=1745, 2155, 2565), never by eye: **both orange and the
+pinned model land all 5 lines within 2px of the real ink 5/5 times at
+every one of the 3 columns.** A deliberately broken +5px offset control at
+the same first column correctly hits 0/5 -- the control can fail (rule 7).
+
+STILL NOT MERGED. Next: crop-check the 3 flagged staves' own pins before
+trusting the pinned model there; then the overnight full re-gather
+(`THROUGH=adjudicate`) if the small-check numbers hold.
+
+## 2026-10-01: PINNED comb step 4 (full count-page re-gather) -- CORRECTS the small check's optimism: net right->wrong=8 / wrong->right=5 at full scale
+
+Per rule 4 (one objective) and rule 7 (a control must be able to fail),
+ran the full count-page re-gather the small check's own result cleared
+the bar for. **Base vs arm on ONE tree** (CLAUDE.md §6b): `lane-2.48-
+seeded`'s own `measure_extractor.py` (`62116487`) was swapped into THIS
+worktree and gathered fresh (`acceptance_quick --doc beethoven5-litolff
+--out-root .../out_base_2_48`, Litolff p0-p3, GATHER+ADJUDICATE only) as
+BASE, THEN the pinned branch's own code was restored and gathered fresh
+the same way as ARM (`--against <base record>`, `--out-root
+.../out_arm_2_48_pinned`) -- never an older record from a concurrent
+worktree, which CLAUDE.md §6b already warns no longer reproduces today's
+tree. Scored with `score_2_48_pinned.py` (the `gather_only_judge.py`
+judge, same pairing as `recheck_2_48_seeded.py`/`recheck_2_48_pinned.py`:
+detector box order within a bar against the reference's onset-descending
+order, scored at GATHER+ADJUDICATE position only, never Q.PITCH/export):
+
+```
+base (lane-2.48-seeded, this tree): {'unscored': 1039, 'wrong': 136, 'right': 145}
+arm  (lane-2.48-pinned):            {'unscored': 1039, 'wrong': 139, 'right': 142}
+changed: 13  right->wrong: 8  wrong->right: 5
+```
+
+**This CORRECTS the small check's conclusion above.** The small check (23
+scored heads out of 25) found 0/0 and a clean fix of the 2 known-broken
+heads; the full page (281 scored heads) finds a NET REGRESSION of 3
+(8 right->wrong against 5 wrong->right) -- the small 25-head sample
+simply did not include 5 of the 8 new right->wrong heads
+(`glyph/2/0/0/5/5`, `glyph/3/0/4/12/3`, `glyph/3/0/4/13/6`,
+`glyph/3/0/8/1/0`, `glyph/3/0/8/1/3`) at all. Two of those five
+(`glyph/3/0/8/1/0`, `/1/3`) sit on the SAME staff and the CELL
+IMMEDIATELY AFTER the bar-49 cluster the seeded comb already fixed
+(`cell/3/0/8/0`) -- consistent with the pinned model's own per-system
+reach: fixing one cell's disagreement by interpolating from distant pins
+can shift a NEIGHBOURING cell that was fine under the per-cell walk.
+`glyph/3/0/8/0/5` itself (part of the original bar-49 cluster, matched
+TODAY in the small check against the 09-30 `ARM_RECORD` snapshot) flips
+right->wrong in this fresh pairing -- the two checks used records from
+different snapshots (the small check's reference pairing came from a
+09-30 seeded record, this one from a fresh 10-01 gather of both base and
+arm on today's tree) and do not reconcile exactly, which is itself the
+project's own standing warning: "a shared record is a snapshot of the
+reader that made it."
+
+**Verdict: the pinned model is NOT a clean win at full scale.** It
+reliably fixes the 2 originally-flagged heads and a few more the small
+check's narrow sample happened to miss, but the per-system reach that
+makes it "more gradual" also lets one system's measured tilt move cells
+the per-cell walk had gotten right by holding locally. STILL NOT MERGED.
+Next: crop-check the 5 NEW right->wrong heads above (same recipe as
+`crop_2_48_pinned_system.py`) before any further iteration on pin count,
+window width, or a per-cell "prefer whichever of {pinned, seeded} is
+closer to this cell's own `_cell_line_offset`" tie-break.

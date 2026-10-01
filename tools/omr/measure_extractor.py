@@ -1842,6 +1842,140 @@ def _trace_cell_local_lines(
     return [np.full(hi - lo, y, dtype=float) + shift for y in ys]
 
 
+# ─── Pinned per-system comb (ROADMAP 2.48, Sean's design #3, 2026-10-01) ────
+#
+# Sean, on the seeded comb's own crops (both remaining right->wrong heads are
+# rounding-boundary coin-flips, 0.13 and 0.03 of a step apart): "Currently I
+# feel like the comb changes too much. Can it be more gradual? Like pinned
+# at the ends and a few points in between a system?" This replaces the
+# per-CELL seeded walk with one smooth model per (staff, system): pinned at
+# both system ends and a few points between, interpolated in between -- no
+# bar-by-bar wiggle, because the model commits to a shift only at the pins
+# and glides between them rather than re-measuring (and re-deciding) at
+# every cell boundary the way the walk did.
+PINNED_COMB_N_INTERIOR_PINS = 3  # a SMALL FIXED count, not a per-space
+                                  # density: 2 ends + 3 interior = 5 pins per
+                                  # system regardless of its width, so a
+                                  # short system is not starved of pins and
+                                  # a long one does not accumulate an
+                                  # unbounded number of commit decisions
+PINNED_COMB_WINDOW_HALF_SPACES = 1.5  # the window searched AROUND each pin,
+                                       # in staff spaces -- six times the
+                                       # walk's own per-step window (a
+                                       # quarter space) because a pin has no
+                                       # running estimate to fall back on
+                                       # and must find its own clean columns
+                                       # cold; still narrow enough to stay
+                                       # LOCAL to the pin (CLAUDE.md §10)
+PINNED_COMB_SEARCH_HALF_SPACES = 0.5  # per-line search half-window around
+                                       # the RAW (unshifted) staff line at a
+                                       # pin -- wider than the walk's 0.25
+                                       # (`CELL_LINE_WALK_SEARCH_HALF_SPACES`)
+                                       # because a pin measures cold, with no
+                                       # seed to narrow the search, and the
+                                       # measured page tilt (CLAUDE.md §10,
+                                       # ~5% of spacing) can exceed a
+                                       # quarter-space window by a system's
+                                       # far end
+PINNED_COMB_MIN_PINS = 2  # fewer surviving pins and a line through them
+                           # answers nothing -- the staff keeps today's
+                           # per-bar grid untouched (rule 8: a pin that
+                           # cannot be measured is DROPPED, never defaulted)
+
+
+def _measure_pin_shift(
+    binary: np.ndarray, nominal_ys: list[float], x_centre: float,
+    half_window_px: float, spacing: float, line_thickness_px: float | None,
+) -> float | None:
+    """The five-line comb's shift at one PIN (`x_centre`), or `None` where
+    too few clean columns were found in the window around it to trust an
+    answer.
+
+    Reuses the same clean-column test the per-cell walk uses
+    (`_measure_line_run_mid`: a run's own top/bottom midpoint, declined if
+    its thickness does not match the staff's own measured line, and a
+    barline column excluded outright) -- a ROBUST MEDIAN over that window's
+    clean steps, not a running walk: a pin has no direction to carry
+    forward, only a window to search cold.
+    """
+    if spacing <= 0:
+        return None
+    max_thickness_px = CELL_LINE_WALK_CLEAN_THICKNESS_MULT * (
+        line_thickness_px if line_thickness_px
+        else CELL_LINE_WALK_DEFAULT_THICKNESS_SPACES * spacing)
+    step_px = max(1, int(round(CELL_LINE_WALK_STEP_SPACES * spacing)))
+    search_half_px = PINNED_COMB_SEARCH_HALF_SPACES * spacing
+    margin = CELL_LINE_WALK_BARLINE_MARGIN_PX
+    top_y, bottom_y = min(nominal_ys), max(nominal_ys)
+    height, width = binary.shape[:2]
+    x0 = max(0, int(round(x_centre - half_window_px)))
+    x1 = min(width, int(round(x_centre + half_window_px)))
+    if x1 <= x0:
+        return None
+    step_estimates: list[float] = []
+    for xi in range(x0, x1, step_px):
+        xw0, xw1 = xi, min(x1, xi + step_px)
+        if any(_is_barline_column(binary, x, top_y, bottom_y)
+               for x in range(xw0 - margin, xw1 + margin)):
+            continue
+        candidates = []
+        for ny in nominal_ys:
+            found = _measure_line_run_mid(
+                binary, xw0, xw1, ny - search_half_px, ny + search_half_px,
+                max_thickness_px)
+            if found is not None:
+                candidates.append(found[0] - ny)
+        if len(candidates) < CELL_LINE_WALK_MIN_LINES_AGREE:
+            continue
+        med = sorted(candidates)[len(candidates) // 2]
+        inliers = [c for c in candidates
+                  if abs(c - med) <= CELL_LINE_WALK_OUTLIER_PX]
+        if len(inliers) >= CELL_LINE_WALK_MIN_LINES_AGREE:
+            step_estimates.append(sum(inliers) / len(inliers))
+    if not step_estimates:
+        return None
+    step_estimates.sort()
+    return step_estimates[len(step_estimates) // 2]
+
+
+def _pinned_system_shifts(
+    pws: PageWithStaves, staff: Staff, system_x0: int, system_x1: int,
+) -> np.ndarray | None:
+    """The pinned comb's shift, per page-column, across
+    `[system_x0, system_x1)` for this staff's whole system -- pinned at
+    both system ends and `PINNED_COMB_N_INTERIOR_PINS` points evenly spaced
+    between, LINEARLY interpolated in between (the simplest curve that
+    cannot overshoot past its own pins; no new degree of freedom beyond the
+    single per-pin shift the per-cell walk already used). `None` if fewer
+    than `PINNED_COMB_MIN_PINS` pins could be measured at all -- the caller
+    keeps today's per-bar grid rather than defaulting to a line through
+    fewer points than that (rule 8).
+    """
+    ys = [float(y) for y in staff.line_ys]
+    spacing = float(staff.line_spacing_px)
+    if len(ys) < 5 or spacing <= 0 or system_x1 <= system_x0:
+        return None
+    binary = pws.page.binary
+    half_window_px = PINNED_COMB_WINDOW_HALF_SPACES * spacing
+    n_pins = PINNED_COMB_N_INTERIOR_PINS + 2
+    pin_xs = [
+        system_x0 + (system_x1 - system_x0) * i / (n_pins - 1)
+        for i in range(n_pins)
+    ]
+    pin_shifts: list[float] = []
+    pin_xs_ok: list[float] = []
+    for px in pin_xs:
+        shift = _measure_pin_shift(binary, ys, px, half_window_px, spacing,
+                                    staff.median_line_thickness_px)
+        if shift is not None:
+            pin_xs_ok.append(px)
+            pin_shifts.append(shift)
+    if len(pin_xs_ok) < PINNED_COMB_MIN_PINS:
+        return None
+    all_cols = np.arange(system_x0, system_x1, dtype=float)
+    return np.interp(all_cols, np.array(pin_xs_ok), np.array(pin_shifts))
+
+
 def _build_measure_cell(
     pws: PageWithStaves,
     staff: Staff,
@@ -1852,6 +1986,7 @@ def _build_measure_cell(
     max_cell_width: int = MAX_CELL_WIDTH_PX,
     *,
     dropped_counter_key: str = "n_measure_cells_dropped_too_narrow",
+    pinned_shifts: tuple[int, np.ndarray] | None = None,
 ) -> MeasureCell | None:
     """Crop + canonically-upscale one (staff, x0:x1) cell from the page.
 
@@ -1965,15 +2100,37 @@ def _build_measure_cell(
     # "local_line_paths_px", None)`, the same dynamic-attribute pattern as
     # `staff_line_spacing_canonical` above.
     if len(staff.line_ys) >= 5:
-        # Seed the comb with THIS CELL's own `_cell_line_offset` shift
-        # ("orange") where it has one, never with a raw, un-localized 0
-        # (2026-10-01, Sean: "the green line should take a cue from the
-        # orange lines so it can't get lost"). Where orange abstained for
-        # this cell, the seed stays 0 -- today's unseeded course -- rather
-        # than inventing a value from nothing (rule 8).
-        seed_px = float(line_offset[0]) if line_offset is not None else 0.0
-        local_paths = _trace_cell_local_lines(pws, staff, x0, x1,
-                                              seed_shift_px=seed_px)
+        local_paths = None
+        # Design #3, pinned per system (2026-10-01): prefer the caller's
+        # precomputed per-(staff, system) pinned model, sliced to this
+        # cell's own x-band, over the per-cell walk -- "pinned at both ends
+        # of the system and a few points in between, interpolated between
+        # pins". Only when the caller passed none, or this staff had fewer
+        # than `PINNED_COMB_MIN_PINS` measurable pins across its WHOLE
+        # system (`_pinned_system_shifts` returned `None` for it), does
+        # this cell fall back to the per-cell seeded walk below -- "today's
+        # per-bar grid", unchanged (rule 8: a model that cannot be built is
+        # dropped, never replaced with something new).
+        if pinned_shifts is not None:
+            sys_x0, shifts_arr = pinned_shifts
+            lo_c, hi_c = max(0, int(x0)), min(binary.shape[1], int(x1))
+            start, end = lo_c - sys_x0, hi_c - sys_x0
+            if hi_c > lo_c and 0 <= start and end <= shifts_arr.shape[0]:
+                cell_shift = shifts_arr[start:end]
+                local_paths = [
+                    np.full(hi_c - lo_c, float(y), dtype=float) + cell_shift
+                    for y in staff.line_ys
+                ]
+        if local_paths is None:
+            # Seed the comb with THIS CELL's own `_cell_line_offset` shift
+            # ("orange") where it has one, never with a raw, un-localized 0
+            # (2026-10-01, Sean: "the green line should take a cue from the
+            # orange lines so it can't get lost"). Where orange abstained
+            # for this cell, the seed stays 0 -- today's unseeded course --
+            # rather than inventing a value from nothing (rule 8).
+            seed_px = float(line_offset[0]) if line_offset is not None else 0.0
+            local_paths = _trace_cell_local_lines(pws, staff, x0, x1,
+                                                  seed_shift_px=seed_px)
         if local_paths is not None:
             cell.__dict__["local_line_paths_px"] = (x0, local_paths)
     # A ONE-LINE staff's cell carries one row, so every consumer that derives
@@ -2049,11 +2206,26 @@ def extract_measures(
     for sys_idx, staves in sys_staves.items():
         bls = sys_barlines.get(sys_idx, [])
         xb = _measure_x_boundaries(bls, staves, counts=pws.deletion_counts)
+        # The pinned comb (ROADMAP 2.48) is a per-(staff, SYSTEM) model, not
+        # a per-cell one -- computed ONCE here, over the system's own full
+        # x-span (`xb`'s own first/last boundary), then sliced per cell
+        # below. A one-line staff has no five-line comb to pin, so it never
+        # gets one (matches `_build_measure_cell`'s own `len(line_ys) >= 5`
+        # gate).
+        sys_x0 = xb[0][0] if xb else None
+        sys_x1 = xb[-1][1] if xb else None
         for staff in staves + sys_one_line.get(sys_idx, []):
+            pinned = None
+            if (sys_x0 is not None and sys_x1 is not None
+                    and len(staff.line_ys) >= 5):
+                shifts = _pinned_system_shifts(pws, staff, sys_x0, sys_x1)
+                if shifts is not None:
+                    pinned = (sys_x0, shifts)
             for m_idx, (x0, x1) in enumerate(xb):
                 cell = _build_measure_cell(
                     pws, staff, sys_idx, x0, x1, m_idx,
                     max_cell_width=max_cell_width,
+                    pinned_shifts=pinned,
                 )
                 if cell is not None:
                     cells.append(cell)
