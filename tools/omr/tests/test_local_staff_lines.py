@@ -67,10 +67,12 @@ def _pws(binary: np.ndarray) -> PageWithStaves:
 
 class TestTraceFollowsTheRampAtTheSubjectsOwnX:
     def test_two_ends_of_one_cell_read_different_lines(self):
-        """A single cell spanning most of a 14px ramp: the LEFT end of the
-        cell must read lines near the nominal row, the RIGHT end near the
-        full displacement — a single flat grid cannot be both."""
-        pws = _pws(_draw_staff(ramp_px=14))
+        """A single cell spanning most of a small ramp (well under the
+        total-drift bound, `CELL_LINE_WALK_MAX_TOTAL_SPACES` * SPACING =
+        6px here): the LEFT end of the cell must read lines near the
+        nominal row, the RIGHT end near the full displacement — a single
+        flat grid cannot be both."""
+        pws = _pws(_draw_staff(ramp_px=5))
         staff = pws.staves[0]
         paths = me._trace_cell_local_lines(pws, staff, X_START + 10, X_END - 10)
         assert paths is not None, "tracing declined on a plainly printed staff"
@@ -78,10 +80,25 @@ class TestTraceFollowsTheRampAtTheSubjectsOwnX:
         left_top = paths[0][5]     # a few columns into the band
         right_top = paths[0][-5]   # a few columns from its end
         assert abs(left_top - NOMINAL_YS[0]) < 2, left_top
-        assert abs(right_top - (NOMINAL_YS[0] + 14)) < 2, right_top
+        assert abs(right_top - (NOMINAL_YS[0] + 5)) < 2, right_top
         # And a midpoint reads something in between, not a single shift.
         mid = paths[0][len(paths[0]) // 2]
-        assert NOMINAL_YS[0] < mid < NOMINAL_YS[0] + 14
+        assert NOMINAL_YS[0] < mid < NOMINAL_YS[0] + 5
+
+    def test_a_ramp_past_the_total_drift_bound_is_capped(self):
+        """A 14px/0.7-space ramp (`CELL_LINE_WALK_MAX_TOTAL_SPACES` = 0.3,
+        i.e. 6px here) exceeds what the comb may walk from the staff's own
+        rigid course -- added 2026-10-01 after 55 of 84 right-to-wrong
+        regressions on the real re-gather traced to the comb aliasing onto
+        a NEIGHBOURING line through a long dense passage (up to 11px, past
+        a full line on some staves). The bound must hold the comb at (or
+        under) it, never follow the ramp past it."""
+        pws = _pws(_draw_staff(ramp_px=14))
+        staff = pws.staves[0]
+        shift = me._walk_comb_shift(pws.page.binary, [float(y) for y in NOMINAL_YS],
+                                    X_START + 10, X_END - 10, float(SPACING))
+        assert shift is not None
+        assert np.max(np.abs(shift)) <= 0.3 * SPACING + 0.5, shift.max()
 
     def test_flat_staff_traces_to_the_nominal_row_everywhere(self):
         """Control: an engraved page is straight, so the local trace must
@@ -158,6 +175,66 @@ class TestCombMovesAsOneShape:
         before = shift[np.where(all_cols < blob_x0)[0][-1]]
         # Inside the blob's own columns, the comb holds -- it does not jump.
         assert np.allclose(shift[in_blob], before, atol=0.5), shift[in_blob]
+
+
+class TestCentreNotEdge:
+    """Sean, on the first comb-walk's own crops: 'the green line is on the
+    ink but towards the TOP of the ink' -- `_measure_line_run_mid` must
+    answer the run's MIDPOINT even when the search window is NOT already
+    centred on it (the exact situation a correction exists for)."""
+
+    def test_midpoint_survives_an_off_centre_window(self):
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        # A 5px-thick line centred at y=150 (148..152 inclusive).
+        binary[148:153, 200:260] = 0
+        # A window that fully CONTAINS the run but whose own centre (151)
+        # sits near the line's bottom edge, not its middle -- the exact
+        # shape a slightly-off running prediction produces. The withdrawn
+        # ink-weighted-centroid design would read this window off-centre
+        # too (less ink visible above the window's own middle than below);
+        # the midpoint of the run's own top/bottom must not care.
+        found = me._measure_line_run_mid(binary, 200, 260, 146.0, 156.0,
+                                         max_thickness_px=10.0)
+        assert found is not None
+        mid, thickness = found
+        assert mid == pytest.approx(150.0, abs=0.5), (mid, thickness)
+        assert thickness == pytest.approx(5.0, abs=0.5)
+
+    def test_a_thick_run_is_declined_not_measured(self):
+        """A run much taller than a bare line (a stem, a barline, a
+        notehead) must be declined, never averaged into an answer."""
+        binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
+        binary[100:160, 200:210] = 0  # a 60px-tall run -- not a staff line
+        found = me._measure_line_run_mid(binary, 200, 210, 120.0, 140.0,
+                                         max_thickness_px=10.0)
+        assert found is None, found
+
+
+class TestBarlinesAndConsistencyRun:
+    def test_a_barline_column_excludes_its_neighbours(self):
+        binary = _draw_staff(ramp_px=0)
+        bx = 400
+        margin = me.CELL_LINE_WALK_BARLINE_MARGIN_PX
+        top_y, bottom_y = float(NOMINAL_YS[0]), float(NOMINAL_YS[-1])
+        assert me._is_barline_column(binary, bx, top_y, bottom_y) is False
+        binary[int(top_y):int(bottom_y) + 1, bx - margin:bx + margin + 1] = 0
+        assert me._is_barline_column(binary, bx, top_y, bottom_y) is True
+
+    def test_a_single_accepted_step_cannot_move_the_comb(self):
+        """A ramp drawn for only ONE step's width (everywhere else flat) --
+        even a perfectly clean, agreeing single step must not commit a
+        move; `CELL_LINE_WALK_MIN_CONSISTENT_RUN` consecutive steps are
+        required."""
+        binary = _draw_staff(ramp_px=0)
+        step_px = max(1, int(round(me.CELL_LINE_WALK_STEP_SPACES * SPACING)))
+        one_step_x0 = 400
+        for x in range(one_step_x0, one_step_x0 + step_px):
+            for y in NOMINAL_YS:
+                binary[y + 4:y + 7, x] = 0   # this one step's lines read +5px
+        shift = me._walk_comb_shift(binary, [float(y) for y in NOMINAL_YS],
+                                    X_START + 5, X_END - 5, float(SPACING))
+        assert shift is not None
+        assert np.max(np.abs(shift)) < 0.5, shift.max()
 
 
 # ─── the cell carries the model, and a consumer reads it at its own x ────────
