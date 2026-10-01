@@ -54,6 +54,16 @@ boxed as a head should be refused as a slash, never kept over the head it crosse
    `worktree-agent-a8aa09e7eba668f3f`). Blocked on Brahms p0 by the time-signature
    digit boxed twice (also as a whole notehead) -- next: refuse a notehead box
    lying on a timeSig box (IoU > 0.9), crop the 10 signature-only strips, merge both.
+   Verified (agent branch): tests/check unchanged, zero false positives over
+   both whole movements x two gather generations, but zero real firings either
+   -- gated on the pre-existing detector duplicate-class defect; recommend
+   merge as an inert-safe connection, see FINDINGS §11.
+   2.47c refused the duplicate-class defect itself (IoU > 0.9 notehead-on-
+   timeSig); 2.47bc then connected the two through `geometry.py` (shared
+   constant + IoU helper), confirmed by a RED->GREEN test, but the real
+   Brahms p0 page still stays at 8 bars -- 4 of 14 staves have no `timeSig`
+   box in the tail cell at all (a detector MISS, not a duplicate-ink pair),
+   out of this item's scope.
 3. Far-note pitch (2.44/2.44c, branches pushed, nothing switched on): redo the
    reader scores at the first two stages (position, not pitch) before deciding.
 **New rule queued:** 2.49 tremolo slash crossing a stem is not a notehead (Sean, DECISIONS 10-01).
