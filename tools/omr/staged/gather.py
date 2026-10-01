@@ -34,7 +34,8 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
-                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
+                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead,
+                       is_hollow_notehead)
 from .record import ABSTAIN, Log, Q, READERS, Subject
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
@@ -4154,6 +4155,152 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                        runner_up=result["runner_up"])
 
 
+#: ROADMAP 2.50. A box this small on either side cannot carry a measured
+#: interior at all (the shrink in `hollow_head_hole_centre` would consume
+#: it) -- declined as `no_staff_geometry`, never a degenerate zero-pixel
+#: "hole".
+HOLLOW_HEAD_MIN_BOX_PX = 3
+
+
+def hollow_head_hole_centre(img: Any, box: Tuple[float, float, float, float]
+                            ) -> Optional[Dict[str, Any]]:
+    """The centroid of a hollow notehead's own ENCLOSED WHITE interior.
+    ROADMAP 2.50 (Sean, 2026-10-01: *"The hollow heads should have a
+    center in the white of the head"*).
+
+    `img` is a cell raster with 0 = ink -- the SAME convention
+    `notehead_ink_under` reads, and the SAME raster (`cell.image_no_staff`)
+    `Q.NOTEHEAD_RECENTRE`/`Q.NOTEHEAD_INK` already read, so a staff line
+    crossing a line-note's hole is ALREADY erased before this function ever
+    sees the raster -- the two halves it would otherwise cut apart come
+    back as one component with no separate masking step here. `box` is the
+    glyph's own detector box `(x, y, w, h)` in that raster's frame.
+
+    The hole is the connected component (4-connectivity, flood fill) of
+    NON-ink pixels strictly inside the box that does NOT touch the box's
+    own border. A component reaching the border is the OUTSIDE background
+    leaking in through a broken ring, or a head with no ring ink at all
+    (filled solid) -- never the enclosed interior, and this function never
+    guesses which part of a border-touching blob might have been the real
+    hole.
+
+    Returns `None` off the raster or on a box too small to carry an
+    interior at all -- declined, never defaulted. Otherwise returns
+    `{"cx", "cy", "area"}` (box-frame pixel coordinates; the centroid is
+    the MEAN of the component's own pixel coordinates, not the bounding-box
+    midpoint -- a hole a staff line cut unevenly, or whose ring is thinner
+    on one side, has a centroid that follows where the white actually is,
+    while a bbox centre follows only its most extreme pixels) when EXACTLY
+    ONE non-border component was found, or `{"n_candidates": k}` with
+    `k != 1` otherwise -- the caller abstains `no_enclosed_hole` on zero
+    (filled/no ring) or more than one (a broken ring merged with the
+    outside reads as a border component and is already excluded above, so
+    `k > 1` here means two or more SEPARATE interior pockets -- a shape
+    this reader will not guess between) candidates alike, per CLAUDE.md
+    rule 8: a filled head, a broken ring and an ambiguous merge are all
+    "cannot tell", never collapsed into one guessed answer.
+    """
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    H, W = img.shape
+    x, y, w, h = (float(v) for v in box)
+    x0 = max(0, int(round(x)))
+    y0 = max(0, int(round(y)))
+    x1 = min(W, int(round(x + w)))
+    y1 = min(H, int(round(y + h)))
+    if x1 - x0 < HOLLOW_HEAD_MIN_BOX_PX or y1 - y0 < HOLLOW_HEAD_MIN_BOX_PX:
+        return None
+    region = img[y0:y1, x0:x1]
+    background = (region != 0)
+    rh, rw = background.shape
+    visited = [[False] * rw for _ in range(rh)]
+    n_candidates = 0
+    best: Optional[List[Tuple[int, int]]] = None
+    for sy in range(rh):
+        for sx in range(rw):
+            if not background[sy][sx] or visited[sy][sx]:
+                continue
+            stack = [(sy, sx)]
+            visited[sy][sx] = True
+            pixels: List[Tuple[int, int]] = []
+            touches_border = False
+            while stack:
+                cy_, cx_ = stack.pop()
+                pixels.append((cy_, cx_))
+                if cy_ == 0 or cx_ == 0 or cy_ == rh - 1 or cx_ == rw - 1:
+                    touches_border = True
+                for dy, dx in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+                    ny, nx = cy_ + dy, cx_ + dx
+                    if (0 <= ny < rh and 0 <= nx < rw
+                            and background[ny][nx] and not visited[ny][nx]):
+                        visited[ny][nx] = True
+                        stack.append((ny, nx))
+            if touches_border:
+                continue
+            n_candidates += 1
+            best = pixels if n_candidates == 1 else None
+    if n_candidates != 1 or best is None:
+        return {"n_candidates": n_candidates}
+    cy_mean = sum(p[0] for p in best) / len(best)
+    cx_mean = sum(p[1] for p in best) / len(best)
+    return {"cx": round(x0 + cx_mean, 3), "cy": round(y0 + cy_mean, 3),
+            "area": len(best)}
+
+
+def gather_hollow_head_centre(log: Log, cells: Sequence[Any],
+                              local: Dict[int, Tuple[int, int]],
+                              detections: Dict[str, List[Any]]) -> None:
+    """`Q.HOLLOW_HEAD_CENTRE` — ROADMAP 2.50, one row per hollow-classed
+    notehead (`geometry.is_hollow_notehead`: `noteheadHalf*`/
+    `noteheadWhole*`/`noteheadDoubleWhole*`, any size suffix). See the
+    quantity's own docstring in `record.py` for the full account; this is
+    GATHER's own connection of it — producer only, read by nothing yet
+    (next round's work)."""
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        for gi, d in enumerate(dets):
+            name = str(getattr(d, "smufl_name", ""))
+            if not is_hollow_notehead(name):
+                continue
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if img is None or getattr(img, "ndim", 0) != 2:
+                log.abstain(g, Q.HOLLOW_HEAD_CENTRE,
+                           reader=READERS.CV_HOLLOW_HEAD_CENTRE, frame=frame,
+                           reason=ABSTAIN.NO_MASK,
+                           note="cell carries no image_no_staff")
+                continue
+            box = (float(d.x_center) - float(d.width_canonical) / 2.0,
+                   float(d.y_center) - float(d.height_canonical) / 2.0,
+                   float(d.width_canonical), float(d.height_canonical))
+            result = hollow_head_hole_centre(img, box)
+            if result is None:
+                log.abstain(g, Q.HOLLOW_HEAD_CENTRE,
+                           reader=READERS.CV_HOLLOW_HEAD_CENTRE, frame=frame,
+                           reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                           note="box off the raster, or too small to carry "
+                                "a measured interior")
+                continue
+            if "cx" not in result:
+                log.abstain(g, Q.HOLLOW_HEAD_CENTRE,
+                           reader=READERS.CV_HOLLOW_HEAD_CENTRE, frame=frame,
+                           reason=ABSTAIN.NO_ENCLOSED_HOLE,
+                           n_candidates=result["n_candidates"],
+                           note="zero, or more than one, non-border-"
+                                "touching component of non-ink pixels "
+                                "inside the box")
+                continue
+            log.observe(g, Q.HOLLOW_HEAD_CENTRE,
+                       [result["cx"], result["cy"]],
+                       reader=READERS.CV_HOLLOW_HEAD_CENTRE, frame=frame,
+                       area=result["area"])
+
+
 #: The interior of a notehead's OWN box is shrunk by this fraction on every
 #: side to make the `center` window. Dense for a filled BLACK head; near-
 #: empty for a HOLLOW one (half/whole) by construction — which is exactly
@@ -7213,6 +7360,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # rule 6, connect never guess) rather than re-deriving it -- so this
         # position is load-bearing, not cosmetic.
         gather_notehead_recentre(log, cells, local, detections)
+        # ROADMAP 2.50. Independent of `gather_notehead_recentre` above --
+        # that search only runs on REGULAR heads (`is_regular_notehead`)
+        # and this one only on HOLLOW-classed heads (`is_hollow_notehead`);
+        # a half note is in both populations and gets a row from each,
+        # which is correct (two different questions about the same glyph).
+        gather_hollow_head_centre(log, cells, local, detections)
         gather_notehead_positions(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid

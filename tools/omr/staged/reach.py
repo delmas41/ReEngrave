@@ -278,6 +278,14 @@ KNOWN_GAPS: Dict[str, str] = {
         "staff-relative input today is `placement`, an above/below far too "
         "coarse to separate a `cresc.` in the dynamics row from an `Allegro` "
         "above the system."),
+    Q.HOLLOW_HEAD_CENTRE: (
+        "⚠️ OPEN BY DESIGN — producer only, ROADMAP 2.50. This round measures "
+        "and labels the hollow head's own hole centroid; it does not yet wire "
+        "it anywhere. FIRST CONSUMER (next round, not this one): "
+        "`Q.NOTEHEAD_STAFF_POSITION`'s own y-read for `is_hollow_notehead` "
+        "glyphs, which today still reads the detector's raw box centre "
+        "unconditionally for this population — see "
+        "`benchmarks/omr-local-staff-2026-09/FINDINGS.md` 'ROADMAP 2.50'."),
     Q.CELL_POSITION_BASIS: (
         "⚠️ ABSTAIN-ONLY BY CONSTRUCTION, never observed — it is the REFUSAL "
         "a cell with no five-line grid files, once, instead of the position "

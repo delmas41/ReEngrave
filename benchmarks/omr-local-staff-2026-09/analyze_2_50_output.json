@@ -1,0 +1,220 @@
+{
+  "record": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ab14531183dd39812/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json",
+  "measured": 77,
+  "abstained": 275,
+  "abstained_by_reason": {
+    "no_enclosed_hole": 275
+  },
+  "delta_px": {
+    "horizontal_mean": 2.7254545454545474,
+    "horizontal_stdev": 23.248015578234973,
+    "vertical_mean": 1.4244935064935054,
+    "vertical_stdev": 21.103016804475082,
+    "n": 77
+  },
+  "rounded_position_changes": [
+    {
+      "subject": "glyph/1/0/4/3/1",
+      "box_rounded": -6,
+      "hole_rounded": -5,
+      "dy_px": 1.3000000000000114,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/1/0/8/6/3",
+      "box_rounded": 8,
+      "hole_rounded": 9,
+      "dy_px": 11.954999999999927,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/1/0/8/15/2",
+      "box_rounded": 5,
+      "hole_rounded": 6,
+      "dy_px": 14.879999999999995,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/1/0/9/9/6",
+      "box_rounded": 19,
+      "hole_rounded": 20,
+      "dy_px": 3.5,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/0/0/6/7",
+      "box_rounded": 0,
+      "hole_rounded": 1,
+      "dy_px": 14.785999999999945,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/0/0/6/9",
+      "box_rounded": 0,
+      "hole_rounded": 1,
+      "dy_px": 15.285999999999945,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/0/9/6/2",
+      "box_rounded": 8,
+      "hole_rounded": 9,
+      "dy_px": 12.606999999999971,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/0/13/5",
+      "box_rounded": -7,
+      "hole_rounded": -8,
+      "dy_px": -7.902999999999992,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/1/12/2",
+      "box_rounded": 0,
+      "hole_rounded": -1,
+      "dy_px": -50.11500000000001,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/2/11/1",
+      "box_rounded": 4,
+      "hole_rounded": 5,
+      "dy_px": 22.065000000000055,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/3/10/5",
+      "box_rounded": 4,
+      "hole_rounded": 3,
+      "dy_px": -57.27999999999997,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/3/10/9",
+      "box_rounded": 4,
+      "hole_rounded": 3,
+      "dy_px": -26.279999999999973,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/3/12/9",
+      "box_rounded": 4,
+      "hole_rounded": 3,
+      "dy_px": -55.013000000000034,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/3/12/10",
+      "box_rounded": 2,
+      "hole_rounded": 3,
+      "dy_px": 21.986999999999966,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/8/13/3",
+      "box_rounded": 8,
+      "hole_rounded": 9,
+      "dy_px": 12.414999999999964,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/9/12/0",
+      "box_rounded": 11,
+      "hole_rounded": 12,
+      "dy_px": 18.883000000000038,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/10/11/2",
+      "box_rounded": -6,
+      "hole_rounded": -7,
+      "dy_px": -47.516999999999996,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/2/1/10/12/0",
+      "box_rounded": -5,
+      "hole_rounded": -4,
+      "dy_px": 17.286,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/2/6/2",
+      "box_rounded": 0,
+      "hole_rounded": 1,
+      "dy_px": 31.886000000000024,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/4/0/8",
+      "box_rounded": 2,
+      "hole_rounded": 3,
+      "dy_px": 33.414999999999964,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/4/12/2",
+      "box_rounded": 2,
+      "hole_rounded": 3,
+      "dy_px": 24.339000000000055,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/4/13/6",
+      "box_rounded": 6,
+      "hole_rounded": 5,
+      "dy_px": -7.850000000000023,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/6/6/3",
+      "box_rounded": -7,
+      "hole_rounded": -8,
+      "dy_px": -8.949000000000002,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/0/9/1/8",
+      "box_rounded": 8,
+      "hole_rounded": 7,
+      "dy_px": -12.719000000000051,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/1/2/8/5",
+      "box_rounded": 1,
+      "hole_rounded": 2,
+      "dy_px": 49.855999999999995,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/1/2/11/3",
+      "box_rounded": 2,
+      "hole_rounded": 1,
+      "dy_px": -52.012,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/1/2/13/3",
+      "box_rounded": 0,
+      "hole_rounded": -1,
+      "dy_px": -3.9920000000000186,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/1/3/6/4",
+      "box_rounded": 7,
+      "hole_rounded": 6,
+      "dy_px": -53.06899999999996,
+      "half_step_px": 50.0
+    },
+    {
+      "subject": "glyph/3/1/5/5/4",
+      "box_rounded": 5,
+      "hole_rounded": 6,
+      "dy_px": 12.489000000000033,
+      "half_step_px": 50.0
+    }
+  ]
+}

@@ -63,6 +63,37 @@ def is_regular_notehead(name: Optional[str]) -> bool:
     return n.startswith(_REGULAR_PREFIXES)
 
 
+#: ROADMAP 2.50. The complementary half of `_REGULAR_PREFIXES` above --
+#: `noteheadHalf*` appears in BOTH (a half note is regular-SIZED but
+#: HOLLOW-SHAPED; the two predicates are not mutually exclusive and no
+#: consumer should assume they are). Derived from `class_aliases.
+#: vocabulary()` by prefix, never a hand-typed list of every OnLine/
+#: InSpace/Small spelling -- the alias module is the one place that list
+#: is allowed to live, per CLAUDE.md §9's "no derived check... without
+#: the vocabulary it is derived from" (the canonical names themselves,
+#: not a copy of them).
+_HOLLOW_PREFIXES = ("noteheadHalf", "noteheadWhole", "noteheadDoubleWhole")
+
+
+def _hollow_classes() -> frozenset[str]:
+    from .. import class_aliases  # local import: avoid a module-load-order
+    return frozenset(n for n in class_aliases.vocabulary()
+                      if n.startswith(_HOLLOW_PREFIXES))
+
+
+def is_hollow_notehead(name: Optional[str]) -> bool:
+    """True for any canonical hollow-shaped notehead class -- `noteheadHalf*`
+    (a half note; HOLLOW but regular-SIZED, so this and `is_regular_notehead`
+    both say True for it), `noteheadWhole*`, `noteheadDoubleWhole*`, at any
+    size suffix (`*Small` included -- a grace/cue hollow head still has a
+    white interior to measure). `False` for anything else, including `None`
+    or a name outside the canonical vocabulary (a typo should read as "not
+    hollow", never crash a GATHER pass)."""
+    if not name:
+        return False
+    return str(name) in _hollow_classes()
+
+
 def standard_head_box(cx: float, cy: float, spacing: float
                       ) -> Tuple[float, float, float, float]:
     """`(x0, x1, y0, y1)` -- a STANDARD notehead extent centred on `(cx,

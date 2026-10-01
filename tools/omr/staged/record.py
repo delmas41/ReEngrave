@@ -779,6 +779,43 @@ class Q(_Vocab):
     #: 2026-09/FINDINGS.md` "ROADMAP 2.42" for what this leaves open.
     STACKED_HEAD_FIT = "stacked_head_fit"
 
+    #: ⚠️⚠️ ROADMAP 2.50 — WHERE THE WHITE OF A HOLLOW HEAD ACTUALLY SITS,
+    #: SEPARATE FROM THE DETECTOR'S CENTRE AND FROM `Q.NOTEHEAD_RECENTRE`
+    #: (which never runs on this shape — `geometry.is_regular_notehead`
+    #: excludes `noteheadHalf*`/`noteheadWhole*`/`noteheadDoubleWhole*` on
+    #: purpose; `is_hollow_notehead` is this quantity's own gate, the
+    #: complementary half of the same class list via `class_aliases.
+    #: vocabulary()`, never a hand-typed list of OnLine/InSpace/Small
+    #: spellings). Sean, 2026-10-01, on a contact sheet: boxes are well
+    #: centred, but some HOLLOW heads' box centre sits "barely high" of
+    #: the white — *"The hollow heads should have a center in the white
+    #: of the head."* One row per hollow-classed glyph: the connected
+    #: component of NON-ink pixels inside the glyph's own detector box, on
+    #: `cell.image_no_staff` (the SAME staff-erased raster `Q.NOTEHEAD_
+    #: RECENTRE`/`Q.NOTEHEAD_INK` read — a line through a line-note's hole
+    #: is already erased there, which is exactly how the two halves a
+    #: printed staff line would otherwise cut apart come back as ONE
+    #: component, with no separate masking step of this reader's own),
+    #: that does NOT touch the box's own border (a component that reaches
+    #: the edge is the OUTSIDE background leaking in through a broken
+    #: ring or a filled head, never the enclosed hole) — `value` is
+    #: `[cx, cy]`, the component's own CENTROID (the mean of its pixel
+    #: coordinates, not the bounding-box midpoint: a hole a staff line cut
+    #: unevenly, or whose ring is thinner on one side, has a centroid that
+    #: follows where the white actually IS, while a bbox centre follows
+    #: only its extreme pixels) in the SAME canonical cell frame as the
+    #: glyph's own box. ABSTAINS (never falls back to the box centre --
+    #: CLAUDE.md rule 8) `no_mask` (no `image_no_staff`), `no_staff_
+    #: geometry` (box off the raster or degenerate) and `no_enclosed_hole`
+    #: (zero or more than one non-border component -- a filled scan, a
+    #: broken ring, or a merged blob are the SAME fact to this reader: it
+    #: could not find exactly one hole, and guessing which candidate is
+    #: real is exactly the guess rule 8 forbids). Read by nothing yet
+    #: (`reach` names it producer-only on purpose -- this round measures
+    #: and labels the quantity; wiring it into `Q.NOTEHEAD_STAFF_POSITION`
+    #: is the next round's work, not this one's).
+    HOLLOW_HEAD_CENTRE = "hollow_head_centre"
+
     #: ⚠️⚠️⚠️ REMOVED, TWICE — Sean, scope change: the whole-group ink fit
     #: does not decide pitch, AND NEITHER DOES A ROUNDING-RESIDUAL RULE. The
     #: real cause of the wrong pitches above the staff is that printed
@@ -1913,6 +1950,11 @@ CLAIMS: "dict[str, str]" = {
     #: position component decides NOTHING about pitch -- see the quantity's
     #: own docstring above.
     "STACKED_HEAD_FIT": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.50: the centroid of a hollow head's own enclosed white
+    #: interior, off the erased raster -- a ruler reading, same reason as
+    #: `NOTEHEAD_RECENTRE`; it says where the hole's own pixels sit, never
+    #: that a head stands there.
+    "HOLLOW_HEAD_CENTRE": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -2253,6 +2295,14 @@ class READERS(_Vocab):
     #: STACK of overlapping same-stem boxes actually support, at 1, 2 or 3
     #: candidate slots, not merely where one box's own centre sits.
     CV_STACKED_HEAD_FIT = "cv_stacked_head_fit"  # gather: 1/2/3-head fit on a stem
+    #: `gather.gather_hollow_head_centre` -- ROADMAP 2.50. Reads the SAME
+    #: staff-erased raster `CV_NOTEHEAD_RECENTRE`/`CV_NOTEHEAD_INK` read
+    #: (`image_no_staff`), so it is NOT independent of them -- one crop, one
+    #: signal, per `CV_INK`'s own entry. Its own reader name because it asks
+    #: a different question (where is the enclosed WHITE interior's own
+    #: centroid) with a different test (connected-component labelling of the
+    #: non-ink pixels, border-touching components discarded).
+    CV_HOLLOW_HEAD_CENTRE = "cv_hollow_head_centre"  # gather: hollow-head hole centroid
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -2394,6 +2444,14 @@ class ABSTAIN(_Vocab):
     #: search never RUNS on a box this size; it abstains and the detector
     #: centre stands, exactly as before ROADMAP 2.39b existed.
     BOX_ALREADY_HEAD_SIZED = "box_already_head_sized"
+    #: ROADMAP 2.50: a hollow head's own box carries zero, or more than one,
+    #: connected component of non-ink pixels that does not touch the box's
+    #: own border -- a filled-in scan, a broken ring letting the outside
+    #: background leak in, and a merged blob that fuses with a neighbour
+    #: are all the SAME fact from this reader's own vantage: it could not
+    #: find exactly one enclosed hole, and guessing which candidate (if
+    #: several) or where (if none) is exactly the guess rule 8 forbids.
+    NO_ENCLOSED_HOLE = "no_enclosed_hole"
     NOT_IN_LEXICON = "not_in_lexicon"
     #: An OCR rung ran over a crop and returned NO CHARACTERS AT ALL. ⚠️ A
     #: DIFFERENT FACT FROM `NOT_IN_LEXICON`, and the direction reader is why:

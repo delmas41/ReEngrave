@@ -490,6 +490,17 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "and the paper it actually stands on. Scoreless, same reason as "
         "`NOTEHEAD_INK`: it names no head, only where the fill is best.",
         None),
+    "HOLLOW_HEAD_CENTRE": (
+        RELATION,
+        "ROADMAP 2.50: the centroid of a hollow notehead's own ENCLOSED "
+        "WHITE interior (connected-component flood fill, border-touching "
+        "components excluded), off the staff-ERASED raster — a relation "
+        "between a located hollow-classed box and the paper it actually "
+        "stands on, the same shape as `NOTEHEAD_RECENTRE` for a different "
+        "population and a different test (component centroid, not a "
+        "matched-window fill search). Scoreless, same reason as "
+        "`NOTEHEAD_RECENTRE`: it names no head, only where the hole is.",
+        None),
     "STACKED_HEAD_FIT": (
         RELATION,
         "ROADMAP 2.42: a bounded 1/2/3-head template fit over a stacked "
@@ -645,6 +656,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # fill test it calls, `notehead_ink_under`, is `CV_NOTEHEAD_INK`'s own
     # function, called here rather than re-derived).
     "CV_STACKED_HEAD_FIT": ("staged/gather.py", "gather_stacked_head_fit"),
+    # ⚠️ ROADMAP 2.50. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_NOTEHEAD_RECENTRE`/`CV_STACKED_HEAD_FIT` do.
+    "CV_HOLLOW_HEAD_CENTRE": ("staged/gather.py", "gather_hollow_head_centre"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
