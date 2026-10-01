@@ -561,7 +561,8 @@ Each of these has cost at least one lane and is still true.
   the SIDE of its head — so the outer note's centre is half a head past the
   stroke. An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two
   heads are at one staff position (empty interval 0.168 vs 0.435 spaces). A
-  key change is printed at one bar on every staff of the system. A
+  key change, and a meter change, is printed at one bar on every staff of
+  the system (meter: Sean, 2026-09-30). A
   cautionary meter after a system's last barline governs no bar. A meter is
   printed at a movement's start and at every change, and a change HOLDS
   until a printed change back — the return is always printed (Sean,

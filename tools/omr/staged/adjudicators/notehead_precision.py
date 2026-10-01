@@ -339,11 +339,10 @@ METER_DIGIT_PAIR_Y_GAP_MAX_SPACES = 1.20
 #: `METER_DIGIT_QUORUM_COVERAGE` moves from the bare majority to 0.8 (a
 #: system-wide near-unanimity, matching CLAUDE.md §10's "printed... on
 #: EVERY staff of the system" for the closest confirmed analogue, a key
-#: change -- CONVENTION ASSUMED for METER specifically, no numbered entry
-#: for it yet in `docs/engraving-conventions.md`; WHAT WOULD FALSIFY IT: a
-#: genuinely narrower orchestra (a chamber reduction, most staves silent at
-#: a real meter change) where the true coverage is inherently lower than
-#: 0.8 -- not seen on either acceptance document; NOT CONFIRMED WITH SEAN).
+#: change -- CONFIRMED for METER by Sean, 2026-09-30 (DECISIONS: a meter
+#: change is printed at one bar on every staff of the system); the 0.8 cut
+#: (not 1.0) leaves room for staves the DETECTOR misses, not for staves the
+#: print omits.
 #: This keeps the one real witness (0.929) and excludes both real-world
 #: false ones (0.571) with margin on both sides.
 #: ─────────────────────────────────────────────────────────────────────────
