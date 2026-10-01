@@ -287,3 +287,56 @@ whose final cautionary signature happens to sit near 20% of that system's
 own median bar width); the dropped barline is tied to a specific plate's
 scan quality in a specific dense passage and is much harder to predict from
 geometry alone.
+
+## 8. (Sean confirmed) FOUND IT -- `prefer="leftmost"` dedup, not ink loss
+
+Sean placed the real barline at page x~870. Measuring the binary render at
+that column confirms it: on every staff of system 0, a vertical ink run of
+59-65px (>= the 51-52px height gate) and 6-8px wide survives
+`_detect_barlines_in_window`'s shape filter cleanly (e.g. staff 0:
+`w=7 h=59 aspect=8.4`, comfortably clears height/width/aspect). So the
+column IS detected per-staff -- section 6a's "ink never survived
+binarisation" conclusion is WRONG and withdrawn.
+
+What actually happens: on most staves there is a SECOND valid component
+only ~35px to its left (x~832, the forte chord's stem: `w=2 h=52
+aspect=26`, also clears every shape gate). `_dedup_barline_candidates`
+collapses any two candidates on one staff closer than
+`BARLINE_MIN_DISTANCE_PX=60`, and `_detect_barlines_per_staff` calls it with
+no `prefer` argument -- the default, `prefer="leftmost"`, keeps the STEM
+and throws away the barline. This is the EXACT failure the function's own
+docstring names ("prefer=tallest exists because the leftmost rule loses a
+real barline to a note stem... measured on Beethoven 5 p.2 system 0") --
+the fix already exists and is wired into `resegment_fused_measures`'s local
+re-segmentation, but never into the global per-staff pass that
+`gather_measures`/`Q.MEASURE_PARTITION` actually reads. On this staff
+`prefer="tallest"` recovers x~870 correctly (h=59 > 52). Only 2 of 11
+staves (4, 10) voted for the real barline because the other 9 lost it to
+their own local stem.
+
+### Generality
+
+`n_barline_candidates_dropped_too_close_on_staff` page-wide for Litolff p2
+alone: 244 (both systems) -- the ingredient (two valid shapes within 60px on
+one staff) is common. I did not have time to classify all 244 against print
+truth; only the one Sean confirmed is verified as a real barline actually
+lost. The counter says the OPPORTUNITY for this exact class is not rare;
+the CONFIRMED rate is 1 instance.
+
+### Fix: question, not a patch
+
+This is a CONNECTION (the height/width discriminator distinguishing a
+barline from a stem is already computed, already proven correct elsewhere
+in this file, and discarded here by an unargued kwarg) -- but
+`prefer="tallest"` is a GLOBAL per-staff default used by every page on both
+pipelines (CLAUDE.md section 3), and the function's own docstring explains
+WHY leftmost was kept as the global default (cheap, thins consistently) --
+I have not measured what `prefer="tallest"` does to the many OTHER
+close-candidate pairs in this page or elsewhere, several of which may be
+real dedups where the stem is legitimately taller than a worn/thin real
+barline. Flipping a shared default without that measurement is exactly
+what rule 5 and rule 9 forbid. **Question for Sean: authorize a `--through
+adjudicate` A/B of `prefer="tallest"` on the per-staff pass (scoped to this
+one call site) against the acceptance set, or is there a narrower condition
+(e.g. only override leftmost when the discarded candidate's height margin
+over the kept one exceeds some bound) you'd rather see first?**
