@@ -633,3 +633,107 @@ STILL NOT MERGED -- this trace explains the mechanism (a real, tilt-driven
 per-cell disagreement, one-directional on this page) but does not change
 the keep/drop verdict: the comb's own measured effect is still a net
 regression under every judge tried so far.
+
+## 2026-10-01: one-head frame-control re-check -- the prior crops' transform, not the staff, was wrong
+
+Manager flagged that the two 2026-10-01 trace crops (`dominant_cause_staff8_
+bar49_head1.png`, `dominant_cause_bass_chord_bar17.png`) drew both grids
+~10px off the real printed lines, and that the green line in those crops
+was explicitly an "illustration" re-walked over an ad hoc window, never the
+byte-exact production comb (stated in `crop_14heads.py`'s own docstring and
+the prior section above). Per CLAUDE.md rule 7 ("a control must be able to
+fail") this re-check rebuilt the frame control and both grids from scratch
+for ONE head, `glyph/3/0/8/0/3` (staff/3/0/8, bar 49, treble, head1 of the
+4-head shared cell), with no re-gather: BASE from the committed
+`library/_shared-records/beethoven5-litolff-mvt1-whole-20261001.record.json`
+(commit `342ec6244`, confirmed NOT an ancestor of 2.48's `81f8c94d7` --
+clean, no comb code), ARM from the a3ef66 lane's own
+`benchmarks/acceptance/quick/out/.../beethoven5-litolff-p3.record.json`
+(the comb branch). The two line-finding functions
+(`measure_extractor._cell_line_offset`, `._trace_cell_local_lines`) were
+called DIRECTLY on a freshly rendered+deskewed page (duck-typed `Staff`/
+`PageWithStaves` stand-ins built from the record's own stored
+`staff_lines`/`staff_spacing`/`staff_skew.thickness_px`) -- re-running only
+the line finders, not a gather.
+
+**Frame control, run first:** stored `staff_lines` for staff/3/0/8
+([1643, 1659, 1674, 1690, 1705], page px) checked against real ink-row
+peaks at a CLEAN x inside the staff's own measured extent (`staff_extent`
+[345, 2610]) -- NOT outside it, which is what produced a bogus -6px
+"failure" on the first attempt (the first clean-x window, 140-60px left of
+the cell, fell before the staff's own extent even started and measured
+nothing real). Corrected: measured peaks [1646, 1662, 1677, 1693, 1709],
+average delta +3.2px from stored. **Broken-state control**: offsetting the
+same stored lines by +5px and comparing ink density under the true vs
+broken position (53 vs 400) correctly shows the broken offset failing --
+the control can fail and does when it should.
+
+So: a genuine ~3px reproduction gap exists between a fresh `render_page`+
+`deskew` call and whatever pixel alignment the original gather's own
+render produced (this run's `deskew()` found 0.000deg to correct; the
+record's own `staff_skew` observation reads 5.0, a different-named
+quantity, not directly comparable) -- small (~0.2 staff-space), well under
+the dominant 0.78sp shift being explained, but real, and it means today's
+independent ink re-measurement cannot discriminate BASE (4.06) from ARM
+(4.84) by eye or by a crude single-column peak-find: ink peaks measured on
+either side of the head (avoiding the notehead's own ink) land 2-4px from
+BOTH candidate grids, which is inside this reproduction gap's own noise
+floor. **This supersedes the "crop does not show which grid is right"
+conclusion only insofar as pixel-level discrimination was never the
+answer here** -- the mechanism below is.
+
+**Where the 0.78sp actually comes from (confirmed, not inferred):**
+`_cell_line_offset` (BASE, pre-existing, NOT part of 2.48) searches the
+WHOLE cell `[343,636)` for one rigid shift maximizing ink coverage under
+all 5 lines at once, and finds `+6px` (`offset_spaces: 0.387`, `rows_
+covered: 5`, `min_row_coverage: 0.98`) -- in canonical half-steps,
+`6/7.75 = 0.774`, matching the recorded shift (+0.780) to three
+decimals. `_trace_cell_local_lines` (ARM, the 2.48 comb), called on this
+SAME cell's own `[343,636)` x-range exactly as `_build_measure_cell`
+calls it, measures **`+0.00px` shift at every single column in the
+cell** -- it never moves at all here, so it reports the raw, un-localized
+`staff.line_ys` unchanged, which is where the ARM's 4.84 comes from.
+**This is not the comb finding a tilt the flat grid missed -- it is the
+comb finding NOTHING (never getting 3-of-5 lines to agree for the
+`CELL_LINE_WALK_MIN_CONSISTENT_RUN` consecutive steps `_walk_comb_shift`'s
+own docstring requires to commit) in a cell this busy** (the cell's own
+`ink` observation: 12 components, 6 stems, 2 beam strokes, several
+noteheads) **and silently holding its starting value, which is read
+downstream as a decided answer with no abstain.** A positive control
+confirms the walk function itself is live in this harness: run
+continuously across the WHOLE staff (`[345,2610)`, one shape, as
+production always calls it per-cell but never across a cell boundary) it
+commits to real nonzero shifts elsewhere on the same staff (up to +4.58px,
+and +1.24px by the time it reaches this cell's own x-range) -- **meaning
+`_trace_cell_local_lines`'s PER-CELL restart (seeded to shift=0 at each
+cell's own left edge, per its `_build_measure_cell` call site) throws away
+whatever momentum the comb built on cleaner columns earlier in the staff,
+right before a busy cell where it most needs that momentum to find
+anything.** Even with full-staff momentum the comb only reaches +1.24px
+here, well short of the rigid localizer's independently cross-validated
++6px (98% row coverage) -- so even its best-case behaviour UNDER-corrects
+this cell, the opposite of "the comb caught a tilt the flat grid missed."
+
+**Conclusion, correcting the 2026-10-01 trace section above for this one
+head:** the "dominant cause" is not a real staff tilt visible to the
+naked eye in a correctly-transformed crop (it cannot be, cleanly, given
+this reproduction's own ~3px noise floor) -- it is that the comb's
+"held, never committed" null answer is indistinguishable, downstream,
+from a confident zero-shift reading, and the per-cell restart denies it
+the one piece of evidence (upstream momentum) that might have let it
+reach closer to the rigid localizer's answer. The other 5 of the 6
+independent per-cell disagreements in the prior trace were NOT
+individually re-examined this round (small-check scope); the mechanism
+found here -- restart-at-cell-boundary discarding momentum, feeding a
+silent "never committed" zero into a decided position -- is a plausible
+candidate for some or all of them and is worth checking before any next
+attempt at the comb, but is not re-verified across all 6 here.
+
+One crop, production-exact grids (not a re-walked illustration -- the
+green line here reproduces the recorded 4.84 to the stored value, the
+orange reproduces 4.06), magenta crosses for the independent ink
+cross-check: `out/print/2.48/onehead/staff8_bar49_head1.png`. The bass
+chord head (`glyph/2/0/3/0/5`) was not re-traced this round (time-boxed,
+Sean: no batteries).
+
+STILL NOT MERGED.
