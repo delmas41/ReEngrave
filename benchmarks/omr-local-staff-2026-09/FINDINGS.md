@@ -496,3 +496,140 @@ not built or scored this round.
 
 4 crops at `out/print/bias/` (base grid=orange, comb=green where it did
 not decline, head centre=magenta cross, detector box=red).
+
+## 2026-10-01: trace the 14 right->wrong / 1 wrong->right stage by stage (Sean's directive)
+
+Per-head trace of all 15 subjects from the GATHER+ADJUDICATE-only judge
+(`gather_only_judge.py`, Litolff count page), read STRAIGHT off two fresh
+re-gathers (base = `origin/main` `fd396df0` in a throwaway worktree, arm =
+this branch, both `acceptance_quick --doc beethoven5-litolff`, default
+GATHER+ADJUDICATE only, no recomputation of either grid -- `Q.NOTEHEAD_
+STAFF_POSITION`'s own stored value, `Q.CELL_STAFF_SPACE`'s own stored
+half-step, `glyph_box`/`event`/`clef`/`printed_bar_number` verdicts as
+filed). Script: `trace_14_heads.py`. All 15 reproduced the a3ef66 lane's
+own arm record's shift to several decimal places on independent re-gather
+(same-code determinism, corroborating the already-recorded A/A control of
+0/0 on both docs).
+
+**Per-head table** (shift = arm pos - base pos, in staff-spaces; dist =
+pos - 4, roughly staff-centre-relative; +/- large = outside the staff):
+
+| subject | bar | clef | chord | dist(base) | shift | base->arm verdict |
+|---|---|---|---|---|---|---|
+| glyph/1/0/7/1/1 | 4+1 | treble | no | 4.52 | -0.035 | right->wrong |
+| glyph/1/0/8/1/6 | 4+1 | treble | no | 4.46 | +0.064 | wrong->right |
+| glyph/2/0/2/4/1 | 17+4 | treble | yes | 6.42 | +0.320 | right->wrong |
+| glyph/2/0/3/0/5 | 17+0 | bass | yes | -6.20 | +1.024 | right->wrong |
+| glyph/2/0/3/0/7 | 17+0 | bass | yes | -6.22 | +1.024 | right->wrong |
+| glyph/2/0/3/3/2 | 17+3 | bass | yes | 3.04 | +0.764 | right->wrong |
+| glyph/2/0/7/0/4 | 17+0 | treble | no | -3.18 | +0.760 | right->wrong |
+| glyph/2/0/7/10/3 | 17+10 | treble | no | 3.48 | +0.028 | right->wrong |
+| glyph/2/0/7/2/2 | 17+2 | treble | no | -2.78 | +0.620 | right->wrong |
+| glyph/3/0/0/2/4 | 49+2 | treble | yes | -11.40 | -0.135 | right->wrong |
+| glyph/3/0/8/0/3 | 49+0 | treble | no | 0.06 | +0.780 | right->wrong |
+| glyph/3/0/8/0/4 | 49+0 | treble | no | 2.08 | +0.780 | right->wrong |
+| glyph/3/0/8/0/5 | 49+0 | treble | no | 3.10 | +0.780 | right->wrong |
+| glyph/3/0/8/0/8 | 49+0 | treble | no | 3.02 | +0.780 | right->wrong |
+| glyph/3/1/0/6/0 | 65+6 | treble | no | -10.50 | -0.028 | right->wrong |
+
+Detector box identical base vs arm on all 15 (zero exceptions, as the
+09-30/10-01 attribution rounds already found for the full 81) -- every
+flip here is purely the comb's geometric answer, never a detector
+difference.
+
+**Classification.** Two clean groups by `|shift|`, not a continuum:
+
+- **5 of 15 (`|shift| < 0.15` sp): rounding-boundary flips.** The head's
+  staff position sits almost exactly on a `.5` cusp in BOTH grids (base
+  residuals 0.46-0.50); a few hundredths of a space from the comb's
+  slightly different line reading tips the `round()` the other way. This
+  group contains the ONE wrong->right head (`glyph/1/0/8/1/6`, +0.064) --
+  it and its right->wrong neighbour at the same bar (`glyph/1/0/7/1/1`,
+  -0.035) sit on ADJACENT staves of the same bar, both near-boundary,
+  flipping in opposite directions. Not a mechanism fault so much as
+  irreducible sensitivity where the true position is near a half-step.
+
+- **10 of 15 (`|shift| >= 0.3` sp, up to a full space): DOMINANT CAUSE --
+  a per-cell/per-chord disagreement between the flat grid and the comb
+  that moves every head in that cell the SAME way.** All 10 are
+  right->wrong and, notably, all 10 shifts are the SAME SIGN (positive)
+  -- not a symmetric spread. Four of the ten are the SAME cell
+  (`cell/3/0/8/0`, bar 49) sharing the identical shift (+0.780 sp) to
+  three decimal places -- one comb decision, charged four times. Two more
+  are one bass chord (`cell/2/0/3/0`, bar 17, glyphs 5+7) sharing +1.024.
+  The other four (`cell/2/0/2/4`, `cell/2/0/3/3`, `cell/2/0/7/0`,
+  `cell/2/0/7/2`) are each their own cell. **So the 10 heads are really
+  only 6 independent comb decisions**, 4 of which land on more than one
+  head because the comb's answer is a per-CELL (or per-chord-column)
+  quantity, not a per-glyph one.
+
+**Print check on the dominant cause** (`crop_14heads.py`, 3 crops at
+`out/print/2.48/`, orange=base flat grid, green=an independently re-walked
+comb for illustration [NOT the byte-exact production value -- the
+10-01 CORRECTION already established that recomputing the walk over an ad
+hoc window does not reproduce the production start-at-x0 history; the
+legend prints the actual stored base/arm positions instead], red=the
+flagged head's own box, bracketed):
+
+- `dominant_cause_staff8_bar49_head1.png` (`glyph/3/0/8/0/3`, first head
+  in the shared cell): near the box the orange and green lines sit close
+  together; by the right edge of the same crop window they have visibly
+  separated by close to half a line's gap. **The page's staff genuinely
+  tilts/wanders across this cell's width** (consistent with the measured
+  ~5% spacing drift on Litolff p3, CLAUDE.md §10) -- the flat grid and a
+  locally-aware reading do not agree over one cell's span, which is
+  exactly what ROADMAP 2.48 set out to fix. The crop does NOT show an
+  obvious misread (no ink is mistaken for a line near the box).
+- `dominant_cause_staff8_bar49_head4.png` (`glyph/3/0/8/0/8`, the last
+  head in the same cell, further right): the SAME divergence is clearly
+  visible right at this head -- green sits above orange by close to half
+  a space here, more than at the first head. Confirms the drift is
+  real and grows across the cell, but the box itself sits in the same
+  space relative to EITHER nearby line pair in this crop -- the crop does
+  not, by itself, show which grid is the one a musician would read off
+  the print; it shows that the two mechanisms genuinely disagree about
+  where the lines are by the time they reach this head.
+- `dominant_cause_bass_chord_bar17.png` (`glyph/2/0/3/0/5`, bass clef):
+  the flagged head is a **ledger note sitting well above the staff's top
+  line**, with a visible ledger stroke through it -- a far note, the
+  hardest case per CLAUDE.md §10. Orange/green again fan apart left to
+  right across the system. For a far note, any per-space measurement
+  difference between the two grids is used TWICE over (it is doubled by
+  the glyph's own distance from the staff before it is extrapolated), so
+  the same tilt that cost ~0.78 sp inside the staff costs ~1.02 sp here --
+  the amplification-by-distance CLAUDE.md names, confirmed visually.
+
+**Conclusion for Sean**: the dominant cause is not 10 independent note
+errors -- it is 6 independent per-cell disagreements between the flat
+grid and the comb over a REAL, visible staff tilt, amplified by distance
+from the staff for the one far head. The comb is not hallucinating ink;
+it is answering a geometric question (where do the lines actually run)
+differently from the flat grid, and on this page's cells, every one of
+those 6 disagreements points the SAME direction -- there is no sign
+cancellation to appeal to.
+
+**Comb + head-ink-centre, scored on these same 15 heads: not built,
+for a measured reason, not skipped.** The already-recorded compensating-
+bias measurement (immediately above) found the head-centring bias is
++0.43 px (std 3.04) against a measured half-step of 50 canonical px
+(`Q.CELL_STAFF_SPACE` on every cell above) -- under 1% of one staff space,
+two orders of magnitude below the 0.3-1.0 sp dominant-cause shifts traced
+here. A sub-pixel box-vs-ink correction cannot move a whole-space grid
+disagreement; building the combined arm and scoring it against these 15
+heads would reach the a-priori-determined answer (no change) at the cost
+of a full re-gather, which rule 5 (reach before accuracy) counsels against
+once the magnitudes are this far apart. If a future lane disputes the
+50-canonical-px half-step on this page, that premise should be re-measured
+first.
+
+**A/A control**: the previously recorded 0 right->wrong / 0 wrong->right
+A/A (separate worktrees, same code) stands; this session's independent
+re-gather of the base and arm (fresh worktree, `fd396df0`) reproduced the
+a3ef66 lane's own arm shifts to several decimal places on every one of
+the 15 heads, which is the same determinism claim made a second,
+independent way.
+
+STILL NOT MERGED -- this trace explains the mechanism (a real, tilt-driven
+per-cell disagreement, one-directional on this page) but does not change
+the keep/drop verdict: the comb's own measured effect is still a net
+regression under every judge tried so far.
