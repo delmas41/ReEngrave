@@ -53,7 +53,10 @@ import clean_heads_sheet as chs
 from frame import render_page_matching_gather
 from tools.omr.annotate import ledger_grid as lg
 
-OUT_PATH = REPO_ROOT / "out" / "print" / "ledgers" / "rungs_sheet.png"
+# lane-ledger-rungs (2026-10-01): v2, drawn with the wide-gap/on-staff/
+# stub fixes (DECISIONS 2026-10-01 a/b/c) applied to the SAME reader --
+# the original rungs_sheet.png stays committed as the before-fix sheet.
+OUT_PATH = REPO_ROOT / "out" / "print" / "ledgers" / "rungs_sheet_v2.png"
 
 # --- reuse clean_heads_sheet's own layout/scale constants exactly ---
 NATIVE = chs.NATIVE
@@ -158,7 +161,9 @@ def classify_far_head(row: dict, binary_page: np.ndarray):
 
     crashed = False
     try:
-        rungs_y = lg.measure_ledger_rungs(binary_page, line_ys_abs, cx).get(side, [])
+        rungs_y = lg.measure_ledger_rungs(
+            binary_page, line_ys_abs, cx, head_y=cy
+        ).get(side, [])
     except Exception:
         traceback.print_exc()
         rungs_y = []
@@ -330,7 +335,13 @@ def main():
         if row is None or row.get("box_page") is None:
             continue
         pos = row["today_pos"]
-        is_far = pos < 0 or pos > 8.0
+        # DECISIONS 2026-10-01 (b): the first space just outside the
+        # staff (-1 or 9) is ON-STAFF, no ledger read -- `lg.far_head_
+        # needs_ledger_read` is the one place that line is drawn. `pos`
+        # is the raw geometric measurement (e.g. -1.02); the half-step
+        # SLOT it names is its rounding, the same convention every other
+        # consumer of `today_pos` in this lane already uses.
+        is_far = lg.far_head_needs_ledger_read(int(round(pos)))
         if not is_far:
             tile, _drawn_lines, _window, _cx = chs.draw_tile(pw.rgb, pw.binary, row, dy)
             tiles.append(tile)
@@ -361,8 +372,8 @@ def main():
     cv2.putText(sheet, "orange = measured ledger rung (filled=clean, hollow=head on it)",
                (10, 38), cv2.FONT_HERSHEY_SIMPLEX, 0.44, ORANGE, 2, cv2.LINE_AA)
     cv2.putText(sheet,
-               "lane-ledger-sheet 2026-10-01 -- Litolff p3, same 15 heads as clean_heads_sheet.py; "
-               "in-staff heads drawn unchanged",
+               "lane-ledger-rungs v2 2026-10-01 -- wide-gap / first-space / stub fixes "
+               "applied; same 15 heads as rungs_sheet.png",
                (10, 58), cv2.FONT_HERSHEY_SIMPLEX, 0.40, BLACK, 1, cv2.LINE_AA)
 
     for i, tile in enumerate(tiles):

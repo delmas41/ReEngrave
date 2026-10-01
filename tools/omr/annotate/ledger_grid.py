@@ -68,6 +68,27 @@ MAX_SPACES = 6.5
 # it both ways.
 WINDOW_HALF_WIDTH_SPACES = 1.1
 CROSS_HALF_WIDTH_SPACES = 0.1
+# A ledger printed THROUGH a head counts only where ink extends on BOTH
+# sides of the head by at least this many spaces (DECISIONS 2026-10-01,
+# Sean: "generally it should have a line that extends on either side of
+# the notehead") -- a long band that is merely long, but lopsided (most of
+# its length on one side, barely only just touching the probe column from
+# the other), is not a stub on both sides and must not be accepted. Sized
+# small deliberately: a detector box is not always perfectly centred on
+# the printed head (2.39b), so a real rung's near side can sit a few px
+# off the box's own x-centre; 0.45 (near a half notehead-width) measured
+# WORSE on 2.44c's truth set than this value -- it rejected real rungs
+# whose near-side stub was short but genuinely present, not merely a
+# brush from one side (see FINDINGS).
+RUNG_STUB_MIN_SPACES = 0.15
+# When the walk cannot find the next rung within WALK_WINDOW of the
+# current anchor but the head it is reading FOR is still farther out than
+# that window reaches, the window is widened up to the head's own
+# distance (plus this much slack) rather than stopping -- hand-drawn
+# ledgers are not evenly spaced (DECISIONS 2026-10-01: "There is a larger
+# space between the lower ledger lines and the one right underneath the
+# note").
+TARGET_SLACK_SPACES = 0.5
 
 
 def _otsu_threshold(values: np.ndarray) -> int:
@@ -105,6 +126,9 @@ def _band_centers(
     hi = int(cx_local + CROSS_HALF_WIDTH_SPACES * spacing)
     min_len = RUNG_MIN_LEN_SPACES * spacing
     bridge = RUNG_BRIDGE_GAP_SPACES * spacing
+    stub = RUNG_STUB_MIN_SPACES * spacing
+    stub_lo = cx_local - stub
+    stub_hi = cx_local + stub
 
     span_len = np.zeros(h, dtype=np.float64)
     padded = np.zeros((h, w + 2), dtype=np.int8)
@@ -124,7 +148,14 @@ def _band_centers(
                 spans.append([s, e])
         best = 0.0
         for s, e in spans:
-            if e - s >= min_len and s <= hi and e >= lo:
+            # A rung must cross the probe column AND extend at least a
+            # stub past the probed x on BOTH sides -- a span that is long
+            # overall but lopsided (e.g. a merged bridge that pulled in
+            # unrelated ink far to one side while barely touching the
+            # other) is not a ledger drawn through this head (DECISIONS
+            # 2026-10-01).
+            if (e - s >= min_len and s <= hi and e >= lo
+                    and s <= stub_lo and e >= stub_hi):
                 best = max(best, float(e - s))
         span_len[yi] = best
 
@@ -171,37 +202,85 @@ def _band_centers(
 
 
 def _walk_ladder(
-    edge_y: float, sign: float, bands: list[float], spacing: float
+    edge_y: float, sign: float, bands: list[float], spacing: float,
+    target_y: float | None = None,
 ) -> list[float]:
     """One rung per staff space outward from the staff's edge line, each
     accepted only inside WALK_WINDOW of the local pitch. Returns measured
-    rung ys, nearest first — WITHOUT the edge line itself."""
+    rung ys, nearest first — WITHOUT the edge line itself.
+
+    `target_y`, when given, is the head this walk is ultimately reading
+    FOR. Hand-drawn ledgers are not evenly spaced (DECISIONS 2026-10-01: a
+    wider-than-usual gap between two lower ledgers made the walk stop
+    before reaching the one right under the note). So where the normal
+    WALK_WINDOW finds nothing but the target is still farther out than
+    the window reaches, the window is widened — just far enough to catch
+    the next rung before the target, never past it — rather than giving
+    up. The widened step always takes the NEAREST candidate outward (never
+    jumping straight to the target), so an irregular gap is still walked
+    one rung at a time.
+    """
     rungs: list[float] = []
     anchor = edge_y
     pitch = spacing
     while len(rungs) < int(MAX_SPACES):
+        base_upper = WALK_WINDOW[1] * pitch
         cands = [
             b for b in bands
-            if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= WALK_WINDOW[1] * pitch
+            if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= base_upper
         ]
+        widened = False
+        if not cands and target_y is not None:
+            dist_to_target = sign * (target_y - anchor)
+            if dist_to_target > base_upper:
+                upper = dist_to_target + TARGET_SLACK_SPACES * spacing
+                cands = [
+                    b for b in bands
+                    if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= upper
+                ]
+                widened = True
         if not cands:
             break
-        expected = anchor + sign * pitch
-        best = min(cands, key=lambda b: abs(b - expected))
+        if widened:
+            best = min(cands, key=lambda b: sign * (b - anchor))
+        else:
+            expected = anchor + sign * pitch
+            best = min(cands, key=lambda b: abs(b - expected))
         rungs.append(best)
         pitch = abs(best - anchor)
         anchor = best
     return rungs
 
 
+def far_head_needs_ledger_read(pos_half_steps: float) -> bool:
+    """A head on the staff's 5 lines (0..8 half-steps from the top line)
+    OR in the first space just outside it (-1 or 9) is ON-STAFF and takes
+    its position from the staff lines directly, never from a ledger read
+    -- DECISIONS 2026-10-01 (Sean, on a reader that drew a rung through
+    such a head): "there is no ledger line. It is the first space above
+    the staff and should probably be treated as a note on the staff not
+    as one that should be a part of ledger lines." Only a head beyond that
+    first space needs `measure_ledger_rungs` at all; a caller that calls
+    it anyway for an on-staff head risks exactly that false rung.
+    """
+    return pos_half_steps < -1 or pos_half_steps > 9
+
+
 def measure_ledger_rungs(
-    img_gray: np.ndarray, staff_line_ys: list[float], x: float
+    img_gray: np.ndarray, staff_line_ys: list[float], x: float,
+    head_y: float | None = None,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
 
     img_gray is the cell image as a 2-D uint8 array in the SAME canonical
     frame as staff_line_ys. Returns {"above": [...], "below": [...]} with
     each list ordered nearest-rung-first; empty lists are abstentions.
+
+    `head_y`, when given, is the y of the head this read is ultimately
+    FOR (same frame as `img_gray`/`staff_line_ys`). It only widens the
+    walk on the side the head actually sits on (DECISIONS 2026-10-01, the
+    wide-gap fix in `_walk_ladder`) so the walk does not give up before
+    reaching that head; it never invents a rung the ink does not show.
     """
     ys = sorted(float(v) for v in staff_line_ys or [])
     if len(ys) < 2 or img_gray.ndim != 2:
@@ -233,5 +312,9 @@ def measure_ledger_rungs(
         ink = window <= thr  # <=: Otsu labels the threshold bin itself ink (a
         # binary image splits at t=0, and `<` would then select nothing)
         bands = _band_centers(ink, x - x0, spacing, yy0)
-        out[side] = _walk_ladder(edge_y, sign, bands, spacing)
+        side_target = (
+            head_y if head_y is not None and sign * (head_y - edge_y) > 0
+            else None
+        )
+        out[side] = _walk_ladder(edge_y, sign, bands, spacing, side_target)
     return out

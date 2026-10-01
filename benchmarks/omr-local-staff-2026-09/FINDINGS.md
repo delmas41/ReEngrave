@@ -1207,3 +1207,145 @@ invalidated.
 
 `pytest`/`staged.check` not run (measurement scripts only, no production
 code touched).
+
+## lane-ledger-rungs 2026-10-01 — three fixes to `measure_ledger_rungs`
+
+Scope: `tools/omr/annotate/ledger_grid.py` (`measure_ledger_rungs`, a
+stand-alone CV reader used by this directory's contact-sheet scripts and
+by `tools/omr/annotate/server.py`'s click-to-box snap). This is NOT
+STAGED's own production ledger reader — that is a separate function,
+`gather._observe_ledger_rung_ink`/`ownership.cv_rungs` in
+`tools/omr/staged/`. Nothing in the STAGED product path, and no default,
+was touched.
+
+Three fixes from Sean's reading of the 15-head rung sheet
+(`out/print/ledgers/rungs_sheet.png`, DECISIONS 2026-10-01):
+
+**(a) do not stop at a wide gap while the head is still farther out.**
+`_walk_ladder`'s `WALK_WINDOW` (0.65–1.35× the local pitch) rejected the
+real rung on `glyph/3/0/0/1/2` because the hand-drawn gap to it was wider
+than usual. Fix: when the normal window finds nothing but the head this
+walk is reading FOR is still farther out than the window reaches, the
+window widens just past the head's own distance (never beyond it) and
+takes the nearest candidate outward — one rung at a time, never jumping
+straight to the head. New `measure_ledger_rungs(..., head_y=...)`
+parameter threads the head's y through, applied only on the side the head
+actually sits on.
+
+**(b) the first space outside the staff is ON-STAFF.** `glyph/3/0/1/2/0`
+has no ledger at all — Sean: "it is the first space above the staff...
+should probably be treated as a note on the staff." New
+`far_head_needs_ledger_read(pos_half_steps)` returns `False` for -1 and 9
+(and every on-staff position 0..8), `True` beyond. `rungs_sheet.py`'s
+far-head gate now calls it (on the ROUNDED position — the raw geometric
+`today_pos` for this head was -1.0x, and using the unrounded float against
+`pos < -1` incorrectly still called the reader).
+
+**(c) a through-head rung needs ink on both sides.** `_band_centers`
+could accept a long band that only barely crossed the probe column on one
+side — most of its length sitting on the other, not a stub on both sides
+of the head. New `RUNG_STUB_MIN_SPACES` requires the merged span to reach
+at least that many spacing-units past the probed x on BOTH sides.
+⚠️ Calibration note: the first value tried (0.45, near a half notehead's
+half-width) measured markedly WORSE on the truth set below — real rungs
+whose box-measured centre sits a few px off the printed ledger's own
+centre (2.39b: boxes are not always perfectly centred) were rejected for
+a short-but-real near-side stub. Lowered to 0.15 (still rejects a span
+that merely brushes the probe column from one side) and re-measured
+clean.
+
+### Tests — RED-first, synthetic, fast tier
+
+`tools/omr/tests/test_ledger_rungs_wide_gap_2026_10_01.py`, 10 tests.
+Confirmed RED against the pre-fix file (`git show 8232c1866:...` into a
+scratch module): `ImportError: cannot import name 'far_head_needs_ledger_
+read'` — collection fails outright, the strongest possible RED. All 10
+pass after the fix; `pytest tools/omr/tests -m "not slow" -k ledger`:
+218 passed, 2 xfailed (unchanged xfails), 0 failed.
+
+Controls in the same file: `test_wide_gap_without_a_target_still_stops_
+old_behaviour` (no target → old behaviour, unchanged); `test_widening_
+never_reaches_past_a_head_with_no_rung_there` (widening is capped, never
+invents a rung far beyond the head); `test_on_staff_positions_are_
+unaffected`; `test_evenly_spaced_ledgers_unchanged_control` (a normal
+ladder, with or without `head_y`, reads identically).
+
+### Score against 2.44c's truth set — STAFF POSITION, never pitch
+
+Per CLAUDE.md §6b (first-two-stages-only; a head's measured staff
+position vs the reference pitch converted through ADJUDICATE's own
+clef). `benchmarks/omr-local-staff-2026-09/score_truth_set_rungs.py`.
+
+⚠️ 2.44c's own `_far_head_subjects`/`build_rows` read `Q.LEDGER_CLEAN_
+COUNT_POSITION`/`Q.LEDGER_RUNG_GRID_POSITION`, quantities that exist only
+on the unmerged `worktree-agent-ac053ee5c8a371951` record schema, not on
+this branch's `tools/omr/staged/record.py`. Re-derived the SAME far-head
+gate those quantities apply (`_ledger_expected > 0`, i.e. position < 0 or
+> 8) directly off `Q.NOTEHEAD_STAFF_POSITION` instead (`_far_head_rows`
+in the scoring script) — same gate, same truth-matching (`onset_exact_
+truth`, reused unchanged), but NOT necessarily the identical 47/11
+population the earlier FINDINGS entry reports, since it is read off this
+record's own detections rather than that lane's. Litolff: 75 far heads
+with a non-empty truth bar (of its own population); Brahms: 16.
+
+"Before" is the committed pre-lane file (`8232c1866`), loaded as a real
+second module from a scratch copy — not a flag toggle, so the comparison
+cannot be gamed by this lane's own code. "After" is the fixed reader,
+called with `head_y` (fix a wired through).
+
+| doc | metric | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry | 52 | 23 | 0 | 75 |
+| Litolff | rungs before | 32 | 12 | 31 | 75 |
+| Litolff | rungs after | 33 | 15 | 27 | 75 |
+| Brahms | geometry | 16 | 0 | 0 | 16 |
+| Brahms | rungs before | 7 | 3 | 6 | 16 |
+| Brahms | rungs after | 7 | 6 | 3 | 16 |
+
+Reading: fix (a) reaches heads the old reader abstained on entirely
+(abstentions drop 31→27 Litolff, 6→3 Brahms), and on Litolff that nets out
+to one more right than before. On Brahms the newly-reached heads all land
+wrong (same rights, +3 wrong) — a genuinely mixed result on this small
+sample, reported as measured, not oversold. All 7 before/after
+disagreements are heads the BEFORE reader abstained on; the fix never
+flips an existing right answer to wrong or vice versa on this set (one
+exception would show as a right→wrong or wrong→right row — there are
+none; every disagreement row has `before=None`).
+
+**Control that can fail** (CLAUDE.md rule 7): same reader, same fixes,
+but every probed head's y offset by one half-step before reading. Scores
+clearly worse on both docs (Litolff 7/41/27 vs 33/15/27; Brahms 2/11/3 vs
+7/6/3) — the judge and the metric are sensitive to a real displacement,
+not insensitive scaffolding.
+
+### (d) — `glyph/3/0/0/0/15`, confirmed: a detector miss, no fix here
+
+Sean noted a second head above the one boxed in tile 1 of the rung sheet.
+Checked directly against the record: no `notehead`-category `Q.GLYPH_BOX`
+row anywhere in cell `3/0/0/0` overlaps that second head's approximate
+position (above the boxed one, same x-column) — the detector never drew
+a box there, so there is no glyph subject for it at all (CLAUDE.md §4b: a
+glyph subject needs a detector box; ink the detector did not fire on is
+only `Q.INK`, read by nothing here). Recorded as a detector miss; no
+reader-side fix applies, per the task brief.
+
+### Redrawn sheet + disagreement crops
+
+`out/print/ledgers/rungs_sheet_v2.png` — same 15 heads, fixed reader.
+`glyph/3/0/1/2/0` now draws as an on-staff tile (fix b); `glyph/3/0/0/1/2`
+now finds 3 rungs (was 2) and lands step -7 (was -5), one step short of
+its own geometry read (-7.98) rather than four short. Pixel-row check:
+all 14 drawn orange rungs sit on ink ≥0.5 coverage over their own
+x-extent (0 failures). Far-head count on the sheet: 5 of 15 (was 6 before
+fix b excluded the first-space head).
+
+`out/print/ledgers/disagree/` — 7 crops (under the 10 cap), every truth-
+set head where rungs-after and rungs-before disagree, same drawing style
+as the sheet. States only what the reference says for each head (truth
+position in the filename's companion console line); not adjudicated here.
+
+### Not done / open
+
+- Small sample (75 + 16 scored heads, not the full 47+11 of the earlier
+  entry) — population difference explained above, not reconciled.
+- No re-gather of any kind was run; STAGED's own record is untouched.
