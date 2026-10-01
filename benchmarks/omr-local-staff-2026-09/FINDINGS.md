@@ -368,3 +368,40 @@ detector box itself slightly mis-placed).
 `test_cell_line_localization.py` + `test_staged_pipeline.py` 47 passed
 (not the full fast tier this round, time). `staged.check` TOTAL 245,
 unchanged. No new flag.
+
+## 2026-10-01 continued: is the 77 actually the comb? A/A control + per-head attribution
+
+**A/A control** (CLAUDE.md §6b non-determinism check): base tree (`8f1b2228`)
+gathered twice, separate worktrees, same command, scored against the same
+truth set. **0 right->wrong / 0 wrong->right on both docs.** This pipeline
+is byte-deterministic for this exact command/weights/env; the 77 is not run
+noise.
+
+**Per-head attribution, all 77 right->wrong (+ the 4 wrong->right)**: for
+each, compared the detector's own `Q.GLYPH_BOX` (base vs arm -- **identical
+on all 81**, zero box differences anywhere) and recomputed the comb's shift
+at that exact head's x (base's own staff lines, arm's code).
+
+- **38 of 77** right->wrong (and 3 of 4 wrong->right) have `|shift| < 0.1
+  step` -- the comb barely moved this head at all, yet its scored pitch
+  still flipped. Box identical, geometry near-identical: **these flips are
+  NOT the comb's doing.** Not chased further this round (time), but the
+  likely mechanism is a cascade through ADJUDICATE/EVALUATE (chord/event
+  grouping, voicing, or stack-rank assignment) triggered by a DIFFERENT
+  head's position change elsewhere in the same bar, not by this head's own
+  measurement.
+- **39 of 77** right->wrong (and 1 of 4 wrong->right) have `|shift| >= 0.1
+  step` with an identical box -- attributable to the comb.
+
+**The comb's real, attributable effect: 39 right->wrong vs 1 wrong->right.**
+Smaller in absolute count than the raw 77/4, but the same decisive
+direction -- still a clear net regression, not close to the "right->wrong
+~0" bar. The other ~41 flips in the raw count are a confirmed SEPARATE
+fault (unchanged box, unmoved comb, flipped verdict) and should not be
+charged to this mechanism or used to judge it further; they are a distinct
+open question for whoever investigates ADJUDICATE/EVALUATE's own
+sensitivity next.
+
+**Recommendation unchanged: do not merge.** The comb's own measured effect
+(39/1) is now isolated from an unrelated ~41-flip artefact the raw A/B was
+conflating it with.
