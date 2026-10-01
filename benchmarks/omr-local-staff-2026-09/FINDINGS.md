@@ -405,3 +405,58 @@ sensitivity next.
 **Recommendation unchanged: do not merge.** The comb's own measured effect
 (39/1) is now isolated from an unrelated ~41-flip artefact the raw A/B was
 conflating it with.
+
+## CORRECTION 2026-10-01: the "39/1 attributable" claim was wrong -- a bug in the attribution script, not a cascade
+
+Re-investigating the manager's judge question (did `Q.NOTEHEAD_STAFF_
+POSITION`'s rounding actually change for the 38 "cascade" heads) found the
+root cause: `attribution_2_48.py` recomputed the comb's shift by calling
+`_walk_comb_shift` fresh over an AD HOC +-150px window around each head,
+starting its own walk at `shift=0` from THAT window's x0 -- a different
+starting point than the real gather used (the cell's own x0). The walk's
+hold/commit history depends on where it starts, so this recomputation does
+not reproduce the production value and is not evidence about anything.
+
+**Corrected check**: read `Q.NOTEHEAD_STAFF_POSITION`'s own STORED value
+directly from both the base and arm records (no recomputation at all) for
+all 81 subjects (77 right->wrong + 4 wrong->right). **All 81 have an
+identical detector box AND a genuinely changed rounded position.** Zero
+are a judge/cascade artifact; the earlier "38 of 77 are not the comb's
+doing" finding does not hold -- it was this script's own bug.
+
+**The comb's real, attributable effect is the full 77 right->wrong vs 4
+wrong->right** (box always identical, so it is purely the comb's
+geometric effect on the position, never a detector difference) --
+matching the raw score exactly. No fix to `truth_set_2_44c.py` is needed;
+there is no re-pairing bug to find, because there is no cascade.
+Recommendation unchanged: do not merge. The compensating-bias and 12-head
+trace questions this (now withdrawn) finding prompted do not need
+answering on this premise.
+
+## 2026-10-01: GATHER+ADJUDICATE-only judge (Sean: "just the first 2 stages")
+
+New judge (`gather_only_judge.py`): no `Q.PITCH`, no `restate_pitch`, no
+export. Pairs OUR notehead sequence (detector box x,y order within a bar)
+against the REFERENCE's (onset ascending, stack descending) by INDEX, never
+by an estimated position. Bar number = `Q.PRINTED_BAR_NUMBER` (ADJUDICATE)
++ cell index. Family = staff ordinal -> `_FAMILY_MAPS`' P-number (stated
+assumption: condensed layout, one staff per family, fixed all piece).
+Reused the existing GATHER+ADJUDICATE rows inside the `--full` records
+(EVALUATE/INFER/EXPORT only ADD verdicts, never mutate them) rather than
+re-gathering.
+
+**Litolff**: base 150 right/131 wrong/1039 unscored; arm 137/144/1039 --
+**14 right->wrong / 1 wrong->right**. **Brahms**: 53/3/1446 both arms, 0
+changed (same severe under-scoring as the full-pipeline judge). Of the
+earlier 77 full-pipeline right->wrong heads, 10 are STILL a flip under
+this independent judge -- the rest fall outside this judge's (much
+smaller) scored population, not because they stopped flipping.
+
+**No other first-two-stage verdict changed**: `readout diff` shows only
+`notehead_staff_position` (844 of 1330) and `accidental_owner` (1 of 139)
+differ; clef (87/87 matched, 0 changes) and glyph_owner/event grouping are
+untouched.
+
+**Conclusion for Sean**: the worsening is visible already at GATHER, under
+a judge whose pairing cannot itself be moved by the comb -- it is in the
+measurement, not a later stage. Recommendation unchanged: do not merge.
