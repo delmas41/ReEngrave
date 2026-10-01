@@ -29,6 +29,14 @@ first two stages; `library/_shared-records/overnight-20261001/`) with
 `tools.omr.staged.readout` — Brahms meter should be decided on most systems
 (2.46); Litolff p2 should have 17 bars in system 0 (2.47).
 
+**Overnight 20261001 READ (09-30 session, vs 20260930b, first two stages):** Brahms meter
+decided 16 -> 34 of 53 systems (digits_misread 36 -> 0; left: 16 carry_not_corroborated,
+2 outweighed, 1 the real m.9 return); Litolff p2 sys0 16 -> 17 bars; undecided durations
+Litolff 1,315 -> 1,019, Brahms 3,762 -> 3,530; Litolff rest_has_a_stem 932 -> 113.
+**CHECK FIRST:** 2.42's `stacked_head_duplicate` refused 696 boxes on the Litolff movement
+(only p3, 50, was ever print-checked); clusters on p13 (104) and p8 (82) -- crop a sample
+there before trusting it. `head_fill_from_ink` narrowings rose (22 -> 48, 9 -> 92).
+
 **Open, in order:**
 1. 2.48 local staff (branch `worktree-agent-a3ef66441824adfff`, pushed, NOT
    merged): Sean's bending comb sits within 0.25 px of the printed line
