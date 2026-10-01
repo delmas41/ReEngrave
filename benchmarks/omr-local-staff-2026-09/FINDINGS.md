@@ -834,3 +834,140 @@ whole has not yet cleared the keep bar from the original A/B
 heads (`glyph/3/0/0/2/4`, `glyph/3/1/0/6/0`) the way the earlier trace did
 for the bar-49 cluster, to see whether the SAME seeding idea (or a
 different one) can close them too.
+
+## 2026-10-01: Sean's boundary question -- why doesn't the (closer) comb improve the score? (lane-2.48-boundary, NO re-gather)
+
+Sean: the comb sits ~0.25px from the print (this FINDINGS line's own strip
+measurements) against today's flat per-bar grid's ~1px -- so why does the
+real re-gather not improve? Three hypotheses tested: (1) too few heads near
+a rounding boundary to flip; (2) box-centre error rivals the line
+improvement; (3) the 149-of-1330 reference-scored sample is too small to
+see it. GATHER+ADJUDICATE-only (CLAUDE.md §6b), no re-gather --
+`boundary_measure.py` reuses `recheck_2_48_seeded.py`'s own recipe (duck-
+typed `Staff`/`PageWithStaves` from the lane's committed ARM record, a
+fresh `render_page`+`deskew`, `_cell_line_offset`/`_trace_cell_local_lines`
+called DIRECTLY). Both TODAY's flat grid and the seeded comb are computed
+fresh here, never read off the record's own stored (comb-affected)
+position -- the record is used only as a source of GATHER facts (boxes,
+staff lines, clef, bar numbers), which prior rounds in this FINDINGS line
+established are byte-identical base vs arm (detector untouched by the comb).
+
+### A. Distance to the rounding boundary, every kept notehead, Litolff p3
+
+349 kept noteheads (ADJUDICATE `kept`, position observed, of this page's
+1330 detected notehead glyphs -- most of the page is refused, narrowed or
+abstained elsewhere in the pipeline, not a 2.48 fact).
+
+| bucket (px from boundary) | count |
+|---|---|
+| 0-0.5 | 25 |
+| 0.5-1 | 17 |
+| 1-2 | 67 |
+| 2-3 | 78 |
+| 3+ | 162 |
+
+**Within 1px of a boundary: 42 of 349 (12.0%).** Within 2px: 109 of 349
+(31%). **Of those 42, only 15 are among the 149 reference-scored heads**
+(36% -- the reference pairing already loses most of the population that
+could visibly flip). **Hypothesis 1 (too few near-boundary heads) does
+NOT hold on its own**: 12% of kept heads, and nearly a third within 2px,
+is not "few" -- a 1px line correction has real room to matter here.
+
+### B. Box-centre error vs line difference, the 112 heads within 2px
+
+For each: TODAY's and the seeded comb's line position at the head's own x
+(both computed fresh, never recomputed over an ad hoc window -- the
+10-01 CORRECTION's own lesson), the detector's box centre, and the head's
+own INK centre (outermost ink row per column, central 40% of the box
+width, staff-line rows masked at the comb's own measured y using the
+record's `staff_skew.thickness_px`, padded 0.3 spaces beyond the box).
+
+- **box-centre error (box_y - ink_y): mean +0.24px, std 2.48px (n=112)**
+- **line difference (comb - orange at the head): mean -0.01px, std 0.47px
+  (n=112)**
+
+**Box-centre error is ~5x the spread of the line difference on these same
+heads.** The comb's own line correction (what this lane changes) is small
+and centred near zero; the detector's box-vs-ink disagreement is an order
+of magnitude larger and in many individual cases alone exceeds a full
+rounding step (|box-ink| > 3px on 19 of 112 heads sampled).
+
+### C. Controls -- and the control FAILS (rule 7)
+
+10 clean, isolated heads (cell-distinct, >3px from any boundary, same
+method): **mean 0.19px, std 3.16px** -- NOT the small, tight agreement
+(~1px) the control was built to show. 3 heads with a deliberately
+offset +3px box: measured errors **5.63 / 0.67 / 0.86px** -- NOT
+consistently ~3px either. **The control fails, as rule 7 requires it be
+able to**, and what it fails AT is informative: the ink-centre
+measurement itself carries several px of noise on this plate, comparable
+in size to the very box-centre effect it was built to quantify. The
+numbers in §B are real (box error visibly dwarfs line error in aggregate,
+and the failure mode below explains why), but not precise enough to
+trust head-by-head.
+
+### D. Crops (`out/print/2.48/boundary/`, 3 near-boundary heads, 600dpi,
+### orange/green/box/ink-centre drawn, verified against ink-row centres)
+
+- `glyph_3_0_0_2_9.png` (dist 0.53px, the flute passage from Sean's own
+  D6/E6 crop history): the detector's OWN box covers only the UPPER
+  portion of a visibly larger connected black blob -- **two heads' ink
+  merged into one component** (Litolff MERGES, CLAUDE.md §10), so the
+  box itself, not just its centre, is the wrong shape for "this one
+  head's ink". The ink-row centres at a clean column (953-968) confirm
+  BOTH orange (451.0/466.0/...) and comb (450.6/465.6/...) sit within
+  ~1px of the real printed lines there -- the geometry side is fine; the
+  box is the problem.
+- `glyph_3_0_9_2_0.png` (dist 0.10px, a dense bass region, several
+  adjacent/overlapping heads): box_y 1894.7 vs ink_y 1892.0 (2.7px) --
+  plausible contamination from the touching neighbour visible in the
+  crop, the same hazard 2.44c's box-recentring hit.
+  `glyph_3_1_6_11_0.png` (dist 1.10px, an isolated open half-note sitting
+  on a line): box_y 3332.9 vs ink_y 3334.5 (1.6px) -- the CLEAN case, and
+  it is the one head of the three where orange and comb visibly
+  coincide and the ink agrees with the box to within less than one
+  staff-space.
+
+### Note history: does this avoid 2.44c's "fixed 3, broke 3"?
+
+**No.** 2.44c's box-recentring (`gather._canonical_ink_centre`, an
+unbounded nearby-component search) fixed 3 of 10 wrong heads and broke 3
+previously-right ones because on a dense page the ink search "finds a
+DIFFERENT, sometimes wrong, nearby component" (FINDINGS §18b). This
+lane's method is narrower -- central 40% of the box width (avoids the
+stem side), staff-line rows masked at the comb's own measured position --
+which removes two of 2.44c's three contamination sources (the stem, the
+staff line itself). It does **not** remove the third, and on this plate
+the dominant one: a vertically adjacent or merged head's ink inside the
+same padded window, confirmed directly in `glyph_3_0_0_2_9.png` above and
+by the control's own 3-6px scatter. A sharper search radius is not
+enough on a MERGING plate; the same hazard that sank 2.44c sinks this
+method's per-head precision too, even though it never re-wires a
+position (measurement only, nothing shipped).
+
+### Answer to Sean's three hypotheses
+
+1. **False as the explanation.** 12% of kept heads sit within 1px of a
+   boundary and nearly a third within 2px -- not a small population.
+2. **The best-supported explanation, even though this lane's own
+   instrument is too noisy to prove it to the pixel.** Box-centre
+   disagreement is ~5x the comb's own line correction in aggregate
+   spread, and several individual heads show box-vs-ink gaps bigger
+   than a full rounding step -- on a page where boxes and ink routinely
+   merge across heads (CLAUDE.md §10), fixing the LINE while the BOX is
+   still wrong by more than the line ever moved cannot show up as a
+   score improvement.
+3. **A real but secondary contributor.** Only 15 of the 42 near-boundary
+   heads (36%) are visible to the reference-scored judge at all -- most
+   of the population this lane measured cannot move `acceptance_quick`'s
+   number either way.
+
+**Recommendation**: before any further line-geometry refinement, the
+detector's own BOX (not just its centre) needs the same kind of scrutiny
+2.39/2.39b gave head sizing -- on a merging plate, "kept notehead" boxes
+routinely bound less than the full printed head, and no amount of line
+precision fixes a position measured from the wrong box. Not built here
+(time, and out of this lane's NO-re-gather / NO-code-change scope).
+
+`pytest`/`staged.check` not run (no production code touched -- measurement
+scripts only, both under `benchmarks/omr-local-staff-2026-09/`).
