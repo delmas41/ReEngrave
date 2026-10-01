@@ -690,3 +690,118 @@ connection is correctly scoped (cross-staff, abstains on empty, leaves
 ROADMAP: this item earns nothing until the duplicate-class detector defect
 is fixed, which is a GATHER change and its own roadmap item, not a
 follow-up inside 2.47b.
+
+## 12. ROADMAP 2.47c -- the duplicate-class defect itself, refused
+
+Section 10c/11c both named the same cause and left it out of scope: the
+detector draws a SECOND box on a meter digit's own ink, correctly classed
+`timeSig*` once and misclassed `noteheadWholeInSpace` a second time, at IoU
+0.94-0.96. `notehead_precision._notehead_duplicate_box_refusal` (2.30)
+never compares across families, so nothing refused it. This item builds
+that cross-family rule: `_timesig_digit_duplicate_refusal`, a notehead-
+classed box at IoU > 0.9 against a `timeSig*` box in the SAME cell is that
+digit's own ink, reason `is_a_time_signature_digit`. IoU alone is the gate
+(no centre test, unlike 2.30) -- a `timeSig*` box and a real nearby head
+are two independently-drawn boxes that do not share 90% of their area by
+chance; `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b and this
+file's own §10c/§11c crops are the print evidence, not a fresh guess.
+
+### 12a. Tests and check
+
+`tools/omr/tests/test_staged_timesig_digit_duplicate.py`, 6 tests. RED
+confirmed by reverting `notehead_precision.py` to `origin/lane-2.47b-
+verify`'s own tree and re-running: 3 of 6 fail (the duplicate-refusal unit
+test, the positive control's own kept-case regresses to the SAME "notehead"
+reason by coincidence rather than the floor doing the work -- caught
+because the test also asserts the fixture's IoU clears/misses the floor
+independently of the verdict -- and the ordering-gap test's own "refused"
+half); the 3 CONTROLS (no `timeSig*` in the cell, a `timeSig*` box is never
+itself a subject, and -- separately pinned -- the measure_partition
+ordering-gap finding) pass on both trees. `pytest -m "not slow"`: 4,205
+passed (base 4,199 + 6), 0 failed, 3 skipped, 2 xfailed. `check`: TOTAL
+245, unchanged.
+
+### 12b. Real data, re-adjudicated off the committed `20261001` records
+
+`ijson`-streamed, never the whole record in memory (a standalone IoU-only
+counting pass, then a second, authoritative pass that loads ONE page's own
+observations into a real `Log` and calls the actual branch code via
+`adjudicate.subjects_for`/`adjudicate.adjudicate_one` -- `lane-2.47b-
+verify`'s own §11b technique, reused):
+
+| record | population | refused (`is_a_time_signature_digit`) | max candidate IoU where NOT refused |
+|---|---|--:|--:|
+| Litolff whole mvt1 (47 pp, 486 MB) | 137 notehead boxes sharing a cell with a `timeSig*` box | **0** | 0.736 |
+| Brahms pp.0-1 (3.47 GB whole record, read to page 1 only) | 188 such boxes | **4** | -- |
+
+Litolff's own maximum (0.736, a real notehead a hair under a `timeSig2` box
+in a crowded bar) sits comfortably below the 0.9 floor with margin on both
+sides, matching this item's own module comment. Brahms's 4: two at the
+OPENING 6/8 (page 0 system 0 cell 0, staves 1), IoU 0.972/0.928, and the
+two already crop-verified at the cautionary 9/8 tail (cell 7, staves 3/4),
+IoU 0.963/0.944 -- `glyph/0/0/3/7/3` is the identical glyph
+`omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b traced end to end and
+print-verified 1 of 1.
+
+**Against the real branch code, not a reimplementation**: page 0 system
+0's own 9,618 observations loaded into a fresh `Log`, `adjudicate.
+subjects_for` (not a bare subject walk -- an earlier draft of this check
+iterated every glyph regardless of `subjects_from=Q.NOTEHEAD_CLASS` and
+produced 68 nonsense "refusals" on `timeSig*`-classed subjects that were
+never notehead candidates at all; caught before being reported, matching
+CLAUDE.md §13's own warning about an unverified lane claim). With the real
+subject domain: all 4 glyphs above decide `True, is_a_time_signature_digit`
+exactly as the standalone IoU pass found, and `Q.MEASURE_PARTITION` on
+every one of the 14 staves in page 0 system 0 **still decides `8, "read"`
+-- NOT 7**. Diagnosed, per the brief's own instruction to report rather
+than reorder: `Q.MEASURE_PARTITION` sits at position 4 in `adjudicate.
+ORDER`, `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` at position 76 (well after it), and
+`structure._trailing_cell_is_cautionary_only` reads each glyph's raw
+DETECTOR class (`Q.GLYPH_BOX`'s own `value[0]`) directly -- it has no way
+to see a later-stage refusal verdict even if it ran after one, because a
+refused glyph's `Q.GLYPH_BOX` class is left exactly as the detector wrote
+it (REFUSED, never relabelled -- CLAUDE.md's own "the record keeps the
+row"). Neither of the brief's two conditions for a safe reorder holds, so
+this is reported, pinned as its own regression test
+(`TestMeasurePartitionOrderingGap`), and NOT built.
+
+This refusal's payoff is at EXPORT, not at `measure_partition`:
+`export.py`'s own accounting buckets a refused glyph `not_a_notehead:
+is_a_time_signature_digit` and drops it before duration or pitch is ever
+derived from it, so the bar it sat in no longer carries a spurious
+duration. Of `omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b's "remaining 7
+of 73 sampled bars" attributed to this exact mechanism, only ONE
+(`glyph/0/0/3/7/3`'s own bar) was individually named by subject; the other
+6 were counted but not enumerated in that pass and are not re-locatable
+here without redoing its sampling -- not attempted (out of scope, time
+budget).
+
+### 12c. Crops
+
+4 of 4 refused boxes, `out/print/2.47c/` (600 dpi, PyMuPDF, ≥1000 px wide,
+red = the refused notehead box, blue = the `timeSig*` box it duplicates --
+the two outlines sit nearly on top of each other, which IS the IoU > 0.9
+claim):
+
+- `brahms-p0-s0-staff1-cell0-glyph24.png` / `-glyph30.png` -- the movement's
+  OPENING 6/8, both boxes landing on the open bowl of the "8".
+- `brahms-p0-s0-staff3-cell7-glyph3.png` / `-staff4-cell7-glyph3.png` -- the
+  cautionary 9/8 tail, same shape, same cell 2.47b's own §10c/§11c already
+  crop-verified from the OTHER side (the `timeSig8` box, not its duplicate).
+
+BY EYE, 4 of 4: every boxed region is unambiguously the lower loop of a
+printed "8", never a notehead. No crop made for Litolff -- nothing was
+refused there to look at.
+
+### 12d. Recommendation
+
+Merge 2.47b and 2.47c together. 2.47b is a correct, currently-inert
+connection (FINDINGS §11e); 2.47c removes exactly the detector-level
+contamination 2.47b's own §10c diagnosis named as the reason it stays
+inert on Brahms p0 -- but, per §12b above, it does not and structurally
+cannot make 2.47b's demotion fire on that same page, because
+`measure_partition` decides before this refusal exists and reads the raw
+class, not the verdict. The two items are complementary fixes to the same
+diagnosed page, not a sequential unlock; both are safe on the evidence
+measured here (tests, `check`, zero false positives on Litolff, 4
+crop-confirmed true positives on Brahms).
