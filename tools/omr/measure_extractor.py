@@ -26,6 +26,7 @@ from collections import Counter
 import cv2
 import numpy as np
 
+from .header_ink import trace_staff_line
 from .system_grouping import _choir_grouping_enabled, gap_bridging_counts
 from .types import Barline, MeasureCell, PageWithStaves, Staff
 
@@ -1502,6 +1503,87 @@ def _cell_line_offset(
     }
 
 
+# ─── A local staff-line MODEL: lines traced at the subject's own x ──────────
+#
+# `_cell_line_offset` slides the whole five-line comb by ONE shift for the
+# whole cell — a scan that tilts or stretches WITHIN a measure (Litolff p3
+# staff/3/0/0's top line wanders 447-454 px, ~5% spacing change, across one
+# system) still hands every reader in that cell the same flat grid. CLAUDE.md
+# §10 (2026-09-30, Sean): "any position relative to the staff reads the staff
+# lines AT THE SUBJECT'S x, never a staff-wide or bar-wide value."
+#
+# This does not re-derive a tracer. `header_ink.trace_staff_line` already
+# follows one printed line across a mask, column by column, filling the
+# columns a glyph sits on from its neighbours — exactly what a per-x model
+# needs, and already proven (staff-line erasure has run it since 2026-09).
+# Reused here, once per line, over the CELL's own x-band (never the whole
+# staff — a local measurement does not need the staff's full width, and a
+# narrower band is cheaper to trace and more exact near the cell it describes).
+ENV_LOCAL_STAFF_LINES = "OMR_LOCAL_STAFF_LINES"
+
+
+def _local_staff_lines_enabled() -> bool:
+    """`OMR_LOCAL_STAFF_LINES` env; ON by default (ROADMAP 2.48). Set
+    0/false/no/off to disable -- the per-cell flat grid (`_cell_line_offset`,
+    or the staff-wide `Staff.line_ys` where that too declines) is what a
+    disabled or declining trace falls back to; nothing falls back further."""
+    raw = os.environ.get(ENV_LOCAL_STAFF_LINES, "").strip().lower()
+    return raw not in {"0", "false", "no", "off"}
+
+
+def _trace_cell_local_lines(
+    pws: PageWithStaves, staff: Staff, x0: int, x1: int
+) -> list | None:
+    """Follow each of the staff's 5 printed lines across this cell's own
+    x-band: `[path_0, ..., path_4]`, each a `np.ndarray` of page-y, one entry
+    per page column from `x0` (inclusive) to `x1` (exclusive) -- or `None`
+    when any one of the five could not be traced.
+
+    ALL FIVE OR NOTHING, the same policy as `measure_line_geometry`: a
+    partial model would not tell its caller WHICH line is missing, so a
+    consumer reading it would be silently mixing a measured line with an
+    absent one. The caller (`_build_measure_cell`) falls back to the
+    existing per-cell flat grid on `None` -- never silently further, and the
+    choice is recorded (`gather._local_cell_grid_at`'s caller tags its
+    observation `local_staff_lines=False`).
+    """
+    binary = pws.page.binary
+    ys = [int(y) for y in staff.line_ys]
+    spacing = float(staff.line_spacing_px)
+    if len(ys) < 5 or spacing <= 0:
+        return None
+    height, width = binary.shape[:2]
+    lo, hi = max(0, int(x0)), min(width, int(x1))
+    if hi - lo < 2:
+        return None
+    limit = int(round(CELL_LINE_MAX_SHIFT_SPACES * spacing))
+    band_lo = max(0, min(ys) - limit - 2)
+    band_hi = min(height, max(ys) + limit + 3)
+    if band_hi - band_lo < 5:
+        return None
+    # Phase 1's binary is 0=ink; `trace_staff_line` wants 255=ink -- the same
+    # conversion `_cell_line_offset` uses on the same band shape.
+    mask = np.where(binary[band_lo:band_hi, lo:hi] == 0, 255, 0).astype(np.uint8)
+    # `trace_staff_line`'s own default search window (0.35 spaces) is
+    # narrower than the displacement this model exists to follow: Litolff
+    # p3's measured wander alone is 0.44 spaces, more than `_cell_line_offset`
+    # already tolerates as a single rigid shift (`CELL_LINE_MAX_SHIFT_SPACES`
+    # = 0.75). A per-column trace must tolerate at least as much, or it
+    # clips the very drift it is built to follow -- measured on this file's
+    # own 14px/0.7-space synthetic ramp, the default window undershoots the
+    # far end by half the ramp.
+    search_spaces = CELL_LINE_MAX_SHIFT_SPACES
+    paths = []
+    for y in ys:
+        traced = trace_staff_line(mask, float(y - band_lo), spacing,
+                                   search_spaces=search_spaces)
+        if traced is None:
+            return None  # all five or nothing -- see the docstring
+        centres, _thickness = traced
+        paths.append(centres + float(band_lo))  # back to page-y
+    return paths
+
+
 def _build_measure_cell(
     pws: PageWithStaves,
     staff: Staff,
@@ -1617,6 +1699,17 @@ def _build_measure_cell(
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
     # kept dynamic for now.)
     cell.__dict__["binary"] = up_bin
+    # The LOCAL staff-line model (ROADMAP 2.48): page-y per page-column, for
+    # this cell's own x-band -- `(x0, [path_0..path_4])`, `x0` being the page
+    # column the first entry of each path belongs to (this cell's own,
+    # post-clamp `x0`, matching `bbox_page_px[0]`). `None` when tracing
+    # declined; a consumer reads it with `getattr(cell,
+    # "local_line_paths_px", None)`, the same dynamic-attribute pattern as
+    # `staff_line_spacing_canonical` above.
+    if _local_staff_lines_enabled() and len(staff.line_ys) >= 5:
+        local_paths = _trace_cell_local_lines(pws, staff, x0, x1)
+        if local_paths is not None:
+            cell.__dict__["local_line_paths_px"] = (x0, local_paths)
     # A ONE-LINE staff's cell carries one row, so every consumer that derives
     # the staff-space unit from the GAPS between rows gets nothing and falls
     # back to a constant that was written for a different frame

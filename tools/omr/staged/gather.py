@@ -519,15 +519,30 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                     half_step=float(half_step), lines=len(
                         list(getattr(c, "staff_line_ys_canonical", None) or [])))
+        bbox = getattr(c, "bbox_page_px", None)
+        scale = getattr(c, "upscale_factor", None)
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
-            pos_float = (d.y_center - top_y) / half_step
+            # ⚠️ LOCAL FIRST, THE CELL'S FLAT GRID AS THE ONLY FALLBACK
+            # (CLAUDE.md §10, ROADMAP 2.48). The head's own x, carried back to
+            # page pixels, is where a scan's tilt or stretch is read off the
+            # PRINT rather than off one shift for the whole cell -- never
+            # silently: `local_staff_lines` records which grid answered.
+            head_top_y, head_half_step, used_local = top_y, half_step, False
+            if bbox is not None and scale:
+                page_x = bbox[0] + d.x_center / scale
+                local_grid = _local_cell_grid_at(c, page_x)
+                if local_grid is not None:
+                    head_top_y, head_half_step = local_grid
+                    used_local = True
+            pos_float = (d.y_center - head_top_y) / head_half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
-                        rounded=int(round(pos_float)))
+                        rounded=int(round(pos_float)),
+                        local_staff_lines=used_local)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -4782,6 +4797,39 @@ def _cell_grid(cell: Any) -> Optional[Tuple[float, float]]:
     if half_step <= 0:
         return None
     return float(lines[0]), float(half_step)
+
+
+def _local_cell_grid_at(cell: Any, page_x: float) -> Optional[Tuple[float, float]]:
+    """`(top_y, half_step)` in the cell's own CANONICAL frame, using the
+    staff lines `measure_extractor._trace_cell_local_lines` traced AT
+    `page_x` -- never the cell's one flat grid (`_cell_grid`) and never the
+    staff-wide `Staff.line_ys`. None where this cell has no local trace
+    (tracing declined, or the flag is off) or `page_x` falls outside the
+    traced band; the caller then falls back to `_cell_grid`, exactly today's
+    behaviour, and records which grid answered (CLAUDE.md §10, ROADMAP 2.48).
+    """
+    local = getattr(cell, "local_line_paths_px", None)
+    if local is None:
+        return None
+    x0, paths = local
+    if not paths or not len(paths[0]):
+        return None
+    bbox = getattr(cell, "bbox_page_px", None)
+    scale = getattr(cell, "upscale_factor", None)
+    if bbox is None or not scale:
+        return None
+    page_y0 = bbox[1]
+    n = len(paths[0])
+    col = int(round(page_x)) - int(x0)
+    col = max(0, min(n - 1, col))
+    canon_ys = [(float(p[col]) - page_y0) * scale for p in paths]
+    gaps = [canon_ys[i + 1] - canon_ys[i] for i in range(len(canon_ys) - 1)]
+    if not gaps:
+        return None
+    half_step = (sum(gaps) / len(gaps)) / 2.0
+    if half_step <= 0:
+        return None
+    return float(canon_ys[0]), float(half_step)
 
 
 def gather_clef(log: Log, cells: Sequence[Any],
