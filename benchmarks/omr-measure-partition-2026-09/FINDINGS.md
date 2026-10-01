@@ -426,3 +426,168 @@ merged to one barline either way.
   crop per case -- consistent with section 1's totals already matching, not
   independently crop-verified here.
 - Not merged anywhere; scoped to this branch per Sean's authorization.
+
+## 10. ROADMAP 2.47b -- a cautionary clef/key/meter is not a bar, generalised
+
+Section 0a (above) diagnosed one page by width calibration and stopped:
+*"the right repair ... is a shape/content read of the tail cell itself ...
+which is a new GATHER question ... and needs its own roadmap item."* This
+item is that read, placed where the brief required: ADJUDICATE, after the
+detector has already run, so looking inside the cell is a CONNECTION (rule
+6) over an already-gathered fact (`Q.GLYPH_BOX`), never a new GATHER
+mechanism.
+
+### 10a. Where the rule lives
+
+`structure.adjudicate_measure_partition` is the only decision that reads
+`Q.BARLINE_COLUMN` (a per-staff cell COUNT, nothing about content --
+`gather.gather_measures`). It now also declares `Q.GLYPH_BOX` and, when the
+staff has at least two cells (a real barline exists before the candidate
+tail), asks `_trailing_cell_is_cautionary_only(ev, system_sub,
+last_cell_index)`:
+
+- reads `Q.GLYPH_BOX` at `Scope.SELF_AND_DESCENDANTS` from the STAFF's own
+  SYSTEM ancestor -- every staff of the system, not just the one being
+  decided, because CLAUDE.md section 10's "printed at one bar on every
+  staff of the system" cuts the other way too: one staff with a genuine
+  short final bar or a pickup means the SYSTEM has not yet closed, and the
+  tail is real for everyone;
+- restricted to rows filed in the exact trailing cell (`subject.cell ==
+  last_cell_index`);
+- demotes (`value = n_cells - 1`, `reason = "cautionary_tail_not_a_bar"`)
+  only when every one of those rows, across every staff, reads as
+  `_is_signature_glyph_class` -- `clef*` / `key{Flat,Sharp,Natural}` /
+  `timeSig*`, explicitly EXCLUDING `keyboard*` (the one `"key"`-prefix
+  collision in the 208-class space: `keyboardPedalPed`/`Up`, which must
+  never pass as a key signature);
+- an EMPTY cell (the detector found nothing there at all) answers False,
+  not True -- rule 8, "we found nothing" is not evidence either way, so
+  today's geometry-only count stands;
+- `n_cells < 2` (no barline read at all for this system) is never touched
+  -- there is no "last barline" for a tail to follow.
+
+### 10b. RED-first tests
+
+`tools/omr/tests/test_staged_measure_partition_2_47b.py`, 9 tests + a
+dedicated classifier unit-test class. RED confirmed by `git stash` of
+`structure.py` alone and re-running: 3 of 9 fail (the headline synthetic
+case, 8 decided cells -> 7, plus both `_is_signature_glyph_class` unit
+tests, since the function does not exist pre-fix) -- the 6 CONTROLS pass
+unchanged on both trees, as rule 7 requires:
+
+- a real note/rest anywhere in the trailing cell, on ANY staff, keeps the
+  WHOLE system's tail a bar (both a notehead and a rest tested separately);
+- a system with no barline at all (`n_cells == 1`) is untouched;
+- an EMPTY trailing cell (no `Q.GLYPH_BOX` row) keeps today's behaviour;
+- a `keyboardPedalPed` box alone in the tail does NOT pass as a key
+  signature (the one classifier collision, pinned as its own regression);
+- no `Q.BARLINE_COLUMN` row still abstains `no_barline`, unchanged.
+
+`pytest -m "not slow" tools/omr/tests`: 4,199 passed (base tree re-measured
+at 4,190 + the 9 new), 0 failed, 3 skipped, 2 xfailed.
+`python3 -m tools.omr.staged.check`: TOTAL 245, unchanged from the base
+tree.
+
+### 10c. A/B, GATHER+ADJUDICATE, `--weights auto --route-weights`
+
+Base = a dedicated detached worktree at `8f1b2228` (the 2.47 merge commit
+this brief named). ⚠️ The shared `/private/tmp/base-check-2a9f` another
+session was already using for the SAME purpose was deleted out from under
+this one mid-run (`ModuleNotFoundError: tools.omr.staged.record_io` on a
+tree that plainly has the file -- the checkout itself was gone, CLAUDE.md
+section 13's shared-checkout collision, hit again) -- recreated privately
+via `git worktree add --detach`, never touching the shared one again.
+
+**Litolff pp.1-4, all 7 systems, 75 staves: 0 diffs.** Every system's
+`measure_partition` value is byte-identical base vs arm and matches 2.47's
+own printed-truth table exactly (p2/sys0 stays 17, etc.) -- the fix is
+INERT exactly where 2.47 already measured no cautionary-tail defect.
+
+**Brahms pp.0-3, all 7 systems, 97 staves: p0/sys0 stays 8, NOT 7.** The
+one case this item was built to fix does not flip on a real re-gather.
+Diagnosed, not shrugged off:
+
+The trailing cell's own `Q.GLYPH_BOX` output (46 rows across 14 staves,
+today's auto-routed weights) is not the clean "clef + time signature" a
+human crop-read expects. On staves 3 and 4 the SAME ink is boxed as BOTH
+`timeSig8` and `noteheadWholeInSpace` at IoU 0.94-0.96 -- measured with a
+small standalone IoU script, not eyeballed. On staves 5, 9, 11, 13 the
+strip holds standalone `noteheadWholeInSpace`/`ledgerLine` boxes with no
+`timeSig` or `clef` row at all. No staff in this cell gets a `clef*` class.
+
+**Crop-verified at 600 dpi** (`out/print/2.47b/brahms-p0-sys0-staff3-tail-
+dup.png`, 1211x240; `-staff11-tail-noclef.png`, 1211x160 -- both >=1000px
+wide, rendered directly from the PDF via PyMuPDF at the gather's own 600
+dpi, double barline plus the tail visible in frame): BY EYE both staves
+show the system's final (double) barline followed by nothing but a
+cautionary **"9/8"** meter change -- no clef, because the clef does not
+change into the next system (CLAUDE.md section 10 names a cautionary METER
+and a cautionary CLEF as separate facts; only the one that changes is
+printed). The `noteheadWholeInSpace`/`ledgerLine` boxes on staff 11 sit at
+the SAME x position as the "9/8" digits, not beside them -- they are the
+digits' own round loops and serifs read under a second, wrong class guess.
+This is the exact duplicate-detection shape `gather.py`'s own
+`gather_detections` docstring already names and explicitly declines to fix
+there ("NOT CHANGED HERE, because changing it changes the DETECTION SET
+... only two full re-gathers can price it" -- 284 same-cell notehead pairs
+measured on the committed Litolff record, IoU 0.91-0.96).
+
+So **by print, Brahms p0 IS the mechanism this item targets** -- the
+connection built here is reading the evidence correctly and refusing,
+correctly, to demote past contamination it cannot itself deduplicate. The
+remaining gap is the detector's pre-existing, already-documented
+duplicate-class defect on tiny high-contrast ink (a digit's round bowl
+reading as a notehead), which is a GATHER/detection-level fault out of this
+item's scope (rule 6: connect, never guess past it; a detection-set change
+needs two full re-gathers to price, section 6b) -- not a flaw in
+`adjudicate_measure_partition`'s own logic. `readout diff` on this page:
+`measure_partition` unchanged (97 decided both arms, identical values
+per-subject); no other quantity touched (the decision reads one new input,
+writes the one it always wrote).
+
+### 10d. Generality
+
+`ijson`-streamed directly over `library/_shared-records/{beethoven5-
+litolff-mvt1-whole-20260930b,brahms1-breitkopf-mvt1-whole-20260930b}
+.record.json` -- `record.verdicts.item` and `record.observations.item`
+read one row at a time, no pool expansion, so the 3.4 GB Brahms record
+never exceeded ~220 MB RSS (confirmed with `ps` during the run). For every
+staff with a DECIDED `measure_partition`, its own last cell's `Q.GLYPH_BOX`
+classes are collected and bucketed PER STAFF -- this is an approximation of
+the real decision, which additionally requires every OTHER staff of the
+system to agree; it does not re-run that cross-staff check, so it over-
+counts "signature-only" candidates relative to what the real decision would
+actually demote.
+
+| record | staves decided | signature-only (candidate) | mixed (Brahms-p0 shape, left alone) | real final bar | empty tail |
+|---|--:|--:|--:|--:|--:|
+| Litolff whole mvt1 (47 pages) | 331 | 1 | 11 | 318 | 1 |
+| Brahms whole mvt1 (53 pages) | 691 | 9 | 49 | 632 | 1 |
+
+The one Litolff "signature-only" candidate, inspected: `page/15 system/0
+staff/4`, classes `{timeSig8, timeSig1}` -- a plausible real instance (not
+crop-checked, time budget), and a reminder that this item is not Brahms-
+only: Litolff's own tail-threshold geometry was never near the 20% line
+anywhere in section 1's 8-page survey, yet a signature-only trailing cell
+still occurs 36 pages outside that sample.
+
+So the mechanism is not rare across the two whole movements (10 signature-
+only candidates total, beyond the one page measured in section 0a), but
+roughly 4-5x as many trailing cells land in the contaminated "mixed"
+bucket this fix correctly declines to touch -- consistent with section
+10c's finding that the duplicate-class defect, not the cautionary-strip
+shape itself, is the dominant obstacle to this item actually firing on
+real pages.
+
+### 10e. What could not be verified
+
+- Whether the other 9 Brahms / the 1 Litolff "signature-only" candidates
+  named in 10d are real (no crop budget beyond the two in 10c).
+- Whether the duplicate-class detector defect is specific to a cell this
+  narrow (113px, pushed through the same canonical upscale as a full-width
+  bar) or recurs at any tail width -- not measured.
+- Whether a dedup pass ahead of this decision (same-region, cross-class)
+  would let Brahms p0 actually flip -- plausible from 10c's IoU numbers,
+  but building it is explicitly out of this item's scope (a GATHER-
+  adjacent change, needs two full re-gathers to price) and is not
+  attempted here.
