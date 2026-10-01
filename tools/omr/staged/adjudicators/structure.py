@@ -103,9 +103,54 @@ def _is_signature_glyph_class(name: object) -> bool:
     return s.startswith(("clef", "key", "timeSig"))
 
 
+def _trailing_cell_signature_vote(
+    ev: Evidence, system_sub: Subject, last_cell_index: int,
+) -> Tuple[int, int]:
+    """Per-staff vote behind ROADMAP 2.47b's MAJORITY rule (DECISIONS
+    2026-10-01, Sean: "if most of the bars confirm the time signature then
+    it should run on all of the staves"): for every staff of the system
+    whose own trailing cell carries at least one `Q.GLYPH_BOX` row, decide
+    whether THAT staff's cell is signature-only -- a clef/key/time class, or
+    a notehead-classed box that is the same ink as a `timeSig*` box the
+    detector also drew there (`geometry.is_timesig_digit_ink`, ROADMAP
+    2.47bc), with nothing else beside it.
+
+    Returns `(n_signature_only, n_with_trailing_cell)`. A staff whose
+    trailing cell has NO `Q.GLYPH_BOX` row at all (the detector found
+    nothing there) is counted in NEITHER number: rule 8, "we found nothing"
+    is not evidence either for or against the system-wide vote, so an
+    all-empty system still returns `(0, 0)` and the caller must treat that
+    as no evidence, not as a unanimous vote of zero over zero.
+    """
+    rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                    subject=system_sub)
+    in_cell = [r for r in rows
+               if r.subject.cell == last_cell_index
+               and isinstance(r.value, (list, tuple)) and r.value]
+    by_staff: Dict[Optional[int], List] = {}
+    for r in in_cell:
+        by_staff.setdefault(r.subject.staff, []).append(r)
+    n_total = len(by_staff)
+    n_signature_only = 0
+    for staff_rows in by_staff.values():
+        timesig_values = [r.value for r in staff_rows
+                           if _is_signature_glyph_class(r.value[0])]
+        staff_is_signature_only = True
+        for r in staff_rows:
+            if _is_signature_glyph_class(r.value[0]):
+                continue
+            if _geom.is_timesig_digit_ink(r.value, timesig_values):
+                continue
+            staff_is_signature_only = False
+            break
+        if staff_is_signature_only:
+            n_signature_only += 1
+    return n_signature_only, n_total
+
+
 def _trailing_cell_is_cautionary_only(
     ev: Evidence, system_sub: Subject, last_cell_index: int,
-) -> bool:
+) -> Tuple[bool, int, int]:
     """ROADMAP 2.47b (CLAUDE.md section 10): "a cautionary meter after a
     system's last barline governs no bar" -- generalised from the meter
     reading to the PARTITION itself. `measure_extractor._measure_x_
@@ -115,52 +160,46 @@ def _trailing_cell_is_cautionary_only(
     §3: a human reads that strip by what is PRINTED in it, which the width
     rule cannot see and this does, after the detector has run).
 
-    True only when `Q.GLYPH_BOX` has at least one row filed in that exact
-    cell, ACROSS EVERY STAFF OF THE SYSTEM (not just the staff being
-    decided -- a pickup or a short final bar on one staff while its
-    neighbours have already finished still makes it a real bar for the
-    whole system, CLAUDE.md section 10's "printed at one bar on every staff
-    of the system" shape), and every one of those rows is a clef/key/time
-    class with nothing else beside it -- no notehead, no rest, no other
-    musical event, on any staff.
+    MAJORITY, not unanimity (DECISIONS 2026-10-01, superseding 2.47b's
+    original "every staff" shape: Brahms p0 system 0 still read 8 bars
+    after the 2.47b+2.47c merge because 4 of its 14 staves have no
+    `timeSig` box in the tail at all -- a detector MISS, not a real bar --
+    and the old all-or-nothing rule let those 4 block the other 10. Sean:
+    "if most of the bars confirm the time signature then it should run on
+    all of the staves"): demotes for the WHOLE system when STRICTLY MORE
+    THAN HALF of the staves that have a trailing cell (`_trailing_cell_
+    signature_vote`'s denominator; an empty cell counts in neither the
+    numerator nor the denominator, rule 8) read that cell as signature-
+    only. CLAUDE.md section 10 still grounds this: a meter/key change is
+    printed at one bar on EVERY staff of the system, so once most staves
+    show it, the few that don't are the readable failure, not a real short
+    bar -- exactly a MAJORITY-voted fact, not a unanimous one.
 
-    An EMPTY cell -- the detector found nothing there at all -- answers
-    False. "We found nothing" is not evidence either way (rule 8: a
-    fallback never converts "cannot tell" into an answer), so today's
-    geometry-only count stands, unchanged, exactly as the brief's third
-    control requires.
+    Returns `(demoted, n_signature_only, n_with_trailing_cell)` so the
+    caller can file the vote in the verdict's own detail rather than
+    re-deriving it.
 
-    ROADMAP 2.47bc: a notehead-classed box in the cell no longer blocks the
-    demotion BY ITSELF when it is the SAME ink as a `timeSig*` box the
-    detector also drew there -- one printed digit, boxed twice under two
-    classes (`geometry.is_timesig_digit_ink`, the shared helper ROADMAP
-    2.47c's own refusal rule uses, so the two decisions agree on what "the
-    same ink" means without this module importing that one -- see
-    `geometry.py`'s section comment on why that import would cycle). The
-    comparison is done PER STAFF: `Q.GLYPH_BOX` values are in each cell's
-    own canonical frame, so a `timeSig*` box on one staff says nothing about
-    a notehead box on another, even at the same cell INDEX.
+    An ALL-empty tail (no staff has any row in the cell at all,
+    `n_with_trailing_cell == 0`) answers `False` -- "we found nothing" is
+    not evidence either way (rule 8), so today's geometry-only count
+    stands, unchanged, exactly as the brief's control requires.
+
+    ROADMAP 2.47bc: a notehead-classed box in a staff's cell no longer
+    blocks THAT STAFF's own signature-only vote by itself when it is the
+    SAME ink as a `timeSig*` box the detector also drew there (`geometry.
+    is_timesig_digit_ink`, the shared helper ROADMAP 2.47c's own refusal
+    rule uses, so the two decisions agree on what "the same ink" means
+    without this module importing that one -- see `geometry.py`'s section
+    comment on why that import would cycle). The comparison is done PER
+    STAFF: `Q.GLYPH_BOX` values are in each cell's own canonical frame, so a
+    `timeSig*` box on one staff says nothing about a notehead box on
+    another, even at the same cell INDEX.
     """
-    rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                    subject=system_sub)
-    in_cell = [r for r in rows
-               if r.subject.cell == last_cell_index
-               and isinstance(r.value, (list, tuple)) and r.value]
-    if not in_cell:
-        return False
-    by_staff: Dict[Optional[int], List] = {}
-    for r in in_cell:
-        by_staff.setdefault(r.subject.staff, []).append(r)
-    for staff_rows in by_staff.values():
-        timesig_values = [r.value for r in staff_rows
-                           if _is_signature_glyph_class(r.value[0])]
-        for r in staff_rows:
-            if _is_signature_glyph_class(r.value[0]):
-                continue
-            if _geom.is_timesig_digit_ink(r.value, timesig_values):
-                continue
-            return False
-    return True
+    n_signature_only, n_total = _trailing_cell_signature_vote(
+        ev, system_sub, last_cell_index)
+    if n_total == 0:
+        return False, n_signature_only, n_total
+    return (2 * n_signature_only > n_total), n_signature_only, n_total
 
 
 @decision(
@@ -188,11 +227,14 @@ def adjudicate_measure_partition(ev: Evidence) -> Ruling:
     if n_cells >= 2:
         system_sub = ev.subject.at(Kind.SYSTEM)
         last_cell_index = n_cells - 1
-        if _trailing_cell_is_cautionary_only(ev, system_sub, last_cell_index):
+        demoted, n_sig, n_total = _trailing_cell_is_cautionary_only(
+            ev, system_sub, last_cell_index)
+        if demoted:
             return Ruling(
                 value=n_cells - 1, reason="cautionary_tail_not_a_bar",
                 used=tuple(r.id for r in rows),
-                detail={"cautionary_cell": last_cell_index})
+                detail={"cautionary_cell": last_cell_index,
+                        "signature_only_vote": "%d/%d" % (n_sig, n_total)})
     return Ruling(value=n_cells, reason="read", used=tuple(r.id for r in rows))
 
 

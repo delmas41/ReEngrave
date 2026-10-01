@@ -12,14 +12,24 @@ clef + time signature for the NEXT system, not a short eighth bar. The width
 rule has no way to look inside the cell; `adjudicate_measure_partition` now
 does, after the detector has run.
 
+MAJORITY (DECISIONS 2026-10-01, superseding this file's original "every
+staff" shape): on the real Brahms p0 system 0 page, 4 of 14 staves have no
+`timeSig` box at all in the tail (a detector MISS on that staff, not a real
+bar) -- the original unanimous rule let those 4 block the other 10 forever.
+Sean: "if most of the bars confirm the time signature then it should run on
+all of the staves." The rule is now: STRICTLY MORE THAN HALF of the staves
+that have a trailing cell (an all-empty cell counts in neither direction,
+rule 8) read it as signature-only demotes the WHOLE system's tail.
+
 ⚠️ RED confirmed by reverting `structure.py` to `git show HEAD:...` (the pre-
-fix tree only reads `Q.BARLINE_COLUMN` and never looks at the cell's own
-content) and re-running this file: `test_cautionary_tail_is_not_counted_as_
-a_bar` failed (asserted 8, got 7) before the fix and the whole-page shape
-test failed likewise. Every other test here is a CONTROL that must be able
-to fail the other way (rule 7): a real note/rest in the tail keeps it a bar,
-an empty tail changes nothing, and a system with no barline at all (a single
-cell) is never touched.
+majority tree, `deaa4fbc`, demotes only on unanimous agreement) and
+re-running this file: `test_cautionary_tail_is_not_counted_as_a_bar` (10/14
+sig-only + 4 stray) failed before this change (asserted 7, got 8) and the
+whole-system shape test failed likewise. Every CONTROL here must be able to
+fail the other way (rule 7): 6/14 signature-only is not a majority, exactly
+half (7/14) is not strictly more than half, a real short final bar on most
+staves keeps it a bar, an empty tail changes nothing, and a system with no
+barline at all (a single cell) is never touched.
 """
 
 from __future__ import annotations
@@ -51,14 +61,15 @@ def _glyph(log, p, sys_idx, st_idx, cell_idx, glyph_idx, smufl_name):
 
 
 class TestCautionaryTailDemoted(unittest.TestCase):
-    """The headline case: Brahms p0 system 0, 8 staves read (shrunk from the
-    real page's 14 for the test, the shape is identical), every staff's
-    8th/final cell holding only `clefF`/`timeSig4` boxes -- no notehead, no
-    rest, on any of them."""
+    """The headline case: Brahms p0 system 0, 14 staves (the real page's own
+    count), every staff's 8th/final cell contested. The real page has 4 of
+    14 staves with a detector MISS on the timeSig box in the tail (stray
+    `noteheadWholeInSpace`/`ledgerLine` ink instead) -- the majority rule
+    (DECISIONS 2026-10-01) demotes anyway because the other 10 agree."""
 
     SYS = 0
     PAGE = 0
-    N_STAVES = 3
+    N_STAVES = 14
 
     def _build(self, log, *, tail_classes_by_staff):
         """`tail_classes_by_staff[st_idx]` is the list of smufl names
@@ -77,8 +88,15 @@ class TestCautionaryTailDemoted(unittest.TestCase):
                 _glyph(log, self.PAGE, self.SYS, st_idx, 7, gi, name)
 
     def test_cautionary_tail_is_not_counted_as_a_bar(self):
+        """10 of 14 staves read a clean signature-only tail; the other 4
+        hold only stray non-signature ink (the real page's detector-miss
+        shape, `noteheadWholeInSpace`/`ledgerLine` boxes with no `timeSig`
+        at all) -- a MAJORITY (10/14), not a unanimity, and the whole
+        system is demoted on every staff."""
         log = Log()
-        tails = {st: ["clefF", "timeSig4"] for st in range(self.N_STAVES)}
+        tails = {st: ["clefF", "timeSig4"] for st in range(10)}
+        for st in range(10, 14):
+            tails[st] = ["noteheadWholeInSpace", "ledgerLine"]
         self._build(log, tail_classes_by_staff=tails)
         log.freeze()
         for st_idx in range(self.N_STAVES):
@@ -86,18 +104,48 @@ class TestCautionaryTailDemoted(unittest.TestCase):
             self.assertEqual(v.outcome, Outcome.DECIDED)
             self.assertEqual(v.value, 7, f"staff {st_idx}")
             self.assertEqual(v.reason, "cautionary_tail_not_a_bar")
+            self.assertEqual(v.detail.get("signature_only_vote"), "10/14",
+                              f"staff {st_idx}")
 
-    def test_RED_a_real_note_in_the_tail_on_ONE_staff_keeps_it_a_bar_for_ALL(self):
-        """CLAUDE.md section 10: a system-wide fact is printed at one bar on
-        EVERY staff. One staff with a genuine short final bar (a real
-        notehead in cell 7) means the system has not yet closed -- the tail
-        is real for the whole system, not just that staff. Must be able to
-        fail: reverting the cross-staff read to "only this staff's own cell"
-        would wrongly demote staves 1 and 2 here."""
+    def test_six_of_fourteen_signature_only_is_not_a_majority(self):
+        """CONTROL, must be able to fail the other way: 6/14 is well under
+        half. The old unanimous rule and the new majority rule agree here --
+        neither demotes."""
         log = Log()
-        tails = {0: ["clefF", "timeSig4"],
-                 1: ["noteheadBlackOnLine"],
-                 2: ["clefG", "timeSig4"]}
+        tails = {st: ["clefF", "timeSig4"] for st in range(6)}
+        for st in range(6, 14):
+            tails[st] = ["noteheadBlackOnLine"]
+        self._build(log, tail_classes_by_staff=tails)
+        log.freeze()
+        for st_idx in range(self.N_STAVES):
+            v = _decide(log, Q.MEASURE_PARTITION, R.staff(self.PAGE, self.SYS, st_idx))
+            self.assertEqual(v.value, 8, f"staff {st_idx}")
+            self.assertEqual(v.reason, "read")
+
+    def test_exactly_half_is_not_a_majority(self):
+        """CONTROL: 7/14 is exactly half, not STRICTLY more than half. Must
+        be able to fail: a `>=` comparison instead of `>` would wrongly
+        demote this tie."""
+        log = Log()
+        tails = {st: ["clefF", "timeSig4"] for st in range(7)}
+        for st in range(7, 14):
+            tails[st] = ["noteheadBlackOnLine"]
+        self._build(log, tail_classes_by_staff=tails)
+        log.freeze()
+        for st_idx in range(self.N_STAVES):
+            v = _decide(log, Q.MEASURE_PARTITION, R.staff(self.PAGE, self.SYS, st_idx))
+            self.assertEqual(v.value, 8, f"staff {st_idx}")
+            self.assertEqual(v.reason, "read")
+
+    def test_a_real_short_final_bar_on_most_staves_keeps_it_a_bar(self):
+        """CONTROL: when most staves hold a genuine musical event (a real
+        notehead) in the tail, it is a real short final bar, not a
+        cautionary strip the minority misdetected -- the majority rule must
+        cut both ways, never defaulting to "demote" on any disagreement."""
+        log = Log()
+        tails = {st: ["noteheadBlackOnLine", "restQuarter"] for st in range(9)}
+        for st in range(9, 14):
+            tails[st] = ["clefF", "timeSig4"]
         self._build(log, tail_classes_by_staff=tails)
         log.freeze()
         for st_idx in range(self.N_STAVES):

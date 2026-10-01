@@ -805,3 +805,99 @@ class, not the verdict. The two items are complementary fixes to the same
 diagnosed page, not a sequential unlock; both are safe on the evidence
 measured here (tests, `check`, zero false positives on Litolff, 4
 crop-confirmed true positives on Brahms).
+
+## 13. ROADMAP 2.47b (majority) -- the all-staves quorum becomes a majority vote
+
+DECISIONS 2026-10-01, Sean, on Brahms p0/system 0 still deciding 8 bars
+after the 2.47b+2.47c merge (`deaa4fbc`): *"if most of the bars confirm the
+time signature then it should run on all of the staves."* 2.47bc's own
+FINDINGS §12/ROADMAP row already diagnosed why the headline page stays
+inert: 4 of its 14 staves have no `timeSig` box in the tail cell at all
+(a detector MISS, not a duplicate-ink pair), so the old unanimous
+"every staff" test could never fire there.
+
+### 13a. What changed
+
+`structure._trailing_cell_signature_vote(ev, system_sub, last_cell_index)`
+is a new helper: per staff with at least one `Q.GLYPH_BOX` row in the
+system's shared trailing cell, decide signature-only exactly as before
+(clef/key/timeSig class, or a notehead box that duplicates a `timeSig*`
+box's ink per `geometry.is_timesig_digit_ink`, ROADMAP 2.47bc), and return
+`(n_signature_only, n_with_trailing_cell)`. A staff with NO row at all in
+the cell is counted in neither number (rule 8: "we found nothing" is not
+evidence for or against the vote). `_trailing_cell_is_cautionary_only` now
+demotes when `n_with_trailing_cell > 0` and `2 * n_signature_only >
+n_with_trailing_cell` -- STRICTLY more than half, not `>=`, so an exact tie
+does not demote. The vote is filed in the verdict's own
+`detail["signature_only_vote"]` (e.g. `"9/14"`) rather than left for a
+later lane to re-derive (`feedback_derive_dont_relist.md`).
+
+### 13b. RED-first tests
+
+`test_staged_measure_partition_2_47b.py`'s `TestCautionaryTailDemoted` was
+rewritten at the real page's 14-staff scale (was a 3-staff shrink):
+
+- Headline: 10/14 signature-only + 4 staves with stray
+  `noteheadWholeInSpace`/`ledgerLine` boxes (no `timeSig` at all, the real
+  page's own detector-miss shape) -> demoted on all 14, vote `"10/14"`.
+- Control: 6/14 signature-only -> NOT demoted (well under half; the old
+  unanimous rule and the new majority rule agree here).
+- Control: exactly 7/14 (half) -> NOT demoted -- must be able to fail a
+  `>=` bug.
+- Control: a real notehead+rest tail on 9/14 staves (most staves) ->
+  NOT demoted; the majority rule must cut both ways, never defaulting to
+  "demote" on disagreement.
+
+RED confirmed: reverted `structure.py` to `git show HEAD:...` (`main`
+`deaa4fbc`, the pre-majority, unanimous-only tree) and re-ran this file --
+`test_cautionary_tail_is_not_counted_as_a_bar` failed (asserted 7, got 8),
+every other test (the three controls above plus the pre-existing
+`TestControls`/`TestSignatureGlyphClassifier` suites) passed unchanged on
+both trees, as required. Restored the fix: GREEN, 11/11 in this file.
+
+`pytest -m "not slow"`: **4,209 passed** (base `3371dd78`'s 4,207 + 2 net
+-- one old test (`test_RED_a_real_note_in_the_tail_on_ONE_staff_keeps_it_
+a_bar_for_ALL`, a 3-staff test whose 2/3 vote IS a majority under the new
+rule and would silently flip meaning if left in place) was replaced by
+three new tests at the 14-staff scale), 0 failed, 3 skipped, 2 xfailed.
+`python3 -m tools.omr.staged.check`: **TOTAL 245**, unchanged.
+
+### 13c. Real data -- both whole movements, ijson-streamed, no full-record expand
+
+Two-pass streamer (pass 1: `barline_column` per staff -> `n_cells`; pass 2:
+`glyph_box` rows at each system's shared last-cell index), re-run through
+the real per-staff classifier logic, then cross-checked on the one page
+that moved by loading ONLY that page's observations into a real `Log` and
+calling `adjudicate.adjudicate_one(..., REGISTRY[Q.MEASURE_PARTITION], ...)`
+-- not a reimplementation. Brahms stayed under ~150 MB RSS throughout (the
+record is 3.4+ GB on disk).
+
+| record | systems with a trailing cell | changed (old != new) |
+|---|--:|--:|
+| `beethoven5-litolff-mvt1-whole-20261001.record.json` (47 pp, 31 systems) | 31 | **0** |
+| `brahms1-breitkopf-mvt1-whole-20261001.record.json` (53 pp, 53 systems) | 53 | **1** |
+
+The one Brahms change is page 0, system 0 -- vote **9/14** (not the 10/14
+the 2.47bc diagnosis row estimated by eye off the per-staff classifier
+alone; measured exactly here, not assumed), old verdict `8, "read"` on
+every staff, new verdict `7, "cautionary_tail_not_a_bar"` on every staff,
+confirmed via the real `adjudicate_one` call on all 14 staves of that
+system (not the streamer's own reimplemented vote). **No other system on
+either whole movement changes.**
+
+### 13d. Crop
+
+Brahms p0/system 0 is already crop-confirmed on the current (20261001)
+gather by FINDINGS §12d/the 2.47bc lane: `out/print/2.47b/brahms-p0-sys0-
+tail-20261001.png` (2027×5527, 600 dpi, all 14 staves, the dropped cell
+boxed red) -- BY EYE every staff's tail cell is unambiguously a pure
+cautionary "9/8" and nothing else. Since §13c found no OTHER system
+changed on either movement, no new crop was needed for this lane.
+
+### 13e. Recommendation
+
+Merge-safe on the evidence measured: RED-first tests (including the
+required "cuts both ways" controls), `check` unchanged, and the one real
+firing in the acceptance set is the exact page Sean's 2026-10-01 decision
+named, with the vote now recorded in the verdict's own detail rather than
+re-derived by a later lane.
