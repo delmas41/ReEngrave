@@ -4727,6 +4727,283 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
                            **candidates_detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.49 -- a notehead-classed box whose own ink crosses BOTH sides of
+# the one stem it overlaps is a TREMOLO SLASH, never a notehead (Sean,
+# DECISIONS 2026-10-01: a notehead's ink lies on ONE side of its stem). This
+# is GATHER's half only, the measurement: how much ink stands on each side,
+# split at the stem's own centre x. `notehead_precision._tremolo_slash_
+# crosses_stem` owns the floor and the refusal.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Pixels of clearance kept beyond the stem's OWN half-width on either side
+#: of the split -- the stem stroke's own ink must never be mistaken for ink
+#: on "the other side" of itself. A whole pixel, not a fraction of the stem
+#: width: `Q.STEM` boxes run 2-4 canonical px wide on both acceptance
+#: documents, and a sub-pixel guard would leave the split line sitting
+#: inside the stem's own anti-aliased edge.
+NOTEHEAD_STEM_CROSS_GUARD_PX = 1.0
+
+
+def _stem_cross_regions(box: Tuple[float, float, float, float],
+                        stem_xywh: Tuple[float, float, float, float],
+                        guard_px: float = NOTEHEAD_STEM_CROSS_GUARD_PX
+                        ) -> Optional[Tuple[Tuple[float, float, float, float],
+                                            Tuple[float, float, float, float]]]:
+    """The LEFT and RIGHT sub-boxes of `box` on either side of `stem_xywh`'s
+    own centre x, each stopped short of the stem's own half-width plus
+    `guard_px` -- so the stem's own stroke is never counted as "ink on the
+    other side" of itself. `None` where either side has no area left at all
+    (the box does not reach past the stem far enough on that side to ask the
+    question, e.g. a normal head whose box runs only from the stem's own
+    edge outward)."""
+    x, y, w, h = box
+    sx, sy, sw, sh = stem_xywh
+    scx = sx + sw / 2.0
+    half = sw / 2.0 + guard_px
+    left_x1 = scx - half
+    right_x0 = scx + half
+    if left_x1 <= x or right_x0 >= x + w:
+        return None
+    return (x, y, left_x1 - x, h), (right_x0, y, (x + w) - right_x0, h)
+
+
+def _region_ink_fraction(img: Any, box: Tuple[float, float, float, float],
+                         exclude_boxes: Sequence[Tuple[float, float, float,
+                                                       float]] = ()
+                         ) -> Optional[float]:
+    """The plain ink fraction of `box` in `img` (0 = ink) -- NO sub-window
+    shrink, unlike `notehead_ink_under`'s `center`/`ring` windows: those are
+    sized against a WHOLE head's own box and degenerate to `None` on the
+    narrow left/right strips `_stem_cross_regions` produces. This is the
+    same `ink.sum() / ink.size` arithmetic `notehead_ink_under`'s own
+    preamble computes, restated at the region's own full extent because
+    that preamble has no unshrunk-whole-region mode to call instead.
+
+    ⚠️ ROADMAP 2.49, MANAGER REVIEW (real Litolff re-gather, pages 1-3):
+    `exclude_boxes` blanks out every pixel under a `Q.BEAM_STROKE` box
+    BEFORE the fraction is taken -- Sean's own convention states it ("a beam
+    may cross, but only joined to another stem at the stem's end"), and a
+    real beam box runs far WIDER than a notehead's own (measured ~500 px vs
+    ~150 px on this plate), so it trivially reaches BOTH sides of a stem
+    whenever its own y-range overlaps the head's box at all. Without this,
+    3 of 4 sampled false positives on the real re-gather were beamed groups,
+    not tremolo slashes -- crops in `out/print/2.49/`."""
+    region = _box_ink_mask(img, box, exclude_boxes)
+    if region is None:
+        return None
+    return round(float(region.sum()) / float(region.size), 4)
+
+
+def _box_ink_mask(img: Any, box: Tuple[float, float, float, float],
+                  exclude_boxes: Sequence[Tuple[float, float, float,
+                                                float]] = ()
+                  ) -> Optional[Any]:
+    """The boolean ink mask (0 = ink in `img`) of `box`'s own interior, with
+    every `exclude_boxes` rectangle blanked out first -- `_region_ink_
+    fraction`'s own preamble, extracted so a caller that needs the MASK
+    itself (not just its fraction) -- `_ink_shape_descriptors`, ROADMAP
+    2.49's shape test -- reads the identical pixels rather than a second,
+    possibly-diverging crop."""
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    x, y, w, h = (float(v) for v in box)
+    x0 = max(0, int(round(x)))
+    y0 = max(0, int(round(y)))
+    x1 = min(W, int(round(x + w)))
+    y1 = min(H, int(round(y + h)))
+    if x1 <= x0 or y1 <= y0:
+        return None
+    region = ink[y0:y1, x0:x1].copy()
+    for ex, ey, ew, eh in exclude_boxes:
+        ex0 = max(x0, int(round(ex)))
+        ey0 = max(y0, int(round(ey)))
+        ex1 = min(x1, int(round(ex + ew)))
+        ey1 = min(y1, int(round(ey + eh)))
+        if ex1 > ex0 and ey1 > ey0:
+            region[ey0 - y0:ey1 - y0, ex0 - x0:ex1 - x0] = False
+    if region.size == 0:
+        return None
+    return region
+
+
+#: A shape read on fewer ink pixels than this is not trustworthy (a
+#: handful of anti-aliased edge pixels has no stable principal axis) --
+#: `None`, not a guessed angle/elongation.
+SHAPE_MIN_INK_PX = 12
+
+
+def _ink_shape_descriptors(mask: Any) -> Optional[Dict[str, float]]:
+    """ROADMAP 2.49 REDESIGN (Sean, DECISIONS 2026-10-01: "it should first
+    be recognized as a thick diagonal line ... not round"): the PRINCIPAL-
+    AXIS shape of an ink mask, by image moments -- no detector box, no
+    class, only the pixels.
+
+      `angle_deg`   the major axis's angle off HORIZONTAL, folded into
+                    [0, 90] (0 = horizontal, like a ledger; 90 = vertical,
+                    like a stem). A diagonal slash sits well inside that
+                    range; a round blob's "major axis" is noise and its
+                    elongation below will say so first.
+      `elongation`  sqrt(major variance / minor variance) -- 1.0 for a
+                    circle, large for a thin line. A filled oval notehead
+                    is close to round; a tremolo stroke is a thin rectangle.
+      `fill`        ink pixels / mask area -- a solid filled oval fills
+                    most of its own bounding box; a thin diagonal stroke
+                    fills much less of the SAME box even where the stroke
+                    itself is thick, because the box is sized to the
+                    GLYPH's detected extent, not to the stroke's own width.
+
+    `None` where there are too few ink pixels to read a shape at all
+    (`SHAPE_MIN_INK_PX`) -- CLAUDE.md rule 8, a shape this rule cannot read
+    is not a shape it clears.
+    """
+    import math
+    import numpy as np
+    if mask is None:
+        return None
+    total = int(mask.sum())
+    if total < SHAPE_MIN_INK_PX:
+        return None
+    ys, xs = np.nonzero(mask)
+    cx, cy = float(xs.mean()), float(ys.mean())
+    dx, dy = xs - cx, ys - cy
+    cov = np.array([[float(np.mean(dx * dx)), float(np.mean(dx * dy))],
+                    [float(np.mean(dx * dy)), float(np.mean(dy * dy))]])
+    evals, evecs = np.linalg.eigh(cov)
+    minor_var, major_var = float(evals[0]), float(evals[1])
+    major_vec = evecs[:, 1]
+    angle = math.degrees(math.atan2(float(major_vec[1]), float(major_vec[0])))
+    angle = angle % 180.0
+    if angle > 90.0:
+        angle = 180.0 - angle
+    elongation = math.sqrt(major_var / minor_var) if minor_var > 1e-6 else 50.0
+    fill = total / mask.size
+    return {"angle_deg": round(angle, 1), "elongation": round(elongation, 2),
+            "fill": round(fill, 4), "ink_px": total}
+
+
+def gather_notehead_stem_cross_ink(log: Log, cells: Sequence[Any],
+                                   local: Dict[int, Tuple[int, int]],
+                                   detections: Dict[str, List[Any]]) -> None:
+    """`Q.NOTEHEAD_STEM_CROSS_INK` -- ROADMAP 2.49. See the quantity's own
+    docstring in `record.py`. Reads `cell.image_no_staff` (the SAME erased
+    raster `gather_notehead_ink`/`gather_stacked_head_fit` already read) and
+    this cell's own `Q.STEM`/`Q.BEAM_STROKE` rows (filed earlier by
+    `gather_cv_lines`) -- nothing here is re-detected.
+
+    ⚠️ BEAM INK IS EXCLUDED FROM THE SPLIT (manager review, real re-gather):
+    a `Q.BEAM_STROKE` box runs far wider than a notehead's own and reaches
+    both sides of a stem whenever it overlaps the head's box at all, which
+    is the common case for any head under a beam -- see `_region_ink_
+    fraction`'s own docstring. Sean's own convention carves this out
+    directly ("a beam may cross, but only joined to another stem at the
+    stem's end"); excluding beam-classed ink is how that exception is kept
+    without re-deriving which beam joins which stem a second time here.
+
+    ⚠️⚠️ ROADMAP 2.49 REDESIGN (Sean, DECISIONS 2026-10-01, on manager crop
+    `glyph/3/0/8/6/12`, a plain filled head whose own round oval pokes
+    slightly past its own attached stem): an AREA fraction of a narrow edge
+    sliver is not evidence -- a tiny curve of a real head's own ink can
+    fill a thin sliver almost completely while being a negligible SHARE of
+    the glyph's own total ink. `detail["left_share"]`/`["right_share"]` are
+    each side's ink pixel count divided by the WHOLE box's own total ink
+    pixel count (beam-excluded) -- "each side a real fraction of the
+    stroke" (Sean) -- and `detail["angle_deg"]`/`["elongation"]`/`["fill"]`
+    (`_ink_shape_descriptors`, over the WHOLE box, beam-excluded) are the
+    shape read ADJUDICATE's shape gate needs. `value` keeps its original
+    `[left, right]` AREA fractions (the per-side density, still a useful
+    ruler reading) unchanged; every new field is additive, in `detail`.
+    """
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        nh_idx = [gi for gi, d in enumerate(dets)
+                 if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)]
+        if not nh_idx:
+            continue
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image_no_staff", None)
+        stem_rows = log.rows(Q.STEM, sub)
+        if img is None or getattr(img, "ndim", 0) != 2 or not stem_rows:
+            continue
+        beam_boxes = [bb for bb in (_stacked_stem_xywh(br.value)
+                                    for br in log.rows(Q.BEAM_STROKE, sub))
+                     if bb is not None]
+        for gi in nh_idx:
+            d = dets[gi]
+            box = (float(d.x_canonical), float(d.y_canonical),
+                  float(d.width_canonical), float(d.height_canonical))
+            my_stem = None
+            for sr in stem_rows:
+                srow = _stacked_stem_xywh(sr.value)
+                if srow is not None and _stacked_boxes_overlap(srow, box):
+                    my_stem = (sr, srow)
+                    break
+            if my_stem is None:
+                continue
+            sr, srow = my_stem
+            regions = _stem_cross_regions(box, srow)
+            if regions is None:
+                continue
+            left_box, right_box = regions
+            left_ink = _region_ink_fraction(img, left_box, beam_boxes)
+            right_ink = _region_ink_fraction(img, right_box, beam_boxes)
+
+            # ⚠️ ROADMAP 2.49 REDESIGN -- each side's SHARE of the glyph's
+            # own total ink, and that ink's own SHAPE (angle/elongation/
+            # fill) -- both measured over the box with the STEM'S OWN
+            # COLUMN blanked out too, not only beam boxes.
+            #
+            # ⚠️⚠️ MANAGER REVIEW, FIRST BUILD OF THIS REDESIGN (page-13
+            # re-gather): computing these over the WHOLE box (stem column
+            # included) read the real slash `glyph/13/1/10/2/0` at
+            # elongation 1.5 / fill 0.62 -- indistinguishable from a round
+            # head -- because the stem's own thick, near-vertical stroke
+            # runs straight through the box's centre and dominates the
+            # moment calculation. The stem is not the stroke being asked
+            # about; `_stem_cross_regions`'s own LEFT/RIGHT boxes already
+            # exclude it, so the shape/share mask is their UNION (the box
+            # with that same centre column blanked), never the raw box.
+            full_mask = _box_ink_mask(img, box, beam_boxes)
+            left_share = right_share = total_ink_px = None
+            shape = None
+            if full_mask is not None:
+                bx = box[0]
+                lx0 = max(0, int(round(left_box[0] - bx)))
+                lx1 = max(0, int(round(left_box[0] + left_box[2] - bx)))
+                rx0 = max(0, int(round(right_box[0] - bx)))
+                rx1 = max(0, int(round(right_box[0] + right_box[2] - bx)))
+                lx1 = min(lx1, full_mask.shape[1])
+                rx1 = min(rx1, full_mask.shape[1])
+                stem_excluded = full_mask.copy()
+                if rx0 > lx1:
+                    stem_excluded[:, lx1:rx0] = False
+                total_ink_px = int(stem_excluded.sum())
+                shape = _ink_shape_descriptors(stem_excluded)
+                if total_ink_px > 0:
+                    left_px = int(stem_excluded[:, :lx1].sum()) if lx1 > 0 else 0
+                    right_px = int(stem_excluded[:, rx0:].sum()) \
+                        if rx0 < stem_excluded.shape[1] else 0
+                    left_share = round(left_px / total_ink_px, 4)
+                    right_share = round(right_px / total_ink_px, 4)
+
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            detail: Dict[str, Any] = {
+                "stem": sr.id, "left": left_ink, "right": right_ink,
+                "left_share": left_share, "right_share": right_share,
+                "total_ink_px": total_ink_px}
+            if shape is not None:
+                detail.update(shape)
+            log.observe(g, Q.NOTEHEAD_STEM_CROSS_INK, [left_ink, right_ink],
+                       reader=READERS.CV_NOTEHEAD_STEM_CROSS_INK, frame=frame,
+                       **detail)
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -7263,6 +7540,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # SLOT a stacked fit is testing, which is a different position this
         # rule must score for itself).
         gather_stacked_head_fit(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.49, BESIDE `gather_stacked_head_fit` for the same
+        # reason it sits beside `gather_notehead_ink`: the sibling witness
+        # for a tremolo slash boxed as a notehead, reading the SAME erased
+        # raster and this cell's own `Q.STEM` rows, already filed by
+        # `gather_cv_lines` above.
+        gather_notehead_stem_cross_ink(log, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
