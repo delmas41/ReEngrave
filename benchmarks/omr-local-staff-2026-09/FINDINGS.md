@@ -290,3 +290,81 @@ own `_cell_line_offset` baseline than the measured wander ever reaches,
 
 `pytest -m "not slow"` 4,190 passed (unaffected). `staged.check` TOTAL 245,
 unchanged. No new flag.
+
+## 2026-10-01 continued: bias diagnosis, then Sean's two fixes (centre not edge; clean columns only)
+
+**Bias diagnosis, before adding a drift bound** (manager-directed, a control
+that can fail): of the 84 right->wrong heads, direction was NOT one-sided
+-- 52 moved UP, 31 DOWN, 1 unchanged (62%/37%, a lean, not a dominant bias).
+Magnitude split the population instead: 55 of 84 carried a >3px excursion
+(up to -11.18px, past a full staff LINE on some staves -- aliasing), while
+the other 29 clustered around a small, real but modest mean (-0.28px).
+**Conclusion: the dominant fault was aliasing/drift, not a uniform
+systematic offset** -- so the total-drift bound (`CELL_LINE_WALK_MAX_TOTAL_
+SPACES`, 0.3 spaces) was added first, as planned.
+
+**Drift bound alone, real re-gather**: Litolff 65 right->wrong / 4
+wrong->right, Brahms 18/0 -- combined **83/4**, barely moved from 84/4.
+Confirms the bound alone does not fix the underlying measurement.
+
+**Sean, reviewing the comb-walk's own crops**: *"The green is much closer
+to the ink but it moves every time it runs into a symbol that crosses the
+staff and when the ink collects at a bar line ... The green line is on the
+ink but towards the TOP of the ink."* Two fixes, as specified:
+
+1. **Centre, not edge.** `_measure_line_run_mid` replaces the withdrawn
+   ink-weighted centroid: walks outward from the ink nearest the search
+   window's centre to that run's own top/bottom edge and uses the
+   midpoint. Proven directly (`TestCentreNotEdge`): the midpoint survives a
+   window whose own centre sits near the run's bottom edge, where the old
+   centroid would have been pulled off-centre.
+2. **Clean columns only.** A column contributes only where its run's
+   thickness is within `CELL_LINE_WALK_CLEAN_THICKNESS_MULT` (1.6x) of the
+   staff's own measured line thickness; barline columns (ink across
+   `CELL_LINE_WALK_BARLINE_FRAC` of the whole staff span) and their own
+   +-2px neighbours are excluded outright. The comb now COMMITS a move only
+   after `CELL_LINE_WALK_MIN_CONSISTENT_RUN` (3) consecutive clean,
+   mutually-agreeing steps -- a single accepted column can no longer move
+   it. Proven directly (`TestBarlinesAndConsistencyRun`): a barline column
+   is detected and excluded; a single clean, agreeing step alone cannot
+   move the comb.
+
+**Real re-gather with both fixes (and the drift bound)**: Litolff 59
+right->wrong / 4 wrong->right, Brahms 18/0 -- combined **77/4**. Modest
+improvement over the drift-bound-alone number (83->77, ~7%), far short of
+the "right->wrong ~0" bar. **The specific bias Sean caught ("towards the
+top") is fixed by design and proven fixed by a direct test, but it was not
+the dominant cause of the 84 regressions** -- consistent with the earlier
+direction histogram (a 62/37 lean, not an overwhelming one-sided bias).
+
+**Strips for Sean** (`out/print/strips/`, 600 dpi, orange=base flat comb,
+green=new comb, grey tick=held step, green tick=committed update):
+- `litolff_p3_staff3_0_0_flutes_seg{0,1}.png` (his own confirmed chords'
+  staff): **max separation 0.00px across the whole system** -- the comb
+  never moves here at all under the new, stricter gates (a control that
+  passes, but also a sign the fixes may now be more conservative than
+  needed on an ordinary staff).
+- `litolff_p1_staff1_0_8_dense_chord_seg{0,1}.png` + one 4x zoom inset: the
+  worst-case staff from the regression list. Max separation dropped from
+  the earlier ~11px aliasing to **3.78px**, and the zoom shows WHY: the
+  divergence sits immediately after a barline, where a printed CLEF's own
+  dense ink crosses all 5 lines right at the edge of the barline-exclusion
+  margin -- bounded and far more plausible than before, but still a real,
+  visible disagreement with the print, not a clean match.
+
+**Recommendation: still not merged.** Both of Sean's specific faults are
+fixed and proven fixed in isolation; the real-page number moved in the
+right direction but only modestly (84->77 of ~1300-1500 heads per page).
+Not chased further this round (time): why the clean-column/consistency-run
+gates still admit enough contaminated steps to drive 77 regressions is
+unexplained -- the next diagnostic step, not attempted here, is a
+head-by-head crop review of the 77 (not just the one worst staff) to see
+whether a SECOND, different fault is still at work, or whether the
+remaining regressions are genuinely close calls where the comb's answer
+and the reference disagree for reasons outside this mechanism (e.g. a
+detector box itself slightly mis-placed).
+
+`pytest tools/omr/tests/test_local_staff_lines.py` 19 passed;
+`test_cell_line_localization.py` + `test_staged_pipeline.py` 47 passed
+(not the full fast tier this round, time). `staged.check` TOTAL 245,
+unchanged. No new flag.
