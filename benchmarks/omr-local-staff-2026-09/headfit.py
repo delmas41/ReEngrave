@@ -41,7 +41,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.omr import measure_extractor as me  # noqa: E402
-from tools.omr.preprocessing import deskew, render_page  # noqa: E402
+from frame import render_page_matching_gather  # noqa: E402 -- lane-2.48-recipe
 from tools.omr.staged.geometry import standard_head_box  # noqa: E402
 from tools.omr.types import PageWithStaves  # noqa: E402
 
@@ -186,9 +186,7 @@ def main():
     print(f"MARGIN={MARGIN}  MIN_WINNER={MIN_WINNER} (stated before results)")
     print("=" * 70)
 
-    pw = render_page(bm.PROVENANCE_PDF, bm.PAGE_IDX, dpi=bm.DPI)
-    rgb2, binary2, _deg = deskew(pw.rgb, pw.binary)
-    pw.rgb, pw.binary = rgb2, binary2
+    pw = render_page_matching_gather(bm.PROVENANCE_PDF, bm.PAGE_IDX, dpi=bm.DPI)
     binary = pw.binary
 
     # ─── Step 1(a)/(b)/(c): 15 clean heads, far from any boundary ───────

@@ -1082,3 +1082,128 @@ committed under this benchmark directory, per convention.
 
 `pytest`/`staged.check` not run (measurement scripts only, no production
 code touched).
+
+## 2026-10-01: the recipe check -- no frame-reproduction gap found (lane-2.48-recipe)
+
+Sean's suspicion, after boundary_measure.py's clean-head control scattered
+3.16px and headfit.py's control (a) missed 9/15: the fresh render these
+scripts lay the record's stored geometry over might not sit in the SAME
+pixel frame GATHER used (DPI, deskew angle, crop/margin, canonical-cell vs
+page frame, rounding, y-flip). GATHER+ADJUDICATE-only, STAGED path, NO
+re-gather, NO production code touched.
+
+### 1. The recipe, compared line by line
+
+Production's ONLY recipe for the pixel frame every GATHER coordinate is
+filed against: `detect_staves(render_page(pdf_path, page_index, dpi=dpi))`
+(`tools/omr/staged/pipeline.py:prepare_pages`) -- ONE call to `render_page`
+(DPI 600 on the CLI, confirmed from this record's own `provenance.settings.
+args.dpi`), which already binarizes (Sauvola) and deskews (Hough,
+rotate-about-centre) internally -- its own docstring: "already binarized
+and deskewed." Nothing else touches the page image before `detect_staves`
+reads `page.binary`.
+
+Every script in this directory that built a fresh frame
+(`recheck_2_48_seeded.py`, `boundary_measure.py`, `headfit.py`, and all 6
+`crop_*.py` scripts) called `render_page(...)` and THEN called `deskew()` a
+SECOND time on its own already-deskewed output -- a real divergence from
+the production recipe. DPI (600), page index (3, the Litolff count page),
+and the PDF path all matched production in every script checked; this
+double-deskew was the ONLY difference found.
+
+### 2. Is it a frame-reproduction gap? Measured directly, both ways -- NO.
+
+**Deterministic check (no ink noise at all):** `detect_staves(render_page(
+pdf, 3, dpi=600))`, called ONCE, reproduces the record's own stored
+`staff_lines` to the INTEGER PIXEL on every staff checked -- e.g.
+staff/3/0/8 = `[1643, 1659, 1674, 1690, 1705]`, matching BOTH
+`library/_shared-records/beethoven5-litolff-mvt1-whole-20261001.record.json`
+and the a3ef66 lane's `beethoven5-litolff-p3.record.json` exactly, byte for
+byte. The second `deskew()` call measured directly: first call finds
+0.2499deg and rotates; the second, re-run on the now-rotated image, finds
+0.0deg and returns the identical arrays (direct numpy diff: mean/max abs
+diff = 0 across the whole page). **The double-deskew bug is a no-op on
+this page/DPI/PDF -- there is no frame-reproduction gap to find here.**
+This directly REFUTES the earlier one-head lane's "~3px reproduction gap"
+(2026-10-01, above): that number came from an ad hoc single-column
+ink-peak-find, a cruder method than `detect_staves`'s own
+`_candidate_staff_rows`/`_comb_match_staves`/`_refit_misaligned_group`
+pipeline, not from a real pixel-frame mismatch -- the finding's own text
+already said as much ("ink peaks... land 2-4px from BOTH candidate grids,
+which is inside this reproduction gap's own noise floor").
+
+**dx/dy table, 5 clean staff-line stretches** (fresh `detect_staves()` line
+_ys vs record's stored `staff_lines`, same staff key): all 5 staves
+checked on page 3 match EXACTLY, dy=0 on every one of the 25 line
+readings (5 staves x 5 lines). No scale, no rotation, no offset.
+
+**dx/dy table, 15 clean isolated noteheads** (`frame_check.py`, box centre
+vs fresh-render ink-COMPONENT centre, dx and dy both, independent of
+boundary_measure.py's own y-only central-column method):
+
+| n | dx mean | dx std | dy mean | dy std |
+|---|---------|--------|---------|--------|
+| 15 | +0.68px | 1.04px | -0.78px | 4.25px |
+
+dx is tight and near zero (no horizontal frame offset); dy scatters
+~4px with no sign pattern against x (no rotation) -- matching, not adding
+to, `boundary_measure.py`'s own control (10 clean heads, y-only method:
+mean 0.19px, std 3.16px). Two independent ink-measurement methods agree:
+the scatter is REAL but it is NOISE IN THE INK-CENTROID INSTRUMENT on a
+MERGING plate (CLAUDE.md §10), not a systematic dx/dy/scale/rotation
+between the fresh render and GATHER's frame.
+
+### 3. Control that can fail (rule 7): deliberate +4px dy -- PASSES, with an honest caveat
+
+The same 15-head ink-component measurement, run again on the SAME render
+shifted +4px (`np.roll`, top 4 rows backfilled to paper), per head:
+median delta -2.22px, mean -1.66px, std 1.18px, 14 of 15 heads shifted in
+the correct (negative) direction. **The control is live and catches the
+injected shift** (bar: per-head median in [-6,-2], met) -- but the
+magnitude is damped from the injected -4 to about -2.2, which is itself
+further, independent evidence (a THIRD method, after boundary_measure.py's
+own control and this script's unshifted dx/dy) that the connected-
+component ink read carries several px of its own noise on this plate
+(a component's measured extent shifts partially with the page, not purely
+rigidly, as neighbouring ink enters/exits its padded window) -- consistent
+with, not contradicting, §2's "no frame gap" conclusion.
+
+### Conclusion
+
+**No recipe divergence explains the clean-head control failures.** The
+one real difference found (the redundant second `deskew()` call) measures
+as a byte-exact no-op on this page/DPI/PDF, and the frame IS correctly
+reproduced (staff lines match the stored record to the integer pixel with
+zero ink-measurement noise involved at all). The ~3.16px / 6-of-15
+control failures already reported for `boundary_measure.py` and
+`headfit.py` stand UNCHANGED and are NOT invalidated by this check --
+their own numbers reproduced byte-for-byte on the corrected frame (box-
+centre error mean=0.235 std=2.478 n=112; clean-head control mean=0.186
+std=3.163 n=10; headfit control (a) 6/15, (b) 15/30, (c) 10/15, (d) 2/3).
+The real cause remains what `boundary_measure.py` §C/D and `headfit.py`'s
+own diagnosis already named: the detector's BOX (and adjacent-candidate
+head-box overlap by construction), not the pixel frame, on a MERGING
+plate.
+
+**Fixed anyway** (hygiene, not a result-changing fix): every script in
+this directory now gets its fresh page image from ONE place,
+`frame.render_page_matching_gather()`, which calls `render_page` exactly
+once -- matching production's own recipe byte for byte -- instead of each
+script independently calling `render_page`+`deskew` and all of them making
+the SAME divergence. A no-op today is not guaranteed to stay a no-op on a
+different page/DPI/PDF this directory's scripts might later be pointed at,
+and rule 7 says a control must be ABLE to fail from one place, not from
+nine independently-reinvented ones.
+
+New: `frame.py` (the shared helper), `frame_check.py` (the dx/dy table +
+the +4px control, both reported above). Modified (same bug, same fix, no
+behaviour change measured): `recheck_2_48_seeded.py`, `boundary_measure.py`,
+`headfit.py`, `crop_14heads.py`, `crop_2_48.py`, `crop_2_48_broken.py`,
+`crop_2_48_seeded.py`, `crop_boundary.py`, `crop_headfit.py`. Re-ran
+`boundary_measure.py`, `headfit.py`, `crop_boundary.py`, `crop_2_48_seeded.
+py` end to end on the corrected frame -- every reported number matches the
+pre-fix value exactly, confirming no result from today's earlier lanes is
+invalidated.
+
+`pytest`/`staged.check` not run (measurement scripts only, no production
+code touched).

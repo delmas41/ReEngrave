@@ -20,7 +20,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.omr import measure_extractor as me
-from tools.omr.preprocessing import deskew, render_page
+from frame import render_page_matching_gather  # lane-2.48-recipe
 from tools.omr.types import PageWithStaves
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -42,9 +42,7 @@ DPI = 600
 
 def main():
     rec = load_record(ARM_RECORD)
-    page = render_page(PDF, 3, dpi=DPI)
-    rgb2, binary2, deg = deskew(page.rgb, page.binary)
-    page.rgb, page.binary, page.skew_correction_deg = rgb2, binary2, deg
+    page = render_page_matching_gather(PDF, 3, dpi=DPI)
 
     staff = duck_staff(rec, STAFF_KEY)
     pws = PageWithStaves(page=page, staves=[staff], barlines=[])

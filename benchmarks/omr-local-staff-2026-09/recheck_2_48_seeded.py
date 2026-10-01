@@ -35,12 +35,14 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.omr import measure_extractor as me
 from tools.omr.acceptance_quick import _FAMILY_MAPS, _load_works_row, _reference_root, _union_bars
 from tools.omr.pitch_resolver import _CLEF_ANCHORS, diatonic_index
-from tools.omr.preprocessing import deskew, render_page
 from tools.omr.types import PageWithStaves, Staff
+
+from frame import render_page_matching_gather  # noqa: E402 -- lane-2.48-recipe, the ONE place a fresh page comes from
 
 ARM_RECORD = (
     "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/"
@@ -274,9 +276,7 @@ def main():
     for sub in subjects:
         page_idx = page_index_of(sub)
         if page_idx not in pages:
-            pw = render_page(provenance_pdf, page_idx, dpi=dpi)
-            rgb2, binary2, _deg = deskew(pw.rgb, pw.binary)
-            pw.rgb, pw.binary = rgb2, binary2
+            pw = render_page_matching_gather(provenance_pdf, page_idx, dpi=dpi)
             pages[page_idx] = pw
         page = pages[page_idx]
 

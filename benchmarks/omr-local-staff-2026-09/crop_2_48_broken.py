@@ -23,7 +23,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 
 from tools.omr import measure_extractor as me
-from tools.omr.preprocessing import deskew, render_page
+from frame import render_page_matching_gather  # lane-2.48-recipe
 from tools.omr.types import PageWithStaves
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -111,9 +111,7 @@ def process(sub, rec, ref_root, family_map, expected):
     cell_key = cell_key_of(sub)
     staff = duck_staff(rec, staff_key)
 
-    page = render_page(PDF, page_idx, dpi=DPI)
-    rgb2, binary2, deg = deskew(page.rgb, page.binary)
-    page.rgb, page.binary, page.skew_correction_deg = rgb2, binary2, deg
+    page = render_page_matching_gather(PDF, page_idx, dpi=DPI)
     pws = PageWithStaves(page=page, staves=[staff], barlines=[])
 
     cell_box = obs(rec, cell_key, "cell_box")["value"]

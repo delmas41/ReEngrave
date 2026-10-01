@@ -34,11 +34,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import numpy as np
 
 from tools.omr import measure_extractor as me
-from tools.omr.preprocessing import deskew, render_page
 from tools.omr.types import PageWithStaves, Staff
 from tools.omr.staged import readout as ro
 from tools.omr.staged.record import Q
 
+from frame import render_page_matching_gather  # lane-2.48-recipe
 import recheck_2_48_seeded as r48  # same directory -- duck_staff, expected_positions_for_page, etc.
 
 ARM_RECORD = r48.ARM_RECORD
@@ -92,10 +92,8 @@ def main():
 
     print(f"Kept noteheads with a staff position on page {PAGE_IDX}: {len(kept)}")
 
-    # --- render + deskew once per page (only page 3 here) ---
-    pw = render_page(PROVENANCE_PDF, PAGE_IDX, dpi=DPI)
-    rgb2, binary2, _deg = deskew(pw.rgb, pw.binary)
-    pw.rgb, pw.binary = rgb2, binary2
+    # --- render once per page (only page 3 here), the SAME frame GATHER used ---
+    pw = render_page_matching_gather(PROVENANCE_PDF, PAGE_IDX, dpi=DPI)
     binary = pw.binary
 
     staff_cache = {}

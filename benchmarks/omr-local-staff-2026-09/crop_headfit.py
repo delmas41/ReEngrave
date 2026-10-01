@@ -16,7 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from tools.omr.preprocessing import deskew, render_page  # noqa: E402
+from frame import render_page_matching_gather  # noqa: E402 -- lane-2.48-recipe
 from tools.omr.staged.geometry import standard_head_box  # noqa: E402
 
 import boundary_measure as bm  # noqa: E402
@@ -123,9 +123,7 @@ def main():
     all_rows, near = bm.main()
     by_sub = {r["sub"]: r for r in all_rows}
 
-    pw = render_page(bm.PROVENANCE_PDF, bm.PAGE_IDX, dpi=bm.DPI)
-    rgb2, binary2, _deg = deskew(pw.rgb, pw.binary)
-    pw.rgb, pw.binary = rgb2, binary2
+    pw = render_page_matching_gather(bm.PROVENANCE_PDF, bm.PAGE_IDX, dpi=bm.DPI)
 
     full = bm.load_record(bm.ARM_RECORD)
     inner = full["record"]

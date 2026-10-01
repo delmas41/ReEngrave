@@ -36,10 +36,15 @@ _page_cache = {}
 
 
 def get_page(page_index):
+    # lane-2.48-recipe (2026-10-01): render_page() ALREADY binarizes+deskews
+    # internally (see its own docstring) -- production's recipe
+    # (tools/omr/staged/pipeline.py:prepare_pages) calls it exactly once and
+    # never deskews a second time. This script used to call deskew() again
+    # on render_page's own output, a divergence from the production recipe
+    # measured (lane-2.48-recipe FINDINGS) to be a no-op on this page/DPI
+    # but wrong in principle; fixed to the single call, matching GATHER.
     if page_index not in _page_cache:
         page = render_page(PDF, page_index, dpi=DPI)
-        rgb, binary, skew = deskew(page.rgb, page.binary)
-        page.rgb, page.binary, page.skew_correction_deg = rgb, binary, skew
         _page_cache[page_index] = page
     return _page_cache[page_index]
 

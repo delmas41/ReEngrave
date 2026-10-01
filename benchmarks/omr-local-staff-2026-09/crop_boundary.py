@@ -20,7 +20,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from tools.omr import measure_extractor as me
-from tools.omr.preprocessing import deskew, render_page
+from frame import render_page_matching_gather  # lane-2.48-recipe
 from tools.omr.types import PageWithStaves
 
 from recheck_2_48_seeded import ARM_RECORD, duck_staff, load_record, obs
@@ -49,9 +49,7 @@ def process(sub, rec, page_cache):
     staff = duck_staff(rec, staff_key)
 
     if page_idx not in page_cache:
-        page = render_page(PDF, page_idx, dpi=DPI)
-        rgb2, binary2, deg = deskew(page.rgb, page.binary)
-        page.rgb, page.binary = rgb2, binary2
+        page = render_page_matching_gather(PDF, page_idx, dpi=DPI)
         page_cache[page_idx] = page
     page = page_cache[page_idx]
     pws = PageWithStaves(page=page, staves=[staff], barlines=[])
