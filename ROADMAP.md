@@ -17,6 +17,33 @@ re-enter.
 
 ---
 
+## START HERE — 2026-10-01 (session of 09-30 night; main ≥ this commit)
+
+**Sean's standing rule (CLAUDE.md §6b): EVERY test is GATHER+ADJUDICATE only
+for now**, reference scoring by STAFF POSITION (not pitch); small re-gather by
+day (`python3 -m tools.omr.acceptance_quick`, defaults to the first two
+stages); full re-gather overnight, `THROUGH=adjudicate`.
+
+**First:** read the overnight full re-gather (tag `20261001`, on `342ec624`,
+first two stages; `library/_shared-records/overnight-20261001/`) with
+`tools.omr.staged.readout` — Brahms meter should be decided on most systems
+(2.46); Litolff p2 should have 17 bars in system 0 (2.47).
+
+**Open, in order:**
+1. 2.48 local staff (branch `worktree-agent-a3ef66441824adfff`, pushed, NOT
+   merged): Sean's bending comb sits within 0.25 px of the printed line
+   centres vs ~1 px for today's grid; detector box centres sit ~0.5 px LOW of
+   the head's ink centre on both plates; on clean single heads the comb
+   halves Litolff's net error, yet at GATHER+ADJUDICATE it flips 14 right ->
+   1 wrong on Litolff p3. Next: classify those 14 (far from staff? chords?
+   spacing?), then score comb + head-ink-centre together.
+2. 2.47b cautionary strip is not a bar (agent branch, in progress).
+3. Far-note pitch (2.44/2.44c, branches pushed, nothing switched on): redo the
+   reader scores at the first two stages (position, not pitch) before deciding.
+**Lesson of the day:** every lane made at least one false claim (crops judged
+by eye, a wrong ruler, a wrong branch name, scoring through later stages);
+check numbers against the reference and the stage the rule names.
+
 ## START HERE — 2026-09-30 evening (main ≥ this commit)
 
 **Records:** acceptance now reads the `20260930b` re-gathers (on `2718c450`,
