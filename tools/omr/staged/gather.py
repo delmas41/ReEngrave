@@ -530,18 +530,31 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
         # head whose own-x trace also declines must not fall through to the
         # second kind silently: it abstains, counted, rather than reporting
         # a position this cell never actually measured.
+        # ⚠️ "COULD NOT ATTEMPT" IS NOT "DECLINED". A cell with no page
+        # geometry at all (no `bbox_page_px`/`upscale_factor` -- a cell never
+        # built by `_build_measure_cell`, e.g. a test double standing in for
+        # an already-known-correct grid) never had the means to try a local
+        # trace, so `_cell_grid(c)`'s answer is the only one there has ever
+        # been and stays the fallback, unchanged. The stricter rule applies
+        # only where local tracing WAS attempted and failed on a REAL cell:
+        # there, the flat grid is trusted only if it is this cell's own
+        # MEASURED offset (`line_grid_localized`, set by `_cell_line_offset`)
+        # -- never the raw staff-wide `Staff.line_ys` that cell's own
+        # `_trace_cell_local_lines`-independent flat path falls back to when
+        # BOTH mechanisms decline (a narrow cell, faint lines).
+        attempted_local = bbox is not None and scale
         cell_grid_is_measured = getattr(c, "line_grid_localized", None) is not None
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
             head_top_y, head_half_step = None, None
-            if bbox is not None and scale:
+            if attempted_local:
                 page_x = bbox[0] + d.x_center / scale
                 local_grid = _local_cell_grid_at(c, page_x)
                 if local_grid is not None:
                     head_top_y, head_half_step = local_grid
-            if head_top_y is None and cell_grid_is_measured:
+            if head_top_y is None and (not attempted_local or cell_grid_is_measured):
                 head_top_y, head_half_step = top_y, half_step
             if head_top_y is None:
                 log.abstain(g, Q.NOTEHEAD_STAFF_POSITION,

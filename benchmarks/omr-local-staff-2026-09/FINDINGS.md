@@ -107,46 +107,97 @@ above):
 - gather_notehead_positions prefers the local grid over a deliberately
   wrong flat grid on a fake cell, and tags the row local_staff_lines=True.
 
-No whole-page or whole-movement re-gather was run this lane (Sean,
-2026-09-29). The reference-backed truth set (truth_set_2_44c.py, branch
-worktree-agent-ac053ee5c8a371951) was read for context (2.44c's own
-numbers, quoted above) but NOT re-run against this change -- scoring the new
-model against it is the natural next proof step and is named, not done,
-consistent with "no pricing runs" as this lane's own standard.
+## REAL RESULT (manager-directed small re-gather, 2026-10-01): NOT MERGE-READY -- a net regression
 
-## staged.check and the one open finding this lane could not close
+Per the manager's review of `61cf3844`, the microscopic-test-only proof above
+was superseded by an actual run: `python3 -m tools.omr.acceptance_quick
+--doc beethoven5-litolff` and `--doc brahms1-breitkopf`, base = `origin/main`
+`8f1b2228` in its own worktree, arm = this branch at `86d0bf68`
+(`--weights auto`, `OMR_DIRECTION_TEXT_SCAN_GATE=1`; `--full` for the
+EVALUATE-stage pitch needed to score against the reference).
 
-pytest -m "not slow" tools/omr/tests: 4,190 passed, 0 failed (includes the new 9
-tests added to this tree's own fast-tier baseline).
+**Cell-level fallback counts, count page only** (`measure_extractor.
+extract_measures` run directly against the rendered page): Litolff p3
+320/320 cells traced locally, 0 fell back to a measured flat grid, 0 fell
+back further. Brahms p1 202/202, same. **Not many fall back** -- the model
+answers almost every cell on its own.
 
-python3 -m tools.omr.staged.check: TOTAL 246 (was 245 on 8f1b2228,
-confirmed by running check against a clean worktree at that exact commit)
--- staged.wiring rose from 67 to 68 open, status still ok (not broken). The
-new entry is DETAIL Q.NOTEHEAD_STAFF_POSITION.local_staff_lines -- written
-by gather_notehead_positions, read by nothing but
-readout._position_words (which shows it in the stage-readout hover text,
-the exact "never show a ruler built the wrong way" requirement), and
-readout.py declares DERIVED_CHECK = True, so wiring.py's own fourth
-exclusion (a "sibling instrument" that NAMES a quantity for display is not
-a CONSUMER of it, by the same rule a test or a benchmark probe is not) does
-not let that mention close the gap. Wiring it into a real DECISION-stage
-consumer this round would have meant switching a second consumer (the
-brief's own instruction says not to); leaving the detail off the row
-entirely would have put the local/flat distinction nowhere a later reader
-or crop could ask for it, which is the exact silent-fallback CLAUDE.md §10
-exists to forbid. Recorded honestly in KNOWN_GAPS (wiring.py) with its own
-reason, same as every other open wiring finding in this tree -- this is
-the one number in this lane's proof that did not come in under the stated
-ceiling, and it is reported rather than hidden.
+**Head-level abstentions** (`ABSTAIN.GRID_NOT_LOCALIZED`, the whole
+GATHER+ADJUDICATE small re-gather, pages 1-3 / 0-1): Litolff 6 of 1330
+notehead glyphs (0.45%), Brahms 0 of 1502. Small, not a concern on its own.
+
+**GATHER+ADJUDICATE readout diff** (`tools.omr.staged.readout diff --force
+--arm code`, base vs arm, Litolff p3): 1065 differences. `notehead_staff_
+position` changed on 1058 of 1330 noteheads (almost every one, since the
+local model answered almost every cell) -- changes are mostly sub-0.5-space
+fractional shifts, but 7 of them cross a rounding boundary far enough to
+flip an `accidental_owner` ADJUDICATE verdict.
+
+**2.44c reference-backed truth set, adapted** (`truth_set_2_44c.py` copied
+from branch `worktree-agent-ac053ee5c8a371951` into this directory; its own
+`_far_head_subjects` depends on the UNMERGED 2.44 ledger-reader quantities
+(`Q.LEDGER_CLEAN_COUNT_POSITION`/`Q.LEDGER_RUNG_GRID_POSITION`), absent on
+this tree -- confirmed by `AttributeError` running it unmodified, so "far"
+was reclassified geometrically here (position outside the 5-line staff,
+strictly WIDER than the ledger gate) in a small adapter script, scoring
+EVERY notehead, far and in-staff, base vs arm, onset-exact against the
+reference, reusing `onset_exact_truth` unchanged):
+
+| doc | bucket | base (right/wrong/unscored) | arm (right/wrong/unscored) |
+|---|---|---|---|
+| Litolff p3 | far | 121 / 42 / 350 | 84 / 54 / 342 |
+| Litolff p3 | in-staff | 289 / 16 / 512 | 234 / 96 / 514 |
+| Brahms p1 | far | 16 / 0 / 589 | 11 / 2 / 531 |
+| Brahms p1 | in-staff | 114 / 0 / 783 | 88 / 29 / 841 |
+
+**Every head whose verdict changed, base to arm, head by head** (646 lines,
+not reproduced in full here -- in `/tmp/score_2_48_v2.out` this session,
+not committed): Litolff **103 right -> wrong, 11 wrong/unscored -> right**;
+Brahms **31 right -> wrong, 0 -> right**. Combined: **134 regressions
+against 11 improvements.**
+
+**This fails the manager's own keep criterion** ("wrong->right with no
+right->wrong, or a net gain verified head by head") outright -- it is a
+clear net loss, not a close call. Two sampled regressions (`glyph/1/0/7/12/1`
+D5->E5 at pos 1.66->1.28; `glyph/1/0/7/15/0` G5->F5 at pos -1.26->-0.41)
+both cross a rounding boundary by a small, locally-measured shift -- **not
+crop-verified against the print**, so which reading is actually right on
+the page is not established here, only that the local model disagrees with
+the reference encoding more often than the flat grid does on this page.
+
+**Suspected cause, not confirmed**: `_cell_line_offset`'s rigid comb-slide
+is a single whole-cell vote over all five lines together (robust to one
+line's ink being contaminated by a nearby notehead); `trace_staff_line`
+traces each line INDEPENDENTLY, column by column, with no cross-line
+coherence check, and this lane widened its search window to 0.75 spaces
+(from its own 0.35 sp default) specifically so it could follow a real tilt
+-- the same widening may let it lock onto nearby glyph ink (a stem, a
+ledger, a beam) at a given column instead of the true staff line, exactly
+where notes are densest. NOT diagnosed further this lane (time); the next
+step is crop-verifying a handful of the 134 regressions against the print
+before any narrower search window or a coherence check is tried.
+
+**Recommendation: do not merge.** The model and its tests stand (Sean's own
+D6 number is reproduced exactly, and the synthetic controls hold), but the
+accuracy claim does not -- CLAUDE.md rule 7 applies ("a convincing number is
+not evidence about its cause"): the mechanism measures something, but not
+yet the right thing on real ink.
+
+## staged.check
+
+`pytest -m "not slow" tools/omr/tests`: 4,190 passed, 0 failed.
+`python3 -m tools.omr.staged.check`: TOTAL **245** (confirmed against
+`8f1b2228` directly), no new flag, no new unread detail key.
 
 ## Not verified
 
-- The fallback-reason COUNTS on the two count pages (how many cells decline
-  to how many each reason) were not measured this lane -- doing so needs a
-  re-gather, which this lane's own proof standard (microscopic tests, not
-  pricing runs) defers to whoever runs the next scheduled re-gather.
-- Whether the local model, wired into gather_notehead_positions, actually
-  turns any of 2.44c's 16 Litolff misses right (or any of its 31 rights
-  wrong) is NOT measured -- that needs scoring against truth_set_2_44c.py
-  on a real record, which is a re-gather and is named as the next step, not
-  done here.
+- The two sampled regressions above are NOT crop-verified against the
+  print -- which reading (local or flat) is actually right is not
+  established, only that the local model disagrees with the reference MORE
+  on this page.
+- The suspected cause (independent per-line tracing vs the rigid comb's
+  cross-line coherence) is a hypothesis, not confirmed by a targeted test.
+- `/tmp/score_2_48_v2.out`'s full 646-line per-head listing is not
+  committed to the tree (ran from a scratch location); the counts above are
+  read directly from it and are reproducible by re-running the adapter
+  script against the same two record pairs.

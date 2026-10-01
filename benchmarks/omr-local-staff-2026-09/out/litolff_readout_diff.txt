@@ -1,0 +1,249 @@
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.readout.html (1.5 MB)
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.diff.html
+gather: 175.309s (pages 1-3, GATHER+ADJUDICATE only)
+GATHER+ADJUDICATE stage summary -- beethoven5-litolff page 3 (1938 boxes gathered)
+family         gathered   kept  refused  narrowed  abstained  given_away  undecided
+accidental           67     60        0         0          0           7          0
+       3x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+articulation         10     10        0         0          0           0          0
+class:arpeggiato       75     75        0         0          0           0          0
+class:augmentationDot        6      6        0         0          0           0          0
+class:beam           98     15        0         0          0          19         64
+      64x  undecided: ADJUDICATE filed nothing on this box
+       6x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       4x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+class:brace           1      0        0         0          0           0          1
+       1x  undecided: ADJUDICATE filed nothing on this box
+class:flag16thUp        1      1        0         0          0           0          0
+class:flag8thDown        3      3        0         0          0           0          0
+class:flag8thUp        3      3        0         0          0           0          0
+class:ledgerLine      506     74      431         0          0           1          0
+     392x  refused: not a ledger -- inside the staff
+      37x  refused: not a ledger -- on a staff line
+       2x  refused: not a ledger -- no head on the rung
+       1x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+class:staff         125      0        0         0          0           0        125
+     125x  undecided: ADJUDICATE filed nothing on this box
+class:stem            2      0        0         0          0           0          2
+       2x  undecided: ADJUDICATE filed nothing on this box
+clef                 30      0        0         0          0           0         30
+      30x  undecided: ADJUDICATE filed nothing on this box
+dynamic              78     49        0         0          0          29          0
+      10x  given_away: given to staff/3/0/4 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/10 (distance); this copy is dropped
+       2x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/5 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+key                  45     43        0         0          0           2          0
+       1x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+note                481    349       98        13          0          21          0
+      57x  refused: not a notehead -- stacked head duplicate
+      19x  refused: not a notehead -- clipped fragment
+       9x  given_away: given to staff/3/0/7 (ledger owner density); this copy is dropped
+       8x  refused: not a notehead -- notehead is a duplicate box
+       7x  given_away: given to staff/3/0/8 (ledger owner density); this copy is dropped
+       6x  refused: read as a whole rest, not a notehead -- shape and position agree
+       6x  narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous
+       5x  refused: not a notehead -- too narrow
+       4x  narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain
+       3x  given_away: given to staff/3/0/9 (distance); this copy is dropped
+       2x  narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous
+       2x  refused: not a notehead -- is a clef
+       1x  given_away: given to staff/3/0/5 (ladder); this copy is dropped
+       1x  narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree
+       1x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       1x  refused: not a notehead -- belongs to a nearer staff
+rest                152    129       18         0          5           0          0
+       8x  refused: not a rest -- rest touches two staff lines
+       6x  refused: not a rest -- rest has a stem
+       5x  abstained: length could not be read -- rest stands where no rest hangs
+       2x  refused: not a rest -- rest off center
+       2x  refused: not a rest -- rest is a duplicate box
+slur                119     96        0         0          0          23          0
+       4x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       4x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/4 (distance); this copy is dropped
+       2x  given_away: given to staff/3/1/3 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+tie                 134    125        0         0          0           9          0
+       2x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/1 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/0/2 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/3 (distance); this copy is dropped
+time                  2      0        0         0          0           0          2
+       2x  undecided: ADJUDICATE filed nothing on this box
+
+note owner:    {'decided': 127, 'no_verdict': 352, 'abstained': 2}  reasons {'far_no_rungs': 2}
+note duration: {'decided': 460, 'narrowed': 21}  reasons {'beams_ambiguous': 15, 'flags_disagree': 1, 'beam_discounted_uncertain': 4, 'head_fill_from_ink': 1}
+note position: {'observed': 481}  reasons {}
+
+clef by staff:
+  staff/3/0/0: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/1: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/2: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/3: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/0/4: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/5: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/6: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/0/7: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/8: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/9: {'outcome': 'decided', 'value': 'alto', 'reason': 'scored'}
+  staff/3/0/10: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/1/0: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/1: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/2: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/1/3: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/4: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/5: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/6: {'outcome': 'decided', 'value': 'alto', 'reason': 'scored'}
+  staff/3/1/7: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+meter by system:
+  system/3/0: {'outcome': 'decided', 'value': {'numerator': 2, 'denominator': 4, 'raw': '2/4', 'segments': [{'numerator': 2, 'denominator': 4, 'raw': '2/4', 'from_cell': 0}]}, 'reason': 'carried'}
+  system/3/1: {'outcome': 'decided', 'value': {'numerator': 2, 'denominator': 4, 'raw': '2/4', 'segments': [{'numerator': 2, 'denominator': 4, 'raw': '2/4', 'from_cell': 0}]}, 'reason': 'carried'}
+
+GATHER+ADJUDICATE stage summary -- beethoven5-litolff (--against base) page 3 (1938 boxes gathered)
+family         gathered   kept  refused  narrowed  abstained  given_away  undecided
+accidental           67     60        0         0          0           7          0
+       3x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+articulation         10     10        0         0          0           0          0
+class:arpeggiato       75     75        0         0          0           0          0
+class:augmentationDot        6      6        0         0          0           0          0
+class:beam           98     15        0         0          0          19         64
+      64x  undecided: ADJUDICATE filed nothing on this box
+       6x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       4x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+class:brace           1      0        0         0          0           0          1
+       1x  undecided: ADJUDICATE filed nothing on this box
+class:flag16thUp        1      1        0         0          0           0          0
+class:flag8thDown        3      3        0         0          0           0          0
+class:flag8thUp        3      3        0         0          0           0          0
+class:ledgerLine      506     74      431         0          0           1          0
+     392x  refused: not a ledger -- inside the staff
+      37x  refused: not a ledger -- on a staff line
+       2x  refused: not a ledger -- no head on the rung
+       1x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+class:staff         125      0        0         0          0           0        125
+     125x  undecided: ADJUDICATE filed nothing on this box
+class:stem            2      0        0         0          0           0          2
+       2x  undecided: ADJUDICATE filed nothing on this box
+clef                 30      0        0         0          0           0         30
+      30x  undecided: ADJUDICATE filed nothing on this box
+dynamic              78     49        0         0          0          29          0
+      10x  given_away: given to staff/3/0/4 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/8 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/10 (distance); this copy is dropped
+       2x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/5 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+key                  45     43        0         0          0           2          0
+       1x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+note                481    349       98        13          0          21          0
+      57x  refused: not a notehead -- stacked head duplicate
+      19x  refused: not a notehead -- clipped fragment
+       9x  given_away: given to staff/3/0/7 (ledger owner density); this copy is dropped
+       8x  refused: not a notehead -- notehead is a duplicate box
+       7x  given_away: given to staff/3/0/8 (ledger owner density); this copy is dropped
+       6x  refused: read as a whole rest, not a notehead -- shape and position agree
+       6x  narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous
+       5x  refused: not a notehead -- too narrow
+       4x  narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain
+       3x  given_away: given to staff/3/0/9 (distance); this copy is dropped
+       2x  narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous
+       2x  refused: not a notehead -- is a clef
+       1x  given_away: given to staff/3/0/5 (ladder); this copy is dropped
+       1x  narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree
+       1x  given_away: given to staff/3/0/7 (distance); this copy is dropped
+       1x  refused: not a notehead -- belongs to a nearer staff
+rest                152    129       18         0          5           0          0
+       8x  refused: not a rest -- rest touches two staff lines
+       6x  refused: not a rest -- rest has a stem
+       5x  abstained: length could not be read -- rest stands where no rest hangs
+       2x  refused: not a rest -- rest off center
+       2x  refused: not a rest -- rest is a duplicate box
+slur                119     96        0         0          0          23          0
+       4x  given_away: given to staff/3/0/1 (distance); this copy is dropped
+       4x  given_away: given to staff/3/0/5 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       3x  given_away: given to staff/3/0/3 (distance); this copy is dropped
+       3x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       2x  given_away: given to staff/3/0/4 (distance); this copy is dropped
+       2x  given_away: given to staff/3/1/3 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+tie                 134    125        0         0          0           9          0
+       2x  given_away: given to staff/3/0/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/0/1 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/0/2 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (range veto); this copy is dropped
+       1x  given_away: given to staff/3/1/1 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/2 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/4 (distance); this copy is dropped
+       1x  given_away: given to staff/3/1/3 (distance); this copy is dropped
+time                  2      0        0         0          0           0          2
+       2x  undecided: ADJUDICATE filed nothing on this box
+
+note owner:    {'decided': 127, 'no_verdict': 352, 'abstained': 2}  reasons {'far_no_rungs': 2}
+note duration: {'decided': 460, 'narrowed': 21}  reasons {'beams_ambiguous': 15, 'flags_disagree': 1, 'beam_discounted_uncertain': 4, 'head_fill_from_ink': 1}
+note position: {'observed': 481}  reasons {}
+
+clef by staff:
+  staff/3/0/0: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/1: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/2: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/3: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/0/4: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/5: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/6: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/0/7: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/8: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/0/9: {'outcome': 'decided', 'value': 'alto', 'reason': 'scored'}
+  staff/3/0/10: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/1/0: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/1: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/2: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+  staff/3/1/3: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/4: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/5: {'outcome': 'decided', 'value': 'treble', 'reason': 'scored'}
+  staff/3/1/6: {'outcome': 'decided', 'value': 'alto', 'reason': 'scored'}
+  staff/3/1/7: {'outcome': 'decided', 'value': 'bass', 'reason': 'scored'}
+meter by system:
+  system/3/0: {'outcome': 'decided', 'value': {'numerator': 2, 'denominator': 4, 'raw': '2/4', 'segments': [{'numerator': 2, 'denominator': 4, 'raw': '2/4', 'from_cell': 0}]}, 'reason': 'carried'}
+  system/3/1: {'outcome': 'decided', 'value': {'numerator': 2, 'denominator': 4, 'raw': '2/4', 'segments': [{'numerator': 2, 'denominator': 4, 'raw': '2/4', 'from_cell': 0}]}, 'reason': 'carried'}
+
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/beethoven5-litolff-2026-10-01.json
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-index.html

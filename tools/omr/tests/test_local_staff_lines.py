@@ -247,3 +247,29 @@ class TestGatherNoteheadPositionsPrefersLocal:
         refusals = log.refusals(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
         assert len(refusals) == 1
         assert refusals[0].reason == ABSTAIN.GRID_NOT_LOCALIZED
+
+    def test_a_cell_with_no_page_geometry_at_all_falls_back_unchanged(self):
+        """A cell never built by `_build_measure_cell` (no `bbox_page_px`/
+        `upscale_factor` -- e.g. a test double standing in for an
+        already-known-correct grid, same shape as `test_staged_pipeline.
+        FakeCell`) never had the means to ATTEMPT a local trace. That is not
+        the same as a real cell DECLINING one, and must not abstain -- this
+        is the regression this lane's own first cut of the fallback caused
+        and the manager's review caught via test_staged_pipeline.py."""
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q
+
+        cell = SimpleNamespace(
+            page_index=0, system_index=0, staff_index=0, measure_index=0,
+            staff_line_ys_canonical=[0, 20, 40, 60, 80],
+            # no bbox_page_px, no upscale_factor, no line_grid_localized
+        )
+        det = _FakeDet(x_center=10, y_center=20)
+        log = Log()
+        cell_key = R.cell(0, 0, 0, 0).to_key()
+        g.gather_notehead_positions(
+            log, [cell], {0: (0, 0)}, {cell_key: [det]})
+        glyph_sub = R.glyph(0, 0, 0, 0, 0)
+        rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, glyph_sub)
+        assert len(rows) == 1
+        assert rows[0].value == pytest.approx(2.0, abs=1e-6)
