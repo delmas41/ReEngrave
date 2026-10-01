@@ -35,7 +35,12 @@ decided 16 -> 34 of 53 systems (digits_misread 36 -> 0; left: 16 carry_not_corro
 Litolff 1,315 -> 1,019, Brahms 3,762 -> 3,530; Litolff rest_has_a_stem 932 -> 113.
 **CHECK FIRST:** 2.42's `stacked_head_duplicate` refused 696 boxes on the Litolff movement
 (only p3, 50, was ever print-checked); clusters on p13 (104) and p8 (82) -- crop a sample
-there before trusting it. `head_fill_from_ink` narrowings rose (22 -> 48, 9 -> 92).
+there before trusting it. DONE 10-01 (manager, 12 random crops, seed 1001): 10 right (same
+head boxed twice), **2 WRONG on p13** (`glyph/13/1/10/2/0`, `glyph/13/1/8/13/5`): the refused
+and kept boxes sit on two DIFFERENT heads a third/fourth apart that don't even overlap, so a
+real chord note is deleted. The group must require overlapping boxes, or the ink fit must
+find 2 heads there; fix before relying on 2.42. One keep-choice (`glyph/11/1/8/2/2`) kept the
+box sitting lower on the head. `head_fill_from_ink` narrowings rose (22 -> 48, 9 -> 92).
 
 **Open, in order:**
 1. 2.48 local staff (branch `worktree-agent-a3ef66441824adfff`, pushed, NOT
