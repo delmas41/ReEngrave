@@ -1541,3 +1541,27 @@ reference disagrees", 2 "abstain -- ambiguous gap", 1 "next-ledger but
 reference disagrees". 4 crops still show the pre-existing, unexplained
 Brahms count-page pixel-check MISS noted in round 2 (not a new
 regression, not chased further here).
+
+## lane-ledger-rungs: why geometry overshoots by one step (2026-10-01)
+
+Measurement only, no reader code touched. Sean confirmed `glyph/1/0/10/14/1`'s
+reference pairing was wrong (dropped from the both-wrong set; both readers
+right there). On the remaining 10 confirmed both-wrong Litolff heads, every
+geometry miss is exactly one step farther from the staff than the
+reference. Two measurements (`outward_bias.py`), 10 misses vs a 10-head
+Litolff control (geometry right, spread over `ledgers_out` 1-4 and both
+sides -- page 3 only, no page-1 head in this population has geometry
+right):
+
+| | n | median gap1/spacing | median gap2/spacing | median box-ink px |
+|---|---|---|---|---|
+| misses | 10 | 1.194 | 1.524 (n=1) | -0.43 |
+| controls | 10 | 0.984 | 1.418 (n=4) | +1.22 |
+
+Misses fixed by stepping on the MEASURED ledger gaps instead of nominal
+staff spacing: 7 of 10.
+
+`benchmarks/omr-local-staff-2026-09/outward_bias.csv` (20 rows, per-head
+gap ratios, box-ink offset, stepped position). 3 crops under
+`out/print/ledgers/outward/` (pixel-row checked, all OK). Not interpreted
+further here, per the brief.
