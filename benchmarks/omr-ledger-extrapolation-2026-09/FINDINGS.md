@@ -897,3 +897,113 @@ of a smaller/easier population. Brahms 7/7 (100%) both ways.
 on all 47/11: Litolff 29/47 (62%), Brahms 9/11 (82%) — WORSE than plain
 geometry (66%, 100%) on both pages. The gain is not ink-centring by
 itself; it needs the local staff fit too.
+
+## 17. (2026-10-01) READER 2'S 22% — ELEVEN CASES, TWO REAL CAUSES, ONE
+## FAILED FIX, HONESTLY REVERTED
+
+Sean, via manager: "We get the furthest with the ledger rung counts
+[reader 2]. Can we spend a little time seeing if we can improve that
+method? We get 78%. Can we draw any conclusions from the 22% we're
+getting wrong?" Baseline (n=47 Litolff, n=11 Brahms, §15's scored
+population): reader 2 is **36 right / 10 wrong / 1 abstain** on Litolff,
+**11 right / 0 wrong / 0 abstain** on Brahms.
+
+### 17a. All 11 Litolff cases, measured (no crops rendered this round —
+time; every number below is read off the record's own rows, not eyeballed)
+
+| subject | bar | print | r2 | error | direction | head | alone/chord | r2 rungs found |
+|---|--:|---|---|--:|---|---|---|---|
+| `glyph/1/0/10/14/1` | 16 | B3 | C4 | +1 | outward | HalfOnLine | alone | 1 |
+| `glyph/1/0/10/7/1` | 9 | C4 | D4 | +1 | outward | HalfInSpace | alone | 1 |
+| `glyph/3/0/0/2/9` | 51 | D6 | E6 | +1 | outward | BlackInSpace | chord [4,9], lower | 1 |
+| `glyph/3/0/0/6/1` | 55 | E6 | F6 | +1 | outward | HalfInSpace | chord [1,2], upper | 3 |
+| `glyph/3/0/0/6/2` | 55 | C6 | D6 | +1 | outward | BlackInSpace | chord [1,2], lower | 1 |
+| `glyph/3/1/0/6/1` | 71 | B5 | C6 | +1 | outward | BlackInSpace | alone | 2 |
+| `glyph/3/0/9/2/0` | 51 | C3 | B2 | -1 | inward | BlackInSpace | chord [0,9] | 2 |
+| `glyph/3/0/9/2/5` | 51 | C3 | B2 | -1 | inward | BlackInSpace | chord [5,8] | 2 |
+| `glyph/3/0/9/3/5` | 52 | C3 | B2 | -1 | inward | BlackInSpace | chord [5,11] | 3 |
+| `glyph/3/0/5/5/7` | 54 | C5 | C4 | -7 (octave) | inward | HalfInSpace | chord [6,7] | 2 |
+| `glyph/3/0/8/1/3` | 50 | B3 | ABSTAIN | — | — | BlackInSpace | chord [3] | 0 (`no_ledger_found`) |
+
+### 17b. Grouped into causes
+
+* **Cause A — pushed ONE STEP OUTWARD (6 of 10, 60%)**: a documented fault
+  (FINDINGS §11a, a filled head or a ledger fused into one read as the
+  rung itself, pushing the snap one step past where the note really sits).
+  Mixed head types (4 filled, 2 open) and mixed alone/chord — not confined
+  to one shape.
+* **Cause B — pushed ONE STEP INWARD (3 of 10, 30%), all on ONE staff**:
+  every instance is `staff/3/0/9`, bars 51-52, all `BlackInSpace`, all
+  chord members, all C3 read as B2. A LOCAL effect tied to one staff, not
+  the general reader — too few cases (n=3, one staff) to say whether it is
+  an engraving irregularity on that staff or a reader fault specific to
+  its printed ink; not generalised further here.
+* **Cause C — one octave outlier (n=1)**: not generalisable.
+* **Cause D — the one abstention**: reader 2 found no rung at all,
+  consistent with `no_ledger_found` elsewhere in this project — a reading
+  gap already documented, not a new fault.
+
+**Checked the 36 right answers for the same features** so Cause A is not
+simply "how every far head looks": they too span filled and open heads,
+chords and single notes, above and below the staff — Cause A describes a
+measured SUBSET, not the shape of the whole population.
+
+### 17c. Attempted fix — measured, found to over-trigger, REVERTED
+
+Built a guard in the wrapper (`gather_ledger_rung_grid_position`, never
+touching `measure_ledger_rungs`/`snap_to_staff` themselves): where the
+snap lands "on" a rung, measure the ink thickness across the head's own
+width at that exact y (`gather._column_ink_thickness`, 5 RED-first
+synthetic tests, all passing in isolation) and decline the snap rather
+than file it where the run is thick (a filled head), not thin (a true
+rung).
+
+**Re-gathered both pages and re-scored — FAILED.** Litolff reader 2 went
+from 36/10/1 to **6 right / 3 wrong / 38 abstain**: the guard fired on
+nearly every "on_line" snap, not just Cause A's six. **Reverted** (code,
+test, and the new `ABSTAIN` reason all removed; both pages re-gathered a
+second time to confirm the baseline 36/10/1 and 11/0/0 are restored
+exactly).
+
+**Why it failed, measured, not guessed**: the guard's threshold (3x the
+constant `LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES`, ~4.2px at this
+spacing) assumes a genuine printed rung is reliably thinner than that. On
+the real raster it is not — ordinary staff lines measured directly
+earlier in this same investigation (FINDINGS §16's drift analysis) came
+in around 4-5px thick, already past the guard's own threshold. A
+CENTRE-thickness test alone cannot tell a true rung from a fused head at
+this resolution; the feature that actually distinguishes them is whether
+the ink EXTENDS PAST the head's own edges (the OVERHANG test `ledger_rung_
+ink` already uses for reader 1) — this attempt tested the wrong feature.
+**Log, one attempt**: thickness-only guard — reverted, net result 0 fixed
+(the idea needs the overhang test, not centre thickness; not rebuilt here
+— time).
+
+### 17d. Growing the sample
+
+Litolff page 1 (PDF) is independently verified (16 decided bars = 16
+verified, `beethoven-sym5-mvt1-984073-p1`) and is ALREADY inside the
+scored n=47 (4 of them) — §15's page-level check already admits every
+page whose bar count is confirmed. No further page could be added without
+gathering a new page this session has not already covered; n=47/11 is the
+honest maximum reachable today.
+
+### 17e. Conclusions for Sean
+
+Two real causes, not one: **6 of 10 wrong answers are pushed one step too
+far OUT** (a filled head or fused ledger read as the rung itself — the
+documented fault) and **3 of 10 are pushed one step too far IN, all on one
+staff** (too few to explain yet). A plausible-looking fix for the first
+cause (checking ink thickness at the chosen rung) was built, measured on
+the real pages, and FAILED — ordinary print ink at this resolution is
+already thick enough to trip a naive thickness test, so it abstained on
+30 correct answers to fix none. It was reverted rather than kept. n is
+small (10 wrong, 1 abstain) and the "inward" cluster rests on only 3 cases
+on one staff — not enough to generalise past "a real pattern, not
+examined further."
+
+### 17f. Checks
+
+`pytest -m "not slow"`: 4,199 passed, 3 skipped, 2 xfailed (back to §14's
+count — the attempt's 5 tests were reverted with its code).
+`python3 -m tools.omr.staged.check`: TOTAL 245, unchanged.
