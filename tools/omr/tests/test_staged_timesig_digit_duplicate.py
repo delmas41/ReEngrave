@@ -33,18 +33,23 @@ a rule that refused every notehead sharing a cell with ANY time-signature
 digit would also pass the RED->GREEN test, and would wrongly delete a real
 first note of the bar printed just after a meter change.
 
-⚠️ `test_the_measure_partition_decision_does_not_see_this_refusal`
-documents a brief-mandated finding rather than a fix: `Q.MEASURE_PARTITION`
-runs BEFORE `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` in `adjudicate.ORDER`, and
-`structure._trailing_cell_is_cautionary_only` reads `Q.GLYPH_BOX`'s own raw
-DETECTOR class directly, never any refusal verdict -- so a duplicate box
-refused here by its CLASS alone (still `noteheadWholeInSpace` on the
-record, only REFUSED, never relabelled or removed) still fails `_is_
-signature_glyph_class` and still blocks ROADMAP 2.47b's cautionary-tail
-demotion on Brahms p0. CLAUDE.md rule 6 (connect, never guess) and the
-brief both say to report this rather than reorder `ORDER` or change
-`structure.py` to read a NOTEHEAD-family verdict from a STRUCTURE-stage
-decision that must run before identity exists.
+⚠️ ROADMAP 2.47bc CLOSES THE GAP THE PARAGRAPH ABOVE USED TO DESCRIBE.
+`Q.MEASURE_PARTITION` still runs BEFORE `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` in
+`adjudicate.ORDER` (unchanged -- `adjudicate.ORDER` is not touched by this
+round), so `structure._trailing_cell_is_cautionary_only` still cannot read
+this rule's REFUSAL verdict. What changed is that the IoU>0.9 "same ink"
+test itself moved to `geometry.is_timesig_digit_ink`/`geometry.box_iou`
+(ONE constant, `geometry.TIMESIG_DIGIT_DUPLICATE_IOU_MIN`, ONE function),
+shared by BOTH `notehead_precision._timesig_digit_duplicate_refusal` (this
+file's own `TestTimeSigDigitDuplicate`, above) and `structure._trailing_
+cell_is_cautionary_only` directly -- so the structure-stage rule now asks
+the identical geometric question of the raw detector boxes itself, without
+needing the notehead-stage refusal to have run first. `TestMeasure
+PartitionOrderingGap` below is the RED->GREEN test for that connection:
+RED on the tree before this round's edit to `structure.py` (value stayed 8,
+reason "read" -- the assertion this test carried before this round), GREEN
+after (value 7, reason "cautionary_tail_not_a_bar"). `adjudicate.ORDER`
+itself is untouched, confirmed by `test_order_is_unchanged` below.
 
 ⚠️ NO TEST HERE ASSERTS ON MODULE SOURCE TEXT (CLAUDE.md §6c).
 """
@@ -159,14 +164,23 @@ class TestTimeSigDigitDuplicate(unittest.TestCase):
 
 
 class TestMeasurePartitionOrderingGap(unittest.TestCase):
-    """Brief point 2: does refusing the duplicate here let ROADMAP 2.47b's
-    cautionary-tail rule now demote? `Q.MEASURE_PARTITION` precedes
+    """ROADMAP 2.47bc: does refusing the duplicate let ROADMAP 2.47b's
+    cautionary-tail rule now demote? `Q.MEASURE_PARTITION` still precedes
     `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` in `adjudicate.ORDER`
-    (`tools/omr/staged/adjudicate.py`), and `_trailing_cell_is_cautionary_
-    only` reads each glyph's raw DETECTOR class, never a refusal verdict —
-    so NEITHER of the brief's two conditions for a safe reorder holds. This
-    test pins that finding rather than attempting the reorder (CLAUDE.md
-    rule 6: connect, never guess past what the record actually wires)."""
+    (`tools/omr/staged/adjudicate.py`, unchanged by this round --
+    `test_order_is_unchanged` below), so `structure._trailing_cell_is_
+    cautionary_only` still cannot read `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`'s own
+    REFUSAL verdict. Instead it now asks `geometry.is_timesig_digit_ink`
+    the identical geometric question `notehead_precision._timesig_digit_
+    duplicate_refusal` asks, directly against the raw detector boxes --
+    same constant, same arithmetic, two call sites, no reorder.
+
+    `test_the_measure_partition_decision_does_not_see_this_refusal` is the
+    RED->GREEN test for that connection: RED on the tree before this
+    round's `structure.py` edit (`value=8, reason="read"` -- what this test
+    asserted before this round, pinning the then-true finding that nothing
+    connected); GREEN after (`value=7,
+    reason="cautionary_tail_not_a_bar"`)."""
 
     PAGE, SYS, N_STAVES = 0, 0, 3
 
@@ -224,14 +238,14 @@ class TestMeasurePartitionOrderingGap(unittest.TestCase):
             self.assertEqual(v.reason, "is_a_time_signature_digit")
 
     def test_the_measure_partition_decision_does_not_see_this_refusal(self):
-        """Documents the gap: `measure_partition` still reads the tail cell
-        as MIXED (a `noteheadWholeInSpace`-classed row is present, by its
-        raw class, regardless of this decision's own later refusal) and
-        does NOT demote — `value` stays at `n_cells` (8), `reason="read"`,
-        matching FINDINGS §10c/§11c's own "Brahms p0/sys0 stays 8" result.
-        A control that CAN fail: if `structure.py` were changed to read the
-        refusal, this assertion would need updating to `value=7` — it is
-        pinned here so that future change is visible, not silent."""
+        """RED->GREEN (ROADMAP 2.47bc). RED on the pre-2.47bc tree: this
+        asserted `value=8, reason="read"` because the tail cell's duplicate
+        notehead box still failed `_is_signature_glyph_class` by its raw
+        class alone. GREEN here: `structure._trailing_cell_is_cautionary_
+        only` now also accepts a notehead-classed box whose ink duplicates
+        a `timeSig*` box in the SAME staff's cell
+        (`geometry.is_timesig_digit_ink`), so the cell reads as
+        signature-only on every staff and the system demotes to 7."""
         log = Log()
         self._build(log)
         log.freeze()
@@ -241,12 +255,82 @@ class TestMeasurePartitionOrderingGap(unittest.TestCase):
             v = adjudicate.adjudicate_one(
                 log, adjudicate.REGISTRY[Q.MEASURE_PARTITION], staff_sub)
             self.assertEqual(v.outcome, Outcome.DECIDED)
-            self.assertEqual(v.value, 8, f"staff {st_idx}")
-            self.assertEqual(v.reason, "read")
+            self.assertEqual(v.value, 7, f"staff {st_idx}")
+            self.assertEqual(v.reason, "cautionary_tail_not_a_bar")
         self.assertTrue(
             _structure._is_signature_glyph_class("timeSig8"))
         self.assertFalse(
             _structure._is_signature_glyph_class("noteheadWholeInSpace"))
+
+    def test_a_real_notehead_beside_the_tail_digit_is_not_demoted(self):
+        """⚠️ THE CONTROL THAT CAN FAIL (CLAUDE.md §6b/rule 7). Same shape as
+        `_build`, but the tail cell's non-signature box is a REAL notehead
+        beside the `timeSig8` (IoU ~0.3, same geometry as `notehead_
+        precision`'s own `test_a_real_notehead_beside_a_timesig_box_is_
+        kept`), not the same ink boxed twice. `_trailing_cell_is_
+        cautionary_only` must still see a real musical event in the tail
+        and leave the system at its full count -- a rule that accepted ANY
+        notehead near a `timeSig*` box, not just the same ink, would pass
+        the RED->GREEN test above and still be wrong."""
+        log = Log()
+        for st_idx in range(self.N_STAVES):
+            staff_sub = R.staff(self.PAGE, self.SYS, st_idx)
+            self._barline_column(log, staff_sub, 8)
+            for cell_idx in range(7):
+                g = R.glyph(self.PAGE, self.SYS, st_idx, cell_idx, 0)
+                log.observe(g, Q.GLYPH_BOX,
+                           ("noteheadBlackOnLine", 0.0, 0.0, 1.0, 1.0),
+                           reader=READERS.DETECTOR,
+                           frame="cell:%d" % cell_idx, score=0.9,
+                           category="notehead")
+            ts = R.glyph(self.PAGE, self.SYS, st_idx, 7, 0)
+            log.observe(ts, Q.GLYPH_BOX,
+                       ("timeSig8", 200.0, 200.0, 100.0, 100.0),
+                       reader=READERS.DETECTOR, frame="cell:7", score=0.663,
+                       category="timeSig")
+            head = R.glyph(self.PAGE, self.SYS, st_idx, 7, 1)
+            log.observe(head, Q.GLYPH_BOX,
+                       ("noteheadBlackInSpace", 260.0, 200.0, 100.0, 100.0),
+                       reader=READERS.DETECTOR, frame="cell:7", score=0.8,
+                       category="notehead")
+            log.observe(head, Q.NOTEHEAD_CLASS, "noteheadBlackInSpace",
+                       reader=READERS.DETECTOR, frame="cell:7", score=0.8)
+            log.observe(head, Q.GLYPH_CONF, 0.8, reader=READERS.DETECTOR,
+                       frame="cell:7", score=0.8)
+            log.observe(head, Q.NOTEHEAD_STAFF_POSITION, 4.0,
+                       reader=READERS.GEOMETRY, frame="cell:7")
+            tail_cell = R.cell(self.PAGE, self.SYS, st_idx, 7)
+            log.observe(tail_cell, Q.CELL_STAFF_SPACE, 100.0,
+                       reader=READERS.GEOMETRY, frame="cell:7")
+            log.observe(tail_cell, Q.CELL_BOX, [0.0, 0.0, 400.0, 400.0],
+                       reader=READERS.GEOMETRY, frame="cell:7")
+        log.freeze()
+        adjudicate._ensure_decisions()
+
+        iou = NP._notehead_box_iou(
+            ("timeSig8", 200.0, 200.0, 100.0, 100.0),
+            ("noteheadBlackInSpace", 260.0, 200.0, 100.0, 100.0))
+        self.assertLess(iou, NP.TIMESIG_DIGIT_DUPLICATE_IOU_MIN)
+        self.assertGreater(iou, 0.0)
+
+        for st_idx in range(self.N_STAVES):
+            staff_sub = R.staff(self.PAGE, self.SYS, st_idx)
+            v = adjudicate.adjudicate_one(
+                log, adjudicate.REGISTRY[Q.MEASURE_PARTITION], staff_sub)
+            self.assertEqual(v.outcome, Outcome.DECIDED)
+            self.assertEqual(v.value, 8, f"staff {st_idx}")
+            self.assertEqual(v.reason, "read")
+
+    def test_order_is_unchanged(self):
+        """`adjudicate.ORDER` is DATA (a tuple of `Q` members this test
+        reads), not module source text (CLAUDE.md §6c's exemption is for
+        source-text assertions, not for reading an ordering tuple) --
+        confirms the brief's instruction that this round connects through
+        `geometry.py`, never by moving `Q.MEASURE_PARTITION` or
+        `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` in `adjudicate.ORDER`."""
+        order = list(adjudicate.ORDER)
+        self.assertLess(order.index(Q.MEASURE_PARTITION),
+                        order.index(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD))
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
+from .. import geometry as _geom
 from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -128,6 +129,17 @@ def _trailing_cell_is_cautionary_only(
     fallback never converts "cannot tell" into an answer), so today's
     geometry-only count stands, unchanged, exactly as the brief's third
     control requires.
+
+    ROADMAP 2.47bc: a notehead-classed box in the cell no longer blocks the
+    demotion BY ITSELF when it is the SAME ink as a `timeSig*` box the
+    detector also drew there -- one printed digit, boxed twice under two
+    classes (`geometry.is_timesig_digit_ink`, the shared helper ROADMAP
+    2.47c's own refusal rule uses, so the two decisions agree on what "the
+    same ink" means without this module importing that one -- see
+    `geometry.py`'s section comment on why that import would cycle). The
+    comparison is done PER STAFF: `Q.GLYPH_BOX` values are in each cell's
+    own canonical frame, so a `timeSig*` box on one staff says nothing about
+    a notehead box on another, even at the same cell INDEX.
     """
     rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                     subject=system_sub)
@@ -136,7 +148,19 @@ def _trailing_cell_is_cautionary_only(
                and isinstance(r.value, (list, tuple)) and r.value]
     if not in_cell:
         return False
-    return all(_is_signature_glyph_class(r.value[0]) for r in in_cell)
+    by_staff: Dict[Optional[int], List] = {}
+    for r in in_cell:
+        by_staff.setdefault(r.subject.staff, []).append(r)
+    for staff_rows in by_staff.values():
+        timesig_values = [r.value for r in staff_rows
+                           if _is_signature_glyph_class(r.value[0])]
+        for r in staff_rows:
+            if _is_signature_glyph_class(r.value[0]):
+                continue
+            if _geom.is_timesig_digit_ink(r.value, timesig_values):
+                continue
+            return False
+    return True
 
 
 @decision(

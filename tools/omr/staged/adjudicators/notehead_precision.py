@@ -1058,18 +1058,11 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
 
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
-    SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
-    arithmetic, restated rather than imported (see the module constant's
-    own note on why)."""
-    _, x0a, y0a, wa, ha = a
-    _, x0b, y0b, wb, hb = b
-    x1a, y1a = x0a + wa, y0a + ha
-    x1b, y1b = x0b + wb, y0b + hb
-    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
-    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
-    inter = iw * ih
-    union = wa * ha + wb * hb - inter
-    return inter / union if union > 0 else 0.0
+    SAME cell's canonical frame. ROADMAP 2.47bc: the arithmetic itself now
+    lives once, in `geometry.box_iou` (shared with `structure.py` — see that
+    module's own section comment); kept under this name here because 2.30's
+    same-class rule and existing tests both call it this way."""
+    return _geom.box_iou(a, b)
 
 
 def _notehead_duplicate_priority(row) -> Tuple[float, int]:
@@ -1285,13 +1278,14 @@ def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
 # boxed twice as a notehead the same way (no crop yet shows that pairing).
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: How much of the two boxes' union the intersection must cover before a
-#: notehead-classed box is read as a `timeSig*` box's own ink, boxed twice.
-#: Measured 0.94-0.96 on the two crop-verified instances above; 0.9 leaves
-#: margin below both without reaching into the range a real, merely-nearby
-#: notehead could occupy by chance (two independent boxes drawn by the
-#: canonical-cell detector do not share 90% of their area).
-TIMESIG_DIGIT_DUPLICATE_IOU_MIN = 0.9
+#: ROADMAP 2.47bc: this constant and the IoU arithmetic it gates both moved
+#: to `geometry.py` (`TIMESIG_DIGIT_DUPLICATE_IOU_MIN`, `box_iou`,
+#: `is_timesig_digit_ink`) so `structure._trailing_cell_is_cautionary_only`
+#: (ROADMAP 2.47b) can ask the SAME question without importing this module
+#: (see `geometry.py`'s own section comment for why that import would
+#: cycle). Re-exported under its original name here -- nothing below, and
+#: no existing test, needs to change which name it reads.
+TIMESIG_DIGIT_DUPLICATE_IOU_MIN = _geom.TIMESIG_DIGIT_DUPLICATE_IOU_MIN
 
 #: Reason a refused notehead carries when it is a `timeSig*` box's own ink,
 #: boxed twice — kept apart from `notehead_is_a_duplicate_box` (2.30, SAME
