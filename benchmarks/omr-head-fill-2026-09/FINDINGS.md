@@ -265,3 +265,127 @@ problem, not this rule).
    second pass over the SAME re-gather would show whether this rule's one
    narrowed case actually resolves once the meter is decided.
 
+## Sec.8. Does ADJUDICATE rule out stray ink in a bar that already reads a whole rest?
+
+2026-10-01, branch `lane-whole-rest-stray-ink`. STAGED, GATHER+ADJUDICATE
+only (CLAUDE.md §6b). No re-gather: read the saved
+`beethoven5-litolff-mvt1-whole-20261001.record.json` (commit
+`342ec6244`, `dirty=False`) via `readout.load_run` / `Run.verdicts_at` /
+`readout.adjudicate_status`, never re-derived. Sean's framing: "ruling out
+random ink in a bar that clearly had a whole note rest" — does the reader
+notice when a bar/staff it has just read a whole rest on ALSO carries
+other boxed ink the detector called a notehead?
+
+**Count.** A "whole rest read" = a `rest`-family glyph classed `restWhole`
+surviving `rest_is_not_a_rest` (not refused), OR any glyph with
+`notehead_is_a_whole_rest` DECIDED `True` (the mirror case, a
+notehead-shaped box read as the bar's rest). A "stray keeper" = another
+`note`-family glyph in the SAME cell whose `adjudicate_status` (ADJUDICATE
+only) is `KEPT` — not refused by `notehead_is_not_a_notehead`, not given
+away by `glyph_owner`, duration DECIDED (not narrowed/abstained) — with
+`glyph_owner`'s own staff equal to (or undecided and left on) the
+whole-rest's staff. **113 (staff, bar) cells** match, spread over 14 of
+the movement's pages (1–16).
+
+**5 sampled, one per page-region** (`out/print/whole-rest-stray/`, red
+corners = the whole-rest subject, blue corners = each KEPT glyph, green =
+that staff's own lines):
+
+- `cell/1/0/0/3` (`cell_1_0_0_3.png`) — the whole rest is a clean,
+  correctly-shaped box hanging under the staff. The KEPT glyph
+  (`glyph/1/0/0/3/1`, `noteheadHalfInSpace`) sits **3.79 staff spaces
+  above** its own filed staff (`notehead_staff_position -7.58`,
+  `glyph_band_distance 3.785`) with **zero ledger rungs** on all four
+  tested (`ledger_rung_ink` False ×4, `ledger_owner_density 0.0`,
+  `glyph_ladder False`). Staff `staff/1/0/0` is the TOPMOST staff of its
+  system (confirmed: page 1's staves are 0–11, system 0), so
+  `belongs_to_a_nearer_staff` structurally cannot fire — there is no
+  nearer staff to lose to. `glyph_owner` awards it to its own staff by
+  `distance`, the weakest tier, and `notehead_is_not_a_notehead` has no
+  rule that reads the ledger-absence CLAUDE.md §10 already states is
+  dispositive ("there is no such thing as a far note with no ledger
+  line"). **This one reads as a genuine reader fault**, not a second
+  voice — a note this far with no rung should abstain, not KEEP with a
+  decided duration.
+- `cell/2/0/1/15` (`cell_2_0_1_15.png`) — textbook two-voice bar: four
+  real eighth/quarter noteheads sit ON the staff forming a melody line,
+  the whole rest hangs cleanly below the staff in the same cell. **Correct
+  reading** — a second voice, not stray ink.
+- `cell/9/1/1/6` (`cell_9_1_1_6.png`, under the "Adagio." tempo marking) —
+  five real melody noteheads on the staff above, the whole rest (with a
+  fermata drawn over it, a common engraving for a tacet voice) sits below
+  the staff. **Correct reading**, same two-voice pattern.
+- `cell/8/0/3/4` (`cell_8_0_3_4.png`) — a dense, MERGED chord (Litolff is
+  the MERGING plate, CLAUDE.md §10): three real noteheads stacked almost
+  on top of each other, and the "whole rest" box is small and sits
+  embedded in the same ink mass. By eye this reads as **plausibly a
+  misclassified fragment of the chord's own merged ink**, not a genuine
+  rest — the opposite-direction mislabel `notehead_is_a_whole_rest` exists
+  to catch, but this one is a `restWhole`-classed GATHER box, which that
+  adjudicator does not re-examine once the detector's own class already
+  says `rest`.
+- `cell/15/1/2/18` (`cell_15_1_2_18.png`) — another SHATTERING/merged
+  passage: six real noteheads under a beamed run, and a wide filled
+  rectangle below the staff reads as the whole rest. Ambiguous by eye at
+  this zoom; consistent with either a real rest or heavy ink bleed, not
+  conclusively one or the other without a sharper crop.
+
+**0 of 5 samples is "random ink masquerading as a note next to an
+untouched rest."** 2 of 5 (`cell/2`, `cell/9`) are confidently a second,
+tacet voice — correct. 1 of 5 (`cell/1`) is a confirmed reader fault, but
+its cause is the ledger/ownership convention, not the rest. 2 of 5
+(`cell/8`, `cell/15`) raise doubt about the REST reading itself on this
+MERGING plate, not about stray noteheads.
+
+**The cause, named by adjudicator:**
+
+1. `notehead_is_not_a_notehead` (`tools/omr/staged/adjudicators/
+   notehead_precision.py:1736`) ships only GEOMETRIC rules —
+   `clipped_fragment`, `too_narrow`, `belongs_to_a_nearer_staff`,
+   `notehead_is_a_duplicate_box`, `stacked_head_duplicate` — none of which
+   reads `Q.REST`, `Q.NOTEHEAD_IS_A_WHOLE_REST`, or any other fact about
+   what else the cell/bar contains. A box that passes these geometric
+   gates survives regardless of whether the same staff already reads a
+   whole-bar rest beside it.
+2. `Q.NOTEHEAD_IS_A_WHOLE_REST` (`rhythm.py:5784`, "is this notehead-classed
+   glyph ACTUALLY a whole rest") is the one place CLAUDE.md's "a whole
+   rest means the BAR" conclusion is read at ADJUDICATE — but its ORDER
+   placement comment (`adjudicate.py` ~line 1023) states outright: "though
+   nothing in ADJUDICATE reads its verdict today." Confirmed by grep: its
+   only other reader anywhere is `export.py:844`, at EXPORT. So even a
+   correctly-decided whole rest changes nothing about how ADJUDICATE
+   treats any OTHER glyph in that cell.
+3. `glyph_owner`'s weakest tier (`distance`) defaults a far, ledgerless
+   glyph to its OWN filed staff whenever no competing staff is near enough
+   to trigger `belongs_to_a_nearer_staff` — `cell/1`'s case. Nothing
+   downstream re-asks whether a note 3.8 spaces from its staff with zero
+   ledger rungs should ever have been kept at all.
+
+**The convention, and its falsifier.** CONVENTION ASSUMED / NOT CONFIRMED
+(nobody asked, CLAUDE.md rule 3): *a whole-bar rest in one voice does not
+refuse a note in a SIBLING voice on the same staff* — supported by 2 of 5
+crops here, both showing the textbook pattern (melody above/below the
+staff, rest on the opposite side). This is the right behaviour for
+genuine two-voice writing and must not be "fixed" by refusing every
+notehead that shares a cell with a rest. It would be FALSIFIED by: (a) a
+bar where the "other voice" note has no stem-direction or bar-sum evidence
+of a second stream anywhere nearby (`adjudicate_voices`,
+`rhythm.py:6192`, already exists to answer exactly this but runs AFTER
+duration/ownership and never feeds back to refuse a glyph); or (b) a note
+whose own ledger evidence contradicts it belonging to the staff at all
+(`cell/1`'s case) — CLAUDE.md §10's own rule ("no such thing as a far note
+with no ledger line") already falsifies that one without needing the rest
+at all. **Not fixed here** (no code changed; this is a SMALL
+investigation, not a re-gather or a battery): a real fix would gate
+`notehead_is_not_a_notehead` or `glyph_owner`'s distance tier on the
+ledger-rung evidence already gathered (`Q.LEDGER_RUNG_INK`,
+`glyph_band_distance`) rather than inventing a new rest-aware rule — the
+evidence for `cell/1`'s fault was already on the record and simply never
+consulted by the rule that owns that convention.
+
+Crops: `out/print/whole-rest-stray/cell_{1_0_0_3,2_0_1_15,8_0_3_4,
+9_1_1_6,15_1_2_18}.png` + `manifest.json`. Script:
+`/private/tmp/.../scratchpad/crop_whole_rest_stray.py` (not committed —
+scratchpad, reproducible from this section's own queries against the
+cited record).
+
