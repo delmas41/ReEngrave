@@ -1007,3 +1007,120 @@ examined further."
 `pytest -m "not slow"`: 4,199 passed, 3 skipped, 2 xfailed (back to §14's
 count — the attempt's 5 tests were reverted with its code).
 `python3 -m tools.omr.staged.check`: TOTAL 245, unchanged.
+
+## 18. (2026-10-01) BOX CENTRING, A DUPLICATE-BOX PAIRING BUG, AND A SECOND
+## FAILED FIX -- ALL MEASURED, ONLY THE JUDGE BUG KEPT
+
+Three more rounds in one session, from crops Sean looked at himself.
+
+### 18a. The octave "error" was a truth-set bug, not a reading
+
+Sean, on `glyph/3/0/5/5/7` (bar 54, truth C5, reader 2 read C4): "there is
+another note an octave higher; there are two notes on the same stem."
+Measured: `glyph/3/0/5/5/6` and `/7` (the chord's own two members) sit
+**0.16 PAGE PIXELS apart** (`bbox_page_px` centres), against a ~15.5px
+staff spacing -- a notehead alone is ~1.1 staff spaces (~17px) tall, so
+two REAL stacked heads are never this close. These are two detector boxes
+(different SMuFL classes, `noteheadHalfOnLine` / `noteheadHalfInSpace`) on
+ONE printed head; the genuinely higher head Sean saw on the page was never
+boxed at all. The truth set's own stack-order ranking (§14a) assigned one
+of these two near-duplicates the chord's OTHER (higher) pitch by y-order,
+which is exactly the kind of coincidental-agreement the manager's §14/§15
+reviews were already watching for -- except this time the coincidence
+pointed the WRONG way and the truth set called a non-answer "wrong."
+
+**Fixed** (`truth_set_2_44c.py`, `onset_exact_truth`): (1) stack ranking
+now uses the PAGE-PIXEL box CENTRE (`bbox_page_px`), not the raw canonical
+`Q.GLYPH_BOX` value's own top-left corner the first version used by
+mistake; (2) a chord whose members' y-centres are closer than
+`DUPLICATE_BOX_MIN_GAP_SPACES` (0.3 staff spaces) is UNSCORED outright --
+two boxes that close are a duplicate on one head, not a resolved stack,
+and ranking them answers a question neither box's own ink can support.
+**Re-validated against every hand-measured head: still ZERO
+disagreements** (Sean's four chord pitches, plus the two other §15
+hand-verified heads, all unchanged). The fix removes 2 heads from the
+Litolff scored pool (401->... 47->45) -- the octave case and one other
+duplicate-box chord elsewhere -- rather than mis-scoring them.
+
+### 18b. Box re-centring (the blue boxes aren't centred) -- fixed 3, broke 3, REVERTED
+
+Sean, on crops of reader 2's 11 wrong cases: "the note is partially boxed
+incorrectly." Measured the detector box's offset from the head's own ink
+centre (padded 0.6 space, staff/ledger rows excluded, nearest-to-box
+contiguous ink run chosen so a chord-mate's ink never pulls it sideways)
+for all 45 Litolff / 11 Brahms scored heads: mean offset for RIGHT answers
+is already non-zero (Litolff -0.12 staff spaces, Brahms -0.22) and WRONG
+answers are offset roughly 3x further (Litolff -0.38) -- boxes ARE
+measurably off-centre, more so on the wrong answers, as Sean said.
+
+Built `gather._canonical_ink_centre` (4 RED-first synthetic tests, all
+passing: a box offset from its own head is recovered; a chord-mate's ink
+does not pull it sideways; no ink at all declines; a lone staff line is
+never mistaken for the head) and wired it into
+`gather_ledger_rung_grid_position`'s own `cx`/`cy` before the ledger scan
+and snap, declining (keeping the detector's own box) wherever no
+qualifying ink run is found.
+
+**Re-gathered both pages and re-scored.** Of reader 2's original 10 wrong:
+**3 turned RIGHT** (`glyph/1/0/10/7/1`, `glyph/3/0/0/6/1`,
+`glyph/3/0/9/2/0`), 1 turned ABSTAIN. **But 3 previously-RIGHT heads
+turned WRONG** (`glyph/3/0/0/2/1`, `glyph/3/0/7/3/4`, `glyph/3/1/0/9/0`) --
+re-centring the box helps where the box was the problem and hurts where
+it was not (the ink search finds a DIFFERENT, sometimes wrong, nearby
+component on a dense page). Per the standing rule ("keep a fix only if it
+turns wrong to right without breaking right ones"), **REVERTED** --
+`gather.py` and its test restored exactly; both pages re-gathered a
+second time, confirming the exact §15 baseline (reader 2 35/9/1 Litolff
+with 18a's duplicate-box fix folded in, 11/0/0 Brahms) is back.
+
+### 18c. Why would a cell's own grid equal the staff-wide lines?
+
+Traced (`tools/omr/measure_extractor.py`, `_build_measure_cell` +
+`_cell_line_offset`): a cell's `staff_line_ys_canonical` is the STAFF-WIDE
+`staff.line_ys` (shifted only by the crop's own `y0`, never re-measured)
+UNLESS `_cell_line_offset` finds a genuine local shift for that specific
+cell's own x-range -- and it DECLINES (falls through to the staff-wide
+value) on any of: the cell narrower than `CELL_LINE_MIN_WIDTH_SPACES`
+(4 staff spaces), a best-fit shift under `CELL_LINE_MIN_SHIFT_SPACES`
+(0.05 spaces, ~0.8px here -- "nothing measured"), or fewer than
+`CELL_LINE_MIN_ROWS_COVERED` (4 of 5) rows clearing
+`CELL_LINE_MIN_ROW_COVERAGE` (45% ink coverage across the cell's width).
+`_cell_grid` (`gather.py`) then reads whatever `staff_line_ys_canonical`
+ended up holding, with NO way to tell from the record alone whether it is
+a genuine local measurement or the staff-wide fallback. This is the
+mechanism: a bar whose own print thins out (sparse ink, a narrow bar, or
+a found shift just under the 0.05-space floor) silently inherits the
+staff-wide lines instead of its own.
+
+### 18d. Decomposition (a: box-vs-ink, b: cell-grid-vs-near-head-local,
+### c: remainder) -- GEOMETRY only
+
+⚠️ Reader 2 does NOT read position through the box-centre + page-pixel
+cell-grid path this decomposition measures -- it reads canonical-frame
+ink via `measure_ledger_rungs`/`snap_to_staff`, an unrelated mechanism.
+This decomposition therefore applies to GEOMETRY's 15 Litolff wrong
+heads only; reader 2's own errors are NOT decomposable this way (§18b's
+real-raster re-centring test is the correct instrument for reader 2).
+
+A "near-head" local-line measurement was built (first clean column
+immediately beside the head, up to 1.5 head-widths, median of whichever
+side(s) qualify -- never averaged over ±4 widths, which can wash out a
+1px discrepancy): it found a qualifying column for 11 of 15 geometry-wrong
+heads. For those 11, `b` (cell-grid top vs this near-head local top) is
+small throughout (-0.19 to +0.19 steps, under 1.5px) -- **smaller than the
+~0.31-step (2.5px) figure Sean measured by hand on `glyph/3/0/0/6/1`**;
+this script's own near-head window evidently lands on a different column
+than his crop did, and that gap is not reconciled here (time). Scoring
+"ink centre + this near-head local-line reading" on the 11 decomposable
+geometry-wrong heads: **4 of 11 turn right** (`glyph/3/0/0/2/1`,
+`glyph/3/0/0/6/1`, `glyph/3/0/8/9/0`, `glyph/3/0/9/2/0`), 7 stay wrong.
+**NOT validated against the right-geometry population** (time) and NOT
+wired anywhere -- an unvalidated candidate for a future lane, not a
+result to act on.
+
+### 18e. Checks
+
+No production code changed net of this item (the recentring attempt was
+built, measured, and reverted in full). `truth_set_2_44c.py` is the only
+surviving diff. `pytest -m "not slow"` and `staged.check` TOTAL 245:
+unchanged from §17f.

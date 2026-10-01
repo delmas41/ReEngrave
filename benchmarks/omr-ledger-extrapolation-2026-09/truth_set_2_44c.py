@@ -166,6 +166,13 @@ def _ref_pitch_set(ref_bars: Dict[str, List], bar: str) -> List[Tuple[str, int]]
 
 _LETTER_ORDER = {"C": 0, "D": 1, "E": 2, "F": 3, "G": 4, "A": 5, "B": 6}
 
+#: Two real stacked noteheads are never closer than this fraction of a
+#: staff space (a notehead alone is ~1.1 spaces tall); anything closer is
+#: two detector boxes on ONE printed head, not a resolved two-member
+#: stack (manager review 2026-10-01, `glyph/3/0/5/5/6`+`/7`, measured
+#: 0.16 PAGE PIXELS apart against a ~15.5px spacing).
+DUPLICATE_BOX_MIN_GAP_SPACES = 0.3
+
 
 def _pitch_height(p: Tuple[str, int]) -> int:
     return p[1] * 7 + _LETTER_ORDER.get(p[0], 0)
@@ -233,12 +240,42 @@ def onset_exact_truth(rec: EXP.Record, doc_id: str, family: Optional[str],
         return None
     if len(our_glyphs) == 1:
         return [truth_pitches[0]]
+    # ⚠️⚠️ MANAGER REVIEW 2026-10-01 (Sean, on `glyph/3/0/5/5/7`'s octave
+    # "error"): ranked by PAGE-pixel box CENTRE (`bbox_page_px`), not the
+    # raw canonical box corner (`Q.GLYPH_BOX`'s own `value[2]`, a y_canonical
+    # TOP-LEFT, never a centre) the first version of this ranking used --
+    # consistent with every other page-pixel measurement in this script.
     ys: Dict[int, float] = {}
     for gi in our_glyphs:
         box_obs = rec.obs(Q.GLYPH_BOX, f"glyph/{page}/{system}/{staff}/{cell}/{gi}")
         if box_obs:
-            ys[gi] = float(box_obs[-1]["value"][2])   # y_canonical
+            detail = box_obs[-1].get("detail") or {}
+            page_box = detail.get("bbox_page_px")
+            if page_box:
+                ys[gi] = (page_box[1] + page_box[3]) / 2.0
     if len(ys) != len(our_glyphs):
+        return None
+    # ⚠️⚠️ A DUPLICATE BOX ON ONE PRINTED HEAD IS NOT A RESOLVED STACK.
+    # Sean: "there is another note an octave higher; there are two notes
+    # on the same stem" -- on `/3/0/5/5/6`+`/7` the detector's two boxes
+    # sit 0.16 PAGE PIXELS apart (two different SMuFL classes, but the
+    # same physical ink), far closer than any two real stacked noteheads
+    # ever are (a notehead alone is ~1.1 staff spaces tall) -- the second,
+    # genuinely higher printed head Sean saw was never boxed at all, so
+    # NEITHER of our two glyphs is that head and ranking them against the
+    # reference's two-pitch chord assigns one of them a pitch neither
+    # glyph's own ink supports. Declined (UNSCORED), not guessed: any two
+    # members closer than this floor make the WHOLE group's ranking
+    # unreliable, not just the closest pair.
+    sorted_ys = sorted(ys.values())
+    min_gap = min((b - a for a, b in zip(sorted_ys, sorted_ys[1:])), default=None)
+    staff_key = f"staff/{page}/{system}/{staff}"
+    line_rows = rec.obs(Q.STAFF_LINES, staff_key)
+    spacing_px = ((max(float(y) for y in line_rows[-1]["value"])
+                  - min(float(y) for y in line_rows[-1]["value"])) / 4.0
+                 if line_rows else 0.0)
+    if min_gap is not None and spacing_px > 0 and \
+            min_gap < DUPLICATE_BOX_MIN_GAP_SPACES * spacing_px:
         return None
     order = sorted(our_glyphs, key=lambda gi: ys[gi])      # top of stack first
     truth_sorted = sorted(truth_pitches, key=_pitch_height, reverse=True)
