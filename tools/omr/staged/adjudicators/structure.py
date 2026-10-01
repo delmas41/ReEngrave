@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
+from .. import geometry as _geom
 from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -84,6 +85,84 @@ def adjudicate_staff_ordinal(ev: Evidence) -> Ruling:
                   used=tuple(r.id for r in rows))
 
 
+def _is_signature_glyph_class(name: object) -> bool:
+    """True only for a clef / key-signature / time-signature detector class
+    (the 208-class taxonomy, `tools/omr/training/deepscoresv2_208_classes.
+    json`: `clefG/clefF/clefC*/clef8/clef15/clefUnpitchedPercussion`,
+    `keyFlat/keySharp/keyNatural`, `timeSig0`-`timeSig9`/`timeSigCommon`/
+    `timeSigCutCommon`) -- the ink a cautionary strip (CLAUDE.md section 10)
+    is printed from and nothing else. `"keyboard"` is excluded on purpose:
+    it is the one prefix collision with `"key"` in that class space
+    (`keyboardPedalPed`/`keyboardPedalUp`, a pedal mark, never a cautionary
+    strip) and a false hit there would let a real pedal glyph sneak through
+    as if it were a key signature.
+    """
+    s = str(name)
+    if s.startswith("keyboard"):
+        return False
+    return s.startswith(("clef", "key", "timeSig"))
+
+
+def _trailing_cell_is_cautionary_only(
+    ev: Evidence, system_sub: Subject, last_cell_index: int,
+) -> bool:
+    """ROADMAP 2.47b (CLAUDE.md section 10): "a cautionary meter after a
+    system's last barline governs no bar" -- generalised from the meter
+    reading to the PARTITION itself. `measure_extractor._measure_x_
+    boundaries` decides, on WIDTH alone, whether the strip after a system's
+    own final barline becomes its own bar or is absorbed into the one
+    before it (`benchmarks/omr-measure-partition-2026-09/FINDINGS.md` §0a,
+    §3: a human reads that strip by what is PRINTED in it, which the width
+    rule cannot see and this does, after the detector has run).
+
+    True only when `Q.GLYPH_BOX` has at least one row filed in that exact
+    cell, ACROSS EVERY STAFF OF THE SYSTEM (not just the staff being
+    decided -- a pickup or a short final bar on one staff while its
+    neighbours have already finished still makes it a real bar for the
+    whole system, CLAUDE.md section 10's "printed at one bar on every staff
+    of the system" shape), and every one of those rows is a clef/key/time
+    class with nothing else beside it -- no notehead, no rest, no other
+    musical event, on any staff.
+
+    An EMPTY cell -- the detector found nothing there at all -- answers
+    False. "We found nothing" is not evidence either way (rule 8: a
+    fallback never converts "cannot tell" into an answer), so today's
+    geometry-only count stands, unchanged, exactly as the brief's third
+    control requires.
+
+    ROADMAP 2.47bc: a notehead-classed box in the cell no longer blocks the
+    demotion BY ITSELF when it is the SAME ink as a `timeSig*` box the
+    detector also drew there -- one printed digit, boxed twice under two
+    classes (`geometry.is_timesig_digit_ink`, the shared helper ROADMAP
+    2.47c's own refusal rule uses, so the two decisions agree on what "the
+    same ink" means without this module importing that one -- see
+    `geometry.py`'s section comment on why that import would cycle). The
+    comparison is done PER STAFF: `Q.GLYPH_BOX` values are in each cell's
+    own canonical frame, so a `timeSig*` box on one staff says nothing about
+    a notehead box on another, even at the same cell INDEX.
+    """
+    rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                    subject=system_sub)
+    in_cell = [r for r in rows
+               if r.subject.cell == last_cell_index
+               and isinstance(r.value, (list, tuple)) and r.value]
+    if not in_cell:
+        return False
+    by_staff: Dict[Optional[int], List] = {}
+    for r in in_cell:
+        by_staff.setdefault(r.subject.staff, []).append(r)
+    for staff_rows in by_staff.values():
+        timesig_values = [r.value for r in staff_rows
+                           if _is_signature_glyph_class(r.value[0])]
+        for r in staff_rows:
+            if _is_signature_glyph_class(r.value[0]):
+                continue
+            if _geom.is_timesig_digit_ink(r.value, timesig_values):
+                continue
+            return False
+    return True
+
+
 @decision(
     quantity=Q.MEASURE_PARTITION,
     checkable=Checkable.MIXED,
@@ -92,17 +171,29 @@ def adjudicate_staff_ordinal(ev: Evidence) -> Ruling:
         "a merged bar sums to a MULTIPLE of the meter; a split bar to a fraction (rhythm_sum_warning)",
     ),
     implicates=(Q.MEASURE_PARTITION, Q.BARLINE_COLUMN, Q.SYSTEM_MEMBERSHIP, Q.DURATION),
-    composed_from=(Q.BARLINE_COLUMN,),
+    composed_from=(Q.BARLINE_COLUMN, Q.GLYPH_BOX),
     scope=Kind.STAFF,
-    wants=(Q.BARLINE_COLUMN,),
-    reasons=("read", "no_barline"),
+    wants=(Q.BARLINE_COLUMN, Q.GLYPH_BOX),
+    reasons=("read", "no_barline", "cautionary_tail_not_a_bar"),
 )
 def adjudicate_measure_partition(ev: Evidence) -> Ruling:
     rows = ev.rows(Q.BARLINE_COLUMN)
     if not rows:
         return Ruling.abstain("no_barline")
-    return Ruling(value=int(rows[-1].value), reason="read",
-                  used=tuple(r.id for r in rows))
+    n_cells = int(rows[-1].value)
+    # A trailing cautionary strip can only exist past a REAL barline --
+    # n_cells == 1 means `_measure_x_boundaries` read no barline at all for
+    # this system, which is a different, already-handled shape (the
+    # system's only cell, not a tail past its last rule) and is left alone.
+    if n_cells >= 2:
+        system_sub = ev.subject.at(Kind.SYSTEM)
+        last_cell_index = n_cells - 1
+        if _trailing_cell_is_cautionary_only(ev, system_sub, last_cell_index):
+            return Ruling(
+                value=n_cells - 1, reason="cautionary_tail_not_a_bar",
+                used=tuple(r.id for r in rows),
+                detail={"cautionary_cell": last_cell_index})
+    return Ruling(value=n_cells, reason="read", used=tuple(r.id for r in rows))
 
 
 # ─────────────────────────────────────────────────────────────────────────────

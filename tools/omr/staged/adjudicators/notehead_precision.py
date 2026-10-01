@@ -1058,18 +1058,11 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
 
 def _notehead_box_iou(a: Any, b: Any) -> float:
     """IoU of two `Q.GLYPH_BOX` VALUE tuples `(class, x, y, w, h)` in the
-    SAME cell's canonical frame — `family_precision._rest_box_iou`'s exact
-    arithmetic, restated rather than imported (see the module constant's
-    own note on why)."""
-    _, x0a, y0a, wa, ha = a
-    _, x0b, y0b, wb, hb = b
-    x1a, y1a = x0a + wa, y0a + ha
-    x1b, y1b = x0b + wb, y0b + hb
-    iw = max(0.0, min(x1a, x1b) - max(x0a, x0b))
-    ih = max(0.0, min(y1a, y1b) - max(y0a, y0b))
-    inter = iw * ih
-    union = wa * ha + wb * hb - inter
-    return inter / union if union > 0 else 0.0
+    SAME cell's canonical frame. ROADMAP 2.47bc: the arithmetic itself now
+    lives once, in `geometry.box_iou` (shared with `structure.py` — see that
+    module's own section comment); kept under this name here because 2.30's
+    same-class rule and existing tests both call it this way."""
+    return _geom.box_iou(a, b)
 
 
 def _notehead_duplicate_priority(row) -> Tuple[float, int]:
@@ -1241,6 +1234,117 @@ def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
         if _notehead_duplicate_priority(row2) > cand_priority:
             return True
     return False
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.47c — THE SAME INK, BOXED ONCE AS A `timeSig*` DIGIT AND AGAIN AS
+# A NOTEHEAD.
+#
+# `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §21b (crop-verified,
+# `out/print/brahms-plus1/E_wholenote_decided_meter_m8_P4.png`) and
+# `benchmarks/omr-measure-partition-2026-09/FINDINGS.md` §10c/§11c
+# (crop-verified twice, `out/print/2.47b/brahms-p0-sys0-staff3-tail-dup.png`
+# and the current-gather `brahms-p0-sys0-tail-20261001.png`) both name the
+# SAME mechanism on Brahms 1/i p0's cautionary "9/8": one digit's ink is
+# boxed TWICE by the detector, once correctly as `timeSig8` (confidence
+# 0.663-0.9+) and again as `noteheadWholeInSpace` (confidence as low as
+# 0.267 — the open-bowl shape a round numeral shares with a hollow head),
+# at IoU 0.94-0.96 both times measured. This is distinct from 2.30's
+# same-CLASS duplicate (`_notehead_duplicate_box_refusal`, which never
+# compares against a different class) and from 2.12l's `is_a_meter_digit`
+# (a PAIR of notehead-classed boxes near a cell's LEFT edge forming the two
+# digits of a change — this is ONE box, cross-FAMILY, and the duplicate can
+# sit anywhere in the cell, including the RIGHT edge where a cautionary
+# change prints just ahead of the barline it warns about).
+#
+# The module docstring above (ROADMAP 2.30 section) already named this exact
+# question for a REST/notehead pair and left it "ASSUMED, NOT CONFIRMED,
+# NOT BUILT" pending a crop. For a notehead/`timeSig*` pair the crop already
+# exists, twice over, from unrelated lanes measuring something else and
+# landing on the same ink — so this is not a guess (rule 6): the convention
+# ("one printed digit, one box drawn twice") is established by print, not
+# assumed to make a rule fire.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a real
+# notehead standing near a meter digit (e.g. the first note of the bar,
+# printed just after a cautionary signature) is a DIFFERENT box on
+# DIFFERENT ink and so shares little area with the digit's own box — IoU
+# alone, at a high floor, is the only gate this rule needs for that reason,
+# unlike 2.30 which also needs a centre test to tell a duplicate from a
+# real chord second (two SAME-class heads deliberately placed close
+# together). A `timeSig*` box and a real notehead box are never placed to
+# overlap on purpose, so no second gate is built here. NOT CONFIRMED WITH
+# SEAN: whether this generalises to a `clef*` or `keySignature*` box
+# boxed twice as a notehead the same way (no crop yet shows that pairing).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ROADMAP 2.47bc: this constant and the IoU arithmetic it gates both moved
+#: to `geometry.py` (`TIMESIG_DIGIT_DUPLICATE_IOU_MIN`, `box_iou`,
+#: `is_timesig_digit_ink`) so `structure._trailing_cell_is_cautionary_only`
+#: (ROADMAP 2.47b) can ask the SAME question without importing this module
+#: (see `geometry.py`'s own section comment for why that import would
+#: cycle). Re-exported under its original name here -- nothing below, and
+#: no existing test, needs to change which name it reads.
+TIMESIG_DIGIT_DUPLICATE_IOU_MIN = _geom.TIMESIG_DIGIT_DUPLICATE_IOU_MIN
+
+#: Reason a refused notehead carries when it is a `timeSig*` box's own ink,
+#: boxed twice — kept apart from `notehead_is_a_duplicate_box` (2.30, SAME
+#: class only) and `is_a_meter_digit` (2.12l, a PAIR of notehead-classed
+#: boxes) so a census can tell the three mechanisms apart (CLAUDE.md §4d).
+TIMESIG_DIGIT_DUPLICATE_REASON = "is_a_time_signature_digit"
+
+
+def _cell_timesig_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
+    """Every `timeSig*`-classed glyph's `Q.GLYPH_BOX` row in THIS glyph's own
+    cell, keyed by subject. `_cell_notehead_boxes`'s rule, ported for the
+    other family: SAME CELL ONLY (the cell this glyph's own box is filed on
+    is the SAME staff's own cell — a `timeSig*` box elsewhere never enters
+    this search)."""
+    out: Dict[Any, Any] = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        if not str(v[0]).lower().startswith("timesig"):
+            continue
+        out[r.subject] = r
+    return out
+
+
+def _timesig_digit_duplicate_refusal(ev: Evidence, this_row,
+                                     detail: Dict[str, Any]
+                                     ) -> Optional[Ruling]:
+    """ROADMAP 2.47c: is this notehead-classed box the SAME ink as a
+    `timeSig*`-classed box the detector drew in this glyph's own cell? See
+    the module section comment above for the measurement and why IoU alone
+    (no centre test, unlike 2.30) is the whole gate.
+    """
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    this_val = this_row.value
+    if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
+        return None
+
+    best = None
+    best_iou = 0.0
+    for subj, row in _cell_timesig_boxes(ev, cell).items():
+        other_val = row.value
+        if not isinstance(other_val, (list, tuple)) or len(other_val) != 5:
+            continue
+        iou = _notehead_box_iou(this_val, other_val)
+        if iou > best_iou:
+            best_iou = iou
+            best = row
+
+    if best is None or best_iou <= TIMESIG_DIGIT_DUPLICATE_IOU_MIN:
+        return None
+    detail["timesig_digit_of"] = best.id
+    detail["timesig_digit_iou"] = round(best_iou, 3)
+    detail["timesig_digit_class"] = best.value[0]
+    return Ruling(value=True, reason="is_a_time_signature_digit",
+                  used=(this_row.id, best.id), detail=detail)
 
 
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
@@ -1729,6 +1833,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      STACKED_HEAD_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
+                                     TIMESIG_DIGIT_DUPLICATE_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -1826,6 +1931,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        carries no ink witness, NEITHER is refused (rule 8). A slot held by
        only one box is untouched. See `_stacked_head_duplicate_refusal`'s
        own docstring and the module's 2.42 section comment.
+    2f. `is_a_time_signature_digit` (ROADMAP 2.47c, SHIPS) — a notehead-
+       classed box at IoU > `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` (0.9) against
+       a `timeSig*`-classed box in the SAME cell is that digit's own ink,
+       boxed twice, not a head (CLAUDE.md §10's SHATTERING-plate shape,
+       here cross-FAMILY rather than 2.30's same-class notehead pair).
+       IoU alone is the whole gate — unlike 2.30, no centre test is needed,
+       because a `timeSig*` box and a real nearby notehead are never drawn
+       to share 90% of their area by chance. Crop-verified twice, on two
+       unrelated lanes that independently landed on the same Brahms p0
+       cautionary 9/8 (`benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+       §21b, `benchmarks/omr-measure-partition-2026-09/FINDINGS.md`
+       §10c/§11c). See the module's own 2.47c section comment for the
+       measurement and what is NOT yet confirmed (a `clef*`/`keySignature*`
+       pairing, generalising past `timeSig*`).
 
     ⚠️ A GLYPH NONE OF THE SHIPPED RULES CONDEMNS DECIDES `False`, REASON
     `notehead` — not an abstention. Geometry was available and was tested;
@@ -1926,6 +2045,16 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     stacked = _stacked_head_duplicate_refusal(ev, box_row, detail)
     if stacked is not None:
         return stacked
+    # ⚠️ ROADMAP 2.47c. AFTER 2.30/2.42's same-FAMILY same-mark tests
+    # (which both only compare within the notehead class) and BEFORE
+    # 2.12l's meter-digit PAIR test below — this is a third, narrower
+    # same-ink question: is this box the SAME ink as a `timeSig*` box
+    # drawn in this cell, never what either box MEANS. See the module's
+    # own section comment above `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` for the
+    # crop evidence (two independent lanes, same Brahms p0 cautionary 9/8).
+    timesig_dup = _timesig_digit_duplicate_refusal(ev, box_row, detail)
+    if timesig_dup is not None:
+        return timesig_dup
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is
