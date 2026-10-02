@@ -36,6 +36,8 @@ REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import numpy as np  # noqa: E402
+
 import score_truth_set_rungs as score  # noqa: E402
 import truth_set_2_44c as ts  # noqa: E402
 from tools.omr.staged import export as EXP  # noqa: E402
@@ -85,6 +87,33 @@ def _window_box(cx: float, cy: float, spacing: float) -> Tuple[float, float, flo
     half_h = (ht.WINDOW_HALF_HEIGHT_HEAD_HEIGHTS * head_h
               + ht.WINDOW_HALF_HEIGHT_EXTRA_SPACES * spacing)
     return (cx - half_w, cy - half_h, cx + half_w, cy + half_h)
+
+
+def measure_line_thickness_px(gray, global_lines, sample_x_ranges) -> Optional[float]:
+    """Median vertical dark-run thickness AT each measured staff line y,
+    sampled over several x ranges away from any far head (never guessed
+    -- `None` where nothing measurable). Used by the geometry-template
+    path (Sean, 2026-10-02) to draw a real line thickness rather than an
+    arbitrary one."""
+    thicknesses: List[float] = []
+    for ly in global_lines:
+        for (x0, x1) in sample_x_ranges:
+            x0i, x1i = max(0, int(x0)), min(gray.shape[1], int(x1))
+            if x1i <= x0i:
+                continue
+            y0i = max(0, int(ly) - 4)
+            y1i = min(gray.shape[0], int(ly) + 5)
+            band = gray[y0i:y1i, x0i:x1i]
+            if band.size == 0:
+                continue
+            thr = lg._otsu_threshold(band)
+            col_profile = (band <= thr).mean(axis=1)
+            run = float((col_profile > 0.5).sum())
+            if run > 0:
+                thicknesses.append(run)
+    if not thicknesses:
+        return None
+    return float(np.median(thicknesses))
 
 
 def _boxes_intersect(a, b) -> bool:
@@ -226,6 +255,77 @@ def templates_for_page(templates_by_page, page: int
     return merged
 
 
+def build_geometry_templates_for_doc(doc_id: str) -> Tuple[
+        Dict[Any, Dict[Tuple[str, str], "ht.Template"]], Dict[str, Any]]:
+    """Sean, 2026-10-02: "try the geometry version first". Measures tilt
+    (`measure_head_tilt.collect_doc_measurements`) and staff-line
+    thickness per far-head page, then draws ONE geometry `Template` set
+    per page from those measured numbers (`ht.build_geometry_templates`)
+    -- same `{page: templates}` + `"pooled"` shape `templates_for_page`
+    already expects, so the SAME matching/scoring code works for either
+    template source."""
+    import measure_head_tilt as mht
+
+    loaded = ts.load_doc(doc_id)
+    rec = loaded["rec"]
+    pages = score.PageCache(loaded["cfg"])
+    far_rows = score._far_head_rows(doc_id, loaded)
+    far_pages = sorted({r["page"] for r in far_rows})
+
+    measurements = mht.collect_doc_measurements(doc_id)
+    report: Dict[str, Any] = {}
+    outer_tilt: Dict[str, float] = {}
+    slit_tilt: Dict[str, float] = {}
+    for kind in ("filled", "hollow"):
+        of_kind = [m for m in measurements if m["kind"] == kind]
+        outer = np.array([m["outer"] for m in of_kind if m["outer"] is not None])
+        slit = np.array([m["slit"] for m in of_kind if m.get("slit") is not None])
+        outer_tilt[kind] = float(np.median(outer)) if outer.size else 0.0
+        if slit.size:
+            slit_tilt[kind] = float(np.median(slit))
+        report[f"{kind}_outer_tilt_deg"] = round(outer_tilt[kind], 1)
+        report[f"{kind}_outer_n"] = int(outer.size)
+        if kind in slit_tilt:
+            report[f"{kind}_slit_tilt_deg"] = round(slit_tilt[kind], 1)
+            report[f"{kind}_slit_n"] = int(slit.size)
+
+    templates_by_page: Dict[Any, Dict[Tuple[str, str], "ht.Template"]] = {}
+    thicknesses = []
+    for page in far_pages:
+        gray = pages.get(page)
+        glyph_boxes = _page_glyph_boxes(rec).get(page, [])
+        nb_boxes = [b for (_s, cls, b) in glyph_boxes if "notehead" in cls.lower()]
+        sample_ranges = [(b[0] - 40, b[0] - 10) for b in nb_boxes[:30]]
+        staff_keys = {f"staff/{p}/{s}/{st}"
+                     for (sub, _c, _b) in glyph_boxes
+                     for p, s, st in [sub.split("/")[1:4]]}
+        page_lines = []
+        for sk in list(staff_keys)[:1]:
+            lr = rec.obs(Q.STAFF_LINES, sk)
+            if lr:
+                page_lines = [float(y) for y in lr[-1]["value"]]
+                break
+        thickness = measure_line_thickness_px(gray, page_lines, sample_ranges) \
+            if page_lines and sample_ranges else None
+        thickness = thickness or 4.0  # measured elsewhere as a typical fallback
+        thicknesses.append(thickness)
+        canonical_thickness = thickness * (ht.CANONICAL_PX_PER_SPACE / max(
+            1.0, (max(page_lines) - min(page_lines)) / 4.0 if page_lines else 20.0))
+        templates_by_page[page] = ht.build_geometry_templates(
+            outer_tilt, slit_tilt, canonical_thickness,
+        )
+    report["measured_line_thickness_px_per_page"] = [round(t, 2) for t in thicknesses]
+    # pooled fallback = same geometry templates, built with the median
+    # measured thickness across pages (geometry templates don't depend
+    # on exemplar counts, so "pooled" here is simply "use the doc's own
+    # median thickness" rather than a per-exemplar average).
+    median_thickness = float(np.median(thicknesses)) if thicknesses else 4.0
+    templates_by_page["pooled"] = ht.build_geometry_templates(
+        outer_tilt, slit_tilt, median_thickness * (ht.CANONICAL_PX_PER_SPACE / 20.0),
+    )
+    return templates_by_page, report
+
+
 def _install_template_evidence(templates_by_page, boxes_by_page):
     original_evidence = lg.head_middle_rung_evidence
     original_reader = score.reader_absolute_position
@@ -276,80 +376,94 @@ def score_doc_with_templates(doc_id: str, templates_by_page) -> Dict[str, Any]:
         _restore_evidence(originals)
 
 
+def run(doc_id: str, label: str, build_fn) -> bool:
+    """Shared re-score body for either template source (exemplar-averaged
+    or geometry-drawn) -- `build_fn(doc_id) -> (templates_by_page, info)`.
+    Returns True iff this doc's run introduced no regression (right under
+    round8, not right under the template source)."""
+    print(f"=== {doc_id} ({label}) ===")
+    templates_by_page, info = build_fn(doc_id)
+    print(f"  {label} info: {info}")
+
+    round8 = score.score_doc(doc_id, four_causes_cd=True)
+    template_run = score_doc_with_templates(doc_id, templates_by_page)
+
+    ok = True
+    tb, ta = round8["tally"], template_run["tally"]
+    n = sum(tb.get("geometry", {}).values())
+    g = tb.get("geometry", {})
+    print(f"  geometry     right={g.get('right',0):>3} wrong={g.get('wrong',0):>3} "
+          f"abstain={g.get('abstain',0):>3}  (n={n})")
+    r8 = tb.get("rungs_after", {})
+    print(f"  round8       right={r8.get('right',0):>3} wrong={r8.get('wrong',0):>3} "
+          f"abstain={r8.get('abstain',0):>3}  (n={n})")
+    tmv = ta.get("rungs_after", {})
+    print(f"  {label:<12} right={tmv.get('right',0):>3} wrong={tmv.get('wrong',0):>3} "
+          f"abstain={tmv.get('abstain',0):>3}  (n={n})")
+
+    before_by = _by_subject(round8["per_head"])
+    after_by = _by_subject(template_run["per_head"])
+
+    agree = [sub for sub, hb in before_by.items()
+            if hb["v_after"] == after_by.get(sub, {}).get("v_after")]
+    print(f"  agree with round8: {len(agree)} of {n}")
+
+    # <label>_where_undecided: keep round8's own answer EXCEPT where
+    # round8 itself abstained -- there, take the template run's answer.
+    combo_tally = collections.Counter()
+    for sub, hb in before_by.items():
+        ha = after_by.get(sub)
+        v = ha["v_after"] if (hb["v_after"] == "abstain" and ha is not None) else hb["v_after"]
+        combo_tally[v] += 1
+    print(f"  {label}_where_undecided right={combo_tally.get('right',0):>3} "
+          f"wrong={combo_tally.get('wrong',0):>3} "
+          f"abstain={combo_tally.get('abstain',0):>3}  (n={n})")
+
+    regressions = [
+        sub for sub, hb in before_by.items()
+        if hb["v_after"] == "right"
+        and after_by.get(sub, {}).get("v_after") != "right"
+    ]
+    print(f"  regressions (right under round8, not right under {label}): "
+          f"{len(regressions)} {regressions}")
+    if regressions:
+        ok = False
+
+    flips = [
+        sub for sub, hb in before_by.items()
+        if hb["v_after"] != after_by.get(sub, {}).get("v_after")
+    ]
+    print(f"  all flips (round8 -> {label}): {len(flips)}")
+    for sub in flips:
+        hb, ha = before_by.get(sub), after_by.get(sub)
+        print(f"    {sub:<20} round8={hb['v_after']:<10} "
+              f"{label}={ha['v_after']:<10} reason={ha['reason']}")
+
+    if doc_id == "beethoven5-litolff":
+        print(f"  the two undecided heads, round8 -> {label}:")
+        for sub in UNDECIDED_TWO:
+            hb, ha = before_by.get(sub), after_by.get(sub)
+            vb = hb["v_after"] if hb else "not-in-population"
+            va = ha["v_after"] if ha else "not-in-population"
+            rb = hb["reason"] if hb else ""
+            ra = ha["reason"] if ha else ""
+            flip = " <-- FLIPPED" if hb and ha and vb != va else ""
+            print(f"    {sub:<20} round8={vb:<10} {label}={va:<10}{flip}")
+            print(f"      round8 reason: {rb}")
+            print(f"      {label} reason: {ra}")
+    print()
+    return ok
+
+
 def main() -> int:
     overall_ok = True
+    print("################ EXEMPLAR-AVERAGED TEMPLATES ################")
     for doc_id in ts.DOCS:
-        print(f"=== {doc_id} ===")
-        templates_by_page, counts = build_templates_for_doc(doc_id)
-        print(f"  template exemplar counts: {counts}")
+        overall_ok &= run(doc_id, "template", build_templates_for_doc)
 
-        round8 = score.score_doc(doc_id, four_causes_cd=True)
-        template_run = score_doc_with_templates(doc_id, templates_by_page)
-
-        tb, ta = round8["tally"], template_run["tally"]
-        n = sum(tb.get("geometry", {}).values())
-        g = tb.get("geometry", {})
-        print(f"  geometry     right={g.get('right',0):>3} wrong={g.get('wrong',0):>3} "
-              f"abstain={g.get('abstain',0):>3}  (n={n})")
-        r8 = tb.get("rungs_after", {})
-        print(f"  round8       right={r8.get('right',0):>3} wrong={r8.get('wrong',0):>3} "
-              f"abstain={r8.get('abstain',0):>3}  (n={n})")
-        tmv = ta.get("rungs_after", {})
-        print(f"  template     right={tmv.get('right',0):>3} wrong={tmv.get('wrong',0):>3} "
-              f"abstain={tmv.get('abstain',0):>3}  (n={n})")
-
-        before_by = _by_subject(round8["per_head"])
-        after_by = _by_subject(template_run["per_head"])
-
-        # template_where_undecided: keep round8's own answer EXCEPT where
-        # round8 itself abstained -- there, take the template run's
-        # answer instead.
-        combo_tally = collections.Counter()
-        combo_by: Dict[str, str] = {}
-        for sub, hb in before_by.items():
-            ha = after_by.get(sub)
-            if hb["v_after"] == "abstain" and ha is not None:
-                combo_by[sub] = ha["v_after"]
-            else:
-                combo_by[sub] = hb["v_after"]
-            combo_tally[combo_by[sub]] += 1
-        print(f"  template_where_undecided right={combo_tally.get('right',0):>3} "
-              f"wrong={combo_tally.get('wrong',0):>3} "
-              f"abstain={combo_tally.get('abstain',0):>3}  (n={n})")
-
-        regressions = [
-            sub for sub, hb in before_by.items()
-            if hb["v_after"] == "right"
-            and after_by.get(sub, {}).get("v_after") != "right"
-        ]
-        print(f"  regressions (right under round8, not right under template): "
-              f"{len(regressions)} {regressions}")
-        if regressions:
-            overall_ok = False
-
-        flips = [
-            sub for sub, hb in before_by.items()
-            if hb["v_after"] != after_by.get(sub, {}).get("v_after")
-        ]
-        print(f"  all flips (round8 -> template): {len(flips)}")
-        for sub in flips:
-            hb, ha = before_by.get(sub), after_by.get(sub)
-            print(f"    {sub:<20} round8={hb['v_after']:<10} "
-                  f"template={ha['v_after']:<10} reason={ha['reason']}")
-
-        if doc_id == "beethoven5-litolff":
-            print("  the two undecided heads, round8 -> template:")
-            for sub in UNDECIDED_TWO:
-                hb, ha = before_by.get(sub), after_by.get(sub)
-                vb = hb["v_after"] if hb else "not-in-population"
-                va = ha["v_after"] if ha else "not-in-population"
-                rb = hb["reason"] if hb else ""
-                ra = ha["reason"] if ha else ""
-                flip = " <-- FLIPPED" if hb and ha and vb != va else ""
-                print(f"    {sub:<20} round8={vb:<10} template={va:<10}{flip}")
-                print(f"      round8 reason:   {rb}")
-                print(f"      template reason: {ra}")
-        print()
+    print("################ GEOMETRY TEMPLATES (Sean, 2026-10-02) ################")
+    for doc_id in ts.DOCS:
+        overall_ok &= run(doc_id, "geom_template", build_geometry_templates_for_doc)
 
     return 0 if overall_ok else 1
 

@@ -3074,3 +3074,118 @@ Paths: `tools/omr/annotate/head_template.py`,
 `tools/omr/tests/test_head_template_2026_10_02.py`,
 `benchmarks/omr-local-staff-2026-09/score_head_template.py`,
 `benchmarks/omr-local-staff-2026-09/template_sheets.py`.
+
+### lane-ledger-template, GEOMETRY templates (2026-10-02, Sean)
+
+**Brief**: "try the geometry version first" -- build templates from
+drawn ellipse geometry instead of averaged real exemplars; "also the
+oval should be at a 45% angle for the note head -- right?" -- MEASURE
+first, never assume (CLAUDE.md rule 7).
+
+**Measured tilt** (`benchmarks/omr-local-staff-2026-09/
+measure_head_tilt.py` -- `cv2.fitEllipse` on each clean on-staff head's
+own local ink, stem columns masked, contours with eccentricity > 2.0
+excluded from the OUTER statistic as stem-contaminated, not silently
+averaged in):
+
+| doc | kind | outer tilt (median) | n | slit tilt (median) | n |
+|---|---|---|---|---|---|
+| Litolff | filled | 1.4 deg | 598 | -- | -- |
+| Litolff | hollow | 2.3 deg | 126 | 38.3 deg | 138 |
+| Brahms | filled | 4.4 deg | 541 | -- | -- |
+| Brahms | hollow | 3.3 deg | 125 | 1.6 deg | 80 |
+
+**The OUTER oval is measured flat, not 20-30 deg** -- both documents,
+both notehead kinds, large samples (125-598 heads each). The manager's
+guess is NOT confirmed for the outer shape; whatever visual tilt
+prompted the question is more likely the STEM's own angle (masked out
+here precisely because it dominates an unmasked fit -- the first pass of
+this measurement, before stem-masking, swung wildly between +-90 deg on
+elongated stem-fused blobs and is why that first pass is not reported).
+**The HOLLOW SLIT is measured steep on Litolff (38.3 deg, close to the
+guessed 40-45 deg) but NOT on Brahms (1.6 deg)** -- the two documents
+disagree, so no single slit angle generalises across editions; each
+document's own measured value is used for its own templates, never one
+borrowed from the other.
+
+**Built**: `head_template.build_geometry_template`/`build_geometry_templates`
+(new, additive) draw a template directly at the canonical grid's own
+scale: outer ellipse `GEOM_HEAD_WIDTH_SPACES=1.3` x `GEOM_HEAD_HEIGHT_
+SPACES=1.0` sp (the brief's own stated numbers -- DIFFERENT from ROADMAP
+2.39's `STANDARD_HEAD_WIDTH/HEIGHT_SPACES` of 1.4 x 1.1, kept as its own
+separate constant, never substituted for the exemplar path's), rotated
+by the MEASURED outer tilt; hollow = ring (outer ellipse minus an inner
+slit ellipse at the measured slit tilt, sized as a fraction of the outer
+axes); on-line/in-space variants draw a line of the page's own MEASURED
+staff-line thickness (`score_head_template.measure_line_thickness_px`,
+median dark-run length at each known staff-line y, several x samples per
+page) through the centre or touching the window's top/bottom, extending
+0.5 sp past the oval, same as the brief's own stated geometry. Matching,
+masks, shift penalty, margin and decision logic are UNCHANGED from the
+exemplar path -- only the template SOURCE differs; `score_head_template.
+build_geometry_templates_for_doc` returns the SAME `{page: templates,
+"pooled": templates}` shape `templates_for_page` already expects, so the
+entire scoring harness is reused verbatim.
+
+**Real-data re-score** (`score_head_template.py`, same local-monkeypatch
+harness, both template sources run side by side this round):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry (position control) | 30 | 14 | 0 | 44 |
+| Litolff | round8 | 25 | 14 | 5 | 44 |
+| Litolff | template (exemplar-averaged) | 16 | 20 | 8 | 44 |
+| Litolff | geom_template (this round) | 14 | 16 | 14 | 44 |
+| Brahms | geometry (position control) | 11 | 0 | 0 | 11 |
+| Brahms | round8 | 11 | 0 | 0 | 11 |
+| Brahms | template (exemplar-averaged) | 6 | 3 | 2 | 11 |
+| Brahms | geom_template (this round) | 6 | 3 | 2 | 11 |
+
+(Note: "geometry" here is the PRE-EXISTING position-control row Sec6b
+names, unrelated to this round's geometry-DRAWN templates -- an
+unfortunate name collision the task brief's own wording creates; kept as
+both scripts already name it, flagged here rather than silently
+renamed.)
+
+Agreement with round 8: Litolff 30 of 44 heads agree (same as the
+exemplar path's 29/44); Brahms 6 of 11 (identical flip set to the
+exemplar path -- both template sources fail the SAME 5 Brahms heads,
+suggesting a Brahms-specific cause neither template source addresses,
+not a property of averaging vs drawing).
+
+**MEASURED NET NEGATIVE, same verdict as both earlier attempts** (the
+oval shape trace, the exemplar-averaged templates): 12 Litolff +
+5 Brahms regressions (right under round 8, not right under the geometry
+template). `geom_template_where_round8_undecided_only` (keep round 8's
+own answer except where it abstains) is never negative by construction
+and measured ZERO net change on both docs this round -- unlike the
+exemplar path, which gained one Litolff head
+(`glyph/3/0/8/6/10`), the geometry-drawn template does not confirm a
+through-rung there either.
+
+**Of the two target heads, NEITHER flips under the geometry templates
+either** -- both stay `abstain`, same reason (`no_rung_before_the_head`)
+as round 8 and the exemplar path. Unlike the exemplar path's confident
+WRONG match on `glyph/3/0/7/2/4`, the geometry template reads it as
+undecided/not-on, i.e. it does not repeat that specific false-confidence
+failure, but it also does not solve the head.
+
+**Conclusion**: switching the template SOURCE (drawn geometry vs
+averaged real ink) changes WHICH heads flip but not the overall verdict
+-- still net negative, still does not resolve the two heads this whole
+lane exists for. The measured tilt numbers are the most durable output
+of this round: the manager's 20-30 deg outer-oval guess is refuted by a
+large, stem-masked sample on both documents; the 40-45 deg hollow-slit
+guess is confirmed on Litolff only.
+
+Sheets: `out/print/ledgers/template_geom_templates.jpg` (30 tiles -- every
+geometry template built, per page, drawn beside 3 real clean heads of
+the same kind from that SAME page at the SAME canonical scale, so shape
+and tilt compare directly) and `out/print/ledgers/template_geom_changed.jpg`
+(19 tiles -- every head whose verdict differs round8 -> geom_template,
+same drawing convention as `template_changed.jpg`).
+
+Paths: `tools/omr/annotate/head_template.py` (geometry additions),
+`benchmarks/omr-local-staff-2026-09/measure_head_tilt.py`,
+`benchmarks/omr-local-staff-2026-09/score_head_template.py` (geometry
+additions), `benchmarks/omr-local-staff-2026-09/template_geom_sheets.py`.

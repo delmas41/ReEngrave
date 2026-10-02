@@ -311,6 +311,109 @@ def build_templates(
     return templates, report
 
 
+# ─────────────────────────────────────────────────────────────────────────
+# GEOMETRY templates (2026-10-02, Sean: "try the geometry version first")
+# -- drawn directly from measured ellipse geometry rather than averaged
+# from real exemplars. Sizes are the task brief's OWN stated numbers
+# (outer ellipse 1.3 sp wide x 1.0 sp tall), which differ from ROADMAP
+# 2.39's `STANDARD_HEAD_WIDTH_SPACES`/`_HEIGHT_SPACES` (1.4 x 1.1) --
+# kept SEPARATE on purpose (`GEOM_HEAD_WIDTH_SPACES`/`_HEIGHT_SPACES`),
+# never silently substituted for the exemplar path's own constants.
+#
+# Tilt is NEVER assumed here -- `measure_head_tilt.py` measures it from
+# the real page first (CLAUDE.md rule 7); this module only draws whatever
+# angle it is given. Calibration (`_draw_angle_deg`): empirically,
+# `cv2.ellipse`'s own `angle` parameter of +N degrees measures back as
+# `-N` through this module's own "up-and-to-the-right from horizontal"
+# convention (`measure_head_tilt._angle_up_right`) -- verified by drawing
+# a known ellipse and re-fitting it before relying on this anywhere.
+# ─────────────────────────────────────────────────────────────────────────
+
+GEOM_HEAD_WIDTH_SPACES = 1.3
+GEOM_HEAD_HEIGHT_SPACES = 1.0
+
+
+def _draw_angle_deg(up_right_tilt_deg: float) -> float:
+    """Up-right-from-horizontal tilt -> the `cv2.ellipse` `angle` to pass
+    to draw it (empirically calibrated, see module docstring above)."""
+    return -up_right_tilt_deg
+
+
+def build_geometry_template(
+    kind: str, variant: str, outer_tilt_deg: float,
+    slit_tilt_deg: Optional[float], line_thickness_px: float,
+) -> Template:
+    """Draw ONE template directly from geometry, at the canonical grid's
+    own fixed scale (`CANONICAL_PX_PER_SPACE`) -- no real exemplar ink
+    involved. `outer_tilt_deg`/`slit_tilt_deg` are MEASURED values from
+    `measure_head_tilt.py`, never assumed; `line_thickness_px` is the
+    page's own measured staff-line thickness, scaled to canonical.
+
+    `variant`: `"on_line"` draws a line of `line_thickness_px` (canonical
+    scale) through the window's own vertical centre, extending 0.5 sp
+    past the outer ellipse on both sides; `"in_space"` draws two such
+    lines touching the window's own top and bottom edges; `"raw"` draws
+    the head alone. `kind="filled"` fills the outer ellipse solid;
+    `"hollow"` draws a ring (outer ellipse minus an inner slit ellipse at
+    `slit_tilt_deg`, sized from the SAME measurement the tilt came from
+    -- see `measure_head_tilt.py`'s own slit axis report)."""
+    canvas = np.zeros((CANONICAL_H, CANONICAL_W), dtype=np.float32)
+    cx, cy = CANONICAL_W / 2.0, CANONICAL_H / 2.0
+    outer_w = GEOM_HEAD_WIDTH_SPACES * CANONICAL_PX_PER_SPACE
+    outer_h = GEOM_HEAD_HEIGHT_SPACES * CANONICAL_PX_PER_SPACE
+    axes = (int(round(outer_w / 2.0)), int(round(outer_h / 2.0)))
+    angle = _draw_angle_deg(outer_tilt_deg)
+
+    mask_u8 = np.zeros((CANONICAL_H, CANONICAL_W), dtype=np.uint8)
+    cv2.ellipse(mask_u8, (int(round(cx)), int(round(cy))), axes, angle,
+               0, 360, 255, -1)
+    if kind == "hollow":
+        slit_angle = _draw_angle_deg(slit_tilt_deg if slit_tilt_deg is not None
+                                     else outer_tilt_deg)
+        slit_axes = (max(1, int(round(axes[0] * 0.55))),
+                    max(1, int(round(axes[1] * 0.70))))
+        cv2.ellipse(mask_u8, (int(round(cx)), int(round(cy))), slit_axes,
+                   slit_angle, 0, 360, 0, -1)
+    canvas[mask_u8 > 0] = 1.0
+
+    if variant in ("on_line", "in_space"):
+        half_t = max(1, int(round(line_thickness_px / 2.0)))
+        reach = int(round((outer_w / 2.0) + 0.5 * CANONICAL_PX_PER_SPACE))
+        lx0, lx1 = max(0, int(round(cx - reach))), min(CANONICAL_W, int(round(cx + reach)) + 1)
+        if variant == "on_line":
+            r0 = max(0, int(round(cy - half_t)))
+            r1 = min(CANONICAL_H, int(round(cy + half_t)) + 1)
+            canvas[r0:r1, lx0:lx1] = 1.0
+        else:
+            for row_center in (half_t, CANONICAL_H - half_t):
+                r0 = max(0, int(round(row_center - half_t)))
+                r1 = min(CANONICAL_H, int(round(row_center + half_t)) + 1)
+                canvas[r0:r1, lx0:lx1] = 1.0
+
+    return Template(
+        img=canvas, mask=SCORE_MASKS[variant],
+        line_mask_components=LINE_MASK_COMPONENTS[variant],
+        n=0, kind=kind, variant=variant,
+    )
+
+
+def build_geometry_templates(
+    outer_tilt_deg: Dict[str, float], slit_tilt_deg: Dict[str, float],
+    line_thickness_px: float,
+) -> Dict[Tuple[str, str], Template]:
+    """Every `(kind, variant)` geometry template, `outer_tilt_deg`/
+    `slit_tilt_deg` keyed by `kind` (`"filled"`/`"hollow"`) -- each
+    drawn fresh, never averaged (`n=0`, since no exemplar built it)."""
+    out: Dict[Tuple[str, str], Template] = {}
+    for kind in ("filled", "hollow"):
+        for variant in ("on_line", "in_space", "raw"):
+            out[(kind, variant)] = build_geometry_template(
+                kind, variant, outer_tilt_deg.get(kind, 0.0),
+                slit_tilt_deg.get(kind), line_thickness_px,
+            )
+    return out
+
+
 def _classify_kind_from_ink(gray: np.ndarray, head_box: Tuple[float, float, float, float]
                             ) -> str:
     """Cheap filled/hollow classifier over the head's OWN box -- a hollow
