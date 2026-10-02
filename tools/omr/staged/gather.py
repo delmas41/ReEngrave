@@ -35,7 +35,8 @@ from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 from . import record as R
 from .geometry import standard_head_box as _standard_head_box_general
 from .geometry import (STANDARD_HEAD_WIDTH_SPACES,
-                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead)
+                       STANDARD_HEAD_HEIGHT_SPACES, is_regular_notehead,
+                       box_iou)
 from .record import ABSTAIN, Log, Q, READERS, Subject
 
 #: `OMR_RESEARCH` — the single umbrella docs/flags-2026-09.md's triage put
@@ -739,14 +740,24 @@ def _tall_box_tie_end_centres(img: Any, d: Any,
     Two ends of the SAME tie/slur (its LEFT and RIGHT windows) never both
     land inside one tall box in practice (they sit either side of the
     arc, which spans a measure), but the de-duplication below guards the
-    one case they could: two windows landing within 0.4 staff spaces of
-    each other -- well under a THIRD apart (one full space, the dyad
-    spacing this round exists for) -- are the SAME predicted position,
-    kept once.
+    one case they could: two RAW witness windows landing within 0.4
+    staff spaces of each other -- well under a THIRD apart (one full
+    space, the dyad spacing this round exists for) -- are the SAME
+    predicted position, kept once, before either is refined.
+
+    ⚠️ A SECOND de-duplication runs AFTER refinement (print-check finding,
+    `lane-farhead-box-ab`, coordinator addendum crop sheet, tiles
+    `cell/2/0/4/7`/`cell/2/1/3/14`): two witnesses that start far enough
+    apart to survive the check above can still converge on the SAME oval
+    once `_notehead_vertical_ink_extent` locks onto the nearest strong
+    ink peak from each -- a merged Litolff blob has one real oval and two
+    witnesses both find it. Two REFINED centres closer than 0.4 spaces
+    are the same note found twice, kept once (the first witness order
+    reaches, same tie-break the raw check already uses).
     """
     box_x0, box_x1 = d.x_canonical, d.x_canonical + d.width_canonical
     box_y0, box_y1 = d.y_canonical, d.y_canonical + d.height_canonical
-    hits: List[Tuple[float, float]] = []
+    raw_hits: List[Tuple[float, float]] = []
     for w in witnesses:
         if w["kind"] not in ("tie_end", "slur_end"):
             continue
@@ -755,19 +766,62 @@ def _tall_box_tie_end_centres(img: Any, d: Any,
         if not (box_x0 - space <= wx <= box_x1 + space
                 and box_y0 - space <= wy <= box_y1 + space):
             continue
-        if any(abs(wy - hy) < space * 0.4 for _, hy in hits):
+        if any(abs(wy - hy) < space * 0.4 for _, hy in raw_hits):
             continue
+        raw_hits.append((wx, wy))
+
+    hits: List[Tuple[float, float]] = []
+    for wx, wy in raw_hits:
         cx = min(max(wx, box_x0 + d.width_canonical * 0.15),
                  box_x1 - d.width_canonical * 0.15)
         extent = _notehead_vertical_ink_extent(img, cx, wy, space,
                                                STANDARD_HEAD_WIDTH_SPACES)
-        if extent is not None:
-            y0, y1 = extent
-            hits.append((cx, (y0 + y1) / 2.0))
-        else:
-            hits.append((cx, wy))
+        cy = (extent[0] + extent[1]) / 2.0 if extent is not None else wy
+        if any(abs(cy - hy) < space * 0.4 for _, hy in hits):
+            continue
+        hits.append((cx, cy))
     hits.sort(key=lambda t: t[1])
     return hits[:2]
+
+
+#: Two rescue-rerun candidates sharing more of their union than this are
+#: the SAME ink, boxed twice at `RESCUE_CONF_FLOOR` -- a looser floor than
+#: `geometry.TIMESIG_DIGIT_DUPLICATE_IOU_MIN` (0.9) on purpose: the
+#: production-floor duplicate test compares two otherwise-identical
+#: detector boxes, while a conf-0.10 rerun's own duplicates wobble by a
+#: few pixels against each other, so a tighter floor would miss them.
+RESCUE_DUPLICATE_IOU_MIN = 0.5
+
+
+def _dedup_rescue_candidates(candidates: Sequence[Any]) -> List[Any]:
+    """ROADMAP 2.55 EXTENSION bugfix (print-check finding, coordinator
+    addendum crop sheet, tiles `cell/2/0/4/7`/`cell/2/1/3/14`): the SAME
+    ink, boxed TWICE by the low-confidence rerun at different confidences
+    (0.1986 vs 0.1631, confirmed by crop) -- each copy then independently
+    matched a witness and, for a tall box, independently found the SAME
+    oval, producing a duplicate rescued head no later check catches (a
+    duplicate FROM THIS READER, never reaching `notehead_precision`'s
+    own `stacked_head_duplicate`/`notehead_is_a_duplicate_box`, which run
+    on the PRODUCTION-floor population only). Keeps the HIGHER-confidence
+    box of any pair sharing more than `RESCUE_DUPLICATE_IOU_MIN` of their
+    union -- same shape as `geometry.is_timesig_digit_ink`'s own
+    duplicate test, reused rather than re-derived (CLAUDE.md rule 6).
+    """
+    kept: List[Any] = []
+    for d in sorted(candidates, key=lambda x: -float(x.confidence)):
+        dup = False
+        for k in kept:
+            iou = box_iou(
+                (d.smufl_name, d.x_canonical, d.y_canonical,
+                 d.width_canonical, d.height_canonical),
+                (k.smufl_name, k.x_canonical, k.y_canonical,
+                 k.width_canonical, k.height_canonical))
+            if iou > RESCUE_DUPLICATE_IOU_MIN:
+                dup = True
+                break
+        if not dup:
+            kept.append(d)
+    return kept
 
 
 def _matching_witness(d: Any, witnesses: Sequence[Dict[str, Any]]
@@ -892,10 +946,10 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
 
         rerun = detector.detect(c, conf_threshold=RESCUE_CONF_FLOOR,
                                 imgsz=imgsz)
-        candidates_by_class = [
+        candidates_by_class = _dedup_rescue_candidates([
             d for d in rerun
             if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)
-            or str(d.smufl_name).lower().startswith(_REST_PREFIX)]
+            or str(d.smufl_name).lower().startswith(_REST_PREFIX)])
 
         img = getattr(c, "image_no_staff", None)
         space = half_step * 2.0 if half_step else None
@@ -919,11 +973,24 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
             if h_ratio is not None and h_ratio > TALL_BOX_HEIGHT_RATIO_MIN:
                 centres = _tall_box_tie_end_centres(img, d, witnesses, space)
                 if not centres:
+                    # ⚠️ The dropped box's own geometry, same shape the
+                    # KEPT path's `box_detail` already carries -- a crop
+                    # pass needs this to draw what was dropped, not only
+                    # that something was. `bbox_page_px` is `None` where
+                    # the cell carries no page frame (same as the KEPT
+                    # path's own `frame_note` fallback), named rather
+                    # than silently omitted.
+                    dropped_page_box = _page_box(c, d)
                     log.abstain(cell_sub, Q.GLYPH_BOX,
                                 reader=READERS.RESCUE_LOWCONF, frame=frame,
                                 reason=ABSTAIN.RESCUE_BOX_SPANS_TWO_HEADS,
                                 smufl_name=d.smufl_name,
-                                height_ratio=round(h_ratio, 3))
+                                height_ratio=round(h_ratio, 3),
+                                box=[d.x_canonical, d.y_canonical,
+                                    d.width_canonical, d.height_canonical],
+                                bbox_page_px=(list(dropped_page_box)
+                                             if dropped_page_box is not None
+                                             else None))
                     continue
                 for cx, cy in centres:
                     split_x0 = cx - STANDARD_HEAD_WIDTH_SPACES * space / 2.0

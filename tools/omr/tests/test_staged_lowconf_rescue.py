@@ -512,6 +512,29 @@ class TestTallBoxTieEndCentres(unittest.TestCase):
             cell.image_no_staff, self._tall_box(), [], SPACE)
         self.assertEqual(centres, [])
 
+    def test_two_witnesses_that_converge_on_one_oval_are_deduped(self):
+        """⚠️ REGRESSION (print-check finding, coordinator addendum crop
+        sheet, tiles `cell/2/0/4/7`/`cell/2/1/3/14`): two tie ends start
+        far enough apart to survive the RAW de-dup, but
+        `_notehead_vertical_ink_extent` can lock onto the SAME ink peak
+        from both -- a merged blob has one real oval, found twice. Must
+        collapse to ONE centre, not report a duplicate second head."""
+        img = _blank_image()
+        # One real head's worth of ink, reachable from BOTH witnesses'
+        # own search bands (+-1 staff space around each predicted y) --
+        # nothing else in the raster for the extent search to find, so
+        # both searches land on the SAME peak despite starting further
+        # apart than the RAW de-dup's own 0.4-space threshold.
+        img[63:73, 70:100] = 0
+        cell = _FakeCell(img)
+        tie1, tie2 = self._tie(60.0), self._tie(80.0)   # 1 sp apart RAW --
+        # both searches still reach the SAME ink (+-1 space each)
+        witnesses = gather._lowconf_rescue_witnesses(cell, [tie1, tie2],
+                                                      HALF_STEP)
+        centres = gather._tall_box_tie_end_centres(
+            cell.image_no_staff, self._tall_box(), witnesses, SPACE)
+        self.assertEqual(len(centres), 1)
+
 
 class TestTallBoxRescueIntegration(unittest.TestCase):
     """The split wired into the full `gather_lowconf_rescue` reader."""
@@ -579,6 +602,34 @@ class TestTallBoxRescueIntegration(unittest.TestCase):
         reasons = [r.reason for r in refusals]
         self.assertIn("rescue_box_spans_two_heads", reasons)
         self.assertEqual(detections.get(_sub().to_key(), []), [])
+
+    def test_the_same_ink_boxed_twice_by_the_rerun_is_not_rescued_twice(
+            self):
+        """⚠️ REGRESSION (print-check finding, coordinator addendum crop
+        sheet, tiles `cell/2/0/4/7`/`cell/2/1/3/14`): the real Litolff
+        small re-gather showed the SAME ink boxed twice by the conf-0.10
+        rerun at two different confidences (0.1986 vs 0.1631) -- each
+        copy independently matched the SAME stem witness and was kept,
+        giving one real note two rescued boxes. Only the higher-
+        confidence copy survives."""
+        cell = _FakeCell(_blank_image())
+        stem = _FakeStem(50.0, 40.0, 2.0, 40.0)   # bottom end at y=80
+        det_a = _FakeDet("noteheadHalfOnLine", 0.1986,
+                        x_canonical=46.0, y_canonical=76.0,
+                        width_canonical=10.0, height_canonical=8.0)
+        det_b = _FakeDet("noteheadHalfOnLine", 0.1631,
+                        x_canonical=47.0, y_canonical=77.0,
+                        width_canonical=10.0, height_canonical=8.0)
+        detector = _FakeDetector([det_a, det_b])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": [stem]}):
+            log, detections = _run_rescue(cell, detector)
+
+        rows = log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].score, 0.1986)
+        self.assertEqual(log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 1)), ())
+        self.assertEqual(len(detections[_sub().to_key()]), 1)
 
     def test_a_normal_height_box_is_unaffected(self):
         """Below `TALL_BOX_HEIGHT_RATIO_MIN`: unchanged single-head path,
