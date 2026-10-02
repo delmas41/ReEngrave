@@ -2781,3 +2781,47 @@ generalisation gap.
 Paths: `tools/omr/annotate/ledger_shape_trace.py`,
 `tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
 `benchmarks/omr-local-staff-2026-09/score_shape_trace.py`.
+
+### lane-ledger-shape, sheets (2026-10-02, drawing only)
+
+`benchmarks/omr-local-staff-2026-09/shape_sheets.py` draws the traced
+outline (magenta), fitted oval (yellow + centre cross), detected line
+bands (orange), detector box (red), staff lines (green) and reference
+tick (cyan) for every regression/flip head, writing
+`out/print/ledgers/shape_regressions.jpg` (19 tiles: the 14 Litolff + 5
+Brahms heads right under round 8 but not right under the shape trace)
+and `out/print/ledgers/shape_flips.jpg` (`glyph/3/0/7/2/4`,
+`glyph/3/0/7/0/7`). No code in `tools/` touched.
+
+Visual read of the 19 regression tiles, bucketed by what visibly went
+wrong (one cause per tile, Sean's own crop-check convention, rule 7):
+
+  * **8 tiles** -- oval/centre mis-fit onto fused or adjacent ink (a
+    stem, beam, flag, a dynamic-mark letterform, or a neighbouring
+    blob entirely) so the real through-line crosses the BOX's edge,
+    never the fitted middle: `glyph/1/0/10/8/1`, `glyph/1/0/3/7/3`,
+    `glyph/3/0/0/2/3`, `glyph/3/0/0/5/12`, `glyph/3/0/5/4/5`,
+    `glyph/3/0/7/4/2`, `glyph/1/1/0/2/4`, `glyph/1/1/8/5/0` (the last
+    two: the oval visibly sits on a dash/movement-number glyph or a
+    stray blob well away from the box's own ink).
+  * **6 tiles** -- no ledger ink found anywhere inside the trace's own
+    search window at all (the real jut sits beyond the window, or a
+    neighbour's own box-exclusion blanks it): `glyph/3/0/5/7/0`,
+    `glyph/3/0/7/2/3`, `glyph/3/0/7/4/0`, `glyph/3/0/8/2/5`,
+    `glyph/1/1/0/4/6`, `glyph/1/1/8/4/4`.
+  * **5 tiles** -- a band IS found and crosses correctly, but on a
+    tightly stacked chord (two far heads a third apart) the traced-
+    middle evidence picks a different rung than the box-centre probe
+    did, landing one half-step off from round 8's own (correct)
+    answer: `glyph/3/0/7/6/2`, `glyph/3/0/7/6/4`, `glyph/3/1/0/9/0`,
+    `glyph/1/1/8/6/0`, and one more off-by-one tile in the same chord
+    family.
+
+Read from the drawings, not re-measured -- a future lane should
+instrument each bucket (print the oval fit's own numbers, not just the
+picture) before trusting the counts past "roughly a third window-miss,
+a third fused-ink mis-fit, a quarter stacked-chord off-by-one."
+
+Paths: `benchmarks/omr-local-staff-2026-09/shape_sheets.py`,
+`out/print/ledgers/shape_regressions.jpg`,
+`out/print/ledgers/shape_flips.jpg`.
