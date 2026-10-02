@@ -185,6 +185,53 @@ def test_no_image_abstains_never_guesses():
     assert st.trace_head_shape(None, (0, 0, 10, 10), SPACING) is None
 
 
+def test_stem_and_staff_line_touching_head_not_followed():
+    """Manager review 2026-10-02 (tiles 2/5/6 of `shape_regressions.jpg`):
+    the trace must be LOCAL, not connected-component. A stem runs up from
+    the head and is FUSED to a staff line it crosses -- the trace must not
+    follow that staff line (no ledger band registered there, oval centre
+    undragged)."""
+    img = _blank(200, 160)
+    cx, cy = 80.0, 120.0
+    _draw_oval(img, cx, cy, rx=13, ry=11)
+    stem_top = cy - 40.0
+    _draw_block(img, cx + 9, stem_top, cx + 12, cy - 11 + 2)
+    staff_line_y = cy - 20.0
+    _draw_hline(img, staff_line_y, 0, 160, thickness=2.0)
+    box = _head_box(cx, cy)
+
+    trace = st.trace_head_shape(img, box, SPACING, staff_lines=[staff_line_y])
+    assert trace is not None
+    assert abs(trace.oval_center_y - cy) <= 3.0, trace.oval_center_y
+    for band in trace.ledger_bands:
+        assert abs(band["y"] - staff_line_y) > 2.0, (
+            "the staff line must never be read as a ledger band")
+
+
+def test_neighbour_chord_head_beside_it_is_excluded():
+    """Manager review 2026-10-02: a head beside a neighbouring chord head
+    must not have that neighbour folded into its own trace -- the oval
+    must fit THIS head alone."""
+    img = _blank(160, 220)
+    cx, cy = 110.0, 80.0
+    _draw_oval(img, cx, cy, rx=13, ry=11)
+    _draw_hline(img, cy, cx - 30, cx + 30, thickness=2.0)
+    # A neighbour chord head, close by but a separate blob (a visible gap
+    # between the two ovals, as on a real stacked-third chord).
+    neighbour_cx = cx + 34.0
+    _draw_oval(img, neighbour_cx, cy + 2.0, rx=13, ry=11)
+    box = _head_box(cx, cy)
+
+    trace = st.trace_head_shape(img, box, SPACING)
+    assert trace is not None
+    assert abs(trace.oval_center_y - cy) <= 3.0, trace.oval_center_y
+    # The oval's own half-width must stay head-sized, never widened by
+    # bridging into the neighbour's own ink.
+    assert trace.oval_half_width <= 1.5 * 13.0, trace.oval_half_width
+    result = st.decide_head_position_from_shape(img, box, SPACING)
+    assert result["decision"] == "on", result
+
+
 def test_stem_column_is_excluded_from_oval_width():
     """A tall, narrow stem attached to the oval's side must not widen the
     oval's own fitted half-width or register as a protruding band."""

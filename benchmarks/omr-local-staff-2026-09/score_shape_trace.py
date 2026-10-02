@@ -46,18 +46,65 @@ def _by_subject(per_head) -> Dict[str, Dict[str, Any]]:
     return {h["subject"]: h for h in per_head}
 
 
+# `derive_far_head_step` calls `head_middle_rung_evidence(img_gray,
+# head_box, spacing, exclude_boxes)` with exactly those 4 positional args
+# -- it has no notion of "this head's own locally measured staff lines".
+# `reader_absolute_position` (the caller one level up, in THIS script) DOES
+# have them, so a thin wrapper stashes the current call's `lines` here and
+# the evidence function reads it back -- a closure over mutable state, not
+# a change to `ledger_grid.py`'s own call site or signature.
+_CURRENT_STAFF_LINES = [None]
+
+
+def _evidence_with_local_staff_lines(img_gray, head_box, spacing, exclude_boxes=None):
+    return shtr.shape_trace_middle_rung_evidence(
+        img_gray, head_box, spacing, exclude_boxes,
+        staff_lines=_CURRENT_STAFF_LINES[0],
+    )
+
+
+def _install_shape_trace_evidence():
+    """Patches `lg.head_middle_rung_evidence` (the drop-in) AND wraps
+    `score.reader_absolute_position` so each call's own `global_lines`
+    reaches the evidence function through `_CURRENT_STAFF_LINES`. Returns
+    the two originals to restore."""
+    original_evidence = lg.head_middle_rung_evidence
+    original_reader = score.reader_absolute_position
+    lg.head_middle_rung_evidence = _evidence_with_local_staff_lines
+
+    def _wrapped_reader(gray, global_lines, box, subject, page_boxes,
+                        page_accidental_boxes=None, four_causes_cd=False):
+        _CURRENT_STAFF_LINES[0] = list(global_lines) if global_lines else None
+        try:
+            return original_reader(
+                gray, global_lines, box, subject, page_boxes,
+                page_accidental_boxes=page_accidental_boxes,
+                four_causes_cd=four_causes_cd,
+            )
+        finally:
+            _CURRENT_STAFF_LINES[0] = None
+
+    score.reader_absolute_position = _wrapped_reader
+    return original_evidence, original_reader
+
+
+def _restore_evidence(originals):
+    original_evidence, original_reader = originals
+    lg.head_middle_rung_evidence = original_evidence
+    score.reader_absolute_position = original_reader
+
+
 def main() -> int:
     overall_ok = True
     for doc_id in ts.DOCS:
         print(f"=== {doc_id} ===")
         round8 = score.score_doc(doc_id, four_causes_cd=True)
 
-        original = lg.head_middle_rung_evidence
-        lg.head_middle_rung_evidence = shtr.shape_trace_middle_rung_evidence
+        originals = _install_shape_trace_evidence()
         try:
             shape_trace = score.score_doc(doc_id, four_causes_cd=True)
         finally:
-            lg.head_middle_rung_evidence = original
+            _restore_evidence(originals)
 
         tb, ta = round8["tally"], shape_trace["tally"]
         n = sum(tb.get("geometry", {}).values())

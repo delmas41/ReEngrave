@@ -2825,3 +2825,95 @@ a third fused-ink mis-fit, a quarter stacked-chord off-by-one."
 Paths: `benchmarks/omr-local-staff-2026-09/shape_sheets.py`,
 `out/print/ledgers/shape_regressions.jpg`,
 `out/print/ledgers/shape_flips.jpg`.
+
+### lane-ledger-shape, LOCAL trace (2026-10-02, manager review + Sean approval)
+
+Manager read of the first cut's `shape_regressions.jpg`: the trace
+followed the whole CONNECTED ink component -- staff lines the stem
+touches, a neighbouring head, printed text -- not just the head's own
+local shape (tiles 2/5/6: traced along full staff lines; tile 4: a tall
+thin oval fit onto the stem; tile 1: oval bigger than the head, missed
+the clear line through its middle).
+
+Rewired `tools/omr/annotate/ledger_shape_trace.py` to be LOCAL, not
+connected-component:
+
+  * window sized from the STANDARD notehead box (ROADMAP 2.39,
+    `tools.omr.staged.geometry.STANDARD_HEAD_WIDTH_SPACES`/
+    `_HEIGHT_SPACES`): columns ±1.5 standard head-widths, rows
+    ±(0.6 standard head-height + 0.5 staff space) of the head's own
+    (re-centred) centre;
+  * each row takes the ink run CONTAINING, or NEAREST within half a
+    head-width of, the head's own column -- never the whole row, so a
+    neighbour head or text is excluded by construction;
+  * the stem column is masked exactly where a real `Q.STEM` box is
+    given (unused in this re-score -- no record plumbing added this
+    round, see "not done" below), heuristically (tall + narrow) otherwise;
+  * staff-line rows (this head's own locally measured lines) are
+    excluded from the oval FIT and from ledger-BAND detection alike --
+    a staff line is inside the staff, a ledger never is;
+  * the oval row-width cap is now 1.6 standard head-widths (was 1.35x
+    the box's own width);
+  * one re-centring iteration: fit once from the box's own centre,
+    re-run the whole window/trace/fit from the first fit's own centre.
+
+11 synthetic tests (9 original + 2 new: stem fused to a touched staff
+line must not be followed; a neighbour chord head beside it must not be
+folded in) -- all GREEN, `pytest tools/omr/tests -k ledger` (341 passed,
+2 xfailed, unrelated) stays green.
+
+**Real-data re-score** (same monkeypatch harness, `staff_lines` now
+threaded through via a `functools.partial`-style wrapper over
+`score.reader_absolute_position` so each head's own locally measured
+staff lines reach the evidence call -- `score_shape_trace.py`):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | shape_trace (local) | 16 | 17 | 11 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | shape_trace (local) | 5 | 4 | 2 | 11 |
+
+Still MEASURED NET NEGATIVE, HELD BACK -- Litolff right ticked up by one
+(25->16 vs the prior cut's 15) and Brahms right ticked down by one (6->5)
+within noise; the population of heads that flip is different from the
+first cut's (17 Litolff + 6 Brahms flip either direction this round, up
+from 14+5 one-directional regressions, because this round's sheet now
+shows EVERY flip, not only regressions).
+
+Of the two target heads: `glyph/3/0/7/2/4` still flips to RIGHT (through
+branch, jut confirmed). `glyph/3/0/7/0/7` now flips to **WRONG**, not
+abstain -- worse than the first cut: the traced-middle probe now
+confirms a through-rung there that is NOT the reference position
+(CLAUDE.md rule 8 concern -- a fallback must never convert "cannot tell"
+into a confident wrong answer; this is the shape trace doing exactly
+that on this one head). Flagged, not explained away.
+
+Visual re-check of the previously named tiles confirms the structural
+fix: `glyph/3/0/5/4/5` (old "oval on the stem" tile) and `glyph/3/0/5/7/0`
+now fit a correctly sized/centred oval on the real notehead, bands
+bracket it instead of smearing across the whole crop width. Several
+tiles still show the magenta trace reaching a distant staff line at the
+TOP of its own local window -- that window legitimately includes it when
+the staff edge is close, and it is no longer treated as a ledger
+candidate (masked by the `staff_lines` parameter) -- a visible but
+harmless remnant, not a re-introduction of the connected-component bug.
+
+**Not done this round** (flagged, not hidden): no real `Q.STEM` box is
+threaded into the re-score -- the heuristic tall/narrow-column fallback
+is what ran; wiring the real stem per glyph needs reading `Q.STEM` off
+the record per subject, left for a future lane since this round's brief
+was the drawing/trace-locality fix, not stem plumbing.
+
+Sheets: `out/print/ledgers/shape_regressions.jpg` (23 tiles -- every
+head whose verdict differs round8 -> shape_trace, EITHER direction, this
+round, derived live from the score rather than hand-listed) and
+`out/print/ledgers/shape_flips.jpg` (the 2 target heads), same drawing
+convention as the first cut.
+
+Paths: `tools/omr/annotate/ledger_shape_trace.py`,
+`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_shape_trace.py`,
+`benchmarks/omr-local-staff-2026-09/shape_sheets.py`.

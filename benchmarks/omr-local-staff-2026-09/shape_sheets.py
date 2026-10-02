@@ -36,6 +36,7 @@ import cv2  # noqa: E402
 
 import truth_set_2_44c as ts  # noqa: E402
 import score_truth_set_rungs as score  # noqa: E402
+import score_shape_trace as sst  # noqa: E402  (the local-staff-lines wrapper)
 from tools.omr.staged.record import Q  # noqa: E402
 from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 from tools.omr.annotate import ledger_shape_trace as shtr  # noqa: E402
@@ -59,22 +60,35 @@ MAGENTA = (220, 0, 220)
 YELLOW = (0, 220, 220)
 BLACK = (0, 0, 0)
 
-REGRESSIONS = {
-    "beethoven5-litolff": [
-        "glyph/1/0/10/8/1", "glyph/1/0/3/7/3", "glyph/3/0/0/2/3",
-        "glyph/3/0/0/5/12", "glyph/3/0/5/4/5", "glyph/3/0/5/7/0",
-        "glyph/3/0/7/2/3", "glyph/3/0/7/3/5", "glyph/3/0/7/4/0",
-        "glyph/3/0/7/4/2", "glyph/3/0/7/6/2", "glyph/3/0/7/6/4",
-        "glyph/3/0/8/2/5", "glyph/3/1/0/9/0",
-    ],
-    "brahms1-breitkopf": [
-        "glyph/1/1/0/2/4", "glyph/1/1/0/4/6", "glyph/1/1/8/4/4",
-        "glyph/1/1/8/5/0", "glyph/1/1/8/6/0",
-    ],
-}
-FLIPS = {
+FLIP_TWO = {
     "beethoven5-litolff": ["glyph/3/0/7/2/4", "glyph/3/0/7/0/7"],
 }
+
+
+def _by_subject(per_head):
+    return {h["subject"]: h for h in per_head}
+
+
+def _live_flip_subjects():
+    """Every head whose verdict differs round8 -> shape_trace, EITHER
+    direction (manager instruction, this round) -- derived from a live
+    score, never hand-listed (CLAUDE.md rule 9)."""
+    out = {}
+    for doc_id in ts.DOCS:
+        round8 = score.score_doc(doc_id, four_causes_cd=FOUR_CAUSES_CD)
+        originals = sst._install_shape_trace_evidence()
+        try:
+            shape_trace = score.score_doc(doc_id, four_causes_cd=FOUR_CAUSES_CD)
+        finally:
+            sst._restore_evidence(originals)
+        before_by = _by_subject(round8["per_head"])
+        after_by = _by_subject(shape_trace["per_head"])
+        flips = sorted(
+            sub for sub, hb in before_by.items()
+            if hb["v_after"] != after_by.get(sub, {}).get("v_after")
+        )
+        out[doc_id] = flips
+    return out
 
 
 def _position_to_y(pos: float, lines, spacing: float) -> float:
@@ -98,20 +112,22 @@ def _tile(doc_id, row, rec, pages, boxes_by_page, acc_boxes_by_page):
         page_accidental_boxes=page_acc_boxes, four_causes_cd=FOUR_CAUSES_CD,
     )
 
-    original = lg.head_middle_rung_evidence
-    lg.head_middle_rung_evidence = shtr.shape_trace_middle_rung_evidence
+    originals = sst._install_shape_trace_evidence()
     try:
         trace_pos, trace_reason = score.reader_absolute_position(
             gray, lines, box, subject, page_boxes,
             page_accidental_boxes=page_acc_boxes, four_causes_cd=FOUR_CAUSES_CD,
         )
     finally:
-        lg.head_middle_rung_evidence = original
+        sst._restore_evidence(originals)
 
     others = [b for (s, b) in page_boxes if s != subject]
     if page_acc_boxes:
         others = others + [b for (_s, b) in page_acc_boxes]
-    trace = shtr.trace_head_shape(gray, box, spacing, exclude_boxes=others)
+    # Same local-staff-lines the evidence call above just used, for a
+    # drawing that matches what was actually scored.
+    trace = shtr.trace_head_shape(gray, box, spacing, exclude_boxes=others,
+                                  staff_lines=lines)
 
     geom_pos = int(round(row["raw_pos"]))
     clef_v = rec.value(Q.CLEF, staff_key)
@@ -263,14 +279,17 @@ def _build_sheet(doc_subjects, out_name):
 
 
 def main() -> int:
+    live_flips = _live_flip_subjects()
+    for doc_id, subs in live_flips.items():
+        print(f"  live flips, {doc_id}: {len(subs)} {subs}")
     reg_subjects = [
-        (doc_id, sub) for doc_id, subs in REGRESSIONS.items() for sub in subs
+        (doc_id, sub) for doc_id, subs in live_flips.items() for sub in subs
     ]
     flip_subjects = [
-        (doc_id, sub) for doc_id, subs in FLIPS.items() for sub in subs
+        (doc_id, sub) for doc_id, subs in FLIP_TWO.items() for sub in subs
     ]
 
-    print("=== shape_regressions.jpg ===")
+    print("=== shape_regressions.jpg (every head whose verdict differs, either direction) ===")
     reg_report = _build_sheet(reg_subjects, "shape_regressions")
     print("\n=== shape_flips.jpg ===")
     flip_report = _build_sheet(flip_subjects, "shape_flips")
