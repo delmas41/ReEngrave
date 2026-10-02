@@ -218,6 +218,103 @@ class TestItNeverGuesses(unittest.TestCase):
         self.assertEqual(v.reason, "no_start_head")
 
 
+class TestAdjacencyAcrossBarlinesRoadmap254(unittest.TestCase):
+    """DECISIONS 2026-10-01 (Sean, on the 2.52 sheet): *"whenever there are
+    2 notes of the same pitch next to each other in a bar or across
+    barlines and there is an arched line between them it is a tie. The
+    notes have to be next to each other regardless of measures/barlines
+    and they have to have the same pitch."* ROADMAP 2.54.
+
+    ⚠️ Run RED against `d74a52ce` (2.52 merged, before 2.54): the first test
+    here abstains `spans_a_whole_bar` there -- the contradiction this lane
+    fixes.
+    """
+
+    def test_a_tied_whole_note_filling_its_bar_pairs_across_the_barline(self):
+        """The bar the arc is filed in holds its OWN note (fills the bar);
+        the arc is cut at both of that bar's edges and used to abstain
+        `spans_a_whole_bar` unconditionally. Now it pairs with the next
+        bar's first head, same as any other barline-crossing tie."""
+        log = Log()
+        _cells(log, 2)
+        a = _head(log, 0, 0, 0.0, 100.0)          # fills bar 0
+        b = _head(log, 1, 0, 204.0, 100.0)        # bar 1's first head
+        arc = _arc(log, 0, 5, 5.0, 197.0)         # cut at both of bar 0's edges
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.reason, "paired")
+        self.assertEqual(v.value, {"start": a.to_key(), "stop": b.to_key()})
+
+    def test_an_arc_across_a_truly_EMPTY_bar_still_abstains(self):
+        """POSITIVE CONTROL for the fix above: where the arc's own bar holds
+        NO notehead at all (the staff-line-read-as-a-tie case the first
+        Litolff crop found), the refusal still fires."""
+        log = Log()
+        _cells(log, 3)
+        _head(log, 0, 0, 150.0, 100.0)
+        _head(log, 2, 0, 430.0, 100.0)
+        arc = _arc(log, 1, 5, 200.0, 400.0)
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.reason, "spans_a_whole_bar")
+
+    def test_a_note_between_the_two_same_position_heads_is_not_adjacent(self):
+        """Two heads at one staff position flank the arc, but a THIRD head
+        -- at a different position -- sits between them in time. A tie
+        never skips a note: this is not a tie."""
+        log = Log()
+        _cells(log, 1)
+        a = _head(log, 0, 0, 40.0, 100.0)
+        _head(log, 0, 1, 80.0, 130.0)             # a different note, between
+        b = _head(log, 0, 2, 120.0, 100.0)
+        arc = _arc(log, 0, 5, 55.0, 115.0)
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "not_adjacent")
+
+    def test_POSITIVE_CONTROL_the_same_pair_with_no_note_between_pairs(self):
+        log = Log()
+        _cells(log, 1)
+        a = _head(log, 0, 0, 40.0, 100.0)
+        b = _head(log, 0, 1, 120.0, 100.0)
+        arc = _arc(log, 0, 5, 55.0, 115.0)
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.reason, "paired")
+        self.assertEqual(v.value, {"start": a.to_key(), "stop": b.to_key()})
+
+    def test_adjacent_heads_at_different_positions_are_not_a_tie(self):
+        """Adjacent (nothing between them) but NOT the same staff position:
+        the convention's other half -- a slur, never a tie. Restates the
+        existing `no_pair_at_one_position` coverage under the 2.54 name."""
+        log = Log()
+        _cells(log, 1)
+        _head(log, 0, 0, 40.0, 100.0)
+        _head(log, 0, 1, 120.0, 105.0)
+        arc = _arc(log, 0, 5, 55.0, 115.0)
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.outcome, Outcome.ABSTAINED)
+        self.assertEqual(v.reason, "no_pair_at_one_position")
+
+    def test_a_tied_chord_two_separate_arcs_each_pair_their_own_position(
+            self):
+        """A tied chord: two DISTINCT ties (one per voice), detected as two
+        SEPARATE arc glyphs far enough apart in y that each only sees its
+        own position's heads -- the ordinary case `3.2c` found in practice
+        (a single ambiguous arc spanning both is the dead-at-zero case that
+        roadmap item measured, not reopened here)."""
+        log = Log()
+        _cells(log, 1)
+        top_a = _head(log, 0, 0, 40.0, 60.0)
+        top_b = _head(log, 0, 1, 120.0, 60.0)
+        bot_a = _head(log, 0, 2, 40.0, 160.0)
+        bot_b = _head(log, 0, 3, 120.0, 160.0)
+        top_arc = _arc(log, 0, 5, 55.0, 115.0, y0=73.0, y1=79.0)
+        bot_arc = _arc(log, 0, 6, 55.0, 115.0, y0=173.0, y1=179.0)
+        v_top, v_bot = _decide(log, top_arc, bot_arc)
+        self.assertEqual(v_top.value,
+                         {"start": top_a.to_key(), "stop": top_b.to_key()})
+        self.assertEqual(v_bot.value,
+                         {"start": bot_a.to_key(), "stop": bot_b.to_key()})
+
+
 class TestTheSystemEdge(unittest.TestCase):
 
     def test_a_tie_running_off_the_system_abstains_and_says_so(self):

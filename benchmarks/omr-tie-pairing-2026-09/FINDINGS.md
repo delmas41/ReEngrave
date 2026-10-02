@@ -843,3 +843,78 @@ window cannot be tightened on this evidence.
   heads, not covered); (4) drop a tie start whose stop's bar is held out;
   (5) the cross-system link (needs the part, i.e. extracting `build` out of
   `export.py`, chain FINDINGS §7 item 2).
+
+## 2.54 — adjacency, and the whole-bar refusal was wrong for a real case
+
+Sean, on the 2.52 sheet (DECISIONS 2026-10-01): *"whenever there are 2 notes
+of the same pitch next to each other in a bar or across barlines and there
+is an arched line between them it is a tie. The notes have to be next to
+each other regardless of measures/barlines and they have to have the same
+pitch."* Checked `adjudicate_tie_pair` against this and found two
+contradictions:
+
+* **`spans_a_whole_bar` refused unconditionally** whenever an arc was cut at
+  BOTH edges of its own bar, on the theory that bar "would have to hold
+  nothing at all". That is true of the staff-line-misread case the first
+  Litolff crop found, but it is also exactly the SHAPE of a real tied
+  whole/half note that fills its own bar and ties to the next bar's first
+  note — which Sean's rule explicitly keeps ("regardless of measures/
+  barlines"). Fixed: the refusal now fires only when the arc's own bar holds
+  NO notehead at all; a bar that holds a note falls through to the ordinary
+  flank search (which already extends across a cut edge).
+* **No ADJACENCY check at all.** The old rule found the nearest same-position
+  heads on each side and paired them, without asking whether some OTHER
+  note (at any position) sat between them in time. Added `not_adjacent`: a
+  candidate pair is rejected if any other usable head sits strictly between
+  the two paired heads in (cell, x) order. ⚠️ First version over-refused:
+  a chord's stacked onsets (heads a few px apart in x, same beat) were read
+  as notes "between" the pair, costing 30 of 253 Litolff p3 arcs. Fixed by
+  exempting any head within one notehead-width of either endpoint's own x
+  (that head is the endpoint's own chord, not a different note in time) —
+  down to 9 of 253 after the fix, all with multiple real heads between the
+  chosen pair on inspection.
+
+Did NOT reopen `3.2c`'s tied-chord disambiguation (measured dead at zero
+there, see above) — a positive-control test confirms two separate, already
+well-separated arcs each still pair their own position without it.
+
+**Real data** (re-adjudicated from the 20261001 whole-movement records,
+streamed with `ijson` so neither the 487 MB Litolff nor the 3.47 GB Brahms
+record is ever loaded whole — `probe/readjudicate_2_54.py`):
+
+| | Litolff whole movement (2,644 arcs) | before | after |
+|---|--:|--:|--:|
+| `paired` | | 277 | **242** |
+| `spans_a_whole_bar` | | 271 | **61** |
+| `not_adjacent` | | 0 | **135** |
+| `more_than_one_pair` | | 74 | 44 |
+| `no_pair_at_one_position` | | 158 | 179 |
+
+| | Brahms pp.0-3 (2,207 arcs, SHATTERING plate) | before | after |
+|---|--:|--:|--:|
+| `spans_a_whole_bar` | | 812 | **179** |
+| `paired` | | 255 | **260** |
+| `not_adjacent` | | 0 | **141** |
+| `more_than_one_pair` | | 130 | 85 |
+
+Diffed by (arc, start, stop): Litolff **20 newly decided, 55 newly
+refused**; the 812→179 Brahms swing in `spans_a_whole_bar` is mostly NOT
+becoming real pairs (SHATTERING plate noise), confirmed by `paired` moving
+only +5 — most released arcs land on a more specific, honest refusal
+instead of a false pair.
+
+**27 crops** (≥600 px, 600 dpi, home staff drawn GREEN, start bracketed RED
+`S`, stop bracketed MAGENTA `E`, naming arc outlined ORANGE; 18 Litolff + 9
+Brahms, 0 refused by the frame control) under
+`out/print/2.54/{litolff,brahms}/`, one `contact_sheet.png` per document.
+My own look, not a verdict: the `linked` (newly decided) crops show a real
+printed curve from S to E in the large majority on both documents. The
+`not_adjacent` (newly refused) crops mostly show real intervening notes
+under a longer slur spanning more than two notes (clearest on Brahms
+`.../2.54-tie-07/08/09.png`). One Litolff `not_adjacent` crop
+(`litolff/2.54-tie-13.png`) is on dense, thick ink where individual
+noteheads are hard to make out by eye — NOT confirmed, flagged rather than
+resolved. Sean's verdicts on the crops: todo.
+
+Next: Sean's crop verdicts; `3.2c`'s tied-chord work is still unmerged and
+untouched by this lane.
