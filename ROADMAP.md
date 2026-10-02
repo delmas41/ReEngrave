@@ -69,6 +69,10 @@ a whole rest).
    does not work yet: it misses the second tie end, split 8 px apart, kept boxes beside the
    head, dropped dyads with ties nearby (manager's read of its sheet). Fix tie-end matching
    first; Sean: "all of those are notes connected to ties".
+   Sean 10-02 (DECISIONS): every tie joins TWO heads and every tie/slur end has a head;
+   stems up+down on one spot = two unison voices, a tie each (above and below); arcs above
+   AND below = more than one note; an arc end with no visible head is a pointer to look for
+   one (more forgiving end-to-head distance); box those heads better (cause A).
 3. 2.44d combined reader: agree -> take it is right (25/27); disagreement needs the
    uneven-rung handling from item 1. 2.51 unboxed ink: redo with barlines + text subtracted.
 **Lesson of the day:** most "the reader is worse" results were the PROCESS — a scoring
