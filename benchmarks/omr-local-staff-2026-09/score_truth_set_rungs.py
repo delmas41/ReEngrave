@@ -45,6 +45,7 @@ from tools.omr.staged import export as EXP  # noqa: E402
 from tools.omr.staged.record import Q  # noqa: E402
 from tools.omr.pitch_resolver import _CLEF_ANCHORS, diatonic_index  # noqa: E402
 from tools.omr.annotate import ledger_grid as lg  # noqa: E402
+from tools.omr.annotate.ledger_grid import GAP_FILL_RANGE_SPACINGS  # noqa: E402
 
 
 # ─────────────────────────────────────────────────────────────────────────
@@ -168,13 +169,30 @@ def reader_absolute_position(
         # appends to the rung list. HELD BACK -- see FINDINGS.
     ).get(side, [])
 
+    # ROUND 7 (DECISIONS 2026-10-01): clean the plain walk's own rungs
+    # BEFORE the stacked-thirds guard reads them -- (c) two edges of one
+    # thick ledger (`glyph/3/0/0/6/1`: 417.5/414.5, 3px apart against a
+    # 4-5px measured line thickness) merge into one; a rung sitting ~half
+    # a spacing from its neighbour is that neighbour's own duplicate edge,
+    # not a ledger a half-step out. Both are additive cleanups of rungs
+    # the walk already found -- neither invents one.
+    items = lg.merge_close_rungs(items, sign, thickness_px=0.35 * spacing)
+    items = lg.drop_duplicate_half_spacing_rung(items, sign, spacing, edge=edge)
+
     # ROUND 6 (DECISIONS 2026-10-0x, Sean on the flute chords): two heads
     # of one chord/stem, outside the staff, centres a THIRD apart, with
     # NEITHER already carrying a line through it, necessarily have a
     # ledger BETWEEN them -- feed it into this head's own rung list
     # before the count, exactly like a rung the plain walk found itself.
+    # ROUND 7: `has_through_head_rung` now re-validates a candidate "through"
+    # rung by FLATNESS (`img_gray=gray, spacing=spacing`) -- round 6
+    # measured that a confound (flag ink, an oversized merged box's own
+    # widest row) can register a false "through" rung and wrongly block
+    # this guard on exactly the pairs it was built for (Sean's flute
+    # chords, (a)/(c) above).
     stack_reason = None
-    if not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
+    if not lg.has_through_head_rung(items, (x0, y0, x1, y1),
+                                     img_gray=gray, spacing=spacing):
         for psub, pbox in page_notehead_boxes:
             if psub == subject:
                 continue
@@ -192,7 +210,9 @@ def reader_absolute_position(
                 gray, ys, (px0 + px1) / 2.0, head_y=pcy,
                 exclude_boxes=p_others, head_box_x=(px0, px1),
             ).get(side, [])
-            if lg.has_through_head_rung(p_items, pbox):
+            p_items = lg.merge_close_rungs(p_items, sign, thickness_px=0.35 * spacing)
+            p_items = lg.drop_duplicate_half_spacing_rung(p_items, sign, spacing)
+            if lg.has_through_head_rung(p_items, pbox, img_gray=gray, spacing=spacing):
                 continue
             # "outer" = farther from the staff edge (the one with the
             # larger |cy - edge|); "inner" = the nearer of the two.
@@ -206,6 +226,7 @@ def reader_absolute_position(
             ]
             res = lg.third_stack_rung(
                 gray, box_outer, box_inner, spacing, exclude_boxes=lateral,
+                require_thin_flat=True,
             )
             items = lg.insert_rung(items, sign, res["y"])
             stack_reason = (
@@ -214,11 +235,36 @@ def reader_absolute_position(
             )
             break  # one qualifying partner is enough
 
+    # ROUND 7: a wide gap (~2 local spacings) between the edge/rungs the
+    # walk has so far is a place to LOOK, never a place to assume (Sean:
+    # "it is possible for it not to be there due to hand drawn spacing").
+    # Only the stacked-thirds pairing above counts a ledger with no ink.
+    ladder = [edge] + items
+    ladder.sort(key=lambda ry: sign * ry)
+    gap_fill_reason = None
+    i = 0
+    while i + 1 < len(ladder):
+        gap_sp = abs(ladder[i + 1] - ladder[i]) / spacing
+        if GAP_FILL_RANGE_SPACINGS[0] <= gap_sp <= GAP_FILL_RANGE_SPACINGS[1]:
+            found = lg.find_rung_in_gap(
+                gray, ladder[i], ladder[i + 1], cx, spacing,
+                head_box_x=(x0, x1),
+            )
+            if found is not None:
+                items = lg.insert_rung(items, sign, found)
+                ladder = [edge] + items
+                ladder.sort(key=lambda ry: sign * ry)
+                gap_fill_reason = "found_in_gap"
+                continue
+        i += 1
+
     step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
     if step["offset"] is None:
         return None, step["reason"]
-    if stack_reason is not None:
-        return edge_pos + int(sign * step["offset"]), f"{step['reason']} ({stack_reason})"
+    extra_reasons = [r for r in (stack_reason, gap_fill_reason) if r is not None]
+    if extra_reasons:
+        return (edge_pos + int(sign * step["offset"]),
+               f"{step['reason']} ({', '.join(extra_reasons)})")
     return edge_pos + int(sign * step["offset"]), step["reason"]
 
 

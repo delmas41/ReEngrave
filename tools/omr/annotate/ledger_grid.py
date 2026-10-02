@@ -966,24 +966,13 @@ def heads_are_a_third_apart(
     return tol[0] <= dist_sp <= tol[1]
 
 
-def has_through_head_rung(
-    rungs_y: "list[float]", box: "tuple[float, float, float, float]",
-    tol_px: float = THROUGH_HEAD_TOL_PX,
-) -> bool:
-    """Does any already-found rung in `rungs_y` pass through this head's
-    OWN box? (DECISIONS 2026-10-0x's guard: a pair where either head
-    already has a line through it gets NOTHING implied -- the convention
-    only forces a ledger between two heads that both lack one.)"""
-    y0, y1 = box[1], box[3]
-    return any(y0 - tol_px <= ry <= y1 + tol_px for ry in rungs_y)
-
-
 def third_stack_rung(
     img_gray: np.ndarray,
     box_outer: "tuple[float, float, float, float]",
     box_inner: "tuple[float, float, float, float]",
     spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    require_thin_flat: bool = False,
 ) -> dict:
     """The ledger that MUST run between two chord-mates stacked a third
     apart outside the staff (DECISIONS 2026-10-0x), when NEITHER already
@@ -1051,6 +1040,27 @@ def third_stack_rung(
     blob_local0, blob_local1 = blob_x0 - x0, blob_x1 - x0
     for s, e in runs:
         if s <= blob_local0 - margin or e >= blob_local1 + margin:
+            if require_thin_flat:
+                # round 7: a run merely clearing the blob's own width can
+                # still be a STEM passing near the midpoint, not the
+                # ledger -- measured on `glyph/3/0/0/2/4`+`/2/9` (Litolff
+                # p3): the column directly under the chord's shared stem
+                # reads 37-39px thick at this exact y, nowhere near a
+                # printed line's 4-5px. Re-validate at the OVERHANGING
+                # side's own outer edge (where the run clears the blob --
+                # a one-sided ledger's overhang, never the blob's own
+                # centre, which the stem can occupy instead) with the
+                # same one-sided-OK thin+flat test used elsewhere in this
+                # module before calling it CONFIRMED; a run that clears
+                # the blob's width but fails this still COUNTS the
+                # position (the convention states the ledger exists with
+                # no ink required) -- it is simply reported IMPLIED, not
+                # falsely ink-confirmed.
+                beyond_right = e >= blob_local1 + margin
+                probe_x = (x0 + e - 2) if beyond_right else (x0 + s + 2)
+                if not rung_is_thin_and_flat(img_gray, mid_y, probe_x, spacing,
+                                             require_all_sides=False):
+                    continue
             return dict(y=mid_y, confirmed=True)
     return dict(y=mid_y, confirmed=False)
 
@@ -1068,3 +1078,292 @@ def insert_rung(
     out = list(rungs_y) + [new_y]
     out.sort(key=lambda ry: sign * ry)
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# round 7 (2026-10-01) -- one-sided ledgers re-validated by FLATNESS, the
+# two-edges-of-one-ledger merge, the duplicate-half-spacing fault, and a
+# wide-gap "look here" search
+# ─────────────────────────────────────────────────────────────────────────
+#
+# Sean's verdicts on round 6's three diagnostic crops (`out/print/ledgers/
+# r6/`), DECISIONS 2026-10-01:
+#
+#   (a) `glyph/3/0/0/2/4`+`/2/9`: a real ledger between/under the pair
+#       extends on ONE side only, past a "weird ink blotch" -- "the thin
+#       horizontal line is clearly there". Measured directly off the real
+#       page (`beethoven5-litolff`, p3, 600 dpi, `_render_page_gray` --
+#       pure PDF rendering, no gather): the column crossing `/2/4`'s own
+#       probe x is SOLID ink from y=383 to y=435 (53px, unbroken) -- the
+#       "through-head" rung round 6 found at y=395 sits inside that 53px
+#       blob. A clean staff line on the SAME page, SAME raster, measures
+#       4-5px thick (sampled at x=700, y 500-750, clear of ink) against a
+#       15.5-16px line spacing -- a real line is ~0.29 of the spacing, not
+#       53/15.5=3.4. The round-5 one-sided span test (`head_box_y` in
+#       `_band_centers`) already exists but was never re-checked for this:
+#       its 95%-of-peak RELATIVE floor can mistake a flag's curl or a
+#       merged chord's own widest row -- locally narrower than its very
+#       wide neighbours -- for a thin isolated line. `rung_is_thin_and_
+#       flat` re-validates a candidate by its ABSOLUTE vertical ink run at
+#       several x offsets across its own claimed length: thin (near the
+#       page's own measured line thickness) AND flat (the same thickness
+#       at each sampled x -- a curve or a flag's taper is not flat).
+#   (b) `glyph/3/0/0/2/1`+`/2/3`: already correct -- a CONTROL. Its own
+#       printed ledgers (DECISIONS 2026-09-30: 396.6/413.3/433.2) are
+#       19.9px and 16.7px apart on a 15.5px spacing (1.28 and 1.08
+#       spacings) -- an ordinary ladder, nothing for round 7's merge or
+#       duplicate-drop to touch; round 7 must leave this pair's answer
+#       unchanged.
+#   (c) `glyph/3/0/0/6/1`+`/6/2`: the two existing rungs at 417.5 and
+#       414.5 (3px apart -- UNDER the page's own measured ~4-5px line
+#       thickness) are the TOP and BOTTOM edge of ONE thick ledger, not
+#       two separate ones. `merge_close_rungs` folds any two rungs closer
+#       than `MERGE_THICKNESS_RATIO` x the measured thickness into one, at
+#       their centre.
+#
+#   Plus, same session: a rung sitting close to HALF a local spacing from
+#   its neighbour is a duplicate of one of that neighbour's own edges, not
+#   a separate ledger a half-step out (every real ledger the walk accepts
+#   is a FULL space from the last one, `WALK_WINDOW` 0.65-1.35) --
+#   `drop_duplicate_half_spacing_rung`.
+#
+#   And (Sean, final wording this session): "A gap should have a ledger
+#   line but it is possible for it not to be there due to hand drawn
+#   spacing." A wide gap (~2 local spacings) between two found rungs is a
+#   place to LOOK -- a RELAXED, one-sided-OK, thin-flat search
+#   (`find_rung_in_gap`) -- and if ink confirms it, it is counted
+#   (`found_in_gap`); a clean gap implies NOTHING (unlike the stacked-
+#   thirds convention, a gap alone never forces a ledger to exist -- only
+#   two heads of ONE CHORD a third apart do that, round 6, unchanged: "The
+#   gap doesn't require a ledger line but in between notes a 3rd apart
+#   does").
+#
+# Every round-7 function is additive and opt-in: the existing, already
+# print-verified both-sides walk (`_walk_ladder`/`_band_centers` with
+# `head_box_y=None`) is untouched, and the primary real-data score's own
+# `measure_ledger_rungs` call keeps `head_box_y=None` exactly as round 5
+# measured (a net negative there). Round 7 is wired ONLY into the round-6
+# stacked-thirds path and its own `has_through_head_rung` guard
+# (`score_truth_set_rungs.reader_absolute_position`).
+
+# A real printed line on this corpus measures 4-5px against a 15.5-16px
+# spacing (~0.29), measured directly off the page (see docstring above) --
+# matches `staff_line_removal.MAX_LINE_THICKNESS_SPACES` (0.35) already
+# used elsewhere for the same quantity; kept distinct here (ledgers are
+# hand-drawn, slightly more variable than engraved staff lines) with the
+# same order-of-magnitude slack.
+LEDGER_THICKNESS_MAX_SPACES = 0.35
+# Flatness is checked at the centre and at +-0.35 spacing either side of
+# it -- far enough to clear a single notehead's own narrow cap but short
+# enough to stay within one claimed rung's own length.
+FLATNESS_SAMPLE_OFFSETS_SPACES = (0.0, -0.35, 0.35)
+# Two rungs this close (relative to the page's own measured thickness) are
+# the top and bottom edge of ONE thick ledger, not two (`glyph/3/0/0/6/1`
+# measured 3px apart against a 4-5px thickness -- comfortably under 1.5x).
+MERGE_THICKNESS_RATIO = 1.5
+# A rung whose gap to its neighbour falls in this band (centred on 0.5
+# spacing) is that neighbour's own duplicate edge, not a ledger a
+# half-step out -- every real ledger this module's walk accepts is a FULL
+# space (`WALK_WINDOW` 0.65-1.35) from the last one.
+DUPLICATE_HALF_SPACING_RANGE = (0.35, 0.65)
+# A gap this wide between two consecutive found rungs is worth a relaxed
+# look -- centred on 2 local spacings (one skipped ledger), with slack for
+# hand-drawn variance on each side.
+GAP_FILL_RANGE_SPACINGS = (1.65, 2.35)
+
+
+def _column_ink_run(
+    img_gray: np.ndarray, y: float, x: float, spacing: float,
+) -> "float | None":
+    """The vertical thickness, in px, of the ink run crossing (y, x) at
+    this SINGLE column -- the contiguous span of inked rows containing
+    row y. `None` where (y, x) is not inked at all. A genuine printed
+    line measures near its own print thickness regardless of which
+    column it is sampled at; a row sitting inside a taller continuous
+    blob (a flag's curl, a merged/oversized box's own ink) measures the
+    FULL height of that blob instead, however locally `_band_centers`'
+    own row-span happened to narrow at that one row (round 6's confound)."""
+    h, w = img_gray.shape
+    x_i, y_i = int(round(x)), int(round(y))
+    if not (0 <= x_i < w and 0 <= y_i < h):
+        return None
+    margin = max(2, int(round(1.5 * spacing)))
+    y0, y1 = max(0, y_i - margin), min(h, y_i + margin + 1)
+    col = img_gray[y0:y1, x_i]
+    thr = _otsu_threshold(col.reshape(-1, 1))
+    ink = col <= thr
+    yy = y_i - y0
+    if not (0 <= yy < ink.size) or not ink[yy]:
+        return None
+    top = yy
+    while top > 0 and ink[top - 1]:
+        top -= 1
+    bot = yy
+    while bot + 1 < ink.size and ink[bot + 1]:
+        bot += 1
+    return float(bot - top + 1)
+
+
+def rung_is_thin_and_flat(
+    img_gray: np.ndarray, y: float, x_center: float, spacing: float,
+    offsets: "tuple[float, ...]" = FLATNESS_SAMPLE_OFFSETS_SPACES,
+    max_thickness_spaces: float = LEDGER_THICKNESS_MAX_SPACES,
+    require_all_sides: bool = True,
+) -> bool:
+    """THIN: every sampled column's own vertical ink run at `y` measures
+    no more than `max_thickness_spaces` of the local spacing. FLAT: those
+    measurements agree with each other within HALF that tolerance -- a
+    curved head edge or a flag's taper thickens steadily across x even
+    while each individual sample stays under the thin cap; a genuine
+    printed line's own thickness barely moves between two points on the
+    same stroke. The CENTRE offset (0.0, always first in `offsets`) must
+    always qualify; a column with no ink at all there fails outright.
+
+    `require_all_sides=True` (the default, used by `has_through_head_rung`'s
+    re-validation) requires every non-centre offset to qualify too -- a
+    through-head rung has ink on both sides of the head by construction,
+    so demanding both here costs nothing and only tightens the test.
+    `require_all_sides=False` (used by `find_rung_in_gap`'s relaxed,
+    one-sided-OK search) accepts the centre plus AT LEAST ONE side, same
+    "one real side is enough" convention `_band_centers`'/`third_stack_
+    rung`'s own one-sided logic already uses elsewhere in this module --
+    a missing or disqualified side is simply dropped from the flatness
+    comparison, never treated as a failure on its own.
+
+    Used to re-validate a candidate BEFORE it is trusted as a real
+    ledger -- never to find one (that is still `_band_centers`'/
+    `third_stack_rung`'s own job)."""
+    cap = max_thickness_spaces * spacing
+    centre_off, side_offs = offsets[0], offsets[1:]
+    t0 = _column_ink_run(img_gray, y, x_center + centre_off * spacing, spacing)
+    if t0 is None or t0 > cap:
+        return False
+    measured = [t0]
+    sides_ok = 0
+    for off in side_offs:
+        t = _column_ink_run(img_gray, y, x_center + off * spacing, spacing)
+        if t is None or t > cap:
+            if require_all_sides:
+                return False
+            continue
+        measured.append(t)
+        sides_ok += 1
+    if not require_all_sides and sides_ok == 0:
+        return False  # centre alone never confirms a HORIZONTAL line
+    return (max(measured) - min(measured)) <= 0.5 * cap
+
+
+def has_through_head_rung(
+    rungs_y: "list[float]", box: "tuple[float, float, float, float]",
+    tol_px: float = THROUGH_HEAD_TOL_PX,
+    img_gray: "np.ndarray | None" = None, spacing: "float | None" = None,
+) -> bool:
+    """Does any already-found rung in `rungs_y` pass through this head's
+    OWN box? (DECISIONS 2026-10-0x's guard: a pair where either head
+    already has a line through it gets NOTHING implied -- the convention
+    only forces a ledger between two heads that both lack one.)
+
+    `img_gray`/`spacing`, when given (round 7): a candidate that sits in
+    range is also re-validated by `rung_is_thin_and_flat` at the box's own
+    x-centre before it counts -- round 6 measured that a confound (flag
+    ink, an oversized merged box's own widest row) can register a false
+    "through" rung and wrongly block the stacked-thirds guard on exactly
+    the pairs it was built for. `img_gray=None` (the default, and every
+    pre-existing caller) keeps the old proximity-only behaviour."""
+    y0, y1 = box[1], box[3]
+    cx = (box[0] + box[2]) / 2.0
+    for ry in rungs_y:
+        if not (y0 - tol_px <= ry <= y1 + tol_px):
+            continue
+        if img_gray is not None and spacing is not None:
+            if not rung_is_thin_and_flat(img_gray, ry, cx, spacing):
+                continue
+        return True
+    return False
+
+
+def merge_close_rungs(
+    rungs_y: "list[float]", sign: float, thickness_px: float,
+    ratio: float = MERGE_THICKNESS_RATIO,
+) -> "list[float]":
+    """Folds any two ADJACENT rungs (in nearest-edge-first order) closer
+    than `ratio` x `thickness_px` into one, at their centre -- the two
+    edges of one thick ledger read as a top rung and a bottom rung
+    (`glyph/3/0/0/6/1`: 417.5/414.5, 3px apart against a 4-5px measured
+    line thickness). `rungs_y` is walked in nearest-edge-first order
+    (ascending `sign * y`, same convention as `insert_rung`) so a merge
+    cannot reorder the ladder."""
+    if not rungs_y:
+        return []
+    ordered = sorted(rungs_y, key=lambda ry: sign * ry)
+    cap = ratio * thickness_px
+    out: "list[float]" = [ordered[0]]
+    for ry in ordered[1:]:
+        if abs(ry - out[-1]) <= cap:
+            out[-1] = (out[-1] + ry) / 2.0
+        else:
+            out.append(ry)
+    return out
+
+
+def drop_duplicate_half_spacing_rung(
+    rungs_y: "list[float]", sign: float, spacing: float,
+    tol_range: "tuple[float, float]" = DUPLICATE_HALF_SPACING_RANGE,
+    edge: "float | None" = None,
+) -> "list[float]":
+    """Drops a rung whose gap to the PREVIOUS (nearer-edge) rung in the
+    ladder -- or to the staff EDGE itself, for the first rung, when `edge`
+    is given -- falls within `tol_range` of a staff spacing. A half-
+    spacing gap is that neighbour's own duplicate edge, never a genuine
+    ledger a half-step out (every real ledger `_walk_ladder` accepts is a
+    full space, 0.65-1.35, from the one before it). Without `edge`, the
+    first rung (no predecessor to be a duplicate of) is never dropped."""
+    if not rungs_y or spacing <= 0:
+        return list(rungs_y)
+    ordered = sorted(rungs_y, key=lambda ry: sign * ry)
+    out: "list[float]" = []
+    anchor = edge
+    for ry in ordered:
+        if anchor is not None:
+            gap_sp = abs(ry - anchor) / spacing
+            if tol_range[0] <= gap_sp <= tol_range[1]:
+                continue  # duplicate edge of the anchor -- drop it
+        out.append(ry)
+        anchor = ry
+    return out
+
+
+def find_rung_in_gap(
+    img_gray: np.ndarray, y_lo: float, y_hi: float, x_center: float,
+    spacing: float, head_box_x: "tuple[float, float] | None" = None,
+) -> "float | None":
+    """A RELAXED search for a thin, flat, one-sided-OK ledger strictly
+    between `y_lo` and `y_hi` (a wide gap between two already-found
+    rungs) -- the convention is "look here", not "it must be there"
+    (Sean: a gap "should have a ledger line but it is possible for it not
+    to be there due to hand drawn spacing"). Scans row by row for the
+    thinnest, most isolated candidate and returns it only if
+    `rung_is_thin_and_flat` confirms it at the box's own probe column (or
+    `x_center` when no box is given); returns `None` on a clean gap --
+    never guessed (CLAUDE.md rule 8)."""
+    lo, hi = sorted((y_lo, y_hi))
+    if hi - lo < 2:
+        return None
+    h, w = img_gray.shape
+    x_i = int(round(x_center))
+    if not (0 <= x_i < w):
+        return None
+    best_y: "float | None" = None
+    best_thickness = float("inf")
+    y = int(lo) + 1
+    while y < int(hi):
+        t = _column_ink_run(img_gray, float(y), x_i, spacing)
+        if t is not None and t < best_thickness:
+            best_thickness, best_y = t, float(y)
+        y += 1
+    if best_y is None:
+        return None
+    if not rung_is_thin_and_flat(img_gray, best_y, x_i, spacing,
+                                 require_all_sides=False):
+        return None
+    return best_y

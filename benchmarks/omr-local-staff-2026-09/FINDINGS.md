@@ -2046,3 +2046,196 @@ ledgers/r6_sheet.png` (3 tiles) — for Sean, not adjudicated here.
   measures them correctly in detail is open.
 - No change to either document's truth-scored population this round;
   nothing in STAGED's production path touched.
+
+## lane-ledger-r7 (2026-10-01) — one-sided ledgers, merged edges, the
+   duplicate-half-spacing fault, a wide-gap search, and WHY round 5's
+   table no longer reproduces
+
+### Round 5 does NOT reproduce on this tree — found, not worked around
+
+Before any code: tried to re-score the committed 44/11 Litolff/Brahms
+table this lane's brief names. It cannot run. `truth_set_2_44c.DOCS`
+points `score_doc()` at `benchmarks/acceptance/quick/out/<doc>/<doc>-
+p*.record.json` — both files are **gitignored** (per round 6's own
+"GLOBAL `Q.STAFF_LINES`... re-gathered fresh on this tree... not
+committed, gitignored" and round-5's "not reproducible... regenerated
+since"), and this lane runs from a FRESH `git worktree` checkout
+(CLAUDE.md §13), which has no untracked files from any prior session —
+only what is committed. Confirmed absent: `ls benchmarks/acceptance/
+quick/out/*/*.record.json` finds nothing; the directory holds only the
+derived `.musicxml`/`.ly`/`.html` siblings, which ARE committed. Writing
+either record back requires `tools.omr.staged` through at least
+ADJUDICATE, i.e. a re-gather — explicitly out of this lane's scope
+("No re-gather", brief). **This is the same fact rounds 5 and 6 already
+each independently re-discovered** (both reported a DIFFERENT population
+size, 113/99 and "not reproducible", every time they touched this doc
+fresh) — restated here as a rule rather than re-measured a third time:
+*a record.json this benchmark depends on is machine-local and
+session-scoped; a worktree lane can read and score one already on disk,
+but cannot regenerate the SAME one without a regather.* Consequence: the
+three-way table (geometry / round-5 rungs / round-7 rungs, whole
+population, right/wrong/abstain) this lane was asked to report **cannot
+be produced** without violating the no-regather instruction. What
+follows instead is measured directly off the three real named pairs
+(whose exact box coordinates survive in committed test fixtures and
+DECISIONS lines, below) plus synthetic RED→GREEN unit coverage for every
+new rule — real-ink-grounded, not real-population-scored.
+
+### (a) `glyph/3/0/0/2/4`+`/2/9`: the confound measured, and fixed
+
+Rendered the real page directly (`truth_set_2_44c._render_page_gray` —
+pure `fitz` rendering, no gather, no weights) at the box coordinates
+preserved in `tools/omr/tests/test_ledger_rungs_round6_2026_10_01.py`
+(`box_far`/`box_near`). Measured, BEFORE any code change: the column
+under `/2/4`'s own probe x is **solid ink for 16–36px** depending on the
+exact window (the window itself clips a taller real blob — same lesson
+as `_rung_row_clears_box`'s own docstring on windowed measurement), where
+a clean staff line on the SAME raster (sampled at x=700, clear of ink,
+y 500–750) measures **4–5px** against a 15.5–16px line spacing (~0.29 of
+the spacing — matches `staff_line_removal.MAX_LINE_THICKNESS_SPACES`,
+0.35, already used elsewhere for the same quantity). Round 6's
+`has_through_head_rung([428.5, 395.0], box_far)` returns `True` by
+proximity alone; the y=395 "rung" is this blob, not a line.
+
+**Built**: `rung_is_thin_and_flat` (THIN: each sampled column's own
+vertical ink run ≤ `LEDGER_THICKNESS_MAX_SPACES` [0.35] of the spacing;
+FLAT: those samples agree within half that cap — a curved head edge or a
+flag's taper thickens steadily across x even while every individual
+sample stays under the thin cap, a genuine line does not).
+`require_all_sides=False` (used only by the relaxed gap search) accepts
+the centre plus at least one side, the same "one real side is enough"
+rule `_band_centers`'/`third_stack_rung`'s own one-sided logic already
+uses. `has_through_head_rung` gained optional `img_gray`/`spacing`: when
+given, a proximity match is also re-validated by this test before it
+counts; `img_gray=None` (every pre-existing caller, including every
+round-6 test) keeps the exact old behaviour.
+
+**Measured fix, real data**: `has_through_head_rung([428.5, 395.0],
+box_far, img_gray=gray, spacing=15.5)` → `False` (was `True`) — the
+stacked-thirds guard now FIRES on this pair, where round 6 found it
+blocked. `third_stack_rung(..., require_thin_flat=True)` (new, opt-in,
+default `False` so round 6's own 13 tests are unaffected) still reports
+`y=400.75` but `confirmed=False`: re-measured the run that cleared the
+blob's own width at its own outer edge (x≈858, not the blob's geometric
+centre) and found a **37–39px** vertical column there too — this merged
+chord's SHARED STEM passes directly through the region Sean read as "the
+thin horizontal line... past a weird ink blotch", and this lane could not
+separate stem ink from ledger ink at that exact pixel with a column-
+thickness test alone. Reported honestly: the position is still COUNTED
+(`insert_rung` runs regardless of `confirmed`, unchanged from round 6 —
+Sean, final wording: "a ledger between two heads of one chord a third
+apart is counted with no ink required"), filed as `implied_by_third`
+rather than a false `ink_confirmed_by_third`. **Not a full accept of
+verdict (a)'s ink claim** — the blocking confound is fixed and the
+guard now fires; whether the exact midpoint ink Sean saw is cleanly
+separable from the stem needs a ruler crop against the print, not a
+column-thickness heuristic, and is left open. Crops: `out/print/ledgers/
+r7/beethoven5-litolff-2-4-2-9-{before,after}.png` (the dashed purple line
+is the implied/unconfirmed midpoint, drawn visibly inside the merged
+ink — consistent with "not cleanly isolated", not contradicting it).
+
+### (b) `glyph/3/0/0/2/1`+`/2/3` — control, unaffected
+
+This pair's own printed ledgers are already known exactly (DECISIONS
+2026-09-30: 396.6/413.3/433.2) — gaps 19.9px and 16.7px on a 15.5px
+spacing (1.28 and 1.08 spacings), both inside `WALK_WINDOW` (0.65–1.35)
+and nowhere near `MERGE_THICKNESS_RATIO`'s reach (≤1.5× a ~4–5px
+thickness, ≤~7.5px) or `DUPLICATE_HALF_SPACING_RANGE` (0.35–0.65 spacing,
+5.4–10.1px). Neither `merge_close_rungs` nor `drop_duplicate_half_
+spacing_rung` fires on gaps this size by construction — verified directly
+(`merge_close_rungs([433.2, 413.3, 396.6], -1.0, thickness_px=4.5) ==
+[433.2, 413.3, 396.6]`, unchanged). This pair's own answer is untouched.
+
+### (c) `glyph/3/0/0/6/1`+`/6/2` — the merge, built and unit-verified;
+   real end-to-end NOT verified (coordinates unavailable without a
+   regather)
+
+Round 6's crop reported `/6/1` own rungs `[434.5, 417.5, 396.0]`, `/6/2`
+own rungs `[434.5, 414.5]` — 417.5 and 414.5 (one from each head's own
+INDEPENDENT search) are 3px apart against the page's own measured 4–5px
+line thickness: the top and bottom edge of one ledger, read twice.
+**Built**: `merge_close_rungs(rungs_y, sign, thickness_px, ratio=1.5)` —
+folds any two ADJACENT rungs (nearest-edge-first order) within
+`ratio × thickness_px` into their centre. Unit-verified directly against
+these exact measured numbers: `merge_close_rungs([417.5, 414.5], -1.0,
+4.5) == [416.0]` (passes); `merge_close_rungs([450.0, 434.0], -1.0, 4.5)
+== [450.0, 434.0]` (two real rungs a full space apart never merge,
+control). **Not verified end-to-end** on the real heads: `/6/1`/`/6/2`'s
+own exact box coordinates are not preserved in any committed fixture
+(round 6 pulled them from the now-missing `record.json`), so this lane
+could not re-render a real "after" crop for this pair the way it did for
+(a) — a genuine gap, stated rather than papered over. The merge is also
+wired into `reader_absolute_position`'s OWN per-head rung list
+(`items = lg.merge_close_rungs(items, ...)` before the stacked-thirds
+guard runs) for the general case the brief asks for (two edges of one
+ledger found by the SAME head's own walk) — this is a different wiring
+point than the cross-head case (c) itself names (417.5 and 414.5 are
+each a DIFFERENT head's own single rung, never in the same list this
+architecture builds), which this lane's reading suggests may need a
+cross-head reconciliation step this round did not attempt.
+
+### Duplicate half-spacing edge, and the wide-gap search
+
+`drop_duplicate_half_spacing_rung(rungs_y, sign, spacing, edge=None)`:
+drops a rung whose gap to the previous rung (or to the staff `edge`
+itself, when supplied — the half-spacing-from-the-edge case the normal
+walk's own 0.30-spacing-clear start never produces, but a supplementary
+insertion could) falls in `DUPLICATE_HALF_SPACING_RANGE` (0.35–0.65
+spacing) — distinct from `WALK_WINDOW` (0.65–1.35, real ledgers) and from
+the merge range (≤1.5× thickness, a few px). Control: hand-drawn gaps of
+0.906× and 1.25× spacing (real measured variance, `WALK_WINDOW`'s own
+range) are untouched.
+
+`find_rung_in_gap(img_gray, y_lo, y_hi, x_center, spacing, head_box_x)`:
+Sean, final wording — "A gap should have a ledger line but it is possible
+for it not to be there due to hand drawn spacing." A gap of
+`GAP_FILL_RANGE_SPACINGS` (1.65–2.35, centred on 2 local spacings — one
+skipped ledger) between two already-found rungs is scanned for the
+thinnest candidate row, confirmed by `rung_is_thin_and_flat(...,
+require_all_sides=False)` (one-sided OK, same relaxation as the gap
+convention). A clean gap returns `None` — nothing implied (unlike the
+stacked-thirds convention, which counts with no ink at all): Sean, same
+session, distinguishing the two — "The gap doesn't require a ledger line
+but in between notes a 3rd apart does." Wired into `reader_absolute_
+position`: scans the edge+rungs ladder for a `GAP_FILL_RANGE_SPACINGS`
+gap, inserts a found rung and re-scans (a found rung can open a new gap
+further out), reason `found_in_gap`.
+
+### RED → GREEN
+
+`tools/omr/tests/test_ledger_rungs_round7_2026_10_01.py`, 18 tests.
+Confirmed RED (`git stash` of `ledger_grid.py` alone, same session):
+`ImportError: cannot import name 'DUPLICATE_HALF_SPACING_RANGE'` —
+collection fails outright. All 18 green after (stash re-applied, same
+tree). Controls, each its own test: a real thin-flat line passes; a
+rounded head edge (thin at every sampled column, but the thickness varies
+from 6px at the centre to 3px at the wings — fails FLATNESS, not
+thinness); a flag's own thick ink fails THINNESS outright; no ink at all
+fails; proximity-only `has_through_head_rung` is UNCHANGED when no image
+is given (round 6's own 13 tests re-run alongside, still green); the
+blob confound (a 70px synthetic blob standing in for the measured 16–36px
+real one) is rejected once an image is supplied; a genuine thin-flat
+through rung is still detected; two edges of one ledger merge, two real
+ledgers a space apart never merge (and never reorder); a half-spacing
+rung is dropped as a duplicate (of its neighbour, and of the staff edge
+itself via `edge=`); uneven-but-complete hand-drawn spacing (0.906×/1.25×)
+is untouched; a faint ONE-SIDED stub in a gap is found; a clean gap
+implies nothing; the stacked-thirds "no ink required" control (round 6's
+own test, re-asserted) is unaffected by any round-7 rule. Fast tier `-k
+ledger`: 312 passed. Full `pytest -m "not slow"` run once (see below).
+
+### Not done / open
+
+- The real-population three-way score table (geometry / round-5 rungs /
+  round-7 rungs) could not be produced — see "Round 5 does NOT reproduce"
+  above. This is a tooling/data-availability finding, not a code result.
+- (a)'s exact midpoint ink is confounded with the chord's own stem on
+  this merged Litolff plate; distinguishing them needs a ruler crop
+  against the print, not a column-thickness heuristic — open.
+- (c)'s cross-head merge (417.5 from `/6/1`, 414.5 from `/6/2` — two
+  DIFFERENT heads' own single-rung lists) is not reconciled; only the
+  same-head case (one head's own walk producing two close rungs) is
+  wired. No real end-to-end crop for this pair (coordinates unavailable
+  without a regather).
+- The 9 Litolff + 22 Brahms corpus-wide stacked-thirds pairs from round 6
+  were not re-checked against round 7's flatness-validated guard — open.
