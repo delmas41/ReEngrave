@@ -104,6 +104,14 @@ class SymbolDetection:
     height_canonical: int
     confidence: float
     pitch: str | None = None
+    #: ROADMAP 2.12g. Set only where `yolo_detector._collapse_role_twins`
+    #: merged a role-twin box (`*OnLine`/`*InSpace`, `*Above`/`*Below`,
+    #: `*Up`/`*Down`) into this one: the ORIGINAL class name of the
+    #: lower-scoring twin that was dropped, so a consumer that wants the
+    #: role this box's OWN detection lost still has it — `smufl_name`
+    #: carries the surviving (higher-scoring) spelling, same as always.
+    #: `None` on every box no merge touched.
+    detector_role: str | None = None
 
     @property
     def y_center(self) -> int:

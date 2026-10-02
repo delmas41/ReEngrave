@@ -907,3 +907,164 @@ def ledger_measured_geometry(
     return dict(offset=int(round(step)),
                reason=f"extrapolated beyond the last measured ledger "
                       f"(gap {last_gap:.1f}px, {extra_steps:.2f} steps out)")
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# round 6 (2026-10-0x) — stacked thirds imply a ledger between them
+# ─────────────────────────────────────────────────────────────────────────
+#
+# DECISIONS 2026-10-0x, Sean, on round 5's flute chords (`glyph/3/0/0/2/1`,
+# `/2/4`, `/2/9`, `/6/2` — the ledger hidden inside the merged blob between
+# two stacked heads was never found): "when there are multiple note heads
+# stacked in thirds and neither of them has a line through them then there
+# must be a line between them and to go looking for it."
+#
+# Measured on the three real Litolff p3 chord-mate pairs this round names
+# (`glyph/3/0/0/2/4`+`/2/9`, `/2/1`+`/2/3`, `/6/1`+`/6/2`): centre-to-centre
+# distance 0.81, 0.915 and 1.12 staff spaces — a THIRD (both heads land in
+# a SPACE; the ladder's own even/odd half-step spelling makes two spaces
+# one rung apart exactly a third in pitch). The range below is that
+# measured spread with slack on each side for hand-drawn variance, never
+# literal "exactly 1.0".
+THIRD_STACK_SPACING_RANGE = (0.70, 1.25)
+# A row at the implied rung's own y need only clear the UNION blob's own
+# width by this margin on ONE side (not both) -- the convention itself
+# already guarantees the ledger exists ("there must be a line between
+# them"), so finding it is a confirmation, not the usual two-sided proof
+# a stand-alone candidate needs. Same scale as RUNG_STUB_MIN_SPACES.
+THIRD_STACK_STUB_MARGIN_SPACES = 0.15
+# How close an existing rung must sit to a head's own box to count as
+# "a line through it" (DECISIONS: a pair where EITHER head already has a
+# line through it gets nothing implied) -- a few px of slack for the
+# box/ink measurement slop already documented elsewhere in this module.
+THROUGH_HEAD_TOL_PX = 2.0
+
+
+def heads_are_a_third_apart(
+    box_a: "tuple[float, float, float, float]",
+    box_b: "tuple[float, float, float, float]",
+    spacing: float,
+    tol: "tuple[float, float]" = THIRD_STACK_SPACING_RANGE,
+) -> bool:
+    """True if two notehead boxes belong to the same chord/stem (their x
+    ranges overlap) and their centres sit `tol` staff spaces apart
+    (DECISIONS 2026-10-0x) -- the geometric half of Sean's "stacked in
+    thirds" guard. Says nothing about which side of the staff they are
+    on, or whether either already has a line through it -- callers check
+    those separately (`far_head_needs_ledger_read`, `has_through_head_
+    rung`), per the rule's own guards (CLAUDE.md rule 8: only outside the
+    staff, only when both qualify)."""
+    ax0, _ay0, ax1, _ay1 = box_a
+    bx0, _by0, bx1, _by1 = box_b
+    if ax1 <= bx0 or bx1 <= ax0:
+        return False  # no x-overlap -- not one chord/stem
+    cy_a = (box_a[1] + box_a[3]) / 2.0
+    cy_b = (box_b[1] + box_b[3]) / 2.0
+    if spacing <= 0:
+        return False
+    dist_sp = abs(cy_a - cy_b) / spacing
+    return tol[0] <= dist_sp <= tol[1]
+
+
+def has_through_head_rung(
+    rungs_y: "list[float]", box: "tuple[float, float, float, float]",
+    tol_px: float = THROUGH_HEAD_TOL_PX,
+) -> bool:
+    """Does any already-found rung in `rungs_y` pass through this head's
+    OWN box? (DECISIONS 2026-10-0x's guard: a pair where either head
+    already has a line through it gets NOTHING implied -- the convention
+    only forces a ledger between two heads that both lack one.)"""
+    y0, y1 = box[1], box[3]
+    return any(y0 - tol_px <= ry <= y1 + tol_px for ry in rungs_y)
+
+
+def third_stack_rung(
+    img_gray: np.ndarray,
+    box_outer: "tuple[float, float, float, float]",
+    box_inner: "tuple[float, float, float, float]",
+    spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> dict:
+    """The ledger that MUST run between two chord-mates stacked a third
+    apart outside the staff (DECISIONS 2026-10-0x), when NEITHER already
+    has a line through it. Looks for it at the exact MIDPOINT between
+    their centres: a thin band there that clears the UNION of the two
+    boxes' own width by `THIRD_STACK_STUB_MARGIN_SPACES` on AT LEAST ONE
+    side is ink-CONFIRMED (returned at the midpoint y -- this module does
+    not re-centre within the small probe band, the convention already
+    names where to look); otherwise the rung is IMPLIED at that exact
+    midpoint and never guessed at a different y (CLAUDE.md rule 8).
+
+    `exclude_boxes`, when given, blanks any OTHER (non-pair) notehead's
+    own ink that is laterally outside the union blob -- never a box that
+    overlaps the blob in x, which could only be one of the pair's own
+    heads or genuinely continuing ink, same reasoning as the rest of
+    this module's exclusion logic.
+
+    Returns `{"y": float, "confirmed": bool}` -- always returns a value
+    (the convention states the ledger EXISTS; "confirmed" only says
+    whether this reader's own ink check happened to see it).
+    """
+    cy_outer = (box_outer[1] + box_outer[3]) / 2.0
+    cy_inner = (box_inner[1] + box_inner[3]) / 2.0
+    mid_y = (cy_outer + cy_inner) / 2.0
+    blob_x0 = min(box_outer[0], box_inner[0])
+    blob_x1 = max(box_outer[2], box_inner[2])
+    margin = THIRD_STACK_STUB_MARGIN_SPACES * spacing
+    h, w = img_gray.shape
+    y_i = int(round(mid_y))
+    y0, y1 = max(0, y_i - 2), min(h, y_i + 3)
+    x0 = max(0, int(blob_x0 - margin - 2))
+    x1 = min(w, int(blob_x1 + margin + 2))
+    if y1 <= y0 or x1 <= x0:
+        return dict(y=mid_y, confirmed=False)
+    window = img_gray[y0:y1, x0:x1].copy()
+    if exclude_boxes:
+        lateral = [
+            b for b in exclude_boxes
+            if b[2] <= blob_x0 or b[0] >= blob_x1
+        ]
+        for (bx0, by0, bx1, by1) in lateral:
+            ex0, ey0 = max(int(bx0), x0), max(int(by0), y0)
+            ex1, ey1 = min(int(bx1) + 1, x1), min(int(by1) + 1, y1)
+            if ex1 > ex0 and ey1 > ey0:
+                window[ey0 - y0:ey1 - y0, ex0 - x0:ex1 - x0] = 255
+    thr = _otsu_threshold(window)
+    ink = window <= thr
+    ink_cols = ink.any(axis=0)
+    bridge = int(round(RUNG_BRIDGE_GAP_SPACES * spacing))
+    runs: list[list[int]] = []
+    n = len(ink_cols)
+    i = 0
+    while i < n:
+        if ink_cols[i]:
+            j = i
+            while j < n and ink_cols[j]:
+                j += 1
+            if runs and i - runs[-1][1] <= bridge:
+                runs[-1][1] = j
+            else:
+                runs.append([i, j])
+            i = j
+        else:
+            i += 1
+    blob_local0, blob_local1 = blob_x0 - x0, blob_x1 - x0
+    for s, e in runs:
+        if s <= blob_local0 - margin or e >= blob_local1 + margin:
+            return dict(y=mid_y, confirmed=True)
+    return dict(y=mid_y, confirmed=False)
+
+
+def insert_rung(
+    rungs_y: "list[float]", sign: float, new_y: float, tol_px: float = 3.0,
+) -> "list[float]":
+    """Insert `new_y` into a nearest-edge-first rung list (round 6) at
+    its correct sorted position, unless a rung already sits within
+    `tol_px` of it (never a duplicate). Nearest-edge-first means
+    DESCENDING y above the staff (sign=-1) and ASCENDING y below it
+    (sign=+1); `sign * y` sorts ascending for both cases."""
+    if any(abs(new_y - ry) <= tol_px for ry in rungs_y):
+        return list(rungs_y)
+    out = list(rungs_y) + [new_y]
+    out.sort(key=lambda ry: sign * ry)
+    return out

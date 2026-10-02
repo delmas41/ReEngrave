@@ -2542,3 +2542,152 @@ on this branch — unchanged from the brief's own stated main baseline).
   rather than attaching to a note. Sean may rename either or ask for a
   different placement.
 touched besides the new test file and this benchmark's own crop script.
+
+---
+
+## §2.12g — collapse the role-twin detector channels before NMS
+
+Branch `lane-2.12g-twins`. STAGED and LEGACY both: `yolo_detector.py` is
+shared (CLAUDE.md §3), so this changes what every consumer of `detect()`
+sees, not only the staged path.
+
+### Manager gate, answered first
+
+Before writing any detector code: of today's same-ink role-twin pairs
+(notehead `*OnLine*`/`*InSpace*`), how many does 2.30/2.42/2.47c already
+settle, and how many survive as two kept boxes? Measured on the committed
+`library/_shared-records/beethoven5-litolff-mvt1-whole-20261001.record.json`
+(no re-gather — a census over rows already on the record), pairing glyphs
+in the same cell sharing a shape core across the `OnLine`/`InSpace` suffix
+at IoU ≥ 0.3:
+
+| | count |
+|---|--:|
+| twin pairs found | 496 (495 note, 1 articulation) |
+| one refused, one kept (2.30/2.42/2.47c already correct) | 266 |
+| **both kept, unrefused** | **197 (40%)** |
+| both refused | 33 |
+
+197 of 496 is far above the "redundant below ~5% / ~20 boxes" stop
+threshold, so the item proceeded. The 33 "both refused" cases are also
+worth noting: a refusal rule firing on EACH half of a twin pair independently
+can delete the only reading of a real note where a GATHER-level merge would
+instead have kept one.
+
+### What was built
+
+`yolo_detector._collapse_role_twins`, called at the end of `detect()`
+(~130 lines incl. comments, no training, no vocabulary change): a twin-
+suffix test derived from the class name itself (`OnLine`/`InSpace`,
+`Above`/`Below`, `Up`/`Down` — NOT a hand-listed class-pair table), a
+same-ink geometry gate ported in shape from
+`notehead_precision._same_mark_centres` (dy < 0.25 staff spaces, dx < 0.5
+head widths, measured LOCALLY off the cell's own staff lines, never a
+page-wide constant — CLAUDE.md §10), and a merge that keeps the
+higher-confidence twin and records the dropped one's class on a new
+`SymbolDetection.detector_role` field. No staff geometry on the cell →
+the whole cell is left untouched (CLAUDE.md rule 8: never guess a merge).
+
+`key*`/`accidental*` is explicitly OUT of this item's scope, narrower than
+the ROADMAP one-liner's own paraphrase: 2.12a already gives that role an
+answer in GATHER (the header-window join), which depends on BOTH detector
+classes existing for one mark — collapsing them here would remove the
+second class that join reads.
+
+**Consumers audited** — does anything branch on the suffix semantically,
+or does it already use geometry / a prefix match that survives the merge
+unaffected:
+- `rhythm._HEAD_BEATS` / `Q.NOTEHEAD_STAFF_POSITION` (`gather.py`): match
+  the shape PREFIX only, never the role suffix — unaffected.
+- `articulation_owner` / `fermata_owner` (2.12f): side comes from measuring
+  the mark against its head, not the `Above`/`Below` suffix — unaffected.
+  (2.12f is itself still open; this item does not depend on it.)
+- `stem_direction` / flag join (2.12e): direction comes from the stem,
+  not the `Up`/`Down` suffix — unaffected.
+- `transcribe.py:473` (LEGACY): strips `OnLineSmall`/`InSpaceSmall`/
+  `OnLine`/`InSpace`/`Small` to normalize to shape — a normalization, not a
+  role branch; sees one box instead of two per twin now, same as STAGED.
+- `clef_locator.py` (2.11's `occupied` veto): keys on `startswith("notehead")`
+  only — unaffected.
+- `class_aliases.py`, `record.py`, `readout.py`, `positional_store.py`,
+  `score_reading.py`: mention `OnLine`/`InSpace` only in comments/docstrings
+  or coarse-name tables, no live branch.
+
+### RED → GREEN
+
+8 unit tests, `tools/omr/tests/test_yolo_role_twin_collapse.py`, exercising
+`_collapse_role_twins` directly (no model load): a twin pair merges to the
+higher-scoring box with `detector_role` recording the dropped twin; two
+DIFFERENT shapes overlapping are untouched; a real chord second at a
+different staff position is untouched; a twin pair far apart in x is
+untouched; no staff geometry abstains the cell from merging; a SAME-suffix
+duplicate (not a twin — 2.30's own job) is untouched; the aggregate "boxes
+never fall below the distinct-ink count" gate. RED-verified by stashing
+`yolo_detector.py`/`template_matcher.py` and re-running (8 of 8 fail — the
+function and field do not exist on the unrepaired tree). Fast tier **4245
+passed** (was 4237, +8), `check` **245** (unchanged).
+
+### Pricing — two re-gathers, base (origin/main) vs arm (this branch),
+GATHER+ADJUDICATE only, `tools.omr.acceptance_quick`, separate worktrees
+and out-roots
+
+| | Brahms (Breitkopf p1) base | Brahms arm | Litolff (p3) base | Litolff arm |
+|---|--:|--:|--:|--:|
+| note gathered | 1015 | 1005 (−10) | 481 | 454 (−27) |
+| note **kept** | 518 | **518 (±0)** | 347 | **344 (−3)** |
+| note refused | 303 | 294 (−9) | 100 | 79 (−21) |
+| note given_away | 52 | 51 (−1) | 21 | 19 (−2) |
+| note narrowed | 142 | 142 (±0) | 13 | 12 (−1) |
+| `stacked_head_duplicate` refusals | n/a (not broken out above) | — | 57 | 38 |
+| `notehead_is_a_duplicate_box` refusals | — | — | 8 | 8 (unchanged — same-class dup, out of scope) |
+
+**Brahms gate clean**: kept count exactly unchanged.
+
+**Litolff's kept count fell by 3** (whole-document re-gather, pages 1-3,
+shows the fuller picture: `readout diff --arm code --family note` reports
+68 glyphs only in base [none only in arm — a MERGE, never a delete of a
+subject neither run shares], 22 of which were KEPT in base, and 12 glyphs
+that flip `refused → kept` between base and arm). Traced every one of the
+22 by box-overlap against the arm record:
+
+- 11 of 12 "kept-only-in-base" noteheads (dedup by same-glyph-key match
+  left 12 of the 22, the rest matched by key with only a stacked_head_fit
+  or GATHER-index change, not a kept/refused change) have an arm survivor
+  at IoU 0.88–1.00 that is ITSELF kept, or is one of the 12 `refused →
+  kept` repairs — i.e. the SAME ink, now correctly kept once instead of
+  (previously) losing to a wrongly-chosen twin. Swept all 516 note cells
+  on the page: of 19 cells whose KEPT population differs between base and
+  arm, **18 are pure count reductions** (N of one shape → N−1 of the same
+  shape — the twin collapse working as intended) and **1 is a genuine
+  class flip**.
+- **The 1 flip, `cell/1/0/3/8`** (crop `out/print/2.12g/00_glyph-1-0-3-8-6.png`):
+  three boxes on one piece of ink in base — `noteheadHalfOnLine` (KEPT),
+  `noteheadHalfInSpace` and `noteheadBlackInSpace` (both refused
+  `stacked_head_duplicate`). The OnLine/InSpace HALF twins collapse to one
+  box in arm, leaving only two candidates in the stacked group instead of
+  three; `_stacked_head_duplicate_refusal`'s own ink-score comparison among
+  the SURVIVORS then picks `noteheadBlackInSpace` instead — the SAME ink
+  now reads as a quarter note where base read a half note. This is a real
+  interaction, not a bookkeeping artefact: removing a losing candidate
+  BEFORE 2.42's ink comparison runs can change which of the REMAINING
+  candidates wins it, because that comparison was written assuming its
+  input is every detector spelling, not a pre-reduced set.
+
+### Verdict: NOT MERGED
+
+The aggregate gate (notehead count must not fall) passes on Brahms cleanly
+and passes on Litolff once traced to real ink (11 of 12 are repairs or
+correct de-duplication, not losses). But the one genuine flip is exactly
+the kind of silent behaviour change CLAUDE.md rule 7 exists to catch before
+trusting a passing aggregate number. Recommendation: send Sean the one
+crop (`out/print/2.12g/00_glyph-1-0-3-8-6.png` — does the plate print a
+half note or a quarter there), and audit whether `_stacked_head_duplicate_
+refusal`'s ink comparison should re-run its own choice knowing a box was
+pre-merged (record `detector_role` IS already on the record for exactly
+this purpose) before merging this branch. Reached: the 859-pair audit
+figure is now 496 on the current tree (most of the gap is 2.12a/b/c/d/e
+landing since the audit, which already resolved some pairs upstream of
+NMS or downstream in ADJUDICATE); the invisible half (sub-threshold splits)
+is still unreached — per FINDINGS §(c)/(e) above, that needs raw per-class
+score access before NMS, which `ultralytics 8.4.50`'s `results.boxes` does
+not expose.
