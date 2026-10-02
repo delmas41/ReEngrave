@@ -223,6 +223,180 @@ _MIN_AUTO_IMGSZ = 64
 _MAX_AUTO_IMGSZ = 2048
 
 
+# ---------------------------------------------------------------------------
+# ROADMAP 2.12g — role-twin channels, one piece of ink, collapsed before a
+# caller ever sees two boxes for it.
+# ---------------------------------------------------------------------------
+#
+# `benchmarks/omr-shape-role-2026-09/FINDINGS.md` §5 row 4 / §(e): a YOLOv8
+# detect head is per-class in its last layer, so `noteheadBlackOnLine` and
+# `noteheadBlackInSpace` are two output channels scoring the SAME ink —
+# `detect()` is called with class-wise NMS (`agnostic_nms=False`), so nothing
+# stops both surviving their own class's suppression and reaching the caller
+# as two boxes for one head. 859 such visible pairs were measured on the two
+# scan records at the time of the audit. This does not reach the INVISIBLE
+# half (a head whose evidence split across both channels and left BOTH under
+# `conf_threshold`) — that needs the raw per-class score tensor before NMS
+# runs at all (FINDINGS §(c): `ultralytics 8.4.50`'s `results.boxes` carries
+# only the post-NMS argmax class and its own score, not every class's score
+# per anchor), which is a larger, unbuilt change. This collapses the
+# ALREADY-EMITTED twin pairs instead — the cheap half that needs no raw
+# tensor access and no re-gather of the model itself.
+#
+# ⚠️ SHAPE stays, ROLE goes. The suffix is stripped to find the twin; the
+# SURVIVING box keeps the higher-scoring twin's own class name (so a
+# consumer reading `smufl_name`'s PREFIX, as `rhythm._HEAD_BEATS` and
+# `Q.NOTEHEAD_STAFF_POSITION` already do per the audit, sees exactly what it
+# saw before) and the dropped twin's class name is recorded on
+# `detector_role` so nothing downstream loses it — see that field's own
+# docstring on `SymbolDetection`. The role itself is never read from either
+# spelling by anything in the product path today (2.12's own principle:
+# shape from the class, role from the geometry — `Q.NOTEHEAD_STAFF_POSITION`,
+# `articulation_owner`'s measured side, `stem_direction`'s measured flag
+# direction).
+#
+# ⚠️ THE SUFFIX TABLE IS A SUFFIX TEST, NOT A HAND-LISTED CLASS-PAIR TABLE —
+# the `_CLEF_CLASSES_INCUMBENT` lesson (`gather.py:259-268`: a hand-written
+# second list admitted the spelling that never occurs and dropped the two
+# that do). Any class ending in one of these six strings is a candidate;
+# which OTHER class it twins with is derived by stripping the suffix and
+# matching the remaining shape core, never spelled out per-class.
+#
+# ⚠️ `key*`/`accidental*` is explicitly OUT OF SCOPE here (unlike the
+# ROADMAP one-liner's own paraphrase): FINDINGS §5's 2.12g entry (the
+# authoritative, measured scope) describes the NARROWER arm as exactly these
+# three suffix families, and 2.12a already gives the accidental/key role a
+# GATHER-level answer (the header-window join) that does not depend on two
+# detector classes existing for one mark — collapsing them here before NMS
+# would remove the second class 2.12a's own join reads.
+_ROLE_TWIN_SUFFIXES: tuple[tuple[str, str], ...] = (
+    ("OnLine", "InSpace"),
+    ("Above", "Below"),
+    ("Up", "Down"),
+)
+
+#: A role-twin merge only ever claims to be the SAME ink, never a chord's
+#: second member drawn beside it. Both gates must agree, same shape as
+#: `notehead_precision._same_mark_centres` (ROADMAP 2.30) — a dy_spaces and
+#: dx_head_widths test, not IoU alone, because IoU alone is exactly what
+#: that rule's own docstring warns is unsafe for a legitimate chord second.
+_TWIN_MAX_DY_STAFF_SPACES = 0.25
+_TWIN_MAX_DX_HEAD_WIDTHS = 0.5
+
+
+def _twin_shape_core(class_name: str) -> tuple[str | None, str | None]:
+    """`(shape_core, suffix)` if `class_name` ends in a role-twin suffix,
+    else `(None, None)`. The suffix test IS the derivation — see the module
+    comment above on why this is not a hand-listed class-pair table."""
+    for a, b in _ROLE_TWIN_SUFFIXES:
+        if class_name.endswith(a):
+            return class_name[: -len(a)], a
+        if class_name.endswith(b):
+            return class_name[: -len(b)], b
+    return None, None
+
+
+def _same_ink_twin(a: "SymbolDetection", b: "SymbolDetection",
+                    spacing_canonical: float) -> bool:
+    """Do `a` and `b` box the SAME piece of ink, never a chord's second
+    member drawn beside it at the same x? Ported unchanged in SHAPE from
+    `notehead_precision._same_mark_centres` (ROADMAP 2.30) — centres, not
+    IoU alone."""
+    if spacing_canonical <= 0:
+        return False
+    ay = a.y_canonical + a.height_canonical / 2.0
+    by = b.y_canonical + b.height_canonical / 2.0
+    dy_spaces = abs(ay - by) / spacing_canonical
+    if dy_spaces >= _TWIN_MAX_DY_STAFF_SPACES:
+        return False
+    head_width = (a.width_canonical + b.width_canonical) / 2.0
+    if head_width <= 0:
+        return False
+    ax = a.x_canonical + a.width_canonical / 2.0
+    bx = b.x_canonical + b.width_canonical / 2.0
+    dx = abs(ax - bx)
+    return dx < _TWIN_MAX_DX_HEAD_WIDTHS * head_width
+
+
+def _cell_spacing_canonical(cell: MeasureCell) -> float | None:
+    """The same per-cell staff-space measurement `imgsz_for_cell` uses — a
+    position test must measure LOCALLY (CLAUDE.md §10), never against a
+    page- or bar-wide constant."""
+    ys = getattr(cell, "staff_line_ys_canonical", None) or []
+    if len(ys) < 2:
+        return None
+    space = (ys[-1] - ys[0]) / (len(ys) - 1)
+    return space if space > 0 else None
+
+
+def _collapse_role_twins(
+    detections: list["SymbolDetection"], cell: MeasureCell,
+) -> list["SymbolDetection"]:
+    """One piece of ink is one reading (ROADMAP 2.12g). Merge same-ink
+    role-twin pairs (see module comment above), keeping the higher-scoring
+    box and recording the dropped twin's class on `detector_role`.
+
+    MERGES, never DELETES: a pair that does not pass `_same_ink_twin`'s
+    geometry gate is left exactly as emitted, same as a pair of genuinely
+    different shapes, or two real chord members. No geometry to measure
+    against (`_cell_spacing_canonical` returns `None`) abstains the whole
+    cell from this merge rather than guessing (CLAUDE.md rule 8) — the
+    pre-2.12g behaviour, unchanged.
+    """
+    if len(detections) < 2:
+        return detections
+    spacing = _cell_spacing_canonical(cell)
+    if spacing is None:
+        return detections
+    n = len(detections)
+    dropped: set[int] = set()
+    survivor_role: dict[int, str] = {}
+    for i in range(n):
+        if i in dropped:
+            continue
+        di = detections[i]
+        core_i, suf_i = _twin_shape_core(di.smufl_name)
+        if core_i is None:
+            continue
+        for j in range(i + 1, n):
+            if j in dropped:
+                continue
+            dj = detections[j]
+            core_j, suf_j = _twin_shape_core(dj.smufl_name)
+            if core_j is None or core_j != core_i or suf_j == suf_i:
+                continue
+            if not _same_ink_twin(di, dj, spacing):
+                continue
+            if di.confidence >= dj.confidence:
+                winner_idx, loser_idx = i, j
+            else:
+                winner_idx, loser_idx = j, i
+            dropped.add(loser_idx)
+            survivor_role[winner_idx] = detections[loser_idx].smufl_name
+            # the loser is gone; stop comparing IT against later boxes, but
+            # the winner (possibly `dj`) keeps comparing against the rest —
+            # re-bind di/suf_i if the winner just became j.
+            if winner_idx == j:
+                di, core_i, suf_i = dj, core_j, suf_j
+    if not dropped:
+        return detections
+    out: list[SymbolDetection] = []
+    for idx, d in enumerate(detections):
+        if idx in dropped:
+            continue
+        role = survivor_role.get(idx)
+        out.append(d if role is None else
+                    SymbolDetection(
+                        cell=d.cell, smufl_name=d.smufl_name,
+                        category=d.category, x_canonical=d.x_canonical,
+                        y_canonical=d.y_canonical,
+                        width_canonical=d.width_canonical,
+                        height_canonical=d.height_canonical,
+                        confidence=d.confidence, pitch=d.pitch,
+                        detector_role=role))
+    return out
+
+
 def imgsz_for_cell(
     cell: MeasureCell,
     target_staff_space_px: float = TARGET_STAFF_SPACE_PX,
@@ -387,7 +561,10 @@ class YoloDetector:
                 confidence=float(conf),
                 pitch=None,
             ))
-        return detections
+        # ROADMAP 2.12g: one piece of ink is one reading. See the module
+        # comment above `_collapse_role_twins` for scope and why this is
+        # the cheap half of the fix, not the invisible-half one.
+        return _collapse_role_twins(detections, cell)
 
     # --------------- diagnostics ---------------
 
