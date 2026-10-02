@@ -2239,3 +2239,133 @@ ledger`: 312 passed. Full `pytest -m "not slow"` run once (see below).
   without a regather).
 - The 9 Litolff + 22 Brahms corpus-wide stacked-thirds pairs from round 6
   were not re-checked against round 7's flatness-validated guard — open.
+
+## lane-ledger-r7, CORRECTED (2026-10-01) — the real records existed;
+   the three-way table; MEASURED NET NEGATIVE; HELD BACK
+
+The coordinator supplied the preserved 2.44c shared records (`library/
+_shared-records/truthset-2.44c-20260930/*.record.json`, symlinked into
+`benchmarks/acceptance/quick/out/.../*.record.json`, not committed) --
+the "round 5 does not reproduce" finding above was about THIS lane's
+fresh worktree having no copy, not about the records not existing. With
+them in place the three-way table runs. This section supersedes the
+real-score claims above; the (a)/(b)/(c) ink measurements and the
+RED→GREEN unit coverage above stand unchanged.
+
+### Round 5 reproduces exactly
+
+Running commit `7ec94862` (pure round 5, no brahms-frame fix) against the
+preserved records: **Litolff 33/8/3, Brahms 7/3/1** — exact match to the
+round-5 table this lane was asked to confirm. Population both docs: 44
+and 11 far heads (`glyph/1/0/10/14/1` excluded), as expected.
+
+### The three-way table
+
+| | Litolff (n=44) | Brahms (n=11) |
+|---|---|---|
+| geometry | 30 right / 14 wrong / 0 abstain | 11 right / 0 / 0 |
+| round 5 code (`7ec94862`, no frame fix) | 33 / 8 / 3 | 7 / 3 / 1 |
+| round 6 + brahms-frame fix (`b82cb566`, no round 7) | 31 / 9 / 4 | 10 / 1 / 0 |
+| round 7, fully enabled (merge+dedup+gap-fill+flatness-revalidated through-head+`require_thin_flat`) | **28 / 13 / 3** | 10 / 1 / 0 |
+| round 7, AS SHIPPED (held back, this branch) | 31 / 9 / 4 | 10 / 1 / 0 |
+
+Brahms' 7/3/1 → 10/1/0 move is entirely the brahms-frame local-staff-line
+fix (already landed on `lane-brahms-frame`, not this lane's own work);
+round 7 changes nothing further on Brahms in either configuration.
+Litolff's 33/8/3 → 31/9/4 move (−2 right) is the SAME frame fix costing a
+small amount there, already measured and reported by that lane
+(`local_staff_lines` reading noise on a few near-boundary heads on
+Litolff's small wander). **Round 7's own marginal effect, isolated
+against the 31/9/4 baseline, is net negative: −3 right if only the
+merge/duplicate-drop/gap-fill cleanups are enabled, −3 right further
+(−6 total) if the flatness-revalidated through-head check and
+`third_stack_rung`'s `require_thin_flat` are enabled too (28/13/3).**
+
+### Half-step control and agree check (round 7 AS SHIPPED, i.e. == round 6+frame)
+
+Control (every head's y shifted one half-step) scores clearly worse than
+31/9/4 and 10/1/0 on both docs (inherited unchanged from round 6 — not
+re-run, since round 7 as shipped is code-identical to round 6+frame for
+every real head). `ledger_measured_position` (the third reader) agree/
+disagree counts are likewise unchanged from round 6, since round 7's new
+functions are not called by any enabled code path.
+
+### Why round 7 regresses, per changed head (round 5 → round 7 fully
+   enabled, since that is the configuration whose table was requested)
+
+8 Litolff + 3 Brahms heads change answer. The 3 Brahms changes (`glyph/
+1/1/8/{4/4,5/0,6/0}`, abstain/wrong → right) are the brahms-frame fix,
+already attributed above. Of the 8 Litolff changes, only ONE is a genuine
+improvement (`glyph/3/0/0/2/9`: wrong → right, a real fix from the
+merge/dedup cleanup touching a rung close to a half-spacing duplicate).
+The other 7 are regressions, and the root cause is the SAME in six of
+them: the flatness-revalidated `has_through_head_rung` samples a
+candidate "through" rung at the box's own STUB points (just past its
+left/right edge, not its centre — centre-sampling was tried first and
+is WRONG by construction: a through rung's own ink is behind the much
+taller notehead body there, see (a)/(b) below) -- but on a dense, stacked
+Litolff chord the neighbouring chord-mate's OWN box sits almost exactly
+where that stub probe looks, corrupting the thickness reading on both
+the pair's own control (`glyph/3/0/0/2/3`, which MUST stay correct per
+Sean's verdict (b) and instead flips to wrong) and five other,
+unrelated heads (`/6/1`, `/7/1`, `/7/4/2`, `/9/2/0`, `/9/2/5`,
+`/1/0/6/0`) whose own stub probes land on a neighbour's ink for the same
+structural reason (Litolff MERGES; stacked-third/adjacent chords are
+exactly where boxes overlap). `glyph/3/0/0/2/3` specifically: measured
+directly -- its real, print-verified through rung (DECISIONS 2026-09-30:
+396.6/413.3/433.2) reads 29-47px at the box CENTRE (the notehead's own
+body, confirming centre-sampling can never work) but only 5px/11px at
+the two STUB points -- 11px fails `LEDGER_THICKNESS_MAX_SPACES`'s 5.5px-
+on-a-15.75-spacing cap, likely because the neighbouring stacked head's
+own ink or anti-aliasing sits in that exact probe window. **This is a
+real, measured limitation of the stub-probe approach on Litolff's dense
+chords, not a bug in the probe's logic** — the fix needs probing OUTSIDE
+both heads' combined extent, or a different signal entirely, and is left
+for a future lane.
+
+### (c) `glyph/3/0/0/6/1`+`/6/2`, end-to-end verified with the real boxes
+
+Real boxes now available: `/6/1` = `(1534.8, 385.675, 1555.105,
+403.035)`, `/6/2` = `(1535.73, 397.3, 1556.035, 416.52)`, spacing=15.875.
+Each head's OWN independent `measure_ledger_rungs` call reproduces round
+6's reported numbers almost exactly (`/6/1`: `[434.48, 417.49, 396.0]`,
+`/6/2`: `[434.0, 414.5]`). Ran `merge_close_rungs`/`drop_duplicate_half_
+spacing_rung` on each head's own list separately, as wired: **neither
+fires** — 417.49 and 396.0 are 21.5px apart (far past the ≤1.5×4-5px≈
+7.5px merge cap) within `/6/1`'s own list, and 434.0/414.5 are 19.5px
+apart within `/6/2`'s own list; 417.49 (from `/6/1`) and 414.5 (from
+`/6/2`) are NEVER in the same list this architecture builds, confirming
+the cross-head-merge gap already flagged above as a real, now
+end-to-end-confirmed limitation, not merely a theoretical one. `/6/1`'s
+own scored verdict (right, pos=-6) and `/6/2`'s (wrong, pos=-5) are
+UNCHANGED across round 5, round 6+frame, and round 7 fully enabled alike
+— this pair's answer never moves under any of this lane's code.
+
+### Verdict: HELD BACK
+
+`ROUND7_CLEANUP_ENABLED = False` (module-level flag, `score_truth_set_
+rungs.py`) gates the merge/duplicate-drop/gap-fill cleanups off by
+default; the flatness-revalidated `has_through_head_rung` call and
+`third_stack_rung`'s `require_thin_flat=True` were reverted outright
+(same proximity-only / no-revalidation calls as round 6). **Round 7 as
+shipped on this branch scores IDENTICALLY to round 6+brahms-frame**
+(31/9/4, 10/1/0 — verified above), i.e. a pure no-op on the real score.
+Every round-7 function remains built, unit-tested (18 RED→GREEN tests,
+fast tier `-k ledger`: 312 passed; full `pytest -m "not slow"`: 4311
+passed, 0 failed, re-run after this correction), and measured against
+real page pixels -- available for a future lane with a sturdier stub
+probe. This is the SAME pattern already established by FAULT 2's
+one-sided rule earlier in this same file ("measured NET NEGATIVE...
+HELD BACK").
+
+### Infinite loop found and fixed, same session
+
+The gap-fill wiring's `while` loop re-probed the same gap forever
+whenever `find_rung_in_gap` found a y within `insert_rung`'s own 3px
+dedup tolerance of an already-present rung (the insert is then a no-op,
+but the loop did not know that and never advanced). Hung the real score
+for 5+ minutes before being caught (CPU-bound, not an exception) and
+killed. Fixed: `continue` only when the ladder's own length actually
+grew; a defensive 20-iteration cap added on top. Caught by running the
+REAL score, not the synthetic unit tests -- none of the 18 round-7 tests
+exercised two back-to-back gaps on one real head's ladder.

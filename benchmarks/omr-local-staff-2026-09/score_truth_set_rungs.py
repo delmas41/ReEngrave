@@ -47,6 +47,18 @@ from tools.omr.pitch_resolver import _CLEF_ANCHORS, diatonic_index  # noqa: E402
 from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 from tools.omr.annotate.ledger_grid import GAP_FILL_RANGE_SPACINGS  # noqa: E402
 
+# lane-ledger-r7 (2026-10-01): the merge/duplicate-drop/gap-fill cleanups
+# and the flatness-revalidated `has_through_head_rung` are each built,
+# RED-first unit-tested, and grounded in real page measurements (FINDINGS
+# "lane-ledger-r7") -- but MEASURED NET NEGATIVE on this real truth set
+# (`beethoven5-litolff` 33/8/3 -> 28/13/3 of 44 with every round-7 piece
+# on; 33/8/3 -> 30/11/3 with only merge/dedup/gap-fill; both lose
+# previously-correct heads, including the explicit control pair
+# `glyph/3/0/0/2/3`). HELD BACK from the live score, same pattern as
+# FAULT 2's one-sided rule in `reader_absolute_position` -- flip this to
+# measure again once a sturdier stub-probe is built.
+ROUND7_CLEANUP_ENABLED = False
+
 
 # ─────────────────────────────────────────────────────────────────────────
 # pitch <-> staff position, inverse of pitch_resolver._pitch_from_position
@@ -174,25 +186,43 @@ def reader_absolute_position(
     # thick ledger (`glyph/3/0/0/6/1`: 417.5/414.5, 3px apart against a
     # 4-5px measured line thickness) merge into one; a rung sitting ~half
     # a spacing from its neighbour is that neighbour's own duplicate edge,
-    # not a ledger a half-step out. Both are additive cleanups of rungs
-    # the walk already found -- neither invents one.
-    items = lg.merge_close_rungs(items, sign, thickness_px=0.35 * spacing)
-    items = lg.drop_duplicate_half_spacing_rung(items, sign, spacing, edge=edge)
+    # not a ledger a half-step out. MEASURED NET NEGATIVE on the real
+    # truth set (`beethoven5-litolff` 33/8/3 -> 30/11/3 of 44 with ONLY
+    # this pair of cleanups enabled, no through-head change at all) --
+    # `glyph/3/0/0/7/1`, `glyph/3/0/7/4/2` and `glyph/3/1/0/6/0` each lose
+    # a previously-correct answer; the merge/drop windows measured on the
+    # three named pairs do not generalise cleanly to the rest of the
+    # population. HELD BACK, same as FAULT 2's one-sided rule above --
+    # see FINDINGS "lane-ledger-r7" for the full per-head diff.
+    if ROUND7_CLEANUP_ENABLED:
+        items = lg.merge_close_rungs(items, sign, thickness_px=0.35 * spacing)
+        items = lg.drop_duplicate_half_spacing_rung(items, sign, spacing, edge=edge)
 
     # ROUND 6 (DECISIONS 2026-10-0x, Sean on the flute chords): two heads
     # of one chord/stem, outside the staff, centres a THIRD apart, with
     # NEITHER already carrying a line through it, necessarily have a
     # ledger BETWEEN them -- feed it into this head's own rung list
     # before the count, exactly like a rung the plain walk found itself.
-    # ROUND 7: `has_through_head_rung` now re-validates a candidate "through"
-    # rung by FLATNESS (`img_gray=gray, spacing=spacing`) -- round 6
-    # measured that a confound (flag ink, an oversized merged box's own
-    # widest row) can register a false "through" rung and wrongly block
-    # this guard on exactly the pairs it was built for (Sean's flute
-    # chords, (a)/(c) above).
+    # ROUND 7 tried making `has_through_head_rung` re-validate a candidate
+    # "through" rung by FLATNESS (`img_gray=gray, spacing=spacing`) --
+    # round 6 measured that a confound (flag ink, an oversized merged
+    # box's own widest row) can register a false "through" rung and
+    # wrongly block this guard on exactly the pairs it was built for
+    # (Sean's flute chords, (a)/(c)). MEASURED NET NEGATIVE with the rest
+    # of round 7 together: Litolff 33/8/3 -> 28/13/3 of 44 -- the SAME
+    # flatness re-check that correctly un-blocks pair (a) also rejects a
+    # genuinely real, print-verified through rung on the CONTROL pair
+    # `glyph/3/0/0/2/3` (measured: its real ledger reads thin 4-5px at the
+    # box's own STUB points but the stub-probe itself still returned a
+    # false negative on this and 5 other previously-correct heads --
+    # chords this close together put a neighbouring head's own ink where
+    # the stub probe looks). HELD BACK -- `img_gray`/`spacing` stay
+    # unpassed here, keeping round 6's own proximity-only behaviour live;
+    # the flatness re-check remains available, unit-tested, and measured
+    # correct on pair (a) in isolation (FINDINGS), for a future lane to
+    # retry with a sturdier stub-probe.
     stack_reason = None
-    if not lg.has_through_head_rung(items, (x0, y0, x1, y1),
-                                     img_gray=gray, spacing=spacing):
+    if not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
         for psub, pbox in page_notehead_boxes:
             if psub == subject:
                 continue
@@ -210,9 +240,10 @@ def reader_absolute_position(
                 gray, ys, (px0 + px1) / 2.0, head_y=pcy,
                 exclude_boxes=p_others, head_box_x=(px0, px1),
             ).get(side, [])
-            p_items = lg.merge_close_rungs(p_items, sign, thickness_px=0.35 * spacing)
-            p_items = lg.drop_duplicate_half_spacing_rung(p_items, sign, spacing)
-            if lg.has_through_head_rung(p_items, pbox, img_gray=gray, spacing=spacing):
+            if ROUND7_CLEANUP_ENABLED:
+                p_items = lg.merge_close_rungs(p_items, sign, thickness_px=0.35 * spacing)
+                p_items = lg.drop_duplicate_half_spacing_rung(p_items, sign, spacing)
+            if lg.has_through_head_rung(p_items, pbox):
                 continue
             # "outer" = farther from the staff edge (the one with the
             # larger |cy - edge|); "inner" = the nearer of the two.
@@ -226,7 +257,6 @@ def reader_absolute_position(
             ]
             res = lg.third_stack_rung(
                 gray, box_outer, box_inner, spacing, exclude_boxes=lateral,
-                require_thin_flat=True,
             )
             items = lg.insert_rung(items, sign, res["y"])
             stack_reason = (
@@ -239,24 +269,41 @@ def reader_absolute_position(
     # walk has so far is a place to LOOK, never a place to assume (Sean:
     # "it is possible for it not to be there due to hand drawn spacing").
     # Only the stacked-thirds pairing above counts a ledger with no ink.
-    ladder = [edge] + items
-    ladder.sort(key=lambda ry: sign * ry)
+    # Folded into the same MEASURED-NET-NEGATIVE / HELD BACK verdict as
+    # the merge/duplicate-drop cleanups above (FINDINGS).
     gap_fill_reason = None
-    i = 0
-    while i + 1 < len(ladder):
-        gap_sp = abs(ladder[i + 1] - ladder[i]) / spacing
-        if GAP_FILL_RANGE_SPACINGS[0] <= gap_sp <= GAP_FILL_RANGE_SPACINGS[1]:
-            found = lg.find_rung_in_gap(
-                gray, ladder[i], ladder[i + 1], cx, spacing,
-                head_box_x=(x0, x1),
-            )
-            if found is not None:
-                items = lg.insert_rung(items, sign, found)
-                ladder = [edge] + items
-                ladder.sort(key=lambda ry: sign * ry)
-                gap_fill_reason = "found_in_gap"
-                continue
-        i += 1
+    if ROUND7_CLEANUP_ENABLED:
+        ladder = [edge] + items
+        ladder.sort(key=lambda ry: sign * ry)
+        i = 0
+        # A found rung within `insert_rung`'s own dedup tolerance of one
+        # already in the ladder changes NOTHING -- without this length
+        # check, re-probing the same unchanged gap forever is an infinite
+        # loop (found running the real score: `find_rung_in_gap` can keep
+        # returning the same near-duplicate y when the gap's own ink is a
+        # single, already-counted feature). Only `continue` (re-check
+        # from the same index, since a fresh insertion can open a NEW gap
+        # before it) when the ladder actually grew.
+        _gap_fill_guard = 0
+        while i + 1 < len(ladder):
+            _gap_fill_guard += 1
+            if _gap_fill_guard > 20:  # defensive cap -- never expected to bind
+                break
+            gap_sp = abs(ladder[i + 1] - ladder[i]) / spacing
+            if GAP_FILL_RANGE_SPACINGS[0] <= gap_sp <= GAP_FILL_RANGE_SPACINGS[1]:
+                found = lg.find_rung_in_gap(
+                    gray, ladder[i], ladder[i + 1], cx, spacing,
+                    head_box_x=(x0, x1),
+                )
+                if found is not None:
+                    before_n = len(items)
+                    items = lg.insert_rung(items, sign, found)
+                    if len(items) > before_n:
+                        ladder = [edge] + items
+                        ladder.sort(key=lambda ry: sign * ry)
+                        gap_fill_reason = "found_in_gap"
+                        continue
+            i += 1
 
     step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
     if step["offset"] is None:

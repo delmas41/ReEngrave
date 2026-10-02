@@ -1253,6 +1253,14 @@ def rung_is_thin_and_flat(
     return (max(measured) - min(measured)) <= 0.5 * cap
 
 
+# How far past a box's own edge the round-7 through-rung re-validation
+# probes for a STUB -- a through-head rung is by definition buried in the
+# notehead's own (much taller) ink at the box's CENTRE, so centre-
+# sampling can never confirm one; it must be checked where the line pokes
+# out past the head instead, same scale as `RUNG_STUB_MIN_SPACES`.
+THROUGH_RUNG_STUB_PROBE_SPACES = 0.25
+
+
 def has_through_head_rung(
     rungs_y: "list[float]", box: "tuple[float, float, float, float]",
     tol_px: float = THROUGH_HEAD_TOL_PX,
@@ -1263,20 +1271,35 @@ def has_through_head_rung(
     already has a line through it gets NOTHING implied -- the convention
     only forces a ledger between two heads that both lack one.)
 
-    `img_gray`/`spacing`, when given (round 7): a candidate that sits in
-    range is also re-validated by `rung_is_thin_and_flat` at the box's own
-    x-centre before it counts -- round 6 measured that a confound (flag
-    ink, an oversized merged box's own widest row) can register a false
-    "through" rung and wrongly block the stacked-thirds guard on exactly
-    the pairs it was built for. `img_gray=None` (the default, and every
+    `img_gray`/`spacing`, when given (round 7): a candidate is also
+    re-validated before it counts -- round 6 measured that a confound
+    (flag ink, an oversized merged box's own widest row) can register a
+    false "through" rung and wrongly block the stacked-thirds guard on
+    exactly the pairs it was built for. The re-check is done at the
+    box's own STUB points (just past its left and right edge), never at
+    its centre: measured directly (`glyph/3/0/0/2/3`, a real print-
+    verified through rung, DECISIONS 2026-09-30) -- the centre column
+    reads 29-47px thick there, because a through rung by definition runs
+    BEHIND the notehead's own (much taller) body ink; the SAME rung
+    measures 4-5px, genuinely thin and flat, at both stubs just past the
+    box's edges, which is where a through rung is actually visible as a
+    line. At least ONE stub passing is enough (the convention's own
+    both-sides rung-finding already required two-sided ink to get this
+    far into `rungs_y` in the first place; this is a sanity re-check, not
+    a re-derivation). `img_gray=None` (the default, and every
     pre-existing caller) keeps the old proximity-only behaviour."""
     y0, y1 = box[1], box[3]
-    cx = (box[0] + box[2]) / 2.0
     for ry in rungs_y:
         if not (y0 - tol_px <= ry <= y1 + tol_px):
             continue
         if img_gray is not None and spacing is not None:
-            if not rung_is_thin_and_flat(img_gray, ry, cx, spacing):
+            stub = THROUGH_RUNG_STUB_PROBE_SPACES * spacing
+            left_x, right_x = box[0] - stub, box[2] + stub
+            left_ok = rung_is_thin_and_flat(img_gray, ry, left_x, spacing,
+                                            require_all_sides=False)
+            right_ok = rung_is_thin_and_flat(img_gray, ry, right_x, spacing,
+                                             require_all_sides=False)
+            if not (left_ok or right_ok):
                 continue
         return True
     return False
