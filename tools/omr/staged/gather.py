@@ -3768,6 +3768,205 @@ def gather_ink(log: Log, cells: Sequence[Any],
                   f"{'' if component_rows else ' (summary row)'}")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A targeted search for a whole rest the detector never boxed -- ROADMAP 2.52
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Fraction of a bar's own width searched FIRST. Sean/DECISIONS 2026-10-01:
+#: "look in the middle of the bar first" -- a whole rest is centred in the
+#: bar, so the middle third is where the engraving puts it; `_widened`
+#: below covers the rest of the bar's interior only if nothing is found here.
+EMPTY_BAR_MIDDLE_FRACTION: Tuple[float, float] = (1.0 / 3.0, 2.0 / 3.0)
+
+
+def _empty_bar_candidate_cells(
+        cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+        detections: Dict[str, List[Any]]) -> List[Any]:
+    """Every cell with NO notehead- or rest-class detection box at all --
+    not one refused, one never drawn. `Q.REST` and the notehead-class rows
+    both start from a detector box in this bar; this search exists for the
+    population neither of them can see (CLAUDE.md §9: "a box it never drew
+    has no subject")."""
+    out = []
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        if any(str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)
+               or str(d.smufl_name).lower().startswith(_REST_PREFIX)
+               for d in dets):
+            continue
+        out.append(c)
+    return out
+
+
+def gather_empty_bar_rest_search(log: Log, cells: Sequence[Any],
+                                 local: Dict[int, Tuple[int, int]],
+                                 detections: Dict[str, List[Any]], *,
+                                 progress: bool = False) -> None:
+    """A targeted ink search, in a bar with no notehead/rest box at all, for
+    a whole rest the detector never drew.
+
+    ⚠️⚠️ SEAN / DECISIONS 2026-10-01: *"If a bar has no notes it should
+    expect to find a whole note rest and look in the middle of the bar
+    first. If it finds it then the bar is complete."* The unboxed-ink lane
+    (`benchmarks/omr-ink-gather-2026-09/FINDINGS.md` §14,
+    `out/print/2.51/litolff-p3-uncovered-contact-sheet.png`) found ~3
+    whole-rest-shaped blobs with NO detector box at all on Litolff p3 --
+    invisible to `Q.REST`, `Q.NOTEHEAD_IS_A_WHOLE_REST` and `size_measure_
+    rest` alike, because every one of them starts from a box the detector
+    drew. This reader does not wait for a box: it re-measures the cell's own
+    connected components directly, exactly as `gather_ink`'s
+    `_ink_components` does, over `cell.image_no_staff` (the staff-erased
+    canonical raster).
+
+    ⚠️ LOCAL, NOT GLOBAL (CLAUDE.md §10: *"anything that uses geometry
+    compared to the staff needs to be measuring locally"*). The shape and
+    position test below reads `cell.staff_line_ys_canonical` -- the SAME
+    per-cell, locally-corrected line positions `_cell_grid` already exposes
+    to every other canonical-frame reader (`OMR_CELL_LINE_TRACE`, ON by
+    default since 2026-09-04) -- never the page-wide `Q.STAFF_LINES` row a
+    scanned staff's tilt and bow can put a half-step off at this bar's own x.
+
+    ⚠️ THE SHAPE TEST IS IMPORTED, NOT RESTATED. `adjudicators.rhythm.
+    _rest_shaped` / `WHOLE_REST_INK_MAX_HEIGHT_SPACES` / `_MIN_ASPECT` /
+    `_MAX_ASPECT` already measure "is this ink the size and proportion of a
+    whole rest" for `Q.NOTEHEAD_IS_A_WHOLE_REST`, in staff-space ratios --
+    frame-independent, so the same test applies unchanged to a canonical-
+    frame component. `WHOLE_REST_STEP` / `_STEP_TOLERANCE` (hangs under the
+    4th line from the bottom) are imported the same way; `HALF_REST_STEP` /
+    `REST_SLOT_TOLERANCE_HALF` are imported too, as the GUARD against the
+    other filled rest shape this search must not confuse: a half rest sits
+    ON the 3rd line (the middle line), not hanging under the 4th, and is
+    excluded before the whole-rest position test ever sees it.
+
+    ⚠️ MIDDLE FIRST, THEN THE WHOLE BAR'S INTERIOR. A measure cell carries no
+    horizontal padding (`measure_extractor` cuts it at the adjacent
+    barlines), so "the bar" and "the cell's own canonical width" are the
+    same quantity. `EMPTY_BAR_MIDDLE_FRACTION` is searched first and a match
+    there is `witness="middle"`; only if nothing in the middle third
+    matches is the rest of the bar's interior searched, `witness="widened"`.
+
+    ⚠️ IT DECIDES NOTHING. `found=True`/`False` is this reader's own test
+    result, not a verdict about what the bar IS --
+    `adjudicate_empty_bar_whole_rest` (ADJUDICATE) is what turns a match
+    into "this bar is a whole-bar rest" and a miss into "this bar stays
+    unread" (CLAUDE.md §2 rule 8: a fallback never converts "cannot tell"
+    into an answer).
+    """
+    if not _ink_enabled():
+        return
+    from .adjudicators import rhythm as _rhythm
+
+    for c in _empty_bar_candidate_cells(cells, local, detections):
+        key = local[c.staff_index]
+        sys_idx, st_idx = key
+        sub = R.cell(c.page_index, sys_idx, st_idx, c.measure_index)
+        frame = frame_cell(c.measure_index)
+
+        comps = _ink_components(c)
+        if comps is None:
+            log.abstain(sub, Q.EMPTY_BAR_REST_SEARCH,
+                        reader=READERS.CV_REST_SEARCH, frame=frame,
+                        reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        grid = _cell_grid(c)
+        img = getattr(c, "image_no_staff", None)
+        width_px = getattr(img, "shape", (0, 0))[1] if img is not None else 0
+        if len(lines) < 5 or grid is None or width_px <= 0:
+            log.abstain(sub, Q.EMPTY_BAR_REST_SEARCH,
+                        reader=READERS.CV_REST_SEARCH, frame=frame,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        _top_y, half_step = grid
+        bottom_line = lines[-1]
+        target_line = lines[1]  # 4th line from the bottom, 2nd from the top
+
+        if not comps:
+            log.observe(sub, Q.EMPTY_BAR_REST_SEARCH, False,
+                        reader=READERS.CV_REST_SEARCH, frame=frame,
+                        found=False, reason="no_ink", bar_width_px=width_px)
+            continue
+
+        def step_of(y_center: float) -> float:
+            return (bottom_line - y_center) / half_step
+
+        mid_lo = width_px * EMPTY_BAR_MIDDLE_FRACTION[0]
+        mid_hi = width_px * EMPTY_BAR_MIDDLE_FRACTION[1]
+
+        candidates = []  # (deviation, witness, component, detail)
+        for (x, y, w, h, _area) in comps:
+            if w <= 0 or h <= 0:
+                continue
+            spacing = half_step * 2.0
+            width_spaces = w / spacing
+            height_spaces = h / spacing
+            aspect = width_spaces / height_spaces
+            x_center = x + w / 2.0
+            y_center = y + h / 2.0
+            step = step_of(y_center)
+
+            if not _rhythm._rest_shaped(height_spaces, aspect):
+                continue
+            # ⚠️ THE HALF-REST GUARD, BEFORE THE WHOLE-REST POSITION TEST.
+            # A half rest sits ON the 3rd line (the middle line) -- closer
+            # to `HALF_REST_STEP` than to `WHOLE_REST_STEP` -- and must not
+            # be read as a whole rest one line away.
+            dev_whole = abs(step - _rhythm.WHOLE_REST_STEP)
+            dev_half = abs(step - _rhythm.HALF_REST_STEP)
+            if (dev_half <= _rhythm.REST_SLOT_TOLERANCE_HALF
+                    and dev_half < dev_whole):
+                continue
+            if dev_whole > _rhythm.WHOLE_REST_STEP_TOLERANCE:
+                continue
+
+            witness = ("middle" if mid_lo <= x_center <= mid_hi
+                       else "widened")
+            detail = {
+                "ink_bbox_canonical": [x, y, x + w, y + h],
+                "width_spaces": round(width_spaces, 3),
+                "height_spaces": round(height_spaces, 3),
+                "staff_step": round(step, 3),
+                "target_line_canonical_y": round(target_line, 2),
+                "witness": witness,
+            }
+            candidates.append((dev_whole, witness, detail))
+
+        middle_hits = [c for c in candidates if c[1] == "middle"]
+        pool = middle_hits or candidates
+        if not pool:
+            log.observe(sub, Q.EMPTY_BAR_REST_SEARCH, False,
+                        reader=READERS.CV_REST_SEARCH, frame=frame,
+                        found=False, reason="not_rest_shaped_or_positioned",
+                        bar_width_px=width_px, n_components=len(comps))
+            continue
+
+        pool.sort(key=lambda t: t[0])
+        _dev, witness, detail = pool[0]
+        # ⚠️ PAGE-FRAME BOX, SAME DERIVATION `gather_ink`'s per-component
+        # branch uses -- so a crop pass can draw the found box without a
+        # second canonical-to-page conversion living in two places.
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        if up and cell_box and len(cell_box) == 4:
+            x0, y0, x1, y1 = detail["ink_bbox_canonical"]
+            detail["bbox_page_px"] = [cell_box[0] + x0 / up,
+                                      cell_box[1] + y0 / up,
+                                      cell_box[0] + x1 / up,
+                                      cell_box[1] + y1 / up]
+        log.observe(sub, Q.EMPTY_BAR_REST_SEARCH, True,
+                    reader=READERS.CV_REST_SEARCH, frame=frame,
+                    found=True, bar_width_px=width_px, **detail)
+        if progress:
+            print(f"  gather empty-bar rest search {sub.to_key()}: "
+                  f"found ({witness})")
+
+
 #: ⚠️ THE WINDOW IS A NOTEHEAD, (width, height) in STAFF SPACES. 1.3 is the
 #: notehead width `notehead_precision` measured (the width floor costs 0 of
 #: 103 confirmed heads -- CLAUDE.md §10); 1.0 is one space, a head's height.
@@ -7531,6 +7730,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # reading `cell.image_no_staff` in common with it and `cell.binary`
         # besides.
         gather_notehead_ink(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.52, AFTER `gather_detections` (it needs this cell's own
+        # boxes to tell whether it has NO notehead/rest box at all) and
+        # BESIDE `gather_ink`/`gather_notehead_ink`: the same erased raster,
+        # `READERS.CV_REST_SEARCH` says so, but only for a bar neither of
+        # those readers has anything boxed to measure.
+        gather_empty_bar_rest_search(log, cells, local, detections,
+                                     progress=progress)
         # ⚠️ ROADMAP 2.42, AFTER `gather_notehead_ink` AND `gather_cv_lines`:
         # the stacked-head fit reads THIS cell's own `Q.STEM` rows (already
         # filed by `gather_cv_lines`, above) and re-derives the same

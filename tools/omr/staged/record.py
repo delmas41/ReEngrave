@@ -1306,6 +1306,35 @@ class Q(_Vocab):
     #: only the middle of that population, so a phantom note whose rest is
     #: shaped unlike the median is not caught here.
     NOTEHEAD_IS_A_WHOLE_REST = "notehead_is_a_whole_rest"
+    #: ROADMAP 2.52 (Sean/DECISIONS 2026-10-01: *"If a bar has no notes it
+    #: should expect to find a whole note rest and look in the middle of the
+    #: bar first. If it finds it then the bar is complete."*). A bar with
+    #: NO notehead- or rest-class detection box at all -- not a box refused,
+    #: a box never drawn -- is otherwise invisible to every other rest
+    #: reading in this file, all of which start from a `Q.REST` or
+    #: `Q.NOTEHEAD_CLASS` box the detector already filed. This quantity is
+    #: GATHER's own targeted ink search of such a bar for a whole-rest
+    #: SHAPED, whole-rest POSITIONED blob the detector never boxed: a filled
+    #: rectangle hanging directly under the staff's 4th line (2nd from the
+    #: top), centred in the bar, found in the bar's own MIDDLE third first
+    #: and the rest of the bar's interior second.
+    #:
+    #: ⚠️ A SEARCH RESULT, NOT A VERDICT. GATHER decides nothing (CLAUDE.md
+    #: Sec.4a): this quantity states only whether the shape-and-position test
+    #: found a match, where, and by which witness (`middle`/`widened`).
+    #: `adjudicate_empty_bar_whole_rest` is the ADJUDICATE decision that
+    #: reads it.
+    EMPTY_BAR_REST_SEARCH = "empty_bar_rest_search"
+    #: ADJUDICATE's own decision over `Q.EMPTY_BAR_REST_SEARCH`
+    #: (`adjudicate_empty_bar_whole_rest`): does a found match mean this
+    #: BAR is a whole-bar rest? A separate quantity from the GATHER row
+    #: it reads, deliberately -- `Q.EMPTY_BAR_REST_SEARCH` is this
+    #: raster's own shape-and-position test result (an IDENTIFICATION, can
+    #: be wrong about what the ink is); this is the WEIGHING of that
+    #: result against CLAUDE.md §2 rule 8 (a miss is never "no rest here",
+    #: only "not found"), the same INTERPRETATION claim `Q.UNREAD_MARK` and
+    #: `Q.NOTEHEAD_IS_A_WHOLE_REST` make one stage over.
+    EMPTY_BAR_WHOLE_REST = "empty_bar_whole_rest"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -1914,6 +1943,16 @@ CLAIMS: "dict[str, str]" = {
     #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
     #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
     "INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
+    #: FIT` are -- the shape-and-position test has already weighed this
+    #: cell's own components against a template (whole-rest-shaped AND
+    #: whole-rest-positioned), so the claim is INTERPRETATION, not a raw
+    #: measurement of this raster alone.
+    "EMPTY_BAR_REST_SEARCH": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.52: ADJUDICATE's weighing of `Q.EMPTY_BAR_REST_SEARCH`'s
+    #: result -- an INTERPRETATION, same reason as `Q.UNREAD_MARK` and
+    #: `Q.NOTEHEAD_IS_A_WHOLE_REST`.
+    "EMPTY_BAR_WHOLE_REST": CLAIM.INTERPRETATION,
     #: ROADMAP 3.4g-3: an ink FRACTION under one ledger box -- a ruler
     #: reading off the erased raster, naming nothing.
     "LEDGER_INK_UNDER": CLAIM.MEASUREMENT,
@@ -2295,6 +2334,14 @@ class READERS(_Vocab):
     #: its matched `Q.STEM` row's centre x rather than asking where the
     #: box's own fill peaks.
     CV_NOTEHEAD_STEM_CROSS_INK = "cv_notehead_stem_cross_ink"  # gather: ink split by stem x
+    #: `gather.gather_empty_bar_rest_search` -- ROADMAP 2.52. Reads the SAME
+    #: `cell.image_no_staff` raster `CV_INK` et al. read (one crop, one
+    #: signal, per `CV_INK`'s own entry), but only on a cell with NO
+    #: notehead- or rest-class detection box at all, asking a question none
+    #: of the above ever ask: is there a whole-rest SHAPED, whole-rest
+    #: POSITIONED piece of ink hanging under the staff's 4th line, that the
+    #: detector never boxed.
+    CV_REST_SEARCH = "cv_rest_search"        # gather: whole-rest search in a boxless bar
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor

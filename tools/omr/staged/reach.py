@@ -68,6 +68,13 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
+    Q.EMPTY_BAR_WHOLE_REST: (
+        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.52 "
+        "is GATHER+ADJUDICATE only (Sean, 2026-09-30: 'I want all our tests "
+        "for now to just be the first 2 stages'). Wiring this verdict into "
+        "`size_measure_rest`/`export.py` so a found whole rest actually "
+        "sizes the bar is explicitly OUT of scope for this lane and is the "
+        "obvious next item if the search is confirmed against the print."),
     Q.HUMAN_VERDICT_STANCE: (
         "⚠️ PRODUCER ONLY BY DESIGN, NOT AN UNCLOSED GAP — roadmap 3.4. A "
         "human's `agree`/`disagree` is filed AGAINST a verdict and must never "

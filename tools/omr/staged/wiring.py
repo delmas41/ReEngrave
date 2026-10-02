@@ -220,6 +220,18 @@ KNOWN_GAPS: Dict[str, str] = {
     # checked at landing time: written in `staged/gather.py`, named by NOTHING
     # outside it and outside tests. They are inventoried with a reason, never
     # suppressed -- `KNOWN_GAPS` is an inventory and anything not on it fails.
+    "DETAIL Q.EMPTY_BAR_REST_SEARCH.bar_width_px": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.52. The bar's own canonical "
+        "width, so a crop pass can draw the bar's extent without re-deriving "
+        "it from `cell.image_no_staff` a second time. No code consumes it; "
+        "it is recorded for the crop/report script, not threaded to a "
+        "decision."),
+    "DETAIL Q.EMPTY_BAR_REST_SEARCH.n_components": (
+        "how many connected-ink components this cell's search considered, "
+        "written only on the `not_rest_shaped_or_positioned` miss so a "
+        "report can tell 'found nothing because there was no candidate ink' "
+        "from 'found nothing because every candidate failed the test'. "
+        "Recorded-only; no consumer."),
     "DETAIL Q.MARGIN_LABEL.rungs_requested": (
         "⚠️ RECORDED-ONLY BY DESIGN, and it is the fix PR #34 said had to "
         "land BEFORE the default moved. The record stamped every label "

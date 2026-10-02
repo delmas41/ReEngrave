@@ -549,6 +549,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
     # ── a fit: position already interpreted ─────────────────────────────────
     "KEYSIG_CLEF_FIT": (DERIVED_FIT, "which clef's slot table fits.", None),
     "KEYSIG_TEMPLATE_FIT": (DERIVED_FIT, "the template reader's answer.", None),
+    # ⚠️ ROADMAP 2.52. A deterministic shape-AND-position test over this
+    # cell's own connected components (imported from `adjudicators.rhythm.
+    # _rest_shaped`/`WHOLE_REST_STEP`), not an argmax with a probability --
+    # the same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_FIT` carry no score.
+    "EMPTY_BAR_REST_SEARCH": (
+        DERIVED_FIT, "whether a whole-rest-shaped, whole-rest-positioned "
+        "piece of ink was found in a bar with no notehead/rest box at all.",
+        None),
 }
 
 
@@ -659,6 +667,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # only, same reason `CV_NOTEHEAD_RECENTRE`/`CV_STACKED_HEAD_FIT` do.
     "CV_NOTEHEAD_STEM_CROSS_INK": ("staged/gather.py",
                                    "gather_notehead_stem_cross_ink"),
+    # ⚠️ ROADMAP 2.52. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
+    "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
