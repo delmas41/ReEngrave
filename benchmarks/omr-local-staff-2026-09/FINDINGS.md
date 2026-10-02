@@ -1629,3 +1629,190 @@ either).
 
 `out/print/ledgers/measured/` (19 crops) + `out/print/ledgers/
 measured_sheet.png` (contact sheet), same style as prior rounds.
+
+## lane-ledger-rungs round 5 (2026-10-0x) — three faults in the rung READ
+
+Scope, as every prior round: `tools/omr/annotate/ledger_grid.py`
+(`measure_ledger_rungs`, `_band_centers`, `_walk_ladder`,
+`_exclude_other_heads_ink`), the stand-alone CV reader this directory's
+contact sheets and `tools/omr/annotate/server.py`'s click-to-box snap use.
+Not STAGED's own production ledger reader (`gather._observe_ledger_rung_
+ink`/`ownership.cv_rungs`); no default touched. Record: an existing
+`acceptance_quick` output (litolff p3 + brahms p1, dated 2026-09-30
+20:13, read from a sibling worktree, no re-gather run by this lane) —
+reproduces round 3's own committed table exactly (Litolff 30/8/6 of 44,
+Brahms 7/3/1 of 11), confirming it is a valid stand-in.
+
+### Before coding: real examples of each fault, and what the code did
+
+**Fault 1, clean middle ledger missed — three real examples, two causes.**
+
+- `glyph/3/0/9/2/0` and `glyph/3/0/9/3/5` (Litolff p3, both truth=11,
+  both abstained `no_rungs`): both sit in a tight chord stack with a
+  neighbour (`glyph/3/0/9/2/9`, `glyph/3/0/9/3/11`) whose own box is
+  nearly as wide as the `WINDOW_HALF_WIDTH_SPACES` candidate window
+  itself. `_exclude_other_heads_ink`'s "does this neighbour's ink
+  continue past its own box on both sides" check used a fixed `check_px`
+  margin (~0.10 spacing, ~2px) measured only within the window's own
+  narrow crop — for `glyph/3/0/9/2/0` the real ledger's near-side ink sat
+  4px past the box edge, just outside that 2px margin, so the real rung
+  between the two stacked heads was masked as "the neighbour's own ink"
+  and the walk abstained with nothing at all.
+- `glyph/1/0/10/8/1` (Litolff p1, truth=-2, abstained `no_rungs`): the
+  only real candidate band sat 22.5px out from the edge, 1.24px past
+  `_walk_ladder`'s strict `WALK_WINDOW` upper bound (21.26px) — but the
+  TARGET (the head's own y) sat 21.24px out, 0.02px INSIDE that same
+  bound. Because the widen trigger only fired when `dist_to_target >
+  base_upper`, and the target technically fit, the window never widened
+  at all even though the one real candidate was a hair's width away.
+
+**Fault 2, one-sided ledgers beside a space-sitting head.** Searched the
+full far-head population on both count pages (403 + 492 candidate
+glyphs) for a thin, real (non-head, non-detector-artefact), length-
+qualifying band that fails the both-sides stub test on one side only.
+Found none outside a head's own box with real evidence behind it —
+every candidate that LOOKED one-sided under a relaxed length test turned
+out to be either a false detector box on header/clef ink (not a real
+notehead subject at all) or failed once the module's own thinness/peak
+test was applied honestly. Built per Sean's stated convention and
+verified geometrically necessary (see below), but NOT demonstrated as a
+live bug on this corpus — reported as measured, not invented.
+
+**Fault 3, horizontal drift.** Measured the x-centre of every rung found
+across several real multi-rung heads (`glyph/3/0/0/2/1`, `glyph/3/0/0/2/
+4`, `glyph/3/0/9/2/5`, two Brahms examples): consecutive rungs drift
+0.5–7px from the fixed probe column, well inside the existing window's
+own ±WINDOW_HALF_WIDTH_SPACES reach. Real drift in this corpus never
+escapes the window, so the fixed-column walk already tolerates it — the
+fault is real (Sean's own convention: hand-drawn ledgers are not
+x-aligned) but not large enough here to flip a verdict. Built and tested
+as a genuine, general-purpose recovery mechanism; measured inert (adds
+nothing, changes nothing) on the real corpus.
+
+### The three fixes
+
+1. **`_exclude_other_heads_ink`** now falls back to a wider read off the
+   FULL page image (never the window's own crop) when the narrow local
+   margin finds no continuation on one side, using the excluded box's
+   TRUE (un-clipped) edges — not the window-clamped ones, which a first
+   pass wrongly used and which regressed `test_excluding_the_neighbor_
+   box_removes_the_fake_rung` (fixed by reading the box's real edges).
+2. **`_select_next_candidate`** (new, factored out of `_walk_ladder`'s
+   own loop body, identical behaviour) now widens the walk's search
+   whenever the strict window is empty and a target is known — not only
+   when the target itself sits beyond the window — so a real candidate
+   sitting a hair past the strict bound is still reached. The widened
+   bound never shrinks below the old one, so this only ever ADDS
+   candidates the old trigger missed.
+3. A **drift-following rescan** (fault 3): after the ordinary fixed-
+   column walk, if at least one rung was found, its own ink run is
+   re-measured directly off the page (`_row_ink_center`) and — only if it
+   has genuinely drifted — ONE more step is tried at that x instead of
+   the original column, recovering a rung that has wandered out of the
+   fixed window's reach entirely. Additive only: never changes an
+   existing answer, only appends one the fixed column could not see.
+
+**Fault 2 was built but is NOT wired into the real-scoring path.**
+`_band_centers` accepts a `head_box_y` parameter: a row through the
+subject's own box still needs both-sides stubs (indistinguishable from
+the head's own outline); a row outside it may qualify with a real span
+on one side alone. Measured and PROVEN geometrically: within the plain
+window (half-width 1.1 spacing), a one-sided span can never reach
+`RUNG_MIN_LEN_SPACES` (1.3 spacing) while failing the OTHER stub at all —
+the arithmetic is exactly 0.05 spacing short — so the rule is inert
+there regardless of real-world evidence. Widening the window to make
+room (`ONE_SIDED_WINDOW_HALF_WIDTH_SPACES`) and wiring it into the real
+score **regressed Litolff from 33→31 right of 44** (an extra, spurious
+one-sided "rung" changes `derive_far_head_step`'s own rung COUNT even
+though it only ever appends — not safely additive at the final
+position). Reverted to a bounded, additive SUPPLEMENTARY step (same
+shape as fault 3's drift step: one extra wider-window probe past the
+current last anchor, only when `head_box_y` is supplied) — still net
+negative when wired into `score_truth_set_rungs.py` (same regression),
+so **`head_box_y` is not passed there at all**; the real score and every
+crop in this round reflect the UNCHANGED (fault-1 + fault-3 only)
+reader. Fault 2 ships as tested, correct-per-convention code behind an
+opt-in parameter that the shipped path does not use (CLAUDE.md rule 7:
+measured, not assumed safe).
+
+### RED → GREEN
+
+`tools/omr/tests/test_ledger_rungs_round5_2026_10_01.py`, 14 tests.
+Confirmed RED against the pre-round-5 file (`git show HEAD:...` into a
+scratch module): `ImportError: cannot import name '_select_next_
+candidate'` — collection fails outright. All 14 green after. Controls:
+a neighbour box with no real continuation stays excluded even at the
+wider margin; the widen fix never invents past target+slack; a one-
+sided span is refused without `head_box_y` and refused through the
+head's own box even with it; both-sided rungs read identically with or
+without `head_box_y`; an evenly-aligned ladder (no drift) reads
+identically with or without the drift step; the drift step never
+invents a rung with no ink anywhere. Fast tier `-k ledger`: 254 passed
+(240 + 14), 2 xfailed, 0 failed. Full `pytest -m "not slow"`: 4,258
+passed, 3 skipped, 2 xfailed, 0 failed (unchanged outside this lane's
+own new tests).
+
+### Re-scored — STAFF POSITION, never pitch (CLAUDE.md §6b)
+
+| doc | metric | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry | 30 | 14 | 0 | 44 |
+| Litolff | rungs, round 3 (before) | 30 | 8 | 6 | 44 |
+| Litolff | rungs, round 5 (after) | 33 | 8 | 3 | 44 |
+| Brahms | geometry | 11 | 0 | 0 | 11 |
+| Brahms | rungs, round 3 (before) | 7 | 3 | 1 | 11 |
+| Brahms | rungs, round 5 (after) | 7 | 3 | 1 | 11 |
+
+Litolff: +3 right, same wrong, 6→3 abstain, all three newly-right heads
+previously abstained (`glyph/1/0/10/8/1`, `glyph/1/0/3/7/3`,
+`glyph/3/0/7/3/1` — the fault-1b widen fix and its knock-on effects).
+Brahms unchanged: its one fault-1a-shaped case (`glyph/1/1/8/4/4`)
+remains abstaining after the fix — the neighbouring chord's own ink
+genuinely occludes the row at the probe column for this specific
+subject (confirmed by direct pixel inspection), a detector/occlusion
+limit this fix does not reach, not a bug.
+
+**Agree check** (geometry vs rungs, round 5): Litolff of 44, both agree
+on 27 (26 right), disagree on 17 (rungs right 7, geometry right 10, both
+wrong 0); i.e. where the two disagree, geometry is still right more
+often on this small sample, consistent with earlier rounds' own
+reporting — rungs' gain this round is entirely recovered abstentions,
+not a reversal of the agree/disagree balance.
+
+**Control that can fail**: every probed head's y offset by one
+half-step — Litolff 16/26/2 (vs 33/8/3), Brahms 3/7/1 (vs 7/3/1), both
+clearly worse.
+
+**`glyph/3/0/9/2/0`'s own fix, not reflected in the right/wrong table**:
+the real middle ledger IS now found (band at the correct position,
+`no_rungs` → `ambiguous gap 0.34 sp`) but the gap still falls between
+`TOUCH_TOL_SPACES` (0.20) and `HALF_LEDGER_TOL_SPACES` (0.35) and
+correctly abstains rather than guess (CLAUDE.md rule 8) — real evidence
+recovered, final verdict unchanged. `glyph/3/0/9/3/5` (same chord)
+remains a genuine occlusion gap, confirmed above.
+
+### Crops
+
+`out/print/ledgers/r5/` (18 crops + `index.md`): the 4 heads whose
+answer changed (listed first, with the round-3 committed reader's own
+answer shown alongside round 5's for comparison), plus every head still
+wrong (10) or abstaining (4) after round 5. One pixel-check near-miss
+on a changed head (`glyph/1/0/3/7/3`, rung coverage 0.43 vs the 0.5
+floor) is a bridged white gap inside the hollow notehead the rung passes
+through (the module's own documented `RUNG_BRIDGE_GAP_SPACES` behaviour,
+confirmed by eye against the crop — a real rung, not a measurement
+bug); the pre-existing, unexplained Brahms count-page staff-line MISSes
+noted in rounds 2–3 persist unchanged, not chased further here. Contact
+sheet: `out/print/ledgers/r5_sheet.png` (18 tiles, changed heads first).
+
+### Not done / open
+
+- Fault 2 has no demonstrated real trigger on this corpus and is not
+  wired into the shipped reader — open for a lane with real evidence of
+  a one-sided ledger beside a space-sitting head, and a probe strategy
+  that does not reuse the same window the both-sides walk depends on.
+- `glyph/3/0/9/3/5`'s occlusion gap is a detector/ink limit, not a
+  reader bug — not chased further.
+- The 8 Litolff "through-head but wrong ledger" and 3 Brahms "touching
+  but reference disagrees" causes from round 3 persist unchanged; this
+  round did not target them.

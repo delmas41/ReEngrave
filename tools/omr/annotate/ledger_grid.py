@@ -112,6 +112,47 @@ RUNG_BOX_VISIBILITY_SPACES = 0.85
 # space between the lower ledger lines and the one right underneath the
 # note").
 TARGET_SLACK_SPACES = 0.5
+# FAULT 1 (round 5, DECISIONS 2026-10-0x): round 1's widen trigger only
+# fired when the TARGET itself sat beyond `base_upper` -- but on
+# `glyph/1/0/10/8/1` (Litolff p1) the target (the head's own y) sits
+# WITHIN base_upper by a hair (21.24 vs 21.26 px) while the only real
+# candidate band sits just OUTSIDE it (22.5 vs 21.26 px): the window never
+# widens at all, the walk finds nothing, and the head abstains even though
+# a real rung is one pixel away. Widen whenever the strict window comes up
+# EMPTY and a target is known, regardless of whether the target itself
+# would have fit -- the widened upper bound is never less than the old
+# one, so this can only ADD candidates the strict window missed, never
+# remove one it already had.
+NEIGHBOR_CONTINUES_MARGIN_SPACES = 0.30
+# FAULT 1 (round 5): the "does this other head's ink continue past its
+# OWN box on both sides" check (round 2's `_exclude_other_heads_ink`) used
+# a fixed `check_px` margin measured ONLY within the already-cropped
+# candidate window -- for a chord stacking several heads at nearly the
+# same x (`glyph/3/0/9/2/0`, `glyph/3/0/9/3/5`, Litolff p3), the excluded
+# neighbour's own box is nearly as wide as that window, leaving only a
+# few px of margin on each side: not enough room for the old fixed check
+# to prove the real ledger between the two heads continues past it, so a
+# genuine CLEAN MIDDLE LEDGER between two stacked heads was dropped
+# entirely (abstain, never a false rung). Reading directly off the FULL
+# page image -- never the window's own crop, same lesson as round 3's
+# `_rung_row_clears_box` -- with this wider margin finds it (measured:
+# 0.30 spacing margin, read on the full image, recovers both real cases;
+# the window's own ~0.10-spacing check_px could not, however widened,
+# because the window itself ran out of room first).
+DRIFT_FOLLOW_MIN_PX_SPACES = 0.15
+# FAULT 2 (round 5): the plain candidate window (+-WINDOW_HALF_WIDTH_SPACES,
+# 2.2 spacing wide total) cannot fit a one-sided span long enough to pass
+# RUNG_MIN_LEN_SPACES (1.3) while failing the OTHER side's stub
+# (RUNG_STUB_MIN_SPACES, 0.15) at all -- the arithmetic is exact: a span
+# starting just past the near-side stub (1.1 - 0.15 = 0.95 spacing from
+# centre) and 1.3 spacing long would need to reach 1.15 spacing from
+# centre, 0.05 spacing PAST the plain window's own edge (1.1). So a one-
+# sided rung can never be seen at all without more room. Only when
+# `head_box_y` is supplied (a caller that knows the subject and wants
+# the one-sided rule) is the ink window widened to make room for it --
+# every pre-existing caller (`head_box_y=None`) keeps the old, narrower
+# window and is completely unaffected.
+ONE_SIDED_WINDOW_HALF_WIDTH_SPACES = WINDOW_HALF_WIDTH_SPACES + RUNG_MIN_LEN_SPACES
 # Sean's 2026-10-01 convention for turning a rung count into a step: the
 # head is placed by the GAP between the last CLEAN rung found and the
 # head's own NEAR edge (the side of its box closest to the staff), not by
@@ -149,6 +190,7 @@ def _otsu_threshold(values: np.ndarray) -> int:
 
 def _band_centers(
     ink: np.ndarray, cx_local: float, spacing: float, y_offset: int,
+    head_box_y: "tuple[float, float] | None" = None,
 ) -> list[float]:
     """Thin bands of long ink spans crossing x=cx_local. Returns centre ys
     in image coordinates (y_offset is the window's top row).
@@ -157,6 +199,19 @@ def _band_centers(
     RUNG_BRIDGE_GAP_SPACES — the rung printed THROUGH an on-line hollow
     notehead is split by the head's white counter and no single run crosses
     the probe column there.
+
+    `head_box_y`, when given, is the SUBJECT's own box (y0, y1) in the
+    SAME image coordinates as `y_offset`. FAULT 2 (round 5, DECISIONS
+    2026-10-0x, Sean: "a ledger above/below the head sitting in a space
+    may extend on ONE side only"): the both-sides stub test applies only
+    to a row that runs THROUGH the head (its y falls inside `head_box_y`)
+    -- there, both sides are required exactly as before, because a
+    one-sided span there is indistinguishable from the head's own
+    outline. A row whose y falls OUTSIDE the head's own box cannot be the
+    head's outline by construction, so a long enough span reaching past
+    the probe column on EITHER side alone (never neither) is accepted as
+    a real ledger beside the head. `head_box_y=None` (the default, and
+    every pre-existing caller) keeps the old both-sides-always behaviour.
     """
     h, w = ink.shape
     lo = int(cx_local - CROSS_HALF_WIDTH_SPACES * spacing)
@@ -183,16 +238,28 @@ def _band_centers(
                 spans[-1][1] = e
             else:
                 spans.append([s, e])
+        through_head = (
+            head_box_y is not None
+            and head_box_y[0] <= (yi + y_offset) <= head_box_y[1]
+        )
         best = 0.0
         for s, e in spans:
+            if e - s < min_len or s > hi or e < lo:
+                continue
+            both_sides = s <= stub_lo and e >= stub_hi
             # A rung must cross the probe column AND extend at least a
             # stub past the probed x on BOTH sides -- a span that is long
             # overall but lopsided (e.g. a merged bridge that pulled in
             # unrelated ink far to one side while barely touching the
             # other) is not a ledger drawn through this head (DECISIONS
-            # 2026-10-01).
-            if (e - s >= min_len and s <= hi and e >= lo
-                    and s <= stub_lo and e >= stub_hi):
+            # 2026-10-01). FAULT 2 (round 5): that requirement is for a
+            # row THROUGH the head only -- a row outside the head's own
+            # box cannot be the head's outline, so one real side is
+            # enough (Sean: a ledger beside a head in a space "may extend
+            # on ONE side only").
+            one_side = (not through_head and head_box_y is not None
+                        and (s <= stub_lo or e >= stub_hi))
+            if both_sides or one_side:
                 best = max(best, float(e - s))
         span_len[yi] = best
 
@@ -238,6 +305,92 @@ def _band_centers(
     return bands
 
 
+def _select_next_candidate(
+    anchor: float, sign: float, bands: list[float], pitch: float,
+    spacing: float, target_y: float | None,
+) -> "tuple[float | None, bool]":
+    """One step of `_walk_ladder`'s own selection rule, factored out so
+    the drift-following rescan (`measure_ledger_rungs`, round 5) can reuse
+    it against a freshly-probed `bands` list without duplicating the
+    window/widen arithmetic. Returns (candidate_y_or_None, widened).
+    """
+    base_upper = WALK_WINDOW[1] * pitch
+    cands = [
+        b for b in bands
+        if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= base_upper
+    ]
+    widened = False
+    if not cands and target_y is not None:
+        # FAULT 1 (round 5, DECISIONS 2026-10-0x, `glyph/1/0/10/8/1`):
+        # widen whenever the strict window is empty and a target is
+        # known -- not only when the target ITSELF sits beyond
+        # `base_upper`. The target can sit just inside the window while
+        # the only real candidate band sits a hair past it (hand-drawn
+        # ledger spacing is not exact); `upper` never shrinks below the
+        # old `base_upper`, so this only ever ADDS candidates the old,
+        # narrower trigger would have missed.
+        dist_to_target = sign * (target_y - anchor)
+        upper = max(base_upper, dist_to_target) + TARGET_SLACK_SPACES * spacing
+        cands = [
+            b for b in bands
+            if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= upper
+        ]
+        if cands:
+            widened = True
+    if not cands:
+        return None, False
+    if widened:
+        best = min(cands, key=lambda b: sign * (b - anchor))
+    else:
+        expected = anchor + sign * pitch
+        best = min(cands, key=lambda b: abs(b - expected))
+    return best, widened
+
+
+def _row_ink_center(
+    img_gray: np.ndarray, y: float, x_guess: float, spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> "float | None":
+    """The x-centre of the widest ink run crossing row `y` near
+    `x_guess`, read directly off the full page image (round 5, FAULT 3) --
+    used only to tell the drift-following rescan in `measure_ledger_rungs`
+    WHERE a just-found rung is actually centred, so the NEXT step's probe
+    column can follow it instead of staying fixed at the original `x`.
+    Returns None where no ink crosses there at all.
+    """
+    h, w = img_gray.shape
+    y_i = int(round(y))
+    if not (0 <= y_i < h):
+        return None
+    margin = int(round(WINDOW_HALF_WIDTH_SPACES * spacing))
+    x0 = max(0, int(round(x_guess)) - margin)
+    x1 = min(w, int(round(x_guess)) + margin)
+    if x1 <= x0:
+        return None
+    row_band = img_gray[max(0, y_i - 1):min(h, y_i + 2), x0:x1]
+    if row_band.size == 0:
+        return None
+    thr = _otsu_threshold(row_band)
+    ink = img_gray[y_i, x0:x1] <= thr
+    if exclude_boxes:
+        ink2d = ink.reshape(1, -1).copy()
+        ink2d = _exclude_other_heads_ink(ink2d, exclude_boxes, x0, y_i, spacing)
+        ink = ink2d[0]
+    cols = np.flatnonzero(ink)
+    if cols.size == 0:
+        return None
+    bridge = RUNG_BRIDGE_GAP_SPACES * spacing
+    runs: list[list[int]] = [[int(cols[0]), int(cols[0])]]
+    for c in cols[1:]:
+        c = int(c)
+        if c - runs[-1][1] <= bridge:
+            runs[-1][1] = c
+        else:
+            runs.append([c, c])
+    s, e = max(runs, key=lambda r: r[1] - r[0])
+    return x0 + (s + e) / 2.0
+
+
 def _walk_ladder(
     edge_y: float, sign: float, bands: list[float], spacing: float,
     target_y: float | None = None,
@@ -261,28 +414,11 @@ def _walk_ladder(
     anchor = edge_y
     pitch = spacing
     while len(rungs) < int(MAX_SPACES):
-        base_upper = WALK_WINDOW[1] * pitch
-        cands = [
-            b for b in bands
-            if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= base_upper
-        ]
-        widened = False
-        if not cands and target_y is not None:
-            dist_to_target = sign * (target_y - anchor)
-            if dist_to_target > base_upper:
-                upper = dist_to_target + TARGET_SLACK_SPACES * spacing
-                cands = [
-                    b for b in bands
-                    if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= upper
-                ]
-                widened = True
-        if not cands:
+        best, _widened = _select_next_candidate(
+            anchor, sign, bands, pitch, spacing, target_y
+        )
+        if best is None:
             break
-        if widened:
-            best = min(cands, key=lambda b: sign * (b - anchor))
-        else:
-            expected = anchor + sign * pitch
-            best = min(cands, key=lambda b: abs(b - expected))
         rungs.append(best)
         pitch = abs(best - anchor)
         anchor = best
@@ -368,6 +504,7 @@ def _rung_row_clears_box(
 def _exclude_other_heads_ink(
     ink: np.ndarray, exclude_boxes: "list[tuple[float, float, float, float]]",
     x0: int, yy0: int, spacing: float,
+    img_gray: "np.ndarray | None" = None, thr: "int | None" = None,
 ) -> np.ndarray:
     """Remove another notehead's own ink from `ink` (boolean, already
     thresholded) -- but NEVER a ledger row that continues past that
@@ -377,10 +514,27 @@ def _exclude_other_heads_ink(
     short band immediately outside the box on both the left and the
     right; only then is it left alone. Otherwise (the head's own ink,
     which does not reach past its own box) it is blanked, as before.
+
+    `img_gray`/`thr`, when given (round 5, FAULT 1, DECISIONS
+    2026-10-0x): when the narrow local margin inside `ink`'s own crop
+    finds no ink on one side, re-check a WIDER margin read directly off
+    the full page image before giving up. A chord stacking several
+    noteheads at nearly the same x (`glyph/3/0/9/2/0`, `glyph/3/0/9/3/5`,
+    Litolff p3) can leave an excluded neighbour's box nearly as wide as
+    the candidate window itself, with only a couple of px of margin
+    inside the crop on each side -- not enough for the narrow check to
+    prove a real ledger between the two heads continues past it, so it
+    was dropped as "the neighbour's own ink" even though it is the
+    subject's own real rung. Measured: a 0.30-spacing margin read off the
+    full image (never the window's own narrower crop) recovers both
+    cases. `img_gray=None` keeps the exact old behaviour (every
+    pre-existing caller).
     """
     out = ink.copy()
     check_px = max(2, int(round(0.10 * spacing)))
+    wide_margin = int(round(NEIGHBOR_CONTINUES_MARGIN_SPACES * spacing))
     h, w = out.shape
+    img_h, img_w = img_gray.shape if img_gray is not None else (0, 0)
     for (bx0, by0, bx1, by1) in exclude_boxes:
         ex0, ey0 = max(int(bx0), x0), max(int(by0), yy0)
         ex1, ey1 = min(int(bx1) + 1, x0 + w), min(int(by1) + 1, yy0 + h)
@@ -393,6 +547,25 @@ def _exclude_other_heads_ink(
         for r in range(row0, row1):
             has_left = col0 > left_lo and out[r, left_lo:col0].any()
             has_right = right_hi > col1 and out[r, col1:right_hi].any()
+            if not (has_left and has_right) and img_gray is not None and thr is not None:
+                abs_y = yy0 + r
+                # Read against the box's TRUE (un-clipped) edges, never
+                # `ex0`/`ex1` -- those are clamped to the candidate
+                # window's own x-range, and when the window happens to
+                # start partway through the excluded neighbour's real
+                # box (as a window can, near a page/cell edge), checking
+                # a margin "before ex0" would look INSIDE that neighbour's
+                # own ink and wrongly call it a continuation.
+                true_x0, true_x1 = int(bx0), int(bx1) + 1
+                if 0 <= abs_y < img_h:
+                    wl0, wl1 = max(0, true_x0 - wide_margin), true_x0
+                    wr0, wr1 = true_x1, min(img_w, true_x1 + wide_margin)
+                    wide_left = img_gray[abs_y, wl0:wl1] if wl1 > wl0 else None
+                    wide_right = img_gray[abs_y, wr0:wr1] if wr1 > wr0 else None
+                    has_left = bool(wide_left is not None and wide_left.size
+                                    and (wide_left <= thr).any())
+                    has_right = bool(wide_right is not None and wide_right.size
+                                      and (wide_right <= thr).any())
             if has_left and has_right:
                 continue  # a real ledger continuing on both sides -- keep it
             out[r, col0:col1] = False
@@ -404,6 +577,7 @@ def measure_ledger_rungs(
     head_y: float | None = None,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     head_box_x: "tuple[float, float] | None" = None,
+    head_box_y: "tuple[float, float] | None" = None,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
 
@@ -442,6 +616,14 @@ def measure_ledger_rungs(
     first and refused -- in a dense chord it silently drops the shorter
     rows a genuine peak's own floor test depends on, breaking peak
     selection for a real, taller rung nearby (see FINDINGS).
+
+    `head_box_y`, when given (round 5, FAULT 2), is the SUBJECT's own box
+    (y0, y1), same frame -- passed through to `_band_centers` so a row
+    beside the head (outside its own box) may qualify as a rung with a
+    real span on only ONE side, never both (Sean: a ledger "above/below
+    the head sitting in a space may extend on ONE side only"). A row
+    through the head (inside `head_box_y`) still needs both sides, as
+    always. `head_box_y=None` keeps the old both-sides-everywhere rule.
     """
     ys = sorted(float(v) for v in staff_line_ys or [])
     if len(ys) < 2 or img_gray.ndim != 2:
@@ -473,13 +655,101 @@ def measure_ledger_rungs(
         ink = window <= thr  # <=: Otsu labels the threshold bin itself ink (a
         # binary image splits at t=0, and `<` would then select nothing)
         if exclude_boxes:
-            ink = _exclude_other_heads_ink(ink, exclude_boxes, x0, yy0, spacing)
-        bands = _band_centers(ink, x - x0, spacing, yy0)
+            ink = _exclude_other_heads_ink(
+                ink, exclude_boxes, x0, yy0, spacing, img_gray, thr
+            )
+        bands = _band_centers(ink, x - x0, spacing, yy0, head_box_y)
         side_target = (
             head_y if head_y is not None and sign * (head_y - edge_y) > 0
             else None
         )
         rungs = _walk_ladder(edge_y, sign, bands, spacing, side_target)
+
+        # FAULT 3 (round 5, DECISIONS 2026-10-0x, Sean: "the rungs of one
+        # vertical stack are not aligned in x (hand-drawn)... let the
+        # probe window for each successive rung follow the previous
+        # rung's measured x-extent... rather than one fixed column
+        # window"). One extra, drift-corrected step: if at least one rung
+        # was found at the FIXED column `x`, re-measure that rung's own
+        # ink run to see where it is actually centred, and -- only if it
+        # has genuinely drifted -- retry the NEXT step's search at THAT
+        # x instead of `x`, so a rung the fixed column cannot reach (it
+        # has wandered past the probe window entirely) is not silently
+        # lost. Never invents a rung the ink does not show: if nothing
+        # qualifies at the drifted column either, the plain-column result
+        # stands unchanged.
+        if rungs:
+            drift_x = _row_ink_center(img_gray, rungs[-1], x, spacing, exclude_boxes)
+            if (drift_x is not None
+                    and abs(drift_x - x) >= DRIFT_FOLLOW_MIN_PX_SPACES * spacing):
+                anchor = rungs[-1]
+                pitch = abs(rungs[-1] - (rungs[-2] if len(rungs) > 1 else edge_y))
+                nx0 = int(max(0, drift_x - WINDOW_HALF_WIDTH_SPACES * spacing))
+                nx1 = int(min(w, drift_x + WINDOW_HALF_WIDTH_SPACES * spacing))
+                upper = WALK_WINDOW[1] * pitch + TARGET_SLACK_SPACES * spacing
+                ny0 = int(max(0, min(anchor, anchor + sign * upper)))
+                ny1 = int(min(h, max(anchor, anchor + sign * upper)))
+                if nx1 > nx0 and ny1 - ny0 >= 2:
+                    nwindow = img_gray[ny0:ny1, nx0:nx1]
+                    nthr = _otsu_threshold(nwindow)
+                    nink = nwindow <= nthr
+                    if exclude_boxes:
+                        nink = _exclude_other_heads_ink(
+                            nink, exclude_boxes, nx0, ny0, spacing, img_gray, nthr
+                        )
+                    nbands = _band_centers(
+                        nink, drift_x - nx0, spacing, ny0, head_box_y
+                    )
+                    extra, _ = _select_next_candidate(
+                        anchor, sign, nbands, pitch, spacing, side_target
+                    )
+                    if extra is not None and all(
+                        abs(extra - ry) > 1.0 for ry in rungs
+                    ):
+                        rungs.append(extra)
+
+        # FAULT 2 (round 5, DECISIONS 2026-10-0x, Sean: "a ledger
+        # above/below the head sitting in a space may extend on ONE side
+        # only"). A one-sided span cannot satisfy RUNG_MIN_LEN_SPACES
+        # within the plain window at all (see
+        # ONE_SIDED_WINDOW_HALF_WIDTH_SPACES's own docstring -- it is 0.05
+        # spacing too narrow, by construction), so widening the PRIMARY
+        # window was tried and refused here: it pulls extra ink into the
+        # bands the ordinary both-sides walk already depends on and
+        # regressed real heads (Litolff 33->27 right on the truth set).
+        # Instead, one extra SUPPLEMENTARY step, exactly like the FAULT 3
+        # drift step above: only a WIDER crop, only for the one step past
+        # the current anchor, only ever ADDING a rung the plain window
+        # could not represent at all -- it can never remove or change one
+        # the plain walk already found.
+        if head_box_y is not None:
+            anchor = rungs[-1] if rungs else edge_y
+            pitch = abs(rungs[-1] - (rungs[-2] if len(rungs) > 1 else edge_y)) \
+                if rungs else spacing
+            wide_half = ONE_SIDED_WINDOW_HALF_WIDTH_SPACES * spacing
+            wx0 = int(max(0, x - wide_half))
+            wx1 = int(min(w, x + wide_half))
+            upper = WALK_WINDOW[1] * pitch + TARGET_SLACK_SPACES * spacing
+            wy0 = int(max(0, min(anchor, anchor + sign * upper)))
+            wy1 = int(min(h, max(anchor, anchor + sign * upper)))
+            if wx1 > wx0 and wy1 - wy0 >= 2:
+                wwindow = img_gray[wy0:wy1, wx0:wx1]
+                wthr = _otsu_threshold(wwindow)
+                wink = wwindow <= wthr
+                if exclude_boxes:
+                    wink = _exclude_other_heads_ink(
+                        wink, exclude_boxes, wx0, wy0, spacing, img_gray, wthr
+                    )
+                wbands = _band_centers(wink, x - wx0, spacing, wy0, head_box_y)
+                one_sided_target = side_target if not rungs else None
+                extra2, _ = _select_next_candidate(
+                    anchor, sign, wbands, pitch, spacing, one_sided_target
+                )
+                if extra2 is not None and all(
+                    abs(extra2 - ry) > 1.0 for ry in rungs
+                ):
+                    rungs.append(extra2)
+
         if head_box_x is not None:
             # Only a LATERAL neighbour (no x-overlap with the subject's
             # own box) is excluded from this verification crop -- a

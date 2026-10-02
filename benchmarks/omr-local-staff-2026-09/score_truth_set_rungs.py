@@ -131,6 +131,14 @@ def reader_absolute_position(
     items = lg.measure_ledger_rungs(
         gray, ys, cx, head_y=cy, exclude_boxes=others,
         head_box_x=(x0, x1),
+        # FAULT 2's one-sided rule (`head_box_y`) is NOT wired into this
+        # real-data score: measured NET NEGATIVE here (Litolff right
+        # 33->31 of 44 when enabled) -- a one-sided "rung" the fixed
+        # window cannot see without widening still occasionally fires on
+        # real ink that is not a real ledger, and any extra rung changes
+        # `derive_far_head_step`'s own COUNT, so it is not safely
+        # additive at the FINAL position even though it only ever
+        # appends to the rung list. HELD BACK -- see FINDINGS.
     ).get(side, [])
     step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
     if step["offset"] is None:
@@ -165,6 +173,14 @@ def ledger_measured_position(
     items = lg.measure_ledger_rungs(
         gray, ys, cx, head_y=cy, exclude_boxes=others,
         head_box_x=(x0, x1),
+        # FAULT 2's one-sided rule (`head_box_y`) is NOT wired into this
+        # real-data score: measured NET NEGATIVE here (Litolff right
+        # 33->31 of 44 when enabled) -- a one-sided "rung" the fixed
+        # window cannot see without widening still occasionally fires on
+        # real ink that is not a real ledger, and any extra rung changes
+        # `derive_far_head_step`'s own COUNT, so it is not safely
+        # additive at the FINAL position even though it only ever
+        # appends to the rung list. HELD BACK -- see FINDINGS.
     ).get(side, [])
     result = lg.ledger_measured_geometry(items, edge, sign, cy, spacing)
     if result["offset"] is None:
