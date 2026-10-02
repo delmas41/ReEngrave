@@ -459,5 +459,144 @@ class TestLedgerBothSidesRescue(unittest.TestCase):
         self.assertEqual(detections.get(_sub().to_key(), []), [])
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.55 EXTENSION, 2026-10-01 (coordinator addendum, lane-farhead-
+# box-ab): Sean, on 4 tall rescued boxes on the 2.55 rescue sheet (tiles
+# 11/13/14/20): *"a few of the boxes look very tall and enclose 2 notes a
+# 3rd away from each other"* -- then, on the same boxes: *"all of those
+# are notes connected to ties"*. Each tie end predicts ONE head at its
+# own staff position; a tall box with two tie ends a third apart is a
+# split into two heads, one tie end is one head, none is dropped and
+# recorded -- never invented either way.
+#
+# ⚠️ RUN RED FIRST: `gather.TALL_BOX_HEIGHT_RATIO_MIN`,
+# `gather._tall_box_tie_end_centres` and `ABSTAIN.RESCUE_BOX_SPANS_TWO_
+# HEADS` do not exist before this round.
+# ─────────────────────────────────────────────────────────────────────────────
+
+class TestTallBoxTieEndCentres(unittest.TestCase):
+    """`gather._tall_box_tie_end_centres` -- pure."""
+
+    def _tie(self, y_bottom):
+        return _FakeDet("tie", 0.9, category="structural",
+                       x_canonical=30.0, y_canonical=y_bottom - 10.0,
+                       width_canonical=40.0, height_canonical=10.0)
+
+    def _tall_box(self):
+        return _FakeDet("noteheadBlackOnLine", 0.12,
+                       x_canonical=78.0, y_canonical=50.0,
+                       width_canonical=14.0, height_canonical=40.0)
+
+    def test_two_tie_ends_a_third_apart_give_two_centres(self):
+        cell = _FakeCell(_blank_image())
+        tie1, tie2 = self._tie(60.0), self._tie(80.0)   # a space apart
+        witnesses = gather._lowconf_rescue_witnesses(cell, [tie1, tie2],
+                                                      HALF_STEP)
+        centres = gather._tall_box_tie_end_centres(
+            cell.image_no_staff, self._tall_box(), witnesses, SPACE)
+        self.assertEqual(len(centres), 2)
+        ys = sorted(c[1] for c in centres)
+        self.assertAlmostEqual(ys[1] - ys[0], SPACE, delta=1.0)
+
+    def test_one_tie_end_gives_one_centre_never_invents_a_second(self):
+        cell = _FakeCell(_blank_image())
+        witnesses = gather._lowconf_rescue_witnesses(cell, [self._tie(60.0)],
+                                                      HALF_STEP)
+        centres = gather._tall_box_tie_end_centres(
+            cell.image_no_staff, self._tall_box(), witnesses, SPACE)
+        self.assertEqual(len(centres), 1)
+
+    def test_no_tie_end_witness_gives_no_centres(self):
+        cell = _FakeCell(_blank_image())
+        centres = gather._tall_box_tie_end_centres(
+            cell.image_no_staff, self._tall_box(), [], SPACE)
+        self.assertEqual(centres, [])
+
+
+class TestTallBoxRescueIntegration(unittest.TestCase):
+    """The split wired into the full `gather_lowconf_rescue` reader."""
+
+    def _tie(self, y_bottom):
+        return _FakeDet("tie", 0.9, category="structural",
+                       x_canonical=30.0, y_canonical=y_bottom - 10.0,
+                       width_canonical=40.0, height_canonical=10.0)
+
+    def _tall_box(self):
+        return _FakeDet("noteheadBlackOnLine", 0.12,
+                       x_canonical=78.0, y_canonical=50.0,
+                       width_canonical=14.0, height_canonical=40.0)
+
+    def test_a_tall_box_over_two_tie_ends_is_split_into_two_heads(self):
+        cell = _FakeCell(_blank_image())
+        tie1, tie2 = self._tie(60.0), self._tie(80.0)
+        detections = {_sub().to_key(): [tie1, tie2]}
+        detector = _FakeDetector([self._tall_box()])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": []}):
+            log, detections = _run_rescue(cell, detector, detections)
+
+        # gi=0,1 are the two ties already in `existing`; the split heads
+        # land at gi=2,3.
+        rows2 = log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 2))
+        rows3 = log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 3))
+        self.assertEqual(len(rows2), 1)
+        self.assertEqual(len(rows3), 1)
+        self.assertEqual(rows2[0].detail.get("witness"), "tall_box_split")
+        self.assertIn("original_box", rows2[0].detail)
+        # Each split box is a STANDARD head, never the tall original.
+        self.assertLess(rows2[0].value[4], 35.0)
+        self.assertLess(rows3[0].value[4], 35.0)
+        self.assertEqual(len(detections[_sub().to_key()]), 4)
+
+    def test_a_tall_box_with_one_tie_end_keeps_only_one_head(self):
+        cell = _FakeCell(_blank_image())
+        detections = {_sub().to_key(): [self._tie(60.0)]}
+        detector = _FakeDetector([self._tall_box()])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": []}):
+            log, detections = _run_rescue(cell, detector, detections)
+
+        glyph1 = R_glyph(0, 0, 0, 0, 1)   # gi=1: index 0 is the tie itself
+        rows = log.rows(Q.GLYPH_BOX, glyph1)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail.get("witness"), "tall_box_split")
+        self.assertEqual(len(detections[_sub().to_key()]), 2)
+
+    def test_a_tall_box_with_no_tie_witness_is_dropped_and_recorded(self):
+        """⚠️ NEVER kept as one head spanning both, and never invented
+        without a witness -- a stem witness alone matches the box's own
+        centre (so the rescue is still guided), but carries no TIE end to
+        split it by."""
+        cell = _FakeCell(_blank_image())
+        stem = _FakeStem(84.0, 30.0, 2.0, 40.0)   # bottom end at y=70
+        detector = _FakeDetector([self._tall_box()])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": [stem]}):
+            log, detections = _run_rescue(cell, detector)
+
+        self.assertEqual(log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0)), ())
+        refusals = log.refusals(Q.GLYPH_BOX, _sub())
+        reasons = [r.reason for r in refusals]
+        self.assertIn("rescue_box_spans_two_heads", reasons)
+        self.assertEqual(detections.get(_sub().to_key(), []), [])
+
+    def test_a_normal_height_box_is_unaffected(self):
+        """Below `TALL_BOX_HEIGHT_RATIO_MIN`: unchanged single-head path,
+        same shape `test_a_stem_end_witness_accepts_a_matching_rescued_
+        head` already exercises."""
+        cell = _FakeCell(_blank_image())
+        stem = _FakeStem(50.0, 40.0, 2.0, 40.0)
+        det = _FakeDet("noteheadHalfOnLine", 0.15,
+                      x_canonical=46.0, y_canonical=76.0,
+                      width_canonical=10.0, height_canonical=8.0)
+        detector = _FakeDetector([det])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": [stem]}):
+            log, detections = _run_rescue(cell, detector)
+        rows = log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0))
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail.get("witness"), "stem_end")
+
+
 if __name__ == "__main__":
     unittest.main()

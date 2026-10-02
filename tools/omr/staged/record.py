@@ -2576,6 +2576,20 @@ class ABSTAIN(_Vocab):
     #: guided prediction. Recorded so an unguided low-confidence box is
     #: traceable as SEEN AND DECLINED, never silently dropped.
     RESCUE_UNGUIDED = "rescue_unguided"
+    #: ROADMAP 2.55 EXTENSION, 2026-10-01 (coordinator addendum, `lane-
+    #: farhead-box-ab`). Sean, on 4 tall rescued boxes (tiles 11/13/14/20
+    #: of the rescue contact sheet): *"a few of the boxes look very tall
+    #: and enclose 2 notes a 3rd away from each other"*, then, on the same
+    #: boxes: *"all of those are notes connected to ties"*. A rescued box
+    #: taller than the standard head by a clear margin
+    #: (`gather.TALL_BOX_HEIGHT_RATIO_MIN`) is NOT kept as one head --
+    #: `gather._tall_box_tie_end_centres` looks for TIE/SLUR END witnesses
+    #: landing on it (each end predicts ONE head at its own staff
+    #: position, refined toward its own oval). This reason fires where
+    #: NONE are found -- the box is recorded and DROPPED, never kept as
+    #: a single head covering both, and never split without a witness
+    #: naming where to split it.
+    RESCUE_BOX_SPANS_TWO_HEADS = "rescue_box_spans_two_heads"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

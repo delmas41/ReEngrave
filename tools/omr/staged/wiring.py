@@ -247,6 +247,14 @@ KNOWN_GAPS: Dict[str, str] = {
         "it is drawing without re-deriving it. No decision consumes it; "
         "whether ADJUDICATE may even SEE the glyph this detail sits "
         "beside is `adjudicate.subjects_for`'s own `RESCUE_SHIPS` gate."),
+    "DETAIL Q.GLYPH_BOX.height_ratio": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.55 EXTENSION, 2026-10-01 "
+        "(coordinator addendum, lane-farhead-box-ab). Filed only on the "
+        "`rescue_box_spans_two_heads` abstention a tall rescued box with "
+        "no tie/slur end witness carries -- a trace convenience (how far "
+        "over `TALL_BOX_HEIGHT_RATIO_MIN` the dropped box sat), not "
+        "re-derived by any consumer. The box ITSELF is never kept either "
+        "way, so nothing downstream has a glyph to hang a decision on."),
     "DETAIL Q.NOTEHEAD_RECENTRE.ink_y0": (
         "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.39b extension, cause A "
         "(DECISIONS 2026-10-01). The vertical-extent fallback's own "

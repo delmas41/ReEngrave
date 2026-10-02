@@ -29,6 +29,7 @@ emits are ASSUMPTIONS -- see ASSUMPTIONS.md.
 from __future__ import annotations
 
 import os
+import types
 from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
@@ -713,6 +714,62 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
     return witnesses
 
 
+#: ROADMAP 2.55 EXTENSION, 2026-10-01 (coordinator addendum, `lane-
+#: farhead-box-ab`): Sean, on the rescue contact sheet's tiles 11/13/14/
+#: 20: *"a few of the boxes look very tall and enclose 2 notes a 3rd away
+#: from each other"*, then: *"all of those are notes connected to ties"*.
+#: A clear margin over the standard head's own height, stated rather
+#: than left a bare literal (CLAUDE.md §7) -- below this, a tall-but-
+#: ordinary box is left to the usual single-head path unchanged.
+TALL_BOX_HEIGHT_RATIO_MIN = 1.4
+
+
+def _tall_box_tie_end_centres(img: Any, d: Any,
+                              witnesses: Sequence[Dict[str, Any]],
+                              space: float
+                              ) -> List[Tuple[float, float]]:
+    """TIE/SLUR END witnesses landing inside the tall rescued box `d` --
+    up to TWO distinct staff positions (Sean: *"two note heads ... a 3rd
+    away from each other"*), each refined toward its own oval via
+    `_notehead_vertical_ink_extent` (cause A's own mechanism -- reused,
+    never re-derived, CLAUDE.md rule 6). `[]` where no tie/slur end
+    witness lands on the box at all -- the caller's own job is to drop
+    the box there, never to invent a split no witness names.
+
+    Two ends of the SAME tie/slur (its LEFT and RIGHT windows) never both
+    land inside one tall box in practice (they sit either side of the
+    arc, which spans a measure), but the de-duplication below guards the
+    one case they could: two windows landing within 0.4 staff spaces of
+    each other -- well under a THIRD apart (one full space, the dyad
+    spacing this round exists for) -- are the SAME predicted position,
+    kept once.
+    """
+    box_x0, box_x1 = d.x_canonical, d.x_canonical + d.width_canonical
+    box_y0, box_y1 = d.y_canonical, d.y_canonical + d.height_canonical
+    hits: List[Tuple[float, float]] = []
+    for w in witnesses:
+        if w["kind"] not in ("tie_end", "slur_end"):
+            continue
+        wx = (w["x_lo"] + w["x_hi"]) / 2.0
+        wy = (w["y_lo"] + w["y_hi"]) / 2.0
+        if not (box_x0 - space <= wx <= box_x1 + space
+                and box_y0 - space <= wy <= box_y1 + space):
+            continue
+        if any(abs(wy - hy) < space * 0.4 for _, hy in hits):
+            continue
+        cx = min(max(wx, box_x0 + d.width_canonical * 0.15),
+                 box_x1 - d.width_canonical * 0.15)
+        extent = _notehead_vertical_ink_extent(img, cx, wy, space,
+                                               STANDARD_HEAD_WIDTH_SPACES)
+        if extent is not None:
+            y0, y1 = extent
+            hits.append((cx, (y0 + y1) / 2.0))
+        else:
+            hits.append((cx, wy))
+    hits.sort(key=lambda t: t[1])
+    return hits[:2]
+
+
 def _matching_witness(d: Any, witnesses: Sequence[Dict[str, Any]]
                       ) -> Optional[Dict[str, Any]]:
     cx = d.x_canonical + d.width_canonical / 2.0
@@ -840,6 +897,8 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
             if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)
             or str(d.smufl_name).lower().startswith(_REST_PREFIX)]
 
+        img = getattr(c, "image_no_staff", None)
+        space = half_step * 2.0 if half_step else None
         matched_witness_ids = set()
         kept: List[Tuple[Any, Dict[str, Any]]] = []
         for d in candidates_by_class:
@@ -849,6 +908,47 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                             reader=READERS.RESCUE_LOWCONF, frame=frame,
                             reason=ABSTAIN.RESCUE_UNGUIDED,
                             smufl_name=d.smufl_name, score=float(d.confidence))
+                continue
+            # ⚠️ ROADMAP 2.55 EXTENSION: a box taller than a standard head
+            # by a clear margin is a TIED DYAD, not one head -- split it
+            # by its own tie/slur end witnesses (never by score or shape
+            # alone), each refined toward its own oval.
+            h_ratio = (float(d.height_canonical)
+                      / (STANDARD_HEAD_HEIGHT_SPACES * space)
+                      if space else None)
+            if h_ratio is not None and h_ratio > TALL_BOX_HEIGHT_RATIO_MIN:
+                centres = _tall_box_tie_end_centres(img, d, witnesses, space)
+                if not centres:
+                    log.abstain(cell_sub, Q.GLYPH_BOX,
+                                reader=READERS.RESCUE_LOWCONF, frame=frame,
+                                reason=ABSTAIN.RESCUE_BOX_SPANS_TWO_HEADS,
+                                smufl_name=d.smufl_name,
+                                height_ratio=round(h_ratio, 3))
+                    continue
+                for cx, cy in centres:
+                    split_x0 = cx - STANDARD_HEAD_WIDTH_SPACES * space / 2.0
+                    split_y0 = cy - STANDARD_HEAD_HEIGHT_SPACES * space / 2.0
+                    split_w_px = STANDARD_HEAD_WIDTH_SPACES * space
+                    split_h_px = STANDARD_HEAD_HEIGHT_SPACES * space
+                    split = types.SimpleNamespace(
+                        smufl_name=d.smufl_name,
+                        confidence=d.confidence, category=d.category,
+                        x_canonical=split_x0, y_canonical=split_y0,
+                        width_canonical=split_w_px,
+                        height_canonical=split_h_px,
+                        # ⚠️ `SymbolDetection.x_center`/`y_center` are
+                        # PROPERTIES derived from the canonical box --
+                        # precomputed here since `SimpleNamespace` has no
+                        # properties, same arithmetic, same result.
+                        x_center=split_x0 + split_w_px / 2.0,
+                        y_center=split_y0 + split_h_px / 2.0,
+                        pitch=None, detector_role=None, cell=None)
+                    split_w = {"kind": "tall_box_split",
+                              "original_box": [d.x_canonical, d.y_canonical,
+                                               d.width_canonical,
+                                               d.height_canonical]}
+                    kept.append((split, split_w))
+                matched_witness_ids.add(id(w))
                 continue
             kept.append((d, w))
             matched_witness_ids.add(id(w))
@@ -866,6 +966,8 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
             page_box = _page_box(c, d)
             box_detail: Dict[str, Any] = {"category": d.category,
                                           "witness": w["kind"]}
+            if "original_box" in w:
+                box_detail["original_box"] = w["original_box"]
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
