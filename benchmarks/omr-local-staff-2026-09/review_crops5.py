@@ -305,8 +305,13 @@ def main() -> int:
             if row is None:
                 continue
             line_rows = rec.obs(Q.STAFF_LINES, row["staff_key"])
-            lines = [float(v) for v in line_rows[-1]["value"]]
+            global_lines = [float(v) for v in line_rows[-1]["value"]]
             gray = pages.get(row["page"])
+            # lane-brahms-frame (2026-10-01): the GLOBAL staff-wide read is
+            # not the frame to draw against on a page with real wander
+            # (CLAUDE.md sec10) -- re-measure at this head's own x, same as
+            # `score.score_doc` now does (`score.frame_lines_for_head`).
+            lines = score.frame_lines_for_head(gray, global_lines, row["page_box"])
             others = [b for (s, b) in boxes_by_page.get(row["page"], [])
                      if s != row["subject"]]
             before_pos, before_reason = _reader_pos(

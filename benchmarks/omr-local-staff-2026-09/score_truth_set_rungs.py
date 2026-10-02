@@ -103,6 +103,33 @@ def _notehead_boxes_by_page(rec: EXP.Record) -> Dict[int, List[Tuple[str, tuple]
 
 
 # ─────────────────────────────────────────────────────────────────────────
+# lane-brahms-frame (2026-10-01) -- the staff's own GLOBAL `Q.STAFF_LINES`
+# read is one representative fit for the WHOLE staff; on a page with real
+# wander (CLAUDE.md sec10: "a scanned staff tilts and changes spacing
+# across a system... any position relative to the staff reads the staff
+# lines AT THE SUBJECT'S x, never a staff-wide or bar-wide value", ROADMAP
+# 2.48) that global fit can sit 10+ page px off the ink at a far head's own
+# x -- measured directly on Brahms page 1 staff/1/1/8 (`staff_skew` 4.5-
+# 5.5deg there vs ~0.25deg on the Litolff p3 control that this rung reader
+# was only ever print-checked against). `truth_set_2_44c.load_doc`'s own
+# geometry scoring ALREADY re-measures locally via its own
+# `local_staff_lines` flanking-band search; this rung reader never did --
+# it took the global read as if it were the local one. One place, reused
+# by both `score_doc` and `review_crops5.py`'s drawing.
+def frame_lines_for_head(gray: "np.ndarray", global_lines: Sequence[float],
+                         box: Sequence[float]) -> List[float]:
+    """The staff's 5 lines AT THIS HEAD'S OWN x -- `local_staff_lines`'s
+    flanking-band re-measurement, falling back to the GLOBAL
+    `Q.STAFF_LINES` read unchanged only where neither flank finds all five
+    (CLAUDE.md rule 8: a declined local read is not an invented one)."""
+    x0, _y0, x1, _y1 = box
+    head_w = x1 - x0
+    local = ts.local_staff_lines(gray, list(global_lines), x0, x1,
+                                 head_w if head_w > 0 else 20.0)
+    return local if local is not None else list(global_lines)
+
+
+# ─────────────────────────────────────────────────────────────────────────
 # the reader's own absolute-position derivation
 # ─────────────────────────────────────────────────────────────────────────
 
@@ -290,14 +317,15 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
             continue
         global_lines = [float(y) for y in line_rows[-1]["value"]]
         gray = pages.get(row["page"])
+        lines = frame_lines_for_head(gray, global_lines, box)
 
         geom_pos = int(round(row["raw_pos"]))
         after_pos, reason = reader_absolute_position(
-            gray, global_lines, box, row["subject"],
+            gray, lines, box, row["subject"],
             boxes_by_page.get(row["page"], [])
         )
         ledger_pos, ledger_reason, ledger_is_fallback = ledger_measured_position(
-            gray, global_lines, box, row["subject"],
+            gray, lines, box, row["subject"],
             boxes_by_page.get(row["page"], []), geom_pos,
         )
 
@@ -384,8 +412,9 @@ def main() -> int:
             x0, y0, x1, y1 = box
             broken_box = (x0, y0 + spacing / 2.0, x1, y1 + spacing / 2.0)
             gray = pages.get(row["page"])
+            lines = frame_lines_for_head(gray, global_lines, box)
             pos, _reason = reader_absolute_position(
-                gray, global_lines, broken_box, row["subject"],
+                gray, lines, broken_box, row["subject"],
                 boxes_by_page.get(row["page"], [])
             )
             if pos is None:
@@ -396,7 +425,7 @@ def main() -> int:
                 wrong += 1
             geom_pos = int(round(row["raw_pos"]))
             lpos, _lreason, lfb = ledger_measured_position(
-                gray, global_lines, broken_box, row["subject"],
+                gray, lines, broken_box, row["subject"],
                 boxes_by_page.get(row["page"], []), geom_pos,
             )
             if lfb:

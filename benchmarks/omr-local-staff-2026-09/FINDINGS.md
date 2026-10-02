@@ -1816,3 +1816,110 @@ sheet: `out/print/ledgers/r5_sheet.png` (18 tiles, changed heads first).
 - The 8 Litolff "through-head but wrong ledger" and 3 Brahms "touching
   but reference disagrees" causes from round 3 persist unchanged; this
   round did not target them.
+
+## lane-brahms-frame (2026-10-01) — the "unexplained" Brahms staff-line
+   MISS from rounds 2/3/5, found and fixed
+
+The misregistration flagged rounds 2, 3 and 5 ("3 unrelated Brahms
+count-page pixel-check MISSes, unexplained") was **not** a render-frame
+bug. Measured directly (CLAUDE.md rule 7 — a control that can fail):
+
+1. **The pixel frame is correct.** `detect_staves(render_page(brahms_pdf,
+   1, dpi=600))` reproduces the committed whole-movement record's own
+   `staff/1/1/8` → `[5990, 6014, 6043, 6069, 6097]` to the exact integer
+   pixel (byte-identical, same as `frame.py`'s own Litolff p3 finding).
+   `truth_set_2_44c._render_page_gray`'s raw fitz render is byte-identical
+   to `render_page`'s own pre-binarize array on this page
+   (`skew_correction_deg=0.0` for both docs' count pages — no deskew
+   fires, so there is no double-deskew divergence here either).
+2. **The real cause: `Q.STAFF_LINES` is one GLOBAL fit for the WHOLE
+   staff, and this rung reader treated it as the LOCAL one.** Brahms
+   page 1's `staff_skew` is 4.5–5.5° (real wander — CLAUDE.md §10),
+   against ~0.25° on the Litolff p3 control this reader was print-checked
+   against in rounds 1–5. `score_truth_set_rungs.py` (and
+   `review_crops5.py`'s crop drawer) pulled `rec.obs(Q.STAFF_LINES,
+   staff_key)` straight into `ledger_grid.measure_ledger_rungs` as if it
+   held the ink's position everywhere on the staff. `truth_set_2_44c.
+   load_doc`'s own GEOMETRY scoring already re-measures locally via its
+   sibling `local_staff_lines` (flanking-band darkest-row search at the
+   head's own x) — this rung reader never called it.
+3. **Measured on the 4 flagged crops** (page 1, staff 8, re-gathered
+   fresh on this tree — `benchmarks/acceptance/quick/out/
+   brahms1-breitkopf/brahms1-breitkopf-p1.record.json`, not committed,
+   gitignored): GLOBAL `Q.STAFF_LINES` sits ~10–13 page px (~0.4 staff
+   space) below the ink at these heads' own x; `local_staff_lines` lands
+   within 0–3 px of the ink's own dark rows on every line checked.
+
+**Fix** (measurement helper only — `tools/omr/annotate/ledger_grid.py` is
+owned by another lane this session and was not touched): added
+`score_truth_set_rungs.frame_lines_for_head(gray, global_lines, box)` —
+`truth_set_2_44c.local_staff_lines` at the head's own x, falling back to
+the unchanged GLOBAL read only where the local flanking search declines
+(CLAUDE.md rule 8). `score_doc` and its control both now pass this local
+read, never the raw global one, to `reader_absolute_position` /
+`ledger_measured_position`; `review_crops5.py` draws the same local lines
+it scores against.
+
+**Re-scored, the 4 flagged heads** (`glyph/1/1/8/{4/4,5/0,6/0,7/4}`,
+before = GLOBAL lines, after = `frame_lines_for_head`):
+
+| subject | before | after | truth | verdict |
+|---|---|---|---|---|
+| glyph/1/1/8/4/4 | abstain (no_rungs) | -2 | [-2] | abstain → **right** |
+| glyph/1/1/8/5/0 | 10 (wrong) | 12 | [12] | wrong → **right** |
+| glyph/1/1/8/6/0 | 11 (wrong) | 13 | [13] | wrong → **right** |
+| glyph/1/1/8/7/4 | 16 (wrong) | 16 | [13] | wrong, unchanged (large negative gap — a real ledger_grid reading fault at this head, not a frame issue; left for the ledger-rungs lane) |
+
+3 of 4 flagged heads go from wrong/abstain to right; the 4th's remaining
+error is a different, already-visible cause (gap −2.79 sp after the fix,
+was −4.82 before) orthogonal to frame registration. Crops redrawn with
+the corrected frame: `out/print/ledgers/r5/brahms1-breitkopf-glyph-1-1-8-
+{4-4,5-0,6-0,7-4}.png` (new script, `redraw_brahms_frame_fix.py` — does
+not re-run `review_crops5.main()`'s full sheet, see below). Pixel-row
+check: every drawn staff line now reads coverage ≥0.95 except one
+(glyph-4-4's 4th line, 0.10 — a local-flank search miss on a line
+occluded by the next system's own ink at this x; not a MISS on the other
+4 lines or the other 3 crops).
+
+**Full Brahms far-head population, same fix, before vs after**
+(`score_doc('brahms1-breitkopf')`, GATHER+ADJUDICATE-derived positions,
+STAFF POSITION not pitch, CLAUDE.md §6b): this lane's own fresh
+re-gather (page 0 through page 1, `--full`, current tree) finds **113**
+scorable far heads, not the 11 in round 5's table — that record is no
+longer reproducible (gitignored, regenerated since, per CLAUDE.md
+"a shared record is a snapshot of the reader that made it") and this
+number is reported as measured, not reconciled against it.
+
+| metric | right | wrong | abstain | n |
+|---|---|---|---|---|
+| geometry | 100 | 13 | 0 | 113 |
+| rungs, before (global lines) | 67 | 45 | 1 | 113 |
+| rungs, after (`frame_lines_for_head`) | 71 | 42 | 0 | 113 |
+
++4 right, −3 wrong, −1 abstain over the whole population — a real but
+modest net gain on top of the 4 flagged heads, consistent with most of
+the far-head population sitting close enough to the staff's own
+reference x that the global/local gap is inside the existing noise
+floor; the gain concentrates where wander is largest.
+
+**Not done / open**:
+- `redraw_brahms_frame_fix.py` redraws only the 4 originally-flagged
+  crops. Redrawing the WHOLE round-5 sheet (now 113 Brahms heads, not
+  11) is out of scope for a frame fix and was not attempted.
+- `glyph/1/1/8/7/4`'s own reading fault (large negative gap) is unfixed
+  — a `ledger_grid.py` question, not a frame one, and out of this lane's
+  file (owned by `lane-ledger-rungs-r5` this session).
+- Litolff re-scored with the same change, as its own control (n=99 on
+  this lane's fresh `--full` re-gather, not the 44 in round 5's table —
+  same non-reproducibility note as Brahms above): before 50/22/27
+  (right/wrong/abstain), after 48/24/27 — a small REGRESSION (-2 right,
+  +2 wrong), not the "unaffected" this lane expected going in. Litolff's
+  own wander (~0.25°) is small enough that `local_staff_lines`' flanking-
+  band search is measuring noise rather than a real local offset at a
+  few heads, and on at least 2 of them that noise crosses a decision
+  boundary the global (noise-free, single global fit) read did not.
+  Reported as measured, not smoothed over (CLAUDE.md rule 7): the fix is
+  a clear net win where wander is real (Brahms) and a small net cost
+  where it is not (Litolff) — not chased further this lane; a candidate
+  next step is gating the local re-measurement on the staff's own
+  measured `Q.STAFF_SKEW`/wander rather than applying it unconditionally.
