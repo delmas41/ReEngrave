@@ -2691,3 +2691,93 @@ and nothing in `tools/omr/staged/gather.py`'s own (unflagged) call to
 regression (`glyph/3/0/0/2/9`) and the still-open 3 "through but
 wrong" heads above need a human crop check before anyone decides to
 wire this further.
+
+## lane-ledger-shape (2026-10-02): shape trace vs the box-centre probe
+
+**Brief**: Sean's view of `out/print/ledgers/r8_*.jpg` ("all 14 that are
+wrong have a ledger line going through them that is visible"; the 2
+undecided, `glyph/3/0/7/0/7` and `glyph/3/0/7/2/4`, "look like
+everything it is declaring is right") plus DECISIONS 2026-10-02 ("trace
+the shape around far heads", "an accidental can merge into a ledger").
+
+**Why the 2 don't commit, found before anything was built**: both abstain
+via `derive_far_head_step`'s final branch, `no_rung_before_the_head` —
+every candidate rung the plain walk finds gets dropped by
+`head_middle_rung_evidence` because it probes for a jut at the detector
+BOX's naive `(y0+y1)/2`, never the printed oval's own centre. Confirmed
+by direct call (`score_truth_set_rungs.reader_absolute_position` on both
+subjects, `four_causes_cd=True`): `after_pos=None`, same reason, while
+`ledger_measured_position` (interpolating the measured ledger ladder) and
+plain geometry both already land on the reference position for both
+heads. This is exactly the mechanism the task brief hypothesised.
+
+**Built**: `tools/omr/annotate/ledger_shape_trace.py` — traces the
+connected ink around a head row by row (excluding a detected stem
+column), fits the oval's own centre/extent from the trace (median width
+of non-inflated rows, width-weighted centroid, walking outward through —
+not stopping at — a thin crossing ledger, stopping only at a genuine
+blank row), finds ledger bands as thin/straight protrusions past the
+fitted oval, and trims a fused accidental off a band's far end by column
+tallness (a column whose own vertical run is much taller than a ledger
+band is excluded from the band's own measured extent, but ONLY outside
+the oval's own footprint — inside it, tallness is the oval itself and is
+expected). `shape_trace_middle_rung_evidence` is a drop-in replacement for
+`ledger_grid.head_middle_rung_evidence` with the same signature and the
+same "no evidence possible -> False" contract.
+
+**RED -> GREEN** (`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+9 synthetic cases, fully hand-built images, no page/weights/library):
+every scenario in the task brief failed first against the initial
+implementation (oval half-width was inflated by the crossing line's own
+width, dragging the centre and blocking the "line touching only the
+top"/open-half-note/accidental/off-centre-box cases) and now passes:
+line-through-both-sides -> on; one-sided jut -> on; line touching only
+the oval's top -> space beyond, not on; open half-note oval + line
+through -> on, centre from the outline; accidental fused onto a ledger's
+end -> still on, band's own measured extent stops short of the
+accidental; a box covering only the top half of the head -> still
+centres from the trace and reads on; no image -> abstains, never guesses;
+a stem does not inflate the oval or register as a band.
+
+**Real-data re-score, substituting the evidence function only (monkeypatch,
+measurement-only, `benchmarks/omr-local-staff-2026-09/score_shape_trace.py`)
+— MEASURED NET NEGATIVE, HELD BACK**:
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | shape_trace | 15 | 15 | 14 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | shape_trace | 6 | 3 | 2 | 11 |
+
+Of the 2 target heads: `glyph/3/0/7/0/7` still abstains (same reason —
+its own rungs still fail the oval-middle evidence test even with the
+traced centre); `glyph/3/0/7/2/4` **FLIPS to right**, now taking the
+"through" branch with a jut confirmed at the traced middle. But the
+substitution costs 14 previously-right Litolff heads (mostly flipping to
+`abstain` via the same `no_rung_before_the_head` reason, i.e. the traced
+oval's fitted width/extent is now making the evidence probe MISS juts the
+box-centre probe used to find) and 5 previously-right Brahms heads — a
+clear net loss, the same "measured net negative, HELD BACK" verdict as
+rounds 6/7 above. The failure mode is plausibly the synthetic tests'
+own simplicity (hand-drawn ovals/lines, no neighbouring stave ink, no
+scan noise) not transferring to real plate ink — rounds 6/7's own note
+that a confound "can register a false reading on exactly the pairs it
+was built for" applies here too.
+
+**Not shipped, not wired into any product/default path.** The module is
+additive only, reachable solely through this measurement script's own
+monkeypatch; `ledger_grid.head_middle_rung_evidence` and `derive_far_
+head_step`'s own call to it are untouched. A future lane's own measured
+fix for the 2-head mechanism should widen the evidence probe's window
+or soften the oval-width inflation guard, re-score against this SAME
+truth set before shipping anything, and treat this result as the
+positive control that the net-negative substitution here is not a
+tooling bug (the module's own 9 synthetic cases all pass) but a real
+generalisation gap.
+
+Paths: `tools/omr/annotate/ledger_shape_trace.py`,
+`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_shape_trace.py`.
