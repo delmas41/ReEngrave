@@ -739,6 +739,19 @@ class Q(_Vocab):
     #: a row exists, falling back to the detector centre where one does
     #: not (declined or off the regular-head gate) -- CLAUDE.md rule 6, a
     #: wiring change may CONNECT a decision, never let one guess.
+    #:
+    #: EXTENDED, ROADMAP 2.39b (cause A, DECISIONS 2026-10-01): where the
+    #: fill search above DECLINES and the detector's box is clearly
+    #: SHORTER than the standard head height (`SHORT_BOX_HEIGHT_RATIO_
+    #: MAX`), a second reader (`READERS.CV_NOTEHEAD_VERTICAL_EXTENT`)
+    #: tries the oval's own ink EXTENT instead of its density -- a half
+    #: note whose oval does not close reads sparse no matter where the
+    #: fill window sits, but still marks its own top/bottom row. Same
+    #: `value` shape (`[dx_spaces, dy_spaces]`, here always `dx_spaces ==
+    #: 0.0` -- only the vertical placement moves); `detail` carries
+    #: `ink_y0`/`ink_y1` (the measured extent), `height_ratio` and
+    #: `original_box` (the detector's own pre-recentre box, kept for
+    #: trace -- CLAUDE.md rule 2, every claim names its path).
     NOTEHEAD_RECENTRE = "notehead_recentre"
 
     #: ⚠️⚠️ ROADMAP 2.42 — HOW MANY HEADS ARE STACKED ON ONE STEM, AND WHERE.
@@ -2321,6 +2334,14 @@ class READERS(_Vocab):
     #: search for the offset with the highest ink fill) with a different
     #: test from `CV_NOTEHEAD_INK`'s fixed-box center/ring read.
     CV_NOTEHEAD_RECENTRE = "cv_notehead_recentre"  # gather: matched-window re-centre
+    #: `gather._notehead_vertical_ink_extent` -- ROADMAP 2.39b extension,
+    #: cause A (DECISIONS 2026-10-01, `lane-farhead-combined`). Reads the
+    #: SAME `image_no_staff` raster `CV_NOTEHEAD_RECENTRE` reads -- not an
+    #: independent witness of it -- but asks a different question (where
+    #: does the oval's own ink START AND STOP in a narrow central strip)
+    #: with a different test, as a FALLBACK the fill search's own decline
+    #: hands to it, never a second opinion run alongside it.
+    CV_NOTEHEAD_VERTICAL_EXTENT = "cv_notehead_vertical_extent"  # gather: short-box ink-extent re-centre
     #: `gather.gather_stacked_head_fit` -- ROADMAP 2.42. Reads `cell.
     #: image_no_staff` in common with `CV_NOTEHEAD_INK`/`CV_NOTEHEAD_
     #: RECENTRE` (one crop, one signal, per `CV_INK`'s own entry) but asks a

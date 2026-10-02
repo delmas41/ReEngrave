@@ -247,6 +247,28 @@ KNOWN_GAPS: Dict[str, str] = {
         "it is drawing without re-deriving it. No decision consumes it; "
         "whether ADJUDICATE may even SEE the glyph this detail sits "
         "beside is `adjudicate.subjects_for`'s own `RESCUE_SHIPS` gate."),
+    "DETAIL Q.NOTEHEAD_RECENTRE.ink_y0": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.39b extension, cause A "
+        "(DECISIONS 2026-10-01). The vertical-extent fallback's own "
+        "measured top row, kept alongside its sibling `ink_y1` so a crop "
+        "pass can draw the extent it found without re-deriving it. No "
+        "decision consumes it; the shift it implies is already filed as "
+        "`value` (`[dx_spaces, dy_spaces]`), which every existing consumer "
+        "of `Q.NOTEHEAD_RECENTRE` reads unchanged."),
+    "DETAIL Q.NOTEHEAD_RECENTRE.ink_y1": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.39b extension, cause A. "
+        "See `ink_y0`'s own entry -- its sibling, the measured bottom row."),
+    "DETAIL Q.NOTEHEAD_RECENTRE.height_ratio": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.39b extension, cause A. "
+        "The box's own height ratio that routed it to the extent fallback "
+        "(always `< SHORT_BOX_HEIGHT_RATIO_MAX`) -- a trace convenience, "
+        "not re-derived by any consumer."),
+    "DETAIL Q.NOTEHEAD_RECENTRE.original_box": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.39b extension, cause A. "
+        "The detector's own pre-recentre box (CLAUDE.md rule 2: every "
+        "claim names its path) -- so a crop pass can show BOTH the "
+        "original short box and the re-centred standard box it was "
+        "replaced by. No decision consumes it."),
     "DETAIL Q.MARGIN_LABEL.rungs_requested": (
         "⚠️ RECORDED-ONLY BY DESIGN, and it is the fix PR #34 said had to "
         "land BEFORE the default moved. The record stamped every label "

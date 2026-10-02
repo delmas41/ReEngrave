@@ -333,5 +333,131 @@ class TestShipsGatesAdjudicate(unittest.TestCase):
         self.assertIn(rescued, subs)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.55 EXTENSION, cause B (DECISIONS 2026-10-01, `lane-farhead-
+# combined`): *"there should be plenty of shape to see 2 oval shapes with
+# lines emerging from both sides of the note heads"* -- a head missed
+# INSIDE a blob. Sean's own 10-01 rule: *"a line through a head always
+# shows on both sides"* -- a ledger row with a thin, flat stub on BOTH
+# sides of a head-sized gap, with no existing notehead/rest box in the
+# gap, is itself a witness that a head sits there.
+#
+# ⚠️ RUN RED FIRST: `gather._ledger_both_sides_witnesses` and the
+# `"ledger_both_sides"` witness kind do not exist before this round.
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _ledger_both_sides_image(*, y_c=120.0, left=(10.0, 30.0),
+                             right=(46.0, 70.0), space=SPACE, width=BAR_WIDTH,
+                             height=BAR_HEIGHT):
+    """A blank cell carrying a thin, flat ledger stub on both sides of the
+    `[left[1], right[0]]` gap at `y_c` -- nothing boxed in the gap."""
+    img = _blank_image(width, height)
+    from tools.omr.staged import gather as _g
+    thickness = _g.LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * space
+    pad = _g.LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * space
+    half_h = thickness / 2.0 + pad
+    y0, y1 = int(round(y_c - half_h)), int(round(y_c + half_h))
+    img[y0:y1, int(left[0]):int(left[1])] = 0
+    img[y0:y1, int(right[0]):int(right[1])] = 0
+    return img
+
+
+class TestLedgerBothSidesWitness(unittest.TestCase):
+    """`gather._ledger_both_sides_witnesses` -- pure, on a synthetic cell."""
+
+    def test_a_stub_pair_with_an_empty_gap_is_a_witness(self):
+        cell = _FakeCell(_ledger_both_sides_image())
+        witnesses = gather._ledger_both_sides_witnesses(cell, [], HALF_STEP)
+        kinds = [w["kind"] for w in witnesses]
+        self.assertIn("ledger_both_sides", kinds)
+        w = next(w for w in witnesses if w["kind"] == "ledger_both_sides")
+        # The gap sits between x=30 and x=46 -- its own centre, x~38, must
+        # fall inside the witness window.
+        self.assertLessEqual(w["x_lo"], 38.0)
+        self.assertGreaterEqual(w["x_hi"], 38.0)
+        self.assertLessEqual(w["y_lo"], 120.0)
+        self.assertGreaterEqual(w["y_hi"], 120.0)
+
+    def test_a_gap_already_covered_by_an_existing_head_is_not_a_witness(self):
+        """Cause B is a MISSED head only -- a gap the detector already
+        boxed is not this witness's territory (cause A's, or no gap at
+        all)."""
+        cell = _FakeCell(_ledger_both_sides_image())
+        existing = [_FakeDet("noteheadBlackOnLine", 0.6,
+                             x_canonical=34.0, y_canonical=116.0,
+                             width_canonical=8.0, height_canonical=8.0)]
+        witnesses = gather._ledger_both_sides_witnesses(cell, existing,
+                                                        HALF_STEP)
+        kinds = [w["kind"] for w in witnesses]
+        self.assertNotIn("ledger_both_sides", kinds)
+
+    def test_a_gap_too_narrow_for_a_head_is_not_a_witness(self):
+        """Two stubs almost touching are two ends of ONE broken ledger,
+        never a head-sized gap."""
+        cell = _FakeCell(_ledger_both_sides_image(left=(10.0, 34.0),
+                                                   right=(36.0, 70.0)))
+        witnesses = gather._ledger_both_sides_witnesses(cell, [], HALF_STEP)
+        kinds = [w["kind"] for w in witnesses]
+        self.assertNotIn("ledger_both_sides", kinds)
+
+    def test_a_gap_too_wide_for_a_head_is_not_a_witness(self):
+        cell = _FakeCell(_ledger_both_sides_image(left=(5.0, 15.0),
+                                                   right=(90.0, 100.0)))
+        witnesses = gather._ledger_both_sides_witnesses(cell, [], HALF_STEP)
+        kinds = [w["kind"] for w in witnesses]
+        self.assertNotIn("ledger_both_sides", kinds)
+
+    def test_a_single_stub_with_nothing_on_the_other_side_is_not_a_witness(self):
+        """One-sided ink alone is not this witness -- Sean's rule names
+        BOTH sides for a line crossing a head."""
+        img = _blank_image(BAR_WIDTH, BAR_HEIGHT)
+        img[117:123, 10:30] = 0  # one stub only
+        cell = _FakeCell(img)
+        witnesses = gather._ledger_both_sides_witnesses(cell, [], HALF_STEP)
+        kinds = [w["kind"] for w in witnesses]
+        self.assertNotIn("ledger_both_sides", kinds)
+
+    def test_no_grid_returns_no_witnesses(self):
+        cell = _FakeCell(_ledger_both_sides_image())
+        self.assertEqual(gather._ledger_both_sides_witnesses(cell, [], None),
+                        [])
+
+
+class TestLedgerBothSidesRescue(unittest.TestCase):
+    """The witness wired into the full `gather_lowconf_rescue` reader."""
+
+    def test_a_detector_box_found_in_the_gap_is_kept_as_a_rescue(self):
+        cell = _FakeCell(_ledger_both_sides_image())
+        det = _FakeDet("noteheadBlackOnLine", 0.12,
+                      x_canonical=34.0, y_canonical=116.0,
+                      width_canonical=8.0, height_canonical=8.0)  # c~(38,120)
+        detector = _FakeDetector([det])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": []}):
+            log, detections = _run_rescue(cell, detector)
+
+        glyph = R_glyph(0, 0, 0, 0, 0)
+        rows = log.rows(Q.GLYPH_BOX, glyph)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0].detail.get("witness"), "ledger_both_sides")
+
+    def test_no_box_found_in_the_gap_records_witness_unmet_never_invents_one(
+            self):
+        """⚠️ THE RULE THE BRIEF NAMES: a witness with nothing near it,
+        even at `RESCUE_CONF_FLOOR`, is recorded (`witness_unmet`) --
+        never a guessed box."""
+        cell = _FakeCell(_ledger_both_sides_image())
+        detector = _FakeDetector([])  # the rerun finds nothing at all
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": []}):
+            log, detections = _run_rescue(cell, detector)
+
+        self.assertEqual(log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0)), ())
+        refusals = log.refusals(Q.GLYPH_BOX, _sub())
+        reasons = [r.reason for r in refusals]
+        self.assertIn("witness_unmet", reasons)
+        self.assertEqual(detections.get(_sub().to_key(), []), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -658,6 +658,13 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.39b. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_NOTEHEAD_RECENTRE": ("staged/gather.py", "gather_notehead_recentre"),
+    # ⚠️ ROADMAP 2.39b EXTENSION, cause A. Also `staged/gather.py`, also
+    # `gather_notehead_recentre` -- the SAME `image_no_staff` raster
+    # `CV_NOTEHEAD_RECENTRE` reads, read by a different function
+    # (`_notehead_vertical_ink_extent`) as a fallback when that search
+    # declines on a short, hollow box.
+    "CV_NOTEHEAD_VERTICAL_EXTENT": ("staged/gather.py",
+                                    "gather_notehead_recentre"),
     # ⚠️ ROADMAP 2.42. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_NOTEHEAD_RECENTRE` does (the standard-head-box
     # fill test it calls, `notehead_ink_under`, is `CV_NOTEHEAD_INK`'s own

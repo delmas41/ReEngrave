@@ -511,15 +511,148 @@ ACCIDENTAL_WITNESS_HALF_WIDTH_SPACES = 1.3   # how far right to look
 ACCIDENTAL_WITNESS_HALF_HEIGHT_SPACES = 0.6  # around the accidental's own y
 
 
+#: ROADMAP 2.55 EXTENSION, cause B (DECISIONS 2026-10-01, `lane-farhead-
+#: combined`): *"there should be plenty of shape to see 2 oval shapes with
+#: lines emerging from both sides of the note heads"* -- a head missed
+#: INSIDE a blob the detector boxed as something else (or boxed nothing
+#: at all). Sean's own 10-01 rule: *"a line through a head always shows
+#: on both sides"* -- so a ledger row with a THIN, FLAT stub of ink on
+#: BOTH sides of a head-sized GAP, where no notehead/rest box already
+#: covers that gap, is itself a witness that a head sits in the gap, on
+#: that ledger, at that x. How far above/below the staff this scan looks,
+#: in staff spaces -- bounded, like every other far-head reader, rather
+#: than an unbounded walk.
+LEDGER_BOTH_SIDES_SEARCH_SPACES = 4.0
+#: A stub shorter than this (staff spaces) is not read as a ledger's own
+#: wing -- too short to tell apart from noise at the row's own edge.
+LEDGER_BOTH_SIDES_MIN_STUB_SPACES = 0.25
+#: The gap between two stubs must be plausibly HEAD-sized to be read as a
+#: head sitting in it -- narrower than this is two ends of one broken
+#: ledger, wider is two unrelated marks that happen to share a row.
+LEDGER_BOTH_SIDES_GAP_MIN_SPACES = 0.6
+LEDGER_BOTH_SIDES_GAP_MAX_SPACES = 2.2
+#: The witness window around the gap's own centre, in staff spaces --
+#: the same shape the stem/arc/accidental witnesses above already use.
+LEDGER_BOTH_SIDES_WITNESS_HALF_WIDTH_SPACES = 0.9
+LEDGER_BOTH_SIDES_WITNESS_HALF_HEIGHT_SPACES = 0.6
+
+
+def _existing_head_covers_gap(existing: Sequence[Any], gap_x0: float,
+                              gap_x1: float, y: float, space: float
+                              ) -> bool:
+    """`True` where a notehead/rest `existing` detection's own centre
+    already falls inside `[gap_x0, gap_x1]` near `y` -- cause B is a MISSED
+    head only; a gap the detector already boxed is cause A's territory
+    (or no gap at all), never this witness's."""
+    half_h = LEDGER_BOTH_SIDES_WITNESS_HALF_HEIGHT_SPACES * space
+    for d0 in existing:
+        name = str(getattr(d0, "smufl_name", "")).lower()
+        if not (name.startswith(_NOTEHEAD_PREFIX)
+                or name.startswith(_REST_PREFIX)):
+            continue
+        cx = d0.x_canonical + d0.width_canonical / 2.0
+        cy = d0.y_canonical + d0.height_canonical / 2.0
+        if gap_x0 <= cx <= gap_x1 and abs(cy - y) <= half_h:
+            return True
+    return False
+
+
+def _ledger_both_sides_witnesses(c: Any, existing: Sequence[Any],
+                                 half_step: Optional[float]
+                                 ) -> List[Dict[str, Any]]:
+    """Candidate ledger rows above/below the staff carrying a THIN, FLAT
+    ink stub on BOTH sides of a head-sized gap that holds no existing
+    notehead/rest box -- ROADMAP 2.55 extension, cause B. `img` is `c`'s
+    own `image_no_staff` (0 == ink); `existing` the production-floor
+    detections already filed for this cell.
+
+    One witness per gap found, named `"ledger_both_sides"`. `None`/`[]`
+    wherever the cell carries no measured grid or no raster -- declined,
+    never guessed.
+    """
+    witnesses: List[Dict[str, Any]] = []
+    if not half_step:
+        return witnesses
+    space = half_step * 2.0
+    img = getattr(c, "image_no_staff", None)
+    if img is None or getattr(img, "ndim", 0) != 2:
+        return witnesses
+    lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+    if len(lines) < 2:
+        return witnesses
+    top, bottom = float(min(lines)), float(max(lines))
+    ink = (img == 0)
+    H, W = ink.shape
+    thickness = LEDGER_RUNG_INK_DEFAULT_THICKNESS_SPACES * space
+    pad = LEDGER_RUNG_INK_THICKNESS_PAD_SPACES * space
+    half_h = thickness / 2.0 + pad
+    min_stub_px = LEDGER_BOTH_SIDES_MIN_STUB_SPACES * space
+
+    y_candidates: List[float] = []
+    y = top - space
+    bound = top - LEDGER_BOTH_SIDES_SEARCH_SPACES * space
+    while y >= bound:
+        y_candidates.append(y)
+        y -= space
+    y = bottom + space
+    bound = bottom + LEDGER_BOTH_SIDES_SEARCH_SPACES * space
+    while y <= bound:
+        y_candidates.append(y)
+        y += space
+
+    for y_c in y_candidates:
+        iy0 = max(0, int(round(y_c - half_h)))
+        iy1 = min(H, int(round(y_c + half_h)))
+        if iy1 <= iy0:
+            continue
+        row = ink[iy0:iy1, :].any(axis=0)
+        runs: List[Tuple[int, int]] = []
+        in_run = False
+        run_start = 0
+        for x in range(W):
+            if row[x] and not in_run:
+                run_start = x
+                in_run = True
+            elif not row[x] and in_run:
+                runs.append((run_start, x))
+                in_run = False
+        if in_run:
+            runs.append((run_start, W))
+        stub_runs = [r for r in runs if (r[1] - r[0]) >= min_stub_px]
+        for i in range(len(stub_runs)):
+            for j in range(i + 1, len(stub_runs)):
+                left, right = stub_runs[i], stub_runs[j]
+                gap_x0, gap_x1 = float(left[1]), float(right[0])
+                gap_w = gap_x1 - gap_x0
+                if gap_w <= 0:
+                    continue
+                gap_w_sp = gap_w / space
+                if not (LEDGER_BOTH_SIDES_GAP_MIN_SPACES <= gap_w_sp
+                        <= LEDGER_BOTH_SIDES_GAP_MAX_SPACES):
+                    continue
+                if _existing_head_covers_gap(existing, gap_x0, gap_x1,
+                                             y_c, space):
+                    continue
+                gap_cx = (gap_x0 + gap_x1) / 2.0
+                wdx = LEDGER_BOTH_SIDES_WITNESS_HALF_WIDTH_SPACES * space
+                wdy = LEDGER_BOTH_SIDES_WITNESS_HALF_HEIGHT_SPACES * space
+                witnesses.append({"kind": "ledger_both_sides",
+                                  "x_lo": gap_cx - wdx, "x_hi": gap_cx + wdx,
+                                  "y_lo": y_c - wdy, "y_hi": y_c + wdy})
+    return witnesses
+
+
 def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
                               half_step: Optional[float]
                               ) -> List[Dict[str, Any]]:
     """Every witness already on the record for cell `c` that PREDICTS where
     a notehead must be: a stem end (classical-CV, re-run directly -- this
     cell has no `Q.STEM` row yet, since this reader runs before
-    `gather_cv_lines` in the pipeline), a tie/slur end, or an accidental's
+    `gather_cv_lines` in the pipeline), a tie/slur end, an accidental's
     right side (both read off `existing`, the production-floor detections
-    already filed for this cell).
+    already filed for this cell), or a ledger row with ink stubs on BOTH
+    sides of a head-sized gap (`_ledger_both_sides_witnesses`, ROADMAP
+    2.55 extension cause B).
 
     Each witness is a half-open window: `kind`, `x_lo`/`x_hi`/`y_lo`/`y_hi`
     in the cell's own CANONICAL frame -- the same frame `d.x_canonical` etc.
@@ -575,6 +708,8 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
         witnesses.append({"kind": "accidental_right",
                           "x_lo": right_x, "x_hi": right_x + 2 * acdx,
                           "y_lo": cy - acdy, "y_hi": cy + acdy})
+
+    witnesses.extend(_ledger_both_sides_witnesses(c, existing, half_step))
     return witnesses
 
 
@@ -4563,6 +4698,108 @@ def recentre_notehead(img: Any, cx: float, cy: float, spacing: float
 #: the flagged head above (ratio 0.79) sits well clear of it.
 RECENTRE_BOX_SIZE_GATE = 0.7
 
+#: ROADMAP 2.39b EXTENSION -- cause A of the "8 far heads neither reader
+#: gets right" (DECISIONS 2026-10-01, `lane-farhead-combined`): *"found the
+#: correct ledger line but the box is small and only covers the top of the
+#: half note"*. A Litolff half note whose oval does not fully close reads
+#: as mostly BLANK PAPER inside its own box, so `recentre_notehead`'s
+#: matched-window FILL search declines no matter where the window sits
+#: (`RECENTRE_MIN_FILL`'s own note: "a hollow head's own interior reads
+#: comparably sparse"). This constant gates a SEPARATE fallback,
+#: `_notehead_vertical_ink_extent`, that reads the oval's own ink EXTENT
+#: (where its ink starts and stops in a narrow central strip) rather than
+#: its density -- a hollow ring still marks its own top and bottom even
+#: though its centre stays white. Runs ONLY where the detector's box is
+#: clearly SHORTER than the standard head (below this ratio) AND the fill
+#: search above has already declined -- a box of normal height is left
+#: exactly as is, unconditionally, the same posture `RECENTRE_BOX_SIZE_
+#: GATE` already takes for width. 0.75 chosen looser than 0.7 on purpose:
+#: this path only ever runs as a second attempt after the fill search's
+#: own (tighter) gate and its own decline, so a slightly wider net here
+#: costs nothing the fill search was not already trying for.
+SHORT_BOX_HEIGHT_RATIO_MAX = 0.75
+
+#: How far past the detector's own centre the vertical-extent search looks
+#: for the oval's own ink, in staff spaces -- generous enough to find a
+#: half note's full oval above a box that covers only its top, bounded so
+#: it cannot wander into a neighbouring line's own head.
+VERTICAL_EXTENT_SEARCH_SPACES = 1.0
+#: The central column band the extent search reads, as a fraction of the
+#: STANDARD head width -- narrow enough to stay off the stem (a stem sits
+#: at a head's SIDE, CLAUDE.md Sec.10) and off a neighbouring head's ink.
+VERTICAL_EXTENT_STRIP_FRAC = 0.4
+#: The WIDE window, as a multiple of the narrow strip above, a candidate
+#: row is also tested against: a staff or ledger line is thin and keeps
+#: going well past the head, while the oval's own cap stops at the head's
+#: own edges -- so a row that is nearly as full out here as in the narrow
+#: strip is a LINE, masked out of the oval's own extent, never counted as
+#: the head's own ink.
+VERTICAL_EXTENT_LINE_WIDE_MULT = 1.8
+#: How full a row must be, in BOTH the narrow strip and the wide window,
+#: to be read as a staff/ledger line rather than the oval's own cap.
+VERTICAL_EXTENT_LINE_FILL_MIN = 0.85
+
+
+def _notehead_vertical_ink_extent(img: Any, cx: float, cy: float,
+                                  spacing: float, width_spaces: float
+                                  ) -> Optional[Tuple[float, float]]:
+    """The oval's own vertical ink extent in a narrow central-column strip
+    around `cx` -- ROADMAP 2.39b extension, cause A (DECISIONS 2026-10-01).
+    `img` is a cell's `image_no_staff` (0 == ink); `cx`, `cy`, `spacing`
+    and `width_spaces` are all in `img`'s own frame/units, the same
+    contract `recentre_notehead` keeps.
+
+    Masks rows that look like a staff or ledger line -- thin, and nearly
+    as full in a window well past the head as in the narrow central strip
+    -- rather than the oval's own cap; a hollow head's ring still shows
+    ink at its own top/bottom row even though its CENTRE does not, which
+    is exactly why this reads a short, hollow box correctly where
+    `recentre_notehead`'s fill search declines.
+
+    `None` off the raster, a degenerate spacing, or no ink found in the
+    strip at all within the search band -- declined, never guessed
+    (CLAUDE.md rule 8).
+    """
+    if img is None or getattr(img, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    half_strip = (width_spaces * spacing * VERTICAL_EXTENT_STRIP_FRAC) / 2.0
+    sx0 = max(0, int(round(cx - half_strip)))
+    sx1 = min(W, int(round(cx + half_strip)))
+    if sx1 <= sx0:
+        return None
+    half_wide = (width_spaces * spacing * VERTICAL_EXTENT_LINE_WIDE_MULT
+                ) / 2.0
+    wx0 = max(0, int(round(cx - half_wide)))
+    wx1 = min(W, int(round(cx + half_wide)))
+    y_lo = max(0, int(round(cy - VERTICAL_EXTENT_SEARCH_SPACES * spacing)))
+    y_hi = min(H, int(round(cy + VERTICAL_EXTENT_SEARCH_SPACES * spacing)))
+    if y_hi <= y_lo:
+        return None
+    rows: List[int] = []
+    for y in range(y_lo, y_hi):
+        strip_row = ink[y, sx0:sx1]
+        if strip_row.size == 0:
+            continue
+        strip_fill = float(strip_row.sum()) / strip_row.size
+        if strip_fill <= 0.0:
+            continue
+        if wx1 > wx0:
+            wide_row = ink[y, wx0:wx1]
+            wide_fill = float(wide_row.sum()) / wide_row.size
+        else:
+            wide_fill = strip_fill
+        is_line = (strip_fill >= VERTICAL_EXTENT_LINE_FILL_MIN
+                  and wide_fill >= VERTICAL_EXTENT_LINE_FILL_MIN)
+        if is_line:
+            continue
+        rows.append(y)
+    if not rows:
+        return None
+    return float(min(rows)), float(max(rows))
+
 
 def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                              local: Dict[int, Tuple[int, int]],
@@ -4632,6 +4869,37 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                 continue
             result = recentre_notehead(img, float(d.x_center),
                                        float(d.y_center), space_canonical)
+            declined = result is None or result["decline_reason"] is not None
+            if declined and h_ratio is not None \
+                    and h_ratio < SHORT_BOX_HEIGHT_RATIO_MAX:
+                # ⚠️ ROADMAP 2.39b EXTENSION, cause A: the fill search above
+                # has declined (a hollow interior reads sparse no matter
+                # where its window sits) and the box is clearly SHORTER
+                # than the standard head -- try the oval's own ink EXTENT
+                # instead of its density. `width_spaces` is the STANDARD
+                # width, never the box's own (short) one -- the search
+                # strip is centred on `cx` regardless of the box's size.
+                extent = _notehead_vertical_ink_extent(
+                    img, float(d.x_center), float(d.y_center),
+                    space_canonical, STANDARD_HEAD_WIDTH_SPACES)
+                if extent is not None:
+                    y0, y1 = extent
+                    cy_new = (y0 + y1) / 2.0
+                    dy_sp = (cy_new - float(d.y_center)) / space_canonical
+                    log.observe(
+                        g, Q.NOTEHEAD_RECENTRE, [0.0, round(dy_sp, 3)],
+                        reader=READERS.CV_NOTEHEAD_VERTICAL_EXTENT,
+                        frame=frame, ink_y0=y0, ink_y1=y1,
+                        height_ratio=round(h_ratio, 3),
+                        original_box=[float(d.x_center), float(d.y_center),
+                                      float(d.width_canonical),
+                                      float(d.height_canonical)],
+                        note="short box re-centred vertically on the "
+                             "oval's own ink extent (staff/ledger rows "
+                             "masked locally); resized to the standard "
+                             "head -- original box kept in `detail` for "
+                             "trace")
+                    continue
             if result is None:
                 log.abstain(g, Q.NOTEHEAD_RECENTRE,
                            reader=READERS.CV_NOTEHEAD_RECENTRE, frame=frame,
