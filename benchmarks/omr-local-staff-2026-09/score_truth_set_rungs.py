@@ -115,6 +115,41 @@ def _notehead_boxes_by_page(rec: EXP.Record) -> Dict[int, List[Tuple[str, tuple]
     return out
 
 
+# Cause C (DECISIONS 2026-10-01, "four causes behind the 8 far heads
+# neither reader gets right"): accidental ink beside a head on a ledger
+# can fake a stub -- these are the detector's OWN accidental-shaped
+# classes (`Q.GLYPH_BOX`'s own category, never the key-signature reading
+# -- a header cell's accidental-shaped box is a DIFFERENT fact, CLAUDE.md
+# sec10/sec5.9/5.8 "the condensed count cannot come from the page" family
+# of cautions; this lane only needs "is there accidental-shaped ink here
+# at all", which the detector class already answers directly).
+_ACCIDENTAL_CLASSES = {
+    "accidentalFlat", "accidentalSharp", "accidentalNatural",
+    "accidentalDoubleFlat", "accidentalDoubleSharp",
+}
+
+
+def _accidental_boxes_by_page(rec: EXP.Record) -> Dict[int, List[Tuple[str, tuple]]]:
+    """Every `Q.GLYPH_BOX` row whose own detector class is accidental-
+    shaped, by page, in PAGE pixels -- same shape as
+    `_notehead_boxes_by_page`, read directly off `Q.GLYPH_BOX` (no
+    per-subject lookup needed; the box IS the observation)."""
+    out: Dict[int, List[Tuple[str, tuple]]] = collections.defaultdict(list)
+    for o in rec.observations:
+        if o["quantity"] != Q.GLYPH_BOX:
+            continue
+        value = o.get("value")
+        if not value or value[0] not in _ACCIDENTAL_CLASSES:
+            continue
+        sub = o["subject"]
+        page = int(sub.split("/")[1])
+        detail = o.get("detail") or {}
+        pb = detail.get("bbox_page_px")
+        if pb:
+            out[page].append((sub, tuple(float(v) for v in pb)))
+    return out
+
+
 # ─────────────────────────────────────────────────────────────────────────
 # lane-brahms-frame (2026-10-01) -- the staff's own GLOBAL `Q.STAFF_LINES`
 # read is one representative fit for the WHOLE staff; on a page with real
@@ -149,8 +184,21 @@ def frame_lines_for_head(gray: "np.ndarray", global_lines: Sequence[float],
 def reader_absolute_position(
     gray, global_lines: Sequence[float], box: Sequence[float],
     subject: str, page_notehead_boxes: Sequence[Tuple[str, tuple]],
+    page_accidental_boxes: "Sequence[Tuple[str, tuple]] | None" = None,
+    four_causes_cd: bool = False,
 ) -> Tuple[Optional[int], str]:
-    """Returns (absolute position or None, reason). Fixes 2 + 3."""
+    """Returns (absolute position or None, reason). Fixes 2 + 3.
+
+    `four_causes_cd=True` (lane-ledger-r8, DECISIONS 2026-10-01, "four
+    causes"): wires causes C and D into this reader --
+    `page_accidental_boxes` joins the other-notehead exclusion set
+    (cause C: accidental ink beside a head on a ledger is never a stub,
+    and the box's own top/bottom edges collapse to the real middle
+    rung), and `derive_far_head_step` gets the image/box it needs to
+    decide line-vs-space by direct evidence (cause D) instead of the
+    retired gap-distance guess. `False` (the default) is the UNCHANGED
+    "as shipped" reader every other caller of this function still gets.
+    """
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -168,9 +216,16 @@ def reader_absolute_position(
     # exclude every OTHER notehead's own box, by SUBJECT -- never by box
     # value, which float round-trips could coincidentally match or miss.
     others = [b for (s, b) in page_notehead_boxes if s != subject]
+    if four_causes_cd and page_accidental_boxes:
+        # Cause C: accidental ink is excluded from stub evidence exactly
+        # like another notehead's own ink -- same mechanism, same
+        # both-sides-continuation safety valve (a real ledger drawn
+        # straight through an accidental's own box still survives).
+        others = others + [b for (_s, b) in page_accidental_boxes]
     items = lg.measure_ledger_rungs(
         gray, ys, cx, head_y=cy, exclude_boxes=others,
         head_box_x=(x0, x1),
+        collapse_edges_box=(x0, y0, x1, y1) if four_causes_cd else None,
         # FAULT 2's one-sided rule (`head_box_y`) is NOT wired into this
         # real-data score: measured NET NEGATIVE here (Litolff right
         # 33->31 of 44 when enabled) -- a one-sided "rung" the fixed
@@ -305,7 +360,12 @@ def reader_absolute_position(
                         continue
             i += 1
 
-    step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
+    step = lg.derive_far_head_step(
+        items, edge, sign, near_y, spacing,
+        img_gray=gray if four_causes_cd else None,
+        head_box=(x0, y0, x1, y1) if four_causes_cd else None,
+        exclude_boxes=others if four_causes_cd else None,
+    )
     if step["offset"] is None:
         return None, step["reason"]
     extra_reasons = [r for r in (stack_reason, gap_fill_reason) if r is not None]
@@ -420,12 +480,20 @@ def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
     return rows
 
 
-def score_doc(doc_id: str) -> Dict[str, Any]:
+def score_doc(doc_id: str, four_causes_cd: bool = False) -> Dict[str, Any]:
+    """`four_causes_cd=True` (lane-ledger-r8): runs the `rungs_after`
+    reader with causes C+D wired in (`reader_absolute_position`'s own
+    flag) -- population, geometry and `ledger_measured` are UNCHANGED,
+    so `tally["rungs_after"]` is the only number this flag can move,
+    directly comparable to the `False` (default, "as shipped") run."""
     loaded = ts.load_doc(doc_id)
     rows = _far_head_rows(doc_id, loaded)
     rec = loaded["rec"]
     pages = PageCache(loaded["cfg"])
     boxes_by_page = _notehead_boxes_by_page(rec)
+    accidental_boxes_by_page = (
+        _accidental_boxes_by_page(rec) if four_causes_cd else {}
+    )
 
     tally: Dict[str, "collections.Counter[str]"] = collections.defaultdict(
         collections.Counter
@@ -464,7 +532,9 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
         geom_pos = int(round(row["raw_pos"]))
         after_pos, reason = reader_absolute_position(
             gray, lines, box, row["subject"],
-            boxes_by_page.get(row["page"], [])
+            boxes_by_page.get(row["page"], []),
+            page_accidental_boxes=accidental_boxes_by_page.get(row["page"], []),
+            four_causes_cd=four_causes_cd,
         )
         ledger_pos, ledger_reason, ledger_is_fallback = ledger_measured_position(
             gray, lines, box, row["subject"],

@@ -30,31 +30,49 @@ from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 
 
 def _rungs_y_for_head(gray, lines: Sequence[float], box, subject: str,
-                      page_boxes: Sequence[Tuple[str, tuple]]
+                      page_boxes: Sequence[Tuple[str, tuple]],
+                      page_accidental_boxes: "Sequence[Tuple[str, tuple]] | None" = None,
+                      four_causes_cd: bool = False,
                       ) -> Tuple[List[float], float, str]:
     """The SAME rung ladder `score.reader_absolute_position` derives its
     own answer from -- recomputed here (not re-exported by that function,
     which returns only the final offset) so the evenness measure and the
     final offset are provably reading the SAME ladder, never a second,
-    independently-walked one."""
+    independently-walked one.
+
+    `four_causes_cd=True` (lane-ledger-r8): wires cause C's accidental-
+    ink exclusion and edge-rung collapse into this SAME ladder too, so
+    the evenness measure stays provably reading what the final offset
+    read. `False` (the default) is UNCHANGED.
+    """
     ys = sorted(float(v) for v in lines)
     spacing = (ys[-1] - ys[0]) / 4.0
     x0, y0, x1, y1 = box
     cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
     side = "above" if cy < ys[0] else "below"
     others = [b for (s, b) in page_boxes if s != subject]
+    if four_causes_cd and page_accidental_boxes:
+        others = others + [b for (_s, b) in page_accidental_boxes]
     items = lg.measure_ledger_rungs(
         gray, ys, cx, head_y=cy, exclude_boxes=others, head_box_x=(x0, x1),
+        collapse_edges_box=(x0, y0, x1, y1) if four_causes_cd else None,
     ).get(side, [])
     return items, spacing, side
 
 
-def score_doc(doc_id: str) -> Dict[str, Any]:
+def score_doc(doc_id: str, four_causes_cd: bool = False) -> Dict[str, Any]:
+    """`four_causes_cd=True` (lane-ledger-r8): the rungs reader feeding
+    `combine_farhead_position` runs with causes C+D wired in (same flag
+    `score.reader_absolute_position` and `_rungs_y_for_head` take).
+    `False` (the default) is the UNCHANGED "as shipped" combine score."""
     loaded = ts.load_doc(doc_id)
     rows = score._far_head_rows(doc_id, loaded)
     rec = loaded["rec"]
     pages = score.PageCache(loaded["cfg"])
     boxes_by_page = score._notehead_boxes_by_page(rec)
+    accidental_boxes_by_page = (
+        score._accidental_boxes_by_page(rec) if four_causes_cd else {}
+    )
 
     tally: "collections.Counter[str]" = collections.Counter()
     branch_tally: Dict[str, "collections.Counter[str]"] = collections.defaultdict(
@@ -89,11 +107,14 @@ def score_doc(doc_id: str) -> Dict[str, Any]:
         geom_pos = int(round(row["raw_pos"]))
         geom_residual = abs(row["raw_pos"] - round(row["raw_pos"]))
         page_boxes = boxes_by_page.get(row["page"], [])
+        page_acc_boxes = accidental_boxes_by_page.get(row["page"], [])
         rungs_pos, _reason = score.reader_absolute_position(
-            gray, lines, box, row["subject"], page_boxes
+            gray, lines, box, row["subject"], page_boxes,
+            page_accidental_boxes=page_acc_boxes, four_causes_cd=four_causes_cd,
         )
         rungs_y, spacing, _side = _rungs_y_for_head(
-            gray, lines, box, row["subject"], page_boxes
+            gray, lines, box, row["subject"], page_boxes,
+            page_accidental_boxes=page_acc_boxes, four_causes_cd=four_causes_cd,
         )
 
         combined = lg.combine_farhead_position(

@@ -61,13 +61,37 @@ def test_touching_the_last_rung_is_the_space_beyond_it() -> None:
 
 
 @pytest.mark.omr_annotate
-def test_half_space_beyond_is_the_next_ledger_hidden_under_the_head() -> None:
-    """RED before this round: the old occupied-tolerance code put this
-    head in the SAME space as the rung (offset+1 = "space"), never
-    recognising it as sitting ON the next (unfound) ledger line.
+def test_half_space_beyond_with_no_evidence_is_now_the_space_beyond_it() -> None:
+    """SUPERSEDED by cause D (DECISIONS 2026-10-01, "four causes"): a gap
+    this size used to be read as "on the next ledger, hidden under the
+    head" by distance alone -- that distance guess is exactly what put
+    tiles 6-8 of the neither-right sheet one ledger too far out. With no
+    image/box supplied (no evidence possible), the head is now the SPACE
+    beyond the last clean rung, never a guessed further line.
     `glyph/3/0/7/6/2`-shaped numbers: one rung, head's near edge 39px
     (0.39 sp) beyond it."""
     out = derive_far_head_step([200.0], 300.0, -1.0, 161.0, 100.0)
+    assert out["kind"] == "space"
+    assert out["offset"] == 3  # last rung at 2 half-steps + 1
+
+
+@pytest.mark.omr_annotate
+def test_half_space_beyond_with_real_evidence_is_the_next_ledger() -> None:
+    """Cause D's positive case: the SAME gap as above, but the page
+    actually shows a thin, flat line with stubs on both sides at the
+    head's own middle row -- now the head IS on that ledger. Head box
+    (120, 140, 180, 161): near edge (bottom, closest to the staff) =
+    161, matching `head_near_y` below; a 5px-thick band at the box's
+    own middle row (150.5), spanning well past both edges, stands in
+    for the printed ledger."""
+    img = np.full((400, 300), 255, dtype=np.uint8)
+    head_box = (120.0, 140.0, 180.0, 161.0)
+    mid_y = int(round((140.0 + 161.0) / 2.0))
+    img[mid_y - 2: mid_y + 3, 60:241] = 0
+    out = derive_far_head_step(
+        [200.0], 300.0, -1.0, 161.0, 100.0,
+        img_gray=img, head_box=head_box,
+    )
     assert out["kind"] == "line"
     assert out["offset"] == 4  # last rung at 2 half-steps + 2
 
@@ -86,19 +110,41 @@ def test_rung_passing_through_the_head_itself() -> None:
 
 
 @pytest.mark.omr_annotate
-def test_ambiguous_gap_abstains() -> None:
-    """Between the two tolerances -- never guessed."""
+def test_formerly_ambiguous_gap_is_now_the_space_with_no_evidence() -> None:
+    """SUPERSEDED by cause D: the old code abstained between the two
+    retired tolerances. There is no "ambiguous" bucket any more -- with
+    no image/box supplied (no evidence of a line possible), any positive
+    gap resolves to the space beyond the last clean rung, never a
+    guess and never an abstention."""
     mid = (TOUCH_TOL_SPACES + HALF_LEDGER_TOL_SPACES) / 2.0
     near_y = 200.0 - mid * 100.0
     out = derive_far_head_step([200.0], 300.0, -1.0, near_y, 100.0)
-    assert out["offset"] is None
-    assert out["kind"] is None
-    assert "ambiguous" in out["reason"]
+    assert out["kind"] == "space"
+    assert out["offset"] == 3
 
 
 @pytest.mark.omr_annotate
-def test_below_side_same_arithmetic_mirrored() -> None:
+def test_below_side_same_arithmetic_mirrored_no_evidence_is_space() -> None:
+    """Mirrored on the below side; SUPERSEDED the same way as the
+    half-space-beyond test above (no evidence supplied -> space, not a
+    guessed next ledger)."""
     out = derive_far_head_step([800.0], 700.0, 1.0, 839.0, 100.0)  # gap 0.39
+    assert out["kind"] == "space"
+    assert out["offset"] == 3
+
+
+@pytest.mark.omr_annotate
+def test_below_side_with_real_evidence_is_the_next_ledger() -> None:
+    """Mirrored positive case: the below-staff side, with a genuine
+    ledger band at the head's own middle row."""
+    img = np.full((1000, 300), 255, dtype=np.uint8)
+    head_box = (120.0, 839.0, 180.0, 860.0)  # near edge (top) = 839
+    mid_y = int(round((839.0 + 860.0) / 2.0))
+    img[mid_y - 2: mid_y + 3, 60:241] = 0
+    out = derive_far_head_step(
+        [800.0], 700.0, 1.0, 839.0, 100.0,
+        img_gray=img, head_box=head_box,
+    )
     assert out["kind"] == "line"
     assert out["offset"] == 4
 
