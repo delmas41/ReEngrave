@@ -1,23 +1,28 @@
 #!/usr/bin/env python3
 """lane-ledger-r8 (2026-10-01): the SAME sheet as `neither_right_sheet.py`
 (Sean's "show the heads where NEITHER method gets it right"), re-drawn
-with causes C and D wired in (`score.reader_absolute_position`'s and
-`combined_scorer`'s own `four_causes_cd=True` -- accidental-ink
-exclusion + edge-rung collapse for cause C, the image-evidenced
-line-vs-space decision for cause D, both DECISIONS 2026-10-01 "four
-causes"). Same drawing code, same style, phone-sized, different reader.
+with causes C and D wired in (`score.reader_absolute_position`'s own
+`four_causes_cd=True` -- accidental-ink exclusion + edge-rung collapse
+for cause C, the connectivity-based one-sided jut evidence for cause D,
+both DECISIONS 2026-10-01 "four causes" + the two later refinements).
+Same drawing code, same style, phone-sized, different reader.
 
-MEASURED FINDING (see FINDINGS.md): on TODAY's record, 7 of the
-original 8 "neither right" heads still qualify (the 8th,
-`glyph/3/0/9/2/0`, already reads right independent of this lane's own
-change -- the tree has moved since the sheet was first drawn). Of those
-7, none exercise cause D's own branch at all: 5 take the "last rung
-passes through the head" branch (unaffected by this fix) and one
-(`glyph/3/0/9/3/5`) finds ZERO rungs (abstains before cause D's code
-ever runs) -- so none flip here. Causes C+D ARE measured to move real
-heads elsewhere in the same population (`glyph/3/0/7/4/2` unread ->
-right; `glyph/3/0/7/4/3` right -> wrong, a genuine, measured trade-off,
-net ZERO on the Litolff combined tally) -- see FINDINGS.md.
+Draws an EXPLICIT subject list (not re-derived from the "neither right"
+gate, which `glyph/3/0/7/4/2` no longer passes now that it is RIGHT):
+the original 8 named heads, plus the two heads this lane's own fix
+moved (`glyph/3/0/7/4/2` unread->right, `glyph/3/0/7/4/3` right->wrong)
+and the one further regression found on the wider population
+(`glyph/3/0/0/2/9` right->wrong). Each tile's legend names the EXACT
+branch `derive_far_head_step` took and its own reason text.
+
+See FINDINGS.md "lane-ledger-r8" for why the sheet's own 8 subjects
+differ slightly from a fresh run today -- in short: NOT because the
+record or the tree moved (the sheet's own commit, `28d367a7`, is the
+exact tip this lane branched from), but because retiring the
+through-decision's distance-guess (as instructed) means the UNFLAGGED
+default call (no image ever supplied) can no longer confirm ANY
+through rung at all -- a direct, foreseeable consequence of this
+lane's own governance change, not of anything external.
 
     python3 benchmarks/omr-local-staff-2026-09/neither_right_sheet_r8.py
 """
@@ -35,13 +40,29 @@ import cv2
 
 import truth_set_2_44c as ts  # noqa: E402
 import score_truth_set_rungs as score  # noqa: E402
-import combined_scorer as cs  # noqa: E402
 import rungs_sheet as rs  # noqa: E402  (reused: rung_extent)
 from tools.omr.staged.record import Q  # noqa: E402
 from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 
 OUT_PATH = REPO / "out" / "print" / "ledgers" / "neither_right_r8.png"
 FOUR_CAUSES_CD = True
+
+SUBJECTS = [
+    # Sean's original 8, same order as `neither_right_sheet.png`.
+    ("beethoven5-litolff", "glyph/1/0/10/7/1"),
+    ("beethoven5-litolff", "glyph/3/0/0/2/1"),
+    ("beethoven5-litolff", "glyph/3/0/0/6/2"),
+    ("beethoven5-litolff", "glyph/3/0/0/7/1"),
+    ("beethoven5-litolff", "glyph/3/0/0/7/2"),
+    ("beethoven5-litolff", "glyph/3/0/8/9/0"),
+    ("beethoven5-litolff", "glyph/3/0/9/2/0"),
+    ("beethoven5-litolff", "glyph/3/0/9/3/5"),
+    # The 2 heads this lane's own fix moves (coordinator's request).
+    ("beethoven5-litolff", "glyph/3/0/7/4/2"),   # unread -> right
+    ("beethoven5-litolff", "glyph/3/0/7/4/3"),   # right -> wrong
+    # One further regression found on the wider population.
+    ("beethoven5-litolff", "glyph/3/0/0/2/9"),   # right -> wrong
+]
 
 TARGET_TILE_W = 700          # "≥ 700 px wide"
 UPSCALE = 3                  # "(×3)"
@@ -69,26 +90,7 @@ def _gap_ratios(rungs_y, spacing):
            for i in range(len(rungs_y) - 1)] if spacing > 0 else []
 
 
-def _collect():
-    bad = []
-    for doc_id in ts.DOCS:
-        r = cs.score_doc(doc_id, four_causes_cd=FOUR_CAUSES_CD)
-        loaded = ts.load_doc(doc_id)
-        rows_by_sub = {row["subject"]: row
-                      for row in score._far_head_rows(doc_id, loaded)}
-        for h in r["per_head"]:
-            if h["v_geom"] == "wrong" and h["v_rungs"] in ("wrong", "unread"):
-                bad.append((doc_id, h, rows_by_sub[h["subject"]], loaded))
-    return bad
-
-
-def _tile(doc_id, h, row, loaded):
-    rec = loaded["rec"]
-    pages = score.PageCache(loaded["cfg"])
-    boxes_by_page = score._notehead_boxes_by_page(rec)
-    acc_boxes_by_page = (
-        score._accidental_boxes_by_page(rec) if FOUR_CAUSES_CD else {}
-    )
+def _tile(doc_id, row, loaded, rec, pages, boxes_by_page, acc_boxes_by_page):
     box = row["page_box"]
     staff_key = row["staff_key"]
     line_rows = rec.obs(Q.STAFF_LINES, staff_key)
@@ -98,14 +100,24 @@ def _tile(doc_id, h, row, loaded):
     spacing = (max(lines) - min(lines)) / 4.0
     page_boxes = boxes_by_page.get(row["page"], [])
     page_acc_boxes = acc_boxes_by_page.get(row["page"], [])
+
+    rungs_pos, reason = score.reader_absolute_position(
+        gray, lines, box, row["subject"], page_boxes,
+        page_accidental_boxes=page_acc_boxes, four_causes_cd=FOUR_CAUSES_CD,
+    )
+    import combined_scorer as cs  # local import, avoids a module cycle at top
     rungs_y, _sp, side = cs._rungs_y_for_head(
         gray, lines, box, row["subject"], page_boxes,
         page_accidental_boxes=page_acc_boxes, four_causes_cd=FOUR_CAUSES_CD,
     )
 
+    geom_pos = int(round(row["raw_pos"]))
+    clef_v = rec.value(Q.CLEF, staff_key)
+    truth_pos = sorted(set(score.truth_positions(row["truth_pitches"], str(clef_v))))
+    ref_pos = truth_pos[0] if truth_pos else geom_pos
+
     x0, y0, x1, y1 = box
     cx = (x0 + x1) / 2.0
-    ref_pos = h["truth_pos"][0]
     ref_y = _position_to_y(ref_pos, lines, spacing)
 
     # ── pixel-row check: every drawn line (staff + rung) must sit on ink
@@ -161,12 +173,14 @@ def _tile(doc_id, h, row, loaded):
     gaps = _gap_ratios(rungs_y, spacing)
     gaps_text = ("gaps: " + ", ".join(f"{g:.1f}" for g in gaps) + " x staff space"
                 if gaps else "gaps: (fewer than 2 rungs found)")
-    rungs_label = (f"{h['rungs_pos']}" if h["rungs_pos"] is not None else "undecided")
+    rungs_label = (f"{rungs_pos}" if rungs_pos is not None else "undecided")
+    verdict = "RIGHT" if rungs_pos in truth_pos else "WRONG"
     lines_text = [
         f"{doc_id}  {row['subject']}",
-        f"reference: {ref_pos}  --  geometry said {h['geom_pos']}  --  "
-        f"ledgers said {rungs_label} ({len(rungs_y)} ledgers found)",
+        f"reference: {ref_pos}  --  geometry said {geom_pos}  --  "
+        f"ledgers said {rungs_label} ({len(rungs_y)} ledgers found)  [{verdict}]",
         gaps_text,
+        f"branch: {reason}"[:95],
     ]
     unchecked = sum(1 for _, _, ok in checked_rows if not ok)
     if unchecked:
@@ -176,27 +190,51 @@ def _tile(doc_id, h, row, loaded):
     # tight head-only crop is often far narrower than its own longest
     # line of text): the canvas is padded to fit the WIDEST line,
     # measured by `cv2.getTextSize`, never just the image's own width.
-    font, font_scale, thickness = cv2.FONT_HERSHEY_SIMPLEX, 0.62, 1
+    font, font_scale, thickness = cv2.FONT_HERSHEY_SIMPLEX, 0.52, 1
     text_w = max(cv2.getTextSize(t, font, font_scale, thickness)[0][0]
                 for t in lines_text)
     canvas_w = max(crop.shape[1], text_w + 16)
-    legend_h = 26 * (len(lines_text) + 1)
+    legend_h = 24 * (len(lines_text) + 1)
     out = np.full((crop.shape[0] + legend_h, canvas_w, 3), 255, dtype=np.uint8)
     out[:crop.shape[0], :crop.shape[1]] = crop
     for i, t in enumerate(lines_text):
-        cv2.putText(out, t, (8, crop.shape[0] + 22 + i * 24),
+        cv2.putText(out, t, (8, crop.shape[0] + 20 + i * 22),
                    font, font_scale, BLACK, thickness, cv2.LINE_AA)
-    return out, checked_rows
+    return out, checked_rows, rungs_pos, geom_pos, ref_pos
 
 
 def build():
-    bad = _collect()
     tiles = []
-    for doc_id, h, row, loaded in bad:
-        tile, checked = _tile(doc_id, h, row, loaded)
+    loaded_cache = {}
+    rows_cache = {}
+    boxes_cache = {}
+    acc_cache = {}
+    for doc_id, subject in SUBJECTS:
+        if doc_id not in loaded_cache:
+            loaded_cache[doc_id] = ts.load_doc(doc_id)
+            rows_cache[doc_id] = {
+                r["subject"]: r
+                for r in score._far_head_rows(doc_id, loaded_cache[doc_id])
+            }
+            boxes_cache[doc_id] = score._notehead_boxes_by_page(
+                loaded_cache[doc_id]["rec"]
+            )
+            acc_cache[doc_id] = score._accidental_boxes_by_page(
+                loaded_cache[doc_id]["rec"]
+            )
+        loaded = loaded_cache[doc_id]
+        row = rows_cache[doc_id].get(subject)
+        if row is None:
+            print(f"{doc_id:<22} {subject:<20} NOT IN FAR-HEAD POPULATION")
+            continue
+        pages = score.PageCache(loaded["cfg"])
+        tile, checked, rungs_pos, geom_pos, ref_pos = _tile(
+            doc_id, row, loaded, loaded["rec"], pages,
+            boxes_cache[doc_id], acc_cache[doc_id],
+        )
         n_bad = sum(1 for _, _, ok in checked if not ok)
-        print(f"{doc_id:<22} {row['subject']:<20} ref={h['truth_pos'][0]:>3} "
-             f"geom={h['geom_pos']:>3} rungs={h['rungs_pos']}  "
+        print(f"{doc_id:<22} {subject:<20} ref={ref_pos:>3} "
+             f"geom={geom_pos:>3} rungs={rungs_pos}  "
              f"pixel-check: {len(checked)-n_bad}/{len(checked)} lines confirmed")
         tiles.append(tile)
 

@@ -97,14 +97,40 @@ def test_half_space_beyond_with_real_evidence_is_the_next_ledger() -> None:
 
 
 @pytest.mark.omr_annotate
-def test_rung_passing_through_the_head_itself() -> None:
-    """The last rung sits BEYOND the near edge (on the far side of the
-    head) -- the head is ON that very rung, not the next one out. The
-    rung's own step is its COUNT in the walk (one rung found = 2
-    half-steps), never a re-measurement of its raw pixel position
-    (round 3 fix -- a re-measurement is exactly what stepped one too far
-    on real, unevenly-spaced ledgers)."""
+def test_rung_passing_through_with_no_evidence_is_not_through() -> None:
+    """SUPERSEDED by cause D governing the through decision itself
+    (coordinator, DECISIONS 2026-10-0x): the last rung sitting beyond
+    the near edge used to be accepted as "passes through" on distance
+    alone -- that is exactly the false through-head reading tiles 4-8
+    of the neither-right sheet show. With no image/box supplied (no
+    evidence possible), this candidate is dropped as the head's own
+    outline, not a ledger -- and since it was the ONLY rung, nothing is
+    left before the head: abstain, never a guess."""
     out = derive_far_head_step([150.0], 300.0, -1.0, 200.0, 100.0)
+    assert out["kind"] is None
+    assert out["offset"] is None
+    assert "no_rung_before_the_head" in out["reason"]
+
+
+@pytest.mark.omr_annotate
+def test_rung_passing_through_with_real_evidence_is_through() -> None:
+    """Cause D's positive case for the through branch: the SAME numbers
+    as above, but the page shows a genuine thin, flat line with stubs
+    on both sides at the head's own middle row -- confirmed through,
+    the rung's own COUNT in the walk (one rung found = 2 half-steps),
+    never a re-measurement of its raw pixel position (round 3 fix -- a
+    re-measurement is exactly what stepped one too far on real,
+    unevenly-spaced ledgers)."""
+    img = np.full((400, 300), 255, dtype=np.uint8)
+    head_box = (120.0, 160.0, 180.0, 200.0)  # near edge (bottom) = 200
+    # The through check reads AT THE CANDIDATE'S OWN row (150, not the
+    # head box's unrelated geometric centre) -- a continuous band there,
+    # through the box's own column, reaching past the right edge.
+    img[148:153, 60:241] = 0
+    out = derive_far_head_step(
+        [150.0], 300.0, -1.0, 200.0, 100.0,
+        img_gray=img, head_box=head_box,
+    )
     assert out["kind"] == "line"
     assert out["offset"] == 2  # the one found rung's own COUNT-based offset
 

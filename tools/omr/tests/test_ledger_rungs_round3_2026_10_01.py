@@ -42,13 +42,38 @@ YS = [300, 400, 500, 600, 700]  # spacing 100, "above" edge = 300
 def test_real_shape_glyph_3_0_0_2_3() -> None:
     """The exact numbers from `glyph/3/0/0/2/3` (DECISIONS 2026-10-01):
     rungs at [431.5, 412.0], edge 450.0, spacing 15.5, near edge 424.58.
-    Reference position -4. Round 2 wrote -5."""
+    Reference position -4. Round 2 wrote -5. SUPERSEDED signature
+    (coordinator, DECISIONS 2026-10-0x): the through decision is now
+    GOVERNED by evidence, never the gap's distance alone, so this real
+    through rung needs a synthetic image confirming it at the head's
+    own middle -- the control below shows what happens without one."""
+    img = np.full((500, 300), 255, dtype=np.uint8)
+    head_box = (120.0, 409.0, 180.0, 424.58)
+    # The through check reads AT THE CANDIDATE'S OWN row (412.0, the
+    # farther-out rung the walk actually found -- never the box's
+    # unrelated geometric centre, ~417).
+    img[410:415, 60:241] = 0
+    out = derive_far_head_step(
+        [431.5, 412.0], edge_y=450.0, sign=-1.0, head_near_y=424.58,
+        spacing=15.5, img_gray=img, head_box=head_box,
+    )
+    assert out["kind"] == "line"
+    assert out["offset"] == 4  # 0 - 4 = -4, matching the reference
+
+
+@pytest.mark.omr_annotate
+def test_real_shape_with_no_evidence_falls_to_the_rung_before_it() -> None:
+    """Control: the SAME real-shape numbers with no image supplied --
+    the candidate "through" rung (431.5) is dropped (unevidenced), and
+    412.0 -- which sits properly between the staff and the head, not
+    overlapping its own box -- becomes "the last ledger before it",
+    decided space (no evidence) rather than guessed through."""
     out = derive_far_head_step(
         [431.5, 412.0], edge_y=450.0, sign=-1.0, head_near_y=424.58,
         spacing=15.5,
     )
-    assert out["kind"] == "line"
-    assert out["offset"] == 4  # 0 - 4 = -4, matching the reference
+    assert out["kind"] == "space"
+    assert out["offset"] == 3  # 412.0's own count (2) + 1, never 4
 
 
 @pytest.mark.omr_annotate
@@ -57,10 +82,18 @@ def test_evenly_spaced_control_unchanged() -> None:
     distance-based arithmetic agree -- this must not regress. Two rungs
     at the walk's own 2-half-steps-per-rung spacing (200, 100 -- 1st and
     2nd out from edge 300), near edge at 125 (25px/0.25sp beyond the 2nd
-    rung -- through-head zone)."""
+    rung -- through-head zone). SUPERSEDED signature (coordinator,
+    DECISIONS 2026-10-0x): the through decision needs evidence now, so
+    this control also supplies a synthetic image confirming a real line
+    at the head's own middle."""
+    img = np.full((400, 300), 255, dtype=np.uint8)
+    head_box = (120.0, 105.0, 180.0, 125.0)
+    # At the candidate's own row (100.0, the farther-out rung), never
+    # the box's unrelated geometric centre (~115).
+    img[98:103, 60:241] = 0
     out = derive_far_head_step(
         [200.0, 100.0], edge_y=300.0, sign=-1.0, head_near_y=125.0,
-        spacing=100.0,
+        spacing=100.0, img_gray=img, head_box=head_box,
     )
     assert out["kind"] == "line"
     assert out["offset"] == 4

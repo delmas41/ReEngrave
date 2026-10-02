@@ -824,28 +824,42 @@ def derive_far_head_step(
     wherever the box happens to be centred.
 
     Walks the SAME ladder arithmetic the reader already uses (2 half-steps
-    per rung from the edge):
+    per rung from the edge), but the THROUGH decision itself is now
+    GOVERNED by evidence, not merely the decision between a further
+    ledger and the space beyond it (coordinator, DECISIONS 2026-10-0x,
+    on round 8's own gap: 5 of Sean's 8 named heads took the OLD
+    "passes through" branch on distance alone BEFORE cause D's evidence
+    check ever ran -- exactly the false through-head reading tiles 4-5
+    (accidental ink) and 6-8 (a head just past a real ledger) describe):
 
       * no rung found at all -> ABSTAIN (nothing to count from).
-      * the last rung is beyond the near edge by `TOUCH_TOL_SPACES` or
-        less (the rung passes through the head's own ink, not merely
-        near it) -> the head sits ON that rung.
-      * otherwise (the near edge sits anywhere beyond the last rung, by
-        a little or a lot) -> cause D (DECISIONS 2026-10-01, "four
-        causes"; Sean on tiles 6-8 of the neither-right sheet: a head
-        just beyond a correctly-found ledger is NOT automatically on a
-        further, hidden one -- that was a distance guess, and it put
-        three heads one ledger too far out). The gap's raw SIZE no
-        longer decides line-vs-space (the old `TOUCH_TOL_SPACES`/
-        `HALF_LEDGER_TOL_SPACES` trichotomy, including its "ambiguous"
-        abstention, is retired): whether the head is ON the next ledger
-        is read directly off the page, at the head's own MIDDLE row,
-        for a line with stubs on BOTH sides
-        (`head_middle_rung_evidence`, `img_gray`/`head_box`/
-        `exclude_boxes`). Evidence found -> line, on that ledger. No
-        evidence -- including when no image/box is supplied at all --
-        -> the head is in the SPACE beyond the last clean rung found,
-        never a guessed further one (CLAUDE.md rule 8).
+      * the last rung sits at or beyond the head's near edge (by
+        `TOUCH_TOL_SPACES` or more) -> a CANDIDATE through-rung, never
+        taken on distance alone. It counts as passing through the head
+        ONLY where `head_middle_rung_evidence` confirms a thin, flat
+        line with stubs on BOTH sides at the head's own MIDDLE row
+        (accidental/other-head ink excluded via `exclude_boxes`). Not
+        evidenced -> this candidate is not a ledger at all (the head's
+        own outline, or an accidental's edge) -- drop it and test the
+        rung before it the SAME way (recursing outward toward the
+        staff), never simply accepting it on the gap's raw size.
+      * once a rung is reached that sits properly between the staff and
+        the head (not overlapping its own box) -- "the last ledger
+        before it" -- the SAME evidence decides line-vs-space exactly
+        as cause D already did: evidenced -> the head is ON the NEXT
+        ledger (one half-step and a half-step more out); not evidenced
+        -> the head is in the SPACE beyond that last real ledger, never
+        a guessed further one (CLAUDE.md rule 8).
+      * every rung drops out this way (none ever sits between the staff
+        and the head) -> ABSTAIN (`no_rung_before_the_head`) -- never a
+        guess from ink that was only ever the head's own outline.
+
+    `img_gray`/`head_box`/`exclude_boxes` omitted (every caller that has
+    no image) means evidence can never be found, so a candidate that
+    used to be accepted as "through" on distance alone is now ALWAYS
+    dropped, never guessed -- a real behaviour change from before cause
+    D existed, and the point of it (CLAUDE.md rule 8: "cannot tell" is
+    never answered as "yes, a line").
 
     Returns `{"offset": int|None, "kind": "line"|"space"|None,
     "reason": str}`. `offset` is in half-steps outward from the edge; the
@@ -854,38 +868,61 @@ def derive_far_head_step(
     """
     if not rungs_y or spacing <= 0:
         return dict(offset=None, kind=None, reason="no_rungs")
-    last = rungs_y[-1]
-    # ROUND 2 BUG (DECISIONS 2026-10-01, Sean on `glyph/3/0/0/2/3`, his C6:
-    # "Fix the one line change that allowed the code to step further out"):
-    # this used to RECOMPUTE the last rung's own step from its raw pixel
-    # distance to the edge (`round(abs(last-edge_y)/half_step)`), rounding
-    # against the NOMINAL half-step -- but hand-drawn ledgers are not
-    # evenly spaced (same fact that motivated the wide-gap walk fix), so a
-    # rung the walk correctly placed as the 2nd one out could measure
-    # 4.9 half-steps from the edge instead of 4, and round UP to 5,
-    # stepping one further out than the rung the walk actually found.
-    # `_walk_ladder` already KNOWS each rung's step: it is simply 2
-    # half-steps per rung, by the ladder's own construction (one rung per
-    # staff space) -- the COUNT of rungs found, not a re-measurement of
-    # the last one's raw position, is what must be trusted here.
-    last_half_steps = 2 * len(rungs_y)
-    gap_spaces = (sign * (head_near_y - last)) / spacing
-    if gap_spaces <= -TOUCH_TOL_SPACES:
-        return dict(offset=last_half_steps, kind="line",
-                   reason=f"last rung passes through the head itself "
-                          f"(gap {gap_spaces:.2f} sp)")
-    evidenced = head_middle_rung_evidence(
+    # The "is there a HIDDEN further ledger" check (the "beyond" branch
+    # below) always asks at the head's own geometric middle -- nothing
+    # has been found there yet, so that is the only candidate row.
+    # Computed once: it does not depend on which rung is being tested.
+    evidenced_beyond = head_middle_rung_evidence(
         img_gray, head_box, spacing, exclude_boxes
     )
-    if evidenced:
-        return dict(offset=last_half_steps + 2, kind="line",
-                   reason=f"{gap_spaces:.2f} sp beyond the last clean rung "
-                          f"-- a line through the head's own middle shows "
-                          f"stubs on both sides")
-    return dict(offset=last_half_steps + 1, kind="space",
-               reason=f"{gap_spaces:.2f} sp beyond the last clean rung -- "
-                      f"no evidenced line at the head's own middle, space "
-                      f"beyond it")
+    remaining = list(rungs_y)
+    while remaining:
+        last = remaining[-1]
+        # ROUND 2 BUG (DECISIONS 2026-10-01, Sean on `glyph/3/0/0/2/3`,
+        # his C6: "Fix the one line change that allowed the code to
+        # step further out"): trust the walk's own COUNT (2 half-steps
+        # per rung), never a re-measurement of the last one's raw pixel
+        # position against the nominal half-step -- hand-drawn ledgers
+        # are not evenly spaced, so that re-measurement could round a
+        # correctly-placed 2nd rung up to a 3rd.
+        last_half_steps = 2 * len(remaining)
+        gap_spaces = (sign * (head_near_y - last)) / spacing
+        if gap_spaces <= -TOUCH_TOL_SPACES:
+            # The THROUGH check asks AT THIS CANDIDATE'S OWN row --
+            # "where we think a ledger line should be" is wherever the
+            # walk already placed it, never the head's unrelated
+            # geometric centre (round 8's own regression: re-measuring
+            # strictly at the box centre missed real, confirmed-good
+            # through rungs sitting a few px off it).
+            if head_middle_rung_evidence(
+                img_gray, head_box, spacing, exclude_boxes, probe_y=last
+            ):
+                return dict(offset=last_half_steps, kind="line",
+                           reason=f"last rung passes through the head "
+                                  f"itself, confirmed by a jut connected "
+                                  f"to it at its own row "
+                                  f"(gap {gap_spaces:.2f} sp)")
+            # cause D (coordinator, DECISIONS 2026-10-0x): not evidenced
+            # -- this rung never actually ran through the head, it was
+            # the head's own outline (or an accidental's edge) wrongly
+            # counted as a ledger. Drop it and test the one before it.
+            remaining.pop()
+            continue
+        # `last` sits between the staff and the head (or touching it) --
+        # a genuine candidate, "the last ledger before it". Decide
+        # line-vs-space by the SAME evidence, never the gap's raw size.
+        if evidenced_beyond:
+            return dict(offset=last_half_steps + 2, kind="line",
+                       reason=f"{gap_spaces:.2f} sp beyond the last clean "
+                              f"rung -- a jut connected to the head's own "
+                              f"middle, on at least one side")
+        return dict(offset=last_half_steps + 1, kind="space",
+                   reason=f"{gap_spaces:.2f} sp beyond the last clean "
+                          f"rung -- no evidenced line at the head's own "
+                          f"middle, space beyond it")
+    return dict(offset=None, kind=None,
+               reason="every found rung was the head's own outline, not "
+                      "a ledger before it -- no_rung_before_the_head")
 
 
 def ledger_measured_geometry(
@@ -1349,64 +1386,46 @@ def has_through_head_rung(
     return False
 
 
-def _mask_boxes_region(
-    img_gray: np.ndarray,
-    exclude_boxes: "list[tuple[float, float, float, float]]",
-    y_center: float, x_lo: float, x_hi: float, spacing: float,
-) -> "tuple[np.ndarray, int, int]":
-    """A small local COPY of `img_gray` around `(y_center, x_lo..x_hi)`
-    with every `exclude_boxes` rectangle painted white -- so a stub probe
-    there can never mistake an accidental's or another notehead's own
-    ink for a ledger's (cause C, DECISIONS 2026-10-01 four causes).
-    Returns `(region, x_offset, y_offset)`; `region` is empty (size 0)
-    where the probe point falls off the page.
-    """
-    h, w = img_gray.shape
-    margin = max(2, int(round(1.5 * spacing)))
-    y0 = max(0, int(round(y_center)) - margin)
-    y1 = min(h, int(round(y_center)) + margin + 1)
-    x0 = max(0, int(round(min(x_lo, x_hi))) - margin)
-    x1 = min(w, int(round(max(x_lo, x_hi))) + margin + 1)
-    if y1 <= y0 or x1 <= x0:
-        return img_gray[0:0, 0:0], x0, y0
-    region = img_gray[y0:y1, x0:x1].copy()
-    for (bx0, by0, bx1, by1) in exclude_boxes:
-        rx0 = max(0, int(bx0) - x0)
-        ry0 = max(0, int(by0) - y0)
-        rx1 = min(region.shape[1], int(bx1) + 1 - x0)
-        ry1 = min(region.shape[0], int(by1) + 1 - y0)
-        if rx1 > rx0 and ry1 > ry0:
-            region[ry0:ry1, rx0:rx1] = 255
-    return region, x0, y0
-
-
 def head_middle_rung_evidence(
     img_gray: "np.ndarray | None",
     head_box: "tuple[float, float, float, float] | None",
     spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    probe_y: "float | None" = None,
 ) -> bool:
     """Cause D's evidence test (DECISIONS 2026-10-01, "four causes behind
     the 8 far heads neither reader gets right", Sean on tiles 6-8:
     *"slightly low but should read as underneath that ledger line"* --
     the head sits in the SPACE beyond the last clean rung found, not on
     a FURTHER hidden one, unless the page actually shows a line there).
-    Per the same day's convention (*"generally it should have a line
-    that extends on either side of the notehead"*), a ledger printed
-    THROUGH a head is confirmed only by a thin, flat band with stubs on
-    BOTH sides of the head's own box at its vertical MIDDLE row -- never
-    guessed from how far the head sits past the last rung the walk
-    already found. Reuses `rung_is_thin_and_flat`'s own stub probe, the
-    same scale (`THROUGH_RUNG_STUB_PROBE_SPACES`) `has_through_head_rung`
-    already validates a candidate's stubs with, but requires BOTH sides
-    (never "at least one" -- that looser rule is for re-validating a
-    candidate the both-sides walk already accepted; here nothing has
-    been found yet, so only direct both-sided evidence counts).
+    `probe_y` is the row to check -- the head's own vertical MIDDLE
+    (`(y0+y1)/2`) by default (used when nothing has been found there
+    yet and the question is whether a HIDDEN ledger exists), or an
+    ALREADY-FOUND candidate's own y (used to confirm it actually runs
+    through the head rather than merely sitting near it).
 
-    `exclude_boxes` (cause C, same decision): accidental or broken
-    half-note ink sitting beside the head must never be read as the
-    ledger's own stub -- every given box's ink is blanked from a local
-    copy of the image before either stub is probed.
+    Three refinements from Sean, same DECISIONS line, after round 8's
+    real-data measurement showed the first (both-sides-required) design
+    wrongly rejected known-good, print-verified through rungs:
+
+      1. *"there are rare cases where the ledger line will only come
+         out on one side not both but any line jutting out of a
+         notehead outside of the staff where we think a ledger line
+         should be is enough"* -- ONE side jutting past the box is
+         enough, never both required.
+      2. *"Examples with accidentals that I saw in the crops never had
+         any ink touching the note head"* -- CONNECTIVITY is the
+         primary test: the jutting ink must be part of the SAME
+         contiguous ink run as the head's own body at `probe_y` (no
+         bridging of any white gap, however small -- unlike
+         `_band_centers`' own hollow-notehead bridge, which exists for
+         a different reason). Found by taking the run that CONTAINS a
+         column inside the head's own box and asking whether THAT run
+         extends past either edge.
+      3. `exclude_boxes` (cause C) stays as the BACKUP, not the primary
+         test: accidental or other-notehead ink is blanked from a local
+         copy of the image first, so it can never supply the jut even
+         where it would otherwise look connected.
 
     `None` for `img_gray`/`head_box`, or a non-positive `spacing`, means
     no evidence is possible at all -- returns `False` (CLAUDE.md rule 8:
@@ -1415,22 +1434,48 @@ def head_middle_rung_evidence(
     if img_gray is None or head_box is None or spacing is None or spacing <= 0:
         return False
     x0, y0, x1, y1 = head_box
-    mid_y = (y0 + y1) / 2.0
-    stub = THROUGH_RUNG_STUB_PROBE_SPACES * spacing
-    left_x, right_x = x0 - stub, x1 + stub
-    probe, ox, oy = img_gray, 0, 0
+    y = probe_y if probe_y is not None else (y0 + y1) / 2.0
+    h, w = img_gray.shape
+    pad = RUNG_BOX_VISIBILITY_SPACES * spacing
+    cx0 = max(0, int(x0 - pad))
+    cx1 = min(w, int(x1 + pad))
+    y_i = int(round(y))
+    wy0, wy1 = max(0, y_i - 1), min(h, y_i + 2)
+    if cx1 <= cx0 or wy1 <= wy0:
+        return False
+    window = img_gray[wy0:wy1, cx0:cx1]
+    thr = _otsu_threshold(window)
+    ink = window <= thr
     if exclude_boxes:
-        probe, ox, oy = _mask_boxes_region(
-            img_gray, exclude_boxes, mid_y, left_x, right_x, spacing
+        ink = _exclude_other_heads_ink(
+            ink, exclude_boxes, cx0, wy0, spacing, img_gray, thr
         )
-        if probe.size == 0:
-            return False
-    mid_y_l = mid_y - oy
-    left_ok = rung_is_thin_and_flat(probe, mid_y_l, left_x - ox, spacing,
-                                    require_all_sides=False)
-    right_ok = rung_is_thin_and_flat(probe, mid_y_l, right_x - ox, spacing,
-                                     require_all_sides=False)
-    return left_ok and right_ok
+    ink_cols = ink.any(axis=0)
+    n = len(ink_cols)
+    runs: list[list[int]] = []
+    i = 0
+    while i < n:
+        if ink_cols[i]:
+            j = i
+            while j < n and ink_cols[j]:
+                j += 1
+            # NO bridging here -- Sean's connectivity rule means a
+            # white gap of ANY size (he saw none at all in his
+            # accidental crops) breaks the connection to the head.
+            runs.append([i, j])
+            i = j
+        else:
+            i += 1
+    probe_col = int(round((x0 + x1) / 2.0)) - cx0
+    containing = [r for r in runs if r[0] <= probe_col < r[1]]
+    if not containing:
+        return False
+    s, e = containing[0]
+    stub = THROUGH_RUNG_STUB_PROBE_SPACES * spacing
+    left_edge, right_edge = x0 - cx0, x1 - cx0
+    left_juts = s <= left_edge - stub
+    right_juts = e >= right_edge + stub
+    return left_juts or right_juts
 
 
 # Cause C (DECISIONS 2026-10-01, four causes): a candidate band landing
