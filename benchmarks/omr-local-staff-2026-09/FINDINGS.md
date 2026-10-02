@@ -2917,3 +2917,160 @@ Paths: `tools/omr/annotate/ledger_shape_trace.py`,
 `tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
 `benchmarks/omr-local-staff-2026-09/score_shape_trace.py`,
 `benchmarks/omr-local-staff-2026-09/shape_sheets.py`.
+
+## lane-ledger-template (2026-10-02): head TEMPLATE matching vs the shape trace
+
+**Brief**: DECISIONS 2026-10-02, Sean -- "try head-template matching for
+far heads" -- after the oval shape trace above was measured NET NEGATIVE
+and held back (the regression tiles read as "oval mis-fit onto fused ink"
+or "no ledger ink found in the trace's own window"): build templates from
+CLEAN exemplars elsewhere on the SAME page/document, rather than fitting
+a fresh shape to the far head's own (often fused) ink every time.
+
+**Built**: `tools/omr/annotate/head_template.py`.
+
+  1. `build_templates` collects clean, isolated, one-per-cell ON-STAFF
+     noteheads (never a far head), classifies each `filled`/`hollow`
+     (detector class, trusted only for these clean heads) and
+     `on_line`/`in_space` (even/odd staff position), crops a LOCAL window
+     sized from `STANDARD_HEAD_WIDTH/HEIGHT_SPACES` at the head's own
+     local spacing, resamples it to a FIXED canonical grid (independent
+     of any one page's own DPI), and averages into a `Template` per
+     `(kind, variant)` -- plus a `raw` pool (both variants) per kind.
+     Reports exemplar counts per combination; a combination under
+     `MIN_TEMPLATE_EXEMPLARS` (3) is not built at all.
+  2. `match_head_template` slides the `on_line`/`in_space` templates of a
+     far head's own classified kind +/-1.5 staff spaces in 1-px steps
+     over the real page ink (staff lines LEFT IN), scored by a
+     correlation that looks ONLY at the template's own HEAD-oval pixels
+     and its LINE-ROW stub pixels (ink elsewhere in the window -- a
+     neighbour's stem, a slur -- never counts). The two terms are scored
+     SEPARATELY (never pooled into one mask) and combined
+     `0.75*head + 0.25*line`, with an explicit per-space SHIFT PENALTY --
+     both needed, see "built wrong first" below. The best match reports
+     the head's matched centre, the winning variant, and the MARGIN
+     between the two variants' own best scores; below a stated threshold
+     (`MARGIN_UNDECIDED_THRESHOLD = 0.08`) the head is UNDECIDED, never
+     forced to an answer.
+  3. `template_middle_rung_evidence` is a drop-in for `ledger_grid.
+     head_middle_rung_evidence` with the SAME 4-positional-argument
+     contract (`templates`/`stem_box`/`kind` bind per call via a closure,
+     exactly like `staff_lines` did for the shape trace) -- substitutable
+     into `derive_far_head_step` by the SAME local monkeypatch
+     `score_shape_trace.py` already used.
+
+**Built WRONG first, twice, both caught before any real-data score**
+(CLAUDE.md rule 7 -- a control that can fail): the first cut pooled the
+head-oval and line-row pixels into ONE scored mask; a FILLED notehead is
+solid ink across its whole body regardless of whether a ledger crosses
+it, so the "on-line" band (which sits inside a filled oval's own row
+range) scored high ink-density agreement from the oval's own body alone
+-- measured directly, a head with NO ledger anywhere near its own middle
+still matched "on_line" at 0.70 correlation. Fixed by restricting each
+line-row mask to the STUB columns PAST the oval's own half-width only
+(the same stub convention `head_middle_rung_evidence` already uses),
+scored separately from the head term and recombined. The SECOND cut then
+let the window's own +/-1.5-space slide "cheat": a strong, correctly-
+shaped but off-centre ledger could out-score a correctly-centred match by
+simply relocating the whole window onto it, independent of whether the
+head's own ink was still there -- fixed with the explicit shift penalty
+and the 0.75/0.25 head/line weighting, which anchors the match to the
+box's own prior position (RED-first: `test_head_in_a_space_with_ledger_
+touching_top_reads_space` caught both bugs before any synthetic test
+passed).
+
+**RED -> GREEN** (`tools/omr/tests/test_head_template_2026_10_02.py`, 9
+synthetic cases, fully hand-built images, no page/weights/library):
+template-build reports counts and excludes a chord cell entirely (never
+just one of the pair) and any non-isolated exemplar; a head ON a ledger
+reads on-line; a head in a space with a ledger ONE STAFF SPACE from its
+own centre (the real engraving distance -- an earlier version of this
+test placed the ledger unrealistically close to the oval and is why the
+first version of this test failed against an otherwise-correct module,
+not a module bug) reads in-space; a head fused to a chord partner a THIRD
+away (1.5 sp, CLAUDE.md sec10) centres on the right head, not the
+neighbour 10+ px away; a HOLLOW head with an open oval end still matches
+and reads on; no image/no templates never guesses (CLAUDE.md rule 8); a
+deliberately ambiguous, off-centre scrap of ink reads UNDECIDED, never
+forced; a stem fused to the head's own side is masked and does not break
+the match. `pytest tools/omr/tests -k ledger` stays at 343 passed (341
+pre-existing + the 2 of this file's own 9 whose name contains "ledger"),
+2 xfailed, no regressions; the full new file alone is 9 passed.
+
+**Real-data re-score** (`benchmarks/omr-local-staff-2026-09/
+score_head_template.py`, same local-monkeypatch harness as the shape
+trace; templates built per PAGE with a document-POOLED fallback per
+`(kind, variant)` a page's own clean population is too sparse for --
+measured directly: Litolff page 3 alone has ZERO clean filled on-line/
+in-space exemplars even though the whole document has 6/9; Brahms page 1
+has essentially none at all, 1 filled exemplar total):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | template (raw substitution) | 16 | 20 | 8 | 44 |
+| beethoven5-litolff | template_where_round8_undecided_only | 26 | 14 | 4 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | template (raw substitution) | 6 | 3 | 2 | 11 |
+| brahms1-breitkopf | template_where_round8_undecided_only | 11 | 0 | 0 | 11 |
+
+The RAW substitution is MEASURED NET NEGATIVE on both documents, the same
+verdict as the oval shape trace -- 12 Litolff + 5 Brahms heads that round
+8 already got right flip away under the template evidence (mostly to
+`abstain` via the same `no_rung_before_the_head` branch, a few to
+`wrong`). The population that flips is almost entirely DIFFERENT from
+the shape trace's own regression set (one overlap: `glyph/3/0/7/4/2`-
+family heads), suggesting the two approaches fail on different heads for
+different reasons rather than the same underlying population being
+genuinely hard.
+
+**`template_where_round8_undecided_only`** (keep round 8's own answer
+everywhere it decided anything at all; consult the template ONLY on
+round 8's own `abstain`s) is NOT net negative -- it can only ever match
+or improve round 8, by construction, and measured ONE net improvement on
+Litolff (`glyph/3/0/8/6/10`, previously `abstain`, now correctly `right`
+via a confirmed through-rung) with zero cost. Brahms had zero round-8
+abstains to begin with (11/0/0), so this combination changes nothing
+there -- there was nothing for it to improve.
+
+**Of the two target heads named in the brief, NEITHER flips**:
+`glyph/3/0/7/0/7` -- margin 0.057, below the stated 0.08 threshold, so
+UNDECIDED (reads as `False`, same as round 8's own abstain reason, no
+change). `glyph/3/0/7/2/4` -- NOT undecided (margin 0.325) but the
+template confidently matches **`in_space`**, disagreeing with the
+established correct reading (geometry, the ledger-measured reader, and
+the shape trace's own "through" branch all agree this head is ON a
+ledger) -- a CONFIDENT WRONG answer on exactly the head this lane was
+built to fix. Measured directly (excluding the SAME accidental/notehead
+boxes `four_causes_cd` excludes): `score_on=0.166, score_space=0.490`.
+This is not a stated-margin failure (rule 8 is respected -- the module
+never answers below its own threshold) but a genuine template-matching
+miss on this one head's own real ink; a future lane should crop-check
+this specific subject against the print before trusting the matcher's
+confidence anywhere near it.
+
+**Not shipped, not wired into any product/default path.** The module is
+additive only, reachable solely through `score_head_template.py`'s own
+monkeypatch. `ledger_grid.head_middle_rung_evidence` and `derive_far_
+head_step`'s own call to it are untouched.
+
+Sheets: `out/print/ledgers/template_templates.jpg` (15 tiles -- every
+`(kind, variant)` template built per document, page-level + the pooled
+fallback, with the HEAD mask (yellow) and LINE-ROW stub mask(s) (orange)
+outlined, captioned with the exemplar count) and
+`out/print/ledgers/template_changed.jpg` (20 tiles -- every head whose
+verdict differs round8 -> template raw substitution, EITHER direction,
+derived live; the best-matching template's standard-head-size outline
+drawn at its own MATCHED centre in yellow, local staff lines in green,
+detector box in red, reference tick in cyan). Staff-line rows spot-
+checked against the raw page (two heads, five lines each): every drawn
+line sits on a row with mean brightness well below the window's white
+background, confirming `frame_lines_for_head`'s local re-measurement is
+reading real ink, not a stale global position.
+
+Paths: `tools/omr/annotate/head_template.py`,
+`tools/omr/tests/test_head_template_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_head_template.py`,
+`benchmarks/omr-local-staff-2026-09/template_sheets.py`.
