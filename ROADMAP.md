@@ -57,7 +57,11 @@ a whole rest).
    Litolff rung count round 5 33/8/3 vs geometry 30/14/0; Brahms round 8 (middle-row rule +
    local staff lines) 11/0/0 = geometry. Round 8 on Litolff fell to 25/14/5 because
    Litolff's boxes often cover only the TOP of a half note (Sean's cause A), so "the head's
-   middle" is wrong there. **NEXT: fix short boxes (cause A) FIRST, then re-run round 8 (D)
+   middle" is wrong there. **NEXT (Sean 10-02, supersedes the line below): a SHAPE-TRACE step — trace
+   the ink outline around each far head; oval = head, a thin run shooting out past it = a
+   ledger; head centre from the traced oval (this also covers cause A). All 14 round-8 rung
+   misses have a VISIBLE line through the head. Also: why the 2 undecided won't commit.**
+   Earlier plan: **NEXT: fix short boxes (cause A) FIRST, then re-run round 8 (D)
    on Litolff.** Branches: `lane-ledger-r8` (rung reader, newest), `lane-ledger-r7`,
    `lane-ledger-rungs-r5`, `lane-brahms-frame`, `lane-farhead-combined` (2.44d, the agree
    rule + the "neither right" sheet script). The 8 Litolff heads neither reader gets right:
