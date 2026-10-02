@@ -45,6 +45,22 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
 # A clef settles, so pitches restate. THE canonical consequence.
 # ─────────────────────────────────────────────────────────────────────────────
 
+#: ROADMAP 2.54 (Sean, 2026-10-01, "combine that way"): `gather.
+#: gather_farhead_combined_position` always RECORDS a far head's combined
+#: reading (`Q.FARHEAD_COMBINED_POSITION`), but `restate_pitch` only ever
+#: SUBSTITUTES it for the raw geometric position when this is `True`.
+#: `False`: measured on the 2.44c truth set (`benchmarks/omr-local-staff-
+#: 2026-09/FINDINGS.md` "ROADMAP 2.54") the combination scores WORSE than
+#: either single reader (28/44 right vs geometry 30/44, rungs 31/44, on
+#: Litolff) -- the `"disagree_rungs"`/`"disagree_geometry"` branches each
+#: pick the wrong reader about as often as the right one on this small a
+#: sample, and the `"unread"` branch trades 8 previously-decided heads for
+#: nothing. HELD BACK, same pattern as `notehead_precision.
+#: TREMOLO_SLASH_SHIPS` before Sean's "switch it on" -- this flag has had
+#: no such instruction and stays `False` until he reads the crops
+#: (`out/print/ledgers/combined/`).
+FARHEAD_COMBINED_SHIPS = False
+
 
 @rule(consequence=Consequence.RESTATE_PITCH,
       cause=Q.CLEF, effect=Q.PITCH, scope=Kind.STAFF,
@@ -109,6 +125,22 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # `glyph/2/1/9/6/2`.
             continue
         pos = int(round(float(row.value)))
+        reason = "position_and_clef"
+        basis: Tuple[str, ...] = (row.id, clef.id)
+
+        # ── ROADMAP 2.54: substitute the combined reading ONLY while
+        # FARHEAD_COMBINED_SHIPS is True (it is not -- see that flag's own
+        # docstring). While False this block changes nothing: `pos`/
+        # `reason`/`basis` stay exactly what they were above, byte-for-
+        # byte identical to the pre-2.54 tree.
+        if FARHEAD_COMBINED_SHIPS:
+            combined_rows = log.rows(Q.FARHEAD_COMBINED_POSITION, row.subject)
+            if combined_rows:
+                combined_row = combined_rows[-1]
+                pos = int(round(float(combined_row.value)))
+                reason = "position_and_clef_farhead_combined"
+                basis = (row.id, clef.id, combined_row.id)
+
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -116,8 +148,8 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             continue
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
-            decider="restate_pitch", reason="position_and_clef",
-            basis=(row.id, clef.id)))
+            decider="restate_pitch", reason=reason,
+            basis=basis))
     return out
 
 

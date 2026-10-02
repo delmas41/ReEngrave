@@ -2369,3 +2369,134 @@ killed. Fixed: `continue` only when the ladder's own length actually
 grew; a defensive 20-iteration cap added on top. Caught by running the
 REAL score, not the synthetic unit tests -- none of the 18 round-7 tests
 exercised two back-to-back gaps on one real head's ladder.
+
+## lane-farhead-combined (2026-10-01) — ROADMAP 2.54, Sean's "combine
+   that way": AGREE -> take it; DISAGREE -> evenness decides; can't tell
+   -> UNREAD. Measured net negative, wired OFF by default.
+
+### Stage placement
+
+The two ingredients (geometry, rungs) are each already a GATHER
+measurement; combining them by a RULE (agree/evenness/unread) is itself
+forced once both inputs exist and the evenness measure is taken (it never
+chooses between two EQUALLY-fitting readings the way INFER would — the
+branch a given (agree?, evenness) pair takes is fully determined, not a
+judgement call between live candidates). So this is an ADJUDICATE-shaped
+DECISION in spirit, but Sean's own brief asked for "its own reader/
+observation", and the two prior-art precedents this lane followed most
+closely (ROADMAP 2.44's two-ledger-reader option B, ROADMAP 2.49's
+`TREMOLO_SLASH_SHIPS`) both put the signal in GATHER (an Observation,
+`Q.FARHEAD_COMBINED_POSITION`) and gate its CONSUMPTION — not its
+recording — behind a `_SHIPS` constant read in EVALUATE
+(`consequences.restate_pitch`, mirroring 2.44's own `restate_pitch`
+substitution exactly). Built that way: `gather.
+gather_farhead_combined_position` always records both readers' own
+values, the evenness measure and the branch taken
+(`Q.FARHEAD_COMBINED_POSITION`'s own detail); `consequences.
+FARHEAD_COMBINED_SHIPS = False` means `restate_pitch` never reads that
+row, so `Q.NOTEHEAD_STAFF_POSITION`/`Q.PITCH` are byte-identical to the
+pre-2.54 tree. `staged.check` TOTAL unchanged at 245 (capture.py
+`UNSCORED`/`READER_RASTER` registrations added for the new quantity/
+reader, same pattern 2.44's commit used).
+
+### Thresholds, measured
+
+`FARHEAD_EVEN_UNEVEN_THRESHOLD = 0.26` — the midpoint of the measured
+split on the 2.44c truth set (`ledger_breakdown_r3.py` Table D,
+re-run fresh this session with the preserved truth-set records): Litolff
+geometry-WRONG heads carry a median rung-gap deviation
+(`max |gap/spacing - 1|` across a head's own found rungs) of **0.419**;
+geometry-RIGHT heads carry **0.105**. CONVENTION ASSUMED (the midpoint of
+a two-point split, not a boundary measured in its own right) / WHAT WOULD
+FALSIFY IT: a larger truth set moving either median far enough to put
+real heads on the wrong side of 0.26 / NOT CONFIRMED beyond the 44
+Litolff + 11 Brahms heads.
+
+`FARHEAD_MIN_RUNGS_FOR_EVENNESS = 2` (need a gap to measure at all) and
+`FARHEAD_NEAR_BOUNDARY_RESIDUAL = 0.4` (within 0.1 of the true rounding
+tie, 0.5) are both stated assumptions, NOT separately measured —
+flagged as such in `ledger_grid.py`'s own docstrings.
+
+### Reproduced baseline (same preserved records, `truthset-2.44c-20260930`)
+
+Geometry 30/14/0 (Litolff n=44), 11/0/0 (Brahms n=11) — exact match to
+this lane's brief. Rungs "as shipped" (`ROUND7_CLEANUP_ENABLED = False`,
+i.e. round 6 + the Brahms local-staff-line fix): 31/9/4 and 10/1/0 —
+exact match.
+
+### Combined score (`combined_scorer.py`, pure function, no re-gather)
+
+| | Litolff (n=44) | Brahms (n=11) |
+|---|---|---|
+| geometry | 30 right / 14 wrong / 0 unread | 11 / 0 / 0 |
+| rungs (as shipped) | 31 / 9 / 4 | 10 / 1 / 0 |
+| **combined** | **28 / 8 / 8** | **10 / 1 / 0** |
+
+Branch breakdown (Litolff):
+
+| branch | n | right | wrong | unread |
+|---|---|---|---|---|
+| agree | 27 | 25 | 2 | 0 |
+| disagree -> rungs (uneven) | 5 | 1 | 4 | 0 |
+| disagree -> geometry (even) | 4 | 2 | 2 | 0 |
+| unread (can't tell) | 8 | — | — | 8 |
+
+Brahms: agree 10/10 right; disagree -> rungs 1/1 wrong (the one case
+where geometry alone was already right); disagree -> geometry and
+unread both empty.
+
+Half-step control (every head's y broken by half a staff space, must
+score worse than 28/44): Litolff **15/44** right (21 unread, 8 wrong) —
+clearly worse, the control can fail and does.
+
+**MEASURED NET NEGATIVE on this truth set, same pattern as round 7**:
+combined (28 right) underperforms BOTH single readers (geometry 30,
+rungs 31) on Litolff. The `agree` branch is strong (25/27 right) but
+small gains there are outweighed by the `disagree_rungs` branch
+(1/5 right — evenness picked the WORSE reader more often than not here)
+and the `unread` branch sacrificing 8 heads that at least one single
+reader had an opinion on. This is exactly why `FARHEAD_COMBINED_SHIPS`
+ships `False`: CLAUDE.md rule 7 ("a control must be able to fail") and
+rule 5 ("reach before accuracy") both apply — the mechanism is measured,
+honestly reported, and not switched on.
+
+### Crops
+
+14 heads where the combined answer differs from plain geometry, each
+>= 600px, box + local staff lines + rungs + reference/geometry/rungs/
+combined/branch text: `out/print/ledgers/combined/` (not committed,
+`.gitignore`'s `benchmarks/**/crops/` sibling rule for `out/print/`).
+Contact sheet: `out/print/ledgers/combined_sheet.png`.
+
+### RED -> GREEN
+
+`tools/omr/tests/test_farhead_combined_2_54.py` (12 tests, pure function
+`ledger_grid.combine_farhead_position`/`farhead_gap_evenness`): RED
+confirmed before this lane (`ImportError: cannot import name
+'FARHEAD_EVEN_UNEVEN_THRESHOLD'`), all green after. `tools/omr/tests/
+test_staged_farhead_combined_wiring_2_54.py` (5 tests): the decided
+`Q.PITCH` is byte-identical whether or not a combined row exists while
+`FARHEAD_COMBINED_SHIPS` is `False`; patched `True` (same pattern as
+`TREMOLO_SLASH_SHIPS`'s own tests), the combined row substitutes and an
+absent row still falls back to geometry untouched. `staged.check` TOTAL
+245 (unchanged). Fast tier (`pytest tools/omr/tests -m "not slow"`) run
+once, same session.
+
+### Open
+
+- The GATHER wiring's `exclude_boxes` is scoped to the SUBJECT'S OWN
+  CELL (its stacked chord-mates), not the whole page the benchmark
+  scorer and `score_truth_set_rungs.py` use — GATHER has no cheap
+  page-wide notehead index. Declared in `gather_farhead_combined_
+  position`'s own docstring; not yet measured whether it changes any
+  real answer (a far head's own chord-mates are almost always in the
+  same cell already).
+- Not re-measured on a real re-gather (CLAUDE.md §6a: "two re-gathers" —
+  a GATHER change needs a FULL re-gather to price, and this is an
+  additive-only GATHER row with `FARHEAD_COMBINED_SHIPS=False`, so no
+  existing verdict moves; left for whoever next re-gathers either
+  movement to confirm `Q.FARHEAD_COMBINED_POSITION` populates as
+  expected).
+- `FARHEAD_EVEN_UNEVEN_THRESHOLD`'s midpoint-of-two-medians derivation is
+  the weakest measured thing here — a larger truth set (more far heads,
+  or a third publisher) is the next lever if this mechanism is revisited.

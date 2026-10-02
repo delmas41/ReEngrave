@@ -1390,3 +1390,114 @@ def find_rung_in_gap(
                                  require_all_sides=False):
         return None
     return best_y
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.54 (Sean, 2026-10-01, "combine that way"): a far head's FINAL
+# position combines geometry (the extrapolated staff grid,
+# `Q.NOTEHEAD_STAFF_POSITION`) and the rung count (this module's own
+# `measure_ledger_rungs` + `derive_far_head_step`, "as shipped" -- round
+# 7's own cleanups measured net negative on the real truth set, FINDINGS
+# "lane-ledger-r7", and are NOT part of this combination): AGREE -> take
+# it; DISAGREE -> the head's OWN printed ledgers' evenness decides which
+# reader to trust (uneven -> rungs, even -> geometry); neither reader can
+# settle it -> UNREAD, counted (CLAUDE.md rule 8: a fallback never
+# converts "cannot tell" into an answer).
+# ─────────────────────────────────────────────────────────────────────────
+
+#: Measured split on the 2.44c truth set (`benchmarks/omr-local-staff-
+#: 2026-09/ledger_breakdown_r3.py`, Table D, Litolff n=44): geometry-WRONG
+#: heads carry a median |gap/spacing - 1| of 0.419 across their OWN found
+#: rung-to-rung gaps; geometry-RIGHT heads carry 0.105. The threshold sits
+#: at the midpoint of those two measured medians.
+#: CONVENTION ASSUMED (the midpoint of a two-point split, not a boundary
+#: measured in its own right) / WHAT WOULD FALSIFY IT: a larger truth set
+#: moving either median far enough to put real heads on the wrong side of
+#: this exact number / NOT CONFIRMED beyond the 44 Litolff + 11 Brahms
+#: heads in `benchmarks/acceptance/quick/out/*/*.record.json`.
+FARHEAD_EVEN_UNEVEN_THRESHOLD = 0.26
+
+#: A head needs at least this many rung-to-rung GAPS (i.e. >= 2 rungs
+#: found) before evenness means anything at all -- `ledger_breakdown_r3.
+#: table_d` itself only reports a deviation for "n with >= 2 rungs found".
+FARHEAD_MIN_RUNGS_FOR_EVENNESS = 2
+
+#: "Geometry near a boundary": the raw (pre-rounding)
+#: `Q.NOTEHEAD_STAFF_POSITION` value's distance from the nearest half-step
+#: integer (that row's own `residual` detail, `gather_notehead_
+#: positions`). 0.4 means within 0.1 of the true rounding tie (0.5) --
+#: the same rounding-boundary language DECISIONS 2026-10-01 uses for the
+#: seeded-comb coin-flip crops (0.13 / 0.03 steps apart).
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a measured population of
+#: near-boundary geometry misses that clusters at a different distance /
+#: NOT CONFIRMED -- no such population has been measured yet.
+FARHEAD_NEAR_BOUNDARY_RESIDUAL = 0.4
+
+
+def farhead_gap_evenness(rungs_y: "list[float]", spacing: float
+                         ) -> "float | None":
+    """The max `|gap/spacing - 1|` across this head's own consecutive
+    found rungs (nearest-edge first, `measure_ledger_rungs`'s own order)
+    -- the SAME measure `ledger_breakdown_r3.table_d` computes off the
+    identical data. `None` with fewer than `FARHEAD_MIN_RUNGS_FOR_
+    EVENNESS` rungs (no gap exists to measure) -- an ABSENCE, never a
+    false 0.0 "perfectly even" claim."""
+    if spacing <= 0 or len(rungs_y) < FARHEAD_MIN_RUNGS_FOR_EVENNESS:
+        return None
+    devs = [abs(abs(rungs_y[i + 1] - rungs_y[i]) / spacing - 1.0)
+           for i in range(len(rungs_y) - 1)]
+    return max(devs) if devs else None
+
+
+def combine_farhead_position(
+    geom_pos: "int | None", geom_residual: "float | None",
+    rungs_pos: "int | None", rungs_y: "list[float]", spacing: float,
+) -> dict:
+    """Sean, 2026-10-01, on the two 2.44 ledger readers: *"combine that
+    way"* -- geometry and rungs AGREE -> take it; DISAGREE -> measure the
+    head's OWN ledger evenness (`farhead_gap_evenness`): uneven -> rungs,
+    even -> geometry; neither can tell -> UNREAD, counted.
+
+    `geom_pos` is the rounded `Q.NOTEHEAD_STAFF_POSITION` value -- always
+    present for a far head (the gate that puts a head in this population
+    at all is that this row exists and is outside the staff).
+    `geom_residual` is that same row's own `residual` detail (distance
+    from the rounding boundary, `0.0`..`0.5`); `None` only where the
+    caller never had it. `rungs_pos` is `derive_far_head_step`'s own
+    offset converted to the shared absolute units (`None` where that
+    reader abstained); `rungs_y` is the rung ladder it was derived from,
+    on this head's own side (nearest-edge first) -- the SAME list used to
+    derive `rungs_pos`, so `farhead_gap_evenness` is never a second,
+    independent ink read.
+
+    Returns `{"position": int|None, "branch": str, "max_gap_deviation":
+    float|None}`. `branch` is one of `"agree"`, `"disagree_rungs"`,
+    `"disagree_geometry"`, `"unread"` -- the pure decision, independent of
+    whether anything downstream reads it (`FARHEAD_COMBINED_SHIPS`,
+    `tools/omr/staged/gather.py`)."""
+    dev = farhead_gap_evenness(rungs_y, spacing)
+
+    if rungs_pos is not None and geom_pos is not None and geom_pos == rungs_pos:
+        return dict(position=geom_pos, branch="agree", max_gap_deviation=dev)
+
+    # DISAGREE from here on -- a rungs abstention (`rungs_pos is None`) is
+    # not an agreement either, and is handled by the same branch logic.
+    near_boundary = (geom_residual is not None
+                     and geom_residual >= FARHEAD_NEAR_BOUNDARY_RESIDUAL)
+    if rungs_pos is None and near_boundary:
+        # Neither reader can settle it: the second reader has nothing at
+        # all, and the first is itself a rounding coin-flip.
+        return dict(position=None, branch="unread", max_gap_deviation=dev)
+    if dev is None:
+        # Too few rungs found beside this head to measure evenness at
+        # all -- "neither can tell" by the OTHER named route.
+        return dict(position=None, branch="unread", max_gap_deviation=dev)
+    if dev > FARHEAD_EVEN_UNEVEN_THRESHOLD:
+        if rungs_pos is None:
+            # Uneven says "trust rungs", but rungs has no answer to give
+            # -- unread, never a guess (CLAUDE.md rule 8).
+            return dict(position=None, branch="unread", max_gap_deviation=dev)
+        return dict(position=rungs_pos, branch="disagree_rungs",
+                   max_gap_deviation=dev)
+    return dict(position=geom_pos, branch="disagree_geometry",
+               max_gap_deviation=dev)

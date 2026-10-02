@@ -258,6 +258,18 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "measured line grid, carrying `residual` and `rounded`. Consumed by "
         "`consequences.restate_pitch` together with the clef.",
         "note"),
+    "FARHEAD_COMBINED_POSITION": (
+        STAFF_GRID_POSITION,
+        "ROADMAP 2.54: a far head's position, combining "
+        "`NOTEHEAD_STAFF_POSITION`'s own geometry row with a rung-count "
+        "reading (`ledger_grid.measure_ledger_rungs` + `derive_far_head_"
+        "step`) via `ledger_grid.combine_farhead_position`. Filed only "
+        "for a head outside its own staff, alongside -- never instead of "
+        "-- `NOTEHEAD_STAFF_POSITION`. `FARHEAD_COMBINED_SHIPS` "
+        "(consequences.py) is `False`: `restate_pitch` does not yet "
+        "substitute it, so this row is measured and recorded, not "
+        "consumed.",
+        "note"),
     "CLEF_POSITION": (
         STAFF_GRID_POSITION,
         "the same measurement from the same grid for a clef glyph, and a "
@@ -626,6 +638,11 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # `image_no_staff` only, same as `CV_INK` (erase for the CV consumer,
     # never the detector, CLAUDE.md §9).
     "CV_LEDGER": ("staged/gather.py", "_observe_ledger_rung_ink"),
+    # ⚠️ ROADMAP 2.54. Also `staged/gather.py` -- reads `image_no_staff`
+    # only, via `annotate.ledger_grid.measure_ledger_rungs` (the SAME
+    # raster `CV_LEDGER` reads, by a different mechanism).
+    "FARHEAD_COMBINED": ("staged/gather.py",
+                        "gather_farhead_combined_position"),
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
