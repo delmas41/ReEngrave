@@ -1872,7 +1872,7 @@ TIE_FLANK_MIN_DY_PX = 30.0
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
-             "no_pair_at_one_position", "no_evidence"),
+             "no_pair_at_one_position", "not_adjacent", "no_evidence"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_tie_pair(ev: Evidence) -> Ruling:
@@ -1905,6 +1905,23 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
       a duplicate detection) the legacy rule takes the nearest in x. Here it
       NARROWS to all of them (`more_than_one_pair`) and EXPORT refuses to
       argmax a narrowing.
+
+    CONVENTION (Sean, DECISIONS 2026-10-01, on the 2.52 sheet): *"whenever
+    there are 2 notes of the same pitch next to each other in a bar or
+    across barlines and there is an arched line between them it is a tie.
+    The notes have to be next to each other regardless of measures/
+    barlines and they have to have the same pitch."* Two consequences,
+    both measured against the OLD rule below and fixed under 2.54:
+
+    * ADJACENCY is in TIME, not in x-reach alone: a candidate pair is
+      refused `not_adjacent` if any OTHER usable head of this bar/voice --
+      at ANY staff position, not only the pair's own -- sits strictly
+      between the two paired heads. A tie never skips a note;
+    * an arc cut at BOTH edges of its own bar is a real tie when that bar
+      HOLDS a note of its own (a tied whole/half note filling the bar,
+      flanked by the next bar's first head) -- `spans_a_whole_bar` now
+      abstains only when the own bar holds NO notehead at all (the
+      staff-line-read-as-a-tie case the first Litolff crop found).
 
     ⚠️ ACROSS A BARLINE, NEVER ACROSS A SYSTEM. The search runs over the
     arc's own bar and the one on either side, on the arc's OWNER staff, in
@@ -1995,13 +2012,21 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     edge_tol = _SLUR_BOUNDARY_SPACES * avg_h
     cut_left = own_box is not None and abs(ax0 - own_box[0]) <= edge_tol
     cut_right = own_box is not None and abs(ax1 - own_box[2]) <= edge_tol
-    if cut_left and cut_right:
-        # ⚠️ A TIE JOINS TWO CONSECUTIVE NOTES, so it can never cross a WHOLE
-        # bar: that bar would have to hold nothing at all. An arc cut at both
-        # of its bar's edges is not a tie half, and searching both adjacent
-        # bars would pair two notes a bar apart -- found on the first Litolff
-        # crop (`3.2b` FINDINGS), a staff line read as a tie.
-        return Ruling.abstain("spans_a_whole_bar")
+    # ⚠️ DECISIONS 2026-10-01 (Sean, on the 2.52 sheet): "the notes have to be
+    # next to each other regardless of measures/barlines" -- a tied whole or
+    # half note that FILLS its own bar, tying to the next bar's first note,
+    # is drawn edge-to-edge of its own bar and is a REAL tie, not a refusal.
+    # The earlier rule ("can never cross a whole bar") conflated two
+    # different things: an arc cut at both of ITS OWN bar's edges with a note
+    # of its own inside that bar (the filled-whole-note case, real) and an
+    # arc cut at both edges of a bar that holds NO notehead AT ALL (the
+    # staff-line-read-as-a-tie case the first Litolff crop found, `3.2b`
+    # FINDINGS). Only the second is refused here; the first falls through to
+    # the ordinary flank search below, which already extends across a cut
+    # edge into the adjacent bar.
+    if cut_left and cut_right and not any(h[1] == cell_index for h in heads):
+        return Ruling.abstain("spans_a_whole_bar", **
+                              {"own_bar_heads": 0})
 
     def usable(row) -> bool:
         # ⚠️ Asked only of a head already inside a window, so the verdicts
@@ -2072,7 +2097,44 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     # candidate. That is forced, not preferred; what remains ambiguous (two
     # DIFFERENT positions each with a pair -- a tied chord -- or two heads at
     # one x) is NARROWED, never argmaxed.
+    #
+    # ⚠️ DECISIONS 2026-10-01: "the notes have to be next to each other" --
+    # ADJACENT in time, nothing of the arc's own voice/staff between them,
+    # whichever position it sits at. `_between` reads the full three-bar
+    # head population (not just the ones already windowed into `lefts`/
+    # `rights`) because the intervening note may sit at a THIRD position,
+    # outside either flank window, and still break adjacency.
+    def order_key(i: int, xc: float) -> Any:
+        return (i, xc)
+
+    def head_between(il: int, xl: float, ir: int, xr: float,
+                      exclude_ids: tuple) -> bool:
+        lo, hi = order_key(il, xl), order_key(ir, xr)
+        if lo > hi:
+            lo, hi = hi, lo
+        for row, i, xc, _yc, w, _h in heads:
+            if row.id in exclude_ids or not usable(row):
+                continue
+            if not (lo < order_key(i, xc) < hi):
+                continue
+            # ⚠️ A head at (near enough) the SAME x as one of the pair's own
+            # endpoints is that endpoint's OWN CHORD -- a simultaneous note,
+            # not one "between" it in time. Same overlap tolerance the flank
+            # search itself uses (`TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS`), so a
+            # chord's stacked onsets never read as intervening notes. Found
+            # on Litolff p3 (`glyph/3/0/0/0/5`): the stop head's own chord
+            # partners, ~1-2 px apart in x, were read as notes between it
+            # and the start before this exemption.
+            tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
+            if i == il and abs(xc - xl) <= tol:
+                continue
+            if i == ir and abs(xc - xr) <= tol:
+                continue
+            return True
+        return False
+
     pairs = []
+    blocked_by_intervening = 0
     for dxl, yl, rl, il in lefts:
         for dxr, yr, rr, ir in rights:
             if rl.subject == rr.subject or not one_position(yl, yr):
@@ -2083,15 +2145,31 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
             if any(d < dxr for d, y, r, _i in rights
                    if r is not rr and one_position(y, yl)):
                 continue
+            xl_c, xr_c = ax0 - dxl, ax1 + dxr
+            if head_between(il, xl_c, ir, xr_c, (rl.id, rr.id)):
+                blocked_by_intervening += 1
+                continue
             pairs.append(((dxl + dxr) / avg_h, abs(yl - yr) / avg_h,
-                          rl, rr, il, ir))
+                          rl, rr, il, ir, yl, yr))
     if not pairs:
         nearest = min(((abs(yl - yr) / avg_h) for _a, yl, _b, _c in lefts
                        for _d, yr, _e, _f in rights), default=None)
+        if blocked_by_intervening:
+            return Ruling.abstain(
+                "not_adjacent", **counts,
+                candidates_blocked=blocked_by_intervening)
         return Ruling.abstain(
             "no_pair_at_one_position", **counts,
             nearest_dy_spaces=None if nearest is None else round(nearest, 3))
     pairs.sort(key=lambda p: (p[0], p[1]))
+
+    # ⚠️ NOT a tied-chord disambiguator by the arc's own y-centre: `3.2c`
+    # (ROADMAP) already tried resolving a stacked-tie chord this way and
+    # measured it DEAD AT ZERO on both scan corpora -- real stacked ties
+    # are two SEPARATE arcs each already outside the other's `y_tol` flank
+    # band in practice, not one arc ambiguous between two close positions.
+    # Where this decision genuinely cannot tell (two positions equally
+    # plausible for ONE arc) it still narrows, unchanged from 3.2b.
 
     def value_of(p) -> Dict[str, Any]:
         return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
@@ -2101,7 +2179,7 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
             [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
             "more_than_one_pair", used=(arc.id,), **counts,
             pairs_at_one_position=len(pairs))
-    dx, dy, rl, rr, il, ir = pairs[0]
+    dx, dy, rl, rr, il, ir, _yl, _yr = pairs[0]
     return Ruling(
         value=value_of(pairs[0]), reason="paired",
         used=(arc.id, rl.id, rr.id),
