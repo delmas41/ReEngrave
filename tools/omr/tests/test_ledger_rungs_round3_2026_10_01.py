@@ -49,10 +49,10 @@ def test_real_shape_glyph_3_0_0_2_3() -> None:
     own middle -- the control below shows what happens without one."""
     img = np.full((500, 300), 255, dtype=np.uint8)
     head_box = (120.0, 409.0, 180.0, 424.58)
-    # The through check reads AT THE CANDIDATE'S OWN row (412.0, the
-    # farther-out rung the walk actually found -- never the box's
-    # unrelated geometric centre, ~417).
-    img[410:415, 60:241] = 0
+    # The through check reads AT THE HEAD'S OWN MIDDLE row (~416.8,
+    # never a candidate's own row -- manager review, DECISIONS
+    # 2026-10-0x: that let an edge-touching ledger read as "through").
+    img[415:420, 60:241] = 0
     out = derive_far_head_step(
         [431.5, 412.0], edge_y=450.0, sign=-1.0, head_near_y=424.58,
         spacing=15.5, img_gray=img, head_box=head_box,
@@ -87,10 +87,13 @@ def test_evenly_spaced_control_unchanged() -> None:
     this control also supplies a synthetic image confirming a real line
     at the head's own middle."""
     img = np.full((400, 300), 255, dtype=np.uint8)
-    head_box = (120.0, 105.0, 180.0, 125.0)
-    # At the candidate's own row (100.0, the farther-out rung), never
-    # the box's unrelated geometric centre (~115).
-    img[98:103, 60:241] = 0
+    # A realistically-sized box (height ~= spacing) so the middle-row
+    # tolerance band sits well clear of both edges; near edge (bottom,
+    # closest to the staff) stays 125, matching `head_near_y` below.
+    head_box = (120.0, 25.0, 180.0, 125.0)
+    # At the head's own MIDDLE row (75), never a candidate's own row --
+    # manager review, DECISIONS 2026-10-0x.
+    img[73:78, 60:241] = 0
     out = derive_far_head_step(
         [200.0, 100.0], edge_y=300.0, sign=-1.0, head_near_y=125.0,
         spacing=100.0, img_gray=img, head_box=head_box,

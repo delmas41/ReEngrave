@@ -123,10 +123,11 @@ def test_rung_passing_through_with_real_evidence_is_through() -> None:
     unevenly-spaced ledgers)."""
     img = np.full((400, 300), 255, dtype=np.uint8)
     head_box = (120.0, 160.0, 180.0, 200.0)  # near edge (bottom) = 200
-    # The through check reads AT THE CANDIDATE'S OWN row (150, not the
-    # head box's unrelated geometric centre) -- a continuous band there,
-    # through the box's own column, reaching past the right edge.
-    img[148:153, 60:241] = 0
+    # The through check reads AT THE HEAD'S OWN MIDDLE row (180, never a
+    # candidate's own row -- manager review, DECISIONS 2026-10-0x) -- a
+    # continuous band there, through the box's own column, reaching
+    # past the right edge.
+    img[178:183, 60:241] = 0
     out = derive_far_head_step(
         [150.0], 300.0, -1.0, 200.0, 100.0,
         img_gray=img, head_box=head_box,

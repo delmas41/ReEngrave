@@ -868,11 +868,16 @@ def derive_far_head_step(
     """
     if not rungs_y or spacing <= 0:
         return dict(offset=None, kind=None, reason="no_rungs")
-    # The "is there a HIDDEN further ledger" check (the "beyond" branch
-    # below) always asks at the head's own geometric middle -- nothing
-    # has been found there yet, so that is the only candidate row.
-    # Computed once: it does not depend on which rung is being tested.
-    evidenced_beyond = head_middle_rung_evidence(
+    # ONE question, asked ONCE, always at the head's own geometric
+    # MIDDLE (never a candidate's own row -- manager review, DECISIONS
+    # 2026-10-0x: a head sitting in the space beside a real ledger
+    # touches that ledger at its OWN top/bottom edge, so probing at a
+    # candidate's row let an edge-touching ledger read as "through" it.
+    # Whether THIS rung passes through the head, or a hidden further
+    # one exists beyond the last rung found, is the SAME fact about the
+    # head -- is there a line at its own middle -- so it is computed
+    # once and reused by every branch below.
+    evidenced = head_middle_rung_evidence(
         img_gray, head_box, spacing, exclude_boxes
     )
     remaining = list(rungs_y)
@@ -888,30 +893,23 @@ def derive_far_head_step(
         last_half_steps = 2 * len(remaining)
         gap_spaces = (sign * (head_near_y - last)) / spacing
         if gap_spaces <= -TOUCH_TOL_SPACES:
-            # The THROUGH check asks AT THIS CANDIDATE'S OWN row --
-            # "where we think a ledger line should be" is wherever the
-            # walk already placed it, never the head's unrelated
-            # geometric centre (round 8's own regression: re-measuring
-            # strictly at the box centre missed real, confirmed-good
-            # through rungs sitting a few px off it).
-            if head_middle_rung_evidence(
-                img_gray, head_box, spacing, exclude_boxes, probe_y=last
-            ):
+            if evidenced:
                 return dict(offset=last_half_steps, kind="line",
                            reason=f"last rung passes through the head "
                                   f"itself, confirmed by a jut connected "
-                                  f"to it at its own row "
+                                  f"to it at the head's own middle row "
                                   f"(gap {gap_spaces:.2f} sp)")
             # cause D (coordinator, DECISIONS 2026-10-0x): not evidenced
-            # -- this rung never actually ran through the head, it was
-            # the head's own outline (or an accidental's edge) wrongly
-            # counted as a ledger. Drop it and test the one before it.
+            # AT THE HEAD'S OWN MIDDLE -- this rung only touches the
+            # head's own edge, it was never a ledger running through
+            # it (the head's own outline, or an accidental's edge).
+            # Drop it and test the one before it.
             remaining.pop()
             continue
         # `last` sits between the staff and the head (or touching it) --
         # a genuine candidate, "the last ledger before it". Decide
         # line-vs-space by the SAME evidence, never the gap's raw size.
-        if evidenced_beyond:
+        if evidenced:
             return dict(offset=last_half_steps + 2, kind="line",
                        reason=f"{gap_spaces:.2f} sp beyond the last clean "
                               f"rung -- a jut connected to the head's own "
@@ -1386,23 +1384,39 @@ def has_through_head_rung(
     return False
 
 
+# Manager review of the design-3 sheet (DECISIONS 2026-10-0x, tiles 3,
+# 4, 5, 6 and the new-wrong `glyph/3/0/0/2/9`): probing AT an already-
+# found CANDIDATE's own row made a head sitting in the space just
+# below (or above) a real ledger touch that ledger at its own TOP (or
+# BOTTOM) edge -- the connectivity test then fired on the head's own
+# edge and declared it "through" a ledger that is really the one
+# BEFORE (or beyond) it. Sean's rule: the line must jut out of the head
+# at the head's own MIDDLE row, not wherever a candidate happens to
+# sit. Probed at the box's own vertical centre, +/- this tolerance (in
+# staff spaces) -- narrow enough to stay clear of a box's own top/
+# bottom edge for a realistically-sized head (~1 staff space tall), not
+# a second, wider window.
+MIDDLE_ROW_TOL_SPACES = 0.15
+
+
 def head_middle_rung_evidence(
     img_gray: "np.ndarray | None",
     head_box: "tuple[float, float, float, float] | None",
     spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
-    probe_y: "float | None" = None,
 ) -> bool:
     """Cause D's evidence test (DECISIONS 2026-10-01, "four causes behind
     the 8 far heads neither reader gets right", Sean on tiles 6-8:
     *"slightly low but should read as underneath that ledger line"* --
     the head sits in the SPACE beyond the last clean rung found, not on
     a FURTHER hidden one, unless the page actually shows a line there).
-    `probe_y` is the row to check -- the head's own vertical MIDDLE
-    (`(y0+y1)/2`) by default (used when nothing has been found there
-    yet and the question is whether a HIDDEN ledger exists), or an
-    ALREADY-FOUND candidate's own y (used to confirm it actually runs
-    through the head rather than merely sitting near it).
+    Always probed at the head's own vertical MIDDLE (`(y0+y1)/2`),
+    +/- `MIDDLE_ROW_TOL_SPACES` -- a rung touching only the head's top
+    or bottom edge is the ledger BEFORE (or beyond) it, never through
+    it, whatever the gap arithmetic or an already-found candidate's own
+    row would otherwise suggest (manager review, DECISIONS 2026-10-0x:
+    probing at a candidate's own row made an edge-touching ledger read
+    as "through").
 
     Three refinements from Sean, same DECISIONS line, after round 8's
     real-data measurement showed the first (both-sides-required) design
@@ -1416,8 +1430,8 @@ def head_middle_rung_evidence(
       2. *"Examples with accidentals that I saw in the crops never had
          any ink touching the note head"* -- CONNECTIVITY is the
          primary test: the jutting ink must be part of the SAME
-         contiguous ink run as the head's own body at `probe_y` (no
-         bridging of any white gap, however small -- unlike
+         contiguous ink run as the head's own body at the middle row
+         (no bridging of any white gap, however small -- unlike
          `_band_centers`' own hollow-notehead bridge, which exists for
          a different reason). Found by taking the run that CONTAINS a
          column inside the head's own box and asking whether THAT run
@@ -1434,13 +1448,14 @@ def head_middle_rung_evidence(
     if img_gray is None or head_box is None or spacing is None or spacing <= 0:
         return False
     x0, y0, x1, y1 = head_box
-    y = probe_y if probe_y is not None else (y0 + y1) / 2.0
+    mid_y = (y0 + y1) / 2.0
     h, w = img_gray.shape
     pad = RUNG_BOX_VISIBILITY_SPACES * spacing
     cx0 = max(0, int(x0 - pad))
     cx1 = min(w, int(x1 + pad))
-    y_i = int(round(y))
-    wy0, wy1 = max(0, y_i - 1), min(h, y_i + 2)
+    tol_px = MIDDLE_ROW_TOL_SPACES * spacing
+    wy0 = max(0, int(round(mid_y - tol_px)))
+    wy1 = min(h, int(round(mid_y + tol_px)) + 1)
     if cx1 <= cx0 or wy1 <= wy0:
         return False
     window = img_gray[wy0:wy1, cx0:cx1]
@@ -1450,6 +1465,9 @@ def head_middle_rung_evidence(
         ink = _exclude_other_heads_ink(
             ink, exclude_boxes, cx0, wy0, spacing, img_gray, thr
         )
+    # Union across the middle-row BAND (never a single exact row) --
+    # "at the head's own middle" with the stated tolerance, not past
+    # it toward either edge.
     ink_cols = ink.any(axis=0)
     n = len(ink_cols)
     runs: list[list[int]] = []

@@ -2548,7 +2548,7 @@ held back in round 6/7 (FINDINGS "lane-ledger-rungs round 6/7") — for
 exactly this reason. Reusing it here inherited the same failure mode.
 Superseded before being measured as a finished design.
 
-### Design 3 (shipped in this lane, two more refinements from Sean): one-sided jut, candidate's own row, connectivity-first
+### Design 3: one-sided jut, candidate's own row, connectivity-first
 
 Sean, on design 2's regression: *"there are rare cases where the ledger
 line will only come out on one side not both but any line jutting out
@@ -2562,68 +2562,88 @@ inside the head's own box, with NO bridging of any white gap (unlike
 different reason); `exclude_boxes` only matters for the rare case an
 accidental's ink does touch.
 
-`head_middle_rung_evidence(img_gray, head_box, spacing, exclude_boxes,
-probe_y=None)`: finds the ink run containing a column inside the box at
-`probe_y` (the head's own geometric middle by default — used when
-nothing has been found there yet and the question is whether a HIDDEN
-ledger exists; or an ALREADY-FOUND candidate's own row — used to
-confirm it actually runs through the head). Returns true if that run
-extends past EITHER box edge by `THROUGH_RUNG_STUB_PROBE_SPACES`.
-`derive_far_head_step` probes AT THE CANDIDATE'S OWN row for the
-through branch (never the box centre — design 2's exact bug) and at
-the box's geometric middle for the "hidden further ledger" branch
-(nothing found there to have its own row). `collapse_head_edge_rungs_
-to_middle` (cause C) unchanged in shape: two found rungs that are
-merely the subject's own box edges are dropped and replaced by the one
-real middle rung only where evidenced.
+Probed AT THE CANDIDATE'S OWN row for the through branch (never the
+box centre — design 2's exact bug) and at the box's geometric middle
+for the "hidden further ledger" branch. **Manager review of the
+design-3 sheet, MEASURED BUG**: a head sitting in the space just below
+(or above) a real ledger TOUCHES that ledger at its own top (or
+bottom) edge — probing at the candidate's own row let that edge-touch
+register as a connected jut, declaring the head "through" a ledger
+that is really the one BEFORE (or beyond) it. Visible on tiles 3, 4, 5,
+6 and the new-wrong `glyph/3/0/0/2/9` (DECISIONS 2026-10-0x). Superseded.
+
+### Design 4 (shipped): always probe at the head's own geometric middle, with a named tolerance band
+
+Sean's rule, restated precisely: the line must jut out of the head AT
+THE HEAD'S MIDDLE ROW, never wherever a candidate happens to sit.
+`head_middle_rung_evidence` drops the `probe_y` override entirely and
+always probes `(y0+y1)/2`, +/- `MIDDLE_ROW_TOL_SPACES = 0.15` (staff
+spaces) — a band, not a single exact row, narrow enough to stay clear
+of a realistically-sized head's own top/bottom edge (~1 staff space
+tall) but wide enough for the hand-drawn print's own slop.
+`derive_far_head_step` computes this ONE fact ONCE (not per-candidate —
+whether the real ledger is at the head's own middle does not depend on
+which already-found rung is being tested) and reuses it in both the
+through branch and the "hidden further ledger" branch, since both ask
+the identical question. `collapse_head_edge_rungs_to_middle` (cause C)
+unchanged — it already only ever asked at the box's own middle.
 
 ### RED-first tests (final design)
 
-`tools/omr/tests/test_ledger_four_causes_cd_2026_10_01.py` (15 tests):
-`head_middle_rung_evidence` — real through-head band (one-sided) true;
-head in a space, nothing at its middle, false; a line touching the head
-on one side -> through; the SAME line with a 2px white gap from the
-head's own ink -> NOT through (Sean's exact connectivity test); the
-accidental-ink control — a real (short) ledger that clears NEITHER
-stub on its own, extended past the right stub only by accidental ink
-TOUCHING it (no gap, so it must fool the unguarded function, asserted)
-— false once the accidental's box is excluded; no image/box -> false.
-`collapse_head_edge_rungs_to_middle` — 4 tests unchanged from design 1
-(two fake edges + real middle collapse; no real middle drops to empty;
-real rungs away from the edges untouched; a rung wedged between two
-edge-ish candidates blocks the collapse). `derive_far_head_step` — a
-rung through the head's top edge with no stubs at the middle -> NOT
-through, abstains with nothing left before the head; the control, a
-real through ledger with both stubs AT THE CANDIDATE'S OWN row ->
-through. Plus 4 rewritten tests in `test_ledger_rungs_conversion_
-round2_2026_10_01.py` and 2 in `test_ledger_rungs_round3_2026_10_01.py`
-(the real `glyph/3/0/0/2/3` and evenly-spaced shapes), each now
-supplying a synthetic image AT THE CANDIDATE'S OWN row. Full `-k
-ledger` suite: 328 passed (was 314 at session start), 2 xfailed
-unchanged. Fast tier (`pytest tools/omr/tests -m "not slow"`) run once.
+`tools/omr/tests/test_ledger_four_causes_cd_2026_10_01.py` (15 tests,
+head boxes resized to ~1 staff space tall — `HEAD_BOX = (120, 100, 180,
+200)` at `SPACING=100` — so the tolerance band cannot accidentally
+overlap an edge, which a too-short synthetic box would make
+meaningless): `head_middle_rung_evidence` — real through-head band
+(one-sided) true; head in a space, nothing at its middle, false; **a
+ledger touching ONLY the top edge -> NOT through** (design 3's own
+bug, now RED-first); **a ledger at the middle row, touching one side
+-> through** (Sean's own positive case); a line touching the head
+-> through, the SAME line with a 2px gap -> NOT through (connectivity);
+the accidental-ink control (false once excluded, true without —
+sanity-checked); no image/box -> false. `collapse_head_edge_rungs_
+to_middle` — 4 tests (edges collapse to the real middle; no real
+middle drops to empty; real rungs away from the edges untouched; a
+rung wedged between blocks the collapse). `derive_far_head_step` — top
+edge, no stubs at the middle -> NOT through, abstains; the control, a
+real through ledger with stubs AT THE HEAD'S OWN MIDDLE -> through.
+Plus rewritten tests in `test_ledger_rungs_conversion_round2_
+2026_10_01.py` and `test_ledger_rungs_round3_2026_10_01.py` (the real
+`glyph/3/0/0/2/3` and evenly-spaced shapes, boxes resized to ~1 staff
+space tall where the through branch is exercised), each now supplying
+a synthetic image AT THE HEAD'S OWN MIDDLE, never a candidate's row.
+Full `-k ledger` suite: 330 passed (was 314 at session start), 2
+xfailed unchanged. Fast tier (`pytest tools/omr/tests -m "not slow"`)
+run once this session (against design 3; no fast-tier test touches
+`derive_far_head_step`/`head_middle_rung_evidence` outside the `-k
+ledger` selection, so this is still representative): 4344 passed, 3
+skipped, 2 xfailed, 0 failed.
 
-### Re-scored, real data (truth-set record `truthset-2.44c-20260930`, final design)
+### Re-scored, real data (truth-set record `truthset-2.44c-20260930`, design 4)
 
 | doc | geometry | rungs, no evidence wired (unflagged default) | rungs, C+D fully wired |
 |---|---|---|---|
-| beethoven5-litolff (n=44) | 30/14/0 | 8/19/17 | 27/15/2 |
-| brahms1-breitkopf (n=11) | 11/0/0 | 6/3/2 | 10/1/0 |
+| beethoven5-litolff (n=44) | 30/14/0 | 8/19/17 | 25/14/5 |
+| brahms1-breitkopf (n=11) | 11/0/0 | 6/3/2 | 11/0/0 |
 
-(format: right/wrong/abstain). The UNFLAGGED column is now, by
+(format: right/wrong/abstain). The UNFLAGGED column is, by
 construction, crippled — with no image ever supplied, the through
 branch can never be evidenced and every such candidate is dropped
-(CLAUDE.md rule 8: "cannot tell" is never answered "yes"). The fully-
-wired column is the one that matters: Litolff 27/44 (close to geometry's
-30, far better than design 2's 8), Brahms 10/11 (matches geometry on 10
-of 11, up from design 1/2's 6/10). **Two regressions found and not yet
-crop-verified**: `glyph/3/0/0/2/9` (Litolff, right -> wrong, `gap -0.18
-sp`, a "jut" on the head's own geometric middle — on a MERGING plate
-this could be the chord's own shared ink, not a ledger) and
-`glyph/1/1/8/7/4` (Brahms, right -> wrong, through-branch at `gap -2.79
-sp` — a candidate THIS far from the head being confirmed "through" by
-a one-sided jut is suspicious and needs a crop). Both are flagged, not
-explained away; CLAUDE.md rule 7 (who says it's right?) applies to
-both before anyone ships this.
+(CLAUDE.md rule 8). The fully-wired column: Brahms now matches
+geometry EXACTLY (11/11, up from design 3's 10/11) — design 4 fixed the
+one false positive design 3 had there
+(`glyph/1/1/8/7/4`, a candidate 2.79 staff spaces from the head that
+design 3's candidate-row probe wrongly confirmed "through"; probing at
+the head's own middle instead correctly finds no evidence there).
+Litolff drops slightly from design 3's 27/44 to 25/44 — `wrong` now
+matches geometry's own count (14) and `abstain` rose from 2 to 5: the
+heads design 3 confirmed via its edge-touching bug now correctly
+abstain instead of confidently landing on a wrong answer. **One
+regression remains, not crop-verified**: `glyph/3/0/0/2/9` (Litolff,
+right -> wrong, `gap -0.18 sp`, a jut on the head's own geometric
+middle — on a MERGING plate this could be the chord's own shared ink,
+not a ledger). Flagged, not explained away; CLAUDE.md rule 7 applies
+before anyone ships this.
 
 ### The 8 named heads: why they differ from a fresh run today, exactly
 
@@ -2644,20 +2664,22 @@ now abstain instead. The fair, apples-to-apples comparison is the
 FULLY-EVIDENCED call (`four_causes_cd=True`): **7 of the original 8
 still qualify**; only tile 7 (`glyph/3/0/9/2/0`) reads right — and it
 already did, in the unmodified code, before this lane touched anything
-(absent from the fresh 12-tile run above too) — so that one head's
-resolution is not this lane's fix, just a pre-existing fact about the
-record this session never changed. **None of the 7 remaining heads flip
-right.** Per-tile branch (`out/print/ledgers/neither_right_r8.png`,
-`neither_right_sheet_r8.py`, now prints each tile's exact
-`derive_far_head_step` reason): `glyph/1/0/10/7/1`, `glyph/3/0/0/6/2`
-take the "beyond the last rung, no evidenced line" (space) branch;
-`glyph/3/0/0/2/1`, `glyph/3/0/0/7/1`, `glyph/3/0/0/7/2`,
-`glyph/3/0/8/9/0` take the "through" branch — each CONFIRMED by a jut
-at its own candidate row (not a guess), but still wrong against the
-reference, meaning this is NOT a through/space arithmetic bug for
-these 4 — the rung count or position itself is wrong upstream (cause
-A/B territory, another lane's scope); `glyph/3/0/9/3/5` still finds
-ZERO rungs (abstains before any evidence check runs at all).
+(absent from the fresh 12-tile run too) — so that one head's resolution
+is not this lane's fix, just a pre-existing fact about the record this
+session never changed. **None of the 7 remaining heads flip right.**
+Per-tile branch (`out/print/ledgers/neither_right_r8.png`,
+`neither_right_sheet_r8.py`, prints each tile's exact `derive_far_head_
+step` reason, design 4): `glyph/1/0/10/7/1`, `glyph/3/0/0/6/2` take the
+"beyond the last rung" branch, EVIDENCED (a jut at the head's own
+middle, on at least one side) -> "line", one ledger step too far out;
+`glyph/3/0/0/2/1`, `glyph/3/0/0/7/1`, `glyph/3/0/0/7/2` take the
+"through" branch — each CONFIRMED by a jut AT THE HEAD'S OWN MIDDLE
+now (not a candidate's row, design 3's own bug), but still wrong
+against the reference. For all 5, this is NOT a through/space
+arithmetic bug any more — the rung count or position itself is wrong
+upstream (cause A/B territory, another lane's scope); `glyph/3/0/8/9/0`
+and `glyph/3/0/9/3/5` abstain (no rung survives before the head at
+all, or zero rungs found) — neither guesses.
 
 ### Not shipped
 
@@ -2665,7 +2687,7 @@ ZERO rungs (abstains before any evidence check runs at all).
 `derive_far_head_step`/`head_middle_rung_evidence` are opt-in
 parameters; `four_causes_cd` defaults `False` everywhere it was added,
 and nothing in `tools/omr/staged/gather.py`'s own (unflagged) call to
-`derive_far_head_step` was touched. The two measured regressions
-(`glyph/3/0/0/2/9`, `glyph/1/1/8/7/4`) and the still-open 4 "through but
+`derive_far_head_step` was touched. The one remaining measured
+regression (`glyph/3/0/0/2/9`) and the still-open 3 "through but
 wrong" heads above need a human crop check before anyone decides to
 wire this further.
