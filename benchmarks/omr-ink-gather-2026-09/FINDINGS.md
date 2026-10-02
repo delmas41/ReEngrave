@@ -1008,3 +1008,185 @@ catch what OCR recall misses.
   enough from every `Q.STAFF_LINES` value to dodge the sliver guard and
   still land in the notehead-sized window — plausible on a crowded page,
   unmeasured here. The crops are the instrument for finding one.
+
+## 14. ROADMAP 2.51 — how much printed ink has no detector box, and what is it
+
+2026-10-01, `lane-2.51-unboxed-ink`. MEASUREMENT ONLY — no production code
+touched. STAGED. Reuses `Q.INK`'s own per-component fields
+(`ink_detector_coverage`, `ink_explained_by`, `ink_bbox_canonical`,
+`width_spaces`/`height_spaces`, `bbox_page_px`) exactly as GATHER wrote them,
+and the REAL `gather._explaining_detections`/`gather._coverage` functions for
+the control (§14.3) — reused, not reimplemented (rule 1).
+
+**Re-gather needed**: the committed `20261001` whole-movement records
+(`library/_shared-records/{beethoven5-litolff,brahms1-breitkopf}-mvt1-whole-
+20261001.record.json`) are the SUMMARY form (roadmap 1.1's default) — every
+`unread_mark` verdict on both abstains `no_ink_component_rows`, confirming no
+per-component box survives. One small `--ink-rows` re-gather per document,
+unattended, `--through adjudicate` (first movement page through the count
+page, per `acceptance_quick`'s own rule never to gather the count page
+alone): Litolff pages 1-3, Brahms pages 0-1, both `--weights auto
+--route-weights --dpi 600`, plus a third on the engraved acceptance page
+(`benchmarks/omr-staged-engraved-2026-09/out/fixture/beethoven-sym5-mvt1-
+m1-24.pdf`, page 0, `--dpi 300`) for the control in §14.3. Scripts under
+`benchmarks/omr-ink-gather-2026-09/unboxed-2.51/`, run with `PYTHONPATH=.`
+from the repo root.
+
+### 14.1 What was subtracted, and what was not
+
+- **Staff lines**: already removed, LOCALLY (CLAUDE.md §10's own rule), by
+  `gather._ink_components`'s own input — `cell.image_no_staff`, the
+  staff-line-erased raster computed per CELL before any component is found.
+  This is upstream of this script; nothing here re-derives it.
+- **Stems**: `stem` is CV-only (CLAUDE.md §9: "`stem` and `staff` are CV-only
+  and cost nothing") and is never a YOLO detection, so it never appears in
+  `ink_explained_by` — every stem pixel reads as uncovered unless subtracted
+  separately. Subtracted here as an axis-aligned BOX overlap between each
+  ink component's canonical bbox and every `Q.STEM` row filed on the same
+  cell (same canonical frame) — an approximation, not a pixel mask, stated
+  plainly.
+- **⚠️ NOT subtracted, because the brief did not name it, but it dominates
+  the residue and should be read alongside every number below: BARLINES.**
+  `barline` is not a detector class either — `measure_extractor.py`'s own
+  `Q.BARLINE_COLUMN` is a CV quantity, not a `glyph_box` row, confirmed here
+  by grepping the gathered quantity list (no `barline*` class ever appears
+  among 22 distinct `glyph_box` classes on the engraved control page). A
+  barline is therefore a THIRD member of the "never boxed by design" family
+  alongside staff lines and stems, and this pass did not get asked to
+  exclude it. §14.2's control result is the direct consequence.
+
+### 14.2 Totals, per page
+
+| page | total ink px | covered % | stem % | **uncovered %** |
+|---|--:|--:|--:|--:|
+| Litolff p3 (count page) | 33,583,719 | 27.48 | 12.42 | **60.10** |
+| Brahms p1 (count page) | 46,456,846 | 25.16 | 11.03 | **63.81** |
+| Beethoven engraved p0 (control) | 5,441,125 | 48.83 | 6.11 | **45.06** |
+
+Per-staff uncovered % ranges widely on both scans (Litolff 44.9–71.6%,
+Brahms 46.4–93.6% — `litolff-p3-result.json`/`brahms-p1-result.json` in
+`unboxed-2.51/` have the full per-staff table), consistent with a page-level
+average hiding a lot of staff-to-staff variation rather than a uniform rate.
+
+**The control at #14.3 explains why the engraved number is nowhere near
+zero**: 93% of near-zero-coverage, line-shaped ink on the engraved page sits
+within 20 px of a cell boundary — i.e. at a barline, the family this pass
+was not asked to subtract. The same check on Litolff finds 93% of its
+line-shaped uncovered ink at a cell edge too; on Brahms only 56% — the
+SHATTERING plate's barlines break into fragments that don't all land flush
+with the cell boundary the way Litolff's MERGING plate's do (reproduce with
+`unboxed-2.51/barline_check.py <record>`). **The headline uncovered-%
+numbers above are therefore NOT a clean measure of genuine detector misses
+— a large, unquantified share on all three pages is ink the pipeline never
+intended to box at all.** This was not pre-registered and is reported as
+found, per rule 8: an uncovered-ink number that does not separate "never
+meant to be boxed" from "missed" would silently read as a much worse gap
+than the detector actually has.
+
+### 14.3 The control (rule 7: it must be able to fail)
+
+**It failed where predicted to pass** (the engraved control, §14.2) — a real,
+useful failure, diagnosed above as the barline gap, not a bug in the
+coverage arithmetic (confirmed by re-deriving it from the record's own
+`ink_detector_coverage` field, not a value this script computed).
+
+**It passed, 10 of 10, on the deleted-box test.** For 5 real, isolated
+notehead detections per scan count page (a `glyph_box` row whose own box
+covers ≥60% of its matching ink component's area, `ink_detector_coverage`
+already ≥0.5 and `ink_explained_by` naming only that one class), the
+detection list for its cell was rebuilt EXACTLY from the record's own
+`glyph_box` rows (the same raw input `gather._explaining_detections` reads)
+with that one box removed, and `gather._coverage` — the real function, not a
+reimplementation — was called again:
+
+| doc | before cov (real box present) | after cov (box removed) | width/height spaces |
+|---|--:|--:|---|
+| Litolff | 1.000, 1.000, 0.983, 0.862, 0.868 | 0.000 ×5 | 1.14×0.57, 1.27×0.50, 1.15×0.50, 0.70×1.40, 1.20×0.39 |
+| Brahms | 0.970, 0.753, 0.945, 1.000, 0.606 | 0.000 ×5 | 1.43×0.84, 2.03×1.28, 1.58×0.71, 1.06×0.17, 1.47×1.75 |
+
+Every deleted box reads zero-coverage ink afterward, as it must. Most land
+inside or near the project's OWN measured notehead band (1.26–1.78 wide ×
+0.34–1.8 tall, `omr-notehead-width-2026-09/FINDINGS.md`) — none of the ten
+would have been excluded by that band, though several fall outside the
+BRIEF's narrower 1.0–1.4 × 0.8–1.2 window used for §14.4's groups (see the
+note there). The control's own failure mode (another overlapping detection
+still explains the component after the chosen one is removed) did not occur
+in this sample of 10 — reported, not hidden; a larger sample could surface
+it. Reproduce with `unboxed-2.51/control.py <record> <page> --n 5`.
+
+### 14.4 Groups, by size/shape relative to the local staff space
+
+Bands exactly as specified in the brief: head-sized 1.0–1.4 × 0.8–1.2 sp;
+digit/letter-sized 0.3–1.0 wide × 0.5–1.6 tall with height ≥ width;
+line-like aspect ratio ≥ 3:1 either way; speck area < 0.08 sp²; else
+"other". **⚠️ CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED**:
+nobody was available to ask Sean before this pass, these bands are the
+brief's own and are narrower than the project's own measured notehead band
+(§14.3) — a real head that prints narrower or taller than 1.0–1.4×0.8–1.2
+(roughly a third of the confirmed control heads above) is NOT counted
+`head_sized` here and instead falls in `other`/`digit_letter_sized`. Counted
+only over components whose OWN uncovered share exceeds half their area (so
+a mostly-covered component contributing a sliver of uncovered edge does not
+pollute the shape counts):
+
+| group | Litolff p3 n | Litolff px | Brahms p1 n | Brahms px |
+|---|--:|--:|--:|--:|
+| head_sized | 10 | 64,173 | 13 | 59,799 |
+| digit_letter_sized | 50 | 170,848 | 79 | 209,960 |
+| line_like | 765 | 13,022,333 | 951 | 7,803,193 |
+| speck | 60 | 14,430 | 2,561 | 74,013 |
+| other | 178 | 4,451,742 | 531 | 18,658,220 |
+
+`line_like` is the largest bucket by area on Litolff (64% of its own
+uncovered-majority mass); `other` is largest on Brahms (63%) — consistent
+with CLAUDE.md §10's own "Litolff MERGES and Breitkopf SHATTERS": Breitkopf's
+shattered ink breaks into shapes that don't cleanly fit any of the four
+named bands, landing in `other` far more than Litolff's.
+
+### 14.5 Crops, and a one-word guess per tile (not a judgement)
+
+`out/print/2.51/litolff-p3-uncovered-contact-sheet.png` and
+`.../brahms-p1-uncovered-contact-sheet.png` — the 20 largest head-sized and
+digit-sized uncovered components per page, ≥3×, rendered from the real PDF
+at the gather's own DPI, uncovered box tinted red, nearby `glyph_box`
+detections drawn thin blue. One-word guess per tile, eyeballed quickly, not
+a verdict:
+
+- **Litolff (20 tiles)**: the large majority are letters of printed
+  direction-word text (`dolce`, the `a.2` divisi marking) that the
+  head/digit-sized geometric window happens to catch; a handful of
+  `head_sized` tiles sit on a bare staff line with no visible round head at
+  all (a likely staff-line-thickening false positive in that band, not
+  print-confirmed); 1–2 tiles do show what looks like a real small notehead
+  beside text.
+- **Brahms (20 tiles)**: essentially ALL 20 are individual LETTERS of
+  printed direction words — `pizz.`, `dim.`, `espr.` — each letter its own
+  ink component on this SHATTERING plate, several (`p`, `i`, `z`, `d`, `m`)
+  landing squarely inside the head-sized or digit-sized window by
+  coincidence of a serif letterform's proportions. This corroborates
+  roadmap 2.4c's own crop finding (`unread_mark.py`'s module docstring,
+  SS13.3b: "6 of 6 Breitkopf crops... are printed direction-word text") at a
+  much larger sample on the same mechanism, independent of that decision's
+  own `Q.DIRECTION_WORD`/`Q.DYNAMIC_LETTER` overlap guard (this pass applies
+  no text guard at all, and still lands almost entirely on text).
+
+### 14.6 What this does and does not establish
+
+- The dominant population in the head/digit-sized uncovered bands on BOTH
+  scans is printed TEXT, not missed noteheads — confirmed by eye, not
+  print-measured bar-by-bar.
+- The flat uncovered-% headline (§14.2) is inflated, by an amount this pass
+  did not quantify precisely, by barline ink — a THIRD by-design gap this
+  brief did not ask to exclude (§14.1). Any future use of this number as a
+  detector-quality proxy needs that subtraction first, or it will read as a
+  much worse recall gap than the detector actually has.
+- The deleted-box control (§14.3) establishes the MECHANISM correctly
+  surfaces a real missing head as uncovered, notehead-sized ink when one
+  really is missing — it does not establish how OFTEN that happens on these
+  two pages, since the ten real heads tested were still present (this
+  pass never actually removed a detection from the live pipeline, only from
+  a reconstructed per-cell list fed to the real coverage function).
+- Not measured: whole-movement reach (both re-gathers were the count-page
+  range only, per CLAUDE.md §6b); any consumer wiring (`Q.INK`/
+  `Q.UNREAD_MARK` stay exactly as documented in §13 — this pass adds no new
+  consumer); a precise "uncovered minus barline" corrected percentage.
