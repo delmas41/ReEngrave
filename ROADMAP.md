@@ -29,7 +29,7 @@ overnight run").
 
 **FIRST, when resuming:** nothing below reaches the records until a re-gather. Ask Sean
 whether to run the overnight full re-gather (`benchmarks/acceptance/overnight/regather_20260930.sh`,
-`THROUGH=adjudicate`, new TAG) on main — it picks up all eight merges below.
+`THROUGH=adjudicate`, new TAG) on main — it picks up all seven merges below.
 
 **Merged 10-01 (all STAGED, all first-two-stages):** 2.47b+2.47c (`deaa4fbc`, a cautionary
 end-strip is not a bar; a meter digit boxed twice is not a notehead), 2.47b majority
