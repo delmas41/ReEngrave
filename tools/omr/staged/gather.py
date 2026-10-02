@@ -457,6 +457,309 @@ def gather_detections(log: Log, cells: Sequence[Any],
     return found
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.55 — low-confidence rescue of a boxless, rest-less bar
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The confidence floor this reader re-runs the SAME detector at, on a
+#: single cell, notehead/rest classes only. Named, never a bare literal
+#: (CLAUDE.md §7): `OMR_CONF_THRESHOLD`'s 0.25 is the production floor every
+#: other reader trusts; this is a SECOND, lower floor, read only here, and
+#: only on a cell that already failed both the production pass and 2.52's
+#: own ink search. ROADMAP 2.53 measured it: a `--conf 0.10` rerun recovered
+#: a notehead/rest box in 24 of 29 Litolff p3 not-found cells, scoring
+#: 0.10-0.25, under crossing ink (ties, ledgers, beams, slurs).
+RESCUE_CONF_FLOOR = 0.10
+
+#: Sean has not yet seen the crops (ROADMAP 2.55, DECISIONS 2026-10-01:
+#: "every rescued box passes the usual checks and is crop-checked before
+#: anything ships"). GATHER always files a rescued box's rows regardless of
+#: this constant; it governs only whether `adjudicate.subjects_for` admits a
+#: rescue-sourced GLYPH subject into any decision's domain. No new env flag
+#: (CLAUDE.md §9) — a named module constant, same posture as an
+#: `OMR_RESEARCH`-gated reader that is nonetheless off by default.
+RESCUE_SHIPS = False
+
+#: ROADMAP 2.55 REFINEMENT (Sean, DECISIONS 2026-10-01, "rescue guided by
+#: stems, ties and accidentals"): *"Every measure should have notes or
+#: rests. If the bar shows ties then there are notes; if there are stems
+#: then there are notes and the note heads will be connected to the stems.
+#: If there are ties the notes will be close to the end of the ties. If
+#: there are accidentals then there are notes."* A rescued box is accepted
+#: ONLY within a tight window of a witness already on the record for this
+#: bar; an unguided low-confidence box is rejected and recorded as such
+#: (`ABSTAIN.RESCUE_UNGUIDED`), never accepted on score alone.
+#:
+#: Every window below is a half-width in STAFF SPACES (one staff space is
+#: `2 * half_step`, `_cell_grid`'s own unit), named rather than a bare
+#: literal (CLAUDE.md §7).
+#:
+#: ⚠️ A STEM'S DIRECTION (up/down) IS NOT RE-DERIVED HERE. Sean's rule ties
+#: the head's SIDE of the stem to its direction (up -> bottom end, right
+#: side; down -> top end, left side), but telling a stem's direction apart
+#: needs the very head this search is looking for. Both ends of the stem
+#: are therefore treated as candidate attachment points, and the window
+#: straddles BOTH sides of the stem rather than committing to one --
+#: looser than Sean's own rule, recorded here rather than silently assumed.
+STEM_WITNESS_HALF_WIDTH_SPACES = 0.9   # either side of the stem
+STEM_WITNESS_HALF_HEIGHT_SPACES = 0.6  # around the stem's own end
+#: An arc is drawn OVER its notes (CLAUDE.md §10), so a tie/slur's own
+#: bottom edge, at each horizontal end, is where a head hangs just below.
+ARC_WITNESS_HALF_WIDTH_SPACES = 0.9    # just beyond each end of the arc
+ARC_WITNESS_HALF_HEIGHT_SPACES = 0.9   # below the arc's own bottom edge
+#: An accidental sits at the SAME staff position as its note, immediately
+#: to the accidental's right.
+ACCIDENTAL_WITNESS_HALF_WIDTH_SPACES = 1.3   # how far right to look
+ACCIDENTAL_WITNESS_HALF_HEIGHT_SPACES = 0.6  # around the accidental's own y
+
+
+def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
+                              half_step: Optional[float]
+                              ) -> List[Dict[str, Any]]:
+    """Every witness already on the record for cell `c` that PREDICTS where
+    a notehead must be: a stem end (classical-CV, re-run directly -- this
+    cell has no `Q.STEM` row yet, since this reader runs before
+    `gather_cv_lines` in the pipeline), a tie/slur end, or an accidental's
+    right side (both read off `existing`, the production-floor detections
+    already filed for this cell).
+
+    Each witness is a half-open window: `kind`, `x_lo`/`x_hi`/`y_lo`/`y_hi`
+    in the cell's own CANONICAL frame -- the same frame `d.x_canonical` etc.
+    are measured in, so a candidate box's own centre can be compared
+    directly, with no second conversion to agree with the raw boxes this
+    reader also reads (CLAUDE.md §10: measure locally).
+    """
+    witnesses: List[Dict[str, Any]] = []
+    if not half_step:
+        return witnesses
+    space = half_step * 2.0
+
+    try:
+        from ..line_detection import detect_lines
+        found = detect_lines(c, candidates_out=None, noteheads=None) or {}
+        stems = found.get("stems") or []
+    except Exception:                                         # noqa: BLE001
+        stems = []
+    dx = STEM_WITNESS_HALF_WIDTH_SPACES * space
+    dy = STEM_WITNESS_HALF_HEIGHT_SPACES * space
+    for s in stems:
+        x_c = s.x_canonical + s.width_canonical / 2.0
+        y_top = s.y_canonical
+        y_bot = s.y_canonical + s.height_canonical
+        for end_y in (y_top, y_bot):
+            witnesses.append({"kind": "stem_end",
+                              "x_lo": x_c - dx, "x_hi": x_c + dx,
+                              "y_lo": end_y - dy, "y_hi": end_y + dy})
+
+    adx = ARC_WITNESS_HALF_WIDTH_SPACES * space
+    ady = ARC_WITNESS_HALF_HEIGHT_SPACES * space
+    for d0 in existing:
+        name = str(getattr(d0, "smufl_name", "")).lower()
+        if name not in ("tie", "slur"):
+            continue
+        x0 = d0.x_canonical
+        x1 = x0 + d0.width_canonical
+        y_bottom = d0.y_canonical + d0.height_canonical
+        witnesses.append({"kind": f"{name}_end",
+                          "x_lo": x0 - 2 * adx, "x_hi": x0,
+                          "y_lo": y_bottom - ady, "y_hi": y_bottom + ady})
+        witnesses.append({"kind": f"{name}_end",
+                          "x_lo": x1, "x_hi": x1 + 2 * adx,
+                          "y_lo": y_bottom - ady, "y_hi": y_bottom + ady})
+
+    acdx = ACCIDENTAL_WITNESS_HALF_WIDTH_SPACES * space
+    acdy = ACCIDENTAL_WITNESS_HALF_HEIGHT_SPACES * space
+    for d0 in existing:
+        if getattr(d0, "category", None) != "accidental":
+            continue
+        right_x = d0.x_canonical + d0.width_canonical
+        cy = d0.y_canonical + d0.height_canonical / 2.0
+        witnesses.append({"kind": "accidental_right",
+                          "x_lo": right_x, "x_hi": right_x + 2 * acdx,
+                          "y_lo": cy - acdy, "y_hi": cy + acdy})
+    return witnesses
+
+
+def _matching_witness(d: Any, witnesses: Sequence[Dict[str, Any]]
+                      ) -> Optional[Dict[str, Any]]:
+    cx = d.x_canonical + d.width_canonical / 2.0
+    cy = d.y_canonical + d.height_canonical / 2.0
+    for w in witnesses:
+        if w["x_lo"] <= cx <= w["x_hi"] and w["y_lo"] <= cy <= w["y_hi"]:
+            return w
+    return None
+
+
+def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]], *,
+                         detector: Any = None,
+                         imgsz: Optional[int] = None,
+                         progress: bool = False) -> None:
+    """Re-run the SAME detector, on ONE cell, at `RESCUE_CONF_FLOOR` --
+    notehead/rest classes ONLY -- for a bar `_empty_bar_candidate_cells`
+    already calls boxless (no notehead/rest box at the production floor)
+    and that 2.52's own ink search (`Q.EMPTY_BAR_REST_SEARCH`) did NOT find
+    a whole rest in.
+
+    ROADMAP 2.53 diagnosed this population by hand: 28 of 29 Litolff p3
+    not-found cells already carry SOME detector box (ties, ledger lines,
+    beams, slurs, fermatas, cautionary clefs) -- never a whole-cell miss,
+    only the notehead/rest CLASS is missing under crossing ink. Sean,
+    DECISIONS 2026-10-01, on that diagnosis: *"Yes"* to a second,
+    lower-confidence pass restricted to those two classes, with every
+    rescued box passing the usual ADJUDICATE checks and crop-checked before
+    anything ships.
+
+    ⚠️ GUIDED, NOT A BARE CONFIDENCE DROP (Sean's SAME-DAY refinement,
+    DECISIONS 2026-10-01: *"Every measure should have notes or rests. If
+    the bar shows ties then there are notes; if there are stems then there
+    are notes ... If there are ties the notes will be close to the end of
+    the ties. If there are accidentals then there are notes."*). A rescued
+    box is kept only when it falls inside `_lowconf_rescue_witnesses`'s own
+    window around a STEM end, a TIE/SLUR end, or an ACCIDENTAL's right side
+    -- `_matching_witness`. An unguided low-confidence box (no witness)
+    is rejected and recorded as such (`ABSTAIN.RESCUE_UNGUIDED`); a
+    witness with no box near it, even at `RESCUE_CONF_FLOOR`, is OUR
+    failure and is recorded too (`ABSTAIN.WITNESS_UNMET`) -- never read as
+    "nothing to find here".
+
+    ⚠️ NEVER TOUCHES A BAR THAT ALREADY HAS A NOTE OR REST. The candidate
+    set is `_empty_bar_candidate_cells`'s own (identical to 2.52's), so a
+    cell with ANY notehead/rest box at the production floor is invisible to
+    this reader by construction -- it is never even considered, not merely
+    declined.
+
+    ⚠️ NEVER RESCUES A BAR 2.52 ALREADY READ. 2.52's own GATHER row
+    (`Q.EMPTY_BAR_REST_SEARCH`) is the one true answer to "did the ink
+    search already find a whole rest here"; this reader asks that SAME
+    question by re-running `gather_empty_bar_rest_search` itself on a
+    throwaway `Log` (rule 6: a connection, never a second copy of the test)
+    rather than guessing from a result it has not computed.
+
+    ⚠️ FILED AS GLYPH BOXES, FROM THEIR OWN READER NAME
+    (`READERS.RESCUE_LOWCONF`), NEVER `READERS.DETECTOR`. Every rescued box
+    is appended to this cell's own `detections` list (mutated IN PLACE, at
+    an index past every box the production pass already assigned) so every
+    later GATHER reader that walks `detections[cell_key]` by index --
+    notehead position, ownership evidence, rhythm marks, the ink/ledger/
+    stem/stacked-head readers -- sees it exactly as it would see any other
+    glyph. Every row this reader files carries `reader=RESCUE_LOWCONF` and
+    `score`, so it is traceable and separable from a production-floor box
+    without needing to read the score's own value.
+
+    ⚠️ GATHER RECORDS THESE ROWS ALWAYS, REGARDLESS OF `RESCUE_SHIPS`.
+    Whether ADJUDICATE may USE a rescued glyph in any decision's domain is
+    `adjudicate.subjects_for`'s own question, not this function's.
+    """
+    if detector is None:
+        return
+    candidates = _empty_bar_candidate_cells(cells, local, detections)
+    if not candidates:
+        return
+
+    # ⚠️ A FRESH, THROWAWAY LOG -- never the real one. This asks 2.52's own
+    # question again, on the pre-mutation `detections`, so the answer is
+    # the SAME one 2.52's own pipeline call will reach; the real log is
+    # untouched by this scratch run.
+    scratch = Log()
+    gather_empty_bar_rest_search(scratch, candidates, local, detections)
+
+    for c in candidates:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        frame = frame_cell(c.measure_index)
+        cell_key = cell_sub.to_key()
+
+        already_found = any(
+            bool(row.value)
+            for row in scratch.rows(Q.EMPTY_BAR_REST_SEARCH, cell_sub))
+        if already_found:
+            continue
+
+        existing = detections.get(cell_key)
+        if existing is None:
+            existing = []
+            detections[cell_key] = existing
+        n_existing = len(existing)
+
+        grid = _cell_grid(c)
+        half_step = grid[1] if grid else None
+        witnesses = _lowconf_rescue_witnesses(c, existing, half_step)
+        if not witnesses:
+            # ⚠️ No witness at all -- "every measure should have notes or
+            # rests" names stems/ties/accidentals as the witnesses; a bar
+            # with none of them gives this reader nothing to be guided by,
+            # and it must not fall back to accepting on score alone.
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_LOWCONF,
+                        frame=frame, reason=ABSTAIN.NO_DETECTIONS,
+                        witnesses_found=0)
+            continue
+
+        rerun = detector.detect(c, conf_threshold=RESCUE_CONF_FLOOR,
+                                imgsz=imgsz)
+        candidates_by_class = [
+            d for d in rerun
+            if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)
+            or str(d.smufl_name).lower().startswith(_REST_PREFIX)]
+
+        matched_witness_ids = set()
+        kept: List[Tuple[Any, Dict[str, Any]]] = []
+        for d in candidates_by_class:
+            w = _matching_witness(d, witnesses)
+            if w is None:
+                log.abstain(cell_sub, Q.GLYPH_BOX,
+                            reader=READERS.RESCUE_LOWCONF, frame=frame,
+                            reason=ABSTAIN.RESCUE_UNGUIDED,
+                            smufl_name=d.smufl_name, score=float(d.confidence))
+                continue
+            kept.append((d, w))
+            matched_witness_ids.add(id(w))
+
+        for w in witnesses:
+            if id(w) not in matched_witness_ids:
+                log.abstain(cell_sub, Q.GLYPH_BOX,
+                            reader=READERS.RESCUE_LOWCONF, frame=frame,
+                            reason=ABSTAIN.WITNESS_UNMET,
+                            witness_kind=w["kind"])
+
+        for k, (d, w) in enumerate(kept):
+            gi = n_existing + k
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, gi)
+            page_box = _page_box(c, d)
+            box_detail: Dict[str, Any] = {"category": d.category,
+                                          "witness": w["kind"]}
+            if page_box is None:
+                box_detail["frame_note"] = (
+                    "no page box: cell has no bbox_page_px/upscale_factor")
+            else:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1],
+                                  x_center_page=(px0 + px1) / 2.0,
+                                  y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX,
+                        (d.smufl_name, d.x_canonical, d.y_canonical,
+                         d.width_canonical, d.height_canonical),
+                        reader=READERS.RESCUE_LOWCONF, frame=frame,
+                        score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence),
+                        reader=READERS.RESCUE_LOWCONF, frame=frame,
+                        score=float(d.confidence))
+            if d.smufl_name.startswith(_NOTEHEAD_PREFIX):
+                log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name,
+                            reader=READERS.RESCUE_LOWCONF, frame=frame,
+                            score=float(d.confidence))
+            existing.append(d)
+        if progress:
+            print(f"  gather lowconf rescue {cell_key}: "
+                  f"{len(kept)} box(es) of {len(candidates_by_class)} "
+                  f"candidate(s), {len(witnesses)} witness(es)")
+
+
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
                               detections: Dict[str, List[Any]]) -> None:
@@ -7679,6 +7982,18 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         detections = gather_detections(
             log, cells, local, detector=detector,
             conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
+
+        # ⚠️ ROADMAP 2.55, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
+        # OF `detections`'s OTHER CONSUMERS: a rescued box is appended to
+        # THIS cell's own `detections` list in place, so every reader below
+        # that walks it by index -- notehead position, ownership evidence,
+        # rhythm marks, the ink/ledger/stem/stacked-head readers -- sees it
+        # exactly as it would see any production-floor box. 2.52's own call
+        # further down (`gather_empty_bar_rest_search`) is UNCHANGED and
+        # simply no longer finds this cell boxless once a rescue succeeds.
+        gather_lowconf_rescue(log, cells, local, detections,
+                              detector=detector, imgsz=imgsz,
+                              progress=progress)
 
         # ⚠️ ROADMAP 2.39b, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
         # OF ITS FOUR CONSUMERS: the matched-window re-centre search files

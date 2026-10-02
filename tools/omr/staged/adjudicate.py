@@ -28,7 +28,7 @@ from typing import (Any, Callable, Dict, FrozenSet, Iterable, List, Optional,
                     Sequence, Set, Tuple, Union)
 
 from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
-                     Outcome, Q, Scope, State, Subject, Verdict)
+                     Outcome, Q, READERS, Scope, State, Subject, Verdict)
 
 
 __all_reexport__ = (Candidate,)
@@ -1126,16 +1126,56 @@ def domain_of(spec: DecisionSpec) -> Tuple[str, ...]:
     return (d,) if isinstance(d, str) else tuple(d)
 
 
+def _is_rescue_only_glyph(log: Log, sub: Subject) -> bool:
+    """ROADMAP 2.55. Is `sub` a GLYPH whose own `Q.GLYPH_BOX` row(s) all
+    come from the low-confidence rescue pass (`READERS.RESCUE_LOWCONF`),
+    never the production detector?
+
+    This is the ONE gate: GATHER (`gather.gather_lowconf_rescue`) files a
+    rescued box's rows unconditionally, and whether ADJUDICATE may put it
+    in any decision's domain is `gather.RESCUE_SHIPS`, read here and nowhere
+    else -- never a per-decision change, so every existing check (duplicate/
+    stacked/tremolo/timesig, ownership, staff position) sees a rescued
+    glyph exactly as it would any other the moment Sean switches it on.
+    """
+    if sub.kind != Kind.GLYPH:
+        return False
+    rows = log.rows(Q.GLYPH_BOX, sub)
+    if not rows:
+        return False
+    return all(row.reader == READERS.RESCUE_LOWCONF for row in rows)
+
+
+def _rescue_ships() -> bool:
+    # Lazy import: `gather.py` does not import `adjudicate.py` at module
+    # scope, but importing it the other way round, at module scope, would
+    # still make ADJUDICATE depend on every GATHER reader loading cleanly
+    # just to ask one boolean. A function-local import keeps the two stages
+    # as separable as the design already treats them.
+    from . import gather as _gather
+    return bool(_gather.RESCUE_SHIPS)
+
+
 def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
     """The subjects this decision is ABOUT.
 
     With `subjects_from`, only subjects carrying a row of that quantity --
     which for ownership is the contested population and nothing else, and for
     `duration` is every notehead AND every rest.
+
+    ⚠️ ROADMAP 2.55. A rescue-sourced GLYPH (`_is_rescue_only_glyph`) is
+    excluded from EVERY decision's domain while `gather.RESCUE_SHIPS` is
+    False -- GATHER recorded its rows regardless, but nothing downstream of
+    this function may act on them until Sean has seen the crops.
     """
+    ships = _rescue_ships()
     wanted = domain_of(spec)
     if not wanted:
-        return log.subjects(spec.scope)
+        all_subjects = log.subjects(spec.scope)
+        if ships:
+            return all_subjects
+        return tuple(s for s in all_subjects
+                     if not _is_rescue_only_glyph(log, s))
     # ⚠️ ROADMAP 3.4g. A CLASS NARROWING IS APPLIED TO THE ROW, NOT TO THE
     # SUBJECT, because a subject can carry several rows and it is the one
     # naming the family that puts it in this decision's domain.
@@ -1155,8 +1195,11 @@ def subjects_for(log: Log, spec: DecisionSpec) -> Tuple[Subject, ...]:
                     and str(v[0]).lower().startswith(classes)):
                 continue
         sub = row.subject.at(spec.scope)
-        if sub is not None:
-            out[sub.to_key()] = sub
+        if sub is None:
+            continue
+        if not ships and _is_rescue_only_glyph(log, sub):
+            continue
+        out[sub.to_key()] = sub
     return tuple(sorted(out.values()))
 
 

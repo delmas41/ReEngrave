@@ -2342,6 +2342,17 @@ class READERS(_Vocab):
     #: POSITIONED piece of ink hanging under the staff's 4th line, that the
     #: detector never boxed.
     CV_REST_SEARCH = "cv_rest_search"        # gather: whole-rest search in a boxless bar
+    #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
+    #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
+    #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a
+    #: cell `_empty_bar_candidate_cells` already calls boxless and 2.52's own
+    #: ink search (`Q.EMPTY_BAR_REST_SEARCH`) did not find a whole rest in.
+    #: Its own reader name, never `DETECTOR`, so a row from this second pass
+    #: is traceable and separable from the first one -- a consumer that must
+    #: not trust it (`adjudicate.subjects_for`, while `RESCUE_SHIPS` is
+    #: False) can filter on this name alone, and a crop or a test can tell
+    #: the two passes apart without reading `score`.
+    RESCUE_LOWCONF = "yolo_rescue_lowconf"   # gather: low-conf rerun of an empty bar
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -2529,6 +2540,21 @@ class ABSTAIN(_Vocab):
     #: argument for or against any value, and `review/feedback.py` reports it
     #: as a place the print is ambiguous rather than as evidence.
     HUMAN_UNSURE = "human_unsure"
+
+    # ── ROADMAP 2.55 (Sean, DECISIONS 2026-10-01, "rescue guided by stems,
+    # ties and accidentals") ────────────────────────────────────────────────
+    #: A witness already on the record for this bar (a stem end, a tie/slur
+    #: end, an accidental's right side) predicted a notehead at a position,
+    #: and the low-confidence rerun found NONE there -- not even unguided
+    #: ink to reject. *"a bar with such witnesses and no head is our
+    #: failure, never an empty bar"*: this is the opposite of silence, filed
+    #: so the gap is counted rather than read as "nothing to find here".
+    WITNESS_UNMET = "witness_unmet"
+    #: The rerun found a notehead/rest-classed box, but it matched NO
+    #: witness's window -- accepted by neither the production pass nor any
+    #: guided prediction. Recorded so an unguided low-confidence box is
+    #: traceable as SEEN AND DECLINED, never silently dropped.
+    RESCUE_UNGUIDED = "rescue_unguided"
 
     # the build itself
     NOT_IMPLEMENTED = "not_implemented"           # ⚠️ a declared stub

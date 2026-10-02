@@ -670,6 +670,12 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.52. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
+    # ⚠️ ROADMAP 2.55. The SAME `YoloDetector.detect` `DETECTOR` names, on
+    # the SAME cell -- a second call at a lower confidence floor
+    # (`RESCUE_CONF_FLOOR`), never a different reader of a different image.
+    # Its own reader name exists so a row from this pass is traceable and
+    # separable from the production one, not because it reads anything else.
+    "RESCUE_LOWCONF": ("yolo_detector.py", "detect"),
     # ⚠️ Reached as `key_signature_locator.locate_key_signature` ->
     # `header_ink.header_ink_mask`; the locator never touches a cell image.
     "CV_HEADER": ("header_ink.py", "header_ink_mask"),
