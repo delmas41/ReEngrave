@@ -140,9 +140,58 @@ def reader_absolute_position(
         # additive at the FINAL position even though it only ever
         # appends to the rung list. HELD BACK -- see FINDINGS.
     ).get(side, [])
+
+    # ROUND 6 (DECISIONS 2026-10-0x, Sean on the flute chords): two heads
+    # of one chord/stem, outside the staff, centres a THIRD apart, with
+    # NEITHER already carrying a line through it, necessarily have a
+    # ledger BETWEEN them -- feed it into this head's own rung list
+    # before the count, exactly like a rung the plain walk found itself.
+    stack_reason = None
+    if not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
+        for psub, pbox in page_notehead_boxes:
+            if psub == subject:
+                continue
+            px0, py0, px1, py1 = pbox
+            pcy = (py0 + py1) / 2.0
+            if top <= pcy <= bottom:
+                continue  # on-staff -- not part of this far-head pairing
+            pside = "above" if pcy < top else "below"
+            if pside != side:
+                continue
+            if not lg.heads_are_a_third_apart((x0, y0, x1, y1), pbox, spacing):
+                continue
+            p_others = [b for (s, b) in page_notehead_boxes if s != psub]
+            p_items = lg.measure_ledger_rungs(
+                gray, ys, (px0 + px1) / 2.0, head_y=pcy,
+                exclude_boxes=p_others, head_box_x=(px0, px1),
+            ).get(side, [])
+            if lg.has_through_head_rung(p_items, pbox):
+                continue
+            # "outer" = farther from the staff edge (the one with the
+            # larger |cy - edge|); "inner" = the nearer of the two.
+            if sign * (cy - edge) >= sign * (pcy - edge):
+                box_outer, box_inner = (x0, y0, x1, y1), pbox
+            else:
+                box_outer, box_inner = pbox, (x0, y0, x1, y1)
+            lateral = [
+                b for (s, b) in page_notehead_boxes
+                if s not in (subject, psub)
+            ]
+            res = lg.third_stack_rung(
+                gray, box_outer, box_inner, spacing, exclude_boxes=lateral,
+            )
+            items = lg.insert_rung(items, sign, res["y"])
+            stack_reason = (
+                "ink_confirmed_by_third" if res["confirmed"]
+                else "implied_by_third"
+            )
+            break  # one qualifying partner is enough
+
     step = lg.derive_far_head_step(items, edge, sign, near_y, spacing)
     if step["offset"] is None:
         return None, step["reason"]
+    if stack_reason is not None:
+        return edge_pos + int(sign * step["offset"]), f"{step['reason']} ({stack_reason})"
     return edge_pos + int(sign * step["offset"]), step["reason"]
 
 

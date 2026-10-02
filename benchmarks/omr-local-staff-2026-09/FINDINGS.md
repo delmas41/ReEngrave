@@ -1816,3 +1816,127 @@ sheet: `out/print/ledgers/r5_sheet.png` (18 tiles, changed heads first).
 - The 8 Litolff "through-head but wrong ledger" and 3 Brahms "touching
   but reference disagrees" causes from round 3 persist unchanged; this
   round did not target them.
+
+## lane-ledger-rungs round 6 (2026-10-0x) — stacked thirds imply a ledger
+
+Rebased this branch onto `origin/main` first (`git merge`, not a literal
+rebase — the lane's own base (`origin/lane-ledger-rungs`) had 28 commits
+unique relative to main's own merge-base, and `git rebase` failed re-
+applying the first of them against `gather.py`'s independent evolution
+on main; `git merge` produced the same combined tree with one conflict,
+`.gitignore`, both sides kept). `ROADMAP.md` and `docs/DECISIONS.md`
+auto-merged cleanly.
+
+Scope as every round: `tools/omr/annotate/ledger_grid.py` + `score_
+truth_set_rungs.py`'s own reader wiring. Not STAGED's production reader;
+no default touched.
+
+### The convention, and what three real examples show
+
+DECISIONS 2026-10-0x, Sean, on round 5's flute chords (`glyph/3/0/0/2/1`,
+`/2/4`, `/2/9`, `/6/2`): *"when there are multiple note heads stacked in
+thirds and neither of them has a line through them then there must be a
+line between them and to go looking for it."*
+
+Measured BEFORE coding, the three real chord-mate pairs (by x-overlap —
+the actual stacked partner of each named head, not the other named heads,
+which sit at different x / different chords entirely):
+
+| outer head | inner head | centre gap (staff spaces) |
+|---|---|---|
+| `glyph/3/0/0/2/4` | `glyph/3/0/0/2/9` | 0.915 |
+| `glyph/3/0/0/2/1` | `glyph/3/0/0/2/3` | 1.120 |
+| `glyph/3/0/0/6/1` | `glyph/3/0/0/6/2` | 0.810 |
+
+`THIRD_STACK_SPACING_RANGE = (0.70, 1.25)` is this measured spread with
+slack on each side.
+
+### Built
+
+`heads_are_a_third_apart` (x-overlap + centre distance in range),
+`has_through_head_rung` (does any of a head's own already-found rungs
+sit within its own box), `third_stack_rung` (looks for ink at the exact
+midpoint between the two centres, clearing the union blob's own width
+by `THIRD_STACK_STUB_MARGIN_SPACES` on AT LEAST ONE side — the
+convention itself guarantees the ledger exists, so this is weaker than
+the ordinary two-sided stub test; implied at the midpoint if not found),
+`insert_rung` (inserts the result into a head's own nearest-edge-first
+rung list, feeding the SAME count `derive_far_head_step` already uses).
+Wired into `score_truth_set_rungs.reader_absolute_position`: for a far
+head with no through-head rung of its own, scans the page's other
+noteheads for a same-side, x-overlapping, third-apart partner that ALSO
+has no through-head rung; if found, computes and inserts the pair's
+rung before the step arithmetic runs.
+
+### RED → GREEN
+
+`tools/omr/tests/test_ledger_rungs_round6_2026_10_01.py`, 13 tests.
+Confirmed RED (`ImportError: cannot import name 'has_through_head_rung'`
+— collection fails outright) against the pre-round-6 file. All 13 green
+after. Controls: a second apart (not a third) does not qualify; no
+x-overlap (two different chords) does not qualify; too far apart (a
+fifth) does not qualify; a through-head rung is correctly detected and
+correctly absent on a clean control; a faint stub on EITHER side alone
+confirms (never neither); another excluded head's own ink never
+confirms; `insert_rung` sorts nearest-edge-first on both sides of the
+staff and never duplicates a rung already present. Fast tier `-k
+ledger`: 267 passed (254 + 13). Full `pytest -m "not slow"` run once.
+
+### Measured: the real-score table is UNCHANGED
+
+Re-scored both docs: Litolff 33/8/3 of 44 (same as round 5), Brahms
+7/3/1 of 11 (same as round 5). **Zero heads changed answer.** This is a
+measured result, not a wiring failure — traced precisely:
+
+- None of the three real pairs above satisfies the convention's own
+  guard. For each, at least one head's CURRENT reading already shows a
+  rung sitting almost exactly at that head's own box CENTRE (within 1–2
+  px of it, both by box-range and box-centre tests) — i.e. `has_through_
+  head_rung` is `True`, and Sean's own stated rule is explicit: *"a pair
+  where either head already has a line through it gets nothing
+  implied."* The guard is doing exactly what it was asked to do.
+- Crop inspection (`out/print/ledgers/r6/`) suggests this "through"
+  reading is itself a SEPARATE, pre-existing confound on these merged
+  Litolff chords: `glyph/3/0/0/2/4`'s matched rung sits right where a
+  16th-note flag/ornament curls above the stack, plausibly flag ink
+  satisfying the both-sides stub test rather than a real ledger;
+  `glyph/3/0/0/6/1`/`/6/2`'s matched rungs sit at the boundary where the
+  two boxes' own (oversized, merged-plate) extents overlap. Both are
+  PLAUSIBLE explanations from the crops, NOT crop-verified against the
+  print letter-for-letter (no ruler check this round — time), so stated
+  as a lead, not a finding.
+- Reach check (CLAUDE.md rule 5): the mechanism is NOT dead code — a
+  whole-movement scan (`heads_are_a_third_apart` + `has_through_head_
+  rung` across every notehead pair on every page) finds 9 qualifying
+  pairs on Litolff and 22 on Brahms. None of the 9 Litolff pairs falls
+  on the truth-scored count page (page 3); none of the 22 Brahms pairs
+  happens to fall in a bar with a reference pitch match (the truth set's
+  own `onset_exact_truth` gate). The convention fires on real ink
+  elsewhere in both gathers; it simply doesn't touch either document's
+  current 44+11 scored population this round.
+
+**Control that can fail**: unaffected by this round (no rung count
+changed), so round 5's own half-step-offset control result stands
+(Litolff 16/26/2, Brahms 3/7/1, both clearly worse than 33/8/3 / 7/3/1).
+
+### Crops
+
+No head's answer changed, so there are no "changed-answer" crops this
+round. Instead, `out/print/ledgers/r6/` holds a DIAGNOSTIC crop for each
+of the three real pairs (both boxes, all their own measured rungs drawn
+solid, the guard's own verdict and reasoning printed) plus `out/print/
+ledgers/r6_sheet.png` (3 tiles) — for Sean, not adjudicated here.
+
+### Not done / open
+
+- The suspected flag-ink / oversized-merged-box confound behind these
+  three pairs' spurious "through-head" reading is NOT crop-verified
+  with a ruler and NOT fixed — a different, likely deeper bug than
+  round 6's own scope (round 3's "a head's own ink is not a rung" fix
+  evidently does not fully generalise to a CHORD's combined ink
+  exceeding any one head's own box width).
+- The 9 Litolff + 22 Brahms corpus-wide qualifying pairs were counted,
+  not individually crop-verified (time) — whether `third_stack_rung`
+  measures them correctly in detail is open.
+- No change to either document's truth-scored population this round;
+  nothing in STAGED's production path touched.
