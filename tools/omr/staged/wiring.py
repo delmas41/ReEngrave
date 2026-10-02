@@ -232,6 +232,21 @@ KNOWN_GAPS: Dict[str, str] = {
         "report can tell 'found nothing because there was no candidate ink' "
         "from 'found nothing because every candidate failed the test'. "
         "Recorded-only; no consumer."),
+    "DETAIL Q.GLYPH_BOX.witnesses_found": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.55. Filed only on the "
+        "abstention this cell carries when `_lowconf_rescue_witnesses` "
+        "finds NOTHING to be guided by (always `0`); a crop/report script "
+        "distinguishes 'no witness at all' from a witness that went unmet "
+        "(`ABSTAIN.WITNESS_UNMET`, which carries `witness_kind` instead). "
+        "No decision consumes it."),
+    "DETAIL Q.GLYPH_BOX.witness_kind": (
+        "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.55. Which witness type "
+        "(`stem_end`/`tie_end`/`slur_end`/`accidental_right`) a kept box "
+        "matched, or (on the `witness_unmet` abstention) which witness "
+        "found nothing near it -- so a crop pass can label the prediction "
+        "it is drawing without re-deriving it. No decision consumes it; "
+        "whether ADJUDICATE may even SEE the glyph this detail sits "
+        "beside is `adjudicate.subjects_for`'s own `RESCUE_SHIPS` gate."),
     "DETAIL Q.MARGIN_LABEL.rungs_requested": (
         "⚠️ RECORDED-ONLY BY DESIGN, and it is the fix PR #34 said had to "
         "land BEFORE the default moved. The record stamped every label "
