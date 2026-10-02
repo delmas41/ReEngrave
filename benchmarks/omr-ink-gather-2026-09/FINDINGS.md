@@ -1008,3 +1008,142 @@ catch what OCR recall misses.
   enough from every `Q.STAFF_LINES` value to dodge the sliver guard and
   still land in the notehead-sized window — plausible on a crowded page,
   unmeasured here. The crops are the instrument for finding one.
+
+## 14. ROADMAP 2.52 — a whole rest the detector never boxed, found by search
+
+Sean / `docs/DECISIONS.md` 2026-10-01: *"If a bar has no notes it should
+expect to find a whole note rest and look in the middle of the bar first.
+If it finds it then the bar is complete."* Context: the (unmerged)
+`origin/lane-2.51-unboxed-ink` branch's own crop pass found ~3 whole-rest-
+shaped blobs with NO detector box at all on Litolff p3 (its FINDINGS §14,
+not on this tree), named by tile, e.g. `glyph/3/0/9/13`. Before this lane,
+every rest reading in `tools/omr/staged/` starts from a box the detector
+drew (`Q.REST`, `Q.NOTEHEAD_IS_A_WHOLE_REST`, `size_measure_rest`) — a bar
+the detector left completely boxless, notehead or rest, left no trace on
+the record at all and exported looking complete (CLAUDE.md §9: "a box it
+never drew has no subject").
+
+### 14.1 The build, GATHER + ADJUDICATE only
+
+`gather.gather_empty_bar_rest_search` (`READERS.CV_REST_SEARCH`, files
+`Q.EMPTY_BAR_REST_SEARCH`): for every cell with NO notehead- or rest-class
+detection box at all (a GATHER-level fact, read off the raw detector boxes
+passed to GATHER — no ADJUDICATE dependency), re-measures the cell's own
+connected ink components (`_ink_components`, the SAME function `gather_ink`
+uses, over `cell.image_no_staff`) against the cell's own LOCALLY-corrected
+staff lines (`cell.staff_line_ys_canonical`, `OMR_CELL_LINE_TRACE`'s own
+per-cell comb, ON by default since 2026-09-04 — CLAUDE.md §10's "measure
+locally" rule, already wired for every canonical-frame reader and reused
+here rather than restated). Shape and position tests are IMPORTED, not
+restated, from `adjudicators.rhythm`: `_rest_shaped`/
+`WHOLE_REST_INK_MAX_HEIGHT_SPACES`/`_MIN_ASPECT`/`_MAX_ASPECT` (size and
+proportion), `WHOLE_REST_STEP`/`_STEP_TOLERANCE` (hangs under the 4th line
+from the bottom), and `HALF_REST_STEP`/`REST_SLOT_TOLERANCE_HALF` as the
+guard against the other filled rest shape — a half rest sits ON the 3rd
+(middle) line, not hanging under the 4th, and a candidate closer to
+`HALF_REST_STEP` than `WHOLE_REST_STEP` is excluded before the whole-rest
+test ever sees it. The search tries the bar's own middle third first
+(`EMPTY_BAR_MIDDLE_FRACTION`); only if nothing matches there does it widen
+to the whole bar's interior (a measure cell has no horizontal padding, so
+"the bar" and "the cell's own canonical width" are one quantity).
+
+`adjudicators.rest_search.adjudicate_empty_bar_whole_rest` (ADJUDICATE,
+`Q.EMPTY_BAR_WHOLE_REST`, a SEPARATE quantity from the GATHER row it reads
+— `Q.EMPTY_BAR_REST_SEARCH` is this raster's own IDENTIFICATION, the
+decision's own INTERPRETATION of it, the same split `Q.UNREAD_MARK` makes
+from `Q.INK`): `found=True` → DECIDED `whole_rest_found_by_search`, this
+bar is a whole-bar rest. `found=False`, or GATHER could not even test →
+ABSTAIN, never a `False` that would claim the bar is empty (CLAUDE.md §2
+rule 8 — "not found" is not evidence the bar has nothing in it). Nothing
+here writes a `Q.REST`/`Q.DURATION` row or touches EXPORT — wiring the
+found verdict into `size_measure_rest` so it actually sizes the bar is
+explicitly out of scope for this GATHER+ADJUDICATE-only lane (`reach.
+KNOWN_GAPS`, Sean 2026-09-30) and is the obvious next item once the search
+is confirmed.
+
+### 14.2 Tests, RED→GREEN
+
+`tools/omr/tests/test_staged_empty_bar_rest_search.py`, 12 tests, run RED
+first (every one fails on `AttributeError`/`KeyError` against the tree
+before `gather_empty_bar_rest_search`/`rest_search.py` existed — confirmed
+by deleting both and re-running, 12 of 12 fail). Population: a whole rest
+centred in a synthetic bar is found (`witness=middle`); an OFF-CENTRE one
+is found only by widening (CLAUDE.md §2 rule 7's own shape — the middle-
+first search must not be the only search); a half-rest-shaped block on the
+3rd line is correctly NOT a whole rest (the control that can fail); an
+empty bar with no ink at all is not found (`reason=no_ink`, kept apart from
+a shape that was found and rejected); a bar with a notehead OR a rest box
+already present is never even searched (`Q.EMPTY_BAR_REST_SEARCH` is never
+filed — CLAUDE.md's 2026-10-01 "leave the whole rest alone": this lane only
+FINDS, it never removes). ADJUDICATE half: a found search result decides
+the bar; a not-found result and a no-ink result both ABSTAIN rather than
+deciding `False`; a missing/geometry-abstained GATHER row passes its own
+reason through. `pytest -m "not slow"`: 4,257 passed (base 4,245 + 12), 0
+failed, 3 skipped, 2 xfailed. `python3 -m tools.omr.staged.check`: 245 →
+248 (all three new findings are inventoried and explained: two `wiring.
+KNOWN_GAPS` entries for two recorded-only detail fields, one `reach.
+KNOWN_GAPS` entry for the deliberately out-of-scope EVALUATE/EXPORT wiring
+— the convention this file's own §13.4/§13.6 precedent set).
+
+### 14.3 Real data — both acceptance documents, GATHER+ADJUDICATE small
+re-gather (`tools.omr.acceptance_quick`, current tree)
+
+**Litolff pp.1–3** (Beethoven 5 mvt 1, MERGING plate): 56 boxless bars
+across the three pages, **27 found, 29 not found** (25 of the 27 found in
+the bar's own middle third, 2 only by widening). On the count page (p3)
+alone: 20 boxless bars, **13 found, 7 not found**. `cell/3/0/9/13` — the
+EXACT tile the 2.51 lane named by eye — is among the 13 found here,
+confirmed by crop below.
+
+**Brahms pp.0–1** (SHATTERING plate): only **9** boxless bars total across
+both pages (consistent with CLAUDE.md §10's "Litolff MERGES and Breitkopf
+SHATTERS" — a shattering plate's ink rarely goes completely unboxed), **1
+found, 8 not found**. The one found case is on the count page (p1),
+`cell/1/1/7/3`.
+
+### 14.4 Crops — every finding verified against the print
+
+`out/print/2.52/litolff-p3-empty-bar-rest-search.png` (full count-page
+contact sheet, every found bar boxed green with the ink outlined orange and
+the target line drawn blue, every not-found bar boxed red) and
+`out/print/2.52/brahms-p1-empty-bar-rest-search.png` (the one Brahms p1
+case). Individually zoomed and read BY EYE against the print (not
+committed separately — the contact sheets above carry the same boxes at
+full page resolution):
+
+- `cell/3/0/9/13` (Litolff, middle): a real whole rest, hanging exactly
+  under the 4th line from the bottom, orange box tight on the glyph. The
+  2.51 lane's own named tile, now found.
+- `cell/3/0/5/0` (Litolff, **widened** — the search's own off-centre case,
+  not the middle third): a real whole rest in the horn part, correctly
+  found only once the search widened past the middle third.
+- `cell/3/1/2/1` (Litolff, middle): a real whole rest.
+- `cell/1/1/7/3` (Brahms, middle): a real whole rest, confirmed on the
+  SHATTERING plate too.
+- `cell/3/0/1/0` (Litolff, **not found**): correctly abstained — this bar
+  holds a TIED half note sustained across the barline (no new attack, so no
+  new notehead box either), not a rest. "Not found" here is the right
+  answer: there is no rest to find, and the decision abstains rather than
+  claiming one.
+
+4 of 4 found cases crop-verified as real whole rests; 1 of 1 not-found case
+spot-checked is a genuine non-rest bar (a tied continuation), not a missed
+rest — exactly the population rule 8's abstention is for.
+
+### 14.5 Not established
+
+- Only 1 of 29 (Litolff) / 8 of 8 (Brahms) not-found cases were crop-
+  checked; the rest could in principle hide a real rest this search's shape
+  or position tolerance misses (a crop-clipped rest at a system edge, an
+  unusually tall/short print) — the contact sheets carry every one of them
+  for a fuller pass.
+- EVALUATE/EXPORT wiring (does a found whole rest actually SIZE the bar and
+  reach the file) is deliberately not built here — `reach.KNOWN_GAPS`'s own
+  entry says so. The acceptance proxies (bars that "add up", held-out bar
+  counts) are therefore UNCHANGED by this lane and were not re-measured —
+  this is a GATHER+ADJUDICATE-only lane per Sean's 2026-09-30 instruction.
+- `bar_width_px`/`n_components` (recorded-only detail fields, `wiring.
+  KNOWN_GAPS`) and `bbox_page_px` on a found row are read by nothing in
+  `tools/omr` yet; the crop script above is their first real consumer, kept
+  as a standalone script rather than landed in the tree (no roadmap item
+  for a 2.52-specific crop tool).

@@ -17,3 +17,4 @@ from . import text        # noqa: F401
 from . import notehead_precision  # noqa: F401
 from . import family_precision    # noqa: F401
 from . import unread_mark         # noqa: F401
+from . import rest_search         # noqa: F401

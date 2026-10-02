@@ -1,0 +1,778 @@
+{
+  "id": "brahms1-breitkopf",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 206.085,
+    "page_index": 1,
+    "start_page": 0,
+    "pages_gathered": "0-1",
+    "full": false,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json",
+    "xml_path": null,
+    "ly_path": null,
+    "pdf_path": null,
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.gather.log",
+    "log_tail": "ot_a_notehead': 1491, 'onset_column': 3, 'ornament_owner': 4, 'part_key': 1, 'part_partition': 1, 'printed_bar_number': 1, 'rest_is_not_a_rest': 371, 'slot_index': 39, 'staff_group': 41, 'staff_ordinal': 41, 'stem_direction': 1036, 'system_key': 3, 'system_membership': 3, 'system_staff_count': 3, 'tie_pair': 144, 'voices': 272, 'wedge_anchor': 41}\n  abstained: {'accidental_owner': {'is_a_key_signature_marker': 21, 'ambiguous_height': 3, 'no_candidate': 54}, 'articulation_owner': {'no_notehead': 1, 'owned_by_another_staff': 1}, 'direction': {'out_of_scope': 314}, 'dot_role': {'dot_role_ambiguous': 37}, 'duration': {'beam_discounted_uncertain': 50, 'beams_ambiguous': 77, 'rest_slot_contradicts_class': 2, 'beam_certain_not_joined': 102, 'flags_disagree': 5, 'unreadable_rest': 2, 'rest_stands_where_no_rest_hangs': 23, 'head_fill_from_ink': 2, 'flag_ink_unread': 8}, 'dynamic': {'unspellable': 10}, 'empty_bar_whole_rest': {'not_found_by_search': 8}, 'glyph_owner': {'tied': 7, 'far_no_rungs': 13}, 'instrument': {'not_in_lexicon': 3}, 'key_signature': {'mixed_marker_kinds': 4, 'disagrees_with_part': 1, 'disagrees_with_document': 5}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 1}, 'meter': {'meter_change_digits_misread': 1}, 'movement_spans': {'no_boundary_detected': 1}, 'ornament_owner': {'no_notehead': 2}, 'pedal_owner': {'no_brace': 3}, 'printed_bar_number': {'no_reading': 2}, 'slot_index': {'ambiguous_pairing': 2}, 'stem_direction': {'no_stem': 446, 'stems_disagree': 9}, 'tie_pair': {'not_a_tie': 317, 'no_pair_at_one_position': 24, 'enters_from_previous_system': 22, 'spans_a_whole_bar': 333, 'more_than_one_pair': 54, 'no_head_near_the_arc': 56, 'no_stop_head': 9, 'no_start_head': 53, 'runs_off_the_system': 22}, 'unread_mark': {'no_ink_component_rows': 314}, 'voices': {'nothing_to_split': 9, 'no_voice_convention_fits': 33}, 'wedge_anchor': {'no_page_frame': 1}}\n\u2500\u2500 DECLARED STUBS: 0 decisions, 0 consequences\n\u2500\u2500 STOPPED AFTER: adjudicate (--through adjudicate) \u2500\u2500\n"
+  },
+  "full": false,
+  "stage_summary": {
+    "page": 1,
+    "gathered_total": 3941,
+    "families": {
+      "accidental": {
+        "gathered": 209,
+        "status": {
+          "given_away": 15,
+          "kept": 194
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "articulation": {
+        "gathered": 22,
+        "status": {
+          "given_away": 4,
+          "kept": 18
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+        }
+      },
+      "class:arpeggiato": {
+        "gathered": 86,
+        "status": {
+          "kept": 86
+        },
+        "reasons": {}
+      },
+      "class:augmentationDot": {
+        "gathered": 49,
+        "status": {
+          "given_away": 4,
+          "kept": 45
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1
+        }
+      },
+      "class:beam": {
+        "gathered": 731,
+        "status": {
+          "given_away": 247,
+          "kept": 222,
+          "undecided": 262
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 262,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 25,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 25,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 20,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 16,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 13,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 12,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 12,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 12,
+          "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 11,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 11,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 9,
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 7,
+          "given_away: given to staff/1/0/13 (distance); this copy is dropped": 6,
+          "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/9 (distance); this copy is dropped": 1
+        }
+      },
+      "class:caesura": {
+        "gathered": 1,
+        "status": {
+          "undecided": 1
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 1
+        }
+      },
+      "class:fingering1": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      },
+      "class:flag16thDown": {
+        "gathered": 2,
+        "status": {
+          "given_away": 1,
+          "kept": 1
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:flag16thUp": {
+        "gathered": 13,
+        "status": {
+          "given_away": 5,
+          "kept": 8
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1
+        }
+      },
+      "class:flag8thDown": {
+        "gathered": 57,
+        "status": {
+          "given_away": 5,
+          "kept": 52
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:flag8thUp": {
+        "gathered": 66,
+        "status": {
+          "given_away": 3,
+          "kept": 63
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1
+        }
+      },
+      "class:ledgerLine": {
+        "gathered": 219,
+        "status": {
+          "given_away": 18,
+          "kept": 121,
+          "refused": 80
+        },
+        "reasons": {
+          "refused: not a ledger -- inside the staff": 64,
+          "refused: not a ledger -- on a staff line": 16,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "class:staff": {
+        "gathered": 101,
+        "status": {
+          "given_away": 7,
+          "kept": 1,
+          "undecided": 93
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 93,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 1
+        }
+      },
+      "class:stem": {
+        "gathered": 5,
+        "status": {
+          "undecided": 5
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 5
+        }
+      },
+      "clef": {
+        "gathered": 50,
+        "status": {
+          "given_away": 8,
+          "kept": 7,
+          "undecided": 35
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 35,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 1
+        }
+      },
+      "dynamic": {
+        "gathered": 204,
+        "status": {
+          "given_away": 82,
+          "kept": 122
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/0 (distance); this copy is dropped": 8,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 6,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/0/12 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 4,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/6 (range veto); this copy is dropped": 3,
+          "given_away: given to staff/1/1/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/11 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/1/3 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "key": {
+        "gathered": 36,
+        "status": {
+          "given_away": 1,
+          "kept": 35
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "note": {
+        "gathered": 1005,
+        "status": {
+          "given_away": 51,
+          "kept": 518,
+          "narrowed": 142,
+          "refused": 294
+        },
+        "reasons": {
+          "refused: not a notehead -- too narrow": 224,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beam certain not joined": 32,
+          "narrowed: length still open: eighth (0.5 beats) | 32nd (0.125 beats) -- beam certain not joined": 32,
+          "refused: not a notehead -- is a meter digit": 30,
+          "refused: not a notehead -- clipped fragment": 26,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 17,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beam certain not joined": 15,
+          "given_away: given to staff/1/1/11 (ledger direction); this copy is dropped": 8,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) -- beams ambiguous": 7,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- flag ink unread": 7,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beam certain not joined": 6,
+          "given_away: given to staff/1/0/3 (ledger direction); this copy is dropped": 5,
+          "refused: not a notehead -- belongs to a nearer staff": 5,
+          "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) -- beam certain not joined": 5,
+          "given_away: given to staff/1/0/1 (ledger owner density); this copy is dropped": 4,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 4,
+          "given_away: given to staff/1/0/9 (ledger direction); this copy is dropped": 4,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+          "given_away: given to staff/1/0/1 (ledger direction); this copy is dropped": 3,
+          "refused: not a notehead -- notehead is a duplicate box": 3,
+          "refused: not a notehead -- stacked head duplicate": 3,
+          "narrowed: length still open: quarter (1 beat) | sixteenth (0.25 beats) -- beam certain not joined": 3,
+          "given_away: given to staff/1/1/3 (ledger direction); this copy is dropped": 3,
+          "narrowed: length still open: sixteenth (0.25 beats) | 32nd (0.125 beats) | 64th (0.0625 beats) -- beams ambiguous": 2,
+          "given_away: given to staff/1/0/3 (ledger owner density); this copy is dropped": 2,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- beam discounted uncertain": 2,
+          "given_away: given to staff/1/0/4 (ledger direction); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (ladder); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "narrowed: length still open: 1.5-beat (1.5 beats) | 0.75-beat (0.75 beats) -- beam certain not joined": 2,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 2,
+          "narrowed: length still open: 1.5-beat (1.5 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 2,
+          "refused: read as a whole rest, not a notehead -- shape and position agree": 2,
+          "given_away: given to staff/1/1/8 (ledger owner density); this copy is dropped": 2,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 1,
+          "narrowed: length still open: 32nd (0.125 beats) | 64th (0.0625 beats) | 0.03125-beat (0.03125 beats) -- beams ambiguous": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/0/5 (ledger owner density); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (hairpin separates); this copy is dropped": 1,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 1,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 0.375-beat (0.375 beats) -- beam certain not joined": 1,
+          "given_away: given to staff/1/0/12 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (ledger direction); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (ledger owner density); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (ladder); this copy is dropped": 1,
+          "refused: not a notehead -- tremolo slash crosses stem": 1,
+          "narrowed: length still open: 0.75-beat (0.75 beats) | 1.5-beat (1.5 beats) -- flag ink unread": 1,
+          "given_away: given to staff/1/1/8 (ledger direction); this copy is dropped": 1
+        },
+        "owner": {
+          "by_outcome": {
+            "no_verdict": 665,
+            "decided": 331,
+            "abstained": 9
+          },
+          "reasons": {
+            "far_no_rungs": 9
+          }
+        },
+        "duration": {
+          "by_outcome": {
+            "decided": 806,
+            "narrowed": 199
+          },
+          "reasons": {
+            "beams_ambiguous": 62,
+            "beam_certain_not_joined": 100,
+            "beam_discounted_uncertain": 23,
+            "flags_disagree": 4,
+            "head_fill_from_ink": 2,
+            "flag_ink_unread": 8
+          }
+        },
+        "staff_position": {
+          "by_outcome": {
+            "observed": 1005
+          },
+          "reasons": {}
+        }
+      },
+      "ornament": {
+        "gathered": 6,
+        "status": {
+          "given_away": 2,
+          "kept": 4
+        },
+        "reasons": {
+          "given_away: given to staff/1/0/9 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (distance); this copy is dropped": 1
+        }
+      },
+      "rest": {
+        "gathered": 350,
+        "status": {
+          "abstained": 6,
+          "kept": 241,
+          "refused": 103
+        },
+        "reasons": {
+          "refused: not a rest -- rest clipped by crop": 47,
+          "refused: not a rest -- rest is a duplicate box": 36,
+          "refused: not a rest -- rest outside its staff": 17,
+          "abstained: length could not be read -- rest stands where no rest hangs": 5,
+          "refused: not a rest -- rest touches two staff lines": 2,
+          "refused: not a rest -- rest has a stem": 1,
+          "abstained: length could not be read -- unreadable rest": 1
+        }
+      },
+      "slur": {
+        "gathered": 162,
+        "status": {
+          "given_away": 51,
+          "kept": 111
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 7,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 6,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 5,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/3 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/0/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/1/1/8 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/1/11 (distance); this copy is dropped": 1
+        }
+      },
+      "tie": {
+        "gathered": 524,
+        "status": {
+          "given_away": 61,
+          "kept": 463
+        },
+        "reasons": {
+          "given_away: given to staff/1/1/5 (distance); this copy is dropped": 5,
+          "given_away: given to staff/1/1/10 (hairpin separates); this copy is dropped": 4,
+          "given_away: given to staff/1/1/12 (distance); this copy is dropped": 4,
+          "given_away: given to staff/1/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/6 (distance); this copy is dropped": 3,
+          "given_away: given to staff/1/1/8 (hairpin separates); this copy is dropped": 3,
+          "given_away: given to staff/1/0/1 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/2 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/6 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/0/13 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/1/1/4 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/5 (range veto); this copy is dropped": 2,
+          "given_away: given to staff/1/1/9 (hairpin separates); this copy is dropped": 2,
+          "given_away: given to staff/1/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/4 (hairpin separates); this copy is dropped": 1,
+          "given_away: given to staff/1/0/9 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/11 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/12 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/1/3 (hairpin separates); this copy is dropped": 1
+        }
+      },
+      "time": {
+        "gathered": 40,
+        "status": {
+          "given_away": 2,
+          "kept": 2,
+          "undecided": 36
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 36,
+          "given_away: given to staff/1/0/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/1/0/7 (distance); this copy is dropped": 1
+        }
+      },
+      "wedge": {
+        "gathered": 1,
+        "status": {
+          "kept": 1
+        },
+        "reasons": {}
+      }
+    },
+    "clef_by_staff": {
+      "staff/1/0/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/4": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/6": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/7": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/8": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/9": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/10": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/0/11": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/1/0/12": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/0/13": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/4": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/6": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/7": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/8": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/9": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/1/1/10": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/1/1/11": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/1/1/12": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      }
+    },
+    "meter_by_system": {
+      "system/1/0": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 9,
+          "denominator": 4,
+          "raw": "9/4",
+          "segments": [
+            {
+              "numerator": 9,
+              "denominator": 4,
+              "raw": "9/4",
+              "from_cell": 0
+            }
+          ],
+          "cautionary": {
+            "from_cell": 6,
+            "numerator": 4,
+            "denominator": 4,
+            "raw": "4/4",
+            "support": 3.5,
+            "staves_reading_it": [
+              7
+            ],
+            "staves_reading_a_meter": 1,
+            "corroborated": false,
+            "bars_fit": 0,
+            "bars_contradict": 0,
+            "loose_digits": 1,
+            "cautionary": true
+          },
+          "declined_changes": [
+            {
+              "from_cell": 2,
+              "numerator": 4,
+              "denominator": 4,
+              "raw": "4/4",
+              "support": 4.0,
+              "staves_reading_it": [
+                7
+              ],
+              "staves_reading_a_meter": 1,
+              "corroborated": false,
+              "bars_fit": 0,
+              "bars_contradict": 0,
+              "loose_digits": 2,
+              "declined_reason": "meter_change_not_system_wide"
+            },
+            {
+              "from_cell": 3,
+              "numerator": 4,
+              "denominator": 4,
+              "raw": "4/4",
+              "support": 3.5,
+              "staves_reading_it": [
+                5
+              ],
+              "staves_reading_a_meter": 1,
+              "corroborated": false,
+              "bars_fit": 0,
+              "bars_contradict": 0,
+              "loose_digits": 1,
+              "declined_reason": "meter_change_not_system_wide"
+            },
+            {
+              "from_cell": 4,
+              "numerator": 4,
+              "denominator": 4,
+              "raw": "4/4",
+              "support": 3.5,
+              "staves_reading_it": [
+                5
+              ],
+              "staves_reading_a_meter": 1,
+              "corroborated": false,
+              "bars_fit": 0,
+              "bars_contradict": 0,
+              "loose_digits": 1,
+              "declined_reason": "meter_change_not_system_wide"
+            },
+            {
+              "from_cell": 5,
+              "numerator": 4,
+              "denominator": 4,
+              "raw": "4/4",
+              "support": 3.5,
+              "staves_reading_it": [
+                4
+              ],
+              "staves_reading_a_meter": 1,
+              "corroborated": false,
+              "bars_fit": 0,
+              "bars_contradict": 0,
+              "loose_digits": 1,
+              "declined_reason": "meter_change_not_system_wide"
+            },
+            {
+              "from_cell": 1,
+              "numerator": null,
+              "denominator": null,
+              "raw": null,
+              "declined_reason": "meter_change_digits_misread",
+              "staves_with_digit_witness": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                13
+              ]
+            }
+          ]
+        },
+        "reason": "voted"
+      },
+      "system/1/1": {
+        "outcome": "abstained",
+        "value": null,
+        "reason": "meter_change_digits_misread"
+      }
+    }
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.readout.html"
+  },
+  "status": "ok"
+}

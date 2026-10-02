@@ -1,0 +1,431 @@
+{
+  "id": "beethoven5-litolff",
+  "gather": {
+    "ok": true,
+    "wall_time_s": 202.66,
+    "page_index": 3,
+    "start_page": 1,
+    "pages_gathered": "1-3",
+    "full": false,
+    "returncode": 0,
+    "record_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json",
+    "xml_path": null,
+    "ly_path": null,
+    "pdf_path": null,
+    "log_path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.gather.log",
+    "log_tail": "ledger_is_not_a_ledger': 1218, 'measure_partition': 53, 'meter': 5, 'notehead_is_a_whole_rest': 1262, 'notehead_is_not_a_notehead': 1262, 'onset_column': 5, 'part_key': 1, 'part_partition': 1, 'printed_bar_number': 5, 'rest_is_not_a_rest': 521, 'slot_index': 49, 'staff_group': 53, 'staff_ordinal': 53, 'stem_direction': 876, 'system_key': 5, 'system_membership': 5, 'system_staff_count': 5, 'tie_pair': 54, 'voices': 796}\n  abstained: {'accidental_owner': {'no_candidate': 61, 'is_a_key_signature_marker': 19, 'ambiguous_height': 2, 'head_belongs_to_a_nearer_staff': 1}, 'articulation_owner': {'no_notehead': 1}, 'direction': {'out_of_scope': 864}, 'dot_role': {'dot_role_ambiguous': 22, 'no_notehead_or_rest_in_cell': 3}, 'duration': {'beams_ambiguous': 34, 'head_fill_from_ink': 4, 'rest_stands_where_no_rest_hangs': 16, 'beam_discounted_uncertain': 20, 'beam_certain_not_joined': 3, 'rest_slot_contradicts_class': 3, 'flags_disagree': 1}, 'dynamic': {'unspellable': 8}, 'empty_bar_whole_rest': {'not_found_by_search': 29}, 'fermata_owner': {'no_carrier': 12}, 'glyph_owner': {'tied': 17, 'far_no_rungs': 4}, 'instrument': {'no_evidence': 16}, 'key_signature': {'disagrees_with_document': 15, 'disagrees_with_system': 5, 'mixed_marker_kinds': 4, 'no_evidence': 5, 'run_fits_no_slot_table': 1}, 'ledger_is_not_a_ledger': {'rung_without_boxed_head': 4}, 'movement_spans': {'no_boundary_detected': 1}, 'pedal_owner': {'no_brace': 1}, 'slot_index': {'family_block_not_forced': 4}, 'stem_direction': {'no_stem': 322, 'stems_disagree': 64}, 'tie_pair': {'no_start_head': 41, 'not_a_tie': 246, 'no_head_near_the_arc': 37, 'spans_a_whole_bar': 43, 'no_pair_at_one_position': 29, 'no_stop_head': 17, 'enters_from_previous_system': 22, 'runs_off_the_system': 10, 'more_than_one_pair': 13}, 'unread_mark': {'no_ink_component_rows': 864}, 'voices': {'no_voice_convention_fits': 12, 'nothing_to_split': 56}}\n\u2500\u2500 DECLARED STUBS: 0 decisions, 0 consequences\n\u2500\u2500 STOPPED AFTER: adjudicate (--through adjudicate) \u2500\u2500\n"
+  },
+  "full": false,
+  "stage_summary": {
+    "page": 3,
+    "gathered_total": 1911,
+    "families": {
+      "accidental": {
+        "gathered": 67,
+        "status": {
+          "given_away": 7,
+          "kept": 60
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1
+        }
+      },
+      "articulation": {
+        "gathered": 10,
+        "status": {
+          "kept": 10
+        },
+        "reasons": {}
+      },
+      "class:arpeggiato": {
+        "gathered": 75,
+        "status": {
+          "kept": 75
+        },
+        "reasons": {}
+      },
+      "class:augmentationDot": {
+        "gathered": 6,
+        "status": {
+          "kept": 6
+        },
+        "reasons": {}
+      },
+      "class:beam": {
+        "gathered": 98,
+        "status": {
+          "given_away": 19,
+          "kept": 15,
+          "undecided": 64
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 64,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 6,
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "class:brace": {
+        "gathered": 1,
+        "status": {
+          "undecided": 1
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 1
+        }
+      },
+      "class:flag16thUp": {
+        "gathered": 1,
+        "status": {
+          "kept": 1
+        },
+        "reasons": {}
+      },
+      "class:flag8thDown": {
+        "gathered": 3,
+        "status": {
+          "kept": 3
+        },
+        "reasons": {}
+      },
+      "class:flag8thUp": {
+        "gathered": 3,
+        "status": {
+          "kept": 3
+        },
+        "reasons": {}
+      },
+      "class:ledgerLine": {
+        "gathered": 506,
+        "status": {
+          "given_away": 1,
+          "kept": 74,
+          "refused": 431
+        },
+        "reasons": {
+          "refused: not a ledger -- inside the staff": 392,
+          "refused: not a ledger -- on a staff line": 37,
+          "refused: not a ledger -- no head on the rung": 2,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 1
+        }
+      },
+      "class:staff": {
+        "gathered": 125,
+        "status": {
+          "undecided": 125
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 125
+        }
+      },
+      "class:stem": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      },
+      "clef": {
+        "gathered": 30,
+        "status": {
+          "undecided": 30
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 30
+        }
+      },
+      "dynamic": {
+        "gathered": 78,
+        "status": {
+          "given_away": 29,
+          "kept": 49
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/4 (distance); this copy is dropped": 10,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/8 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/10 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/0/5 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "key": {
+        "gathered": 45,
+        "status": {
+          "given_away": 2,
+          "kept": 43
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1
+        }
+      },
+      "note": {
+        "gathered": 454,
+        "status": {
+          "given_away": 19,
+          "kept": 344,
+          "narrowed": 12,
+          "refused": 79
+        },
+        "reasons": {
+          "refused: not a notehead -- stacked head duplicate": 38,
+          "refused: not a notehead -- clipped fragment": 17,
+          "refused: not a notehead -- notehead is a duplicate box": 8,
+          "given_away: given to staff/3/0/7 (ledger owner density); this copy is dropped": 8,
+          "refused: read as a whole rest, not a notehead -- shape and position agree": 6,
+          "given_away: given to staff/3/0/8 (ledger owner density); this copy is dropped": 6,
+          "refused: not a notehead -- too narrow": 5,
+          "narrowed: length still open: quarter (1 beat) | eighth (0.5 beats) -- beams ambiguous": 5,
+          "narrowed: length still open: eighth (0.5 beats) | quarter (1 beat) -- beam discounted uncertain": 4,
+          "given_away: given to staff/3/0/9 (distance); this copy is dropped": 3,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beams ambiguous": 2,
+          "refused: not a notehead -- is a clef": 2,
+          "refused: not a notehead -- tremolo slash crosses stem": 2,
+          "given_away: given to staff/3/0/5 (ladder); this copy is dropped": 1,
+          "narrowed: length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- flags disagree": 1,
+          "given_away: given to staff/3/0/7 (distance); this copy is dropped": 1,
+          "refused: not a notehead -- belongs to a nearer staff": 1
+        },
+        "owner": {
+          "by_outcome": {
+            "decided": 122,
+            "no_verdict": 331,
+            "abstained": 1
+          },
+          "reasons": {
+            "far_no_rungs": 1
+          }
+        },
+        "duration": {
+          "by_outcome": {
+            "decided": 435,
+            "narrowed": 19
+          },
+          "reasons": {
+            "beams_ambiguous": 13,
+            "flags_disagree": 1,
+            "beam_discounted_uncertain": 4,
+            "head_fill_from_ink": 1
+          }
+        },
+        "staff_position": {
+          "by_outcome": {
+            "observed": 454
+          },
+          "reasons": {}
+        }
+      },
+      "rest": {
+        "gathered": 152,
+        "status": {
+          "abstained": 5,
+          "kept": 129,
+          "refused": 18
+        },
+        "reasons": {
+          "refused: not a rest -- rest touches two staff lines": 8,
+          "refused: not a rest -- rest has a stem": 6,
+          "abstained: length could not be read -- rest stands where no rest hangs": 5,
+          "refused: not a rest -- rest off center": 2,
+          "refused: not a rest -- rest is a duplicate box": 2
+        }
+      },
+      "slur": {
+        "gathered": 119,
+        "status": {
+          "given_away": 23,
+          "kept": 96
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/1 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/0/5 (distance); this copy is dropped": 4,
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/3 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 3,
+          "given_away: given to staff/3/0/4 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/3 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1
+        }
+      },
+      "tie": {
+        "gathered": 134,
+        "status": {
+          "given_away": 9,
+          "kept": 125
+        },
+        "reasons": {
+          "given_away: given to staff/3/0/2 (distance); this copy is dropped": 2,
+          "given_away: given to staff/3/0/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/0/2 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (range veto); this copy is dropped": 1,
+          "given_away: given to staff/3/1/1 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/2 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/4 (distance); this copy is dropped": 1,
+          "given_away: given to staff/3/1/3 (distance); this copy is dropped": 1
+        }
+      },
+      "time": {
+        "gathered": 2,
+        "status": {
+          "undecided": 2
+        },
+        "reasons": {
+          "undecided: ADJUDICATE filed nothing on this box": 2
+        }
+      }
+    },
+    "clef_by_staff": {
+      "staff/3/0/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/2": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/3": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/0/4": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/6": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/0/7": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/8": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/0/9": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/3/0/10": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/1/0": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/1": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/2": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      },
+      "staff/3/1/3": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/4": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/5": {
+        "outcome": "decided",
+        "value": "treble",
+        "reason": "scored"
+      },
+      "staff/3/1/6": {
+        "outcome": "decided",
+        "value": "alto",
+        "reason": "scored"
+      },
+      "staff/3/1/7": {
+        "outcome": "decided",
+        "value": "bass",
+        "reason": "scored"
+      }
+    },
+    "meter_by_system": {
+      "system/3/0": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "segments": [
+            {
+              "numerator": 2,
+              "denominator": 4,
+              "raw": "2/4",
+              "from_cell": 0
+            }
+          ]
+        },
+        "reason": "carried"
+      },
+      "system/3/1": {
+        "outcome": "decided",
+        "value": {
+          "numerator": 2,
+          "denominator": 4,
+          "raw": "2/4",
+          "segments": [
+            {
+              "numerator": 2,
+              "denominator": 4,
+              "raw": "2/4",
+              "from_cell": 0
+            }
+          ]
+        },
+        "reason": "carried"
+      }
+    }
+  },
+  "readout_html": {
+    "ok": true,
+    "path": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a07335ae55dc34a17/benchmarks/acceptance/quick/out/beethoven5-litolff/beethoven5-litolff-p3.readout.html"
+  },
+  "status": "ok"
+}

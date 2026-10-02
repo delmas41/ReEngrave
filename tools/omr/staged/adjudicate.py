@@ -1088,6 +1088,12 @@ ORDER: Tuple[str, ...] = (
     # must already exist. It needs no other decision's verdict -- its other
     # two inputs (`Q.INK`, `Q.STAFF_LINES`, `Q.CELL_BOX`) are GATHER rows.
     Q.UNREAD_MARK,
+    # ⚠️ ROADMAP 2.52. Needs no other decision's VERDICT -- its only input is
+    # `Q.EMPTY_BAR_REST_SEARCH`, a GATHER row, and `subjects_from` is that
+    # same quantity, so this never even runs on a cell GATHER did not file
+    # one for. Placed beside `Q.UNREAD_MARK` because both are CELL-scope,
+    # GATHER-row-only decisions about a bar the detector left nothing in.
+    Q.EMPTY_BAR_WHOLE_REST,
     # ⚠️⚠️ AFTER `VOICES`, AND IT SAT BESIDE THE FERMATA UNTIL THE INVENTORY
     # SAID OTHERWISE. Both ends of a hairpin must come from ONE voice --
     # MusicXML pairs a wedge within a `<voice>` stream, so a start in voice 1
