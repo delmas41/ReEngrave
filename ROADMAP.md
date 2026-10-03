@@ -57,7 +57,19 @@ a whole rest).
    Litolff rung count round 5 33/8/3 vs geometry 30/14/0; Brahms round 8 (middle-row rule +
    local staff lines) 11/0/0 = geometry. Round 8 on Litolff fell to 25/14/5 because
    Litolff's boxes often cover only the TOP of a half note (Sean's cause A), so "the head's
-   middle" is wrong there. **NEXT (Sean 10-02, supersedes the line below): a SHAPE-TRACE step — trace
+   middle" is wrong there. **STATUS 10-02 (latest, read first):** four approaches tried on 10-02, all on branches, nothing on:
+   round 8 rung reader (`lane-ledger-r8`; with `four_causes_cd=True`: Litolff 25/14/5, Brahms 11/0/0 —
+   its head-middle rule is right but needs the head's TRUE centre; the 2 undecided fail only because
+   it probes the BOX middle); shape trace (`lane-ledger-shape`, held back: ovals grab fused ink);
+   head templates (`lane-ledger-template`: same-page exemplar templates too few/misaligned; geometry
+   templates drawn ROTATED ~90° and review crops off-centre — a build bug, the idea is untested).
+   Used only where round 8 is undecided, exemplar templates gave +1 (`glyph/3/0/8/6/10`) and never hurt.
+   **NEXT: fix the sideways-template bug, redo `template_review10` for Sean BEFORE any scoring;
+   if he approves the overlay, score "template only where round 8 is undecided" and use its centre in
+   round 8's middle-row probe.** Safe interim rule if far heads must ship: geometry and rungs AGREE ->
+   take it (≈9 in 10 right); disagree -> unread, counted. Sheets for Sean: `out/print/ledgers/r8_*.jpg`
+   (`lane-r8-sheets`). Measured tilts in DECISIONS 10-02.
+   **NEXT (Sean 10-02, supersedes the line below): a SHAPE-TRACE step — trace
    the ink outline around each far head; oval = head, a thin run shooting out past it = a
    ledger; head centre from the traced oval (this also covers cause A). All 14 round-8 rung
    misses have a VISIBLE line through the head. Also: why the 2 undecided won't commit.**
