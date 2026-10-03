@@ -273,21 +273,25 @@ def build_geometry_templates_for_doc(doc_id: str) -> Tuple[
     far_pages = sorted({r["page"] for r in far_rows})
 
     measurements = mht.collect_doc_measurements(doc_id)
+    summary = mht.summarize(doc_id, measurements)
     report: Dict[str, Any] = {}
     outer_tilt: Dict[str, float] = {}
     slit_tilt: Dict[str, float] = {}
+    slit_ratio: Dict[str, Tuple[float, float]] = {}
     for kind in ("filled", "hollow"):
-        of_kind = [m for m in measurements if m["kind"] == kind]
-        outer = np.array([m["outer"] for m in of_kind if m["outer"] is not None])
-        slit = np.array([m["slit"] for m in of_kind if m.get("slit") is not None])
-        outer_tilt[kind] = float(np.median(outer)) if outer.size else 0.0
-        if slit.size:
-            slit_tilt[kind] = float(np.median(slit))
+        entry = summary.get(kind, {})
+        outer_tilt[kind] = entry.get("outer_tilt_deg", 0.0)
+        if "slit_tilt_deg" in entry:
+            slit_tilt[kind] = entry["slit_tilt_deg"]
+        if "slit_to_outer_ratio" in entry:
+            slit_ratio[kind] = entry["slit_to_outer_ratio"]
         report[f"{kind}_outer_tilt_deg"] = round(outer_tilt[kind], 1)
-        report[f"{kind}_outer_n"] = int(outer.size)
+        report[f"{kind}_outer_n"] = entry.get("outer_n", 0)
         if kind in slit_tilt:
             report[f"{kind}_slit_tilt_deg"] = round(slit_tilt[kind], 1)
-            report[f"{kind}_slit_n"] = int(slit.size)
+            report[f"{kind}_slit_n"] = entry.get("slit_n", 0)
+        if kind in slit_ratio:
+            report[f"{kind}_slit_ratio"] = tuple(round(r, 3) for r in slit_ratio[kind])
 
     templates_by_page: Dict[Any, Dict[Tuple[str, str], "ht.Template"]] = {}
     thicknesses = []
@@ -300,7 +304,7 @@ def build_geometry_templates_for_doc(doc_id: str) -> Tuple[
                      for (sub, _c, _b) in glyph_boxes
                      for p, s, st in [sub.split("/")[1:4]]}
         page_lines = []
-        for sk in list(staff_keys)[:1]:
+        for sk in sorted(staff_keys)[:1]:
             lr = rec.obs(Q.STAFF_LINES, sk)
             if lr:
                 page_lines = [float(y) for y in lr[-1]["value"]]
@@ -312,7 +316,7 @@ def build_geometry_templates_for_doc(doc_id: str) -> Tuple[
         canonical_thickness = thickness * (ht.CANONICAL_PX_PER_SPACE / max(
             1.0, (max(page_lines) - min(page_lines)) / 4.0 if page_lines else 20.0))
         templates_by_page[page] = ht.build_geometry_templates(
-            outer_tilt, slit_tilt, canonical_thickness,
+            outer_tilt, slit_tilt, canonical_thickness, slit_ratio=slit_ratio,
         )
     report["measured_line_thickness_px_per_page"] = [round(t, 2) for t in thicknesses]
     # pooled fallback = same geometry templates, built with the median
@@ -322,6 +326,7 @@ def build_geometry_templates_for_doc(doc_id: str) -> Tuple[
     median_thickness = float(np.median(thicknesses)) if thicknesses else 4.0
     templates_by_page["pooled"] = ht.build_geometry_templates(
         outer_tilt, slit_tilt, median_thickness * (ht.CANONICAL_PX_PER_SPACE / 20.0),
+        slit_ratio=slit_ratio,
     )
     return templates_by_page, report
 

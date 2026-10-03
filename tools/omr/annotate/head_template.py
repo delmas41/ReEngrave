@@ -342,6 +342,7 @@ def _draw_angle_deg(up_right_tilt_deg: float) -> float:
 def build_geometry_template(
     kind: str, variant: str, outer_tilt_deg: float,
     slit_tilt_deg: Optional[float], line_thickness_px: float,
+    slit_width_ratio: float = 0.55, slit_height_ratio: float = 0.70,
 ) -> Template:
     """Draw ONE template directly from geometry, at the canonical grid's
     own fixed scale (`CANONICAL_PX_PER_SPACE`) -- no real exemplar ink
@@ -355,8 +356,12 @@ def build_geometry_template(
     lines touching the window's own top and bottom edges; `"raw"` draws
     the head alone. `kind="filled"` fills the outer ellipse solid;
     `"hollow"` draws a ring (outer ellipse minus an inner slit ellipse at
-    `slit_tilt_deg`, sized from the SAME measurement the tilt came from
-    -- see `measure_head_tilt.py`'s own slit axis report)."""
+    `slit_tilt_deg`, sized `slit_width_ratio`/`slit_height_ratio` of the
+    OUTER ellipse's own axes -- both MEASURED, `measure_head_tilt.py`'s
+    own slit-vs-outer-axis ratio, never the old hardcoded 0.55/0.70
+    default (manager review 2026-10-02: the hollow template must be
+    "mostly ink" with a narrow, slanted slit, not a thin ring around a
+    big empty centre))."""
     canvas = np.zeros((CANONICAL_H, CANONICAL_W), dtype=np.float32)
     cx, cy = CANONICAL_W / 2.0, CANONICAL_H / 2.0
     outer_w = GEOM_HEAD_WIDTH_SPACES * CANONICAL_PX_PER_SPACE
@@ -370,8 +375,8 @@ def build_geometry_template(
     if kind == "hollow":
         slit_angle = _draw_angle_deg(slit_tilt_deg if slit_tilt_deg is not None
                                      else outer_tilt_deg)
-        slit_axes = (max(1, int(round(axes[0] * 0.55))),
-                    max(1, int(round(axes[1] * 0.70))))
+        slit_axes = (max(1, int(round(axes[0] * slit_width_ratio))),
+                    max(1, int(round(axes[1] * slit_height_ratio))))
         cv2.ellipse(mask_u8, (int(round(cx)), int(round(cy))), slit_axes,
                    slit_angle, 0, 360, 0, -1)
     canvas[mask_u8 > 0] = 1.0
@@ -400,16 +405,24 @@ def build_geometry_template(
 def build_geometry_templates(
     outer_tilt_deg: Dict[str, float], slit_tilt_deg: Dict[str, float],
     line_thickness_px: float,
+    slit_ratio: Optional[Dict[str, Tuple[float, float]]] = None,
 ) -> Dict[Tuple[str, str], Template]:
     """Every `(kind, variant)` geometry template, `outer_tilt_deg`/
-    `slit_tilt_deg` keyed by `kind` (`"filled"`/`"hollow"`) -- each
-    drawn fresh, never averaged (`n=0`, since no exemplar built it)."""
+    `slit_tilt_deg`/`slit_ratio` keyed by `kind` (`"filled"`/`"hollow"`)
+    -- each drawn fresh, never averaged (`n=0`, since no exemplar built
+    it). `slit_ratio[kind]` is `(width_ratio, height_ratio)`, MEASURED
+    (`measure_head_tilt.py`'s own slit-vs-outer axis report) -- omitted
+    keys fall back to `build_geometry_template`'s own default."""
     out: Dict[Tuple[str, str], Template] = {}
     for kind in ("filled", "hollow"):
         for variant in ("on_line", "in_space", "raw"):
+            kwargs = {}
+            if slit_ratio and kind in slit_ratio:
+                kwargs["slit_width_ratio"] = slit_ratio[kind][0]
+                kwargs["slit_height_ratio"] = slit_ratio[kind][1]
             out[(kind, variant)] = build_geometry_template(
                 kind, variant, outer_tilt_deg.get(kind, 0.0),
-                slit_tilt_deg.get(kind), line_thickness_px,
+                slit_tilt_deg.get(kind), line_thickness_px, **kwargs,
             )
     return out
 

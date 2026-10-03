@@ -3189,3 +3189,108 @@ Paths: `tools/omr/annotate/head_template.py` (geometry additions),
 `benchmarks/omr-local-staff-2026-09/measure_head_tilt.py`,
 `benchmarks/omr-local-staff-2026-09/score_head_template.py` (geometry
 additions), `benchmarks/omr-local-staff-2026-09/template_geom_sheets.py`.
+
+### lane-ledger-template, re-measured tilt + ONE review sheet (2026-10-02, Sean -- NO SCORING this round)
+
+**Brief**: manager's read of `template_geom_templates.jpg` -- (1) the
+~2 deg outer tilt is likely an ARTEFACT (fitEllipse with staff lines
+left in is pulled flat by the line through/along the head); (2) the
+hollow template (thin ring, big empty centre) does not look like a
+real Litolff half note; (3) the "real head" comparison panels were not
+framed on the heads at all. Sean: "no scoring this round, only
+templates and one review sheet."
+
+**Re-measured tilt** (`measure_head_tilt.py`, rewritten):
+
+  1. staff-line ROWS are now masked before any contour fit -- but only
+     in the columns OUTSIDE the oval's own expected footprint
+     (`GEOM_HEAD_WIDTH_SPACES`'s half-width around the window centre),
+     never inside it. **First cut masked the FULL row width and was
+     measured WRONG** (caught before trusting any number): on a space
+     this tight, BOTH neighbouring staff lines sit inside even the tight
+     tilt window (measured directly: `lines_local` at window-relative
+     rows ~5 and ~20 of a 26-27-row window), overlapping the oval's own
+     top/bottom extent -- blanking the full row chopped both tips off
+     the oval, leaving a thin residual whose fitted eccentricity read
+     3-17 instead of a real oval's ~1.1-1.6, and the aggregate tilt came
+     back at an incoherent 45 deg median. Column-restricted masking (this
+     round's shipped version) leaves the oval's own ink alone wherever a
+     line and the oval's footprint overlap, and only removes a line's
+     ink where it is unambiguously NOT the oval (outside that column
+     range) -- the same "never touch the real footprint, only the stub
+     beyond it" principle this lane's own ledger-evidence masks already
+     use.
+  2. staff-line THICKNESS for the mask band is the page-level
+     measurement (`score_head_template.measure_line_thickness_px`,
+     already validated in the prior round) -- NOT a fresh per-head
+     re-measurement: a first attempt at measuring thickness inside the
+     tiny tilt window itself occasionally returned a wildly wrong run
+     length (an edge column catching unrelated ink) and masked the
+     ENTIRE window to zero ink on several heads before this was caught.
+  3. OUTER tilt is restricted to heads IN A SPACE (`position % 2 == 1`)
+     -- belt-and-suspenders on top of the masking, per Sean's own
+     instruction, so no on-line head's own through-line can bias it at
+     all.
+  4. a non-deterministic staff-key pick (`set` iteration order, which
+     varies by Python's per-process hash seed) was found and fixed
+     (`sorted(staff_keys)[:1]`, was `list(staff_keys)[:1]`) -- without it
+     the SAME input produced different thickness/measurement counts on
+     different runs. A residual run-to-run jitter remains (borderline
+     eccentricity-threshold heads flip in/out of the sample from tiny
+     floating-point differences inside `cv2`'s own fit) -- small against
+     the wide IQRs reported below, not chased further this round.
+
+| doc | kind | outer tilt (median, IQR) | n | slit tilt (median, IQR) | n | slit:outer axis ratio |
+|---|---|---|---|---|---|---|
+| Litolff | filled | 10.4 deg [-2.3, 43.3] | 334 | -- | -- | -- |
+| Litolff | hollow | 43.6 deg [4.4, 71.5] | 94 | 35.3 deg [30.5, 38.6] | 206 | 0.19 x 0.43 |
+| Brahms | filled | 26.3 deg [4.7, 66.2] | 375 | -- | -- | -- |
+| Brahms | hollow | 12.8 deg [-15.2, 59.0] | 103 | -7.0 deg [-13.0, 37.0] | 140 | 0.29 x 0.35 |
+
+**Read honestly**: these are NOISY numbers (wide IQRs, some run-to-run
+jitter) -- not the single clean angle the first (line-biased) pass
+reported, nor a crisp confirmation of "45 deg". The medians sit closer
+to the manager's 20-30 deg outer-oval guess than before (Litolff 10.4,
+Brahms 26.3 for filled) but the spread is wide enough that this is a
+RANGE, not a fact pinned to one number. The Litolff SLIT tilt is the
+one tight, repeatable measurement here (30.5-38.6 deg IQR, n=206) --
+close to the manager's own 40-45 deg guess for the slit specifically.
+Brahms's slit measurement stays unreliable (sign-inconsistent, wide
+IQR) -- the two editions still do not share one slit angle.
+
+**Redrawn hollow templates**: `slit_width_ratio`/`slit_height_ratio`
+(new parameters on `head_template.build_geometry_template`/
+`build_geometry_templates`) size the inner slit from the MEASURED
+slit-vs-outer axis ratio above (Litolff 0.19 x 0.43, Brahms 0.29 x 0.35)
+instead of the previous hardcoded 0.55 x 0.70 -- the hollow template is
+now mostly ink with a narrow, slanted slit, per the manager's own
+reading of what a real Litolff half note looks like.
+
+**ONE review sheet** (`template_review10.py`, NO scoring call anywhere
+in it -- no `score_doc_with_templates`, no round8 comparison, no
+right/wrong tally): `out/print/ledgers/template_review10.jpg` -- the
+drawn templates (filled/hollow x on-line/in-space/raw, each doc, at the
+same canonical scale) ABOVE 10 real far heads (`glyph/3/0/7/0/7`,
+`glyph/3/0/7/2/4`, `glyph/3/0/8/6/10` always included, the rest a
+hand-stated mix across filled/hollow x above/below x on-ledger/in-space,
+selected by GATHER facts -- detector class, position parity -- never by
+truth agreement, CLAUDE.md rule 5), each cropped CENTRED on the head at
+4x zoom with generous padding (2.2 sp x, 2.8 sp y) so the head and its
+ledgers are fully in frame, the best-matching template's own outline
+overlaid at its MATCHED centre (yellow, + centre cross), local staff
+lines (green), detector box (red), and a reference TICK (cyan, for
+visual calibration only -- never tallied). The match's own
+on-line/in-space verdict and margin are printed as text, not scored.
+
+Staff-line rows pixel-row checked directly against the raw page (two
+heads, five lines each): every line sits on a row with mean brightness
+well below the window's white background (0-85 across the 10 rows
+sampled), confirming the drawn lines are real ink, not a stale position.
+
+Paths: `tools/omr/annotate/head_template.py` (`slit_width_ratio`/
+`slit_height_ratio`), `benchmarks/omr-local-staff-2026-09/
+measure_head_tilt.py` (rewritten masking + axis/ratio reporting),
+`benchmarks/omr-local-staff-2026-09/score_head_template.py`
+(`build_geometry_templates_for_doc` now reuses `measure_head_tilt.
+summarize`), `benchmarks/omr-local-staff-2026-09/template_review10.py`,
+`out/print/ledgers/template_review10.jpg`.
