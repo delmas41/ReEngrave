@@ -397,6 +397,29 @@ class Q(_Vocab):
     LEDGER_OWNER_DENSITY = "ledger_owner_density"
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
+    #: ⚠️ ROADMAP 2.54 (Sean, 2026-10-01, "combine that way"): a SECOND
+    #: reading of a far head's own position, filed ALONGSIDE (never
+    #: instead of) `Q.NOTEHEAD_STAFF_POSITION` -- the GATHER row this
+    #: quantity reads and reports on, never mutates. One row per regular
+    #: notehead glyph OUTSIDE its own staff, past the exempt first space
+    #: (`ledger_grid.far_head_needs_ledger_read`). `value`, where decided,
+    #: is `ledger_grid.combine_farhead_position`'s own combined position
+    #: in `Q.NOTEHEAD_STAFF_POSITION`'s own units; `detail` carries
+    #: `geom_pos`, `rungs_pos`, `branch` (`"agree"` / `"disagree_rungs"`
+    #: / `"disagree_geometry"`), `max_gap_deviation` and `n_rungs` --
+    #: ALWAYS, whatever `branch` is, so a human (or a future lane) can
+    #: read both readers' own values and the evenness that chose between
+    #: them off the record directly, never re-derived (CLAUDE.md rule 6).
+    #: Abstains `FARHEAD_COMBINED_UNDECIDED` for the `"unread"` branch --
+    #: CLAUDE.md rule 8, a fallback never converts "cannot tell" into an
+    #: answer, and `combine_farhead_position`'s own `position=None` is
+    #: filed as exactly that, counted rather than silently dropped.
+    #: ⚠️⚠️ `FARHEAD_COMBINED_SHIPS` (consequences.py) is `False`: nothing
+    #: downstream reads this quantity to change a PITCH yet -- it is
+    #: recorded so the combination can be measured on a real re-gather
+    #: before anyone decides whether to switch it on (ROADMAP 2.54,
+    #: `benchmarks/omr-local-staff-2026-09/FINDINGS.md`).
+    FARHEAD_COMBINED_POSITION = "farhead_combined_position"
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
     #: same grid and in the same units as `NOTEHEAD_STAFF_POSITION` -- which is
     #: the whole point: the rule that owns it ("the head immediately RIGHT of
@@ -2011,6 +2034,12 @@ CLAIMS: "dict[str, str]" = {
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.54: `ledger_grid.combine_farhead_position`'s own reading
+    #: of a far head's position -- a ruler reading, same reason as
+    #: `NOTEHEAD_STAFF_POSITION` itself; it says where the staff grid and
+    #: the printed ledgers agree or disagree, never that the head IS a
+    #: particular pitch.
+    "FARHEAD_COMBINED_POSITION": CLAIM.MEASUREMENT,
     #: ⚠️ A MEASUREMENT AND NOT AN IDENTIFICATION, though a class name is what
     #: chooses its anchor. What would make the row WRONG is the RULER -- a
     #: mis-measured line grid, or a box whose centre is not where the glyph
@@ -2278,6 +2307,15 @@ class READERS(_Vocab):
     #: horizontal rung at THIS expected step) with a different test
     #: (a windowed density ruler, not components or morphology).
     CV_LEDGER = "cv_ledger"                  # gather_ownership_evidence: rung ink
+    #: `gather.gather_farhead_combined_position` -- ROADMAP 2.54. Reads
+    #: the SAME staff-erased raster `CV_LEDGER` reads, via the SAME
+    #: `ledger_grid.measure_ledger_rungs` call `gather_notehead_positions`
+    #: already has no equivalent of -- not independent of it in the "one
+    #: crop, one signal" sense; its own reader name because it combines
+    #: that ink read with the already-filed GEOMETRY row by a different
+    #: mechanism (agreement, then evenness) than any other reader of this
+    #: raster.
+    FARHEAD_COMBINED = "farhead_combined"
     #: `gather._observe_stem_tip_ink` -- ROADMAP 2.18c. Reads the SAME
     #: staff-erased raster `CV_LINES`/`CV_INK`/`CV_LEDGER` read
     #: (`image_no_staff`), so it is NOT independent of any of them -- one
@@ -2415,6 +2453,12 @@ class ABSTAIN(_Vocab):
     NO_COLUMN_EVIDENCE = "no_column_evidence"    # _assign_groups :611
     NO_SYSTEM = "no_system"                      # assign_systems :672
     NO_STAFF_GEOMETRY = "no_staff_geometry"
+    #: ROADMAP 2.48: a head's own-x local trace declined AND the cell's flat
+    #: grid is not this cell's own measured offset (`_cell_line_offset`
+    #: declined too, so `staff_line_ys_canonical` is the raw staff-wide
+    #: `Staff.line_ys` copied in unchanged) -- CLAUDE.md §10 forbids reporting
+    #: a position off a grid that was never actually measured for this cell.
+    GRID_NOT_LOCALIZED = "grid_not_localized"
     NO_BARLINE = "no_barline"
 
     # ⚠️ The CV clef locator's own rejecting branches, spelled EXACTLY as the
@@ -2436,6 +2480,12 @@ class ABSTAIN(_Vocab):
     ONLY_DEBRIS = "only_debris"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"
+    #: ROADMAP 2.54: neither reader could settle a far head's position --
+    #: geometry and the rung count disagree, and either the head's own
+    #: printed ledgers were too few to measure evenness, or the rung
+    #: reader itself abstained while geometry sat too near its own
+    #: rounding boundary to trust alone. CLAUDE.md rule 8: never guessed.
+    FARHEAD_COMBINED_UNDECIDED = "farhead_combined_undecided"
 
     # readers with nothing to read
     #: ⚠️⚠️ A CLAIM ABOUT THE PAGE, AND ONLY THE INK READER MAY MAKE IT.

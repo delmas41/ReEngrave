@@ -1,0 +1,7 @@
+# lane-ledger-rungs round 6 diagnostic crops (2026-10-0x)
+
+Stacked-thirds convention (DECISIONS 2026-10-0x). Measured result: the real-score table is UNCHANGED from round 5 -- see FINDINGS.md for why (the 3 named pairs' current reading already shows a through-head rung on at least one side, blocking the convention's own guard). These are diagnostic crops, not changed-answer crops.
+
+- `beethoven5-litolff-glyph-3-0-0-2-4-glyph-3-0-0-2-9.png` — glyph/3/0/0/2/4  vs  glyph/3/0/0/2/9  (beethoven5-litolff) | centres 0.915 staff spaces apart (third range (0.7, 1.25)) | glyph/3/0/0/2/4 own rungs: [428.5, 395.0]  through_head=True | glyph/3/0/0/2/9 own rungs: [428.5]  through_head=False | GUARD DOES NOT FIRE -- glyph/3/0/0/2/4 already through-head
+- `beethoven5-litolff-glyph-3-0-0-2-1-glyph-3-0-0-2-3.png` — glyph/3/0/0/2/1  vs  glyph/3/0/0/2/3  (beethoven5-litolff) | centres 1.120 staff spaces apart (third range (0.7, 1.25)) | glyph/3/0/0/2/1 own rungs: [431.5, 395.5]  through_head=True | glyph/3/0/0/2/3 own rungs: [431.5, 412.0]  through_head=True | GUARD DOES NOT FIRE -- glyph/3/0/0/2/1 already through-head; glyph/3/0/0/2/3 already through-head
+- `beethoven5-litolff-glyph-3-0-0-6-1-glyph-3-0-0-6-2.png` — glyph/3/0/0/6/1  vs  glyph/3/0/0/6/2  (beethoven5-litolff) | centres 0.810 staff spaces apart (third range (0.7, 1.25)) | glyph/3/0/0/6/1 own rungs: [434.5, 417.5, 396.0]  through_head=True | glyph/3/0/0/6/2 own rungs: [434.5, 414.5]  through_head=True | GUARD DOES NOT FIRE -- glyph/3/0/0/6/1 already through-head; glyph/3/0/0/6/2 already through-head

@@ -1,0 +1,22 @@
+litolff: 251 clean single noteheads qualified
+  LINE BIAS (base grid - ink centre): n=226 mean=-0.935px std=3.450px
+  LINE BIAS (comb - ink centre):       n=83 mean=-0.250px std=1.059px
+  HEAD BIAS (box centre - ink centre): n=251 mean=+0.427px std=3.044px
+    open: n=108 mean=+0.141px std=3.379px
+    filled: n=143 mean=+0.642px std=2.744px
+    on-line: n=116 mean=+0.035px std=2.952px
+    in-space: n=135 mean=+0.763px std=3.081px
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/litolff_glyph_1_0_0_3_1.png  size=1125x324
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/litolff_glyph_1_0_0_15_1.png  size=927x310
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/litolff_glyph_1_0_2_1_1.png  size=1123x322
+brahms: 100 clean single noteheads qualified
+  LINE BIAS (base grid - ink centre): n=231 mean=+1.018px std=5.928px
+  LINE BIAS (comb - ink centre):       n=14 mean=+0.012px std=0.279px
+  HEAD BIAS (box centre - ink centre): n=100 mean=+0.508px std=4.528px
+    open: n=46 mean=-0.015px std=5.402px
+    filled: n=54 mean=+0.954px std=3.561px
+    on-line: n=37 mean=+0.918px std=2.593px
+    in-space: n=63 mean=+0.268px std=5.333px
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/brahms_glyph_0_0_0_0_20.png  size=1143x333
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/brahms_glyph_0_0_1_1_20.png  size=1107x328
+  crop: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a3ef66441824adfff/benchmarks/omr-local-staff-2026-09/out/print/bias/brahms_glyph_0_0_2_0_5.png  size=1143x339

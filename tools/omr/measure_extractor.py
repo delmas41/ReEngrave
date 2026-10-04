@@ -25,6 +25,7 @@ from collections import Counter
 
 import cv2
 import numpy as np
+from scipy.ndimage import median_filter
 
 from .system_grouping import _choir_grouping_enabled, gap_bridging_counts
 from .types import Barline, MeasureCell, PageWithStaves, Staff
@@ -1502,6 +1503,345 @@ def _cell_line_offset(
     }
 
 
+# ─── A local staff-line MODEL: the rigid comb, WALKED along the ink ─────────
+#
+# `_cell_line_offset` slides the whole five-line comb by ONE shift for the
+# whole cell — a scan that tilts or stretches WITHIN a measure (Litolff p3
+# staff/3/0/0's top line wanders 447-454 px, ~5% spacing change, across one
+# system) still hands every reader in that cell the same flat grid. CLAUDE.md
+# §10 (2026-09-30, Sean): "any position relative to the staff reads the staff
+# lines AT THE SUBJECT'S x, never a staff-wide or bar-wide value."
+#
+# ⚠️ REBUILT 2026-10-01 (manager review of the first cut, `86d0bf68`):
+# tracing each of the 5 lines INDEPENDENTLY, column by column
+# (`header_ink.trace_staff_line`, one call per line, no line checking any
+# other), measured a NET REGRESSION against the 2.44c reference truth set --
+# 134 right-to-wrong against 11 wrong-to-right. No cross-line agreement
+# check meant a line could lock onto nearby glyph ink (a stem, a beam, a
+# ledger) instead of the printed staff line, and nothing in that design
+# could tell the difference. Sean's own design, which this is: *"As it works
+# currently a straight line is aligned with the 5 staff lines. Once the
+# straight lines are laid out, can it be measured against the ink, and where
+# they begin to differ the straight line starts to change direction to match
+# what the ink is doing?"* -- the comb starts straight (the staff's own
+# measured `line_ys`) and is walked along x as ONE SHAPE, never one line at
+# a time: at each step every line is checked in a NARROW window around
+# where the comb currently predicts it, and the comb only moves where AT
+# LEAST THREE of five agree. A single wandering line can never drag the
+# comb off the staff; a stretch of ink-covered columns (a chord, a beam)
+# simply holds the comb's last course, which is itself the staff's own
+# measured direction up to that point -- never a guess at what covered ink
+# might have said.
+CELL_LINE_WALK_STEP_SPACES = 0.25     # Sean: "small x steps ... quarter of a
+                                       # staff space"
+CELL_LINE_WALK_SEARCH_HALF_SPACES = 0.25   # a NARROW window around the
+                                            # comb's CURRENT prediction, not
+                                            # the widened 0.35+ the withdrawn
+                                            # independent tracer used
+CELL_LINE_WALK_MIN_COVERAGE = 0.5     # a step's window must be mostly inked
+                                       # to count as "found clean ink" there
+CELL_LINE_WALK_MIN_LINES_AGREE = 3    # of 5 -- Sean's own floor
+CELL_LINE_WALK_OUTLIER_PX = 1.0       # "agreeing ... within ~1 px"
+CELL_LINE_WALK_MAX_TOTAL_SPACES = 0.3 # ⚠️ ADDED after manager review, 2026-10-01
+                                       # (direction/bias diagnosis below): of 84
+                                       # right-to-wrong heads, 55 carried a
+                                       # >3px excursion (up to 11px -- past a
+                                       # full staff LINE on some staves), the
+                                       # comb aliasing onto a neighbouring
+                                       # line's ink through a long enough
+                                       # dense passage; the per-step cap alone
+                                       # slows that walk but never stops it
+                                       # accumulating. The comb's TOTAL shift
+                                       # from the staff's own rigid course is
+                                       # now bounded here, well under half a
+                                       # space so it can never cross onto a
+                                       # neighbour -- past this bound an
+                                       # update is refused outright (the comb
+                                       # HOLDS), not merely slowed
+CELL_LINE_WALK_MAX_STEP_SPACES = 0.08 # the comb's per-step change is capped
+                                       # -- real tilt/stretch accrues slowly
+                                       # over a staff's whole width (Litolff's
+                                       # worst measured case is ~0.44 spaces
+                                       # over an entire system, many steps),
+                                       # a notehead is a local blob and must
+                                       # not move the comb in one step
+
+# ⚠️ FIX 2026-10-01 (Sean, looking at the first comb-walk's own crops):
+# *"The green is much closer to the ink but it moves every time it runs
+# into a symbol that crosses the staff and when the ink collects at a bar
+# line … The green line is on the ink but towards the TOP of the ink."*
+# Two faults, both fixed below. (1) `_measure_ink_centroid` (withdrawn)
+# took the ink-weighted centroid of whatever fell inside a FIXED, narrow
+# search window -- if the window was not already centred on the true line
+# (because the comb's own running prediction was off, which is exactly
+# when a correction is needed), the window clips one side of the real ink
+# run and the centroid is dragged toward whichever side survived: visibly
+# "on the ink but towards the top". Replaced by `_measure_line_run_mid`,
+# which finds the ink run's own TOP and BOTTOM edge (walking outward from
+# the nearest ink to the window's centre until the run ends) and uses
+# their midpoint -- a window still locates the run, but no longer decides
+# where in it the answer sits. (2) Nothing told a "clean" column (a bare
+# staff line) from a dirty one (a stem, a barline, a notehead crossing it)
+# except coverage -- so dense ink at a barline or a chord satisfied the
+# existing 3-of-5 rule by ACCIDENT, not by finding the line. A column now
+# contributes only where that run's own thickness is close to the staff's
+# OWN measured line thickness (`CELL_LINE_WALK_CLEAN_THICKNESS_MULT`), and
+# barline columns are excluded outright, not merely out-thickened.
+CELL_LINE_WALK_CLEAN_THICKNESS_MULT = 1.6   # a run taller than this multiple
+                                             # of the staff's own measured
+                                             # line thickness is a stem, a
+                                             # barline or a notehead, not a
+                                             # bare line -- declined, not
+                                             # measured
+CELL_LINE_WALK_DEFAULT_THICKNESS_SPACES = 0.12  # a staff with no measured
+                                                 # thickness (`Staff.
+                                                 # median_line_thickness_px`
+                                                 # is None) falls back to
+                                                 # this -- a modern-engraving
+                                                 # line, the SMALLER of the
+                                                 # two conventions CLAUDE.md
+                                                 # §9 names (0.08-0.31 sp),
+                                                 # so the clean-column gate
+                                                 # stays strict rather than
+                                                 # admitting more than it
+                                                 # should on an unmeasured
+                                                 # staff
+CELL_LINE_WALK_BARLINE_FRAC = 0.9     # a column inked across this fraction
+                                       # of the WHOLE staff span (top line
+                                       # to bottom line) is a barline, not
+                                       # staff-line ink -- excluded with its
+                                       # neighbours, never just out-thickened
+CELL_LINE_WALK_BARLINE_MARGIN_PX = 2  # "barline columns and their
+                                       # neighbours" -- Sean's own margin
+CELL_LINE_WALK_MIN_CONSISTENT_RUN = 3 # "a single accepted column can't move
+                                       # the comb; it needs a consistent run
+                                       # of clean columns" -- this many
+                                       # consecutive steps must each find a
+                                       # clean 3-of-5 agreement, mutually
+                                       # within CELL_LINE_WALK_OUTLIER_PX of
+                                       # each other, before the comb commits
+                                       # to moving at all; one dirty or
+                                       # disagreeing step anywhere in the
+                                       # run resets it to empty
+
+
+def _measure_line_run_mid(binary: np.ndarray, x0: int, x1: int,
+                          y_lo: float, y_hi: float, max_thickness_px: float
+                          ) -> tuple[float, float] | None:
+    """The MIDPOINT of the ink run nearest the window's own centre, in
+    `[y_lo, y_hi)` over columns `[x0, x1)`, and that run's thickness -- or
+    `None` where too few columns carry ink, or the found run is taller than
+    `max_thickness_px` (a stem, a barline or a notehead crossing the
+    window, not a bare staff line).
+
+    CENTRE, not edge (Sean, 2026-10-01): walks outward from the ink nearest
+    the window's centre to that run's own top and bottom, per column, and
+    takes the MIDPOINT of the median top and median bottom across columns
+    -- never the centroid of whatever ink the window happens to clip.
+    """
+    y_lo_i, y_hi_i = int(round(y_lo)), int(round(y_hi))
+    if y_hi_i <= y_lo_i or x1 <= x0:
+        return None
+    height, width = binary.shape[:2]
+    y_lo_i, y_hi_i = max(0, y_lo_i), min(height, y_hi_i)
+    x0, x1 = max(0, x0), min(width, x1)
+    if y_hi_i <= y_lo_i or x1 <= x0:
+        return None
+    ink = binary[y_lo_i:y_hi_i, x0:x1] == 0           # 0 = ink (Phase 1)
+    if ink.size == 0:
+        return None
+    coverage = float(ink.any(axis=0).mean())
+    if coverage < CELL_LINE_WALK_MIN_COVERAGE:
+        return None
+    centre_row = (y_hi_i - y_lo_i) // 2
+    tops: list[int] = []
+    bottoms: list[int] = []
+    for c in range(ink.shape[1]):
+        col = ink[:, c]
+        if col[centre_row]:
+            seed = centre_row
+        else:
+            idx = np.flatnonzero(col)
+            if idx.size == 0:
+                continue
+            seed = int(idx[np.argmin(np.abs(idx - centre_row))])
+        top = seed
+        while top - 1 >= 0 and col[top - 1]:
+            top -= 1
+        bottom = seed
+        while bottom + 1 < col.shape[0] and col[bottom + 1]:
+            bottom += 1
+        tops.append(top)
+        bottoms.append(bottom)
+    if not tops:
+        return None
+    top_m = float(np.median(tops))
+    bottom_m = float(np.median(bottoms))
+    thickness = bottom_m - top_m + 1.0
+    if thickness > max_thickness_px:
+        return None   # not a bare line -- a stem, a barline, a notehead
+    return y_lo_i + (top_m + bottom_m) / 2.0, thickness
+
+
+def _is_barline_column(binary: np.ndarray, x: int, top_y: float,
+                       bottom_y: float) -> bool:
+    """True where column `x` is inked across `CELL_LINE_WALK_BARLINE_FRAC`
+    of the staff's own full span (top line to bottom line) -- a barline
+    crossing every line at once, excluded outright rather than merely
+    out-thickened (Sean: "barline columns and their neighbours")."""
+    height, width = binary.shape[:2]
+    if not (0 <= x < width):
+        return True    # off the page reads as "exclude", never "clean"
+    y0, y1 = max(0, int(round(top_y))), min(height, int(round(bottom_y)) + 1)
+    if y1 <= y0:
+        return False
+    col = binary[y0:y1, x] == 0
+    return float(col.mean()) >= CELL_LINE_WALK_BARLINE_FRAC
+
+
+def _walk_comb_shift(binary: np.ndarray, nominal_ys: list[float],
+                     x0: int, x1: int, spacing: float,
+                     line_thickness_px: float | None = None,
+                     seed_shift_px: float = 0.0,
+                     ) -> np.ndarray | None:
+    """The comb's ONE shift from `nominal_ys`, per page-column from `x0` to
+    `x1`, walked along x and smoothed -- or `None` where the band is too
+    narrow to take even one step.
+
+    ⚠️ SEEDED 2026-10-01 (Sean: "let's use the current process to start
+    where the comb starts -- so the green line should take a cue from the
+    orange lines so it can't get lost and then it should tilt with the ink
+    as it does"). The comb starts at `seed_shift_px` -- the cell's own
+    `_cell_line_offset` ("orange") shift when that reader could read it, 0
+    (today's unseeded course, `nominal_ys` unchanged) when it abstained --
+    never at a raw, un-localized 0 by default. The one-head trace
+    (`benchmarks/omr-local-staff-2026-09/FINDINGS.md`, 2026-10-01) found
+    the previous unseeded comb silently reporting the raw, unshifted lines
+    whenever a busy cell (stems, a beam) never let it commit a move of its
+    own -- orange had already found the real shift there and the comb threw
+    it away by starting from scratch. Seeding fixes exactly that: a cell
+    that never commits now HOLDS at the seed, not at a guessed zero.
+
+    The comb is updated as ONE SHAPE: a step's candidate shift is the MEDIAN
+    of whichever lines found a CLEAN run (`_measure_line_run_mid` -- its own
+    thickness close to the staff's, never a barline column or its
+    neighbours), outliers beyond `CELL_LINE_WALK_OUTLIER_PX` of that median
+    dropped. The comb only COMMITS to moving after
+    `CELL_LINE_WALK_MIN_CONSISTENT_RUN` consecutive such steps agree with
+    each other, by at most `CELL_LINE_WALK_MAX_STEP_SPACES` of a space per
+    commit and `CELL_LINE_WALK_MAX_TOTAL_SPACES` FROM THE SEED in total.
+    Anywhere a step is dirty or disagrees, the pending run resets and the
+    comb HOLDS its current course -- the seed's own direction up to that
+    point, never a guess at covered ink.
+    """
+    if spacing <= 0:
+        return None
+    max_thickness_px = CELL_LINE_WALK_CLEAN_THICKNESS_MULT * (
+        line_thickness_px if line_thickness_px
+        else CELL_LINE_WALK_DEFAULT_THICKNESS_SPACES * spacing)
+    step_px = max(1, int(round(CELL_LINE_WALK_STEP_SPACES * spacing)))
+    search_half_px = CELL_LINE_WALK_SEARCH_HALF_SPACES * spacing
+    max_step_px = CELL_LINE_WALK_MAX_STEP_SPACES * spacing
+    max_total_px = CELL_LINE_WALK_MAX_TOTAL_SPACES * spacing
+    margin = CELL_LINE_WALK_BARLINE_MARGIN_PX
+    top_y, bottom_y = min(nominal_ys), max(nominal_ys)
+    xs = list(range(x0, x1, step_px))
+    if not xs:
+        return None
+    shift = float(seed_shift_px)
+    shifts: list[float] = []
+    pending: list[float] = []     # candidate new_shift values, a run so far
+    for xi in xs:
+        xw0, xw1 = xi, min(x1, xi + step_px)
+        has_barline = any(
+            _is_barline_column(binary, x, top_y, bottom_y)
+            for x in range(xw0 - margin, xw1 + margin))
+        candidates = []
+        if not has_barline:
+            for ny in nominal_ys:
+                py = ny + shift
+                found = _measure_line_run_mid(
+                    binary, xw0, xw1, py - search_half_px, py + search_half_px,
+                    max_thickness_px)
+                if found is not None:
+                    candidates.append(found[0] - ny)
+        step_ok = len(candidates) >= CELL_LINE_WALK_MIN_LINES_AGREE
+        new_shift = None
+        if step_ok:
+            med = sorted(candidates)[len(candidates) // 2]
+            inliers = [c for c in candidates
+                      if abs(c - med) <= CELL_LINE_WALK_OUTLIER_PX]
+            if len(inliers) >= CELL_LINE_WALK_MIN_LINES_AGREE:
+                new_shift = sum(inliers) / len(inliers)
+        if new_shift is None:
+            pending = []          # dirty or disagreeing -- the run resets
+        else:
+            if pending and abs(new_shift - pending[-1]) > CELL_LINE_WALK_OUTLIER_PX:
+                pending = []      # this step does not agree with the run so far
+            pending.append(new_shift)
+            if len(pending) >= CELL_LINE_WALK_MIN_CONSISTENT_RUN:
+                commit = sum(pending) / len(pending)
+                delta = max(-max_step_px, min(max_step_px, commit - shift))
+                proposed = shift + delta
+                # The TOTAL course is bounded against the SEED (today's
+                # per-bar grid where it has one, the staff's own rigid
+                # line_ys otherwise) -- not against a raw zero -- so a
+                # seeded cell is still free to tilt up to this much FURTHER
+                # from where it started, never from an unrelated origin. An
+                # update that would walk the comb past this bound is
+                # refused outright (held), because past it the "ink"
+                # three-of-five agreed on is more likely a neighbouring
+                # line than this one.
+                if abs(proposed - seed_shift_px) <= max_total_px:
+                    shift = proposed
+                pending = []       # the run has been spent, start a fresh one
+        shifts.append(shift)
+    xs_arr = np.array(xs, dtype=float)
+    shifts_arr = np.array(shifts, dtype=float)
+    all_cols = np.arange(x0, x1, dtype=float)
+    per_col = np.interp(all_cols, xs_arr, shifts_arr)
+    # A running median along x, same pattern (and the same reasoning) as
+    # `trace_staff_line`'s own smoothing: a few steps that update on
+    # noise cannot kink the course.
+    k = max(3, (int(round(0.5 * spacing / step_px)) | 1))
+    if k > 1 and per_col.size > k:
+        per_col = median_filter(per_col, size=k, mode="nearest")
+    return per_col
+
+
+def _trace_cell_local_lines(
+    pws: PageWithStaves, staff: Staff, x0: int, x1: int,
+    seed_shift_px: float = 0.0,
+) -> list | None:
+    """The staff's 5 lines, walked along this cell's own x-band:
+    `[path_0, ..., path_4]`, each a `np.ndarray` of page-y, one entry per
+    page column from `x0` (inclusive) to `x1` (exclusive) -- or `None` when
+    the band is too narrow to walk at all.
+
+    `seed_shift_px` is this cell's own `_cell_line_offset` ("orange") shift
+    where the caller has one, 0 otherwise (2026-10-01, Sean) -- see
+    `_walk_comb_shift`'s docstring for why.
+
+    One shift for all five lines (`_walk_comb_shift`), not five independent
+    traces -- see the section comment above for why, and what the previous
+    (withdrawn) design cost.
+    """
+    binary = pws.page.binary
+    ys = [float(y) for y in staff.line_ys]
+    spacing = float(staff.line_spacing_px)
+    if len(ys) < 5 or spacing <= 0:
+        return None
+    lo, hi = max(0, int(x0)), min(binary.shape[1], int(x1))
+    if hi - lo < 2:
+        return None
+    shift = _walk_comb_shift(binary, ys, lo, hi, spacing,
+                             line_thickness_px=staff.median_line_thickness_px,
+                             seed_shift_px=seed_shift_px)
+    if shift is None:
+        return None
+    return [np.full(hi - lo, y, dtype=float) + shift for y in ys]
+
+
 def _build_measure_cell(
     pws: PageWithStaves,
     staff: Staff,
@@ -1617,6 +1957,25 @@ def _build_measure_cell(
     # staff-line-removal step. (Not part of MeasureCell's formal schema —
     # kept dynamic for now.)
     cell.__dict__["binary"] = up_bin
+    # The LOCAL staff-line model (ROADMAP 2.48): page-y per page-column, for
+    # this cell's own x-band -- `(x0, [path_0..path_4])`, `x0` being the page
+    # column the first entry of each path belongs to (this cell's own,
+    # post-clamp `x0`, matching `bbox_page_px[0]`). `None` when tracing
+    # declined; a consumer reads it with `getattr(cell,
+    # "local_line_paths_px", None)`, the same dynamic-attribute pattern as
+    # `staff_line_spacing_canonical` above.
+    if len(staff.line_ys) >= 5:
+        # Seed the comb with THIS CELL's own `_cell_line_offset` shift
+        # ("orange") where it has one, never with a raw, un-localized 0
+        # (2026-10-01, Sean: "the green line should take a cue from the
+        # orange lines so it can't get lost"). Where orange abstained for
+        # this cell, the seed stays 0 -- today's unseeded course -- rather
+        # than inventing a value from nothing (rule 8).
+        seed_px = float(line_offset[0]) if line_offset is not None else 0.0
+        local_paths = _trace_cell_local_lines(pws, staff, x0, x1,
+                                              seed_shift_px=seed_px)
+        if local_paths is not None:
+            cell.__dict__["local_line_paths_px"] = (x0, local_paths)
     # A ONE-LINE staff's cell carries one row, so every consumer that derives
     # the staff-space unit from the GAPS between rows gets nothing and falls
     # back to a constant that was written for a different frame

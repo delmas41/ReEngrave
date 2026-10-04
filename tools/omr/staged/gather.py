@@ -820,15 +820,206 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                     half_step=float(half_step), lines=len(
                         list(getattr(c, "staff_line_ys_canonical", None) or [])))
+        bbox = getattr(c, "bbox_page_px", None)
+        scale = getattr(c, "upscale_factor", None)
+        # ⚠️ ONLY A MEASURED FLAT GRID IS A FALLBACK; THE STAFF-WIDE ONE IS
+        # NOT (CLAUDE.md §10, ROADMAP 2.48). `_cell_grid(c)` above answers
+        # from `c.staff_line_ys_canonical` whatever its provenance -- this
+        # cell's own measured offset (`line_grid_localized` present, set by
+        # `_cell_line_offset`) OR, where that declined, the raw staff-wide
+        # `Staff.line_ys` copied in unchanged by `_build_measure_cell`. A
+        # head whose own-x trace also declines must not fall through to the
+        # second kind silently: it abstains, counted, rather than reporting
+        # a position this cell never actually measured.
+        # ⚠️ "COULD NOT ATTEMPT" IS NOT "DECLINED". A cell with no page
+        # geometry at all (no `bbox_page_px`/`upscale_factor` -- a cell never
+        # built by `_build_measure_cell`, e.g. a test double standing in for
+        # an already-known-correct grid) never had the means to try a local
+        # trace, so `_cell_grid(c)`'s answer is the only one there has ever
+        # been and stays the fallback, unchanged. The stricter rule applies
+        # only where local tracing WAS attempted and failed on a REAL cell:
+        # there, the flat grid is trusted only if it is this cell's own
+        # MEASURED offset (`line_grid_localized`, set by `_cell_line_offset`)
+        # -- never the raw staff-wide `Staff.line_ys` that cell's own
+        # `_trace_cell_local_lines`-independent flat path falls back to when
+        # BOTH mechanisms decline (a narrow cell, faint lines).
+        attempted_local = bbox is not None and scale
+        cell_grid_is_measured = getattr(c, "line_grid_localized", None) is not None
         for gi, d in enumerate(dets):
             if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
                 continue
-            pos_float = (d.y_center - top_y) / half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            head_top_y, head_half_step = None, None
+            if attempted_local:
+                page_x = bbox[0] + d.x_center / scale
+                local_grid = _local_cell_grid_at(c, page_x)
+                if local_grid is not None:
+                    head_top_y, head_half_step = local_grid
+            if head_top_y is None and (not attempted_local or cell_grid_is_measured):
+                head_top_y, head_half_step = top_y, half_step
+            if head_top_y is None:
+                log.abstain(g, Q.NOTEHEAD_STAFF_POSITION,
+                            reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+                            reason=ABSTAIN.GRID_NOT_LOCALIZED)
+                continue
+            pos_float = (d.y_center - head_top_y) / head_half_step
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
                         rounded=int(round(pos_float)))
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.54 (Sean, 2026-10-01, "combine that way"): a far head's position
+# combines the geometry row above with a rung-count reading, via
+# `ledger_grid.combine_farhead_position`. `FARHEAD_COMBINED_SHIPS`
+# (`consequences.py`) is `False` -- this function only RECORDS the
+# combination; it never changes `Q.NOTEHEAD_STAFF_POSITION` or a pitch.
+# ─────────────────────────────────────────────────────────────────────────────
+
+def gather_farhead_combined_position(log: Log, cells: Sequence[Any],
+                                     local: Dict[int, Tuple[int, int]],
+                                     detections: Dict[str, List[Any]]
+                                     ) -> None:
+    """`Q.FARHEAD_COMBINED_POSITION` -- ROADMAP 2.54.
+
+    For every REGULAR notehead glyph `gather_notehead_positions` already
+    filed a `Q.NOTEHEAD_STAFF_POSITION` row for, and which sits OUTSIDE
+    its own staff past the exempt first space
+    (`ledger_grid.far_head_needs_ledger_read`), reads a rung-count
+    position (`ledger_grid.measure_ledger_rungs` +
+    `ledger_grid.derive_far_head_step`, the "as shipped" reader --
+    round 7's own merge/dedup/gap-fill/flatness cleanups measured net
+    negative on the real truth set, `benchmarks/omr-local-staff-2026-09/
+    FINDINGS.md` "lane-ledger-r7", and are NOT reused here) and combines
+    it with the already-filed geometry via `ledger_grid.combine_farhead_
+    position`. `detail` ALWAYS carries `geom_pos`, `rungs_pos`, `branch`,
+    `max_gap_deviation` and `n_rungs`, whatever the branch, so the record
+    itself shows both readers' own values and why one was chosen (CLAUDE.md
+    rule 6: never re-derive what the record can already show). Abstains
+    `ABSTAIN.FARHEAD_COMBINED_UNDECIDED` for the `"unread"` branch
+    (CLAUDE.md rule 8) and `ABSTAIN.NO_MASK` where the cell carries no
+    `image_no_staff`.
+
+    ⚠️ SCOPE NARROWER THAN THE BENCHMARK SCORER (`benchmarks/omr-local-
+    staff-2026-09/combined_scorer.py`): `exclude_boxes` here covers only
+    this CELL's own other notehead detections (a far head's own stacked
+    chord-mates are almost always in the same cell) -- GATHER has no
+    cheap page-wide notehead index the way the benchmark's post-hoc page
+    render does. Declared here, not silently narrowed.
+
+    ⚠️ DOES NOT TOUCH `gather_notehead_positions`'s own row -- that stays
+    the sole geometry CONTROL this reader is measured against.
+    """
+    import numpy as np
+    from tools.omr.annotate import ledger_grid as lg
+
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        lines = sorted(float(v) for v in
+                       (getattr(c, "staff_line_ys_canonical", None) or []))
+        if len(lines) < 2:
+            continue
+        grid = _cell_grid(c)
+        if grid is None:
+            continue
+        _, half_step = grid
+        spacing = half_step * 2.0
+        img = getattr(c, "image_no_staff", None)
+        gray = None
+        if img is not None and getattr(img, "ndim", None) in (2, 3):
+            gray = img if img.ndim == 2 else img.mean(axis=2).astype(np.uint8)
+
+        # Standard head boxes + recentred centres for every regular
+        # notehead in THIS cell (canonical frame) -- reused both as this
+        # reader's own `exclude_boxes` and as the subject's own box.
+        head_boxes: Dict[int, Tuple[float, float, float, float]] = {}
+        centres: Dict[int, Tuple[float, float]] = {}
+        for gi, d in enumerate(dets):
+            if not is_regular_notehead(d.smufl_name):
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            cx = float(d.x_canonical) + float(d.width_canonical) / 2.0
+            cy = float(d.y_canonical) + float(d.height_canonical) / 2.0
+            recentred = log.rows(Q.NOTEHEAD_RECENTRE, g)
+            if recentred:
+                dx_sp, dy_sp = recentred[-1].value
+                cx = cx + dx_sp * spacing
+                cy = cy + dy_sp * spacing
+            centres[gi] = (cx, cy)
+            head_boxes[gi] = _standard_head_box(cx, cy, spacing)
+
+        for gi, d in enumerate(dets):
+            if gi not in centres:
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            frame = frame_cell(g.cell)
+            geom_rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, g)
+            if not geom_rows:
+                continue   # gather_notehead_positions itself abstained
+            geom_row = geom_rows[-1]
+            geom_pos_float = float(geom_row.value)
+            geom_pos = int(round(geom_pos_float))
+            geom_residual = (geom_row.detail or {}).get("residual")
+            if geom_residual is None:
+                geom_residual = abs(geom_pos_float - geom_pos)
+            if not lg.far_head_needs_ledger_read(geom_pos_float):
+                continue  # on-staff, or the exempt first space
+
+            if gray is None:
+                log.abstain(g, Q.FARHEAD_COMBINED_POSITION,
+                            reader=READERS.FARHEAD_COMBINED, frame=frame,
+                            reason=ABSTAIN.NO_MASK,
+                            note="cell carries no image_no_staff")
+                continue
+
+            cx, cy = centres[gi]
+            hx0, hx1, hy0, hy1 = head_boxes[gi]
+            others = [b for k, b in head_boxes.items() if k != gi]
+            above = cy < lines[0]
+            side = "above" if above else "below"
+            if above:
+                edge, sign, near_y, edge_pos = lines[0], -1.0, hy1, 0
+            else:
+                edge, sign, near_y, edge_pos = lines[-1], 1.0, hy0, 8
+
+            rungs = lg.measure_ledger_rungs(
+                gray, lines, cx, head_y=cy, exclude_boxes=others,
+                head_box_x=(hx0, hx1),
+            ).get(side, [])
+            step = lg.derive_far_head_step(rungs, edge, sign, near_y, spacing)
+            rungs_pos = (edge_pos + int(sign * step["offset"])
+                        if step["offset"] is not None else None)
+
+            combined = lg.combine_farhead_position(
+                geom_pos=geom_pos, geom_residual=geom_residual,
+                rungs_pos=rungs_pos, rungs_y=rungs, spacing=spacing,
+            )
+            detail = dict(
+                geom_pos=geom_pos, rungs_pos=rungs_pos,
+                branch=combined["branch"],
+                max_gap_deviation=combined["max_gap_deviation"],
+                n_rungs=len(rungs),
+            )
+            if combined["branch"] == "unread":
+                log.abstain(g, Q.FARHEAD_COMBINED_POSITION,
+                            reader=READERS.FARHEAD_COMBINED, frame=frame,
+                            reason=ABSTAIN.FARHEAD_COMBINED_UNDECIDED,
+                            **detail)
+            else:
+                log.observe(g, Q.FARHEAD_COMBINED_POSITION,
+                            combined["position"],
+                            reader=READERS.FARHEAD_COMBINED, frame=frame,
+                            **detail)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -5561,6 +5752,39 @@ def _cell_grid(cell: Any) -> Optional[Tuple[float, float]]:
     return float(lines[0]), float(half_step)
 
 
+def _local_cell_grid_at(cell: Any, page_x: float) -> Optional[Tuple[float, float]]:
+    """`(top_y, half_step)` in the cell's own CANONICAL frame, using the
+    staff lines `measure_extractor._trace_cell_local_lines` traced AT
+    `page_x` -- never the cell's one flat grid (`_cell_grid`) and never the
+    staff-wide `Staff.line_ys`. None where this cell has no local trace
+    (tracing declined, or the flag is off) or `page_x` falls outside the
+    traced band; the caller then falls back to `_cell_grid`, exactly today's
+    behaviour, and records which grid answered (CLAUDE.md §10, ROADMAP 2.48).
+    """
+    local = getattr(cell, "local_line_paths_px", None)
+    if local is None:
+        return None
+    x0, paths = local
+    if not paths or not len(paths[0]):
+        return None
+    bbox = getattr(cell, "bbox_page_px", None)
+    scale = getattr(cell, "upscale_factor", None)
+    if bbox is None or not scale:
+        return None
+    page_y0 = bbox[1]
+    n = len(paths[0])
+    col = int(round(page_x)) - int(x0)
+    col = max(0, min(n - 1, col))
+    canon_ys = [(float(p[col]) - page_y0) * scale for p in paths]
+    gaps = [canon_ys[i + 1] - canon_ys[i] for i in range(len(canon_ys) - 1)]
+    if not gaps:
+        return None
+    half_step = (sum(gaps) / len(gaps)) / 2.0
+    if half_step <= 0:
+        return None
+    return float(canon_ys[0]), float(half_step)
+
+
 def gather_clef(log: Log, cells: Sequence[Any],
                 local: Dict[int, Tuple[int, int]],
                 detections: Dict[str, List[Any]]) -> None:
@@ -8003,6 +8227,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # position is load-bearing, not cosmetic.
         gather_notehead_recentre(log, cells, local, detections)
         gather_notehead_positions(log, cells, local, detections)
+        # ROADMAP 2.54: a SECOND reading of a far head's position,
+        # combining geometry (just filed above) with a rung count --
+        # recorded only, `FARHEAD_COMBINED_SHIPS` (consequences.py) is
+        # `False` so nothing downstream changes yet.
+        gather_farhead_combined_position(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
         # and its consumer's whole rule is a comparison between the two. Filed

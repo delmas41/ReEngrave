@@ -338,6 +338,11 @@ out/2.45/
 # durable record and are committed.
 out/2.46/
 
+# lane-ledger-rungs: a scratch copy of a past commit's ledger_grid.py,
+# regenerated on demand by score_truth_set_rungs.py -- never the durable
+# record (that is FINDINGS.md and the crops under out/print/ledgers/).
+out/print/ledgers/_ledger_grid_before.py
+
 # ROADMAP 2.12g: the base-vs-arm GATHER+ADJUDICATE re-gather dumps
 # (regenerable by `tools.omr.acceptance_quick`, see FINDINGS §2.12g) — the
 # crops under `out/print/2.12g/` ARE the durable record and are committed.
