@@ -1,182 +1,775 @@
 [
  {
+  "doc": "beethoven5-litolff",
   "subject": "glyph/3/0/7/0/7",
   "kind": "filled",
   "zoom": 6,
   "spacing": 16.0,
-  "box_ink_frac": 0.84,
-  "ink_centroid_off_px": [
-   0.3,
-   -1.1
+  "variant": "in_space",
+  "template_step": -3,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [
+   -3
   ],
+  "geometry": -3,
+  "box_ink_frac": 0.84,
   "tmpl_in_ink": 0.92,
   "head_ink_covered": 0.66,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 0.5,
-  "n_ink_rungs": 4
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1486.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1502.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1472.5,
+    "dark_left": 0.5,
+    "dark_right": 0.75,
+    "dark": 0.75,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 1,
+   "ink_centroid_shift_px": -1,
+   "score_at_chosen": 0.297,
+   "score_at_ink_centre": 0.153,
+   "oval_minus_ink_centre_px": 2.1,
+   "oval_minus_ink_centre_sp": 0.13
+  },
+  "sheet": "main"
  },
  {
+  "doc": "beethoven5-litolff",
   "subject": "glyph/3/0/7/2/4",
   "kind": "filled",
   "zoom": 6,
   "spacing": 15.8,
-  "box_ink_frac": 0.73,
-  "ink_centroid_off_px": [
-   0.5,
-   -1.9
+  "variant": "on_line",
+  "template_step": 10,
+  "template_flag": "",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [
+   10
   ],
-  "tmpl_in_ink": 1.0,
+  "geometry": 10,
+  "box_ink_frac": 0.73,
+  "tmpl_in_ink": 0.99,
   "head_ink_covered": 0.66,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 1.3,
-  "n_ink_rungs": 4
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1533.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1549.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1566.0,
+    "dark_left": 1.0,
+    "dark_right": 0.75,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": -3,
+   "ink_centroid_shift_px": -2,
+   "score_at_chosen": 0.295,
+   "score_at_ink_centre": 0.232,
+   "oval_minus_ink_centre_px": -1.1,
+   "oval_minus_ink_centre_sp": -0.07
+  },
+  "sheet": "main"
  },
  {
+  "doc": "beethoven5-litolff",
   "subject": "glyph/3/0/8/6/10",
   "kind": "filled",
   "zoom": 6,
   "spacing": 15.8,
+  "variant": "on_line",
+  "template_step": 10,
+  "template_flag": "",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [
+   10
+  ],
+  "geometry": 11,
   "box_ink_frac": 0.79,
-  "ink_centroid_off_px": [
-   -0.1,
-   -0.4
+  "tmpl_in_ink": 0.99,
+  "head_ink_covered": 0.72,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1688.5,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1705.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1725.0,
+    "dark_left": 0.5,
+    "dark_right": 0.5,
+    "dark": 0.5,
+    "MISS": true
+   }
   ],
-  "tmpl_in_ink": 1.0,
-  "head_ink_covered": 0.73,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 0.5,
-  "n_ink_rungs": 3
+  "diag": {
+   "chosen_shift_px": -1,
+   "ink_centroid_shift_px": 0,
+   "score_at_chosen": 0.216,
+   "score_at_ink_centre": 0.182,
+   "oval_minus_ink_centre_px": -0.6,
+   "oval_minus_ink_centre_sp": -0.04
+  },
+  "sheet": "main"
  },
  {
-  "subject": "glyph/2/0/0/1/11",
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/3/0/0/2/1",
   "kind": "filled",
   "zoom": 6,
   "spacing": 15.8,
+  "variant": "in_space",
+  "template_step": -3,
+  "template_flag": "",
+  "round8_step": -4,
+  "round8_reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+  "reference": [
+   -6
+  ],
+  "geometry": -7,
+  "box_ink_frac": 0.64,
+  "tmpl_in_ink": 0.78,
+  "head_ink_covered": 0.75,
+  "lines": [
+   {
+    "what": "ledger",
+    "y": 431.5,
+    "dark_left": 0.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 395.5,
+    "dark_left": 0.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": -1,
+   "score_at_chosen": 0.243,
+   "score_at_ink_centre": 0.188,
+   "oval_minus_ink_centre_px": 0.8,
+   "oval_minus_ink_centre_sp": 0.05
+  },
+  "sheet": "main"
+ },
+ {
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/3/0/0/2/9",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "variant": "on_line",
+  "template_step": -4,
+  "template_flag": "oval -0.45 sp off that line",
+  "round8_step": -6,
+  "round8_reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+  "reference": [
+   -5
+  ],
+  "geometry": -6,
+  "box_ink_frac": 0.7,
+  "tmpl_in_ink": 0.79,
+  "head_ink_covered": 0.65,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 447.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 428.5,
+    "dark_left": 0.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 415.0,
+    "dark_left": 0.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": -1,
+   "score_at_chosen": 0.111,
+   "score_at_ink_centre": 0.063,
+   "oval_minus_ink_centre_px": 1.3,
+   "oval_minus_ink_centre_sp": 0.09
+  },
+  "sheet": "main"
+ },
+ {
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/3/0/7/2/2",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "variant": "in_space",
+  "template_step": 11,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": 11,
+  "round8_reason": "0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+  "reference": [
+   11
+  ],
+  "geometry": 11,
+  "box_ink_frac": 0.75,
+  "tmpl_in_ink": 0.97,
+  "head_ink_covered": 0.8,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1533.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1549.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1566.5,
+    "dark_left": 0.25,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": -1,
+   "score_at_chosen": 0.206,
+   "score_at_ink_centre": 0.202,
+   "oval_minus_ink_centre_px": 1.4,
+   "oval_minus_ink_centre_sp": 0.09
+  },
+  "sheet": "main"
+ },
+ {
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/3/0/5/2/0",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "variant": "on_line",
+  "template_step": 10,
+  "template_flag": "",
+  "round8_step": 10,
+  "round8_reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.40 sp)",
+  "reference": [
+   10
+  ],
+  "geometry": 10,
   "box_ink_frac": 0.69,
-  "ink_centroid_off_px": [
-   3.0,
-   -0.6
+  "tmpl_in_ink": 0.95,
+  "head_ink_covered": 0.72,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1184.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1199.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1215.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1229.5,
+    "dark_left": 1.0,
+    "dark_right": 0.75,
+    "dark": 1.0,
+    "MISS": false
+   }
   ],
-  "tmpl_in_ink": 0.77,
-  "head_ink_covered": 0.61,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 1.2,
-  "n_ink_rungs": 2
+  "diag": {
+   "chosen_shift_px": -3,
+   "ink_centroid_shift_px": -2,
+   "score_at_chosen": 0.426,
+   "score_at_ink_centre": 0.422,
+   "oval_minus_ink_centre_px": -1.1,
+   "oval_minus_ink_centre_sp": -0.07
+  },
+  "sheet": "main"
  },
  {
-  "subject": "glyph/1/0/11/2/3",
-  "kind": "filled",
-  "zoom": 6,
-  "spacing": 15.8,
-  "box_ink_frac": 0.83,
-  "ink_centroid_off_px": [
-   -0.8,
-   -1.0
-  ],
-  "tmpl_in_ink": 0.52,
-  "head_ink_covered": 1.0,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 1.0,
-  "n_ink_rungs": 3
- },
- {
+  "doc": "beethoven5-litolff",
   "subject": "glyph/1/0/9/14/8",
   "kind": "filled",
   "zoom": 6,
   "spacing": 15.8,
+  "variant": "on_line",
+  "template_step": 10,
+  "template_flag": "oval -0.36 sp off that line",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [],
+  "geometry": 19,
   "box_ink_frac": 0.54,
-  "ink_centroid_off_px": [
-   1.9,
-   -0.1
-  ],
   "tmpl_in_ink": 0.68,
   "head_ink_covered": 0.75,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 0.7,
-  "n_ink_rungs": 2
+  "lines": [
+   {
+    "what": "ledger",
+    "y": 2895.0,
+    "dark_left": 0.5,
+    "dark_right": 0.5,
+    "dark": 0.5,
+    "MISS": true
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": 0,
+   "score_at_chosen": 0.0,
+   "score_at_ink_centre": 0.0,
+   "oval_minus_ink_centre_px": 0.1,
+   "oval_minus_ink_centre_sp": 0.01
+  },
+  "sheet": "controls"
  },
  {
+  "doc": "beethoven5-litolff",
+  "subject": "glyph/1/0/11/2/3",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "variant": "in_space",
+  "template_step": -1,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": null,
+  "round8_reason": "no_rungs",
+  "reference": [],
+  "geometry": -12,
+  "box_ink_frac": 0.83,
+  "tmpl_in_ink": 0.52,
+  "head_ink_covered": 1.0,
+  "lines": [],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": -1,
+   "score_at_chosen": 0.066,
+   "score_at_ink_centre": -0.021,
+   "oval_minus_ink_centre_px": 1.0,
+   "oval_minus_ink_centre_sp": 0.06
+  },
+  "sheet": "controls"
+ },
+ {
+  "doc": "beethoven5-litolff",
   "subject": "glyph/1/0/9/3/5",
   "kind": "filled",
   "zoom": 6,
   "spacing": 15.8,
+  "variant": "on_line",
+  "template_step": 10,
+  "template_flag": "oval +0.27 sp off that line",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [],
+  "geometry": 10,
   "box_ink_frac": 0.73,
-  "ink_centroid_off_px": [
-   0.5,
-   -0.4
-  ],
   "tmpl_in_ink": 0.88,
   "head_ink_covered": 0.48,
-  "tmpl_w_px": 20,
-  "tmpl_h_px": 16,
-  "tilt_deg": 10.4,
-  "topmost_x_minus_centre_px": 0.5,
-  "n_ink_rungs": 4
+  "lines": [
+   {
+    "what": "staff",
+    "y": 2768.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 2784.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 2799.5,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 2817.5,
+    "dark_left": 0.5,
+    "dark_right": 0.0,
+    "dark": 0.5,
+    "MISS": true
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 5,
+   "ink_centroid_shift_px": 0,
+   "score_at_chosen": 0.151,
+   "score_at_ink_centre": 0.088,
+   "oval_minus_ink_centre_px": 5.4,
+   "oval_minus_ink_centre_sp": 0.34
+  },
+  "sheet": "controls"
  },
  {
-  "subject": "glyph/0/0/0/0/6",
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/1/1/0/4/0",
   "kind": "filled",
   "zoom": 3,
-  "spacing": 31.8,
-  "box_ink_frac": 0.86,
-  "ink_centroid_off_px": [
-   0.4,
-   1.1
+  "spacing": 27.5,
+  "variant": "in_space",
+  "template_step": -7,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": -7,
+  "round8_reason": "-0.19 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+  "reference": [
+   -7
   ],
-  "tmpl_in_ink": 0.99,
-  "head_ink_covered": 0.88,
-  "tmpl_w_px": 40,
-  "tmpl_h_px": 34,
-  "tilt_deg": 26.3,
-  "topmost_x_minus_centre_px": 4.2,
-  "n_ink_rungs": 3
+  "geometry": -7,
+  "box_ink_frac": 0.83,
+  "tmpl_in_ink": 1.0,
+  "head_ink_covered": 0.69,
+  "lines": [
+   {
+    "what": "ledger",
+    "y": 4207.5,
+    "dark_left": 0.71,
+    "dark_right": 0.29,
+    "dark": 0.71,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 4178.0,
+    "dark_left": 0.71,
+    "dark_right": 0.29,
+    "dark": 0.71,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 4151.5,
+    "dark_left": 0.86,
+    "dark_right": 0.57,
+    "dark": 0.86,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 1,
+   "ink_centroid_shift_px": 1,
+   "score_at_chosen": 0.079,
+   "score_at_ink_centre": 0.079,
+   "oval_minus_ink_centre_px": 0.0,
+   "oval_minus_ink_centre_sp": 0.0
+  },
+  "sheet": "main"
  },
  {
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/1/1/0/2/4",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 27.5,
+  "variant": "in_space",
+  "template_step": -3,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": -2,
+  "round8_reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.64 sp)",
+  "reference": [
+   -2
+  ],
+  "geometry": -2,
+  "box_ink_frac": 0.84,
+  "tmpl_in_ink": 0.99,
+  "head_ink_covered": 0.73,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 4234.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 4261.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 4288.5,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 4205.5,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": -1,
+   "ink_centroid_shift_px": 1,
+   "score_at_chosen": 0.437,
+   "score_at_ink_centre": 0.351,
+   "oval_minus_ink_centre_px": -2.0,
+   "oval_minus_ink_centre_sp": -0.07
+  },
+  "sheet": "main"
+ },
+ {
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/1/1/8/6/0",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 27.6,
+  "variant": "on_line",
+  "template_step": 12,
+  "template_flag": "NO measured line within half a space (+0.56 sp)",
+  "round8_step": 13,
+  "round8_reason": "0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+  "reference": [
+   13
+  ],
+  "geometry": 13,
+  "box_ink_frac": 0.88,
+  "tmpl_in_ink": 1.0,
+  "head_ink_covered": 0.81,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 6086.5,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 6113.5,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 6140.5,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": -1,
+   "ink_centroid_shift_px": -2,
+   "score_at_chosen": -0.045,
+   "score_at_ink_centre": -0.124,
+   "oval_minus_ink_centre_px": 0.9,
+   "oval_minus_ink_centre_sp": 0.03
+  },
+  "sheet": "main"
+ },
+ {
+  "doc": "brahms1-breitkopf",
   "subject": "glyph/0/0/0/0/5",
   "kind": "filled",
   "zoom": 3,
   "spacing": 31.9,
+  "variant": "in_space",
+  "template_step": -5,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": -4,
+  "round8_reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.60 sp)",
+  "reference": [],
+  "geometry": -4,
   "box_ink_frac": 0.78,
-  "ink_centroid_off_px": [
-   -1.1,
-   0.2
+  "tmpl_in_ink": 1.0,
+  "head_ink_covered": 0.87,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1582.5,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1614.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1551.5,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1519.5,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
   ],
-  "tmpl_in_ink": 0.99,
-  "head_ink_covered": 0.86,
-  "tmpl_w_px": 40,
-  "tmpl_h_px": 34,
-  "tilt_deg": 26.3,
-  "topmost_x_minus_centre_px": 3.8,
-  "n_ink_rungs": 3
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": 0,
+   "score_at_chosen": 0.568,
+   "score_at_ink_centre": 0.568,
+   "oval_minus_ink_centre_px": -0.2,
+   "oval_minus_ink_centre_sp": -0.01
+  },
+  "sheet": "controls"
  },
  {
+  "doc": "brahms1-breitkopf",
+  "subject": "glyph/0/0/0/0/6",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 31.8,
+  "variant": "in_space",
+  "template_step": -3,
+  "template_flag": "beyond the outermost measured ledger",
+  "round8_step": -3,
+  "round8_reason": "-0.04 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+  "reference": [],
+  "geometry": -3,
+  "box_ink_frac": 0.86,
+  "tmpl_in_ink": 0.99,
+  "head_ink_covered": 0.88,
+  "lines": [
+   {
+    "what": "staff",
+    "y": 1583.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "staff",
+    "y": 1614.0,
+    "dark": 1.0,
+    "MISS": false
+   },
+   {
+    "what": "ledger",
+    "y": 1550.0,
+    "dark_left": 1.0,
+    "dark_right": 1.0,
+    "dark": 1.0,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": 1,
+   "score_at_chosen": 0.595,
+   "score_at_ink_centre": 0.577,
+   "oval_minus_ink_centre_px": -1.1,
+   "oval_minus_ink_centre_sp": -0.04
+  },
+  "sheet": "controls"
+ },
+ {
+  "doc": "brahms1-breitkopf",
   "subject": "glyph/0/0/0/6/20",
   "kind": "filled",
   "zoom": 3,
   "spacing": 31.8,
+  "variant": "in_space",
+  "template_step": 9,
+  "template_flag": "",
+  "round8_step": null,
+  "round8_reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+  "reference": [],
+  "geometry": 19,
   "box_ink_frac": 0.63,
-  "ink_centroid_off_px": [
-   2.3,
-   1.9
-  ],
   "tmpl_in_ink": 0.7,
   "head_ink_covered": 0.9,
-  "tmpl_w_px": 40,
-  "tmpl_h_px": 34,
-  "tilt_deg": 26.3,
-  "topmost_x_minus_centre_px": 4.5,
-  "n_ink_rungs": 2
+  "lines": [
+   {
+    "what": "ledger",
+    "y": 1904.5,
+    "dark_left": 0.38,
+    "dark_right": 0.88,
+    "dark": 0.88,
+    "MISS": false
+   }
+  ],
+  "diag": {
+   "chosen_shift_px": 0,
+   "ink_centroid_shift_px": 2,
+   "score_at_chosen": -0.042,
+   "score_at_ink_centre": -0.102,
+   "oval_minus_ink_centre_px": -1.9,
+   "oval_minus_ink_centre_sp": -0.06
+  },
+  "sheet": "controls"
  }
 ]

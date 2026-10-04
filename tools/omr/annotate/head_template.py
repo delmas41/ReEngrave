@@ -576,6 +576,8 @@ def match_head_template(
 
     lx0, lx1 = int(round(cx - half_w)) - ix0, int(round(cx + half_w)) - ix0
 
+    shift_scores: Dict[str, Dict[int, float]] = {"on_line": {}, "in_space": {}}
+
     def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
         if tmpl is None:
             return None, None
@@ -595,6 +597,7 @@ def match_head_template(
             if score is None:
                 continue
             score -= SHIFT_PENALTY_PER_SPACE * (abs(shift) / spacing)
+            shift_scores[tmpl.variant][shift] = float(score)
             if best_score is None or score > best_score:
                 best_score, best_shift = score, shift
         return best_score, best_shift
@@ -619,6 +622,9 @@ def match_head_template(
         center_y=cy + (best_shift or 0),
         score_on=score_on, score_space=score_space, margin=float(margin),
         undecided=bool(undecided), reason="matched",
+        # diagnostic only (every penalised score by variant and vertical
+        # shift in px) -- nothing reads it to decide.
+        shift_scores=shift_scores,
     )
 
 
