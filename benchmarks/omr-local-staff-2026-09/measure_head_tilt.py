@@ -99,8 +99,8 @@ def _fit_angle(mask: np.ndarray, max_ecc: Optional[float] = None) -> Optional[fl
 
 def _fit_axes(mask: np.ndarray, max_ecc: Optional[float] = None
              ) -> Optional[Tuple[float, float]]:
-    """`(width, height)` of the fitted ellipse (cv2's own raw axes, NOT
-    reoriented) -- used to size a drawn template's inner slit from the
+    """`(long, short)` axes of the fitted ellipse (major axis first, the
+    one `_angle_up_right` is the tilt of) -- used to size a drawn template's inner slit from the
     SAME fit the angle came from, never a separately-guessed fraction."""
     c = _largest_contour(mask)
     if c is None or len(c) < 5:
@@ -110,7 +110,11 @@ def _fit_axes(mask: np.ndarray, max_ecc: Optional[float] = None
         ecc = max(ew, eh) / max(1.0, min(ew, eh))
         if ecc > max_ecc:
             return None
-    return (float(ew), float(eh))
+    # cv2 returns the UNROTATED box (width, height), which for a fitted
+    # wide head is (minor, major) -- swapped. The tilt is the MAJOR axis's
+    # angle, so report (long, short). 2026-10-04: the raw order was drawn
+    # as (width, height) -> upright ovals.
+    return (float(max(ew, eh)), float(min(ew, eh)))
 
 
 #: Page-level thickness cache (`sht.measure_line_thickness_px`, already

@@ -673,3 +673,21 @@ def template_middle_rung_evidence(
         exclude_boxes=exclude_boxes, stem_box=stem_box, kind=kind,
     )
     return result["decision"] == "on"
+
+
+def geometry_outline_poly(cx: float, cy: float, px_per_space: float,
+                          tilt_deg: float, width_spaces: float = None,
+                          height_spaces: float = None) -> np.ndarray:
+    """Outline (N x 2 int polygon, native image coords, y DOWN) of the
+    geometry head at centre (cx, cy): WIDE axis `width_spaces` (default
+    1.3 sp) tilted `tilt_deg` up-to-the-right, SHORT axis `height_spaces`
+    (default 1.0 sp). Same `_draw_angle_deg` convention as
+    `build_geometry_template`, so the review sheet draws what the matcher
+    matches (2026-10-04: the first sheet drew the cv2 fit's raw
+    (minor, major) pair as (width, height) -> upright ovals)."""
+    w = GEOM_HEAD_WIDTH_SPACES if width_spaces is None else width_spaces
+    h = GEOM_HEAD_HEIGHT_SPACES if height_spaces is None else height_spaces
+    axes = (max(1, int(round(w * px_per_space / 2.0))),
+            max(1, int(round(h * px_per_space / 2.0))))
+    return cv2.ellipse2Poly((int(round(cx)), int(round(cy))), axes,
+                            int(round(_draw_angle_deg(tilt_deg))), 0, 360, 5)

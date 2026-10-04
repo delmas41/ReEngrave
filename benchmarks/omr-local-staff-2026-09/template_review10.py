@@ -120,22 +120,41 @@ def _select_10(doc_id: str, loaded) -> list:
     return out[:10]
 
 
-def _draw_template_outline(crop, to_tile, cx, cy, kind, scale, outer_axes_native,
-                           angle_deg):
-    """Yellow rotated-ellipse outline + centre cross at the MATCHED
-    centre, sized from this doc's own measured outer axes (native px)."""
-    center_tile = to_tile(cx, cy)
-    ax_px = (int(outer_axes_native[0] / 2.0 * scale),
-            int(outer_axes_native[1] / 2.0 * scale))
-    cv2.ellipse(crop, center_tile, ax_px, -angle_deg, 0, 360, YELLOW, 2)
-    cs_ = 10
-    cv2.line(crop, (center_tile[0] - cs_, center_tile[1]),
-              (center_tile[0] + cs_, center_tile[1]), YELLOW, 2)
-    cv2.line(crop, (center_tile[0], center_tile[1] - cs_),
-              (center_tile[0], center_tile[1] + cs_), YELLOW, 2)
+HALF_W_SPACES = 2.6   # crop is CENTRED on the detector box centre
+HALF_H_SPACES = 3.2
+TARGET_TILE_SPACING_PX = 90  # zoom so one staff space is ~90 px (>= x3)
+BLUE = (255, 80, 0)
 
 
-def _head_tile(doc_id, row, rec, pages, templates_by_page, outer_tilt, outer_axes_native):
+def _local_ink_rungs(ink: np.ndarray, bx0: int, bx1: int, spacing: float):
+    """Rows (crop coords) holding a horizontal line of INK beside the head:
+    the strip left of the box and the strip right of it must each be mostly
+    ink on one side. Purely local -- nothing extrapolated from staff
+    spacing. Returns [(row_centre, band_height)]."""
+    h, w = ink.shape
+    reach = int(round(1.0 * spacing))
+    ls = ink[:, max(0, bx0 - reach):max(0, bx0 - 2)]
+    rs = ink[:, min(w, bx1 + 2):min(w, bx1 + reach)]
+    def frac(strip):
+        return strip.mean(axis=1) if strip.size else np.zeros(h)
+    hit = (frac(ls) >= 0.8) | (frac(rs) >= 0.8)
+    out, i = [], 0
+    while i < h:
+        if hit[i]:
+            j = i
+            while j + 1 < h and hit[j + 1]:
+                j += 1
+            # a rung is thin: wider than ~0.5 spacing is a blob, not a line
+            if (j - i + 1) <= 0.5 * spacing:
+                out.append(((i + j) / 2.0, j - i + 1))
+            i = j + 1
+        else:
+            i += 1
+    return out
+
+
+def _head_tile(doc_id, row, rec, pages, templates_by_page, outer_tilt,
+               boxes_by_page, acc_boxes_by_page):
     box = row["page_box"]
     staff_key = row["staff_key"]
     line_rows = rec.obs(Q.STAFF_LINES, staff_key)
@@ -144,74 +163,104 @@ def _head_tile(doc_id, row, rec, pages, templates_by_page, outer_tilt, outer_axe
     lines = score.frame_lines_for_head(gray, global_lines, box)
     spacing = (max(lines) - min(lines)) / 4.0
     subject = row["subject"]
-
-    boxes_by_page = sht._page_glyph_boxes(rec)
-    entry = {s: (cls, b) for (s, cls, b) in boxes_by_page.get(row["page"], [])}
+    page_boxes = boxes_by_page.get(row["page"], [])
+    entry = {sb: (cls, b) for (sb, cls, b) in page_boxes}
     cls, _b = entry.get(subject, ("noteheadBlackOnLine", box))
     kind = "filled" if "Black" in cls else "hollow"
-
-    others = [b for (s, c, b) in boxes_by_page.get(row["page"], []) if s != subject]
+    others = [b for (sb, c, b) in page_boxes if sb != subject]
     templates = sht.templates_for_page(templates_by_page, row["page"])
-    match = ht.match_head_template(gray, box, spacing, templates, exclude_boxes=others,
-                                   kind=kind)
+    match = ht.match_head_template(gray, box, spacing, templates,
+                                   exclude_boxes=others, kind=kind)
 
     x0, y0, x1, y1 = box
-    cx = (x0 + x1) / 2.0
+    cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0   # detector box centre, page px
     clef_v = rec.value(Q.CLEF, staff_key)
     truth_pos = sorted(set(score.truth_positions(row["truth_pitches"], str(clef_v))))
     geom_pos = int(round(row["raw_pos"]))
-    ref_pos = truth_pos[0] if truth_pos else geom_pos
-    ref_y = _position_to_y(ref_pos, lines, spacing)
+    r8_pos, _why = score.reader_absolute_position(
+        gray, lines, box, subject, [(sb, b) for (sb, c, b) in page_boxes],
+        page_accidental_boxes=acc_boxes_by_page.get(row["page"], []),
+        four_causes_cd=True)
 
-    match_cy = match["center_y"] if match else (y0 + y1) / 2.0
-    all_ys = [min(lines), max(lines), y0, y1, ref_y, match_cy]
-    crop_x0 = max(0, int(cx - PAD_SPACES_X * spacing))
-    crop_x1 = min(gray.shape[1], int(cx + PAD_SPACES_X * spacing))
-    crop_y0 = max(0, int(min(all_ys) - PAD_SPACES_Y * spacing))
-    crop_y1 = min(gray.shape[0], int(max(all_ys) + PAD_SPACES_Y * spacing))
-    crop = cv2.cvtColor(gray[crop_y0:crop_y1, crop_x0:crop_x1], cv2.COLOR_GRAY2BGR)
-    h0, w0 = crop.shape[:2]
-    crop = cv2.resize(crop, (w0 * ZOOM, h0 * ZOOM), interpolation=cv2.INTER_NEAREST)
+    # centred window (clamped only by the page edge)
+    cx0 = int(round(cx - HALF_W_SPACES * spacing)); cx1 = int(round(cx + HALF_W_SPACES * spacing))
+    cy0 = int(round(cy - HALF_H_SPACES * spacing)); cy1 = int(round(cy + HALF_H_SPACES * spacing))
+    H, W = gray.shape
+    gcrop = np.full((cy1 - cy0, cx1 - cx0), 255, np.uint8)
+    sx0, sy0, sx1, sy1 = max(0, cx0), max(0, cy0), min(W, cx1), min(H, cy1)
+    gcrop[sy0 - cy0:sy1 - cy0, sx0 - cx0:sx1 - cx0] = gray[sy0:sy1, sx0:sx1]
+    thr = ht._otsu_threshold(gcrop)
+    ink = gcrop <= thr
+    zoom = max(3, int(round(TARGET_TILE_SPACING_PX / spacing)))
+    img = cv2.cvtColor(gcrop, cv2.COLOR_GRAY2BGR)
+    img = cv2.resize(img, (img.shape[1] * zoom, img.shape[0] * zoom),
+                     interpolation=cv2.INTER_NEAREST)
 
-    def to_tile(px, py):
-        return (int((px - crop_x0) * ZOOM), int((py - crop_y0) * ZOOM))
+    def T(px, py):  # page px -> tile px
+        return (int(round((px - cx0) * zoom)), int(round((py - cy0) * zoom)))
 
-    for ly in lines:
-        p0, p1 = to_tile(crop_x0, ly), to_tile(crop_x1, ly)
-        cv2.line(crop, p0, p1, GREEN, 2)
+    bx0c, bx1c = int(round(x0 - cx0)), int(round(x1 - cx0))
+    rungs = _local_ink_rungs(ink, bx0c, bx1c, spacing)
+    for (rc, _bh) in rungs:  # orange: local ink lines
+        yy = int(round((rc + 0.5) * zoom))
+        cv2.line(img, (0, yy), (img.shape[1], yy), ORANGE, 2)
 
-    tl, br = to_tile(x0, y0), to_tile(x1, y1)
-    cv2.rectangle(crop, tl, br, RED, 1)
+    tilt = outer_tilt.get(kind, 0.0)
+    mcy = match["center_y"] if match else cy
+    poly = ht.geometry_outline_poly(cx, mcy, spacing, tilt)
+    # tile-space polygon (poly is built in page px, scaled by one space)
+    pts = ht.geometry_outline_poly((cx - cx0) * zoom, (mcy - cy0) * zoom,
+                                   spacing * zoom, tilt).astype(np.int32)
+    cv2.polylines(img, [pts], True, BLUE, 2, cv2.LINE_AA)
+    cv2.rectangle(img, T(x0, y0), T(x1, y1), RED, 1)
 
-    if match and match.get("best_variant") is not None:
-        _draw_template_outline(crop, to_tile, cx, match_cy, kind, ZOOM,
-                               outer_axes_native, outer_tilt.get(kind, 0.0))
+    # --- pixel self-check numbers (page px, measured off the ink) ---
+    bi = ink[max(0, int(y0 - cy0)):int(y1 - cy0), max(0, bx0c):bx1c]
+    box_ink = float(bi.mean()) if bi.size else 0.0
+    ys_i, xs_i = np.nonzero(bi)
+    cen_off = ((xs_i.mean() + max(0, bx0c)) - (cx - cx0), (ys_i.mean() + max(0, int(y0 - cy0))) - (cy - cy0)) if xs_i.size else (None, None)
+    tm = np.zeros(ink.shape, np.uint8)
+    cv2.fillPoly(tm, [np.array([[int(round(x - cx0)), int(round(y - cy0))] for x, y in poly], np.int32)], 1)
+    t_area = int(tm.sum())
+    t_in_ink = float((ink & (tm > 0)).sum() / max(1, t_area))
+    # head ink = ink inside the detector box, minus rows that are rungs
+    hb = np.zeros(ink.shape, bool)
+    hb[max(0, int(y0 - cy0)):int(y1 - cy0), max(0, bx0c):bx1c] = True
+    head_ink = ink & hb
+    head_cov = float((head_ink & (tm > 0)).sum() / max(1, head_ink.sum()))
+    pxs, pys = poly[:, 0], poly[:, 1]
+    top_x = pxs[pys == pys.min()].mean() - mcy * 0 - cx
+    check = dict(subject=subject, kind=kind, zoom=zoom, spacing=round(spacing, 1),
+                 box_ink_frac=round(box_ink, 2),
+                 ink_centroid_off_px=tuple(None if v is None else round(float(v), 1) for v in cen_off),
+                 tmpl_in_ink=round(t_in_ink, 2), head_ink_covered=round(head_cov, 2),
+                 tmpl_w_px=int(pxs.max() - pxs.min()), tmpl_h_px=int(pys.max() - pys.min()),
+                 tilt_deg=round(tilt, 1), topmost_x_minus_centre_px=round(float(top_x), 1),
+                 n_ink_rungs=len(rungs))
 
-    cyan_x0 = to_tile(cx - 1.2 * spacing, ref_y)[0]
-    cyan_x1 = to_tile(cx + 1.2 * spacing, ref_y)[0]
-    cyan_y = to_tile(cx, ref_y)[1]
-    cv2.line(crop, (cyan_x0, cyan_y), (cyan_x1, cyan_y), CYAN, 3)
-
-    variant_label = (match["best_variant"] if match and match.get("best_variant")
-                     else "none")
-    margin_label = f"{match['margin']:.3f}" if match and match.get("margin") is not None else "n/a"
-    undecided = match.get("undecided") if match else True
+    pos_c = (mcy - lines[0]) / (spacing / 2.0)
+    pos_i = int(round(pos_c))
+    var = match["best_variant"] if match and match.get("best_variant") else None
+    where = {"on_line": "on a line", "in_space": "in a space"}.get(var, "no answer")
+    parity_says = "on a line" if pos_i % 2 == 0 else "in a space"
+    if var is not None and parity_says != where:
+        where += f" (its height implies {parity_says}: disagree)"
+    und = "  (UNDECIDED)" if (match is None or match.get("undecided")) else ""
+    ref_txt = ",".join(str(p) for p in truth_pos) if truth_pos else "none"
     lines_text = [
-        f"{doc_id}  {subject}  ({kind})",
-        f"template match: {variant_label}{'  UNDECIDED' if undecided else ''}  "
-        f"margin={margin_label}",
-        "green=staff lines  yellow=matched template  cyan=reference tick",
+        f"{doc_id.split('-')[0]} {subject} ({kind})",
+        f"template says: {where}; height step {pos_i}{und}",
+        f"round 8: {'abstained' if r8_pos is None else r8_pos}   geometry: {geom_pos}   reference: {ref_txt}",
     ]
-    font, font_scale, thickness = cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1
-    text_w = max(cv2.getTextSize(t, font, font_scale, thickness)[0][0] for t in lines_text)
-    canvas_w = max(crop.shape[1], text_w + 16)
-    legend_h = 24 * (len(lines_text) + 1)
-    out = np.full((crop.shape[0] + legend_h, canvas_w, 3), 255, dtype=np.uint8)
-    out[:crop.shape[0], :crop.shape[1]] = crop
+    font, fs = cv2.FONT_HERSHEY_SIMPLEX, 0.55
+    tw = max(cv2.getTextSize(t, font, fs, 1)[0][0] for t in lines_text)
+    cw = max(img.shape[1], tw + 16)
+    lh = 24 * (len(lines_text) + 1)
+    out = np.full((img.shape[0] + lh, cw, 3), 255, np.uint8)
+    out[:img.shape[0], :img.shape[1]] = img
     for i, t in enumerate(lines_text):
-        cv2.putText(out, t, (8, crop.shape[0] + 20 + i * 22),
-                    font, font_scale, BLACK, thickness, cv2.LINE_AA)
-    return out
+        cv2.putText(out, t, (8, img.shape[0] + 22 + i * 24), font, fs, BLACK, 1, cv2.LINE_AA)
+    return out, check
 
 
 def _templates_panel(doc_id, templates_by_page, info):
@@ -248,14 +297,12 @@ def _templates_panel(doc_id, templates_by_page, info):
 def main() -> int:
     panels = []
     head_tiles = []
+    checks = []
     for doc_id in ts.DOCS:
         print(f"=== {doc_id} ===")
         measurements = mht.collect_doc_measurements(doc_id)
         summary = mht.summarize(doc_id, measurements)
         outer_tilt = {k: v.get("outer_tilt_deg", 0.0) for k, v in summary.items()}
-        outer_axes_native = {k: v.get("outer_axes_px", (
-            STANDARD_HEAD_WIDTH_SPACES * 16, STANDARD_HEAD_HEIGHT_SPACES * 16))
-            for k, v in summary.items()}
         templates_by_page, info = sht.build_geometry_templates_for_doc(doc_id)
         panels.append(_templates_panel(doc_id, templates_by_page, info))
 
@@ -266,9 +313,12 @@ def main() -> int:
         remaining = max(0, min(want, 10 - len(head_tiles)))
         selected = _select_10(doc_id, loaded)[:remaining] if remaining else []
         for row in selected:
-            tile = _head_tile(doc_id, row, rec, pages, templates_by_page,
-                              outer_tilt, outer_axes_native.get("filled", (20, 20)))
+            tile, chk = _head_tile(doc_id, row, rec, pages, templates_by_page,
+                                   outer_tilt, sht._page_glyph_boxes(rec),
+                                   score._accidental_boxes_by_page(rec))
             head_tiles.append(tile)
+            checks.append(chk)
+            print("  CHECK", chk)
         print()
 
     # 10 head tiles total across both docs, 2 columns.
@@ -308,7 +358,13 @@ def main() -> int:
 
     panels_stack = pad_to_width(panels_stack, full_w)
     heads_sheet = pad_to_width(heads_sheet, full_w)
-    sheet = np.vstack([panels_stack, heads_sheet])
+    legend = ("RED thin box = detector box.  BLUE oval = best-matching geometry head "
+              "(1.3 x 1.0 staff spaces, tilted at the measured angle) at its matched "
+              "height.  ORANGE lines = staff/ledger lines read from the INK beside the "
+              "head (local, never extrapolated).")
+    lg_img = np.full((34, full_w, 3), 255, np.uint8)
+    cv2.putText(lg_img, legend, (8, 22), cv2.FONT_HERSHEY_SIMPLEX, 0.6, BLACK, 1, cv2.LINE_AA)
+    sheet = np.vstack([lg_img, panels_stack, heads_sheet])
 
     if sheet.shape[1] > MAX_SHEET_W:
         f = MAX_SHEET_W / sheet.shape[1]
@@ -317,6 +373,8 @@ def main() -> int:
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     cv2.imwrite(str(OUT_PATH), sheet, [int(cv2.IMWRITE_JPEG_QUALITY), JPEG_QUALITY])
+    import json
+    (OUT_DIR / "template_review10_checks.json").write_text(json.dumps(checks, indent=1))
     print(f"wrote {OUT_PATH} ({len(head_tiles)} head tiles, "
           f"{sheet.shape[1]}x{sheet.shape[0]})")
     return 0

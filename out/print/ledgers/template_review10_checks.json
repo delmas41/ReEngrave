@@ -1,0 +1,182 @@
+[
+ {
+  "subject": "glyph/3/0/7/0/7",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 16.0,
+  "box_ink_frac": 0.84,
+  "ink_centroid_off_px": [
+   0.3,
+   -1.1
+  ],
+  "tmpl_in_ink": 0.92,
+  "head_ink_covered": 0.66,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 0.5,
+  "n_ink_rungs": 4
+ },
+ {
+  "subject": "glyph/3/0/7/2/4",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.73,
+  "ink_centroid_off_px": [
+   0.5,
+   -1.9
+  ],
+  "tmpl_in_ink": 1.0,
+  "head_ink_covered": 0.66,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 1.3,
+  "n_ink_rungs": 4
+ },
+ {
+  "subject": "glyph/3/0/8/6/10",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.79,
+  "ink_centroid_off_px": [
+   -0.1,
+   -0.4
+  ],
+  "tmpl_in_ink": 1.0,
+  "head_ink_covered": 0.73,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 0.5,
+  "n_ink_rungs": 3
+ },
+ {
+  "subject": "glyph/2/0/0/1/11",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.69,
+  "ink_centroid_off_px": [
+   3.0,
+   -0.6
+  ],
+  "tmpl_in_ink": 0.77,
+  "head_ink_covered": 0.61,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 1.2,
+  "n_ink_rungs": 2
+ },
+ {
+  "subject": "glyph/1/0/11/2/3",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.83,
+  "ink_centroid_off_px": [
+   -0.8,
+   -1.0
+  ],
+  "tmpl_in_ink": 0.52,
+  "head_ink_covered": 1.0,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 1.0,
+  "n_ink_rungs": 3
+ },
+ {
+  "subject": "glyph/1/0/9/14/8",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.54,
+  "ink_centroid_off_px": [
+   1.9,
+   -0.1
+  ],
+  "tmpl_in_ink": 0.68,
+  "head_ink_covered": 0.75,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 0.7,
+  "n_ink_rungs": 2
+ },
+ {
+  "subject": "glyph/1/0/9/3/5",
+  "kind": "filled",
+  "zoom": 6,
+  "spacing": 15.8,
+  "box_ink_frac": 0.73,
+  "ink_centroid_off_px": [
+   0.5,
+   -0.4
+  ],
+  "tmpl_in_ink": 0.88,
+  "head_ink_covered": 0.48,
+  "tmpl_w_px": 20,
+  "tmpl_h_px": 16,
+  "tilt_deg": 10.4,
+  "topmost_x_minus_centre_px": 0.5,
+  "n_ink_rungs": 4
+ },
+ {
+  "subject": "glyph/0/0/0/0/6",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 31.8,
+  "box_ink_frac": 0.86,
+  "ink_centroid_off_px": [
+   0.4,
+   1.1
+  ],
+  "tmpl_in_ink": 0.99,
+  "head_ink_covered": 0.88,
+  "tmpl_w_px": 40,
+  "tmpl_h_px": 34,
+  "tilt_deg": 26.3,
+  "topmost_x_minus_centre_px": 4.2,
+  "n_ink_rungs": 3
+ },
+ {
+  "subject": "glyph/0/0/0/0/5",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 31.9,
+  "box_ink_frac": 0.78,
+  "ink_centroid_off_px": [
+   -1.1,
+   0.2
+  ],
+  "tmpl_in_ink": 0.99,
+  "head_ink_covered": 0.86,
+  "tmpl_w_px": 40,
+  "tmpl_h_px": 34,
+  "tilt_deg": 26.3,
+  "topmost_x_minus_centre_px": 3.8,
+  "n_ink_rungs": 3
+ },
+ {
+  "subject": "glyph/0/0/0/6/20",
+  "kind": "filled",
+  "zoom": 3,
+  "spacing": 31.8,
+  "box_ink_frac": 0.63,
+  "ink_centroid_off_px": [
+   2.3,
+   1.9
+  ],
+  "tmpl_in_ink": 0.7,
+  "head_ink_covered": 0.9,
+  "tmpl_w_px": 40,
+  "tmpl_h_px": 34,
+  "tilt_deg": 26.3,
+  "topmost_x_minus_centre_px": 4.5,
+  "n_ink_rungs": 2
+ }
+]

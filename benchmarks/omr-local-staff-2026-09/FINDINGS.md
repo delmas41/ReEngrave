@@ -3294,3 +3294,18 @@ measure_head_tilt.py` (rewritten masking + axis/ratio reporting),
 (`build_geometry_templates_for_doc` now reuses `measure_head_tilt.
 summarize`), `benchmarks/omr-local-staff-2026-09/template_review10.py`,
 `out/print/ledgers/template_review10.jpg`.
+
+## Geometry head templates: the upright-oval bug and the fixed review sheet (lane-ledger-template-fix, 2026-10-04)
+
+No scoring. GATHER+ADJUDICATE only. Nothing switched on. The sheet is `out/print/ledgers/template_review10.jpg` (checks in `template_review10_checks.json`).
+
+**What was wrong.**
+1. `measure_head_tilt._fit_axes` returned cv2.fitEllipse's raw `(width, height)`. For a wide head that pair is (minor, major), swapped. `template_review10._draw_template_outline` drew it as (width, height), so every blue/yellow oval was upright (22 x 29 px at 16 px/space). Fixed: `_fit_axes` now returns (long, short), the same axis `_angle_up_right` measures. This also fixes the slit/outer ratio pairing (slit width was being applied to the head's tall axis).
+2. The crop was not centred. The window spanned min/max of staff lines, reference and match, so the head sat wherever those fell. Now a fixed window of +/-2.6 x +/-3.2 spaces around the detector box centre. Box and crop are in the same frame (page px at the record's 600 dpi); no DPI mismatch exists.
+3. `head_template.py`'s template BUILDER was already correct. Drawing at tilt 0 is wider than tall, and +N degrees puts the top ink right of centre (`_draw_angle_deg = -tilt` is right). The new test for it passes unfixed. The test that went RED on the unfixed tree is `test_fit_axes_reports_long_then_short_matching_tilt_axis`. Added `head_template.geometry_outline_poly` so the sheet draws with the matcher's own convention.
+
+**Tilt convention.** Checked by drawing known ellipses at -30/0/+30 with cv2.ellipse and re-fitting: `_angle_up_right` returns +29.8/0/-29.8, and the top ink lies right of centre for the positive one. The convention was NOT flipped, so ~10 / 35 / 26 degrees mean what they said. Caveats: IQRs are very wide (Litolff filled -2..43, Brahms filled 5..66), so the median is a weak summary; and the measured Litolff outer axes (22 x 29 px) exceed 1.3 x 1.0 spaces (21 x 16 px at 16 px/space), so the fit probably includes stem/neighbour ink. The sheet draws the 1.3 x 1.0 geometry, not the measured axes.
+
+**Self-check (pixel measurements, 10 tiles; first 3 shown).** The red box is on ink (fraction of the box that is ink): 0.84 / 0.73 / 0.79; ink centroid within 2 px of the box centre. Template ink overlap (fraction of the oval that is ink / fraction of in-box head ink the oval covers): 0.92 / 0.66, 1.00 / 0.66, 1.00 / 0.73. Across all 10 the oval-in-ink range is 0.52-1.00. The weak tiles are glyph/1/0/11/2/3 (0.52, ink-box merge) and glyph/0/0/0/6/20 (0.70). Oval 20 x 16 px at tilt 10 degrees (wider than tall), with top-most point 0.5-1.3 px right of centre. Brahms: 40 x 34 px at 26 degrees, top-most 3.8-4.5 px right of centre.
+
+**Caveats for the reader of the sheet.** Orange lines are rows of thin horizontal ink beside the head, so they can include non-rung strokes (slurs, beam tails). The "template says" text uses the matcher variant; where its height implies the other parity the tile says "disagree". Round 8 is `reader_absolute_position(four_causes_cd=True)`; "abstained" means it returned None.
