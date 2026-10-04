@@ -2691,3 +2691,72 @@ and nothing in `tools/omr/staged/gather.py`'s own (unflagged) call to
 regression (`glyph/3/0/0/2/9`) and the still-open 3 "through but
 wrong" heads above need a human crop check before anyone decides to
 wire this further.
+
+## lane-ledger-r8-main (2026-10-04) -- round 8 on current main, plus an explicit head-centre input
+
+Path: STAGED/GATHER+ADJUDICATE scoring harness over the legacy-shared
+rung reader (`tools/omr/annotate/ledger_grid.py`). Nothing switched on,
+nothing merged to main.
+
+**Rebase.** `lane-ledger-r8` (ded3d6ff) merged into `origin/main`
+(cac6e278) as `lane-ledger-r8-main`. Its base (46c982db) was 27 commits
+behind. The only textual conflicts were six generated files under
+`benchmarks/acceptance/quick/out/`; per the brief ROADMAP.md,
+docs/DECISIONS.md and everything under `benchmarks/acceptance/quick/`
+take main's version. The merge also carries the lane-2.48 local-staff
+work that r8 was built on (`measure_extractor.py`, `staged/gather.py`,
+`record.py`, `capture.py`, `consequences.py`) -- none of it is on main.
+
+**CONTROL (same script, same records, same flags).**
+`score_four_causes_cd.py` against
+`library/_shared-records/truthset-2.44c-20260930/` (symlinked into the
+path the script reads; `.gitignore`d): Litolff geometry 30/14/0,
+rungs_after **25 right / 14 wrong / 5 undecided** of 44; Brahms
+**11/0/0** of 11. Reproduced exactly, before and after the parameter
+below (output byte-identical). The script applies Sean's first-space
+rule: `far_head_needs_ledger_read` keeps a first-space head out of the
+far-head population (scored as on-staff geometry), and
+`glyph/1/0/10/14/1` is excluded (Sean: its reference is wrong, it is
+-2). Known: one regression `glyph/3/0/0/2/9` (right before, not right
+after), as in round 8.
+
+**New: `head_center_y`** (optional, page px, same frame as the box) on
+`head_middle_rung_evidence`, `collapse_head_edge_rungs_to_middle`,
+`derive_far_head_step`, `measure_ledger_rungs`. `None` = the box-middle
+probe, bit-identical. Where the collapse puts back a rung it puts it at
+the supplied centre. Only the probed ROW changes; the probed column
+(box x-middle) is unchanged. Test:
+`tests/test_ledger_head_center_input_2026_10_04.py` (a head whose box
+covers only its top half, ledger through the true middle: default says
+not-through, supplied centre says through). Run RED first on the
+unmodified reader (5 of 6 failed, the control that must read
+"not-through" passed), GREEN after.
+
+**DIAGNOSTIC ONLY -- not a result, not a headline.** The 5 Litolff
+heads still undecided; each head's centre traced from its own ink
+(`r8main_centre_diagnostic.py`: the dark run, >50% of a narrow centre
+column band, containing the box middle). Only ONE flips:
+
+- `glyph/3/0/7/2/4` (truth 10): traced centre 1568.5 vs box middle
+  1570.1; probe False -> True; reader None -> 10 (right). MARGINAL: the
+  ledger stubs sit at rows 1564-1567 (left stub 1564-1566, right stub
+  1566-1567), so the supplied centre's +-0.15sp band (1566..1571) reaches
+  the ledger by about one row. The head sits 0.19 sp below the ledger's
+  own row.
+- `glyph/3/0/7/0/7` (truth -3): traced centre 1464.5 vs box middle
+  1467.5; probe stays False, reader stays undecided. The head sits in
+  the SPACE above the first ledger; the one rung found (1472.5, ink
+  stub at x1+3 rows 1471-1474) touches the head's BOTTOM edge from
+  below and the reader drops it as "the head's own outline". That is
+  not a centre problem -- a ledger touching the head's far edge from the
+  staff side is what a head in the space above it looks like.
+- `8/6/10`, `8/9/0`: traced centres within +0.3 / +1.1 px of the box
+  middle, probe unchanged, undecided unchanged. `9/3/5`: no rung at all;
+  the trace merged with the staff's bottom line (run 1.3 sp too tall to
+  trust) and is discarded.
+
+So the "2 undecided heads that flip with a traced centre" in the brief
+does not reproduce: one flips, marginally; the second is a different
+fault. Crops (x3; red = box, green = supplied centre row, orange = rung
+from ink; row positions verified against the page's own ink columns):
+`out/print/ledgers/r8main/`.

@@ -186,6 +186,7 @@ def reader_absolute_position(
     subject: str, page_notehead_boxes: Sequence[Tuple[str, tuple]],
     page_accidental_boxes: "Sequence[Tuple[str, tuple]] | None" = None,
     four_causes_cd: bool = False,
+    head_center_y: Optional[float] = None,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
 
@@ -198,6 +199,10 @@ def reader_absolute_position(
     decide line-vs-space by direct evidence (cause D) instead of the
     retired gap-distance guess. `False` (the default) is the UNCHANGED
     "as shipped" reader every other caller of this function still gets.
+
+    `head_center_y` (lane-ledger-r8-main, 2026-10-04; DIAGNOSTIC input):
+    the head's own centre row, page px, replacing the box middle in the
+    middle-row probe. `None` = unchanged.
     """
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
@@ -226,6 +231,7 @@ def reader_absolute_position(
         gray, ys, cx, head_y=cy, exclude_boxes=others,
         head_box_x=(x0, x1),
         collapse_edges_box=(x0, y0, x1, y1) if four_causes_cd else None,
+        head_center_y=head_center_y if four_causes_cd else None,
         # FAULT 2's one-sided rule (`head_box_y`) is NOT wired into this
         # real-data score: measured NET NEGATIVE here (Litolff right
         # 33->31 of 44 when enabled) -- a one-sided "rung" the fixed
@@ -365,6 +371,7 @@ def reader_absolute_position(
         img_gray=gray if four_causes_cd else None,
         head_box=(x0, y0, x1, y1) if four_causes_cd else None,
         exclude_boxes=others if four_causes_cd else None,
+        head_center_y=head_center_y if four_causes_cd else None,
     )
     if step["offset"] is None:
         return None, step["reason"]
@@ -480,12 +487,17 @@ def _far_head_rows(doc_id: str, loaded: Dict[str, Any]) -> List[Dict[str, Any]]:
     return rows
 
 
-def score_doc(doc_id: str, four_causes_cd: bool = False) -> Dict[str, Any]:
+def score_doc(doc_id: str, four_causes_cd: bool = False,
+              head_centers: Optional[Dict[str, float]] = None) -> Dict[str, Any]:
     """`four_causes_cd=True` (lane-ledger-r8): runs the `rungs_after`
     reader with causes C+D wired in (`reader_absolute_position`'s own
     flag) -- population, geometry and `ledger_measured` are UNCHANGED,
     so `tally["rungs_after"]` is the only number this flag can move,
-    directly comparable to the `False` (default, "as shipped") run."""
+    directly comparable to the `False` (default, "as shipped") run.
+
+    `head_centers` (2026-10-04, DIAGNOSTIC ONLY): subject -> traced head
+    centre row (page px), passed as `head_center_y` for just those
+    subjects. `None` (the default) changes nothing."""
     loaded = ts.load_doc(doc_id)
     rows = _far_head_rows(doc_id, loaded)
     rec = loaded["rec"]
@@ -535,6 +547,7 @@ def score_doc(doc_id: str, four_causes_cd: bool = False) -> Dict[str, Any]:
             boxes_by_page.get(row["page"], []),
             page_accidental_boxes=accidental_boxes_by_page.get(row["page"], []),
             four_causes_cd=four_causes_cd,
+            head_center_y=(head_centers or {}).get(row["subject"]),
         )
         ledger_pos, ledger_reason, ledger_is_fallback = ledger_measured_position(
             gray, lines, box, row["subject"],

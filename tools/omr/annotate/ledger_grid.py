@@ -586,6 +586,7 @@ def measure_ledger_rungs(
     head_box_x: "tuple[float, float] | None" = None,
     head_box_y: "tuple[float, float] | None" = None,
     collapse_edges_box: "tuple[float, float, float, float] | None" = None,
+    head_center_y: "float | None" = None,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
 
@@ -643,6 +644,11 @@ def measure_ledger_rungs(
     back as the one genuine rung through the box's own middle
     (`collapse_head_edge_rungs_to_middle`). `collapse_edges_box=None`
     (the default) changes nothing.
+
+    `head_center_y`, when given (2026-10-04), is the head's own traced
+    centre row (page px, same frame as `collapse_edges_box`); it is only
+    forwarded to the collapse's middle-row probe and replaces the box
+    middle there. `None` = today's behaviour.
     """
     ys = sorted(float(v) for v in staff_line_ys or [])
     if len(ys) < 2 or img_gray.ndim != 2:
@@ -802,7 +808,7 @@ def measure_ledger_rungs(
             # see `collapse_edges_box`'s own docstring for why.
             rungs = collapse_head_edge_rungs_to_middle(
                 rungs, sign, collapse_edges_box, img_gray, spacing,
-                exclude_boxes,
+                exclude_boxes, head_center_y,
             )
         out[side] = rungs
     return out
@@ -814,6 +820,7 @@ def derive_far_head_step(
     img_gray: "np.ndarray | None" = None,
     head_box: "tuple[float, float, float, float] | None" = None,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_center_y: "float | None" = None,
 ) -> dict:
     """Sean's 2026-10-01 convention for turning a rung count into a step.
 
@@ -878,7 +885,7 @@ def derive_far_head_step(
     # head -- is there a line at its own middle -- so it is computed
     # once and reused by every branch below.
     evidenced = head_middle_rung_evidence(
-        img_gray, head_box, spacing, exclude_boxes
+        img_gray, head_box, spacing, exclude_boxes, head_center_y
     )
     remaining = list(rungs_y)
     while remaining:
@@ -1404,6 +1411,7 @@ def head_middle_rung_evidence(
     head_box: "tuple[float, float, float, float] | None",
     spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_center_y: "float | None" = None,
 ) -> bool:
     """Cause D's evidence test (DECISIONS 2026-10-01, "four causes behind
     the 8 far heads neither reader gets right", Sean on tiles 6-8:
@@ -1441,6 +1449,14 @@ def head_middle_rung_evidence(
          copy of the image first, so it can never supply the jut even
          where it would otherwise look connected.
 
+    `head_center_y`, when given (lane-ledger-r8-main, 2026-10-04), is the
+    head's own centre row in page px, same frame as the box -- the row the
+    middle probe is centred on INSTEAD of the box middle. A detector box
+    often covers only the top of a half note, so the box middle is not the
+    head's middle; a caller that traced the true centre supplies it here.
+    `None` (the default) probes at `(y0+y1)/2`, exactly as before. The
+    column probed (the box's x middle) is unchanged.
+
     `None` for `img_gray`/`head_box`, or a non-positive `spacing`, means
     no evidence is possible at all -- returns `False` (CLAUDE.md rule 8:
     "cannot tell" is never answered as "yes, a line").
@@ -1448,7 +1464,8 @@ def head_middle_rung_evidence(
     if img_gray is None or head_box is None or spacing is None or spacing <= 0:
         return False
     x0, y0, x1, y1 = head_box
-    mid_y = (y0 + y1) / 2.0
+    mid_y = ((y0 + y1) / 2.0 if head_center_y is None
+             else float(head_center_y))
     h, w = img_gray.shape
     pad = RUNG_BOX_VISIBILITY_SPACES * spacing
     cx0 = max(0, int(x0 - pad))
@@ -1511,6 +1528,7 @@ def collapse_head_edge_rungs_to_middle(
     head_box: "tuple[float, float, float, float]",
     img_gray: "np.ndarray | None", spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_center_y: "float | None" = None,
 ) -> "list[float]":
     """Cause C: when accidental (or broken half-note) ink beside a head
     on a ledger fakes two "rungs" at the head's own top and bottom edges,
@@ -1543,8 +1561,10 @@ def collapse_head_edge_rungs_to_middle(
     if hi != lo + 1:
         return list(rungs_y)
     out = ordered[:lo] + ordered[hi + 1:]
-    if head_middle_rung_evidence(img_gray, head_box, spacing, exclude_boxes):
-        mid_y = (y0 + y1) / 2.0
+    if head_middle_rung_evidence(img_gray, head_box, spacing, exclude_boxes,
+                                 head_center_y):
+        mid_y = ((y0 + y1) / 2.0 if head_center_y is None
+                 else float(head_center_y))
         out = sorted(out + [mid_y], key=lambda ry: sign * ry)
     return out
 
