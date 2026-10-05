@@ -41,7 +41,15 @@ from . import standard_head_box as shb
 READER_KEYWORDS: Dict[str, bool] = dict(
     near_edge_ledgers=True, restore_masked_near_edge=True,
     far_side_ledger=True, drop_beyond_head=True,
-    drop_same_ink_other_staff=True)
+    drop_same_ink_other_staff=True,
+    # lane-through-head-on (E5): a ledger through the head means the head is on it
+    through_head_on_rung=True)
+#: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
+#: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
+#: heads a third apart; split it into two standard boxes and place the ledger
+#: between them. Off = bit-identical to the unsplit reader.
+CHORD_SPLIT = True
+CHORD_SPLIT_OVERPRINT_SP = 0.2
 EXCLUSION_RULES: Dict[str, bool] = dict(connected=True, one_sided=True,
                                         jut_from_ink=True)
 
@@ -438,11 +446,49 @@ class FarHeadPage:
                  kind="hollow" if head_kind(cls) == "hollow" else "filled")
         st = self._standard_box(h, lines, spacing)
         use = tuple(st["box"]) if st["pass"] else box
+        box_source = "standard" if st["pass"] else "detector"
+        nh, rungs, split = self.nh, None, None
+        if CHORD_SPLIT:
+            split = self._chord_split(subject, box, lines, spacing)
+            if split is not None:
+                use, rungs = split["box"], split["rungs_y"]
+                box_source = "chord_split"
+                # the blob's other head is this head's own ink: not blanked
+                nh = [(s, b) for (s, b) in self.nh if s not in split["subjects"]]
         pos, reason = read_absolute_position(
-            self.gray, lines, use, subject, self.nh, self.acc)
-        return dict(pos=pos, reason=reason,
-                    box_source="standard" if st["pass"] else "detector",
-                    fit=st["fit"], shape_source=self.shape_source)
+            self.gray, lines, use, subject, nh, self.acc,
+            chord_split_rungs_y=rungs)
+        return dict(pos=pos, reason=reason, box_source=box_source,
+                    fit=st["fit"], shape_source=self.shape_source,
+                    chord_split=None if split is None else dict(
+                        partner=split["subjects"][1:], rung_y=split["rung_y"],
+                        source=split["source"]))
+
+    def _chord_split(self, subject, box, lines, spacing):
+        """The split of this head's blob into two page-standard boxes, or
+        None. Only same-staff boxes may share a blob; exactly two (this head
+        and one other) are split."""
+        stem = subject.split("/")[:4]
+        others = [(s, tuple(b)) for (s, b) in self.nh
+                  if s != subject and s.split("/")[:4] == stem]
+        cl = lg.chord_blob_cluster(box, [b for (_s, b) in others])
+        if len(cl) != 2:
+            return None
+        clset = set(cl[1:])
+        subs = [subject] + [s for (s, b) in others if b in clset]
+        shp = self.shape
+        res = lg.split_chord_blob(
+            self.gray, cl, spacing, shp["width_sp"], shp["height_sp"],
+            shp["tilt_deg"],
+            exclude_boxes=[b for (s, b) in others if s not in subs],
+            staff_span=(min(lines), max(lines)),
+            min_box_overprint_sp=CHORD_SPLIT_OVERPRINT_SP)
+        if not res.get("split"):
+            return None
+        order = sorted(range(2), key=lambda i: (cl[i][1] + cl[i][3]) / 2.0)
+        return dict(box=tuple(res["boxes"][order.index(0)]), rungs_y=res["rungs_y"],
+                    rung_y=round(res["rung_y"], 1), source=res["rung_source"],
+                    subjects=subs)
 
 
 def _oval_vs_ink(gray, box, spacing, thickness, line_ys, poly_page, cx_oval, cy_oval):
@@ -500,6 +546,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            subject: str,
                            page_notehead_boxes: Sequence[Tuple[str, tuple]],
                            page_accidental_boxes: Sequence[Tuple[str, tuple]],
+                           chord_split_rungs_y: Optional[Sequence[float]] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x."""
@@ -508,11 +555,11 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             one_sided=EXCLUSION_RULES["one_sided"],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
-                     page_accidental_boxes)
+                     page_accidental_boxes, chord_split_rungs_y)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
-          page_accidental_boxes) -> Tuple[Optional[int], str]:
+          page_accidental_boxes, chord_split_rungs_y=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -539,7 +586,14 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
     # a THIRD apart, neither with a line through it, necessarily have a ledger
     # between them.
     stack_reason = None
-    if not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
+    if chord_split_rungs_y is not None:
+        # the split blob's own ledgers (every printed jut, and the one between
+        # the two heads) replace the stacked-thirds partner search
+        for _ry in chord_split_rungs_y:
+            if (_ry < top) == (sign < 0):
+                items = lg.insert_rung(items, sign, _ry)
+        stack_reason = "chord_split_rung"
+    elif not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
         for psub, pbox in page_notehead_boxes:
             if psub == subject:
                 continue
@@ -579,6 +633,7 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
         far_side_ledger=READER_KEYWORDS["far_side_ledger"],
         far_side_partner_boxes=[b for (s_, b) in page_notehead_boxes if s_ != subject],
         drop_rungs_beyond_head=READER_KEYWORDS["drop_beyond_head"],
+        through_head_on_rung=READER_KEYWORDS["through_head_on_rung"],
     )
     if step["offset"] is None:
         return None, step["reason"]
