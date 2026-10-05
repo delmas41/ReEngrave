@@ -21,6 +21,7 @@
 set -uo pipefail
 TAG=${TAG:-20260930b}
 THROUGH=${THROUGH:-adjudicate}
+REF=${REF:-origin/main}   # 2026-10-04: a branch may be re-gathered before it is merged
 M=/Users/seanjohnson/Desktop/ReEngrave
 WT=$M/.claude/worktrees/overnight-$TAG
 OUT=$M/library/_shared-records
@@ -29,12 +30,12 @@ mkdir -p "$LOG"
 cd "$M"
 git fetch -q origin
 git worktree remove --force "$WT" 2>/dev/null
-git worktree add -q --detach "$WT" origin/main || exit 2
+git worktree add -q --detach "$WT" "$REF" || exit 2
 cd "$WT"
 ln -sfn $M/.venv-surya .venv-surya; ln -sfn $M/.venv-omrned .venv-omrned; ln -sfn $M/omr-weights omr-weights
 mkdir -p tools/omr/training/data && ln -sfn $M/tools/omr/training/data/weights tools/omr/training/data/weights
 export OMR_DIRECTION_TEXT_SCAN_GATE=1 OMR_SURYA_KEEP_ALIVE=0 OMRNED_PYTHON=$M/.venv-omrned/bin/python
-echo "commit $(git rev-parse HEAD) through $THROUGH start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
+echo "ref $REF commit $(git rev-parse HEAD) through $THROUGH start $(date -u +%FT%TZ)" > "$LOG/summary.txt"
 run() {  # id pdf pages
   local t0=$(date +%s)
   python3 -m tools.omr.staged "$2" --pages "$3" --weights auto --through "$THROUGH" --out "$OUT/$1-mvt1-whole-$TAG.record.json" > "$LOG/$1.log" 2>&1
