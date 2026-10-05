@@ -612,6 +612,9 @@ def match_head_template(
     decide: str = "joint",
     line_tolerance_spaces: float = 0.15,
     line_term: str = "ncc",
+    refine_centre: bool = False,
+    refine_mode: str = "iou",
+    refine_min_gain: float = 0.0,
 ) -> Optional[Dict]:
     """`dx_range_spaces` > 0 (round 3, 2026-10-04) also slides the window
     HORIZONTALLY by up to that many spaces, so the oval can land on the
@@ -777,7 +780,14 @@ def match_head_template(
     margin = (best_score - other_score) if other_score is not None else best_score
     undecided = margin < MARGIN_UNDECIDED_THRESHOLD
 
-    return dict(
+    refined = None
+    if refine_centre:
+        t_best = (tmpl_on if best_variant == "on_line" else tmpl_space)
+        hm = (t_best.head_img if t_best.head_img is not None else t_best.img) > 0.5
+        refined = refine_oval_centre(img_gray, cx + best_dx[best_variant], cy + (best_shift or 0),
+                                     spacing, hm, exclude_boxes=exclude_boxes,
+                                     score_mode=refine_mode, min_gain=refine_min_gain)
+    out = dict(
         kind=use_kind, best_variant=best_variant,
         center_y=cy + (best_shift or 0),
         center_x=cx + best_dx[best_variant],
@@ -787,6 +797,111 @@ def match_head_template(
         # shift in px) -- nothing reads it to decide.
         shift_scores=shift_scores,
     )
+    if refined is not None:
+        out["refined"] = refined
+    return out
+
+
+REFINE_MAX_SHIFT_SPACES = 0.25
+REFINE_STEP_PX = 0.5
+REFINE_LINE_COVERAGE = 0.70      # a row is a staff/ledger line when this much of the strip beside the head is ink
+
+
+def refine_oval_centre(img_gray: np.ndarray, cx: float, cy: float, spacing: float,
+                       head_mask: np.ndarray, max_shift_spaces: float = REFINE_MAX_SHIFT_SPACES,
+                       exclude_boxes: Optional[Sequence[Tuple[float, float, float, float]]] = None,
+                       score_mode: str = "iou", min_gain: float = 0.0) -> Dict:
+    """`score_mode="edge"`: instead of the IoU, score half the oval's ink COVERAGE
+    plus half the fraction of its OUTLINE that lies on the ink's own boundary --
+    a fused neighbour, beam or line adds no boundary at the oval's outline, so it
+    does not pull. `"iou"` (default) is the first version.
+    Nudge a head oval (given as the canonical-grid bool `head_mask`, centre at
+    the grid centre, 30 px per space) to the sub-pixel position where it best
+    covers the ink under it (round 6, Sean: "occasionally slightly off centre").
+
+    The ink it is compared with has stems and thin remnants removed by the same
+    morphological opening the matcher's head term uses, other noteheads' boxes
+    blanked, and every staff / ledger line row (a row whose strips beside the head
+    are mostly ink) cleared OUTSIDE the candidate oval. The score is the IoU of
+    the oval with that ink inside a window just larger than the oval -- so a
+    stem, beam, line or a neighbour fused at its edge adds to the union but is
+    not a reason to move toward it. The shift is capped at `max_shift_spaces` in
+    each of dx, dy; the start position wins ties. Returns
+    `dict(center_x, center_y, dx_px, dy_px, iou_before, iou_after)`."""
+    H, W = img_gray.shape
+    s = spacing / CANONICAL_PX_PER_SPACE
+    ys, xs = np.nonzero(head_mask)
+    mcx_c, mcy_c = xs.mean(), ys.mean()              # the mask's own centroid, canonical px
+    # oval at native scale, as a float image whose centroid is at (ox, oy)
+    mh, mw = max(3, int(round(head_mask.shape[0] * s))), max(3, int(round(head_mask.shape[1] * s)))
+    small = cv2.resize(head_mask.astype(np.float32), (mw, mh), interpolation=cv2.INTER_LINEAR)
+    ox, oy = mcx_c * s, mcy_c * s
+    hw = int(np.ceil(1.0 * spacing + max_shift_spaces * spacing + 2))
+    hh = int(np.ceil(0.85 * spacing + max_shift_spaces * spacing + 2))
+    wide = int(np.ceil(2.0 * spacing))                # strips used to find line rows
+    x0, x1 = int(round(cx)) - hw - wide, int(round(cx)) + hw + wide + 1
+    y0, y1 = int(round(cy)) - hh, int(round(cy)) + hh + 1
+    if x0 < 0 or y0 < 0 or x1 > W or y1 > H:
+        return dict(center_x=cx, center_y=cy, dx_px=0.0, dy_px=0.0, iou_before=None, iou_after=None,
+                    reason="window_off_page")
+    win = img_gray[y0:y1, x0:x1]
+    ink = (win <= _otsu_threshold(win))
+    if exclude_boxes:
+        ink = _blank_excluded_boxes(ink, exclude_boxes, x0, y0)
+    d = max(3, int(round(0.42 * spacing)) | 1)
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d, d))
+    opened = cv2.morphologyEx(ink.astype(np.uint8), cv2.MORPH_OPEN, k).astype(bool)
+    # line rows from the RAW ink: strips left and right of the head zone
+    lcx = cx - x0
+    strip_l = ink[:, max(0, int(lcx - hw)):max(0, int(lcx - 0.95 * spacing))]
+    strip_r = ink[:, min(ink.shape[1], int(lcx + 0.95 * spacing)):min(ink.shape[1], int(lcx + hw))]
+    def cov(a):
+        return a.mean(axis=1) if a.size else np.zeros(ink.shape[0])
+    line_rows = (cov(strip_l) >= REFINE_LINE_COVERAGE) | (cov(strip_r) >= REFINE_LINE_COVERAGE)
+    thick = max(1, int(round(0.2 * spacing)))
+    line_rows = cv2.dilate(line_rows.astype(np.uint8).reshape(-1, 1), np.ones((2 * thick + 1, 1), np.uint8)).reshape(-1) > 0
+    # crop everything to the window just larger than the oval
+    cx_in, cy_in = cx - x0, cy - y0
+    wx0, wx1 = int(round(cx_in)) - hw, int(round(cx_in)) + hw + 1
+    wy0, wy1 = int(round(cy_in)) - hh, int(round(cy_in)) + hh + 1
+    base_ink = opened[wy0:wy1, wx0:wx1]
+    rows_win = line_rows[wy0:wy1]
+    Hh, Ww = base_ink.shape
+
+    def place(px, py):
+        """Oval centred (as its centroid) at window coords (px, py), sub-pixel."""
+        M = np.array([[1, 0, px - ox], [0, 1, py - oy]], np.float32)
+        return cv2.warpAffine(small, M, (Ww, Hh), flags=cv2.INTER_LINEAR) >= 0.5
+
+    k3 = np.ones((3, 3), np.uint8)
+
+    def score(px, py):
+        ov = place(px, py)
+        ink_c = base_ink & ~(rows_win[:, None] & ~ov)
+        if score_mode == "edge":
+            cover = (ink_c & ov).sum() / max(1, ov.sum())
+            outline = ov & ~cv2.erode(ov.astype(np.uint8), k3).astype(bool)
+            ink_b = ink_c & ~cv2.erode(ink_c.astype(np.uint8), k3).astype(bool)
+            ink_bd = cv2.dilate(ink_b.astype(np.uint8), k3).astype(bool)
+            edge = (ink_bd & outline).sum() / max(1, outline.sum())
+            return 0.5 * cover + 0.5 * edge
+        u = (ink_c | ov).sum()
+        return (ink_c & ov).sum() / u if u else 0.0
+
+    sx, sy = cx_in - wx0, cy_in - wy0
+    iou0 = score(sx, sy)
+    best, bx, by = iou0, 0.0, 0.0
+    m = max_shift_spaces * spacing
+    steps = np.arange(-m, m + 1e-6, REFINE_STEP_PX)
+    for dy in steps:
+        for dx in steps:
+            v = score(sx + dx, sy + dy)
+            if v > best + 1e-9 or (abs(v - best) <= 1e-9 and (dx * dx + dy * dy) < (bx * bx + by * by) and v > iou0):
+                best, bx, by = v, float(dx), float(dy)
+    if best - iou0 < min_gain:        # not enough better to trust a move: stay put
+        best, bx, by = iou0, 0.0, 0.0
+    return dict(center_x=cx + bx, center_y=cy + by, dx_px=bx, dy_px=by,
+                iou_before=float(iou0), iou_after=float(best))
 
 
 def decide_head_position_from_template(

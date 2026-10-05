@@ -106,6 +106,49 @@ def test_thick_scanned_lines_still_decide_line_vs_space():
         assert m["margin"] >= 0.08, (pos, m["margin"])
 
 
+def _refine_scene(neighbour=False, stem=True, line=True, spacing=20.0):
+    img = np.full((240, 420), 255, np.uint8)
+    cv2.fillPoly(img, [ht.geometry_outline_poly(200, 100, spacing, 0.0).astype(np.int32)], 0)
+    if neighbour:
+        cv2.fillPoly(img, [ht.geometry_outline_poly(200 + 1.3 * spacing, 100, spacing, 0.0).astype(np.int32)], 0)
+    if stem:
+        img[100 - int(3.5 * spacing):100, 200 + 12:200 + 15] = 0        # stem up on the right
+    if line:
+        img[99:102, :] = 0                                              # a staff line through the head
+    return img
+
+
+def test_refine_centres_an_oval_started_off_on_a_head_with_a_stem_and_a_line():
+    """Round 6: the oval started 0.2 sp off must come back to the head's centre
+    (within 0.05 sp) although a stem and a line touch the head."""
+    img = _refine_scene()
+    mask = ht.head_shape_mask(1.3, 1.0, 0.0)
+    for sx, sy in ((204.0, 100.0), (196.0, 100.0), (200.0, 104.0), (200.0, 96.0), (203.0, 103.0)):
+        r = ht.refine_oval_centre(img, sx, sy, 20.0, mask)
+        err = np.hypot(r["center_x"] - 200, r["center_y"] - 100) / 20.0
+        assert err <= 0.05, (sx, sy, r, err)
+
+
+def test_refine_is_not_pulled_into_a_fused_neighbour():
+    """A second head fused at its edge must not drag the oval toward it."""
+    img = _refine_scene(neighbour=True)
+    mask = ht.head_shape_mask(1.3, 1.0, 0.0)
+    r = ht.refine_oval_centre(img, 202.0, 100.0, 20.0, mask)
+    assert abs(r["center_x"] - 200) <= 0.1 * 20.0 and abs(r["center_y"] - 100) <= 0.1 * 20.0, r
+    # and it never leaves the +-0.25 sp box around where it started
+    assert abs(r["center_x"] - 202.0) <= 0.25 * 20.0 + 1e-6
+
+
+def test_refine_off_is_the_default_and_adds_nothing():
+    img = _refine_scene()
+    tm = ht.build_geometry_templates({"filled": 0.0, "hollow": 0.0}, {}, 3.0 * 30.0 / 20.0)
+    box = (200 - 13, 100 - 10, 200 + 13, 100 + 10)
+    off = ht.match_head_template(img, box, 20.0, tm, kind="filled")
+    assert "refined" not in off
+    on = ht.match_head_template(img, box, 20.0, tm, kind="filled", refine_centre=True)
+    assert "refined" in on and {k: v for k, v in on.items() if k != "refined"} == off
+
+
 def test_horizontal_search_moves_the_oval_onto_an_offset_head():
     """Round 3: the box sits 6 px left of the printed head. Vertical-only
     cannot fix that; a +-0.4 sp horizontal search lands on the ink."""
