@@ -2963,3 +2963,61 @@ by itself -- tile 5 stays wrong until the lower head's undersized box is replace
 Pixel check (ink on the row within +-1.1 sp of the head x, vs the rows 0.5 sp above / below; printed by `accidental_sheet.py`): tile 5 kept L1 434 0.66/0.74,0.09; L2 423.5 0.74/0.11,0.63; L3 411 0.66/0.11,0.40;
 L4 396 0.74/0.26,0.11; L5 376 1.00/0.29,0.66. Tile 6 L1 424 0.74/0.12,0.74; L2 396 0.79/0.21,0.12; L3 376.5 1.00/0.35,0.68. Tile 2 L1 428.5 0.74/0.11,0.00; 395 0.63/0.54,0.60 (a head body, not a thin line -- consistent with cause ii).
 Tests `tools/omr/tests/test_ledger_accidental_2026_10_04.py` 7 (new names: RED by ImportError against the base tree; GREEN now); all 362 `-k ledger` tests pass.
+
+## lane-ledger-exclusion (2026-10-04): what `_exclude_other_heads_ink` may blank of THIS head's own evidence (tiles 2, 7, 9)
+
+Base `origin/lane-ledger-accidental` b50ef07a. Scripts (this directory): `score_exclusion.py` (arm table), `exclusion_sheet.py` (crops),
+`exclusion_reach.py` (does each rule fire at all), `exclusion_identity.py` (default-output identity), `exclusion_trace.py` / `exclusion_one_rows.py` / `exclusion_ascii.py` /
+`exclusion_diag.py` (per-head traces). Sheet `out/print/ledgers/exclusion/exclusion_sheet.png` (+ one PNG per head). All keywords default OFF.
+**Control** reproduced: Litolff 32/10/2 (n=44), Brahms 11/0/0; with `drop_rungs_beyond_head` 33/9/2. **Default output bit-identical**: all 55 heads x 3 default-path arms (165 reads,
+position AND reason) are byte-identical between this tree and the base tree (`exclusion_identity.py`, base `ledger_grid.py`/`score_truth_set_rungs.py` loaded from git).
+LEGACY path (the ledger reader is the annotate/staged-support reader; nothing here is wired into STAGED or switched on).
+
+**Cause, per tile** (all three confirmed in ink, `exclusion_ascii.py`):
+* tile 9 `3/0/7/7/0` and tile 7 `3/0/7/4/3`: the box blanking the head's middle band is NOT another note. `3/0/8/7/1` (staff 8) and `3/0/6/4/3` (staff 6) overlap the subject's box by
+  93% / 62% of the smaller box (IoU 0.57 / 0.45): the same head claimed by the cross-staff contest on both staves (`glyph_owner` decides whose; the ledger reader should not). Blanked, the ledger
+  through the head vanishes from the middle-row evidence.
+* tile 2 `3/0/0/2/4`: the real 2nd ledger (rows 413-417, 5 px thick) juts 12 px right out of neighbour head `2/9` and nothing on the left. Both-sides test -> blanked.
+
+**Rules** (convention first, constants from spacing; `sp` = staff spacing):
+1. `exclusion_boxes_for(..., drop_same_ink_other_staff=True)` -- a box owned by ANOTHER staff (subject key `glyph/p/sys/STAFF/..`) that overlaps the subject's box by > 0.5 of the SMALLER box
+   (`SAME_INK_OVERLAP_FRACTION`) and does not COINCIDE with it (IoU < 0.9, `SAME_INK_COINCIDENT_IOU`) is the same ink twice, not blanked. The coincidence bound is not optional: Brahms
+   `glyph/1/1/8/7/4` has a staff-9 duplicate at IoU 0.97 whose blanking of the WHOLE head keeps the head's own ink from merging with a slur into a false rung (without the bound: 13 right -> 11
+   wrong, found by the arm table, traced in `exclusion_trace.py`). 0.9 sits between 0.57 and 0.97: **n = 3 heads, so a measured bound, not a convention**. Fires on 15 of 55 heads (reach).
+2. `exclusion_rules(one_sided=True)` -- a row of another head's box is kept when ink runs unbroken from that head's outermost ink out past the box edge >= 0.35 sp
+   (`ONE_SIDED_JUT_MIN_BEYOND_SPACES`), is <= `LEDGER_THICKNESS_MAX_SPACES` (0.35 sp) + 1 px thick over the outer half of the run, and its top and bottom edges move <= 0.10 sp (min 1 px,
+   `ONE_SIDED_JUT_FLAT_TOL_SPACES`) over it. Fires on 17 of 55 heads. **Does it separate a ledger from a round head tip? Not cleanly.** Tile 2's ledger passes; a synthetic round tip fails
+   (tests); but on the real tile 5 (below) the pointed right tip of the lower head `7/2` (rows 427-429, 10 px beyond its undersized box, thickness 6,5,5,4,4) ALSO passes. The stricter "same
+   thickness along the run (<= 1 px)" refuses that tip -- and tile 2's ledger with it (a real ledger's own end tapers too: 5 thick for 5 px, then 3). Both measured (arm table); the looser one is
+   the keyword's behaviour, `ONE_SIDED_JUT_THICKNESS_TOL_PX` (None = off) holds the stricter one.
+3. `exclusion_rules(own_box=subject_box)` -- the subject's own box is never blanked (the docstring's old principle). **REFUSED**: it breaks two right heads (Litolff `3/0/9/3/5` 11 -> abstain,
+   Brahms `1/1/8/7/4` 13 -> wrong; its only gains are `3/0/0/6/2` against the reference Sean marked wrong, and `2/9` wrong -> wrong). Keyword kept, never to be turned on; not in the headline arm.
+
+**Arms** (Litolff right/wrong/abstain; Brahms 11/0/0 unless stated):
+| arm | Litolff | per-head changes vs control | right heads broken |
+|---|---|---|---|
+| control | 32/10/2 | -- | -- |
+| same | 34/8/2 | `7/4/3` -3 -> -4 right; `7/7/0` 11 -> 12 right | 0 |
+| one | 32/10/2 | `2/4` -4 -> -6 (L2 found; still wrong: head box too low, other lane) | 0 |
+| own | 32/9/3, Brahms 10/1/0 | `9/3/5` right -> abstain; Brahms `8/7/4` right -> wrong | 2 |
+| same+one | 34/8/2 | tiles 7, 9 right; tile 2 -6 wrong | 0 |
+| drop (lane-ledger-accidental) | 33/9/2 | `7/2` -6 -> -2 right | 0 |
+| same+one+drop | 35/7/2 | tiles 7, 9, `7/2` right | 0 |
+| conn+one | 33/9/2 | `7/1` -10 -> -8 right (see below) | 0 |
+| **conn+same+one+drop** | **36/6/2**, Brahms 11/0/0 | tiles 7, 9 right, `7/1` -10 -> -8 right, `7/2` -6 -> -2 right; tile 2 -4 -> -6 wrong | **0** |
+| same+one(strict)+conn+drop | 35/7/2 | as above minus `7/1` | 0 |
+| all (+own) +drop | 35/6/3, Brahms 10/1/0 | as `own` | 2 |
+Tile 5 `3/0/0/7/1` is the lane-ledger-accidental tile and appears only with `conn` AND `one` together: `conn` drops the false row 434 and the lower head's through-ledger that counted only
+because of the accidental on its left (423.5, "both sides"); `one` puts back the through-ledger as its right-hand jut (row 428, the box middle). Ladder 5 -> 4 rungs, -8. Correct COUNT, but the
+row's pixel check is a head-body row, not an isolated line (ink 0.63, rows 0.5 sp off 0.51/0.60) because that ledger lies inside the lower head's blob -- and it rests on the tip-or-ledger call above.
+**The one question for Sean** (a single crop, `glyph_3_0_0_7_1.png`, right panel): is the pointed ink right of the lower head, at the orange L1 row, the END OF ITS LEDGER or the head's own tip?
+If a tip, `7/1` stays at -6 (35/7/2) and `one` is worth only tile 2's L2.
+
+**Tiles 2 / 7 / 9** individually: 9 and 7 become right by rule 1 alone (the ledger through the head returns to the middle-row band; pixel check below). 2: L2 (y416) is now counted
+(ladder 428.5, 416, 395), but the head box (382.7-404.6) sits too low, so "through 395" gives -6, not -7: unchanged wrong, not fixable here. Pixel check (ink on the row within +-1.1 sp of the
+head x / rows 0.5 sp above, below): tile 2 L1 428.5 0.74/0.11,0.00; L2 416 0.63/0.63,0.11; L3 395 0.63/0.54,0.60. Tile 7 L1 1470 0.91/0.46,0.17; L2 1452 0.91/0.37,0.51 (row through the head's
+body, the ledger is the jut at its middle). Tile 9 L1 1567 0.83/0.11,0.46; L2 1582 0.86/0.31,0.51 (same). Tile 6 L1 424 0.74/0.12,0.74; L2 396 0.79/0.21,0.12; L3 376.5 1.00/0.35,0.68 (L2, L3 drawn
+but beyond the head: not counted, by `drop`). **Broken heads: none** in any arm that includes rule 1 or 2 (right heads broken: []). The 15 heads where a rule fires but the verdict does not move
+were not cropped; REACH says the rules are live, not that every firing is a ledger.
+Tests `tools/omr/tests/test_ledger_exclusion_2026_10_04.py` 11 (all names new: RED by ImportError on the base tree; one mutation -- raising the thickness cap -- turns the thick-ledger test RED);
+`-k ledger` 373 passed 2 xfailed (one older test pinned `_EXCL_RULES == {"connected": False}` and now names the two new keys); `staged.check` 250, unchanged.

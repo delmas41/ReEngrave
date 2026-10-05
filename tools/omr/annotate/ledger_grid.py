@@ -524,14 +524,59 @@ def _rung_row_clears_box(
 #     ledger stub for it).  Default: any ink within the margin counts.
 # (A second rule, "one thin flat jut keeps the row", was built, measured
 # +1 head for a cause no crop showed, and REFUSED -- FINDINGS.)
-_EXCL_RULES = {"connected": False}
+# lane-ledger-exclusion (2026-10-04) -- what the exclusion may blank of THIS
+# head's evidence.  Default OFF (bit-identical):
+#   own_box:   the SUBJECT's own box (x0, y0, x1, y1) is never blanked -- the
+#     docstring of `_exclude_other_heads_ink` has always said the subject's
+#     own box "is real evidence, not noise"; a neighbour's box that overlaps
+#     it blanked that evidence anyway.
+#   one_sided: a row of another head's box is kept when a THIN, FLAT line
+#     juts from its ink on ONE side only (Sean 2026-10-01: a ledger "will
+#     only come out on one side not both") -- `_thin_flat_one_sided_jut`.
+#     (The first attempt, in lane-ledger-accidental, kept any thin jut and
+#     was refused; this one also needs length beyond the box and straight
+#     top/bottom edges.)
+_EXCL_RULES = {"connected": False, "own_box": None, "one_sided": False}
+
+# a head box that overlaps the subject's by more than this fraction of the
+# SMALLER box's area is the same ink detected twice (cross-staff duplicate),
+# not another note: two different heads of a chord are displaced by about a
+# head width, so their boxes share a sliver, never most of one box.
+SAME_INK_OVERLAP_FRACTION = 0.5
+# ... but only a PARTIAL overlap: a box that coincides with the subject's
+# (IoU >= this) blanks exactly the subject's own box -- the blanking every
+# jut-beyond-the-box test is built around, and on Brahms `glyph/1/1/8/7/4`
+# (IoU 0.97 with its staff-9 duplicate) it is what keeps the head's own ink
+# from merging with a slur into a false rung.  A partial box (tiles 7 and 9:
+# IoU 0.45 and 0.57) blanks only HALF the head -- the middle-row band the
+# evidence is read from -- which is the defect.  Measured on n=3 heads.
+SAME_INK_COINCIDENT_IOU = 0.9
+# one-sided jut: the line must run at least this far beyond the other head's
+# box edge, connected to its ink (a ledger overhangs a head by ~0.3-0.5 sp;
+# `RUNG_STUB_MIN_SPACES` is the walk's own, smaller, both-sided floor)
+ONE_SIDED_JUT_MIN_BEYOND_SPACES = 0.35
+# ... be no thicker than a ledger (`LEDGER_THICKNESS_MAX_SPACES`, +1 px of
+# scan slop) and have straight top and bottom edges (a rectangle: the edges
+# move by no more than this over the jut; a round head tip's thickness
+# changes by several px over the same run)
+ONE_SIDED_JUT_FLAT_TOL_SPACES = 0.10
+# Optional stricter flatness: the same THICKNESS along the run to within this
+# many px (None = not applied; the shipped test).  Measured and NOT adopted:
+# a real ledger's own end tapers by a row or two as well (tile 2's jut is 5
+# thick for 5 px then 3 for 3), so applying it at 1 px refuses tile 2's
+# ledger together with the tile-5 tip it was meant to catch (FINDINGS).
+ONE_SIDED_JUT_THICKNESS_TOL_PX = None
 
 
 class exclusion_rules:
     """Context manager: `with exclusion_rules(connected=True): ...`."""
 
-    def __init__(self, connected: bool = False):
-        self._new = {"connected": bool(connected)}
+    def __init__(self, connected: bool = False, own_box=None,
+                 one_sided: bool = False):
+        self._new = {"connected": bool(connected),
+                     "own_box": (tuple(float(v) for v in own_box)
+                                 if own_box is not None else None),
+                     "one_sided": bool(one_sided)}
 
     def __enter__(self):
         self._old = dict(_EXCL_RULES)
@@ -560,6 +605,121 @@ def _connected_continuation(row_ink_in_box: np.ndarray, left_ink: np.ndarray,
     right = (right_ink.size > 0 and bool(right_ink[0])
              and bool(row_ink_in_box[hi:].all()))
     return left, right
+
+
+def exclusion_boxes_for(subject: str, subject_box, page_notehead_boxes,
+                        page_accidental_boxes=None,
+                        drop_same_ink_other_staff: bool = False):
+    """The boxes whose ink is blanked as "not this head's" while reading
+    `subject`: every OTHER notehead box on the page plus the accidental
+    boxes -- exactly the list the reader always built (default).
+
+    `drop_same_ink_other_staff` (lane-ledger-exclusion, default False): a
+    box owned by ANOTHER STAFF (subject keys `glyph/page/system/staff/...`)
+    that overlaps the subject's box by more than `SAME_INK_OVERLAP_FRACTION`
+    of the smaller box, without coinciding with it (IoU <
+    `SAME_INK_COINCIDENT_IOU`), is this same ink claimed twice (the
+    cross-staff ownership contest, `glyph_owner`, decides whose it is -- not
+    a ledger reader); it is no other note's ink and is not blanked."""
+    out = []
+    sx0, sy0, sx1, sy1 = subject_box
+    s_staff = subject.split("/")[:4]
+    for key, b in page_notehead_boxes:
+        if key == subject:
+            continue
+        if drop_same_ink_other_staff and key.split("/")[:4] != s_staff:
+            ox = max(0.0, min(sx1, b[2]) - max(sx0, b[0]))
+            oy = max(0.0, min(sy1, b[3]) - max(sy0, b[1]))
+            a_s = (sx1 - sx0) * (sy1 - sy0)
+            a_b = (b[2] - b[0]) * (b[3] - b[1])
+            small = min(a_s, a_b)
+            inter = ox * oy
+            iou = inter / (a_s + a_b - inter) if (a_s + a_b - inter) > 0 else 0.0
+            if (small > 0 and inter > SAME_INK_OVERLAP_FRACTION * small
+                    and iou < SAME_INK_COINCIDENT_IOU):
+                continue
+        out.append(b)
+    out.extend(b for (_k, b) in (page_accidental_boxes or []))
+    return out
+
+
+def _thin_flat_one_sided_jut(ink: np.ndarray, x0: int, yy0: int,
+                             img_gray, thr, abs_y: int,
+                             true_x0: int, true_x1: int,
+                             spacing: float) -> bool:
+    """Does row `abs_y` carry a thin, flat line that juts out of the box
+    [true_x0, true_x1) of ANOTHER head on at least one side?  True means the
+    row is a ledger (Sean 2026-10-01: a ledger may come out on one side
+    only), not that head's own ink.  All of:
+      connected -- ink runs unbroken from the head's outermost ink inside
+        the box on that side out past the box edge (a white gap is never a
+        stub);
+      long      -- it runs >= ONE_SIDED_JUT_MIN_BEYOND_SPACES past the edge;
+      thin      -- over the outer half of that run the vertical ink run
+        through `abs_y` is <= a ledger's thickness (+1 px);
+      flat      -- and its top and bottom edges move by <= the flat
+        tolerance over that run (a round head tip fails: its thickness
+        changes several px over the same distance)."""
+    h, w = ink.shape
+    need = int(np.ceil(ONE_SIDED_JUT_MIN_BEYOND_SPACES * spacing))
+    cap = int(np.floor(LEDGER_THICKNESS_MAX_SPACES * spacing)) + 1
+    tol = max(1, int(round(ONE_SIDED_JUT_FLAT_TOL_SPACES * spacing)))
+    reach = int(np.ceil(2.0 * spacing))
+    vpad = cap + 2 * tol + 2
+    ay0, ay1 = abs_y - vpad, abs_y + vpad + 1
+    ax0, ax1 = true_x0 - reach, true_x1 + reach
+    P = np.zeros((ay1 - ay0, ax1 - ax0), bool)   # ink on the page rect; unknown -> no ink
+    if img_gray is not None and thr is not None:
+        gh, gw = img_gray.shape
+        sx0, sy0, sx1, sy1 = max(ax0, 0), max(ay0, 0), min(ax1, gw), min(ay1, gh)
+        if sx1 > sx0 and sy1 > sy0:
+            P[sy0 - ay0:sy1 - ay0, sx0 - ax0:sx1 - ax0] = \
+                img_gray[sy0:sy1, sx0:sx1] <= thr
+    else:
+        sx0, sy0 = max(ax0, x0), max(ay0, yy0)
+        sx1, sy1 = min(ax1, x0 + w), min(ay1, yy0 + h)
+        if sx1 > sx0 and sy1 > sy0:
+            P[sy0 - ay0:sy1 - ay0, sx0 - ax0:sx1 - ax0] = \
+                ink[sy0 - yy0:sy1 - yy0, sx0 - x0:sx1 - x0]
+    row = abs_y - ay0
+    for flip in (False, True):
+        Q = P[:, ::-1] if flip else P
+        if flip:
+            bl, br = ax1 - true_x1, ax1 - true_x0
+        else:
+            bl, br = true_x0 - ax0, true_x1 - ax0
+        inside = Q[row, bl:br]
+        if not inside.any():
+            continue
+        c = bl + int(np.flatnonzero(inside)[-1])   # the head's outermost ink
+        while c < Q.shape[1] and Q[row, c]:
+            c += 1
+        lj = c - br                                 # how far the run goes beyond the box
+        if lj < need:
+            continue
+        tops, bots = [], []
+        for cc in range(br + lj // 2, c):
+            col = Q[:, cc]
+            t = row
+            while t > 0 and col[t - 1]:
+                t -= 1
+            b = row
+            while b < Q.shape[0] - 1 and col[b + 1]:
+                b += 1
+            tops.append(t)
+            bots.append(b)
+        if not tops:
+            continue
+        thick = [b - t + 1 for t, b in zip(tops, bots)]
+        if max(thick) > cap:
+            continue
+        if max(tops) - min(tops) > tol or max(bots) - min(bots) > tol:
+            continue
+        if (ONE_SIDED_JUT_THICKNESS_TOL_PX is not None
+                and max(thick) - min(thick) > ONE_SIDED_JUT_THICKNESS_TOL_PX):
+            continue
+        return True
+    return False
 
 
 def _exclude_other_heads_ink(
@@ -642,7 +802,19 @@ def _exclude_other_heads_ink(
                                           and (wide_right <= thr).any())
             if has_left and has_right:
                 continue  # a real ledger continuing on both sides -- keep it
+            if _EXCL_RULES["one_sided"] and _thin_flat_one_sided_jut(
+                    ink, x0, yy0, img_gray, thr, yy0 + r,
+                    int(bx0), int(bx1) + 1, spacing):
+                continue  # a thin flat line out of one side only -- a ledger
             out[r, col0:col1] = False
+    own = _EXCL_RULES["own_box"]
+    if own is not None:
+        # the subject's own box is real evidence, whatever box overlaps it
+        ox0, oy0 = max(int(own[0]), x0), max(int(own[1]), yy0)
+        ox1, oy1 = min(int(own[2]) + 1, x0 + w), min(int(own[3]) + 1, yy0 + h)
+        if ox1 > ox0 and oy1 > oy0:
+            out[oy0 - yy0:oy1 - yy0, ox0 - x0:ox1 - x0] = \
+                ink[oy0 - yy0:oy1 - yy0, ox0 - x0:ox1 - x0]
     return out
 
 
