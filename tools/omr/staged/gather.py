@@ -832,6 +832,194 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# A far head's position, counted off its printed LEDGERS -- ROADMAP 2.56
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️ ROADMAP 2.56's own switch, DEFAULT ON for the overnight run (Sean's go,
+#: 2026-10-04) and the ONLY way to put the geometry position back for every far
+#: head. A DENY-LIST (CLAUDE.md §7): an empty value or a typo leaves it on.
+FARHEAD_LEDGER_ENV = "OMR_FARHEAD_LEDGER"
+
+
+def _farhead_ledger_enabled() -> bool:
+    return os.environ.get(FARHEAD_LEDGER_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
+
+
+class FarHeadState:
+    """What the far-head reader carries ACROSS the pages of one gather.
+
+    A page measures the head SIZE from its own clean on-line heads and, below
+    `far_head_reader.MIN_PAGE_SHAPE_HEADS` of them (every page of the merging
+    Litolff plate), falls back to the shape POOLED over the pages gathered so
+    far -- the benchmark scorer's own document fallback. A page that has no
+    shape yet is HELD (its raster with it) and read as soon as the pool
+    reaches the minimum; `finish_far_head_ledger_positions` reads or abstains
+    (`no_page_shape`) whatever is still held at the end of the run.
+    """
+
+    def __init__(self) -> None:
+        self.pool: List[Dict[str, Any]] = []
+        self.held: List[Tuple[Any, List[Dict[str, Any]]]] = []
+
+
+def _file_far_head_reading(log: Log, job: Dict[str, Any], page_ctx: Any) -> bool:
+    """Read one far head and FILE it: an Observation under `READERS.
+    LEDGER_FARHEAD`, or an Abstention with a reason word. Returns whether a
+    position was observed."""
+    frame = job["frame"]
+    # ⚠️ BUILT HERE, FROM ITS FIVE INTEGERS, so `wiring`'s AST walk can resolve
+    # the observe site's subject kind (a subject handed in through a dict is an
+    # UNRESOLVED gather site).
+    g = R.glyph(job["page"], job["system"], job["staff"], job["cell"],
+                job["glyph"])
+    res = page_ctx.read(g.to_key(), job["box"], job["cls"], job["global_lines"])
+    if res["pos"] is None:
+        word = (ABSTAIN.NO_PAGE_SHAPE if res["reason"] == "no_page_shape"
+                else ABSTAIN.LEDGER_NOT_READ)
+        log.abstain(g, Q.FAR_HEAD_LEDGER_POSITION, reader=READERS.LEDGER_FARHEAD,
+                    frame=frame, reason=word, ledger_reason=res["reason"],
+                    geometry_position=job["geometry_position"])
+        return False
+    log.observe(g, Q.FAR_HEAD_LEDGER_POSITION, int(res["pos"]),
+                reader=READERS.LEDGER_FARHEAD, frame=frame,
+                ledger_reason=res["reason"], box_source=res["box_source"],
+                shape_source=res.get("shape_source"),
+                geometry_position=job["geometry_position"])
+    return True
+
+
+def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
+                                     local: Dict[int, Tuple[int, int]],
+                                     detections: Dict[str, List[Any]],
+                                     state: Optional[FarHeadState] = None
+                                     ) -> Dict[str, int]:
+    """`Q.FAR_HEAD_LEDGER_POSITION` for every notehead OUTSIDE its staff's
+    first space -- the position counted off the head's own printed ledgers.
+
+    ⚠️ A SECOND WITNESS, NEVER AN OVERWRITE (CLAUDE.md rule 6). The geometry
+    row `gather_notehead_positions` filed stays on the record untouched; this
+    is a different quantity from a different reader, and
+    `adjudicate_notehead_position` is what weighs them. A head the reader
+    could not place is an ABSTENTION with a reason word, never a default.
+
+    The reader is `tools.omr.annotate.far_head_reader` -- Sean's accepted arm
+    E3 (round-8 ledgers + the exclusion rules + the template-sized head box).
+    It reads the page's ORIGINAL raster (`pws.page.rgb`, the staff lines left
+    in) and the staff lines AT THE HEAD'S OWN x (CLAUDE.md §10), in the page
+    frame the boxes are already in. Returns a census `{far, observed,
+    abstained, held}` for the caller and the tests.
+
+    Pass the run's `FarHeadState` to share the size pool across pages; with
+    none, this page stands alone and finishes itself.
+    """
+    census = {"far": 0, "observed": 0, "abstained": 0, "held": 0}
+    if not _farhead_ledger_enabled():
+        return census
+    own_state = state is None
+    state = state if state is not None else FarHeadState()
+    rgb = getattr(getattr(pws, "page", None), "rgb", None)
+    if rgb is None or getattr(rgb, "ndim", 0) < 2:
+        return census
+    from ..annotate import far_head_reader as FH
+    import cv2
+
+    cell_by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    staff_lines: Dict[str, List[float]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is None:
+            continue
+        p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+        staff_lines[R.staff(p, key[0], key[1]).to_key()] = \
+            [float(y) for y in st.line_ys]
+
+    heads: List[Dict[str, Any]] = []
+    page_boxes: List[Tuple[str, str, tuple]] = []
+    jobs: List[Dict[str, Any]] = []
+    used_staves: Dict[str, List[float]] = {}
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        own = R.staff(sub.page, sub.system, sub.staff).to_key()
+        for gi, d in enumerate(dets):
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            page_boxes.append((g.to_key(), d.smufl_name, box))
+            if not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
+                continue
+            rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, g)
+            lines = staff_lines.get(own)
+            if not rows or lines is None:
+                continue
+            try:
+                pos = int(round(float(rows[-1].value)))
+            except (TypeError, ValueError):
+                continue
+            used_staves[own] = lines
+            heads.append(dict(subject=g.to_key(), box=box, pos=pos,
+                              cls=d.smufl_name, score=float(d.confidence),
+                              global_lines=lines))
+            if FH.lg.far_head_needs_ledger_read(pos):
+                jobs.append(dict(page=sub.page, system=sub.system,
+                                 staff=sub.staff, cell=sub.cell, glyph=gi,
+                                 box=box, cls=d.smufl_name,
+                                 global_lines=lines, geometry_position=pos,
+                                 frame=frame_cell(sub.cell)))
+    if not jobs:
+        return census
+    census["far"] = len(jobs)
+    gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY) if rgb.ndim == 3 else rgb
+    ctx = FH.FarHeadPage(gray, heads, page_boxes, used_staves)
+    state.pool.extend(ctx.samples)
+    pooled = FH.pooled_shape(state.pool)
+    if ctx.shape is None and pooled is not None:
+        ctx.adopt(pooled, f"document pool n={len(state.pool)}")
+    if ctx.shape is None:
+        state.held.append((ctx, jobs))
+        census["held"] = len(jobs)
+    else:
+        for job in jobs:
+            census["observed" if _file_far_head_reading(log, job, ctx)
+                   else "abstained"] += 1
+    # A pool that just reached the minimum frees every page held for want of it.
+    if pooled is not None and state.held:
+        still = []
+        for hctx, hjobs in state.held:
+            if hctx.shape is None and not hctx.adopt(
+                    pooled, f"document pool n={len(state.pool)}"):
+                still.append((hctx, hjobs))
+                continue
+            for job in hjobs:
+                _file_far_head_reading(log, job, hctx)
+        state.held = still
+    if own_state:
+        finish_far_head_ledger_positions(log, state)
+    return census
+
+
+def finish_far_head_ledger_positions(log: Log, state: FarHeadState) -> None:
+    """End of the run: a page still held has no head size to read with -- it
+    ABSTAINS (`no_page_shape`), and is counted, rather than borrow one."""
+    from ..annotate import far_head_reader as FH
+    pooled = FH.pooled_shape(state.pool)
+    for hctx, hjobs in state.held:
+        if hctx.shape is None and pooled is not None:
+            hctx.adopt(pooled, f"document pool n={len(state.pool)}")
+        for job in hjobs:
+            _file_far_head_reading(log, job, hctx)
+    state.held = []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The PRINTED in-bar accidental — ROADMAP 2.7
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -7948,6 +8136,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
     from . import positions as _positions
 
     log = log if log is not None else Log()
+    far_head_state = FarHeadState()          # ROADMAP 2.56: the size pool
 
     for pws, cells in pws_and_cells:
         # ⚠️ EXTERNAL FACTS FIRST. Not an ordering preference: anything
@@ -8012,6 +8201,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # than a naming of it.
         gather_accidental_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
+        # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
+        # one whose GEOMETRY position lies outside the first space -- it reads
+        # that row) and after the ownership evidence, which does not feed it.
+        # A second witness under its own reader, never an overwrite.
+        gather_far_head_ledger_positions(log, pws, cells, local, detections,
+                                         far_head_state)
         gather_rhythm_marks(log, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
@@ -8093,5 +8288,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # Off by default -- see `positions.POSITIONS_ENV`.
         _positions.gather_family_positions(log, pws, cells, local, detections)
 
+    finish_far_head_ledger_positions(log, far_head_state)
     log.freeze()
     return log

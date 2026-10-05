@@ -397,6 +397,20 @@ class Q(_Vocab):
     LEDGER_OWNER_DENSITY = "ledger_owner_density"
     GLYPH_LADDER = "glyph_ladder"            # ledger rung completeness
     NOTEHEAD_STAFF_POSITION = "notehead_staff_position"   # pos_float, CLEF-FREE
+    #: ROADMAP 2.56. A head OUTSIDE its staff's first space, read from its own
+    #: printed LEDGERS (`tools/omr/annotate/far_head_reader.py`: round 8 + the
+    #: exclusion rules + the template-sized head box, Sean's accepted arm E3).
+    #: An INTEGER half-step position from the staff's top line -- exactly
+    #: `NOTEHEAD_STAFF_POSITION`'s unit -- filed as a SECOND witness under its
+    #: own reader, never over the geometry row (which stays on the record).
+    #: A reading that could not be made is an ABSTENTION with a reason word.
+    FAR_HEAD_LEDGER_POSITION = "far_head_ledger_position"
+    #: ADJUDICATE's decision of a far head's staff position
+    #: (`adjudicate_notehead_position`): the ledger reading where the ledger
+    #: reader made one, and ABSTAINED where it could not -- the geometry
+    #: position is not silently substituted for a head that needed a ledger
+    #: read (CLAUDE.md §2 rule 8). Only far heads are in its domain.
+    NOTEHEAD_POSITION = "notehead_position"
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
     #: same grid and in the same units as `NOTEHEAD_STAFF_POSITION` -- which is
     #: the whole point: the rule that owns it ("the head immediately RIGHT of
@@ -2011,6 +2025,13 @@ CLAIMS: "dict[str, str]" = {
 
     # ── the family POSITION facts: rulers on their own ink ─────────────────
     "NOTEHEAD_STAFF_POSITION": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.56: a position COUNTED OFF PRINTED LEDGERS -- the ledgers
+    #: found, kept or refused, and the line-or-space call are all
+    #: interpretations of the ink, so unlike the geometry row it is not a
+    #: bare ruler reading.
+    "FAR_HEAD_LEDGER_POSITION": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.56: the weighing of the two position witnesses for a far head.
+    "NOTEHEAD_POSITION": CLAIM.INTERPRETATION,
     #: ⚠️ A MEASUREMENT AND NOT AN IDENTIFICATION, though a class name is what
     #: chooses its anchor. What would make the row WRONG is the RULER -- a
     #: mis-measured line grid, or a box whose centre is not where the glyph
@@ -2353,6 +2374,12 @@ class READERS(_Vocab):
     #: False) can filter on this name alone, and a crop or a test can tell
     #: the two passes apart without reading `score`.
     RESCUE_LOWCONF = "yolo_rescue_lowconf"   # gather: low-conf rerun of an empty bar
+    #: `gather.gather_far_head_ledger_positions` -- ROADMAP 2.56. Reads the
+    #: page's ORIGINAL raster (`pws.page.rgb`, staff lines left in) -- a
+    #: different raster from `CV_INK`'s erased crops, so not the same signal --
+    #: but it shares the detector's BOX with every other glyph reader; the box
+    #: is the standard head box where its template fit gate passes.
+    LEDGER_FARHEAD = "ledger_farhead"        # gather: far-head position from printed ledgers
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
@@ -2433,6 +2460,14 @@ class ABSTAIN(_Vocab):
     F_CLEF_DOTS = "f_clef_dots"
     MEZZOSOPRANO_SYMMETRY = "mezzosoprano_symmetry"
     NO_MASK = "no_mask"
+    #: ROADMAP 2.56. The far-head ledger reader ran and could not say where
+    #: the head sits (the reader's own reason word rides in `ledger_reason`).
+    #: ⚠️ OUR failure, never a reading: a head outside the staff always has a
+    #: ledger (Sean, 2026-09-29), so "no rungs" is a missed one.
+    LEDGER_NOT_READ = "ledger_not_read"
+    #: The page has too few clean on-line heads to MEASURE a head size, and no
+    #: earlier page of the run supplied a pool: the reader will not borrow one.
+    NO_PAGE_SHAPE = "no_page_shape"
     ONLY_DEBRIS = "only_debris"
     TOO_FAR_RIGHT = "too_far_right"
     OFF_STAFF_ONLY = "off_staff_only"

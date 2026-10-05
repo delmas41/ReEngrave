@@ -109,6 +109,17 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # `glyph/2/1/9/6/2`.
             continue
         pos = int(round(float(row.value)))
+        pos_basis = row.id
+        # ⚠️ ROADMAP 2.56. A far head's position DECIDED from its printed
+        # ledgers (`adjudicate_notehead_position`) replaces the geometry
+        # extrapolation above for that head only; where the decision
+        # abstained, or the head was never in its domain, the row stands
+        # exactly as before.
+        far = log.verdict(Q.NOTEHEAD_POSITION, row.subject)
+        if far is not None and far.outcome == Outcome.DECIDED \
+                and far.value is not None:
+            pos = int(far.value)
+            pos_basis = far.id
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -117,7 +128,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
             decider="restate_pitch", reason="position_and_clef",
-            basis=(row.id, clef.id)))
+            basis=(pos_basis, clef.id)))
     return out
 
 
