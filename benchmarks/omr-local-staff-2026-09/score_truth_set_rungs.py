@@ -207,8 +207,16 @@ def _reader_absolute_position_impl(
     far_side_ledger: bool = False,
     drop_beyond_head: bool = False,
     drop_same_ink_other_staff: bool = False,
+    chord_split_rungs_y: Optional[Sequence[float]] = None,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
+
+    `chord_split_rungs_y` (lane-chord-blob-split, 2026-10-04): the ledgers
+    `ledger_grid.split_chord_blob` found at a split blob (every printed jut
+    on its right, and the one between the two heads -- a jut's row, else the
+    stacked-thirds midpoint); each is inserted into this head's rung list
+    (`insert_rung`, never a duplicate) in place of the stacked-thirds partner
+    search.  None = unchanged.
 
     `near_edge_ledgers` (lane-ledger-edge-fix, 2026-10-04): forwarded to
     `derive_far_head_step` (Part 1: a real ledger touching the head's NEAR
@@ -314,7 +322,12 @@ def _reader_absolute_position_impl(
     # correct on pair (a) in isolation (FINDINGS), for a future lane to
     # retry with a sturdier stub-probe.
     stack_reason = None
-    if not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
+    if chord_split_rungs_y is not None:
+        for _ry in chord_split_rungs_y:
+            if (_ry < top) == (sign < 0):      # this side of the staff only
+                items = lg.insert_rung(items, sign, _ry)
+        stack_reason = "chord_split_rung"
+    elif not lg.has_through_head_rung(items, (x0, y0, x1, y1)):
         for psub, pbox in page_notehead_boxes:
             if psub == subject:
                 continue
