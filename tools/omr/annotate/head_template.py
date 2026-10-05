@@ -615,6 +615,9 @@ def match_head_template(
     refine_centre: bool = False,
     refine_mode: str = "iou",
     refine_min_gain: float = 0.0,
+    ladder_ys: Optional[Sequence[float]] = None,
+    ladder_tol_px: Optional[float] = None,
+    refine_stem: bool = False,
 ) -> Optional[Dict]:
     """`dx_range_spaces` > 0 (round 3, 2026-10-04) also slides the window
     HORIZONTALLY by up to that many spaces, so the oval can land on the
@@ -697,12 +700,38 @@ def match_head_template(
 
     best_dx: Dict[str, int] = {"on_line": 0, "in_space": 0, "raw": 0}
 
+    # Ledger-constrained heights (round 7): the head's centre is ON a found line
+    # row, MIDWAY between two adjacent found rows, or half a measured gap beyond
+    # the outermost found row. Only the variant-free `raw` search is constrained.
+    # (This makes the height a CONSEQUENCE of the ledger read -- the template is
+    # then a placement tool, not a second witness for line-vs-space.)
+    ladder_info = None
+    allowed_shifts = None
+    if ladder_ys is not None and len(ladder_ys) >= 2:
+        rows = sorted(float(y) for y in ladder_ys)
+        gaps = [b - a for a, b in zip(rows[:-1], rows[1:]) if b - a > 0.5 * spacing]
+        g = float(np.median(gaps)) if gaps else spacing
+        cands = [(y, "on a found line") for y in rows]
+        cands += [((a + b) / 2.0, "midway between found lines") for a, b in zip(rows[:-1], rows[1:]) if b - a <= 1.6 * g]
+        cands += [(rows[0] - g / 2.0, "half a gap beyond the outermost found line"),
+                  (rows[-1] + g / 2.0, "half a gap beyond the outermost found line")]
+        tol = ladder_tol_px if ladder_tol_px is not None else max(1.0, 0.1 * spacing)
+        near = [(y, k) for (y, k) in cands if abs(y - cy) <= SLIDE_RANGE_SPACES * spacing]
+        allowed_shifts = {sh for sh in range(-slide_px, slide_px + 1)
+                          if any(abs(cy + sh - y) <= tol for (y, _k) in near)}
+        ladder_info = dict(candidates=[(round(y, 1), k) for (y, k) in near], tol_px=tol, gap_px=round(g, 1),
+                           applied=bool(allowed_shifts))
+        if not allowed_shifts:
+            allowed_shifts = None      # nothing to constrain with: fall back, and say so
+
     def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
         if tmpl is None:
             return None, None
         best_score, best_shift = None, None
         for dxp, shift in [(a, b) for a in range(-dx_max, dx_max + 1)
-                           for b in range(-slide_px, slide_px + 1, SLIDE_STEP_PX)]:
+                           for b in range(-slide_px, slide_px + 1, SLIDE_STEP_PX)
+                           if not (allowed_shifts is not None and tmpl.variant == "raw"
+                                   and b not in allowed_shifts)]:
             lx0, lx1 = lx0_base + dxp, lx1_base + dxp
             win_cy = cy + shift
             ly0 = int(round(win_cy - half_h)) - iy0
@@ -784,9 +813,20 @@ def match_head_template(
     if refine_centre:
         t_best = (tmpl_on if best_variant == "on_line" else tmpl_space)
         hm = (t_best.head_img if t_best.head_img is not None else t_best.img) > 0.5
-        refined = refine_oval_centre(img_gray, cx + best_dx[best_variant], cy + (best_shift or 0),
-                                     spacing, hm, exclude_boxes=exclude_boxes,
-                                     score_mode=refine_mode, min_gain=refine_min_gain)
+        pcx, pcy = cx + best_dx[best_variant], cy + (best_shift or 0)
+        stem_info = None
+        if refine_stem:
+            hys, hxs = np.nonzero(hm)
+            stem_info = find_stem_side(img_gray, pcx, pcy, spacing,
+                                       head_half_w_spaces=(hxs.max() - hxs.min() + 1) / 2.0 / CANONICAL_PX_PER_SPACE)
+        # (Round 7 tried choosing AMONG the ledger-read heights by oval/ink IoU instead of the
+        # head-template score: it jumped a head 1.09 sp onto the wrong candidate and made 6 of
+        # the 10 far heads worse. The head-template score picks the height; this only nudges
+        # horizontally when ledger-constrained.)
+        refined = refine_oval_centre(img_gray, pcx, pcy, spacing, hm, exclude_boxes=exclude_boxes,
+                                     score_mode=refine_mode, min_gain=refine_min_gain, stem=stem_info,
+                                     max_shift_y_spaces=(0.0 if (ladder_info and ladder_info["applied"]) else None))
+        refined["stem"] = stem_info
     out = dict(
         kind=use_kind, best_variant=best_variant,
         center_y=cy + (best_shift or 0),
@@ -799,6 +839,8 @@ def match_head_template(
     )
     if refined is not None:
         out["refined"] = refined
+    if ladder_info is not None:
+        out["ladder"] = ladder_info
     return out
 
 
@@ -807,14 +849,75 @@ REFINE_STEP_PX = 0.5
 REFINE_LINE_COVERAGE = 0.70      # a row is a staff/ledger line when this much of the strip beside the head is ink
 
 
+STEM_RUN_SPACES = (2.0, 6.5)
+STEM_REACH_BEYOND_CENTRE_SPACES = 1.55   # head half-height (0.55) + 1 sp of stem past it
+
+
+def find_stem_side(img_gray: np.ndarray, cx: float, cy: float, spacing: float,
+                   head_half_w_spaces: float = 0.75) -> Optional[Dict]:
+    """Find the stem from the INK: a vertical ink run of 2.0-6.5 sp that passes
+    through the head's own row, touches the head's left or right edge and reaches
+    >= 1 sp past the head. Engraving convention (CLAUDE.md sec 10): stem up -> the
+    head's RIGHT side, stem down -> LEFT ("right-and-down does not exist"; a find
+    that breaks it is returned with `convention_ok=False`, never silently fixed).
+    Returns `dict(side, direction, x0, x1, run_sp, convention_ok)` (x in page px,
+    the columns of the stem) or None where no stem is on the print."""
+    H, W = img_gray.shape
+    ry0, ry1 = max(0, int(cy - 7 * spacing)), min(H, int(cy + 7 * spacing) + 1)
+    rx0, rx1 = max(0, int(cx - (head_half_w_spaces + 0.6) * spacing)), min(W, int(cx + (head_half_w_spaces + 0.6) * spacing) + 1)
+    if ry1 - ry0 < 3 or rx1 - rx0 < 3:
+        return None
+    win = img_gray[ry0:ry1, rx0:rx1]
+    ink = win <= _otsu_threshold(win)
+    r0 = int(round(cy)) - ry0
+    if not 0 <= r0 < ink.shape[0]:
+        return None
+    found = {}
+    hw = head_half_w_spaces * spacing
+    for side, (a, b) in (("left", (cx - hw - 0.2 * spacing, cx - hw + 0.35 * spacing)),
+                         ("right", (cx + hw - 0.35 * spacing, cx + hw + 0.2 * spacing))):
+        cols = []
+        for c in range(max(0, int(a) - rx0), min(ink.shape[1], int(b) - rx0 + 1)):
+            col = ink[:, c]
+            if not col[r0]:
+                continue
+            u = r0
+            while u - 1 >= 0 and col[u - 1]:
+                u -= 1
+            d = r0
+            while d + 1 < len(col) and col[d + 1]:
+                d += 1
+            run, up, dn = (d - u + 1) / spacing, (r0 - u) / spacing, (d - r0) / spacing
+            if STEM_RUN_SPACES[0] <= run <= STEM_RUN_SPACES[1] and max(up, dn) >= STEM_REACH_BEYOND_CENTRE_SPACES:
+                cols.append((c + rx0, run, "up" if up > dn else "down"))
+        if cols:
+            dirs = [d for (_c, _r, d) in cols]
+            direction = max(set(dirs), key=dirs.count)
+            cc = [c for (c, _r, d) in cols if d == direction]
+            found[side] = dict(side=side, direction=direction, x0=float(min(cc)), x1=float(max(cc)) + 1.0,
+                               run_sp=float(max(r for (_c, r, d) in cols if d == direction)),
+                               convention_ok=(side == "right") == (direction == "up"))
+    if not found:
+        return None
+    ok = [v for v in found.values() if v["convention_ok"]]
+    pool = ok or list(found.values())
+    return max(pool, key=lambda v: v["run_sp"])
+
+
 def refine_oval_centre(img_gray: np.ndarray, cx: float, cy: float, spacing: float,
                        head_mask: np.ndarray, max_shift_spaces: float = REFINE_MAX_SHIFT_SPACES,
                        exclude_boxes: Optional[Sequence[Tuple[float, float, float, float]]] = None,
-                       score_mode: str = "iou", min_gain: float = 0.0) -> Dict:
+                       score_mode: str = "iou", min_gain: float = 0.0,
+                       stem: Optional[Dict] = None, stem_margin_px: float = 2.0,
+                       max_shift_y_spaces: Optional[float] = None) -> Dict:
     """`score_mode="edge"`: instead of the IoU, score half the oval's ink COVERAGE
     plus half the fraction of its OUTLINE that lies on the ink's own boundary --
     a fused neighbour, beam or line adds no boundary at the oval's outline, so it
     does not pull. `"iou"` (default) is the first version.
+    `stem` (from `find_stem_side`): the columns of the stem plus `stem_margin_px`
+    (a ledger-thickness margin) are EXCLUDED from the overlap score, on that side
+    only, so a stem cannot pull the oval. `max_shift_y_spaces` caps the vertical
+    shift separately (0 = horizontal nudge only).
     Nudge a head oval (given as the canonical-grid bool `head_mask`, centre at
     the grid centre, 30 px per space) to the sub-pixel position where it best
     covers the ink under it (round 6, Sean: "occasionally slightly off centre").
@@ -862,8 +965,11 @@ def refine_oval_centre(img_gray: np.ndarray, cx: float, cy: float, spacing: floa
     line_rows = cv2.dilate(line_rows.astype(np.uint8).reshape(-1, 1), np.ones((2 * thick + 1, 1), np.uint8)).reshape(-1) > 0
     # crop everything to the window just larger than the oval
     cx_in, cy_in = cx - x0, cy - y0
-    wx0, wx1 = int(round(cx_in)) - hw, int(round(cx_in)) + hw + 1
-    wy0, wy1 = int(round(cy_in)) - hh, int(round(cy_in)) + hh + 1
+    # floor(x + 0.5), not round(): banker's rounding of an exact .5 could put the
+    # sub-window one pixel outside the array (a negative start index)
+    rcx_, rcy_ = int(np.floor(cx_in + 0.5)), int(np.floor(cy_in + 0.5))
+    wx0, wx1 = max(0, rcx_ - hw), rcx_ + hw + 1
+    wy0, wy1 = max(0, rcy_ - hh), rcy_ + hh + 1
     base_ink = opened[wy0:wy1, wx0:wx1]
     rows_win = line_rows[wy0:wy1]
     Hh, Ww = base_ink.shape
@@ -875,9 +981,20 @@ def refine_oval_centre(img_gray: np.ndarray, cx: float, cy: float, spacing: floa
 
     k3 = np.ones((3, 3), np.uint8)
 
+    excl_cols = np.zeros(Ww, bool)
+    if stem is not None:
+        e0 = int(np.floor(stem["x0"] - stem_margin_px)) - x0 - wx0
+        e1 = int(np.ceil(stem["x1"] + stem_margin_px)) - x0 - wx0
+        excl_cols[max(0, e0):max(0, min(Ww, e1 + 1))] = True
+
     def score(px, py):
         ov = place(px, py)
         ink_c = base_ink & ~(rows_win[:, None] & ~ov)
+        if excl_cols.any():
+            # stem ink OUTSIDE the candidate oval (above / below the head, in the
+            # stem's columns) is not counted; the oval's own pixels and the head ink
+            # under them still are, so the stem side is not left unconstrained.
+            ink_c = ink_c & ~(excl_cols[None, :] & ~ov)
         if score_mode == "edge":
             cover = (ink_c & ov).sum() / max(1, ov.sum())
             outline = ov & ~cv2.erode(ov.astype(np.uint8), k3).astype(bool)
@@ -893,7 +1010,9 @@ def refine_oval_centre(img_gray: np.ndarray, cx: float, cy: float, spacing: floa
     best, bx, by = iou0, 0.0, 0.0
     m = max_shift_spaces * spacing
     steps = np.arange(-m, m + 1e-6, REFINE_STEP_PX)
-    for dy in steps:
+    my = m if max_shift_y_spaces is None else max_shift_y_spaces * spacing
+    steps_y = np.arange(-my, my + 1e-6, REFINE_STEP_PX) if my > 0 else np.array([0.0])
+    for dy in steps_y:
         for dx in steps:
             v = score(sx + dx, sy + dy)
             if v > best + 1e-9 or (abs(v - best) <= 1e-9 and (dx * dx + dy * dy) < (bx * bx + by * by) and v > iou0):

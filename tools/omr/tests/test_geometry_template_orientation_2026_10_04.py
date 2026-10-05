@@ -149,6 +149,64 @@ def test_refine_off_is_the_default_and_adds_nothing():
     assert "refined" in on and {k: v for k, v in on.items() if k != "refined"} == off
 
 
+def _stem_scene(kind, head_cy=100, sp=20.0, stem_w=6):
+    img = np.full((260, 420), 255, np.uint8)
+    cv2.fillPoly(img, [ht.geometry_outline_poly(200, head_cy, sp, 0.0).astype(np.int32)], 0)
+    hw = int(0.65 * sp)
+    if kind == "right_up":
+        img[head_cy - int(3.5 * sp):head_cy, 200 + hw - stem_w:200 + hw + 1] = 0
+    elif kind == "left_down":
+        img[head_cy:head_cy + int(3.5 * sp), 200 - hw:200 - hw + stem_w] = 0
+    elif kind == "right_down":
+        img[head_cy:head_cy + int(3.5 * sp), 200 + hw - stem_w:200 + hw + 1] = 0
+    return img
+
+
+def test_stem_side_follows_the_engraving_convention():
+    """Stem up -> the head's RIGHT, stem down -> LEFT; right-and-down is reported
+    as breaking the convention, never silently accepted."""
+    r = ht.find_stem_side(_stem_scene("right_up"), 200.0, 100.0, 20.0)
+    assert (r["side"], r["direction"], r["convention_ok"]) == ("right", "up", True)
+    l = ht.find_stem_side(_stem_scene("left_down"), 200.0, 100.0, 20.0)
+    assert (l["side"], l["direction"], l["convention_ok"]) == ("left", "down", True)
+    bad = ht.find_stem_side(_stem_scene("right_down"), 200.0, 100.0, 20.0)
+    assert bad["convention_ok"] is False
+    assert ht.find_stem_side(_stem_scene("none"), 200.0, 100.0, 20.0) is None
+
+
+def test_stem_columns_are_excluded_from_the_overlap_score():
+    """Ink inside the stem's column band cannot move the oval: the refined centre
+    with the stem excluded equals the centre on the same scene with NO stem."""
+    mask = ht.head_shape_mask(1.3, 1.0, 0.0)
+    with_stem, without = _stem_scene("right_up", stem_w=14), _stem_scene("none")
+    stem = ht.find_stem_side(with_stem, 204.0, 100.0, 20.0)
+    a = ht.refine_oval_centre(with_stem, 204.0, 100.0, 20.0, mask, stem=stem)
+    b = ht.refine_oval_centre(without, 204.0, 100.0, 20.0, mask)
+    assert abs(a["center_x"] - b["center_x"]) <= 1.0 and abs(a["center_y"] - b["center_y"]) <= 1.0
+
+
+def test_ledger_rows_constrain_the_template_height():
+    """Round 7: with the found line rows given, the head's centre is ON a row,
+    midway between two, or half a gap beyond the outermost -- and it says so."""
+    sp = 20.0
+    rows = [60.0, 80.0, 100.0, 120.0, 140.0]
+    tm = ht.build_geometry_templates({"filled": 0.0, "hollow": 0.0}, {}, 3.0 * 30.0 / sp)
+    for true_y, off in ((90.0, 0.25), (100.0, -0.25), (130.0, 0.25), (150.0, -0.25)):
+        img = np.full((300, 400), 255, np.uint8)
+        for y in rows:
+            img[int(y) - 1:int(y) + 2, :] = 0
+        cv2.fillPoly(img, [ht.geometry_outline_poly(200, true_y, sp, 0.0).astype(np.int32)], 0)
+        box = (200 - 13, true_y + off * sp - 10, 200 + 13, true_y + off * sp + 10)
+        m = ht.match_head_template(img, box, sp, tm, kind="filled", dx_range_spaces=0.4,
+                                   head_ink_mode="opening", decide="staged", line_term="coverage",
+                                   ladder_ys=rows)
+        assert m["ladder"]["applied"] and abs(m["center_y"] - true_y) <= 1.5, (true_y, m["center_y"])
+        kinds = {k for (y, k) in m["ladder"]["candidates"] if abs(y - true_y) <= 1.0}
+        assert kinds, (true_y, m["ladder"]["candidates"])
+    plain = ht.match_head_template(img, box, sp, tm, kind="filled", decide="staged", line_term="coverage")
+    assert "ladder" not in plain
+
+
 def test_horizontal_search_moves_the_oval_onto_an_offset_head():
     """Round 3: the box sits 6 px left of the printed head. Vertical-only
     cannot fix that; a +-0.4 sp horizontal search lands on the ink."""

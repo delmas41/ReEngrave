@@ -1,0 +1,1802 @@
+{
+ "shapes": {
+  "beethoven5-litolff": {
+   "chosen": "A_oval",
+   "candidates": {
+    "A_oval": {
+     "mean_iou": 0.837,
+     "mean_offset_sp": 0.055,
+     "n_miss": 0,
+     "variant_agree": 5,
+     "per_head_iou": [
+      0.82,
+      0.87,
+      0.77,
+      0.86,
+      0.94,
+      0.93
+     ]
+    },
+    "B_flat_oval": {
+     "mean_iou": 0.828,
+     "mean_offset_sp": 0.082,
+     "n_miss": 0,
+     "variant_agree": 5,
+     "per_head_iou": [
+      0.91,
+      0.83,
+      0.81,
+      0.88,
+      0.95,
+      0.88
+     ]
+    },
+    "C_mean_shape": {
+     "mean_iou": 0.813,
+     "mean_offset_sp": 0.097,
+     "n_miss": 1,
+     "variant_agree": 5,
+     "per_head_iou": [
+      0.8,
+      0.84,
+      0.77,
+      0.86,
+      0.89,
+      0.91
+     ]
+    }
+   },
+   "params": {
+    "A_oval": {
+     "width_sp": 1.5863072806734746,
+     "height_sp": 1.0497428743485193,
+     "tilt_deg": 29.27106699497812,
+     "n": 8,
+     "source": "on-line heads",
+     "tilt_iqr": [
+      19.7,
+      44.7
+     ]
+    },
+    "B_flat_oval": {
+     "width_sp": 1.633617737071142,
+     "height_sp": 1.1026539423165935,
+     "tilt_deg": 41.87164386996824,
+     "flat_bottom_fraction": 0.8,
+     "n": 17,
+     "iou_with_mean_shape": 0.855
+    },
+    "C_mean_shape": {
+     "width_sp": 1.633617737071142,
+     "height_sp": 1.1026539423165935,
+     "tilt_deg": 41.87164386996824,
+     "n": 19,
+     "mean_area_sp2": 1.314
+    }
+   }
+  },
+  "brahms1-breitkopf": {
+   "chosen": "C_mean_shape",
+   "candidates": {
+    "A_oval": {
+     "mean_iou": 0.892,
+     "mean_offset_sp": 0.05,
+     "n_miss": 0,
+     "variant_agree": 6,
+     "per_head_iou": [
+      0.85,
+      0.87,
+      0.87,
+      0.9,
+      0.91,
+      0.95
+     ]
+    },
+    "B_flat_oval": {
+     "mean_iou": 0.912,
+     "mean_offset_sp": 0.043,
+     "n_miss": 0,
+     "variant_agree": 6,
+     "per_head_iou": [
+      0.87,
+      0.88,
+      0.9,
+      0.95,
+      0.92,
+      0.95
+     ]
+    },
+    "C_mean_shape": {
+     "mean_iou": 0.915,
+     "mean_offset_sp": 0.038,
+     "n_miss": 0,
+     "variant_agree": 6,
+     "per_head_iou": [
+      0.86,
+      0.89,
+      0.9,
+      0.94,
+      0.95,
+      0.95
+     ]
+    }
+   },
+   "params": {
+    "A_oval": {
+     "width_sp": 1.489204458432014,
+     "height_sp": 1.1306598612189624,
+     "tilt_deg": 28.139489272862566,
+     "n": 132,
+     "source": "on-line heads",
+     "tilt_iqr": [
+      25.7,
+      30.0
+     ]
+    },
+    "B_flat_oval": {
+     "width_sp": 1.489383961007817,
+     "height_sp": 1.1307357069178028,
+     "tilt_deg": 28.117073380340095,
+     "flat_bottom_fraction": 0.95,
+     "n": 133,
+     "iou_with_mean_shape": 0.954
+    },
+    "C_mean_shape": {
+     "width_sp": 1.489383961007817,
+     "height_sp": 1.1307357069178028,
+     "tilt_deg": 28.117073380340095,
+     "n": 133,
+     "mean_area_sp2": 1.303
+    }
+   }
+  }
+ },
+ "tiles": [
+  {
+   "iou": 0.82,
+   "offset_sp": 0.08,
+   "iou_open": 0.85,
+   "offset_open_sp": 0.05,
+   "before": {
+    "iou": 0.82,
+    "offset_sp": 0.08,
+    "bbox_offset_sp": 0.066
+   },
+   "bbox_offset_sp": 0.066,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.922,
+    0.922
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/10/2/0",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.183,
+   "score_on": 0.724,
+   "score_space": 0.54,
+   "dx_sp": 0.0,
+   "dy_sp": -0.12,
+   "dx_px": 0.0,
+   "dy_px": -2.0,
+   "spacing": 16.0,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     152.3,
+     100.8
+    ],
+    "after": [
+     151.9,
+     99.9
+    ],
+    "before": [
+     151.9,
+     99.9
+    ],
+    "max_err_px": 0.8
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.75,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 8,
+   "flags": []
+  },
+  {
+   "iou": 0.87,
+   "offset_sp": 0.06,
+   "iou_open": 0.94,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.87,
+    "offset_sp": 0.06,
+    "bbox_offset_sp": 0.011
+   },
+   "bbox_offset_sp": 0.011,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.943,
+    0.943
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/10/9/0",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.188,
+   "score_on": 0.774,
+   "score_space": 0.587,
+   "dx_sp": -0.06,
+   "dy_sp": 0.13,
+   "dx_px": -1.0,
+   "dy_px": 2.0,
+   "spacing": 15.6,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     148.7,
+     98.4
+    ],
+    "after": [
+     148.3,
+     98.2
+    ],
+    "before": [
+     148.3,
+     98.2
+    ],
+    "max_err_px": 0.4
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.71,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 4,
+   "flags": []
+  },
+  {
+   "iou": 0.77,
+   "offset_sp": 0.11,
+   "iou_open": 0.86,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.76,
+    "offset_sp": 0.04,
+    "bbox_offset_sp": 0.065
+   },
+   "bbox_offset_sp": 0.04,
+   "nudge_dx_sp": -0.03,
+   "nudge_dy_sp": 0.065,
+   "nudge_sp": 0.071,
+   "refine_iou": [
+    0.888,
+    0.938
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/1/1/4/2",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.194,
+   "score_on": 0.684,
+   "score_space": 0.489,
+   "dx_sp": -0.16,
+   "dy_sp": -0.12,
+   "dx_px": -2.5,
+   "dy_px": -2.0,
+   "spacing": 15.9,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     151.1,
+     100.0
+    ],
+    "after": [
+     151.9,
+     99.9
+    ],
+    "before": [
+     151.9,
+     99.9
+    ],
+    "max_err_px": 0.8
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.72,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 2,
+   "flags": [
+    "offset WORSE",
+    "WORSE than the r5 sheet"
+   ]
+  },
+  {
+   "iou": 0.86,
+   "offset_sp": 0.05,
+   "iou_open": 0.93,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.86,
+    "offset_sp": 0.05,
+    "bbox_offset_sp": 0.055
+   },
+   "bbox_offset_sp": 0.055,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.986,
+    0.986
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/2/0/9/11/1",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.205,
+   "score_on": 0.222,
+   "score_space": 0.427,
+   "dx_sp": 0.0,
+   "dy_sp": 0.06,
+   "dx_px": 0.0,
+   "dy_px": 1.0,
+   "spacing": 15.8,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.38,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "in_space",
+   "position": 7,
+   "flags": []
+  },
+  {
+   "iou": 0.94,
+   "offset_sp": 0.02,
+   "iou_open": 0.95,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.78,
+    "offset_sp": 0.09,
+    "bbox_offset_sp": 0.119
+   },
+   "bbox_offset_sp": 0.193,
+   "nudge_dx_sp": -0.219,
+   "nudge_dy_sp": 0.159,
+   "nudge_sp": 0.27,
+   "refine_iou": [
+    0.872,
+    1.0
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/2/0/9/15/4",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.038,
+   "score_on": 0.373,
+   "score_space": 0.336,
+   "dx_sp": 0.03,
+   "dy_sp": 0.22,
+   "dx_px": 0.5,
+   "dy_px": 3.5,
+   "spacing": 15.9,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     151.1,
+     100.0
+    ],
+    "after": [
+     151.9,
+     99.9
+    ],
+    "before": [
+     151.9,
+     99.9
+    ],
+    "max_err_px": 0.8
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.85,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 7,
+   "flags": [
+    "MOVED>0.15sp",
+    "bbox WORSE"
+   ]
+  },
+  {
+   "iou": 0.93,
+   "offset_sp": 0.01,
+   "iou_open": 0.93,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.93,
+    "offset_sp": 0.01,
+    "bbox_offset_sp": 0.025
+   },
+   "bbox_offset_sp": 0.025,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.924,
+    0.924
+   ],
+   "label": "control",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/10/7/1",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.21,
+   "score_on": 0.226,
+   "score_space": 0.436,
+   "dx_sp": 0.0,
+   "dy_sp": 0.0,
+   "dx_px": 0.0,
+   "dy_px": 0.0,
+   "spacing": 15.6,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     148.7,
+     98.4
+    ],
+    "after": [
+     148.3,
+     98.2
+    ],
+    "before": [
+     148.3,
+     98.2
+    ],
+    "max_err_px": 0.4
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.78,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "in_space",
+   "position": 5,
+   "flags": []
+  },
+  {
+   "iou": 0.84,
+   "offset_sp": 0.03,
+   "iou_open": 0.84,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.84,
+    "offset_sp": 0.03,
+    "bbox_offset_sp": 0.044
+   },
+   "bbox_offset_sp": 0.044,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.76,
+    0.76
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/7/0/7",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.019,
+   "score_on": 0.362,
+   "score_space": 0.381,
+   "dx_sp": 0.12,
+   "dy_sp": -0.25,
+   "dx_px": 2.0,
+   "dy_px": -4.0,
+   "spacing": 16.0,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     152.3,
+     100.8
+    ],
+    "after": [
+     151.9,
+     99.9
+    ],
+    "before": [
+     151.9,
+     99.9
+    ],
+    "max_err_px": 0.8
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 5.12,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      1472.5,
+      "on a found line"
+     ],
+     [
+      1486.0,
+      "on a found line"
+     ],
+     [
+      1479.2,
+      "midway between found lines"
+     ],
+     [
+      1464.5,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.6,
+    "gap_px": 16.0,
+    "applied": true
+   },
+   "variant_round5": "in_space",
+   "reference": [
+    -3
+   ],
+   "round8": null,
+   "flags": []
+  },
+  {
+   "iou": 0.75,
+   "offset_sp": 0.05,
+   "iou_open": 0.8,
+   "offset_open_sp": 0.05,
+   "before": {
+    "iou": 0.74,
+    "offset_sp": 0.19,
+    "bbox_offset_sp": 0.133
+   },
+   "bbox_offset_sp": 0.061,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": -0.19,
+   "nudge_sp": 0.19,
+   "refine_iou": [
+    0.826,
+    0.826
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/7/2/4",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.098,
+   "score_on": 0.527,
+   "score_space": 0.43,
+   "dx_sp": 0.06,
+   "dy_sp": -0.19,
+   "dx_px": 1.0,
+   "dy_px": -3.0,
+   "spacing": 15.8,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.06,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      1549.0,
+      "on a found line"
+     ],
+     [
+      1566.0,
+      "on a found line"
+     ],
+     [
+      1557.5,
+      "midway between found lines"
+     ],
+     [
+      1574.0,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 16.0,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    10
+   ],
+   "round8": null,
+   "flags": [
+    "MOVED>0.15sp"
+   ]
+  },
+  {
+   "iou": 0.76,
+   "offset_sp": 0.11,
+   "iou_open": 0.81,
+   "offset_open_sp": 0.15,
+   "before": {
+    "iou": 0.81,
+    "offset_sp": 0.05,
+    "bbox_offset_sp": 0.013
+   },
+   "bbox_offset_sp": 0.169,
+   "nudge_dx_sp": 0.127,
+   "nudge_dy_sp": -0.127,
+   "nudge_sp": 0.18,
+   "refine_iou": [
+    0.757,
+    0.757
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/8/6/10",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.023,
+   "score_on": 0.482,
+   "score_space": 0.459,
+   "dx_sp": 0.13,
+   "dy_sp": -0.13,
+   "dx_px": 2.0,
+   "dy_px": -2.0,
+   "spacing": 15.8,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.19,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      1705.0,
+      "on a found line"
+     ],
+     [
+      1725.0,
+      "on a found line"
+     ],
+     [
+      1715.0,
+      "midway between found lines"
+     ],
+     [
+      1733.0,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 16.0,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    10
+   ],
+   "round8": null,
+   "flags": [
+    "MOVED>0.15sp",
+    "offset WORSE",
+    "bbox WORSE",
+    "IoU WORSE",
+    "WORSE than the r5 sheet"
+   ]
+  },
+  {
+   "iou": 0.64,
+   "offset_sp": 0.18,
+   "iou_open": 0.64,
+   "offset_open_sp": 0.18,
+   "before": {
+    "iou": 0.64,
+    "offset_sp": 0.18,
+    "bbox_offset_sp": 0.091
+   },
+   "bbox_offset_sp": 0.091,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.695,
+    0.695
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/0/2/1",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.06,
+   "score_on": 0.576,
+   "score_space": 0.515,
+   "dx_sp": 0.38,
+   "dy_sp": -0.06,
+   "dx_px": 6.0,
+   "dy_px": -1.0,
+   "spacing": 15.8,
+   "MISS": true,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 5.78,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      395.5,
+      "on a found line"
+     ],
+     [
+      387.6,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 15.8,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    -6
+   ],
+   "round8": -4,
+   "flags": []
+  },
+  {
+   "iou": 0.56,
+   "offset_sp": 0.29,
+   "iou_open": 0.57,
+   "offset_open_sp": 0.3,
+   "before": {
+    "iou": 0.43,
+    "offset_sp": 0.49,
+    "bbox_offset_sp": 0.36
+   },
+   "bbox_offset_sp": 0.166,
+   "nudge_dx_sp": 0.099,
+   "nudge_dy_sp": -0.254,
+   "nudge_sp": 0.273,
+   "refine_iou": [
+    0.501,
+    0.67
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/0/2/9",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.013,
+   "score_on": 0.145,
+   "score_space": 0.158,
+   "dx_sp": 0.23,
+   "dy_sp": 0.0,
+   "dx_px": 3.6,
+   "dy_px": 0.0,
+   "spacing": 15.8,
+   "MISS": true,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 2.48,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      415.0,
+      "on a found line"
+     ],
+     [
+      428.5,
+      "on a found line"
+     ],
+     [
+      421.8,
+      "midway between found lines"
+     ],
+     [
+      407.1,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 15.8,
+    "applied": true
+   },
+   "variant_round5": "in_space",
+   "reference": [
+    -5
+   ],
+   "round8": -6,
+   "flags": [
+    "MOVED>0.15sp"
+   ]
+  },
+  {
+   "iou": 0.69,
+   "offset_sp": 0.16,
+   "iou_open": 0.68,
+   "offset_open_sp": 0.17,
+   "before": {
+    "iou": 0.8,
+    "offset_sp": 0.1,
+    "bbox_offset_sp": 0.095
+   },
+   "bbox_offset_sp": 0.272,
+   "nudge_dx_sp": 0.19,
+   "nudge_dy_sp": -0.254,
+   "nudge_sp": 0.317,
+   "refine_iou": [
+    0.571,
+    0.571
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/7/2/2",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.034,
+   "score_on": 0.284,
+   "score_space": 0.319,
+   "dx_sp": 0.19,
+   "dy_sp": -0.32,
+   "dx_px": 3.0,
+   "dy_px": -5.0,
+   "spacing": 15.8,
+   "MISS": true,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.62,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      1566.5,
+      "on a found line"
+     ],
+     [
+      1557.8,
+      "midway between found lines"
+     ],
+     [
+      1574.5,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 16.0,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    11
+   ],
+   "round8": 11,
+   "flags": [
+    "MOVED>0.15sp",
+    "offset WORSE",
+    "bbox WORSE",
+    "IoU WORSE",
+    "WORSE than the r5 sheet"
+   ]
+  },
+  {
+   "iou": 0.87,
+   "offset_sp": 0.01,
+   "iou_open": 0.91,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.87,
+    "offset_sp": 0.01,
+    "bbox_offset_sp": 0.013
+   },
+   "bbox_offset_sp": 0.013,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.822,
+    0.822
+   ],
+   "label": "far",
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/5/2/0",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.146,
+   "score_on": 0.495,
+   "score_space": 0.349,
+   "dx_sp": 0.13,
+   "dy_sp": -0.19,
+   "dx_px": 2.0,
+   "dy_px": -3.0,
+   "spacing": 15.8,
+   "MISS": false,
+   "size_check": {
+    "kind": "fitted axes",
+    "expected_px": [
+     149.9,
+     99.2
+    ],
+    "after": [
+     149.9,
+     100.1
+    ],
+    "before": [
+     149.9,
+     100.1
+    ],
+    "max_err_px": 0.9
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 5.46,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      1215.0,
+      "on a found line"
+     ],
+     [
+      1229.5,
+      "on a found line"
+     ],
+     [
+      1222.2,
+      "midway between found lines"
+     ],
+     [
+      1237.5,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 1.5750000000000002,
+    "gap_px": 16.0,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    10
+   ],
+   "round8": 10,
+   "flags": []
+  },
+  {
+   "iou": 0.86,
+   "offset_sp": 0.09,
+   "iou_open": 0.93,
+   "offset_open_sp": 0.04,
+   "before": {
+    "iou": 0.86,
+    "offset_sp": 0.09,
+    "bbox_offset_sp": 0.026
+   },
+   "bbox_offset_sp": 0.026,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.947,
+    0.947
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/0/12/3/2",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.198,
+   "score_on": 0.827,
+   "score_space": 0.629,
+   "dx_sp": 0.04,
+   "dy_sp": 0.0,
+   "dx_px": 1.0,
+   "dy_px": 0.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     94.0
+    ],
+    "before": [
+     111.0,
+     94.0
+    ],
+    "max_err_px": 2.2
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 3.45,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 4,
+   "flags": []
+  },
+  {
+   "iou": 0.89,
+   "offset_sp": 0.06,
+   "iou_open": 0.95,
+   "offset_open_sp": 0.03,
+   "before": {
+    "iou": 0.89,
+    "offset_sp": 0.06,
+    "bbox_offset_sp": 0.009
+   },
+   "bbox_offset_sp": 0.009,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.962,
+    0.962
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/0/9/6/0",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.24,
+   "score_on": 0.825,
+   "score_space": 0.586,
+   "dx_sp": 0.0,
+   "dy_sp": 0.04,
+   "dx_px": 0.0,
+   "dy_px": 1.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     94.0
+    ],
+    "before": [
+     111.0,
+     94.0
+    ],
+    "max_err_px": 2.2
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 3.38,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 4,
+   "flags": []
+  },
+  {
+   "iou": 0.9,
+   "offset_sp": 0.06,
+   "iou_open": 0.96,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.9,
+    "offset_sp": 0.06,
+    "bbox_offset_sp": 0.02
+   },
+   "bbox_offset_sp": 0.02,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.96,
+    0.96
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/1/12/4/0",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.21,
+   "score_on": 0.852,
+   "score_space": 0.642,
+   "dx_sp": 0.0,
+   "dy_sp": 0.0,
+   "dx_px": 0.0,
+   "dy_px": 0.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     95.0
+    ],
+    "before": [
+     111.0,
+     95.0
+    ],
+    "max_err_px": 1.8
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 3.53,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "on_line",
+   "position": 2,
+   "flags": []
+  },
+  {
+   "iou": 0.94,
+   "offset_sp": 0.01,
+   "iou_open": 0.97,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.94,
+    "offset_sp": 0.01,
+    "bbox_offset_sp": 0.018
+   },
+   "bbox_offset_sp": 0.018,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.992,
+    0.992
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/0/11/2/6",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.23,
+   "score_on": 0.527,
+   "score_space": 0.758,
+   "dx_sp": 0.0,
+   "dy_sp": 0.0,
+   "dx_px": 0.0,
+   "dy_px": 0.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     95.0
+    ],
+    "before": [
+     111.0,
+     95.0
+    ],
+    "max_err_px": 1.8
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 4.15,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "in_space",
+   "position": 1,
+   "flags": []
+  },
+  {
+   "iou": 0.95,
+   "offset_sp": 0.0,
+   "iou_open": 0.96,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.95,
+    "offset_sp": 0.0,
+    "bbox_offset_sp": 0.033
+   },
+   "bbox_offset_sp": 0.033,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.975,
+    0.975
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/0/2/6/3",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.219,
+   "score_on": 0.507,
+   "score_space": 0.726,
+   "dx_sp": 0.0,
+   "dy_sp": -0.04,
+   "dx_px": 0.0,
+   "dy_px": -1.0,
+   "spacing": 28.4,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     116.3,
+     99.3
+    ],
+    "after": [
+     115.0,
+     98.0
+    ],
+    "before": [
+     115.0,
+     98.0
+    ],
+    "max_err_px": 1.3
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.17,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "in_space",
+   "position": 3,
+   "flags": []
+  },
+  {
+   "iou": 0.95,
+   "offset_sp": 0.01,
+   "iou_open": 0.97,
+   "offset_open_sp": 0.0,
+   "before": {
+    "iou": 0.95,
+    "offset_sp": 0.01,
+    "bbox_offset_sp": 0.003
+   },
+   "bbox_offset_sp": 0.003,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.989,
+    0.989
+   ],
+   "label": "control",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/1/11/1/6",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.206,
+   "score_on": 0.531,
+   "score_space": 0.737,
+   "dx_sp": 0.0,
+   "dy_sp": -0.04,
+   "dx_px": 0.0,
+   "dy_px": -1.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     95.0
+    ],
+    "before": [
+     111.0,
+     95.0
+    ],
+    "max_err_px": 1.8
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 3.89,
+    "convention_ok": true
+   },
+   "ladder": null,
+   "variant_round5": "in_space",
+   "position": 7,
+   "flags": []
+  },
+  {
+   "iou": 0.91,
+   "offset_sp": 0.02,
+   "iou_open": 0.93,
+   "offset_open_sp": 0.02,
+   "before": {
+    "iou": 0.91,
+    "offset_sp": 0.02,
+    "bbox_offset_sp": 0.028
+   },
+   "bbox_offset_sp": 0.028,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": 0.0,
+   "nudge_sp": 0.0,
+   "refine_iou": [
+    0.802,
+    0.802
+   ],
+   "label": "far",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/1/0/4/0",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.07,
+   "score_on": 0.6,
+   "score_space": 0.67,
+   "dx_sp": 0.0,
+   "dy_sp": -0.07,
+   "dx_px": 0.0,
+   "dy_px": -2.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     94.0
+    ],
+    "before": [
+     111.0,
+     94.0
+    ],
+    "max_err_px": 2.2
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 6.11,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      4151.5,
+      "on a found line"
+     ],
+     [
+      4178.0,
+      "on a found line"
+     ],
+     [
+      4164.8,
+      "midway between found lines"
+     ],
+     [
+      4137.5,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 2.75,
+    "gap_px": 28.0,
+    "applied": true
+   },
+   "variant_round5": "in_space",
+   "reference": [
+    -7
+   ],
+   "round8": -7,
+   "flags": []
+  },
+  {
+   "iou": 0.75,
+   "offset_sp": 0.1,
+   "iou_open": 0.89,
+   "offset_open_sp": 0.04,
+   "before": {
+    "iou": 0.74,
+    "offset_sp": 0.1,
+    "bbox_offset_sp": 0.088
+   },
+   "bbox_offset_sp": 0.036,
+   "nudge_dx_sp": 0.036,
+   "nudge_dy_sp": -0.036,
+   "nudge_sp": 0.051,
+   "refine_iou": [
+    0.866,
+    0.866
+   ],
+   "label": "far",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/1/0/2/4",
+   "kind": "filled",
+   "variant": "on_line",
+   "margin": 0.101,
+   "score_on": 0.522,
+   "score_space": 0.421,
+   "dx_sp": -0.04,
+   "dy_sp": 0.04,
+   "dx_px": -1.0,
+   "dy_px": 1.0,
+   "spacing": 27.5,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     112.8,
+     96.2
+    ],
+    "after": [
+     111.0,
+     94.0
+    ],
+    "before": [
+     111.0,
+     94.0
+    ],
+    "max_err_px": 2.2
+   },
+   "stem": {
+    "side": "left",
+    "direction": "down",
+    "run_sp": 3.82,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      4205.5,
+      "on a found line"
+     ],
+     [
+      4234.0,
+      "on a found line"
+     ],
+     [
+      4219.7,
+      "midway between found lines"
+     ],
+     [
+      4247.5,
+      "midway between found lines"
+     ],
+     [
+      4191.7,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 2.75,
+    "gap_px": 27.5,
+    "applied": true
+   },
+   "variant_round5": "on_line",
+   "reference": [
+    -2
+   ],
+   "round8": -2,
+   "flags": []
+  },
+  {
+   "iou": 0.94,
+   "offset_sp": 0.01,
+   "iou_open": 0.96,
+   "offset_open_sp": 0.01,
+   "before": {
+    "iou": 0.93,
+    "offset_sp": 0.03,
+    "bbox_offset_sp": 0.012
+   },
+   "bbox_offset_sp": 0.036,
+   "nudge_dx_sp": 0.0,
+   "nudge_dy_sp": -0.036,
+   "nudge_sp": 0.036,
+   "refine_iou": [
+    0.0,
+    0.0
+   ],
+   "label": "far",
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/1/1/8/6/0",
+   "kind": "filled",
+   "variant": "in_space",
+   "margin": 0.038,
+   "score_on": 0.068,
+   "score_space": 0.105,
+   "dx_sp": 0.0,
+   "dy_sp": -0.04,
+   "dx_px": 0.0,
+   "dy_px": -1.0,
+   "spacing": 27.6,
+   "MISS": false,
+   "size_check": {
+    "kind": "mask extents",
+    "expected_px": [
+     113.3,
+     96.7
+    ],
+    "after": [
+     112.0,
+     95.0
+    ],
+    "before": [
+     112.0,
+     95.0
+    ],
+    "max_err_px": 1.7
+   },
+   "stem": {
+    "side": "right",
+    "direction": "up",
+    "run_sp": 4.81,
+    "convention_ok": true
+   },
+   "ladder": {
+    "candidates": [
+     [
+      6140.5,
+      "on a found line"
+     ],
+     [
+      6127.0,
+      "midway between found lines"
+     ],
+     [
+      6154.3,
+      "half a gap beyond the outermost found line"
+     ]
+    ],
+    "tol_px": 2.7625,
+    "gap_px": 27.5,
+    "applied": true
+   },
+   "variant_round5": "in_space",
+   "reference": [
+    13
+   ],
+   "round8": 13,
+   "flags": [
+    "bbox WORSE"
+   ]
+  }
+ ],
+ "drawing_check": [
+  {
+   "subject": "glyph/3/0/7/2/2",
+   "solid_centroid_err_px": [
+    -0.0,
+    0.1
+   ],
+   "before_centroid_err_px": [
+    -0.0,
+    0.1
+   ],
+   "stated_separation_px": 30.0,
+   "expected_from_nudge_px": 30.1,
+   "blue_pixels_in_tile": 1948
+  },
+  {
+   "subject": "glyph/3/0/0/2/9",
+   "solid_centroid_err_px": [
+    -0.4,
+    -0.0
+   ],
+   "before_centroid_err_px": [
+    -0.0,
+    -0.0
+   ],
+   "stated_separation_px": 25.8,
+   "expected_from_nudge_px": 25.9,
+   "blue_pixels_in_tile": 1926
+  },
+  {
+   "subject": "glyph/2/0/9/15/4",
+   "solid_centroid_err_px": [
+    -0.5,
+    0.3
+   ],
+   "before_centroid_err_px": [
+    -0.3,
+    -0.5
+   ],
+   "stated_separation_px": 25.8,
+   "expected_from_nudge_px": 25.8,
+   "blue_pixels_in_tile": 1918
+  },
+  {
+   "subject": "glyph/3/0/7/2/4",
+   "solid_centroid_err_px": [
+    -0.3,
+    -0.5
+   ],
+   "before_centroid_err_px": [
+    -0.3,
+    -0.5
+   ],
+   "stated_separation_px": 18.0,
+   "expected_from_nudge_px": 18.0,
+   "blue_pixels_in_tile": 1912
+  },
+  {
+   "subject": "glyph/3/0/8/6/10",
+   "solid_centroid_err_px": [
+    0.2,
+    -0.2
+   ],
+   "before_centroid_err_px": [
+    0.2,
+    -0.2
+   ],
+   "stated_separation_px": 17.0,
+   "expected_from_nudge_px": 17.1,
+   "blue_pixels_in_tile": 1913
+  },
+  {
+   "subject": "glyph/3/1/1/4/2",
+   "solid_centroid_err_px": [
+    -0.4,
+    0.1
+   ],
+   "before_centroid_err_px": [
+    -0.3,
+    0.3
+   ],
+   "stated_separation_px": 6.8,
+   "expected_from_nudge_px": 6.8,
+   "blue_pixels_in_tile": 1871
+  }
+ ]
+}
