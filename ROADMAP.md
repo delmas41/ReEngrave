@@ -17,6 +17,29 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-04 (day session; main ≥ this commit)
+
+**Landed today (reader only, nothing switched on, no re-gather):** the round-8 far-head rung
+reader (`tools/omr/annotate/ledger_grid.py`) with fix 1 (`near_edge_ledgers`,
+`restore_masked_staff_side_rungs`) and the far-side rule (`far_side_ledger`), all keyword-gated,
+default off; tests + `benchmarks/omr-local-staff-2026-09/` (scorers: `score_far_side.py`). Truth set
+(records symlinked from `library/_shared-records/truthset-2.44c-20260930/` into
+`benchmarks/acceptance/quick/out/`): Litolff 25/14/5 -> fix 1 29/13/2 -> + far side 32/10/2 (n=44;
+`1/0/10/14/1` excluded; `3/0/0/6/2`'s reference is wrong per Sean, n=43 gives 32/9/2); Brahms 11/0/0
+throughout. Rules were written on these same heads -- the out-of-sample test is a re-gather. The
+reader is NOT wired into STAGED: the 2.48 local-staff GATHER wiring and 2.54 combined position on
+`lane-ledger-r8`'s history were deliberately NOT landed (2.48 is parked).
+**Parked on branches:** geometry head templates (`lane-ledger-template-fix` 51c8f65a, rounds 3-7:
+shape good per Sean, occasionally off centre, stem side + ledger-constrained height, all off) -- a
+placement/boxing tool for cause A and the tied-dyad split, not a line/space witness;
+`lane-ledger-template-centre` (centre into round 8: no gain).
+**Open, in order:** (1) the 10 remaining Litolff misses (crop sheet requested by Sean 10-04,
+`lane-ledger-wrong10-sheet`): mostly a ledger THROUGH the head not evidenced at the middle row (a
+looser probe band of ±0.30 sp fixed 2 in the census, tuned in-sample -- not built), a thick ledger
+counted twice, a ledger missed in a wide gap; (2) which Brahms tiles Sean meant by "not noteheads";
+eighth-rest blobs boxed as noteheads on Brahms p1; (3) wire the reader into STAGED (needs its own
+item and Sean's go) and an overnight re-gather; (4) tied dyads under 2.55 (unchanged from below).
+
 ## START HERE — after 2026-10-01 (day session; main ≥ this commit; resuming "in a few days")
 
 **How Sean wants the day run (memory + DECISIONS 10-01):** propose lanes and get his pick
@@ -498,6 +521,7 @@ Gate: `current.json` for all three; a baseline count committed.
 | 2.51 | How much printed ink has no detector box, and what is it | **measured, NOT merged** (`lane-2.51-unboxed-ink` `78d05d85`, `benchmarks/omr-ink-gather-2026-09/FINDINGS.md` §14). Headline (60% Litolff / 64% Brahms uncovered) is NOT usable: barlines and text were not subtracted -- the engraved control read 45%, not ~0. Useful part: the 20 largest unboxed blobs on Litolff p3 are mostly words ("dolce", "a.2"), ~3 whole rests (led to 2.52), and no obvious missed black head. Next if resumed: subtract barlines + text |
 | 2.53 | Bars full of notes with no detector box at all | **diagnosed, NOT merged** (`lane-2.53-unboxed-bars` `ad41435b`, write-up in that branch's ROADMAP row). Litolff p3: 29 boxless bars with notes; the detector RAN there (other classes boxed) but noteheads fell under conf 0.25 -- at 0.10, 24 of 29 recover, mostly hollow heads crossed by ties/slurs/ledgers. Brahms's 8 were the cautionary 9/8 strip. Led to 2.55 |
 | 2.44d | Far-head position: combine geometry and the rung count (Sean: agree -> take it) | **built, OFF, NOT merged** (`lane-farhead-combined` `28d367a7`; `Q.FARHEAD_COMBINED_POSITION`, `FARHEAD_COMBINED_SHIPS=False`; ⚠️ the lane labelled it 2.54 and gated it at EVALUATE/pitch -- renumber, and gate on staff position at ADJUDICATE if resumed). Litolff 28/8/8 (right/wrong/unread) vs geometry 30/14/0; agree 27 -> 25 right; disagree is a coin flip either way, so the even/uneven switch did not work. Sean: "Geometry and rungs agree is the right path but we need a way of dealing with uneven rungs" |
+| 2.44e | Round-8 far-head rung reader + fix 1 (near-edge ledger counted) + far-side rule (Sean 2026-10-04) | **landed OFF (reader only, not wired into STAGED)** -- DECISIONS 2026-10-04; Litolff 25/14/5 -> 32/10/2, Brahms 11/0/0 |
 
 Gate: > 80% of gathered noteheads reach the file on both scans; all parts
 named; second count lower than the first.

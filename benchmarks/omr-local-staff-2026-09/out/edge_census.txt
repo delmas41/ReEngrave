@@ -1,0 +1,104 @@
+control A (no wrappers) beethoven5-litolff: {'right': 25, 'wrong': 14, 'abstain': 5} n=44
+control A (no wrappers) brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+control B (wrappers+recording) beethoven5-litolff: {'right': 25, 'wrong': 14, 'abstain': 5} == A
+control B (wrappers+recording) brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0} == A
+replayed derive == real derive on 55/55 heads
+
+=== the non-right heads ===
+head                 v      cls      r8   undo   ref  cause / dropping rule
+glyph/3/0/0/2/1      wrong  E        -4     -6  [-6]  exclusion_or_cascade y=412 (near-0.32 far-1.50 mid-0.91)
+glyph/3/0/0/6/2      wrong  E        -6     -4  [-4]  exclusion_or_cascade y=398 (near+1.14 far-0.08 mid+0.53)
+glyph/3/0/7/0/7      abstai E      None     -3  [-3]  derive_pop y=1472 (near+0.36 far-0.99 mid-0.31)
+glyph/3/0/8/9/0      abstai E      None     11  [11]  derive_pop y=1724 (near+0.21 far-1.27 mid-0.53)
+glyph/3/0/9/3/5      abstai E      None  11,11  [11]  exclusion_or_cascade y=1881 (near-0.26 far-1.66 mid-0.96); exclusion_or_cascade y=1903 (near+1.17 far-0.23 mid+0.47)
+glyph/3/0/0/2/9      wrong  E?       -6     -4  [-5]  exclusion_or_cascade y=398 (near+1.29 far+0.03 mid+0.66)
+glyph/1/0/10/7/1     wrong  other    -4      -  [-2]  through-ledger sits 0.19 sp from the box's near edge (box rides high): counted as the ledger BEFORE the head, then a jut at box middle -> one too far
+glyph/3/0/0/2/4      wrong  other    -4      -  [-7]  missed middle ledger: 2.15 sp gap between found rungs (no ink found there)
+glyph/3/0/0/7/1      wrong  other   -10      -  [-8]  5 rungs found for 4 ledgers: one thick ledger counted twice (merge-close / half-spacing dedupe are off)
+glyph/3/0/0/7/2      wrong  other    -6      -  [-2]  rungs BEYOND the head (neighbour heads' ledgers) counted: derive's through-branch takes the last rung however far past the head
+glyph/3/0/7/2/4      abstai other  None      -  [10]  through-line not evidenced at the box-middle row (rung 0.26 sp above it)   [through-undo -> 10 = ref]
+glyph/3/0/7/3/1      wrong  other    -5      -  [-6]  through-line not evidenced at the box-middle row -> popped   [through-undo -> -6 = ref]
+glyph/3/0/7/3/2      wrong  other    -5      -  [-6]  through-line not evidenced at the box-middle row -> popped   [through-undo -> -6 = ref]
+glyph/3/0/7/3/4      wrong  other    -5      -  [-6]  through-ledger dropped by other-head masking AND not evidenced (two faults)
+glyph/3/0/7/4/3      wrong  other    -3      -  [-4]  through-ledger dropped by clears-box / masking AND not evidenced (two faults)
+glyph/3/0/7/6/1      wrong  other    11      -  [12]  through-line not evidenced at the box-middle row -> popped   [through-undo -> 12 = ref]
+glyph/3/0/7/7/0      wrong  other    11      -  [12]  through-line not evidenced at the box-middle row -> popped   [through-undo -> 12 = ref]
+glyph/3/0/8/6/10     abstai other  None      -  [10]  through-line not evidenced at the box-middle row -> popped   [through-undo -> 10 = ref]
+glyph/3/1/0/6/0      wrong  other    -3      -  [-6]  first ledger dropped by clears-box AND through-line not evidenced (two faults)
+counts: {'other': 13, 'E': 5, 'E?': 1} of 19
+
+=== right heads: edge-band drops, and every undo that breaks one ===
+glyph/1/0/3/7/3 edge_drops: [('clears_box', 1599, 1.66, 0.31)] breaks: [{'rule': 'clears_box', 'y': 1599.0, 'pos': -4}]
+glyph/3/0/0/2/3 edge_drops: [] breaks: [{'rule': 'exclusion_or_cascade', 'y': 395.4848484848485, 'pos': -6}]
+glyph/3/0/0/5/12 edge_drops: [] breaks: [{'rule': 'exclusion_or_cascade', 'y': 396.5, 'pos': -6}]
+glyph/1/1/8/7/4 edge_drops: [('derive_pop', 6182, 1.56, 0.41), ('exclusion_or_cascade', 6168, 1.04, -0.12)] breaks: [{'rule': 'derive_pop', 'y': 6215.0, 'pos': 17}, {'rule': 'derive_pop', 'y': 6182.0, 'pos': 15}, {'rule': 'exclusion_or_cascade', 'y': 6168.0, 'pos': 11}]
+right heads (both docs) = 36; with an edge-band drop whose undo breaks them: 2 ['glyph/1/0/3/7/3', 'glyph/1/1/8/7/4']; broken by ANY single undo: 4 ['glyph/1/0/3/7/3', 'glyph/3/0/0/2/3', 'glyph/3/0/0/5/12', 'glyph/1/1/8/7/4']
+
+BLANKET undo 'pop_near':
+  beethoven5-litolff: {'right': 27, 'wrong': 14, 'abstain': 3}
+     glyph/3/0/7/0/7  abstain -> right (pos -3)
+     glyph/3/0/8/9/0  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'pop_edge':
+  beethoven5-litolff: {'right': 27, 'wrong': 14, 'abstain': 3}
+     glyph/3/0/7/0/7  abstain -> right (pos -3)
+     glyph/3/0/8/9/0  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'clears_edge':
+  beethoven5-litolff: {'right': 24, 'wrong': 15, 'abstain': 5}
+     glyph/1/0/3/7/3  right -> wrong (pos -4)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'collapse':
+  beethoven5-litolff: {'right': 25, 'wrong': 14, 'abstain': 5}
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'excl':
+  beethoven5-litolff: {'right': 25, 'wrong': 14, 'abstain': 5}
+     glyph/3/0/0/2/1  wrong -> right (pos -6)
+     glyph/3/0/0/2/3  right -> wrong (pos -6)
+     glyph/3/0/0/5/12  right -> wrong (pos -6)
+     glyph/3/0/0/6/2  wrong -> right (pos -4)
+     glyph/3/0/7/4/2  right -> abstain (pos None)
+     glyph/3/0/9/3/5  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 10, 'wrong': 1, 'abstain': 0}
+     glyph/1/1/8/7/4  right -> wrong (pos 11)
+
+BLANKET undo 'inject_near':
+  beethoven5-litolff: {'right': 27, 'wrong': 13, 'abstain': 4}
+     glyph/3/0/0/2/1  wrong -> right (pos -6)
+     glyph/3/0/9/3/5  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'inject_band':
+  beethoven5-litolff: {'right': 27, 'wrong': 13, 'abstain': 4}
+     glyph/3/0/0/2/1  wrong -> right (pos -6)
+     glyph/3/0/9/3/5  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'pop_mid_through':
+  beethoven5-litolff: {'right': 31, 'wrong': 10, 'abstain': 3}
+     glyph/3/0/7/2/4  abstain -> right (pos 10)
+     glyph/3/0/7/3/1  wrong -> right (pos -6)
+     glyph/3/0/7/3/2  wrong -> right (pos -6)
+     glyph/3/0/7/6/1  wrong -> right (pos 12)
+     glyph/3/0/7/7/0  wrong -> right (pos 12)
+     glyph/3/0/8/6/10  abstain -> right (pos 10)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'near_fix':
+  beethoven5-litolff: {'right': 29, 'wrong': 13, 'abstain': 2}
+     glyph/3/0/0/2/1  wrong -> right (pos -6)
+     glyph/3/0/7/0/7  abstain -> right (pos -3)
+     glyph/3/0/8/9/0  abstain -> right (pos 11)
+     glyph/3/0/9/3/5  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}
+
+BLANKET undo 'all_edge':
+  beethoven5-litolff: {'right': 26, 'wrong': 15, 'abstain': 3}
+     glyph/1/0/3/7/3  right -> wrong (pos -4)
+     glyph/3/0/7/0/7  abstain -> right (pos -3)
+     glyph/3/0/8/9/0  abstain -> right (pos 11)
+  brahms1-breitkopf: {'right': 11, 'wrong': 0, 'abstain': 0}

@@ -1,0 +1,16 @@
+=== beethoven5-litolff ===
+  base  far       n= 513  {'unscored': 350, 'right': 121, 'wrong': 42}
+  base  in-staff  n= 817  {'unscored': 512, 'right': 289, 'wrong': 16}
+  arm   far       n= 513  {'unscored': 350, 'right': 121, 'wrong': 42}
+  arm   in-staff  n= 817  {'unscored': 512, 'right': 289, 'wrong': 16}
+  heads present in both, pitch-or-verdict changed: 0
+  right->wrong: 0   wrong/other->right: 0
+  only in base: 0   only in arm: 0
+=== brahms1-breitkopf ===
+  base  far       n= 605  {'unscored': 589, 'right': 16}
+  base  in-staff  n= 897  {'unscored': 783, 'right': 114}
+  arm   far       n= 605  {'unscored': 589, 'right': 16}
+  arm   in-staff  n= 897  {'unscored': 783, 'right': 114}
+  heads present in both, pitch-or-verdict changed: 0
+  right->wrong: 0   wrong/other->right: 0
+  only in base: 0   only in arm: 0

@@ -1,0 +1,390 @@
+=== beethoven5-litolff ===
+  base  far       n= 513  {'unscored': 350, 'right': 121, 'wrong': 42}
+  base  in-staff  n= 817  {'unscored': 512, 'right': 289, 'wrong': 16}
+  arm   far       n= 527  {'unscored': 365, 'right': 102, 'wrong': 60}
+  arm   in-staff  n= 803  {'unscored': 497, 'right': 246, 'wrong': 60}
+  heads present in both, pitch-or-verdict changed: 291
+  right->wrong: 66   wrong/other->right: 4
+    in-staff  glyph/1/0/0/15/1             unscored->unscored  D5   ->C5     pos 2.50->2.50
+    FAR       glyph/1/0/3/15/1             unscored->unscored  C4   ->B3     pos -1.58->-1.44
+    FAR       glyph/1/0/7/1/1              wrong  ->right    D4   ->E4     pos 8.52->8.49
+    in-staff  glyph/1/0/8/0/5              right  ->wrong    G4   ->E4     pos 5.96->8.02
+    in-staff  glyph/1/0/8/0/6              right  ->wrong    G4   ->F4     pos 5.98->7.18
+    in-staff  glyph/1/0/8/0/7              right  ->wrong    G4   ->E4     pos 5.98->8.23
+    in-staff  glyph/1/0/8/1/6              right  ->wrong    E4   ->D4     pos 8.46->8.51
+    FAR       glyph/1/0/8/8/4              unscored->unscored  D4   ->E4     pos 8.54->8.47
+    FAR       glyph/1/0/9/11/1             wrong  ->right    A4   ->G4     pos -0.54->-0.46
+    FAR       glyph/2/0/0/1/0              right  ->wrong    G6   ->F6     pos -8.16->-7.22
+    FAR       glyph/2/0/0/1/1              wrong  ->right    G6   ->F6     pos -7.54->-6.59
+    FAR       glyph/2/0/0/1/12             unscored->unscored  E3   ->D3     pos 14.86->15.80
+    FAR       glyph/2/0/0/1/15             unscored->unscored  D6   ->C6     pos -5.26->-4.33
+    FAR       glyph/2/0/0/1/17             unscored->unscored  G6   ->F6     pos -8.24->-7.31
+    FAR       glyph/2/0/0/1/3              right  ->wrong    D6   ->C6     pos -4.74->-3.79
+    FAR       glyph/2/0/0/1/4              unscored->unscored  G6   ->F6     pos -8.36->-7.43
+    FAR       glyph/2/0/0/2/1              unscored->unscored  C6   ->B5     pos -4.28->-3.47
+    FAR       glyph/2/0/0/2/2              unscored->unscored  E6   ->D6     pos -6.20->-5.39
+    FAR       glyph/2/0/0/2/8              unscored->unscored  C6   ->B5     pos -4.30->-3.49
+    in-staff  glyph/2/0/0/7/4              unscored->unscored  F5   ->G5     pos -0.44->-0.54
+    FAR       glyph/2/0/1/1/0              right  ->wrong    G5   ->F5     pos -1.10->-0.31
+    FAR       glyph/2/0/1/1/2              right  ->wrong    G5   ->F5     pos -1.12->-0.31
+    in-staff  glyph/2/0/1/1/4              unscored->unscored  F5   ->E5     pos -0.06->0.93
+    in-staff  glyph/2/0/1/1/5              right  ->wrong    D5   ->C5     pos 2.16->2.95
+    in-staff  glyph/2/0/1/1/6              right  ->wrong    D5   ->C5     pos 2.08->2.89
+    in-staff  glyph/2/0/1/1/7              unscored->unscored  D5   ->C5     pos 2.10->3.09
+    in-staff  glyph/2/0/1/2/2              unscored->unscored  E5   ->D5     pos 1.10->1.99
+    in-staff  glyph/2/0/1/2/5              unscored->unscored  C5   ->B4     pos 3.14->4.03
+    in-staff  glyph/2/0/1/2/9              unscored->unscored  E4   ->D4     pos 8.12->9.01
+    in-staff  glyph/2/0/1/3/0              unscored->unscored  F5   ->E5     pos 0.04->0.78
+    in-staff  glyph/2/0/1/3/3              unscored->unscored  C5   ->B4     pos 3.16->3.83
+    in-staff  glyph/2/0/1/3/5              unscored->unscored  C5   ->B4     pos 3.16->3.90
+    in-staff  glyph/2/0/1/3/6              unscored->unscored  B4   ->A4     pos 3.94->4.68
+    in-staff  glyph/2/0/1/4/5              unscored->unscored  B4   ->A4     pos 4.46->4.76
+    FAR       glyph/2/0/2/0/7              unscored->unscored  B2   ->G2     pos 18.26->20.30
+    in-staff  glyph/2/0/2/1/1              unscored->unscored  E4   ->D4     pos 8.02->8.66
+    FAR       glyph/2/0/2/1/13             unscored->unscored  G3   ->F3     pos 12.98->13.74
+    in-staff  glyph/2/0/2/1/16             unscored->unscored  E4   ->D4     pos 7.94->8.70
+    in-staff  glyph/2/0/2/1/17             unscored->unscored  A4   ->G4     pos 4.96->5.61
+    in-staff  glyph/2/0/2/1/18             unscored->unscored  B4   ->A4     pos 4.40->5.16
+    FAR       glyph/2/0/2/1/3              unscored->unscored  C4   ->B3     pos 9.96->10.73
+    in-staff  glyph/2/0/2/1/5              unscored->unscored  A4   ->G4     pos 4.94->5.60
+    in-staff  glyph/2/0/2/1/7              unscored->unscored  E4   ->D4     pos 7.88->8.64
+    FAR       glyph/2/0/3/0/5              unscored->unscored  C4   ->A3     pos -2.20->-0.16
+    FAR       glyph/2/0/3/0/7              unscored->unscored  C4   ->A3     pos -2.22->-0.18
+    FAR       glyph/2/0/3/1/0              right  ->wrong    B3   ->A3     pos -1.12->-0.17
+    FAR       glyph/2/0/3/1/10             unscored->unscored  D5   ->C5     pos -9.78->-8.70
+    FAR       glyph/2/0/3/1/13             unscored->unscored  F5   ->E5     pos -12.28->-11.33
+    FAR       glyph/2/0/3/1/14             unscored->unscored  F5   ->D5     pos -12.42->-10.44
+    FAR       glyph/2/0/3/1/15             unscored->unscored  E5   ->D5     pos -11.36->-10.30
+    FAR       glyph/2/0/3/1/18             unscored->unscored  E5   ->D5     pos -11.44->-10.36
+    FAR       glyph/2/0/3/1/2              unscored->unscored  B3   ->A3     pos -1.10->-0.02
+    FAR       glyph/2/0/3/1/3              right  ->wrong    B3   ->G3     pos -0.88->0.70
+    FAR       glyph/2/0/3/1/4              unscored->unscored  E5   ->D5     pos -11.48->-9.90
+    FAR       glyph/2/0/3/1/7              unscored->unscored  B3   ->G3     pos -1.16->0.82
+    FAR       glyph/2/0/3/2/2              unscored->unscored  C4   ->B3     pos -1.84->-0.88
+    FAR       glyph/2/0/3/3/1              unscored->unscored  F5   ->E5     pos -11.76->-10.98
+    in-staff  glyph/2/0/3/3/2              right  ->wrong    A2   ->G2     pos 7.04->7.82
+    in-staff  glyph/2/0/3/4/0              unscored->unscored  G2   ->F2     pos 8.08->8.84
+    FAR       glyph/2/0/3/4/1              unscored->unscored  E5   ->D5     pos -11.00->-10.24
+    in-staff  glyph/2/0/4/1/10             unscored->unscored  E5   ->D5     pos 1.38->2.33
+    in-staff  glyph/2/0/4/1/2              unscored->unscored  E5   ->D5     pos 1.08->2.08
+    in-staff  glyph/2/0/4/1/5              unscored->unscored  E5   ->C5     pos 1.06->2.80
+    in-staff  glyph/2/0/4/1/6              unscored->unscored  E5   ->D5     pos 1.12->2.12
+    in-staff  glyph/2/0/4/2/1              unscored->unscored  E5   ->D5     pos 1.02->2.02
+    FAR       glyph/2/0/4/3/0              unscored->unscored  C4   ->B3     pos 9.94->10.72
+    in-staff  glyph/2/0/4/3/2              unscored->unscored  C5   ->B4     pos 3.00->3.78
+    in-staff  glyph/2/0/4/3/3              unscored->unscored  D5   ->C5     pos 1.82->2.60
+    in-staff  glyph/2/0/4/4/1              unscored->unscored  E4   ->D4     pos 8.04->8.61
+    in-staff  glyph/2/0/5/1/1              unscored->unscored  G4   ->F4     pos 6.16->6.98
+    in-staff  glyph/2/0/5/1/14             unscored->unscored  A4   ->G4     pos 4.86->5.68
+    in-staff  glyph/2/0/5/1/2              right  ->wrong    G4   ->F4     pos 6.10->7.17
+    FAR       glyph/2/0/5/1/3              unscored->unscored  G3   ->F3     pos 13.06->13.88
+    in-staff  glyph/2/0/5/1/4              right  ->wrong    G4   ->F4     pos 6.00->6.85
+    FAR       glyph/2/0/5/1/5              right  ->wrong    G3   ->F3     pos 12.96->14.05
+    FAR       glyph/2/0/5/1/6              right  ->wrong    G3   ->F3     pos 12.80->13.68
+    in-staff  glyph/2/0/5/2/2              unscored->unscored  C5   ->B4     pos 3.06->3.88
+    in-staff  glyph/2/0/5/2/5              unscored->unscored  D5   ->C5     pos 1.80->2.62
+    FAR       glyph/2/0/5/4/1              unscored->unscored  G3   ->F3     pos 13.46->13.54
+    in-staff  glyph/2/0/6/1/0              unscored->unscored  G2   ->E2     pos 8.08->10.10
+    in-staff  glyph/2/0/6/1/1              unscored->unscored  G2   ->E2     pos 8.00->9.99
+    in-staff  glyph/2/0/6/1/2              unscored->unscored  G2   ->E2     pos 7.98->9.97
+    FAR       glyph/2/0/6/1/5              unscored->unscored  G4   ->E4     pos -6.08->-4.10
+    FAR       glyph/2/0/6/1/6              unscored->unscored  G4   ->E4     pos -6.20->-4.17
+    FAR       glyph/2/0/6/1/7              unscored->unscored  A4   ->F4     pos -6.66->-4.65
+    FAR       glyph/2/0/6/2/2              unscored->unscored  C5   ->A4     pos -8.54->-7.48
+    in-staff  glyph/2/0/6/2/3              unscored->unscored  C3   ->B2     pos 5.02->6.08
+    FAR       glyph/2/0/6/3/0              unscored->unscored  B4   ->A4     pos -8.34->-7.41
+    in-staff  glyph/2/0/6/4/2              unscored->unscored  G2   ->F2     pos 8.04->8.85
+    FAR       glyph/2/0/6/4/3              unscored->unscored  G4   ->F4     pos -5.54->-4.73
+    in-staff  glyph/2/0/7/0/4              right  ->wrong    E5   ->C5     pos 0.82->2.88
+    FAR       glyph/2/0/7/1/1              unscored->unscored  G5   ->F5     pos -1.08->-0.16
+    FAR       glyph/2/0/7/1/3              unscored->unscored  G5   ->F5     pos -1.00->-0.11
+    in-staff  glyph/2/0/7/1/4              unscored->unscored  F5   ->E5     pos 0.00->0.94
+    in-staff  glyph/2/0/7/1/5              unscored->unscored  D5   ->C5     pos 1.98->2.82
+    in-staff  glyph/2/0/7/1/8              unscored->unscored  F4   ->E4     pos 7.10->7.99
+    in-staff  glyph/2/0/7/1/9              unscored->unscored  F4   ->E4     pos 7.04->7.96
+    in-staff  glyph/2/0/7/2/2              right  ->wrong    E5   ->D5     pos 1.22->2.02
+    in-staff  glyph/2/0/7/3/2              unscored->unscored  G4   ->A4     pos 5.58->5.46
+    FAR       glyph/2/0/7/4/1              unscored->unscored  G3   ->F3     pos 12.92->13.62
+    in-staff  glyph/2/0/7/4/12             unscored->unscored  C5   ->B4     pos 3.16->3.84
+    FAR       glyph/2/0/7/4/13             unscored->unscored  E3   ->D3     pos 14.96->15.68
+    in-staff  glyph/2/0/7/4/2              unscored->unscored  B4   ->A4     pos 4.04->4.76
+    FAR       glyph/2/0/7/4/3              unscored->unscored  D4   ->C4     pos 9.22->9.97
+    in-staff  glyph/2/0/7/4/5              unscored->unscored  A4   ->G4     pos 5.36->6.04
+    in-staff  glyph/2/0/8/0/1              right  ->wrong    E4   ->C4     pos 7.96->9.99
+    in-staff  glyph/2/0/8/0/2              right  ->wrong    E4   ->C4     pos 8.04->10.08
+    in-staff  glyph/2/0/8/0/3              unscored->unscored  G4   ->E4     pos 6.20->8.22
+    in-staff  glyph/2/0/8/0/5              unscored->unscored  F4   ->D4     pos 6.90->8.92
+    in-staff  glyph/2/0/8/0/7              unscored->unscored  F4   ->D4     pos 6.74->8.76
+    FAR       glyph/2/0/8/3/1              unscored->unscored  E6   ->F6     pos -6.48->-6.53
+    in-staff  glyph/2/0/9/0/0              right  ->wrong    G4   ->E4     pos 0.12->2.10
+    in-staff  glyph/2/0/9/0/1              right  ->wrong    E4   ->C4     pos 2.14->4.12
+    in-staff  glyph/2/0/9/0/2              wrong  ->wrong    E4   ->C4     pos 2.16->4.11
+    FAR       glyph/2/0/9/0/6              unscored->unscored  F2   ->D2     pos 14.82->16.79
+    FAR       glyph/2/1/0/12/10            unscored->unscored  D6   ->E6     pos -5.40->-5.53
+    FAR       glyph/2/1/0/12/8             unscored->unscored  F6   ->G6     pos -7.42->-7.55
+    FAR       glyph/2/1/0/13/3             unscored->unscored  D6   ->C6     pos -4.52->-4.42
+    FAR       glyph/2/1/0/8/1              unscored->unscored  C6   ->D6     pos -4.48->-4.51
+    FAR       glyph/2/1/1/13/1             unscored->unscored  A5   ->G5     pos -1.54->-1.43
+    FAR       glyph/2/1/10/12/0            unscored->unscored  F4   ->E4     pos -4.72->-3.98
+    in-staff  glyph/2/1/10/12/1            right  ->wrong    C3   ->B2     pos 5.04->5.78
+    in-staff  glyph/2/1/10/13/0            unscored->unscored  C3   ->A2     pos 4.96->6.90
+    in-staff  glyph/2/1/10/13/2            unscored->unscored  C3   ->B2     pos 5.08->6.24
+    in-staff  glyph/2/1/10/13/3            right  ->wrong    C3   ->B2     pos 4.84->5.94
+    FAR       glyph/2/1/10/13/4            wrong  ->wrong    F4   ->D4     pos -4.54->-3.44
+    in-staff  glyph/2/1/10/13/5            unscored->unscored  C3   ->B2     pos 5.06->6.21
+    in-staff  glyph/2/1/10/14/2            unscored->unscored  G2   ->E2     pos 7.70->9.75
+    in-staff  glyph/2/1/2/11/1             unscored->unscored  B4   ->A4     pos 4.46->4.63
+    in-staff  glyph/2/1/3/12/10            unscored->unscored  C4   ->B3     pos 2.50->2.69
+    in-staff  glyph/2/1/3/13/0             unscored->unscored  C4   ->B3     pos 2.50->2.69
+    in-staff  glyph/2/1/4/13/0             unscored->unscored  F5   ->E5     pos 0.36->0.61
+    in-staff  glyph/2/1/4/14/6             unscored->unscored  E5   ->D5     pos 1.38->2.32
+    in-staff  glyph/2/1/4/14/8             unscored->unscored  F5   ->E5     pos 0.42->1.49
+    in-staff  glyph/2/1/4/14/9             unscored->unscored  E5   ->D5     pos 0.78->1.85
+    FAR       glyph/2/1/5/13/1             wrong  ->right    B3   ->C4     pos 10.56->10.45
+    FAR       glyph/2/1/6/13/0             unscored->unscored  F4   ->E4     pos -4.90->-4.00
+    FAR       glyph/2/1/6/13/1             unscored->unscored  F4   ->E4     pos -5.32->-4.26
+    in-staff  glyph/2/1/6/13/2             unscored->unscored  C3   ->B2     pos 5.04->6.04
+    in-staff  glyph/2/1/6/13/4             unscored->unscored  C3   ->B2     pos 5.02->5.92
+    FAR       glyph/2/1/6/14/0             unscored->unscored  A1   ->G1     pos 13.76->14.84
+    FAR       glyph/2/1/6/14/2             unscored->unscored  F1   ->E1     pos 15.96->17.48
+    in-staff  glyph/2/1/6/14/3             unscored->unscored  G2   ->F2     pos 7.96->9.03
+    FAR       glyph/2/1/6/14/4             unscored->unscored  C4   ->B3     pos -2.22->-1.15
+    FAR       glyph/2/1/6/14/5             unscored->unscored  F1   ->E1     pos 15.96->17.07
+    FAR       glyph/2/1/6/9/8              unscored->unscored  G4   ->F4     pos -5.58->-5.42
+    FAR       glyph/2/1/7/11/2             unscored->unscored  D6   ->C6     pos -4.58->-3.84
+    FAR       glyph/2/1/7/11/6             unscored->unscored  D6   ->C6     pos -4.62->-3.88
+    in-staff  glyph/2/1/7/12/0             unscored->unscored  G4   ->F4     pos 5.92->6.87
+    in-staff  glyph/2/1/7/12/2             unscored->unscored  G4   ->F4     pos 5.98->7.21
+    in-staff  glyph/2/1/7/12/3             unscored->unscored  E5   ->D5     pos 0.76->1.58
+    in-staff  glyph/2/1/7/13/0             right  ->wrong    E4   ->D4     pos 7.92->8.99
+    FAR       glyph/2/1/7/13/1             right  ->wrong    C4   ->A3     pos 10.18->12.00
+    FAR       glyph/2/1/7/13/2             right  ->wrong    C4   ->A3     pos 10.30->12.28
+    FAR       glyph/2/1/7/13/3             right  ->wrong    C4   ->B3     pos 10.08->11.25
+    FAR       glyph/2/1/7/14/0             wrong  ->wrong    G6   ->E6     pos -7.70->-5.64
+    FAR       glyph/2/1/7/14/1             unscored->unscored  E7   ->B6     pos -12.62->-10.50
+    FAR       glyph/2/1/7/14/3             unscored->unscored  A3   ->F3     pos 11.58->13.69
+    FAR       glyph/2/1/7/14/4             wrong  ->wrong    E6   ->C6     pos -5.60->-3.77
+    FAR       glyph/2/1/7/14/6             wrong  ->wrong    E6   ->B5     pos -5.50->-3.49
+    FAR       glyph/2/1/7/7/4              right  ->wrong    A5   ->B5     pos -2.50->-2.53
+    FAR       glyph/2/1/7/8/8              unscored->unscored  A5   ->B5     pos -2.48->-2.51
+    in-staff  glyph/2/1/8/12/0             unscored->unscored  E4   ->D4     pos 7.96->8.69
+    FAR       glyph/2/1/8/12/1             unscored->unscored  B5   ->A5     pos -2.64->-1.77
+    in-staff  glyph/2/1/8/12/2             unscored->unscored  C5   ->B4     pos 2.78->3.51
+    FAR       glyph/2/1/8/12/4             unscored->unscored  A5   ->G5     pos -2.34->-1.47
+    FAR       glyph/2/1/8/13/0             unscored->unscored  G6   ->E6     pos -7.72->-5.66
+    FAR       glyph/2/1/8/13/1             unscored->unscored  G6   ->E6     pos -7.68->-5.77
+    FAR       glyph/2/1/8/13/2             unscored->unscored  G6   ->E6     pos -7.60->-5.63
+    in-staff  glyph/2/1/8/13/3             unscored->unscored  E4   ->C4     pos 8.38->9.62
+    FAR       glyph/2/1/8/13/5             unscored->unscored  A5   ->G5     pos -2.14->-0.63
+    FAR       glyph/2/1/8/13/7             unscored->unscored  A6   ->G6     pos -8.86->-7.63
+    FAR       glyph/2/1/8/13/8             unscored->unscored  A5   ->G5     pos -2.42->-0.87
+    in-staff  glyph/2/1/8/14/0             right  ->wrong    D5   ->B4     pos 2.14->4.08
+    in-staff  glyph/2/1/8/14/11            unscored->unscored  D5   ->B4     pos 1.94->4.08
+    in-staff  glyph/2/1/8/14/2             right  ->wrong    D5   ->B4     pos 2.10->4.18
+    FAR       glyph/2/1/8/14/3             unscored->unscored  D4   ->B3     pos 9.16->11.34
+    FAR       glyph/2/1/8/14/4             unscored->unscored  E6   ->C6     pos -6.20->-4.06
+    in-staff  glyph/2/1/8/14/5             right  ->wrong    F5   ->D5     pos -0.04->2.01
+    in-staff  glyph/2/1/8/14/8             unscored->unscored  B4   ->G4     pos 4.02->6.16
+    in-staff  glyph/2/1/9/10/1             right  ->wrong    E4   ->C4     pos 2.08->4.06
+    FAR       glyph/2/1/9/10/2             wrong  ->wrong    B2   ->G2     pos 11.66->13.64
+    FAR       glyph/2/1/9/10/4             right  ->wrong    C3   ->A2     pos 10.80->12.70
+    FAR       glyph/2/1/9/10/5             wrong  ->wrong    B2   ->A2     pos 11.60->13.49
+    FAR       glyph/2/1/9/10/7             right  ->wrong    E3   ->C3     pos 9.16->11.05
+    FAR       glyph/2/1/9/10/8             right  ->wrong    E3   ->C3     pos 9.06->11.04
+    FAR       glyph/2/1/9/10/9             right  ->wrong    E3   ->C3     pos 9.14->11.04
+    in-staff  glyph/2/1/9/11/0             unscored->unscored  C4   ->A3     pos 3.54->5.65
+    in-staff  glyph/2/1/9/11/1             unscored->unscored  C4   ->A3     pos 3.54->5.67
+    FAR       glyph/2/1/9/11/3             unscored->unscored  C3   ->A2     pos 10.56->12.67
+    FAR       glyph/2/1/9/12/0             unscored->unscored  C3   ->A2     pos 11.30->13.31
+    in-staff  glyph/2/1/9/12/2             unscored->unscored  D4   ->B3     pos 3.16->5.19
+    in-staff  glyph/2/1/9/12/5             unscored->unscored  D4   ->B3     pos 3.24->5.25
+    FAR       glyph/2/1/9/13/2             unscored->unscored  A2   ->G2     pos 13.46->13.62
+    FAR       glyph/2/1/9/7/3              unscored->unscored  G5   ->E5     pos -7.06->-5.15
+    in-staff  glyph/2/1/9/7/4              unscored->unscored  G3   ->E3     pos 7.22->9.13
+    in-staff  glyph/2/1/9/7/7              unscored->unscored  B3   ->A3     pos 5.20->5.97
+    in-staff  glyph/2/1/9/7/8              unscored->unscored  B3   ->A3     pos 5.06->6.13
+    in-staff  glyph/2/1/9/8/1              right  ->wrong    C4   ->A3     pos 3.98->5.89
+    FAR       glyph/2/1/9/8/2              unscored->unscored  A5   ->F5     pos -7.68->-5.69
+    in-staff  glyph/2/1/9/8/4              right  ->wrong    C4   ->B3     pos 4.06->4.98
+    in-staff  glyph/2/1/9/8/5              unscored->unscored  A3   ->F3     pos 6.06->8.03
+    in-staff  glyph/2/1/9/8/6              right  ->wrong    C4   ->B3     pos 4.06->5.01
+    in-staff  glyph/2/1/9/9/4              unscored->unscored  F4   ->D4     pos 1.14->2.82
+    in-staff  glyph/2/1/9/9/5              unscored->unscored  F4   ->E4     pos 1.04->2.36
+    in-staff  glyph/2/1/9/9/6              unscored->unscored  F4   ->E4     pos 0.92->2.11
+    FAR       glyph/3/0/0/2/4              right  ->wrong    F6   ->G6     pos -7.40->-7.54
+    FAR       glyph/3/0/0/6/2              wrong  ->wrong    D6   ->E6     pos -5.46->-5.55
+    FAR       glyph/3/0/1/4/6              unscored->unscored  E3   ->D3     pos 15.42->15.57
+    FAR       glyph/3/0/1/5/2              unscored->unscored  E3   ->D3     pos 15.46->15.59
+    in-staff  glyph/3/0/10/0/5             unscored->unscored  G2   ->E2     pos 8.26->10.25
+    in-staff  glyph/3/0/10/1/3             unscored->unscored  G2   ->F2     pos 7.74->8.56
+    in-staff  glyph/3/0/10/2/0             right  ->wrong    G2   ->F2     pos 8.12->8.84
+    in-staff  glyph/3/0/10/2/1             unscored->unscored  G2   ->F2     pos 8.12->8.99
+    in-staff  glyph/3/0/10/2/2             right  ->wrong    C3   ->B2     pos 5.16->6.09
+    in-staff  glyph/3/0/10/2/5             right  ->wrong    C3   ->B2     pos 4.92->5.88
+    FAR       glyph/3/0/10/2/6             unscored->unscored  B4   ->A4     pos -8.00->-7.07
+    FAR       glyph/3/0/10/2/7             unscored->unscored  B4   ->A4     pos -7.98->-7.02
+    in-staff  glyph/3/0/10/3/5             unscored->unscored  A3   ->G3     pos 0.44->0.57
+    FAR       glyph/3/0/10/5/5             unscored->unscored  B3   ->A3     pos -0.52->-0.44
+    FAR       glyph/3/0/2/5/4              unscored->unscored  G5   ->F5     pos -0.56->-0.43
+    in-staff  glyph/3/0/5/2/7              unscored->unscored  D5   ->C5     pos 2.40->2.51
+    FAR       glyph/3/0/6/3/4              unscored->unscored  E1   ->D1     pos 17.48->17.57
+    FAR       glyph/3/0/7/0/3              right  ->wrong    G5   ->E5     pos -1.02->0.92
+    in-staff  glyph/3/0/7/0/4              right  ->wrong    F5   ->D5     pos 0.06->2.02
+    in-staff  glyph/3/0/7/0/6              right  ->wrong    F5   ->D5     pos 0.06->2.03
+    FAR       glyph/3/0/7/0/8              right  ->wrong    B5   ->G5     pos -2.94->-0.95
+    in-staff  glyph/3/0/8/0/3              right  ->wrong    B4   ->G4     pos 4.06->6.14
+    in-staff  glyph/3/0/8/0/4              right  ->wrong    G4   ->E4     pos 6.08->8.25
+    in-staff  glyph/3/0/8/0/5              right  ->wrong    F4   ->D4     pos 7.10->9.17
+    in-staff  glyph/3/0/8/0/8              right  ->wrong    F4   ->D4     pos 7.02->9.09
+    in-staff  glyph/3/0/9/0/3              unscored->unscored  E4   ->C4     pos 2.32->4.35
+    in-staff  glyph/3/0/9/0/4              unscored->unscored  C4   ->A3     pos 4.10->5.95
+    in-staff  glyph/3/0/9/0/5              unscored->unscored  B3   ->G3     pos 4.96->6.81
+    FAR       glyph/3/0/9/1/1              unscored->unscored  G5   ->F5     pos -6.84->-5.95
+    FAR       glyph/3/0/9/1/3              unscored->unscored  A5   ->G5     pos -8.18->-7.29
+    FAR       glyph/3/0/9/1/5              unscored->unscored  A5   ->G5     pos -8.16->-7.27
+    in-staff  glyph/3/0/9/2/19             unscored->unscored  F3   ->E3     pos 8.22->8.78
+    FAR       glyph/3/0/9/2/4              unscored->unscored  D3   ->C3     pos 10.50->11.06
+    in-staff  glyph/3/0/9/2/7              unscored->unscored  F3   ->E3     pos 8.22->8.78
+    FAR       glyph/3/1/0/6/0              right  ->wrong    E6   ->F6     pos -6.50->-6.52
+    FAR       glyph/3/1/0/8/2              unscored->unscored  F6   ->G6     pos -7.46->-7.61
+    FAR       glyph/3/1/0/8/4              unscored->unscored  D4   ->E4     pos 8.58->8.44
+    FAR       glyph/3/1/1/17/0             unscored->unscored  E3   ->D3     pos 15.46->15.52
+    FAR       glyph/3/1/1/17/2             unscored->unscored  E3   ->D3     pos 15.48->15.54
+    in-staff  glyph/3/1/1/2/1              right  ->wrong    F5   ->E5     pos 0.00->0.84
+    in-staff  glyph/3/1/1/2/3              right  ->wrong    C5   ->B4     pos 3.10->3.86
+    in-staff  glyph/3/1/2/11/1             unscored->unscored  A3   ->G3     pos 0.42->0.58
+    in-staff  glyph/3/1/2/13/3             unscored->unscored  A3   ->B3     pos -0.48->-0.57
+    in-staff  glyph/3/1/2/2/4              unscored->unscored  A3   ->F3     pos 0.16->1.81
+    FAR       glyph/3/1/2/2/9              right  ->wrong    B3   ->G3     pos -0.54->1.07
+    FAR       glyph/3/1/2/3/0              unscored->unscored  B3   ->A3     pos -0.66->0.38
+    in-staff  glyph/3/1/2/4/2              right  ->wrong    F3   ->E3     pos 2.12->3.01
+    in-staff  glyph/3/1/2/4/3              right  ->wrong    B2   ->A2     pos 6.04->6.93
+    in-staff  glyph/3/1/2/8/4              unscored->unscored  F3   ->G3     pos 1.56->1.50
+    in-staff  glyph/3/1/3/0/6              unscored->unscored  G4   ->E4     pos 5.84->7.89
+    in-staff  glyph/3/1/3/0/7              unscored->unscored  G4   ->E4     pos 5.66->7.71
+    in-staff  glyph/3/1/3/2/3              right  ->wrong    G4   ->A4     pos 5.60->5.47
+    in-staff  glyph/3/1/3/5/3              unscored->unscored  F4   ->G4     pos 6.54->6.50
+    in-staff  glyph/3/1/4/0/10             right  ->wrong    C5   ->A4     pos 2.98->5.06
+    in-staff  glyph/3/1/4/0/4              right  ->wrong    F5   ->D5     pos 0.04->2.08
+    in-staff  glyph/3/1/4/1/0              right  ->wrong    B4   ->A4     pos 4.06->5.15
+    in-staff  glyph/3/1/4/1/1              right  ->wrong    C5   ->B4     pos 3.14->4.17
+    in-staff  glyph/3/1/5/1/0              unscored->unscored  G4   ->E4     pos 5.82->7.97
+    in-staff  glyph/3/1/5/1/5              unscored->unscored  G4   ->E4     pos 6.28->8.39
+    in-staff  glyph/3/1/5/2/1              unscored->unscored  G4   ->E4     pos 6.36->8.36
+    in-staff  glyph/3/1/5/2/4              unscored->unscored  G4   ->E4     pos 5.80->7.80
+    in-staff  glyph/3/1/5/3/0              unscored->unscored  A4   ->F4     pos 4.98->7.02
+    FAR       glyph/3/1/5/3/1              unscored->unscored  D4   ->B3     pos 8.68->10.55
+    FAR       glyph/3/1/5/3/3              unscored->unscored  D4   ->B3     pos 8.68->10.55
+    in-staff  glyph/3/1/5/4/3              right  ->wrong    A4   ->G4     pos 4.72->6.07
+    in-staff  glyph/3/1/5/5/1              unscored->unscored  F4   ->E4     pos 6.82->7.80
+    in-staff  glyph/3/1/5/5/4              unscored->unscored  A4   ->G4     pos 5.26->6.24
+    in-staff  glyph/3/1/5/6/2              unscored->unscored  G4   ->F4     pos 5.70->6.54
+    in-staff  glyph/3/1/5/6/6              unscored->unscored  G4   ->F4     pos 6.02->6.86
+    in-staff  glyph/3/1/6/0/9              right  ->wrong    D4   ->B3     pos 2.78->4.94
+    in-staff  glyph/3/1/6/1/0              unscored->unscored  F4   ->D4     pos 1.34->3.34
+    in-staff  glyph/3/1/6/1/1              unscored->unscored  E4   ->D4     pos 1.50->3.50
+    in-staff  glyph/3/1/6/2/0              unscored->unscored  E4   ->C4     pos 1.70->3.80
+    in-staff  glyph/3/1/6/2/2              unscored->unscored  E4   ->C4     pos 1.62->3.72
+    in-staff  glyph/3/1/6/3/1              unscored->unscored  F4   ->D4     pos 0.72->2.84
+    in-staff  glyph/3/1/6/3/2              unscored->unscored  F4   ->D4     pos 0.64->2.76
+    in-staff  glyph/3/1/6/4/1              unscored->unscored  D4   ->C4     pos 2.80->3.89
+    in-staff  glyph/3/1/6/4/4              unscored->unscored  D4   ->C4     pos 2.74->3.83
+    in-staff  glyph/3/1/7/12/0             unscored->unscored  C3   ->D3     pos 5.06->4.13
+    in-staff  glyph/3/1/7/13/0             unscored->unscored  F3   ->G3     pos 1.96->0.88
+    in-staff  glyph/3/1/7/16/2             unscored->unscored  E3   ->F3     pos 3.04->1.95
+    in-staff  glyph/3/1/7/16/3             unscored->unscored  E3   ->F3     pos 3.08->1.85
+    in-staff  glyph/3/1/7/17/0             unscored->unscored  A3   ->B3     pos -0.04->-1.11
+    in-staff  glyph/3/1/7/17/4             unscored->unscored  A3   ->B3     pos -0.08->-0.88
+    in-staff  glyph/3/1/7/17/6             unscored->unscored  G3   ->A3     pos 0.54->0.19
+  only in base: 0   only in arm: 0
+=== brahms1-breitkopf ===
+  base  far       n= 605  {'unscored': 589, 'right': 16}
+  base  in-staff  n= 897  {'unscored': 783, 'right': 114}
+  arm   far       n= 613  {'unscored': 596, 'right': 15, 'wrong': 2}
+  arm   in-staff  n= 889  {'unscored': 776, 'right': 97, 'wrong': 16}
+  heads present in both, pitch-or-verdict changed: 83
+  right->wrong: 18   wrong/other->right: 0
+    in-staff  glyph/0/0/12/0/29            unscored->unscored  G3   ->F3     pos 5.36->5.51
+    FAR       glyph/0/0/2/6/14             unscored->unscored  A2   ->G2     pos 19.46->19.58
+    in-staff  glyph/0/0/4/2/4              unscored->unscored  B2   ->C3     pos 5.50->5.40
+    FAR       glyph/0/0/4/3/2              unscored->unscored  B1   ->C2     pos 12.58->12.49
+    FAR       glyph/0/0/5/1/16             unscored->unscored  C4   ->D4     pos 9.52->9.42
+    FAR       glyph/0/0/5/2/17             unscored->unscored  C4   ->D4     pos 9.58->9.47
+    FAR       glyph/0/0/6/4/1              unscored->unscored  C7   ->D7     pos -11.42->-11.52
+    FAR       glyph/1/0/0/1/30             unscored->unscored  E3   ->D3     pos 15.44->15.50
+    FAR       glyph/1/0/0/2/16             unscored->unscored  C6   ->B5     pos -3.50->-3.42
+    FAR       glyph/1/0/0/2/9              unscored->unscored  C4   ->B3     pos 10.48->10.53
+    in-staff  glyph/1/0/1/0/61             unscored->unscored  D5   ->E5     pos 1.51->1.49
+    FAR       glyph/1/0/1/1/32             unscored->unscored  D6   ->C6     pos -4.54->-4.48
+    in-staff  glyph/1/0/10/0/24            unscored->unscored  G4   ->A4     pos 5.56->5.50
+    FAR       glyph/1/0/10/0/35            unscored->unscored  G2   ->A2     pos 19.55->19.47
+    FAR       glyph/1/0/10/4/39            unscored->unscored  E6   ->D6     pos -5.51->-5.48
+    in-staff  glyph/1/0/11/0/36            unscored->unscored  A3   ->B3     pos 5.52->5.45
+    in-staff  glyph/1/0/13/1/13            unscored->unscored  E3   ->F3     pos 2.54->2.41
+    FAR       glyph/1/0/2/1/3              unscored->unscored  D3   ->E3     pos 15.53->15.50
+    FAR       glyph/1/0/3/1/2              unscored->unscored  A4   ->B4     pos -7.48->-7.55
+    in-staff  glyph/1/0/3/1/31             unscored->unscored  G2   ->F2     pos 8.45->8.53
+    in-staff  glyph/1/0/4/1/8              unscored->unscored  G2   ->F2     pos 8.49->8.53
+    in-staff  glyph/1/0/5/0/17             unscored->unscored  A4   ->G4     pos 5.43->5.55
+    in-staff  glyph/1/0/5/5/2              unscored->unscored  F5   ->E5     pos 0.46->0.53
+    in-staff  glyph/1/0/5/5/3              unscored->unscored  D5   ->C5     pos 2.50->2.57
+    in-staff  glyph/1/0/5/5/6              unscored->unscored  B4   ->A4     pos 4.48->4.55
+    in-staff  glyph/1/0/6/1/11             unscored->unscored  G4   ->A4     pos 5.53->5.47
+    in-staff  glyph/1/0/7/0/18             unscored->unscored  A4   ->G4     pos 5.40->5.52
+    FAR       glyph/1/0/7/1/16             unscored->unscored  G3   ->F3     pos 13.43->13.51
+    FAR       glyph/1/0/8/3/8              unscored->unscored  A1   ->G1     pos 14.48->14.52
+    FAR       glyph/1/1/1/1/11             unscored->unscored  A5   ->G5     pos -1.52->-1.46
+    in-staff  glyph/1/1/10/6/0             unscored->unscored  G4   ->A4     pos -0.02->-0.89
+    in-staff  glyph/1/1/10/6/4             right  ->wrong    E4   ->F4     pos 1.98->1.08
+    in-staff  glyph/1/1/10/6/9             unscored->unscored  G3   ->A3     pos 6.98->5.94
+    in-staff  glyph/1/1/10/7/1             right  ->wrong    G4   ->B4     pos 0.00->-1.92
+    in-staff  glyph/1/1/10/7/11            right  ->wrong    G3   ->A3     pos 7.24->5.87
+    in-staff  glyph/1/1/10/7/2             right  ->wrong    E4   ->F4     pos 2.16->0.79
+    in-staff  glyph/1/1/10/7/4             right  ->wrong    E4   ->F4     pos 2.02->0.68
+    in-staff  glyph/1/1/10/7/5             right  ->wrong    E4   ->G4     pos 1.88->-0.03
+    in-staff  glyph/1/1/11/6/0             right  ->wrong    G2   ->A2     pos 8.06->6.92
+    in-staff  glyph/1/1/11/6/3             right  ->wrong    G3   ->A3     pos 1.06->-0.03
+    in-staff  glyph/1/1/11/6/4             right  ->wrong    E3   ->F3     pos 2.98->1.89
+    in-staff  glyph/1/1/11/7/1             unscored->unscored  G2   ->A2     pos 7.98->6.59
+    in-staff  glyph/1/1/11/7/2             unscored->unscored  E3   ->G3     pos 2.64->0.86
+    in-staff  glyph/1/1/11/7/3             unscored->unscored  E3   ->G3     pos 2.92->0.89
+    in-staff  glyph/1/1/11/7/4             unscored->unscored  G3   ->B3     pos 0.58->-1.24
+    in-staff  glyph/1/1/11/7/5             unscored->unscored  E3   ->F3     pos 3.14->1.75
+    in-staff  glyph/1/1/11/7/7             unscored->unscored  G3   ->B3     pos 0.84->-0.81
+    in-staff  glyph/1/1/11/7/8             unscored->unscored  A3   ->B3     pos 0.26->-1.39
+    in-staff  glyph/1/1/11/7/9             unscored->unscored  F3   ->A3     pos 2.14->0.49
+    FAR       glyph/1/1/12/6/4             unscored->unscored  G4   ->B4     pos -6.34->-7.68
+    in-staff  glyph/1/1/2/1/16             unscored->unscored  E4   ->D4     pos 8.45->8.58
+    FAR       glyph/1/1/2/1/3              unscored->unscored  A3   ->G3     pos 12.45->12.57
+    FAR       glyph/1/1/2/1/4              unscored->unscored  G6   ->F6     pos -7.57->-7.43
+    FAR       glyph/1/1/2/2/15             unscored->unscored  C4   ->B3     pos 10.43->10.52
+    FAR       glyph/1/1/2/4/6              unscored->unscored  A2   ->G2     pos 19.38->19.50
+    FAR       glyph/1/1/3/2/25             unscored->unscored  C5   ->B4     pos -8.67->-8.48
+    FAR       glyph/1/1/3/3/2              unscored->unscored  E4   ->D4     pos -3.53->-3.32
+    in-staff  glyph/1/1/3/6/6              unscored->unscored  F3   ->E3     pos 2.38->2.53
+    in-staff  glyph/1/1/4/3/10             unscored->unscored  G2   ->F2     pos 8.44->8.51
+    in-staff  glyph/1/1/4/3/5              unscored->unscored  G3   ->F3     pos 1.44->1.52
+    FAR       glyph/1/1/5/6/9              unscored->unscored  E6   ->F6     pos -6.16->-7.11
+    FAR       glyph/1/1/5/7/11             unscored->unscored  D3   ->E3     pos 16.34->15.13
+    in-staff  glyph/1/1/6/6/6              unscored->unscored  E4   ->F4     pos 7.98->7.14
+    in-staff  glyph/1/1/6/7/2              unscored->unscored  E4   ->F4     pos 8.04->6.98
+    in-staff  glyph/1/1/6/7/3              unscored->unscored  C5   ->D5     pos 3.16->2.10
+    FAR       glyph/1/1/7/1/1              unscored->unscored  B4   ->A4     pos -7.52->-7.36
+    in-staff  glyph/1/1/7/6/7              unscored->unscored  G2   ->A2     pos 7.98->7.14
+    in-staff  glyph/1/1/7/7/3              unscored->unscored  G2   ->A2     pos 8.06->6.91
+    in-staff  glyph/1/1/7/7/5              unscored->unscored  F3   ->G3     pos 2.22->1.12
+    in-staff  glyph/1/1/7/7/9              unscored->unscored  E3   ->G3     pos 2.54->1.44
+    in-staff  glyph/1/1/8/7/1              right  ->wrong    G4   ->A4     pos 5.94->5.10
+    in-staff  glyph/1/1/8/7/2              right  ->wrong    E4   ->F4     pos 8.14->7.20
+    FAR       glyph/1/1/8/7/4              right  ->wrong    G3   ->A3     pos 13.36->12.46
+    in-staff  glyph/1/1/8/7/5              right  ->wrong    E4   ->F4     pos 8.16->7.30
+    in-staff  glyph/1/1/8/7/6              right  ->wrong    E4   ->F4     pos 7.98->7.19
+    FAR       glyph/1/1/9/1/32             unscored->unscored  G5   ->F5     pos -0.58->-0.46
+    in-staff  glyph/1/1/9/4/13             unscored->unscored  A4   ->B4     pos 4.69->4.44
+    in-staff  glyph/1/1/9/7/0              right  ->wrong    E4   ->F4     pos 8.22->7.24
+    in-staff  glyph/1/1/9/7/3              right  ->wrong    E4   ->F4     pos 8.14->7.20
+    in-staff  glyph/1/1/9/7/4              right  ->wrong    G4   ->A4     pos 5.98->5.06
+    in-staff  glyph/1/1/9/7/5              right  ->wrong    E4   ->F4     pos 7.96->7.04
+    FAR       glyph/1/1/9/7/6              unscored->unscored  G3   ->A3     pos 13.12->12.14
+    FAR       glyph/1/1/9/7/7              unscored->unscored  C6   ->D6     pos -4.30->-5.28
+  only in base: 0   only in arm: 0

@@ -1,0 +1,25 @@
+=== beethoven5-litolff ===
+  base: {'unscored': 1039, 'wrong': 131, 'right': 150}
+  arm:  {'unscored': 1039, 'wrong': 144, 'right': 137}
+  changed: 15  right->wrong: 14  wrong->right: 1
+    ('glyph/1/0/7/1/1', 'right', 'wrong')
+    ('glyph/1/0/8/1/6', 'wrong', 'right')
+    ('glyph/2/0/2/4/1', 'right', 'wrong')
+    ('glyph/2/0/3/0/5', 'right', 'wrong')
+    ('glyph/2/0/3/0/7', 'right', 'wrong')
+    ('glyph/2/0/3/3/2', 'right', 'wrong')
+    ('glyph/2/0/7/0/4', 'right', 'wrong')
+    ('glyph/2/0/7/10/3', 'right', 'wrong')
+    ('glyph/2/0/7/2/2', 'right', 'wrong')
+    ('glyph/3/0/0/2/4', 'right', 'wrong')
+    ('glyph/3/0/8/0/3', 'right', 'wrong')
+    ('glyph/3/0/8/0/4', 'right', 'wrong')
+    ('glyph/3/0/8/0/5', 'right', 'wrong')
+    ('glyph/3/0/8/0/8', 'right', 'wrong')
+    ('glyph/3/1/0/6/0', 'right', 'wrong')
+=== brahms1-breitkopf ===
+  base: {'unscored': 1446, 'right': 53, 'wrong': 3}
+  arm:  {'unscored': 1446, 'right': 53, 'wrong': 3}
+  changed: 0  right->wrong: 0  wrong->right: 0
+
+of the 77 earlier (full-pipeline) right->wrong heads: 77 found in this GATHER+ADJUDICATE judge's scored population; 10 are STILL a right->wrong flip here
