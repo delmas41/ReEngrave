@@ -207,6 +207,7 @@ def _reader_absolute_position_impl(
     far_side_ledger: bool = False,
     drop_beyond_head: bool = False,
     drop_same_ink_other_staff: bool = False,
+    through_head_on_rung: bool = False,
     chord_split_rungs_y: Optional[Sequence[float]] = None,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
@@ -426,6 +427,8 @@ def _reader_absolute_position_impl(
            if far_side_ledger and four_causes_cd else {}),
         **({"drop_rungs_beyond_head": True}
            if drop_beyond_head and four_causes_cd else {}),
+        **({"through_head_on_rung": True}
+           if through_head_on_rung and four_causes_cd else {}),
     )
     if step["offset"] is None:
         return None, step["reason"]

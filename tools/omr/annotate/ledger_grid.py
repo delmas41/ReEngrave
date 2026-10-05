@@ -1075,6 +1075,7 @@ def derive_far_head_step(
     far_side_ledger: bool = False,
     far_side_partner_boxes: "list[tuple[float, float, float, float]] | None" = None,
     drop_rungs_beyond_head: bool = False,
+    through_head_on_rung: bool = False,
 ) -> dict:
     """Sean's 2026-10-01 convention for turning a rung count into a step.
 
@@ -1145,6 +1146,14 @@ def derive_far_head_step(
     "reason": str}`. `offset` is in half-steps outward from the edge; the
     caller adds it to (or subtracts it from, by `sign`) the edge's own
     staff position.
+
+    `through_head_on_rung` (lane-through-head-on, 2026-10-04, Sean on tile 3
+    `glyph/3/0/8/6/10`; default False = bit-identical): where fix 1 refuses a
+    near-edge rung because the head's body is on BOTH sides of it, and
+    `through_head_on_rung_evidence` finds a thin flat ledger whose line
+    crosses the head (>= 0.245 of its ink on the staff side), the head is ON
+    that rung (offset `2n`, kind line). Only reached after `near_edge_ledgers`
+    has declined the rung.
 
     `drop_rungs_beyond_head` (lane-ledger-accidental, 2026-10-04; default
     False = bit-identical): the walk reads rungs out to MAX_SPACES, so in a
@@ -1217,6 +1226,14 @@ def derive_far_head_step(
                                   f"near edge (rung {gap_spaces:.2f} sp "
                                   f"inside the box): counted, head in the "
                                   f"space beyond it")
+            if through_head_on_rung and through_head_on_rung_evidence(
+                    img_gray, last, head_box, sign, spacing,
+                    exclude_boxes)["ok"]:
+                return dict(offset=last_half_steps, kind="line",
+                           reason=f"a thin flat ledger runs through the "
+                                  f"head (rung {gap_spaces:.2f} sp inside "
+                                  f"the box, head ink on both sides): the "
+                                  f"head is on it")
             remaining.pop()
             continue
         # `last` sits between the staff and the head (or touching it) --
@@ -2031,6 +2048,103 @@ def near_edge_ledger_evidence(
 def rung_is_near_edge_ledger(*args, **kwargs) -> bool:
     """Boolean form of `near_edge_ledger_evidence` (same arguments)."""
     return bool(near_edge_ledger_evidence(*args, **kwargs)["ok"])
+
+
+# ---------------------------------------------------------------------------
+# Through-head ledger (lane-through-head-on, 2026-10-04; Sean on the combined
+# sheet, tile 3 `glyph/3/0/8/6/10`: "Tile 3 is on a ledger line - the first
+# below the staff"). The complement of fix 1: outside the staff, a thin flat
+# ledger that passes THROUGH a far head (head ink on BOTH sides of it) means
+# the head is ON that line. Fix 1 refuses exactly this (`head_body_on_both_
+# sides_of_the_rung`) and the rung is then popped. What separates it from the
+# grazing case fix 1 gets right is the share of the head's own ink lying on
+# the STAFF side of the line, `frac_stf` = staff-side ink height / total ink
+# height (central 60% of the box width, the contiguous run through the box
+# middle): ~0 where the line is the head's staff-side edge (head hangs in the
+# space beyond), >= 0.245 where the line crosses the head (measured on 44
+# Litolff far heads, benchmarks/omr-local-staff-2026-09/tile3_vs_fix1.py).
+# ---------------------------------------------------------------------------
+THROUGH_HEAD_FRAC_STF_MIN = 0.245
+THROUGH_HEAD_NEAR_BAND_SPACES = (-0.35, 0.60)   # rung vs the staff-side box edge
+THROUGH_HEAD_INK_COLUMNS = 0.6                  # central fraction of the box width
+
+
+def head_ink_staff_fraction(
+    img_gray: np.ndarray, y: float,
+    box: "tuple[float, float, float, float]", sign: float, spacing: float,
+) -> "float | None":
+    """Share of the head's own ink height lying on the STAFF side of row `y`.
+
+    The ink is read in the central `THROUGH_HEAD_INK_COLUMNS` of the box
+    width: the contiguous run (bridging one blank row) that passes through
+    the box middle row. None where it cannot be read."""
+    x0, y0, x1, y1 = box
+    h, w = img_gray.shape
+    ref = img_gray[max(0, int(y0) - 10):int(y1) + 10,
+                   max(0, int(x0) - 10):int(x1) + 10]
+    thr = _otsu_threshold(ref if ref.size else img_gray)
+    ink = img_gray <= thr
+    cx, bw = (x0 + x1) / 2.0, x1 - x0
+    xa = max(0, int(round(cx - 0.5 * THROUGH_HEAD_INK_COLUMNS * bw)))
+    xb = min(w, int(round(cx + 0.5 * THROUGH_HEAD_INK_COLUMNS * bw)) + 1)
+    r0, r1 = max(0, int(y0 - 0.4 * spacing)), min(h, int(y1 + 0.4 * spacing) + 1)
+    if xb <= xa or r1 <= r0:
+        return None
+    prof = ink[r0:r1, xa:xb].mean(axis=1) >= 0.5
+    if not prof.any():
+        return None
+    mid = int(round((y0 + y1) / 2.0)) - r0
+    idx = np.where(prof)[0]
+    a = b = int(idx[np.argmin(np.abs(idx - mid))])
+    while a > 0 and (prof[a - 1] or (a > 1 and prof[a - 2])):
+        a -= 1
+    while b < len(prof) - 1 and (prof[b + 1] or (b < len(prof) - 2 and prof[b + 2])):
+        b += 1
+    top, bot = a + r0, b + r0 + 1.0
+    near_ink, far_ink = (bot, top) if sign < 0 else (top, bot)
+    above = sign * (y - near_ink)
+    below = sign * (far_ink - y)
+    total = above + below
+    if total <= 0:
+        return None
+    return above / total
+
+
+def through_head_on_rung_evidence(
+    img_gray: "np.ndarray | None",
+    y: float,
+    head_box: "tuple[float, float, float, float] | None",
+    sign: float,
+    spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> dict:
+    """Is the rung at row `y` a thin flat ledger running THROUGH this head?
+
+    All of: the rung lies within `THROUGH_HEAD_NEAR_BAND_SPACES` of the
+    head's staff-side box edge (inside the box, as fix 1's candidates are);
+    it is a thin flat connected jut (`thin_flat_jut_evidence`); the head's
+    body is on BOTH sides of it (fix 1's own refusal, so this fires only
+    where `near_edge_ledger_evidence` said
+    `head_body_on_both_sides_of_the_rung`); and `head_ink_staff_fraction`
+    >= `THROUGH_HEAD_FRAC_STF_MIN`. Anything unreadable -> not ok (rule 8)."""
+    if img_gray is None or head_box is None or not spacing or spacing <= 0:
+        return dict(ok=False, why="no_image")
+    near_y = head_box[3] if sign < 0 else head_box[1]
+    rn = sign * (y - near_y) / spacing
+    lo, hi = THROUGH_HEAD_NEAR_BAND_SPACES
+    if not (lo <= rn <= hi):
+        return dict(ok=False, why="rung_not_at_the_near_edge", rn=rn)
+    fix1 = near_edge_ledger_evidence(img_gray, y, head_box, sign, spacing,
+                                     exclude_boxes)
+    if fix1["why"] != "head_body_on_both_sides_of_the_rung":
+        return dict(ok=False, why="not_a_both_sides_refusal:" + fix1["why"])
+    frac = head_ink_staff_fraction(img_gray, y, head_box, sign, spacing)
+    if frac is None:
+        return dict(ok=False, why="head_ink_unreadable")
+    if frac < THROUGH_HEAD_FRAC_STF_MIN:
+        return dict(ok=False, why="head_ink_mostly_beyond_the_rung", frac_stf=frac)
+    return dict(ok=True, why="thin_flat_ledger_through_the_head",
+                frac_stf=frac)
 
 
 # ---------------------------------------------------------------------------

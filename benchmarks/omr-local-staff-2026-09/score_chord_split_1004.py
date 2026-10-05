@@ -37,6 +37,9 @@ from tools.omr.annotate import ledger_grid as lg  # noqa: E402
 OVERPRINT_SP = 0.2   # pre-set: two standard heads a third apart abut (~0.05 sp)
 
 
+THROUGH = dict(through_head_on_rung=True)
+
+
 def same_staff(a, b):
     """glyph/<page>/<system>/<staff>/<cell>/<i>: the first four fields."""
     return a.split("/")[:4] == b.split("/")[:4]
@@ -59,7 +62,7 @@ def blob_for(h, D, overprint=None):
     return subs, cl, res
 
 
-def e4_reads(D, e3_boxes, overprint=None):
+def e4_reads(D, e3_boxes, overprint=None, **extra):
     """{subject: dict(pos, reason, v, box, split)} for every far head."""
     out = {}
     for h in D["far"]:
@@ -80,7 +83,7 @@ def e4_reads(D, e3_boxes, overprint=None):
                          extent_sp=round(res["extent_sp"], 2), partner=subs[1])
         elif res.get("split"):
             split = dict(declined="cluster_of_%d_boxes" % len(cl))
-        pos, reason = se.read(base, **{**c.EXC, **base.pop("_kw", {})})
+        pos, reason = se.read(base, **{**c.EXC, **extra, **base.pop("_kw", {})})
         out[h["subject"]] = dict(pos=pos, reason=reason, v=ec.verdict(pos, h["truth"]),
                                  box=[round(float(v), 1) for v in base["box"]], split=split)
     return out
@@ -120,15 +123,43 @@ def trigger_census(D):
     return out
 
 
+def through_head_census(D):
+    """How often `through_head_on_rung_evidence` WOULD fire on every in-staff
+    head of the page (the reader asks it for far heads only; here it is asked
+    of each staff line crossing the box, on both sides -- an UPPER bound of
+    the heads it could ever claim). Returns (fired, n, rows)."""
+    fired, n, rows = 0, 0, []
+    for h in D["heads_in"]:
+        lines = h.get("lines") or h.get("global_lines")
+        gray = h.get("gray")
+        if gray is None:
+            gray = D["pages"].get(h["page"])
+        sp = h.get("spacing") or (max(lines) - min(lines)) / 4.0
+        x0, y0, x1, y1 = h["box"]
+        n += 1
+        hit = None
+        for y in (yy for yy in lines if y0 <= yy <= y1):
+            for sg in (-1.0, 1.0):
+                ev = lg.through_head_on_rung_evidence(gray, y, h["box"], sg, sp)
+                if ev["ok"]:
+                    hit = (h["subject"], round(y), sg, round(ev["frac_stf"], 3))
+        if hit:
+            fired += 1
+            rows.append(hit)
+    return fired, n, rows
+
+
 def main():
     base_res = c.run()[1]
-    arms = {"E4raw": None, "E4": OVERPRINT_SP}
-    e4, census = {}, {}
+    arms = {"E4raw": None, "E4": OVERPRINT_SP, "E5": OVERPRINT_SP}
+    e4, census, through_census = {}, {}, {}
     for d in ts.DOCS:
         D = c.sb.build(d)
         e3b = {s: r["reads"]["E3"]["box"] for s, r in base_res[d].items()}
-        e4[d] = {a: e4_reads(D, e3b, ov) for a, ov in arms.items()}
+        e4[d] = {a: e4_reads(D, e3b, ov, **(THROUGH if a == "E5" else {}))
+                 for a, ov in arms.items()}
         census[d] = trigger_census(D)
+        through_census[d] = through_head_census(D)
     print("== E3 (control) vs E4raw vs E4")
     for d in ts.DOCS:
         print(f"E3    {d:20} {ec.tally([r['reads']['E3']['v'] for r in base_res[d].values()])}")
@@ -152,6 +183,14 @@ def main():
                 if o["v"] == "right" and n["v"] != "right":
                     broken.append(s)
         print(f"{a} right heads broken vs E3:", broken)
+    print("\n== through-head rule: in-staff heads it could fire on (upper bound), and far heads it DID fire on")
+    for d in ts.DOCS:
+        f, n, rows = through_census[d]
+        print(f"{d[:8]} in-staff: {f} / {n}")
+        for r in rows[:15]:
+            print("      ", r)
+        fired = [s for s, r in e4[d]["E5"].items() if "runs through the head" in r["reason"]]
+        print(f"{d[:8]} far heads where the rule fired: {fired}")
     print("\n== trigger census: split fires / heads")
     for d in ts.DOCS:
         for (key, vname), (fired, n, rows) in census[d].items():
