@@ -1,0 +1,71 @@
+S0 beethoven5-litolff {'right': 32, 'wrong': 10, 'abstain': 2} S2 {'right': 35, 'wrong': 8, 'abstain': 1} S2H {'right': 36, 'wrong': 7, 'abstain': 1}
+S0 brahms1-breitkopf {'right': 11, 'wrong': 0, 'abstain': 0} S2 {'right': 11, 'wrong': 0, 'abstain': 0} S2H {'right': 11, 'wrong': 0, 'abstain': 0}
+sheet: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a03def9ffcf6c1414/out/print/ledgers/standard_box_hollow/standard_box_hollow_sheet.png (1752, 3220)
+
+== per-tile numbers ==
+ 1 glyph/1/0/10/7/1   hollow S0 -4/wrong S2 -4/wrong S2H -2/right ref=[-2] gate S2 {'iou_open': 0.47, 'offset_open_sp': 0.29, 'iou_raw': 0.45, 'offset_raw_sp': 0.31, 'passed': False} S2H {'iou_open': 0.79, 'offset_open_sp': 0.05, 'passed': True}
+    line: orange y 2896.5 moved 0 on_ink True near 0.5 / 0.0 ridge 35 / 18 
+    box red_raw {'blob_in_box': 0.64, 'box_is_ink': 0.66, 'd_left': -3.2, 'd_right': 4.7, 'd_top': 0.7, 'd_bottom': 8.4, 'blob_wh_px': [29, 23]}
+    box cyan_raw {'blob_in_box': 0.87, 'box_is_ink': 0.62, 'd_left': -3.6, 'd_right': 1.1, 'd_top': 0.0, 'd_bottom': 3.1, 'blob_wh_px': [29, 23]}
+    box red_filled {'blob_in_box': 0.56, 'box_is_ink': 0.82, 'd_left': -3.2, 'd_right': 4.7, 'd_top': -0.3, 'd_bottom': 10.4, 'blob_wh_px': [29, 26]}
+    box cyan_filled {'blob_in_box': 0.81, 'box_is_ink': 0.84, 'd_left': -3.6, 'd_right': 1.1, 'd_top': -1.0, 'd_bottom': 5.1, 'blob_wh_px': [29, 26]}
+    frame control on/off: 1.0 0.23
+ 2 glyph/3/0/0/6/2    filled S0 -6/wrong S2 -6/wrong S2H -6/wrong ref=[-4] gate S2 {'iou_open': 0.35, 'offset_open_sp': 0.52, 'iou_raw': 0.37, 'offset_raw_sp': 0.49, 'passed': False} S2H {'iou_open': 0.44, 'offset_open_sp': 0.4, 'passed': False}
+    line: orange y 434.0 moved 0 on_ink True near 1.0 / 0.38 ridge 29 / 5 
+    line: orange y 414.5 moved 0 on_ink True near 1.0 / 0.88 ridge 35 / 17 
+    line: magenta y 398.5 moved 0 on_ink True near 1.0 / 0.62 ridge 34 / 18 thrown: other note's ink
+    box red_raw {'blob_in_box': 0.43, 'box_is_ink': 0.63, 'd_left': 3.3, 'd_right': 10.0, 'd_top': -5.3, 'd_bottom': 10.5, 'blob_wh_px': [28, 36]}
+    box cyan_raw {'blob_in_box': 0.47, 'box_is_ink': 0.6, 'd_left': 2.8, 'd_right': 6.4, 'd_top': -10.4, 'd_bottom': 5.6, 'blob_wh_px': [28, 36]}
+    box red_filled {'blob_in_box': 0.48, 'box_is_ink': 0.76, 'd_left': 3.3, 'd_right': 10.0, 'd_top': -5.3, 'd_bottom': 10.5, 'blob_wh_px': [28, 36]}
+    box cyan_filled {'blob_in_box': 0.5, 'box_is_ink': 0.7, 'd_left': 2.8, 'd_right': 6.4, 'd_top': -10.4, 'd_bottom': 5.6, 'blob_wh_px': [28, 36]}
+    frame control on/off: 0.97 0.03
+ 3 glyph/1/0/10/8/1   hollow S0 -2/right S2 -2/right S2H -2/right ref=[-2] gate S2 {'iou_open': 0.53, 'offset_open_sp': 0.03, 'iou_raw': 0.49, 'offset_raw_sp': 0.04, 'passed': False} S2H {'iou_open': 0.65, 'offset_open_sp': 0.08, 'passed': False}
+    line: orange y 2892.5 moved 0 on_ink True near 0.62 / 0.0 ridge 37 / 16 
+    box red_raw {'blob_in_box': 0.92, 'box_is_ink': 0.62, 'd_left': -2.3, 'd_right': 2.5, 'd_top': -1.6, 'd_bottom': 2.1, 'blob_wh_px': [31, 27]}
+    box cyan_raw {'blob_in_box': 0.81, 'box_is_ink': 0.68, 'd_left': -3.2, 'd_right': 3.5, 'd_top': -2.3, 'd_bottom': 4.8, 'blob_wh_px': [31, 27]}
+    box red_filled {'blob_in_box': 0.92, 'box_is_ink': 0.79, 'd_left': -2.3, 'd_right': 2.5, 'd_top': -1.6, 'd_bottom': 2.1, 'blob_wh_px': [31, 27]}
+    box cyan_filled {'blob_in_box': 0.81, 'box_is_ink': 0.87, 'd_left': -3.2, 'd_right': 3.5, 'd_top': -2.3, 'd_bottom': 4.8, 'blob_wh_px': [31, 27]}
+    frame control on/off: 1.0 0.26
+ 4 glyph/1/0/3/7/3    hollow S0 -2/right S2 -2/right S2H -2/right ref=[-2] gate S2 {'iou_open': 0.6, 'offset_open_sp': 0.06, 'iou_raw': 0.51, 'offset_raw_sp': 0.15, 'passed': False} S2H {'iou_open': 0.63, 'offset_open_sp': 0.12, 'passed': False}
+    line: orange y 1616.5 moved 0 on_ink False near 0.5 / 0.0 ridge 41 / 24 
+    line: magenta y 1599.0 moved -5 on_ink True near 1.0 / 0.0 ridge 20 / 14 thrown: not clear past the head
+    box red_raw {'blob_in_box': 0.76, 'box_is_ink': 0.7, 'd_left': -1.7, 'd_right': 5.1, 'd_top': 0.2, 'd_bottom': 9.9, 'blob_wh_px': [31, 32]}
+    box cyan_raw {'blob_in_box': 0.75, 'box_is_ink': 0.75, 'd_left': -1.7, 'd_right': 5.1, 'd_top': -3.0, 'd_bottom': 9.1, 'blob_wh_px': [31, 32]}
+    box red_filled {'blob_in_box': 0.76, 'box_is_ink': 0.85, 'd_left': -1.7, 'd_right': 5.1, 'd_top': -0.8, 'd_bottom': 9.9, 'blob_wh_px': [31, 33]}
+    box cyan_filled {'blob_in_box': 0.72, 'box_is_ink': 0.88, 'd_left': -1.7, 'd_right': 5.1, 'd_top': -4.0, 'd_bottom': 9.1, 'blob_wh_px': [31, 33]}
+    frame control on/off: 1.0 0.24
+ 5 glyph/3/0/0/5/12   hollow S0 -4/right S2 -4/right S2H -4/right ref=[-4] gate S2 {'iou_open': 0.19, 'offset_open_sp': 0.71, 'iou_raw': 0.26, 'offset_raw_sp': 0.62, 'passed': False} S2H {'iou_open': 0.6, 'offset_open_sp': 0.23, 'passed': False}
+    line: orange y 433.5 moved 0 on_ink True near 0.62 / 0.38 ridge 31 / 4 
+    line: orange y 415.5 moved 0 on_ink True near 1.0 / 0.25 ridge 36 / 19 
+    line: magenta y 396.5 moved 0 on_ink True near 1.0 / 0.0 ridge 36 / 16 thrown: other note's ink
+    box red_raw {'blob_in_box': 0.51, 'box_is_ink': 0.51, 'd_left': 3.9, 'd_right': 8.9, 'd_top': -11.2, 'd_bottom': -0.8, 'blob_wh_px': [32, 29]}
+    box cyan_raw {'blob_in_box': 0.56, 'box_is_ink': 0.64, 'd_left': -2.6, 'd_right': 5.4, 'd_top': -10.6, 'd_bottom': -1.4, 'blob_wh_px': [32, 29]}
+    box red_filled {'blob_in_box': 0.52, 'box_is_ink': 0.69, 'd_left': 3.9, 'd_right': 8.9, 'd_top': -11.2, 'd_bottom': -0.8, 'blob_wh_px': [32, 29]}
+    box cyan_filled {'blob_in_box': 0.57, 'box_is_ink': 0.85, 'd_left': -2.6, 'd_right': 5.4, 'd_top': -10.6, 'd_bottom': -1.4, 'blob_wh_px': [32, 29]}
+    frame control on/off: 1.0 0.07
+ 6 glyph/3/0/0/6/1    hollow S0 -6/right S2 -6/right S2H -6/right ref=[-6] gate S2 {'iou_open': 0.18, 'offset_open_sp': 0.78, 'iou_raw': 0.19, 'offset_raw_sp': 0.73, 'passed': False} S2H {'iou_open': 0.16, 'offset_open_sp': 0.75, 'passed': False}
+    line: orange y 434.5 moved 0 on_ink True near 1.0 / 0.25 ridge 29 / 5 
+    line: orange y 417.5 moved 0 on_ink True near 1.0 / 0.62 ridge 34 / 29 
+    line: orange y 396.0 moved 5 on_ink True near 1.0 / 0.62 ridge 32 / 31 
+    box red_raw {'blob_in_box': 0.5, 'box_is_ink': 0.48, 'd_left': 5.2, 'd_right': 2.9, 'd_top': 0.3, 'd_bottom': 10.0, 'blob_wh_px': [19, 28]}
+    box cyan_raw {'blob_in_box': 0.37, 'box_is_ink': 0.26, 'd_left': 11.8, 'd_right': 6.3, 'd_top': 1.2, 'd_bottom': 9.1, 'blob_wh_px': [19, 28]}
+    box red_filled {'blob_in_box': 0.49, 'box_is_ink': 0.53, 'd_left': 5.2, 'd_right': 2.9, 'd_top': 0.3, 'd_bottom': 10.0, 'blob_wh_px': [19, 28]}
+    box cyan_filled {'blob_in_box': 0.39, 'box_is_ink': 0.32, 'd_left': 11.8, 'd_right': 6.3, 'd_top': 1.2, 'd_bottom': 9.1, 'blob_wh_px': [19, 28]}
+    frame control on/off: 0.97 0.03
+ 7 glyph/3/0/5/4/5    hollow S0 10/right S2 10/right S2H 10/right ref=[10] gate S2 {'iou_open': 0.21, 'offset_open_sp': 0.61, 'iou_raw': 0.26, 'offset_raw_sp': 0.62, 'passed': False} S2H {'iou_open': 0.27, 'offset_open_sp': 0.66, 'passed': False}
+    line: orange y 1233.5 moved 0 on_ink True near 1.0 / 0.43 ridge 37 / 19 
+    box red_raw {'blob_in_box': 0.88, 'box_is_ink': 0.58, 'd_left': 1.7, 'd_right': 6.0, 'd_top': 0.2, 'd_bottom': 1.3, 'blob_wh_px': [30, 22]}
+    box cyan_raw {'blob_in_box': 0.45, 'box_is_ink': 0.33, 'd_left': 0.9, 'd_right': 6.7, 'd_top': -10.3, 'd_bottom': -8.2, 'blob_wh_px': [30, 22]}
+    box red_filled {'blob_in_box': 0.83, 'box_is_ink': 0.76, 'd_left': 1.7, 'd_right': 6.0, 'd_top': 0.2, 'd_bottom': 2.3, 'blob_wh_px': [30, 23]}
+    box cyan_filled {'blob_in_box': 0.49, 'box_is_ink': 0.51, 'd_left': 0.9, 'd_right': 6.7, 'd_top': -10.3, 'd_bottom': -7.2, 'blob_wh_px': [30, 23]}
+    frame control on/off: 1.0 0.22
+
+== controls ==
+beethove F filled-class in-staff heads 582: with a counter found 87 ['glyph/1/0/2/0/15', 'glyph/1/0/2/2/1', 'glyph/1/0/2/2/2', 'glyph/1/0/7/11/1', 'glyph/1/0/7/11/3', 'glyph/1/0/7/13/2', 'glyph/1/0/7/15/2', 'glyph/1/0/8/5/0']
+beethove H hollow-class in-staff heads 225: with a counter found 215
+beethove G all n=225: gate pass raw 1 -> filled 113; centre error median raw 0.31 -> filled 0.27 sp
+beethove G isolated n=26: gate pass raw 0 -> filled 13; centre error median raw 0.26 -> filled 0.21 sp
+brahms1- F filled-class in-staff heads 797: with a counter found 8 ['glyph/0/0/6/3/3', 'glyph/0/0/10/1/16', 'glyph/1/0/0/1/14', 'glyph/1/0/0/1/15', 'glyph/1/0/3/3/14', 'glyph/1/0/4/1/21', 'glyph/1/0/5/0/25', 'glyph/1/1/3/4/23']
+brahms1- H hollow-class in-staff heads 100: with a counter found 100
+brahms1- G all n=100: gate pass raw 1 -> filled 69; centre error median raw 0.59 -> filled 0.32 sp
+brahms1- G isolated n=16: gate pass raw 0 -> filled 16; centre error median raw 0.06 -> filled 0.03 sp

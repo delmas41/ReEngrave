@@ -1,0 +1,36 @@
+== n=44/11
+S0  beethoven5-litolff   {'right': 32, 'wrong': 10, 'abstain': 2} n=44
+S0  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2  beethoven5-litolff   {'right': 35, 'wrong': 8, 'abstain': 1} n=44
+S2  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2H beethoven5-litolff   {'right': 36, 'wrong': 7, 'abstain': 1} n=44
+S2H brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+== n=43/11 (3/0/0/6/2 out)
+S0  beethoven5-litolff   {'right': 32, 'wrong': 9, 'abstain': 2} n=43
+S0  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2  beethoven5-litolff   {'right': 35, 'wrong': 7, 'abstain': 1} n=43
+S2  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2H beethoven5-litolff   {'right': 36, 'wrong': 6, 'abstain': 1} n=43
+S2H brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+== against Sean (3/0/0/6/2 = -6), n=44
+S0 {'right': 33, 'wrong': 9, 'abstain': 2}
+S2 {'right': 36, 'wrong': 7, 'abstain': 1}
+S2H {'right': 37, 'wrong': 6, 'abstain': 1}
+
+-- S2H vs S2: every changed head --
+beetho glyph/1/0/10/7/1     -4 wrong   ->    -2 right   ref=[-2] kind=hollow fit 0.47/0.29 -> 0.79/0.05 pass False->True pockets=[41, 31] | last rung passes through the head itself, confirmed by a jut connected to it at the head's
+beetho right broken S2H vs S2: [] | right broken S2H vs S0: []
+brahms right broken S2H vs S2: [] | right broken S2H vs S0: []
+
+-- heads with a pocket (counter found) --
+beetho glyph/1/0/10/7/1 eadHalfInSpace hollow [{'area': 41, 'r_max': 2.87, 'centre': (1622.2, 2889.6), 'raw_enclosed': False}, {'area': 31, 'r_max': 2.32, 'centre': (1609.9, 2901.9), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.27, 'r_floor': 1.5} fit 0.47/0.29 -> 0.79/0.05 pass False -> True
+beetho glyph/1/0/10/8/1 headHalfOnLine hollow [{'area': 21, 'r_max': 1.91, 'centre': (1750.8, 2888.3), 'raw_enclosed': True}, {'area': 33, 'r_max': 2.32, 'centre': (1741.4, 2898.4), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.27, 'r_floor': 1.5} fit 0.53/0.03 -> 0.65/0.08 pass False -> False
+beetho glyph/1/0/3/7/3 eadHalfInSpace hollow [{'area': 34, 'r_max': 2.32, 'centre': (1621.8, 1611.4), 'raw_enclosed': True}, {'area': 10, 'r_max': 1.91, 'centre': (1612.9, 1621.2), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.27, 'r_floor': 1.5} fit 0.6/0.06 -> 0.63/0.12 pass False -> False
+beetho glyph/3/0/0/5/12 headHalfOnLine hollow [{'area': 33, 'r_max': 2.32, 'centre': (1373.7, 401.7), 'raw_enclosed': True}, {'area': 34, 'r_max': 2.74, 'centre': (1385.2, 409.5), 'raw_enclosed': False}, {'area': 24, 'r_max': 2.32, 'centre': (1374.4, 419.9), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.2, 'r_floor': 1.5} fit 0.19/0.71 -> 0.6/0.23 pass False -> False
+beetho glyph/3/0/0/6/1 eadHalfInSpace hollow [{'area': 37, 'r_max': 2.74, 'centre': (1548.9, 403.6), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.33, 'r_floor': 1.5} fit 0.18/0.78 -> 0.16/0.75 pass False -> False
+beetho glyph/3/0/0/6/2 adBlackInSpace filled [{'area': 37, 'r_max': 2.74, 'centre': (1548.9, 403.6), 'raw_enclosed': True}] {'close_diameter': None, 'r_cap': 4.33, 'r_floor': 1.5} fit 0.35/0.52 -> 0.44/0.4 pass False -> False
+beetho glyph/3/0/5/4/5 headHalfOnLine hollow [{'area': 17, 'r_max': 1.91, 'centre': (1212.3, 1228.1), 'raw_enclosed': True}, {'area': 29, 'r_max': 2.32, 'centre': (1201.7, 1238.1), 'raw_enclosed': True}] {'close_diameter': 9, 'r_cap': 4.27, 'r_floor': 1.5} fit 0.21/0.61 -> 0.27/0.66 pass False -> False
+
+-- filled-head invariance: heads with NO pocket must equal S2 exactly --
+no-pocket heads 48, not identical: []
+gate pass S2H: {'beethoven5-litolff': (20, 44), 'brahms1-breitkopf': (11, 11)} | S2: {'beethoven5-litolff': 19, 'brahms1-breitkopf': 11}

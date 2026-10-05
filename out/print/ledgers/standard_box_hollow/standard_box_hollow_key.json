@@ -1,0 +1,9152 @@
+{
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/1/0/10/7/1",
+   "kind": "hollow",
+   "sean": "(tile 1) half note ON the line above the staff; box too small, grabs only the upper half",
+   "reference": [
+    -2
+   ],
+   "reads": {
+    "S0": {
+     "pos": -4,
+     "v": "wrong",
+     "reason": "-0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "box": [
+      1603.17,
+      2885.26,
+      1623.33,
+      2899.59
+     ]
+    },
+    "S2": {
+     "pos": -4,
+     "v": "wrong",
+     "reason": "-0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "box": [
+      1603.17,
+      2885.26,
+      1623.33,
+      2899.59
+     ]
+    },
+    "S2H": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.53 sp)",
+     "box": [
+      1603.62,
+      2885.98,
+      1626.87,
+      2904.88
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.47,
+    "offset_open_sp": 0.29,
+    "iou_raw": 0.45,
+    "offset_raw_sp": 0.31,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.79,
+    "offset_open_sp": 0.05,
+    "passed": true
+   },
+   "pockets": [
+    {
+     "area": 41,
+     "r_max": 2.87,
+     "centre": [
+      1622.2,
+      2889.6
+     ],
+     "raw_enclosed": false
+    },
+    {
+     "area": 31,
+     "r_max": 2.32,
+     "centre": [
+      1609.9,
+      2901.9
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1603.6249078578624,
+    2885.9759376476277,
+    1626.8700921421375,
+    2904.876562352373
+   ],
+   "detector_box": [
+    1603.1675,
+    2885.26,
+    1623.3275,
+    2899.5925
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 2896.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 35,
+     "ridge_off": 18,
+     "near_on": 0.5,
+     "near_off": 0.0,
+     "near_side": "left",
+     "stub_on": 0.31,
+     "stub_off": 0.0,
+     "span_on": 0.82,
+     "span_off": 0.54,
+     "stub_side": "left"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.64,
+     "box_is_ink": 0.66,
+     "d_left": -3.2,
+     "d_right": 4.7,
+     "d_top": 0.7,
+     "d_bottom": 8.4,
+     "blob_wh_px": [
+      29,
+      23
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.87,
+     "box_is_ink": 0.62,
+     "d_left": -3.6,
+     "d_right": 1.1,
+     "d_top": 0.0,
+     "d_bottom": 3.1,
+     "blob_wh_px": [
+      29,
+      23
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.56,
+     "box_is_ink": 0.82,
+     "d_left": -3.2,
+     "d_right": 4.7,
+     "d_top": -0.3,
+     "d_bottom": 10.4,
+     "blob_wh_px": [
+      29,
+      26
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.81,
+     "box_is_ink": 0.84,
+     "d_left": -3.6,
+     "d_right": 1.1,
+     "d_top": -1.0,
+     "d_bottom": 5.1,
+     "blob_wh_px": [
+      29,
+      26
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.22727272727272727
+   }
+  },
+  {
+   "n": 2,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/0/6/2",
+   "kind": "filled",
+   "sean": "(tile 4) ON its line (-6): the open-ended half note; the reference (-4) is wrong",
+   "reference": [
+    -4
+   ],
+   "reads": {
+    "S0": {
+     "pos": -6,
+     "v": "wrong",
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ]
+    },
+    "S2": {
+     "pos": -6,
+     "v": "wrong",
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ]
+    },
+    "S2H": {
+     "pos": -6,
+     "v": "wrong",
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.35,
+    "offset_open_sp": 0.52,
+    "iou_raw": 0.37,
+    "offset_raw_sp": 0.49,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.44,
+    "offset_open_sp": 0.4,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 37,
+     "r_max": 2.74,
+     "centre": [
+      1548.9,
+      403.6
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1536.1676650630836,
+    402.3846851686401,
+    1559.5973349369167,
+    421.43531483135985
+   ],
+   "detector_box": [
+    1535.73,
+    397.3,
+    1556.035,
+    416.52
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 434.0,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 29,
+     "ridge_off": 5,
+     "near_on": 1.0,
+     "near_off": 0.38,
+     "near_side": "right",
+     "stub_on": 0.56,
+     "stub_off": 0.19,
+     "span_on": 0.72,
+     "span_off": 0.53,
+     "stub_side": "right"
+    },
+    {
+     "kind": "orange",
+     "y": 414.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 35,
+     "ridge_off": 17,
+     "near_on": 1.0,
+     "near_off": 0.88,
+     "near_side": "right",
+     "stub_on": 0.94,
+     "stub_off": 0.44,
+     "span_on": 0.72,
+     "span_off": 0.61,
+     "stub_side": "right"
+    },
+    {
+     "kind": "magenta",
+     "y": 398.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "label": "thrown: other note's ink",
+     "ridge_on": 34,
+     "ridge_off": 18,
+     "near_on": 1.0,
+     "near_off": 0.62,
+     "near_side": "right",
+     "stub_on": 0.81,
+     "stub_off": 0.31,
+     "span_on": 0.75,
+     "span_off": 0.5,
+     "stub_side": "right"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.43,
+     "box_is_ink": 0.63,
+     "d_left": 3.3,
+     "d_right": 10.0,
+     "d_top": -5.3,
+     "d_bottom": 10.5,
+     "blob_wh_px": [
+      28,
+      36
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.47,
+     "box_is_ink": 0.6,
+     "d_left": 2.8,
+     "d_right": 6.4,
+     "d_top": -10.4,
+     "d_bottom": 5.6,
+     "blob_wh_px": [
+      28,
+      36
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.48,
+     "box_is_ink": 0.76,
+     "d_left": 3.3,
+     "d_right": 10.0,
+     "d_top": -5.3,
+     "d_bottom": 10.5,
+     "blob_wh_px": [
+      28,
+      36
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.5,
+     "box_is_ink": 0.7,
+     "d_left": 2.8,
+     "d_right": 6.4,
+     "d_top": -10.4,
+     "d_bottom": 5.6,
+     "blob_wh_px": [
+      28,
+      36
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 0.972972972972973,
+    "off": 0.02702702702702703
+   }
+  },
+  {
+   "n": 3,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/1/0/10/8/1",
+   "kind": "hollow",
+   "sean": null,
+   "reference": [
+    -2
+   ],
+   "reads": {
+    "S0": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ]
+    },
+    "S2": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ]
+    },
+    "S2H": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.53,
+    "offset_open_sp": 0.03,
+    "iou_raw": 0.49,
+    "offset_raw_sp": 0.04,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.65,
+    "offset_open_sp": 0.08,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 21,
+     "r_max": 1.91,
+     "centre": [
+      1750.8,
+      2888.3
+     ],
+     "raw_enclosed": true
+    },
+    {
+     "area": 33,
+     "r_max": 2.32,
+     "centre": [
+      1741.4,
+      2898.4
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1734.2399078578626,
+    2883.3146876476276,
+    1757.4850921421378,
+    2902.215312352373
+   ],
+   "detector_box": [
+    1733.2625,
+    2882.5825,
+    1758.4625,
+    2904.9475
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 2892.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 37,
+     "ridge_off": 16,
+     "near_on": 0.62,
+     "near_off": 0.0,
+     "near_side": "left",
+     "stub_on": 0.31,
+     "stub_off": 0.0,
+     "span_on": 0.9,
+     "span_off": 0.46,
+     "stub_side": "left"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.92,
+     "box_is_ink": 0.62,
+     "d_left": -2.3,
+     "d_right": 2.5,
+     "d_top": -1.6,
+     "d_bottom": 2.1,
+     "blob_wh_px": [
+      31,
+      27
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.81,
+     "box_is_ink": 0.68,
+     "d_left": -3.2,
+     "d_right": 3.5,
+     "d_top": -2.3,
+     "d_bottom": 4.8,
+     "blob_wh_px": [
+      31,
+      27
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.92,
+     "box_is_ink": 0.79,
+     "d_left": -2.3,
+     "d_right": 2.5,
+     "d_top": -1.6,
+     "d_bottom": 2.1,
+     "blob_wh_px": [
+      31,
+      27
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.81,
+     "box_is_ink": 0.87,
+     "d_left": -3.2,
+     "d_right": 3.5,
+     "d_top": -2.3,
+     "d_bottom": 4.8,
+     "blob_wh_px": [
+      31,
+      27
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.2636363636363636
+   }
+  },
+  {
+   "n": 4,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/1/0/3/7/3",
+   "kind": "hollow",
+   "sean": null,
+   "reference": [
+    -2
+   ],
+   "reads": {
+    "S0": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ]
+    },
+    "S2": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ]
+    },
+    "S2H": {
+     "pos": -2,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.6,
+    "offset_open_sp": 0.06,
+    "iou_raw": 0.51,
+    "offset_raw_sp": 0.15,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.63,
+    "offset_open_sp": 0.12,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 34,
+     "r_max": 2.32,
+     "centre": [
+      1621.8,
+      1611.4
+     ],
+     "raw_enclosed": true
+    },
+    {
+     "area": 10,
+     "r_max": 1.91,
+     "centre": [
+      1612.9,
+      1621.2
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1603.6724078578625,
+    1607.0121876476273,
+    1626.9175921421377,
+    1625.9128123523728
+   ],
+   "detector_box": [
+    1603.67,
+    1603.845,
+    1626.92,
+    1625.08
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 1616.5,
+     "moved_px": 0,
+     "on_ink": false,
+     "ridge_on": 41,
+     "ridge_off": 24,
+     "near_on": 0.5,
+     "near_off": 0.0,
+     "near_side": "left",
+     "stub_on": 0.5,
+     "stub_off": 0.25,
+     "span_on": 0.92,
+     "span_off": 0.54,
+     "stub_side": "left"
+    },
+    {
+     "kind": "magenta",
+     "y": 1599.0,
+     "moved_px": -5,
+     "on_ink": true,
+     "label": "thrown: not clear past the head",
+     "ridge_on": 20,
+     "ridge_off": 14,
+     "near_on": 1.0,
+     "near_off": 0.0,
+     "near_side": "left",
+     "stub_on": 1.0,
+     "stub_off": 0.31,
+     "span_on": 0.28,
+     "span_off": 0.23,
+     "stub_side": "left"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.76,
+     "box_is_ink": 0.7,
+     "d_left": -1.7,
+     "d_right": 5.1,
+     "d_top": 0.2,
+     "d_bottom": 9.9,
+     "blob_wh_px": [
+      31,
+      32
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.75,
+     "box_is_ink": 0.75,
+     "d_left": -1.7,
+     "d_right": 5.1,
+     "d_top": -3.0,
+     "d_bottom": 9.1,
+     "blob_wh_px": [
+      31,
+      32
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.76,
+     "box_is_ink": 0.85,
+     "d_left": -1.7,
+     "d_right": 5.1,
+     "d_top": -0.8,
+     "d_bottom": 9.9,
+     "blob_wh_px": [
+      31,
+      33
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.72,
+     "box_is_ink": 0.88,
+     "d_left": -1.7,
+     "d_right": 5.1,
+     "d_top": -4.0,
+     "d_bottom": 9.1,
+     "blob_wh_px": [
+      31,
+      33
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.23636363636363636
+   }
+  },
+  {
+   "n": 5,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/0/5/12",
+   "kind": "hollow",
+   "sean": null,
+   "reference": [
+    -4
+   ],
+   "reads": {
+    "S0": {
+     "pos": -4,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ]
+    },
+    "S2": {
+     "pos": -4,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ]
+    },
+    "S2H": {
+     "pos": -4,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.19,
+    "offset_open_sp": 0.71,
+    "iou_raw": 0.26,
+    "offset_raw_sp": 0.62,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.6,
+    "offset_open_sp": 0.23,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 33,
+     "r_max": 2.32,
+     "centre": [
+      1373.7,
+      401.7
+     ],
+     "raw_enclosed": true
+    },
+    {
+     "area": 34,
+     "r_max": 2.74,
+     "centre": [
+      1385.2,
+      409.5
+     ],
+     "raw_enclosed": false
+    },
+    {
+     "area": 24,
+     "r_max": 2.32,
+     "centre": [
+      1374.4,
+      419.9
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1366.5846506526414,
+    408.61719012661433,
+    1389.6453493473587,
+    427.3678098733857
+   ],
+   "detector_box": [
+    1360.095,
+    409.235,
+    1386.135,
+    426.75
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 433.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 31,
+     "ridge_off": 4,
+     "near_on": 0.62,
+     "near_off": 0.38,
+     "near_side": "right",
+     "stub_on": 0.33,
+     "stub_off": 0.27,
+     "span_on": 0.74,
+     "span_off": 0.36,
+     "stub_side": "right"
+    },
+    {
+     "kind": "orange",
+     "y": 415.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 36,
+     "ridge_off": 19,
+     "near_on": 1.0,
+     "near_off": 0.25,
+     "near_side": "right",
+     "stub_on": 0.73,
+     "stub_off": 0.13,
+     "span_on": 0.74,
+     "span_off": 0.48,
+     "stub_side": "right"
+    },
+    {
+     "kind": "magenta",
+     "y": 396.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "label": "thrown: other note's ink",
+     "ridge_on": 36,
+     "ridge_off": 16,
+     "near_on": 1.0,
+     "near_off": 0.0,
+     "near_side": "right",
+     "stub_on": 0.6,
+     "stub_off": 0.0,
+     "span_on": 0.79,
+     "span_off": 0.43,
+     "stub_side": "right"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.51,
+     "box_is_ink": 0.51,
+     "d_left": 3.9,
+     "d_right": 8.9,
+     "d_top": -11.2,
+     "d_bottom": -0.8,
+     "blob_wh_px": [
+      32,
+      29
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.56,
+     "box_is_ink": 0.64,
+     "d_left": -2.6,
+     "d_right": 5.4,
+     "d_top": -10.6,
+     "d_bottom": -1.4,
+     "blob_wh_px": [
+      32,
+      29
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.52,
+     "box_is_ink": 0.69,
+     "d_left": 3.9,
+     "d_right": 8.9,
+     "d_top": -11.2,
+     "d_bottom": -0.8,
+     "blob_wh_px": [
+      32,
+      29
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.57,
+     "box_is_ink": 0.85,
+     "d_left": -2.6,
+     "d_right": 5.4,
+     "d_top": -10.6,
+     "d_bottom": -1.4,
+     "blob_wh_px": [
+      32,
+      29
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.07272727272727272
+   }
+  },
+  {
+   "n": 6,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/0/6/1",
+   "kind": "hollow",
+   "sean": null,
+   "reference": [
+    -6
+   ],
+   "reads": {
+    "S0": {
+     "pos": -6,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ]
+    },
+    "S2": {
+     "pos": -6,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ]
+    },
+    "S2H": {
+     "pos": -6,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.18,
+    "offset_open_sp": 0.78,
+    "iou_raw": 0.19,
+    "offset_raw_sp": 0.73,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.16,
+    "offset_open_sp": 0.75,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 37,
+     "r_max": 2.74,
+     "centre": [
+      1548.9,
+      403.6
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1528.2376650630833,
+    384.82968516864014,
+    1551.6673349369164,
+    403.8803148313599
+   ],
+   "detector_box": [
+    1534.8,
+    385.675,
+    1555.105,
+    403.035
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 434.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 29,
+     "ridge_off": 5,
+     "near_on": 1.0,
+     "near_off": 0.25,
+     "near_side": "right",
+     "stub_on": 0.62,
+     "stub_off": 0.12,
+     "span_on": 0.69,
+     "span_off": 0.47,
+     "stub_side": "right"
+    },
+    {
+     "kind": "orange",
+     "y": 417.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 34,
+     "ridge_off": 29,
+     "near_on": 1.0,
+     "near_off": 0.62,
+     "near_side": "right",
+     "stub_on": 1.0,
+     "stub_off": 0.38,
+     "span_on": 0.67,
+     "span_off": 0.56,
+     "stub_side": "right"
+    },
+    {
+     "kind": "orange",
+     "y": 396.0,
+     "moved_px": 5,
+     "on_ink": true,
+     "ridge_on": 32,
+     "ridge_off": 31,
+     "near_on": 1.0,
+     "near_off": 0.62,
+     "near_side": "right",
+     "stub_on": 0.75,
+     "stub_off": 0.38,
+     "span_on": 0.72,
+     "span_off": 0.56,
+     "stub_side": "right"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.5,
+     "box_is_ink": 0.48,
+     "d_left": 5.2,
+     "d_right": 2.9,
+     "d_top": 0.3,
+     "d_bottom": 10.0,
+     "blob_wh_px": [
+      19,
+      28
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.37,
+     "box_is_ink": 0.26,
+     "d_left": 11.8,
+     "d_right": 6.3,
+     "d_top": 1.2,
+     "d_bottom": 9.1,
+     "blob_wh_px": [
+      19,
+      28
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.49,
+     "box_is_ink": 0.53,
+     "d_left": 5.2,
+     "d_right": 2.9,
+     "d_top": 0.3,
+     "d_bottom": 10.0,
+     "blob_wh_px": [
+      19,
+      28
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.39,
+     "box_is_ink": 0.32,
+     "d_left": 11.8,
+     "d_right": 6.3,
+     "d_top": 1.2,
+     "d_bottom": 9.1,
+     "blob_wh_px": [
+      19,
+      28
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 0.9732142857142857,
+    "off": 0.026785714285714284
+   }
+  },
+  {
+   "n": 7,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/3/0/5/4/5",
+   "kind": "hollow",
+   "sean": null,
+   "reference": [
+    10
+   ],
+   "reads": {
+    "S0": {
+     "pos": 10,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ]
+    },
+    "S2": {
+     "pos": 10,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ]
+    },
+    "S2H": {
+     "pos": 10,
+     "v": "right",
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ]
+    }
+   },
+   "gate_s2": {
+    "iou_open": 0.21,
+    "offset_open_sp": 0.61,
+    "iou_raw": 0.26,
+    "offset_raw_sp": 0.62,
+    "passed": false
+   },
+   "gate_s2h": {
+    "iou_open": 0.27,
+    "offset_open_sp": 0.66,
+    "passed": false
+   },
+   "pockets": [
+    {
+     "area": 17,
+     "r_max": 1.91,
+     "centre": [
+      1212.3,
+      1228.1
+     ],
+     "raw_enclosed": true
+    },
+    {
+     "area": 29,
+     "r_max": 2.32,
+     "centre": [
+      1201.7,
+      1238.1
+     ],
+     "raw_enclosed": true
+    }
+   ],
+   "standard_box_s2h": [
+    1191.0511578578623,
+    1233.2996876476273,
+    1214.2963421421375,
+    1252.2003123523727
+   ],
+   "detector_box": [
+    1190.31,
+    1222.8275,
+    1215.0375,
+    1242.6725000000001
+   ],
+   "pixel_check_lines": [
+    {
+     "kind": "orange",
+     "y": 1233.5,
+     "moved_px": 0,
+     "on_ink": true,
+     "ridge_on": 37,
+     "ridge_off": 19,
+     "near_on": 1.0,
+     "near_off": 0.43,
+     "near_side": "right",
+     "stub_on": 0.53,
+     "stub_off": 0.2,
+     "span_on": 0.8,
+     "span_off": 0.54,
+     "stub_side": "right"
+    }
+   ],
+   "pixel_check_boxes": {
+    "red_raw": {
+     "blob_in_box": 0.88,
+     "box_is_ink": 0.58,
+     "d_left": 1.7,
+     "d_right": 6.0,
+     "d_top": 0.2,
+     "d_bottom": 1.3,
+     "blob_wh_px": [
+      30,
+      22
+     ]
+    },
+    "cyan_raw": {
+     "blob_in_box": 0.45,
+     "box_is_ink": 0.33,
+     "d_left": 0.9,
+     "d_right": 6.7,
+     "d_top": -10.3,
+     "d_bottom": -8.2,
+     "blob_wh_px": [
+      30,
+      22
+     ]
+    },
+    "red_filled": {
+     "blob_in_box": 0.83,
+     "box_is_ink": 0.76,
+     "d_left": 1.7,
+     "d_right": 6.0,
+     "d_top": 0.2,
+     "d_bottom": 2.3,
+     "blob_wh_px": [
+      30,
+      23
+     ]
+    },
+    "cyan_filled": {
+     "blob_in_box": 0.49,
+     "box_is_ink": 0.51,
+     "d_left": 0.9,
+     "d_right": 6.7,
+     "d_top": -10.3,
+     "d_bottom": -7.2,
+     "blob_wh_px": [
+      30,
+      23
+     ]
+    }
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.21818181818181817
+   }
+  }
+ ],
+ "controls": {
+  "beethoven5-litolff": {
+   "F_n": 582,
+   "F_pocket": [
+    "glyph/1/0/2/0/15",
+    "glyph/1/0/2/2/1",
+    "glyph/1/0/2/2/2",
+    "glyph/1/0/7/11/1",
+    "glyph/1/0/7/11/3",
+    "glyph/1/0/7/13/2",
+    "glyph/1/0/7/15/2",
+    "glyph/1/0/8/5/0",
+    "glyph/1/0/8/8/3",
+    "glyph/1/0/8/9/1",
+    "glyph/1/0/8/14/7",
+    "glyph/1/0/9/2/1",
+    "glyph/1/0/11/2/2",
+    "glyph/2/0/1/2/1",
+    "glyph/2/0/1/3/3",
+    "glyph/2/0/1/4/9",
+    "glyph/2/0/2/2/17",
+    "glyph/2/0/2/3/3",
+    "glyph/2/0/2/4/6",
+    "glyph/2/0/3/4/4",
+    "glyph/2/0/3/4/6",
+    "glyph/2/0/3/4/10",
+    "glyph/2/0/4/1/3",
+    "glyph/2/0/4/14/3",
+    "glyph/2/0/4/14/7",
+    "glyph/2/0/5/1/2",
+    "glyph/2/0/5/1/6",
+    "glyph/2/0/7/1/3",
+    "glyph/2/0/7/3/8",
+    "glyph/2/0/7/9/3",
+    "glyph/2/0/7/11/0",
+    "glyph/2/0/7/14/0",
+    "glyph/2/0/7/15/8",
+    "glyph/2/0/8/3/3",
+    "glyph/2/0/9/0/2",
+    "glyph/2/0/9/5/1",
+    "glyph/2/0/9/6/7",
+    "glyph/2/0/9/13/1",
+    "glyph/2/0/10/1/6",
+    "glyph/2/0/10/14/1",
+    "glyph/2/1/2/9/7",
+    "glyph/2/1/3/3/3",
+    "glyph/2/1/3/3/4",
+    "glyph/2/1/3/11/5",
+    "glyph/2/1/4/14/6",
+    "glyph/2/1/4/14/9",
+    "glyph/2/1/7/1/2",
+    "glyph/2/1/7/1/3",
+    "glyph/2/1/7/3/1",
+    "glyph/2/1/7/3/2",
+    "glyph/2/1/7/5/4",
+    "glyph/2/1/8/0/11",
+    "glyph/2/1/8/1/2",
+    "glyph/2/1/8/3/0",
+    "glyph/2/1/8/4/3",
+    "glyph/2/1/8/4/5",
+    "glyph/2/1/8/8/7",
+    "glyph/2/1/8/9/3",
+    "glyph/2/1/8/10/22",
+    "glyph/2/1/9/0/14",
+    "glyph/2/1/9/1/2",
+    "glyph/2/1/9/3/3",
+    "glyph/2/1/9/4/2",
+    "glyph/2/1/9/4/3",
+    "glyph/2/1/9/7/4",
+    "glyph/2/1/9/7/6",
+    "glyph/2/1/9/7/10",
+    "glyph/2/1/10/0/1",
+    "glyph/2/1/10/2/0",
+    "glyph/2/1/10/2/1",
+    "glyph/2/1/10/2/2",
+    "glyph/2/1/10/13/3",
+    "glyph/2/1/10/13/6",
+    "glyph/3/0/2/7/2",
+    "glyph/3/0/4/0/5",
+    "glyph/3/0/4/3/10",
+    "glyph/3/0/4/3/12",
+    "glyph/3/0/4/7/1",
+    "glyph/3/0/9/0/1",
+    "glyph/3/0/9/0/6",
+    "glyph/3/1/3/0/7",
+    "glyph/3/1/5/1/1",
+    "glyph/3/1/5/13/2",
+    "glyph/3/1/6/3/2",
+    "glyph/3/1/7/1/2",
+    "glyph/3/1/7/12/0",
+    "glyph/3/1/7/16/4"
+   ],
+   "H_n": 225,
+   "H_pocket": 215,
+   "G": [
+    {
+     "subject": "glyph/1/0/2/1/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1033.9724999999999,
+       1524.05375
+      ],
+      "err_sp": 0.13
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1032.9724999999999,
+       1524.05375
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/3/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.32,
+      "gate": false,
+      "centre": [
+       1232.9724999999999,
+       1530.3775
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.67,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       1232.9724999999999,
+       1535.3775
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/4/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1298.9962500000001,
+       1529.1175
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       1298.9962500000001,
+       1529.1175
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/15/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.11,
+      "off": 0.62,
+      "gate": false,
+      "centre": [
+       2515.2512500000003,
+       1506.1525000000001
+      ],
+      "err_sp": 0.76
+     },
+     "filled": {
+      "iou": 0.11,
+      "off": 0.62,
+      "gate": false,
+      "centre": [
+       2515.2512500000003,
+       1506.1525000000001
+      ],
+      "err_sp": 0.76
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/8/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       1746.02,
+       2409.29
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1747.02,
+       2409.29
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/12/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.58,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       2181.01875,
+       2398.13125
+      ],
+      "err_sp": 0.18
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       2181.01875,
+       2398.13125
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/14/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.55,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       2358.7512500000003,
+       2392.83125
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       2359.7512500000003,
+       2392.83125
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.31,
+      "gate": false,
+      "centre": [
+       1031.5,
+       2632.7212499999996
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.15,
+      "gate": true,
+      "centre": [
+       1031.5,
+       2632.7212499999996
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/6/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.22,
+      "gate": false,
+      "centre": [
+       1491.2475,
+       2621.90875
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.84,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1490.2475,
+       2622.90875
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/6/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.55,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1489.775,
+       2627.1775
+      ],
+      "err_sp": 0.25
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.15,
+      "gate": true,
+      "centre": [
+       1489.775,
+       2628.1775
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/7/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1618.1375,
+       2619.49125
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1617.1375,
+       2621.49125
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/15/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       2478.97875,
+       2606.26125
+      ],
+      "err_sp": 0.08
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       2477.97875,
+       2607.26125
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/15/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.26,
+      "gate": false,
+      "centre": [
+       2479.6875,
+       2605.6237499999997
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       2477.6875,
+       2607.6237499999997
+      ],
+      "err_sp": 0.05
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/2/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.31,
+      "off": 0.36,
+      "gate": false,
+      "centre": [
+       1129.0774999999999,
+       2801.89375
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.84,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1123.0774999999999,
+       2801.89375
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/8/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1746.25625,
+       2734.32625
+      ],
+      "err_sp": 0.15
+     },
+     "filled": {
+      "iou": 0.74,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       1746.25625,
+       2734.32625
+      ],
+      "err_sp": 0.15
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/15/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       2477.3725,
+       2738.5787499999997
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.75,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       2477.3725,
+       2739.5787499999997
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/5/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.18,
+      "off": 0.56,
+      "gate": false,
+      "centre": [
+       1242.0,
+       422.68
+      ],
+      "err_sp": 0.85
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.04,
+      "gate": false,
+      "centre": [
+       1248.0,
+       412.68
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/5/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.18,
+      "off": 0.57,
+      "gate": false,
+      "centre": [
+       1241.68,
+       422.4
+      ],
+      "err_sp": 0.82
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       1247.68,
+       416.4
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/5/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.18,
+      "off": 0.53,
+      "gate": false,
+      "centre": [
+       1242.4,
+       422.32
+      ],
+      "err_sp": 0.79
+     },
+     "filled": {
+      "iou": 0.8,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1248.4,
+       416.32
+      ],
+      "err_sp": 0.27
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/6/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1322.48,
+       410.4
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1322.48,
+       411.4
+      ],
+      "err_sp": 0.15
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/6/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.53,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1321.12,
+       413.72
+      ],
+      "err_sp": 0.09
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       1322.12,
+       412.72
+      ],
+      "err_sp": 0.07
+     }
+    },
+    {
+     "subject": "glyph/2/0/0/15/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2526.12,
+       423.12
+      ],
+      "err_sp": 0.77
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2526.12,
+       423.12
+      ],
+      "err_sp": 0.77
+     }
+    },
+    {
+     "subject": "glyph/2/0/1/5/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1246.72,
+       553.48875
+      ],
+      "err_sp": 0.34
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       1248.72,
+       552.48875
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/2/0/1/5/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.27,
+      "gate": false,
+      "centre": [
+       1248.4050000000002,
+       551.8425
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.04,
+      "gate": false,
+      "centre": [
+       1251.4050000000002,
+       548.8425
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/2/0/1/6/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.45,
+      "gate": false,
+      "centre": [
+       1318.87,
+       554.0475
+      ],
+      "err_sp": 0.32
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       1322.87,
+       551.0475
+      ],
+      "err_sp": 0.62
+     }
+    },
+    {
+     "subject": "glyph/2/0/1/6/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.44,
+      "gate": false,
+      "centre": [
+       1318.87,
+       553.65375
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       1322.87,
+       550.65375
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/2/0/2/5/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.41,
+      "off": 0.4,
+      "gate": false,
+      "centre": [
+       1248.98,
+       717.90375
+      ],
+      "err_sp": 0.32
+     },
+     "filled": {
+      "iou": 0.61,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1250.98,
+       716.90375
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/2/0/3/1/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       657.9024999999999,
+       868.39375
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.1,
+      "off": 0.77,
+      "gate": false,
+      "centre": [
+       653.9024999999999,
+       864.39375
+      ],
+      "err_sp": 1.08
+     }
+    },
+    {
+     "subject": "glyph/2/0/3/1/21",
+     "isolated": false,
+     "raw": {
+      "iou": 0.03,
+      "off": 0.77,
+      "gate": false,
+      "centre": [
+       657.9024999999999,
+       875.9862499999999
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.79,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       654.9024999999999,
+       881.9862499999999
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/2/0/7/0/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.61,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       517.92,
+       1451.28
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       517.92,
+       1451.28
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/2/0/7/6/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       1322.2,
+       1495.08
+      ],
+      "err_sp": 0.15
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1322.2,
+       1496.08
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/2/0/7/8/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       1545.3600000000001,
+       1496.1599999999999
+      ],
+      "err_sp": 0.18
+     },
+     "filled": {
+      "iou": 0.88,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1546.3600000000001,
+       1497.1599999999999
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/2/0/7/8/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1545.3600000000001,
+       1493.6399999999999
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1545.3600000000001,
+       1492.6399999999999
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/2/0/9/5/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       1254.44,
+       1794.24
+      ],
+      "err_sp": 0.08
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       1253.44,
+       1800.24
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/2/0/9/6/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1325.8,
+       1794.1599999999999
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       1324.8,
+       1800.1599999999999
+      ],
+      "err_sp": 0.37
+     }
+    },
+    {
+     "subject": "glyph/2/0/9/6/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1325.8000000000002,
+       1793.3600000000001
+      ],
+      "err_sp": 0.08
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1324.8000000000002,
+       1795.3600000000001
+      ],
+      "err_sp": 0.1
+     }
+    },
+    {
+     "subject": "glyph/2/0/9/10/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       1828.0,
+       1787.8400000000001
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1827.0,
+       1786.8400000000001
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/2/0/9/14/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       2372.6800000000003,
+       1793.04
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       2373.6800000000003,
+       1790.04
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/2/1/0/5/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.11,
+      "off": 0.59,
+      "gate": false,
+      "centre": [
+       1260.82125,
+       2221.2562500000004
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.11,
+      "off": 0.59,
+      "gate": false,
+      "centre": [
+       1260.82125,
+       2221.2562500000004
+      ],
+      "err_sp": 0.78
+     }
+    },
+    {
+     "subject": "glyph/2/1/1/5/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       1244.6,
+       2346.64
+      ],
+      "err_sp": 0.55
+     },
+     "filled": {
+      "iou": 0.07,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       1244.6,
+       2348.64
+      ],
+      "err_sp": 0.61
+     }
+    },
+    {
+     "subject": "glyph/2/1/1/10/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.01,
+      "gate": false,
+      "centre": [
+       1972.08,
+       2283.2799999999997
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.84,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1972.08,
+       2281.2799999999997
+      ],
+      "err_sp": 0.16
+     }
+    },
+    {
+     "subject": "glyph/2/1/1/12/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       2232.4399999999996,
+       2284.2
+      ],
+      "err_sp": 0.29
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       2233.4399999999996,
+       2283.2
+      ],
+      "err_sp": 0.26
+     }
+    },
+    {
+     "subject": "glyph/2/1/1/12/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.59,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       2232.52,
+       2284.2799999999997
+      ],
+      "err_sp": 0.33
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       2233.52,
+       2283.2799999999997
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/2/1/2/10/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.35,
+      "off": 0.04,
+      "gate": false,
+      "centre": [
+       1972.08,
+       2469.04
+      ],
+      "err_sp": 0.41
+     },
+     "filled": {
+      "iou": 0.85,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1974.08,
+       2469.04
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/2/1/2/13/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.25,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       2359.52,
+       2469.6400000000003
+      ],
+      "err_sp": 0.41
+     },
+     "filled": {
+      "iou": 0.25,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       2359.52,
+       2469.6400000000003
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/2/1/2/14/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.36,
+      "gate": false,
+      "centre": [
+       2493.76,
+       2479.52
+      ],
+      "err_sp": 0.41
+     },
+     "filled": {
+      "iou": 0.41,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       2492.76,
+       2479.52
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/2/1/2/14/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       2493.6,
+       2479.04
+      ],
+      "err_sp": 0.4
+     },
+     "filled": {
+      "iou": 0.41,
+      "off": 0.32,
+      "gate": false,
+      "centre": [
+       2492.6,
+       2479.04
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/2/1/2/14/14",
+     "isolated": false,
+     "raw": {
+      "iou": 0.77,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       2493.7200000000003,
+       2461.0
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.86,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       2492.7200000000003,
+       2460.0
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/2/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       788.7125,
+       2553.23625
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.15,
+      "gate": true,
+      "centre": [
+       785.7125,
+       2556.23625
+      ],
+      "err_sp": 0.26
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/10/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.26,
+      "gate": false,
+      "centre": [
+       1971.5325,
+       2586.815
+      ],
+      "err_sp": 0.35
+     },
+     "filled": {
+      "iou": 0.63,
+      "off": 0.03,
+      "gate": false,
+      "centre": [
+       1971.5325,
+       2590.815
+      ],
+      "err_sp": 0.11
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/10/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       1971.9812499999998,
+       2583.9712499999996
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1973.9812499999998,
+       2580.9712499999996
+      ],
+      "err_sp": 0.58
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/10/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.02,
+      "gate": false,
+      "centre": [
+       1971.98125,
+       2584.08125
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1972.98125,
+       2581.08125
+      ],
+      "err_sp": 0.39
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/11/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.59,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       2114.53125,
+       2581.39625
+      ],
+      "err_sp": 0.45
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       2115.53125,
+       2581.39625
+      ],
+      "err_sp": 0.47
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/12/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.64,
+      "off": 0.05,
+      "gate": false,
+      "centre": [
+       2228.01125,
+       2582.91625
+      ],
+      "err_sp": 0.47
+     },
+     "filled": {
+      "iou": 0.78,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       2229.01125,
+       2582.91625
+      ],
+      "err_sp": 0.51
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/12/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.53,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2229.5862500000003,
+       2597.9575
+      ],
+      "err_sp": 0.29
+     },
+     "filled": {
+      "iou": 0.55,
+      "off": 0.28,
+      "gate": false,
+      "centre": [
+       2229.5862500000003,
+       2597.9575
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/13/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2360.39,
+       2584.8375
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.48,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2360.39,
+       2584.8375
+      ],
+      "err_sp": 0.43
+     }
+    },
+    {
+     "subject": "glyph/2/1/3/13/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2358.075,
+       2602.28875
+      ],
+      "err_sp": 0.44
+     },
+     "filled": {
+      "iou": 0.38,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2358.075,
+       2602.28875
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/0/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.55,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       528.615,
+       2714.15125
+      ],
+      "err_sp": 0.41
+     },
+     "filled": {
+      "iou": 0.18,
+      "off": 0.78,
+      "gate": false,
+      "centre": [
+       536.615,
+       2723.15125
+      ],
+      "err_sp": 1.07
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/10/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1973.71375,
+       2731.9875
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.87,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1974.71375,
+       2728.9875
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/10/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.63,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       1975.2962499999999,
+       2711.41
+      ],
+      "err_sp": 0.48
+     },
+     "filled": {
+      "iou": 0.83,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1975.2962499999999,
+       2711.41
+      ],
+      "err_sp": 0.48
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/11/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       2109.9875,
+       2731.4362499999997
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       2108.9875,
+       2731.4362499999997
+      ],
+      "err_sp": 0.42
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/11/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       2111.06625,
+       2713.67
+      ],
+      "err_sp": 0.4
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       2110.06625,
+       2713.67
+      ],
+      "err_sp": 0.38
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/12/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.61,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       2232.26375,
+       2714.93
+      ],
+      "err_sp": 0.44
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       2232.26375,
+       2713.93
+      ],
+      "err_sp": 0.5
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/12/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.58,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2232.26375,
+       2730.13625
+      ],
+      "err_sp": 0.28
+     },
+     "filled": {
+      "iou": 0.58,
+      "off": 0.25,
+      "gate": false,
+      "centre": [
+       2233.26375,
+       2728.13625
+      ],
+      "err_sp": 0.26
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/13/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.34,
+      "gate": false,
+      "centre": [
+       2333.8675000000003,
+       2716.7887499999997
+      ],
+      "err_sp": 0.69
+     },
+     "filled": {
+      "iou": 0.15,
+      "off": 0.34,
+      "gate": false,
+      "centre": [
+       2333.8675000000003,
+       2716.7887499999997
+      ],
+      "err_sp": 0.69
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/13/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       2355.1925,
+       2716.7174999999997
+      ],
+      "err_sp": 0.46
+     },
+     "filled": {
+      "iou": 0.48,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       2355.1925,
+       2716.7174999999997
+      ],
+      "err_sp": 0.46
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/13/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.43,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2356.42125,
+       2733.49125
+      ],
+      "err_sp": 0.44
+     },
+     "filled": {
+      "iou": 0.43,
+      "off": 0.25,
+      "gate": false,
+      "centre": [
+       2356.42125,
+       2733.49125
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/2/1/4/14/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       2493.95,
+       2719.31625
+      ],
+      "err_sp": 0.72
+     },
+     "filled": {
+      "iou": 0.52,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       2493.95,
+       2719.31625
+      ],
+      "err_sp": 0.72
+     }
+    },
+    {
+     "subject": "glyph/2/1/7/0/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       529.94625,
+       3133.3999999999996
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       534.94625,
+       3148.3999999999996
+      ],
+      "err_sp": 1.09
+     }
+    },
+    {
+     "subject": "glyph/2/1/7/2/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       790.88625,
+       3123.34375
+      ],
+      "err_sp": 0.32
+     },
+     "filled": {
+      "iou": 0.61,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       786.88625,
+       3128.34375
+      ],
+      "err_sp": 0.15
+     }
+    },
+    {
+     "subject": "glyph/2/1/7/2/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       793.3824999999999,
+       3123.23375
+      ],
+      "err_sp": 0.57
+     },
+     "filled": {
+      "iou": 0.16,
+      "off": 0.8,
+      "gate": false,
+      "centre": [
+       800.3824999999999,
+       3135.23375
+      ],
+      "err_sp": 0.96
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/11/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.38,
+      "gate": false,
+      "centre": [
+       2113.1375,
+       3322.9375
+      ],
+      "err_sp": 0.27
+     },
+     "filled": {
+      "iou": 0.41,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       2112.1375,
+       3322.9375
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/11/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.4,
+      "off": 0.05,
+      "gate": false,
+      "centre": [
+       2111.09,
+       3283.5387499999997
+      ],
+      "err_sp": 0.34
+     },
+     "filled": {
+      "iou": 0.4,
+      "off": 0.05,
+      "gate": false,
+      "centre": [
+       2111.09,
+       3283.5387499999997
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/12/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.33,
+      "off": 0.45,
+      "gate": false,
+      "centre": [
+       2225.07375,
+       3324.43375
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.39,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       2224.07375,
+       3324.43375
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/12/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.49,
+      "gate": false,
+      "centre": [
+       2224.995,
+       3323.33125
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.34,
+      "off": 0.67,
+      "gate": false,
+      "centre": [
+       2224.995,
+       3319.33125
+      ],
+      "err_sp": 0.43
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/13/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.39,
+      "gate": false,
+      "centre": [
+       2356.3975,
+       3329.5525
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2353.3975,
+       3331.5525
+      ],
+      "err_sp": 0.25
+     }
+    },
+    {
+     "subject": "glyph/2/1/8/13/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       2350.53125,
+       3288.98
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.67,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2351.53125,
+       3286.98
+      ],
+      "err_sp": 0.27
+     }
+    },
+    {
+     "subject": "glyph/2/1/9/0/4",
+     "isolated": true,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       529.88,
+       3418.96
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       535.88,
+       3433.96
+      ],
+      "err_sp": 1.05
+     }
+    },
+    {
+     "subject": "glyph/2/1/9/2/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.27,
+      "gate": false,
+      "centre": [
+       793.12,
+       3411.2799999999997
+      ],
+      "err_sp": 0.49
+     },
+     "filled": {
+      "iou": 0.14,
+      "off": 0.89,
+      "gate": false,
+      "centre": [
+       801.12,
+       3422.2799999999997
+      ],
+      "err_sp": 1.04
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/10/11",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.07,
+      "gate": false,
+      "centre": [
+       1975.60625,
+       3580.25
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.5,
+      "off": 0.07,
+      "gate": false,
+      "centre": [
+       1975.60625,
+       3580.25
+      ],
+      "err_sp": 0.11
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/11/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       2113.46875,
+       3580.3374999999996
+      ],
+      "err_sp": 0.26
+     },
+     "filled": {
+      "iou": 0.52,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       2113.46875,
+       3580.3374999999996
+      ],
+      "err_sp": 0.26
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/12/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2223.35,
+       3582.9375
+      ],
+      "err_sp": 0.25
+     },
+     "filled": {
+      "iou": 0.51,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2223.35,
+       3582.9375
+      ],
+      "err_sp": 0.25
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/14/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.26,
+      "gate": false,
+      "centre": [
+       2484.66875,
+       3607.71875
+      ],
+      "err_sp": 0.27
+     },
+     "filled": {
+      "iou": 0.57,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       2484.66875,
+       3607.71875
+      ],
+      "err_sp": 0.27
+     }
+    },
+    {
+     "subject": "glyph/3/0/1/1/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.12,
+      "off": 0.68,
+      "gate": false,
+      "centre": [
+       650.6712500000001,
+       603.40125
+      ],
+      "err_sp": 0.88
+     },
+     "filled": {
+      "iou": 0.26,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       644.6712500000001,
+       593.40125
+      ],
+      "err_sp": 0.98
+     }
+    },
+    {
+     "subject": "glyph/3/0/1/3/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.05,
+      "gate": false,
+      "centre": [
+       1037.8475,
+       603.48125
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       1037.8475,
+       603.48125
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/3/0/1/4/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.56,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1203.855,
+       604.19
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1204.855,
+       604.19
+      ],
+      "err_sp": 0.22
+     }
+    },
+    {
+     "subject": "glyph/3/0/1/6/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.03,
+      "gate": false,
+      "centre": [
+       1554.1625,
+       605.6075000000001
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.88,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1553.1625,
+       605.6075000000001
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/0/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.0,
+      "gate": false,
+      "centre": [
+       527.0225,
+       769.07625
+      ],
+      "err_sp": 0.3
+     },
+     "filled": {
+      "iou": 0.64,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       527.0225,
+       769.07625
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/0/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.5,
+      "gate": false,
+      "centre": [
+       523.2825,
+       792.87375
+      ],
+      "err_sp": 1.0
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       529.2825,
+       786.87375
+      ],
+      "err_sp": 0.56
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/0/11",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.02,
+      "gate": false,
+      "centre": [
+       526.7862500000001,
+       768.9975
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       526.7862500000001,
+       768.9975
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/1/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       680.6112499999999,
+       767.65875
+      ],
+      "err_sp": 0.08
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       680.6112499999999,
+       767.65875
+      ],
+      "err_sp": 0.08
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/3/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1039.76875,
+       763.24875
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.77,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1035.76875,
+       763.24875
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/3/13",
+     "isolated": false,
+     "raw": {
+      "iou": 0.44,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1035.98125,
+       727.1575
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1037.98125,
+       726.1575
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/4/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.35,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1203.4925,
+       764.4300000000001
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1204.4925,
+       764.4300000000001
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/4/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.32,
+      "gate": false,
+      "centre": [
+       1203.57125,
+       764.2725
+      ],
+      "err_sp": 0.1
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1204.57125,
+       764.2725
+      ],
+      "err_sp": 0.05
+     }
+    },
+    {
+     "subject": "glyph/3/0/2/6/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.13,
+      "off": 0.57,
+      "gate": false,
+      "centre": [
+       1548.2725,
+       733.35375
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.15,
+      "off": 0.59,
+      "gate": false,
+      "centre": [
+       1542.2725,
+       719.35375
+      ],
+      "err_sp": 0.82
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/0/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.22,
+      "off": 0.52,
+      "gate": false,
+      "centre": [
+       524.5662500000001,
+       917.64375
+      ],
+      "err_sp": 0.72
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       530.5662500000001,
+       912.64375
+      ],
+      "err_sp": 0.63
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/0/14",
+     "isolated": false,
+     "raw": {
+      "iou": 0.13,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       500.78375,
+       878.4425
+      ],
+      "err_sp": 0.96
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       502.78375,
+       886.4425
+      ],
+      "err_sp": 0.9
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/1/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.51,
+      "gate": false,
+      "centre": [
+       675.9975,
+       917.1949999999999
+      ],
+      "err_sp": 0.59
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       680.9975,
+       913.1949999999999
+      ],
+      "err_sp": 0.22
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/3/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       1036.0125,
+       891.59375
+      ],
+      "err_sp": 0.13
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1037.0125,
+       892.59375
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/4/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1203.65,
+       888.75875
+      ],
+      "err_sp": 0.52
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1203.65,
+       888.75875
+      ],
+      "err_sp": 0.52
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/5/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.25,
+      "off": 0.27,
+      "gate": false,
+      "centre": [
+       1376.92625,
+       873.0862500000001
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.77,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1379.92625,
+       863.0862500000001
+      ],
+      "err_sp": 0.37
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/5/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.28,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1376.8474999999999,
+       872.7950000000001
+      ],
+      "err_sp": 0.26
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1378.8474999999999,
+       863.7950000000001
+      ],
+      "err_sp": 0.38
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/6/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.3,
+      "off": 0.28,
+      "gate": false,
+      "centre": [
+       1550.1625,
+       873.5825
+      ],
+      "err_sp": 0.27
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1553.1625,
+       864.5825
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/6/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.29,
+      "off": 0.34,
+      "gate": false,
+      "centre": [
+       1551.95,
+       889.49875
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1550.95,
+       881.49875
+      ],
+      "err_sp": 0.11
+     }
+    },
+    {
+     "subject": "glyph/3/0/3/6/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.3,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       1549.7687500000002,
+       873.5825
+      ],
+      "err_sp": 0.29
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1552.7687500000002,
+       864.5825
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/0/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.2,
+      "off": 0.61,
+      "gate": false,
+      "centre": [
+       503.0,
+       1042.6399999999999
+      ],
+      "err_sp": 0.65
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       503.0,
+       1038.6399999999999
+      ],
+      "err_sp": 0.58
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/1/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.2,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       682.36,
+       1029.04
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       681.36,
+       1030.04
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/3/13",
+     "isolated": false,
+     "raw": {
+      "iou": 0.31,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1038.32,
+       1030.12
+      ],
+      "err_sp": 0.33
+     },
+     "filled": {
+      "iou": 0.62,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       1036.32,
+       1029.12
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/3/14",
+     "isolated": false,
+     "raw": {
+      "iou": 0.31,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1038.16,
+       1030.1599999999999
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.78,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1036.16,
+       1028.1599999999999
+      ],
+      "err_sp": 0.33
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/5/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.56,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       1382.72,
+       1026.72
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1384.72,
+       1026.72
+      ],
+      "err_sp": 0.38
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/6/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.41,
+      "gate": false,
+      "centre": [
+       1553.76,
+       1046.8400000000001
+      ],
+      "err_sp": 0.28
+     },
+     "filled": {
+      "iou": 0.87,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1553.76,
+       1047.8400000000001
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/6/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.32,
+      "gate": false,
+      "centre": [
+       1554.3200000000002,
+       1045.4
+      ],
+      "err_sp": 0.47
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1554.3200000000002,
+       1044.4
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/6/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.4,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       1554.28,
+       1029.64
+      ],
+      "err_sp": 0.17
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1553.28,
+       1027.64
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/11/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2188.96,
+       1045.8400000000001
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       2187.96,
+       1045.8400000000001
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/11/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.28,
+      "gate": false,
+      "centre": [
+       2189.04,
+       1046.44
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       2189.04,
+       1045.44
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/12/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.22,
+      "off": 0.5,
+      "gate": false,
+      "centre": [
+       2268.84,
+       1048.8000000000002
+      ],
+      "err_sp": 0.34
+     },
+     "filled": {
+      "iou": 0.78,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       2271.84,
+       1040.8000000000002
+      ],
+      "err_sp": 0.21
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/13/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.58,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       2352.3599999999997,
+       1071.04
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       2351.3599999999997,
+       1072.04
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/13/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.1,
+      "off": 0.53,
+      "gate": false,
+      "centre": [
+       2344.6000000000004,
+       1060.3600000000001
+      ],
+      "err_sp": 0.82
+     },
+     "filled": {
+      "iou": 0.09,
+      "off": 0.7,
+      "gate": false,
+      "centre": [
+       2344.6000000000004,
+       1060.3600000000001
+      ],
+      "err_sp": 0.82
+     }
+    },
+    {
+     "subject": "glyph/3/0/4/15/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.05,
+      "off": 0.96,
+      "gate": false,
+      "centre": [
+       2522.44,
+       1062.24
+      ],
+      "err_sp": 1.01
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       2525.44,
+       1075.24
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/3/0/5/4/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       1205.4850000000001,
+       1177.7825
+      ],
+      "err_sp": 0.2
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1207.4850000000001,
+       1177.7825
+      ],
+      "err_sp": 0.1
+     }
+    },
+    {
+     "subject": "glyph/3/0/6/3/9",
+     "isolated": true,
+     "raw": {
+      "iou": 0.2,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1038.9975,
+       1337.4850000000001
+      ],
+      "err_sp": 0.15
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       1040.9975,
+       1337.4850000000001
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/3/0/6/5/4",
+     "isolated": true,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1379.06,
+       1337.17
+      ],
+      "err_sp": 0.02
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1378.06,
+       1339.17
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/3/0/6/6/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.41,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       1553.58,
+       1337.24875
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1553.58,
+       1337.24875
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/3/0/8/14/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.61,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       2425.635,
+       1689.9499999999998
+      ],
+      "err_sp": 0.09
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       2422.635,
+       1691.9499999999998
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/0/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       538.7725,
+       1867.8825
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.55,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       538.7725,
+       1865.8825
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/5/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1382.4387499999998,
+       1856.46375
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1381.4387499999998,
+       1856.46375
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/6/7",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1553.7849999999999,
+       1869.5437499999998
+      ],
+      "err_sp": 0.58
+     },
+     "filled": {
+      "iou": 0.44,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1553.7849999999999,
+       1866.5437499999998
+      ],
+      "err_sp": 0.42
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/14/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       2423.78375,
+       1815.7262500000002
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       2422.78375,
+       1817.7262500000002
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/15/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       2520.02625,
+       1812.11875
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2520.02625,
+       1796.11875
+      ],
+      "err_sp": 1.06
+     }
+    },
+    {
+     "subject": "glyph/3/0/9/15/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.43,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2519.9475,
+       1811.7649999999999
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       2520.9475,
+       1809.7649999999999
+      ],
+      "err_sp": 0.22
+     }
+    },
+    {
+     "subject": "glyph/3/0/10/0/8",
+     "isolated": true,
+     "raw": {
+      "iou": 0.33,
+      "off": 0.45,
+      "gate": false,
+      "centre": [
+       534.615,
+       2029.135
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.79,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       537.615,
+       2026.135
+      ],
+      "err_sp": 0.28
+     }
+    },
+    {
+     "subject": "glyph/3/0/10/1/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       688.31375,
+       2023.6225
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       688.31375,
+       2023.6225
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/3/0/10/3/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1042.1475,
+       1998.8400000000001
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       1042.1475,
+       1997.8400000000001
+      ],
+      "err_sp": 0.09
+     }
+    },
+    {
+     "subject": "glyph/3/0/10/5/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1380.6275,
+       1997.58
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1379.6275,
+       1998.58
+      ],
+      "err_sp": 0.12
+     }
+    },
+    {
+     "subject": "glyph/3/0/10/6/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.24,
+      "off": 0.39,
+      "gate": false,
+      "centre": [
+       1550.32,
+       1997.71375
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1550.32,
+       1997.71375
+      ],
+      "err_sp": 0.05
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/2/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.43,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       797.2,
+       2643.8275
+      ],
+      "err_sp": 0.27
+     },
+     "filled": {
+      "iou": 0.74,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       797.2,
+       2641.8275
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/4/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       1002.7525,
+       2658.4674999999997
+      ],
+      "err_sp": 0.26
+     },
+     "filled": {
+      "iou": 0.79,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       1004.7525,
+       2657.4674999999997
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/4/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.41,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       1005.5975000000001,
+       2686.77
+      ],
+      "err_sp": 0.3
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1005.5975000000001,
+       2686.77
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/5/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1160.1625,
+       2645.3774999999996
+      ],
+      "err_sp": 0.48
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1160.1625,
+       2645.3774999999996
+      ],
+      "err_sp": 0.48
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/5/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1159.395,
+       2662.21
+      ],
+      "err_sp": 0.15
+     },
+     "filled": {
+      "iou": 0.85,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       1159.395,
+       2664.21
+      ],
+      "err_sp": 0.27
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/6/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.29,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1272.805,
+       2645.5325000000003
+      ],
+      "err_sp": 0.2
+     },
+     "filled": {
+      "iou": 0.84,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       1272.805,
+       2644.5325000000003
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/7/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.53,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1380.1,
+       2651.965
+      ],
+      "err_sp": 0.44
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.25,
+      "gate": false,
+      "centre": [
+       1380.1,
+       2653.965
+      ],
+      "err_sp": 0.55
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/8/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.56,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1494.8449999999998,
+       2650.1825
+      ],
+      "err_sp": 0.19
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1492.8449999999998,
+       2648.1825
+      ],
+      "err_sp": 0.08
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/8/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1495.5425,
+       2649.33
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1492.5425,
+       2648.33
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/8/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.35,
+      "off": 0.04,
+      "gate": false,
+      "centre": [
+       1494.69,
+       2683.3050000000003
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       1491.69,
+       2685.3050000000003
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/8/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.4,
+      "gate": false,
+      "centre": [
+       1492.2875,
+       2668.7574999999997
+      ],
+      "err_sp": 0.79
+     },
+     "filled": {
+      "iou": 0.88,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1489.2875,
+       2678.7574999999997
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/9/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.53,
+      "off": 0.15,
+      "gate": false,
+      "centre": [
+       1648.2,
+       2642.2775
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1648.2,
+       2642.2775
+      ],
+      "err_sp": 0.53
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/9/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.31,
+      "gate": false,
+      "centre": [
+       1649.8975,
+       2657.08
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.59,
+      "off": 0.31,
+      "gate": false,
+      "centre": [
+       1648.8975,
+       2657.08
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/9/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.35,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1648.045,
+       2642.51
+      ],
+      "err_sp": 0.51
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.06,
+      "gate": true,
+      "centre": [
+       1648.045,
+       2642.51
+      ],
+      "err_sp": 0.51
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/9/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.25,
+      "gate": false,
+      "centre": [
+       1650.2075,
+       2655.6549999999997
+      ],
+      "err_sp": 0.35
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       1647.2075,
+       2651.6549999999997
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/10/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.29,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       1754.495,
+       2644.1375
+      ],
+      "err_sp": 0.41
+     },
+     "filled": {
+      "iou": 0.31,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       1754.495,
+       2644.1375
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/11/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.61,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1860.0675,
+       2639.4025
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.83,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       1860.0675,
+       2639.4025
+      ],
+      "err_sp": 0.43
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/11/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.25,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1857.4625,
+       2660.025
+      ],
+      "err_sp": 0.42
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1857.4625,
+       2658.025
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/11/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1857.92,
+       2644.26
+      ],
+      "err_sp": 0.1
+     },
+     "filled": {
+      "iou": 0.25,
+      "off": 0.68,
+      "gate": false,
+      "centre": [
+       1858.92,
+       2657.26
+      ],
+      "err_sp": 0.86
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/12/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       1956.7975000000001,
+       2662.7525
+      ],
+      "err_sp": 0.42
+     },
+     "filled": {
+      "iou": 0.53,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1958.7975000000001,
+       2664.7525
+      ],
+      "err_sp": 0.46
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/13/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.49,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2091.3175,
+       2648.865
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.61,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2090.3175,
+       2651.865
+      ],
+      "err_sp": 0.47
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/13/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.33,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       2091.9375,
+       2630.265
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       2089.9375,
+       2632.265
+      ],
+      "err_sp": 0.45
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/13/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.5,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       2091.4725,
+       2647.0675
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2088.4725,
+       2645.0675
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/14/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.26,
+      "off": 0.38,
+      "gate": false,
+      "centre": [
+       2186.68,
+       2631.9775
+      ],
+      "err_sp": 0.38
+     },
+     "filled": {
+      "iou": 0.47,
+      "off": 0.39,
+      "gate": false,
+      "centre": [
+       2185.68,
+       2635.9775
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/15/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.27,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2278.4725,
+       2644.6025
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       2278.4725,
+       2644.6025
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/16/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       2384.16,
+       2660.9475
+      ],
+      "err_sp": 0.39
+     },
+     "filled": {
+      "iou": 0.4,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2385.16,
+       2659.9475
+      ],
+      "err_sp": 0.47
+     }
+    },
+    {
+     "subject": "glyph/3/1/2/16/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.28,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       2386.2375,
+       2643.185
+      ],
+      "err_sp": 0.57
+     },
+     "filled": {
+      "iou": 0.24,
+      "off": 0.52,
+      "gate": false,
+      "centre": [
+       2386.2375,
+       2643.185
+      ],
+      "err_sp": 0.57
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/0/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.49,
+      "gate": false,
+      "centre": [
+       544.6475,
+       2882.9475
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.67,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       542.6475,
+       2867.9475
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/1/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       691.2562499999999,
+       2866.34875
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       689.2562499999999,
+       2868.34875
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/2/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.43,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       791.7362499999999,
+       2864.82875
+      ],
+      "err_sp": 0.19
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.07,
+      "gate": false,
+      "centre": [
+       789.7362499999999,
+       2865.82875
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/2/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.57,
+      "gate": false,
+      "centre": [
+       791.5,
+       2882.4675
+      ],
+      "err_sp": 1.18
+     },
+     "filled": {
+      "iou": 0.07,
+      "off": 0.7,
+      "gate": false,
+      "centre": [
+       791.5,
+       2882.4675
+      ],
+      "err_sp": 1.18
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/3/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.44,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       903.335,
+       2863.45875
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       901.335,
+       2865.45875
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/3/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       903.25625,
+       2863.6400000000003
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       901.25625,
+       2865.6400000000003
+      ],
+      "err_sp": 0.21
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/6/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.43,
+      "off": 0.32,
+      "gate": false,
+      "centre": [
+       1265.25625,
+       2871.5775000000003
+      ],
+      "err_sp": 0.3
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1268.25625,
+       2868.5775000000003
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/7/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1383.9575,
+       2863.35625
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1381.9575,
+       2865.35625
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/8/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.55,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       1490.73625,
+       2871.995
+      ],
+      "err_sp": 0.15
+     },
+     "filled": {
+      "iou": 0.39,
+      "off": 0.55,
+      "gate": false,
+      "centre": [
+       1501.73625,
+       2872.995
+      ],
+      "err_sp": 0.59
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/8/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.23,
+      "off": 0.58,
+      "gate": false,
+      "centre": [
+       1500.68125,
+       2858.99375
+      ],
+      "err_sp": 0.86
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1494.68125,
+       2865.99375
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/8/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       1491.8937500000002,
+       2870.79
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.8,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       1491.8937500000002,
+       2869.79
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/3/1/3/9/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.07,
+      "gate": false,
+      "centre": [
+       1647.20125,
+       2864.9625
+      ],
+      "err_sp": 0.19
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       1646.20125,
+       2864.9625
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/0/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       547.6181640625,
+       3207.1708984375
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.34,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       547.6181640625,
+       3207.1708984375
+      ],
+      "err_sp": 0.12
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/2/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.46,
+      "off": 0.41,
+      "gate": false,
+      "centre": [
+       797.28625,
+       3211.8912499999997
+      ],
+      "err_sp": 0.3
+     },
+     "filled": {
+      "iou": 0.51,
+      "off": 0.27,
+      "gate": false,
+      "centre": [
+       797.28625,
+       3214.8912499999997
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/3/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       902.9725,
+       3205.9700000000003
+      ],
+      "err_sp": 0.12
+     },
+     "filled": {
+      "iou": 0.37,
+      "off": 0.09,
+      "gate": false,
+      "centre": [
+       902.9725,
+       3205.9700000000003
+      ],
+      "err_sp": 0.12
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/4/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.46,
+      "gate": false,
+      "centre": [
+       1006.7874999999999,
+       3204.99625
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.32,
+      "off": 0.46,
+      "gate": false,
+      "centre": [
+       1006.7874999999999,
+       3204.99625
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/5/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1161.40625,
+       3224.09375
+      ],
+      "err_sp": 0.71
+     },
+     "filled": {
+      "iou": 0.32,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       1161.40625,
+       3224.09375
+      ],
+      "err_sp": 0.71
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/5/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.48,
+      "off": 0.38,
+      "gate": false,
+      "centre": [
+       1160.40625,
+       3208.1225
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.57,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1159.40625,
+       3208.1225
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/6/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.35,
+      "off": 0.25,
+      "gate": false,
+      "centre": [
+       1273.59125,
+       3209.41
+      ],
+      "err_sp": 0.38
+     },
+     "filled": {
+      "iou": 0.38,
+      "off": 0.36,
+      "gate": false,
+      "centre": [
+       1273.59125,
+       3212.41
+      ],
+      "err_sp": 0.4
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/6/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.22,
+      "gate": false,
+      "centre": [
+       1273.59125,
+       3209.8500000000004
+      ],
+      "err_sp": 0.38
+     },
+     "filled": {
+      "iou": 0.35,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       1273.59125,
+       3212.8500000000004
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/7/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       1377.98125,
+       3201.7174999999997
+      ],
+      "err_sp": 0.29
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       1377.98125,
+       3201.7174999999997
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/7/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1377.98125,
+       3202.48
+      ],
+      "err_sp": 0.35
+     },
+     "filled": {
+      "iou": 0.6,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1377.98125,
+       3202.48
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/8/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.13,
+      "gate": false,
+      "centre": [
+       1492.4825,
+       3202.395
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       1493.4825,
+       3201.395
+      ],
+      "err_sp": 0.16
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/9/0",
+     "isolated": true,
+     "raw": {
+      "iou": 0.53,
+      "off": 0.12,
+      "gate": false,
+      "centre": [
+       1648.52375,
+       3208.2749999999996
+      ],
+      "err_sp": 0.32
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1645.52375,
+       3210.2749999999996
+      ],
+      "err_sp": 0.25
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/10/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1752.0749999999998,
+       3210.18125
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       1752.0749999999998,
+       3210.18125
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/11/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.58,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1854.43875,
+       3201.7262499999997
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.1,
+      "off": 0.8,
+      "gate": false,
+      "centre": [
+       1857.43875,
+       3187.7262499999997
+      ],
+      "err_sp": 1.13
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/11/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.27,
+      "gate": false,
+      "centre": [
+       1856.3625,
+       3205.2925
+      ],
+      "err_sp": 0.19
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       1853.3625,
+       3205.2925
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/12/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.64,
+      "off": 0.07,
+      "gate": false,
+      "centre": [
+       1960.4475,
+       3207.665
+      ],
+      "err_sp": 0.27
+     },
+     "filled": {
+      "iou": 0.64,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       1959.4475,
+       3208.665
+      ],
+      "err_sp": 0.21
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/13/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.59,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       2084.2887499999997,
+       3214.92625
+      ],
+      "err_sp": 0.16
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       2085.2887499999997,
+       3213.92625
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/14/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.64,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       2183.7262499999997,
+       3197.52375
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       2183.7262499999997,
+       3197.52375
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/15/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       2280.1775,
+       3187.23
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.74,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       2276.1775,
+       3189.23
+      ],
+      "err_sp": 0.08
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/15/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       2280.1775,
+       3187.3824999999997
+      ],
+      "err_sp": 0.35
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       2276.1775,
+       3188.3824999999997
+      ],
+      "err_sp": 0.12
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/15/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2270.34125,
+       3217.5012500000003
+      ],
+      "err_sp": 0.36
+     },
+     "filled": {
+      "iou": 0.03,
+      "off": 0.7,
+      "gate": false,
+      "centre": [
+       2270.34125,
+       3211.5012500000003
+      ],
+      "err_sp": 0.74
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/16/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       2379.30375,
+       3190.4325
+      ],
+      "err_sp": 0.33
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       2375.30375,
+       3191.4325
+      ],
+      "err_sp": 0.1
+     }
+    },
+    {
+     "subject": "glyph/3/1/5/17/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.68,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       2506.2625,
+       3199.125
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       2506.2625,
+       3199.125
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/1/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.41,
+      "gate": false,
+      "centre": [
+       696.265,
+       3335.9
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.65,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       695.265,
+       3339.9
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/1/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.41,
+      "off": 0.39,
+      "gate": false,
+      "centre": [
+       696.18625,
+       3336.5775
+      ],
+      "err_sp": 0.51
+     },
+     "filled": {
+      "iou": 0.06,
+      "off": 0.96,
+      "gate": false,
+      "centre": [
+       702.18625,
+       3350.5775
+      ],
+      "err_sp": 1.03
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/2/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.59,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       794.3512499999999,
+       3341.75875
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       794.3512499999999,
+       3341.75875
+      ],
+      "err_sp": 0.23
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/3/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.36,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       903.55625,
+       3333.78125
+      ],
+      "err_sp": 0.02
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       903.55625,
+       3333.78125
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/4/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.41,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       1003.87,
+       3349.1375
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.33,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       1015.87,
+       3349.1375
+      ],
+      "err_sp": 0.8
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/4/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.14,
+      "gate": false,
+      "centre": [
+       1003.555,
+       3348.5862500000003
+      ],
+      "err_sp": 0.02
+     },
+     "filled": {
+      "iou": 0.34,
+      "off": 0.61,
+      "gate": false,
+      "centre": [
+       1015.555,
+       3348.5862500000003
+      ],
+      "err_sp": 0.78
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/5/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.4,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       1162.31125,
+       3335.4825
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       1157.31125,
+       3338.4825
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/5/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.36,
+      "off": 0.48,
+      "gate": false,
+      "centre": [
+       1161.9175,
+       3335.1125
+      ],
+      "err_sp": 0.52
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       1156.9175,
+       3339.1125
+      ],
+      "err_sp": 0.16
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/6/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.42,
+      "gate": false,
+      "centre": [
+       1275.4299999999998,
+       3333.82125
+      ],
+      "err_sp": 0.63
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       1271.4299999999998,
+       3339.82125
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/6/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.3,
+      "off": 0.48,
+      "gate": false,
+      "centre": [
+       1275.2725,
+       3333.2700000000004
+      ],
+      "err_sp": 0.57
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1271.2725,
+       3339.2700000000004
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/7/0",
+     "isolated": true,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.02,
+      "gate": false,
+      "centre": [
+       1379.2175000000002,
+       3330.0012500000003
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.35,
+      "off": 0.68,
+      "gate": false,
+      "centre": [
+       1391.2175000000002,
+       3330.0012500000003
+      ],
+      "err_sp": 0.83
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/8/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.38,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       1495.3587499999999,
+       3345.5150000000003
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1495.3587499999999,
+       3343.5150000000003
+      ],
+      "err_sp": 0.22
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/9/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.36,
+      "off": 0.31,
+      "gate": false,
+      "centre": [
+       1650.5875,
+       3333.56875
+      ],
+      "err_sp": 0.5
+     },
+     "filled": {
+      "iou": 0.71,
+      "off": 0.15,
+      "gate": true,
+      "centre": [
+       1645.5875,
+       3334.56875
+      ],
+      "err_sp": 0.21
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/10/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.39,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1756.24875,
+       3333.15125
+      ],
+      "err_sp": 0.37
+     },
+     "filled": {
+      "iou": 0.75,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1751.24875,
+       3333.15125
+      ],
+      "err_sp": 0.07
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/10/4",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.4,
+      "gate": false,
+      "centre": [
+       1757.19375,
+       3333.56875
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.74,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       1752.19375,
+       3335.56875
+      ],
+      "err_sp": 0.15
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/11/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.33,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       1860.32,
+       3332.915
+      ],
+      "err_sp": 0.46
+     },
+     "filled": {
+      "iou": 0.3,
+      "off": 0.69,
+      "gate": false,
+      "centre": [
+       1866.32,
+       3332.915
+      ],
+      "err_sp": 0.83
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/11/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1856.24,
+       3332.36375
+      ],
+      "err_sp": 0.89
+     },
+     "filled": {
+      "iou": 0.08,
+      "off": 0.78,
+      "gate": false,
+      "centre": [
+       1845.24,
+       3324.36375
+      ],
+      "err_sp": 0.86
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/12/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.29,
+      "gate": false,
+      "centre": [
+       1962.14625,
+       3333.0725
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.61,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       1959.14625,
+       3336.0725
+      ],
+      "err_sp": 0.58
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/12/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.4,
+      "off": 0.33,
+      "gate": false,
+      "centre": [
+       1963.17,
+       3332.52125
+      ],
+      "err_sp": 0.79
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       1958.17,
+       3332.52125
+      ],
+      "err_sp": 0.49
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/13/0",
+     "isolated": true,
+     "raw": {
+      "iou": 0.52,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2091.4449999999997,
+       3349.05875
+      ],
+      "err_sp": 0.52
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       2086.4449999999997,
+       3351.05875
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/14/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.66,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       2183.87125,
+       3325.80375
+      ],
+      "err_sp": 0.22
+     },
+     "filled": {
+      "iou": 0.85,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       2182.87125,
+       3324.80375
+      ],
+      "err_sp": 0.24
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/15/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.34,
+      "gate": false,
+      "centre": [
+       2282.09875,
+       3316.85
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       2278.09875,
+       3317.85
+      ],
+      "err_sp": 0.39
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/15/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.34,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       2282.4137499999997,
+       3316.92875
+      ],
+      "err_sp": 0.63
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       2276.4137499999997,
+       3317.92875
+      ],
+      "err_sp": 0.33
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/17/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.28,
+      "off": 0.46,
+      "gate": false,
+      "centre": [
+       2511.6025,
+       3332.67875
+      ],
+      "err_sp": 0.47
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       2506.6025,
+       3334.67875
+      ],
+      "err_sp": 0.14
+     }
+    },
+    {
+     "subject": "glyph/3/1/6/17/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.28,
+      "off": 0.48,
+      "gate": false,
+      "centre": [
+       2511.9175,
+       3332.67875
+      ],
+      "err_sp": 0.48
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       2506.9175,
+       3334.67875
+      ],
+      "err_sp": 0.15
+     }
+    },
+    {
+     "subject": "glyph/3/1/7/17/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.37,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       2584.6675,
+       3503.02625
+      ],
+      "err_sp": 0.54
+     },
+     "filled": {
+      "iou": 0.19,
+      "off": 0.81,
+      "gate": false,
+      "centre": [
+       2596.6675,
+       3499.02625
+      ],
+      "err_sp": 1.26
+     }
+    },
+    {
+     "subject": "glyph/3/1/7/17/6",
+     "isolated": false,
+     "raw": {
+      "iou": 0.45,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       2584.9825,
+       3508.3025
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.62,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       2586.9825,
+       3509.3025
+      ],
+      "err_sp": 0.41
+     }
+    }
+   ]
+  },
+  "brahms1-breitkopf": {
+   "F_n": 797,
+   "F_pocket": [
+    "glyph/0/0/6/3/3",
+    "glyph/0/0/10/1/16",
+    "glyph/1/0/0/1/14",
+    "glyph/1/0/0/1/15",
+    "glyph/1/0/3/3/14",
+    "glyph/1/0/4/1/21",
+    "glyph/1/0/5/0/25",
+    "glyph/1/1/3/4/23"
+   ],
+   "H_n": 100,
+   "H_pocket": 100,
+   "G": [
+    {
+     "subject": "glyph/0/0/1/0/24",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1525.5361328125,
+       2084.8828125
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.9,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1527.5361328125,
+       2081.8828125
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/0/0/1/0/30",
+     "isolated": false,
+     "raw": {
+      "iou": 0.24,
+      "off": 0.43,
+      "gate": false,
+      "centre": [
+       1526.5361328125,
+       2049.3056640625
+      ],
+      "err_sp": 0.13
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1525.5361328125,
+       2050.3056640625
+      ],
+      "err_sp": 0.17
+     }
+    },
+    {
+     "subject": "glyph/0/0/2/0/19",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1524.8828125,
+       2470.7939453125
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1526.8828125,
+       2466.7939453125
+      ],
+      "err_sp": 0.16
+     }
+    },
+    {
+     "subject": "glyph/0/0/3/0/15",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1523.576171875,
+       2855.2783203125
+      ],
+      "err_sp": 0.59
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1523.576171875,
+       2855.2783203125
+      ],
+      "err_sp": 0.59
+     }
+    },
+    {
+     "subject": "glyph/0/0/3/0/17",
+     "isolated": false,
+     "raw": {
+      "iou": 0.01,
+      "off": 0.73,
+      "gate": false,
+      "centre": [
+       1523.576171875,
+       2814.087890625
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.97,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1523.576171875,
+       2821.087890625
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/0/0/3/7/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.62,
+      "gate": false,
+      "centre": [
+       5447.46875,
+       2855.44
+      ],
+      "err_sp": 0.23
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       5450.46875,
+       2852.44
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/0/0/4/0/14",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1526.189453125,
+       3187.1640625
+      ],
+      "err_sp": 0.51
+     },
+     "filled": {
+      "iou": 0.84,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       1526.189453125,
+       3180.1640625
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/0/0/4/0/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1529.9716796875,
+       3147.111328125
+      ],
+      "err_sp": 0.26
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1525.9716796875,
+       3152.111328125
+      ],
+      "err_sp": 0.13
+     }
+    },
+    {
+     "subject": "glyph/0/0/4/3/5",
+     "isolated": false,
+     "raw": {
+      "iou": 0.11,
+      "off": 0.59,
+      "gate": false,
+      "centre": [
+       3195.0874999999996,
+       3132.6
+      ],
+      "err_sp": 0.8
+     },
+     "filled": {
+      "iou": 0.07,
+      "off": 0.78,
+      "gate": false,
+      "centre": [
+       3195.0874999999996,
+       3122.6
+      ],
+      "err_sp": 1.09
+     }
+    },
+    {
+     "subject": "glyph/0/0/4/7/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5448.5875,
+       3188.5375000000004
+      ],
+      "err_sp": 0.47
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       5449.5875,
+       3185.5375000000004
+      ],
+      "err_sp": 0.48
+     }
+    },
+    {
+     "subject": "glyph/0/0/4/7/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.3,
+      "off": 0.42,
+      "gate": false,
+      "centre": [
+       5451.75,
+       3153.6875
+      ],
+      "err_sp": 0.64
+     },
+     "filled": {
+      "iou": 0.7,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       5449.75,
+       3153.6875
+      ],
+      "err_sp": 0.6
+     }
+    },
+    {
+     "subject": "glyph/0/0/5/7/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5447.52,
+       3597.88
+      ],
+      "err_sp": 0.44
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.15,
+      "gate": true,
+      "centre": [
+       5447.52,
+       3597.88
+      ],
+      "err_sp": 0.44
+     }
+    },
+    {
+     "subject": "glyph/0/0/5/7/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.3,
+      "off": 0.42,
+      "gate": false,
+      "centre": [
+       5450.0,
+       3562.2
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.0,
+      "gate": true,
+      "centre": [
+       5448.0,
+       3563.2
+      ],
+      "err_sp": 0.01
+     }
+    },
+    {
+     "subject": "glyph/0/0/5/7/2",
+     "isolated": false,
+     "raw": {
+      "iou": 0.42,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       5448.32,
+       3564.8
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.61,
+      "off": 0.3,
+      "gate": false,
+      "centre": [
+       5447.32,
+       3564.8
+      ],
+      "err_sp": 0.59
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/1/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2250.3999999999996,
+       4735.64
+      ],
+      "err_sp": 0.07
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       2250.3999999999996,
+       4735.64
+      ],
+      "err_sp": 0.07
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/2/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2732.44,
+       4730.8
+      ],
+      "err_sp": 0.13
+     },
+     "filled": {
+      "iou": 0.97,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       2732.44,
+       4735.8
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/3/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       3162.76,
+       4735.96
+      ],
+      "err_sp": 0.04
+     },
+     "filled": {
+      "iou": 0.97,
+      "off": 0.0,
+      "gate": true,
+      "centre": [
+       3162.76,
+       4734.96
+      ],
+      "err_sp": 0.01
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/4/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       3638.8,
+       4736.4400000000005
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       3638.8,
+       4736.4400000000005
+      ],
+      "err_sp": 0.03
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/5/0",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       4168.4400000000005,
+       4730.0
+      ],
+      "err_sp": 0.14
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.0,
+      "gate": true,
+      "centre": [
+       4167.4400000000005,
+       4735.0
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/0/0/8/6/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       4741.578125,
+       4734.5625
+      ],
+      "err_sp": 0.02
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       4741.578125,
+       4734.5625
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/0/0/9/0/20",
+     "isolated": false,
+     "raw": {
+      "iou": 0.28,
+      "off": 0.43,
+      "gate": false,
+      "centre": [
+       1531.109375,
+       5242.4833984375
+      ],
+      "err_sp": 0.11
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1530.109375,
+       5244.4833984375
+      ],
+      "err_sp": 0.16
+     }
+    },
+    {
+     "subject": "glyph/0/0/9/0/21",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.56,
+      "gate": false,
+      "centre": [
+       1528.109375,
+       5276.5361328125
+      ],
+      "err_sp": 0.69
+     },
+     "filled": {
+      "iou": 0.08,
+      "off": 0.58,
+      "gate": false,
+      "centre": [
+       1530.109375,
+       5277.5361328125
+      ],
+      "err_sp": 0.62
+     }
+    },
+    {
+     "subject": "glyph/0/0/9/7/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5446.856250000001,
+       5273.67
+      ],
+      "err_sp": 0.97
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5446.856250000001,
+       5273.67
+      ],
+      "err_sp": 0.97
+     }
+    },
+    {
+     "subject": "glyph/0/0/11/0/22",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1527.49609375,
+       6115.802734375
+      ],
+      "err_sp": 0.63
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       1527.49609375,
+       6115.802734375
+      ],
+      "err_sp": 0.63
+     }
+    },
+    {
+     "subject": "glyph/0/0/11/7/0",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5450.2425,
+       6110.796249999999
+      ],
+      "err_sp": 0.7
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5450.2425,
+       6110.796249999999
+      ],
+      "err_sp": 0.7
+     }
+    },
+    {
+     "subject": "glyph/0/0/11/7/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5453.3075,
+       6068.385
+      ],
+      "err_sp": 0.28
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       5448.3075,
+       6071.385
+      ],
+      "err_sp": 0.19
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/1/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       2249.44,
+       6825.4
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       2249.44,
+       6825.4
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/2/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.11,
+      "gate": false,
+      "centre": [
+       2731.48,
+       6825.719999999999
+      ],
+      "err_sp": 0.04
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       2731.48,
+       6825.719999999999
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/3/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.4,
+      "gate": false,
+      "centre": [
+       3160.52,
+       6825.5599999999995
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.96,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       3161.52,
+       6825.5599999999995
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/4/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       3637.36,
+       6825.719999999999
+      ],
+      "err_sp": 0.05
+     },
+     "filled": {
+      "iou": 0.97,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       3637.36,
+       6825.719999999999
+      ],
+      "err_sp": 0.05
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/5/0",
+     "isolated": true,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.35,
+      "gate": false,
+      "centre": [
+       4169.24,
+       6825.24
+      ],
+      "err_sp": 0.04
+     },
+     "filled": {
+      "iou": 0.98,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       4169.24,
+       6825.24
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/6/1",
+     "isolated": true,
+     "raw": {
+      "iou": 0.23,
+      "off": 0.34,
+      "gate": false,
+      "centre": [
+       4741.609375,
+       6823.9375
+      ],
+      "err_sp": 0.04
+     },
+     "filled": {
+      "iou": 0.97,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       4741.609375,
+       6823.9375
+      ],
+      "err_sp": 0.04
+     }
+    },
+    {
+     "subject": "glyph/0/0/13/7/1",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5443.4400000000005,
+       6853.76
+      ],
+      "err_sp": 0.56
+     },
+     "filled": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5444.4400000000005,
+       6853.76
+      ],
+      "err_sp": 0.56
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/0/67",
+     "isolated": false,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.75,
+      "gate": false,
+      "centre": [
+       897.948486328125,
+       627.764404296875
+      ],
+      "err_sp": 0.77
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.18,
+      "gate": false,
+      "centre": [
+       895.948486328125,
+       639.764404296875
+      ],
+      "err_sp": 0.33
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/17",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       1891.81201171875,
+       666.22802734375
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       1892.81201171875,
+       655.22802734375
+      ],
+      "err_sp": 0.22
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/1/31",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       1895.2939453125,
+       629.0751953125
+      ],
+      "err_sp": 0.72
+     },
+     "filled": {
+      "iou": 0.75,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       1893.2939453125,
+       639.0751953125
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/1/0/0/4/35",
+     "isolated": false,
+     "raw": {
+      "iou": 0.12,
+      "off": 0.79,
+      "gate": false,
+      "centre": [
+       3667.86474609375,
+       615.97119140625
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.12,
+      "off": 0.81,
+      "gate": false,
+      "centre": [
+       3667.86474609375,
+       615.97119140625
+      ],
+      "err_sp": 0.75
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/0/38",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.62,
+      "gate": false,
+      "centre": [
+       894.06591796875,
+       924.755859375
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       895.06591796875,
+       916.755859375
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/0/42",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.8,
+      "gate": false,
+      "centre": [
+       899.06591796875,
+       886.927734375
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.65,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       895.06591796875,
+       897.927734375
+      ],
+      "err_sp": 0.37
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/0/50",
+     "isolated": false,
+     "raw": {
+      "iou": 0.58,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       898.59619140625,
+       848.209716796875
+      ],
+      "err_sp": 0.32
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       898.59619140625,
+       848.209716796875
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/0/61",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       898.59619140625,
+       833.67822265625
+      ],
+      "err_sp": 0.21
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.1,
+      "gate": false,
+      "centre": [
+       899.59619140625,
+       839.67822265625
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/20",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.6,
+      "gate": false,
+      "centre": [
+       1891.2939453125,
+       924.3037109375
+      ],
+      "err_sp": 0.6
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1893.2939453125,
+       916.3037109375
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/29",
+     "isolated": false,
+     "raw": {
+      "iou": 0.61,
+      "off": 0.17,
+      "gate": false,
+      "centre": [
+       1893.73974609375,
+       834.375
+      ],
+      "err_sp": 0.47
+     },
+     "filled": {
+      "iou": 0.51,
+      "off": 0.26,
+      "gate": false,
+      "centre": [
+       1893.73974609375,
+       835.375
+      ],
+      "err_sp": 0.43
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/31",
+     "isolated": false,
+     "raw": {
+      "iou": 0.6,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1894.06103515625,
+       834.78076171875
+      ],
+      "err_sp": 0.26
+     },
+     "filled": {
+      "iou": 0.62,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       1895.06103515625,
+       846.78076171875
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/1/0/1/1/34",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.75,
+      "gate": false,
+      "centre": [
+       1897.77587890625,
+       888.34765625
+      ],
+      "err_sp": 0.71
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       1893.77587890625,
+       898.34765625
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/19",
+     "isolated": true,
+     "raw": {
+      "iou": 0.22,
+      "off": 0.48,
+      "gate": false,
+      "centre": [
+       1894.5791015625,
+       1147.82177734375
+      ],
+      "err_sp": 0.55
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1894.5791015625,
+       1140.82177734375
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/26",
+     "isolated": false,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1896.38232421875,
+       1076.154296875
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.63,
+      "off": 0.28,
+      "gate": false,
+      "centre": [
+       1897.38232421875,
+       1075.154296875
+      ],
+      "err_sp": 0.4
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/1/36",
+     "isolated": false,
+     "raw": {
+      "iou": 0.81,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1894.2578125,
+       1055.39501953125
+      ],
+      "err_sp": 0.34
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1894.2578125,
+       1055.39501953125
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/2/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.45,
+      "off": 0.04,
+      "gate": false,
+      "centre": [
+       2561.5625,
+       1096.7375000000002
+      ],
+      "err_sp": 0.01
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       2561.5625,
+       1096.7375000000002
+      ],
+      "err_sp": 0.01
+     }
+    },
+    {
+     "subject": "glyph/1/0/2/6/20",
+     "isolated": false,
+     "raw": {
+      "iou": 0.44,
+      "off": 0.06,
+      "gate": false,
+      "centre": [
+       4975.65673828125,
+       1156.323974609375
+      ],
+      "err_sp": 0.06
+     },
+     "filled": {
+      "iou": 0.88,
+      "off": 0.05,
+      "gate": true,
+      "centre": [
+       4975.65673828125,
+       1156.323974609375
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/0/30",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.72,
+      "gate": false,
+      "centre": [
+       898.713623046875,
+       1424.822509765625
+      ],
+      "err_sp": 0.97
+     },
+     "filled": {
+      "iou": 0.08,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       897.713623046875,
+       1408.822509765625
+      ],
+      "err_sp": 1.49
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/0/31",
+     "isolated": false,
+     "raw": {
+      "iou": 0.11,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       896.41943359375,
+       1461.592529296875
+      ],
+      "err_sp": 0.6
+     },
+     "filled": {
+      "iou": 0.8,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       896.41943359375,
+       1453.592529296875
+      ],
+      "err_sp": 0.42
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/1/24",
+     "isolated": false,
+     "raw": {
+      "iou": 0.32,
+      "off": 0.37,
+      "gate": false,
+      "centre": [
+       1892.2939453125,
+       1462.04736328125
+      ],
+      "err_sp": 0.53
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1892.2939453125,
+       1456.04736328125
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/3/1/25",
+     "isolated": false,
+     "raw": {
+      "iou": 0.06,
+      "off": 0.81,
+      "gate": false,
+      "centre": [
+       1895.13330078125,
+       1426.37646484375
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.68,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1892.13330078125,
+       1438.37646484375
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/1/13",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       1892.5791015625,
+       1668.99853515625
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1894.5791015625,
+       1660.99853515625
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/4/1/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.75,
+      "gate": false,
+      "centre": [
+       1897.2578125,
+       1631.43603515625
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.75,
+      "off": 0.12,
+      "gate": true,
+      "centre": [
+       1894.2578125,
+       1642.43603515625
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/0/10",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       895.713623046875,
+       1862.403564453125
+      ],
+      "err_sp": 0.63
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       897.713623046875,
+       1853.403564453125
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/0/17",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.76,
+      "gate": false,
+      "centre": [
+       898.713623046875,
+       1824.045166015625
+      ],
+      "err_sp": 0.76
+     },
+     "filled": {
+      "iou": 0.81,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       896.713623046875,
+       1835.045166015625
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/0/32",
+     "isolated": false,
+     "raw": {
+      "iou": 0.57,
+      "off": 0.21,
+      "gate": false,
+      "centre": [
+       898.59619140625,
+       1771.3271484375
+      ],
+      "err_sp": 0.16
+     },
+     "filled": {
+      "iou": 0.72,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       899.59619140625,
+       1782.3271484375
+      ],
+      "err_sp": 0.25
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/24",
+     "isolated": false,
+     "raw": {
+      "iou": 0.51,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1894.06103515625,
+       1857.67724609375
+      ],
+      "err_sp": 0.38
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1895.06103515625,
+       1855.67724609375
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/1/0/5/1/33",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.67,
+      "gate": false,
+      "centre": [
+       1899.8642578125,
+       1826.5966796875
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.76,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       1895.8642578125,
+       1837.5966796875
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/0/23",
+     "isolated": false,
+     "raw": {
+      "iou": 0.13,
+      "off": 0.62,
+      "gate": false,
+      "centre": [
+       898.59619140625,
+       2171.708740234375
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       898.59619140625,
+       2162.708740234375
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       1893.38232421875,
+       2172.88671875
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1895.38232421875,
+       2163.88671875
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/11",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.75,
+      "gate": false,
+      "centre": [
+       1897.38232421875,
+       2134.396484375
+      ],
+      "err_sp": 0.82
+     },
+     "filled": {
+      "iou": 0.78,
+      "off": 0.08,
+      "gate": true,
+      "centre": [
+       1894.38232421875,
+       2145.396484375
+      ],
+      "err_sp": 0.43
+     }
+    },
+    {
+     "subject": "glyph/1/0/6/1/12",
+     "isolated": false,
+     "raw": {
+      "iou": 0.31,
+      "off": 0.28,
+      "gate": false,
+      "centre": [
+       1896.34619140625,
+       2106.416015625
+      ],
+      "err_sp": 0.65
+     },
+     "filled": {
+      "iou": 0.65,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       1896.34619140625,
+       2095.416015625
+      ],
+      "err_sp": 0.25
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/9",
+     "isolated": false,
+     "raw": {
+      "iou": 0.13,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       899.1845703125,
+       2425.168701171875
+      ],
+      "err_sp": 0.64
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       899.1845703125,
+       2416.168701171875
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/0/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.74,
+      "gate": false,
+      "centre": [
+       903.067138671875,
+       2387.221923828125
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.82,
+      "off": 0.07,
+      "gate": true,
+      "centre": [
+       900.067138671875,
+       2398.221923828125
+      ],
+      "err_sp": 0.34
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/11",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.6,
+      "gate": false,
+      "centre": [
+       1892.828125,
+       2426.837890625
+      ],
+      "err_sp": 0.67
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1896.828125,
+       2416.837890625
+      ],
+      "err_sp": 0.29
+     }
+    },
+    {
+     "subject": "glyph/1/0/7/1/17",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.74,
+      "gate": false,
+      "centre": [
+       1898.02490234375,
+       2387.68505859375
+      ],
+      "err_sp": 0.79
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       1896.02490234375,
+       2398.68505859375
+      ],
+      "err_sp": 0.38
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/8",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.57,
+      "gate": false,
+      "centre": [
+       1894.7919921875,
+       2599.03466796875
+      ],
+      "err_sp": 0.58
+     },
+     "filled": {
+      "iou": 0.95,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1897.7919921875,
+       2591.03466796875
+      ],
+      "err_sp": 0.28
+     }
+    },
+    {
+     "subject": "glyph/1/0/8/1/16",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.77,
+      "gate": false,
+      "centre": [
+       1899.470703125,
+       2562.1669921875
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       1896.470703125,
+       2573.1669921875
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/0/23",
+     "isolated": false,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.58,
+      "gate": false,
+      "centre": [
+       904.243896484375,
+       2805.927734375
+      ],
+      "err_sp": 0.8
+     },
+     "filled": {
+      "iou": 0.78,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       901.243896484375,
+       2817.927734375
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/0/25",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       897.361328125,
+       2843.815185546875
+      ],
+      "err_sp": 0.62
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       900.361328125,
+       2835.815185546875
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/1/19",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.59,
+      "gate": false,
+      "centre": [
+       1894.4345703125,
+       2845.1591796875
+      ],
+      "err_sp": 0.63
+     },
+     "filled": {
+      "iou": 0.91,
+      "off": 0.04,
+      "gate": true,
+      "centre": [
+       1897.4345703125,
+       2837.1591796875
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/9/1/20",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.81,
+      "gate": false,
+      "centre": [
+       1901.1494140625,
+       2807.560546875
+      ],
+      "err_sp": 0.78
+     },
+     "filled": {
+      "iou": 0.66,
+      "off": 0.22,
+      "gate": false,
+      "centre": [
+       1897.1494140625,
+       2818.560546875
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/0/24",
+     "isolated": false,
+     "raw": {
+      "iou": 0.08,
+      "off": 0.72,
+      "gate": false,
+      "centre": [
+       905.009033203125,
+       3030.810302734375
+      ],
+      "err_sp": 0.77
+     },
+     "filled": {
+      "iou": 0.8,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       903.009033203125,
+       3040.810302734375
+      ],
+      "err_sp": 0.41
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/0/29",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.6,
+      "gate": false,
+      "centre": [
+       900.009033203125,
+       3066.168701171875
+      ],
+      "err_sp": 0.54
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       903.009033203125,
+       3060.168701171875
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/0/41",
+     "isolated": false,
+     "raw": {
+      "iou": 0.56,
+      "off": 0.19,
+      "gate": false,
+      "centre": [
+       904.185791015625,
+       2989.26904296875
+      ],
+      "err_sp": 0.24
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       904.185791015625,
+       2988.26904296875
+      ],
+      "err_sp": 0.2
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/1/15",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       1899.0048828125,
+       3068.48046875
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1901.0048828125,
+       3060.48046875
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/1/16",
+     "isolated": false,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.7,
+      "gate": false,
+      "centre": [
+       1903.84423828125,
+       3032.275390625
+      ],
+      "err_sp": 0.71
+     },
+     "filled": {
+      "iou": 0.75,
+      "off": 0.11,
+      "gate": true,
+      "centre": [
+       1900.84423828125,
+       3041.275390625
+      ],
+      "err_sp": 0.37
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/0/36",
+     "isolated": false,
+     "raw": {
+      "iou": 0.1,
+      "off": 0.68,
+      "gate": false,
+      "centre": [
+       906.774169921875,
+       3355.941162109375
+      ],
+      "err_sp": 0.45
+     },
+     "filled": {
+      "iou": 0.1,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       904.774169921875,
+       3339.941162109375
+      ],
+      "err_sp": 1.03
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/0/37",
+     "isolated": false,
+     "raw": {
+      "iou": 0.17,
+      "off": 0.6,
+      "gate": false,
+      "centre": [
+       901.8916015625,
+       3391.887939453125
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       904.8916015625,
+       3383.887939453125
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/1/15",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       1899.77197265625,
+       3392.244140625
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       1902.77197265625,
+       3384.244140625
+      ],
+      "err_sp": 0.3
+     }
+    },
+    {
+     "subject": "glyph/1/0/11/1/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.09,
+      "off": 0.73,
+      "gate": false,
+      "centre": [
+       1907.73583984375,
+       3356.05517578125
+      ],
+      "err_sp": 0.73
+     },
+     "filled": {
+      "iou": 0.74,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       1903.73583984375,
+       3366.05517578125
+      ],
+      "err_sp": 0.35
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/0/23",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.65,
+      "gate": false,
+      "centre": [
+       912.069580078125,
+       3612.633544921875
+      ],
+      "err_sp": 0.96
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.16,
+      "gate": false,
+      "centre": [
+       909.069580078125,
+       3623.633544921875
+      ],
+      "err_sp": 0.57
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/0/27",
+     "isolated": false,
+     "raw": {
+      "iou": 0.16,
+      "off": 0.57,
+      "gate": false,
+      "centre": [
+       909.36376953125,
+       3648.2861328125
+      ],
+      "err_sp": 0.58
+     },
+     "filled": {
+      "iou": 0.77,
+      "off": 0.13,
+      "gate": true,
+      "centre": [
+       910.36376953125,
+       3636.2861328125
+      ],
+      "err_sp": 0.39
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/0/42",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.24,
+      "gate": false,
+      "centre": [
+       909.5986328125,
+       3572.974853515625
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.69,
+      "off": 0.2,
+      "gate": false,
+      "centre": [
+       909.5986328125,
+       3572.974853515625
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/12/1/14",
+     "isolated": true,
+     "raw": {
+      "iou": 0.21,
+      "off": 0.54,
+      "gate": false,
+      "centre": [
+       1901.98486328125,
+       3650.48046875
+      ],
+      "err_sp": 0.59
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       1904.98486328125,
+       3643.48046875
+      ],
+      "err_sp": 0.32
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/0/20",
+     "isolated": false,
+     "raw": {
+      "iou": 0.13,
+      "off": 0.64,
+      "gate": false,
+      "centre": [
+       905.5986328125,
+       3862.345458984375
+      ],
+      "err_sp": 0.61
+     },
+     "filled": {
+      "iou": 0.83,
+      "off": 0.09,
+      "gate": true,
+      "centre": [
+       906.5986328125,
+       3853.345458984375
+      ],
+      "err_sp": 0.36
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/0/28",
+     "isolated": false,
+     "raw": {
+      "iou": 0.07,
+      "off": 0.74,
+      "gate": false,
+      "centre": [
+       909.5986328125,
+       3825.4580078125
+      ],
+      "err_sp": 0.86
+     },
+     "filled": {
+      "iou": 0.73,
+      "off": 0.14,
+      "gate": true,
+      "centre": [
+       907.5986328125,
+       3837.4580078125
+      ],
+      "err_sp": 0.46
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/0/29",
+     "isolated": false,
+     "raw": {
+      "iou": 0.2,
+      "off": 0.42,
+      "gate": false,
+      "centre": [
+       911.657958984375,
+       3797.154052734375
+      ],
+      "err_sp": 0.6
+     },
+     "filled": {
+      "iou": 0.08,
+      "off": 0.69,
+      "gate": false,
+      "centre": [
+       910.657958984375,
+       3814.154052734375
+      ],
+      "err_sp": 1.21
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/11",
+     "isolated": false,
+     "raw": {
+      "iou": 0.15,
+      "off": 0.63,
+      "gate": false,
+      "centre": [
+       1909.466796875,
+       3825.47216796875
+      ],
+      "err_sp": 0.75
+     },
+     "filled": {
+      "iou": 0.06,
+      "off": 0.66,
+      "gate": false,
+      "centre": [
+       1906.466796875,
+       3809.47216796875
+      ],
+      "err_sp": 1.33
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/13",
+     "isolated": false,
+     "raw": {
+      "iou": 0.54,
+      "off": 0.23,
+      "gate": false,
+      "centre": [
+       1909.6796875,
+       3790.9013671875
+      ],
+      "err_sp": 0.31
+     },
+     "filled": {
+      "iou": 0.38,
+      "off": 0.46,
+      "gate": false,
+      "centre": [
+       1908.6796875,
+       3772.9013671875
+      ],
+      "err_sp": 0.37
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/1/14",
+     "isolated": false,
+     "raw": {
+      "iou": 0.14,
+      "off": 0.6,
+      "gate": false,
+      "centre": [
+       1905.30615234375,
+       3861.92626953125
+      ],
+      "err_sp": 0.6
+     },
+     "filled": {
+      "iou": 0.94,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       1906.30615234375,
+       3853.92626953125
+      ],
+      "err_sp": 0.31
+     }
+    },
+    {
+     "subject": "glyph/1/0/13/3/18",
+     "isolated": false,
+     "raw": {
+      "iou": 0.18,
+      "off": 0.56,
+      "gate": false,
+      "centre": [
+       3146.725,
+       3810.1375
+      ],
+      "err_sp": 0.76
+     },
+     "filled": {
+      "iou": 0.77,
+      "off": 0.1,
+      "gate": true,
+      "centre": [
+       3161.725,
+       3819.1375
+      ],
+      "err_sp": 0.18
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/6/6",
+     "isolated": true,
+     "raw": {
+      "iou": 0.02,
+      "off": 0.74,
+      "gate": false,
+      "centre": [
+       4602.1,
+       5591.762500000001
+      ],
+      "err_sp": 0.43
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       4600.1,
+       5603.762500000001
+      ],
+      "err_sp": 0.01
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/7/2",
+     "isolated": true,
+     "raw": {
+      "iou": 0.18,
+      "off": 0.46,
+      "gate": false,
+      "centre": [
+       5049.0,
+       5590.5625
+      ],
+      "err_sp": 0.51
+     },
+     "filled": {
+      "iou": 0.93,
+      "off": 0.02,
+      "gate": true,
+      "centre": [
+       5041.0,
+       5601.5625
+      ],
+      "err_sp": 0.02
+     }
+    },
+    {
+     "subject": "glyph/1/1/6/7/3",
+     "isolated": false,
+     "raw": {
+      "iou": 0.0,
+      "off": null,
+      "gate": false,
+      "centre": [
+       5041.549999999999,
+       5528.325000000001
+      ],
+      "err_sp": 0.19
+     },
+     "filled": {
+      "iou": 0.92,
+      "off": 0.03,
+      "gate": true,
+      "centre": [
+       5041.549999999999,
+       5534.325000000001
+      ],
+      "err_sp": 0.06
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/6/7",
+     "isolated": true,
+     "raw": {
+      "iou": 0.03,
+      "off": 0.67,
+      "gate": false,
+      "centre": [
+       4609.07625,
+       5820.87375
+      ],
+      "err_sp": 0.4
+     },
+     "filled": {
+      "iou": 0.89,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       4607.07625,
+       5831.87375
+      ],
+      "err_sp": 0.01
+     }
+    },
+    {
+     "subject": "glyph/1/1/7/7/3",
+     "isolated": true,
+     "raw": {
+      "iou": 0.47,
+      "off": 0.08,
+      "gate": false,
+      "centre": [
+       5042.2175,
+       5828.87625
+      ],
+      "err_sp": 0.03
+     },
+     "filled": {
+      "iou": 0.88,
+      "off": 0.01,
+      "gate": true,
+      "centre": [
+       5042.2175,
+       5829.87625
+      ],
+      "err_sp": 0.01
+     }
+    }
+   ]
+  }
+ }
+}

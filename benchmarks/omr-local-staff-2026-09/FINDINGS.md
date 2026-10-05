@@ -2980,3 +2980,49 @@ Boxes: share of the head blob inside the box, detector (red) / standard (cyan): 
 (tile 1). The free position search is not reliable on a head fused to a stem/partner or on a half note, and the gate that spots this cannot see hollow heads at all. S2's +3 on Litolff
 (32 -> 35) is four changed heads, three of them fixes with a 0.3-0.4 px margin on the jut test; Brahms is untouched. Not a result to flip a default on (rule 5): needs the hollow-head fit fixed first
 (fill the blob's hole before the IoU) and a read of the two blanked-by-neighbour-box heads. Tests: `test_standard_head_box_2026_10_04.py` 7 (RED against the module missing; two mutations -- centre from the detector, un-rotated extents -- each fail one test).
+
+## lane-standard-box-hollow (2026-10-04): fill a half note's counter before the standard-box fit (Sean)
+
+Base `origin/lane-standard-head-box` 31813a1c. Code: `standard_head_box.counter_pockets / fill_counter` (+ `score_standard_box_hollow.py`,
+`standard_box_hollow_sheet.py`, 5 tests); `ledger_grid.py` NOT edited; nothing wired into a product path. Output `out/print/ledgers/standard_box_hollow/`.
+
+**Control** (can fail: the new arm is the only change): S0 32/10/2 and 11/0/0, S2 35/8/1 and 11/0/0 reproduced exactly.
+
+**Rule (every size measured, none tuned on these heads).** The page gets the counter painted as ink (`gray` copy) BEFORE the template's free search and before the
+gate's IoU; the reader still reads the original page. Counter = a white pocket (enclosed as printed; for a head the detector calls HOLLOW also enclosed after a
+closing) with largest inscribed radius <= (short axis - 2 strokes)/2 (4.3 px Litolff), >= t/4 + 0.5 px (speckle floor; a 1-px hole is 1.0, real counters 1.9-2.9),
+area <= the inner-oval area, centre within 0.5 sp of the detector box (hollow class) / inside the box (filled class, enclosed WITHOUT closing; a closing-only pocket must
+be inside the box -- an earlier version painted slivers between head and stem, seen on the sheet, fixed). **Closing disc = 2 t + 1 px** (9 px Litolff t=4, 15/11 Brahms):
+a gap in a ring's wall the wall's own stroke could span twice; wider is a different mark (test). A head with no pocket gets the SAME array back.
+
+| arm | Litolff r/w/a (n=44) | n=43 (`6/2` out) | vs Sean's own readings (`6/2` = -6) | Brahms | right broken |
+|---|---|---|---|---|---|
+| S0 detector box | 32/10/2 | 32/9/2 | 33/9/2 | 11/0/0 | - |
+| S2 control | 35/8/1 | 35/7/1 | 36/7/1 | 11/0/0 | 0 |
+| S2H (counter filled) | **36/7/1** | 36/6/1 | **37/6/1** | 11/0/0 | **0** (vs S2 and vs S0) |
+
+**Every change S2 -> S2H: one head.** Tile 1 `glyph/1/0/10/7/1`: -4 wrong -> -2 right (ref -2, Sean: half note on the line); gate IoU/offset 0.47/0.29 FAIL -> 0.79/0.05 PASS, the
+standard box then holds 0.81 of the head (detector 0.56 filled / 0.64 raw), the ledger through the box middle is evidenced. The other 5 hollow far heads (`1/0/10/8/1`, `1/0/3/7/3`,
+`3/0/0/5/12`, `3/0/0/6/1`, `3/0/5/4/5`) still fail the gate (IoU 0.65 / 0.63 / 0.60 / 0.16 / 0.27 after fill): a filled oval against a blob fused to a stem, a stacked partner or
+the staff -- the same cause that fails the filled heads, not the counter. Their reads are unchanged (all right under S0 and S2). 48 heads with no pocket: box, gate and read bit-identical to S2.
+
+**Tile 4 `glyph/3/0/0/6/2`** (Sean: ON its line, -6): reads -6 under S0, S2 and S2H, i.e. RIGHT against Sean, wrong against the stale reference (-4); not moved, not broken, kept out of the n=43
+headline. Its class is BLACK (`noteheadBlackInSpace`) yet the ink holds a clean enclosed counter at Otsu -- the pocket is found (filled-class rule), but fit stays 0.44/0.40 (fused to its stacked
+partner and stem, blob 28 x 36 px). **On this print I could not see an OPEN end**: the counter is closed at the gather's threshold; Sean's "open-ended" may be at the head's other side or at a
+different threshold. The closing path therefore has NO real far-head test case here -- it is proven on synthetic rings only (RED/GREEN tests), which is not evidence it fires on a scan.
+Tile 5's partner `3/0/0/7/2` is a black head, no pocket, box unchanged (still the undersized-box case for `lane-ledger-accidental`).
+
+**Controls on the in-staff population (can fail)**: H -- hollow-class in-staff heads with a counter found: Litolff 215 of 225, Brahms 100 of 100. G -- the template fit's gate on those heads,
+raw page -> filled page: Litolff 1 -> 113 of 225 pass (isolated 0 -> 13 of 26), Brahms 1 -> 69 of 100 (isolated 0 -> 16 of 16); free-search centre error against the head's filled-blob centroid,
+median Litolff 0.31 -> 0.27 sp, Brahms 0.59 -> 0.32 sp (isolated 0.26 -> 0.21, 0.06 -> 0.03). The gate really could not see a half note before. **F -- the filled-class rule is NOT safe in-staff**: 87 of 582 Litolff
+and 8 of 797 Brahms filled-class in-staff heads get a "counter" (wedge pockets between head, staff line, stem or beam; contact sheet checked). On the 38 filled Litolff / 11 Brahms FAR heads it fires on exactly 1
+(`6/2`, a real counter). It stays gated by the fit, but do not apply the filled-class override to in-staff heads without a line-bounded-pocket rule (a solidity test did not separate them).
+
+**Pixel checks** (sheet `standard_box_hollow_sheet.png`, 7 tiles, 1752 x 3220, x6 of the 600 dpi render): drawn lines 14, 13 on ink by the stub-zone/ridge test (one flagged, tile 4 `1/0/3/7/3` orange y 1616.5, ridge 41/24, a line through the head's own ink);
+frame control on >= 0.97 / off <= 0.26. Share of the head blob inside the box, detector (red) / standard (cyan), on the filled page: tile 1 0.56/0.81, tile 3 0.92/0.81, tile 4 0.63/0.60, tile 5 0.43/0.47, tile 6 0.47/0.38, tile 7 0.82/0.50,
+tile 2 0.48/0.50. Share of the box that is ink on the filled page: cyan 0.84 / 0.87 / 0.89 / 0.90 on tiles 1 / 3 / 4 / 5. Only tile 1 improves in the box; tiles 5-7 the standard box is worse than the detector's
+(stacked/fused heads) and stay on the detector box (gate fail).
+
+**What this says.** Filling the counter fixes the one far half note whose only fault was the gate not seeing hollow heads (Sean's tile 1) and makes the gate usable on half notes in general (1 -> 113 / 1 -> 69 passes in-staff).
+It does not fix the others, whose faults are fusion. +1 on Litolff (not out-of-sample, one head); not a result to flip a default on. Next: the open-ring path needs a real scan example; a fusion-aware fit (stem/partner excluded
+from the blob) is what the five remaining hollow heads need.
