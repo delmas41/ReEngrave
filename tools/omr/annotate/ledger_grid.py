@@ -536,7 +536,8 @@ def _rung_row_clears_box(
 #     (The first attempt, in lane-ledger-accidental, kept any thin jut and
 #     was refused; this one also needs length beyond the box and straight
 #     top/bottom edges.)
-_EXCL_RULES = {"connected": False, "own_box": None, "one_sided": False}
+_EXCL_RULES = {"connected": False, "own_box": None, "one_sided": False,
+               "jut_from_ink": False}
 
 # a head box that overlaps the subject's by more than this fraction of the
 # SMALLER box's area is the same ink detected twice (cross-staff duplicate),
@@ -572,11 +573,12 @@ class exclusion_rules:
     """Context manager: `with exclusion_rules(connected=True): ...`."""
 
     def __init__(self, connected: bool = False, own_box=None,
-                 one_sided: bool = False):
+                 one_sided: bool = False, jut_from_ink: bool = False):
         self._new = {"connected": bool(connected),
                      "own_box": (tuple(float(v) for v in own_box)
                                  if own_box is not None else None),
-                     "one_sided": bool(one_sided)}
+                     "one_sided": bool(one_sided),
+                     "jut_from_ink": bool(jut_from_ink)}
 
     def __enter__(self):
         self._old = dict(_EXCL_RULES)
@@ -1712,12 +1714,107 @@ def has_through_head_rung(
 MIDDLE_ROW_TOL_SPACES = 0.15
 
 
+def _jut_from_head_ink(
+    img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
+    spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_center_y: "float | None" = None,
+) -> dict:
+    """lane-jut-from-ink: does a ledger line jut out of the head's own INK?
+
+    Same question as `head_middle_rung_evidence` (a line at the head's
+    middle row, connected to the head, unbridged, one side enough), but the
+    head's extent is found in the INK, never taken from the box:
+
+      * the ink run in the middle-row band that contains the box's middle
+        column (the box is used only to say WHERE to look, a few px of
+        placement error cannot change what is found there);
+      * for every column of that run, the vertical ink run through the
+        band. A ledger is thin (<= `LEDGER_THICKNESS_MAX_SPACES`); the
+        head's body is thicker. The head spans the outermost THICK columns
+        (a hollow head's counter is open at its middle column, but its two
+        sides are thick);
+      * the jut on a side is the run's length past that outermost thick
+        column, and must reach `RUNG_STUB_MIN_SPACES`.
+
+    Returns `{"ok", "why", "left_jut", "right_jut"}` (px). No thick column
+    at all = the head's body was not found = cannot tell (rule 8), `ok`
+    False.
+    """
+    bad = lambda why, **k: dict(ok=False, why=why, left_jut=0, right_jut=0, **k)  # noqa: E731
+    x0, y0, x1, y1 = head_box
+    mid_y = ((y0 + y1) / 2.0 if head_center_y is None
+             else float(head_center_y))
+    h, w = img_gray.shape
+    pad = RUNG_BOX_VISIBILITY_SPACES * spacing
+    cx0, cx1 = max(0, int(x0 - pad)), min(w, int(x1 + pad))
+    tol_px = MIDDLE_ROW_TOL_SPACES * spacing
+    half = JUT_INK_WINDOW_HALF_SPACES * spacing
+    ty0, ty1 = max(0, int(round(mid_y - half))), min(h, int(round(mid_y + half)) + 1)
+    b0 = int(round(mid_y - tol_px)) - ty0
+    b1 = int(round(mid_y + tol_px)) + 1 - ty0
+    b0, b1 = max(0, b0), min(ty1 - ty0, b1)
+    if cx1 <= cx0 or ty1 <= ty0 or b1 <= b0:
+        return bad("off_image")
+    window = img_gray[ty0:ty1, cx0:cx1]
+    thr = _otsu_threshold(img_gray[ty0 + b0:ty0 + b1, cx0:cx1])
+    ink = window <= thr
+    if exclude_boxes:
+        ink = _exclude_other_heads_ink(ink, exclude_boxes, cx0, ty0, spacing,
+                                       img_gray, thr)
+    band = ink[b0:b1]
+    cols = band.any(axis=0)
+    n = len(cols)
+    probe = int(round((x0 + x1) / 2.0)) - cx0
+    if not (0 <= probe < n) or not cols[probe]:
+        return bad("no_ink_at_the_head_centre")
+    s = probe
+    while s > 0 and cols[s - 1]:
+        s -= 1
+    e = probe + 1
+    while e < n and cols[e]:
+        e += 1
+    cap = LEDGER_THICKNESS_MAX_SPACES * spacing
+    thick = []
+    for c in range(s, e):
+        col = ink[:, c]
+        best, run = 0, 0
+        top = 0
+        for r in range(len(col) + 1):
+            if r < len(col) and col[r]:
+                if run == 0:
+                    top = r
+                run += 1
+            else:
+                if run and top < b1 and r > b0:   # the run crosses the band
+                    best = max(best, run)
+                run = 0
+        if best > cap:
+            thick.append(c)
+    if not thick:
+        return bad("no_head_body_in_the_run")
+    left_jut = thick[0] - s
+    right_jut = e - (thick[-1] + 1)
+    need = RUNG_STUB_MIN_SPACES * spacing
+    return dict(ok=bool(left_jut >= need or right_jut >= need),
+                why="jut_from_ink", left_jut=left_jut, right_jut=right_jut,
+                head_x=(cx0 + thick[0], cx0 + thick[-1] + 1),
+                run_x=(cx0 + s, cx0 + e))
+
+
+# Rows kept around the head's middle for `_jut_from_head_ink`: the head is
+# ~1 staff space tall, so +-0.75 sp holds the whole head with margin and a
+# vertical ink run through the band is measured in full.
+JUT_INK_WINDOW_HALF_SPACES = 0.75
+
+
 def head_middle_rung_evidence(
     img_gray: "np.ndarray | None",
     head_box: "tuple[float, float, float, float] | None",
     spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     head_center_y: "float | None" = None,
+    jut_from_ink: "bool | None" = None,
 ) -> bool:
     """Cause D's evidence test (DECISIONS 2026-10-01, "four causes behind
     the 8 far heads neither reader gets right", Sean on tiles 6-8:
@@ -1766,9 +1863,24 @@ def head_middle_rung_evidence(
     `None` for `img_gray`/`head_box`, or a non-positive `spacing`, means
     no evidence is possible at all -- returns `False` (CLAUDE.md rule 8:
     "cannot tell" is never answered as "yes, a line").
+
+    `jut_from_ink` (lane-jut-from-ink, 2026-10-04; `None` = the module rule
+    `_EXCL_RULES["jut_from_ink"]`, default False = every caller before it,
+    bit-identical): the jut is measured from the head's OWN INK edge on
+    that row (`_jut_from_head_ink`), not from the detector box edge. The
+    box is a detector or template artefact, and 2 px of placement noise
+    flipped ~5 of 41 far heads (frame-drop investigation); the head's ink
+    does not move when the box does. The needed jut is
+    `RUNG_STUB_MIN_SPACES` (the walk's own stub floor), not the 0.25 sp
+    box-edge probe.
     """
     if img_gray is None or head_box is None or spacing is None or spacing <= 0:
         return False
+    if jut_from_ink is None:
+        jut_from_ink = _EXCL_RULES["jut_from_ink"]
+    if jut_from_ink:
+        return _jut_from_head_ink(img_gray, head_box, spacing, exclude_boxes,
+                                  head_center_y)["ok"]
     x0, y0, x1, y1 = head_box
     mid_y = ((y0 + y1) / 2.0 if head_center_y is None
              else float(head_center_y))

@@ -42,7 +42,8 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     near_edge_ledgers=True, restore_masked_near_edge=True,
     far_side_ledger=True, drop_beyond_head=True,
     drop_same_ink_other_staff=True)
-EXCLUSION_RULES: Dict[str, bool] = dict(connected=True, one_sided=True)
+EXCLUSION_RULES: Dict[str, bool] = dict(connected=True, one_sided=True,
+                                        jut_from_ink=True)
 
 #: A page with fewer clean on-line heads than this has no MEASURED head shape
 #: (`score_standard_box.MIN_PAGE_SHAPE_HEADS`). The scorer fell back to the
@@ -504,7 +505,8 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
     printed ledgers. `lines` are the staff lines AT the head's x."""
     with lg.exclusion_rules(connected=EXCLUSION_RULES["connected"],
                             own_box=None,
-                            one_sided=EXCLUSION_RULES["one_sided"]):
+                            one_sided=EXCLUSION_RULES["one_sided"],
+                            jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes)
 
