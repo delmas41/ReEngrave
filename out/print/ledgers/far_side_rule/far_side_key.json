@@ -1,0 +1,170 @@
+[
+ {
+  "subject": "glyph/3/0/7/3/1",
+  "doc": "beethoven5-litolff",
+  "reference": [
+   -6
+  ],
+  "before": -5,
+  "after": -6,
+  "far_rung_ordinal": 3,
+  "far_rung_y": 1434.9903846153845,
+  "far_rung_jut": {
+   "ok": true,
+   "why": "thin_flat_jut_connected_at_the_box_edge",
+   "thickness": [
+    4.0
+   ],
+   "left_jut": -1,
+   "right_jut": 3
+  },
+  "pixel_check": [
+   {
+    "line": "L1",
+    "y": 1470.0,
+    "span_on": 0.62,
+    "span_off": 0.1,
+    "stub_on": 0.62,
+    "stub_off": 0.0,
+    "stub_side": "left"
+   },
+   {
+    "line": "L2",
+    "y": 1454.0,
+    "span_on": 0.62,
+    "span_off": 0.4,
+    "stub_on": 0.62,
+    "stub_off": 0.38,
+    "stub_side": "left"
+   },
+   {
+    "line": "L3",
+    "y": 1435.0,
+    "span_on": 0.81,
+    "span_off": 0.48,
+    "stub_on": 0.88,
+    "stub_off": 0.56,
+    "stub_side": "left"
+   }
+  ],
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.07272727272727272
+  },
+  "px_per_sp": 110.0,
+  "source_scale": 6.984126984126984,
+  "sp": 15.75
+ },
+ {
+  "subject": "glyph/3/0/7/3/2",
+  "doc": "beethoven5-litolff",
+  "reference": [
+   -6
+  ],
+  "before": -5,
+  "after": -6,
+  "far_rung_ordinal": 3,
+  "far_rung_y": 1435.0121951219512,
+  "far_rung_jut": {
+   "ok": true,
+   "why": "thin_flat_jut_connected_at_the_box_edge",
+   "thickness": [
+    5.0
+   ],
+   "left_jut": -1,
+   "right_jut": 3
+  },
+  "pixel_check": [
+   {
+    "line": "L1",
+    "y": 1470.5,
+    "span_on": 0.71,
+    "span_off": 0.13,
+    "stub_on": 0.75,
+    "stub_off": 0.0,
+    "stub_side": "left"
+   },
+   {
+    "line": "L2",
+    "y": 1452.5,
+    "span_on": 0.82,
+    "span_off": 0.45,
+    "stub_on": 1.0,
+    "stub_off": 0.62,
+    "stub_side": "left"
+   },
+   {
+    "line": "L3",
+    "y": 1435.0,
+    "span_on": 0.87,
+    "span_off": 0.53,
+    "stub_on": 0.75,
+    "stub_off": 0.44,
+    "stub_side": "right"
+   }
+  ],
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.10909090909090909
+  },
+  "px_per_sp": 110.0,
+  "source_scale": 6.984126984126984,
+  "sp": 15.75
+ },
+ {
+  "subject": "glyph/3/0/7/3/4",
+  "doc": "beethoven5-litolff",
+  "reference": [
+   -6
+  ],
+  "before": -5,
+  "after": -6,
+  "far_rung_ordinal": 3,
+  "far_rung_y": 1434.0,
+  "far_rung_jut": {
+   "ok": true,
+   "why": "thin_flat_jut_connected_at_the_box_edge",
+   "thickness": [
+    4.0
+   ],
+   "left_jut": 0,
+   "right_jut": 3
+  },
+  "pixel_check": [
+   {
+    "line": "L1",
+    "y": 1469.5,
+    "span_on": 0.73,
+    "span_off": 0.15,
+    "stub_on": 0.88,
+    "stub_off": 0.31,
+    "stub_side": "right"
+   },
+   {
+    "line": "L2",
+    "y": 1453.0,
+    "span_on": 0.83,
+    "span_off": 0.46,
+    "stub_on": 1.0,
+    "stub_off": 0.69,
+    "stub_side": "right"
+   },
+   {
+    "line": "L3",
+    "y": 1434.0,
+    "span_on": 0.76,
+    "span_off": 0.54,
+    "stub_on": 0.88,
+    "stub_off": 0.69,
+    "stub_side": "right"
+   }
+  ],
+  "frame_control": {
+   "on": 1.0,
+   "off": 0.10810810810810811
+  },
+  "px_per_sp": 110.0,
+  "source_scale": 6.984126984126984,
+  "sp": 15.75
+ }
+]

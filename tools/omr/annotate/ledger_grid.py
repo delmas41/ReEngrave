@@ -1815,6 +1815,7 @@ def rung_is_near_edge_ledger(*args, **kwargs) -> bool:
 HEAD_WIDTH_SPACES = 1.3
 STEM_LENGTH_SPACES = 3.5
 FAR_SIDE_PARTNER_DY_MIN_SPACES = 0.5
+FAR_SIDE_DRIFT_MAX_CAP_FRACTION = 0.25
 
 
 def far_side_jut_evidence(
@@ -1868,6 +1869,24 @@ def far_side_jut_evidence(
         if best is None or best[0] < stub_min:
             continue
         _, r, c = best
+        # FLAT along the jut too: the centre of the vertical ink run must not
+        # drift (a slur's arc leaves the row; a ledger does not) by more than
+        # a quarter of the ledger cap, never less than one pixel.
+        centres = []
+        for k in range(min(int(best[0]), int(round(spacing)))):
+            col = edge_col + sgn * (k + 1)
+            if not (0 <= col < ink.shape[1]) or not ink[r, col]:
+                break
+            colv = ink[:, col]
+            top = bot = r
+            while top > 0 and colv[top - 1]:
+                top -= 1
+            while bot + 1 < colv.size and colv[bot + 1]:
+                bot += 1
+            centres.append((top + bot) / 2.0)
+        if centres and (max(centres) - min(centres)
+                        > max(1.0, FAR_SIDE_DRIFT_MAX_CAP_FRACTION * cap)):
+            continue
         ts_ = []
         for k in range(n_out):
             col = c - sgn * k

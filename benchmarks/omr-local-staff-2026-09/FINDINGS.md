@@ -2895,3 +2895,27 @@ vs the same zones 0.5 sp off it. Every orange line reads on > off (3/0/0/2/1: 1.
 0.70/0.35; 8/9/0 0.50/0.15; 3/5 1880.5 0.60/0.11; 6/0 2284 0.22/0.00, 2301 0.33/0.00). Magenta lines that are
 weak: 3/5 1893.5 (0.10/0.00) and 1919.5 (0.40/0.60, a stem/flag beside it) -- rungs the reader still, rightly,
 does not count.
+
+## lane-ledger-far-side-rule (2026-10-04): a thin line at a head's FAR side, nothing farther out => ON it (Sean)
+
+Base `origin/lane-ledger-edge-fix` (845ab8cc). Code: `ledger_grid.far_side_ledger_evidence` (+ `far_side_jut_evidence`,
+`far_side_partner`), reached only through `derive_far_head_step(far_side_ledger=True, far_side_partner_boxes=...)`; default
+off is bit-identical (test). Scorer `score_far_side.py`; sheet `out/print/ledgers/far_side_rule/far_side_sheet.png`.
+Reference exclusions: `glyph/1/0/10/14/1` as before and, new, `glyph/3/0/0/6/2` (Sean: ON its arrowed line, -6; the reference -4 is wrong).
+
+**Rule** (constants derived from spacing/ledger thickness, none per-score): only where the middle-row through test finds no line,
+the bare ink walk's outermost rung that is (i) in the head's far half (> `MIDDLE_ROW_TOL_SPACES` beyond the middle) and not more
+than one ledger thickness (0.35 sp) past the far edge, (ii) on the ladder (whole spaces from the staff edge +-0.35 sp), (iii) backed
+by thin flat ink CONNECTED to the head (run anchored a stub inside each box edge, out past it >= 0.15 sp, thickness <= 0.35 sp,
+flat in thickness and with centre drift <= max(1 px, cap/4)); and (iv) NO partner: no other detector notehead within one head
+width in x (1.3 sp) and 0.5..3.5 sp (a stem) farther out. Duplicate boxes on the same head (IoU >= 0.5) are not masked as
+"other heads" (3/0/7/3/4 has one). Then offset = 2n, a line. Sensitivity: head width 1.0-2.2 sp x stem 2.5-8 sp gives the identical 3 changes.
+
+**Control**: default Litolff 25/14/5, Brahms 11/0/0; fix 1 29/13/2, 11/0/0 (n=44). Excluding 3/0/0/6/2 (n=43): default 25/13/5, fix 1 29/12/2.
+**Arms** (right/wrong/abstain): fix 1 + far-side rule Litolff 32/10/2 (n=44), 32/9/2 (n=43); Brahms 11/0/0.
+Per-head changes vs fix 1 (all three, nothing else): `3/0/7/3/1`, `3/0/7/3/2`, `3/0/7/3/4`: -5 wrong -> -6 right (ref -6): thin flat tip on ledger 3, no partner.
+Right heads broken: none. The (c) heads (`0/0/2/3`, `0/5/12`, `0/2/9`, `0/6/2`) stay put (partner). `3/0/0/7/2` (rung 1.49, jut not thin/flat) unchanged.
+Reach: 3 of 55 far heads. Caveat as the lane said: on these heads the line is a 0.23 sp pointed tip; the slur-arc refusal rests on the centre-drift
+test, which has little power for a jut that short.
+Pixel check (ink on row vs 0.5 sp off, +-1 px; stub zone): L3 3/0/7/3/1 0.88/0.56, 3/0/7/3/2 0.75/0.44, 3/0/7/3/4 0.88/0.69; L1/L2 on > off in every tile; frame control 1.00/0.07-0.11.
+Tests `test_ledger_far_side_rule_2026_10_04.py` 7: RED against the base module (ImportError), GREEN now; the arc test also failed (6 != 5) before the drift check was added.
