@@ -2955,3 +2955,34 @@ F0, where the box middle is above the oval (the template misfit, IoU 0.49).
 
 Template fits on the far heads (Litolff, shape A_oval; Brahms, C_mean_shape): Brahms 11 of 11 pass (IoU 0.74-0.95,
 offset <= 0.10 sp). Litolff: 21 of 44 miss, mostly the hollow heads (IoU 0.22-0.56) and blob-fused ones.
+
+## lane-ledger-far-edge-crops (2026-10-04): "a ledger touching a far head's FAR edge -- is the head ON it?" (Sean: "Depends, show me crops")
+
+MEASURE + CROPS ONLY; `tools/` untouched (the reader is only called). Script `far_edge_crops.py`; sheet and key
+`out/print/ledgers/far_edge/far_edge_sheet.png`, `far_edge_key.json`. Base `origin/lane-ledger-template-centre` (2f9de5aa).
+Control: fix 1 (`near_edge_ledgers` + `restore_masked_near_edge`) Litolff 29/13/2, Brahms 11/0/0; default 25/14/5, 11/0/0.
+
+**Test.** A far-edge rung = a rung of the bare ink walk (`edge_census.stage0_candidates`, no masking) that the census's
+own `_is_edge_related` calls 'far' (>0.25 sp from the box middle, within [-0.45,+0.35] sp of the far edge), PLUS rungs on
+the head's far half the census calls 'mid' (rm > 0.15 sp, the shipped probe tolerance, and rf <= 0.35). Backed by ink =
+`thin_flat_jut_evidence` ok (other heads/accidentals blanked) or a raw +-1 px ink run >= 0.1 sp beyond the box. Chord
+partner farther out = any detector notehead box within 1.7 sp in x, 0.5-3.0 sp farther out.
+
+**Result: the population is small.** Of 55 far heads, 10 have such a rung (Litolff 9, Brahms 1):
+- (a) reference ON the line, no partner: Litolff 4 (`3/0/7/3/1`, `7/3/2`, `7/3/4`, `0/7/2`); Brahms 0.
+- (b) reference in the space nearer the staff, no partner: 0 in both. Brahms' only candidate (`1/1/8/7/4`, ref 13) is
+  a SLUR crossing the head's bottom, not a ledger (no ink run beside the head) -- the head hangs under a real near-edge ledger.
+- (c) a chord partner sits farther out: Litolff 4 (`0/2/3`, `0/2/9`, `0/5/12`, `0/6/2`); Brahms 0. Reference is ON the
+  line in 2 (2/3, 5/12; answer unchanged by "on it") and NOT on it in 2 (2/9 ref -5, 6/2 ref -4: the rung is the partner's).
+- other: `3/0/9/3/5` (the rung is the head's own outline, no ink beyond it).
+So where nothing sits farther out, the reference says ON in every case that exists (4 of 4) and never in the space.
+"If that rung meant ON" would turn 3 wrong heads right (7/3/1, 7/3/2, 7/3/4: -5 -> -6) and 7/0/2 (-6 -> -2); it would
+turn 2/9 (-6 -> -4) and 6/2 (-6 stays) wrong/unchanged -- both (c), where it would be wrong or no help.
+Caveat: the jut on 7/3/1 and 7/3/2 is only 0.23-0.24 sp (the heads nearly touch their neighbours; stubs are tiny bumps).
+Of the 9 named misses only 3 (7/3/1, 7/3/2, 7/3/4) have a far-half rung; `3/0/7/2/4, 7/4/3, 7/6/1, 7/7/0, 8/6/10,
+3/1/0/6/0` have their popped rung within 0.26 sp of the box middle (through the head, rm -0.26..+0.11): not far-edge.
+
+**Sheet** (7 tiles, 110 px per staff space = x7 Litolff; shuffled; number only): a = tiles 4, 6, 7; c = tiles 1, 2, 3, 5
+(no (b) exists; the (c) tiles are the contrast). Excluded by the pixel rule: `0/7/2` (ink on-row 0.74 vs 0.77 off).
+Pixel numbers (+-1 px, head width +-0.5 sp: on/off 0.5 sp): span 0.69-0.87 vs 0.47-0.64 on all 7; staff-line frame control
+0.97-1.00 vs 0.03-0.11. Weakness: the line is mostly hidden in black heads, so the span test is weak (tile 3 0.69/0.64).

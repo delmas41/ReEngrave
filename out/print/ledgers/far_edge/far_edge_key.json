@@ -1,0 +1,607 @@
+{
+ "tiles": [
+  {
+   "tile": 1,
+   "subject": "glyph/3/0/0/5/12",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "c",
+   "group_meaning": "a chord partner (detector notehead) sits farther out",
+   "reference_pos": [
+    -4
+   ],
+   "round8_fix1_answer": -4,
+   "round8_fix1_verdict": "right",
+   "answer_if_on_arrowed_line": -4,
+   "far_rung": {
+    "y": 415.5,
+    "ordinal": 2,
+    "rn": 0.72,
+    "rf": -0.4,
+    "rm": 0.16,
+    "tier": "far_half",
+    "line_pos": -4
+   },
+   "partner_farther": [
+    {
+     "subject": "glyph/3/0/0/5/7",
+     "dx_sp": -0.26,
+     "dy_sp": 1.53
+    }
+   ],
+   "jut": {
+    "ok": true,
+    "why": "thin_flat_connected_jut",
+    "left_sp": -0.19,
+    "right_sp": 0.76
+   },
+   "raw_run_sp": {
+    "left": -0.12,
+    "right": 0.82
+   },
+   "ref_vs_line": "on",
+   "pixels": {
+    "span_on": 0.7380952380952381,
+    "span_off": 0.47619047619047616,
+    "stub_side": "right",
+    "stub_on": 0.7333333333333333,
+    "stub_off": 0.13333333333333333,
+    "stub_left": [
+     0.0,
+     0.0
+    ],
+    "stub_right": [
+     0.7333333333333333,
+     0.13333333333333333
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.07272727272727272
+   },
+   "arrow": {
+    "tip_page": [
+     1400.875,
+     415.5
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.82,
+    "arrowed_row_page": 415.5,
+    "crop_page": [
+     1318,
+     371,
+     1428,
+     465
+    ],
+    "scale": 7.0
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 7.0,
+   "pixel_ok": true
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/3/0/0/6/2",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "c",
+   "group_meaning": "a chord partner (detector notehead) sits farther out",
+   "reference_pos": [
+    -4
+   ],
+   "round8_fix1_answer": -6,
+   "round8_fix1_verdict": "wrong",
+   "answer_if_on_arrowed_line": -6,
+   "far_rung": {
+    "y": 398.5,
+    "ordinal": 3,
+    "rn": 1.14,
+    "rf": -0.08,
+    "rm": 0.53,
+    "tier": "census",
+    "line_pos": -6
+   },
+   "partner_farther": [
+    {
+     "subject": "glyph/3/0/0/6/1",
+     "dx_sp": -0.06,
+     "dy_sp": 0.79
+    }
+   ],
+   "jut": {
+    "ok": false,
+    "why": "rung_row_not_connected_to_the_head",
+    "left_sp": 0.0,
+    "right_sp": 0.0
+   },
+   "raw_run_sp": {
+    "left": -0.02,
+    "right": 0.94
+   },
+   "ref_vs_line": "other",
+   "pixels": {
+    "span_on": 0.75,
+    "span_off": 0.5,
+    "stub_side": "right",
+    "stub_on": 0.8666666666666667,
+    "stub_off": 0.3333333333333333,
+    "stub_left": [
+     0.0,
+     0.0
+    ],
+    "stub_right": [
+     0.8666666666666667,
+     0.3333333333333333
+    ]
+   },
+   "frame_control": {
+    "on": 0.972972972972973,
+    "off": 0.02702702702702703
+   },
+   "arrow": {
+    "tip_page": [
+     1572.905,
+     398.5
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.94,
+    "arrowed_row_page": 398.5,
+    "crop_page": [
+     1490,
+     359,
+     1601,
+     455
+    ],
+    "scale": 6.936936936936937
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 6.936936936936937,
+   "pixel_ok": true
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/3/0/0/2/9",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "c",
+   "group_meaning": "a chord partner (detector notehead) sits farther out",
+   "reference_pos": [
+    -5
+   ],
+   "round8_fix1_answer": -6,
+   "round8_fix1_verdict": "wrong",
+   "answer_if_on_arrowed_line": -4,
+   "far_rung": {
+    "y": 397.5,
+    "ordinal": 2,
+    "rn": 1.29,
+    "rf": 0.03,
+    "rm": 0.66,
+    "tier": "census",
+    "line_pos": -4
+   },
+   "partner_farther": [
+    {
+     "subject": "glyph/3/0/0/2/4",
+     "dx_sp": -0.02,
+     "dy_sp": 0.9
+    }
+   ],
+   "jut": {
+    "ok": false,
+    "why": "rung_row_not_connected_to_the_head",
+    "left_sp": 0.0,
+    "right_sp": 0.0
+   },
+   "raw_run_sp": {
+    "left": -0.16,
+    "right": 0.75
+   },
+   "ref_vs_line": "other",
+   "pixels": {
+    "span_on": 0.6923076923076923,
+    "span_off": 0.6410256410256411,
+    "stub_side": "right",
+    "stub_on": 0.625,
+    "stub_off": 0.375,
+    "stub_left": [
+     0.0,
+     0.0
+    ],
+    "stub_right": [
+     0.625,
+     0.375
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.03636363636363636
+   },
+   "arrow": {
+    "tip_page": [
+     867.89,
+     397.5
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.75,
+    "arrowed_row_page": 397.5,
+    "crop_page": [
+     787,
+     361,
+     897,
+     455
+    ],
+    "scale": 7.0
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 7.0,
+   "pixel_ok": true
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/3/0/7/3/1",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "a",
+   "group_meaning": "reference says ON the arrowed line",
+   "reference_pos": [
+    -6
+   ],
+   "round8_fix1_answer": -5,
+   "round8_fix1_verdict": "wrong",
+   "answer_if_on_arrowed_line": -6,
+   "far_rung": {
+    "y": 1434.9903846153845,
+    "ordinal": 3,
+    "rn": 0.87,
+    "rf": -0.51,
+    "rm": 0.18,
+    "tier": "far_half",
+    "line_pos": -6
+   },
+   "partner_farther": [],
+   "jut": {
+    "ok": true,
+    "why": "thin_flat_connected_jut",
+    "left_sp": -0.03,
+    "right_sp": 0.23
+   },
+   "raw_run_sp": {
+    "left": 0.03,
+    "right": 0.23
+   },
+   "ref_vs_line": "on",
+   "pixels": {
+    "span_on": 0.8095238095238095,
+    "span_off": 0.47619047619047616,
+    "stub_side": "left",
+    "stub_on": 0.875,
+    "stub_off": 0.5625,
+    "stub_left": [
+     0.875,
+     0.5625
+    ],
+    "stub_right": [
+     0.125,
+     0.0
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.07272727272727272
+   },
+   "arrow": {
+    "tip_page": [
+     1156.89,
+     1434.9903846153845
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.23,
+    "arrowed_row_page": 1434.9903846153845,
+    "crop_page": [
+     1083,
+     1391,
+     1193,
+     1485
+    ],
+    "scale": 7.0
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 7.0,
+   "pixel_ok": true
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/3/0/0/2/3",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "c",
+   "group_meaning": "a chord partner (detector notehead) sits farther out",
+   "reference_pos": [
+    -4
+   ],
+   "round8_fix1_answer": -4,
+   "round8_fix1_verdict": "right",
+   "answer_if_on_arrowed_line": -4,
+   "far_rung": {
+    "y": 412.0,
+    "ordinal": 2,
+    "rn": 0.8,
+    "rf": -0.42,
+    "rm": 0.19,
+    "tier": "far_half",
+    "line_pos": -4
+   },
+   "partner_farther": [
+    {
+     "subject": "glyph/3/0/0/2/1",
+     "dx_sp": 0.02,
+     "dy_sp": 1.1
+    }
+   ],
+   "jut": {
+    "ok": true,
+    "why": "thin_flat_connected_jut",
+    "left_sp": -0.21,
+    "right_sp": 0.7
+   },
+   "raw_run_sp": {
+    "left": -0.14,
+    "right": 0.7
+   },
+   "ref_vs_line": "on",
+   "pixels": {
+    "span_on": 0.7105263157894737,
+    "span_off": 0.47368421052631576,
+    "stub_side": "right",
+    "stub_on": 0.625,
+    "stub_off": 0.1875,
+    "stub_left": [
+     0.0,
+     0.0
+    ],
+    "stub_right": [
+     0.625,
+     0.1875
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.02727272727272727
+   },
+   "arrow": {
+    "tip_page": [
+     954.89,
+     412.0
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.7,
+    "arrowed_row_page": 412.0,
+    "crop_page": [
+     876,
+     368,
+     986,
+     462
+    ],
+    "scale": 7.0
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 7.0,
+   "pixel_ok": true
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/3/0/7/3/2",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "a",
+   "group_meaning": "reference says ON the arrowed line",
+   "reference_pos": [
+    -6
+   ],
+   "round8_fix1_answer": -5,
+   "round8_fix1_verdict": "wrong",
+   "answer_if_on_arrowed_line": -6,
+   "far_rung": {
+    "y": 1435.0121951219512,
+    "ordinal": 3,
+    "rn": 0.9,
+    "rf": -0.42,
+    "rm": 0.24,
+    "tier": "far_half",
+    "line_pos": -6
+   },
+   "partner_farther": [],
+   "jut": {
+    "ok": true,
+    "why": "thin_flat_connected_jut",
+    "left_sp": -0.09,
+    "right_sp": 0.24
+   },
+   "raw_run_sp": {
+    "left": 0.04,
+    "right": 0.24
+   },
+   "ref_vs_line": "on",
+   "pixels": {
+    "span_on": 0.868421052631579,
+    "span_off": 0.5263157894736842,
+    "stub_side": "right",
+    "stub_on": 0.75,
+    "stub_off": 0.4375,
+    "stub_left": [
+     1.0,
+     0.75
+    ],
+    "stub_right": [
+     0.75,
+     0.4375
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.10909090909090909
+   },
+   "arrow": {
+    "tip_page": [
+     1122.89,
+     1435.0121951219512
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.24,
+    "arrowed_row_page": 1435.0121951219512,
+    "crop_page": [
+     1051,
+     1392,
+     1161,
+     1486
+    ],
+    "scale": 7.0
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 7.0,
+   "pixel_ok": true
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/3/0/7/3/4",
+   "doc": "beethoven5-litolff",
+   "page": 3,
+   "group": "a",
+   "group_meaning": "reference says ON the arrowed line",
+   "reference_pos": [
+    -6
+   ],
+   "round8_fix1_answer": -5,
+   "round8_fix1_verdict": "wrong",
+   "answer_if_on_arrowed_line": -6,
+   "far_rung": {
+    "y": 1434.0,
+    "ordinal": 3,
+    "rn": 0.92,
+    "rf": -0.42,
+    "rm": 0.25,
+    "tier": "census",
+    "line_pos": -6
+   },
+   "partner_farther": [],
+   "jut": {
+    "ok": false,
+    "why": "rung_row_not_connected_to_the_head",
+    "left_sp": 0.0,
+    "right_sp": 0.0
+   },
+   "raw_run_sp": {
+    "left": 0.07,
+    "right": 0.21
+   },
+   "ref_vs_line": "on",
+   "pixels": {
+    "span_on": 0.7560975609756098,
+    "span_off": 0.5365853658536586,
+    "stub_side": "right",
+    "stub_on": 0.875,
+    "stub_off": 0.6875,
+    "stub_left": [
+     0.0,
+     0.0
+    ],
+    "stub_right": [
+     0.875,
+     0.6875
+    ]
+   },
+   "frame_control": {
+    "on": 1.0,
+    "off": 0.10810810810810811
+   },
+   "arrow": {
+    "tip_page": [
+     1095.89,
+     1434.0
+    ],
+    "arrow_side": "right",
+    "ink_run_sp": 0.21,
+    "arrowed_row_page": 1434.0,
+    "crop_page": [
+     1023,
+     1391,
+     1134,
+     1485
+    ],
+    "scale": 6.936936936936937
+   },
+   "display_px_per_sp": 110.0,
+   "source_scale": 6.936936936936937,
+   "pixel_ok": true
+  }
+ ],
+ "excluded_after_pixel_check": [
+  {
+   "subject": "glyph/3/0/0/7/2",
+   "group": "a",
+   "reason": "span ink on <= off",
+   "pixels": {
+    "span_on": 0.7435897435897436,
+    "span_off": 0.7692307692307693,
+    "stub_side": "right",
+    "stub_on": 0.3125,
+    "stub_off": 0.25,
+    "stub_left": [
+     0.6,
+     0.6666666666666666
+    ],
+    "stub_right": [
+     0.3125,
+     0.25
+    ]
+   }
+  }
+ ],
+ "not_on_sheet": [
+  {
+   "subject": "glyph/3/0/9/3/5",
+   "group": "o",
+   "truth": [
+    11
+   ],
+   "far_rung": {
+    "y": 1903.0,
+    "ordinal": 3,
+    "rn": 1.17,
+    "rf": -0.23,
+    "rm": 0.47,
+    "tier": "census",
+    "line_pos": 14
+   },
+   "jut": {
+    "ok": false,
+    "why": "rung_row_not_connected_to_the_head",
+    "left_sp": 0.0,
+    "right_sp": 0.0
+   }
+  },
+  {
+   "subject": "glyph/1/1/8/7/4",
+   "group": "x",
+   "truth": [
+    13
+   ],
+   "far_rung": {
+    "y": 6168.0,
+    "ordinal": 3,
+    "rn": 1.04,
+    "rf": -0.12,
+    "rm": 0.46,
+    "tier": "census",
+    "line_pos": 14
+   },
+   "jut": {
+    "ok": false,
+    "why": "rung_row_not_connected_to_the_head",
+    "left_sp": 0.0,
+    "right_sp": 0.0
+   }
+  }
+ ]
+}
