@@ -32,6 +32,12 @@ scorers read an UNDESKEWED render while the gather's boxes/lines are in the desk
 1f100ef2 (E4, Litolff 42/1/1) and on it `lane-through-head-on` e3dfe28d (E5, 43/1/0; Sean: a
 ledger THROUGH the head means it is ON it); not yet in the wiring. Measured on the way: our
 staff lines sit ~1-2 px above their ink (median +1.07 px Litolff, +0.65 Brahms).
+**Later 10-04:** the 38-vs-30 drop is a SCORER artefact (`lane-frame-drop-investigation`): the
+scorers laid deskewed boxes on an undeskewed render, the misplaced boxes let the jut-past-box test
+fire. Fix `lane-jut-from-ink` (jut measured from the head's own ink): correct frame Litolff 31 -> 36/41,
+Brahms 11/11, ±2 px box shift 33-37 (was 28-36). `lane-farhead-all-wired` bcd0ca80 = 2.56 + jut fix +
+chord split + through-head, all wired: 37/41, 11/11. A SECOND overnight re-gather from it,
+`TAG=20261004-farhead-all`, starts when the first finishes -- compare the two (Sean).
 
 **Landed today (READER ONLY, everything keyword-gated and OFF, NOT wired into STAGED, no re-gather):**
 the far-head ledger reader `tools/omr/annotate/ledger_grid.py` (round 8 + fix 1 near-edge ledger +
