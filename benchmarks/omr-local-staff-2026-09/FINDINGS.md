@@ -4112,3 +4112,24 @@ Six reads change: `7/1`, `3/4`, `7/6/2`, `8/6/10` (was abstain), `9/0` go right;
 **Combined with `origin/lane-through-head-on`** (chord split E4 + through-head rule E5): merged cleanly (FINDINGS only conflicted, both kept); both stay OFF and unwired in the reader. The E5 rule's only gain (`8/6/10`) is already read right by the ink jut, so wiring it moved nothing (36/41 either way, Brahms 11/11): not wired (rule 5). E4 (`2/4`, `2/9`) needs a chord-cluster hook in `FarHeadPage.read`, which is not a small step: skipped.
 
 **Caveats.** In-sample (the 41 are the heads the rule was looked at on); the real out-of-sample test is the re-gather. Tests `test_ledger_jut_from_ink_2026_10_04.py` run RED on the unrepaired tree (8 failures: no keyword), green after.
+
+### lane-overnight-20261004-read: the two overnight re-gathers read (2026-10-05)
+
+STAGED path, GATHER+ADJUDICATE only. RUN 1 = `*-whole-20261004-farhead` (branch lane-farhead-wire-staged, reader wired, no fixes); RUN 2 = `*-whole-20261004-farhead-all` (lane-farhead-all-wired `bcd0ca80`: + jut-from-ink + chord split + through-head); BASE = `*-whole-20261001` (newest earlier; geometry only, no far-head rows). Litolff pp.1-16, Brahms pp.0-26. Records read only, via `load_record`. Scripts: `overnight_1004_{truth,extract,report,sheet}.py`; full printout `out/overnight_1004_report.txt`. Heads matched across records by box overlap (IoU >= 0.5, same page).
+
+**1. Reach (neither run is dead; `no_page_shape` = 0 in both).**
+| | far heads | far-head rows | reader abstained (`ledger_not_read`) | NOTEHEAD_POSITION decided |
+|---|---|---|---|---|
+| Litolff RUN1 | 4,197 | 2,833 | 1,364 (32%) | 2,833 |
+| Litolff RUN2 | 4,197 | 2,830 | 1,367 | 2,830 |
+| Brahms RUN1 | 8,966 | 6,790 | 2,176 (24%) | 6,790 |
+| Brahms RUN2 | 8,966 | 6,628 | 2,338 | 6,628 |
+BASE far heads (geometry outside the first space): Litolff 4,363, Brahms 9,105, none read. Page-shape pool: Litolff filled on its first gathered page (p1 already read; 14 pages read with the pooled shape, p14 and p16 with their own); Brahms every page used its own shape. Abstentions are `no_rungs` (Litolff 927/909, Brahms 1,490/1,481) and "every found rung was the head's own outline" (437/458, 686/857). RUN 2 abstains on more heads than RUN 1 (Brahms +162).
+
+**2. RUN 1 vs RUN 2.** Same heads (Litolff 4,197 matched, Brahms 8,966). Both decided: Litolff 2,663, Brahms 6,506; decided position DIFFERS on 234 (Litolff) and 411 (Brahms), on every page; decided to abstained 170 / 284, abstained to decided 167 / 122. Most differences are one step (-3 to -4, 11 to 12): the jut-from-ink change moves a whole population by one, with no reference outside the truth pages to say which way is right.
+
+**3. IN-SAMPLE truth set (not out-of-sample).** Litolff n=44 (`3/0/0/6/2` = -6 per Sean): RUN1 35 right / 5 wrong / 4 undecided; RUN2 35 / 5 / 4; geometry 29 / 15 (same in BASE). Brahms n=11: 11/0/0 in both runs and geometry. RUN 2 gains `3/0/0/2/9`, `3/0/0/7/1`, `3/0/8/6/10`; loses `1/0/3/7/3` (now undecided), `3/0/0/2/4` (reads -6, truth -7, chord split) and `3/0/7/3/1` (-5, truth -6). Net zero. Still wrong in RUN 2: `3/0/0/6/2` (-4), `3/0/7/3/1/2/4` (-5 for -6). Undecided: `1/0/3/7/3`, `3/0/8/1/1`, `3/0/9/3/5`, `3/1/0/9/2`. The wired reader gets 35 of 44 where the scorer-frame benchmark said 40: pooled shape and the gather frame cost 5 heads on the very heads it was written on.
+
+**4. OUT-OF-SAMPLE** (Litolff pp.4-16, Brahms pp.2-26; the truth set's heads are p1/p3 and p1; rules were written on Litolff p1-3, Brahms p0-1). Agreement with geometry is NOT accuracy. RUN 2, Litolff: 3,829 far heads, decided and agreeing with geometry 926, decided and DISAGREEING 1,657, abstained 1,246. Brahms: 8,479; 3,544 agree, 2,683 disagree, 2,252 abstained. RUN 1: Litolff 967 / 1,615 / 1,247; Brahms 3,640 / 2,757 / 2,082. Out of the decided, the reader disagrees with geometry on 64% (Litolff) and 43% (Brahms), against 15/44 and 0/11 in-sample: far more than the in-sample error rate predicts, so one side is wrong on a lot of heads and only the print can say which.
+
+**Crop sheet** `out/print/ledgers/overnight_1004_sample.png` (+ `.json` key): 12 seeded (20261004) RUN 2 disagreements, 6 per document. Replay of the reader on the gather-frame raster reproduced the recorded position on 12 of 12 (control: a non-reproducing head is not drawn; the pooled-shape rebuild gave a slightly different sample count on 5 Litolff pages but the same positions). Drawn lines re-measured against pixel rows: ledger overlays median +0.00 px (n=21), staff overlays median -1.50 px (n=109), the standing known bias (`_darkest_row`, see lane-frame-drop). Open: Sean says which tick is right on tiles 1-12.
