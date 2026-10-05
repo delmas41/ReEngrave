@@ -1,0 +1,27 @@
+stub-zone ink fraction at each drawn line (the 0.6 sp just outside each side of the head's box, best of rows y-1..y+1)
+vs the same zones read 0.5 sp above and below (mean) -- a line off the print reads as low as its shifted copy
+head                 arm     colour          y    on   off
+glyph/3/0/0/2/1      before  orange      431.5  1.00  0.00
+glyph/3/0/0/2/1      before  orange      395.5  1.00  0.39
+glyph/3/0/0/2/1      before  magenta     412.0  1.00  0.22
+glyph/3/0/0/2/1      after   orange      431.5  1.00  0.00
+glyph/3/0/0/2/1      after   orange      412.0  1.00  0.22
+glyph/3/0/0/2/1      after   orange      395.5  1.00  0.39
+glyph/3/0/7/0/7      before  magenta    1472.5  0.70  0.35
+glyph/3/0/7/0/7      after   orange     1472.5  0.70  0.35
+glyph/3/0/8/9/0      before  magenta    1724.0  0.50  0.15
+glyph/3/0/8/9/0      after   orange     1724.0  0.50  0.15
+glyph/3/0/9/3/5      before  magenta    1880.5  0.60  0.11
+glyph/3/0/9/3/5      before  magenta    1893.5  0.10  0.00
+glyph/3/0/9/3/5      before  magenta    1903.0  0.80  0.30
+glyph/3/0/9/3/5      before  magenta    1919.5  0.40  0.60
+glyph/3/0/9/3/5      after   orange     1880.5  0.60  0.11
+glyph/3/0/9/3/5      after   magenta    1893.5  0.10  0.00
+glyph/3/0/9/3/5      after   magenta    1903.0  0.80  0.30
+glyph/3/0/9/3/5      after   magenta    1919.5  0.40  0.60
+glyph/3/1/0/6/0      before  orange     2284.0  0.22  0.00
+glyph/3/1/0/6/0      before  magenta    2268.5  0.33  0.00
+glyph/3/1/0/6/0      before  magenta    2301.0  0.33  0.00
+glyph/3/1/0/6/0      after   orange     2301.0  0.33  0.00
+glyph/3/1/0/6/0      after   orange     2284.0  0.22  0.00
+glyph/3/1/0/6/0      after   magenta    2268.5  0.33  0.00

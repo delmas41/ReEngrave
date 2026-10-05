@@ -187,8 +187,14 @@ def reader_absolute_position(
     page_accidental_boxes: "Sequence[Tuple[str, tuple]] | None" = None,
     four_causes_cd: bool = False,
     head_center_y: Optional[float] = None,
+    near_edge_ledgers: bool = False,
+    restore_masked_near_edge: bool = False,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
+
+    `near_edge_ledgers` (lane-ledger-edge-fix, 2026-10-04): forwarded to
+    `derive_far_head_step` (Part 1: a real ledger touching the head's NEAR
+    edge is counted, not dropped as its outline). False = unchanged.
 
     `four_causes_cd=True` (lane-ledger-r8, DECISIONS 2026-10-01, "four
     causes"): wires causes C and D into this reader --
@@ -232,6 +238,10 @@ def reader_absolute_position(
         head_box_x=(x0, x1),
         collapse_edges_box=(x0, y0, x1, y1) if four_causes_cd else None,
         head_center_y=head_center_y if four_causes_cd else None,
+        # lane-ledger-edge-fix: passed ONLY when on, so the default call is
+        # byte-for-byte the pre-fix call (and works against the base module)
+        **({"restore_masked_staff_side_rungs": True}
+           if restore_masked_near_edge and four_causes_cd else {}),
         # FAULT 2's one-sided rule (`head_box_y`) is NOT wired into this
         # real-data score: measured NET NEGATIVE here (Litolff right
         # 33->31 of 44 when enabled) -- a one-sided "rung" the fixed
@@ -372,6 +382,8 @@ def reader_absolute_position(
         head_box=(x0, y0, x1, y1) if four_causes_cd else None,
         exclude_boxes=others if four_causes_cd else None,
         head_center_y=head_center_y if four_causes_cd else None,
+        **({"near_edge_ledgers": True}
+           if near_edge_ledgers and four_causes_cd else {}),
     )
     if step["offset"] is None:
         return None, step["reason"]

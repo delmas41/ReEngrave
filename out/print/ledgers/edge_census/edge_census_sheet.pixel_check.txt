@@ -1,0 +1,39 @@
+stub-zone ink fraction (0.1..1.1 sp left/right of the box): ON the line [L,R] vs the same zones 0.5 sp OFF it
+glyph/3/0/0/2/1: staff outer line on=1.00 [1.0, 1.0] off=0.00
+    orange kept                        y=   431.5  on 0.56 [0.0, 0.56]  off 0.00
+    orange kept                        y=   395.5  on 0.69 [0.0, 0.69]  off 0.16
+    magenta exclusion_or_cascade       y=   412.0  on 0.56 [0.0, 0.56]  off 0.06
+glyph/3/0/0/6/2: staff outer line on=1.00 [1.0, 1.0] off=0.03
+    orange kept                        y=   434.0  on 0.62 [0.0, 0.62]  off 0.16
+    orange kept                        y=   414.5  on 1.00 [0.0, 1.0]  off 0.44
+    magenta exclusion_or_cascade       y=   398.5  on 0.88 [0.0, 0.88]  off 0.28
+glyph/3/0/7/0/7: staff outer line on=1.00 [1.0, 1.0] off=0.53
+    magenta derive_pop                 y=  1472.5  on 0.69 [0.69, 0.62]  off 0.56
+glyph/3/0/8/9/0: staff outer line on=1.00 [1.0, 1.0] off=0.06
+    magenta derive_pop                 y=  1724.0  on 0.19 [0.12, 0.19]  off 0.09
+glyph/3/0/9/3/5: staff outer line on=1.00 [1.0, 1.0] off=0.25
+    magenta clears_box                 y=  1892.0  on 0.00 [0.0, 0.0]  off 0.03
+    magenta exclusion_or_cascade       y=  1880.5  on 0.25 [0.06, 0.25]  off 0.00
+    magenta exclusion_or_cascade       y=  1903.0  on 0.62 [0.0, 0.62]  off 0.41
+    magenta exclusion_or_cascade       y=  1919.5  on 0.62 [0.0, 0.62]  off 0.66
+glyph/3/0/0/2/9: staff outer line on=1.00 [1.0, 1.0] off=0.00
+    orange kept                        y=   428.5  on 0.44 [0.0, 0.44]  off 0.00
+    orange kept                        y=   415.0  on 0.69 [0.0, 0.69]  off 0.19
+    magenta exclusion_or_cascade       y=   397.5  on 0.69 [0.0, 0.69]  off 0.38
+glyph/1/0/3/7/3: staff outer line on=1.00 [1.0, 1.0] off=0.47
+    orange kept                        y=  1616.5  on 0.50 [0.5, 0.38]  off 0.25
+    magenta clears_box                 y=  1599.0  on 0.25 [0.25, 0.12]  off 0.53
+glyph/1/1/8/7/4: staff outer line on=1.00 [1.0, 1.0] off=0.02
+    orange kept                        y=  6113.0  on 0.37 [0.15, 0.37]  off 0.02
+    orange kept                        y=  6140.0  on 0.37 [0.15, 0.37]  off 0.00
+    magenta derive_pop                 y=  6215.0  on 1.00 [1.0, 1.0]  off 0.00
+    magenta derive_pop                 y=  6182.0  on 1.00 [0.0, 1.0]  off 0.30
+    magenta exclusion_or_cascade       y=  6168.0  on 0.59 [0.59, 0.0]  off 0.43
+glyph/3/0/0/2/3: staff outer line on=1.00 [1.0, 1.0] off=0.00
+    orange kept                        y=   431.5  on 0.62 [0.0, 0.62]  off 0.00
+    orange kept                        y=   412.0  on 0.62 [0.0, 0.62]  off 0.12
+    magenta exclusion_or_cascade       y=   395.5  on 0.75 [0.0, 0.75]  off 0.22
+glyph/3/0/0/5/12: staff outer line on=1.00 [1.0, 1.0] off=0.09
+    orange kept                        y=   433.5  on 0.38 [0.0, 0.38]  off 0.12
+    orange kept                        y=   415.5  on 0.75 [0.0, 0.75]  off 0.09
+    magenta exclusion_or_cascade       y=   396.5  on 0.62 [0.0, 0.62]  off 0.03

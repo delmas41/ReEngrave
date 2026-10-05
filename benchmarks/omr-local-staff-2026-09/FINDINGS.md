@@ -2760,3 +2760,138 @@ does not reproduce: one flips, marginally; the second is a different
 fault. Crops (x3; red = box, green = supplied centre row, orange = rung
 from ink; row positions verified against the page's own ink columns):
 `out/print/ledgers/r8main/`.
+
+## lane-ledger-edge-census (2026-10-04) -- how many round-8 misses are "a ledger touching the head's top/bottom edge, dropped"?
+
+MEASURE ONLY. `tools/` is untouched (`git diff origin/lane-ledger-r8-main -- tools` is empty): the reader is read
+by run-time wrappers in `edge_census.py` (`ledger_grid._rung_row_clears_box`, `collapse_head_edge_rungs_to_middle`,
+`measure_ledger_rungs`, and a replay of `derive_far_head_step`'s loop). Output: `out/edge_census.txt`; sheet:
+`out/print/ledgers/edge_census/edge_census_sheet.png` (+ `.pixel_check.txt`). Path: STAGED far-head rung reader on
+the truth-set records, GATHER+ADJUDICATE only, staff position vs reference.
+
+Controls (can fail): wrappers off 25/14/5 and 11/0/0 (= `score_four_causes_cd.py`); wrappers on + recording the
+same; the replayed derive equals the real one on 55/55 heads. Blanket undos that DO break heads are in the output
+(`excl` +3/-4 Litolff, -1 Brahms; `clears_edge` -1), so the instrument can fail.
+
+Edge-band drop = a dropped candidate within 0.5 sp of the box edge nearest or farthest from the staff and more than
+0.30 sp from the box middle (nearer the middle it is a THROUGH candidate). Band and 0.30 were set after seeing the
+data -- 19 + 36 heads, treat as descriptive. "Undo" = that one drop reversed, the reader's own rules do the rest.
+
+The 19 non-right Litolff heads (undo = the edge-drop undone; `-` = no edge drop):
+
+| head | class | round 8 | undo | ref | cause / dropping rule |
+|---|---|---|---|---|---|
+| 3/0/7/0/7 | E | none | -3 | -3 | edge-of-head pop: the only ledger touches the head's bottom edge |
+| 3/0/8/9/0 | E | none | 11 | 11 | edge-of-head pop: the only ledger touches the head's top edge |
+| 3/0/9/3/5 | E | none | 11 | 11 | other-head masking removed the ledger at the head's top edge (two other bare rows are the head's own rows) |
+| 3/0/0/2/1 | E | -4 | -6 | -6 | other-head masking removed the ledger under it (it runs through the chord's lower head) |
+| 3/0/0/6/2 | E | -6 | -4 | -4 | masking removed a rung at the head's top edge; the fix works only via edge-collapse |
+| 3/0/0/2/9 | E? | -6 | -4 | -5 | masking differs (398 vs 415); real fault is a false jut at the box middle |
+| 1/0/10/7/1 | other | -4 | - | -2 | through-ledger 0.19 sp from the box's near edge (box rides high): counted as the ledger before, then a jut -> one too far |
+| 3/0/0/2/4 | other | -4 | - | -7 | missed middle ledger (2.15 sp gap) |
+| 3/0/0/7/1 | other | -10 | - | -8 | one thick ledger counted twice (5 rungs for 4; dedupe is off) |
+| 3/0/0/7/2 | other | -6 | - | -2 | rungs BEYOND the head counted: derive's through-branch takes the last rung however far out |
+| 3/0/7/2/4 | other | none | - | 10 | through-line not evidenced at the box-middle row |
+| 3/0/7/3/1, /3/2 | other | -5 | - | -6 | same |
+| 3/0/7/6/1, /7/0 | other | 11 | - | 12 | same |
+| 3/0/8/6/10 | other | none | - | 10 | same |
+| 3/0/7/3/4 | other | -5 | - | -6 | through-ledger masked AND not evidenced |
+| 3/0/7/4/3 | other | -3 | - | -4 | through-ledger dropped by clears-box/masking AND not evidenced |
+| 3/1/0/6/0 | other | -3 | - | -6 | first ledger dropped by clears-box AND through-line not evidenced |
+
+Counts: **E 5, E? 1, other 13** of 19. Dropped "as the head's own outline" by `derive_far_head_step` (the case
+Sean named): **2 of 19** (3/0/7/0/7, 3/0/8/9/0), both abstains. The rest of E is other-head masking, not outline.
+Blanket fixes over all 55 heads: undo near-band outline pops -> Litolff 27/14/3 (+2, 0 broken), Brahms 11/0/0;
+that plus re-adding masked near-band rungs ("near_fix") -> Litolff 29/13/2 (+4, 0 broken), Brahms 11/0/0.
+Undoing every edge drop (clears/collapse/pops, near AND far) -> 26/15/3: it breaks 1/0/3/7/3 (a far-edge rung
+correctly dropped). Right heads with an edge-band drop: 2 of 36 (1/0/3/7/3, Brahms 1/1/8/7/4) and BOTH are broken
+by undoing it; two more (3/0/0/2/3, 3/0/0/5/12) break under masking undo just outside the band (0.63/0.82 sp).
+So: the near edge is a real ledger to count, the FAR edge rung must stay dropped.
+
+Bigger bucket, outside the question: 6 of the 13 "other" (3/0/7/2/4, 7/3/1, 7/3/2, 7/6/1, 7/7/0, 8/6/10) are a
+through-ledger the middle-row jut test misses; counting a popped rung within 0.30 sp of the box middle as through
+("pop_mid_through") gives Litolff 31/10/3 (+6, 0 broken), Brahms 11/0/0. Same caveat: tuned on the set it is
+scored on, and the reference pairing is the only judge.
+
+Pixel check (stub zones 0.1..1.1 sp beside the box, line vs same zones 0.5 sp off; `.pixel_check.txt`): the staff
+outer line reads 1.00 in all 10 tiles (off-line 0.00-0.53); drawn rungs on-line/off-line e.g. 3/0/0/2/1 0.56/0.00,
+0.69/0.16, 0.56/0.06; 3/0/0/6/2 0.62/0.16, 1.00/0.44, 0.88/0.28; Brahms 6215 1.00/0.00, 6182 1.00/0.30. Weak or
+failing lines: 3/0/8/9/0 pop 0.19/0.09 (short ledger, mostly inside the head's width), 3/0/7/0/7 0.69/0.56, and the
+head-outline rows of 3/0/9/3/5 (0.00, 0.62/0.66) and 1/0/3/7/3's clears-box row (0.25/0.53) -- those are rows the
+reader rightly rejects.
+
+## lane-ledger-edge-fix 2026-10-04 -- a ledger against a far head's NEAR edge is counted (Sean: "Start the fix")
+
+Branch `lane-ledger-edge-fix` off `origin/lane-ledger-r8-main` (3f0b8605) with the census scripts. STAGED is not
+touched; this is `tools/omr/annotate/ledger_grid.py` (the round-8 reader the benchmarks score), both parts behind
+keyword arguments that default to today's behaviour. Nothing is on in production; nothing is merged to main.
+
+**Control (before any edit):** `score_four_causes_cd.py` -> Litolff 25/14/5, Brahms 11/0/0.
+**Default is bit-identical:** `default_identity_check.py base_ledger_grid.py` swaps the branch base's file in and
+compares `(position, reason)` on all 55 heads: 0 differ.
+
+**The rule, as stated (convention first, constants derived):** a head is ON a ledger only if a thin flat line juts
+out of it at its middle row, touching; otherwise it is in the SPACE beyond the last ledger, and no ledger between
+the staff and the head is ever skipped; ink separated from the head by a white gap is never the head's stub; an
+accidental never touches the head but may merge into the ledger.
+* Part 1 (`derive_far_head_step(near_edge_ledgers=True)`): a rung `derive` would pop ("not evidenced at the middle
+  row, so the head's outline") is instead COUNTED, head in the space beyond it (offset 2n+1), when
+  `near_edge_ledger_evidence` holds: (a) a thin flat CONNECTED jut (`thin_flat_jut_evidence`): the ink at the rung's
+  row, no bridging, joins the box at its middle column and runs past the box by >= `RUNG_STUB_MIN_SPACES`; over the
+  outermost stub length of that jut the vertical run is <= `LEDGER_THICKNESS_MAX_SPACES` and flat within half that;
+  a side that fails (accidental, stem) does not count, one good side is enough; other heads' and accidentals' ink
+  blanked first; AND (b) the head's body hangs on the FAR side only (`head_body_ink_either_side`): over a band as
+  tall as the thin cap, in the box shrunk by the stub length, the far side is >= 50% ink and the staff side holds
+  <= half of the far side's. (b) is what separates "touching the near edge" from "through the head": a head ON the
+  line has body on both sides. A far-edge rung has no body beyond it and is never counted, so it stays dropped.
+  Why not "off the box middle by X": 3/0/7/2/4's through ledger is 0.26 sp from its box middle, 3/0/7/0/7's edge
+  ledger 0.31 sp -- a 0.8 px difference on a box that is 1.45 sp tall; the census's 0.30 cutoff was exactly that
+  fit. An off-middle-by-derived-constant rule (0.15 + half thickness) was tried first and turned 7/2/4 from abstain
+  to WRONG (11, ref 10); the body-side test reads the head's own ink and does not.
+* Part 2 (`measure_ledger_rungs(restore_masked_staff_side_rungs=True)`, needs `exclude_boxes` and the subject's full
+  box): a rung the bare ink offers and the other-head mask lost is restored only if it lies BETWEEN the staff and
+  this head (not past the head's near edge by `TOUCH_TOL_SPACES`, derive's own "between" class) AND the head that
+  masked it is itself printed on it (the same thin-flat-jut test run on THAT head's box, every other box blanked).
+  Convention: the mask exists so a neighbour's ink cannot SUPPLY a stub; it must not delete a ledger the neighbour
+  sits on, which a farther head must still count. Separates the census's pair: 3/0/0/2/1's lost 412 is between it
+  and the staff, masked by 2/3 which sits on it (restored, right); 3/0/0/2/3's lost 395 lies beyond its far edge
+  (not restored), and 3/0/0/5/12 likewise -- neither breaks.
+
+**Arms (`score_edge_fix.py`, four_causes_cd=True; Litolff n=44, Brahms n=11):**
+
+| arm | Litolff right/wrong/abstain | Brahms |
+|---|---|---|
+| default (= control) | 25 / 14 / 5 | 11 / 0 / 0 |
+| Part 1 | 27 / 14 / 3 | 11 / 0 / 0 |
+| Part 1 + 2 | 29 / 13 / 2 | 11 / 0 / 0 |
+
+Every changed head (nothing else moves; **0 right heads broken** in either arm):
+Part 1: 3/0/7/0/7 abstain -> -3 right (ref -3); 3/0/8/9/0 abstain -> 11 right (ref 11).
+Part 2 adds: 3/0/0/2/1 -4 wrong -> -6 right; 3/0/9/3/5 abstain -> 11 right (ref 11); 3/1/0/6/0 -3 wrong -> -5 wrong
+(ref -6; a real ledger between it and the staff is now counted, the head still carries a second fault: first
+ledger dropped by clears-box, through-line not evidenced).
+These equal the census's blanket undos (27/14/3 and 29/13/2) -- but by a rule that does not read the answer.
+
+**Honest limits.** (1) The constants are the module's own (stub length 0.15 sp, thin cap 0.35 sp, flat = half the
+cap) plus two new plain ones (body band = the thin cap; one-sided = a majority, 0.5); nothing was searched, but
+"outermost stub length" (not half the jut) and "body-side, not middle-offset" were chosen after seeing why the
+first versions failed on 3/0/7/2/4, 3/0/7/0/7 and 3/0/0/2/1, so the 55 heads are not an out-of-sample test. The
+margin on the decisive numbers: far/staff ink 1.00/0.35 (0/7, accepted) vs 0.99/0.79 (7/2/4, refused); 8/9/0
+0.89/0.04. (2) 3/0/7/0/7's staff-side ink 0.35 is the closest call. (3) Both fixes are only reached where
+`four_causes_cd` is on; the staged path does not call this reader. (4) The other non-right heads (through-line not
+evidenced, thick ledger counted twice, rungs beyond the head) are untouched.
+
+Tests: `tools/omr/tests/test_ledger_edge_fix_2026_10_04.py` (12): near-edge ledger counted; far-edge rung still
+dropped; a tall accidental-shaped blob is not a ledger; an accidental merged into the ledger does not veto it; a
+white gap means not the head's; a head with body on both sides is not an edge case; masked staff-side ledger
+restored / beyond-head ledger not restored / own-width row not restored; defaults off. Written RED first: against
+the base file the module does not even import the new names (ImportError); in the green run each positive case has
+its default-state control assertion in the same test (e.g. `default["offset"] is None`).
+
+Sheet: `out/print/ledgers/edge_fix/edge_fix_sheet.png` (5 changed heads x before/after/reference, x3, real print at
+600 dpi; red box, orange counted, magenta dashed still dropped with the rule, green margin ticks = nominal
+reference rows) with `.pixel_check.txt`: ink fraction in the 0.6 sp just outside each side of the box, ON the line
+vs the same zones 0.5 sp off it. Every orange line reads on > off (3/0/0/2/1: 1.00 vs 0.00/0.22/0.39; 0/7
+0.70/0.35; 8/9/0 0.50/0.15; 3/5 1880.5 0.60/0.11; 6/0 2284 0.22/0.00, 2301 0.33/0.00). Magenta lines that are
+weak: 3/5 1893.5 (0.10/0.00) and 1919.5 (0.40/0.60, a stem/flag beside it) -- rungs the reader still, rightly,
+does not count.
