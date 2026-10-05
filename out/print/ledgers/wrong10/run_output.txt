@@ -1,0 +1,57 @@
+control default   beethoven5-litolff   {'right': 25, 'wrong': 14, 'abstain': 5} n=44
+control default   brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+control fix1      beethoven5-litolff   {'right': 29, 'wrong': 13, 'abstain': 2} n=44
+control fix1      brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+control fix1_far  beethoven5-litolff   {'right': 32, 'wrong': 10, 'abstain': 2} n=44
+control fix1_far  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+sheet: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ac3f904c8e52fa2b7/out/print/ledgers/wrong10/wrong10_sheet.png (1752, 3888)
+
+#  subject              ours  ref   reason
+ 1 glyph/1/0/10/7/1        -4    -2  -0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+ 2 glyph/3/0/0/2/4         -4    -7  last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)
+ 3 glyph/3/0/0/2/9         -6    -5  -0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+ 4 glyph/3/0/0/6/2         -6    -4  -0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side   [reference wrong per Sean]
+ 5 glyph/3/0/0/7/1        -10    -8  last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)
+ 6 glyph/3/0/0/7/2         -6    -2  last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -3.87 sp)
+ 7 glyph/3/0/7/4/3         -3    -4  0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+ 8 glyph/3/0/7/6/1         11    12  0.50 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+ 9 glyph/3/0/7/7/0         11    12  0.38 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+10 glyph/3/1/0/6/0         -5    -6  0.22 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+
+pixel check (stub zones beside the box, row +-1 px, on vs 0.5 sp off; span = head width +-0.5 sp)
+1 glyph/1/0/10/7/1 frame control on/off: 1.0 0.23
+    {'kind': 'orange', 'y': 2896.5, 'moved_px': 0, 'on_ink': True, 'ridge_on': 35, 'ridge_off': 18, 'near_on': 0.62, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.31, 'stub_off': 0.0, 'span_on': 0.89, 'span_off': 0.58, 'stub_side': 'left'}
+2 glyph/3/0/0/2/4 frame control on/off: 1.0 0.04
+    {'kind': 'orange', 'y': 428.5, 'moved_px': 0, 'on_ink': True, 'ridge_on': 29, 'ridge_off': 4, 'near_on': 0.88, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.44, 'stub_off': 0.0, 'span_on': 0.72, 'span_off': 0.1, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 395.0, 'moved_px': 0, 'on_ink': False, 'ridge_on': 30, 'ridge_off': 23, 'near_on': 1.0, 'near_off': 0.88, 'near_side': 'right', 'stub_on': 0.69, 'stub_off': 0.44, 'span_on': 0.65, 'span_off': 0.6, 'stub_side': 'right'}
+3 glyph/3/0/0/2/9 frame control on/off: 1.0 0.04
+    {'kind': 'orange', 'y': 428.5, 'moved_px': 0, 'on_ink': True, 'ridge_on': 29, 'ridge_off': 4, 'near_on': 0.75, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.38, 'stub_off': 0.0, 'span_on': 0.74, 'span_off': 0.1, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 415.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 29, 'ridge_off': 23, 'near_on': 1.0, 'near_off': 0.62, 'near_side': 'right', 'stub_on': 0.62, 'stub_off': 0.31, 'span_on': 0.64, 'span_off': 0.62, 'stub_side': 'right'}
+    {'kind': 'magenta', 'y': 397.5, 'moved_px': 0, 'on_ink': False, 'label': "thrown: other note's ink", 'ridge_on': 30, 'ridge_off': 23, 'near_on': 1.0, 'near_off': 0.75, 'near_side': 'right', 'stub_on': 0.62, 'stub_off': 0.38, 'span_on': 0.69, 'span_off': 0.64, 'stub_side': 'right'}
+4 glyph/3/0/0/6/2 frame control on/off: 0.97 0.03
+    {'kind': 'orange', 'y': 434.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 29, 'ridge_off': 5, 'near_on': 1.0, 'near_off': 0.38, 'near_side': 'right', 'stub_on': 0.6, 'stub_off': 0.2, 'span_on': 0.72, 'span_off': 0.53, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 414.5, 'moved_px': 0, 'on_ink': True, 'ridge_on': 35, 'ridge_off': 17, 'near_on': 1.0, 'near_off': 0.88, 'near_side': 'right', 'stub_on': 1.0, 'stub_off': 0.47, 'span_on': 0.72, 'span_off': 0.61, 'stub_side': 'right'}
+    {'kind': 'magenta', 'y': 398.5, 'moved_px': 0, 'on_ink': True, 'label': "thrown: other note's ink", 'ridge_on': 34, 'ridge_off': 18, 'near_on': 1.0, 'near_off': 0.62, 'near_side': 'right', 'stub_on': 0.87, 'stub_off': 0.33, 'span_on': 0.75, 'span_off': 0.5, 'stub_side': 'right'}
+5 glyph/3/0/0/7/1 frame control on/off: 1.0 0.1
+    {'kind': 'orange', 'y': 434.0, 'moved_px': 3, 'on_ink': True, 'ridge_on': 25, 'ridge_off': 25, 'near_on': 1.0, 'near_off': 0.12, 'near_side': 'left', 'stub_on': 0.56, 'stub_off': 0.12, 'span_on': 0.58, 'span_off': 0.63, 'stub_side': 'left'}
+    {'kind': 'orange', 'y': 423.5, 'moved_px': -2, 'on_ink': True, 'ridge_on': 30, 'ridge_off': 30, 'near_on': 1.0, 'near_off': 0.12, 'near_side': 'left', 'stub_on': 0.56, 'stub_off': 0.19, 'span_on': 0.74, 'span_off': 0.63, 'stub_side': 'left'}
+    {'kind': 'orange', 'y': 411.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 26, 'ridge_off': 6, 'near_on': 0.88, 'near_off': 0.12, 'near_side': 'right', 'stub_on': 0.44, 'stub_off': 0.06, 'span_on': 0.66, 'span_off': 0.5, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 396.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 28, 'ridge_off': 4, 'near_on': 0.75, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.38, 'stub_off': 0.0, 'span_on': 0.74, 'span_off': 0.45, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 376.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 42, 'ridge_off': 30, 'near_on': 1.0, 'near_off': 0.12, 'near_side': 'right', 'stub_on': 0.5, 'stub_off': 0.06, 'span_on': 1.0, 'span_off': 0.76, 'stub_side': 'right'}
+6 glyph/3/0/0/7/2 frame control on/off: 1.0 0.1
+    {'kind': 'orange', 'y': 424.0, 'moved_px': -3, 'on_ink': True, 'ridge_on': 28, 'ridge_off': 35, 'near_on': 1.0, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.67, 'stub_off': 0.13, 'span_on': 0.62, 'span_off': 0.67, 'stub_side': 'left'}
+    {'kind': 'orange', 'y': 396.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 28, 'ridge_off': 4, 'near_on': 0.5, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.25, 'stub_off': 0.0, 'span_on': 0.72, 'span_off': 0.41, 'stub_side': 'right'}
+    {'kind': 'orange', 'y': 376.5, 'moved_px': 0, 'on_ink': True, 'ridge_on': 42, 'ridge_off': 30, 'near_on': 0.75, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.38, 'stub_off': 0.0, 'span_on': 1.0, 'span_off': 0.72, 'stub_side': 'right'}
+7 glyph/3/0/7/4/3 frame control on/off: 1.0 0.31
+    {'kind': 'orange', 'y': 1470.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 38, 'ridge_off': 17, 'near_on': 0.12, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.06, 'stub_off': 0.0, 'span_on': 0.82, 'span_off': 0.42, 'stub_side': 'left'}
+    {'kind': 'magenta', 'y': 1457.0, 'moved_px': -5, 'on_ink': True, 'label': 'thrown: not clear past the head', 'ridge_on': 41, 'ridge_off': 30, 'near_on': 1.0, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.75, 'stub_off': 0.5, 'span_on': 0.88, 'span_off': 0.45, 'stub_side': 'right'}
+8 glyph/3/0/7/6/1 frame control on/off: 1.0 0.2
+    {'kind': 'orange', 'y': 1566.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 48, 'ridge_off': 14, 'near_on': 0.38, 'near_off': 0.0, 'near_side': 'right', 'stub_on': 0.67, 'stub_off': 0.47, 'span_on': 0.76, 'span_off': 0.29, 'stub_side': 'left'}
+    {'kind': 'magenta', 'y': 1583.5, 'moved_px': 0, 'on_ink': False, 'label': 'thrown: lies past the head', 'ridge_on': 48, 'ridge_off': 34, 'near_on': 0.43, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.73, 'stub_off': 0.47, 'span_on': 0.79, 'span_off': 0.45, 'stub_side': 'left'}
+9 glyph/3/0/7/7/0 frame control on/off: 1.0 0.14
+    {'kind': 'orange', 'y': 1567.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 33, 'ridge_off': 16, 'near_on': 0.38, 'near_off': 0.12, 'near_side': 'right', 'stub_on': 0.19, 'stub_off': 0.06, 'span_on': 0.72, 'span_off': 0.47, 'stub_side': 'right'}
+    {'kind': 'magenta', 'y': 1580.0, 'moved_px': 0, 'on_ink': True, 'label': 'thrown: lies past the head', 'ridge_on': 39, 'ridge_off': 33, 'near_on': 0.75, 'near_off': 0.12, 'near_side': 'right', 'stub_on': 0.38, 'stub_off': 0.06, 'span_on': 0.82, 'span_off': 0.57, 'stub_side': 'right'}
+10 glyph/3/1/0/6/0 frame control on/off: 1.0 0.0
+    {'kind': 'orange', 'y': 2301.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 30, 'ridge_off': 7, 'near_on': 0.25, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.38, 'stub_off': 0.0, 'span_on': 0.65, 'span_off': 0.0, 'stub_side': 'left'}
+    {'kind': 'orange', 'y': 2284.0, 'moved_px': 0, 'on_ink': True, 'ridge_on': 27, 'ridge_off': 8, 'near_on': 0.12, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.06, 'stub_off': 0.0, 'span_on': 0.68, 'span_off': 0.45, 'stub_side': 'left'}
+    {'kind': 'magenta', 'y': 2268.5, 'moved_px': 0, 'on_ink': False, 'label': 'thrown: lies past the head', 'ridge_on': 30, 'ridge_off': 21, 'near_on': 0.25, 'near_off': 0.0, 'near_side': 'left', 'stub_on': 0.12, 'stub_off': 0.0, 'span_on': 0.75, 'span_off': 0.45, 'stub_side': 'left'}
