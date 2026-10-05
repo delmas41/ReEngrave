@@ -6,6 +6,8 @@ from tools.omr.annotate import ledger_grid as lg
 
 
 def _spy(monkeypatch):
+    # these two tests pin the run-2 (count-outward) path's wiring: select it
+    monkeypatch.setitem(FH.READER_KEYWORDS, "note_first", False)
     seen = {}
     real = lg.derive_far_head_step
 

@@ -43,7 +43,11 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     far_side_ledger=True, drop_beyond_head=True,
     drop_same_ink_other_staff=True,
     # lane-through-head-on (E5): a ledger through the head means the head is on it
-    through_head_on_rung=True)
+    through_head_on_rung=True,
+    # lane-farhead-note-first (2026-10-05, Sean's order): the note's own line
+    # first, then the count to it, which must fit the gap. False = the run-2
+    # reader (count outward from the staff), bit-identical.
+    note_first=True)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -455,11 +459,13 @@ class FarHeadPage:
                 box_source = "chord_split"
                 # the blob's other head is this head's own ink: not blanked
                 nh = [(s, b) for (s, b) in self.nh if s not in split["subjects"]]
+        detail: Dict[str, Any] = {}
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
-            chord_split_rungs_y=rungs)
+            chord_split_rungs_y=rungs, detail_out=detail)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
+                    box_used=tuple(use), lines_used=list(lines), detail=detail,
                     chord_split=None if split is None else dict(
                         partner=split["subjects"][1:], rung_y=split["rung_y"],
                         source=split["source"]))
@@ -547,19 +553,22 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            page_notehead_boxes: Sequence[Tuple[str, tuple]],
                            page_accidental_boxes: Sequence[Tuple[str, tuple]],
                            chord_split_rungs_y: Optional[Sequence[float]] = None,
+                           detail_out: Optional[Dict[str, Any]] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
-    printed ledgers. `lines` are the staff lines AT the head's x."""
+    printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
+    when given, receives the note-first reader's line / count (`note_first`)."""
     with lg.exclusion_rules(connected=EXCLUSION_RULES["connected"],
                             own_box=None,
                             one_sided=EXCLUSION_RULES["one_sided"],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
-                     page_accidental_boxes, chord_split_rungs_y)
+                     page_accidental_boxes, chord_split_rungs_y, detail_out)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
-          page_accidental_boxes, chord_split_rungs_y=None) -> Tuple[Optional[int], str]:
+          page_accidental_boxes, chord_split_rungs_y=None,
+          detail_out=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -624,6 +633,20 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             stack_reason = ("ink_confirmed_by_third" if res["confirmed"]
                             else "implied_by_third")
             break
+
+    if READER_KEYWORDS.get("note_first"):
+        nf = lg.derive_note_first_step(
+            gray, (x0, y0, x1, y1), edge, sign, spacing, items,
+            exclude_boxes=others,
+            far_side_partner_boxes=[b for (s_, b) in page_notehead_boxes
+                                    if s_ != subject])
+        if detail_out is not None:
+            detail_out["note_first"] = nf
+            detail_out["edge_y"] = edge
+        if nf["offset"] is None:
+            return None, nf["reason"]
+        tag = f" ({stack_reason})" if stack_reason is not None else ""
+        return edge_pos + int(sign * nf["offset"]), nf["reason"] + tag
 
     step = lg.derive_far_head_step(
         items, edge, sign, near_y, spacing,

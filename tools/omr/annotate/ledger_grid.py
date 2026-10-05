@@ -1813,10 +1813,35 @@ def _jut_from_head_ink(
     left_jut = thick[0] - s
     right_jut = e - (thick[-1] + 1)
     need = RUNG_STUB_MIN_SPACES * spacing
+    # note-first reader: WHERE the jutting line is (page y). The vertical run
+    # through the middle band, centred, on every column of a jut that reaches
+    # `need`; the median over those columns. Purely additive: no other caller
+    # reads it.
+    centres = []
+    for lo, hi, jut in ((s, thick[0], left_jut), (thick[-1] + 1, e, right_jut)):
+        if jut < need:
+            continue
+        for c in range(lo, hi):
+            col = ink[:, c]
+            r = None
+            for rr in range(b0, b1):
+                if col[rr]:
+                    r = rr
+                    break
+            if r is None:
+                continue
+            a = r
+            while a - 1 >= 0 and col[a - 1]:
+                a -= 1
+            z = r
+            while z + 1 < len(col) and col[z + 1]:
+                z += 1
+            centres.append(ty0 + (a + z) / 2.0)
+    line_y = float(np.median(centres)) if centres else None
     return dict(ok=bool(left_jut >= need or right_jut >= need),
                 why="jut_from_ink", left_jut=left_jut, right_jut=right_jut,
                 head_x=(cx0 + thick[0], cx0 + thick[-1] + 1),
-                run_x=(cx0 + s, cx0 + e))
+                run_x=(cx0 + s, cx0 + e), line_y=line_y)
 
 
 # Rows kept around the head's middle for `_jut_from_head_ink`: the head is
@@ -3026,3 +3051,226 @@ def split_chord_blob(
                 rung_y=rung_y, rung_confirmed=confirmed, rung_source=source,
                 rungs_y=juts,
                 extent_px=ext["extent_px"], extent_sp=extent_sp)
+
+
+
+# ---------------------------------------------------------------------------
+# NOTE FIRST (lane-farhead-note-first, 2026-10-05; Sean, DECISIONS 2026-10-05:
+# *"the lines that it sits on or that run through it can only be either on the
+# edge of the box or running through the box. There can't be a line that is far
+# away from the box itself"*). The order, for a head outside its staff:
+#   1. the staff's edge (the caller's `edge_y`, measured locally at the head's x);
+#   2. the NOTE first: a thin line through its middle (the head is ON it), or a
+#      thin line on the box's STAFF-SIDE edge with the head hanging beyond it
+#      (the head is in the SPACE one step beyond), or a thin line on its FAR
+#      side with no note farther out (ON it). None of those can be seen ->
+#      ABSTAIN with a reason, never a guess;
+#   3. COUNT the ledgers strictly BETWEEN the staff edge and that line, by a
+#      local ink read (`rungs_y`, plus a relaxed look into any empty place a gap
+#      has room for); the chain edge -> ledgers -> the note's line must be evenly
+#      spaced, so that no gap holds room for a different count than found. A
+#      disagreement abstains (`count_does_not_fit`);
+#   4. the position is the edge + the ledgers counted (+1 for the space beyond).
+# By construction the line the answer rests on is AT the box.
+# ---------------------------------------------------------------------------
+#: a ledger counts as "on the staff-side edge" of the box when it lies within
+#: this many spaces of that edge: negative = toward the staff, positive =
+#: inside the box (the through-head rule's own band, `THROUGH_HEAD_NEAR_BAND_
+#: SPACES`, with 0.05 more toward the staff for a hand-drawn drift).
+NOTE_LINE_NEAR_BAND_SPACES = (-0.40, 0.60)
+#: a walk rung lies "through the box" when it is within this many spaces of the
+#: box's MIDDLE (`MIDDLE_ROW_TOL_SPACES`'s own 0.15 widened by a ledger's half
+#: thickness and the box-placement slack; a ledger on the box EDGE is ~0.55 sp
+#: from the middle, well outside it)
+NOTE_LINE_MIDDLE_BAND_SPACES = 0.30
+#: consecutive ledgers (and the staff edge to the first) are one PITCH apart.
+#: The pitch is the ledgers' own (Litolff prints ~1.1x the staff spacing, up to
+#: ~1.3 hand-drawn), so the count is judged by every GAP of the chain, never by
+#: the total against the staff spacing: a gap above the max holds room for one
+#: more ledger (look for it, else abstain); a gap below the min is two marks of
+#: one ledger.
+NOTE_GAP_MAX_SPACES = 1.5
+NOTE_GAP_MIN_SPACES = 0.7
+#: a found rung is "between" only when it is at least this far from the note's
+#: line and from the staff edge
+NOTE_BETWEEN_MIN_SPACES = 0.5
+
+
+NOTE_LINE_REFINE_MAX_SPACES = 0.30   # how far the flank ink may move a line's row
+NOTE_LINE_FLANK_INK_FRACTION = 0.6
+
+
+def refine_line_on_flanks(img_gray, y, head_box, spacing):
+    """The row of the line at `y` read where the head does not hide it: the
+    columns flanking the box (0.1..1.0 sp out, each side), the nearest run of
+    rows (within `NOTE_LINE_REFINE_MAX_SPACES`) whose ink fraction there is
+    >= `NOTE_LINE_FLANK_INK_FRACTION`. The walk's rung row is a band peak over
+    columns that include the head's own ink, which can sit a few px off the
+    line. Returns `(y, True)` refined, `(y, False)` where no ink flanks the head
+    at that row (the line is hidden behind it: the walk's row stands)."""
+    h, w = img_gray.shape
+    m = int(round(NOTE_LINE_REFINE_MAX_SPACES * spacing))
+    cands = []
+    for a, b in ((head_box[0] - 1.0 * spacing, head_box[0] - 0.1 * spacing),
+                 (head_box[2] + 0.1 * spacing, head_box[2] + 1.0 * spacing)):
+        a, b = max(0, int(a)), min(w, int(b))
+        if b <= a:
+            continue
+        band = img_gray[max(0, int(y) - m - 2):min(h, int(y) + m + 3), a:b]
+        if band.size == 0:
+            continue
+        thr = _otsu_threshold(band)
+        r0 = max(0, int(y) - m - 2)
+        rows = [r for r in range(int(y) - m, int(y) + m + 1) if 0 <= r < h
+                and float((img_gray[r, a:b] <= thr).mean()) >= NOTE_LINE_FLANK_INK_FRACTION]
+        if not rows:
+            continue
+        runs, cur = [], [rows[0]]
+        for r in rows[1:]:
+            if r == cur[-1] + 1:
+                cur.append(r)
+            else:
+                runs.append(cur)
+                cur = [r]
+        runs.append(cur)
+        best = min(runs, key=lambda c: abs(float(np.mean(c)) - y))
+        # a thin line only: a thick run is a head's tail or a beam, not a ledger
+        if len(best) <= LEDGER_THICKNESS_MAX_SPACES * spacing + 1:
+            cands.append(float(np.mean(best)))
+    if not cands:
+        return float(y), False
+    return float(np.mean(cands)), True
+
+
+def find_note_line(
+    img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
+    edge_y: float, sign: float, spacing: float,
+    rungs_y: "list[float]",
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    far_side_partner_boxes: "list | None" = None,
+) -> dict:
+    """Step 2: the line the NOTE itself rests on, at its box. Returns
+    `{ok, kind: 'on'|'space', y, how}` or `{ok: False, reason}`."""
+    x0, y0, x1, y1 = head_box
+    jf = _jut_from_head_ink(img_gray, tuple(head_box), spacing, exclude_boxes)
+    if jf["ok"] and jf.get("line_y") is not None:
+        return dict(ok=True, kind="on", y=float(jf["line_y"]), how="through_the_middle")
+    mid_y = (y0 + y1) / 2.0
+    mids = [r for r in rungs_y
+            if abs(r - mid_y) <= NOTE_LINE_MIDDLE_BAND_SPACES * spacing]
+    if mids:
+        # a ledger the walk found (thin, a full span, longer than the head)
+        # running through the box's middle: the head is ON it, whether or not a
+        # jut shows past a head that hides it
+        return dict(ok=True, kind="on",
+                    y=float(min(mids, key=lambda r: abs(r - mid_y))),
+                    how="through_the_box_middle")
+    fs = far_side_ledger_evidence(img_gray, tuple(head_box), sign, spacing,
+                                  edge_y, far_side_partner_boxes, exclude_boxes)
+    if fs["ok"]:
+        return dict(ok=True, kind="on", y=float(fs["y"]), how="far_side")
+    near_y = y1 if sign < 0 else y0
+    lo, hi = NOTE_LINE_NEAR_BAND_SPACES
+    cand = []
+    for r in rungs_y:
+        rn = sign * (r - near_y) / spacing      # >0: inside the box
+        if lo <= rn <= hi:
+            cand.append((rn, r))
+    if not cand:
+        return dict(ok=False, reason="no_line_at_the_note_box" if rungs_y
+                    else "no_rungs")
+    # outermost first, as the old walk popped inward
+    for rn, r in sorted(cand, key=lambda t: -sign * t[1]):
+        if rn <= TOUCH_TOL_SPACES:
+            # the walk's own ledger (thin band, a full span past the head) sits AT
+            # the box's staff-side edge, not inside the box: nothing of the head
+            # could be mistaken for it -- the head hangs in the space beyond it
+            return dict(ok=True, kind="space", y=float(r), how="staff_side_edge")
+        if near_edge_ledger_evidence(img_gray, r, tuple(head_box), sign, spacing,
+                                     exclude_boxes)["ok"]:
+            return dict(ok=True, kind="space", y=float(r), how="staff_side_edge_ink")
+        if through_head_on_rung_evidence(img_gray, r, tuple(head_box), sign,
+                                         spacing, exclude_boxes)["ok"]:
+            return dict(ok=True, kind="on", y=float(r), how="through_the_head")
+    return dict(ok=False, reason="line_at_the_box_not_a_ledger_for_this_head")
+
+
+def count_ledgers_between(
+    img_gray: "np.ndarray", edge_y: float, sign: float, spacing: float,
+    line_y: float, rungs_y: "list[float]", x_center: float,
+    head_box_x: "tuple[float, float] | None" = None,
+) -> dict:
+    """Step 3: the ledgers strictly between the staff edge and `line_y`.
+    `rungs_y` is the local ink read (the walk's rungs). The chain
+    [edge, ledgers..., line] must be evenly spaced by the ledgers' own pitch:
+    a gap that holds room for another ledger gets a relaxed look
+    (`find_rung_in_gap`, a place to LOOK, never a guess) and, where nothing is
+    printed there, the count does not fit. Returns `{k, between, fits, why,
+    gaps, d}`; `k` = ledgers between + the line itself."""
+    d = sign * (line_y - edge_y) / spacing
+    if d < NOTE_GAP_MIN_SPACES:
+        return dict(k=0, between=[], fits=False, gaps=[], d=d,
+                    why="line_not_beyond_the_staff_edge")
+    m = NOTE_BETWEEN_MIN_SPACES * spacing
+    between: list[float] = []
+    for r in sorted(rungs_y, key=lambda v: sign * v):
+        if sign * (r - edge_y) <= m or sign * (line_y - r) < m:
+            continue
+        if between and abs(r - between[-1]) < m:
+            continue
+        between.append(float(r))
+
+    def chain_gaps():
+        chain = [edge_y] + between + [line_y]
+        return chain, [sign * (b - a) / spacing for a, b in zip(chain, chain[1:])]
+
+    for _ in range(8):
+        chain, gaps = chain_gaps()
+        wide = [i for i, g in enumerate(gaps) if g > NOTE_GAP_MAX_SPACES]
+        if not wide:
+            break
+        a, b = chain[wide[0]], chain[wide[0] + 1]
+        got = find_rung_in_gap(img_gray, min(a, b) + 0.45 * spacing,
+                               max(a, b) - 0.45 * spacing, x_center, spacing,
+                               head_box_x)
+        if got is None:
+            break
+        between.append(float(got))
+        between.sort(key=lambda v: sign * v)
+    chain, gaps = chain_gaps()
+    fits = all(NOTE_GAP_MIN_SPACES <= g <= NOTE_GAP_MAX_SPACES for g in gaps)
+    why = "ok" if fits else (
+        "count_does_not_fit (gaps " + ", ".join(f"{g:.2f}" for g in gaps)
+        + " sp: a gap holds room for a different count than found)")
+    return dict(k=len(between) + 1, between=between, fits=fits, why=why, d=d,
+                gaps=gaps)
+
+
+def derive_note_first_step(
+    img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
+    edge_y: float, sign: float, spacing: float, rungs_y: "list[float]",
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    far_side_partner_boxes: "list | None" = None,
+) -> dict:
+    """Sean's 2026-10-05 order (see the block comment). Returns `{offset, kind,
+    reason, line_y, how, between, k, gaps}`; `offset` (half-steps out from the
+    edge) is None where it abstains, `reason` then names why."""
+    ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
+                        exclude_boxes, far_side_partner_boxes)
+    if not ln["ok"]:
+        return dict(offset=None, kind=None, reason=ln["reason"], line_y=None,
+                    how=None, between=[], k=None, gaps=[])
+    cx = (head_box[0] + head_box[2]) / 2.0
+    ln["y"], ln["seen_on_flanks"] = refine_line_on_flanks(
+        img_gray, ln["y"], head_box, spacing)
+    ct = count_ledgers_between(img_gray, edge_y, sign, spacing, ln["y"], rungs_y,
+                               cx, (head_box[0], head_box[2]))
+    base = dict(kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
+                between=ct["between"], k=ct["k"], gaps=ct["gaps"])
+    if not ct["fits"]:
+        return dict(offset=None, reason=ct["why"], **base)
+    off = 2 * ct["k"] + (1 if ln["kind"] == "space" else 0)
+    where = "on" if ln["kind"] == "on" else "in the space beyond"
+    return dict(offset=off, reason=(
+        f"{where} ledger {ct['k']} ({ln['how']}; {len(ct['between'])} between "
+        f"it and the staff, {ct['d']:.2f} sp out)"), **base)
