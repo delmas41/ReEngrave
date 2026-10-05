@@ -1,0 +1,102 @@
+====================================================================================================
+beethoven5-litolff RUN1: far heads 4197; replay of the reader: {'mismatch': 415, 'repro': 2418}
+  CONTROL truth heads matched 44/44; with measured rows (replay reproduced) 34, on the grid 10
+  [all matched] n=44: references PASS 39/44 (88.6%); shifted -1 FLAGGED 40/44 (90.9%), +1 FLAGGED 37/44 (84.1%), both +-1 flagged 33/44 (75.0%), -2 44/44 (100.0%), +2 44/44 (100.0%)
+     references that FAIL: [('glyph/1/0/10/7/1', -2, 'measured', 1, ['measured']), ('glyph/3/0/0/6/2', -6, 'grid', 1, ['extrapolated']), ('glyph/3/0/0/7/1', -8, 'grid', 1, ['extrapolated']), ('glyph/3/0/9/1/1', 13, 'grid', None, ['extrapolated']), ('glyph/3/0/8/6/12', 10, 'grid', 1, ['extrapolated'])]
+  [measured-rows only] n=34: references PASS 33/34 (97.1%); shifted -1 FLAGGED 31/34 (91.2%), +1 FLAGGED 30/34 (88.2%), both +-1 flagged 27/34 (79.4%), -2 34/34 (100.0%), +2 34/34 (100.0%)
+     references that FAIL: [('glyph/1/0/10/7/1', -2, 'measured', 1, ['measured'])]
+  truth cross-tab (answer right/wrong x ON/OFF): {('reader right', 'OFF'): 1, ('geo wrong', 'ON'): 7, ('reader right', 'ON'): 34, ('geo wrong', 'OFF'): 8, ('geo right', 'ON'): 29, ('reader wrong', 'OFF'): 5, 'reader undecided': 4}
+  decided far heads 2833; replay reproduced the record on 2418 (85.4%); census below is on those 2418
+  READER   ON 1470/2418 (60.8%)   OFF 948/2418 (39.2%)   steps off {'1': 140, '2': 166, '3+': 475, 'none': 167}
+  GEOMETRY ON 1395/2418 (57.7%)   OFF 1023/2418 (42.3%)   steps off {'1': 755, '2': 82, '3+': 35, 'none': 151}
+  both ON 1055  only reader ON 415  only geometry ON 340  neither 608
+  reader named line is: {'measured/staff': 1829, 'interpolated': 573, 'extrapolated': 16}
+     reader lines measured/staff: 1829 heads, ON 1464/1829 (80.0%)
+     reader lines interpolated: 573 heads, ON 1/573 (0.2%)
+     reader lines extrapolated: 16 heads, ON 5/16 (31.2%)
+  geometry named line is: {'measured/staff': 1581, 'interpolated': 326, 'extrapolated': 511}
+     geometry lines measured/staff: 1581 heads, ON 1067/1581 (67.5%)
+     geometry lines interpolated: 326 heads, ON 101/326 (31.0%)
+     geometry lines extrapolated: 511 heads, ON 227/511 (44.4%)
+    reader==geometry: 940 heads, reader ON 887/940 (94.4%)
+    reader!=geometry: 1478 heads, reader ON 583/1478 (39.4%)
+    box_source detector: 1391 heads, reader ON 716/1391 (51.5%), geometry ON 700/1391 (50.3%)
+    box_source standard: 1027 heads, reader ON 754/1027 (73.4%), geometry ON 695/1027 (67.7%)
+  SECONDARY (box = the box the reader's step rule used): reader ON 1471/2418 (60.8%)  steps off {'1': 136, '2': 163, '3+': 478, 'none': 170}
+====================================================================================================
+beethoven5-litolff RUN2: far heads 4197; replay of the reader: {'repro': 2818, 'mismatch': 12}
+  CONTROL truth heads matched 44/44; with measured rows (replay reproduced) 40, on the grid 4
+  [all matched] n=44: references PASS 41/44 (93.2%); shifted -1 FLAGGED 41/44 (93.2%), +1 FLAGGED 38/44 (86.4%), both +-1 flagged 35/44 (79.5%), -2 44/44 (100.0%), +2 44/44 (100.0%)
+     references that FAIL: [('glyph/1/0/10/7/1', -2, 'measured', 1, ['measured']), ('glyph/3/0/0/2/4', -7, 'measured', None, ['measured']), ('glyph/3/0/9/1/1', 13, 'grid', None, ['extrapolated'])]
+  [measured-rows only] n=40: references PASS 38/40 (95.0%); shifted -1 FLAGGED 37/40 (92.5%), +1 FLAGGED 35/40 (87.5%), both +-1 flagged 32/40 (80.0%), -2 40/40 (100.0%), +2 40/40 (100.0%)
+     references that FAIL: [('glyph/1/0/10/7/1', -2, 'measured', 1, ['measured']), ('glyph/3/0/0/2/4', -7, 'measured', None, ['measured'])]
+  truth cross-tab (answer right/wrong x ON/OFF): {('reader right', 'OFF'): 1, ('geo wrong', 'ON'): 5, ('reader right', 'ON'): 34, ('geo wrong', 'OFF'): 10, 'reader undecided': 4, ('reader wrong', 'OFF'): 5, ('geo right', 'OFF'): 1, ('geo right', 'ON'): 28}
+  decided far heads 2830; replay reproduced the record on 2818 (99.6%); census below is on those 2818
+  READER   ON 1612/2818 (57.2%)   OFF 1206/2818 (42.8%)   steps off {'1': 207, '2': 199, '3+': 587, 'none': 213}
+  GEOMETRY ON 1589/2818 (56.4%)   OFF 1229/2818 (43.6%)   steps off {'1': 906, '2': 94, '3+': 42, 'none': 187}
+  both ON 1139  only reader ON 473  only geometry ON 450  neither 756
+  reader named line is: {'measured/staff': 2051, 'interpolated': 737, 'extrapolated': 30}
+     reader lines measured/staff: 2051 heads, ON 1600/2051 (78.0%)
+     reader lines interpolated: 737 heads, ON 2/737 (0.3%)
+     reader lines extrapolated: 30 heads, ON 10/30 (33.3%)
+  geometry named line is: {'measured/staff': 1864, 'interpolated': 415, 'extrapolated': 539}
+     geometry lines measured/staff: 1864 heads, ON 1230/1864 (66.0%)
+     geometry lines interpolated: 415 heads, ON 123/415 (29.6%)
+     geometry lines extrapolated: 539 heads, ON 236/539 (43.8%)
+    reader==geometry: 1020 heads, reader ON 958/1020 (93.9%)
+    reader!=geometry: 1798 heads, reader ON 654/1798 (36.4%)
+    box_source chord_split: 52 heads, reader ON 26/52 (50.0%), geometry ON 34/52 (65.4%)
+    box_source detector: 1655 heads, reader ON 799/1655 (48.3%), geometry ON 809/1655 (48.9%)
+    box_source standard: 1111 heads, reader ON 787/1111 (70.8%), geometry ON 746/1111 (67.1%)
+  SECONDARY (box = the box the reader's step rule used): reader ON 1610/2818 (57.1%)  steps off {'1': 202, '2': 198, '3+': 589, 'none': 219}
+====================================================================================================
+brahms1-breitkopf RUN1: far heads 8966; replay of the reader: {'repro': 6088, 'mismatch': 702}
+  CONTROL truth heads matched 11/11; with measured rows (replay reproduced) 11, on the grid 0
+  [all matched] n=11: references PASS 11/11 (100.0%); shifted -1 FLAGGED 11/11 (100.0%), +1 FLAGGED 10/11 (90.9%), both +-1 flagged 10/11 (90.9%), -2 11/11 (100.0%), +2 11/11 (100.0%)
+     references that FAIL: []
+  [measured-rows only] n=11: references PASS 11/11 (100.0%); shifted -1 FLAGGED 11/11 (100.0%), +1 FLAGGED 10/11 (90.9%), both +-1 flagged 10/11 (90.9%), -2 11/11 (100.0%), +2 11/11 (100.0%)
+     references that FAIL: []
+  truth cross-tab (answer right/wrong x ON/OFF): {('reader right', 'ON'): 11, ('geo right', 'ON'): 11}
+  decided far heads 6790; replay reproduced the record on 6088 (89.7%); census below is on those 6088
+  READER   ON 3747/6088 (61.5%)   OFF 2341/6088 (38.5%)   steps off {'1': 129, '2': 370, '3+': 1319, 'none': 523}
+  GEOMETRY ON 4507/6088 (74.0%)   OFF 1581/6088 (26.0%)   steps off {'1': 920, '2': 151, '3+': 43, 'none': 467}
+  both ON 3599  only reader ON 148  only geometry ON 908  neither 1433
+  reader named line is: {'measured/staff': 4452, 'interpolated': 1621, 'extrapolated': 15}
+     reader lines measured/staff: 4452 heads, ON 3739/4452 (84.0%)
+     reader lines interpolated: 1621 heads, ON 5/1621 (0.3%)
+     reader lines extrapolated: 15 heads, ON 3/15 (20.0%)
+  geometry named line is: {'measured/staff': 4769, 'extrapolated': 357, 'interpolated': 962}
+     geometry lines measured/staff: 4769 heads, ON 4157/4769 (87.2%)
+     geometry lines interpolated: 962 heads, ON 222/962 (23.1%)
+     geometry lines extrapolated: 357 heads, ON 128/357 (35.9%)
+    reader==geometry: 3675 heads, reader ON 3586/3675 (97.6%)
+    reader!=geometry: 2413 heads, reader ON 161/2413 (6.7%)
+    box_source detector: 2194 heads, reader ON 846/2194 (38.6%), geometry ON 1157/2194 (52.7%)
+    box_source standard: 3894 heads, reader ON 2901/3894 (74.5%), geometry ON 3350/3894 (86.0%)
+  SECONDARY (box = the box the reader's step rule used): reader ON 3755/6088 (61.7%)  steps off {'1': 122, '2': 373, '3+': 1320, 'none': 518}
+====================================================================================================
+brahms1-breitkopf RUN2: far heads 8966; replay of the reader: {'repro': 6621, 'mismatch': 7}
+  CONTROL truth heads matched 11/11; with measured rows (replay reproduced) 11, on the grid 0
+  [all matched] n=11: references PASS 11/11 (100.0%); shifted -1 FLAGGED 11/11 (100.0%), +1 FLAGGED 10/11 (90.9%), both +-1 flagged 10/11 (90.9%), -2 11/11 (100.0%), +2 11/11 (100.0%)
+     references that FAIL: []
+  [measured-rows only] n=11: references PASS 11/11 (100.0%); shifted -1 FLAGGED 11/11 (100.0%), +1 FLAGGED 10/11 (90.9%), both +-1 flagged 10/11 (90.9%), -2 11/11 (100.0%), +2 11/11 (100.0%)
+     references that FAIL: []
+  truth cross-tab (answer right/wrong x ON/OFF): {('reader right', 'ON'): 11, ('geo right', 'ON'): 11}
+  decided far heads 6628; replay reproduced the record on 6621 (99.9%); census below is on those 6621
+  READER   ON 3884/6621 (58.7%)   OFF 2737/6621 (41.3%)   steps off {'1': 257, '2': 423, '3+': 1459, 'none': 598}
+  GEOMETRY ON 4831/6621 (73.0%)   OFF 1790/6621 (27.0%)   steps off {'1': 1029, '2': 175, '3+': 49, 'none': 537}
+  both ON 3724  only reader ON 160  only geometry ON 1107  neither 1630
+  reader named line is: {'measured/staff': 4756, 'interpolated': 1828, 'extrapolated': 37}
+     reader lines measured/staff: 4756 heads, ON 3871/4756 (81.4%)
+     reader lines interpolated: 1828 heads, ON 6/1828 (0.3%)
+     reader lines extrapolated: 37 heads, ON 7/37 (18.9%)
+  geometry named line is: {'measured/staff': 5156, 'extrapolated': 377, 'interpolated': 1088}
+     geometry lines measured/staff: 5156 heads, ON 4454/5156 (86.4%)
+     geometry lines interpolated: 1088 heads, ON 247/1088 (22.7%)
+     geometry lines extrapolated: 377 heads, ON 130/377 (34.5%)
+    reader==geometry: 3810 heads, reader ON 3704/3810 (97.2%)
+    reader!=geometry: 2811 heads, reader ON 180/2811 (6.4%)
+    box_source chord_split: 91 heads, reader ON 36/91 (39.6%), geometry ON 62/91 (68.1%)
+    box_source detector: 2424 heads, reader ON 876/2424 (36.1%), geometry ON 1243/2424 (51.3%)
+    box_source standard: 4106 heads, reader ON 2972/4106 (72.4%), geometry ON 3526/4106 (85.9%)
+  SECONDARY (box = the box the reader's step rule used): reader ON 3895/6621 (58.8%)  steps off {'1': 245, '2': 430, '3+': 1462, 'none': 589}
