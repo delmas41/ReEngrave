@@ -1,0 +1,41 @@
+{
+ "beethoven5-litolff": {
+  "mean_shape_source_before": 33,
+  "after": 19,
+  "removed": 14,
+  "removed_reasons": {
+   "detector score": 7,
+   "no stem": 12,
+   "overlaps dynamicF": 1
+  },
+  "control_pool_before": 25,
+  "control_pool_after": 15,
+  "sean_subjects_in_removed": [],
+  "sean_subjects_symbol": {}
+ },
+ "brahms1-breitkopf": {
+  "mean_shape_source_before": 134,
+  "after": 133,
+  "removed": 1,
+  "removed_reasons": {
+   "no stem": 1
+  },
+  "control_pool_before": 256,
+  "control_pool_after": 251,
+  "sean_subjects_in_removed": [],
+  "sean_subjects_symbol": {
+   "glyph/1/0/2/6/3": {
+    "ok": true,
+    "reasons": [],
+    "detector_score": 0.8171008229255676,
+    "stem_run_sp": 3.171806167400881
+   },
+   "glyph/1/1/12/4/0": {
+    "ok": true,
+    "reasons": [],
+    "detector_score": 0.8214896321296692,
+    "stem_run_sp": 3.5272727272727273
+   }
+  }
+ }
+}

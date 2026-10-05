@@ -223,6 +223,79 @@ def in_staff_heads(doc_id: str, loaded, pages) -> List[Dict[str, Any]]:
     return out
 
 
+# ---- round 5: "is this box really a notehead?" (Sean: two Brahms controls were
+# "not noteheads, part of another symbol"). The CONVENTION used, stated once:
+#   (1) the detector's own confidence for the notehead box is >= 0.5;
+#   (2) no rest / flag / clef / dynamic / accidental / fermata / ornament / ottava /
+#       time / key box overlaps more than 20% of the head's box (a notehead box
+#       sitting inside another symbol is a piece of that symbol);
+#   (3) a FILLED head carries a STEM on the print: a vertical ink run 2.0-6.5 sp
+#       long touching the head's left or right edge and reaching >= 1 sp past the
+#       head (every filled head has a stem, chord heads included; a barline is
+#       longer than 6.5 sp, a tie or beam is horizontal). Hollow/whole class heads
+#       are not asked for one (a whole note has none).
+# None of these keys on a subject id.
+MIN_DETECTOR_SCORE = 0.5
+# NOT "flag": a flag is attached to the stem OF a real head, and the detector's
+# flag box overlaps the head's box on every flagged stem-down note (the first
+# version of this rule removed 15 real Brahms heads that way -- contact sheet).
+NON_HEAD_CLASS_WORDS = ("rest", "clef", "dynamic", "accidental", "fermata",
+                        "ornament", "ottava", "time", "key")
+OVERLAP_FRACTION_MAX = 0.20
+STEM_RUN_SPACES = (2.0, 6.5)
+STEM_REACH_PAST_HEAD_SPACES = 1.0
+
+
+def symbol_gate(gray, h, page_boxes, rec) -> Dict[str, Any]:
+    x0, y0, x1, y1 = h["box"]
+    sp = h["spacing"]
+    reasons = []
+    obs = rec.obs(Q.GLYPH_BOX, h["subject"])
+    score_ = obs[-1].get("score") if obs else None
+    if score_ is None or score_ < MIN_DETECTOR_SCORE:
+        reasons.append(f"detector score {score_}")
+    area = max(1.0, (x1 - x0) * (y1 - y0))
+    for (sub, cls, b) in page_boxes:
+        if sub == h["subject"] or not any(w in cls.lower() for w in NON_HEAD_CLASS_WORDS):
+            continue
+        ox, oy = min(x1, b[2]) - max(x0, b[0]), min(y1, b[3]) - max(y0, b[1])
+        if ox > 0 and oy > 0 and ox * oy / area > OVERLAP_FRACTION_MAX:
+            reasons.append(f"overlaps {cls}")
+            break
+    stem = None
+    if "Black" in (h.get("cls") or ""):
+        H, W = gray.shape
+        ry0, ry1 = max(0, int(y0 - 7 * sp)), min(H, int(y1 + 7 * sp))
+        rx0, rx1 = max(0, int(x0 - 0.5 * sp)), min(W, int(x1 + 0.5 * sp))
+        win = gray[ry0:ry1, rx0:rx1]
+        ink = win <= ht._otsu_threshold(win)
+        hy0, hy1 = int(y0) - ry0, int(y1) - ry0
+        bands = [(int(x0 - 0.2 * sp) - rx0, int(x0 + 0.35 * sp) - rx0),
+                 (int(x1 - 0.35 * sp) - rx0, int(x1 + 0.2 * sp) - rx0)]
+        best = 0.0
+        for c0, c1 in bands:
+            for c in range(max(0, c0), min(ink.shape[1], c1 + 1)):
+                col = ink[:, c]
+                # the run that contains the head's own rows
+                r = (hy0 + hy1) // 2
+                if not col[min(max(r, 0), len(col) - 1)]:
+                    continue
+                a = r
+                while a - 1 >= 0 and col[a - 1]:
+                    a -= 1
+                b_ = r
+                while b_ + 1 < len(col) and col[b_ + 1]:
+                    b_ += 1
+                ext_up, ext_dn = (hy0 - a) / sp, (b_ - hy1) / sp
+                run = (b_ - a + 1) / sp
+                if STEM_RUN_SPACES[0] <= run <= STEM_RUN_SPACES[1] and max(ext_up, ext_dn) >= STEM_REACH_PAST_HEAD_SPACES:
+                    best = max(best, run)
+        stem = best
+        if best == 0.0:
+            reasons.append("no stem on the print")
+    return dict(ok=not reasons, reasons=reasons, detector_score=score_, stem_run_sp=stem)
+
+
 def annotate_heads(doc_id, loaded, pages, heads) -> None:
     """Fill `lines`, `spacing`, `isolated`, `meas` on each head dict."""
     rec = loaded["rec"]
@@ -241,7 +314,9 @@ def annotate_heads(doc_id, loaded, pages, heads) -> None:
             if (b[0] < x1 + gap and b[2] > x0 - gap and b[1] < y1 + gap and b[3] > y0 - gap):
                 iso = False
                 break
-        h["isolated"] = iso
+        h["isolated_boxes"] = iso
+        h["symbol"] = symbol_gate(gray, h, pb, rec)
+        h["isolated"] = iso and h["symbol"]["ok"]
         thick = mht._page_line_thickness_px(doc_id, h["page"], gray, rec, pb)
         h["thickness"] = thick
         h["meas"] = measure_clean_head(gray, h["box"], h["lines"], h["spacing"], thick)
