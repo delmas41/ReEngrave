@@ -1,0 +1,27 @@
+sheet: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a468e8ca1e77a0949/out/print/ledgers/combined_1004/combined_1004_sheet.png (1752, 1800)
+
+1. glyph/3/0/0/2/4 we=-6 ref(scored)=[-7] ref(Sean)=-7 std_box=False gate={'passed': False, 'iou_open': 0.35, 'offset_open_sp': 0.42} | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)
+    line: orange y 428.5 moved_px 0 on_ink True near on/off 0.88 / 0.0 ridge 29 / 4 
+    line: orange y 416.0 moved_px 1 on_ink True near on/off 1.0 / 0.62 ridge 29 / 23 
+    line: orange y 395.0 moved_px 0 on_ink False near on/off 1.0 / 0.88 ridge 30 / 23 
+    cyan box vs head blob: {'blob_in_box': 0.54, 'box_is_ink': 0.64, 'd_left': 6.0, 'd_right': 6.1, 'd_top': -2.7, 'd_bottom': 7.4, 'blob_wh_px': [25, 33]}
+    frame control on/off: 1.0 0.04
+
+2. glyph/3/0/0/2/9 we=-6 ref(scored)=[-5] ref(Sean)=-5 std_box=False gate={'passed': False, 'iou_open': 0.39, 'offset_open_sp': 0.5} | -0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+    line: orange y 428.5 moved_px 0 on_ink True near on/off 0.75 / 0.0 ridge 29 / 4 
+    line: orange y 415.0 moved_px 0 on_ink True near on/off 1.0 / 0.62 ridge 29 / 23 
+    line: magenta y 397.5 moved_px 0 on_ink False near on/off 1.0 / 0.75 ridge 30 / 23 thrown: other note's ink
+    cyan box vs head blob: {'blob_in_box': 0.5, 'box_is_ink': 0.69, 'd_left': 5.5, 'd_right': 6.8, 'd_top': -9.9, 'd_bottom': 1.2, 'blob_wh_px': [26, 32]}
+    frame control on/off: 1.0 0.04
+
+3. glyph/3/0/8/6/10 we=None ref(scored)=[10] ref(Sean)=10 std_box=True gate={'passed': True, 'iou_open': 0.81, 'offset_open_sp': 0.01} | every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head
+    line: magenta y 1725.0 moved_px -5 on_ink False near on/off 0.38 / 0.0 ridge 19 / 35 thrown: the head's own outline
+    cyan box vs head blob: {'blob_in_box': 0.95, 'box_is_ink': 0.79, 'd_left': -0.8, 'd_right': 0.9, 'd_top': -2.3, 'd_bottom': 0.8, 'blob_wh_px': [26, 23]}
+    frame control on/off: 1.0 0.14
+
+4. glyph/3/0/0/6/2 we=-6 ref(scored)=[-4] ref(Sean)=-6 std_box=False gate={'passed': False, 'iou_open': 0.44, 'offset_open_sp': 0.4} | -0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+    line: orange y 434.0 moved_px 0 on_ink True near on/off 1.0 / 0.38 ridge 29 / 5 
+    line: orange y 414.5 moved_px 0 on_ink True near on/off 1.0 / 0.88 ridge 35 / 17 
+    line: magenta y 398.5 moved_px 0 on_ink True near on/off 1.0 / 0.62 ridge 34 / 18 thrown: other note's ink
+    cyan box vs head blob: {'blob_in_box': 0.43, 'box_is_ink': 0.63, 'd_left': 3.3, 'd_right': 8.0, 'd_top': -10.3, 'd_bottom': 8.5, 'blob_wh_px': [26, 39]}
+    frame control on/off: 0.97 0.03
