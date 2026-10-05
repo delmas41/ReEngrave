@@ -189,6 +189,7 @@ def reader_absolute_position(
     head_center_y: Optional[float] = None,
     near_edge_ledgers: bool = False,
     restore_masked_near_edge: bool = False,
+    far_side_ledger: bool = False,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
 
@@ -384,6 +385,12 @@ def reader_absolute_position(
         head_center_y=head_center_y if four_causes_cd else None,
         **({"near_edge_ledgers": True}
            if near_edge_ledgers and four_causes_cd else {}),
+        # lane-ledger-far-side-rule: passed ONLY when on (default call
+        # byte-for-byte the pre-rule call)
+        **({"far_side_ledger": True,
+            "far_side_partner_boxes": [b for (s_, b) in page_notehead_boxes
+                                       if s_ != subject]}
+           if far_side_ledger and four_causes_cd else {}),
     )
     if step["offset"] is None:
         return None, step["reason"]

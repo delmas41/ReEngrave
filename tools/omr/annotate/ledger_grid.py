@@ -833,6 +833,8 @@ def derive_far_head_step(
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     head_center_y: "float | None" = None,
     near_edge_ledgers: bool = False,
+    far_side_ledger: bool = False,
+    far_side_partner_boxes: "list[tuple[float, float, float, float]] | None" = None,
 ) -> dict:
     """Sean's 2026-10-01 convention for turning a rung count into a step.
 
@@ -891,6 +893,14 @@ def derive_far_head_step(
     another head's ledger or the outline), so the far-edge pop is
     unchanged.
 
+    `far_side_ledger` (lane-ledger-far-side-rule, 2026-10-04, Sean: a thin
+    line touching the FAR side of a head, with no other note farther out,
+    means the head is ON it; default False = bit-identical): where the
+    middle row shows no line (the through test is unchanged and goes
+    first), `far_side_ledger_evidence` is asked, with
+    `far_side_partner_boxes` (the OTHER noteheads' boxes) deciding whether
+    a chord partner sits farther out. Evidenced -> offset `2n`, kind line.
+
     Returns `{"offset": int|None, "kind": "line"|"space"|None,
     "reason": str}`. `offset` is in half-steps outward from the edge; the
     caller adds it to (or subtracts it from, by `sign`) the edge's own
@@ -910,6 +920,15 @@ def derive_far_head_step(
     evidenced = head_middle_rung_evidence(
         img_gray, head_box, spacing, exclude_boxes, head_center_y
     )
+    if far_side_ledger and not evidenced:
+        fs = far_side_ledger_evidence(
+            img_gray, head_box, sign, spacing, edge_y,
+            far_side_partner_boxes, exclude_boxes, head_center_y)
+        if fs["ok"]:
+            return dict(offset=2 * fs["n"], kind="line",
+                       reason=f"a thin flat line touches the head's far "
+                              f"side (ledger {fs['n']}), nothing farther "
+                              f"out: the head is on it")
     remaining = list(rungs_y)
     while remaining:
         last = remaining[-1]
@@ -1759,6 +1778,191 @@ def near_edge_ledger_evidence(
 def rung_is_near_edge_ledger(*args, **kwargs) -> bool:
     """Boolean form of `near_edge_ledger_evidence` (same arguments)."""
     return bool(near_edge_ledger_evidence(*args, **kwargs)["ok"])
+
+
+# ---------------------------------------------------------------------------
+# Far-side ledger (lane-ledger-far-side-rule, 2026-10-04; Sean on the far-edge
+# crop sheet: outside the staff, a thin line touching the FAR side of a head
+# -- the side away from the staff -- with NO other note farther out means the
+# head is ON that line; with a chord partner farther out the rule does not
+# apply). Everything below is derived from the staff spacing and the ledger
+# thickness already used by this module -- no per-score number.
+#
+#   FAR HALF   a rung counts as "at the far side" when it sits farther from
+#              the staff than the head's middle by MORE than the middle-row
+#              probe's own tolerance (`MIDDLE_ROW_TOL_SPACES`: nearer than
+#              that is the through-rung the middle probe already judges) ...
+#   NOT PAST   ... and no farther past the head's far edge than one ledger
+#              thickness (`LEDGER_THICKNESS_MAX_SPACES`: beyond that it is
+#              no longer touching the head).
+#   ON LADDER  its distance from the staff edge is a whole number of staff
+#              spaces within one ledger thickness (a ledger is one space
+#              from the last, hand-drawn drift is a fraction of that).
+#   PARTNER    another detector notehead whose centre is within one head
+#              width in x (side-by-side heads of a chord sit one head width
+#              apart; a head is `HEAD_WIDTH_SPACES` wide) and at least half
+#              a space (one step) farther out and no farther than one stem
+#              length (`STEM_LENGTH_SPACES`: members of one chord hang on
+#              one stem) -> the rule does not apply.
+#   BACKED     thin, flat ink that is CONNECTED to the head: starting a stub
+#              length INSIDE the head's box edge on the rung's row, an
+#              unbridged run goes out past the box by at least a stub
+#              (`RUNG_STUB_MIN_SPACES`), and the vertical run over its
+#              outermost stub length is no thicker than
+#              `LEDGER_THICKNESS_MAX_SPACES` with the columns agreeing
+#              within half of that. One side is enough.
+# ---------------------------------------------------------------------------
+HEAD_WIDTH_SPACES = 1.3
+STEM_LENGTH_SPACES = 3.5
+FAR_SIDE_PARTNER_DY_MIN_SPACES = 0.5
+
+
+def far_side_jut_evidence(
+    img_gray: "np.ndarray | None",
+    y: float,
+    box: "tuple[float, float, float, float]",
+    spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> dict:
+    """Is there thin, flat ink at row `y` connected to `box` and running
+    out past it on at least one side? (`thin_flat_jut_evidence`'s sibling:
+    that one anchors at the box's middle column, which for a hollow head is
+    white; this one anchors a stub length inside each box EDGE.)"""
+    bad = lambda why, **k: dict(ok=False, why=why, **k)  # noqa: E731
+    if img_gray is None or box is None or not spacing or spacing <= 0:
+        return bad("no_image")
+    x0, y0, x1, y1 = box
+    h, w = img_gray.shape
+    pad = RUNG_BOX_VISIBILITY_SPACES * spacing
+    cx0, cx1 = max(0, int(x0 - pad)), min(w, int(x1 + pad) + 1)
+    margin = int(round(1.5 * spacing))
+    ry0, ry1 = max(0, int(round(y)) - margin), min(h, int(round(y)) + margin + 1)
+    if cx1 <= cx0 or ry1 <= ry0:
+        return bad("off_image")
+    window = img_gray[ry0:ry1, cx0:cx1]
+    thr = _otsu_threshold(window)
+    ink = window <= thr
+    if exclude_boxes:
+        ink = _exclude_other_heads_ink(ink, exclude_boxes, cx0, ry0, spacing,
+                                       img_gray, thr)
+    cap = LEDGER_THICKNESS_MAX_SPACES * spacing
+    stub_min = RUNG_STUB_MIN_SPACES * spacing
+    n_out = max(1, int(round(stub_min)))
+    yy = int(round(y)) - ry0
+    rows = [r for r in (yy, yy - 1, yy + 1) if 0 <= r < ink.shape[0]]
+    thick, juts = [], {}
+    for sgn, name in ((-1, "left"), (1, "right")):
+        edge_col = (int(x0) if sgn < 0 else int(x1)) - cx0
+        start = edge_col - sgn * int(round(stub_min))
+        best = None
+        for r in rows:
+            if not (0 <= start < ink.shape[1]) or not ink[r, start]:
+                continue
+            c = start
+            while 0 <= c + sgn < ink.shape[1] and ink[r, c + sgn]:
+                c += sgn
+            jut = (edge_col - c) if sgn < 0 else (c - edge_col)
+            if best is None or jut > best[0]:
+                best = (jut, r, c)
+        juts[name] = 0 if best is None else best[0]
+        if best is None or best[0] < stub_min:
+            continue
+        _, r, c = best
+        ts_ = []
+        for k in range(n_out):
+            col = c - sgn * k
+            if not (0 <= col < ink.shape[1]) or not ink[r, col]:
+                continue
+            colv = ink[:, col]
+            top = bot = r
+            while top > 0 and colv[top - 1]:
+                top -= 1
+            while bot + 1 < colv.size and colv[bot + 1]:
+                bot += 1
+            ts_.append(float(bot - top + 1))
+        if ts_ and max(ts_) <= cap and (max(ts_) - min(ts_)) <= 0.5 * cap:
+            thick.append(max(ts_))
+    if not thick:
+        return bad("no_thin_flat_connected_jut", left_jut=juts.get("left", 0),
+                   right_jut=juts.get("right", 0))
+    if len(thick) == 2 and abs(thick[0] - thick[1]) > 0.5 * cap:
+        return bad("stubs_not_flat", thickness=thick)
+    return dict(ok=True, why="thin_flat_jut_connected_at_the_box_edge",
+                thickness=thick, left_jut=juts["left"], right_jut=juts["right"])
+
+
+def far_side_partner(
+    head_box: "tuple[float, float, float, float]", sign: float, spacing: float,
+    partner_boxes: "list[tuple[float, float, float, float]] | None",
+) -> "tuple | None":
+    """The first other notehead box that is a chord partner FARTHER OUT than
+    this head (see the block comment above), else None."""
+    x0, y0, x1, y1 = head_box
+    cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+    dx_max = max(x1 - x0, HEAD_WIDTH_SPACES * spacing)
+    for b in partner_boxes or []:
+        bx, by = (b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0
+        dy = sign * (by - cy) / spacing
+        if (abs(bx - cx) <= dx_max
+                and FAR_SIDE_PARTNER_DY_MIN_SPACES <= dy <= STEM_LENGTH_SPACES):
+            return tuple(b)
+    return None
+
+
+def far_side_ledger_evidence(
+    img_gray: "np.ndarray | None",
+    head_box: "tuple[float, float, float, float] | None",
+    sign: float, spacing: float, edge_y: float,
+    partner_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    head_center_y: "float | None" = None,
+) -> dict:
+    """Is the head ON a thin line touching its FAR side, with no note
+    farther out? `ok` -> `n` is the ledger's ordinal from the staff edge
+    (the head's position is `2n` half-steps out). The bare ink walk (no
+    masking) offers the candidate rungs, exactly as the edge census did."""
+    if img_gray is None or head_box is None or not spacing or spacing <= 0:
+        return dict(ok=False, why="no_image")
+    p = far_side_partner(head_box, sign, spacing, partner_boxes)
+    if p is not None:
+        return dict(ok=False, why="a_chord_partner_sits_farther_out",
+                    partner=p)
+    x0, y0, x1, y1 = head_box
+    # a second detector box on THIS head (same head boxed twice, e.g. on two
+    # staves of a contested chord) is the head's own ink, never "another
+    # head's" -- masking it would blank the very ledger jut being asked about
+    def _same_head(b):
+        iw = min(x1, b[2]) - max(x0, b[0])
+        ih = min(y1, b[3]) - max(y0, b[1])
+        if iw <= 0 or ih <= 0:
+            return False
+        inter = iw * ih
+        union = (x1 - x0) * (y1 - y0) + (b[2] - b[0]) * (b[3] - b[1]) - inter
+        return union > 0 and inter / union >= 0.5
+    exclude_boxes = [b for b in (exclude_boxes or []) if not _same_head(b)]
+    cx = (x0 + x1) / 2.0
+    mid = head_center_y if head_center_y is not None else (y0 + y1) / 2.0
+    far_y = y0 if sign < 0 else y1
+    ys = [edge_y - sign * k * spacing for k in range(5)]
+    side = "above" if sign < 0 else "below"
+    bare = measure_ledger_rungs(img_gray, ys, cx, head_y=mid).get(side, [])
+    tol = LEDGER_THICKNESS_MAX_SPACES
+    best = None
+    for y in bare:
+        rm = sign * (y - mid) / spacing
+        rf = sign * (y - far_y) / spacing
+        if not (rm > MIDDLE_ROW_TOL_SPACES and rf <= tol):
+            continue
+        rel = sign * (y - edge_y) / spacing
+        n = int(round(rel))
+        if n < 1 or abs(rel - n) > tol:
+            continue
+        ev = far_side_jut_evidence(img_gray, y, tuple(head_box), spacing,
+                                   exclude_boxes)
+        if ev["ok"] and (best is None or n > best["n"]):
+            best = dict(ok=True, n=n, y=float(y), rm=rm, rf=rf, jut=ev,
+                        why="thin_flat_line_touches_the_far_side_no_note_beyond")
+    return best or dict(ok=False, why="no_backed_rung_at_the_far_side")
 
 
 def restore_masked_staff_side_ledgers(
