@@ -2895,3 +2895,63 @@ vs the same zones 0.5 sp off it. Every orange line reads on > off (3/0/0/2/1: 1.
 0.70/0.35; 8/9/0 0.50/0.15; 3/5 1880.5 0.60/0.11; 6/0 2284 0.22/0.00, 2301 0.33/0.00). Magenta lines that are
 weak: 3/5 1893.5 (0.10/0.00) and 1919.5 (0.40/0.60, a stem/flag beside it) -- rungs the reader still, rightly,
 does not count.
+
+## lane-ledger-template-centre (2026-10-04): the template's centre as round 8's probe row
+
+Sean: "Feed the center into round 8". Base `origin/lane-ledger-edge-fix` (845ab8cc) + `head_template.py` and its
+page-shape drivers copied from `lane-ledger-template-fix` 89327ab3 (not edited). GATHER+ADJUDICATE only; nothing
+switched on. The `head_center_y` parameter already existed on the probe path (r8-main); this lane only SUPPLIES it.
+Scripts: `template_centre.py` (per-head template fit), `score_template_centre.py` (arms), `centre_scan.py`
+(diagnostic), `template_centre_sheet.py` (sheet). Sheet: `out/print/ledgers/template_centre/` (`sheet_changed.png`,
+`sheet_census.png`, `pixel_check.json`).
+
+Control (reproduced): default 25/14/5 Litolff (n=44), 11/0/0 Brahms; fix 1 (parts 1+2) 29/13/2, 11/0/0.
+
+**F2 gate, fixed before any arm was scored:** use the template centre only where the template's own pixel check
+passes round 4's MISS rule unchanged -- IoU >= 0.70 AND offset <= 0.15 sp (oval vs the head's ink blob). 23 of 44
+Litolff heads and 11 of 11 Brahms heads pass.
+
+| arm (fix 1 on) | Litolff right/wrong/undecided | Brahms |
+|---|---|---|
+| default (control) | 25/14/5 | 11/0/0 |
+| F0 fix 1 | 29/13/2 | 11/0/0 |
+| F1 template centre on every head | 25/15/4 | 11/0/0 |
+| F2 only where the fit passes the gate | 29/13/2 | 11/0/0 |
+| F3 only the 9 census heads | 29/13/2 | 11/0/0 |
+
+**Result: no gain.** F2 and F3 change no verdict at all (identical to F0). F1 is a regression: four right heads
+break, all with a template fit the gate refuses (IoU 0.49-0.66), so the gate does its job:
+`3/0/0/5/12` -4 -> -3 (template oval 0.32 sp low, probe row moves off the through-line), `3/0/5/4/5` 10 -> abstain
+(oval 0.57 sp low, IoU 0.49), `3/0/7/0/7` -3 -> -2, `3/0/7/3/5` 10 -> abstain (the lower row now reads as the head's
+own outline). Sheet: `sheet_changed.png`.
+
+**Why it does not help the census heads:** the template centre sits on the box middle. Template dy from the box
+middle is 0.00-0.06 sp on 29 of 44 Litolff heads and never over 0.57; on the 9 census heads it is 0.00 on six,
+-0.06, +0.19 and -0.13 on the others, and seven of the nine fits are trusted (IoU 0.71-0.80; the two that are not:
+`7/2/4` offset 0.19 sp, `7/4/3` IoU 0.57). The oval sits
+on the head and the box already agrees with it; the box-covers-only-the-top cause (A) is not what these heads show.
+Per head (F0 answer -> reference; all unchanged by F1/F2/F3):
+- `3/0/7/2/4` (undecided, ref 10): scan below. A centre 0.1-0.4 sp ABOVE the box middle finds the through-line
+  (R at -0.4..-0.1 sp); the template says 0.00. A probe band of +-0.30 sp (shipped +-0.15) finds it AT the box
+  middle (and at 0..-0.5).
+- `3/0/7/7/0` (11, ref 12): same pattern: right at -0.4..-0.1 sp with the shipped band; right at the box middle
+  and 0.8 above with a +-0.30 band.
+- `3/0/7/3/2`, `3/0/7/3/4`, `3/0/7/4/3` (one short): right only at +0.6..+0.8 sp (toward the staff-far side)
+  with the +-0.30 band for 7/3/2, 7/3/4, 7/4/3 -- far outside any plausible centre error; the crops show a ledger
+  drawn against the TOP of the head ("popped"/"not kept" magenta) where the print's reference puts the head ON it
+  (nominal row at the head's top). That is a rung-through-vs-touching decision at the top edge, not a centre.
+- `3/0/7/3/1`, `3/0/7/6/1`, `3/1/0/6/0` (one short): wrong at every centre in -0.8..+0.8, both bands. Same top-edge
+  ledger picture. `3/0/8/6/10`: abstains at every centre and band.
+So the centre is not the limiting factor for this population; two heads (`7/2/4`, `7/7/0`) are limited by WHERE
+the probe row sits in a head whose rendered ink centre the template does not move, and a wider probe band
+(`MIDDLE_ROW_TOL_SPACES` 0.15 -> 0.30, monkeypatched in `centre_scan.py` only) rescues those two without any
+centre. REPORTED, not added: no threshold was tuned or changed in `tools/`. Scoring the +-0.30 band as a whole arm
+was not done (it would be a tuned threshold; needs its own roadmap decision and a check on Brahms).
+
+Pixel check on the sheet (`pixel_check.json`; ink fraction in the 0.6 sp stubs on the line vs 0.5 sp off it): every
+orange line reads on > off, but several are weak (3/0/7/7/0 1567.0: 0.50/0.35; 3/0/7/3/1 1454.0: 0.22/0.00 -- short
+ledgers). The green probe row lies inside the template oval at the box's x for every tile except one: `3/0/5/4/5`
+F0, where the box middle is above the oval (the template misfit, IoU 0.49).
+
+Template fits on the far heads (Litolff, shape A_oval; Brahms, C_mean_shape): Brahms 11 of 11 pass (IoU 0.74-0.95,
+offset <= 0.10 sp). Litolff: 21 of 44 miss, mostly the hollow heads (IoU 0.22-0.56) and blob-fused ones.
