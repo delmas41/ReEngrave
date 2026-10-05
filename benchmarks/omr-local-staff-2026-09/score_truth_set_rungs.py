@@ -181,7 +181,22 @@ def frame_lines_for_head(gray: "np.ndarray", global_lines: Sequence[float],
 # the reader's own absolute-position derivation
 # ─────────────────────────────────────────────────────────────────────────
 
-def reader_absolute_position(
+def reader_absolute_position(*args, connected_continuation: bool = False,
+                             own_box_inviolate: bool = False,
+                             one_sided_jut: bool = False,
+                             **kwargs):
+    """lane-ledger-accidental (2026-10-04): `_reader_absolute_position_impl`
+    under the exclusion rules named (all default False = the pre-lane read,
+    byte for byte; `drop_beyond_head` and `drop_same_ink_other_staff` are
+    impl keywords).  lane-ledger-exclusion adds `own_box_inviolate` and
+    `one_sided_jut` (args[2] is the subject's box)."""
+    with lg.exclusion_rules(connected=connected_continuation,
+                            own_box=args[2] if own_box_inviolate else None,
+                            one_sided=one_sided_jut):
+        return _reader_absolute_position_impl(*args, **kwargs)
+
+
+def _reader_absolute_position_impl(
     gray, global_lines: Sequence[float], box: Sequence[float],
     subject: str, page_notehead_boxes: Sequence[Tuple[str, tuple]],
     page_accidental_boxes: "Sequence[Tuple[str, tuple]] | None" = None,
@@ -190,6 +205,8 @@ def reader_absolute_position(
     near_edge_ledgers: bool = False,
     restore_masked_near_edge: bool = False,
     far_side_ledger: bool = False,
+    drop_beyond_head: bool = False,
+    drop_same_ink_other_staff: bool = False,
 ) -> Tuple[Optional[int], str]:
     """Returns (absolute position or None, reason). Fixes 2 + 3.
 
@@ -227,13 +244,16 @@ def reader_absolute_position(
 
     # exclude every OTHER notehead's own box, by SUBJECT -- never by box
     # value, which float round-trips could coincidentally match or miss.
-    others = [b for (s, b) in page_notehead_boxes if s != subject]
-    if four_causes_cd and page_accidental_boxes:
-        # Cause C: accidental ink is excluded from stub evidence exactly
-        # like another notehead's own ink -- same mechanism, same
-        # both-sides-continuation safety valve (a real ledger drawn
-        # straight through an accidental's own box still survives).
-        others = others + [b for (_s, b) in page_accidental_boxes]
+    # Cause C: accidental ink is excluded from stub evidence exactly
+    # like another notehead's own ink -- same mechanism, same
+    # both-sides-continuation safety valve (a real ledger drawn
+    # straight through an accidental's own box still survives).
+    # (`lg.exclusion_boxes_for`: the same list; with
+    # `drop_same_ink_other_staff` False it is byte-for-byte the old one.)
+    others = lg.exclusion_boxes_for(
+        subject, box, page_notehead_boxes,
+        page_accidental_boxes if four_causes_cd else None,
+        drop_same_ink_other_staff=drop_same_ink_other_staff)
     items = lg.measure_ledger_rungs(
         gray, ys, cx, head_y=cy, exclude_boxes=others,
         head_box_x=(x0, x1),
@@ -391,6 +411,8 @@ def reader_absolute_position(
             "far_side_partner_boxes": [b for (s_, b) in page_notehead_boxes
                                        if s_ != subject]}
            if far_side_ledger and four_causes_cd else {}),
+        **({"drop_rungs_beyond_head": True}
+           if drop_beyond_head and four_causes_cd else {}),
     )
     if step["offset"] is None:
         return None, step["reason"]

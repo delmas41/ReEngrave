@@ -2919,3 +2919,66 @@ Reach: 3 of 55 far heads. Caveat as the lane said: on these heads the line is a 
 test, which has little power for a jut that short.
 Pixel check (ink on row vs 0.5 sp off, +-1 px; stub zone): L3 3/0/7/3/1 0.88/0.56, 3/0/7/3/2 0.75/0.44, 3/0/7/3/4 0.88/0.69; L1/L2 on > off in every tile; frame control 1.00/0.07-0.11.
 Tests `test_ledger_far_side_rule_2026_10_04.py` 7: RED against the base module (ImportError), GREEN now; the arc test also failed (6 != 5) before the drift check was added.
+
+## lane-farhead-combined-1004 (2026-10-04): today's far-head pieces COMBINED (STAGED reader; all default-OFF keywords; nothing switched on, nothing merged to main)
+
+Branch `lane-farhead-combined-1004` off main `21cd341b`. Brought in from
+`origin/lane-ledger-exclusion` (2e4aa867, on `lane-ledger-accidental`):
+`ledger_grid.py` (a verified superset of main's -- main's four removed lines
+are the `has_left/has_right` pair, now the `else` of the `connected` rule), its
+tests and scripts; from `origin/lane-standard-box-hollow` (c80f7c4f, on
+`lane-standard-head-box`): `standard_head_box.py`, `head_template.py`,
+`ledger_shape_trace.py`, tests, scripts (that branch does not touch
+`ledger_grid.py`). Those branches' own FINDINGS sections stay on them.
+
+**Controls (each piece's own number reproduces on the combined tree):** main
+M0 32/10/2, Brahms 11/0/0; exclusion best arm conn+same+one+drop 36/6/2, 11/0/0;
+S0/S2/S2H alone 32/10/2 -> 35/8/1 -> 36/7/1, Brahms 11/0/0 throughout; S2H
+no-pocket invariance: 48 heads identical. Tests: 333 passed, 2 xfailed over
+every ledger / standard-box test file; `staged.check` TOTAL 250.
+
+**Combined, cumulative arms** (`score_combined_1004.py`; Litolff n=44 as scored
+/ "vs Sean" with `3/0/0/6/2` = -6; Brahms n=11; `glyph/1/0/10/14/1` excluded):
+
+| arm | Litolff as scored | Litolff vs Sean | Brahms |
+|---|---|---|---|
+| M0 main (near_edge + restore + far_side) | 32/10/2 | 33/9/2 | 11/0/0 |
+| E1 + exclusion (conn+same+one+drop) | 36/6/2 | 37/5/2 | 11/0/0 |
+| E2 + standard box where its gate passes (S2) | 39/4/1 | 40/3/1 | 11/0/0 |
+| E3 + counter filled (S2H) | **40/3/1** | **41/2/1** | 11/0/0 |
+
+Per-head changes:
+- E1 vs M0: `3/0/0/7/1` -10 -> -8, `3/0/0/7/2` -6 -> -2, `3/0/7/4/3` -3 -> -4,
+  `3/0/7/7/0` 11 -> 12, all wrong -> right (the through-ledger is kept by the
+  connected / same-ink / one-sided rules; rungs beyond the head are not
+  counted); `3/0/0/2/4` -4 -> -6 wrong -> wrong (ref -7).
+- E2 vs E1: `3/0/7/2/4` abstain -> 10 right, `3/0/7/6/1` 11 -> 12 right,
+  `3/1/0/6/0` -5 -> -6 right (the standard box is centred on the head, so the
+  head's own middle row is where the through-ledger is looked for). The box
+  also moves on 16 more Litolff and all 11 Brahms heads with the read unchanged.
+- E3 vs E2: `1/0/10/7/1` (hollow half note, tile 1 of Sean's earlier sheet)
+  -4 -> -2 right (the filled counter lets the template fit pass the gate:
+  IoU 0.47 -> 0.79).
+- Right heads broken at any step: none (E3 vs M0: none).
+
+Remaining after E3 (reader's own reason): `3/0/0/2/4` we -6 / ref -7 wrong
+(through-ledger confirmed by a jut at the head's middle row; detector box kept
+-- the standard box fails its gate, IoU 0.35, offset 0.42 sp); `3/0/0/2/9` we -6
+/ ref -5 wrong (-0.18 sp beyond the last clean rung, a jut connected to the
+head's middle; gate fails, 0.39 / 0.50); `3/0/8/6/10` abstain / ref 10 (every
+found rung was the head's own outline -- no_rung_before_the_head; standard box
+used, gate 0.81 / 0.01). `3/0/0/6/2` reads -6, wrong only against the file's
+reference -4 (Sean: -6). Brahms: none.
+
+Sheet for Sean: `out/print/ledgers/combined_1004/combined_1004_sheet.png`
+(4 tiles, x6, 600 dpi) + `combined_1004_key.json` (every pixel number).
+Pixel check: 7 of 10 drawn lines pass ink-vs-off. The 3 that read
+`on_ink False`: tile 1's third ledger (y395) and tile 2's dashed line (y397.5)
+have ink on the row (near_on 1.0) but the control rows 0.5 sp off read 0.88 /
+0.75 because the head and a neighbour sit there, so the test cannot
+discriminate; tile 3's dashed line (y1725) is the head's own outline inside its
+box (near_on 0.38) -- drawn labelled as such. Frame control on/off 0.97-1.0 vs
+0.03-0.14 on all four. Cyan boxes vs the head's own blob: tile 3 (standard box)
+blob_in_box 0.95; tiles 1, 2, 4 (detector box, standard box not trusted)
+0.54 / 0.50 / 0.43 -- the boxes there are poor, which is the remaining work.
+This is the reading we have, not an endorsement; nothing was tuned.

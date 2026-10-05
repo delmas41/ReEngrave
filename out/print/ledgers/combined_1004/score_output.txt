@@ -1,0 +1,65 @@
+== step tables (as scored; n=44 / n=11)
+M0  beethoven5-litolff   {'right': 32, 'wrong': 10, 'abstain': 2} n=44
+M0  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+M0  vs Sean (3/0/0/6/2 = -6), Litolff n=44: {'right': 33, 'wrong': 9, 'abstain': 2}
+E1  beethoven5-litolff   {'right': 36, 'wrong': 6, 'abstain': 2} n=44
+E1  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+E1  vs Sean (3/0/0/6/2 = -6), Litolff n=44: {'right': 37, 'wrong': 5, 'abstain': 2}
+E2  beethoven5-litolff   {'right': 39, 'wrong': 4, 'abstain': 1} n=44
+E2  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+E2  vs Sean (3/0/0/6/2 = -6), Litolff n=44: {'right': 40, 'wrong': 3, 'abstain': 1}
+E3  beethoven5-litolff   {'right': 40, 'wrong': 3, 'abstain': 1} n=44
+E3  brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+E3  vs Sean (3/0/0/6/2 = -6), Litolff n=44: {'right': 41, 'wrong': 2, 'abstain': 1}
+
+--- E1 vs M0: every changed head
+beetho glyph/3/0/0/2/4      -4 wrong   ->   -6 wrong   ref=[-7] kind=filled last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)
+beetho glyph/3/0/0/7/1     -10 wrong   ->   -8 right   ref=[-8] kind=filled last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)
+beetho glyph/3/0/0/7/2      -6 wrong   ->   -2 right   ref=[-2] kind=filled last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.85 sp)
+beetho glyph/3/0/7/4/3      -3 wrong   ->   -4 right   ref=[-4] kind=filled last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.81 sp)
+beetho glyph/3/0/7/7/0      11 wrong   ->   12 right   ref=[12] kind=filled last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.58 sp)
+right heads broken: []
+
+--- E2 vs E1: every changed head
+beetho glyph/3/0/0/7/2      -2 right   ->   -2 right   ref=[-2] kind=filled gate PASS iou 0.84 off 0.05; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)
+beetho glyph/3/0/5/2/0      10 right   ->   10 right   ref=[10] kind=filled gate PASS iou 0.85 off 0.02; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.58 sp)
+beetho glyph/3/0/7/2/3      10 right   ->   10 right   ref=[10] kind=filled gate PASS iou 0.81 off 0.12; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.51 sp)
+beetho glyph/3/0/7/2/4    None abstain ->   10 right   ref=[10] kind=filled gate PASS iou 0.7 off 0.15; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.31 sp)
+beetho glyph/3/0/7/3/1      -6 right   ->   -6 right   ref=[-6] kind=filled gate PASS iou 0.73 off 0.1; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.78 sp)
+beetho glyph/3/0/7/3/5      10 right   ->   10 right   ref=[10] kind=filled gate PASS iou 0.74 off 0.14; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.39 sp)
+beetho glyph/3/0/7/4/0      -2 right   ->   -2 right   ref=[-2] kind=filled gate PASS iou 0.81 off 0.05; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)
+beetho glyph/3/0/7/4/2      -2 right   ->   -2 right   ref=[-2] kind=filled gate PASS iou 0.77 off 0.05; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.70 sp)
+beetho glyph/3/0/7/6/1      11 wrong   ->   12 right   ref=[12] kind=filled gate PASS iou 0.79 off 0.03; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)
+beetho glyph/3/0/7/6/2      12 right   ->   12 right   ref=[12] kind=filled gate PASS iou 0.81 off 0.12; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)
+beetho glyph/3/0/7/6/4      12 right   ->   12 right   ref=[12] kind=filled gate PASS iou 0.75 off 0.1; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.57 sp)
+beetho glyph/3/0/7/7/0      12 right   ->   12 right   ref=[12] kind=filled gate PASS iou 0.73 off 0.13; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.52 sp)
+beetho glyph/3/0/8/2/2      10 right   ->   10 right   ref=[10] kind=filled gate PASS iou 0.77 off 0.11; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.45 sp)
+beetho glyph/3/0/8/2/5      10 right   ->   10 right   ref=[10] kind=filled gate PASS iou 0.82 off 0.09; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)
+beetho glyph/3/0/8/6/10   None abstain -> None abstain ref=[10] kind=filled gate PASS iou 0.81 off 0.01; every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head
+beetho glyph/3/1/0/6/0      -5 wrong   ->   -6 right   ref=[-6] kind=filled gate PASS iou 0.79 off 0.09; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)
+beetho glyph/3/1/0/6/1      -3 right   ->   -3 right   ref=[-3] kind=filled gate PASS iou 0.7 off 0.02; -0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+beetho glyph/3/1/0/7/0      -6 right   ->   -6 right   ref=[-6] kind=filled gate PASS iou 0.72 off 0.11; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)
+beetho glyph/3/1/0/9/2      -3 right   ->   -3 right   ref=[-3] kind=filled gate PASS iou 0.78 off 0.05; -0.08 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/0/2/4      -2 right   ->   -2 right   ref=[-2] kind=filled gate PASS iou 0.87 off 0.07; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.71 sp)
+brahms glyph/1/1/0/4/0      -7 right   ->   -7 right   ref=[-7] kind=filled gate PASS iou 0.86 off 0.06; -0.15 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/0/4/1      -9 right   ->   -9 right   ref=[-9] kind=filled gate PASS iou 0.89 off 0.03; -0.12 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/0/4/3      -5 right   ->   -5 right   ref=[-5] kind=filled gate PASS iou 0.91 off 0.01; -0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/0/4/4      -3 right   ->   -3 right   ref=[-3] kind=filled gate PASS iou 0.84 off 0.07; -0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/0/4/5      -8 right   ->   -8 right   ref=[-8] kind=filled gate PASS iou 0.9 off 0.03; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)
+brahms glyph/1/1/0/4/6      -6 right   ->   -6 right   ref=[-6] kind=filled gate PASS iou 0.87 off 0.03; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)
+brahms glyph/1/1/8/4/4      -2 right   ->   -2 right   ref=[-2] kind=filled gate PASS iou 0.9 off 0.02; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)
+brahms glyph/1/1/8/5/0      12 right   ->   12 right   ref=[12] kind=filled gate PASS iou 0.86 off 0.04; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.60 sp)
+brahms glyph/1/1/8/6/0      13 right   ->   13 right   ref=[13] kind=filled gate PASS iou 0.78 off 0.13; -0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+brahms glyph/1/1/8/7/4      13 right   ->   13 right   ref=[13] kind=filled gate PASS iou 0.79 off 0.11; -0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+right heads broken: []
+
+--- E3 vs E2: every changed head
+beetho glyph/1/0/10/7/1     -4 wrong   ->   -2 right   ref=[-2] kind=hollow gate PASS iou 0.79 off 0.05; last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.53 sp)
+right heads broken: []
+
+--- right heads broken E3 vs M0: []
+
+== remaining wrong/undecided after E3 (reference shown; Sean's -6 for 3/0/0/6/2)
+beetho glyph/3/0/0/2/4    we=  -6 ref=[-7] (wrong) kind=filled cls=headBlackInSpace std_box=False | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)
+beetho glyph/3/0/0/2/9    we=  -6 ref=[-5] (wrong) kind=filled cls=headBlackInSpace std_box=False | -0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+beetho glyph/3/0/8/6/10   we=None ref=[10] (abstain) kind=filled cls=eheadBlackOnLine std_box=True | every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head

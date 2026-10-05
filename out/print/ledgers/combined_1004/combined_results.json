@@ -1,0 +1,6840 @@
+{
+ "beethoven5-litolff": {
+  "glyph/1/0/10/7/1": {
+   "truth": [
+    -2
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfInSpace",
+   "s2": {
+    "box": [
+     1601.6249078578624,
+     2890.9759376476277,
+     1624.8700921421375,
+     2909.876562352373
+    ],
+    "centre": [
+     1613.2475,
+     2900.4262500000004
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.47,
+     "offset_open_sp": 0.29,
+     "iou_raw": 0.45,
+     "offset_raw_sp": 0.31
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.508
+    ],
+    "det_size_sp": [
+     1.28,
+     0.91
+    ],
+    "size_ratio": [
+     1.153,
+     1.319
+    ]
+   },
+   "s2h": {
+    "box": [
+     1603.6249078578624,
+     2885.9759376476277,
+     1626.8700921421375,
+     2904.876562352373
+    ],
+    "centre": [
+     1615.2475,
+     2895.4262500000004
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.05
+    },
+    "pass": true,
+    "pockets": [
+     {
+      "area": 41,
+      "r_max": 2.87,
+      "centre": [
+       1622.2,
+       2889.6
+      ],
+      "raw_enclosed": false
+     },
+     {
+      "area": 31,
+      "r_max": 2.32,
+      "centre": [
+       1609.9,
+       2901.9
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -4,
+     "reason": "-0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1603.17,
+      2885.26,
+      1623.33,
+      2899.59
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -4,
+     "reason": "-0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1603.17,
+      2885.26,
+      1623.33,
+      2899.59
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -4,
+     "reason": "-0.20 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1603.17,
+      2885.26,
+      1623.33,
+      2899.59
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.53 sp)",
+     "v": "right",
+     "box": [
+      1603.62,
+      2885.98,
+      1626.87,
+      2904.88
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/0/10/8/1": {
+   "truth": [
+    -2
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfOnLine",
+   "s2": {
+    "box": [
+     1734.2399078578626,
+     2884.3146876476276,
+     1757.4850921421378,
+     2903.215312352373
+    ],
+    "centre": [
+     1745.8625000000002,
+     2893.7650000000003
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.53,
+     "offset_open_sp": 0.03,
+     "iou_raw": 0.49,
+     "offset_raw_sp": 0.04
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.6,
+     1.42
+    ],
+    "size_ratio": [
+     0.922,
+     0.845
+    ]
+   },
+   "s2h": {
+    "box": [
+     1734.2399078578626,
+     2883.3146876476276,
+     1757.4850921421378,
+     2902.215312352373
+    ],
+    "centre": [
+     1745.8625000000002,
+     2892.7650000000003
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.65,
+     "offset_open_sp": 0.08
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 21,
+      "r_max": 1.91,
+      "centre": [
+       1750.8,
+       2888.3
+      ],
+      "raw_enclosed": true
+     },
+     {
+      "area": 33,
+      "r_max": 2.32,
+      "centre": [
+       1741.4,
+       2898.4
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "v": "right",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "v": "right",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "v": "right",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.79 sp)",
+     "v": "right",
+     "box": [
+      1733.26,
+      2882.58,
+      1758.46,
+      2904.95
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/1/0/3/7/3": {
+   "truth": [
+    -2
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfInSpace",
+   "s2": {
+    "box": [
+     1603.6724078578625,
+     1608.0121876476273,
+     1626.9175921421377,
+     1626.9128123523728
+    ],
+    "centre": [
+     1615.295,
+     1617.4625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.6,
+     "offset_open_sp": 0.06,
+     "iou_raw": 0.51,
+     "offset_raw_sp": 0.15
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.19
+    ],
+    "det_size_sp": [
+     1.476,
+     1.348
+    ],
+    "size_ratio": [
+     1.0,
+     0.89
+    ]
+   },
+   "s2h": {
+    "box": [
+     1603.6724078578625,
+     1607.0121876476273,
+     1626.9175921421377,
+     1625.9128123523728
+    ],
+    "centre": [
+     1615.295,
+     1616.4625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.63,
+     "offset_open_sp": 0.12
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 34,
+      "r_max": 2.32,
+      "centre": [
+       1621.8,
+       1611.4
+      ],
+      "raw_enclosed": true
+     },
+     {
+      "area": 10,
+      "r_max": 1.91,
+      "centre": [
+       1612.9,
+       1621.2
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "v": "right",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "v": "right",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "v": "right",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.54 sp)",
+     "v": "right",
+     "box": [
+      1603.67,
+      1603.85,
+      1626.92,
+      1625.08
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/2/1": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     925.5249078578624,
+     387.15968764762727,
+     948.7700921421376,
+     406.06031235237276
+    ],
+    "centre": [
+     937.1475,
+     396.61
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.63,
+     "offset_open_sp": 0.17,
+     "iou_raw": 0.62,
+     "offset_raw_sp": 0.17
+    },
+    "pass": false,
+    "shift_sp": [
+     0.381,
+     -0.063
+    ],
+    "det_size_sp": [
+     1.545,
+     1.181
+    ],
+    "size_ratio": [
+     0.955,
+     1.016
+    ]
+   },
+   "s2h": {
+    "box": [
+     925.5249078578624,
+     387.15968764762727,
+     948.7700921421376,
+     406.06031235237276
+    ],
+    "centre": [
+     937.1475,
+     396.61
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.63,
+     "offset_open_sp": 0.17
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      918.98,
+      388.31,
+      943.32,
+      406.91
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      918.98,
+      388.31,
+      943.32,
+      406.91
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      918.98,
+      388.31,
+      943.32,
+      406.91
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      918.98,
+      388.31,
+      943.32,
+      406.91
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/2/3": {
+   "truth": [
+    -4
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     924.2149078578625,
+     405.5196876476273,
+     947.4600921421377,
+     424.4203123523728
+    ],
+    "centre": [
+     935.8375000000001,
+     414.97
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.6,
+     "offset_open_sp": 0.26,
+     "iou_raw": 0.58,
+     "offset_raw_sp": 0.18
+    },
+    "pass": false,
+    "shift_sp": [
+     0.317,
+     0.0
+    ],
+    "det_size_sp": [
+     1.407,
+     1.22
+    ],
+    "size_ratio": [
+     1.049,
+     0.984
+    ]
+   },
+   "s2h": {
+    "box": [
+     924.2149078578625,
+     405.5196876476273,
+     947.4600921421377,
+     424.4203123523728
+    ],
+    "centre": [
+     935.8375000000001,
+     414.97
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.6,
+     "offset_open_sp": 0.26
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.80 sp)",
+     "v": "right",
+     "box": [
+      919.75,
+      405.36,
+      941.92,
+      424.58
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.80 sp)",
+     "v": "right",
+     "box": [
+      919.75,
+      405.36,
+      941.92,
+      424.58
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.80 sp)",
+     "v": "right",
+     "box": [
+      919.75,
+      405.36,
+      941.92,
+      424.58
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.80 sp)",
+     "v": "right",
+     "box": [
+      919.75,
+      405.36,
+      941.92,
+      424.58
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/2/4": {
+   "truth": [
+    -7
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     830.3224078578623,
+     384.2071876476273,
+     853.5675921421375,
+     403.1078123523728
+    ],
+    "centre": [
+     841.9449999999999,
+     393.6575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.35,
+     "offset_open_sp": 0.42,
+     "iou_raw": 0.37,
+     "offset_raw_sp": 0.41
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.516,
+     1.388
+    ],
+    "size_ratio": [
+     0.974,
+     0.865
+    ]
+   },
+   "s2h": {
+    "box": [
+     830.3224078578623,
+     384.2071876476273,
+     853.5675921421375,
+     403.1078123523728
+    ],
+    "centre": [
+     841.9449999999999,
+     393.6575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.35,
+     "offset_open_sp": 0.42
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)",
+     "v": "wrong",
+     "box": [
+      830.01,
+      382.73,
+      853.88,
+      404.58
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)",
+     "v": "wrong",
+     "box": [
+      830.01,
+      382.73,
+      853.88,
+      404.58
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)",
+     "v": "wrong",
+     "box": [
+      830.01,
+      382.73,
+      853.88,
+      404.58
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.61 sp)",
+     "v": "wrong",
+     "box": [
+      830.01,
+      382.73,
+      853.88,
+      404.58
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/2/9": {
+   "truth": [
+    -5
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     832.7099078578624,
+     402.3896876476273,
+     855.9550921421376,
+     421.2903123523728
+    ],
+    "centre": [
+     844.3325,
+     411.84000000000003
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.39,
+     "offset_open_sp": 0.5,
+     "iou_raw": 0.4,
+     "offset_raw_sp": 0.47
+    },
+    "pass": false,
+    "shift_sp": [
+     0.127,
+     0.254
+    ],
+    "det_size_sp": [
+     1.506,
+     1.26
+    ],
+    "size_ratio": [
+     0.98,
+     0.952
+    ]
+   },
+   "s2h": {
+    "box": [
+     832.7099078578624,
+     402.3896876476273,
+     855.9550921421376,
+     421.2903123523728
+    ],
+    "centre": [
+     844.3325,
+     411.84000000000003
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.39,
+     "offset_open_sp": 0.5
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      830.48,
+      397.92,
+      854.19,
+      417.76
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      830.48,
+      397.92,
+      854.19,
+      417.76
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      830.48,
+      397.92,
+      854.19,
+      417.76
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "-0.18 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      830.48,
+      397.92,
+      854.19,
+      417.76
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/5/12": {
+   "truth": [
+    -4
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfOnLine",
+   "s2": {
+    "box": [
+     1360.5846506526414,
+     414.61719012661433,
+     1383.6453493473587,
+     433.3678098733857
+    ],
+    "centre": [
+     1372.115,
+     423.9925
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.19,
+     "offset_open_sp": 0.71,
+     "iou_raw": 0.26,
+     "offset_raw_sp": 0.62
+    },
+    "pass": false,
+    "shift_sp": [
+     -0.064,
+     0.384
+    ],
+    "det_size_sp": [
+     1.667,
+     1.121
+    ],
+    "size_ratio": [
+     0.885,
+     1.071
+    ]
+   },
+   "s2h": {
+    "box": [
+     1366.5846506526414,
+     408.61719012661433,
+     1389.6453493473587,
+     427.3678098733857
+    ],
+    "centre": [
+     1378.115,
+     417.9925
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.6,
+     "offset_open_sp": 0.23
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 33,
+      "r_max": 2.32,
+      "centre": [
+       1373.7,
+       401.7
+      ],
+      "raw_enclosed": true
+     },
+     {
+      "area": 34,
+      "r_max": 2.74,
+      "centre": [
+       1385.2,
+       409.5
+      ],
+      "raw_enclosed": false
+     },
+     {
+      "area": 24,
+      "r_max": 2.32,
+      "centre": [
+       1374.4,
+       419.9
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.2,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1360.1,
+      409.24,
+      1386.13,
+      426.75
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/6/1": {
+   "truth": [
+    -6
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfInSpace",
+   "s2": {
+    "box": [
+     1528.2376650630833,
+     384.82968516864014,
+     1551.6673349369164,
+     403.8803148313599
+    ],
+    "centre": [
+     1539.9524999999999,
+     394.355
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.18,
+     "offset_open_sp": 0.78,
+     "iou_raw": 0.19,
+     "offset_raw_sp": 0.73
+    },
+    "pass": false,
+    "shift_sp": [
+     -0.315,
+     0.0
+    ],
+    "det_size_sp": [
+     1.279,
+     1.094
+    ],
+    "size_ratio": [
+     1.154,
+     1.097
+    ]
+   },
+   "s2h": {
+    "box": [
+     1528.2376650630833,
+     384.82968516864014,
+     1551.6673349369164,
+     403.8803148313599
+    ],
+    "centre": [
+     1539.9524999999999,
+     394.355
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.16,
+     "offset_open_sp": 0.75
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 37,
+      "r_max": 2.74,
+      "centre": [
+       1548.9,
+       403.6
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.33,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      1534.8,
+      385.68,
+      1555.11,
+      403.04
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/6/2": {
+   "truth": [
+    -4
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     1534.1676650630836,
+     403.3846851686401,
+     1557.5973349369167,
+     422.43531483135985
+    ],
+    "centre": [
+     1545.8825000000002,
+     412.90999999999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.35,
+     "offset_open_sp": 0.52,
+     "iou_raw": 0.37,
+     "offset_raw_sp": 0.49
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.378
+    ],
+    "det_size_sp": [
+     1.279,
+     1.211
+    ],
+    "size_ratio": [
+     1.154,
+     0.991
+    ]
+   },
+   "s2h": {
+    "box": [
+     1536.1676650630836,
+     402.3846851686401,
+     1559.5973349369167,
+     421.43531483135985
+    ],
+    "centre": [
+     1547.8825000000002,
+     411.90999999999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.44,
+     "offset_open_sp": 0.4
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 37,
+      "r_max": 2.74,
+      "centre": [
+       1548.9,
+       403.6
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.33,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "-0.13 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side",
+     "v": "wrong",
+     "box": [
+      1535.73,
+      397.3,
+      1556.04,
+      416.52
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/7/1": {
+   "truth": [
+    -8
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1721.5699078578625,
+     367.4596876476272,
+     1744.8150921421377,
+     386.3603123523727
+    ],
+    "centre": [
+     1733.1925,
+     376.90999999999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.67,
+     "offset_open_sp": 0.28,
+     "iou_raw": 0.6,
+     "offset_raw_sp": 0.36
+    },
+    "pass": false,
+    "shift_sp": [
+     0.381,
+     0.063
+    ],
+    "det_size_sp": [
+     1.447,
+     1.319
+    ],
+    "size_ratio": [
+     1.02,
+     0.91
+    ]
+   },
+   "s2h": {
+    "box": [
+     1721.5699078578625,
+     367.4596876476272,
+     1744.8150921421377,
+     386.3603123523727
+    ],
+    "centre": [
+     1733.1925,
+     376.90999999999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.67,
+     "offset_open_sp": 0.28
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "wrong",
+     "box": [
+      1715.8,
+      365.52,
+      1738.59,
+      386.3
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      1715.8,
+      365.52,
+      1738.59,
+      386.3
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      1715.8,
+      365.52,
+      1738.59,
+      386.3
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      1715.8,
+      365.52,
+      1738.59,
+      386.3
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/0/7/2": {
+   "truth": [
+    -2
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1721.9649078578625,
+     420.22968764762726,
+     1745.2100921421377,
+     439.13031235237275
+    ],
+    "centre": [
+     1733.5875,
+     429.68
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.84,
+     "offset_open_sp": 0.05,
+     "iou_raw": 0.67,
+     "offset_raw_sp": 0.2
+    },
+    "pass": true,
+    "shift_sp": [
+     0.317,
+     0.127
+    ],
+    "det_size_sp": [
+     1.486,
+     1.24
+    ],
+    "size_ratio": [
+     0.993,
+     0.968
+    ]
+   },
+   "s2h": {
+    "box": [
+     1721.9649078578625,
+     420.22968764762726,
+     1745.2100921421377,
+     439.13031235237275
+    ],
+    "centre": [
+     1733.5875,
+     429.68
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.84,
+     "offset_open_sp": 0.05
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -3.87 sp)",
+     "v": "wrong",
+     "box": [
+      1716.88,
+      417.92,
+      1740.29,
+      437.44
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.85 sp)",
+     "v": "right",
+     "box": [
+      1716.88,
+      417.92,
+      1740.29,
+      437.44
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1721.96,
+      420.23,
+      1745.21,
+      439.13
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1721.96,
+      420.23,
+      1745.21,
+      439.13
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/5/2/0": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     954.3811578578625,
+     1220.8509376476272,
+     977.6263421421377,
+     1239.7515623523727
+    ],
+    "centre": [
+     966.0037500000001,
+     1230.30125
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.85,
+     "offset_open_sp": 0.02,
+     "iou_raw": 0.75,
+     "offset_raw_sp": 0.07
+    },
+    "pass": true,
+    "shift_sp": [
+     0.127,
+     -0.19
+    ],
+    "det_size_sp": [
+     1.59,
+     1.29
+    ],
+    "size_ratio": [
+     0.928,
+     0.93
+    ]
+   },
+   "s2h": {
+    "box": [
+     954.3811578578625,
+     1220.8509376476272,
+     977.6263421421377,
+     1239.7515623523727
+    ],
+    "centre": [
+     966.0037500000001,
+     1230.30125
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.85,
+     "offset_open_sp": 0.02
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.40 sp)",
+     "v": "right",
+     "box": [
+      951.48,
+      1223.14,
+      976.52,
+      1243.46
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.40 sp)",
+     "v": "right",
+     "box": [
+      951.48,
+      1223.14,
+      976.52,
+      1243.46
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.58 sp)",
+     "v": "right",
+     "box": [
+      954.38,
+      1220.85,
+      977.63,
+      1239.75
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.58 sp)",
+     "v": "right",
+     "box": [
+      954.38,
+      1220.85,
+      977.63,
+      1239.75
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/5/4/5": {
+   "truth": [
+    10
+   ],
+   "kind": "hollow",
+   "cls": "noteheadHalfOnLine",
+   "s2": {
+    "box": [
+     1191.0511578578623,
+     1232.2996876476273,
+     1214.2963421421375,
+     1251.2003123523727
+    ],
+    "centre": [
+     1202.67375,
+     1241.75
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.21,
+     "offset_open_sp": 0.61,
+     "iou_raw": 0.26,
+     "offset_raw_sp": 0.62
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.571
+    ],
+    "det_size_sp": [
+     1.57,
+     1.26
+    ],
+    "size_ratio": [
+     0.94,
+     0.952
+    ]
+   },
+   "s2h": {
+    "box": [
+     1191.0511578578623,
+     1233.2996876476273,
+     1214.2963421421375,
+     1252.2003123523727
+    ],
+    "centre": [
+     1202.67375,
+     1242.75
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.27,
+     "offset_open_sp": 0.66
+    },
+    "pass": false,
+    "pockets": [
+     {
+      "area": 17,
+      "r_max": 1.91,
+      "centre": [
+       1212.3,
+       1228.1
+      ],
+      "raw_enclosed": true
+     },
+     {
+      "area": 29,
+      "r_max": 2.32,
+      "centre": [
+       1201.7,
+       1238.1
+      ],
+      "raw_enclosed": true
+     }
+    ],
+    "filled_same_object": false,
+    "info": {
+     "close_diameter": 9,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1190.31,
+      1222.83,
+      1215.04,
+      1242.67
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/5/7/0": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1716.7049078578623,
+     1224.6384376476271,
+     1739.9500921421375,
+     1243.5390623523726
+    ],
+    "centre": [
+     1728.3274999999999,
+     1234.08875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.18,
+     "iou_raw": 0.62,
+     "offset_raw_sp": 0.21
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.56,
+     1.35
+    ],
+    "size_ratio": [
+     0.946,
+     0.889
+    ]
+   },
+   "s2h": {
+    "box": [
+     1716.7049078578623,
+     1224.6384376476271,
+     1739.9500921421375,
+     1243.5390623523726
+    ],
+    "centre": [
+     1728.3274999999999,
+     1234.08875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.18
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1716.04,
+      1223.46,
+      1740.61,
+      1244.72
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1716.04,
+      1223.46,
+      1740.61,
+      1244.72
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1716.04,
+      1223.46,
+      1740.61,
+      1244.72
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      1716.04,
+      1223.46,
+      1740.61,
+      1244.72
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/0/7": {
+   "truth": [
+    -3
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     523.6729222683047,
+     1453.919682689653,
+     547.2870777316954,
+     1473.120317310347
+    ],
+    "centre": [
+     535.48,
+     1463.52
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.68,
+     "offset_open_sp": 0.14,
+     "iou_raw": 0.64,
+     "offset_raw_sp": 0.18
+    },
+    "pass": false,
+    "shift_sp": [
+     0.125,
+     -0.25
+    ],
+    "det_size_sp": [
+     1.31,
+     1.35
+    ],
+    "size_ratio": [
+     1.127,
+     0.889
+    ]
+   },
+   "s2h": {
+    "box": [
+     523.6729222683047,
+     1453.919682689653,
+     547.2870777316954,
+     1473.120317310347
+    ],
+    "centre": [
+     535.48,
+     1463.52
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.68,
+     "offset_open_sp": 0.14
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.4,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -3,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.36 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      523.0,
+      1456.72,
+      543.96,
+      1478.32
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -3,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.36 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      523.0,
+      1456.72,
+      543.96,
+      1478.32
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -3,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.36 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      523.0,
+      1456.72,
+      543.96,
+      1478.32
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -3,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.36 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      523.0,
+      1456.72,
+      543.96,
+      1478.32
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/2/2": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     894.3774078578624,
+     1570.0296876476273,
+     917.6225921421376,
+     1588.9303123523728
+    ],
+    "centre": [
+     906.0,
+     1579.48
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.64,
+     "offset_open_sp": 0.25,
+     "iou_raw": 0.6,
+     "offset_raw_sp": 0.27
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     -0.063
+    ],
+    "det_size_sp": [
+     1.331,
+     1.453
+    ],
+    "size_ratio": [
+     1.109,
+     0.826
+    ]
+   },
+   "s2h": {
+    "box": [
+     894.3774078578624,
+     1570.0296876476273,
+     917.6225921421376,
+     1588.9303123523728
+    ],
+    "centre": [
+     906.0,
+     1579.48
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.64,
+     "offset_open_sp": 0.25
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      895.52,
+      1569.04,
+      916.48,
+      1591.92
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      895.52,
+      1569.04,
+      916.48,
+      1591.92
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      895.52,
+      1569.04,
+      916.48,
+      1591.92
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      895.52,
+      1569.04,
+      916.48,
+      1591.92
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/2/3": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     923.2018934474202,
+     1558.0996926056014,
+     946.0781065525798,
+     1576.7003073943988
+    ],
+    "centre": [
+     934.64,
+     1567.4
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.12,
+     "iou_raw": 0.72,
+     "offset_raw_sp": 0.14
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     -0.065
+    ],
+    "det_size_sp": [
+     1.455,
+     1.301
+    ],
+    "size_ratio": [
+     1.014,
+     0.922
+    ]
+   },
+   "s2h": {
+    "box": [
+     923.2018934474202,
+     1558.0996926056014,
+     946.0781065525798,
+     1576.7003073943988
+    ],
+    "centre": [
+     934.64,
+     1567.4
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.12
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.14,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.50 sp)",
+     "v": "right",
+     "box": [
+      923.36,
+      1558.32,
+      945.92,
+      1578.48
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.50 sp)",
+     "v": "right",
+     "box": [
+      923.36,
+      1558.32,
+      945.92,
+      1578.48
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.51 sp)",
+     "v": "right",
+     "box": [
+      923.2,
+      1558.1,
+      946.08,
+      1576.7
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.51 sp)",
+     "v": "right",
+     "box": [
+      923.2,
+      1558.1,
+      946.08,
+      1576.7
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/2/4": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     954.0974078578624,
+     1560.6296876476272,
+     977.3425921421376,
+     1579.5303123523727
+    ],
+    "centre": [
+     965.72,
+     1570.08
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.7,
+     "offset_open_sp": 0.15,
+     "iou_raw": 0.65,
+     "offset_raw_sp": 0.19
+    },
+    "pass": true,
+    "shift_sp": [
+     0.063,
+     0.0
+    ],
+    "det_size_sp": [
+     1.615,
+     1.453
+    ],
+    "size_ratio": [
+     0.914,
+     0.826
+    ]
+   },
+   "s2h": {
+    "box": [
+     954.0974078578624,
+     1560.6296876476272,
+     977.3425921421376,
+     1579.5303123523727
+    ],
+    "centre": [
+     965.72,
+     1570.08
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.7,
+     "offset_open_sp": 0.15
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      952.0,
+      1558.64,
+      977.44,
+      1581.52
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      952.0,
+      1558.64,
+      977.44,
+      1581.52
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.31 sp)",
+     "v": "right",
+     "box": [
+      954.1,
+      1560.63,
+      977.34,
+      1579.53
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.31 sp)",
+     "v": "right",
+     "box": [
+      954.1,
+      1560.63,
+      977.34,
+      1579.53
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/3/1": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1126.2974078578625,
+     1428.3896876476274,
+     1149.5425921421377,
+     1447.290312352373
+    ],
+    "centre": [
+     1137.92,
+     1437.8400000000001
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.1,
+     "iou_raw": 0.63,
+     "offset_raw_sp": 0.05
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.707,
+     1.382
+    ],
+    "size_ratio": [
+     0.865,
+     0.868
+    ]
+   },
+   "s2h": {
+    "box": [
+     1126.2974078578625,
+     1428.3896876476274,
+     1149.5425921421377,
+     1447.290312352373
+    ],
+    "centre": [
+     1137.92,
+     1437.8400000000001
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.1
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1124.48,
+      1426.96,
+      1151.36,
+      1448.72
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1124.48,
+      1426.96,
+      1151.36,
+      1448.72
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.78 sp)",
+     "v": "right",
+     "box": [
+      1126.3,
+      1428.39,
+      1149.54,
+      1447.29
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.78 sp)",
+     "v": "right",
+     "box": [
+      1126.3,
+      1428.39,
+      1149.54,
+      1447.29
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/3/2": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1094.2974078578625,
+     1429.3496876476274,
+     1117.5425921421377,
+     1448.250312352373
+    ],
+    "centre": [
+     1105.92,
+     1438.8000000000002
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.69,
+     "offset_open_sp": 0.04,
+     "iou_raw": 0.6,
+     "offset_raw_sp": 0.14
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.443,
+     1.321
+    ],
+    "size_ratio": [
+     1.023,
+     0.908
+    ]
+   },
+   "s2h": {
+    "box": [
+     1094.2974078578625,
+     1429.3496876476274,
+     1117.5425921421377,
+     1448.250312352373
+    ],
+    "centre": [
+     1105.92,
+     1438.8000000000002
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.69,
+     "offset_open_sp": 0.04
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1094.56,
+      1428.4,
+      1117.28,
+      1449.2
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1094.56,
+      1428.4,
+      1117.28,
+      1449.2
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1094.56,
+      1428.4,
+      1117.28,
+      1449.2
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1094.56,
+      1428.4,
+      1117.28,
+      1449.2
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/3/4": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1066.7774078578625,
+     1428.5496876476273,
+     1090.0225921421377,
+     1447.4503123523727
+    ],
+    "centre": [
+     1078.4,
+     1438.0
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.67,
+     "offset_open_sp": 0.02,
+     "iou_raw": 0.58,
+     "offset_raw_sp": 0.13
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.564,
+     1.341
+    ],
+    "size_ratio": [
+     0.944,
+     0.895
+    ]
+   },
+   "s2h": {
+    "box": [
+     1066.7774078578625,
+     1428.5496876476273,
+     1090.0225921421377,
+     1447.4503123523727
+    ],
+    "centre": [
+     1078.4,
+     1438.0
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.67,
+     "offset_open_sp": 0.02
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1066.08,
+      1427.44,
+      1090.72,
+      1448.56
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1066.08,
+      1427.44,
+      1090.72,
+      1448.56
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1066.08,
+      1427.44,
+      1090.72,
+      1448.56
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "a thin flat line touches the head's far side (ledger 3), nothing farther out: the head is on it",
+     "v": "right",
+     "box": [
+      1066.08,
+      1427.44,
+      1090.72,
+      1448.56
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/3/5": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1023.9618934474203,
+     1559.0196926056014,
+     1046.83810655258,
+     1577.6203073943984
+    ],
+    "centre": [
+     1035.4,
+     1568.32
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.74,
+     "offset_open_sp": 0.14,
+     "iou_raw": 0.64,
+     "offset_raw_sp": 0.23
+    },
+    "pass": true,
+    "shift_sp": [
+     0.065,
+     0.0
+    ],
+    "det_size_sp": [
+     1.59,
+     1.394
+    ],
+    "size_ratio": [
+     0.928,
+     0.861
+    ]
+   },
+   "s2h": {
+    "box": [
+     1023.9618934474203,
+     1559.0196926056014,
+     1046.83810655258,
+     1577.6203073943984
+    ],
+    "centre": [
+     1035.4,
+     1568.32
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.74,
+     "offset_open_sp": 0.14
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.14,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.48 sp)",
+     "v": "right",
+     "box": [
+      1022.08,
+      1557.52,
+      1046.72,
+      1579.12
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.48 sp)",
+     "v": "right",
+     "box": [
+      1022.08,
+      1557.52,
+      1046.72,
+      1579.12
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.39 sp)",
+     "v": "right",
+     "box": [
+      1023.96,
+      1559.02,
+      1046.84,
+      1577.62
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.39 sp)",
+     "v": "right",
+     "box": [
+      1023.96,
+      1559.02,
+      1046.84,
+      1577.62
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/4/0": {
+   "truth": [
+    -2
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1302.4174078578624,
+     1459.2696876476273,
+     1325.6625921421376,
+     1478.1703123523728
+    ],
+    "centre": [
+     1314.04,
+     1468.72
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.05,
+     "iou_raw": 0.72,
+     "offset_raw_sp": 0.12
+    },
+    "pass": true,
+    "shift_sp": [
+     0.127,
+     0.0
+    ],
+    "det_size_sp": [
+     1.514,
+     1.3
+    ],
+    "size_ratio": [
+     0.975,
+     0.923
+    ]
+   },
+   "s2h": {
+    "box": [
+     1302.4174078578624,
+     1459.2696876476273,
+     1325.6625921421376,
+     1478.1703123523728
+    ],
+    "centre": [
+     1314.04,
+     1468.72
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.05
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      1300.12,
+      1458.48,
+      1323.96,
+      1478.96
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      1300.12,
+      1458.48,
+      1323.96,
+      1478.96
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1302.42,
+      1459.27,
+      1325.66,
+      1478.17
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1302.42,
+      1459.27,
+      1325.66,
+      1478.17
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/4/2": {
+   "truth": [
+    -2
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1241.8574078578624,
+     1460.6296876476272,
+     1265.1025921421376,
+     1479.5303123523727
+    ],
+    "centre": [
+     1253.48,
+     1470.08
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.77,
+     "offset_open_sp": 0.05,
+     "iou_raw": 0.73,
+     "offset_raw_sp": 0.06
+    },
+    "pass": true,
+    "shift_sp": [
+     0.127,
+     0.0
+    ],
+    "det_size_sp": [
+     1.503,
+     1.331
+    ],
+    "size_ratio": [
+     0.982,
+     0.902
+    ]
+   },
+   "s2h": {
+    "box": [
+     1241.8574078578624,
+     1460.6296876476272,
+     1265.1025921421376,
+     1479.5303123523727
+    ],
+    "centre": [
+     1253.48,
+     1470.08
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.77,
+     "offset_open_sp": 0.05
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      1239.64,
+      1459.6,
+      1263.32,
+      1480.56
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.73 sp)",
+     "v": "right",
+     "box": [
+      1239.64,
+      1459.6,
+      1263.32,
+      1480.56
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.70 sp)",
+     "v": "right",
+     "box": [
+      1241.86,
+      1460.63,
+      1265.1,
+      1479.53
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.70 sp)",
+     "v": "right",
+     "box": [
+      1241.86,
+      1460.63,
+      1265.1,
+      1479.53
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/4/3": {
+   "truth": [
+    -4
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1190.3496506526415,
+     1447.3846901266143,
+     1213.4103493473588,
+     1466.1353098733857
+    ],
+    "centre": [
+     1201.88,
+     1456.76
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.56,
+     "offset_open_sp": 0.16,
+     "iou_raw": 0.5,
+     "offset_raw_sp": 0.11
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.192
+    ],
+    "det_size_sp": [
+     1.597,
+     1.403
+    ],
+    "size_ratio": [
+     0.924,
+     0.855
+    ]
+   },
+   "s2h": {
+    "box": [
+     1190.3496506526415,
+     1447.3846901266143,
+     1213.4103493473588,
+     1466.1353098733857
+    ],
+    "centre": [
+     1201.88,
+     1456.76
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.56,
+     "offset_open_sp": 0.16
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.2,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -3,
+     "reason": "0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1189.4,
+      1442.8,
+      1214.36,
+      1464.72
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.81 sp)",
+     "v": "right",
+     "box": [
+      1189.4,
+      1442.8,
+      1214.36,
+      1464.72
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.81 sp)",
+     "v": "right",
+     "box": [
+      1189.4,
+      1442.8,
+      1214.36,
+      1464.72
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.81 sp)",
+     "v": "right",
+     "box": [
+      1189.4,
+      1442.8,
+      1214.36,
+      1464.72
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/7/6/1": {
+   "truth": [
+    12
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1651.6696506526414,
+     1574.7846901266141,
+     1674.7303493473587,
+     1593.5353098733856
+    ],
+    "centre": [
+     1663.2,
+     1584.1599999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.03,
+     "iou_raw": 0.69,
+     "offset_raw_sp": 0.09
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.69,
+     1.321
+    ],
+    "size_ratio": [
+     0.873,
+     0.908
+    ]
+   },
+   "s2h": {
+    "box": [
+     1651.6696506526414,
+     1574.7846901266141,
+     1674.7303493473587,
+     1593.5353098733856
+    ],
+    "centre": [
+     1663.2,
+     1584.1599999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.03
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.2,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.50 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1650.0,
+      1573.84,
+      1676.4,
+      1594.48
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.50 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1650.0,
+      1573.84,
+      1676.4,
+      1594.48
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1651.67,
+      1574.78,
+      1674.73,
+      1593.54
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1651.67,
+      1574.78,
+      1674.73,
+      1593.54
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/6/2": {
+   "truth": [
+    12
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1589.3317082944102,
+     1574.1846702947175,
+     1613.8682917055896,
+     1594.1353297052822
+    ],
+    "centre": [
+     1601.6,
+     1584.1599999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.12,
+     "iou_raw": 0.59,
+     "offset_raw_sp": 0.18
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.28,
+     1.261
+    ],
+    "size_ratio": [
+     1.153,
+     0.952
+    ]
+   },
+   "s2h": {
+    "box": [
+     1589.3317082944102,
+     1574.1846702947175,
+     1613.8682917055896,
+     1594.1353297052822
+    ],
+    "centre": [
+     1601.6,
+     1584.1599999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.12
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.73,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.59 sp)",
+     "v": "right",
+     "box": [
+      1590.96,
+      1573.68,
+      1612.24,
+      1594.64
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.59 sp)",
+     "v": "right",
+     "box": [
+      1590.96,
+      1573.68,
+      1612.24,
+      1594.64
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1589.33,
+      1574.18,
+      1613.87,
+      1594.14
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1589.33,
+      1574.18,
+      1613.87,
+      1594.14
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/6/4": {
+   "truth": [
+    12
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1617.8974078578624,
+     1574.5496876476273,
+     1641.1425921421376,
+     1593.4503123523727
+    ],
+    "centre": [
+     1629.52,
+     1584.0
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.75,
+     "offset_open_sp": 0.1,
+     "iou_raw": 0.64,
+     "offset_raw_sp": 0.15
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.483,
+     1.331
+    ],
+    "size_ratio": [
+     0.995,
+     0.902
+    ]
+   },
+   "s2h": {
+    "box": [
+     1617.8974078578624,
+     1574.5496876476273,
+     1641.1425921421376,
+     1593.4503123523727
+    ],
+    "centre": [
+     1629.52,
+     1584.0
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.75,
+     "offset_open_sp": 0.1
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.63 sp)",
+     "v": "right",
+     "box": [
+      1617.84,
+      1573.52,
+      1641.2,
+      1594.48
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.63 sp)",
+     "v": "right",
+     "box": [
+      1617.84,
+      1573.52,
+      1641.2,
+      1594.48
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.57 sp)",
+     "v": "right",
+     "box": [
+      1617.9,
+      1574.55,
+      1641.14,
+      1593.45
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.57 sp)",
+     "v": "right",
+     "box": [
+      1617.9,
+      1574.55,
+      1641.14,
+      1593.45
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/7/7/0": {
+   "truth": [
+    12
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1717.3896506526414,
+     1573.8246901266143,
+     1740.4503493473587,
+     1592.5753098733858
+    ],
+    "centre": [
+     1728.92,
+     1583.2
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.13,
+     "iou_raw": 0.59,
+     "offset_raw_sp": 0.22
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.516,
+     1.321
+    ],
+    "size_ratio": [
+     0.974,
+     0.908
+    ]
+   },
+   "s2h": {
+    "box": [
+     1717.3896506526414,
+     1573.8246901266143,
+     1740.4503493473587,
+     1592.5753098733858
+    ],
+    "centre": [
+     1728.92,
+     1583.2
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.13
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.2,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.38 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1717.08,
+      1572.88,
+      1740.76,
+      1593.52
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.58 sp)",
+     "v": "right",
+     "box": [
+      1717.08,
+      1572.88,
+      1740.76,
+      1593.52
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.52 sp)",
+     "v": "right",
+     "box": [
+      1717.39,
+      1573.82,
+      1740.45,
+      1592.58
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.52 sp)",
+     "v": "right",
+     "box": [
+      1717.39,
+      1573.82,
+      1740.45,
+      1592.58
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/8/1/1": {
+   "truth": [
+    13
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     748.9901650630835,
+     1742.05218516864,
+     772.4198349369163,
+     1761.1028148313596
+    ],
+    "centre": [
+     760.7049999999999,
+     1751.5774999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.55,
+     "offset_open_sp": 0.31,
+     "iou_raw": 0.52,
+     "offset_raw_sp": 0.34
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.484,
+     1.494
+    ],
+    "size_ratio": [
+     0.995,
+     0.803
+    ]
+   },
+   "s2h": {
+    "box": [
+     748.9901650630835,
+     1742.05218516864,
+     772.4198349369163,
+     1761.1028148313596
+    ],
+    "centre": [
+     760.7049999999999,
+     1751.5774999999999
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.55,
+     "offset_open_sp": 0.31
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.33,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 13,
+     "reason": "0.11 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      748.92,
+      1739.72,
+      772.49,
+      1763.43
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 13,
+     "reason": "0.11 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      748.92,
+      1739.72,
+      772.49,
+      1763.43
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 13,
+     "reason": "0.11 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      748.92,
+      1739.72,
+      772.49,
+      1763.43
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 13,
+     "reason": "0.11 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      748.92,
+      1739.72,
+      772.49,
+      1763.43
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/8/1/3": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     717.0896506526412,
+     1721.3771901266143,
+     740.1503493473588,
+     1740.1278098733858
+    ],
+    "centre": [
+     728.62,
+     1730.7525
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.12,
+     "iou_raw": 0.63,
+     "offset_raw_sp": 0.13
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     -0.192
+    ],
+    "det_size_sp": [
+     1.468,
+     1.617
+    ],
+    "size_ratio": [
+     1.005,
+     0.742
+    ]
+   },
+   "s2h": {
+    "box": [
+     717.0896506526412,
+     1721.3771901266143,
+     740.1503493473588,
+     1740.1278098733858
+    ],
+    "centre": [
+     728.62,
+     1730.7525
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.12
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.2,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      717.15,
+      1721.12,
+      740.09,
+      1746.38
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      717.15,
+      1721.12,
+      740.09,
+      1746.38
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      717.15,
+      1721.12,
+      740.09,
+      1746.38
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      717.15,
+      1721.12,
+      740.09,
+      1746.38
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/8/2/2": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     958.4299078578624,
+     1713.4596876476273,
+     981.6750921421376,
+     1732.3603123523728
+    ],
+    "centre": [
+     970.0525,
+     1722.91
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.77,
+     "offset_open_sp": 0.11,
+     "iou_raw": 0.72,
+     "offset_raw_sp": 0.12
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     -0.063
+    ],
+    "det_size_sp": [
+     1.545,
+     1.319
+    ],
+    "size_ratio": [
+     0.955,
+     0.91
+    ]
+   },
+   "s2h": {
+    "box": [
+     958.4299078578624,
+     1713.4596876476273,
+     981.6750921421376,
+     1732.3603123523728
+    ],
+    "centre": [
+     970.0525,
+     1722.91
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.77,
+     "offset_open_sp": 0.11
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      957.88,
+      1713.53,
+      982.22,
+      1734.3
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      957.88,
+      1713.53,
+      982.22,
+      1734.3
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.45 sp)",
+     "v": "right",
+     "box": [
+      958.43,
+      1713.46,
+      981.68,
+      1732.36
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.45 sp)",
+     "v": "right",
+     "box": [
+      958.43,
+      1713.46,
+      981.68,
+      1732.36
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/8/2/5": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     927.1199078578625,
+     1713.6146876476273,
+     950.3650921421377,
+     1732.5153123523728
+    ],
+    "centre": [
+     938.7425000000001,
+     1723.065
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.82,
+     "offset_open_sp": 0.09,
+     "iou_raw": 0.73,
+     "offset_raw_sp": 0.11
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     -0.063
+    ],
+    "det_size_sp": [
+     1.466,
+     1.319
+    ],
+    "size_ratio": [
+     1.007,
+     0.91
+    ]
+   },
+   "s2h": {
+    "box": [
+     927.1199078578625,
+     1713.6146876476273,
+     950.3650921421377,
+     1732.5153123523728
+    ],
+    "centre": [
+     938.7425000000001,
+     1723.065
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.82,
+     "offset_open_sp": 0.09
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.43 sp)",
+     "v": "right",
+     "box": [
+      927.2,
+      1713.68,
+      950.29,
+      1734.45
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.43 sp)",
+     "v": "right",
+     "box": [
+      927.2,
+      1713.68,
+      950.29,
+      1734.45
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      927.12,
+      1713.61,
+      950.37,
+      1732.52
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 10,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.44 sp)",
+     "v": "right",
+     "box": [
+      927.12,
+      1713.61,
+      950.37,
+      1732.52
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/8/6/10": {
+   "truth": [
+    10
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1539.8399078578625,
+     1718.2571876476272,
+     1563.0850921421377,
+     1737.1578123523727
+    ],
+    "centre": [
+     1551.4625,
+     1727.7075
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.01,
+     "iou_raw": 0.75,
+     "offset_raw_sp": 0.06
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.466,
+     1.309
+    ],
+    "size_ratio": [
+     1.007,
+     0.917
+    ]
+   },
+   "s2h": {
+    "box": [
+     1539.8399078578625,
+     1718.2571876476272,
+     1563.0850921421377,
+     1737.1578123523727
+    ],
+    "centre": [
+     1551.4625,
+     1727.7075
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.81,
+     "offset_open_sp": 0.01
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      1539.91,
+      1717.4,
+      1563.01,
+      1738.02
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      1539.91,
+      1717.4,
+      1563.01,
+      1738.02
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      1539.84,
+      1718.26,
+      1563.09,
+      1737.16
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": null,
+     "reason": "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head",
+     "v": "abstain",
+     "box": [
+      1539.84,
+      1718.26,
+      1563.09,
+      1737.16
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/0/8/9/0": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     1904.2299078578624,
+     1722.9071876476273,
+     1927.4750921421376,
+     1741.8078123523728
+    ],
+    "centre": [
+     1915.8525,
+     1732.3575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.08,
+     "iou_raw": 0.6,
+     "offset_raw_sp": 0.08
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.407,
+     1.486
+    ],
+    "size_ratio": [
+     1.049,
+     0.808
+    ]
+   },
+   "s2h": {
+    "box": [
+     1904.2299078578624,
+     1722.9071876476273,
+     1927.4750921421376,
+     1741.8078123523728
+    ],
+    "centre": [
+     1915.8525,
+     1732.3575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.66,
+     "offset_open_sp": 0.08
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.21 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      1904.77,
+      1720.65,
+      1926.93,
+      1744.06
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.21 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      1904.77,
+      1720.65,
+      1926.93,
+      1744.06
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.21 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      1904.77,
+      1720.65,
+      1926.93,
+      1744.06
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "a thin flat ledger touches the head's near edge (rung -0.21 sp inside the box): counted, head in the space beyond it",
+     "v": "right",
+     "box": [
+      1904.77,
+      1720.65,
+      1926.93,
+      1744.06
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/9/2/0": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     926.5511578578624,
+     1883.2071876476273,
+     949.7963421421376,
+     1902.1078123523728
+    ],
+    "centre": [
+     938.17375,
+     1892.6575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.63,
+     "offset_open_sp": 0.22,
+     "iou_raw": 0.62,
+     "offset_raw_sp": 0.23
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     -0.127
+    ],
+    "det_size_sp": [
+     1.33,
+     1.18
+    ],
+    "size_ratio": [
+     1.11,
+     1.017
+    ]
+   },
+   "s2h": {
+    "box": [
+     926.5511578578624,
+     1883.2071876476273,
+     949.7963421421376,
+     1902.1078123523728
+    ],
+    "centre": [
+     938.17375,
+     1892.6575
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.63,
+     "offset_open_sp": 0.22
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      927.7,
+      1885.37,
+      948.65,
+      1903.95
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      927.7,
+      1885.37,
+      948.65,
+      1903.95
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      927.7,
+      1885.37,
+      948.65,
+      1903.95
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "0.34 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      927.7,
+      1885.37,
+      948.65,
+      1903.95
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/9/2/5": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     954.7436578578624,
+     1882.3409376476272,
+     977.9888421421376,
+     1901.2415623523727
+    ],
+    "centre": [
+     966.36625,
+     1891.79125
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.61,
+     "offset_open_sp": 0.24,
+     "iou_raw": 0.58,
+     "offset_raw_sp": 0.26
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     -0.127
+    ],
+    "det_size_sp": [
+     1.35,
+     1.39
+    ],
+    "size_ratio": [
+     1.093,
+     0.863
+    ]
+   },
+   "s2h": {
+    "box": [
+     954.7436578578624,
+     1882.3409376476272,
+     977.9888421421376,
+     1901.2415623523727
+    ],
+    "centre": [
+     966.36625,
+     1891.79125
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.61,
+     "offset_open_sp": 0.24
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.18 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      955.74,
+      1882.85,
+      977.0,
+      1904.74
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.09 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      955.74,
+      1882.85,
+      977.0,
+      1904.74
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "0.09 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      955.74,
+      1882.85,
+      977.0,
+      1904.74
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "0.09 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      955.74,
+      1882.85,
+      977.0,
+      1904.74
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/0/9/3/5": {
+   "truth": [
+    11
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     1028.1624078578623,
+     1883.1521876476272,
+     1051.4075921421374,
+     1902.0528123523727
+    ],
+    "centre": [
+     1039.7849999999999,
+     1892.6025
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.64,
+     "offset_open_sp": 0.16,
+     "iou_raw": 0.62,
+     "offset_raw_sp": 0.17
+    },
+    "pass": false,
+    "shift_sp": [
+     0.0,
+     -0.19
+    ],
+    "det_size_sp": [
+     1.42,
+     1.4
+    ],
+    "size_ratio": [
+     1.039,
+     0.857
+    ]
+   },
+   "s2h": {
+    "box": [
+     1028.1624078578623,
+     1883.1521876476272,
+     1051.4075921421374,
+     1902.0528123523727
+    ],
+    "centre": [
+     1039.7849999999999,
+     1892.6025
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.64,
+     "offset_open_sp": 0.16
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 11,
+     "reason": "0.26 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1028.6,
+      1884.58,
+      1050.97,
+      1906.63
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 11,
+     "reason": "0.26 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1028.6,
+      1884.58,
+      1050.97,
+      1906.63
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 11,
+     "reason": "0.26 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1028.6,
+      1884.58,
+      1050.97,
+      1906.63
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": 11,
+     "reason": "0.26 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1028.6,
+      1884.58,
+      1050.97,
+      1906.63
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/1/0/6/0": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1299.2449078578622,
+     2258.405937647627,
+     1322.4900921421374,
+     2277.3065623523726
+    ],
+    "centre": [
+     1310.8674999999998,
+     2267.85625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.09,
+     "iou_raw": 0.73,
+     "offset_raw_sp": 0.06
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     -0.127
+    ],
+    "det_size_sp": [
+     1.56,
+     1.35
+    ],
+    "size_ratio": [
+     0.946,
+     0.889
+    ]
+   },
+   "s2h": {
+    "box": [
+     1299.2449078578622,
+     2258.405937647627,
+     1322.4900921421374,
+     2277.3065623523726
+    ],
+    "centre": [
+     1310.8674999999998,
+     2267.85625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.09
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -5,
+     "reason": "0.22 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1298.58,
+      2259.22,
+      1323.15,
+      2280.49
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -5,
+     "reason": "0.22 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "wrong",
+     "box": [
+      1298.58,
+      2259.22,
+      1323.15,
+      2280.49
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1299.24,
+      2258.41,
+      1322.49,
+      2277.31
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)",
+     "v": "right",
+     "box": [
+      1299.24,
+      2258.41,
+      1322.49,
+      2277.31
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/1/0/6/1": {
+   "truth": [
+    -3
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     1257.4524078578622,
+     2286.314687647627,
+     1280.6975921421374,
+     2305.2153123523726
+    ],
+    "centre": [
+     1269.0749999999998,
+     2295.765
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.7,
+     "offset_open_sp": 0.02,
+     "iou_raw": 0.61,
+     "offset_raw_sp": 0.05
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.063,
+     0.0
+    ],
+    "det_size_sp": [
+     1.42,
+     1.46
+    ],
+    "size_ratio": [
+     1.039,
+     0.822
+    ]
+   },
+   "s2h": {
+    "box": [
+     1257.4524078578622,
+     2286.314687647627,
+     1280.6975921421374,
+     2305.2153123523726
+    ],
+    "centre": [
+     1269.0749999999998,
+     2295.765
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.7,
+     "offset_open_sp": 0.02
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -3,
+     "reason": "-0.14 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1258.89,
+      2284.27,
+      1281.26,
+      2307.26
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -3,
+     "reason": "-0.14 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1258.89,
+      2284.27,
+      1281.26,
+      2307.26
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -3,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1257.45,
+      2286.31,
+      1280.7,
+      2305.22
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -3,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1257.45,
+      2286.31,
+      1280.7,
+      2305.22
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/1/0/7/0": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1406.8274078578622,
+     2261.484687647627,
+     1430.0725921421374,
+     2280.3853123523727
+    ],
+    "centre": [
+     1418.4499999999998,
+     2270.935
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.72,
+     "offset_open_sp": 0.11,
+     "iou_raw": 0.58,
+     "offset_raw_sp": 0.02
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.063
+    ],
+    "det_size_sp": [
+     1.56,
+     1.36
+    ],
+    "size_ratio": [
+     0.946,
+     0.882
+    ]
+   },
+   "s2h": {
+    "box": [
+     1406.8274078578622,
+     2261.484687647627,
+     1430.0725921421374,
+     2280.3853123523727
+    ],
+    "centre": [
+     1418.4499999999998,
+     2270.935
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.72,
+     "offset_open_sp": 0.11
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1406.16,
+      2259.22,
+      1430.73,
+      2280.64
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.68 sp)",
+     "v": "right",
+     "box": [
+      1406.16,
+      2259.22,
+      1430.73,
+      2280.64
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)",
+     "v": "right",
+     "box": [
+      1406.83,
+      2261.48,
+      1430.07,
+      2280.39
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)",
+     "v": "right",
+     "box": [
+      1406.83,
+      2261.48,
+      1430.07,
+      2280.39
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/3/1/0/9/0": {
+   "truth": [
+    -4
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     1630.8774078578624,
+     2278.9121876476274,
+     1654.1225921421376,
+     2297.812812352373
+    ],
+    "centre": [
+     1642.5,
+     2288.3625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.16,
+     "iou_raw": 0.6,
+     "offset_raw_sp": 0.16
+    },
+    "pass": false,
+    "shift_sp": [
+     -0.063,
+     0.0
+    ],
+    "det_size_sp": [
+     1.44,
+     1.26
+    ],
+    "size_ratio": [
+     1.025,
+     0.952
+    ]
+   },
+   "s2h": {
+    "box": [
+     1630.8774078578624,
+     2278.9121876476274,
+     1654.1225921421376,
+     2297.812812352373
+    ],
+    "centre": [
+     1642.5,
+     2288.3625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.73,
+     "offset_open_sp": 0.16
+    },
+    "pass": false,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1632.16,
+      2278.44,
+      1654.84,
+      2298.28
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1632.16,
+      2278.44,
+      1654.84,
+      2298.28
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1632.16,
+      2278.44,
+      1654.84,
+      2298.28
+     ],
+     "std_used": false
+    },
+    "E3": {
+     "pos": -4,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.72 sp)",
+     "v": "right",
+     "box": [
+      1632.16,
+      2278.44,
+      1654.84,
+      2298.28
+     ],
+     "std_used": false
+    }
+   }
+  },
+  "glyph/3/1/0/9/2": {
+   "truth": [
+    -3
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     1672.2999078578623,
+     2283.298437647627,
+     1695.5450921421375,
+     2302.1990623523725
+    ],
+    "centre": [
+     1683.9225,
+     2292.7487499999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.78,
+     "offset_open_sp": 0.05,
+     "iou_raw": 0.7,
+     "offset_raw_sp": 0.04
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.063,
+     0.063
+    ],
+    "det_size_sp": [
+     1.34,
+     1.29
+    ],
+    "size_ratio": [
+     1.101,
+     0.93
+    ]
+   },
+   "s2h": {
+    "box": [
+     1672.2999078578623,
+     2283.298437647627,
+     1695.5450921421375,
+     2302.1990623523725
+    ],
+    "centre": [
+     1683.9225,
+     2292.7487499999997
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4758847164619147,
+     1.200039663793368
+    ],
+    "fit": {
+     "iou_open": 0.78,
+     "offset_open_sp": 0.05
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 4.27,
+     "r_floor": 1.5
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -3,
+     "reason": "-0.06 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1674.37,
+      2281.59,
+      1695.47,
+      2301.91
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -3,
+     "reason": "-0.06 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1674.37,
+      2281.59,
+      1695.47,
+      2301.91
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -3,
+     "reason": "-0.08 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1672.3,
+      2283.3,
+      1695.55,
+      2302.2
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -3,
+     "reason": "-0.08 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      1672.3,
+      2283.3,
+      1695.55,
+      2302.2
+     ],
+     "std_used": true
+    }
+   }
+  }
+ },
+ "brahms1-breitkopf": {
+  "glyph/1/1/0/2/4": {
+   "truth": [
+    -2
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     2682.381854655994,
+     4191.506223582287,
+     2721.439922687756,
+     4225.108522511463
+    ],
+    "centre": [
+     2701.910888671875,
+     4208.307373046875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.87,
+     "offset_open_sp": 0.07,
+     "iou_raw": 0.73,
+     "offset_raw_sp": 0.07
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.036,
+     0.073
+    ],
+    "det_size_sp": [
+     1.449,
+     1.217
+    ],
+    "size_ratio": [
+     0.98,
+     1.004
+    ]
+   },
+   "s2h": {
+    "box": [
+     2682.381854655994,
+     4191.506223582287,
+     2721.439922687756,
+     4225.108522511463
+    ],
+    "centre": [
+     2701.910888671875,
+     4208.307373046875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.87,
+     "offset_open_sp": 0.07
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.59,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.64 sp)",
+     "v": "right",
+     "box": [
+      2682.98,
+      4189.57,
+      2722.84,
+      4223.05
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.64 sp)",
+     "v": "right",
+     "box": [
+      2682.98,
+      4189.57,
+      2722.84,
+      4223.05
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.71 sp)",
+     "v": "right",
+     "box": [
+      2682.38,
+      4191.51,
+      2721.44,
+      4225.11
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.71 sp)",
+     "v": "right",
+     "box": [
+      2682.38,
+      4191.51,
+      2721.44,
+      4225.11
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/0": {
+   "truth": [
+    -7
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     3609.516864421619,
+     4122.146116160412,
+     3648.574932453381,
+     4155.748415089588
+    ],
+    "centre": [
+     3629.0458984375,
+     4138.947265625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.86,
+     "offset_open_sp": 0.06,
+     "iou_raw": 0.77,
+     "offset_raw_sp": 0.11
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.036,
+     0.0
+    ],
+    "det_size_sp": [
+     1.508,
+     1.284
+    ],
+    "size_ratio": [
+     0.942,
+     0.952
+    ]
+   },
+   "s2h": {
+    "box": [
+     3609.516864421619,
+     4122.146116160412,
+     3648.574932453381,
+     4155.748415089588
+    ],
+    "centre": [
+     3629.0458984375,
+     4138.947265625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.86,
+     "offset_open_sp": 0.06
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.59,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -7,
+     "reason": "-0.19 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3609.31,
+      4121.29,
+      3650.79,
+      4156.6
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -7,
+     "reason": "-0.19 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3609.31,
+      4121.29,
+      3650.79,
+      4156.6
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -7,
+     "reason": "-0.15 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3609.52,
+      4122.15,
+      3648.57,
+      4155.75
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -7,
+     "reason": "-0.15 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3609.52,
+      4122.15,
+      3648.57,
+      4155.75
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/1": {
+   "truth": [
+    -9
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     3466.016864421619,
+     4093.3160380354116,
+     3505.074932453381,
+     4126.918336964588
+    ],
+    "centre": [
+     3485.5458984375,
+     4110.1171875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.89,
+     "offset_open_sp": 0.03,
+     "iou_raw": 0.82,
+     "offset_raw_sp": 0.08
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.036,
+     0.073
+    ],
+    "det_size_sp": [
+     1.427,
+     1.141
+    ],
+    "size_ratio": [
+     0.995,
+     1.071
+    ]
+   },
+   "s2h": {
+    "box": [
+     3466.016864421619,
+     4093.3160380354116,
+     3505.074932453381,
+     4126.918336964588
+    ],
+    "centre": [
+     3485.5458984375,
+     4110.1171875
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.89,
+     "offset_open_sp": 0.03
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.59,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -9,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3466.93,
+      4092.42,
+      3506.17,
+      4123.81
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -9,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3466.93,
+      4092.42,
+      3506.17,
+      4123.81
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -9,
+     "reason": "-0.12 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3466.02,
+      4093.32,
+      3505.07,
+      4126.92
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -9,
+     "reason": "-0.12 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3466.02,
+      4093.32,
+      3505.07,
+      4126.92
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/3": {
+   "truth": [
+    -5
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     3788.751727702869,
+     4151.192502879162,
+     3827.809795734631,
+     4184.794801808338
+    ],
+    "centre": [
+     3808.28076171875,
+     4167.99365234375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.91,
+     "offset_open_sp": 0.01,
+     "iou_raw": 0.8,
+     "offset_raw_sp": 0.07
+    },
+    "pass": true,
+    "shift_sp": [
+     -0.036,
+     0.073
+    ],
+    "det_size_sp": [
+     1.457,
+     1.192
+    ],
+    "size_ratio": [
+     0.975,
+     1.025
+    ]
+   },
+   "s2h": {
+    "box": [
+     3788.751727702869,
+     4151.192502879162,
+     3827.809795734631,
+     4184.794801808338
+    ],
+    "centre": [
+     3808.28076171875,
+     4167.99365234375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.91,
+     "offset_open_sp": 0.01
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.59,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -5,
+     "reason": "-0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3789.24,
+      4149.6,
+      3829.32,
+      4182.39
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -5,
+     "reason": "-0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3789.24,
+      4149.6,
+      3829.32,
+      4182.39
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -5,
+     "reason": "-0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3788.75,
+      4151.19,
+      3827.81,
+      4184.79
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -5,
+     "reason": "-0.16 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3788.75,
+      4151.19,
+      3827.81,
+      4184.79
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/4": {
+   "truth": [
+    -3
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     3857.297626140369,
+     4174.697385691662,
+     3896.355694172131,
+     4208.299684620838
+    ],
+    "centre": [
+     3876.82666015625,
+     4191.49853515625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.84,
+     "offset_open_sp": 0.07,
+     "iou_raw": 0.73,
+     "offset_raw_sp": 0.15
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.376,
+     1.213
+    ],
+    "size_ratio": [
+     1.032,
+     1.007
+    ]
+   },
+   "s2h": {
+    "box": [
+     3857.297626140369,
+     4174.697385691662,
+     3896.355694172131,
+     4208.299684620838
+    ],
+    "centre": [
+     3876.82666015625,
+     4191.49853515625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.84,
+     "offset_open_sp": 0.07
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.59,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -3,
+     "reason": "-0.06 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3857.91,
+      4174.82,
+      3895.75,
+      4208.17
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -3,
+     "reason": "-0.06 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3857.91,
+      4174.82,
+      3895.75,
+      4208.17
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -3,
+     "reason": "-0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3857.3,
+      4174.7,
+      3896.36,
+      4208.3
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -3,
+     "reason": "-0.07 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      3857.3,
+      4174.7,
+      3896.36,
+      4208.3
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/5": {
+   "truth": [
+    -8
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     3536.613445258055,
+     4106.807445959114,
+     3575.493976616945,
+     4140.257007165886
+    ],
+    "centre": [
+     3556.0537109375,
+     4123.5322265625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.9,
+     "offset_open_sp": 0.03,
+     "iou_raw": 0.81,
+     "offset_raw_sp": 0.07
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.433,
+     1.229
+    ],
+    "size_ratio": [
+     0.991,
+     0.994
+    ]
+   },
+   "s2h": {
+    "box": [
+     3536.613445258055,
+     4106.807445959114,
+     3575.493976616945,
+     4140.257007165886
+    ],
+    "centre": [
+     3556.0537109375,
+     4123.5322265625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.9,
+     "offset_open_sp": 0.03
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.52,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      3536.43,
+      4106.72,
+      3575.67,
+      4140.35
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      3536.43,
+      4106.72,
+      3575.67,
+      4140.35
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      3536.61,
+      4106.81,
+      3575.49,
+      4140.26
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -8,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.65 sp)",
+     "v": "right",
+     "box": [
+      3536.61,
+      4106.81,
+      3575.49,
+      4140.26
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/0/4/6": {
+   "truth": [
+    -6
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     3689.101238226805,
+     4135.675610021614,
+     3727.981769585695,
+     4169.125171228386
+    ],
+    "centre": [
+     3708.54150390625,
+     4152.400390625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.87,
+     "offset_open_sp": 0.03,
+     "iou_raw": 0.72,
+     "offset_raw_sp": 0.13
+    },
+    "pass": true,
+    "shift_sp": [
+     0.037,
+     0.0
+    ],
+    "det_size_sp": [
+     1.526,
+     1.27
+    ],
+    "size_ratio": [
+     0.931,
+     0.962
+    ]
+   },
+   "s2h": {
+    "box": [
+     3689.101238226805,
+     4135.675610021614,
+     3727.981769585695,
+     4169.125171228386
+    ],
+    "centre": [
+     3708.54150390625,
+     4152.400390625
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.87,
+     "offset_open_sp": 0.03
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.52,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.69 sp)",
+     "v": "right",
+     "box": [
+      3686.66,
+      4135.02,
+      3728.42,
+      4169.78
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.69 sp)",
+     "v": "right",
+     "box": [
+      3686.66,
+      4135.02,
+      3728.42,
+      4169.78
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)",
+     "v": "right",
+     "box": [
+      3689.1,
+      4135.68,
+      3727.98,
+      4169.13
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -6,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.66 sp)",
+     "v": "right",
+     "box": [
+      3689.1,
+      4135.68,
+      3727.98,
+      4169.13
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/8/4/4": {
+   "truth": [
+    -2
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     3476.9805398810618,
+     5941.662615045554,
+     3516.5712179314382,
+     5975.723127141946
+    ],
+    "centre": [
+     3496.77587890625,
+     5958.69287109375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.9,
+     "offset_open_sp": 0.02,
+     "iou_raw": 0.8,
+     "offset_raw_sp": 0.03
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.036
+    ],
+    "det_size_sp": [
+     1.357,
+     1.197
+    ],
+    "size_ratio": [
+     1.047,
+     1.021
+    ]
+   },
+   "s2h": {
+    "box": [
+     3476.9805398810618,
+     5941.662615045554,
+     3516.5712179314382,
+     5975.723127141946
+    ],
+    "centre": [
+     3496.77587890625,
+     5958.69287109375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.9,
+     "offset_open_sp": 0.02
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.8,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.62 sp)",
+     "v": "right",
+     "box": [
+      3477.86,
+      5941.02,
+      3515.69,
+      5974.37
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.62 sp)",
+     "v": "right",
+     "box": [
+      3477.86,
+      5941.02,
+      3515.69,
+      5974.37
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      3476.98,
+      5941.66,
+      3516.57,
+      5975.72
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": -2,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.67 sp)",
+     "v": "right",
+     "box": [
+      3476.98,
+      5941.66,
+      3516.57,
+      5975.72
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/8/5/0": {
+   "truth": [
+    12
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackOnLine",
+   "s2": {
+    "box": [
+     4446.0535026569905,
+     6124.7565882578165,
+     4484.756497343009,
+     6158.053411742183
+    ],
+    "centre": [
+     4465.405,
+     6141.405
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.86,
+     "offset_open_sp": 0.04,
+     "iou_raw": 0.7,
+     "offset_raw_sp": 0.16
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.492,
+     1.217
+    ],
+    "size_ratio": [
+     0.952,
+     1.004
+    ]
+   },
+   "s2h": {
+    "box": [
+     4446.0535026569905,
+     6124.7565882578165,
+     4484.756497343009,
+     6158.053411742183
+    ],
+    "centre": [
+     4465.405,
+     6141.405
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.86,
+     "offset_open_sp": 0.04
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.45,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.59 sp)",
+     "v": "right",
+     "box": [
+      4445.07,
+      6124.82,
+      4485.73,
+      6157.99
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.59 sp)",
+     "v": "right",
+     "box": [
+      4445.07,
+      6124.82,
+      4485.73,
+      6157.99
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.60 sp)",
+     "v": "right",
+     "box": [
+      4446.05,
+      6124.76,
+      4484.76,
+      6158.05
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 12,
+     "reason": "last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.60 sp)",
+     "v": "right",
+     "box": [
+      4446.05,
+      6124.76,
+      4484.76,
+      6158.05
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/8/6/0": {
+   "truth": [
+    13
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     4584.065947647683,
+     6140.176231674209,
+     4623.301552352317,
+     6173.931268325791
+    ],
+    "centre": [
+     4603.68375,
+     6157.05375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.78,
+     "offset_open_sp": 0.13,
+     "iou_raw": 0.71,
+     "offset_raw_sp": 0.17
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.365,
+     1.133
+    ],
+    "size_ratio": [
+     1.041,
+     1.078
+    ]
+   },
+   "s2h": {
+    "box": [
+     4584.065947647683,
+     6140.176231674209,
+     4623.301552352317,
+     6173.931268325791
+    ],
+    "centre": [
+     4603.68375,
+     6157.05375
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.78,
+     "offset_open_sp": 0.13
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.66,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 13,
+     "reason": "0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      4584.82,
+      6141.4,
+      4622.54,
+      6172.7
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 13,
+     "reason": "0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      4584.82,
+      6141.4,
+      4622.54,
+      6172.7
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 13,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      4584.07,
+      6140.18,
+      4623.3,
+      6173.93
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 13,
+     "reason": "-0.01 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      4584.07,
+      6140.18,
+      4623.3,
+      6173.93
+     ],
+     "std_used": true
+    }
+   }
+  },
+  "glyph/1/1/8/7/4": {
+   "truth": [
+    13
+   ],
+   "kind": "filled",
+   "cls": "noteheadBlackInSpace",
+   "s2": {
+    "box": [
+     5090.734807666298,
+     6139.163194841425,
+     5128.905192333701,
+     6172.001805158576
+    ],
+    "centre": [
+     5109.82,
+     6155.5825
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.11,
+     "iou_raw": 0.63,
+     "offset_raw_sp": 0.06
+    },
+    "pass": true,
+    "shift_sp": [
+     0.0,
+     0.0
+    ],
+    "det_size_sp": [
+     1.374,
+     1.155
+    ],
+    "size_ratio": [
+     1.034,
+     1.058
+    ]
+   },
+   "s2h": {
+    "box": [
+     5090.734807666298,
+     6139.163194841425,
+     5128.905192333701,
+     6172.001805158576
+    ],
+    "centre": [
+     5109.82,
+     6155.5825
+    ],
+    "placed": true,
+    "size_sp": [
+     1.4202933829731523,
+     1.22190177924279
+    ],
+    "fit": {
+     "iou_open": 0.79,
+     "offset_open_sp": 0.11
+    },
+    "pass": true,
+    "pockets": [],
+    "filled_same_object": true,
+    "info": {
+     "close_diameter": null,
+     "r_cap": 10.23,
+     "r_floor": 1.75
+    }
+   },
+   "reads": {
+    "M0": {
+     "pos": 13,
+     "reason": "0.00 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      5091.36,
+      6140.07,
+      5128.28,
+      6171.1
+     ],
+     "std_used": false
+    },
+    "E1": {
+     "pos": 13,
+     "reason": "0.00 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      5091.36,
+      6140.07,
+      5128.28,
+      6171.1
+     ],
+     "std_used": false
+    },
+    "E2": {
+     "pos": 13,
+     "reason": "-0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      5090.73,
+      6139.16,
+      5128.91,
+      6172.0
+     ],
+     "std_used": true
+    },
+    "E3": {
+     "pos": 13,
+     "reason": "-0.03 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it",
+     "v": "right",
+     "box": [
+      5090.73,
+      6139.16,
+      5128.91,
+      6172.0
+     ],
+     "std_used": true
+    }
+   }
+  }
+ }
+}
