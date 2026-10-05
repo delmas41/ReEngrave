@@ -2983,6 +2983,611 @@ blob_in_box 0.95; tiles 1, 2, 4 (detector box, standard box not trusted)
 0.54 / 0.50 / 0.43 -- the boxes there are poor, which is the remaining work.
 This is the reading we have, not an endorsement; nothing was tuned.
 
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-template-fix (the 10-02 shape-trace and template rounds) -->
+## lane-ledger-shape (2026-10-02): shape trace vs the box-centre probe
+
+**Brief**: Sean's view of `out/print/ledgers/r8_*.jpg` ("all 14 that are
+wrong have a ledger line going through them that is visible"; the 2
+undecided, `glyph/3/0/7/0/7` and `glyph/3/0/7/2/4`, "look like
+everything it is declaring is right") plus DECISIONS 2026-10-02 ("trace
+the shape around far heads", "an accidental can merge into a ledger").
+
+**Why the 2 don't commit, found before anything was built**: both abstain
+via `derive_far_head_step`'s final branch, `no_rung_before_the_head` —
+every candidate rung the plain walk finds gets dropped by
+`head_middle_rung_evidence` because it probes for a jut at the detector
+BOX's naive `(y0+y1)/2`, never the printed oval's own centre. Confirmed
+by direct call (`score_truth_set_rungs.reader_absolute_position` on both
+subjects, `four_causes_cd=True`): `after_pos=None`, same reason, while
+`ledger_measured_position` (interpolating the measured ledger ladder) and
+plain geometry both already land on the reference position for both
+heads. This is exactly the mechanism the task brief hypothesised.
+
+**Built**: `tools/omr/annotate/ledger_shape_trace.py` — traces the
+connected ink around a head row by row (excluding a detected stem
+column), fits the oval's own centre/extent from the trace (median width
+of non-inflated rows, width-weighted centroid, walking outward through —
+not stopping at — a thin crossing ledger, stopping only at a genuine
+blank row), finds ledger bands as thin/straight protrusions past the
+fitted oval, and trims a fused accidental off a band's far end by column
+tallness (a column whose own vertical run is much taller than a ledger
+band is excluded from the band's own measured extent, but ONLY outside
+the oval's own footprint — inside it, tallness is the oval itself and is
+expected). `shape_trace_middle_rung_evidence` is a drop-in replacement for
+`ledger_grid.head_middle_rung_evidence` with the same signature and the
+same "no evidence possible -> False" contract.
+
+**RED -> GREEN** (`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+9 synthetic cases, fully hand-built images, no page/weights/library):
+every scenario in the task brief failed first against the initial
+implementation (oval half-width was inflated by the crossing line's own
+width, dragging the centre and blocking the "line touching only the
+top"/open-half-note/accidental/off-centre-box cases) and now passes:
+line-through-both-sides -> on; one-sided jut -> on; line touching only
+the oval's top -> space beyond, not on; open half-note oval + line
+through -> on, centre from the outline; accidental fused onto a ledger's
+end -> still on, band's own measured extent stops short of the
+accidental; a box covering only the top half of the head -> still
+centres from the trace and reads on; no image -> abstains, never guesses;
+a stem does not inflate the oval or register as a band.
+
+**Real-data re-score, substituting the evidence function only (monkeypatch,
+measurement-only, `benchmarks/omr-local-staff-2026-09/score_shape_trace.py`)
+— MEASURED NET NEGATIVE, HELD BACK**:
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | shape_trace | 15 | 15 | 14 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | shape_trace | 6 | 3 | 2 | 11 |
+
+Of the 2 target heads: `glyph/3/0/7/0/7` still abstains (same reason —
+its own rungs still fail the oval-middle evidence test even with the
+traced centre); `glyph/3/0/7/2/4` **FLIPS to right**, now taking the
+"through" branch with a jut confirmed at the traced middle. But the
+substitution costs 14 previously-right Litolff heads (mostly flipping to
+`abstain` via the same `no_rung_before_the_head` reason, i.e. the traced
+oval's fitted width/extent is now making the evidence probe MISS juts the
+box-centre probe used to find) and 5 previously-right Brahms heads — a
+clear net loss, the same "measured net negative, HELD BACK" verdict as
+rounds 6/7 above. The failure mode is plausibly the synthetic tests'
+own simplicity (hand-drawn ovals/lines, no neighbouring stave ink, no
+scan noise) not transferring to real plate ink — rounds 6/7's own note
+that a confound "can register a false reading on exactly the pairs it
+was built for" applies here too.
+
+**Not shipped, not wired into any product/default path.** The module is
+additive only, reachable solely through this measurement script's own
+monkeypatch; `ledger_grid.head_middle_rung_evidence` and `derive_far_
+head_step`'s own call to it are untouched. A future lane's own measured
+fix for the 2-head mechanism should widen the evidence probe's window
+or soften the oval-width inflation guard, re-score against this SAME
+truth set before shipping anything, and treat this result as the
+positive control that the net-negative substitution here is not a
+tooling bug (the module's own 9 synthetic cases all pass) but a real
+generalisation gap.
+
+Paths: `tools/omr/annotate/ledger_shape_trace.py`,
+`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_shape_trace.py`.
+
+### lane-ledger-shape, sheets (2026-10-02, drawing only)
+
+`benchmarks/omr-local-staff-2026-09/shape_sheets.py` draws the traced
+outline (magenta), fitted oval (yellow + centre cross), detected line
+bands (orange), detector box (red), staff lines (green) and reference
+tick (cyan) for every regression/flip head, writing
+`out/print/ledgers/shape_regressions.jpg` (19 tiles: the 14 Litolff + 5
+Brahms heads right under round 8 but not right under the shape trace)
+and `out/print/ledgers/shape_flips.jpg` (`glyph/3/0/7/2/4`,
+`glyph/3/0/7/0/7`). No code in `tools/` touched.
+
+Visual read of the 19 regression tiles, bucketed by what visibly went
+wrong (one cause per tile, Sean's own crop-check convention, rule 7):
+
+  * **8 tiles** -- oval/centre mis-fit onto fused or adjacent ink (a
+    stem, beam, flag, a dynamic-mark letterform, or a neighbouring
+    blob entirely) so the real through-line crosses the BOX's edge,
+    never the fitted middle: `glyph/1/0/10/8/1`, `glyph/1/0/3/7/3`,
+    `glyph/3/0/0/2/3`, `glyph/3/0/0/5/12`, `glyph/3/0/5/4/5`,
+    `glyph/3/0/7/4/2`, `glyph/1/1/0/2/4`, `glyph/1/1/8/5/0` (the last
+    two: the oval visibly sits on a dash/movement-number glyph or a
+    stray blob well away from the box's own ink).
+  * **6 tiles** -- no ledger ink found anywhere inside the trace's own
+    search window at all (the real jut sits beyond the window, or a
+    neighbour's own box-exclusion blanks it): `glyph/3/0/5/7/0`,
+    `glyph/3/0/7/2/3`, `glyph/3/0/7/4/0`, `glyph/3/0/8/2/5`,
+    `glyph/1/1/0/4/6`, `glyph/1/1/8/4/4`.
+  * **5 tiles** -- a band IS found and crosses correctly, but on a
+    tightly stacked chord (two far heads a third apart) the traced-
+    middle evidence picks a different rung than the box-centre probe
+    did, landing one half-step off from round 8's own (correct)
+    answer: `glyph/3/0/7/6/2`, `glyph/3/0/7/6/4`, `glyph/3/1/0/9/0`,
+    `glyph/1/1/8/6/0`, and one more off-by-one tile in the same chord
+    family.
+
+Read from the drawings, not re-measured -- a future lane should
+instrument each bucket (print the oval fit's own numbers, not just the
+picture) before trusting the counts past "roughly a third window-miss,
+a third fused-ink mis-fit, a quarter stacked-chord off-by-one."
+
+Paths: `benchmarks/omr-local-staff-2026-09/shape_sheets.py`,
+`out/print/ledgers/shape_regressions.jpg`,
+`out/print/ledgers/shape_flips.jpg`.
+
+### lane-ledger-shape, LOCAL trace (2026-10-02, manager review + Sean approval)
+
+Manager read of the first cut's `shape_regressions.jpg`: the trace
+followed the whole CONNECTED ink component -- staff lines the stem
+touches, a neighbouring head, printed text -- not just the head's own
+local shape (tiles 2/5/6: traced along full staff lines; tile 4: a tall
+thin oval fit onto the stem; tile 1: oval bigger than the head, missed
+the clear line through its middle).
+
+Rewired `tools/omr/annotate/ledger_shape_trace.py` to be LOCAL, not
+connected-component:
+
+  * window sized from the STANDARD notehead box (ROADMAP 2.39,
+    `tools.omr.staged.geometry.STANDARD_HEAD_WIDTH_SPACES`/
+    `_HEIGHT_SPACES`): columns ±1.5 standard head-widths, rows
+    ±(0.6 standard head-height + 0.5 staff space) of the head's own
+    (re-centred) centre;
+  * each row takes the ink run CONTAINING, or NEAREST within half a
+    head-width of, the head's own column -- never the whole row, so a
+    neighbour head or text is excluded by construction;
+  * the stem column is masked exactly where a real `Q.STEM` box is
+    given (unused in this re-score -- no record plumbing added this
+    round, see "not done" below), heuristically (tall + narrow) otherwise;
+  * staff-line rows (this head's own locally measured lines) are
+    excluded from the oval FIT and from ledger-BAND detection alike --
+    a staff line is inside the staff, a ledger never is;
+  * the oval row-width cap is now 1.6 standard head-widths (was 1.35x
+    the box's own width);
+  * one re-centring iteration: fit once from the box's own centre,
+    re-run the whole window/trace/fit from the first fit's own centre.
+
+11 synthetic tests (9 original + 2 new: stem fused to a touched staff
+line must not be followed; a neighbour chord head beside it must not be
+folded in) -- all GREEN, `pytest tools/omr/tests -k ledger` (341 passed,
+2 xfailed, unrelated) stays green.
+
+**Real-data re-score** (same monkeypatch harness, `staff_lines` now
+threaded through via a `functools.partial`-style wrapper over
+`score.reader_absolute_position` so each head's own locally measured
+staff lines reach the evidence call -- `score_shape_trace.py`):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | shape_trace (local) | 16 | 17 | 11 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | shape_trace (local) | 5 | 4 | 2 | 11 |
+
+Still MEASURED NET NEGATIVE, HELD BACK -- Litolff right ticked up by one
+(25->16 vs the prior cut's 15) and Brahms right ticked down by one (6->5)
+within noise; the population of heads that flip is different from the
+first cut's (17 Litolff + 6 Brahms flip either direction this round, up
+from 14+5 one-directional regressions, because this round's sheet now
+shows EVERY flip, not only regressions).
+
+Of the two target heads: `glyph/3/0/7/2/4` still flips to RIGHT (through
+branch, jut confirmed). `glyph/3/0/7/0/7` now flips to **WRONG**, not
+abstain -- worse than the first cut: the traced-middle probe now
+confirms a through-rung there that is NOT the reference position
+(CLAUDE.md rule 8 concern -- a fallback must never convert "cannot tell"
+into a confident wrong answer; this is the shape trace doing exactly
+that on this one head). Flagged, not explained away.
+
+Visual re-check of the previously named tiles confirms the structural
+fix: `glyph/3/0/5/4/5` (old "oval on the stem" tile) and `glyph/3/0/5/7/0`
+now fit a correctly sized/centred oval on the real notehead, bands
+bracket it instead of smearing across the whole crop width. Several
+tiles still show the magenta trace reaching a distant staff line at the
+TOP of its own local window -- that window legitimately includes it when
+the staff edge is close, and it is no longer treated as a ledger
+candidate (masked by the `staff_lines` parameter) -- a visible but
+harmless remnant, not a re-introduction of the connected-component bug.
+
+**Not done this round** (flagged, not hidden): no real `Q.STEM` box is
+threaded into the re-score -- the heuristic tall/narrow-column fallback
+is what ran; wiring the real stem per glyph needs reading `Q.STEM` off
+the record per subject, left for a future lane since this round's brief
+was the drawing/trace-locality fix, not stem plumbing.
+
+Sheets: `out/print/ledgers/shape_regressions.jpg` (23 tiles -- every
+head whose verdict differs round8 -> shape_trace, EITHER direction, this
+round, derived live from the score rather than hand-listed) and
+`out/print/ledgers/shape_flips.jpg` (the 2 target heads), same drawing
+convention as the first cut.
+
+Paths: `tools/omr/annotate/ledger_shape_trace.py`,
+`tools/omr/tests/test_ledger_shape_trace_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_shape_trace.py`,
+`benchmarks/omr-local-staff-2026-09/shape_sheets.py`.
+
+## lane-ledger-template (2026-10-02): head TEMPLATE matching vs the shape trace
+
+**Brief**: DECISIONS 2026-10-02, Sean -- "try head-template matching for
+far heads" -- after the oval shape trace above was measured NET NEGATIVE
+and held back (the regression tiles read as "oval mis-fit onto fused ink"
+or "no ledger ink found in the trace's own window"): build templates from
+CLEAN exemplars elsewhere on the SAME page/document, rather than fitting
+a fresh shape to the far head's own (often fused) ink every time.
+
+**Built**: `tools/omr/annotate/head_template.py`.
+
+  1. `build_templates` collects clean, isolated, one-per-cell ON-STAFF
+     noteheads (never a far head), classifies each `filled`/`hollow`
+     (detector class, trusted only for these clean heads) and
+     `on_line`/`in_space` (even/odd staff position), crops a LOCAL window
+     sized from `STANDARD_HEAD_WIDTH/HEIGHT_SPACES` at the head's own
+     local spacing, resamples it to a FIXED canonical grid (independent
+     of any one page's own DPI), and averages into a `Template` per
+     `(kind, variant)` -- plus a `raw` pool (both variants) per kind.
+     Reports exemplar counts per combination; a combination under
+     `MIN_TEMPLATE_EXEMPLARS` (3) is not built at all.
+  2. `match_head_template` slides the `on_line`/`in_space` templates of a
+     far head's own classified kind +/-1.5 staff spaces in 1-px steps
+     over the real page ink (staff lines LEFT IN), scored by a
+     correlation that looks ONLY at the template's own HEAD-oval pixels
+     and its LINE-ROW stub pixels (ink elsewhere in the window -- a
+     neighbour's stem, a slur -- never counts). The two terms are scored
+     SEPARATELY (never pooled into one mask) and combined
+     `0.75*head + 0.25*line`, with an explicit per-space SHIFT PENALTY --
+     both needed, see "built wrong first" below. The best match reports
+     the head's matched centre, the winning variant, and the MARGIN
+     between the two variants' own best scores; below a stated threshold
+     (`MARGIN_UNDECIDED_THRESHOLD = 0.08`) the head is UNDECIDED, never
+     forced to an answer.
+  3. `template_middle_rung_evidence` is a drop-in for `ledger_grid.
+     head_middle_rung_evidence` with the SAME 4-positional-argument
+     contract (`templates`/`stem_box`/`kind` bind per call via a closure,
+     exactly like `staff_lines` did for the shape trace) -- substitutable
+     into `derive_far_head_step` by the SAME local monkeypatch
+     `score_shape_trace.py` already used.
+
+**Built WRONG first, twice, both caught before any real-data score**
+(CLAUDE.md rule 7 -- a control that can fail): the first cut pooled the
+head-oval and line-row pixels into ONE scored mask; a FILLED notehead is
+solid ink across its whole body regardless of whether a ledger crosses
+it, so the "on-line" band (which sits inside a filled oval's own row
+range) scored high ink-density agreement from the oval's own body alone
+-- measured directly, a head with NO ledger anywhere near its own middle
+still matched "on_line" at 0.70 correlation. Fixed by restricting each
+line-row mask to the STUB columns PAST the oval's own half-width only
+(the same stub convention `head_middle_rung_evidence` already uses),
+scored separately from the head term and recombined. The SECOND cut then
+let the window's own +/-1.5-space slide "cheat": a strong, correctly-
+shaped but off-centre ledger could out-score a correctly-centred match by
+simply relocating the whole window onto it, independent of whether the
+head's own ink was still there -- fixed with the explicit shift penalty
+and the 0.75/0.25 head/line weighting, which anchors the match to the
+box's own prior position (RED-first: `test_head_in_a_space_with_ledger_
+touching_top_reads_space` caught both bugs before any synthetic test
+passed).
+
+**RED -> GREEN** (`tools/omr/tests/test_head_template_2026_10_02.py`, 9
+synthetic cases, fully hand-built images, no page/weights/library):
+template-build reports counts and excludes a chord cell entirely (never
+just one of the pair) and any non-isolated exemplar; a head ON a ledger
+reads on-line; a head in a space with a ledger ONE STAFF SPACE from its
+own centre (the real engraving distance -- an earlier version of this
+test placed the ledger unrealistically close to the oval and is why the
+first version of this test failed against an otherwise-correct module,
+not a module bug) reads in-space; a head fused to a chord partner a THIRD
+away (1.5 sp, CLAUDE.md sec10) centres on the right head, not the
+neighbour 10+ px away; a HOLLOW head with an open oval end still matches
+and reads on; no image/no templates never guesses (CLAUDE.md rule 8); a
+deliberately ambiguous, off-centre scrap of ink reads UNDECIDED, never
+forced; a stem fused to the head's own side is masked and does not break
+the match. `pytest tools/omr/tests -k ledger` stays at 343 passed (341
+pre-existing + the 2 of this file's own 9 whose name contains "ledger"),
+2 xfailed, no regressions; the full new file alone is 9 passed.
+
+**Real-data re-score** (`benchmarks/omr-local-staff-2026-09/
+score_head_template.py`, same local-monkeypatch harness as the shape
+trace; templates built per PAGE with a document-POOLED fallback per
+`(kind, variant)` a page's own clean population is too sparse for --
+measured directly: Litolff page 3 alone has ZERO clean filled on-line/
+in-space exemplars even though the whole document has 6/9; Brahms page 1
+has essentially none at all, 1 filled exemplar total):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| beethoven5-litolff | geometry | 30 | 14 | 0 | 44 |
+| beethoven5-litolff | round8 | 25 | 14 | 5 | 44 |
+| beethoven5-litolff | template (raw substitution) | 16 | 20 | 8 | 44 |
+| beethoven5-litolff | template_where_round8_undecided_only | 26 | 14 | 4 | 44 |
+| brahms1-breitkopf | geometry | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | round8 | 11 | 0 | 0 | 11 |
+| brahms1-breitkopf | template (raw substitution) | 6 | 3 | 2 | 11 |
+| brahms1-breitkopf | template_where_round8_undecided_only | 11 | 0 | 0 | 11 |
+
+The RAW substitution is MEASURED NET NEGATIVE on both documents, the same
+verdict as the oval shape trace -- 12 Litolff + 5 Brahms heads that round
+8 already got right flip away under the template evidence (mostly to
+`abstain` via the same `no_rung_before_the_head` branch, a few to
+`wrong`). The population that flips is almost entirely DIFFERENT from
+the shape trace's own regression set (one overlap: `glyph/3/0/7/4/2`-
+family heads), suggesting the two approaches fail on different heads for
+different reasons rather than the same underlying population being
+genuinely hard.
+
+**`template_where_round8_undecided_only`** (keep round 8's own answer
+everywhere it decided anything at all; consult the template ONLY on
+round 8's own `abstain`s) is NOT net negative -- it can only ever match
+or improve round 8, by construction, and measured ONE net improvement on
+Litolff (`glyph/3/0/8/6/10`, previously `abstain`, now correctly `right`
+via a confirmed through-rung) with zero cost. Brahms had zero round-8
+abstains to begin with (11/0/0), so this combination changes nothing
+there -- there was nothing for it to improve.
+
+**Of the two target heads named in the brief, NEITHER flips**:
+`glyph/3/0/7/0/7` -- margin 0.057, below the stated 0.08 threshold, so
+UNDECIDED (reads as `False`, same as round 8's own abstain reason, no
+change). `glyph/3/0/7/2/4` -- NOT undecided (margin 0.325) but the
+template confidently matches **`in_space`**, disagreeing with the
+established correct reading (geometry, the ledger-measured reader, and
+the shape trace's own "through" branch all agree this head is ON a
+ledger) -- a CONFIDENT WRONG answer on exactly the head this lane was
+built to fix. Measured directly (excluding the SAME accidental/notehead
+boxes `four_causes_cd` excludes): `score_on=0.166, score_space=0.490`.
+This is not a stated-margin failure (rule 8 is respected -- the module
+never answers below its own threshold) but a genuine template-matching
+miss on this one head's own real ink; a future lane should crop-check
+this specific subject against the print before trusting the matcher's
+confidence anywhere near it.
+
+**Not shipped, not wired into any product/default path.** The module is
+additive only, reachable solely through `score_head_template.py`'s own
+monkeypatch. `ledger_grid.head_middle_rung_evidence` and `derive_far_
+head_step`'s own call to it are untouched.
+
+Sheets: `out/print/ledgers/template_templates.jpg` (15 tiles -- every
+`(kind, variant)` template built per document, page-level + the pooled
+fallback, with the HEAD mask (yellow) and LINE-ROW stub mask(s) (orange)
+outlined, captioned with the exemplar count) and
+`out/print/ledgers/template_changed.jpg` (20 tiles -- every head whose
+verdict differs round8 -> template raw substitution, EITHER direction,
+derived live; the best-matching template's standard-head-size outline
+drawn at its own MATCHED centre in yellow, local staff lines in green,
+detector box in red, reference tick in cyan). Staff-line rows spot-
+checked against the raw page (two heads, five lines each): every drawn
+line sits on a row with mean brightness well below the window's white
+background, confirming `frame_lines_for_head`'s local re-measurement is
+reading real ink, not a stale global position.
+
+Paths: `tools/omr/annotate/head_template.py`,
+`tools/omr/tests/test_head_template_2026_10_02.py`,
+`benchmarks/omr-local-staff-2026-09/score_head_template.py`,
+`benchmarks/omr-local-staff-2026-09/template_sheets.py`.
+
+### lane-ledger-template, GEOMETRY templates (2026-10-02, Sean)
+
+**Brief**: "try the geometry version first" -- build templates from
+drawn ellipse geometry instead of averaged real exemplars; "also the
+oval should be at a 45% angle for the note head -- right?" -- MEASURE
+first, never assume (CLAUDE.md rule 7).
+
+**Measured tilt** (`benchmarks/omr-local-staff-2026-09/
+measure_head_tilt.py` -- `cv2.fitEllipse` on each clean on-staff head's
+own local ink, stem columns masked, contours with eccentricity > 2.0
+excluded from the OUTER statistic as stem-contaminated, not silently
+averaged in):
+
+| doc | kind | outer tilt (median) | n | slit tilt (median) | n |
+|---|---|---|---|---|---|
+| Litolff | filled | 1.4 deg | 598 | -- | -- |
+| Litolff | hollow | 2.3 deg | 126 | 38.3 deg | 138 |
+| Brahms | filled | 4.4 deg | 541 | -- | -- |
+| Brahms | hollow | 3.3 deg | 125 | 1.6 deg | 80 |
+
+**The OUTER oval is measured flat, not 20-30 deg** -- both documents,
+both notehead kinds, large samples (125-598 heads each). The manager's
+guess is NOT confirmed for the outer shape; whatever visual tilt
+prompted the question is more likely the STEM's own angle (masked out
+here precisely because it dominates an unmasked fit -- the first pass of
+this measurement, before stem-masking, swung wildly between +-90 deg on
+elongated stem-fused blobs and is why that first pass is not reported).
+**The HOLLOW SLIT is measured steep on Litolff (38.3 deg, close to the
+guessed 40-45 deg) but NOT on Brahms (1.6 deg)** -- the two documents
+disagree, so no single slit angle generalises across editions; each
+document's own measured value is used for its own templates, never one
+borrowed from the other.
+
+**Built**: `head_template.build_geometry_template`/`build_geometry_templates`
+(new, additive) draw a template directly at the canonical grid's own
+scale: outer ellipse `GEOM_HEAD_WIDTH_SPACES=1.3` x `GEOM_HEAD_HEIGHT_
+SPACES=1.0` sp (the brief's own stated numbers -- DIFFERENT from ROADMAP
+2.39's `STANDARD_HEAD_WIDTH/HEIGHT_SPACES` of 1.4 x 1.1, kept as its own
+separate constant, never substituted for the exemplar path's), rotated
+by the MEASURED outer tilt; hollow = ring (outer ellipse minus an inner
+slit ellipse at the measured slit tilt, sized as a fraction of the outer
+axes); on-line/in-space variants draw a line of the page's own MEASURED
+staff-line thickness (`score_head_template.measure_line_thickness_px`,
+median dark-run length at each known staff-line y, several x samples per
+page) through the centre or touching the window's top/bottom, extending
+0.5 sp past the oval, same as the brief's own stated geometry. Matching,
+masks, shift penalty, margin and decision logic are UNCHANGED from the
+exemplar path -- only the template SOURCE differs; `score_head_template.
+build_geometry_templates_for_doc` returns the SAME `{page: templates,
+"pooled": templates}` shape `templates_for_page` already expects, so the
+entire scoring harness is reused verbatim.
+
+**Real-data re-score** (`score_head_template.py`, same local-monkeypatch
+harness, both template sources run side by side this round):
+
+| doc | reader | right | wrong | abstain | n |
+|---|---|---|---|---|---|
+| Litolff | geometry (position control) | 30 | 14 | 0 | 44 |
+| Litolff | round8 | 25 | 14 | 5 | 44 |
+| Litolff | template (exemplar-averaged) | 16 | 20 | 8 | 44 |
+| Litolff | geom_template (this round) | 14 | 16 | 14 | 44 |
+| Brahms | geometry (position control) | 11 | 0 | 0 | 11 |
+| Brahms | round8 | 11 | 0 | 0 | 11 |
+| Brahms | template (exemplar-averaged) | 6 | 3 | 2 | 11 |
+| Brahms | geom_template (this round) | 6 | 3 | 2 | 11 |
+
+(Note: "geometry" here is the PRE-EXISTING position-control row Sec6b
+names, unrelated to this round's geometry-DRAWN templates -- an
+unfortunate name collision the task brief's own wording creates; kept as
+both scripts already name it, flagged here rather than silently
+renamed.)
+
+Agreement with round 8: Litolff 30 of 44 heads agree (same as the
+exemplar path's 29/44); Brahms 6 of 11 (identical flip set to the
+exemplar path -- both template sources fail the SAME 5 Brahms heads,
+suggesting a Brahms-specific cause neither template source addresses,
+not a property of averaging vs drawing).
+
+**MEASURED NET NEGATIVE, same verdict as both earlier attempts** (the
+oval shape trace, the exemplar-averaged templates): 12 Litolff +
+5 Brahms regressions (right under round 8, not right under the geometry
+template). `geom_template_where_round8_undecided_only` (keep round 8's
+own answer except where it abstains) is never negative by construction
+and measured ZERO net change on both docs this round -- unlike the
+exemplar path, which gained one Litolff head
+(`glyph/3/0/8/6/10`), the geometry-drawn template does not confirm a
+through-rung there either.
+
+**Of the two target heads, NEITHER flips under the geometry templates
+either** -- both stay `abstain`, same reason (`no_rung_before_the_head`)
+as round 8 and the exemplar path. Unlike the exemplar path's confident
+WRONG match on `glyph/3/0/7/2/4`, the geometry template reads it as
+undecided/not-on, i.e. it does not repeat that specific false-confidence
+failure, but it also does not solve the head.
+
+**Conclusion**: switching the template SOURCE (drawn geometry vs
+averaged real ink) changes WHICH heads flip but not the overall verdict
+-- still net negative, still does not resolve the two heads this whole
+lane exists for. The measured tilt numbers are the most durable output
+of this round: the manager's 20-30 deg outer-oval guess is refuted by a
+large, stem-masked sample on both documents; the 40-45 deg hollow-slit
+guess is confirmed on Litolff only.
+
+Sheets: `out/print/ledgers/template_geom_templates.jpg` (30 tiles -- every
+geometry template built, per page, drawn beside 3 real clean heads of
+the same kind from that SAME page at the SAME canonical scale, so shape
+and tilt compare directly) and `out/print/ledgers/template_geom_changed.jpg`
+(19 tiles -- every head whose verdict differs round8 -> geom_template,
+same drawing convention as `template_changed.jpg`).
+
+Paths: `tools/omr/annotate/head_template.py` (geometry additions),
+`benchmarks/omr-local-staff-2026-09/measure_head_tilt.py`,
+`benchmarks/omr-local-staff-2026-09/score_head_template.py` (geometry
+additions), `benchmarks/omr-local-staff-2026-09/template_geom_sheets.py`.
+
+### lane-ledger-template, re-measured tilt + ONE review sheet (2026-10-02, Sean -- NO SCORING this round)
+
+**Brief**: manager's read of `template_geom_templates.jpg` -- (1) the
+~2 deg outer tilt is likely an ARTEFACT (fitEllipse with staff lines
+left in is pulled flat by the line through/along the head); (2) the
+hollow template (thin ring, big empty centre) does not look like a
+real Litolff half note; (3) the "real head" comparison panels were not
+framed on the heads at all. Sean: "no scoring this round, only
+templates and one review sheet."
+
+**Re-measured tilt** (`measure_head_tilt.py`, rewritten):
+
+  1. staff-line ROWS are now masked before any contour fit -- but only
+     in the columns OUTSIDE the oval's own expected footprint
+     (`GEOM_HEAD_WIDTH_SPACES`'s half-width around the window centre),
+     never inside it. **First cut masked the FULL row width and was
+     measured WRONG** (caught before trusting any number): on a space
+     this tight, BOTH neighbouring staff lines sit inside even the tight
+     tilt window (measured directly: `lines_local` at window-relative
+     rows ~5 and ~20 of a 26-27-row window), overlapping the oval's own
+     top/bottom extent -- blanking the full row chopped both tips off
+     the oval, leaving a thin residual whose fitted eccentricity read
+     3-17 instead of a real oval's ~1.1-1.6, and the aggregate tilt came
+     back at an incoherent 45 deg median. Column-restricted masking (this
+     round's shipped version) leaves the oval's own ink alone wherever a
+     line and the oval's footprint overlap, and only removes a line's
+     ink where it is unambiguously NOT the oval (outside that column
+     range) -- the same "never touch the real footprint, only the stub
+     beyond it" principle this lane's own ledger-evidence masks already
+     use.
+  2. staff-line THICKNESS for the mask band is the page-level
+     measurement (`score_head_template.measure_line_thickness_px`,
+     already validated in the prior round) -- NOT a fresh per-head
+     re-measurement: a first attempt at measuring thickness inside the
+     tiny tilt window itself occasionally returned a wildly wrong run
+     length (an edge column catching unrelated ink) and masked the
+     ENTIRE window to zero ink on several heads before this was caught.
+  3. OUTER tilt is restricted to heads IN A SPACE (`position % 2 == 1`)
+     -- belt-and-suspenders on top of the masking, per Sean's own
+     instruction, so no on-line head's own through-line can bias it at
+     all.
+  4. a non-deterministic staff-key pick (`set` iteration order, which
+     varies by Python's per-process hash seed) was found and fixed
+     (`sorted(staff_keys)[:1]`, was `list(staff_keys)[:1]`) -- without it
+     the SAME input produced different thickness/measurement counts on
+     different runs. A residual run-to-run jitter remains (borderline
+     eccentricity-threshold heads flip in/out of the sample from tiny
+     floating-point differences inside `cv2`'s own fit) -- small against
+     the wide IQRs reported below, not chased further this round.
+
+| doc | kind | outer tilt (median, IQR) | n | slit tilt (median, IQR) | n | slit:outer axis ratio |
+|---|---|---|---|---|---|---|
+| Litolff | filled | 10.4 deg [-2.3, 43.3] | 334 | -- | -- | -- |
+| Litolff | hollow | 43.6 deg [4.4, 71.5] | 94 | 35.3 deg [30.5, 38.6] | 206 | 0.19 x 0.43 |
+| Brahms | filled | 26.3 deg [4.7, 66.2] | 375 | -- | -- | -- |
+| Brahms | hollow | 12.8 deg [-15.2, 59.0] | 103 | -7.0 deg [-13.0, 37.0] | 140 | 0.29 x 0.35 |
+
+**Read honestly**: these are NOISY numbers (wide IQRs, some run-to-run
+jitter) -- not the single clean angle the first (line-biased) pass
+reported, nor a crisp confirmation of "45 deg". The medians sit closer
+to the manager's 20-30 deg outer-oval guess than before (Litolff 10.4,
+Brahms 26.3 for filled) but the spread is wide enough that this is a
+RANGE, not a fact pinned to one number. The Litolff SLIT tilt is the
+one tight, repeatable measurement here (30.5-38.6 deg IQR, n=206) --
+close to the manager's own 40-45 deg guess for the slit specifically.
+Brahms's slit measurement stays unreliable (sign-inconsistent, wide
+IQR) -- the two editions still do not share one slit angle.
+
+**Redrawn hollow templates**: `slit_width_ratio`/`slit_height_ratio`
+(new parameters on `head_template.build_geometry_template`/
+`build_geometry_templates`) size the inner slit from the MEASURED
+slit-vs-outer axis ratio above (Litolff 0.19 x 0.43, Brahms 0.29 x 0.35)
+instead of the previous hardcoded 0.55 x 0.70 -- the hollow template is
+now mostly ink with a narrow, slanted slit, per the manager's own
+reading of what a real Litolff half note looks like.
+
+**ONE review sheet** (`template_review10.py`, NO scoring call anywhere
+in it -- no `score_doc_with_templates`, no round8 comparison, no
+right/wrong tally): `out/print/ledgers/template_review10.jpg` -- the
+drawn templates (filled/hollow x on-line/in-space/raw, each doc, at the
+same canonical scale) ABOVE 10 real far heads (`glyph/3/0/7/0/7`,
+`glyph/3/0/7/2/4`, `glyph/3/0/8/6/10` always included, the rest a
+hand-stated mix across filled/hollow x above/below x on-ledger/in-space,
+selected by GATHER facts -- detector class, position parity -- never by
+truth agreement, CLAUDE.md rule 5), each cropped CENTRED on the head at
+4x zoom with generous padding (2.2 sp x, 2.8 sp y) so the head and its
+ledgers are fully in frame, the best-matching template's own outline
+overlaid at its MATCHED centre (yellow, + centre cross), local staff
+lines (green), detector box (red), and a reference TICK (cyan, for
+visual calibration only -- never tallied). The match's own
+on-line/in-space verdict and margin are printed as text, not scored.
+
+Staff-line rows pixel-row checked directly against the raw page (two
+heads, five lines each): every line sits on a row with mean brightness
+well below the window's white background (0-85 across the 10 rows
+sampled), confirming the drawn lines are real ink, not a stale position.
+
+Paths: `tools/omr/annotate/head_template.py` (`slit_width_ratio`/
+`slit_height_ratio`), `benchmarks/omr-local-staff-2026-09/
+measure_head_tilt.py` (rewritten masking + axis/ratio reporting),
+`benchmarks/omr-local-staff-2026-09/score_head_template.py`
+(`build_geometry_templates_for_doc` now reuses `measure_head_tilt.
+summarize`), `benchmarks/omr-local-staff-2026-09/template_review10.py`,
+`out/print/ledgers/template_review10.jpg`.
+
 <!-- brought onto main 2026-10-04 from origin/lane-ledger-template-centre -->
 ## lane-ledger-template-centre (2026-10-04): the template's centre as round 8's probe row
 
