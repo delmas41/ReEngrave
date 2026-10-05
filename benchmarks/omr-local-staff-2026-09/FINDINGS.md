@@ -2982,3 +2982,453 @@ box (near_on 0.38) -- drawn labelled as such. Frame control on/off 0.97-1.0 vs
 blob_in_box 0.95; tiles 1, 2, 4 (detector box, standard box not trusted)
 0.54 / 0.50 / 0.43 -- the boxes there are poor, which is the remaining work.
 This is the reading we have, not an endorsement; nothing was tuned.
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-template-centre -->
+## lane-ledger-template-centre (2026-10-04): the template's centre as round 8's probe row
+
+Sean: "Feed the center into round 8". Base `origin/lane-ledger-edge-fix` (845ab8cc) + `head_template.py` and its
+page-shape drivers copied from `lane-ledger-template-fix` 89327ab3 (not edited). GATHER+ADJUDICATE only; nothing
+switched on. The `head_center_y` parameter already existed on the probe path (r8-main); this lane only SUPPLIES it.
+Scripts: `template_centre.py` (per-head template fit), `score_template_centre.py` (arms), `centre_scan.py`
+(diagnostic), `template_centre_sheet.py` (sheet). Sheet: `out/print/ledgers/template_centre/` (`sheet_changed.png`,
+`sheet_census.png`, `pixel_check.json`).
+
+Control (reproduced): default 25/14/5 Litolff (n=44), 11/0/0 Brahms; fix 1 (parts 1+2) 29/13/2, 11/0/0.
+
+**F2 gate, fixed before any arm was scored:** use the template centre only where the template's own pixel check
+passes round 4's MISS rule unchanged -- IoU >= 0.70 AND offset <= 0.15 sp (oval vs the head's ink blob). 23 of 44
+Litolff heads and 11 of 11 Brahms heads pass.
+
+| arm (fix 1 on) | Litolff right/wrong/undecided | Brahms |
+|---|---|---|
+| default (control) | 25/14/5 | 11/0/0 |
+| F0 fix 1 | 29/13/2 | 11/0/0 |
+| F1 template centre on every head | 25/15/4 | 11/0/0 |
+| F2 only where the fit passes the gate | 29/13/2 | 11/0/0 |
+| F3 only the 9 census heads | 29/13/2 | 11/0/0 |
+
+**Result: no gain.** F2 and F3 change no verdict at all (identical to F0). F1 is a regression: four right heads
+break, all with a template fit the gate refuses (IoU 0.49-0.66), so the gate does its job:
+`3/0/0/5/12` -4 -> -3 (template oval 0.32 sp low, probe row moves off the through-line), `3/0/5/4/5` 10 -> abstain
+(oval 0.57 sp low, IoU 0.49), `3/0/7/0/7` -3 -> -2, `3/0/7/3/5` 10 -> abstain (the lower row now reads as the head's
+own outline). Sheet: `sheet_changed.png`.
+
+**Why it does not help the census heads:** the template centre sits on the box middle. Template dy from the box
+middle is 0.00-0.06 sp on 29 of 44 Litolff heads and never over 0.57; on the 9 census heads it is 0.00 on six,
+-0.06, +0.19 and -0.13 on the others, and seven of the nine fits are trusted (IoU 0.71-0.80; the two that are not:
+`7/2/4` offset 0.19 sp, `7/4/3` IoU 0.57). The oval sits
+on the head and the box already agrees with it; the box-covers-only-the-top cause (A) is not what these heads show.
+Per head (F0 answer -> reference; all unchanged by F1/F2/F3):
+- `3/0/7/2/4` (undecided, ref 10): scan below. A centre 0.1-0.4 sp ABOVE the box middle finds the through-line
+  (R at -0.4..-0.1 sp); the template says 0.00. A probe band of +-0.30 sp (shipped +-0.15) finds it AT the box
+  middle (and at 0..-0.5).
+- `3/0/7/7/0` (11, ref 12): same pattern: right at -0.4..-0.1 sp with the shipped band; right at the box middle
+  and 0.8 above with a +-0.30 band.
+- `3/0/7/3/2`, `3/0/7/3/4`, `3/0/7/4/3` (one short): right only at +0.6..+0.8 sp (toward the staff-far side)
+  with the +-0.30 band for 7/3/2, 7/3/4, 7/4/3 -- far outside any plausible centre error; the crops show a ledger
+  drawn against the TOP of the head ("popped"/"not kept" magenta) where the print's reference puts the head ON it
+  (nominal row at the head's top). That is a rung-through-vs-touching decision at the top edge, not a centre.
+- `3/0/7/3/1`, `3/0/7/6/1`, `3/1/0/6/0` (one short): wrong at every centre in -0.8..+0.8, both bands. Same top-edge
+  ledger picture. `3/0/8/6/10`: abstains at every centre and band.
+So the centre is not the limiting factor for this population; two heads (`7/2/4`, `7/7/0`) are limited by WHERE
+the probe row sits in a head whose rendered ink centre the template does not move, and a wider probe band
+(`MIDDLE_ROW_TOL_SPACES` 0.15 -> 0.30, monkeypatched in `centre_scan.py` only) rescues those two without any
+centre. REPORTED, not added: no threshold was tuned or changed in `tools/`. Scoring the +-0.30 band as a whole arm
+was not done (it would be a tuned threshold; needs its own roadmap decision and a check on Brahms).
+
+Pixel check on the sheet (`pixel_check.json`; ink fraction in the 0.6 sp stubs on the line vs 0.5 sp off it): every
+orange line reads on > off, but several are weak (3/0/7/7/0 1567.0: 0.50/0.35; 3/0/7/3/1 1454.0: 0.22/0.00 -- short
+ledgers). The green probe row lies inside the template oval at the box's x for every tile except one: `3/0/5/4/5`
+F0, where the box middle is above the oval (the template misfit, IoU 0.49).
+
+Template fits on the far heads (Litolff, shape A_oval; Brahms, C_mean_shape): Brahms 11 of 11 pass (IoU 0.74-0.95,
+offset <= 0.10 sp). Litolff: 21 of 44 miss, mostly the hollow heads (IoU 0.22-0.56) and blob-fused ones.
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-far-edge-crops -->
+## lane-ledger-far-edge-crops (2026-10-04): "a ledger touching a far head's FAR edge -- is the head ON it?" (Sean: "Depends, show me crops")
+
+MEASURE + CROPS ONLY; `tools/` untouched (the reader is only called). Script `far_edge_crops.py`; sheet and key
+`out/print/ledgers/far_edge/far_edge_sheet.png`, `far_edge_key.json`. Base `origin/lane-ledger-template-centre` (2f9de5aa).
+Control: fix 1 (`near_edge_ledgers` + `restore_masked_near_edge`) Litolff 29/13/2, Brahms 11/0/0; default 25/14/5, 11/0/0.
+
+**Test.** A far-edge rung = a rung of the bare ink walk (`edge_census.stage0_candidates`, no masking) that the census's
+own `_is_edge_related` calls 'far' (>0.25 sp from the box middle, within [-0.45,+0.35] sp of the far edge), PLUS rungs on
+the head's far half the census calls 'mid' (rm > 0.15 sp, the shipped probe tolerance, and rf <= 0.35). Backed by ink =
+`thin_flat_jut_evidence` ok (other heads/accidentals blanked) or a raw +-1 px ink run >= 0.1 sp beyond the box. Chord
+partner farther out = any detector notehead box within 1.7 sp in x, 0.5-3.0 sp farther out.
+
+**Result: the population is small.** Of 55 far heads, 10 have such a rung (Litolff 9, Brahms 1):
+- (a) reference ON the line, no partner: Litolff 4 (`3/0/7/3/1`, `7/3/2`, `7/3/4`, `0/7/2`); Brahms 0.
+- (b) reference in the space nearer the staff, no partner: 0 in both. Brahms' only candidate (`1/1/8/7/4`, ref 13) is
+  a SLUR crossing the head's bottom, not a ledger (no ink run beside the head) -- the head hangs under a real near-edge ledger.
+- (c) a chord partner sits farther out: Litolff 4 (`0/2/3`, `0/2/9`, `0/5/12`, `0/6/2`); Brahms 0. Reference is ON the
+  line in 2 (2/3, 5/12; answer unchanged by "on it") and NOT on it in 2 (2/9 ref -5, 6/2 ref -4: the rung is the partner's).
+- other: `3/0/9/3/5` (the rung is the head's own outline, no ink beyond it).
+So where nothing sits farther out, the reference says ON in every case that exists (4 of 4) and never in the space.
+"If that rung meant ON" would turn 3 wrong heads right (7/3/1, 7/3/2, 7/3/4: -5 -> -6) and 7/0/2 (-6 -> -2); it would
+turn 2/9 (-6 -> -4) and 6/2 (-6 stays) wrong/unchanged -- both (c), where it would be wrong or no help.
+Caveat: the jut on 7/3/1 and 7/3/2 is only 0.23-0.24 sp (the heads nearly touch their neighbours; stubs are tiny bumps).
+Of the 9 named misses only 3 (7/3/1, 7/3/2, 7/3/4) have a far-half rung; `3/0/7/2/4, 7/4/3, 7/6/1, 7/7/0, 8/6/10,
+3/1/0/6/0` have their popped rung within 0.26 sp of the box middle (through the head, rm -0.26..+0.11): not far-edge.
+
+**Sheet** (7 tiles, 110 px per staff space = x7 Litolff; shuffled; number only): a = tiles 4, 6, 7; c = tiles 1, 2, 3, 5
+(no (b) exists; the (c) tiles are the contrast). Excluded by the pixel rule: `0/7/2` (ink on-row 0.74 vs 0.77 off).
+Pixel numbers (+-1 px, head width +-0.5 sp: on/off 0.5 sp): span 0.69-0.87 vs 0.47-0.64 on all 7; staff-line frame control
+0.97-1.00 vs 0.03-0.11. Weakness: the line is mostly hidden in black heads, so the span test is weak (tile 3 0.69/0.64).
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-accidental -->
+## lane-ledger-accidental (2026-10-04): why accidental ink to the left still corrupts tiles 5, 6 -- and why tile 2 misses its 2nd ledger
+
+Base `origin/main` e15b5681. Scripts: `accidental_census.py` (census, runtime wrappers via `edge_census`), `accidental_sheet.py`
+(the crops; `--arm=NAME` redraws under an arm), `score_accidental.py` (arm table). Sheet `out/print/ledgers/accidental/accidental_sheet.png`
+(+ per-tile PNGs; `arm_conn_drop/` = the same tiles under conn+drop). x6, real print, red = head box, purple = accidental boxes,
+orange = kept rungs, magenta dashed = bare-ink rungs the reader dropped, yellow = ink `_exclude_other_heads_ink` blanked.
+**Control** (fix1_far: near_edge_ledgers + restore_masked_near_edge + far_side_ledger, four_causes_cd): Litolff 32/10/2 (n=44), Brahms 11/0/0,
+reproduced with recording off and on; default read bit-identical to the pre-change tree on all 55 heads (0 differ).
+
+**Cause per tile** (none is "accidental strokes became rungs" and none is the cause-C exclusion running on the wrong ink):
+* tile 5 `3/0/0/7/1` (we -10, ref -8): ladder [434, 423.5, 411, 396, 376] -- 5 rungs, the head is on the 5th; the true ladder is 4 (L1 hides inside the
+  lower head's blob). Row 434 is the LOWER head `7/2`'s own ink (box 417.9-437.4, undersized: ink goes ~6 px past it on the right). The
+  exclusion keeps a neighbour's row when ink continues past its box on both sides within 2 px; on rows 432-435 the "left side" is the
+  ACCIDENTAL's blob 5 px left of `7/2`'s box (it ends at 1716, the head ink starts at 1722: 7 white columns between), so 434 survives as a rung.
+  Without accidental boxes in the exclusion set the answer is identical (-10), i.e. the cause-C box exclusion neither helps nor hurts here; the
+  accidental box is also too narrow (right edge 1713, ink to 1716).
+* tile 6 `3/0/0/7/2` (we -6, ref -2): NOT the accidental (read without accidental boxes: -6 too). Ladder [424, 396, 376.5]; the head is on L1 (424, evidenced
+  at its middle row) but `derive_far_head_step` takes "evidenced" to mean the LAST rung is the one through the head, and the last rung is 3.87 sp
+  beyond it (the stack's other heads' ledgers) -> counted all three.
+* tile 2 `3/0/0/2/4` (we -4, ref -7): no accidental in range. Two causes: (i) the 2nd ledger (y~415) juts out of the neighbour head `2/9` on ONE side;
+  the exclusion blanks 2/9's rows (needs both sides), the bare walk also never offers it (merged blob), so the ladder is [428.5, 395]; (ii) the head box
+  (382.7-404.6) is too low/big: the 3rd ledger at 395 touches the head's bottom but reads "through its middle". With L2 found the answer would be -6, not
+  -7: the head box is the other lane's.
+
+**Census, all 55 far heads** (detector accidental box with right edge <= 2 sp left of the head box and within 1.5 sp vertically): Litolff 9 of 44 --
+6 right / 3 wrong (`7/1`, `7/2`, `7/7/0`); Brahms 2 of 11 -- 2 right. Same heads with accidental boxes REMOVED from the exclusion set: Litolff 5/3/1
+(+1 right from cause C: `3/0/7/4/2` abstain -> right), Brahms 2/0/0. 8 of 11 are right now; 3 wrong, each for a cause above or unexplained (`7/7/0`).
+
+**Arms** (all default OFF; Litolff right/wrong/abstain, Brahms 11/0/0 in every arm; `3/0/0/6/2` excluded would read one fewer wrong):
+| arm | Litolff | per-head changes vs control | right heads broken |
+|---|---|---|---|
+| control | 32/10/2 | -- | -- |
+| conn (`exclusion_rules(connected=True)`) | 32/10/2 | `7/1` -10 -> -6 wrong -> wrong (false 434 gone, but the 423.5 through-ledger of the lower head, whose left stub is the accidental, goes with it; the true L1 is invisible as ink) | 0 |
+| drop (`derive_far_head_step(drop_rungs_beyond_head=True)`) | 33/9/2 | `7/2` -6 wrong -> -2 right | 0 |
+| conn+drop | 33/9/2 | both of the above | 0 |
+| (refused) one-sided thin-jut keep, with conn | 33/9/2 (+drop 34/8/2) | `7/7/0` 11 wrong -> 12 right, mechanism not shown by its crop (the yellow there is a box overlapping the head itself) | 0 |
+`drop` tolerance (beyond the head's far edge): 0.25 / 0.35 / 0.5 / 0.75 / 1.0 sp all 33/9/2, 1.5 sp back to 32/10/2; shipped 0.25 (ledger n+1 of a head ON ledger n sits ~0.5 sp past its far edge).
+The one-sided rule was built, did not recover tile 2's ledger (a round head tip beyond an undersized box also tapers thinly), and was REMOVED; the +1 on `7/7/0` is not evidence of a cause.
+**Reading**: `drop` is a clean convention fix (a ledger beyond a head is not that head's) worth +1 here; `conn` implements Sean's 10-01 white-gap rule but moves no verdict
+by itself -- tile 5 stays wrong until the lower head's undersized box is replaced by the standard head box (other lane), at which point re-run `score_accidental.py`.
+Pixel check (ink on the row within +-1.1 sp of the head x, vs the rows 0.5 sp above / below; printed by `accidental_sheet.py`): tile 5 kept L1 434 0.66/0.74,0.09; L2 423.5 0.74/0.11,0.63; L3 411 0.66/0.11,0.40;
+L4 396 0.74/0.26,0.11; L5 376 1.00/0.29,0.66. Tile 6 L1 424 0.74/0.12,0.74; L2 396 0.79/0.21,0.12; L3 376.5 1.00/0.35,0.68. Tile 2 L1 428.5 0.74/0.11,0.00; 395 0.63/0.54,0.60 (a head body, not a thin line -- consistent with cause ii).
+Tests `tools/omr/tests/test_ledger_accidental_2026_10_04.py` 7 (new names: RED by ImportError against the base tree; GREEN now); all 362 `-k ledger` tests pass.
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-exclusion -->
+## lane-ledger-exclusion (2026-10-04): what `_exclude_other_heads_ink` may blank of THIS head's own evidence (tiles 2, 7, 9)
+
+Base `origin/lane-ledger-accidental` b50ef07a. Scripts (this directory): `score_exclusion.py` (arm table), `exclusion_sheet.py` (crops),
+`exclusion_reach.py` (does each rule fire at all), `exclusion_identity.py` (default-output identity), `exclusion_trace.py` / `exclusion_one_rows.py` / `exclusion_ascii.py` /
+`exclusion_diag.py` (per-head traces). Sheet `out/print/ledgers/exclusion/exclusion_sheet.png` (+ one PNG per head). All keywords default OFF.
+**Control** reproduced: Litolff 32/10/2 (n=44), Brahms 11/0/0; with `drop_rungs_beyond_head` 33/9/2. **Default output bit-identical**: all 55 heads x 3 default-path arms (165 reads,
+position AND reason) are byte-identical between this tree and the base tree (`exclusion_identity.py`, base `ledger_grid.py`/`score_truth_set_rungs.py` loaded from git).
+LEGACY path (the ledger reader is the annotate/staged-support reader; nothing here is wired into STAGED or switched on).
+
+**Cause, per tile** (all three confirmed in ink, `exclusion_ascii.py`):
+* tile 9 `3/0/7/7/0` and tile 7 `3/0/7/4/3`: the box blanking the head's middle band is NOT another note. `3/0/8/7/1` (staff 8) and `3/0/6/4/3` (staff 6) overlap the subject's box by
+  93% / 62% of the smaller box (IoU 0.57 / 0.45): the same head claimed by the cross-staff contest on both staves (`glyph_owner` decides whose; the ledger reader should not). Blanked, the ledger
+  through the head vanishes from the middle-row evidence.
+* tile 2 `3/0/0/2/4`: the real 2nd ledger (rows 413-417, 5 px thick) juts 12 px right out of neighbour head `2/9` and nothing on the left. Both-sides test -> blanked.
+
+**Rules** (convention first, constants from spacing; `sp` = staff spacing):
+1. `exclusion_boxes_for(..., drop_same_ink_other_staff=True)` -- a box owned by ANOTHER staff (subject key `glyph/p/sys/STAFF/..`) that overlaps the subject's box by > 0.5 of the SMALLER box
+   (`SAME_INK_OVERLAP_FRACTION`) and does not COINCIDE with it (IoU < 0.9, `SAME_INK_COINCIDENT_IOU`) is the same ink twice, not blanked. The coincidence bound is not optional: Brahms
+   `glyph/1/1/8/7/4` has a staff-9 duplicate at IoU 0.97 whose blanking of the WHOLE head keeps the head's own ink from merging with a slur into a false rung (without the bound: 13 right -> 11
+   wrong, found by the arm table, traced in `exclusion_trace.py`). 0.9 sits between 0.57 and 0.97: **n = 3 heads, so a measured bound, not a convention**. Fires on 15 of 55 heads (reach).
+2. `exclusion_rules(one_sided=True)` -- a row of another head's box is kept when ink runs unbroken from that head's outermost ink out past the box edge >= 0.35 sp
+   (`ONE_SIDED_JUT_MIN_BEYOND_SPACES`), is <= `LEDGER_THICKNESS_MAX_SPACES` (0.35 sp) + 1 px thick over the outer half of the run, and its top and bottom edges move <= 0.10 sp (min 1 px,
+   `ONE_SIDED_JUT_FLAT_TOL_SPACES`) over it. Fires on 17 of 55 heads. **Does it separate a ledger from a round head tip? Not cleanly.** Tile 2's ledger passes; a synthetic round tip fails
+   (tests); but on the real tile 5 (below) the pointed right tip of the lower head `7/2` (rows 427-429, 10 px beyond its undersized box, thickness 6,5,5,4,4) ALSO passes. The stricter "same
+   thickness along the run (<= 1 px)" refuses that tip -- and tile 2's ledger with it (a real ledger's own end tapers too: 5 thick for 5 px, then 3). Both measured (arm table); the looser one is
+   the keyword's behaviour, `ONE_SIDED_JUT_THICKNESS_TOL_PX` (None = off) holds the stricter one.
+3. `exclusion_rules(own_box=subject_box)` -- the subject's own box is never blanked (the docstring's old principle). **REFUSED**: it breaks two right heads (Litolff `3/0/9/3/5` 11 -> abstain,
+   Brahms `1/1/8/7/4` 13 -> wrong; its only gains are `3/0/0/6/2` against the reference Sean marked wrong, and `2/9` wrong -> wrong). Keyword kept, never to be turned on; not in the headline arm.
+
+**Arms** (Litolff right/wrong/abstain; Brahms 11/0/0 unless stated):
+| arm | Litolff | per-head changes vs control | right heads broken |
+|---|---|---|---|
+| control | 32/10/2 | -- | -- |
+| same | 34/8/2 | `7/4/3` -3 -> -4 right; `7/7/0` 11 -> 12 right | 0 |
+| one | 32/10/2 | `2/4` -4 -> -6 (L2 found; still wrong: head box too low, other lane) | 0 |
+| own | 32/9/3, Brahms 10/1/0 | `9/3/5` right -> abstain; Brahms `8/7/4` right -> wrong | 2 |
+| same+one | 34/8/2 | tiles 7, 9 right; tile 2 -6 wrong | 0 |
+| drop (lane-ledger-accidental) | 33/9/2 | `7/2` -6 -> -2 right | 0 |
+| same+one+drop | 35/7/2 | tiles 7, 9, `7/2` right | 0 |
+| conn+one | 33/9/2 | `7/1` -10 -> -8 right (see below) | 0 |
+| **conn+same+one+drop** | **36/6/2**, Brahms 11/0/0 | tiles 7, 9 right, `7/1` -10 -> -8 right, `7/2` -6 -> -2 right; tile 2 -4 -> -6 wrong | **0** |
+| same+one(strict)+conn+drop | 35/7/2 | as above minus `7/1` | 0 |
+| all (+own) +drop | 35/6/3, Brahms 10/1/0 | as `own` | 2 |
+Tile 5 `3/0/0/7/1` is the lane-ledger-accidental tile and appears only with `conn` AND `one` together: `conn` drops the false row 434 and the lower head's through-ledger that counted only
+because of the accidental on its left (423.5, "both sides"); `one` puts back the through-ledger as its right-hand jut (row 428, the box middle). Ladder 5 -> 4 rungs, -8. Correct COUNT, but the
+row's pixel check is a head-body row, not an isolated line (ink 0.63, rows 0.5 sp off 0.51/0.60) because that ledger lies inside the lower head's blob -- and it rests on the tip-or-ledger call above.
+**The one question for Sean** (a single crop, `glyph_3_0_0_7_1.png`, right panel): is the pointed ink right of the lower head, at the orange L1 row, the END OF ITS LEDGER or the head's own tip?
+If a tip, `7/1` stays at -6 (35/7/2) and `one` is worth only tile 2's L2.
+
+**Tiles 2 / 7 / 9** individually: 9 and 7 become right by rule 1 alone (the ledger through the head returns to the middle-row band; pixel check below). 2: L2 (y416) is now counted
+(ladder 428.5, 416, 395), but the head box (382.7-404.6) sits too low, so "through 395" gives -6, not -7: unchanged wrong, not fixable here. Pixel check (ink on the row within +-1.1 sp of the
+head x / rows 0.5 sp above, below): tile 2 L1 428.5 0.74/0.11,0.00; L2 416 0.63/0.63,0.11; L3 395 0.63/0.54,0.60. Tile 7 L1 1470 0.91/0.46,0.17; L2 1452 0.91/0.37,0.51 (row through the head's
+body, the ledger is the jut at its middle). Tile 9 L1 1567 0.83/0.11,0.46; L2 1582 0.86/0.31,0.51 (same). Tile 6 L1 424 0.74/0.12,0.74; L2 396 0.79/0.21,0.12; L3 376.5 1.00/0.35,0.68 (L2, L3 drawn
+but beyond the head: not counted, by `drop`). **Broken heads: none** in any arm that includes rule 1 or 2 (right heads broken: []). The 15 heads where a rule fires but the verdict does not move
+were not cropped; REACH says the rules are live, not that every firing is a ledger.
+Tests `tools/omr/tests/test_ledger_exclusion_2026_10_04.py` 11 (all names new: RED by ImportError on the base tree; one mutation -- raising the thickness cap -- turns the thick-ledger test RED);
+`-k ledger` 373 passed 2 xfailed (one older test pinned `_EXCL_RULES == {"connected": False}` and now names the two new keys); `staged.check` 250, unchanged.
+
+<!-- brought onto main 2026-10-04 from origin/lane-standard-head-box -->
+## lane-standard-head-box (2026-10-04): a STANDARD-size head box per page, placed by the geometry template (Sean)
+
+Base `origin/main` e15b5681 (round 8 + fix 1 + far-side rule, all OFF). Sean: *"Shouldn't the boxes for notes heads be standardized in size?"*,
+*"Could we use our template work to determine size of notes?"*. Code: `tools/omr/annotate/standard_head_box.py` (pure construction, imported by
+nothing in the product; `ledger_grid.py` NOT edited), template code copied from `lane-ledger-template-fix` 51c8f65a (`head_template.py`,
+`ledger_shape_trace.py`, and the measuring scripts `shape_from_page.py` etc.). Scorer `score_standard_box.py`, sheet `standard_box_sheet.py`,
+step-4 numbers `standard_box_thrown_tests.py`; output `out/print/ledgers/standard_box/`.
+
+**Construction.** SIZE = the page's measured head (second-moment fit on clean, isolated, ON-LINE filled heads, `shape_from_page`): Litolff
+oval 1.59 x 1.05 sp tilt 29.3 deg (n=8 on-line heads for the WHOLE document -- pages 1/2/3 have 0/2/6, so all three use the document's) -> axis-aligned
+box 1.48 x 1.20 sp; Brahms p0 1.42x1.07 tilt 30.8 (n=12) -> 1.34 x 1.17, p1 1.49x1.13 tilt 28.1 (n=120) -> 1.42 x 1.22. A hollow head takes the
+same outer size. CENTRE = the template's FREE position search (`match_head_template(decide="staged", dx_range 0.4 sp, head_ink_mode="opening")`,
+no ledger input, no refine). Detector box vs standard box over the 44/11 far heads: Litolff centre shift median 0.08 sp (p90 0.38, max 0.57), size
+ratio width median 0.99 [0.86, 1.15], height median 0.91 [0.74, 1.32]; Brahms shift median 0.04 (max 0.08), ratios 0.93-1.05 / 0.95-1.08.
+**Search control (can fail)**, 12 clean in-staff heads per doc, centre error against the head's own centroid: started at the detector box median 0.07 sp
+(Litolff) / 0.03 (Brahms); started 0.3 sp off 0.16 / 0.04; started 1.2 sp off 1.29 / 1.45 (does NOT recover -- outside the window). Box check control
+(share of the head blob inside the box): right centre 0.82 / 0.98, same box 1 sp displaced 0.30 / 0.27.
+
+**Arms** (reader = fix 1 + far-side rule; the BOX and the centre both change, `head_center_y` left None; other heads' exclusion boxes stay detector boxes).
+Gate for S2, fixed BEFORE scoring: template-oval vs head-ink-blob IoU >= 0.70 and centre offset <= 0.15 sp, on the OPENED ink with staff lines only
+(ledger-free, so the gate is not a consequence of the ledger read; it is also not independent of the search, which maximised agreement with that ink).
+
+| arm | Litolff right/wrong/abstain (n=44) | n=43 (`6/2` out) | Brahms | right heads broken |
+|---|---|---|---|---|
+| S0 detector box (control, reproduces 32/10/2, 11/0/0) | 32/10/2 | 32/9/2 | 11/0/0 | - |
+| S1 standard box on every far head | 33/9/2 | 32/9/2 | 11/0/0 | 5 |
+| S2 standard box only where the fit passes | 35/8/1 | 35/7/1 | 11/0/0 | 0 |
+
+Against Sean's own readings (`3/0/0/6/2` = -6, not the reference's -4): S0 33/9/2, S1 32/10/2, **S2 36/7/1**.
+Gate passes: Litolff 19 of 44, Brahms 11 of 11. **All 6 hollow Litolff far heads fail the gate** (0 of 6; filled 19 of 38): the oval is a filled shape and
+the ink blob of a half note has a hole, so the gate cannot pass a half note -- S2 never moves the very half-note tiles Sean raised (1, 4).
+
+Every changed head (S1 vs S0; S2 = S1 where "pass"):
+- `1/0/10/7/1` -4 wrong -> -2 right (ref -2; fit 0.47/0.29 FAIL so S2 stays -4): box 0.51 sp lower, 1.15 x 1.32 bigger; the through-ledger now sits at the box middle (evidenced).
+- `3/0/7/6/1` 11 -> 12 right, `3/1/0/6/0` -5 -> -6 right, `3/0/7/2/4` abstain -> 10 right (all PASS): the box got NARROWER (0.87-0.95 x) so the ledger's jut past the box clears the 0.25 sp stub test (3.7/4.3 px, 4.2/2.5 px against 3.9 needed; detector box 2.0/2.6 and 3.6/1.8) -- size is what mattered; the margin is 0.3-0.4 px, thin.
+- `3/0/0/6/2` -6 -> -4 "right": right only against the WRONG reference; Sean's -6 is what S0 reads. S1 makes it worse; S2 keeps -6.
+- `3/0/0/7/1` -10 -> -8 right (ref -8, fit FAIL -> S2 -10); `3/0/0/7/2` -6 -> -8 wrong (ref -2; PASS: still wrong, differently).
+- 5 RIGHT heads broken by S1, every one a gate FAIL: `0/2/3` (fit 0.60/0.26), `0/5/12` (0.19/0.71), `0/6/1` (0.18/0.78; no_rungs, abstains), `5/4/5` (0.21/0.61), `1/0/9/0` (0.73/0.16). Crops: the oval is pulled into a fused stem/partner or onto the wrong half of the head (sheet tiles 8-10, 13, 15). Not tuned away; the gate removes them.
+- `3/0/0/2/9`: -6 -> -4 under S1, still wrong (ref -5): fit 0.39/0.50, the head is fused to its stem and a partner above; the cyan box lands low on the stem. Not fixed.
+
+**Sean's named tiles, S0 / S1 / S2** (his reading): 1 `1/0/10/7/1` (-2) -4 / -2 / -4; 3 `3/0/0/2/9` (-5) -6 / -4 / -6; 4 `3/0/0/6/2` (-6) -6 / -4 / -6;
+7 `3/0/7/4/3` (-4) -3 / -3 / -3; 8 `3/0/7/6/1` (12) 11 / 12 / 12; 9 `3/0/7/7/0` (12) 11 / 11 / 11; 10 `3/1/0/6/0` (-6) -5 / -6 / -6.
+Box checks: tile 1 the standard box holds 0.82 of the head blob (detector 0.59) -- Sean's "box too small" is borne out; tile 3 the standard box is no better (0.52 vs 0.57).
+
+**Step 4: what throws "past the head" on the two still-wrong tiles** (`standard_box_thrown_tests.py`; each re-evaluation asserted equal to the real function):
+- `3/0/7/7/0` (thrown line y 1580, 0.20 sp above the standard box middle): `ledger_grid.head_middle_rung_evidence` -> False, so `derive_far_head_step` pops the rung
+  (gap -0.40 sp <= -TOUCH_TOL 0.20). Reason: the middle-row band (rows 1581-1586) has NO ink at the probe column because `_exclude_other_heads_ink` blanks it:
+  another detector notehead box on a neighbouring staff, `glyph/3/0/8/7/1`, overlaps 0.59 of this head's box. With no blanking the same test passes (run 1716-1748, jut 1.1 / 7.2 px against 3.9 needed). Identical at the detector box and the standard box.
+- `3/0/7/4/3` (line y 1457): `_rung_row_clears_box` -> False: run through the row is 21 px (x 1193-1214), needs box width + 2 x 0.05 sp = 26.5 px (detector box) / 24.6 px (standard box); and
+  `head_middle_rung_evidence` finds no run at the detector box (a box `glyph/3/0/6/4/3` overlaps 0.63 and blanks it) and, at the standard box, a run 1193-1214 whose jut is -2.7 / +0.6 px against 3.9 needed (without blanking 3.3 / 2.6: still short). The ledger here is hidden behind the neighbouring box's blanking AND short on the left.
+- (Fixed ones, for the record: `3/0/7/6/1` and `3/1/0/6/0` are thrown at the detector box by the SAME stub test -- jut 2.0/2.6 and 3.6/1.8 px vs 3.9 -- not by the other-head blanking; the narrower box passes it.)
+The accidental / other-head blanking is another lane's function; not edited.
+
+**Pixel checks** (sheet `standard_box_sheet.png`, 15 tiles, 1752 x 6358, x6 of the 600 dpi render). Lines: 34 drawn, 28 read on ink by the stub-zone/ridge test; 6 flagged (`6/1` 1583.5, `6/0` 2268.5, `0/2/3` 411, `0/5/12` 424, `0/7/2` 428.5, `1/0/9/0` 2287) -- each flagged at moved_px 0, i.e. no row within +-0.35 sp reads better (the crude test is low on lines running through a head's own ink); 4 lines snapped (-5, -5, 1, 1 px). Frame control (staff edge row vs 0.5 sp beyond): on >= 0.97, off <= 0.35 on every tile.
+Boxes: share of the head blob inside the box, detector (red) / standard (cyan): tile 1 0.59/0.82; passing heads `6/1` 0.97/0.93, `7/0` 0.94/0.89, `1/6/0` 0.95/0.90, `0/7/2` 0.78/0.95, `2/4` 0.91/0.82; failing heads mostly worse (`0/5/12` 0.56/0.38, `5/4/5` 0.87/0.51, `0/6/1` 0.50/0.37). Share of the box that is ink: cyan 0.73-0.81 on the passing heads vs red 0.60-0.72 (tighter). Mean over all 15: red 0.73, cyan 0.69.
+
+**What this says.** A standard box helps where the head is clean and the detector's box is wrong in SIZE (the ledger-jut test is size-sensitive: three heads) or too small
+(tile 1). The free position search is not reliable on a head fused to a stem/partner or on a half note, and the gate that spots this cannot see hollow heads at all. S2's +3 on Litolff
+(32 -> 35) is four changed heads, three of them fixes with a 0.3-0.4 px margin on the jut test; Brahms is untouched. Not a result to flip a default on (rule 5): needs the hollow-head fit fixed first
+(fill the blob's hole before the IoU) and a read of the two blanked-by-neighbour-box heads. Tests: `test_standard_head_box_2026_10_04.py` 7 (RED against the module missing; two mutations -- centre from the detector, un-rotated extents -- each fail one test).
+
+<!-- brought onto main 2026-10-04 from origin/lane-standard-box-hollow -->
+## lane-standard-box-hollow (2026-10-04): fill a half note's counter before the standard-box fit (Sean)
+
+Base `origin/lane-standard-head-box` 31813a1c. Code: `standard_head_box.counter_pockets / fill_counter` (+ `score_standard_box_hollow.py`,
+`standard_box_hollow_sheet.py`, 5 tests); `ledger_grid.py` NOT edited; nothing wired into a product path. Output `out/print/ledgers/standard_box_hollow/`.
+
+**Control** (can fail: the new arm is the only change): S0 32/10/2 and 11/0/0, S2 35/8/1 and 11/0/0 reproduced exactly.
+
+**Rule (every size measured, none tuned on these heads).** The page gets the counter painted as ink (`gray` copy) BEFORE the template's free search and before the
+gate's IoU; the reader still reads the original page. Counter = a white pocket (enclosed as printed; for a head the detector calls HOLLOW also enclosed after a
+closing) with largest inscribed radius <= (short axis - 2 strokes)/2 (4.3 px Litolff), >= t/4 + 0.5 px (speckle floor; a 1-px hole is 1.0, real counters 1.9-2.9),
+area <= the inner-oval area, centre within 0.5 sp of the detector box (hollow class) / inside the box (filled class, enclosed WITHOUT closing; a closing-only pocket must
+be inside the box -- an earlier version painted slivers between head and stem, seen on the sheet, fixed). **Closing disc = 2 t + 1 px** (9 px Litolff t=4, 15/11 Brahms):
+a gap in a ring's wall the wall's own stroke could span twice; wider is a different mark (test). A head with no pocket gets the SAME array back.
+
+| arm | Litolff r/w/a (n=44) | n=43 (`6/2` out) | vs Sean's own readings (`6/2` = -6) | Brahms | right broken |
+|---|---|---|---|---|---|
+| S0 detector box | 32/10/2 | 32/9/2 | 33/9/2 | 11/0/0 | - |
+| S2 control | 35/8/1 | 35/7/1 | 36/7/1 | 11/0/0 | 0 |
+| S2H (counter filled) | **36/7/1** | 36/6/1 | **37/6/1** | 11/0/0 | **0** (vs S2 and vs S0) |
+
+**Every change S2 -> S2H: one head.** Tile 1 `glyph/1/0/10/7/1`: -4 wrong -> -2 right (ref -2, Sean: half note on the line); gate IoU/offset 0.47/0.29 FAIL -> 0.79/0.05 PASS, the
+standard box then holds 0.81 of the head (detector 0.56 filled / 0.64 raw), the ledger through the box middle is evidenced. The other 5 hollow far heads (`1/0/10/8/1`, `1/0/3/7/3`,
+`3/0/0/5/12`, `3/0/0/6/1`, `3/0/5/4/5`) still fail the gate (IoU 0.65 / 0.63 / 0.60 / 0.16 / 0.27 after fill): a filled oval against a blob fused to a stem, a stacked partner or
+the staff -- the same cause that fails the filled heads, not the counter. Their reads are unchanged (all right under S0 and S2). 48 heads with no pocket: box, gate and read bit-identical to S2.
+
+**Tile 4 `glyph/3/0/0/6/2`** (Sean: ON its line, -6): reads -6 under S0, S2 and S2H, i.e. RIGHT against Sean, wrong against the stale reference (-4); not moved, not broken, kept out of the n=43
+headline. Its class is BLACK (`noteheadBlackInSpace`) yet the ink holds a clean enclosed counter at Otsu -- the pocket is found (filled-class rule), but fit stays 0.44/0.40 (fused to its stacked
+partner and stem, blob 28 x 36 px). **On this print I could not see an OPEN end**: the counter is closed at the gather's threshold; Sean's "open-ended" may be at the head's other side or at a
+different threshold. The closing path therefore has NO real far-head test case here -- it is proven on synthetic rings only (RED/GREEN tests), which is not evidence it fires on a scan.
+Tile 5's partner `3/0/0/7/2` is a black head, no pocket, box unchanged (still the undersized-box case for `lane-ledger-accidental`).
+
+**Controls on the in-staff population (can fail)**: H -- hollow-class in-staff heads with a counter found: Litolff 215 of 225, Brahms 100 of 100. G -- the template fit's gate on those heads,
+raw page -> filled page: Litolff 1 -> 113 of 225 pass (isolated 0 -> 13 of 26), Brahms 1 -> 69 of 100 (isolated 0 -> 16 of 16); free-search centre error against the head's filled-blob centroid,
+median Litolff 0.31 -> 0.27 sp, Brahms 0.59 -> 0.32 sp (isolated 0.26 -> 0.21, 0.06 -> 0.03). The gate really could not see a half note before. **F -- the filled-class rule is NOT safe in-staff**: 87 of 582 Litolff
+and 8 of 797 Brahms filled-class in-staff heads get a "counter" (wedge pockets between head, staff line, stem or beam; contact sheet checked). On the 38 filled Litolff / 11 Brahms FAR heads it fires on exactly 1
+(`6/2`, a real counter). It stays gated by the fit, but do not apply the filled-class override to in-staff heads without a line-bounded-pocket rule (a solidity test did not separate them).
+
+**Pixel checks** (sheet `standard_box_hollow_sheet.png`, 7 tiles, 1752 x 3220, x6 of the 600 dpi render): drawn lines 14, 13 on ink by the stub-zone/ridge test (one flagged, tile 4 `1/0/3/7/3` orange y 1616.5, ridge 41/24, a line through the head's own ink);
+frame control on >= 0.97 / off <= 0.26. Share of the head blob inside the box, detector (red) / standard (cyan), on the filled page: tile 1 0.56/0.81, tile 3 0.92/0.81, tile 4 0.63/0.60, tile 5 0.43/0.47, tile 6 0.47/0.38, tile 7 0.82/0.50,
+tile 2 0.48/0.50. Share of the box that is ink on the filled page: cyan 0.84 / 0.87 / 0.89 / 0.90 on tiles 1 / 3 / 4 / 5. Only tile 1 improves in the box; tiles 5-7 the standard box is worse than the detector's
+(stacked/fused heads) and stay on the detector box (gate fail).
+
+**What this says.** Filling the counter fixes the one far half note whose only fault was the gate not seeing hollow heads (Sean's tile 1) and makes the gate usable on half notes in general (1 -> 113 / 1 -> 69 passes in-staff).
+It does not fix the others, whose faults are fusion. +1 on Litolff (not out-of-sample, one head); not a result to flip a default on. Next: the open-ring path needs a real scan example; a fusion-aware fit (stem/partner excluded
+from the blob) is what the five remaining hollow heads need.
+
+<!-- brought onto main 2026-10-04 from origin/lane-ledger-template-fix -->
+## Geometry head templates: the upright-oval bug and the fixed review sheet (lane-ledger-template-fix, 2026-10-04)
+
+No scoring. GATHER+ADJUDICATE only. Nothing switched on. The sheet is `out/print/ledgers/template_review10.jpg` (checks in `template_review10_checks.json`).
+
+**What was wrong.**
+1. `measure_head_tilt._fit_axes` returned cv2.fitEllipse's raw `(width, height)`. For a wide head that pair is (minor, major), swapped. `template_review10._draw_template_outline` drew it as (width, height), so every blue/yellow oval was upright (22 x 29 px at 16 px/space). Fixed: `_fit_axes` now returns (long, short), the same axis `_angle_up_right` measures. This also fixes the slit/outer ratio pairing (slit width was being applied to the head's tall axis).
+2. The crop was not centred. The window spanned min/max of staff lines, reference and match, so the head sat wherever those fell. Now a fixed window of +/-2.6 x +/-3.2 spaces around the detector box centre. Box and crop are in the same frame (page px at the record's 600 dpi); no DPI mismatch exists.
+3. `head_template.py`'s template BUILDER was already correct. Drawing at tilt 0 is wider than tall, and +N degrees puts the top ink right of centre (`_draw_angle_deg = -tilt` is right). The new test for it passes unfixed. The test that went RED on the unfixed tree is `test_fit_axes_reports_long_then_short_matching_tilt_axis`. Added `head_template.geometry_outline_poly` so the sheet draws with the matcher's own convention.
+
+**Tilt convention.** Checked by drawing known ellipses at -30/0/+30 with cv2.ellipse and re-fitting: `_angle_up_right` returns +29.8/0/-29.8, and the top ink lies right of centre for the positive one. The convention was NOT flipped, so ~10 / 35 / 26 degrees mean what they said. Caveats: IQRs are very wide (Litolff filled -2..43, Brahms filled 5..66), so the median is a weak summary; and the measured Litolff outer axes (22 x 29 px) exceed 1.3 x 1.0 spaces (21 x 16 px at 16 px/space), so the fit probably includes stem/neighbour ink. The sheet draws the 1.3 x 1.0 geometry, not the measured axes.
+
+**Self-check (pixel measurements, 10 tiles; first 3 shown).** The red box is on ink (fraction of the box that is ink): 0.84 / 0.73 / 0.79; ink centroid within 2 px of the box centre. Template ink overlap (fraction of the oval that is ink / fraction of in-box head ink the oval covers): 0.92 / 0.66, 1.00 / 0.66, 1.00 / 0.73. Across all 10 the oval-in-ink range is 0.52-1.00. The weak tiles are glyph/1/0/11/2/3 (0.52, ink-box merge) and glyph/0/0/0/6/20 (0.70). Oval 20 x 16 px at tilt 10 degrees (wider than tall), with top-most point 0.5-1.3 px right of centre. Brahms: 40 x 34 px at 26 degrees, top-most 3.8-4.5 px right of centre.
+
+**Caveats for the reader of the sheet.** Orange lines are rows of thin horizontal ink beside the head, so they can include non-rung strokes (slurs, beam tails). The "template says" text uses the matcher variant; where its height implies the other parity the tile says "disagree". Round 8 is `reader_absolute_position(four_causes_cd=True)`; "abstained" means it returned None.
+
+### Review-sheet fixes after the manager's read (lane-ledger-template-fix, 2026-10-04, second pass)
+
+Still no scoring. Sheet: `out/print/ledgers/template_review10.jpg`; the three heads the manager named, plus the Brahms pair, are on `template_review10_controls.jpg`; numbers in `template_review10_checks.json`; diagnostics by `template_height_diag.py`.
+
+1. **Orange lines were a generic thin-row scan (slurs matched).** Now staff lines come from `score.frame_lines_for_head` (`local_staff_lines` at the head's x) and ledgers from `combined_scorer._rungs_y_for_head` = `ledger_grid.measure_ledger_rungs(..., four_causes_cd=True)` with round 8's exact arguments (other noteheads + accidentals excluded). Ledgers are drawn box +/- 0.6 sp. Self-check: dark-pixel fraction within +/-1 px along each line (staff lines across the tile outside the box; ledgers over the 0.25 sp just outside each box edge, best side counts). 3 of 16 tiles report a ledger under 0.6 (all exactly 0.5, i.e. a stub shorter than the check zone): `glyph/3/0/8/6/10`, `glyph/1/0/9/14/8`, `glyph/1/0/9/3/5` (left 0.5, right 0.0). They are reported, not hidden.
+2. **"round 8: abstained" on every tile was my bug.** I passed every detection as the "other noteheads" set; `score_doc` passes only `_notehead_boxes_by_page`. Now called exactly as `score_four_causes_cd.py` does. Control: the 5 Litolff abstains match `score_doc(four_causes_cd=True)` (3/0/7/0/7, 3/0/7/2/4, 3/0/8/6/10, 3/0/8/9/0, 3/0/9/3/5); Brahms decides 11 of 11.
+3. **"on a line ... disagree".** Not a matcher bug. The matcher's answer is its variant (`decide_head_position_from_template`: on_line -> "on"). The "height implies parity" came from my label extrapolating the staff grid (`lines[0] + step * spacing/2`) out to heads 6-10 steps away, where a 5% scan spacing error flips parity -- exactly what DECISIONS 2026-10-01 forbids. Now ONE answer per tile: the variant, with the step read off the MEASURED ladder (staff lines + round 8's rungs). A flag says when the matched oval is more than 0.25 sp off its line, or no measured line is within half a space.
+4. **Why three ovals sit off the head.** The matcher is not choosing a height; there is nothing to score. Each of the three detector boxes is a fragment (0.71, 0.35 and 0.65 sp tall; a head is 1.0) that overlaps a real neighbouring notehead box (`glyph/1/0/10/14/1`, `1/0/10/2/2`, brahms `0/0/1/6/1`). The matcher blanks other noteheads' boxes (as round 8 does), which erases the head's own ink: scores are exactly 0.000 at every height for 1/0/9/14/8 and on_line/in_space (1/0/11/2/3, margin 0.066 only on in_space), and flat (-0.05) for brahms 6/20; margins 0.000 / 0.066 / 0.009, so all three are UNDECIDED and the height is simply the box centre. 1/0/11/2/3's ink run extends 1.02 sp above its 5 px box; brahms 6/20's extends 1.60 sp below. Two readings of the same fact: the box, not the template, is off the head. Excluding every detection (the first fixed sheet) vs only noteheads+accidentals changed 1/0/11/2/3's margin 0.030 -> 0.066, nothing else. Not tuned.
+5. **Greyscale and references.** Tiles are the real print (bicubic upscale; Litolff and Brahms are bitonal scans so they still look black and white). Population is `score_doc`'s (heads that have a reference), 7 Litolff + 3 Brahms, diversity-bucketed by class/side/parity; the three round-8-undecided heads from the first sheet are kept (5 Litolff heads are undecided in all). Every selected tile happens to be a filled head.
+
+### Round 3: the control first, the shape from the page, the oval placed by search (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Scripts: `shape_from_page.py` (shape + why the old tilt was noisy), `template_review_r3.py` (sheets + table). Sheets: `out/print/ledgers/template_review_r3.jpg` (12 controls, then the 10 far heads), `template_review_r3_blueonly.jpg` (4 tiles x6, no box/lines); numbers in `template_review_r3_checks.json`, `shape_from_page.json`.
+
+**Measured shape (median of per-head second-moment fits over clean, isolated, in-staff, ON-LINE heads that pass an oval gate; IoU of blob with its own moments-ellipse >= 0.85, area 0.7-1.45 sp^2, long axis 1.0-1.8 sp, solidity >= 0.9).**
+- Brahms (Breitkopf): 1.49 x 1.13 sp, tilt 28.2 deg, IQR 25.8-29.9 (n = 133 on-line heads; 256 of 302 isolated filled heads pass).
+- Litolff: 1.55 x 0.99 sp, tilt 20.0 deg, IQR 14.4-42.5 (n = 14; only 25 of 113 isolated filled heads pass the gate -- the scan merges heads with lines, and the heads are flat-bottomed lemons, not ovals, so the gate rejects 74 as `not_oval`). Treat Litolff's tilt as weak.
+- Hollow heads: 3 (Litolff) and 0 (Brahms) pass; the hollow templates reuse the filled shape and tilt, no slit measured. The old 35 / -7 deg slit numbers stand unconfirmed.
+- The old default (1.3 x 1.0) was too narrow on both pages.
+
+**Why the old tilt was noisy (IQR -2..43 on Litolff).** Three causes, in order of size:
+1. **It measured heads in spaces, and those are contaminated.** On Brahms the same clean fit gives 28.2 deg (IQR 25.8-29.9) on on-line heads but 7.7 deg (IQR 5.6-9.0) in spaces; Litolff 20.0 on line vs 6.7 in space. In Brahms a head is taller than the gap between two lines, so it touches both, and the blob merges with a line stub top and bottom, which flattens the fitted axis. `measure_head_tilt.summarize` deliberately used in-space heads only ("avoid the bias entirely"); that was the biased half. On the old 1.65 sp window every window's ink touched its edge (223 of 223 Brahms, 24 of 24 Litolff), i.e. the fit never saw a whole head.
+2. The stem was removed by blanking whole columns; the stem column's run includes the head, so the head's own edge beside the stem was deleted (and the matcher inherited the same stem mask, which shifts the best match away from the stem side: the "up-left" oval).
+3. cv2.fitEllipse on a 20 x 16 px blob is quantisation noise (heads with ecc < 1.15: IQR 12-62 deg). Second moments are an area statistic, and the angle is reported only where ecc >= 1.12.
+Fix: line rows removed only outside a nominal oval, stems and remnants removed by an opening (disc 0.42 sp), moments angle, on-line heads only. Mid-range Brahms montage: blobs look like clean ovals; Litolff montage: the +-40 deg tails are line remnants merged with the head.
+
+**Placement.** `match_head_template(dx_range_spaces=0.4, head_ink_mode="opening")` (defaults unchanged). The HEAD term reads ink with stems and line remnants opened away; the LINE term keeps the raw ink.
+
+**Control (12 clean in-staff heads, picked by the shape gate only, 3 on a line + 3 in a space per doc).** Oval vs the head's own ink blob (box +-0.3 sp, staff rows masked outside the oval): median IoU 0.87, median offset 0.06 sp, 2 of 12 MISS (IoU < 0.7 or offset > 0.15 sp), both Litolff. Movement of the oval from the box: max |dx| 0.04 sp, max |dy| 0.11 sp -- on easy heads the box was already right and the search barely moves. Brahms controls 0.87-0.94 IoU, offset <= 0.06 sp. **The control that failed: the variant.** The matcher's on-line / in-space answer agrees with the staff-position parity on only 7 of 12 controls (Litolff: all three on-line heads answered "in space"; Brahms 4 of 6). That is the answer the far-head use depends on, and it is not yet a trustworthy answer on easy heads.
+
+**Far heads (same 10).** Median IoU 0.79, median offset 0.10 sp, 3 of 10 MISS: `glyph/3/0/7/0/7` (IoU 0.61, offset 0.17), `glyph/3/0/0/2/1` (0.62, 0.18; dx +0.38 sp: the search moved it sideways), `glyph/3/0/0/2/9` (0.38, 0.56 sp; the blob there is a head fused to a beam/stem mass, so its centroid is not the head's). Brahms far heads 0.79-0.89. Full per-tile table (IoU with stems opened away in brackets):
+
+label doc subject kind variant dx_sp dy_sp IoU (open) offset_sp
+control litolff 3/0/10/2/0 filled in_space 0.00 -0.06 0.78 (0.81) 0.14
+control litolff 3/0/5/13/4 filled in_space 0.00 +0.06 0.53 (0.51) 0.23 MISS
+control litolff 3/0/7/4/13 filled in_space 0.00 0.00 0.66 (0.67) 0.08 MISS
+control litolff 2/0/4/1/3 filled in_space 0.00 +0.06 0.75 (0.79) 0.12
+control litolff 2/0/9/15/4 filled in_space 0.00 0.00 0.75 (0.84) 0.12
+control litolff 3/0/10/7/1 filled in_space 0.00 -0.06 0.90 (0.87) 0.02
+far litolff 3/0/7/0/7 in_space 0.00 +0.06 0.61 (0.63) 0.17 MISS
+far litolff 3/0/7/2/4 on_line 0.00 -0.19 0.73 (0.77) 0.10
+far litolff 3/0/8/6/10 on_line +0.06 -0.06 0.79 (0.83) 0.02
+far litolff 3/0/0/2/1 on_line +0.38 -0.06 0.62 (0.62) 0.18 MISS
+far litolff 3/0/0/2/9 in_space 0.00 +0.25 0.38 (0.37) 0.56 MISS
+far litolff 3/0/7/2/2 on_line 0.00 -0.19 0.71 (0.72) 0.13
+far litolff 3/0/5/2/0 on_line +0.06 -0.19 0.82 (0.85) 0.04
+control brahms 1/0/12/3/3 in_space 0.00 0.00 0.87 (0.94) 0.02
+control brahms 1/1/0/5/3 on_line -0.04 0.00 0.87 (0.92) 0.05
+control brahms 1/1/12/4/0 on_line 0.00 0.00 0.87 (0.92) 0.06
+control brahms 1/0/11/2/6 on_line 0.00 0.00 0.90 (0.97) 0.04
+control brahms 1/0/2/6/8 in_space 0.00 -0.11 0.92 (0.95) 0.02
+control brahms 1/1/11/2/6 in_space 0.00 -0.04 0.94 (0.97) 0.01
+far brahms 1/1/0/4/0 on_line -0.04 0.00 0.83 (0.94) 0.07
+far brahms 1/1/0/2/4 on_line 0.00 +0.04 0.79 (0.92) 0.09
+far brahms 1/1/8/6/0 in_space -0.04 0.00 0.89 (0.89) 0.06
+
+Honest limit: the Litolff plate prints flat-bottomed lemons that merge with the staff lines; a tilted ellipse is a modest fit there (IoU 0.53-0.90). The next candidate is a lemon (an ellipse with a flattened lower edge), not a different tilt.
+
+### Round 4: the lemon shape, and why on-line / in-space failed on easy heads (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Scripts: `template_review_r4.py` (shape candidates, controls, far heads, sheets), `variant_diag.py` (head term and each line band per control, `staged|joint`, `tol`, `ncc|coverage`), `shape_from_page.py` (adds `mean_shape`, the lemon gate). Sheets: `out/print/ledgers/template_review_r4.jpg`, `template_review_r4_blueonly.jpg`; numbers `template_review_r4_checks.json`.
+
+**1. Litolff shape.** Three candidates, each scored on the 6 Litolff controls (oval vs the head's ink blob): A oval (round 3: 1.55 x 0.99 sp, 20 deg) mean IoU 0.827; B oval with the lower edge cut flat (1.56 x 1.06 sp, 36 deg, flat fraction 0.9 fitted to the mean shape, 31 clean on-line heads; IoU 0.888 against the mean shape) 0.815; C mean shape of 33 clean on-line heads aligned on measured centroids (area 1.24 sp^2) 0.790. The plain oval stays for Litolff; neither lemon helps on the controls (the lemon gate drops the oval test, keeps area / size / solidity >= 0.88). Brahms, 6 controls: A 0.887, B (flat 0.95) 0.908, C mean of 134 heads 0.915 -- C is used (a small gain, n = 6, but the mean shape is a measured head and visibly fits: see the blue-only sheet). Litolff's remaining misses are where the head is fused to a line or stem, not the outline.
+
+**2. Why on-line / in-space failed on easy heads (7 of 12 agreed).** Four causes, in the order found (`variant_diag.py`, before = `joint ncc`):
+1. The in_space template put its two bounding lines at +-0.99 sp from the head centre (the bands sat at the window's top and bottom edges). The lines that bound a space are +-0.5 sp away; +-1 sp is where an ON-LINE head's neighbouring staff lines are. Every on-line head fired the in_space bands (e.g. Litolff `3/0/7/4/13`: in_space band 0.39 vs on-line line term 0.19; Brahms `1/0/12/3/3` band 0.40). The test that encoded this ("a ledger touching only its top is ONE space from the head's centre") had the geometry wrong and was corrected, as was the exemplar fixture's in_space exemplars.
+2. The head term differed between the variants (the template's line bars sat inside the head mask), so the answer was not decided by line evidence alone. The variants now share one head image.
+3. The head's POSITION and the line variant were chosen jointly under a shift penalty, with boxes up to 0.25 sp off the head; the winning variant followed the box. Now `decide="staged"`: position from the variant-free head template, then each variant scored at that position (+-0.15 sp, no penalty).
+4. The line term was a correlation over a thin band. On a thick scanned line the band is solid ink, the correlation has zero variance and scores exactly 0.0 (every Litolff line term was 0.00-0.46, margins 0.002-0.08). It is now ink coverage of the template's own line rows (`line_term="coverage"`), margins 0.17-0.24.
+Tests (RED first): the synthetic coin-flip case with 8 px lines gave margin 0.000 and answered "on" for every in-space head (red), then green with coverage; the 3-px staff case had margins 0.01-0.02 before the geometry fix (0.1 after, enforced >= 0.08).
+Control selection now also requires the print to agree with the staff position (the head's ink centroid within 0.2 sp of a line or space middle, and which of the two matches the position's parity): the old control `2/0/9/15/4`-like cases that sat 0.3 sp off both were not clean.
+
+**Result on the 12 controls: 12 decided (margin >= 0.08), 11 agree with the staff position, 1 disagrees.** The one: Litolff `3/0/10/4/1` (position 1, in a space) answers on_line (margin 0.14). The head is 1.1 sp tall in a 1.0 sp space, the top staff line lies wholly inside its top, and the head-only template is pulled 0.16 sp up by that line ink, which puts the line inside the on-line band. The Litolff headline remains weak; Brahms is 6 of 6.
+
+**3. Far heads (same 10), no score.** Only 1 of 10 clears the 0.08 margin (`3/0/5/2/0`: on a line, reference on a line, round 8 on a line). Variant (margin | reference parity | round 8): `3/0/7/0/7` on_line (0.013 | space | abstains), `3/0/7/2/4` on_line (0.017 | on | abstains), `3/0/8/6/10` on_line (0.031 | on | abstains), `3/0/0/2/1` on_line (0.065 | on | on), `3/0/0/2/9` in_space (0.008 | space | on), `3/0/7/2/2` on_line (0.001 | space | space), `3/0/5/2/0` on_line (0.116 | on | on), Brahms `1/1/0/4/0` in_space (0.070 | space | space), `1/1/0/2/4` on_line (0.073 | on | on), `1/1/8/6/0` in_space (0.038 | space | space). The far heads' line evidence is short stubs, so margins are small: the matcher mostly says "cannot tell", which is the right answer to give rather than a guess.
+
+**4. Pixel self-check (oval vs ink blob, box +-0.3 sp, line rows masked outside the oval).** Controls: median IoU 0.90, median offset 0.06 sp, 1 of 12 MISS (Litolff `3/0/7/4/13`, IoU 0.66: a head merged into a thick line). Far heads: median IoU 0.74, median offset 0.13 sp, 4 of 10 MISS (`3/0/7/0/7` 0.61/0.17, `3/0/7/2/4` 0.72/0.19, `3/0/0/2/1` 0.62/0.18, `3/0/0/2/9` 0.42/0.49). Brahms far heads 0.74-0.93.
+
+### Round 5: "Brahms 3 and 5 are not noteheads" (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Scripts: `non_head_diag.py` (wide crops + detector boxes), `symbol_gate_report.py` (what the rule removes, seeded contact sheets), `shape_from_page.symbol_gate`, `template_review_r5.py` (sheets). Sheets: `out/print/ledgers/template_review_r5.jpg`, `template_review_r5_blueonly.jpg`; wide crops `out/print/ledgers/nonhead/glyph_1_1_12_4_0_wide.jpg`, `glyph_1_0_2_6_3_wide.jpg`; contact sheets `symbol_gate_brahms1.jpg`, `symbol_gate_beethoven5.jpg`.
+
+**1. The two heads, from the print (gather dpi 600, 2x crop, whole neighbourhood, all boxes drawn).** I could not find another symbol they are part of; on the print both read as ordinary filled noteheads. This needs Sean to circle what he sees.
+- `glyph/1/1/12/4/0`: detector `noteheadBlackOnLine`, score 0.82, 38 x 32 px (1.38 x 1.16 sp). A black oval sitting on a ledger line under the upper staff of a system, the second head of a beamed pair (stem down on its left, beam below), ordinary clef and rests to the right. Overlapping detector boxes: `tie` 0.29 (1 px of overlap), `ledgerLine` 0.37 and 0.31 (13x5 and 38x6 px). No rest, flag, clef or dynamic box touches it. Stem run on the print 3.5 sp.
+- `glyph/1/0/2/6/3`: `noteheadBlackInSpace`, score 0.82, 38 x 30 px. A black oval in a space of the middle staff, stem up on its right. Overlapping boxes: only the `staff` box 0.69 (it lies inside the staff). Stem run 3.2 sp.
+If Sean means different tiles, the Brahms control order on the r4 sheet was `1/0/12/3/2, 1/0/9/6/0, 1/1/12/4/0, 1/0/11/2/6, 1/0/2/6/3, 1/1/11/2/5`; the r5 order is the same except the sixth (`1/1/11/1/6`).
+
+**2. How they got through, and the tighter rule.** The old gate asked only for a detector `notehead*` box with an oval-shaped, well-sized blob and no other NOTEHEAD/accidental/rest box within a space; a box overlapping a clef, dynamic or flag was never looked at, nor was the detector's own confidence, nor a stem. The convention now (`symbol_gate`, no subject ids): detector score >= 0.5; no rest / clef / dynamic / accidental / fermata / ornament / ottava / time / key box overlaps more than 20% of the head's box; a FILLED head must carry a stem on the print (a vertical ink run 2.0-6.5 sp touching its left or right edge and reaching >= 1 sp past the head; hollow/whole are not asked). A flag box is deliberately NOT a disqualifier: the first version of the rule included it and removed 15 real stem-down flagged Brahms heads (contact sheet showed it) because the flag box overlaps the head's box on every such note.
+- Brahms mean-shape source (filled, on-line, lemon-gated): 134 -> 133 (1 removed, no stem). Control pool: 256 -> 251. Both of Sean's heads PASS the rule (detector 0.82, stems of 3.5 and 3.2 sp, no rest/flag/clef/dynamic box on them).
+- Litolff mean-shape source: 33 -> 19 (14 removed: 7 detector score < 0.5, 12 no stem found, 1 overlapping a dynamic `f`). Control pool 25 -> 15. In the seeded contact sheet (all 14 shown) about 8 are flat slivers or fragments inside `ff`/`sf` dynamics and rests (real contamination), about 5 look like genuine heads whose stem the run test did not find (`3/0/7/14/1`, `2/1/8/5/1`, `2/1/8/5/5`, `3/1/7/17/0`, `2/0/2/11/3`): the rule over-removes there, which is the safe direction for a template source. The 19 kept Litolff heads (all shown) and 24 of the 133 kept Brahms heads (seed 5) all look like real heads.
+So the Brahms mean shape was NOT contaminated by non-heads in any way I can show; it is rebuilt from 133 heads and is the same to three decimals (1.490 x 1.131 sp, 28.1 deg).
+
+**3. Controls and line/space, re-run.** Re-picked Brahms controls: `1/0/12/3/2, 1/0/9/6/0, 1/1/12/4/0, 1/0/11/2/6, 1/0/2/6/3, 1/1/11/1/6` (the same two heads are still in). Candidate shapes, 6 controls each (mean IoU): Litolff oval 0.837 (now 1.59 x 1.05 sp, 29 deg from only 8 clean on-line heads: weak, IQR 19.7-44.7), flat 0.828, mean 0.813 -> oval; Brahms oval 0.892, flat 0.912, mean 0.915 -> mean shape. Line/space on the 12 controls: 11 decided (margin >= 0.08), all 11 agree with the staff position, 1 undecided (Litolff `2/0/9/15/4`, margin 0.038); no decided-wrong (r4 had one). Pixel check: controls median IoU 0.89, offset 0.06 sp, 0 of 12 MISS; far heads median IoU 0.81, offset 0.10 sp, 3 of 10 MISS (`3/0/7/2/4` 0.74/0.19, `3/0/0/2/1` 0.64/0.18, `3/0/0/2/9` 0.43/0.49).
+
+**Far heads, no score (variant, margin | reference parity | round 8):** `3/0/7/0/7` in_space 0.019 | space | abstains; `3/0/7/2/4` on_line 0.018 | on | abstains; `3/0/8/6/10` on_line 0.021 | on | abstains; `3/0/0/2/1` on_line 0.060 | on | on; `3/0/0/2/9` in_space 0.007 | space | on; `3/0/7/2/2` on_line 0.005 | space | space; `3/0/5/2/0` on_line 0.146 | on | on (the one decided); Brahms `1/1/0/4/0` in_space 0.070 | space | space; `1/1/0/2/4` on_line 0.073 | on | on; `1/1/8/6/0` in_space 0.038 | space | space.
+
+### Round 6: centring the oval (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Code: `head_template.refine_oval_centre` and `match_head_template(refine_centre=False, refine_mode="iou", refine_min_gain=0.0)`; scripts `template_review_r6.py` (before/after on the same tiles, sheets), `refine_off_identity.py`. Sheets: `out/print/ledgers/template_review_r6.jpg`, `..._blueonly.jpg`, `..._movers.jpg`; numbers `template_review_r6_checks.json`.
+
+**Method.** After the staged position search, the oval (the template's own head mask) is slid sub-pixel (0.5 px steps, +-0.25 sp in dx and dy) to maximise its IoU with the ink under it, where that ink has stems and thin remnants removed by the opening, other noteheads' boxes blanked, and every staff / ledger row (a row mostly ink in the strips beside the head) cleared outside the candidate oval; ink in a window just larger than the oval only, so a fused neighbour adds to the union and is not a reason to move. A move needs an internal IoU gain of at least `min_gain` (0.05 in the sheets) or the oval stays. An edge-based score (coverage plus the fraction of the oval's outline on the ink's boundary) was also tried and is no better (same number of tiles made worse, one more moved > 0.15 sp), so the IoU score is the default.
+
+**Tests (RED first):** `refine_oval_centre` did not exist (AttributeError / TypeError for `refine_centre`). Now green: a synthetic head with a stem and a line through it, oval started 0.2 sp off in five directions, ends 0.025 sp from the true centre (0.5 px); a head fused to a neighbour started 0.1 sp off toward it ends at the same point; and with `refine_centre` off the match dict is exactly the same and has no `refined` key. **Default off is bit-identical to 56f8c66c** on 72 calls (12 controls + 6 isolated heads per document, 3 configurations): `refine_off_identity.py`.
+
+**Before vs after (22 tiles; "offset" = round-3 measure, oval centre vs the centroid of the head's ink; "bbox" = independent: midpoint of the head's leftmost/rightmost ink columns and top/bottom rows at the head's own width, stems opened away, same clip and ink for before and after).**
+- The nudge does nothing where it matters least: 11 of the 12 controls and 3 of the 10 far heads did not move (gain below 0.05). All six Brahms controls were already within 0.09 sp (<= 2.5 px) of their ink centre; a move there is below one pixel of quantisation and the two measures disagree in sign at that size.
+- Moved (8 tiles):
+  - Better by both measures: Litolff far `3/0/7/2/4` (nudge +0.04,-0.15; offset 0.19 -> 0.04, bbox 0.133 -> 0.029, IoU 0.74 -> 0.76); Litolff far `3/0/0/2/9` (+0.23,-0.12; offset 0.49 -> 0.33, bbox 0.36 -> 0.127, IoU 0.43 -> 0.54); Brahms far `1/1/0/2/4` (+0.10,-0.05; bbox 0.088 -> 0.041, IoU 0.74 -> 0.78, offset unchanged 0.10).
+  - Mixed: Litolff control `2/0/9/15/4` (-0.22,+0.22; offset 0.09 -> 0.06, IoU 0.78 -> 0.87, but bbox 0.119 -> 0.249).
+  - Moved the WRONG way by both measures: Litolff far `3/0/0/2/1` (+0.10,-0.09; offset 0.18 -> 0.28, bbox 0.09 -> 0.20, IoU 0.64 -> 0.61); Litolff far `3/0/7/2/2` (+0.16,-0.25; offset 0.10 -> 0.18, bbox 0.10 -> 0.26, IoU 0.80 -> 0.74); Brahms far `1/1/0/4/0` (-0.03,+0.08; offset 0.02 -> 0.06, bbox 0.03 -> 0.06, IoU 0.91 -> 0.80).
+  - Moved more than 0.15 sp: `2/0/9/15/4` (0.31 sp total), `3/0/7/2/2` (0.30), `3/0/0/2/9` (0.26), `3/0/7/2/4` (0.15 in dy).
+- Ungated (min_gain 0) the nudge moves nearly every tile by 0.01-0.07 sp and makes 8-9 tiles slightly worse by one measure or the other; the 0.05 gate removes those no-ops.
+**Reading:** the nudge is not a fix. The three tiles it makes worse are the ones whose head is fused to a stem, beam or neighbouring head, where the ink the IoU sees is not the head (the same fused ink the independent measure also sees); on clean heads there is nothing to nudge. It stays OFF by default. If Sean's "slightly off centre" is the Litolff far heads, the nudge helps `3/0/7/2/4` and `3/0/0/2/9` and hurts `3/0/0/2/1` and `3/0/7/2/2`.
+
+**Pixel-check of the drawing** (`DRAWING CHECK` in the run output and `drawing_check` in the json): the six mover tiles' solid and dashed outlines, redrawn on blank canvases, have centroids within 0.5 px of the tile coordinates of the stated centres (x6, so 0.08 px of the page), and the separation between the two outlines equals the stated nudge within 0.1 px (e.g. `2/0/9/15/4`: 29.7 vs 29.8 px).
+
+### Round 7: stem side, ledger-constrained height, and the "different sizes" drawing question (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Code: `head_template.find_stem_side`, `refine_oval_centre(stem=, max_shift_y_spaces=)`, `match_head_template(ladder_ys=, refine_stem=)` (all default off / unchanged; the r5 configuration is bit-identical). Script `template_review_r7.py`; sheets `out/print/ledgers/template_review_r7.jpg`, `..._blueonly.jpg`, `..._movers.jpg` (round 5 dashed vs round 7 solid); numbers `template_review_r7_checks.json`.
+
+**Drawing / size.** I could not reproduce a size difference between the dashed (before) and solid (after) outlines. Both come from the same function at the same scale; I now fit an ellipse to every drawn outline (`size_check`, or extents against the mask for the Brahms mean shape) and compare it to the template's axes in tile pixels: the largest deviation over all 22 tiles, for either outline, is 2.2 px at x3-x6 (Brahms mask rounding) and 0.4-0.9 px for the Litolff ovals; before and after agree with each other to the same tolerance. On `2/0/9/15/4` and `3/0/7/2/2` specifically: 0.8 and 0.9 px. The look of different sizes on the round-6 movers sheet is, as far as I can measure, the dashes (the dashed arc disappears under the solid one where they overlap, so a displaced pair reads as one smaller than the other). The drawing check also reports centroid error (<= 0.5 px) and the separation of the two outlines against the stated nudge (within 0.1 px).
+
+**1. Stem.** `find_stem_side` reads the stem from the ink (a vertical run of 2.0-6.5 sp through the head's row, touching its left or right edge, reaching >= 1 sp past it) and applies the engraving convention (stem up = right, stem down = left; a find that broke it would be flagged, none did). Sides found on all 22 tiles (side/direction): Litolff controls all right/up; Litolff far `3/0/7/0/7` left/down, `3/0/7/2/4` right/up, `3/0/8/6/10` right/up, `3/0/0/2/1` left/down, `3/0/0/2/9` right/up, `3/0/7/2/2` right/up, `3/0/5/2/0` right/up; Brahms controls `1/0/12/3/2`, `1/0/9/6/0`, `1/1/12/4/0`, `1/0/11/2/6` left/down, `1/0/2/6/3`, `1/1/11/1/6` right/up; Brahms far `1/1/0/4/0` left/down, `1/1/0/2/4` left/down, `1/1/8/6/0` right/up. The nudge then ignores stem ink in the stem's columns (+2 px) that lies OUTSIDE the candidate oval. (My first version also ignored the oval's own pixels in the band; it left the stem side unconstrained and made two controls worse, so it was changed.) On clean synthetic heads the exclusion makes no difference (the overlap score was already robust to a stem); it is tested as an invariance: the refined centre with the stem excluded equals the one on the same scene with no stem.
+
+**2. Ledgers orient the height.** `ladder_ys` = round 8's measured rows (`combined_scorer._rungs_y_for_head`, four-causes args, plain walk) plus the local staff lines. The head's centre is allowed only ON a found row, midway between two adjacent found rows (gap <= 1.6 x the median gap), or half a measured gap beyond the outermost row, within +-0.1 sp (>= 1 px) of one; the horizontal nudge follows with dy fixed. **This makes the template's height a CONSEQUENCE of the ledger read: with `ladder_ys` the template can no longer serve as independent evidence for line-vs-space. It is a placement / boxing tool (useful for Sean's cause A, short boxes, and the tied-dyad split), not a second witness.** An attempt to pick among the candidate heights by oval/ink overlap instead of the head-template score jumped one head 1.09 sp onto the wrong candidate and made 6 of 10 far heads worse; it is removed.
+
+**3. Self-check, vs round 5 (22 tiles).** 14 tiles are unchanged (11 controls with a nudge < 0.05 gain, 3 far). Better than round 5: Litolff far `3/0/7/2/4` (offset 0.19 -> 0.05, bbox 0.13 -> 0.06), `3/0/0/2/9` (offset 0.49 -> 0.29, IoU 0.43 -> 0.56), Litolff control `2/0/9/15/4` (IoU 0.78 -> 0.94, offset 0.09 -> 0.02, but independent bbox 0.12 -> 0.19). WORSE than round 5: Litolff control `3/1/1/4/2` (offset 0.04 -> 0.11; independent bbox 0.065 -> 0.04, IoU 0.76 -> 0.77, so the two measures disagree), Litolff far `3/0/8/6/10` (moved +0.13,-0.13; offset 0.05 -> 0.11, bbox 0.01 -> 0.17, IoU 0.81 -> 0.76) and `3/0/7/2/2` (moved +0.19,-0.25; offset 0.10 -> 0.16, bbox 0.10 -> 0.27, IoU 0.80 -> 0.69). Moved more than 0.15 sp: `2/0/9/15/4`, `3/0/7/2/4`, `3/0/8/6/10`, `3/0/0/2/9`, `3/0/7/2/2`. The Brahms controls and the three Brahms far heads are unchanged within 0.05 sp (one bbox 0.012 -> 0.036). Line/space: the variant answers match round 5 on 9 of 10 far heads; `3/0/7/2/2` changes from on_line to in_space (reference: in a space) because its height moved to a different ledger candidate, which is exactly the dependence above.
