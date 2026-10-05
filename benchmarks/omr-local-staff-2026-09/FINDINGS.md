@@ -2919,3 +2919,47 @@ Reach: 3 of 55 far heads. Caveat as the lane said: on these heads the line is a 
 test, which has little power for a jut that short.
 Pixel check (ink on row vs 0.5 sp off, +-1 px; stub zone): L3 3/0/7/3/1 0.88/0.56, 3/0/7/3/2 0.75/0.44, 3/0/7/3/4 0.88/0.69; L1/L2 on > off in every tile; frame control 1.00/0.07-0.11.
 Tests `test_ledger_far_side_rule_2026_10_04.py` 7: RED against the base module (ImportError), GREEN now; the arc test also failed (6 != 5) before the drift check was added.
+
+## lane-ledger-accidental (2026-10-04): why accidental ink to the left still corrupts tiles 5, 6 -- and why tile 2 misses its 2nd ledger
+
+Base `origin/main` e15b5681. Scripts: `accidental_census.py` (census, runtime wrappers via `edge_census`), `accidental_sheet.py`
+(the crops; `--arm=NAME` redraws under an arm), `score_accidental.py` (arm table). Sheet `out/print/ledgers/accidental/accidental_sheet.png`
+(+ per-tile PNGs; `arm_conn_drop/` = the same tiles under conn+drop). x6, real print, red = head box, purple = accidental boxes,
+orange = kept rungs, magenta dashed = bare-ink rungs the reader dropped, yellow = ink `_exclude_other_heads_ink` blanked.
+**Control** (fix1_far: near_edge_ledgers + restore_masked_near_edge + far_side_ledger, four_causes_cd): Litolff 32/10/2 (n=44), Brahms 11/0/0,
+reproduced with recording off and on; default read bit-identical to the pre-change tree on all 55 heads (0 differ).
+
+**Cause per tile** (none is "accidental strokes became rungs" and none is the cause-C exclusion running on the wrong ink):
+* tile 5 `3/0/0/7/1` (we -10, ref -8): ladder [434, 423.5, 411, 396, 376] -- 5 rungs, the head is on the 5th; the true ladder is 4 (L1 hides inside the
+  lower head's blob). Row 434 is the LOWER head `7/2`'s own ink (box 417.9-437.4, undersized: ink goes ~6 px past it on the right). The
+  exclusion keeps a neighbour's row when ink continues past its box on both sides within 2 px; on rows 432-435 the "left side" is the
+  ACCIDENTAL's blob 5 px left of `7/2`'s box (it ends at 1716, the head ink starts at 1722: 7 white columns between), so 434 survives as a rung.
+  Without accidental boxes in the exclusion set the answer is identical (-10), i.e. the cause-C box exclusion neither helps nor hurts here; the
+  accidental box is also too narrow (right edge 1713, ink to 1716).
+* tile 6 `3/0/0/7/2` (we -6, ref -2): NOT the accidental (read without accidental boxes: -6 too). Ladder [424, 396, 376.5]; the head is on L1 (424, evidenced
+  at its middle row) but `derive_far_head_step` takes "evidenced" to mean the LAST rung is the one through the head, and the last rung is 3.87 sp
+  beyond it (the stack's other heads' ledgers) -> counted all three.
+* tile 2 `3/0/0/2/4` (we -4, ref -7): no accidental in range. Two causes: (i) the 2nd ledger (y~415) juts out of the neighbour head `2/9` on ONE side;
+  the exclusion blanks 2/9's rows (needs both sides), the bare walk also never offers it (merged blob), so the ladder is [428.5, 395]; (ii) the head box
+  (382.7-404.6) is too low/big: the 3rd ledger at 395 touches the head's bottom but reads "through its middle". With L2 found the answer would be -6, not
+  -7: the head box is the other lane's.
+
+**Census, all 55 far heads** (detector accidental box with right edge <= 2 sp left of the head box and within 1.5 sp vertically): Litolff 9 of 44 --
+6 right / 3 wrong (`7/1`, `7/2`, `7/7/0`); Brahms 2 of 11 -- 2 right. Same heads with accidental boxes REMOVED from the exclusion set: Litolff 5/3/1
+(+1 right from cause C: `3/0/7/4/2` abstain -> right), Brahms 2/0/0. 8 of 11 are right now; 3 wrong, each for a cause above or unexplained (`7/7/0`).
+
+**Arms** (all default OFF; Litolff right/wrong/abstain, Brahms 11/0/0 in every arm; `3/0/0/6/2` excluded would read one fewer wrong):
+| arm | Litolff | per-head changes vs control | right heads broken |
+|---|---|---|---|
+| control | 32/10/2 | -- | -- |
+| conn (`exclusion_rules(connected=True)`) | 32/10/2 | `7/1` -10 -> -6 wrong -> wrong (false 434 gone, but the 423.5 through-ledger of the lower head, whose left stub is the accidental, goes with it; the true L1 is invisible as ink) | 0 |
+| drop (`derive_far_head_step(drop_rungs_beyond_head=True)`) | 33/9/2 | `7/2` -6 wrong -> -2 right | 0 |
+| conn+drop | 33/9/2 | both of the above | 0 |
+| (refused) one-sided thin-jut keep, with conn | 33/9/2 (+drop 34/8/2) | `7/7/0` 11 wrong -> 12 right, mechanism not shown by its crop (the yellow there is a box overlapping the head itself) | 0 |
+`drop` tolerance (beyond the head's far edge): 0.25 / 0.35 / 0.5 / 0.75 / 1.0 sp all 33/9/2, 1.5 sp back to 32/10/2; shipped 0.25 (ledger n+1 of a head ON ledger n sits ~0.5 sp past its far edge).
+The one-sided rule was built, did not recover tile 2's ledger (a round head tip beyond an undersized box also tapers thinly), and was REMOVED; the +1 on `7/7/0` is not evidence of a cause.
+**Reading**: `drop` is a clean convention fix (a ledger beyond a head is not that head's) worth +1 here; `conn` implements Sean's 10-01 white-gap rule but moves no verdict
+by itself -- tile 5 stays wrong until the lower head's undersized box is replaced by the standard head box (other lane), at which point re-run `score_accidental.py`.
+Pixel check (ink on the row within +-1.1 sp of the head x, vs the rows 0.5 sp above / below; printed by `accidental_sheet.py`): tile 5 kept L1 434 0.66/0.74,0.09; L2 423.5 0.74/0.11,0.63; L3 411 0.66/0.11,0.40;
+L4 396 0.74/0.26,0.11; L5 376 1.00/0.29,0.66. Tile 6 L1 424 0.74/0.12,0.74; L2 396 0.79/0.21,0.12; L3 376.5 1.00/0.35,0.68. Tile 2 L1 428.5 0.74/0.11,0.00; 395 0.63/0.54,0.60 (a head body, not a thin line -- consistent with cause ii).
+Tests `tools/omr/tests/test_ledger_accidental_2026_10_04.py` 7 (new names: RED by ImportError against the base tree; GREEN now); all 362 `-k ledger` tests pass.

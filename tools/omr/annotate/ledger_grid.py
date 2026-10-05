@@ -165,6 +165,12 @@ ONE_SIDED_WINDOW_HALF_WIDTH_SPACES = WINDOW_HALF_WIDTH_SPACES + RUNG_MIN_LEN_SPA
 # the second example -- box/ink measurement slop (2.39b) means "about
 # half" reads closer to a third in practice.
 TOUCH_TOL_SPACES = 0.20
+# lane-ledger-accidental: a rung farther from the staff than the head's own
+# FAR edge by more than this is another head's ledger (`drop_rungs_beyond_head`).
+# A head ON ledger n has ledger n+1 about 0.5 sp past its far edge, so the
+# bound must sit well inside that (0.25); measured insensitive over
+# 0.25..1.0 on the 2.44c truth sets (FINDINGS).
+BEYOND_HEAD_FAR_EDGE_SPACES = 0.25
 # RETIRED as a line-vs-space decision (DECISIONS 2026-10-01, four causes,
 # cause D): a gap this size or larger used to be read as "on the next
 # ledger, hidden under the head" by distance alone -- that guess put
@@ -508,6 +514,54 @@ def _rung_row_clears_box(
     return (e - s) >= box_w + 2 * RUNG_BEYOND_BOX_MIN_SPACES * spacing
 
 
+# lane-ledger-accidental (2026-10-04) -- how the "does this OTHER head's ink
+# continue past its own box" safety valve of `_exclude_other_heads_ink`
+# counts continuing ink.  Default OFF (bit-identical); switched on for the
+# duration of one read by `exclusion_rules(...)`.
+#   connected: the ink beyond the box counts only where it is CONNECTED to
+#     the head's own ink along the row (Sean 2026-10-01: ink separated from
+#     a head by a white gap -- an accidental, boxed or not -- is never a
+#     ledger stub for it).  Default: any ink within the margin counts.
+# (A second rule, "one thin flat jut keeps the row", was built, measured
+# +1 head for a cause no crop showed, and REFUSED -- FINDINGS.)
+_EXCL_RULES = {"connected": False}
+
+
+class exclusion_rules:
+    """Context manager: `with exclusion_rules(connected=True): ...`."""
+
+    def __init__(self, connected: bool = False):
+        self._new = {"connected": bool(connected)}
+
+    def __enter__(self):
+        self._old = dict(_EXCL_RULES)
+        _EXCL_RULES.update(self._new)
+        return self
+
+    def __exit__(self, *exc):
+        _EXCL_RULES.clear()
+        _EXCL_RULES.update(self._old)
+        return False
+
+
+def _connected_continuation(row_ink_in_box: np.ndarray, left_ink: np.ndarray,
+                            right_ink: np.ndarray) -> "tuple[bool, bool]":
+    """`row_ink_in_box` is the ink of the head's box columns on one row,
+    `left_ink`/`right_ink` the ink of the margins immediately outside it
+    (nearest-the-box last/first).  A side continues only if the margin ink
+    runs unbroken from the head's own outermost ink in the box to the box
+    edge and on through the margin's first column."""
+    if not row_ink_in_box.any():
+        return False, False
+    idx = np.flatnonzero(row_ink_in_box)
+    lo, hi = int(idx[0]), int(idx[-1])
+    left = (left_ink.size > 0 and bool(left_ink[-1])
+            and bool(row_ink_in_box[:lo + 1].all()))
+    right = (right_ink.size > 0 and bool(right_ink[0])
+             and bool(row_ink_in_box[hi:].all()))
+    return left, right
+
+
 def _exclude_other_heads_ink(
     ink: np.ndarray, exclude_boxes: "list[tuple[float, float, float, float]]",
     x0: int, yy0: int, spacing: float,
@@ -554,6 +608,9 @@ def _exclude_other_heads_ink(
         for r in range(row0, row1):
             has_left = col0 > left_lo and out[r, left_lo:col0].any()
             has_right = right_hi > col1 and out[r, col1:right_hi].any()
+            if _EXCL_RULES["connected"]:
+                has_left, has_right = _connected_continuation(
+                    out[r, col0:col1], out[r, left_lo:col0], out[r, col1:right_hi])
             if not (has_left and has_right) and img_gray is not None and thr is not None:
                 abs_y = yy0 + r
                 # Read against the box's TRUE (un-clipped) edges, never
@@ -569,10 +626,20 @@ def _exclude_other_heads_ink(
                     wr0, wr1 = true_x1, min(img_w, true_x1 + wide_margin)
                     wide_left = img_gray[abs_y, wl0:wl1] if wl1 > wl0 else None
                     wide_right = img_gray[abs_y, wr0:wr1] if wr1 > wr0 else None
-                    has_left = bool(wide_left is not None and wide_left.size
-                                    and (wide_left <= thr).any())
-                    has_right = bool(wide_right is not None and wide_right.size
-                                      and (wide_right <= thr).any())
+                    if _EXCL_RULES["connected"]:
+                        # the head's own ink on this row, read off the page
+                        # (the window may clip the box), then the margin
+                        # must run unbroken into it
+                        rowv = img_gray[abs_y, true_x0:true_x1] <= thr
+                        has_left, has_right = _connected_continuation(
+                            rowv,
+                            (wide_left <= thr) if wide_left is not None else np.zeros(0, bool),
+                            (wide_right <= thr) if wide_right is not None else np.zeros(0, bool))
+                    else:
+                        has_left = bool(wide_left is not None and wide_left.size
+                                        and (wide_left <= thr).any())
+                        has_right = bool(wide_right is not None and wide_right.size
+                                          and (wide_right <= thr).any())
             if has_left and has_right:
                 continue  # a real ledger continuing on both sides -- keep it
             out[r, col0:col1] = False
@@ -835,6 +902,7 @@ def derive_far_head_step(
     near_edge_ledgers: bool = False,
     far_side_ledger: bool = False,
     far_side_partner_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    drop_rungs_beyond_head: bool = False,
 ) -> dict:
     """Sean's 2026-10-01 convention for turning a rung count into a step.
 
@@ -905,7 +973,20 @@ def derive_far_head_step(
     "reason": str}`. `offset` is in half-steps outward from the edge; the
     caller adds it to (or subtracts it from, by `sign`) the edge's own
     staff position.
+
+    `drop_rungs_beyond_head` (lane-ledger-accidental, 2026-10-04; default
+    False = bit-identical): the walk reads rungs out to MAX_SPACES, so in a
+    chord the ladder carries the OTHER heads' ledgers beyond this head. A
+    ledger farther out than this head's own FAR edge (by more than
+    `BEYOND_HEAD_FAR_EDGE_SPACES`) is never one of THIS head's ledgers; it
+    is removed before the count (otherwise a head with a line through its
+    middle was credited with every rung of the stack above it -- tile
+    `glyph/3/0/0/7/2`, gap -3.87 sp).
     """
+    if drop_rungs_beyond_head and rungs_y and head_box is not None and spacing > 0:
+        far_y = head_box[1] if sign < 0 else head_box[3]
+        rungs_y = [r for r in rungs_y
+                   if sign * (r - far_y) / spacing <= BEYOND_HEAD_FAR_EDGE_SPACES]
     if not rungs_y or spacing <= 0:
         return dict(offset=None, kind=None, reason="no_rungs")
     # ONE question, asked ONCE, always at the head's own geometric
