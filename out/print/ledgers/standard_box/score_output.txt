@@ -1,0 +1,47 @@
+== SHAPES (measured, per page) ==
+beethove p1: oval 1.59x1.05 sp tilt 29.3 n=8 [document (page has 0 on-line heads)]  -> box extent 1.48x1.20 sp
+beethove p2: oval 1.59x1.05 sp tilt 29.3 n=8 [document (page has 2 on-line heads)]  -> box extent 1.48x1.20 sp
+beethove p3: oval 1.59x1.05 sp tilt 29.3 n=8 [document (page has 6 on-line heads)]  -> box extent 1.48x1.20 sp
+brahms1- p0: oval 1.42x1.07 sp tilt 30.8 n=12 [page]  -> box extent 1.34x1.17 sp
+brahms1- p1: oval 1.49x1.13 sp tilt 28.1 n=120 [page]  -> box extent 1.42x1.22 sp
+== n=44/11
+S0 beethoven5-litolff   {'right': 32, 'wrong': 10, 'abstain': 2} n=44
+S0 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S1 beethoven5-litolff   {'right': 33, 'wrong': 9, 'abstain': 2} n=44
+S1 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2 beethoven5-litolff   {'right': 35, 'wrong': 8, 'abstain': 1} n=44
+S2 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+== n=43/11 (3/0/0/6/2 excluded)
+S0 beethoven5-litolff   {'right': 32, 'wrong': 9, 'abstain': 2} n=43
+S0 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S1 beethoven5-litolff   {'right': 32, 'wrong': 9, 'abstain': 2} n=43
+S1 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+S2 beethoven5-litolff   {'right': 35, 'wrong': 7, 'abstain': 1} n=43
+S2 brahms1-breitkopf    {'right': 11, 'wrong': 0, 'abstain': 0} n=11
+
+--- S1 vs S0: every changed head ---
+beethove glyph/1/0/10/7/1      -4 wrong   ->    -2 right   ref=[-2] shift=(0.0, 0.508) size_ratio=(1.153, 1.319) fit=0.47/0.29 pass=False | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/0/2/3       -4 right   ->    -3 wrong   ref=[-4] shift=(0.317, 0.0) size_ratio=(1.049, 0.984) fit=0.6/0.26 pass=False | 0.42 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+beethove glyph/3/0/0/2/9       -6 wrong   ->    -4 wrong   ref=[-5] shift=(0.127, 0.254) size_ratio=(0.98, 0.952) fit=0.39/0.5 pass=False | 0.46 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+beethove glyph/3/0/0/5/12      -4 right   ->    -2 wrong   ref=[-4] shift=(-0.064, 0.384) size_ratio=(0.885, 1.071) fit=0.19/0.71 pass=False | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/0/6/1       -6 right   ->  None abstain ref=[-6] shift=(-0.315, 0.0) size_ratio=(1.154, 1.097) fit=0.18/0.78 pass=False | no_rungs
+beethove glyph/3/0/0/6/2       -6 wrong   ->    -4 right   ref=[-4] shift=(0.0, 0.378) size_ratio=(1.154, 0.991) fit=0.35/0.52 pass=False | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/0/7/1      -10 wrong   ->    -8 right   ref=[-8] shift=(0.381, 0.063) size_ratio=(1.02, 0.91) fit=0.67/0.28 pass=False | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/0/7/2       -6 wrong   ->    -8 wrong   ref=[-2] shift=(0.317, 0.127) size_ratio=(0.993, 0.968) fit=0.84/0.05 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/5/4/5       10 right   ->    11 wrong   ref=[10] shift=(0.0, 0.571) size_ratio=(0.94, 0.952) fit=0.21/0.61 pass=False | -0.08 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+beethove glyph/3/0/7/2/4     None abstain ->    10 right   ref=[10] shift=(0.063, 0.0) size_ratio=(0.914, 0.826) fit=0.7/0.15 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/7/6/1       11 wrong   ->    12 right   ref=[12] shift=(0.0, 0.0) size_ratio=(0.873, 0.908) fit=0.79/0.03 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/1/0/6/0       -5 wrong   ->    -6 right   ref=[-6] shift=(0.0, -0.127) size_ratio=(0.946, 0.889) fit=0.79/0.09 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/1/0/9/0       -4 right   ->    -3 wrong   ref=[-4] shift=(-0.063, 0.0) size_ratio=(1.025, 0.952) fit=0.73/0.16 pass=False | 0.20 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+right heads broken: ['glyph/3/0/0/2/3', 'glyph/3/0/0/5/12', 'glyph/3/0/0/6/1', 'glyph/3/0/5/4/5', 'glyph/3/1/0/9/0']
+
+--- S2 vs S0: every changed head ---
+beethove glyph/3/0/0/7/2       -6 wrong   ->    -8 wrong   ref=[-2] shift=(0.317, 0.127) size_ratio=(0.993, 0.968) fit=0.84/0.05 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/7/2/4     None abstain ->    10 right   ref=[10] shift=(0.063, 0.0) size_ratio=(0.914, 0.826) fit=0.7/0.15 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/0/7/6/1       11 wrong   ->    12 right   ref=[12] shift=(0.0, 0.0) size_ratio=(0.873, 0.908) fit=0.79/0.03 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+beethove glyph/3/1/0/6/0       -5 wrong   ->    -6 right   ref=[-6] shift=(0.0, -0.127) size_ratio=(0.946, 0.889) fit=0.79/0.09 pass=True | last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap
+right heads broken: []
+
+gate pass (pass, total): {'beethoven5-litolff': (19, 44), 'brahms1-breitkopf': (11, 11)}
+beethove centre shift detector->standard (sp): median 0.08 p90 0.38 max 0.57; size ratio w median 0.99 [0.86,1.15] h median 0.91 [0.74,1.32]
+brahms1- centre shift detector->standard (sp): median 0.04 p90 0.08 max 0.08; size ratio w median 0.99 [0.93,1.05] h median 1.01 [0.95,1.08]

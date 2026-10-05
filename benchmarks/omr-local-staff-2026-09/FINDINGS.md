@@ -2919,3 +2919,64 @@ Reach: 3 of 55 far heads. Caveat as the lane said: on these heads the line is a 
 test, which has little power for a jut that short.
 Pixel check (ink on row vs 0.5 sp off, +-1 px; stub zone): L3 3/0/7/3/1 0.88/0.56, 3/0/7/3/2 0.75/0.44, 3/0/7/3/4 0.88/0.69; L1/L2 on > off in every tile; frame control 1.00/0.07-0.11.
 Tests `test_ledger_far_side_rule_2026_10_04.py` 7: RED against the base module (ImportError), GREEN now; the arc test also failed (6 != 5) before the drift check was added.
+
+## lane-standard-head-box (2026-10-04): a STANDARD-size head box per page, placed by the geometry template (Sean)
+
+Base `origin/main` e15b5681 (round 8 + fix 1 + far-side rule, all OFF). Sean: *"Shouldn't the boxes for notes heads be standardized in size?"*,
+*"Could we use our template work to determine size of notes?"*. Code: `tools/omr/annotate/standard_head_box.py` (pure construction, imported by
+nothing in the product; `ledger_grid.py` NOT edited), template code copied from `lane-ledger-template-fix` 51c8f65a (`head_template.py`,
+`ledger_shape_trace.py`, and the measuring scripts `shape_from_page.py` etc.). Scorer `score_standard_box.py`, sheet `standard_box_sheet.py`,
+step-4 numbers `standard_box_thrown_tests.py`; output `out/print/ledgers/standard_box/`.
+
+**Construction.** SIZE = the page's measured head (second-moment fit on clean, isolated, ON-LINE filled heads, `shape_from_page`): Litolff
+oval 1.59 x 1.05 sp tilt 29.3 deg (n=8 on-line heads for the WHOLE document -- pages 1/2/3 have 0/2/6, so all three use the document's) -> axis-aligned
+box 1.48 x 1.20 sp; Brahms p0 1.42x1.07 tilt 30.8 (n=12) -> 1.34 x 1.17, p1 1.49x1.13 tilt 28.1 (n=120) -> 1.42 x 1.22. A hollow head takes the
+same outer size. CENTRE = the template's FREE position search (`match_head_template(decide="staged", dx_range 0.4 sp, head_ink_mode="opening")`,
+no ledger input, no refine). Detector box vs standard box over the 44/11 far heads: Litolff centre shift median 0.08 sp (p90 0.38, max 0.57), size
+ratio width median 0.99 [0.86, 1.15], height median 0.91 [0.74, 1.32]; Brahms shift median 0.04 (max 0.08), ratios 0.93-1.05 / 0.95-1.08.
+**Search control (can fail)**, 12 clean in-staff heads per doc, centre error against the head's own centroid: started at the detector box median 0.07 sp
+(Litolff) / 0.03 (Brahms); started 0.3 sp off 0.16 / 0.04; started 1.2 sp off 1.29 / 1.45 (does NOT recover -- outside the window). Box check control
+(share of the head blob inside the box): right centre 0.82 / 0.98, same box 1 sp displaced 0.30 / 0.27.
+
+**Arms** (reader = fix 1 + far-side rule; the BOX and the centre both change, `head_center_y` left None; other heads' exclusion boxes stay detector boxes).
+Gate for S2, fixed BEFORE scoring: template-oval vs head-ink-blob IoU >= 0.70 and centre offset <= 0.15 sp, on the OPENED ink with staff lines only
+(ledger-free, so the gate is not a consequence of the ledger read; it is also not independent of the search, which maximised agreement with that ink).
+
+| arm | Litolff right/wrong/abstain (n=44) | n=43 (`6/2` out) | Brahms | right heads broken |
+|---|---|---|---|---|
+| S0 detector box (control, reproduces 32/10/2, 11/0/0) | 32/10/2 | 32/9/2 | 11/0/0 | - |
+| S1 standard box on every far head | 33/9/2 | 32/9/2 | 11/0/0 | 5 |
+| S2 standard box only where the fit passes | 35/8/1 | 35/7/1 | 11/0/0 | 0 |
+
+Against Sean's own readings (`3/0/0/6/2` = -6, not the reference's -4): S0 33/9/2, S1 32/10/2, **S2 36/7/1**.
+Gate passes: Litolff 19 of 44, Brahms 11 of 11. **All 6 hollow Litolff far heads fail the gate** (0 of 6; filled 19 of 38): the oval is a filled shape and
+the ink blob of a half note has a hole, so the gate cannot pass a half note -- S2 never moves the very half-note tiles Sean raised (1, 4).
+
+Every changed head (S1 vs S0; S2 = S1 where "pass"):
+- `1/0/10/7/1` -4 wrong -> -2 right (ref -2; fit 0.47/0.29 FAIL so S2 stays -4): box 0.51 sp lower, 1.15 x 1.32 bigger; the through-ledger now sits at the box middle (evidenced).
+- `3/0/7/6/1` 11 -> 12 right, `3/1/0/6/0` -5 -> -6 right, `3/0/7/2/4` abstain -> 10 right (all PASS): the box got NARROWER (0.87-0.95 x) so the ledger's jut past the box clears the 0.25 sp stub test (3.7/4.3 px, 4.2/2.5 px against 3.9 needed; detector box 2.0/2.6 and 3.6/1.8) -- size is what mattered; the margin is 0.3-0.4 px, thin.
+- `3/0/0/6/2` -6 -> -4 "right": right only against the WRONG reference; Sean's -6 is what S0 reads. S1 makes it worse; S2 keeps -6.
+- `3/0/0/7/1` -10 -> -8 right (ref -8, fit FAIL -> S2 -10); `3/0/0/7/2` -6 -> -8 wrong (ref -2; PASS: still wrong, differently).
+- 5 RIGHT heads broken by S1, every one a gate FAIL: `0/2/3` (fit 0.60/0.26), `0/5/12` (0.19/0.71), `0/6/1` (0.18/0.78; no_rungs, abstains), `5/4/5` (0.21/0.61), `1/0/9/0` (0.73/0.16). Crops: the oval is pulled into a fused stem/partner or onto the wrong half of the head (sheet tiles 8-10, 13, 15). Not tuned away; the gate removes them.
+- `3/0/0/2/9`: -6 -> -4 under S1, still wrong (ref -5): fit 0.39/0.50, the head is fused to its stem and a partner above; the cyan box lands low on the stem. Not fixed.
+
+**Sean's named tiles, S0 / S1 / S2** (his reading): 1 `1/0/10/7/1` (-2) -4 / -2 / -4; 3 `3/0/0/2/9` (-5) -6 / -4 / -6; 4 `3/0/0/6/2` (-6) -6 / -4 / -6;
+7 `3/0/7/4/3` (-4) -3 / -3 / -3; 8 `3/0/7/6/1` (12) 11 / 12 / 12; 9 `3/0/7/7/0` (12) 11 / 11 / 11; 10 `3/1/0/6/0` (-6) -5 / -6 / -6.
+Box checks: tile 1 the standard box holds 0.82 of the head blob (detector 0.59) -- Sean's "box too small" is borne out; tile 3 the standard box is no better (0.52 vs 0.57).
+
+**Step 4: what throws "past the head" on the two still-wrong tiles** (`standard_box_thrown_tests.py`; each re-evaluation asserted equal to the real function):
+- `3/0/7/7/0` (thrown line y 1580, 0.20 sp above the standard box middle): `ledger_grid.head_middle_rung_evidence` -> False, so `derive_far_head_step` pops the rung
+  (gap -0.40 sp <= -TOUCH_TOL 0.20). Reason: the middle-row band (rows 1581-1586) has NO ink at the probe column because `_exclude_other_heads_ink` blanks it:
+  another detector notehead box on a neighbouring staff, `glyph/3/0/8/7/1`, overlaps 0.59 of this head's box. With no blanking the same test passes (run 1716-1748, jut 1.1 / 7.2 px against 3.9 needed). Identical at the detector box and the standard box.
+- `3/0/7/4/3` (line y 1457): `_rung_row_clears_box` -> False: run through the row is 21 px (x 1193-1214), needs box width + 2 x 0.05 sp = 26.5 px (detector box) / 24.6 px (standard box); and
+  `head_middle_rung_evidence` finds no run at the detector box (a box `glyph/3/0/6/4/3` overlaps 0.63 and blanks it) and, at the standard box, a run 1193-1214 whose jut is -2.7 / +0.6 px against 3.9 needed (without blanking 3.3 / 2.6: still short). The ledger here is hidden behind the neighbouring box's blanking AND short on the left.
+- (Fixed ones, for the record: `3/0/7/6/1` and `3/1/0/6/0` are thrown at the detector box by the SAME stub test -- jut 2.0/2.6 and 3.6/1.8 px vs 3.9 -- not by the other-head blanking; the narrower box passes it.)
+The accidental / other-head blanking is another lane's function; not edited.
+
+**Pixel checks** (sheet `standard_box_sheet.png`, 15 tiles, 1752 x 6358, x6 of the 600 dpi render). Lines: 34 drawn, 28 read on ink by the stub-zone/ridge test; 6 flagged (`6/1` 1583.5, `6/0` 2268.5, `0/2/3` 411, `0/5/12` 424, `0/7/2` 428.5, `1/0/9/0` 2287) -- each flagged at moved_px 0, i.e. no row within +-0.35 sp reads better (the crude test is low on lines running through a head's own ink); 4 lines snapped (-5, -5, 1, 1 px). Frame control (staff edge row vs 0.5 sp beyond): on >= 0.97, off <= 0.35 on every tile.
+Boxes: share of the head blob inside the box, detector (red) / standard (cyan): tile 1 0.59/0.82; passing heads `6/1` 0.97/0.93, `7/0` 0.94/0.89, `1/6/0` 0.95/0.90, `0/7/2` 0.78/0.95, `2/4` 0.91/0.82; failing heads mostly worse (`0/5/12` 0.56/0.38, `5/4/5` 0.87/0.51, `0/6/1` 0.50/0.37). Share of the box that is ink: cyan 0.73-0.81 on the passing heads vs red 0.60-0.72 (tighter). Mean over all 15: red 0.73, cyan 0.69.
+
+**What this says.** A standard box helps where the head is clean and the detector's box is wrong in SIZE (the ledger-jut test is size-sensitive: three heads) or too small
+(tile 1). The free position search is not reliable on a head fused to a stem/partner or on a half note, and the gate that spots this cannot see hollow heads at all. S2's +3 on Litolff
+(32 -> 35) is four changed heads, three of them fixes with a 0.3-0.4 px margin on the jut test; Brahms is untouched. Not a result to flip a default on (rule 5): needs the hollow-head fit fixed first
+(fill the blob's hole before the IoU) and a read of the two blanked-by-neighbour-box heads. Tests: `test_standard_head_box_2026_10_04.py` 7 (RED against the module missing; two mutations -- centre from the detector, un-rotated extents -- each fail one test).

@@ -1,0 +1,128 @@
+S0 beethoven5-litolff {'right': 32, 'wrong': 10, 'abstain': 2}
+S0 brahms1-breitkopf {'right': 11, 'wrong': 0, 'abstain': 0}
+sheet: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a308b1dcefb1c9bbe/out/print/ledgers/standard_box/standard_box_sheet.png (1752, 6358)
+
+== per-tile numbers ==
+ 1 glyph/1/0/10/7/1   S0 -4/wrong S1 -2/right S2 -4/wrong ref=[-2] gate=False fit={'iou_open': 0.47, 'offset_open_sp': 0.29, 'iou_raw': 0.45, 'offset_raw_sp': 0.31} shift=(0.0, 0.508) size=(1.153, 1.319) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.85 sp)
+    line: orange y 2896.5 moved 0 on_ink True near 0.5 / 0.0 ridge 37 / 20 
+    box red : {'blob_in_box': 0.59, 'box_is_ink': 0.66, 'd_left': -3.2, 'd_right': 4.7, 'd_top': 0.7, 'd_bottom': 10.4, 'blob_wh_px': [29, 25]}
+    box cyan: {'blob_in_box': 0.82, 'box_is_ink': 0.65, 'd_left': -1.6, 'd_right': 3.1, 'd_top': -5.0, 'd_bottom': 0.1, 'blob_wh_px': [29, 25]}
+    frame control on/off: 1.0 0.23
+ 2 glyph/3/0/0/2/9    S0 -6/wrong S1 -4/wrong S2 -6/wrong ref=[-5] gate=False fit={'iou_open': 0.39, 'offset_open_sp': 0.5, 'iou_raw': 0.4, 'offset_raw_sp': 0.47} shift=(0.127, 0.254) size=(0.98, 0.952) evidenced@std=True
+    S1 reason: 0.46 sp beyond the last clean rung -- a jut connected to the head's own middle, on at least one side
+    drop: {'rule': 'exclusion_or_cascade', 'y': 397.5, 'rel': 'far', 'rn': 1.51, 'rf': 0.31, 'rm': 0.91}
+    line: orange y 428.5 moved 0 on_ink True near 0.57 / 0.0 ridge 29 / 4 
+    line: magenta y 397.5 moved 0 on_ink True near 1.0 / 0.57 ridge 30 / 23 thrown: other note's ink
+    box red : {'blob_in_box': 0.57, 'box_is_ink': 0.69, 'd_left': 5.5, 'd_right': 7.8, 'd_top': -5.9, 'd_bottom': 1.2, 'blob_wh_px': [27, 28]}
+    box cyan: {'blob_in_box': 0.52, 'box_is_ink': 0.69, 'd_left': 3.3, 'd_right': 6.0, 'd_top': -10.4, 'd_bottom': -2.3, 'blob_wh_px': [27, 28]}
+    frame control on/off: 1.0 0.04
+ 3 glyph/3/0/0/6/2    S0 -6/wrong S1 -4/right S2 -6/wrong ref=[-4] gate=False fit={'iou_open': 0.35, 'offset_open_sp': 0.52, 'iou_raw': 0.37, 'offset_raw_sp': 0.49} shift=(0.0, 0.378) size=(1.154, 0.991) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.50 sp)
+    drop: {'rule': 'exclusion_or_cascade', 'y': 398.5, 'rel': 'far', 'rn': 1.51, 'rf': 0.31, 'rm': 0.91}
+    line: orange y 434.0 moved 0 on_ink True near 1.0 / 0.25 ridge 29 / 5 
+    line: orange y 414.5 moved 0 on_ink True near 1.0 / 0.75 ridge 35 / 17 
+    line: magenta y 398.5 moved 0 on_ink True near 1.0 / 0.5 ridge 34 / 18 thrown: other note's ink
+    box red : {'blob_in_box': 0.44, 'box_is_ink': 0.63, 'd_left': 3.3, 'd_right': 8.0, 'd_top': -4.3, 'd_bottom': 11.5, 'blob_wh_px': [26, 36]}
+    box cyan: {'blob_in_box': 0.41, 'box_is_ink': 0.53, 'd_left': 4.8, 'd_right': 6.4, 'd_top': -10.4, 'd_bottom': 5.6, 'blob_wh_px': [26, 36]}
+    frame control on/off: 0.97 0.03
+ 4 glyph/3/0/7/4/3    S0 -3/wrong S1 -3/wrong S2 -3/wrong ref=[-4] gate=False fit={'iou_open': 0.56, 'offset_open_sp': 0.16, 'iou_raw': 0.5, 'offset_raw_sp': 0.11} shift=(0.0, 0.192) size=(0.924, 0.855) evidenced@std=False
+    S1 reason: 0.25 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+    drop: {'rule': 'clears_box', 'y': 1457.0, 'rel': 'mid', 'rn': 0.58, 'rf': -0.62, 'rm': -0.02}
+    line: orange y 1470.0 moved 0 on_ink True near 0.25 / 0.0 ridge 37 / 16 
+    line: magenta y 1457.0 moved -5 on_ink True near 1.0 / 0.0 ridge 41 / 29 thrown: not clear past the head
+    box red : {'blob_in_box': 0.79, 'box_is_ink': 0.71, 'd_left': -0.4, 'd_right': 3.6, 'd_top': -0.8, 'd_bottom': 9.3, 'blob_wh_px': [30, 33]}
+    box cyan: {'blob_in_box': 0.68, 'box_is_ink': 0.76, 'd_left': -1.3, 'd_right': 4.6, 'd_top': -5.4, 'd_bottom': 7.9, 'blob_wh_px': [30, 33]}
+    frame control on/off: 1.0 0.31
+ 5 glyph/3/0/7/6/1    S0 11/wrong S1 12/right S2 12/right ref=[12] gate=True fit={'iou_open': 0.79, 'offset_open_sp': 0.03, 'iou_raw': 0.69, 'offset_raw_sp': 0.09} shift=(0.0, 0.0) size=(0.873, 0.908) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)
+    line: orange y 1566.0 moved 0 on_ink True near 0.62 / 0.0 ridge 45 / 12 
+    line: orange y 1583.5 moved 0 on_ink False near 0.5 / 0.0 ridge 45 / 31 
+    box red : {'blob_in_box': 0.97, 'box_is_ink': 0.72, 'd_left': -1.0, 'd_right': 0.6, 'd_top': 0.2, 'd_bottom': 0.5, 'blob_wh_px': [29, 22]}
+    box cyan: {'blob_in_box': 0.93, 'box_is_ink': 0.81, 'd_left': -2.7, 'd_right': 2.3, 'd_top': -0.8, 'd_bottom': 1.5, 'blob_wh_px': [29, 22]}
+    frame control on/off: 1.0 0.2
+ 6 glyph/3/0/7/7/0    S0 11/wrong S1 11/wrong S2 11/wrong ref=[12] gate=True fit={'iou_open': 0.73, 'offset_open_sp': 0.13, 'iou_raw': 0.59, 'offset_raw_sp': 0.22} shift=(0.0, 0.0) size=(0.974, 0.908) evidenced@std=False
+    S1 reason: 0.44 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+    drop: {'rule': 'derive_pop', 'y': 1580.0, 'k': 1, 'gap': -0.4, 'rel': 'mid', 'rn': 0.4, 'rf': -0.8, 'rm': -0.2}
+    line: orange y 1567.0 moved 0 on_ink True near 0.38 / 0.12 ridge 33 / 16 
+    line: magenta y 1580.0 moved 0 on_ink True near 0.75 / 0.12 ridge 39 / 33 thrown: lies past the head
+    box red : {'blob_in_box': 0.94, 'box_is_ink': 0.71, 'd_left': -0.1, 'd_right': 4.2, 'd_top': 0.1, 'd_bottom': 0.5, 'blob_wh_px': [29, 22]}
+    box cyan: {'blob_in_box': 0.89, 'box_is_ink': 0.77, 'd_left': -0.4, 'd_right': 4.5, 'd_top': -0.8, 'd_bottom': 1.4, 'blob_wh_px': [29, 22]}
+    frame control on/off: 1.0 0.14
+ 7 glyph/3/1/0/6/0    S0 -5/wrong S1 -6/right S2 -6/right ref=[-6] gate=True fit={'iou_open': 0.79, 'offset_open_sp': 0.09, 'iou_raw': 0.73, 'offset_raw_sp': 0.06} shift=(0.0, -0.127) size=(0.946, 0.889) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.56 sp)
+    line: orange y 2301.0 moved 0 on_ink True near 0.38 / 0.0 ridge 30 / 6 
+    line: orange y 2284.0 moved 0 on_ink True near 0.25 / 0.0 ridge 27 / 8 
+    line: orange y 2268.5 moved 0 on_ink False near 0.38 / 0.0 ridge 30 / 21 
+    box red : {'blob_in_box': 0.95, 'box_is_ink': 0.71, 'd_left': -2.6, 'd_right': -0.2, 'd_top': -1.2, 'd_bottom': -1.5, 'blob_wh_px': [28, 22]}
+    box cyan: {'blob_in_box': 0.9, 'box_is_ink': 0.77, 'd_left': -3.2, 'd_right': 0.5, 'd_top': -0.4, 'd_bottom': 1.7, 'blob_wh_px': [28, 22]}
+    frame control on/off: 1.0 0.0
+ 8 glyph/3/0/0/2/3    S0 -4/right S1 -3/wrong S2 -4/right ref=[-4] gate=False fit={'iou_open': 0.6, 'offset_open_sp': 0.26, 'iou_raw': 0.58, 'offset_raw_sp': 0.18} shift=(0.317, 0.0) size=(1.049, 0.984) evidenced@std=False
+    S1 reason: 0.42 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+    drop: {'rule': 'derive_pop', 'y': 411.01, 'k': 1, 'gap': -0.85, 'rel': 'far', 'rn': 0.85, 'rf': -0.35, 'rm': 0.25}
+    drop: {'rule': 'exclusion_or_cascade', 'y': 394.99, 'rel': None, 'rn': 1.87, 'rf': 0.67, 'rm': 1.27}
+    line: orange y 431.0 moved 0 on_ink True near 0.5 / 0.0 ridge 29 / 5 
+    line: magenta y 411.0 moved 0 on_ink False near 0.5 / 0.0 ridge 30 / 21 thrown: lies past the head
+    line: magenta y 395.0 moved 0 on_ink True near 0.75 / 0.0 ridge 32 / 19 thrown: other note's ink
+    box red : {'blob_in_box': 0.52, 'box_is_ink': 0.63, 'd_left': 3.2, 'd_right': 9.1, 'd_top': -10.4, 'd_bottom': -1.6, 'blob_wh_px': [29, 29]}
+    box cyan: {'blob_in_box': 0.59, 'box_is_ink': 0.75, 'd_left': -1.2, 'd_right': 3.5, 'd_top': -10.5, 'd_bottom': -1.4, 'blob_wh_px': [29, 29]}
+    frame control on/off: 1.0 0.03
+ 9 glyph/3/0/0/5/12   S0 -4/right S1 -2/wrong S2 -4/right ref=[-4] gate=False fit={'iou_open': 0.19, 'offset_open_sp': 0.71, 'iou_raw': 0.26, 'offset_raw_sp': 0.62} shift=(-0.064, 0.384) size=(0.885, 1.071) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.60 sp)
+    drop: {'rule': 'collapse_edges', 'y': 433.5, 'rel': 'near', 'rn': -0.01, 'rf': -1.21, 'rm': -0.61}
+    drop: {'rule': 'collapse_edges', 'y': 415.5, 'rel': 'far', 'rn': 1.14, 'rf': -0.06, 'rm': 0.54}
+    drop: {'rule': 'exclusion_or_cascade', 'y': 396.5, 'rel': None, 'rn': 2.36, 'rf': 1.16, 'rm': 1.76}
+    line: orange y 424.0 moved 0 on_ink False near 0.0 / 0.0 ridge 18 / 18 
+    line: magenta y 433.5 moved 0 on_ink True near 1.0 / 0.0 ridge 31 / 4 thrown: head's own edge
+    line: magenta y 415.5 moved 0 on_ink True near 1.0 / 0.38 ridge 36 / 19 thrown: head's own edge
+    line: magenta y 396.5 moved 0 on_ink True near 1.0 / 0.38 ridge 36 / 16 thrown: other note's ink
+    box red : {'blob_in_box': 0.56, 'box_is_ink': 0.51, 'd_left': 3.9, 'd_right': 4.9, 'd_top': -5.2, 'd_bottom': 11.2, 'blob_wh_px': [28, 35]}
+    box cyan: {'blob_in_box': 0.38, 'box_is_ink': 0.39, 'd_left': 3.4, 'd_right': 7.4, 'd_top': -10.6, 'd_bottom': 4.6, 'blob_wh_px': [28, 35]}
+    frame control on/off: 1.0 0.07
+10 glyph/3/0/0/6/1    S0 -6/right S1 None/abstain S2 -6/right ref=[-6] gate=False fit={'iou_open': 0.18, 'offset_open_sp': 0.78, 'iou_raw': 0.19, 'offset_raw_sp': 0.73} shift=(-0.315, 0.0) size=(1.154, 1.097) evidenced@std=None
+    S1 reason: no_rungs
+    box red : {'blob_in_box': 0.5, 'box_is_ink': 0.48, 'd_left': 5.2, 'd_right': 2.9, 'd_top': 0.3, 'd_bottom': 10.0, 'blob_wh_px': [19, 28]}
+    box cyan: {'blob_in_box': 0.37, 'box_is_ink': 0.26, 'd_left': 11.8, 'd_right': 6.3, 'd_top': 1.2, 'd_bottom': 9.1, 'blob_wh_px': [19, 28]}
+    frame control on/off: 0.97 0.03
+11 glyph/3/0/0/7/1    S0 -10/wrong S1 -8/right S2 -10/wrong ref=[-8] gate=False fit={'iou_open': 0.67, 'offset_open_sp': 0.28, 'iou_raw': 0.6, 'offset_raw_sp': 0.36} shift=(0.381, 0.063) size=(1.02, 0.91) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.63 sp)
+    line: orange y 432.0 moved -5 on_ink True near 0.62 / 0.0 ridge 35 / 28 
+    line: orange y 411.0 moved 0 on_ink True near 0.12 / 0.0 ridge 26 / 6 
+    line: orange y 396.0 moved 0 on_ink True near 0.25 / 0.12 ridge 28 / 4 
+    line: orange y 376.5 moved 1 on_ink True near 1.0 / 0.62 ridge 42 / 32 
+    box red : {'blob_in_box': 0.79, 'box_is_ink': 0.72, 'd_left': -1.8, 'd_right': 7.4, 'd_top': 1.5, 'd_bottom': 2.7, 'blob_wh_px': [33, 23]}
+    box cyan: {'blob_in_box': 0.79, 'box_is_ink': 0.76, 'd_left': -7.6, 'd_right': 1.2, 'd_top': -0.5, 'd_bottom': 2.6, 'blob_wh_px': [33, 23]}
+    frame control on/off: 1.0 0.1
+12 glyph/3/0/0/7/2    S0 -6/wrong S1 -8/wrong S2 -8/wrong ref=[-2] gate=True fit={'iou_open': 0.84, 'offset_open_sp': 0.05, 'iou_raw': 0.67, 'offset_raw_sp': 0.2} shift=(0.317, 0.127) size=(0.993, 0.968) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -3.98 sp)
+    line: orange y 428.5 moved 0 on_ink False near 0.5 / 0.0 ridge 31 / 31 
+    line: orange y 411.0 moved 0 on_ink True near 0.0 / 0.0 ridge 26 / 6 
+    line: orange y 396.0 moved 0 on_ink True near 0.29 / 0.0 ridge 28 / 4 
+    line: orange y 376.5 moved 1 on_ink True near 1.0 / 0.57 ridge 42 / 32 
+    box red : {'blob_in_box': 0.78, 'box_is_ink': 0.6, 'd_left': 5.1, 'd_right': 7.7, 'd_top': 1.1, 'd_bottom': 1.6, 'blob_wh_px': [27, 21]}
+    box cyan: {'blob_in_box': 0.95, 'box_is_ink': 0.73, 'd_left': 0.0, 'd_right': 2.8, 'd_top': -1.2, 'd_bottom': -0.1, 'blob_wh_px': [27, 21]}
+    frame control on/off: 1.0 0.1
+13 glyph/3/0/5/4/5    S0 10/right S1 11/wrong S2 10/right ref=[10] gate=False fit={'iou_open': 0.21, 'offset_open_sp': 0.61, 'iou_raw': 0.26, 'offset_raw_sp': 0.62} shift=(0.0, 0.571) size=(0.94, 0.952) evidenced@std=False
+    S1 reason: -0.08 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+    line: orange y 1233.5 moved 0 on_ink True near 1.0 / 0.5 ridge 36 / 18 
+    box red : {'blob_in_box': 0.87, 'box_is_ink': 0.58, 'd_left': 1.7, 'd_right': 6.0, 'd_top': -0.8, 'd_bottom': 1.3, 'blob_wh_px': [30, 23]}
+    box cyan: {'blob_in_box': 0.51, 'box_is_ink': 0.38, 'd_left': 0.9, 'd_right': 6.7, 'd_top': -10.3, 'd_bottom': -7.2, 'blob_wh_px': [30, 23]}
+    frame control on/off: 1.0 0.22
+14 glyph/3/0/7/2/4    S0 None/abstain S1 10/right S2 10/right ref=[10] gate=True fit={'iou_open': 0.7, 'offset_open_sp': 0.15, 'iou_raw': 0.65, 'offset_raw_sp': 0.19} shift=(0.063, 0.0) size=(0.914, 0.826) evidenced@std=True
+    S1 reason: last rung passes through the head itself, confirmed by a jut connected to it at the head's own middle row (gap -0.31 sp)
+    line: orange y 1565.5 moved 0 on_ink True near 1.0 / 0.12 ridge 46 / 32 
+    box red : {'blob_in_box': 0.91, 'box_is_ink': 0.67, 'd_left': -1.0, 'd_right': 1.6, 'd_top': -2.6, 'd_bottom': -2.5, 'blob_wh_px': [29, 24]}
+    box cyan: {'blob_in_box': 0.82, 'box_is_ink': 0.78, 'd_left': -3.1, 'd_right': 1.7, 'd_top': -4.6, 'd_bottom': -0.5, 'blob_wh_px': [29, 24]}
+    frame control on/off: 1.0 0.35
+15 glyph/3/1/0/9/0    S0 -4/right S1 -3/wrong S2 -4/right ref=[-4] gate=False fit={'iou_open': 0.73, 'offset_open_sp': 0.16, 'iou_raw': 0.6, 'offset_raw_sp': 0.16} shift=(-0.063, 0.0) size=(1.025, 0.952) evidenced@std=False
+    S1 reason: 0.20 sp beyond the last clean rung -- no evidenced line at the head's own middle, space beyond it
+    drop: {'rule': 'derive_pop', 'y': 2287.01, 'k': 1, 'gap': -0.69, 'rel': 'mid', 'rn': 0.69, 'rf': -0.51, 'rm': 0.09}
+    line: orange y 2301.0 moved 0 on_ink True near 0.12 / 0.0 ridge 29 / 16 
+    line: magenta y 2287.0 moved 0 on_ink False near 0.25 / 0.0 ridge 30 / 21 thrown: lies past the head
+    box red : {'blob_in_box': 0.81, 'box_is_ink': 0.73, 'd_left': -3.2, 'd_right': 0.2, 'd_top': -0.4, 'd_bottom': 5.7, 'blob_wh_px': [27, 27]}
+    box cyan: {'blob_in_box': 0.81, 'box_is_ink': 0.77, 'd_left': -1.9, 'd_right': 0.9, 'd_top': -0.9, 'd_bottom': 6.2, 'blob_wh_px': [27, 27]}
+    frame control on/off: 1.0 0.0
+
+== controls (in-staff clean heads) ==
+beethoven5-litolff centre error (sp) search from detector / 0.3 sp off / 1.2 sp off: medians [0.07, 0.16, 1.29] max [0.18, 0.35, 1.46] | blob-in-box right vs displaced 1sp: mean 0.82 0.3
+brahms1-breitkopf centre error (sp) search from detector / 0.3 sp off / 1.2 sp off: medians [0.03, 0.04, 1.45] max [0.1, 0.09, 1.53] | blob-in-box right vs displaced 1sp: mean 0.98 0.27
