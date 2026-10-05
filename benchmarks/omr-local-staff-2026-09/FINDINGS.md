@@ -4056,3 +4056,59 @@ STAGED reader (`far_head_reader.FarHeadPage`, arm E3), LEGACY nothing. Litolff p
 **Also measured (side finding, H3 asks for it):** the reader's re-measured staff lines sit ABOVE the dark-band centre: median -1.5 px on the undeskewed raster, -1.0 px on the gather's (99 overlay samples on the 9 tiles); the ledger rows sit +0.5 px (18 measurable of 42 drawn; the rest lie on merged ink or are restored/implied rungs). `_darkest_row` takes the FIRST row of a tied minimum, which on a bitonal thick line is its top edge: a 1-2 px staff-line-vs-ledger offset inside every far-head read, from a third, unrelated cause. Same bias as the earlier "staff lines ~1-2 px above the ink" finding.
 
 **Crop (`frame_drop_pairs.py`):** 9 heads read right in exactly one raster (A right, B wrong: `3/0/0/6/2`, `3/0/0/7/1`, `3/0/7/3/1`, `3/0/7/3/2`, `3/0/7/3/4`, `3/0/7/6/2`, `3/0/9/3/5`, `3/1/0/9/0`; B right, A wrong: `3/0/0/2/4`). Same pixels in both tiles of a pair, 3x nearest, record boxes laid on both. Every drawn row mapped back to its source row (assert, 1/6 px), staff and ledger overlays re-measured against the dark band under them (numbers above).
+
+### Chord-blob split: `3/0/0/2/4` + `3/0/0/2/9` go right (lane-chord-blob-split, 2026-10-04)
+
+READER ONLY, default OFF (pure functions in `tools/omr/annotate/ledger_grid.py`: `chord_blob_cluster`, `chord_blob_extent`, `chord_blob_trigger`, `ledger_juts_in_range`, `split_chord_blob`; called by no product code). Scorer `score_chord_split_1004.py` (arm E4 = E3 + split; control E3 reproduces 40/3/1 and 11/0/0). Tests `test_ledger_chord_blob_split_2026_10_04.py` (RED first: the four fail on `AttributeError` on the unrepaired tree; green after). Crop `out/print/ledgers/chord_split.png` (`crop_chord_split.py`).
+
+**Result.** Litolff E3 40/3/1 -> **E4 42/1/1** (43/0/1 counting `3/0/0/6/2` by Sean's -6); Brahms 11/0/0 -> 11/0/0. `2/4` -6 -> **-7 right**, `2/9` -6 -> **-5 right**. Right heads broken: **0** on both documents. Every other head's read is byte-for-byte the E3 read. Rule 5 caveat: the rule was built on these same two heads (and the 44 around them); the out-of-sample test is a re-gather.
+
+**What the data is, not what the brief said.** `2/4` and `2/9` are not one box taller than 1.6 standard heads: they are TWO detector boxes (1.39 and 1.26 sp tall, centres 0.9 sp apart, 7 px left of the ink) laid over one blob. So the trigger is on the BLOB: the vertical ink run in a narrow band through the heads' own column (stem and ledger stubs are outside the band), over the page-standard head height, > 1.6 (2.48 sp / 1.2 = 2.1 here). Two heads, not three: the run must be <= h + 1.35 sp (`THIRD_STACK_SPACING_RANGE[1]` 1.25 + 0.10 blur). The heads are placed at the blob's two ENDS (top + h/2, bottom - h/2), not mid +- 0.5 sp: on Litolff the printed ledgers run 1.1-1.25 sp apart (here 395.5 and 415.5, 20 px against a 15.75 px space), so the heads are 1.25 sp apart. The ledgers are the printed juts to the right of the column between and under the heads (rows 395.5 and 415.5); only where none is printed is the stacked-thirds midpoint (`third_stack_rung`, reused) inserted, labelled IMPLIED.
+
+**Two things the harness needed.** (a) `measure_ledger_rungs` cannot see both bars of a merged blob: head rows and bars are one contiguous qualifying band and a band yields ONE peak, so the bar through the lower head's foot (415.5) was lost and both heads read one step low (-5/-3, consistent with each other, one ledger short). `ledger_juts_in_range` supplies them; `reader_absolute_position(chord_split_rungs_y=...)` inserts them (`insert_rung`). (b) The partner's box must not be blanked from the subject's ink (its bar is the subject's ledger): the pair's own two entries leave the exclusion list.
+
+**Trigger counts** (split FIRES; gates are cumulative):
+| population | raw (ink run > 1.6 std) | + far (centre >= 0.25 sp outside the lines) | + boxes overprint >= 0.2 sp (E4) |
+|---|---|---|---|
+| Litolff in-staff heads (807) | 191 | 5 | 2 (one pair, `2/1/8/12/0`+`/12/1`) |
+| Litolff far heads (44) | 10 | 10 | **2** (`2/4`, `2/9`) |
+| Brahms in-staff heads (897) | 178 | 0 | 0 |
+| Brahms far heads (11) | 0 | 0 | 0 |
+Spurious fires: the raw trigger alone is NOT far-only (191 of 807 in-staff heads: chords, beams and stems in the band); the far gate removes all but 5, the overprint gate all but one real-looking pair at the staff edge (not inspected against the print; counted, not judged). The 8 other far heads that fire raw include `2/1`+`2/3`, `7/2/2`... (right already, two well-formed boxes or one box over one head); without the overprint gate E4raw is the same 42/1/1 (its only difference is the 6 singleton-box fires, which are declined) -- the overprint gate is kept because two standard heads a third apart abut at ~0.05 sp and the pre-set bound is 0.2 sp. Earlier, with a looser separation bound (h + 1.5 sp) `3/0/0/6/1`+`/6/2` split on a different ink structure (centres 1.45 sp apart, both heads hollow) and broke a right head; the 1.35 bound declines it (`separation_not_a_third`). That bound was tuned on this pair: a third falsifier.
+
+**Not solved / named.** A ledger that juts out LEFT only is not seen; a stem-up blob puts the stem in the jut window; a cluster of three heads and the 3-box clusters (`9/2/0`...) are declined, not split; a single detector box over two heads is declined (nothing to assign the second head to).
+
+**Print check.** Crop from the Litolff PDF raster at the gather DPI, local lines drawn, every drawn line re-measured against pixel rows: the two inserted ledgers sit 0.1 and 0.3 px from their ink rows; the five staff lines sit 1.5-1.9 px ABOVE the ink centre -- not this lane's, but a standing offset: over 220 line reads on the 44 far heads the frame sits a median +1.07 px (0.07 sp) above the ink centre on Litolff (+0.65 on Brahms), p10..p90 0.5..1.6. Worth a look before the grid is trusted to 0.1 sp.
+
+## Through-head ledger: the head is ON a thin flat line that crosses it (lane-through-head-on, 2026-10-04)
+
+**Path: the far-head ledger reader (`ledger_grid`, used by the 2.44c truth-set scorers; not wired into LEGACY or STAGED).** Sean on tile 3 `glyph/3/0/8/6/10`: *"Tile 3 is on a ledger line - the first below the staff."* Fix 1 (`near_edge_ledgers`) refuses that rung (`head_body_on_both_sides_of_the_rung`) and it is popped, so the head abstained.
+
+**Rule** (`derive_far_head_step(through_head_on_rung=True)`, default OFF, bit-identical off; pure functions `through_head_on_rung_evidence`, `head_ink_staff_fraction`). Reached only after fix 1 has declined the rung: a thin flat connected jut within [-0.35, +0.60] sp of the staff-side box edge, head body on both sides, and `frac_stf` (staff-side head ink / head ink height, central 60% of the box width) >= 0.245 (the separator measured by `tile3_vs_fix1.py`, branch `lane-tile3-measure`) -> the head is ON that rung (offset 2n, line).
+
+**Scored** (`score_chord_split_1004.py`, arm E5 = E4 + the rule; staff position vs the reference, GATHER+ADJUDICATE only): control E4 reproduces Litolff 42/1/1, Brahms 11/0/0. E5: Litolff 43/1/0 (44/0/0 against Sean's -6 for `3/0/0/6/2`), Brahms 11/0/0. One head changes: `3/0/8/6/10` None -> 10 (right). **0 right heads broken on either document.** On the far heads the rule fires on that one head only (Litolff) and none on Brahms.
+
+**Reach on in-staff heads.** The real reader run over every in-staff head with the rule on vs off (`through_head_census_in_staff.py`): Litolff 807 heads, Brahms 897 -- 0 reads change, 0 reasons name the rule, 0 reader errors. The bare evidence function is NOT safe on an in-staff head: a staff line is itself a thin flat line through the head, and asked of every staff line crossing a box it fires on 215/807 and 396/897 (upper bound printed by the scorer). It must only be called from the far-head rung path, as it is.
+
+**Caveats.** In-sample: one positive head (tile 3), written for it; the 0.245 gate comes from 44 Litolff far heads. The rule is unevidenced on Brahms (no through-head far case there). The head ink is read at the Otsu threshold of the box surround (the measurement script used gray < 140); tile 3 passes on it. Unit test `tools/omr/tests/test_ledger_through_head_on_2026_10_04.py` (run RED first: ImportError on the unrepaired tree).
+
+## lane-jut-from-ink (2026-10-04): measure the ledger's jut from the head's INK, not the box edge
+
+STAGED reader (`far_head_reader.FarHeadPage`), LEGACY nothing. Fixes the cause found by lane-frame-drop-investigation: the "ledger runs through the head" test (`ledger_grid.head_middle_rung_evidence`) needed the connected ink to stick out of the detector BOX by 0.25 sp = 3.9 px; 2 px of box placement decided the read. New keyword `jut_from_ink` (default OFF = bit-identical; also `exclusion_rules(jut_from_ink=...)`), implemented by `_jut_from_head_ink`: take the middle-row ink run through the box's middle column, measure the vertical ink thickness at every column of it, call the outermost columns thicker than a ledger (`LEDGER_THICKNESS_MAX_SPACES`) the head's body, and require the line to run `RUNG_STUB_MIN_SPACES` (0.15 sp, the walk's own stub floor, not fitted) past that. No thick column = body not found = cannot tell (False). The reader (`far_head_reader.EXCLUSION_RULES`) has it ON.
+
+**Scored, CORRECT FRAME only** (the gather's deskewed raster with the record's boxes; scripts `jut_from_ink_eval.py`, `jut_from_ink_flips.py`, `jut_from_ink_crop.py`; read-only on the shared records; staff position vs reference, GATHER+ADJUDICATE only, `3/0/0/6/2` by Sean's -6):
+
+| | box edge (before) | ink edge (after) |
+|---|---|---|
+| Litolff p3, 41 far heads | 31 right / 8 wrong / 2 abstain | **36 / 4 / 1** |
+| Brahms p1, 11 far heads | 11 / 0 / 0 | **11 / 0 / 0** |
+
+Six reads change: `7/1`, `3/4`, `7/6/2`, `8/6/10` (was abstain), `9/0` go right; `6/2` -3 -> -4 (still wrong against Sean's -6). **Right heads broken: 0** on both pages. The stopgap (0.15 sp from the box) read 37; this reads 36 and has no threshold to tune on the box.
+
+**Shift test** (every box moved by -2..+2 px in x and y, 25 shifts, right heads out of 41 / 11): Litolff box edge **28..36** (spread 8), ink edge **33..37** (spread 4); Brahms 10..11 both. The through test itself no longer moves; what remains is other box-based steps (rung walk, far-side rule): shifting dy -2 flips `6/1` and `8/1/3`, dy +2 flips `5/12` and `7/7/0`, in both directions (`jut_from_ink_flips.py`). Not fixed here.
+
+**Crop** `out/print/ledgers/jut_from_ink.png`: the six changed heads, old left / new right, same gather raster and boxes, 3x. Blue = local staff lines, green dashes = ledger rows counted, orange = detector box, yellow ticks = head's ink edge, cyan ticks = ledger end, red/magenta bars = read / reference. Re-measured against pixel rows: staff overlays sit a median 1.0 px above the dark band (n=70), ledger rows +0.5 px (n=6), the known offset, not this change.
+
+**Combined with `origin/lane-through-head-on`** (chord split E4 + through-head rule E5): merged cleanly (FINDINGS only conflicted, both kept); both stay OFF and unwired in the reader. The E5 rule's only gain (`8/6/10`) is already read right by the ink jut, so wiring it moved nothing (36/41 either way, Brahms 11/11): not wired (rule 5). E4 (`2/4`, `2/9`) needs a chord-cluster hook in `FarHeadPage.read`, which is not a small step: skipped.
+
+**Caveats.** In-sample (the 41 are the heads the rule was looked at on); the real out-of-sample test is the re-gather. Tests `test_ledger_jut_from_ink_2026_10_04.py` run RED on the unrepaired tree (8 failures: no keyword), green after.

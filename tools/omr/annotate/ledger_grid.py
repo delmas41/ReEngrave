@@ -1077,6 +1077,7 @@ def derive_far_head_step(
     far_side_ledger: bool = False,
     far_side_partner_boxes: "list[tuple[float, float, float, float]] | None" = None,
     drop_rungs_beyond_head: bool = False,
+    through_head_on_rung: bool = False,
 ) -> dict:
     """Sean's 2026-10-01 convention for turning a rung count into a step.
 
@@ -1147,6 +1148,14 @@ def derive_far_head_step(
     "reason": str}`. `offset` is in half-steps outward from the edge; the
     caller adds it to (or subtracts it from, by `sign`) the edge's own
     staff position.
+
+    `through_head_on_rung` (lane-through-head-on, 2026-10-04, Sean on tile 3
+    `glyph/3/0/8/6/10`; default False = bit-identical): where fix 1 refuses a
+    near-edge rung because the head's body is on BOTH sides of it, and
+    `through_head_on_rung_evidence` finds a thin flat ledger whose line
+    crosses the head (>= 0.245 of its ink on the staff side), the head is ON
+    that rung (offset `2n`, kind line). Only reached after `near_edge_ledgers`
+    has declined the rung.
 
     `drop_rungs_beyond_head` (lane-ledger-accidental, 2026-10-04; default
     False = bit-identical): the walk reads rungs out to MAX_SPACES, so in a
@@ -1219,6 +1228,14 @@ def derive_far_head_step(
                                   f"near edge (rung {gap_spaces:.2f} sp "
                                   f"inside the box): counted, head in the "
                                   f"space beyond it")
+            if through_head_on_rung and through_head_on_rung_evidence(
+                    img_gray, last, head_box, sign, spacing,
+                    exclude_boxes)["ok"]:
+                return dict(offset=last_half_steps, kind="line",
+                           reason=f"a thin flat ledger runs through the "
+                                  f"head (rung {gap_spaces:.2f} sp inside "
+                                  f"the box, head ink on both sides): the "
+                                  f"head is on it")
             remaining.pop()
             continue
         # `last` sits between the staff and the head (or touching it) --
@@ -2146,6 +2163,103 @@ def rung_is_near_edge_ledger(*args, **kwargs) -> bool:
 
 
 # ---------------------------------------------------------------------------
+# Through-head ledger (lane-through-head-on, 2026-10-04; Sean on the combined
+# sheet, tile 3 `glyph/3/0/8/6/10`: "Tile 3 is on a ledger line - the first
+# below the staff"). The complement of fix 1: outside the staff, a thin flat
+# ledger that passes THROUGH a far head (head ink on BOTH sides of it) means
+# the head is ON that line. Fix 1 refuses exactly this (`head_body_on_both_
+# sides_of_the_rung`) and the rung is then popped. What separates it from the
+# grazing case fix 1 gets right is the share of the head's own ink lying on
+# the STAFF side of the line, `frac_stf` = staff-side ink height / total ink
+# height (central 60% of the box width, the contiguous run through the box
+# middle): ~0 where the line is the head's staff-side edge (head hangs in the
+# space beyond), >= 0.245 where the line crosses the head (measured on 44
+# Litolff far heads, benchmarks/omr-local-staff-2026-09/tile3_vs_fix1.py).
+# ---------------------------------------------------------------------------
+THROUGH_HEAD_FRAC_STF_MIN = 0.245
+THROUGH_HEAD_NEAR_BAND_SPACES = (-0.35, 0.60)   # rung vs the staff-side box edge
+THROUGH_HEAD_INK_COLUMNS = 0.6                  # central fraction of the box width
+
+
+def head_ink_staff_fraction(
+    img_gray: np.ndarray, y: float,
+    box: "tuple[float, float, float, float]", sign: float, spacing: float,
+) -> "float | None":
+    """Share of the head's own ink height lying on the STAFF side of row `y`.
+
+    The ink is read in the central `THROUGH_HEAD_INK_COLUMNS` of the box
+    width: the contiguous run (bridging one blank row) that passes through
+    the box middle row. None where it cannot be read."""
+    x0, y0, x1, y1 = box
+    h, w = img_gray.shape
+    ref = img_gray[max(0, int(y0) - 10):int(y1) + 10,
+                   max(0, int(x0) - 10):int(x1) + 10]
+    thr = _otsu_threshold(ref if ref.size else img_gray)
+    ink = img_gray <= thr
+    cx, bw = (x0 + x1) / 2.0, x1 - x0
+    xa = max(0, int(round(cx - 0.5 * THROUGH_HEAD_INK_COLUMNS * bw)))
+    xb = min(w, int(round(cx + 0.5 * THROUGH_HEAD_INK_COLUMNS * bw)) + 1)
+    r0, r1 = max(0, int(y0 - 0.4 * spacing)), min(h, int(y1 + 0.4 * spacing) + 1)
+    if xb <= xa or r1 <= r0:
+        return None
+    prof = ink[r0:r1, xa:xb].mean(axis=1) >= 0.5
+    if not prof.any():
+        return None
+    mid = int(round((y0 + y1) / 2.0)) - r0
+    idx = np.where(prof)[0]
+    a = b = int(idx[np.argmin(np.abs(idx - mid))])
+    while a > 0 and (prof[a - 1] or (a > 1 and prof[a - 2])):
+        a -= 1
+    while b < len(prof) - 1 and (prof[b + 1] or (b < len(prof) - 2 and prof[b + 2])):
+        b += 1
+    top, bot = a + r0, b + r0 + 1.0
+    near_ink, far_ink = (bot, top) if sign < 0 else (top, bot)
+    above = sign * (y - near_ink)
+    below = sign * (far_ink - y)
+    total = above + below
+    if total <= 0:
+        return None
+    return above / total
+
+
+def through_head_on_rung_evidence(
+    img_gray: "np.ndarray | None",
+    y: float,
+    head_box: "tuple[float, float, float, float] | None",
+    sign: float,
+    spacing: float,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+) -> dict:
+    """Is the rung at row `y` a thin flat ledger running THROUGH this head?
+
+    All of: the rung lies within `THROUGH_HEAD_NEAR_BAND_SPACES` of the
+    head's staff-side box edge (inside the box, as fix 1's candidates are);
+    it is a thin flat connected jut (`thin_flat_jut_evidence`); the head's
+    body is on BOTH sides of it (fix 1's own refusal, so this fires only
+    where `near_edge_ledger_evidence` said
+    `head_body_on_both_sides_of_the_rung`); and `head_ink_staff_fraction`
+    >= `THROUGH_HEAD_FRAC_STF_MIN`. Anything unreadable -> not ok (rule 8)."""
+    if img_gray is None or head_box is None or not spacing or spacing <= 0:
+        return dict(ok=False, why="no_image")
+    near_y = head_box[3] if sign < 0 else head_box[1]
+    rn = sign * (y - near_y) / spacing
+    lo, hi = THROUGH_HEAD_NEAR_BAND_SPACES
+    if not (lo <= rn <= hi):
+        return dict(ok=False, why="rung_not_at_the_near_edge", rn=rn)
+    fix1 = near_edge_ledger_evidence(img_gray, y, head_box, sign, spacing,
+                                     exclude_boxes)
+    if fix1["why"] != "head_body_on_both_sides_of_the_rung":
+        return dict(ok=False, why="not_a_both_sides_refusal:" + fix1["why"])
+    frac = head_ink_staff_fraction(img_gray, y, head_box, sign, spacing)
+    if frac is None:
+        return dict(ok=False, why="head_ink_unreadable")
+    if frac < THROUGH_HEAD_FRAC_STF_MIN:
+        return dict(ok=False, why="head_ink_mostly_beyond_the_rung", frac_stf=frac)
+    return dict(ok=True, why="thin_flat_ledger_through_the_head",
+                frac_stf=frac)
+
+
+# ---------------------------------------------------------------------------
 # Far-side ledger (lane-ledger-far-side-rule, 2026-10-04; Sean on the far-edge
 # crop sheet: outside the staff, a thin line touching the FAR side of a head
 # -- the side away from the staff -- with NO other note farther out means the
@@ -2643,3 +2757,272 @@ def combine_farhead_position(
                    max_gap_deviation=dev)
     return dict(position=geom_pos, branch="disagree_geometry",
                max_gap_deviation=dev)
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# lane-chord-blob-split (2026-10-04) -- ONE merged chord blob, two heads a
+# third apart.  READER ONLY, keyword-gated by the caller, default OFF; wired
+# into nothing.
+#
+# `glyph/3/0/0/2/4` (ref -7) and `/2/9` (ref -5) on Litolff p3 are two
+# detector boxes laid over ONE merged blob of ink -- two heads a third
+# apart, sharing a stem -- each box 1.3-1.4 standard heads tall, centred
+# 0.9 sp apart and 7 px left of the heads' own ink.  Sean: both heads sit in
+# SPACES, the lines jutting out are not near the heads' middles, the clear
+# 2nd ledger between them is missed.
+#
+# The blob is MEASURED, not assumed: the vertical ink run in a narrow band
+# through the heads' own column (stem and ledger stubs are outside it).  Its
+# extent over the page-standard head height says how many heads are stacked
+# (one head = 1.0, two a third apart = 1 + 1/h ~ 1.95); above
+# CHORD_SPLIT_MIN_EXTENT_RATIO the blob is more than one head, at or below
+# `h + CHORD_SPLIT_MAX_EXTRA_SPACES` it is exactly TWO (a third apart is one
+# staff space between centres: Sean, "two heads a third apart always have one
+# between them").  Anything taller, or a blob whose column is not one head
+# wide, is DECLINED with a reason -- never split by guess (CLAUDE.md rule 8).
+# ─────────────────────────────────────────────────────────────────────────
+CHORD_SPLIT_MIN_EXTENT_RATIO = 1.6
+# two heads a third apart: extent = h + (centre separation).  The separation
+# is a staff space, up to `THIRD_STACK_SPACING_RANGE[1]` (hand-drawn ledger
+# pitch runs 1.1-1.25 sp on Litolff) plus 0.10 sp of scan blur; a taller blob
+# is not one third (three heads is h + 2.0, a head and its ledger-bearing
+# neighbour is something else) and is DECLINED.
+CHORD_SPLIT_MAX_EXTRA_SPACES = THIRD_STACK_SPACING_RANGE[1] + 0.10
+CHORD_SPLIT_BAND_FRACTION = 0.25      # +- this fraction of the head width
+CHORD_SPLIT_COLUMN_INK_FRACTION = 0.5
+CHORD_SPLIT_FAR_MARGIN_SPACES = 0.25
+CHORD_SPLIT_PAD_SPACES = 0.75         # how far past the boxes' union to look
+
+
+def chord_blob_cluster(
+    subject_box: "tuple[float, float, float, float]",
+    other_boxes: "list[tuple[float, float, float, float]]",
+    min_x_overlap: float = 0.5,
+) -> "list[tuple[float, float, float, float]]":
+    """The subject box plus every OTHER box laid on the same blob: it
+    overlaps the subject's x range by at least `min_x_overlap` of the
+    narrower box and touches or overlaps it in y."""
+    out = [tuple(subject_box)]
+    sx0, sy0, sx1, sy1 = subject_box
+    for b in other_boxes:
+        bx0, by0, bx1, by1 = b
+        ox = min(sx1, bx1) - max(sx0, bx0)
+        narrow = min(sx1 - sx0, bx1 - bx0)
+        if narrow <= 0 or ox < min_x_overlap * narrow:
+            continue
+        if by1 < sy0 or by0 > sy1:
+            continue
+        out.append(tuple(b))
+    return out
+
+
+def chord_blob_extent(
+    img_gray: np.ndarray, boxes: "list[tuple[float, float, float, float]]",
+    spacing: float,
+) -> "dict | None":
+    """Where the heads' own ink is: `cx` (column centre), `width`, and the
+    vertical ink run `y0..y1` (inclusive rows) through that column's centre
+    band.  None when no ink / no head-wide column is found."""
+    ux0 = min(b[0] for b in boxes)
+    uy0 = min(b[1] for b in boxes)
+    ux1 = max(b[2] for b in boxes)
+    uy1 = max(b[3] for b in boxes)
+    pad = int(round(CHORD_SPLIT_PAD_SPACES * spacing))
+    h, w = img_gray.shape
+    wx0, wx1 = max(0, int(ux0) - pad), min(w, int(ux1) + pad + 1)
+    wy0, wy1 = max(0, int(uy0) - pad), min(h, int(uy1) + pad + 1)
+    if wx1 <= wx0 or wy1 <= wy0:
+        return None
+    win = img_gray[wy0:wy1, wx0:wx1]
+    ink = win <= _otsu_threshold(win)
+    ry0, ry1 = int(uy0) - wy0, int(uy1) - wy0 + 1
+    if ry1 <= ry0:
+        return None
+    col_frac = ink[ry0:ry1].mean(axis=0)
+    good = col_frac >= CHORD_SPLIT_COLUMN_INK_FRACTION
+    best, i = None, 0
+    while i < len(good):
+        if good[i]:
+            j = i
+            while j < len(good) and good[j]:
+                j += 1
+            if best is None or j - i > best[1] - best[0]:
+                best = (i, j)
+            i = j
+        else:
+            i += 1
+    if best is None:
+        return None
+    c0, c1 = best
+    cx_local = (c0 + c1 - 1) / 2.0
+    width = float(c1 - c0)
+    half = max(1.0, CHORD_SPLIT_BAND_FRACTION * width)
+    b0 = max(0, int(round(cx_local - half)))
+    b1 = min(ink.shape[1], int(round(cx_local + half)) + 1)
+    rows = ink[:, b0:b1].any(axis=1)
+    mid = (ry0 + ry1) // 2
+    if not rows[min(max(mid, 0), len(rows) - 1)]:
+        # the union's own middle row has no ink in the band: nothing to run
+        cand = [r for r in range(ry0, ry1) if rows[r]]
+        if not cand:
+            return None
+        mid = min(cand, key=lambda r: abs(r - mid))
+    top = mid
+    gap = 0
+    r = mid
+    while r > 0:
+        r -= 1
+        if rows[r]:
+            top, gap = r, 0
+        else:
+            gap += 1
+            if gap > 1:
+                break
+    bot = mid
+    gap = 0
+    r = mid
+    while r < len(rows) - 1:
+        r += 1
+        if rows[r]:
+            bot, gap = r, 0
+        else:
+            gap += 1
+            if gap > 1:
+                break
+    return dict(cx=wx0 + cx_local, width=width, y0=wy0 + top, y1=wy0 + bot,
+                extent_px=float(bot - top + 1))
+
+
+def chord_blob_trigger(extent_px: float, spacing: float,
+                       std_height_sp: float) -> bool:
+    """The trigger alone: the blob's ink run is taller than
+    `CHORD_SPLIT_MIN_EXTENT_RATIO` standard head heights."""
+    if spacing <= 0 or std_height_sp <= 0:
+        return False
+    return extent_px / (spacing * std_height_sp) > CHORD_SPLIT_MIN_EXTENT_RATIO
+
+
+CHORD_SPLIT_JUT_MIN_PX = 3          # a ledger pokes this far past the head's edge
+
+
+def ledger_juts_in_range(img_gray: np.ndarray, y_lo: float, y_hi: float,
+                         cx: float, head_width_px: float, spacing: float
+                         ) -> "list[float]":
+    """Centre rows of every thin jut that pokes out of the heads' column to the
+    RIGHT between rows `y_lo` and `y_hi` -- the ledgers of a merged chord blob,
+    which `measure_ledger_rungs` cannot separate (the blob's body rows and its
+    bars are ONE contiguous qualifying band, and a band yields one peak).  A
+    jut is a run of rows whose ink reaches at least `CHORD_SPLIT_JUT_MIN_PX`
+    past the column's right edge and is no thicker than
+    `LEDGER_THICKNESS_MAX_SPACES`.  A ledger that pokes out on the LEFT only is
+    not seen (recorded limit)."""
+    h, w = img_gray.shape
+    x_edge = int(round(cx + head_width_px / 2.0))
+    x_probe = min(w - 1, x_edge + CHORD_SPLIT_JUT_MIN_PX)
+    x_far = min(w, x_edge + int(round(0.6 * spacing)))
+    y0, y1 = int(round(min(y_lo, y_hi))), int(round(max(y_lo, y_hi)))
+    y0, y1 = max(0, y0), min(h - 1, y1)
+    if y1 <= y0 or x_probe >= x_far:
+        return []
+    ref = img_gray[max(0, y0 - 3):min(h, y1 + 4),
+                   max(0, int(cx - spacing)):x_far]
+    thr = _otsu_threshold(ref)
+    rows = [bool((img_gray[y, x_probe:x_far] <= thr).any()) for y in range(y0, y1 + 1)]
+    out, i = [], 0
+    while i < len(rows):
+        if rows[i]:
+            j = i
+            while j < len(rows) and rows[j]:
+                j += 1
+            if j - i <= LEDGER_THICKNESS_MAX_SPACES * spacing + 1:
+                out.append(y0 + (i + j - 1) / 2.0)
+            i = j
+        else:
+            i += 1
+    return out
+
+
+def split_chord_blob(
+    img_gray: np.ndarray, boxes: "list[tuple[float, float, float, float]]",
+    spacing: float, std_width_sp: float, std_height_sp: float,
+    tilt_deg: float = 0.0,
+    exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    staff_span: "tuple[float, float] | None" = None,
+    min_box_overprint_sp: "float | None" = None,
+) -> dict:
+    """Split ONE merged chord blob (`boxes` = every detector box laid on it,
+    `chord_blob_cluster`) into two page-standard head boxes a staff space
+    apart, and place the ledger the stacked-thirds convention puts between
+    them (`third_stack_rung`, at the exact midpoint -- reused, not
+    re-derived).
+
+    Returns `{"split": False, "reason": ...}` where it declines (no ink,
+    below the trigger, three or more heads, column not one head wide), else
+    `{"split": True, "boxes": [top, bottom], "centres": [...], "rung_y",
+    "rung_confirmed", "extent_px", "extent_sp"}`; boxes are (x0,y0,x1,y1)
+    page px, top one first.
+
+    `staff_span` = (top line y, bottom line y) of the LOCAL staff: when given,
+    a blob with any box centre inside it is declined (`in_staff`) -- the rule
+    is for far heads.  `min_box_overprint_sp`: when given, the detector boxes
+    must PRINT OVER each other by at least this many spaces (their y ranges
+    overlap) -- two standard heads a third apart abut (overlap ~0.05 sp), so
+    boxes that overlap more than that are oversize boxes on one blob, not two
+    well-formed heads; otherwise declined (`boxes_well_formed`)."""
+    from . import standard_head_box as shb
+    if staff_span is not None:
+        top, bottom = staff_span
+        m = CHORD_SPLIT_FAR_MARGIN_SPACES * spacing
+        # far = every box centre at least a quarter space OUTSIDE the outer
+        # lines: a head on the top line (position 0) is in the staff however
+        # its box happens to be centred
+        if any(top - m <= (b[1] + b[3]) / 2.0 <= bottom + m for b in boxes):
+            return dict(split=False, reason="in_staff")
+    if min_box_overprint_sp is not None:
+        ov = 0.0
+        for i in range(len(boxes)):
+            for j in range(i + 1, len(boxes)):
+                ov = max(ov, (min(boxes[i][3], boxes[j][3])
+                              - max(boxes[i][1], boxes[j][1])) / spacing)
+        if ov < min_box_overprint_sp:
+            return dict(split=False, reason="boxes_well_formed", overprint_sp=ov)
+    ext = chord_blob_extent(img_gray, boxes, spacing)
+    if ext is None:
+        return dict(split=False, reason="no_ink_column")
+    std_h_px = shb.oval_extents_spaces(std_width_sp, std_height_sp, tilt_deg)[1] * spacing
+    std_w_px = shb.oval_extents_spaces(std_width_sp, std_height_sp, tilt_deg)[0] * spacing
+    extent_sp = ext["extent_px"] / spacing
+    if not chord_blob_trigger(ext["extent_px"], spacing,
+                              std_h_px / spacing):
+        return dict(split=False, reason="below_trigger", extent_sp=extent_sp)
+    if ext["extent_px"] > std_h_px + CHORD_SPLIT_MAX_EXTRA_SPACES * spacing:
+        return dict(split=False, reason="separation_not_a_third", extent_sp=extent_sp)
+    if not (0.8 * std_w_px <= ext["width"] <= 1.6 * std_w_px):
+        return dict(split=False, reason="column_not_one_head_wide",
+                    extent_sp=extent_sp)
+    cx = ext["cx"]
+    # the heads sit at the blob's two ENDS (a ledger bar through the lower
+    # head's bottom edge, or ledgers hand-drawn at 1.1-1.25 x the staff pitch,
+    # make the pair wider than one staff space, so the ends -- not "mid +- half
+    # a space" -- are what is measured)
+    cys = (ext["y0"] + std_h_px / 2.0, ext["y1"] + 1 - std_h_px / 2.0)
+    new_boxes = [shb.standard_box_at(cx, cy, spacing, std_width_sp,
+                                     std_height_sp, tilt_deg) for cy in cys]
+    # the ledger between them: where a thin jut is PRINTED between the two
+    # centres; else the stacked-thirds convention's own midpoint
+    # (`third_stack_rung`, reused -- IMPLIED, never an ink claim)
+    juts = ledger_juts_in_range(img_gray, ext["y0"] - 1, ext["y1"] + 1, cx,
+                                ext["width"], spacing)
+    mid = (cys[0] + cys[1]) / 2.0
+    between = [y for y in juts if cys[0] <= y <= cys[1]]
+    if between:
+        rung_y, confirmed, source = min(between, key=lambda y: abs(y - mid)), True, "ink_jut"
+    else:
+        res = third_stack_rung(img_gray, new_boxes[0], new_boxes[1], spacing,
+                               exclude_boxes=exclude_boxes)
+        rung_y, confirmed, source = res["y"], res["confirmed"], "third_stack_midpoint"
+        juts = sorted(set(juts) | {rung_y})
+    return dict(split=True, boxes=new_boxes, centres=[(cx, cys[0]), (cx, cys[1])],
+                rung_y=rung_y, rung_confirmed=confirmed, rung_source=source,
+                rungs_y=juts,
+                extent_px=ext["extent_px"], extent_sp=extent_sp)
