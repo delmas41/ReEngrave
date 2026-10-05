@@ -19,6 +19,20 @@ re-enter.
 
 ## START HERE — after 2026-10-04 (day session; main ≥ this commit)
 
+**Evening 10-04 (FIRST, read before anything below):** an overnight re-gather is RUNNING on the
+UNMERGED branch `lane-farhead-wire-staged` 6b76e6ad (2.56, the far-head reader wired as arm E3,
+`OMR_FARHEAD_LEDGER` default ON): `TAG=20261004-farhead`, `THROUGH=adjudicate`, records +
+`summary.txt` under `library/_shared-records/overnight-20261004-farhead/`. Read it as REACH
+first: on the small re-gather every far head abstained `no_page_shape` (pp.1-3 hold 5 clean
+on-line heads, the reader needs 8; the pool-hold path is unit-tested only) and an abstained
+read WITHHOLDS the geometry position by design (rule 8). ⚠️ The wiring lane found the in-sample
+scorers read an UNDESKEWED render while the gather's boxes/lines are in the deskewed frame
+(~12 px off at the right of Litolff p3): in the true frame E3 is 30/41, not 38/41 -- every
+10-04 tally is in the scorer's frame. Also built, OFF, unmerged: `lane-chord-blob-split`
+1f100ef2 (E4, Litolff 42/1/1) and on it `lane-through-head-on` e3dfe28d (E5, 43/1/0; Sean: a
+ledger THROUGH the head means it is ON it); not yet in the wiring. Measured on the way: our
+staff lines sit ~1-2 px above their ink (median +1.07 px Litolff, +0.65 Brahms).
+
 **Landed today (READER ONLY, everything keyword-gated and OFF, NOT wired into STAGED, no re-gather):**
 the far-head ledger reader `tools/omr/annotate/ledger_grid.py` (round 8 + fix 1 near-edge ledger +
 far-side rule + `drop_rungs_beyond_head` + exclusion rules `connected`/`one_sided`/
