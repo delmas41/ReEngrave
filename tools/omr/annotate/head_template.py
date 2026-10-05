@@ -173,9 +173,14 @@ def _line_row_band(center_row: float) -> np.ndarray:
 # one-side-is-enough precedent `ledger_grid.head_middle_rung_evidence`
 # already uses for a through-rung's own two stubs.
 ON_LINE_LINE_MASK = _line_row_band(CANONICAL_H / 2.0)
-_IN_SPACE_TOP_BAND = _line_row_band(LEDGER_BAND_MAX_SPACES / 2.0 * CANONICAL_PX_PER_SPACE)
-_IN_SPACE_BOTTOM_BAND = _line_row_band(
-    CANONICAL_H - LEDGER_BAND_MAX_SPACES / 2.0 * CANONICAL_PX_PER_SPACE)
+# Round 4 (2026-10-04): the two lines that bound the space a head sits in are
+# +-0.5 sp from the head's centre. The first version put them at the window's
+# own top/bottom edges (+-0.99 sp), which is where an ON-LINE head's
+# NEIGHBOURING staff lines are -- so every on-line head fired the in_space
+# bands (measured on the control heads, `variant_diag.py`).
+IN_SPACE_HALF_GAP_SPACES = 0.5
+_IN_SPACE_TOP_BAND = _line_row_band(CANONICAL_H / 2.0 - IN_SPACE_HALF_GAP_SPACES * CANONICAL_PX_PER_SPACE)
+_IN_SPACE_BOTTOM_BAND = _line_row_band(CANONICAL_H / 2.0 + IN_SPACE_HALF_GAP_SPACES * CANONICAL_PX_PER_SPACE)
 IN_SPACE_LINE_MASK = _IN_SPACE_TOP_BAND | _IN_SPACE_BOTTOM_BAND
 
 LINE_MASK_COMPONENTS: Dict[str, List[np.ndarray]] = {
@@ -199,6 +204,11 @@ class Template:
     n: int                # exemplar count that built this template
     kind: str             # "filled" | "hollow"
     variant: str          # "on_line" | "in_space" | "raw"
+    # The HEAD alone (no line bars). When set, the HEAD term correlates
+    # against THIS for every variant, so the variants differ only by their
+    # line evidence beside the head (round 4: bars drawn inside the head
+    # mask used to give the variants different head scores).
+    head_img: Optional[np.ndarray] = None
 
 
 def classify_kind_from_class_name(class_name: Optional[str]) -> Optional[str]:
@@ -308,6 +318,12 @@ def build_templates(
             line_mask_components=LINE_MASK_COMPONENTS[variant],
             n=n, kind=kind, variant=variant,
         )
+    # Variants must differ only by their LINE evidence: give them the same
+    # head image (the variant-free `raw` average) for the HEAD term.
+    for (kind, variant), t in list(templates.items()):
+        raw_t = templates.get((kind, "raw"))
+        if variant in ("on_line", "in_space") and raw_t is not None:
+            t.head_img = raw_t.img
     return templates, report
 
 
@@ -344,6 +360,7 @@ def build_geometry_template(
     slit_tilt_deg: Optional[float], line_thickness_px: float,
     slit_width_ratio: float = 0.55, slit_height_ratio: float = 0.70,
     width_spaces: Optional[float] = None, height_spaces: Optional[float] = None,
+    shape_mask: Optional[np.ndarray] = None, flat_bottom_fraction: Optional[float] = None,
 ) -> Template:
     """Draw ONE template directly from geometry, at the canonical grid's
     own fixed scale (`CANONICAL_PX_PER_SPACE`) -- no real exemplar ink
@@ -371,8 +388,13 @@ def build_geometry_template(
     angle = _draw_angle_deg(outer_tilt_deg)
 
     mask_u8 = np.zeros((CANONICAL_H, CANONICAL_W), dtype=np.uint8)
-    cv2.ellipse(mask_u8, (int(round(cx)), int(round(cy))), axes, angle,
-               0, 360, 255, -1)
+    if shape_mask is not None:
+        mask_u8[shape_mask] = 255      # a measured head shape (e.g. a mean lemon)
+    else:
+        cv2.ellipse(mask_u8, (int(round(cx)), int(round(cy))), axes, angle,
+                   0, 360, 255, -1)
+        if flat_bottom_fraction is not None:
+            mask_u8 = _flatten_bottom(mask_u8, flat_bottom_fraction)
     if kind == "hollow":
         slit_angle = _draw_angle_deg(slit_tilt_deg if slit_tilt_deg is not None
                                      else outer_tilt_deg)
@@ -382,6 +404,7 @@ def build_geometry_template(
                    slit_angle, 0, 360, 0, -1)
     canvas[mask_u8 > 0] = 1.0
 
+    head_only = canvas.copy()
     if variant in ("on_line", "in_space"):
         half_t = max(1, int(round(line_thickness_px / 2.0)))
         reach = int(round((outer_w / 2.0) + 0.5 * CANONICAL_PX_PER_SPACE))
@@ -391,7 +414,8 @@ def build_geometry_template(
             r1 = min(CANONICAL_H, int(round(cy + half_t)) + 1)
             canvas[r0:r1, lx0:lx1] = 1.0
         else:
-            for row_center in (half_t, CANONICAL_H - half_t):
+            for row_center in (cy - IN_SPACE_HALF_GAP_SPACES * CANONICAL_PX_PER_SPACE,
+                               cy + IN_SPACE_HALF_GAP_SPACES * CANONICAL_PX_PER_SPACE):
                 r0 = max(0, int(round(row_center - half_t)))
                 r1 = min(CANONICAL_H, int(round(row_center + half_t)) + 1)
                 canvas[r0:r1, lx0:lx1] = 1.0
@@ -399,8 +423,46 @@ def build_geometry_template(
     return Template(
         img=canvas, mask=SCORE_MASKS[variant],
         line_mask_components=LINE_MASK_COMPONENTS[variant],
-        n=0, kind=kind, variant=variant,
+        n=0, kind=kind, variant=variant, head_img=head_only,
     )
+
+
+def _flatten_bottom(mask_u8: np.ndarray, fraction: float) -> np.ndarray:
+    """Cut the lower part of a head mask flat: rows below
+    `centre + fraction * (bottom extent below centre)` are cleared (fraction
+    1.0 = untouched). The Litolff plate prints flat-bottomed lemons."""
+    ys, _xs = np.nonzero(mask_u8)
+    if ys.size == 0:
+        return mask_u8
+    cy = ys.mean()
+    cut = int(round(cy + fraction * (ys.max() - cy)))
+    out = mask_u8.copy()
+    out[cut + 1:, :] = 0
+    return out
+
+
+def head_shape_mask(width_spaces: float, height_spaces: float, tilt_deg: float,
+                    flat_bottom_fraction: Optional[float] = None) -> np.ndarray:
+    """The canonical-grid boolean mask of a geometry head (centre at the grid
+    centre) -- what `build_geometry_template` draws."""
+    m = np.zeros((CANONICAL_H, CANONICAL_W), np.uint8)
+    axes = (int(round(width_spaces * CANONICAL_PX_PER_SPACE / 2.0)),
+            int(round(height_spaces * CANONICAL_PX_PER_SPACE / 2.0)))
+    cv2.ellipse(m, (int(round(CANONICAL_W / 2.0)), int(round(CANONICAL_H / 2.0))), axes,
+                _draw_angle_deg(tilt_deg), 0, 360, 255, -1)
+    if flat_bottom_fraction is not None:
+        m = _flatten_bottom(m, flat_bottom_fraction)
+    return m > 0
+
+
+def mask_outline_poly(mask: np.ndarray, cx: float, cy: float, px_per_space: float) -> np.ndarray:
+    """Outline polygon (N x 2, y down) of a canonical-grid head mask placed
+    at (cx, cy) with `px_per_space` pixels per space."""
+    cnts, _ = cv2.findContours(mask.astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    c = max(cnts, key=cv2.contourArea).reshape(-1, 2).astype(np.float64)
+    c[:, 0] = (c[:, 0] - CANONICAL_W / 2.0) * px_per_space / CANONICAL_PX_PER_SPACE + cx
+    c[:, 1] = (c[:, 1] - CANONICAL_H / 2.0) * px_per_space / CANONICAL_PX_PER_SPACE + cy
+    return np.round(c).astype(np.int32)
 
 
 def build_geometry_templates(
@@ -409,6 +471,8 @@ def build_geometry_templates(
     slit_ratio: Optional[Dict[str, Tuple[float, float]]] = None,
     width_spaces: Optional[Dict[str, float]] = None,
     height_spaces: Optional[Dict[str, float]] = None,
+    shape_masks: Optional[Dict[str, np.ndarray]] = None,
+    flat_bottom_fraction: Optional[Dict[str, float]] = None,
 ) -> Dict[Tuple[str, str], Template]:
     """Every `(kind, variant)` geometry template, `outer_tilt_deg`/
     `slit_tilt_deg`/`slit_ratio` keyed by `kind` (`"filled"`/`"hollow"`)
@@ -423,6 +487,10 @@ def build_geometry_templates(
             if slit_ratio and kind in slit_ratio:
                 kwargs["slit_width_ratio"] = slit_ratio[kind][0]
                 kwargs["slit_height_ratio"] = slit_ratio[kind][1]
+            if shape_masks and kind in shape_masks:
+                kwargs["shape_mask"] = shape_masks[kind]
+            if flat_bottom_fraction and kind in flat_bottom_fraction:
+                kwargs["flat_bottom_fraction"] = flat_bottom_fraction[kind]
             if width_spaces and kind in width_spaces:
                 kwargs["width_spaces"] = width_spaces[kind]
             if height_spaces and kind in height_spaces:
@@ -501,20 +569,30 @@ SHIFT_PENALTY_PER_SPACE = 0.5
 
 
 def _template_score(tmpl: Template, candidate: np.ndarray,
-                    line_candidate: Optional[np.ndarray] = None) -> Optional[float]:
-    head_score = _masked_ncc(tmpl.img, candidate, HEAD_MASK)
+                    line_candidate: Optional[np.ndarray] = None,
+                    line_term: str = "ncc") -> Optional[float]:
+    head_score = _masked_ncc(tmpl.head_img if tmpl.head_img is not None else tmpl.img,
+                             candidate, HEAD_MASK)
     if head_score is None:
         return None
     if not tmpl.line_mask_components:
         return head_score
     # Either bounding band matching is enough (one-side-is-enough
     # precedent) -- take the BEST component, never require all of them.
-    comp_scores = [
-        s for s in (_masked_ncc(tmpl.img, candidate if line_candidate is None
-                                else line_candidate, m)
-                    for m in tmpl.line_mask_components)
-        if s is not None
-    ]
+    lc = candidate if line_candidate is None else line_candidate
+    if line_term == "coverage":
+        # Ink coverage of the template's own line rows inside each stub band.
+        # (A correlation over a band the ink fills completely -- a thick scanned
+        # line -- has zero variance and scores exactly 0.0: no evidence either
+        # way, so on-line / in-space became a coin flip on Litolff.)
+        comp_scores = []
+        for m in tmpl.line_mask_components:
+            bar = m & (tmpl.img > 0.5)
+            if bar.any():
+                comp_scores.append(float(lc[bar].mean()))
+    else:
+        comp_scores = [s for s in (_masked_ncc(tmpl.img, lc, m)
+                                   for m in tmpl.line_mask_components) if s is not None]
     if not comp_scores:
         return head_score
     line_score = max(comp_scores)
@@ -531,11 +609,21 @@ def match_head_template(
     kind: Optional[str] = None,
     dx_range_spaces: float = 0.0,
     head_ink_mode: str = "stem_mask",
+    decide: str = "joint",
+    line_tolerance_spaces: float = 0.15,
+    line_term: str = "ncc",
 ) -> Optional[Dict]:
     """`dx_range_spaces` > 0 (round 3, 2026-10-04) also slides the window
     HORIZONTALLY by up to that many spaces, so the oval can land on the
     ink rather than at the box's x; `center_x` is then returned. `0.0`
-    (default) is the unchanged vertical-only search. `head_ink_mode`:
+    (default) is the unchanged vertical-only search. `decide="staged"`
+    (round 4): the head's POSITION is found first by the variant-free
+    `raw` template (head term only, with the shift penalty), then each
+    line variant is scored AT that position (best within
+    `line_tolerance_spaces` vertically, no penalty) -- so the on-line /
+    in-space answer rests on the line evidence beside the head alone, not
+    on where the box happened to be centred. `"joint"` (default) is the
+    unchanged search over variants and positions together. `head_ink_mode`:
     `"stem_mask"` (default, unchanged) blanks tall columns, which also
     eats the head's own edge beside its stem; `"opening"` instead removes
     stems and staff-line remnants from the HEAD term's ink by a
@@ -602,9 +690,9 @@ def match_head_template(
 
     lx0_base, lx1_base = int(round(cx - half_w)) - ix0, int(round(cx + half_w)) - ix0
 
-    shift_scores: Dict[str, Dict[int, float]] = {"on_line": {}, "in_space": {}}
+    shift_scores: Dict[str, Dict[int, float]] = {"on_line": {}, "in_space": {}, "raw": {}}
 
-    best_dx: Dict[str, int] = {"on_line": 0, "in_space": 0}
+    best_dx: Dict[str, int] = {"on_line": 0, "in_space": 0, "raw": 0}
 
     def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
         if tmpl is None:
@@ -629,7 +717,7 @@ def match_head_template(
                 if cand_line.shape[0] != CANONICAL_H or cand_line.shape[1] != CANONICAL_W:
                     cand_line = cv2.resize(cand_line, (CANONICAL_W, CANONICAL_H),
                                            interpolation=cv2.INTER_AREA)
-            score = _template_score(tmpl, candidate, cand_line)
+            score = _template_score(tmpl, candidate, cand_line, line_term)
             if score is None:
                 continue
             score -= SHIFT_PENALTY_PER_SPACE * (abs(shift) / spacing)
@@ -641,8 +729,41 @@ def match_head_template(
                 best_dx[tmpl.variant] = dxp
         return best_score, best_shift
 
-    score_on, shift_on = _best_for(tmpl_on)
-    score_space, shift_space = _best_for(tmpl_space)
+    staged_pos = None
+    if decide == "staged" and templates.get((use_kind, "raw")) is not None:
+        _s, _sh = _best_for(templates[(use_kind, "raw")])
+        if _s is not None:
+            staged_pos = (best_dx["raw"], _sh)
+    if staged_pos is not None:
+        pdx, psh = staged_pos
+        tol = int(round(line_tolerance_spaces * spacing))
+
+        def _at_position(tmpl):
+            if tmpl is None:
+                return None, None
+            best_s, best_t = None, None
+            for t in range(-tol, tol + 1):
+                lx0, lx1 = lx0_base + pdx, lx1_base + pdx
+                ly0 = int(round(cy + psh + t - half_h)) - iy0
+                ly1 = int(round(cy + psh + t + half_h)) - iy0
+                if ly0 < 0 or ly1 > ink.shape[0] or lx0 < 0 or lx1 > ink.shape[1]:
+                    continue
+                cand = ink[ly0:ly1, lx0:lx1]
+                cand_l = ink_line[ly0:ly1, lx0:lx1]
+                if cand.shape != (CANONICAL_H, CANONICAL_W):
+                    cand = cv2.resize(cand, (CANONICAL_W, CANONICAL_H), interpolation=cv2.INTER_AREA)
+                    cand_l = cv2.resize(cand_l, (CANONICAL_W, CANONICAL_H), interpolation=cv2.INTER_AREA)
+                sc = _template_score(tmpl, cand, cand_l if ink_line is not ink else None, line_term)
+                if sc is not None and (best_s is None or sc > best_s):
+                    best_s, best_t = sc, t
+            return best_s, best_t
+        score_on, _t_on = _at_position(tmpl_on)
+        score_space, _t_sp = _at_position(tmpl_space)
+        shift_on = shift_space = psh
+        best_dx["on_line"] = best_dx["in_space"] = pdx
+    else:
+        score_on, shift_on = _best_for(tmpl_on)
+        score_space, shift_space = _best_for(tmpl_space)
 
     candidates = [(v, s) for v, s in
                   (("on_line", score_on), ("in_space", score_space)) if s is not None]

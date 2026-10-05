@@ -51,6 +51,7 @@ ISOLATION_CLASSES = ("notehead", "accidental", "rest")
 AREA_SP2 = (0.7, 1.45)        # ellipse 1.3 x 1.0 sp is 1.02 sp^2
 LONG_AXIS_SP = (1.0, 1.8)
 SOLIDITY_MIN = 0.90
+LEMON_SOLIDITY_MIN = 0.88     # the shape gate for a lemon: no oval test, same area/size/solidity
 ELLIPSE_IOU_MIN = 0.85        # blob must BE an oval: IoU with its own moments-ellipse
 ECC_MIN_FOR_ANGLE = 1.12     # below this a blob is round: its angle is undefined
 
@@ -156,7 +157,10 @@ def measure_clean_head(gray, box, lines, spacing, thickness_px) -> Dict[str, Any
         reason = f"long axis {long_sp:.2f} sp outside {LONG_AXIS_SP}"
     elif b["solidity"] < SOLIDITY_MIN:
         reason = f"solidity {b['solidity']:.2f} < {SOLIDITY_MIN}"
-    res = dict(ok=(reason == ""), reason=reason, ell_iou=ell_iou, long_sp=long_sp, short_sp=short_sp,
+    ok_lemon = (AREA_SP2[0] <= area_sp2 <= AREA_SP2[1]
+                and LONG_AXIS_SP[0] <= long_sp <= LONG_AXIS_SP[1]
+                and b["solidity"] >= LEMON_SOLIDITY_MIN)
+    res = dict(ok=(reason == ""), ok_lemon=bool(ok_lemon), reason=reason, ell_iou=ell_iou, long_sp=long_sp, short_sp=short_sp,
                ecc=ms["ecc"], tilt=ms["tilt_up_right_deg"],
                angle_defined=ms["ecc"] >= ECC_MIN_FOR_ANGLE, area_sp2=area_sp2,
                blob=b)
@@ -342,3 +346,27 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# --------------------------------------------------------------------------
+# round 4: a mean head shape (for plates whose heads are not ovals)
+# --------------------------------------------------------------------------
+
+def mean_shape(heads, pages, kind="filled", on_line_only=True):
+    """Average of the clean heads' OUTER blobs, each resampled to the canonical
+    grid (30 px per space) and aligned on its own measured centroid (second
+    moments) -- the tilt stays IN the shape. Returns (prob, n) with prob in 0..1
+    on the `head_template` canonical grid, head centre at the grid centre."""
+    use = [h for h in heads if h["kind"] == kind and h["isolated"] and h["meas"].get("ok_lemon")
+           and (not on_line_only or h["pos"] % 2 == 0)]
+    acc = np.zeros((ht.CANONICAL_H, ht.CANONICAL_W), np.float64)
+    for h in use:
+        b = h["meas"]["blob"]
+        ms = moments_shape(b["outer"])
+        s_ = ht.CANONICAL_PX_PER_SPACE / h["spacing"]
+        M = np.array([[s_, 0, ht.CANONICAL_W / 2.0 - s_ * ms["cx"]],
+                      [0, s_, ht.CANONICAL_H / 2.0 - s_ * ms["cy"]]], np.float64)
+        w = cv2.warpAffine(b["outer"].astype(np.float32), M, (ht.CANONICAL_W, ht.CANONICAL_H),
+                           flags=cv2.INTER_LINEAR)
+        acc += w
+    return (acc / max(1, len(use))), len(use)

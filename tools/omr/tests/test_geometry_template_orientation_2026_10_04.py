@@ -59,6 +59,53 @@ def test_fit_axes_reports_long_then_short_matching_tilt_axis():
     assert abs(mht._fit_angle(im > 0) - 30) < 2
 
 
+def _staff_with_head(head_y_in_spaces_from_top, spacing=20.0, tilt=0.0, thickness=3):
+    """5 horizontal lines `spacing` apart (`thickness` px) and a filled head at
+    a half-step position (0 = top line, 1 = first space, 2 = second line...)."""
+    img = np.full((260, 400), 255, np.uint8)
+    top = 60.0
+    for i in range(5):
+        y = int(round(top + i * spacing))
+        img[y - thickness // 2:y - thickness // 2 + thickness, :] = 0
+    cy = top + head_y_in_spaces_from_top * spacing / 2.0
+    poly = ht.geometry_outline_poly(200, cy, spacing, tilt)
+    cv2.fillPoly(img, [poly.astype(np.int32)], 0)
+    return img, (200 - 13, cy - 10, 200 + 13, cy + 10)
+
+
+def test_head_on_a_line_is_on_line_and_head_in_a_space_is_in_space():
+    """The control heads' failure mode (round 4): an in-staff head ON a line
+    answered in_space because the in_space template put its two lines at
+    +-1 sp (where an on-line head's NEIGHBOURING staff lines are) instead of
+    +-0.5 sp (the lines that bound the space the head sits in)."""
+    tm = ht.build_geometry_templates({"filled": 0.0, "hollow": 0.0}, {}, 3.0 * 30.0 / 20.0)
+    for off in (0.0, 0.25, -0.25):   # real boxes sit up to ~0.25 sp off the head
+        for pos, want in ((2, "on_line"), (4, "on_line"), (6, "on_line"),
+                          (1, "in_space"), (3, "in_space"), (5, "in_space"), (7, "in_space")):
+            img, box = _staff_with_head(pos)
+            box = (box[0], box[1] + off * 20, box[2], box[3] + off * 20)
+            m = ht.match_head_template(img, box, 20.0, tm, kind="filled",
+                                       dx_range_spaces=0.4, head_ink_mode="opening",
+                                       decide="staged")
+            assert m["best_variant"] == want, (off, pos, m["best_variant"], m["score_on"], m["score_space"])
+            # a decision, not a coin flip: the winning line term clearly beats the other
+            assert m["margin"] >= 0.08, (off, pos, m["margin"])
+
+
+def test_thick_scanned_lines_still_decide_line_vs_space():
+    """Litolff prints staff lines ~0.4 sp thick. A correlation over a band the
+    ink fills completely has zero variance and scores exactly 0.0 (a
+    computation, not a measurement), so on-line and in-space heads came back as
+    coin flips. The line term must read ink COVERAGE of the line rows."""
+    tm = ht.build_geometry_templates({"filled": 0.0, "hollow": 0.0}, {}, 8.0 * 30.0 / 20.0)
+    for pos, want in ((2, "on_line"), (4, "on_line"), (1, "in_space"), (3, "in_space"), (5, "in_space")):
+        img, box = _staff_with_head(pos, thickness=8)
+        m = ht.match_head_template(img, box, 20.0, tm, kind="filled", dx_range_spaces=0.4,
+                                   head_ink_mode="opening", decide="staged", line_term="coverage")
+        assert m["best_variant"] == want, (pos, m["best_variant"], m["score_on"], m["score_space"])
+        assert m["margin"] >= 0.08, (pos, m["margin"])
+
+
 def test_horizontal_search_moves_the_oval_onto_an_offset_head():
     """Round 3: the box sits 6 px left of the printed head. Vertical-only
     cannot fix that; a +-0.4 sp horizontal search lands on the ink."""

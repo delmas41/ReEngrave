@@ -70,10 +70,11 @@ def _build_clean_exemplars_canvas(h=400, w=1400):
         if variant == "on_line":
             _draw_hline(img, cy, cx - 30, cx + 30)
         else:
-            # Real engraving distance: adjacent ledgers/staff lines are
-            # exactly ONE staff space apart.
-            _draw_hline(img, cy - SPACING, cx - 30, cx + 30)
-            _draw_hline(img, cy + SPACING, cx - 30, cx + 30)
+            # Real engraving: adjacent ledgers/staff lines are exactly ONE
+            # staff space apart, so the two lines bounding the space a head
+            # sits in are HALF a space above and below its centre.
+            _draw_hline(img, cy - 0.5 * SPACING, cx - 30, cx + 30)
+            _draw_hline(img, cy + 0.5 * SPACING, cx - 30, cx + 30)
         class_name = (
             ("noteheadBlackOnLine" if kind == "filled" else "noteheadHalfOnLine")
             if variant == "on_line" else
@@ -172,13 +173,15 @@ def test_head_on_a_ledger_line_reads_on(templates):
 
 def test_head_in_a_space_with_ledger_touching_top_reads_space(templates):
     """A far head in a space, with a ledger touching only its top (the
-    ledger BEFORE it, bounding the space, ONE staff space from the head's
-    own centre -- the real engraving distance between adjacent ledgers)
+    ledger BEFORE it, bounding the space: HALF a staff space from the
+    head's own centre -- one space is the distance between ADJACENT
+    ledgers, not from a head to the ledger bounding its space; the first
+    version of this test, and of the in_space template, had that wrong)
     -- in-space wins, never on."""
     img = _blank(200, 200)
     cx, cy = 100.0, 100.0
     _draw_oval(img, cx, cy)
-    _draw_hline(img, cy - SPACING, cx - 30, cx + 30)
+    _draw_hline(img, cy - 0.5 * SPACING, cx - 30, cx + 30)
     box = _head_box(cx, cy)
     result = ht.decide_head_position_from_template(
         img, box, SPACING, templates, kind="filled")
