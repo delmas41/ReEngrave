@@ -343,6 +343,7 @@ def build_geometry_template(
     kind: str, variant: str, outer_tilt_deg: float,
     slit_tilt_deg: Optional[float], line_thickness_px: float,
     slit_width_ratio: float = 0.55, slit_height_ratio: float = 0.70,
+    width_spaces: Optional[float] = None, height_spaces: Optional[float] = None,
 ) -> Template:
     """Draw ONE template directly from geometry, at the canonical grid's
     own fixed scale (`CANONICAL_PX_PER_SPACE`) -- no real exemplar ink
@@ -364,8 +365,8 @@ def build_geometry_template(
     big empty centre))."""
     canvas = np.zeros((CANONICAL_H, CANONICAL_W), dtype=np.float32)
     cx, cy = CANONICAL_W / 2.0, CANONICAL_H / 2.0
-    outer_w = GEOM_HEAD_WIDTH_SPACES * CANONICAL_PX_PER_SPACE
-    outer_h = GEOM_HEAD_HEIGHT_SPACES * CANONICAL_PX_PER_SPACE
+    outer_w = (GEOM_HEAD_WIDTH_SPACES if width_spaces is None else width_spaces) * CANONICAL_PX_PER_SPACE
+    outer_h = (GEOM_HEAD_HEIGHT_SPACES if height_spaces is None else height_spaces) * CANONICAL_PX_PER_SPACE
     axes = (int(round(outer_w / 2.0)), int(round(outer_h / 2.0)))
     angle = _draw_angle_deg(outer_tilt_deg)
 
@@ -406,6 +407,8 @@ def build_geometry_templates(
     outer_tilt_deg: Dict[str, float], slit_tilt_deg: Dict[str, float],
     line_thickness_px: float,
     slit_ratio: Optional[Dict[str, Tuple[float, float]]] = None,
+    width_spaces: Optional[Dict[str, float]] = None,
+    height_spaces: Optional[Dict[str, float]] = None,
 ) -> Dict[Tuple[str, str], Template]:
     """Every `(kind, variant)` geometry template, `outer_tilt_deg`/
     `slit_tilt_deg`/`slit_ratio` keyed by `kind` (`"filled"`/`"hollow"`)
@@ -420,6 +423,10 @@ def build_geometry_templates(
             if slit_ratio and kind in slit_ratio:
                 kwargs["slit_width_ratio"] = slit_ratio[kind][0]
                 kwargs["slit_height_ratio"] = slit_ratio[kind][1]
+            if width_spaces and kind in width_spaces:
+                kwargs["width_spaces"] = width_spaces[kind]
+            if height_spaces and kind in height_spaces:
+                kwargs["height_spaces"] = height_spaces[kind]
             out[(kind, variant)] = build_geometry_template(
                 kind, variant, outer_tilt_deg.get(kind, 0.0),
                 slit_tilt_deg.get(kind), line_thickness_px, **kwargs,
@@ -493,7 +500,8 @@ LINE_TERM_WEIGHT = 0.25
 SHIFT_PENALTY_PER_SPACE = 0.5
 
 
-def _template_score(tmpl: Template, candidate: np.ndarray) -> Optional[float]:
+def _template_score(tmpl: Template, candidate: np.ndarray,
+                    line_candidate: Optional[np.ndarray] = None) -> Optional[float]:
     head_score = _masked_ncc(tmpl.img, candidate, HEAD_MASK)
     if head_score is None:
         return None
@@ -502,7 +510,8 @@ def _template_score(tmpl: Template, candidate: np.ndarray) -> Optional[float]:
     # Either bounding band matching is enough (one-side-is-enough
     # precedent) -- take the BEST component, never require all of them.
     comp_scores = [
-        s for s in (_masked_ncc(tmpl.img, candidate, m)
+        s for s in (_masked_ncc(tmpl.img, candidate if line_candidate is None
+                                else line_candidate, m)
                     for m in tmpl.line_mask_components)
         if s is not None
     ]
@@ -520,8 +529,18 @@ def match_head_template(
     exclude_boxes: Optional[Sequence[Tuple[float, float, float, float]]] = None,
     stem_box: Optional[Tuple[float, float, float, float]] = None,
     kind: Optional[str] = None,
+    dx_range_spaces: float = 0.0,
+    head_ink_mode: str = "stem_mask",
 ) -> Optional[Dict]:
-    """Slide the `on_line` and `in_space` templates of `kind` (classified
+    """`dx_range_spaces` > 0 (round 3, 2026-10-04) also slides the window
+    HORIZONTALLY by up to that many spaces, so the oval can land on the
+    ink rather than at the box's x; `center_x` is then returned. `0.0`
+    (default) is the unchanged vertical-only search. `head_ink_mode`:
+    `"stem_mask"` (default, unchanged) blanks tall columns, which also
+    eats the head's own edge beside its stem; `"opening"` instead removes
+    stems and staff-line remnants from the HEAD term's ink by a
+    morphological opening (disc wider than a stem, narrower than a head)
+    and leaves the LINE term's ink untouched. Slide the `on_line` and `in_space` templates of `kind` (classified
     from the ink where not given) vertically over the real page ink at
     the head's own x, `SLIDE_RANGE_SPACES` either way in `SLIDE_STEP_PX`
     steps. Returns `None` where nothing can be matched at all (no image,
@@ -554,8 +573,9 @@ def match_head_template(
     slide_px = int(round(SLIDE_RANGE_SPACES * spacing))
     h, w = img_gray.shape
 
-    ix0 = max(0, int(round(cx - half_w)))
-    ix1 = min(w, int(round(cx + half_w)))
+    dx_max = int(round(dx_range_spaces * spacing))
+    ix0 = max(0, int(round(cx - half_w)) - dx_max)
+    ix1 = min(w, int(round(cx + half_w)) + dx_max)
     iy0 = max(0, int(round(cy - half_h - slide_px)))
     iy1 = min(h, int(round(cy + half_h + slide_px)))
     if ix1 <= ix0 or iy1 <= iy0:
@@ -570,19 +590,29 @@ def match_head_template(
         ink_bool = ink > 0.5
         ink_bool = _blank_excluded_boxes(ink_bool, exclude_boxes, ix0, iy0)
         ink = ink_bool.astype(np.float32)
-    stem_h, stem_w = ink.shape
-    ink_bool = _mask_stem_columns(ink > 0.5, spacing, stem_box=stem_box, wx0=ix0)
-    ink = ink_bool.astype(np.float32)
+    if head_ink_mode == "opening":
+        d = max(3, int(round(0.42 * spacing)) | 1)
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d, d))
+        ink_line = ink
+        ink = cv2.morphologyEx((ink > 0.5).astype(np.uint8), cv2.MORPH_OPEN, k).astype(np.float32)
+    else:
+        ink_bool = _mask_stem_columns(ink > 0.5, spacing, stem_box=stem_box, wx0=ix0)
+        ink = ink_bool.astype(np.float32)
+        ink_line = ink
 
-    lx0, lx1 = int(round(cx - half_w)) - ix0, int(round(cx + half_w)) - ix0
+    lx0_base, lx1_base = int(round(cx - half_w)) - ix0, int(round(cx + half_w)) - ix0
 
     shift_scores: Dict[str, Dict[int, float]] = {"on_line": {}, "in_space": {}}
+
+    best_dx: Dict[str, int] = {"on_line": 0, "in_space": 0}
 
     def _best_for(tmpl: Optional[Template]) -> Tuple[Optional[float], Optional[int]]:
         if tmpl is None:
             return None, None
         best_score, best_shift = None, None
-        for shift in range(-slide_px, slide_px + 1, SLIDE_STEP_PX):
+        for dxp, shift in [(a, b) for a in range(-dx_max, dx_max + 1)
+                           for b in range(-slide_px, slide_px + 1, SLIDE_STEP_PX)]:
+            lx0, lx1 = lx0_base + dxp, lx1_base + dxp
             win_cy = cy + shift
             ly0 = int(round(win_cy - half_h)) - iy0
             ly1 = int(round(win_cy + half_h)) - iy0
@@ -593,13 +623,22 @@ def match_head_template(
             if candidate.shape[0] != CANONICAL_H or candidate.shape[1] != CANONICAL_W:
                 candidate = cv2.resize(candidate, (CANONICAL_W, CANONICAL_H),
                                        interpolation=cv2.INTER_AREA)
-            score = _template_score(tmpl, candidate)
+            cand_line = None
+            if ink_line is not ink:
+                cand_line = ink_line[ly0:ly1, lx0:lx1]
+                if cand_line.shape[0] != CANONICAL_H or cand_line.shape[1] != CANONICAL_W:
+                    cand_line = cv2.resize(cand_line, (CANONICAL_W, CANONICAL_H),
+                                           interpolation=cv2.INTER_AREA)
+            score = _template_score(tmpl, candidate, cand_line)
             if score is None:
                 continue
             score -= SHIFT_PENALTY_PER_SPACE * (abs(shift) / spacing)
-            shift_scores[tmpl.variant][shift] = float(score)
+            score -= SHIFT_PENALTY_PER_SPACE * (abs(dxp) / spacing)
+            if dxp == 0:
+                shift_scores[tmpl.variant][shift] = float(score)
             if best_score is None or score > best_score:
                 best_score, best_shift = score, shift
+                best_dx[tmpl.variant] = dxp
         return best_score, best_shift
 
     score_on, shift_on = _best_for(tmpl_on)
@@ -620,6 +659,7 @@ def match_head_template(
     return dict(
         kind=use_kind, best_variant=best_variant,
         center_y=cy + (best_shift or 0),
+        center_x=cx + best_dx[best_variant],
         score_on=score_on, score_space=score_space, margin=float(margin),
         undecided=bool(undecided), reason="matched",
         # diagnostic only (every penalised score by variant and vertical

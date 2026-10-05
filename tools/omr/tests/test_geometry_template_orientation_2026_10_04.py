@@ -57,3 +57,17 @@ def test_fit_axes_reports_long_then_short_matching_tilt_axis():
     assert abs(long_ - 130) < 4 and abs(short_ - 100) < 4
     # and the tilt is read in the same (up-to-the-right) convention
     assert abs(mht._fit_angle(im > 0) - 30) < 2
+
+
+def test_horizontal_search_moves_the_oval_onto_an_offset_head():
+    """Round 3: the box sits 6 px left of the printed head. Vertical-only
+    cannot fix that; a +-0.4 sp horizontal search lands on the ink."""
+    spacing = 20.0
+    img = np.full((200, 300), 255, np.uint8)
+    poly = ht.geometry_outline_poly(156, 100, spacing, 0.0)
+    cv2.fillPoly(img, [poly.astype(np.int32)], 0)
+    box = (150 - 14, 100 - 11, 150 + 14, 100 + 11)
+    tm = ht.build_geometry_templates({"filled": 0.0, "hollow": 0.0}, {}, 4.0)
+    moved = ht.match_head_template(img, box, spacing, tm, kind="filled",
+                                   dx_range_spaces=0.4, head_ink_mode="opening")
+    assert abs(moved["center_x"] - 156) < abs(150 - 156) - 2

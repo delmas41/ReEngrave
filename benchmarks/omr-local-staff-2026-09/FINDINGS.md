@@ -3319,3 +3319,51 @@ Still no scoring. Sheet: `out/print/ledgers/template_review10.jpg`; the three he
 3. **"on a line ... disagree".** Not a matcher bug. The matcher's answer is its variant (`decide_head_position_from_template`: on_line -> "on"). The "height implies parity" came from my label extrapolating the staff grid (`lines[0] + step * spacing/2`) out to heads 6-10 steps away, where a 5% scan spacing error flips parity -- exactly what DECISIONS 2026-10-01 forbids. Now ONE answer per tile: the variant, with the step read off the MEASURED ladder (staff lines + round 8's rungs). A flag says when the matched oval is more than 0.25 sp off its line, or no measured line is within half a space.
 4. **Why three ovals sit off the head.** The matcher is not choosing a height; there is nothing to score. Each of the three detector boxes is a fragment (0.71, 0.35 and 0.65 sp tall; a head is 1.0) that overlaps a real neighbouring notehead box (`glyph/1/0/10/14/1`, `1/0/10/2/2`, brahms `0/0/1/6/1`). The matcher blanks other noteheads' boxes (as round 8 does), which erases the head's own ink: scores are exactly 0.000 at every height for 1/0/9/14/8 and on_line/in_space (1/0/11/2/3, margin 0.066 only on in_space), and flat (-0.05) for brahms 6/20; margins 0.000 / 0.066 / 0.009, so all three are UNDECIDED and the height is simply the box centre. 1/0/11/2/3's ink run extends 1.02 sp above its 5 px box; brahms 6/20's extends 1.60 sp below. Two readings of the same fact: the box, not the template, is off the head. Excluding every detection (the first fixed sheet) vs only noteheads+accidentals changed 1/0/11/2/3's margin 0.030 -> 0.066, nothing else. Not tuned.
 5. **Greyscale and references.** Tiles are the real print (bicubic upscale; Litolff and Brahms are bitonal scans so they still look black and white). Population is `score_doc`'s (heads that have a reference), 7 Litolff + 3 Brahms, diversity-bucketed by class/side/parity; the three round-8-undecided heads from the first sheet are kept (5 Litolff heads are undecided in all). Every selected tile happens to be a filled head.
+
+### Round 3: the control first, the shape from the page, the oval placed by search (lane-ledger-template-fix, 2026-10-04)
+
+Still no scoring of any reader. Scripts: `shape_from_page.py` (shape + why the old tilt was noisy), `template_review_r3.py` (sheets + table). Sheets: `out/print/ledgers/template_review_r3.jpg` (12 controls, then the 10 far heads), `template_review_r3_blueonly.jpg` (4 tiles x6, no box/lines); numbers in `template_review_r3_checks.json`, `shape_from_page.json`.
+
+**Measured shape (median of per-head second-moment fits over clean, isolated, in-staff, ON-LINE heads that pass an oval gate; IoU of blob with its own moments-ellipse >= 0.85, area 0.7-1.45 sp^2, long axis 1.0-1.8 sp, solidity >= 0.9).**
+- Brahms (Breitkopf): 1.49 x 1.13 sp, tilt 28.2 deg, IQR 25.8-29.9 (n = 133 on-line heads; 256 of 302 isolated filled heads pass).
+- Litolff: 1.55 x 0.99 sp, tilt 20.0 deg, IQR 14.4-42.5 (n = 14; only 25 of 113 isolated filled heads pass the gate -- the scan merges heads with lines, and the heads are flat-bottomed lemons, not ovals, so the gate rejects 74 as `not_oval`). Treat Litolff's tilt as weak.
+- Hollow heads: 3 (Litolff) and 0 (Brahms) pass; the hollow templates reuse the filled shape and tilt, no slit measured. The old 35 / -7 deg slit numbers stand unconfirmed.
+- The old default (1.3 x 1.0) was too narrow on both pages.
+
+**Why the old tilt was noisy (IQR -2..43 on Litolff).** Three causes, in order of size:
+1. **It measured heads in spaces, and those are contaminated.** On Brahms the same clean fit gives 28.2 deg (IQR 25.8-29.9) on on-line heads but 7.7 deg (IQR 5.6-9.0) in spaces; Litolff 20.0 on line vs 6.7 in space. In Brahms a head is taller than the gap between two lines, so it touches both, and the blob merges with a line stub top and bottom, which flattens the fitted axis. `measure_head_tilt.summarize` deliberately used in-space heads only ("avoid the bias entirely"); that was the biased half. On the old 1.65 sp window every window's ink touched its edge (223 of 223 Brahms, 24 of 24 Litolff), i.e. the fit never saw a whole head.
+2. The stem was removed by blanking whole columns; the stem column's run includes the head, so the head's own edge beside the stem was deleted (and the matcher inherited the same stem mask, which shifts the best match away from the stem side: the "up-left" oval).
+3. cv2.fitEllipse on a 20 x 16 px blob is quantisation noise (heads with ecc < 1.15: IQR 12-62 deg). Second moments are an area statistic, and the angle is reported only where ecc >= 1.12.
+Fix: line rows removed only outside a nominal oval, stems and remnants removed by an opening (disc 0.42 sp), moments angle, on-line heads only. Mid-range Brahms montage: blobs look like clean ovals; Litolff montage: the +-40 deg tails are line remnants merged with the head.
+
+**Placement.** `match_head_template(dx_range_spaces=0.4, head_ink_mode="opening")` (defaults unchanged). The HEAD term reads ink with stems and line remnants opened away; the LINE term keeps the raw ink.
+
+**Control (12 clean in-staff heads, picked by the shape gate only, 3 on a line + 3 in a space per doc).** Oval vs the head's own ink blob (box +-0.3 sp, staff rows masked outside the oval): median IoU 0.87, median offset 0.06 sp, 2 of 12 MISS (IoU < 0.7 or offset > 0.15 sp), both Litolff. Movement of the oval from the box: max |dx| 0.04 sp, max |dy| 0.11 sp -- on easy heads the box was already right and the search barely moves. Brahms controls 0.87-0.94 IoU, offset <= 0.06 sp. **The control that failed: the variant.** The matcher's on-line / in-space answer agrees with the staff-position parity on only 7 of 12 controls (Litolff: all three on-line heads answered "in space"; Brahms 4 of 6). That is the answer the far-head use depends on, and it is not yet a trustworthy answer on easy heads.
+
+**Far heads (same 10).** Median IoU 0.79, median offset 0.10 sp, 3 of 10 MISS: `glyph/3/0/7/0/7` (IoU 0.61, offset 0.17), `glyph/3/0/0/2/1` (0.62, 0.18; dx +0.38 sp: the search moved it sideways), `glyph/3/0/0/2/9` (0.38, 0.56 sp; the blob there is a head fused to a beam/stem mass, so its centroid is not the head's). Brahms far heads 0.79-0.89. Full per-tile table (IoU with stems opened away in brackets):
+
+label doc subject kind variant dx_sp dy_sp IoU (open) offset_sp
+control litolff 3/0/10/2/0 filled in_space 0.00 -0.06 0.78 (0.81) 0.14
+control litolff 3/0/5/13/4 filled in_space 0.00 +0.06 0.53 (0.51) 0.23 MISS
+control litolff 3/0/7/4/13 filled in_space 0.00 0.00 0.66 (0.67) 0.08 MISS
+control litolff 2/0/4/1/3 filled in_space 0.00 +0.06 0.75 (0.79) 0.12
+control litolff 2/0/9/15/4 filled in_space 0.00 0.00 0.75 (0.84) 0.12
+control litolff 3/0/10/7/1 filled in_space 0.00 -0.06 0.90 (0.87) 0.02
+far litolff 3/0/7/0/7 in_space 0.00 +0.06 0.61 (0.63) 0.17 MISS
+far litolff 3/0/7/2/4 on_line 0.00 -0.19 0.73 (0.77) 0.10
+far litolff 3/0/8/6/10 on_line +0.06 -0.06 0.79 (0.83) 0.02
+far litolff 3/0/0/2/1 on_line +0.38 -0.06 0.62 (0.62) 0.18 MISS
+far litolff 3/0/0/2/9 in_space 0.00 +0.25 0.38 (0.37) 0.56 MISS
+far litolff 3/0/7/2/2 on_line 0.00 -0.19 0.71 (0.72) 0.13
+far litolff 3/0/5/2/0 on_line +0.06 -0.19 0.82 (0.85) 0.04
+control brahms 1/0/12/3/3 in_space 0.00 0.00 0.87 (0.94) 0.02
+control brahms 1/1/0/5/3 on_line -0.04 0.00 0.87 (0.92) 0.05
+control brahms 1/1/12/4/0 on_line 0.00 0.00 0.87 (0.92) 0.06
+control brahms 1/0/11/2/6 on_line 0.00 0.00 0.90 (0.97) 0.04
+control brahms 1/0/2/6/8 in_space 0.00 -0.11 0.92 (0.95) 0.02
+control brahms 1/1/11/2/6 in_space 0.00 -0.04 0.94 (0.97) 0.01
+far brahms 1/1/0/4/0 on_line -0.04 0.00 0.83 (0.94) 0.07
+far brahms 1/1/0/2/4 on_line 0.00 +0.04 0.79 (0.92) 0.09
+far brahms 1/1/8/6/0 in_space -0.04 0.00 0.89 (0.89) 0.06
+
+Honest limit: the Litolff plate prints flat-bottomed lemons that merge with the staff lines; a tilted ellipse is a modest fit there (IoU 0.53-0.90). The next candidate is a lemon (an ellipse with a flattened lower edge), not a different tilt.
