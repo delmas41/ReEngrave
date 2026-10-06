@@ -3300,6 +3300,136 @@ def is_text_class(cls: "str | None") -> bool:
     return any(w in c for w in TEXT_CLASS_WORDS)
 
 
+# lane-slur-not-ledger (Sean 2026-10-06, Litolff p16 `glyph/16/0/0/0/2`): a slur or tie is not a ledger. A counted
+# ledger is a short, straight, level line at the note's column. Cutoffs STATED BEFORE LOOKING at any page:
+#   trace the stroke through the row from the head's column outward over THIN columns (vertical ink run <= 0.45 sp;
+#   a thicker column -- a head, a stem -- is crossed, not measured), up to 3.5 sp each side (the window must exceed half the LONG cutoff to see it); fit y(x) (in sp) with a
+#   quadratic over the thin columns. CURVED where (the stroke is over 3 sp long AND) the second difference over +-1 sp, |2a|, exceeds 0.15 sp, or the tilt
+#   over 2 sp, |2b|, exceeds 0.30 sp. LONG where the thin stroke runs more than 5 sp end to end (a ledger over a
+#   stacked chord is under 4). A rung with fewer than 8 thin columns spanning 1.2 sp is UNTESTABLE and stays (the
+#   status quo). A rung is refused ONLY where a slur/tie box of the record lies across it AND the stroke is not a
+#   short level one (curved / tilted / long / untestable); a level, straight, short stroke under a tie box is kept
+#   (a ledger may sit under a real tie), and a non-level stroke with no box is kept (shape alone measured too much).
+SLUR_CLASS_WORDS = ("slur", "tie", "arc")
+SLUR_THIN_MAX_SPACES = 0.45
+SLUR_TRACE_HALF_SPACES = 3.5
+SLUR_CURVE_MAX_SPACES = 0.15
+SLUR_TILT_MAX_SPACES = 0.30
+SLUR_LONG_MAX_SPACES = 5.0
+# REVISED once, after the truth set (Litolff p3, Brahms p1) lost 3 right heads: the curvature term, as first stated,
+# fired on 2-sp stubs (curve 0.16-0.19, span 1.8-2.1 sp: the flared end of a real ledger). A quadratic on a ledger-
+# sized stroke measures its ends, so curvature counts only where the stroke is longer than any ledger (3 sp); the
+# tilt term (a straight rising or falling stroke) and the LONG term are unchanged.
+SLUR_CURVE_MIN_SPAN_SPACES = 3.0
+SLUR_MIN_THIN_COLUMNS = 8
+SLUR_MIN_SPAN_SPACES = 1.2
+
+
+def is_slur_class(cls: "str | None") -> bool:
+    c = (cls or "").lower()
+    return any(w in c for w in SLUR_CLASS_WORDS)
+
+
+def rung_trace(img_gray: "np.ndarray", y: float, cx: float, spacing: float) -> dict:
+    """Follow the stroke through row `y` outward from column `cx`: `{xs, cs}` (thin columns, x and run-centre y, px)."""
+    h, w = img_gray.shape
+    m = int(round(1.5 * spacing))
+    yi = int(round(y))
+    if not (m < yi < h - m):
+        return dict(xs=[], cs=[])
+    reach = int(SLUR_TRACE_HALF_SPACES * spacing)
+    x0, x1 = max(0, int(cx) - reach), min(w, int(cx) + reach + 1)
+    if x1 - x0 < 3:
+        return dict(xs=[], cs=[])
+    win = img_gray[yi - m:yi + m + 1, x0:x1]
+    ink = win <= _otsu_threshold(win)
+    thin = SLUR_THIN_MAX_SPACES * spacing
+    follow = 0.3 * spacing
+
+    def run_at(col, near):
+        best = None
+        r = 0
+        n = ink.shape[0]
+        while r < n:
+            if ink[r, col]:
+                e = r
+                while e + 1 < n and ink[e + 1, col]:
+                    e += 1
+                c = (r + e) / 2.0
+                if abs(c - near) <= follow + (e - r) / 2.0 and (best is None or abs(c - near) < abs(best[0] - near)):
+                    best = (c, e - r + 1)
+                r = e + 1
+            else:
+                r += 1
+        return best
+
+    xs, cs = [], []
+    for step in (1, -1):
+        prev = float(m)
+        col = int(cx) - x0
+        miss = 0
+        rng = range(col, ink.shape[1]) if step == 1 else range(col - 1, -1, -1)
+        for cc in rng:
+            got = run_at(cc, prev)
+            if got is None:
+                miss += 1
+                if miss > max(2, int(0.25 * spacing)):
+                    break
+                continue
+            miss = 0
+            if got[1] <= thin:
+                prev = got[0]
+                xs.append(x0 + cc)
+                cs.append(yi - m + got[0])
+    order = np.argsort(xs) if xs else []
+    return dict(xs=[xs[i] for i in order], cs=[cs[i] for i in order])
+
+
+def rung_shape(img_gray: "np.ndarray", y: float, cx: float, spacing: float) -> dict:
+    """`{verdict: 'ledger'|'curved'|'long'|'untestable', curve, tilt, span, n}` (curve/tilt/span in spaces)."""
+    t = rung_trace(img_gray, y, cx, spacing)
+    xs, cs = np.array(t["xs"], float), np.array(t["cs"], float)
+    if len(xs) < SLUR_MIN_THIN_COLUMNS or (xs[-1] - xs[0]) / spacing < SLUR_MIN_SPAN_SPACES:
+        return dict(verdict="untestable", curve=None, tilt=None, span=None, n=int(len(xs)))
+    span = float(xs[-1] - xs[0]) / spacing
+    u, v = (xs - cx) / spacing, (cs - y) / spacing
+    a, b, _c = np.polyfit(u, v, 2)
+    curve, tilt = abs(2 * a), abs(2 * b)
+    verdict = "ledger"
+    if span > SLUR_LONG_MAX_SPACES:
+        verdict = "long"
+    elif (span >= SLUR_CURVE_MIN_SPAN_SPACES and curve > SLUR_CURVE_MAX_SPACES) or tilt > SLUR_TILT_MAX_SPACES:
+        verdict = "curved"
+    return dict(verdict=verdict, curve=float(curve), tilt=float(tilt), span=span, n=int(len(xs)))
+
+
+def ledger_candidates_not_slur(
+    img_gray: "np.ndarray", rungs_y: "list[float]", cx: float, spacing: float,
+    arc_boxes: "list | None" = None,
+) -> "tuple[list[float], list[dict]]":
+    """`rungs_y` minus the rungs that are part of a slur/tie: (kept, rejected `{y, why, shape}`)."""
+    kept, rejected = [], []
+    half = LEDGER_TEXT_COLUMN_SPACES * spacing
+    band = 0.2 * spacing
+    for r in rungs_y:
+        sh = rung_shape(img_gray, r, cx, spacing)
+        hit = any(b[0] < cx + half and b[2] > cx - half and b[1] - band <= r <= b[3] + band for b in (arc_boxes or []))
+        # The record's slur / tie box across the rung is REQUIRED (the first out-of-sample read, 5,948 far heads, refused
+        # on shape alone: 198 decisions lost, 119 of them agreeing with geometry -- long strokes are ledgers run
+        # together over a chord or a beam group, and a quadratic on a merged plate measures its neighbours).
+        if not hit:
+            kept.append(r)
+        elif sh["verdict"] == "curved":
+            # "long" is NOT refused (second out-of-sample read: under a slur box the long strokes refused were staff
+            # lines and ledgers run together -- 7 of 14 such changes had a before-reading agreeing with geometry)
+            rejected.append(dict(y=float(r), why="not_straight_short_level_curved_under_arc_box", shape=sh))
+        elif sh["verdict"] == "untestable":
+            rejected.append(dict(y=float(r), why="arc_box_and_untestable_shape", shape=sh))
+        else:
+            kept.append(r)
+    return kept, rejected
+
+
 def ledger_candidates_not_text(
     img_gray: "np.ndarray", rungs_y: "list[float]", cx: float, spacing: float,
     text_boxes: "list | None" = None,
@@ -3328,6 +3458,7 @@ def derive_note_first_step(
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     far_side_partner_boxes: "list | None" = None,
     ledger_not_text: bool = False, text_boxes: "list | None" = None,
+    slur_not_ledger: bool = False, arc_boxes: "list | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment). Returns `{offset, kind,
     reason, line_y, how, between, k, gaps}`; `offset` (half-steps out from the
@@ -3346,11 +3477,19 @@ def derive_note_first_step(
         count_rungs, refused = ledger_candidates_not_text(
             img_gray, rungs_y, cx, spacing, text_boxes)
         count_rungs = [r for r in count_rungs] + [r for r in rungs_y if abs(r - ln["y"]) < 1e-6]
+    if slur_not_ledger:
+        # lane-slur-not-ledger: a slur/tie is not a ledger; the note's own line is never tested here either
+        own = [r for r in count_rungs if abs(r - ln["y"]) < 1e-6]
+        kept, slur_refused = ledger_candidates_not_slur(
+            img_gray, [r for r in count_rungs if abs(r - ln["y"]) >= 1e-6], cx, spacing, arc_boxes)
+        count_rungs = kept + own
+        refused = list(refused) + slur_refused
     ct = count_ledgers_between(
         img_gray, edge_y, sign, spacing, ln["y"], count_rungs, cx,
         (head_box[0], head_box[2]),
-        is_text=((lambda y: not ledger_candidates_not_text(
-            img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None))
+        is_text=(None if not (ledger_not_text or slur_not_ledger) else (lambda y: (
+            (ledger_not_text and not ledger_candidates_not_text(img_gray, [y], cx, spacing, text_boxes)[0])
+            or (slur_not_ledger and not ledger_candidates_not_slur(img_gray, [y], cx, spacing, arc_boxes)[0])))))
     base = dict(refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])
     if not ct["fits"]:

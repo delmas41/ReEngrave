@@ -50,6 +50,8 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     note_first=True,
     # lane-ledger-not-text (Sean 2026-10-05): a rung counted between must not be text ink
     ledger_not_text=True,
+    # lane-slur-not-ledger (Sean 2026-10-06): a rung counted between must not be part of a slur / tie / arc
+    slur_not_ledger=True,
     # lane-farhead-not-a-note (Sean 2026-10-05): a box the record's own evidence says is NOT a notehead
     # (a barline, a tremolo slash, text, a sliver) is refused (abstained, never deleted) before it is read.
     not_a_note=True)
@@ -450,6 +452,8 @@ class FarHeadPage:
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
         # lane-ledger-not-text: the record's own text / dynamic boxes
         self.text_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_text_class(c)]
+        # lane-slur-not-ledger: the record's own slur / tie boxes
+        self.arc_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_slur_class(c)]
         self.thickness = page_line_thickness_px(gray, staff_lines_by_key, self.nh)
         in_staff = [h for h in heads if 0 <= h["pos"] <= 8 and head_kind(h.get("cls"))]
         spacings, on = [], []
@@ -574,7 +578,7 @@ class FarHeadPage:
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
             chord_split_rungs_y=rungs, detail_out=detail,
-            text_boxes=self.text_boxes)
+            text_boxes=self.text_boxes, arc_boxes=self.arc_boxes)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -667,6 +671,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            chord_split_rungs_y: Optional[Sequence[float]] = None,
                            detail_out: Optional[Dict[str, Any]] = None,
                            text_boxes: Optional[Sequence[tuple]] = None,
+                           arc_boxes: Optional[Sequence[tuple]] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -677,12 +682,12 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes, chord_split_rungs_y, detail_out,
-                     text_boxes)
+                     text_boxes, arc_boxes)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
-          detail_out=None, text_boxes=None) -> Tuple[Optional[int], str]:
+          detail_out=None, text_boxes=None, arc_boxes=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -755,7 +760,9 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             far_side_partner_boxes=[b for (s_, b) in page_notehead_boxes
                                     if s_ != subject],
             ledger_not_text=READER_KEYWORDS.get("ledger_not_text", False),
-            text_boxes=text_boxes)
+            text_boxes=text_boxes,
+            slur_not_ledger=READER_KEYWORDS.get("slur_not_ledger", False),
+            arc_boxes=arc_boxes)
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge

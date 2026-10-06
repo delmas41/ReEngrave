@@ -1,0 +1,41 @@
+far heads replayed 5958; OFF reproduces the recorded position on 5948 (mismatch 10); {'beethoven5-litolff': {'repro': 1897, 'carried': 1807, 'touched': 28, 'mismatch': 6}, 'brahms1-breitkopf': {'repro': 4051, 'carried': 3686, 'touched': 121, 'mismatch': 4}}
+decisions changed 20 of 5948: {'decided->abstain': 20}
+   of them agree with geometry after: 0 | disagreed with geometry before: 11
+owners changed 18: {'own->silent': 17, 'silent->OTHER': 1}
+heads where the rule refused a counted rung: 141 | rung refusals by kind: {'not_straight_short_level_curved_under_arc_box': 125, 'arc_box_and_untestable_shape': 21}
+Sean's confirmed-right tiles (position / owner OFF -> ON):
+   nf1     brahms  glyph/5/0/0/1/9    pos -2 -> -2 | owner staff/5/0/0 -> staff/5/0/0 same
+   nf2     brahms  glyph/19/1/0/5/10  pos -3 -> -3 | owner None -> None same
+   nf3     brahms  glyph/5/1/0/5/0    pos None -> None | owner None -> None same
+   nf4     brahms  glyph/12/0/7/5/0   pos 13 -> 13 | owner None -> None same
+   nf5     litolff glyph/13/1/1/10/3  pos -2 -> -2 | owner None -> None same
+   nf6     litolff glyph/10/0/1/5/1   pos -2 -> -2 | owner None -> None same
+   nf7     brahms  glyph/19/1/9/7/5   pos 11 -> 11 | owner None -> None same
+   nf8     brahms  glyph/18/1/9/7/10  pos -9 -> -9 | owner None -> None same
+   nf9     litolff glyph/5/0/0/2/10   pos -3 -> -3 | owner None -> None same
+   nf10    litolff glyph/9/0/3/10/2   pos -4 -> -4 | owner None -> None same
+   nf11    litolff glyph/11/0/2/0/8   pos -2 -> -2 | owner staff/11/0/2 -> staff/11/0/2 same
+   night1  litolff glyph/12/1/0/0/7   pos -8 -> -8 | owner None -> None same
+   night2  brahms  glyph/9/1/2/3/2    pos -3 -> -3 | owner None -> None same
+   night3  litolff glyph/16/0/0/8/1   pos -8 -> -8 | owner None -> None same
+   night4  brahms  glyph/6/0/7/6/5    pos -6 -> -6 | owner None -> None same
+   night5  brahms  glyph/2/0/3/2/1    pos -6 -> -6 | owner None -> None same
+   night7  brahms  glyph/5/0/3/3/3    pos 11 -> 11 | owner None -> None same
+   night8  litolff glyph/14/1/0/7/3   pos -4 -> -4 | owner None -> None same
+   night11 litolff glyph/7/0/7/15/4   pos -2 -> -2 | owner None -> None same
+   night12 litolff glyph/5/0/5/9/0    pos -6 -> -6 | owner None -> None same
+   tiles whose answer changed: 0
+drawn lines 35 | within 2 px of an ink row: 16 | off by more than 2 px: 7 [(1, 'rejected rung', 485.0, 2.5), (2, 'rejected rung', 5015.0, 6.0), (4, 'counted ledger 1', 4384.5, 2.00810810810799), (4, 'rejected rung', 4440.0, 3.486928104574872), (5, 'staff edge', 550.0, 2.5), (8, 'counted ledger 1', 2072.5, 3.0016393442624576), (9, 'counted ledger 1', 2993.5, 2.015957446808443)] | no ink beside the head to measure: 12
+1 beetho glyph/16/0/0/0/2 | BEFORE on the 3rd ledger below | the OTHER staff (16/0/0) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+2 brahms glyph/19/1/3/0/7 | BEFORE on the 3rd ledger below | no owner (silent: both_fit) | AFTER no answer (abstained) | the OTHER staff (19/1/4)
+3 beetho glyph/6/0/5/12/4 | BEFORE on the 3rd ledger above | the OTHER staff (6/0/5) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+4 brahms glyph/13/1/1/9/2 | BEFORE on the 3rd ledger below | the OTHER staff (13/1/1) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+5 brahms glyph/23/0/0/2/2 | BEFORE in the space above the 3rd ledger | the OTHER staff (23/0/0) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+6 brahms glyph/10/1/1/1/2 | BEFORE on the 2nd ledger above | the OTHER staff (10/1/1) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+7 beetho glyph/15/0/9/3/5 | BEFORE in the space above the 2nd ledger | the OTHER staff (15/0/9) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+8 brahms glyph/18/0/6/1/2 | BEFORE on the 3rd ledger below | no owner (silent: unread) | AFTER no answer (abstained) | no owner (silent: unread)
+9 brahms glyph/19/0/10/8/1 | BEFORE on the 3rd ledger below | the OTHER staff (19/0/10) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+10 brahms glyph/19/0/9/8/1 | BEFORE on the 3rd ledger below | the OTHER staff (19/0/9) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+11 brahms glyph/17/1/0/0/15 | BEFORE on the 2nd ledger above | the OTHER staff (17/1/0) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+12 brahms glyph/25/1/0/2/1 | BEFORE in the space above the 3rd ledger | the OTHER staff (25/1/0) | AFTER no answer (abstained) | no owner (silent: neither_fits)
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-ab9b398578b011a39/out/print/ledgers/slur_not_ledger.png pool of changes 20

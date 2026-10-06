@@ -1,0 +1,1207 @@
+{
+ "beethoven5-litolff": {
+  "NEW": {
+   "far": 4197,
+   "decided": 1903,
+   "abstained": 1845,
+   "not_a_note_refused": 449,
+   "abstain_by_reason": {
+    "count_does_not_fit": 857,
+    "no_rungs": 588,
+    "no_line_at_the_note_box": 347,
+    "line_at_the_box_not_a_ledger_for_this_head": 39,
+    "line_not_beyond_the_staff_edge": 14
+   },
+   "not_a_note_by_reason": {
+    "not_a_note:clipped_fragment": 306,
+    "not_a_note:on_text": 57,
+    "not_a_note:too_narrow": 42,
+    "not_a_note:on_a_barline": 31,
+    "not_a_note:tremolo_slash": 13
+   },
+   "adjudicate_decided_not_a_notehead_among_far": 4197,
+   "both": 449
+  },
+  "BASE": {
+   "far": 4197,
+   "decided": 2830,
+   "abstained": 1367,
+   "not_a_note_refused": 0,
+   "abstain_by_reason": {
+    "no_rungs": 909,
+    "every found rung was the head's own outline, not a ledger be": 458
+   },
+   "not_a_note_by_reason": {},
+   "adjudicate_decided_not_a_notehead_among_far": 4197,
+   "both": 0
+  },
+  "owner_witness": {
+   "decided": 3061,
+   "kept_on_filing": 1840,
+   "changed": {
+    "to filing staff (BASE: other staff / abstained)": 59,
+    "moved off filing staff, DROPPED (no twin)": 114,
+    "moved off filing staff, twin on new staff": 47
+   },
+   "base_had": {
+    "BASE had filing staff": 128,
+    "BASE abstained": 33
+   }
+  },
+  "offbox": {
+   "NEW": {
+    "reader's measured rows": {
+     "n": 1897,
+     "reader_on": 1794,
+     "geometry_on": 1317
+    },
+    "grid rows (reader-independent)": {
+     "n": 1897,
+     "reader_on": 1604,
+     "geometry_on": 1505
+    },
+    "decided": 1903,
+    "replayed_ok": 1897,
+    "control": {
+     "n": 36,
+     "ref_pass": 35,
+     "both_shift_flagged": 30,
+     "cross": {
+      "('reader right', 'ON')": 35,
+      "('reader wrong', 'OFF')": 1
+     }
+    }
+   },
+   "BASE": {
+    "reader's measured rows": {
+     "n": 2818,
+     "reader_on": 1612,
+     "geometry_on": 1589
+    },
+    "grid rows (reader-independent)": {
+     "n": 2818,
+     "reader_on": 1438,
+     "geometry_on": 2022
+    },
+    "decided": 2830,
+    "replayed_ok": 2818,
+    "control": {
+     "n": 38,
+     "ref_pass": 37,
+     "both_shift_flagged": 31,
+     "cross": {
+      "('reader right', 'ON')": 33,
+      "('reader wrong', 'OFF')": 5
+     }
+    }
+   },
+   "common": {
+    "n": 1754,
+    "new_on": 1656,
+    "base_on": 1553,
+    "same_answer": 1600
+   }
+  },
+  "truth": {
+   "n": 41,
+   "tally": {
+    "NEW": {
+     "right": 36,
+     "wrong": 1,
+     "undecided": 4
+    },
+    "BASE": {
+     "right": 33,
+     "wrong": 5,
+     "undecided": 3
+    },
+    "GEO": {
+     "wrong": 12,
+     "right": 29
+    }
+   },
+   "rows": [
+    {
+     "subject": "glyph/3/0/0/2/1",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/0/2/1",
+      -6,
+      -7
+     ],
+     "BASE": [
+      "glyph/3/0/0/2/1",
+      -6,
+      -7
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/2/3",
+     "truth": [
+      -4
+     ],
+     "NEW": [
+      "glyph/3/0/0/2/3",
+      -4,
+      -5
+     ],
+     "BASE": [
+      "glyph/3/0/0/2/3",
+      -4,
+      -5
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/2/4",
+     "truth": [
+      -7
+     ],
+     "NEW": [
+      "glyph/3/0/0/2/4",
+      -6,
+      -7
+     ],
+     "BASE": [
+      "glyph/3/0/0/2/4",
+      -6,
+      -7
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/2/9",
+     "truth": [
+      -5
+     ],
+     "NEW": [
+      "glyph/3/0/0/2/9",
+      -5,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/0/0/2/9",
+      -5,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/5/12",
+     "truth": [
+      -4
+     ],
+     "NEW": [
+      "glyph/3/0/0/5/12",
+      -4,
+      -4
+     ],
+     "BASE": [
+      "glyph/3/0/0/5/12",
+      -4,
+      -4
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/6/1",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/0/6/1",
+      -6,
+      -7
+     ],
+     "BASE": [
+      "glyph/3/0/0/6/1",
+      -6,
+      -7
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/6/2",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/0/6/2",
+      null,
+      -5
+     ],
+     "BASE": [
+      "glyph/3/0/0/6/2",
+      -4,
+      -5
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/7/1",
+     "truth": [
+      -8
+     ],
+     "NEW": [
+      "glyph/3/0/0/7/1",
+      -8,
+      -9
+     ],
+     "BASE": [
+      "glyph/3/0/0/7/1",
+      -8,
+      -9
+     ]
+    },
+    {
+     "subject": "glyph/3/0/0/7/2",
+     "truth": [
+      -2
+     ],
+     "NEW": [
+      "glyph/3/0/0/7/2",
+      -2,
+      -3
+     ],
+     "BASE": [
+      "glyph/3/0/0/7/2",
+      -2,
+      -3
+     ]
+    },
+    {
+     "subject": "glyph/3/0/5/2/0",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/5/2/0",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/5/2/0",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/5/4/5",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/5/4/5",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/5/4/5",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/5/7/0",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/5/7/0",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/5/7/0",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/0/7",
+     "truth": [
+      -3
+     ],
+     "NEW": [
+      "glyph/3/0/7/0/8",
+      -3,
+      -3
+     ],
+     "BASE": [
+      "glyph/3/0/7/0/8",
+      -3,
+      -3
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/2/2",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/7/2/2",
+      11,
+      11
+     ],
+     "BASE": [
+      "glyph/3/0/7/2/2",
+      11,
+      11
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/2/3",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/7/2/3",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/7/2/3",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/2/4",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/7/2/4",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/7/2/4",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/3/1",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/7/3/1",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/0/7/3/1",
+      -5,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/3/2",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/7/3/2",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/0/7/3/2",
+      -5,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/3/4",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/0/7/3/4",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/0/7/3/4",
+      -5,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/3/5",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/7/3/5",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/7/3/5",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/4/0",
+     "truth": [
+      -2
+     ],
+     "NEW": [
+      "glyph/3/0/7/4/0",
+      -2,
+      -2
+     ],
+     "BASE": [
+      "glyph/3/0/7/4/0",
+      -2,
+      -2
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/4/2",
+     "truth": [
+      -2
+     ],
+     "NEW": [
+      "glyph/3/0/7/4/2",
+      -2,
+      -2
+     ],
+     "BASE": [
+      "glyph/3/0/7/4/2",
+      -2,
+      -2
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/4/3",
+     "truth": [
+      -4
+     ],
+     "NEW": [
+      "glyph/3/0/7/4/3",
+      -4,
+      -4
+     ],
+     "BASE": [
+      "glyph/3/0/7/4/3",
+      -4,
+      -4
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/6/1",
+     "truth": [
+      12
+     ],
+     "NEW": [
+      "glyph/3/0/7/6/1",
+      12,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/7/6/1",
+      12,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/6/2",
+     "truth": [
+      12
+     ],
+     "NEW": [
+      "glyph/3/0/7/6/2",
+      12,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/7/6/2",
+      12,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/6/4",
+     "truth": [
+      12
+     ],
+     "NEW": [
+      "glyph/3/0/7/6/3",
+      12,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/7/6/3",
+      12,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/7/7/0",
+     "truth": [
+      12
+     ],
+     "NEW": [
+      "glyph/3/0/7/7/0",
+      12,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/7/7/0",
+      12,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/1/1",
+     "truth": [
+      13
+     ],
+     "NEW": [
+      "glyph/3/0/9/1/1",
+      null,
+      -7
+     ],
+     "BASE": [
+      "glyph/3/0/9/1/1",
+      null,
+      -7
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/1/3",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/8/1/2",
+      11,
+      11
+     ],
+     "BASE": [
+      "glyph/3/0/8/1/2",
+      11,
+      11
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/2/2",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/8/2/2",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/8/2/2",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/2/5",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/8/2/5",
+      10,
+      10
+     ],
+     "BASE": [
+      "glyph/3/0/8/2/5",
+      10,
+      10
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/6/10",
+     "truth": [
+      10
+     ],
+     "NEW": [
+      "glyph/3/0/8/6/12",
+      10,
+      11
+     ],
+     "BASE": [
+      "glyph/3/0/8/6/12",
+      10,
+      11
+     ]
+    },
+    {
+     "subject": "glyph/3/0/8/9/0",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/8/9/0",
+      11,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/8/9/0",
+      11,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/9/2/0",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/9/2/0",
+      11,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/9/2/0",
+      11,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/0/9/2/5",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/9/2/5",
+      11,
+      11
+     ],
+     "BASE": [
+      "glyph/3/0/9/2/5",
+      11,
+      11
+     ]
+    },
+    {
+     "subject": "glyph/3/0/9/3/5",
+     "truth": [
+      11
+     ],
+     "NEW": [
+      "glyph/3/0/9/3/5",
+      null,
+      12
+     ],
+     "BASE": [
+      "glyph/3/0/9/3/5",
+      null,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/3/1/0/6/0",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/1/0/6/0",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/1/0/6/0",
+      -6,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/1/0/6/1",
+     "truth": [
+      -3
+     ],
+     "NEW": [
+      "glyph/3/1/0/6/1",
+      -3,
+      -3
+     ],
+     "BASE": [
+      "glyph/3/1/0/6/1",
+      -3,
+      -3
+     ]
+    },
+    {
+     "subject": "glyph/3/1/0/7/0",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/3/1/0/7/0",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/3/1/0/7/0",
+      -6,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/3/1/0/9/0",
+     "truth": [
+      -4
+     ],
+     "NEW": [
+      "glyph/3/1/0/9/0",
+      -4,
+      -4
+     ],
+     "BASE": [
+      "glyph/3/1/0/9/0",
+      -4,
+      -4
+     ]
+    },
+    {
+     "subject": "glyph/3/1/0/9/2",
+     "truth": [
+      -3
+     ],
+     "NEW": [
+      "glyph/3/1/0/9/2",
+      null,
+      -3
+     ],
+     "BASE": [
+      "glyph/3/1/0/9/2",
+      null,
+      -3
+     ]
+    }
+   ]
+  },
+  "census": {
+   "NEW": {
+    "noteheads": 11399,
+    "far": 4197,
+    "owner_all": {
+     "decided": 9286,
+     "abstained": 136
+    },
+    "owner_nonfar": {
+     "decided": 379
+    },
+    "owner_far": {
+     "decided": 4089,
+     "abstained": 47
+    },
+    "clef": {
+     "decided": 317,
+     "narrowed": 10,
+     "abstained": 4
+    },
+    "meter": {
+     "decided": 31
+    },
+    "np": {
+     "abstained": 2294,
+     "decided": 1903
+    },
+    "nan": {
+     "decided": 11399
+    }
+   },
+   "BASE": {
+    "noteheads": 11399,
+    "far": 4197,
+    "owner_all": {
+     "decided": 9213,
+     "abstained": 209
+    },
+    "owner_nonfar": {
+     "decided": 379
+    },
+    "owner_far": {
+     "decided": 4016,
+     "abstained": 120
+    },
+    "clef": {
+     "decided": 317,
+     "narrowed": 10,
+     "abstained": 4
+    },
+    "meter": {
+     "decided": 31
+    },
+    "np": {
+     "abstained": 1367,
+     "decided": 2830
+    },
+    "nan": {
+     "decided": 11399
+    }
+   },
+   "clef_changed": [],
+   "meter_changed": [],
+   "flags": []
+  }
+ },
+ "brahms1-breitkopf": {
+  "NEW": {
+   "far": 8966,
+   "decided": 4055,
+   "abstained": 3506,
+   "not_a_note_refused": 1405,
+   "abstain_by_reason": {
+    "count_does_not_fit": 1911,
+    "no_line_at_the_note_box": 771,
+    "no_rungs": 748,
+    "line_not_beyond_the_staff_edge": 42,
+    "line_at_the_box_not_a_ledger_for_this_head": 34
+   },
+   "not_a_note_by_reason": {
+    "not_a_note:too_narrow": 534,
+    "not_a_note:clipped_fragment": 426,
+    "not_a_note:on_a_barline": 373,
+    "not_a_note:on_text": 64,
+    "not_a_note:tremolo_slash": 8
+   },
+   "adjudicate_decided_not_a_notehead_among_far": 8966,
+   "both": 1405
+  },
+  "BASE": {
+   "far": 8966,
+   "decided": 6628,
+   "abstained": 2338,
+   "not_a_note_refused": 0,
+   "abstain_by_reason": {
+    "no_rungs": 1481,
+    "every found rung was the head's own outline, not a ledger be": 857
+   },
+   "not_a_note_by_reason": {},
+   "adjudicate_decided_not_a_notehead_among_far": 8966,
+   "both": 0
+  },
+  "owner_witness": {
+   "decided": 7085,
+   "kept_on_filing": 3797,
+   "changed": {
+    "moved off filing staff, DROPPED (no twin)": 365,
+    "to filing staff (BASE: other staff / abstained)": 47,
+    "moved off filing staff, twin on new staff": 47
+   },
+   "base_had": {
+    "BASE had filing staff": 387,
+    "BASE abstained": 25
+   }
+  },
+  "offbox": {
+   "NEW": {
+    "reader's measured rows": {
+     "n": 4051,
+     "reader_on": 3976,
+     "geometry_on": 3859
+    },
+    "grid rows (reader-independent)": {
+     "n": 4051,
+     "reader_on": 3846,
+     "geometry_on": 3949
+    },
+    "decided": 4055,
+    "replayed_ok": 4051,
+    "control": {
+     "n": 11,
+     "ref_pass": 11,
+     "both_shift_flagged": 10,
+     "cross": {
+      "('reader right', 'ON')": 11
+     }
+    }
+   },
+   "BASE": {
+    "reader's measured rows": {
+     "n": 6621,
+     "reader_on": 3884,
+     "geometry_on": 4831
+    },
+    "grid rows (reader-independent)": {
+     "n": 6621,
+     "reader_on": 3825,
+     "geometry_on": 5652
+    },
+    "decided": 6628,
+    "replayed_ok": 6621,
+    "control": {
+     "n": 11,
+     "ref_pass": 11,
+     "both_shift_flagged": 10,
+     "cross": {
+      "('reader right', 'ON')": 11
+     }
+    }
+   },
+   "common": {
+    "n": 3949,
+    "new_on": 3875,
+    "base_on": 3728,
+    "same_answer": 3670
+   }
+  },
+  "truth": {
+   "n": 11,
+   "tally": {
+    "NEW": {
+     "right": 11
+    },
+    "BASE": {
+     "right": 11
+    },
+    "GEO": {
+     "right": 11
+    }
+   },
+   "rows": [
+    {
+     "subject": "glyph/1/1/0/2/4",
+     "truth": [
+      -2
+     ],
+     "NEW": [
+      "glyph/1/1/0/2/4",
+      -2,
+      -2
+     ],
+     "BASE": [
+      "glyph/1/1/0/2/4",
+      -2,
+      -2
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/0",
+     "truth": [
+      -7
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/0",
+      -7,
+      -7
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/0",
+      -7,
+      -7
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/1",
+     "truth": [
+      -9
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/1",
+      -9,
+      -9
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/1",
+      -9,
+      -9
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/3",
+     "truth": [
+      -5
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/3",
+      -5,
+      -5
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/3",
+      -5,
+      -5
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/4",
+     "truth": [
+      -3
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/4",
+      -3,
+      -3
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/4",
+      -3,
+      -3
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/5",
+     "truth": [
+      -8
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/5",
+      -8,
+      -8
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/5",
+      -8,
+      -8
+     ]
+    },
+    {
+     "subject": "glyph/1/1/0/4/6",
+     "truth": [
+      -6
+     ],
+     "NEW": [
+      "glyph/1/1/0/4/6",
+      -6,
+      -6
+     ],
+     "BASE": [
+      "glyph/1/1/0/4/6",
+      -6,
+      -6
+     ]
+    },
+    {
+     "subject": "glyph/1/1/8/4/4",
+     "truth": [
+      -2
+     ],
+     "NEW": [
+      "glyph/1/1/8/4/4",
+      -2,
+      -2
+     ],
+     "BASE": [
+      "glyph/1/1/8/4/4",
+      -2,
+      -2
+     ]
+    },
+    {
+     "subject": "glyph/1/1/8/5/0",
+     "truth": [
+      12
+     ],
+     "NEW": [
+      "glyph/1/1/8/5/0",
+      12,
+      12
+     ],
+     "BASE": [
+      "glyph/1/1/8/5/0",
+      12,
+      12
+     ]
+    },
+    {
+     "subject": "glyph/1/1/8/6/0",
+     "truth": [
+      13
+     ],
+     "NEW": [
+      "glyph/1/1/8/6/0",
+      13,
+      13
+     ],
+     "BASE": [
+      "glyph/1/1/8/6/0",
+      13,
+      13
+     ]
+    },
+    {
+     "subject": "glyph/1/1/8/7/4",
+     "truth": [
+      13
+     ],
+     "NEW": [
+      "glyph/1/1/8/7/4",
+      13,
+      13
+     ],
+     "BASE": [
+      "glyph/1/1/8/7/4",
+      13,
+      13
+     ]
+    }
+   ]
+  },
+  "census": {
+   "NEW": {
+    "noteheads": 24260,
+    "far": 8966,
+    "owner_all": {
+     "abstained": 486,
+     "decided": 33557
+    },
+    "owner_nonfar": {
+     "decided": 1176
+    },
+    "owner_far": {
+     "decided": 8828,
+     "abstained": 94
+    },
+    "clef": {
+     "decided": 690,
+     "narrowed": 1
+    },
+    "meter": {
+     "decided": 5,
+     "abstained": 48
+    },
+    "np": {
+     "decided": 4055,
+     "abstained": 4911
+    },
+    "nan": {
+     "decided": 24260
+    }
+   },
+   "BASE": {
+    "noteheads": 24260,
+    "far": 8966,
+    "owner_all": {
+     "abstained": 539,
+     "decided": 33504
+    },
+    "owner_nonfar": {
+     "decided": 1176
+    },
+    "owner_far": {
+     "decided": 8775,
+     "abstained": 147
+    },
+    "clef": {
+     "decided": 690,
+     "narrowed": 1
+    },
+    "meter": {
+     "decided": 5,
+     "abstained": 48
+    },
+    "np": {
+     "decided": 6628,
+     "abstained": 2338
+    },
+    "nan": {
+     "decided": 24260
+    }
+   },
+   "clef_changed": [],
+   "meter_changed": [],
+   "flags": []
+  }
+ }
+}
