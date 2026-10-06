@@ -3199,6 +3199,7 @@ def count_ledgers_between(
     img_gray: "np.ndarray", edge_y: float, sign: float, spacing: float,
     line_y: float, rungs_y: "list[float]", x_center: float,
     head_box_x: "tuple[float, float] | None" = None,
+    is_text: "Callable[[float], bool] | None" = None,
 ) -> dict:
     """Step 3: the ledgers strictly between the staff edge and `line_y`.
     `rungs_y` is the local ink read (the walk's rungs). The chain
@@ -3233,7 +3234,7 @@ def count_ledgers_between(
         got = find_rung_in_gap(img_gray, min(a, b) + 0.45 * spacing,
                                max(a, b) - 0.45 * spacing, x_center, spacing,
                                head_box_x)
-        if got is None:
+        if got is None or (is_text is not None and is_text(float(got))):
             break
         between.append(float(got))
         between.sort(key=lambda v: sign * v)
@@ -3246,11 +3247,87 @@ def count_ledgers_between(
                 gaps=gaps)
 
 
+# lane-ledger-not-text (Sean 2026-10-05, Brahms `glyph/5/0/6/3/2`): text ink is not a ledger. A rung
+# counted BETWEEN the staff edge and the note's line must be a thin line at the note's column: it is
+# refused where its ink is tall AND a detector box of a text/dynamic class lies across it (the record's
+# own boxes) or its row is not one continuous stroke. The cutoffs and why are below.
+TEXT_CLASS_WORDS = ("dynamic", "text", "letter", "lyric", "tempo")
+LEDGER_TEXT_COLUMN_SPACES = 1.0
+TEXT_CLASS_WORDS = ("dynamic", "text", "letter", "lyric", "tempo")
+LEDGER_TEXT_COLUMN_SPACES = 1.0
+# `rung_is_thin_and_flat` over-refuses on a scan (21 px of ink at the column where a neighbouring head
+# of a chord stacks on the row: 6 right Litolff heads lost), and a detector text box over a rung is often
+# a false box on a real ledger (Litolff: 3 of 3 boxed rungs looked at were real ledgers), so a rung is
+# TEXT only where its ink is TALL (the median vertical run over the columns within +-1.2 sp of the head
+# holding ink at the row is >= 0.5 sp: a ledger stays under 0.4, the letters of a word do not) AND
+# either a text/dynamic box lies across it or its row is not one continuous stroke (< 0.60 of the
+# columns inked). The "cre" row: median run 0.66 sp, continuity 0.52. Cutoffs set after seeing both.
+LEDGER_ROW_CONTINUITY_HALF_SPACES = 1.2
+LEDGER_ROW_CONTINUITY_MIN = 0.60
+LEDGER_TEXT_TALL_MIN_SPACES = 0.5
+
+
+def _row_columns(img_gray: "np.ndarray", y: float, cx: float, spacing: float):
+    half = LEDGER_ROW_CONTINUITY_HALF_SPACES * spacing
+    a, b = max(0, int(cx - half)), min(img_gray.shape[1], int(cx + half))
+    yi = int(round(y))
+    if b <= a or not (1 <= yi < img_gray.shape[0] - 1):
+        return None
+    m = int(spacing)
+    thr = _otsu_threshold(img_gray[max(0, yi - 3 * m):yi + 3 * m, a:b])
+    return a, b, (img_gray[yi - 1:yi + 2, a:b] <= thr).any(axis=0)
+
+
+def rung_row_continuity(img_gray: "np.ndarray", y: float, cx: float, spacing: float) -> float:
+    """Fraction of the columns within +-1.2 sp of `cx` that hold ink at row `y` (+-1 px)."""
+    got = _row_columns(img_gray, y, cx, spacing)
+    return 0.0 if got is None else float(got[2].mean())
+
+
+def rung_median_run_spaces(img_gray: "np.ndarray", y: float, cx: float, spacing: float) -> float:
+    """Median vertical ink run (in spaces) over the columns within +-1.2 sp of `cx` holding ink at `y`."""
+    runs = []
+    for x in range(int(cx - LEDGER_ROW_CONTINUITY_HALF_SPACES * spacing),
+                   int(cx + LEDGER_ROW_CONTINUITY_HALF_SPACES * spacing)):
+        t = _column_ink_run(img_gray, y, x, spacing)
+        if t is not None:
+            runs.append(t / spacing)
+    return float(np.median(runs)) if runs else 0.0
+
+
+def is_text_class(cls: "str | None") -> bool:
+    c = (cls or "").lower()
+    return any(w in c for w in TEXT_CLASS_WORDS)
+
+
+def ledger_candidates_not_text(
+    img_gray: "np.ndarray", rungs_y: "list[float]", cx: float, spacing: float,
+    text_boxes: "list | None" = None,
+) -> "tuple[list[float], list[dict]]":
+    """`rungs_y` minus the rungs that are text: (kept, rejected). A rejected rung is
+    `{y, why: 'text_box'|'not_thin_and_flat'}`."""
+    kept, rejected = [], []
+    half = LEDGER_TEXT_COLUMN_SPACES * spacing
+    band = 0.2 * spacing
+    for r in rungs_y:
+        hit = [b for b in (text_boxes or [])
+               if b[0] < cx + half and b[2] > cx - half and b[1] - band <= r <= b[3] + band]
+        tall = rung_median_run_spaces(img_gray, r, cx, spacing) >= LEDGER_TEXT_TALL_MIN_SPACES
+        if tall and hit:
+            rejected.append(dict(y=float(r), why="text_box_and_tall_ink"))
+        elif tall and rung_row_continuity(img_gray, r, cx, spacing) < LEDGER_ROW_CONTINUITY_MIN:
+            rejected.append(dict(y=float(r), why="tall_ink_not_one_continuous_stroke"))
+        else:
+            kept.append(r)
+    return kept, rejected
+
+
 def derive_note_first_step(
     img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
     edge_y: float, sign: float, spacing: float, rungs_y: "list[float]",
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     far_side_partner_boxes: "list | None" = None,
+    ledger_not_text: bool = False, text_boxes: "list | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment). Returns `{offset, kind,
     reason, line_y, how, between, k, gaps}`; `offset` (half-steps out from the
@@ -3263,9 +3340,18 @@ def derive_note_first_step(
     cx = (head_box[0] + head_box[2]) / 2.0
     ln["y"], ln["seen_on_flanks"] = refine_line_on_flanks(
         img_gray, ln["y"], head_box, spacing)
-    ct = count_ledgers_between(img_gray, edge_y, sign, spacing, ln["y"], rungs_y,
-                               cx, (head_box[0], head_box[2]))
-    base = dict(kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
+    count_rungs, refused = rungs_y, []
+    if ledger_not_text:
+        # only the rungs COUNTED between are tested: the note's own line may run through the head
+        count_rungs, refused = ledger_candidates_not_text(
+            img_gray, rungs_y, cx, spacing, text_boxes)
+        count_rungs = [r for r in count_rungs] + [r for r in rungs_y if abs(r - ln["y"]) < 1e-6]
+    ct = count_ledgers_between(
+        img_gray, edge_y, sign, spacing, ln["y"], count_rungs, cx,
+        (head_box[0], head_box[2]),
+        is_text=((lambda y: not ledger_candidates_not_text(
+            img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None))
+    base = dict(refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])
     if not ct["fits"]:
         return dict(offset=None, reason=ct["why"], **base)

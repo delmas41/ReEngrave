@@ -47,7 +47,9 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # lane-farhead-note-first (2026-10-05, Sean's order): the note's own line
     # first, then the count to it, which must fit the gap. False = the run-2
     # reader (count outward from the staff), bit-identical.
-    note_first=True)
+    note_first=True,
+    # lane-ledger-not-text (Sean 2026-10-05): a rung counted between must not be text ink
+    ledger_not_text=True)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -356,6 +358,8 @@ class FarHeadPage:
         self.page_boxes = list(page_boxes)
         self.nh = [(h["subject"], tuple(h["box"])) for h in heads]
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
+        # lane-ledger-not-text: the record's own text / dynamic boxes
+        self.text_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_text_class(c)]
         self.thickness = page_line_thickness_px(gray, staff_lines_by_key, self.nh)
         in_staff = [h for h in heads if 0 <= h["pos"] <= 8 and head_kind(h.get("cls"))]
         spacings, on = [], []
@@ -462,7 +466,8 @@ class FarHeadPage:
         detail: Dict[str, Any] = {}
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
-            chord_split_rungs_y=rungs, detail_out=detail)
+            chord_split_rungs_y=rungs, detail_out=detail,
+            text_boxes=self.text_boxes)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -554,6 +559,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            page_accidental_boxes: Sequence[Tuple[str, tuple]],
                            chord_split_rungs_y: Optional[Sequence[float]] = None,
                            detail_out: Optional[Dict[str, Any]] = None,
+                           text_boxes: Optional[Sequence[tuple]] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -563,12 +569,13 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             one_sided=EXCLUSION_RULES["one_sided"],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
-                     page_accidental_boxes, chord_split_rungs_y, detail_out)
+                     page_accidental_boxes, chord_split_rungs_y, detail_out,
+                     text_boxes)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
-          detail_out=None) -> Tuple[Optional[int], str]:
+          detail_out=None, text_boxes=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -639,7 +646,9 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             gray, (x0, y0, x1, y1), edge, sign, spacing, items,
             exclude_boxes=others,
             far_side_partner_boxes=[b for (s_, b) in page_notehead_boxes
-                                    if s_ != subject])
+                                    if s_ != subject],
+            ledger_not_text=READER_KEYWORDS.get("ledger_not_text", False),
+            text_boxes=text_boxes)
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge

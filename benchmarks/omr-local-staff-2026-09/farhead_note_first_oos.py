@@ -96,7 +96,7 @@ def main(which, p0, p1, out):
                 row[name] = dict(pos=r["pos"], reason=r["reason"], box_used=r.get("box_used"),
                                  lines=r.get("lines_used"), edge_y=d.get("edge_y"),
                                  line_y=nf.get("line_y"), kind=nf.get("kind"), how=nf.get("how"),
-                                 k=nf.get("k"), between=nf.get("between"), gaps=nf.get("gaps"), seen=nf.get("seen_on_flanks"))
+                                 k=nf.get("k"), refused=nf.get("refused_rungs"), between=nf.get("between"), gaps=nf.get("gaps"), seen=nf.get("seen_on_flanks"))
             results.append(row)
     FH.READER_KEYWORDS["note_first"] = True
     Path(out).write_text(json.dumps(results))
