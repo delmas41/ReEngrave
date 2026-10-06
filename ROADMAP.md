@@ -17,6 +17,25 @@ re-enter.
 
 ---
 
+## START HERE — after the night of 2026-10-05→06 (night manager; main ≥ this commit)
+
+**Nothing below is merged to main; all on branches, Sean to review.** Sean (10-05) ruled the far-head
+reading ORDER (DECISIONS 2026-10-05): the note's own line first (through the box, or on its staff-side
+edge), then count ledgers from the staff edge to it; an answer whose line is elsewhere is wrong.
+Built, chained: `lane-farhead-note-first` 8b02a092 (Sean: 11/12 right out-of-sample) ->
+`lane-ledger-not-text` 1d8a15e5 (crescendo text is not a ledger) -> `lane-farhead-not-a-note`
+690764be (refuse barline/bracket/slash/text/sliver boxes) + `lane-owner-by-ledgers` ca0893c9
+(`OMR_FARHEAD_OWNER_LEDGERS`, default OFF; ROADMAP 2.56b) = `lane-night-1005-combined` e09e9bf5
+(fast 4,505 passed, check 250). **Night re-gather** `TAG=20261006-night-combined` (owner flag ON,
+THROUGH=adjudicate), read on `lane-night-1006-read` 5eae9b67: Sean's through-or-edge rule
+94.6%/98.1% of decided far heads (was 57%/59%; reader-independent grid 84.6%/94.9%); truth set
+Litolff 36/1/4 (old reader 33/5/3, geometry 29/12/0), Brahms 11/0/0; decided far heads 1,903/4,055
+(was 2,830/6,628) -- fewer answers, far more of them land on the note; nothing outside far heads moved
+>2%. **For Sean:** (1) the sample sheet `out/print/ledgers/night_1006_sample.png` (that branch);
+(2) ownership moves with NO twin box on the new staff are DROPPED (114 Litolff / 365 Brahms) --
+written on neither staff, his call; (3) the not-a-note gate refuses clipped real heads at a cell edge
+(tiles 11-12 of `farhead_not_a_note.png`); (4) merge the chain to main?
+
 ## START HERE — after 2026-10-04 (day session; main ≥ this commit)
 
 **Evening 10-04 (FIRST, read before anything below):** an overnight re-gather is RUNNING on the
