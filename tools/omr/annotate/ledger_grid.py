@@ -2321,7 +2321,9 @@ def through_head_on_rung_evidence(
 #   HANGS       `head_ink_staff_excess` -- the head's ink on the STAFF side of
 #               the edge line, beyond the line's own half thickness -- is at most
 #               `EDGE_VS_THROUGH_STAFF_EXCESS_MAX_SPACES` (half a ledger
-#               thickness: a line's own ink, not head). In-sample (27 far heads
+#               thickness: a line's own ink, not head) and at least minus
+#               `EDGE_VS_THROUGH_STAFF_EXCESS_MIN_SPACES` (the line touches the
+#               head: it is not a ledger standing clear of it). In-sample (27 far heads
 #               on both scans where a thin line touches the staff-side edge):
 #               heads in the space beyond -0.25..+0.05 sp, heads the line crosses
 #               +0.26..+0.43 sp (three narrow slivers, a split chord and a
@@ -2330,6 +2332,12 @@ def through_head_on_rung_evidence(
 #               unless a second, hidden middle rung is also present).
 # ---------------------------------------------------------------------------
 EDGE_VS_THROUGH_STAFF_EXCESS_MAX_SPACES = LEDGER_THICKNESS_MAX_SPACES / 2.0
+#: ... and the line must TOUCH the head: the head's ink starts no farther from the line than one ledger
+#: thickness (`LEDGER_THICKNESS_MAX_SPACES`) on the far side of it -- `excess` no lower than minus that. Added after
+#: the whole-population list of heads the rule changed showed 8 whose line is 0.4-1.0 sp clear of the head (a ledger
+#: BETWEEN the staff and the head, not one it touches): in-sample, the heads in the space beyond a line they touch
+#: read -0.25..+0.05.
+EDGE_VS_THROUGH_STAFF_EXCESS_MIN_SPACES = -LEDGER_THICKNESS_MAX_SPACES
 #: the two rungs must be at least this far apart to be two lines of one head
 EDGE_VS_THROUGH_MIN_SEPARATION_SPACES = 0.30
 
@@ -2391,7 +2399,8 @@ def edge_vs_through_evidence(
             continue
         ex = head_ink_staff_excess(img_gray, r, head_box, sign, spacing,
                                    max(ev["thickness"]))
-        if ex is None or ex > EDGE_VS_THROUGH_STAFF_EXCESS_MAX_SPACES:
+        if ex is None or not (EDGE_VS_THROUGH_STAFF_EXCESS_MIN_SPACES <= ex
+                              <= EDGE_VS_THROUGH_STAFF_EXCESS_MAX_SPACES):
             continue
         return dict(ok=True, why="visible_edge_line_head_hangs_beyond_it", y=float(r),
                     excess=float(ex), edge_thickness=max(ev["thickness"]),

@@ -95,6 +95,19 @@ def test_head_that_crosses_the_edge_line_is_not_hanging_beyond_it():
         lg.EDGE_VS_THROUGH_STAFF_EXCESS_MAX_SPACES
 
 
+def test_a_ledger_standing_clear_of_the_head_is_not_the_line_it_hangs_beyond():
+    """The edge 'rung' is a real ledger but the head's ink starts a whole space beyond it (the ledger
+    BETWEEN the staff and the head): the line does not touch the head, the rule is silent."""
+    img = np.full((420, 300), 255, dtype=np.uint8)
+    img[318:322, 70:157] = 0                        # ledger 1
+    img[341:360, 100:127] = 0                       # head: starts 1 space (20 px) below it
+    box = (100.0, 318.0, 127.0, 361.0)               # a generous detector box: its edge is at the ledger
+    ex = lg.head_ink_staff_excess(img, EDGE_RUNG, box, SIGN, SP, 4.0)
+    assert ex < lg.EDGE_VS_THROUGH_STAFF_EXCESS_MIN_SPACES, ex
+    ev = lg.edge_vs_through_evidence(img, box, SIGN, SP, [EDGE_RUNG, 345.0], 345.0)
+    assert not ev["ok"] and ev["why"] == "no_visible_edge_line_with_the_head_beyond_it", ev
+
+
 def test_excess_of_a_head_hanging_beyond_the_line_is_about_zero():
     ex = lg.head_ink_staff_excess(_page(), EDGE_RUNG, BOX, SIGN, SP, 4.0)
     assert ex is not None and abs(ex) <= 0.05, ex
