@@ -411,6 +411,17 @@ class Q(_Vocab):
     #: position is not silently substituted for a head that needed a ledger
     #: read (CLAUDE.md §2 rule 8). Only far heads are in its domain.
     NOTEHEAD_POSITION = "notehead_position"
+    #: ROADMAP 2.56b. A far head read toward ONE CANDIDATE staff by the note-first
+    #: look (the note's own line, then the ledgers counted from it to that
+    #: staff's edge): the position it would have ON THAT STAFF, as an integer
+    #: half-step from that staff's top line -- or an ABSTENTION where the
+    #: ledgers toward that staff do not make a chain (`ledger_not_read`). One
+    #: row per candidate (`detail["candidate"]`); a head that
+    #: needs no ledger toward a candidate (on its lines or in the first space
+    #: outside) files that geometry position under `ledger_reason=
+    #: no_ledger_needed`. `adjudicate_glyph_owner` reads it: Sean's rule
+    #: (2026-09-28, CLAUDE.md §10) -- the ledgers name the owner.
+    FAR_HEAD_OWNER_LEDGER = "far_head_owner_ledger"
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
     #: same grid and in the same units as `NOTEHEAD_STAFF_POSITION` -- which is
     #: the whole point: the rule that owns it ("the head immediately RIGHT of
@@ -2032,6 +2043,10 @@ CLAIMS: "dict[str, str]" = {
     "FAR_HEAD_LEDGER_POSITION": CLAIM.INTERPRETATION,
     #: ROADMAP 2.56: the weighing of the two position witnesses for a far head.
     "NOTEHEAD_POSITION": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.56b: a ledger chain read toward each candidate staff -- the
+    #: line the note rests on, the ledgers counted, the fit of the gaps are all
+    #: interpretations of the ink.
+    "FAR_HEAD_OWNER_LEDGER": CLAIM.INTERPRETATION,
     #: ⚠️ A MEASUREMENT AND NOT AN IDENTIFICATION, though a class name is what
     #: chooses its anchor. What would make the row WRONG is the RULER -- a
     #: mis-measured line grid, or a box whose centre is not where the glyph
@@ -2380,6 +2395,13 @@ class READERS(_Vocab):
     #: but it shares the detector's BOX with every other glyph reader; the box
     #: is the standard head box where its template fit gate passes.
     LEDGER_FARHEAD = "ledger_farhead"        # gather: far-head position from printed ledgers
+    #: `gather.gather_far_head_ledger_positions`, ROADMAP 2.56b. The SAME note-
+    #: first look as `LEDGER_FARHEAD` run toward each CANDIDATE staff -- its own
+    #: reader name because it answers a different question (whose ladder is
+    #: this?) and `glyph_owner` must be able to tell it from the position row.
+    #: Same raster, same crop as `LEDGER_FARHEAD`: not an independent witness of
+    #: the head's POSITION, and it is not offered as one.
+    LEDGER_OWNER_NOTE_FIRST = "ledger_owner_note_first"
     CV_HEADER = "cv_header"                  # header_ink
     TEMPLATE = "template"                    # symbol_library NCC matching
     GEOMETRY = "geometry"                    # staff_detector / measure_extractor
