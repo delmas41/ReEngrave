@@ -4176,3 +4176,57 @@ Reasons (all read off rows the record holds; the floors are imported from `noteh
 **Sheet:** `out/print/ledgers/owner_by_ledgers.png`, 12 seeded (20261005) changes, 6 per document, numbered; BLUE = old owner's staff edge, CYAN = new owner's edge, orange = the note, solid green = ledgers counted toward the new staff, red = the note's own line, dashed = what was seen toward the old staff, and under each tile in words "moved from staff X to staff Y because ...". Re-measured against pixel rows: 49 drawn lines, 41 within 2 px of an ink row, 2 more than 2 px off (tile 8 old staff edge 3.0 px, tile 9 old note line 5.0 px), 6 hidden behind the head. NOT yet adjudicated by Sean.
 
 **Tests / checks.** `test_far_head_owner_by_ledgers_2026_10_05.py` (16): RED on the tree before this item (ImportError: no `far_head_owner`; with the new modules but the old `glyph_owner`, the two decision tests fail), green after; each layer has a control that can fail (ledgers erased -> silent, not the nearer staff; flag off -> no rows). Fast tier 4,488 passed (4,473 before + this file); `staged.check` TOTAL 250 before and after (a first cut made `wiring` BROKEN: a bare `own` detail key in this lane's own rows read as a consumer of `Q.GLYPH_BAND_DISTANCE.own`, retiring a KNOWN_GAP; and an observe site whose subject came in as a parameter was UNRESOLVED -- both fixed).
+
+## lane-local-staff-lines (2026-10-06): the local five lines are fitted as a comb on the KNOWN staff, one narrow window per line
+
+Sean: "the 5 line staff should be very obvious." Path: STAGED far-head reader and owner witness
+(`far_head_reader.local_staff_lines_in_windows`, `READER_KEYWORDS['local_lines_in_window']`, default ON; `far_head_owner.read_toward`).
+Tree: branch `lane-local-staff-lines` off `lane-night-1005-combined` e09e9bf5. Records: the two `20261006-night-combined` (read via
+`record_io.load_record`, extract `night_1006_extract.py`; no gather). Scripts `local_lines_*.py` in this directory.
+
+**1. Tile 6 (Litolff p16 `glyph/16/0/0/0/2`, staff below `16/0/1`).** The old read does NOT read the pipeline's cell: it reads two side
+bands (one head-width wide, one head-width off the head) and, for each global line, takes the single darkest row within +-0.5 spacing of it.
+Staff 16/0/1's global lines (532, 548 ...) sit 8.5 px = 0.54 space ABOVE the ink (lines at 540.5, 556.5, 572.5, 588.5, 604.5). So the
+first window (524-540) reaches only the top edge of line 1 and the second window (540-556) starts on it: line 1's darkest row is 538-539,
+line 2's is 540 -> two lines 1.5 px apart on one stroke (538.5 / 540.0), the real first line never read, and the 5th window
+(587-603) holds line 4, so the staff came out 4 lines + a copy. Both causes the manager named are real, the first drives it: windows that
+touch (so one stroke feeds two) and a window centre that is half a space off the ink.
+
+**Crop / cell question (Sean: "if the crop can't tell where the staff is, the cell is cut poorly").** Of the 711 fits the old read flagged
+(Litolff 480 of 4,494, Brahms 231 of 12,138), the new fit's offset from the global lines is >= 0.4 sp on 166 (Litolff 143, Brahms 23: the
+window is cut off the staff), 0.2-0.4 sp on 298 (partly clipped), < 0.2 sp on 179 (merged bars / smudge in the ink itself), and 68 cannot
+be fitted at all (Litolff 4, Brahms 64: lines broken in the ink). Over ALL fits, 424 (Litolff 280, Brahms 144) have global lines >= 0.4 sp
+off the ink. **Plain finding for Sean: the cause is the position of the staff lines the pipeline hands the reader (staff detection /
+per-cell frame on a tilting, wandering scan; Litolff p16 is 7 px of wander), not the side windows' width; the windows then cut the real
+staff off.** That registration lives outside this fence (`staff_detector` / cell frame). Where the global lines are more than 0.55 sp off
+their ink, the comb cannot reach them (searching further lets a ledger or slur stand in for a line: tried at +-0.8 sp, it moved staff
+16/0/0 of tile 6 itself a space off, so it was reverted); those fits abstain (`lines_missing`) rather than guess.
+
+**2. Count (10-06 records, every far head, both candidate staves = own + `neighbour_staff`; implausible = not 5 lines, declined to global, or
+an adjacent gap < 0.6 or > 1.4 of that staff's own spacing).** Litolff: 4,197 far heads, 4,494 fits, old flagged 480 (413 implausible gap,
+67 declined to the global lines), new flagged 7 (all abstained). Brahms: 8,755 far heads, 12,138 fits, old flagged 231 (111 + 120),
+new flagged 100 (all abstained: the ink lines are broken / merged bars; Brahms p17 is the worst page). Replayed far heads where the
+local lines differ or were flagged: 600 and 942 (the OFF arm reproduces the record on 597 and 940: the control). Decided far-head
+positions resting on a flagged old fit: 145 (Litolff) + 73 (Brahms); owner-witness answers resting on one: 151 of 596 + 84 of 929.
+After: positions changed 43 + 39 (decided -> other decided 15 + 1; decided -> abstain 26 + 38; abstain -> decided 2 + 0); owner witness
+changed 26 + 39 (mostly an owner answer becoming `neither_fits` / `unread`). A line with no ink in its window takes the comb's place, labelled
+(`fallback`, 110 + 164 fits); two or more such lines = the staff is not read (`no_staff_lines`, unread, never ruled out).
+
+**3. Fix** (keyword-gated, ON in `FarHeadPage.read`, the not-a-note pre-check, `far_head_owner.read_toward`; the page-shape measurement
+on clean heads keeps the old per-line read so both arms share one head shape): fit the five known lines as ONE comb (shift in +-0.55 sp,
+the plateau's middle), then search each line only within +-0.3 sp of its comb place (windows never meet), and replace a line that makes
+an adjacent gap < 0.6 or > 1.4 sp by the comb's place (labelled). Line positions keep the old top-edge convention.
+
+**Controls.** Tile 6: both staves now give five even lines (staff below 538.5, 554.5, 570.0, 586.5, 602.5; staff above 386.5 ... 449.5);
+what it reads: toward its own staff (16/0/0) still `on ledger 3 below` (a slur counted as ledgers: the `lane-slur-not-ledger` rule is not in
+this base), toward the staff BELOW now fits too (`on the 2nd ledger above`, was refused by the mis-fit), so the owner witness says
+**both fit -> silent** (was: wrongly "own staff"). Together with the slur rule it would name the staff below. Sean's confirmed-right
+tiles (note_first 1-11, night 1-5,7,8,11,12, the 24 edge-vs-through): 44 of 44 keep position and owner. Truth set
+(`local_lines_truth.py`, Litolff p3 + Brahms p1): Brahms 11/0/0 -> 11/0/0; Litolff 39/0/2 -> 38/0/3: **ONE right head, `glyph/3/0/7/0/7`
+(truth -3), becomes an abstain (`line_not_beyond_the_staff_edge`), not wrong.** The old fit put the 5th line at 1548.5 (true 1554: the
+right band caught a blob), compressing the spacing to 14.5 px; with the true 15.9 px the printed ledger-ish mark 10.5 px above the top
+line is 0.66 sp, under the reader's 0.70 minimum gap (`NOTE_GAP_MIN_SPACES`). The old answer was right only through a mis-fit; the 0.70
+floor is the reader's rule, not retuned here. NOT 0 right broken: a decision for Sean.
+Drawn lines re-measured against pixel rows on the sheet (`out/print/ledgers/local_staff_lines.png`, 12 seeded heads, tile 1 = night tile 6):
+old 69 drawn, 45 within 2 px of an ink row, 22 off by more; new 42 drawn, 35 within, 5 off. Unit test
+`test_local_staff_lines_in_windows_2026_10_06.py` (6 tests; RED on the base: no `local_staff_lines_in_windows`). Fast tier 4,511 passed.

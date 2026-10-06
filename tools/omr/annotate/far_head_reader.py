@@ -52,7 +52,20 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     ledger_not_text=True,
     # lane-farhead-not-a-note (Sean 2026-10-05): a box the record's own evidence says is NOT a notehead
     # (a barline, a tremolo slash, text, a sliver) is refused (abstained, never deleted) before it is read.
-    not_a_note=True)
+    not_a_note=True,
+    # lane-local-staff-lines (Sean 2026-10-06: "the 5 line staff should be very obvious"): the five local lines are
+    # fitted as ONE comb to the known staff (a shift at this x), then each line is searched only inside its own narrow
+    # window about the comb, one line per window -- never two lines on one ink row. False = the old per-line +-0.5 sp
+    # darkest-row search, bit-identical.
+    local_lines_in_window=True)
+#: window half-width (staff spaces) for one line about the comb; two windows never meet (0.3 + 0.3 < 1)
+LOCAL_LINE_WINDOW_SP = 0.3
+#: the comb shift searched about the known staff (staff spaces)
+LOCAL_COMB_SHIFT_SP = 0.55
+#: a staff whose pooled lines miss this many or more windows is not read (abstain), never filled from the global lines
+LOCAL_LINES_MAX_MISSING = 1
+#: an adjacent gap outside this fraction of the staff's own spacing is an implausible fit
+LOCAL_GAP_PLAUSIBLE = (0.6, 1.4)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -230,13 +243,106 @@ def local_staff_lines(gray, global_lines: Sequence[float], head_x0: float,
     return [sum(v) / len(v) for v in zip(*per_flank)]
 
 
+def gaps_plausible(lines: Sequence[float], spacing: float) -> bool:
+    """Five lines whose adjacent gaps are all within `LOCAL_GAP_PLAUSIBLE` of `spacing`."""
+    ys = sorted(float(v) for v in lines)
+    if len(ys) != 5 or spacing <= 0:
+        return False
+    lo, hi = LOCAL_GAP_PLAUSIBLE
+    return all(lo * spacing <= b - a <= hi * spacing for a, b in zip(ys, ys[1:]))
+
+
+def _flank_in_windows(gray, gl: Sequence[float], spacing: float, x0: int, x1: int):
+    """One flank band: the comb shift `d` that puts the five known lines on the darkest rows (all five at once, so one
+    dark slur or a neighbour's line cannot pull it), then each line's darkest row inside +-`LOCAL_LINE_WINDOW_SP` of
+    its comb position. `(comb ys, found ys or None per line, d)`, or `None` where the band is off the page."""
+    H, W = gray.shape
+    x0, x1 = max(0, x0), min(W, x1)
+    if x1 <= x0 or H < 3:
+        return None
+    prof = gray[:, x0:x1].astype(float).mean(axis=1)
+    med = float(np.median(prof))
+    ys = sorted(float(v) for v in gl)
+
+    def dark(y):           # how far below the band's paper level the row at y is
+        i = int(round(y))
+        if i < 0 or i >= H:
+            return 0.0
+        return max(0.0, med - float(prof[i]))
+    reach = LOCAL_COMB_SHIFT_SP * spacing
+    shifts = np.arange(-int(reach), int(reach) + 1, 0.5)
+    scores = np.array([sum(dark(y + d) for y in ys) for d in shifts])
+    # a staff line is several rows thick, so the best score is a plateau: take its middle, not its first row. The
+    # search stops at +-0.55 sp: further out a comb also fits one space off (the staff's last four lines plus a
+    # ledger or a slur), and a known staff more than half a space off its ink is a registration fault, reported by
+    # the audit, not repaired here.
+    near = shifts[scores >= scores.max() * 0.97]
+    d = float(np.median(near)) if len(near) else 0.0
+    comb = [y + d for y in ys]
+    half = LOCAL_LINE_WINDOW_SP * spacing
+    found = [_darkest_row(gray, x0, x1, int(round(c - half)), int(round(c + half)) + 1) for c in comb]
+    return comb, found, d
+
+
+def local_staff_lines_in_windows(gray, global_lines: Sequence[float], head_x0: float, head_x1: float,
+                                 head_width: float) -> Dict[str, Any]:
+    """The five lines of the KNOWN staff at this head's x: `dict(lines, fallback, missing, shifts)`. `lines` is five ys,
+    one per known line in order, each found inside its own narrow window or (`fallback` lists those indices) taken at
+    the comb position; `lines` is `None` -- the reader abstains -- where more than `LOCAL_LINES_MAX_MISSING` lines
+    are found in neither flank, or the lines do not come out plausible."""
+    ys = sorted(float(v) for v in global_lines)
+    spacing = (ys[-1] - ys[0]) / 4.0 if len(ys) >= 2 else 0.0
+    if len(ys) != 5 or spacing <= 0:
+        return dict(lines=None, fallback=[], missing=[], shifts=[], why="no_staff_lines")
+    gap = head_width
+    bands = [(int(head_x0 - gap - head_width), int(head_x0 - gap)),
+             (int(head_x1 + gap), int(head_x1 + gap + head_width))]
+    flanks = [f for f in (_flank_in_windows(gray, ys, spacing, a, b) for a, b in bands) if f is not None]
+    if not flanks:
+        return dict(lines=None, fallback=[], missing=[], shifts=[], why="no_staff_lines")
+    lines, fallback = [], []
+    for i in range(5):
+        got = [f[1][i] for f in flanks if f[1][i] is not None]
+        if got:
+            lines.append(sum(got) / len(got))
+        else:
+            lines.append(sum(f[0][i] for f in flanks) / len(flanks))
+            fallback.append(i)
+    comb = [sum(f[0][i] for f in flanks) / len(flanks) for i in range(5)]
+    lo, hi = LOCAL_GAP_PLAUSIBLE
+    # a found line that makes an implausible gap with a neighbour is the doubtful one (a merged bar, a smudge edge):
+    # it is replaced by the comb's place -- a labelled fallback, counted like a missing line
+    for _ in range(5):
+        bad = [i for i in range(4) if not (lo * spacing <= lines[i + 1] - lines[i] <= hi * spacing)]
+        if not bad:
+            break
+        cand = {j for i in bad for j in (i, i + 1) if j not in fallback}
+        if not cand:
+            break
+        j = max(cand, key=lambda k: abs(lines[k] - comb[k]))
+        lines[j] = comb[j]
+        fallback.append(j)
+    out = dict(lines=lines, fallback=sorted(fallback), missing=sorted(fallback), shifts=[f[2] for f in flanks])
+    if len(fallback) > LOCAL_LINES_MAX_MISSING:
+        out.update(lines=None, why="lines_missing")
+    elif not gaps_plausible(lines, spacing):
+        out.update(lines=None, why="implausible_gaps")
+    return out
+
+
 def frame_lines_for_head(gray, global_lines: Sequence[float],
-                         box: Sequence[float]) -> List[float]:
-    """The staff's five lines AT THIS HEAD'S x; the global read unchanged only
-    where neither flank finds all five (a declined local read is not an
-    invented one)."""
+                         box: Sequence[float], windowed: Optional[bool] = None) -> List[float]:
+    """The staff's five lines AT THIS HEAD'S x. Default (`READER_KEYWORDS['local_lines_in_window']`): the known staff
+    fitted as a comb and searched window by window (`local_staff_lines_in_windows`); `[]` where it cannot be fitted --
+    the caller abstains rather than read against the global lines. Off: the per-line darkest-row search, the global
+    read unchanged only where neither flank finds all five."""
     x0, _y0, x1, _y1 = box
     w = x1 - x0
+    if windowed is None:
+        windowed = READER_KEYWORDS.get("local_lines_in_window", False)
+    if windowed:
+        r = local_staff_lines_in_windows(gray, list(global_lines), x0, x1, w if w > 0 else 20.0)
+        return list(r["lines"]) if r["lines"] is not None else []
     loc = local_staff_lines(gray, list(global_lines), x0, x1, w if w > 0 else 20.0)
     return loc if loc is not None else list(global_lines)
 
@@ -454,7 +560,9 @@ class FarHeadPage:
         in_staff = [h for h in heads if 0 <= h["pos"] <= 8 and head_kind(h.get("cls"))]
         spacings, on = [], []
         for h in in_staff:
-            lines = frame_lines_for_head(gray, h["global_lines"], h["box"])
+            # the page's head shape is measured on clean on-line heads with the unchanged per-line read: the windowed
+            # comb is the READ-time frame, and must not move the shape both arms are compared on
+            lines = frame_lines_for_head(gray, h["global_lines"], h["box"], windowed=False)
             sp = (max(lines) - min(lines)) / 4.0
             spacings.append(sp)
             if head_kind(h["cls"]) != "filled" or h["pos"] % 2 != 0:
@@ -543,7 +651,7 @@ class FarHeadPage:
         say -- never a default. A box the record's own evidence says is not a
         note abstains `not_a_note:<reason>` before anything is read."""
         if READER_KEYWORDS.get("not_a_note") and len(global_lines) >= 2:
-            _lines = frame_lines_for_head(self.gray, global_lines, tuple(float(v) for v in box))
+            _lines = frame_lines_for_head(self.gray, global_lines, tuple(float(v) for v in box)) or list(global_lines)
             _sp = (max(_lines) - min(_lines)) / 4.0
             _nan = self.refuse_not_a_note(subject, box, cls, _sp)
             if _nan is not None:
@@ -554,6 +662,8 @@ class FarHeadPage:
                         n_on_line=self.n_on_line)
         box = tuple(float(v) for v in box)
         lines = frame_lines_for_head(self.gray, global_lines, box)
+        if not lines:           # the known staff could not be fitted at this x: not read, never read against the global lines
+            return dict(pos=None, reason="no_staff_lines", box_source=None)
         spacing = (max(lines) - min(lines)) / 4.0
         if spacing <= 0:
             return dict(pos=None, reason="bad_spacing", box_source=None)

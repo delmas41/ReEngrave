@@ -87,6 +87,8 @@ def read_toward(ctx: "FH.FarHeadPage", subject: str, box: Sequence[float],
     how)`. `fits` is True only where a position is read or none is needed."""
     box = tuple(float(v) for v in box)
     lines = FH.frame_lines_for_head(ctx.gray, cand_lines, box)
+    if not lines:           # the candidate staff cannot be fitted at this x: unread, so not ruled out
+        return dict(fits=False, pos=None, reason="no_staff_lines", how=None, unread=True)
     top, bot = min(lines), max(lines)
     sp = (bot - top) / 4.0
     if sp <= 0:
