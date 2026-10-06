@@ -1325,6 +1325,54 @@ CONTEST_IOU = 0.3
 #: one pixel apart.
 LEDGER_ROUND_UP = 0.25
 
+#: ⚠️ lane-owner-from-staves (Sean, 2026-10-06), DEFAULT OFF until he has seen
+#: `out/print/ledgers/owner_from_staves.png`. With it ON, GATHER (a) files the
+#: head's LOCAL position against each candidate staff's own cell grid
+#: (`local_position_in_candidate` on `Q.GLYPH_BAND_DISTANCE`) and (b) names a
+#: staff whose band the head lies in -- or within `PAGE_EDGE_MARGIN_SPACES` of,
+#: by the page-wide lines -- as a CANDIDATE even where it holds no box of this
+#: ink; `adjudicate_glyph_owner` reads both (`ownership._owner_from_staves`).
+#: An ALLOW-LIST (CLAUDE.md §7): a typo leaves it off.
+OWNER_FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
+
+
+def _owner_from_staves_enabled() -> bool:
+    return os.environ.get(OWNER_FROM_STAVES_ENV, "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+#: ⚠️ MEASURED: how far a head's page-wide position can sit from its LOCAL one
+#: (`Q.NOTEHEAD_STAFF_POSITION`, the cell's own grid) over every notehead on the
+#: 10-06 records -- max 0.775 sp (Litolff) / 0.73 sp (Breitkopf), p99 0.64 / 0.36.
+#: Inside the page-wide band by this much, a head is inside by any local grid;
+#: nearer an edge only a local measure can say. One constant for both stages.
+PAGE_EDGE_MARGIN_SPACES = 0.8
+
+
+def _local_position_in_candidate(cells_of_staff, cand_key: str, cx: float,
+                                 y: float) -> Optional[float]:
+    """`y`'s position in half-steps from the TOP line of candidate `cand_key`'s
+    own cell grid at the bar holding page x `cx` (`MeasureCell.
+    staff_line_ys_canonical`, localized per cell -- CLAUDE.md §10: measure
+    against the staff locally), or `None` -- DECLINED where no cell of that
+    staff spans `cx` or the cell carries no five-line grid."""
+    try:
+        sub = Subject.from_key(cand_key)
+    except ValueError:
+        return None
+    for c in cells_of_staff.get((sub.page, sub.system, sub.staff), ()):
+        bb = getattr(c, "bbox_page_px", None)
+        up = getattr(c, "upscale_factor", None)
+        ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        if not bb or not up or len(ys) < 2 or not (bb[0] <= cx <= bb[2]):
+            continue
+        page_ys = [bb[1] + float(v) / up for v in ys]
+        half = (page_ys[-1] - page_ys[0]) / (len(page_ys) - 1) / 2.0
+        if half <= 0:
+            return None
+        return (y - page_ys[0]) / half
+    return None
+
 
 def _page_box(cell: Any, det: Any) -> Optional[Tuple[float, float, float, float]]:
     """Canonical cell coordinates -> page pixels."""
@@ -1390,6 +1438,7 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     # rather than back through the record (GATHER decides nothing and reads
     # no verdict of its own).
     thickness_by_key: Dict[str, Optional[float]] = {}
+    extent_by_key: Dict[str, Tuple[float, float]] = {}
     for st in pws.staves:
         key = local.get(st.staff_index)
         if key is None:
@@ -1401,6 +1450,10 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
             geom[sub.to_key()] = ([float(y) for y in st.line_ys], float(sp))
             thickness_by_key[sub.to_key()] = getattr(
                 st, "median_line_thickness_px", None)
+            if _owner_from_staves_enabled() and hasattr(st, "x_start") \
+                    and hasattr(st, "x_end"):
+                extent_by_key[sub.to_key()] = (float(st.x_start),
+                                               float(st.x_end))
 
     cell_by_key = {}
     for c in cells:
@@ -1473,9 +1526,41 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
 
     ledgers = _ledger_index(placed)
 
+    # lane-owner-from-staves: with the flag ON, each candidate staff's cells
+    # (for the head's LOCAL position) and the staves a head lies in or beside
+    cells_of_staff: Optional[Dict[Tuple[int, int, int], List[Any]]] = None
+    if _owner_from_staves_enabled():
+        cells_of_staff = {}
+        for (page, system, staff, _m), c in cell_by_key.items():
+            cells_of_staff.setdefault((page, system, staff), []).append(c)
+
+    def _near_staves(g_: Subject, box_) -> set:
+        """Other staves of this system whose band the head's centre lies in or
+        within `PAGE_EDGE_MARGIN_SPACES` of (page-wide lines), x within the
+        staff's extent plus a cell's pad. A CANDIDATE, never a verdict."""
+        if cells_of_staff is None:
+            return set()
+        cx_, cy_ = (box_[0] + box_[2]) / 2.0, (box_[1] + box_[3]) / 2.0
+        own_ = g_.at(R.Kind.STAFF).to_key()
+        out_ = set()
+        for k_, (ys_, sp_) in geom.items():
+            if k_ == own_:
+                continue
+            s_ = Subject.from_key(k_)
+            if (s_.page, s_.system) != (g_.page, g_.system):
+                continue
+            ext_ = extent_by_key.get(k_)
+            if ext_ is None or not (ext_[0] - 2 * sp_ <= cx_ <= ext_[1] + 2 * sp_):
+                continue
+            if _band_distance_spaces(cy_, ys_, sp_) <= PAGE_EDGE_MARGIN_SPACES:
+                out_.add(k_)
+        return out_
+
     for i, others in sorted(contests.items()):
-        _gather_owner_candidates(log, placed[i], others, geom, ledgers,
-                                 cell_by_key, thickness_by_key)
+        _gather_owner_candidates(log, placed[i],
+                                 others | _near_staves(placed[i][0], placed[i][1]),
+                                 geom, ledgers, cell_by_key, thickness_by_key,
+                                 cells_of_staff)
 
     # ─────────────────────────────────────────────────────────────────────
     # ROADMAP 2.37 (Sean, 2026-09-29 via the coordinator, quoted):
@@ -1517,13 +1602,15 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
         y_center = (box[1] + box[3]) / 2.0
         if _ledger_expected(y_center, line_ys, spacing) <= 0:
             continue                  # on-staff or the exempt first space
-        _gather_owner_candidates(log, (g, box, det), set(), geom, ledgers,
-                                 cell_by_key, thickness_by_key)
+        _gather_owner_candidates(log, (g, box, det), _near_staves(g, box), geom,
+                                 ledgers, cell_by_key, thickness_by_key,
+                                 cells_of_staff)
 
 
 def _gather_owner_candidates(log: Log, placed_item, others: set,
                              geom: Dict[str, Tuple[List[float], float]],
-                             ledgers, cell_by_key, thickness_by_key) -> None:
+                             ledgers, cell_by_key, thickness_by_key,
+                             cells_of_staff=None) -> None:
     """The per-candidate GATHER body `gather_ownership_evidence` runs for one
     glyph, whether it came from a real cross-staff CONTEST (`others`
     non-empty) or ROADMAP 2.37's own-staff-only walk (`others` empty, a
@@ -1548,11 +1635,20 @@ def _gather_owner_candidates(log: Log, placed_item, others: set,
         # an interpretation, which is not a cycle yet but becomes one the
         # moment a clef adjudicator reads ownership.
         half = spacing / 2.0 if spacing else 1.0
+        extra: Dict[str, Any] = {}
+        if cells_of_staff is not None:
+            # lane-owner-from-staves: where the head sits against THIS
+            # candidate's own cell grid at its x, not the page-wide fit
+            lp = _local_position_in_candidate(
+                cells_of_staff, cand_key, (box[0] + box[2]) / 2.0, y_center)
+            if lp is not None:
+                extra["local_position_in_candidate"] = lp
         log.observe(g, Q.GLYPH_BAND_DISTANCE,
                     _band_distance_spaces(y_center, line_ys, spacing),
                     reader=READERS.GEOMETRY, frame=FRAME_PAGE,
                     candidate=cand_key, own=(cand_key == own),
-                    position_in_candidate=(y_center - min(line_ys)) / half)
+                    position_in_candidate=(y_center - min(line_ys)) / half,
+                    **extra)
         if det.smufl_name.startswith(_NOTEHEAD_PREFIX):
             _observe_ladder(log, g, box, cand_key, line_ys, spacing,
                             ledgers)

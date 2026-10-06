@@ -398,13 +398,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "record keeps the result; this is the evidence that decision was made "
         "on, unread — which is the shape that let a whole-crop OCR block be "
         "assigned to one staff for months before block HEIGHT was recorded."),
-    "DETAIL Q.STAFF_SKEW.thickness_px": (
-        "the staff's measured printed line thickness, beside its wander. "
-        "`staff_line_removal` measures thickness AGAIN, per cell, from the "
-        "cell's own ink — deliberately, since it varies 0.06-0.31 spaces "
-        "across the corpus — so this page-level figure is a second reading "
-        "that nothing compares against the first."),
-
     # ── DETAIL, Q.INK — a PRODUCER shipped deliberately without a consumer
     #
     # ⚠️⚠️ THESE SEVEN ARE OPEN BY DESIGN AND MUST NOT BE READ AS AN OVERSIGHT.

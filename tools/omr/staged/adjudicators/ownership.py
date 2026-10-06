@@ -13,6 +13,7 @@ adjudication reads a frozen record.
 
 from __future__ import annotations
 
+import os
 from collections import Counter
 from dataclasses import dataclass
 from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tuple
@@ -20,7 +21,8 @@ from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tup
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
-from ..gather import LEDGER_ROUND_UP
+from ..gather import (CONTEST_IOU, LEDGER_ROUND_UP,
+                      PAGE_EDGE_MARGIN_SPACES, _iou)
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
 # ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
 # pair" query -- see `structure.grand_staff_partner_staff`'s own docstring.
@@ -268,6 +270,202 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
                 (r.detail or {}).get("ledger_reason") for r in refusals}}
 
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# lane-owner-from-staves (Sean, 2026-10-06) -- OWNERSHIP STARTS FROM THE STAVES
+# WE KNOW. A notehead lying ON or BETWEEN a known staff's five lines belongs to
+# that staff: decided, no contest. Only a head in the GAP between two staves is
+# contested and goes on to the ledger witness and the older tiers.
+#
+# WHY THIS WAS NOT ALREADY SO (measured on the 10-06 records, FINDINGS in
+# `benchmarks/omr-local-staff-2026-09/`): `glyph_owner` is only ever asked about
+# a head that has `Q.GLYPH_BAND_DISTANCE` rows -- a twin on another staff, or a
+# far head walked against its OWN staff alone -- and it then SCORES: a complete
+# ladder +4.0, a range veto -6.0, a hairpin +7.0, distance only as a tie-break
+# (-0.5 per space; a head INSIDE a band has distance 0 and so no term at all).
+# "Inside the band" was therefore never a tier: it was the absence of a penalty,
+# and any of the other terms, or the note-first witness's own reading, could
+# outvote it. And a head in B's band filed on A with no twin on B had no B
+# candidate row, so B was never even asked about.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️ DEFAULT OFF until Sean has seen `out/print/ledgers/owner_from_staves.png`.
+#: An ALLOW-LIST (CLAUDE.md §7): a typo leaves it off. Read at ADJUDICATE time.
+FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
+
+
+def _from_staves_enabled() -> bool:
+    return os.environ.get(FROM_STAVES_ENV, "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+#: `gather.PAGE_EDGE_MARGIN_SPACES` (0.8, MEASURED: the page-wide position of a
+#: head can sit up to 0.775 sp (Litolff) / 0.73 sp (Breitkopf) from its local
+#: one). Where a head's position against a staff is known only from the
+#: page-wide `Q.STAFF_LINES`, it counts as inside only this far INSIDE the
+#: band; nearer an edge that reading is not evidence and the tier is silent.
+
+#: a staff's x extent, plus this many spaces for a cell's pad, is "beside" it
+STAFF_BESIDE_SLACK_SPACES = 2.0
+
+
+def _staff_band(geo, skew_rows):
+    """`(top, bottom, spacing, half_thickness_px, row ids)` of a staff in page
+    pixels from its `staff_geometry` and its `Q.STAFF_SKEW` rows (read by the
+    caller, at the staff, where they are filed); `None` -- DECLINED, never
+    defaulted -- without geometry."""
+    if geo is None:
+        return None
+    ys, sp, ids = geo
+    th = 0.0
+    if skew_rows:
+        t = (skew_rows[-1].detail or {}).get("thickness_px")
+        if isinstance(t, (list, tuple)):
+            t = sorted(float(v) for v in t)[len(t) // 2] if t else None
+        try:
+            th = float(t) if t else 0.0
+        except (TypeError, ValueError):
+            th = 0.0
+        ids = ids + [skew_rows[-1].id]
+    return min(ys), max(ys), sp, th / 2.0, ids
+
+
+def _head_page_box(ev: Evidence):
+    """This head's own page box `(x0, y0, x1, y1)` and its row id, or `None`."""
+    rows = ev.rows(Q.GLYPH_BOX)
+    if not rows:
+        return None
+    bb = (rows[0].detail or {}).get("bbox_page_px")
+    if not bb or len(bb) != 4:
+        return None
+    return tuple(float(v) for v in bb), rows[0].id
+
+
+def _twin_on(ev: Evidence, staff: R.Subject, box):
+    """The notehead box on `staff` that is the SAME ink as `box` -- the
+    contest's own test (`gather.CONTEST_IOU`, strict) over the same bar's cell
+    on that staff. `(glyph subject, row id, iou)` or `None`."""
+    me = ev.subject
+    cell = R.cell(me.page, me.system, staff.staff, me.cell)
+    best = None
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=cell):
+        v = row.value
+        if not isinstance(v, (list, tuple)) or not v \
+                or not str(v[0]).startswith("notehead"):
+            continue
+        bb = (row.detail or {}).get("bbox_page_px")
+        if not bb or len(bb) != 4:
+            continue
+        iou = _iou(box, tuple(float(x) for x in bb))
+        if iou > CONTEST_IOU and (best is None or iou > best[2]):
+            best = (row.subject, row.id, iou)
+    return best
+
+
+def _holds(ev: Evidence, staff: R.Subject, box, cy: float, own: bool, band):
+    """Does `staff`'s five-line band hold this head? `(True|False|None, how,
+    row ids, detail)`; `None` = cannot tell (rule 8), never "no".
+
+    The band is the top line to the bottom line plus half a line thickness
+    (Sean, 2026-10-06). The head's centre is measured, in this order, by
+
+      1. its OWN `Q.NOTEHEAD_STAFF_POSITION` against its own staff's local grid
+         (`own`), or the SAME INK's position in the candidate's own cell (the
+         twin's) -- both LOCAL, in that cell's own canonical frame (CLAUDE.md
+         §10: measure against the staff locally);
+      2. the page-wide lines, only where the head is at least
+         `PAGE_EDGE_MARGIN_SPACES` inside the band -- nearer an edge the
+         page-wide reading is silent, because a scanned staff wanders more
+         than that."""
+    if band is None:
+        return None, "no_staff_geometry", (), {}
+    top, bottom, sp, half_th, ids = band
+    half = sp / 2.0
+    tol = half_th / half if half else 0.0
+    pos_rows = ev.rows(Q.NOTEHEAD_STAFF_POSITION) if own else ()
+    how, pos, used = None, None, tuple(ids)
+    if own and pos_rows:
+        pos, how, used = float(pos_rows[-1].value), "local_own_cell", used + (pos_rows[-1].id,)
+    elif not own:
+        twin = _twin_on(ev, staff, box)
+        if twin is not None:
+            tp = ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=twin[0])
+            if tp:
+                pos, how = float(tp[-1].value), "local_twin_cell"
+                used = used + (tp[-1].id, twin[1])
+    if pos is None and not own:
+        # GATHER's own measure of the head against THIS candidate's cell grid
+        # at its x (flag ON): `local_position_in_candidate`, same unit
+        for row in ev.rows(Q.GLYPH_BAND_DISTANCE):
+            if (row.detail or {}).get("candidate") == staff.to_key() \
+                    and (row.detail or {}).get("local_position_in_candidate") is not None:
+                pos, how = float(row.detail["local_position_in_candidate"]), "local_candidate_grid"
+                used = used + (row.id,)
+                break
+    if pos is not None:
+        return (-tol <= pos <= 8.0 + tol), how, used, {"position": round(pos, 3)}
+    # page-wide, with the measured margin
+    m = PAGE_EDGE_MARGIN_SPACES * sp
+    if top + m <= cy <= bottom - m:
+        return True, "page_wide_margin", used, {
+            "inside_by_spaces": round(min(cy - top, bottom - cy) / sp, 3)}
+    if cy < top - m or cy > bottom + m:
+        return False, "page_wide_margin", used, {}
+    return None, "page_wide_edge", used, {}
+
+
+def _owner_from_staves(ev: Evidence):
+    """Ruling for a head lying in a known staff's band, or `None` where it
+    does not (the gap, an edge the page-wide lines cannot settle, two staves
+    claiming it): then the older tiers run as before."""
+    hb = _head_page_box(ev)
+    if hb is None:
+        return None
+    box, box_id = hb
+    cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+    me = ev.subject
+    own_staff = me.at(Kind.STAFF)
+    holders, undecided, used, per = [], [], [box_id], {}
+    for st in ev.subjects(Kind.STAFF):
+        if st.page != me.page or st.system != me.system:
+            continue
+        ext = ev.rows(Q.STAFF_EXTENT, subject=st)
+        geo = staff_geometry(ev, st)
+        if not ext or geo is None:
+            continue
+        x0, x1 = float(ext[-1].value[0]), float(ext[-1].value[1])
+        slack = STAFF_BESIDE_SLACK_SPACES * geo[1]
+        if not (x0 - slack <= cx <= x1 + slack):
+            continue
+        band = _staff_band(geo, ev.rows(Q.STAFF_SKEW, subject=st))
+        ok, how, ids, det = _holds(ev, st, box, cy, st.to_key() == own_staff.to_key(), band)
+        per[st.to_key()] = dict(holds=ok, how=how, **det)
+        if ok:
+            holders.append(st)
+            used += list(ids)
+        elif ok is None:
+            undecided.append(st)
+    # exactly one staff holds the head and no other staff is undecided about it
+    if len(holders) != 1 or undecided:
+        return None
+    owner = holders[0]
+    detail = {"staff_band": per, "measured": per[owner.to_key()]["how"]}
+    if owner.to_key() == own_staff.to_key():
+        return Ruling(value=owner.to_key(), reason="staff_band",
+                      used=tuple(used), detail=detail)
+    # ⚠️ A COPY OF THE SAME HEAD found by a NEIGHBOUR's padded cell (Sean,
+    # 2026-10-06). If the owning staff has its own box of this ink the copy is a
+    # duplicate and EXPORT drops it (`owned_by_another_staff`); if it has none,
+    # the head is NAMED here (`staff_band_no_box`) and no box is invented --
+    # relocation is Sean's call, never this tier's.
+    twin = _twin_on(ev, owner, box)
+    detail["owner_box"] = twin[0].to_key() if twin else None
+    return Ruling(value=owner.to_key(),
+                  reason="staff_band" if twin else "staff_band_no_box",
+                  used=tuple(used), detail=detail)
+
+
 @decision(
     quantity=Q.GLYPH_OWNER,
     checkable=Checkable.MIXED,
@@ -297,7 +495,7 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
-                   Q.FAR_HEAD_OWNER_LEDGER),
+                   Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW),
     scope=Kind.GLYPH,
     # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
     # look toward each candidate staff, read AHEAD of distance and of the older
@@ -306,8 +504,10 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
-           Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER),
-    reasons=("human_owner", "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
+           Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT,
+           Q.STAFF_SKEW),
+    reasons=("human_owner", "staff_band", "staff_band_no_box",
+             "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
              "ledger_direction", "ledger_refuted", "hairpin_separates",
              "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
              "distance", "no_contest", "no_evidence", "tied"),
@@ -364,6 +564,14 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # from, and there is nothing to arbitrate.
         own = ev.subject.at(Kind.STAFF)
         return Ruling(value=own.to_key(), reason="no_contest")
+
+    # ⚠️⚠️ lane-owner-from-staves (Sean, 2026-10-06), AHEAD OF EVERY LEDGER
+    # TIER. A head ON or BETWEEN a known staff's five lines belongs to that
+    # staff -- decided, no contest. Only a head in the GAP goes on. Default OFF.
+    if _from_staves_enabled():
+        banded = _owner_from_staves(ev)
+        if banded is not None:
+            return banded
 
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
 
