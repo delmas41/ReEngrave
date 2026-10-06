@@ -239,11 +239,11 @@ def tile(row, crop, number):
     checks = []
     ly = row["off"]["line_y"]
     if ly is not None:
-        cv2.line(im, (0, Y(ly)), (im.shape[1] - 1, Y(ly)), (0, 0, 255), 1)    # the reader's line: red
+        cv2.line(im, (0, Y(ly)), (im.shape[1] - 1, Y(ly)), (0, 0, 255), 2)    # the reader's line: red
         checks.append(("red", ly, remeasure(crop, (gx0, gy0), ly, row["box"], sp)))
     if row["on"]["pos"] != row["off"]["pos"] and row["on"]["line_y"] is not None:
         ry = row["on"]["line_y"]
-        cv2.line(im, (0, Y(ry)), (im.shape[1] - 1, Y(ry)), (200, 0, 200), 1)  # the rule's line: magenta
+        cv2.line(im, (0, Y(ry)), (im.shape[1] - 1, Y(ry)), (200, 0, 200), 2)  # the rule's line: magenta
         checks.append(("magenta", ry, remeasure(crop, (gx0, gy0), ry, row["box"], sp)))
     if gy0 <= row["edge"] < gy0 + crop.shape[0]:
         cv2.line(im, (0, Y(row["edge"])), (im.shape[1] - 1, Y(row["edge"])), (255, 100, 0), 1)  # staff edge: blue
@@ -279,8 +279,13 @@ def sheet(argv):
         im, ch = tile(r, crops[r["subject"].replace("/", "_")], i)
         allchecks += [(i,) + c for c in ch]
         tiles.append((im, i, r))
-    W = max(t[0].shape[1] for t in tiles)
-    Hh = max(t[0].shape[0] for t in tiles)
+    W, Hh = 400, 300
+    def fit(im):
+        f = min(1.0, W / im.shape[1], Hh / im.shape[0])
+        if f < 1.0:
+            im = cv2.resize(im, None, fx=f, fy=f, interpolation=cv2.INTER_AREA)
+        return im
+    tiles = [(fit(im), i, r) for im, i, r in tiles]
     cap_h = 92
     cols = 5
     cells = []
