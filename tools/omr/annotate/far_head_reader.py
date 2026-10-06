@@ -52,7 +52,10 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     ledger_not_text=True,
     # lane-farhead-not-a-note (Sean 2026-10-05): a box the record's own evidence says is NOT a notehead
     # (a barline, a tremolo slash, text, a sliver) is refused (abstained, never deleted) before it is read.
-    not_a_note=True)
+    not_a_note=True,
+    # lane-edge-vs-through (Sean 2026-10-06): a middle rung the page does not show as a line is not taken
+    # over a visible line at the head's staff-side edge (the head hangs beyond that line: the space).
+    edge_vs_through=True)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -755,7 +758,8 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             far_side_partner_boxes=[b for (s_, b) in page_notehead_boxes
                                     if s_ != subject],
             ledger_not_text=READER_KEYWORDS.get("ledger_not_text", False),
-            text_boxes=text_boxes)
+            text_boxes=text_boxes,
+            edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False))
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge
