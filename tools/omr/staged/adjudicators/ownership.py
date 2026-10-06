@@ -227,6 +227,47 @@ def _ledger_owner_comparison(ev: Evidence, cand_keys: Sequence[Optional[str]]
     }
 
 
+def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...], Dict[str, Any]]]:
+    """ROADMAP 2.56b. The far head read toward EACH candidate staff by the
+    note-first look (`gather._file_owner_ledger_readings`): the note's own line
+    first, then the ledgers counted from it to that staff's edge. Sean
+    (2026-09-28, CLAUDE.md §10): the ledgers name the owner, nearness is only a
+    hint. Returns `(owner staff key, row ids, detail)` where EXACTLY ONE
+    candidate's ladder fits, `None` (the witness is silent, the older tiers run
+    as they did) where
+
+      * no such row was filed (the flag was off, or the head is not far),
+      * a candidate could not be looked at (`unread`: no head size, no staff
+        lines) -- it could be the owner, so nothing is concluded, or
+      * both fit or neither does -- two answers both fit, or none: a tie is
+        never broken by distance here (rule 8).
+
+    A candidate the ledgers did not reach is refuted by an ABSTENTION row
+    (`ledger_not_read`, `unread` False); the rows that fit are Observations.
+    """
+    rows = ev.rows(Q.FAR_HEAD_OWNER_LEDGER)
+    refusals = ev.refusals(Q.FAR_HEAD_OWNER_LEDGER)
+    if not rows and not refusals:
+        return None
+    if any((r.detail or {}).get("unread") for r in refusals):
+        return None
+    fitting = {}
+    for r in rows:
+        fitting[(r.detail or {}).get("candidate")] = r
+    if len(fitting) != 1:
+        return None
+    owner, row = next(iter(fitting.items()))
+    if owner is None:
+        return None
+    return owner, tuple(r.id for r in rows) + tuple(r.id for r in refusals), {
+        "fits": {k: dict(position=v.value, how=(v.detail or {}).get("how"),
+                         ledger_reason=(v.detail or {}).get("ledger_reason"))
+                 for k, v in fitting.items()},
+        "not_fitting": {
+            (r.detail or {}).get("candidate"):
+                (r.detail or {}).get("ledger_reason") for r in refusals}}
+
+
 @decision(
     quantity=Q.GLYPH_OWNER,
     checkable=Checkable.MIXED,
@@ -255,14 +296,18 @@ def _ledger_owner_comparison(ev: Evidence, cand_keys: Sequence[Optional[str]]
     composed_from=(Q.GLYPH_BAND_DISTANCE, Q.GLYPH_LADDER, Q.INSTRUMENT, Q.CLEF,
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
-                   Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY),
+                   Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
+                   Q.FAR_HEAD_OWNER_LEDGER),
     scope=Kind.GLYPH,
+    # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
+    # look toward each candidate staff, read AHEAD of distance and of the older
+    # ladder tiers (`_note_first_ledger_owner`).
     wants=(Q.GLYPH_LADDER, Q.GLYPH_BAND_DISTANCE, Q.GLYPH_CONF,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.CLEF,
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
-           Q.LEDGER_OWNER_DENSITY),
-    reasons=("human_owner", "ledger_owner_density", "ledger_witnesses_disagree",
+           Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER),
+    reasons=("human_owner", "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
              "ledger_direction", "ledger_refuted", "hairpin_separates",
              "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
              "distance", "no_contest", "no_evidence", "tied"),
@@ -321,6 +366,19 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         return Ruling(value=own.to_key(), reason="no_contest")
 
     ladders = {r.detail.get("candidate"): r for r in ev.rows(Q.GLYPH_LADDER)}
+
+    # ⚠️⚠️ ROADMAP 2.56b, AHEAD OF EVERY OLDER LEDGER TIER AND OF DISTANCE.
+    # Sean (2026-09-28): the ledger lines name the owner and are
+    # authoritative; nearness never overrides them. The note-first look reads
+    # the NOTE'S OWN line and counts the ledgers from it to each candidate's
+    # edge, so it needs no complete walk from the staff outward. A resolved
+    # contest DROPS the loser (the exporter refuses the copy), it never
+    # relocates it.
+    nf = _note_first_ledger_owner(ev)
+    if nf is not None:
+        owner, used, detail = nf
+        return Ruling(value=owner, reason="ledger_note_first", used=used,
+                      detail={"ledger_note_first": detail})
 
     # ⚠️⚠️ ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted): pitch is
     # already geometric and never reads a ledger; the ledger reader is

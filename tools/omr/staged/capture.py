@@ -271,6 +271,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "already on the glyph's `Q.GLYPH_BOX` row. Consumed by "
         "`adjudicate_notehead_position`.",
         None),
+    "FAR_HEAD_OWNER_LEDGER": (
+        DERIVED_FIT,
+        "ROADMAP 2.56b -- the far-head ledger reading made toward ONE CANDIDATE "
+        "staff (`detail[\"candidate\"]`): the position the head would have on "
+        "that staff, counted off the ledgers between its edge and the note's own "
+        "line. An interpretation of ink (the line the note rests on, the chain "
+        "of gaps), not a ruler reading. Scoreless for the position row's reason. "
+        "Consumed by `adjudicate_glyph_owner`.",
+        None),
     "CLEF_POSITION": (
         STAFF_GRID_POSITION,
         "the same measurement from the same grid for a clef glyph, and a "
@@ -686,6 +695,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     "LEDGER_FARHEAD": ("staged/gather.py", "gather_far_head_ledger_positions"),
+    # ⚠️ ROADMAP 2.56b. Same function, same raster, the same crop: one more
+    # reading of it, toward each candidate staff.
+    "LEDGER_OWNER_NOTE_FIRST": ("staged/gather.py",
+                                "gather_far_head_ledger_positions"),
     # ⚠️ ROADMAP 2.55. The SAME `YoloDetector.detect` `DETECTOR` names, on
     # the SAME cell -- a second call at a lower confidence floor
     # (`RESCUE_CONF_FLOOR`), never a different reader of a different image.
