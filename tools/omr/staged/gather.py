@@ -863,6 +863,34 @@ class FarHeadState:
         self.held: List[Tuple[Any, List[Dict[str, Any]]]] = []
 
 
+def _far_head_not_a_note_evidence(log: Log, jobs: Sequence[Dict[str, Any]],
+                                  cell_by_key: Dict[Any, Any]) -> Dict[str, Dict[str, Any]]:
+    """lane-farhead-not-a-note (Sean 2026-10-05): what the record ALREADY holds about each far head that says its box
+    may not be a notehead -- read, never measured here (CLAUDE.md rule 6). Per subject: the measure cell's page box,
+    the measure cuts of its own staff (a cut is where `measure_partition` found a barline), 2.49's
+    `Q.NOTEHEAD_STEM_CROSS_INK` detail. A verdict is never read here (GATHER precedes ADJUDICATE); a re-read of a
+    FINISHED record may hand the reader its `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` verdict as `decided` itself.
+    ⚠️ ORDER: this reads rows filed by `gather_notehead_stem_cross_ink`, so the far-head gather runs after it."""
+    cuts: Dict[Tuple[int, int, int], set] = {}
+    for (page, system, staff, _cell), c in cell_by_key.items():
+        bb = getattr(c, "bbox_page_px", None)
+        if bb:
+            cuts.setdefault((page, system, staff), set()).update((float(bb[0]), float(bb[2])))
+    out: Dict[str, Dict[str, Any]] = {}
+    for job in jobs:
+        g = R.glyph(job["page"], job["system"], job["staff"], job["cell"], job["glyph"])
+        c = cell_by_key.get((job["page"], job["system"], job["staff"], job["cell"]))
+        bb = getattr(c, "bbox_page_px", None) if c is not None else None
+        ev: Dict[str, Any] = dict(
+            cell_box=tuple(float(v) for v in bb) if bb else None,
+            barline_xs=sorted(cuts.get((job["page"], job["system"], job["staff"]), ())))
+        rows = log.rows(Q.NOTEHEAD_STEM_CROSS_INK, g)
+        if rows:
+            ev["cross"] = dict(rows[-1].detail or {})
+        out[g.to_key()] = ev
+    return out
+
+
 def _file_far_head_reading(log: Log, job: Dict[str, Any], page_ctx: Any) -> bool:
     """Read one far head and FILE it: an Observation under `READERS.
     LEDGER_FARHEAD`, or an Abstention with a reason word. Returns whether a
@@ -877,6 +905,8 @@ def _file_far_head_reading(log: Log, job: Dict[str, Any], page_ctx: Any) -> bool
     if res["pos"] is None:
         word = (ABSTAIN.NO_PAGE_SHAPE if res["reason"] == "no_page_shape"
                 else ABSTAIN.LEDGER_NOT_READ)
+        # lane-farhead-not-a-note: `ledger_reason` is `not_a_note:<why>` where the record's own evidence says the box
+        # is something else; it abstains (never a position, never a deletion) and the reason is on the row
         log.abstain(g, Q.FAR_HEAD_LEDGER_POSITION, reader=READERS.LEDGER_FARHEAD,
                     frame=frame, reason=word, ledger_reason=res["reason"],
                     geometry_position=job["geometry_position"])
@@ -978,7 +1008,8 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
         return census
     census["far"] = len(jobs)
     gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY) if rgb.ndim == 3 else rgb
-    ctx = FH.FarHeadPage(gray, heads, page_boxes, used_staves)
+    ctx = FH.FarHeadPage(gray, heads, page_boxes, used_staves,
+                         not_a_note=_far_head_not_a_note_evidence(log, jobs, cell_by_key))
     state.pool.extend(ctx.samples)
     pooled = FH.pooled_shape(state.pool)
     if ctx.shape is None and pooled is not None:
@@ -8201,12 +8232,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # than a naming of it.
         gather_accidental_positions(log, cells, local, detections)
         gather_ownership_evidence(log, pws, cells, local, detections)
-        # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
-        # one whose GEOMETRY position lies outside the first space -- it reads
-        # that row) and after the ownership evidence, which does not feed it.
-        # A second witness under its own reader, never an overwrite.
-        gather_far_head_ledger_positions(log, pws, cells, local, detections,
-                                         far_head_state)
         gather_rhythm_marks(log, cells, local, detections)
         gather_glyph_families(log, detections, cells, local)
         # ⚠️ AFTER detection (the letters ARE detections, and the CV wedge
@@ -8260,6 +8285,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # raster and this cell's own `Q.STEM` rows, already filed by
         # `gather_cv_lines` above.
         gather_notehead_stem_cross_ink(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.56, AFTER `gather_notehead_positions` (a far head is
+        # one whose GEOMETRY position lies outside the first space -- it reads
+        # that row) and after the ownership evidence, which does not feed it.
+        # A second witness under its own reader, never an overwrite.
+        # ⚠️ lane-farhead-not-a-note: MOVED HERE from beside the ownership
+        # evidence, because the gate reads `Q.NOTEHEAD_STEM_CROSS_INK` (2.49's
+        # tremolo-slash rows) and `Q.STEM`-era evidence that did not exist yet.
+        gather_far_head_ledger_positions(log, pws, cells, local, detections,
+                                         far_head_state)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

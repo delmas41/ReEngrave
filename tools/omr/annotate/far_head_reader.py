@@ -49,7 +49,10 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # reader (count outward from the staff), bit-identical.
     note_first=True,
     # lane-ledger-not-text (Sean 2026-10-05): a rung counted between must not be text ink
-    ledger_not_text=True)
+    ledger_not_text=True,
+    # lane-farhead-not-a-note (Sean 2026-10-05): a box the record's own evidence says is NOT a notehead
+    # (a barline, a tremolo slash, text, a sliver) is refused (abstained, never deleted) before it is read.
+    not_a_note=True)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -89,6 +92,89 @@ STEM_RUN_SPACES = (2.0, 6.5)
 STEM_REACH_PAST_HEAD_SPACES = 1.0
 CUT_SPACES = 0.3                      # template_review_r7.CUT_SPACES
 DEFAULT_THICKNESS_PX = 4.0            # mht._page_line_thickness_px's fallback
+
+
+# ---------------------------------------------------------------------------
+# lane-farhead-not-a-note (Sean, DECISIONS 2026-10-05). Of 12 seeded abstentions, 4 were not noteheads: two
+# barlines/brackets, a tremolo slash, the "a 2" numeral. The reader is handed whatever the detector boxed as a
+# notehead; this refuses a box the record's OWN evidence says is something else. It abstains with a named reason; it
+# deletes nothing (the glyph, its box and its geometry row stay on the record).
+#
+# THRESHOLDS, STATED BEFORE LOOKING (the floors that are not new are IMPORTED from `notehead_precision`, never restated):
+#   * on_a_barline : a measure cut (the record's own `cell_box` edge on this staff = where `measure_partition` cut
+#                    at a barline) lies INSIDE the box's x extent AND the box is narrower than one staff space.
+#                    BARLINE NOTE: the first draft (cut within 0.25 sp of the box, any width) was measured and
+#                    refused real heads and dynamic letters (of 12 refusals no other reason made, 4 were real heads,
+#                    6 dynamic letters; the cut is only within ~9 px of the barline ink). The conjunction cannot
+#                    refuse a head-wide box; see FINDINGS.
+#   * on_text      : a detector box of a text/dynamic class (`ledger_grid.is_text_class`) covers at least
+#                    TEXT_OVERLAP_MIN (half) of the head box.
+#   * tremolo_slash: 2.49's own SHAPE test (angle, elongation, fill) and CROSSING test (each side >= 30% of the
+#                    glyph's ink) on the `Q.NOTEHEAD_STEM_CROSS_INK` row. 2.49's POSITION test (away from both stem
+#                    ends) is deliberately NOT asked here -- see FINDINGS; the shape and crossing constants are 2.49's.
+#   * too_narrow / clipped_fragment : `notehead_precision`'s own floors (1.0 sp wide for noteheadBlack*; under
+#                    CLIPPED_NOTEHEAD_MAX_SPACES tall and on the cell's own edge).
+#   * decided_not_a_notehead : the record already holds `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` True for the box (a re-read of
+#                    a finished record; at GATHER there is no verdict yet and this is simply absent).
+# ---------------------------------------------------------------------------
+TEXT_OVERLAP_MIN = 0.5
+
+NOT_A_NOTE_WORDS = {
+    "decided_not_a_notehead": "the record already decided this box is not a notehead ({detail})",
+    "on_a_barline": "a barline: the record's own measure cut runs through this box",
+    "tremolo_slash": "a tremolo slash: a diagonal stroke across its stem, ink on both sides",
+    "on_text": "text: a text or dynamic box the record holds lies over this box",
+    "too_narrow": "too narrow to be a notehead (under one staff space wide)",
+    "clipped_fragment": "a sliver cut off by the edge of its measure cell",
+}
+
+
+def _precision():
+    # lazy: staged -> annotate is the usual direction; this reads two floors and two pure tests back
+    from ..staged.adjudicators import notehead_precision as NP
+    return NP
+
+
+def not_a_note_reason(box, cls, spacing, *, cell_box=None, cross=None, barline_xs=(), text_boxes=(),
+                      decided=None) -> Optional[Dict[str, Any]]:
+    """Why this far "notehead" box is something else, or `None`. Pure: a box, its class, the local staff spacing
+    (page px) and the record's own evidence about it. `dict(reason, words, drawn, also)`: `drawn` is the evidence to
+    draw, `[(kind, geometry)]`; `also` every other reason that fired (the first in ORDER is the one named)."""
+    if spacing is None or spacing <= 0:
+        return None
+    x0, y0, x1, y1 = (float(v) for v in box)
+    NP = _precision()
+    fired: List[Tuple[str, Any]] = []
+    if decided:
+        fired.append(("decided_not_a_notehead", decided))
+    # a cut INSIDE the box, on a box narrower than a head (see the BARLINE note above: a margin test refused real
+    # heads and dynamic letters that merely stood near a cut)
+    cuts = ([float(x) for x in (barline_xs or ()) if x0 <= float(x) <= x1]
+            if (x1 - x0) / spacing < NP.TOO_NARROW_MIN_SPACES else [])
+    if cuts:
+        fired.append(("on_a_barline", [("barline", min(cuts, key=lambda x: abs(x - (x0 + x1) / 2.0)))]))
+    if cross and NP._tremolo_shape_ok(cross) and NP._tremolo_crossing_ok(cross):
+        fired.append(("tremolo_slash", [("slash", (x0, y0, x1, y1))]))
+    area = max(1e-9, (x1 - x0) * (y1 - y0))
+    for tb in text_boxes or ():
+        ox, oy = min(x1, tb[2]) - max(x0, tb[0]), min(y1, tb[3]) - max(y0, tb[1])
+        if ox > 0 and oy > 0 and ox * oy / area >= TEXT_OVERLAP_MIN:
+            fired.append(("on_text", [("text", tuple(tb))]))
+            break
+    if (str(cls or "").lower().startswith(NP.TOO_NARROW_CLASS_PREFIX)
+            and (x1 - x0) / spacing < NP.TOO_NARROW_MIN_SPACES):
+        fired.append(("too_narrow", [("box", (x0, y0, x1, y1))]))
+    if cell_box is not None and (y1 - y0) / spacing < NP.CLIPPED_NOTEHEAD_MAX_SPACES:
+        tol = NP.CELL_EDGE_TOLERANCE_PAGE_PX
+        top, bot = abs(y0 - cell_box[1]) <= tol, abs(y1 - cell_box[3]) <= tol
+        if top or bot:
+            fired.append(("clipped_fragment", [("cell_edge", cell_box[1] if top else cell_box[3])]))
+    if not fired:
+        return None
+    reason, detail = fired[0]
+    words = NOT_A_NOTE_WORDS[reason].format(detail=detail if isinstance(detail, str) else "")
+    drawn = detail if isinstance(detail, list) else []
+    return dict(reason=reason, words=words, drawn=drawn, also=[r for r, _ in fired[1:]])
 
 
 def head_kind(cls: Optional[str]) -> Optional[str]:
@@ -353,8 +439,12 @@ class FarHeadPage:
 
     def __init__(self, gray, heads: Sequence[Dict[str, Any]],
                  page_boxes: Sequence[Tuple[str, str, tuple]],
-                 staff_lines_by_key: Dict[str, Sequence[float]]):
+                 staff_lines_by_key: Dict[str, Sequence[float]],
+                 not_a_note: Optional[Dict[str, Dict[str, Any]]] = None):
         self.gray = gray
+        # lane-farhead-not-a-note: per far-head subject, the record's evidence that the box may not be a note --
+        # `dict(cell_box, cross, barline_xs, decided)`; absent = no evidence = never refused for want of it
+        self.not_a_note: Dict[str, Dict[str, Any]] = dict(not_a_note or {})
         self.page_boxes = list(page_boxes)
         self.nh = [(h["subject"], tuple(h["box"])) for h in heads]
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
@@ -437,11 +527,28 @@ class FarHeadPage:
                           and off <= shb.FIT_OFFSET_MAX_SPACES)
         return st
 
+    def refuse_not_a_note(self, subject: str, box, cls, spacing) -> Optional[Dict[str, Any]]:
+        """`not_a_note_reason` over this subject's own evidence, or `None` (switched off, or no reason)."""
+        if not READER_KEYWORDS.get("not_a_note"):
+            return None
+        ev = self.not_a_note.get(subject) or {}
+        return not_a_note_reason(
+            box, cls, spacing, cell_box=ev.get("cell_box"), cross=ev.get("cross"),
+            barline_xs=ev.get("barline_xs") or (), text_boxes=self.text_boxes, decided=ev.get("decided"))
+
     def read(self, subject: str, box: Sequence[float], cls: Optional[str],
              global_lines: Sequence[float]) -> Dict[str, Any]:
         """The far head's absolute position: `dict(pos, reason, box_source,
         fit)`. `pos` is `None` (with a reason word) where the reader cannot
-        say -- never a default."""
+        say -- never a default. A box the record's own evidence says is not a
+        note abstains `not_a_note:<reason>` before anything is read."""
+        if READER_KEYWORDS.get("not_a_note") and len(global_lines) >= 2:
+            _lines = frame_lines_for_head(self.gray, global_lines, tuple(float(v) for v in box))
+            _sp = (max(_lines) - min(_lines)) / 4.0
+            _nan = self.refuse_not_a_note(subject, box, cls, _sp)
+            if _nan is not None:
+                return dict(pos=None, reason="not_a_note:" + _nan["reason"], box_source=None,
+                            not_a_note=_nan, spacing=_sp)
         if self.shape is None:
             return dict(pos=None, reason="no_page_shape", box_source=None,
                         n_on_line=self.n_on_line)
