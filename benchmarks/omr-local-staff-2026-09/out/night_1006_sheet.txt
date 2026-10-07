@@ -1,0 +1,15 @@
+pools: {'beethoven5-litolff': {'pool': 1739, 'differ_both_decided': 140, 'differ_base_abstained': 127, 'agree': 1472}, 'brahms1-breitkopf': {'pool': 3783, 'differ_both_decided': 267, 'differ_base_abstained': 98, 'agree': 3418}}
+drawn lines 40 | within 2 px of a flanking ink row: 28 | off by more than 2 px: 3 [(1, 'note line', 2137.2, 2.8), (6, 'ledger 2', 485.0, 2.5), (10, 'note line', 4915.0, 3.5)] | no flanking ink beside the head: 9
+1 beetho glyph/12/1/0/0/7 | NEW on the 4th ledger above | BASE in the space above the 3rd ledger | geometry -9 | DIFF through_the_box_middle
+2 brahms glyph/9/1/2/3/2 | NEW in the space above the 1st ledger | BASE in the space above the 1st ledger | geometry -3 | same staff_side_edge
+3 beetho glyph/16/0/0/8/1 | NEW on the 4th ledger above | BASE on the 3rd ledger above | geometry -8 | DIFF through_the_middle
+4 brahms glyph/6/0/7/6/5 | NEW on the 3rd ledger above | BASE in the space above the 2nd ledger | geometry -6 | DIFF through_the_box_middle
+5 brahms glyph/2/0/3/2/1 | NEW on the 3rd ledger above | BASE in the space above the 2nd ledger | geometry -6 | DIFF through_the_box_middle
+6 beetho glyph/16/0/0/0/2 | NEW on the 3rd ledger below | BASE on the 2nd ledger below | geometry 13 | DIFF through_the_middle
+7 brahms glyph/5/0/3/3/3 | NEW in the space below the 1st ledger | BASE in the space below the 1st ledger | geometry 11 | same staff_side_edge
+8 beetho glyph/14/1/0/7/3 | NEW on the 2nd ledger above | BASE on the 2nd ledger above | geometry -4 | same through_the_middle
+9 brahms glyph/13/0/9/0/4 | NEW on the 2nd ledger above | BASE in the space above the 1st ledger | geometry -3 | DIFF through_the_box_middle
+10 brahms glyph/3/1/3/7/9 | NEW on the 1st ledger below | BASE in the space below the 1st ledger | geometry 11 | DIFF through_the_box_middle
+11 beetho glyph/7/0/7/15/4 | NEW on the 1st ledger above | BASE on the 1st ledger above | geometry -2 | same through_the_middle
+12 beetho glyph/5/0/5/9/0 | NEW on the 3rd ledger above | BASE in the space above the 2nd ledger | geometry -6 | DIFF through_the_box_middle
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a71206afd272feab6/out/print/ledgers/night_1006_sample.png

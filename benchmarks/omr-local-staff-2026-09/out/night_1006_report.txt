@@ -1,0 +1,95 @@
+====================================================================================================
+beethoven5-litolff: NEW beethoven5-litolff-mvt1-whole-20261006-night-combined.record.json  BASE beethoven5-litolff-mvt1-whole-20261004-farhead-all.record.json
+ replay controls: NEW {'repro': 1897, 'mismatch': 6} BASE {'repro': 2818, 'mismatch': 12}
+
+1. FAR HEADS
+  NEW: far heads 4197; decided 1903; abstained 1845; refused as not-a-note 449 (reader gate)
+     abstained by reason: {'count_does_not_fit': 857, 'no_rungs': 588, 'no_line_at_the_note_box': 347, 'line_at_the_box_not_a_ledger_for_this_head': 39, 'line_not_beyond_the_staff_edge': 14}
+     not-a-note by why: {'not_a_note:clipped_fragment': 306, 'not_a_note:on_text': 57, 'not_a_note:too_narrow': 42, 'not_a_note:on_a_barline': 31, 'not_a_note:tremolo_slash': 13}
+  BASE: far heads 4197; decided 2830; abstained 1367; refused as not-a-note 0 (reader gate)
+     abstained by reason: {'no_rungs': 909, "every found rung was the head's own outline, not a ledger be": 458}
+   owner changes, ledger-owner witness (NEW):
+  witness (reason ledger_note_first) decided 3061 heads (1840 on the filing staff); NEW owner differs from BASE on 220: {'to filing staff (BASE: other staff / abstained)': 59, 'moved off filing staff, DROPPED (no twin)': 114, 'moved off filing staff, twin on new staff': 47}
+     for the moved-off ones: {'BASE had filing staff': 128, 'BASE abstained': 33}; box-unmatched 0
+     all glyph_owner reasons NEW: {'ledger_note_first': 3061, 'distance': 779, 'ledger_direction': 357, 'ledger_owner_density': 163, 'ladder': 87, 'far_no_rungs': 46, 'range_veto': 19, 'hairpin_separates': 2, 'ledger_witnesses_disagree': 1}
+
+2. OFF-BOX CHECK (Sean's rule) on decided far heads
+  NEW: decided far heads 1903; replay reproduced the record on 1897/1903 (99.7%) (census on those)
+     [reader's measured rows] reader ON 1794/1897 (94.6%)   geometry ON 1317/1897 (69.4%)
+     [grid rows (reader-independent)] reader ON 1604/1897 (84.6%)   geometry ON 1505/1897 (79.3%)
+  BASE: decided far heads 2830; replay reproduced the record on 2818/2830 (99.6%) (census on those)
+     [reader's measured rows] reader ON 1612/2818 (57.2%)   geometry ON 1589/2818 (56.4%)
+     [grid rows (reader-independent)] reader ON 1438/2818 (51.0%)   geometry ON 2022/2818 (71.8%)
+  SAME HEADS decided in both (n=1754): NEW ON 1656/1754 (94.4%)  BASE ON 1553/1754 (88.5%); same answer 1600/1754 (91.2%)
+  CONTROL NEW: truth references with measured rows n=36: references PASS 35/36 (97.2%); both +-1 shifts FLAGGED 30/36 (83.3%); reader right/wrong x ON/OFF {('reader right', 'ON'): 35, ('reader wrong', 'OFF'): 1}
+  CONTROL BASE: truth references with measured rows n=38: references PASS 37/38 (97.4%); both +-1 shifts FLAGGED 31/38 (81.6%); reader right/wrong x ON/OFF {('reader right', 'ON'): 33, ('reader wrong', 'OFF'): 5}
+
+3. TRUTH SET
+  truth-set far heads n=41
+    NEW   right  36 wrong   1 undecided   4 unmatched   0
+    BASE  right  33 wrong   5 undecided   3 unmatched   0
+    GEO   right  29 wrong  12 undecided   0 unmatched   0
+    NEW!=BASE glyph/3/0/0/6/2 truth [-6] NEW None (id glyph/3/0/0/6/2) BASE -4 geometry -5
+    NEW!=BASE glyph/3/0/7/3/1 truth [-6] NEW -6 (id glyph/3/0/7/3/1) BASE -5 geometry -6
+    NEW!=BASE glyph/3/0/7/3/2 truth [-6] NEW -6 (id glyph/3/0/7/3/2) BASE -5 geometry -6
+    NEW!=BASE glyph/3/0/7/3/4 truth [-6] NEW -6 (id glyph/3/0/7/3/4) BASE -5 geometry -6
+    NEW wrong: glyph/3/0/0/2/4 truth [-7] NEW -6 geometry -7
+
+4. WHOLE-RECORD SANITY (GATHER+ADJUDICATE)
+  noteheads    NEW 11399   BASE 11399
+  far          NEW 4197   BASE 4197
+  owner_all    NEW {'decided': 9286, 'abstained': 136}   BASE {'decided': 9213, 'abstained': 209}
+  owner_nonfar NEW {'decided': 379}   BASE {'decided': 379}
+  owner_far    NEW {'decided': 4089, 'abstained': 47}   BASE {'decided': 4016, 'abstained': 120}
+  np           NEW {'abstained': 2294, 'decided': 1903}   BASE {'abstained': 1367, 'decided': 2830}
+  nan          NEW {'decided': 11399}   BASE {'decided': 11399}
+  clef         NEW {'decided': 317, 'narrowed': 10, 'abstained': 4}   BASE {'decided': 317, 'narrowed': 10, 'abstained': 4}
+  meter        NEW {'decided': 31}   BASE {'decided': 31}
+  clef verdicts: staves in both 331; changed 0 []
+  meter verdicts: systems in both 31; changed 0 []
+  FLAGS (>2% change outside the far-head population): none
+====================================================================================================
+brahms1-breitkopf: NEW brahms1-breitkopf-mvt1-whole-20261006-night-combined.record.json  BASE brahms1-breitkopf-mvt1-whole-20261004-farhead-all.record.json
+ replay controls: NEW {'repro': 4051, 'mismatch': 4} BASE {'repro': 6621, 'mismatch': 7}
+
+1. FAR HEADS
+  NEW: far heads 8966; decided 4055; abstained 3506; refused as not-a-note 1405 (reader gate)
+     abstained by reason: {'count_does_not_fit': 1911, 'no_line_at_the_note_box': 771, 'no_rungs': 748, 'line_not_beyond_the_staff_edge': 42, 'line_at_the_box_not_a_ledger_for_this_head': 34}
+     not-a-note by why: {'not_a_note:too_narrow': 534, 'not_a_note:clipped_fragment': 426, 'not_a_note:on_a_barline': 373, 'not_a_note:on_text': 64, 'not_a_note:tremolo_slash': 8}
+  BASE: far heads 8966; decided 6628; abstained 2338; refused as not-a-note 0 (reader gate)
+     abstained by reason: {'no_rungs': 1481, "every found rung was the head's own outline, not a ledger be": 857}
+   owner changes, ledger-owner witness (NEW):
+  witness (reason ledger_note_first) decided 7085 heads (3797 on the filing staff); NEW owner differs from BASE on 459: {'moved off filing staff, DROPPED (no twin)': 365, 'to filing staff (BASE: other staff / abstained)': 47, 'moved off filing staff, twin on new staff': 47}
+     for the moved-off ones: {'BASE had filing staff': 387, 'BASE abstained': 25}; box-unmatched 0
+     all glyph_owner reasons NEW: {'ledger_note_first': 7085, 'ledger_direction': 1379, 'distance': 1027, 'ladder': 220, 'ledger_owner_density': 179, 'hairpin_separates': 104, 'far_no_rungs': 88, 'range_veto': 10, 'tied': 6}
+
+2. OFF-BOX CHECK (Sean's rule) on decided far heads
+  NEW: decided far heads 4055; replay reproduced the record on 4051/4055 (99.9%) (census on those)
+     [reader's measured rows] reader ON 3976/4051 (98.1%)   geometry ON 3859/4051 (95.3%)
+     [grid rows (reader-independent)] reader ON 3846/4051 (94.9%)   geometry ON 3949/4051 (97.5%)
+  BASE: decided far heads 6628; replay reproduced the record on 6621/6628 (99.9%) (census on those)
+     [reader's measured rows] reader ON 3884/6621 (58.7%)   geometry ON 4831/6621 (73.0%)
+     [grid rows (reader-independent)] reader ON 3825/6621 (57.8%)   geometry ON 5652/6621 (85.4%)
+  SAME HEADS decided in both (n=3949): NEW ON 3875/3949 (98.1%)  BASE ON 3728/3949 (94.4%); same answer 3670/3949 (92.9%)
+  CONTROL NEW: truth references with measured rows n=11: references PASS 11/11 (100.0%); both +-1 shifts FLAGGED 10/11 (90.9%); reader right/wrong x ON/OFF {('reader right', 'ON'): 11}
+  CONTROL BASE: truth references with measured rows n=11: references PASS 11/11 (100.0%); both +-1 shifts FLAGGED 10/11 (90.9%); reader right/wrong x ON/OFF {('reader right', 'ON'): 11}
+
+3. TRUTH SET
+  truth-set far heads n=11
+    NEW   right  11 wrong   0 undecided   0 unmatched   0
+    BASE  right  11 wrong   0 undecided   0 unmatched   0
+    GEO   right  11 wrong   0 undecided   0 unmatched   0
+
+4. WHOLE-RECORD SANITY (GATHER+ADJUDICATE)
+  noteheads    NEW 24260   BASE 24260
+  far          NEW 8966   BASE 8966
+  owner_all    NEW {'abstained': 486, 'decided': 33557}   BASE {'abstained': 539, 'decided': 33504}
+  owner_nonfar NEW {'decided': 1176}   BASE {'decided': 1176}
+  owner_far    NEW {'decided': 8828, 'abstained': 94}   BASE {'decided': 8775, 'abstained': 147}
+  np           NEW {'decided': 4055, 'abstained': 4911}   BASE {'decided': 6628, 'abstained': 2338}
+  nan          NEW {'decided': 24260}   BASE {'decided': 24260}
+  clef         NEW {'decided': 690, 'narrowed': 1}   BASE {'decided': 690, 'narrowed': 1}
+  meter        NEW {'decided': 5, 'abstained': 48}   BASE {'decided': 5, 'abstained': 48}
+  clef verdicts: staves in both 691; changed 0 []
+  meter verdicts: systems in both 53; changed 0 []
+  FLAGS (>2% change outside the far-head population): none
