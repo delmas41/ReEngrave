@@ -1124,3 +1124,108 @@ No production code changed net of this item (the recentring attempt was
 built, measured, and reverted in full). `truth_set_2_44c.py` is the only
 surviving diff. `pytest -m "not slow"` and `staged.check` TOTAL 245:
 unchanged from §17f.
+
+## 19. (2026-10-01) LANE `lane-2.44-first-two-stages` — REPRODUCED, SCORED,
+## PRINT-CHECKED, OPTION B IS INERT ON THIS POPULATION
+
+New lane, same branch tip (`worktree-agent-ac053ee5c8a371951` / 5099af33),
+in a fresh worktree with none of the gitignored build products (`.record.
+json` files are not committed — CLAUDE.md §5a's symlink setup plus a fresh
+`--full` re-gather of both count pages was required before anything in
+this section could be measured).
+
+### 19a. The judge already does what Sean asked
+
+Confirmed by reading, not by building: `truth_set_2_44c.py`'s own
+`build_rows` computes every candidate pitch from `Q.NOTEHEAD_STAFF_
+POSITION` (an ADJUDICATE-stage row) and `Q.CLEF` (ADJUDICATE) via
+`_pitch_from_position` directly — never `Q.PITCH` (EVALUATE) and never a
+field read off the exported MusicXML. No fix needed; no RED-first test
+added because nothing was red. (`EXP.build(rec)` — needed only for the
+truth set's own BAR NUMBERING and part/family bookkeeping, not for any
+candidate's pitch — does require a `--full` gather through EXPORT; the
+POSITION the judge actually scores is unaffected by whether EVALUATE ran.)
+
+### 19b. Reproduced exactly
+
+Fresh `--full` small re-gather, both documents, this worktree:
+
+| reading | Litolff (n=45) | Brahms (n=11) |
+|---|---|---|
+| geometry | 30 right / 15 wrong (67%) | 11/0 (100%) |
+| reader 1 (clean-count) | 5 right / 12 wrong / 28 abstain | 5/2/4 |
+| reader 2 (rung grid) | 35 right / 9 wrong / 1 abstain (78%) | 11/0/0 (100%) |
+| agreement (r1==r2) | 4 right / 41 abstain | 5 right / 6 abstain |
+| **option B** (agree overrides, else geometry) | **30/15 — byte-identical to geometry** | **11/0 — byte-identical to geometry** |
+| local geometry (2.44c's 4th reading) | 22/20/3 (49%) | 11/0 (100%) |
+
+Byte-identical to §15/§17/§18a's own committed numbers. Control: self-
+control (ref vs itself) 0 bad on both documents; corrupted control (+1
+octave shift) false-passes 9.2% (Litolff, 926/10029) / 7.5% (Brahms,
+1328/17825) — same rate §14 validated the judge at. A positive control that
+can fail (CLAUDE.md §6b) and did not flip to zero or 100%.
+
+### 19c. ⚠️ Option B never fires correctly on this scored population
+
+Every one of the 4 Litolff / 5 Brahms agreement cases (`r1 == r2`) already
+equals geometry's own rounded answer — option B and geometry score the
+IDENTICAL right/wrong set on both documents, to the row. The rule as
+specified (require both readers to agree before overriding geometry) is
+not WRONG, but on the 56 heads this truth set can check, it has never once
+changed a wrong geometric answer into a right one, or vice versa. This is
+not a contradiction of DECISIONS 2026-09-30's choice of option B — the
+rule's design was to catch the rarer case where geometry is confidently
+wrong (Sean's own flute-chord example) — but it means "option B" is not
+demonstrated as an improvement by this measurement; it is demonstrated as
+harmless (never makes geometry worse) and currently inert (never makes it
+better) on the two count pages.
+
+### 19d. Print check — 8 of 30/2 scored disagreement heads, `out/print/2.44/`
+
+Selected every scored head where geometry, reader 1, reader 2 and local
+geometry do not all agree (30 Litolff, 2 Brahms candidates), picked the 8
+richest disagreements, including all four of Sean's own named chord heads
+(`glyph/3/0/0/2/{1,3,4,9}`, DECISIONS 2026-09-30). Each crop (600 dpi, 3x
+upscaled) draws the staff lines (grey), the detected box (red), and each
+candidate's own extrapolated staff position as a coloured tick (cyan =
+geometry, magenta = reader 1, green = reader 2, orange = local geometry),
+legend text marking RIGHT/WRONG against the reference encoding:
+
+| crop | print truth | geometry | reader 1 | reader 2 | local geom |
+|---|---|---|---|---|---|
+| `litolff-glyph-1-0-3-7-3` | C4 | D4 WRONG | (no row) | C4 RIGHT | F4 WRONG |
+| `litolff-glyph-3-0-0-2-1` (Sean's chord 2 upper) | E6 | F6 WRONG | B5 WRONG | E6 RIGHT | E6 RIGHT |
+| `litolff-glyph-3-0-0-2-3` (chord 2 lower) | C6 | D6 WRONG | B5 WRONG | C6 RIGHT | C6 RIGHT |
+| `litolff-glyph-3-0-0-2-4` (chord 1 upper) | F6 | F6 RIGHT | B5 WRONG | F6 RIGHT | F6 RIGHT |
+| `litolff-glyph-3-0-0-2-9` (chord 1 lower) | D6 | E6 WRONG | D6 RIGHT | E6 WRONG | D6 RIGHT |
+| `litolff-glyph-3-0-0-7-1` | G6 | A6 WRONG | C6 WRONG | G6 RIGHT | A6 WRONG |
+| `litolff-glyph-1-0-10-8-1` | C4 | D4 WRONG | (no row) | C4 RIGHT | (no row) |
+| `brahms-glyph-1-1-0-4-0` | F6 | F6 RIGHT | B5 WRONG | F6 RIGHT | F6 RIGHT |
+
+Looked at each by eye: reader 2's green tick lands on or inside the real
+printed head/ledger ink in all 8 crops, and agrees with the reference in
+all 8. Reader 1's magenta tick is visibly off the engraved ink in 7 of 8 —
+consistent with §17's diagnosed causes (A: pushed outward by a filled head
+or fused ledger; B: one Litolff staff's own local effect), not a new
+finding. Geometry and local geometry each miss 5 of 8, always by rounding
+toward the staff rather than away from it. `litolff-glyph-3-0-0-2-9` is the
+one case in this sample where reader 1 is right and reader 2 is wrong —
+the same chord (chord 1) where reader 2 gets its OTHER member
+(`/2/4`) right, i.e. reader 2's error here is local to one head within a
+chord it otherwise reads correctly, not a wholesale miss.
+
+### 19e. Recommendation
+
+Reader 2 (`LEDGER_RUNG_GRID`) alone is the strongest single reading
+measured on this population (78% Litolff, 100% Brahms) and the print
+check supports it on every crop looked at. Option B as specified is safe
+to leave as-is (it never makes geometry worse here) but should not be
+reported to Sean as a measured improvement — on these 56 scored heads it
+is indistinguishable from plain geometry. Recommend: keep option B
+unchanged (DECISIONS 2026-09-30 stands, nothing here contradicts it), but
+do not claim it as a win until reader 1 is repaired (§17e) or a case is
+found where the two readers agree on something geometry gets wrong. Not
+wired; no default flipped; `pytest -m "not slow"` and `check` unchanged
+(no production code touched — `truth_set_2_44c.py`'s own `DOCS` paths were
+only re-populated by a fresh `--full` gather, and `crop_disagreements_2_44.
+py` is a new measurement-only script, both under this benchmark directory).
