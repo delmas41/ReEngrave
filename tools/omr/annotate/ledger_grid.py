@@ -3425,6 +3425,180 @@ def refine_line_on_flanks(img_gray, y, head_box, spacing, require_contact=False)
     return float(np.mean(cands)), True
 
 
+# ---------------------------------------------------------------------------
+# lane-farhead-2-9 (Sean 2026-10-07, farhead_5_6 tile 2 `brahms 18/1/0/5/21`): "I don't think it should be assuming there
+# are lines where it can't see them, only looking for them where it thinks they should be."  A ledger fused into a head's
+# ink is not in the walk's rungs, but its ENDS jut out of the head on either side, however short.  THE TEST (stated before
+# it was run): at the row the ledger must be on (+- `JUT_ROW_TOL_SPACES`), a side of the head shows a jut when, in the
+# columns 0.05..0.55 sp beyond that side's edge, a thin (<= LEDGER_THICKNESS_MAX sp) run of ink whose centre is within the
+# row tolerance holds >= `JUT_MIN_SPACES` (0.15 sp, `RUNG_STUB_MIN_SPACES`) CONTIGUOUS columns that BEGIN within
+# `JUT_START_MAX_SPACES` (0.25 sp) of that edge (a dot floats clear of the head; a ledger end does not), with the run's
+# centre steady within 0.10 sp and its thickness within half the thin cap (flat).  A jut on ONE side counts (2026-10-01:
+# a one-sided ledger is real).  Nothing found -> nothing counted.
+# REVISED after the first run on tile 2 (the print showed it): the edge is measured from the box AND from the head's own
+# ink body (`_jut_from_head_ink`'s thick columns; the box sits 2-3 px outside the body, which hid a 6 px jut), and the
+# row tolerance is 0.15 sp (half a ledger's printed thickness, 8 px on this plate; the first 0.12 sp = 3.3 px missed a
+# hand-drawn ledger that sits 3.5 px off the equal-pitch row).
+# ---------------------------------------------------------------------------
+JUT_ROW_TOL_SPACES = 0.15
+JUT_MIN_SPACES = RUNG_STUB_MIN_SPACES        # a jut this long on ONE side counts
+#: "however short" (Sean): a jut this long counts only where it shows on BOTH sides at the one row -- the same 3-4 px
+#: stub either side of the body is a ledger running through; a head's own corner bleeds on one side at a time.  (The first
+#: run on tile 2 found 4 px = 0.146 sp on each side at 3984, a hair under JUT_MIN_SPACES.)
+JUT_MIN_BOTH_SIDES_SPACES = 0.10
+JUT_START_MAX_SPACES = 0.25
+JUT_SCAN_FROM_SPACES = 0.05
+JUT_SCAN_TO_SPACES = 0.55
+JUT_CENTRE_STEADY_SPACES = 0.10
+
+
+def _jut_column(col, ya, y, tol, cap):
+    """(centre row, thickness) of the ink run in this column that touches the row window y +- tol and is thin and
+    centred on it, else None."""
+    for r in range(int(np.floor(y - tol)), int(np.ceil(y + tol)) + 1):
+        i = r - ya
+        if 0 <= i < col.size and col[i]:
+            lo = hi = i
+            while lo > 0 and col[lo - 1]:
+                lo -= 1
+            while hi + 1 < col.size and col[hi + 1]:
+                hi += 1
+            c, t = ya + (lo + hi) / 2.0, hi - lo + 1
+            return (c, t) if t <= cap and abs(c - y) <= tol else None
+    return None
+
+
+def _jut_side(img_gray, head_box, y, spacing, side, edge=None):
+    """`{ok, y, len_px, thickness, why}` for one side of the head at row `y` (the test above), measured outward from
+    `edge` (default: the box's edge)."""
+    h, w = img_gray.shape
+    x0, y0, x1, y1 = head_box
+    tol = JUT_ROW_TOL_SPACES * spacing
+    cap = LEDGER_THICKNESS_MAX_SPACES * spacing + 1.0
+    edge = (x1 if side == "right" else x0) if edge is None else edge
+    d0, d1 = JUT_SCAN_FROM_SPACES * spacing, JUT_SCAN_TO_SPACES * spacing
+    xs = ([int(round(edge + d)) for d in np.arange(d0, d1)] if side == "right"
+          else [int(round(edge - d)) for d in np.arange(d0, d1)])          # outward from the box edge
+    xs = [x for x in xs if 0 <= x < w]
+    ya, yb = max(0, int(y - 1.5 * spacing)), min(h, int(y + 1.5 * spacing) + 1)
+    if len(xs) < 2 or yb - ya < 3:
+        return dict(ok=False, why="off_the_page")
+    thr = _otsu_threshold(img_gray[ya:yb, min(xs):max(xs) + 1])
+    stretches, cur = [], []
+    for x in xs:
+        hit = _jut_column(img_gray[ya:yb, x] <= thr, ya, y, tol, cap)
+        if hit is None:
+            if cur:
+                stretches.append(cur)
+            cur = []
+        else:
+            cur.append((abs(edge - x), hit[0], hit[1], x))
+    if cur:
+        stretches.append(cur)
+    for st in stretches:
+        if st[0][0] > JUT_START_MAX_SPACES * spacing or len(st) < JUT_MIN_BOTH_SIDES_SPACES * spacing:
+            continue
+        cs, ts, xs_ = [c for _, c, _, _ in st], [t for _, _, t, _ in st], [x for _, _, _, x in st]
+        if max(cs) - min(cs) > JUT_CENTRE_STEADY_SPACES * spacing or max(ts) - min(ts) > 0.5 * cap:
+            continue
+        return dict(ok=True, y=float(np.median(cs)), len_px=len(st), thickness=float(np.median(ts)), why="jut",
+                    x_from=int(min(xs_)), x_to=int(max(xs_)))
+    return dict(ok=False, why="no_thin_flat_jut_at_the_row")
+
+
+def ledger_jut_on_row(img_gray, head_box, y, spacing) -> dict:
+    """Is there a ledger at row `y`?  Its thin flat END juts out of the head's box on either side (`_jut_side`'s test).
+    `{ok, y (the jut's own row), left, right, sides}`: `ok` on a jut on ONE side or both."""
+    body = _jut_from_head_ink(img_gray, tuple(head_box), spacing)
+    bx = body.get("head_x") if body.get("why") == "jut_from_ink" else None
+    out = {}
+    for side, bedge in (("left", bx[0] if bx else None), ("right", bx[1] if bx else None)):
+        out[side] = _jut_side(img_gray, head_box, y, spacing, side)
+        if not out[side]["ok"] and bedge is not None:
+            alt = _jut_side(img_gray, head_box, y, spacing, side, edge=float(bedge))
+            if alt["ok"]:
+                out[side] = dict(alt, measured_from="ink_body")
+    L, R = out["left"], out["right"]
+    sides = [s for s in (L, R) if s["ok"]]
+    long_enough = [s for s in sides if s["len_px"] >= JUT_MIN_SPACES * spacing]
+    ok = bool(long_enough) or len(sides) == 2
+    ys = [s["y"] for s in sides]
+    return dict(ok=ok, y=float(np.mean(ys)) if ok else None, left=L, right=R,
+                sides=len(sides), looked_y=float(y))
+
+
+#: a wedge (`>`, `^`) is not a ledger. A TENUTO is a flat dash, which is what a short stub ledger is too: Sean confirmed Litolff
+#: `10/0/0/10/8` (a head on ledger 2, its ledger 1 a dash the detector called `articTenutoBelow`), so tenuto is NOT here.
+ARTIC_CLASS_WORDS = ("accent", "marcato")
+
+
+def is_articulation_class(cls: "str | None") -> bool:
+    c = (cls or "").lower()
+    return any(w in c for w in ARTIC_CLASS_WORDS)
+
+
+def rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box=None) -> bool:
+    """Is the ink of the rung at row `y` an accent / marcato / tenuto's own stroke?  (lane-farhead-2-9, farhead_5_6 tile 9:
+    the lower arm of an accent under a head was counted as a ledger.)  Yes only where a detector box of such a class lies
+    across the row AND the row's ink, the horizontal run through that box, ends inside it (within `JUT_MIN_SPACES` of
+    it): a ledger runs on past a mark's box.  Never the other way round: no box, or ink beyond it, leaves the rung a ledger.
+    With `head_box`, only a box under/over THIS head (its x-range within 0.3 spaces of the head's) counts."""
+    h, w = img_gray.shape
+    yi = int(round(y))
+    if not (1 <= yi < h - 1):
+        return False
+    for b in artic_boxes or ():
+        if not (b[1] - 0.1 * spacing <= y <= b[3] + 0.1 * spacing):
+            continue
+        if head_box is not None and (b[2] < head_box[0] - 0.3 * spacing or b[0] > head_box[2] + 0.3 * spacing):
+            continue
+        a0, a1 = max(0, int(b[0] - 3 * spacing)), min(w, int(b[2] + 3 * spacing) + 1)
+        thr = _otsu_threshold(img_gray[max(0, yi - int(spacing)):yi + int(spacing) + 1, a0:a1])
+        ink = (img_gray[yi - 1:yi + 2, a0:a1] <= thr).any(axis=0)
+        probe = int(round((b[0] + b[2]) / 2.0)) - a0
+        if not (0 <= probe < ink.size):
+            continue
+        # the run through the box: start from the inked column nearest its middle
+        near = [c for c in range(max(0, probe - int(spacing)), min(ink.size, probe + int(spacing) + 1)) if ink[c]]
+        if not near:
+            continue
+        c0 = min(near, key=lambda c: abs(c - probe))
+        lo = hi = c0
+        while lo > 0 and ink[lo - 1]:
+            lo -= 1
+        while hi + 1 < ink.size and ink[hi + 1]:
+            hi += 1
+        slack = JUT_MIN_SPACES * spacing
+        if a0 + lo >= b[0] - slack and a0 + hi + 1 <= b[2] + slack:
+            return True
+    return False
+
+
+def hidden_ledger_row(head_box, edge_y, sign, spacing, rungs_y):
+    """The row a ledger the walk did not find must be on, or None.  Only where the staff edge and the first FOUND rung
+    at or beyond the head's middle enclose the head and the gap holds room for exactly ONE more ledger (each half
+    within the pitch limits): the row is that rung moved one pitch toward the staff (the pitch = its distance to the
+    next found rung beyond it, else the staff spacing).  A PLACE TO LOOK, never an answer."""
+    cy = (head_box[1] + head_box[3]) / 2.0
+    beyond = sorted([r for r in rungs_y if sign * (r - edge_y) > NOTE_BETWEEN_MIN_SPACES * spacing],
+                    key=lambda v: sign * v)
+    outer = [r for r in beyond if sign * (r - cy) >= 0]
+    if not outer:
+        return None
+    b = outer[0]
+    gap = sign * (b - edge_y) / spacing
+    if not (NOTE_GAP_MAX_SPACES < gap <= 2 * NOTE_GAP_MAX_SPACES):
+        return None
+    nxt = [r for r in beyond if sign * (r - b) > 0.5 * spacing]
+    pitch = sign * (nxt[0] - b) if nxt else spacing
+    pitch = min(max(pitch, NOTE_GAP_MIN_SPACES * spacing), NOTE_GAP_MAX_SPACES * spacing)
+    y_e = b - sign * pitch
+    lo_gap, hi_gap = sign * (y_e - edge_y) / spacing, sign * (b - y_e) / spacing
+    if not (NOTE_GAP_MIN_SPACES <= lo_gap <= NOTE_GAP_MAX_SPACES and NOTE_GAP_MIN_SPACES <= hi_gap <= NOTE_GAP_MAX_SPACES):
+        return None
+    return dict(y=float(y_e), rung=float(b), gap_sp=float(gap), pitch=float(pitch))
+
+
 def find_note_line(
     img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
     edge_y: float, sign: float, spacing: float,
@@ -3496,8 +3670,11 @@ def count_ledgers_between(
     line_y: float, rungs_y: "list[float]", x_center: float,
     head_box_x: "tuple[float, float] | None" = None,
     is_text: "Callable[[float], bool] | None" = None,
+    rung_ok: "Callable[[float], bool] | None" = None,
 ) -> dict:
     """Step 3: the ledgers strictly between the staff edge and `line_y`.
+    `rung_ok` (lane-farhead-2-9; None = bit-identical): a rung counts as a ledger only where this says it is one
+    (`rung_is_articulation`: an accent's arm is not a ledger).
     `rungs_y` is the local ink read (the walk's rungs). The chain
     [edge, ledgers..., line] must be evenly spaced by the ledgers' own pitch:
     a gap that holds room for another ledger gets a relaxed look
@@ -3515,6 +3692,8 @@ def count_ledgers_between(
             continue
         if between and abs(r - between[-1]) < m:
             continue
+        if rung_ok is not None and not rung_ok(float(r)):
+            continue
         between.append(float(r))
 
     def chain_gaps():
@@ -3531,6 +3710,8 @@ def count_ledgers_between(
                                max(a, b) - 0.45 * spacing, x_center, spacing,
                                head_box_x)
         if got is None or (is_text is not None and is_text(float(got))):
+            break
+        if rung_ok is not None and not rung_ok(float(got)):
             break
         between.append(float(got))
         between.sort(key=lambda v: sign * v)
@@ -3626,8 +3807,18 @@ def derive_note_first_step(
     ledger_not_text: bool = False, text_boxes: "list | None" = None,
     edge_vs_through: bool = False,
     flank_refine_bounded: bool = False,
+    look_where_it_must_be: bool = False,
+    artic_boxes: "list | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment).
+
+    `look_where_it_must_be` (lane-farhead-2-9, Sean 2026-10-07; False = bit-identical): (1) where no note line was
+    found and the staff edge and the first found rung beyond the head leave a gap with room for exactly one ledger the
+    walk did not find, the row it must be on is computed and LOOKED at (`hidden_ledger_row`, `ledger_jut_on_row`): the
+    ledger is counted only if its thin flat end is found jutting out of the head at that row, else the head stays
+    unread; never inferred from the gap. (2) a rung counted between the edge and the line is refused where it is the
+    stroke of an accent/marcato/tenuto the detector boxed (`rung_is_articulation`).
+    `artic_boxes`: the page's detector boxes of those classes.
 
     `flank_refine_bounded` (lane-farhead-5-6, 2026-10-07; False = bit-identical): a line a jut measured
     (`through_the_middle`) was read on the flank columns already, so it is not re-measured there; any other
@@ -3637,9 +3828,17 @@ def derive_note_first_step(
     ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
                         exclude_boxes, far_side_partner_boxes,
                         edge_vs_through=edge_vs_through)
+    looked = None
+    if not ln["ok"] and look_where_it_must_be:
+        hid = hidden_ledger_row(head_box, edge_y, sign, spacing, rungs_y)
+        if hid is not None:
+            looked = ledger_jut_on_row(img_gray, head_box, hid["y"], spacing)
+            looked["expected"] = hid
+            if looked["ok"]:
+                ln = dict(ok=True, kind="space", y=float(looked["y"]), how="hidden_ledger_jut_looked_for")
     if not ln["ok"]:
         return dict(offset=None, kind=None, reason=ln["reason"], line_y=None,
-                    how=None, between=[], k=None, gaps=[])
+                    how=None, between=[], k=None, gaps=[], hidden_ledger_look=looked)
     cx = (head_box[0] + head_box[2]) / 2.0
     if flank_refine_bounded:
         if ln["how"] == "through_the_middle" and FLANK_REFINE_SKIP_JUT:
@@ -3661,8 +3860,10 @@ def derive_note_first_step(
         img_gray, edge_y, sign, spacing, ln["y"], count_rungs, cx,
         (head_box[0], head_box[2]),
         is_text=((lambda y: not ledger_candidates_not_text(
-            img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None))
-    base = dict(refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
+            img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None),
+        rung_ok=((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
+                 if (look_where_it_must_be and artic_boxes) else None))
+    base = dict(hidden_ledger_look=looked, refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 edge_vs_through=ln.get("edge_vs_through"),
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])
     if not ct["fits"]:
