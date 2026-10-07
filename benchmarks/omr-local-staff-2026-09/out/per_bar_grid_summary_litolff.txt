@@ -1,0 +1,8 @@
+litolff 1-16 cells 5377 measured in both arms 5238
+  bars >= 0.25 sp off: off 29 -> on 0
+  bars >= 0.4 sp off: off 29 -> on 0
+  bars < 0.4 sp off before and >= 0.4 sp after: 0 []
+  bars more than 1 px worse: 0 []
+  bars whose shift changed: 30
+  [off] adjacent-bar shift jumps > 0.5 sp: 14
+  [on] adjacent-bar shift jumps > 0.5 sp: 0

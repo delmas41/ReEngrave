@@ -1,0 +1,8 @@
+brahms 0-26 cells 6685 measured in both arms 6560
+  bars >= 0.25 sp off: off 4 -> on 0
+  bars >= 0.4 sp off: off 2 -> on 0
+  bars < 0.4 sp off before and >= 0.4 sp after: 0 []
+  bars more than 1 px worse: 1 [('cell/17/0/3/5', 0.3, -1.6)]
+  bars whose shift changed: 28
+  [off] adjacent-bar shift jumps > 0.5 sp: 2
+  [on] adjacent-bar shift jumps > 0.5 sp: 0
