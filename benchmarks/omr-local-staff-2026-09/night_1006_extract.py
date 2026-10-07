@@ -21,6 +21,12 @@ CENSUS_Q = (Q.CLEF, Q.METER, Q.GLYPH_OWNER, Q.NOTEHEAD_POSITION, Q.NOTEHEAD_IS_N
 
 def main(src, dst):
     res = load_record(src)
+    out = from_result(res, src)
+    Path(dst).write_text(json.dumps(out))
+    print(dst, "glyphs", len(out["glyphs"]), "staves", len(out["staff_lines"]), "noteheads", out["census"]["noteheads_gathered"])
+
+
+def from_result(res, src):
     rec = res["record"]
     superseded = {v["supersedes"] for v in rec["verdicts"] if v.get("supersedes")}
     stand = collections.defaultdict(dict)       # quantity -> subject -> verdict
@@ -75,8 +81,7 @@ def main(src, dst):
                      reason=v.get("reason")) for s, v in stand[Q.METER].items()}
     out = dict(src=str(src), provenance=res.get("provenance"), glyphs=keep, staff_lines=staff_lines, boxes=boxes,
                census=census, clef=clef, meter=meter)
-    Path(dst).write_text(json.dumps(out))
-    print(dst, "glyphs", len(keep), "staves", len(staff_lines), "noteheads", len(nh_class))
+    return out
 
 
 if __name__ == "__main__":

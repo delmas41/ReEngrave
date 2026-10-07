@@ -1,0 +1,675 @@
+{
+ "beethoven5-litolff": {
+  "head_changes": {
+   "matched_in_staff": 7197,
+   "same": 7165,
+   "changed": 32,
+   "delta_steps": {
+    "-2": 16,
+    "2": 16
+   },
+   "far_matched": 4202,
+   "far_changed": 28,
+   "far_delta_steps": {
+    "-2": 10,
+    "-1": 1,
+    "0": 4174,
+    "2": 15,
+    "3": 2
+   }
+  },
+  "owner_changes": {
+   "counts": {
+    "same": 4441,
+    "decided -> decided: other staff": 21,
+    "abstained -> decided": 43,
+    "decided -> decided: now on filing staff": 10
+   },
+   "unmatched": 0,
+   "reason_of_new_verdict_where_changed": {
+    "group_owner": 37,
+    "ledger_note_first": 24,
+    "distance": 10,
+    "ledger_direction": 2,
+    "ladder": 1
+   }
+  },
+  "summary_diff": {
+   "all": {
+    "accidental_owner": {
+     "abstained": [
+      862,
+      863
+     ],
+     "decided": [
+      646,
+      645
+     ]
+    },
+    "beam_stem_join": {
+     "declined": [
+      7023,
+      6953
+     ],
+     "read": [
+      6689,
+      6651
+     ]
+    },
+    "beam_stroke": {
+     "declined": [
+      4429,
+      4439
+     ],
+     "read": [
+      4014,
+      4002
+     ]
+    },
+    "dot_role": {
+     "abstained": [
+      171,
+      173
+     ],
+     "decided": [
+      430,
+      428
+     ]
+    },
+    "empty_bar_rest_search": {
+     "read": [
+      243,
+      355
+     ]
+    },
+    "empty_bar_whole_rest": {
+     "abstained": [
+      129,
+      240
+     ],
+     "decided": [
+      114,
+      115
+     ]
+    },
+    "far_head_ledger_position": {
+     "declined": [
+      2294,
+      2175
+     ],
+     "read": [
+      1903,
+      2021
+     ]
+    },
+    "far_head_owner_ledger": {
+     "declined": [
+      4925,
+      4746
+     ],
+     "read": [
+      3143,
+      3320
+     ]
+    },
+    "glyph_band_distance": {
+     "read": [
+      17315,
+      17395
+     ]
+    },
+    "glyph_box": {
+     "declined": [
+      1098,
+      1080
+     ],
+     "read": [
+      37121,
+      37121
+     ]
+    },
+    "glyph_ladder": {
+     "read": [
+      6956,
+      6960
+     ]
+    },
+    "glyph_owner": {
+     "abstained": [
+      136,
+      132
+     ],
+     "decided": [
+      9286,
+      9330
+     ]
+    },
+    "key_signature": {
+     "abstained": [
+      197,
+      194
+     ],
+     "decided": [
+      134,
+      137
+     ]
+    },
+    "keysig_clef_fit": {
+     "read": [
+      456,
+      467
+     ]
+    },
+    "keysig_run_position": {
+     "declined": [
+      177,
+      174
+     ],
+     "read": [
+      154,
+      157
+     ]
+    },
+    "keysig_template_fit": {
+     "read": [
+      411,
+      419
+     ]
+    },
+    "ledger_owner_density": {
+     "declined": [
+      2559,
+      2639
+     ],
+     "read": [
+      4942,
+      4942
+     ]
+    },
+    "ledger_rung_ink": {
+     "declined": [
+      211,
+      211
+     ],
+     "read": [
+      16823,
+      16827
+     ]
+    },
+    "mark_group": {
+     "read": [
+      0,
+      16308
+     ]
+    },
+    "meter_ocr": {
+     "declined": [
+      73,
+      74
+     ]
+    },
+    "meter_template": {
+     "declined": [
+      258,
+      257
+     ],
+     "read": [
+      73,
+      74
+     ]
+    },
+    "notehead_position": {
+     "abstained": [
+      2294,
+      2175
+     ],
+     "decided": [
+      1903,
+      2021
+     ]
+    },
+    "notehead_stem_cross_ink": {
+     "read": [
+      4218,
+      4216
+     ]
+    },
+    "stacked_head_fit": {
+     "declined": [
+      21,
+      21
+     ],
+     "read": [
+      2995,
+      2993
+     ]
+    },
+    "stem": {
+     "declined": [
+      1670,
+      1670
+     ],
+     "read": [
+      9071,
+      9070
+     ]
+    },
+    "stem_direction": {
+     "abstained": [
+      3949,
+      3951
+     ],
+     "decided": [
+      7450,
+      7448
+     ]
+    },
+    "stem_tip_ink": {
+     "declined": [
+      13111,
+      13106
+     ],
+     "read": [
+      5031,
+      5034
+     ]
+    },
+    "tie_pair": {
+     "abstained": [
+      2384,
+      2382
+     ],
+     "decided": [
+      260,
+      262
+     ]
+    },
+    "voices": {
+     "abstained": [
+      352,
+      351
+     ],
+     "decided": [
+      5025,
+      5026
+     ]
+    }
+   },
+   "over_2pct": {
+    "empty_bar_rest_search.read": [
+     243,
+     355
+    ],
+    "empty_bar_whole_rest.abstained": [
+     129,
+     240
+    ],
+    "far_head_ledger_position.declined": [
+     2294,
+     2175
+    ],
+    "far_head_ledger_position.read": [
+     1903,
+     2021
+    ],
+    "far_head_owner_ledger.declined": [
+     4925,
+     4746
+    ],
+    "far_head_owner_ledger.read": [
+     3143,
+     3320
+    ],
+    "ledger_owner_density.declined": [
+     2559,
+     2639
+    ],
+    "mark_group.read": [
+     0,
+     16308
+    ],
+    "notehead_position.abstained": [
+     2294,
+     2175
+    ],
+    "notehead_position.decided": [
+     1903,
+     2021
+    ]
+   }
+  },
+  "clusters_new": {
+   "boxes": 11399,
+   "marks": 9047,
+   "marks_with_2plus": 2009,
+   "extra_boxes": 2352,
+   "size_hist": {
+    "1": 7038,
+    "2": 1733,
+    "3": 223,
+    "4": 43,
+    "5": 7,
+    "6": 2,
+    "7": 1
+   }
+  },
+  "clusters_base": {
+   "boxes": 11399,
+   "marks": 9047,
+   "marks_with_2plus": 2009,
+   "extra_boxes": 2352,
+   "size_hist": {
+    "1": 7038,
+    "2": 1733,
+    "3": 223,
+    "4": 43,
+    "5": 7,
+    "6": 2,
+    "7": 1
+   }
+  },
+  "rows_new": {
+   "null": {
+    "marks": 13265,
+    "marks_with_2plus": 2531,
+    "extra_members": 3043
+   }
+  }
+ },
+ "brahms1-breitkopf": {
+  "head_changes": {
+   "matched_in_staff": 15294,
+   "same": 15282,
+   "changed": 12,
+   "delta_steps": {
+    "-1": 7,
+    "2": 5
+   },
+   "far_matched": 8966,
+   "far_changed": 3,
+   "far_delta_steps": {
+    "-1": 3,
+    "0": 8963
+   }
+  },
+  "owner_changes": {
+   "counts": {
+    "same": 10033,
+    "decided -> decided: other staff": 26,
+    "abstained -> decided": 27,
+    "decided -> decided: now on filing staff": 9,
+    "decided -> abstained": 3
+   },
+   "unmatched": 0,
+   "reason_of_new_verdict_where_changed": {
+    "ledger_note_first": 22,
+    "group_owner": 22,
+    "ledger_direction": 7,
+    "distance": 5,
+    "ladder": 3,
+    "far_no_rungs": 2,
+    "staff_band_no_box": 2,
+    "hairpin_separates": 1
+   }
+  },
+  "summary_diff": {
+   "all": {
+    "articulation_owner": {
+     "abstained": [
+      460,
+      459
+     ],
+     "decided": [
+      803,
+      804
+     ]
+    },
+    "beam_stem_join": {
+     "declined": [
+      8074,
+      8056
+     ],
+     "read": [
+      14128,
+      14104
+     ]
+    },
+    "beam_stroke": {
+     "declined": [
+      5706,
+      5709
+     ],
+     "read": [
+      13609,
+      13605
+     ]
+    },
+    "dot_role": {
+     "abstained": [
+      1982,
+      1987
+     ],
+     "decided": [
+      7692,
+      7687
+     ]
+    },
+    "duration": {
+     "abstained": [
+      3484,
+      3483
+     ],
+     "decided": [
+      28905,
+      28906
+     ]
+    },
+    "empty_bar_rest_search": {
+     "read": [
+      145,
+      157
+     ]
+    },
+    "empty_bar_whole_rest": {
+     "abstained": [
+      41,
+      53
+     ],
+     "decided": [
+      104,
+      104
+     ]
+    },
+    "far_head_ledger_position": {
+     "declined": [
+      4911,
+      4680
+     ],
+     "read": [
+      4055,
+      4286
+     ]
+    },
+    "far_head_owner_ledger": {
+     "declined": [
+      9874,
+      9610
+     ],
+     "read": [
+      7548,
+      7812
+     ]
+    },
+    "glyph_band_distance": {
+     "read": [
+      65000,
+      65339
+     ]
+    },
+    "glyph_ladder": {
+     "read": [
+      14978,
+      14987
+     ]
+    },
+    "glyph_owner": {
+     "abstained": [
+      486,
+      484
+     ],
+     "decided": [
+      33557,
+      33591
+     ]
+    },
+    "keysig_template_fit": {
+     "read": [
+      656,
+      655
+     ]
+    },
+    "ledger_owner_density": {
+     "declined": [
+      6251,
+      6590
+     ],
+     "read": [
+      10856,
+      10856
+     ]
+    },
+    "ledger_rung_ink": {
+     "declined": [
+      1673,
+      1675
+     ],
+     "read": [
+      35205,
+      35212
+     ]
+    },
+    "mark_group": {
+     "read": [
+      0,
+      40260
+     ]
+    },
+    "notehead_position": {
+     "abstained": [
+      4911,
+      4680
+     ],
+     "decided": [
+      4055,
+      4286
+     ]
+    },
+    "notehead_stem_cross_ink": {
+     "read": [
+      4427,
+      4428
+     ]
+    },
+    "stem": {
+     "declined": [
+      1506,
+      1506
+     ],
+     "read": [
+      17756,
+      17757
+     ]
+    },
+    "stem_tip_ink": {
+     "declined": [
+      23680,
+      23684
+     ],
+     "read": [
+      11832,
+      11830
+     ]
+    },
+    "tie_pair": {
+     "abstained": [
+      13030,
+      13031
+     ],
+     "decided": [
+      1784,
+      1783
+     ]
+    }
+   },
+   "over_2pct": {
+    "far_head_ledger_position.declined": [
+     4911,
+     4680
+    ],
+    "far_head_ledger_position.read": [
+     4055,
+     4286
+    ],
+    "far_head_owner_ledger.declined": [
+     9874,
+     9610
+    ],
+    "far_head_owner_ledger.read": [
+     7548,
+     7812
+    ],
+    "ledger_owner_density.declined": [
+     6251,
+     6590
+    ],
+    "mark_group.read": [
+     0,
+     40260
+    ],
+    "notehead_position.abstained": [
+     4911,
+     4680
+    ],
+    "notehead_position.decided": [
+     4055,
+     4286
+    ]
+   }
+  },
+  "clusters_new": {
+   "boxes": 24260,
+   "marks": 20295,
+   "marks_with_2plus": 3826,
+   "extra_boxes": 3965,
+   "size_hist": {
+    "1": 16469,
+    "2": 3714,
+    "3": 94,
+    "4": 11,
+    "5": 5,
+    "6": 2
+   }
+  },
+  "clusters_base": {
+   "boxes": 24260,
+   "marks": 20295,
+   "marks_with_2plus": 3826,
+   "extra_boxes": 3965,
+   "size_hist": {
+    "1": 16469,
+    "2": 3714,
+    "3": 94,
+    "4": 11,
+    "5": 5,
+    "6": 2
+   }
+  },
+  "rows_new": {
+   "null": {
+    "marks": 33082,
+    "marks_with_2plus": 6396,
+    "extra_members": 7178
+   }
+  }
+ }
+}
