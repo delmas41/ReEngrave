@@ -407,9 +407,9 @@ def test_the_staged_identity_decision_is_ungated():
     # `test_the_flag_governs_the_legacy_path_only`, which pins that
     # predicate to a single legacy caller.
     #
-    # As written it also failed on a flag that has nothing to do with the
-    # roster and does not gate `adjudicate_instrument` at all:
-    # `OMR_SLOT_CONSTRAINTS` gates `adjudicate_slot_index`, a different
+    # As written it also failed on a flag that had nothing to do with the
+    # roster and did not gate `adjudicate_instrument` at all:
+    # `OMR_SLOT_CONSTRAINTS` gated `adjudicate_slot_index`, a different
     # decision in the same file. Renaming that predicate to slip past a
     # substring would be the test training the code, so the assertion is
     # narrowed to its meaning instead.
@@ -424,12 +424,10 @@ def test_the_staged_identity_decision_is_ungated():
         "a ROSTER flag gate appeared on the staged path")
 
     named = set(re.findall(r"\b(\w*enabled)\(\)", src))
-    accounted = {"slot_constraints_enabled"}   # docs/flags-2026-09.md
+    # ⚠️ EMPTY SINCE 2026-10-07 (roadmap 0.2c): `slot_constraints_enabled`
+    # was the one accounted predicate and was promoted away with its flag.
+    accounted: set = set()
     assert named <= accounted, (
         f"undocumented flag predicate(s) in the staged identity module: "
         f"{sorted(named - accounted)} — give each a row in "
         f"docs/flags-2026-09.md and add it here, or remove the gate")
-    flags = (root.parent.parent / "docs" / "flags-2026-09.md")
-    if flags.is_file():
-        assert "OMR_SLOT_CONSTRAINTS" in flags.read_text("utf8"), (
-            "the accounted predicate has no row in the flag table")

@@ -26,8 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (CLEF_GAP_SWITCH, FAMILY_BLOCK_SWITCH, Inference,
-                    PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, `# noqa: SLF001`): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -798,18 +797,18 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
 
 @rule(
     inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
-    # ⚠️⚠️ ITS OWN FLAG, DEFAULT ON -- the one rule in this stage that has
-    # been put to the PRINT most thoroughly. 25 of 25 placements correct,
+    # ⚠️⚠️ NO FLAG (promoted 2026-10-07, roadmap 0.2c; was
+    # `OMR_SLOT_FAMILY_BLOCK`) -- the one rule in this stage that has been
+    # put to the PRINT most thoroughly. 25 of 25 placements correct,
     # ZERO grafts, `staff_not_identified` 783 -> 141, 562 pitched notes
     # joining the parts they belong to rather than inventing any. The two
     # duration rules below now default ON too (`OMR_INFER`, Sean 2026-09-23,
     # roadmap 2.3 -- three subjects checked against the print, all three
     # corrected by the `Q.GLYPH_OWNER` fix; see
     # `benchmarks/omr-infer-duration-print-2026-09/FINDINGS.md` §7-§9). They
-    # keep their OWN flag rather than sharing this one, because bundling
-    # would make one flag two decisions of unequal evidential weight, and
-    # the same reasoning that separated them in the first place stands.
-    switch=FAMILY_BLOCK_SWITCH,
+    # keep their OWN flag (`OMR_INFER`) rather than sharing this rule's
+    # absence of one, because the duration rules are not equally evidenced.
+    switch=ALWAYS_ON,
     target=Q.SLOT_INDEX,
     # ⚠️ `Q.CLEF` IS NOT HERE AND MUST NOT BE. The raw glyph is a reading of
     # ink; the verdict is an argument that already weighs the instrument this
@@ -1241,11 +1240,10 @@ def clef_gap_census(log: Log) -> List[_ClefGap]:
 
 @rule(
     inference=Inference.FILL_CLEF_GAP,
-    # ⚠️ ITS OWN FLAG, DEFAULT ON. See `infer.CLEF_GAP_ENV`: this rule's
-    # evidence is neither the duration rules' nor the family block's, and one
-    # flag over three rules makes turning any of them off one decision about
-    # all of them.
-    switch=CLEF_GAP_SWITCH,
+    # ⚠️ NO FLAG (promoted 2026-10-07, roadmap 0.2c; was `OMR_CLEF_GAP`):
+    # this rule's evidence is neither the duration rules' nor the family
+    # block's, and it stays registered apart from `OMR_INFER`.
+    switch=ALWAYS_ON,
     target=Q.CLEF,
     # ⚠️ `Q.CLEF` IS IN `reads` AND THAT IS THE POINT: tier (2) is other
     # staves' CLEF VERDICTS, which is the sideways read EVALUATE structurally
