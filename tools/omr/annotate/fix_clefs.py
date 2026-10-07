@@ -26,7 +26,6 @@ import json
 from pathlib import Path
 
 from ..pitch_resolver import pitch_for_notehead
-from ..template_matcher import SymbolDetection
 
 
 def infer_clef(entry: dict) -> str:

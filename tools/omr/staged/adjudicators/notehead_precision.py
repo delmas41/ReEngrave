@@ -90,7 +90,7 @@ from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
 from .. import record as R
-from ..record import ABSTAIN, Kind, Outcome, Q, Scope
+from ..record import ABSTAIN, Kind, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
 # through a dotted relative path: `wiring.details` matches detail keys by bare
 # substring, and a dot followed by the module's first three letters reads as

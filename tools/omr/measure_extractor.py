@@ -1384,7 +1384,7 @@ CELL_LINE_MIN_WIDTH_SPACES = 4.0
 
 # ─── ROADMAP 2.57: find the five lines IN the cell, do not shift the comb ─────
 #
-# `OMR_CELL_LINE_FIND` (default OFF until Sean sees the sheet). The staff-wide
+# `OMR_CELL_LINE_FIND` (default ON since 2026-10-06, Sean; deny-list). The staff-wide
 # `line_ys` are one y per line from a whole-page profile after one deskew
 # angle; at the far end of a tilted staff they can sit a whole spacing off the
 # ink. A capped SHIFT of the recorded comb cannot fix that: a comb one spacing

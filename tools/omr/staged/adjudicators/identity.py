@@ -10,8 +10,8 @@ from __future__ import annotations
 import re
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 
-from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
-from ..record import ABSTAIN, Candidate, Kind, Q, Scope, State
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
+from ..record import Candidate, Kind, Q, Scope
 
 
 @decision(

@@ -15,3 +15,10 @@ derived-truth-floor/
 # the wall-clock difference is the anti-cache control and is part of the result.
 noise-floor/armA/
 noise-floor/armB/
+# 2026-10-07 audit: the two noise-floor arms are the raw data behind the
+# "+/-6 edits" figure CLAUDE.md 6b quotes; they were tracked despite the
+# rule above and are kept, so the rule and the tree agree.
+!noise-floor/armA/
+!noise-floor/armA/**
+!noise-floor/armB/
+!noise-floor/armB/**

@@ -33,7 +33,7 @@ from __future__ import annotations
 
 import dataclasses
 import json
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from . import record as R
 from .record import Abstention, Log, Observation, Q, READERS, Verdict

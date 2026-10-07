@@ -41,7 +41,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import os
 import sys
 import urllib.request
 from dataclasses import dataclass
@@ -163,7 +162,7 @@ def download_dataset(
     report: dict = {"out_dir": str(out_dir), "files": []}
 
     total_expected = sum(f.expected_size_bytes for f in files)
-    print(f"DeepScoresV2 download plan:", file=sys.stderr)
+    print("DeepScoresV2 download plan:", file=sys.stderr)
     print(f"  target dir:    {out_dir}", file=sys.stderr)
     print(f"  files:         {len(files)}", file=sys.stderr)
     print(f"  total size:    ~{_human(total_expected)}", file=sys.stderr)
@@ -188,7 +187,7 @@ def download_dataset(
             continue
 
         if dst.exists() and not force and _verify_size(dst, f.expected_size_bytes):
-            print(f"    -> already present, skipping", file=sys.stderr)
+            print("    -> already present, skipping", file=sys.stderr)
             entry["status"] = "skipped"
             report["files"].append(entry)
             continue
@@ -209,10 +208,10 @@ def download_dataset(
             )
             entry["status"] = "size_mismatch"
         elif f.sha256 and not _verify_sha256(dst, f.sha256):
-            print(f"    -> WARNING: sha256 mismatch", file=sys.stderr)
+            print("    -> WARNING: sha256 mismatch", file=sys.stderr)
             entry["status"] = "sha256_mismatch"
         else:
-            print(f"    -> OK", file=sys.stderr)
+            print("    -> OK", file=sys.stderr)
             entry["status"] = "ok"
         report["files"].append(entry)
 

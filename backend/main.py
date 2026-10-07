@@ -19,7 +19,6 @@ from fastapi import (
     Form,
     HTTPException,
     Query,
-    Request,
     UploadFile,
 )
 from fastapi.middleware.cors import CORSMiddleware

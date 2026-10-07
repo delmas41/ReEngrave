@@ -171,13 +171,22 @@ class TestAbstains:
         """Bounded below one spacing so aliasing is unreachable: past that,
         the nearest printed line to a modeled row is a DIFFERENT line, and a
         confident answer there is confidently wrong.
+
+        This pins the COMB-SLIDE path, which has the bound. ROADMAP 2.57
+        (`OMR_CELL_LINE_FIND`, default ON since 2026-10-06) finds the five
+        lines in the cell instead and so reports the full-spacing shift on
+        purpose -- Litolff's 21 one-line-off bars were exactly this case. So
+        the flag is OFF here; found failing in the slow tier by the
+        2026-10-07 audit once the tier rule stopped hiding this file.
         """
         # Draw the staff a full spacing below where the model says it is.
         binary = np.full((PAGE_H, PAGE_W), 255, dtype=np.uint8)
         for y in NOMINAL_YS:
             binary[y + SPACING - 1:y + SPACING + 2, X_START:X_END] = 0
         pws = _pws(binary)
-        got = me._cell_line_offset(pws, pws.staves[0], 400, 500)
+        with pytest.MonkeyPatch.context() as mp:
+            mp.setenv(me.ENV_CELL_LINE_FIND, "0")
+            got = me._cell_line_offset(pws, pws.staves[0], 400, 500)
         # Either it abstains, or it answers something inside its own bound —
         # what it must never do is report the full spacing.
         if got is not None:

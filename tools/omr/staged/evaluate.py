@@ -36,9 +36,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import (Any, Callable, Dict, List, Optional, Sequence, Tuple)
+from typing import (Callable, List, Optional, Sequence, Tuple)
 
-from .record import (ABSTAIN, Kind, Log, Outcome, Q, Scope, State, Subject,
+from .record import (Kind, Log, Outcome, Q, Subject,
                      Verdict)
 
 

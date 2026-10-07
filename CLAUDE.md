@@ -21,8 +21,10 @@ The 850 KB chronicle this file replaced is
 every measurement, refusal and mistake from May to September 2026. **Read it
 by search, never front to back, and never brief a lane from it** — its
 sentences are corrected in place and a stale one reads exactly like a work
-order. `PROJECT_STATUS.md`, `NOTES.md`, `version_memory.md` and
-`PROJECT_BRIEF.md` are frozen historical files.
+order. `PROJECT_STATUS.md` and `NOTES.md` are frozen historical files.
+`PROJECT_BRIEF.md` (the short "what and where") and `version_memory.md` (the
+running change log) were un-frozen on 2026-10-07 (Sean, DECISIONS) and are
+updated with every commit alongside this file.
 
 ---
 
@@ -161,16 +163,17 @@ never overturns a DECIDED one. EXPORT refuses to argmax a narrowing.
 
 ### 4c. The decisions
 
-28 adjudicators in `staged/adjudicators/` (`structure.py`, `identity.py`,
-`header.py`, `clef.py`, `ownership.py`, `rhythm.py`, `text.py`), registered in
-`adjudicate.REGISTRY` and run in `adjudicate.ORDER`:
+The adjudicators live in `staged/adjudicators/` (`structure.py`,
+`identity.py`, `header.py`, `clef.py`, `ownership.py`, `rhythm.py`, `text.py`,
+`notehead_precision.py`, `family_precision.py`, `movement.py`, `position.py`,
+`rest_search.py`, `unread_mark.py`), each registered by `@decision` into
+`adjudicate.REGISTRY` and run in `adjudicate.ORDER`. The count and the order
+are DERIVED, never typed here (the 2026-10-07 audit found a typed list of 28
+against 51 in the tree):
 
-`system_membership, staff_group, measure_partition, staff_ordinal,
-system_staff_count, instrument, slot_index, part_partition, group_symbol,
-clef, key_signature, glyph_owner, arc_owner, arc_kind, articulation_owner,
-fermata_owner, ornament_owner, stem_direction, notehead_is_a_whole_rest,
-tuplet_ratio, duration, event, voices, onset_column, wedge_anchor, meter,
-dynamic, direction`
+```bash
+python3 -c "from tools.omr.staged import adjudicate; print(len(adjudicate.ORDER)); print(*adjudicate.ORDER)"
+```
 
 Each declares `wants`, `implicates`, `checked_by` and `reasons`; `inventory
 --check` reports a declaration the body does not read. Stubs: none
@@ -265,7 +268,11 @@ export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/pytho
 
 The library (`library/`, 6.4 GB) is machine-local and resolves to the main
 checkout from any worktree. A cloud container has no weights and no library
-and can only re-export or re-adjudicate a committed record.
+and can only re-export or re-adjudicate a committed record. **Its clone is
+also SHALLOW** (121 commits from 2026-10-01 on the 2026-10-07 audit): `git
+log -S`, `--follow` and blame bottom out at the graft, so rule 1's brief
+needs `git fetch --unshallow origin main` (or a blobless bare fetch into the
+scratchpad) before any "when was this added" claim.
 
 ### 5b. The staged pipeline (product path)
 
@@ -460,7 +467,12 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 `pytest tools/omr/tests` runs everything; `pytest -m "not slow"` is the fast
 tier (target under two minutes) derived from `tools/omr/tests/durations.json`
-— a new test file is fast by default, UNLESS its text contains `library/`, `omr-weights` (even inside a benchmark name like `omr-weights-ab`), a venv or a `.pdf"` path (even in a comment): then the WHOLE file goes slow silently — compare the passed count after a merge. No new test may assert on module
+— a file `durations.json` measured is fast or slow by that measurement
+alone; a file it has NOT measured (new) is fast by default UNLESS its source
+CODE (comments and docstrings do not count, since 2026-10-07) contains
+`library/`, `omr-weights` (even inside a benchmark name like
+`omr-weights-ab`), a venv or a `.pdf"` path: then the WHOLE file goes slow
+silently until it is measured — compare the passed count after a merge. No new test may assert on module
 source text (`inspect.getsource`, AST walks) except the flag-direction guard
 and a gather-shape check; `check` counts the rest. Mutation batteries were
 one-off proofs; their `FINDINGS.md` stand, the scripts are being archived
@@ -696,6 +708,7 @@ Work in a worktree off `origin/main`; never `git checkout` a dirty file
 `git stash`. Fence lanes by FUNCTION NAME before dispatch when two touch one
 file. Every lane report is a ledger: check its claims against the tree with
 one command before believing it (five of six reports in one night contained
-a claim the tree contradicted). A session ends by updating its ROADMAP line
-and, if it learned something general, a rule here or a DECISIONS line —
-not by writing a handoff.
+a claim the tree contradicted). A session ends by updating its ROADMAP line,
+adding its entry to `version_memory.md` (and `PROJECT_BRIEF.md` where the
+state it describes moved) and, if it learned something general, a rule here
+or a DECISIONS line — not by writing a handoff.

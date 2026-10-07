@@ -24,7 +24,6 @@ from typing import Any, Callable, Coroutine, Optional
 
 import anthropic
 from pdf2image import convert_from_path
-from PIL import Image
 
 from modules.musicxml_builder import (
     PageAnalysis,

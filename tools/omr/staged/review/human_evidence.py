@@ -1270,13 +1270,6 @@ def _what_he_was_shown(v: dict) -> dict:
             "verdict_rows_considered": len(v.get("considered") or ())}
 
 
-def _verdict_subject(record: dict, verdict_id: str) -> Optional[str]:
-    for v in record.get("verdicts") or ():
-        if v.get("id") == verdict_id:
-            return v.get("subject")
-    return None
-
-
 def verdict_by_id(record: dict, verdict_id: str) -> Optional[dict]:
     for v in record.get("verdicts") or ():
         if v.get("id") == verdict_id:

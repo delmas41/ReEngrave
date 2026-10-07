@@ -25,7 +25,7 @@ Pure arrays and boxes in, a plain dict out. Page frame throughout.
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, Optional, Sequence, Tuple
 
 from . import far_head_reader as FH
 from . import ledger_grid as lg

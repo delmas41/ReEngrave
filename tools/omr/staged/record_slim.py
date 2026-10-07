@@ -69,7 +69,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
-from typing import Any, Dict, Iterator, Tuple
+from typing import Any, Dict, Tuple
 
 #: ⚠️ NOT A DERIVED CHECK IN THE AUDIT SENSE -- but `wiring.py`'s DETAIL
 #: question treats this marker as meaning exactly what applies here too:

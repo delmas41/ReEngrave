@@ -342,3 +342,17 @@ out/2.46/
 # (regenerable by `tools.omr.acceptance_quick`, see FINDINGS §2.12g) — the
 # crops under `out/print/2.12g/` ARE the durable record and are committed.
 out/2.12g-arm/
+
+# --- 2026-10-07 audit: make the ignore rules and the tree AGREE -----------
+# `git ls-files -ci --exclude-standard` listed 45 tracked files the rules
+# above match. One (a page thumbnail) was untracked. The rest are the RAW
+# DATA of documented results and stay tracked (CLAUDE.md rule 7: a result
+# whose raw data is gone is not evidence), negated here so they stop
+# reading as violations:
+!benchmarks/omr-clef-demo/*.omr.json
+!benchmarks/omr-keysig-blindspot-2026-08/crops/
+!benchmarks/omr-keysig-blindspot-2026-08/crops/**
+!benchmarks/omr-label-ladder-2026-09/crops/
+!benchmarks/omr-label-ladder-2026-09/crops/**
+!benchmarks/omr-margin-labels-2026-08/crops/
+!benchmarks/omr-margin-labels-2026-08/crops/**

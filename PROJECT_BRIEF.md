@@ -1,9 +1,53 @@
-> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
 
 # ReEngrave — Project Brief
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
+**Updated:** 2026-10-07 (un-frozen; kept current with every commit alongside
+`CLAUDE.md` and `version_memory.md`). Sections below the next one are the
+dated record from before the 2026-09-22 freeze and are left as written.
+
+## Where things stand (2026-10-07)
+
+**The product path is STAGED** (`tools/omr/staged/`, DECISIONS 2026-09-22):
+five stages — GATHER, ADJUDICATE, EVALUATE, INFER, EXPORT — every decision
+filed against a subject on an append-only record, allowed to abstain, and
+traceable. The older **LEGACY** reader (`tools/omr/transcribe.py` and its
+satellites) is frozen: bug fixes only. It still drives the web app and the
+benchmarks until roadmap Phase 3 replaces it.
+
+**Definition of done** (plan §4): one command, a whole movement, MusicXML
+and a LilyPond PDF, every unread bar MARKED and never invented, every staff
+named or held out and counted, and a cleanup count Sean would rather pay
+than re-enter.
+
+**Where the effort is** (Sean, 2026-09-30 and again 2026-10-07): the first
+two stages only — "apples to apples, GATHER+ADJUDICATE vs GATHER+ADJUDICATE".
+The current work is reading far-from-staff noteheads by their ledger lines
+and deciding which staff a note belongs to on scanned conductor's pages
+(ROADMAP 2.44–2.59). Sean adjudicates contact sheets of crops; his rulings
+are the conventions in `docs/DECISIONS.md` and CLAUDE.md §10. Nothing is
+measured through EVALUATE or EXPORT until he says so.
+
+**How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
+Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather
+during the day (`tools.omr.acceptance_quick`), the full overnight re-gather,
+and Sean's cleanup count every two weeks. `python3 -m tools.omr.staged.check`
+is the one hygiene number and must go down (192 on 2026-10-07).
+
+**Status of the pieces**: ROADMAP Phase 0 (consolidate) done apart from 0.4a;
+Phase 1 (acceptance harness) built; Phase 2 (close the foundation) in
+progress and where every lane is; Phase 3 (staged becomes the web app's
+engine) and Phase 4 (import from IMSLP, one command, BUILT not merged) wait.
+The web app runs the legacy engine, has a payment gate Sean bypasses as
+admin, and has open security items that must be fixed before any public
+deployment (`docs/audit-2026-10-07-code-cleaning.md` §3A).
+
+**Read next**: [CLAUDE.md](CLAUDE.md) (the spec), [ROADMAP.md](ROADMAP.md)
+(status), [docs/DECISIONS.md](docs/DECISIONS.md) (rulings),
+[version_memory.md](version_memory.md) (the change log).
+
+---
 
 ## What it is
 
@@ -28,7 +72,9 @@ project is for and where it stands, not how the code works.
    fine-tuned on DeepScoresV2. This is where most of the recent engineering
    effort has gone: reading orchestral conductor's scores accurately is
    hard, and the project has been steadily closing the gap between "reads
-   an engraved page" and "reads a real 19th-century scan."
+   an engraved page" and "reads a real 19th-century scan." Since
+   2026-09-22 the pipeline is two readers: the STAGED product path and the
+   frozen LEGACY reader (see "Where things stand" above and CLAUDE.md §3).
 
 A third, optional piece — the **Maestro theory layer**
 (`tools/maestro_bridge/`) — adds harmony/rhythm validation and pitch

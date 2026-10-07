@@ -15,11 +15,11 @@ a startup failure rather than a run that does not terminate.
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, List, Optional, Sequence, Tuple
 
 from . import record as R
 from .evaluate import Consequence, rule
-from .record import ABSTAIN, Kind, Log, Outcome, Q, READERS, Scope, Subject, Verdict
+from .record import Kind, Log, Outcome, Q, Scope, Subject, Verdict
 
 
 def _verdict(log: Log, subject: Subject, quantity: str, value: Any,

@@ -33,7 +33,7 @@ import json
 import pathlib
 import re
 import sys
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import adjudicate as A
 from . import consequences as _consequences  # noqa: F401  (registers rules)

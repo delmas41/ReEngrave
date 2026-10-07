@@ -518,7 +518,7 @@ def main() -> None:
             print(f"  {name}")
         print(f"  (to admit one: edit {manifest_path(root)} and rebuild, "
               f"or pass --versions for a one-off build)")
-    print(f"\ntotals:")
+    print("\ntotals:")
     print(f"  train images: {len(train_paths)}")
     print(f"  val images:   {len(val_paths)}")
     print(f"  classes (nc): {nc_main}  (full vocab: {len(full_names)})")
@@ -530,7 +530,7 @@ def main() -> None:
         for i, n in sorted(dropped.items()):
             name = full_names[i] if i < len(full_names) else f"class{i}"
             print(f"  {name} (id {i}): {n}")
-    print(f"\nwrote:")
+    print("\nwrote:")
     print(f"  {output_yaml}")
     print(f"  {train_txt}")
     print(f"  {val_txt}")

@@ -3138,15 +3138,7 @@ def _corroborate(ev: Evidence, candidate: dict) -> dict:
     if not num or not den:
         return {"state": "no_candidate"}
     expected = float(num) * 4.0 / float(den)
-
-    whole_rests = {r.subject for r in
-                   ev.rows(Q.REST, scope=Scope.SELF_AND_DESCENDANTS)
-                   if r.value == "restWhole"}
-
-    bars = _bar_lengths_for(ev)
-    agree = disagree = 0
-    observed = Counter()
-    return _score_bars(bars, expected)
+    return _score_bars(_bar_lengths_for(ev), expected)
 
 
 def _bar_lengths_for(ev: Evidence) -> dict:
