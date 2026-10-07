@@ -1,0 +1,243 @@
+WALL TIMES (s):
+lit6 base rc=0 wall=275
+lit6 arm rc=0 wall=254
+lit6B base rc=0 wall=291
+lit12 base rc=0 wall=479
+lit12 arm rc=0 wall=737
+lit1-3 base rc=0 wall=568
+lit1-3 arm rc=0 wall=591
+bra7 base rc=0 wall=314
+bra7 arm rc=0 wall=251
+bra0-1 base rc=0 wall=1059
+bra0-1 arm rc=0 wall=1240
+ALLDONE
+
+
+=== A/A (base twice, Litolff p6): row-count cells that differ: 0
+   readout diff n_differences: 0
+
+=== bra0-1: ARM vs BASE row-count cells that differ: 0
+   census (base -> arm):
+        family accidental: 278 -> 278
+        family articulation: 23 -> 23
+        family class:arpeggiato: 88 -> 88
+        family class:augmentationDot: 188 -> 188
+        family class:beam: 909 -> 909
+        family class:caesura: 1 -> 1
+        family class:fingering1: 2 -> 2
+        family class:flag16thDown: 3 -> 3
+        family class:flag16thUp: 13 -> 13
+        family class:flag8thDown: 97 -> 97
+        family class:flag8thUp: 72 -> 72
+        family class:ledgerLine: 450 -> 450
+        family class:staff: 167 -> 167
+        family class:stem: 21 -> 21
+        family clef: 68 -> 68
+        family dynamic: 266 -> 266
+        family key: 64 -> 64
+        family note: 1491 -> 1491
+        family ornament: 6 -> 6
+        family rest: 371 -> 371
+        family slur: 317 -> 317
+        family tie: 717 -> 717
+        family time: 104 -> 104
+        family wedge: 1 -> 1
+      glyph boxes gathered: 5717 -> 5717
+      rest-search rows: found: 1 -> 1
+      rest-search rows: not found: 8 -> 8
+      verdict clef: decided: 41 -> 41
+      verdict duration: abstained: 25 -> 25
+      verdict duration: decided: 1591 -> 1591
+      verdict duration: narrowed: 246 -> 246
+      verdict empty_bar_whole_rest: abstained: 8 -> 8
+      verdict empty_bar_whole_rest: decided: 1 -> 1
+      verdict glyph_owner: abstained: 20 -> 20
+      verdict glyph_owner: decided: 1755 -> 1755
+      verdict key_signature: abstained: 10 -> 10
+      verdict key_signature: decided: 31 -> 31
+      verdict meter: abstained: 1 -> 1
+      verdict meter: decided: 2 -> 2
+      verdict notehead_is_a_whole_rest: decided: 1491 -> 1491
+   readout diff n_differences: 0
+   structure changed: {}
+   bars with a rest-search row: base 9, arm 9; only in arm 0
+
+=== bra7: ARM vs BASE row-count cells that differ: 3
+   -2  ('obs', 'keysig_template_fit', 'template', '')
+   -1  ('verdict', 'key_signature', 'decided', 'fitted_no_markers')
+   +1  ('verdict', 'key_signature', 'abstained', 'no_evidence')
+   census (base -> arm):
+        family accidental: 86 -> 86
+        family articulation: 19 -> 19
+        family class:arpeggiato: 5 -> 5
+        family class:augmentationDot: 218 -> 218
+        family class:beam: 380 -> 380
+        family class:brace: 5 -> 5
+        family class:fingering1: 1 -> 1
+        family class:flag16thUp: 4 -> 4
+        family class:flag8thDown: 16 -> 16
+        family class:flag8thUp: 23 -> 23
+        family class:ledgerLine: 229 -> 229
+        family class:staff: 137 -> 137
+        family class:stem: 8 -> 8
+        family clef: 36 -> 36
+        family dynamic: 120 -> 120
+        family key: 46 -> 46
+        family note: 611 -> 611
+        family ornament: 1 -> 1
+        family rest: 250 -> 250
+        family slur: 217 -> 217
+        family tie: 456 -> 456
+        family time: 7 -> 7
+      glyph boxes gathered: 2875 -> 2875
+      rest-search rows: found: 3 -> 3
+      rest-search rows: not found: 1 -> 1
+      verdict clef: decided: 22 -> 22
+      verdict duration: abstained: 6 -> 6
+      verdict duration: decided: 745 -> 745
+      verdict duration: narrowed: 110 -> 110
+      verdict empty_bar_whole_rest: abstained: 1 -> 1
+      verdict empty_bar_whole_rest: decided: 3 -> 3
+      verdict glyph_owner: abstained: 29 -> 29
+      verdict glyph_owner: decided: 795 -> 795
+      verdict key_signature: abstained: 5 -> 6   <-- CHANGED
+      verdict key_signature: decided: 17 -> 16   <-- CHANGED
+      verdict meter: abstained: 2 -> 2
+      verdict notehead_is_a_whole_rest: decided: 611 -> 611
+   readout diff n_differences: 2
+   structure changed: {'key_signature': 1, 'part_key': 1}
+   bars with a rest-search row: base 4, arm 4; only in arm 0
+
+=== lit1-3: ARM vs BASE row-count cells that differ: 2
+   +15  ('verdict', 'empty_bar_whole_rest', 'abstained', 'not_found_by_search')
+   +15  ('obs', 'empty_bar_rest_search', 'cv_rest_search', 'found=False')
+   census (base -> arm):
+        family accidental: 139 -> 139
+        family articulation: 26 -> 26
+        family class:arpeggiato: 205 -> 205
+        family class:augmentationDot: 21 -> 21
+        family class:beam: 325 -> 325
+        family class:brace: 7 -> 7
+        family class:flag16thDown: 1 -> 1
+        family class:flag16thUp: 1 -> 1
+        family class:flag8thDown: 8 -> 8
+        family class:flag8thUp: 7 -> 7
+        family class:ledgerLine: 1222 -> 1222
+        family class:staff: 396 -> 396
+        family class:stem: 7 -> 7
+        family clef: 87 -> 87
+        family dynamic: 396 -> 396
+        family fermata: 63 -> 63
+        family key: 96 -> 96
+        family note: 1286 -> 1286
+        family rest: 521 -> 521
+        family slur: 246 -> 246
+        family tie: 266 -> 266
+        family time: 16 -> 16
+      glyph boxes gathered: 5342 -> 5342
+      rest-search rows: found: 27 -> 27
+      rest-search rows: not found: 14 -> 29   <-- CHANGED
+      verdict clef: decided: 53 -> 53
+      verdict duration: abstained: 16 -> 16
+      verdict duration: decided: 1725 -> 1725
+      verdict duration: narrowed: 66 -> 66
+      verdict empty_bar_whole_rest: abstained: 14 -> 29   <-- CHANGED
+      verdict empty_bar_whole_rest: decided: 27 -> 27
+      verdict glyph_owner: abstained: 23 -> 23
+      verdict glyph_owner: decided: 1112 -> 1112
+      verdict key_signature: abstained: 30 -> 30
+      verdict key_signature: decided: 23 -> 23
+      verdict meter: decided: 5 -> 5
+      verdict notehead_is_a_whole_rest: decided: 1286 -> 1286
+   readout diff n_differences: 15
+   structure changed: {'empty_bar_whole_rest': 15}
+   bars with a rest-search row: base 41, arm 56; only in arm 15
+
+=== lit12: ARM vs BASE row-count cells that differ: 0
+   census (base -> arm):
+        family accidental: 197 -> 197
+        family articulation: 81 -> 81
+        family class:arpeggiato: 172 -> 172
+        family class:augmentationDot: 12 -> 12
+        family class:beam: 219 -> 219
+        family class:brace: 7 -> 7
+        family class:fingering1: 2 -> 2
+        family class:flag16thDown: 3 -> 3
+        family class:flag8thDown: 7 -> 7
+        family class:flag8thUp: 13 -> 13
+        family class:ledgerLine: 719 -> 719
+        family class:staff: 255 -> 255
+        family class:stem: 5 -> 5
+        family clef: 41 -> 41
+        family dynamic: 53 -> 53
+        family fermata: 6 -> 6
+        family key: 21 -> 21
+        family note: 968 -> 968
+        family rest: 176 -> 176
+        family slur: 91 -> 91
+        family tie: 104 -> 104
+        family time: 4 -> 4
+        family tuplet: 1 -> 1
+      glyph boxes gathered: 3157 -> 3157
+      rest-search rows: found: 6 -> 6
+      rest-search rows: not found: 3 -> 3
+      verdict clef: decided: 22 -> 22
+      verdict clef: narrowed: 1 -> 1
+      verdict duration: abstained: 6 -> 6
+      verdict duration: decided: 1044 -> 1044
+      verdict duration: narrowed: 94 -> 94
+      verdict empty_bar_whole_rest: abstained: 3 -> 3
+      verdict empty_bar_whole_rest: decided: 6 -> 6
+      verdict glyph_owner: abstained: 11 -> 11
+      verdict glyph_owner: decided: 938 -> 938
+      verdict key_signature: abstained: 9 -> 9
+      verdict key_signature: decided: 14 -> 14
+      verdict meter: abstained: 2 -> 2
+      verdict notehead_is_a_whole_rest: decided: 968 -> 968
+   readout diff n_differences: 0
+   structure changed: {}
+   bars with a rest-search row: base 9, arm 9; only in arm 0
+
+=== lit6: ARM vs BASE row-count cells that differ: 2
+   +4  ('verdict', 'empty_bar_whole_rest', 'abstained', 'not_found_by_search')
+   +4  ('obs', 'empty_bar_rest_search', 'cv_rest_search', 'found=False')
+   census (base -> arm):
+        family accidental: 104 -> 104
+        family articulation: 11 -> 11
+        family class:arpeggiato: 136 -> 136
+        family class:augmentationDot: 5 -> 5
+        family class:beam: 211 -> 211
+        family class:brace: 3 -> 3
+        family class:flag8thDown: 2 -> 2
+        family class:flag8thUp: 6 -> 6
+        family class:ledgerLine: 607 -> 607
+        family class:staff: 228 -> 228
+        family class:stem: 4 -> 4
+        family clef: 40 -> 40
+        family dynamic: 62 -> 62
+        family key: 38 -> 38
+        family note: 834 -> 834
+        family rest: 165 -> 165
+        family slur: 59 -> 59
+        family tie: 114 -> 114
+        family time: 9 -> 9
+        family tuplet: 1 -> 1
+      glyph boxes gathered: 2639 -> 2639
+      rest-search rows: found: 4 -> 4
+      rest-search rows: not found: 15 -> 19   <-- CHANGED
+      verdict clef: decided: 20 -> 20
+      verdict clef: narrowed: 2 -> 2
+      verdict duration: abstained: 15 -> 15
+      verdict duration: decided: 897 -> 897
+      verdict duration: narrowed: 87 -> 87
+      verdict empty_bar_whole_rest: abstained: 15 -> 19   <-- CHANGED
+      verdict empty_bar_whole_rest: decided: 4 -> 4
+      verdict glyph_owner: abstained: 11 -> 11
+      verdict glyph_owner: decided: 611 -> 611
+      verdict key_signature: abstained: 7 -> 7
+      verdict key_signature: decided: 15 -> 15
+      verdict meter: abstained: 2 -> 2
+      verdict notehead_is_a_whole_rest: decided: 834 -> 834
+   readout diff n_differences: 4
+   structure changed: {'empty_bar_whole_rest': 4}
+   bars with a rest-search row: base 19, arm 23; only in arm 4

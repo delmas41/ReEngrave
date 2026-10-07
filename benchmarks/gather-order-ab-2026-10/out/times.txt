@@ -1,0 +1,14 @@
+lit6 base rc=0 wall=275
+lit6 arm rc=0 wall=254
+lit6B base rc=0 wall=291
+lit12 base rc=0 wall=479
+lit12 arm rc=0 wall=737
+lit1-3 base rc=0 wall=568
+lit1-3 arm rc=0 wall=591
+bra7 base rc=0 wall=314
+bra7 arm rc=0 wall=251
+bra0-1 base rc=0 wall=1059
+bra0-1 arm rc=0 wall=1240
+ALLDONE
+bra7B base rc=0 wall=701
+bra7B arm rc=0 wall=503
