@@ -198,10 +198,18 @@ and the fix; all are small.
 
 - 299 test files, 6,310 test functions, 106,511 lines. Ten files over
   1,000 lines (`test_export.py` 3,206; `test_staged_export.py` 2,725).
-- **The slow-by-text rule catches 56 files, 52 of them slow by text ONLY**
-  (a `.pdf"` string in 47). The fast tier is 232 files; 168 files have no
-  recorded duration (`durations.json` is from 2026-09-22). Re-measuring
-  durations would move most of those 52 into the fast tier.
+- **The slow-by-text rule caught 56 files, 52 of them slow by text ONLY**
+  (a `.pdf"` string in 47); 7 matched only in a comment or docstring, 32 were
+  measured fast on 2026-09-22 and slow by text alone. **Fixed the same day
+  (Sean: "move on the .pdf issues")**: a measured duration now decides for a
+  measured file, the text rule judges only unmeasured files, and it ignores
+  comments and docstrings (`tools/omr/tests/conftest.py`, CLAUDE.md §6c).
+  39 files moved to the fast tier; it found one test the slow tier had been
+  failing since 10-06 (`test_cell_line_localization` pinned the comb-slide
+  bound that ROADMAP 2.57 replaced; it now pins that path under its flag) and
+  four that need `ijson`, which this container lacked. 168 files still have
+  no recorded duration; re-measuring `durations.json` on Sean's machine is
+  the remaining step.
 - 46 source-text test files remain (policy: no new ones, counted).
 - **ROADMAP 0.4a** (shared fixture module): the four two-line `_log` copies
   are in `test_staged_c_clef.py:33`, `test_staged_clef.py:19`,
@@ -217,9 +225,16 @@ and the fix; all are small.
 - 20,081 tracked files; `.git` 506 MB; working tree 1.4 GB. By kind: PNG
   3,686 files / 855 MB; JSON 8,926 / 365 MB; `benchmarks/` 832 MB,
   `data/` 503 MB, `out/` 72 MB.
-- **45 tracked files are now matched by `.gitignore`** (`git ls-files -ci
+- **45 tracked files were matched by `.gitignore`** (`git ls-files -ci
   --exclude-standard`): 11 `*.omr.json` in `omr-clef-demo` (30 MB), 17
-  files under `crops/`, 16 noise-floor outputs, 1 thumbnail.
+  files under `crops/`, 16 noise-floor outputs, 1 thumbnail. **Resolved the
+  same day**: the thumbnail untracked; the other 44 are the raw data of
+  documented results (the clef-demo results file cites the `.omr.json`; the
+  noise-floor arms are behind the ±6-edit figure CLAUDE.md §6b quotes; the
+  crops are print evidence) and are kept, with negation rules so the rules
+  and the tree agree. The count is 0. The ~290-line `.gitignore` itself,
+  with its ~20 per-roadmap-item blocks, was not consolidated: changing rule
+  semantics is a separate decision.
 - **11 `*.record.json` are tracked, 98.7 MB**, mostly
   `benchmarks/omr-staged-engraved-2026-09/out/`. CLAUDE.md §5a says a cloud
   container can only work from a committed record, so some are inputs on
@@ -245,8 +260,31 @@ of them the ledger rounds whose outcome DECISIONS 2026-10-04..06 records
 ("all nine retired, nothing merged") or whose accepted part landed under
 another name. Four are from April–July. Deleting remote branches is
 destructive and not done here; the list is in the hygiene reader's report
-(this file's git history has the agent output if wanted). Proposed: prune
-the merged 336 now, and the retired lanes once Sean nods.
+(this file's git history has the agent output if wanted). **Half done the
+same day (Sean: "clean up of ... unmerged branches")**: the 67 unmerged
+branches with no commit since 2026-10-04 each have a verified copy at
+`archive/<name>` (the session proxy accepts pushes to `refs/heads/*` only,
+so a bare `refs/archive/*` namespace was refused; a branch keeps every
+commit reachable). **Deleting the 403 originals was blocked by the cloud
+session's permission system** ("unverifiable deletion scope") and nothing
+was deleted. The recipe needs only the remote's own state, so it can be run
+from any checkout once Sean approves:
+
+```bash
+git fetch origin --prune
+# 1. every branch fully merged into main (336 at the time of writing)
+git branch -r --merged origin/main | sed 's#^ *origin/##' \
+  | grep -vx main | grep -v '^archive/' > /tmp/merged.txt
+# 2. every stale branch that already has its archive copy (67)
+git ls-remote --heads origin 'archive/*' | sed 's#.*refs/heads/archive/##' > /tmp/stale.txt
+# sanity: nothing active, nothing named main
+grep -cx main /tmp/merged.txt /tmp/stale.txt      # both 0
+# 3. delete, in batches of 30
+cat /tmp/merged.txt /tmp/stale.txt | xargs -n 30 git push origin --delete
+```
+
+Every branch active since 2026-10-04 stays, including the ones other
+sessions created during this run.
 
 ## 4. Proposed next lanes, in order
 
@@ -256,22 +294,25 @@ the merged 336 now, and the retired lanes once Sean nods.
    five reads, no behaviour change, brings staged to 18 of the 15 cap.
 3. [ ] **GATHER handlers abstain, never default** (§3B third bullet) —
    rule 8 made structural; `health` would see it.
-4. [ ] **Re-measure `durations.json`** and tighten the slow-by-text regex
-   (`.pdf"` inside a comment should not slow a file) — ~50 files back in
-   the fast tier.
+4. [x] **Tighten the slow-by-text rule** — done the same day (§3D).
+   [ ] Re-measure `durations.json` on Sean's machine so the 168 unmeasured
+   files are judged by measurement too.
 5. [ ] **Derived-check helper module** (`_gap_key`, `stale_gaps`,
    `unaccounted`, `_quantities`) — four copies to one.
 6. [ ] **Record-dump triage** (§3E) — name the committed records that are
-   inputs; `git rm --cached` the rest and the 45 ignored-but-tracked files.
-7. [ ] **Branch prune** — merged first, retired lanes with Sean.
+   inputs; `git rm --cached` the rest. (The 45 ignored-but-tracked files:
+   done the same day.)
+7. [~] **Branch prune** — archive copies made; the deletions wait on Sean's
+   approval (§3F has the recipe).
 8. [ ] 0.4a shared test fixture module (inventory in §3D).
 
-## 5. Open question on the root files
+## 5. The root files — ruled
 
 The user preference for this account asks that `CLAUDE.md`, `PROJECT_BRIEF.md`
-and `version_memory.md` be updated after every commit. CLAUDE.md (the spec,
-2026-09-22) declares `PROJECT_BRIEF.md` and `version_memory.md` FROZEN
-historical files and makes ROADMAP + DECISIONS + `FINDINGS.md` the only
-records (rule 9). This run followed the spec: CLAUDE.md and ROADMAP were
-updated; the frozen files were not. If the preference should win, the fix is
-one DECISIONS line un-freezing them, and a line here saying so.
+and `version_memory.md` be updated after every commit; CLAUDE.md (2026-09-22)
+had declared the latter two frozen. **Sean, 2026-10-07: "Unfreeze and update
+so that all docs are up to date."** Done (DECISIONS 2026-10-07): both are
+un-frozen and current, `version_memory.md` carries one bridge entry for the
+frozen window and per-commit entries from here on, CLAUDE.md §13 names them
+in the session-end rule, and `PROJECT_STATUS.md` / `NOTES.md` stay frozen
+with a refreshed banner.

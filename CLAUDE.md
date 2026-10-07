@@ -21,8 +21,10 @@ The 850 KB chronicle this file replaced is
 every measurement, refusal and mistake from May to September 2026. **Read it
 by search, never front to back, and never brief a lane from it** — its
 sentences are corrected in place and a stale one reads exactly like a work
-order. `PROJECT_STATUS.md`, `NOTES.md`, `version_memory.md` and
-`PROJECT_BRIEF.md` are frozen historical files.
+order. `PROJECT_STATUS.md` and `NOTES.md` are frozen historical files.
+`PROJECT_BRIEF.md` (the short "what and where") and `version_memory.md` (the
+running change log) were un-frozen on 2026-10-07 (Sean, DECISIONS) and are
+updated with every commit alongside this file.
 
 ---
 
@@ -465,7 +467,12 @@ filed as evidence in the record). The `claude_vision` OMR engine
 
 `pytest tools/omr/tests` runs everything; `pytest -m "not slow"` is the fast
 tier (target under two minutes) derived from `tools/omr/tests/durations.json`
-— a new test file is fast by default, UNLESS its text contains `library/`, `omr-weights` (even inside a benchmark name like `omr-weights-ab`), a venv or a `.pdf"` path (even in a comment): then the WHOLE file goes slow silently — compare the passed count after a merge. No new test may assert on module
+— a file `durations.json` measured is fast or slow by that measurement
+alone; a file it has NOT measured (new) is fast by default UNLESS its source
+CODE (comments and docstrings do not count, since 2026-10-07) contains
+`library/`, `omr-weights` (even inside a benchmark name like
+`omr-weights-ab`), a venv or a `.pdf"` path: then the WHOLE file goes slow
+silently until it is measured — compare the passed count after a merge. No new test may assert on module
 source text (`inspect.getsource`, AST walks) except the flag-direction guard
 and a gather-shape check; `check` counts the rest. Mutation batteries were
 one-off proofs; their `FINDINGS.md` stand, the scripts are being archived
@@ -701,6 +708,7 @@ Work in a worktree off `origin/main`; never `git checkout` a dirty file
 `git stash`. Fence lanes by FUNCTION NAME before dispatch when two touch one
 file. Every lane report is a ledger: check its claims against the tree with
 one command before believing it (five of six reports in one night contained
-a claim the tree contradicted). A session ends by updating its ROADMAP line
-and, if it learned something general, a rule here or a DECISIONS line —
-not by writing a handoff.
+a claim the tree contradicted). A session ends by updating its ROADMAP line,
+adding its entry to `version_memory.md` (and `PROJECT_BRIEF.md` where the
+state it describes moved) and, if it learned something general, a rule here
+or a DECISIONS line — not by writing a handoff.

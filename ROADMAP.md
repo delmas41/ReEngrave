@@ -25,6 +25,12 @@ adjudicator list (51 in the tree, the text said 28) and §5a says a cloud clone 
 before any public deployment of the web app:** scores have no owner column, `/uploads` is served without
 auth, two upload routes join the client's filename into a path, forgot-password returns the reset token,
 and the JWT secret has a working default (report §3A). Nothing in GATHER/ADJUDICATE moved.
+**Follow-up the same day (Sean: "Unfreeze and update so that all docs are up to date"):** `PROJECT_BRIEF.md` and
+`version_memory.md` un-frozen (DECISIONS 2026-10-07) and brought current; the slow-tier text rule fixed (a measured
+duration decides; comments/docstrings do not count; 39 files move to the fast tier); the 45 ignored-but-tracked
+files resolved (1 untracked, 44 negated as raw data); remote branches HALF pruned: 67 stale unmerged copied to
+`archive/<name>`; deleting the 403 originals (336 merged + 67 archived) was blocked by the session's permission
+system and waits on Sean (audit report §3F has the recipe).
 
 ## START HERE — after the night of 2026-10-06→07 (main ≥ this commit)
 
