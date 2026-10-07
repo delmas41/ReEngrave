@@ -19,9 +19,9 @@ own docstring defers that one to run time -- *"`export.status_census` already
 answers it at RUN time as a PARTITION"* -- and that is measurement-first. A
 quantity that is gathered, declared by nobody and read by nobody is reported
 by `gather_coverage` as **GATHERED (observed)**, i.e. as healthy.
-`Q.STAFF_SKEW` sits in exactly that cell today (`Q.STAFF_EXTENT` did too,
-until ROADMAP 4.2b's movement-boundary detection became its first reader --
-see `KNOWN_GAPS` below).
+`Q.STAFF_SKEW` sat in exactly that cell (`Q.STAFF_EXTENT` did too, until
+ROADMAP 4.2b's movement-boundary detection became its first reader; STAFF_SKEW
+until lane-owner-from-staves read its thickness) -- see `KNOWN_GAPS` below.
 
 ## ⚠️ THE ACCESSOR SET IS DERIVED, AND THIS TOOL'S OWN FIRST RUN PROVES WHY
 
@@ -303,12 +303,10 @@ KNOWN_GAPS: Dict[str, str] = {
     # entry left in place (`stale gap entries`), which is how this one was
     # found; the module docstring's own "sit in exactly that cell today"
     # line (above) is corrected the same day.
-    Q.STAFF_SKEW: (
-        "⚠️ OPEN FINDING, NOT EXCUSED — recorded 2026-09-16, found by this "
-        "check. Same shape as STAFF_EXTENT: observed at `gather.py:133` (and "
-        "abstained at :130) and read by nothing anywhere. The measured tilt/bow "
-        "that `OMR_CELL_LINE_TRACE` exists to correct is recorded and never "
-        "consulted."),
+    # ⚠️ `Q.STAFF_SKEW`'S ENTRY REMOVED 2026-10-06 (lane-owner-from-staves), AS ITS
+    # OWN TEXT SAID TO: the ownership adjudicator's `_staff_band` now reads the staff's
+    # measured line thickness (`thickness_px`) for the half-line-thickness the
+    # staves tier adds to a band.
     # ⚠️ THE `Q.GROUP_SYMBOL` ENTRY THAT STOOD HERE LEFT 2026-09-29, ROADMAP
     # 2.27d: `adjudicators/text.py` (`_canonical_grand_staff_owner`),
     # `adjudicators/rhythm.py` (`_not_the_neighbours_beam`) and

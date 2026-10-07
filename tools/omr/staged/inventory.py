@@ -125,10 +125,9 @@ KNOWN_GAPS: Dict[str, str] = {
         "`_dedupe_cross_staff_detections` has both detections' confidences in "
         "hand at the moment it decides and uses neither. The staged decision "
         "declares it and still does not read it.",
-    "glyph_owner declares 'notehead_staff_position'":
-        "⚠️ MISDIRECTED rather than inert: `_range_veto` does read a staff "
-        "position, out of `band_row.detail['position_in_candidate']`, so "
-        "`wants` names the wrong quantity for a real dependency.",
+    # ⚠️ `glyph_owner declares 'notehead_staff_position'` LEFT THIS LIST 2026-10-06
+    # (lane-owner-from-staves): the staves tier (`_holds`) reads the head's own
+    # LOCAL position and the twin's, so the declaration names a real dependency.
     "tuplet_ratio declares 'beam_stroke'":
         "inert declaration. The legacy rule takes a tuplet group's EXTENT "
         "from the beam box (`rhythm._beamed_groups`); the staged decision "
