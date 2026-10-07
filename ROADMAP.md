@@ -17,6 +17,19 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-06 (day; main ≥ this commit)
+
+**LANDED on main (87d17c00, `lane-lines-combined`):** the far-head chain -- note-first reader, text is
+not a ledger, not-a-note gate, edge-vs-through (Sean 24/24), far-head per-bar grid (line CENTRE, ±0.3 sp
+re-find), ownership by ledgers (`OMR_FARHEAD_OWNER_LEDGERS`, OFF), ownership from staves
+(`OMR_OWNER_FROM_STAVES`, OFF), find-the-five-lines-in-each-cell 2.57 (`OMR_CELL_LINE_FIND`, OFF;
+Sean: "working perfectly", Litolff 29 one-line-off bars -> 0). Fast 4,526 passed, check 250. Truth set
+Litolff 39/0/2, Brahms 10/0/1. Verified (Opus, `verify-staff-line-offsets`): raw staff-wide lines tilt
+off the ink (p90 5.5 px); the per-bar grid fixes most. **Not adopted:** slur-not-ledger (refused real
+ledgers 6/12). **Retired:** nine stranded pieces (DECISIONS 10-06). **Next:** `lane-edge-merge-unseen-ledgers`
+(5 right heads lost: edge-merge drops real ledgers under a slur; knife-edge limits); then switch the two
+OFF flags on with Sean; NO overnight until Sean says (10-06: "We have a lot more to do before then").
+
 ## START HERE — after the night of 2026-10-05→06 (night manager; main ≥ this commit)
 
 **Nothing below is merged to main; all on branches, Sean to review.** Sean (10-05) ruled the far-head
