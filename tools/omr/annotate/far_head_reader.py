@@ -71,7 +71,11 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     #            a head's own interior row sits only 0.57-0.65 of the last gap from it, on the same knife edge;
     #  rows_clear_of_box: a rung more than half a line thickness clear of the box's rows is not the head's own widest
     #            row, so it need not be wider than the head.
-    edge_jut_kept=True, split_welded_bands=True, walk_tol=False, rows_clear_of_box=True)
+    edge_jut_kept=True, split_welded_bands=True, walk_tol=False, rows_clear_of_box=True,
+    # lane-farhead-5-6 (Sean 2026-10-07, worse-cases tile 6): the flank re-measure of the note's line may not move it
+    # onto another mark. A jut's own row is not re-measured; any other line is re-measured only on flank rows that touch the head.
+    # False = the old 0.30 sp window, bit-identical. ON: Sean ruled tile 6 (1st ledger below the Horn staff); this is its cause.
+    flank_refine_bounded=True)
 #: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel
 WALK_CENTRE_TOL_PX = 0.5
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
@@ -886,7 +890,8 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
                                     if s_ != subject],
             ledger_not_text=READER_KEYWORDS.get("ledger_not_text", False),
             text_boxes=text_boxes,
-            edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False))
+            edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False),
+            flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False))
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge
