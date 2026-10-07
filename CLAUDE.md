@@ -472,7 +472,7 @@ alone; a file it has NOT measured (new) is fast by default UNLESS its source
 CODE (comments and docstrings do not count, since 2026-10-07) contains
 `library/`, `omr-weights` (even inside a benchmark name like
 `omr-weights-ab`), a venv or a `.pdf"` path: then the WHOLE file goes slow
-silently until it is measured — compare the passed count after a merge. No new test may assert on module
+silently until it is measured — compare the passed count after a merge. Re-measure the durations with `python3 -m tools.omr.tests.measure_durations` (ROADMAP 0.4f) on a machine that has the library, weights and venvs, from a clean tree; it refuses a dirty one and leaves all-skipped files unmeasured. No new test may assert on module
 source text (`inspect.getsource`, AST walks) except the flag-direction guard
 and a gather-shape check; `check` counts the rest. Mutation batteries were
 one-off proofs; their `FINDINGS.md` stand, the scripts are being archived

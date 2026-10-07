@@ -39,9 +39,11 @@ is the one hygiene number and must go down (192 on 2026-10-07).
 Phase 1 (acceptance harness) built; Phase 2 (close the foundation) in
 progress and where every lane is; Phase 3 (staged becomes the web app's
 engine) and Phase 4 (import from IMSLP, one command, BUILT not merged) wait.
-The web app runs the legacy engine, has a payment gate Sean bypasses as
-admin, and has open security items that must be fixed before any public
-deployment (`docs/audit-2026-10-07-code-cleaning.md` §3A).
+The web app runs the legacy engine and has a payment gate Sean bypasses as
+admin; the audit's security items (`docs/audit-2026-10-07-code-cleaning.md`
+§3A) were fixed the same day (ROADMAP 3.6: owners on scores, signed
+`/uploads`, safe upload names, no reset token, no default secret), leaving
+dependency pins and nginx/rate-limit hardening as follow-ups.
 
 **Read next**: [CLAUDE.md](CLAUDE.md) (the spec), [ROADMAP.md](ROADMAP.md)
 (status), [docs/DECISIONS.md](docs/DECISIONS.md) (rulings),

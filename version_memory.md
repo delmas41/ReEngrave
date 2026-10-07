@@ -22,6 +22,85 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-07 — ROADMAP 3.6: the web app hardened before any deploy
+
+**`lane-webapp-hardening` (Opus; the audit's §3A list).** Scores, Gradus
+scores and comparison sessions now have an owner (`user_id`, FK, indexed),
+and every `/api/scores*`, `/api/diffs/*`, export, Gradus, compare and
+checkout route answers 404 for another user's item (never 403, so a
+foreign id reads like a missing one). The learning report counts only the
+caller's scores; the fine-tuning export is admin-only. The `StaticFiles`
+mount at `/uploads` is gone: a route serves a file only with a one-hour
+HMAC-SHA256 signed URL the API returns (`pdf_url`, `pdf_snippet_url`,
+`musicxml_snippet_url`, `xml_url`; `backend/core/signed_urls.py`), and
+`DiffCard` uses those instead of building `/uploads/...` itself. Gradus and
+compare uploads are stored `<uuid>_<basename>` behind an extension
+allowlist; every upload is capped at `MAX_UPLOAD_BYTES` (50 MB, 413 above).
+Forgot-password returns the token only with `EXPOSE_RESET_TOKEN`. The app
+refuses to start with the default `SECRET_KEY` unless `ALLOW_DEFAULT_SECRET`
+(set in the dev compose only); the refresh cookie's `secure` flag follows
+`COOKIE_SECURE`; `admin_emails` has no personal default. lilypond and
+musicxml2ly time out at 300 s, rsvg-convert and inkscape at 60 s.
+**Schema change with no migration: `docker compose down && docker volume rm
+reengrave_db && docker compose up -d`.** 21 new tests
+(`backend/tests/test_webapp_hardening.py`), all RED on main first — user B
+listed and decided user A's score, unsigned `/uploads` answered 200, Gradus
+wrote outside its directory, `dev_token` was in the body. Backend 140
+passed with the same three pre-existing failures. CONVENTION ASSUMED (not
+confirmed with Sean): the knowledge base (patterns, auto-accept rules) stays
+shared across users, as auto-accept already reads it globally. Not done:
+dependency pins, nginx body cap, logout token blacklist, rate limits beyond
+the three auth routes.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4g: the derived checks share their gap helpers
+
+**`lane-check-helpers` (Sonnet, 40960d9a).** New `tools/omr/staged/check_helpers.py`
+(registered in `reach.NOT_A_STAGE` so `unaccounted_modules()` does not flag
+it) holds `gap_key` / `unaccounted` / `stale_gaps` with the module's
+`KNOWN_GAPS` passed in, and `q_name` / `attr_tail`; `capture`, `inventory`,
+`trace` and `wiring` keep same-named one-line wrappers, `capture` and
+`gather_coverage` alias the two AST helpers — 15 definitions became 5 plus
+11 wrappers. `trace.stale_gaps` keeps table order (`ordered=True`); the
+others sort, as before. NOT unified, bodies differ: `_quantities` in
+capture / gather_coverage / wiring / health (four different questions) and
+`gather_coverage.unaccounted` (legacy event keys, returns a dict). Five new
+tests check each wrapper against the helper on its own table. The first
+test draft used `ast.parse` and moved `source_text_tests` to 47; rewritten
+to build nodes directly, back to 46. `check` 192 identical throughout; fast
+tier 6,006 passed.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4a DONE: the shared staged test fixture module
+
+**`lane-0.4a-fixtures` (Sonnet, e7aa9fd0).** `tools/omr/tests/_staged_fixtures.py`
+(uncollected, no slow-tier trigger text) holds `fresh_log()`; the four
+byte-identical `def _log(): return Log()` copies in `test_staged_c_clef`,
+`test_staged_clef`, `test_staged_clef_human_box` and
+`test_staged_clef_offstaff` became one aliased import (+18/−18 lines). The
+survey found no other unifiable helper: the remaining 19 `_log` and 8
+`_record` helpers each build a scene or record shape of their own. No test
+added, removed or changed; fast tier 6,001 passed and `check` 192 unchanged.
+
+---
+
+## 2026-10-07 — ROADMAP 0.4f: a one-command re-measure for `durations.json`
+
+**`lane-durations-recipe` (Sonnet, a342293a).** `durations.json` was a one-off
+from 9ee9d99c (2026-09-22) with no producing script, which is why 168 of 299
+test files have never been measured. `tools/omr/tests/measure_durations.py`
+runs the full suite in-process with a small plugin, sums setup+call+teardown
+per file into the committed shape (same `measured_on` header), refuses a
+dirty tree and `-m`, and lists all-skipped files under
+`unmeasured_all_skipped` instead of recording a skip as fast. Smoke-tested
+here on two files only; **the real measurement needs Sean's library, weights
+and venvs and is not done** — `python3 -m tools.omr.tests.measure_durations`
+from a clean main, then commit the file. CLAUDE.md §6c names it.
+
+---
+
 ## 2026-10-07 — RECORD-DUMP TRIAGE (audit report §3E): six uncited dumps untracked
 
 **A read-only survey (Sonnet) of the 38 tracked data dumps over 3 MB (247.6
