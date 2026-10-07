@@ -711,6 +711,19 @@ class Q(_Vocab):
     #: their rungs. A MEASUREMENT, never a verdict: it names nothing.
     LEDGER_INK_UNDER = "ledger_ink_under"
 
+    #: ⚠️ ROADMAP 2.60 (lane-arc-not-a-line, Sean 2026-10-07: *"it is still
+    #: occasionally calling a staff line an arc"*). What is INSIDE a
+    #: detector `slur`/`tie` box, read off the PAGE's own raster with EVERY
+    #: staff line of the page (the neighbouring staff's included) taken out
+    #: of the box: the fraction of the box's columns that hold CURVE-SHAPED
+    #: ink (a vertical run no longer than `ARC_INK_CURVE_RUN_SPACES` -- not a
+    #: stem, not a head, not a barline), how many staff lines pass through
+    #: the box, and how many columns are one tall vertical stroke. A box
+    #: that is a staff line (or a barline) holds NOTHING curved once the
+    #: lines are out; a real arc's ink survives on nearly every column. A MEASUREMENT filed on the arc glyph, naming nothing --
+    #: `adjudicate_arc_is_not_an_arc` reads it.
+    ARC_INK_SHAPE = "arc_ink_shape"
+
     #: ⚠️⚠️ ROADMAP 2.23 — A HEAD'S FILL (HOLLOW VS BLACK), READ FROM THE
     #: INK, NOT ONLY FROM THE DETECTOR'S CLASS. One row per notehead-classed
     #: glyph: the ink fraction INSIDE the detector's OWN box, two ways --
@@ -1991,6 +2004,9 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 3.4g-3: an ink FRACTION under one ledger box -- a ruler
     #: reading off the erased raster, naming nothing.
     "LEDGER_INK_UNDER": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.60: curve-shaped ink coverage of an arc box, off the page
+    #: raster with every staff line taken out -- a ruler reading.
+    "ARC_INK_SHAPE": CLAIM.MEASUREMENT,
     #: ROADMAP 2.18c: a windowed ink density test at a stem's tip, off the
     #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
     #: it says whether flag-shaped ink stands there, never that a flag does.
@@ -2334,6 +2350,13 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: `gather.gather_arc_ink` -- ROADMAP 2.60. Reads the page's own binary
+    #: raster (`pws.page.binary`, the staff lines left in, like `LEDGER_
+    #: FARHEAD`), so it shares a crop with every other reader of this page
+    #: -- one crop, one signal. Its own name because it asks a different
+    #: question (is there CURVED ink in this arc box once every staff line
+    #: is taken out of it).
+    CV_ARC_INK = "cv_arc_ink"                # gather: curved ink in an arc box
     #: `gather._observe_beam_stem_join` -- ROADMAP 2.38. Reads the SAME
     #: staff-erased raster `CV_LINES`/`CV_INK`/`CV_LEDGER`/`CV_STEM_TIP` read
     #: (`image_no_staff`), so it is not independent of them in the "one crop,

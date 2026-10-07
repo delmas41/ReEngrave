@@ -5008,6 +5008,176 @@ def gather_ledger_ink(log: Log, cells: Sequence[Any],
                         ink_background_windows=m["background_windows"])
 
 
+#: ROADMAP 2.60 -- what makes a column of an arc box "curve-shaped": its
+#: ink's longest vertical run is no longer than this many staff spaces. A
+#: tie/slur stroke is 0.1-0.35 sp thick and, even on a steep end, stays under
+#: it; a stem, a barline and a notehead are all longer. Fixed BEFORE any
+#: count was taken (lane-arc-not-a-line).
+ARC_INK_CURVE_RUN_SPACES = 0.8
+#: A column is part of a TALL VERTICAL STROKE when one run covers this share
+#: of the box's height (a barline, a stem).
+ARC_INK_TALL_RUN_SHARE = 0.8
+#: A staff line "passes through" the box within this many spaces of its rows,
+#: and its stroke is taken to be this many spaces either side of its ink row.
+ARC_INK_LINE_PAD_SPACES = 0.15
+ARC_INK_LINE_STROKE_SPACES = 0.1
+#: A staff line is SNAPPED to the page's own ink row (local, never the staff's
+#: global value) only where this share of the box's columns are ink there.
+ARC_INK_LINE_SNAP_SPACES = 0.3
+ARC_INK_LINE_SNAP_MIN_FILL = 0.5
+#: ...and a line's stroke is grown at most this far either side of the row.
+ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
+#: A column holds ink only with at least this many ink pixels in it.
+ARC_INK_MIN_COLUMN_PX = 2
+
+
+def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
+                  space: float, line_ys: Sequence[float]
+                  ) -> Optional[Dict[str, Any]]:
+    """What is inside one arc box once EVERY staff line is taken out of it.
+    ROADMAP 2.60.
+
+    `binary` is the PAGE's own raster (0 = ink, the staff lines left in),
+    `box` the arc's `(x0, y0, x1, y1)` in page pixels, `space` one staff
+    space in pixels, `line_ys` EVERY staff line of the page that can cross the
+    box -- the neighbouring staff's as well as the owner's: an arc box cut
+    from one staff's cell routinely sits on the next staff's lines, which the
+    owner's own erasure never touched. Each line is snapped to the ink row
+    beside the box (LOCAL: a scanned staff tilts across a system) and its
+    stroke removed. `None` where the box is off the raster or there is no
+    unit -- declined, never defaulted.
+
+      `coverage`      share of the box's columns holding CURVE-SHAPED ink
+                      once the line strokes are removed (longest vertical run
+                      <= `ARC_INK_CURVE_RUN_SPACES`)
+      `tall_cols`     share of columns whose remaining ink run covers
+                      `ARC_INK_TALL_RUN_SHARE` of the box height
+      `lines_in_box`  how many staff lines pass through the box
+      `width_spaces`, `height_spaces`   the box, in spaces
+    """
+    import numpy as np
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not space \
+            or space <= 0:
+        return None
+    H, W = binary.shape
+    x0, y0, x1, y1 = (float(v) for v in box)
+    ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    if ix1 <= ix0 or iy1 <= iy0:
+        return None
+    ink = (binary[iy0:iy1, ix0:ix1] == 0)
+    h, w = ink.shape
+    pad = ARC_INK_LINE_PAD_SPACES * space
+    snap = int(round(ARC_INK_LINE_SNAP_SPACES * space))
+    stroke = max(1, int(round(ARC_INK_LINE_STROKE_SPACES * space)))
+    n_lines = 0
+    removed = np.zeros(h, dtype=bool)
+    for ly in line_ys:
+        ly = float(ly)
+        if not (y0 - pad <= ly <= y1 + pad):
+            continue
+        n_lines += 1
+        r0 = int(round(ly)) - iy0
+        best, best_fill = r0, 0.0
+        for r in range(max(0, r0 - snap), min(h, r0 + snap + 1)):
+            fill = float(ink[r].mean())
+            if fill > best_fill + 1e-9 or (abs(fill - best_fill) < 1e-9
+                                           and abs(r - r0) < abs(best - r0)):
+                best, best_fill = r, fill
+        if best_fill >= ARC_INK_LINE_SNAP_MIN_FILL:
+            # the stroke is as thick as the ink row is: grow while the row is
+            # still mostly ink (a scan's staff line is 3 px or 12), one pixel
+            # of margin beyond it.
+            top = bot = best
+            cap = int(round(ARC_INK_LINE_MAX_HALF_STROKE_SPACES * space))
+            while top - 1 >= 0 and best - (top - 1) <= cap \
+                    and ink[top - 1].mean() >= ARC_INK_LINE_SNAP_MIN_FILL:
+                top -= 1
+            while bot + 1 < h and (bot + 1) - best <= cap \
+                    and ink[bot + 1].mean() >= ARC_INK_LINE_SNAP_MIN_FILL:
+                bot += 1
+            removed[max(0, top - 1):min(h, bot + 2)] = True
+        else:
+            removed[max(0, r0 - stroke):min(h, r0 + stroke + 1)] = True
+    ink = ink & ~removed[:, None]
+    max_curve = ARC_INK_CURVE_RUN_SPACES * space
+    curve = tall = 0
+    for c in range(w):
+        col = ink[:, c]
+        if col.sum() < ARC_INK_MIN_COLUMN_PX:
+            continue
+        padded = np.concatenate(([0], col.astype(np.int8), [0]))
+        d = np.diff(padded)
+        starts, ends = np.where(d == 1)[0], np.where(d == -1)[0]
+        longest = int((ends - starts).max())
+        if longest <= max_curve:
+            curve += 1
+        if longest >= ARC_INK_TALL_RUN_SHARE * h:
+            tall += 1
+    return {"coverage": round(curve / w, 4), "tall_cols": round(tall / w, 4),
+            "lines_in_box": n_lines,
+            "width_spaces": round((x1 - x0) / space, 3),
+            "height_spaces": round((y1 - y0) / space, 3)}
+
+
+def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
+                   local: Dict[int, Tuple[int, int]],
+                   detections: Dict[str, List[Any]]) -> None:
+    """`Q.ARC_INK_SHAPE` on every detector `slur`/`tie` box. ROADMAP 2.60.
+
+    ⚠️ OFF THE PAGE'S OWN RASTER (`pws.page.binary`, the staff lines left in)
+    and the lines of EVERY staff of the page, in page pixels: the first
+    version read the owner cell's erased raster and its own lines, and a box
+    that sat on the NEXT staff's line read as a full curve (the three tiles
+    Sean called barlines, 2026-10-07). A MEASUREMENT filed on the glyph,
+    naming nothing; the thresholds live in the decision. Declined, never
+    defaulted: no page raster -> `no_mask`; no staff unit ->
+    `no_staff_geometry`.
+    """
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    all_lines: List[float] = []
+    for st in getattr(pws, "staves", ()) or ():
+        all_lines.extend(float(y) for y in st.line_ys)
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        idx = [gi for gi, d in enumerate(dets)
+               if d.smufl_name in _ARC_CLASSES]
+        if not idx:
+            continue
+        frame = frame_cell(c.measure_index)
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 / float(getattr(c, "upscale_factor", 1.0) or 1.0) \
+            if grid else None
+        for gi in idx:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if binary is None or getattr(binary, "ndim", 0) != 2:
+                log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
+                            frame=frame, reason=ABSTAIN.NO_MASK,
+                            note="page carries no binary raster")
+                continue
+            page_box = _page_box(c, dets[gi])
+            if not space or page_box is None:
+                log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+                continue
+            m = arc_ink_shape(binary, page_box, space, all_lines)
+            if m is None:
+                log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            note="box off the raster")
+                continue
+            log.observe(g, Q.ARC_INK_SHAPE, m["coverage"],
+                        reader=READERS.CV_ARC_INK, frame=frame,
+                        tall_cols=m["tall_cols"],
+                        lines_in_box=m["lines_in_box"],
+                        width_spaces=m["width_spaces"],
+                        height_spaces=m["height_spaces"])
+
+
 #: ROADMAP 2.39b — the bounded search around the detector's own centre, in
 #: staff spaces (Sean's own bound: "at most +-0.6 sp vertically and +-0.4 sp
 #: horizontally"). Not grown past what a measured sliver needs
@@ -8669,6 +8839,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # erased raster (and says so: `READERS.CV_INK`). The second witness
         # for Sean's `[C91]` -- see the function.
         gather_ledger_ink(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.60, beside `gather_ledger_ink` for the same reason:
+        # what is inside each slur/tie box once every staff line is taken out.
+        gather_arc_ink(log, pws, cells, local, detections)
         # ⚠️ ROADMAP 2.23 (ported, GATHER half, from `claude/no-ink-head-
         # 2.6h`), BESIDE `gather_ledger_ink` for the same reason: the
         # sibling witness for the notehead's OWN box rather than its rung,
