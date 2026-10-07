@@ -622,6 +622,26 @@ def _too_narrow(box_row, spacing_canonical: float,
     return w_spaces < TOO_NARROW_MIN_SPACES
 
 
+#: ROADMAP 2.59 (lane-dot-not-a-note, `OMR_DOT_FOLLOWS_NOTE`, default OFF).
+#: A notehead-class box no larger than this on BOTH sides, in staff spaces, is
+#: a DOT, whatever class the detector gave it. STATED BEFORE ANY COUNT: a
+#: printed dot is ~0.3-0.5 sp round (the detector's `augmentationDot` box is
+#: 13-15 px on a ~27 px staff space, 0.5 sp), a notehead is ~1.3 sp wide
+#: (CLAUDE.md §10) and `too_narrow`'s floor is 1.0 sp. 0.75 sp sits in the
+#: gap, and the test needs BOTH sides small so a real head clipped to a
+#: sliver (short but >= 1.0 wide) is never taken for one. It extends the
+#: refusal `too_narrow` makes for `noteheadBlack*` to the hollow classes.
+DOT_SIZED_MAX_SPACES = 0.75
+
+
+def _dot_sized(box_row, spacing_canonical: float,
+               detail: Dict[str, Any]) -> bool:
+    _name, _x, _y, w_c, h_c = box_row.value
+    w_sp, h_sp = w_c / spacing_canonical, h_c / spacing_canonical
+    detail["dot_size_spaces"] = [round(w_sp, 3), round(h_sp, 3)]
+    return w_sp <= DOT_SIZED_MAX_SPACES and h_sp <= DOT_SIZED_MAX_SPACES
+
+
 #: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
 #: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
 #: imported: `family_precision` imports FROM this module
@@ -2106,7 +2126,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
-                                     "too_narrow",
+                                     "too_narrow", "is_a_dot", "on_a_barline",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -2305,6 +2325,23 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                       used=tuple(used), detail=detail)
     if _too_narrow(box_row, spacing, detail):
         return Ruling(value=True, reason="too_narrow",
+                      used=tuple(used), detail=detail)
+    # ROADMAP 2.59: the hollow classes `too_narrow` does not reach. AFTER the
+    # two shape rules above so every box they already refuse keeps its reason.
+    if _ledger.dot_follows_note_enabled() \
+            and _dot_sized(box_row, spacing, detail):
+        # a dot-sized mark ON a barline's column is stray ink on the line, not
+        # a dot (Sean 2026-10-07, Brahms `5/1/1/2/17`): a different claim
+        page_box = (box_row.detail or {}).get("bbox_page_px")
+        cell_box = _cell_box_page(ev)
+        w_c = box_row.value[3]
+        if page_box and len(page_box) == 4 and cell_box and w_c:
+            sp_page = spacing * (page_box[2] - page_box[0]) / w_c
+            if _ledger.mark_on_a_barline(page_box, cell_box, sp_page):
+                detail["barline_edges_page"] = [cell_box[0], cell_box[2]]
+                return Ruling(value=True, reason="on_a_barline",
+                              used=tuple(used), detail=detail)
+        return Ruling(value=True, reason="is_a_dot",
                       used=tuple(used), detail=detail)
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE

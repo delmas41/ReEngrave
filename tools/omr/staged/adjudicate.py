@@ -1262,6 +1262,11 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).
             from .adjudicators import ownership as _own
             _own.reconcile_group_owners(log)
+        if quantity == Q.DOT_ROLE:
+            # ROADMAP 2.59: a dot's owner is its note's owner. A no-op
+            # unless `OMR_DOT_FOLLOWS_NOTE` is on.
+            from .adjudicators import ownership as _own
+            _own.reconcile_dot_owners(log)
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out

@@ -98,6 +98,16 @@ dirty tree and `-m`, and lists all-skipped files under
 here on two files only; **the real measurement needs Sean's library, weights
 and venvs and is not done** — `python3 -m tools.omr.tests.measure_durations`
 from a clean main, then commit the file. CLAUDE.md §6c names it.
+## 2026-10-07 — manager session (notation-tile-fixes): far-head + line chain, mark identity, dots, arcs
+
+Landed on main through 10-07 (all GATHER+ADJUDICATE, details in ROADMAP START HERE and
+`benchmarks/omr-local-staff-2026-09/FINDINGS.md`): the note-first far-head reader chain (2.56-2.57c,
+edge-vs-through, per-bar grid, edge-merge fix, `flank_refine_bounded` 2.59 far-head), the cell line finder
+2.57 (`OMR_CELL_LINE_FIND` ON), owner-from-staves 2.56c (ON) and its speed fixes (Log subject cache;
+correlated-groups pairwise), mark identity (`OMR_MARK_GROUPS`, `OMR_RELOCATE_AT_EXPORT`, OFF), the export
+`cell_past_the_last_bar` accounting fix, arc owner `ends_on_noteheads`, dots 2.59 (`OMR_DOT_FOLLOWS_NOTE`
+ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007-night` scored on
+`lane-night-1007-read`. Sean's rulings recorded in DECISIONS 10-04..10-07.
 
 ---
 

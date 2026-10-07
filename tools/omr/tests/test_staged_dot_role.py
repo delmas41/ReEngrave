@@ -24,7 +24,9 @@ adjudicated a print crop of this family; see
 
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 import xml.etree.ElementTree as ET
 
 from tools.omr.staged import adjudicate
@@ -185,7 +187,11 @@ class TestDotRoleRespectsADecidedOwner(unittest.TestCase):
     goes RED -- the ghost's box, alone in the cell, still admits the
     augmentation window and the role is wrongly decided `augmentation`."""
 
+    @mock.patch.dict(os.environ, {"OMR_DOT_FOLLOWS_NOTE": "0"})
     def test_the_only_candidate_owned_by_the_neighbour_does_not_admit_the_dot(self):
+        # The pre-2.59 path: with `OMR_DOT_FOLLOWS_NOTE` ON (default since
+        # 2026-10-07) a dot follows its note to the neighbour staff instead --
+        # `test_dot_not_a_note_2026_10_07.py` covers that.
         log = Log()
         _staff_space(log)
         ghost = _note(log, 0, "noteheadHalf")

@@ -1661,29 +1661,88 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)
 
 
+#: ROADMAP 2.60 (lane-arc-not-a-line) -- the thresholds `Q.ARC_INK_SHAPE` is
+#: read against, FIXED BEFORE ANY COUNT WAS TAKEN. A staff line is a straight
+#: horizontal stroke through the whole box; erased, it leaves nothing curved,
+#: so: a box at least this wide, a staff line through it, and under this share
+#: of its columns holding curve-shaped ink.
+ARC_LINE_MIN_WIDTH_SPACES = 2.5
+ARC_LINE_MAX_COVERAGE = 0.35
+#: A barline is a straight vertical stroke: a box no wider than a space and
+#: at least two spaces tall, most of whose columns are one tall vertical run.
+ARC_BARLINE_MAX_WIDTH_SPACES = 1.0
+ARC_BARLINE_MIN_HEIGHT_SPACES = 2.0
+ARC_BARLINE_MIN_TALL_COLS = 0.6
+
+
+def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
+                     ) -> Optional[Ruling]:
+    """The box's own ink says it is a straight line, not a curve.
+
+    Reads GATHER's `Q.ARC_INK_SHAPE` (the erased raster, measured LOCALLY in
+    the arc's own cell). ABSTAINS NOTHING: a declined or missing reading
+    leaves the box standing as it did, never refused on a guess.
+    """
+    rows = ev.rows(Q.ARC_INK_SHAPE)
+    if not rows:
+        return None
+    row = rows[-1]
+    d = row.detail or {}
+    try:
+        cov = float(row.value)
+        width = float(d["width_spaces"])
+        height = float(d["height_spaces"])
+        tall = float(d["tall_cols"])
+        n_lines = int(d["lines_in_box"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    detail.update(ink_coverage=cov, ink_tall_cols=tall,
+                  ink_lines_in_box=n_lines, width_spaces=width,
+                  height_spaces=height)
+    if (n_lines >= 1 and width >= ARC_LINE_MIN_WIDTH_SPACES
+            and cov < ARC_LINE_MAX_COVERAGE):
+        return Ruling(value=True, reason="ink_is_a_staff_line",
+                      used=(row.id,), detail=detail)
+    if (width <= ARC_BARLINE_MAX_WIDTH_SPACES
+            and height >= ARC_BARLINE_MIN_HEIGHT_SPACES
+            and tall >= ARC_BARLINE_MIN_TALL_COLS):
+        return Ruling(value=True, reason="ink_is_a_barline",
+                      used=(row.id,), detail=detail)
+    return None
+
+
 @decision(
     quantity=Q.ARC_IS_NOT_AN_ARC,
     composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE),
+           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE),
     subjects_from=Q.ARC_BOX,
-    reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC),
+    reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
+    + ("ink_is_a_staff_line", "ink_is_a_barline"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
     """Is this box the detector called a slur or a tie a symbol at all?
 
-    HUMAN WITNESS ONLY. ⚠️ NOT a second opinion on `Q.ARC_KIND`: *slur or
-    tie* and *a symbol or not* are different questions and this asks only the
-    second.
+    A human refusal first. Then the box's OWN INK (`Q.ARC_INK_SHAPE`,
+    ROADMAP 2.60): a box that holds no curved ink once the staff lines are
+    erased and has a staff line through it is a STAFF LINE
+    (`ink_is_a_staff_line`); a narrow tall box that is one vertical stroke is
+    a BARLINE (`ink_is_a_barline`). Both are refusals with a named reason --
+    the box stays in the record, the arc grammar and export skip it.
+    ⚠️ NOT a second opinion on `Q.ARC_KIND`: *slur or tie* and *a symbol or
+    not* are different questions and this asks only the second.
     """
     _ = ev.rows(Q.ARC_BOX)       # the domain's own quantity, declared and read
     detail, used = _class_detail(ev)
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    by_ink = _arc_ink_refusal(ev, detail)
+    if by_ink is not None:
+        return by_ink
     return Ruling(value=False, reason="arc", used=used, detail=detail)
 
 
