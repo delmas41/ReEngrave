@@ -204,6 +204,7 @@ def _otsu_threshold(values: np.ndarray) -> int:
 def _band_centers(
     ink: np.ndarray, cx_local: float, spacing: float, y_offset: int,
     head_box_y: "tuple[float, float] | None" = None,
+    split_welded: bool = False,
 ) -> list[float]:
     """Thin bands of long ink spans crossing x=cx_local. Returns centre ys
     in image coordinates (y_offset is the window's top row).
@@ -293,44 +294,112 @@ def _band_centers(
             # passes unchanged; a head with no rung through it peaks on its
             # fat body rows, which fail the thinness test — no fake band.
             band = span_len[yi:j]
-            k = int(np.argmax(band))
-            floor = 0.95 * band[k]
-            lo_i = k
-            while lo_i > 0 and band[lo_i - 1] >= floor:
-                lo_i -= 1
-            hi_i = k
-            while hi_i + 1 < band.shape[0] and band[hi_i + 1] >= floor:
-                hi_i += 1
-            if hi_i - lo_i + 1 <= max_thick:
-                # Span-weighted centre of the peak rows. Recentring on "wing"
-                # columns a notehead cannot reach was built and REFUSED: for
-                # both wing zones tried (0.55..1.1 and 0.9..1.1 spaces out)
-                # it measured worse on the hollow corpus than this — see
-                # benchmarks/omr-snap-ledger-2026-09/FINDINGS.md.
-                idx = np.arange(lo_i, hi_i + 1, dtype=np.float64)
-                weights = band[lo_i : hi_i + 1]
-                bands.append(
-                    float(np.average(idx, weights=weights)) + yi + y_offset
-                )
+            peaks = _thin_peak(band, 0, band.shape[0], max_thick)
+            if peaks is not None:
+                found = [peaks]
+                if split_welded:
+                    found += _welded_peaks(band, peaks, max_thick,
+                                           2.0 * stub)
+                for lo_i, hi_i in found:
+                    # Span-weighted centre of the peak rows. Recentring on
+                    # "wing" columns a notehead cannot reach was built and
+                    # REFUSED: for both wing zones tried (0.55..1.1 and
+                    # 0.9..1.1 spaces out) it measured worse on the hollow
+                    # corpus than this — see
+                    # benchmarks/omr-snap-ledger-2026-09/FINDINGS.md.
+                    idx = np.arange(lo_i, hi_i + 1, dtype=np.float64)
+                    weights = band[lo_i : hi_i + 1]
+                    bands.append(
+                        float(np.average(idx, weights=weights)) + yi + y_offset
+                    )
+                bands.sort()
             yi = j
         else:
             yi += 1
     return bands
 
 
+def _thin_peak(band: np.ndarray, a: int, b: int, max_thick: float):
+    """The contiguous plateau (rows within 5% of the maximum) around the
+    widest row of `band[a:b]` as (lo, hi) in `band`'s own indices, or None
+    where it is thicker than a rung (`max_thick` rows)."""
+    seg = band[a:b]
+    k = int(np.argmax(seg)) + a
+    floor = 0.95 * band[k]
+    lo_i = k
+    while lo_i > a and band[lo_i - 1] >= floor:
+        lo_i -= 1
+    hi_i = k
+    while hi_i + 1 < b and band[hi_i + 1] >= floor:
+        hi_i += 1
+    if hi_i - lo_i + 1 <= max_thick:
+        return lo_i, hi_i
+    return None
+
+
+def _welded_peaks(band: np.ndarray, main: "tuple[int, int]",
+                  max_thick: float, margin: float) -> "list[tuple[int, int]]":
+    """Second, third ... rungs of one contiguous region whose head body is
+    itself wider than the rung length floor (lane-edge-merge-unseen-ledgers,
+    2026-10-06; Brahms `glyph/14/0/1/0/6`: the head's own rows are 38 px
+    against a 36 px floor, so the rows between two ledgers pass as 'long'
+    and ONE region holds both; the old code kept only the widest plateau and
+    the other ledger was lost -- found or not by whether one row of the head
+    sat 0.3 px under the floor).  A further plateau is a ledger when it is
+    thin (`max_thick`) AND stands at least `margin` (two stubs: the jut past
+    the body on both sides) above every row between it and the plateau (or
+    region edge) it is separated from -- a head's own widest rows do not stand
+    out from the head's body by that much."""
+    out: "list[tuple[int, int]]" = []
+    n = band.shape[0]
+    segs = [(0, main[0], False, True), (main[1] + 1, n, True, False)]
+    # (a, b, lo bound is a peak, hi bound is a peak)
+    while segs:
+        a, b, lo_pk, hi_pk = segs.pop()
+        if b - a < 1 or band[a:b].max() <= 0:
+            continue
+        pk = _thin_peak(band, a, b, max_thick)
+        if pk is None:
+            continue
+        p, q = pk
+        top = float(band[p])
+        ok = True
+        for (rows, bounded) in ((band[a:p], lo_pk), (band[q + 1:b], hi_pk)):
+            if bounded:
+                # rows between this plateau and the neighbouring plateau:
+                # none (it is a shoulder of it) or a valley of lower span
+                if rows.size == 0 or top - float(rows.min()) < margin:
+                    ok = False
+            # an open (region-edge) side has nothing to stand out from
+        if not ok:
+            continue
+        out.append(pk)
+        segs.append((a, p, lo_pk, True))
+        segs.append((q + 1, b, True, hi_pk))
+    return sorted(out)
+
+
 def _select_next_candidate(
     anchor: float, sign: float, bands: list[float], pitch: float,
-    spacing: float, target_y: float | None,
+    spacing: float, target_y: float | None, tol_px: float = 0.0,
 ) -> "tuple[float | None, bool]":
     """One step of `_walk_ladder`'s own selection rule, factored out so
     the drift-following rescan (`measure_ledger_rungs`, round 5) can reuse
     it against a freshly-probed `bands` list without duplicating the
     window/widen arithmetic. Returns (candidate_y_or_None, widened).
     """
-    base_upper = WALK_WINDOW[1] * pitch
+    # `tol_px` (lane-edge-merge-unseen-ledgers, 2026-10-06): the window
+    # compares two centre-to-centre gaps, each known only to the half pixel
+    # band centres sit on (reading the staff line at its centre instead of
+    # its top row moved the first gap by 2 px and put a real ledger 0.15 px
+    # outside a 0.65 bound). Half a line thickness (2.5 px) was tried and
+    # refused: it admitted four heads' own middle rows (0.57-0.61 of the
+    # last gap) as rungs. 0.0 = the old exact window.
+    lower = WALK_WINDOW[0] * pitch - tol_px
+    base_upper = WALK_WINDOW[1] * pitch + tol_px
     cands = [
         b for b in bands
-        if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= base_upper
+        if lower <= sign * (b - anchor) <= base_upper
     ]
     widened = False
     if not cands and target_y is not None:
@@ -346,7 +415,7 @@ def _select_next_candidate(
         upper = max(base_upper, dist_to_target) + TARGET_SLACK_SPACES * spacing
         cands = [
             b for b in bands
-            if WALK_WINDOW[0] * pitch <= sign * (b - anchor) <= upper
+            if lower <= sign * (b - anchor) <= upper
         ]
         if cands:
             widened = True
@@ -406,7 +475,7 @@ def _row_ink_center(
 
 def _walk_ladder(
     edge_y: float, sign: float, bands: list[float], spacing: float,
-    target_y: float | None = None,
+    target_y: float | None = None, tol_px: float = 0.0,
 ) -> list[float]:
     """One rung per staff space outward from the staff's edge line, each
     accepted only inside WALK_WINDOW of the local pitch. Returns measured
@@ -428,7 +497,7 @@ def _walk_ladder(
     pitch = spacing
     while len(rungs) < int(MAX_SPACES):
         best, _widened = _select_next_candidate(
-            anchor, sign, bands, pitch, spacing, target_y
+            anchor, sign, bands, pitch, spacing, target_y, tol_px
         )
         if best is None:
             break
@@ -456,6 +525,8 @@ def _rung_row_clears_box(
     img_gray: np.ndarray, y: float, x: float,
     head_box_x: "tuple[float, float]", spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
+    box_rows: "tuple[float, float] | None" = None, tol_px: float = 0.0,
+    sign: float = 0.0,
 ) -> bool:
     """Does the ink crossing (y, x) extend past the subject's OWN box
     (`head_box_x`) by `RUNG_BEYOND_BOX_MIN_SPACES` on top of the box's
@@ -468,6 +539,15 @@ def _rung_row_clears_box(
     dense chord it pulls in neighbouring stems/beams and makes a real
     rung's own row-span too TALL across consecutive rows, failing peak
     selection's thinness test before this check is ever reached.
+
+    `box_rows` (the box's own y0, y1) with `tol_px` (lane-edge-merge-unseen-
+    ledgers, 2026-10-06; default None = every row is tested, bit-identical):
+    the head's OWN widest row is the thing this test refuses, and that row is
+    inside the box. A row more than `tol_px` (half a line thickness) clear of
+    the box's rows cannot be the head's outline, so it needs only to be inked
+    through the probe column -- not wider than the head by a further 0.1 sp
+    (Litolff p5 `glyph/5/0/5/9/0`: the second ledger, 5.9 px below the head,
+    a hand-drawn bar 27.0 px wide against a 25.5 px box, needs 27.08).
     """
     h, w = img_gray.shape
     bx0, bx1 = head_box_x
@@ -511,6 +591,12 @@ def _rung_row_clears_box(
     if not containing:
         return False
     s, e = containing[0]
+    if box_rows is not None and tol_px > 0 and sign != 0:
+        # only on the STAFF side of the box: a ledger lies between a far head
+        # and its staff, never beyond the head (a slur or flag above it)
+        clear = (y > box_rows[1] + tol_px) if sign < 0 else (y < box_rows[0] - tol_px)
+        if clear:
+            return True
     return (e - s) >= box_w + 2 * RUNG_BEYOND_BOX_MIN_SPACES * spacing
 
 
@@ -829,8 +915,24 @@ def measure_ledger_rungs(
     collapse_edges_box: "tuple[float, float, float, float] | None" = None,
     head_center_y: "float | None" = None,
     restore_masked_staff_side_rungs: bool = False,
+    keep_edge_juts: bool = False,
+    split_welded_bands: bool = False,
+    walk_tol_px: float = 0.0,
+    outline_margin_px: float = 0.0,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
+
+    lane-edge-merge-unseen-ledgers (2026-10-06; all three default off =
+    bit-identical, switched on by the STAGED far-head reader only):
+    `keep_edge_juts` -- the edge collapse never drops a rung that shows a
+    thin flat jut past the head (`collapse_head_edge_rungs_to_middle`);
+    `split_welded_bands` -- a contiguous region of long rows holds every
+    ledger plateau, not just the widest (`_welded_peaks`); `walk_tol_px` --
+    the walk window is widened by this many px at both ends (band centres
+    sit on a half-pixel grid; `_select_next_candidate`);
+    `outline_margin_px` -- the "wider than the head" test is applied only to
+    rows within this many px (half a line thickness) of the box's own rows
+    (`_rung_row_clears_box`).
 
     `restore_masked_staff_side_rungs` (lane-ledger-edge-fix, 2026-10-04;
     default False = bit-identical): see `restore_masked_staff_side_ledgers`.
@@ -931,11 +1033,30 @@ def measure_ledger_rungs(
                 ink, exclude_boxes, x0, yy0, spacing, img_gray, thr
             )
         bands = _band_centers(ink, x - x0, spacing, yy0, head_box_y)
+        if split_welded_bands and collapse_edges_box is not None:
+            # A plateau found only by splitting a welded region is the
+            # head's own interior unless it juts past the head (Brahms p16
+            # `glyph/16/0/2/2/1`: the row under a flat sign, 55 px wide
+            # against a 38 px head, stood out of the body and became a
+            # rung): it must show the same thin flat jut the edge rule
+            # asks for.
+            extra = [b for b in _band_centers(ink, x - x0, spacing, yy0,
+                                              head_box_y, True)
+                     if all(abs(b - o) > 1.0 for o in bands)]
+            mid_y = (collapse_edges_box[1] + collapse_edges_box[3]) / 2.0
+            # ... and lie on the staff side of the head's middle: a ledger
+            # runs between a far head and its staff, never beyond the head
+            # (Brahms p17 `glyph/17/1/0/2/6`: the head's own brim, above it)
+            extra = [b for b in extra if sign * (b - mid_y) <= 0
+                     and thin_flat_jut_evidence(img_gray, b, collapse_edges_box,
+                                                spacing, exclude_boxes)["ok"]]
+            bands = sorted(bands + extra)
         side_target = (
             head_y if head_y is not None and sign * (head_y - edge_y) > 0
             else None
         )
-        rungs = _walk_ladder(edge_y, sign, bands, spacing, side_target)
+        rungs = _walk_ladder(edge_y, sign, bands, spacing, side_target,
+                             walk_tol_px)
 
         # FAULT 3 (round 5, DECISIONS 2026-10-0x, Sean: "the rungs of one
         # vertical stack are not aligned in x (hand-drawn)... let the
@@ -973,7 +1094,8 @@ def measure_ledger_rungs(
                         nink, drift_x - nx0, spacing, ny0, head_box_y
                     )
                     extra, _ = _select_next_candidate(
-                        anchor, sign, nbands, pitch, spacing, side_target
+                        anchor, sign, nbands, pitch, spacing, side_target,
+                        walk_tol_px
                     )
                     if extra is not None and all(
                         abs(extra - ry) > 1.0 for ry in rungs
@@ -1015,7 +1137,8 @@ def measure_ledger_rungs(
                 wbands = _band_centers(wink, x - wx0, spacing, wy0, head_box_y)
                 one_sided_target = side_target if not rungs else None
                 extra2, _ = _select_next_candidate(
-                    anchor, sign, wbands, pitch, spacing, one_sided_target
+                    anchor, sign, wbands, pitch, spacing, one_sided_target,
+                    walk_tol_px
                 )
                 if extra2 is not None and all(
                     abs(extra2 - ry) > 1.0 for ry in rungs
@@ -1038,10 +1161,13 @@ def measure_ledger_rungs(
                 b for b in (exclude_boxes or [])
                 if b[2] <= head_box_x[0] or b[0] >= head_box_x[1]
             ]
+            box_rows = ((collapse_edges_box[1], collapse_edges_box[3])
+                        if collapse_edges_box is not None and outline_margin_px > 0
+                        else None)
             rungs = [
                 ry for ry in rungs
                 if _rung_row_clears_box(img_gray, ry, x, head_box_x, spacing,
-                                        lateral)
+                                        lateral, box_rows, outline_margin_px, sign)
             ]
         if (restore_masked_staff_side_rungs and exclude_boxes
                 and collapse_edges_box is not None):
@@ -1060,7 +1186,7 @@ def measure_ledger_rungs(
             # see `collapse_edges_box`'s own docstring for why.
             rungs = collapse_head_edge_rungs_to_middle(
                 rungs, sign, collapse_edges_box, img_gray, spacing,
-                exclude_boxes, head_center_y,
+                exclude_boxes, head_center_y, keep_edge_juts=keep_edge_juts,
             )
         out[side] = rungs
     return out
@@ -2670,6 +2796,7 @@ def collapse_head_edge_rungs_to_middle(
     img_gray: "np.ndarray | None", spacing: float,
     exclude_boxes: "list[tuple[float, float, float, float]] | None" = None,
     head_center_y: "float | None" = None,
+    keep_edge_juts: bool = False,
 ) -> "list[float]":
     """Cause C: when accidental (or broken half-note) ink beside a head
     on a ledger fakes two "rungs" at the head's own top and bottom edges,
@@ -2682,6 +2809,16 @@ def collapse_head_edge_rungs_to_middle(
     in the ladder (no other rung between them) -- a real ledger pair
     flanking the head at the normal spacing is never this close to the
     box's own edges and is left untouched.
+
+    `keep_edge_juts` (lane-edge-merge-unseen-ledgers, 2026-10-06; Sean: a thin
+    flat line that juts out of the head at its edge is a ledger and is never
+    merged away; only rows of the head's OWN outline, with no jut beyond the
+    head, collapse): the pair is the box's outline only for the member that
+    shows no thin flat connected jut past the head on at least one side
+    (`thin_flat_jut_evidence`, other heads' and accidentals' ink blanked, so
+    cause C's accidental still supplies none). A member WITH a jut stays; a slur under the head has no jut and
+    goes. Where either member stays the middle row is not probed -- the head
+    has a printed ledger at its edge. Both without a jut: as before.
     """
     if len(rungs_y) < 2 or spacing <= 0:
         return list(rungs_y)
@@ -2701,6 +2838,12 @@ def collapse_head_edge_rungs_to_middle(
     lo, hi = min(i_top, i_bot), max(i_top, i_bot)
     if hi != lo + 1:
         return list(rungs_y)
+    if keep_edge_juts:
+        kept = [ordered[i] for i in (lo, hi)
+                if thin_flat_jut_evidence(img_gray, ordered[i], head_box,
+                                          spacing, exclude_boxes)["ok"]]
+        if kept:
+            return ordered[:lo] + kept + ordered[hi + 1:]
     out = ordered[:lo] + ordered[hi + 1:]
     if head_middle_rung_evidence(img_gray, head_box, spacing, exclude_boxes,
                                  head_center_y):
