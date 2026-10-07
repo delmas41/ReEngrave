@@ -49,12 +49,9 @@ from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
 from tools.omr.staged.adjudicators import clef as clef_mod
 from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.tests._staged_fixtures import fresh_log as _log
 
 SUB = R.staff(0, 0, 0)
-
-
-def _log() -> Log:
-    return Log()
 
 
 def _file_clef_box(log: Log, *, reader: str, glyph: str, position: float,

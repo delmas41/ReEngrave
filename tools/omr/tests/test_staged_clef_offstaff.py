@@ -40,7 +40,8 @@ from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
 from tools.omr.staged.adjudicators import clef as clef_mod
-from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.staged.record import Outcome, Q, READERS
+from tools.omr.tests._staged_fixtures import fresh_log as _log
 
 SUB = R.staff(0, 0, 0)
 
@@ -53,10 +54,6 @@ OFF_STAFF_POSITION = 19.4
 #: the pooled G on-staff cluster runs ~2.6..7.6, median ~4.2-4.3 across the
 #: three acceptance documents).
 NORMAL_G_POSITION = 4.3
-
-
-def _log() -> Log:
-    return Log()
 
 
 class TestALoneOffStaffBoxNoLongerDecidesAlone(unittest.TestCase):

@@ -12,12 +12,9 @@ from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
 from tools.omr.staged.adjudicators import clef as clef_mod
 from tools.omr.staged.record import (ABSTAIN, Log, Outcome, Q, READERS, State)
+from tools.omr.tests._staged_fixtures import fresh_log as _log
 
 SUB = R.staff(0, 0, 0)
-
-
-def _log():
-    return Log()
 
 
 class TestAClassNameCannotNameACClef(unittest.TestCase):
