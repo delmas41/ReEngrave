@@ -356,3 +356,20 @@ out/2.12g-arm/
 !benchmarks/omr-label-ladder-2026-09/crops/**
 !benchmarks/omr-margin-labels-2026-08/crops/
 !benchmarks/omr-margin-labels-2026-08/crops/**
+
+# --- 2026-10-07 record-dump triage (audit report §3E) ---------------------
+# Pipeline OUTPUTS are not committed unless a FINDINGS cites them (rule 7) or
+# the acceptance manifest names them as an input. The engraved benchmark's
+# out/ holds both kinds, so the directory is ignored and the kept records are
+# negated by name. Seven uncited dumps (~39 MB) were untracked on 2026-10-07.
+benchmarks/omr-staged-engraved-2026-09/out/**/*.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930b.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260923.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260928.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260929.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/engraved-p0.record.json
+!benchmarks/omr-staged-engraved-2026-09/out/2.3b/engraved-p0p2-arm.record.json
+benchmarks/omr-no-ink-lie-2026-09/out/*.record.json
+benchmarks/omr-owner-domain-2026-09/out/brahms1-breitkopf-whole.json
+benchmarks/acceptance/out/**/*-whole-movement-*.musicxml

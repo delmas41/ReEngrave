@@ -468,6 +468,7 @@ RE-DECIDED record> --pdf <pdf> --staff staff/3/0/9` →
 | 0.4d | Archive the 52 mutation batteries under `benchmarks/_archive/`; no new ones | **done (audit 2026-10-07, `lane-audit-2026-10-07`)** — 55 scripts `git mv`'d under `benchmarks/_archive/<same path>`, `README.md` there; `check` 247 → 192, every other check's count unchanged |
 | 0.4e | No new source-text tests; `check` counts them | done — 47 files counted, allowlist of 2 |
 | 0.5 | Lane discipline: brief from the tree, phase item, gate, print check | done (plan §6, rules 1–10) |
+| 0.7 | Record-dump triage (audit §3E): which committed dumps are inputs, evidence, or untrackable | **done 2026-10-07 (`lane-record-triage`)** — 1 input (the manifest's engraved record), 28 evidence kept, 7 uncited dumps untracked (~39 MB), engraved `out/*.record.json` ignored with the kept ones negated |
 | 0.6 | Code audit and cleaning run (Sonnet readers, Fable analysis) | **done 2026-10-07** — report `docs/audit-2026-10-07-code-cleaning.md`: what was removed (dead `_corroborate` block, duplicated `relocate_at_export_enabled`, 3 uncalled functions, 86 unused imports outside legacy/tests), what was NOT touched and why (web-app security list for Sean, 9 `promote` flags still read, 46 source-text test files, 98.7 MB of tracked record dumps, 87 unmerged remote branches). Fast tier and every derived-check count unchanged |
 
 Gate: spec < 6,000 words; `check` writes `open-findings.json`; flag table
