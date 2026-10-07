@@ -128,7 +128,7 @@ def find_dot_and_head(rep, row):
     return dk, on["dots"][dk]["box"], hk, hb, sliver
 
 
-def draw(short, rep, row, no, kind):
+def draw(short, rep, row, no, kind, capfn=None):
     doc = DOCNAME[short]
     on, off = rep["on"], rep["off"]
     dk, dbox, hk, hbox, sliver = find_dot_and_head(rep, row)
@@ -226,6 +226,8 @@ def draw(short, rep, row, no, kind):
         cv2.putText(margin, nm, (3, yy + 4), cv2.FONT_HERSHEY_SIMPLEX, 0.4, col, 1, cv2.LINE_AA)
     ov = np.hstack([margin, ov])
     zoom = np.hstack([np.full((zoom.shape[0], M, 3), 255, np.uint8), zoom])
+    if capfn is not None:
+        return ov, zoom, capfn(on, off, row, dk, hk, note_staff, filing, own_off, own_on), checked, dict(doc=short, page=page, subject=row["key"], dot=dk, head=hk)
     # ---------------- words ----------------
     caps = []
     role_off, role_on = (item_off or {}).get("role") or {}, (item_on or {}).get("role") or {}

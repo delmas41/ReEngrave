@@ -3695,6 +3695,54 @@ DOT_TWIN_OVERLAP_MIN = 0.5
 DOT_TWIN_MAX_RATIO = 1.35
 
 
+#: ROADMAP 2.59 round 2 (Sean, 2026-10-07). THE GEOMETRIC TESTS, stated before
+#: any count, in staff spaces (sp), all in the PAGE frame.
+#:
+#: STACKED UNDER A NOTE (a staccato-placed dot): the dot's centre x lies within
+#: DOT_STACK_CENTRED_MAX_SPACES of the centre of a notehead -- of ANY staff,
+#: owned by anyone (the staccato window's own centring figure) -- and the dot's
+#: centre y lies OUTSIDE that head's y-extent, no farther from its nearest
+#: edge than DOT_STACK_MAX_SPACES. MEASURED on the 10-07 night records before
+#: it was fixed: the dots this separated from true staccati sit at 0.0-0.5 sp
+#: from the centre (99% under 0.42), while a lengthening dot beside the
+#: shifted head of a chord's second sits at 0.5-0.76 sp -- the span's EDGE. A lengthening dot sits to the RIGHT of its
+#: head at the head's own height (in the space, or the space above for a line
+#: note: CLAUDE.md §10); a staccato sits directly above or below a head,
+#: within its x span. A dot that fits the second is never read as the first.
+DOT_STACK_MAX_SPACES = 2.0
+DOT_STACK_CENTRED_MAX_SPACES = 0.5
+#: ON A BARLINE: a mark's page x-extent reaches the barline column, i.e. comes
+#: within BARLINE_COLUMN_TOL_SPACES of its cell's left or right page edge --
+#: cells are cut AT the barlines (`Q.CELL_BOX` edges; the cells of a staff
+#: are contiguous, Brahms p5 staff 1: 1330 | 1804 | 2271), the precedent is
+#: `unread_mark._touches_a_barline`. Tighter than that rule's 0.5 sp so a dot
+#: printed close before a barline is not taken for ink on it.
+BARLINE_COLUMN_TOL_SPACES = 0.15
+
+
+def dot_stacked_under_a_note(dot_page, notes_page, sp_page) -> bool:
+    if not dot_page or not sp_page:
+        return False
+    cx, cy = (dot_page[0] + dot_page[2]) / 2.0, (dot_page[1] + dot_page[3]) / 2.0
+    for b in notes_page:
+        if abs(cx - (b[0] + b[2]) / 2.0) > DOT_STACK_CENTRED_MAX_SPACES * sp_page:
+            continue
+        if b[1] <= cy <= b[3]:
+            continue
+        gap = (b[1] - cy) if cy < b[1] else (cy - b[3])
+        if gap <= DOT_STACK_MAX_SPACES * sp_page:
+            return True
+    return False
+
+
+def mark_on_a_barline(mark_page, cell_page, sp_page) -> bool:
+    if not mark_page or not cell_page or not sp_page:
+        return False
+    tol = BARLINE_COLUMN_TOL_SPACES * sp_page
+    return any(mark_page[0] <= edge + tol and mark_page[2] >= edge - tol
+               for edge in (cell_page[0], cell_page[2]))
+
+
 def _decided_str(v) -> Optional[str]:
     if v is not None and v.outcome is Outcome.DECIDED \
             and isinstance(v.value, str):
@@ -3729,6 +3777,9 @@ def reconcile_dot_owners(log: R.Log) -> Dict[str, int]:
         head = (role.detail or {}).get("head")
         if not head:
             census["no_head_named"] += 1
+            continue
+        if (role.detail or {}).get("head_refused"):
+            census["head_is_a_refused_fragment"] += 1
             continue
         hsub = R.Subject.from_key(head)
         hv = log.verdict(Q.GLYPH_OWNER, hsub)

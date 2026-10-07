@@ -933,6 +933,62 @@ def _in_staccato_window(dot_box, head_box, space,
     return True
 
 
+def _refused_as_a_notehead(ev: Evidence, subject) -> bool:
+    v = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=subject)
+    return (v is not None and v.outcome is Outcome.DECIDED
+            and v.value is True)
+
+
+def _dot_page_context(ev: Evidence, cell, dot_box_row, dot_box, space, boxes):
+    """ROADMAP 2.59 round 2 (`OMR_DOT_FOLLOWS_NOTE`): the dot against the PAGE.
+
+    -> None where the dot has no page box (DECLINED, not defaulted), else
+    `{"on_a_barline", "stacked", "neighbour_heads"}`. `stacked` is
+    `ownership.dot_stacked_under_a_note` over every NON-REFUSED notehead of
+    this cell and of the cells of the staves just above and below it in the
+    same bar -- the padded cell reaches into them, and a staccato's note is
+    often the neighbour's. `neighbour_heads` are those neighbours' heads in
+    THIS dot's canonical frame, for the foreign augmentation window.
+    """
+    pb = (dot_box_row.detail or {}).get("bbox_page_px")
+    if not pb or len(pb) != 4 or not dot_box[2]:
+        return None
+    k = (pb[2] - pb[0]) / float(dot_box[2])        # page px per canonical px
+    if k <= 0:
+        return None
+    sp_page = space * k
+    cell_rows = ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_ANCESTORS,
+                        subject=cell)
+    cell_page = (list(cell_rows[-1].value)
+                 if cell_rows and len(cell_rows[-1].value) == 4 else None)
+    notes_page, neighbour = [], []
+    cells = [(cell, boxes, False)]
+    for ds in (-1, 1):
+        if cell.staff + ds < 0:
+            continue
+        nc = Subject(Kind.CELL, page=cell.page, system=cell.system,
+                     staff=cell.staff + ds, cell=cell.cell)
+        cells.append((nc, _cell_boxes(ev, nc), True))
+    for c, cb, is_nb in cells:
+        for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                         subject=c):
+            if _refused_as_a_notehead(ev, r.subject):
+                continue
+            row_ = cb.get(r.subject.to_key())
+            hp = (row_.detail or {}).get("bbox_page_px") if row_ else None
+            if not hp or len(hp) != 4:
+                continue
+            notes_page.append(tuple(hp))
+            if is_nb:
+                neighbour.append((r.subject.to_key(), (
+                    dot_box[0] + (hp[0] - pb[0]) / k,
+                    dot_box[1] + (hp[1] - pb[1]) / k,
+                    (hp[2] - hp[0]) / k, (hp[3] - hp[1]) / k)))
+    return {"on_a_barline": _own.mark_on_a_barline(pb, cell_page, sp_page),
+            "stacked": _own.dot_stacked_under_a_note(pb, notes_page, sp_page),
+            "neighbour_heads": neighbour}
+
+
 def _attached_dots(ev: Evidence, cell, head_box, space):
     """The augmentation dots belonging to THIS notehead.
 
@@ -1067,14 +1123,16 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     # settled verdict, never a hole -- `test_staged_dot_role.py`'s
     # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
-                   Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER),
+                   Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
-           Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER),
+           Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
-             "owned_by_another_staff"),
+             "owned_by_another_staff", "on_a_barline"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -1132,6 +1190,13 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_cell_staff_space")
 
     boxes = _cell_boxes(ev, cell)
+    keep_foreign = _own.dot_follows_note_enabled()
+    ctx = None
+    if keep_foreign:
+        ctx = _dot_page_context(ev, cell, box_rows[-1], dot_box, space, boxes)
+        if ctx is not None and ctx["on_a_barline"]:
+            return Ruling.abstain("on_a_barline", **{
+                "detector_class": (row.detail or {}).get("detector_class")})
     # ⚠️ ROADMAP 2.27c: the dot itself has no staff of its own to defend (it
     # is `ev.subject`, not a candidate), so unlike `_attached_dots` above
     # there is no self-reference to protect -- every candidate that
@@ -1142,13 +1207,21 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     all_targets = []                    # heads AND rests, for the aug window
     note_targets = []                   # noteheads only, for the staccato one
     n_raw = n_excluded = 0
-    keep_foreign = _own.dot_follows_note_enabled()
     foreign_targets = []                # (key, box): owned by another staff
+    refused_targets = []                # (key, box): refused as a notehead
     all_keys = []                       # parallel to all_targets
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
             n_raw += 1
             box_row = boxes.get(r.subject.to_key())
+            if keep_foreign and q == Q.NOTEHEAD_CLASS \
+                    and _refused_as_a_notehead(ev, r.subject):
+                # a refused fragment is not a note: it is the LAST resort for
+                # a dot, after every real note (Brahms `16/1/10/4/3`)
+                rb_ = _xywh_head(box_row.value) if box_row else None
+                if rb_ is not None:
+                    refused_targets.append((r.subject.to_key(), rb_))
+                continue
             b = _xywh_head(box_row.value) if box_row else None
             if _own._owned_by_a_different_staff(ev, r, home):
                 n_excluded += 1
@@ -1161,7 +1234,10 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
             all_keys.append(r.subject.to_key())
             if q == Q.NOTEHEAD_CLASS:
                 note_targets.append((r.subject.to_key(), b))
-    if not all_targets and not (keep_foreign and foreign_targets):
+    if keep_foreign and ctx is not None:
+        foreign_targets += ctx["neighbour_heads"]
+    if not all_targets and not (keep_foreign and (foreign_targets
+                                                  or refused_targets)):
         # ⚠️ Apart from a genuinely empty cell, so a stray dot with nothing
         # of its own to attach to can be told from one whose only candidates
         # were the neighbour's ink.
@@ -1177,7 +1253,8 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
     home_best, home_score = None, float("inf")
-    for key, hb in zip(all_keys, all_targets):
+    stacked = bool(keep_foreign and ctx is not None and ctx["stacked"])
+    for key, hb in ([] if stacked else zip(all_keys, all_targets)):
         if _in_augmentation_window(dot_box, hb, max_above, max_below):
             if not keep_foreign:
                 return Ruling(value="augmentation",
@@ -1220,16 +1297,6 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
         # turn a staccato into an augmentation (measured: 8 of 14 Litolff
         # role changes were exactly that when it came first).
         dot_x_left, dot_y = dot_box[0], dot_box[1] + dot_box[3] / 2.0
-        dot_cx_ = dot_box[0] + dot_box[2] / 2.0
-        # ⚠️ a dot standing over (or under) ANY note's own column may be that
-        # note's staccato -- 6 of 6 Litolff dots the first version read as
-        # augmentations were exactly that (crops, FINDINGS) -- so it is left
-        # abstained, never guessed (rule 8). Only a dot with no note stacked
-        # at its x follows the note to its left.
-        stacked = any(abs(dot_cx_ - (hb[0] + hb[2] / 2.0))
-                      <= STACCATO_CENTRED_MAX_SPACES * space
-                      for hb in list(all_targets)
-                      + [b_ for _k, b_ in foreign_targets])
         best, best_score = None, float("inf")
         for key, hb in ([] if stacked else foreign_targets):
             if not _in_augmentation_window(dot_box, hb, max_above, max_below):
@@ -1250,6 +1317,24 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                           reason="right_of_and_level_with_a_head",
                           used=used, detail={**detail, "head": best,
                                              "head_owned_elsewhere": True})
+    if keep_foreign and not stacked:
+        # LAST: no real note takes the dot, so the refused fragment the old
+        # reading used still does (it is where the note's ink is) -- never
+        # converting "cannot tell" into more than the old reading said.
+        dot_x_left, dot_y = dot_box[0], dot_box[1] + dot_box[3] / 2.0
+        best, best_score = None, float("inf")
+        for key, hb in refused_targets:
+            if not _in_augmentation_window(dot_box, hb, max_above, max_below):
+                continue
+            score = (dot_x_left - (hb[0] + hb[2])
+                     + abs(hb[1] + hb[3] / 2.0 - dot_y) * 2)
+            if score < best_score:
+                best_score, best = score, key
+        if best is not None:
+            return Ruling(value="augmentation",
+                          reason="right_of_and_level_with_a_head",
+                          used=used, detail={**detail, "head": best,
+                                             "head_refused": True})
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 

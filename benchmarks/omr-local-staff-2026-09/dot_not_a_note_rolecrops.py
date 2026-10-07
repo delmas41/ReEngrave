@@ -11,7 +11,7 @@ from frame import render_page_matching_gather
 DOC = {"brahms": "brahms1-breitkopf", "lito": "beethoven5-litolff"}
 
 
-def main(d, short, mx):
+def main(d, short, mx, only=None, tag=''):
     off = json.loads((Path(d) / f"{short}_all_off.json").read_text())
     on = json.loads((Path(d) / f"{short}_all_on.json").read_text())
     rows = []
@@ -20,6 +20,8 @@ def main(d, short, mx):
         ra, rb = (a["role"] or {}).get("v"), (b["role"] or {}).get("v")
         if ra != rb:
             rows.append((f"{ra}->{rb}", k, a, b))
+    if only:
+        rows = [r for r in rows if r[0] == only]
     rows.sort(key=lambda r: r[0])
     stac = [r for r in rows if r[0].startswith("staccato")]
     print(short, "role changes", len(rows), "staccato->aug", len(stac))
@@ -51,11 +53,12 @@ def main(d, short, mx):
     while len(tiles) % cols:
         tiles.append(np.full_like(tiles[0], 255))
     img = np.vstack([np.hstack(tiles[i:i + cols]) for i in range(0, len(tiles), cols)])
-    out = HERE.parents[1] / f"out/print/dot_role_changes_{short}.png"
+    out = HERE.parents[1] / f"out/print/dot_role_changes_{short}{tag}.png"
     cv2.imwrite(str(out), img)
     print("wrote", out)
 
 
 if __name__ == "__main__":
     a = sys.argv[1:]
-    main(a[0], a[1], int(a[a.index("--max") + 1]) if "--max" in a else 24)
+    main(a[0], a[1], int(a[a.index("--max") + 1]) if "--max" in a else 24,
+         a[a.index("--only") + 1] if "--only" in a else None, a[a.index("--tag") + 1] if "--tag" in a else '')

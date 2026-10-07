@@ -2126,7 +2126,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
-                                     "too_narrow", "is_a_dot",
+                                     "too_narrow", "is_a_dot", "on_a_barline",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -2330,6 +2330,17 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # two shape rules above so every box they already refuse keeps its reason.
     if _ledger.dot_follows_note_enabled() \
             and _dot_sized(box_row, spacing, detail):
+        # a dot-sized mark ON a barline's column is stray ink on the line, not
+        # a dot (Sean 2026-10-07, Brahms `5/1/1/2/17`): a different claim
+        page_box = (box_row.detail or {}).get("bbox_page_px")
+        cell_box = _cell_box_page(ev)
+        w_c = box_row.value[3]
+        if page_box and len(page_box) == 4 and cell_box and w_c:
+            sp_page = spacing * (page_box[2] - page_box[0]) / w_c
+            if _ledger.mark_on_a_barline(page_box, cell_box, sp_page):
+                detail["barline_edges_page"] = [cell_box[0], cell_box[2]]
+                return Ruling(value=True, reason="on_a_barline",
+                              used=tuple(used), detail=detail)
         return Ruling(value=True, reason="is_a_dot",
                       used=tuple(used), detail=detail)
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow

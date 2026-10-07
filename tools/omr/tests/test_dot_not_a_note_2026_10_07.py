@@ -293,3 +293,200 @@ class TestADotBoxedAsAHeadFollowsTheDot(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROUND 2 (Sean, 2026-10-07, 8 of 12 right): staccato-placed dots, a dot whose
+# nearest "note" is a refused fragment, and stray ink on a barline.
+# ─────────────────────────────────────────────────────────────────────────────
+from tools.omr.staged.adjudicators import ownership as OWN  # noqa: E402
+
+
+def _pnote(log, staff, gi, head, page, cell=0, w=None, h=None):
+    """A notehead whose canonical box equals its page box (scale 1)."""
+    g = R.glyph(0, 0, staff, cell, gi)
+    log.observe(g, Q.NOTEHEAD_CLASS, head, reader=READERS.DETECTOR,
+                frame=f"cell:{cell}", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, (head, page[0], page[1], page[2] - page[0],
+                                 page[3] - page[1]),
+                reader=READERS.DETECTOR, frame=f"cell:{cell}", score=0.9,
+                bbox_page_px=list(page))
+    sc = R.cell(0, 0, staff, cell)
+    if not log.rows(Q.CELL_STAFF_SPACE, sc):
+        log.observe(sc, Q.CELL_STAFF_SPACE, float(SPACE),
+                    reader=READERS.GEOMETRY, frame=f"cell:{cell}")
+    return g
+
+
+def _pdot(log, gi, page, cls="augmentationDot"):
+    d = R.glyph(0, 0, 0, 0, gi)
+    log.observe(d, Q.GLYPH_BOX, (cls, page[0], page[1], page[2] - page[0],
+                                 page[3] - page[1]),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.8,
+                bbox_page_px=list(page))
+    log.observe(d, Q.AUG_DOT, ((page[0] + page[2]) / 2.0,
+                               (page[1] + page[3]) / 2.0),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.8,
+                detector_role="dot", detector_class=cls)
+    return d
+
+
+def _run_flag(log, flag=True):
+    with mock.patch.dict(os.environ, FLAG if flag else {}, clear=False):
+        if not flag:
+            os.environ.pop("OMR_DOT_FOLLOWS_NOTE", None)
+        adjudicate.run(log)
+
+
+class TestTheGeometricTests(unittest.TestCase):
+    SP = 16.0
+
+    def test_a_dot_above_a_notes_column_is_stacked(self):
+        self.assertTrue(OWN.dot_stacked_under_a_note(
+            (96, 0, 104, 8), [(90, 20, 110, 36)], self.SP))
+
+    def test_POSITIVE_CONTROL_a_dot_right_of_a_head_at_its_height_is_not(self):
+        self.assertFalse(OWN.dot_stacked_under_a_note(
+            (112, 22, 120, 30), [(90, 20, 110, 36)], self.SP))
+
+    def test_POSITIVE_CONTROL_a_dot_far_above_is_not_that_notes_staccato(self):
+        self.assertFalse(OWN.dot_stacked_under_a_note(
+            (96, -60, 104, -52), [(90, 20, 110, 36)], self.SP))
+
+    def test_a_mark_touching_a_cell_edge_is_on_a_barline(self):
+        cell = (100, 0, 400, 100)
+        self.assertTrue(OWN.mark_on_a_barline((100, 40, 112, 60), cell, self.SP))
+        self.assertTrue(OWN.mark_on_a_barline((395, 40, 401, 60), cell, self.SP))
+
+    def test_POSITIVE_CONTROL_a_mark_a_head_inside_is_not(self):
+        self.assertFalse(OWN.mark_on_a_barline((130, 40, 142, 60),
+                                               (100, 0, 400, 100), self.SP))
+
+
+class TestAStaccatoPlacedDotIsNeverLengthening(unittest.TestCase):
+    def _log(self, with_stack=True):
+        log = _log()
+        # home note (staff 0), the dot level with it and right of it: by itself
+        # a plain augmentation dot (tile 8's OFF reading)
+        _pnote(log, 0, 0, "noteheadBlack", (X - 10, 0, X + 10, 16))
+        dot = _pdot(log, 1, (X + 14, 2, X + 22, 10))
+        if with_stack:
+            # the NEXT note, on the staff below, its column right under the dot
+            _pnote(log, 1, 2, "noteheadBlack", (X + 10, 18, X + 30, 34))
+        return log, dot
+
+    def test_RED_a_dot_over_a_notes_column_is_not_read_as_lengthening(self):
+        log, dot = self._log(with_stack=True)
+        _run_flag(log)
+        self.assertNotEqual(log.verdict(Q.DOT_ROLE, dot).value, "augmentation")
+
+    def test_POSITIVE_CONTROL_the_same_dot_without_the_stack_is(self):
+        log, dot = self._log(with_stack=False)
+        _run_flag(log)
+        self.assertEqual(log.verdict(Q.DOT_ROLE, dot).value, "augmentation")
+
+    def test_the_flag_off_reading_is_unchanged(self):
+        log, dot = self._log(with_stack=True)
+        _run_flag(log, flag=False)
+        self.assertEqual(log.verdict(Q.DOT_ROLE, dot).value, "augmentation")
+
+
+class TestARefusedFragmentTakesNoDot(unittest.TestCase):
+    """Brahms `16/1/10/4/3`: the dot's nearest head in its own strip was a
+    7 px sliver of the viola's note; the dot belongs to the VIOLA."""
+
+    def _log(self):
+        log = _log()
+        _pnote(log, 0, 0, "noteheadBlack", (X - 10, 0, X - 2, 8))      # sliver
+        viola = _pnote(log, 1, 1, "noteheadHalf", (X - 10, 2, X + 10, 18))
+        dot = _pdot(log, 2, (X + 12, 4, X + 20, 12))
+        return log, dot, viola
+
+    def test_RED_the_dot_follows_the_real_note_not_the_sliver(self):
+        log, dot, viola = self._log()
+        _run_flag(log)
+        role = log.verdict(Q.DOT_ROLE, dot)
+        self.assertEqual(role.value, "augmentation")
+        self.assertEqual(role.detail["head"], viola.to_key())
+        self.assertEqual(log.verdict(Q.GLYPH_OWNER, dot).value, BELOW.to_key())
+
+    def test_the_sliver_really_is_refused(self):
+        log, dot, viola = self._log()
+        _run_flag(log)
+        self.assertEqual(log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                                     R.glyph(0, 0, 0, 0, 0)).value, True)
+
+    def test_the_old_reading_with_the_flag_off_took_the_sliver(self):
+        log, dot, viola = self._log()
+        _run_flag(log, flag=False)
+        self.assertEqual(log.verdict(Q.DOT_ROLE, dot).value, "augmentation")
+        self.assertNotIn("head", log.verdict(Q.DOT_ROLE, dot).detail)
+
+
+class TestDotSizedInkOnABarlineIsNotADot(unittest.TestCase):
+    CELLBOX = [100.0, 0.0, 400.0, 100.0]
+
+    def _hollow(self, x0):
+        log = _log()
+        log.observe(CELL, Q.CELL_BOX, list(self.CELLBOX),
+                    reader=READERS.GEOMETRY, frame="page")
+        g = _pnote(log, 0, 0, "noteheadHalf", (x0, 40, x0 + 8, 48))
+        _run_flag(log)
+        return log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
+
+    def test_RED_a_dot_sized_box_on_the_barline_is_refused_as_ink_on_it(self):
+        v = self._hollow(100.0)
+        self.assertEqual((v.value, v.reason), (True, "on_a_barline"))
+
+    def test_POSITIVE_CONTROL_the_same_box_mid_bar_is_still_a_dot(self):
+        v = self._hollow(200.0)
+        self.assertEqual((v.value, v.reason), (True, "is_a_dot"))
+
+    def test_a_dot_mark_on_the_barline_is_not_read(self):
+        log = _log()
+        log.observe(CELL, Q.CELL_BOX, list(self.CELLBOX),
+                    reader=READERS.GEOMETRY, frame="page")
+        _pnote(log, 0, 0, "noteheadHalf", (X - 10, 0, X + 10, 16))
+        d = _pdot(log, 1, (96, 4, 104, 12))
+        _run_flag(log)
+        role = log.verdict(Q.DOT_ROLE, d)
+        self.assertEqual((role.outcome, role.reason),
+                         (Outcome.ABSTAINED, "on_a_barline"))
+
+    def test_POSITIVE_CONTROL_a_dot_beside_its_head_mid_bar_is_read(self):
+        log = _log()
+        log.observe(CELL, Q.CELL_BOX, list(self.CELLBOX),
+                    reader=READERS.GEOMETRY, frame="page")
+        _pnote(log, 0, 0, "noteheadHalf", (X - 10, 0, X + 10, 16))
+        d = _pdot(log, 1, (X + 12, 4, X + 20, 12))
+        _run_flag(log)
+        self.assertEqual(log.verdict(Q.DOT_ROLE, d).value, "augmentation")
+
+
+class TestRoundTwoRefinements(unittest.TestCase):
+    SP = 16.0
+
+    def test_a_dot_at_the_edge_of_a_chord_seconds_shifted_head_is_not_stacked(self):
+        """A lengthening dot beside the upper head of a chord's second sits
+        0.5-0.76 sp from the centre of the shifted lower head -- the edge of its
+        span -- and must not be called a staccato."""
+        self.assertFalse(OWN.dot_stacked_under_a_note(
+            (121, 4, 129, 12), [(100, 20, 130, 36)], self.SP))   # 0.6 sp off
+        self.assertTrue(OWN.dot_stacked_under_a_note(
+            (111, 4, 119, 12), [(100, 20, 130, 36)], self.SP))   # 0.0 sp off
+
+    def test_RED_a_refused_fragment_is_still_the_last_resort_for_a_dot(self):
+        """With no real note anywhere near, the old reading (the fragment's)
+        stands: 135 true dots beside a head boxed only as a clipped fragment
+        were lost when the fragment was dropped outright."""
+        log = _log()
+        _pnote(log, 0, 0, "noteheadBlack", (X - 10, 0, X - 2, 8))        # sliver
+        d = _pdot(log, 2, (X + 4, 2, X + 12, 10))
+        _run_flag(log)
+        role = log.verdict(Q.DOT_ROLE, d)
+        self.assertEqual(role.value, "augmentation")
+        self.assertTrue(role.detail.get("head_refused"))
+        # ... and the dot's owner is NOT moved to a fragment's staff
+        self.assertNotEqual(log.verdict(Q.GLYPH_OWNER, d) and
+                            log.verdict(Q.GLYPH_OWNER, d).reason,
+                            "dot_follows_note")
