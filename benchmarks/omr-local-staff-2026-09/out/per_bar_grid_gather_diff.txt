@@ -1,0 +1,28 @@
+== litolff p2
+cells 352/352; heads with a position: off 671 on 671; in both 671; only-off 0 only-on 0
+position changed: 8  by step: {-0.26: 1, -1.88: 6, -2.0: 1}
+truth-set heads on this page: 0; moved: []
+== litolff p3
+cells 320/320; heads with a position: off 462 on 462; in both 462; only-off 0 only-on 0
+position changed: 1  by step: {-2.11: 1}
+truth-set heads on this page: 38; moved: []
+== litolff p4
+cells 330/330; heads with a position: off 977 on 977; in both 977; only-off 0 only-on 0
+position changed: 22  by step: {-1.9: 2, -1.92: 3, -2.04: 1, 1.9: 9, 2.04: 7}
+truth-set heads on this page: 0; moved: []
+== litolff p6
+cells 298/298; heads with a position: off 834 on 834; in both 834; only-off 0 only-on 0
+position changed: 25  by step: {-1.9: 3, -2.02: 3, -2.04: 2, 1.9: 6, 1.92: 4, 2.02: 5, 2.06: 2}
+truth-set heads on this page: 0; moved: []
+== litolff p10
+cells 319/319; heads with a position: off 727 on 727; in both 727; only-off 0 only-on 0
+position changed: 2  by step: {-2.04: 2}
+truth-set heads on this page: 0; moved: []
+== litolff p12
+cells 323/323; heads with a position: off 968 on 968; in both 968; only-off 0 only-on 0
+position changed: 1  by step: {-1.92: 1}
+truth-set heads on this page: 0; moved: []
+== litolff p14
+cells 367/367; heads with a position: off 841 on 841; in both 841; only-off 0 only-on 0
+position changed: 2  by step: {-1.98: 2}
+truth-set heads on this page: 0; moved: []

@@ -1382,6 +1382,135 @@ CELL_LINE_MIN_SHIFT_SPACES = 0.05
 # lives in a cell 9 spaces wide or wider.
 CELL_LINE_MIN_WIDTH_SPACES = 4.0
 
+# ─── ROADMAP 2.57: find the five lines IN the cell, do not shift the comb ─────
+#
+# `OMR_CELL_LINE_FIND` (default OFF until Sean sees the sheet). The staff-wide
+# `line_ys` are one y per line from a whole-page profile after one deskew
+# angle; at the far end of a tilted staff they can sit a whole spacing off the
+# ink. A capped SHIFT of the recorded comb cannot fix that: a comb one spacing
+# over still has four of its five rows on printed lines, so it locks one line
+# over (verify-staff-line-offsets 2026-10-06: 21 Litolff bars, 1 Brahms, every
+# head in them two steps wrong).
+#
+# THE RULE (stated before it was run). The cell is cropped with a 4 sp pad, so
+# the printed staff is inside it however far the recorded lines are off.
+#   1. Row profile across the cell's whole width, columns that hold a stem or
+#      barline (more than `FIND_TALL_COLUMN_SPACES` of ink inside the search
+#      band) left out: coverage(y) = fraction of the remaining columns inked.
+#   2. Choose the SET of exactly five rows, evenly spaced at the staff's own
+#      spacing (+-`FIND_SPACING_TOLERANCE`), every one with coverage
+#      >= `FIND_LINE_COVERAGE` (0.70: a printed line is solid across the cell;
+#      a slur or beam smears to 0.4-0.6), maximising the summed coverage.
+#   3. WHITE one spacing above the top and one below the bottom (coverage under
+#      `FIND_LINE_COVERAGE` there), so an extra line cannot pass for an end
+#      line. A comb one line over fails this, which is the point.
+#   4. The shift is the mean of (found row - recorded row), rigid as before.
+#   5. A cell whose existing (capped) comb already has all five rows on ink
+#      keeps it -- a comb one line over never does --, an answer within
+#      `FIND_KEEP_PX` (1 px, the grid's own quantisation) of the capped one is
+#      not a move, and the found rows must
+#      sit on a straight line to within 0.1 sp (they are the printed lines).
+#   Not found (cell too narrow, a beam or text where a line should be): the
+#   existing capped shift answers and the cell says so (`line_grid_found`:
+#   False in its provenance).
+ENV_CELL_LINE_FIND = "OMR_CELL_LINE_FIND"
+CELL_LINE_FIND_TALL_COLUMN_SPACES = 4.5
+CELL_LINE_FIND_SPACING_TOLERANCE = 0.08
+CELL_LINE_FIND_LINE_COVERAGE = 0.70
+CELL_LINE_FIND_SEARCH_SPACES = 2.0
+CELL_LINE_FIND_KEEP_PX = 1
+
+
+def _cell_line_find_enabled() -> bool:
+    """`OMR_CELL_LINE_FIND` env; OFF by default (ROADMAP 2.57). Allow-list, so
+    a typo leaves the default in force."""
+    raw = os.environ.get(ENV_CELL_LINE_FIND, "").strip().lower()
+    return raw in {"1", "true", "yes", "on"}
+
+
+def _row_profile(binary, ys, spacing, lo, hi):
+    """(coverage per row, band_lo): the fraction of the cell's columns inked at
+    each row, columns holding a stem or barline left out. None if too little
+    is left to say anything."""
+    height = binary.shape[0]
+    search = int(round(CELL_LINE_FIND_SEARCH_SPACES * spacing))
+    band_lo = max(0, min(ys) - search - int(round(spacing)) - 3)
+    band_hi = min(height, max(ys) + search + int(round(spacing)) + 4)
+    if band_hi - band_lo < 6 * spacing:
+        return None
+    ink = (binary[band_lo:band_hi, lo:hi] == 0)
+    keep = ~(ink.sum(axis=0) > CELL_LINE_FIND_TALL_COLUMN_SPACES * spacing)
+    if keep.sum() < max(10, 0.4 * (hi - lo)):
+        return None
+    return ink[:, keep].mean(axis=1), band_lo
+
+
+def _comb_inked(binary, ys, spacing, lo, hi) -> bool:
+    """True if every one of the five rows `ys` is a printed line across the
+    cell (coverage >= `FIND_LINE_COVERAGE`). A comb one line over is not."""
+    prof = _row_profile(binary, ys, spacing, lo, hi)
+    if prof is None:
+        return False
+    cov, band_lo = prof
+    n = cov.shape[0]
+    for y in ys:
+        r = int(round(y)) - band_lo
+        a, b = max(0, r - 1), min(n, r + 2)
+        if a >= b or float(cov[a:b].max()) < CELL_LINE_FIND_LINE_COVERAGE:
+            return False
+    return True
+
+
+def _find_five_lines(binary, ys, spacing, lo, hi):
+    """The five printed line rows in columns lo:hi as a list of page rows, or
+    None -- see the rule above."""
+    prof = _row_profile(binary, ys, spacing, lo, hi)
+    if prof is None:
+        return None
+    cov, band_lo = prof
+    n = cov.shape[0]
+
+    def line_cov(r: int) -> float:
+        a, b = max(0, r - 1), min(n, r + 2)
+        return float(cov[a:b].max()) if a < b else 0.0
+
+    best = None  # (score, -|shift|, rows)
+    d_lo = int(round(spacing * (1 - CELL_LINE_FIND_SPACING_TOLERANCE)))
+    d_hi = int(round(spacing * (1 + CELL_LINE_FIND_SPACING_TOLERANCE)))
+    raw_mid = (ys[0] + ys[-1]) / 2.0
+    for d in range(d_lo, d_hi + 1):
+        for r0 in range(int(round(spacing)) + 2, n - 5 * d - 2):
+            rows = [r0 + k * d for k in range(5)]
+            covs = [line_cov(r) for r in rows]
+            if min(covs) < CELL_LINE_FIND_LINE_COVERAGE:
+                continue
+            if (line_cov(r0 - d) >= CELL_LINE_FIND_LINE_COVERAGE
+                    or line_cov(rows[-1] + d) >= CELL_LINE_FIND_LINE_COVERAGE):
+                continue
+            # refine each row to the local coverage peak (line centre)
+            score = sum(covs)
+            mid = band_lo + (rows[0] + rows[-1]) / 2.0
+            key = (round(score, 4), -abs(mid - raw_mid))
+            if best is None or key > best[0]:
+                best = (key, rows)
+    if best is None:
+        return None
+    out = []
+    half = max(2, int(round(0.4 * spacing)))
+    for r in best[1]:
+        a, b = max(0, r - half), min(n, r + half + 1)
+        seg = cov[a:b] >= 0.5          # the line's own run (its centre = (first+last)/2)
+        idx = np.flatnonzero(seg)
+        centre = a + (r - a if not len(idx) else (idx.min() + idx.max()) / 2.0)
+        out.append(band_lo + float(centre))
+    # the rows must be the printed lines themselves: evenly spaced to within
+    # a tenth of a spacing of their own straight-line fit
+    k = np.arange(5)
+    fit = np.polyval(np.polyfit(k, out, 1), k)
+    if np.max(np.abs(np.array(out) - fit)) > 0.1 * spacing:
+        return None
+    return out
+
 
 def _cell_line_trace_enabled() -> bool:
     """`OMR_CELL_LINE_TRACE` env; ON by default since 2026-09-04. Priced on
@@ -1442,6 +1571,44 @@ def _cell_span_px(staff: Staff) -> int:
 def _cell_line_offset(
     pws: PageWithStaves, staff: Staff, x0: int, x1: int
 ) -> tuple[int, dict] | None:
+    """The cell's grid shift: the capped comb shift (below), and, with
+    `OMR_CELL_LINE_FIND` on, the five lines FOUND in the cell where they can
+    be (ROADMAP 2.57). A cell whose capped comb already
+    has all five rows on ink keeps it; where nothing is found the capped answer stands and says so."""
+    capped = _cell_line_offset_capped(pws, staff, x0, x1)
+    if not _cell_line_find_enabled():
+        return capped
+    ys = [int(y) for y in staff.line_ys]
+    spacing = float(staff.line_spacing_px)
+    height, width = pws.page.binary.shape[:2]
+    lo, hi = max(0, int(x0)), min(width, int(x1))
+    if len(ys) < 5 or spacing <= 0 or (hi - lo) < max(2.0, CELL_LINE_MIN_WIDTH_SPACES * spacing):
+        return capped
+    old_shift = capped[0] if capped else 0
+    if _comb_inked(pws.page.binary, [y + old_shift for y in ys], spacing, lo, hi):
+        return capped          # all five lines already on ink: nothing to find
+    found = _find_five_lines(pws.page.binary, ys, spacing, lo, hi)
+    if found is None:
+        prov = dict(capped[1]) if capped else {}
+        prov["line_grid_found"] = False
+        return (capped[0], prov) if capped else None
+    shift = int(round(sum(f - y for f, y in zip(found, ys)) / 5.0))
+    if abs(shift - old_shift) <= CELL_LINE_FIND_KEEP_PX:
+        return capped          # one pixel is the grid's own quantisation
+    if abs(shift) < CELL_LINE_MIN_SHIFT_SPACES * spacing:
+        return None
+    return shift, {
+        "offset_px": shift,
+        "offset_spaces": round(shift / spacing, 3),
+        "rows_covered": 5,
+        "min_row_coverage": CELL_LINE_FIND_LINE_COVERAGE,
+        "line_grid_found": True,
+    }
+
+
+def _cell_line_offset_capped(
+    pws: PageWithStaves, staff: Staff, x0: int, x1: int
+) -> tuple[int, dict] | None:
     """How far this cell's printed staff sits from the rows the page-wide fit
     assigned it, in page pixels — `(offset, provenance)`, or None to abstain.
 
@@ -1494,12 +1661,13 @@ def _cell_line_offset(
     if covered < CELL_LINE_MIN_ROWS_COVERED:
         return None  # no staff-line comb under this cell — see the constants
 
-    return best_shift, {
+    prov = {
         "offset_px": best_shift,
         "offset_spaces": round(best_shift / spacing, 3),
         "rows_covered": covered,
         "min_row_coverage": round(min(coverage), 3),
     }
+    return best_shift, prov
 
 
 def _build_measure_cell(
