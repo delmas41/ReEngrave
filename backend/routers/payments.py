@@ -14,7 +14,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import settings
 from database.connection import get_db
-from database.models import Payment, ScoreAccess, User
+from database.models import Payment, Score, ScoreAccess, User
 from dependencies import get_current_user
 
 logger = logging.getLogger(__name__)
@@ -95,6 +95,13 @@ async def create_checkout_session(
     db: AsyncSession = Depends(get_db),
 ):
     """Create a Stripe Checkout Session for Vision AI access on a score."""
+    # Only for a score the caller owns (404 otherwise, as /api/scores does).
+    owned = await db.execute(
+        select(Score.id).where(Score.id == body.score_id, Score.user_id == current_user.id)
+    )
+    if owned.scalar_one_or_none() is None:
+        raise HTTPException(status_code=404, detail="Score not found")
+
     # Admin bypass – no payment needed
     if current_user.email in settings.admin_email_list:
         await _grant_vision_access(current_user.id, body.score_id, "admin", db)

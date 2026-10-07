@@ -16,6 +16,35 @@ from xml.etree import ElementTree as ET
 
 logger = logging.getLogger(__name__)
 
+# Wall-clock limits on the external engravers. A hostile or pathological
+# .ly can loop LilyPond forever; past the limit the process is killed and
+# the caller gets an error, never a hung worker.
+LILYPOND_TIMEOUT_S = 300.0
+MUSICXML2LY_TIMEOUT_S = 300.0
+
+
+class SubprocessTimeout(RuntimeError):
+    """An external tool ran past its wall-clock limit and was killed."""
+
+
+async def communicate_with_timeout(
+    proc: asyncio.subprocess.Process, timeout: float, name: str,
+) -> tuple[bytes, bytes]:
+    """`proc.communicate()` bounded by *timeout* seconds; on expiry the
+    process is killed and reaped and SubprocessTimeout is raised."""
+    try:
+        return await asyncio.wait_for(proc.communicate(), timeout=timeout)
+    except asyncio.TimeoutError:
+        try:
+            proc.kill()
+        except ProcessLookupError:
+            pass
+        try:
+            await proc.wait()
+        except Exception:  # pragma: no cover - best effort reap
+            pass
+        raise SubprocessTimeout(f"{name} timed out after {timeout:.0f}s and was killed")
+
 
 # ---------------------------------------------------------------------------
 # Data classes
@@ -55,7 +84,8 @@ async def musicxml_to_lilypond(musicxml_path: str, output_dir: str) -> str:
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    stdout, stderr = await proc.communicate()
+    stdout, stderr = await communicate_with_timeout(
+        proc, MUSICXML2LY_TIMEOUT_S, "musicxml2ly")
 
     if proc.returncode != 0:
         err = stderr.decode("utf-8", errors="replace")
@@ -85,7 +115,15 @@ async def engrave_score(ly_path: str, output_dir: str) -> EngraveResult:
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE,
     )
-    stdout, stderr = await proc.communicate()
+    try:
+        stdout, stderr = await communicate_with_timeout(
+            proc, LILYPOND_TIMEOUT_S, "LilyPond")
+    except SubprocessTimeout as exc:
+        return EngraveResult(
+            full_score_pdf_path="",
+            ly_source_path=ly_path,
+            error_message=str(exc),
+        )
 
     stem = Path(ly_path).stem
     pdf_path = os.path.join(output_dir, f"{stem}.pdf")
