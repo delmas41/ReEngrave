@@ -112,6 +112,8 @@ import pathlib
 import sys
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
+from . import check_helpers as _H
+
 _HERE = pathlib.Path(__file__).resolve().parent
 _TOOLS = _HERE.parent.parent                      # tools/
 _ROOT = _TOOLS.parent                             # repo root
@@ -626,21 +628,17 @@ KNOWN_GAPS: Dict[str, str] = {
 
 
 def _gap_key(problem: str) -> Optional[str]:
-    for key in KNOWN_GAPS:
-        if problem.startswith(key):
-            return key
-    return None
+    return _H.gap_key(problem, KNOWN_GAPS)
 
 
 def unaccounted(problems: Sequence[str]) -> List[str]:
     """Problems on no KNOWN_GAPS entry. These are what `--check` fails on."""
-    return [p for p in problems if _gap_key(p) is None]
+    return _H.unaccounted(problems, KNOWN_GAPS)
 
 
 def stale_gaps(problems: Sequence[str]) -> List[str]:
     """KNOWN_GAPS entries nothing reports any more. A CLOSED gap must LEAVE."""
-    hit = {_gap_key(p) for p in problems}
-    return sorted(k for k in KNOWN_GAPS if k not in hit)
+    return _H.stale_gaps(problems, KNOWN_GAPS)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -376,6 +376,7 @@ ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 #: decoration.
 NOT_A_STAGE = frozenset({
     "inventory.py", "health.py", "wiring.py", "gather_coverage.py",
+    "check_helpers.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a

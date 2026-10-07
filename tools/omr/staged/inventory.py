@@ -36,6 +36,7 @@ import sys
 from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from . import adjudicate as A
+from . import check_helpers as _H
 from . import consequences as _consequences  # noqa: F401  (registers rules)
 from . import evaluate as E
 from . import groups as G
@@ -147,22 +148,18 @@ KNOWN_GAPS: Dict[str, str] = {
 
 def _gap_key(problem: str) -> Optional[str]:
     """Which KNOWN_GAPS entry a problem line belongs to, by prefix."""
-    for key in KNOWN_GAPS:
-        if problem.startswith(key):
-            return key
-    return None
+    return _H.gap_key(problem, KNOWN_GAPS)
 
 
 def unaccounted(problems: Sequence[str]) -> List[str]:
     """Problems on no KNOWN_GAPS entry. These are what `--check` fails on."""
-    return [p for p in problems if _gap_key(p) is None]
+    return _H.unaccounted(problems, KNOWN_GAPS)
 
 
 def stale_gaps(problems: Sequence[str]) -> List[str]:
     """KNOWN_GAPS entries nothing reports any more -- a CLOSED gap that never
     left the list. The list must describe the pipeline, not its history."""
-    hit = {_gap_key(p) for p in problems}
-    return sorted(k for k in KNOWN_GAPS if k not in hit)
+    return _H.stale_gaps(problems, KNOWN_GAPS)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
