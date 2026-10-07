@@ -1,0 +1,213 @@
+
+=== beethoven5-litolff RUN1 (beethoven5-litolff-mvt1-whole-20261004-farhead.record.json)
+ far heads (geometry outside the first space): 4197
+ Q.FAR_HEAD_LEDGER_POSITION rows: 2833  abstentions: {'ledger_not_read': 1364}
+ Q.NOTEHEAD_POSITION decided 2833  abstained {'ledger_not_read': 1364}  far heads with no verdict 0
+ why the far-head reader abstained: {"every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head": 437, 'no_rungs': 927}
+ pages read with the pooled shape: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]; with the page's own: [14, 16]
+ shape source of the rows: {'document pool': 2428, 'page': 405}  box source: {'detector': 1663, 'standard': 1170}
+ per page (decided / abstained-by-reason): {1: {'ledger_not_read': 16, 'decided': 17}, 2: {'decided': 153, 'ledger_not_read': 71}, 3: {'decided': 81, 'ledger_not_read': 30}, 4: {'decided': 265, 'ledger_not_read': 163}, 5: {'decided': 129, 'ledger_not_read': 43}, 6: {'decided': 204, 'ledger_not_read': 83}, 7: {'ledger_not_read': 101, 'decided': 217}, 8: {'decided': 180, 'ledger_not_read': 81}, 9: {'decided': 102, 'ledger_not_read': 46}, 10: {'decided': 207, 'ledger_not_read': 96}, 11: {'decided': 54, 'ledger_not_read': 24}, 12: {'decided': 304, 'ledger_not_read': 123}, 13: {'decided': 244, 'ledger_not_read': 159}, 14: {'decided': 207, 'ledger_not_read': 83}, 15: {'decided': 271, 'ledger_not_read': 144}, 16: {'decided': 198, 'ledger_not_read': 101}}
+
+=== beethoven5-litolff RUN2 (beethoven5-litolff-mvt1-whole-20261004-farhead-all.record.json)
+ far heads (geometry outside the first space): 4197
+ Q.FAR_HEAD_LEDGER_POSITION rows: 2830  abstentions: {'ledger_not_read': 1367}
+ Q.NOTEHEAD_POSITION decided 2830  abstained {'ledger_not_read': 1367}  far heads with no verdict 0
+ why the far-head reader abstained: {"every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head": 458, 'no_rungs': 909}
+ pages read with the pooled shape: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15]; with the page's own: [14, 16]
+ shape source of the rows: {'document pool': 2424, 'page': 406}  box source: {'detector': 1659, 'standard': 1119, 'chord_split': 52}
+ per page (decided / abstained-by-reason): {1: {'ledger_not_read': 15, 'decided': 18}, 2: {'decided': 146, 'ledger_not_read': 78}, 3: {'decided': 83, 'ledger_not_read': 28}, 4: {'decided': 266, 'ledger_not_read': 162}, 5: {'decided': 123, 'ledger_not_read': 49}, 6: {'decided': 204, 'ledger_not_read': 83}, 7: {'ledger_not_read': 102, 'decided': 216}, 8: {'decided': 175, 'ledger_not_read': 86}, 9: {'decided': 98, 'ledger_not_read': 50}, 10: {'decided': 205, 'ledger_not_read': 98}, 11: {'decided': 56, 'ledger_not_read': 22}, 12: {'decided': 304, 'ledger_not_read': 123}, 13: {'decided': 243, 'ledger_not_read': 160}, 14: {'decided': 206, 'ledger_not_read': 84}, 15: {'decided': 287, 'ledger_not_read': 128}, 16: {'decided': 200, 'ledger_not_read': 99}}
+
+=== beethoven5-litolff BASE (beethoven5-litolff-mvt1-whole-20261001.record.json)
+ far heads (geometry outside the first space): 4363
+ Q.FAR_HEAD_LEDGER_POSITION rows: 0  abstentions: {}
+ Q.NOTEHEAD_POSITION decided 0  abstained {}  far heads with no verdict 4363
+ why the far-head reader abstained: {}
+ pages read with the pooled shape: []; with the page's own: []
+ shape source of the rows: {}  box source: {}
+ per page (decided / abstained-by-reason): {1: {'no_verdict': 34}, 2: {'no_verdict': 240}, 3: {'no_verdict': 115}, 4: {'no_verdict': 452}, 5: {'no_verdict': 168}, 6: {'no_verdict': 294}, 7: {'no_verdict': 329}, 8: {'no_verdict': 279}, 9: {'no_verdict': 154}, 10: {'no_verdict': 314}, 11: {'no_verdict': 75}, 12: {'no_verdict': 445}, 13: {'no_verdict': 433}, 14: {'no_verdict': 305}, 15: {'no_verdict': 428}, 16: {'no_verdict': 298}}
+
+--- beethoven5-litolff: RUN1 vs RUN2 far heads matched by box overlap: 4197 (same glyph id 4196); only in RUN1 0, only in RUN2 1
+   both decided 2663; decided position DIFFERS on 234; decided->abstained 170; abstained->decided 167
+   differing heads by page: {2: 10, 3: 6, 4: 13, 5: 15, 6: 17, 7: 14, 8: 8, 9: 9, 10: 12, 11: 6, 12: 21, 13: 32, 14: 18, 15: 32, 16: 21}
+     glyph/2/0/0/1/4: RUN1 -7 (detector) -> RUN2 -8 (detector)  geometry -8
+     glyph/2/0/3/1/10: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -10
+     glyph/2/0/3/1/15: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -11
+     glyph/2/1/0/11/2: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/2/1/0/12/8: RUN1 -5 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/2/1/0/13/5: RUN1 -5 (detector) -> RUN2 -6 (detector)  geometry -7
+     glyph/2/1/7/9/3: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -5
+     glyph/2/1/7/10/5: RUN1 -6 (detector) -> RUN2 -5 (detector)  geometry -7
+     glyph/2/1/7/13/3: RUN1 12 (detector) -> RUN2 11 (detector)  geometry 10
+     glyph/2/1/9/11/3: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 11
+     glyph/3/0/0/2/4: RUN1 -7 (detector) -> RUN2 -6 (chord_split)  geometry -7
+     glyph/3/0/0/2/9: RUN1 -3 (detector) -> RUN2 -5 (chord_split)  geometry -6
+     glyph/3/0/0/6/2: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/3/0/0/7/1: RUN1 -7 (detector) -> RUN2 -8 (detector)  geometry -9
+     glyph/3/0/7/3/1: RUN1 -6 (standard) -> RUN2 -5 (standard)  geometry -6
+     glyph/3/1/2/17/6: RUN1 -2 (detector) -> RUN2 -4 (chord_split)  geometry -3
+     glyph/4/0/1/11/7: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/4/0/5/3/6: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -8
+     glyph/4/0/8/9/3: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/4/0/8/12/6: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 16
+     glyph/4/0/9/5/7: RUN1 16 (detector) -> RUN2 10 (detector)  geometry 15
+     glyph/4/0/9/12/9: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 16
+     glyph/4/1/0/1/5: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/4/1/0/6/1: RUN1 -6 (standard) -> RUN2 -5 (standard)  geometry -9
+     glyph/4/1/0/10/0: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/4/1/0/12/0: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/4/1/1/4/10: RUN1 13 (detector) -> RUN2 14 (detector)  geometry 15
+     glyph/4/1/1/5/6: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/4/1/2/13/0: RUN1 -4 (standard) -> RUN2 -3 (standard)  geometry -5
+     glyph/5/0/0/1/2: RUN1 -8 (detector) -> RUN2 -7 (detector)  geometry -8
+     glyph/5/0/0/1/8: RUN1 -8 (standard) -> RUN2 -7 (standard)  geometry -8
+     glyph/5/0/0/2/5: RUN1 -6 (standard) -> RUN2 -5 (standard)  geometry -6
+     glyph/5/0/0/6/5: RUN1 -3 (standard) -> RUN2 -4 (chord_split)  geometry -3
+     glyph/5/0/1/2/8: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -4
+     glyph/5/0/2/2/2: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -4
+     glyph/5/0/3/7/0: RUN1 -4 (standard) -> RUN2 -3 (standard)  geometry -5
+     glyph/5/1/1/5/4: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/5/1/3/9/4: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -5
+     glyph/5/1/3/11/2: RUN1 -4 (standard) -> RUN2 -3 (standard)  geometry -5
+     glyph/5/1/1/4/6: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/5/1/1/6/7: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -4
+     glyph/5/1/1/9/6: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/5/1/1/9/7: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/5/1/1/9/8: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -4
+     glyph/6/0/0/10/5: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -3
+     glyph/6/0/0/12/4: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -4
+     glyph/6/0/4/6/3: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 19
+     glyph/6/0/4/7/7: RUN1 13 (detector) -> RUN2 14 (detector)  geometry 19
+     glyph/6/0/4/12/3: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/6/0/7/10/12: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 16
+     glyph/6/0/7/11/5: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 16
+     glyph/6/1/0/10/8: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -5
+     glyph/6/1/1/11/1: RUN1 -2 (detector) -> RUN2 -4 (chord_split)  geometry -4
+     glyph/6/1/5/2/2: RUN1 -2 (detector) -> RUN2 -8 (detector)  geometry -7
+     glyph/6/1/6/4/5: RUN1 -8 (detector) -> RUN2 -2 (detector)  geometry -7
+     glyph/6/1/6/10/2: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -8
+     glyph/6/1/6/12/0: RUN1 12 (detector) -> RUN2 11 (detector)  geometry 14
+     glyph/6/1/7/12/1: RUN1 -5 (detector) -> RUN2 -3 (chord_split)  geometry -6
+     glyph/6/1/7/12/7: RUN1 -6 (detector) -> RUN2 -8 (chord_split)  geometry -7
+     glyph/6/1/9/9/2: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 11
+
+--- beethoven5-litolff: IN-SAMPLE truth-set far heads (n=44) -- NOT out-of-sample
+   RUN1      right  35 wrong   5 undecided   4 unmatched   0
+   RUN2      right  35 wrong   5 undecided   4 unmatched   0
+   GEO_RUN2  right  29 wrong  15 undecided   0 unmatched   0
+   GEO_BASE  right  29 wrong  15 undecided   0 unmatched   0
+     RUN1->RUN2 changes: glyph/1/0/3/7/3 truth [-2] RUN1 -2 RUN2 None geometry -3
+     RUN1->RUN2 changes: glyph/3/0/0/2/4 truth [-7] RUN1 -7 RUN2 -6 geometry -7
+     RUN1->RUN2 changes: glyph/3/0/0/2/9 truth [-5] RUN1 -3 RUN2 -5 geometry -6
+     RUN1->RUN2 changes: glyph/3/0/0/6/2 truth [-6] RUN1 -3 RUN2 -4 geometry -5
+     RUN1->RUN2 changes: glyph/3/0/0/7/1 truth [-8] RUN1 -7 RUN2 -8 geometry -9
+     RUN1->RUN2 changes: glyph/3/0/7/3/1 truth [-6] RUN1 -6 RUN2 -5 geometry -6
+     RUN1->RUN2 changes: glyph/3/0/8/6/10 truth [10] RUN1 None RUN2 10 geometry 11
+   RUN2 wrong: [('glyph/3/0/0/2/4', [-7], -6, -7), ('glyph/3/0/0/6/2', [-6], -4, -5), ('glyph/3/0/7/3/1', [-6], -5, -6), ('glyph/3/0/7/3/2', [-6], -5, -6), ('glyph/3/0/7/3/4', [-6], -5, -6)]
+   RUN2 undecided: [('glyph/1/0/3/7/3', [-2], -3), ('glyph/3/0/8/1/1', [13], -7), ('glyph/3/0/9/3/5', [11], 12), ('glyph/3/1/0/9/2', [-3], -3)]
+
+--- beethoven5-litolff: OUT-OF-SAMPLE far heads (pages not in [1, 2, 3]). Agreement with geometry is NOT accuracy.
+   RUN1: far heads 3829  decided & agree with geometry 967  decided & DISAGREE 1615  abstained 1247 {'ledger_not_read': 1247}
+   RUN2: far heads 3829  decided & agree with geometry 926  decided & DISAGREE 1657  abstained 1246 {'ledger_not_read': 1246}
+
+=== brahms1-breitkopf RUN1 (brahms1-breitkopf-mvt1-whole-20261004-farhead.record.json)
+ far heads (geometry outside the first space): 8966
+ Q.FAR_HEAD_LEDGER_POSITION rows: 6790  abstentions: {'ledger_not_read': 2176}
+ Q.NOTEHEAD_POSITION decided 6790  abstained {'ledger_not_read': 2176}  far heads with no verdict 0
+ why the far-head reader abstained: {'no_rungs': 1490, "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head": 686}
+ pages read with the pooled shape: []; with the page's own: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+ shape source of the rows: {'page': 6790}  box source: {'standard': 4283, 'detector': 2507}
+ per page (decided / abstained-by-reason): {0: {'decided': 163, 'ledger_not_read': 22}, 1: {'decided': 230, 'ledger_not_read': 72}, 2: {'decided': 261, 'ledger_not_read': 55}, 3: {'decided': 297, 'ledger_not_read': 101}, 4: {'ledger_not_read': 78, 'decided': 297}, 5: {'decided': 446, 'ledger_not_read': 76}, 6: {'decided': 209, 'ledger_not_read': 121}, 7: {'decided': 143, 'ledger_not_read': 29}, 8: {'decided': 49, 'ledger_not_read': 23}, 9: {'decided': 212, 'ledger_not_read': 38}, 10: {'decided': 302, 'ledger_not_read': 100}, 11: {'decided': 226, 'ledger_not_read': 85}, 12: {'ledger_not_read': 157, 'decided': 253}, 13: {'decided': 383, 'ledger_not_read': 98}, 14: {'ledger_not_read': 116, 'decided': 186}, 15: {'decided': 91, 'ledger_not_read': 58}, 16: {'ledger_not_read': 159, 'decided': 283}, 17: {'ledger_not_read': 165, 'decided': 375}, 18: {'decided': 375, 'ledger_not_read': 122}, 19: {'decided': 334, 'ledger_not_read': 106}, 20: {'decided': 124, 'ledger_not_read': 34}, 21: {'decided': 127, 'ledger_not_read': 34}, 22: {'decided': 176, 'ledger_not_read': 46}, 23: {'decided': 272, 'ledger_not_read': 74}, 24: {'ledger_not_read': 103, 'decided': 422}, 25: {'decided': 250, 'ledger_not_read': 62}, 26: {'decided': 304, 'ledger_not_read': 42}}
+
+=== brahms1-breitkopf RUN2 (brahms1-breitkopf-mvt1-whole-20261004-farhead-all.record.json)
+ far heads (geometry outside the first space): 8966
+ Q.FAR_HEAD_LEDGER_POSITION rows: 6628  abstentions: {'ledger_not_read': 2338}
+ Q.NOTEHEAD_POSITION decided 6628  abstained {'ledger_not_read': 2338}  far heads with no verdict 0
+ why the far-head reader abstained: {'no_rungs': 1481, "every found rung was the head's own outline, not a ledger before it -- no_rung_before_the_head": 857}
+ pages read with the pooled shape: []; with the page's own: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
+ shape source of the rows: {'page': 6628}  box source: {'standard': 4111, 'detector': 2426, 'chord_split': 91}
+ per page (decided / abstained-by-reason): {0: {'decided': 169, 'ledger_not_read': 16}, 1: {'decided': 232, 'ledger_not_read': 70}, 2: {'decided': 256, 'ledger_not_read': 60}, 3: {'decided': 284, 'ledger_not_read': 114}, 4: {'ledger_not_read': 93, 'decided': 282}, 5: {'decided': 435, 'ledger_not_read': 87}, 6: {'decided': 187, 'ledger_not_read': 143}, 7: {'decided': 143, 'ledger_not_read': 29}, 8: {'decided': 47, 'ledger_not_read': 25}, 9: {'decided': 211, 'ledger_not_read': 39}, 10: {'decided': 273, 'ledger_not_read': 129}, 11: {'decided': 218, 'ledger_not_read': 93}, 12: {'ledger_not_read': 154, 'decided': 256}, 13: {'decided': 364, 'ledger_not_read': 117}, 14: {'ledger_not_read': 115, 'decided': 187}, 15: {'decided': 92, 'ledger_not_read': 57}, 16: {'ledger_not_read': 167, 'decided': 275}, 17: {'ledger_not_read': 179, 'decided': 361}, 18: {'decided': 376, 'ledger_not_read': 121}, 19: {'decided': 333, 'ledger_not_read': 107}, 20: {'decided': 123, 'ledger_not_read': 35}, 21: {'decided': 123, 'ledger_not_read': 38}, 22: {'decided': 175, 'ledger_not_read': 47}, 23: {'decided': 269, 'ledger_not_read': 77}, 24: {'ledger_not_read': 119, 'decided': 406}, 25: {'decided': 247, 'ledger_not_read': 65}, 26: {'decided': 304, 'ledger_not_read': 42}}
+
+=== brahms1-breitkopf BASE (brahms1-breitkopf-mvt1-whole-20261001.record.json)
+ far heads (geometry outside the first space): 9105
+ Q.FAR_HEAD_LEDGER_POSITION rows: 0  abstentions: {}
+ Q.NOTEHEAD_POSITION decided 0  abstained {}  far heads with no verdict 9105
+ why the far-head reader abstained: {}
+ pages read with the pooled shape: []; with the page's own: []
+ shape source of the rows: {}  box source: {}
+ per page (decided / abstained-by-reason): {0: {'no_verdict': 186}, 1: {'no_verdict': 306}, 2: {'no_verdict': 318}, 3: {'no_verdict': 412}, 4: {'no_verdict': 381}, 5: {'no_verdict': 527}, 6: {'no_verdict': 334}, 7: {'no_verdict': 173}, 8: {'no_verdict': 71}, 9: {'no_verdict': 254}, 10: {'no_verdict': 411}, 11: {'no_verdict': 318}, 12: {'no_verdict': 414}, 13: {'no_verdict': 501}, 14: {'no_verdict': 305}, 15: {'no_verdict': 150}, 16: {'no_verdict': 455}, 17: {'no_verdict': 541}, 18: {'no_verdict': 512}, 19: {'no_verdict': 448}, 20: {'no_verdict': 158}, 21: {'no_verdict': 164}, 22: {'no_verdict': 223}, 23: {'no_verdict': 349}, 24: {'no_verdict': 530}, 25: {'no_verdict': 316}, 26: {'no_verdict': 348}}
+
+--- brahms1-breitkopf: RUN1 vs RUN2 far heads matched by box overlap: 8966 (same glyph id 8966); only in RUN1 0, only in RUN2 0
+   both decided 6506; decided position DIFFERS on 411; decided->abstained 284; abstained->decided 122
+   differing heads by page: {0: 15, 1: 11, 2: 25, 3: 13, 4: 22, 5: 16, 6: 36, 7: 11, 8: 4, 9: 13, 10: 25, 11: 10, 12: 11, 13: 37, 14: 8, 15: 5, 16: 19, 17: 26, 18: 29, 19: 26, 20: 3, 21: 5, 22: 10, 23: 8, 24: 2, 25: 7, 26: 14}
+     glyph/0/0/0/2/4: RUN1 -5 (detector) -> RUN2 -6 (detector)  geometry -6
+     glyph/0/0/0/4/8: RUN1 -3 (detector) -> RUN2 -4 (chord_split)  geometry -4
+     glyph/0/0/0/5/3: RUN1 -7 (detector) -> RUN2 -8 (detector)  geometry -8
+     glyph/0/0/0/5/11: RUN1 -5 (detector) -> RUN2 -6 (detector)  geometry -6
+     glyph/0/0/4/3/2: RUN1 13 (detector) -> RUN2 14 (detector)  geometry 13
+     glyph/0/0/5/2/16: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 11
+     glyph/0/0/5/3/15: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 11
+     glyph/0/0/9/0/9: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -4
+     glyph/0/0/9/0/10: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -4
+     glyph/0/0/9/1/9: RUN1 -7 (standard) -> RUN2 -8 (standard)  geometry -8
+     glyph/0/0/9/3/2: RUN1 -9 (standard) -> RUN2 -10 (standard)  geometry -10
+     glyph/0/0/9/5/10: RUN1 -5 (standard) -> RUN2 -6 (standard)  geometry -6
+     glyph/0/0/9/6/4: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -4
+     glyph/0/0/9/6/9: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -4
+     glyph/0/0/11/6/11: RUN1 -5 (standard) -> RUN2 -6 (standard)  geometry -6
+     glyph/1/0/7/1/10: RUN1 12 (detector) -> RUN2 16 (detector)  geometry 15
+     glyph/1/0/7/1/14: RUN1 12 (detector) -> RUN2 11 (detector)  geometry 15
+     glyph/1/0/7/1/18: RUN1 12 (detector) -> RUN2 16 (detector)  geometry 15
+     glyph/1/0/8/0/10: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/1/0/8/1/11: RUN1 -4 (detector) -> RUN2 -8 (detector)  geometry -7
+     glyph/1/0/9/0/4: RUN1 -4 (standard) -> RUN2 -3 (standard)  geometry -4
+     glyph/1/0/13/2/9: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -3
+     glyph/1/1/1/6/0: RUN1 -8 (detector) -> RUN2 -6 (detector)  geometry -7
+     glyph/1/1/3/2/9: RUN1 -5 (detector) -> RUN2 -6 (detector)  geometry -10
+     glyph/1/1/5/5/7: RUN1 12 (detector) -> RUN2 11 (detector)  geometry 16
+     glyph/1/1/11/0/22: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -7
+     glyph/2/0/0/3/8: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -4
+     glyph/2/0/0/4/4: RUN1 -4 (detector) -> RUN2 -6 (chord_split)  geometry -4
+     glyph/2/0/0/4/9: RUN1 -2 (detector) -> RUN2 -4 (chord_split)  geometry -2
+     glyph/2/0/0/5/6: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -4
+     glyph/2/0/0/5/14: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -4
+     glyph/2/0/1/2/3: RUN1 12 (standard) -> RUN2 11 (standard)  geometry 14
+     glyph/2/0/2/3/20: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/2/0/2/3/21: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/2/0/2/5/7: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/2/0/3/2/1: RUN1 -6 (standard) -> RUN2 -5 (standard)  geometry -6
+     glyph/2/0/3/5/2: RUN1 -3 (detector) -> RUN2 -2 (detector)  geometry -2
+     glyph/2/0/6/2/20: RUN1 -2 (detector) -> RUN2 -3 (chord_split)  geometry -6
+     glyph/2/0/7/0/7: RUN1 -6 (detector) -> RUN2 -5 (detector)  geometry -7
+     glyph/2/0/8/0/28: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -5
+     glyph/2/0/9/3/6: RUN1 12 (standard) -> RUN2 11 (standard)  geometry 15
+     glyph/2/0/9/3/14: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 16
+     glyph/2/0/10/3/5: RUN1 -4 (standard) -> RUN2 -3 (standard)  geometry -4
+     glyph/2/0/11/0/29: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -7
+     glyph/2/0/12/0/24: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -11
+     glyph/2/1/0/2/4: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/2/1/0/2/9: RUN1 13 (detector) -> RUN2 14 (detector)  geometry 15
+     glyph/2/1/4/0/19: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -7
+     glyph/2/1/5/2/11: RUN1 14 (detector) -> RUN2 13 (detector)  geometry 15
+     glyph/2/1/12/5/1: RUN1 -6 (standard) -> RUN2 -5 (standard)  geometry -6
+     glyph/2/1/13/8/0: RUN1 -4 (detector) -> RUN2 -3 (detector)  geometry -5
+     glyph/3/0/0/0/14: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/3/0/0/4/2: RUN1 -3 (detector) -> RUN2 -4 (detector)  geometry -4
+     glyph/3/0/5/0/5: RUN1 10 (detector) -> RUN2 16 (detector)  geometry 15
+     glyph/3/0/6/8/1: RUN1 12 (detector) -> RUN2 11 (detector)  geometry 15
+     glyph/3/0/10/7/6: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/3/1/0/2/4: RUN1 -7 (standard) -> RUN2 -8 (standard)  geometry -7
+     glyph/3/1/0/2/11: RUN1 -3 (standard) -> RUN2 -4 (standard)  geometry -4
+     glyph/3/1/2/0/15: RUN1 11 (detector) -> RUN2 12 (detector)  geometry 15
+     glyph/3/1/2/2/13: RUN1 16 (detector) -> RUN2 10 (detector)  geometry 15
+
+--- brahms1-breitkopf: IN-SAMPLE truth-set far heads (n=11) -- NOT out-of-sample
+   RUN1      right  11 wrong   0 undecided   0 unmatched   0
+   RUN2      right  11 wrong   0 undecided   0 unmatched   0
+   GEO_RUN2  right  11 wrong   0 undecided   0 unmatched   0
+   GEO_BASE  right  11 wrong   0 undecided   0 unmatched   0
+   RUN2 wrong: []
+   RUN2 undecided: []
+
+--- brahms1-breitkopf: OUT-OF-SAMPLE far heads (pages not in [0, 1]). Agreement with geometry is NOT accuracy.
+   RUN1: far heads 8479  decided & agree with geometry 3640  decided & DISAGREE 2757  abstained 2082 {'ledger_not_read': 2082}
+   RUN2: far heads 8479  decided & agree with geometry 3544  decided & DISAGREE 2683  abstained 2252 {'ledger_not_read': 2252}
