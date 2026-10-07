@@ -44,7 +44,7 @@ def find_on(monkeypatch):
 @pytest.mark.parametrize("shift", [20, -20, 22])
 def test_off_locks_one_line_over_on_finds_it(shift, monkeypatch):
     pws, staff = _pws(shift)
-    monkeypatch.delenv("OMR_CELL_LINE_FIND", raising=False)
+    monkeypatch.setenv("OMR_CELL_LINE_FIND", "0")
     off = me._cell_line_offset(pws, staff, 250, 600)
     assert off is None or abs(off[0] - shift) > 8, off     # the control FAILS here
     monkeypatch.setenv("OMR_CELL_LINE_FIND", "1")
@@ -61,7 +61,7 @@ def test_a_comb_already_on_five_lines_is_left_alone(find_on):
 def test_small_tilt_keeps_the_capped_answer(find_on, monkeypatch):
     pws, staff = _pws(5)
     on = me._cell_line_offset(pws, staff, 250, 600)
-    monkeypatch.delenv("OMR_CELL_LINE_FIND", raising=False)
+    monkeypatch.setenv("OMR_CELL_LINE_FIND", "0")
     off = me._cell_line_offset(pws, staff, 250, 600)
     assert on == off and on is not None and abs(on[0] - 5) <= 1
 
@@ -77,7 +77,15 @@ def test_nothing_to_find_falls_back_and_says_so(find_on):
     assert got is None or got[1].get("line_grid_found") is False
 
 
-def test_flag_default_off_is_the_old_function(monkeypatch):
-    monkeypatch.delenv("OMR_CELL_LINE_FIND", raising=False)
+def test_flag_off_is_the_old_function(monkeypatch):
+    monkeypatch.setenv("OMR_CELL_LINE_FIND", "0")
     pws, staff = _pws(20)
     assert me._cell_line_offset(pws, staff, 250, 600) == me._cell_line_offset_capped(pws, staff, 250, 600)
+
+
+def test_flag_default_is_on(monkeypatch):
+    """Sean 2026-10-06: switched ON by default (deny-list)."""
+    monkeypatch.delenv("OMR_CELL_LINE_FIND", raising=False)
+    assert me._cell_line_find_enabled()
+    monkeypatch.setenv("OMR_CELL_LINE_FIND", "0")
+    assert not me._cell_line_find_enabled()

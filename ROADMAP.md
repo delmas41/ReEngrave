@@ -22,7 +22,7 @@ re-enter.
 **LANDED on main (87d17c00, `lane-lines-combined`):** the far-head chain -- note-first reader, text is
 not a ledger, not-a-note gate, edge-vs-through (Sean 24/24), far-head per-bar grid (line CENTRE, ±0.3 sp
 re-find), ownership by ledgers (`OMR_FARHEAD_OWNER_LEDGERS`, OFF), ownership from staves
-(`OMR_OWNER_FROM_STAVES`, OFF), find-the-five-lines-in-each-cell 2.57 (`OMR_CELL_LINE_FIND`, OFF;
+(`OMR_OWNER_FROM_STAVES`, merged LATER, see below), find-the-five-lines-in-each-cell 2.57 (`OMR_CELL_LINE_FIND`;
 Sean: "working perfectly", Litolff 29 one-line-off bars -> 0). Fast 4,526 passed, check 250. Truth set
 Litolff 39/0/2, Brahms 10/0/1. Verified (Opus, `verify-staff-line-offsets`): raw staff-wide lines tilt
 off the ink (p90 5.5 px); the per-bar grid fixes most. **Not adopted:** slur-not-ledger (refused real

@@ -4,7 +4,7 @@ A notehead lying ON or BETWEEN a known staff's five lines -- measured LOCALLY, c
 line to the bottom line plus half a line thickness -- belongs to that staff: decided, no contest. A box of the same
 head found by a NEIGHBOUR's padded cell is a duplicate (the owning staff has its own box) or is named
 `staff_band_no_box` (it has none; no box is invented). Only a head in the GAP is left to the ledger witness and the
-older tiers. Behind `OMR_OWNER_FROM_STAVES`, default OFF.
+older tiers. Behind `OMR_OWNER_FROM_STAVES`, default ON since 2026-10-06 (Sean).
 
 RUN RED FIRST against the unrepaired tree (no tier, no flag): every `staff_band` assertion fails there.
 
@@ -78,10 +78,8 @@ class _V:
 
 
 def _decide(log, g, *, on=True):
-    env = {ENV: "1"} if on else {}
+    env = {ENV: "1"} if on else {ENV: "0"}   # default ON since 2026-10-06: OFF must be explicit
     with mock.patch.dict(os.environ, env):
-        if not on:
-            os.environ.pop(ENV, None)
         spec = adjudicate.REGISTRY[Q.GLYPH_OWNER]
         # the decision body on its declared evidence, as `adjudicate_one` runs it (a second arm on one log would be
         # refused as a second adjudication)
@@ -223,10 +221,8 @@ def _gather(cy, *, on, with_twin):
     dets = {R.cell(0, 0, 0, 0).to_key(): [_Det("noteheadBlackOnLine", 300.0, cy - 8.0, 24.0, 16.0)]}
     if with_twin:
         dets[R.cell(0, 0, 1, 0).to_key()] = [_Det("noteheadBlackOnLine", 300.0, cy - 8.0, 24.0, 16.0)]
-    env = {ENV: "1"} if on else {}
+    env = {ENV: "1"} if on else {ENV: "0"}   # default ON since 2026-10-06: OFF must be explicit
     with mock.patch.dict(os.environ, env):
-        if not on:
-            os.environ.pop(ENV, None)
         G.gather_ownership_evidence(log, _PWS(staves), cells, {0: (0, 0), 1: (0, 1)}, dets)
     return [r for r in log.all_rows() if getattr(r, "quantity", None) == Q.GLYPH_BAND_DISTANCE]
 

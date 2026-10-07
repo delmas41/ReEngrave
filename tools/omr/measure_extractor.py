@@ -1422,10 +1422,11 @@ CELL_LINE_FIND_KEEP_PX = 1
 
 
 def _cell_line_find_enabled() -> bool:
-    """`OMR_CELL_LINE_FIND` env; OFF by default (ROADMAP 2.57). Allow-list, so
-    a typo leaves the default in force."""
-    raw = os.environ.get(ENV_CELL_LINE_FIND, "").strip().lower()
-    return raw in {"1", "true", "yes", "on"}
+    """`OMR_CELL_LINE_FIND` env; ON by default since 2026-10-06 (ROADMAP 2.57,
+    Sean on the sheet: "working perfectly"). Deny-list, so a typo leaves the
+    default in force."""
+    raw = os.environ.get(ENV_CELL_LINE_FIND, "1").strip().lower()
+    return raw not in {"0", "", "false", "no", "off"}
 
 
 def _row_profile(binary, ys, spacing, lo, hi):

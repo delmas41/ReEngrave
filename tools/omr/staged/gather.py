@@ -1350,13 +1350,13 @@ LEDGER_ROUND_UP = 0.25
 #: staff whose band the head lies in -- or within `PAGE_EDGE_MARGIN_SPACES` of,
 #: by the page-wide lines -- as a CANDIDATE even where it holds no box of this
 #: ink; `adjudicate_glyph_owner` reads both (`ownership._owner_from_staves`).
-#: An ALLOW-LIST (CLAUDE.md §7): a typo leaves it off.
+#: DEFAULT ON since 2026-10-06 (Sean). A DENY-LIST (CLAUDE.md §7): a typo leaves it on.
 OWNER_FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
 
 
 def _owner_from_staves_enabled() -> bool:
-    return os.environ.get(OWNER_FROM_STAVES_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    return os.environ.get(OWNER_FROM_STAVES_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 #: ⚠️ MEASURED: how far a head's page-wide position can sit from its LOCAL one

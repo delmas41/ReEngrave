@@ -289,14 +289,14 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
 # candidate row, so B was never even asked about.
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: ⚠️ DEFAULT OFF until Sean has seen `out/print/ledgers/owner_from_staves.png`.
-#: An ALLOW-LIST (CLAUDE.md §7): a typo leaves it off. Read at ADJUDICATE time.
+#: DEFAULT ON since 2026-10-06 (Sean: switch it on).
+#: A DENY-LIST (CLAUDE.md §7): a typo leaves it on. Read at ADJUDICATE time.
 FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
 
 
 def _from_staves_enabled() -> bool:
-    return os.environ.get(FROM_STAVES_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    return os.environ.get(FROM_STAVES_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 #: `gather.PAGE_EDGE_MARGIN_SPACES` (0.8, MEASURED: the page-wide position of a
