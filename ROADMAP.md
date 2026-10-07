@@ -29,6 +29,9 @@ off the ink (p90 5.5 px); the per-bar grid fixes most. **Not adopted:** slur-not
 ledgers 6/12). **Retired:** nine stranded pieces (DECISIONS 10-06). **Next:** `lane-edge-merge-unseen-ledgers`
 (5 right heads lost: edge-merge drops real ledgers under a slur; knife-edge limits); then switch the two
 OFF flags on with Sean; NO overnight until Sean says (10-06: "We have a lot more to do before then").
+**Correction (later 10-06):** `lane-owner-from-staves` was NOT in `lane-lines-combined`; merged to main
+separately (d9c09b88). `OMR_CELL_LINE_FIND` and `OMR_OWNER_FROM_STAVES` now DEFAULT ON (Sean); `OMR_FARHEAD_OWNER_LEDGERS`
+stays OFF pending Sean on `owner_by_ledgers.png` + dropped-vs-relocated. Fast 4,542 passed, check 247.
 
 ## START HERE — after the night of 2026-10-05→06 (night manager; main ≥ this commit)
 
