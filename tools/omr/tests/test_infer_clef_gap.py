@@ -126,41 +126,25 @@ class _Doc:
         return self.log.verdict(Q.CLEF, self.staves[i])
 
 
-class TestTheFlag(unittest.TestCase):
-    """⚠️ DEFAULT ON, so the test is a DENY-list (`docs/flags-2026-09.md`,
-    CLAUDE.md §7). A default-ON flag written as an allow-list is switched off
-    by a typo, which is the one thing a shipped rule's gate must not do."""
+class TestTheRuleHasNoFlag(unittest.TestCase):
+    """⚠️ PROMOTED 2026-10-07 (roadmap 0.2c): `OMR_CLEF_GAP` is REMOVED. The
+    rule registers with `infer.ALWAYS_ON` and no environment variable can
+    silence it. (The flag's own tests -- default ON, typo stays ON, the
+    off-words, the rule's own switch, and the OFF arm naming the flag in
+    `Report.disabled` -- went with the flag.)"""
 
-    def test_on_by_default(self):
-        with mock.patch.dict(os.environ, {}, clear=True):
-            self.assertTrue(infer.clef_gap_enabled())
-
-    def test_a_typo_does_not_switch_it_off(self):
-        for bad in ("1", "yess", "ON!", "TRUE", "maybe"):
-            with mock.patch.dict(os.environ, {infer.CLEF_GAP_ENV: bad}):
-                self.assertTrue(infer.clef_gap_enabled(), bad)
-
-    def test_the_off_words_work(self):
-        """⚠️ THE POSITIVE CONTROL. Without it the predicate could be
-        `lambda: True` and every test above would still pass."""
-        for good in ("0", "", "false", "NO", "off"):
-            with mock.patch.dict(os.environ, {infer.CLEF_GAP_ENV: good}):
-                self.assertFalse(infer.clef_gap_enabled(), good)
-
-    def test_the_rule_has_its_own_switch_and_it_is_not_the_others(self):
+    def test_the_rule_runs_whatever_the_environment_says(self):
         r = _registered("fill_clef_gap")
-        self.assertEqual(r.switch.env, infer.CLEF_GAP_ENV)
-        self.assertNotEqual(r.switch.env, infer.INFER_ENV)
-        self.assertNotEqual(r.switch.env, infer.FAMILY_BLOCK_ENV)
-
-    def test_off_means_the_rule_does_not_run_and_the_report_names_the_flag(self):
+        self.assertEqual(r.switch.env, infer.ALWAYS_ON.env)
         d = _Doc(["alto", "alto", None])
-        with mock.patch.dict(os.environ, {infer.CLEF_GAP_ENV: "0"}):
+        with mock.patch.dict(os.environ, {"OMR_CLEF_GAP": "0",
+                                          infer.INFER_ENV: "0"}):
             rep = d.infer()
+        self.assertNotIn(("fill_clef_gap", "(always on)"), rep.disabled)
         self.assertEqual(
-            [i for i in rep.inferred if i[0] == "fill_clef_gap"], [])
-        self.assertIn((("fill_clef_gap"), infer.CLEF_GAP_ENV), rep.disabled)
-        self.assertIs(d.clef(2).outcome, Outcome.ABSTAINED)
+            [i[0] for i in rep.inferred if i[0] == "fill_clef_gap"],
+            ["fill_clef_gap"])
+        self.assertIs(d.clef(2).outcome, Outcome.DECIDED)
 
 
 class TestTierTwoTheSamePartOnOtherSystems(unittest.TestCase):

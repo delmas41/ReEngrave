@@ -299,7 +299,7 @@ class TestTheMeterCarry(unittest.TestCase):
             self._bars(log, carried_pages[1], beats=dst_beats)
         return log, src, dst
 
-    def _run(self, log, on):
+    def _run(self, log):
         """Adjudicate METER ONLY, over its systems in reading order.
 
         ⚠️ Deliberately not `adjudicate.run`: these logs pre-record the staff
@@ -308,73 +308,19 @@ class TestTheMeterCarry(unittest.TestCase):
         Reading order is what makes the carry reachable at all, so it is
         asserted here rather than assumed: `Subject` is an ordered dataclass.
         """
-        import os
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
         systems = sorted(log.subjects(R.Kind.SYSTEM))
         self.assertEqual(systems, sorted(systems))
-        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
-        # ⚠️ THE OFF ARM SETS "0" AND MUST NOT POP. `OMR_METER_CARRY` went
-        # DEFAULT-ON on 2026-09-15, so an ABSENT variable is now ON -- popping
-        # it would silently run the on-arm code and every "off" assertion below
-        # would be testing the wrong branch.
-        os.environ[rhythm_mod.METER_CARRY_ENV] = "1" if on else "0"
-        try:
-            for sysj in systems:
-                adjudicate.adjudicate_one(log, spec, sysj)
-        finally:
-            if prev is None:
-                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
-            else:
-                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
-
-    def test_with_the_flag_OFF_the_system_still_abstains(self):
-        """⚠️ The control for every claim below. Measured on the real page
-        too: flag-OFF reproduced all 4,498 verdicts of the pre-change run
-        identically, reasons and values included.
-
-        ⚠️ **RENAMED 2026-09-15, WHEN THE DEFAULT FLIPPED.** It was
-        `test_off_by_default_...`, and that name asserted a property of the
-        BUILD'S PROGRESS rather than of the mechanism -- the same shape as the
-        eight `stubs()` assertions this project records. The behaviour under
-        `OMR_METER_CARRY=0` is what this test is for and is unchanged; where
-        the DEFAULT sits is asserted separately, right below, so the two facts
-        cannot be confused for one another again.
-        """
-        log, _src, dst = self._log()
-        self._run(log, on=False)
-        v = log.verdict(Q.METER, dst)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "no_evidence")
-
-    def test_the_DEFAULT_is_now_ON(self):
-        """Sean's call, 2026-09-15. Asserted on the PREDICATE, not on a run.
-
-        ⚠️ It reads an ABSENT variable, which is the whole point: the previous
-        default made absence mean OFF, and every harness in this file expressed
-        "off" by popping the variable. A flip that changed the predicate and
-        left those harnesses alone would have run the ON code under every
-        "off" arm, green.
-        """
-        import os
-        prev = os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
-        try:
-            self.assertTrue(rhythm_mod.meter_carry_enabled())
-            os.environ[rhythm_mod.METER_CARRY_ENV] = "0"
-            self.assertFalse(rhythm_mod.meter_carry_enabled())
-            # ⚠️ A typo must NOT turn a default-ON flag off. See CLAUDE.md,
-            # "A flag's OFF test must follow its DEFAULT".
-            os.environ[rhythm_mod.METER_CARRY_ENV] = "yess"
-            self.assertTrue(rhythm_mod.meter_carry_enabled())
-        finally:
-            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
-            if prev is not None:
-                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+        # ⚠️ The carry has no flag since 2026-10-07 (roadmap 0.2c) and so no
+        # OFF arm: it always runs.
+        for sysj in systems:
+            adjudicate.adjudicate_one(log, spec, sysj)
 
     def test_on_it_takes_the_last_meter_that_was_READ(self):
         log, src, dst = self._log()
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "carried")
@@ -387,7 +333,7 @@ class TestTheMeterCarry(unittest.TestCase):
         """The carry is reached only from an abstention branch, so a system
         with its own evidence cannot be overwritten by an older page."""
         log, src, _dst = self._log()
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, src)
         self.assertEqual(v.reason, "voted")
 
@@ -412,7 +358,7 @@ class TestTheMeterCarry(unittest.TestCase):
                         score=0.7, raw="2/4")
         self._bars(log, 1, beats=2.0)
         self._bars(log, 2, beats=2.0)
-        self._run(log, on=True)
+        self._run(log)
         mid_v = log.verdict(Q.METER, mid)
         far_v = log.verdict(Q.METER, far)
         self.assertEqual(mid_v.reason, "carried")
@@ -444,7 +390,7 @@ class TestTheMeterCarry(unittest.TestCase):
         +14, +7 and +16, and the wrong one -12, -9 and -14.
         """
         log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
@@ -457,7 +403,7 @@ class TestTheMeterCarry(unittest.TestCase):
         this the corroboration would be indistinguishable from switching the
         carry off."""
         log, src, dst = self._log(dst_beats=2.0)
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "carried")
@@ -514,7 +460,7 @@ class TestTheMeterCarry(unittest.TestCase):
                     value={"events": [{"glyphs": [0], "x": 100.0,
                                        "kind": "rest"}]},
                     decider="t", reason="x_clustered"))
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         # the rests match 4/4 EXACTLY, and must still corroborate nothing:
         # the bars stay SILENT (no agreeing bar is counted). ⚠️ ROADMAP 2.22b
@@ -556,7 +502,7 @@ class TestTheMeterCarry(unittest.TestCase):
         """⚠️ A single number hides which of three pages you are looking at.
         Sean: "keep reporting the counts"."""
         log, _src, dst = self._log(dst_beats=2.0)
-        self._run(log, on=True)
+        self._run(log)
         d = log.verdict(Q.METER, dst).detail
         for key in ("support", "floor", "bars_agree", "bars_disagree",
                     "bar_lengths_seen", "pages_since_read", "carried_from"):
@@ -567,7 +513,7 @@ class TestTheMeterCarry(unittest.TestCase):
         mode. That is a different fact from "they disagree with the carry",
         and the record keeps it rather than collapsing both to a refusal."""
         log, _src, dst = self._log(carried_pages=(1, 17), dst_beats=1.5)
-        self._run(log, on=True)
+        self._run(log)
         d = log.verdict(Q.METER, dst).detail
         self.assertTrue(d["bar_lengths_seen"])
         self.assertIn(1.5, [float(k) for k in d["bar_lengths_seen"]])
@@ -581,7 +527,7 @@ class TestTheMeterCarry(unittest.TestCase):
         are no vote: the carry holds, labelled apart from a corroborated
         `carried` so a reader can tell the two apart."""
         log, _src, dst = self._log(bars=False)
-        self._run(log, on=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, rhythm_mod.METER_CARRIED_UNCONTESTED)
@@ -592,7 +538,7 @@ class TestTheMeterCarry(unittest.TestCase):
         """The whole record depends on a consumer being able to tell a meter
         that was READ from one that was inherited."""
         log, _src, dst = self._log()
-        self._run(log, on=True)
+        self._run(log)
         self.assertNotEqual(log.verdict(Q.METER, dst).reason, "voted")
 
 
@@ -655,10 +601,28 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
                     decider="t", reason="x_clustered"))
 
     def _log(self, per_cell, *, source=(2, 4), source_raw="2/4",
-             source_page=0, dst_page=1):
+             source_page=0, dst_page=1, decoy=None):
+        """`decoy`: a `(num, den)` read on a system BETWEEN the source and the
+        destination. ⚠️ Since 2026-10-07 (roadmap 0.2c) the carry has no flag
+        and always runs, so it is no longer possible to ask the bars rung in
+        isolation: with only `source` on the page the carry stands wherever
+        the bars agree with it. The decoy is the nearest READ meter, of a
+        DIFFERENT length from the bars under test, so the carry is refused
+        (`carry_outweighed_by_the_bars`) and the bars rung is the one that
+        speaks -- the real p.63 shape, the only one in which this rung is
+        reachable when a carry source exists. The `source` is then the only
+        system that READ the bars' own length, which is what it lends."""
         log = Log()
         src, dst = R.system(source_page, 0), R.system(dst_page, 0)
-        for sysj, n in ((src, 12), (dst, 11)):
+        systems = [(src, 12), (dst, 11)]
+        if decoy is not None:
+            systems.append((R.system(source_page, 1), 12))
+            for i in range(12):
+                log.observe(R.staff(source_page, 1, i), Q.METER_TEMPLATE,
+                            decoy, reader=READERS.TEMPLATE,
+                            frame="header_window", score=0.7,
+                            raw="%d/%d" % decoy)
+        for sysj, n in systems:
             log.record(adjudicate.Verdict(
                 id=log._next_id("vrd"), subject=sysj,
                 quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
@@ -671,68 +635,24 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         self._bars(log, dst_page, per_cell)
         return log, src, dst
 
-    def _run(self, log, *, from_bars, carry=False):
-        import os
+    def _run(self, log):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        # ⚠️ "0", never None -- both flags are DEFAULT-ON since 2026-09-15,
-        # so popping the variable is the ON arm, not the off one.
-        env = {rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else "0",
-               rhythm_mod.METER_CARRY_ENV: "1" if carry else "0"}
-        prev = {k: os.environ.get(k) for k in env}
-        try:
-            for k, v in env.items():
-                if v is None:
-                    os.environ.pop(k, None)
-                else:
-                    os.environ[k] = v
-            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-                adjudicate.adjudicate_one(log, spec, sysj)
-        finally:
-            for k, v in prev.items():
-                if v is None:
-                    os.environ.pop(k, None)
-                else:
-                    os.environ[k] = v
+        # ⚠️ Neither the carry nor the bars rung has a flag since 2026-10-07
+        # (roadmap 0.2c): both always run.
+        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+            adjudicate.adjudicate_one(log, spec, sysj)
 
     # ── the control ─────────────────────────────────────────────────────────
-
-    def test_with_the_flag_OFF_the_system_still_abstains(self):
-        """The control for every claim below.
-
-        ⚠️ RENAMED 2026-09-15 with the default flip — see the sibling test in
-        `TestTheMeterCarry` for why the old name was a claim about the build
-        rather than about the mechanism.
-        """
-        log, _src, dst = self._log([2.0] * 6)
-        self._run(log, from_bars=False)
-        v = log.verdict(Q.METER, dst)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "no_evidence")
-
-    def test_the_DEFAULT_is_now_ON(self):
-        """Sean's call, 2026-09-15. On the PREDICATE, with an ABSENT variable."""
-        import os
-        prev = os.environ.pop(rhythm_mod.METER_FROM_BARS_ENV, None)
-        try:
-            self.assertTrue(rhythm_mod.meter_from_bars_enabled())
-            os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "off"
-            self.assertFalse(rhythm_mod.meter_from_bars_enabled())
-            os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "ON!"
-            self.assertTrue(rhythm_mod.meter_from_bars_enabled())
-        finally:
-            os.environ.pop(rhythm_mod.METER_FROM_BARS_ENV, None)
-            if prev is not None:
-                os.environ[rhythm_mod.METER_FROM_BARS_ENV] = prev
 
     # ── what it does ────────────────────────────────────────────────────────
 
     def test_six_bars_agreeing_name_the_meter(self):
         """Six bars at 2.0 with a `2/4` read elsewhere: the length is the
         bars', the spelling is borrowed, and both are on the record."""
-        log, src, dst = self._log([2.0] * 6)
-        self._run(log, from_bars=True)
+        log, src, dst = self._log([2.0] * 6, decoy=(3, 4))
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "derived_from_bars")
@@ -747,8 +667,8 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
     def test_a_segment_is_written_so_meter_at_answers(self):
         """`Q.METER` is a fact about a RANGE OF BARS however it was decided,
         so a derived meter must serialise like a read one."""
-        log, _src, dst = self._log([2.0] * 6)
-        self._run(log, from_bars=True)
+        log, _src, dst = self._log([2.0] * 6, decoy=(3, 4))
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertEqual(R.meter_at(v.value, 0)["raw"], "2/4")
         self.assertEqual(R.meter_at(v.value, 5)["raw"], "2/4")
@@ -766,10 +686,14 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         Beethoven 5 / Litolff p.17 system 0 — 3.0, 3.5, 1.0, 1.5).
         """
         log, _src, dst = self._log([3.0, 3.5, 1.0, 1.5])
-        self._run(log, from_bars=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "no_evidence")
+        # ⚠️ Was `no_evidence` while the carry could be switched off. With it
+        # always on, the carried `2/4` is WEIGHED against these four bars and
+        # refused -- the same safety claim (no meter is handed to the
+        # Andante), now with the carry's own refusal as the reason.
+        self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
 
     def test_three_bars_are_not_enough_however_well_they_agree(self):
         """⚠️ AND THE FLOOR IS THE ONLY THING REFUSING THEM.
@@ -780,8 +704,8 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         The constant is gone; this now pins the floor's lower reach, which is
         what actually holds.
         """
-        log, _src, dst = self._log([2.0] * 3)
-        self._run(log, from_bars=True)
+        log, _src, dst = self._log([2.0] * 3, decoy=(3, 4))
+        self._run(log)
         self.assertIs(log.verdict(Q.METER, dst).outcome, Outcome.ABSTAINED)
 
     def test_a_length_NO_METER_PRINTS_is_not_a_candidate(self):
@@ -790,7 +714,7 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         garbage that survives upstream filtering; a bar-sum reader must not
         reintroduce it by the back door."""
         log, _src, dst = self._log([1.0] * 6)
-        self._run(log, from_bars=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertNotIn(1.0, rhythm_mod._METER_LENGTHS)
@@ -798,8 +722,8 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
     def test_a_split_page_scores_below_the_floor(self):
         """Eight bars, five agreeing and three not: +2, under the floor. The
         floor is what "the longer the more likely" cashes out as."""
-        log, _src, dst = self._log([2.0] * 5 + [3.0, 4.0, 6.0])
-        self._run(log, from_bars=True)
+        log, _src, dst = self._log([2.0] * 5 + [3.0, 4.0, 6.0], decoy=(3, 4))
+        self._run(log)
         self.assertIs(log.verdict(Q.METER, dst).outcome, Outcome.ABSTAINED)
 
     # ── the length / form split ─────────────────────────────────────────────
@@ -809,7 +733,7 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         long, and nothing on this document has said whether that is printed
         3/4, 6/8 or 12/16*. Refusing to spell it is the point."""
         log, _src, dst = self._log([3.0] * 6, source=(2, 4), source_raw="2/4")
-        self._run(log, from_bars=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "bars_name_a_length_without_a_form")
@@ -824,8 +748,9 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
         printed nothing we could read. The numbers are borrowed; the
         engraving is not, and the source's own `raw` is recorded beside the
         answer rather than copied into it."""
-        log, _src, dst = self._log([4.0] * 6, source=(4, 4), source_raw="C")
-        self._run(log, from_bars=True)
+        log, _src, dst = self._log([4.0] * 6, source=(4, 4), source_raw="C",
+                                decoy=(3, 4))
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual((v.value["numerator"], v.value["denominator"]), (4, 4))
@@ -850,9 +775,20 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
             log.observe(R.staff(0, 0, i), Q.METER_TEMPLATE, (2, 4),
                         reader=READERS.TEMPLATE, frame="header_window",
                         score=0.7, raw="2/4")
+        # The carry has no flag since 2026-10-07 (roadmap 0.2c): a nearer READ
+        # `3/4` is what the carry offers and the 2.0-beat bars refuse, so the
+        # bars rung is the one that speaks on `mid` and `far`.
+        log.record(adjudicate.Verdict(
+            id=log._next_id("vrd"), subject=R.system(0, 1),
+            quantity=Q.SYSTEM_STAFF_COUNT, outcome=Outcome.DECIDED,
+            value=12, decider="t", reason="counted"))
+        for i in range(12):
+            log.observe(R.staff(0, 1, i), Q.METER_TEMPLATE, (3, 4),
+                        reader=READERS.TEMPLATE, frame="header_window",
+                        score=0.7, raw="3/4")
         self._bars(log, 1, [2.0] * 6)
         self._bars(log, 2, [2.0] * 6)
-        self._run(log, from_bars=True)
+        self._run(log)
         for sysj in (mid, far):
             v = log.verdict(Q.METER, sysj)
             self.assertEqual(v.reason, "derived_from_bars")
@@ -863,14 +799,14 @@ class TestTheBarsMayNameTheMeter(unittest.TestCase):
 
     def test_it_never_overturns_a_system_that_read_its_own_meter(self):
         log, src, _dst = self._log([3.0] * 6)
-        self._run(log, from_bars=True)
+        self._run(log)
         self.assertEqual(log.verdict(Q.METER, src).reason, "voted")
 
     def test_the_CARRY_is_asked_first_where_both_could_speak(self):
         """⚠️ Reach, not merit: the carry names an ENGRAVING it actually saw,
         so where it stands there is nothing for a borrow to add."""
         log, _src, dst = self._log([2.0] * 6)
-        self._run(log, from_bars=True, carry=True)
+        self._run(log)
         self.assertEqual(log.verdict(Q.METER, dst).reason, "carried")
 
     def test_the_constants_keep_the_floor_reachable_by_a_real_page(self):
@@ -1162,41 +1098,19 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         self._bars(log, dst_page, per_cell)
         return log, R.system(dst_page, 0)
 
-    def _run(self, log, *, carry, from_bars):
-        import os
+    def _run(self, log):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        # ⚠️ "0", never None -- see the sibling helpers: both flags are
-        # DEFAULT-ON since 2026-09-15 and an absent variable means ON.
-        env = {rhythm_mod.METER_CARRY_ENV: "1" if carry else "0",
-               rhythm_mod.METER_FROM_BARS_ENV: "1" if from_bars else "0"}
-        prev = {k: os.environ.get(k) for k in env}
-        try:
-            for k, v in env.items():
-                os.environ.pop(k, None) if v is None else os.environ.update({k: v})
-            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-                adjudicate.adjudicate_one(log, spec, sysj)
-        finally:
-            for k, v in prev.items():
-                os.environ.pop(k, None) if v is None else os.environ.update({k: v})
-
-    def test_the_carry_alone_is_refused_by_bars_that_read_well(self):
-        """The control: the bars DO discriminate against a wrong carry when
-        they can speak. This is the p.63 shape — 6 bars of 3.0 against a
-        carried 2/4."""
-        log, dst = self._log([3.0] * 6)
-        self._run(log, carry=True, from_bars=False)
-        v = log.verdict(Q.METER, dst)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "carry_outweighed_by_the_bars")
-        self.assertEqual(v.detail["bars_disagree"], 6)
+        # ⚠️ Neither mechanism has a flag since 2026-10-07 (roadmap 0.2c).
+        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+            adjudicate.adjudicate_one(log, spec, sysj)
 
     def test_a_REFUSED_carry_does_not_block_the_bars(self):
         """⚠️ THE BUG. With both mechanisms on, the refused carry used to be
         returned as the answer and the bars were never asked."""
         log, dst = self._log([3.0] * 6)
-        self._run(log, carry=True, from_bars=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertEqual(v.reason, "bars_name_a_length_without_a_form")
         self.assertEqual(v.detail["length"], 3.0)
@@ -1209,7 +1123,7 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         answer is the new movement's meter, not the old one's."""
         log, dst = self._log([3.0] * 6,
                              sources=((0, (3, 4)), (1, (2, 4))))
-        self._run(log, carry=True, from_bars=True)
+        self._run(log)
         v = log.verdict(Q.METER, dst)
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.reason, "derived_from_bars")
@@ -1221,7 +1135,7 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         newer mechanism: a carry the bars agree with names an engraving that
         was actually read, and nothing here displaces it."""
         log, dst = self._log([2.0] * 6)
-        self._run(log, carry=True, from_bars=True)
+        self._run(log)
         self.assertEqual(log.verdict(Q.METER, dst).reason, "carried")
 
     def test_the_most_informative_refusal_is_the_one_reported(self):
@@ -1229,17 +1143,10 @@ class TestARefusalMayNotBlockALaterRung(unittest.TestCase):
         the BAR LENGTH tells a reader more than one naming only the carry's
         support, which tells more than a bare "nothing here"."""
         log, dst = self._log([3.0] * 6)
-        self._run(log, carry=True, from_bars=True)
+        self._run(log)
         d = log.verdict(Q.METER, dst).detail
         self.assertIn("length", d)
         self.assertIn("candidate_forms", d)
-
-    def test_flags_off_is_unchanged(self):
-        log, dst = self._log([3.0] * 6)
-        self._run(log, carry=False, from_bars=False)
-        v = log.verdict(Q.METER, dst)
-        self.assertIs(v.outcome, Outcome.ABSTAINED)
-        self.assertEqual(v.reason, "no_evidence")
 
 
 # ⚠️⚠️ `TestACourtesySignatureIsNotAChange` STOOD HERE AND WAS REMOVED AS A
@@ -1336,16 +1243,8 @@ class TestTheCarryTakesTheMeterInForceAtTheSourcesEND(unittest.TestCase):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
-        os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
-        try:
-            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-                adjudicate.adjudicate_one(log, spec, sysj)
-        finally:
-            if prev is None:
-                os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
-            else:
-                os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+            adjudicate.adjudicate_one(log, spec, sysj)
 
     def test_a_source_that_CHANGED_hands_on_what_it_changed_TO(self):
         """⚠️ RUN THIS RED: restore the old
@@ -1916,21 +1815,11 @@ class TestAnUncorroboratedChangeIsNotCarriedOffItsSystem(unittest.TestCase):
         log.freeze()
         adjudicate._ensure_decisions()
         spec = adjudicate.REGISTRY[Q.METER]
-        prev = {k: os.environ.get(k) for k in
-                (rhythm_mod.METER_CARRY_ENV, rhythm_mod.METER_FROM_BARS_ENV)}
-        os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
-        # ⚠️ The bars reader is switched OFF so a carried meter and a locally
-        # derived one cannot be confused: this class is about the CARRY.
-        os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "0"
-        try:
-            for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-                adjudicate.adjudicate_one(log, spec, sysj)
-        finally:
-            for k, v in prev.items():
-                if v is None:
-                    os.environ.pop(k, None)
-                else:
-                    os.environ[k] = v
+        # ⚠️ Until 2026-10-07 the bars reader was switched OFF here so a
+        # carried meter and a locally derived one could not be confused. It
+        # has no flag any more (roadmap 0.2c): both always run.
+        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+            adjudicate.adjudicate_one(log, spec, sysj)
 
     def _segments(self, v):
         segs = (v.value or {}).get("segments") or []

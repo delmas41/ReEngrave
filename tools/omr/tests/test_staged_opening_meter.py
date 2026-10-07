@@ -103,26 +103,15 @@ def _bars(log, sysj, n_staves, n_bars, beats):
 
 
 def _run(log):
-    """Adjudicate METER over every system in document order, carry ON, the
-    bars-derive-a-length rung OFF -- isolating the carry/cautionary
+    """Adjudicate METER over every system in document order, carry and the
+    bars-derive-a-length rung (neither has a flag since 2026-10-07) -- isolating the carry/cautionary
     mechanism under test, the same discipline
     `TestAnUncorroboratedChangeIsNotCarriedOffItsSystem._run` already uses."""
     log.freeze()
     adjudicate._ensure_decisions()
     spec = adjudicate.REGISTRY[Q.METER]
-    prev = {k: os.environ.get(k) for k in
-            (rhythm_mod.METER_CARRY_ENV, rhythm_mod.METER_FROM_BARS_ENV)}
-    os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
-    os.environ[rhythm_mod.METER_FROM_BARS_ENV] = "0"
-    try:
-        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-            adjudicate.adjudicate_one(log, spec, sysj)
-    finally:
-        for k, v in prev.items():
-            if v is None:
-                os.environ.pop(k, None)
-            else:
-                os.environ[k] = v
+    for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+        adjudicate.adjudicate_one(log, spec, sysj)
 
 
 class TestAnOpeningThatDisagreesWithACorroboratedCautionaryIsRechecked(

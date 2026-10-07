@@ -235,7 +235,7 @@ class TestTheConsumerActuallyRefuses(unittest.TestCase):
     # ── the settings stamp: a flag arm is a LEGITIMATE same-tree pair ──────
     #
     # ⚠️⚠️ Refusing every same-clean-tree pair was wrong on a FLAG-DRIVEN
-    # pipeline. An arm that changes `OMR_METER_CARRY` and nothing else MUST
+    # pipeline. An arm that changes `OMR_INK` and nothing else MUST
     # come from one commit, so same-tree is the REQUIRED condition there. The
     # refusal was right only while records could not say what settings they
     # were built under -- and the cost was that NO flag arm in the repo ever

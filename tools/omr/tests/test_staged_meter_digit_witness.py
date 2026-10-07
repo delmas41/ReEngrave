@@ -317,21 +317,13 @@ def _digit_witness_verdicts(log, sysj, cell, staves):
 
 
 def _run(log):
-    """Adjudicate METER over every system in document order, carry ON —
+    """Adjudicate METER over every system in document order (the carry has no flag since 2026-10-07) —
     `test_staged_meter_return_not_read.py`'s own discipline."""
     log.freeze()
     adjudicate._ensure_decisions()
     spec = adjudicate.REGISTRY[Q.METER]
-    prev = os.environ.get(rhythm_mod.METER_CARRY_ENV)
-    os.environ[rhythm_mod.METER_CARRY_ENV] = "1"
-    try:
-        for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
-            adjudicate.adjudicate_one(log, spec, sysj)
-    finally:
-        if prev is None:
-            os.environ.pop(rhythm_mod.METER_CARRY_ENV, None)
-        else:
-            os.environ[rhythm_mod.METER_CARRY_ENV] = prev
+    for sysj in sorted(log.subjects(R.Kind.SYSTEM)):
+        adjudicate.adjudicate_one(log, spec, sysj)
 
 
 def _source(*, witness_staves, src_n_cells=3):

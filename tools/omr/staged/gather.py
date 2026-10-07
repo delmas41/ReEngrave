@@ -527,7 +527,10 @@ ACCIDENTAL_WITNESS_HALF_HEIGHT_SPACES = 0.6  # around the accidental's own y
 
 
 def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
-                              half_step: Optional[float]
+                              half_step: Optional[float], *,
+                              log: Optional[Log] = None,
+                              subject: Optional[Subject] = None,
+                              frame: Optional[str] = None
                               ) -> List[Dict[str, Any]]:
     """Every witness already on the record for cell `c` that PREDICTS where
     a notehead must be: a stem end (classical-CV, re-run directly -- this
@@ -541,6 +544,11 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
     are measured in, so a candidate box's own centre can be compared
     directly, with no second conversion to agree with the raw boxes this
     reader also reads (CLAUDE.md §10: measure locally).
+
+    ⚠️ ROADMAP 2.60: a stem reader that THROWS is filed on `log` (when the
+    caller passes one) as the rescue's own `Q.GLYPH_BOX` abstention,
+    `READER_UNAVAILABLE` with the exception class -- the witness set is then
+    missing its stems, which is *cannot tell*, not *this bar has no stems*.
     """
     witnesses: List[Dict[str, Any]] = []
     if not half_step:
@@ -551,7 +559,12 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
         from ..line_detection import detect_lines
         found = detect_lines(c, candidates_out=None, noteheads=None) or {}
         stems = found.get("stems") or []
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
+        if log is not None and subject is not None:
+            log.abstain(subject, Q.GLYPH_BOX, reader=READERS.RESCUE_LOWCONF,
+                        frame=frame or frame_cell(c.measure_index),
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=type(exc).__name__, witness_kind="stem_end")
         stems = []
     dx = STEM_WITNESS_HALF_WIDTH_SPACES * space
     dy = STEM_WITNESS_HALF_HEIGHT_SPACES * space
@@ -716,7 +729,9 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
 
         grid = _cell_grid(c)
         half_step = grid[1] if grid else None
-        witnesses = _lowconf_rescue_witnesses(c, existing, half_step)
+        witnesses = _lowconf_rescue_witnesses(c, existing, half_step,
+                                              log=log, subject=cell_sub,
+                                              frame=frame)
         if not witnesses:
             # ⚠️ No witness at all -- "every measure should have notes or
             # rests" names stems/ties/accidentals as the witnesses; a bar
@@ -6446,10 +6461,15 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
                         FRAME_HEADER_WINDOW, "clef_locator unavailable")
         return
 
+    # ⚠️ ROADMAP 2.60: a header cutter that THREW is not a staff with no
+    # header geometry. The crop is still `None` (control flow unchanged), but
+    # the row says the reader could not run and names the exception.
+    header_error: Optional[str] = None
     try:
         header_cells = header_cells_for_page(pws)
     except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
+        header_error = type(exc).__name__
 
     first_cell = {}
     for c in cells:
@@ -6462,6 +6482,13 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
                  (frame_cell(0), first_cell.get(staff_index)))
         for frame, crop in crops:
             if crop is None:
+                if header_error is not None and frame == FRAME_HEADER_WINDOW:
+                    log.abstain(sub, Q.CLEF_LOCATED,
+                                reader=READERS.CV_LOCATOR, frame=frame,
+                                reason=ABSTAIN.READER_UNAVAILABLE,
+                                error=header_error,
+                                note="header_cells_for_page raised")
+                    continue
                 log.abstain(sub, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
                             note="no crop of this kind for this staff")
@@ -6791,10 +6818,14 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
                         "key_signature_locator unavailable")
         return
 
+    # ⚠️ ROADMAP 2.60: a header cutter that THREW abstains
+    # `READER_UNAVAILABLE` with the exception class, not `NO_STAFF_GEOMETRY`.
+    header_error: Optional[str] = None
     try:
         header_cells = header_cells_for_page(pws)
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
+        header_error = type(exc).__name__
 
     for staff_index, key in sorted(local.items()):
         sub = R.staff(p, key[0], key[1])
@@ -6802,6 +6833,14 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
 
         crop = header_cells.get(staff_index)
         if crop is None:
+            if header_error is not None:
+                log.abstain(sub, Q.KEYSIG_RUN_POSITION,
+                            reader=READERS.CV_HEADER,
+                            frame=FRAME_HEADER_WINDOW,
+                            reason=ABSTAIN.READER_UNAVAILABLE,
+                            error=header_error,
+                            note="header_cells_for_page raised")
+                continue
             log.abstain(sub, Q.KEYSIG_RUN_POSITION, reader=READERS.CV_HEADER,
                         frame=FRAME_HEADER_WINDOW,
                         reason=ABSTAIN.NO_STAFF_GEOMETRY)
@@ -6810,11 +6849,18 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
         occupied = _occupied_boxes(detections, p, key, FRAME_HEADER_WINDOW)
         positions = None
         fitted_any = False
+        fit_errors: List[str] = []
         for candidate in _SLOT_TABLE_CLEFS:
             try:
                 found = locate_key_signature(crop, candidate,
                                              occupied_boxes=occupied)
-            except Exception:                                 # noqa: BLE001
+            except Exception as exc:                          # noqa: BLE001
+                # ⚠️ ROADMAP 2.60: a fit that THREW is not a fit that failed.
+                log.abstain(sub, Q.KEYSIG_CLEF_FIT, reader=READERS.CV_HEADER,
+                            frame=FRAME_HEADER_WINDOW,
+                            reason=ABSTAIN.READER_UNAVAILABLE,
+                            error=type(exc).__name__, candidate=candidate)
+                fit_errors.append(type(exc).__name__)
                 continue
             if found is None:
                 continue
@@ -6830,6 +6876,17 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
 
         _gather_keysig_template(log, sub, crop)
 
+        if not fitted_any and fit_errors:
+            # ⚠️ ROADMAP 2.60: a candidate that threw might have fitted, so
+            # "no candidate clef's slot table fits" is not ours to say.
+            log.abstain(sub, Q.KEYSIG_RUN_POSITION, reader=READERS.CV_HEADER,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=fit_errors[0],
+                        note="locate_key_signature raised on a candidate "
+                             "clef and none fitted",
+                        clefs_tried=list(_SLOT_TABLE_CLEFS))
+            continue
         if not fitted_any:
             # ⚠️ Two different states collapse here and the detail says which:
             # a run that fits NO slot table, and a header with no run at all.
@@ -6877,14 +6934,24 @@ def _gather_keysig_template(log: Log, sub: Subject, crop: Any) -> None:
     window is empty for some other reason, which is why the header-window
     repair in `staff_header.measure_header_window` had to land first.
     """
+    # ⚠️ ROADMAP 2.60: a reader that cannot import, or THROWS on a candidate,
+    # abstains `READER_UNAVAILABLE` with the exception class.
     try:
         from ..key_signature_template import read_key_signature
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
+        log.abstain(sub, Q.KEYSIG_TEMPLATE_FIT, reader=READERS.TEMPLATE,
+                    frame=FRAME_HEADER_WINDOW,
+                    reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__)
         return
     for candidate in _SLOT_TABLE_CLEFS:
         try:
             read = read_key_signature(crop, candidate)
-        except Exception:                                     # noqa: BLE001
+        except Exception as exc:                              # noqa: BLE001
+            log.abstain(sub, Q.KEYSIG_TEMPLATE_FIT, reader=READERS.TEMPLATE,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=type(exc).__name__, candidate=candidate)
             continue
         if read is None:
             continue
@@ -7002,16 +7069,27 @@ def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
         _stub_per_staff(log, cells, local, Q.METER_TEMPLATE, READERS.TEMPLATE,
                         FRAME_HEADER_WINDOW, "time_signature_locator missing")
         return
+    # ⚠️ ROADMAP 2.60: a header cutter that THREW abstains
+    # `READER_UNAVAILABLE` with the exception class, not `NO_STAFF_GEOMETRY`.
+    header_error: Optional[str] = None
     try:
         header_cells = header_cells_for_page(pws)
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
+        header_error = type(exc).__name__
 
     for staff_index, key in sorted(local.items()):
         sub = R.staff(p, key[0], key[1])
         _gather_meter_glyphs(log, sub, detections, p, key)
 
         crop = header_cells.get(staff_index)
+        if crop is None and header_error is not None:
+            log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
+                        frame=FRAME_HEADER_WINDOW,
+                        reason=ABSTAIN.READER_UNAVAILABLE,
+                        error=header_error,
+                        note="header_cells_for_page raised")
+            continue
         if crop is None:
             log.abstain(sub, Q.METER_TEMPLATE, reader=READERS.TEMPLATE,
                         frame=FRAME_HEADER_WINDOW,
@@ -7472,10 +7550,15 @@ def gather_meter_ocr_at_bars(log: Log, cells: Sequence[Any],
     """
     if not _meter_ocr_at_bar_enabled():
         return
+    # ⚠️ ROADMAP 2.60: the per-cell `READER_UNAVAILABLE` row below now names
+    # the exception when the import THREW, so it can be told from a machine
+    # with no Tesseract.
+    import_error: Dict[str, Any] = {}
     try:
         from .. import meter_digit_ocr
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         meter_digit_ocr = None                                # type: ignore
+        import_error = {"error": type(exc).__name__}
 
     by_staff_cell: Dict[Tuple[int, int], Any] = {}
     page_index = 0
@@ -7494,13 +7577,14 @@ def gather_meter_ocr_at_bars(log: Log, cells: Sequence[Any],
             if meter_digit_ocr is None or not meter_digit_ocr.available():
                 log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
                             frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
-                            cell=cell_index)
+                            cell=cell_index, **import_error)
                 continue
             cell_key = R.cell(page_index, sys_idx, st_idx, cell_index).to_key()
             cell_dets = detections.get(cell_key, [])
             image = None
             split_row = None
             origin = None
+            metrics_error: Optional[str] = None
             if any(str(getattr(d, "smufl_name", "")).startswith("timeSig")
                   for d in cell_dets):
                 window = _bar_head_window(cell, METER_TEMPLATE_AT_BAR_WINDOW_SPACES)
@@ -7515,8 +7599,9 @@ def gather_meter_ocr_at_bars(log: Log, cells: Sequence[Any],
                 try:
                     from ..header_ink import staff_metrics
                     metrics = staff_metrics(cell)
-                except Exception:                                 # noqa: BLE001
+                except Exception as exc:                          # noqa: BLE001
                     metrics = None
+                    metrics_error = type(exc).__name__
                 if metrics is not None:
                     spacing = metrics[0]
                     box = _meter_digit_pair_box(cell_dets, spacing)
@@ -7531,6 +7616,16 @@ def gather_meter_ocr_at_bars(log: Log, cells: Sequence[Any],
                                 image = full[y0i:y1i, x0i:x1i]
                                 split_row = (y1i - y0i) // 2
                                 origin = "digit_pair_witness"
+            if (image is None or image.size == 0) \
+                    and metrics_error is not None:
+                # ⚠️ ROADMAP 2.60: the staff-metrics reader THREW, so the
+                # digit-pair witness was never looked for -- not "the
+                # detector fired nothing here".
+                log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
+                            frame=frame, reason=ABSTAIN.READER_UNAVAILABLE,
+                            cell=cell_index, error=metrics_error,
+                            note="header_ink.staff_metrics raised")
+                continue
             if image is None or image.size == 0:
                 log.abstain(sub, Q.METER_OCR_AT_BAR, reader=READERS.TESSERACT,
                             frame=frame, reason=ABSTAIN.NO_DETECTIONS,
@@ -7572,24 +7667,29 @@ def _label_rung_state(surya_fallback: bool, ocr_fallback: bool) -> Dict[str, Any
     cascade runs, is what lets the rows below name the difference.
     """
     requested, available, unavailable = [], ["text_layer"], []
+    #: ROADMAP 2.60: a rung whose availability probe THREW, by exception
+    #: class -- read back onto that rung's `READER_UNAVAILABLE` row.
+    errors: Dict[str, str] = {}
     if surya_fallback:
         requested.append("surya")
         try:
             from ..staff_labels_surya import available as _surya_available
             ok = bool(_surya_available())
-        except Exception:                                     # noqa: BLE001
+        except Exception as exc:                              # noqa: BLE001
             ok = False
+            errors["surya"] = type(exc).__name__
         (available if ok else unavailable).append("surya")
     if ocr_fallback:
         requested.append("tesseract")
         try:
             from ..staff_labels_tesseract import available as _tess_available
             ok = bool(_tess_available())
-        except Exception:                                     # noqa: BLE001
+        except Exception as exc:                              # noqa: BLE001
             ok = False
+            errors["tesseract"] = type(exc).__name__
         (available if ok else unavailable).append("tesseract")
     return {"requested": requested, "available": available,
-            "unavailable": unavailable}
+            "unavailable": unavailable, "errors": errors}
 
 
 def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
@@ -7810,12 +7910,18 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
     # named is the ABSENT one, so `gather_coverage` and any census can see
     # which install is missing without parsing a note.
     for name in rungs["unavailable"]:
+        probe_error = rungs["errors"].get(name)
         log.abstain(page_sub, Q.MARGIN_LABEL, reader=_RUNG_READER[name],
                     frame=FRAME_MARGIN, reason=ABSTAIN.READER_UNAVAILABLE,
-                    note=f"{name} was requested and is not installed here",
+                    note=(f"{name} was requested and is not installed here"
+                          if probe_error is None else
+                          f"{name} was requested and its availability "
+                          f"probe raised"),
                     rungs_requested=list(rungs["requested"]),
                     rungs_available=list(rungs["available"]),
-                    rungs_unavailable=list(rungs["unavailable"]))
+                    rungs_unavailable=list(rungs["unavailable"]),
+                    **({} if probe_error is None
+                       else {"error": probe_error}))
 
     tiers: List[int] = [0, 0, 0, 0, 0]
     sources: Dict[int, str] = {}
@@ -8408,8 +8514,14 @@ def gather_document_identity(log: Log, pdf_path: Any) -> None:
     try:
         from tools.omr.positional_store import edition_for_pdf
         facts = edition_for_pdf(pdf_path)
-    except Exception:            # pragma: no cover - catalog absent/unreadable
+    except Exception as exc:     # catalog absent/unreadable  # noqa: BLE001
         facts = {}
+        # ⚠️ ROADMAP 2.60: a catalog that THREW cannot say the PDF is not in
+        # it. `NOT_IN_CATALOG` is a reading of the catalog; this is none.
+        log.abstain(R.DOCUMENT, Q.DOCUMENT_IDENTITY, reader=READERS.CATALOG,
+                    frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    error=type(exc).__name__, note=str(exc)[:200])
+        return
     if not facts:
         # ⚠️ A PDF THE STORE DOES NOT HOLD ABSTAINS. It is NOT defaulted to
         # "unknown publisher": a fallback that converts *cannot tell* into a

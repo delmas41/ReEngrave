@@ -23,7 +23,6 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
-import os
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
@@ -2869,75 +2868,53 @@ METER_AGREEMENT_FLOOR = 0.70
 METER_COVERAGE_FLOOR = 0.5
 
 
-#: Carry a DECIDED meter forward onto systems that read none. Default OFF.
-#:
-#: ⚠️⚠️ IT IS OFF BECAUSE THE HAZARD IS MEASURED, NOT BECAUSE IT IS FEARED.
-#: A meter is a fact of the MOVEMENT, so a carry is right until a movement
-#: starts and catastrophic afterwards -- and on the very document the benefit
-#: was measured on, THE MOVEMENT START READS NOTHING.
-#:
-#: Beethoven 5 / Litolff `984073`, one call each:
-#:
-#:   * BENEFIT -- p1/s0 decides `2/4` from **12 of 12** staves; p2/s0 reads
-#:     nothing and p2/s1 reads 3 spurious `C`. Both want p1's answer.
-#:   * HAZARD -- p17 is the *Andante con moto*, a NEW MOVEMENT printing `3/8`
-#:     on every staff. All three of its systems abstain `no_evidence`: the
-#:     template reader RAN on all 20 staves and declined `below_threshold`,
-#:     because Litolff sets `3` over `8` as heavy nearly-touching digits that
-#:     do not correlate with the Bravura templates. So an unconditional carry
-#:     stamps movement 1's `2/4` onto the whole Andante.
-#:
-#: Four guards were looked for and each is REFUTED by measurement, not by
-#: argument:
-#:
-#:   1. *"a movement start reads SOME meter, a continuation reads none"* --
-#:      inverted. The continuations p14-p16 read 1-4 spurious `C`/`4/4`; the
-#:      movement start reads 0.
-#:   2. *the KEY SIGNATURE changes at a movement boundary* -- unusable on a
-#:      scan. Only a handful of staves per system decide a key and they
-#:      disagree with each other (p14/s1 reads {-5, -3, -1, 2}); the true -4
-#:      of the Andante is never among them.
-#:   3. *the printed TEMPO HEADING* -- p17 prints "Andante con moto." three
-#:      times, and it is the right signal in principle. `direction` yields
-#:      **0 decided verdicts** in the staged record today, so it cannot be
-#:      asked.
-#:   4. *a distance bound* -- DECISIVE. Movement 1 occupies pages 1-16, so a
-#:      meter read on p1 legitimately governs 16 pages. Any bound under 16
-#:      truncates a legitimate carry in this document and any bound of 16 or
-#:      more reaches the Andante. No reach constant separates them.
-#:
-#: So the blocking input is named and it is a MOVEMENT-START signal, not a
-#: tuning constant. Flip this the day one exists.
-METER_CARRY_ENV = "OMR_METER_CARRY"
-
-
-def meter_carry_enabled() -> bool:
-    """Read the flag. **ON by default since 2026-09-15** (Sean's call).
-
-    ⚠️⚠️ **THE TEST FOLLOWS THE DEFAULT, AND FLIPPING ONE WITHOUT THE OTHER IS
-    THE FAILURE THAT HIDES.** This read was `== "1"` — the right shape for a
-    default-OFF mechanism, where a typo must not switch a document ONTO
-    something whose hazard is a whole wrong movement. Left as an allow-list
-    with the default ON, `OMR_METER_CARRY=`, `=yess` and `=ON!` would every
-    one of them read as FALSE and **silently restore** the behaviour the
-    default exists to replace. So it is now a DENY-list: only an explicit off
-    word turns it off. See CLAUDE.md, *"A flag's OFF test must follow its
-    DEFAULT"*, where five shipped flags had exactly this backwards, and
-    `tools/omr/tests/test_flag_default_direction.py`, which derives the
-    direction from the predicate rather than from a written list.
-
-    ⚠️ The flip does NOT close the objection recorded at `METER_CARRY_ENV`
-    above — on a scan whose meter GLYPHS are misread the weighing never gets a
-    fair candidate, and Brahms 1 / Breitkopf still votes `9/4` for a printed
-    `9/8`. What changed is that `A-METER-6` stops a ONE-STAFF change being
-    spread across pages by this mechanism; a misread OPENING is untouched by
-    it and remains open.
-    """
-    # ⚠️ The default literal is `"1"` and `""` is in the OFF set, which is
-    # `OMR_METER_SEGMENTS`' shape exactly -- copied rather than invented so
-    # this repo does not grow a third convention for what an empty value means.
-    return os.environ.get(METER_CARRY_ENV, "1").strip().lower() not in (
-        "0", "", "false", "no", "off")
+# Carry a DECIDED meter forward onto systems that read none. (`_carry_meter`.)
+#
+# ⚠️ PROMOTED 2026-10-07 (roadmap 0.2c): this was the flag `OMR_METER_CARRY`,
+# default ON since 2026-09-15 (Sean's call); the flag, its predicate and the
+# OFF path are REMOVED and the carry always runs. What follows is the record
+# of why the carry needs the bars to weigh it, and it is kept because
+# `_carry_meter`, `_nearest_read_system` and `A-METER-6` point at it.
+#
+# ⚠️⚠️ THE CARRY NEEDS THE WEIGHING BECAUSE THE HAZARD IS MEASURED, NOT
+# BECAUSE IT IS FEARED.
+# A meter is a fact of the MOVEMENT, so a carry is right until a movement
+# starts and catastrophic afterwards -- and on the very document the benefit
+# was measured on, THE MOVEMENT START READS NOTHING.
+#
+# Beethoven 5 / Litolff `984073`, one call each:
+#
+#   * BENEFIT -- p1/s0 decides `2/4` from **12 of 12** staves; p2/s0 reads
+#     nothing and p2/s1 reads 3 spurious `C`. Both want p1's answer.
+#   * HAZARD -- p17 is the *Andante con moto*, a NEW MOVEMENT printing `3/8`
+#     on every staff. All three of its systems abstain `no_evidence`: the
+#     template reader RAN on all 20 staves and declined `below_threshold`,
+#     because Litolff sets `3` over `8` as heavy nearly-touching digits that
+#     do not correlate with the Bravura templates. So an unconditional carry
+#     stamps movement 1's `2/4` onto the whole Andante.
+#
+# Four guards were looked for and each is REFUTED by measurement, not by
+# argument:
+#
+#   1. *"a movement start reads SOME meter, a continuation reads none"* --
+#      inverted. The continuations p14-p16 read 1-4 spurious `C`/`4/4`; the
+#      movement start reads 0.
+#   2. *the KEY SIGNATURE changes at a movement boundary* -- unusable on a
+#      scan. Only a handful of staves per system decide a key and they
+#      disagree with each other (p14/s1 reads {-5, -3, -1, 2}); the true -4
+#      of the Andante is never among them.
+#   3. *the printed TEMPO HEADING* -- p17 prints "Andante con moto." three
+#      times, and it is the right signal in principle. `direction` yields
+#      **0 decided verdicts** in the staged record today, so it cannot be
+#      asked.
+#   4. *a distance bound* -- DECISIVE. Movement 1 occupies pages 1-16, so a
+#      meter read on p1 legitimately governs 16 pages. Any bound under 16
+#      truncates a legitimate carry in this document and any bound of 16 or
+#      more reaches the Andante. No reach constant separates them.
+#
+# So the blocking input is named and it is a MOVEMENT-START signal, not a
+# tuning constant. (Sean flipped the carry ON anyway on 2026-09-15 and the
+# bars weigh it; the movement-start signal itself is still missing.)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -3045,27 +3022,13 @@ METER_CARRY_MIN_STAVES_PER_BAR = 3
 # laundered guess this module's own docstring bans.
 # ─────────────────────────────────────────────────────────────────────────────
 
-METER_FROM_BARS_ENV = "OMR_METER_FROM_BARS"
-
-
-def meter_from_bars_enabled() -> bool:
-    """Read the flag. **ON by default since 2026-09-15** (Sean's call).
-
-    ⚠️⚠️ A DENY-LIST, NOT AN ALLOW-LIST, and for the reason
-    `meter_carry_enabled` states above: with the default ON an allow-list
-    (`in ("1","true","yes","on")`) makes an empty value or a typo silently
-    restore the old behaviour, which is the direction that hides. Same shape
-    as `OMR_METER_SEGMENTS`; `tools/omr/tests/test_flag_default_direction.py`
-    derives the direction from this predicate and fails if the two disagree.
-
-    ⚠️ **THIS RUNG IS THE ONE THAT CANNOT CROSS A MOVEMENT BOUNDARY**, which
-    is why flipping it is a different act from flipping the carry: every term
-    comes from bars inside ONE system, so the *Andante* cannot be handed
-    movement 1's `2/4` by this route however many pages of it precede. Only
-    the SPELLING reaches back, and only where the length already matches.
-    """
-    return os.environ.get(METER_FROM_BARS_ENV, "1").strip().lower() not in (
-        "0", "", "false", "no", "off")
+# ⚠️ PROMOTED 2026-10-07 (roadmap 0.2c): `_meter_from_bars` was gated by the
+# flag `OMR_METER_FROM_BARS`, default ON since 2026-09-15 (Sean's call, with
+# the carry). The flag, its predicate and the OFF path are REMOVED. This rung
+# is the one that cannot cross a movement boundary: every term comes from bars
+# inside ONE system, so the *Andante* cannot be handed movement 1's `2/4` by
+# this route however many pages of it precede. Only the SPELLING reaches back,
+# and only where the length already matches.
 
 
 #: ⚠️⚠️ THERE IS ONE CONSTANT HERE AND THERE WERE TWO. A separate
@@ -4537,7 +4500,7 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     suspect where a chain of 16 one-page hops would each look local.
 
     ⚠️ It is also why this needs no reach constant of its own -- see
-    `METER_CARRY_ENV`, where the reach bound is refuted outright.
+    the `_carry_meter` note on the carry's hazard, where the reach bound is refuted outright.
 
     ⚠️⚠️ ROADMAP 4.2: A CARRY NEVER CROSSES A `--movements` BOUNDARY. Walking
     backward through the document's systems STOPS outright (not merely
@@ -4548,8 +4511,6 @@ def _carry_meter(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     fact on the record `_movements.same_movement` is always True, so this is
     a no-op on a record with no `--movements` -- exactly the pre-4.2 walk.
     """
-    if not meter_carry_enabled():
-        return None
     here = ev.subject
     spans = _movement_spans(ev)
     #: Sources walked PAST because A-METER-6 left them nothing carryable.
@@ -4918,8 +4879,6 @@ def _meter_from_bars(ev: Evidence, instead_of: str) -> Optional[Ruling]:
     lengths and it scores -2.0. The only thing that reaches back is the
     SPELLING, and that is gated on the length already matching.
     """
-    if not meter_from_bars_enabled():
-        return None
     op = _bars_opinion(ev)
     if op["state"] != "named":
         return None                   # the caller's own abstention stands
@@ -5161,7 +5120,7 @@ def adjudicate_meter(ev: Evidence) -> Ruling:
     if not rows:
         # ⚠️ THE CARRY IS TRIED ONLY WHERE THIS SYSTEM'S OWN EVIDENCE FAILED,
         # so it can never overturn a reading. Off by default -- see
-        # `METER_CARRY_ENV` for the movement-boundary hazard, measured.
+        # the carry-hazard note above `_carry_meter` for the movement-boundary hazard, measured.
         #
         # ⚠️ ROADMAP 2.29: WHERE ONLY THE OCR READ, IT IS STILL NOT DECIDED
         # HERE. `ocr` is handed to `_meter_fallbacks` as a NAMED CANDIDATE

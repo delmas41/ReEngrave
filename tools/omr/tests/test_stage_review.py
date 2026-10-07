@@ -372,9 +372,17 @@ class TestViewsOnAFixture(unittest.TestCase):
         self.assertTrue(v["did_not_run"])
         self.assertEqual(v["inferences"], [])
         self.assertIn("collapse_slot_index_to_family_block", v["gates"])
-        for g in v["gates"].values():
-            self.assertTrue(g["env"].startswith("OMR_"))
+        for name, g in v["gates"].items():
             self.assertIn("on", g)
+            if g["env"] == "(always on)":
+                # ⚠️ PROMOTED 2026-10-07 (roadmap 0.2c): a rule with no flag
+                # reports the sentinel `infer.ALWAYS_ON` and can only be ON.
+                self.assertTrue(g["on"], name)
+            else:
+                self.assertTrue(g["env"].startswith("OMR_"), name)
+        self.assertEqual(
+            v["gates"]["collapse_slot_index_to_family_block"]["env"],
+            "(always on)")
 
     def test_export_view_names_the_bucket_per_head(self):
         v = R.export_view(self.D, "staff/0/0/1")

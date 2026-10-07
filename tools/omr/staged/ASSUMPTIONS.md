@@ -525,7 +525,7 @@ bound matters more.
 ### A-DUR-2 · ⚠️ A carried meter is WEIGHED by the bars, not gated
 
 **PRINCIPLE** — self-checking arithmetic outranks inherited information.
-*`rhythm._corroborate`, `W_METER_CARRIED`, `W_METER_BAR_FITS`, `METER_CARRY_FLOOR`, `METER_CARRY_MIN_BARS`, `OMR_METER_CARRY` (default `1` since 2026-09-15)*
+*`rhythm._corroborate`, `W_METER_CARRIED`, `W_METER_BAR_FITS`, `METER_CARRY_FLOOR`, `METER_CARRY_MIN_BARS`, the former flag `OMR_METER_CARRY` (ON since 2026-09-15; promoted and removed 2026-10-07, roadmap 0.2c)*
 
 **Assumption.** A system that read no usable meter may take the last meter
 that was READ, as a CANDIDATE; every bar of that system then adds `+1.0` if it
@@ -639,7 +639,7 @@ p.17 report one segment and no change), but one true positive is one.
 ### A-DUR-7 · ⚠️ The bars name a LENGTH; only ink names the ENGRAVING
 
 **PRINCIPLE** — a decision may propose only what its evidence can distinguish.
-*`rhythm._bars_opinion`, `_form_for_length`, `_meter_from_bars`, `METER_FROM_BARS_FLOOR`, `_METER_LENGTHS`, `OMR_METER_FROM_BARS` (default `1` since 2026-09-15)*
+*`rhythm._bars_opinion`, `_form_for_length`, `_meter_from_bars`, `METER_FROM_BARS_FLOOR`, `_METER_LENGTHS`, the former flag `OMR_METER_FROM_BARS` (ON since 2026-09-15; promoted and removed 2026-10-07, roadmap 0.2c)*
 
 **Assumption.** A system that read no meter and could not carry one may take
 the bar length its own bars agree on, scored in the carry's currency (`+1.0`

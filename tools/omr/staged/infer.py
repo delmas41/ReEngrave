@@ -89,10 +89,12 @@ readings).
 ─────────────────────────────────────────────────────────────────────────────
 ⚠️ BYPASS. Default ON since 2026-09-23 (roadmap 2.3, Sean's decision -- see
 `docs/flags-2026-09.md`), and an explicit OFF still means ABSENT rather than
-quiet: `pipeline` adds no `inference` key when the stage did not run, so a
-record made with `OMR_INFER=0` is byte-identical to one from a tree without
-this module. That is asserted by `test_infer_bypass.py` rather than asserted
-here -- an earlier stage's arm (`readjudicate`, `reexport_arm`) must never
+quiet: `pipeline` adds no `inference` key when the stage did not run. ⚠️ SINCE
+2026-10-07 (roadmap 0.2c) TWO RULES HAVE NO FLAG (`ALWAYS_ON`: the slot-index
+and clef-gap rules), so `OMR_INFER=0` alone no longer bypasses the stage: the
+key is absent only when NO rule is enabled, which `test_infer_bypass.py`
+reaches by removing the always-on rules from the registry. That is asserted by
+`test_infer_bypass.py` rather than asserted here -- an earlier stage's arm (`readjudicate`, `reexport_arm`) must never
 have to know this stage exists.
 """
 
@@ -118,7 +120,7 @@ INFER_ENV = "OMR_INFER"
 #: flipping the predicate would have been the exact mistake
 #: `test_flag_default_direction.py` exists to catch -- a typo (`OMR_INFER=`,
 #: `OMR_INFER=nope`) silently reading as OFF and turning a shipped stage back
-#: into a bypass. `_OFF_WORDS` (below) is shared with `family_block_enabled`;
+#: into a bypass. `_OFF_WORDS` (below) is shared with `part_key_enabled`;
 #: this predicate is still written out on its own line, never behind a
 #: helper, so the AST scan sees each flag's own `os.environ.get` call.
 _OFF_WORDS = ("0", "", "false", "no", "off")
@@ -129,58 +131,15 @@ def infer_enabled() -> bool:
     return os.environ.get(INFER_ENV, "1").strip().lower() not in _OFF_WORDS
 
 
-#: The slot-index rule's OWN flag, and it is default-ON -- and has been since
-#: before `OMR_INFER` was.
-#:
-#: ⚠️⚠️ A SECOND FLAG RATHER THAN A WIDENING OF THE FIRST, BECAUSE THE THREE
-#: RULES ARE NOT EQUALLY EVIDENCED AND ONE FLAG WOULD MAKE FLIPPING THEM ONE
-#: DECISION. `collapse_slot_index_to_family_block` is checked against the
-#: PRINT -- 25 of 25 placements correct, ZERO grafts, `staff_not_identified`
-#: 783 -> 141. The two duration rules were unverified against a print when
-#: `OMR_INFER` was default OFF; as of 2026-09-23 three subjects have been
-#: checked (all three wrong under the pre-fix reads, all three corrected by
-#: wiring `Q.GLYPH_OWNER` in -- `benchmarks/omr-infer-duration-print-2026-09/
-#: FINDINGS.md` §7-§9) and Sean took the default decision on that evidence.
-#: The two flags stay separate regardless, because a rule's own evidential
-#: weight belongs on the rule, not folded into a shared one.
-#:
-#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- now true of both flags in
-#: this file. `OMR_SLOT_FAMILY_BLOCK=` or a typo must leave a measured rule
-#: RUNNING; an allow-list would let an empty value silently restore the 642
-#: events this rule puts in the file. See *A flag's OFF test must follow its
-#: DEFAULT* in CLAUDE.md. The predicate is still written on its own line
-#: below, sharing only the `_OFF_WORDS` tuple with `infer_enabled` above, so
-#: the AST scan still sees each flag's own `os.environ.get` call.
-FAMILY_BLOCK_ENV = "OMR_SLOT_FAMILY_BLOCK"
-
-
-def family_block_enabled() -> bool:
-    """Read the slot-index rule's flag. Anything but an off-word is ON."""
-    return (os.environ.get(FAMILY_BLOCK_ENV, "1").strip().lower()
-            not in _OFF_WORDS)
-
-
-#: The clef-gap rule's OWN flag, default ON (roadmap 2.10, Sean 2026-09-23).
-#:
-#: ⚠️⚠️ A THIRD FLAG FOR THE SAME REASON THE SECOND EXISTS: this rule's
-#: evidence is not the duration rules' evidence and is not the family block's
-#: either. Its first tier is a CORROBORATION the record already holds -- the
-#: same part's clef READ on other systems of the same document, which is a
-#: reading of other ink and not a convention at all -- and its second tier is
-#: a bare engraving convention with no witness on the page. One flag over the
-#: three would make turning any of them off one decision about all of them.
-#:
-#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON -- as with both flags above.
-#: `OMR_CLEF_GAP=` or a typo must leave the rule RUNNING. The predicate is
-#: written out on its own line, never behind a helper, so the AST scan in
-#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
-CLEF_GAP_ENV = "OMR_CLEF_GAP"
-
-
-def clef_gap_enabled() -> bool:
-    """Read the clef-gap rule's flag. Anything but an off-word is ON."""
-    return (os.environ.get(CLEF_GAP_ENV, "1").strip().lower()
-            not in _OFF_WORDS)
+#: PROMOTED 2026-10-07 (roadmap 0.2c): the slot-index rule
+#: (`collapse_slot_index_to_family_block`, 25 of 25 placements correct against
+#: the print, ZERO grafts, `staff_not_identified` 783 -> 141) and the clef-gap
+#: rule (`fill_clef_gap`, roadmap 2.10) each had their own default-ON flag
+#: (`OMR_SLOT_FAMILY_BLOCK`, `OMR_CLEF_GAP`). Both flags are REMOVED: the
+#: behaviour is the old ON default, the environment read and the OFF path are
+#: gone, and the two rules register with `ALWAYS_ON` below. The per-rule
+#: evidence stays on each rule in `inferences.py`; an arm that needs the old
+#: identity must now be a code arm, not an environment variable.
 
 
 #: The key-gap rule's OWN flag, default ON (roadmap 2.9b, Sean 2026-09-23).
@@ -232,11 +191,11 @@ class Switch:
 #: measurement.
 INFER_SWITCH = Switch(INFER_ENV, infer_enabled)
 
-#: The slot-index rule alone. Default ON -- 25 of 25 against the print.
-FAMILY_BLOCK_SWITCH = Switch(FAMILY_BLOCK_ENV, family_block_enabled)
-
-#: The clef-gap rule alone. Default ON (roadmap 2.10).
-CLEF_GAP_SWITCH = Switch(CLEF_GAP_ENV, clef_gap_enabled)
+#: A rule with no flag of its own (a PROMOTED rule, roadmap 0.2c). It reads
+#: no environment variable and is always enabled; the name is what the review
+#: server shows as the rule's gate. It is not an off switch that happens to be
+#: on -- `Switch.fn` never reads anything.
+ALWAYS_ON = Switch("(always on)", lambda: True)
 
 #: The key-gap rule alone. Default ON (roadmap 2.9b).
 PART_KEY_SWITCH = Switch(PART_KEY_ENV, part_key_enabled)
@@ -585,13 +544,16 @@ def stage_should_run() -> bool:
     written would be this repository's own `fixed-then-kept-open-in-prose`
     with the polarity reversed. The property it becomes is the one that was
     always meant: **when NO RULE IS ENABLED the key is absent**, which is
-    still provable -- turn every rule's flag off and compare -- and is what
-    `test_infer_bypass` now asserts.
+    still provable -- remove the `ALWAYS_ON` rules (promoted 2026-10-07,
+    roadmap 0.2c, so no environment variable can silence them), turn every
+    remaining rule's flag off and compare -- and is what `test_infer_bypass`
+    now asserts.
 
     ⚠️ So a record from a tree carrying INFER is no longer byte-identical to
     one from a tree without it under default settings. That is not a
     regression hidden in a helper, it is what flipping a rule on MEANS, and
-    an arm that needs the old identity sets `OMR_SLOT_FAMILY_BLOCK=0`.
+    an arm that needs the old identity must be a code arm (the
+    `OMR_SLOT_FAMILY_BLOCK` flag was promoted away 2026-10-07).
     """
     return bool(enabled_rules())
 

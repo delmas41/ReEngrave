@@ -224,7 +224,7 @@ class TestWhereTheLengthIsUnknownItIsRefused(unittest.TestCase):
         argued. With no meter, P2's OWN eventless bars 4 and 5 still come out
         as a 4.0 whole rest — that is the exporter's standing behaviour for a
         bar the page PRINTS for this staff, `measure="yes"` withheld, and it
-        is what `OMR_METER_CARRY` is for. What the padding must not do is add
+        is what the meter carry is for. What the padding must not do is add
         that same fabricated length to bars the page prints for this part NOT
         AT ALL: those numbers stay absent."""
         xml, rep = SX.to_musicxml(UNKNOWN)

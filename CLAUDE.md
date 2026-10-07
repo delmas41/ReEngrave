@@ -188,12 +188,16 @@ the join. Rule order matters and is asserted: `move_glyph` runs after
 `respell_accidental`, which is why the sounding pitch is routed at EXPORT
 and not revised in EVALUATE.
 
-**INFER** (`infer.py`, `inferences.py`): three rules, each with its own gate:
-`collapse_slot_index_to_family_block` (default ON, print-verified) and two
-duration rules (`collapse_duration_by_column`, `collapse_duration_to_barline`,
-default OFF, never print-checked — roadmap 2.3). The harness enforces: runs
-after EVALUATE, refuses an unfrozen log, writes only where the record has no
-answer, never invents a value, supersedes visibly.
+**INFER** (`infer.py`, `inferences.py`): every rule registers with a
+`Switch` that names its gate. `collapse_slot_index_to_family_block`
+(print-verified, 25 of 25) and `fill_clef_gap` are `ALWAYS_ON` — their flags
+were promoted and removed 2026-10-07 (roadmap 0.2c); the two duration rules
+(`collapse_duration_by_column`, `collapse_duration_to_barline`) gate on
+`OMR_INFER` (default ON since 2026-09-23, roadmap 2.3), the part-key rule on
+`OMR_PART_KEY`. The list is DERIVED: `infer.RULES` and each rule's
+`switch.env`, never typed here. The harness enforces: runs after EVALUATE,
+refuses an unfrozen log, writes only where the record has no answer, never
+invents a value, supersedes visibly.
 
 **EXPORT** (`staged/export.py`): MusicXML only. Reuses the legacy pure
 renderers (`_mxl_*`) over its own positions. The accounting control is an

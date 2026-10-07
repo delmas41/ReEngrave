@@ -48,43 +48,35 @@ def _document(systems, roster=None, page=0):
     it entirely (the default) is the REAL, current shape of every roster
     this repo has gathered.
 
-    ⚠️ `OMR_SLOT_CONSTRAINTS=0` FOR THE DURATION OF THE BUILD, restored
-    after. The constraint channels (`_apply_constraints`, order/family/
-    clef) are a SEPARATE, earlier-roadmap mechanism this file is not
-    testing, and left enabled they can independently narrow or decide an
-    unnamed staff before this rule ever runs on some shapes. Isolating the
-    flag here, rather than shrinking the reference further, keeps the
-    reference wide enough to hold the roadmap 2.26b shape (an INTERIOR
-    bare-crook staff, never the trailing one `_place_in_family_block`
-    already owns).
+    ⚠️ THE CONSTRAINT CHANNELS (`_apply_constraints`, order/family/clef) RUN
+    HERE NOW. Until 2026-10-07 (roadmap 0.2c) this builder set
+    `OMR_SLOT_CONSTRAINTS=0` for the duration of the build, because they are
+    a SEPARATE, earlier-roadmap mechanism this file is not testing and left
+    enabled they can independently narrow or decide an unnamed staff before
+    this rule ever runs on some shapes. The flag is gone, so the fixtures
+    below must hold the roadmap 2.26b shape (an INTERIOR bare-crook staff,
+    never the trailing one `_place_in_family_block` already owns) with the
+    channels on.
     """
-    old = os.environ.get("OMR_SLOT_CONSTRAINTS")
-    os.environ["OMR_SLOT_CONSTRAINTS"] = "0"
-    try:
-        log = Log()
-        for s, texts in enumerate(systems):
-            log.observe(R.system(page, s), Q.SYSTEM_STAFF_COUNT, len(texts),
+    log = Log()
+    for s, texts in enumerate(systems):
+        log.observe(R.system(page, s), Q.SYSTEM_STAFF_COUNT, len(texts),
+                    reader=READERS.GEOMETRY, frame="system")
+        for i, text in enumerate(texts):
+            sub = R.staff(page, s, i)
+            log.observe(sub, Q.STAFF_ORDINAL, i,
                         reader=READERS.GEOMETRY, frame="system")
-            for i, text in enumerate(texts):
-                sub = R.staff(page, s, i)
-                log.observe(sub, Q.STAFF_ORDINAL, i,
-                            reader=READERS.GEOMETRY, frame="system")
-                if text is not None:
-                    log.observe(sub, Q.MARGIN_LABEL, text,
-                                reader=READERS.SURYA, frame="page")
-        if roster is not None:
-            value = {"work_id": "test", "instruments": ["Horn"],
-                     "families": ["brass"], "complete": True,
-                     "source_kind": "catalog", "crooked": roster}
-            log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, value,
-                        reader=READERS.CATALOG, frame="page")
-        adjudicate.run(log)
-        return log
-    finally:
-        if old is None:
-            os.environ.pop("OMR_SLOT_CONSTRAINTS", None)
-        else:
-            os.environ["OMR_SLOT_CONSTRAINTS"] = old
+            if text is not None:
+                log.observe(sub, Q.MARGIN_LABEL, text,
+                            reader=READERS.SURYA, frame="page")
+    if roster is not None:
+        value = {"work_id": "test", "instruments": ["Horn"],
+                 "families": ["brass"], "complete": True,
+                 "source_kind": "catalog", "crooked": roster}
+        log.observe(R.DOCUMENT, Q.ROSTER_ENTRY, value,
+                    reader=READERS.CATALOG, frame="page")
+    adjudicate.run(log)
+    return log
 
 
 def _slot_verdict(log, page, system, i):
@@ -100,13 +92,22 @@ def _slots(log, system, n, page=0):
 
 
 # 5-slot reference: Horn braced at 1/2 (crooked C, Es, exactly Brahms 1's
-# own text), Fagotti and Oboi bracket it so the bare staff in a short
+# own text), Oboi and Fagotti follow it so the bare staff in a short
 # system is INTERIOR -- never the trailing staff `_place_in_family_block`
 # already claims.
-REFERENCE = ["Flauti", "(C) Hr.", "Hr. (Es)", "Fagotti", "Oboi"]
+#
+# ⚠️ OBOI SITS BETWEEN THE HORNS AND THE FAGOTTI, NOT AFTER THEM (changed
+# 2026-10-07, roadmap 0.2c). The slot-constraint channels have no flag any
+# more, and when the short system tacets the LAST slot the score order alone
+# forces the bare staff onto the one slot left between its neighbours
+# (`forced_by_constraints`) and the bare-crook rule is never reached. With the
+# tacet Oboi in the middle, score order leaves the bare staff TWO slots
+# (Horn II or Oboi) and only the plate's own crook convention can choose --
+# which is the population this rule exists for.
+REFERENCE = ["Flauti", "(C) Hr.", "Hr. (Es)", "Oboi", "Fagotti"]
 
 # The short system every test starts from: staff 2 is the bare crook under
-# test; staff 3 (named) makes it interior; staff 4 (Oboi) is tacet here,
+# test; staff 3 (named) makes it interior; the Oboi is tacet here,
 # which is what makes the system SHORT (4 of 5) in the first place.
 SHORT_ES = ["Flauti", "(C) Hr.", "(Es)", "Fagotti"]
 SHORT_C = ["Flauti", "(C) Hr.", "(C)", "Fagotti"]

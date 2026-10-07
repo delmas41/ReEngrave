@@ -434,12 +434,11 @@ def adjudicate_slot_index(ev: Evidence) -> Ruling:
         placed = _place_in_family_block(
             ev, here, mine, pairing, ref_system, ref_names,
             n_staves=int(count.value), used=(ordinal.id, count.id))
-        if slot_constraints_enabled():
-            narrowed = _apply_constraints(
-                ev, placed, here, mine, ref_system, ref_names,
-                n_staves=int(count.value), used=(ordinal.id, count.id))
-            if narrowed is not None:
-                return narrowed
+        narrowed = _apply_constraints(
+            ev, placed, here, mine, ref_system, ref_names,
+            n_staves=int(count.value), used=(ordinal.id, count.id))
+        if narrowed is not None:
+            return narrowed
         if placed is not None:
             return placed
         # ⚠️⚠️ ROADMAP 2.26b. `unnamed_in_short_system`'s own population --
@@ -1038,15 +1037,6 @@ ALTERNATING_CLEFS: Dict[str, Tuple[str, ...]] = {
 
 #: A system this ambiguous is a "cannot tell", not a slow one.
 _MAX_ASSIGNMENTS = 200000
-
-
-def slot_constraints_enabled() -> bool:
-    """⚠️ A DENY-LIST, because the default is ON. An allow-list would let an
-    empty value or a typo silently restore the previous behaviour, which is
-    the hazard `test_flag_default_direction.py` exists for."""
-    import os
-    return os.environ.get("OMR_SLOT_CONSTRAINTS", "1").strip().lower() \
-        not in ("0", "", "false", "no", "off")
 
 
 def _admissible_clefs(instrument: Optional[dict]) -> Optional[Tuple[str, ...]]:
