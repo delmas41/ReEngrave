@@ -60,7 +60,20 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # bar it stands in (what `gather_notehead_positions` uses for the in-staff positions), not the staff-wide raw
     # lines, and are re-found only within PER_BAR_GRID_WINDOW_SP of that grid, at the CENTRE of the dark run.
     # False = the old flank re-measure (+-0.5 sp, the line's top row), bit-identical, on whatever lines are passed.
-    per_bar_grid=True)
+    per_bar_grid=True,
+    # lane-edge-merge-unseen-ledgers (Sean 2026-10-06, "fix the edge-merging rule"; ROADMAP 2.57b), the three causes
+    # that lost a ledger the print shows plainly. False = the old reader, bit-identical.
+    #  edge_jut_kept: the edge collapse never drops a rung that shows a thin flat jut past the head;
+    #  split_welded_bands: a region of long rows (a head body wider than the floor) holds every ledger plateau;
+    #  walk_tol: the ledger walk's window is widened by WALK_CENTRE_TOL_PX at both ends (a gap between two band centres
+    #            is known to +-half a pixel). OFF -- MEASURED AND REFUSED (FINDINGS 2026-10-06 lane-edge-merge-unseen-ledgers): it
+    #            rescues one head (Litolff night 12) and moves five right Brahms heads to a wrong ledger count, because
+    #            a head's own interior row sits only 0.57-0.65 of the last gap from it, on the same knife edge;
+    #  rows_clear_of_box: a rung more than half a line thickness clear of the box's rows is not the head's own widest
+    #            row, so it need not be wider than the head.
+    edge_jut_kept=True, split_welded_bands=True, walk_tol=False, rows_clear_of_box=True)
+#: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel
+WALK_CENTRE_TOL_PX = 0.5
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -684,7 +697,7 @@ class FarHeadPage:
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
             chord_split_rungs_y=rungs, detail_out=detail,
-            text_boxes=self.text_boxes)
+            text_boxes=self.text_boxes, thickness_px=self.thickness)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -777,6 +790,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            chord_split_rungs_y: Optional[Sequence[float]] = None,
                            detail_out: Optional[Dict[str, Any]] = None,
                            text_boxes: Optional[Sequence[tuple]] = None,
+                           thickness_px: Optional[float] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -787,12 +801,13 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes, chord_split_rungs_y, detail_out,
-                     text_boxes)
+                     text_boxes, thickness_px)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
-          detail_out=None, text_boxes=None) -> Tuple[Optional[int], str]:
+          detail_out=None, text_boxes=None,
+          thickness_px=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -813,6 +828,11 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
         gray, ys, cx, head_y=cy, exclude_boxes=others, head_box_x=(x0, x1),
         collapse_edges_box=(x0, y0, x1, y1), head_center_y=None,
         restore_masked_staff_side_rungs=READER_KEYWORDS["restore_masked_near_edge"],
+        keep_edge_juts=READER_KEYWORDS.get("edge_jut_kept", False),
+        split_welded_bands=READER_KEYWORDS.get("split_welded_bands", False),
+        walk_tol_px=(WALK_CENTRE_TOL_PX if READER_KEYWORDS.get("walk_tol") else 0.0),
+        outline_margin_px=(0.5 * float(thickness_px)
+                           if READER_KEYWORDS.get("rows_clear_of_box") and thickness_px else 0.0),
     ).get(side, [])
 
     # Round 6 (Sean, flute chords): two heads of one chord, outside the staff,
