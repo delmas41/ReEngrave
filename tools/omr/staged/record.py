@@ -405,6 +405,12 @@ class Q(_Vocab):
     #: own reader, never over the geometry row (which stays on the record).
     #: A reading that could not be made is an ABSTENTION with a reason word.
     FAR_HEAD_LEDGER_POSITION = "far_head_ledger_position"
+    #: ADJUDICATE's decision of a far head's staff position
+    #: (`adjudicate_notehead_position`): the ledger reading where the ledger
+    #: reader made one, and ABSTAINED where it could not -- the geometry
+    #: position is not silently substituted for a head that needed a ledger
+    #: read (CLAUDE.md §2 rule 8). Only far heads are in its domain.
+    NOTEHEAD_POSITION = "notehead_position"
     #: ROADMAP 2.58b (Sean, 2026-10-06: *"give each note or symbol some sort of
     #: identifier that allows us to make sure that it only shows up once"*).
     #: The id of the PHYSICAL MARK a detector box belongs to: boxes of one
@@ -416,12 +422,6 @@ class Q(_Vocab):
     #: `glyph_owner` rules once per group and EXPORT writes one member
     #: (`mark_group_duplicate` counts the rest).
     MARK_GROUP = "mark_group"
-    #: ADJUDICATE's decision of a far head's staff position
-    #: (`adjudicate_notehead_position`): the ledger reading where the ledger
-    #: reader made one, and ABSTAINED where it could not -- the geometry
-    #: position is not silently substituted for a head that needed a ledger
-    #: read (CLAUDE.md §2 rule 8). Only far heads are in its domain.
-    NOTEHEAD_POSITION = "notehead_position"
     #: ROADMAP 2.56b. A far head read toward ONE CANDIDATE staff by the note-first
     #: look (the note's own line, then the ledgers counted from it to that
     #: staff's edge): the position it would have ON THAT STAFF, as an integer

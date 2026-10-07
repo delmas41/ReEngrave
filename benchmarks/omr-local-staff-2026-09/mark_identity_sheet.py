@@ -18,8 +18,8 @@ nearest-neighbour x3. Legend (also on the sheet):
 
   RED corner brackets     the subject head (the detector's box)
   GREEN corner brackets   a head that is ALREADY written there (collision tile)
-  BLUE 1 px lines         the five lines of the staff the head was FOUND on
-  ORANGE 1 px lines       the five lines of the staff that OWNS it (relocated)
+  CYAN 1 px lines         the five lines of the staff the head was FOUND on
+  MAGENTA 1 px lines      the five lines of the staff that OWNS it (relocated)
   group tiles             one colour per member box, labelled
 
 Every drawn staff line is RE-MEASURED against the pixel rows: it is snapped to
@@ -49,10 +49,11 @@ from tools.omr.staged.record_io import load_record  # noqa: E402
 from tools.omr.preprocessing import render_page  # noqa: E402
 import truth_set_2_44c as ts  # noqa: E402
 
-BLUE, ORANGE, RED, GREEN = (0, 110, 255), (255, 120, 0), (225, 0, 0), (0, 170, 0)
-PALETTE = [(225, 0, 0), (0, 110, 255), (0, 170, 0), (200, 0, 200), (255, 140, 0)]
+BLUE, ORANGE, RED, GREEN = (0, 215, 255), (255, 0, 200), (225, 0, 0), (0, 175, 0)
+PALETTE = [(225, 0, 0), (0, 215, 255), (0, 175, 0), (255, 0, 200), (255, 140, 0)]
 SCALE = 3
-HALF_W_SP = 4.5
+HALF_W_SP = 5.5
+HALF_H_SP = 7.0
 DOCS = {"lit": "beethoven5-litolff", "brahms": "brahms1-breitkopf"}
 _PAGES = {}
 
@@ -153,11 +154,15 @@ def tile(doc, rec, page, system, shown, box, marks, caption, notes=None):
         infos.append((st, col, ys, sp))
     sp = infos[0][3]
     cx = (box[0] + box[2]) / 2.0
+    cy = (box[1] + box[3]) / 2.0
     x0, x1 = int(cx - HALF_W_SP * sp), int(cx + HALF_W_SP * sp)
-    ytop = min(min(i[2]) for i in infos) - 2.2 * sp
-    ybot = max(max(i[2]) for i in infos) + 2.2 * sp
-    ytop, ybot = min(ytop, box[1] - 1.2 * sp), max(ybot, box[3] + 1.2 * sp)
-    y0, y1 = int(max(ytop, 0)), int(min(ybot, gray.shape[0]))
+    lo, hi = cy - HALF_H_SP * sp, cy + HALF_H_SP * sp
+    for _st, _col, ys_, spi_ in infos:
+        # always include the staff line NEAREST the head, so the tile shows
+        # where the head sits against BOTH staves, never only one
+        near = min(ys_, key=lambda y: abs(y - cy))
+        lo, hi = min(lo, near - 1.0 * sp), max(hi, near + 1.0 * sp)
+    y0, y1 = int(max(lo, 0)), int(min(hi, gray.shape[0]))
     crop = gray[y0:y1, x0:x1]
     im = Image.fromarray(crop).convert("RGB").resize(
         (crop.shape[1] * SCALE, crop.shape[0] * SCALE), Image.NEAREST)
@@ -168,6 +173,8 @@ def tile(doc, rec, page, system, shown, box, marks, caption, notes=None):
         ok = on > off + 0.05
         controls.append((st, worst, on, off, ok))
         for r in snapped:
+            if not (y0 <= r < y1):
+                continue
             yy = (r - y0) * SCALE + SCALE // 2
             d.line([(0, yy), (im.width, yy)], fill=col, width=1)
     corner_brackets(d, box, SCALE, x0, y0, RED)
@@ -175,15 +182,42 @@ def tile(doc, rec, page, system, shown, box, marks, caption, notes=None):
     for mb, col, lab in marks:
         corner_brackets(d, mb, SCALE, x0, y0, col)
         d.text(((mb[0] - x0) * SCALE, (mb[3] - y0) * SCALE + 3), lab, fill=col, font=f)
-    cap_h = 22 * (len(caption) + 1)
+    fcap = font(13)
+    wrapped = []
+    for line in caption:
+        cur = ""
+        for word in line.split(" "):
+            t = (cur + " " + word).strip()
+            if fcap.getlength(t) > im.width - 12 and cur:
+                wrapped.append(cur)
+                cur = word
+            else:
+                cur = t
+        wrapped.append(cur)
+    c = "; ".join("staff %d: lines snapped %.2f sp, ink on %.2f vs off %.2f %s" % (st, w, a_, b_, "ok" if ok else "FRAME CONTROL FAILED")
+                  for st, w, a_, b_, ok in controls)
+    fsm = font(10)
+    cw = []
+    cur = ""
+    for word in c.split(" "):
+        t = (cur + " " + word).strip()
+        if fsm.getlength(t) > im.width - 12 and cur:
+            cw.append(cur)
+            cur = word
+        else:
+            cur = t
+    cw.append(cur)
+    cap_h = 18 * len(wrapped) + 13 * len(cw) + 12
     out = Image.new("RGB", (im.width, im.height + cap_h), (255, 255, 255))
     out.paste(im, (0, 0))
     d2 = ImageDraw.Draw(out)
-    for k, line in enumerate(caption):
-        d2.text((6, im.height + 4 + 22 * k), line, fill=(0, 0, 0), font=font(13))
-    c = "; ".join("staff %d snap %.2f sp on %.2f off %.2f %s" % (st, w, a, b, "ok" if ok else "FRAME CONTROL FAILED")
-                  for st, w, a, b, ok in controls)
-    d2.text((6, im.height + 4 + 22 * len(caption)), c, fill=(110, 110, 110), font=font(10))
+    y = im.height + 4
+    for line in wrapped:
+        d2.text((6, y), line, fill=(0, 0, 0), font=fcap)
+        y += 18
+    for line in cw:
+        d2.text((6, y), line, fill=(110, 110, 110), font=fsm)
+        y += 13
     return out, controls
 
 
@@ -277,7 +311,7 @@ def relocate_sheet(a):
             tiles.append(t[0] if t else None)
             report.append((g, "collision", t[1] if t else None))
     sheet(tiles[:24], "Heads that belong to another staff: written on the staff that owns them (12 relocated, up to 12 collisions)",
-          ["RED corner brackets = the head.  BLUE lines = the staff it was found on.  ORANGE lines = the staff that owns it.  GREEN brackets = a head already written there.",
+          ["RED corner brackets = the head.  CYAN lines = the staff it was found on.  MAGENTA lines = the staff that owns it.  GREEN brackets = a head already written there.",
            "Lines are 1 px, snapped to the darkest pixel row under the tile and checked against the rows half a space off (control printed under each tile).",
            "Real print, 600 dpi, x3."], a.out)
     bad = [r for r in report if r[2] and not all(c[4] for c in r[2])]

@@ -701,11 +701,28 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
 
     band = [r for r in log.rows(Q.GLYPH_BAND_DISTANCE, subject)
             if r.detail.get("candidate") == owner.value]
-    if not band:
-        return []
-    pos = band[0].detail.get("position_in_candidate")
-    if pos is None:
-        return []
+    pos = band[0].detail.get("position_in_candidate") if band else None
+    if pos is not None:
+        source = band[0]
+        reason = "reowned"
+    else:
+        # ⚠️ ROADMAP 2.58. A head the owner staff holds NO copy of has no
+        # band-distance row toward that staff -- the contest is built from a
+        # PAIR -- so the geometry row above cannot exist for exactly the heads
+        # Sean ruled must be written on their owner. The decision that NAMED
+        # the owner (`ledger_note_first`, ROADMAP 2.56b) read a position
+        # toward it: an integer half-step from THAT staff's top line, counted
+        # off the head's own printed ledgers, in the same unit as
+        # `position_in_candidate`. Connecting it is not a guess -- it is the
+        # reading the ownership verdict stands on.
+        led = [r for r in log.rows(Q.FAR_HEAD_OWNER_LEDGER, subject)
+               if r.detail.get("candidate") == owner.value
+               and isinstance(r.value, (int, float))]
+        if not led:
+            return []
+        source = led[0]
+        pos = led[0].value
+        reason = "reowned_by_ledger_reading"
 
     from ..pitch_resolver import _pitch_from_position
     name = _pitch_from_position(int(round(float(pos))), str(clef.value))
@@ -716,8 +733,8 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
     out = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=Q.PITCH,
         outcome=Outcome.DECIDED, value=name, decider="move_glyph",
-        reason="reowned", considered=(owner.id, clef.id, band[0].id),
-        basis=(owner.id, clef.id, band[0].id),
+        reason=reason, considered=(owner.id, clef.id, source.id),
+        basis=(owner.id, clef.id, source.id),
         supersedes=prior.id if prior is not None else None)
     return [log.record(out)]
 

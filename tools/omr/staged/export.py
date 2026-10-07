@@ -883,6 +883,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         is_rest = bool(rec.obs(Q.REST, sub))
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
+        nearer_staff_claim = False
         if not is_rest:
             # ⚠️⚠️ ROADMAP 2.4a. FIRST, before the whole-rest question and
             # everything after it, for the same reason `ink_is_a_whole_rest`
@@ -905,8 +906,21 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             npv = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
             if (npv is not None and npv["outcome"] == "decided"
                     and npv["value"] is True):
-                _drop(f"not_a_notehead:{npv.get('reason', '?')}", s)
-                continue
+                # ⚠️ ROADMAP 2.58. `belongs_to_a_nearer_staff` is itself an
+                # OWNERSHIP claim (the ledgers point to another staff), not a
+                # statement that the ink is not a head -- so under
+                # `OMR_RELOCATE_AT_EXPORT` it goes on to the owner stage below,
+                # where a twin on the owner still drops it (under THIS name)
+                # and no twin relocates it. Every other `not_a_notehead`
+                # reason (a clipped fragment, a too-narrow box, a duplicate
+                # box) is about the BOX and still drops here.
+                if not (relocate
+                        and npv.get("reason") == "belongs_to_a_nearer_staff"
+                        and A.is_relocated_copy(
+                            sub, rec.value(Q.GLYPH_OWNER, sub))):
+                    _drop(f"not_a_notehead:{npv.get('reason', '?')}", s)
+                    continue
+                nearer_staff_claim = True
         else:
             # ⚠️⚠️ ROADMAP 3.4g, AND IT IS THE REST'S OWN VERSION OF THE LINE
             # ABOVE. `adjudicate_rest_is_not_a_rest` asks of rest ink the
@@ -1072,7 +1086,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # connected to the same stem"*, and it is what the legacy
             # `_dedupe_cross_staff_detections` achieves by DELETING the loser
             # rather than relocating it.
-            _drop("owned_by_another_staff", s)
+            _drop("not_a_notehead:belongs_to_a_nearer_staff"
+                  if nearer_staff_claim else "owned_by_another_staff", s)
             continue
         own_v = rec.verdict(Q.GLYPH_OWNER, sub)
         if (own_v and own_v.get("outcome") == "abstained"

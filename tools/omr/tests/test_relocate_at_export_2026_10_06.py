@@ -166,5 +166,84 @@ class TestEveryRefusalIsNamed(unittest.TestCase):
         self.assertTrue(rep["balance"]["balanced"])
 
 
+class TestNearerStaffClaimIsRelocatedToo(unittest.TestCase):
+    """`not_a_notehead:belongs_to_a_nearer_staff` is an OWNERSHIP claim, so
+    under the flag it is relocated where the owner holds no copy and still
+    dropped (under its own name) where the owner holds one."""
+
+    def _page(self, **kw):
+        page = _two_staves(**kw)
+        page["record"]["verdicts"].append(
+            _vrd(990, "glyph/0/0/1/0/0", Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, True,
+                 reason="belongs_to_a_nearer_staff"))
+        return page
+
+    def test_off_it_is_dropped_under_its_own_name(self):
+        xml, rep = _export(self._page(), flag=False)
+        self.assertEqual(rep["notes_not_written"],
+                         {"not_a_notehead:belongs_to_a_nearer_staff": 1})
+
+    def test_on_and_no_twin_it_is_written_on_the_owner(self):
+        xml, rep = _export(self._page(), flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": ["G4"], "P2": []})
+        self.assertEqual(rep["notes_not_written_total"], 0)
+
+    def test_on_and_a_twin_it_is_still_dropped_under_the_same_name(self):
+        xml, rep = _export(self._page(owner_twin_box=(101, 211, 121, 231)),
+                           flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"not_a_notehead:belongs_to_a_nearer_staff": 1})
+
+    def test_a_fragment_box_is_NOT_relocated_it_is_about_the_box(self):
+        page = _two_staves()
+        page["record"]["verdicts"].append(
+            _vrd(990, "glyph/0/0/1/0/0", Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, True,
+                 reason="clipped_fragment"))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"not_a_notehead:clipped_fragment": 1})
+
+
+class TestMoveGlyphReadsTheLedgerReadingWhenThereIsNoBandRow(unittest.TestCase):
+    """The head's owner holds no copy, so there is no band-distance row toward
+    it; the position the owner verdict itself stands on is the ledger reading."""
+
+    def _log(self, *, band=None, ledger=None):
+        from tools.omr.staged import consequences as C
+        from tools.omr import staged  # noqa: F401
+        from tools.omr.staged.record import Log, Outcome, Verdict, READERS
+        from tools.omr.staged import record as R
+        log = Log()
+        g = R.glyph(0, 0, 1, 0, 0)
+        if band is not None:
+            log.observe(g, Q.GLYPH_BAND_DISTANCE, 1.0, reader=READERS.GEOMETRY,
+                        frame="cell:0", candidate="staff/0/0/0",
+                        position_in_candidate=band)
+        if ledger is not None:
+            log.observe(g, Q.FAR_HEAD_OWNER_LEDGER, ledger,
+                        reader=READERS.LEDGER_OWNER_NOTE_FIRST,
+                        frame="cell:0", candidate="staff/0/0/0")
+        owner = log.record(Verdict(
+            id=log._next_id("vrd"), subject=g, quantity=Q.GLYPH_OWNER,
+            outcome=Outcome.DECIDED, value="staff/0/0/0", decider="t",
+            reason="x"))
+        log.record(Verdict(
+            id=log._next_id("vrd"), subject=R.staff(0, 0, 0), quantity=Q.CLEF,
+            outcome=Outcome.DECIDED, value="treble", decider="t", reason="x"))
+        return C.move_glyph(log, g, owner)
+
+    def test_the_ledger_reading_gives_the_pitch_on_the_owner_clef(self):
+        out = self._log(ledger=-2)
+        self.assertEqual([v.value for v in out], ["A5"])
+        self.assertEqual(out[0].decider, "move_glyph")
+
+    def test_the_band_row_still_wins_when_there_is_one(self):
+        out = self._log(band=4.0, ledger=-2)
+        self.assertEqual([v.value for v in out], ["B4"])
+
+    def test_neither_row_means_no_pitch_never_a_guess(self):
+        self.assertEqual(self._log(), [])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -81,26 +81,19 @@ def main():
     result = load_record(a.rebuilt)
     off = run(result, False)
     on = run(result, True)
-    cand = (off["dropped"].get("owned_by_another_staff", 0)
-            - on["dropped"].get("owned_by_another_staff", 0))
-    print("OFF  notes written %d  not written %d  %s" % (
-        off["notes"], off["balance"]["events_not_written"],
-        off["dropped"]))
-    print("ON   notes written %d  not written %d  %s" % (
-        on["notes"], on["balance"]["events_not_written"], on["dropped"]))
-    named = {k: v for k, v in on["dropped"].items()
-             if k.startswith("relocation_") or k in (
-                 "owner_staff_has_no_measures", "staff_not_identified")}
-    print("candidates (owner holds no twin): %d" % cand)
-    print("  written on the owner: %d" % on["relocated"])
-    print("  counted under a named reason: %s" % named)
-    print("  written nowhere (candidates - written - counted): %d" % (
-        cand - on["relocated"]
-        - sum(v for k, v in named.items() if k.startswith("relocation_"))
-        - (on["dropped"].get("owner_staff_has_no_measures", 0)
-           - off["dropped"].get("owner_staff_has_no_measures", 0))
-        - (on["dropped"].get("staff_not_identified", 0)
-           - off["dropped"].get("staff_not_identified", 0))))
+    print("OFF  notes written %d  not written %d" % (
+        off["notes"], off["balance"]["events_not_written"]))
+    print("ON   notes written %d  not written %d" % (
+        on["notes"], on["balance"]["events_not_written"]))
+    moved = collections.Counter()
+    for sub, f_on in on["fates"].items():
+        f_off = off["fates"].get(sub)
+        if f_off != f_on:
+            moved[(f_off, f_on)] += 1
+    print("heads whose fate the flag changed (OFF fate -> ON fate):")
+    for (a_, b_), n in moved.most_common():
+        print("  %5d  %s -> %s" % (n, a_, b_))
+    print("heads written on the staff that owns them: %d" % on["relocated"])
     print("balanced OFF %s ON %s; no glyph written twice (asserted)" % (
         off["balance"]["balanced"], on["balance"]["balanced"]))
     if on["census"]:

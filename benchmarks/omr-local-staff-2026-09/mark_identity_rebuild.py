@@ -62,12 +62,33 @@ def rebuild(rec: dict, pages=None) -> Log:
     return log
 
 
+def load_pages_streaming(path, pages):
+    """GATHER rows of `pages` (and the document-level rows) only, streamed with
+    ijson -- a 3 GB record never has to fit in memory. Observations and
+    abstentions are never pooled (record_io), so this is the same rows
+    `load_record` would give. No verdicts: this is for a REBUILD."""
+    import ijson
+    obs, ab = [], []
+    with open(path, "rb") as f:
+        for kind, bucket in (("observations", obs), ("abstentions", ab)):
+            f.seek(0)
+            for row in ijson.items(f, f"record.{kind}.item", use_float=True):
+                pg = _page_of(row["subject"])
+                if pg is None or pg in pages:
+                    bucket.append(row)
+    return {"record": {"observations": obs, "abstentions": ab, "verdicts": []},
+            "source": {}, "summary": {}}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("record")
     ap.add_argument("out")
     ap.add_argument("--pages", default=None, help="comma list of pdf indices")
     ap.add_argument("--control", action="store_true")
+    ap.add_argument("--stream", action="store_true",
+                    help="with --pages: stream only those pages' rows (for a "
+                         "record too large to load); no --control possible")
     ap.add_argument("--groups", action="store_true",
                     help="file Q.MARK_GROUP rows (ROADMAP 2.58b) off the "
                          "rebuilt GLYPH_BOX rows before adjudicating")
@@ -76,7 +97,10 @@ def main() -> int:
     a = ap.parse_args()
     pages = set(int(x) for x in a.pages.split(",")) if a.pages else None
     t0 = time.time()
-    res = load_record(a.record)
+    if a.stream:
+        res = load_pages_streaming(a.record, pages)
+    else:
+        res = load_record(a.record)
     rec = res["record"]
     print(f"loaded in {time.time() - t0:.0f}s: {len(rec['observations'])} obs")
     log = rebuild(rec, pages)
