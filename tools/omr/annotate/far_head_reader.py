@@ -75,7 +75,12 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # lane-farhead-5-6 (Sean 2026-10-07, worse-cases tile 6): the flank re-measure of the note's line may not move it
     # onto another mark. A jut's own row is not re-measured; any other line is re-measured only on flank rows that touch the head.
     # False = the old 0.30 sp window, bit-identical. ON: Sean ruled tile 6 (1st ledger below the Horn staff); this is its cause.
-    flank_refine_bounded=True)
+    flank_refine_bounded=True,
+    # lane-farhead-2-9 (Sean 2026-10-07, farhead_5_6 tiles 2 and 9): "only looking for lines where it thinks they should be".
+    # Where the count leaves room for a ledger the walk did not find, the row it must be on is LOOKED at (the ledger's thin
+    # flat end jutting out of the head, however short) and counted only if found; a rung counted between the staff and the
+    # note's line is refused where it is the stroke of an accent/marcato/tenuto the detector boxed. False = the old reader.
+    look_where_it_must_be=True)
 #: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel
 WALK_CENTRE_TOL_PX = 0.5
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
@@ -577,6 +582,8 @@ class FarHeadPage:
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
         # lane-ledger-not-text: the record's own text / dynamic boxes
         self.text_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_text_class(c)]
+        # lane-farhead-2-9: the record's own accent / marcato / tenuto boxes (their stroke is not a ledger)
+        self.artic_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_articulation_class(c)]
         self.thickness = page_line_thickness_px(gray, staff_lines_by_key, self.nh)
         in_staff = [h for h in heads if 0 <= h["pos"] <= 8 and head_kind(h.get("cls"))]
         spacings, on = [], []
@@ -701,7 +708,7 @@ class FarHeadPage:
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
             chord_split_rungs_y=rungs, detail_out=detail,
-            text_boxes=self.text_boxes, thickness_px=self.thickness)
+            text_boxes=self.text_boxes, thickness_px=self.thickness, artic_boxes=self.artic_boxes)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -795,6 +802,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            detail_out: Optional[Dict[str, Any]] = None,
                            text_boxes: Optional[Sequence[tuple]] = None,
                            thickness_px: Optional[float] = None,
+                           artic_boxes: Optional[Sequence[tuple]] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -805,13 +813,13 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes, chord_split_rungs_y, detail_out,
-                     text_boxes, thickness_px)
+                     text_boxes, thickness_px, artic_boxes)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
           detail_out=None, text_boxes=None,
-          thickness_px=None) -> Tuple[Optional[int], str]:
+          thickness_px=None, artic_boxes=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -891,7 +899,9 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             ledger_not_text=READER_KEYWORDS.get("ledger_not_text", False),
             text_boxes=text_boxes,
             edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False),
-            flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False))
+            flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False),
+            look_where_it_must_be=READER_KEYWORDS.get("look_where_it_must_be", False),
+            artic_boxes=artic_boxes)
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge
