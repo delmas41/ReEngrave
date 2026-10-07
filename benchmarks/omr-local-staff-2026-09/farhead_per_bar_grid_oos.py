@@ -21,6 +21,7 @@ sys.path.insert(0, str(HERE)); sys.path.insert(0, str(HERE.parents[1]))
 import cv2
 import farhead_note_first_oos as O
 import farhead_per_bar_grid_lib as GL
+import lines_combined_5_lib as LC5
 import truth_set_2_44c as ts
 from frame import render_page_matching_gather
 from tools.omr.annotate import far_head_owner as FO, far_head_reader as FH, ledger_grid as lg
@@ -42,7 +43,7 @@ def _arm_read(r):
     return dict(pos=r["pos"], reason=r["reason"], kind=nf.get("kind"), how=nf.get("how"), line_y=nf.get("line_y"),
                 edge_y=d.get("edge_y"), k=nf.get("k"), between=nf.get("between"),
                 box_used=r.get("box_used"), lines=r.get("lines_used"), fit=r.get("fit"),
-                box_source=r.get("box_source"))
+                box_source=r.get("box_source"), rungs=r.get("_rungs"))
 
 
 def _owner(ctx, h, own_key, staves, gray):
@@ -75,7 +76,9 @@ def read_arm(new, gray, heads_raw, heads_grid, page_boxes, staff_lines, staves, 
         if h["subject"] not in far_subjects:
             continue
         own_key = "staff/" + "/".join(h["subject"].split("/")[1:4])
+        LC5._CAP.clear()
         r = ctx.read(h["subject"], h["box"], h["cls"], h["global_lines"])
+        r["_rungs"] = LC5.candidates(dict(LC5._CAP)) if LC5._CAP else None
         rows[h["subject"]] = dict(read=_arm_read(r), owner=_owner(ctx, h, own_key, staves, gray))
     return ctx, rows
 
