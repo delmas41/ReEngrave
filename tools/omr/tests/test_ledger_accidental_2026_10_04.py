@@ -132,10 +132,12 @@ def test_connected_rule_blanks_the_separated_row_and_keeps_the_real_one() -> Non
 
 @pytest.mark.omr_annotate
 def test_rules_default_off_and_restored_after_the_block() -> None:
-    assert lg._EXCL_RULES == {"connected": False, "own_box": None, "one_sided": False}
+    assert lg._EXCL_RULES == {"connected": False, "own_box": None, "one_sided": False,
+                               "jut_from_ink": False}
     with exclusion_rules(connected=True):
         assert lg._EXCL_RULES["connected"] is True
-    assert lg._EXCL_RULES == {"connected": False, "own_box": None, "one_sided": False}
+    assert lg._EXCL_RULES == {"connected": False, "own_box": None, "one_sided": False,
+                               "jut_from_ink": False}
     a = _exclude_other_heads_ink(_ink(), BOXES, 0, 0, SP)
     with exclusion_rules(connected=False):
         b = _exclude_other_heads_ink(_ink(), BOXES, 0, 0, SP)

@@ -1094,6 +1094,12 @@ ORDER: Tuple[str, ...] = (
     # one for. Placed beside `Q.UNREAD_MARK` because both are CELL-scope,
     # GATHER-row-only decisions about a bar the detector left nothing in.
     Q.EMPTY_BAR_WHOLE_REST,
+    # ⚠️ ROADMAP 2.56. Needs no other decision's VERDICT -- its inputs are
+    # two GATHER rows (`Q.FAR_HEAD_LEDGER_POSITION`, `Q.NOTEHEAD_STAFF_
+    # POSITION`) and `subjects_from` is the first, so it only runs on a far
+    # head GATHER read a ledger for. Its verdict is read by EVALUATE's
+    # `restate_pitch`, so its position in this list constrains nothing.
+    Q.NOTEHEAD_POSITION,
     # ⚠️⚠️ AFTER `VOICES`, AND IT SAT BESIDE THE FERMATA UNTIL THE INVENTORY
     # SAID OTHERWISE. Both ends of a hairpin must come from ONE voice --
     # MusicXML pairs a wedge within a `<voice>` stream, so a start in voice 1
