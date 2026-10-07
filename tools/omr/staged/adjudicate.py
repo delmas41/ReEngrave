@@ -21,10 +21,9 @@ deliberately no way to express a multiplier in this module.
 
 from __future__ import annotations
 
-import functools
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import (Any, Callable, Dict, FrozenSet, Iterable, List, Optional,
+from typing import (Any, Callable, Dict, FrozenSet, List, Optional,
                     Sequence, Set, Tuple, Union)
 
 from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,

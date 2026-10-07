@@ -150,7 +150,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
-from ..record import ABSTAIN, Kind, Outcome, Q, Scope
+from ..record import Kind, Outcome, Q, Scope
 from .notehead_precision import TOO_NARROW_MIN_SPACES
 from .rhythm import ONSET_COLUMN_MIN_WITNESSES, ONSET_COLUMN_TOLERANCE_SPACES
 

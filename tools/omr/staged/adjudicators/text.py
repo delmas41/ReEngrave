@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision, is_relocated_copy)
-from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
+from ..record import ABSTAIN, Kind, Q, Scope, Subject
 from . import structure as _structure
 
 

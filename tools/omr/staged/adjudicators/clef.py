@@ -24,9 +24,9 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Tuple
 
-from ..adjudicate import (Candidate, Checkable, READINGS, Evidence, Mode, Ruling, Term, decision,
+from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling, Term, decision,
                           tally)
-from ..record import ABSTAIN, Kind, Q, READERS, Scope, State
+from ..record import Kind, Q, READERS
 # ⚠️ The ONE measured answer to "which clef family is this class name",
 # imported rather than restated: it collapses both spellings of the
 # vocabulary (`clefCAlto` and DeepScoresV2's `cClefAlto`) onto one core, and a

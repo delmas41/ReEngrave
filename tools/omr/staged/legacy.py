@@ -13,15 +13,15 @@ onto the serialised staff dict (`transcribe.py:4921`) and **no reader in
 `export.py` touches it** -- it is DELIVERED AND UNREAD. Comparing against it
 would compare our verdict to a number that changes nothing downstream, which
 would read as agreement or divergence about a fact the old pipeline does not
-actually use. It is available via `group_index_for_reference()` for someone
-who wants it, named so the distinction is unmissable.
+actually use. (A helper that returned it, `group_index_for_reference`, had
+no caller and was removed in the 2026-10-07 audit; `git log -S` finds it.)
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from . import record as R
 from .record import Q, Subject
@@ -87,28 +87,6 @@ def extract(result: dict) -> Dict[str, Dict[str, Any]]:
             if ts is not None:
                 put(Q.METER, R.system(p, s), ts)
 
-    return out
-
-
-def group_index_for_reference(result: dict) -> Dict[str, Any]:
-    """⚠️ NOT part of `extract`, and the name says why.
-
-    `group_index` reaches the serialised staff dict and no reader in
-    `export.py` consumes it. That is a DIFFERENT failure from a fact that
-    never crosses the JSON boundary at all -- delivered-and-unread rather than
-    stranded-in-process -- and the two need different fixes. Comparing our
-    grouping verdict against it measures agreement about a number that
-    changes nothing.
-    """
-    out: Dict[str, Any] = {}
-    for page in result.get("pages", []):
-        p = page.get("page_index", 0)
-        for sys_i, sys_d in enumerate(page.get("systems", [])):
-            s = sys_d.get("system_index", sys_i)
-            for local, staff in enumerate(sys_d.get("staves", [])):
-                gi = staff.get("group_index")
-                if gi is not None:
-                    out[R.staff(p, s, local).to_key()] = gi
     return out
 
 

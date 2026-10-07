@@ -65,8 +65,7 @@ from . import adjudicate as A
 # third blind spot).
 from .adjudicators import ownership as _ownership_rules
 _OWNER_NOT_READ_REASONS = _ownership_rules.OWNER_NOT_READ_REASONS
-from .adjudicators.rhythm import (METER_RETURN_MARK_CELL,
-                                  METER_RETURN_NOT_READ_REASON)
+from .adjudicators.rhythm import (METER_RETURN_NOT_READ_REASON)
 from .record import Q, meter_at
 
 
@@ -103,22 +102,6 @@ RELOCATE_AT_EXPORT_ENV = "OMR_RELOCATE_AT_EXPORT"
 #: A relocated head within this many staff spaces (page pixels, both axes) of
 #: a head the owner's cell already holds is the SAME ink, not a second note.
 RELOCATE_COLLISION_SPACES = 0.75
-#: ROADMAP 2.58. Write a head whose decided owner is ANOTHER staff, and which
-#: that staff holds no copy of, on the owner staff (Sean 2026-10-06:
-#: *"All note heads should be found and written on their staff"*). OFF until
-#: Sean has seen `out/print/mark_identity_relocate.png`.
-RELOCATE_AT_EXPORT_ENV = "OMR_RELOCATE_AT_EXPORT"
-#: A relocated head within this many staff spaces (page pixels, both axes) of
-#: a head the owner's cell already holds is the SAME ink, not a second note.
-RELOCATE_COLLISION_SPACES = 0.75
-
-
-def relocate_at_export_enabled() -> bool:
-    """`OMR_RELOCATE_AT_EXPORT` -- DEFAULT OFF, so an allow-list: a typo or an
-    empty value leaves the pre-2.58 exporter (which DROPS the head) in force.
-    Read ONCE per export, never per notehead."""
-    return os.environ.get(RELOCATE_AT_EXPORT_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
 
 
 def relocate_at_export_enabled() -> bool:

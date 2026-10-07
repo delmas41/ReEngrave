@@ -17,6 +17,15 @@ re-enter.
 
 ---
 
+## START HERE — after the 2026-10-07 code audit (`lane-audit-2026-10-07`)
+
+A cleaning run, no behaviour change: `docs/audit-2026-10-07-code-cleaning.md` is the report and the
+checklist of what is left. ROADMAP 0.4d done (`check` 247 → 192). CLAUDE.md §4c no longer types the
+adjudicator list (51 in the tree, the text said 28) and §5a says a cloud clone is shallow. **For Sean,
+before any public deployment of the web app:** scores have no owner column, `/uploads` is served without
+auth, two upload routes join the client's filename into a path, forgot-password returns the reset token,
+and the JWT secret has a working default (report §3A). Nothing in GATHER/ADJUDICATE moved.
+
 ## START HERE — after the night of 2026-10-06→07 (main ≥ this commit)
 
 Landed on main overnight: mark identity (`OMR_RELOCATE_AT_EXPORT`, `OMR_MARK_GROUPS`, both OFF), the
@@ -450,9 +459,10 @@ RE-DECIDED record> --pdf <pdf> --staff staff/3/0/9` →
 | 0.4a | Shared staged test fixture module; delete the four `_log` copies | todo |
 | 0.4b | One `python3 -m tools.omr.staged.check` with `open-findings.json` | done — **baseline 250 open findings on 2026-09-22** (wiring 66, reach 26, gather_coverage 19, capture 18, inventory 11, brakes 8, trace 3, source-text tests 47 files, live mutation batteries 52) |
 | 0.4c | Fast / slow test tiers derived from measured durations | done — full suite 4,806 passed / 20 skipped in 700 s; fast tier 2,695 tests in 75 s wall (`pytest -m "not slow"`); threshold derived from `tools/omr/tests/durations.json` |
-| 0.4d | Archive the 52 mutation batteries under `benchmarks/_archive/`; no new ones | todo — `check` counts live ones meanwhile |
+| 0.4d | Archive the 52 mutation batteries under `benchmarks/_archive/`; no new ones | **done (audit 2026-10-07, `lane-audit-2026-10-07`)** — 55 scripts `git mv`'d under `benchmarks/_archive/<same path>`, `README.md` there; `check` 247 → 192, every other check's count unchanged |
 | 0.4e | No new source-text tests; `check` counts them | done — 47 files counted, allowlist of 2 |
 | 0.5 | Lane discipline: brief from the tree, phase item, gate, print check | done (plan §6, rules 1–10) |
+| 0.6 | Code audit and cleaning run (Sonnet readers, Fable analysis) | **done 2026-10-07** — report `docs/audit-2026-10-07-code-cleaning.md`: what was removed (dead `_corroborate` block, duplicated `relocate_at_export_enabled`, 3 uncalled functions, 86 unused imports outside legacy/tests), what was NOT touched and why (web-app security list for Sean, 9 `promote` flags still read, 46 source-text test files, 98.7 MB of tracked record dumps, 87 unmerged remote branches). Fast tier and every derived-check count unchanged |
 
 Gate: spec < 6,000 words; `check` writes `open-findings.json`; flag table
 has a verdict on every flag; fast tier under two minutes.

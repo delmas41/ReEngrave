@@ -69,7 +69,7 @@ only fill the gap where none was given.
 from __future__ import annotations
 
 import statistics
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Optional, Sequence
 
 from ..adjudicate import Checkable, Evidence, Ruling, decision
 from ..record import DOCUMENT, Kind, Observation, Q, Scope, Subject

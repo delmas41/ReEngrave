@@ -34,11 +34,10 @@ The live faults that motivate it, all in the existing tree:
 
 from __future__ import annotations
 
-import json
-from dataclasses import dataclass, field, replace
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import (Any, Dict, Iterator, List, Mapping, Optional, Sequence,
-                    Set, Union)
+from typing import (Any, Iterator, Mapping, Sequence,
+                    Union)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Addressing

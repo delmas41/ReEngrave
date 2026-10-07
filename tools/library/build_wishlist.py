@@ -21,7 +21,6 @@ Works already held in the library are skipped unless ``--include-held``.
 from __future__ import annotations
 
 import argparse
-import html as H
 import json
 import re
 import sys

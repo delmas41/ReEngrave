@@ -1,57 +1,61 @@
 # ReEngrave
 
-Music score quality control: take a scanned PDF of a score, run optical music
-recognition (OMR) to produce MusicXML, check the result (theory checks,
-reference comparison, or Claude Vision diff review), and export corrected
-`.musicxml` / LilyPond `.ly` / engraved PDF.
+ReEngrave reads a scanned or engraved orchestral score (a PDF, normally an
+IMSLP edition held in the score library) and produces a MusicXML file and a
+LilyPond-engraved PDF of the same music. Every bar the reader could not read
+is MARKED as unread and never invented; every staff is named or held out and
+counted. The output is meant to be cleaned up by a musician, not re-entered.
 
-Personal-use project. The primary OMR engine is an in-house YOLOv8l +
-classical-CV pipeline (`tools/omr/`, F1 98.8% on the Bach WTC verdict set);
-Claude Vision OMR is the secondary engine. An optional theory layer
-(`tools/maestro_bridge/`, env-gated) validates harmony/rhythm and re-ranks
-ambiguous pitches against key context.
+Personal-use project, in active development. **Start with
+[CLAUDE.md](CLAUDE.md)** — it is the spec, kept under 6,000 words, and says
+what to read next and in what order.
 
-## Two ways to use it
+## Two pipelines, one product path
 
-| Use it from | Entry point | Best for |
+| Path | Where | Status |
 |---|---|---|
-| **Web app** | `docker compose up -d` → http://localhost | Reviewing scores, diff review, comparison sessions |
-| **CLI** | `python3 -m tools.omr.transcribe score.pdf` | Batch transcription, scripting — PDF → MusicXML / LilyPond with no Docker |
+| **STAGED** | `tools/omr/staged/` | the product path: GATHER → ADJUDICATE → EVALUATE → INFER → EXPORT, every decision on an append-only record, may abstain |
+| **LEGACY** | `tools/omr/transcribe.py`, `export.py`, `contextual.py` | frozen (bug fixes only); still drives the web app and the benchmarks until roadmap Phase 3 |
 
-```
-PDF ──► OMR (local YOLO │ Claude Vision) ──► MusicXML ──► review ──► export
-              │                                  ▲      (vision diff,
-              └── theory layer (optional) ───────┘       theory checks,
-                  harmony/rhythm validation,             Gradus comparison)
-                  pitch re-ranking
-```
+Shared by both: the YOLOv8 detector, staff/system/measure extraction, the
+header readers, the score library, the dossiers and the fact sheet.
 
 ## Quick start
 
 ```bash
-# Web app (needs the YOLO weights file, see CLAUDE.md → "OMR weights")
+# The product path, one page, through to a compiled PDF
+python3 -m tools.omr.staged score.pdf --pages 0 --weights omr-weights/<file>.pt \
+    --musicxml out.musicxml --lilypond out.ly --pdf out.pdf
+
+# The derived checks (one number; it must go down)
+python3 -m tools.omr.staged.check
+
+# The fast test tier
+pytest tools/omr/tests -m "not slow"
+
+# Web app (legacy engine by default; see CLAUDE.md §5a and §11)
 docker compose up -d          # → http://localhost
-
-# Standalone CLI (no Docker)
-python3 -m tools.omr.transcribe score.pdf --out out.json
-python3 -m tools.omr.export out.json --format lilypond --out out.ly
-lilypond out.ly               # → out.pdf
-
-# Theory layer (optional; runs host-side, needs Node)
-git submodule update --init   # pulls tools/maestro_bridge/gradus
 ```
+
+Weights are gitignored under `omr-weights/` and the score library
+(`library/`, 6.4 GB) is machine-local; CLAUDE.md §5a says how a worktree or a
+cloud container gets at them.
 
 ## Documentation map
 
 | Doc | What's in it |
 |---|---|
-| [CLAUDE.md](CLAUDE.md) | Full operational reference — setup, project structure, pipeline, env vars, common tasks |
-| [PROJECT_STATUS.md](PROJECT_STATUS.md) | Where the work stands right now |
-| [NOTES.md](NOTES.md) | Backlog / parked research ideas |
-| [tools/omr/README.md](tools/omr/README.md) | OMR pipeline deep dive — JSON schema, CLI flags, class space |
-| [docs/maestro-integration-plan.md](docs/maestro-integration-plan.md) | Theory-layer (Maestro Analyzer) integration plan + results |
-| [benchmarks/omr-phase4-session/retrospective.md](benchmarks/omr-phase4-session/retrospective.md) | How the OMR pipeline was built (Phase 4 story) |
+| [CLAUDE.md](CLAUDE.md) | The spec: what the system is, the ten rules, how to run and measure it |
+| [ROADMAP.md](ROADMAP.md) | The phases and the status of every item; work is an item here or it is not work |
+| [docs/DECISIONS.md](docs/DECISIONS.md) | What has been decided, by whom, why (append-only) |
+| [docs/plan-2026-09-22-from-here-to-a-finished-score.md](docs/plan-2026-09-22-from-here-to-a-finished-score.md) | The assessment that produced the roadmap |
+| [docs/flags-2026-09.md](docs/flags-2026-09.md) | Every `OMR_*` flag with a verdict |
+| `benchmarks/<name>-2026-09/FINDINGS.md` | Every measurement, one directory each |
+| [docs/chronicle-2026-09.md](docs/chronicle-2026-09.md) | The archived record, May–September 2026; search it, never read it front to back |
 
-**Stack:** FastAPI + SQLAlchemy (async SQLite) · React + Vite + TypeScript ·
-ultralytics YOLOv8 + OpenCV · music21 · Verovio · LilyPond · Claude API ·
+`PROJECT_STATUS.md`, `NOTES.md`, `version_memory.md` and `PROJECT_BRIEF.md`
+are frozen historical files.
+
+**Stack:** Python 3.11+ · ultralytics YOLOv8 + OpenCV · LilyPond · FastAPI +
+SQLAlchemy (async SQLite) · React + Vite + TypeScript · Verovio · Claude API ·
 Docker Compose (Traefik in production).

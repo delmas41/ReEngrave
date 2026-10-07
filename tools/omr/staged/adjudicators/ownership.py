@@ -23,7 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from ..gather import (CONTEST_IOU, LEDGER_ROUND_UP,
                       PAGE_EDGE_MARGIN_SPACES, _iou)
-from ..record import ABSTAIN, Kind, Outcome, Q, Scope, State
+from ..record import Kind, Outcome, Q, Scope
 # ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
 # pair" query -- see `structure.grand_staff_partner_staff`'s own docstring.
 from . import structure as _structure

@@ -161,16 +161,17 @@ never overturns a DECIDED one. EXPORT refuses to argmax a narrowing.
 
 ### 4c. The decisions
 
-28 adjudicators in `staged/adjudicators/` (`structure.py`, `identity.py`,
-`header.py`, `clef.py`, `ownership.py`, `rhythm.py`, `text.py`), registered in
-`adjudicate.REGISTRY` and run in `adjudicate.ORDER`:
+The adjudicators live in `staged/adjudicators/` (`structure.py`,
+`identity.py`, `header.py`, `clef.py`, `ownership.py`, `rhythm.py`, `text.py`,
+`notehead_precision.py`, `family_precision.py`, `movement.py`, `position.py`,
+`rest_search.py`, `unread_mark.py`), each registered by `@decision` into
+`adjudicate.REGISTRY` and run in `adjudicate.ORDER`. The count and the order
+are DERIVED, never typed here (the 2026-10-07 audit found a typed list of 28
+against 51 in the tree):
 
-`system_membership, staff_group, measure_partition, staff_ordinal,
-system_staff_count, instrument, slot_index, part_partition, group_symbol,
-clef, key_signature, glyph_owner, arc_owner, arc_kind, articulation_owner,
-fermata_owner, ornament_owner, stem_direction, notehead_is_a_whole_rest,
-tuplet_ratio, duration, event, voices, onset_column, wedge_anchor, meter,
-dynamic, direction`
+```bash
+python3 -c "from tools.omr.staged import adjudicate; print(len(adjudicate.ORDER)); print(*adjudicate.ORDER)"
+```
 
 Each declares `wants`, `implicates`, `checked_by` and `reasons`; `inventory
 --check` reports a declaration the body does not read. Stubs: none
@@ -265,7 +266,11 @@ export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/pytho
 
 The library (`library/`, 6.4 GB) is machine-local and resolves to the main
 checkout from any worktree. A cloud container has no weights and no library
-and can only re-export or re-adjudicate a committed record.
+and can only re-export or re-adjudicate a committed record. **Its clone is
+also SHALLOW** (121 commits from 2026-10-01 on the 2026-10-07 audit): `git
+log -S`, `--follow` and blame bottom out at the graft, so rule 1's brief
+needs `git fetch --unshallow origin main` (or a blobless bare fetch into the
+scratchpad) before any "when was this added" claim.
 
 ### 5b. The staged pipeline (product path)
 

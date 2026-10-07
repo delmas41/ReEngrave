@@ -44,6 +44,8 @@ back to the constant-pitch extrapolation it always had.
 
 from __future__ import annotations
 
+from typing import Callable
+
 import numpy as np
 
 # A rung must out-span a half notehead (1.167 spaces) with margin, while
