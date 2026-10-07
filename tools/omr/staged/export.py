@@ -1115,6 +1115,22 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             continue
 
         cell_index = plan["cell"] if plan is not None else (s["cell"] or 0)
+        # ⚠️⚠️ A BAR THE FILE DOES NOT HAVE. The renderer walks
+        # `range(run.n_measures)`, so a head filed into a cell at or past the
+        # staff's bar count was `written` here and appeared nowhere: whole
+        # Brahms (night 10-07) held six, all page 0 / system 0 cell 7 on staves
+        # whose `measure_partition` says SEVEN bars, and `to_musicxml` raised
+        # `Unbalanced` -- with every flag off as well as on, because this is
+        # the partition against the detector's cell cut, not the relocation or
+        # the mark groups. COUNTED under its own name, never written into a
+        # bar we do not hold and never folded into a catch-all. A staff whose
+        # bar count ABSTAINED has `n_measures == 0` and is the same loss with a
+        # different cause, so it gets its own reason: the repair for one is
+        # the partition, for the other the cell cut.
+        if cell_index >= run.n_measures:
+            _drop("cell_past_the_last_bar" if run.n_measures_decided
+                  else "bar_count_not_decided", s)
+            continue
         cell = run.cells.setdefault(
             cell_index, Cell(run.page, run.system, run.staff, cell_index))
 

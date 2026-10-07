@@ -4425,3 +4425,28 @@ Sean (2026-10-06, `lines_combined_5.png`): fix the edge-merging rule; "do we kno
 - Unit tests `test_edge_merge_unseen_ledgers_2026_10_06.py` (11): RED on the unrepaired tree (9 failed, by the missing parameters), green after, each switch with a same-class control; fast tier 4,537 passed; `staged.check` 250 -> 250. The legacy paths pass none of the switches and are bit-identical.
 
 **Limits.** `edge_jut_kept` may be fooled by a stroke that lands on a head's edge on one side. `split_welded_bands` and `walk_tol` interact (welded alone lost 2-3 Litolff heads that the others repaired). The truth and 44-tile controls cannot fail on gains.
+
+## 2026-10-07 -- lane-export-unbalanced-brahms: six heads written to a bar the file does not have (STAGED EXPORT, `_place_notes`; no flag)
+
+**Record.** The 10-07 night Brahms record (`...-whole-20261007-night.record.json`, through adjudicate) REBUILT through EVALUATE by `mark_identity_rebuild.py` (the lane-mark-identity work file, 7 GB, not regenerated here). Export read from it via `load_record`, in one process, four arms: mark-group rows stripped or kept x `OMR_RELOCATE_AT_EXPORT` off/on. No gather, no re-adjudicate.
+
+**Does main balance? No -- with all three flags off it raises too.** The 6 are the same in all four arms (off/off 7,170 written; groups 7,164; relocate 7,152; both 7,146). So this is not a flag defect; the 10-07 FINDINGS' "relocate-off arm" was just the first arm run.
+
+**The six** (page 0, system 0, cell 7; staffs 4, 5, 5, 9, 11, 13): `glyph/0/0/4/7/2`, `glyph/0/0/5/7/0`, `glyph/0/0/5/7/1`, `glyph/0/0/9/7/0`, `glyph/0/0/11/7/0`, `glyph/0/0/13/7/1`. All whole-note heads at the left of the system; each staff's `measure_partition` says 7 bars (cells 0-6). `_place_notes` filed each into `run.cells[7]` and marked it `written`; `_part_xml` walks `range(run.n_measures)`, so cell 7 is never rendered. Written nowhere, counted nowhere. (My first probe also flagged 20 `written_value_fits_no_note` heads -- those were a filter bug in the probe, they ARE counted.)
+
+**Fix.** After the owner staff and cell are known (so it covers a relocated head's cell too): a head whose cell index is at or past the staff's bar count is counted, not written -- `cell_past_the_last_bar` (partition decided), or `bar_count_not_decided` (partition abstained, `n_measures` 0). No catch-all. `test_export_cell_past_last_bar_2026_10_07.py` (6 tests, all four flag combinations, positive control in each class): RED on the unrepaired tree (4 of 6 failed, the first with exactly `Unbalanced: 1 noteheads+rests in the log, 0 written and 0 accounted`), green after. Fast tier 4,594 passed; `staged.check` 247 -> 247. All four Brahms arms now balance.
+
+**The counts the night read could not give** (per physical mark = `Q.MARK_GROUP` group over the 10-07 gather; final fate: written / counted under a reason / held out at render by `bar_does_not_add_up`; heads 20,295 marks, rests 7,259):
+
+| arm | heads written once | heads 2+ times | heads nowhere | rests once | rests 2+ | rests nowhere | heads relocated | `relocation_collides` |
+|---|---|---|---|---|---|---|---|---|
+| off (no groups, no relocate) | 5,156 | 9 | 15,130 | 1,992 | 1 | 5,266 | 0 | 0 |
+| groups only | 5,171 | 0 | 15,124 | 1,993 | 0 | 5,266 | 0 | 0 |
+| relocate only | 5,139 | 9 | 15,147 | 1,991 | 1 | 5,267 | 59 | 5 |
+| both | 5,154 | 0 | 15,141 | 1,992 | 0 | 5,267 | 59 | 4 |
+
+Groups remove every double write (9 heads + 1 rest to 0; `mark_group_duplicate` 59-60). Relocation writes 59 heads on their owner, refuses 4-5 as collisions, and takes `owned_by_another_staff` 2,714 -> 2,664 and `belongs_to_a_nearer_staff` 65 -> 50. Heads written nowhere, groups arm, by reason: `bar_does_not_add_up` 8,010, `too_narrow` 3,142, `duration_narrowed` 1,790, `owned_by_another_staff` 1,198, `clipped_fragment` 411, `stacked_head_duplicate` 339, `belongs_to_a_nearer_staff` 62, `staff_not_identified` 55. Rests nowhere: `bar_does_not_add_up` 4,290, `rest_clipped_by_crop` 531, `rest_is_a_duplicate_box` 125, `rest_outside_its_staff` 115. Every subject has a group row, none unaccounted. A mark the group shares across staves can read "nowhere" under a different member's reason than the report's per-subject total (59 `mark_group_duplicate` are bookkeeping, not losses).
+
+**`bar_does_not_add_up`.** 13,597 subjects tonight (groups arm; 13,650 with no groups, 13,727 relocate-only). The only prior Brahms figure on disk is `benchmarks/acceptance/current.json` (an earlier through-INFER whole-movement export): 12,927. So +670 (+5%). NOT the 10-06 record, which was not exported; not investigated.
+
+**Limits.** One record, one tree. Why the partition says 7 bars where the detector cut an eighth cell on page 0 system 0 is not investigated (a partition or cell-cut question, not an export one).
