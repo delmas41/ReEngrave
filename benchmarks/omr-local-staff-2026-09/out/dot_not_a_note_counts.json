@@ -1,0 +1,58 @@
+{
+ "brahms": {
+  "counts": {
+   "notehead_class_boxes": 24260,
+   "notehead_duration_changed": 858,
+   "dot_sized": 1724,
+   "dot_shaped_box_owner_moved_to_the_dots_staff": 17,
+   "newly_refused": 9,
+   "newly_refused_dot_sized": 9,
+   "dots": 9674,
+   "dots_read_as_lengthening_on": 6301,
+   "dots_read_as_lengthening_off": 5299
+  },
+  "dot_sized_reasons_off": {
+   "too_narrow": 1555,
+   "clipped_fragment": 146,
+   "belongs_to_a_nearer_staff": 1,
+   "KEPT": 9,
+   "is_a_clef": 13
+  },
+  "dot_sized_reasons_on": {
+   "too_narrow": 1555,
+   "clipped_fragment": 146,
+   "is_a_dot": 10,
+   "NEWLY:is_a_dot": 9,
+   "is_a_clef": 13
+  },
+  "dot_changes": {
+   "role abstained:None -> decided:augmentation": 1002,
+   "owner moved to the note's staff": 297,
+   "  (the dot had no decided owner before)": 66
+  }
+ },
+ "lito": {
+  "counts": {
+   "notehead_class_boxes": 11399,
+   "dot_sized": 52,
+   "notehead_duration_changed": 1,
+   "dots": 601,
+   "dots_read_as_lengthening_on": 49,
+   "dots_read_as_lengthening_off": 48
+  },
+  "dot_sized_reasons_off": {
+   "clipped_fragment": 8,
+   "too_narrow": 42,
+   "is_a_clef": 2
+  },
+  "dot_sized_reasons_on": {
+   "clipped_fragment": 8,
+   "too_narrow": 42,
+   "is_a_clef": 2
+  },
+  "dot_changes": {
+   "owner moved to the note's staff": 4,
+   "role abstained:None -> decided:augmentation": 1
+  }
+ }
+}

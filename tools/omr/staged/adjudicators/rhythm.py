@@ -909,6 +909,9 @@ def _in_augmentation_window(dot_box, head_box, max_above, max_below):
 #: adjudicated a print crop of this family; ask before trusting a borderline
 #: case, and see `benchmarks/omr-shape-role-2026-09/FINDINGS.md` Sec.2.12c.
 STACCATO_CENTRED_MAX_SPACES = 0.5
+#: ROADMAP 2.59: widest gap, head edge to dot, at which a dot may follow a note
+#: owned by ANOTHER staff (`OMR_DOT_FOLLOWS_NOTE`).
+FOREIGN_DOT_MAX_GAP_SPACES = 0.75
 STACCATO_OFFSET_MIN_SPACES = 0.75
 
 
@@ -992,15 +995,27 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     mine_key = ev.subject.to_key()
     home = cell.at(Kind.STAFF).to_key()
     heads = []
+    # ⚠️ OMR_DOT_FOLLOWS_NOTE (lane-dot-not-a-note, Sean 2026-10-07): a dot
+    # belongs to the note immediately to its LEFT, whichever staff owns that
+    # note. A head owned by another staff is therefore kept in the pool, but
+    # flagged: it may take a dot ONLY when `adjudicate_dot_role` named it as
+    # that dot's note (checked per dot below), so a ghost can still never
+    # steal a dot from a home head (the 2.27c fault) and a distant ghost can
+    # never turn a staccato into an augmentation.
+    keep_foreign = _own.dot_follows_note_enabled()
+    foreign_keys = set()
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
-            if (r.subject.to_key() != mine_key
-                    and _own._owned_by_a_different_staff(ev, r, home)):
+            foreign = (r.subject.to_key() != mine_key
+                       and _own._owned_by_a_different_staff(ev, r, home))
+            if foreign and not keep_foreign:
                 continue
             box_row = boxes.get(r.subject.to_key())
             b = _xywh_head(box_row.value) if box_row else None
             if b is not None:
                 heads.append((r.subject.to_key(), b))
+                if foreign:
+                    foreign_keys.add(r.subject.to_key())
     mine = None
     for key, b in heads:
         if b == head_box and key == ev.subject.to_key():
@@ -1024,7 +1039,11 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
         dot_x_left, dot_w = db[0], db[2]
         dot_y = db[1] + db[3] / 2.0
         best, best_score = None, float("inf")
+        named = ((role.detail or {}).get("head")
+                 if foreign_keys else None)
         for key, hb in heads:
+            if key in foreign_keys and key != named:
+                continue
             if not _in_augmentation_window(db, hb, max_above, max_below):
                 continue
             hx_right = hb[0] + hb[2]
@@ -1123,20 +1142,26 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     all_targets = []                    # heads AND rests, for the aug window
     note_targets = []                   # noteheads only, for the staccato one
     n_raw = n_excluded = 0
+    keep_foreign = _own.dot_follows_note_enabled()
+    foreign_targets = []                # (key, box): owned by another staff
+    all_keys = []                       # parallel to all_targets
     for q in (Q.NOTEHEAD_CLASS, Q.REST):
         for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
             n_raw += 1
-            if _own._owned_by_a_different_staff(ev, r, home):
-                n_excluded += 1
-                continue
             box_row = boxes.get(r.subject.to_key())
             b = _xywh_head(box_row.value) if box_row else None
+            if _own._owned_by_a_different_staff(ev, r, home):
+                n_excluded += 1
+                if b is not None:
+                    foreign_targets.append((r.subject.to_key(), b))
+                continue
             if b is None:
                 continue
             all_targets.append(b)
+            all_keys.append(r.subject.to_key())
             if q == Q.NOTEHEAD_CLASS:
                 note_targets.append((r.subject.to_key(), b))
-    if not all_targets:
+    if not all_targets and not (keep_foreign and foreign_targets):
         # ⚠️ Apart from a genuinely empty cell, so a stray dot with nothing
         # of its own to attach to can be told from one whose only candidates
         # were the neighbour's ink.
@@ -1151,11 +1176,24 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
 
     max_above = max(1.0, space * DOT_ABOVE_NOTE_MAX_SPACES)
     max_below = max(1.0, space * DOT_BELOW_NOTE_MAX_SPACES)
-    for hb in all_targets:
+    home_best, home_score = None, float("inf")
+    for key, hb in zip(all_keys, all_targets):
         if _in_augmentation_window(dot_box, hb, max_above, max_below):
-            return Ruling(value="augmentation",
-                          reason="right_of_and_level_with_a_head",
-                          used=used, detail=detail)
+            if not keep_foreign:
+                return Ruling(value="augmentation",
+                              reason="right_of_and_level_with_a_head",
+                              used=used, detail=detail)
+            sc = (dot_box[0] - (hb[0] + hb[2])
+                  + abs(hb[1] + hb[3] / 2.0
+                        - (dot_box[1] + dot_box[3] / 2.0)) * 2)
+            if sc < home_score:
+                home_score, home_best = sc, key
+    if home_best is not None:
+        # same best-head score `_attached_dots` uses; names the note so the
+        # dot's owner can follow it (`ownership.reconcile_dot_owners`)
+        return Ruling(value="augmentation",
+                      reason="right_of_and_level_with_a_head",
+                      used=used, detail={**detail, "head": home_best})
 
     dot_cx = dot_box[0] + dot_box[2] / 2.0
     dot_cy = dot_box[1] + dot_box[3] / 2.0
@@ -1174,6 +1212,44 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                       detail={**detail, "owner": best_owner,
                               "articulation": "staccato"})
 
+    if keep_foreign:
+        # ⚠️ LAST, and only where nothing of THIS staff's fits either window:
+        # the dot trails the note immediately to its left even though another
+        # staff owns that note (Brahms `18/1/12/6/18`, `5/0/1/5/32`). Tried
+        # after the staccato window so a distant neighbour's note can never
+        # turn a staccato into an augmentation (measured: 8 of 14 Litolff
+        # role changes were exactly that when it came first).
+        dot_x_left, dot_y = dot_box[0], dot_box[1] + dot_box[3] / 2.0
+        dot_cx_ = dot_box[0] + dot_box[2] / 2.0
+        # ⚠️ a dot standing over (or under) ANY note's own column may be that
+        # note's staccato -- 6 of 6 Litolff dots the first version read as
+        # augmentations were exactly that (crops, FINDINGS) -- so it is left
+        # abstained, never guessed (rule 8). Only a dot with no note stacked
+        # at its x follows the note to its left.
+        stacked = any(abs(dot_cx_ - (hb[0] + hb[2] / 2.0))
+                      <= STACCATO_CENTRED_MAX_SPACES * space
+                      for hb in list(all_targets)
+                      + [b_ for _k, b_ in foreign_targets])
+        best, best_score = None, float("inf")
+        for key, hb in ([] if stacked else foreign_targets):
+            if not _in_augmentation_window(dot_box, hb, max_above, max_below):
+                continue
+            # a dot sits right beside its note: the gap from the head's right
+            # edge, in staff spaces, is capped far tighter than the window's
+            # own 5-dot-widths (measured in the three crops this rule was cut
+            # from: 0.2-0.3 sp for the real ones, 1.1+ sp for the two that
+            # were another note's staccato)
+            if dot_x_left - (hb[0] + hb[2]) > FOREIGN_DOT_MAX_GAP_SPACES * space:
+                continue
+            score = (dot_x_left - (hb[0] + hb[2])
+                     + abs(hb[1] + hb[3] / 2.0 - dot_y) * 2)
+            if score < best_score:
+                best_score, best = score, key
+        if best is not None:
+            return Ruling(value="augmentation",
+                          reason="right_of_and_level_with_a_head",
+                          used=used, detail={**detail, "head": best,
+                                             "head_owned_elsewhere": True})
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
