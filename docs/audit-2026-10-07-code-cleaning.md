@@ -235,11 +235,23 @@ and the fix; all are small.
   and the tree agree. The count is 0. The ~290-line `.gitignore` itself,
   with its ~20 per-roadmap-item blocks, was not consolidated: changing rule
   semantics is a separate decision.
-- **11 `*.record.json` are tracked, 98.7 MB**, mostly
-  `benchmarks/omr-staged-engraved-2026-09/out/`. CLAUDE.md §5a says a cloud
-  container can only work from a committed record, so some are inputs on
-  purpose. Decide which; `git rm --cached` the rest. History rewrite is not
-  proposed.
+- **11 `*.record.json` were tracked, 98.7 MB**, mostly
+  `benchmarks/omr-staged-engraved-2026-09/out/`. **Triaged the same day**
+  (a read-only survey of the 38 tracked dumps over 3 MB, 247.6 MB in all):
+  ONE is an input — `engraved-p0p2-20260930b.record.json`, which
+  `benchmarks/acceptance/manifest.json` names as the engraved acceptance
+  document's record, the only one a cloud container needs; 28 (174 MB) are
+  evidence a `FINDINGS.md`, a benchmark script or the acceptance tooling
+  reads; 9 (62.8 MB) are uncited outputs. The six clear-cut ones were
+  untracked (`engraved-p0p2-20260929b`, `engraved-p1`, `engraved-p2`, the
+  `omr-no-ink-lie` repaired Litolff record, the `omr-owner-domain` Brahms
+  dump, the two timestamped acceptance MusicXML files; ~39 MB off the
+  checkout, history untouched) and the engraved benchmark's `out/*.record.json` is now ignored
+  with the kept records negated by name. Three weak candidates stay tracked
+  (`20260929`, the `2.3b` arm, `grid_brahms_0-26.json` from a two-day-old
+  lane). Untracking never shrinks `.git`; only a history rewrite would, and
+  none is proposed. Compressing the two `gather.json` dumps (32 MB) is the
+  next size lever if wanted.
 - `out/print/` is tracked by design (526 files, crops). `data/user-labeled*`
   tracks 1,781 PNGs (496 MB) — the hand labels, not regenerable (§9), so
   they stay.

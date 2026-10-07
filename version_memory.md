@@ -35,6 +35,30 @@ ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007
 
 ---
 
+## 2026-10-07 — RECORD-DUMP TRIAGE (audit report §3E): six uncited dumps untracked
+
+**A read-only survey (Sonnet) of the 38 tracked data dumps over 3 MB (247.6
+MB), then Sean: "do whatever you think is best for lane 7".** One file is an
+INPUT (`benchmarks/omr-staged-engraved-2026-09/out/engraved-p0p2-20260930b.record.json`,
+named by `benchmarks/acceptance/manifest.json`); 28 are evidence a FINDINGS,
+a benchmark script or the acceptance tooling reads (174 MB, kept, rule 7);
+9 are uncited outputs. The six clear-cut ones, plus the Litolff twin of the
+timestamped MusicXML the new ignore rule caught, are untracked (~39 MB off
+the checkout): `engraved-p0p2-20260929b`, `engraved-p1`, `engraved-p2` records,
+`omr-no-ink-lie-2026-09/out/litolff-p1-repaired.record.json`,
+`omr-owner-domain-2026-09/out/brahms1-breitkopf-whole.json`, and the
+timestamped `brahms1-breitkopf-whole-movement-20260923T163805Z.musicxml` and
+`beethoven5-litolff-whole-movement-20260923T025457Z.musicxml`.
+Three weak candidates stay. `.gitignore` now ignores the engraved
+benchmark's `out/**/*.record.json` with the seven kept records negated by
+name, so the directory cannot regrow without a decision. History is not
+rewritten, so `.git` does not shrink.
+
+**Files touched:** `.gitignore`, `docs/audit-2026-10-07-code-cleaning.md`,
+`ROADMAP.md`, `version_memory.md`, seven `git rm --cached`.
+
+---
+
 ## 2026-10-07 — AUDIT FOLLOW-UP: docs un-frozen, the slow-tier text rule fixed, ignored files untracked, branches pruned
 
 **Sean, on the audit's open question: "Unfreeze and update so that all docs
