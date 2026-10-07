@@ -17,6 +17,19 @@ re-enter.
 
 ---
 
+## START HERE — after the night of 2026-10-06→07 (main ≥ this commit)
+
+Landed on main overnight: mark identity (`OMR_RELOCATE_AT_EXPORT`, `OMR_MARK_GROUPS`, both OFF), the
+owner-from-staves speed fix (Log subject cache; verdicts bit-identical), the edge-merge fix 2.57c (4 of 5
+lost heads back; Litolff night-12 still abstains). Overnight `TAG=20261007-night` (main 3aef0c7d, through
+adjudicate, + `OMR_FARHEAD_OWNER_LEDGERS=1 OMR_MARK_GROUPS=1 OMR_RELOCATE_AT_EXPORT=1`), read on
+`lane-night-1007-read` 8acb704b: bars ≥0.4 sp off the ink 21->0 / 1->0; far heads decided 2,021/4,286
+(was 1,903/4,055); truth Litolff 37/1/3, Brahms 11/0/0; Litolff notes written 2+ times 171->0, 30
+relocated (3 collisions). ⚠️ Brahms ran 175 min (was 107): ADJUDICATE with `OMR_OWNER_FROM_STAVES`
+still ~2x (Litolff re-adjudicate 656 s on vs 296 off). ⚠️ through-or-edge on the reader-INDEPENDENT grid
+82.8% Litolff, below plain geometry 85.2%. Unexplained: Litolff `empty_bar_rest_search` 243->355.
+For Sean: `out/print/night_1007_sample.png` (that branch).
+
 ## START HERE — after 2026-10-06 (day; main ≥ this commit)
 
 **LANDED on main (87d17c00, `lane-lines-combined`):** the far-head chain -- note-first reader, text is
