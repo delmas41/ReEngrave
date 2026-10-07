@@ -148,7 +148,11 @@ never overturns a DECIDED one. EXPORT refuses to argmax a narrowing.
 - **Scope** (`EXACT / SELF_AND_ANCESTORS / SELF_AND_DESCENDANTS`) says where a
   consumer looks. A quantity filed on a STAFF read by a DOCUMENT decision
   returns nothing at `EXACT` and fails silently; `wiring --check` catches
-  the declared cases.
+  the declared cases. The same silence governs ORDER inside GATHER: a reader
+  placed above the reader whose rows it reads gets an empty answer, not an
+  error, so a reader runs after every producer it reads and the forced edges
+  are DERIVED from those reads (`gather.gather`'s docstring), never counted
+  (A-GATHER-1 said three; the tree held eleven, one backwards — 2.58).
 - **Provenance**: every record is stamped with the commit and `dirty`. A
   record from a dirty tree, or with `dirty is None`, is not a baseline.
 - **`Evidence.correlated_groups`**: rows from one reader on one crop are ONE

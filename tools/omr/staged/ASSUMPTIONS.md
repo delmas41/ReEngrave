@@ -463,13 +463,13 @@ the cost of computing identity first is unpaid.
 ⚠️ **And identity is a declared STUB**, so today this assumption is *untested by
 construction* — the tier it unlocks is not yet computed by anything.
 
-### A-GATHER-1 · Only three gathering edges are forced
+### A-GATHER-1 · Only three gathering edges are forced — ⚠️ FALSIFIED 2026-10-06
 
-**MIXED** — geometry-before-everything is principle; the other two edges are facts about OUR readers.
+**MIXED** — geometry-before-everything is principle; every other edge is a fact about OUR readers, and the set GROWS with every reader that reads another's row.
 
-**Assumption.** Within GATHER only three orderings are real: page geometry
-before every reader; detection before direction text; detection before notehead
-positions.
+**Assumption (as designed).** Within GATHER only three orderings are real:
+page geometry before every reader; detection before direction text; detection
+before notehead positions.
 
 **Why.** Verified in the tree during the design: a cell is *defined* by
 `staff.line_ys` (`measure_extractor.py:1441-1442` enforces it itself);
@@ -477,10 +477,27 @@ positions.
 mask before looking for words; a position is measured from a detection's
 y-centre.
 
-**How to falsify.** `verify_order.py`-style static assertion. ⚠️ **The premise
-handed to the design said TWO edges and verification found THREE** — do not
-inherit this count either. Nine further input edges are listed in the design
-document §7.1(3) and none is re-asserted here.
+**Falsified 2026-10-06.** Walking every `log.rows(Q.X, …)` call in each
+reader and its helpers (an AST pass over `gather.py`) found about ELEVEN
+forced edges, not three — ROADMAP 2.39b, 2.42, 2.49, 2.52/2.55 and 2.56 each
+added a reader that reads an earlier reader's row and each said so in its own
+call-site comment, while this entry and `gather()`'s docstring kept saying
+three. The sentence read like a licence to reorder. The current list lives in
+`gather.gather`'s docstring, dated, with the instruction to re-derive it; it
+is not restated here. ⚠️ One of the edges ran BACKWARDS in the tree: the
+low-confidence rescue (2.55) read `Q.EMPTY_BAR_REST_SEARCH` thirteen steps
+before the search filed it, and papered over the gap by re-running the search
+on a throwaway `Log`. Fixed the same day: the search now runs directly after
+detection and the rescue reads the record — and raises `GatherOrderError` if
+called where the search has not filed (a control that can fail, rule 7).
+
+**How to falsify (the rule, not the count).** A reader runs after every reader
+whose rows it reads and after every reader that mutates state it walks. Any
+`log.rows(Q.X)` in a reader whose producer sits later in `gather()`'s body is
+a misorder; `log.rows()` returns empty rather than raising on an unfiled
+quantity, so the misorder is SILENT unless the reader guards it. ⚠️ **The
+premise handed to the design said TWO edges, verification found THREE, and
+the tree held ELEVEN** — do not inherit any count.
 
 ### A-DUR-1 · ⚠️ Duration is a VERDICT, not a measurement
 

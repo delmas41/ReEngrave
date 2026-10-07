@@ -34,6 +34,7 @@ position) is reached unchanged once Sean switches it on.
 """
 from __future__ import annotations
 
+import os
 import unittest
 from unittest import mock
 
@@ -115,10 +116,16 @@ def _sub():
     return R_cell(0, 0, 0, 0)
 
 
-def _run_rescue(cell, detector, detections=None):
+def _run_rescue(cell, detector, detections=None, *, search_first=True):
+    """The rescue as `gather()` runs it: 2.52's search FIRST, on the same
+    log, then the rescue reading its row (ROADMAP 2.58). `search_first=
+    False` is the misorder the rescue must refuse, kept only for the test
+    that proves it does."""
     log = Log()
     local = {cell.staff_index: (0, 0)}
     detections = detections if detections is not None else {}
+    if search_first:
+        gather.gather_empty_bar_rest_search(log, [cell], local, detections)
     gather.gather_lowconf_rescue(log, [cell], local, detections,
                                  detector=detector, imgsz=None)
     return log, detections
@@ -263,16 +270,75 @@ class TestTheGatherRescue(unittest.TestCase):
         self.assertEqual(detections[_sub().to_key()], existing)
 
     def test_a_bar_where_2_52_already_found_a_whole_rest_is_never_rerun(self):
-        """⚠️ Never rescues a bar 2.52 already read: the scratch re-run of
-        `gather_empty_bar_rest_search` finds the SAME real whole rest its
-        own pipeline call will, and this reader stands down."""
+        """⚠️ Never rescues a bar 2.52 already read: the search's own
+        `found=True` row is on the record (it ran first, as in `gather()`)
+        and this reader stands down."""
         cell = _FakeCell(_whole_rest_image())
         detector = _FakeDetector([_FakeDet("noteheadHalfOnLine", 0.15)])
         log, detections = _run_rescue(cell, detector)
 
+        self.assertTrue(log.rows(Q.EMPTY_BAR_REST_SEARCH, _sub())[-1].value)
         self.assertEqual(detector.calls, [])
         self.assertEqual(log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0)), ())
         self.assertNotIn(_sub().to_key(), detections)
+
+    def test_rescue_before_the_search_raises_rather_than_rescuing_everything(self):
+        """ROADMAP 2.58, the control that can fail (CLAUDE.md rule 7). A
+        candidate cell with no search row and no search refusal, ink on,
+        means this reader ran before `gather_empty_bar_rest_search`. The
+        old behaviour was silent: `log.rows()` returned nothing and every
+        candidate was rescued."""
+        cell = _FakeCell(_blank_image())
+        detector = _FakeDetector([_FakeDet("noteheadHalfOnLine", 0.15)])
+        with mock.patch.dict(os.environ, {gather.INK_ENV: "1"}):
+            with self.assertRaises(gather.GatherOrderError):
+                _run_rescue(cell, detector, search_first=False)
+        self.assertEqual(detector.calls, [])
+
+    def test_with_ink_off_the_search_files_nothing_and_the_rescue_proceeds(self):
+        """The guard's own OFF branch: `OMR_INK=0` means the search files
+        nothing BY DESIGN, so an empty record is not a misorder and the
+        rescue runs on every candidate, as it did against an empty scratch
+        log before 2.58."""
+        cell = _FakeCell(_blank_image())
+        stem = _FakeStem(50.0, 40.0, 2.0, 40.0)
+        det = _FakeDet("noteheadHalfOnLine", 0.15,
+                      x_canonical=46.0, y_canonical=76.0,
+                      width_canonical=10.0, height_canonical=8.0)
+        detector = _FakeDetector([det])
+        with mock.patch.dict(os.environ, {gather.INK_ENV: "0"}), \
+                mock.patch("tools.omr.line_detection.detect_lines",
+                           return_value={"stems": [stem]}):
+            log, detections = _run_rescue(cell, detector)
+
+        self.assertEqual(log.rows(Q.EMPTY_BAR_REST_SEARCH, _sub()), ())
+        self.assertEqual(log.refusals(Q.EMPTY_BAR_REST_SEARCH, _sub()), ())
+        self.assertEqual(detector.calls, [(gather.RESCUE_CONF_FLOOR, None)])
+        self.assertEqual(len(detections[_sub().to_key()]), 1)
+
+    def test_a_rescued_bar_keeps_its_found_false_search_row(self):
+        """ROADMAP 2.58's one record change: the search ran on this bar and
+        said `found=False`, then the rescue found a head. Both stay on the
+        record -- before 2.58 the search ran AFTER the rescue and skipped
+        the bar as no longer boxless, so the record never said the search
+        had looked."""
+        cell = _FakeCell(_blank_image())
+        stem = _FakeStem(50.0, 40.0, 2.0, 40.0)
+        det = _FakeDet("noteheadHalfOnLine", 0.15,
+                      x_canonical=46.0, y_canonical=76.0,
+                      width_canonical=10.0, height_canonical=8.0)
+        detector = _FakeDetector([det])
+        with mock.patch("tools.omr.line_detection.detect_lines",
+                        return_value={"stems": [stem]}):
+            log, detections = _run_rescue(cell, detector)
+
+        search = log.rows(Q.EMPTY_BAR_REST_SEARCH, _sub())
+        self.assertEqual(len(search), 1)
+        self.assertFalse(search[0].value)
+        self.assertEqual(search[0].reader, READERS.CV_REST_SEARCH)
+        rescued = log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0))
+        self.assertEqual(len(rescued), 1)
+        self.assertEqual(rescued[0].reader, READERS.RESCUE_LOWCONF)
 
     def test_a_non_notehead_non_rest_class_at_low_confidence_is_not_kept(self):
         """Restricted to notehead/rest classes only -- a `beam` the lower
@@ -289,9 +355,15 @@ class TestTheGatherRescue(unittest.TestCase):
         self.assertEqual(detections.get(_sub().to_key(), []), [])
 
     def test_no_detector_is_a_supported_no_op(self):
+        """The RESCUE files nothing without a detector. The search that ran
+        before it (2.58) files its own row, which is not this reader's."""
         cell = _FakeCell(_blank_image())
         log, detections = _run_rescue(cell, detector=None)
-        self.assertEqual(log.all_rows(), ())
+        self.assertEqual(
+            [r for r in log.all_rows()
+             if r.reader == READERS.RESCUE_LOWCONF], [])
+        self.assertEqual(log.rows(Q.GLYPH_BOX, R_glyph(0, 0, 0, 0, 0)), ())
+        self.assertNotIn(_sub().to_key(), detections)
 
 
 class TestShipsGatesAdjudicate(unittest.TestCase):

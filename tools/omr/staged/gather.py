@@ -478,6 +478,21 @@ RESCUE_CONF_FLOOR = 0.10
 #: GLYPH subject into any decision's domain. No env flag (CLAUDE.md §9).
 RESCUE_SHIPS = True
 
+
+class GatherOrderError(RuntimeError):
+    """A GATHER reader was called before a reader whose rows it reads.
+
+    ⚠️ `Log.rows()` on a quantity nobody has filed returns EMPTY, not an
+    error, so a reader placed above its input in `gather()` fails SILENTLY
+    -- it reads "nothing there" and proceeds as if that were the answer.
+    ROADMAP 2.58: the low-confidence rescue did exactly that for five days
+    (reading `Q.EMPTY_BAR_REST_SEARCH` thirteen steps before it was filed,
+    covered by a scratch re-run of the search). Raised by a reader that can
+    tell, from the record, that its input never ran -- never by the record
+    itself, which has no idea what a reader intends to read.
+    """
+
+
 #: ROADMAP 2.55 REFINEMENT (Sean, DECISIONS 2026-10-01, "rescue guided by
 #: stems, ties and accidentals"): *"Every measure should have notes or
 #: rests. If the bar shows ties then there are notes; if there are stems
@@ -630,10 +645,21 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
 
     ⚠️ NEVER RESCUES A BAR 2.52 ALREADY READ. 2.52's own GATHER row
     (`Q.EMPTY_BAR_REST_SEARCH`) is the one true answer to "did the ink
-    search already find a whole rest here"; this reader asks that SAME
-    question by re-running `gather_empty_bar_rest_search` itself on a
-    throwaway `Log` (rule 6: a connection, never a second copy of the test)
-    rather than guessing from a result it has not computed.
+    search already find a whole rest here", and this reader READS IT OFF
+    `log` (rule 6: a connection, never a second copy of the test). Until
+    2026-10-06 the search ran AFTER this reader in `gather()`, so this
+    function re-ran it on a throwaway `Log` -- twice the work, and an
+    answer the record never held. `gather()` now runs the search first.
+
+    ⚠️ AND IT REFUSES TO RUN WHERE THE SEARCH HAS NOT FILED. With ink on,
+    `gather_empty_bar_rest_search` files a row or a refusal for EVERY
+    candidate cell, so a candidate with neither means this reader was
+    called before the search -- the silent misorder `log.rows()` would
+    otherwise turn into "not found, rescue everything". That raises
+    (`GatherOrderError`) rather than proceeding: a control that can fail
+    (rule 7). With ink OFF the search files nothing by design and the rescue
+    proceeds on every candidate, exactly as it did against an empty scratch
+    log before.
 
     ⚠️ FILED AS GLYPH BOXES, FROM THEIR OWN READER NAME
     (`READERS.RESCUE_LOWCONF`), NEVER `READERS.DETECTOR`. Every rescued box
@@ -655,13 +681,7 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
     candidates = _empty_bar_candidate_cells(cells, local, detections)
     if not candidates:
         return
-
-    # ⚠️ A FRESH, THROWAWAY LOG -- never the real one. This asks 2.52's own
-    # question again, on the pre-mutation `detections`, so the answer is
-    # the SAME one 2.52's own pipeline call will reach; the real log is
-    # untouched by this scratch run.
-    scratch = Log()
-    gather_empty_bar_rest_search(scratch, candidates, local, detections)
+    search_ran = _ink_enabled()
 
     for c in candidates:
         key = local.get(c.staff_index)
@@ -673,10 +693,19 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
         frame = frame_cell(c.measure_index)
         cell_key = cell_sub.to_key()
 
-        already_found = any(
-            bool(row.value)
-            for row in scratch.rows(Q.EMPTY_BAR_REST_SEARCH, cell_sub))
-        if already_found:
+        # ⚠️ THE REAL LOG, not a scratch one -- see the docstring. The
+        # candidate set is the search's own (both computed off the
+        # pre-mutation `detections`), so with ink on every cell here holds
+        # a row or a refusal from `READERS.CV_REST_SEARCH`, or the search
+        # has not run yet.
+        search_rows = log.rows(Q.EMPTY_BAR_REST_SEARCH, cell_sub)
+        if search_ran and not search_rows \
+                and not log.refusals(Q.EMPTY_BAR_REST_SEARCH, cell_sub):
+            raise GatherOrderError(
+                f"gather_lowconf_rescue ran before "
+                f"gather_empty_bar_rest_search at {cell_key}: the rescue "
+                f"reads Q.EMPTY_BAR_REST_SEARCH and it is not on the record")
+        if any(bool(row.value) for row in search_rows):
             continue
 
         existing = detections.get(cell_key)
@@ -8318,20 +8347,43 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            progress: bool = False) -> Log:
     """Run every reader over already-prepared pages and return a frozen Log.
 
-    ⚠️ THE ORDER BELOW IS THE ASSUMED ONE AND ONLY THREE STEPS OF IT ARE
-    FORCED (A-GATHER-1):
+    ⚠️ THE RULE FOR ORDER IS ONE SENTENCE: a reader runs after every reader
+    whose rows it reads (`log.rows(Q.X, ...)`) and after every reader that
+    mutates state it walks (`detections`). GATHER decides nothing, so
+    anything else about the order is kinship, not dependency, and a step
+    that reads only the raster and `detections` could sit anywhere after
+    detection without changing a byte of the record. ⚠️ `log.rows()` on a
+    quantity nobody has filed yet returns EMPTY rather than raising, so a
+    reader placed above its input fails SILENTLY -- the one misorder that
+    bit (the rescue, below) now raises `GatherOrderError` instead.
 
-      1. page geometry before everything -- a cell is DEFINED by
-         `staff.line_ys` and nothing has coordinates before it;
-      2. detection before direction text -- it subtracts every detection from
-         the page's ink;
-      3. detection before notehead positions -- the position is measured from
-         a detection's y-centre.
+    The forced edges, as of 2026-10-06 (A-GATHER-1 said THREE until this
+    date; the count is derivable -- every `Q.X` inside a `log.rows(...)`
+    call in a reader or its helpers -- and should be re-derived, not
+    inherited):
 
-    Everything else is free to reorder. ⚠️ A FOURTH edge was found during the
-    build and does NOT appear here because it is an ADJUDICATION edge, not a
-    gathering one: the meter vote consumes committed durations. See
-    ASSUMPTIONS.md A-DUR-1.
+      geometry        -> everything (a cell is DEFINED by `staff.line_ys`)
+      detection       -> everything after it (`detections`)
+      rest search     -> lowconf rescue           (`Q.EMPTY_BAR_REST_SEARCH`)
+      lowconf rescue  -> every `detections` walker (mutates it in place)
+      recentre        -> ownership evidence, CV lines, notehead ink
+                                                  (`Q.NOTEHEAD_RECENTRE`)
+      notehead pos.   -> far-head ledgers         (`Q.NOTEHEAD_STAFF_POSITION`)
+      CV lines        -> stacked-head fit, stem cross-ink
+                                                  (`Q.STEM`, `Q.BEAM_STROKE`)
+      stem cross-ink  -> far-head ledgers         (`Q.NOTEHEAD_STEM_CROSS_INK`)
+      geometry        -> key signature            (`Q.CELL_STAFF_SPACE`)
+      detection       -> direction words (erases every detection from the mask)
+      hairpins, direction words -> family positions (promoted off their rows)
+
+    ⚠️ What is NOT an edge, because nothing in GATHER reads it: the CLEF.
+    Notehead positions are clef-free by design (the point of
+    `gather_notehead_positions`), and the key-signature reader fits every
+    clef's slot table rather than asking. The header readers' consumers are
+    all in ADJUDICATE; moving them earlier would reorder the record and
+    change nothing. ⚠️ A further edge found during the build is an
+    ADJUDICATION edge, not a gathering one: the meter vote consumes
+    committed durations. See ASSUMPTIONS.md A-DUR-1.
 
     `ink_component_rows` forwards to `gather_ink` (roadmap 1.1): False (the
     default) files one aggregated `Q.INK` row per cell; True reproduces the
@@ -8388,14 +8440,32 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             log, cells, local, detector=detector,
             conf_threshold=conf_threshold, imgsz=imgsz, progress=progress)
 
-        # ⚠️ ROADMAP 2.55, IMMEDIATELY AFTER DETECTION AND BEFORE EVERY ONE
-        # OF `detections`'s OTHER CONSUMERS: a rescued box is appended to
-        # THIS cell's own `detections` list in place, so every reader below
-        # that walks it by index -- notehead position, ownership evidence,
-        # rhythm marks, the ink/ledger/stem/stacked-head readers -- sees it
-        # exactly as it would see any production-floor box. 2.52's own call
-        # further down (`gather_empty_bar_rest_search`) is UNCHANGED and
-        # simply no longer finds this cell boxless once a rescue succeeds.
+        # ⚠️ ROADMAP 2.52, IMMEDIATELY AFTER DETECTION (it needs this cell's
+        # own boxes to tell whether it has NO notehead/rest box at all) AND
+        # BEFORE THE RESCUE BELOW, which reads its row. This is the order
+        # Sean gave (DECISIONS 2026-10-01: look for the whole rest in the
+        # middle of the bar FIRST; only a bar that has none is rescued).
+        # Until 2026-10-06 this call sat beside `gather_ink` and the rescue
+        # re-ran it on a throwaway `Log` to get an answer it could not yet
+        # read off the record -- the search ran twice on every candidate bar
+        # and the rescue read a scratch copy. It reads the SAME erased raster
+        # `gather_ink`/`gather_notehead_ink` read (`READERS.CV_REST_SEARCH`
+        # says so); its position here is a dependency, not a kinship.
+        gather_empty_bar_rest_search(log, cells, local, detections,
+                                     progress=progress)
+
+        # ⚠️ ROADMAP 2.55, AFTER THE REST SEARCH (it reads `Q.EMPTY_BAR_REST_
+        # SEARCH` off THIS log and refuses to run where the search has not
+        # filed -- see the function) AND BEFORE EVERY ONE OF `detections`'s
+        # OTHER CONSUMERS: a rescued box is appended to THIS cell's own
+        # `detections` list in place, so every reader below that walks it by
+        # index -- notehead position, ownership evidence, rhythm marks, the
+        # ink/ledger/stem/stacked-head readers -- sees it exactly as it would
+        # see any production-floor box. A rescued bar therefore carries BOTH
+        # its `found=False` search row and its rescued boxes: the record says
+        # the search looked and did not find a whole rest, then the rescue
+        # found heads. `adjudicate_empty_bar_whole_rest` abstains on the
+        # former (additive, never a gate), so the two do not contest.
         gather_lowconf_rescue(log, cells, local, detections,
                               detector=detector, imgsz=imgsz,
                               progress=progress)
@@ -8450,13 +8520,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # reading `cell.image_no_staff` in common with it and `cell.binary`
         # besides.
         gather_notehead_ink(log, cells, local, detections)
-        # ⚠️ ROADMAP 2.52, AFTER `gather_detections` (it needs this cell's own
-        # boxes to tell whether it has NO notehead/rest box at all) and
-        # BESIDE `gather_ink`/`gather_notehead_ink`: the same erased raster,
-        # `READERS.CV_REST_SEARCH` says so, but only for a bar neither of
-        # those readers has anything boxed to measure.
-        gather_empty_bar_rest_search(log, cells, local, detections,
-                                     progress=progress)
+        # (ROADMAP 2.52's `gather_empty_bar_rest_search` ran directly after
+        # detection, above, since 2026-10-06 -- the rescue reads its row.)
         # ⚠️ ROADMAP 2.42, AFTER `gather_notehead_ink` AND `gather_cv_lines`:
         # the stacked-head fit reads THIS cell's own `Q.STEM` rows (already
         # filed by `gather_cv_lines`, above) and re-derives the same

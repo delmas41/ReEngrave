@@ -39,8 +39,9 @@ def prepare_pages(pdf_path: str, pages: Sequence[int], *,
                   dpi: int = 600) -> List[Tuple[Any, List[Any]]]:
     """Render, detect staves, group systems, cut cells — all existing code.
 
-    ⚠️ This is the FIRST of the three hard gathering edges: a measure cell is
-    DEFINED by `staff.line_ys`, so nothing has coordinates until this has
+    ⚠️ This is the FIRST of the hard gathering edges (the full list, derived
+    rather than counted, is in `gather.gather`'s docstring): a measure cell
+    is DEFINED by `staff.line_ys`, so nothing has coordinates until this has
     run. `extract_measures` enforces it itself (`measure_extractor.py:
     1441-1442`: `if not pws.barlines: detect_barlines(pws)`).
     """
