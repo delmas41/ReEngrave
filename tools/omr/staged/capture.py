@@ -484,6 +484,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "space away — a relation between a located rung and the paper "
         "around it. Scoreless because it is a ruler reading, not a naming.",
         None),
+    "ARC_INK_SHAPE": (
+        RELATION,
+        "ROADMAP 2.60: the share of an arc box's columns that hold "
+        "curve-shaped ink once every staff line is taken out, the number of "
+        "staff lines through the box, and the share of columns that are one "
+        "tall vertical stroke -- a relation between a detector arc box and "
+        "the paper inside it, off the page raster. Scoreless because "
+        "it is a ruler reading, not a naming.",
+        None),
     "STEM_TIP_INK": (
         RELATION,
         "ROADMAP 2.18c: a windowed ink density test 1.0-2.5 staff spaces "
@@ -669,6 +678,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
+    # ⚠️ ROADMAP 2.60. Also `staged/gather.py` -- reads the PAGE's binary
+    # raster (`pws.page.binary`), staff lines left in, like `LEDGER_FARHEAD`:
+    # the lines of every staff are removed by the reader itself.
+    "CV_ARC_INK": ("staged/gather.py", "gather_arc_ink"),
     # ⚠️ ROADMAP 2.38. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP` do.
     "CV_BEAM_JOIN": ("staged/gather.py", "_observe_beam_stem_join"),
