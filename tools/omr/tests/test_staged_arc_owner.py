@@ -262,3 +262,42 @@ class TestHeadsFollowTheirOWNERAcrossStaves(unittest.TestCase):
         self.assertEqual(
             v.value, LOWER.to_key(),
             "the hugging heads are LOWER's by ownership, so the arc is too")
+
+
+class TestAnArcBelongsToTheStaffOfTheHeadsAtItsTwoENDS(unittest.TestCase):
+    """lane-arc-owner-regression (Sean 2026-10-07, `brahms 5/0/6/5/11`): *"both
+    arcs belong to the horn"*. The arc was cut from the unnamed staff BELOW; the
+    heads at BOTH of its ends are the Horn's (above); but one head in the MIDDLE
+    of the arc had been given to the lower staff, so both staves "hugged" the arc
+    at 0.0 spaces and the arc stayed where it was cut. An arc is drawn over the
+    notes it CONNECTS -- the two at its ends -- not over every head under it."""
+
+    def _scene(self, *, right_end_staff=0, mid_head_staff=1, sliver=False):
+        log = Log()
+        _spacing(log, UPPER, 10.0); _spacing(log, LOWER, 10.0)
+        arc = _arc(log, 1, 0, 100.0, 300.0, 200.0, 220.0)   # CUT from LOWER
+        _head(log, 0, 1, 90.0, 200.0)                       # left end  : UPPER
+        _head(log, right_end_staff, 2, 290.0, 200.0)        # right end
+        _head(log, mid_head_staff, 3, 190.0, 200.0)         # in the middle
+        if sliver:   # a 3px edge sliver past the right end, owned the other way
+            _head(log, 1, 4, 305.0, 200.0, w=3.0)
+        return log, arc
+
+    def test_both_end_heads_one_staff_beats_a_stray_middle_head(self):
+        log, arc = self._scene()
+        v = _own(log, arc)
+        self.assertEqual(v.value, UPPER.to_key())
+
+    def test_a_clipped_sliver_at_the_edge_is_not_an_end_head(self):
+        log, arc = self._scene(sliver=True)
+        v = _own(log, arc)
+        self.assertEqual(v.value, UPPER.to_key())
+
+    def test_ends_on_DIFFERENT_staves_leave_the_comparative_rule_alone(self):
+        """The positive control must be able to fail: with the ends split the
+        end rule is silent and the arc stays on the staff it was cut from, as
+        it did before this rule existed."""
+        log, arc = self._scene(right_end_staff=1)
+        v = _own(log, arc)
+        self.assertEqual(v.value, LOWER.to_key())
+        self.assertNotEqual(v.reason, "ends_on_noteheads")

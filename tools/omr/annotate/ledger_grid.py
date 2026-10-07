@@ -3366,23 +3366,35 @@ NOTE_BETWEEN_MIN_SPACES = 0.5
 
 
 NOTE_LINE_REFINE_MAX_SPACES = 0.30   # how far the flank ink may move a line's row
+#: lane-farhead-5-6: with `flank_refine_bounded`, only flank rows that touch the head count (a dot floats clear of it)
+FLANK_REFINE_CONTACT = True
+#: lane-farhead-5-6: with `flank_refine_bounded`, a jut's own row (`through_the_middle`) is not re-measured on the flanks
+FLANK_REFINE_SKIP_JUT = True
 NOTE_LINE_FLANK_INK_FRACTION = 0.6
 
 
-def refine_line_on_flanks(img_gray, y, head_box, spacing):
+def refine_line_on_flanks(img_gray, y, head_box, spacing, require_contact=False):
     """The row of the line at `y` read where the head does not hide it: the
     columns flanking the box (0.1..1.0 sp out, each side), the nearest run of
     rows (within `NOTE_LINE_REFINE_MAX_SPACES`) whose ink fraction there is
     >= `NOTE_LINE_FLANK_INK_FRACTION`. The walk's rung row is a band peak over
     columns that include the head's own ink, which can sit a few px off the
     line. Returns `(y, True)` refined, `(y, False)` where no ink flanks the head
-    at that row (the line is hidden behind it: the walk's row stands)."""
+    at that row (the line is hidden behind it: the walk's row stands).
+
+    `require_contact` (lane-farhead-5-6, 2026-10-07; False = bit-identical): a flank row counts only where its ink touches the
+    head -- the strip 0.05..0.3 sp outside the box is at least half inked at that row. A ledger stub juts
+    out of the head; an augmentation dot floats clear of it."""
     h, w = img_gray.shape
     m = int(round(NOTE_LINE_REFINE_MAX_SPACES * spacing))
     cands = []
-    for a, b in ((head_box[0] - 1.0 * spacing, head_box[0] - 0.1 * spacing),
-                 (head_box[2] + 0.1 * spacing, head_box[2] + 1.0 * spacing)):
+    for (a, b), (ca, cb) in (
+            ((head_box[0] - 1.0 * spacing, head_box[0] - 0.1 * spacing),
+             (head_box[0] - 0.3 * spacing, head_box[0] - 0.05 * spacing)),
+            ((head_box[2] + 0.1 * spacing, head_box[2] + 1.0 * spacing),
+             (head_box[2] + 0.05 * spacing, head_box[2] + 0.3 * spacing))):
         a, b = max(0, int(a)), min(w, int(b))
+        ca, cb = max(0, int(ca)), min(w, int(cb))
         if b <= a:
             continue
         band = img_gray[max(0, int(y) - m - 2):min(h, int(y) + m + 3), a:b]
@@ -3391,7 +3403,9 @@ def refine_line_on_flanks(img_gray, y, head_box, spacing):
         thr = _otsu_threshold(band)
         r0 = max(0, int(y) - m - 2)
         rows = [r for r in range(int(y) - m, int(y) + m + 1) if 0 <= r < h
-                and float((img_gray[r, a:b] <= thr).mean()) >= NOTE_LINE_FLANK_INK_FRACTION]
+                and float((img_gray[r, a:b] <= thr).mean()) >= NOTE_LINE_FLANK_INK_FRACTION
+                and (not require_contact or cb <= ca
+                     or float((img_gray[r, ca:cb] <= thr).mean()) >= 0.5)]
         if not rows:
             continue
         runs, cur = [], [rows[0]]
@@ -3611,8 +3625,13 @@ def derive_note_first_step(
     far_side_partner_boxes: "list | None" = None,
     ledger_not_text: bool = False, text_boxes: "list | None" = None,
     edge_vs_through: bool = False,
+    flank_refine_bounded: bool = False,
 ) -> dict:
-    """Sean's 2026-10-05 order (see the block comment). Returns `{offset, kind,
+    """Sean's 2026-10-05 order (see the block comment).
+
+    `flank_refine_bounded` (lane-farhead-5-6, 2026-10-07; False = bit-identical): a line a jut measured
+    (`through_the_middle`) was read on the flank columns already, so it is not re-measured there; any other
+    line is re-measured only on flank rows that TOUCH the head (`require_contact`). Returns `{offset, kind,
     reason, line_y, how, between, k, gaps}`; `offset` (half-steps out from the
     edge) is None where it abstains, `reason` then names why."""
     ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
@@ -3622,8 +3641,16 @@ def derive_note_first_step(
         return dict(offset=None, kind=None, reason=ln["reason"], line_y=None,
                     how=None, between=[], k=None, gaps=[])
     cx = (head_box[0] + head_box[2]) / 2.0
-    ln["y"], ln["seen_on_flanks"] = refine_line_on_flanks(
-        img_gray, ln["y"], head_box, spacing)
+    if flank_refine_bounded:
+        if ln["how"] == "through_the_middle" and FLANK_REFINE_SKIP_JUT:
+            ln["seen_on_flanks"] = True       # its row IS the median of the jut's own flank columns
+        else:
+            ln["y"], ln["seen_on_flanks"] = refine_line_on_flanks(
+                img_gray, ln["y"], head_box, spacing,
+                require_contact=FLANK_REFINE_CONTACT)
+    else:
+        ln["y"], ln["seen_on_flanks"] = refine_line_on_flanks(
+            img_gray, ln["y"], head_box, spacing)
     count_rungs, refused = rungs_y, []
     if ledger_not_text:
         # only the rungs COUNTED between are tested: the note's own line may run through the head

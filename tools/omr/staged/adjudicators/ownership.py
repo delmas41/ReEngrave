@@ -1592,7 +1592,7 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
     # mean "I could not read THIS arc".
     subjects_from=Q.ARC_BOX,
     reasons=("hugs_noteheads", "no_better_staff", "no_page_frame",
-             "no_rival_staff", "no_evidence"),
+             "no_rival_staff", "no_evidence", "ends_on_noteheads"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_owner(ev: Evidence) -> Ruling:
@@ -1649,6 +1649,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
 
     system = ev.subject.at(Kind.SYSTEM)
     heads: Dict[str, List[Tuple[float, float, float, float]]] = {}
+    all_heads: List[Tuple[str, float, float, float, float]] = []
     for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                        subject=system):
         if row.detail.get("category") != "notehead":
@@ -1673,6 +1674,8 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
                      else row.subject.at(Kind.STAFF).to_key())
         heads.setdefault(str(staff_key), []).append(
             (float(box[0]), float(box[1]), float(box[2]), float(box[3])))
+        all_heads.append((str(staff_key), float(box[0]), float(box[1]),
+                          float(box[2]), float(box[3])))
 
     spacing: Dict[str, float] = {}
     for row in ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_DESCENDANTS,
@@ -1701,6 +1704,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
         return min(gaps) / sp, len(covered)
 
     own_gap, own_n = clearance(own)
+    ends = _arc_end_owner(arc_box, all_heads, spacing)
     rivals = []
     for staff_key in heads:
         if staff_key == own:
@@ -1715,6 +1719,28 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
               "rivals": [{"staff": k, "clearance_spaces": g, "covered": n}
                          for g, n, k in rivals[:4]]}
 
+    ruling = _comparative_arc_ruling(arc, own, own_gap, rivals, detail,
+                                     _ARC_RIVAL_MARGIN_SPACES,
+                                     _ARC_RIVAL_NEAR_SPACES)
+    # ⚠️ THE ARC IS DRAWN OVER THE TWO NOTES IT CONNECTS (CLAUDE.md §10; Sean,
+    # 2026-10-07, `brahms 5/0/6/5/11`: *"both arcs belong to the horn"*). When
+    # the nearest head at each END belongs to ONE staff, that staff owns the
+    # arc -- whatever else lies under its middle. The comparative rule counts
+    # EVERY covered head, so one head in the middle owned by another staff
+    # tied the clearance at 0.0 and the arc stayed on the staff it was cut
+    # from. It speaks only where it DISAGREES with the comparative answer;
+    # ends that disagree with each other, or no two end heads near the arc,
+    # leave that answer exactly as it was.
+    if ends is not None and ends != ruling.value:
+        return Ruling(value=ends, reason="ends_on_noteheads", used=(arc.id,),
+                      detail={**detail, "end_owner": ends,
+                              "comparative": {"value": ruling.value,
+                                              "reason": ruling.reason},
+                              **({"moved_from": own} if ends != own else {})})
+    return ruling
+
+
+def _comparative_arc_ruling(arc, own, own_gap, rivals, detail, margin, near):
     if not rivals:
         # ⚠️ NOT AN ABSTENTION. "No other staff of this system explains this
         # arc better" is a DECISION that it stays where it was found, and the
@@ -1724,16 +1750,61 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
                       used=(arc.id,), detail=detail)
 
     best_gap, _best_n, best_key = rivals[0]
-    if best_gap > _ARC_RIVAL_NEAR_SPACES:
+    if best_gap > near:
         return Ruling(value=own, reason="no_better_staff",
                       used=(arc.id,), detail=detail)
     # ⚠️ An arc covering NOTHING in this staff is claimed outright: it binds no
     # note here, so there is nothing for it to be.
-    if own_gap is not None and (own_gap - best_gap) < _ARC_RIVAL_MARGIN_SPACES:
+    if own_gap is not None and (own_gap - best_gap) < margin:
         return Ruling(value=own, reason="no_better_staff",
                       used=(arc.id,), detail=detail)
     return Ruling(value=best_key, reason="hugs_noteheads", used=(arc.id,),
                   detail={**detail, "moved_from": own})
+
+
+def _arc_end_owner(arc_box, heads, spacing):
+    """The staff that owns the heads at BOTH ends of an arc, or None.
+
+    `heads` is `[(owner key, x0, y0, x1, y1)]` for the whole system, already
+    grouped by the OWNER `glyph_owner` decided. An end head is one whose
+    centre lies under the arc's x extent (the same padded test the clearance
+    makes), whose box is at least `TOO_NARROW_MIN_SPACES` wide (an edge sliver
+    is not a note: on `brahms 5/0/6/5/11` the right end held two 7 px slivers
+    of the NEXT bar's heads, one for each staff) and that sits within
+    `_ARC_RIVAL_NEAR_SPACES` of the arc's box in its owner's staff spaces. The
+    left end is the leftmost such head and the right end the rightmost, a
+    half head width of slack for a duplicated mark. ONE owner at each end, the
+    SAME owner at both, or nothing: it never picks between two.
+    """
+    from ...export import _ARC_RIVAL_NEAR_SPACES, _SLUR_ARC_PAD_NOTEHEADS
+    from .notehead_precision import TOO_NARROW_MIN_SPACES
+
+    if not heads:
+        return None
+    mean_w = sum(h[3] - h[1] for h in heads) / len(heads)
+    pad = _SLUR_ARC_PAD_NOTEHEADS * mean_w
+    near = []
+    for owner, x0, y0, x1, y1 in heads:
+        sp = spacing.get(owner)
+        if not sp or (x1 - x0) < TOO_NARROW_MIN_SPACES * sp:
+            continue
+        cx = (x0 + x1) / 2.0
+        if not (arc_box[0] - pad <= cx <= arc_box[2] + pad):
+            continue
+        gap = max(arc_box[1] - y1, y0 - arc_box[3], 0.0)
+        if gap / sp > _ARC_RIVAL_NEAR_SPACES:
+            continue
+        near.append((cx, owner, x1 - x0))
+    if len(near) < 2:      # one head cannot be both ends of an arc
+        return None
+    lo = min(c for c, _o, _w in near)
+    hi = max(c for c, _o, _w in near)
+    slack = 0.5 * mean_w
+    left = {o for c, o, _w in near if c <= lo + slack}
+    right = {o for c, o, _w in near if c >= hi - slack}
+    if hi - lo > slack and len(left) == 1 and left == right:
+        return next(iter(left))
+    return None
 
 
 def _median(xs):
