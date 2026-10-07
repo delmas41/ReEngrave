@@ -299,6 +299,20 @@ def _from_staves_enabled() -> bool:
         not in ("0", "", "false", "no", "off")
 
 
+#: ROADMAP 2.59 (lane-dot-not-a-note, Sean 2026-10-07) -- DEFAULT OFF, so a
+#: typo leaves it off (allow-list, CLAUDE.md §7). One switch for the three
+#: dot rules: (a) a notehead-class box of dot size is refused as a dot, (b) a
+#: dot belongs to the note immediately to its LEFT and so to THAT note's
+#: owner (never to the strip that happened to box it), (c) a dot-sized box
+#: sharing ink with a dot takes that dot's owner. Read at ADJUDICATE time.
+DOT_FOLLOWS_NOTE_ENV = "OMR_DOT_FOLLOWS_NOTE"
+
+
+def dot_follows_note_enabled() -> bool:
+    return os.environ.get(DOT_FOLLOWS_NOTE_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
 #: `gather.PAGE_EDGE_MARGIN_SPACES` (0.8, MEASURED: the page-wide position of a
 #: head can sit up to 0.775 sp (Litolff) / 0.73 sp (Breitkopf) from its local
 #: one). Where a head's position against a staff is known only from the
@@ -3736,3 +3750,189 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
             census["adopted_after_abstaining" if prior is not None
                    else "adopted_uncontested"] += 1
     return dict(census)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.59 -- A DOT BELONGS TO THE NOTE TO ITS LEFT (Sean, 2026-10-07)
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box of notehead class counts as THE SAME INK as a dot box where at least
+#: this share of the SMALLER box lies inside the other, and it is no larger
+#: than DOT_TWIN_MAX_RATIO x the dot box on either side. ⚠️ Containment, not
+#: the group rule's IoU 0.3: a dot clipped by the cell edge is a fragment of
+#: the whole dot (Brahms `7/1/0/9/9` against `7/1/1/9/10`: 54% of the
+#: fragment inside the dot, IoU 0.295 -- under the group rule's bar by 0.005).
+DOT_TWIN_OVERLAP_MIN = 0.5
+DOT_TWIN_MAX_RATIO = 1.35
+
+
+#: ROADMAP 2.59 round 2 (Sean, 2026-10-07). THE GEOMETRIC TESTS, stated before
+#: any count, in staff spaces (sp), all in the PAGE frame.
+#:
+#: STACKED UNDER A NOTE (a staccato-placed dot): the dot's centre x lies within
+#: DOT_STACK_CENTRED_MAX_SPACES of the centre of a notehead -- of ANY staff,
+#: owned by anyone (the staccato window's own centring figure) -- and the dot's
+#: centre y lies OUTSIDE that head's y-extent, no farther from its nearest
+#: edge than DOT_STACK_MAX_SPACES. MEASURED on the 10-07 night records before
+#: it was fixed: the dots this separated from true staccati sit at 0.0-0.5 sp
+#: from the centre (99% under 0.42), while a lengthening dot beside the
+#: shifted head of a chord's second sits at 0.5-0.76 sp -- the span's EDGE. A lengthening dot sits to the RIGHT of its
+#: head at the head's own height (in the space, or the space above for a line
+#: note: CLAUDE.md §10); a staccato sits directly above or below a head,
+#: within its x span. A dot that fits the second is never read as the first.
+DOT_STACK_MAX_SPACES = 2.0
+DOT_STACK_CENTRED_MAX_SPACES = 0.5
+#: ON A BARLINE: a mark's page x-extent reaches the barline column, i.e. comes
+#: within BARLINE_COLUMN_TOL_SPACES of its cell's left or right page edge --
+#: cells are cut AT the barlines (`Q.CELL_BOX` edges; the cells of a staff
+#: are contiguous, Brahms p5 staff 1: 1330 | 1804 | 2271), the precedent is
+#: `unread_mark._touches_a_barline`. Tighter than that rule's 0.5 sp so a dot
+#: printed close before a barline is not taken for ink on it.
+BARLINE_COLUMN_TOL_SPACES = 0.15
+
+
+def dot_stacked_under_a_note(dot_page, notes_page, sp_page) -> bool:
+    if not dot_page or not sp_page:
+        return False
+    cx, cy = (dot_page[0] + dot_page[2]) / 2.0, (dot_page[1] + dot_page[3]) / 2.0
+    for b in notes_page:
+        if abs(cx - (b[0] + b[2]) / 2.0) > DOT_STACK_CENTRED_MAX_SPACES * sp_page:
+            continue
+        if b[1] <= cy <= b[3]:
+            continue
+        gap = (b[1] - cy) if cy < b[1] else (cy - b[3])
+        if gap <= DOT_STACK_MAX_SPACES * sp_page:
+            return True
+    return False
+
+
+def mark_on_a_barline(mark_page, cell_page, sp_page) -> bool:
+    if not mark_page or not cell_page or not sp_page:
+        return False
+    tol = BARLINE_COLUMN_TOL_SPACES * sp_page
+    return any(mark_page[0] <= edge + tol and mark_page[2] >= edge - tol
+               for edge in (cell_page[0], cell_page[2]))
+
+
+def _decided_str(v) -> Optional[str]:
+    if v is not None and v.outcome is Outcome.DECIDED \
+            and isinstance(v.value, str):
+        return v.value
+    return None
+
+
+def reconcile_dot_owners(log: R.Log) -> Dict[str, int]:
+    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default OFF).
+
+    Run after `Q.DOT_ROLE`, whose augmentation verdict names the note the dot
+    trails (`detail.head`). CONNECTS, NEVER GUESSES (rule 6): it only reads
+    two verdicts that already exist and files the dot's owner as the note's
+    -- the note's DECIDED `glyph_owner`, or, where the note was never
+    contested, its own filing staff. A note whose owner is not decided files
+    nothing (`head_owner_undecided`). The dot's own verdict is superseded,
+    never overwritten.
+
+    Second half: a notehead-class box that is the SAME INK as such a dot (a
+    dot clipped by the cell edge and boxed as a head -- Brahms `glyph/7/1/0/
+    9/9`) takes the dot's final owner; it was given to whichever strip cut it.
+    """
+    if not dot_follows_note_enabled():
+        return {}
+    census: Counter = Counter()
+    dots: Dict[str, Tuple[R.Subject, str]] = {}
+    for sub in log.subjects(Kind.GLYPH):
+        role = log.verdict(Q.DOT_ROLE, sub)
+        if role is None or role.outcome is not Outcome.DECIDED \
+                or role.value != "augmentation":
+            continue
+        head = (role.detail or {}).get("head")
+        if not head:
+            census["no_head_named"] += 1
+            continue
+        if (role.detail or {}).get("head_refused"):
+            census["head_is_a_refused_fragment"] += 1
+            continue
+        hsub = R.Subject.from_key(head)
+        hv = log.verdict(Q.GLYPH_OWNER, hsub)
+        target = _decided_str(hv)
+        if target is None and hv is None:
+            hs = hsub.at(Kind.STAFF)
+            target = hs.to_key() if hs is not None else None
+        if target is None:
+            census["head_owner_undecided"] += 1
+            continue
+        census["dots"] += 1
+        dv = log.verdict(Q.GLYPH_OWNER, sub)
+        home = sub.at(Kind.STAFF)
+        cur = _decided_str(dv) if dv is not None else (
+            home.to_key() if home is not None else None)
+        dots[sub.to_key()] = (sub, target)
+        if cur == target:
+            census["already_with_its_note"] += 1
+            continue
+        basis = tuple(x.id for x in (role, hv, dv) if x is not None)
+        out = R.Verdict(
+            id=log._next_id("vrd"), subject=sub, quantity=Q.GLYPH_OWNER,
+            outcome=Outcome.DECIDED, value=target,
+            decider="reconcile_dot_owners", reason="dot_follows_note",
+            considered=basis, basis=basis,
+            supersedes=dv.id if dv is not None else None,
+            detail={"head": head, "was": cur})
+        log.record(out)
+        census["moved_to_its_note" if cur else "filed"] += 1
+    # --- the dot-shaped notehead-class box that is a dot's own ink ----------
+    page_dots: Dict[Tuple[int, int], List[Tuple[Any, str]]] = {}
+    for key, (sub, target) in dots.items():
+        for r in log.rows(Q.GLYPH_BOX, sub):
+            bb = (r.detail or {}).get("bbox_page_px")
+            if bb and len(bb) == 4:
+                page_dots.setdefault((sub.page, sub.system), []).append(
+                    (tuple(bb), target))
+    if page_dots:
+        for sub in log.subjects(Kind.GLYPH):
+            npv = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+            if npv is None or npv.outcome is not Outcome.DECIDED \
+                    or npv.value is not True:
+                continue
+            for r in log.rows(Q.GLYPH_BOX, sub):
+                bb = (r.detail or {}).get("bbox_page_px")
+                cls = (r.value[0] if isinstance(r.value, (list, tuple))
+                       and r.value else "")
+                if not bb or len(bb) != 4 \
+                        or not str(cls).lower().startswith("notehead"):
+                    continue
+                for db, target in page_dots.get((sub.page, sub.system), ()):
+                    if _box_overlap_of_smaller(tuple(bb), db) < DOT_TWIN_OVERLAP_MIN:
+                        continue
+                    if (bb[2] - bb[0]) > DOT_TWIN_MAX_RATIO * (db[2] - db[0]) \
+                            or (bb[3] - bb[1]) > DOT_TWIN_MAX_RATIO \
+                            * (db[3] - db[1]):
+                        continue
+                    census["dot_twin_boxes"] += 1
+                    ov = log.verdict(Q.GLYPH_OWNER, sub)
+                    ohome = sub.at(Kind.STAFF)
+                    cur = _decided_str(ov) if ov is not None else (
+                        ohome.to_key() if ohome is not None else None)
+                    if cur == target:
+                        break
+                    basis = tuple(x.id for x in (npv, ov) if x is not None)
+                    log.record(R.Verdict(
+                        id=log._next_id("vrd"), subject=sub,
+                        quantity=Q.GLYPH_OWNER, outcome=Outcome.DECIDED,
+                        value=target, decider="reconcile_dot_owners",
+                        reason="dot_follows_note", considered=basis,
+                        basis=basis,
+                        supersedes=ov.id if ov is not None else None,
+                        detail={"twin_of_a_dot": True, "was": cur}))
+                    census["dot_twin_moved"] += 1
+                    break
+    return dict(census)
+
+
+def _box_overlap_of_smaller(a, b) -> float:
+    ix0, iy0 = max(a[0], b[0]), max(a[1], b[1])
+    ix1, iy1 = min(a[2], b[2]), min(a[3], b[3])
+    if ix1 <= ix0 or iy1 <= iy0:
+        return 0.0
+    small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
+    return ((ix1 - ix0) * (iy1 - iy0)) / small if small > 0 else 0.0
