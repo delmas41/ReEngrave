@@ -1,0 +1,650 @@
+{
+ "lito-new": {
+  "repro": "331/331",
+  "repro_extra": 0,
+  "cells_box_match": "5377/5377",
+  "shift_control": {
+   "staff": "staff/1/0/0",
+   "n_common": 157,
+   "n_a": 157,
+   "n_b": 158,
+   "median_detected_shift": 3.0,
+   "max_dev": 4.440892098500626e-16
+  },
+  "heads": {
+   "n": 11399,
+   "max_err_pergrid": 0.004999999999999893,
+   "n_err_gt_0.01": 0,
+   "n_in_shifted_cells": 8926,
+   "unlocalized_err_median_in_shifted": 0.24
+  },
+  "raw_line_samples": {
+   "n": 209205,
+   "median_px": 1.5,
+   "p90_px": 5.5,
+   "max_px": 17.5,
+   "median_sp": 0.09523809523809523,
+   "p90_sp": 0.3492063492063492,
+   "max_sp": 1.1111111111111112,
+   "signed_median_px": 0.0,
+   "signed_mean_px": 0.7879520087952009,
+   "thickness_median_px": 4.0
+  },
+  "staves_measured": 331,
+  "clear_columns_per_staff_median": 126.0,
+  "staves_ge_0.25sp_colmean": 211,
+  "staves_ge_0.4sp_colmean": 147,
+  "staves_ge_0.25sp_anyline": 230,
+  "staves_ge_0.4sp_anyline": 163,
+  "shape_of_flagged": {
+   "shift": 2,
+   "wander": 78,
+   "tilt": 127,
+   "spacing": 4
+  },
+  "max_tilt_px_among_tilt": 19.771310797537645,
+  "worst10": [
+   {
+    "staff": "staff/4/0/5",
+    "max_px": 17.2,
+    "max_sp": 1.09
+   },
+   {
+    "staff": "staff/2/1/9",
+    "max_px": 16.9,
+    "max_sp": 1.06
+   },
+   {
+    "staff": "staff/6/1/11",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/4/0/4",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/10/0/1",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/4/0/1",
+    "max_px": 16.3,
+    "max_sp": 1.03
+   },
+   {
+    "staff": "staff/6/1/10",
+    "max_px": 15.8,
+    "max_sp": 1.0
+   },
+   {
+    "staff": "staff/6/1/9",
+    "max_px": 15.2,
+    "max_sp": 0.97
+   },
+   {
+    "staff": "staff/6/0/0",
+    "max_px": 14.9,
+    "max_sp": 0.96
+   },
+   {
+    "staff": "staff/14/0/1",
+    "max_px": 14.4,
+    "max_sp": 0.91
+   }
+  ],
+  "cells_ge2": 4934,
+  "cells_median_ge_0.25sp": {
+   "raw": 791,
+   "bar": 0
+  },
+  "cells_anypoint_ge_0.25sp": {
+   "raw": 902,
+   "bar": 1
+  },
+  "cells_median_ge_0.4sp": {
+   "raw": 383,
+   "bar": 0
+  },
+  "cells_anypoint_ge_0.4sp": {
+   "raw": 447,
+   "bar": 0
+  },
+  "within_bar_range_px": {
+   "median": 0.6,
+   "p90": 1.4000000000000001
+  },
+  "cell_median_abs_bar_px": {
+   "median": 0.3,
+   "p90": 0.6
+  },
+  "bad_cells_median_ge_0.4sp": {
+   "n": 0,
+   "why": {},
+   "list": []
+  }
+ },
+ "lito-base": {
+  "repro": "331/331",
+  "repro_extra": 0,
+  "cells_box_match": "5377/5377",
+  "shift_control": {
+   "staff": "staff/1/0/0",
+   "n_common": 157,
+   "n_a": 157,
+   "n_b": 158,
+   "median_detected_shift": 3.0,
+   "max_dev": 4.440892098500626e-16
+  },
+  "heads": {
+   "n": 11399,
+   "max_err_pergrid": 0.004999999999999893,
+   "n_err_gt_0.01": 0,
+   "n_in_shifted_cells": 8902,
+   "unlocalized_err_median_in_shifted": 0.23999999999999977
+  },
+  "raw_line_samples": {
+   "n": 209205,
+   "median_px": 1.5,
+   "p90_px": 5.5,
+   "max_px": 17.5,
+   "median_sp": 0.09523809523809523,
+   "p90_sp": 0.3492063492063492,
+   "max_sp": 1.1111111111111112,
+   "signed_median_px": 0.0,
+   "signed_mean_px": 0.7879520087952009,
+   "thickness_median_px": 4.0
+  },
+  "staves_measured": 331,
+  "clear_columns_per_staff_median": 126.0,
+  "staves_ge_0.25sp_colmean": 211,
+  "staves_ge_0.4sp_colmean": 147,
+  "staves_ge_0.25sp_anyline": 230,
+  "staves_ge_0.4sp_anyline": 163,
+  "shape_of_flagged": {
+   "shift": 2,
+   "wander": 78,
+   "tilt": 127,
+   "spacing": 4
+  },
+  "max_tilt_px_among_tilt": 19.771310797537645,
+  "worst10": [
+   {
+    "staff": "staff/4/0/5",
+    "max_px": 17.2,
+    "max_sp": 1.09
+   },
+   {
+    "staff": "staff/2/1/9",
+    "max_px": 16.9,
+    "max_sp": 1.06
+   },
+   {
+    "staff": "staff/6/1/11",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/4/0/4",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/10/0/1",
+    "max_px": 16.6,
+    "max_sp": 1.05
+   },
+   {
+    "staff": "staff/4/0/1",
+    "max_px": 16.3,
+    "max_sp": 1.03
+   },
+   {
+    "staff": "staff/6/1/10",
+    "max_px": 15.8,
+    "max_sp": 1.0
+   },
+   {
+    "staff": "staff/6/1/9",
+    "max_px": 15.2,
+    "max_sp": 0.97
+   },
+   {
+    "staff": "staff/6/0/0",
+    "max_px": 14.9,
+    "max_sp": 0.96
+   },
+   {
+    "staff": "staff/14/0/1",
+    "max_px": 14.4,
+    "max_sp": 0.91
+   }
+  ],
+  "cells_ge2": 4934,
+  "cells_median_ge_0.25sp": {
+   "raw": 791,
+   "bar": 21
+  },
+  "cells_anypoint_ge_0.25sp": {
+   "raw": 902,
+   "bar": 22
+  },
+  "cells_median_ge_0.4sp": {
+   "raw": 383,
+   "bar": 21
+  },
+  "cells_anypoint_ge_0.4sp": {
+   "raw": 447,
+   "bar": 21
+  },
+  "within_bar_range_px": {
+   "median": 0.6,
+   "p90": 1.4000000000000001
+  },
+  "cell_median_abs_bar_px": {
+   "median": 0.3,
+   "p90": 0.6
+  },
+  "bad_cells_median_ge_0.4sp": {
+   "n": 21,
+   "why": {
+    "moved_wrong_way": 10,
+    "not_shifted": 10,
+    "other": 1
+   },
+   "list": [
+    {
+     "cell": "cell/10/0/1/0",
+     "shift": 0,
+     "raw_med": 15.2,
+     "bar_med": 15.2
+    },
+    {
+     "cell": "cell/10/0/1/1",
+     "shift": -2,
+     "raw_med": 13.1,
+     "bar_med": 15.1
+    },
+    {
+     "cell": "cell/2/1/9/13",
+     "shift": -2,
+     "raw_med": 14.0,
+     "bar_med": 16.0
+    },
+    {
+     "cell": "cell/2/1/9/14",
+     "shift": 0,
+     "raw_med": 15.4,
+     "bar_med": 15.4
+    },
+    {
+     "cell": "cell/4/0/1/0",
+     "shift": -1,
+     "raw_med": 14.5,
+     "bar_med": 15.5
+    },
+    {
+     "cell": "cell/4/0/4/10",
+     "shift": 1,
+     "raw_med": -14.1,
+     "bar_med": -15.1
+    },
+    {
+     "cell": "cell/4/0/4/11",
+     "shift": 0,
+     "raw_med": -15.2,
+     "bar_med": -15.2
+    },
+    {
+     "cell": "cell/4/0/4/12",
+     "shift": 0,
+     "raw_med": -16.4,
+     "bar_med": -16.4
+    },
+    {
+     "cell": "cell/4/0/4/13",
+     "shift": 0,
+     "raw_med": -15.8,
+     "bar_med": -15.8
+    },
+    {
+     "cell": "cell/4/0/4/14",
+     "shift": 0,
+     "raw_med": -15.0,
+     "bar_med": -15.0
+    },
+    {
+     "cell": "cell/4/0/5/0",
+     "shift": 0,
+     "raw_med": 15.9,
+     "bar_med": 15.9
+    },
+    {
+     "cell": "cell/4/0/5/1",
+     "shift": -1,
+     "raw_med": 14.0,
+     "bar_med": 15.0
+    },
+    {
+     "cell": "cell/6/0/0/11",
+     "shift": 1,
+     "raw_med": -13.9,
+     "bar_med": -14.9
+    },
+    {
+     "cell": "cell/6/0/0/12",
+     "shift": 1,
+     "raw_med": -14.6,
+     "bar_med": -15.6
+    },
+    {
+     "cell": "cell/6/1/10/0",
+     "shift": 1,
+     "raw_med": -15.0,
+     "bar_med": -16.0
+    },
+    {
+     "cell": "cell/6/1/10/1",
+     "shift": 1,
+     "raw_med": -15.6,
+     "bar_med": -16.6
+    },
+    {
+     "cell": "cell/6/1/11/10",
+     "shift": -1,
+     "raw_med": 14.6,
+     "bar_med": 15.6
+    },
+    {
+     "cell": "cell/6/1/11/11",
+     "shift": 0,
+     "raw_med": 15.8,
+     "bar_med": 15.8
+    },
+    {
+     "cell": "cell/6/1/11/12",
+     "shift": 0,
+     "raw_med": 15.8,
+     "bar_med": 15.8
+    },
+    {
+     "cell": "cell/6/1/11/13",
+     "shift": 1,
+     "raw_med": 16.5,
+     "bar_med": 15.5
+    },
+    {
+     "cell": "cell/6/1/9/13",
+     "shift": 0,
+     "raw_med": 15.1,
+     "bar_med": 15.1
+    }
+   ]
+  }
+ },
+ "brahms-new": {
+  "repro": "691/691",
+  "repro_extra": 0,
+  "cells_box_match": "6685/6685",
+  "shift_control": {
+   "staff": "staff/0/0/0",
+   "n_common": 128,
+   "n_a": 129,
+   "n_b": 128,
+   "median_detected_shift": 3.0,
+   "max_dev": 0.0
+  },
+  "heads": {
+   "n": 24260,
+   "max_err_pergrid": 0.005000000000000782,
+   "n_err_gt_0.01": 0,
+   "n_in_shifted_cells": 10883,
+   "unlocalized_err_median_in_shifted": 0.21999999999999975
+  },
+  "raw_line_samples": {
+   "n": 582425,
+   "median_px": 1.5,
+   "p90_px": 5.5,
+   "max_px": 19.5,
+   "median_sp": 0.05504587155963303,
+   "p90_sp": 0.2,
+   "max_sp": 0.6972477064220184,
+   "signed_median_px": 0.0,
+   "signed_mean_px": -0.2279100313345066,
+   "thickness_median_px": 7.0
+  },
+  "staves_measured": 691,
+  "clear_columns_per_staff_median": 163.0,
+  "staves_ge_0.25sp_colmean": 251,
+  "staves_ge_0.4sp_colmean": 63,
+  "staves_ge_0.25sp_anyline": 301,
+  "staves_ge_0.4sp_anyline": 104,
+  "shape_of_flagged": {
+   "tilt": 235,
+   "spacing": 11,
+   "shift": 4,
+   "wander": 1
+  },
+  "max_tilt_px_among_tilt": 24.38810790754593,
+  "worst10": [
+   {
+    "staff": "staff/12/1/8",
+    "max_px": 17.9,
+    "max_sp": 0.64
+   },
+   {
+    "staff": "staff/1/1/7",
+    "max_px": 17.2,
+    "max_sp": 0.63
+   },
+   {
+    "staff": "staff/1/1/9",
+    "max_px": 16.7,
+    "max_sp": 0.61
+   },
+   {
+    "staff": "staff/2/1/12",
+    "max_px": 16.5,
+    "max_sp": 0.61
+   },
+   {
+    "staff": "staff/7/0/0",
+    "max_px": 15.0,
+    "max_sp": 0.55
+   },
+   {
+    "staff": "staff/12/1/6",
+    "max_px": 14.5,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/20/0/11",
+    "max_px": 14.3,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/14/1/10",
+    "max_px": 14.2,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/20/1/2",
+    "max_px": 14.0,
+    "max_sp": 0.5
+   },
+   {
+    "staff": "staff/7/0/2",
+    "max_px": 13.9,
+    "max_sp": 0.5
+   }
+  ],
+  "cells_ge2": 6489,
+  "cells_median_ge_0.25sp": {
+   "raw": 369,
+   "bar": 0
+  },
+  "cells_anypoint_ge_0.25sp": {
+   "raw": 521,
+   "bar": 0
+  },
+  "cells_median_ge_0.4sp": {
+   "raw": 45,
+   "bar": 0
+  },
+  "cells_anypoint_ge_0.4sp": {
+   "raw": 85,
+   "bar": 0
+  },
+  "within_bar_range_px": {
+   "median": 1.4,
+   "p90": 2.5
+  },
+  "cell_median_abs_bar_px": {
+   "median": 0.5,
+   "p90": 1.4
+  },
+  "bad_cells_median_ge_0.4sp": {
+   "n": 0,
+   "why": {},
+   "list": []
+  }
+ },
+ "brahms-base": {
+  "repro": "691/691",
+  "repro_extra": 0,
+  "cells_box_match": "6685/6685",
+  "shift_control": {
+   "staff": "staff/0/0/0",
+   "n_common": 128,
+   "n_a": 129,
+   "n_b": 128,
+   "median_detected_shift": 3.0,
+   "max_dev": 0.0
+  },
+  "heads": {
+   "n": 24260,
+   "max_err_pergrid": 0.005000000000000782,
+   "n_err_gt_0.01": 0,
+   "n_in_shifted_cells": 10858,
+   "unlocalized_err_median_in_shifted": 0.21999999999999975
+  },
+  "raw_line_samples": {
+   "n": 582425,
+   "median_px": 1.5,
+   "p90_px": 5.5,
+   "max_px": 19.5,
+   "median_sp": 0.05504587155963303,
+   "p90_sp": 0.2,
+   "max_sp": 0.6972477064220184,
+   "signed_median_px": 0.0,
+   "signed_mean_px": -0.2279100313345066,
+   "thickness_median_px": 7.0
+  },
+  "staves_measured": 691,
+  "clear_columns_per_staff_median": 163.0,
+  "staves_ge_0.25sp_colmean": 251,
+  "staves_ge_0.4sp_colmean": 63,
+  "staves_ge_0.25sp_anyline": 301,
+  "staves_ge_0.4sp_anyline": 104,
+  "shape_of_flagged": {
+   "tilt": 235,
+   "spacing": 11,
+   "shift": 4,
+   "wander": 1
+  },
+  "max_tilt_px_among_tilt": 24.38810790754593,
+  "worst10": [
+   {
+    "staff": "staff/12/1/8",
+    "max_px": 17.9,
+    "max_sp": 0.64
+   },
+   {
+    "staff": "staff/1/1/7",
+    "max_px": 17.2,
+    "max_sp": 0.63
+   },
+   {
+    "staff": "staff/1/1/9",
+    "max_px": 16.7,
+    "max_sp": 0.61
+   },
+   {
+    "staff": "staff/2/1/12",
+    "max_px": 16.5,
+    "max_sp": 0.61
+   },
+   {
+    "staff": "staff/7/0/0",
+    "max_px": 15.0,
+    "max_sp": 0.55
+   },
+   {
+    "staff": "staff/12/1/6",
+    "max_px": 14.5,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/20/0/11",
+    "max_px": 14.3,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/14/1/10",
+    "max_px": 14.2,
+    "max_sp": 0.52
+   },
+   {
+    "staff": "staff/20/1/2",
+    "max_px": 14.0,
+    "max_sp": 0.5
+   },
+   {
+    "staff": "staff/7/0/2",
+    "max_px": 13.9,
+    "max_sp": 0.5
+   }
+  ],
+  "cells_ge2": 6489,
+  "cells_median_ge_0.25sp": {
+   "raw": 369,
+   "bar": 3
+  },
+  "cells_anypoint_ge_0.25sp": {
+   "raw": 521,
+   "bar": 4
+  },
+  "cells_median_ge_0.4sp": {
+   "raw": 45,
+   "bar": 1
+  },
+  "cells_anypoint_ge_0.4sp": {
+   "raw": 85,
+   "bar": 1
+  },
+  "within_bar_range_px": {
+   "median": 1.4,
+   "p90": 2.5
+  },
+  "cell_median_abs_bar_px": {
+   "median": 0.5,
+   "p90": 1.4
+  },
+  "bad_cells_median_ge_0.4sp": {
+   "n": 1,
+   "why": {
+    "moved_wrong_way": 1
+   },
+   "list": [
+    {
+     "cell": "cell/7/0/5/8",
+     "shift": 15,
+     "raw_med": -9.8,
+     "bar_med": -24.8
+    }
+   ]
+  }
+ }
+}

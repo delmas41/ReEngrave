@@ -39,7 +39,8 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-SCRATCH = Path("/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-notation-tile-fixes-2837c5/61ecbfe3-efe1-4b05-b3a2-0c894d475fc0/scratchpad/verify")
+import os as _os
+SCRATCH = Path(_os.environ.get("VSO_SCRATCH") or "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-notation-tile-fixes-2837c5/61ecbfe3-efe1-4b05-b3a2-0c894d475fc0/scratchpad/verify")
 SHARED = Path("/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records")
 DOCS = {
     "litolff": SHARED / "beethoven5-litolff-mvt1-whole-20261006-night-combined.record.json",
@@ -52,7 +53,10 @@ STEP_SPACES = 0.5          # candidate columns every half space
 
 def extract(doc: str) -> None:
     from tools.omr.staged.record_io import load_record
-    r = load_record(DOCS[doc])
+    extract_from(load_record(DOCS[doc]), doc)
+
+
+def extract_from(r, doc: str) -> None:
     args = r["provenance"]["settings"]["args"]
     out = {"pdf": args["pdf"], "dpi": args["dpi"], "pages": args["pages"],
            "commit": r["provenance"]["commit"], "dirty": r["provenance"]["dirty"],
@@ -343,7 +347,7 @@ def classify(st):
 def summary() -> dict:
     from tools.omr.measure_extractor import CELL_LINE_MAX_SHIFT_SPACES
     out = {}
-    for doc in ("litolff", "brahms"):
+    for doc in (_os.environ.get("VSO_DOCS") or "litolff,brahms").split(","):
         f = SCRATCH / f"{doc}.measure.json"
         if not f.exists():
             continue

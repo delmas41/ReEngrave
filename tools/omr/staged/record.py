@@ -2913,7 +2913,7 @@ class Log:
     __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen",
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
-                 "_closure_cache", "_subjects_cache", "_desc_prefix_cache",
+                 "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
                  "_subject_keys")
 
     def __init__(self) -> None:
@@ -2972,6 +2972,7 @@ class Log:
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
         self._closure_cache: dict[str, "frozenset[str]"] = {}
+        self._qic_cache: dict[str, "frozenset[str]"] = {}
         #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
         #: decision calling it once per subject is quadratic in the record.
         #: Measured: `adjudicate_system_key` calls it once per SYSTEM, and on
@@ -3315,9 +3316,16 @@ class Log:
         return result
 
     def quantities_in_closure(self, row_id: str) -> frozenset[str]:
-        return frozenset(
+        # SPEED ONLY (lane-brahms-1007-worse-and-slow): memoised like `closure`
+        # (a row's basis never changes), 3.6M calls on three Brahms pages.
+        cached = self._qic_cache.get(row_id)
+        if cached is not None:
+            return cached
+        out = frozenset(
             r.quantity for r in (self.row(i) for i in self.closure(row_id))
             if r is not None)
+        self._qic_cache[row_id] = out
+        return out
 
     # ── serialisation ───────────────────────────────────────────────────────
 

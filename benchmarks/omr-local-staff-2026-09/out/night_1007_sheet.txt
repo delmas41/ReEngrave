@@ -1,0 +1,16 @@
+pools: {'beethoven5-litolff': {'newly': 146, 'changed': 37, 'owner': 61, 'lines': 27}, 'brahms1-breitkopf': {'newly': 241, 'changed': 86, 'owner': 35, 'lines': 12}}
+NEW drawn lines 34: within 2 px of an ink row 20; off by more than 2 px 5 [(3, 'note line', 1415.0, 2.5, False), (4, 'note line', 6935.0, 6.0, False), (5, 'NEW owner staff, line nearest the note', 2012.9, 5.1, False), (11, 'NEW line 3', 1969.1, 2.1, False), (11, 'NEW line 5', 2014.9, 5.1, False)]; no ink beside the head to measure 9
+BASE drawn lines 14: offsets px (None = no ink within 6 px): [(2, 'BASE note line', 1.0), (3, 'BASE note line', 0.0), (6, 'BASE line 1', 0.6), (6, 'BASE line 2', 0.5), (6, 'BASE line 3', 1.5), (6, 'BASE line 4', 0.9), (6, 'BASE line 5', None), (9, 'BASE note line', 1.5), (11, 'BASE line 1', 0.4), (11, 'BASE line 2', 0.1), (11, 'BASE line 3', 0.9), (11, 'BASE line 4', 1.0), (11, 'BASE line 5', None), (12, 'BASE note line', 0.5)]
+1 beetho glyph/10/1/8/9/6 | owner | NEW: belongs to staff 10 from the top of system 2 (NOT the one it is filed on) | BASE: no answer (gave up)
+2 beetho glyph/6/1/9/10/2 | far_changed | NEW: in the space below the 1st ledger line below the staff | BASE: in the space below the 2nd ledger line below the staff
+3 beetho glyph/5/0/5/8/1 | far_changed | NEW: in the space above the 2nd ledger line above the staff | BASE: on the 3rd ledger line above the staff
+4 brahms glyph/19/1/12/0/5 | far_newly | NEW: in the space above the 2nd ledger line above the staff | BASE: no answer (gave up: count_does_not_fit (gaps 0.98, 0.96, 0.6)
+5 brahms glyph/7/0/6/5/13 | owner | NEW: belongs to staff 6 from the top of system 1 (NOT the one it is filed on) | BASE: no answer (gave up)
+6 beetho glyph/6/1/10/1/2 | lines | NEW: in staff space 4th from the bottom | BASE: in the space just above the top line
+7 beetho glyph/10/0/0/10/8 | far_newly | NEW: on the 2nd ledger line above the staff | BASE: no answer (gave up: count_does_not_fit (gaps 2.19 sp: a gap )
+8 brahms glyph/23/1/9/5/5 | far_newly | NEW: in the space below the 1st ledger line below the staff | BASE: no answer (gave up: no_rungs)
+9 brahms glyph/4/0/13/1/2 | far_changed | NEW: in the space above the 2nd ledger line above the staff | BASE: on the 3rd ledger line above the staff
+10 beetho glyph/13/1/0/13/11 | far_newly | NEW: on the 3rd ledger line above the staff | BASE: no answer (gave up: count_does_not_fit (gaps 1.26, 2.32 sp: )
+11 brahms glyph/7/0/5/4/4 | lines | NEW: on staff line 2nd from the bottom | BASE: in staff space 1st from the bottom
+12 brahms glyph/25/0/3/8/4 | far_changed | NEW: in the space above the 1st ledger line above the staff | BASE: on the 2nd ledger line above the staff
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-aaf68a3c057ea47d7/out/print/night_1007_sample.png

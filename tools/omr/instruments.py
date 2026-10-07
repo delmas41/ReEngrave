@@ -30,6 +30,7 @@ or more, not to police an unusual note.
 
 from __future__ import annotations
 
+import functools
 import re
 import unicodedata
 from dataclasses import dataclass, field, replace
@@ -717,10 +718,17 @@ def _letters(text: str) -> int:
     return sum(1 for c in text if c.isalpha())
 
 
+@functools.lru_cache(maxsize=None)
+def _alias_pattern(probe: str):
+    # SPEED ONLY: `re`'s own cache holds 512 patterns and the alias index is larger, so the
+    # per-call `re.search(<pattern string>)` recompiled ~600k times on three Brahms pages.
+    return re.compile(rf"(?<![a-z]){re.escape(probe)}(?![a-z])")
+
+
 def _search(candidate: str, folded: bool) -> tuple[str, Instrument] | None:
     for alias, inst in _ALIAS_INDEX:
         probe = _fold_ocr(alias) if folded else alias
-        if re.search(rf"(?<![a-z]){re.escape(probe)}(?![a-z])", candidate):
+        if _alias_pattern(probe).search(candidate):
             return alias, inst
     return None
 
