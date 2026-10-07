@@ -32,6 +32,17 @@ files resolved (1 untracked, 44 negated as raw data); remote branches HALF prune
 `archive/<name>`; deleting the 403 originals (336 merged + 67 archived) was blocked by the session's permission
 system and waits on Sean (audit report §3F has the recipe).
 
+## START HERE — after 2026-10-07 (day; main ≥ this commit)
+
+Landed 10-07 (all judged by Sean on the print, GATHER+ADJUDICATE): arc owner `ends_on_noteheads`; far-head
+`flank_refine_bounded` (his tile 6) and `lane-farhead-2-9` (hidden ledger looked for where it must be, never
+assumed -- Sean's rule; accents are not ledgers); dots 2.59 `OMR_DOT_FOLLOWS_NOTE` **ON** (2 rounds, 0 wrong;
+open: a staccato it leaves unread); arcs-not-a-line 2.60 (GATHER, staff lines refused as arcs -- ~half of
+Brahms "arcs"; needs a re-gather to reach records); export `cell_past_the_last_bar`; ADJUDICATE speed fixes
+(Brahms owner-from-staves ~6x). Sean's 2.58 gather reorder A/B'd: neutral (19 extra search rows). Rule
+(Sean 10-07): compare first-two-stage outputs only; `OMR_RELOCATE_AT_EXPORT` parked. Still OFF:
+`OMR_FARHEAD_OWNER_LEDGERS`, `OMR_MARK_GROUPS`. Next: an overnight re-gather would price 2.60 + all of today.
+
 ## START HERE — after the night of 2026-10-06→07 (main ≥ this commit)
 
 Landed on main overnight: mark identity (`OMR_RELOCATE_AT_EXPORT`, `OMR_MARK_GROUPS`, both OFF), the

@@ -161,6 +161,8 @@ correlated-groups pairwise), mark identity (`OMR_MARK_GROUPS`, `OMR_RELOCATE_AT_
 `cell_past_the_last_bar` accounting fix, arc owner `ends_on_noteheads`, dots 2.59 (`OMR_DOT_FOLLOWS_NOTE`
 ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007-night` scored on
 `lane-night-1007-read`. Sean's rulings recorded in DECISIONS 10-04..10-07.
+Later 10-07: far-head `lane-farhead-2-9` landed (look for a hidden ledger only where it must be, by its
+jutting ends; accent strokes are not ledgers; Sean: his tiles 2 and 9 right). Fast 6,112 passed, check 192.
 
 ---
 
