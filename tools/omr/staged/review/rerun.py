@@ -169,9 +169,10 @@ def export_with_subjects(result: dict) -> Tuple[str, dict, List[Tuple[str, str]]
         last["sub"] = key
         return s
 
-    def place(rec, runs, by_system=None, held_out=None):
+    def place(rec, runs, by_system=None, held_out=None, **kw):
         probe = _ProbeBySystem(refusals, last)
-        dropped = orig_place(rec, runs, by_system=probe, held_out=held_out)
+        dropped = orig_place(rec, runs, by_system=probe, held_out=held_out,
+                             **kw)
         for run in runs.values():
             for cell in run.cells.values():
                 for det in cell.detections:

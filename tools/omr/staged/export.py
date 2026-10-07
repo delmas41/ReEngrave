@@ -95,6 +95,38 @@ from .record import Q, meter_at
 #: where the hand-read truth puts it) — see
 #: `benchmarks/omr-staged-meter-segments-2026-09/FINDINGS.md`.
 WHOLE_REST_INK_ENV = "OMR_WHOLE_REST_INK"
+#: ROADMAP 2.58. Write a head whose decided owner is ANOTHER staff, and which
+#: that staff holds no copy of, on the owner staff (Sean 2026-10-06:
+#: *"All note heads should be found and written on their staff"*). OFF until
+#: Sean has seen `out/print/mark_identity_relocate.png`.
+RELOCATE_AT_EXPORT_ENV = "OMR_RELOCATE_AT_EXPORT"
+#: A relocated head within this many staff spaces (page pixels, both axes) of
+#: a head the owner's cell already holds is the SAME ink, not a second note.
+RELOCATE_COLLISION_SPACES = 0.75
+#: ROADMAP 2.58. Write a head whose decided owner is ANOTHER staff, and which
+#: that staff holds no copy of, on the owner staff (Sean 2026-10-06:
+#: *"All note heads should be found and written on their staff"*). OFF until
+#: Sean has seen `out/print/mark_identity_relocate.png`.
+RELOCATE_AT_EXPORT_ENV = "OMR_RELOCATE_AT_EXPORT"
+#: A relocated head within this many staff spaces (page pixels, both axes) of
+#: a head the owner's cell already holds is the SAME ink, not a second note.
+RELOCATE_COLLISION_SPACES = 0.75
+
+
+def relocate_at_export_enabled() -> bool:
+    """`OMR_RELOCATE_AT_EXPORT` -- DEFAULT OFF, so an allow-list: a typo or an
+    empty value leaves the pre-2.58 exporter (which DROPS the head) in force.
+    Read ONCE per export, never per notehead."""
+    return os.environ.get(RELOCATE_AT_EXPORT_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def relocate_at_export_enabled() -> bool:
+    """`OMR_RELOCATE_AT_EXPORT` -- DEFAULT OFF, so an allow-list: a typo or an
+    empty value leaves the pre-2.58 exporter (which DROPS the head) in force.
+    Read ONCE per export, never per notehead."""
+    return os.environ.get(RELOCATE_AT_EXPORT_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
 
 
 def whole_rest_ink_enabled() -> bool:
@@ -506,8 +538,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         for _k in runs:
             if not isinstance(rec.value(Q.SLOT_INDEX, _k), int):
                 held_out_runs.add(_k)
+    relocated_out: Dict[str, int] = {}
+    fates: Dict[str, str] = {}
     dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
-                           held_out=held_out_runs)
+                           held_out=held_out_runs, relocated=relocated_out,
+                           fates=fates)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -664,6 +699,8 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         # to see which parts are fragments without reading this code.
         "unidentified_parts": sorted(unidentified),
         "held_out_staves": len(held_out_runs),
+        "relocated_at_export": int(relocated_out.get("heads", 0)),
+        "marks_census": marks_census(rec, fates),
         "join_decided": kind,
         "join_used": used,
         "join_reason": (rec.verdict(Q.PART_PARTITION, "document") or {}).get("reason"),
@@ -737,8 +774,26 @@ def _sounding_pitch(pitch: str, alteration: str) -> str:
 
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  by_system: Optional[Dict[Tuple[int, int], Any]] = None,
-                 held_out: Optional[set] = None) -> Dict[str, int]:
+                 held_out: Optional[set] = None,
+                 relocated: Optional[Dict[str, int]] = None,
+                 fates: Optional[Dict[str, str]] = None) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
+
+    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF): the one exception to
+    the paragraph below. Sean, 2026-10-06 -- *"All note heads should be found
+    and written on their staff"* -- ruled that a head whose decided owner is
+    another staff, and which that staff holds NO copy of, is RELOCATED rather
+    than dropped. The claim "the owner holds a twin" is then CHECKED (a page
+    box of the same ink on the owner staff, IoU over 0.3) instead of assumed
+    from the domain of `glyph_owner`; where it holds the drop below is
+    unchanged. `relocated` (out-param) counts what moved.
+
+    ROADMAP 2.58b: where the record carries `Q.MARK_GROUP` rows (gathered with
+    `OMR_MARK_GROUPS`), each group is written ONCE -- its most confident
+    member that would otherwise be written -- and every other member is
+    counted under `mark_group_duplicate`. `fates` (out-param) records, per
+    glyph subject, `written` or the refusal reason, which is what
+    `marks_census` partitions.
 
     ⚠️ A measure cell is cut with padding above and below so ledger notes are
     not sliced off, so on a conductor's page the same ink is detected once per
@@ -784,6 +839,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         the per-system counts must SUM to this function's own return.
         """
         dropped[reason] += 1
+        if fates is not None and "_sub" in s:
+            fates[s["_sub"]] = reason
         if by_system is not None:
             key = (s["page"], s["system"])
             by_system.setdefault(key, collections.Counter())[reason] += 1
@@ -793,9 +850,34 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     # split one export between two behaviours — which is exactly the kind of
     # half-applied change no count would show.
     refuse_whole_rest_ink = whole_rest_ink_enabled()
+    relocate = relocate_at_export_enabled()
+    pending_relocations: List[Tuple[StaffRun, int, Dict[str, Any],
+                                    Dict[str, Any], Optional[str], str,
+                                    float]] = []
+    twin_index = _notehead_page_boxes(rec) if relocate else {}
+    # ⚠️ ROADMAP 2.58b. EMPTY unless the record was gathered with
+    # `OMR_MARK_GROUPS`, and then every placement below is QUEUED and replayed
+    # in record order so one group is written once.
+    group_of: Dict[str, str] = {o["subject"]: o["value"]
+                                for o in rec.obs_of(Q.MARK_GROUP)}
+    queued: List[Tuple[Optional[str], float, str, StaffRun, int,
+                       Dict[str, Any], Dict[str, Any]]] = []
+
+    def _emit(run: StaffRun, ci: int, det: Dict[str, Any],
+              s: Dict[str, Any], sub: str, conf: float) -> None:
+        if not group_of:
+            run.cells.setdefault(
+                ci, Cell(run.page, run.system, run.staff, ci)
+            ).detections.append(det)
+            if fates is not None:
+                fates[sub] = "written"
+            return
+        queued.append((group_of.get(sub), conf, sub, run, ci, det, s))
+
     for o in rec.obs_of(Q.GLYPH_BOX):
         sub = o["subject"]
         s = _parse_subject(sub)
+        s["_sub"] = sub
         if s["glyph"] is None:
             continue
         is_rest = bool(rec.obs(Q.REST, sub))
@@ -952,7 +1034,35 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             continue
 
         owner = rec.value(Q.GLYPH_OWNER, sub)
-        if A.is_relocated_copy(sub, owner):
+        plan = None
+        if (relocate and not is_rest
+                and A.is_relocated_copy(sub, owner)):
+            plan = _plan_relocation(rec, runs, o, s, sub, owner, twin_index)
+            if isinstance(plan, str):
+                _drop(plan, s)       # a NAMED refusal, never a silent one
+                continue
+        if plan is not None:
+            # ⚠️ THE PITCH IS RE-DERIVED BY `move_glyph` (EVALUATE) AND ONLY
+            # ASKED OF IT HERE -- `_plan_relocation` has already refused a
+            # head whose PITCH verdict is not move_glyph's. The sounding
+            # alteration was derived from the HOME staff's key by
+            # `respell_accidental`, against a letter that has since changed,
+            # so it is re-derived from the OWNER's key; a PRINTED accidental
+            # is the page's own mark and is kept.
+            pitch = rec.value(Q.PITCH, sub)
+            acc_v = rec.verdict(Q.ACCIDENTAL, sub) or {}
+            printed = None
+            if (acc_v.get("detail") or {}).get("printed") \
+                    and acc_v.get("outcome") == "decided":
+                printed = acc_v.get("value")
+            alteration = printed or _key_alteration_for(
+                pitch, rec.value(Q.KEY_SIGNATURE, plan["owner"]))
+            applied = None
+            if pitch is not None and alteration:
+                sounding = _sounding_pitch(pitch, alteration)
+                if sounding != pitch:
+                    pitch, applied = sounding, alteration
+        elif A.is_relocated_copy(sub, owner):
             # ⚠️⚠️ THE CONTEST IS RESOLVED BY REFUSING THE COPY, NOT BY
             # MOVING IT. See `A.is_relocated_copy`: `glyph_owner`'s domain is
             # the CONTESTED population, so a verdict naming another staff
@@ -975,7 +1085,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # reading gap: COUNTED here, never written.
             _drop("owner_not_read", s)
             continue
-        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        home = (plan["owner"] if plan is not None else
+                _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0))
         if held_out and home in held_out:
             # ⚠️ THE STAFF IS HELD OUT, so this note has no part to go in.
             # COUNTED, never swallowed -- the shortfall belongs in the record.
@@ -988,11 +1099,13 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             _drop("owner_staff_has_no_measures", s)
             continue
 
-        cell_index = s["cell"] or 0
+        cell_index = plan["cell"] if plan is not None else (s["cell"] or 0)
         cell = run.cells.setdefault(
             cell_index, Cell(run.page, run.system, run.staff, cell_index))
 
         name, x, y, w, h = o["value"]
+        if plan is not None:
+            x, y, w, h = plan["bbox"]
         written = float(dur.get("written") or dur.get("beats") or 0.0)
         # ⚠️ A MEASURE REST NEEDS NO NOTE VALUE, and demanding one would
         # refuse the bar the convention exists for. `<rest measure="yes"/>`
@@ -1000,14 +1113,12 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         # bar length that reduces to nothing (5/4, 7/8) is exportable here
         # while the same number on a NOTE is not.
         if dur.get("measure_rest"):
-            cell = run.cells.setdefault(
-                cell_index, Cell(run.page, run.system, run.staff, cell_index))
-            cell.detections.append({
+            _emit(run, cell_index, {
                 "category": "rest", "class": name,
                 "bbox": [int(x), int(y), int(w), int(h)],
                 "duration_beats": written, "duration_type": "whole", "dots": 0,
                 "measure_rest": True, "glyph": sub,
-            })
+            }, s, sub, float(o.get("score") or 0.0))
             continue
         fit = _legacy._dotted_duration_for_beats(written)
         if fit is None:
@@ -1017,7 +1128,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             _drop("written_value_fits_no_note", s)
             continue
         dtype, derived_dots = fit
-        cell.detections.append({
+        _det = {
             "category": "rest" if is_rest else "notehead",
             "class": name,
             "bbox": [int(x), int(y), int(w), int(h)],
@@ -1069,8 +1180,241 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # are indistinguishable on a fixture whose boxes start at 0, which
             # is how this project has already paid for the confusion once.
             "bbox_page": _corners_to_wh(_page_box_of(o)),
-        })
+        }
+        if plan is None:
+            _emit(run, cell_index, _det, s, sub, float(o.get("score") or 0.0))
+        else:
+            pending_relocations.append(
+                (run, cell_index, _det, s, group_of.get(sub), sub,
+                 float(o.get("score") or 0.0)))
+    # ⚠️ ROADMAP 2.58b: THE ONE-MARK-ONE-NOTE RULE. Of the members of a group
+    # that would be written, the most confident is (ties: the lowest subject),
+    # and the rest are COUNTED. Replayed in record order so a cell's detection
+    # order is what it always was.
+    def _again(sub: str) -> Dict[str, Any]:
+        """The subject's own parse, FRESH -- see the note in `_plan_relocation`:
+        a probe attributes a refusal to the last subject parsed, and these are
+        refusals made after the loop has moved on."""
+        s2 = _parse_subject(sub)
+        s2["_sub"] = sub
+        return s2
+
+    won: Dict[str, str] = {}
+    if queued:
+        best: Dict[str, Tuple[float, str]] = {}
+        for gid, conf, sub, *_r in queued:
+            if gid is not None:
+                cur = best.get(gid)
+                if cur is None or (-conf, sub) < (-cur[0], cur[1]):
+                    best[gid] = (conf, sub)
+        for gid, conf, sub, run, ci, det, s in queued:
+            if gid is not None and best[gid][1] != sub:
+                _drop("mark_group_duplicate", _again(sub))
+                continue
+            if gid is not None:
+                won[gid] = sub
+            run.cells.setdefault(
+                ci, Cell(run.page, run.system, run.staff, ci)
+            ).detections.append(det)
+            if fates is not None:
+                fates[sub] = "written"
+    # ⚠️ AFTER EVERY OWN HEAD IS PLACED, so the collision test sees the owner's
+    # cell whole and does not depend on which row came first. A relocated
+    # head within `RELOCATE_COLLISION_SPACES` of a head the cell already holds
+    # is the same ink (a page box that overlapped too little to be called a
+    # twin): COUNTED, never written a second time -- one mark, one note.
+    rbest: Dict[str, Tuple[float, str]] = {}
+    for run, cell_index, det, s, gid, sub, conf in pending_relocations:
+        if gid is not None:
+            cur = rbest.get(gid)
+            if cur is None or (-conf, sub) < (-cur[0], cur[1]):
+                rbest[gid] = (conf, sub)
+    for run, cell_index, det, s, gid, sub, conf in pending_relocations:
+        if gid is not None and (gid in won or rbest[gid][1] != sub):
+            # the mark is already written (by a member that stayed home or a
+            # more confident relocated one): this is the same ink.
+            _drop("mark_group_duplicate", _again(sub))
+            continue
+        cell = run.cells.setdefault(
+            cell_index, Cell(run.page, run.system, run.staff, cell_index))
+        if _near_existing_head(cell, det, run.spacing):
+            _drop("relocation_collides", _again(sub))
+            continue
+        cell.detections.append(det)
+        if gid is not None:
+            won[gid] = sub
+        if fates is not None:
+            fates[sub] = "written_relocated"
+        if relocated is not None:
+            relocated["heads"] = relocated.get("heads", 0) + 1
     return dict(dropped)
+
+
+def marks_census(rec: Record, fates: Dict[str, str]) -> Dict[str, Any]:
+    """ROADMAP 2.58b: per family, how many PHYSICAL MARKS (`Q.MARK_GROUP`
+    groups) were written once, counted under a reason, or written more than
+    once -- with an `unaccounted` bucket a test requires EMPTY.
+
+    ⚠️ ONLY FAMILIES `_place_notes` PLACES (notehead, rest) HAVE A PER-MARK
+    FATE; accidentals are folded into the note they stand before in another
+    function, so for them this reports the gathered marks and how many were
+    detected more than once and says plainly that the export fate is not
+    tracked per mark. Empty when the record carries no `Q.MARK_GROUP` rows.
+    """
+    members: Dict[str, List[str]] = {}
+    family: Dict[str, str] = {}
+    for o in rec.obs_of(Q.MARK_GROUP):
+        members.setdefault(o["value"], []).append(o["subject"])
+        family[o["value"]] = (o.get("detail") or {}).get("family", "?")
+    out: Dict[str, Dict[str, Any]] = {}
+    for gid, subs in members.items():
+        fam = family[gid]
+        row = out.setdefault(fam, {
+            "marks": 0, "detected_more_than_once": 0, "written_once": 0,
+            "counted_under_a_reason": 0, "written_more_than_once": 0,
+            "unaccounted": 0, "reasons": collections.Counter(),
+            "export_fate_tracked": fam in ("notehead", "rest")})
+        row["marks"] += 1
+        if len(subs) > 1:
+            row["detected_more_than_once"] += 1
+        if not row["export_fate_tracked"]:
+            continue
+        got = [fates.get(sub) for sub in subs]
+        if any(g is None for g in got):
+            row["unaccounted"] += 1
+            continue
+        w = sum(1 for g in got if g.startswith("written"))
+        if w == 1:
+            row["written_once"] += 1
+        elif w == 0:
+            row["counted_under_a_reason"] += 1
+            row["reasons"][collections.Counter(got).most_common(1)[0][0]] += 1
+        else:
+            row["written_more_than_once"] += 1
+    for row in out.values():
+        row["reasons"] = dict(row["reasons"])
+    return out
+
+
+def _box_iou(a: Sequence[float], b: Sequence[float]) -> float:
+    ix0, iy0 = max(a[0], b[0]), max(a[1], b[1])
+    ix1, iy1 = min(a[2], b[2]), min(a[3], b[3])
+    if ix1 <= ix0 or iy1 <= iy0:
+        return 0.0
+    inter = (ix1 - ix0) * (iy1 - iy0)
+    ua = ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1])
+          - inter)
+    return inter / ua if ua > 0 else 0.0
+
+
+#: The overlap above which two boxes of one family are ONE physical mark
+#: (the same figure `gather` groups on for ROADMAP 2.58b).
+SAME_INK_IOU = 0.3
+
+
+def _notehead_page_boxes(rec: Record) -> Dict[Tuple[int, int, int],
+                                              List[List[float]]]:
+    """Every notehead's page box, by (page, system, staff) it was FOUND on."""
+    out: Dict[Tuple[int, int, int], List[List[float]]] = {}
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        sub = o["subject"]
+        s = _parse_subject(sub)
+        if s["glyph"] is None or not rec.obs(Q.NOTEHEAD_CLASS, sub):
+            continue
+        box = _page_box_of(o)
+        if box is None:
+            continue
+        out.setdefault((s["page"] or 0, s["system"] or 0, s["staff"] or 0),
+                       []).append(box)
+    return out
+
+
+_SHARPS_ORDER = ("F", "C", "G", "D", "A", "E", "B")
+
+
+def _key_alteration_for(pitch: Optional[str], fifths: Any) -> Optional[str]:
+    """The key signature's alteration of this letter, or None.
+
+    The same rule `consequences.respell_accidental` applies, spelled for a
+    pitch that is already on the staff whose key is `fifths`."""
+    if not pitch or not isinstance(fifths, int) or not fifths:
+        return None
+    altered = set(_SHARPS_ORDER[:fifths] if fifths > 0
+                  else list(reversed(_SHARPS_ORDER))[:abs(fifths)])
+    return ("#" if fifths > 0 else "b") if pitch[0] in altered else None
+
+
+def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
+                     o: Dict[str, Any], s: Dict[str, Optional[int]],
+                     sub: str, owner: str,
+                     twin_index: Dict[Tuple[int, int, int], List[List[float]]]
+                     ) -> Any:
+    """Where a head owned by another staff would be written.
+
+    Returns None when the owner HOLDS a copy (the classic refusal stands), a
+    reason string when the head cannot be placed (a named refusal), or
+    `{"owner", "cell", "bbox"}`.
+
+    ⚠️ EVERY STEP THAT CANNOT BE ANSWERED IS A NAMED REFUSAL, NEVER A GUESS:
+    no page box, no cell on the owner staff at that x, no frame to re-express
+    the box in, and -- the one that matters -- a PITCH verdict that is not
+    `move_glyph`'s, because a pitch still on the staff the head was CUT from is
+    the documented 263-edit failure.
+    """
+    box = _page_box_of(o)
+    if box is None or not isinstance(owner, str):
+        return "relocation_no_page_box"
+    # ⚠️ NOT `_parse_subject`: the stage-review probes wrap it to learn WHICH
+    # subject a refusal belongs to ("the last one parsed"), and parsing the
+    # OWNER here would hand them the wrong row.
+    pg, sy, st = (int(v) for v in owner.split("/")[1:4])
+    own = {"page": pg, "system": sy, "staff": st}
+    okey = (pg, sy, st)
+    for twin in twin_index.get(okey, ()):
+        if _box_iou(box, twin) > SAME_INK_IOU:
+            return None                      # the owner holds it: classic drop
+    run = runs.get(owner)
+    if run is None or not run.cell_boxes:
+        return "owner_staff_has_no_measures"
+    pv = rec.verdict(Q.PITCH, sub)
+    if pv is None or pv.get("decider") != "move_glyph":
+        return "relocation_not_repitched"
+    cx = (box[0] + box[2]) / 2.0
+    hits = [(abs((cb[0] + cb[2]) / 2.0 - cx), ci, cb)
+            for ci, cb in run.cell_boxes.items() if cb[0] <= cx <= cb[2]]
+    if not hits:
+        return "relocation_no_cell_at_x"
+    _, ci, cb = min(hits)
+    css = rec.obs(Q.CELL_STAFF_SPACE,
+                  f"cell/{own['page'] or 0}/{own['system'] or 0}/"
+                  f"{own['staff'] or 0}/{ci}")
+    unit = css[-1]["value"] if css else None
+    if (not run.spacing or not isinstance(unit, (int, float))
+            or unit <= 0):
+        return "relocation_no_frame"
+    up = float(unit) / float(run.spacing)
+    return {"owner": owner, "cell": ci,
+            "bbox": [(box[0] - cb[0]) * up, (box[1] - cb[1]) * up,
+                     (box[2] - box[0]) * up, (box[3] - box[1]) * up]}
+
+
+def _near_existing_head(cell: "Cell", det: Dict[str, Any],
+                        spacing: Optional[float]) -> bool:
+    """Is a notehead the cell already holds within `RELOCATE_COLLISION_SPACES`
+    staff spaces of `det`, in page pixels, on BOTH axes?"""
+    b = det.get("bbox_page")
+    if b is None or not spacing:
+        return False
+    cx, cy = b[0] + b[2] / 2.0, b[1] + b[3] / 2.0
+    lim = RELOCATE_COLLISION_SPACES * spacing
+    for d in cell.detections:
+        if d.get("category") != "notehead" or not d.get("bbox_page"):
+            continue
+        e = d["bbox_page"]
+        if (abs(e[0] + e[2] / 2.0 - cx) < lim
+                and abs(e[1] + e[3] / 2.0 - cy) < lim):
+            return True
+    return False
 
 
 def _page_box_of(o: Dict[str, Any]) -> Optional[List[float]]:
@@ -4243,6 +4587,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     report["written"]["parts"] = len(parts)
     report["written"]["divisions"] = divisions
     report["part_join"] = provenance
+    report["marks_census"] = provenance.get("marks_census", {})
     # ⚠️ REPORTED WHETHER OR NOT IT FIRED, and the `refused` key is the whole
     # point rather than an afterthought. *"we numbered the document"* and
     # *"this figure was never computed"* must not read alike — the same lesson
@@ -4647,6 +4992,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "rests_duplicated_across_voices": duplicated,
         "notes_doubled_to_condensed_slot": doubled_to_condensed,
         "events_not_written": report["notes_not_written_total"],
+        # ROADMAP 2.58: heads written on the staff that OWNS them, counted
+        # once as written -- informational, the equality is unchanged.
+        "relocated_heads_written": int(
+            report["part_join"].get("relocated_at_export", 0)),
         "balanced": events_in_log == written + report["notes_not_written_total"],
     }
     if not report["balance"]["balanced"]:

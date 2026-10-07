@@ -99,9 +99,10 @@ def instrument() -> None:
 
     orig_place = EXPORT._place_notes
 
-    def place(rec, runs, by_system=None, held_out=None):
+    def place(rec, runs, by_system=None, held_out=None, **kw):
         probe = _ProbeBySystem()
-        dropped = orig_place(rec, runs, by_system=probe, held_out=held_out)
+        dropped = orig_place(rec, runs, by_system=probe, held_out=held_out,
+                             **kw)
         for run in runs.values():
             for ci, cell in run.cells.items():
                 for det in cell.detections:

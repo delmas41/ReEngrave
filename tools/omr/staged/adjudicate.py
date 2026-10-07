@@ -1244,6 +1244,11 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             continue
         for subject in subjects_for(log, spec):
             out.append(adjudicate_one(log, spec, subject))
+        if quantity == Q.GLYPH_OWNER:
+            # ⚠️ ROADMAP 2.58b: one ruling per physical mark. A no-op unless
+            # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).
+            from .adjudicators import ownership as _own
+            _own.reconcile_group_owners(log)
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out
