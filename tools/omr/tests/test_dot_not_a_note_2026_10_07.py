@@ -74,7 +74,7 @@ class TestDotSizedBoxIsNotAHead(unittest.TestCase):
         g = _note(log, 0, head, w=w, h=h)
         with mock.patch.dict(os.environ, FLAG if flag else {}, clear=False):
             if not flag:
-                os.environ.pop("OMR_DOT_FOLLOWS_NOTE", None)
+                os.environ["OMR_DOT_FOLLOWS_NOTE"] = "0"   # default ON since 2026-10-07: OFF is explicit
             adjudicate.run(log)
         return log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
 
@@ -113,7 +113,7 @@ class TestADotBelongsToTheNoteToItsLeft(unittest.TestCase):
         env = dict(FLAG) if flag else {}
         with mock.patch.dict(os.environ, env, clear=False):
             if not flag:
-                os.environ.pop("OMR_DOT_FOLLOWS_NOTE", None)
+                os.environ["OMR_DOT_FOLLOWS_NOTE"] = "0"   # default ON since 2026-10-07: OFF is explicit
             adjudicate.run(log)
         return log, head, dot
 
@@ -239,7 +239,7 @@ class TestADotBoxedAsAHeadFollowsTheDot(unittest.TestCase):
         env = dict(FLAG) if flag else {}
         with mock.patch.dict(os.environ, env, clear=False):
             if not flag:
-                os.environ.pop("OMR_DOT_FOLLOWS_NOTE", None)
+                os.environ["OMR_DOT_FOLLOWS_NOTE"] = "0"   # default ON since 2026-10-07: OFF is explicit
             adjudicate.run(log)
         return log, sliver, dot, head
 
@@ -334,7 +334,7 @@ def _pdot(log, gi, page, cls="augmentationDot"):
 def _run_flag(log, flag=True):
     with mock.patch.dict(os.environ, FLAG if flag else {}, clear=False):
         if not flag:
-            os.environ.pop("OMR_DOT_FOLLOWS_NOTE", None)
+            os.environ["OMR_DOT_FOLLOWS_NOTE"] = "0"   # default ON since 2026-10-07: OFF is explicit
         adjudicate.run(log)
 
 

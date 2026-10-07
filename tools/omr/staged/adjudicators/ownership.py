@@ -309,8 +309,9 @@ DOT_FOLLOWS_NOTE_ENV = "OMR_DOT_FOLLOWS_NOTE"
 
 
 def dot_follows_note_enabled() -> bool:
-    return os.environ.get(DOT_FOLLOWS_NOTE_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """DEFAULT ON since 2026-10-07 (Sean: "switch it on"). Deny-list."""
+    return os.environ.get(DOT_FOLLOWS_NOTE_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 #: `gather.PAGE_EDGE_MARGIN_SPACES` (0.8, MEASURED: the page-wide position of a
