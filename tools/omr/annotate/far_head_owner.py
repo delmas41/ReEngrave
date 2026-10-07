@@ -81,6 +81,19 @@ def neighbour_staff(box: Sequence[float], own_key: str,
     return pick(near) if near else None
 
 
+def lines_at(staff: Dict[str, Any], cx: float) -> Sequence[float]:
+    """The staff's five lines AT x: the per-bar grid of the bar whose x range holds
+    `cx` (`staff["grid"]`: `(x0, x1, lines)` segments; the nearest bar where none
+    holds it), else the staff-wide `lines` (lane-farhead-per-bar-grid)."""
+    segs = staff.get("grid") if FH.READER_KEYWORDS.get("per_bar_grid") else None
+    if not segs:
+        return staff["lines"]
+    for x0, x1, ln in segs:
+        if x0 <= cx < x1:
+            return ln
+    return min(segs, key=lambda s: min(abs(cx - s[0]), abs(cx - s[1])))[2]
+
+
 def read_toward(ctx: "FH.FarHeadPage", subject: str, box: Sequence[float],
                 cls: Optional[str], cand_lines: Sequence[float]) -> Dict[str, Any]:
     """The head read toward ONE candidate staff: `dict(fits, pos, reason,
@@ -123,11 +136,12 @@ def owner_by_ledgers(ctx: "FH.FarHeadPage", subject: str, box: Sequence[float],
     """Read the head toward its own staff and its neighbour; name the owner or
     say why not. `own` is `dict(key, lines)` among `staves`."""
     own = next(s for s in staves if s["key"] == own_key)
+    cx = (float(box[0]) + float(box[2])) / 2.0
     cands: Dict[str, Dict[str, Any]] = {
-        own_key: read_toward(ctx, subject, box, cls, own["lines"])}
+        own_key: read_toward(ctx, subject, box, cls, lines_at(own, cx))}
     nb = neighbour_staff(box, own_key, staves)
     if nb is not None:
-        cands[nb["key"]] = read_toward(ctx, subject, box, cls, nb["lines"])
+        cands[nb["key"]] = read_toward(ctx, subject, box, cls, lines_at(nb, cx))
     owner, word = decide(cands) if len(cands) > 1 else (
         (own_key, "one_candidate") if cands[own_key]["fits"]
         else (None, "unread" if cands[own_key].get("unread") else "neither_fits"))

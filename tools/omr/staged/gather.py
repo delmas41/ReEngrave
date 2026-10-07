@@ -961,7 +961,8 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
     nb = FO.neighbour_staff(job["box"], own, staves)
     if nb is not None:
         cands.append((nb["key"], FO.read_toward(
-            page_ctx, g.to_key(), job["box"], job["cls"], nb["lines"])))
+            page_ctx, g.to_key(), job["box"], job["cls"],
+            FO.lines_at(nb, (job["box"][0] + job["box"][2]) / 2.0))))
     for key, rd in cands:
         if rd["fits"]:
             log.observe(g, Q.FAR_HEAD_OWNER_LEDGER, int(rd["pos"]),
@@ -1024,6 +1025,21 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
         key = local.get(c.staff_index)
         if key is not None:
             cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    # lane-farhead-per-bar-grid (Sean 2026-10-06): the lines a head is read
+    # against start from the PER-BAR grid of ITS bar -- the very rows
+    # `gather_notehead_positions` took its position from (`_cell_grid`'s
+    # source) -- not the staff-wide raw lines, which sit off the ink by the
+    # staff's tilt. Keyword `per_bar_grid` off = the raw lines, as before.
+    per_bar = bool(FH.READER_KEYWORDS.get("per_bar_grid"))
+    grid_by_staff: Dict[str, List[Tuple[float, float, List[float]]]] = {}
+    if per_bar:
+        for c in cells:
+            key = local.get(c.staff_index)
+            gl = FH.cell_grid_page_lines(c) if key is not None else None
+            if gl is not None:
+                grid_by_staff.setdefault(
+                    R.staff(c.page_index, key[0], key[1]).to_key(), []
+                ).append((float(c.bbox_page_px[0]), float(c.bbox_page_px[2]), gl))
     staff_lines: Dict[str, List[float]] = {}
     owner_on = _farhead_owner_enabled()
     owner_staves: List[Dict[str, Any]] = []
@@ -1038,7 +1054,8 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
             owner_staves.append(dict(
                 key=R.staff(p, key[0], key[1]).to_key(),
                 lines=[float(y) for y in st.line_ys],
-                x0=float(st.x_start), x1=float(st.x_end)))
+                x0=float(st.x_start), x1=float(st.x_end),
+                grid=grid_by_staff.get(R.staff(p, key[0], key[1]).to_key())))
 
     heads: List[Dict[str, Any]] = []
     page_boxes: List[Tuple[str, str, tuple]] = []
@@ -1067,14 +1084,15 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
             except (TypeError, ValueError):
                 continue
             used_staves[own] = lines
+            head_lines = (FH.cell_grid_page_lines(c) or lines) if per_bar else lines
             heads.append(dict(subject=g.to_key(), box=box, pos=pos,
                               cls=d.smufl_name, score=float(d.confidence),
-                              global_lines=lines))
+                              global_lines=head_lines))
             if FH.lg.far_head_needs_ledger_read(pos):
                 jobs.append(dict(page=sub.page, system=sub.system,
                                  staff=sub.staff, cell=sub.cell, glyph=gi,
                                  box=box, cls=d.smufl_name,
-                                 global_lines=lines, geometry_position=pos,
+                                 global_lines=head_lines, geometry_position=pos,
                                  frame=frame_cell(sub.cell), own_key=own,
                                  staves=owner_staves if owner_on else None))
     if not jobs:

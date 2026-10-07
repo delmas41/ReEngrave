@@ -55,7 +55,12 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     not_a_note=True,
     # lane-edge-vs-through (Sean 2026-10-06): a middle rung the page does not show as a line is not taken
     # over a visible line at the head's staff-side edge (the head hangs beyond that line: the space).
-    edge_vs_through=True)
+    edge_vs_through=True,
+    # lane-farhead-per-bar-grid (Sean 2026-10-06): the lines a head is read against start from the PER-BAR grid of the
+    # bar it stands in (what `gather_notehead_positions` uses for the in-staff positions), not the staff-wide raw
+    # lines, and are re-found only within PER_BAR_GRID_WINDOW_SP of that grid, at the CENTRE of the dark run.
+    # False = the old flank re-measure (+-0.5 sp, the line's top row), bit-identical, on whatever lines are passed.
+    per_bar_grid=True)
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
 #: detector boxes that print over each other >= CHORD_SPLIT_OVERPRINT_SP is two
 #: heads a third apart; split it into two standard boxes and place the ledger
@@ -237,11 +242,113 @@ def frame_lines_for_head(gray, global_lines: Sequence[float],
                          box: Sequence[float]) -> List[float]:
     """The staff's five lines AT THIS HEAD'S x; the global read unchanged only
     where neither flank finds all five (a declined local read is not an
-    invented one)."""
+    invented one). With `READER_KEYWORDS["per_bar_grid"]` the lines passed are
+    the bar's own grid and `grid_lines_for_head` does the (narrower) re-find."""
     x0, _y0, x1, _y1 = box
     w = x1 - x0
+    if READER_KEYWORDS.get("per_bar_grid"):
+        return grid_lines_for_head(gray, list(global_lines), x0, x1, w if w > 0 else 20.0)
     loc = local_staff_lines(gray, list(global_lines), x0, x1, w if w > 0 else 20.0)
     return loc if loc is not None else list(global_lines)
+
+
+# ---------------------------------------------------------------------------
+# lane-farhead-per-bar-grid (Sean 2026-10-06). The raw staff-wide lines sit off the ink by the staff's tilt (p90 5.5 px,
+# max ~19 px on Litolff); the per-bar grid in-staff positions already use is close to it. The old re-find searched
+# +-0.5 sp around the RAW line, so where that line was >= 0.5 sp off it landed one line over, and took the line's TOP
+# row, ~1.5 px high. THRESHOLDS, STATED BEFORE LOOKING: window +-0.3 sp of the grid line, one line per window, the
+# CENTRE of the dark run (half-depth), never two lines within 0.5 sp (both go back to the grid and are counted).
+# ---------------------------------------------------------------------------
+PER_BAR_GRID_WINDOW_SP = 0.3
+PER_BAR_GRID_MIN_SEPARATION_SP = 0.5
+#: how often the re-find had to use the grid's own position (counted, never silent)
+GRID_STATS: Dict[str, int] = dict(lines=0, refound=0, from_grid_not_found=0, from_grid_pair=0)
+
+
+def cell_grid_page_lines(cell) -> Optional[List[float]]:
+    """The five lines of ONE bar's grid in PAGE pixels -- the very rows
+    `staged.gather._cell_grid` takes `top_y` and `half_step` from
+    (`staff_line_ys_canonical`, which holds `staff.line_ys` plus the cell's own
+    localized shift), carried back by the cell's own origin and scale. None
+    where the cell has no grid."""
+    ys = list(getattr(cell, "staff_line_ys_canonical", None) or [])
+    bbox = getattr(cell, "bbox_page_px", None)
+    up = getattr(cell, "upscale_factor", None)
+    if len(ys) < 2 or not bbox or not up:
+        return None
+    return [float(bbox[1]) + float(y) / float(up) for y in ys]
+
+
+def _dark_run_centre(gray, x0: int, x1: int, lo: int, hi: int,
+                     ext_lo: int, ext_hi: int) -> Optional[float]:
+    """Centre (midpoint of top and bottom row) of the dark run whose darkest
+    row lies in [lo, hi); the run is the contiguous rows at or below the
+    half-depth between that row and the band's median, looked for in
+    [ext_lo, ext_hi). None where no row stands out (`_darkest_row`'s test)."""
+    H, W = gray.shape
+    x0, x1 = max(0, x0), min(W, x1)
+    ext_lo, ext_hi = max(0, ext_lo), min(H, ext_hi)
+    lo, hi = max(lo, ext_lo), min(hi, ext_hi)
+    if x1 <= x0 or hi <= lo:
+        return None
+    rows = gray[ext_lo:ext_hi, x0:x1].astype(float).mean(axis=1)
+    k = lo - ext_lo + int(np.argmin(rows[lo - ext_lo:hi - ext_lo]))
+    med = float(np.median(rows))
+    if rows[k] >= med - 8.0:
+        return None
+    thr = (rows[k] + med) / 2.0
+    a = b = k
+    while a - 1 >= 0 and rows[a - 1] <= thr:
+        a -= 1
+    while b + 1 < len(rows) and rows[b + 1] <= thr:
+        b += 1
+    return float(ext_lo) + (a + b) / 2.0
+
+
+def grid_lines_for_head(gray, grid: Sequence[float], head_x0: float,
+                        head_x1: float, head_width: float) -> List[float]:
+    """The bar's grid lines re-found at the head's own flanks, each only within
+    PER_BAR_GRID_WINDOW_SP of its grid line, at the centre of the dark run. A
+    line not found (in either flank) is the grid's own position, counted; two
+    found lines closer than PER_BAR_GRID_MIN_SEPARATION_SP both go back to the
+    grid. Never moves a line farther than the window."""
+    g = sorted(float(v) for v in grid)
+    if len(g) < 2:
+        return list(g)
+    sp = (g[-1] - g[0]) / (len(g) - 1)
+    if sp <= 0:
+        return list(g)
+    gap = head_width
+    bands = [(int(head_x0 - gap - head_width), int(head_x0 - gap)),
+             (int(head_x1 + gap), int(head_x1 + gap + head_width))]
+    win, ext = PER_BAR_GRID_WINDOW_SP * sp, 0.5 * sp
+    found: List[Optional[float]] = []
+    for gy in g:
+        vals = []
+        for bx0, bx1 in bands:
+            c = _dark_run_centre(gray, bx0, bx1, int(np.floor(gy - win)), int(np.ceil(gy + win)) + 1,
+                                 int(np.floor(gy - ext)), int(np.ceil(gy + ext)) + 1)
+            if c is not None and abs(c - gy) <= win:
+                vals.append(c)
+        found.append(sum(vals) / len(vals) if vals else None)
+    sep = PER_BAR_GRID_MIN_SEPARATION_SP * sp
+    pair_bad = set()
+    for i in range(len(g) - 1):
+        if found[i] is not None and found[i + 1] is not None and found[i + 1] - found[i] < sep:
+            pair_bad.update((i, i + 1))
+    out = []
+    for i, gy in enumerate(g):
+        GRID_STATS["lines"] += 1
+        if i in pair_bad:
+            GRID_STATS["from_grid_pair"] += 1
+            out.append(gy)
+        elif found[i] is None:
+            GRID_STATS["from_grid_not_found"] += 1
+            out.append(gy)
+        else:
+            GRID_STATS["refound"] += 1
+            out.append(found[i])
+    return out
 
 
 # ---------------------------------------------------------------------------
