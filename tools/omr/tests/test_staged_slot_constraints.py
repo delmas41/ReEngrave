@@ -125,19 +125,6 @@ class TestTheClefNarrowsWhatPositionCannot(unittest.TestCase):
         self.assertEqual({v.reason for v in got},
                          {"family_block_not_forced"})
 
-    def test_the_flag_off_restores_the_shipped_answer_exactly(self):
-        real = identity.slot_constraints_enabled
-        identity.slot_constraints_enabled = lambda: False
-        try:
-            log = _document(
-                [FULL, WINDS + [None] * 3],
-                clefs={(1, 3): "clefG", (1, 4): "clefG", (1, 5): "alto"},
-                blocks={0: BLOCKS_FULL, 1: [0, 0, 0, 1, 1, 1]})
-        finally:
-            identity.slot_constraints_enabled = real
-        got = [_v(log, 1, i) for i in range(3, 6)]
-        self.assertEqual([v.outcome for v in got], [Outcome.NARROWED] * 3)
-
 
 class TestAChannelMayNarrowAndNeverEmpty(unittest.TestCase):
 

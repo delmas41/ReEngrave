@@ -508,28 +508,30 @@ class TestRunHonoursEachRulesOwnGate(unittest.TestCase):
         """⚠️ A report naming the wrong flag is worse than one naming none --
         it sends the next reader to a variable that changes nothing."""
         for switch, env in ((infer.INFER_SWITCH, "OMR_INFER"),
-                          (infer.FAMILY_BLOCK_SWITCH, "OMR_SLOT_FAMILY_BLOCK")):
+                          (infer.PART_KEY_SWITCH, "OMR_PART_KEY")):
             self.assertEqual(switch.env, env)
 
 
-class TestTheTwoDefaultsAreSeparate(unittest.TestCase):
+class TestTheDefaultsAreSeparate(unittest.TestCase):
     """⚠️⚠️ THE POINT OF THE WHOLE CHANGE: the flags are independent dials,
-    and flipping any one does not flip the others -- true whether all default
-    ON (as of 2026-09-23) or, as originally shipped 2026-09-21, only the slot
-    rule did. The tests below force every flag explicitly, so they assert the
-    independence rather than any flag's own default.
+    and flipping any one does not flip the others. The tests below force
+    every REMAINING flag explicitly, so they assert the independence rather
+    than any flag's own default.
 
-    ⚠️ THREE FLAGS SINCE 2026-09-23 (roadmap 2.10 added `OMR_CLEF_GAP`), and
-    the name of this class is left alone: it is about the SEPARATION, and
-    renaming it per rule added would make the class a list. Each `_on` call
-    names every flag, so a FOURTH rule fails these tests loudly rather than
-    sliding into an assertion that only enumerated two."""
+    ⚠️ TWO RULES HAVE NO FLAG SINCE 2026-10-07 (roadmap 0.2c promoted
+    `OMR_SLOT_FAMILY_BLOCK` and `OMR_CLEF_GAP`): `infer.ALWAYS_ON`. Nothing
+    in the environment can silence them, and they are asserted below by NAME
+    so a rule that silently stops being unflagged -- or a flagged rule that
+    silently becomes unflagged -- fails here loudly."""
 
-    #: ⚠️ EVERY per-rule flag, DERIVED from the registry rather than typed, so
-    #: a rule added without a line here cannot pass silently.
+    PROMOTED = ["collapse_slot_index_to_family_block", "fill_clef_gap"]
+
+    #: ⚠️ EVERY remaining per-rule flag, DERIVED from the registry rather than
+    #: typed, so a rule added without a line here cannot pass silently.
     def _all_off(self):
         infer._ensure_rules()
-        return {r.switch.env: "0" for r in infer.RULES}
+        return {r.switch.env: "0" for r in infer.RULES
+                if r.switch.env != infer.ALWAYS_ON.env}
 
     def _on(self, env):
         forced = self._all_off()
@@ -537,27 +539,27 @@ class TestTheTwoDefaultsAreSeparate(unittest.TestCase):
         with mock.patch.dict(os.environ, forced, clear=False):
             return sorted(r.inference.value for r in infer.enabled_rules())
 
-    def test_only_the_slot_rule_is_on_by_default(self):
-        self.assertEqual(self._on({"OMR_SLOT_FAMILY_BLOCK": "1"}),
-                         ["collapse_slot_index_to_family_block"])
+    def test_the_promoted_rules_are_the_two_with_no_flag(self):
+        infer._ensure_rules()
+        self.assertEqual(
+            sorted(r.inference.value for r in infer.RULES
+                   if r.switch.env == infer.ALWAYS_ON.env),
+            sorted(self.PROMOTED))
 
-    def test_only_the_clef_gap_rule_is_on_when_only_its_flag_is(self):
-        self.assertEqual(self._on({"OMR_CLEF_GAP": "1"}), ["fill_clef_gap"])
+    def test_with_every_flag_off_only_the_promoted_rules_run(self):
+        self.assertEqual(self._on({}), sorted(self.PROMOTED))
 
-    def test_raising_OMR_INFER_does_not_silence_the_slot_rule(self):
-        self.assertIn("collapse_slot_index_to_family_block",
-                      self._on({"OMR_INFER": "1",
-                                "OMR_SLOT_FAMILY_BLOCK": "1"}))
+    def test_raising_OMR_INFER_adds_the_duration_rules_and_keeps_the_promoted(self):
+        got = self._on({"OMR_INFER": "1"})
+        self.assertEqual(sorted(set(got) - set(self.PROMOTED)),
+                         ["collapse_duration_by_column",
+                          "collapse_duration_to_barline"])
+        self.assertTrue(set(self.PROMOTED) <= set(got))
 
-    def test_silencing_the_slot_rule_does_not_raise_the_duration_rules(self):
-        self.assertEqual(self._on({}), [])
-
-    def test_the_stage_runs_when_any_single_rule_is_on(self):
-        for flag in self._all_off():
-            with self.subTest(flag):
-                env = self._all_off()
-                env[flag] = "1"
-                with mock.patch.dict(os.environ, env, clear=False):
-                    self.assertTrue(infer.stage_should_run())
+    def test_the_stage_runs_with_every_flag_off_because_two_rules_have_none(self):
+        """⚠️ THE CONSEQUENCE: `OMR_INFER=0` is no longer a bypass of the
+        stage. (`test_infer_bypass` reaches the bypass over a registry without
+        the promoted rules.)"""
         with mock.patch.dict(os.environ, self._all_off(), clear=False):
-            self.assertFalse(infer.stage_should_run())
+            self.assertTrue(infer.stage_should_run())
+

@@ -16,6 +16,9 @@ leaves no trace.** `_all_off()` is that state, and it is spelled out of the
 GATES rather than hand-listed, so a fourth rule with a fourth flag cannot
 quietly stop being covered here.
 
+⚠️ SINCE 2026-10-07 (roadmap 0.2c) `_all_off()` MEANS "EVERY FLAGGED RULE OFF,
+OVER A REGISTRY WITHOUT THE TWO UNFLAGGED ONES" -- see `_flagged_rules`.
+
 ⚠️⚠️ THE HAZARD IS THE STAGE PERTURBING UPSTREAM *BY EXISTING* RATHER THAN BY
 RUNNING — a field added to `Verdict`, a serialisation change, a reordering, an
 import with a side effect. That is how an "isolated" change reaches an arm
@@ -43,24 +46,37 @@ from tools.omr.staged.record import Verdict
 from .test_staged_pipeline import FakeDetector, build_page
 
 
-def _all_off():
-    """Every rule's flag, set to that flag's own OFF word.
+def _flagged_rules():
+    """The registry minus the rules with NO flag (`infer.ALWAYS_ON`).
 
-    ⚠️ DERIVED FROM THE REGISTRY, never a hand list. Both `OMR_INFER` and
-    `OMR_SLOT_FAMILY_BLOCK` are deny-lists (both default ON, as of
-    2026-09-23 -- `OMR_INFER` used to be an allow-list for a default-OFF
-    flag, before roadmap 2.3's flip), so "off" happens to be the same word
-    for both today -- but this stays derived rather than hand-listed because
-    a hand list here would silently stop covering the next rule, whatever
-    its own direction turns out to be. `"0"` is an off-word under either
-    direction, which is what makes one literal correct for every switch;
-    asserted rather than assumed.
+    ⚠️ ADDED 2026-10-07 (roadmap 0.2c). The slot-index and clef-gap rules lost
+    their flags (`OMR_SLOT_FAMILY_BLOCK`, `OMR_CLEF_GAP`) when they were
+    promoted, so no environment can silence them and the stage's bypass is no
+    longer reachable by turning flags off. The property this file pins --
+    *no rule enabled means no trace* -- is a property of `stage_should_run`
+    and `pipeline`, so it is reached by running over the registry WITHOUT the
+    always-on rules. Under default settings the stage DOES run and the
+    `inference` key IS present; that is what promoting a rule means.
     """
     infer._ensure_rules()
-    env = {}
-    for r in infer.RULES:
-        env[r.switch.env] = "0"
-    with mock.patch.dict(os.environ, env, clear=False):
+    return [r for r in infer.RULES if r.switch.env != infer.ALWAYS_ON.env]
+
+
+def _all_off():
+    """Every FLAGGED rule's flag, set to that flag's own OFF word.
+
+    ⚠️ DERIVED FROM THE REGISTRY, never a hand list. `OMR_INFER` and
+    `OMR_PART_KEY` are deny-lists (both default ON), so "off" is the same word
+    for both -- but this stays derived rather than hand-listed because a hand
+    list here would silently stop covering the next rule, whatever its own
+    direction turns out to be. `"0"` is an off-word under either direction,
+    which is what makes one literal correct for every switch; asserted rather
+    than assumed.
+    """
+    rules = _flagged_rules()
+    env = {r.switch.env: "0" for r in rules}
+    with mock.patch.object(infer, "RULES", rules), \
+            mock.patch.dict(os.environ, env, clear=False):
         assert not infer.stage_should_run(), (
             "a rule stayed enabled with every flag at '0' -- this file's "
             "whole premise is that the OFF state is reachable")
@@ -68,7 +84,8 @@ def _all_off():
 
 
 def _run(env):
-    with mock.patch.dict(os.environ, env, clear=False):
+    with mock.patch.object(infer, "RULES", _flagged_rules()), \
+            mock.patch.dict(os.environ, env, clear=False):
         return pipeline.run_staged_on(build_page(), detector=FakeDetector())
 
 

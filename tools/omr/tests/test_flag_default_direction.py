@@ -228,11 +228,23 @@ class TestTheProseAgreesWithThePredicate(unittest.TestCase):
 
     def test_the_scan_finds_the_claims(self):
         """⚠️ The positive control. A regex that matches nothing agrees with
-        everything — the failure this repo has shipped twice."""
-        self.assertGreaterEqual(
-            len(self.claims), 2,
-            "no default claim was parsed out of ASSUMPTIONS.md; the prose "
-            "form changed and this guard went vacuous")
+        everything — the failure this repo has shipped twice.
+
+        ⚠️ REWRITTEN 2026-10-07 (roadmap 0.2c). It used to assert that the
+        real `ASSUMPTIONS.md` held at least two parsed claims; those two were
+        `OMR_METER_CARRY` and `OMR_METER_FROM_BARS`, which were PROMOTED (flag
+        and prose claim both removed), so the file now holds none and the old
+        assertion would have demanded a stale claim be kept to feed it. The
+        control moves to the parser itself, on planted prose in the form the
+        guard reads, and the file scan below is the check that no claim
+        about a flag nothing reads survives."""
+        planted = ("*`rhythm.x`, `OMR_PLANTED_ON` (default `1` since "
+                   "2026-09-15) and `OMR_PLANTED_OFF` (default `0`)*")
+        found = [(m.group(1), m.group(2) == "1")
+                 for m in _CLAIM.finditer(planted)]
+        self.assertEqual(found, [("OMR_PLANTED_ON", True),
+                                 ("OMR_PLANTED_OFF", False)])
+        self.assertEqual(list(_CLAIM.finditer("`OMR_X` (default `2`")), [])
 
     def test_every_claimed_default_matches_the_predicate(self):
         bad = []

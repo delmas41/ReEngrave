@@ -149,6 +149,13 @@ def frozen_flags() -> set:
     return set(re.findall(r"`(OMR_[A-Z0-9_]+)`", _section(2)))
 
 
+#: ⚠️ ONE MARKER PER LANE THAT REMOVES FLAGS. `REMOVED 0.2b` was the first;
+#: roadmap 0.2c (2026-10-07) promoted five more and marks its rows
+#: `REMOVED 2026-10-07`, so the claim is checked against the tree rather than
+#: trusted.
+REMOVED_MARKERS = ("REMOVED 0.2b", "REMOVED 2026-10-07")
+
+
 def removed_flags() -> set:
     """Flags whose §1 row is marked REMOVED at this roadmap item.
 
@@ -156,14 +163,16 @@ def removed_flags() -> set:
     counted once its verdict cell contains the literal substring
     `REMOVED 0.2b`, which this lane's own edits to the doc introduce for
     exactly the flags it removed (`OMR_HOLD_OUT_UNIDENTIFIED`,
-    `OMR_METER_SEGMENTS`, `OMR_ADJUDICATE`). A flag promoted or deleted at a
-    LATER roadmap item does not carry this marker yet and is not checked
+    `OMR_METER_SEGMENTS`, `OMR_ADJUDICATE`) and, since 0.2c, `REMOVED
+    2026-10-07` for the five it promoted. A flag promoted or deleted at a
+    LATER roadmap item does not carry a marker yet and is not checked
     here until it does — this test enforces 0.2b's own removals, not the
     whole table's aspirations.
     """
     out = set()
     for line in _section(1).splitlines():
-        if not line.startswith("|") or "REMOVED 0.2b" not in line:
+        if not line.startswith("|") or not any(
+                mark in line for mark in REMOVED_MARKERS):
             continue
         m = re.search(r"`(OMR_[A-Z0-9_]+)`", line)
         if m:
@@ -232,8 +241,11 @@ class TestNoRemovedFlagIsStillRead(unittest.TestCase):
     checked here rather than trusted."""
 
     def test_the_removed_list_is_real(self):
-        """⚠️ The positive control."""
-        self.assertGreaterEqual(len(removed_flags()), 3)
+        """⚠️ The positive control -- and it names the 0.2c flags, so a
+        marker that stopped matching would fail here, not pass vacuously."""
+        self.assertGreaterEqual(len(removed_flags()), 8)
+        self.assertTrue({"OMR_METER_CARRY", "OMR_SLOT_CONSTRAINTS"}
+                        <= removed_flags())
 
     def test_none_of_them_are_read(self):
         removed = removed_flags()
