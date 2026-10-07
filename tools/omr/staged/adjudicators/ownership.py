@@ -3594,3 +3594,74 @@ def adjudicate_ottava_owner(ev: Evidence) -> Ruling:
                       detail={"y_center": yc, "staff_bottom": bottom})
     return Ruling.abstain("no_staff_lines", y_center=yc, staff_top=top,
                           staff_bottom=bottom)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.58b -- ONE OWNERSHIP RULING PER PHYSICAL MARK
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
+    """`glyph_owner` rules ONCE per `Q.MARK_GROUP` (Sean, 2026-10-06).
+
+    Every box of one mark gets the SAME owner. The members were ruled one by
+    one from their own cells -- each looked at a different padded crop -- and
+    the measured outcomes disagree in a way that loses ink: one copy decided
+    and the other abstained (the abstained copy was then written NOWHERE as
+    `owner_not_read`), or no copy was contested at all.
+
+    ⚠️ IT CONNECTS A DECISION AND NEVER LETS ONE GUESS (CLAUDE.md rule 6):
+      * every member that DECIDED names the same staff -> the members that
+        abstained, or that never entered the contest, take that staff; the new
+        verdict names the decided members' verdicts as its BASIS and
+        SUPERSEDES the member's own, so both stay on the record;
+      * the decided members DISAGREE -> nothing is filed; the conflict is
+        counted (`conflict`) and each member keeps its own ruling. A swap is
+        not resolved by a vote;
+      * no member decided -> nothing is filed (`all_silent`): the mark stays
+        counted under `owner_not_read`, never silently assigned.
+    A DECIDED verdict is never overturned.
+
+    Returns the census. Runs only where `Q.MARK_GROUP` rows exist, so a record
+    gathered without `OMR_MARK_GROUPS` is untouched.
+    """
+    groups: Dict[str, List[R.Subject]] = {}
+    for sub in log.subjects(Kind.GLYPH):
+        for row in log.rows(Q.MARK_GROUP, sub):
+            groups.setdefault(row.value, []).append(sub)
+    census: Counter = Counter()
+    for gid in sorted(groups):
+        members = groups[gid]
+        if len(members) < 2:
+            continue
+        census["groups"] += 1
+        verdicts = {m: log.verdict(Q.GLYPH_OWNER, m) for m in members}
+        decided = {m: v for m, v in verdicts.items()
+                   if v is not None and v.outcome is Outcome.DECIDED
+                   and isinstance(v.value, str)}
+        owners = {v.value for v in decided.values()}
+        if not decided:
+            census["all_silent"] += 1
+            continue
+        if len(owners) > 1:
+            census["conflict"] += 1
+            continue
+        owner = next(iter(owners))
+        basis = tuple(sorted(v.id for v in decided.values()))
+        for m in members:
+            if m in decided:
+                continue
+            prior = verdicts[m]
+            own = m.at(Kind.STAFF)
+            if prior is None and own is not None and own.to_key() == owner:
+                continue                 # never contested and already home
+            out = R.Verdict(
+                id=log._next_id("vrd"), subject=m, quantity=Q.GLYPH_OWNER,
+                outcome=Outcome.DECIDED, value=owner,
+                decider="reconcile_group_owners", reason="group_owner",
+                considered=basis, basis=basis,
+                supersedes=prior.id if prior is not None else None)
+            log.record(out)
+            census["adopted_after_abstaining" if prior is not None
+                   else "adopted_uncontested"] += 1
+    return dict(census)

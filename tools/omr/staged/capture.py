@@ -258,6 +258,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "measured line grid, carrying `residual` and `rounded`. Consumed by "
         "`consequences.restate_pitch` together with the clef.",
         "note"),
+    "MARK_GROUP": (
+        RELATION,
+        "ROADMAP 2.58b -- a RELATION between detector boxes already located: "
+        "the id of the physical mark whose page boxes (one family, one "
+        "system) overlap by IoU over 0.3. Scoreless because it is computed "
+        "FROM the boxes, each of which already carries its own confidence on "
+        "its `Q.GLYPH_BOX` row; a score on the group would be a second "
+        "opinion of the same numbers. Consumed by `reconcile_group_owners` "
+        "and by EXPORT's write-once rule.",
+        None),
     "FAR_HEAD_LEDGER_POSITION": (
         DERIVED_FIT,
         "ROADMAP 2.56 -- a position ALREADY INTERPRETED, not a ruler reading "

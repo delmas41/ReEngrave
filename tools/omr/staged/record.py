@@ -411,6 +411,17 @@ class Q(_Vocab):
     #: position is not silently substituted for a head that needed a ledger
     #: read (CLAUDE.md §2 rule 8). Only far heads are in its domain.
     NOTEHEAD_POSITION = "notehead_position"
+    #: ROADMAP 2.58b (Sean, 2026-10-06: *"give each note or symbol some sort of
+    #: identifier that allows us to make sure that it only shows up once"*).
+    #: The id of the PHYSICAL MARK a detector box belongs to: boxes of one
+    #: family on one printed system whose PAGE-pixel boxes overlap (IoU over
+    #: 0.3) are one piece of ink however many padded cells, staves or class
+    #: names found it. Filed on EVERY glyph of a grouped family (a singleton
+    #: gets a group of one, so "written once" has a denominator). A GROUPING,
+    #: never a decision: no box is dropped and no verdict is touched here --
+    #: `glyph_owner` rules once per group and EXPORT writes one member
+    #: (`mark_group_duplicate` counts the rest).
+    MARK_GROUP = "mark_group"
     #: ROADMAP 2.56b. A far head read toward ONE CANDIDATE staff by the note-first
     #: look (the note's own line, then the ledgers counted from it to that
     #: staff's edge): the position it would have ON THAT STAFF, as an integer
@@ -2041,6 +2052,9 @@ CLAIMS: "dict[str, str]" = {
     #: interpretations of the ink, so unlike the geometry row it is not a
     #: bare ruler reading.
     "FAR_HEAD_LEDGER_POSITION": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.58b: a RELATION between boxes already drawn (their page
+    #: overlap) -- a measurement of the boxes, not a reading of new ink.
+    "MARK_GROUP": CLAIM.MEASUREMENT,
     #: ROADMAP 2.56: the weighing of the two position witnesses for a far head.
     "NOTEHEAD_POSITION": CLAIM.INTERPRETATION,
     #: ROADMAP 2.56b: a ledger chain read toward each candidate staff -- the

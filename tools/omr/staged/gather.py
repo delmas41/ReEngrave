@@ -1461,6 +1461,158 @@ def _band_distance_spaces(y: float, line_ys: Sequence[float],
     return gap / spacing if spacing else gap
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.58b -- ONE IDENTITY PER PHYSICAL MARK
+# ─────────────────────────────────────────────────────────────────────────────
+
+MARK_GROUPS_ENV = "OMR_MARK_GROUPS"
+#: The overlap (page pixels) above which two boxes of one family are ONE mark.
+#: The same figure the legacy `_CROSS_STAFF_DUPLICATE_IOU` was swept to (the
+#: lowest value costing no matched note on three works) and the one
+#: `export.SAME_INK_IOU` reads.
+MARK_GROUP_IOU = 0.3
+#: Families that are grouped. ⚠️ DYNAMICS ARE DELIBERATELY NOT HERE:
+#: `benchmarks/omr-staged-dedupe-2026-09/FINDINGS.md` §6.3 measured the two `f`
+#: of a printed `ff` at IoU 0.317 -- two real marks whose boxes overlap more
+#: than the gate -- and the populations "do not separate"; a flat IoU rule
+#: over them deletes real ink. Noteheads separate (§6.3), rests and
+#: accidentals are single glyphs that cannot sit on one another.
+MARK_GROUP_CATEGORIES = ("notehead", "rest", "accidental")
+
+
+def mark_groups_enabled() -> bool:
+    """`OMR_MARK_GROUPS` -- DEFAULT OFF (allow-list: a typo leaves it off)."""
+    return os.environ.get(MARK_GROUPS_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
+    """Connected components of `items` under IoU > `MARK_GROUP_IOU`.
+
+    `items` carry `box` (page CORNERS), `category` and `scope` (page, system):
+    only items with the same category AND scope are ever compared. Returns
+    index lists, each sorted, ordered by the group's leftmost x then index, so
+    the result is deterministic.
+    """
+    parent = list(range(len(items)))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    buckets: Dict[Tuple[Any, Any], List[int]] = {}
+    for i, it in enumerate(items):
+        buckets.setdefault((it["category"], it["scope"]), []).append(i)
+    for members in buckets.values():
+        members.sort(key=lambda i: items[i]["box"][0])
+        for a in range(len(members)):
+            i = members[a]
+            bi = items[i]["box"]
+            for b in range(a + 1, len(members)):
+                j = members[b]
+                bj = items[j]["box"]
+                if bj[0] >= bi[2]:
+                    break
+                if _iou(bi, bj) > MARK_GROUP_IOU:
+                    parent[find(i)] = find(j)
+    groups: Dict[int, List[int]] = {}
+    for i in range(len(items)):
+        groups.setdefault(find(i), []).append(i)
+    return sorted((sorted(g) for g in groups.values()),
+                  key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
+
+
+def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
+    """One `Q.MARK_GROUP` row per item. Returns the number of groups."""
+    seq: Dict[Tuple[int, int], int] = {}
+    groups = cluster_marks(items)
+    for g in groups:
+        scope = items[g[0]]["scope"]
+        n = seq[scope] = seq.get(scope, -1) + 1
+        gid = f"mg/{scope[0]}/{scope[1]}/{n}"
+        # the REPRESENTATIVE: the most confident member; ties go to the
+        # lowest key so a rerun names the same one.
+        rep = min(g, key=lambda i: (-(items[i]["conf"] or 0.0),
+                                    items[i]["key"]))
+        for i in g:
+            it = items[i]
+            extra: Dict[str, Any] = {}
+            if len(g) > 1:
+                extra["members"] = [items[j]["key"] for j in g]
+            glyph = R.glyph(*it["coords"])
+            log.observe(glyph, Q.MARK_GROUP, gid,
+                        reader=READERS.GEOMETRY, frame=it["frame"],
+                        family=it["category"], size=len(g),
+                        rep=items[rep]["key"], **extra)
+    return len(groups)
+
+
+def gather_mark_groups(log: Log, cells: Sequence[Any],
+                       local: Dict[int, Tuple[int, int]],
+                       detections: Dict[str, List[Any]]) -> int:
+    """ROADMAP 2.58b: file the physical-mark identity of every notehead, rest
+    and accidental box of a page (`OMR_MARK_GROUPS`, default OFF).
+
+    AFTER `gather_detections` and the low-confidence rescue (the box set is
+    final), BEFORE every reader that could use the identity. It reads the
+    detector's own PAGE boxes and decides nothing: no row is removed.
+    """
+    if not mark_groups_enabled():
+        return 0
+    by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    items: List[Dict[str, Any]] = []
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            if d.category not in MARK_GROUP_CATEGORIES:
+                continue
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            items.append({"coords": (sub.page, sub.system, sub.staff,
+                                     sub.cell, gi),
+                          "key": g.to_key(), "box": box,
+                          "category": d.category,
+                          "scope": (sub.page, sub.system),
+                          "conf": float(d.confidence),
+                          "frame": frame_cell(sub.cell)})
+    return _file_mark_groups(log, items)
+
+
+def mark_groups_from_log(log: Log) -> int:
+    """The same grouping, off the `Q.GLYPH_BOX` rows already in an UNFROZEN
+    log -- for a rebuilt record (`benchmarks/omr-local-staff-2026-09/
+    mark_identity_rebuild.py`), which has no detector to re-run. One code
+    path with `gather_mark_groups`: both end in `_file_mark_groups`."""
+    items: List[Dict[str, Any]] = []
+    for row in log.all_rows():
+        if getattr(row, "quantity", None) != Q.GLYPH_BOX:
+            continue
+        if not hasattr(row, "detail") or not hasattr(row, "value"):
+            continue
+        cat = row.detail.get("category")
+        box = row.detail.get("bbox_page_px")
+        sub = row.subject
+        if cat not in MARK_GROUP_CATEGORIES or not box:
+            continue
+        items.append({"coords": (sub.page, sub.system, sub.staff, sub.cell,
+                                 sub.glyph),
+                      "key": sub.to_key(), "box": tuple(box),
+                      "category": cat, "scope": (sub.page, sub.system),
+                      "conf": row.score, "frame": row.frame})
+    return _file_mark_groups(log, items)
+
+
 def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
                               detections: Dict[str, List[Any]]) -> None:
@@ -8478,6 +8630,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # notehead_ink` (the fill test) below all READ that row (CLAUDE.md
         # rule 6, connect never guess) rather than re-deriving it -- so this
         # position is load-bearing, not cosmetic.
+        # ⚠️ ROADMAP 2.58b, BEFORE EVERY READER THAT COULD USE THE IDENTITY and
+        # after the last thing that changes the box set (the rescue above).
+        # A grouping over the detector's page boxes; flag-gated inside.
+        gather_mark_groups(log, cells, local, detections)
         gather_notehead_recentre(log, cells, local, detections)
         gather_notehead_positions(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
