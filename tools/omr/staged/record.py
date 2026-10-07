@@ -2913,7 +2913,8 @@ class Log:
     __slots__ = ("_obs", "_abs", "_vrd", "_by_subject", "_n", "_frozen",
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
-                 "_closure_cache", "_subjects_cache", "_desc_prefix_cache")
+                 "_closure_cache", "_subjects_cache", "_desc_prefix_cache",
+                 "_subject_keys")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -2978,6 +2979,8 @@ class Log:
         #: minutes to over an hour. The answer is a pure function of
         #: `_by_subject`, so it is cached and cleared on every write.
         self._subjects_cache: dict[str, tuple] = {}
+        #: every subject key any row is filed under (see `_index`).
+        self._subject_keys: set = set()
 
     # ── writing ─────────────────────────────────────────────────────────────
 
@@ -2986,7 +2989,8 @@ class Log:
         return f"{prefix}:{self._n:06d}"
 
     def _index(self, quantity: str, subject: Subject, row_id: str) -> None:
-        self._by_subject.setdefault((quantity, subject.to_key()), []).append(row_id)
+        skey = subject.to_key()
+        self._by_subject.setdefault((quantity, skey), []).append(row_id)
         # ⚠️ Bumped on EVERY write to this quantity -- an Observation in
         # GATHER, an Abstention, or a Verdict recorded later in ADJUDICATE --
         # so a SELF_AND_DESCENDANTS cache keyed on this counter is correct
@@ -2996,8 +3000,16 @@ class Log:
         # ⚠️ A new row may introduce a subject nothing had filed under, so the
         # subject cache is cleared here rather than being versioned: it is
         # rebuilt at most once per kind per stage.
-        if self._subjects_cache:
-            self._subjects_cache.clear()
+        # ⚠️ ONLY a subject key nothing was filed under can change `subjects()`
+        # (it is a function of the SET of keys, not of the rows). Clearing on
+        # every write made a decision that asks once per subject AND writes a
+        # verdict per subject quadratic: `_owner_from_staves` asked for every
+        # staff of the document per head, and each glyph_owner verdict wiped
+        # the cache (Litolff p3: 35 s for 314 heads, 0.1 s with the flag off).
+        if skey not in self._subject_keys:
+            self._subject_keys.add(skey)
+            if self._subjects_cache:
+                self._subjects_cache.clear()
 
     def observe(self, subject: Subject, quantity: str, value: Any, *,
                 reader: str, frame: str, score: float | None = None,
