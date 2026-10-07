@@ -91,7 +91,8 @@ async def _make_staged_score(db_session, tmp_path) -> Score:
         fh.write(record_io.dumps_for_file(_one_note_record()))
 
     score = Score(
-        id="staged-score-1", title="T", composer="C", era="romantic",
+        id="staged-score-1", user_id="owner-1",
+        title="T", composer="C", era="romantic",
         source="upload", original_pdf_path=str(tmp_path / "score.pdf"),
         status="review",
         metadata_json={"omr_engine": "staged", "omr_record_path": record_path},

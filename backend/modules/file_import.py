@@ -11,6 +11,7 @@ import uuid
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 from xml.etree import ElementTree as ET
 
 import aiofiles
@@ -31,12 +32,70 @@ class ImportResult:
     size_bytes: int
 
 
+class UploadTooLargeError(ValueError):
+    """An upload exceeded the configured byte cap (the route answers 413)."""
+
+
+class UploadNameRejectedError(ValueError):
+    """An upload's filename has an extension outside the route's allowlist."""
+
+
+XML_EXTENSIONS = (".xml", ".musicxml", ".mxl")
+PDF_EXTENSIONS = (".pdf",)
+
+_READ_CHUNK = 1024 * 1024
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
 
-async def save_uploaded_file(file: UploadFile, upload_dir: str) -> ImportResult:
+async def read_upload_capped(file: UploadFile, max_bytes: Optional[int]) -> bytes:
+    """Read an UploadFile whole, raising UploadTooLargeError past max_bytes.
+
+    Reads in chunks so an oversized body is refused without holding more
+    than max_bytes + one chunk in memory. max_bytes None = no cap.
+    """
+    if max_bytes is None:
+        return await file.read()
+    chunks: list[bytes] = []
+    total = 0
+    while True:
+        chunk = await file.read(_READ_CHUNK)
+        if not chunk:
+            break
+        total += len(chunk)
+        if total > max_bytes:
+            raise UploadTooLargeError(
+                f"Upload exceeds the {max_bytes} byte limit"
+            )
+        chunks.append(chunk)
+    return b"".join(chunks)
+
+
+def safe_stored_name(filename: Optional[str], allowed_exts: tuple[str, ...], default: str) -> str:
+    """On-disk name for a client-supplied filename: `<uuid>_<basename>`.
+
+    The basename strips any directory part (absolute or `..`) the client
+    sent; the extension must be in *allowed_exts* (case-insensitive) or
+    UploadNameRejectedError is raised; the uuid prefix keeps two uploads
+    of the same name apart.
+    """
+    base = os.path.basename((filename or "").replace("\\", "/")).strip()
+    if base in ("", ".", ".."):
+        base = default
+    if not base.lower().endswith(tuple(e.lower() for e in allowed_exts)):
+        raise UploadNameRejectedError(
+            f"File '{base}' must have one of these extensions: "
+            + ", ".join(allowed_exts)
+        )
+    return f"{uuid.uuid4()}_{base}"
+
+
+async def save_uploaded_file(
+    file: UploadFile, upload_dir: str, max_bytes: Optional[int] = None,
+) -> ImportResult:
     """Save a FastAPI UploadFile to disk.
 
     Detects file type by extension and magic bytes. Compressed MusicXML
@@ -49,7 +108,7 @@ async def save_uploaded_file(file: UploadFile, upload_dir: str) -> ImportResult:
     file_id = str(uuid.uuid4())
     original_filename = file.filename or f"upload_{file_id}"
 
-    content = await file.read()
+    content = await read_upload_capped(file, max_bytes)
 
     # Decompress .mxl before type detection
     if _is_mxl(content, original_filename):

@@ -146,6 +146,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 #: quantity makes; this module owns only the CONSTRAINT between that table and
 #: `UNSCORED`. Aliased on the way in so a reader of `claim_consistency` can see
 #: at a glance that the answer comes from elsewhere.
+from . import check_helpers as _H
 from .record import (CLAIM_OF_UNSCORED, claims_of as record_claims_of,
                      claims_unaccounted as record_claims_unaccounted)
 
@@ -1107,38 +1108,25 @@ def claim_consistency() -> List[str]:
 
 
 def _gap_key(problem: str) -> Optional[str]:
-    for key in KNOWN_GAPS:
-        if problem.startswith(key):
-            return key
-    return None
+    return _H.gap_key(problem, KNOWN_GAPS)
 
 
 def unaccounted(problems: Sequence[str]) -> List[str]:
     """Problems on no KNOWN_GAPS entry. These are what `--check` fails on."""
-    return [p for p in problems if _gap_key(p) is None]
+    return _H.unaccounted(problems, KNOWN_GAPS)
 
 
 def stale_gaps(problems: Sequence[str]) -> List[str]:
     """KNOWN_GAPS entries nothing reports any more. A CLOSED gap must LEAVE."""
-    hit = {_gap_key(p) for p in problems}
-    return sorted(k for k in KNOWN_GAPS if k not in hit)
+    return _H.stale_gaps(problems, KNOWN_GAPS)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. The gather walk — every `log.observe`, with its score resolved
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _q_name(node: ast.AST) -> Optional[str]:
-    """`Q.GLYPH_BOX` -> "GLYPH_BOX". Anything else -> None."""
-    if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)
-            and node.value.id == "Q"):
-        return node.attr
-    return None
-
-
-def _attr_tail(node: ast.AST) -> Optional[str]:
-    """`READERS.DETECTOR` -> "DETECTOR"."""
-    return node.attr if isinstance(node, ast.Attribute) else None
+_q_name = _H.q_name
+_attr_tail = _H.attr_tail
 
 
 def _dict_literals(fn: ast.AST) -> Dict[str, Set[str]]:

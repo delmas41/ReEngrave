@@ -80,6 +80,7 @@ import sys
 from typing import Any, Dict, List, Optional, Tuple
 
 from . import adjudicate as A
+from . import check_helpers as _H
 from . import evaluate as E
 from . import export as X
 from . import infer as INF
@@ -841,10 +842,7 @@ KNOWN_GAPS: Dict[str, str] = {
 
 
 def _gap_key(problem: str) -> Optional[str]:
-    for key in KNOWN_GAPS:
-        if problem.startswith(key):
-            return key
-    return None
+    return _H.gap_key(problem, KNOWN_GAPS)
 
 
 def problems() -> List[str]:
@@ -892,11 +890,11 @@ def _gap_problems() -> List[str]:
 
 
 def unaccounted(probs: List[str]) -> List[str]:
-    return [p for p in probs if _gap_key(p) is None]
+    return _H.unaccounted(probs, KNOWN_GAPS)
 
 
 def stale_gaps(probs: List[str]) -> List[str]:
-    return [k for k in KNOWN_GAPS if not any(_gap_key(p) == k for p in probs)]
+    return _H.stale_gaps(probs, KNOWN_GAPS, ordered=True)
 
 
 def controls() -> Dict[str, int]:

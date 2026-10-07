@@ -49,6 +49,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from ..class_aliases import canonical, vocabulary
+from . import check_helpers as _check_helpers
 
 _HERE = Path(__file__).resolve().parent
 _OMR = _HERE.parent
@@ -58,19 +59,8 @@ _OMR = _HERE.parent
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def _q_name(node: ast.AST) -> Optional[str]:
-    """`Q.GLYPH_BOX` -> "GLYPH_BOX". Anything else -> None."""
-    if (isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name)
-            and node.value.id == "Q"):
-        return node.attr
-    return None
-
-
-def _attr_tail(node: ast.AST) -> Optional[str]:
-    """`READERS.DETECTOR` -> "DETECTOR"; `ABSTAIN.NO_INK` -> "NO_INK"."""
-    if isinstance(node, ast.Attribute):
-        return node.attr
-    return None
+_q_name = _check_helpers.q_name
+_attr_tail = _check_helpers.attr_tail
 
 
 def _kwarg(call: ast.Call, name: str) -> Optional[ast.AST]:

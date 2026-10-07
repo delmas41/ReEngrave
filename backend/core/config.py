@@ -6,6 +6,10 @@ from __future__ import annotations
 
 from pydantic_settings import BaseSettings
 
+# The JWT/HMAC secret shipped in this file. Startup refuses it unless
+# ALLOW_DEFAULT_SECRET is set (dev compose only) -- see check_startup_secret.
+DEFAULT_SECRET_KEY = "changeme-please-use-a-long-random-string-in-production"
+
 
 class Settings(BaseSettings):
     # --- Existing ---
@@ -15,11 +19,25 @@ class Settings(BaseSettings):
     export_dir: str = "./exports"
 
     # --- Auth ---
-    secret_key: str = "changeme-please-use-a-long-random-string-in-production"
+    secret_key: str = DEFAULT_SECRET_KEY
+    # True only in the dev docker-compose.yml: lets the app start with the
+    # shipped default secret_key. Never set it in production.
+    allow_default_secret: bool = False
     access_token_expire_minutes: int = 15
     refresh_token_expire_days: int = 7
-    # Comma-separated list of admin email addresses
-    admin_emails: str = "delmas41@gmail.com"
+    # Comma-separated list of admin email addresses (ADMIN_EMAILS in .env)
+    admin_emails: str = ""
+    # Refresh cookie `secure` flag. True (HTTPS only) unless the dev stack
+    # sets COOKIE_SECURE=false for plain-http localhost.
+    cookie_secure: bool = True
+    # Dev only: forgot-password returns the reset token in its body.
+    expose_reset_token: bool = False
+
+    # --- Uploads ---
+    # Per-file upload cap; every upload route answers 413 above it.
+    max_upload_bytes: int = 50 * 1024 * 1024
+    # Lifetime of a signed /uploads URL (?t=<exp>.<sig>), seconds.
+    upload_url_ttl_s: int = 3600
 
     # --- Stripe ---
     stripe_secret_key: str = ""
@@ -52,6 +70,21 @@ class Settings(BaseSettings):
     @property
     def cors_origin_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+
+
+def check_startup_secret(s: "Settings") -> None:
+    """Refuse to run with the shipped default secret_key.
+
+    Every JWT and every signed /uploads URL is keyed on it, so the default
+    lets anyone forge both. Raised from the app lifespan (main.py).
+    """
+    if s.secret_key == DEFAULT_SECRET_KEY and not s.allow_default_secret:
+        raise RuntimeError(
+            "SECRET_KEY is the shipped default. Set SECRET_KEY to a long "
+            "random string in backend/.env (e.g. `python3 -c \"import "
+            "secrets; print(secrets.token_urlsafe(48))\"`), or set "
+            "ALLOW_DEFAULT_SECRET=true for a local dev stack only."
+        )
 
 
 settings = Settings()

@@ -20,6 +20,12 @@ import anthropic
 from pdf2image import convert_from_path
 from PIL import Image
 
+from modules.lilypond_engrave import SubprocessTimeout, communicate_with_timeout
+
+# rsvg-convert / inkscape wall-clock limit; past it the converter is killed
+# and the next fallback (or False) is used.
+SVG_CONVERT_TIMEOUT_S = 60.0
+
 ANTHROPIC_API_KEY: str = os.getenv("ANTHROPIC_API_KEY", "")
 DEFAULT_MODEL = "claude-opus-4-6"
 
@@ -411,11 +417,12 @@ async def _svg_to_png(svg_path: str, png_path: str) -> bool:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
-        await proc.communicate()
+        await communicate_with_timeout(proc, SVG_CONVERT_TIMEOUT_S, "rsvg-convert")
         if proc.returncode == 0 and Path(png_path).exists():
             return True
-    except FileNotFoundError:
-        pass
+    except (FileNotFoundError, SubprocessTimeout) as exc:
+        if isinstance(exc, SubprocessTimeout):
+            logger.warning("%s", exc)
 
     # Try inkscape
     try:
@@ -427,11 +434,12 @@ async def _svg_to_png(svg_path: str, png_path: str) -> bool:
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
-        await proc.communicate()
+        await communicate_with_timeout(proc, SVG_CONVERT_TIMEOUT_S, "inkscape")
         if proc.returncode == 0 and Path(png_path).exists():
             return True
-    except FileNotFoundError:
-        pass
+    except (FileNotFoundError, SubprocessTimeout) as exc:
+        if isinstance(exc, SubprocessTimeout):
+            logger.warning("%s", exc)
 
     return False
 
