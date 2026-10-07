@@ -233,9 +233,9 @@ export default function DiffCard({ diff, onDecide }: Props) {
         <div style={styles.snippets}>
           <div style={styles.snippetBox}>
             <span style={styles.snippetLabel}>PDF original</span>
-            {diff.pdf_snippet_path ? (
+            {diff.pdf_snippet_url ? (
               <img
-                src={`/uploads/${diff.pdf_snippet_path}`}
+                src={diff.pdf_snippet_url}
                 alt="PDF snippet"
                 style={styles.snippetImg}
               />
@@ -245,9 +245,9 @@ export default function DiffCard({ diff, onDecide }: Props) {
           </div>
           <div style={styles.snippetBox}>
             <span style={styles.snippetLabel}>MusicXML render</span>
-            {diff.musicxml_snippet_path ? (
+            {diff.musicxml_snippet_url ? (
               <img
-                src={`/uploads/${diff.musicxml_snippet_path}`}
+                src={diff.musicxml_snippet_url}
                 alt="MusicXML snippet"
                 style={styles.snippetImg}
               />

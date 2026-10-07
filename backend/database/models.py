@@ -23,7 +23,14 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, computed_field
+
+
+def _signed(path: Optional[str]) -> Optional[str]:
+    """Signed /uploads URL for a stored file path (lazy import: config is
+    read at call time, and models stays importable on its own)."""
+    from core.signed_urls import signed_url
+    return signed_url(path)
 
 
 # ---------------------------------------------------------------------------
@@ -48,6 +55,11 @@ class Score(Base):
     __tablename__ = "scores"
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    # Owner. Every /api/scores* route filters on it (404 for another
+    # user's score). Added 2026-10-07 with no migration: the DB is dropped.
+    user_id: Mapped[str] = mapped_column(
+        String, ForeignKey("users.id"), nullable=False, index=True
+    )
     title: Mapped[str] = mapped_column(String, nullable=False)
     composer: Mapped[str] = mapped_column(String, nullable=False)
     era: Mapped[str] = mapped_column(String, nullable=False)  # baroque/classical/romantic/modern
@@ -226,6 +238,9 @@ class GradusScore(Base):
     __tablename__ = "gradus_scores"
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(
+        String, ForeignKey("users.id"), nullable=False, index=True
+    )
     title: Mapped[str] = mapped_column(String, nullable=False)
     composer: Mapped[str] = mapped_column(String, nullable=False)
     xml_path: Mapped[str] = mapped_column(String, nullable=False)
@@ -250,6 +265,9 @@ class ComparisonSession(Base):
     __tablename__ = "comparison_sessions"
 
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    user_id: Mapped[str] = mapped_column(
+        String, ForeignKey("users.id"), nullable=False, index=True
+    )
     name: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     gradus_score_id: Mapped[Optional[str]] = mapped_column(
         String, ForeignKey("gradus_scores.id"), nullable=True
@@ -388,6 +406,12 @@ class ScoreResponse(BaseModel):
     updated_at: datetime
     metadata_json: Optional[dict]
 
+    @computed_field
+    @property
+    def pdf_url(self) -> Optional[str]:
+        """Signed /uploads URL for the original PDF (1 h), or None."""
+        return _signed(self.original_pdf_path)
+
 
 class FlaggedDiffResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -410,6 +434,18 @@ class FlaggedDiffResponse(BaseModel):
     auto_accepted: bool
     auto_accept_rule_id: Optional[str]
     created_at: datetime
+
+    @computed_field
+    @property
+    def pdf_snippet_url(self) -> Optional[str]:
+        """Signed /uploads URL for the PDF snippet image, or None."""
+        return _signed(self.pdf_snippet_path)
+
+    @computed_field
+    @property
+    def musicxml_snippet_url(self) -> Optional[str]:
+        """Signed /uploads URL for the rendered-MusicXML snippet, or None."""
+        return _signed(self.musicxml_snippet_path)
 
 
 class KnowledgePatternResponse(BaseModel):
@@ -482,6 +518,16 @@ class GradusScoreResponse(BaseModel):
     notes: Optional[str]
     created_at: datetime
     updated_at: datetime
+
+    @computed_field
+    @property
+    def xml_url(self) -> Optional[str]:
+        return _signed(self.xml_path)
+
+    @computed_field
+    @property
+    def pdf_url(self) -> Optional[str]:
+        return _signed(self.pdf_path)
 
 
 class ComparisonSessionResponse(BaseModel):

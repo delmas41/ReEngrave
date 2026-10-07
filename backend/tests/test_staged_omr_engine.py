@@ -220,10 +220,29 @@ def app_client():
     from database.models import Score
     from fastapi.testclient import TestClient
 
-    main_module.app.dependency_overrides[get_current_user] = lambda: object()
+    from database.models import User
+
+    # Scores have an owner (Score.user_id); the route only finds a score
+    # owned by the current user, so the override returns a real stored user.
+    user = User(id=_TEST_USER_ID, email=f"{_TEST_USER_ID}@example.com",
+                password_hash="x", role="user")
+    main_module.app.dependency_overrides[get_current_user] = lambda: user
     with TestClient(main_module.app) as client:
+        asyncio.run(_ensure_user(AsyncSessionLocal, user))
         yield main_module, client, AsyncSessionLocal, Score
     main_module.app.dependency_overrides.pop(get_current_user, None)
+
+
+_TEST_USER_ID = "staged-engine-test-user"
+
+
+async def _ensure_user(session_factory, user) -> None:
+    from database.models import User
+    async with session_factory() as session:
+        if await session.get(User, user.id) is None:
+            session.add(User(id=user.id, email=user.email,
+                             password_hash=user.password_hash, role=user.role))
+            await session.commit()
 
 
 async def _create_score(session_factory, Score, pdf_path: str) -> str:
@@ -232,7 +251,8 @@ async def _create_score(session_factory, Score, pdf_path: str) -> str:
     score_id = str(uuid.uuid4())
     async with session_factory() as session:
         session.add(Score(
-            id=score_id, title="Test", composer="Test", era="romantic",
+            id=score_id, user_id=_TEST_USER_ID,
+            title="Test", composer="Test", era="romantic",
             source="upload", original_pdf_path=pdf_path,
             status="pending", created_at=datetime.utcnow(),
             updated_at=datetime.utcnow(),

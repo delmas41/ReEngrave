@@ -81,6 +81,8 @@ export interface Score {
   created_at: string; // ISO datetime string
   updated_at: string;
   metadata_json: Record<string, unknown> | null;
+  /** Signed /uploads URL for the original PDF (expires in 1 h), or null. */
+  pdf_url: string | null;
 }
 
 export interface FlaggedDifference {
@@ -94,6 +96,9 @@ export interface FlaggedDifference {
   description: string;
   pdf_snippet_path: string;
   musicxml_snippet_path: string;
+  /** Signed /uploads URLs (expire in 1 h); null when there is no image. */
+  pdf_snippet_url: string | null;
+  musicxml_snippet_url: string | null;
   audiveris_confidence: number; // 0-1
   claude_vision_confidence: number; // 0-1
   human_decision: HumanDecision | null;
@@ -201,6 +206,9 @@ export interface GradusScore {
   notes: string | null;
   created_at: string;
   updated_at: string;
+  /** Signed /uploads URLs (expire in 1 h), or null. */
+  xml_url: string | null;
+  pdf_url: string | null;
 }
 
 export interface ComparisonSession {

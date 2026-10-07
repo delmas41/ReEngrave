@@ -67,7 +67,7 @@ def _set_refresh_cookie(response: Response, token: str) -> None:
         key=_REFRESH_COOKIE,
         value=token,
         httponly=True,
-        secure=False,  # Set True in production (HTTPS)
+        secure=settings.cookie_secure,  # COOKIE_SECURE=false in dev compose only
         samesite="lax",
         max_age=_REFRESH_MAX_AGE,
         path="/api/auth/refresh",
@@ -232,7 +232,12 @@ async def forgot_password(
     body: ForgotPasswordRequest,
     db: AsyncSession = Depends(get_db),
 ):
-    """Generate a password reset token (returns token in response for dev; send email in prod)."""
+    """Generate a password reset token.
+
+    The body is the same whether or not the email exists, and never
+    carries the token unless EXPOSE_RESET_TOKEN is set (dev only). No mail
+    is sent yet; the token is in the password_reset_tokens table.
+    """
     result = await db.execute(select(User).where(User.email == body.email.lower()))
     user = result.scalar_one_or_none()
 
@@ -251,11 +256,11 @@ async def forgot_password(
     )
     await db.flush()
 
-    # TODO: Send email. For dev, return the token directly.
-    return {
-        "status": "If that email exists, a reset link has been sent",
-        "dev_token": token_str,  # Remove in production
-    }
+    # TODO: send the reset link by email.
+    body_out = {"status": "If that email exists, a reset link has been sent"}
+    if settings.expose_reset_token:
+        body_out["dev_token"] = token_str
+    return body_out
 
 
 @router.post("/reset-password")

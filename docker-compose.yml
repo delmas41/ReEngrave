@@ -24,6 +24,10 @@ services:
       DATABASE_URL: sqlite+aiosqlite:////app/data/reengrave.db
       UPLOAD_DIR: /app/uploads
       EXPORT_DIR: /app/exports
+      # DEV ONLY (never in docker-compose.prod.yml): start even with the
+      # shipped default SECRET_KEY, and send the refresh cookie over http.
+      ALLOW_DEFAULT_SECRET: "true"
+      COOKIE_SECURE: "false"
       # Override default OMR weights path / pipeline knobs by uncommenting:
       # OMR_WEIGHTS_PATH: /app/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt
       # OMR_MAX_PAGES: 5

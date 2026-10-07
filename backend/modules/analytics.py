@@ -258,19 +258,33 @@ async def apply_auto_accept(diff: dict, db: AsyncSession) -> Optional[str]:
     return None
 
 
-async def generate_learning_report(db: AsyncSession) -> dict:
+def _diffs_of(user_id: Optional[str]):
+    """`select(func.count())` over FlaggedDifference, joined to the owning
+    Score and restricted to *user_id*'s scores when one is given."""
+    q = select(func.count()).select_from(FlaggedDifference)
+    if user_id is not None:
+        q = q.join(Score, FlaggedDifference.score_id == Score.id).where(
+            Score.user_id == user_id)
+    return q
+
+
+async def generate_learning_report(db: AsyncSession, user_id: Optional[str] = None) -> dict:
     """Return a comprehensive report of the self-improving agent's state,
     including weekly trend analysis of acceptance rates.
+
+    With *user_id*, score and correction counts (and the weekly trend) are
+    that user's own; the knowledge base (patterns, auto-accept rules) is
+    shared across users either way.
     """
     # Total corrections
     total_result = await db.execute(
-        select(func.count()).where(FlaggedDifference.human_decision.isnot(None))
+        _diffs_of(user_id).where(FlaggedDifference.human_decision.isnot(None))
     )
     total_corrections = total_result.scalar() or 0
 
     # Accept rate
     accept_result = await db.execute(
-        select(func.count()).where(FlaggedDifference.human_decision == "accept")
+        _diffs_of(user_id).where(FlaggedDifference.human_decision == "accept")
     )
     total_accepts = accept_result.scalar() or 0
     accept_rate = total_accepts / total_corrections if total_corrections > 0 else 0.0
@@ -288,11 +302,14 @@ async def generate_learning_report(db: AsyncSession) -> dict:
     top_patterns = patterns_result.scalars().all()
 
     # Scores overview
-    scores_result = await db.execute(select(func.count(Score.id)))
+    scores_q = select(func.count(Score.id))
+    if user_id is not None:
+        scores_q = scores_q.where(Score.user_id == user_id)
+    scores_result = await db.execute(scores_q)
     total_scores = scores_result.scalar() or 0
 
     # Weekly trend analysis (SQLite strftime)
-    weekly_trends = await _compute_weekly_trends(db)
+    weekly_trends = await _compute_weekly_trends(db, user_id=user_id)
 
     # Prompt performance from ClaudePromptVersion (if any active versions exist)
     prompt_performance = await _compute_prompt_performance(db)
@@ -387,21 +404,25 @@ async def export_finetuning_dataset(db: AsyncSession, output_dir: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-async def _compute_weekly_trends(db: AsyncSession) -> list[dict]:
+async def _compute_weekly_trends(db: AsyncSession, user_id: Optional[str] = None) -> list[dict]:
     """Compute weekly acceptance rates over the past 12 weeks.
 
     Uses SQLite's strftime('%Y-%W', ...) for ISO year-week grouping.
     Returns a list of {week, total, accepts, accept_rate} dicts, oldest first.
     """
     try:
+        q = select(
+            func.strftime("%Y-%W", FlaggedDifference.created_at).label("week"),
+            func.count().label("total"),
+            func.sum(
+                (FlaggedDifference.human_decision == "accept").cast(int)
+            ).label("accepts"),
+        )
+        if user_id is not None:
+            q = q.join(Score, FlaggedDifference.score_id == Score.id).where(
+                Score.user_id == user_id)
         result = await db.execute(
-            select(
-                func.strftime("%Y-%W", FlaggedDifference.created_at).label("week"),
-                func.count().label("total"),
-                func.sum(
-                    (FlaggedDifference.human_decision == "accept").cast(int)
-                ).label("accepts"),
-            )
+            q
             .where(FlaggedDifference.human_decision.isnot(None))
             .group_by(text("week"))
             .order_by(text("week"))

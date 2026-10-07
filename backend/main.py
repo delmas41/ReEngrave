@@ -23,12 +23,12 @@ from fastapi import (
 )
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.config import settings
+from core import signed_urls
+from core.config import check_startup_secret, settings
 from core.limiter import limiter
 from database.connection import create_all_tables, get_db
 from database.models import (
@@ -72,7 +72,8 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create DB tables on startup."""
+    """Refuse the default secret, then create DB tables on startup."""
+    check_startup_secret(settings)
     await create_all_tables()
     os.makedirs(settings.upload_dir, exist_ok=True)
     os.makedirs(settings.export_dir, exist_ok=True)
@@ -104,9 +105,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve uploaded files (snippet images, PDFs) as static assets
-app.mount("/uploads", StaticFiles(directory=settings.upload_dir), name="uploads")
-
 # Routers
 app.include_router(auth_router)
 app.include_router(payments_router)
@@ -129,6 +127,68 @@ class BulkDecideRequest(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Ownership / upload helpers
+# ---------------------------------------------------------------------------
+
+
+async def _owned_score(db: AsyncSession, score_id: str, user: User) -> Score:
+    """The score if *user* owns it; 404 otherwise (never 403, so another
+    user's score id is indistinguishable from a missing one)."""
+    result = await db.execute(
+        select(Score).where(Score.id == score_id, Score.user_id == user.id)
+    )
+    score = result.scalar_one_or_none()
+    if score is None:
+        raise HTTPException(status_code=404, detail="Score not found")
+    return score
+
+
+def _is_admin(user: User) -> bool:
+    return user.role == "admin" or (user.email or "").lower() in settings.admin_email_list
+
+
+def _upload_http_error(exc: Exception) -> HTTPException:
+    if isinstance(exc, file_import.UploadTooLargeError):
+        return HTTPException(status_code=413, detail=str(exc))
+    return HTTPException(status_code=400, detail=str(exc))
+
+
+async def _save_named_upload(
+    upload: UploadFile, dest_dir: str, allowed_exts: tuple[str, ...], default: str,
+) -> str:
+    """Write a client upload under *dest_dir* as `<uuid>_<basename>` after
+    the extension allowlist and the size cap; return the path."""
+    try:
+        stored = file_import.safe_stored_name(upload.filename, allowed_exts, default)
+        content = await file_import.read_upload_capped(upload, settings.max_upload_bytes)
+    except ValueError as exc:
+        raise _upload_http_error(exc)
+    path = os.path.join(dest_dir, stored)
+    with open(path, "wb") as f:
+        f.write(content)
+    return path
+
+
+# ---------------------------------------------------------------------------
+# Signed file route (replaces the unauthenticated StaticFiles mount)
+# ---------------------------------------------------------------------------
+
+
+@app.get("/uploads/{path:path}")
+async def serve_upload(path: str, t: Optional[str] = Query(None)):
+    """Serve a file under upload_dir only with a valid `?t=<exp>.<sig>`
+    (core/signed_urls.py). Missing, expired or forged token, a path that
+    resolves outside upload_dir, or no such file: 404 for all of them."""
+    if not signed_urls.verify_token(path, t):
+        raise HTTPException(status_code=404, detail="Not found")
+    target = signed_urls.resolve_inside_uploads(path)
+    if target is None:
+        raise HTTPException(status_code=404, detail="Not found")
+    return FileResponse(
+        path=str(target), headers={"X-Content-Type-Options": "nosniff"})
+
+
+# ---------------------------------------------------------------------------
 # File import routes
 # ---------------------------------------------------------------------------
 
@@ -143,13 +203,18 @@ async def upload_pdf(
     current_user: User = Depends(get_current_user),
 ):
     """Upload a PDF score. Creates a Score record and saves the file."""
-    import_result = await file_import.save_uploaded_file(file, settings.upload_dir)
+    try:
+        import_result = await file_import.save_uploaded_file(
+            file, settings.upload_dir, max_bytes=settings.max_upload_bytes)
+    except ValueError as exc:
+        raise _upload_http_error(exc)
     if import_result.file_type != "pdf":
         raise HTTPException(status_code=400, detail="Uploaded file must be a PDF")
 
     score_id = str(uuid.uuid4())
     score = Score(
         id=score_id,
+        user_id=current_user.id,
         title=title,
         composer=composer,
         era=era,
@@ -175,13 +240,18 @@ async def upload_musicxml(
     current_user: User = Depends(get_current_user),
 ):
     """Upload a MusicXML file directly (skips OMR step)."""
-    import_result = await file_import.save_uploaded_file(file, settings.upload_dir)
+    try:
+        import_result = await file_import.save_uploaded_file(
+            file, settings.upload_dir, max_bytes=settings.max_upload_bytes)
+    except ValueError as exc:
+        raise _upload_http_error(exc)
     if import_result.file_type != "musicxml":
         raise HTTPException(status_code=400, detail="Uploaded file must be MusicXML")
 
     score_id = str(uuid.uuid4())
     score = Score(
         id=score_id,
+        user_id=current_user.id,
         title=title,
         composer=composer,
         era=era,
@@ -236,10 +306,7 @@ async def run_omr(
         (``tools.omr.staged.budget``) is refused up front, with the
         estimate in the error, when it exceeds ``OMR_JOB_BUDGET_S``.
     """
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
     if not score.original_pdf_path:
         raise HTTPException(status_code=400, detail="No PDF available for OMR")
 
@@ -498,10 +565,7 @@ async def run_comparison(
     """Run Claude Vision comparison. Requires payment (or admin bypass)."""
     from routers.payments import user_has_vision_access
 
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
     if not score.musicxml_path:
         raise HTTPException(status_code=400, detail="No MusicXML available – run OMR first")
 
@@ -636,10 +700,7 @@ async def get_score_status(
     current_user: User = Depends(get_current_user),
 ):
     """Return the current processing status of a score."""
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
     return {"score_id": score_id, "status": score.status, "updated_at": score.updated_at}
 
 
@@ -653,8 +714,12 @@ async def list_scores(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """List all scores."""
-    result = await db.execute(select(Score).order_by(Score.created_at.desc()))
+    """List the current user's scores."""
+    result = await db.execute(
+        select(Score)
+        .where(Score.user_id == current_user.id)
+        .order_by(Score.created_at.desc())
+    )
     return [ScoreResponse.model_validate(s) for s in result.scalars().all()]
 
 
@@ -665,10 +730,7 @@ async def get_score(
     current_user: User = Depends(get_current_user),
 ):
     """Get score details by ID."""
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
     return ScoreResponse.model_validate(score)
 
 
@@ -679,10 +741,7 @@ async def delete_score(
     current_user: User = Depends(get_current_user),
 ):
     """Delete a score and its associated files."""
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
 
     await db.delete(score)
     await db.flush()
@@ -702,6 +761,7 @@ async def list_diffs(
     current_user: User = Depends(get_current_user),
 ):
     """List all flagged differences for a score."""
+    await _owned_score(db, score_id, current_user)
     result = await db.execute(
         select(FlaggedDifference)
         .where(FlaggedDifference.score_id == score_id)
@@ -724,7 +784,9 @@ async def record_decision(
         raise HTTPException(status_code=400, detail="edit_value required for edit decision")
 
     result = await db.execute(
-        select(FlaggedDifference).where(FlaggedDifference.id == diff_id)
+        select(FlaggedDifference)
+        .join(Score, FlaggedDifference.score_id == Score.id)
+        .where(FlaggedDifference.id == diff_id, Score.user_id == current_user.id)
     )
     diff = result.scalar_one_or_none()
     if diff is None:
@@ -748,6 +810,7 @@ async def bulk_decide(
     """Bulk accept or reject multiple flagged differences."""
     if body.decision not in ("accept", "reject"):
         raise HTTPException(status_code=400, detail="decision must be accept or reject")
+    await _owned_score(db, score_id, current_user)
 
     updated = 0
     for diff_id in body.diff_ids:
@@ -784,6 +847,7 @@ async def export_score(
         fmt = ExportFormat(format)
     except ValueError:
         raise HTTPException(status_code=400, detail=f"Invalid format: {format}")
+    await _owned_score(db, score_id, current_user)
 
     export_subdir = os.path.join(settings.export_dir, score_id)
     try:
@@ -807,10 +871,7 @@ async def export_status(
     current_user: User = Depends(get_current_user),
 ):
     """Return export job status."""
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
 
     return {"score_id": score_id, "export_status": "ready" if score.status == "complete" else score.status}
 
@@ -825,8 +886,10 @@ async def get_analytics_report(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Return the learning report with stats and suggestions."""
-    return await analytics.generate_learning_report(db)
+    """Return the learning report. Score and correction counts are the
+    current user's; the knowledge base (patterns, auto-accept rules) is
+    shared across users, as it is when auto-accept is applied."""
+    return await analytics.generate_learning_report(db, user_id=current_user.id)
 
 
 @app.get("/api/analytics/patterns", response_model=list[KnowledgePatternResponse])
@@ -857,7 +920,10 @@ async def trigger_finetuning_export(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """Trigger fine-tuning dataset export."""
+    """Trigger fine-tuning dataset export (admin only: it reads every
+    user's reviewed differences)."""
+    if not _is_admin(current_user):
+        raise HTTPException(status_code=403, detail="Admin only")
     output_path = await analytics.export_finetuning_dataset(
         db, os.path.join(settings.export_dir, "finetuning")
     )
@@ -896,24 +962,24 @@ async def create_gradus_score(
     gradus_dir = os.path.join(settings.upload_dir, "gradus", score_id)
     os.makedirs(gradus_dir, exist_ok=True)
 
-    # Save XML file
-    xml_filename = xml_file.filename or "score.xml"
-    xml_path = os.path.join(gradus_dir, xml_filename)
-    content = await xml_file.read()
-    with open(xml_path, "wb") as f:
-        f.write(content)
+    # Client filenames are reduced to a basename, checked against an
+    # extension allowlist and prefixed with a uuid (as /api/import does).
+    try:
+        xml_path = await _save_named_upload(
+            xml_file, gradus_dir, file_import.XML_EXTENSIONS, "score.xml")
 
-    # Save optional PDF file
-    pdf_path: Optional[str] = None
-    if pdf_file and pdf_file.filename:
-        pdf_filename = pdf_file.filename
-        pdf_path = os.path.join(gradus_dir, pdf_filename)
-        pdf_content = await pdf_file.read()
-        with open(pdf_path, "wb") as f:
-            f.write(pdf_content)
+        pdf_path: Optional[str] = None
+        if pdf_file and pdf_file.filename:
+            pdf_path = await _save_named_upload(
+                pdf_file, gradus_dir, file_import.PDF_EXTENSIONS, "score.pdf")
+    except HTTPException:
+        import shutil
+        shutil.rmtree(gradus_dir, ignore_errors=True)
+        raise
 
     gradus = GradusScore(
         id=score_id,
+        user_id=current_user.id,
         title=title,
         composer=composer,
         xml_path=xml_path,
@@ -935,7 +1001,9 @@ async def list_gradus_scores(
 ):
     """List all Gradus master reference scores."""
     result = await db.execute(
-        select(GradusScore).order_by(GradusScore.created_at.desc())
+        select(GradusScore)
+        .where(GradusScore.user_id == current_user.id)
+        .order_by(GradusScore.created_at.desc())
     )
     return [GradusScoreResponse.model_validate(g) for g in result.scalars().all()]
 
@@ -947,7 +1015,10 @@ async def delete_gradus_score(
     current_user: User = Depends(get_current_user),
 ):
     """Delete a Gradus score and its uploaded files."""
-    result = await db.execute(select(GradusScore).where(GradusScore.id == gradus_id))
+    result = await db.execute(
+        select(GradusScore).where(
+            GradusScore.id == gradus_id, GradusScore.user_id == current_user.id)
+    )
     gradus = result.scalar_one_or_none()
     if gradus is None:
         raise HTTPException(status_code=404, detail="Gradus score not found")
@@ -988,30 +1059,35 @@ async def create_comparison_session(
     if len(xml_files) > 6:
         raise HTTPException(status_code=400, detail="Maximum 6 XML files per comparison")
 
-    session_id = str(uuid.uuid4())
-    compare_dir = os.path.join(settings.upload_dir, "compare", session_id)
-    os.makedirs(compare_dir, exist_ok=True)
-
-    # Save uploaded files
-    saved_paths: list[str] = []
-    for xml_file in xml_files:
-        filename = xml_file.filename or f"score_{len(saved_paths)}.xml"
-        file_path = os.path.join(compare_dir, filename)
-        content = await xml_file.read()
-        with open(file_path, "wb") as f:
-            f.write(content)
-        saved_paths.append(file_path)
-
-    # Resolve optional master path
+    # Resolve optional master path (the caller's own Gradus scores only)
     master_path: Optional[str] = None
     if gradus_score_id:
         g_result = await db.execute(
-            select(GradusScore).where(GradusScore.id == gradus_score_id)
+            select(GradusScore).where(
+                GradusScore.id == gradus_score_id,
+                GradusScore.user_id == current_user.id,
+            )
         )
         gradus = g_result.scalar_one_or_none()
         if gradus is None:
             raise HTTPException(status_code=404, detail="Gradus score not found")
         master_path = gradus.xml_path
+
+    session_id = str(uuid.uuid4())
+    compare_dir = os.path.join(settings.upload_dir, "compare", session_id)
+    os.makedirs(compare_dir, exist_ok=True)
+
+    # Save uploaded files: basename + extension allowlist + uuid prefix
+    saved_paths: list[str] = []
+    try:
+        for xml_file in xml_files:
+            saved_paths.append(await _save_named_upload(
+                xml_file, compare_dir, file_import.XML_EXTENSIONS,
+                f"score_{len(saved_paths)}.xml"))
+    except HTTPException:
+        import shutil
+        shutil.rmtree(compare_dir, ignore_errors=True)
+        raise
 
     # Run comparison (synchronous — music21 parsing is CPU-bound)
     try:
@@ -1029,6 +1105,7 @@ async def create_comparison_session(
     import json as _json
     session = ComparisonSession(
         id=session_id,
+        user_id=current_user.id,
         name=name,
         gradus_score_id=gradus_score_id or None,
         xml_paths_json=_json.dumps(saved_paths),
@@ -1048,7 +1125,10 @@ async def list_comparison_sessions(
 ):
     """List recent comparison sessions (newest first)."""
     result = await db.execute(
-        select(ComparisonSession).order_by(ComparisonSession.created_at.desc()).limit(50)
+        select(ComparisonSession)
+        .where(ComparisonSession.user_id == current_user.id)
+        .order_by(ComparisonSession.created_at.desc())
+        .limit(50)
     )
     return [ComparisonSessionResponse.model_validate(s) for s in result.scalars().all()]
 
@@ -1061,7 +1141,10 @@ async def get_comparison_session(
 ):
     """Get a specific comparison session and its results."""
     result = await db.execute(
-        select(ComparisonSession).where(ComparisonSession.id == session_id)
+        select(ComparisonSession).where(
+            ComparisonSession.id == session_id,
+            ComparisonSession.user_id == current_user.id,
+        )
     )
     session = result.scalar_one_or_none()
     if session is None:
@@ -1081,10 +1164,7 @@ async def theory_check(
     current_user: User = Depends(get_current_user),
 ):
     """Run music theory sanity checks (rhythm, range, enharmonic) on a score's MusicXML."""
-    result = await db.execute(select(Score).where(Score.id == score_id))
-    score = result.scalar_one_or_none()
-    if score is None:
-        raise HTTPException(status_code=404, detail="Score not found")
+    score = await _owned_score(db, score_id, current_user)
     if not score.musicxml_path:
         raise HTTPException(status_code=400, detail="No MusicXML available – run OMR first")
 
