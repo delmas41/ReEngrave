@@ -45,14 +45,12 @@ import json
 import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Dict, List, Optional, Sequence, Tuple
 
-from dataclasses import replace as _dc_replace
 
-from .. import adjudicate, evaluate, export as EXPORT, groups, infer
+from .. import evaluate, export as EXPORT, infer
 from .. import adjudicators, consequences, inferences      # noqa: F401
-from ..record import (Candidate, Log, Outcome, Q, Subject, UphillConsequence,
-                      Verdict)
+from ..record import (Log, Q, Subject)
 from ..record_io import load_record
 from . import human_evidence as HE
 

@@ -67,31 +67,6 @@ def _proved_engraved(ev: Evidence) -> bool:
     return False
 
 
-def _template_fit(ev: Evidence, clef):
-    """The template reader's row for the SETTLED clef, and its fifths.
-
-    ⚠️ IT RETURNS THE **ROW**, NOT A `Ruling`, AND THAT IS DELIBERATE. An
-    earlier draft took the reason word as a PARAMETER and built the Ruling
-    here, which is tidier and defeats `brakes --check`: that tool judges
-    statically whether every declared reason is reachable, and a reason
-    arriving as an argument made `fitted_by_template` and
-    `fitted_by_template_engraved` UNRESOLVED -- exactly the trade INFER
-    refused when it wrote two flag predicates out separately rather than share
-    a helper taking the flag name, *"because the derived flag-direction scan
-    finds flags by AST and a helper taking the name as a parameter would hide
-    both."* The lookup is shared; the two literal reasons stay at their call
-    sites where a derived check can see them.
-    """
-    for row in ev.rows(Q.KEYSIG_TEMPLATE_FIT):
-        if str(row.value) != str(clef.value):
-            continue
-        fifths = row.detail.get("fifths")
-        if fifths is None:
-            continue
-        return row, int(fifths)
-    return None, None
-
-
 def _template_detail(row) -> dict:
     return {"n_accidentals": row.detail.get("n_accidentals"),
             "accidental": row.detail.get("accidental"),

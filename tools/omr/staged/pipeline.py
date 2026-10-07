@@ -27,7 +27,7 @@ from . import adjudicate, evaluate, gather, groups
 # `_ensure_rules`, so importing it here is cheap regardless of which of its
 # rules (each gated by its own flag) end up firing.
 from . import infer
-from .record import Kind, Log, Outcome, Q, State, Subject
+from .record import Kind, Log, Outcome, Q, Subject, Verdict
 
 
 # ─────────────────────────────────────────────────────────────────────────────

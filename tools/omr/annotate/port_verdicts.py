@@ -29,10 +29,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 from pathlib import Path
 
-import cv2
 
 from ..pitch_resolver import pitch_for_notehead
 from ..symbol_library.loader import SymbolLibrary

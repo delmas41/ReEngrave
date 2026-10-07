@@ -76,7 +76,6 @@ import hashlib
 import json
 import random
 import shutil
-import sys
 import tarfile
 import urllib.request
 from datetime import datetime, timezone

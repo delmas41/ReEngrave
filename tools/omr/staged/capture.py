@@ -146,9 +146,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 #: quantity makes; this module owns only the CONSTRAINT between that table and
 #: `UNSCORED`. Aliased on the way in so a reader of `claim_consistency` can see
 #: at a glance that the answer comes from elsewhere.
-from .record import (CLAIM, CLAIM_OF_UNSCORED, CLAIMS,
-                     claim_of as record_claim_of,
-                     claims_of as record_claims_of,
+from .record import (CLAIM_OF_UNSCORED, claims_of as record_claims_of,
                      claims_unaccounted as record_claims_unaccounted)
 
 _HERE = pathlib.Path(__file__).resolve().parent
@@ -1755,7 +1753,6 @@ def _family_quantities() -> Dict[str, Dict[str, Any]]:
     """
     from . import pipeline                     # noqa: F401  (fills REGISTRY)
     from . import adjudicate as A
-    from . import consequences as C
     from . import evaluate as EV
     from . import export as E
 

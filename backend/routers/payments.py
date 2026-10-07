@@ -7,7 +7,7 @@ Admin emails bypass payment entirely.
 import logging
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession

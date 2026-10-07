@@ -10,7 +10,7 @@ import base64
 import json
 import logging
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -253,8 +253,8 @@ async def compare_measure_pair(
         agreement_pct = flagged_measures[measure_num]
         if agreement_pct < 0.5:
             flagged_measures_note = (
-                f"⚠️⚠️ STRONG DISAGREEMENT across sources — this measure is very likely "
-                f"to contain an error."
+                "⚠️⚠️ STRONG DISAGREEMENT across sources — this measure is very likely "
+                "to contain an error."
             )
         else:
             flagged_measures_note = (

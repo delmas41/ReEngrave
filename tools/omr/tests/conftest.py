@@ -104,17 +104,20 @@ def _do_not_require_an_optional_local_install(monkeypatch):
 # `durations.json` is ever re-measured, rather than freezing today's number
 # into the source.
 #
-# On top of the duration cut, a file is ALWAYS slow if its own name or source
-# text references machine-local, gitignored state this repo's CLAUDE.md
-# documents as a trap in a fresh checkout or worktree — the score `library/`,
-# `omr-weights/`, `.venv-surya`, `.venv-omrned`, or a PDF fixture path — because
-# those tests can differ in cost (or availability) by machine in a way a
-# duration measured on one machine cannot promise for another.
+# A file with NO entry in `durations.json` (new, never measured) is judged by
+# its CONTENT instead: it is slow if its own name or source CODE references
+# machine-local, gitignored state this repo's CLAUDE.md documents as a trap in
+# a fresh checkout or worktree — the score `library/`, `omr-weights/`,
+# `.venv-surya`, `.venv-omrned`, or a PDF fixture path — because such a test
+# can differ in cost (or availability) by machine. So a brand-new test that
+# touches `library/` is slow on day one, until it is measured.
 #
-# A test FILE that carries no entry in `durations.json` at all (a new file,
-# never measured) is FAST by duration — it cannot inherit a large number it
-# was never charged — but the content check still applies to it independently,
-# so a brand-new test that touches `library/` is still slow on day one.
+# Two things the content check does NOT do (2026-10-07, the audit's ".pdf
+# issue"): it does not read comments or docstrings — a `.pdf"` in a docstring
+# made 7 whole files slow silently — and it does not override a MEASUREMENT.
+# A file that `durations.json` covers is slow or fast by that measurement
+# alone; the text rule is the stand-in for a measurement, not a veto over
+# one (32 measured-fast files were slow by text alone before this).
 import json as _json
 import re as _re
 
@@ -174,12 +177,41 @@ _SLOW_BY_DURATION, _SLOW_THRESHOLD_SECONDS, _FAST_TIER_MEASURED_SECONDS = (
 
 _CONTENT_SCAN_CACHE = {}
 
+_DOCSTRING_OPENERS = tuple(p + q for p in ("", "r", "u", "R", "U")
+                           for q in ('"' * 3, "'" * 3))
+
+
+def _code_only(source):
+    """`source` with comments and docstrings dropped.
+
+    Tokenises rather than regex-stripping so a `#` inside a string survives.
+    A docstring is a triple-quoted STRING token that opens its own logical
+    line; a string used as a value keeps its text. On a tokenize error (a
+    file pytest will refuse anyway) the full source is returned, which only
+    ever errs toward SLOW.
+    """
+    import io as _io
+    import tokenize as _tokenize
+    kept = []
+    try:
+        for tok in _tokenize.generate_tokens(_io.StringIO(source).readline):
+            if tok.type == _tokenize.COMMENT:
+                continue
+            if (tok.type == _tokenize.STRING
+                    and tok.line.strip().startswith(_DOCSTRING_OPENERS)):
+                continue
+            kept.append(tok.string)
+    except (_tokenize.TokenError, SyntaxError, IndentationError):
+        return source
+    return " ".join(kept)
+
 
 def _file_matches_slow_content(abs_path):
-    """Does this file's own NAME or SOURCE reference machine-local state?
+    """Does this file's own NAME or SOURCE CODE reference machine-local state?
 
-    Cached per absolute path — collection visits many items per file, and a
-    file's own text does not change mid-run.
+    Comments and docstrings do not count (see the module comment). Cached per
+    absolute path — collection visits many items per file, and a file's own
+    text does not change mid-run.
     """
     cached = _CONTENT_SCAN_CACHE.get(abs_path)
     if cached is not None:
@@ -191,7 +223,7 @@ def _file_matches_slow_content(abs_path):
             text = abs_path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             text = ""
-        result = bool(_CONTENT_SLOW_PATTERN.search(text))
+        result = bool(_CONTENT_SLOW_PATTERN.search(_code_only(text)))
     _CONTENT_SCAN_CACHE[abs_path] = result
     return result
 
@@ -205,7 +237,8 @@ def _repo_relative_posix(abs_path):
 
 
 def pytest_collection_modifyitems(config, items):
-    """Apply `slow` to every item whose FILE is slow by duration or content.
+    """Apply `slow` to every item whose FILE is slow: by its measured duration
+    where one exists, else by its content.
 
     Marking is per-file, not per-test: a file's measured total already sums
     every test in it, and content references (a PDF fixture, `library/`, a
@@ -214,10 +247,10 @@ def pytest_collection_modifyitems(config, items):
     for item in items:
         abs_path = __import__("pathlib").Path(str(item.fspath)).resolve()
         rel_path = _repo_relative_posix(abs_path)
-        is_slow = (
-            rel_path in _SLOW_BY_DURATION
-            or _file_matches_slow_content(abs_path)
-        )
+        if rel_path in _MEASURED_DURATIONS:
+            is_slow = rel_path in _SLOW_BY_DURATION
+        else:
+            is_slow = _file_matches_slow_content(abs_path)
         if is_slow:
             item.add_marker(pytest.mark.slow)
 

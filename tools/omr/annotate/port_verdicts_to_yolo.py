@@ -309,7 +309,7 @@ def main() -> None:
         {"aggregate": agg, "per_cell": all_reports}, indent=2
     ))
     print(f"\nwrote {rpt_path}")
-    print(f"\naggregate:")
+    print("\naggregate:")
     print(f"  tm_filled_total = {agg['n_tm_filled_total']}")
     print(f"  ported_tp       = {agg['n_ported_tp']} "
           f"(YOLO confirmed real symbols at TM locations)")

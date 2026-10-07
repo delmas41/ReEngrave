@@ -1,4 +1,4 @@
-> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
+> **FROZEN 2026-09-22; banner refreshed 2026-10-07.** This file is the backlog and research notes to 2026-09-22 and is not updated. Current state: `ROADMAP.md` (status of every item, START HERE blocks), `docs/DECISIONS.md` (rulings), `PROJECT_BRIEF.md` (the short what-and-where, un-frozen 2026-10-07), `version_memory.md` (the running change log, un-frozen 2026-10-07), `CLAUDE.md` (the spec).
 
 # ReEngrave — backlog / research notes
 

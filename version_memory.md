@@ -1,9 +1,13 @@
-> **FROZEN 2026-09-22.** This file is historical. Current state lives in `CLAUDE.md` (the spec), `ROADMAP.md` (status) and `docs/DECISIONS.md` (decisions). See `docs/plan-2026-09-22-from-here-to-a-finished-score.md`.
 
 # ReEngrave — Version Memory
 
 A running log of changes made to this project, newest first. Updated after
-every commit alongside CLAUDE.md and PROJECT_BRIEF.md.
+every commit alongside CLAUDE.md and PROJECT_BRIEF.md. Frozen 2026-09-22 with
+the move to ROADMAP/DECISIONS; **un-frozen 2026-10-07** (Sean, DECISIONS):
+the gap is covered by one bridge entry summarised from ROADMAP's START HERE
+blocks, and every commit from 2026-10-07 on gets its own entry again. The
+ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
+measurement; this file is the WHEN and WHAT of each commit.
 
 ⚠️ **ORDER IS CAUSAL — several entries share a date, so the sequence is what
 carries the dependency, not the heading.** Parallel sessions dated their own
@@ -15,6 +19,160 @@ session's dated claim to tidy a sort would be the ledger overwriting the tree.
 wrote them re-dated its own blocks to `2026-09-09 (night)` in the same commits
 that landed on main, so that wording is gone — corrected here rather than left
 pointing at headings no longer in the file.)*
+
+---
+
+## 2026-10-07 — AUDIT FOLLOW-UP: docs un-frozen, the slow-tier text rule fixed, ignored files untracked, branches pruned
+
+**Sean, on the audit's open question: "Unfreeze and update so that all docs
+are up to date. Can we move on the .pdf issues and clean up of gitignore and
+unmerged branches?"** Branch `lane-audit-2026-10-07`, PR #59.
+
+- **Docs.** `PROJECT_BRIEF.md` and this file un-frozen (DECISIONS
+  2026-10-07); CLAUDE.md's frozen list and §13 session-end rule updated;
+  `PROJECT_STATUS.md` and `NOTES.md` stay frozen with a refreshed banner.
+  `PROJECT_BRIEF.md` gains "Where things stand (2026-10-07)".
+- **The slow-tier text rule** (`tools/omr/tests/conftest.py`). Before: a file
+  was slow if its measured duration was over the line OR its text contained
+  `library/`, `omr-weights`, a venv or a `.pdf"` path, comments included.
+  After: a file `durations.json` has measured is fast or slow by that
+  measurement alone; only an UNMEASURED file is judged by its content, and
+  comments/docstrings do not count. Measured on the tree before the change:
+  56 files matched the text rule; 7 matched only in comments or docstrings;
+  32 were measured fast and slow by text alone. CLAUDE.md §6c updated.
+  The enlarged tier found one test the slow tier had been failing since
+  10-06: `test_cell_line_localization::test_displacement_beyond_the_bound_is_refused`
+  pinned the comb-slide bound that ROADMAP 2.57 (`OMR_CELL_LINE_FIND`,
+  default ON since 10-06) replaces on purpose; it now pins that path with
+  the flag OFF, and the flag's stale "default OFF" comment in
+  `tools/omr/measure_extractor.py` says ON. Four `test_positional_store`
+  tests need `ijson`, an optional dependency this container lacked.
+- **Ignored-but-tracked files** (45, `git ls-files -ci --exclude-standard`):
+  one page thumbnail untracked; the other 44 are the raw data of documented
+  results — 11 `omr-clef-demo/*.omr.json` cited by its results file, 17
+  crops under three 2026-08/09 benchmark directories, and the 16 noise-floor
+  arm outputs behind the "±6 edits" figure CLAUDE.md §6b quotes — and are
+  kept, with negation rules so the ignore rules and the tree agree (0 after).
+- **Remote branches, half done**: the 67 unmerged branches with no commit
+  since 2026-10-04 now each have a verified copy at `archive/<name>` (the
+  session proxy allows pushes to `refs/heads/*` only, so a bare
+  `refs/archive/*` namespace was refused; a branch under `archive/` keeps
+  every commit reachable and out of the way). **Deleting the 403 originals
+  (336 merged into `main` + the 67 archived) was blocked by the cloud
+  session's permission system ("unverifiable deletion scope") and waits on
+  Sean** — the recipe, derivable from the remote alone, is in the audit
+  report §3F. Branches active since 2026-10-04 are untouched either way.
+
+**Files touched:** `CLAUDE.md`, `PROJECT_BRIEF.md`, `PROJECT_STATUS.md`,
+`NOTES.md`, `version_memory.md`, `docs/DECISIONS.md`, `ROADMAP.md`,
+`tools/omr/tests/conftest.py`, `.gitignore` and the untracked paths.
+
+---
+
+## 2026-10-07 — AUDIT AND CLEANING RUN (ROADMAP 0.4d, 0.6)
+
+**Four Sonnet readers, Fable analysis; nothing in GATHER or ADJUDICATE
+moved; every derived-check count identical before and after except the one
+meant to drop.** Report: `docs/audit-2026-10-07-code-cleaning.md`. Two
+commits on `lane-audit-2026-10-07` (PR #59): `8bbc6c8c` (ROADMAP 0.4d: 55
+mutation batteries to `benchmarks/_archive/`, `check` 247 → 192) and
+`35c44ba2` (dead `_corroborate` block in `adjudicators/rhythm.py`; the
+duplicated `relocate_at_export_enabled` in `export.py`; three uncalled
+functions; 86 unused imports outside legacy and tests; three annotation-only
+names imported; CLAUDE.md §4c derives the adjudicator count — the text said
+28, the tree has 51 — and §5a says a cloud clone is shallow; the
+`OMR_OWNER_FROM_STAVES` flags row; README rewritten). Fast tier 4,580 passed
+before and after; backend 119 passed with the two pre-existing stub failures
+and one that needs the `lilypond` binary.
+
+Found and NOT changed (report §3): the web app's security items (no owner on
+`Score`, `/uploads` unauthenticated, two upload routes join the client's
+filename, forgot-password returns the token, a working default JWT secret,
+dependency advisories); nine `promote` flags still read in staged; ~20
+GATHER exception handlers that default instead of abstaining; 98.7 MB of
+tracked record dumps; 102 benchmark directories without a `FINDINGS.md`.
+
+---
+
+## 2026-09-22 → 2026-10-07 — BRIDGE: what landed while this file was frozen
+
+**Summarised from ROADMAP's stacked START HERE blocks, the phase tables and
+DECISIONS — not from commit messages, and not per commit.** Newest first.
+Where the blocks disagree with each other the disagreement is kept, not
+resolved.
+
+**2026-10-06 → 07, overnight**
+- Mark identity landed behind `OMR_RELOCATE_AT_EXPORT` and `OMR_MARK_GROUPS`,
+  both OFF (ROADMAP 2.58/2.58b).
+- The owner-from-staves speed fix landed with verdicts bit-identical;
+  ROADMAP 2.57c (the edge-merge fix) brought back 4 of 5 lost heads.
+- Overnight `TAG=20261007-night` (main `3aef0c7d`, through adjudicate): bars
+  ≥0.4 sp off the ink 21 → 0 on Litolff and 1 → 0 on Brahms; far heads
+  decided 2,021/4,286 (from 1,903/4,055). Open: Brahms ran 175 min (was
+  107), and through-or-edge on the reader-independent grid reads 82.8% on
+  Litolff against 85.2% for plain geometry.
+
+**2026-10-06, day (`lane-lines-combined`, `87d17c00`)**
+- The far-head chain landed: note-first reader, text is not a ledger,
+  not-a-note gate, edge-vs-through (Sean 24/24), the far-head per-bar grid,
+  and `OMR_FARHEAD_OWNER_LEDGERS` (OFF).
+- ROADMAP 2.57 `OMR_CELL_LINE_FIND` landed (Sean: "working perfectly"; 29
+  one-line-off Litolff bars → 0). `OMR_OWNER_FROM_STAVES` (2.56c) merged
+  separately as `d9c09b88`; both became default ON on Sean's instruction.
+- Slur-not-ledger was not adopted (refused real ledgers on 6 of 12 tiles);
+  nine stranded pieces were retired (DECISIONS 2026-10-06).
+
+**2026-10-05 → 06, overnight**
+- Sean's far-head reading order (DECISIONS 2026-10-05): a line can only be
+  "on the edge of the box or running through the box".
+- The chain `lane-farhead-note-first` → `lane-ledger-not-text` →
+  `lane-farhead-not-a-note`, plus `lane-owner-by-ledgers` (ROADMAP 2.56b),
+  combined as `lane-night-1005-combined`; on `TAG=20261006-night-combined`
+  the through-or-edge rule held on 94.6% / 98.1% of decided far heads (was
+  57% / 59%), with decided far heads 1,903/4,055 (from 2,830/6,628).
+- Ownership moves with no twin box are dropped (114 Litolff, 365 Brahms);
+  left as Sean's call.
+
+**2026-10-04**
+- The far-head ledger reader `tools/omr/annotate/ledger_grid.py` and the
+  page-standard head box `standard_head_box.py` landed, keyword-gated, OFF,
+  not wired into STAGED. Litolff far heads (n=44) went 25/14/5 → 40/3/1
+  across the day; Brahms stayed 11/0/0.
+- ROADMAP 2.56 wired the reader as arm E3 (`OMR_FARHEAD_LEDGER`, default ON)
+  on the then-unmerged `lane-farhead-wire-staged`.
+- A scorer frame error (undeskewed render against deskewed boxes) was found
+  and fixed by `lane-jut-from-ink`.
+
+**2026-10-01**
+- Seven merges, all STAGED and first-two-stages: 2.47b/2.47c, 2.49 (tremolo
+  slash, ON), 2.12g (a detector change), 2.52, 2.55 ON, 2.54. ROADMAP 2.48
+  (comb) parked and 2.50 dropped. Sean's ledger rules are in DECISIONS
+  2026-10-01. No overnight run; fast tier 4,274 passed, `check` 250 (was 245).
+
+**2026-09-30**
+- ROADMAP 1.5 (`staged.readout`), 1.6/1.6b (small re-gather, GATHER+ADJUDICATE
+  default) and CLAUDE.md §6b's "every test is first-two-stages" rule landed;
+  2.33b, 2.39/2.39b, 2.42, 2.43 landed; 2.38c and 2.41 findings only.
+- The first overnight records had no `--weights auto` and were renamed
+  `*.NO-WEIGHTS`; the re-run `20260930b` replaced them. Cleanup count 1.4
+  deferred (Sean: "still too far away").
+
+**2026-09-28 → 29**
+- Merged 09-28: ROADMAP 0.2b (flag enforcement, `OMR_RESEARCH`), 3.1b, 3.3
+  (both halves, `--pdf`), 3.3c, 3.5, 4.1, 4.2, 4.2b; 3.4 (stage review) had
+  merged 09-23. Landed: 2.6c–2.6f, 2.10b, 2.17–2.19, 2.22, 2.25–2.27, 2.29,
+  2.30, 2.33, 2.34, 2.36–2.38b, 3.2b. Built but dead at zero, not merged:
+  3.2c, 2.6h.
+- Weights (DECISIONS 2026-09-29): keep production; class deletion is
+  last-layer only; ledger lines are "a CV job". ROADMAP 1.3
+  (`tools.omr.acceptance`) done; the 09-29 acceptance table gives Litolff
+  notes written 3,867 → 4,885 and Brahms 3,529 → 5,501.
+
+**Numbers at the end of the window, as the blocks state them**: fast tier
+4,542 passed and `check` 247 (the 10-06 block); the far-head truth set
+10-06 → 07 night Litolff 37/1/3, Brahms 11/0/0 (the 10-07 block). The 10-06
+day block gives 39/0/2 and 10/0/1, the 10-04 block 36/1/4 and 11/0/0, and
+fast tier 4,526 with `check` 250 earlier the same day.
 
 ---
 

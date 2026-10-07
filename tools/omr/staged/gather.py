@@ -5282,7 +5282,6 @@ def notehead_ink_under(img: Any, box: Tuple[float, float, float, float]
     a box standing on blank paper is exactly this record's claim, never a
     lower number fitted to one document after the fact.
     """
-    import numpy as np
     if img is None or getattr(img, "ndim", 0) != 2:
         return None
     ink = (img == 0)

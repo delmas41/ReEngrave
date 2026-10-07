@@ -9,9 +9,9 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Tuple
 
-from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
+from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
-from ..record import ABSTAIN, Kind, Q, Scope, State, Subject
+from ..record import Kind, Q, Scope, State, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. None of these is measured. See ASSUMPTIONS.md.
