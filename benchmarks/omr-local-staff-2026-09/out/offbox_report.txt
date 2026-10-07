@@ -1,0 +1,88 @@
+constants (fixed before looking): BAND=0.5 (central 50% of box height), EDGE_TOL=0.25 sp
+
+====================================================================================================
+beethoven5-litolff  local staff lines used / global fallback: {'RUN1|local': 4123, 'RUN1|global_fallback': 74, 'RUN2|local': 4123, 'RUN2|global_fallback': 74}
+
+--- beethoven5-litolff RUN1: far heads 4197
+  CONTROL truth-set heads matched 44 of 44 (unmatched 0).
+    references PASS the check: 36/44 (81.8%)
+    reference -1 step FLAGGED off-box: 41/44 (93.2%)
+    reference +1 step FLAGGED off-box: 36/44 (81.8%)
+    reference -2 step FLAGGED off-box: 44/44 (100.0%)
+    reference +2 step FLAGGED off-box: 44/44 (100.0%)
+    both +-1 shifts flagged: 33/44 (75.0%)
+    references that FAIL: [('glyph/1/0/10/7/1', -2, 'standard', 1), ('glyph/3/0/0/6/1', -6, 'detector', 1), ('glyph/3/0/0/6/2', -6, 'detector', 1), ('glyph/3/0/0/7/1', -8, 'detector', 1), ('glyph/3/0/7/6/1', 12, 'standard', None), ('glyph/3/0/9/1/1', 13, None, None), ('glyph/3/0/8/1/2', 11, 'detector', None), ('glyph/3/0/8/6/12', 10, None, 1)]
+    truth-set cross-tab (answer right/wrong x check ON/OFF): {('reader right', 'OFF'): 4, ('geo wrong', 'ON'): 9, ('reader right', 'ON'): 31, ('geo wrong', 'OFF'): 6, ('geo right', 'ON'): 27, ('reader wrong', 'OFF'): 5, ('geo right', 'OFF'): 2, 'reader undecided': 4}
+  decided far heads: 2833   reasons {'ledger_position': 2833}
+  READER   ON the box 1473/2833 (52.0%)   OFF 1360/2833 (48.0%)   steps off {'1': 324, '2': 193, '3+': 557, 'none': 286}
+  GEOMETRY ON the box 2033/2833 (71.8%)   OFF 800/2833 (28.2%)   steps off {'1': 427, '2': 52, '3+': 57, 'none': 264}
+  both ON 1260  only reader ON 213  only geometry ON 773  neither 587
+    reader==geometry: 1067 heads, reader answer ON 993/1067 (93.1%)
+    reader!=geometry: 1766 heads, reader answer ON 480/1766 (27.2%)
+    box_source detector: 1663 heads, reader ON 675/1663 (40.6%), geometry ON 1119/1663 (67.3%)
+    box_source standard: 1170 heads, reader ON 798/1170 (68.2%), geometry ON 914/1170 (78.1%)
+    reader OFF by side/kind of answer: {'above/even': 348, 'below/odd': 261, 'below/even': 341, 'above/odd': 410}
+
+--- beethoven5-litolff RUN2: far heads 4197
+  CONTROL truth-set heads matched 44 of 44 (unmatched 0).
+    references PASS the check: 36/44 (81.8%)
+    reference -1 step FLAGGED off-box: 41/44 (93.2%)
+    reference +1 step FLAGGED off-box: 36/44 (81.8%)
+    reference -2 step FLAGGED off-box: 44/44 (100.0%)
+    reference +2 step FLAGGED off-box: 44/44 (100.0%)
+    both +-1 shifts flagged: 33/44 (75.0%)
+    references that FAIL: [('glyph/1/0/10/7/1', -2, 'standard', 1), ('glyph/3/0/0/6/1', -6, 'detector', 1), ('glyph/3/0/0/6/2', -6, 'detector', 1), ('glyph/3/0/0/7/1', -8, 'detector', 1), ('glyph/3/0/7/6/1', 12, 'standard', None), ('glyph/3/0/9/1/1', 13, None, None), ('glyph/3/0/8/1/2', 11, 'detector', None), ('glyph/3/0/8/6/12', 10, 'standard', 1)]
+    truth-set cross-tab (answer right/wrong x check ON/OFF): {('reader right', 'OFF'): 6, ('geo wrong', 'ON'): 9, ('reader right', 'ON'): 29, ('geo wrong', 'OFF'): 6, 'reader undecided': 4, ('reader wrong', 'OFF'): 5, ('geo right', 'ON'): 27, ('geo right', 'OFF'): 2}
+  decided far heads: 2830   reasons {'ledger_position': 2830}
+  READER   ON the box 1443/2830 (51.0%)   OFF 1387/2830 (49.0%)   steps off {'1': 336, '2': 191, '3+': 563, 'none': 297}
+  GEOMETRY ON the box 2029/2830 (71.7%)   OFF 801/2830 (28.3%)   steps off {'1': 423, '2': 46, '3+': 57, 'none': 275}
+  both ON 1220  only reader ON 223  only geometry ON 809  neither 578
+    reader==geometry: 1025 heads, reader answer ON 949/1025 (92.6%)
+    reader!=geometry: 1805 heads, reader answer ON 494/1805 (27.4%)
+    box_source chord_split: 52 heads, reader ON 17/52 (32.7%), geometry ON 43/52 (82.7%)
+    box_source detector: 1659 heads, reader ON 676/1659 (40.7%), geometry ON 1111/1659 (67.0%)
+    box_source standard: 1119 heads, reader ON 750/1119 (67.0%), geometry ON 875/1119 (78.2%)
+    reader OFF by side/kind of answer: {'above/even': 371, 'below/odd': 232, 'below/even': 401, 'above/odd': 383}
+====================================================================================================
+brahms1-breitkopf  local staff lines used / global fallback: {'RUN1|local': 8859, 'RUN2|local': 8859, 'RUN1|global_fallback': 107, 'RUN2|global_fallback': 107}
+
+--- brahms1-breitkopf RUN1: far heads 8966
+  CONTROL truth-set heads matched 11 of 11 (unmatched 0).
+    references PASS the check: 11/11 (100.0%)
+    reference -1 step FLAGGED off-box: 11/11 (100.0%)
+    reference +1 step FLAGGED off-box: 11/11 (100.0%)
+    reference -2 step FLAGGED off-box: 11/11 (100.0%)
+    reference +2 step FLAGGED off-box: 11/11 (100.0%)
+    both +-1 shifts flagged: 11/11 (100.0%)
+    references that FAIL: []
+    truth-set cross-tab (answer right/wrong x check ON/OFF): {('reader right', 'ON'): 11, ('geo right', 'ON'): 11}
+  decided far heads: 6790   reasons {'ledger_position': 6790}
+  READER   ON the box 3915/6790 (57.7%)   OFF 2875/6790 (42.3%)   steps off {'1': 302, '2': 377, '3+': 1466, 'none': 730}
+  GEOMETRY ON the box 5802/6790 (85.4%)   OFF 988/6790 (14.6%)   steps off {'1': 305, '2': 13, '3+': 8, 'none': 662}
+  both ON 3855  only reader ON 60  only geometry ON 1947  neither 928
+    reader==geometry: 3894 heads, reader answer ON 3800/3894 (97.6%)
+    reader!=geometry: 2896 heads, reader answer ON 115/2896 (4.0%)
+    box_source detector: 2507 heads, reader ON 881/2507 (35.1%), geometry ON 1776/2507 (70.8%)
+    box_source standard: 4283 heads, reader ON 3034/4283 (70.8%), geometry ON 4026/4283 (94.0%)
+    reader OFF by side/kind of answer: {'above/odd': 492, 'below/odd': 686, 'below/even': 898, 'above/even': 799}
+
+--- brahms1-breitkopf RUN2: far heads 8966
+  CONTROL truth-set heads matched 11 of 11 (unmatched 0).
+    references PASS the check: 11/11 (100.0%)
+    reference -1 step FLAGGED off-box: 11/11 (100.0%)
+    reference +1 step FLAGGED off-box: 11/11 (100.0%)
+    reference -2 step FLAGGED off-box: 11/11 (100.0%)
+    reference +2 step FLAGGED off-box: 11/11 (100.0%)
+    both +-1 shifts flagged: 11/11 (100.0%)
+    references that FAIL: []
+    truth-set cross-tab (answer right/wrong x check ON/OFF): {('reader right', 'ON'): 11, ('geo right', 'ON'): 11}
+  decided far heads: 6628   reasons {'ledger_position': 6628}
+  READER   ON the box 3827/6628 (57.7%)   OFF 2801/6628 (42.3%)   steps off {'1': 334, '2': 375, '3+': 1361, 'none': 731}
+  GEOMETRY ON the box 5656/6628 (85.3%)   OFF 972/6628 (14.7%)   steps off {'1': 287, '2': 13, '3+': 8, 'none': 664}
+  both ON 3770  only reader ON 57  only geometry ON 1886  neither 915
+    reader==geometry: 3812 heads, reader answer ON 3709/3812 (97.3%)
+    reader!=geometry: 2816 heads, reader answer ON 118/2816 (4.2%)
+    box_source chord_split: 91 heads, reader ON 26/91 (28.6%), geometry ON 77/91 (84.6%)
+    box_source detector: 2426 heads, reader ON 848/2426 (35.0%), geometry ON 1696/2426 (69.9%)
+    box_source standard: 4111 heads, reader ON 2953/4111 (71.8%), geometry ON 3883/4111 (94.5%)
+    reader OFF by side/kind of answer: {'above/odd': 545, 'below/odd': 702, 'below/even': 823, 'above/even': 731}

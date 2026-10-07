@@ -1,0 +1,162 @@
+{
+ "beethoven5-litolff|RUN1|control|all matched": {
+  "n": 44,
+  "ref_pass": 39,
+  "m1": 40,
+  "p1": 37,
+  "both": 33
+ },
+ "beethoven5-litolff|RUN1|control|measured-rows only": {
+  "n": 34,
+  "ref_pass": 33,
+  "m1": 31,
+  "p1": 30,
+  "both": 27
+ },
+ "beethoven5-litolff|RUN1|census": {
+  "decided": 2833,
+  "replayed": 2418,
+  "reader_on": 1470,
+  "reader_off": 948,
+  "reader_steps": {
+   "1": 140,
+   "2": 166,
+   "3+": 475,
+   "none": 167
+  },
+  "geo_on": 1395,
+  "geo_off": 1023,
+  "geo_steps": {
+   "1": 755,
+   "2": 82,
+   "3+": 35,
+   "none": 151
+  },
+  "both_on": 1055,
+  "only_reader_on": 415,
+  "only_geo_on": 340,
+  "neither": 608,
+  "secondary_reader_on": 1471,
+  "secondary_n": 2418
+ },
+ "beethoven5-litolff|RUN2|control|all matched": {
+  "n": 44,
+  "ref_pass": 41,
+  "m1": 41,
+  "p1": 38,
+  "both": 35
+ },
+ "beethoven5-litolff|RUN2|control|measured-rows only": {
+  "n": 40,
+  "ref_pass": 38,
+  "m1": 37,
+  "p1": 35,
+  "both": 32
+ },
+ "beethoven5-litolff|RUN2|census": {
+  "decided": 2830,
+  "replayed": 2818,
+  "reader_on": 1612,
+  "reader_off": 1206,
+  "reader_steps": {
+   "1": 207,
+   "2": 199,
+   "3+": 587,
+   "none": 213
+  },
+  "geo_on": 1589,
+  "geo_off": 1229,
+  "geo_steps": {
+   "1": 906,
+   "2": 94,
+   "3+": 42,
+   "none": 187
+  },
+  "both_on": 1139,
+  "only_reader_on": 473,
+  "only_geo_on": 450,
+  "neither": 756,
+  "secondary_reader_on": 1610,
+  "secondary_n": 2818
+ },
+ "brahms1-breitkopf|RUN1|control|all matched": {
+  "n": 11,
+  "ref_pass": 11,
+  "m1": 11,
+  "p1": 10,
+  "both": 10
+ },
+ "brahms1-breitkopf|RUN1|control|measured-rows only": {
+  "n": 11,
+  "ref_pass": 11,
+  "m1": 11,
+  "p1": 10,
+  "both": 10
+ },
+ "brahms1-breitkopf|RUN1|census": {
+  "decided": 6790,
+  "replayed": 6088,
+  "reader_on": 3747,
+  "reader_off": 2341,
+  "reader_steps": {
+   "1": 129,
+   "2": 370,
+   "3+": 1319,
+   "none": 523
+  },
+  "geo_on": 4507,
+  "geo_off": 1581,
+  "geo_steps": {
+   "1": 920,
+   "2": 151,
+   "3+": 43,
+   "none": 467
+  },
+  "both_on": 3599,
+  "only_reader_on": 148,
+  "only_geo_on": 908,
+  "neither": 1433,
+  "secondary_reader_on": 3755,
+  "secondary_n": 6088
+ },
+ "brahms1-breitkopf|RUN2|control|all matched": {
+  "n": 11,
+  "ref_pass": 11,
+  "m1": 11,
+  "p1": 10,
+  "both": 10
+ },
+ "brahms1-breitkopf|RUN2|control|measured-rows only": {
+  "n": 11,
+  "ref_pass": 11,
+  "m1": 11,
+  "p1": 10,
+  "both": 10
+ },
+ "brahms1-breitkopf|RUN2|census": {
+  "decided": 6628,
+  "replayed": 6621,
+  "reader_on": 3884,
+  "reader_off": 2737,
+  "reader_steps": {
+   "1": 257,
+   "2": 423,
+   "3+": 1459,
+   "none": 598
+  },
+  "geo_on": 4831,
+  "geo_off": 1790,
+  "geo_steps": {
+   "1": 1029,
+   "2": 175,
+   "3+": 49,
+   "none": 537
+  },
+  "both_on": 3724,
+  "only_reader_on": 160,
+  "only_geo_on": 1107,
+  "neither": 1630,
+  "secondary_reader_on": 3895,
+  "secondary_n": 6621
+ }
+}

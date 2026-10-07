@@ -1,0 +1,109 @@
+{
+ "seed": 20261005,
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/15/1/2/7/1",
+   "reader": 10,
+   "geometry": 12,
+   "box_source": "detector",
+   "nearest_passing_steps": 2,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": true
+  },
+  {
+   "n": 2,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/7/1/8/15/1",
+   "reader": -2,
+   "geometry": -4,
+   "box_source": "detector",
+   "nearest_passing_steps": 1,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": true
+  },
+  {
+   "n": 3,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/16/0/0/0/2",
+   "reader": 12,
+   "geometry": 13,
+   "box_source": "standard",
+   "nearest_passing_steps": 2,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": false
+  },
+  {
+   "n": 4,
+   "doc": "beethoven5-litolff",
+   "subject": "glyph/4/0/8/8/4",
+   "reader": 11,
+   "geometry": 16,
+   "box_source": "detector",
+   "nearest_passing_steps": 4,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": false
+  },
+  {
+   "n": 5,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/13/1/9/8/1",
+   "reader": 11,
+   "geometry": 13,
+   "box_source": "standard",
+   "nearest_passing_steps": 1,
+   "kinds": [
+    "measured"
+   ],
+   "geometry_passes": false
+  },
+  {
+   "n": 6,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/12/0/4/0/17",
+   "reader": -4,
+   "geometry": -7,
+   "box_source": "detector",
+   "nearest_passing_steps": 4,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": false
+  },
+  {
+   "n": 7,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/4/0/7/2/0",
+   "reader": -2,
+   "geometry": -6,
+   "box_source": "standard",
+   "nearest_passing_steps": 4,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": true
+  },
+  {
+   "n": 8,
+   "doc": "brahms1-breitkopf",
+   "subject": "glyph/3/0/4/8/10",
+   "reader": -2,
+   "geometry": -7,
+   "box_source": "detector",
+   "nearest_passing_steps": null,
+   "kinds": [
+    "interpolated"
+   ],
+   "geometry_passes": false
+  }
+ ]
+}
