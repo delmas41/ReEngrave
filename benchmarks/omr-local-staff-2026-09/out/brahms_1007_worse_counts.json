@@ -1,0 +1,57 @@
+{
+ "counts": {
+  "far_answer_changed": 93,
+  "not_a_note_now_a_note": 43,
+  "owner_moved_to_another_staff": 35,
+  "far_decided_then_abstains": 29,
+  "arc_owner_changed": 17,
+  "in_staff_position_moved": 12,
+  "duration_changed": 10,
+  "dot_no_longer_read_as_lengthening": 9,
+  "tie_pair_lost": 5,
+  "owner_decided_then_abstains": 3,
+  "accidental_owner_lost": 3,
+  "articulation_owner_lost": 2
+ },
+ "owner_moved_split": {
+  "moved_off_filing_staff_no_twin": 21,
+  "to_filing_staff": 9,
+  "moved_off_filing_staff_twin_there": 5
+ },
+ "far_abstain_reasons": {
+  "no_line_at_the_note_box": 3,
+  "count_does_not_fit": 17,
+  "line_not_beyond_the_staff_edge": 9
+ },
+ "only_in_new": {
+  "glyph_owner": 4,
+  "empty_bar_whole_rest": 12
+ },
+ "empty_bar_whole_rest_only_in_new": {
+  "abstained:not_found_by_search": 12
+ },
+ "not_a_note_reasons_new": {
+  "notehead": 19530,
+  "too_narrow": 3408,
+  "stacked_head_duplicate": 426,
+  "clipped_fragment": 593,
+  "is_a_time_signature_digit": 4,
+  "notehead_is_a_duplicate_box": 129,
+  "tremolo_slash_crosses_stem": 43,
+  "is_a_meter_digit": 30,
+  "belongs_to_a_nearer_staff": 65,
+  "is_a_clef": 32
+ },
+ "not_a_note_reasons_base": {
+  "notehead": 19487,
+  "too_narrow": 3408,
+  "stacked_head_duplicate": 426,
+  "clipped_fragment": 593,
+  "is_a_time_signature_digit": 4,
+  "notehead_is_a_duplicate_box": 129,
+  "tremolo_slash_crosses_stem": 43,
+  "is_a_meter_digit": 30,
+  "belongs_to_a_nearer_staff": 108,
+  "is_a_clef": 32
+ }
+}

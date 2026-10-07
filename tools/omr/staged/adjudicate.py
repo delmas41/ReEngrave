@@ -544,12 +544,15 @@ class Evidence:
         # property the bucket key guarantees.
         derived_obs = [r for bucket in obs_buckets.values()
                        for r in bucket if r.basis]
+        # SPEED ONLY: a pair already in one component cannot change the
+        # components, so its (expensive) test is skipped; the returned
+        # components are identical.
         for i, a in enumerate(others):
             for b in others[i + 1:]:
-                if _one_signal(self.log, a, b):
+                if find(a.id) != find(b.id) and _one_signal(self.log, a, b):
                     union(a.id, b.id)
             for obs in derived_obs:
-                if _one_signal(self.log, a, obs):
+                if find(a.id) != find(obs.id) and _one_signal(self.log, a, obs):
                     union(a.id, obs.id)
 
         components: Dict[str, List[str]] = {}
@@ -561,9 +564,20 @@ class Evidence:
 def _one_signal(log: Log, a: Any, b: Any) -> bool:
     if isinstance(a, Observation) and isinstance(b, Observation):
         return (a.reader, a.frame, a.quantity) == (b.reader, b.frame, b.quantity)
-    shared = log.closure(a.id) & log.closure(b.id)
-    shared = {s for s in shared if s not in (a.id, b.id)}
-    return bool(shared)
+    # SPEED ONLY (lane-brahms-1007-worse-and-slow): the same truth value as
+    # `bool({s in closure(a) & closure(b) if s not in (a.id, b.id)})`, found by
+    # walking the SMALLER closure and stopping at the first shared id that is
+    # neither row. With `OMR_OWNER_FROM_STAVES` the closures are thousands of
+    # rows and nearly all shared, and building the whole intersection set was
+    # 75 s of a 190 s ADJUDICATE on three Brahms pages.
+    ca, cb = log.closure(a.id), log.closure(b.id)
+    if len(ca) > len(cb):
+        ca, cb = cb, ca
+    ia, ib = a.id, b.id
+    for s in ca:
+        if s != ia and s != ib and s in cb:
+            return True
+    return False
 
 
 # ─────────────────────────────────────────────────────────────────────────────
