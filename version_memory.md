@@ -22,6 +22,59 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-07 — ROADMAP 2.61 (STAGED): GATHER handlers abstain, never default
+
+**`lane-gather-abstain` (Opus, c8feea00; rule 8 made structural in GATHER).**
+Twelve `except Exception` handlers in `staged/gather.py` turned a reader's
+crash into a default (`header_cells = {}`, `stems = []`, `facts = {}`,
+`metrics = None`, a bare `return`, a `continue`) or, worse, into a false
+finding (`no_staff_geometry`, `no_clusters`, `no_detections`,
+`not_in_catalog`). Each now files an Abstention with
+`reason=READER_UNAVAILABLE` and the exception class in `detail.error`, on
+the subject and quantity the reader owned: the low-confidence rescue's stem
+witness (`GLYPH_BOX`), the clef locator (`CLEF_LOCATED`), the key-signature
+header and per-candidate fits (`KEYSIG_RUN_POSITION`, `KEYSIG_CLEF_FIT`), the
+keysig template (`KEYSIG_TEMPLATE_FIT`), the meter template
+(`METER_TEMPLATE`), meter OCR at bars, the margin-label rung probes
+(`MARGIN_LABEL`, error carried) and the catalog identity
+(`DOCUMENT_IDENTITY`). The brief asked for the class name as the reason;
+`Log.abstain` checks reasons against the closed `ABSTAIN` vocabulary and
+`record.py` was outside the fence, so the class rides in `detail.error`, the
+same shape the sixteen handlers that already abstained use. Where a crash
+was already written as a false claim the reason is corrected and the row
+count is unchanged; records are bit-identical when nothing raises (nine
+positive controls). 20 tests, 11 RED on the unrepaired tree. Left by design:
+`_in_hairpin_band` (a detail key, no quantity), the scan gate (the reader
+still runs), and the four `_stub_*` import-failure paths that record
+`NOT_IMPLEMENTED` — there a real defect still counts as build progress.
+(Numbered 2.61: another session took 2.60 for `arc_is_not_an_arc` today.)
+
+---
+
+## 2026-10-07 — ROADMAP 0.2c: five default-ON flags promoted
+
+**`lane-0.2c-promote` (Sonnet, 7b0ae721).** `OMR_SLOT_FAMILY_BLOCK`,
+`OMR_CLEF_GAP` (infer.py), `OMR_METER_CARRY`, `OMR_METER_FROM_BARS`
+(adjudicators/rhythm.py) and `OMR_SLOT_CONSTRAINTS` (adjudicators/identity.py):
+the environment reads, the `*_ENV` constants and the OFF code paths are gone;
+the behaviour is the old ON default. The two INFER rules register with a new
+`infer.ALWAYS_ON` switch; `OMR_INFER` only ever gated the two duration rules
+(its own comment says so), so no surviving setting changes behaviour — only
+the all-off combination `test_infer_bypass` used to reach is gone, and that
+test now reaches the no-rule state over a registry without the always-on
+rules. Staged `OMR_*` env names 23 → 18. Twelve OFF-path tests deleted with
+the paths; six `TestTheBarsMayNameTheMeter` tests that isolated the bars rung
+by switching the carry off now use a nearer decoy read meter; the bare-crook
+fixtures put the tacet Oboi between the Horns and the Fagotti so score order
+alone no longer forces the staff. `docs/flags-2026-09.md` rows read
+`promoted — REMOVED 2026-10-07`; `test_flag_triage` now checks a REMOVED row
+is unread. Fast tier 6,001 → 5,989, `check` 192 unchanged. Lesson: removing
+a flag removes the isolation arm other tests relied on — expect fixture
+rewrites, not just deletions. About 17 archived benchmark scripts still set
+the removed names; they are inert.
+
+---
+
 ## 2026-10-07 — ROADMAP 3.6: the web app hardened before any deploy
 
 **`lane-webapp-hardening` (Opus; the audit's §3A list).** Scores, Gradus
