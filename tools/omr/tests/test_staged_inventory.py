@@ -118,7 +118,7 @@ class TestTheChecksHaveTeeth(unittest.TestCase):
                          "system_membership reads the ROW, not the verdict")
 
     def test_a_late_verdict_read_of_a_BOTH_quantity_is_caught(self):
-        """⚠️ ROADMAP 2.59, THE HOLE THE ADJUDICATE SEQUENCE DOC FOUND. A
+        """⚠️ ROADMAP 2.62, THE HOLE THE ADJUDICATE SEQUENCE DOC FOUND. A
         want that is both gathered and decided is `kind == "both"` and the
         order check used to skip it entirely -- so `slot_index`, which reads
         `ev.verdict(Q.SYSTEM_STAFF_COUNT, ...)` (`identity.py`), moved ahead

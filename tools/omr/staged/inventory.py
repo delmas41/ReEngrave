@@ -395,7 +395,7 @@ def _body_reads(spec) -> Tuple[Set[str], Set[str]]:
     ACCESSOR) -- the decision's body plus its module helpers to depth 3 and
     sibling-module helpers one hop, the walk `_never_read` has always done.
 
-    ⚠️ ROADMAP 2.59. THE SECOND SET IS WHAT RE-ARMS THE ORDER CHECK. A want
+    ⚠️ ROADMAP 2.62. THE SECOND SET IS WHAT RE-ARMS THE ORDER CHECK. A want
     that is BOTH gathered and decided (`system_staff_count`, `staff_ordinal`,
     `movement_spans`, `printed_bar_number`, `meter`) was classified `both`
     and never order-checked at all, because `wants` cannot say HOW the
@@ -546,7 +546,7 @@ def build() -> Dict[str, Any]:
             # `gather_measures` AND decided by `adjudicate_system_staff_count`,
             # so calling it a pure verdict makes `system_membership` -- which
             # runs first and reads the OBSERVATION -- look like a dependency
-            # cycle. `kind` keeps saying `both` for it. ⚠️ ROADMAP 2.59: but
+            # cycle. `kind` keeps saying `both` for it. ⚠️ ROADMAP 2.62: but
             # `both` is about the PRODUCERS, and the order check needs to know
             # how THIS decision READS it -- `slot_index` reads the same
             # quantity's VERDICT and is a real dependency. `read_as_verdict`
@@ -667,7 +667,7 @@ def _problems(rows: List[Dict[str, Any]], order: List[str],
                 out.append(
                     f"{q} wants {c['quantity']!r}, which no gather site "
                     f"observes and no decision produces")
-            # ⚠️ ROADMAP 2.59: `read_as_verdict` re-arms this for a `both`
+            # ⚠️ ROADMAP 2.62: `read_as_verdict` re-arms this for a `both`
             # quantity. A decision reading its OWN quantity's verdict on
             # another subject (`meter`'s carry) has equal rank and is not a
             # misorder; see `docs/adjudicate-sequence-2026-10-07.md` §3.
