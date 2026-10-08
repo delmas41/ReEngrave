@@ -384,19 +384,37 @@ def _sibling_helpers(fn_path: "pathlib.Path") -> Dict[str, ast.FunctionDef]:
     return out
 
 
-def _never_read(spec) -> List[str]:
-    """`wants` entries whose `Q.` name appears nowhere in the decision's body.
+#: `Evidence` accessors that return a VERDICT. A `Q.X` passed as the first
+#: argument of one of these is the decision reading another decision's
+#: answer, whatever else also produces `X` -- see `_body_reads`.
+_VERDICT_ACCESSORS = ("verdict", "verdicts", "admitted")
 
-    Deliberately CONSERVATIVE — any mention counts as a read, including one
-    inside a loop tuple — so what it reports is a declaration the code does
-    not touch at all.
+
+def _body_reads(spec) -> Tuple[Set[str], Set[str]]:
+    """(every `Q.` name the body mentions, the subset read THROUGH A VERDICT
+    ACCESSOR) -- the decision's body plus its module helpers to depth 3 and
+    sibling-module helpers one hop, the walk `_never_read` has always done.
+
+    ⚠️ ROADMAP 2.62. THE SECOND SET IS WHAT RE-ARMS THE ORDER CHECK. A want
+    that is BOTH gathered and decided (`system_staff_count`, `staff_ordinal`,
+    `movement_spans`, `printed_bar_number`, `meter`) was classified `both`
+    and never order-checked at all, because `wants` cannot say HOW the
+    decision reads it -- `system_membership` reads `Q.SYSTEM_STAFF_COUNT`'s
+    ROW and must not be a cycle, `slot_index` reads its VERDICT and must be
+    ordered after it. The body says which: `ev.verdict(Q.X, ...)` is a
+    verdict read, `ev.rows(Q.X, ...)` is not. Proved with a control on
+    2026-10-07 (`docs/adjudicate-sequence-2026-10-07.md` §4): `slot_index`
+    moved ahead of `system_staff_count` was NOT reported while `voices`
+    ahead of `event` was.
     """
+    names: Set[str] = set()
+    verdict_names: Set[str] = set()
     if spec.stub:
-        return []                       # a stub reads nothing, by definition
+        return names, verdict_names     # a stub reads nothing, by definition
     try:
         src = inspect.getsource(spec.fn)
     except OSError:                                          # noqa: BLE001
-        return []
+        return names, verdict_names
     # ⚠️ THE DECORATOR MUST BE EXCLUDED, AND LEAVING IT IN MADE THIS CHECK
     # REPORT ZERO. `inspect.getsource` includes decorator lines, and `wants`
     # lives there — so every declared quantity "appeared in the source" and
@@ -405,7 +423,7 @@ def _never_read(spec) -> List[str]:
     fn = next((n for n in ast.walk(tree)
                if isinstance(n, ast.FunctionDef) and n.name == spec.name), None)
     if fn is None:
-        return []
+        return names, verdict_names
     # ⚠️ AND THE MODULE'S OWN HELPERS COUNT AS THE DECISION READING.
     # `adjudicate_clef` asks for `clef_glyph` through `_detector_terms(ev)`;
     # a check that looked only at the decision body reported six decisions
@@ -417,7 +435,6 @@ def _never_read(spec) -> List[str]:
                if isinstance(n, ast.FunctionDef)}
     # ⚠️ ROADMAP 2.27c: sibling-module helpers, one hop, same rule as above.
     sibling = _sibling_helpers(fn_path)
-    names: Set[str] = set()
     seen: Set[str] = set()
     frontier = [fn]
     for _ in range(3):
@@ -435,6 +452,17 @@ def _never_read(spec) -> List[str]:
                         called = (f.id if isinstance(f, ast.Name)
                                   else f.attr if isinstance(f, ast.Attribute)
                                   else None)
+                        # `<anything>.verdict(Q.X, ...)`: a verdict read,
+                        # whatever else produces X. The receiver is not
+                        # checked by name because helpers call it `ev`,
+                        # `evidence` or `e`; the accessor name is the claim.
+                        if (isinstance(f, ast.Attribute)
+                                and f.attr in _VERDICT_ACCESSORS
+                                and a.args
+                                and isinstance(a.args[0], ast.Attribute)
+                                and isinstance(a.args[0].value, ast.Name)
+                                and a.args[0].value.id == "Q"):
+                            verdict_names.add(a.args[0].attr)
                         if called in helpers and called not in seen:
                             seen.add(called)
                             nxt.append(helpers[called])
@@ -448,8 +476,31 @@ def _never_read(spec) -> List[str]:
         frontier = nxt
         if not frontier:
             break
-    read = {getattr(Q, n) for n in names if isinstance(getattr(Q, n, None), str)}
+    return names, verdict_names
+
+
+def _q_values(names: Set[str]) -> Set[str]:
+    return {getattr(Q, n) for n in names
+            if isinstance(getattr(Q, n, None), str)}
+
+
+def _never_read(spec) -> List[str]:
+    """`wants` entries whose `Q.` name appears nowhere in the decision's body.
+
+    Deliberately CONSERVATIVE — any mention counts as a read, including one
+    inside a loop tuple — so what it reports is a declaration the code does
+    not touch at all.
+    """
+    names, _ = _body_reads(spec)
+    read = _q_values(names)
     return [w for w in spec.wants if w not in read]
+
+
+def _verdict_reads(spec) -> Set[str]:
+    """The `wants` entries the body reads THROUGH A VERDICT ACCESSOR
+    (`ev.verdict`/`ev.verdicts`/`ev.admitted`), as quantity values."""
+    _, verdict_names = _body_reads(spec)
+    return _q_values(verdict_names) & set(spec.wants)
 
 
 def _dedent(src: str) -> str:
@@ -488,13 +539,18 @@ def build() -> Dict[str, Any]:
             rows.append({"quantity": quantity, "registered": False})
             continue
         consumes = []
+        verdict_read = _verdict_reads(spec)
         for w in spec.wants:
             # ⚠️ A quantity can be BOTH, and treating them as exclusive is a
             # false alarm: `system_staff_count` is observed by
             # `gather_measures` AND decided by `adjudicate_system_staff_count`,
             # so calling it a pure verdict makes `system_membership` -- which
             # runs first and reads the OBSERVATION -- look like a dependency
-            # cycle. Only a wants entry that is ONLY a later verdict is one.
+            # cycle. `kind` keeps saying `both` for it. ⚠️ ROADMAP 2.62: but
+            # `both` is about the PRODUCERS, and the order check needs to know
+            # how THIS decision READS it -- `slot_index` reads the same
+            # quantity's VERDICT and is a real dependency. `read_as_verdict`
+            # carries that, derived from the body (`_verdict_reads`).
             gathered = w in sites or w in indirect
             decided = w in A.REGISTRY
             out_of_pipeline_producer = oop.get(w)
@@ -512,6 +568,7 @@ def build() -> Dict[str, Any]:
             consumes.append({
                 "quantity": w,
                 "kind": kind,
+                "read_as_verdict": w in verdict_read,
                 "gathered_by": sites.get(w, []),
                 "gathered_indirectly_by": [f for f in indirect.get(w, [])
                                            if f not in sites.get(w, [])],
@@ -610,7 +667,11 @@ def _problems(rows: List[Dict[str, Any]], order: List[str],
                 out.append(
                     f"{q} wants {c['quantity']!r}, which no gather site "
                     f"observes and no decision produces")
-            elif (c["kind"] == "verdict"
+            # ⚠️ ROADMAP 2.62: `read_as_verdict` re-arms this for a `both`
+            # quantity. A decision reading its OWN quantity's verdict on
+            # another subject (`meter`'s carry) has equal rank and is not a
+            # misorder; see `docs/adjudicate-sequence-2026-10-07.md` §3.
+            elif ((c["kind"] == "verdict" or c.get("read_as_verdict"))
                   and rank.get(c["quantity"], -1) > rank[q]):
                 out.append(
                     f"{q} wants the VERDICT {c['quantity']!r}, which ORDER "

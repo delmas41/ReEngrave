@@ -113,6 +113,43 @@ class TestTheChecksHaveTeeth(unittest.TestCase):
                    if r["quantity"] == "system_membership")
         kinds = {c["quantity"]: c["kind"] for c in row["consumes"]}
         self.assertEqual(kinds["system_staff_count"], "both")
+        reads = {c["quantity"]: c["read_as_verdict"] for c in row["consumes"]}
+        self.assertFalse(reads["system_staff_count"],
+                         "system_membership reads the ROW, not the verdict")
+
+    def test_a_late_verdict_read_of_a_BOTH_quantity_is_caught(self):
+        """⚠️ ROADMAP 2.62, THE HOLE THE ADJUDICATE SEQUENCE DOC FOUND. A
+        want that is both gathered and decided is `kind == "both"` and the
+        order check used to skip it entirely -- so `slot_index`, which reads
+        `ev.verdict(Q.SYSTEM_STAFF_COUNT, ...)` (`identity.py`), moved ahead
+        of `system_staff_count` was NOT reported while the `voices`-ahead-of-
+        `event` control was. Run RED against the tree before `read_as_
+        verdict` existed: the first assertion fails with a KeyError and the
+        last with an empty list."""
+        inv = inventory.build()
+        row = next(r for r in inv["decisions"] if r["quantity"] == "slot_index")
+        reads = {c["quantity"]: c["read_as_verdict"] for c in row["consumes"]}
+        self.assertTrue(reads["system_staff_count"],
+                        "slot_index reads the VERDICT; the body says so")
+
+        order = list(A.ORDER)
+        order.remove("slot_index")
+        order.insert(order.index("system_staff_count"), "slot_index")
+        rank = {q: n for n, q in enumerate(order)}
+        sites, indirect = inventory._gather_sites()
+        problems = inventory._problems(inv["decisions"], order, rank, sites)
+        self.assertTrue(
+            any("slot_index wants the VERDICT 'system_staff_count'" in p
+                for p in problems), problems)
+
+    def test_a_decision_reading_its_own_verdict_on_another_subject_is_not_a_misorder(self):
+        """`meter` reads the PREVIOUS system's `meter` verdict for the carry
+        (`rhythm.py`). Equal rank is not `>` rank, so the order check stays
+        silent on it -- and on the real ORDER there is no other `both`
+        verdict read out of place."""
+        problems = [p for p in inventory.build()["problems"]
+                    if "runs AFTER it" in p]
+        self.assertEqual(problems, [])
 
 
 class TestTheRunColumn(unittest.TestCase):

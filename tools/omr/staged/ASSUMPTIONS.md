@@ -422,23 +422,36 @@ merely resembles ours. Do not promote a "why" to a result.
 
 ### A-ORDER-1 · The adjudication order
 
-**MIXED** — the RULE (order binds only on verdict-consumption) is principle; the 21-item LIST is ours.
+**MIXED** — the RULE (order binds only on verdict-consumption) is principle; the LIST (51 decisions on 2026-10-07; this entry said 21 until then) is ours.
 *`adjudicate.ORDER`*
 
-**Assumption.** Decisions run structure → identity → header facts → ownership →
-rhythm → text.
+**Assumption.** Decisions run movement → structure → identity → header facts →
+what-a-thing-is refusals → ownership → rhythm → text.
 
 **Why.** Adjudication reads a **frozen** log, so ordering is free for
 measurements; it binds only where one decision consumes another's *verdict*.
 This order is the assumed dependency order.
 
-**How to falsify.** Permute it. Any pair whose swap changes a verdict has a real
-dependency the list does not express — that is a finding, and the fix is to
-declare the dependency, not to re-sort by hand.
+**How to falsify.** Not by permuting it by hand any more. `inventory --check`
+compares every decision's `wants` with `ORDER` and reports a verdict consumed
+from a decision LATER in `ORDER` in one line; it has caught three such faults
+(`wedge_anchor`, `meter`, `onset_column`). ⚠️ Two edges it cannot see
+(2026-10-07, `docs/adjudicate-sequence-2026-10-07.md` §3–4): (1) a want that is
+BOTH gathered and decided (`system_staff_count`, `staff_ordinal`,
+`movement_spans`, `printed_bar_number`, `meter`) is classified `both` and never
+order-checked, so a decision reading one of their VERDICTS from too early would
+pass — proved with a control (`slot_index` ahead of `system_staff_count`: not
+reported; `voices` ahead of `event`: reported); the fix is to classify by the
+body's accessor (`ev.verdict`), proposed, not built. (2) WITHIN a decision:
+`meter` reads the PREVIOUS system's `meter` verdict for the carry, which holds
+because `subjects_for` visits subjects in `Subject`'s own (page, system) order
+and `log.record` writes each verdict before the next subject.
 
 **Blast radius.** A decision that runs too early sees `State.ABSENT` for a
 verdict that would have existed and abstains. It fails **quiet and safe** — the
 verdict records `missing`, so the symptom is visible rather than a wrong answer.
+⚠️ Contrast A-GATHER-1: GATHER's `log.rows()` leaves no such trace, which is
+why its one misorder went unnoticed and this stage's three did not.
 
 ### A-ORDER-2 · ⚠️ Identity BEFORE ownership and BEFORE the clef
 
