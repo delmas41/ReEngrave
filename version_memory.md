@@ -22,6 +22,68 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
+
+Sean went through four batches, and the roadmap rows now match his answers
+(DECISIONS 2026-10-08).
+
+- **39 rows are `done`.** Each status now opens with "done (`<sha>`; closed
+  with Sean 2026-10-08 in the 0.8 close-or-keep pass)". The lane's text is
+  kept after it.
+- **2 rows are KEPT OPEN**, each stating what remains:
+  - 2.26b: no run has shown the bare-crook rule reach a record.
+  - 2.13: the whole-movement check, plus one Tesseract misread.
+- **New row 2.65:** Sean's print check, one tile at a time, of the 09-29
+  rhythm connections (40 tiles never judged by him), plus 2.23's 6 tiles and
+  its never-asked head-fill convention.
+
+The triage report gained a close-or-keep section. No code changed.
+
+## 2026-10-08 — ROADMAP 0.8 follow-up: Sean's "Yes to all"
+
+DECISIONS 2026-10-08:
+- **Dropped:** 2.6h and 3.2c (dead at zero).
+- **Dropped as superseded:** the 2.21 draft, 2.44, 2.44c and 2.44d. Each
+  roadmap row now opens with `dropped (...)`.
+- **2.51 evidence landed** from `lane-2.51-unboxed-ink` `78d05d85`: four
+  scripts under `benchmarks/omr-ink-gather-2026-09/unboxed-2.51/`, the
+  FINDINGS section, and two sheets in `out/print/2.51/`. Its FINDINGS section
+  was §14 on the branch; it is renumbered §15 here because main's §14 is 2.52.
+  2.52's pointer to it, which said "not on this tree", now points to §15.
+- **2.53 write-up landed** from `lane-2.53-unboxed-bars` `ad41435b`. The lane
+  wrote it as its ROADMAP row; it is now FINDINGS §16 (rule 9), with two
+  sheets in `out/print/2.53/`. The branch's re-gathered
+  `benchmarks/acceptance/quick/` outputs were NOT landed. Its "recommendation,
+  not built" is annotated as later built by 2.55.
+
+No code changed.
+
+## 2026-10-08 — ROADMAP 0.8: the "built, not merged" rows triaged against the tree
+
+**Sean: "Can you start 2. Sort the built not merged."** A docs-only commit:
+no code, no run, no measurement. Fetched the full history and every `origin/*`
+branch, then checked each branch named by an open Phase 2/3 row against
+`origin/main` 6e96227b (`merge-base --is-ancestor`, `git cherry`, the first
+landing merge, whether that merge was empty, whether the added functions are
+still on main).
+
+- **41 rows said "not merged" for work that is on main.** Each now has a bold
+  `MERGED to main (<sha>, tree-verified 2026-10-08)` prefix, with the lane's
+  text kept after it. Six flags those rows call OFF are default ON today
+  (`OMR_CELL_LINE_FIND`, `OMR_OWNER_FROM_STAVES`,
+  `OMR_FARHEAD_OWNER_LEDGERS`, `OMR_MARK_GROUPS`, `OMR_DOT_FOLLOWS_NOTE`,
+  `OMR_STEM_OWNER`).
+- **Nine rows are genuinely not on main:**
+  - Superseded: the 2.21 first draft, 2.44, 2.44c, 2.44d.
+  - Dead at zero, recommended drop: 2.6h, 3.2c.
+  - Evidence only, recommended land: 2.51, 2.53.
+  - Parked by Sean: 2.48.
+  These rows got a prefix saying so. Nothing was dropped: each drop needs
+  Sean and a DECISIONS line.
+- New: `docs/triage-2026-10-08-built-not-merged.md`, ROADMAP row 0.8 and a
+  START HERE block. CLAUDE.md §5a: how to fetch every branch in a shallow
+  cloud clone, and the fact that "not merged" is a claim to check.
+
 ## 2026-10-08 — INTEGRATION C: eight audit follow-up lanes (Sonnet), one landing
 
 **Sean: "clean up the worktrees and send out agents for the follow-ups - use
