@@ -932,6 +932,39 @@ def _in_staccato_window(dot_box, head_box, space,
     return True
 
 
+#: ROADMAP 2.59 follow-up (lane-staccato-unread, Sean 2026-10-07, Litolff
+#: `12/1/6/2/9`: "not sure why it can't see that the first cell is a staccato
+#: note"). THE TEST, stated before any count: a staccato's note is read from
+#: EVERY real head on the page, not only the heads this staff's strip owns --
+#: a note is often filed in (or owned by) the staff just below/above the strip
+#: that boxed its staccato dot, exactly like an augmentation dot's (2.59).
+#: Window and offset are the home window's own (`STACCATO_CENTRED_MAX_SPACES`,
+#: `STACCATO_OFFSET_MIN_SPACES`), plus a REACH the home window never had: the
+#: dot lies no farther than `STACCATO_MAX_GAP_SPACES` from the head's nearest
+#: edge (= `ownership.DOT_STACK_MAX_SPACES`, the reader's own stacked test).
+#: It answers STACCATO ONLY -- a mark above/below a head is never lengthening.
+STACCATO_MAX_GAP_SPACES = 2.0
+
+
+def _foreign_staccato_owner(dot_box, foreign_targets, space):
+    """The nearest head, of ANY other staff's strip or owner, whose staccato
+    window holds `dot_box` and that is within `STACCATO_MAX_GAP_SPACES` of
+    it. -> its key, or None (never a guess: no head in the window abstains)."""
+    best, best_dist = None, float("inf")
+    dcx = dot_box[0] + dot_box[2] / 2.0
+    dcy = dot_box[1] + dot_box[3] / 2.0
+    for key, hb in foreign_targets:
+        if not _in_staccato_window(dot_box, hb, space):
+            continue
+        hcy = hb[1] + hb[3] / 2.0
+        if abs(hcy - dcy) - hb[3] / 2.0 > STACCATO_MAX_GAP_SPACES * space:
+            continue
+        dist = (hb[0] + hb[2] / 2.0 - dcx) ** 2 + (hcy - dcy) ** 2
+        if dist < best_dist:
+            best_dist, best = dist, key
+    return best
+
+
 def _refused_as_a_notehead(ev: Evidence, subject) -> bool:
     v = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=subject)
     return (v is not None and v.outcome is Outcome.DECIDED
@@ -1288,6 +1321,18 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                       detail={**detail, "owner": best_owner,
                               "articulation": "staccato"})
 
+    if keep_foreign:
+        # ⚠️ lane-staccato-unread: nothing of THIS staff's holds the dot, but a
+        # note filed in (or owned by) the next strip does -- the dot is its
+        # staccato. Tried BEFORE the foreign augmentation below so a mark
+        # standing over a note's column can never become lengthening.
+        fowner = _foreign_staccato_owner(dot_box, foreign_targets, space)
+        if fowner is not None:
+            return Ruling(value="staccato",
+                          reason="centred_and_offset_from_a_head", used=used,
+                          detail={**detail, "owner": fowner,
+                                  "articulation": "staccato",
+                                  "head_owned_elsewhere": True})
     if keep_foreign:
         # ⚠️ LAST, and only where nothing of THIS staff's fits either window:
         # the dot trails the note immediately to its left even though another

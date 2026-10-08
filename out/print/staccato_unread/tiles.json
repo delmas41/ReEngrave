@@ -1,0 +1,182 @@
+[
+ {
+  "n": 1,
+  "doc": "lito",
+  "page": 12,
+  "subject": "glyph/12/1/6/2/9",
+  "note": "glyph/12/1/7/2/9",
+  "dot_staff": "staff/12/1/6",
+  "note_staff": "staff/12/1/7",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under no name read  (staff 8).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   1674,
+   1376
+  ]
+ },
+ {
+  "n": 2,
+  "doc": "lito",
+  "page": 15,
+  "subject": "glyph/15/0/10/8/2",
+  "note": "glyph/15/0/9/8/1",
+  "dot_staff": "staff/15/0/10",
+  "note_staff": "staff/15/0/9",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under no name read  (staff 10).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   1652,
+   1086
+  ]
+ },
+ {
+  "n": 3,
+  "doc": "lito",
+  "page": 4,
+  "subject": "glyph/4/1/9/1/2",
+  "note": "glyph/4/1/8/1/3",
+  "dot_staff": "staff/4/1/9",
+  "note_staff": "staff/4/1/8",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under no name read  (staff 9).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   1654,
+   1344
+  ]
+ },
+ {
+  "n": 4,
+  "doc": "lito",
+  "page": 12,
+  "subject": "glyph/12/0/6/9/8",
+  "note": "glyph/12/0/7/9/9",
+  "dot_staff": "staff/12/0/6",
+  "note_staff": "staff/12/0/7",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under no name read  (staff 8).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   1654,
+   1358
+  ]
+ },
+ {
+  "n": 5,
+  "doc": "brahms",
+  "page": 4,
+  "subject": "glyph/4/1/8/6/5",
+  "note": "glyph/4/1/8/6/10",
+  "dot_staff": "staff/4/1/8",
+  "note_staff": "staff/4/1/9",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Violin  (staff 10).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2682,
+   2020
+  ]
+ },
+ {
+  "n": 6,
+  "doc": "brahms",
+  "page": 16,
+  "subject": "glyph/16/1/12/6/2",
+  "note": "glyph/16/1/13/6/9",
+  "dot_staff": "staff/16/1/12",
+  "note_staff": "staff/16/1/13",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Contrabass  (staff 14).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2618,
+   1664
+  ]
+ },
+ {
+  "n": 7,
+  "doc": "brahms",
+  "page": 19,
+  "subject": "glyph/19/1/6/1/8",
+  "note": "glyph/19/1/5/1/0",
+  "dot_staff": "staff/19/1/6",
+  "note_staff": "staff/19/1/5",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Horn  (staff 6).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2640,
+   1974
+  ]
+ },
+ {
+  "n": 8,
+  "doc": "brahms",
+  "page": 10,
+  "subject": "glyph/10/0/3/4/15",
+  "note": "glyph/10/0/4/4/5",
+  "dot_staff": "staff/10/0/3",
+  "note_staff": "staff/10/0/4",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Contrabassoon  (staff 5).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2616,
+   2152
+  ]
+ },
+ {
+  "n": 9,
+  "doc": "brahms",
+  "page": 12,
+  "subject": "glyph/12/1/8/8/5",
+  "note": "glyph/12/1/8/8/3",
+  "dot_staff": "staff/12/1/8",
+  "note_staff": "staff/12/1/9",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Violin  (staff 10).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2682,
+   2164
+  ]
+ },
+ {
+  "n": 10,
+  "doc": "brahms",
+  "page": 20,
+  "subject": "glyph/20/0/7/5/5",
+  "note": "glyph/20/0/7/5/1",
+  "dot_staff": "staff/20/0/7",
+  "note_staff": "staff/20/0/8",
+  "words": [
+   "BEFORE: the reader could not tell what this dot is (it left it unread).",
+   "AFTER: it reads the dot as a staccato on the green note, a note filed under Violin  (staff 9).",
+   "ORANGE box = the dot.   GREEN box = the note it stands over."
+  ],
+  "size": [
+   2640,
+   2392
+  ]
+ }
+]
