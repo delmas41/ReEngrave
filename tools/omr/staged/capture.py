@@ -289,6 +289,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "of gaps), not a ruler reading. Scoreless for the position row's reason. "
         "Consumed by `adjudicate_glyph_owner`.",
         None),
+    "HEAD_STEM_REACH": (
+        RELATION,
+        "ROADMAP 2.58d -- which way a CONTESTED notehead's stem leaves it and "
+        "how far it runs, read off the page raster beside the head's own box "
+        "(page px). Scoreless like the other ruler readings on a head; a "
+        "SEPARATE row from a separate reader beside the detector's. Consumed "
+        "by `adjudicate_glyph_owner`.",
+        None),
     "CLEF_POSITION": (
         STAFF_GRID_POSITION,
         "the same measurement from the same grid for a clef glyph, and a "
@@ -716,6 +724,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
+    # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.
+    "CV_HEAD_STEM_REACH": ("staged/gather.py", "gather_head_stem_reach"),
     "LEDGER_FARHEAD": ("staged/gather.py", "gather_far_head_ledger_positions"),
     # ⚠️ ROADMAP 2.56b. Same function, same raster, the same crop: one more
     # reading of it, toward each candidate staff.
