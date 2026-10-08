@@ -163,6 +163,7 @@ ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007
 `lane-night-1007-read`. Sean's rulings recorded in DECISIONS 10-04..10-07.
 Later 10-07: far-head `lane-farhead-2-9` landed (look for a hidden ledger only where it must be, by its
 jutting ends; accent strokes are not ledgers; Sean: his tiles 2 and 9 right). Fast 6,112 passed, check 192.
+Then `OMR_FARHEAD_OWNER_LEDGERS` and `OMR_MARK_GROUPS` switched default ON (Sean); re-gather `20261007-day` started.
 
 ---
 

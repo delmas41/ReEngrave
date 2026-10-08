@@ -102,7 +102,7 @@ class TestFiling(unittest.TestCase):
         dets = {"cell/0/0/0/0": [det(100.0), det(104.0)]}
         local = {0: (0, 0)}
         with mock.patch.dict(os.environ, {}, clear=False):
-            os.environ.pop("OMR_MARK_GROUPS", None)
+            os.environ["OMR_MARK_GROUPS"] = "0"   # default ON since 2026-10-07: OFF is explicit
             log = Log()
             self.assertEqual(G.gather_mark_groups(log, [cell], local, dets), 0)
             self.assertEqual(

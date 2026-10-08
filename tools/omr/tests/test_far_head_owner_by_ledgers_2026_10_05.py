@@ -9,7 +9,7 @@ Three layers, each with a control that can fail:
   * `far_head_owner` -- the note-first look run toward EACH candidate staff:
     exactly one fitting staff owns the head; both or neither say nothing.
   * `gather` -- files one `Q.FAR_HEAD_OWNER_LEDGER` row per candidate, only
-    behind `OMR_FARHEAD_OWNER_LEDGERS` (default OFF).
+    behind `OMR_FARHEAD_OWNER_LEDGERS` (default ON since 2026-10-07).
   * `adjudicate_glyph_owner` -- reads it AHEAD of distance, and stays silent
     (the older tiers run as before) where the witness cannot say.
 
@@ -204,18 +204,16 @@ def _gather(gray, box, *, owner_on):
     log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos, reader="geometry",
                 frame="cell:0", residual=0.0, rounded=int(round(pos)))
     dets = {R_cell(0, 0, 0, 0).to_key(): [_Det(box)]}
-    env = {gather.FARHEAD_OWNER_ENV: "1"} if owner_on else {}
+    env = {gather.FARHEAD_OWNER_ENV: "1" if owner_on else "0"}   # default ON since 2026-10-07
     with mock.patch.object(FH, "FarHeadPage", _PooledPage), \
             mock.patch.dict(os.environ, env):
-        if not owner_on:
-            os.environ.pop(gather.FARHEAD_OWNER_ENV, None)
         gather.gather_far_head_ledger_positions(
             log, _Pws(gray), [_Cell()], {0: (0, 0), 1: (0, 1)}, dets, None)
     return log, g
 
 
 class TestTheGather(unittest.TestCase):
-    def test_off_by_default_files_nothing(self):
+    def test_off_files_nothing(self):
         gray, box = _page(owner="B")
         log, g = _gather(gray, box, owner_on=False)
         self.assertEqual(log.rows(Q.FAR_HEAD_OWNER_LEDGER, g), ())
@@ -299,3 +297,12 @@ class TestTheDecision(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestDefault(unittest.TestCase):
+    def test_default_is_on(self):
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(gather.FARHEAD_OWNER_ENV, None)
+            self.assertTrue(gather._farhead_owner_enabled())
+            os.environ[gather.FARHEAD_OWNER_ENV] = "0"
+            self.assertFalse(gather._farhead_owner_enabled())

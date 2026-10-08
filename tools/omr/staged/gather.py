@@ -894,13 +894,14 @@ def _farhead_ledger_enabled() -> bool:
 #: far-head note-first look is ALSO run toward each candidate staff (the head's
 #: own and the next staff beyond it), filed as `Q.FAR_HEAD_OWNER_LEDGER`, and
 #: `adjudicate_glyph_owner` reads it (Sean 2026-09-28: the ledgers name the
-#: owner). An ALLOW-LIST (CLAUDE.md §7): a typo leaves it off.
+#: owner). A DENY-LIST (CLAUDE.md §7), default ON since 2026-10-07.
 FARHEAD_OWNER_ENV = "OMR_FARHEAD_OWNER_LEDGERS"
 
 
 def _farhead_owner_enabled() -> bool:
-    return os.environ.get(FARHEAD_OWNER_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    """DEFAULT ON since 2026-10-07 (Sean). Deny-list."""
+    return os.environ.get(FARHEAD_OWNER_ENV, "1").strip().lower() \
+        not in ("0", "", "false", "no", "off")
 
 
 class FarHeadState:
@@ -1094,7 +1095,7 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
         p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
         staff_lines[R.staff(p, key[0], key[1]).to_key()] = \
             [float(y) for y in st.line_ys]
-        if owner_on:
+        if owner_on and hasattr(st, "x_start"):   # a staff with no extent cannot be a candidate
             owner_staves.append(dict(
                 key=R.staff(p, key[0], key[1]).to_key(),
                 lines=[float(y) for y in st.line_ys],
@@ -1496,9 +1497,9 @@ MARK_GROUP_CATEGORIES = ("notehead", "rest", "accidental")
 
 
 def mark_groups_enabled() -> bool:
-    """`OMR_MARK_GROUPS` -- DEFAULT OFF (allow-list: a typo leaves it off)."""
-    return os.environ.get(MARK_GROUPS_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_MARK_GROUPS` -- DEFAULT ON since 2026-10-07 (Sean). Deny-list."""
+    return os.environ.get(MARK_GROUPS_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
