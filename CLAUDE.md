@@ -276,7 +276,8 @@ and can only re-export or re-adjudicate a committed record. **Its clone is
 also SHALLOW** (121 commits from 2026-10-01 on the 2026-10-07 audit): `git
 log -S`, `--follow` and blame bottom out at the graft, so rule 1's brief
 needs `git fetch --unshallow origin main` (or a blobless bare fetch into the
-scratchpad) before any "when was this added" claim.
+scratchpad) before any "when was this added" claim; "not merged" too (0.8
+found 41 such rows on main).
 
 ### 5b. The staged pipeline (product path)
 
@@ -573,8 +574,8 @@ design here:
   passes with `batch_config.json`, click-to-box, `--blind` for scoring
   passes). Pre-filled verdicts are a QUEUE, not labels (blind out-of-sample
   0.915 under the 0.97 bar). Workflow and hotkeys: chronicle §"Hand-label
-  cells". Scan truth is moving to hand-labeled whole-ink pages in page
-  pixels (ROADMAP 1.7, `data/hand-truth/README.md`).
+  cells". Scan truth: hand-labeled pages (ROADMAP 1.7,
+  `data/hand-truth/README.md`).
 
 ---
 
