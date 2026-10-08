@@ -82,10 +82,20 @@ _EXPRESSION = """
     appassionato agitato risoluto energico deciso brillante brio bravura
     lusingando morendo smorzando perdendosi calando slancio
     lacrimoso mesto lamentoso teneramente amabile
-    sotto voce divisi unis pizzicato pizz arco tremolo trem
+    sotto voce divisi unis pizzicato pizz arco tremolo trem marc
     sord sordino sordini muta ausdrucksvoll zart getragen breitgestrichen
     gestopft offen dampfer dämpfer flatterzunge
     doux chante chanté expressif
+"""
+
+#: Part (instrument) names printed INSIDE a system, at the left of a staff that
+#: carries a divided part: `Basso`, `Bassi.`, `Vcl.` (Sean, 2026-10-08, page-by-
+#: page review of the scan pages -- he wants them read). A margin label is the
+#: other reader's (`instruments.py`); these are the ones printed in the music.
+#: Each entry was added because a printed word on the 10 review pages is one:
+#: basso, bassi, vcl (and vc / violoncello / violoncelli, its spellings).
+_PART = """
+    basso bassi vcl vc violoncello violoncelli
 """
 
 #: Dynamic WORDS — the ones spelled out rather than drawn as a glyph. The
@@ -107,11 +117,12 @@ TERMS: dict[str, str] = {
     **_terms(_EXPRESSION, "expression"),
     **_terms(_DYNAMIC_WORD, "dynamic"),
     **_terms(_INTENSIFIER, "expression"),
+    **_terms(_PART, "part"),
 }
 
 #: A phrase takes the category of its most specific term, not of its first —
 #: `Un poco sostenuto` is a tempo mark whose first matching token is `poco`.
-_CATEGORY_RANK = ("tempo", "dynamic", "expression")
+_CATEGORY_RANK = ("tempo", "dynamic", "expression", "part")
 
 #: Everything a token may carry and still be the same word: a trailing period
 #: on an abbreviation, and the punctuation OCR sometimes attaches.
@@ -136,20 +147,78 @@ def _normalise(token: str) -> str:
     return token.strip(_STRIP).lower()
 
 
+#: Dynamic LETTERS. The detector's dynamic reader owns these marks
+#: (`export.measure_dynamics`), so the word reader must not refuse a string only
+#: because a dynamic stands beside the word: `più f`, `sempre molto p e dolce`,
+#: `p cresc.` (Sean, 2026-10-08: the dynamic reader takes the `f`; the word
+#: reader must still read `più`). The letters are DROPPED from the reading --
+#: never kept, never turned into anything else -- and what is left must pass
+#: on its own, exactly as before.
+_DYNAMIC_LETTERS = {"p", "pp", "ppp", "f", "ff", "fff", "mp", "mf", "sf", "sfz",
+                    "fz", "fp", "rf", "rfz", "sfp"}
+
+#: `a2` / `a 2` / `a.2`: both players of a shared staff play the line (Sean,
+#: 2026-10-08: yes, read it). It is text, not a notehead.
+_A_DUE = re.compile(r"a\s?\.?\s?2\.?")
+
+
+def _unglue(token: str) -> str:
+    """`pdolce` -> `dolce`, `pmarc` -> `marc`: a dynamic letter glued to the
+    front of a word that is a term. Only where the remainder is a real term and
+    the whole token is not (`piano`, `poco`, `pizz` stand)."""
+    if token in TERMS or token in CONNECTIVE:
+        return token
+    for k in (3, 2, 1):
+        if token[:k] in _DYNAMIC_LETTERS and token[k:] in TERMS:
+            return token[k:]
+    return token
+
+
+def _trim_ends(text: str) -> str:
+    """The reading without OCR punctuation debris at its ends (`, cresc.`,
+    `cresc,`): a leading comma/dash/bullet and a trailing comma/semicolon cost
+    an edit each and are never part of a direction. An abbreviation's period
+    stays."""
+    return text.strip().lstrip(" ,;:.·•-").rstrip(" ,;:·•-") or text.strip()
+
+
 def lookup(text: str) -> DirectionHit | None:
     """The direction `text` names, or None if it is not one.
 
     Case and punctuation are ignored for MATCHING and preserved in the result.
+    A dynamic letter beside the words is ignored for matching AND left out of
+    the result (see `_DYNAMIC_LETTERS`).
     """
     if not text:
         return None
+    if _A_DUE.fullmatch(text.strip().lower()):
+        return DirectionHit(text=text.strip(), category="part", terms=("a2",))
     # Musical text is letters, spaces and abbreviation periods. A digit or a
     # bracket means a bar number, a metronome mark or a rehearsal letter — all
     # of which are somebody else's problem, and none of which is a direction.
     if not re.fullmatch(r"[A-Za-zÀ-ÿ' .,\-]+", text.strip()):
         return None
+    hit = _lookup_words(text.split())
+    if hit is not None:
+        return DirectionHit(text=_trim_ends(text), category=hit.category,
+                            terms=hit.terms)
+    # Second look, only if the first refused: without the dynamic letters.
+    kept = []
+    for word in text.split():
+        norm = _normalise(word)
+        if not norm or norm in _DYNAMIC_LETTERS:
+            continue
+        glued = _unglue(norm)
+        if glued != norm:
+            word = word[word.lower().find(glued):]
+        kept.append(word)
+    if kept == text.split():
+        return None
+    return _lookup_words(kept)
 
-    tokens = [_normalise(t) for t in text.split()]
+
+def _lookup_words(words: list[str]) -> DirectionHit | None:
+    tokens = [_normalise(t) for t in words]
     tokens = [t for t in tokens if t]
     if not tokens or len(tokens) > MAX_PHRASE_TOKENS:
         return None
@@ -177,5 +246,5 @@ def lookup(text: str) -> DirectionHit | None:
 
     categories = {TERMS[t] for t in matched}
     category = next(c for c in _CATEGORY_RANK if c in categories)
-    return DirectionHit(text=text.strip(), category=category,
+    return DirectionHit(text=" ".join(words).strip(), category=category,
                         terms=tuple(matched))

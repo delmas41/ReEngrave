@@ -310,9 +310,10 @@ Operational facts worth more than they look:
   reaches it, while an edit to an already-imported module does not. Land
   every edit before the run; the provenance stamp names the tree that
   FINISHED, not the code that ran.
-- Cost on a scan: ~93 s/page with the margin-label rungs, ~267 s/page with
-  the direction-word reader; `OMR_DIRECTION_TEXT_SCAN_GATE=1` skips the
-  latter on a page proved to be a scan. Unattended: `OMR_SURYA_KEEP_ALIVE=0`
+- Cost on a scan: ~93 s/page with the margin-label rungs, ~20 s/page more with
+  the direction-word reader (3-36 s, 2026-10-08; it was 267 s before the
+  width-scaled token cap), which now runs on scans -- no script sets
+  `OMR_DIRECTION_TEXT_SCAN_GATE` any more. Unattended: `OMR_SURYA_KEEP_ALIVE=0`
   so the run owns its own processes. **Never `pkill -f llama-server`** — the
   resident server is shared with other sessions; use
   `python3 -m tools.omr.staff_labels_surya --stop` only when nothing else is

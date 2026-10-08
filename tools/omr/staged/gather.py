@@ -8523,7 +8523,8 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
         return
 
     try:
-        found, info = DT.read_directions(pws, page_dict, readers=readers)
+        found, info = DT.read_directions(pws, page_dict, readers=readers,
+                                         scan_order=True)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,

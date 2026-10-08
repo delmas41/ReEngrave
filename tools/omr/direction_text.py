@@ -57,6 +57,9 @@ from __future__ import annotations
 
 import logging
 import os
+import re
+import time
+import dataclasses
 from dataclasses import dataclass
 from typing import Any, Callable, Sequence
 
@@ -221,6 +224,19 @@ class BandConfig:
     fused_word_min_height_spaces: float = 0.9
     fused_word_min_fill: float = 0.45
     fused_word_weight: int = 3
+    #: A dynamic glyph with ink touching its RIGHT edge and none on the left is
+    #: the first letter of a word, not a dynamic: the `p` of `più` (Brahms p3,
+    #: 2026-10-08: eight `più f`, every `p` blanked, the word reached the reader
+    #: as `ui`). A true dynamic stands 1.7 spaces clear of a word beside it; the
+    #: gap here is the width of a letter-space. Only the RIGHT edge, so a dynamic
+    #: that merely ends against a stem or a slur on its left is still blanked.
+    word_initial_gap_spaces: float = 0.35
+    #: The tempo word at the HEAD of a system or the FOOT of its last staff
+    #: (`Allegro`, `Adagio`) is set in larger, bolder type than an expression
+    #: mark: its capital is 3.1 spaces tall on Brahms p3. In those two strips a
+    #: letter may be this big; everywhere else `max_glyph_*_spaces` stands.
+    tempo_strip_max_glyph_spaces: float = 3.6
+    a_due_gap_spaces: float = 0.8
 
 
 DEFAULT_BAND_CONFIG = BandConfig()
@@ -303,7 +319,13 @@ def _is_inside_a_word(mask: np.ndarray, box: tuple[int, int, int, int],
         return False
     left = mask[top:bottom, max(0, x - reach):max(0, x)]
     right = mask[top:bottom, min(width, x + w):min(width, x + w + reach)]
-    return bool(left.size and right.size and left.any() and right.any())
+    if left.size and right.size and left.any() and right.any():
+        return True
+    # first letter of a word: ink hard against the right edge, nothing on the left
+    near = max(1, int(round(config.word_initial_gap_spaces * spacing)))
+    # (skip the first 3 px: a box clips its own glyph and leaves a speck there)
+    touch = mask[top:bottom, min(width, x + w + 3):min(width, x + w + 3 + near)]
+    return bool(touch.size and touch.any() and not (left.size and left.any()))
 
 
 def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
@@ -373,6 +395,30 @@ def _letter_components(mask: np.ndarray, spacing: float,
     return out
 
 
+def _is_a_due_pair(run, spacing: float, config: BandConfig) -> bool:
+    """Two letter-sized, letter-dense pieces close together: `a 2`.
+
+    `a2` (both players of a shared staff, Sean 2026-10-08: read it) is TWO
+    components, under the three a word needs. Admitted only as a pair that is
+    small (each piece 0.45-1.8 spaces tall, the pair under 3.2 wide), tight (the
+    gap under 0.8 spaces) and level (centres within 0.35 spaces) -- and then only
+    a candidate: the lexicon still has to accept what the reader makes of it.
+    """
+    if len(run) != 2:
+        return False
+    a, b = sorted(run, key=lambda c: c[0])
+    for x, y, w, h, area in (a, b):
+        if not (0.45 * spacing <= h <= 1.8 * spacing):
+            return False
+        if area < 0.25 * w * h:
+            return False
+    gap = b[0] - (a[0] + a[2])
+    width = (b[0] + b[2]) - a[0]
+    level = abs((a[1] + a[3] / 2.0) - (b[1] + b[3] / 2.0))
+    return (gap <= config.a_due_gap_spaces * spacing
+            and width <= 3.2 * spacing and level <= 0.35 * spacing)
+
+
 def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
                         spacing: float,
                         config: BandConfig) -> list[tuple[int, int, int, int, int]]:
@@ -416,7 +462,7 @@ def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
     words = []
     for run in runs:
         weight = sum(config.fused_word_weight if c[2] > max_w else 1 for c in run)
-        if weight < config.min_components:
+        if weight < config.min_components and not _is_a_due_pair(run, spacing, config):
             continue
         x0 = min(c[0] for c in run)
         x1 = max(c[0] + c[2] for c in run)
@@ -555,8 +601,18 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
         if band.size == 0 or not band.any():
             continue
         spacing = _spacing(staff)
+        last_of_system = max((x.staff_index for x in pws.staves
+                              if x.system_index == staff.system_index
+                              and x.top_y >= staff.top_y), default=-1) == staff.staff_index
+        if placement == "above" or (placement == "below" and last_of_system):
+            big = config.tempo_strip_max_glyph_spaces
+            strip_config = dataclasses.replace(
+                config, max_glyph_height_spaces=max(config.max_glyph_height_spaces, big),
+                max_glyph_width_spaces=max(config.max_glyph_width_spaces, big))
+        else:
+            strip_config = config
         words = _cluster_into_words(
-            _letter_components(band, spacing, config), spacing, config)
+            _letter_components(band, spacing, strip_config), spacing, strip_config)
         for wx0, wy0, wx1, wy1, n_comp in words:
             page_box = (x0 + wx0, y_top + wy0, x0 + wx1, y_top + wy1)
             measure_index = _measure_at(spans, page_box[0])
@@ -631,6 +687,37 @@ def crop_for(page: PageImage, candidate: TextCandidate,
         if drop.any():
             crop = crop.copy()
             crop[drop] = 255
+    scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
+    if scale <= 1.0 or crop.size == 0:
+        return crop
+    return cv2.resize(crop, None, fx=scale, fy=scale,
+                      interpolation=cv2.INTER_CUBIC)
+
+
+#: The TIGHT retry crop: the candidate's own box plus this much, with EVERYTHING
+#: else cut away and a white margin put back. The standard crop pads 1.3 spaces
+#: sideways to recover a dropped first letter, and on a scan that pad brings in
+#: the barline, the neighbouring notehead and staff-line stubs -- `cresc.`
+#: between two barlines came back from Surya as '' or as `CRESC. CRESC. CRESC.`
+#: and from the same box cut tight as `cresc.` (Litolff p4/p6 and Brahms p12,
+#: 2026-10-08: 12 of 13 retried crops that a person reads at a glance).
+TIGHT_PAD_X_SPACES = 0.25
+TIGHT_PAD_Y_SPACES = 0.2
+TIGHT_MARGIN_SPACES = 1.0
+
+
+def tight_crop_for(page: PageImage, candidate: TextCandidate,
+                   spacing: float) -> np.ndarray:
+    px = int(round(TIGHT_PAD_X_SPACES * spacing))
+    py = int(round(TIGHT_PAD_Y_SPACES * spacing))
+    x0, y0, x1, y1 = candidate.bbox_page
+    h, w = page.rgb.shape[:2]
+    crop = page.rgb[max(0, y0 - py):min(h, y1 + py),
+                    max(0, x0 - px):min(w, x1 + px)]
+    m = int(round(TIGHT_MARGIN_SPACES * spacing))
+    white = (255,) * (crop.shape[2] if crop.ndim == 3 else 1)
+    crop = cv2.copyMakeBorder(crop, m, m, m, m, cv2.BORDER_CONSTANT,
+                              value=white if crop.ndim == 3 else 255)
     scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
     if scale <= 1.0 or crop.size == 0:
         return crop
@@ -801,6 +888,29 @@ def _surya_word_reader(crops):
         crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
 
 
+#: A TIGHT crop holds one word and white margin, so Surya's output ceiling can be
+#: lower still: about 2 characters a staff space is generous for an italic word
+#: (`cresc.` is 6 characters in ~4 spaces), and a looping decoder on a crop with
+#: no word in it stops sooner. cap = BASE + PER_SPACE x width in spaces.
+TIGHT_CAP_BASE = 8
+TIGHT_CAP_PER_SPACE = 2
+
+
+def tight_word_token_cap(crop) -> int:
+    return TIGHT_CAP_BASE + int(round(
+        TIGHT_CAP_PER_SPACE * crop.shape[1] / MIN_CROP_SPACING_PX))
+
+
+def _surya_tight_word_reader(crops):
+    from . import staff_labels_surya
+    return staff_labels_surya.read_crops_text(
+        crops, max_tokens=tight_word_token_cap,
+        crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
+
+
+_surya_word_reader.tight = _surya_tight_word_reader
+
+
 def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
     """The rungs to ask, in precedence order, skipping any that cannot run.
 
@@ -880,6 +990,7 @@ def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
 
 def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
                     readers: Sequence[tuple[str, Reader]] | None = None,
+                    scan_order: bool = False,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
                     ) -> tuple[list[DirectionText], dict[str, Any]]:
     """Every direction on the page, plus a report of what happened.
@@ -911,8 +1022,12 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
 
     spacing = float(np.median([_spacing(s) for s in pws.staves]))
     raw = _page_ink(pws.page)
-    erase = ((raw > 0) & (_blank_detections(raw, page_dict, spacing, config) == 0)
-             ).astype(np.uint8) * 255
+    blanked = _blank_detections(raw, page_dict, spacing, config)
+    erase = ((raw > 0) & (blanked == 0)).astype(np.uint8) * 255
+    if (scan_order and len(readers) > 1
+            and any(n == "tesseract" for n, _fn in readers)):
+        return _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
+                               blanked, config, info)
     crops = [crop_for(pws.page, c, spacing, erase=erase) for c in candidates]
 
     # Every rung reads every crop. Running the later ones only where the first
@@ -927,7 +1042,7 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             logger.warning("direction reader %s failed: %s", name, exc)
             info.setdefault("failed_readers", {})[name] = f"{type(exc).__name__}: {exc}"
 
-    out: list[DirectionText] = []
+    accepted_at: dict[int, DirectionText] = {}
     for index, candidate in enumerate(candidates):
         texts = [(name, texts[index]) for name, texts in read
                  if index < len(texts) and texts[index]]
@@ -949,7 +1064,7 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
                 "took": winner_name,
             })
         info["by_reader"][winner_name] = info["by_reader"].get(winner_name, 0) + 1
-        out.append(DirectionText(
+        accepted_at[index] = DirectionText(
             staff_index=candidate.staff_index,
             measure_index=candidate.measure_index,
             x_page=candidate.x_page,
@@ -958,8 +1073,278 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             placement=candidate.placement,
             terms=hit.terms,
             reader=winner_name,
-        ))
+        )
+
+    out = [accepted_at[i] for i in sorted(accepted_at)]
     info["n_accepted"] = len(out)
+    info["candidates"] = candidates
+    return out, info
+
+
+#: A crop is worth the slow reader's time on the retry only if the cheap one saw
+#: LETTERS in it: at least this many alphabetic characters. Staff-line debris and
+#: beamed notes read as `FEE'?` or `TTY!`; a word, however garbled, reads as 3+.
+RETRY_MIN_LETTERS = 3
+
+
+#: How far, in staff spaces, a sibling word may sit from the word it echoes and
+#: still be "at the same x": the same cresc. is engraved in the same bar on
+#: every staff but not always on the same pixel (Litolff p4: 0 to 4 spaces).
+SIBLING_X_SLACK_SPACES = 3.0
+
+
+def sibling_candidates(pws, page_dict, blanked, candidates, accepted_at,
+                       spacing, config) -> list[TextCandidate]:
+    """Windows to LOOK in: the same word, at the same x, on the other staves.
+
+    A word read in one bar of a system is very often printed again in that bar
+    on the other instruments (`cresc.` over a whole string choir). Where the
+    first look found nothing on such a staff, this proposes ONE candidate there:
+    the ink in the staff's own band within `SIBLING_X_SLACK_SPACES` of the
+    word's x, found with relaxed letter tests, its box widened to at least the
+    echoed word's width.
+
+    ⚠️ It is a place to look, never an assumption: the candidate is read by the
+    same OCR rungs and counts only if the LEXICON accepts what they read. Part
+    names (`Basso`) are not echoed -- each staff prints its own.
+    """
+    staves = {s.staff_index: s for s in pws.staves}
+    staff_dicts = _staff_dicts(page_dict)
+    bands: dict[int, list[tuple[str, int, int]]] = {}
+    for staff, placement, y_top, y_bottom in _bands_for_page(pws, config):
+        bands.setdefault(staff.staff_index, []).append((placement, y_top, y_bottom))
+    relaxed = dataclasses.replace(config, min_fill_ratio=0.10,
+                                  min_glyph_height_spaces=0.15,
+                                  min_components=2)
+    slack = SIBLING_X_SLACK_SPACES * spacing
+    per_system: dict[int, list[tuple[TextCandidate, DirectionText]]] = {}
+    for i, d in accepted_at.items():
+        if d.category == "part" and d.terms != ("a2",):
+            continue
+        c = candidates[i]
+        if c.staff_index in staves:
+            per_system.setdefault(staves[c.staff_index].system_index, []).append((c, d))
+    out: list[TextCandidate] = []
+    for system_index, items in per_system.items():
+        items.sort(key=lambda t: t[0].bbox_page[0])
+        groups: list[list[tuple[TextCandidate, DirectionText]]] = []
+        for item in items:
+            if groups and item[0].bbox_page[0] - groups[-1][0][0].bbox_page[0] <= slack:
+                groups[-1].append(item)
+            else:
+                groups.append([item])
+        for group in groups:
+            gx0 = float(np.median([c.bbox_page[0] for c, _d in group]))
+            gwidth = float(np.median([c.bbox_page[2] - c.bbox_page[0] for c, _d in group]))
+            for staff in (s for s in pws.staves if s.system_index == system_index):
+                sd = staff_dicts.get(staff.staff_index)
+                spans = _measure_spans(sd) if sd else []
+                if not spans:
+                    continue
+                if any(c.staff_index == staff.staff_index
+                       and abs(c.bbox_page[0] - gx0) <= slack
+                       for i, c in ((j, candidates[j]) for j in accepted_at)):
+                    continue                  # that staff already has its word
+                sp = _spacing(staff)
+                for placement, y_top, y_bottom in bands.get(staff.staff_index, []):
+                    if placement == "above":
+                        continue              # the head-of-system strip is the finder's
+                    x_lo = max(int(staff.x_start), int(gx0 - slack))
+                    x_hi = min(int(staff.x_end), int(gx0 + gwidth + slack))
+                    if x_hi - x_lo < 4 or y_bottom - y_top < 4:
+                        continue
+                    window = blanked[y_top:y_bottom, x_lo:x_hi]
+                    comps = _letter_components(window, sp, relaxed)
+                    if len(comps) < 2:
+                        continue
+                    hx0 = min(c[0] for c in comps); hx1 = max(c[0] + c[2] for c in comps)
+                    hy0 = min(c[1] for c in comps); hy1 = max(c[1] + c[3] for c in comps)
+                    if hy1 - hy0 < config.min_word_height_spaces * sp:
+                        continue
+                    bx0 = min(x_lo + hx0, int(gx0 - 0.3 * sp))
+                    bx1 = max(x_lo + hx1, int(gx0 + gwidth + 0.3 * sp))
+                    box = (max(0, bx0), y_top + hy0, bx1, y_top + hy1)
+                    m = _measure_at(spans, box[0])
+                    if m is None:
+                        continue
+                    out.append(TextCandidate(staff.staff_index, m, box, placement,
+                                             len(comps)))
+    return out
+
+
+def _drop_overlapping_readings(candidates, accepted_at) -> None:
+    """Two readings of the same ink on one staff are ONE word, not two: keep the
+    one cut from the smaller box (`piu` over `piu f`), because the metric charges
+    a second copy exactly what it charges a missed word."""
+    keys = sorted(accepted_at)
+    for a_i, i in enumerate(keys):
+        for j in keys[a_i + 1:]:
+            if i not in accepted_at or j not in accepted_at:
+                continue
+            a, b = candidates[i], candidates[j]
+            if a.staff_index != b.staff_index:
+                continue
+            ax0, ay0, ax1, ay1 = a.bbox_page
+            bx0, by0, bx1, by1 = b.bbox_page
+            if min(ax1, bx1) > max(ax0, bx0) and min(ay1, by1) > max(ay0, by0):
+                area = lambda c: (c[2] - c[0]) * (c[3] - c[1])
+                del accepted_at[i if area(a.bbox_page) > area(b.bbox_page) else j]
+
+
+def _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> None:
+    """`a 2` is printed OVER the notes of the staff it governs, in the gap above
+    them, so the band that found it (the staff above's `below` strip) names the
+    wrong part. Where the next staff of the same system starts nearer than the
+    last one ended, the word is that staff's."""
+    ordered = sorted(pws.staves, key=lambda s: s.top_y)
+    by_index = {s.staff_index: s for s in ordered}
+    for i, d in list(accepted_at.items()):
+        if d.terms != ("a2",):
+            continue
+        c = candidates[i]
+        staff = by_index.get(c.staff_index)
+        if staff is None:
+            continue
+        later = [s for s in ordered if s.top_y > staff.top_y]
+        if not later or later[0].system_index != staff.system_index:
+            continue
+        nxt = later[0]
+        y = c.bbox_page[3]
+        if abs(nxt.top_y - y) >= abs(y - staff.bottom_y):
+            continue
+        sd = _staff_dicts(page_dict).get(nxt.staff_index)
+        m = _measure_at(_measure_spans(sd), c.bbox_page[0]) if sd else None
+        if m is None:
+            continue
+        accepted_at[i] = dataclasses.replace(d, staff_index=nxt.staff_index,
+                                             measure_index=m)
+
+
+def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
+                    blanked, config, info):
+    """The reading order for a page that is not proven born-digital (a scan).
+
+    Surya is the slow rung -- about 0.5 s a crop, and most of the candidates on
+    a scanned conductor's page are not words at all (beams, ledger-line stubs,
+    notehead clusters), which it spends the longest on. So the order is:
+
+      1. Tesseract on the standard crop, then on the TIGHT crop
+         (`tight_crop_for`), for every candidate (0.1 s a crop);
+      2. Surya on the tight crop, then on the standard crop, ONLY for candidates
+         where Tesseract saw `RETRY_MIN_LETTERS` or more letters in either crop
+         and nothing is accepted yet.
+
+    The lexicon decides every acceptance, exactly as ever -- no fuzzy matching,
+    so a garbled reading is refused whichever crop it came from. What the gate
+    can lose is a word Tesseract read as fewer than 3 letters on BOTH crops;
+    `benchmarks/omr-direction-text-2026-09/misses` counts that against the
+    ungated reader on the 10 review pages.
+    """
+    cheap = [(n, f) for n, f in readers if n == "tesseract"]
+    slow = [(n, f) for n, f in readers if n != "tesseract"]
+    n = len(candidates)
+    wide: dict[int, np.ndarray] = {}
+    tight: dict[int, np.ndarray] = {}
+
+    def wide_crop(i):
+        if i not in wide:
+            wide[i] = crop_for(pws.page, candidates[i], spacing, erase=erase)
+        return wide[i]
+
+    def tight_crop(i):
+        if i not in tight:
+            tight[i] = tight_crop_for(pws.page, candidates[i], spacing)
+        return tight[i]
+
+    accepted_at: dict[int, DirectionText] = {}
+    seen: dict[int, list[str]] = {i: [] for i in range(n)}
+
+    spoke: set[int] = set()       # candidates the last `run` got any text for
+
+    def run(rungs, indices, crop_of, suffix):
+        spoke.clear()
+        for name, fn in rungs:
+            todo = [i for i in indices if i not in accepted_at]
+            if not todo:
+                return
+            try:
+                use = getattr(fn, "tight", fn)      # one word per crop: the lower ceiling
+                texts = list(use([crop_of(i) for i in todo]))
+            except Exception as exc:                          # noqa: BLE001
+                logger.warning("direction reader %s failed: %s", name, exc)
+                info.setdefault("failed_readers", {})[name] = f"{type(exc).__name__}: {exc}"
+                continue
+            for i, text in zip(todo, texts):
+                if not text:
+                    continue
+                spoke.add(i)
+                seen[i].append(text)
+                hit = lexicon_lookup(text)
+                if hit is None:
+                    continue
+                c = candidates[i]
+                label = name + suffix
+                accepted_at[i] = DirectionText(
+                    staff_index=c.staff_index, measure_index=c.measure_index,
+                    x_page=c.x_page, text=hit.text, category=hit.category,
+                    placement=c.placement, terms=hit.terms, reader=label)
+                info["by_reader"][label] = info["by_reader"].get(label, 0) + 1
+
+    def read_indices(everyone):
+        run(cheap, everyone, wide_crop, "")
+        run(cheap, everyone, tight_crop, "-tight")
+        lettered = [i for i in everyone if i not in accepted_at and
+                    sum(ch.isalpha() for t in seen[i] for ch in t) >= RETRY_MIN_LETTERS]
+        info["n_lettered"] = info.get("n_lettered", 0) + len(lettered)
+        run(slow, lettered, tight_crop, "-tight")
+        # The standard (wide) crop still gets its turn where the tight one
+        # failed: it keeps the pad that recovers a dropped first letter, and
+        # `p marc.` was read from it and not from the tight crop.
+        # ... but only for crops the cheap rung saw a real run of letters in
+        # (four in a row, `MATE`, `CTESC`): three-letter debris like `FEE'?` is
+        # what a beamed group reads as, and the slow rung spends longest on it.
+        strong = [i for i in lettered if i not in accepted_at and any(
+            len(w) >= 4 for t in seen[i] for w in re.findall(r"[^\W\d_]+", t))]
+        run(slow, strong, wide_crop, "")
+
+    t0 = time.perf_counter()
+    read_indices(list(range(n)))
+    info["first_looks_s"] = round(time.perf_counter() - t0, 2)
+
+    # SIBLINGS: where a word was read, look for the same word at the same x on
+    # the other staves of its system (`sibling_candidates`).
+    t0 = time.perf_counter()
+    n_first = len(candidates)
+    extra = sibling_candidates(pws, page_dict, blanked, candidates,
+                               accepted_at, spacing, config)
+    info["n_sibling_windows"] = len(extra)
+    candidates.extend(extra)
+    for i in range(n_first, len(candidates)):
+        seen[i] = []
+    read_indices(list(range(n_first, len(candidates))))
+    # A sibling reading that lands on a word already read on that staff is a
+    # second look at the same ink: keep the first.
+    for i in range(n_first, len(candidates)):
+        if i in accepted_at and any(
+                j != i and j in accepted_at
+                and candidates[j].staff_index == candidates[i].staff_index
+                and abs(candidates[j].x_page - candidates[i].x_page) < 3 * spacing
+                for j in list(accepted_at)):
+            del accepted_at[i]
+    info["n_sibling_read"] = sum(1 for i in accepted_at if i >= n_first)
+    info["sibling_s"] = round(time.perf_counter() - t0, 2)
+    _drop_overlapping_readings(candidates, accepted_at)
+    _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at)
+    everyone = list(range(len(candidates)))
+    info["n_read"] = sum(1 for i in everyone if seen[i])
+    info["seen"] = {i: list(seen[i]) for i in everyone if i not in accepted_at}
+    for i in everyone:
+        if i not in accepted_at:
+            info["rejected"].extend(seen[i])
+    out = [accepted_at[i] for i in sorted(accepted_at)]
+    info["n_accepted"] = len(out)
+    info["candidates"] = candidates
+    info["word_boxes"] = [candidates[i].bbox_page for i in sorted(accepted_at)]
     return out, info
 
 
