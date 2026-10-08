@@ -116,10 +116,10 @@ class BandConfig:
     #: staves and prints `arco` and `dolce` 3.5 to 7 spaces down, past a
     #: 3-space reach. The engraved benchmark never showed it because LilyPond
     #: sets its directions tight under the staff.
-    below_spaces: float = 3.0
+    below_spaces: float = 5.0   # was 3.0: Brahms p12 `dim.` printed 3.4 spaces under a system's last staff (2026-10-08)
     #: Clear of the staff lines themselves by this much, so the band never
     #: contains the line ink it would otherwise have to erase.
-    clearance_spaces: float = 0.25
+    clearance_spaces: float = 0.10   # was 0.25: Brahms p12 `dim.` printed 0.2 spaces under its staff (2026-10-08)
 
     #: A letter's ink. Lowercase `o` is about half a space tall and an ascender
     #: about one; a staff-line fragment is 0.1 and is what the minimum rejects.
@@ -191,7 +191,7 @@ class BandConfig:
     #: Only dynamics are excused, and deliberately: a notehead in a beamed run
     #: also has ink on both sides, and letting the test excuse THOSE would put
     #: the notes back into the very mask that exists to have them taken out.
-    inside_word_gap_spaces: float = 0.5
+    inside_word_gap_spaces: float = 0.9   # was 0.5: Brahms p7 `espr.` letters read as dynamics, 0.5-0.9 sp apart; a real dynamic stands 1.7 clear (2026-10-08)
     #: A detection wider than this is a SPAN, not a glyph, and its bounding box
     #: is not blanked.
     #:
@@ -213,6 +213,14 @@ class BandConfig:
     #: which is exactly what `min_fill_ratio` and `max_glyph_width_spaces`
     #: refuse — the fill-ratio test was written for slurs in the first place.
     max_blank_width_spaces: float = 4.0
+    #: A scan can fuse a whole italic word (`dim.`) into ONE component. Accepted as
+    #: a word of `fused_word_weight` letters if it is at most this wide, at least
+    #: this tall and fills this much of its box (a hairpin stroke is thin, an arc
+    #: is sparse, a beamed group is taller than two spaces). Brahms p12, 2026-10-08.
+    fused_word_max_width_spaces: float = 7.0
+    fused_word_min_height_spaces: float = 0.9
+    fused_word_min_fill: float = 0.45
+    fused_word_weight: int = 3
 
 
 DEFAULT_BAND_CONFIG = BandConfig()
@@ -349,7 +357,15 @@ def _letter_components(mask: np.ndarray, spacing: float,
     out = []
     for i in range(1, n):
         x, y, w, h, area = (int(stats[i, k]) for k in range(5))
-        if not (min_h <= h <= max_h) or w > max_w:
+        if not (min_h <= h <= max_h):
+            continue
+        if w > max_w:
+            # Too wide for a letter: only a FUSED WORD may pass (see BandConfig).
+            if not (w <= config.fused_word_max_width_spaces * spacing
+                    and h >= config.fused_word_min_height_spaces * spacing
+                    and area >= config.fused_word_min_fill * w * h):
+                continue
+            out.append((x, y, w, h, area))
             continue
         if area < config.min_fill_ratio * w * h:
             continue
@@ -396,9 +412,11 @@ def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
         if not joined:
             runs.append([comp])
 
+    max_w = config.max_glyph_width_spaces * spacing
     words = []
     for run in runs:
-        if len(run) < config.min_components:
+        weight = sum(config.fused_word_weight if c[2] > max_w else 1 for c in run)
+        if weight < config.min_components:
             continue
         x0 = min(c[0] for c in run)
         x1 = max(c[0] + c[2] for c in run)
@@ -408,7 +426,7 @@ def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
         y1 = max(c[1] + c[3] for c in run)
         if y1 - y0 < config.min_word_height_spaces * spacing:
             continue
-        words.append((x0, y0, x1, y1, len(run)))
+        words.append((x0, y0, x1, y1, weight))
     return words
 
 
@@ -589,7 +607,7 @@ MAX_CROP_UPSCALE = 4.0
 
 
 def crop_for(page: PageImage, candidate: TextCandidate,
-             spacing: float) -> np.ndarray:
+             spacing: float, erase: np.ndarray | None = None) -> np.ndarray:
     """The candidate's own pixels, padded and enlarged, from the ORIGINAL render.
 
     Not from the subtracted mask: the mask has holes where the detections were
@@ -600,8 +618,19 @@ def crop_for(page: PageImage, candidate: TextCandidate,
     pad_y = int(round(CROP_PAD_Y_SPACES * spacing))
     x0, y0, x1, y1 = candidate.bbox_page
     h, w = page.rgb.shape[:2]
-    crop = page.rgb[max(0, y0 - pad_y):min(h, y1 + pad_y),
-                    max(0, x0 - pad_x):min(w, x1 + pad_x)]
+    cy0, cy1 = max(0, y0 - pad_y), min(h, y1 + pad_y)
+    cx0, cx1 = max(0, x0 - pad_x), min(w, x1 + pad_x)
+    crop = page.rgb[cy0:cy1, cx0:cx1]
+    if erase is not None and crop.size:
+        # The PAD exists to recover letters the filters dropped; it must not
+        # re-admit ink the detector named as something else (Brahms `p dolce`:
+        # the `p` came back and the reading was `v dolce`). Inside the
+        # candidate's own box nothing is touched.
+        drop = erase[cy0:cy1, cx0:cx1] > 0
+        drop[max(0, y0 - cy0):max(0, y1 - cy0), max(0, x0 - cx0):max(0, x1 - cx0)] = False
+        if drop.any():
+            crop = crop.copy()
+            crop[drop] = 255
     scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
     if scale <= 1.0 or crop.size == 0:
         return crop
@@ -743,11 +772,6 @@ def page_is_scanned(page: PageImage) -> bool:
     return False
 
 
-#: Output-token ceiling for ONE direction-word crop on Surya (this reader only;
-#: margin labels never pass it). The longest legal direction is a few tokens;
-#: the default ceiling (12,288) is only ever reached by a looping decoder
-#: (Litolff p2: two `cresc.` crops, 101 s and 291 s, both returning nothing).
-DIRECTION_WORD_MAX_TOKENS = 64
 #: Belt-and-braces wall-time guard per crop (s): a crop still silent after this
 #: reads as "" and the next crop goes on. Normal crops take 0.1-3 s.
 DIRECTION_CROP_TIMEOUT_S = 20.0
@@ -756,8 +780,7 @@ DIRECTION_CROP_TIMEOUT_S = 20.0
 def _surya_word_reader(crops):
     from . import staff_labels_surya
     return staff_labels_surya.read_crops_text(
-        crops, max_tokens=DIRECTION_WORD_MAX_TOKENS,
-        crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
+        crops, crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
 
 
 def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
@@ -869,7 +892,10 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         return [], info
 
     spacing = float(np.median([_spacing(s) for s in pws.staves]))
-    crops = [crop_for(pws.page, c, spacing) for c in candidates]
+    raw = _page_ink(pws.page)
+    erase = ((raw > 0) & (_blank_detections(raw, page_dict, spacing, config) == 0)
+             ).astype(np.uint8) * 255
+    crops = [crop_for(pws.page, c, spacing, erase=erase) for c in candidates]
 
     # Every rung reads every crop. Running the later ones only where the first
     # came back empty would be cheaper and would measure something else: a rung

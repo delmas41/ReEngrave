@@ -368,6 +368,13 @@ def worker_session(*, enabled: bool = True):
         if st is not None:
             logger.info("surya: worker session closing after %d job(s), "
                         "%d fell back", st["jobs"], st["fell_back"])
+            if st["proc"] is not proc and st["proc"].poll() is None:
+                # a session re-opened by `_reopen_session` after a crop guard
+                try:
+                    st["proc"].stdin.close()
+                    st["proc"].wait(timeout=30)
+                except Exception:                             # noqa: BLE001
+                    st["proc"].kill()
         if proc is not None and proc.poll() is None:
             try:
                 proc.stdin.close()
@@ -375,6 +382,31 @@ def worker_session(*, enabled: bool = True):
             except Exception:                                 # noqa: BLE001
                 proc.kill()
         _stop_server_this_session_started(before_pid)
+
+
+def _reopen_session(timeout_s: float = 120.0) -> bool:
+    """Start a fresh serving worker after the crop wall-time guard killed the
+    session, so the NEXT crop does not pay a one-shot spawn (model load, ~70 s)
+    inside its own 20 s deadline and read as empty. Held-out run 2026-10-08:
+    without this, every crop after the first abandoned one was lost."""
+    global _SESSION
+    if _SESSION is not None or not available():
+        return _SESSION is not None
+    try:
+        proc = subprocess.Popen(
+            [str(interpreter()), str(_WORKER), "--serve"],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE, text=True, env=dict(os.environ))
+        ready, _, _ = select.select([proc.stdout], [], [], timeout_s)
+        line = proc.stdout.readline() if ready else ""
+        if "ready" not in (line or ""):
+            proc.kill()
+            return False
+        _SESSION = {"proc": proc, "jobs": 0, "fell_back": 0}
+        return True
+    except Exception as exc:                                  # noqa: BLE001
+        logger.warning("surya: could not re-open the session (%s)", exc)
+        return False
 
 
 def _stop_server_this_session_started(before_pid: str | None) -> None:
@@ -587,8 +619,11 @@ def read_crops_text(crops: list, *,
                             keep_alive=keep_alive).get("crops", [])
     else:
         entries = []
+        had_session = _SESSION is not None
         for b64 in encoded:
             one = dict(job, crops=[b64])
+            if had_session and _SESSION is None:
+                _reopen_session()
             try:
                 got = _dispatch(one, timeout_s=crop_timeout_s,
                                 keep_alive=keep_alive,

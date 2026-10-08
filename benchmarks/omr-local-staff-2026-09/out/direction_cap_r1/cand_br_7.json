@@ -1,0 +1,542 @@
+[
+ {
+  "staff": 1,
+  "measure": 6,
+  "bbox": [
+   4261,
+   978,
+   4406,
+   1029
+  ],
+  "w_sp": 5.2,
+  "h_sp": 1.8,
+  "n": 10,
+  "placement": "below",
+  "surya": "Pespir.",
+  "tess": "Des fT.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 2,
+  "measure": 6,
+  "bbox": [
+   4262,
+   1257,
+   4406,
+   1308
+  ],
+  "w_sp": 5.2,
+  "h_sp": 1.8,
+  "n": 8,
+  "placement": "below",
+  "surya": "espr.",
+  "tess": "Pespr.",
+  "surya_ok": "espr.",
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 6,
+  "bbox": [
+   4257,
+   1566,
+   4395,
+   1619
+  ],
+  "w_sp": 5.0,
+  "h_sp": 1.9,
+  "n": 4,
+  "placement": "below",
+  "surya": "espr.",
+  "tess": "2 eSpr.",
+  "surya_ok": "espr.",
+  "tess_ok": null
+ },
+ {
+  "staff": 4,
+  "measure": 2,
+  "bbox": [
+   2115,
+   1811,
+   2227,
+   1864
+  ],
+  "w_sp": 4.1,
+  "h_sp": 1.9,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "Solo",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 2,
+  "bbox": [
+   2190,
+   2340,
+   2279,
+   2366
+  ],
+  "w_sp": 3.2,
+  "h_sp": 0.9,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u2014>",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 3,
+  "bbox": [
+   2425,
+   2340,
+   2730,
+   2368
+  ],
+  "w_sp": 11.0,
+  "h_sp": 1.0,
+  "n": 9,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u2014+ = \u2014+ w \u2014 -",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 4,
+  "bbox": [
+   2955,
+   2340,
+   3043,
+   2365
+  ],
+  "w_sp": 3.2,
+  "h_sp": 0.9,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u2014> <p -",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 5,
+  "bbox": [
+   3648,
+   2340,
+   3771,
+   2361
+  ],
+  "w_sp": 4.5,
+  "h_sp": 0.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "eh mp",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 5,
+  "bbox": [
+   3722,
+   2380,
+   3820,
+   2408
+  ],
+  "w_sp": 3.5,
+  "h_sp": 1.0,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 7,
+  "measure": 6,
+  "bbox": [
+   4224,
+   2704,
+   4360,
+   2739
+  ],
+  "w_sp": 4.9,
+  "h_sp": 1.3,
+  "n": 5,
+  "placement": "below",
+  "surya": "arco www.arco.c",
+  "tess": "arco",
+  "surya_ok": null,
+  "tess_ok": "arco"
+ },
+ {
+  "staff": 7,
+  "measure": 6,
+  "bbox": [
+   4254,
+   2637,
+   4411,
+   2687
+  ],
+  "w_sp": 5.7,
+  "h_sp": 1.8,
+  "n": 7,
+  "placement": "below",
+  "surya": "",
+  "tess": "Mdolce",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 8,
+  "measure": 6,
+  "bbox": [
+   4251,
+   2937,
+   4410,
+   2987
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.8,
+  "n": 7,
+  "placement": "below",
+  "surya": "P dolce",
+  "tess": "V dolce",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 9,
+  "measure": 6,
+  "bbox": [
+   4159,
+   3222,
+   4291,
+   3273
+  ],
+  "w_sp": 4.8,
+  "h_sp": 1.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u201cdolce",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 1,
+  "bbox": [
+   1567,
+   4423,
+   1737,
+   4459
+  ],
+  "w_sp": 6.2,
+  "h_sp": 1.3,
+  "n": 10,
+  "placement": "below",
+  "surya": "Cresc.",
+  "tess": "CTESC.",
+  "surya_ok": "Cresc.",
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 6,
+  "bbox": [
+   3626,
+   4420,
+   3772,
+   4471
+  ],
+  "w_sp": 5.3,
+  "h_sp": 1.8,
+  "n": 10,
+  "placement": "below",
+  "surya": "espir:",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 1,
+  "bbox": [
+   1575,
+   4723,
+   1743,
+   4757
+  ],
+  "w_sp": 6.1,
+  "h_sp": 1.2,
+  "n": 13,
+  "placement": "below",
+  "surya": "",
+  "tess": "CPeST.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 6,
+  "bbox": [
+   3594,
+   4767,
+   3812,
+   4834
+  ],
+  "w_sp": 7.9,
+  "h_sp": 2.4,
+  "n": 8,
+  "placement": "below",
+  "surya": "pdolce",
+  "tess": "\u2014padolcel",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 6,
+  "bbox": [
+   3648,
+   4685,
+   3808,
+   4735
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.8,
+  "n": 6,
+  "placement": "below",
+  "surya": "v dolce",
+  "tess": "v dolce",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 1,
+  "bbox": [
+   1571,
+   5042,
+   1726,
+   5079
+  ],
+  "w_sp": 5.6,
+  "h_sp": 1.3,
+  "n": 8,
+  "placement": "below",
+  "surya": "",
+  "tess": "CTESC",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 16,
+  "measure": 1,
+  "bbox": [
+   1574,
+   5496,
+   1734,
+   5530
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.2,
+  "n": 13,
+  "placement": "below",
+  "surya": "CTESC. CTESC. CTESC.",
+  "tess": "CTESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 17,
+  "measure": 1,
+  "bbox": [
+   1490,
+   5917,
+   1634,
+   5965
+  ],
+  "w_sp": 5.2,
+  "h_sp": 1.7,
+  "n": 11,
+  "placement": "below",
+  "surya": "espt.",
+  "tess": "OSDT.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 1,
+  "bbox": [
+   1545,
+   6199,
+   1630,
+   6248
+  ],
+  "w_sp": 3.1,
+  "h_sp": 1.8,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "SDT",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 1,
+  "bbox": [
+   1632,
+   6285,
+   1715,
+   6329
+  ],
+  "w_sp": 3.0,
+  "h_sp": 1.6,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "SP 7\"",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 3,
+  "bbox": [
+   2235,
+   6274,
+   2511,
+   6299
+  ],
+  "w_sp": 10.0,
+  "h_sp": 0.9,
+  "n": 6,
+  "placement": "below",
+  "surya": "",
+  "tess": "-pP ft",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 19,
+  "measure": 1,
+  "bbox": [
+   1615,
+   6482,
+   1769,
+   6518
+  ],
+  "w_sp": 5.6,
+  "h_sp": 1.3,
+  "n": 8,
+  "placement": "below",
+  "surya": "",
+  "tess": "PCTESC",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 20,
+  "measure": 1,
+  "bbox": [
+   1557,
+   6869,
+   1690,
+   6904
+  ],
+  "w_sp": 4.8,
+  "h_sp": 1.3,
+  "n": 8,
+  "placement": "below",
+  "surya": "arco",
+  "tess": "arco",
+  "surya_ok": "arco",
+  "tess_ok": "arco"
+ },
+ {
+  "staff": 20,
+  "measure": 1,
+  "bbox": [
+   1583,
+   6783,
+   1755,
+   6818
+  ],
+  "w_sp": 6.2,
+  "h_sp": 1.3,
+  "n": 13,
+  "placement": "below",
+  "surya": "CIRCULAR STAMP WITH THE TEXT \"CIRCULAR STAMP\" and a",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 20,
+  "measure": 6,
+  "bbox": [
+   3619,
+   6745,
+   3987,
+   6816
+  ],
+  "w_sp": 13.3,
+  "h_sp": 2.6,
+  "n": 18,
+  "placement": "below",
+  "surya": "sempre molte",
+  "tess": "seinpre molt",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 20,
+  "measure": 8,
+  "bbox": [
+   4261,
+   6751,
+   4349,
+   6800
+  ],
+  "w_sp": 3.2,
+  "h_sp": 1.8,
+  "n": 5,
+  "placement": "below",
+  "surya": "Police",
+  "tess": "olce",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 21,
+  "measure": 1,
+  "bbox": [
+   1627,
+   7076,
+   1778,
+   7111
+  ],
+  "w_sp": 5.5,
+  "h_sp": 1.3,
+  "n": 11,
+  "placement": "below",
+  "surya": "",
+  "tess": "7 CTOSC",
+  "surya_ok": null,
+  "tess_ok": null
+ }
+]

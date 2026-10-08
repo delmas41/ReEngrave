@@ -80,11 +80,18 @@ def experiment(log, pws, cells, local, detections, tag, outdir, pdfname, pageno)
     R["on_s"] = time.perf_counter() - t
     R["on_info_readers"] = info_on.get("readers")
     R["on_words"] = [list(key(w)) + [w.reader] for w in on]
-    t = time.perf_counter()
-    off, info_off = DT.read_directions(pws, page_dict, readers=[("surya", SU.read_crops_text), ("tesseract", TE.read_crops_text)])
-    R["off_s"] = time.perf_counter() - t
-    R["off_words"] = [list(key(w)) + [w.reader] for w in off]
-    kon = {key(w) for w in on}; koff = {key(w) for w in off}
+    prev = os.environ.get("DT_REUSE_OFF")      # dir with an earlier run's data_<tag>.json: reuse its unguarded arm
+    if prev and (Path(prev) / f"data_{tag}.json").exists():
+        old = json.load(open(Path(prev) / f"data_{tag}.json"))
+        R["off_s"] = old["off_s"]; R["off_words"] = old["off_words"]
+        koff = {tuple(w[:4]) for w in old["off_words"]}
+    else:
+        t = time.perf_counter()
+        off, info_off = DT.read_directions(pws, page_dict, readers=[("surya", SU.read_crops_text), ("tesseract", TE.read_crops_text)])
+        R["off_s"] = time.perf_counter() - t
+        R["off_words"] = [list(key(w)) + [w.reader] for w in off]
+        koff = {key(w) for w in off}
+    kon = {key(w) for w in on}
     R["lost_on_vs_off"] = sorted(map(list, koff - kon))
     R["extra_on_vs_off"] = sorted(map(list, kon - koff))
     draw(pws, cands, on, outdir / f"page_{tag}.png", f"{pdfname} pdf page index {pageno}: green = word found by the reader")

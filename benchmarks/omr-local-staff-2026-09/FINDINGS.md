@@ -4793,3 +4793,51 @@ still set `OMR_DIRECTION_TEXT_SCAN_GATE=1`. (The flag's own default is already O
 `default_readers`, so it is on wherever that reader runs. Separately, the review images show the reader boxes only a minority of the
 printed words (Brahms p12 prints many `dim.`/`cresc.`; the CV candidates are the limit), which the cap does not touch.
 Review images: `out/print/direction_text_scans/{litolff,brahms}_page_NN.png`, `questions.txt`.
+
+---
+
+## 2026-10-08 (later) -- cap dropped, guard only; candidate finder fixed (lane-direction-text-on-scans)
+
+PATH: STAGED `direction_text.find_candidates` / `read_directions`. Sean approved: drop the 64-token cap (it lost `arco`), keep the 20 s per-crop guard,
+then fix the finder.
+
+**1. Guard only.** `DIRECTION_WORD_MAX_TOKENS` removed (the worker/`read_crops_text` `max_tokens` parameter stays, unused by the product). Same 10 pages
+(`out/direction_cap_r1`): words identical to cap-off on 9 of 10; Brahms p12 `arco` STILL lost (the crop needs ~96 s uncapped, the guard abandons it at 20 s);
+pages Litolff 4/6/9 took 86/70/59 s, i.e. **neither of Sean's two conditions (every page under ~30 s AND `arco` back) holds with the guard alone**: a looping
+`cresc.` crop costs the guard's 20 s each, 2-4 per page. Found a bug on the way: the guard closes the session, and every LATER crop then spawned one-shot
+(model load) inside its own 20 s deadline and read as empty -> `_reopen_session` after an abandoned crop (test added).
+
+**2. Why words were missed** (printed = in-lexicon words I read off `out/direction_cap_r1/diag_*.png`; `a 2`, `ten.`, `marc.`, `Solo`, `sempre molto p e dolce` are NOT
+in `direction_lexicon`, so excluded; counts are by eye, +-3): the finder PROPOSES a box on most printed words; most losses are AFTER it.
+
+| page | printed | found before | found after |
+|---|--:|--:|--:|
+| Litolff 4 | 10 | 4 | 4 |
+| Litolff 6 | 17 | 3 | 4 |
+| Litolff 9 | 18 | 6 | 6 |
+| Litolff 12 | 2 | 0 | 0 |
+| Litolff 15 | 0 | 0 | 0 |
+| Brahms 3 | 9 | 0 | 1 |
+| Brahms 7 | 24 | 5 | 9 |
+| Brahms 12 | 25 | 3 | 15 |
+| Brahms 18 | 8 | 0 | 3 |
+| Brahms 24 | 0 | 0 | 0 |
+| **all** | **~113** | **21** | **42** |
+
+Dropped-at step, for the words with no found reading (per-candidate texts `out/direction_cap_r1/cand_*.json`):
+- **No candidate** (~15%): band limits (a `dim.` 3.4 sp under a system's last staff, past the 3 sp reach; one 0.2 sp under its staff, inside the 0.25 sp clearance);
+  subtraction (Brahms p7 `espr.` under a horn: three letters read as `dynamic` detections, 1,100 of 1,958 ink px erased); letter filter (a scan fuses `dim.` into one
+  4.3 x 1.7 sp component, refused at 2 sp wide); letters fused to a slur/neighbour ink (`arco`, Brahms p7: not fixed).
+- **Candidate proposed, reading refused** (~75%, mostly NOT the finder): `cresc.` read as `CTESC.`/`Crese.`/`eres.`, or Surya's runaway `Cresc. Cresc. Cresc.` (the
+  lexicon refuses repeats by name); leading marks (`> cresc.`, `'cresc.`, `ICresc.`); the crop's pad re-admitting a detected `p` (`v dolce`, `P dolce`); `p cresc.` is not a
+  lexicon entry. NOT changed here (the lexicon is load-bearing; a repair of those readings is a decision for Sean).
+- Spurious candidates on beamed notes (~30% of candidates on dense pages): cost 0.2 s each, no effect on recall.
+
+**3. Rules fixed** (each stated before the run, `test_direction_candidates_2026_10_08.py`, 6 RED -> green, 2 positive controls): (a) `crop_for(erase=)`: the pad
+never re-admits ink the subtraction erased; (b) `below_spaces` 3 -> 5; (c) `clearance_spaces` 0.25 -> 0.10; (d) `inside_word_gap_spaces` 0.5 -> 0.9 (a real dynamic
+stands 1.7 clear); (e) a fused word (one component <= 7 sp wide, >= 0.9 sp tall, fill >= 0.45) counts as 3 letters. Result: found 21 -> 42 of ~113, candidates
++25%, no word lost to a fix except one staff-ownership swap on Litolff 4 (`cresc.` at x 621 found under staff 4, no longer under staff 7: net 4 -> 4).
+
+**Time per page** (guard only, after the re-open fix; before): Litolff 4 86->46 s, 6 70->69, 9 59->86, 12 3->8, 15 2->3; Brahms 3 5->11, 7 22->53, 12 39->37, 18 6->32, 24 3->4.
+Six pages are over 30 s because of looping `cresc.` crops, not the finder. Scan-gate default and the overnight script are unchanged.
+Review images: `out/print/direction_text_scans_r2/`.

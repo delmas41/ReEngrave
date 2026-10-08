@@ -48,10 +48,10 @@ def test_the_direction_reader_passes_its_cap_and_guard(monkeypatch):
     jobs = _record(monkeypatch)
     out = DT._surya_word_reader([CROP, CROP])
     assert out == ["cresc.", "cresc."]
-    assert DT.DIRECTION_WORD_MAX_TOKENS <= 128
+    assert not hasattr(DT, "DIRECTION_WORD_MAX_TOKENS")   # Sean 10-08: the cap lost `arco`
     assert len(jobs) == 2                                  # one job per crop
     for job, timeout, kw in jobs:
-        assert job["max_tokens"] == DT.DIRECTION_WORD_MAX_TOKENS
+        assert "max_tokens" not in job                    # full-page limit as before
         assert timeout == DT.DIRECTION_CROP_TIMEOUT_S
         assert kw.get("one_shot_fallback") is False
 
@@ -109,3 +109,28 @@ def test_worker_lowers_the_ceiling_for_the_job_only(monkeypatch):
     assert seen == [(64, 64), (12288, 8192)]
     assert (settings.SURYA_MAX_TOKENS_FULL_PAGE,
             settings.SURYA_MAX_TOKENS_BLOCK_CEILING) == (12288, 8192)
+
+
+def test_after_a_crop_is_abandoned_the_session_is_reopened(monkeypatch):
+    """Held-out run 2026-10-08: the guard closes the broken session, and without
+    a re-open every later crop spawned one-shot (model load ~70 s) inside its own
+    20 s deadline and read as empty -- words lost and ~100 s pages."""
+    monkeypatch.setattr(SU, "_SESSION", {"proc": object(), "jobs": 0, "fell_back": 0})
+    calls = {"n": 0, "reopen": 0}
+
+    def fake(job, **kw):
+        calls["n"] += 1
+        if calls["n"] == 2:
+            monkeypatch.setattr(SU, "_SESSION", None)       # what _close_broken_session does
+            raise SU.SuryaLabelError("silent")
+        return {"crops": [{"text": "dim."}]}
+
+    def reopen(*a, **k):
+        calls["reopen"] += 1
+        monkeypatch.setattr(SU, "_SESSION", {"proc": object(), "jobs": 0, "fell_back": 0})
+        return True
+    monkeypatch.setattr(SU, "_dispatch", fake)
+    monkeypatch.setattr(SU, "_reopen_session", reopen, raising=False)
+    out = SU.read_crops_text([CROP, CROP, CROP], crop_timeout_s=5)
+    assert out == ["dim.", "", "dim."]
+    assert calls["reopen"] == 1
