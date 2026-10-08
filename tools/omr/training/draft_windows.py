@@ -164,7 +164,6 @@ def _fill_by_order(out: list[dict], base_staves: list[dict], checks: list[str]) 
     neighbours' base positions and is not used elsewhere, the print's own
     order names it (the Kontrafagott between the Fagotte and the Hörner).
     Anything less determined stays empty for the human."""
-    base_index = {id(b): i for i, b in enumerate(base_staves)}
     by_parts = {tuple(b.get("parts", [])): i for i, b in enumerate(base_staves)}
     used = {by_parts[tuple(o["parts"])] for o in out if o["parts"] and tuple(o["parts"]) in by_parts}
     for k, o in enumerate(out):

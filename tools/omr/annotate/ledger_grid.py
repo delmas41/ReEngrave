@@ -3401,7 +3401,6 @@ def refine_line_on_flanks(img_gray, y, head_box, spacing, require_contact=False)
         if band.size == 0:
             continue
         thr = _otsu_threshold(band)
-        r0 = max(0, int(y) - m - 2)
         rows = [r for r in range(int(y) - m, int(y) + m + 1) if 0 <= r < h
                 and float((img_gray[r, a:b] <= thr).mean()) >= NOTE_LINE_FLANK_INK_FRACTION
                 and (not require_contact or cb <= ca

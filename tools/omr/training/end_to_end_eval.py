@@ -29,6 +29,7 @@ does not check rather than to flatter the pipeline.
 
 from __future__ import annotations
 
+import os
 import argparse
 import difflib
 import json
@@ -44,10 +45,12 @@ from tools.omr.transcribe import transcribe
 from tools.omr.export import to_musicxml
 
 
+# `REENGRAVE_WEIGHTS_DIR` names the weights directory on another machine; the
+# default is the one on Sean's.
 DEFAULT_WEIGHTS = Path(
-    "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/"
-    "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
-)
+    os.environ.get("REENGRAVE_WEIGHTS_DIR")
+    or "/Users/seanjohnson/Desktop/ReEngrave/omr-weights"
+) / "deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt"
 BENCH_DIR = Path("benchmarks/omr-end-to-end")
 
 

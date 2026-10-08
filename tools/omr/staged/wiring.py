@@ -1328,7 +1328,6 @@ def roundtrip() -> Dict[str, Any]:
             tree = _parse(path)
             if tree is None:
                 continue
-            src = path.read_text()
             for node in ast.walk(tree):
                 if not isinstance(node, ast.ClassDef):
                     continue
