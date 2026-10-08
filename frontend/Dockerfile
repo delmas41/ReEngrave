@@ -1,9 +1,11 @@
-FROM node:20-alpine AS build
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+# package-lock.json installs cleanly with `npm ci` on Node 22 (checked, no
+# peer-dependency conflicts), so --legacy-peer-deps is no longer needed.
+RUN npm ci
 
 COPY . .
 
