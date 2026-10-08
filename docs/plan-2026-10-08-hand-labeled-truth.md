@@ -1,6 +1,6 @@
 # Hand-labeled truth: what we have, how it is used, and the plan to test only against it
 
-**Date:** 2026-10-08 · **Status:** ACCEPTED by Sean 2026-10-08 (decisions in §5). This is ROADMAP **1.7**. No code changed yet.
+**Date:** 2026-10-08 · **Status:** ACCEPTED by Sean 2026-10-08 (decisions in §5). This is ROADMAP **1.7**. Phases A (but A3) and B built 2026-10-08 in `tools/omr/hand_truth/`.
 **Path:** STAGED for everything this plan would score. LEGACY is touched only where §3 says it is.
 
 Every number below was measured on this tree on 2026-10-08. The commands are in §6. Where a number comes only from a FINDINGS.md or DECISIONS line, it says so.
@@ -17,7 +17,7 @@ There are 23 versions, 670 unique measure-cell crops from 85 source pages and 13
 
 | tier | versions | cells | what a HUMAN did | truth for |
 |---|---|--:|---|---|
-| **1. Drawn from scratch, palette recorded** | v22 (Dvořák 9, Simrock pp. 9–20) | 110 | Sean drew every symbol in the 27-class `draw-rich` palette; 88 cells also had a ties/slurs reconcile | those 27 classes |
+| **1. Drawn from scratch, palette recorded** | v22 (Dvořák 9, Simrock pp. 9–20) | 110 | Sean drew every symbol in the 27-class `draw-rich` palette (109 cells carry the stamp; `dvorak9-p19-sys0-s0-m0` saved none); 88 cells also had a ties/slurs reconcile | those 27 classes |
 | **1b. Drawn from scratch, palette NOT recorded** | v3 (Mahler 5), v4 (La mer) | 64 | drawn by hand; no record of which classes were in scope | unknown until checked |
 | **2. Completion pass on a model pre-label** | v18 (Brahms 1, Breitkopf pp. 2–4) | 56 | confirm/reject/add over the 23-class `completion-full` palette, plus a hollow-head pass | 23 classes; recall partly bounded by what the model showed |
 | **3. Hand-labeled for some symbols only** | v13–v17, v19–v21 (Litolff, Peters, Eulenburg, Simrock, UE, Novello, Durand) | 264 | by hand: hollow heads, rests, accidentals, clefs (on 23 cells). **Model boxes, spot-checked 8 per class:** black heads, dots, dynamics, slurs, ties | hollow / rests / accidentals / clefs only |
@@ -118,16 +118,16 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
 
 ### Phase A: Make what exists honest (no labeling)
 
-- [ ] **A1. One generated inventory.** A script writes `data/hand-truth/INVENTORY.json` from the tree. For every dataset it records unit, count, page, inspected families, **labeler (sean / claude / model-prefill)** and consumers. It is never typed by hand.
-- [ ] **A2. Provenance in the inventory**, not by editing other benchmarks' files:
-  - §1e sets → `labeler: claude`;
-  - §1d prose-only numbers → `raw: gone`.
+- [x] **A1. One generated inventory** (2026-10-08). `python3 -m tools.omr.hand_truth.inventory` writes `data/hand-truth/INVENTORY.json` from the tree: every label version (tier, cells, boxes, pages, recorded passes, box origin), every cell-verdict set under `benchmarks/` (cells a human acted on vs pre-fill only), every adjudication file, the structure rows. `--check` exits 1 when the committed file is stale. Nothing in it is typed except the per-version tier (`inventory.TIERS`, with its basis).
+- [x] **A2. Provenance in the inventory** (2026-10-08), not by editing other benchmarks' files. Who judged comes from each file's own `adjudicator` field or its own text ("not Sean's"): 10 Sean, 7 Claude, **9 unrecorded** — never guessed.
+  - Not done: the §1d prose-only numbers (`raw: gone`) — they live in DECISIONS, not in files the generator can read. Folded into A3.
 - [ ] **A3. Fold Sean's scattered crop verdicts** (10 JSON files plus the prose entries whose sheets survive) into one append-only ledger keyed by page + box.
-- [ ] **A4. Hold-out list** (after §5 Q7). Record the leakage in §1f on the production weights' FINDINGS.
+- [x] **A4. Hold-out list** (2026-10-08, §5 Q7): `data/hand-truth/held-out.json`. The inventory computes which held-out pages production already trained on: **Brahms PDF index 1, Litolff 984073 index 1 and 3**.
+- [x] **A5. Weights lineage** (2026-10-08, Sean: *"How do we know where the individual notes from our current weights came from?"*). Declared with evidence in `data/hand-truth/weights-lineage.json`; the inventory expands it into cells, pages and box origin — production's features were trained on 7,288 boxes, **3,871 from label files and 3,417 (47%) added by the previous model**. `--verify-checkpoints omr-weights/` compares the declaration with each `.pt`'s own `train_args` (needs torch; on Sean's machine — not yet run).
 
 ### Phase B: The page-truth store (code; runs anywhere)
 
-- [ ] **B1. Schema `data/hand-truth/<edition>/<pdf_page_index>.json`.**
+- [x] **B1. Schema** `data/hand-truth/pages/<edition>/<pdf_page_index>.json` (2026-10-08, `tools/omr/hand_truth/store.py`). Pre-fills wait in a `queue` and become truth only through `confirm_prefill` / `fix_prefill`; the store refuses any labeler but Sean; states advance one step at a time.
   - Page DPI and size.
   - Per box:
     - page-pixel box and class (the 208-class space plus customs: barlines, text, noise);
@@ -136,11 +136,11 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
     - for a notehead: owner staff and staff position.
   - Per cell: its page rectangle and `inspected_passes`.
   - Per staff: "lines right" (yes / no).
-- [ ] **B2. Completeness is computed, never asserted.**
+- [x] **B2. Completeness is computed, never asserted** (2026-10-08, `completeness.py`; ink components by the repo's own `cv2.connectedComponentsWithStats`, 8-connected, staff lines removed first, specks counted not dropped). The scorer side of the refusal waits for D1.
   - A family is complete on a page only when every cell on it is inspected for that family.
   - The **ink-coverage control**: every connected ink component on the page lies inside a box or a `noise` mark, or it is listed for Sean.
   - The scorer refuses to score an incomplete family. It does not score it as zero.
-- [ ] **B3. Training export.** Page boxes → YOLO cells, through the same cutter, as a new `data/user-labeled/vN` version. One truth feeds both the detector and the tests. Held-out pages are excluded by name.
+- [x] **B3. Training export** (2026-10-08, `export_yolo.py`): page boxes → YOLO cell labels with the existing converter's vocabulary and line format. Refuses a held-out page and a page still `labeling`; SKIPS any cell not inspected for every bit of ink (its unboxed ink would train as background). Writing the result as a `data/user-labeled/vN` version waits for the first checked page.
 
 ### Phase C: Labeling, cell by cell, with pre-fills (Sean's time; the main cost)
 
@@ -225,8 +225,8 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 
 | phase | items | done |
 |---|--:|--:|
-| A. honest inventory | 4 | 0 |
-| B. page-truth store | 3 | 0 |
+| A. honest inventory + lineage | 5 | 4 (A3 open) |
+| B. page-truth store | 3 | 3 |
 | C. label, Claude check, LilyPond side by side; pages 1–5 | 6 + 5 pages | 0 |
 | D. scorer + controls | 3 | 0 |
 | E. grow the set | 3 | 0 |
@@ -246,11 +246,7 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 5. **First pages first**, for instrument names, time signatures and the other global information; **multiple publishers**.
 6. **After each page:** Claude double-checks it (flags only; C5), then the labels are rendered through LilyPond beside the print, one measure at a time, for Sean's visual check (C6).
 
-**Still open:**
-
-7. **Training vs testing.** A page cannot be both training data and test truth for the same weights. Proposed:
-   - every labeled page trains, EXCEPT a fixed held-out set that never trains: Brahms PDF index 0–1 and Litolff 984073 index 1 and 3;
-   - the other publishers' pages train.
+7. **Training vs testing** (Sean 2026-10-08: "Yes"). Brahms PDF index 0–1 and Litolff 984073 index 1 and 3 never train any weights that are TESTED on them (`data/hand-truth/held-out.json`); every other labeled page trains. Shipped weights may train on everything, and their score on the held-out pages is then never quoted as evidence. The leak is to be MEASURED on the Brahms count page once it is complete: production's recall on the 19 cells it trained on vs the other 191.
 
    A reader-stage A/B on one set of weights is unaffected either way, because both arms see the same detector. A weights test is not.
 
@@ -258,7 +254,7 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 
 ## 6. How these numbers were measured
 
-- **Per-version cells and boxes:** `data/user-labeled/v*/labels/*.txt`. Cell ids are mapped to PDF and page through every `benchmarks/**/cells*.json` manifest (0 unmapped).
+- **Per-version cells and boxes:** `data/user-labeled/v*/labels/*.txt`. Cell ids are mapped to PDF and page through every `benchmarks/**/cells*.json` manifest (all mapped except v6's 47 clef cells, whose manifest names no PDF). All of §1a is now regenerated by `python3 -m tools.omr.hand_truth.inventory`.
 - **Completeness:** the union of `inspected_passes` over every `benchmarks/**/verdicts*/` and `*merged*/` verdict file per cell_id. Versions v1–v6 record none; their tier comes from the metadata totals (`n_tp` / `n_fn_added`) and descriptions.
 - **Count-page size:** the sum of printed bars × staff-systems in the `counts/*-SEAN-*.csv` sheets. First-page sizes are staves × bars from `works.json`, before margin cells.
 - **Leakage:** `grep` of the count-page cell ids in `_catalog_train.txt` / `_catalog_val.txt`.

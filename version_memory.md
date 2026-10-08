@@ -22,6 +22,29 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 1.7: hand-truth store, completeness, training export, inventory and weights lineage (A, B)
+
+**New package `tools/omr/hand_truth/` (no product-path code touched).** `store.py`: one
+JSON per printed page under `data/hand-truth/pages/`, every box in page pixels, each cell
+recording its exact page rectangle so cell <-> page is an exact map and a mark in two
+padded cells is one box; pre-fills wait in a queue until Sean confirms or fixes them; only
+Sean may write truth; `labeling -> checked -> verified`, one step at a time.
+`completeness.py`: a family is complete only when every cell was inspected for it (old
+partial passes such as "hollow noteheads" complete nothing); the ink-coverage control lists
+every unboxed ink component (staff lines removed first, specks counted). `export_yolo.py`:
+page boxes -> YOLO cell labels in the existing vocabulary; refuses held-out and unchecked
+pages, skips cells not swept for every bit of ink. `inventory.py`: generates
+`data/hand-truth/INVENTORY.json` (`--check`), including the weights lineage declared in
+`data/hand-truth/weights-lineage.json` (`--verify-checkpoints` reads the `.pt` train_args on
+a machine with weights). Measured: production's features trained on 3,871 label-file boxes
++ 3,417 teacher boxes; three of the four held-out pages were already trained on; adjudication
+files: 10 Sean, 7 Claude, 9 unrecorded; one v22 cell (`dvorak9-p19-sys0-s0-m0`) holds 7
+drawn boxes with no pass stamp. Held-out list decided by Sean (DECISIONS). 26 new tests,
+run RED against the tree without the package first; four mechanisms broken in memory each
+turned their test red. `staged.check` unchanged at 192.
+
+---
+
 ## 2026-10-08 — ROADMAP 1.7 (STAGED, measurement): hand-labeled page truth — inventory and plan
 
 **Plan only; no code.** `docs/plan-2026-10-08-hand-labeled-truth.md` inventories every

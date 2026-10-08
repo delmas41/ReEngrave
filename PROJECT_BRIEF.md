@@ -35,6 +35,9 @@ its count page, cell by cell, stored in page pixels, across several publishers, 
 retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
 Each page is double-checked by Claude (flags only) and then rendered through
 LilyPond beside the print, measure by measure, before it counts as truth.
+The store, the completeness check, the training export and a generated
+inventory with the weights lineage are built (`tools/omr/hand_truth/`,
+`data/hand-truth/INVENTORY.json`); the labeling tool on the store is next.
 
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather

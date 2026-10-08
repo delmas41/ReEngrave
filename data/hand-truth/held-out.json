@@ -1,0 +1,10 @@
+{
+  "_what": "Pages that are TEST truth and never train any weights that are tested on them (ROADMAP 1.7, plan §5 Q7). Shipped weights may train on everything; their score on these pages is then never quoted as evidence.",
+  "decided": "Sean 2026-10-08 (DECISIONS)",
+  "pages": [
+    {"edition": "imslp317803", "pdf_page_index": 0, "label": "Brahms 1 mvt 1, Breitkopf — first page"},
+    {"edition": "imslp317803", "pdf_page_index": 1, "label": "Brahms 1 mvt 1, Breitkopf — acceptance count page"},
+    {"edition": "imslp984073", "pdf_page_index": 1, "label": "Beethoven 5 mvt 1, Litolff — first page"},
+    {"edition": "imslp984073", "pdf_page_index": 3, "label": "Beethoven 5 mvt 1, Litolff — acceptance count page"}
+  ]
+}
