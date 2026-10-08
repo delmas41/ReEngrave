@@ -53,7 +53,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
 from . import export as SX
-from .record import meter_at
+from .record import Q, meter_at
 
 #: The two things the legacy `_lily_event` family has no syntax for, named
 #: once rather than scattered across the render loop. Neither is new: the
@@ -230,7 +230,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                   spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
                   meters: Dict[Tuple[int, int], Any],
                   counters: Dict[str, int],
-                  divisions: int
+                  divisions: int,
+                  drops: Optional[Any] = None,
                   ) -> Tuple[List[_Bar], List[Dict[str, Any]], List[Dict[str, Any]]]:
     """This part's bars in DOCUMENT order, plus the two LilyPond "lanes" a
     hairpin plan is built over.
@@ -354,7 +355,21 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
                     # the balance for a row that does not exist.
                     counters["bars_held_out_sum_on_a_doubled_staff"] += 1
                 else:
-                    counters["notes_held_out_sum"] += SX._bar_event_rows(events)
+                    n_rows = SX._bar_event_rows(events)
+                    counters["notes_held_out_sum"] += n_rows
+                    # ⚠️ ROADMAP 2.64: THE SAME `_drop` DISCIPLINE THE
+                    # MUSICXML RENDER USES (`export._part_xml`, `drops=`).
+                    # Until 2026-10-07 the notes a held bar refused were
+                    # counted here and reached `dropped` NOWHERE, so this
+                    # exporter's `notes_not_written_total` was the
+                    # build-time figure alone -- smaller than the MusicXML
+                    # sidecar's for the same record -- and no equality
+                    # noticed. A caller passing None gets the hold-out
+                    # without the accounting, as `_part_xml` says of its
+                    # own default: right only for a test not reading it.
+                    if drops is not None:
+                        for _ in range(n_rows):
+                            drops(SX._BAR_SUM_REFUSAL, run.page, run.system)
                 bars.append(_Bar("empty", judged, run.clef, key,
                                  directions=directions, condensed=condensed,
                                  reason=SX._BAR_SUM_REFUSAL))
@@ -494,9 +509,9 @@ def _staff_block(rec: SX.Record, part: Sequence[SX.StaffRun], name: str,
                  spans: Optional[Sequence[Tuple[Tuple[int, int], int]]],
                  meters: Dict[Tuple[int, int], Any],
                  counters: Dict[str, int], divisions: int,
-                 indent: str = "    ") -> str:
+                 indent: str = "    ", drops: Optional[Any] = None) -> str:
     bars, lane0, lane1 = _collect_bars(rec, part, offsets, spans, meters,
-                                       counters, divisions)
+                                       counters, divisions, drops=drops)
     wedges: Dict[int, str] = {}
     wedges.update(_legacy._lily_wedge_plan(lane0))
     wedges.update(_legacy._lily_wedge_plan(lane1))
@@ -570,6 +585,19 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
      _dot_role_report) = SX.build(rec)
 
     counters: Dict[str, int] = collections.Counter()
+    # ⚠️ ROADMAP 2.64. `dropped` arrives from `build` as the build-time
+    # refusals; the render adds the bar-sum hold-outs through `_drop_at_
+    # render`, by reason AND by system at once, exactly as `to_musicxml`
+    # does -- and the same two equalities are asserted below. Until
+    # 2026-10-07 this exporter reported the build-time figure as if it were
+    # the whole, and asserted no notes balance at all.
+    dropped = collections.Counter(dropped)
+
+    def _drop_at_render(reason: str, page: int, system: int) -> None:
+        dropped[reason] += 1
+        notes_dropped_by_system.setdefault(
+            (page, system), collections.Counter())[reason] += 1
+
     arcs_dropped = collections.Counter(arcs_dropped) + collections.Counter(
         SX._pair_arcs(rec, parts, counters))
     wedges_dropped = collections.Counter(SX._place_wedges(rec, parts, counters))
@@ -593,7 +621,7 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
         name = next((r.name for r in part if r.name), None) or SX._default_name(part)
         part_blocks.append(
             _staff_block(rec, part, name, offsets, spans, meters, counters,
-                        divisions))
+                        divisions, drops=_drop_at_render))
 
     version = _lilypond_version()
     # ⚠️ THE SAME FALLBACK `_legacy._score_partwise` USES, over the SAME
@@ -703,6 +731,48 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             "found (%d) -- a bar was found without being marked, or marked "
             "without being found" % (_mrn_written, _mrn_found))
     report["meter_returns_not_read"] = _mrn_found
+    # ⚠️⚠️ ROADMAP 2.64: THE TWO NOTE EQUALITIES `to_musicxml` ASSERTS,
+    # ASSERTED HERE TOO, over the SAME counters and the SAME formula -- a
+    # second spelling of either would be a second thing to keep in step.
+    # (1) per-system refusals sum to per-reason refusals, after the render;
+    # (2) noteheads+rests in the log = written + not-written. `raise`, never
+    # a flag: a control nobody consults is not a control (`to_musicxml`'s
+    # own words, learnt from `symbol_ledger.coverage_check`).
+    report["notes_not_written"] = dict(dropped)
+    report["notes_not_written_total"] = sum(dropped.values())
+    report["notes_not_written_by_system"] = {
+        f"{p}/{s}": dict(c)
+        for (p, s), c in sorted(notes_dropped_by_system.items())}
+    _by_sys_total = sum(sum(c.values())
+                        for c in notes_dropped_by_system.values())
+    if _by_sys_total != sum(dropped.values()):
+        raise SX.Unbalanced(
+            "lilypond: notes refused per system (%d) do not sum to the "
+            "per-reason total (%d) after rendering -- a refusal reaches one "
+            "counter and not the other" % (_by_sys_total, sum(dropped.values())))
+    events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    duplicated = int(counters.get("rests_duplicated_across_voices", 0))
+    doubled_to_condensed = int(
+        counters.get("notes_doubled_to_condensed_slot", 0))
+    written = (int(counters.get("notes", 0)) + int(counters.get("rests", 0))
+               + int(counters.get("measure_rests_read", 0)) - duplicated
+               - doubled_to_condensed)
+    report["balance"] = {
+        "events_in_log": events_in_log,
+        "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
+        "rests_in_log": len(rec.obs_of(Q.REST)),
+        "events_written": written,
+        "rests_duplicated_across_voices": duplicated,
+        "notes_doubled_to_condensed_slot": doubled_to_condensed,
+        "events_not_written": report["notes_not_written_total"],
+        "balanced": events_in_log == written + report["notes_not_written_total"],
+    }
+    if not report["balance"]["balanced"]:
+        raise SX.Unbalanced(
+            f"lilypond: {events_in_log} noteheads+rests in the log, {written} "
+            f"written and {report['notes_not_written_total']} accounted as "
+            f"dropped -- the difference went nowhere. "
+            f"{report['notes_not_written']}")
     if out:
         pathlib.Path(out).write_text(text)
     return text, report

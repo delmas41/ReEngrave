@@ -66,6 +66,68 @@ def _add_ornament(page, gi, *, owner_gi, kind="tremolo", strokes=2,
     return page
 
 
+class TestTheNotesBalanceIsAssertedHereToo(unittest.TestCase):
+    """ROADMAP 2.64. `to_lilypond` reused every reader `to_musicxml` does and
+    asserted two of its four equalities -- but a bar `_bar_holds_out` refused
+    was counted in `notes_held_out_sum` and its notes never reached
+    `dropped`, so the `.ly` sidecar's `notes_not_written_total` was the
+    build-time figure alone, smaller than the `.musicxml` sidecar's for the
+    same record, and nothing raised (`docs/export-sequence-2026-10-07.md`
+    SS3). ⚠️ RUN RED FIRST against the tree before `drops=` reached
+    `_collect_bars`: the first test reads 0 against 3 and the second fails
+    on a missing `balance` key.
+    """
+
+    def _held_bar(self):
+        from tools.omr.tests.test_staged_bar_sum_holdout import _bar
+        return _bar([("C4", QUARTER), ("D4", QUARTER), ("E4", QUARTER)])
+
+    def test_both_sidecars_withhold_the_same_notes(self):
+        """The control: one record, exported both ways, the two reports'
+        `notes_not_written_total` agree -- and are 3, not 0, because the
+        bar holds three quarters in 2/4 and is held out by both."""
+        _xml, mx = SX.to_musicxml(self._held_bar())
+        _ly, ly = LY.to_lilypond(self._held_bar())
+        self.assertEqual(mx["bars_held_out_sum"]["bars"], 1)
+        self.assertEqual(ly["bars_held_out_sum"]["bars"], 1)
+        self.assertEqual(mx["notes_not_written_total"], 3)
+        self.assertEqual(ly["notes_not_written_total"],
+                         mx["notes_not_written_total"])
+        self.assertEqual(ly["notes_not_written"]["bar_does_not_add_up"], 3)
+        self.assertEqual(ly["notes_not_written_by_system"],
+                         mx["notes_not_written_by_system"])
+
+    def test_the_balance_is_reported_and_holds(self):
+        _ly, ly = LY.to_lilypond(self._held_bar())
+        self.assertTrue(ly["balance"]["balanced"], ly["balance"])
+        self.assertEqual(ly["balance"]["events_in_log"], 3)
+        self.assertEqual(ly["balance"]["events_written"], 0)
+        self.assertEqual(ly["balance"]["events_not_written"], 3)
+
+    def test_a_bar_that_adds_up_balances_with_nothing_withheld(self):
+        """The other side of the control: the equality can also hold with
+        zero refusals, so a passing `balanced` is not just 'nothing was
+        counted'."""
+        from tools.omr.tests.test_staged_bar_sum_holdout import _bar
+        _ly, ly = LY.to_lilypond(_bar([("C4", QUARTER), ("D4", QUARTER)]))
+        self.assertEqual(ly["notes_not_written_total"], 0)
+        self.assertEqual(ly["balance"]["events_written"], 2)
+        self.assertTrue(ly["balance"]["balanced"])
+
+    def test_an_unbalanced_render_raises_rather_than_reporting(self):
+        """`Unbalanced` is raised, never returned as a flag, the same
+        discipline `to_musicxml` keeps. Forced by making one hold-out reach
+        the counters and not `dropped`: patch `_bar_event_rows` to lie to
+        the render's own count."""
+        from unittest import mock
+        page = self._held_bar()
+        real = SX._bar_event_rows
+        with mock.patch.object(SX, "_bar_event_rows",
+                               side_effect=lambda ev: real(ev) - 1):
+            with self.assertRaises(SX.Unbalanced):
+                LY.to_lilypond(page)
+
+
 class TestItWritesAFile(unittest.TestCase):
     def test_a_one_part_page_has_the_paid_for_shape(self):
         text, report = LY.to_lilypond(_one_staff_page(notes=[("C4", QUARTER)]))
