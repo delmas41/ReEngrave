@@ -81,7 +81,6 @@ def _bootstrap_from_md(md_text: str, old_dets: list[dict]) -> list[dict]:
     parse it and bootstrap an old-style verdict-row list."""
     parsed = parse_verdict_markdown(md_text)
     md_by_id = {d.id: d for d in parsed.detections}
-    rows = []
     vmap_synth = []
     for d in old_dets:
         md_det = md_by_id.get(d["id"])

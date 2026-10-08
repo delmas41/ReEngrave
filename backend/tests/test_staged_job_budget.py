@@ -17,7 +17,7 @@ assertion):
     `staged_omr.run_staged_omr`) — the one thing this whole change must not
     touch for an existing caller.
 
-Reuses `test_staged_omr_engine.py`'s fixture shape (`fake_pipeline`,
+Reuses `test_staged_omr_engine.py`'s helper shape (`fake_pipeline`,
 `_minimal_pdf`, `app_client`, `_create_score`, `_fetch_score`) rather than
 duplicating it — importing them, not restating them, is what keeps this
 suite from drifting the way a second hand-copy always does.
@@ -26,10 +26,10 @@ suite from drifting the way a second hand-copy always does.
 from __future__ import annotations
 
 import asyncio
-import os
 
 import pytest
 
+# (`app_client` and `fake_pipeline` come from `conftest.py` by discovery.)
 # ⚠️ SAME tmp-dir / env-var bootstrap `test_staged_omr_engine.py` does,
 # BEFORE `main` is imported anywhere — importing that module here reuses its
 # already-set env vars (`os.environ.setdefault`, so this is a no-op if that
@@ -39,8 +39,6 @@ from tests.test_staged_omr_engine import (  # noqa: E402
     _create_score,
     _fetch_score,
     _minimal_pdf,
-    app_client,
-    fake_pipeline,
 )
 
 from modules import staged_omr  # noqa: E402

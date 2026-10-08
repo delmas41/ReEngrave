@@ -28,6 +28,7 @@ stem/beam error, which it is not.
 
 from __future__ import annotations
 
+import os
 import argparse
 import json
 import shutil
@@ -51,8 +52,10 @@ TEMPLATE = BENCH_DIR / "reference-lines.ly"
 GROUND_TRUTH_PATH = BENCH_DIR / "ground-truth.json"
 HAND_LABELS_PATH = BENCH_DIR / "hand-labeled-beams.json"
 HAND_STEMS_PATH = BENCH_DIR / "hand-labeled-stems.json"
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
 SCORE_ROOT = Path(
-    "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
+    os.environ.get("REENGRAVE_SCORES_DIR") or "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
 )
 THICKNESSES = (1, 2, 3, 4)
 
