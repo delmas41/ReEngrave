@@ -1,0 +1,122 @@
+[
+ {
+  "n": 1,
+  "kind": "meter",
+  "label": "METER: worked out from the bars",
+  "doc": "brahms1-breitkopf",
+  "page": 12,
+  "subject": "system/12/1",
+  "base": "BASE: cannot tell this system's meter (the printed digits looked like a change but were misread: 'meter_change_digits_misread'), so no bar in it is checked against a meter.",
+  "new": "NEW: 6/8, worked out from how long the bars add up (reason: derived_from_bars). The dotted notes are now counted as dotted, so the bars now add up to 6/8."
+ },
+ {
+  "n": 2,
+  "kind": "dot_aug",
+  "label": "DOT: unread -> lengthening",
+  "doc": "brahms1-breitkopf",
+  "page": 16,
+  "subject": "glyph/16/1/9/2/4",
+  "base": "BASE: cannot tell what this dot is ('could lengthen a note or be a staccato dot'), so it says nothing. The note to its left (green box): 2.0 beats (half).",
+  "new": "NEW: a lengthening dot: it sits right of a note head and level with it, so the note is longer. The same note: 3.0 beats (dotted 3.0-beat)."
+ },
+ {
+  "n": 3,
+  "kind": "arc",
+  "label": "ARC: a staff line, no longer an arc",
+  "doc": "beethoven5-litolff",
+  "page": 16,
+  "subject": "glyph/16/0/8/3/5",
+  "base": "BASE: this box (7 staff spaces wide, 0.4 tall) was kept as a tie, owned by staff 9 from the top (no name read). Tie pairing: abstained (no_pair_at_one_position).",
+  "new": "NEW: refused, because the ink in the box is a straight staff line, not a curve (a staff line runs through it and nearly every column holds only line). It is no longer an arc, so it cannot tie or slur anything. Tie pairing: abstained (not_an_arc)."
+ },
+ {
+  "n": 4,
+  "kind": "far_new",
+  "label": "FAR HEAD: BASE gave up, NEW answers",
+  "doc": "brahms1-breitkopf",
+  "page": 26,
+  "subject": "glyph/26/0/11/0/17",
+  "base": "BASE: gave up, no position (line_at_the_box_not_a_ledger_for_this_head).",
+  "new": "NEW: in the space above the 1st ledger line above the staff."
+ },
+ {
+  "n": 5,
+  "kind": "dot_owner",
+  "label": "DOT: whose it is",
+  "doc": "brahms1-breitkopf",
+  "page": 5,
+  "subject": "glyph/5/0/1/6/8",
+  "base": "BASE: this dot (orange) belongs to staff 1 from the top (Flute). The dot is filed under staff 2 from the top (Oboe).",
+  "new": "NEW: it belongs to staff 2 from the top (Oboe), the staff of the note it follows (green box)."
+ },
+ {
+  "n": 6,
+  "kind": "far_new",
+  "label": "FAR HEAD: BASE gave up, NEW answers",
+  "doc": "brahms1-breitkopf",
+  "page": 4,
+  "subject": "glyph/4/0/2/4/2",
+  "base": "BASE: gave up, no position (line_not_beyond_the_staff_edge).",
+  "new": "NEW: on the 1st ledger line below the staff."
+ },
+ {
+  "n": 7,
+  "kind": "arc",
+  "label": "ARC: a staff line, no longer an arc",
+  "doc": "brahms1-breitkopf",
+  "page": 11,
+  "subject": "glyph/11/1/11/6/11",
+  "base": "BASE: this box (12 staff spaces wide, 0.6 tall) was kept as a tie, owned by staff 12 from the top (Viola). Tie pairing: abstained (no_start_head).",
+  "new": "NEW: refused, because the ink in the box is a straight staff line, not a curve (a staff line runs through it and nearly every column holds only line). It is no longer an arc, so it cannot tie or slur anything. Tie pairing: abstained (not_an_arc)."
+ },
+ {
+  "n": 8,
+  "kind": "owner",
+  "label": "OWNER: moved to another staff",
+  "doc": "brahms1-breitkopf",
+  "page": 11,
+  "subject": "glyph/11/0/11/8/18",
+  "base": "BASE: belongs to staff 12 from the top (Viola). The note is filed under staff 12 from the top (Viola).",
+  "new": "NEW: belongs to staff 11 from the top (Violin) (NOT the one it is filed under); decided by: dot_follows_note."
+ },
+ {
+  "n": 9,
+  "kind": "voices",
+  "label": "VOICES: one bar's note lengths",
+  "doc": "brahms1-breitkopf",
+  "page": 13,
+  "subject": "cell/13/0/13/11",
+  "base": "BASE: no way to split the bar into voices that adds up (no_voice_convention_fits).",
+  "new": "NEW: 1 voice, the note lengths add up to the bar."
+ },
+ {
+  "n": 10,
+  "kind": "owner",
+  "label": "OWNER: moved to another staff",
+  "doc": "brahms1-breitkopf",
+  "page": 13,
+  "subject": "glyph/13/1/8/2/4",
+  "base": "BASE: belongs to staff 9 from the top (Timpani). The note is filed under staff 9 from the top (Timpani).",
+  "new": "NEW: belongs to staff 10 from the top (Violin) (NOT the one it is filed under); decided by: dot_follows_note."
+ },
+ {
+  "n": 11,
+  "kind": "dot_stac",
+  "label": "DOT: lengthening -> staccato",
+  "doc": "beethoven5-litolff",
+  "page": 12,
+  "subject": "glyph/12/0/8/11/4",
+  "base": "BASE: read as a lengthening dot (right of a head, level with it), making the note longer. The note to its left (green box): 0.75 beats (dotted 0.75-beat).",
+  "new": "NEW: read as a staccato dot (centred on the head's column, above or below it), so the note is not lengthened. The same note: 0.5 beats (eighth)."
+ },
+ {
+  "n": 12,
+  "kind": "arc",
+  "label": "ARC: a staff line, no longer an arc",
+  "doc": "brahms1-breitkopf",
+  "page": 3,
+  "subject": "glyph/3/1/1/1/13",
+  "base": "BASE: this box (20 staff spaces wide, 1.8 tall) was kept as a tie, owned by staff 2 from the top (Oboe). Tie pairing: abstained (not_adjacent).",
+  "new": "NEW: refused, because the ink in the box is a straight staff line, not a curve (a staff line runs through it and nearly every column holds only line). It is no longer an arc, so it cannot tie or slur anything. Tie pairing: abstained (not_an_arc)."
+ }
+]
