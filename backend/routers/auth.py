@@ -8,13 +8,14 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from fastapi import APIRouter, Cookie, Depends, HTTPException, Request, Response, status
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError
 from pydantic import BaseModel, EmailStr
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.config import settings
-from core.limiter import limiter
+from core.limiter import limiter, setting_limit
 from core.security import (
     create_access_token,
     create_refresh_token,
@@ -29,6 +30,12 @@ from dependencies import get_current_user
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 _REFRESH_COOKIE = "refresh_token"
+# The cookie must reach /api/auth/refresh AND /api/auth/logout (logout revokes
+# it), so it is scoped to the auth prefix. Before ROADMAP 3.6c it was scoped to
+# /api/auth/refresh alone; that path is still expired on every set and clear.
+_REFRESH_PATH = "/api/auth"
+_LEGACY_REFRESH_PATH = "/api/auth/refresh"
+_bearer = HTTPBearer(auto_error=False)
 _REFRESH_MAX_AGE = settings.refresh_token_expire_days * 24 * 3600
 
 
@@ -70,12 +77,26 @@ def _set_refresh_cookie(response: Response, token: str) -> None:
         secure=settings.cookie_secure,  # COOKIE_SECURE=false in dev compose only
         samesite="lax",
         max_age=_REFRESH_MAX_AGE,
-        path="/api/auth/refresh",
+        path=_REFRESH_PATH,
     )
+    # Retire a cookie issued under the pre-3.6c path so the browser does not
+    # hold two (the old one is already blacklisted by rotation).
+    response.delete_cookie(key=_REFRESH_COOKIE, path=_LEGACY_REFRESH_PATH)
 
 
 def _clear_refresh_cookie(response: Response) -> None:
-    response.delete_cookie(key=_REFRESH_COOKIE, path="/api/auth/refresh")
+    response.delete_cookie(key=_REFRESH_COOKIE, path=_REFRESH_PATH)
+    response.delete_cookie(key=_REFRESH_COOKIE, path=_LEGACY_REFRESH_PATH)
+
+
+def _blacklist(db: AsyncSession, payload: dict) -> None:
+    """Add a decoded token's jti to the blacklist until its own `exp`."""
+    jti = payload.get("jti")
+    if not jti:
+        return
+    exp_ts = payload.get("exp")
+    expires_at = datetime.fromtimestamp(exp_ts, tz=timezone.utc) if exp_ts else datetime.now(timezone.utc)
+    db.add(TokenBlacklist(jti=jti, expires_at=expires_at))
 
 
 # ---------------------------------------------------------------------------
@@ -155,7 +176,9 @@ async def login(
 
 
 @router.post("/refresh")
+@limiter.limit(setting_limit("rate_limit_refresh"))
 async def refresh_token(
+    request: Request,
     response: Response,
     db: AsyncSession = Depends(get_db),
     refresh_token: Optional[str] = Cookie(default=None, alias=_REFRESH_COOKIE),
@@ -188,9 +211,7 @@ async def refresh_token(
         raise exc
 
     # Blacklist old refresh token
-    exp_ts = payload.get("exp")
-    expires_at = datetime.fromtimestamp(exp_ts, tz=timezone.utc) if exp_ts else datetime.now(timezone.utc)
-    db.add(TokenBlacklist(jti=jti, expires_at=expires_at))
+    _blacklist(db, payload)
     await db.flush()
 
     # Issue new tokens
@@ -208,13 +229,27 @@ async def refresh_token(
 @router.post("/logout")
 async def logout(
     response: Response,
+    credentials: HTTPAuthorizationCredentials = Depends(_bearer),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
-    # We blacklist the access token via get_current_user's jti; but we also need it here.
-    # Instead, just clear the cookie and return success.
-    # The access token will expire naturally (15 min).
+    refresh_token: Optional[str] = Cookie(default=None, alias=_REFRESH_COOKIE),
 ):
-    """Log out: clear refresh cookie."""
+    """Log out: blacklist the access token and the refresh cookie's token
+    (each until its own expiry) and clear the cookie."""
+    # get_current_user has already validated the bearer token.
+    _blacklist(db, decode_token(credentials.credentials))
+    if refresh_token:
+        try:
+            rp = decode_token(refresh_token)
+        except JWTError:
+            rp = None
+        # Only the caller's own refresh token, only once.
+        if rp and rp.get("type") == "refresh" and rp.get("sub") == current_user.id:
+            jti = rp.get("jti")
+            seen = await db.execute(select(TokenBlacklist).where(TokenBlacklist.jti == jti))
+            if jti and seen.scalar_one_or_none() is None:
+                _blacklist(db, rp)
+    await db.flush()
     _clear_refresh_cookie(response)
     return {"status": "logged out"}
 
@@ -264,7 +299,9 @@ async def forgot_password(
 
 
 @router.post("/reset-password")
+@limiter.limit(setting_limit("rate_limit_reset_password"))
 async def reset_password(
+    request: Request,
     body: ResetPasswordRequest,
     db: AsyncSession = Depends(get_db),
 ):
