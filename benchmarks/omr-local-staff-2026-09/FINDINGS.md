@@ -4685,3 +4685,184 @@ Scripts: `stem_owner_extract.py`, `stem_owner_measure.py`, `stem_owner_lib.py`, 
 `stem_owner_tiles.py`. Tests: `tools/omr/tests/test_stem_owner_2026_10_08.py`, 20 tests, 18 RED on the unrepaired tree (the two group
 tests already pass on it: the 2.58c rule adopts an abstained copy's twin), then green.
 Gates: `staged.check` TOTAL 192 -> 192; fast tier 6,150 passed (the two flag-doc tests failed until `OMR_STEM_OWNER` got its row in `docs/flags-2026-09.md`, then 37 of 37 pass).
+
+---
+
+## 2026-10-08 -- Why is the direction-word reader 4:30 a page? (lane-direction-text-timing; measurement only, no default changed)
+
+**Sean:** *"Why is it 4:30 a page? I feel like text OCR is the simplest type of scan."* PATH: STAGED `gather_direction_words`
+(`direction_text.read_directions`: CV candidates -> crop/upscale -> Surya AND Tesseract -> `direction_lexicon` gate), scan gate OFF.
+Script `direction_timing.py` (runs the real staged GATHER on one page, replaces `gather_direction_words` with the timed reader on
+its own inputs); `direction_timing_compare.py`; raw rows `out/direction_timing/*.json`. Warm shared `llama-server` (pid 92818,
+left alone), one Surya worker session per run, `OMR_SURYA_KEEP_ALIVE=0`.
+
+**The answer: it is not the OCR, it is two to four crops that make Surya generate until its token ceiling.** Everything else is
+seconds.
+
+| page (pdf index) | candidates | read_directions wall | Surya (1 call, all crops) | Tesseract (per crop) | words |
+|---|--:|--:|--:|--:|--|
+| Litolff p3 (the count page) | 6 | **2.7 s** | 1.7 s (0.28 s/crop) | 0.94 s total (0.16 s/crop) | 0 |
+| Brahms p1 (the count page) | 20 | **9.9 s** | 6.3 s (0.31 s/crop) | 3.55 s total (0.18 s/crop) | 8 |
+| Litolff p1 (extra, same scan) | 9 | 3.9 s | 2.6 s | 1.3 s | 0 |
+| Litolff p2 (extra, same scan) | 21 | **319.6 s** | **316.0 s** | 3.5 s | 2 (`cresc.`, `Cresc.`) |
+
+Other parts, every page: Surya worker session open 1.0-5.0 s (attaches to the resident server; first call 0.2-0.3 s; a one-shot
+spawn with no session is 2.4 s; a COLD `llama-server` start was NOT measured -- the shared one is never stopped); candidate
+finding 0.02-0.12 s; crop + upscale <0.01 s; lexicon gate 5-50 microseconds for the whole page; `default_readers` 0.05-0.08 s.
+Candidates that end as words: Brahms p1 8 of 20 (`pizz.`x3, `unis.`, `dim.`x2, `arco`, `Cresc.`), Litolff p2 2 of 21, Litolff p1
+and p3 0 (p1 prints `Allegro con brio` but the candidate box cuts it: Tesseract reads `rro cOn`, Surya nothing -- a CV-box miss, not
+an OCR one; p3's `dolce` reads `» dolce` from Tesseract and is refused by the lexicon's character test).
+
+**Where the 320 s on Litolff p2 goes** (Surya, one call per crop, `out/direction_timing/dt_litolff_p2_percrop.json`): 19 of 21 crops
+take 0.1-3.0 s; **crop 2 takes 101 s and crop 9 takes 291 s, and both return an empty string** (402 s total, 392 s of it those
+two). They are real `cresc.` words (Tesseract: `I CTESC.`, `CTESC.`) on which the decoder loops. The mechanism is in the venv:
+`surya/settings.py` `SURYA_MAX_TOKENS_FULL_PAGE = 12288`, and the worker calls the predictor with `full_page=True`, so a looping crop
+generates up to 12,288 tokens at ~100-140 tok/s. `is_runaway_read` only refuses the text AFTER the time is spent. This also
+explains the earlier **267 s/page vs 132 s/page vs 2.7 s**: the per-page cost is "how many runaway crops that page has x ~100-290 s".
+Control that can fail: a clean PIL-rendered `Flauti` crop reproduced it (194 s, then refused as a 178-char runaway) while the same
+crop style `Allegro con brio` took 2.4 s.
+
+**Arms** (same pages; "same words" = same (staff, bar, text) as the full reader):
+
+| arm | Litolff p3 | Brahms p1 | Litolff p2 |
+|---|---|---|---|
+| full (Surya + Tesseract, Surya first) | 2.7 s, 0 words | 9.9 s, 8 words | 319.6 s, 2 words |
+| (a) Tesseract only | 0.9 s, 0 | 3.5 s, **4 of 8** (loses 2 `pizz.`, `dim.`, `Cresc.`) | 3.5 s, **0 of 2** |
+| (b) Tesseract first, Surya on lexicon failures | 2.3 s, 0 | 7.8 s, 8 of 8 | 334.6 s, 2 of 2 (every crop fails, Surya reads all 21) |
+| (c) Surya only | 1.3 s, 0 | 4.6 s, 8 of 8 | 312.6 s, 2 of 2 |
+| (d) one crop per band strip, Tesseract `--psm 11` on the subtracted mask | 5 strips | 13 strips, 2.3 s, finds `pizz.` `dim` `espr`, **misses 6 of 8**, invents `espr` | 16 strips, 2.6 s, finds 0 of 2 |
+| (d) same strips, Surya | 1.8 s, 0 | **364.5 s** (a wide strip loops), words repeated 8x, no positions | skipped |
+| (e) size test, loose (1-20 sp wide, 0.45-3 sp tall, >=2 comps) | drops 0 of 6 | drops 0 of 20 | drops 0 of 21 |
+| (e2) size test, tight (>=4.3 sp wide, >=1.2 sp tall, >=4 comps) | keeps 1 of 6 | keeps 15 of 20, loses 0 words | keeps 12 of 21, loses 0 words |
+| (f) Surya with `SURYA_MAX_TOKENS_FULL_PAGE=64` (env only), per crop | -- | **5.2 s**, 8 of 8, texts identical | **8.1 s** (was 402 s), 2 of 2 |
+
+Notes. (d): the strips lose which bar a word is in (Surya returns text only) and Tesseract on a whole strip reads music residue; it
+is both less accurate and no faster, so not worth building. (e)/(e2): the CV already filters size, so a loose test is inert; the
+tight test is derived from where Brahms p1's own 8 words sit, so it is an upper bound, not a held-out result -- and crops cost
+0.2 s each, so dropping them saves a few seconds at most, while the one thing that costs minutes (a looping crop) is not
+predictable from size (the two looping crops are 4-6 sp wide, like the good ones). (f) was run per crop, with the word list
+completed from the full run's Tesseract texts where Surya read nothing (the same precedence `read_directions` uses); nothing in the
+repo was changed.
+
+**Recommendation (a decision for Sean, not made here).** The cheapest arm that finds the same words is the FULL two-rung reader
+with a **token ceiling on the Surya direction call**: 64 tokens is >3x the longest legal direction here, on these three pages it
+changes no reading or word (8 of 8, 2 of 2, 0 of 0) and takes Litolff p2 from 320 s to ~8 s and every page to 3-10 s. Dropping
+Surya (arm a) is NOT acceptable: it loses half of Brahms' words and all of Litolff p2's, because Tesseract reads `cresc.` as
+`CTESC.`. The ceiling must be set where the worker calls the predictor (a keyword on `_read_crops`, not the global env) and needs
+a held-out run on more pages (Mahler, an engraved page, `Allegro con brio` on Litolff p1 where the CV box, not the OCR, is
+the miss) before it is relied on -- n = 3 pages, 10 words. The scan gate (`OMR_DIRECTION_TEXT_SCAN_GATE`) was bought to hide this
+cost; with the ceiling it need not stay.
+
+**Not measured:** a cold `llama-server` start (shared server never stopped); engraved pages; Litolff p0 has no staves (0
+candidates, as the script prints `NaN` spacing); `OMR_SURYA_KEEP_ALIVE=0` does not remove the pre-existing resident server, so
+"owning my processes" held only for the worker.
+
+---
+
+## 2026-10-08 -- Direction-word token cap, held-out check (lane-direction-text-on-scans; scan-gate default NOT changed)
+
+PATH: STAGED `gather_direction_words` / `direction_text.read_directions`. Built: `DIRECTION_WORD_MAX_TOKENS = 64` and a 20 s per-crop
+wall-time guard (`DIRECTION_CROP_TIMEOUT_S`; a crop silent past it reads as empty, the session is closed, no retry), passed only by
+`direction_text._surya_word_reader`; the worker lowers `SURYA_MAX_TOKENS_FULL_PAGE` and the block ceiling for that job only (margin labels
+untouched). Tests `test_direction_word_token_cap_2026_10_08.py` (7; 5 RED on the old tree, 2 are positive controls). Fast tier 6,171 passed;
+`staged.check` 192 -> 192.
+
+Held-out, scan gate OFF, one page each (`direction_cap_heldout.py`, rows `out/direction_cap/data_*.json`), cap ON vs OFF:
+
+| page (pdf idx) | candidates | ON s | OFF s | words ON / OFF |
+|---|--:|--:|--:|---|
+| Litolff 4 | 28 | 16.6 | 119.7 | 4 / 4 |
+| Litolff 6 | 19 | 14.2 | 320.5 | 3 / 3 |
+| Litolff 9 | 26 | 15.8 | 127.0 | 6 / 6 |
+| Litolff 12 | 7 | 3.8 | 3.0 | 0 / 0 |
+| Litolff 15 | 6 | 2.8 | 2.3 | 0 / 0 |
+| Brahms 3 | 11 | 4.7 | 4.4 | 0 / 0 |
+| Brahms 7 | 30 | 17.3 | 23.4 | 5 / 5 |
+| Brahms 12 | 36 | 18.4 | 112.5 | **3 / 4** |
+| Brahms 18 | 15 | 6.3 | 6.0 | 0 / 0 |
+| Brahms 24 | 6 | 3.4 | 2.7 | 0 / 0 |
+
+**One real word is lost: `arco`, Brahms p12, staff 26, x 932** (crop `out/direction_cap/lost_arco_crop.png`, plainly `arco`). Probe
+(`direction_cap_probe.py`): uncapped Surya reads `arco` then loops on junk (96 s, 106 s); with the cap (64, and also with only
+`SURYA_MAX_TOKENS_FULL_PAGE=64`) it reads `Station of th` every time; Tesseract reads `do`. So the cap does not merely truncate a
+looping tail: the word sits in output that only completes after the loop, and a cut pass falls to a different reading. Every other
+word is identical (ON no extras). Time: every ON page is under 20 s; the OFF ceiling is 320 s.
+
+Per the lane's rule the scan-gate default was not switched and `regather_20260930.sh`/`acceptance_quick`/`gather_movement.sh`
+still set `OMR_DIRECTION_TEXT_SCAN_GATE=1`. (The flag's own default is already OFF, i.e. the reader runs.) The cap is in
+`default_readers`, so it is on wherever that reader runs. Separately, the review images show the reader boxes only a minority of the
+printed words (Brahms p12 prints many `dim.`/`cresc.`; the CV candidates are the limit), which the cap does not touch.
+Review images: `out/print/direction_text_scans/{litolff,brahms}_page_NN.png`, `questions.txt`.
+
+---
+
+## 2026-10-08 (later) -- cap dropped, guard only; candidate finder fixed (lane-direction-text-on-scans)
+
+PATH: STAGED `direction_text.find_candidates` / `read_directions`. Sean approved: drop the 64-token cap (it lost `arco`), keep the 20 s per-crop guard,
+then fix the finder.
+
+**1. Guard only.** `DIRECTION_WORD_MAX_TOKENS` removed (the worker/`read_crops_text` `max_tokens` parameter stays, unused by the product). Same 10 pages
+(`out/direction_cap_r1`): words identical to cap-off on 9 of 10; Brahms p12 `arco` STILL lost (the crop needs ~96 s uncapped, the guard abandons it at 20 s);
+pages Litolff 4/6/9 took 86/70/59 s, i.e. **neither of Sean's two conditions (every page under ~30 s AND `arco` back) holds with the guard alone**: a looping
+`cresc.` crop costs the guard's 20 s each, 2-4 per page. Found a bug on the way: the guard closes the session, and every LATER crop then spawned one-shot
+(model load) inside its own 20 s deadline and read as empty -> `_reopen_session` after an abandoned crop (test added).
+
+**2. Why words were missed** (printed = in-lexicon words I read off `out/direction_cap_r1/diag_*.png`; `a 2`, `ten.`, `marc.`, `Solo`, `sempre molto p e dolce` are NOT
+in `direction_lexicon`, so excluded; counts are by eye, +-3): the finder PROPOSES a box on most printed words; most losses are AFTER it.
+
+| page | printed | found before | found after |
+|---|--:|--:|--:|
+| Litolff 4 | 10 | 4 | 4 |
+| Litolff 6 | 17 | 3 | 4 |
+| Litolff 9 | 18 | 6 | 6 |
+| Litolff 12 | 2 | 0 | 0 |
+| Litolff 15 | 0 | 0 | 0 |
+| Brahms 3 | 9 | 0 | 1 |
+| Brahms 7 | 24 | 5 | 9 |
+| Brahms 12 | 25 | 3 | 15 |
+| Brahms 18 | 8 | 0 | 3 |
+| Brahms 24 | 0 | 0 | 0 |
+| **all** | **~113** | **21** | **42** |
+
+Dropped-at step, for the words with no found reading (per-candidate texts `out/direction_cap_r1/cand_*.json`):
+- **No candidate** (~15%): band limits (a `dim.` 3.4 sp under a system's last staff, past the 3 sp reach; one 0.2 sp under its staff, inside the 0.25 sp clearance);
+  subtraction (Brahms p7 `espr.` under a horn: three letters read as `dynamic` detections, 1,100 of 1,958 ink px erased); letter filter (a scan fuses `dim.` into one
+  4.3 x 1.7 sp component, refused at 2 sp wide); letters fused to a slur/neighbour ink (`arco`, Brahms p7: not fixed).
+- **Candidate proposed, reading refused** (~75%, mostly NOT the finder): `cresc.` read as `CTESC.`/`Crese.`/`eres.`, or Surya's runaway `Cresc. Cresc. Cresc.` (the
+  lexicon refuses repeats by name); leading marks (`> cresc.`, `'cresc.`, `ICresc.`); the crop's pad re-admitting a detected `p` (`v dolce`, `P dolce`); `p cresc.` is not a
+  lexicon entry. NOT changed here (the lexicon is load-bearing; a repair of those readings is a decision for Sean).
+- Spurious candidates on beamed notes (~30% of candidates on dense pages): cost 0.2 s each, no effect on recall.
+
+**3. Rules fixed** (each stated before the run, `test_direction_candidates_2026_10_08.py`, 6 RED -> green, 2 positive controls): (a) `crop_for(erase=)`: the pad
+never re-admits ink the subtraction erased; (b) `below_spaces` 3 -> 5; (c) `clearance_spaces` 0.25 -> 0.10; (d) `inside_word_gap_spaces` 0.5 -> 0.9 (a real dynamic
+stands 1.7 clear); (e) a fused word (one component <= 7 sp wide, >= 0.9 sp tall, fill >= 0.45) counts as 3 letters. Result: found 21 -> 42 of ~113, candidates
++25%, no word lost to a fix except one staff-ownership swap on Litolff 4 (`cresc.` at x 621 found under staff 4, no longer under staff 7: net 4 -> 4).
+
+**Time per page** (guard only, after the re-open fix; before): Litolff 4 86->46 s, 6 70->69, 9 59->86, 12 3->8, 15 2->3; Brahms 3 5->11, 7 22->53, 12 39->37, 18 6->32, 24 3->4.
+Six pages are over 30 s because of looping `cresc.` crops, not the finder. Scan-gate default and the overnight script are unchanged.
+Review images: `out/print/direction_text_scans_r2/`.
+
+---
+
+## 2026-10-08 (night) -- stuck `cresc.` crops: width-scaled token cap (lane-direction-text-on-scans; lexicon untouched, scan gate untouched)
+
+PATH: STAGED `direction_text._surya_word_reader`. Rules stated before the run, evaluated OFFLINE on one set of per-crop rows (`direction_stop_experiment.py`,
+`direction_stop_analyze.py`, rows `out/direction_stop/`; current finder, erase-padded crops, 10 held-out pages, 295 candidates):
+
+| policy | read time, 10 pages | words vs current branch |
+|---|--:|---|
+| P0 current: Surya (20 s guard, uncapped) then Tesseract | 355 s | -- |
+| P1 Tesseract first, Surya (guard) only where Tesseract fails the lexicon | 329 s | none lost |
+| P2 Tesseract first, Surya with width-scaled cap on failures | 137 s | none lost (one `dim` reads `dim,`) |
+| P3 = P2 + one uncapped retry of what still fails | 397 s | none lost |
+| **P4 Surya with width-scaled cap, then Tesseract (shipped)** | **148 s** | **none lost, none gained** |
+
+Tesseract alone reads right 22 of the 42 crops anyone reads right (52%); on the looping `cresc.` crops it returns `CTESC.`/`Crese.`, which the lexicon (unchanged) refuses,
+so Tesseract-first alone does not remove the loops (P1). What removes them is the output ceiling. Rule: **cap = 32 + 4 x crop width in staff spaces** (a crop is
+enlarged to 80 px per space) -- a short word cannot produce long output; the 20 s guard stays as backstop. Retrying uncapped (P3) buys nothing here and costs the loops back.
+A fixed 64 had lost `arco` (Brahms p12) on the OLD crop; the width cap keeps it on the current crop (arco read by Surya in 15 of 15), but that is one crop's evidence -- the old crop
+still shows the cap can cut a word whose output only ends after a loop.
+
+End-to-end re-run (`out/direction_cap_r4`, real reader) against the previous branch state (`direction_cap_r3`): found 42 -> 42, no word lost or gained, vs cap-off the only difference
+is the Litolff 4 staff swap already recorded. Time per page: Brahms 3/7/12/18/24 = 10.6/24.2/26.6/10.7/4.2 s, Litolff 4/6/9/12/15 = 18.4/17.8/17.9/7.3/2.9 s (all under 30 s;
+before: 11/53/37/32/4 and 46/69/86/8/3). Tests `test_direction_word_token_cap_2026_10_08.py`: 3 RED -> green. Fast tier 6,182 passed; `staged.check` 192 -> 192.

@@ -1,0 +1,171 @@
+{
+ "tag": "br_12",
+ "n_candidates": 36,
+ "n_found_in_data": 3,
+ "points": [
+  {
+   "text": "dim. Fl",
+   "page_xy": [
+    1445,
+    667
+   ],
+   "band": [
+    [
+     0,
+     "below",
+     661,
+     738
+    ]
+   ],
+   "ink_px": 4012,
+   "ink_left_after_subtraction": 4012,
+   "detections": [
+    [
+     "structural",
+     1232,
+     546,
+     291,
+     122,
+     "span-not-blanked"
+    ],
+    [
+     "dynamic",
+     1446,
+     650,
+     67,
+     42,
+     "blanked"
+    ]
+   ],
+   "components_in_window": 2,
+   "pass_letter_filter": 1,
+   "step": "letter_filter",
+   "comp_sizes_sp": [
+    [
+     4.34,
+     1.74,
+     0.69
+    ],
+    [
+     0.51,
+     0.18,
+     0.84
+    ]
+   ]
+  },
+  {
+   "text": "dim. Klar",
+   "page_xy": [
+    1452,
+    1068
+   ],
+   "band": [],
+   "ink_px": 3208,
+   "ink_left_after_subtraction": 3208,
+   "detections": [
+    [
+     "structural",
+     1305,
+     1086,
+     213,
+     40,
+     "span-not-blanked"
+    ],
+    [
+     "structural",
+     1232,
+     948,
+     291,
+     143,
+     "span-not-blanked"
+    ],
+    [
+     "structural",
+     1232,
+     989,
+     293,
+     167,
+     "span-not-blanked"
+    ],
+    [
+     "structural",
+     1260,
+     1033,
+     260,
+     28,
+     "span-not-blanked"
+    ]
+   ],
+   "step": "no_band",
+   "staves_near_sp": [
+    [
+     1,
+     "below_staff_bottom=7.7sp",
+     "above_staff_top=-11.7sp"
+    ],
+    [
+     2,
+     "below_staff_bottom=0.2sp",
+     "above_staff_top=-4.1sp"
+    ],
+    [
+     3,
+     "below_staff_bottom=-9.8sp",
+     "above_staff_top=5.8sp"
+    ]
+   ],
+   "band_edges_near": [
+    [
+     1,
+     "below",
+     862,
+     948
+    ],
+    [
+     2,
+     "below",
+     1069,
+     1221
+    ]
+   ]
+  },
+  {
+   "text": "dim. Kb",
+   "page_xy": [
+    1152,
+    3688
+   ],
+   "band": [],
+   "ink_px": 2830,
+   "ink_left_after_subtraction": 2830,
+   "step": "no_band",
+   "staves_near_sp": [
+    [
+     13,
+     "below_staff_bottom=3.4sp",
+     "above_staff_top=-7.3sp"
+    ]
+   ],
+   "band_edges_near": [
+    [
+     12,
+     "below",
+     3357,
+     3478
+    ],
+    [
+     13,
+     "below",
+     3601,
+     3677
+    ],
+    [
+     14,
+     "above",
+     3803,
+     4005
+    ]
+   ]
+  }
+ ]
+}

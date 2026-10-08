@@ -1,0 +1,138 @@
+{
+ "tag": "br_24",
+ "rows": [
+  {
+   "staff": 0,
+   "measure": 1,
+   "x": 1792,
+   "bbox": [
+    1792,
+    636,
+    1912,
+    676
+   ],
+   "w_sp": 6.92,
+   "cap": 60,
+   "tess": "arc.",
+   "t_tess": 0.18,
+   "surya_guard": "",
+   "t_surya_guard": 0.41,
+   "surya_cap": "",
+   "t_surya_cap": 0.22
+  },
+  {
+   "staff": 2,
+   "measure": 4,
+   "x": 3122,
+   "bbox": [
+    3122,
+    1184,
+    3260,
+    1215
+   ],
+   "w_sp": 7.56,
+   "cap": 62,
+   "tess": "f .",
+   "t_tess": 0.37,
+   "surya_guard": "",
+   "t_surya_guard": 0.34,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 3,
+   "measure": 0,
+   "x": 1225,
+   "bbox": [
+    1225,
+    1331,
+    1411,
+    1356
+   ],
+   "w_sp": 9.3,
+   "cap": 69,
+   "tess": "pan oe oe",
+   "t_tess": 0.31,
+   "surya_guard": "",
+   "t_surya_guard": 0.35,
+   "surya_cap": "",
+   "t_surya_cap": 0.26
+  },
+  {
+   "staff": 4,
+   "measure": 1,
+   "x": 1736,
+   "bbox": [
+    1736,
+    1583,
+    1908,
+    1611
+   ],
+   "w_sp": 8.79,
+   "cap": 67,
+   "tess": "i A",
+   "t_tess": 0.21,
+   "surya_guard": "",
+   "t_surya_guard": 0.35,
+   "surya_cap": "",
+   "t_surya_cap": 0.28
+  },
+  {
+   "staff": 9,
+   "measure": 2,
+   "x": 2303,
+   "bbox": [
+    2303,
+    2927,
+    2474,
+    2973
+   ],
+   "w_sp": 8.76,
+   "cap": 67,
+   "tess": "=a",
+   "t_tess": 0.25,
+   "surya_guard": "",
+   "t_surya_guard": 0.37,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 12,
+   "measure": 0,
+   "x": 1229,
+   "bbox": [
+    1229,
+    3547,
+    1369,
+    3587
+   ],
+   "w_sp": 7.64,
+   "cap": 63,
+   "tess": "a",
+   "t_tess": 0.38,
+   "surya_guard": "",
+   "t_surya_guard": 0.36,
+   "surya_cap": "",
+   "t_surya_cap": 0.23
+  },
+  {
+   "staff": 27,
+   "measure": 3,
+   "x": 2904,
+   "bbox": [
+    2904,
+    7316,
+    3005,
+    7369
+   ],
+   "w_sp": 6.24,
+   "cap": 57,
+   "tess": "J.B",
+   "t_tess": 0.37,
+   "surya_guard": "J.B.",
+   "t_surya_guard": 0.44,
+   "surya_cap": "J.B.",
+   "t_surya_cap": 0.39
+  }
+ ]
+}

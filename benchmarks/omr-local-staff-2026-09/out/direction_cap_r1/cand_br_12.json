@@ -1,0 +1,650 @@
+[
+ {
+  "staff": 0,
+  "measure": 12,
+  "bbox": [
+   4658,
+   694,
+   4890,
+   738
+  ],
+  "w_sp": 8.4,
+  "h_sp": 1.6,
+  "n": 11,
+  "placement": "below",
+  "surya": "",
+  "tess": "9 LTeSC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 0,
+  "measure": 12,
+  "bbox": [
+   4660,
+   661,
+   4901,
+   691
+  ],
+  "w_sp": 8.7,
+  "h_sp": 1.1,
+  "n": 8,
+  "placement": "below",
+  "surya": "",
+  "tess": ". y \u201c \u00bb \u00a9 \"",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 1,
+  "measure": 1,
+  "bbox": [
+   1376,
+   866,
+   1447,
+   919
+  ],
+  "w_sp": 2.6,
+  "h_sp": 1.9,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "atn",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 2,
+  "measure": 12,
+  "bbox": [
+   4798,
+   1075,
+   4899,
+   1112
+  ],
+  "w_sp": 3.7,
+  "h_sp": 1.3,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "TEST,",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 1,
+  "bbox": [
+   1373,
+   1354,
+   1445,
+   1400
+  ],
+  "w_sp": 2.6,
+  "h_sp": 1.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "atn",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 12,
+  "bbox": [
+   4815,
+   1344,
+   4887,
+   1374
+  ],
+  "w_sp": 2.6,
+  "h_sp": 1.1,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "eSC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 5,
+  "measure": 3,
+  "bbox": [
+   1947,
+   1738,
+   2063,
+   1760
+  ],
+  "w_sp": 4.2,
+  "h_sp": 0.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "=> ws.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 5,
+  "measure": 12,
+  "bbox": [
+   4726,
+   1792,
+   4886,
+   1830
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.4,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": ") CTESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 9,
+  "measure": 0,
+  "bbox": [
+   1081,
+   2677,
+   1155,
+   2729
+  ],
+  "w_sp": 2.7,
+  "h_sp": 1.9,
+  "n": 3,
+  "placement": "below",
+  "surya": "din",
+  "tess": "din",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 9,
+  "measure": 8,
+  "bbox": [
+   3324,
+   2658,
+   3393,
+   2710
+  ],
+  "w_sp": 2.5,
+  "h_sp": 1.9,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "din",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 9,
+  "measure": 12,
+  "bbox": [
+   4666,
+   2674,
+   4887,
+   2710
+  ],
+  "w_sp": 8.0,
+  "h_sp": 1.3,
+  "n": 9,
+  "placement": "below",
+  "surya": "p c r e s c.",
+  "tess": "PCTESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 10,
+  "measure": 0,
+  "bbox": [
+   1081,
+   2922,
+   1155,
+   2973
+  ],
+  "w_sp": 2.7,
+  "h_sp": 1.8,
+  "n": 3,
+  "placement": "below",
+  "surya": "din",
+  "tess": "atn",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 10,
+  "measure": 8,
+  "bbox": [
+   3331,
+   2890,
+   3473,
+   2941
+  ],
+  "w_sp": 5.1,
+  "h_sp": 1.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u201cdim.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 10,
+  "measure": 12,
+  "bbox": [
+   4811,
+   2926,
+   4971,
+   2963
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.3,
+  "n": 8,
+  "placement": "below",
+  "surya": "",
+  "tess": "YCTresc:",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 11,
+  "measure": 0,
+  "bbox": [
+   1083,
+   3132,
+   1216,
+   3184
+  ],
+  "w_sp": 4.8,
+  "h_sp": 1.9,
+  "n": 5,
+  "placement": "below",
+  "surya": "dim.",
+  "tess": "dim",
+  "surya_ok": "dim.",
+  "tess_ok": "dim"
+ },
+ {
+  "staff": 11,
+  "measure": 8,
+  "bbox": [
+   3375,
+   3186,
+   3469,
+   3222
+  ],
+  "w_sp": 3.4,
+  "h_sp": 1.3,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "ALM.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 11,
+  "measure": 10,
+  "bbox": [
+   4012,
+   3146,
+   4183,
+   3183
+  ],
+  "w_sp": 6.2,
+  "h_sp": 1.3,
+  "n": 7,
+  "placement": "below",
+  "surya": "",
+  "tess": "VMNATC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 11,
+  "measure": 12,
+  "bbox": [
+   4831,
+   3124,
+   4987,
+   3160
+  ],
+  "w_sp": 5.6,
+  "h_sp": 1.3,
+  "n": 9,
+  "placement": "below",
+  "surya": "",
+  "tess": "2 CT ESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 0,
+  "bbox": [
+   1090,
+   3426,
+   1224,
+   3476
+  ],
+  "w_sp": 4.9,
+  "h_sp": 1.8,
+  "n": 5,
+  "placement": "below",
+  "surya": "dim",
+  "tess": "",
+  "surya_ok": "dim",
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 8,
+  "bbox": [
+   3318,
+   3372,
+   3502,
+   3433
+  ],
+  "w_sp": 6.7,
+  "h_sp": 2.2,
+  "n": 6,
+  "placement": "below",
+  "surya": "dim.",
+  "tess": "dim",
+  "surya_ok": "dim.",
+  "tess_ok": "dim"
+ },
+ {
+  "staff": 12,
+  "measure": 10,
+  "bbox": [
+   3988,
+   3394,
+   4217,
+   3430
+  ],
+  "w_sp": 8.3,
+  "h_sp": 1.3,
+  "n": 7,
+  "placement": "below",
+  "surya": "",
+  "tess": "ne marc.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 12,
+  "bbox": [
+   4705,
+   3412,
+   4869,
+   3449
+  ],
+  "w_sp": 5.9,
+  "h_sp": 1.3,
+  "n": 9,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u201cCTESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 10,
+  "bbox": [
+   3960,
+   3601,
+   4095,
+   3633
+  ],
+  "w_sp": 4.9,
+  "h_sp": 1.2,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u2014 Pee.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 12,
+  "bbox": [
+   4783,
+   3613,
+   4851,
+   3650
+  ],
+  "w_sp": 2.5,
+  "h_sp": 1.3,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "ESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 0,
+  "bbox": [
+   1179,
+   3986,
+   1231,
+   4005
+  ],
+  "w_sp": 1.9,
+  "h_sp": 0.7,
+  "n": 3,
+  "placement": "above",
+  "surya": "",
+  "tess": "> oe",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 5,
+  "bbox": [
+   3390,
+   4184,
+   3562,
+   4207
+  ],
+  "w_sp": 6.2,
+  "h_sp": 0.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "i ab wah",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 6,
+  "bbox": [
+   3788,
+   4198,
+   3962,
+   4240
+  ],
+  "w_sp": 6.3,
+  "h_sp": 1.5,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "rrr.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 15,
+  "measure": 5,
+  "bbox": [
+   3358,
+   4392,
+   3467,
+   4448
+  ],
+  "w_sp": 3.9,
+  "h_sp": 2.0,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u201ca2",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 17,
+  "measure": 7,
+  "bbox": [
+   4295,
+   4809,
+   4435,
+   4843
+  ],
+  "w_sp": 5.1,
+  "h_sp": 1.2,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u2014+\u2014+ \u2014",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 20,
+  "measure": 7,
+  "bbox": [
+   4298,
+   5477,
+   4442,
+   5501
+  ],
+  "w_sp": 5.2,
+  "h_sp": 0.9,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "aa amb \u201cmd",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 22,
+  "measure": 1,
+  "bbox": [
+   1461,
+   6010,
+   1670,
+   6049
+  ],
+  "w_sp": 7.6,
+  "h_sp": 1.4,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "- Fat",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 22,
+  "measure": 9,
+  "bbox": [
+   5259,
+   6032,
+   5408,
+   6049
+  ],
+  "w_sp": 5.4,
+  "h_sp": 0.6,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "oe ae GE ane",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 25,
+  "measure": 2,
+  "bbox": [
+   2154,
+   6717,
+   2267,
+   6737
+  ],
+  "w_sp": 4.1,
+  "h_sp": 0.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "\u201cT @ \u00ab",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 25,
+  "measure": 3,
+  "bbox": [
+   2362,
+   6690,
+   2426,
+   6737
+  ],
+  "w_sp": 2.3,
+  "h_sp": 1.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "Te",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 26,
+  "measure": 0,
+  "bbox": [
+   932,
+   6957,
+   1067,
+   6985
+  ],
+  "w_sp": 4.9,
+  "h_sp": 1.0,
+  "n": 6,
+  "placement": "below",
+  "surya": "Station of th",
+  "tess": "do",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 26,
+  "measure": 2,
+  "bbox": [
+   2156,
+   6964,
+   2270,
+   6985
+  ],
+  "w_sp": 4.1,
+  "h_sp": 0.8,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "Ve 2 a",
+  "surya_ok": null,
+  "tess_ok": null
+ }
+]

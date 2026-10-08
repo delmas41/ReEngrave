@@ -1,0 +1,135 @@
+{
+ "t_surya_worker_session_open": 1.0715752909999998,
+ "session_opened": true,
+ "spacing_px": 15.75,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 0.03131204200000326,
+ "t_default_readers(incl page_is_engraved)": 0.07212187499999345,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 21,
+ "t_crop_upscale": 0.0034036670000006097,
+ "crop_shapes_median_hw": [
+  148,
+  540
+ ],
+ "crop_px_total": 1546480,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.22764779199999907,
+ "t_surya_second_call_1crop": 0.18682529200000175,
+ "dummy_read": [
+  ""
+ ],
+ "percrop_surya": [
+  {
+   "cand": 0,
+   "s": 0.15598795899999374,
+   "text": ""
+  },
+  {
+   "cand": 1,
+   "s": 0.22624275000000438,
+   "text": ""
+  },
+  {
+   "cand": 2,
+   "s": 101.209114458,
+   "text": ""
+  },
+  {
+   "cand": 3,
+   "s": 0.15280275000000643,
+   "text": ""
+  },
+  {
+   "cand": 4,
+   "s": 0.13537020799998345,
+   "text": ""
+  },
+  {
+   "cand": 5,
+   "s": 0.2005163749999781,
+   "text": ""
+  },
+  {
+   "cand": 6,
+   "s": 0.22761862499999097,
+   "text": ""
+  },
+  {
+   "cand": 7,
+   "s": 0.23708075000001827,
+   "text": ""
+  },
+  {
+   "cand": 8,
+   "s": 0.23579683400001272,
+   "text": ""
+  },
+  {
+   "cand": 9,
+   "s": 291.291051958,
+   "text": ""
+  },
+  {
+   "cand": 10,
+   "s": 0.2451253330000327,
+   "text": ""
+  },
+  {
+   "cand": 11,
+   "s": 0.1507163329999912,
+   "text": ""
+  },
+  {
+   "cand": 12,
+   "s": 2.899150834000011,
+   "text": "CRESC. CRESC. CRESC. CRESC. CRESC. CRESC."
+  },
+  {
+   "cand": 13,
+   "s": 0.4357807079999816,
+   "text": "cresc."
+  },
+  {
+   "cand": 14,
+   "s": 0.19655229199997848,
+   "text": ""
+  },
+  {
+   "cand": 15,
+   "s": 0.3308370830000058,
+   "text": "CTE8C."
+  },
+  {
+   "cand": 16,
+   "s": 0.2274191250000399,
+   "text": ""
+  },
+  {
+   "cand": 17,
+   "s": 0.4871305409999991,
+   "text": "CTESI."
+  },
+  {
+   "cand": 18,
+   "s": 0.1931020420000209,
+   "text": ""
+  },
+  {
+   "cand": 19,
+   "s": 0.3757972919999588,
+   "text": "Cresc."
+  },
+  {
+   "cand": 20,
+   "s": 2.980438000000049,
+   "text": "Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc."
+  }
+ ],
+ "percrop_total": 402.5936322500001,
+ "tag": "litolff-p2-percrop",
+ "gather_wall_total_incl_experiment": 459.490920291
+}
