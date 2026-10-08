@@ -84,6 +84,22 @@ first, each verified again on the merged tree.
 
 Verified on the merged tree: see the integration commit message for the
 fast-tier, `staged.check` and backend numbers.
+## 2026-10-08 — ROADMAP 3.5 (STAGED): the CLI-summary tests follow the tree
+
+**`claude/jolly-kilby-67143e`.** Four slow-tier tests in
+`tools/omr/tests/test_staged_cli_pdf.py` (ROADMAP 3.3's `_render_pdf` /
+`_print_accounting_summary` tests) had failed on `origin/main` since 3.5
+(`135b7a60`, 2026-09-28) rewrote the accounting summary to two lines
+(`unread bars ("unread", read NOTHING): N` and `held-out bars ("unread"):
+N`, off `report["unread_bar_marks"]`) and made a held-out bar a red marked
+rest in the `.ly`, without touching the tests; the file is slow because its
+text names `.pdf`, so the fast tier never showed them (2.64 flagged them
+2026-10-07). The 3.5 row says done and the wording is the intended one, so
+the tests were updated, not the code (rule 10): expected words and counts
+are read off the exporter's own report, the underfull-bar LilyPond test
+asserts the marked rest and a CLEAN compile, and the bar-check parser's
+"can fail" control (rule 7) now runs on a hand-broken `.ly`. RED 4/8 →
+GREEN 9/9; `staged.check` 192 → 192; `staged/lilypond.py` untouched.
 
 ---
 
