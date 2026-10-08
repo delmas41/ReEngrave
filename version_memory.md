@@ -22,6 +22,23 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 1.7 (STAGED, measurement): hand-labeled page truth — inventory and plan
+
+**Plan only; no code.** `docs/plan-2026-10-08-hand-labeled-truth.md` inventories every
+hand label in the tree and how it is used, and Sean accepted its plan the same day
+(DECISIONS 2026-10-08). Measured: 670 cells across 85 pages carry some hand label;
+none is complete for every class and no page is complete (110 cells, v22, are drawn
+from scratch over a recorded 27-class palette; 264 "complete" round-3 cells are
+hand-labeled only for hollow heads / rests / accidentals / clefs); the two count
+pages are 19/210 and 7/408 cells touched, and those cells sit in production's
+training split. No benchmark scores a scan against hand symbols — every music-level
+scan number comes from an MXL. Decisions: every bit of ink boxed, page-pixel
+storage, one cell at a time with pre-fills, first pages first across publishers,
+every box also training data, Verovio engraved control kept. Open: the held-out
+page list. Added ROADMAP 1.7, a DECISIONS line, and a CLAUDE.md §9 pointer.
+
+---
+
 ## 2026-10-07 — ROADMAP 2.61 (STAGED): GATHER handlers abstain, never default
 
 **`lane-gather-abstain` (Opus, c8feea00; rule 8 made structural in GATHER).**

@@ -3,7 +3,7 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-07 (un-frozen; kept current with every commit alongside
+**Updated:** 2026-10-08 (un-frozen; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
@@ -28,6 +28,11 @@ and deciding which staff a note belongs to on scanned conductor's pages
 (ROADMAP 2.44–2.59). Sean adjudicates contact sheets of crops; his rulings
 are the conventions in `docs/DECISIONS.md` and CLAUDE.md §10. Nothing is
 measured through EVALUATE or EXPORT until he says so.
+
+**Truth is moving to hand-labeled pages** (ROADMAP 1.7, Sean 2026-10-08): no scan page
+is hand-labeled yet; the plan labels every bit of ink on a movement's first page and
+its count page, cell by cell, stored in page pixels, across several publishers, and
+retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
 
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather

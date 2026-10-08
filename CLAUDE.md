@@ -573,7 +573,8 @@ design here:
   passes with `batch_config.json`, click-to-box, `--blind` for scoring
   passes). Pre-filled verdicts are a QUEUE, not labels (blind out-of-sample
   0.915 under the 0.97 bar). Workflow and hotkeys: chronicle §"Hand-label
-  cells".
+  cells". Scan truth is moving to whole-ink pages stored in page pixels
+  (ROADMAP 1.7); no page is complete yet.
 
 ---
 
