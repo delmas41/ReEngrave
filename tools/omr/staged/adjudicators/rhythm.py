@@ -1124,7 +1124,7 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
         db = _xywh_head(box_row.value) if box_row else None
         if db is None:
             continue
-        dot_x_left, dot_w = db[0], db[2]
+        dot_x_left = db[0]
         dot_y = db[1] + db[3] / 2.0
         best, best_score = None, float("inf")
         named = ((role.detail or {}).get("head")
@@ -3627,8 +3627,8 @@ def _ocr_at_bar_candidates(ev: Evidence) -> Dict[int, dict]:
         by_cell.setdefault(int(cell_index), {}).setdefault(
             (int(v[0]), int(v[1])), []).append(r)
     out: Dict[int, dict] = {}
-    for cell_index, tally in by_cell.items():
-        (num, den), witnesses = max(tally.items(), key=lambda kv: len(kv[1]))
+    for cell_index, by_value in by_cell.items():
+        (num, den), witnesses = max(by_value.items(), key=lambda kv: len(kv[1]))
         out[cell_index] = {"numerator": num, "denominator": den,
                            "raw": "%d/%d" % (num, den),
                            "staves_reading_it": len(witnesses)}

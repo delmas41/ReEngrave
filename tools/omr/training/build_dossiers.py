@@ -25,6 +25,7 @@ use without knowing which staff is which. See `tools/omr/dossier.py`.
 """
 from __future__ import annotations
 
+import os
 import argparse
 import json
 import sys
@@ -33,8 +34,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[3]
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
 DEFAULT_SCORE_DIR = Path(
-    "/Users/seanjohnson/Desktop/gradus-vercel/public/scores"
+    os.environ.get("REENGRAVE_SCORES_DIR")
+    or "/Users/seanjohnson/Desktop/gradus-vercel/public/scores"
 )
 DEFAULT_OUT_DIR = ROOT / "data" / "dossiers"
 

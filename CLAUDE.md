@@ -674,8 +674,9 @@ Each of these has cost at least one lane and is still true.
   Node, off by default, not in the container.
 - Frontend: React + Vite + React Query; pages under `frontend/src/pages/`;
   `docker compose build frontend` after any change (Vite bakes env at build).
-- Known stubs: correction patching (§5c), PDF.js crop in `DiffCard`,
-  vestigial `audiveris_*` field names.
+- Known stubs: correction patching (§5c), the PDF crop in `DiffCard` (a
+  placeholder; no PDF.js or Verovio in the frontend since 3.6d). The
+  `audiveris_*` names were retired 2026-10-08 (3.6e).
 
 ---
 

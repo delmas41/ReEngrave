@@ -24,12 +24,11 @@ directory *before* import, following the same pattern
 from __future__ import annotations
 
 import asyncio
-import json
 import os
 import tempfile
 from pathlib import Path
 
-import pytest
+from tests.conftest import _TEST_USER_ID  # noqa: E402
 
 _tmp_root = tempfile.mkdtemp(prefix="reengrave-staged-test-")
 os.environ.setdefault("UPLOAD_DIR", os.path.join(_tmp_root, "uploads"))
@@ -44,60 +43,12 @@ os.makedirs(os.environ["EXPORT_DIR"], exist_ok=True)
 from modules import staged_omr  # noqa: E402
 from tools.omr.staged import export as staged_export  # noqa: E402
 from tools.omr.staged import record_io  # noqa: E402
-from tools.omr.staged.record import Q  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
-# A tiny fake staged record — the same shape
-# tools/omr/tests/test_staged_export.py's `_one_staff_page` builds.
+# The tiny fake staged record (`_one_note_record`) and the `fake_pipeline` /
+# `app_client` fixtures live in `conftest.py`.
 # ---------------------------------------------------------------------------
-
-
-def _log_json(observations, verdicts, abstentions=()):
-    return {"record": {"observations": list(observations),
-                       "verdicts": list(verdicts),
-                       "abstentions": list(abstentions),
-                       "counts": {}},
-            "summary": {}}
-
-
-def _obs(i, subject, quantity, value, **detail):
-    return {"id": f"obs:{i:06d}", "subject": subject, "quantity": quantity,
-            "value": value, "reader": "detector", "frame": "cell:0",
-            "score": 0.9, "detail": detail, "basis": []}
-
-
-def _vrd(i, subject, quantity, value, outcome="decided", reason="x",
-         candidates=()):
-    return {"id": f"vrd:{i:06d}", "subject": subject, "quantity": quantity,
-            "outcome": outcome, "value": value, "decider": "t",
-            "reason": reason, "considered": [], "used": [], "missing": [],
-            "declined": [], "excluded": [], "correlated": [],
-            "candidates": list(candidates), "basis": [], "margin": None,
-            "supersedes": None, "detail": {}}
-
-
-QUARTER = {"beats": 1.0, "written": 1.0, "dots": 0}
-
-
-def _one_note_record() -> dict:
-    """A minimal one-staff, one-measure, one-note page — a fresh dict every
-    call, enough for `to_musicxml` to write a real file."""
-    obs = [
-        _obs(0, "glyph/0/0/0/0/0", Q.GLYPH_BOX,
-             ["noteheadBlackOnLine", 0, 50, 40, 40], category="notehead"),
-        _obs(1, "glyph/0/0/0/0/0", Q.NOTEHEAD_CLASS, "noteheadBlackOnLine"),
-    ]
-    vrd = [
-        _vrd(2, "glyph/0/0/0/0/0", Q.PITCH, "C4"),
-        _vrd(3, "glyph/0/0/0/0/0", Q.DURATION, QUARTER),
-        _vrd(900, "staff/0/0/0", Q.MEASURE_PARTITION, 1),
-        _vrd(901, "staff/0/0/0", Q.CLEF, "treble"),
-        _vrd(902, "system/0/0", Q.SYSTEM_STAFF_COUNT, 1),
-        _vrd(903, "document", Q.PART_PARTITION,
-             {"join": "ordinal", "staves_per_system": 1}, reason="ordinal"),
-    ]
-    return _log_json(obs, vrd)
 
 
 def _minimal_pdf(path: str) -> str:
@@ -107,32 +58,6 @@ def _minimal_pdf(path: str) -> str:
     doc.save(path)
     doc.close()
     return path
-
-
-def _fake_no_routing(pdf_path, pages, *, weights=None, route_weights=False,
-                     **kw):
-    """The same shape `resolve_staged_weights` gives a no-weights,
-    no-`--route-weights` CLI call: no detector, no classification."""
-    return None, None, None
-
-
-def _fake_run_staged(pdf_path, pages, *, detector=None, dpi=600,
-                     conf_threshold=0.25, imgsz=None, roster=None,
-                     dossier=None, input_domain_classification=None,
-                     legacy=None, progress=False):
-    return _one_note_record()
-
-
-@pytest.fixture
-def fake_pipeline(monkeypatch):
-    """Stand in for the heavy gather/detector/routing calls everywhere
-    `staged_omr` reaches them, so a test needs no weights and does no real
-    PDF rendering."""
-    monkeypatch.setattr(
-        "tools.omr.staged.weight_routing.resolve_staged_weights",
-        _fake_no_routing)
-    monkeypatch.setattr(
-        "tools.omr.staged.pipeline.run_staged", _fake_run_staged)
 
 
 # ---------------------------------------------------------------------------
@@ -205,44 +130,6 @@ class TestUnbalancedBecomesAResultError:
 # ---------------------------------------------------------------------------
 # End-to-end: the route itself accepts "staged" and the job path runs
 # ---------------------------------------------------------------------------
-
-
-@pytest.fixture
-def app_client():
-    """Import `main` (fresh sys.path / DB / upload dir already pointed at
-    tmp by the module-level os.environ.setdefault calls above), override
-    auth, and yield an ENTERED TestClient (so the app's lifespan runs —
-    `create_all_tables()` — before any request) plus the pieces needed to
-    drive the DB directly."""
-    import main as main_module
-    from dependencies import get_current_user
-    from database.connection import AsyncSessionLocal
-    from database.models import Score
-    from fastapi.testclient import TestClient
-
-    from database.models import User
-
-    # Scores have an owner (Score.user_id); the route only finds a score
-    # owned by the current user, so the override returns a real stored user.
-    user = User(id=_TEST_USER_ID, email=f"{_TEST_USER_ID}@example.com",
-                password_hash="x", role="user")
-    main_module.app.dependency_overrides[get_current_user] = lambda: user
-    with TestClient(main_module.app) as client:
-        asyncio.run(_ensure_user(AsyncSessionLocal, user))
-        yield main_module, client, AsyncSessionLocal, Score
-    main_module.app.dependency_overrides.pop(get_current_user, None)
-
-
-_TEST_USER_ID = "staged-engine-test-user"
-
-
-async def _ensure_user(session_factory, user) -> None:
-    from database.models import User
-    async with session_factory() as session:
-        if await session.get(User, user.id) is None:
-            session.add(User(id=user.id, email=user.email,
-                             password_hash=user.password_hash, role=user.role))
-            await session.commit()
 
 
 async def _create_score(session_factory, Score, pdf_path: str) -> str:

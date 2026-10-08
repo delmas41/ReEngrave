@@ -44,5 +44,32 @@ COPY backend/ .
 # import transcribe` works.
 COPY tools/ ./tools/
 
+# The repo-root build context ignores backend/.dockerignore (Docker reads the
+# ignore file at the context root), so drop the test suite explicitly too.
+RUN rm -rf /app/tests
+
+# ---------------------------------------------------------------------------
+# Run as a non-root user. uploads/, exports/ and data/ are the three named
+# volumes docker-compose mounts; they must be writable by this user. HOME is
+# set because ultralytics/matplotlib write config and cache under it.
+#
+# NOTE for existing deployments: a named volume created by the previous
+# (root) image stays root-owned -- docker only copies image ownership into a
+# NEW, empty volume. Fix once with:
+#   docker compose run --rm --user root backend chown -R app:app /app/uploads /app/exports /app/data
+# ---------------------------------------------------------------------------
+RUN groupadd --system --gid 10001 app \
+    && useradd --system --uid 10001 --gid app --create-home --home-dir /home/app app \
+    && mkdir -p /app/uploads /app/exports /app/data \
+    && chown -R app:app /app/uploads /app/exports /app/data /home/app
+ENV HOME=/home/app PYTHONDONTWRITEBYTECODE=1
+USER app
+
 EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# --proxy-headers / --forwarded-allow-ips='*': the rate limiter and the logs
+# must see the real client IP from X-Forwarded-For, not nginx's. '*' is right
+# ONLY because the backend publishes no port in docker-compose.prod.yml, so
+# the sole peer that can reach it is the frontend nginx, which sets
+# X-Forwarded-For. (docker-compose.yml, dev, publishes 8000: there a client can
+# spoof the header, which is acceptable for local development only.)
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips=*"]

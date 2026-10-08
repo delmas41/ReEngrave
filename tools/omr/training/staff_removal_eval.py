@@ -88,6 +88,7 @@ their keep as a RECORD of what erasure destroys (they reach the output JSON as
 
 from __future__ import annotations
 
+import os
 import argparse
 import json
 from pathlib import Path
@@ -100,8 +101,10 @@ from ..staff_detector import detect_staves
 from ..staff_line_removal import remove_staff_lines
 
 
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
 SCORE_DIR = Path(
-    "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
+    os.environ.get("REENGRAVE_SCORES_DIR") or "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
 )
 
 # One page per score, chosen to span the printed-thickness range. Paths are the

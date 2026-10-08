@@ -22,7 +22,7 @@ nothing from the package so any check may import it without a cycle.
 from __future__ import annotations
 
 import ast
-from typing import Iterable, List, Mapping, Optional, Sequence
+from typing import Iterable, List, Optional, Sequence
 
 
 def gap_key(problem: str, known_gaps: Iterable[str]) -> Optional[str]:

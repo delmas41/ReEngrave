@@ -10,6 +10,7 @@ What they pin: the viewer's pick-list funnel is
 number, on the staff the whole item was opened for.
 """
 
+import os
 import unittest
 from pathlib import Path
 
@@ -18,9 +19,12 @@ import pytest
 from tools.omr.staged.record import Q
 from tools.omr.staged.review import server as R
 
-REAL_RECORD = Path("/Users/seanjohnson/Desktop/ReEngrave/library/"
-                   "_shared-records/"
-                   "beethoven5-litolff-mvt1-whole-20260923.record.json")
+# `REENGRAVE_LIBRARY_DIR` names the library directory on another machine; the
+# default is the one on Sean's.
+REAL_RECORD = Path(os.environ.get("REENGRAVE_LIBRARY_DIR")
+                   or "/Users/seanjohnson/Desktop/ReEngrave/library"
+                   ) / "_shared-records" / (
+    "beethoven5-litolff-mvt1-whole-20260923.record.json")
 
 
 @pytest.mark.slow

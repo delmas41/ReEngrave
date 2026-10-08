@@ -1,5 +1,5 @@
 """Tests for main._mean_omr_confidence_for_page — the real (non-hardcoded)
-confidence fed into FlaggedDifference.audiveris_confidence and, from there,
+confidence fed into FlaggedDifference.omr_confidence and, from there,
 into apply_auto_accept.
 
 Importing `main` mounts a StaticFiles app on Settings().upload_dir, so the
@@ -100,3 +100,22 @@ class TestMeanOmrConfidenceForPage:
         score = FakeScore(metadata_json={"omr_json_path": omr_json_path})
         # Only page_index 0 exists — page_number=5 -> page_index 4, missing.
         assert _mean_omr_confidence_for_page(score, page_number=5) == 0.5
+
+
+def test_api_response_field_is_omr_confidence():
+    """The FlaggedDifference API response names the OMR confidence
+    ``omr_confidence`` (renamed from the retired Audiveris-era name), and the
+    ORM column, the response schema and the auto-accept rule agree on it."""
+    from database.models import (
+        AutoAcceptRule,
+        AutoAcceptRuleResponse,
+        FlaggedDiffResponse,
+        FlaggedDifference,
+    )
+
+    assert "omr_confidence" in FlaggedDiffResponse.model_fields
+    assert "omr_confidence" in FlaggedDifference.__table__.columns
+    assert "min_omr_confidence" in AutoAcceptRuleResponse.model_fields
+    assert "min_omr_confidence" in AutoAcceptRule.__table__.columns
+    stale = [n for n in FlaggedDiffResponse.model_fields if "audiveris" in n]
+    assert stale == []

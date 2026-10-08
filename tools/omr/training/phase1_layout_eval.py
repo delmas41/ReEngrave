@@ -18,6 +18,7 @@ unnoticed.
 
 from __future__ import annotations
 
+import os
 import argparse
 import json
 from pathlib import Path
@@ -30,8 +31,10 @@ from tools.omr.staff_detector import detect_staves
 from tools.omr.measure_extractor import detect_barlines, extract_measures
 
 
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
 SCORE_DIR = Path(
-    "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
+    os.environ.get("REENGRAVE_SCORES_DIR") or "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus"
 )
 PDF_DIR = SCORE_DIR / "PDF Scores"
 

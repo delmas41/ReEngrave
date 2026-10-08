@@ -27,6 +27,7 @@ Marked `omr_smoke` so they can be skipped in fast CI loops:
 
 from __future__ import annotations
 
+import os
 import json
 from pathlib import Path
 
@@ -41,7 +42,8 @@ from tools.omr.staff_line_removal import remove_staff_lines
 
 # Test PDFs — paths set up for the user's local machine. Tests skip if
 # the file isn't present, so they're safe to ship as-is.
-SCORE_DIR = Path("/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
+SCORE_DIR = Path(os.environ.get("REENGRAVE_SCORES_DIR")
+                 or "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
 WTC = SCORE_DIR / "PDF Scores" / "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"
 BEETHOVEN5 = SCORE_DIR / "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"
 # A monograph: prose pages, and music examples set into prose. It is the only

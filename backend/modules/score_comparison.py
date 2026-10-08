@@ -367,7 +367,6 @@ def run_theory_checks(xml_path: str) -> list[dict]:
                         try:
                             acc = note.pitch.accidental
                             pitch_step = note.pitch.step  # e.g. "B", "C"
-                            acc_name = acc.name if acc is not None else "natural"
 
                             # Double accidentals
                             if acc is not None and acc.alter is not None and abs(acc.alter) >= 2:
