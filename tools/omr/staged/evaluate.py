@@ -149,8 +149,13 @@ DOWNHILL: Tuple[str, ...] = (
     # writes here reads the bar's OWN completeness, which is exactly what
     # `reconcile_duration`'s pass over `Q.DURATION` may just have settled
     # (a beam level re-read by +/-1 can be what makes a bar's total land, or
-    # not). Placing this any earlier would let it fire on a total
-    # `reconcile_duration` was about to correct.
+    # not). ⚠️ ROADMAP 2.63: until 2026-10-07 this position governed NOTHING
+    # about when the rule ran -- `_pass` sorted by the CAUSE's rank only, and
+    # all four meter-caused rules share one, so what put
+    # `reinstate_rest_between_staves` after `reconcile_duration` was its
+    # line number in `consequences.py`. `execution_order` now keys on
+    # (cause rank, effect rank), so this placement is the reason, as the
+    # sentence above always claimed.
     Q.REST_IS_NOT_A_REST,
 )
 
@@ -266,6 +271,28 @@ def _cause_for(log: Log, quantity: str, subject: Subject):
     return None
 
 
+def execution_order(rules: Sequence[Rule] = None) -> List[Rule]:
+    """The rules in the order `_pass` runs them: by the DOWNHILL rank of the
+    CAUSE, then of the EFFECT, then registration order (the sort is stable).
+
+    ⚠️ ROADMAP 2.63. The second key is new. With the cause alone, the four
+    `meter`-caused rules ran in the order they were typed in
+    `consequences.py`, and the one edge among them that nothing pinned --
+    `reinstate_rest_between_staves` (effect `rest_is_not_a_rest`) after
+    `reconcile_duration` (effect `duration`) -- was credited by DOWNHILL's
+    own comment to the effect's position, which did not enter the sort at
+    all. Now it does. ⚠️ Registration order STILL decides a pair sharing
+    both cause and effect (`reconcile_chord_duration` before
+    `reconcile_duration`, both `meter -> duration`), and
+    `test_staged_chord_duration` pins that pair by file order on purpose.
+    Exposed as a function so a test can read the order rather than infer
+    it from a report.
+    """
+    rules = RULES if rules is None else rules
+    return sorted(rules, key=lambda r: (DOWNHILL.index(r.cause),
+                                        DOWNHILL.index(r.effect)))
+
+
 def _pass(log: Log, report: Report, *, progress: bool,
           only_downstream_of: Optional[frozenset] = None) -> Report:
     """The rules, once, in DOWNHILL order.
@@ -279,7 +306,7 @@ def _pass(log: Log, report: Report, *, progress: bool,
     (the first pass). A set means *"only where this rule's cause, or a
     verdict it declares it also reads, is one of these"* -- see `run_over`.
     """
-    ordered = sorted(RULES, key=lambda r: DOWNHILL.index(r.cause))
+    ordered = execution_order()
 
     for r in ordered:
         if r.stub:
