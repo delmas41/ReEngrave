@@ -670,7 +670,7 @@ async def run_comparison(
                         description=d.description,
                         pdf_snippet_path=pdf_snippet_path,
                         musicxml_snippet_path=xml_snippet_path,
-                        audiveris_confidence=omr_confidence,
+                        omr_confidence=omr_confidence,
                         claude_vision_confidence=d.confidence,
                         created_at=datetime.utcnow(),
                     )
@@ -680,7 +680,7 @@ async def run_comparison(
                     diff_dict = {
                         "difference_type": d.difference_type,
                         "instrument": d.instrument,
-                        "audiveris_confidence": omr_confidence,
+                        "omr_confidence": omr_confidence,
                         "claude_vision_confidence": d.confidence,
                         "era": s.era,
                     }

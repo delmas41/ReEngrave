@@ -100,7 +100,7 @@ async def analyze_correction_patterns(db: AsyncSession) -> list[PatternAnalysis]
 
         analyses.append(
             PatternAnalysis(
-                pattern_type="instrument_quirk" if instrument != "unknown" else "audiveris_failure",
+                pattern_type="instrument_quirk" if instrument != "unknown" else "omr_failure",
                 instrument=instrument,
                 difference_type=diff_type,
                 occurrence_count=total,
@@ -190,7 +190,7 @@ async def evaluate_auto_accept_rules(db: AsyncSession) -> None:
                 rule_description=pattern.pattern_description,
                 instrument=pattern.instrument,
                 difference_type=pattern.difference_type,
-                min_audiveris_confidence=0.7,
+                min_omr_confidence=0.7,
                 min_claude_confidence=0.7,
                 min_confirmations=10,
                 current_confirmations=pattern.occurrence_count,
@@ -224,7 +224,7 @@ async def apply_auto_accept(diff: dict, db: AsyncSession) -> Optional[str]:
     )
     rules = result.scalars().all()
 
-    audiveris_conf = diff.get("audiveris_confidence", 0.0)
+    omr_conf = diff.get("omr_confidence", 0.0)
     claude_conf = diff.get("claude_vision_confidence", 0.0)
     instrument = diff.get("instrument", "")
     era = diff.get("era", "")
@@ -236,7 +236,7 @@ async def apply_auto_accept(diff: dict, db: AsyncSession) -> Optional[str]:
             continue
 
         conf_match = (
-            audiveris_conf >= rule.min_audiveris_confidence
+            omr_conf >= rule.min_omr_confidence
             and claude_conf >= rule.min_claude_confidence
         )
         if not conf_match:
@@ -378,7 +378,7 @@ async def export_finetuning_dataset(db: AsyncSession, output_dir: str) -> str:
                     "instrument": diff.instrument,
                     "difference_type": diff.difference_type,
                     "description": diff.description,
-                    "audiveris_confidence": diff.audiveris_confidence,
+                    "omr_confidence": diff.omr_confidence,
                     "claude_vision_confidence": diff.claude_vision_confidence,
                     "human_decision": diff.human_decision,
                 },

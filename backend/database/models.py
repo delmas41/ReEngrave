@@ -101,7 +101,7 @@ class FlaggedDifference(Base):
     description: Mapped[str] = mapped_column(Text, nullable=False)
     pdf_snippet_path: Mapped[str] = mapped_column(String, nullable=False, default="")
     musicxml_snippet_path: Mapped[str] = mapped_column(String, nullable=False, default="")
-    audiveris_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
+    omr_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     claude_vision_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.0)
     human_decision: Mapped[Optional[str]] = mapped_column(
         String, nullable=True
@@ -134,7 +134,7 @@ class KnowledgePattern(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
     pattern_type: Mapped[str] = mapped_column(
         String, nullable=False
-    )  # audiveris_failure/claude_vision_prompt/instrument_quirk
+    )  # omr_failure/claude_vision_prompt/instrument_quirk
     instrument: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     difference_type: Mapped[str] = mapped_column(String, nullable=False)
     era: Mapped[Optional[str]] = mapped_column(String, nullable=True)
@@ -172,7 +172,7 @@ class AutoAcceptRule(Base):
     rule_description: Mapped[str] = mapped_column(Text, nullable=False)
     instrument: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     difference_type: Mapped[str] = mapped_column(String, nullable=False)
-    min_audiveris_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.8)
+    min_omr_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.8)
     min_claude_confidence: Mapped[float] = mapped_column(Float, nullable=False, default=0.8)
     min_confirmations: Mapped[int] = mapped_column(Integer, nullable=False, default=10)
     current_confirmations: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
@@ -426,7 +426,7 @@ class FlaggedDiffResponse(BaseModel):
     description: str
     pdf_snippet_path: str
     musicxml_snippet_path: str
-    audiveris_confidence: float
+    omr_confidence: float
     claude_vision_confidence: float
     human_decision: Optional[str]
     human_edit_value: Optional[str]
@@ -475,7 +475,7 @@ class AutoAcceptRuleResponse(BaseModel):
     rule_description: str
     instrument: Optional[str]
     difference_type: str
-    min_audiveris_confidence: float
+    min_omr_confidence: float
     min_claude_confidence: float
     min_confirmations: int
     current_confirmations: int

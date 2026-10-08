@@ -221,7 +221,7 @@ export default function DiffCard({ diff, onDecide }: Props) {
           {diff.difference_type}
         </span>
         <span style={styles.instrument}>{diff.instrument}</span>
-        <ConfidenceBadge value={diff.audiveris_confidence} label="OMR" />
+        <ConfidenceBadge value={diff.omr_confidence} label="OMR" />
         <ConfidenceBadge value={diff.claude_vision_confidence} label="Vision" />
         {diff.auto_accepted && <span style={styles.autoBadge}>Auto-accepted</span>}
       </div>
