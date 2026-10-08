@@ -155,16 +155,16 @@ class TestTheStemWitness(unittest.TestCase):
     UP_TO_A = ("up", HEAD_CY - 3.5 * SP)            # tip 262.4: inside A's lowest space
     DOWN_TO_B = ("down", HEAD_CY + 3.5 * SP)         # tip 374.4: inside B's lines
 
-    def test_the_witness_is_declared_and_default_off(self):
+    def test_the_witness_is_declared_and_default_on(self):
         spec = adjudicate.REGISTRY[Q.GLYPH_OWNER]
         self.assertIn(Q.HEAD_STEM_REACH, spec.wants)
         self.assertIn("stem_toward_staff", spec.reasons)
         self.assertIn("stem_disagrees", spec.reasons)
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(OWN.STEM_OWNER_ENV, None)
+            self.assertTrue(OWN.stem_owner_enabled())    # default ON since 2026-10-08
+            os.environ[OWN.STEM_OWNER_ENV] = "0"
             self.assertFalse(OWN.stem_owner_enabled())
-            os.environ[OWN.STEM_OWNER_ENV] = "1"
-            self.assertTrue(OWN.stem_owner_enabled())
 
     def test_off_the_nearer_staff_wins_as_before(self):
         """CONTROL that can fail: the same stem, flag OFF, is not read."""

@@ -305,8 +305,9 @@ STEM_OWNER_ENV = "OMR_STEM_OWNER"
 
 
 def stem_owner_enabled() -> bool:
-    return os.environ.get(STEM_OWNER_ENV, "0").strip().lower() in (
-        "1", "true", "yes", "on")
+    """DEFAULT ON since 2026-10-08 (Sean: "if they pass then implement them"). Deny-list."""
+    return os.environ.get(STEM_OWNER_ENV, "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
 
 
 #: A stem "reaches" a staff when its tip stands within this many of THAT
