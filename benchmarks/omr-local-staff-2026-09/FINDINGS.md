@@ -4550,3 +4550,21 @@ Two first versions refused, with the numbers: (1) requiring EVERY counted rung t
 So the look rescues FOUR heads in all, not ten (the sheet shows all four, then the nine other accent refusals that were sampled to fill it: tiles 1-2 Sean's, 3-5 rescues, 6-12 seeded refusals). All 12 Brahms refusals were cropped (`crop` of 12): every one is a real `>` accent under or over the head. The 13th decided->abstain is tile 9. Off-box count not re-run.
 **Not fixed / said plainly:** the look needs the ledger's end to stand out of the head's ink by >= 3 px; a ledger fused with a flat's bowl on one side and short on the other would not be seen (tile 2 was close to that). 11 of the 15 abstains seen on the way are untouched.
 **Gates:** `staged.check` TOTAL 247 (the same figure the last lane reported; no baseline re-run on the unpatched tree); fast tier before the last narrowing 4,608 passed, after it the 574 far-head/ledger/owner tests pass.
+
+## lane-staccato-unread (2026-10-07): a staccato over the NEXT strip's note was left unread (STAGED ADJUDICATE; ROADMAP 2.59 follow-up)
+
+Sean, on `dot_not_a_note_r2.png` tile 1 (Litolff `12/1/6/2/9`): "not sure why it can't see that the first cell is a staccato note."
+All numbers: the 10-07 DAY records, GATHER+ADJUDICATE through `dot_role`, one tree, `staccato_unread_replay.py` (before = tree at e92bfc6a, after = this branch).
+
+1. **Which condition fails.** Measured on the page (16 px/sp): the dot sits 0.08 sp off the column of the note under it and 1.2 sp above its centre, so it is inside the staccato window. The note is filed in the next strip down and owned by another staff, and `dot_role` tried the staccato window against its own strip's notes only; the only own-strip head is 1.23 sp to the dot's left. "Stacked" (correctly) stopped it reading as lengthening, so nothing was left: abstained `dot_role_ambiguous`. No column-from-box-edge or stem-side fault.
+2. **Unread dots, before** (page geometry: staccato-like = a real head within 0.5 sp in x, dot outside its y extent and <= 2 sp from its edge; lengthening-like = a head's right edge within 1 sp left of the dot at its height):
+
+| | dots | unread | staccato-like | lengthening-like | neither | other |
+|---|---|---|---|---|---|---|
+| Litolff | 601 | 173 | 39 | 11 | 118 | 5 (3 no head in cell, 2 on a barline) |
+| Brahms | 9,674 | 876 | 259 | 163 | 446 | 8 (barline) |
+
+All 39 Litolff staccato-like cases have the head in a neighbouring strip or owned elsewhere; none has an own-strip head.
+3. **Fix** (`rhythm._foreign_staccato_owner`, threshold stated before running): after the own-strip windows fail, the staccato window (<= 0.5 sp centred, >= 0.75 sp off) is tried against every real head of any strip or owner, within 2.0 sp of the head's edge (the stacked test's reach). Staccato only; tried before the foreign augmentation; flag-gated with `OMR_DOT_FOLLOWS_NOTE`. Named note in `detail.owner`, `head_owned_elsewhere`.
+4. **After.** Unread: Litolff 173 -> 134 (staccato-like 39 -> 0), Brahms 876 -> 621 (staccato-like 259 -> 4). Role changes: 294, every one unread -> staccato; zero decided dot changed (augmentation 18 and 6,280 unchanged), so Sean's confirmed dot sheet answers are untouched (checked the r2 keys one by one). Left unread on purpose: the lengthening-like (11 + 163) and "neither" (118 + 446) are not staccato and stay "cannot tell". The dot's OWNER still follows only an augmentation (`ownership.reconcile_dot_owners`, outside this lane): a foreign-note staccato keeps its filing strip as owner.
+5. Test: `test_staccato_unread_2026_10_07.py`, RED (1 failure + 5 controls passing) on the unrepaired tree, green after. Tiles: `out/print/staccato_unread/tile_01..10.png`, `questions.txt` (tile 1 Sean's, 2-10 seeded 20261008: 3 Litolff, 6 Brahms).
