@@ -460,7 +460,7 @@ def _close_broken_session() -> None:
 
 
 def _dispatch(job: dict, *, timeout_s: float | None,
-              keep_alive: bool | None) -> dict:
+              keep_alive: bool | None, one_shot_fallback: bool = True) -> dict:
     """The payload for one job: through the open session if there is one,
     else a one-shot spawn exactly as before.
 
@@ -469,11 +469,16 @@ def _dispatch(job: dict, *, timeout_s: float | None,
     taken and make any timing of it meaningless.
     """
     timeout = timeout_s if timeout_s is not None else DEFAULT_TIMEOUT_S
+    had_session = _SESSION is not None
     payload = _session_dispatch(job, timeout)
     if payload is not None:
         if "error" in payload:
             raise SuryaLabelError(payload["error"])
         return payload
+    if had_session and not one_shot_fallback:
+        # The per-crop wall-time guard: a session that ran out its deadline
+        # is NOT re-asked from scratch (that would double the wait).
+        raise SuryaLabelError(f"surya session gave no answer in {timeout}s")
 
     python = interpreter()
     env = dict(os.environ)
@@ -538,7 +543,9 @@ def read_crops_surya(crops: list[MarginCrop], *,
 
 def read_crops_text(crops: list, *,
                     timeout_s: float | None = None,
-                    keep_alive: bool | None = None) -> list[str]:
+                    keep_alive: bool | None = None,
+                    max_tokens: int | None = None,
+                    crop_timeout_s: float | None = None) -> list[str]:
     """Plain OCR for a list of BGR image arrays — one string per crop.
 
     The second thing this venv is good for. `direction_text` needs to read a
@@ -550,6 +557,17 @@ def read_crops_text(crops: list, *,
     A crop that reads as nothing comes back as `""`, never as an exception —
     the caller's job is to gate what was read, and a blank crop is a legitimate
     answer to "what does this say".
+
+    `max_tokens` caps what Surya may GENERATE per crop (the worker lowers
+    `SURYA_MAX_TOKENS_FULL_PAGE` and the block ceiling for this job only; the
+    margin-label reader never passes it). A crop that makes the decoder loop
+    otherwise runs to 12,288 tokens, 100-290 s, and returns text the runaway
+    gate then refuses anyway.
+
+    `crop_timeout_s` is the belt-and-braces: with it, each crop is its own job
+    with that wall-time deadline, and a crop that exceeds it reads as `""` (the
+    session is closed and the next crop pays a respawn; no retry of the slow
+    crop). Without it, behaviour is exactly as before.
     """
     if not crops:
         return []
@@ -561,13 +579,28 @@ def read_crops_text(crops: list, *,
         encoded.append(base64.standard_b64encode(buf.tobytes()).decode("ascii")
                        if ok else "")
 
-    payload: dict[str, Any] = _dispatch({"crops": encoded},
-                                        timeout_s=timeout_s,
-                                        keep_alive=keep_alive)
+    job: dict[str, Any] = {"crops": encoded}
+    if max_tokens is not None:
+        job["max_tokens"] = int(max_tokens)
+    if crop_timeout_s is None:
+        entries = _dispatch(job, timeout_s=timeout_s,
+                            keep_alive=keep_alive).get("crops", [])
+    else:
+        entries = []
+        for b64 in encoded:
+            one = dict(job, crops=[b64])
+            try:
+                got = _dispatch(one, timeout_s=crop_timeout_s,
+                                keep_alive=keep_alive,
+                                one_shot_fallback=False).get("crops", [])
+                entries.append(got[0] if got else {"text": ""})
+            except SuryaLabelError as exc:
+                logger.warning("surya: crop abandoned (%s)", exc)
+                entries.append({"text": "", "error": "crop wall-time guard"})
 
     out = []
     n_runaway = 0
-    for entry in payload.get("crops", []):
+    for entry in entries:
         if entry.get("error"):
             logger.warning("surya failed on one crop: %s", entry["error"])
             out.append("")

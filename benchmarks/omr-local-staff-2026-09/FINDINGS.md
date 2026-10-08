@@ -4756,3 +4756,40 @@ cost; with the ceiling it need not stay.
 **Not measured:** a cold `llama-server` start (shared server never stopped); engraved pages; Litolff p0 has no staves (0
 candidates, as the script prints `NaN` spacing); `OMR_SURYA_KEEP_ALIVE=0` does not remove the pre-existing resident server, so
 "owning my processes" held only for the worker.
+
+---
+
+## 2026-10-08 -- Direction-word token cap, held-out check (lane-direction-text-on-scans; scan-gate default NOT changed)
+
+PATH: STAGED `gather_direction_words` / `direction_text.read_directions`. Built: `DIRECTION_WORD_MAX_TOKENS = 64` and a 20 s per-crop
+wall-time guard (`DIRECTION_CROP_TIMEOUT_S`; a crop silent past it reads as empty, the session is closed, no retry), passed only by
+`direction_text._surya_word_reader`; the worker lowers `SURYA_MAX_TOKENS_FULL_PAGE` and the block ceiling for that job only (margin labels
+untouched). Tests `test_direction_word_token_cap_2026_10_08.py` (7; 5 RED on the old tree, 2 are positive controls). Fast tier 6,171 passed;
+`staged.check` 192 -> 192.
+
+Held-out, scan gate OFF, one page each (`direction_cap_heldout.py`, rows `out/direction_cap/data_*.json`), cap ON vs OFF:
+
+| page (pdf idx) | candidates | ON s | OFF s | words ON / OFF |
+|---|--:|--:|--:|---|
+| Litolff 4 | 28 | 16.6 | 119.7 | 4 / 4 |
+| Litolff 6 | 19 | 14.2 | 320.5 | 3 / 3 |
+| Litolff 9 | 26 | 15.8 | 127.0 | 6 / 6 |
+| Litolff 12 | 7 | 3.8 | 3.0 | 0 / 0 |
+| Litolff 15 | 6 | 2.8 | 2.3 | 0 / 0 |
+| Brahms 3 | 11 | 4.7 | 4.4 | 0 / 0 |
+| Brahms 7 | 30 | 17.3 | 23.4 | 5 / 5 |
+| Brahms 12 | 36 | 18.4 | 112.5 | **3 / 4** |
+| Brahms 18 | 15 | 6.3 | 6.0 | 0 / 0 |
+| Brahms 24 | 6 | 3.4 | 2.7 | 0 / 0 |
+
+**One real word is lost: `arco`, Brahms p12, staff 26, x 932** (crop `out/direction_cap/lost_arco_crop.png`, plainly `arco`). Probe
+(`direction_cap_probe.py`): uncapped Surya reads `arco` then loops on junk (96 s, 106 s); with the cap (64, and also with only
+`SURYA_MAX_TOKENS_FULL_PAGE=64`) it reads `Station of th` every time; Tesseract reads `do`. So the cap does not merely truncate a
+looping tail: the word sits in output that only completes after the loop, and a cut pass falls to a different reading. Every other
+word is identical (ON no extras). Time: every ON page is under 20 s; the OFF ceiling is 320 s.
+
+Per the lane's rule the scan-gate default was not switched and `regather_20260930.sh`/`acceptance_quick`/`gather_movement.sh`
+still set `OMR_DIRECTION_TEXT_SCAN_GATE=1`. (The flag's own default is already OFF, i.e. the reader runs.) The cap is in
+`default_readers`, so it is on wherever that reader runs. Separately, the review images show the reader boxes only a minority of the
+printed words (Brahms p12 prints many `dim.`/`cresc.`; the CV candidates are the limit), which the cap does not touch.
+Review images: `out/print/direction_text_scans/{litolff,brahms}_page_NN.png`, `questions.txt`.

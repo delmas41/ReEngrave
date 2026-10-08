@@ -743,6 +743,23 @@ def page_is_scanned(page: PageImage) -> bool:
     return False
 
 
+#: Output-token ceiling for ONE direction-word crop on Surya (this reader only;
+#: margin labels never pass it). The longest legal direction is a few tokens;
+#: the default ceiling (12,288) is only ever reached by a looping decoder
+#: (Litolff p2: two `cresc.` crops, 101 s and 291 s, both returning nothing).
+DIRECTION_WORD_MAX_TOKENS = 64
+#: Belt-and-braces wall-time guard per crop (s): a crop still silent after this
+#: reads as "" and the next crop goes on. Normal crops take 0.1-3 s.
+DIRECTION_CROP_TIMEOUT_S = 20.0
+
+
+def _surya_word_reader(crops):
+    from . import staff_labels_surya
+    return staff_labels_surya.read_crops_text(
+        crops, max_tokens=DIRECTION_WORD_MAX_TOKENS,
+        crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
+
+
 def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
     """The rungs to ask, in precedence order, skipping any that cannot run.
 
@@ -801,7 +818,7 @@ def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:
         try:
             from . import staff_labels_surya
             if staff_labels_surya.available():
-                readers.append(("surya", staff_labels_surya.read_crops_text))
+                readers.append(("surya", _surya_word_reader))
         except Exception as exc:                              # noqa: BLE001
             logger.debug("surya rung unavailable: %s", exc)
     # Only ever DROP the second rung, and only where the page proves itself
