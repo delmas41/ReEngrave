@@ -31,10 +31,11 @@ class TestGatherConstantsUnchanged(unittest.TestCase):
     def test_with_gate_is_93_s_per_page(self):
         self.assertEqual(budget.GATHER_S_PER_PAGE_WITH_DIRECTION_GATE, 93.0)
 
-    def test_without_gate_adds_the_267s_direction_reader_cost(self):
+    def test_without_gate_adds_the_measured_direction_reader_cost(self):
         self.assertEqual(
             budget.GATHER_S_PER_PAGE_WITHOUT_DIRECTION_GATE,
-            budget.GATHER_S_PER_PAGE_WITH_DIRECTION_GATE + 267.0)
+            budget.GATHER_S_PER_PAGE_WITH_DIRECTION_GATE
+            + budget.DIRECTION_READER_S_PER_PAGE)
 
 
 class TestPostGatherIsDerivedNotHardcoded(unittest.TestCase):

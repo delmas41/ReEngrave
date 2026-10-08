@@ -202,9 +202,7 @@ import sys
 from tools.omr.staged.budget import estimate_job_budget_s, format_budget_report
 n = int(sys.argv[1])
 # The direction-word reader now RUNS on scans (OMR_DIRECTION_TEXT_SCAN_GATE is
-# no longer set, 2026-10-08; ~20 s/page measured). `budget.py` still prices the
-# reader at the old 267 s/page, so the figure printed here is a conservative
-# UPPER bound: expected = the without-gate figure.
+# no longer set, 2026-10-08); `budget.py` prices it at the measured 18 s/page.
 print(format_budget_report(estimate_job_budget_s(n, direction_text_scan_gate=False)))
 print("   ⚠️ n=1 document at this scale (roadmap 1.1's own first run) -- "
       "the GATHER half of this is CLAUDE.md's own per-page constants times "

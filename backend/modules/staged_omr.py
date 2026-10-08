@@ -163,7 +163,7 @@ def parse_page_range(pages: str) -> List[int]:
 
 
 def estimate_budget_s(n_pages: int, *,
-                      direction_text_scan_gate: bool = True) -> Dict[str, Any]:
+                      direction_text_scan_gate: bool = False) -> Dict[str, Any]:
     """The same per-page time estimate `gather_movement.sh` prints
     (ROADMAP 1.2b) — `tools.omr.staged.budget.estimate_job_budget_s`,
     imported rather than restated, so the CLI script and this web job can

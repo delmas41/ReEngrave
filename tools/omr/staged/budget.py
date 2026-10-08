@@ -83,10 +83,17 @@ from typing import Any, Dict
 GATHER_S_PER_PAGE_WITH_DIRECTION_GATE = 93.0
 
 #: The same GATHER stage if the gate never fires and the direction-word
-#: reader runs on every page too (CLAUDE.md §5b: ~267 s/page more) — the
+#: reader runs on every page too (measured, see `DIRECTION_READER_S_PER_PAGE`) — the
 #: conservative upper bound `gather_movement.sh` has always printed
 #: alongside the expected figure.
-GATHER_S_PER_PAGE_WITHOUT_DIRECTION_GATE = 93.0 + 267.0
+#: The direction-word reader's cost on a scan, MEASURED 2026-10-08 on the 10
+#: held-out pages with the width-scaled token cap, tight crops and the fast-rung
+#: gate (`benchmarks/omr-direction-text-2026-09/FINDINGS.md`): mean 17.5 s per
+#: page, 3.5-28 s, rounded up. It was 267 s before those; the reader now runs on
+#: scans (no script sets `OMR_DIRECTION_TEXT_SCAN_GATE`), so this is the
+#: EXPECTED figure and `direction_text_scan_gate` defaults to False.
+DIRECTION_READER_S_PER_PAGE = 18.0
+GATHER_S_PER_PAGE_WITHOUT_DIRECTION_GATE = 93.0 + DIRECTION_READER_S_PER_PAGE
 
 # ─────────────────────────────────────────────────────────────────────────
 # post-GATHER (ADJUDICATE/EVALUATE/INFER/write): the 2026-09-28 recalibration.
@@ -152,7 +159,7 @@ POST_GATHER_UPPER_BOUND_CAVEAT = (
 
 
 def estimate_job_budget_s(n_pages: int, *,
-                          direction_text_scan_gate: bool = True
+                          direction_text_scan_gate: bool = False
                           ) -> Dict[str, Any]:
     """Seconds, over `n_pages`, for a whole staged run: GATHER through
     EXPORT. A COMPUTATION from the constants above, never a measurement of
