@@ -22,6 +22,32 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 0.8: the "built, not merged" rows triaged against the tree
+
+**Sean: "Can you start 2. Sort the built not merged."** A docs-only commit:
+no code, no run, no measurement. Fetched the full history and every `origin/*`
+branch, then checked each branch named by an open Phase 2/3 row against
+`origin/main` 6e96227b (`merge-base --is-ancestor`, `git cherry`, the first
+landing merge, whether that merge was empty, whether the added functions are
+still on main).
+
+- **41 rows said "not merged" for work that is on main.** Each now has a bold
+  `MERGED to main (<sha>, tree-verified 2026-10-08)` prefix, with the lane's
+  text kept after it. Six flags those rows call OFF are default ON today
+  (`OMR_CELL_LINE_FIND`, `OMR_OWNER_FROM_STAVES`,
+  `OMR_FARHEAD_OWNER_LEDGERS`, `OMR_MARK_GROUPS`, `OMR_DOT_FOLLOWS_NOTE`,
+  `OMR_STEM_OWNER`).
+- **Nine rows are genuinely not on main:**
+  - Superseded: the 2.21 first draft, 2.44, 2.44c, 2.44d.
+  - Dead at zero, recommended drop: 2.6h, 3.2c.
+  - Evidence only, recommended land: 2.51, 2.53.
+  - Parked by Sean: 2.48.
+  These rows got a prefix saying so. Nothing was dropped: each drop needs
+  Sean and a DECISIONS line.
+- New: `docs/triage-2026-10-08-built-not-merged.md`, ROADMAP row 0.8 and a
+  START HERE block. CLAUDE.md §5a: how to fetch every branch in a shallow
+  cloud clone, and the fact that "not merged" is a claim to check.
+
 ## 2026-10-08 — INTEGRATION C: eight audit follow-up lanes (Sonnet), one landing
 
 **Sean: "clean up the worktrees and send out agents for the follow-ups - use
