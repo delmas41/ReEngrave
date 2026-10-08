@@ -1399,6 +1399,32 @@ writes. Then the pins are two tests short and the order wants declaring.
 gap would go unfilled if the rules reversed — visible as `skipped` lines in
 the report, never as a wrong value.
 
+### A-EXPORT-1 · The exporter's order is data flow, and its guards are equalities
+
+**MIXED** — "a mark hangs on a placed note" and "an arc is merged along a
+part" are facts; the sequence in `to_musicxml` is ours.
+*`export.to_musicxml`, `export.build`, `export._part_xml`, `lilypond.to_lilypond`*
+
+**Assumption.** Runs → hold-out set → notes → marks → join → arcs/wedges/
+numbering → render → report → equalities. Every edge in that chain is forced
+by what the next step reads, and each is stated at its call site
+(`docs/export-sequence-2026-10-07.md` §4).
+
+**Why.** A misorder would move a refusal out of reach of a counter, and the
+counters are asserted: three `Unbalanced` equalities (per-system = per-reason,
+re-asserted after the render; unread-bar marks = the three held-out reasons;
+noteheads+rests in the log = written + not-written) and seven per-family
+controls, equalities wherever nothing legitimately collapses (the wedge
+control was a `<=` for one afternoon and hid ten hairpins).
+
+**How to falsify.** Reorder a step and the equality it feeds goes False. ⚠️
+That was NOT true of the LilyPond path until 2026-10-07: `to_lilypond` reused
+every reader and asserted only two of the four equalities; a bar
+`_bar_holds_out` refused was counted but its notes never reached `dropped`, so
+the `.ly` sidecar's `notes_not_written_total` was smaller than the `.musicxml`
+sidecar's for the same record and nothing raised. ROADMAP 2.64 threads the
+same `drops=` callback and asserts the same two note equalities there.
+
 ---
 
 ## A-WIT — redundant groups (the witnesses)
