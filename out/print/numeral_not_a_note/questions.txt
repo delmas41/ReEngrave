@@ -1,0 +1,3 @@
+Tile 1 (Cello, page 27, Sean's tile 4): Is the thing in the orange box a note or a number?
+Tile 2 (Cello, page 27, the matching box in the next bar): Is the thing in the orange box a note or a number?
+Tile 3 (Cello, page 2): Is the thing in the orange box a note or a letter of the word "cresc."?

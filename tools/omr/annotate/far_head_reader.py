@@ -149,10 +149,27 @@ DEFAULT_THICKNESS_PX = 4.0            # mht._page_line_thickness_px's fallback
 # ---------------------------------------------------------------------------
 TEXT_OVERLAP_MIN = 0.5
 
+# lane-numeral-not-a-note (Sean 2026-10-08, `brahms 26/0/11/0/17`: a "2" boxed as a half head, score 0.254, no numeral box
+# on the record). THRESHOLDS, STATED BEFORE LOOKING:
+#   * on_numeral     : a detector `fingering*` / `tuplet*` (not bracket) box covers at least TEXT_OVERLAP_MIN of the head box.
+#   * numeral_shaped : the ink component holding most of the box's ink is ISOLATED (does not reach the edge of the box padded by
+#                      0.3 sp, so no staff line, ledger, stem, slur or neighbour is joined to it), is NUMERAL-SIZED
+#                      (NUMERAL_W_SP x NUMERAL_H_SP) and is NOT a solid oval: area / convex-hull area under
+#                      NUMERAL_SOLIDITY_MAX. A "2" is open on the left with a flat base stroke (~0.7); a head is a convex oval.
+#   A hole-count / opened-area test was measured first and REFUSED ~60% of real hollow heads (a scanned half head is a black oval
+#   with a thin white slit): dropped, see FINDINGS.
+NUMERAL_CLASS_PREFIXES = ("fingering", "tuplet")
+NUMERAL_W_SP = (0.5, 2.0)
+NUMERAL_H_SP = (0.8, 2.0)
+NUMERAL_SOLIDITY_MAX = 0.78
+NUMERAL_ISOLATION_PAD_SP = 0.3
+
 NOT_A_NOTE_WORDS = {
     "decided_not_a_notehead": "the record already decided this box is not a notehead ({detail})",
     "on_a_barline": "a barline: the record's own measure cut runs through this box",
     "tremolo_slash": "a tremolo slash: a diagonal stroke across its stem, ink on both sides",
+    "on_numeral": "a number: a fingering or tuplet digit box the record holds lies over this box",
+    "numeral_shaped": "a number or letter: its ink is a separate, digit-sized mark that is not a solid oval",
     "on_text": "text: a text or dynamic box the record holds lies over this box",
     "too_narrow": "too narrow to be a notehead (under one staff space wide)",
     "clipped_fragment": "a sliver cut off by the edge of its measure cell",
@@ -165,8 +182,37 @@ def _precision():
     return NP
 
 
+def isolated_ink_shape(gray, box, spacing) -> Optional[Dict[str, Any]]:
+    """The ink component holding most of `box`'s ink, in staff spaces: `dict(isolated, solidity, w_sp, h_sp)`, or `None`
+    where the box holds no ink. `isolated` = it does not reach the edge of the box padded by NUMERAL_ISOLATION_PAD_SP."""
+    import cv2
+    x0, y0, x1, y1 = (int(round(float(v))) for v in box)
+    pad = int(round(NUMERAL_ISOLATION_PAD_SP * spacing))
+    H, W = gray.shape
+    a0, b0, a1, b1 = max(0, x0 - pad), max(0, y0 - pad), min(W, x1 + pad), min(H, y1 + pad)
+    if a1 <= a0 or b1 <= b0:
+        return None
+    ink = (gray[b0:b1, a0:a1] < 128).astype(np.uint8)
+    n, lab, st, _ = cv2.connectedComponentsWithStats(ink, connectivity=8)
+    inbox = np.zeros_like(ink)
+    inbox[max(0, y0 - b0):max(0, y1 - b0), max(0, x0 - a0):max(0, x1 - a0)] = 1
+    best, bi = 0, None
+    for i in range(1, n):
+        a = int(((lab == i) & (inbox == 1)).sum())
+        if a > best:
+            best, bi = a, i
+    if bi is None:
+        return None
+    cnts, _ = cv2.findContours((lab == bi).astype(np.uint8), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    hull_area = cv2.contourArea(cv2.convexHull(np.vstack(cnts)))
+    x, y, w, h, area = (int(v) for v in st[bi])
+    touches = x <= 0 or y <= 0 or x + w >= ink.shape[1] or y + h >= ink.shape[0]
+    return dict(isolated=not touches, solidity=float(area) / max(1.0, hull_area),
+                w_sp=w / spacing, h_sp=h / spacing)
+
+
 def not_a_note_reason(box, cls, spacing, *, cell_box=None, cross=None, barline_xs=(), text_boxes=(),
-                      decided=None) -> Optional[Dict[str, Any]]:
+                      decided=None, numeral_boxes=(), ink_shape=None) -> Optional[Dict[str, Any]]:
     """Why this far "notehead" box is something else, or `None`. Pure: a box, its class, the local staff spacing
     (page px) and the record's own evidence about it. `dict(reason, words, drawn, also)`: `drawn` is the evidence to
     draw, `[(kind, geometry)]`; `also` every other reason that fired (the first in ORDER is the one named)."""
@@ -191,6 +237,15 @@ def not_a_note_reason(box, cls, spacing, *, cell_box=None, cross=None, barline_x
         if ox > 0 and oy > 0 and ox * oy / area >= TEXT_OVERLAP_MIN:
             fired.append(("on_text", [("text", tuple(tb))]))
             break
+    for nb in numeral_boxes or ():
+        ox, oy = min(x1, nb[2]) - max(x0, nb[0]), min(y1, nb[3]) - max(y0, nb[1])
+        if ox > 0 and oy > 0 and ox * oy / area >= TEXT_OVERLAP_MIN:
+            fired.append(("on_numeral", [("numeral", tuple(nb))]))
+            break
+    if (ink_shape and ink_shape.get("isolated") and NUMERAL_W_SP[0] <= ink_shape["w_sp"] <= NUMERAL_W_SP[1]
+            and NUMERAL_H_SP[0] <= ink_shape["h_sp"] <= NUMERAL_H_SP[1]
+            and ink_shape["solidity"] < NUMERAL_SOLIDITY_MAX):
+        fired.append(("numeral_shaped", [("box", (x0, y0, x1, y1))]))
     if (str(cls or "").lower().startswith(NP.TOO_NARROW_CLASS_PREFIX)
             and (x1 - x0) / spacing < NP.TOO_NARROW_MIN_SPACES):
         fired.append(("too_narrow", [("box", (x0, y0, x1, y1))]))
@@ -582,6 +637,9 @@ class FarHeadPage:
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
         # lane-ledger-not-text: the record's own text / dynamic boxes
         self.text_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_text_class(c)]
+        # lane-numeral-not-a-note: the record's own fingering / tuplet digit boxes (a bracket is not a digit)
+        self.numeral_boxes = [tuple(b) for (_s, c, b) in self.page_boxes
+                              if str(c or "").lower().startswith(NUMERAL_CLASS_PREFIXES) and "racket" not in str(c)]
         # lane-farhead-2-9: the record's own accent / marcato / tenuto boxes (their stroke is not a ledger)
         self.artic_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_articulation_class(c)]
         self.thickness = page_line_thickness_px(gray, staff_lines_by_key, self.nh)
@@ -668,7 +726,8 @@ class FarHeadPage:
         ev = self.not_a_note.get(subject) or {}
         return not_a_note_reason(
             box, cls, spacing, cell_box=ev.get("cell_box"), cross=ev.get("cross"),
-            barline_xs=ev.get("barline_xs") or (), text_boxes=self.text_boxes, decided=ev.get("decided"))
+            barline_xs=ev.get("barline_xs") or (), text_boxes=self.text_boxes, decided=ev.get("decided"),
+            numeral_boxes=self.numeral_boxes, ink_shape=isolated_ink_shape(self.gray, box, spacing))
 
     def read(self, subject: str, box: Sequence[float], cls: Optional[str],
              global_lines: Sequence[float]) -> Dict[str, Any]:
