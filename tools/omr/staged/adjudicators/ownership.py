@@ -3687,6 +3687,23 @@ def adjudicate_ottava_owner(ev: Evidence) -> Ruling:
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+#: ROADMAP 2.58c (Sean, 2026-10-08 brief; the rule is CLAUDE.md §10 as Sean
+#: stated it on 2026-09-28: *"the ledger lines name the owner, and they are
+#: authoritative ... nearness is only a hint and never overrides them"*).
+#: The reasons a `glyph_owner` verdict rests on the LEDGER witness, and the one
+#: that rests on nearness alone. Every other deciding reason (`staff_band`,
+#: `range_veto`, `ladder`, `hairpin_separates`) is neither and is never ranked.
+LEDGER_OWNER_REASONS = ("ledger_note_first", "ledger_direction",
+                        "ledger_owner_density")
+NEARNESS_ONLY_OWNER_REASONS = ("distance",)
+
+
+def _refused_as_a_note(log: R.Log, sub: R.Subject) -> bool:
+    v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+    return bool(v is not None and v.outcome is Outcome.DECIDED
+                and v.value is True)
+
+
 def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
     """`glyph_owner` rules ONCE per `Q.MARK_GROUP` (Sean, 2026-10-06).
 
@@ -3696,17 +3713,38 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
     and the other abstained (the abstained copy was then written NOWHERE as
     `owner_not_read`), or no copy was contested at all.
 
-    ⚠️ IT CONNECTS A DECISION AND NEVER LETS ONE GUESS (CLAUDE.md rule 6):
-      * every member that DECIDED names the same staff -> the members that
-        abstained, or that never entered the contest, take that staff; the new
-        verdict names the decided members' verdicts as its BASIS and
-        SUPERSEDES the member's own, so both stay on the record;
-      * the decided members DISAGREE -> nothing is filed; the conflict is
-        counted (`conflict`) and each member keeps its own ruling. A swap is
-        not resolved by a vote;
-      * no member decided -> nothing is filed (`all_silent`): the mark stays
-        counted under `owner_not_read`, never silently assigned.
-    A DECIDED verdict is never overturned.
+    ⚠️ IT CONNECTS A DECISION AND NEVER LETS ONE GUESS (CLAUDE.md rule 6).
+    THE RULES, in the order they are tried (ROADMAP 2.58c states 3-5):
+
+      1. every member that DECIDED names the same staff -> the members that
+         abstained, or that never entered the contest, take that staff; the
+         new verdict names the decided members' verdicts as its BASIS and
+         SUPERSEDES the member's own, so both stay on the record;
+      2. no member decided -> nothing is filed. The census says WHY, because
+         the two cases are not the same thing: `owned_by_filing_staff` (no
+         member was ever contested and all were cut from ONE staff -- nobody
+         disputes it, there is no verdict to file) is an owner;
+         `unowned_abstained` (a contested copy looked and could not tell:
+         `far_no_rungs`, `tied`) and `unowned_split_uncontested` (never
+         contested but filed on DIFFERENT staves) are not, and stay counted
+         under `owner_not_read`, never silently assigned (rule 8);
+      3. A REFUSED BOX DOES NOT VOTE. A member whose
+         `notehead_is_not_a_notehead` verdict is DECIDED True is not a note;
+         its `glyph_owner` is not evidence about the mark's staff (that
+         decision does not read the refusal), so it neither supplies an owner
+         nor blocks one (`refused_ignored`);
+      4. the decided members DISAGREE and exactly ONE staff rests on the
+         LEDGER witness (`LEDGER_OWNER_REASONS`) while every dissenter rests
+         on nearness alone (`NEARNESS_ONLY_OWNER_REASONS`) -> the ledger
+         staff is the group's owner and the nearness verdicts are SUPERSEDED
+         (`conflict_resolved_by_ledger`). Ledger lines name the owner; a
+         silent ledger look from the other copy's crop is the absence of
+         evidence, not a refutation;
+      5. any other disagreement -- two ledger readings, a ledger reading
+         against `staff_band`/`ladder`/`range_veto`, a swap -- files nothing
+         and is counted (`conflict`); each member keeps its own ruling. A swap
+         is not resolved by a vote.
+    A DECIDED verdict is overturned ONLY by rule 4.
 
     Returns the census. Runs only where `Q.MARK_GROUP` rows exist, so a record
     gathered without `OMR_MARK_GROUPS` is untouched.
@@ -3722,16 +3760,39 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
             continue
         census["groups"] += 1
         verdicts = {m: log.verdict(Q.GLYPH_OWNER, m) for m in members}
-        decided = {m: v for m, v in verdicts.items()
-                   if v is not None and v.outcome is Outcome.DECIDED
-                   and isinstance(v.value, str)}
+        refused = {m for m in members if _refused_as_a_note(log, m)}
+        decided_all = {m: v for m, v in verdicts.items()
+                       if v is not None and v.outcome is Outcome.DECIDED
+                       and isinstance(v.value, str)}
+        decided = {m: v for m, v in decided_all.items() if m not in refused}
+        if len(decided) != len(decided_all):
+            census["refused_ignored"] += 1
         owners = {v.value for v in decided.values()}
         if not decided:
             census["all_silent"] += 1
+            if any(v is not None for v in verdicts.values()):
+                census["unowned_abstained"] += 1
+            else:
+                homes = {m.at(Kind.STAFF).to_key() for m in members
+                         if m.at(Kind.STAFF) is not None}
+                census["owned_by_filing_staff" if len(homes) == 1
+                       else "unowned_split_uncontested"] += 1
             continue
+        resolved = False
         if len(owners) > 1:
-            census["conflict"] += 1
-            continue
+            ledger_owners = {v.value for v in decided.values()
+                             if v.reason in LEDGER_OWNER_REASONS}
+            dissent_is_nearness = len(ledger_owners) == 1 and all(
+                v.reason in NEARNESS_ONLY_OWNER_REASONS
+                for v in decided.values() if v.value not in ledger_owners)
+            if not dissent_is_nearness:
+                census["conflict"] += 1
+                continue
+            owners = ledger_owners
+            decided = {m: v for m, v in decided.items()
+                       if v.value in ledger_owners}
+            resolved = True
+            census["conflict_resolved_by_ledger"] += 1
         owner = next(iter(owners))
         basis = tuple(sorted(v.id for v in decided.values()))
         for m in members:
@@ -3741,14 +3802,22 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
             own = m.at(Kind.STAFF)
             if prior is None and own is not None and own.to_key() == owner:
                 continue                 # never contested and already home
+            if prior is not None and prior.outcome is Outcome.DECIDED \
+                    and (m in refused or prior.value == owner):
+                continue                 # a refused box's ruling is left alone
             out = R.Verdict(
                 id=log._next_id("vrd"), subject=m, quantity=Q.GLYPH_OWNER,
                 outcome=Outcome.DECIDED, value=owner,
-                decider="reconcile_group_owners", reason="group_owner",
-                considered=basis, basis=basis,
-                supersedes=prior.id if prior is not None else None)
+                decider="reconcile_group_owners",
+                reason="group_owner", considered=basis, basis=basis,
+                supersedes=prior.id if prior is not None else None,
+                detail=({"overruled": prior.value, "by": "ledger"}
+                        if prior is not None
+                        and prior.outcome is Outcome.DECIDED else {}))
             log.record(out)
             census["adopted_after_abstaining" if prior is not None
+                   and prior.outcome is not Outcome.DECIDED
+                   else "overruled_by_ledger" if prior is not None
                    else "adopted_uncontested"] += 1
     return dict(census)
 

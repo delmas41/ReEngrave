@@ -4550,3 +4550,39 @@ Two first versions refused, with the numbers: (1) requiring EVERY counted rung t
 So the look rescues FOUR heads in all, not ten (the sheet shows all four, then the nine other accent refusals that were sampled to fill it: tiles 1-2 Sean's, 3-5 rescues, 6-12 seeded refusals). All 12 Brahms refusals were cropped (`crop` of 12): every one is a real `>` accent under or over the head. The 13th decided->abstain is tile 9. Off-box count not re-run.
 **Not fixed / said plainly:** the look needs the ledger's end to stand out of the head's ink by >= 3 px; a ledger fused with a flat's bowl on one side and short on the other would not be seen (tile 2 was close to that). 11 of the 15 abstains seen on the way are untouched.
 **Gates:** `staged.check` TOTAL 247 (the same figure the last lane reported; no baseline re-run on the unpatched tree); fast tier before the last narrowing 4,608 passed, after it the 574 far-head/ledger/owner tests pass.
+
+## 2026-10-08 -- ROADMAP 2.58c: why a mark seen 2+ times has no owner (`lane-mark-group-no-owner`)
+
+GATHER+ADJUDICATE only, on the 10-07 day records. Population = notehead marks seen 2+ times, members not refused as a
+note (Litolff 1,420, Brahms 3,076). Scripts: `mark_group_no_owner_extract.py`, `mark_group_no_owner_tiles.py`.
+
+**The 148 (Litolff) / 40 (Brahms) "no owner" is mostly not a gap.** Counted as "no member holds a DECIDED `glyph_owner`":
+
+| cause | Litolff | Brahms |
+|---|---|---|
+| never contested, every copy cut from ONE staff (and one cell) -- the filing staff is the owner, nothing to file | 146 | 35 |
+| a contested copy looked and abstained (`far_no_rungs`; Brahms also 1 `tied`) -- every copy abstained | 2 | 5 |
+| (not in the 148) decided copies name different staves | 4 | 2 |
+
+Under the project's own measure (`day_1007_report.marks`: decided owner, else filing staff) that is Litolff 2 unowned +
+4 split, Brahms 5 unowned + 2 split. The brief's Brahms "5" is that measure; the Litolff "148" is the decided-verdict
+count (its Brahms twin is 40).
+
+**Replay control:** the group stage rebuilt from the record (GATHER `mark_group` rows + each member's original
+`glyph_owner` and not-a-note verdicts) with the OLD rule reproduces the record's own `group_owner` verdicts exactly
+(Litolff 39/39, Brahms 31/31); the NEW rule differs on 3 and 7 member verdicts, so the control can fail.
+
+**Rules (stated before the run; `reconcile_group_owners`):** (3) a box refused as a note neither votes nor blocks;
+(4) one ledger-backed staff against nearness-only (`distance`) dissent -> the ledger staff owns the group (CLAUDE.md §10:
+ledgers name the owner, nearness is a hint); (5) any other disagreement files nothing. Census now says WHY a group is
+silent (`owned_by_filing_staff` / `unowned_abstained` / `unowned_split_uncontested`).
+
+**Result:** groups that had one owner and changed or lost it: 0 / 0. Newly owned: Litolff 2 conflicts resolved by rule 4
+(`14/0/46`, `4/1/178`; Brahms 0 -- both its conflicts are ledger-vs-ledger). Of the 2 (Litolff) / 5 (Brahms) groups
+where every copy abstained: 0 gain an owner -- no copy has an answer to adopt, and rule 8 forbids a guess (several
+carry tremolo-slash or numeral signals: possibly not notes -- the not-a-note lane's). Rule 3 changed 8 verdicts
+(1 + 7), all on boxes refused as notes (nothing written changes). Kept conflicts: Litolff 2 (`12/0/491`, `6/1/374`),
+Brahms 2 (`18/1/599`, `5/1/35`) -- swaps between ledger readings, not resolved.
+
+**Pending Sean:** `out/print/mark_group_no_owner/tile_01..10.png` + `questions.txt` (answer key `key.json`, not on the
+tiles). Tiles 3 and 7 are the two rule-4 groups; the rule is not to be merged until he answers them.
