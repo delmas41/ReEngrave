@@ -1,0 +1,119 @@
+{
+ "tag": "lit_15",
+ "rows": [
+  {
+   "staff": 5,
+   "measure": 18,
+   "x": 2276,
+   "bbox": [
+    2276,
+    1259,
+    2382,
+    1282
+   ],
+   "w_sp": 7.3,
+   "cap": 61,
+   "tess": "bal",
+   "t_tess": 0.17,
+   "surya_guard": "",
+   "t_surya_guard": 0.37,
+   "surya_cap": "",
+   "t_surya_cap": 0.21
+  },
+  {
+   "staff": 9,
+   "measure": 12,
+   "x": 1711,
+   "bbox": [
+    1711,
+    1884,
+    1771,
+    1917
+   ],
+   "w_sp": 5.0,
+   "cap": 52,
+   "tess": "Jaspq",
+   "t_tess": 0.18,
+   "surya_guard": "",
+   "t_surya_guard": 0.36,
+   "surya_cap": "",
+   "t_surya_cap": 0.26
+  },
+  {
+   "staff": 10,
+   "measure": 11,
+   "x": 1693,
+   "bbox": [
+    1693,
+    2006,
+    1757,
+    2055
+   ],
+   "w_sp": 5.2,
+   "cap": 53,
+   "tess": "val.",
+   "t_tess": 0.31,
+   "surya_guard": "",
+   "t_surya_guard": 0.36,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 14,
+   "measure": 5,
+   "x": 1023,
+   "bbox": [
+    1023,
+    2709,
+    1065,
+    2729
+   ],
+   "w_sp": 4.1,
+   "cap": 48,
+   "tess": "ay a",
+   "t_tess": 0.31,
+   "surya_guard": "",
+   "t_surya_guard": 0.32,
+   "surya_cap": "",
+   "t_surya_cap": 0.28
+  },
+  {
+   "staff": 16,
+   "measure": 12,
+   "x": 1726,
+   "bbox": [
+    1726,
+    2998,
+    1849,
+    3009
+   ],
+   "w_sp": 8.15,
+   "cap": 65,
+   "tess": "i ih: 1 at",
+   "t_tess": 0.22,
+   "surya_guard": "",
+   "t_surya_guard": 0.35,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 21,
+   "measure": 4,
+   "x": 939,
+   "bbox": [
+    939,
+    3649,
+    954,
+    3665
+   ],
+   "w_sp": 2.75,
+   "cap": 43,
+   "tess": "xf",
+   "t_tess": 0.3,
+   "surya_guard": "",
+   "t_surya_guard": 0.32,
+   "surya_cap": "",
+   "t_surya_cap": 0.25
+  }
+ ]
+}

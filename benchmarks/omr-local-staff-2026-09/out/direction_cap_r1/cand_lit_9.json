@@ -1,0 +1,470 @@
+[
+ {
+  "staff": 1,
+  "measure": 0,
+  "bbox": [
+   577,
+   675,
+   639,
+   692
+  ],
+  "w_sp": 3.9,
+  "h_sp": 1.1,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 1,
+  "measure": 1,
+  "bbox": [
+   728,
+   620,
+   784,
+   631
+  ],
+  "w_sp": 3.6,
+  "h_sp": 0.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "em",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 2,
+  "measure": 1,
+  "bbox": [
+   743,
+   814,
+   800,
+   834
+  ],
+  "w_sp": 3.6,
+  "h_sp": 1.3,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "an",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 0,
+  "bbox": [
+   579,
+   904,
+   640,
+   921
+  ],
+  "w_sp": 3.9,
+  "h_sp": 1.1,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "aa",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 1,
+  "bbox": [
+   746,
+   969,
+   802,
+   995
+  ],
+  "w_sp": 3.6,
+  "h_sp": 1.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "ag",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 6,
+  "measure": 2,
+  "bbox": [
+   872,
+   1340,
+   902,
+   1362
+  ],
+  "w_sp": 1.9,
+  "h_sp": 1.4,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "PN,",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 8,
+  "measure": 7,
+  "bbox": [
+   1404,
+   1633,
+   1455,
+   1654
+  ],
+  "w_sp": 3.2,
+  "h_sp": 1.3,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "ptr2",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 9,
+  "measure": 7,
+  "bbox": [
+   1397,
+   1784,
+   1483,
+   1797
+  ],
+  "w_sp": 5.5,
+  "h_sp": 0.8,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 10,
+  "measure": 7,
+  "bbox": [
+   1423,
+   1907,
+   1471,
+   1929
+  ],
+  "w_sp": 3.0,
+  "h_sp": 1.4,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "NZZ.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 5,
+  "bbox": [
+   1359,
+   2291,
+   1451,
+   2315
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "Cresc.",
+  "tess": "Cresc.",
+  "surya_ok": "Cresc.",
+  "tess_ok": "Cresc."
+ },
+ {
+  "staff": 12,
+  "measure": 5,
+  "bbox": [
+   1523,
+   2323,
+   1669,
+   2372
+  ],
+  "w_sp": 9.3,
+  "h_sp": 3.1,
+  "n": 10,
+  "placement": "below",
+  "surya": "",
+  "tess": "f Adagio.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 6,
+  "bbox": [
+   1717,
+   2341,
+   1774,
+   2372
+  ],
+  "w_sp": 3.6,
+  "h_sp": 2.0,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "Tae",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 4,
+  "bbox": [
+   1236,
+   2457,
+   1331,
+   2479
+  ],
+  "w_sp": 6.0,
+  "h_sp": 1.4,
+  "n": 6,
+  "placement": "below",
+  "surya": "cresc.",
+  "tess": "ICresc.",
+  "surya_ok": "cresc.",
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 5,
+  "bbox": [
+   1369,
+   2602,
+   1456,
+   2625
+  ],
+  "w_sp": 5.5,
+  "h_sp": 1.5,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "CTESC",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 15,
+  "measure": 4,
+  "bbox": [
+   1231,
+   2731,
+   1326,
+   2754
+  ],
+  "w_sp": 6.0,
+  "h_sp": 1.5,
+  "n": 10,
+  "placement": "below",
+  "surya": "Professor Daniel Martinez | Participants | Proces",
+  "tess": "crese.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 4,
+  "bbox": [
+   1239,
+   3168,
+   1332,
+   3191
+  ],
+  "w_sp": 5.9,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "",
+  "tess": "ICresc.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 5,
+  "bbox": [
+   1468,
+   3219,
+   1530,
+   3246
+  ],
+  "w_sp": 3.9,
+  "h_sp": 1.7,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "ava",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 18,
+  "measure": 11,
+  "bbox": [
+   2522,
+   3168,
+   2609,
+   3193
+  ],
+  "w_sp": 5.5,
+  "h_sp": 1.6,
+  "n": 5,
+  "placement": "below",
+  "surya": "Cresc. Cresc. Cresc.",
+  "tess": "crese.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 19,
+  "measure": 2,
+  "bbox": [
+   899,
+   3374,
+   977,
+   3398
+  ],
+  "w_sp": 5.0,
+  "h_sp": 1.5,
+  "n": 4,
+  "placement": "below",
+  "surya": "ATCO ATCO ATCO",
+  "tess": "arco",
+  "surya_ok": null,
+  "tess_ok": "arco"
+ },
+ {
+  "staff": 19,
+  "measure": 4,
+  "bbox": [
+   1245,
+   3343,
+   1337,
+   3367
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "cresc.",
+  "tess": "cresc.",
+  "surya_ok": "cresc.",
+  "tess_ok": "cresc."
+ },
+ {
+  "staff": 19,
+  "measure": 11,
+  "bbox": [
+   2502,
+   3320,
+   2607,
+   3343
+  ],
+  "w_sp": 6.7,
+  "h_sp": 1.5,
+  "n": 8,
+  "placement": "below",
+  "surya": "",
+  "tess": "y crese.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 20,
+  "measure": 4,
+  "bbox": [
+   1247,
+   3482,
+   1337,
+   3506
+  ],
+  "w_sp": 5.7,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "cresc. cresc. cresc.",
+  "tess": "cresc.",
+  "surya_ok": null,
+  "tess_ok": "cresc."
+ },
+ {
+  "staff": 20,
+  "measure": 11,
+  "bbox": [
+   2519,
+   3473,
+   2610,
+   3494
+  ],
+  "w_sp": 5.8,
+  "h_sp": 1.3,
+  "n": 7,
+  "placement": "below",
+  "surya": "CTESC.",
+  "tess": "CTESC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 21,
+  "measure": 0,
+  "bbox": [
+   519,
+   3606,
+   615,
+   3635
+  ],
+  "w_sp": 6.1,
+  "h_sp": 1.8,
+  "n": 7,
+  "placement": "below",
+  "surya": "Bassi.",
+  "tess": "Bassi.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 21,
+  "measure": 4,
+  "bbox": [
+   1244,
+   3608,
+   1344,
+   3632
+  ],
+  "w_sp": 6.3,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "",
+  "tess": "Cresc.",
+  "surya_ok": null,
+  "tess_ok": "Cresc."
+ },
+ {
+  "staff": 21,
+  "measure": 11,
+  "bbox": [
+   2522,
+   3600,
+   2608,
+   3622
+  ],
+  "w_sp": 5.5,
+  "h_sp": 1.4,
+  "n": 6,
+  "placement": "below",
+  "surya": "CR'SC.",
+  "tess": "CTVEC.",
+  "surya_ok": null,
+  "tess_ok": null
+ }
+]

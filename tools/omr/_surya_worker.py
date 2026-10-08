@@ -156,7 +156,23 @@ def _handle(job, predictor, Image) -> dict:
     crops = job.get("crops")
 
     if crops is not None:
-        return {"crops": _read_crops(predictor, Image, crops)}
+        cap = job.get("max_tokens")
+        if not cap:
+            return {"crops": _read_crops(predictor, Image, crops)}
+        # A word crop cannot need thousands of tokens; a looping decoder would
+        # otherwise run to SURYA_MAX_TOKENS_FULL_PAGE (12288, 100-290 s).
+        # Lowered for THIS job only and restored, so a margin-label job on
+        # the same serving worker is untouched.
+        from surya.settings import settings                # noqa: PLC0415
+        old = (settings.SURYA_MAX_TOKENS_FULL_PAGE,
+               settings.SURYA_MAX_TOKENS_BLOCK_CEILING)
+        settings.SURYA_MAX_TOKENS_FULL_PAGE = min(old[0], int(cap))
+        settings.SURYA_MAX_TOKENS_BLOCK_CEILING = min(old[1], int(cap))
+        try:
+            return {"crops": _read_crops(predictor, Image, crops)}
+        finally:
+            (settings.SURYA_MAX_TOKENS_FULL_PAGE,
+             settings.SURYA_MAX_TOKENS_BLOCK_CEILING) = old
 
     if not systems:
         return {"error": "no systems supplied"}
