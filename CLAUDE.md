@@ -574,8 +574,8 @@ design here:
   passes). Pre-filled verdicts are a QUEUE, not labels (blind out-of-sample
   0.915 under the 0.97 bar). Workflow and hotkeys: chronicle §"Hand-label
   cells". Scan truth is moving to whole-ink pages stored in page pixels
-  (ROADMAP 1.7, `tools/omr/hand_truth/`), each Claude-checked then
-  LilyPond-verified by Sean; no page is complete yet.
+  (ROADMAP 1.7; runbook `data/hand-truth/README.md`), each Claude-checked
+  then LilyPond-verified by Sean; no page is complete yet.
 
 ---
 

@@ -37,7 +37,10 @@ Each page is double-checked by Claude (flags only) and then rendered through
 LilyPond beside the print, measure by measure, before it counts as truth.
 The store, the completeness check, the training export and a generated
 inventory with the weights lineage are built (`tools/omr/hand_truth/`,
-`data/hand-truth/INVENTORY.json`); the labeling tool on the store is next.
+`data/hand-truth/INVENTORY.json`), and so is the whole labeling loop — cut a
+page, label it cell by cell in the existing UI, Claude's check, the reader with
+perfect eyes, a bar-by-bar LilyPond review (runbook: `data/hand-truth/README.md`).
+The first page to label is Brahms 317803 PDF index 0.
 
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather

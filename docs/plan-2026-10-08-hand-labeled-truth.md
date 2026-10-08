@@ -1,6 +1,6 @@
 # Hand-labeled truth: what we have, how it is used, and the plan to test only against it
 
-**Date:** 2026-10-08 · **Status:** ACCEPTED by Sean 2026-10-08 (decisions in §5). This is ROADMAP **1.7**. Phases A (but A3) and B built 2026-10-08 in `tools/omr/hand_truth/`.
+**Date:** 2026-10-08 · **Status:** ACCEPTED by Sean 2026-10-08 (decisions in §5). This is ROADMAP **1.7**. Phases A (but A3), B and the Phase C tools built 2026-10-08 in `tools/omr/hand_truth/`; the runbook for the first page is in `data/hand-truth/README.md`.
 **Path:** STAGED for everything this plan would score. LEGACY is touched only where §3 says it is.
 
 Every number below was measured on this tree on 2026-10-08. The commands are in §6. Where a number comes only from a FINDINGS.md or DECISIONS line, it says so.
@@ -144,18 +144,18 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
 
 ### Phase C: Labeling, cell by cell, with pre-fills (Sean's time; the main cost)
 
-- [ ] **C1. Annotate server on the page store.**
+- [x] **C1. Annotate server on the page store** (2026-10-08: `hand_truth/session.py` cuts the page — product-path measure cells at their own `bbox_page_px` plus margin/top/bottom REGION cells for every other bit of ink; `hand_truth/bench.py` lays it out as an ordinary bench and folds every save back in page pixels, idempotently, refreshing overlapping cells; `annotate/server.py --page-store`, a sync failure answers 500; `text` and `noise` join the picker in that mode only; staff lines are five thin `staff` boxes on each staff's first cell).
   - Same cell-at-a-time UI and hotkeys.
   - Reads and writes the page store; adds the margin / top / bottom cells and a staff-lines check.
   - Every box carries its origin.
-- [ ] **C2. Pre-fills, in order of trust** (Sean 10-08: pre-fills allowed). A pre-fill is a queue, never truth, until Sean acts on it.
+- [x] **C2. Pre-fills, in order of trust** (2026-10-08: old labels re-projected through `recut_cells`' exact frame check, newest version first, a wrong-frame cell refused; the detector per cell; page-level dedupe, an old human box always wins. NOT BUILT: a pre-fill from the CV stem/beam/ledger readers — the detector supplies beams and ledger lines, stems will mostly be drawn) (Sean 10-08: pre-fills allowed). A pre-fill is a queue, never truth, until Sean acts on it.
   1. Sean's existing labels on that page, re-projected into page pixels (`recut_cells`' frame check; refused where the frame does not match).
   2. Production weights.
   3. The CV readers: staff lines, stems, beams, ledger rungs, barlines.
   4. OCR for text.
 - [ ] **C3. Time the first system**, and price the rest of the plan from that, not from a guess.
 - [ ] **C4. Blind re-label of one system a week later.** The agreement is the noise floor for every score on these pages (rule 7).
-- [ ] **C5. Claude double-checks the page** (Sean 10-08).
+- [x] **C5. Claude double-checks the page** (Sean 10-08; built 2026-10-08: `hand_truth/checks.py` — the fixed checks below plus the ink control, raised once and never again after Sean resolves them; the visual pass files flags with `session raise`; `advance --to checked` refuses while any flag, pre-fill or unswept cell remains).
 
   Claude only FLAGS. Sean decides every flag, and Claude never edits the truth: a model's judgment is not evidence (rule 7).
 
@@ -170,7 +170,7 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
      - a head whose stated staff position disagrees with its box against the local staff lines.
   2. **Then a visual pass:** Claude looks at each cell with its boxes drawn and lists suspected misses and wrong classes.
   3. **Flags open as a queue** in the same annotate UI, and each one is accepted or rejected by Sean. The share Sean accepts is recorded per page, so we learn whether the check earns its time.
-- [ ] **C6. LilyPond side by side, one measure at a time** (Sean 10-08).
+- [x] **C6. LilyPond side by side, one measure at a time** (Sean 10-08; built 2026-10-08: `hand_truth/perfect_eyes.py` runs `pipeline.run_staged` with a detector stand-in that returns the page's boxes; `hand_truth/review.py` slices each printed bar by ordinal with clef/key/time carried, renders it with `musicxml2ly` + `lilypond -dcrop`, and serves the marks into `<page>.review.json` keyed to a hash of the boxes; a part whose bar count differs is shown NOT ALIGNED, never guessed; `advance --to verified` needs every bar ok on the current labels).
   - **Boxes are not music.** Something has to turn them into notes and rhythm.
   - **Proposed: feed the hand boxes to the STAGED pipeline in place of the detector** ("perfect eyes").
     - Sean's labels supply the staff owner and staff position, so what remains is mainly rhythm grouping.
@@ -227,7 +227,7 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 |---|--:|--:|
 | A. honest inventory + lineage | 5 | 4 (A3 open) |
 | B. page-truth store | 3 | 3 |
-| C. label, Claude check, LilyPond side by side; pages 1–5 | 6 + 5 pages | 0 |
+| C. label, Claude check, LilyPond side by side; pages 1–5 | 6 + 5 pages | tools 4 of 6 (C3 timing and C4 blind re-label need a labeled page); pages 0 |
 | D. scorer + controls | 3 | 0 |
 | E. grow the set | 3 | 0 |
 

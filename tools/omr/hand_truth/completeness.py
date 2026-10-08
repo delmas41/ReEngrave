@@ -20,7 +20,7 @@ from typing import Dict, Iterable, List, Optional, Sequence
 import numpy as np
 
 from tools.omr.score_reading import detector_family
-from tools.omr.hand_truth.store import ALL_INK, NOISE, TEXT, PageTruth
+from tools.omr.hand_truth.store import ALL_INK, ALL_INK_PASS, NOISE, TEXT, PageTruth
 
 #: Whole-ink families the reading scorer does not list, so a class never
 #: falls through to "unscored" here. Prefix-matched after normalising the
@@ -89,7 +89,7 @@ def families_covered(passes: Iterable[str]) -> Optional[frozenset]:
     """Families a cell's passes cover; ``None`` means ALL (the whole-ink pass)."""
     out: set = set()
     for p in passes:
-        if p == ALL_INK:
+        if p in (ALL_INK, ALL_INK_PASS):
             return None
         if p in LEGACY_PASS_FAMILIES:
             out |= LEGACY_PASS_FAMILIES[p]
@@ -180,7 +180,7 @@ def page_complete(page: PageTruth, ink_report: Optional[InkReport] = None) -> Di
     """The whole-ink verdict: every cell ALL_INK, every staff's lines confirmed,
     and the ink-coverage control clean. Without an ink report it is NOT complete
     — the control was not run, which is not the same as passing it."""
-    cells_ok = bool(page.cells) and all(ALL_INK in c.inspected for c in page.cells)
+    cells_ok = bool(page.cells) and all(families_covered(c.inspected) is None for c in page.cells)
     staves_ok = bool(page.staves) and all(s.lines_right is True for s in page.staves)
     ink_ok = ink_report is not None and ink_report.clean
     return {

@@ -39,6 +39,9 @@ CELL_KINDS: Tuple[str, ...] = ("measure", "margin", "top", "bottom")
 #: A cell inspected for EVERY family — the whole-ink pass (Sean 2026-10-08:
 #: "start with everything on the page").
 ALL_INK = "*"
+#: The same pass as the labeling UI names it (``batch_config.json`` pass_name,
+#: stamped into ``inspected_passes`` when Sean moves on from a cell).
+ALL_INK_PASS = "all-ink"
 #: Ink that is not music (specks, bleed-through). Boxed so the ink-coverage
 #: control can close; never exported as a training class.
 NOISE = "noise"
@@ -88,6 +91,9 @@ class Box:
     #: Staff position in steps from the middle line (0 = middle line).
     staff_position: Optional[int] = None
     cell_id: Optional[str] = None  # the cell it was drawn or confirmed in
+    #: ``<cell_id>#<added id>`` for a box drawn in the labeling UI — the key that
+    #: makes re-syncing the same saved cell idempotent (the UI autosaves).
+    ref: Optional[str] = None
 
     def validate(self) -> None:
         if self.origin not in ORIGINS:
@@ -123,6 +129,8 @@ class Cell:
     system: Optional[int] = None
     staff: Optional[int] = None
     measure: Optional[int] = None
+    #: The staff's five line ys in THIS cell's canonical frame (measure cells).
+    staff_line_ys: Optional[List[float]] = None
 
     def validate(self) -> None:
         if self.kind not in CELL_KINDS:
@@ -156,6 +164,27 @@ class StaffCheck:
     lines_right: Optional[bool] = None  # None = not yet looked at
 
 
+FLAG_STATES: Tuple[str, ...] = ("open", "accepted", "rejected")
+
+
+@dataclass
+class Flag:
+    """Something Claude's double-check thinks may be wrong (plan C5).
+
+    A flag is never an edit: Sean ``accepted`` it (and fixed the page) or
+    ``rejected`` it (the page was right). ``by`` says which checker raised it.
+    """
+
+    id: str
+    kind: str
+    message: str
+    by: str  # "check:<name>" for a fixed check, "claude:visual" for the visual pass
+    rect: Optional[Rect] = None
+    cell_id: Optional[str] = None
+    box_ids: List[str] = field(default_factory=list)
+    status: str = "open"
+
+
 @dataclass
 class PageTruth:
     edition: str
@@ -168,6 +197,9 @@ class PageTruth:
     queue: List[Prefill] = field(default_factory=list)
     cells: List[Cell] = field(default_factory=list)
     staves: List[StaffCheck] = field(default_factory=list)
+    flags: List[Flag] = field(default_factory=list)
+    #: Who cut the cells, how — so a later re-cut can be checked against it.
+    provenance: Dict = field(default_factory=dict)
     schema_version: int = SCHEMA_VERSION
 
     # ------------------------------------------------------------ lookup
@@ -247,6 +279,61 @@ class PageTruth:
         """Sean says the proposal is not on the page. It simply leaves the queue."""
         self._take(prefill_id)
 
+    def box(self, box_id: str) -> Box:
+        for b in self.boxes:
+            if b.id == box_id:
+                return b
+        raise StoreError(f"no box {box_id!r}")
+
+    def box_by_ref(self, ref: str) -> Optional[Box]:
+        return next((b for b in self.boxes if b.ref == ref), None)
+
+    def edit_box(self, box_id: str, *, cls: Optional[str] = None, rect: Optional[Rect] = None) -> Box:
+        """Sean corrected a truth box. A confirmed pre-fill he changes is then a FIXED one."""
+        b = self.box(box_id)
+        if cls is not None:
+            b.cls = cls
+        if rect is not None:
+            b.rect = _check_rect(rect, f"box {box_id}")
+        if b.origin == "prefill-confirmed" and (cls is not None or rect is not None):
+            b.origin = "prefill-fixed"
+        b.validate()
+        return b
+
+    def remove_box(self, box_id: str) -> Box:
+        """Sean said a truth box is not on the page (his latest word wins)."""
+        b = self.box(box_id)
+        self.boxes.remove(b)
+        return b
+
+    def staff(self, system: int, staff: int) -> StaffCheck:
+        for s in self.staves:
+            if (s.system, s.staff) == (system, staff):
+                return s
+        raise StoreError(f"no staff ({system}, {staff})")
+
+    # ------------------------------------------------------------ flags
+    def raise_flag(self, kind: str, message: str, by: str, **kw) -> Flag:
+        used = {f.id for f in self.flags}
+        n = len(used)
+        while f"f{n}" in used:
+            n += 1
+        f = Flag(id=f"f{n}", kind=kind, message=message, by=by, **kw)
+        self.flags.append(f)
+        return f
+
+    def resolve_flag(self, flag_id: str, status: str) -> Flag:
+        if status not in ("accepted", "rejected"):
+            raise StoreError(f"a flag resolves to accepted or rejected, not {status!r}")
+        for f in self.flags:
+            if f.id == flag_id:
+                f.status = status
+                return f
+        raise StoreError(f"no flag {flag_id!r}")
+
+    def open_flags(self) -> List[Flag]:
+        return [f for f in self.flags if f.status == "open"]
+
     def boxes_in_cell(self, cell_id: str) -> List[Tuple[Box, Rect, bool]]:
         """Every truth box that touches the cell, in the cell's canonical frame.
 
@@ -287,6 +374,9 @@ class PageTruth:
             raise StoreError("duplicate box/pre-fill id")
         for b in self.boxes:
             b.validate()
+        for f in self.flags:
+            if f.status not in FLAG_STATES:
+                raise StoreError(f"flag {f.id}: status {f.status!r} not in {FLAG_STATES}")
 
     def to_json(self) -> Dict:
         self.validate()
@@ -307,6 +397,9 @@ class PageTruth:
             queue=[Prefill(**{**p, "rect": rect(p["rect"])}) for p in d.get("queue", [])],
             cells=[Cell(**{**c, "rect": rect(c["rect"])}) for c in d.get("cells", [])],
             staves=[StaffCheck(**s) for s in d.get("staves", [])],
+            flags=[Flag(**{**f, "rect": rect(f["rect"]) if f.get("rect") else None})
+                   for f in d.get("flags", [])],
+            provenance=d.get("provenance", {}),
         )
         page.validate()
         return page

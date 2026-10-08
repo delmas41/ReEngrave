@@ -26,7 +26,8 @@ from typing import Dict, Iterable, Optional, Set, Tuple
 
 import numpy as np
 
-from tools.omr.hand_truth.store import ALL_INK, NOISE, REPO, TEXT, PageTruth, StoreError
+from tools.omr.hand_truth.completeness import families_covered
+from tools.omr.hand_truth.store import NOISE, REPO, TEXT, PageTruth, StoreError
 from tools.omr.training.verdicts_to_yolo_labels import (
     DEEPSCORES_208_JSON,
     _emit_yolo_line,
@@ -93,7 +94,7 @@ def export_page(page: PageTruth, page_image: Optional[np.ndarray], out_dir: Path
         (out_dir / "images").mkdir(parents=True, exist_ok=True)
     written, not_whole_ink, skipped = [], [], Counter()
     for c in page.cells:
-        if ALL_INK not in c.inspected:
+        if families_covered(c.inspected) is not None:
             not_whole_ink.append(c.id)
             continue
         name = f"{page.edition}-p{page.pdf_page_index}-{c.id}"

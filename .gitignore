@@ -373,3 +373,10 @@ benchmarks/omr-staged-engraved-2026-09/out/**/*.record.json
 benchmarks/omr-no-ink-lie-2026-09/out/*.record.json
 benchmarks/omr-owner-domain-2026-09/out/brahms1-breitkopf-whole.json
 benchmarks/acceptance/out/**/*-whole-movement-*.musicxml
+
+# ROADMAP 1.7: a hand-truth labeling session is REGENERABLE from the page
+# store (data/hand-truth/pages/, committed) plus the PDF: cell PNGs, the
+# bench's detection/verdict files (every save is folded into the page store)
+# and the review's crops and LilyPond renders. Sean's review marks live
+# beside the page store, as <page>.review.json, and ARE committed.
+benchmarks/hand-truth-sessions/

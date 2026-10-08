@@ -22,6 +22,29 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 1.7 (C): label a page cell by cell into page pixels; Claude's check; perfect eyes; bar-by-bar LilyPond review
+
+**`tools/omr/hand_truth/` gains `session.py`, `bench.py`, `checks.py`, `perfect_eyes.py`,
+`review.py`; `annotate/server.py` gains `--page-store` (one hook after a save, `text`/`noise`
+in the picker in that mode only; the 52 existing server tests unchanged and green).**
+`session new` cuts a page with the product path's own `extract_measures` (cell rect =
+`bbox_page_px`) and adds margin/top/bottom region cells for every other bit of ink, then
+queues pre-fills — Sean's old labels re-projected through `recut_cells`' exact frame check
+(newest version first, wrong frames refused) and the detector, deduped per page. The bench
+bridge keeps detection ids = page ids, folds each save back idempotently (confirm / reject /
+fix / draw / remove, staff-line checks, the `all-ink` stamp) and refreshes overlapping
+cells, so one mark is one box. `checks.run_all` raises the fixed-check flags once (never
+again after Sean resolves one); `session raise` files the visual pass's flags; `advance`
+refuses `checked` with any flag, pre-fill or unswept cell, and `verified` without every
+printed bar marked ok on the current labels. `perfect_eyes` runs `pipeline.run_staged`
+with a detector stand-in returning the page's boxes (ran end to end here on a synthetic
+page in 3.8 s). `review` slices each bar by ordinal (clef/key/time carried; a part of the
+wrong length shown NOT ALIGNED), renders with `musicxml2ly` + `lilypond -dcrop`, serves the
+marks. `benchmarks/hand-truth-sessions/` gitignored (regenerable). 20 new tests, RED first;
+ten mechanisms broken in memory each turned a test red. `staged.check` unchanged at 192.
+
+---
+
 ## 2026-10-08 — ROADMAP 1.7: hand-truth store, completeness, training export, inventory and weights lineage (A, B)
 
 **New package `tools/omr/hand_truth/` (no product-path code touched).** `store.py`: one

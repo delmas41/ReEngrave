@@ -173,7 +173,7 @@ def _class_to_category(name: str) -> str:
     return "structural"  # safe default — visible in picker rather than hidden
 
 
-def _load_class_catalog() -> tuple[list[dict], dict[str, list[str]]]:
+def _load_class_catalog(extra: tuple[str, ...] = ()) -> tuple[list[dict], dict[str, list[str]]]:
     """Return (classes, categories) where:
 
     - classes: list of {name, category, has_archetype}
@@ -188,7 +188,10 @@ def _load_class_catalog() -> tuple[list[dict], dict[str, list[str]]]:
     # The 208 DSv2 classes + custom classes (barlines etc) that DSv2 didn't
     # annotate but humans label by hand. Custom classes appear in the picker
     # but won't have model predictions until we re-train with them included.
-    unique = list(dict.fromkeys(list(raw) + _CUSTOM_CLASSES))
+    # `extra`: classes only a page-store bench offers (ROADMAP 1.7: `text`,
+    # `noise`), so every bit of ink can be boxed. They never reach the YOLO
+    # converter's vocabulary — `hand_truth.export_yolo` skips both.
+    unique = list(dict.fromkeys(list(raw) + _CUSTOM_CLASSES + list(extra)))
     classes = []
     by_cat: dict[str, list[str]] = {c: [] for c in _CATEGORY_ORDER}
     for name in unique:
@@ -1093,7 +1096,13 @@ def _summarize_cell_status(bench: Bench, cell_id: str, vp: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 
-def create_app(bench: Bench | Path, *, blind: bool = False) -> FastAPI:
+def create_app(
+    bench: Bench | Path,
+    *,
+    blind: bool = False,
+    on_saved: Any = None,
+    extra_classes: tuple[str, ...] = (),
+) -> FastAPI:
     """The labeling app. `blind=True` withholds the pre-fill entirely.
 
     ⚠️ **A blind pass is what makes a pre-fill measurement out-of-sample.**
@@ -1110,7 +1119,7 @@ def create_app(bench: Bench | Path, *, blind: bool = False) -> FastAPI:
         bench = Bench(root=bench)
     bench.verdicts_dir.mkdir(parents=True, exist_ok=True)
     manifest = _load_manifest(bench)
-    classes, categories = _load_class_catalog()
+    classes, categories = _load_class_catalog(tuple(extra_classes))
     by_class_name = {c["name"]: c for c in classes}
     pass_config = _load_batch_config(bench, set(by_class_name))
     if pass_config is not None:
@@ -1398,7 +1407,18 @@ def create_app(bench: Bench | Path, *, blind: bool = False) -> FastAPI:
         normalized = _validate_v2(payload)
         out = bench.verdicts_dir / f"{cell_id}.verdict.json"
         out.write_text(json.dumps(normalized, indent=2))
-        return {"ok": True, "saved_at": normalized["labeled_at_utc"]}
+        if on_saved is None:
+            return {"ok": True, "saved_at": normalized["labeled_at_utc"]}
+        # Page-store mode (ROADMAP 1.7, `--page-store`): fold the save into the
+        # page and refresh the overlapping cells. A failure is LOUD — the
+        # verdict is on disk, but the page did not take it, and the save
+        # indicator must say so rather than report a clean save.
+        try:
+            touched = on_saved(cell_id)
+        except Exception as e:  # noqa: BLE001
+            raise HTTPException(500, detail=f"saved, but the page store did not take it: {e!r}")
+        return {"ok": True, "saved_at": normalized["labeled_at_utc"],
+                "synced_cells": sorted(touched or ())}
 
     @app.get("/api/cell/{cell_id}/snap")
     def api_cell_snap(cell_id: str, x: float, y: float, slot: int = 0) -> dict:
@@ -1803,6 +1823,15 @@ def main() -> None:
             "them."
         ),
     )
+    ap.add_argument(
+        "--page-store",
+        type=Path,
+        help=(
+            "A hand-truth page (data/hand-truth/pages/<edition>/<page>.json, "
+            "ROADMAP 1.7). Every save is folded into it in PAGE pixels and the "
+            "overlapping cells are refreshed; `text` and `noise` join the picker."
+        ),
+    )
     args = ap.parse_args()
 
     bench = _derive_bench(args)
@@ -1817,8 +1846,18 @@ def main() -> None:
     if args.blind:
         print("[server] BLIND: the reference pre-fill is withheld — no hints, "
               "no queue order. These labels can score it.")
+    on_saved, extra = None, ()
+    if args.page_store:
+        from tools.omr.hand_truth import bench as page_bench
+
+        page_path = args.page_store.resolve()
+        if not page_path.exists():
+            raise SystemExit(f"[server] ERROR: no page store at {page_path}")
+        print(f"[server] page store: {page_path}")
+        on_saved = lambda cid: page_bench.on_saved(page_path, bench.root, cid)  # noqa: E731
+        extra = tuple(page_bench.PAGE_TRUTH_CLASSES)
     try:
-        app = create_app(bench, blind=args.blind)
+        app = create_app(bench, blind=args.blind, on_saved=on_saved, extra_classes=extra)
     except ValueError as e:
         # Almost always a hand-edited batch_config.json. Say what is wrong
         # rather than serving the full picker to someone who asked for a pass.
