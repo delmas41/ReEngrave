@@ -32,6 +32,18 @@ files resolved (1 untracked, 44 negated as raw data); remote branches HALF prune
 `archive/<name>`; deleting the 403 originals (336 merged + 67 archived) was blocked by the session's permission
 system and waits on Sean (audit report §3F has the recipe).
 
+## START HERE — after the night of 2026-10-07→08 (main ≥ this commit)
+
+Landed 10-08 (Sean judged each on the print, one tile at a time): numerals not noteheads (`numeral_shaped`),
+staccato from any staff's note (9/9), group-owner rules + STEM owner witness 2.58d (`OMR_STEM_OWNER` ON; Sean's
+Trumpet/Clarinet tiles right). Far-head reader beat plain geometry 10:1 on Sean's disagreement tiles -- the
+reader-independent check was biased (it extrapolated ledgers). Overnight `20261008-night` (main 178d1035,
+through adjudicate) read on `lane-night-1008-read` 9c1289d0: stem changes 4/4 owners to the farther staff, answers
+2/6 new, abstains 13/44 where it disagrees with the ledger witness; truth set unchanged 37/1/3, 11/0/0. Waiting for
+Sean: the 10 stem tiles (`out/print/night_1008/`, ask ONE AT A TIME); the scan-text decision (Fable design review:
+on scans no text is read inside systems -- `OMR_DIRECTION_TEXT_SCAN_GATE`; recommend one shared `Q.PAGE_TEXT`
+witness, cheap OCR on the non-music residue, erase only later, never before the detector).
+
 ## START HERE — after 2026-10-07 (day; main ≥ this commit)
 
 Landed 10-07 (all judged by Sean on the print, GATHER+ADJUDICATE): arc owner `ends_on_noteheads`; far-head
