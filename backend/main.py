@@ -19,6 +19,7 @@ from fastapi import (
     Form,
     HTTPException,
     Query,
+    Request,
     UploadFile,
 )
 from fastapi.middleware.cors import CORSMiddleware
@@ -29,7 +30,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core import signed_urls
 from core.config import check_startup_secret, settings
-from core.limiter import limiter
+from core.limiter import limiter, setting_limit
 from database.connection import create_all_tables, get_db
 from database.models import (
     AutoAcceptRule,
@@ -194,7 +195,9 @@ async def serve_upload(path: str, t: Optional[str] = Query(None)):
 
 
 @app.post("/api/import/upload")
+@limiter.limit(setting_limit("rate_limit_upload"))
 async def upload_pdf(
+    request: Request,
     file: UploadFile = File(...),
     title: str = Form(...),
     composer: str = Form(...),
@@ -231,7 +234,9 @@ async def upload_pdf(
 
 
 @app.post("/api/import/musicxml")
+@limiter.limit(setting_limit("rate_limit_musicxml"))
 async def upload_musicxml(
+    request: Request,
     file: UploadFile = File(...),
     title: str = Form(...),
     composer: str = Form(...),
@@ -274,7 +279,9 @@ async def upload_musicxml(
 
 
 @app.post("/api/scores/{score_id}/process/omr")
+@limiter.limit(setting_limit("rate_limit_process_omr"))
 async def run_omr(
+    request: Request,
     score_id: str,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
@@ -556,7 +563,9 @@ def _mean_omr_confidence_for_page(score: "Score", page_number: int) -> float:
 
 
 @app.post("/api/scores/{score_id}/process/compare")
+@limiter.limit(setting_limit("rate_limit_process_compare"))
 async def run_comparison(
+    request: Request,
     score_id: str,
     background_tasks: BackgroundTasks,
     db: AsyncSession = Depends(get_db),
@@ -948,7 +957,9 @@ async def get_auto_rules(
 
 
 @app.post("/api/gradus/", response_model=GradusScoreResponse)
+@limiter.limit(setting_limit("rate_limit_gradus"))
 async def create_gradus_score(
+    request: Request,
     xml_file: UploadFile = File(...),
     pdf_file: Optional[UploadFile] = File(None),
     title: str = Form(...),
@@ -1041,7 +1052,9 @@ async def delete_gradus_score(
 
 
 @app.post("/api/compare/", response_model=ComparisonSessionResponse)
+@limiter.limit(setting_limit("rate_limit_compare"))
 async def create_comparison_session(
+    request: Request,
     xml_files: list[UploadFile] = File(...),
     gradus_score_id: Optional[str] = Form(None),
     name: Optional[str] = Form(None),
