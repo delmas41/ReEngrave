@@ -37,6 +37,13 @@ storage, one cell at a time with pre-fills, first pages first across publishers,
 every box also training data, Verovio engraved control kept. Open: the held-out
 page list. Added ROADMAP 1.7, a DECISIONS line, and a CLAUDE.md §9 pointer.
 
+**Same day, second commit:** Sean added the review loop — after a page is labeled,
+Claude double-checks it (fixed consistency checks, then a visual pass; flags only,
+Sean decides each), then the hand boxes are run through the STAGED pipeline in
+place of the detector and rendered with LilyPond beside the print, one measure at a
+time, for Sean to mark ok / label wrong / reader wrong (plan C5, C6; DECISIONS).
+A page is truth only once every measure is ok.
+
 ---
 
 ## 2026-10-07 — ROADMAP 2.61 (STAGED): GATHER handlers abstain, never default

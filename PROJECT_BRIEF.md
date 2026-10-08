@@ -33,6 +33,8 @@ measured through EVALUATE or EXPORT until he says so.
 is hand-labeled yet; the plan labels every bit of ink on a movement's first page and
 its count page, cell by cell, stored in page pixels, across several publishers, and
 retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
+Each page is double-checked by Claude (flags only) and then rendered through
+LilyPond beside the print, measure by measure, before it counts as truth.
 
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather

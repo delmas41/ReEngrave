@@ -99,7 +99,7 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
 
 ## 3. The plan
 
-**Goal:** every MEASUREMENT on a scan — benchmarks, acceptance, A/B gates, weights tests — is scored against hand-labeled page truth. **Every box Sean draws or confirms is also training data** (Sean 10-08), except on pages held out for testing (§5 Q6). Unit tests are not in scope. GATHER + ADJUDICATE first, per Sean 09-30.
+**Goal:** every MEASUREMENT on a scan — benchmarks, acceptance, A/B gates, weights tests — is scored against hand-labeled page truth. **Every box Sean draws or confirms is also training data** (Sean 10-08), except on pages held out for testing (§5 Q7). Unit tests are not in scope. GATHER + ADJUDICATE first, per Sean 09-30.
 
 **Why full-ink labeling is also the training fix:** a fine-tune treats any unboxed ink on a training cell as background. That is how beams went 127 → 0 and how rests and accidentals were suppressed in round 3 (CLAUDE.md §9; ROUND3_COMPLETENESS.md). A page with every bit of ink boxed is the first labeling that cannot teach the detector to delete a class.
 
@@ -123,7 +123,7 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
   - §1e sets → `labeler: claude`;
   - §1d prose-only numbers → `raw: gone`.
 - [ ] **A3. Fold Sean's scattered crop verdicts** (10 JSON files plus the prose entries whose sheets survive) into one append-only ledger keyed by page + box.
-- [ ] **A4. Hold-out list** (after §5 Q6). Record the leakage in §1f on the production weights' FINDINGS.
+- [ ] **A4. Hold-out list** (after §5 Q7). Record the leakage in §1f on the production weights' FINDINGS.
 
 ### Phase B: The page-truth store (code; runs anywhere)
 
@@ -155,6 +155,36 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
   4. OCR for text.
 - [ ] **C3. Time the first system**, and price the rest of the plan from that, not from a guess.
 - [ ] **C4. Blind re-label of one system a week later.** The agreement is the noise floor for every score on these pages (rule 7).
+- [ ] **C5. Claude double-checks the page** (Sean 10-08).
+
+  Claude only FLAGS. Sean decides every flag, and Claude never edits the truth: a model's judgment is not evidence (rule 7).
+
+  1. **Fixed checks first** (no model, cheap, cannot hallucinate):
+     - ink left over by the coverage control;
+     - duplicate boxes on one mark;
+     - a dot with no head to its left; an accidental with no head to its right;
+     - a stem with no head; a beam that touches fewer than two stems;
+     - a head outside the staff with no ledger line (Sean 09-29: none exists);
+     - tied heads at different staff positions;
+     - a system that starts with no clef or key;
+     - a head whose stated staff position disagrees with its box against the local staff lines.
+  2. **Then a visual pass:** Claude looks at each cell with its boxes drawn and lists suspected misses and wrong classes.
+  3. **Flags open as a queue** in the same annotate UI, and each one is accepted or rejected by Sean. The share Sean accepts is recorded per page, so we learn whether the check earns its time.
+- [ ] **C6. LilyPond side by side, one measure at a time** (Sean 10-08).
+  - **Boxes are not music.** Something has to turn them into notes and rhythm.
+  - **Proposed: feed the hand boxes to the STAGED pipeline in place of the detector** ("perfect eyes").
+    - Sean's labels supply the staff owner and staff position, so what remains is mainly rhythm grouping.
+    - Run ADJUDICATE → EXPORT, then `--lilypond --pdf` through the existing `staged/lilypond.py`.
+  - **Render per measure.** Each measure becomes one small LilyPond score, carrying the clef / key / meter in force. It sits beside the print crop of the same measure, cut at the gather's DPI, on a page built from `build_count_sidebyside.py`'s pieces.
+  - **Sean marks each measure:**
+    - `ok`;
+    - `label wrong` → back to that cell;
+    - `reader wrong` → the reader misread perfect boxes, which is a free finding for Phase 2 (traceable with `staged.trace`).
+
+    Bars the pipeline holds out show as marked-unread, never as silence.
+  - **Byproduct:** the same run is the ceiling measurement — what the reader produces with perfect eyes.
+
+**A page's life:** `labeling` → `checked` (C5 flags all resolved) → `verified` (C6, every measure `ok`). Only a `verified` page is truth for D, and the export to training (B3) uses `checked` or later.
 
 **Page order** (Sean: start on a first page for the global information):
 
@@ -197,7 +227,7 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 |---|--:|--:|
 | A. honest inventory | 4 | 0 |
 | B. page-truth store | 3 | 0 |
-| C. label pages 1–5 | 4 + 5 pages | 0 |
+| C. label, Claude check, LilyPond side by side; pages 1–5 | 6 + 5 pages | 0 |
 | D. scorer + controls | 3 | 0 |
 | E. grow the set | 3 | 0 |
 
@@ -214,10 +244,11 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 3. **Engraved control:** keep the Verovio page truth.
 4. **Pre-fills:** allowed; existing labels first.
 5. **First pages first**, for instrument names, time signatures and the other global information; **multiple publishers**.
+6. **After each page:** Claude double-checks it (flags only; C5), then the labels are rendered through LilyPond beside the print, one measure at a time, for Sean's visual check (C6).
 
 **Still open:**
 
-6. **Training vs testing.** A page cannot be both training data and test truth for the same weights. Proposed:
+7. **Training vs testing.** A page cannot be both training data and test truth for the same weights. Proposed:
    - every labeled page trains, EXCEPT a fixed held-out set that never trains: Brahms PDF index 0–1 and Litolff 984073 index 1 and 3;
    - the other publishers' pages train.
 
