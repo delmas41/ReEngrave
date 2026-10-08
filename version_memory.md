@@ -308,6 +308,7 @@ Later 10-07: far-head `lane-farhead-2-9` landed (look for a hidden ledger only w
 jutting ends; accent strokes are not ledgers; Sean: his tiles 2 and 9 right). Fast 6,112 passed, check 192.
 Then `OMR_FARHEAD_OWNER_LEDGERS` and `OMR_MARK_GROUPS` switched default ON (Sean); re-gather `20261007-day` started.
 10-08: numerals not noteheads (`numeral_shaped`), staccato from any staff's note (Sean 9/9) landed; far-head reader beats geometry 10:1 on Sean's tiles (the independent check extrapolated ledgers).
+10-08 later: stem owner ON (Sean 10/10); direction words on scans (Surya width cap + 20 s guard, ~17 s/page), finder + lexicon fixes, word+dynamic joined into one marking; ~93/113 words, no wrong readings.
 
 ---
 

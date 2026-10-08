@@ -55,6 +55,23 @@ files resolved (1 untracked, 44 negated as raw data); remote branches HALF prune
 `archive/<name>`; deleting the 403 originals (336 merged + 67 archived) was blocked by the session's permission
 system and waits on Sean (audit report §3F has the recipe).
 
+## START HERE — after 2026-10-08 (day; main ≥ this commit)
+
+**Landed 10-08 (all judged by Sean on the print, one tile at a time; all GATHER+ADJUDICATE):** stem owner
+witness 2.58d ON (Sean 10/10 out of sample); numerals not noteheads; staccato from any staff's note (9/9);
+far-head reader beats geometry 10:1 on Sean's tiles (the reader-independent check was biased: it extrapolated
+ledgers -- checks must take ledger rows from INK). **Direction words now read on SCANS** (the scan gate is gone
+from the scripts): Surya output capped by crop width + 20 s guard (the 4.5 min/page was Surya looping on a few
+`cresc.` crops; now ~17 s/page, `staged/budget.py` 18 s), candidate-finder fixes, lexicon additions (`Basso`,
+`Bassi`, `Vcl.`, `marc.`, `a2`, `ten.`), same-word-on-other-staves look, word + dynamic JOINED into one
+marking (`più f`, Sean: "they only mean something together"). Review pages: ~93 of ~113 words, NO wrong readings.
+**Open, in order:** (1) export the joined word+dynamic as ONE MusicXML direction (`<words>`+`<dynamics>`) --
+parked with export (Sean: first two stages first); (2) remaining word misses: letters fused to noteheads/stems cut
+the candidate box (`Adagio`, `pizz.`, `ten.`), `Vcl.` read as `val.`; (3) one shared `Q.PAGE_TEXT` map every
+reader consults (Fable design review 10-08); (4) an overnight re-gather THROUGH=adjudicate to measure all of
+10-08 together (the direction reader adds ~5 min Litolff / ~9 min Brahms); (5) the dot rule's 84/184 stem-moved
+heads were judged 10/10 -- no open owner sheet. Never loosen the lexicon by fuzzy match (Sean has not ruled).
+
 ## START HERE — after the night of 2026-10-07→08 (main ≥ this commit)
 
 Landed 10-08 (Sean judged each on the print, one tile at a time): numerals not noteheads (`numeral_shaped`),
