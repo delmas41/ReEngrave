@@ -17,7 +17,6 @@ comparison and the acceptance harness, not through an in-process shadow mode.
 
 from __future__ import annotations
 
-import os
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from . import consequences  # noqa: F401  -- registers the EVALUATE rules
@@ -108,8 +107,7 @@ def _rung_header(surya_fallback: bool, ocr_fallback: bool) -> str:
             return "off" + ("" if ok else " (not installed)")
         return "on" if ok else "on BUT NOT INSTALLED"
 
-    directions_on = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() \
-        not in ("0", "", "false", "no", "off")
+    directions_on = gather.direction_text_enabled()
     return ("  rungs: labels text_layer=on"
             f" surya={_state('staff_labels_surya', surya_fallback)}"
             f" tesseract={_state('staff_labels_tesseract', ocr_fallback)}"
