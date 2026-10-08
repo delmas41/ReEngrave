@@ -1,0 +1,110 @@
+[
+ {
+  "n": 1,
+  "subject": "glyph/7/1/0/6/2",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_both_rows",
+  "reader": -4,
+  "geometry": -6,
+  "staff": "Flute"
+ },
+ {
+  "n": 2,
+  "subject": "glyph/8/1/0/17/10",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -2,
+  "geometry": -3,
+  "staff": "Flute"
+ },
+ {
+  "n": 3,
+  "subject": "glyph/6/1/0/11/2",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_both_rows",
+  "reader": -6,
+  "geometry": -8,
+  "staff": "Flute"
+ },
+ {
+  "n": 4,
+  "subject": "glyph/5/1/3/7/2",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -4,
+  "geometry": -5,
+  "staff": null
+ },
+ {
+  "n": 5,
+  "subject": "glyph/8/1/7/10/1",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_both_rows",
+  "reader": 12,
+  "geometry": 11,
+  "staff": null
+ },
+ {
+  "n": 6,
+  "subject": "glyph/12/0/0/12/3",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -4,
+  "geometry": -5,
+  "staff": "Flute"
+ },
+ {
+  "n": 7,
+  "subject": "glyph/10/1/1/10/6",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_grid_passes_own_rows",
+  "reader": -2,
+  "geometry": -3,
+  "staff": "Oboe"
+ },
+ {
+  "n": 8,
+  "subject": "glyph/4/0/1/8/10",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -2,
+  "geometry": -3,
+  "staff": "Oboe"
+ },
+ {
+  "n": 9,
+  "subject": "glyph/7/1/3/17/1",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_grid_passes_own_rows",
+  "reader": -3,
+  "geometry": -4,
+  "staff": "Bassoon"
+ },
+ {
+  "n": 10,
+  "subject": "glyph/5/1/3/7/1",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -4,
+  "geometry": -5,
+  "staff": null
+ },
+ {
+  "n": 11,
+  "subject": "glyph/16/1/0/11/5",
+  "doc": "beethoven5-litolff",
+  "group": "geometry_fails_grid",
+  "reader": -8,
+  "geometry": -9,
+  "staff": "Flute"
+ },
+ {
+  "n": 12,
+  "subject": "glyph/4/0/0/13/6",
+  "doc": "beethoven5-litolff",
+  "group": "reader_fails_grid_passes_own_rows",
+  "reader": -2,
+  "geometry": -3,
+  "staff": "Flute"
+ }
+]

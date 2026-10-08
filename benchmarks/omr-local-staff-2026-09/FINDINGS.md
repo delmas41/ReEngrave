@@ -4550,3 +4550,23 @@ Two first versions refused, with the numbers: (1) requiring EVERY counted rung t
 So the look rescues FOUR heads in all, not ten (the sheet shows all four, then the nine other accent refusals that were sampled to fill it: tiles 1-2 Sean's, 3-5 rescues, 6-12 seeded refusals). All 12 Brahms refusals were cropped (`crop` of 12): every one is a real `>` accent under or over the head. The 13th decided->abstain is tile 9. Off-box count not re-run.
 **Not fixed / said plainly:** the look needs the ledger's end to stand out of the head's ink by >= 3 px; a ledger fused with a flat's bowl on one side and short on the other would not be seen (tile 2 was close to that). 11 of the 15 abstains seen on the way are untouched.
 **Gates:** `staged.check` TOTAL 247 (the same figure the last lane reported; no baseline re-run on the unpatched tree); fast tier before the last narrowing 4,608 passed, after it the 574 far-head/ledger/owner tests pass.
+
+## farhead-vs-geometry (2026-10-07): why the note-first reader scores below plain geometry on the independent through-or-edge check (STAGED, GATHER+ADJUDICATE only; READ ONLY on the 10-07 DAY records `...-20261007-day`, main 2baf8875)
+
+Scripts: `farhead_vs_geometry.py` (counts, `--ink`), `farhead_vs_geometry_tiles.py` (the sheet), `farhead_vs_geometry_names.py` (staff names); extract and replay are the day-1007 ones (`night_1007_extract.py`, `night_1007_replay.py`, which reproduces the record on 99.9%). Counts: `out/farhead_vs_geometry_summary.json`. No reader code was changed.
+
+**Reproduced.** Decided and replayed far heads: Litolff 2,023, reader passes the grid check 82.7%, geometry 85.3%; Brahms 4,315, 96.9 vs 98.4. Disagreements (different answers, exactly one fails): Litolff reader-fails 234 / geometry-fails 183; Brahms 90 + 26.
+
+**Cause, Litolff, reader fails and geometry passes (234; rules fixed before counting).**
+- 185 (79%) **grid extrapolation**: the reader passes the same check on its own measured ledger rows. The check puts every ledger exactly one staff space beyond the last, the printed ledgers sit further out: reader row minus grid row, above the staff, median +0.27 sp (1st ledger +0.20, 2nd +0.27, 3rd +0.30, 4th +0.50); the staff-edge row agrees to 0.0 sp, so it is not the staff lines. Printed pitch, edge line to 1st ledger ink to ink, median 1.05 sp, page medians 0.92 to 1.23. Of these 185, geometry also fails on the measured rows in 149.
+- 31 **box**: 24 the reader's staff-side edge line is more than 0.25 sp from the detector box edge (box looser than the head ink), 7 pass on the box the reader used.
+- 17 **ON a line outside the central half of the box**. 1 other. Hence only 49 of 234 fail on the reader's own rows too (the "~95% own-row" figure).
+No count/missing-ledger cause at all once the grid is not the umpire; no staff-edge row cause (0). Rung-is-not-a-ledger (slur, beam, text) is not separable by number from these rows; the tiles carry it.
+**Reverse, geometry fails and the reader passes (183):** geometry fails the measured rows as well on 181; it passes the grid check because it shares the grid's own extrapolation, not because it is closer to the print.
+**Brahms** (smaller: 90 reader-fails, 26 geometry-fails): 63 grid extrapolation (45 + 18), 10 box, 17 on-line-off-centre.
+
+**Independent ink check** (row = the ink run within 0.5 sp of the grid row, flank columns beside the box; heads where both answers' rows have ink, which drops 906 of 2,023 Litolff and 1,353 of 4,315 Brahms): Litolff reader 84.1% vs geometry 76.5% (n 1,117); on the 361 where the answers differ, reader 264 pass, geometry 179. Brahms 80.0 vs 79.4 (n 2,962; differ 111: 65 vs 48). On ink rows the reader is not below geometry; the gap was the check's one-space ledger pitch. Ink measure is limited to ledgers visible beside the head.
+
+**Fix: none made.** The dominant cause is in the verifier's grid, not the reader, and the print has not been judged by Sean. Do not tune the reader to this check. If Sean agrees, the check (`offbox_check.Rows`, `verify_staff_line_offsets` style) should take ledger rows from ink. Controls unaffected (no code change): Sean's confirmed tiles, truth set, `staged.check` and the fast tier are as on main.
+
+**Sheet:** `out/print/farhead_vs_geometry/tile_01..12.png` + `questions.txt` (seed 20261008, Litolff: 3 grid-extrapolation, 3 fail-both-rows, 6 geometry-fails). RED = reader's line, BLUE = geometry's, PURPLE where both name the same line; both on the measured ledger rows; ORANGE corners = the note; each drawn line re-measured against ink (6 of 16 within 2 px, 4 with no ink beside the head, 6 farther: a hidden ledger, not a drawn error). NOT judged by Sean.

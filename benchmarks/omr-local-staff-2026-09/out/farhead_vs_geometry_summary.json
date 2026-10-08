@@ -1,0 +1,64 @@
+{
+ "beethoven5-litolff": {
+  "tally": {
+   "n": 2023,
+   "reader_pass": 1674,
+   "geo_pass": 1725,
+   "same_answer": 1233,
+   "RG": 1491,
+   "Rg": 183,
+   "rG": 234,
+   "rg": 115,
+   "not_replayed": 9
+  },
+  "decomposition": {
+   "geometry_fails_grid|geometry_fails_measured_rows_too": 181,
+   "grid_extrapolation|geometry_also_fails_measured_rows": 149,
+   "box|passes_on_the_reader_box": 7,
+   "on_line_off_centre|": 17,
+   "box|edge_line_farther_than_tol_from_box_edge": 24,
+   "other|hidden_ledger_jut_looked_for": 1,
+   "grid_extrapolation|geometry_passes_measured_rows": 36,
+   "geometry_fails_grid|geometry_passes_measured_rows": 2
+  },
+  "ink": {
+   "unmeasured": 906,
+   "n": 1117,
+   "reader_pass": 939,
+   "geometry_pass": 854,
+   "differ": 361,
+   "differ_reader_pass": 264,
+   "differ_geometry_pass": 179
+  }
+ },
+ "brahms1-breitkopf": {
+  "tally": {
+   "n": 4315,
+   "reader_pass": 4180,
+   "geo_pass": 4244,
+   "same_answer": 4114,
+   "RG": 4154,
+   "rG": 90,
+   "rg": 45,
+   "Rg": 26
+  },
+  "decomposition": {
+   "box|passes_on_the_reader_box": 5,
+   "on_line_off_centre|": 17,
+   "geometry_fails_grid|geometry_fails_measured_rows_too": 23,
+   "box|edge_line_farther_than_tol_from_box_edge": 5,
+   "grid_extrapolation|geometry_also_fails_measured_rows": 45,
+   "grid_extrapolation|geometry_passes_measured_rows": 18,
+   "geometry_fails_grid|geometry_passes_measured_rows": 3
+  },
+  "ink": {
+   "unmeasured": 1353,
+   "n": 2962,
+   "reader_pass": 2369,
+   "geometry_pass": 2352,
+   "differ": 111,
+   "differ_reader_pass": 65,
+   "differ_geometry_pass": 48
+  }
+ }
+}
