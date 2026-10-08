@@ -99,7 +99,7 @@ export interface FlaggedDifference {
   /** Signed /uploads URLs (expire in 1 h); null when there is no image. */
   pdf_snippet_url: string | null;
   musicxml_snippet_url: string | null;
-  audiveris_confidence: number; // 0-1
+  omr_confidence: number; // 0-1
   claude_vision_confidence: number; // 0-1
   human_decision: HumanDecision | null;
   human_edit_value: string | null;
@@ -111,7 +111,7 @@ export interface FlaggedDifference {
 
 export interface KnowledgePattern {
   id: string;
-  pattern_type: 'audiveris_failure' | 'claude_vision_prompt' | 'instrument_quirk';
+  pattern_type: 'omr_failure' | 'claude_vision_prompt' | 'instrument_quirk';
   instrument: string | null;
   difference_type: DifferenceType;
   era: Era | null;
@@ -132,7 +132,7 @@ export interface AutoAcceptRule {
   rule_description: string;
   instrument: string | null;
   difference_type: DifferenceType;
-  min_audiveris_confidence: number;
+  min_omr_confidence: number;
   min_claude_confidence: number;
   min_confirmations: number;
   current_confirmations: number;
