@@ -22,6 +22,23 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
+
+Sean went through four batches, and the roadmap rows now match his answers
+(DECISIONS 2026-10-08).
+
+- **39 rows are `done`.** Each status now opens with "done (`<sha>`; closed
+  with Sean 2026-10-08 in the 0.8 close-or-keep pass)". The lane's text is
+  kept after it.
+- **2 rows are KEPT OPEN**, each stating what remains:
+  - 2.26b: no run has shown the bare-crook rule reach a record.
+  - 2.13: the whole-movement check, plus one Tesseract misread.
+- **New row 2.65:** Sean's print check, one tile at a time, of the 09-29
+  rhythm connections (40 tiles never judged by him), plus 2.23's 6 tiles and
+  its never-asked head-fill convention.
+
+The triage report gained a close-or-keep section. No code changed.
+
 ## 2026-10-08 — ROADMAP 0.8 follow-up: Sean's "Yes to all"
 
 DECISIONS 2026-10-08:

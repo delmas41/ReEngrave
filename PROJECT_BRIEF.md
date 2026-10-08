@@ -50,8 +50,9 @@ dependency pins and nginx/rate-limit hardening as follow-ups.
 "not merged" for work that is already on main. Nine are genuinely off main:
 four superseded, two dead at zero, two evidence-only, one parked by Sean.
 Sean answered "Yes to all" the same day: the six are dropped and the two
-evidence lanes are landed. The open work is a close-or-keep pass with Sean
-over the 41 merged rows, not a merge pass.
+evidence lanes are landed. The close-or-keep pass over the 41 merged rows
+followed the same day: 39 are done, 2 are kept open (2.26b, 2.13), and one new
+item, 2.65, puts the never-judged 09-29 rhythm tiles in front of Sean.
 
 **Read next**: [CLAUDE.md](CLAUDE.md) (the spec), [ROADMAP.md](ROADMAP.md)
 (status), [docs/DECISIONS.md](docs/DECISIONS.md) (rulings),

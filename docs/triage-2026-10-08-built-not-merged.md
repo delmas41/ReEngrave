@@ -73,3 +73,21 @@ These are open for other reasons and were not touched:
 | 2.38c | diagnosed |
 | 2.41 | measured |
 | 3.3 | web-app engine switch |
+
+## Close-or-keep pass (same day, with Sean)
+
+The 41 merged rows were reviewed in four batches, each against its own text, the flags on main and Sean's later rulings in DECISIONS.
+
+| batch | rows | outcome |
+|---|---|---|
+| far-note and ownership | 14 | all done |
+| rhythm, beams, held bars | 12 | all done; the six never-judged crop sheets became **2.65** |
+| identity, clef, meter, bar numbers | 10 | 7 done (plus 2.23, folded into 2.65); **2.26b** and **2.13** kept open |
+| weights, ties, stage-order checks | 5 | all done |
+
+That makes **39 done and 2 kept open**, plus one new row (2.65).
+
+Two leftovers stay as notes in their FINDINGS, not as rows:
+- 2.57c's night-12 head: a 0.15 px miss whose fix costs 5 right heads.
+- 2.60's bar-wide box that holds real slur ends.
+
