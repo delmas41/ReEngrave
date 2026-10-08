@@ -1,0 +1,502 @@
+[
+ {
+  "tile": 1,
+  "doc": "brahms",
+  "head": "glyph/2/1/11/0/0",
+  "label": "BASE (day) abstained; the stem answers it",
+  "A": "staff 11: Violin (2.Viol.)",
+  "B": "staff 12: Viola",
+  "size": [
+   1744,
+   3377
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 6240.0,
+   "ext_spaces": 8.756
+  },
+  "off": [
+   "B",
+   "staff/2/1/11",
+   null
+  ],
+  "on": [
+   "B",
+   "staff/2/1/10",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "B",
+   "staff/2/1/11",
+   null
+  ],
+  "on_final": [
+   "B",
+   "staff/2/1/10",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "new_owner": "staff/2/1/10",
+  "pool": "B",
+  "record_owner": [
+   "decided",
+   "staff/2/1/10",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 2,
+  "doc": "brahms",
+  "head": "glyph/5/1/11/0/13",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 12: Viola",
+  "B": "staff 13: Cello",
+  "size": [
+   1744,
+   3482
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 6868.0,
+   "ext_spaces": 4.317
+  },
+  "off": [
+   "A",
+   "staff/5/1/11",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/5/1/12",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/5/1/11",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/5/1/12",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/5/1/11",
+   "reason": "distance"
+  },
+  "new_owner": "staff/5/1/12",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/5/1/12",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 3,
+  "doc": "brahms",
+  "head": "glyph/5/1/12/0/5",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 13: Cello",
+  "B": "staff 12: Viola",
+  "size": [
+   1744,
+   3482
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 6868.0,
+   "ext_spaces": 4.317
+  },
+  "off": [
+   "A",
+   "staff/5/1/11",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/5/1/12",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/5/1/11",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/5/1/12",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/5/1/11",
+   "reason": "distance"
+  },
+  "new_owner": "staff/5/1/12",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/5/1/12",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 4,
+  "doc": "litolff",
+  "head": "glyph/6/1/11/10/2",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 12: no label",
+  "B": "staff 11: no label",
+  "size": [
+   1680,
+   2791
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 3433.0,
+   "ext_spaces": 5.937
+  },
+  "off": [
+   "A",
+   "staff/6/1/11",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/6/1/10",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/6/1/11",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/6/1/10",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/6/1/11",
+   "reason": "distance"
+  },
+  "new_owner": "staff/6/1/10",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/6/1/10",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 5,
+  "doc": "litolff",
+  "head": "glyph/6/1/10/10/13",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 12: no label",
+  "B": "staff 11: no label",
+  "size": [
+   1680,
+   2791
+  ],
+  "stem": {
+   "direction": "up",
+   "tip_y": 3433.0,
+   "ext_spaces": 5.61
+  },
+  "off": [
+   "A",
+   "staff/6/1/11",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/6/1/10",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/6/1/11",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/6/1/10",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/6/1/11",
+   "reason": "distance"
+  },
+  "new_owner": "staff/6/1/10",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/6/1/10",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 6,
+  "doc": "brahms",
+  "head": "glyph/3/0/0/1/4",
+  "label": "BASE (day) abstained; the stem answers it",
+  "A": "staff 2: Oboe",
+  "B": "staff 1: Flute",
+  "size": [
+   1756,
+   3602
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 877.0,
+   "ext_spaces": 4.759
+  },
+  "off": [
+   "B",
+   "staff/3/0/0",
+   null
+  ],
+  "on": [
+   "B",
+   "staff/3/0/1",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "B",
+   "staff/3/0/0",
+   null
+  ],
+  "on_final": [
+   "B",
+   "staff/3/0/1",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "new_owner": "staff/3/0/1",
+  "pool": "B",
+  "record_owner": [
+   "decided",
+   "staff/3/0/1",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 7,
+  "doc": "brahms",
+  "head": "glyph/18/1/13/5/1",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 13: Cello",
+  "B": "staff 14: Contrabass",
+  "size": [
+   1750,
+   3489
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 7057.0,
+   "ext_spaces": 4.406
+  },
+  "off": [
+   "A",
+   "staff/18/1/12",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/18/1/13",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/18/1/12",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/18/1/13",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/18/1/12",
+   "reason": "distance"
+  },
+  "new_owner": "staff/18/1/13",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/18/1/13",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 8,
+  "doc": "brahms",
+  "head": "glyph/18/1/12/5/2",
+  "label": "BASE (day) decided the other staff; the stem moves it",
+  "A": "staff 13: Cello",
+  "B": "staff 14: Contrabass",
+  "size": [
+   1750,
+   3489
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 7057.0,
+   "ext_spaces": 4.496
+  },
+  "off": [
+   "A",
+   "staff/18/1/12",
+   null
+  ],
+  "on": [
+   "A",
+   "staff/18/1/13",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "A",
+   "staff/18/1/12",
+   null
+  ],
+  "on_final": [
+   "A",
+   "staff/18/1/13",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "decided",
+   "value": "staff/18/1/12",
+   "reason": "distance"
+  },
+  "new_owner": "staff/18/1/13",
+  "pool": "A",
+  "record_owner": [
+   "decided",
+   "staff/18/1/13",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 9,
+  "doc": "brahms",
+  "head": "glyph/2/0/8/5/4",
+  "label": "BASE (day) abstained; the stem answers it",
+  "A": "staff 10: Violin (1.Viol.)",
+  "B": "staff 9: Timpani",
+  "size": [
+   1738,
+   3612
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 2656.0,
+   "ext_spaces": 4.415
+  },
+  "off": [
+   "B",
+   "staff/2/0/8",
+   null
+  ],
+  "on": [
+   "B",
+   "staff/2/0/9",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "B",
+   "staff/2/0/8",
+   null
+  ],
+  "on_final": [
+   "B",
+   "staff/2/0/9",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "new_owner": "staff/2/0/9",
+  "pool": "B",
+  "record_owner": [
+   "decided",
+   "staff/2/0/9",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ },
+ {
+  "tile": 10,
+  "doc": "litolff",
+  "head": "glyph/4/1/1/4/1",
+  "label": "BASE (day) abstained; the stem answers it",
+  "A": "staff 2: Oboe",
+  "B": "staff 3: Clarinet (Cl.)",
+  "size": [
+   1680,
+   2467
+  ],
+  "stem": {
+   "direction": "down",
+   "tip_y": 2519.0,
+   "ext_spaces": 5.932
+  },
+  "off": [
+   "B",
+   "staff/4/1/1",
+   null
+  ],
+  "on": [
+   "B",
+   "staff/4/1/2",
+   "stem_toward_staff"
+  ],
+  "off_final": [
+   "B",
+   "staff/4/1/1",
+   null
+  ],
+  "on_final": [
+   "B",
+   "staff/4/1/2",
+   "stem_toward_staff"
+  ],
+  "base_owner": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "new_owner": "staff/4/1/2",
+  "pool": "B",
+  "record_owner": [
+   "decided",
+   "staff/4/1/2",
+   "stem_toward_staff",
+   "adjudicate_glyph_owner"
+  ]
+ }
+]

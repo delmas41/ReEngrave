@@ -1,0 +1,190 @@
+{
+ "beethoven5-litolff": {
+  "stem": {
+   "control": {
+    "subject matched": 11399
+   },
+   "transitions": {
+    "same owner, reason distance -> stem_toward_staff": 265,
+    "same owner, reason group_owner -> stem_toward_staff": 33,
+    "decided:ledger_note_first -> abstained:stem_disagrees": 13,
+    "decided:distance -> decided:stem_toward_staff": 4,
+    "abstained:far_no_rungs -> decided:stem_toward_staff": 2,
+    "same owner, reason ledger_note_first -> group_owner": 2,
+    "decided:ledger_note_first -> decided:group_owner": 1,
+    "decided:group_owner -> abstained:ledger_witnesses_disagree": 1
+   },
+   "moved_by_new_rule_and_distance": {
+    "stem_toward_staff: moved to farther staff": 4,
+    "group_owner: moved to nearer staff": 1
+   },
+   "examples": {
+    "abstained:far_no_rungs -> decided:stem_toward_staff": [
+     "glyph/4/1/1/4/1",
+     "glyph/4/1/2/4/1"
+    ],
+    "decided:ledger_note_first -> decided:group_owner": [
+     "glyph/4/1/1/4/3"
+    ],
+    "decided:ledger_note_first -> abstained:stem_disagrees": [
+     "glyph/6/0/0/8/9",
+     "glyph/6/0/1/8/2",
+     "glyph/6/1/0/9/1",
+     "glyph/6/1/0/9/4",
+     "glyph/6/1/1/9/1",
+     "glyph/6/1/1/9/2"
+    ],
+    "decided:distance -> decided:stem_toward_staff": [
+     "glyph/6/1/10/10/7",
+     "glyph/6/1/10/10/13",
+     "glyph/6/1/11/10/2",
+     "glyph/14/0/6/1/1"
+    ],
+    "decided:group_owner -> abstained:ledger_witnesses_disagree": [
+     "glyph/13/1/7/9/4"
+    ]
+   },
+   "owner_by_reason_NEW": {
+    "decided:ledger_note_first": 3076,
+    "decided:distance": 430,
+    "decided:stem_toward_staff": 304,
+    "decided:staff_band": 245,
+    "decided:ledger_direction": 240,
+    "decided:ledger_owner_density": 108,
+    "decided:ladder": 54,
+    "decided:staff_band_no_box": 22,
+    "abstained:stem_disagrees": 13,
+    "decided:range_veto": 10,
+    "decided:group_owner": 7,
+    "decided:hairpin_separates": 3,
+    "abstained:far_no_rungs": 2,
+    "abstained:ledger_witnesses_disagree": 1
+   },
+   "owner_by_reason_BASE": {
+    "decided:ledger_note_first": 3092,
+    "decided:distance": 699,
+    "decided:staff_band": 245,
+    "decided:ledger_direction": 240,
+    "decided:ledger_owner_density": 108,
+    "decided:ladder": 54,
+    "decided:group_owner": 38,
+    "decided:staff_band_no_box": 22,
+    "decided:range_veto": 10,
+    "abstained:far_no_rungs": 4,
+    "decided:hairpin_separates": 3
+   }
+  },
+  "numeral": {
+   "NEW": {
+    "not_a_note total": 461
+   },
+   "BASE": {
+    "not_a_note total": 461
+   }
+  }
+ },
+ "brahms1-breitkopf": {
+  "stem": {
+   "control": {
+    "subject matched": 24260
+   },
+   "transitions": {
+    "same owner, reason distance -> stem_toward_staff": 103,
+    "decided:ledger_note_first -> abstained:stem_disagrees": 41,
+    "same owner, reason group_owner -> stem_toward_staff": 13,
+    "decided:group_owner -> abstained:far_no_rungs": 7,
+    "abstained:far_no_rungs -> decided:stem_toward_staff": 6,
+    "decided:distance -> decided:stem_toward_staff": 4,
+    "decided:ledger_direction -> abstained:stem_disagrees": 3,
+    "decided:ladder -> decided:group_owner": 1,
+    "same owner, reason ledger_note_first -> distance": 1
+   },
+   "moved_by_new_rule_and_distance": {
+    "stem_toward_staff: moved to farther staff": 4,
+    "group_owner: moved to farther staff": 1
+   },
+   "examples": {
+    "decided:group_owner -> abstained:far_no_rungs": [
+     "glyph/1/1/2/2/13",
+     "glyph/1/1/2/2/16",
+     "glyph/1/1/3/2/25",
+     "glyph/1/1/4/3/4",
+     "glyph/5/0/4/0/10",
+     "glyph/6/0/9/0/17"
+    ],
+    "abstained:far_no_rungs -> decided:stem_toward_staff": [
+     "glyph/2/0/8/5/4",
+     "glyph/2/0/9/5/4",
+     "glyph/2/1/10/0/5",
+     "glyph/2/1/11/0/0",
+     "glyph/3/0/0/1/4",
+     "glyph/3/0/1/1/1"
+    ],
+    "decided:ledger_note_first -> abstained:stem_disagrees": [
+     "glyph/3/0/0/2/2",
+     "glyph/3/0/0/2/4",
+     "glyph/3/0/1/2/6",
+     "glyph/3/0/1/2/8",
+     "glyph/4/1/11/8/7",
+     "glyph/4/1/12/8/9"
+    ],
+    "decided:distance -> decided:stem_toward_staff": [
+     "glyph/5/1/11/0/13",
+     "glyph/5/1/12/0/5",
+     "glyph/18/1/12/5/2",
+     "glyph/18/1/13/5/1"
+    ],
+    "decided:ladder -> decided:group_owner": [
+     "glyph/5/1/12/0/10"
+    ],
+    "decided:ledger_direction -> abstained:stem_disagrees": [
+     "glyph/11/0/2/0/21",
+     "glyph/15/0/4/4/7",
+     "glyph/15/0/5/4/4"
+    ]
+   },
+   "owner_by_reason_NEW": {
+    "decided:ledger_note_first": 6650,
+    "decided:staff_band": 1105,
+    "decided:distance": 781,
+    "decided:ledger_direction": 756,
+    "decided:staff_band_no_box": 210,
+    "decided:ledger_owner_density": 131,
+    "decided:stem_toward_staff": 126,
+    "decided:ladder": 104,
+    "decided:hairpin_separates": 90,
+    "abstained:far_no_rungs": 66,
+    "abstained:stem_disagrees": 44,
+    "decided:dot_follows_note": 18,
+    "decided:range_veto": 8,
+    "abstained:tied": 7,
+    "decided:group_owner": 2
+   },
+   "owner_by_reason_BASE": {
+    "decided:ledger_note_first": 6692,
+    "decided:staff_band": 1105,
+    "decided:distance": 887,
+    "decided:ledger_direction": 759,
+    "decided:staff_band_no_box": 210,
+    "decided:ledger_owner_density": 131,
+    "decided:ladder": 105,
+    "decided:hairpin_separates": 90,
+    "abstained:far_no_rungs": 65,
+    "decided:group_owner": 21,
+    "decided:dot_follows_note": 18,
+    "decided:range_veto": 8,
+    "abstained:tied": 7
+   }
+  },
+  "numeral": {
+   "NEW": {
+    "not_a_note total": 1406,
+    "numeral_shaped": 3,
+    "numeral_shaped, class noteheadHalfInSpace": 3
+   },
+   "BASE": {
+    "not_a_note total": 1403
+   }
+  }
+ }
+}

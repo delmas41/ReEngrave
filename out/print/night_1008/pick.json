@@ -1,0 +1,192 @@
+[
+ {
+  "doc": "brahms",
+  "head": "glyph/2/1/11/0/0",
+  "pool": "B",
+  "new": "staff/2/1/10",
+  "other": "staff/2/1/11",
+  "base": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "cls": "noteheadBlackInSpace",
+  "box": [
+   966.3212890625,
+   6480.798828125,
+   1005.86328125,
+   6509.556640625
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/5/1/11/0/13",
+  "pool": "A",
+  "new": "staff/5/1/12",
+  "other": "staff/5/1/11",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/5/1/11",
+   "reason": "distance"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   949.07275390625,
+   6715.5556640625,
+   992.26025390625,
+   6749.2958984375
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/5/1/12/0/5",
+  "pool": "A",
+  "new": "staff/5/1/12",
+  "other": "staff/5/1/11",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/5/1/11",
+   "reason": "distance"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   951.4345703125,
+   6714.85791015625,
+   995.296875,
+   6749.27294921875
+  ]
+ },
+ {
+  "doc": "litolff",
+  "head": "glyph/6/1/11/10/2",
+  "pool": "A",
+  "new": "staff/6/1/10",
+  "other": "staff/6/1/11",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/6/1/11",
+   "reason": "distance"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   2282.7775,
+   3526.5075,
+   2309.5525,
+   3545.7225
+  ]
+ },
+ {
+  "doc": "litolff",
+  "head": "glyph/6/1/10/10/13",
+  "pool": "A",
+  "new": "staff/6/1/10",
+  "other": "staff/6/1/11",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/6/1/11",
+   "reason": "distance"
+  },
+  "cls": "noteheadHalfOnLine",
+  "box": [
+   2282.4625,
+   3521.365,
+   2310.025,
+   3545.935
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/3/0/0/1/4",
+  "pool": "B",
+  "new": "staff/3/0/1",
+  "other": "staff/3/0/0",
+  "base": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   1557.48,
+   718.0274999999999,
+   1598.8274999999999,
+   744.9449999999999
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/18/1/13/5/1",
+  "pool": "A",
+  "new": "staff/18/1/13",
+  "other": "staff/18/1/12",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/18/1/12",
+   "reason": "distance"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   3990.0975,
+   6901.99,
+   4027.2825,
+   6934.735
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/18/1/12/5/2",
+  "pool": "A",
+  "new": "staff/18/1/13",
+  "other": "staff/18/1/12",
+  "base": {
+   "outcome": "decided",
+   "value": "staff/18/1/12",
+   "reason": "distance"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   3988.395,
+   6901.7825,
+   4032.2675,
+   6934.4825
+  ]
+ },
+ {
+  "doc": "brahms",
+  "head": "glyph/2/0/8/5/4",
+  "pool": "B",
+  "new": "staff/2/0/9",
+  "other": "staff/2/0/8",
+  "base": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   4821.7373046875,
+   2502.1982421875,
+   4865.1806640625,
+   2534.5966796875
+  ]
+ },
+ {
+  "doc": "litolff",
+  "head": "glyph/4/1/1/4/1",
+  "pool": "B",
+  "new": "staff/4/1/2",
+  "other": "staff/4/1/1",
+  "base": {
+   "outcome": "abstained",
+   "value": null,
+   "reason": "far_no_rungs"
+  },
+  "cls": "noteheadBlackOnLine",
+  "box": [
+   1123.995,
+   2403.83,
+   1149.51,
+   2425.565
+  ]
+ }
+]

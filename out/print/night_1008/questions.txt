@@ -1,0 +1,10 @@
+Tile 01: Which staff does the orange note belong to: staff 11, Violin (2.Viol.) or staff 12, Viola?
+Tile 02: Which staff does the orange note belong to: staff 12, Viola or staff 13, Cello?
+Tile 03: Which staff does the orange note belong to: staff 13, Cello or staff 12, Viola?
+Tile 04: Which staff does the orange note belong to: staff 12 (no name printed) or staff 11 (no name printed)?
+Tile 05: Which staff does the orange note belong to: staff 12 (no name printed) or staff 11 (no name printed)?
+Tile 06: Which staff does the orange note belong to: staff 2, Oboe or staff 1, Flute?
+Tile 07: Which staff does the orange note belong to: staff 13, Cello or staff 14, Contrabass?
+Tile 08: Which staff does the orange note belong to: staff 13, Cello or staff 14, Contrabass?
+Tile 09: Which staff does the orange note belong to: staff 10, Violin (1.Viol.) or staff 9, Timpani?
+Tile 10: Which staff does the orange note belong to: staff 2, Oboe or staff 3, Clarinet (Cl.)?

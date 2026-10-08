@@ -1,0 +1,590 @@
+
+====================================================================================================
+beethoven5-litolff
+STEM / OWNER {
+ "control": {
+  "subject matched": 11399
+ },
+ "transitions": {
+  "same owner, reason distance -> stem_toward_staff": 265,
+  "same owner, reason group_owner -> stem_toward_staff": 33,
+  "decided:ledger_note_first -> abstained:stem_disagrees": 13,
+  "decided:distance -> decided:stem_toward_staff": 4,
+  "abstained:far_no_rungs -> decided:stem_toward_staff": 2,
+  "same owner, reason ledger_note_first -> group_owner": 2,
+  "decided:ledger_note_first -> decided:group_owner": 1,
+  "decided:group_owner -> abstained:ledger_witnesses_disagree": 1
+ },
+ "moved_by_new_rule_and_distance": {
+  "stem_toward_staff: moved to farther staff": 4,
+  "group_owner: moved to nearer staff": 1
+ },
+ "examples": {
+  "abstained:far_no_rungs -> decided:stem_toward_staff": [
+   "glyph/4/1/1/4/1",
+   "glyph/4/1/2/4/1"
+  ],
+  "decided:ledger_note_first -> decided:group_owner": [
+   "glyph/4/1/1/4/3"
+  ],
+  "decided:ledger_note_first -> abstained:stem_disagrees": [
+   "glyph/6/0/0/8/9",
+   "glyph/6/0/1/8/2",
+   "glyph/6/1/0/9/1",
+   "glyph/6/1/0/9/4",
+   "glyph/6/1/1/9/1",
+   "glyph/6/1/1/9/2"
+  ],
+  "decided:distance -> decided:stem_toward_staff": [
+   "glyph/6/1/10/10/7",
+   "glyph/6/1/10/10/13",
+   "glyph/6/1/11/10/2",
+   "glyph/14/0/6/1/1"
+  ],
+  "decided:group_owner -> abstained:ledger_witnesses_disagree": [
+   "glyph/13/1/7/9/4"
+  ]
+ },
+ "owner_by_reason_NEW": {
+  "decided:ledger_note_first": 3076,
+  "decided:distance": 430,
+  "decided:stem_toward_staff": 304,
+  "decided:staff_band": 245,
+  "decided:ledger_direction": 240,
+  "decided:ledger_owner_density": 108,
+  "decided:ladder": 54,
+  "decided:staff_band_no_box": 22,
+  "abstained:stem_disagrees": 13,
+  "decided:range_veto": 10,
+  "decided:group_owner": 7,
+  "decided:hairpin_separates": 3,
+  "abstained:far_no_rungs": 2,
+  "abstained:ledger_witnesses_disagree": 1
+ },
+ "owner_by_reason_BASE": {
+  "decided:ledger_note_first": 3092,
+  "decided:distance": 699,
+  "decided:staff_band": 245,
+  "decided:ledger_direction": 240,
+  "decided:ledger_owner_density": 108,
+  "decided:ladder": 54,
+  "decided:group_owner": 38,
+  "decided:staff_band_no_box": 22,
+  "decided:range_veto": 10,
+  "abstained:far_no_rungs": 4,
+  "decided:hairpin_separates": 3
+ }
+}
+NUMERAL {
+ "NEW": {
+  "not_a_note total": 461
+ },
+ "BASE": {
+  "not_a_note total": 461
+ }
+}
+
+====================================================================================================
+brahms1-breitkopf
+STEM / OWNER {
+ "control": {
+  "subject matched": 24260
+ },
+ "transitions": {
+  "same owner, reason distance -> stem_toward_staff": 103,
+  "decided:ledger_note_first -> abstained:stem_disagrees": 41,
+  "same owner, reason group_owner -> stem_toward_staff": 13,
+  "decided:group_owner -> abstained:far_no_rungs": 7,
+  "abstained:far_no_rungs -> decided:stem_toward_staff": 6,
+  "decided:distance -> decided:stem_toward_staff": 4,
+  "decided:ledger_direction -> abstained:stem_disagrees": 3,
+  "decided:ladder -> decided:group_owner": 1,
+  "same owner, reason ledger_note_first -> distance": 1
+ },
+ "moved_by_new_rule_and_distance": {
+  "stem_toward_staff: moved to farther staff": 4,
+  "group_owner: moved to farther staff": 1
+ },
+ "examples": {
+  "decided:group_owner -> abstained:far_no_rungs": [
+   "glyph/1/1/2/2/13",
+   "glyph/1/1/2/2/16",
+   "glyph/1/1/3/2/25",
+   "glyph/1/1/4/3/4",
+   "glyph/5/0/4/0/10",
+   "glyph/6/0/9/0/17"
+  ],
+  "abstained:far_no_rungs -> decided:stem_toward_staff": [
+   "glyph/2/0/8/5/4",
+   "glyph/2/0/9/5/4",
+   "glyph/2/1/10/0/5",
+   "glyph/2/1/11/0/0",
+   "glyph/3/0/0/1/4",
+   "glyph/3/0/1/1/1"
+  ],
+  "decided:ledger_note_first -> abstained:stem_disagrees": [
+   "glyph/3/0/0/2/2",
+   "glyph/3/0/0/2/4",
+   "glyph/3/0/1/2/6",
+   "glyph/3/0/1/2/8",
+   "glyph/4/1/11/8/7",
+   "glyph/4/1/12/8/9"
+  ],
+  "decided:distance -> decided:stem_toward_staff": [
+   "glyph/5/1/11/0/13",
+   "glyph/5/1/12/0/5",
+   "glyph/18/1/12/5/2",
+   "glyph/18/1/13/5/1"
+  ],
+  "decided:ladder -> decided:group_owner": [
+   "glyph/5/1/12/0/10"
+  ],
+  "decided:ledger_direction -> abstained:stem_disagrees": [
+   "glyph/11/0/2/0/21",
+   "glyph/15/0/4/4/7",
+   "glyph/15/0/5/4/4"
+  ]
+ },
+ "owner_by_reason_NEW": {
+  "decided:ledger_note_first": 6650,
+  "decided:staff_band": 1105,
+  "decided:distance": 781,
+  "decided:ledger_direction": 756,
+  "decided:staff_band_no_box": 210,
+  "decided:ledger_owner_density": 131,
+  "decided:stem_toward_staff": 126,
+  "decided:ladder": 104,
+  "decided:hairpin_separates": 90,
+  "abstained:far_no_rungs": 66,
+  "abstained:stem_disagrees": 44,
+  "decided:dot_follows_note": 18,
+  "decided:range_veto": 8,
+  "abstained:tied": 7,
+  "decided:group_owner": 2
+ },
+ "owner_by_reason_BASE": {
+  "decided:ledger_note_first": 6692,
+  "decided:staff_band": 1105,
+  "decided:distance": 887,
+  "decided:ledger_direction": 759,
+  "decided:staff_band_no_box": 210,
+  "decided:ledger_owner_density": 131,
+  "decided:ladder": 105,
+  "decided:hairpin_separates": 90,
+  "abstained:far_no_rungs": 65,
+  "decided:group_owner": 21,
+  "decided:dot_follows_note": 18,
+  "decided:range_veto": 8,
+  "abstained:tied": 7
+ }
+}
+NUMERAL {
+ "NEW": {
+  "not_a_note total": 1406,
+  "numeral_shaped": 3,
+  "numeral_shaped, class noteheadHalfInSpace": 3
+ },
+ "BASE": {
+  "not_a_note total": 1403
+ }
+}
+====================================================================================================
+beethoven5-litolff: NEW beethoven5-litolff-mvt1-whole-20261008-night.record.json  BASE beethoven5-litolff-mvt1-whole-20261007-day.record.json
+ replay controls: NEW {'repro': 2023, 'mismatch': 9} BASE {'repro': 2023, 'mismatch': 9}
+
+1. FAR HEADS
+  NEW: far heads 4196; decided 2032; abstained 1703; refused as not-a-note 461 (reader gate)
+     abstained by reason: {'count_does_not_fit': 791, 'no_rungs': 565, 'no_line_at_the_note_box': 303, 'line_at_the_box_not_a_ledger_for_this_head': 33, 'line_not_beyond_the_staff_edge': 11}
+     not-a-note by why: {'not_a_note:clipped_fragment': 316, 'not_a_note:on_text': 57, 'not_a_note:too_narrow': 44, 'not_a_note:on_a_barline': 31, 'not_a_note:tremolo_slash': 13}
+  BASE: far heads 4196; decided 2032; abstained 1703; refused as not-a-note 461 (reader gate)
+     abstained by reason: {'count_does_not_fit': 791, 'no_rungs': 565, 'no_line_at_the_note_box': 303, 'line_at_the_box_not_a_ledger_for_this_head': 33, 'line_not_beyond_the_staff_edge': 11}
+     not-a-note by why: {'not_a_note:clipped_fragment': 316, 'not_a_note:on_text': 57, 'not_a_note:too_narrow': 44, 'not_a_note:on_a_barline': 31, 'not_a_note:tremolo_slash': 13}
+   owner changes, ledger-owner witness (NEW):
+  witness (reason ledger_note_first) decided 3076 heads (1948 on the filing staff); NEW owner differs from BASE on 0: {}
+     for the moved-off ones: {}; box-unmatched 0
+     all glyph_owner reasons NEW: {'ledger_note_first': 3076, 'distance': 430, 'stem_toward_staff': 304, 'staff_band': 245, 'ledger_direction': 240, 'ledger_owner_density': 108, 'ladder': 54, 'staff_band_no_box': 22, 'stem_disagrees': 13, 'range_veto': 10}
+
+2. OFF-BOX CHECK (Sean's rule) on decided far heads
+  NEW: decided far heads 2032; replay reproduced the record on 2023/2032 (99.6%) (census on those)
+     [reader's measured rows] reader ON 1920/2023 (94.9%)   geometry ON 1393/2023 (68.9%)
+     [grid rows (reader-independent)] reader ON 1674/2023 (82.7%)   geometry ON 1725/2023 (85.3%)
+  BASE: decided far heads 2032; replay reproduced the record on 2023/2032 (99.6%) (census on those)
+     [reader's measured rows] reader ON 1920/2023 (94.9%)   geometry ON 1393/2023 (68.9%)
+     [grid rows (reader-independent)] reader ON 1674/2023 (82.7%)   geometry ON 1725/2023 (85.3%)
+  SAME HEADS decided in both (n=2023): NEW ON 1920/2023 (94.9%)  BASE ON 1920/2023 (94.9%); same answer 2023/2023 (100.0%)
+  CONTROL NEW: truth references with measured rows n=38: references PASS 37/38 (97.4%); both +-1 shifts FLAGGED 32/38 (84.2%); reader right/wrong x ON/OFF {('reader right', 'ON'): 37, ('reader wrong', 'OFF'): 1}
+  CONTROL BASE: truth references with measured rows n=38: references PASS 37/38 (97.4%); both +-1 shifts FLAGGED 32/38 (84.2%); reader right/wrong x ON/OFF {('reader right', 'ON'): 37, ('reader wrong', 'OFF'): 1}
+
+3. TRUTH SET
+  truth-set far heads n=41
+    NEW   right  37 wrong   1 undecided   3 unmatched   0
+    BASE  right  37 wrong   1 undecided   3 unmatched   0
+    GEO   right  29 wrong  12 undecided   0 unmatched   0
+    NEW wrong: glyph/3/0/0/2/4 truth [-7] NEW -6 geometry -7
+
+4. WHOLE-RECORD SANITY (GATHER+ADJUDICATE)
+  noteheads    NEW 11399   BASE 11399
+  far          NEW 4196   BASE 4196
+  owner_all    NEW {'decided': 9318, 'abstained': 105}   BASE {'decided': 9331, 'abstained': 93}
+  owner_nonfar NEW {'decided': 381}   BASE {'decided': 381}
+  owner_far    NEW {'decided': 4118, 'abstained': 16}   BASE {'decided': 4130, 'abstained': 4}
+  np           NEW {'abstained': 2164, 'decided': 2032}   BASE {'abstained': 2164, 'decided': 2032}
+  nan          NEW {'decided': 11399}   BASE {'decided': 11399}
+  clef         NEW {'decided': 317, 'narrowed': 10, 'abstained': 4}   BASE {'decided': 317, 'narrowed': 10, 'abstained': 4}
+  meter        NEW {'decided': 31}   BASE {'decided': 31}
+  clef verdicts: staves in both 331; changed 0 []
+  meter verdicts: systems in both 31; changed 0 []
+  FLAGS (>2% change outside the far-head population): none
+====================================================================================================
+brahms1-breitkopf: NEW brahms1-breitkopf-mvt1-whole-20261008-night.record.json  BASE brahms1-breitkopf-mvt1-whole-20261007-day.record.json
+ replay controls: NEW {'repro': 4313} BASE {'repro': 4313, 'mismatch': 2}
+
+1. FAR HEADS
+  NEW: far heads 8966; decided 4313; abstained 3247; refused as not-a-note 1406 (reader gate)
+     abstained by reason: {'count_does_not_fit': 1885, 'no_rungs': 689, 'no_line_at_the_note_box': 643, 'line_at_the_box_not_a_ledger_for_this_head': 30}
+     not-a-note by why: {'not_a_note:too_narrow': 533, 'not_a_note:clipped_fragment': 425, 'not_a_note:on_a_barline': 373, 'not_a_note:on_text': 64, 'not_a_note:tremolo_slash': 8, 'not_a_note:numeral_shaped': 3}
+  BASE: far heads 8966; decided 4315; abstained 3248; refused as not-a-note 1403 (reader gate)
+     abstained by reason: {'count_does_not_fit': 1885, 'no_rungs': 690, 'no_line_at_the_note_box': 643, 'line_at_the_box_not_a_ledger_for_this_head': 30}
+     not-a-note by why: {'not_a_note:too_narrow': 533, 'not_a_note:clipped_fragment': 425, 'not_a_note:on_a_barline': 373, 'not_a_note:on_text': 64, 'not_a_note:tremolo_slash': 8}
+   owner changes, ledger-owner witness (NEW):
+  witness (reason ledger_note_first) decided 6650 heads (4066 on the filing staff); NEW owner differs from BASE on 0: {}
+     for the moved-off ones: {}; box-unmatched 0
+     all glyph_owner reasons NEW: {'ledger_note_first': 6650, 'staff_band': 1105, 'distance': 781, 'ledger_direction': 756, 'staff_band_no_box': 210, 'ledger_owner_density': 131, 'stem_toward_staff': 126, 'ladder': 104, 'hairpin_separates': 90, 'far_no_rungs': 66}
+
+2. OFF-BOX CHECK (Sean's rule) on decided far heads
+  NEW: decided far heads 4313; replay reproduced the record on 4313/4313 (100.0%) (census on those)
+     [reader's measured rows] reader ON 4236/4313 (98.2%)   geometry ON 4119/4313 (95.5%)
+     [grid rows (reader-independent)] reader ON 4180/4313 (96.9%)   geometry ON 4243/4313 (98.4%)
+  BASE: decided far heads 4315; replay reproduced the record on 4313/4315 (100.0%) (census on those)
+     [reader's measured rows] reader ON 4236/4313 (98.2%)   geometry ON 4119/4313 (95.5%)
+     [grid rows (reader-independent)] reader ON 4180/4313 (96.9%)   geometry ON 4243/4313 (98.4%)
+  SAME HEADS decided in both (n=4313): NEW ON 4236/4313 (98.2%)  BASE ON 4236/4313 (98.2%); same answer 4313/4313 (100.0%)
+  CONTROL NEW: truth references with measured rows n=11: references PASS 11/11 (100.0%); both +-1 shifts FLAGGED 11/11 (100.0%); reader right/wrong x ON/OFF {('reader right', 'ON'): 11}
+  CONTROL BASE: truth references with measured rows n=11: references PASS 11/11 (100.0%); both +-1 shifts FLAGGED 11/11 (100.0%); reader right/wrong x ON/OFF {('reader right', 'ON'): 11}
+
+3. TRUTH SET
+  truth-set far heads n=11
+    NEW   right  11 wrong   0 undecided   0 unmatched   0
+    BASE  right  11 wrong   0 undecided   0 unmatched   0
+    GEO   right  11 wrong   0 undecided   0 unmatched   0
+
+4. WHOLE-RECORD SANITY (GATHER+ADJUDICATE)
+  noteheads    NEW 24260   BASE 24260
+  far          NEW 8966   BASE 8966
+  owner_all    NEW {'abstained': 480, 'decided': 33626}   BASE {'abstained': 433, 'decided': 33673}
+  owner_nonfar NEW {'decided': 1176}   BASE {'decided': 1176}
+  owner_far    NEW {'decided': 8805, 'abstained': 117}   BASE {'decided': 8850, 'abstained': 72}
+  np           NEW {'decided': 4313, 'abstained': 4653}   BASE {'decided': 4315, 'abstained': 4651}
+  nan          NEW {'decided': 24260}   BASE {'decided': 24260}
+  clef         NEW {'decided': 690, 'narrowed': 1}   BASE {'decided': 690, 'narrowed': 1}
+  meter        NEW {'decided': 8, 'abstained': 45}   BASE {'decided': 8, 'abstained': 45}
+  clef verdicts: staves in both 691; changed 0 []
+  meter verdicts: systems in both 53; changed 0 []
+  FLAGS (>2% change outside the far-head population): none
+
+====================================================================================================
+beethoven5-litolff
+  in-staff heads, geometry position NEW vs BASE: {'matched_in_staff': 7203, 'same': 7203, 'changed': 0, 'delta_steps': {}, 'far_matched': 4196, 'far_changed': 0, 'far_delta_steps': {0: 4196}}
+  owner verdicts NEW vs BASE (matched by box): {'counts': {'same': 4494, 'abstained -> decided': 2, 'decided -> decided: other staff': 3, 'decided -> abstained': 14, 'decided -> decided: now on filing staff': 2}, 'unmatched': 0, 'reason_of_new_verdict_where_changed': {'stem_disagrees': 13, 'stem_toward_staff': 6, 'group_owner': 1, 'ledger_witnesses_disagree': 1}}
+  summary counts that moved >2% (BASE, NEW): {'dot_role.abstained': (173, 134), 'dot_role.decided': (428, 467), 'head_stem_reach.read': (0, 4515)}
+  noteheads detected 2+ times, clustered off boxes: NEW {'boxes': 11399, 'marks': 9047, 'marks_with_2plus': 2009, 'extra_boxes': 2352, 'size_hist': {1: 7038, 2: 1733, 3: 223, 4: 43, 5: 7, 6: 2, 7: 1}} 
+     BASE {'boxes': 11399, 'marks': 9047, 'marks_with_2plus': 2009, 'extra_boxes': 2352, 'size_hist': {1: 7038, 2: 1733, 3: 223, 4: 43, 5: 7, 6: 2, 7: 1}} 
+     NEW's own mark_group rows (control) {'notehead': {'marks': 9047, 'marks_with_2plus': 2009, 'extra_members': 2352}, 'accidental': {'marks': 999, 'marks_with_2plus': 360, 'extra_members': 506}, 'other': {'marks': 446, 'marks_with_2plus': 65, 'extra_members': 85}, 'rest': {'marks': 2773, 'marks_with_2plus': 97, 'extra_members': 100}}
+brahms1-breitkopf
+  in-staff heads, geometry position NEW vs BASE: {'matched_in_staff': 15294, 'same': 15294, 'changed': 0, 'delta_steps': {}, 'far_matched': 8966, 'far_changed': 0, 'far_delta_steps': {0: 8966}}
+  owner verdicts NEW vs BASE (matched by box): {'counts': {'same': 10036, 'decided -> abstained': 51, 'abstained -> decided': 6, 'decided -> decided: other staff': 3, 'decided -> decided: now on filing staff': 2}, 'unmatched': 0, 'reason_of_new_verdict_where_changed': {'stem_disagrees': 44, 'stem_toward_staff': 10, 'far_no_rungs': 7, 'group_owner': 1}}
+  summary counts that moved >2% (BASE, NEW): {'dot_role.abstained': (876, 621), 'dot_role.decided': (8798, 9053), 'glyph_owner.abstained': (485, 511), 'head_stem_reach.read': (0, 10098)}
+  noteheads detected 2+ times, clustered off boxes: NEW {'boxes': 24260, 'marks': 20295, 'marks_with_2plus': 3826, 'extra_boxes': 3965, 'size_hist': {1: 16469, 2: 3714, 3: 94, 4: 11, 5: 5, 6: 2}} 
+     BASE {'boxes': 24260, 'marks': 20295, 'marks_with_2plus': 3826, 'extra_boxes': 3965, 'size_hist': {1: 16469, 2: 3714, 3: 94, 4: 11, 5: 5, 6: 2}} 
+     NEW's own mark_group rows (control) {'notehead': {'marks': 20295, 'marks_with_2plus': 3826, 'extra_members': 3965}, 'other': {'marks': 1166, 'marks_with_2plus': 166, 'extra_members': 188}, 'accidental': {'marks': 4362, 'marks_with_2plus': 1635, 'extra_members': 2155}, 'rest': {'marks': 7259, 'marks_with_2plus': 769, 'extra_members': 870}}
+
+====================================================================================================
+beethoven5-litolff
+ARCS {
+ "NEW": {
+  "arc_subjects": 2644,
+  "refused_by_reason": {
+   "ink_is_a_staff_line": 503
+  },
+  "refused": 503,
+  "kept": 2141,
+  "owner_by_outcome_reason": {
+   "decided:no_better_staff": 2189,
+   "decided:no_rival_staff": 309,
+   "decided:hugs_noteheads": 146
+  }
+ },
+ "BASE": {
+  "arc_subjects": 2644,
+  "refused_by_reason": {
+   "ink_is_a_staff_line": 503
+  },
+  "refused": 503,
+  "kept": 2141,
+  "owner_by_outcome_reason": {
+   "decided:no_better_staff": 2194,
+   "decided:no_rival_staff": 304,
+   "decided:hugs_noteheads": 146
+  }
+ },
+ "owner_changes": {
+  "same": 2644
+ },
+ "newly_refused": 0
+}
+MARKS {
+ "NEW": {
+  "notehead: marks": 8402,
+  "notehead: single-box marks with no staff owning them": 0,
+  "notehead: marks seen 2+ times": 1420,
+  "notehead: extra boxes": 1549,
+  "notehead: 2+ groups, one owner": 1411,
+  "notehead: 2+ groups, no staff owns it": 7,
+  "notehead: 2+ groups, two or more different owners": 2,
+  "all: marks": 13265,
+  "all: single-box marks with no staff owning them": 0,
+  "all: marks seen 2+ times": 2531,
+  "all: extra boxes": 3043,
+  "all: 2+ groups, one owner": 2498,
+  "all: 2+ groups, no staff owns it": 8,
+  "all: 2+ groups, two or more different owners": 25,
+  "all: 2+ groups, one owner but some box abstained": 1,
+  "mark_group_rows": 16308,
+  "mark_groups": 13265
+ },
+ "BASE": {
+  "notehead: marks": 8402,
+  "notehead: single-box marks with no staff owning them": 0,
+  "notehead: marks seen 2+ times": 1420,
+  "notehead: extra boxes": 1549,
+  "notehead: 2+ groups, one owner": 1414,
+  "notehead: 2+ groups, two or more different owners": 4,
+  "notehead: 2+ groups, no staff owns it": 2,
+  "all: marks": 13265,
+  "all: single-box marks with no staff owning them": 0,
+  "all: marks seen 2+ times": 2531,
+  "all: extra boxes": 3043,
+  "all: 2+ groups, one owner": 2501,
+  "all: 2+ groups, no staff owns it": 3,
+  "all: 2+ groups, two or more different owners": 27,
+  "mark_group_rows": 16308,
+  "mark_groups": 13265
+ }
+}
+DOTS {
+ "NEW": {
+  "decided|centred_and_offset_from_a_head|staccato": 449,
+  "abstained|dot_role_ambiguous|None": 129,
+  "decided|right_of_and_level_with_a_head|augmentation": 18,
+  "abstained|no_notehead_or_rest_in_cell|None": 3,
+  "abstained|on_a_barline|None": 2
+ },
+ "BASE": {
+  "decided|centred_and_offset_from_a_head|staccato": 410,
+  "abstained|dot_role_ambiguous|None": 168,
+  "decided|right_of_and_level_with_a_head|augmentation": 18,
+  "abstained|no_notehead_or_rest_in_cell|None": 3,
+  "abstained|on_a_barline|None": 2
+ },
+ "role_changes": {
+  "same": 562,
+  "role/verdict changed": 39,
+  "abstained:dot_role_ambiguous -> decided:centred_and_offset_from_a_head": 39
+ },
+ "dot_owner_changes": {
+  "dot boxes": 154,
+  "no owner verdict in one run": 138
+ },
+ "note_durations": {
+  "NEW": {
+   "by_outcome": {
+    "decided": 10602,
+    "narrowed": 797
+   },
+   "by_reason": {
+    "decided:head_and_marks": 10602,
+    "narrowed:beams_ambiguous": 505,
+    "narrowed:beam_discounted_uncertain": 181,
+    "narrowed:head_fill_from_ink": 48,
+    "narrowed:beam_certain_not_joined": 30,
+    "narrowed:flag_ink_unread": 28,
+    "narrowed:flags_disagree": 5
+   }
+  },
+  "BASE": {
+   "by_outcome": {
+    "decided": 10602,
+    "narrowed": 797
+   },
+   "by_reason": {
+    "decided:head_and_marks": 10602,
+    "narrowed:beams_ambiguous": 505,
+    "narrowed:beam_discounted_uncertain": 181,
+    "narrowed:head_fill_from_ink": 48,
+    "narrowed:beam_certain_not_joined": 30,
+    "narrowed:flag_ink_unread": 28,
+    "narrowed:flags_disagree": 5
+   }
+  },
+  "changes": {
+   "same": 11399
+  }
+ }
+}
+VERDICT DIFF per quantity (changed / n):
+  accidental_owner                       n=  1508 changed=    4 (0.27%) missing=0 {'abstained -> decided': 3, 'decided -> abstained': 1}
+  arc_owner                              n=  2644 changed=    5 (0.19%) missing=0 {'same outcome, value/reason differs': 5}
+  dot_role                               n=   601 changed=   39 (6.49%) missing=0 {'abstained -> decided': 39}
+  glyph_owner                            n=  9423 changed=  321 (3.41%) missing=1 {'same outcome, value/reason differs': 305, 'decided -> abstained': 14, 'abstained -> decided': 2}
+  tie_pair                               n=  2644 changed=    1 (0.04%) missing=0 {'same outcome, value/reason differs': 1}
+detector class counts that differ (BASE, NEW): {}
+
+====================================================================================================
+brahms1-breitkopf
+ARCS {
+ "NEW": {
+  "arc_subjects": 14814,
+  "refused_by_reason": {
+   "ink_is_a_staff_line": 7946
+  },
+  "refused": 7946,
+  "kept": 6868,
+  "owner_by_outcome_reason": {
+   "decided:hugs_noteheads": 1289,
+   "decided:no_better_staff": 12842,
+   "decided:no_rival_staff": 675,
+   "decided:ends_on_noteheads": 8
+  }
+ },
+ "BASE": {
+  "arc_subjects": 14814,
+  "refused_by_reason": {
+   "ink_is_a_staff_line": 7946
+  },
+  "refused": 7946,
+  "kept": 6868,
+  "owner_by_outcome_reason": {
+   "decided:hugs_noteheads": 1292,
+   "decided:no_better_staff": 12837,
+   "decided:no_rival_staff": 677,
+   "decided:ends_on_noteheads": 8
+  }
+ },
+ "owner_changes": {
+  "same": 14807,
+  "decided -> other staff": 7,
+  "decided -> other staff [arc kept]": 7,
+  "by new reason hugs_noteheads": 2,
+  "by new reason no_better_staff": 5
+ },
+ "newly_refused": 0
+}
+MARKS {
+ "NEW": {
+  "notehead: marks": 16407,
+  "notehead: single-box marks with no staff owning them": 2,
+  "notehead: marks seen 2+ times": 3076,
+  "notehead: extra boxes": 3114,
+  "notehead: 2+ groups, one owner": 3052,
+  "notehead: 2+ groups, no staff owns it": 23,
+  "notehead: 2+ groups, two or more different owners": 1,
+  "all: marks": 33082,
+  "all: single-box marks with no staff owning them": 2,
+  "all: marks seen 2+ times": 6396,
+  "all: extra boxes": 7178,
+  "all: 2+ groups, no staff owns it": 53,
+  "all: 2+ groups, one owner": 6312,
+  "all: 2+ groups, two or more different owners": 31,
+  "all: 2+ groups, one owner but some box abstained": 5,
+  "mark_group_rows": 40260,
+  "mark_groups": 33082
+ },
+ "BASE": {
+  "notehead: marks": 16407,
+  "notehead: single-box marks with no staff owning them": 2,
+  "notehead: marks seen 2+ times": 3076,
+  "notehead: extra boxes": 3114,
+  "notehead: 2+ groups, one owner": 3069,
+  "notehead: 2+ groups, no staff owns it": 5,
+  "notehead: 2+ groups, two or more different owners": 2,
+  "all: marks": 33082,
+  "all: single-box marks with no staff owning them": 1,
+  "all: marks seen 2+ times": 6396,
+  "all: extra boxes": 7178,
+  "all: 2+ groups, no staff owns it": 35,
+  "all: 2+ groups, one owner": 6329,
+  "all: 2+ groups, two or more different owners": 32,
+  "mark_group_rows": 40260,
+  "mark_groups": 33082
+ }
+}
+DOTS {
+ "NEW": {
+  "decided|right_of_and_level_with_a_head|augmentation": 6281,
+  "decided|centred_and_offset_from_a_head|staccato": 2772,
+  "abstained|dot_role_ambiguous|None": 613,
+  "abstained|on_a_barline|None": 8
+ },
+ "BASE": {
+  "decided|right_of_and_level_with_a_head|augmentation": 6281,
+  "decided|centred_and_offset_from_a_head|staccato": 2517,
+  "abstained|dot_role_ambiguous|None": 868,
+  "abstained|on_a_barline|None": 8
+ },
+ "role_changes": {
+  "same": 9419,
+  "role/verdict changed": 255,
+  "abstained:dot_role_ambiguous -> decided:centred_and_offset_from_a_head": 255
+ },
+ "dot_owner_changes": {
+  "dot boxes": 6836,
+  "no owner verdict in one run": 4501,
+  "dot owner changed": 4,
+  "  decided -> decided": 2,
+  "  decided -> abstained": 2
+ },
+ "note_durations": {
+  "NEW": {
+   "by_outcome": {
+    "decided": 21036,
+    "narrowed": 3224
+   },
+   "by_reason": {
+    "decided:head_and_marks": 21036,
+    "narrowed:beams_ambiguous": 1658,
+    "narrowed:beam_discounted_uncertain": 982,
+    "narrowed:beam_certain_not_joined": 367,
+    "narrowed:head_fill_from_ink": 93,
+    "narrowed:flags_disagree": 71,
+    "narrowed:flag_ink_unread": 53
+   }
+  },
+  "BASE": {
+   "by_outcome": {
+    "decided": 21036,
+    "narrowed": 3224
+   },
+   "by_reason": {
+    "decided:head_and_marks": 21036,
+    "narrowed:beams_ambiguous": 1658,
+    "narrowed:beam_discounted_uncertain": 982,
+    "narrowed:beam_certain_not_joined": 367,
+    "narrowed:head_fill_from_ink": 93,
+    "narrowed:flags_disagree": 71,
+    "narrowed:flag_ink_unread": 53
+   }
+  },
+  "changes": {
+   "same": 24260
+  }
+ }
+}
+VERDICT DIFF per quantity (changed / n):
+  accidental_owner                       n=  6544 changed=    6 (0.09%) missing=0 {'abstained -> decided': 5, 'decided -> abstained': 1}
+  arc_owner                              n= 14814 changed=    9 (0.06%) missing=0 {'same outcome, value/reason differs': 9}
+  articulation_owner                     n=  1263 changed=    3 (0.24%) missing=0 {'same outcome, value/reason differs': 3}
+  dot_role                               n=  9674 changed=  255 (2.64%) missing=0 {'abstained -> decided': 255}
+  glyph_owner                            n= 34106 changed=  183 (0.54%) missing=0 {'same outcome, value/reason differs': 124, 'decided -> abstained': 53, 'abstained -> decided': 6}
+  notehead_position                      n=  8966 changed=    2 (0.02%) missing=0 {'decided -> abstained': 2}
+  tie_pair                               n= 14814 changed=   14 (0.09%) missing=0 {'abstained -> decided': 8, 'same outcome, value/reason differs': 6}
+detector class counts that differ (BASE, NEW): {}
