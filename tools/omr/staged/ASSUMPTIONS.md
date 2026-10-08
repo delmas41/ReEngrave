@@ -1329,6 +1329,15 @@ ownership → pitch → accidental → meter → duration.
 above its cause raises `UphillRule` — so the list is enforced even though it is
 unmeasured.
 
+⚠️ **What the list does NOT do (2026-10-07,
+`docs/evaluate-sequence-2026-10-07.md` §3).** It orders CAUSES, not rules:
+`_pass` sorts `RULES` by the cause's rank and the sort is stable, so rules
+sharing a cause run in REGISTRATION (file) order. The four `meter`-caused rules
+depend on each other (`reconcile_chord_duration` before `reconcile_duration`,
+pinned by test; `reinstate_rest_between_staves` after `reconcile_duration`,
+pinned by nothing but line 1295) and the comment on `Q.REST_IS_NOT_A_REST` in
+this list credits the ordering to the effect's position, which governs nothing.
+
 **How to falsify.** Any consequence that genuinely needs to run the other way.
 ⚠️ **If you find one, do NOT build a fixpoint. Record the tension and
 escalate.**
