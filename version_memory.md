@@ -22,6 +22,20 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 1.7: test pages the current weights never saw
+
+Sean asked whether the hand-truth work overlaps the current weights; it did — production's
+training corpus held cells of three of the four planned test pages. Decided (DECISIONS): the
+test pages are now Brahms 317803 pdf 0, Litolff 984073 pdf 2 (replacing pdf 1) and Dvořák
+405834 pdf 4, none of which holds a cell production trained on; the two acceptance count
+pages stay, and the inventory now names, per held-out page, exactly which cells production
+trained on (`held_out_cells_trained_by_production`: 19 on Brahms pdf 1, 7 on Litolff pdf 3 —
+an earlier 23 / 14 counted a cell once per label version) so the scorer can report them
+apart. `held-out.json` holds the five pages. New inventory test run RED against the previous
+commit first.
+
+---
+
 ## 2026-10-08 — ROADMAP 1.7 (C): label a page cell by cell into page pixels; Claude's check; perfect eyes; bar-by-bar LilyPond review
 
 **`tools/omr/hand_truth/` gains `session.py`, `bench.py`, `checks.py`, `perfect_eyes.py`,

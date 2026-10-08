@@ -203,4 +203,6 @@ def test_only_whole_ink_cells_train_and_lines_use_the_catalog_vocabulary(tmp_pat
 
 def test_the_committed_held_out_list_holds_the_first_and_count_pages():
     held = export_yolo.held_out_pages()
-    assert {("imslp317803", 0), ("imslp317803", 1), ("imslp984073", 1), ("imslp984073", 3)} <= held
+    assert {("imslp317803", 0), ("imslp317803", 1), ("imslp984073", 2), ("imslp984073", 3),
+            ("imslp405834", 4)} <= held
+    assert ("imslp984073", 1) not in held  # production trained on part of it: no longer a test page

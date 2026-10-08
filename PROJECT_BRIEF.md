@@ -40,7 +40,8 @@ inventory with the weights lineage are built (`tools/omr/hand_truth/`,
 `data/hand-truth/INVENTORY.json`), and so is the whole labeling loop — cut a
 page, label it cell by cell in the existing UI, Claude's check, the reader with
 perfect eyes, a bar-by-bar LilyPond review (runbook: `data/hand-truth/README.md`).
-The first page to label is Brahms 317803 PDF index 0.
+The first page to label is Brahms 317803 PDF index 0; the test pages (Brahms pdf 0,
+Litolff 984073 pdf 2, Dvořák 405834 pdf 4) hold nothing the current weights trained on.
 
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather

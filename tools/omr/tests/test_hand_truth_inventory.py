@@ -42,6 +42,16 @@ def test_the_leak_check_finds_trained_pages_and_only_those(inv):
     assert "imslp317803:0" not in inv["held_out_pages_seen_by_production"]
 
 
+def test_the_clean_test_pages_are_clean_and_the_count_pages_name_their_trained_cells(inv):
+    seen = set(inv["held_out_pages_seen_by_production"])
+    for clean in ("imslp317803:0", "imslp984073:2", "imslp405834:4"):
+        assert clean not in seen
+    trained = inv["held_out_cells_trained_by_production"]
+    assert set(trained) == seen == {"imslp317803:1", "imslp984073:3"}
+    assert len(trained["imslp317803:1"]) == 19 and len(trained["imslp984073:3"]) == 7
+    assert all(c.startswith("s") and "-st" in c and "-m" in c for v in trained.values() for c in v)
+
+
 def test_who_judged_comes_from_the_file_never_a_guess(inv):
     by_file = {a["file"]: a["labeler"] for a in inv["adjudications"]}
     assert by_file["benchmarks/omr-stem-crop-pass-2026-09/ADJUDICATION-litolff.json"] == "claude"

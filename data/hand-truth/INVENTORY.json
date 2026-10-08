@@ -159,15 +159,47 @@
   }
  ],
  "hand_truth_pages": [],
+ "held_out_cells_trained_by_production": {
+  "imslp317803:1": [
+   "s0-st0-m1",
+   "s0-st1-m1",
+   "s0-st1-m5",
+   "s0-st10-m3",
+   "s0-st2-m2",
+   "s0-st2-m5",
+   "s0-st3-m4",
+   "s0-st3-m6",
+   "s0-st9-m0",
+   "s0-st9-m5",
+   "s1-st19-m0",
+   "s1-st20-m6",
+   "s1-st21-m6",
+   "s1-st22-m0",
+   "s1-st23-m2",
+   "s1-st24-m2",
+   "s1-st25-m3",
+   "s1-st26-m0",
+   "s1-st26-m3"
+  ],
+  "imslp984073:3": [
+   "s0-st2-m6",
+   "s0-st5-m5",
+   "s0-st6-m4",
+   "s0-st6-m5",
+   "s1-st14-m0",
+   "s1-st14-m1",
+   "s1-st14-m2"
+  ]
+ },
  "held_out_pages": [
   "imslp317803:0",
   "imslp317803:1",
-  "imslp984073:1",
+  "imslp405834:4",
+  "imslp984073:2",
   "imslp984073:3"
  ],
  "held_out_pages_seen_by_production": [
   "imslp317803:1",
-  "imslp984073:1",
   "imslp984073:3"
  ],
  "label_versions": [

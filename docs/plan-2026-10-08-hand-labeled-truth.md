@@ -122,7 +122,7 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
 - [x] **A2. Provenance in the inventory** (2026-10-08), not by editing other benchmarks' files. Who judged comes from each file's own `adjudicator` field or its own text ("not Sean's"): 10 Sean, 7 Claude, **9 unrecorded** — never guessed.
   - Not done: the §1d prose-only numbers (`raw: gone`) — they live in DECISIONS, not in files the generator can read. Folded into A3.
 - [ ] **A3. Fold Sean's scattered crop verdicts** (10 JSON files plus the prose entries whose sheets survive) into one append-only ledger keyed by page + box.
-- [x] **A4. Hold-out list** (2026-10-08, §5 Q7): `data/hand-truth/held-out.json`. The inventory computes which held-out pages production already trained on: **Brahms PDF index 1, Litolff 984073 index 1 and 3**.
+- [x] **A4. Hold-out list** (2026-10-08, §5 Q7): `data/hand-truth/held-out.json` — Brahms 317803 pdf 0–1, Litolff 984073 pdf 2–3, Dvořák 405834 pdf 4. The inventory names the cells production trained on per held-out page: 19 on the Brahms count page, 7 on the Litolff count page, none on the other three (an earlier count of 23 / 14 counted a cell once per label version).
 - [x] **A5. Weights lineage** (2026-10-08, Sean: *"How do we know where the individual notes from our current weights came from?"*). Declared with evidence in `data/hand-truth/weights-lineage.json`; the inventory expands it into cells, pages and box origin — production's features were trained on 7,288 boxes, **3,871 from label files and 3,417 (47%) added by the previous model**. `--verify-checkpoints omr-weights/` compares the declaration with each `.pt`'s own `train_args` (needs torch; on Sean's machine — not yet run).
 
 ### Phase B: The page-truth store (code; runs anywhere)
@@ -188,20 +188,22 @@ Under rule 7 these are a model's own judgment. The inventory (A1) marks them `la
 
 **Page order** (Sean: start on a first page for the global information):
 
-| # | page | why | cells (est.) | already labeled |
+| # | page | why | cells (est.) | production trained on |
 |---|---|---|--:|--:|
-| 1 | **Brahms, Breitkopf 317803, PDF index 0** — mvt 1 first page | smallest first page (14 staves, bars 1–7); names, meter, key, tempo | ~98 + margins | 0 |
-| 2 | Brahms, Breitkopf, PDF index 1 — count page | acceptance count page, next to #1 | 210 | 19 (tier 2) |
-| 3 | **Litolff 984073, PDF index 1** — mvt 1 first page | second publisher; first page (12 staves, bars 1–16) | ~192 | 9 (tier 3) |
-| 4 | Litolff 984073, PDF index 3 — count page | acceptance count page | 408 | 7 (tier 3) |
-| 5 | **Simrock Dvořák 9, PDF index 4** — mvt 1 first page | third publisher; v22 tier-1 labels on later pages | ~120 | 0 |
-| 6+ | one first page each: Peters, Eulenburg, Universal, Novello, Durand | multiple publishers (Sean 10-08) | — | tier-3 cells on nearby pages |
+| 1 | **Brahms, Breitkopf 317803, PDF index 0** — mvt 1 first page | smallest first page (14 staves, bars 1–7); names, meter, key, tempo | ~98 + margins | **0 cells** |
+| 2 | Brahms, Breitkopf, PDF index 1 — count page | acceptance count page, next to #1 | 210 | 19 cells (scored apart) |
+| 3 | **Litolff 984073, PDF index 2** — bars 17–48 | second publisher; replaces PDF index 1, part of which production trained on (Sean 10-08) | ~352 | **0 cells** |
+| 4 | Litolff 984073, PDF index 3 — count page | acceptance count page | 408 | 7 cells (scored apart) |
+| 5 | **Simrock Dvořák 9, PDF index 4** — mvt 1 first page | third publisher, first page | ~120 | **0 cells** |
+| 6+ | one first page each: Peters, Eulenburg, Universal, Novello, Durand | multiple publishers (Sean 10-08) | — | check the inventory first |
+
+**Overlap with the current weights (Sean 2026-10-08: "all of the work we will do will NOT overlap with our current weights").** Pages 1, 3 and 5 hold no cell production trained on. The two count pages stay in the acceptance set; the inventory names the cells of each that production trained on (`held_out_cells_trained_by_production`: 19 on Brahms, 7 on Litolff), and the scorer reports those cells apart from the rest — the gap between the two is the leak, measured. Litolff PDF index 1 leaves the test set and may train. No future weights train on any page here (`held-out.json`).
 
 Each first page has a hand-read `works.json` row (bar window, staves, clef/key) to check the structure labels against.
 
 ### Phase D: The scorer (STAGED, GATHER + ADJUDICATE)
 
-- [ ] **D1. `hand_truth` scorer.** For a record and a hand-labeled page, report:
+- [ ] **D1. `hand_truth` scorer.** For a record and a hand-labeled page, report — separately for the cells the weights under test trained on and for the rest (`held_out_cells_trained_by_production` for production):
   - per family: box recall / precision;
   - per notehead: owner right / wrong / abstained, and staff position right / wrong / abstained;
   - per staff-system: clef / key / meter and instrument name.
@@ -246,7 +248,7 @@ Each first page has a hand-read `works.json` row (bar window, staves, clef/key) 
 5. **First pages first**, for instrument names, time signatures and the other global information; **multiple publishers**.
 6. **After each page:** Claude double-checks it (flags only; C5), then the labels are rendered through LilyPond beside the print, one measure at a time, for Sean's visual check (C6).
 
-7. **Training vs testing** (Sean 2026-10-08: "Yes"). Brahms PDF index 0–1 and Litolff 984073 index 1 and 3 never train any weights that are TESTED on them (`data/hand-truth/held-out.json`); every other labeled page trains. Shipped weights may train on everything, and their score on the held-out pages is then never quoted as evidence. The leak is to be MEASURED on the Brahms count page once it is complete: production's recall on the 19 cells it trained on vs the other 191.
+7. **Training vs testing** (Sean 2026-10-08: "Yes", then the same day: test pages the current weights never saw). Brahms PDF index 0–1, Litolff 984073 index 2–3 and Dvořák 405834 index 4 never train any weights that are TESTED on them (`data/hand-truth/held-out.json`); every other labeled page trains. Shipped weights may train on everything, and their score on the held-out pages is then never quoted as evidence. The leak is to be MEASURED on the Brahms count page once it is complete: production's recall on the 19 cells it trained on vs the other 191.
 
    A reader-stage A/B on one set of weights is unaffected either way, because both arms see the same detector. A weights test is not.
 
