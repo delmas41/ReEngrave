@@ -4841,3 +4841,28 @@ stands 1.7 clear); (e) a fused word (one component <= 7 sp wide, >= 0.9 sp tall,
 **Time per page** (guard only, after the re-open fix; before): Litolff 4 86->46 s, 6 70->69, 9 59->86, 12 3->8, 15 2->3; Brahms 3 5->11, 7 22->53, 12 39->37, 18 6->32, 24 3->4.
 Six pages are over 30 s because of looping `cresc.` crops, not the finder. Scan-gate default and the overnight script are unchanged.
 Review images: `out/print/direction_text_scans_r2/`.
+
+---
+
+## 2026-10-08 (night) -- stuck `cresc.` crops: width-scaled token cap (lane-direction-text-on-scans; lexicon untouched, scan gate untouched)
+
+PATH: STAGED `direction_text._surya_word_reader`. Rules stated before the run, evaluated OFFLINE on one set of per-crop rows (`direction_stop_experiment.py`,
+`direction_stop_analyze.py`, rows `out/direction_stop/`; current finder, erase-padded crops, 10 held-out pages, 295 candidates):
+
+| policy | read time, 10 pages | words vs current branch |
+|---|--:|---|
+| P0 current: Surya (20 s guard, uncapped) then Tesseract | 355 s | -- |
+| P1 Tesseract first, Surya (guard) only where Tesseract fails the lexicon | 329 s | none lost |
+| P2 Tesseract first, Surya with width-scaled cap on failures | 137 s | none lost (one `dim` reads `dim,`) |
+| P3 = P2 + one uncapped retry of what still fails | 397 s | none lost |
+| **P4 Surya with width-scaled cap, then Tesseract (shipped)** | **148 s** | **none lost, none gained** |
+
+Tesseract alone reads right 22 of the 42 crops anyone reads right (52%); on the looping `cresc.` crops it returns `CTESC.`/`Crese.`, which the lexicon (unchanged) refuses,
+so Tesseract-first alone does not remove the loops (P1). What removes them is the output ceiling. Rule: **cap = 32 + 4 x crop width in staff spaces** (a crop is
+enlarged to 80 px per space) -- a short word cannot produce long output; the 20 s guard stays as backstop. Retrying uncapped (P3) buys nothing here and costs the loops back.
+A fixed 64 had lost `arco` (Brahms p12) on the OLD crop; the width cap keeps it on the current crop (arco read by Surya in 15 of 15), but that is one crop's evidence -- the old crop
+still shows the cap can cut a word whose output only ends after a loop.
+
+End-to-end re-run (`out/direction_cap_r4`, real reader) against the previous branch state (`direction_cap_r3`): found 42 -> 42, no word lost or gained, vs cap-off the only difference
+is the Litolff 4 staff swap already recorded. Time per page: Brahms 3/7/12/18/24 = 10.6/24.2/26.6/10.7/4.2 s, Litolff 4/6/9/12/15 = 18.4/17.8/17.9/7.3/2.9 s (all under 30 s;
+before: 11/53/37/32/4 and 46/69/86/8/3). Tests `test_direction_word_token_cap_2026_10_08.py`: 3 RED -> green. Fast tier 6,182 passed; `staged.check` 192 -> 192.

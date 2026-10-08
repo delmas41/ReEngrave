@@ -777,10 +777,28 @@ def page_is_scanned(page: PageImage) -> bool:
 DIRECTION_CROP_TIMEOUT_S = 20.0
 
 
+#: Surya's output ceiling for ONE word crop grows with the crop's width, so a
+#: short word cannot produce long output: cap = BASE + PER_SPACE x width in
+#: staff spaces (a crop is enlarged to MIN_CROP_SPACING_PX per space, so the
+#: width in spaces is `shape[1] / MIN_CROP_SPACING_PX`). Measured on the 10
+#: held-out scan pages (benchmarks/omr-local-staff-2026-09 FINDINGS, 2026-10-08):
+#: reading time 355 s -> 148 s, no word lost against the uncapped reader. A FIXED
+#: 64-token cap lost `arco` on Brahms p12 on the old crop; this one keeps it on
+#: the current crop, and the 20 s guard below stays as the backstop.
+DIRECTION_CAP_BASE = 32
+DIRECTION_CAP_PER_SPACE = 4
+
+
+def word_token_cap(crop) -> int:
+    return DIRECTION_CAP_BASE + int(round(
+        DIRECTION_CAP_PER_SPACE * crop.shape[1] / MIN_CROP_SPACING_PX))
+
+
 def _surya_word_reader(crops):
     from . import staff_labels_surya
     return staff_labels_surya.read_crops_text(
-        crops, crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
+        crops, max_tokens=word_token_cap,
+        crop_timeout_s=DIRECTION_CROP_TIMEOUT_S)
 
 
 def default_readers(page: PageImage | None = None) -> list[tuple[str, Reader]]:

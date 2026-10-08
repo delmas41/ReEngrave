@@ -1,0 +1,17 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+ "page": "15",
+ "tag": "lit_15",
+ "n_candidates": 6,
+ "scan_gate_would_fire": true,
+ "on_s": 2.9131809999999945,
+ "on_info_readers": [
+  "surya",
+  "tesseract"
+ ],
+ "on_words": [],
+ "off_s": 2.2822771250000002,
+ "off_words": [],
+ "lost_on_vs_off": [],
+ "extra_on_vs_off": []
+}

@@ -590,7 +590,7 @@ def read_crops_text(crops: list, *,
     the caller's job is to gate what was read, and a blank crop is a legitimate
     answer to "what does this say".
 
-    `max_tokens` caps what Surya may GENERATE per crop (the worker lowers
+    `max_tokens` (an int, or a callable crop -> int, asked per crop) caps what Surya may GENERATE per crop (the worker lowers
     `SURYA_MAX_TOKENS_FULL_PAGE` and the block ceiling for this job only; the
     margin-label reader never passes it). A crop that makes the decoder loop
     otherwise runs to 12,288 tokens, 100-290 s, and returns text the runaway
@@ -612,8 +612,10 @@ def read_crops_text(crops: list, *,
                        if ok else "")
 
     job: dict[str, Any] = {"crops": encoded}
-    if max_tokens is not None:
+    if max_tokens is not None and not callable(max_tokens):
         job["max_tokens"] = int(max_tokens)
+    if callable(max_tokens) and crop_timeout_s is None:
+        job["max_tokens"] = max(int(max_tokens(c)) for c in crops)
     if crop_timeout_s is None:
         entries = _dispatch(job, timeout_s=timeout_s,
                             keep_alive=keep_alive).get("crops", [])
@@ -622,6 +624,8 @@ def read_crops_text(crops: list, *,
         had_session = _SESSION is not None
         for b64 in encoded:
             one = dict(job, crops=[b64])
+            if callable(max_tokens):
+                one["max_tokens"] = int(max_tokens(crops[len(entries)]))
             if had_session and _SESSION is None:
                 _reopen_session()
             try:

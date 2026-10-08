@@ -48,10 +48,9 @@ def test_the_direction_reader_passes_its_cap_and_guard(monkeypatch):
     jobs = _record(monkeypatch)
     out = DT._surya_word_reader([CROP, CROP])
     assert out == ["cresc.", "cresc."]
-    assert not hasattr(DT, "DIRECTION_WORD_MAX_TOKENS")   # Sean 10-08: the cap lost `arco`
     assert len(jobs) == 2                                  # one job per crop
     for job, timeout, kw in jobs:
-        assert "max_tokens" not in job                    # full-page limit as before
+        assert job["max_tokens"] == DT.word_token_cap(CROP)   # the width-scaled cap, per crop
         assert timeout == DT.DIRECTION_CROP_TIMEOUT_S
         assert kw.get("one_shot_fallback") is False
 
@@ -134,3 +133,20 @@ def test_after_a_crop_is_abandoned_the_session_is_reopened(monkeypatch):
     out = SU.read_crops_text([CROP, CROP, CROP], crop_timeout_s=5)
     assert out == ["dim.", "", "dim."]
     assert calls["reopen"] == 1
+
+
+def test_the_cap_scales_with_the_crop_width():
+    """A short word cannot produce long output: cap = base + per_space * width in
+    spaces (a crop is enlarged to MIN_CROP_SPACING_PX per space)."""
+    narrow = np.full((100, int(3 * DT.MIN_CROP_SPACING_PX), 3), 255, np.uint8)
+    wide = np.full((100, int(12 * DT.MIN_CROP_SPACING_PX), 3), 255, np.uint8)
+    assert DT.word_token_cap(narrow) == DT.DIRECTION_CAP_BASE + 3 * DT.DIRECTION_CAP_PER_SPACE
+    assert DT.word_token_cap(wide) == DT.DIRECTION_CAP_BASE + 12 * DT.DIRECTION_CAP_PER_SPACE
+    assert DT.word_token_cap(narrow) < DT.word_token_cap(wide) < 200     # never the 12,288 default
+
+
+def test_a_callable_cap_is_asked_per_crop(monkeypatch):
+    jobs = _record(monkeypatch)
+    small, big = CROP, np.full((20, 400, 3), 255, np.uint8)
+    SU.read_crops_text([small, big], max_tokens=lambda c: c.shape[1], crop_timeout_s=5)
+    assert [j[0]["max_tokens"] for j in jobs] == [60, 400]
