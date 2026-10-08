@@ -3922,7 +3922,6 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
                 census["owned_by_filing_staff" if len(homes) == 1
                        else "unowned_split_uncontested"] += 1
             continue
-        resolved = False
         if len(owners) > 1:
             ledger_owners = {v.value for v in decided.values()
                              if v.reason in LEDGER_OWNER_REASONS}
@@ -3935,7 +3934,6 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
             owners = ledger_owners
             decided = {m: v for m, v in decided.items()
                        if v.value in ledger_owners}
-            resolved = True
             census["conflict_resolved_by_ledger"] += 1
         owner = next(iter(owners))
         basis = tuple(sorted(v.id for v in decided.values()))

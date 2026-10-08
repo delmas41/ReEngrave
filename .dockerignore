@@ -1,0 +1,27 @@
+# Root build context (docker-compose builds the backend with `context: .`
+# because its Dockerfile copies backend/ and tools/). Everything else is
+# excluded so a build does not ship the 6.4 GB library, the benchmarks, the
+# weights or the git history to the daemon (audit follow-up 3.6b, 2026-10-08).
+.git
+.gitignore
+library/
+omr-weights/
+benchmarks/
+data/
+docs/
+out/
+frontend/
+scripts/
+*.md
+.venv*/
+**/__pycache__/
+**/*.pyc
+**/node_modules/
+**/.pytest_cache/
+backend/tests/
+backend/uploads/
+backend/exports/
+backend/*.db*
+backend/.env*
+tools/omr/training/data/
+tools/omr/tests/

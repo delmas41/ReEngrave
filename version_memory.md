@@ -22,6 +22,71 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — INTEGRATION C: eight audit follow-up lanes (Sonnet), one landing
+
+**Sean: "clean up the worktrees and send out agents for the follow-ups - use
+sonnet agents."** Worktrees of the 10-07 lanes removed (all clean, all
+landed). Eight lanes off `main` 69c425e8 (which had taken the other
+session's stem-owner landing overnight), each measuring its own baseline
+first, each verified again on the merged tree.
+
+- **3.6b `lane-3.6b-deps-docker` (71520b04):** python-multipart 0.0.20,
+  python-jose 3.5.0, requests 2.32.5, pillow 11.3.0; passlib + bcrypt 3.2.2
+  replaced by direct `bcrypt` (cost 12, 72-byte truncation as passlib did; a
+  hash from the old stack verifies, 6 tests); `node:22-alpine` + `npm ci`
+  (build verified); backend image non-root (uid 10001) with
+  `--proxy-headers`; nginx `client_max_body_size 60m` and `X-Forwarded-*`.
+  Images not built here. Found: no root `.dockerignore`, so every backend
+  build shipped `library/` (6.4 GB) and `benchmarks/` to the daemon —
+  added at integration. **Existing volumes need a one-time `chown`.**
+- **3.6c `lane-3.6c-auth-limits` (d065fd08):** logout blacklists both
+  tokens' jtis; the refresh cookie's path is `/api/auth` (was
+  `/api/auth/refresh`, which the browser never sent to logout; old path
+  expired on every set; still httpOnly); eight more routes rate-limited
+  with the numbers in `core/config.py`; limiter keys on the first
+  `X-Forwarded-For` hop only under `TRUST_PROXY_HEADERS` (default off; prod
+  must set it). 15 tests RED first.
+- **3.6d `lane-frontend-dead-code` (f3952e18):** four unimported components
+  and `declarations.d.ts` deleted (−776 lines); `verovio`/`pdfjs-dist`
+  uninstalled by npm; `vite build` passes; the stale `optimizeDeps.exclude`
+  dropped at integration. FOUND: `tsc --noEmit` has ~70 pre-existing errors
+  on main — the type check was never a clean gate (new todo 3.6f).
+- **3.6e `lane-audiveris-rename` (ff1b89b5):** `omr_confidence`,
+  `min_omr_confidence`, `omr_failure`; `AudiverisResult` gone; frontend
+  types match; a schema change riding 3.6's DB drop.
+- **2.61b `lane-gather-followups` (39664e3e):** `OMR_OWNER_FROM_STAVES` and
+  `OMR_DIRECTION_TEXT` each read at ONE site (`gather.owner_from_staves_enabled`,
+  `gather.direction_text_enabled`); the four `_stub_*` sites file
+  `READER_UNAVAILABLE` + `detail.error` when a reader's import throws
+  (`NOT_IMPLEMENTED` stays for the genuinely unwritten); three dead locals
+  gone. 13 tests, 7 RED first. Lesson: `wiring.details` matches a detail key
+  by bare substring, so a COMMENT containing `.own` read as a consumer of
+  `Q.GLYPH_BAND_DISTANCE.own` (CLAUDE.md §4d's third blind spot, bitten).
+- **2.61c `lane-clef-candidate-abstained` (4167dbbd):** `adjudicate_clef`
+  treats a candidate whose fit abstained as UNKNOWN — neither eliminated
+  nor supported — using a worst-case margin (each unknown credited
+  `W_KEYSIG_FIT`; the winner's own fit term dropped where fitters + unknowns
+  could cover all four clefs); under `MARGIN_FLOOR` the verdict NARROWS with
+  the unknown as a candidate; a strongly decided clef is unchanged. 8 tests,
+  5 RED first. Same pattern remains in `header.py:~366` (todo 2.61d).
+- **0.6b `lane-pyflakes-and-paths` (4d0705fe):** five unused locals, the
+  `tally` loop shadow, the mis-read `noqa` comment, `app_client` /
+  `fake_pipeline` into `backend/tests/conftest.py`, `/Users/seanjohnson`
+  literals behind `REENGRAVE_SCORES_DIR` / `REENGRAVE_WEIGHTS_DIR` /
+  `REENGRAVE_LIBRARY_DIR` with the literals as defaults. Four stray F841/F401
+  findings outside every fence fixed at integration (`ownership.py`,
+  `check_helpers.py`, `musicxml_builder.py`, `score_comparison.py`).
+- **3.0b `lane-legacy-constants-pin` (b0104579):** 90 tests pin the 18
+  constants, 36 functions (existence, callability, parameter names) and 35
+  pure examples STAGED takes from the frozen legacy modules; a failure names
+  the staged consumer; proven RED on a mutated constant and a renamed
+  parameter. Stricter than the call sites need; fine while LEGACY is frozen.
+
+Verified on the merged tree: see the integration commit message for the
+fast-tier, `staged.check` and backend numbers.
+
+---
+
 ## 2026-10-07 — ROADMAP 2.61 (STAGED): GATHER handlers abstain, never default
 
 **`lane-gather-abstain` (Opus, c8feea00; rule 8 made structural in GATHER).**
