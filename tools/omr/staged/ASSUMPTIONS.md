@@ -1374,6 +1374,31 @@ after two fields went stale; that is a shape failing, not three oversights.
 **How to falsify.** Find a consumer that genuinely needs the current value and
 cannot query for it. (`Log.verdict` is that query.)
 
+### A-INF-1 · INFER's rules run in registration order, and one edge depends on it
+
+**MIXED** — the harness guards (after EVALUATE, frozen log, no overturn, no
+unadmitted value, labelled supersession) are principle and are raised, not
+assumed; the ORDER of the five rules is ours. *`infer.run`, `inferences.py`*
+
+**Assumption.** `infer.run` iterates `RULES` as registered; no sort. The one
+dependency inside the stage is that `collapse_slot_index_to_family_block`
+runs before `fill_clef_gap` and `fill_part_key`, both of which read the
+slot-index VERDICT through `log.verdict` and so see what it inferred.
+
+**Why.** Registration order in `inferences.py`, and nothing else. Pinned by
+`test_infer_clef_gap` and `test_staged_key_by_part`, each asserting the slot
+rule's index is below its own and naming registration order as the mechanism
+(2026-10-07, `docs/infer-sequence-2026-10-07.md` §3). The two duration rules
+share a target and cannot interfere: the second sees the first's answer as
+DECIDED and skips it.
+
+**How to falsify.** Register a sixth rule that reads a target a later rule
+writes. Then the pins are two tests short and the order wants declaring.
+
+**Blast radius.** One staff family: a narrowed slot whose clef gap or key
+gap would go unfilled if the rules reversed — visible as `skipped` lines in
+the report, never as a wrong value.
+
 ---
 
 ## A-WIT — redundant groups (the witnesses)
