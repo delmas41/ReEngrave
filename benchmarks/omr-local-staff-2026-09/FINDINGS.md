@@ -4727,10 +4727,10 @@ crop style `Allegro con brio` took 2.4 s.
 | arm | Litolff p3 | Brahms p1 | Litolff p2 |
 |---|---|---|---|
 | full (Surya + Tesseract, Surya first) | 2.7 s, 0 words | 9.9 s, 8 words | 319.6 s, 2 words |
-| (a) Tesseract only | 1.0 s, 0 | 3.5 s, **4 of 8** (loses 2 `pizz.`, `dim.`, `Cresc.`) | 3.5 s, **0 of 2** |
+| (a) Tesseract only | 0.9 s, 0 | 3.5 s, **4 of 8** (loses 2 `pizz.`, `dim.`, `Cresc.`) | 3.5 s, **0 of 2** |
 | (b) Tesseract first, Surya on lexicon failures | 2.3 s, 0 | 7.8 s, 8 of 8 | 334.6 s, 2 of 2 (every crop fails, Surya reads all 21) |
 | (c) Surya only | 1.3 s, 0 | 4.6 s, 8 of 8 | 312.6 s, 2 of 2 |
-| (d) one crop per band strip, Tesseract `--psm 11` on the subtracted mask | 5 strips | 13 strips, 3.5 s-class, finds `pizz.` `dim` `espr`, **misses 6 of 8**, invents `espr` | 16 strips, finds 0 of 2 |
+| (d) one crop per band strip, Tesseract `--psm 11` on the subtracted mask | 5 strips | 13 strips, 2.3 s, finds `pizz.` `dim` `espr`, **misses 6 of 8**, invents `espr` | 16 strips, 2.6 s, finds 0 of 2 |
 | (d) same strips, Surya | 1.8 s, 0 | **364.5 s** (a wide strip loops), words repeated 8x, no positions | skipped |
 | (e) size test, loose (1-20 sp wide, 0.45-3 sp tall, >=2 comps) | drops 0 of 6 | drops 0 of 20 | drops 0 of 21 |
 | (e2) size test, tight (>=4.3 sp wide, >=1.2 sp tall, >=4 comps) | keeps 1 of 6 | keeps 15 of 20, loses 0 words | keeps 12 of 21, loses 0 words |
