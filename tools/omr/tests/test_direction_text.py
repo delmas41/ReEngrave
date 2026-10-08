@@ -168,7 +168,9 @@ class TestClustering:
         assert len(rows) == 1 and rows[0][4] == 5
 
     def test_a_two_letter_cluster_is_refused(self):
-        assert _cluster_into_words([_letter(100), _letter(130)],
+        # two letters far apart: not the `a 2` pair (that one is tight, small
+        # and level -- see test_direction_words_misses_2026_10_08)
+        assert _cluster_into_words([_letter(100), _letter(300)],
                                    SPACING, DEFAULT_BAND_CONFIG) == []
 
     def test_a_flat_run_is_refused_by_the_cluster_height(self):

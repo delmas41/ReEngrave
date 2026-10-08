@@ -420,7 +420,8 @@ def gather_count_page(doc: Dict[str, Any], out_dir: Path, *,
     else:
         cmd += ["--through", "adjudicate"]
     env = dict(os.environ)
-    env.setdefault("OMR_DIRECTION_TEXT_SCAN_GATE", "1")
+    # The direction-word reader runs on scans (2026-10-08, ~20 s/page): the scan
+    # gate is no longer set here.
     env.setdefault("OMR_SURYA_KEEP_ALIVE", "0")
 
     t0 = time.time()
