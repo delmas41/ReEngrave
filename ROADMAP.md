@@ -69,7 +69,7 @@ marking (`più f`, Sean: "they only mean something together"). Review pages: ~93
 parked with export (Sean: first two stages first); (2) remaining word misses: letters fused to noteheads/stems cut
 the candidate box (`Adagio`, `pizz.`, `ten.`), `Vcl.` read as `val.`; (3) one shared `Q.PAGE_TEXT` map every
 reader consults (Fable design review 10-08); (4) an overnight re-gather THROUGH=adjudicate to measure all of
-10-08 together (the direction reader adds ~5 min Litolff / ~9 min Brahms); (5) the dot rule's 84/184 stem-moved
+10-08 together (the direction reader adds ~5 min Litolff / ~9 min Brahms); (5) a sample of the stem rule's 84/184 moved
 heads were judged 10/10 -- no open owner sheet. Never loosen the lexicon by fuzzy match (Sean has not ruled).
 
 ## START HERE — after the night of 2026-10-07→08 (main ≥ this commit)
