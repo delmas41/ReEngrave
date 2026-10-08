@@ -8273,7 +8273,7 @@ def _direction_page_dict(pws: Any, cells: Sequence[Any],
         if m is None:
             continue
         cell = m["_cell"]
-        for d in dets:
+        for det_index, d in enumerate(dets):
             box = _page_box(cell, d)
             if box is None:
                 continue
@@ -8281,6 +8281,8 @@ def _direction_page_dict(pws: Any, cells: Sequence[Any],
             m["detections"].append({
                 "class": d.smufl_name,
                 "category": d.category,
+                "cell_key": cell_key,
+                "detector_index": det_index,
                 "bbox_page": [int(x0), int(y0),
                               int(round(x1 - x0)), int(round(y1 - y0))],
             })
@@ -8542,6 +8544,9 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     # today -- but an index join would be silently wrong the day either side
     # filters, and a wrong join here attributes one word's reading to another
     # word's ink.
+    # The reader may have proposed candidates the CV pass above did not (the
+    # sibling windows); file against ITS list so those words have a subject.
+    candidates = list(info.get("candidates") or candidates)
     accepted: Dict[Tuple[int, int, int], List[Any]] = {}
     for d in found:
         accepted.setdefault(
@@ -8597,6 +8602,15 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                         frame=FRAME_PAGE,
                         category=d.category, terms=list(d.terms),
                         winning_reader=d.reader,
+                        dynamics=list(d.dynamics),
+                        # ONE marking: the word and the dynamic it includes.
+                        # The glyph subjects below are the detector's own
+                        # dynamic boxes, exported once, inside this marking.
+                        includes_dynamic_glyphs=[
+                            R.glyph(p, Subject.from_key(ck).system,
+                                    Subject.from_key(ck).staff,
+                                    Subject.from_key(ck).cell, int(di)).to_key()
+                            for ck, di, _b in d.dynamic_links if ck],
                         readers_run=[n for n, _f in readers],
                         # ⚠️ RECORDED, NOT RE-ASKED. Where the two rungs read
                         # one crop differently the reader takes Surya by a

@@ -1532,6 +1532,8 @@ def measure_dynamics(detections: list[dict[str, Any]]) -> list[tuple[float, str,
     """
     letters = []
     for det in detections:
+        if det.get("in_direction_word"):
+            continue            # exported once, inside the marking that includes it
         letter = _DYNAMIC_LETTER.get(det.get("class") or "")
         box = det.get("bbox")
         if letter and box and len(box) == 4:

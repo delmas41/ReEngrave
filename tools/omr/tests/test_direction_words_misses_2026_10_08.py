@@ -31,17 +31,26 @@ def test_words_sean_asked_for_are_read(text, category):
     assert hit is not None and hit.category == category and hit.text == text
 
 
-@pytest.mark.parametrize("text,expected", [
-    ("più f", "più"),                                  # Brahms p3: dynamic reader takes the f
-    ("piu f", "piu"),
-    ("sempre molto p e dolce", "sempre molto e dolce"),  # Brahms p7
-    ("p cresc.", "cresc."),
-    ("pmarc.", "marc."),                               # Brahms p12, `p` glued on by the OCR
-    (", cresc.", "cresc."),                            # OCR punctuation debris at the ends
+@pytest.mark.parametrize("text,expected,dyn", [
+    ("più f", "più f", ("f",)),                         # Brahms p3: ONE marking, word + dynamic
+    ("piu f", "piu f", ("f",)),
+    ("sempre molto p e dolce", "sempre molto p e dolce", ("p",)),   # Brahms p7
+    ("p cresc.", "p cresc.", ("p",)),
+    ("f marc.", "f marc.", ("f",)),
+    ("sempre p", "sempre p", ("p",)),
+    ("poco a poco cresc.", "poco a poco cresc.", ()),
+    ("pmarc.", "p marc.", ("p",)),                     # Brahms p12, `p` glued on by the OCR
+    (", cresc.", "cresc.", ()),                        # OCR punctuation debris at the ends
 ])
-def test_a_dynamic_letter_beside_a_word_is_dropped_not_read(text, expected):
+def test_a_dynamic_beside_a_word_is_one_marking_kept_whole(text, expected, dyn):
+    """Sean 2026-10-08 (round 4): do NOT drop the dynamic letter; word and
+    dynamic mean something only together."""
     hit = lookup(text)
-    assert hit is not None and hit.text == expected
+    assert hit is not None and hit.text == expected and hit.dynamics == dyn
+
+
+def test_ten_is_tenuto():
+    assert lookup("ten.").category == "expression"        # Litolff p9
 
 
 @pytest.mark.parametrize("text", [
@@ -218,3 +227,48 @@ def test_two_readings_of_the_same_ink_on_one_staff_are_one_word():
     accepted = {0: mk("piu"), 1: mk("piu,")}
     DT._drop_overlapping_readings([c_small, c_big], accepted)
     assert list(accepted) == [0]                                     # the smaller box stays
+
+
+# -- round 4 ----------------------------------------------------------------
+
+def test_a_cluster_on_two_baselines_is_split_into_two_words():
+    """Litolff p6: `Basso` with `pizz.` printed a line lower beside it."""
+    from tools.omr.tests.test_direction_text import _letter
+    basso = [_letter(100 + i * 40, y=40) for i in range(5)]
+    pizz = [_letter(320 + i * 40, y=40 + int(0.8 * SPACING)) for i in range(4)]
+    rows = DT._cluster_into_words(basso + pizz, SPACING, DEFAULT_BAND_CONFIG)
+    assert len(rows) == 2
+    same_line = [_letter(100 + i * 40, y=40) for i in range(9)]       # control: one word stays one
+    assert len(DT._cluster_into_words(same_line, SPACING, DEFAULT_BAND_CONFIG)) == 1
+
+
+def test_a_short_bold_word_of_two_blobs_is_a_candidate():
+    """Litolff p15 `Vcl.`: `Vc` fused into one blob plus the `l`."""
+    from tools.omr.tests.test_direction_text import _letter
+    pair = [_letter(100, y=40, w=50, h=40), _letter(160, y=34, w=14, h=58)]
+    assert len(DT._cluster_into_words(pair, SPACING, DEFAULT_BAND_CONFIG)) == 1
+
+
+def test_the_dynamic_a_marking_includes_is_linked_and_not_exported_twice():
+    pws = _pws([_staff(0, 500), _staff(1, 1200)])
+    det = {"category": "dynamic", "class": "dynamicF", "bbox_page": [440, 700, 30, 36],
+           "cell_key": "ck", "detector_index": 3}
+    page_dict = _page_dict([0, 1], [(100, 2000)], {0: [det]})
+    cand = TextCandidate(0, 0, (300, 700, 420, 734), "below", 4)
+    d = DirectionText(0, 0, 300, "più f", "expression", "below", ("più",), "tesseract", ("f",))
+    acc = {0: d}
+    DT._link_dynamics(page_dict, [cand], acc, SPACING)
+    assert acc[0].dynamic_links[0][:2] == ("ck", 3)
+    assert det["in_direction_word"] is True
+    from tools.omr.export import measure_dynamics
+    assert measure_dynamics([{"class": "dynamicF", "bbox": [440, 700, 30, 36], "in_direction_word": True}]) == []
+    far = {"category": "dynamic", "class": "dynamicP", "bbox_page": [1500, 700, 30, 36]}
+    pd2 = _page_dict([0, 1], [(100, 2000)], {0: [far]})
+    acc2 = {0: d}
+    DT._link_dynamics(pd2, [cand], acc2, SPACING)
+    assert acc2[0].dynamic_links == () and "in_direction_word" not in far      # not beside it: not linked
+
+
+def test_the_budget_prices_the_direction_reader_at_the_measured_figure():
+    from tools.omr.staged import budget
+    assert budget.DIRECTION_READER_S_PER_PAGE < 60.0

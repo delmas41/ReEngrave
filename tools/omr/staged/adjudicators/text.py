@@ -514,6 +514,12 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
                 "placement": d.get("placement"),
                 "x_page": d.get("x_page"),
                 "reader": d.get("winning_reader"),
+                # ONE marking: the word and the dynamic glyph(s) it includes
+                # (`più f`); the export writes them as one direction and the
+                # dynamic reader does not write the glyph a second time.
+                "includes_dynamic_glyphs": list(
+                    d.get("includes_dynamic_glyphs") or ()),
+                "dynamics": list(d.get("dynamics") or ()),
             })
         words.sort(key=lambda w: (w["x_page"] if w["x_page"] is not None
                                   else 0.0, w["text"]))

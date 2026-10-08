@@ -274,6 +274,12 @@ class DirectionText:
     #: fail differently, so "who found this" is the first question to ask when
     #: a page's yield changes.
     reader: str = ""
+    #: Dynamic tokens that are PART of this marking (`più f` -> ('f',)).
+    dynamics: tuple[str, ...] = ()
+    #: The detector's dynamic glyphs the marking includes, as
+    #: `(cell_key, detector_index, (x, y, w, h))`: the same ink is the dynamic
+    #: reader's AND this marking's, and is exported ONCE, as part of the marking.
+    dynamic_links: tuple = ()
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -285,6 +291,8 @@ class DirectionText:
             "placement": self.placement,
             "terms": list(self.terms),
             "reader": self.reader,
+            "dynamics": list(self.dynamics),
+            "dynamic_links": [list(l[:2]) + [list(l[2])] for l in self.dynamic_links],
         }
 
 
@@ -408,7 +416,7 @@ def _is_a_due_pair(run, spacing: float, config: BandConfig) -> bool:
         return False
     a, b = sorted(run, key=lambda c: c[0])
     for x, y, w, h, area in (a, b):
-        if not (0.45 * spacing <= h <= 1.8 * spacing):
+        if not (0.45 * spacing <= h <= 2.0 * spacing):
             return False
         if area < 0.25 * w * h:
             return False
@@ -416,7 +424,41 @@ def _is_a_due_pair(run, spacing: float, config: BandConfig) -> bool:
     width = (b[0] + b[2]) - a[0]
     level = abs((a[1] + a[3] / 2.0) - (b[1] + b[3] / 2.0))
     return (gap <= config.a_due_gap_spaces * spacing
-            and width <= 3.2 * spacing and level <= 0.35 * spacing)
+            and width <= 4.0 * spacing and level <= 0.6 * spacing)
+
+
+BASELINE_SPLIT_GAP_SPACES = 0.25
+BASELINE_SPLIT_DROP_SPACES = 0.55
+
+
+def _split_on_baseline(run, spacing: float, config: BandConfig):
+    """Cut a run where a gap of at least a quarter space separates two groups
+    whose letter centres differ by half a space or more: two WORDS on two
+    baselines that the shared-line tolerance (0.9 spaces) had joined -- Litolff
+    p6 `Basso` with `pizz.` printed a line lower beside it. A gap alone never
+    cuts (`espr. e legato` has 1.4-1.7); the baseline step is what says another
+    word. A part is kept only if it can be a word (3 letter pieces or the
+    `a 2` pair), else the run stays whole."""
+    ordered = sorted(run, key=lambda c: c[0])
+    gap_min = BASELINE_SPLIT_GAP_SPACES * spacing
+    drop_min = BASELINE_SPLIT_DROP_SPACES * spacing
+    best = None
+    for i in range(3, len(ordered) - 2):
+        left, right = ordered[:i], ordered[i:]
+        gap = right[0][0] - max(c[0] + c[2] for c in left)
+        cl_all = [c[1] + c[3] / 2.0 for c in left]
+        cr_all = [c[1] + c[3] / 2.0 for c in right]
+        cl, cr = float(np.median(cl_all)), float(np.median(cr_all))
+        if gap >= gap_min and abs(cl - cr) >= drop_min:
+            # the cut that leaves each side on ONE baseline
+            spread = float(np.var(cl_all) * len(cl_all) + np.var(cr_all) * len(cr_all))
+            if best is None or spread < best[0]:
+                best = (spread, i)
+    if best is not None:
+        i = best[1]
+        return (_split_on_baseline(ordered[:i], spacing, config)
+                + _split_on_baseline(ordered[i:], spacing, config))
+    return [run]
 
 
 def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
@@ -458,6 +500,7 @@ def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
         if not joined:
             runs.append([comp])
 
+    runs = [part for run in runs for part in _split_on_baseline(run, spacing, config)]
     max_w = config.max_glyph_width_spaces * spacing
     words = []
     for run in runs:
@@ -1073,8 +1116,10 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             placement=candidate.placement,
             terms=hit.terms,
             reader=winner_name,
+            dynamics=hit.dynamics,
         )
 
+    _link_dynamics(page_dict, candidates, accepted_at, spacing)
     out = [accepted_at[i] for i in sorted(accepted_at)]
     info["n_accepted"] = len(out)
     info["candidates"] = candidates
@@ -1085,6 +1130,12 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
 #: LETTERS in it: at least this many alphabetic characters. Staff-line debris and
 #: beamed notes read as `FEE'?` or `TTY!`; a word, however garbled, reads as 3+.
 RETRY_MIN_LETTERS = 3
+
+#: Wall time (s) after which the slow rung stops taking the STANDARD crop of
+#: candidates its tight crop failed on. The tight pass has run on every
+#: lettered crop by then; this only trims the fallback, and only on the
+#: densest plates (Brahms p7/p12 spent 32-36 s without it).
+SLOW_WIDE_BUDGET_S = 17.0
 
 
 #: How far, in staff spaces, a sibling word may sit from the word it echoes and
@@ -1172,6 +1223,43 @@ def sibling_candidates(pws, page_dict, blanked, candidates, accepted_at,
     return out
 
 
+DYNAMIC_LINK_REACH_SPACES = 1.5
+
+
+def _link_dynamics(page_dict, candidates, accepted_at, spacing) -> None:
+    """Tie each marking that CONTAINS a dynamic (`più f`) to the detector's
+    dynamic glyph(s) standing beside or inside its box, and flag those glyphs
+    `in_direction_word` so the dynamic reader does not export them a second
+    time. A dynamic the OCR read but no glyph stands beside stays unlinked: the
+    marking keeps its letters, nothing is lost, nothing is counted twice."""
+    reach = DYNAMIC_LINK_REACH_SPACES * spacing
+    staves = _staff_dicts(page_dict)
+    for i, d in list(accepted_at.items()):
+        if not d.dynamics:
+            continue
+        sd = staves.get(d.staff_index)
+        if sd is None:
+            continue
+        x0, y0, x1, y1 = candidates[i].bbox_page
+        links = []
+        for m in sd.get("measures", []):
+            for k, det in enumerate(m.get("detections", [])):
+                if det.get("category") != "dynamic" or det.get("in_direction_word"):
+                    continue
+                bx = det.get("bbox_page")
+                if not bx:
+                    continue
+                dx, dy, dw, dh = (float(v) for v in bx)
+                if (dx + dw >= x0 - reach and dx <= x1 + reach
+                        and dy + dh >= y0 - 0.5 * spacing and dy <= y1 + 0.5 * spacing):
+                    det["in_direction_word"] = True
+                    links.append((det.get("cell_key"),
+                                  det.get("detector_index", k),
+                                  (int(dx), int(dy), int(dw), int(dh))))
+        if links:
+            accepted_at[i] = dataclasses.replace(d, dynamic_links=tuple(links))
+
+
 def _drop_overlapping_readings(candidates, accepted_at) -> None:
     """Two readings of the same ink on one staff are ONE word, not two: keep the
     one cut from the smaller box (`piu` over `piu f`), because the metric charges
@@ -1218,6 +1306,8 @@ def _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> N
             continue
         accepted_at[i] = dataclasses.replace(d, staff_index=nxt.staff_index,
                                              measure_index=m)
+        candidates[i] = dataclasses.replace(c, staff_index=nxt.staff_index,
+                                            measure_index=m)
 
 
 def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
@@ -1287,7 +1377,8 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                 accepted_at[i] = DirectionText(
                     staff_index=c.staff_index, measure_index=c.measure_index,
                     x_page=c.x_page, text=hit.text, category=hit.category,
-                    placement=c.placement, terms=hit.terms, reader=label)
+                    placement=c.placement, terms=hit.terms, reader=label,
+                    dynamics=hit.dynamics)
                 info["by_reader"][label] = info["by_reader"].get(label, 0) + 1
 
     def read_indices(everyone):
@@ -1305,9 +1396,12 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
         # what a beamed group reads as, and the slow rung spends longest on it.
         strong = [i for i in lettered if i not in accepted_at and any(
             len(w) >= 4 for t in seen[i] for w in re.findall(r"[^\W\d_]+", t))]
-        run(slow, strong, wide_crop, "")
+        if time.perf_counter() - t_start <= SLOW_WIDE_BUDGET_S:
+            run(slow, strong, wide_crop, "")
+        else:
+            info["slow_wide_skipped"] = info.get("slow_wide_skipped", 0) + len(strong)
 
-    t0 = time.perf_counter()
+    t_start = t0 = time.perf_counter()
     read_indices(list(range(n)))
     info["first_looks_s"] = round(time.perf_counter() - t0, 2)
 
@@ -1335,6 +1429,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     info["sibling_s"] = round(time.perf_counter() - t0, 2)
     _drop_overlapping_readings(candidates, accepted_at)
     _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at)
+    _link_dynamics(page_dict, candidates, accepted_at, spacing)
     everyone = list(range(len(candidates)))
     info["n_read"] = sum(1 for i in everyone if seen[i])
     info["seen"] = {i: list(seen[i]) for i in everyone if i not in accepted_at}

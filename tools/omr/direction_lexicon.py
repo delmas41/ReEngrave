@@ -76,7 +76,7 @@ _TEMPO = """
 
 #: Expression and articulation words — what is printed under a staff.
 _EXPRESSION = """
-    legato staccato staccatissimo marcato marcatissimo tenuto portato
+    legato staccato staccatissimo marcato marcatissimo tenuto ten portato
     pesante leggiero leggiermente dolce dolcissimo cantabile espressivo espress
     espr grazioso scherzando giocoso tranquillo calmo semplice
     appassionato agitato risoluto energico deciso brillante brio bravura
@@ -134,26 +134,29 @@ _STRIP = ".,;:!·•"
 MAX_PHRASE_TOKENS = 6
 
 
+
 @dataclass(frozen=True)
 class DirectionHit:
     """What `lookup` matched, alongside the text exactly as it was read."""
 
     text: str          #: unchanged — the metric scores printed characters
-    category: str      #: `tempo` | `expression` | `dynamic`
+    category: str      #: `tempo` | `expression` | `dynamic` | `part`
     terms: tuple[str, ...]   #: the lexicon entries that matched
+    #: Dynamic tokens INSIDE the phrase (`più f` -> ('f',)). The marking is ONE
+    #: thing -- word and dynamic mean something only together (Sean,
+    #: 2026-10-08) -- so they stay in `text`; the caller links the detector's
+    #: dynamic glyph so it is not counted twice.
+    dynamics: tuple[str, ...] = ()
 
 
 def _normalise(token: str) -> str:
     return token.strip(_STRIP).lower()
 
 
-#: Dynamic LETTERS. The detector's dynamic reader owns these marks
-#: (`export.measure_dynamics`), so the word reader must not refuse a string only
-#: because a dynamic stands beside the word: `più f`, `sempre molto p e dolce`,
-#: `p cresc.` (Sean, 2026-10-08: the dynamic reader takes the `f`; the word
-#: reader must still read `più`). The letters are DROPPED from the reading --
-#: never kept, never turned into anything else -- and what is left must pass
-#: on its own, exactly as before.
+#: Dynamic tokens a phrase may contain: `più f`, `p dolce`, `f marc.`,
+#: `sempre p`, `poco a poco cresc.`. A BARE dynamic is not a direction -- it is
+#: the dynamic reader's (`export.measure_dynamics`) -- so a string with no real
+#: term in it is still refused.
 _DYNAMIC_LETTERS = {"p", "pp", "ppp", "f", "ff", "fff", "mp", "mf", "sf", "sfz",
                     "fz", "fp", "rf", "rfz", "sfp"}
 
@@ -162,23 +165,21 @@ _DYNAMIC_LETTERS = {"p", "pp", "ppp", "f", "ff", "fff", "mp", "mf", "sf", "sfz",
 _A_DUE = re.compile(r"a\s?\.?\s?2\.?")
 
 
-def _unglue(token: str) -> str:
-    """`pdolce` -> `dolce`, `pmarc` -> `marc`: a dynamic letter glued to the
-    front of a word that is a term. Only where the remainder is a real term and
-    the whole token is not (`piano`, `poco`, `pizz` stand)."""
-    if token in TERMS or token in CONNECTIVE:
-        return token
+def _unglue(token: str) -> list[str]:
+    """`pdolce` -> [`p`, `dolce`]: a dynamic letter run glued to the front of a
+    term by the OCR. Only where the remainder is a real term and the whole token
+    is not (`piano`, `poco`, `pizz` stand)."""
+    if token in TERMS or token in CONNECTIVE or token in _DYNAMIC_LETTERS:
+        return [token]
     for k in (3, 2, 1):
         if token[:k] in _DYNAMIC_LETTERS and token[k:] in TERMS:
-            return token[k:]
-    return token
+            return [token[:k], token[k:]]
+    return [token]
 
 
 def _trim_ends(text: str) -> str:
     """The reading without OCR punctuation debris at its ends (`, cresc.`,
-    `cresc,`): a leading comma/dash/bullet and a trailing comma/semicolon cost
-    an edit each and are never part of a direction. An abbreviation's period
-    stays."""
+    `cresc,`). An abbreviation's period stays."""
     return text.strip().lstrip(" ,;:.·•-").rstrip(" ,;:·•-") or text.strip()
 
 
@@ -186,8 +187,6 @@ def lookup(text: str) -> DirectionHit | None:
     """The direction `text` names, or None if it is not one.
 
     Case and punctuation are ignored for MATCHING and preserved in the result.
-    A dynamic letter beside the words is ignored for matching AND left out of
-    the result (see `_DYNAMIC_LETTERS`).
     """
     if not text:
         return None
@@ -198,27 +197,18 @@ def lookup(text: str) -> DirectionHit | None:
     # of which are somebody else's problem, and none of which is a direction.
     if not re.fullmatch(r"[A-Za-zÀ-ÿ' .,\-]+", text.strip()):
         return None
-    hit = _lookup_words(text.split())
-    if hit is not None:
-        return DirectionHit(text=_trim_ends(text), category=hit.category,
-                            terms=hit.terms)
-    # Second look, only if the first refused: without the dynamic letters.
-    kept = []
-    for word in text.split():
-        norm = _normalise(word)
-        if not norm or norm in _DYNAMIC_LETTERS:
-            continue
-        glued = _unglue(norm)
-        if glued != norm:
-            word = word[word.lower().find(glued):]
-        kept.append(word)
-    if kept == text.split():
-        return None
-    return _lookup_words(kept)
-
-
-def _lookup_words(words: list[str]) -> DirectionHit | None:
-    tokens = [_normalise(t) for t in words]
+    spaced = []
+    glued = False
+    for w in text.split():
+        norm = _normalise(w)
+        parts = _unglue(norm) if norm else []
+        if len(parts) == 2:
+            glued = True
+            spaced += [parts[0], w[w.lower().find(parts[1]):]]
+        else:
+            spaced.append(w)
+    shown = " ".join(spaced) if glued else _trim_ends(text)
+    tokens = [_normalise(t) for t in spaced]
     tokens = [t for t in tokens if t]
     if not tokens or len(tokens) > MAX_PHRASE_TOKENS:
         return None
@@ -236,9 +226,12 @@ def _lookup_words(words: list[str]) -> DirectionHit | None:
         return None
 
     matched: list[str] = []
+    dynamics: list[str] = []
     for token in tokens:
         if token in TERMS:
             matched.append(token)
+        elif token in _DYNAMIC_LETTERS:
+            dynamics.append(token)
         elif token not in CONNECTIVE:
             return None
     if not matched:
@@ -246,5 +239,5 @@ def _lookup_words(words: list[str]) -> DirectionHit | None:
 
     categories = {TERMS[t] for t in matched}
     category = next(c for c in _CATEGORY_RANK if c in categories)
-    return DirectionHit(text=" ".join(words).strip(), category=category,
-                        terms=tuple(matched))
+    return DirectionHit(text=shown, category=category, terms=tuple(matched),
+                        dynamics=tuple(dynamics))
