@@ -164,6 +164,7 @@ ON 10-07), arcs-not-a-line 2.60 (GATHER, `Q.ARC_INK_SHAPE`). Overnight `20261007
 Later 10-07: far-head `lane-farhead-2-9` landed (look for a hidden ledger only where it must be, by its
 jutting ends; accent strokes are not ledgers; Sean: his tiles 2 and 9 right). Fast 6,112 passed, check 192.
 Then `OMR_FARHEAD_OWNER_LEDGERS` and `OMR_MARK_GROUPS` switched default ON (Sean); re-gather `20261007-day` started.
+10-08: numerals not noteheads (`numeral_shaped`), staccato from any staff's note (Sean 9/9) landed; far-head reader beats geometry 10:1 on Sean's tiles (the independent check extrapolated ledgers).
 
 ---
 
