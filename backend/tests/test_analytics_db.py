@@ -37,7 +37,7 @@ async def _make_active_rule(
     *,
     difference_type: str = "note",
     instrument: str | None = None,
-    min_audiveris_confidence: float = 0.7,
+    min_omr_confidence: float = 0.7,
     min_claude_confidence: float = 0.7,
 ) -> AutoAcceptRule:
     pattern = KnowledgePattern(
@@ -60,7 +60,7 @@ async def _make_active_rule(
         rule_description="auto-accept test rule",
         instrument=instrument,
         difference_type=difference_type,
-        min_audiveris_confidence=min_audiveris_confidence,
+        min_omr_confidence=min_omr_confidence,
         min_claude_confidence=min_claude_confidence,
         min_confirmations=10,
         current_confirmations=10,
@@ -83,7 +83,7 @@ class TestApplyAutoAccept:
         diff = {
             "difference_type": "note",
             "instrument": "violin",
-            "audiveris_confidence": 0.9,
+            "omr_confidence": 0.9,
             "claude_vision_confidence": 0.9,
             "era": "",
         }
@@ -91,14 +91,14 @@ class TestApplyAutoAccept:
         assert result == rule.id
 
     async def test_low_omr_confidence_does_not_match(self, db_session):
-        # This is the scenario the hardcoded audiveris_confidence=0.5 created:
+        # This is the scenario the hardcoded omr_confidence=0.5 created:
         # a rule requiring 0.7 could never fire. With a real (low) confidence
         # it correctly still doesn't fire.
-        await _make_active_rule(db_session, min_audiveris_confidence=0.7)
+        await _make_active_rule(db_session, min_omr_confidence=0.7)
         diff = {
             "difference_type": "note",
             "instrument": "violin",
-            "audiveris_confidence": 0.5,
+            "omr_confidence": 0.5,
             "claude_vision_confidence": 0.9,
             "era": "",
         }
@@ -108,11 +108,11 @@ class TestApplyAutoAccept:
     async def test_high_omr_confidence_matches(self, db_session):
         # With a real, page-derived confidence above the rule's threshold,
         # the rule can now actually fire (the point of the fix).
-        rule = await _make_active_rule(db_session, min_audiveris_confidence=0.7)
+        rule = await _make_active_rule(db_session, min_omr_confidence=0.7)
         diff = {
             "difference_type": "note",
             "instrument": "violin",
-            "audiveris_confidence": 0.82,
+            "omr_confidence": 0.82,
             "claude_vision_confidence": 0.9,
             "era": "",
         }
@@ -123,7 +123,7 @@ class TestApplyAutoAccept:
         diff = {
             "difference_type": "note",
             "instrument": "violin",
-            "audiveris_confidence": 0.9,
+            "omr_confidence": 0.9,
             "claude_vision_confidence": 0.9,
             "era": "",
         }

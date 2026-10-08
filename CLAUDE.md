@@ -573,9 +573,8 @@ design here:
   passes with `batch_config.json`, click-to-box, `--blind` for scoring
   passes). Pre-filled verdicts are a QUEUE, not labels (blind out-of-sample
   0.915 under the 0.97 bar). Workflow and hotkeys: chronicle §"Hand-label
-  cells". Scan truth is moving to whole-ink pages stored in page pixels
-  (ROADMAP 1.7; runbook `data/hand-truth/README.md`), each Claude-checked
-  then LilyPond-verified by Sean; test pages hold no cell production saw.
+  cells". Scan truth is moving to hand-labeled whole-ink pages in page
+  pixels (ROADMAP 1.7, `data/hand-truth/README.md`).
 
 ---
 
@@ -676,8 +675,9 @@ Each of these has cost at least one lane and is still true.
   Node, off by default, not in the container.
 - Frontend: React + Vite + React Query; pages under `frontend/src/pages/`;
   `docker compose build frontend` after any change (Vite bakes env at build).
-- Known stubs: correction patching (§5c), PDF.js crop in `DiffCard`,
-  vestigial `audiveris_*` field names.
+- Known stubs: correction patching (§5c), the PDF crop in `DiffCard` (a
+  placeholder; no PDF.js or Verovio in the frontend since 3.6d). The
+  `audiveris_*` names were retired 2026-10-08 (3.6e).
 
 ---
 

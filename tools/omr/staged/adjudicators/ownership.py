@@ -22,7 +22,8 @@ from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
 from ..gather import (CONTEST_IOU, LEDGER_ROUND_UP,
-                      PAGE_EDGE_MARGIN_SPACES, _iou)
+                      PAGE_EDGE_MARGIN_SPACES, _iou,
+                      owner_from_staves_enabled)
 from ..record import Kind, Outcome, Q, Scope
 # ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
 # pair" query -- see `structure.grand_staff_partner_staff`'s own docstring.
@@ -292,9 +293,9 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
 # candidate row, so B was never even asked about.
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: DEFAULT ON since 2026-10-06 (Sean: switch it on).
-#: A DENY-LIST (CLAUDE.md §7): a typo leaves it on. Read at ADJUDICATE time.
-FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
+#: `OMR_OWNER_FROM_STAVES` (DEFAULT ON since 2026-10-06, Sean) has ONE reader,
+#: `owner_from_staves_enabled` in GATHER (ROADMAP 2.61b); this module imports
+#: it and calls it at ADJUDICATE time.
 
 
 #: ROADMAP 2.58d (lane-stem-owner) -- DEFAULT OFF until Sean has adjudicated
@@ -385,11 +386,6 @@ def _stem_owner(ev: Evidence, cand_keys: Sequence[Optional[str]]):
     return pointed[0], tuple(used), {
         "stem": {"direction": way, "tip_y": float(tip), "head_cy": cy,
                  "ext_spaces": det.get(f"{way}_ext"), "per_candidate": per}}
-
-
-def _from_staves_enabled() -> bool:
-    return os.environ.get(FROM_STAVES_ENV, "1").strip().lower() \
-        not in ("0", "", "false", "no", "off")
 
 
 #: ROADMAP 2.59 (lane-dot-not-a-note, Sean 2026-10-07) -- DEFAULT OFF, so a
@@ -678,7 +674,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # ⚠️⚠️ lane-owner-from-staves (Sean, 2026-10-06), AHEAD OF EVERY LEDGER
     # TIER. A head ON or BETWEEN a known staff's five lines belongs to that
     # staff -- decided, no contest. Only a head in the GAP goes on. Default OFF.
-    if _from_staves_enabled():
+    if owner_from_staves_enabled():
         banded = _owner_from_staves(ev)
         if banded is not None:
             return banded
@@ -3926,7 +3922,6 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
                 census["owned_by_filing_staff" if len(homes) == 1
                        else "unowned_split_uncontested"] += 1
             continue
-        resolved = False
         if len(owners) > 1:
             ledger_owners = {v.value for v in decided.values()
                              if v.reason in LEDGER_OWNER_REASONS}
@@ -3939,7 +3934,6 @@ def reconcile_group_owners(log: R.Log) -> Dict[str, int]:
             owners = ledger_owners
             decided = {m: v for m, v in decided.items()
                        if v.value in ledger_owners}
-            resolved = True
             census["conflict_resolved_by_ledger"] += 1
         owner = next(iter(owners))
         basis = tuple(sorted(v.id for v in decided.values()))

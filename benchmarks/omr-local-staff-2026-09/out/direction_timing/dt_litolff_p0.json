@@ -1,0 +1,110 @@
+{
+ "t_surya_worker_session_open": 1.0249405,
+ "session_opened": true,
+ "spacing_px": NaN,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 2.5830000001114684e-06,
+ "t_default_readers(incl page_is_engraved)": 0.012019291000000099,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 0,
+ "t_crop_upscale": 2.000000000279556e-06,
+ "crop_shapes_median_hw": null,
+ "crop_px_total": 0,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.7548283329999999,
+ "t_surya_second_call_1crop": 0.15103166599999973,
+ "dummy_read": [
+  ""
+ ],
+ "full_wall_read_directions": 3.0415999999533483e-05,
+ "full_surya_calls": [],
+ "full_surya_total": 0,
+ "full_tess_total_batch": 0,
+ "full_n_read": 0,
+ "full_n_accepted": 0,
+ "full_rejected_texts": [],
+ "full_conflicts": [],
+ "full_by_reader": {},
+ "t_lexicon_per_pass": 1.228999999991487e-07,
+ "lexicon_calls_per_pass": 0,
+ "full_words": [],
+ "raw_texts": [],
+ "geometry": [],
+ "tess_calls": {
+  "n": 0,
+  "total": 0,
+  "mean": 0.0,
+  "max": 0
+ },
+ "A_tess_only": {
+  "time_read_s": 0,
+  "lexicon_s": 6.144999999957435e-08,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "C_surya_only": {
+  "time_read_s": 7.909999997224304e-07,
+  "per_crop_mean_s": 7.909999997224304e-07,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "C_vs_full_surya_texts_identical": 0,
+ "B_tess_then_surya": {
+  "n_surya_crops": 0,
+  "time_read_s": 0.0,
+  "tess_s": 0,
+  "surya_s": 0.0,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "E_size_test": {
+  "rule": "1.0<=w<=20 sp, 0.45<=h<=3.0 sp, n_components>=2",
+  "kept": 0,
+  "dropped": 0,
+  "dropped_accepted_in_full": []
+ },
+ "E_size_filtered_full_readers": {
+  "time_read_s": 0.0,
+  "surya_s": 0.0,
+  "tess_s": 0,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "EB_size_filtered_tess_then_surya": {
+  "n_surya_crops": 0,
+  "time_read_s": 0.0,
+  "tess_s": 0,
+  "surya_s": 0.0,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "E2_tight_size_test": {
+  "rule": "w>=4.3 sp, h>=1.2 sp, n_components>=4",
+  "kept": 0,
+  "dropped": 0,
+  "dropped_accepted_in_full": []
+ },
+ "EA_size_filtered_tess_only": {
+  "time_read_s": 0,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "error": "Traceback (most recent call last):\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a4faba8ffda7021fb/benchmarks/omr-local-staff-2026-09/direction_timing.py\", line 317, in patched\n    run_experiment(log, pws, cells, local, detections)\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a4faba8ffda7021fb/benchmarks/omr-local-staff-2026-09/direction_timing.py\", line 233, in run_experiment\n    mask = DT._blank_detections(DT._page_ink(pws.page), page_dict, spacing, cfg)\n  File \"/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a4faba8ffda7021fb/tools/omr/direction_text.py\", line 315, in _blank_detections\n    pad = int(round(config.detection_pad_spaces * spacing))\nValueError: cannot convert float NaN to integer\n",
+ "tag": "litolff-p0",
+ "gather_wall_total_incl_experiment": 2.9688916250000004
+}

@@ -45,16 +45,13 @@ MAX_TOKENS_PAGE = 32768  # dense orchestral pages need lots of room
 @dataclass
 class ClaudeVisionResult:
     """Shape-compatible with ``local_omr.LocalOmrResult`` for the fields
-    callers in main.py read. Originally inherited from
-    ``audiveris_omr.AudiverisResult`` (now deleted)."""
+    callers in main.py read. Originally modelled on the result class of
+    the Audiveris engine (since deleted)."""
     musicxml_path: str
     confidence_score: float
     measures_count: int
     error_message: Optional[str] = None
 
-
-# Back-compat alias — older code in this module still refers to AudiverisResult.
-AudiverisResult = ClaudeVisionResult
 
 # Type alias for the progress callback
 ProgressCallback = Callable[[int, int, list[int]], Coroutine[Any, Any, None]]
@@ -502,20 +499,20 @@ async def run_claude_vision_omr(
     pdf_path: str,
     output_dir: str,
     progress_callback: Optional[ProgressCallback] = None,
-) -> AudiverisResult:
+) -> ClaudeVisionResult:
     """Run Claude Vision OMR on a PDF score.
 
     1. Render PDF pages to PNG
     2. Extract score header from page 1
     3. Process each page sequentially
     4. Assemble MusicXML
-    5. Return AudiverisResult
+    5. Return ClaudeVisionResult
 
     The progress_callback is called after each page:
         await progress_callback(current_page, total_pages, failed_pages)
     """
     if not ANTHROPIC_API_KEY:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -533,7 +530,7 @@ async def run_claude_vision_omr(
             None, _render_pdf_pages, pdf_path, omr_dir
         )
     except Exception as exc:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -543,7 +540,7 @@ async def run_claude_vision_omr(
 
     total_pages = len(page_pngs)
     if total_pages == 0:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -559,7 +556,7 @@ async def run_claude_vision_omr(
         client, page_pngs[0], HEADER_PROMPT, HEADER_SCHEMA, MAX_TOKENS_HEADER
     )
     if not header_json:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -618,7 +615,7 @@ async def run_claude_vision_omr(
                 pass  # don't let callback errors stop processing
 
     if not pages:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -634,7 +631,7 @@ async def run_claude_vision_omr(
         output_path = os.path.join(output_dir, f"{stem}_vision.musicxml")
         write_musicxml(xml_str, output_path)
     except Exception as exc:
-        return AudiverisResult(
+        return ClaudeVisionResult(
             musicxml_path="",
             book_path="",
             confidence_score=0.0,
@@ -681,7 +678,7 @@ async def run_claude_vision_omr(
         except OSError:
             pass
 
-    return AudiverisResult(
+    return ClaudeVisionResult(
         musicxml_path=output_path,
         book_path="",
         confidence_score=confidence,

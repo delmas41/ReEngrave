@@ -379,7 +379,7 @@ def _add_direction(
         words = SubElement(dt, "words")
         words.text = direction.value
         if direction.bpm:
-            sound = SubElement(dir_el, "sound", tempo=str(direction.bpm))
+            SubElement(dir_el, "sound", tempo=str(direction.bpm))
 
     SubElement(dir_el, "staff").text = str(staff_num)
 

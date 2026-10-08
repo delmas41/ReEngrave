@@ -22,7 +22,7 @@ rewritten. This is a change to how their opinions are combined.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling, Term, decision,
                           tally)
@@ -655,6 +655,57 @@ def _carry_terms(ev: Evidence, *,
     return out, withheld
 
 
+#: ⚠️ ROADMAP 2.61c. The `detail` key naming the clef candidates whose
+#: key-signature fit THREW (an Abstention on `Q.KEYSIG_CLEF_FIT`): unknown,
+#: neither eliminated nor supported.
+UNKNOWN_FIT_KEY = "keysig_fit_unknown"
+
+
+def _unknown_fit_candidates(ev: Evidence,
+                            fits: Sequence[Any]) -> Tuple[str, ...]:
+    """The slot-table clefs whose fit is an ABSTENTION, not a reading.
+
+    A refusal naming a `candidate` makes that clef unknown; one naming none
+    makes every clef without a fit row unknown (we cannot say which it was).
+    A clef with a fit ROW is read and is never unknown.
+    """
+    read = {str(r.value) for r in fits}
+    unknown: List[str] = []
+    for refusal in ev.refusals(Q.KEYSIG_CLEF_FIT):
+        named = refusal.detail.get("candidate")
+        names = ([str(named)] if named is not None
+                 else [c for c in _SLOT_TABLE_CLEFS])
+        for name in names:
+            if (name in _SLOT_TABLE_CLEFS and name not in read
+                    and name not in unknown):
+                unknown.append(name)
+    return tuple(unknown)
+
+
+def _worst_case_margin(candidates: Dict[str, List[Term]],
+                       scored: Sequence[Tuple[float, str]],
+                       unknown: Sequence[str],
+                       fits: Sequence[Any]) -> float:
+    """The read winner's margin if every unknown fit had gone the worst way.
+
+    Two worst cases, taken together: an unknown candidate gains the most its
+    fit could have given it (`W_KEYSIG_FIT`); and if the fitters plus the
+    unknowns could cover every slot-table clef, the fit would have
+    discriminated nothing, so the winner's own fit term is not safe to count.
+    """
+    top_score, top_name = scored[0]
+    discriminating = {str(r.value) for r in fits
+                      if (r.detail.get("n_accidentals") or 0) > 0}
+    top = top_score
+    if (top_name in discriminating
+            and len(discriminating | set(unknown)) >= len(_SLOT_TABLE_CLEFS)):
+        top -= W_KEYSIG_FIT
+    rivals = [score + (W_KEYSIG_FIT if name in unknown else 0.0)
+              for score, name in scored[1:]]
+    rivals += [W_KEYSIG_FIT for name in unknown if name not in candidates]
+    return top - (max(rivals) if rivals else 0.0)
+
+
 @decision(
     quantity=Q.CLEF,
     checkable=Checkable.MIXED,
@@ -732,6 +783,7 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
         # to have contributed. Recording it in `declined` is what stops a
         # later reader counting silence as support.
         ev._declined.add(Q.KEYSIG_CLEF_FIT)
+    unknown_fit = _unknown_fit_candidates(ev, fits)
 
     # ⚠️ A `clefC` detection supports every C clef a reader NAMED, and names
     # none itself. If nothing named one, it supports nothing -- which is the
@@ -779,6 +831,8 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
             extra[CONTRADICTION_REASON] = contradictions
         if discounted:
             extra[OFF_STAFF_REASON] = discounted
+        if unknown_fit:
+            extra[UNKNOWN_FIT_KEY] = list(unknown_fit)
         if extra:
             return Ruling.abstain("no_candidates", **extra)
         return Ruling.abstain("no_candidates")
@@ -792,6 +846,24 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     top_score, top_name = scored[0]
     runner_up = scored[1][0] if len(scored) > 1 else 0.0
     margin = top_score - runner_up
+
+    # ⚠️ ROADMAP 2.61c, RULE 8. A candidate whose key-signature fit THREW is
+    # UNKNOWN -- not "does not fit". It is neither eliminated nor supported;
+    # but it may have fitted, so the winner must clear the floor over the MOST
+    # that fit could have given each unknown (`W_KEYSIG_FIT`), and must not
+    # have leaned on a fit that the unknown candidate's own fit could have
+    # made non-discriminating. Where it cannot, the margin recorded is the
+    # worst-case one, below the floor, and the harness NARROWS -- with the
+    # unknown among the candidates -- instead of deciding against it.
+    if unknown_fit:
+        worst = _worst_case_margin(candidates, scored, unknown_fit, fits)
+        if worst < MARGIN_FLOOR:
+            margin = worst
+            for name in unknown_fit:
+                if name not in candidates:
+                    candidates[name] = []
+                    scored.append((0.0, name))
+            scored.sort(reverse=True)
 
     # ⚠️ EVERY id a term cites, not just the first. `_human_named_c_clef`'s
     # CONFIRMED case is this file's first multi-row term (`(glyph_row.id,
@@ -808,6 +880,8 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # as the same answer.
     cands = tuple(Candidate(value=n, support=sc) for sc, n in scored)
     detail: Dict[str, Any] = {"scores": {n: s for s, n in scored}}
+    if unknown_fit:
+        detail[UNKNOWN_FIT_KEY] = list(unknown_fit)
     if seeds_withheld:
         # ⚠️ RECORDED, NOT DISCARDED. A supplied clef that was refused is a
         # fact about this run -- it is how a human reading the record can see

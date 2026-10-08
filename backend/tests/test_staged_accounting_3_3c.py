@@ -44,15 +44,17 @@ import pytest
 # already-set env vars (`os.environ.setdefault`, a no-op if that module's
 # import ran first) rather than pointing `main` at a second, different
 # throwaway DB. Same convention `test_staged_job_budget.py` follows.
+# (`app_client` and `fake_pipeline` come from `conftest.py` by discovery.)
+from tests.conftest import (  # noqa: E402
+    _log_json,
+    _obs,
+    _one_note_record,
+    _vrd,
+)
 from tests.test_staged_omr_engine import (  # noqa: E402
     _create_score,
     _fetch_score,
     _minimal_pdf,
-    _one_note_record,
-    _log_json,
-    _obs,
-    _vrd,
-    app_client,
 )
 
 from tools.omr.staged.record import Q  # noqa: E402

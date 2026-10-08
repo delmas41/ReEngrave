@@ -1,0 +1,130 @@
+{
+ "t_surya_worker_session_open": 1.02456025,
+ "session_opened": true,
+ "spacing_px": 27.5,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 0.11380270900001221,
+ "t_default_readers(incl page_is_engraved)": 0.07558454200000142,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 20,
+ "t_crop_upscale": 0.005532999999999788,
+ "crop_shapes_median_hw": [
+  183,
+  609
+ ],
+ "crop_px_total": 2265171,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.22133129200000212,
+ "t_surya_second_call_1crop": 0.13759525000000394,
+ "dummy_read": [
+  ""
+ ],
+ "percrop_surya": [
+  {
+   "cand": 0,
+   "s": 0.18548225000000684,
+   "text": ""
+  },
+  {
+   "cand": 1,
+   "s": 0.1482058339999952,
+   "text": ""
+  },
+  {
+   "cand": 2,
+   "s": 0.13762699999999484,
+   "text": ""
+  },
+  {
+   "cand": 3,
+   "s": 0.16999312500000485,
+   "text": ""
+  },
+  {
+   "cand": 4,
+   "s": 0.22651675000000182,
+   "text": ""
+  },
+  {
+   "cand": 5,
+   "s": 0.2296536669999938,
+   "text": ""
+  },
+  {
+   "cand": 6,
+   "s": 0.29428975000000435,
+   "text": "pizz."
+  },
+  {
+   "cand": 7,
+   "s": 0.2930499590000011,
+   "text": "unis."
+  },
+  {
+   "cand": 8,
+   "s": 0.5437654589999994,
+   "text": "pizz."
+  },
+  {
+   "cand": 9,
+   "s": 0.3213786669999905,
+   "text": "pizz."
+  },
+  {
+   "cand": 10,
+   "s": 0.2080312080000084,
+   "text": ""
+  },
+  {
+   "cand": 11,
+   "s": 0.2351670420000005,
+   "text": ""
+  },
+  {
+   "cand": 12,
+   "s": 0.27673166700000706,
+   "text": "dim."
+  },
+  {
+   "cand": 13,
+   "s": 0.30229500000000087,
+   "text": "arco"
+  },
+  {
+   "cand": 14,
+   "s": 0.30969616699999847,
+   "text": "CTESC."
+  },
+  {
+   "cand": 15,
+   "s": 0.33251870799999494,
+   "text": "dim."
+  },
+  {
+   "cand": 16,
+   "s": 0.25309662499999774,
+   "text": "pp"
+  },
+  {
+   "cand": 17,
+   "s": 0.3491491660000037,
+   "text": "Cresc."
+  },
+  {
+   "cand": 18,
+   "s": 0.21320166700000698,
+   "text": ""
+  },
+  {
+   "cand": 19,
+   "s": 0.2027087919999957,
+   "text": ""
+  }
+ ],
+ "percrop_total": 5.232558503000007,
+ "tag": "brcap",
+ "gather_wall_total_incl_experiment": 102.643129042
+}

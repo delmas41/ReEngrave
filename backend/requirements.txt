@@ -8,17 +8,26 @@ httpx==0.27.0
 # Its constraints (httpx<1,>=0.25; pydantic<3,>=1.9; anyio<5) are satisfied by
 # the httpx/pydantic/fastapi pins here.
 anthropic==0.116.0
-python-multipart==0.0.9
-pillow==10.3.0
+# python-multipart >=0.0.18: fixes the multipart-boundary ReDoS / CPU-exhaustion
+# advisories (GHSA-59g5-xgcq-4qw3, CVE-2024-53981). 0.0.20 imports as
+# python_multipart and keeps the legacy `multipart` shim Starlette 0.37 uses.
+python-multipart==0.0.20
+# pillow: newest 11.x (not 12) to limit API risk; 10.3.0 is behind several
+# security releases. pdf2image and cairosvg checked against it.
+pillow==11.3.0
 pdf2image==1.17.0
 beautifulsoup4==4.12.3
 lxml==5.2.2
-requests==2.32.2
+# requests >=2.32.4: fixes CVE-2024-47081 (.netrc credential leak to the wrong host).
+requests==2.32.5
 pydantic==2.7.1
 pydantic-settings==2.2.1
-python-jose[cryptography]==3.3.0
-passlib[bcrypt]==1.7.4
-bcrypt==3.2.2
+# python-jose >=3.4.0: fixes CVE-2024-33663 (algorithm confusion) and
+# CVE-2024-33664 (JWE decompression bomb). The app signs HS256 only.
+python-jose[cryptography]==3.5.0
+# Direct bcrypt (passlib 1.7.4 is end-of-life and breaks on bcrypt>=4.1).
+# Hashes made by passlib's bcrypt handler are plain $2b$ and still verify.
+bcrypt>=4.1
 stripe==9.9.0
 slowapi==0.1.9
 email-validator==2.1.1

@@ -1,0 +1,110 @@
+[
+ {
+  "staff": 0,
+  "measure": 1,
+  "bbox": [
+   1792,
+   636,
+   1912,
+   676
+  ],
+  "w_sp": 4.3,
+  "h_sp": 1.4,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "Narc.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 3,
+  "measure": 0,
+  "bbox": [
+   1225,
+   1335,
+   1411,
+   1356
+  ],
+  "w_sp": 6.7,
+  "h_sp": 0.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "en ee",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 5,
+  "measure": 1,
+  "bbox": [
+   1677,
+   1881,
+   1774,
+   1930
+  ],
+  "w_sp": 3.5,
+  "h_sp": 1.8,
+  "n": 3,
+  "placement": "below",
+  "surya": "a2",
+  "tess": "az,",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 7,
+  "measure": 4,
+  "bbox": [
+   3319,
+   2316,
+   3515,
+   2342
+  ],
+  "w_sp": 7.1,
+  "h_sp": 0.9,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "ge Te",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 16,
+  "measure": 2,
+  "bbox": [
+   2151,
+   4687,
+   2225,
+   4725
+  ],
+  "w_sp": 2.7,
+  "h_sp": 1.4,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "wy",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 27,
+  "measure": 3,
+  "bbox": [
+   2912,
+   7310,
+   3059,
+   7329
+  ],
+  "w_sp": 5.3,
+  "h_sp": 0.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "I D 4",
+  "tess": "vy Y\u00a5p> A",
+  "surya_ok": null,
+  "tess_ok": null
+ }
+]

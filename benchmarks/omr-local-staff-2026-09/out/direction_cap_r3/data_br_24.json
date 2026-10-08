@@ -1,0 +1,17 @@
+{
+ "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "page": "24",
+ "tag": "br_24",
+ "n_candidates": 7,
+ "scan_gate_would_fire": true,
+ "on_s": 4.189886875000013,
+ "on_info_readers": [
+  "surya",
+  "tesseract"
+ ],
+ "on_words": [],
+ "off_s": 2.712351084000005,
+ "off_words": [],
+ "lost_on_vs_off": [],
+ "extra_on_vs_off": []
+}

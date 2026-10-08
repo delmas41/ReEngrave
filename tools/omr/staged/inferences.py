@@ -28,7 +28,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
 from .infer import (ALWAYS_ON, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
-# stage, `# noqa: SLF001`): `_admit`'s own candidate-membership check for a
+# stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
 # BEFORE proposing, so a value the reader never admitted reads as a named
 # decline here rather than a `ValueNotAdmitted` crash in the harness.
