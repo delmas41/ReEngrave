@@ -22,6 +22,25 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 0.8 follow-up: Sean's "Yes to all"
+
+DECISIONS 2026-10-08:
+- **Dropped:** 2.6h and 3.2c (dead at zero).
+- **Dropped as superseded:** the 2.21 draft, 2.44, 2.44c and 2.44d. Each
+  roadmap row now opens with `dropped (...)`.
+- **2.51 evidence landed** from `lane-2.51-unboxed-ink` `78d05d85`: four
+  scripts under `benchmarks/omr-ink-gather-2026-09/unboxed-2.51/`, the
+  FINDINGS section, and two sheets in `out/print/2.51/`. Its FINDINGS section
+  was §14 on the branch; it is renumbered §15 here because main's §14 is 2.52.
+  2.52's pointer to it, which said "not on this tree", now points to §15.
+- **2.53 write-up landed** from `lane-2.53-unboxed-bars` `ad41435b`. The lane
+  wrote it as its ROADMAP row; it is now FINDINGS §16 (rule 9), with two
+  sheets in `out/print/2.53/`. The branch's re-gathered
+  `benchmarks/acceptance/quick/` outputs were NOT landed. Its "recommendation,
+  not built" is annotated as later built by 2.55.
+
+No code changed.
+
 ## 2026-10-08 — ROADMAP 0.8: the "built, not merged" rows triaged against the tree
 
 **Sean: "Can you start 2. Sort the built not merged."** A docs-only commit:

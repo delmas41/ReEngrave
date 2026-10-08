@@ -52,7 +52,7 @@ Flags named "OFF" in those rows that are **default ON on main today**:
 | 2.53 | `lane-2.53-unboxed-bars` | 1 | **land the write-up + sheets only** | The branch also rewrites `benchmarks/acceptance/quick/` outputs, which must not overwrite main's. It led to 2.55. |
 | 2.48 | `lane-2.48-seeded`, `lane-2.48-pinned` | 14 / 15 | **leave parked** | Sean 10-01: "park, do not forget". |
 
-Nothing is dropped or retired by this triage. Those are Sean's calls, and each needs its own DECISIONS line. The branches stay on origin either way.
+**Sean's answer, the same day: "Yes to all"** (DECISIONS 2026-10-08). 2.6h and 3.2c are dropped. The 2.21 draft, 2.44, 2.44c and 2.44d are dropped as superseded. 2.51's scripts, findings and sheets are landed (FINDINGS `omr-ink-gather-2026-09` §15, `out/print/2.51/`). 2.53's write-up is §16 of the same file, with its sheets in `out/print/2.53/`; its quick outputs were not landed. The branches stay on origin.
 
 ## What the triage changes about the backlog
 

@@ -48,9 +48,10 @@ dependency pins and nginx/rate-limit hardening as follow-ups.
 **The "built, not merged" backlog was mostly a stale ledger** (ROADMAP 0.8,
 2026-10-08, `docs/triage-2026-10-08-built-not-merged.md`). 41 roadmap rows said
 "not merged" for work that is already on main. Nine are genuinely off main:
-four superseded, two dead at zero, two evidence-only, one parked by Sean. The
-open work is a close-or-keep pass with Sean over the merged rows, not a merge
-pass.
+four superseded, two dead at zero, two evidence-only, one parked by Sean.
+Sean answered "Yes to all" the same day: the six are dropped and the two
+evidence lanes are landed. The open work is a close-or-keep pass with Sean
+over the 41 merged rows, not a merge pass.
 
 **Read next**: [CLAUDE.md](CLAUDE.md) (the spec), [ROADMAP.md](ROADMAP.md)
 (status), [docs/DECISIONS.md](docs/DECISIONS.md) (rulings),
