@@ -6276,6 +6276,171 @@ def gather_notehead_stem_cross_ink(log: Log, cells: Sequence[Any],
                        **detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.58d -- `Q.HEAD_STEM_REACH`: which way a contested head's stem runs.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A vertical run beside a head must stand this far (staff spaces) past the
+#: head's own edge to count as a stem. A head is ~1.0-1.5 sp tall and a stem is
+#: at least ~2.5 sp, so 0.8 sp clears the head's own outline and the thickness
+#: of a staff line crossing the column, and is short of any real stem.
+HEAD_STEM_MIN_EXT_SPACES = 0.8
+#: The column the run is read in: a stem is ~0.15-0.25 sp wide and its OUTER
+#: edge is flush with the head's edge (down -> left, up -> right, CLAUDE.md
+#: §10), so the window slides this far each side of the edge and keeps the
+#: position that gives the longest run.
+HEAD_STEM_WINDOW_SPACES = 0.18
+HEAD_STEM_SLIDE_OUT_SPACES = 0.15
+HEAD_STEM_SLIDE_IN_SPACES = 0.30
+#: a run bridges a white gap this long (a staff line erased or thinned, a
+#: broken scan) but NO longer: the gap between two staff lines is a whole space
+HEAD_STEM_GAP_SPACES = 0.30
+HEAD_STEM_ROW_FRACTION = 0.85
+HEAD_STEM_MAX_RUN_SPACES = 9.0
+
+
+def _stem_run(ink: Any, x_lo: int, x_hi: int, y_from: int, step: int,
+              gap_px: int, max_px: int) -> Tuple[int, bool]:
+    """`(last inked row, hit the image edge)` walking from `y_from` in `step`
+    (+1 down, -1 up) over columns `[x_lo, x_hi)`; a row is inked when at least
+    `HEAD_STEM_ROW_FRACTION` of the window is. Stops at a gap of more than
+    `gap_px` blank rows."""
+    h, w = ink.shape
+    x_lo, x_hi = max(0, x_lo), min(w, x_hi)
+    if x_hi <= x_lo:
+        return y_from - step, False
+    last = y_from - step
+    r = y_from
+    n = 0
+    while 0 <= r < h and n <= max_px:
+        if float(ink[r, x_lo:x_hi].mean()) >= HEAD_STEM_ROW_FRACTION:
+            last = r
+        elif abs(r - last) > gap_px:
+            return last, False
+        r += step
+        n += 1
+    return last, not (0 <= r < h)
+
+
+def measure_head_stem(ink: Any, box: Tuple[float, float, float, float],
+                      sp: float) -> Dict[str, Any]:
+    """Which way a head's stem runs, off a boolean ink image (True = ink) in the
+    SAME frame as `box = (x0, y0, x1, y1)` and `sp` pixels per staff space.
+
+    ⚠️ A RULER READING, NOT AN IDENTIFICATION. It reports vertical ink beside
+    the head; that the ink is a stem and which staff it points at are
+    ADJUDICATE's. `direction`: `down` (a run beneath the head along its left
+    edge), `up` (above, along its right edge), `both` (through-ink: a barline
+    or a through-stem -- claims nothing), `none` (no run of
+    `HEAD_STEM_MIN_EXT_SPACES`). Pixels in, pixels out."""
+    x0, y0, x1, y1 = (float(v) for v in box)
+    hh = y1 - y0
+    out: Dict[str, Any] = {"sp": float(sp)}
+    if sp <= 0 or hh <= 0:
+        return dict(out, direction="none", down_ext=0.0, up_ext=0.0,
+                    down_tip_y=None, up_tip_y=None)
+    win = max(2, int(round(HEAD_STEM_WINDOW_SPACES * sp)))
+    gap = max(1, int(round(HEAD_STEM_GAP_SPACES * sp)))
+    mx = int(round(HEAD_STEM_MAX_RUN_SPACES * sp))
+    ys_dn = int(round(y1 - 0.25 * hh))
+    ys_up = int(round(y0 + 0.25 * hh))
+    best = {}
+    lo_out = HEAD_STEM_SLIDE_OUT_SPACES * sp
+    lo_in = HEAD_STEM_SLIDE_IN_SPACES * sp
+    through = {}
+    for side in ("down", "up"):
+        ext_best, tip_best, clip_best, xs_best = -1e9, None, False, None
+        if side == "down":
+            starts = range(int(round(x0 - lo_out)), int(round(x0 + lo_in)) + 1)
+        else:
+            starts = range(int(round(x1 - lo_in)) - win,
+                           int(round(x1 + lo_out)) - win + 1)
+        for xs in starts:
+            if side == "down":
+                tip, clip = _stem_run(ink, xs, xs + win, ys_dn, 1, gap, mx)
+                ext = tip - y1
+            else:
+                tip, clip = _stem_run(ink, xs, xs + win, ys_up, -1, gap, mx)
+                ext = y0 - tip
+            if ext > ext_best:
+                ext_best, tip_best, clip_best, xs_best = ext, tip, clip, xs
+        best[side] = (ext_best / sp, tip_best, clip_best)
+        # THROUGH-INK: the SAME columns also run the OTHER way past the head -- a
+        # barline touching the head, or a stem that is another head's. Not a stem
+        # that leaves THIS head one way.
+        if ext_best / sp >= HEAD_STEM_MIN_EXT_SPACES and xs_best is not None:
+            if side == "down":
+                t2, _c = _stem_run(ink, xs_best, xs_best + win, ys_up, -1, gap, mx)
+                through[side] = (y0 - t2) / sp >= HEAD_STEM_MIN_EXT_SPACES
+            else:
+                t2, _c = _stem_run(ink, xs_best, xs_best + win, ys_dn, 1, gap, mx)
+                through[side] = (t2 - y1) / sp >= HEAD_STEM_MIN_EXT_SPACES
+    d_ok = best["down"][0] >= HEAD_STEM_MIN_EXT_SPACES
+    u_ok = best["up"][0] >= HEAD_STEM_MIN_EXT_SPACES
+    direction = ("both" if (d_ok and u_ok) or any(through.values())
+                 else "down" if d_ok else "up" if u_ok else "none")
+    return dict(out, direction=direction,
+                down_ext=round(best["down"][0], 3),
+                up_ext=round(best["up"][0], 3),
+                down_tip_y=(float(best["down"][1]) if d_ok else None),
+                up_tip_y=(float(best["up"][1]) if u_ok else None),
+                down_clipped=bool(best["down"][2]) if d_ok else False,
+                up_clipped=bool(best["up"][2]) if u_ok else False)
+
+
+def gather_head_stem_reach(log: Log, pws: Any, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]]) -> Dict[str, int]:
+    """`Q.HEAD_STEM_REACH` for every CONTESTED notehead (one with
+    `Q.GLYPH_BAND_DISTANCE` rows -- the `glyph_owner` domain). ROADMAP 2.58d.
+
+    ⚠️ READS THE PAGE'S ORIGINAL RASTER (`pws.page.rgb`), in the page frame the
+    boxes are already in, so a head cut from one staff's padded cell and the
+    same ink cut from its neighbour's get the SAME reading (a cell frame could
+    not answer a cross-staff question). Runs after `gather_ownership_evidence`
+    (it filters on its rows). Returns a census `{heads, down, up, both, none}`."""
+    census = {"heads": 0, "down": 0, "up": 0, "both": 0, "none": 0}
+    rgb = getattr(getattr(pws, "page", None), "rgb", None)
+    if rgb is None or getattr(rgb, "ndim", 0) < 2:
+        return census
+    gray = rgb if rgb.ndim == 2 else rgb[..., :3].mean(axis=2)
+    ink = gray < 128
+    cell_by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    sp_by_staff: Dict[Tuple[int, int], float] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        ys = [float(y) for y in st.line_ys]
+        if key is not None and len(ys) >= 2:
+            sp_by_staff[(key[0], key[1])] = (ys[-1] - ys[0]) / (len(ys) - 1)
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        sp = sp_by_staff.get((sub.system, sub.staff))
+        if c is None or not sp:
+            continue
+        for gi, d in enumerate(dets):
+            if not str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX):
+                continue
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            if not log.rows(Q.GLYPH_BAND_DISTANCE, g):
+                continue
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            res = measure_head_stem(ink, box, sp)
+            census["heads"] += 1
+            census[res["direction"]] += 1
+            log.observe(g, Q.HEAD_STEM_REACH, res["direction"],
+                        reader=READERS.CV_HEAD_STEM_REACH, frame="page",
+                        head_box_page=[round(float(v), 2) for v in box],
+                        **{k: v for k, v in res.items() if k != "direction"})
+    return census
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -8987,6 +9152,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # tremolo-slash rows) and `Q.STEM`-era evidence that did not exist yet.
         gather_far_head_ledger_positions(log, pws, cells, local, detections,
                                          far_head_state)
+        # ⚠️ ROADMAP 2.58d, AFTER `gather_ownership_evidence` (it files only
+        # for a contested head, read off that evidence's own rows).
+        gather_head_stem_reach(log, pws, cells, local, detections)
         gather_detector_beams(log, detections)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)

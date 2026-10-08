@@ -1,0 +1,10 @@
+Tile 01: Which staff does the orange note belong to: staff 7, Timpani or staff 6, Trumpet (Tr.)?
+Tile 02: Which staff does the orange note belong to: staff 2, Oboe or staff 3, Clarinet (Cl.)?
+Tile 03: Which staff does the orange note belong to: staff 3, Clarinet (Cl.) or staff 4, Bassoon (Fag.)?
+Tile 04: Which staff does the orange note belong to: staff 6, "(Es)" or staff 5, Horn ((C) Hr.)?
+Tile 05: Which staff does the orange note belong to: staff 2, Oboe or staff 1, Flute?
+Tile 06: Which staff does the orange note belong to: staff 11, Violin (2.Viol.) or staff 12, Viola?
+Tile 07: Which staff does the orange note belong to: staff 3, Clarinet (Klar. (B)) or staff 4, Bassoon (Fag.)?
+Tile 08: Which staff does the orange note belong to: staff 5, Contrabassoon or staff 4, Bassoon (Fag.)?
+Tile 09: Which staff does the orange note belong to: staff 7, "(Es)" or staff 6, Horn ((C) Hr.)?
+Tile 10: Which staff does the orange note belong to: staff 4, "Fug." or staff 3, Clarinet (Cl.)?

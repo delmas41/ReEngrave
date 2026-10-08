@@ -177,8 +177,11 @@ OWN_STRUCTURE_TOLERANCE_SPACES = 0.2
 #: relative density comparison and the detector-based ladder each have an
 #: opinion and they DISAGREE -- neither is trusted alone, held out exactly
 #: like a reading gap.
+#: ROADMAP 2.58d adds `stem_disagrees`: the stem witness and a ledger
+#: witness name DIFFERENT staves -- held out like `ledger_witnesses_disagree`.
 OWNER_NOT_READ_REASONS = ("far_no_rungs", "tied", "no_evidence",
-                          "ledger_all_refuted", "ledger_witnesses_disagree")
+                          "ledger_all_refuted", "ledger_witnesses_disagree",
+                          "stem_disagrees")
 
 #: A candidate's `Q.LEDGER_OWNER_DENSITY` reading must beat the OTHER
 #: candidate's own reading by at least this ratio to decide ownership --
@@ -292,6 +295,95 @@ def _note_first_ledger_owner(ev: Evidence) -> Optional[Tuple[str, Tuple[str, ...
 #: DEFAULT ON since 2026-10-06 (Sean: switch it on).
 #: A DENY-LIST (CLAUDE.md §7): a typo leaves it on. Read at ADJUDICATE time.
 FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
+
+
+#: ROADMAP 2.58d (lane-stem-owner) -- DEFAULT OFF until Sean has adjudicated
+#: `out/print/stem_owner/`; an allow-list (CLAUDE.md §7), so a typo leaves it
+#: off. Read at ADJUDICATE time. The GATHER row (`Q.HEAD_STEM_REACH`) is filed
+#: either way: evidence is recorded, this flag only says whether it is read.
+STEM_OWNER_ENV = "OMR_STEM_OWNER"
+
+
+def stem_owner_enabled() -> bool:
+    return os.environ.get(STEM_OWNER_ENV, "0").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+#: A stem "reaches" a staff when its tip stands within this many of THAT
+#: staff's spaces of its outer line (or past it): INTO the lines, or ending in
+#: the band a space either side of them.
+STEM_REACH_BAND_SPACES = 1.0
+#: The stem speaks only for a head that is CLEARLY outside every candidate's
+#: five lines: its centre at least this many of that staff's spaces beyond the
+#: staff's outer line (a head on the first ledger line stands at ~1.0). A head
+#: on or between the lines, or in the first space, is `staff_band`'s; its stem
+#: may point at the neighbour for reasons that have nothing to do with
+#: ownership (a beamed group, a second voice), and the replay found ten such
+#: heads on the first draft of this rule -- every one a head sitting ON an edge
+#: line -- which the owner-from-staves control forbids to move.
+STEM_MIN_OUTSIDE_SPACES = 0.9
+
+
+def _stem_owner(ev: Evidence, cand_keys: Sequence[Optional[str]]):
+    """ROADMAP 2.58d. The STEM witness: `(owner staff key, row ids, detail)`
+    or `None` (silent).
+
+    THE RULE (stated before any count; Sean, 2026-10-08: *"the stem should make
+    it obvious"*; CLAUDE.md §10 stems: up -> right, down -> left, and the
+    middle-line convention: a head far below its staff stems UP toward it, a
+    head far above stems DOWN toward it):
+
+      * the head's stem leaves it `down` or `up` (`Q.HEAD_STEM_REACH`; `both`
+        and `none` are silent -- a barline, a hidden stem and a whole note are
+        not an answer);
+      * a candidate staff is POINTED AT when it lies on the stem's side of the
+        head (its near edge beyond the head's centre in that direction) and
+        the stem's tip stands in its band: at or past its outer line less
+        `STEM_REACH_BAND_SPACES` of that staff's spaces;
+      * exactly ONE candidate pointed at -> it owns the head. Toward neither
+        or toward both -> silent.
+
+    It does not decide against a ledger witness: `adjudicate_glyph_owner`
+    abstains (`stem_disagrees`) where the two name different staves.
+    """
+    rows = ev.rows(Q.HEAD_STEM_REACH)
+    if not rows:
+        return None
+    row = rows[-1]
+    way = row.value
+    if way not in ("down", "up"):
+        return None
+    det = row.detail or {}
+    tip = det.get(f"{way}_tip_y")
+    box = det.get("head_box_page")
+    if tip is None or not box or len(box) != 4:
+        return None
+    cy = (float(box[1]) + float(box[3])) / 2.0
+    sign = 1.0 if way == "down" else -1.0
+    pointed, per, used = [], {}, [row.id]
+    for k in cand_keys:
+        if k is None:
+            continue
+        st = R.Subject.from_key(k)
+        geo = staff_geometry(ev, st)
+        if geo is None:
+            continue
+        ys, sp, ids = geo
+        top, bot = min(ys), max(ys)
+        if max(top - cy, cy - bot) < STEM_MIN_OUTSIDE_SPACES * sp:
+            return None            # on, between or beside a staff's lines: not a far head
+        near, far_edge = (top, bot) if sign > 0 else (bot, top)
+        on_side = (near - cy) * sign >= 0.0
+        reach = float(tip) * sign >= (near - sign * STEM_REACH_BAND_SPACES * sp) * sign
+        per[k] = dict(on_the_stems_side=on_side, tip_reaches=bool(reach))
+        if on_side and reach:
+            pointed.append(k)
+            used += list(ids)
+    if len(pointed) != 1:
+        return None
+    return pointed[0], tuple(used), {
+        "stem": {"direction": way, "tip_y": float(tip), "head_cy": cy,
+                 "ext_spaces": det.get(f"{way}_ext"), "per_candidate": per}}
 
 
 def _from_staves_enabled() -> bool:
@@ -510,7 +602,8 @@ def _owner_from_staves(ev: Evidence):
                    Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
-                   Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW),
+                   Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW,
+                   Q.HEAD_STEM_REACH),
     scope=Kind.GLYPH,
     # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
     # look toward each candidate staff, read AHEAD of distance and of the older
@@ -520,9 +613,10 @@ def _owner_from_staves(ev: Evidence):
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
            Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT,
-           Q.STAFF_SKEW),
+           Q.STAFF_SKEW, Q.HEAD_STEM_REACH),
     reasons=("human_owner", "staff_band", "staff_band_no_box",
              "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
+             "stem_toward_staff", "stem_disagrees",
              "ledger_direction", "ledger_refuted", "hairpin_separates",
              "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
              "distance", "no_contest", "no_evidence", "tied"),
@@ -597,11 +691,28 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # edge, so it needs no complete walk from the staff outward. A resolved
     # contest DROPS the loser (the exporter refuses the copy), it never
     # relocates it.
+    # ⚠️ ROADMAP 2.58d, THE STEM WITNESS (read here, applied below). Where it
+    # and a ledger witness name DIFFERENT staves the head ABSTAINS
+    # (`stem_disagrees`) -- neither is trusted alone, rule 8 -- and the
+    # group rule (`reconcile_group_owners`) takes the owner from the copy that
+    # did not abstain.
+    stem = None
+    if stem_owner_enabled():
+        stem = _stem_owner(ev, [r.detail.get("candidate") for r in bands])
+
+    def _stem_clash(owner):
+        return Ruling.abstain("stem_disagrees",
+                              stem_owner=stem[0], ledger_owner=owner,
+                              **stem[2])
+
     nf = _note_first_ledger_owner(ev)
     if nf is not None:
         owner, used, detail = nf
+        if stem is not None and stem[0] != owner:
+            return _stem_clash(owner)
         return Ruling(value=owner, reason="ledger_note_first", used=used,
-                      detail={"ledger_note_first": detail})
+                      detail={"ledger_note_first": detail,
+                              **({"stem_agrees": True} if stem is not None else {})})
 
     # ⚠️⚠️ ROADMAP 2.37 (Sean's redirect, 2026-09-29, quoted): pitch is
     # already geometric and never reads a ledger; the ledger reader is
@@ -623,6 +734,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
             return Ruling.abstain("ledger_witnesses_disagree",
                                   ledger_owner_density=detail,
                                   ledger=ledger.summary())
+        if stem is not None and stem[0] != winner:
+            return _stem_clash(winner)
         return Ruling(value=winner, reason="ledger_owner_density",
                       used=tuple(r.id for r in bands),
                       detail={"ledger_owner_density": detail})
@@ -633,6 +746,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # `trace`/a count must be able to tell them apart.
         reason = ("ledger_refuted" if ledger.word == "ledger_refuted"
                   else "ledger_direction")
+        if stem is not None and stem[0] != ledger.winner:
+            return _stem_clash(ledger.winner)
         return Ruling(value=ledger.winner, reason=reason,
                       used=tuple(r.id for r in bands) + ledger.row_ids,
                       detail={"ledger": ledger.summary()})
@@ -704,6 +819,24 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     if not scored:
         return Ruling.abstain("no_evidence")
 
+    # ⚠️ ROADMAP 2.58d, THE STEM WHERE NO LEDGER WITNESS DECIDED. It stands in
+    # for the three places the sum below ends on NOTHING a witness decided --
+    # `far_no_rungs`, `ledger_all_refuted`, `tied` -- and for `distance`, which
+    # is the tie-break and nothing more (`distance` is "before" it, the brief's
+    # words). It never overrules a hairpin or a complete ladder: where the sum
+    # was decided by one of those and the stem names the OTHER staff, the head
+    # abstains (`stem_disagrees`). A candidate the written range calls
+    # IMPOSSIBLE cannot be named by a stem: the stem is then SILENT (`None`) and
+    # the sum stands as it did -- the first draft abstained here and turned 185
+    # decided Litolff heads into unread ones.
+    def _stem_ruling():
+        owner, used, detail = stem
+        if any(t.name == "range_impossible"
+               for _s, k, ts, _d2 in scored if k == owner for t in ts):
+            return None
+        return Ruling(value=owner, reason="stem_toward_staff",
+                      used=tuple(r.id for r in bands) + used, detail=detail)
+
     # ⚠️⚠️ ROADMAP 2.6c (second half): A FAR NOTE WITH NO RUNGS EITHER WAY IS
     # A READING GAP, NOT A DISTANCE TIE-BREAK (Sean, 2026-09-28). Every
     # candidate needs `FAR_MIN_RUNGS` or more and not one rung was found
@@ -712,6 +845,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # and still speaks. EXPORT counts the head `owner_not_read`
     # (`OWNER_NOT_READ_REASONS`) and never writes it at a guess.
     if ledger is not None and ledger.word == "far_no_rungs" and not hairpins:
+        if stem is not None and _stem_ruling() is not None:
+            return _stem_ruling()
         return Ruling.abstain("far_no_rungs", ledger=ledger.summary())
 
     # ⚠️ ROADMAP 2.37 (Sean, 2026-09-29): every candidate this glyph could
@@ -722,6 +857,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
     # never conflates the two.
     if ledger is not None and ledger.word == "ledger_all_refuted" \
             and not hairpins:
+        if stem is not None and _stem_ruling() is not None:
+            return _stem_ruling()
         return Ruling.abstain("ledger_all_refuted", ledger=ledger.summary())
 
     scored.sort(key=lambda t: (-t[0], t[1]))
@@ -742,6 +879,8 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # ⚠️ Two equal-cost mappings that disagree carry literally zero
         # information. Saying so beats breaking the tie on something measured
         # to be a coin flip.
+        if stem is not None and _stem_ruling() is not None:
+            return _stem_ruling()
         return Ruling.abstain("tied")
 
     # ⚠️ ROADMAP 2.6c: checked FIRST because it can carry a contest a
@@ -755,6 +894,14 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         reason = "range_veto"
     else:
         reason = "distance"
+
+    stem_says = _stem_ruling() if stem is not None else None   # None: silent or vetoed
+    if stem_says is not None:
+        if reason == "distance":
+            return stem_says
+        if stem[0] != top_key:
+            return Ruling.abstain("stem_disagrees", stem_owner=stem[0],
+                                  against=reason, **stem[2])
 
     detail = {"scores": {k: sc for sc, k, _t, _d2 in scored},
               "would_win_on_distance": by_distance[1]}

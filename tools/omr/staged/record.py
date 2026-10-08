@@ -432,6 +432,25 @@ class Q(_Vocab):
     #: no_ledger_needed`. `adjudicate_glyph_owner` reads it: Sean's rule
     #: (2026-09-28, CLAUDE.md §10) -- the ledgers name the owner.
     FAR_HEAD_OWNER_LEDGER = "far_head_owner_ledger"
+    #: ROADMAP 2.58d (lane-stem-owner; Sean, 2026-10-08, on two mark-group tiles:
+    #: *"the stem should make it obvious"*). Which way a CONTESTED notehead's
+    #: stem leaves it and how far it runs, measured off the page's ORIGINAL
+    #: raster in PAGE pixels beside the head's own box: `value` is `down` (a
+    #: vertical ink run beneath the head along its LEFT edge), `up` (along its
+    #: RIGHT edge, above), `both` (a barline or a through-stem: no stem is
+    #: claimed) or `none` (the reader looked and found no run of at least
+    #: `HEAD_STEM_MIN_EXT_SPACES` -- a whole note, a missed stem, a stem hidden
+    #: by a neighbour: NOT "this head has no stem"). `detail` carries each
+    #: side's run `down_tip_y` / `up_tip_y` (page px), its extension past the
+    #: head's edge in staff spaces, the head's page box and `sp`. A ruler
+    #: reading: it says where vertical ink runs, never that it is THIS head's
+    #: stem or which staff it points at (that is `adjudicate_glyph_owner`).
+    #: ⚠️ `Q.STEM` was tried first and does NOT hold this head's stem on the
+    #: tile that prompted it (the stem is thin where it crosses the next
+    #: staff's lines and the CV opening dropped it; the stem it did hold
+    #: there is the RIGHT-hand neighbour's), so this is a second reader of the
+    #: raster, not a re-reading of those rows.
+    HEAD_STEM_REACH = "head_stem_reach"
     #: The PRINTED in-bar accidental's own staff position, CLEF-FREE, on the
     #: same grid and in the same units as `NOTEHEAD_STAFF_POSITION` -- which is
     #: the whole point: the rule that owns it ("the head immediately RIGHT of
@@ -2076,6 +2095,9 @@ CLAIMS: "dict[str, str]" = {
     #: line the note rests on, the ledgers counted, the fit of the gaps are all
     #: interpretations of the ink.
     "FAR_HEAD_OWNER_LEDGER": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.58d: a run of vertical ink beside a contested head, off the
+    #: page raster -- a ruler reading, same reason as `STEM_TIP_INK`.
+    "HEAD_STEM_REACH": CLAIM.MEASUREMENT,
     #: ⚠️ A MEASUREMENT AND NOT AN IDENTIFICATION, though a class name is what
     #: chooses its anchor. What would make the row WRONG is the RULER -- a
     #: mis-measured line grid, or a box whose centre is not where the glyph
@@ -2406,6 +2428,10 @@ class READERS(_Vocab):
     #: its matched `Q.STEM` row's centre x rather than asking where the
     #: box's own fill peaks.
     CV_NOTEHEAD_STEM_CROSS_INK = "cv_notehead_stem_cross_ink"  # gather: ink split by stem x
+    #: `gather.gather_head_stem_reach` -- ROADMAP 2.58d. Reads the page's
+    #: ORIGINAL raster beside each contested head's box (the staff lines left
+    #: in: a vertical stem run is not broken by them).
+    CV_HEAD_STEM_REACH = "cv_head_stem_reach"    # gather: stem run beside a contested head
     #: `gather.gather_empty_bar_rest_search` -- ROADMAP 2.52. Reads the SAME
     #: `cell.image_no_staff` raster `CV_INK` et al. read (one crop, one
     #: signal, per `CV_INK`'s own entry), but only on a cell with NO

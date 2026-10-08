@@ -4586,3 +4586,68 @@ Brahms 2 (`18/1/599`, `5/1/35`) -- swaps between ledger readings, not resolved.
 
 **Pending Sean:** `out/print/mark_group_no_owner/tile_01..10.png` + `questions.txt` (answer key `key.json`, not on the
 tiles). Tiles 3 and 7 are the two rule-4 groups; the rule is not to be merged until he answers them.
+
+## 2026-10-08 -- ROADMAP 2.58d: a STEM witness for ownership (`lane-stem-owner`, off `lane-mark-group-no-owner`)
+
+GATHER+ADJUDICATE only, replayed on the 10-07 day records (no re-gather). Sean on the 2.58c tiles 3 and 7: the Litolff p14 head
+between Trumpet and Timpani is the Trumpet's, the p4 head between Oboe and Clarinet is the Clarinet's -- *"the stem should make it
+obvious"*. 2.58c gave tile 3 right and tile 7 WRONG (Oboe).
+
+**Why the ledger witness said Oboe on tile 7 (plain).** The note-first reader counted two "ledgers" toward the Oboe: rung 1 is the
+SLUR arc that crosses the bar above the heads (curved, slanted, thick) and rung 2 is the tops of the NEIGHBOURING heads on the same
+level (`right_adjacent` 0.94) -- there is no flat line at either height (8x crop with the reader's three windows ruled:
+`out/print/stem_owner/why_oboe_tile7_crop.png`, `stem_owner_why_oboe_crop.py`). The head's own stem runs straight down its left edge into the
+Clarinet's lines, which is what the new witness reads. A ledger read from the print that counts a slur and a neighbour is a
+reading fault upstream of ownership (the 2.60 line: an arc is not a line, here a line is not an arc).
+
+**`Q.STEM` was tried first and does not hold it.** The head's own stem is thin where it crosses the next staff's lines and the CV
+opening dropped it; the one `Q.STEM` row beside the head is the RIGHT-hand neighbour's (a down stem stands at its head's LEFT). So
+`Q.HEAD_STEM_REACH` (new, GATHER, `gather_head_stem_reach` / pure `measure_head_stem`) reads the page's original raster in page
+pixels beside each CONTESTED head: a vertical ink run along its left edge beneath it = `down`, along its right edge above it =
+`up`, the same columns running BOTH ways = `both` (barline / another head's stem: claims nothing), a run under 0.8 sp = `none`.
+
+**The rule (stated before any count; `ownership._stem_owner`).** A head at least 0.9 sp outside every candidate's outer line whose
+stem leaves it down/up and whose tip stands within a space of exactly ONE candidate's band, on the stem's side, belongs to that
+staff. Toward neither or both, `both`, `none`, or a head on/beside the lines (the owner-from-staves control): silent. Order: human,
+`staff_band`, `ledger_note_first`, ledger density/direction, hairpin/ladder/range, THEN stem in place of `distance` (and of
+`far_no_rungs` / `ledger_all_refuted` / `tied`). Stem vs a ledger witness, or vs a hairpin/ladder decision, naming different
+staves: the head ABSTAINS (`stem_disagrees`, counted `owner_not_read`); a staff the written range calls impossible is simply not
+named by a stem (the first draft abstained there and turned 185 decided Litolff heads into unread ones -- removed). Default OFF
+(`OMR_STEM_OWNER`, allow-list); the GATHER row is filed either way.
+
+**Controls.** `adjudicate_glyph_owner` with the flag OFF reproduces the record's own verdicts head for head: Litolff 9,383 / 9,383,
+Brahms 33,749 / 33,749. Tiles 3 and 7 now come out Trumpet and Clarinet (tile 7: the Oboe-cell copy abstains `stem_disagrees`, the
+Clarinet-cell copy decides `stem_toward_staff`, the 2.58c group rule adopts the Clarinet for both). No head whose centre lies inside
+its filing staff's band changes owner (0 of 102 / 0 of 267; the FIRST draft moved 10 heads sitting on an edge line -- now excluded by
+the 0.9 sp floor). The ledger-read far heads on the two count pages keep their owner (0 of 93 Litolff p3, 0 of 189 Brahms p1; the
+changes there are 4 and 12 heads decided by `distance` / `hairpin_separates`). Sean-confirmed owners: of 14 heads transcribed
+from his sheets, 9 hold in both arms; 5 (owner-by-ledgers 4, 6 and 7, day tiles 8 and 10) already differ from my transcription in
+the flag-OFF arm, identically, and the stem changes none of them -- not a stem effect, to be re-read against the sheets.
+
+**Out of sample (owner changes by rule, final owner after the group rule).**
+
+| | Litolff | Brahms |
+|---|---|---|
+| stem reads down / up / both / none | 2,918 / 2,036 / 1,528 / 2,940 | 7,259 / 4,450 / 7,449 / 14,885 |
+| `distance` -> stem owner (a head moves to the FARTHER staff) | 84 | 184 |
+| `far_no_rungs` -> stem owner (a gap answered) | 35 | 19 |
+| `ledger_note_first` -> abstain (stem and ledgers disagree) | 16 | 41 |
+| `hairpin_separates` / ladder / `ledger_direction` -> abstain | 2 | 33 / 1 / 3 |
+| final owner changes | 102 | 267 |
+| ledger-read heads where the stem AGREES vs DISAGREES | 2,232 vs 16 | 4,937 vs 44 |
+
+The agreement is the best evidence short of Sean: the note-first ledger witness was right on every sheet he adjudicated, and the
+stem, read off different pixels, names the same staff 99.3% / 99.1% of the time. The 16 + 44 disagreements and the 84 + 184 moves to
+the farther staff are the open question -- a beamed group stems away from its own staff, and a stem reaches the neighbour whenever
+the gap is under about 3.5 sp. `distance -> stem` is the class most likely to be wrong; the tiles sample it.
+
+**Pending Sean:** `out/print/stem_owner/tile_01..10.png` + `questions.txt` (answers in `key.json`, not on the tiles). 1-2 are his
+3 and 7; 3-10 are seeded changes: 3 where the stem moves a head to the farther staff (5, 7, 9), 3 where stem and ledgers disagree
+(4, 8, 10), 2 where the stem answers a head the ledgers could not (3, 6). Not merged; `OMR_STEM_OWNER` stays off.
+**Not fixed / said plainly:** the reach test is a 1 sp band, not "beamed to notes on the staff" (beam joins are not read); the
+reader sees ONE stem per head (a chord's inner heads read `both` and stay silent); the replay reads the raw page raster where the
+gather reader would read the same (`pws.page.rgb`) -- equal by construction, not yet shown by a re-gather.
+Scripts: `stem_owner_extract.py`, `stem_owner_measure.py`, `stem_owner_lib.py`, `stem_owner_replay.py`, `stem_owner_report.py`,
+`stem_owner_tiles.py`. Tests: `tools/omr/tests/test_stem_owner_2026_10_08.py`, 20 tests, 18 RED on the unrepaired tree (the two group
+tests already pass on it: the 2.58c rule adopts an abstained copy's twin), then green.
+Gates: `staged.check` TOTAL 192 -> 192; fast tier 6,150 passed (the two flag-doc tests failed until `OMR_STEM_OWNER` got its row in `docs/flags-2026-09.md`, then 37 of 37 pass).
