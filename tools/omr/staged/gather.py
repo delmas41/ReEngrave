@@ -3249,6 +3249,8 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
     other_ink = _ink_without_detections(pws, detections, cell_by_key,
                                         _page_staff_spacing(bands))
     page_letters = _dynamic_letter_boxes(detections, cell_by_key)
+    # ROADMAP 2.68 (twins): the page's raw ink, for the letter's own HEIGHT.
+    raw_ink = _raw_page_ink(pws)
     # ROADMAP 2.68 (Sean 2026-10-08/09: a dynamic belongs to the staff it is
     # printed BELOW): each cell's staff grid, for the letter's LOCAL position
     # against its own staff and the two beside it.
@@ -3303,6 +3305,15 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                 cells_of_staff, sub, (x0 + x1) / 2.0, (y0 + y1) / 2.0)
             if positions:
                 detail["local_position_in_staves"] = positions
+            if band is not None and raw_ink is not None:
+                # ROADMAP 2.68 (twins): how tall the INK in this box is, in
+                # staff spaces -- the evidence that says which letter ONE ink
+                # boxed as two classes is (an `f` rises above the x-height, a
+                # `p` does not). Absent where there is nothing to measure.
+                extent = letter_ink_extent(raw_ink, box, band[2])
+                if extent is not None:
+                    detail.update(ink_height_spaces=extent["height_spaces"],
+                                  ink_width_spaces=extent["width_spaces"])
             log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
@@ -3341,6 +3352,87 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
             log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
                         frame=frame_cell(c.measure_index),
                         reason=ABSTAIN.NO_DETECTIONS)
+
+
+def _raw_page_ink(pws: Any):
+    """The page's ink (255) with NOTHING taken out, or None with no raster."""
+    page = getattr(pws, "page", None)
+    rgb = getattr(page, "rgb", None)
+    if rgb is None:
+        return None
+    import cv2 as _cv2
+    gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
+    _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
+    return mask
+
+
+#: A horizontal run this long (staff spaces) is a staff or ledger line, not a
+#: letter: no letter's stroke runs 2 spaces without bending.
+LETTER_LINE_SPACES = 2.0
+#: Ink under this share of a square staff space is a speck, not a part of the
+#: letter.
+LETTER_SPECK_SPACES2 = 0.08
+
+
+def letter_ink_extent(ink, box, spacing: float) -> Optional[Dict[str, float]]:
+    """How tall and how wide the INK inside a dynamic letter's box is, in staff
+    spaces, with staff lines and tall strokes (barlines, stems) taken out. Pure;
+    `ink` is 255 = ink. None where nothing but lines stood in the box.
+
+    ROADMAP 2.68 (twins). One printed letter boxed as two classes (`dynamicP`
+    and `dynamicF` on the same ink) can only be told apart by what the ink IS,
+    and the cheapest measure that separates `f` from `p` is HEIGHT: an `f`
+    rises above the x-height AND falls below it, a `p` only falls. Measured on
+    Sean's 12 hand-labelled `f` boxes (Brahms 317803 pdf 0): 2.4 to 2.6 spaces;
+    the `p`s on the same plate 1.4 to 2.1.
+
+    The lines are taken out on a crop PADDED beyond the box (2 spaces either
+    side, 3 above and below), because a staff line is only a line where its
+    run is longer than the letter is wide and a barline only a barline where
+    it is taller than the letter is tall; inside the box alone both look like
+    ink of the letter. Everything outside the box (+2 px) is then discarded.
+    """
+    import cv2 as _cv2
+    import numpy as _np
+    sp = float(spacing)
+    if sp <= 0:
+        return None
+    x0, y0, x1, y1 = (int(round(v)) for v in box)
+    px, py = int(round(2.0 * sp)), int(round(3.0 * sp))
+    H, W = ink.shape[:2]
+    cx0, cy0 = max(0, x0 - px), max(0, y0 - py)
+    cx1, cy1 = min(W, x1 + px), min(H, y1 + py)
+    if cx1 <= cx0 or cy1 <= cy0:
+        return None
+    crop = _np.array(ink[cy0:cy1, cx0:cx1], copy=True)
+    kh = max(3, int(round(LETTER_LINE_SPACES * sp)))
+    hl = _cv2.morphologyEx(crop, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (kh, 1)))
+    hl = _cv2.dilate(hl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, 3)))
+    crop[hl > 0] = 0
+    kv = max(3, int(round(VLINE_SPACES * sp)))
+    vl = _cv2.morphologyEx(crop, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, kv)))
+    vl = _cv2.dilate(vl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (3, 1)))
+    crop[vl > 0] = 0
+    # keep only what stands in the box itself
+    keep = _np.zeros_like(crop)
+    bx0, by0 = max(0, x0 - 2 - cx0), max(0, y0 - 2 - cy0)
+    bx1, by1 = min(crop.shape[1], x1 + 3 - cx0), min(crop.shape[0], y1 + 3 - cy0)
+    keep[by0:by1, bx0:bx1] = crop[by0:by1, bx0:bx1]
+    n, _lab, stats, _cen = _cv2.connectedComponentsWithStats(keep, connectivity=8)
+    parts = [i for i in range(1, n)
+             if stats[i, _cv2.CC_STAT_AREA] >= LETTER_SPECK_SPACES2 * sp * sp]
+    if not parts:
+        return None
+    left = min(stats[i, _cv2.CC_STAT_LEFT] for i in parts)
+    top = min(stats[i, _cv2.CC_STAT_TOP] for i in parts)
+    right = max(stats[i, _cv2.CC_STAT_LEFT] + stats[i, _cv2.CC_STAT_WIDTH] for i in parts)
+    bottom = max(stats[i, _cv2.CC_STAT_TOP] + stats[i, _cv2.CC_STAT_HEIGHT] for i in parts)
+    return {"height_spaces": round(float(bottom - top) / sp, 3),
+            "width_spaces": round(float(right - left) / sp, 3),
+            "bbox_page_px": [float(cx0 + left), float(cy0 + top),
+                             float(cx0 + right), float(cy0 + bottom)]}
 
 
 #: How close letter ink must stand to a dynamic letter, on its own line, for

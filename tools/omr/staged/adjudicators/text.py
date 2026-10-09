@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+import itertools
+from typing import Any, Dict, List, NamedTuple, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision, is_relocated_copy)
@@ -120,6 +121,104 @@ def _has_a_twin_on(rows: Any, staff_key: str, row: Any) -> bool:
                 box, tuple(float(v) for v in theirs)):
             return True
     return False
+
+
+#: ROADMAP 2.68 (twins). Two boxes of DIFFERENT letter classes are one printed
+#: ink only where they are comparable boxes: the shared area must be at least
+#: this share of the LARGER one. Measured on Litolff, the `s` of a printed `sf`
+#: is a small box (14 x 26 px) tucked inside the `f`'s (42 x 48): shared area
+#: 0.05-0.2 of the larger on 84 same-cell pairs, and those are TWO letters
+#: (the 37 `sf` of Litolff p2-p3, seen on the print). One `p` boxed also as
+#: `dynamicF` shares 0.47-0.99. Two boxes of the SAME class that nest are one
+#: ink without this test -- no two printed `f`s nest.
+SAME_INK_SHARE_OF_LARGER = 0.4
+
+
+def same_ink_letters(a_box: Sequence[float], a_letter: Optional[str],
+                     b_box: Sequence[float], b_letter: Optional[str]) -> bool:
+    """Are these two dynamic-letter boxes ONE printed letter boxed twice?
+    (`rest_is_a_duplicate_box`'s principle: one ink, one mark.) Distinct ink
+    side by side (`ff`, `fp`, `sf`) is not."""
+    ix = min(a_box[2], b_box[2]) - max(a_box[0], b_box[0])
+    iy = min(a_box[3], b_box[3]) - max(a_box[1], b_box[1])
+    if ix <= 0 or iy <= 0:
+        return False
+    area_a = max(1.0, (a_box[2] - a_box[0]) * (a_box[3] - a_box[1]))
+    area_b = max(1.0, (b_box[2] - b_box[0]) * (b_box[3] - b_box[1]))
+    if ix * iy < SAME_LETTER_SHARE * min(area_a, area_b):
+        return False
+    if a_letter == b_letter:
+        return True
+    return ix * iy >= SAME_INK_SHARE_OF_LARGER * max(area_a, area_b)
+
+
+def _same_ink_groups(rows: Sequence[Any]) -> Dict[str, List[Any]]:
+    """row id -> every row (itself included) on the same printed ink, across
+    cells and staves of the system (transitive: a box boxed three times)."""
+    items = []
+    for r in rows:
+        box = (r.detail or {}).get("bbox_page_px")
+        if box and len(box) == 4:
+            items.append((r, tuple(float(v) for v in box), _letter_of(r)))
+    parent = list(range(len(items)))
+
+    def find(i: int) -> int:
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            if same_ink_letters(items[i][1], items[i][2], items[j][1], items[j][2]):
+                parent[find(i)] = find(j)
+    members: Dict[int, List[Any]] = {}
+    for i, (r, _b, _l) in enumerate(items):
+        members.setdefault(find(i), []).append(r)
+    return {r.id: members[find(i)] for i, (r, _b, _l) in enumerate(items)}
+
+
+#: ROADMAP 2.68 (twins): the ink HEIGHT, in staff spaces, each dynamic letter
+#: can have. An `f` rises above the x-height and falls below it; a `p` only
+#: falls; `s m z r` are x-height letters. MEASURED, not fitted to a result:
+#: Sean's 12 hand-labelled `f` boxes (Brahms 317803 pdf 0) are 2.4-2.6 spaces
+#: tall; the `p`s the two plates' detectors agree on, 1.4-2.1. The bands
+#: leave a GAP (2.1-2.3) on purpose: an ink in it is read as neither, and the
+#: identity abstains. WHAT WOULD FALSIFY IT: a printed `f` under 2.3 spaces
+#: (a small-print edition) -- the first sign is `identity_by_ink` choosing `p`
+#: for an ink Sean calls `f`.
+INK_HEIGHT_BANDS_SPACES: Dict[str, Tuple[float, float]] = {
+    "f": (2.3, 5.0),
+    "p": (1.4, 2.1),
+    "s": (0.0, 1.5), "z": (0.0, 1.5), "m": (0.0, 1.5), "r": (0.0, 1.5),
+}
+
+
+def _identity_of_ink(group: Sequence[Any]) -> Tuple[Optional[str], str, Tuple[str, ...]]:
+    """Which letter is ONE ink the detector boxed as one or several classes?
+    `(letter | None, how, the letters still possible)`.
+
+    In order: every box agrees -> that letter (`agreed`). They disagree -> the
+    ink's own height (`ink_height`): the letters whose band holds it; exactly
+    one -> it. Otherwise None -- present, identity abstained (rule 8). The
+    detector's SCORE is not consulted: on Brahms p1 it ranks the `f` twin above
+    the printed `p` on 5 of 12 same-ink pairs.
+    """
+    letters = tuple(sorted({_letter_of(r) for r in group if _letter_of(r)}))
+    if len(letters) == 1:
+        return letters[0], "agreed", letters
+    heights = [float(r.detail["ink_height_spaces"]) for r in group
+               if (r.detail or {}).get("ink_height_spaces") is not None]
+    if not heights:
+        return None, "no_ink_measure", letters
+    h = max(heights)
+    fits = tuple(l for l in letters
+                 if INK_HEIGHT_BANDS_SPACES.get(l) is None
+                 or INK_HEIGHT_BANDS_SPACES[l][0] <= h <= INK_HEIGHT_BANDS_SPACES[l][1])
+    if len(fits) == 1:
+        return fits[0], "ink_height", letters
+    return (None, "ink_height_fits_none" if not fits else "ink_height_fits_several",
+            fits or letters)
 
 
 def _letter_of(row: Any) -> Optional[str]:
@@ -344,6 +443,12 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
     inside_alone = inside_unmeasured = in_a_dynamic_token = 0
+    # ROADMAP 2.68 (twins): one printed letter boxed twice is ONE letter.
+    ink_groups = _same_ink_groups(rows)
+    seen_ink: set = set()
+    alts_of: Dict[str, Tuple[str, ...]] = {}
+    group_ids: Dict[str, List[str]] = {}
+    same_ink_collapsed = identity_by_ink = identity_abstained = 0
     # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
     # page pixels -- a second reader (Tesseract/Surya, not the detector).
     word_boxes = [(tuple(float(v) for v in (w.detail or {})["bbox_page_px"]),
@@ -467,6 +572,31 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             in_a_dynamic_token += 1
         letter = _letter_of(row)
         geom = _geometry(row)
+        group = ink_groups.get(row.id) or [row]
+        if len(group) > 1:
+            # ⚠️ ROADMAP 2.68 (twins, Sean 2026-10-09: *"many dynamic markings
+            # could ... get double boxed"*). Every box on this ink is ONE
+            # letter, written once; WHICH letter it is comes from the ink, and
+            # where nothing separates the candidates the letter stays present
+            # and its identity abstains.
+            key = frozenset(r.id for r in group)
+            if key in seen_ink:
+                same_ink_collapsed += 1
+                continue
+            seen_ink.add(key)
+            ident, how, possible = _identity_of_ink(group)
+            boxes = [tuple(float(v) for v in r.detail["bbox_page_px"])
+                     for r in group if (r.detail or {}).get("bbox_page_px")]
+            geom = (min(b[0] for b in boxes), max(b[2] for b in boxes),
+                    (min(b[1] for b in boxes) + max(b[3] for b in boxes)) / 2.0)
+            group_ids[row.id] = [r.id for r in group]
+            if ident is None:
+                identity_abstained += 1
+                letter = "?"
+                alts_of[row.id] = possible
+            else:
+                identity_by_ink += (how == "ink_height")
+                letter = ident
         if letter is None:
             continue
         if geom is None:
@@ -503,16 +633,17 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if x0 - prev_right <= width and abs(y - run[0][2]) <= width:
             run.append(entry)
         else:
-            words.append(_close(run))
+            words.append(_close(run, alts_of))
             run = [entry]
         prev_right = x1
-    words.append(_close(run))
+    words.append(_close(run, alts_of))
     for w in words:
         # ⚠️ KEPT PER RUN AS `letters` (ROADMAP 2.68): `used` flattens every
         # run's letters into one list, and the pairing of a word with ITS
         # dynamic (`consequences.pair_word_and_dynamic`) needs to know which
-        # letters -- and so which page boxes -- made which dynamic.
-        w["letters"] = w.pop("_ids")
+        # letters -- and so which page boxes -- made which dynamic. A letter
+        # boxed twice lists every box on its ink.
+        w["letters"] = [i for rid in w.pop("_ids") for i in group_ids.get(rid, [rid])]
         used.extend(w["letters"])
 
     unspellable = [w for w in words if not w["spelled"]]
@@ -542,6 +673,13 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # (Sean 2026-10-09), from their own local positions -- not by the
         # contest, the band flag or the cell they were cut from.
         "letters_placed_below_their_staff": placed_below_n,
+        # ⚠️ ROADMAP 2.68 (twins). Boxes dropped because the SAME printed ink
+        # was already a letter of this bar (one ink, one letter), the inks
+        # whose letter the ink's height settled, and the inks whose identity
+        # nothing settled (present, not spelled).
+        "letters_same_ink_collapsed": same_ink_collapsed,
+        "letters_identity_by_ink_height": identity_by_ink,
+        "letters_identity_abstained": identity_abstained,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
     if unspellable and not any(w["spelled"] for w in words):
@@ -664,15 +802,40 @@ def _token_is_a_word(letter_box, word_box, text: str) -> bool:
     return True
 
 
-def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:
-    """One assembled run, with the vertical evidence the exporter never had."""
+def _close(run: List[Tuple[float, float, float, str, Any]],
+           alts: Optional[Dict[str, Tuple[str, ...]]] = None) -> Dict[str, Any]:
+    """One assembled run, with the vertical evidence the exporter never had.
+
+    `alts` maps a row id to the letters its ink may still be (ROADMAP 2.68,
+    twins: one ink boxed as `dynamicF` and `dynamicP` whose identity nothing
+    settled). Such a slot is written `?`. The run is spelled only where the
+    lexicon leaves ONE reading (`s?` -> `sf`: `sp` is not a dynamic) and
+    says so (`identity="lexicon"`); where it leaves several the run is not
+    spelled and every word it could be is the candidate."""
+    alts = alts or {}
     text = "".join(e[3] for e in run)
+    slots = [sorted(alts.get(e[4].id) or (e[3],)) for e in run]
+    open_slot = any(len(sl) > 1 for sl in slots)
+    if open_slot:
+        combos = {"".join(c) for c in itertools.product(*slots)}
+        full = sorted(c for c in combos if c in DYNAMIC_WORDS)
+        spelled = len(full) == 1
+        if spelled:
+            text = full[0]
+        completions = full if full else sorted(
+            w for w in DYNAMIC_WORDS if any(w.startswith(c) for c in combos))
+        identity = "lexicon" if spelled else "open"
+    else:
+        spelled = text in DYNAMIC_WORDS
+        completions = sorted(w for w in DYNAMIC_WORDS if w.startswith(text))
+        identity = "read"
     offsets = [e[4].detail.get("band_offset_spaces") for e in run]
     offsets = [float(o) for o in offsets if o is not None]
     return {
         "text": text,
-        "spelled": text in DYNAMIC_WORDS,
-        "completions": sorted(w for w in DYNAMIC_WORDS if w.startswith(text)),
+        "spelled": spelled,
+        "identity": identity,
+        "completions": completions,
         "x_page": run[0][0],
         "n_letters": len(run),
         #: ⚠️ RECORDED, NOT USED. The letters of one word sit at one height, so
