@@ -76,6 +76,104 @@ pointing at headings no longer in the file.)*
 - **2.67 opened** (Sean): a large multilingual terms library with abbreviations, built on the Gradus
   dictionary; the Gradus half is an agent's branch in `gradus-vercel`, not pushed.
 
+## 2026-10-08 — ROADMAP 1.7: main merged into the hand-truth branch (PR #63)
+
+`main` moved 27 commits (integration C and the direction-text lane); the only conflicts
+were the two append-only ledgers, resolved by keeping every entry of both sides
+(DECISIONS: main's lines, then 1.7's; this file: 1.7's entries above main's). The merge
+took CLAUDE.md to 6,010 words, so 1.7's §9 sentence was shortened back under the cap
+(5,996). Hand-truth, annotate-server and training-pipeline tests 130 passed;
+`inventory --check` clean; `staged.check` 192. **Merged again** the same evening (main had
+moved 5 more commits, ROADMAP 0.8): the same append-only ledgers plus PROJECT_BRIEF's
+"Updated" line (main's wording kept); CLAUDE.md came to 6,006, so 1.7's §9 sentence was
+cut to one clause (5,999).
+
+---
+
+## 2026-10-08 — ROADMAP 1.7: test pages the current weights never saw
+
+Sean asked whether the hand-truth work overlaps the current weights; it did — production's
+training corpus held cells of three of the four planned test pages. Decided (DECISIONS): the
+test pages are now Brahms 317803 pdf 0, Litolff 984073 pdf 2 (replacing pdf 1) and Dvořák
+405834 pdf 4, none of which holds a cell production trained on; the two acceptance count
+pages stay, and the inventory now names, per held-out page, exactly which cells production
+trained on (`held_out_cells_trained_by_production`: 19 on Brahms pdf 1, 7 on Litolff pdf 3 —
+an earlier 23 / 14 counted a cell once per label version) so the scorer can report them
+apart. `held-out.json` holds the five pages. New inventory test run RED against the previous
+commit first.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7 (C): label a page cell by cell into page pixels; Claude's check; perfect eyes; bar-by-bar LilyPond review
+
+**`tools/omr/hand_truth/` gains `session.py`, `bench.py`, `checks.py`, `perfect_eyes.py`,
+`review.py`; `annotate/server.py` gains `--page-store` (one hook after a save, `text`/`noise`
+in the picker in that mode only; the 52 existing server tests unchanged and green).**
+`session new` cuts a page with the product path's own `extract_measures` (cell rect =
+`bbox_page_px`) and adds margin/top/bottom region cells for every other bit of ink, then
+queues pre-fills — Sean's old labels re-projected through `recut_cells`' exact frame check
+(newest version first, wrong frames refused) and the detector, deduped per page. The bench
+bridge keeps detection ids = page ids, folds each save back idempotently (confirm / reject /
+fix / draw / remove, staff-line checks, the `all-ink` stamp) and refreshes overlapping
+cells, so one mark is one box. `checks.run_all` raises the fixed-check flags once (never
+again after Sean resolves one); `session raise` files the visual pass's flags; `advance`
+refuses `checked` with any flag, pre-fill or unswept cell, and `verified` without every
+printed bar marked ok on the current labels. `perfect_eyes` runs `pipeline.run_staged`
+with a detector stand-in returning the page's boxes (ran end to end here on a synthetic
+page in 3.8 s). `review` slices each bar by ordinal (clef/key/time carried; a part of the
+wrong length shown NOT ALIGNED), renders with `musicxml2ly` + `lilypond -dcrop`, serves the
+marks. `benchmarks/hand-truth-sessions/` gitignored (regenerable). 20 new tests, RED first;
+ten mechanisms broken in memory each turned a test red. `staged.check` unchanged at 192.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7: hand-truth store, completeness, training export, inventory and weights lineage (A, B)
+
+**New package `tools/omr/hand_truth/` (no product-path code touched).** `store.py`: one
+JSON per printed page under `data/hand-truth/pages/`, every box in page pixels, each cell
+recording its exact page rectangle so cell <-> page is an exact map and a mark in two
+padded cells is one box; pre-fills wait in a queue until Sean confirms or fixes them; only
+Sean may write truth; `labeling -> checked -> verified`, one step at a time.
+`completeness.py`: a family is complete only when every cell was inspected for it (old
+partial passes such as "hollow noteheads" complete nothing); the ink-coverage control lists
+every unboxed ink component (staff lines removed first, specks counted). `export_yolo.py`:
+page boxes -> YOLO cell labels in the existing vocabulary; refuses held-out and unchecked
+pages, skips cells not swept for every bit of ink. `inventory.py`: generates
+`data/hand-truth/INVENTORY.json` (`--check`), including the weights lineage declared in
+`data/hand-truth/weights-lineage.json` (`--verify-checkpoints` reads the `.pt` train_args on
+a machine with weights). Measured: production's features trained on 3,871 label-file boxes
++ 3,417 teacher boxes; three of the four held-out pages were already trained on; adjudication
+files: 10 Sean, 7 Claude, 9 unrecorded; one v22 cell (`dvorak9-p19-sys0-s0-m0`) holds 7
+drawn boxes with no pass stamp. Held-out list decided by Sean (DECISIONS). 26 new tests,
+run RED against the tree without the package first; four mechanisms broken in memory each
+turned their test red. `staged.check` unchanged at 192.
+
+---
+
+## 2026-10-08 — ROADMAP 1.7 (STAGED, measurement): hand-labeled page truth — inventory and plan
+
+**Plan only; no code.** `docs/plan-2026-10-08-hand-labeled-truth.md` inventories every
+hand label in the tree and how it is used, and Sean accepted its plan the same day
+(DECISIONS 2026-10-08). Measured: 670 cells across 85 pages carry some hand label;
+none is complete for every class and no page is complete (110 cells, v22, are drawn
+from scratch over a recorded 27-class palette; 264 "complete" round-3 cells are
+hand-labeled only for hollow heads / rests / accidentals / clefs); the two count
+pages are 19/210 and 7/408 cells touched, and those cells sit in production's
+training split. No benchmark scores a scan against hand symbols — every music-level
+scan number comes from an MXL. Decisions: every bit of ink boxed, page-pixel
+storage, one cell at a time with pre-fills, first pages first across publishers,
+every box also training data, Verovio engraved control kept. Open: the held-out
+page list. Added ROADMAP 1.7, a DECISIONS line, and a CLAUDE.md §9 pointer.
+
+**Same day, second commit:** Sean added the review loop — after a page is labeled,
+Claude double-checks it (fixed consistency checks, then a visual pass; flags only,
+Sean decides each), then the hand boxes are run through the STAGED pipeline in
+place of the detector and rendered with LilyPond beside the print, one measure at a
+time, for Sean to mark ok / label wrong / reader wrong (plan C5, C6; DECISIONS).
+A page is truth only once every measure is ok.
+
+---
+
 ## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
 
 Sean went through four batches, and the roadmap rows now match his answers
