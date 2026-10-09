@@ -1,0 +1,53 @@
+{
+ "roadmap_item": "2.69",
+ "pdf": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+ "dpi": 600,
+ "question": "What is the printed value of the note in the red brackets?",
+ "note": "ours is for the manager only; the tile shows nothing of ours",
+ "heads": [
+  {
+   "n": 1,
+   "tile": "head_01.png",
+   "subject": "glyph/1/1/8/3/8",
+   "page_box": [
+    3321.6767578125,
+    5941.03125,
+    3359.759765625,
+    5973.97607421875
+   ],
+   "pdf_page_index": 1,
+   "ours": {
+    "outcome": "decided",
+    "reason": "hooks_counted",
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   }
+  },
+  {
+   "n": 2,
+   "tile": "head_02.png",
+   "subject": "glyph/1/1/9/2/3",
+   "page_box": [
+    2419.93359375,
+    6321.10595703125,
+    2460.74609375,
+    6354.90380859375
+   ],
+   "pdf_page_index": 1,
+   "ours": {
+    "outcome": "decided",
+    "reason": "hooks_counted",
+    "value": {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   }
+  }
+ ]
+}

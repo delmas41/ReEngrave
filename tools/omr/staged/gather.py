@@ -3855,7 +3855,15 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                     log, sub, frame, c, row_id,
                     (float(d.x_canonical), float(d.y_canonical),
                      float(d.width_canonical), float(d.height_canonical)),
-                    blockers, space_c)
+                    blockers, space_c, heads=heads)
+
+        # ROADMAP 2.69 follow-up: is any `augmentationDot` box in this cell
+        # really the tip of a flag? Needs the cell raster, not any stem.
+        if space_c is None:
+            _grid_d = _cell_grid(c)
+            space_c = _grid_d[1] * 2.0 if _grid_d is not None else None
+        _observe_dot_stroke_ink(log, sub, frame, c,
+                                (detections or {}).get(sub.to_key()), space_c)
 
         # ROADMAP 2.38: a second, independent witness for the beams_
         # ambiguous population -- does THIS stem's own ink run unbroken
@@ -3995,6 +4003,243 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     }
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.69 -- COUNT the hooks at a stem tip (Sean, 2026-10-09).
+#
+# *"Count the hooks and if you can't count use the fact that there is a hook
+# to help later deduction process."* `stem_tip_ink` says a hook is THERE; this
+# says how many, off the same staff-erased raster, where the ink lets it, and
+# says WHY NOT where it does not (a reason word in the row's detail, never a
+# default). The adjudicator decides a counted level and NARROWS an uncounted
+# one among flag levels >= 1 only; the bar's arithmetic settles the rest.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED with Sean (rule
+# 3): each hook of a flag is a separate stroke leaving the stem on ONE side
+# (the right, whichever way the stem points) and the strokes are stacked
+# along the stem, separated by paper, so a column read to the stem's right
+# crosses as many separate runs of ink as there are hooks. Falsified by a
+# print-confirmed two-hook flag whose strokes touch across that whole band.
+# A tremolo SLASH (Sean 2026-10-09, ROADMAP 2.71) is a thick angled line
+# crossing BOTH sides of one stem and joined to no other note: ink on both
+# sides of the stem in the counted band is REFUSED, never counted.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How far along the stem from its tip the hook band reaches, in spaces.
+#: Three hooks fit with room to spare; the band is cut earlier at the first
+#: notehead it would run into (`head_edge`), so the stem's OWN head is never
+#: counted as a hook.
+STEM_TIP_HOOKS_REACH_SPACES = 3.4
+#: The counted band's distance from the stem's right edge, in spaces: far
+#: enough out to skip the stem's own thickness, far enough in to hold a curl.
+STEM_TIP_HOOKS_NEAR_SPACES = 0.1
+STEM_TIP_HOOKS_FAR_SPACES = 0.4
+#: The LEFT guard's own band: the mirrored 1.2 spaces beside the stem.
+STEM_TIP_HOOKS_LEFT_SPACES = 1.2
+#: Healing of the staff-erase's thin stripes (they split ONE stroke into
+#: two), a run's minimum thickness and the minimum paper between two runs, in
+#: spaces. NOT CONFIRMED beyond the Brahms p1 population (FINDINGS 2.69).
+STEM_TIP_HOOKS_CLOSE_SPACES = 0.06
+STEM_TIP_HOOKS_MIN_THICK_SPACES = 0.12
+STEM_TIP_HOOKS_MIN_GAP_SPACES = 0.12
+#: A count of k needs k runs in at least this fraction of the INKED columns;
+#: more than this share of columns showing k+1 runs means the band is not
+#: clean (a stroke touching its neighbour, a slur) and the count is refused.
+STEM_TIP_HOOKS_SUPPORT = 0.40
+STEM_TIP_HOOKS_GLITCH = 0.12
+#: A band where fewer than this share of columns hold ANY attached ink is
+#: too broken a stroke to say how many there are.
+STEM_TIP_HOOKS_MIN_COVERAGE = 0.5
+#: Component ink to the stem's LEFT above this density means the stroke
+#: crosses the stem (a slash, a slur), which a flag hook never does.
+STEM_TIP_HOOKS_LEFT_MAX = 0.05
+#: Where stacked hooks stand: the first leaves the stem within this many
+#: spaces of the tip, and consecutive hooks leave it this far apart (spaces).
+#: NOT CONFIRMED against a two-hook print on this plate (Brahms p1 holds
+#: none); argued from Bravura's flag spacing and checked on the rendered
+#: engraved sixteenth and thirty-second flags (FINDINGS 2.69).
+STEM_TIP_HOOKS_FIRST_MAX_SPACES = 0.8
+STEM_TIP_HOOKS_SPACING_MIN = 0.4
+STEM_TIP_HOOKS_SPACING_MAX = 1.1
+#: The longest uncounted bracket this reader will name (levels), so a noisy
+#: band never opens the narrowing to a 64th.
+STEM_TIP_HOOKS_MAX_LEVEL = 3
+
+HOOKS_UNCOUNTED_NO_ROOM = "no_room"
+HOOKS_UNCOUNTED_HEAD_AT_END = "head_at_this_end"
+HOOKS_UNCOUNTED_BOTH_SIDES = "crosses_both_sides"
+HOOKS_UNCOUNTED_TOO_LITTLE = "too_little_ink"
+HOOKS_UNCOUNTED_UNRESOLVED = "unresolved"
+
+
+def _runs_true(col: Any) -> List[Tuple[int, int]]:
+    out: List[Tuple[int, int]] = []
+    start = None
+    for i, v in enumerate(col):
+        if v and start is None:
+            start = i
+        elif not v and start is not None:
+            out.append((start, i))
+            start = None
+    if start is not None:
+        out.append((start, len(col)))
+    return out
+
+
+def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
+                   into_sign: float, space: float,
+                   head_edge: Optional[float] = None
+                   ) -> Optional[Dict[str, Any]]:
+    """How many hooks hang from this stem tip? ROADMAP 2.69.
+
+    Same frame and contract as `stem_tip_ink` (canonical CELL pixels, no
+    frame conversion, `into_sign` +1 = walk DOWN from the top tip). Returns a
+    dict, never a guess:
+
+    - `hooks`: the counted level (int >= 1), or `None`;
+    - `hooks_min`/`hooks_max`: the bracket the ink supports (equal when
+      counted) -- what the adjudicator narrows over when `hooks` is `None`;
+    - `hooks_reason`: the reason word when `hooks` is `None`;
+    - `hooks_support`: the share of inked columns showing >= 1, 2, 3 runs.
+
+    `None` where the raster or the band falls off it, so the caller files
+    nothing rather than a default.
+
+    ⚠️ ONLY INK ATTACHED TO THE STEM COUNTS (8-connected, after healing the
+    erase's stripes), and ink attached on BOTH sides is refused whole -- the
+    slash (ROADMAP 2.71) and a crossing slur are not hooks.
+    """
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    import cv2
+    import numpy as np
+    H, W = img.shape
+    ya = tip_y - into_sign * 0.2 * space
+    yb = tip_y + into_sign * STEM_TIP_HOOKS_REACH_SPACES * space
+    if head_edge is not None:
+        lim = head_edge - into_sign * 0.1 * space
+        yb = min(yb, lim) if into_sign > 0 else max(yb, lim)
+    y0, y1 = (ya, yb) if ya <= yb else (yb, ya)
+    iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+    bx0 = int(round(stem_x1 + STEM_TIP_HOOKS_NEAR_SPACES * space))
+    bx1 = int(round(stem_x1 + STEM_TIP_HOOKS_FAR_SPACES * space))
+    lx0 = max(0, int(round(stem_x0 - STEM_TIP_HOOKS_LEFT_SPACES * space)))
+    lx1 = int(round(stem_x0 - STEM_TIP_HOOKS_NEAR_SPACES * space))
+    bx1 = min(W, bx1)
+    if iy1 - iy0 < 3 or bx1 - bx0 < 3 or lx1 <= lx0 or bx0 >= W:
+        return None
+
+    def verdict(hooks, lo, hi, reason, support=()):
+        return {"hooks": hooks, "hooks_min": lo, "hooks_max": hi,
+                "hooks_reason": reason,
+                "hooks_support": [round(s, 3) for s in support]}
+
+    # The head at THIS end means this end is not a flag's tip; a band too
+    # short for even two hooks cannot say how many there are.
+    if (iy1 - iy0) < 1.2 * space:
+        return verdict(None, 1, 2, HOOKS_UNCOUNTED_NO_ROOM)
+    ink = (img[iy0:iy1, lx0:bx1] == 0).astype(np.uint8)
+    k = max(1, int(round(STEM_TIP_HOOKS_CLOSE_SPACES * space)))
+    ink = cv2.morphologyEx(ink, cv2.MORPH_CLOSE, np.ones((k, k), np.uint8))
+    _n, lab = cv2.connectedComponents(ink, connectivity=8)
+    sc0 = max(0, int(round(stem_x0)) - lx0)
+    sc1 = min(ink.shape[1], int(round(stem_x1)) - lx0 + 1)
+    seeds = set(np.unique(lab[:, sc0:sc1]).tolist()) - {0}
+    if not seeds:
+        return verdict(None, 1, 2, HOOKS_UNCOUNTED_TOO_LITTLE)
+    comp = np.isin(lab, list(seeds))
+    left = comp[:, :max(0, lx1 - lx0)]
+    tmin = max(2, int(round(STEM_TIP_HOOKS_MIN_THICK_SPACES * space)))
+    gmin = max(2, int(round(STEM_TIP_HOOKS_MIN_GAP_SPACES * space)))
+    # Ink attached to the stem on its LEFT too: either dense over the whole
+    # mirrored band, or a stroke thick enough to be a mark standing in most
+    # of the columns right beside the stem (a thin slur or a slash crossing
+    # it is thin in density and thick in a column).
+    near_left = left[:, max(0, left.shape[1] - int(round(
+        STEM_TIP_HOOKS_FAR_SPACES * space))):] if left.size else left
+    left_cols = sum(1 for cx in range(near_left.shape[1])
+                    if any(r[1] - r[0] >= tmin
+                           for r in _runs_true(near_left[:, cx]))) \
+        if near_left.size else 0
+    if left.size and (float(left.sum()) / float(left.size) > STEM_TIP_HOOKS_LEFT_MAX
+                      or left_cols > 0.3 * near_left.shape[1]):
+        return verdict(None, 1, 2, HOOKS_UNCOUNTED_BOTH_SIDES)
+    band = comp[:, bx0 - lx0:]
+    ks: List[int] = []
+    starts: List[List[float]] = []          # per column, run near-edges (spaces from the tip)
+    for cx in range(band.shape[1]):
+        merged: List[Tuple[int, int]] = []
+        for r in _runs_true(band[:, cx]):
+            if r[1] - r[0] < tmin:
+                continue
+            if merged and r[0] - merged[-1][1] < gmin:
+                merged[-1] = (merged[-1][0], r[1])
+            else:
+                merged.append(r)
+        ks.append(len(merged))
+        if into_sign > 0:
+            starts.append([(iy0 + a - tip_y) / space for a, _b in merged])
+        else:
+            starts.append(sorted((tip_y - (iy0 + b)) / space for _a, b in merged))
+    inked = [n for n in ks if n > 0]
+    if len(inked) < STEM_TIP_HOOKS_MIN_COVERAGE * len(ks):
+        return verdict(None, 1, 2, HOOKS_UNCOUNTED_TOO_LITTLE)
+    support = [sum(1 for n in inked if n >= j) / float(len(inked))
+               for j in (1, 2, 3, 4)]
+    count = max(j for j in (1, 2, 3, 4) if support[j - 1] >= STEM_TIP_HOOKS_SUPPORT)
+    over = support[count] if count < 4 else 0.0
+    shaped = True
+    if count >= 2:
+        # Hooks are STACKED strokes: the first leaves the stem at its tip
+        # and each next one a hook-spacing further in. A second run far from
+        # the first (a slur or a ledger line meeting the stem) is attached
+        # ink, not a hook.
+        cols = sorted((c for c in starts if len(c) >= count),
+                      key=lambda c: c[0])
+        firsts = sorted(c[0] for c in cols)
+        gaps = sorted(c[j] - c[j - 1] for c in cols for j in range(1, count))
+        mid = len(cols) // 2
+        shaped = (firsts[mid] <= STEM_TIP_HOOKS_FIRST_MAX_SPACES
+                  and STEM_TIP_HOOKS_SPACING_MIN <= gaps[len(gaps) // 2]
+                  <= STEM_TIP_HOOKS_SPACING_MAX)
+    if over > STEM_TIP_HOOKS_GLITCH or count >= STEM_TIP_HOOKS_MAX_LEVEL + 1 \
+            or not shaped:
+        # Not shaped like stacked hooks: it may be one hook plus attached
+        # ink, or `count` real ones -- the bracket is 1..count. Clean but
+        # over-supported at count+1: count..count+1.
+        if not shaped:
+            lo, hi = 1, min(count, STEM_TIP_HOOKS_MAX_LEVEL)
+        else:
+            lo = min(count, STEM_TIP_HOOKS_MAX_LEVEL)
+            hi = min(count + 1, STEM_TIP_HOOKS_MAX_LEVEL)
+        return verdict(None, lo, max(lo, hi), HOOKS_UNCOUNTED_UNRESOLVED,
+                       support)
+    return verdict(count, count, count, None, support)
+
+
+def _head_edge_for_end(heads: Optional[Sequence[Tuple[float, float, float, float]]],
+                       stem_x0: float, stem_x1: float, tip_y: float,
+                       into_sign: float, space: float
+                       ) -> Tuple[Optional[float], bool]:
+    """`(edge_y, head_at_this_end)` -- where walking from this tip into the
+    stem the first notehead beside it begins (`None` where none does or no
+    detection map ran), and whether a head stands AT this end (then it is
+    the head's end, not a flag's). ROADMAP 2.69."""
+    if not heads:
+        return None, False
+    edge: Optional[float] = None
+    for hx, hy, hw, hh in heads:
+        if hx >= stem_x1 + 1.8 * space or hx + hw <= stem_x0 - 1.8 * space:
+            continue
+        near, far = (hy, hy + hh) if into_sign > 0 else (hy + hh, hy)
+        t_near = (near - tip_y) * into_sign
+        t_far = (far - tip_y) * into_sign
+        if t_near <= 0.3 * space and t_far > -0.3 * space:
+            return None, True
+        if t_near > 0.3 * space and (edge is None or t_near < edge):
+            edge = t_near
+    return (None if edge is None else tip_y + into_sign * edge), False
+
+
 def _rects_overlap(a: Tuple[float, float, float, float],
                    b: Tuple[float, float, float, float]) -> bool:
     """Two `(x0, y0, x1, y1)` CORNER boxes -- NOT `Q.STEM`'s own `[x, y, w,
@@ -4042,8 +4287,17 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                           stem_row_id: str,
                           stem_box: Tuple[float, float, float, float],
                           blockers: Sequence[Tuple[float, float, float, float]],
-                          space: Optional[float]) -> None:
+                          space: Optional[float],
+                          heads: Optional[Sequence[Tuple[float, float, float, float]]] = None
+                          ) -> None:
     """`Q.STEM_TIP_INK` -- one row per (`Q.STEM` row, end). ROADMAP 2.18c.
+
+    ROADMAP 2.69: where the ink IS found, the row's detail also carries the
+    HOOK COUNT (`stem_tip_hooks`: `hooks`, `hooks_min`, `hooks_max`,
+    `hooks_reason`, `hooks_support`). `heads` is this cell's notehead boxes
+    (canonical), so the count stops short of the stem's own head. The value
+    stays the 2.18c boolean -- *a hook is there* -- and the count is the
+    reader's detail, `None` with a reason word where the ink cannot say.
 
     Reuses `ledger_rung_ink`'s own shape: a windowed density test off the
     staff-ERASED raster (CLAUDE.md SS9 -- erase for the CV consumer, never
@@ -4091,9 +4345,123 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="window off the raster")
             continue
         found = m.pop("found")
+        hook_detail: Dict[str, Any] = {}
+        if found:
+            edge, head_here = _head_edge_for_end(heads, x0, x1, tip_y,
+                                                 into_sign, space)
+            if head_here:
+                hook_detail = {"hooks": None, "hooks_min": 1, "hooks_max": 2,
+                               "hooks_reason": HOOKS_UNCOUNTED_HEAD_AT_END,
+                               "hooks_support": []}
+            else:
+                counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign,
+                                         space, head_edge=edge)
+                if counted is not None:
+                    hook_detail = counted
         log.observe(sub, Q.STEM_TIP_INK, found,
                     reader=READERS.CV_STEM_TIP, frame=frame,
-                    stem_row_id=stem_row_id, end=end, **m)
+                    stem_row_id=stem_row_id, end=end, **m, **hook_detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.69 follow-up -- is a "dot" box really the curled tip of a flag?
+#
+# Sean, 2026-10-09 (DECISIONS, on 2.65 tile 13: the detector's
+# `augmentationDot` box sits on the TIP of the note's own flag and made a plain
+# eighth a dotted one): *"a dot can not fully or mostly overlap a flag but it
+# can touch it"*. OVERLAP, not contact. A real dot is a disc: no straight line
+# longer than the disc fits inside it, whether or not it touches a flag. A
+# flag tip, a stem or a beam is a stroke: a line three dot-widths long fits.
+# The test opens the box's ink with such a line at 45/90/135 degrees (not 0:
+# an erased staff line leaves horizontal stripes), grows the survivors back
+# by 0.15 spaces within the ink, and reports the share of the box's ink that
+# survived. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond
+# Sean's two lines: a printed dot standing mostly on a stroke (a dot jammed
+# against a flag so hard the line fits through half its ink) would be read as
+# stroke. On Brahms p1 every real dot reads 0.0 and the tile-13 tip 0.93.
+# ─────────────────────────────────────────────────────────────────────────────
+
+DOT_STROKE_LINE_DOT_WIDTHS = 3.0
+DOT_STROKE_LINE_MIN_SPACES = 1.0
+DOT_STROKE_GROW_SPACES = 0.15
+DOT_STROKE_ANGLES = (45, 90, 135)
+
+
+def dot_stroke_ink(img: Any, box: Tuple[float, float, float, float],
+                   space: float) -> Optional[Dict[str, Any]]:
+    """The share of the ink inside `box` (`x, y, w, h`, canonical cell px)
+    that lies on an elongated stroke. `None` -- declined -- where the raster,
+    the unit or the box is unusable; `ink_px` 0 says the box held no ink at
+    all (then `fraction` is 0.0 and means nothing). ROADMAP 2.69 follow-up."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    x, y, w, h = [float(v) for v in box]
+    if w <= 0 or h <= 0:
+        return None
+    import cv2
+    import numpy as np
+    H, W = img.shape
+    L = int(round(max(DOT_STROKE_LINE_DOT_WIDTHS * max(w, h),
+                      DOT_STROKE_LINE_MIN_SPACES * space)))
+    L += 1 - L % 2
+    pad = int(L // 2 + 2)
+    x0, y0 = max(0, int(x) - pad), max(0, int(y) - pad)
+    x1, y1 = min(W, int(x + w) + pad), min(H, int(y + h) + pad)
+    bx0, by0 = int(x) - x0, int(y) - y0
+    bx1, by1 = min(x1 - x0, bx0 + int(w)), min(y1 - y0, by0 + int(h))
+    if x1 - x0 < 3 or y1 - y0 < 3 or bx1 <= bx0 or by1 <= by0 \
+            or bx0 < 0 or by0 < 0:
+        return None
+    ink = (img[y0:y1, x0:x1] == 0).astype(np.uint8)
+    keep = np.zeros_like(ink)
+    c = L // 2
+    for ang in DOT_STROKE_ANGLES:
+        k = np.zeros((L, L), np.uint8)
+        dx, dy = np.cos(np.radians(ang)), np.sin(np.radians(ang))
+        for t in np.linspace(-c, c, 4 * L):
+            k[int(round(c + t * dy)), int(round(c + t * dx))] = 1
+        keep |= cv2.morphologyEx(ink, cv2.MORPH_OPEN, k)
+    r = max(1, int(round(DOT_STROKE_GROW_SPACES * space)))
+    grow = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
+    keep = cv2.dilate(keep, grow) & ink
+    inside = int(ink[by0:by1, bx0:bx1].sum())
+    on_stroke = int(keep[by0:by1, bx0:bx1].sum())
+    return {"fraction": round(on_stroke / float(inside), 4) if inside else 0.0,
+            "ink_px": inside, "line_px": L}
+
+
+def _observe_dot_stroke_ink(log: Log, sub: Subject, frame: str, cell: Any,
+                            dets: Optional[Sequence[Any]],
+                            space: Optional[float]) -> None:
+    """`Q.DOT_STROKE_INK` -- one row per `augmentationDot` detection in this
+    cell, on that detection's own glyph subject (the index into the cell's
+    detections, the same numbering `_notehead_boxes_for_cell` uses).
+    ROADMAP 2.69 follow-up."""
+    img = getattr(cell, "image_no_staff", None)
+    for gi, d in enumerate(dets or ()):
+        if not str(getattr(d, "smufl_name", "")).startswith("augmentationDot"):
+            continue
+        g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+        if img is None or getattr(img, "ndim", 0) != 2:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if not space or space <= 0:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="no cell staff-space unit")
+            continue
+        m = dot_stroke_ink(img, (float(d.x_canonical), float(d.y_canonical),
+                                 float(d.width_canonical),
+                                 float(d.height_canonical)), space)
+        if m is None:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="box off the raster")
+            continue
+        log.observe(g, Q.DOT_STROKE_INK, m.pop("fraction"),
+                    reader=READERS.CV_DOT_STROKE, frame=frame, **m)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
