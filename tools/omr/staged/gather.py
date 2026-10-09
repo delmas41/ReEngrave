@@ -3761,7 +3761,14 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # `None` and therefore no gate, never an empty one.
         heads = _notehead_boxes_for_cell(detections, sub, c, log=log)
         try:
-            found = detect_lines(c, candidates_out=runs, noteheads=heads)
+            # ⚠️ ROADMAP 2.74: `rescue_tall_beams` -- a component refused only
+            # for being too TALL is a beam fused to a hairpin's line or a
+            # slur's tail (2.65 tile 1); it is re-opened with a kernel thicker
+            # than a hairpin and read like any other. STAGED only: the legacy
+            # callers of `detect_lines` leave it off and read exactly what they
+            # always read.
+            found = detect_lines(c, candidates_out=runs, noteheads=heads,
+                                 rescue_tall_beams=True)
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
@@ -6974,6 +6981,9 @@ BEAM_INK_MIN_COVER = 0.5
 #: head can bulge the run.
 BEAM_INK_END_TRIM_SPACES = 0.5
 BEAM_INK_THRESHOLD = 180
+#: How far either side of a stroke the staff lines are read, in staff spaces,
+#: so a beam lying ON a line does not set the line's own thickness.
+BEAM_INK_LINE_FLANK_SPACES = 3.0
 
 
 def _ink_runs(col: Any) -> List[Tuple[int, int]]:
@@ -6993,18 +7003,34 @@ def _median_filter_1d(a: Any, k: int) -> Any:
 
 def local_line_thickness(ink: Any, line_ys: Sequence[float], x0: int, x1: int,
                          space: float) -> Optional[float]:
-    """The median thickness, in canonical px, of this cell's staff lines AT
-    columns `x0..x1` -- read off the UNERASED ink, `None` where too few
-    columns show a line. ROADMAP 2.74. LOCAL on purpose (CLAUDE.md §10)."""
+    """The thickness, in canonical px, of this cell's staff lines AT columns
+    `x0..x1` (and `BEAM_INK_LINE_FLANK_SPACES` either side) -- read off the
+    UNERASED ink, `None` where fewer than two lines show one. ROADMAP 2.74.
+    LOCAL on purpose (CLAUDE.md §10: measure against the staff where the
+    subject is, never staff-wide).
+
+    ⚠️ A BEAM LYING ON A STAFF LINE MERGES WITH IT, and ink only ever ADDS to
+    a line's run, so the lines this reads are the lower bound of their own
+    columns: each line's 25th percentile over the columns it is read at (a
+    cell dense with stems and heads covers a line over most of a bar), then
+    the SECOND-thinnest line (the thinnest where only three are readable).
+    The pooled median was measured and refused: a two-level beam standing on
+    two of a staff's five lines pooled to 54 px against a true 23 and read a
+    real beam as a hairpin; on Litolff p3 a bar of merged stems read 58-63 px
+    on its top lines against a true 29.
+    """
     import numpy as np
     H, W = ink.shape
-    out: List[int] = []
     half = 0.2 * space
+    flank = BEAM_INK_LINE_FLANK_SPACES * space
+    cx0, cx1 = max(0, int(x0 - flank)), min(W, int(x1 + flank))
+    per_line: List[float] = []
     for ly in line_ys:
         lo, hi = max(0, int(ly - 0.5 * space)), min(H, int(ly + 0.5 * space) + 1)
         if hi <= lo:
             continue
-        for cx in range(max(0, int(x0)), min(W, int(x1))):
+        vals: List[int] = []
+        for cx in range(cx0, cx1):
             # the run that sits on the line's own row, measured over a wider
             # slice so a line thicker than the window is not clipped to it
             best, bov = None, 0.0
@@ -7013,8 +7039,13 @@ def local_line_thickness(ink: Any, line_ys: Sequence[float], x0: int, x1: int,
                 if ov > bov:
                     best, bov = (rs, re_), ov
             if best is not None:
-                out.append(best[1] - best[0])
-    return float(np.median(out)) if len(out) >= 8 else None
+                vals.append(best[1] - best[0])
+        if len(vals) >= 8:
+            per_line.append(float(np.percentile(vals, 25)))
+    if len(per_line) < 3:
+        return min(per_line) if len(per_line) >= 1 else None
+    per_line.sort()
+    return per_line[1] if len(per_line) >= 4 else per_line[0]
 
 
 def _stem_at_end(ink: Any, x_end: float, band: Tuple[float, float],

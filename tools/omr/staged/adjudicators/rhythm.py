@@ -690,29 +690,36 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
 # CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's
 # three lines: the numbers below. A beam is `BEAM_THICKNESS_RATIO_MIN` times
 # the staff line's own thickness, measured at the stroke's own columns on the
-# plate (a hairpin's line is about one; Brahms p1: real beams 2.4-4.4, slurs
-# and hairpin strokes 1.3-1.7, nothing between 1.7 and 2.4). Falsified by a
-# print-confirmed beam under it, a slur over it, or a real beam this drops
-# (`FINDINGS.md` §15 crops).
+# plate (a hairpin's line is about one). Falsified by a print-confirmed beam
+# under it, a slur over it, or a real beam this drops (`FINDINGS.md` §15
+# crops).
 # ─────────────────────────────────────────────────────────────────────────────
 
 #: A beam's median thickness, in multiples of the staff line's thickness AT its
 #: own columns. Local on purpose (CLAUDE.md §10: a scan's weight changes
 #: across a system), a ratio and never a pixel count (two plates, two
-#: resolutions). Sits in the empty interval between the measured populations.
-BEAM_THICKNESS_RATIO_MIN = 2.0
+#: resolutions).
+#:
+#: ⚠️ MEASURED ON BOTH PLATES (`FINDINGS.md` §15, the CV strokes with a stem
+#: read at BOTH ends -- the strokes most surely beams): Brahms p0-1 172 of 174
+#: read 2.5 or more; Litolff p1-3 130 of 131 read 2.0 or more; the thin strokes
+#: (hairpin lines, slur and tie arcs, staff-line residue) read 1.75 or less on
+#: both. 1.75 sits in the empty interval of both plates (it is the midpoint of
+#: the thin population's top, ~1.5, and the thinnest beam, 2.0), and is far
+#: from the hairpin line's own ~1.0-1.3.
+BEAM_THICKNESS_RATIO_MIN = 1.75
 
 #: How far a beam may bow from straight, in staff spaces (the sagitta of a
 #: parabola fitted to its straightest edge or centre line). "A beam never has
 #: an arc."
 #:
-#: ⚠️ MEASURED, AND IT IS THE LOOSER OF THE TWO RULERS ON THIS PLATE. Brahms
-#: p1, 46 CV strokes: real beams read 0.00-0.20 spaces, one real beam FUSED to
-#: a slur's tail 0.30, the slur and tie strokes 0.18-0.26 -- the populations
-#: overlap, so a cut that keeps the fused beam cannot refuse a slur by its bow
-#: alone. The thickness rule (`BEAM_THICKNESS_RATIO_MIN`) does that work there
-#: (slurs 1.3-1.7 lines, beams 2.4+). The bow is kept as the second, rarer
-#: test Sean named: a THICK stroke bowed past this is not a beam either.
+#: ⚠️ MEASURED, AND IT IS THE LOOSER OF THE TWO RULERS. Brahms p0-1 and
+#: Litolff p1-3: every CV stroke at or over the thickness cut reads 0.00-0.23
+#: spaces but one (a real Brahms beam FUSED to a slur's tail, 0.30); the thin
+#: slur strokes read 0.18-0.26. The populations overlap, so a cut that keeps the
+#: fused beam cannot refuse a slur by its bow alone -- the thickness rule does
+#: that work. What this cut refuses is a THICK stroke bowed past it: on both
+#: plates, detector boxes over a whole cluster of ink (0.4-1.4 spaces).
 BEAM_SAGITTA_MAX_SPACES = 0.40
 
 #: How far (staff spaces) a one-stem stroke may lie from a stroke that stands
@@ -2092,12 +2099,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     kept, neighbour_dropped = _not_the_neighbours_beam(
         ev, cell, kept, stems, own_stems)
     kept, arc_dropped = _not_a_decided_arc(ev, cell, kept, stems)
-    # ⚠️ ROADMAP 2.74 (Sean, 2026-10-09), SAME TIER: a stroke the INK reads
-    # as too thin, bowed, or standing on one stem is not a beam. Read off
-    # `Q.BEAM_STROKE_INK`; an unread test keeps the stroke (rule 8).
-    kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-        ev, cell, kept, stems, _join_tolerance(ev, cell))
-    used.extend(r.id for r in ink_used)
     # ⚠️⚠️ RULE 8, APPLIED TO 2.25b (manager, before merge): discounting a
     # stroke as the neighbour's or a decided arc's own ink may not by
     # itself turn a marked note into an unmarked one. Recorded here, before
@@ -2108,8 +2109,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # covers; the SAME test 2.18b's own `beyond_stem_kept_no_other_mark`
     # runs for a different cause.
     discount_removed_all_marks = (bool(before_2_25b) and not kept
-                                  and bool(neighbour_dropped or arc_dropped
-                                           or ink_dropped))
+                                  and bool(neighbour_dropped or arc_dropped))
     # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
@@ -2124,6 +2124,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     tol = _join_tolerance(ev, cell)
     kept_all = kept
     kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
+    # ⚠️ ROADMAP 2.74 (Sean, 2026-10-09): a stroke the INK reads as too thin,
+    # bowed, or standing on one stem is not a beam. Read off
+    # `Q.BEAM_STROKE_INK`; an unread test keeps the stroke (rule 8). AFTER
+    # the side and beyond-the-tip tests on purpose: it judges the strokes
+    # that would otherwise COUNT, so a stroke those tests refuse anyway is
+    # not one the ink "removed".
+    pre_ink = list(kept)
+    kept, ink_dropped, ink_used = _not_a_beam_by_ink(
+        ev, cell, kept, stems, tol)
     joined, attached = _stem_joined(kept, stems, head_box)
     # ⚠️ ROADMAP 2.43: THIS HEAD'S OWN STEM'S PADDED X-SPAN, gating
     # `_beam_levels`'s merely-POSSIBLE column match (`None` where this head
@@ -2150,6 +2159,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if beyond and not possible and not _attached_flags(
             ev, cell, attached, tol)[1]:
         kept, beyond, beyond_guarded = kept_all, [], True
+        pre_ink = list(kept)
+        kept, ink_dropped, ink_used = _not_a_beam_by_ink(
+            ev, cell, kept, stems, tol)
         joined, attached = _stem_joined(kept, stems, head_box)
         join_witness, join_used = _beam_join_witness(ev, cell, kept,
                                                       own_stems, side)
@@ -2170,6 +2182,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         certain_conflicts = ()
     levels = certain
     used.extend(b.id for b in kept)
+    used.extend(r.id for r in ink_used)
+    # ⚠️ ROADMAP 2.74, RULE 8: the ink's refusals may not by themselves turn a
+    # marked note into an unmarked one -- the same shape as 2.25b's guard,
+    # WITHOUT its `own_stems` condition (a chord head shares a stem no box of
+    # its own overlaps, and Brahms p1 page 0 holds ~45 of them: beamed
+    # eighths whose only 'beam' was a detector box lying on a staff line).
+    ink_removed_all_marks = bool(pre_ink) and not kept and bool(ink_dropped)
     used.extend(s.id for s in attached)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
@@ -2373,8 +2392,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
     # DECISIONS 2026-09-30), so a discount that removed its candidate
     # strokes must not narrow it toward one anyway.
-    if (discount_removed_all_marks and own_stems and beam_evidence
-            == "none_over_this_note" and not flag_levels and not hollow):
+    if (((discount_removed_all_marks and own_stems) or ink_removed_all_marks)
+            and beam_evidence == "none_over_this_note"
+            and not flag_levels and not hollow):
         cands = []
         for level in (0, 1):
             b = base / (2 ** level) if level else base

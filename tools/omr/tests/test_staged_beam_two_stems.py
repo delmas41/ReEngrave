@@ -143,6 +143,17 @@ class TestTheMeasurement(unittest.TestCase):
         self.assertGreater(left["thickness_ratio"], 3.0)
         self.assertLess(right["thickness_ratio"], 1.6)
 
+    def test_a_beam_lying_ON_two_staff_lines_does_not_set_their_thickness(self):
+        """⚠️ A two-level beam standing on two of the staff's five lines
+        merges with them; the pooled median of the lines' runs read 54 px
+        against a true 23 on Brahms p1 and called a real beam a hairpin."""
+        img = _page()
+        _bar(img, 60, 200, LINES[2] - 2, 12)           # a beam level on line 3
+        _bar(img, 60, 200, LINES[3] - 2, 12)           # and one on line 4
+        m = _measure(img, (60, LINES[2] - 2, 140, 12))
+        self.assertEqual(m["line_px"], 3.0)
+        self.assertGreaterEqual(m["thickness_ratio"], 3.5)
+
     def test_a_stroke_over_paper_is_DECLINED_not_measured(self):
         self.assertIsNone(_measure(_page(), (60, 40, 140, 10)))
 
@@ -235,7 +246,7 @@ class TestARealBeamStays(unittest.TestCase):
             _stem(log, x=x, y=30, h=170)          # hangs from the head to y=200
             gs.append(g)
         beam = _beam(log, y=196, x0=60, x1=200)
-        hairpin = _beam(log, y=214, x0=40, x1=220)
+        hairpin = _beam(log, y=205, x0=40, x1=220)     # within the tip's reach
         _ink(log, beam)
         _ink(log, hairpin, ratio=1.1, sag=0.02, ends=(False, False))
         adjudicate.run(log)
@@ -339,6 +350,65 @@ class TestASlurTieOrHairpinStrokeIsNotThisNotesBeam(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "beam_discounted_uncertain")
         self.assertEqual({c.value["beats"] for c in v.candidates}, {1.0, 0.5})
+
+
+class TestTheInksRefusalsNeverDecideTheHeadValueFromAbsence(unittest.TestCase):
+    """Rule 8. Brahms p1 page 0 holds ~45 beamed eighths whose only 'beam' was
+    a detector box lying on a staff line: the ink reads it thin and refuses
+    it, and a head with nothing left must not fall to its head value (quarter)
+    as if the beam had been looked for and found absent."""
+
+    def _chord_head(self, log, *, with_ink):
+        """A head with NO stem box of its own (a chord member: the stem is
+        another head's) under one stroke."""
+        _staff_space(log)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        stroke = _beam(log, y=90, x0=20, x1=300, reader=READERS.DETECTOR)
+        if with_ink:
+            _ink(log, stroke, ratio=1.0, sag=0.0, ends=(False, False))
+        return g
+
+    def test_a_head_left_with_nothing_by_the_ink_is_NARROWED_not_a_quarter(
+            self):
+        log = Log()
+        g = self._chord_head(log, with_ink=True)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beam_discounted_uncertain")
+        self.assertEqual({c.value["beats"] for c in v.candidates}, {1.0, 0.5})
+        self.assertEqual(v.detail["beams_not_by_ink"], 1)
+
+    def test_control_the_same_head_with_NO_ink_reading_counts_the_stroke(self):
+        """⚠️ It must be able to FAIL: without the ink row the stroke is
+        judged as it always was and the head reads an eighth."""
+        log = Log()
+        g = self._chord_head(log, with_ink=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_a_stroke_the_SIDE_test_refuses_anyway_is_not_the_inks_removal(
+            self):
+        """The stroke lies across the head from its stem: the existing side
+        rule refuses it whatever the ink says, so the ink removed nothing and
+        the head reads what it always read."""
+        log = Log()
+        _staff_space(log)
+        g, _s = _head_with_stem(log, 0, 135)               # stem rises: up
+        far = _beam(log, y=150, x0=100, x1=200)            # below the head
+        _ink(log, far, ratio=1.0, sag=0.0, ends=(False, False))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["beams_far_side"], 1)
+        self.assertEqual(v.detail["beams_not_by_ink"], 0)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
 
 
 class TestATestThatCannotBeReadAbstains(unittest.TestCase):
@@ -485,6 +555,77 @@ class TestACountedHookSettlesTwoFlagBoxes(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "flags_disagree")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Part 3 -- a beam FUSED to a hairpin's line is rescued (2.65 tile 1)
+# ─────────────────────────────────────────────────────────────────────────────
+
+import cv2                                                       # noqa: E402
+
+from tools.omr import line_detection as LD                       # noqa: E402
+from tools.omr.types import MeasureCell                          # noqa: E402
+
+SPACING = 100
+LINE_YS = [100, 200, 300, 400, 500]
+BEAM_H = int(0.48 * SPACING)
+#: ceiling that the beam ALONE (48) passes and the beam + two thin lines (62)
+#: does not -- a stand-in for the real plate's 125 px against its 115 ceiling.
+TALL_CEILING_LINES = 0.60
+
+
+def _fused_cell(*, thickness=10.0, hairpin=True):
+    img = np.full((800, 900), 255, dtype=np.uint8)
+    y_top = 150
+    for x in (300, 550):                              # two stems...
+        img[y_top:y_top + int(3.5 * SPACING), x - 5:x + 5] = 0
+    img[y_top:y_top + BEAM_H, 295:555] = 0            # ...and the beam
+    if hairpin:                                       # two thin lines under it
+        img[y_top + BEAM_H:y_top + BEAM_H + 7, 480:700] = 0
+        img[y_top + BEAM_H + 7:y_top + BEAM_H + 14, 480:700] = 0
+    return MeasureCell(
+        page_index=0, system_index=0, staff_index=0, measure_index=0,
+        image=img, image_no_staff=img.copy(), bbox_page_px=(0, 0, 900, 800),
+        staff_line_ys_canonical=list(LINE_YS), upscale_factor=1.0,
+        staff_line_thickness_canonical=thickness)
+
+
+class TestABeamFusedToAHairpinLineIsRescued(unittest.TestCase):
+    """Brahms p1 `glyph/1/0/0/0/5`: a dim. hairpin drawn so close under a
+    group's beam that the opening fused them into ONE component taller than
+    the beam ceiling, so the group's beam was never read and an eighth read a
+    quarter. Re-opened with a kernel thicker than a hairpin's line, the beam
+    stays and the line goes."""
+
+    def test_without_the_rescue_the_fused_component_is_refused_as_today(self):
+        cell = _fused_cell()
+        self.assertEqual(LD.detect_beams(
+            cell, max_height_lines=TALL_CEILING_LINES), [])
+
+    def test_with_the_rescue_the_beam_is_read_and_the_lines_are_not(self):
+        cell = _fused_cell()
+        beams = LD.detect_beams(cell, max_height_lines=TALL_CEILING_LINES,
+                                rescue_tall=True)
+        self.assertEqual(len(beams), 1)
+        b = beams[0]
+        self.assertLessEqual(abs(b.height_canonical - BEAM_H), 4)
+        self.assertLessEqual(abs(b.width_canonical - 260), 8)
+
+    def test_no_traced_line_thickness_means_no_rescue_not_a_guess(self):
+        cell = _fused_cell(thickness=None)
+        self.assertEqual(LD.detect_beams(
+            cell, max_height_lines=TALL_CEILING_LINES, rescue_tall=True), [])
+
+    def test_the_rescue_is_ADDITIVE_a_beam_read_anyway_is_the_same_beam(self):
+        cell = _fused_cell(hairpin=False)
+        a = LD.detect_beams(cell, max_height_lines=TALL_CEILING_LINES)
+        b = LD.detect_beams(cell, max_height_lines=TALL_CEILING_LINES,
+                            rescue_tall=True)
+        self.assertEqual(len(a), 1)
+        self.assertEqual([(x.x_canonical, x.y_canonical, x.width_canonical,
+                           x.height_canonical) for x in a],
+                         [(x.x_canonical, x.y_canonical, x.width_canonical,
+                           x.height_canonical) for x in b])
 
 
 if __name__ == "__main__":
