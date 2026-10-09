@@ -1,0 +1,22 @@
+ 1 | Sean: 8th note on first ledger line | ours: quarter (1 beat) | pos=-2 | glyph/1/0/0/0/5 owner=staff/1/0/0
+ 2 | Sean: Quarter note on first ledger line tied to a note in the next bar | ours: quarter (1 beat) | pos=-2 | glyph/1/0/0/2/2 owner=staff/1/0/0
+ 3 | Sean: 8th note in top space of staff | ours: eighth (0.5 beats) | pos=None | glyph/1/0/0/4/11 owner=None
+ 4 | Sean: 8th note, 2nd to top line | ours: narrowed (beams_ambiguous) [{'value': {'beats': 0.125, 'written': 0.125, 'dots': 0, 'beam_levels': 3}, 'support': 2.0}, {'value': {'beats': 0.0625, 'written': 0.0625, 'dots': 0, 'beam_levels': 4}, 'support': 1.0}, {'value': {'beats': 0.03125, 'written': 0.03125, 'dots': 0, 'beam_levels': 5}, 'support': 1.0}] | pos=None | glyph/1/0/3/3/11 owner=None
+ 5 | Sean: 8th note, 2nd to top line | ours: eighth (0.5 beats) | pos=None | glyph/1/0/3/4/2 owner=None
+ 6 | Sean: 8th note, space underneath staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/0/9/5/1 owner=staff/1/0/9
+ 7 | Sean: Dotted quarter, first space of staff | ours: 1.5-beat (1.5 beats) | pos=None | glyph/1/0/10/0/9 owner=None
+ 8 | Sean: 8th note, top space of staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/3/1/27 owner=None
+ 9 | Sean: 8th note, space above first ledger line, tied | ours: eighth (0.5 beats) | pos=-3 | glyph/1/1/3/3/2 owner=staff/1/1/3
+10 | Sean: 8th note, first space of staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/8/0/11 owner=None
+11 | Sean: 8th note, first space of staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/1/8/0/9 owner=None
+12 | Sean: 8th note, first line of staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/1/8/1/11 owner=None
+13 | Sean: 8th note, second space of staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.75, 'written': 0.75, 'dots': 1, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.5, 'written': 1.5, 'dots': 1, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/1/8/3/4 owner=None
+14 | Sean: 8th note, first space under staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/1/9/0/17 owner=staff/1/1/9
+15 | Sean: 8th note, under first ledger line below staff | ours: narrowed (flags_disagree) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 1.0}, {'value': {'beats': 0.25, 'written': 0.25, 'dots': 0, 'beam_levels': 2}, 'support': 1.0}] | pos=11 | glyph/1/1/9/0/13 owner=staff/1/1/9
+16 | Sean: 8th note, first space under staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/9/3/1 owner=None
+17 | Sean: 8th note, first line of staff | ours: narrowed (flag_ink_unread) [{'value': {'beats': 0.5, 'written': 0.5, 'dots': 0, 'beam_levels': 1}, 'support': 2.0}, {'value': {'beats': 1.0, 'written': 1.0, 'dots': 0, 'beam_levels': 0}, 'support': 1.0}] | pos=None | glyph/1/1/9/3/9 owner=None
+18 | Sean: 8th note, first line of staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/9/7/5 owner=None
+19 | Sean: 8th note, on first ledger line under staff | ours: eighth (0.5 beats) | pos=10 | glyph/1/1/10/1/4 owner=staff/1/1/10
+20 | Sean: 8th note, first space under staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/10/1/3 owner=None
+21 | Sean: 8th note, second to top line of staff | ours: sixteenth (0.25 beats) | pos=None | glyph/1/1/10/7/4 owner=None
+22 | Sean: 8th note, first line of staff | ours: eighth (0.5 beats) | pos=None | glyph/1/1/11/1/0 owner=staff/1/1/11
