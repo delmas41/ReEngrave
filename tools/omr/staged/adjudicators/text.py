@@ -234,7 +234,7 @@ def _identity_of_ink(group: Sequence[Any]) -> Tuple[Optional[str], str, Tuple[st
     ink's own height (`ink_height`): the letters whose band holds it; exactly
     one -> it. Otherwise None -- present, identity abstained (rule 8). The
     detector's SCORE is not consulted: on Brahms p1 it ranks the `f` twin above
-    the printed `p` on 5 of 12 same-ink pairs.
+    the printed `p` on 8 of the 22 same-ink f/p inks of Brahms p0-1.
     """
     letters = tuple(sorted({_letter_of(r) for r in group if _letter_of(r)}))
     if len(letters) == 1:

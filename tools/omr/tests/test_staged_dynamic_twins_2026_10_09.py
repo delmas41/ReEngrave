@@ -15,7 +15,7 @@ Sean's 12 hand-labelled `f` boxes, Brahms 317803 pdf 0, 2.4 to 2.6 spaces; a
 `p` 1.4 to 2.1); height between the two bands, or none measured -> the letter
 is PRESENT and its identity ABSTAINS (rule 8). The detector's own score is NOT
 evidence for the identity: on Brahms p1 it ranks the `f` twin above the
-printed `p` on 5 of the 12 same-ink pairs.
+printed `p` on 8 of the 22 same-ink f/p inks.
 """
 from __future__ import annotations
 
@@ -56,7 +56,7 @@ class TestOneInkIsOneLetter(unittest.TestCase):
     def test_one_p_boxed_as_p_and_as_f_is_one_letter_not_fp(self):
         """Brahms p1 `cell/1/0/9/1`: the printed `p` carries a `dynamicP` and a
         `dynamicF` box on the same ink (the `f` twin scores LOWER there but is
-        higher on 5 of 12 pairs, so the score cannot decide). The ink is 1.9
+        higher on 8 of 22 inks, so the score cannot decide). The ink is 1.9
         spaces tall -- a `p`. RED before: the run spelled `fp`."""
         log = Log()
         _letter(log, 0, "p", 100, 125, score=0.74, ink_h=1.9)
@@ -101,7 +101,7 @@ class TestOneInkIsOneLetter(unittest.TestCase):
 
     def test_no_ink_measure_and_disagreeing_boxes_abstains_the_identity(self):
         """An older record has no `ink_height_spaces`; the detector's score is
-        not a witness (it is wrong on 5 of 12), so the identity abstains."""
+        not a witness (it disagrees with the ink on 8 of 22), so the identity abstains."""
         log = Log()
         _letter(log, 0, "p", 100, 125, score=0.9)
         _letter(log, 1, "f", 100, 125, score=0.4)
