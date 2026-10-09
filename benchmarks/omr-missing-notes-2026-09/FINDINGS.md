@@ -1744,3 +1744,54 @@ spacing .4-1.1) are set on one plate.
 **Not done.** Wiring the count as a witness against a detector flag box
 (`flags_disagree`, tile 15; the detector's 16th on a single hook); a real
 two-hook head from a scan (none in the gathered pages).
+
+### 14b. Follow-up: a "dot" on the tip of a flag (Sean, 2026-10-09, DECISIONS)
+
+Tile 13 (glyph/1/1/8/3/4, a plain eighth) was DECIDED 0.75 after 14: the
+detector's `augmentationDot` box glyph/1/1/8/3/15 sits entirely on the curled
+tip of the note's own flag, `adjudicate_dot_role` called it right-of-and-level
+and the note was dotted. Sean: *"a dot can not fully or mostly overlap a flag
+but it can touch it"* -- overlap, not contact.
+
+**Built.** GATHER `Q.DOT_STROKE_INK` (`gather.dot_stroke_ink`,
+`_observe_dot_stroke_ink`, `READERS.CV_DOT_STROKE`; filed on each
+`augmentationDot` detection's own glyph subject): the share of the ink inside
+the dot box that lies on an elongated stroke -- ink a line three dot-widths
+long fits through, opened at 45/90/135 degrees (not 0: erased staff lines leave
+horizontal stripes, which first read a real dot as 0.94), the survivors grown
+back 0.15 spaces within the ink. A disc, touching a flag or not, has no such
+line (0.0); a flag tip or stem does. ADJUDICATE: `adjudicate_dot_role`
+abstains `on_a_stroke` at >= `DOT_ON_STROKE_MIN` (0.5); `_attached_dots` already
+reads only DECIDED augmentation roles, so the note is not dotted. Nothing is
+decided about what the box IS. `check` TOTAL 192 (= main); capture/producer
+entries added.
+
+**Measured (Brahms p0-1, 46 real dot boxes with ink on page 1).** Real dots: 0.0
+on every one. Refused: glyph/1/1/8/3/15 (0.93, tile 13's tip) and
+glyph/1/0/13/0/24 (1.0, 18 ink pixels, a box on the base of a stem against a
+head; crop `out/print/2.69/dot_02.png`: no dot is printed there).
+**Durations that moved (full page, 1,862 verdicts): tile 13 0.75 -> 0.5
+(decided eighth, right) and glyph/1/0/13/0/8 `beam_certain_not_joined`
+[0.375, 0.75] -> [0.25, 0.5] (the dotted candidates, from the second false dot,
+gone). Nothing else.** The 22-tile table: 18 right / 2 wrong (1, 21) / 2
+narrowed (4, 15); tile 13 right.
+
+**Tests.** `test_staged_dot_on_stroke.py` (17): RED first -- 16 of 17 failed on
+the unrepaired tree (the controls fail there on missing vocabulary, so the
+behavioural controls are the ones that matter: no stroke row = unchanged, a
+staccato above a note stays a staccato, a dot with stroke 0.2/0.49 stays a dot,
+a disc touching a flag and a disc on a staff stripe read < 0.5). The existing
+2026-10-07 rulings' tests (staccato placed dots, dot on a barline, dot follows
+the real note) pass unchanged. `pytest -m "not slow"`: 6,474 passed, 0 failed.
+
+**Beamless cells (asked by the 2.70 lane).** NOT handled on this branch: the
+2.18c/2.69 block is gated on `beam_evidence == "none_over_this_note"`, which
+needs `Q.BEAM_STROKE` READ in the cell. A cell where the beam reader found no
+stroke at all (abstention `no_line_accepted`) reads `reader_declined`, so a note
+whose hook the tip reader COUNTED still decides its head value there (checked:
+a counted hook, with and without the `no_line_accepted` abstention, decides
+the quarter). The sheet-B heads decided because their cells hold other beams.
+The same hole existed before 2.69; it is not a regression. The fix is to admit
+`reader_declined` where every `Q.BEAM_STROKE` abstention in the cell is
+`no_line_accepted`/`no_stems_to_join` (the reader ran and accepted nothing),
+never for `reader_unavailable`.
