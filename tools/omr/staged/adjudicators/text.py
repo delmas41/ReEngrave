@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple
+import itertools
+from typing import Any, Dict, List, NamedTuple, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
                           decision, is_relocated_copy)
@@ -50,6 +51,206 @@ def _staff_above(subject: Subject) -> Optional[str]:
         return None
     return Subject(Kind.STAFF, page=staff_sub.page, system=staff_sub.system,
                    staff=staff_sub.staff - 1).to_key()
+
+
+def _staff_it_is_printed_below(row: Any) -> Optional[str]:
+    """ROADMAP 2.68, Sean (DECISIONS 2026-10-08, restated 2026-10-09): *"It
+    sits below the staff it belongs to."* The key of the staff this letter is
+    printed BELOW -- or INSIDE -- read off the letter's own LOCAL positions
+    (`local_position_in_staves`: half-steps from the top line of the staff
+    above, its own and the staff beneath, each measured against that staff's
+    own cell grid at the letter's x, filed by `gather_dynamic_letters`).
+
+    The staff is the LAST one whose top line lies above the letter's centre:
+    under staff N and above staff N+1's top line that is N; inside N+1's lines
+    it is N+1. Neither distance nor an instrument range enters.
+
+    None where it cannot tell (rule 8): no positions on the row (an older
+    record), no position against its own staff, or the letter stands above
+    every staff measured -- above a system's first staff there is nothing in
+    this system to be below, and the old chain keeps what it had."""
+    pos = (row.detail or {}).get("local_position_in_staves")
+    if not isinstance(pos, dict) or "0" not in pos:
+        return None
+    try:
+        measured = {int(k): float(v) for k, v in pos.items()}
+    except (TypeError, ValueError):
+        return None
+    reached = [off for off, half_steps in measured.items() if half_steps >= 0.0]
+    if not reached:
+        return None
+    staff = row.subject.at(Kind.STAFF)
+    if staff is None or staff.staff is None:
+        return None
+    return Subject(Kind.STAFF, page=staff.page, system=staff.system,
+                   staff=staff.staff + max(reached)).to_key()
+
+
+#: Two letter boxes overlapping by this share of the SMALLER area are one
+#: printed letter cut from two cells (`gather._same_ink_boxes`' own 0.5). Not
+#: IoU: the same `f` boxed tall from one cell and as its lower half from the
+#: other overlaps at IoU 0.28 (Brahms p0, the oboe's `f legato`) and was kept
+#: twice -- `ff`.
+SAME_LETTER_SHARE = 0.5
+
+
+def _same_ink(a: Tuple[float, float, float, float],
+              b: Tuple[float, float, float, float]) -> bool:
+    ix = min(a[2], b[2]) - max(a[0], b[0])
+    iy = min(a[3], b[3]) - max(a[1], b[1])
+    if ix <= 0 or iy <= 0:
+        return False
+    small = max(1.0, min((a[2] - a[0]) * (a[3] - a[1]),
+                         (b[2] - b[0]) * (b[3] - b[1])))
+    return ix * iy >= SAME_LETTER_SHARE * small
+
+
+def _has_a_twin_on(rows: Any, staff_key: str, row: Any) -> bool:
+    """Is the SAME printed letter also a row cut from `staff_key`'s own cell?
+    Then the copy cut from elsewhere is its duplicate. Without a twin it is
+    the only evidence the mark exists, and it is moved, not dropped."""
+    mine = (row.detail or {}).get("bbox_page_px")
+    if not mine or len(mine) != 4:
+        return False
+    box = tuple(float(v) for v in mine)
+    for other in rows:
+        if other is row or other.subject.at(Kind.STAFF).to_key() != staff_key:
+            continue
+        theirs = (other.detail or {}).get("bbox_page_px")
+        if theirs and len(theirs) == 4 and _same_ink(
+                box, tuple(float(v) for v in theirs)):
+            return True
+    return False
+
+
+#: ROADMAP 2.68 (twins). Two boxes of DIFFERENT letter classes are one printed
+#: ink only where they are comparable boxes: the shared area must be at least
+#: this share of the LARGER one. Measured on Litolff, the `s` of a printed `sf`
+#: is a small box (14 x 26 px) tucked inside the `f`'s (42 x 48): shared area
+#: 0.05-0.2 of the larger on 84 same-cell pairs, and those are TWO letters
+#: (the 37 `sf` of Litolff p2-p3, seen on the print). One `p` boxed also as
+#: `dynamicF` shares 0.47-0.99.
+SAME_INK_SHARE_OF_LARGER = 0.4
+
+#: ROADMAP 2.68 (twins). The widest ONE printed dynamic letter can be, in staff
+#: spaces, and so the widest that two overlapping boxes can span and still be
+#: one letter boxed twice. MEASURED: the union of every same-class same-cell
+#: overlapping pair on Brahms p0-1 is <= 2.5 spaces except one 14 px sliver
+#: pair (29 pairs; Sean's hand-labelled `f` boxes are 2.2 wide); on Litolff the
+#: single `f` is 2.5-2.7 wide and the pairs that are the printed `ff` -- two
+#: `f` interlocked, their boxes overlapping by HALF the smaller one -- span 3.1
+#: to 4.2 (Sean, tile 2: `ff`). A box-overlap test alone cannot tell the two
+#: (a first version collapsed Litolff's `ff` to `f`: the ink-sharing and the
+#: x-offset of twins and of a real `ff` run continuously 0.0-0.49); how many
+#: letters the ink can HOLD can. WHAT WOULD FALSIFY IT: a plate whose single `f`
+#: is wider than 2.9 spaces collapsing nothing it should (a double stays), or a
+#: printed `ff` set narrower than 2.9 collapsing to `f` -- the first sign is a
+#: `letters_same_ink_collapsed` on a bar Sean reads `ff`.
+SINGLE_LETTER_MAX_WIDTH_SPACES = 2.9
+#: A dynamic letter is at least this tall (spaces); a thinner box is a sliver
+#: of one, never a letter of its own (Brahms p1 `p` slivers 14 px = 0.4 spaces).
+LETTER_MIN_HEIGHT_SPACES = 0.8
+
+
+def same_ink_letters(a_box: Sequence[float], a_letter: Optional[str],
+                     b_box: Sequence[float], b_letter: Optional[str],
+                     spacing: Optional[float]) -> bool:
+    """Are these two dynamic-letter boxes ONE printed letter boxed twice?
+    (`rest_is_a_duplicate_box`'s principle: one ink, one mark.) Distinct ink
+    side by side (`ff`, `fp`, `sf`) is not. `spacing` is the staff spacing in
+    page pixels; with none the answer is no (rule 8: cannot tell is not 'same')."""
+    if not spacing or spacing <= 0:
+        return False
+    ix = min(a_box[2], b_box[2]) - max(a_box[0], b_box[0])
+    iy = min(a_box[3], b_box[3]) - max(a_box[1], b_box[1])
+    if ix <= 0 or iy <= 0:
+        return False
+    area_a = max(1.0, (a_box[2] - a_box[0]) * (a_box[3] - a_box[1]))
+    area_b = max(1.0, (b_box[2] - b_box[0]) * (b_box[3] - b_box[1]))
+    if ix * iy < SAME_LETTER_SHARE * min(area_a, area_b):
+        return False
+    union_w = (max(a_box[2], b_box[2]) - min(a_box[0], b_box[0])) / float(spacing)
+    if union_w > SINGLE_LETTER_MAX_WIDTH_SPACES:
+        return False                # wider than one letter: it holds two
+    if a_letter == b_letter:
+        return True
+    return ix * iy >= SAME_INK_SHARE_OF_LARGER * max(area_a, area_b)
+
+
+def _same_ink_groups(rows: Sequence[Any]) -> Dict[str, List[Any]]:
+    """row id -> every row (itself included) on the same printed ink, across
+    cells and staves of the system.
+
+    ⚠️ A GROUP IS A CLIQUE, NOT A CHAIN. Every member is the same ink as every
+    other. Chained (A~B, B~C -> {A, B, C}) it merged the `s` and the `f` of a
+    printed `sf` through their twins on the staff beneath (the `s` boxed big
+    on one staff, small on the other): 11 Litolff `sf` came out `f`."""
+    items = []
+    for r in rows:
+        box = (r.detail or {}).get("bbox_page_px")
+        if box and len(box) == 4:
+            b = tuple(float(v) for v in box)
+            sp = (r.detail or {}).get("staff_spacing_px")
+            if (b[3] - b[1]) < LETTER_MIN_HEIGHT_SPACES * float(sp or 0.0):
+                continue                    # a sliver is nobody's twin
+            items.append((r, b, _letter_of(r), float(sp) if sp else None))
+    groups: List[List[Tuple[Any, Tuple[float, ...], Optional[str], Optional[float]]]] = []
+    for it in items:
+        for g in groups:
+            if all(same_ink_letters(it[1], it[2], m[1], m[2], it[3] or m[3]) for m in g):
+                g.append(it)
+                break
+        else:
+            groups.append([it])
+    out: Dict[str, List[Any]] = {}
+    for g in groups:
+        members = [m[0] for m in g]
+        for m in members:
+            out[m.id] = members
+    return out
+
+
+#: ROADMAP 2.68 (twins): the ink HEIGHT, in staff spaces, each dynamic letter
+#: can have. An `f` rises above the x-height and falls below it; a `p` only
+#: falls; `s m z r` are x-height letters. MEASURED, not fitted to a result:
+#: Sean's 12 hand-labelled `f` boxes (Brahms 317803 pdf 0) are 2.4-2.6 spaces
+#: tall; the `p`s the two plates' detectors agree on, 1.4-2.1. The bands
+#: leave a GAP (2.1-2.3) on purpose: an ink in it is read as neither, and the
+#: identity abstains. WHAT WOULD FALSIFY IT: a printed `f` under 2.3 spaces
+#: (a small-print edition) -- the first sign is `identity_by_ink` choosing `p`
+#: for an ink Sean calls `f`.
+INK_HEIGHT_BANDS_SPACES: Dict[str, Tuple[float, float]] = {
+    "f": (2.3, 5.0),
+    "p": (1.4, 2.1),
+    "s": (0.0, 1.5), "z": (0.0, 1.5), "m": (0.0, 1.5), "r": (0.0, 1.5),
+}
+
+
+def _identity_of_ink(group: Sequence[Any]) -> Tuple[Optional[str], str, Tuple[str, ...]]:
+    """Which letter is ONE ink the detector boxed as one or several classes?
+    `(letter | None, how, the letters still possible)`.
+
+    In order: every box agrees -> that letter (`agreed`). They disagree -> the
+    ink's own height (`ink_height`): the letters whose band holds it; exactly
+    one -> it. Otherwise None -- present, identity abstained (rule 8). The
+    detector's SCORE is not consulted: on Brahms p1 it ranks the `f` twin above
+    the printed `p` on 8 of the 22 same-ink f/p inks of Brahms p0-1.
+    """
+    letters = tuple(sorted({_letter_of(r) for r in group if _letter_of(r)}))
+    if len(letters) == 1:
+        return letters[0], "agreed", letters
+    heights = [float(r.detail["ink_height_spaces"]) for r in group
+               if (r.detail or {}).get("ink_height_spaces") is not None]
+    if not heights:
+        return None, "no_ink_measure", letters
+    h = max(heights)
+    fits = tuple(l for l in letters
+                 if INK_HEIGHT_BANDS_SPACES.get(l) is None
+                 or INK_HEIGHT_BANDS_SPACES[l][0] <= h <= INK_HEIGHT_BANDS_SPACES[l][1])
+    if len(fits) == 1:
+        return fits[0], "ink_height", letters
+    return (None, "ink_height_fits_none" if not fits else "ink_height_fits_several",
+            fits or letters)
 
 
 def _letter_of(row: Any) -> Optional[str]:
@@ -214,6 +415,21 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     verdict that IS decided -- that query runs first and, where it names a
     staff, `owned_by` already differs from `home` before this is reached.
 
+    ⚠️⚠️ ROADMAP 2.68, SEAN (DECISIONS 2026-10-08/09): *"It sits below the
+    staff it belongs to."* The three paragraphs above are the FALLBACK. Where
+    GATHER filed the letter's LOCAL positions against its neighbours' staves
+    (`local_position_in_staves`), the staff it is printed below (or inside) is
+    its owner and `Q.GLYPH_OWNER` is not asked: measured on the 10-09 small
+    re-gather, 43 of 213 kept Litolff letters and 23 of 94 Brahms ones stood
+    under the staff above their cell and the contest gave them to the staff
+    beneath by `distance` (3.29 vs 3.02 spaces), `range_veto` (an instrument
+    range has no say over a dynamic) or `tied`, and the 2.27c band rule that
+    should have caught the rest reads a quantity gathered only under an OFF
+    flag. Such a letter is a duplicate only where the same ink is also a row
+    of the owner's own cell (`_has_a_twin_on`); otherwise it is the mark's
+    sole evidence and MOVES. Not decided (and left to the chain): no
+    positions, or above a system's first staff.
+
     ⚠️ **THE ASSEMBLY RULE IS DELIBERATELY THE EXPORTER'S, UNCHANGED**, so
     that the only difference between this and the shipped path is the
     ownership query and the frame. It is not a good rule: measured on the
@@ -258,15 +474,23 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
-    inside_alone = inside_unmeasured = 0
+    inside_alone = inside_unmeasured = in_a_dynamic_token = 0
+    # ROADMAP 2.68 (twins): one printed letter boxed twice is ONE letter.
+    ink_groups = _same_ink_groups(rows)
+    seen_ink: set = set()
+    alts_of: Dict[str, Tuple[str, ...]] = {}
+    group_ids: Dict[str, List[str]] = {}
+    same_ink_collapsed = identity_by_ink = identity_abstained = 0
     # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
     # page pixels -- a second reader (Tesseract/Surya, not the detector).
-    word_boxes = [tuple(float(v) for v in (w.detail or {})["bbox_page_px"])
+    word_boxes = [(tuple(float(v) for v in (w.detail or {})["bbox_page_px"]),
+                   str(w.value or ""))
                   for w in ev.rows(Q.DIRECTION_WORD,
                                    scope=Scope.SELF_AND_DESCENDANTS,
                                    subject=system)
                   if (w.detail or {}).get("bbox_page_px")]
     grand_staff_shared = 0
+    placed_below_n = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
             continue
@@ -283,9 +507,16 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             continue
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
-        owned_by = (owner.value if owner is not None and owner.value
+        # ⚠️ ROADMAP 2.68, SEAN: a dynamic sits below the staff it belongs to.
+        # Where the letter's own LOCAL position says which staff it is below,
+        # that is the owner -- `Q.GLYPH_OWNER` (distance, an instrument range,
+        # a tie) is not asked, because none of them is a reason to move a
+        # dynamic to the staff beneath it.
+        placed_below = _staff_it_is_printed_below(row)
+        owned_by = (placed_below if placed_below is not None
+                    else owner.value if owner is not None and owner.value
                     else home)
-        if owner is not None and owner.value:
+        if placed_below is None and owner is not None and owner.value:
             # ⚠️ ROADMAP 2.27d, ONLY THE CONTESTED CASE. `owner` exists
             # here only for a letter `glyph_owner` actually adjudicated --
             # i.e. one BOTH staves' padded cells caught, which is the
@@ -304,7 +535,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # (Merge of 2.27c with 2.27d: the band rule speaks ONLY where no
         # contest was decided -- `owner` absent or valueless -- so it can
         # never override a decided owner, including a grand-staff one.)
-        if owned_by == home and (owner is None or not owner.value):
+        if (placed_below is None and owned_by == home
+                and (owner is None or not owner.value)):
             band_rows = ev.rows(Q.DYNAMIC_BAND_POSITION, subject=row.subject)
             if band_rows:
                 offset = float(band_rows[-1].value)
@@ -326,7 +558,14 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # by construction) -- there is no twin on `mine` to be a duplicate
         # of, so skipping the check here is not a special case of the rule,
         # it is the rule's own premise not holding.
-        if not moved_by_band and is_relocated_copy(row.subject, owned_by):
+        if placed_below is not None:
+            # a letter placed by its position is a duplicate only where the
+            # SAME ink is also a row of this staff's own cell; else it is the
+            # sole evidence of the mark and is moved here, not dropped
+            if owned_by != home and _has_a_twin_on(rows, owned_by, row):
+                dup_dropped += 1
+                continue
+        elif not moved_by_band and is_relocated_copy(row.subject, owned_by):
             # ⚠️⚠️ A LETTER WHOSE HOME IS ANOTHER STAFF IS A SECOND COPY, NOT
             # A RESCUE, AND THE DOCSTRING ABOVE USED TO CLAIM OTHERWISE.
             # `glyph_owner` speaks only about the CONTESTED population
@@ -347,7 +586,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             dup_dropped += 1
             continue
         # (after ownership: counted once, on the staff that keeps the letter)
-        if _inside_a_read_word(row, word_boxes):
+        if _letter_of_a_known_word(row, word_boxes):
             sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
             if not sides:
                 # inside a known word, but nobody read the ink beside it:
@@ -358,14 +597,44 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                 continue
             else:
                 inside_alone += 1
+        elif _inside_a_read_word(row, word_boxes):
+            # inside a read word's box, but the word's own text puts the spot
+            # at its dynamic (`f espr.`, `P dolce`), or two readings disagree
+            # about it: the dynamic stays
+            in_a_dynamic_token += 1
         letter = _letter_of(row)
         geom = _geometry(row)
+        group = ink_groups.get(row.id) or [row]
+        if len(group) > 1:
+            # ⚠️ ROADMAP 2.68 (twins, Sean 2026-10-09: *"many dynamic markings
+            # could ... get double boxed"*). Every box on this ink is ONE
+            # letter, written once; WHICH letter it is comes from the ink, and
+            # where nothing separates the candidates the letter stays present
+            # and its identity abstains.
+            key = frozenset(r.id for r in group)
+            if key in seen_ink:
+                same_ink_collapsed += 1
+                continue
+            seen_ink.add(key)
+            ident, how, possible = _identity_of_ink(group)
+            # the run is ordered and measured by THIS row's own box, not the
+            # group's union: a twin boxed bigger would pull the letter under
+            # its neighbour (an `s` before an `f` came out `fs`)
+            group_ids[row.id] = [r.id for r in group]
+            if ident is None:
+                identity_abstained += 1
+                letter = "?"
+                alts_of[row.id] = possible
+            else:
+                identity_by_ink += (how == "ink_height")
+                letter = ident
         if letter is None:
             continue
         if geom is None:
             no_frame += 1
             continue
         kept.append((geom[0], geom[1], geom[2], letter, row))
+        placed_below_n += placed_below is not None
 
     if not kept:
         if no_frame:
@@ -395,16 +664,17 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if x0 - prev_right <= width and abs(y - run[0][2]) <= width:
             run.append(entry)
         else:
-            words.append(_close(run))
+            words.append(_close(run, alts_of))
             run = [entry]
         prev_right = x1
-    words.append(_close(run))
+    words.append(_close(run, alts_of))
     for w in words:
         # ⚠️ KEPT PER RUN AS `letters` (ROADMAP 2.68): `used` flattens every
         # run's letters into one list, and the pairing of a word with ITS
         # dynamic (`consequences.pair_word_and_dynamic`) needs to know which
-        # letters -- and so which page boxes -- made which dynamic.
-        w["letters"] = w.pop("_ids")
+        # letters -- and so which page boxes -- made which dynamic. A letter
+        # boxed twice lists every box on its ink.
+        w["letters"] = [i for rid in w.pop("_ids") for i in group_ids.get(rid, [rid])]
         used.extend(w["letters"])
 
     unspellable = [w for w in words if not w["spelled"]]
@@ -424,11 +694,23 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         "letters_inside_a_read_word": inside_word,
         "letters_alone_inside_a_word_box": inside_alone,
         "letters_inside_a_word_box_unmeasured": inside_unmeasured,
+        "letters_at_a_words_dynamic_token": in_a_dynamic_token,
         # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
         # owner` moved onto this staff (or off it) because they sit
         # between the two staves of a decided brace pair -- zero on every
         # system that never decides `Q.GROUP_SYMBOL` "brace".
         "letters_shared_on_grand_staff": grand_staff_shared,
+        # ⚠️ ROADMAP 2.68. Letters kept on the staff they are printed BELOW
+        # (Sean 2026-10-09), from their own local positions -- not by the
+        # contest, the band flag or the cell they were cut from.
+        "letters_placed_below_their_staff": placed_below_n,
+        # ⚠️ ROADMAP 2.68 (twins). Boxes dropped because the SAME printed ink
+        # was already a letter of this bar (one ink, one letter), the inks
+        # whose letter the ink's height settled, and the inks whose identity
+        # nothing settled (present, not spelled).
+        "letters_same_ink_collapsed": same_ink_collapsed,
+        "letters_identity_by_ink_height": identity_by_ink,
+        "letters_identity_abstained": identity_abstained,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
     if unspellable and not any(w["spelled"] for w in words):
@@ -443,6 +725,285 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                   reason="spelled", used=tuple(used), detail=detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.68: a dynamic mark is anchored to ONE NOTE
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+class OnsetColumn(NamedTuple):
+    """The notes (and rests) of ONE staff that sound at one x: a chord is one
+    column. `x0`/`x1` are page pixels, `keys` the glyph subject keys, `cell`
+    the bar the NOTE is printed in, `carrier` `notehead` or `rest`."""
+    x0: float
+    x1: float
+    keys: Tuple[str, ...]
+    cell: int
+    carrier: str
+
+
+class AnchorChoice(NamedTuple):
+    column: Optional[OnsetColumn]
+    relation: Optional[str]      # "at_note" | "next_onset" | None
+    why: Optional[str]           # the reason for None
+
+
+#: Sean (2026-10-09): *"If it is on a note, it starts on the note."* A mark
+#: stands AT a note where its ink overlaps the note's horizontal extent by at
+#: least this share of the NOTE's width; a graze under it is the mark standing
+#: between. CONVENTION ASSUMED (the share is not measured on a corpus; a
+#: quarter of a head is a touch, not a position) / WHAT WOULD FALSIFY IT: Sean
+#: calling an `at_note` anchor a mark that stands between two notes, or the
+#: reverse -- the finding counts how many anchors flip between 0.0 and 0.5.
+AT_NOTE_MIN_OVERLAP = 0.25
+#: Two columns whose overlap with the mark is within this share of each other
+#: are equally plausible, and the anchor abstains (rule 8).
+EQUALLY_PLAUSIBLE_SHARE = 0.8
+
+
+def anchor_for_extent(x0: float, x1: float,
+                      columns: Sequence[OnsetColumn]) -> AnchorChoice:
+    """THE ONE RULE (Sean, 2026-10-09): *"If it is on a note, it starts on the
+    note. If it's between notes, it impacts the next one coming up. It's meant
+    to give the musician a heads up."*
+
+    The mark's ink spans `[x0, x1]` on the page (local by construction: a
+    position in page pixels, read off boxes at that x). A column the ink
+    overlaps by `AT_NOTE_MIN_OVERLAP` of the column's width is AT it; the one
+    with the largest overlap is the anchor, unless a second is within
+    `EQUALLY_PLAUSIBLE_SHARE` of it (abstain). Otherwise the mark is BETWEEN:
+    the anchor is the first column whose centre lies to the right of the
+    mark's centre -- across a barline, whatever cell detected the box or holds
+    the note. Nothing following: abstain, and say so.
+
+    This is also the answer to a dynamic printed ON a barline: it is between
+    the last note of one bar and the first of the next, so it anchors to the
+    next bar's first note and its bar is that note's."""
+    ordered = sorted(columns, key=lambda c: (c.x0 + c.x1, c.keys))
+    centre = (x0 + x1) / 2.0
+    under = []
+    for col in ordered:
+        overlap = min(x1, col.x1) - max(x0, col.x0)
+        width = max(1.0, col.x1 - col.x0)
+        if overlap > 0 and overlap >= AT_NOTE_MIN_OVERLAP * width:
+            under.append((overlap, col))
+    if len(under) > 1:
+        # a wide mark (`ff`, `sfz`) can overlap several heads; a dynamic is
+        # set CENTRED on the note it belongs to, so the head the mark's own
+        # centre stands over is the one it starts on
+        centred = [(o, c) for o, c in under if c.x0 <= centre <= c.x1]
+        if len(centred) == 1:
+            under = centred
+    if under:
+        under.sort(key=lambda oc: -oc[0])
+        best_overlap, best = under[0]
+        if len(under) > 1 and under[1][0] >= EQUALLY_PLAUSIBLE_SHARE * best_overlap:
+            return AnchorChoice(None, None, "equally_plausible")
+        return AnchorChoice(best, "at_note", None)
+    for col in ordered:
+        if (col.x0 + col.x1) / 2.0 > centre:
+            return AnchorChoice(col, "next_onset", None)
+    return AnchorChoice(None, None, "no_following_note_in_system")
+
+
+def _onset_columns(heads: Sequence[Tuple[str, int, str, Tuple[float, float]]]
+                   ) -> List[OnsetColumn]:
+    """Group `(key, cell, carrier, (x0, x1))` heads into columns: heads whose
+    centres stand within half a head's width are one onset (a chord; or a note
+    and a rest of another voice at the same x -- the column is then a notehead)."""
+    if not heads:
+        return []
+    widths = sorted(h[3][1] - h[3][0] for h in heads)
+    tol = 0.5 * widths[len(widths) // 2]
+    cols: List[List[Tuple[str, int, str, Tuple[float, float]]]] = []
+    for h in sorted(heads, key=lambda h: (h[3][0] + h[3][1], h[0])):
+        cx = (h[3][0] + h[3][1]) / 2.0
+        if cols:
+            last = cols[-1]
+            lcx = sum((m[3][0] + m[3][1]) / 2.0 for m in last) / len(last)
+            if abs(cx - lcx) <= tol:
+                last.append(h)
+                continue
+        cols.append([h])
+    out = []
+    for members in cols:
+        out.append(OnsetColumn(
+            x0=min(m[3][0] for m in members), x1=max(m[3][1] for m in members),
+            keys=tuple(sorted(m[0] for m in members)),
+            cell=min(m[1] for m in members),
+            carrier="notehead" if any(m[2] == "notehead" for m in members) else "rest"))
+    return out
+
+
+#: Two pieces of ink standing no further apart than this share of a staff
+#: space, in two different cells, are touching.
+HALVES_TOUCH_SPACES = 0.25
+
+
+def _join_letter_halves(marks: List[Dict[str, Any]]) -> Tuple[List[Dict[str, Any]], int]:
+    """A letter printed ON a barline is cut by it: the left piece is detected
+    by the bar before, the right piece by the bar after, and each cell spells
+    its own `f` (Litolff p2, staff 3: `f` [762, 774] + `f` [774, 801], one
+    printed `f` -- 12 + 27 px). Two single-letter marks of the SAME letter, in
+    two different cells, touching, whose union is no wider than one letter can
+    be (`SINGLE_LETTER_MAX_WIDTH_SPACES`) are ONE mark. A printed `ff` across a
+    barline is two full letters, its union twice that, and stays two."""
+    ordered = sorted(marks, key=lambda m: (m["x0"], m["x1"]))
+    out: List[Dict[str, Any]] = []
+    joined = 0
+    for m in ordered:
+        prev = out[-1] if out else None
+        sp = (prev or {}).get("_sp") or m.get("_sp")
+        if (prev is not None and sp and prev["detected_in_cell"] != m["detected_in_cell"]
+                and prev["text"] and prev["text"] == m["text"] and len(m["text"]) == 1
+                and m["x0"] - prev["x1"] <= HALVES_TOUCH_SPACES * sp
+                and (max(m["x1"], prev["x1"]) - min(m["x0"], prev["x0"]))
+                <= SINGLE_LETTER_MAX_WIDTH_SPACES * sp):
+            prev["x0"], prev["x1"] = min(prev["x0"], m["x0"]), max(prev["x1"], m["x1"])
+            prev["letters"] = list(prev["letters"]) + list(m["letters"])
+            prev["also_detected_in_cell"] = m["detected_in_cell"]
+            joined += 1
+            continue
+        out.append(dict(m))
+    return out, joined
+
+
+@decision(
+    quantity=Q.DYNAMIC_ANCHOR,
+    checkable=Checkable.UNCHECKABLE,
+    composed_from=(Q.DYNAMIC, Q.DYNAMIC_LETTER, Q.GLYPH_BOX, Q.GLYPH_OWNER,
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.STAFF,
+    wants=(Q.DYNAMIC, Q.DYNAMIC_LETTER, Q.GLYPH_BOX, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    subjects_from=Q.DYNAMIC_LETTER,
+    reasons=("anchored", "some_marks_unanchored", "no_marks"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_dynamic_anchor(ev: Evidence) -> Ruling:
+    """The ONE note each dynamic mark of this staff starts on.
+
+    Sean (2026-10-09): *"Hairpins and dynamic markings will often cross many
+    bars. Can we make dynamics system specific rather than cell specific?"* /
+    *"They will still need a single point to start or end - connected to a
+    note."* / *"If it is on a note, it starts on the note. If it's between
+    notes, it impacts the next one coming up."*
+
+    ⚠️ STAFF-LEVEL, READ ACROSS CELLS. `adjudicate_dynamic` still reads and
+    spells per cell (a cell is where a letter was DETECTED and where its
+    ownership is settled); this reads the marks it filed on EVERY cell of this
+    staff in the system, finds the notes and rests of the staff over the whole
+    system, and says which one each mark starts on by `anchor_for_extent`.
+    The bar is the NOTE's, so a dynamic printed on a barline belongs to the
+    bar it announces, whichever padded cell saw it.
+
+    ⚠️ THE NOTES ARE THIS STAFF'S: `Q.GLYPH_OWNER` (else the cell's own staff),
+    minus a head refused as `not a notehead` / a rest refused as `not a
+    rest`. A mark with no following note in the system abstains and is counted
+    (`marks_without_a_following_note`) -- the next system's first note is not
+    this system's evidence.
+
+    ⚠️ NOT YET MOVED OFF THE CELL: `Q.DYNAMIC` itself, and the hairpin
+    (`Q.WEDGE_ANCHOR` keeps its own `nearest` start rule, measured 4 of 4 on
+    the engraved fixture, until a page with hairpins says Sean's rule differs).
+    """
+    staff = ev.subject
+    mine = staff.to_key()
+    system = ev.subject.at(Kind.SYSTEM)
+
+    letter_rows = {r.id: r for r in ev.rows(
+        Q.DYNAMIC_LETTER, scope=Scope.SELF_AND_DESCENDANTS, subject=system)}
+
+    # the cells of THIS staff (every cell files a letter row or an abstention)
+    cell_ids = set()
+    for r in ev.rows(Q.DYNAMIC_LETTER, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if r.subject.cell is not None:
+            cell_ids.add(int(r.subject.cell))
+    for a in ev.refusals(Q.DYNAMIC_LETTER, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if a.subject.cell is not None:
+            cell_ids.add(int(a.subject.cell))
+
+    marks: List[Dict[str, Any]] = []
+    for c in sorted(cell_ids):
+        sub = Subject(Kind.CELL, page=staff.page, system=staff.system,
+                      staff=staff.staff, cell=c)
+        dyn = ev.verdict(Q.DYNAMIC, subject=sub)
+        if dyn is None:
+            continue
+        for w in (dyn.detail or {}).get("words") or ():
+            boxes = []
+            for lid in w.get("letters") or ():
+                row = letter_rows.get(lid)
+                box = (row.detail or {}).get("bbox_page_px") if row is not None else None
+                if box and len(box) == 4:
+                    boxes.append(tuple(float(v) for v in box))
+            if not boxes:
+                continue
+            spacings = [float(letter_rows[lid].detail["staff_spacing_px"])
+                        for lid in w.get("letters") or ()
+                        if lid in letter_rows
+                        and (letter_rows[lid].detail or {}).get("staff_spacing_px")]
+            marks.append({"text": w["text"] if w.get("spelled") else None,
+                          "spelled": bool(w.get("spelled")),
+                          "x0": min(b[0] for b in boxes), "x1": max(b[2] for b in boxes),
+                          "detected_in_cell": c, "letters": list(w.get("letters") or ()),
+                          "_sp": spacings[0] if spacings else None})
+    if not marks:
+        return Ruling(value=[], reason="no_marks", detail={"marks": 0})
+    marks, halves_joined = _join_letter_halves(marks)
+
+    heads: List[Tuple[str, int, str, Tuple[float, float]]] = []
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=system):
+        category = (row.detail or {}).get("category")
+        if category not in ("notehead", "rest"):
+            continue
+        box = (row.detail or {}).get("bbox_page_px")
+        if not box or len(box) != 4 or row.subject.cell is None:
+            continue
+        owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+        staff_key = owner.value if owner is not None and owner.value \
+            else row.subject.at(Kind.STAFF).to_key()
+        if str(staff_key) != mine:
+            continue
+        if category == "notehead":
+            refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=row.subject)
+        else:
+            refusal = ev.verdict(Q.REST_IS_NOT_A_REST, subject=row.subject)
+        if refusal is not None and refusal.value is True:
+            continue
+        heads.append((row.subject.to_key(), int(row.subject.cell), category,
+                      (float(box[0]), float(box[2]))))
+    columns = _onset_columns(heads)
+
+    out: List[Dict[str, Any]] = []
+    at_note = next_onset = equal = no_next = 0
+    for m in sorted(marks, key=lambda m: (m["x0"], m["x1"])):
+        choice = anchor_for_extent(m["x0"], m["x1"], columns)
+        entry = {k: v for k, v in m.items() if k != "_sp"}
+        if choice.column is None:
+            entry.update(anchor=None, anchor_cell=None, relation=None, why=choice.why)
+            equal += choice.why == "equally_plausible"
+            no_next += choice.why == "no_following_note_in_system"
+        else:
+            entry.update(anchor=choice.column.keys[0], anchor_cell=choice.column.cell,
+                         relation=choice.relation, why=None,
+                         carrier=choice.column.carrier,
+                         n_heads_in_column=len(choice.column.keys))
+            at_note += choice.relation == "at_note"
+            next_onset += choice.relation == "next_onset"
+        out.append(entry)
+    unanchored = sum(1 for e in out if e["anchor"] is None)
+    detail = {"marks": len(out), "marks_at_a_note": at_note,
+              "marks_before_the_next_onset": next_onset,
+              "marks_equally_plausible": equal,
+              "marks_without_a_following_note": no_next,
+              "onset_columns": len(columns),
+              "letter_halves_joined_across_a_barline": halves_joined,
+              "at_note_min_overlap": AT_NOTE_MIN_OVERLAP}
+    if unanchored:
+        return Ruling(value=out, reason="some_marks_unanchored", detail=detail)
+    return Ruling(value=out, reason="anchored", detail=detail)
+
+
 #: A letter box with at least this share of its area inside a word box is one
 #: of the word's letters (ROADMAP 2.68).
 INSIDE_READ_WORD_SHARE = 0.5
@@ -451,8 +1012,9 @@ INSIDE_READ_WORD_SHARE = 0.5
 def _is_a_letter_of_a_known_word(sides) -> bool:
     """Sean 2026-10-09: *"When p is by itself it is piano when it is
     surrounded by other letter the context solves it ... only if it makes a
-    word we know."* The KNOWN word is the caller's test (`_inside_a_read_word`:
-    a word the OCR read AND the lexicon accepted); this is the other half --
+    word we know."* The KNOWN word is the caller's test (`_letter_of_a_known_word`:
+    a word the OCR read AND the lexicon accepted, the letter in a token of its
+    text that is not a dynamic); this is the other half --
     the letter has letter ink beside it on its own line
     (`Q.DYNAMIC_LETTER_NEIGHBOURS`). A letter with space on both sides is a
     dynamic even inside a word's box (`p espr.`: the `p` is the dynamic)."""
@@ -470,29 +1032,120 @@ def _inside_a_read_word(row, word_boxes) -> bool:
     lexicon ACCEPTED is a second, independent reader saying that ink is text;
     a letter box mostly inside such a word's box is that word's letter, not a
     dynamic. Counted (`letters_inside_a_read_word`), never dropped silently.
+    This is the BOX half; `_letter_of_a_known_word` adds the TEXT half.
     """
+    return bool(_words_around(row, word_boxes))
+
+
+def _words_around(row, word_boxes):
+    """The read words whose box holds at least `INSIDE_READ_WORD_SHARE` of this
+    letter's box: `[(box, text)]`."""
     box = (row.detail or {}).get("bbox_page_px")
     if not box or not word_boxes:
-        return False
+        return []
     x0, y0, x1, y1 = (float(v) for v in box)
     area = max(1.0, (x1 - x0) * (y1 - y0))
-    for w in word_boxes:
+    out = []
+    for item in word_boxes:
+        # a bare box (no text read with it) or (box, text)
+        w, text = (item if len(item) == 2 and not isinstance(item[0], (int, float))
+                   else (item, None))
         ix = max(0.0, min(x1, w[2]) - max(x0, w[0]))
         iy = max(0.0, min(y1, w[3]) - max(y0, w[1]))
         if ix * iy >= INSIDE_READ_WORD_SHARE * area:
-            return True
-    return False
+            out.append((w, text))
+    return out
 
 
-def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:
-    """One assembled run, with the vertical evidence the exporter never had."""
+def _letter_of_a_known_word(row, word_boxes) -> bool:
+    """Sean's DEDUCTIVE rule (2026-10-09), the TEXT half: *"only if it makes a
+    word we know"*. The letter lies inside a word the OCR read and the lexicon
+    accepted, AND the word's own text puts that spot in a token that is not a
+    dynamic. A reading with no dynamic token in it (`espr. e legato`, `A PIZZ.`)
+    holds no dynamic: every dynamic-classed box inside it is a letter of it. A
+    reading that names one (`f espr. e legato`, `P dolce`, `p cresc. f`) holds
+    the dynamic at its leading and/or trailing end: a letter standing there is
+    the dynamic, one past it is the word's. Several words may hold the same ink
+    (a sibling window, a joined reading): ALL must say `letter of the word`, or
+    nothing is decided -- the letter stays what the detector said (rule 8)."""
+    around = _words_around(row, word_boxes)
+    if not around:
+        return False
+    box = row.detail["bbox_page_px"]
+    # a word held with no text can say nothing about tokens: cannot tell
+    return all(text is not None and _token_is_a_word(box, w, text)
+               for w, text in around)
+
+
+def _token_is_a_word(letter_box, word_box, text: str) -> bool:
+    """Does the OCR'd `text`, laid along `word_box` in proportion to its
+    characters, put the letter at `letter_box` in a token that is a word rather
+    than a dynamic? The proportion is crude (an italic `p` is wider than the
+    average letter), so only the two ENDS are asked, and by the letter's OUTER
+    edge: a leading dynamic token (`f`, `P`, `fp`) claims the letters whose left
+    edge falls in its share of the box plus its space; a trailing one the
+    letters whose right edge does."""
+    from ...direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    tokens = text.split()
+    if not tokens:
+        return False
+    total = sum(len(t) for t in tokens) + len(tokens) - 1
+    width = max(1.0, word_box[2] - word_box[0])
+    per_char = width / max(1, total)
+    lead = 0
+    while lead < len(tokens) and _normalise(tokens[lead]) in _DYNAMIC_LETTERS:
+        lead += 1
+    trail = 0
+    while (trail < len(tokens) - lead
+           and _normalise(tokens[len(tokens) - 1 - trail]) in _DYNAMIC_LETTERS):
+        trail += 1
+    if lead == len(tokens):
+        return False        # the text IS a dynamic: not a word at all
+    if lead:
+        chars = sum(len(t) for t in tokens[:lead]) + lead     # tokens + one space each
+        if letter_box[0] <= word_box[0] + chars * per_char:
+            return False
+    if trail:
+        chars = sum(len(t) for t in tokens[len(tokens) - trail:]) + trail
+        if letter_box[2] >= word_box[2] - chars * per_char:
+            return False
+    return True
+
+
+def _close(run: List[Tuple[float, float, float, str, Any]],
+           alts: Optional[Dict[str, Tuple[str, ...]]] = None) -> Dict[str, Any]:
+    """One assembled run, with the vertical evidence the exporter never had.
+
+    `alts` maps a row id to the letters its ink may still be (ROADMAP 2.68,
+    twins: one ink boxed as `dynamicF` and `dynamicP` whose identity nothing
+    settled). Such a slot is written `?`. The run is spelled only where the
+    lexicon leaves ONE reading (`s?` -> `sf`: `sp` is not a dynamic) and
+    says so (`identity="lexicon"`); where it leaves several the run is not
+    spelled and every word it could be is the candidate."""
+    alts = alts or {}
     text = "".join(e[3] for e in run)
+    slots = [sorted(alts.get(e[4].id) or (e[3],)) for e in run]
+    open_slot = any(len(sl) > 1 for sl in slots)
+    if open_slot:
+        combos = {"".join(c) for c in itertools.product(*slots)}
+        full = sorted(c for c in combos if c in DYNAMIC_WORDS)
+        spelled = len(full) == 1
+        if spelled:
+            text = full[0]
+        completions = full if full else sorted(
+            w for w in DYNAMIC_WORDS if any(w.startswith(c) for c in combos))
+        identity = "lexicon" if spelled else "open"
+    else:
+        spelled = text in DYNAMIC_WORDS
+        completions = sorted(w for w in DYNAMIC_WORDS if w.startswith(text))
+        identity = "read"
     offsets = [e[4].detail.get("band_offset_spaces") for e in run]
     offsets = [float(o) for o in offsets if o is not None]
     return {
         "text": text,
-        "spelled": text in DYNAMIC_WORDS,
-        "completions": sorted(w for w in DYNAMIC_WORDS if w.startswith(text)),
+        "spelled": spelled,
+        "identity": identity,
+        "completions": completions,
         "x_page": run[0][0],
         "n_letters": len(run),
         #: ⚠️ RECORDED, NOT USED. The letters of one word sit at one height, so

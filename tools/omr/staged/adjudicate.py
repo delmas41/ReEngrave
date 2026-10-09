@@ -1139,6 +1139,9 @@ ORDER: Tuple[str, ...] = (
     Q.WEDGE_ANCHOR,
     # text
     Q.DYNAMIC,
+    # ROADMAP 2.68: AFTER `Q.DYNAMIC` -- the marks it anchors are that
+    # decision's runs, read across every cell of the staff.
+    Q.DYNAMIC_ANCHOR,
     Q.DIRECTION,
     # ⚠️ ROADMAP 2.13. Reads GATHER only (`Q.PRINTED_BAR_NUMBER`'s own
     # Observations) -- nothing in ADJUDICATE depends on it and it depends on

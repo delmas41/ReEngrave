@@ -1,0 +1,866 @@
+[
+ {
+  "id": "b4213",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 11.84,
+  "found": true,
+  "box_ok": false,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/4/1/3",
+   "cls": "noteheadHalfInSpace",
+   "pos": 12,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.34,
+  "all": [
+   [
+    "0/4/1/3",
+    "noteheadHalfInSpace",
+    "kept",
+    "half (2 beats)",
+    0.34
+   ]
+  ]
+ },
+ {
+  "id": "q564",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 11.92,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/4/2/5",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    0.42
+   ]
+  ]
+ },
+ {
+  "id": "q568",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 12.0,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/4/3/7",
+   "cls": "noteheadHalfInSpace",
+   "pos": 12,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.52,
+  "all": [
+   [
+    "0/4/3/2",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    0.51
+   ],
+   [
+    "0/4/3/7",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.52
+   ]
+  ]
+ },
+ {
+  "id": "q576",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 12.38,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/4/4/2",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ],
+   [
+    "0/4/4/9",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- notehead is a duplicate box",
+    0.56
+   ]
+  ]
+ },
+ {
+  "id": "q589",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 12.31,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/4/5/4",
+   "cls": "noteheadHalfInSpace",
+   "pos": 12,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/4/5/4",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q595",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 11.88,
+  "found": true,
+  "box_ok": false,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/4/6/4",
+   "cls": "noteheadHalfInSpace",
+   "pos": 12,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.38,
+  "all": [
+   [
+    "0/4/6/4",
+    "noteheadHalfInSpace",
+    "kept",
+    "half (2 beats)",
+    0.38
+   ]
+  ]
+ },
+ {
+  "id": "q613",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 16.99,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/0/9",
+   "cls": "noteheadHalfInSpace",
+   "pos": 17,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.99,
+  "all": [
+   [
+    "0/5/0/9",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.99
+   ]
+  ]
+ },
+ {
+  "id": "q616",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 9.85,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/0/13",
+   "cls": "noteheadHalfOnLine",
+   "pos": 10,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.99,
+  "all": [
+   [
+    "0/5/0/13",
+    "noteheadHalfOnLine",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.99
+   ]
+  ]
+ },
+ {
+  "id": "q623",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 17.17,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/5/1/2",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q637",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 9.77,
+  "found": true,
+  "box_ok": false,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/1/16",
+   "cls": "noteheadHalfInSpace",
+   "pos": 10,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.48,
+  "all": [
+   [
+    "0/5/1/16",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.48
+   ]
+  ]
+ },
+ {
+  "id": "q643",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 17.17,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/2/5",
+   "cls": "noteheadHalfInSpace",
+   "pos": 17,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/5/2/5",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ],
+   [
+    "0/6/2/8",
+    "noteheadBlackInSpace",
+    "refused",
+    "not a notehead -- clipped fragment",
+    0.42
+   ],
+   [
+    "0/6/2/14",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- clipped fragment",
+    0.42
+   ]
+  ]
+ },
+ {
+  "id": "q653",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 10.06,
+  "found": true,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/2/16",
+   "cls": "noteheadHalfInSpace",
+   "pos": 11,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.49,
+  "all": [
+   [
+    "0/5/2/16",
+    "noteheadHalfInSpace",
+    "kept",
+    "half (2 beats)",
+    0.49
+   ],
+   [
+    "0/5/2/17",
+    "noteheadHalfOnLine",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    0.56
+   ]
+  ]
+ },
+ {
+  "id": "q666",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 16.93,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/5/3/9",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ],
+   [
+    "0/6/3/7",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- clipped fragment",
+    0.3
+   ]
+  ]
+ },
+ {
+  "id": "q670",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 9.69,
+  "found": true,
+  "box_ok": false,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/3/15",
+   "cls": "noteheadHalfInSpace",
+   "pos": 10,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.25,
+  "all": [
+   [
+    "0/5/3/14",
+    "noteheadHalfOnLine",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ],
+   [
+    "0/5/3/15",
+    "noteheadHalfInSpace",
+    "kept",
+    "half (2 beats)",
+    0.25
+   ]
+  ]
+ },
+ {
+  "id": "q677",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 17.29,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/4/2",
+   "cls": "noteheadHalfInSpace",
+   "pos": 17,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/5/4/2",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ],
+   [
+    "0/6/4/1",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- clipped fragment",
+    0.43
+   ]
+  ]
+ },
+ {
+  "id": "q687",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 10.03,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/4/15",
+   "cls": "noteheadHalfInSpace",
+   "pos": 10,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.53,
+  "all": [
+   [
+    "0/5/4/15",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.53
+   ]
+  ]
+ },
+ {
+  "id": "q694",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 17.03,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/5/5/6",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q700",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 9.85,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/5/5/12",
+   "cls": "noteheadHalfInSpace",
+   "pos": 10,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.54,
+  "all": [
+   [
+    "0/5/5/12",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.54
+   ]
+  ]
+ },
+ {
+  "id": "q703",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 16.87,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/5/6/2",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    0.99
+   ],
+   [
+    "0/6/6/3",
+    "noteheadHalfOnLine",
+    "refused",
+    "not a notehead -- clipped fragment",
+    0.24
+   ]
+  ]
+ },
+ {
+  "id": "q711",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 9.56,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": false,
+  "best": {
+   "key": "glyph/0/0/5/6/12",
+   "cls": "noteheadHalfOnLine",
+   "pos": 10,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.99,
+  "all": [
+   [
+    "0/5/6/12",
+    "noteheadHalfOnLine",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.99
+   ],
+   [
+    "0/5/6/13",
+    "noteheadHalfOnLine",
+    "kept",
+    "half (2 beats)",
+    0.34
+   ]
+  ]
+ },
+ {
+  "id": "q712",
+  "hand_cls": "noteheadHalfOnLine",
+  "hand_pos": 10.39,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": false,
+  "best": {
+   "key": "glyph/0/0/5/6/13",
+   "cls": "noteheadHalfOnLine",
+   "pos": 10,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 0.99,
+  "all": [
+   [
+    "0/5/6/12",
+    "noteheadHalfOnLine",
+    "kept",
+    "3.0-beat (3 beats)",
+    0.34
+   ],
+   [
+    "0/5/6/13",
+    "noteheadHalfOnLine",
+    "kept",
+    "half (2 beats)",
+    0.99
+   ]
+  ]
+ },
+ {
+  "id": "q875",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 5.04,
+  "found": false,
+  "box_ok": false,
+  "pos_ok": false,
+  "half": false,
+  "single": false,
+  "best": null,
+  "iou": 0.0,
+  "all": [
+   [
+    "0/8/1/2",
+    "noteheadHalfInSpace",
+    "refused",
+    "not a notehead -- stacked head duplicate",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q887",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 4.93,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/8/2/3",
+   "cls": "noteheadHalfInSpace",
+   "pos": 5,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/8/2/3",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q894",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 5.06,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/8/3/2",
+   "cls": "noteheadHalfInSpace",
+   "pos": 5,
+   "dur": {
+    "beats": 2.0,
+    "written": 2.0,
+    "dots": 0,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/8/3/2",
+    "noteheadHalfInSpace",
+    "kept",
+    "half (2 beats)",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q901",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 5.09,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/8/4/2",
+   "cls": "noteheadHalfInSpace",
+   "pos": 5,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/8/4/2",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q907",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 5.0,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/8/5/0",
+   "cls": "noteheadHalfInSpace",
+   "pos": 5,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/8/5/0",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ]
+  ]
+ },
+ {
+  "id": "q913",
+  "hand_cls": "noteheadHalfInSpace",
+  "hand_pos": 4.97,
+  "found": true,
+  "box_ok": true,
+  "pos_ok": true,
+  "half": true,
+  "single": true,
+  "best": {
+   "key": "glyph/0/0/8/6/1",
+   "cls": "noteheadHalfInSpace",
+   "pos": 5,
+   "dur": {
+    "beats": 3.0,
+    "written": 3.0,
+    "dots": 1,
+    "beam_levels": 0
+   },
+   "status": "kept"
+  },
+  "iou": 1.0,
+  "all": [
+   [
+    "0/8/6/1",
+    "noteheadHalfInSpace",
+    "kept",
+    "3.0-beat (3 beats)",
+    1.0
+   ]
+  ]
+ }
+]

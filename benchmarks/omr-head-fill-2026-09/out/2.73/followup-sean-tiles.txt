@@ -1,0 +1,68 @@
+sean8 #1 page 6 truth: HALF
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=-1
+   new : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+   mid : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+   new3: kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+sean8 #2 page 6 truth: HALF
+   base: kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=1
+   new : kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+   mid : kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+   new3: kept lackOnLine dur=(2.0, 'decided', 'hollow_head_bare_stem') pos=1
+sean8 #3 page 6 truth: HALF
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=-4
+   new : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-4
+   mid : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-4
+   new3: kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-4
+sean8 #4 page 6 truth: HALF
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=7
+   new : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=7
+   mid : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=7
+   new3: kept lackInSpace dur=(2.0, 'decided', 'hollow_head_bare_stem') pos=7
+sean8 #5 page 6 truth: HALF
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=5
+   new : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=5
+   mid : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=5
+   new3: kept lackInSpace dur=(2.0, 'decided', 'hollow_head_bare_stem') pos=5
+sean8 #6 page 6 truth: HALF
+   base: kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+   new : kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+   mid : kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+   new3: kept lackOnLine dur=(None, 'narrowed', 'head_fill_from_ink') pos=1
+sean8 #7 page 3 truth: HALF
+   base: kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=7
+   new : kept alfOnLine dur=(2.0, 'decided', 'head_and_marks') pos=7
+   new3: kept alfOnLine dur=(2.0, 'decided', 'head_and_marks') pos=7
+sean8 #8 page 3 truth: HALF
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=3
+   new : kept lackInSpace dur=(None, 'narrowed', 'head_fill_from_ink') pos=3
+   new3: kept lackInSpace dur=(None, 'narrowed', 'head_fill_from_ink') pos=3
+headfill #1 page 6 truth: barline
+   base: REFUSED/other lackInSpace refused ['not a notehead -- too narrow']
+   new : REFUSED/other lackInSpace refused ['not a notehead -- too narrow']
+   mid : REFUSED/other lackInSpace refused ['not a notehead -- too narrow']
+   new3: REFUSED/other lackInSpace refused ['not a notehead -- too narrow']
+headfill #2 page 6 truth: eighth+natural
+   base: kept lackOnLine dur=(0.5, 'decided', 'head_and_marks') pos=4
+   new : kept lackOnLine dur=(0.5, 'decided', 'head_and_marks') pos=4
+   mid : kept lackOnLine dur=(0.5, 'decided', 'head_and_marks') pos=4
+   new3: kept lackOnLine dur=(0.5, 'decided', 'head_and_marks') pos=4
+headfill #3 page 6 truth: HALF + slash
+   base: no box
+   new : no box
+   mid : no box
+   new3: no box
+headfill #4 page 6 truth: WHOLE REST
+   base: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=9
+   new : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=9
+   mid : kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=9
+   new3: kept lackInSpace dur=(1.0, 'decided', 'head_and_marks') pos=9
+headfill #5 page 6 truth: HALF
+   base: kept lackInSpace dur=(2.0, 'decided', 'hollow_head_bare_stem') pos=-1
+   new : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+   mid : kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+   new3: kept alfInSpace dur=(2.0, 'decided', 'head_and_marks') pos=-1
+headfill #6 page 6 truth: HALF
+   base: kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=0
+   new : kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=0
+   mid : kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=0
+   new3: kept lackOnLine dur=(1.0, 'decided', 'head_and_marks') pos=0

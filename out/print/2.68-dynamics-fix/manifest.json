@@ -1,0 +1,70 @@
+{
+ "question": "What dynamic markings are printed for this staff in the blue bar?",
+ "tiles": [
+  {
+   "n": 1,
+   "doc": "litolff",
+   "cell": "cell/2/0/7/2",
+   "staff_name": null,
+   "before": [
+    "f"
+   ],
+   "after": [
+    "f",
+    "f"
+   ],
+   "file": "dyn_01.png"
+  },
+  {
+   "n": 2,
+   "doc": "brahms",
+   "cell": "cell/0/0/0/0",
+   "staff_name": "Flute",
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_02.png"
+  },
+  {
+   "n": 3,
+   "doc": "brahms",
+   "cell": "cell/0/0/2/0",
+   "staff_name": "Clarinet",
+   "before": [
+    "f"
+   ],
+   "after": [
+    "f",
+    "f"
+   ],
+   "file": "dyn_03.png"
+  },
+  {
+   "n": 4,
+   "doc": "brahms",
+   "cell": "cell/0/0/3/0",
+   "staff_name": "Bassoon",
+   "before": [
+    "f",
+    "f"
+   ],
+   "after": [
+    "f",
+    "fp"
+   ],
+   "file": "dyn_04.png"
+  },
+  {
+   "n": 5,
+   "doc": "brahms",
+   "cell": "cell/0/0/11/0",
+   "staff_name": "Viola",
+   "before": [],
+   "after": [
+    "f"
+   ],
+   "file": "dyn_05.png"
+  }
+ ]
+}
