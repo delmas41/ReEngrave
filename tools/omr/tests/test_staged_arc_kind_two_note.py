@@ -219,8 +219,76 @@ class TestTheControlsThatMustNotChange(unittest.TestCase):
         (v,) = _decide(log, arc)
         self.assertEqual(v.value, "tie")
 
-    def test_a_chord_at_an_end_is_not_judged(self):
-        """Which member does the arc leave? The rule has no evidence."""
+    def test_a_chord_end_with_NO_same_pitch_pairing_is_not_called_a_slur(self):
+        """Chord to chord, every DETECTED pairing a different pitch. The
+        partner may be a note nobody detected (fused or doubled boxes), so the
+        slur direction does not fire at a chord -- the class stands. (The
+        first version slurred tied chords: Brahms p0 bar 3.)"""
+        for cls in ("tie", "slur"):
+            with self.subTest(cls=cls):
+                log = Log()
+                _cells(log, 2)
+                for gi, (x, step) in enumerate(((40.0, 4), (40.0, 9),
+                                                (120.0, 6), (120.0, 8))):
+                    _head(log, 0, gi, x, step)
+                arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls=cls)
+                (v,) = _decide(log, arc)
+                self.assertEqual(v.value, cls)
+                self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]
+                                 ["relation"], "chord_no_same_pitch")
+
+    def test_the_positive_control_single_heads_a_step_apart_ARE_a_slur(self):
+        log = Log()
+        _two_heads(log, 4, 6, cls="tie")
+        a = R.glyph(0, 0, 0, 0, 5)
+        (v,) = _decide(log, a)
+        self.assertEqual(v.value, "slur")
+
+    def test_a_chord_end_with_one_member_UNREAD_does_not_prove_no_pairing(self):
+        """The unread member may be the partner: the class stands."""
+        log = Log()
+        _cells(log, 2)
+        _head(log, 0, 0, 40.0, 4)
+        _head(log, 0, 1, 40.0, 9, read=False)
+        _head(log, 0, 2, 120.0, 6)
+        _head(log, 0, 3, 120.0, 8)
+        arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls="tie")
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.value, "tie")
+        self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]["relation"],
+                         "unread")
+
+    def test_a_tied_chord_arc_nearest_the_OTHER_notes_is_still_a_tie(self):
+        """Sean 2026-10-09 (litolff_02 / litolff_03 tiles): a two-note chord
+        tied across the barline, the arc printed nearest one note at each end
+        but those two are a step apart. The OTHER pair is one pitch, and
+        "if they are close to note heads that are the same it is a tie"."""
+        log = Log()
+        _cells(log, 2)
+        for gi, (x, step) in enumerate(((40.0, 4), (40.0, 9), (120.0, 5), (120.0, 9))):
+            _head(log, 0, gi, x, step)
+        arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls="tie")
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.value, "tie")
+        two = v.detail["grammar"]["tie_slur_rule"]["two_note"]
+        self.assertEqual(two["relation"], "same")
+        self.assertEqual(two["pairs_at_one_pitch"], 1)
+
+    def test_the_same_chord_tie_across_a_BARLINE_half_arc(self):
+        """The litolff_02 shape: the arc is the right half of a tie cut at the
+        barline, the heads in the next bar are a two-note chord."""
+        log = Log()
+        _cells(log, 3)
+        for gi, (x, step) in enumerate(((150.0, 4), (150.0, 9))):
+            _head(log, 0, gi, x, step)
+        for gi, (x, step) in enumerate(((230.0, 5), (230.0, 9))):
+            _head(log, 1, gi, x, step)
+        h1 = _arc(log, 0, 8, 165.0, 200.0, y0=109.0, y1=115.0, cls="tie")
+        h2 = _arc(log, 1, 8, 200.0, 222.0, y0=109.0, y1=115.0, cls="tie")
+        v1, v2 = _decide(log, h1, h2)
+        self.assertEqual((v1.value, v2.value), ("tie", "tie"))
+
+    def test_a_chord_member_at_one_pitch_makes_a_SLUR_class_a_tie(self):
         log = Log()
         _cells(log, 2)
         _head(log, 0, 0, 40.0, 4)
@@ -228,9 +296,8 @@ class TestTheControlsThatMustNotChange(unittest.TestCase):
         _head(log, 0, 2, 120.0, 4)
         arc = _arc(log, 0, 5, 55.0, 115.0, cls="slur")
         (v,) = _decide(log, arc)
-        self.assertEqual(v.value, "slur")
-        self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]["why"],
-                         "chord_or_second_voice_at_an_end")
+        self.assertEqual(v.value, "tie")
+        self.assertTrue(v.detail["grammar"]["tie_slur_rule"]["two_note"]["chord"])
 
     def test_a_sliver_is_not_judged(self):
         log = Log()
@@ -384,9 +451,9 @@ class TestStackedArcs(unittest.TestCase):
                          "above")
 
     def test_below_the_notes_the_arc_NEARER_the_heads_is_the_tie(self):
-        """CONVENTION ASSUMED, NOT CONFIRMED (Sean's sentence says 'bottom');
-        an engraved tie hugs its heads. This test pins what is ASSUMED so a
-        confirmation or a correction from Sean is one line."""
+        """CONFIRMED by Sean 2026-10-09 (the two stacked-below tiles, both
+        'A tie, B slur'): the arc nearer the noteheads is the tie, which
+        under the notes is the UPPER of the two arcs."""
         v_near, v_far = self._stack("slur", "tie", below=True)
         self.assertEqual((v_near.value, v_far.value), ("tie", "slur"))
         self.assertEqual(v_near.detail["grammar"]["tie_slur_rule"]["stack"]["side"],

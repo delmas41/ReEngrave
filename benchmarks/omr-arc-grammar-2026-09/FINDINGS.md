@@ -927,3 +927,49 @@ code's per-arc rows (`2.75-*-old.rows.json`: the old code's), so every figure in
 * Not measured: EXPORT. Only the first two stages were run, per Sean's
   2026-09-30 instruction; `adjudicate_tie_pair` pairs a reclassified tie
   (tested), and whether the file then carries fewer edits is unmeasured.
+
+
+### 16.8 Sean judged the 12 tiles (2026-10-09, `out/print/2.75-review/answers.json`) -- and the chord fix
+
+Single arcs **8 of 10 right**; both stacked-below pairs **right** ("A tie, B
+slur": the arc NEARER the noteheads is the tie -- the convention is now
+CONFIRMED, not assumed). The two wrong: `litolff_02` and `litolff_03`, both
+TIES -- a two-note chord tied across a barline, which the rule made slurs.
+Measured on the records: at each end the detector had fused the chord into one
+tall box (1.5-1.65 head heights) and/or refused the second head as a
+`stacked_head_duplicate`; the arc was paired with the one head left, a step
+away from the one at the other end.
+
+Sean, judging `litolff_05`: *"as a rule, regardless of where the ties are and
+if they are close to note heads that are the same it is a tie"*. Built so:
+
+* an END is a column: every usable head in the column of the nearest head
+  (chord members, a unison, another voice), plus the boxes refused as a
+  DUPLICATE of a head (the ink is a real head's) and the two head-sized ends of
+  a box taller than 1.4 head heights (`TALL_BOX_HEAD_HEIGHTS`, fused heads);
+  a pairing at ONE pitch anywhere among them is a TIE (a half-box has no step,
+  so its height alone can prove SAME, never DIFFERENT);
+* different pitch -> SLUR fires only when no same-pitch pairing exists AND each
+  end is a single head. At a chord end with no same-pitch pairing the class
+  STANDS (`relation: chord_no_same_pitch`): the first version of this fix
+  slurred tied chords on Brahms p0 bar 3 (a missing partner), caught in the
+  crops before it was kept. Exception kept: an arc over 3+ onsets whose ends
+  share no pitch is still a slur (a tie never skips a note);
+* the stack rule skips chord ends (a tied chord prints one tie per note).
+
+Result on the SAME 12 tiles after the fix, on a fresh small re-gather of the
+merged tree (main f93f41d9 incl. 2.72 / 2.73 / 2.68): **single arcs 10 of 10,
+stacked pairs 2 of 2** (in-sample: two of the ten were the cases the fix was
+written for). Sean's hand-labelled Brahms page, 61 matched truth boxes: **55
+right** (before this fix 54; before 2.75, 48): truth tie -> ours tie 24
+(was 23), the only arc that got worse mid-fix (a truth slur over chord ends) is
+back to slur. Changed vs the detector on the replay of the base records:
+Brahms 98 (81 slur->tie, 14 tie->slur, 3 abstain), Litolff 75 (64, 8, 3);
+the extra slur->tie flips over the first version are tied chords (34
+Litolff, 15 Brahms; sampled by eye). Fast tier 6,719 passed; `check` 193 (the merge itself moved `reach` 22 -> 23; this lane adds no
+quantity).
+
+Open: `adjudicate_tie_pair` still pairs only single same-position heads, so a
+tie recognised through a duplicate or a half-box abstains `no_pair_at_one_
+position` there -- the kind is right, the `<tied>` pairing for these chord
+ties is unwritten (EXPORT unmeasured).

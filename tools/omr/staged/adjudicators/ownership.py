@@ -2233,6 +2233,13 @@ STACK_MAX_GAP_SPACES = 4.0
 #: slivers (0.45 and 0.66 widths -- staff-line ink, not arcs) and recorded with
 #: every decision (`arc_width_widths`, `start_dx_widths`, `stop_dx_widths`).
 ARC_MIN_WIDTH_HEADS = 1.5
+
+#: A head box taller than this many average head heights is two heads fused
+#: (a second a step apart, merged by a thick scan): its centre is neither
+#: head's, so its two head-sized ends are offered as candidate partners.
+#: NOT swept; the two tiles Sean judged (litolff_02 / litolff_03) have boxes
+#: 1.5 and 1.65 head heights tall, single heads 0.9-1.1.
+TALL_BOX_HEAD_HEIGHTS = 1.4
 ARC_END_MAX_DX_HEADS = 1.5
 
 #: A printed accidental glyph with no owner counts as "possibly this head's"
@@ -2331,20 +2338,50 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
                            "crosses_barline": S[3] != E[3],
                            "half_arc": ("left" if cut_l else
                                         "right" if cut_r else None)}
-    # ⚠️ ONE HEAD AT EACH END. A second candidate in the same column (a chord
-    # member, a unison, another voice) makes "the note the arc leaves" a
-    # choice this rule has no evidence to make.
-    for name, side, chosen, edge in (("start", lefts, hs, fs.ax0),
-                                     ("stop", rights, he, fs.ax1)):
+    # ⚠️ AN END IS A COLUMN, NOT A HEAD (Sean, 2026-10-09, judging the
+    # litolff_02 / litolff_03 tiles -- two-note chords tied across a barline
+    # that the first version read as slurs by pairing the arc with the OTHER
+    # note of the chord at one end): *"as a rule, regardless of where the ties
+    # are and if they are close to note heads that are the same it is a tie"*.
+    # Every usable head in the column of each end's nearest head (a chord
+    # member, a unison, another voice) is a candidate partner, and a pairing
+    # at one pitch ANYWHERE among them is a tie. The different-pitch -> slur
+    # direction below may fire only when NO pairing at one pitch exists.
+    def _column(chosen):
+        """Every candidate partner at one end: the usable heads in its column
+        (`head`), the boxes refused as a DUPLICATE of a head (`dup` -- the ink
+        is a real head's, only its box was a second drawing of it), and the
+        two head-sized ends of a box TALLER than a head (`half` -- two heads
+        a step apart fused into one box, so its centre is neither head's).
+        A `dup` carries its own position row; a `half` has none, so it can
+        PROVE a same-pitch pairing (by height alone) and never a different
+        one."""
         tol = chosen[4] * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
-        for t in side:
-            if t[2].id == chosen[0].id:
+        out_c = []
+        for t in fs.heads:
+            if t[1] != chosen[1] or abs(t[2] - chosen[2]) > tol * 1.5:
                 continue
-            xc = edge - t[0] if name == "start" else edge + t[0]
-            if abs(xc - chosen[2]) <= tol:
-                out.update(evaluated=False,
-                           why="chord_or_second_voice_at_an_end")
-                return out
+            if t[0].id == chosen[0].id or fs.usable(t[0]):
+                if abs(t[2] - chosen[2]) <= tol:
+                    out_c.append((t, "head"))
+                if t[5] > TALL_BOX_HEAD_HEIGHTS * fs.avg_h:
+                    for yc in (t[3] - t[5] / 2.0 + fs.avg_h / 2.0,
+                               t[3] + t[5] / 2.0 - fs.avg_h / 2.0):
+                        out_c.append(((t[0], t[1], t[2], yc, t[4], fs.avg_h),
+                                      "half"))
+                continue
+            nv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=t[0].subject)
+            if (nv is not None and nv.outcome is Outcome.DECIDED
+                    and nv.value is True
+                    and nv.reason in ("stacked_head_duplicate",
+                                      "notehead_is_a_duplicate_box")):
+                out_c.append((t, "dup"))
+        return out_c
+
+    col_s, col_e = _column(hs), _column(he)
+    out["start_column"] = sum(1 for c in col_s if c[1] == "head")
+    out["stop_column"] = sum(1 for c in col_e if c[1] == "head")
+    out["chord"] = len(col_s) > 1 or len(col_e) > 1
     out["start_dx_widths"] = (None if cut_l else round(S[0] / hs[4], 2))
     out["stop_dx_widths"] = (None if cut_r else round(E[0] / he[4], 2))
     out["arc_width_widths"] = round((fs.ax1 - fs.ax0) / hs[4], 2)
@@ -2363,31 +2400,82 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
             return out
     out["between"] = bool(fs.head_between(S[3], hs[2], E[3], he[2],
                                           (S[2].id, E[2].id)))
-    s_step, s_src = _head_step(ev, S[2])
-    e_step, e_src = _head_step(ev, E[2])
-    out.update(start_step=s_step, stop_step=e_step,
-               start_step_source=s_src, stop_step_source=e_src,
-               dy_spaces=round(abs(hs[3] - he[3]) / fs.avg_h, 3))
     limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
-    near = out["dy_spaces"] <= limit
-    if s_step is None or e_step is None:
-        out["relation"] = "unread"
-    elif s_step == e_step:
-        out["relation"] = "same" if near else "conflict"
+    def _step_of(c):
+        return (None, "tall_box_half") if c[1] == "half" else _head_step(ev, c[0][0])
+
+    pairs = []
+    for ca in col_s:
+        for cb in col_e:
+            a, b = ca[0], cb[0]
+            sa, sb = _step_of(ca)[0], _step_of(cb)[0]
+            dy = abs(a[3] - b[3]) / fs.avg_h
+            near = dy <= limit
+            extra = "half" in (ca[1], cb[1])
+            if extra:
+                # no step for a half-box: height alone can prove SAME, never
+                # DIFFERENT
+                rel = "same" if near else "skip"
+            elif sa is None or sb is None:
+                rel = "unread"
+            elif sa == sb:
+                rel = "same" if near else "conflict"
+            else:
+                rel = "different" if not near else "conflict"
+            acc = None
+            if rel == "same":
+                acc_b = _accidental_state(ev, b)
+                acc_a = acc_b if a[1] == b[1] else _accidental_state(ev, a)
+                if a[1] == b[1]:
+                    acc = ("unchanged" if acc_b == "none" else
+                           "printed" if acc_b == "printed" else "unknown")
+                else:
+                    acc = ("unchanged" if acc_b == acc_a == "none" else
+                           "printed" if "printed" in (acc_b, acc_a)
+                           else "unknown")
+            pairs.append((dy, rel, acc, ca, cb, sa, sb))
+    same = [p for p in pairs if p[1] == "same"]
+    proved = [p for p in same if p[2] == "unchanged"]
+    if proved:
+        best, relation, accidental = min(proved, key=lambda p: p[0]), "same", "unchanged"
+    elif same:
+        best = min(same, key=lambda p: p[0])
+        relation = "same"
+        accidental = ("printed" if all(p[2] == "printed" for p in same)
+                      else "unknown")
+    elif (pairs and len(col_s) == 1 and len(col_e) == 1
+          and all(p[1] == "different" for p in pairs)):
+        best = min(pairs, key=lambda p: p[0])
+        relation, accidental = "different", None
+    elif pairs and all(p[1] in ("different", "skip") for p in pairs) \
+            and any(p[1] == "different" for p in pairs):
+        # ⚠️ NO SAME-PITCH PAIRING AMONG THE HEADS WE FOUND, but an end is a
+        # chord (or a fused / doubled box): the partner may be a note nobody
+        # detected (the first crops of this reading made slurs of tied
+        # chords, Brahms p0 bar 3 among them). It is a tie when a pair at one
+        # pitch exists; it is NOT thereby a slur -- the class stands.
+        best = min((p for p in pairs if p[1] == "different"), key=lambda p: p[0])
+        relation, accidental = "chord_no_same_pitch", None
     else:
-        out["relation"] = "different" if not near else "conflict"
-    if out["relation"] == "same":
-        acc_e = _accidental_state(ev, he)
-        acc_s = acc_e if S[3] == E[3] else _accidental_state(ev, hs)
-        if S[3] == E[3]:
-            out["accidental"] = ("unchanged" if acc_e == "none" else
-                                 "printed" if acc_e == "printed" else "unknown")
-        else:
-            out["accidental"] = ("unchanged" if acc_e == acc_s == "none" else
-                                 "printed" if "printed" in (acc_e, acc_s)
-                                 else "unknown")
-        out["stop_accidental"] = acc_e
-    out["_heads"] = (hs[3], he[3], hs[4])
+        # ⚠️ "no same-pitch pairing exists" is only provable when EVERY head
+        # in both columns was read; one unread head can be the partner.
+        best = min(pairs, key=lambda p: p[0])
+        relation = ("unread" if any(p[1] == "unread" for p in pairs)
+                    else "conflict")
+        accidental = None
+    dy, _rel, _acc, ca, cb, sa, sb = best
+    a, b = ca[0], cb[0]
+    out.update(start=a[0].subject.to_key(), stop=b[0].subject.to_key(),
+               start_step=sa, stop_step=sb,
+               start_step_source=_step_of(ca)[1],
+               stop_step_source=_step_of(cb)[1],
+               start_candidate=ca[1], stop_candidate=cb[1],
+               dy_spaces=round(dy, 3), relation=relation,
+               pairs_at_one_pitch=len(same))
+    if relation == "same":
+        out["accidental"] = accidental
+        out["stop_accidental"] = _accidental_state(ev, b)
+    out["_heads"] = (a[3], b[3], a[4])
     return out
 
 
@@ -2403,7 +2491,7 @@ def _two_note_verdict(kind: str, tn: Dict[str, Any]
         # (a tie joins one pitch); SAME ends prove nothing -- C D C under a
         # slur, or a tie with another voice's note between -- so the detector
         # stands. A slur over three notes is a slur already.
-        if rel == "different" and kind == "tie":
+        if rel in ("different", "chord_no_same_pitch") and kind == "tie":
             return "slur", "three_or_more_notes_ends_differ"
         return None, None
     if rel == "different":
@@ -2426,10 +2514,14 @@ def _stack_reading(ev: Evidence, arc: Any, fs: "_Flank",
     DISJOINT in y (overlapping boxes are a duplicate detection, not a stack),
     both on the same side of the heads. `role` is `nearer` / `farther` than the
     other arc to the heads. Sean: above the notes the lower is the tie; below
-    them the tie is taken to be the one nearer the heads (CONVENTION ASSUMED,
-    NOT CONFIRMED -- an engraved tie hugs its heads).
+    them the tie is the one nearer the heads (CONFIRMED by Sean 2026-10-09 on
+    the two stacked-below tiles: "A tie, B slur" -- the arc NEARER the
+    noteheads is the tie, the other the slur).
+
+    A chord at either end is not a stack (tied chords print one arc per note,
+    each its own tie).
     """
-    if not tn.get("evaluated"):
+    if not tn.get("evaluated") or tn.get("chord"):
         return None
     y_s, y_e, w = tn["_heads"]
     head_yc = (y_s + y_e) / 2.0
@@ -2767,6 +2859,7 @@ class _Flank:
     rights: Any = None
     counts: Any = None
     head_between: Any = None
+    usable: Any = None
 
 
 def _flank_search(ev: Evidence, arc: Any) -> "_Flank":
@@ -2944,7 +3037,7 @@ def _flank_search(ev: Evidence, arc: Any) -> "_Flank":
     return _Flank(ax0=ax0, ay0=ay0, ax1=ax1, ay1=ay1, arc_yc=arc_yc,
                   home=home, cell_index=cell_index, heads=heads, avg_h=avg_h,
                   lefts=lefts, rights=rights, counts=counts,
-                  head_between=head_between)
+                  head_between=head_between, usable=usable)
 
 @decision(
     quantity=Q.TIE_PAIR,
