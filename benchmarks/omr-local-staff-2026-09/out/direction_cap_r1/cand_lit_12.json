@@ -1,0 +1,128 @@
+[
+ {
+  "staff": 0,
+  "measure": 0,
+  "bbox": [
+   527,
+   512,
+   622,
+   535
+  ],
+  "w_sp": 6.0,
+  "h_sp": 1.5,
+  "n": 6,
+  "placement": "below",
+  "surya": "CTEBC.",
+  "tess": "CTesC.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 4,
+  "measure": 4,
+  "bbox": [
+   1082,
+   1065,
+   1181,
+   1087
+  ],
+  "w_sp": 6.3,
+  "h_sp": 1.4,
+  "n": 5,
+  "placement": "below",
+  "surya": "",
+  "tess": "Crasc.",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 12,
+  "measure": 9,
+  "bbox": [
+   2023,
+   2308,
+   2077,
+   2335
+  ],
+  "w_sp": 3.4,
+  "h_sp": 1.7,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "aa",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 13,
+  "measure": 11,
+  "bbox": [
+   2338,
+   2432,
+   2398,
+   2451
+  ],
+  "w_sp": 3.8,
+  "h_sp": 1.2,
+  "n": 3,
+  "placement": "below",
+  "surya": "",
+  "tess": "5 om i",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 14,
+  "measure": 10,
+  "bbox": [
+   2155,
+   2563,
+   2237,
+   2590
+  ],
+  "w_sp": 5.2,
+  "h_sp": 1.7,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "tt tl",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 17,
+  "measure": 12,
+  "bbox": [
+   2541,
+   2906,
+   2608,
+   2934
+  ],
+  "w_sp": 4.3,
+  "h_sp": 1.8,
+  "n": 4,
+  "placement": "below",
+  "surya": "",
+  "tess": "",
+  "surya_ok": null,
+  "tess_ok": null
+ },
+ {
+  "staff": 21,
+  "measure": 0,
+  "bbox": [
+   509,
+   3505,
+   609,
+   3535
+  ],
+  "w_sp": 6.3,
+  "h_sp": 1.9,
+  "n": 7,
+  "placement": "below",
+  "surya": "Bassi.",
+  "tess": "Basal.",
+  "surya_ok": null,
+  "tess_ok": null
+ }
+]

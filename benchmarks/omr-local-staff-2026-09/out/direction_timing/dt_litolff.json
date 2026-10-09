@@ -1,0 +1,330 @@
+{
+ "t_surya_worker_session_open": 5.031172292000001,
+ "session_opened": true,
+ "spacing_px": 15.75,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 0.033390959000001885,
+ "t_default_readers(incl page_is_engraved)": 0.06669624999999968,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 6,
+ "t_crop_upscale": 0.0008682919999998262,
+ "crop_shapes_median_hw": [
+  130,
+  392
+ ],
+ "crop_px_total": 391760,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.3294692499999954,
+ "t_surya_second_call_1crop": 0.11583666599999987,
+ "dummy_read": [
+  ""
+ ],
+ "full_wall_read_directions": 2.6553329170000026,
+ "full_surya_calls": [
+  [
+   6,
+   1.6756894589999973
+  ]
+ ],
+ "full_surya_total": 1.6756894589999973,
+ "full_tess_total_batch": 0.9446285000000003,
+ "full_n_read": 6,
+ "full_n_accepted": 0,
+ "full_rejected_texts": [
+  "7",
+  "a.2.",
+  "m /4",
+  "Tt",
+  "\u00bb dolce",
+  "="
+ ],
+ "full_conflicts": [],
+ "full_by_reader": {},
+ "t_lexicon_per_pass": 4.84165000003145e-06,
+ "lexicon_calls_per_pass": 12,
+ "full_words": [],
+ "raw_texts": [
+  {
+   "cand": 0,
+   "surya": "",
+   "tess": "7"
+  },
+  {
+   "cand": 1,
+   "surya": "",
+   "tess": "a.2."
+  },
+  {
+   "cand": 2,
+   "surya": "",
+   "tess": "m /4"
+  },
+  {
+   "cand": 3,
+   "surya": "",
+   "tess": "Tt"
+  },
+  {
+   "cand": 4,
+   "surya": "",
+   "tess": "\u00bb dolce"
+  },
+  {
+   "cand": 5,
+   "surya": "",
+   "tess": "="
+  }
+ ],
+ "geometry": [
+  {
+   "cand": 0,
+   "w_sp": 3.365079365079365,
+   "h_sp": 1.4603174603174602,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 1,
+   "w_sp": 2.984126984126984,
+   "h_sp": 1.5238095238095237,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 2,
+   "w_sp": 4.0,
+   "h_sp": 0.8888888888888888,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 3,
+   "w_sp": 4.253968253968254,
+   "h_sp": 0.8888888888888888,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 4,
+   "w_sp": 9.015873015873016,
+   "h_sp": 2.4761904761904763,
+   "n_comp": 6,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 5,
+   "w_sp": 2.4761904761904763,
+   "h_sp": 0.8888888888888888,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  }
+ ],
+ "tess_calls": {
+  "n": 6,
+  "total": 0.9395756249999963,
+  "mean": 0.15659593749999937,
+  "max": 0.18046645900000158
+ },
+ "A_tess_only": {
+  "time_read_s": 0.9395756249999963,
+  "lexicon_s": 2.420825000015725e-06,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "C_surya_only": {
+  "time_read_s": 1.2705856250000096,
+  "per_crop_mean_s": 0.21176427083333493,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "C_vs_full_surya_texts_identical": 6,
+ "B_tess_then_surya": {
+  "n_surya_crops": 6,
+  "time_read_s": 2.255582292000007,
+  "tess_s": 0.9395756249999963,
+  "surya_s": 1.3160066670000106,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "E_size_test": {
+  "rule": "1.0<=w<=20 sp, 0.45<=h<=3.0 sp, n_components>=2",
+  "kept": 6,
+  "dropped": 0,
+  "dropped_accepted_in_full": []
+ },
+ "E_size_filtered_full_readers": {
+  "time_read_s": 2.2316848730000203,
+  "surya_s": 1.289682875000011,
+  "tess_s": 0.9420019980000092,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "EB_size_filtered_tess_then_surya": {
+  "n_surya_crops": 6,
+  "time_read_s": 2.230507165000006,
+  "tess_s": 0.9420019980000092,
+  "surya_s": 1.2885051669999967,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "EA_size_filtered_tess_only": {
+  "time_read_s": 0.9395756249999963,
+  "n_words": 0,
+  "same": 0,
+  "missing": [],
+  "extra": []
+ },
+ "D_n_strips": 5,
+ "D_tess_strips": {
+  "time_s": 0.7141110000000026,
+  "n_calls": 5,
+  "strips": [
+   {
+    "staff": 3,
+    "placement": "below",
+    "n_cands": 2,
+    "strip_w_px": 1098,
+    "raw": [
+     "wtf",
+     "|",
+     "3.2"
+    ],
+    "words": []
+   },
+   {
+    "staff": 5,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 103,
+    "raw": [],
+    "words": []
+   },
+   {
+    "staff": 6,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 107,
+    "raw": [
+     "TT."
+    ],
+    "words": []
+   },
+   {
+    "staff": 7,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 182,
+    "raw": [
+     "dolce"
+    ],
+    "words": [
+     "dolce"
+    ]
+   },
+   {
+    "staff": 8,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 79,
+    "raw": [],
+    "words": []
+   }
+  ]
+ },
+ "D_surya_strips": {
+  "time_s": 1.8415437499999996,
+  "n_calls": 5,
+  "strips": [
+   {
+    "staff": 3,
+    "placement": "below",
+    "raw": "2.2",
+    "words": []
+   },
+   {
+    "staff": 5,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 6,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 7,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 8,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   }
+  ]
+ },
+ "D_full_bag_per_band": {},
+ "surya_calls_all": [
+  {
+   "label": "warmup-1st-call-on-open-session",
+   "n_crops": 1,
+   "s": 0.3294692499999954
+  },
+  {
+   "label": "warmup-2nd-call",
+   "n_crops": 1,
+   "s": 0.11583666599999987
+  },
+  {
+   "label": "C-all-crops",
+   "n_crops": 6,
+   "s": 1.2705856250000096
+  },
+  {
+   "label": "B-lexicon-failures",
+   "n_crops": 6,
+   "s": 1.3160066670000106
+  },
+  {
+   "label": "E-survivors",
+   "n_crops": 6,
+   "s": 1.289682875000011
+  },
+  {
+   "label": "E+B-lexicon-failures",
+   "n_crops": 6,
+   "s": 1.2885051669999967
+  },
+  {
+   "label": "D-strips",
+   "n_crops": 5,
+   "s": 1.841517207999999
+  }
+ ],
+ "page_experiment_wall_s": 12.956020582999997,
+ "tag": "litolff-p3",
+ "gather_wall_total_incl_experiment": 67.317760041
+}

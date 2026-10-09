@@ -1,0 +1,822 @@
+{
+ "t_surya_worker_session_open": 1.0103923750000001,
+ "session_opened": true,
+ "spacing_px": 27.5,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 0.117126374999998,
+ "t_default_readers(incl page_is_engraved)": 0.07679991700000244,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 20,
+ "t_crop_upscale": 0.0056042909999973745,
+ "crop_shapes_median_hw": [
+  183,
+  609
+ ],
+ "crop_px_total": 2265171,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.22431283299999905,
+ "t_surya_second_call_1crop": 0.12964954100000625,
+ "dummy_read": [
+  ""
+ ],
+ "full_wall_read_directions": 9.944203750000014,
+ "full_surya_calls": [
+  [
+   20,
+   6.260737750000004
+  ]
+ ],
+ "full_surya_total": 6.260737750000004,
+ "full_tess_total_batch": 3.5526937919999995,
+ "full_n_read": 18,
+ "full_n_accepted": 8,
+ "full_rejected_texts": [
+  "aT",
+  "> &",
+  ", Pizz.\u2014",
+  "plzz.",
+  "plzz.",
+  "p1zz.",
+  "ain",
+  "CTESC.",
+  "CTESC.",
+  "pp",
+  "CTeS\u20ac."
+ ],
+ "full_conflicts": [],
+ "full_by_reader": {
+  "surya": 8
+ },
+ "t_lexicon_per_pass": 4.610625000012192e-05,
+ "lexicon_calls_per_pass": 40,
+ "full_words": [
+  {
+   "cand": 6,
+   "staff": 9,
+   "measure": 5,
+   "placement": "below",
+   "reader": "surya",
+   "text": "pizz."
+  },
+  {
+   "cand": 7,
+   "staff": 10,
+   "measure": 1,
+   "placement": "below",
+   "reader": "surya",
+   "text": "unis."
+  },
+  {
+   "cand": 8,
+   "staff": 10,
+   "measure": 1,
+   "placement": "below",
+   "reader": "surya",
+   "text": "pizz."
+  },
+  {
+   "cand": 9,
+   "staff": 10,
+   "measure": 5,
+   "placement": "below",
+   "reader": "surya",
+   "text": "pizz."
+  },
+  {
+   "cand": 12,
+   "staff": 17,
+   "measure": 4,
+   "placement": "below",
+   "reader": "surya",
+   "text": "dim."
+  },
+  {
+   "cand": 13,
+   "staff": 21,
+   "measure": 0,
+   "placement": "below",
+   "reader": "surya",
+   "text": "arco"
+  },
+  {
+   "cand": 15,
+   "staff": 22,
+   "measure": 4,
+   "placement": "below",
+   "reader": "surya",
+   "text": "dim."
+  },
+  {
+   "cand": 17,
+   "staff": 23,
+   "measure": 1,
+   "placement": "below",
+   "reader": "surya",
+   "text": "Cresc."
+  }
+ ],
+ "raw_texts": [
+  {
+   "cand": 0,
+   "surya": "",
+   "tess": ""
+  },
+  {
+   "cand": 1,
+   "surya": "",
+   "tess": "aT"
+  },
+  {
+   "cand": 2,
+   "surya": "",
+   "tess": "> &"
+  },
+  {
+   "cand": 3,
+   "surya": "",
+   "tess": ", Pizz.\u2014"
+  },
+  {
+   "cand": 4,
+   "surya": "",
+   "tess": "plzz."
+  },
+  {
+   "cand": 5,
+   "surya": "",
+   "tess": "plzz."
+  },
+  {
+   "cand": 6,
+   "surya": "pizz.",
+   "tess": "PIZZ"
+  },
+  {
+   "cand": 7,
+   "surya": "unis.",
+   "tess": "unis."
+  },
+  {
+   "cand": 8,
+   "surya": "pizz.",
+   "tess": "plzz."
+  },
+  {
+   "cand": 9,
+   "surya": "pizz.",
+   "tess": "p1Zz."
+  },
+  {
+   "cand": 10,
+   "surya": "",
+   "tess": "p1zz."
+  },
+  {
+   "cand": 11,
+   "surya": "",
+   "tess": "ain"
+  },
+  {
+   "cand": 12,
+   "surya": "dim.",
+   "tess": "adem."
+  },
+  {
+   "cand": 13,
+   "surya": "arco",
+   "tess": "arco"
+  },
+  {
+   "cand": 14,
+   "surya": "CTESC.",
+   "tess": "CTESC."
+  },
+  {
+   "cand": 15,
+   "surya": "dim.",
+   "tess": "dim."
+  },
+  {
+   "cand": 16,
+   "surya": "pp",
+   "tess": ""
+  },
+  {
+   "cand": 17,
+   "surya": "Cresc.",
+   "tess": "CTESC,"
+  },
+  {
+   "cand": 18,
+   "surya": "",
+   "tess": ""
+  },
+  {
+   "cand": 19,
+   "surya": "",
+   "tess": "CTeS\u20ac."
+  }
+ ],
+ "geometry": [
+  {
+   "cand": 0,
+   "w_sp": 4.509090909090909,
+   "h_sp": 0.9090909090909091,
+   "n_comp": 3,
+   "placement": "above",
+   "accepted": false
+  },
+  {
+   "cand": 1,
+   "w_sp": 3.272727272727273,
+   "h_sp": 0.9090909090909091,
+   "n_comp": 4,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 2,
+   "w_sp": 2.5454545454545454,
+   "h_sp": 0.9818181818181818,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 3,
+   "w_sp": 7.2,
+   "h_sp": 1.8545454545454545,
+   "n_comp": 6,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 4,
+   "w_sp": 5.236363636363636,
+   "h_sp": 1.7454545454545454,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 5,
+   "w_sp": 4.363636363636363,
+   "h_sp": 1.4545454545454546,
+   "n_comp": 4,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 6,
+   "w_sp": 4.9818181818181815,
+   "h_sp": 1.6727272727272726,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 7,
+   "w_sp": 5.236363636363636,
+   "h_sp": 1.2363636363636363,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 8,
+   "w_sp": 5.090909090909091,
+   "h_sp": 1.6727272727272726,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 9,
+   "w_sp": 5.0181818181818185,
+   "h_sp": 1.3818181818181818,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 10,
+   "w_sp": 4.909090909090909,
+   "h_sp": 1.4545454545454546,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 11,
+   "w_sp": 2.6545454545454548,
+   "h_sp": 1.7818181818181817,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 12,
+   "w_sp": 5.236363636363636,
+   "h_sp": 1.8181818181818181,
+   "n_comp": 6,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 13,
+   "w_sp": 4.836363636363636,
+   "h_sp": 1.2,
+   "n_comp": 4,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 14,
+   "w_sp": 6.218181818181818,
+   "h_sp": 1.2727272727272727,
+   "n_comp": 7,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 15,
+   "w_sp": 4.654545454545454,
+   "h_sp": 1.8181818181818181,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 16,
+   "w_sp": 3.709090909090909,
+   "h_sp": 1.8909090909090909,
+   "n_comp": 3,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 17,
+   "w_sp": 6.0,
+   "h_sp": 1.2727272727272727,
+   "n_comp": 9,
+   "placement": "below",
+   "accepted": true
+  },
+  {
+   "cand": 18,
+   "w_sp": 7.818181818181818,
+   "h_sp": 1.3818181818181818,
+   "n_comp": 5,
+   "placement": "below",
+   "accepted": false
+  },
+  {
+   "cand": 19,
+   "w_sp": 6.109090909090909,
+   "h_sp": 1.2727272727272727,
+   "n_comp": 7,
+   "placement": "below",
+   "accepted": false
+  }
+ ],
+ "tess_calls": {
+  "n": 20,
+  "total": 3.5386762069999804,
+  "mean": 0.17693381034999903,
+  "max": 0.19531908300000111
+ },
+ "A_tess_only": {
+  "time_read_s": 3.5386762069999804,
+  "lexicon_s": 2.305312500006096e-05,
+  "n_words": 4,
+  "same": 4,
+  "missing": [
+   [
+    10,
+    1,
+    2084,
+    "pizz"
+   ],
+   [
+    10,
+    5,
+    4454,
+    "pizz"
+   ],
+   [
+    17,
+    4,
+    3683,
+    "dim"
+   ],
+   [
+    23,
+    1,
+    1747,
+    "cresc"
+   ]
+  ],
+  "extra": []
+ },
+ "C_surya_only": {
+  "time_read_s": 4.597749499999992,
+  "per_crop_mean_s": 0.2298874749999996,
+  "n_words": 8,
+  "same": 8,
+  "missing": [],
+  "extra": []
+ },
+ "C_vs_full_surya_texts_identical": 20,
+ "B_tess_then_surya": {
+  "n_surya_crops": 16,
+  "time_read_s": 7.833924789999983,
+  "tess_s": 3.5386762069999804,
+  "surya_s": 4.295248583000003,
+  "n_words": 8,
+  "same": 8,
+  "missing": [],
+  "extra": []
+ },
+ "E_size_test": {
+  "rule": "1.0<=w<=20 sp, 0.45<=h<=3.0 sp, n_components>=2",
+  "kept": 20,
+  "dropped": 0,
+  "dropped_accepted_in_full": []
+ },
+ "E_size_filtered_full_readers": {
+  "time_read_s": 9.00731870699991,
+  "surya_s": 5.475513333000009,
+  "tess_s": 3.5318053739999016,
+  "n_words": 8,
+  "same": 8,
+  "missing": [],
+  "extra": []
+ },
+ "EB_size_filtered_tess_then_surya": {
+  "n_surya_crops": 16,
+  "time_read_s": 7.6510176239999055,
+  "tess_s": 3.5318053739999016,
+  "surya_s": 4.119212250000004,
+  "n_words": 8,
+  "same": 8,
+  "missing": [],
+  "extra": []
+ },
+ "EA_size_filtered_tess_only": {
+  "time_read_s": 3.5386762069999804,
+  "n_words": 4,
+  "same": 4,
+  "missing": [
+   [
+    10,
+    1,
+    2084,
+    "pizz"
+   ],
+   [
+    10,
+    5,
+    4454,
+    "pizz"
+   ],
+   [
+    17,
+    4,
+    3683,
+    "dim"
+   ],
+   [
+    23,
+    1,
+    1747,
+    "cresc"
+   ]
+  ],
+  "extra": []
+ },
+ "D_n_strips": 13,
+ "D_tess_strips": {
+  "time_s": 2.328552166999998,
+  "n_calls": 13,
+  "strips": [
+   {
+    "staff": 0,
+    "placement": "above",
+    "n_cands": 1,
+    "strip_w_px": 194,
+    "raw": [],
+    "words": []
+   },
+   {
+    "staff": 0,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 160,
+    "raw": [],
+    "words": []
+   },
+   {
+    "staff": 5,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 140,
+    "raw": [
+     "aa"
+    ],
+    "words": []
+   },
+   {
+    "staff": 8,
+    "placement": "below",
+    "n_cands": 2,
+    "strip_w_px": 2644,
+    "raw": [
+     "pizz."
+    ],
+    "words": [
+     "pizz."
+    ]
+   },
+   {
+    "staff": 9,
+    "placement": "below",
+    "n_cands": 2,
+    "strip_w_px": 2604,
+    "raw": [
+     "i",
+     "\u00e9",
+     "D1ZZ"
+    ],
+    "words": []
+   },
+   {
+    "staff": 10,
+    "placement": "below",
+    "n_cands": 3,
+    "strip_w_px": 2581,
+    "raw": [
+     "a",
+     "\u201c",
+     "espr",
+     "plzz.",
+     "D1ZZ."
+    ],
+    "words": [
+     "espr"
+    ]
+   },
+   {
+    "staff": 11,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 205,
+    "raw": [],
+    "words": []
+   },
+   {
+    "staff": 14,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 143,
+    "raw": [],
+    "words": []
+   },
+   {
+    "staff": 17,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 214,
+    "raw": [
+     "arn."
+    ],
+    "words": []
+   },
+   {
+    "staff": 21,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 203,
+    "raw": [
+     "AFCO"
+    ],
+    "words": []
+   },
+   {
+    "staff": 22,
+    "placement": "below",
+    "n_cands": 3,
+    "strip_w_px": 2895,
+    "raw": [
+     "\u2014",
+     "dim",
+     "y",
+     "Ce"
+    ],
+    "words": [
+     "dim"
+    ]
+   },
+   {
+    "staff": 23,
+    "placement": "below",
+    "n_cands": 2,
+    "strip_w_px": 480,
+    "raw": [
+     "r",
+     "\u20ac",
+     "\u20ac8C."
+    ],
+    "words": []
+   },
+   {
+    "staff": 25,
+    "placement": "below",
+    "n_cands": 1,
+    "strip_w_px": 238,
+    "raw": [
+     "CTESC."
+    ],
+    "words": []
+   }
+  ]
+ },
+ "D_surya_strips": {
+  "time_s": 364.515215958,
+  "n_calls": 13,
+  "strips": [
+   {
+    "staff": 0,
+    "placement": "above",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 0,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 5,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 8,
+    "placement": "below",
+    "raw": "pizz. TRCO pizz.",
+    "words": [
+     "pizz.",
+     "pizz."
+    ]
+   },
+   {
+    "staff": 9,
+    "placement": "below",
+    "raw": "pizz  \n  espr  \n  espr  \n  espr  \n  pizz  \n \n \n  pizz  \n  espr  \n  espr  \n  espr  \n  pizz",
+    "words": [
+     "pizz espr",
+     "espr",
+     "espr pizz",
+     "pizz espr",
+     "espr",
+     "espr pizz"
+    ]
+   },
+   {
+    "staff": 10,
+    "placement": "below",
+    "raw": "espr espr espr espr unis. pizz. arco Dizz.",
+    "words": [
+     "espr",
+     "espr",
+     "espr",
+     "espr unis. pizz. arco"
+    ]
+   },
+   {
+    "staff": 11,
+    "placement": "below",
+    "raw": "pizz.",
+    "words": [
+     "pizz."
+    ]
+   },
+   {
+    "staff": 14,
+    "placement": "below",
+    "raw": "",
+    "words": []
+   },
+   {
+    "staff": 17,
+    "placement": "below",
+    "raw": "dim. dim. dim. dim. dim. dim. dim. dim.",
+    "words": [
+     "dim.",
+     "dim.",
+     "dim.",
+     "dim.",
+     "dim.",
+     "dim.",
+     "dim.",
+     "dim."
+    ]
+   },
+   {
+    "staff": 21,
+    "placement": "below",
+    "raw": "arco",
+    "words": [
+     "arco"
+    ]
+   },
+   {
+    "staff": 22,
+    "placement": "below",
+    "raw": "resc.  \n resc. f = _____ dim r p p",
+    "words": [
+     "dim"
+    ]
+   },
+   {
+    "staff": 23,
+    "placement": "below",
+    "raw": "C resc.",
+    "words": []
+   },
+   {
+    "staff": 25,
+    "placement": "below",
+    "raw": "CTESC. CTESC. CTESC. CTESC. CTESC.",
+    "words": []
+   }
+  ]
+ },
+ "D_full_bag_per_band": {
+  "9/below": [
+   "pizz"
+  ],
+  "10/below": [
+   "unis",
+   "pizz",
+   "pizz"
+  ],
+  "17/below": [
+   "dim"
+  ],
+  "21/below": [
+   "arco"
+  ],
+  "22/below": [
+   "dim"
+  ],
+  "23/below": [
+   "cresc"
+  ]
+ },
+ "surya_calls_all": [
+  {
+   "label": "warmup-1st-call-on-open-session",
+   "n_crops": 1,
+   "s": 0.22431283299999905
+  },
+  {
+   "label": "warmup-2nd-call",
+   "n_crops": 1,
+   "s": 0.12964954100000625
+  },
+  {
+   "label": "C-all-crops",
+   "n_crops": 20,
+   "s": 4.597749499999992
+  },
+  {
+   "label": "B-lexicon-failures",
+   "n_crops": 16,
+   "s": 4.295248583000003
+  },
+  {
+   "label": "E-survivors",
+   "n_crops": 20,
+   "s": 5.475513333000009
+  },
+  {
+   "label": "E+B-lexicon-failures",
+   "n_crops": 16,
+   "s": 4.119212250000004
+  },
+  {
+   "label": "D-strips",
+   "n_crops": 13,
+   "s": 364.515200333
+  }
+ ],
+ "page_experiment_wall_s": 403.131892125,
+ "tag": "brahms-p1",
+ "gather_wall_total_incl_experiment": 503.457948
+}

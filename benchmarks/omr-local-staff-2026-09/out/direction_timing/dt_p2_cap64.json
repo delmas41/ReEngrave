@@ -1,0 +1,135 @@
+{
+ "t_surya_worker_session_open": 1.025667291,
+ "session_opened": true,
+ "spacing_px": 15.75,
+ "scan_gate_would_fire": true,
+ "t_find_candidates": 0.031108291999998983,
+ "t_default_readers(incl page_is_engraved)": 0.07025279199999801,
+ "readers": [
+  "surya",
+  "tesseract"
+ ],
+ "n_candidates": 21,
+ "t_crop_upscale": 0.0031933750000021632,
+ "crop_shapes_median_hw": [
+  148,
+  540
+ ],
+ "crop_px_total": 1546480,
+ "resident_server_before": 92818,
+ "t_surya_first_call_1crop": 0.185541458000003,
+ "t_surya_second_call_1crop": 0.2209702500000006,
+ "dummy_read": [
+  ""
+ ],
+ "percrop_surya": [
+  {
+   "cand": 0,
+   "s": 0.1898913329999985,
+   "text": ""
+  },
+  {
+   "cand": 1,
+   "s": 0.2295144169999972,
+   "text": ""
+  },
+  {
+   "cand": 2,
+   "s": 0.9237569160000021,
+   "text": ""
+  },
+  {
+   "cand": 3,
+   "s": 0.18578075000000638,
+   "text": ""
+  },
+  {
+   "cand": 4,
+   "s": 0.15878299999999967,
+   "text": ""
+  },
+  {
+   "cand": 5,
+   "s": 0.2102518749999973,
+   "text": ""
+  },
+  {
+   "cand": 6,
+   "s": 0.22346850000000273,
+   "text": ""
+  },
+  {
+   "cand": 7,
+   "s": 0.20286633399999943,
+   "text": ""
+  },
+  {
+   "cand": 8,
+   "s": 0.20090420900000083,
+   "text": ""
+  },
+  {
+   "cand": 9,
+   "s": 0.9426722920000046,
+   "text": ""
+  },
+  {
+   "cand": 10,
+   "s": 0.2338327500000048,
+   "text": ""
+  },
+  {
+   "cand": 11,
+   "s": 0.2034337079999986,
+   "text": ""
+  },
+  {
+   "cand": 12,
+   "s": 0.9232762500000007,
+   "text": "CRESC. Page-Header"
+  },
+  {
+   "cand": 13,
+   "s": 0.5148917920000002,
+   "text": "cresc."
+  },
+  {
+   "cand": 14,
+   "s": 0.22442908300000397,
+   "text": ""
+  },
+  {
+   "cand": 15,
+   "s": 0.3349734170000005,
+   "text": "CTE8C."
+  },
+  {
+   "cand": 16,
+   "s": 0.22982662500000117,
+   "text": ""
+  },
+  {
+   "cand": 17,
+   "s": 0.4970756249999937,
+   "text": "CTESI."
+  },
+  {
+   "cand": 18,
+   "s": 0.1908844579999993,
+   "text": ""
+  },
+  {
+   "cand": 19,
+   "s": 0.32858291699999853,
+   "text": "Cresc."
+  },
+  {
+   "cand": 20,
+   "s": 0.957830959000006,
+   "text": "Cresc. Cresc. Cresc."
+  }
+ ],
+ "percrop_total": 8.106927210000016,
+ "tag": "p2cap",
+ "gather_wall_total_incl_experiment": 63.055635666
+}

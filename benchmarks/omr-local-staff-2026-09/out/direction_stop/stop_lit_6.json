@@ -1,0 +1,537 @@
+{
+ "tag": "lit_6",
+ "rows": [
+  {
+   "staff": 2,
+   "measure": 7,
+   "x": 1642,
+   "bbox": [
+    1642,
+    796,
+    1727,
+    825
+   ],
+   "w_sp": 6.25,
+   "cap": 57,
+   "tess": "TT",
+   "t_tess": 0.17,
+   "surya_guard": "",
+   "t_surya_guard": 0.38,
+   "surya_cap": "",
+   "t_surya_cap": 0.25
+  },
+  {
+   "staff": 3,
+   "measure": 6,
+   "x": 1491,
+   "bbox": [
+    1491,
+    912,
+    1586,
+    936
+   ],
+   "w_sp": 6.75,
+   "cap": 59,
+   "tess": "cr\u00e9sc.",
+   "t_tess": 0.27,
+   "surya_guard": "\u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421. \u0421\u0422\u0415\u0412\u0421.",
+   "t_surya_guard": 3.9,
+   "surya_cap": "\u0421\u0422\u0415\u0412\u0421.",
+   "t_surya_cap": 0.82
+  },
+  {
+   "staff": 5,
+   "measure": 5,
+   "x": 1300,
+   "bbox": [
+    1300,
+    1249,
+    1394,
+    1272
+   ],
+   "w_sp": 6.7,
+   "cap": 59,
+   "tess": "CTESC.",
+   "t_tess": 0.18,
+   "surya_guard": "cresc.",
+   "t_surya_guard": 0.41,
+   "surya_cap": "cresc.",
+   "t_surya_cap": 0.39
+  },
+  {
+   "staff": 6,
+   "measure": 5,
+   "x": 1300,
+   "bbox": [
+    1300,
+    1391,
+    1399,
+    1414
+   ],
+   "w_sp": 6.95,
+   "cap": 60,
+   "tess": "CT\u00e98C.",
+   "t_tess": 0.18,
+   "surya_guard": "CTEBC. CTEBC. CTEBC. CTEBC.",
+   "t_surya_guard": 2.69,
+   "surya_cap": "CTEBC.",
+   "t_surya_cap": 1.05
+  },
+  {
+   "staff": 6,
+   "measure": 6,
+   "x": 1480,
+   "bbox": [
+    1480,
+    1420,
+    1573,
+    1444
+   ],
+   "w_sp": 6.65,
+   "cap": 59,
+   "tess": "ST.",
+   "t_tess": 0.17,
+   "surya_guard": "",
+   "t_surya_guard": 0.33,
+   "surya_cap": "",
+   "t_surya_cap": 0.24
+  },
+  {
+   "staff": 7,
+   "measure": 0,
+   "x": 471,
+   "bbox": [
+    471,
+    1524,
+    563,
+    1559
+   ],
+   "w_sp": 6.6,
+   "cap": 58,
+   "tess": "Vel",
+   "t_tess": 0.3,
+   "surya_guard": "Vol. 1",
+   "t_surya_guard": 0.47,
+   "surya_cap": "Vol. 1",
+   "t_surya_cap": 0.42
+  },
+  {
+   "staff": 7,
+   "measure": 5,
+   "x": 1300,
+   "bbox": [
+    1300,
+    1530,
+    1395,
+    1553
+   ],
+   "w_sp": 6.75,
+   "cap": 59,
+   "tess": "Crese.",
+   "t_tess": 0.19,
+   "surya_guard": "Cresc.",
+   "t_surya_guard": 0.5,
+   "surya_cap": "Cresc.",
+   "t_surya_cap": 0.44
+  },
+  {
+   "staff": 7,
+   "measure": 11,
+   "x": 2307,
+   "bbox": [
+    2307,
+    1510,
+    2404,
+    1529
+   ],
+   "w_sp": 6.85,
+   "cap": 59,
+   "tess": "eS oe a",
+   "t_tess": 0.23,
+   "surya_guard": "",
+   "t_surya_guard": 0.33,
+   "surya_cap": "",
+   "t_surya_cap": 0.24
+  },
+  {
+   "staff": 8,
+   "measure": 0,
+   "x": 481,
+   "bbox": [
+    481,
+    1674,
+    665,
+    1720
+   ],
+   "w_sp": 11.2,
+   "cap": 77,
+   "tess": "Basso,y--",
+   "t_tess": 0.23,
+   "surya_guard": "Basso  pizze",
+   "t_surya_guard": 0.65,
+   "surya_cap": "Basso  pizze",
+   "t_surya_cap": 0.55
+  },
+  {
+   "staff": 8,
+   "measure": 5,
+   "x": 1302,
+   "bbox": [
+    1302,
+    1670,
+    1400,
+    1695
+   ],
+   "w_sp": 6.9,
+   "cap": 60,
+   "tess": "crese.",
+   "t_tess": 0.17,
+   "surya_guard": "Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc.",
+   "t_surya_guard": 2.45,
+   "surya_cap": "Cresc. Cresc. Cresc.",
+   "t_surya_cap": 1.06
+  },
+  {
+   "staff": 12,
+   "measure": 7,
+   "x": 1853,
+   "bbox": [
+    1853,
+    2395,
+    1887,
+    2413
+   ],
+   "w_sp": 3.7,
+   "cap": 47,
+   "tess": "lad",
+   "t_tess": 0.25,
+   "surya_guard": "",
+   "t_surya_guard": 0.32,
+   "surya_cap": "",
+   "t_surya_cap": 0.25
+  },
+  {
+   "staff": 12,
+   "measure": 9,
+   "x": 2118,
+   "bbox": [
+    2118,
+    2367,
+    2208,
+    2389
+   ],
+   "w_sp": 6.5,
+   "cap": 58,
+   "tess": "CTeSC",
+   "t_tess": 0.2,
+   "surya_guard": "",
+   "t_surya_guard": 0.31,
+   "surya_cap": "",
+   "t_surya_cap": 0.23
+  },
+  {
+   "staff": 13,
+   "measure": 9,
+   "x": 2117,
+   "bbox": [
+    2117,
+    2509,
+    2216,
+    2532
+   ],
+   "w_sp": 6.95,
+   "cap": 60,
+   "tess": "CTESC.",
+   "t_tess": 0.17,
+   "surya_guard": "Cresc. Cresc. Cresc. Cresc. Cresc. Cresc. Cresc.",
+   "t_surya_guard": 3.71,
+   "surya_cap": "Cresc. Cresc.",
+   "t_surya_cap": 1.05
+  },
+  {
+   "staff": 14,
+   "measure": 8,
+   "x": 1955,
+   "bbox": [
+    1955,
+    2699,
+    2053,
+    2722
+   ],
+   "w_sp": 6.9,
+   "cap": 60,
+   "tess": "crese.",
+   "t_tess": 0.18,
+   "surya_guard": "",
+   "t_surya_guard": 20.02,
+   "surya_cap": "",
+   "t_surya_cap": 1.48
+  },
+  {
+   "staff": 17,
+   "measure": 4,
+   "x": 1335,
+   "bbox": [
+    1335,
+    3155,
+    1414,
+    3175
+   ],
+   "w_sp": 5.95,
+   "cap": 56,
+   "tess": "",
+   "t_tess": 0.15,
+   "surya_guard": "",
+   "t_surya_guard": 0.32,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 17,
+   "measure": 8,
+   "x": 1977,
+   "bbox": [
+    1977,
+    3156,
+    2063,
+    3175
+   ],
+   "w_sp": 6.3,
+   "cap": 57,
+   "tess": "\u2014",
+   "t_tess": 0.24,
+   "surya_guard": "",
+   "t_surya_guard": 0.32,
+   "surya_cap": "",
+   "t_surya_cap": 0.24
+  },
+  {
+   "staff": 18,
+   "measure": 7,
+   "x": 1799,
+   "bbox": [
+    1799,
+    3279,
+    1892,
+    3297
+   ],
+   "w_sp": 6.65,
+   "cap": 59,
+   "tess": "a",
+   "t_tess": 0.3,
+   "surya_guard": "",
+   "t_surya_guard": 0.3,
+   "surya_cap": "",
+   "t_surya_cap": 0.2
+  },
+  {
+   "staff": 18,
+   "measure": 8,
+   "x": 1964,
+   "bbox": [
+    1964,
+    3250,
+    2061,
+    3283
+   ],
+   "w_sp": 6.85,
+   "cap": 59,
+   "tess": "\u2014Cresc.",
+   "t_tess": 0.23,
+   "surya_guard": "CRESC.",
+   "t_surya_guard": 0.44,
+   "surya_cap": "CRESC.",
+   "t_surya_cap": 0.39
+  },
+  {
+   "staff": 19,
+   "measure": 0,
+   "x": 487,
+   "bbox": [
+    487,
+    3370,
+    532,
+    3400
+   ],
+   "w_sp": 4.25,
+   "cap": 49,
+   "tess": "Vel.",
+   "t_tess": 0.3,
+   "surya_guard": "Vcl",
+   "t_surya_guard": 0.33,
+   "surya_cap": "Vcl",
+   "t_surya_cap": 0.28
+  },
+  {
+   "staff": 19,
+   "measure": 8,
+   "x": 1961,
+   "bbox": [
+    1961,
+    3375,
+    2043,
+    3398
+   ],
+   "w_sp": 6.1,
+   "cap": 56,
+   "tess": "Crese:",
+   "t_tess": 0.17,
+   "surya_guard": "",
+   "t_surya_guard": 0.31,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 19,
+   "measure": 9,
+   "x": 2122,
+   "bbox": [
+    2122,
+    3363,
+    2227,
+    3376
+   ],
+   "w_sp": 7.25,
+   "cap": 61,
+   "tess": "7",
+   "t_tess": 0.32,
+   "surya_guard": "",
+   "t_surya_guard": 0.34,
+   "surya_cap": "",
+   "t_surya_cap": 0.25
+  },
+  {
+   "staff": 19,
+   "measure": 10,
+   "x": 2320,
+   "bbox": [
+    2320,
+    3363,
+    2405,
+    3399
+   ],
+   "w_sp": 6.25,
+   "cap": 57,
+   "tess": "meee",
+   "t_tess": 0.31,
+   "surya_guard": "",
+   "t_surya_guard": 0.36,
+   "surya_cap": "",
+   "t_surya_cap": 0.29
+  },
+  {
+   "staff": 20,
+   "measure": 0,
+   "x": 486,
+   "bbox": [
+    486,
+    3500,
+    590,
+    3528
+   ],
+   "w_sp": 7.2,
+   "cap": 61,
+   "tess": "Basso.",
+   "t_tess": 0.18,
+   "surya_guard": "",
+   "t_surya_guard": 20.01,
+   "surya_cap": "Basso. CERTIFICATE OF CONSTRUCTION",
+   "t_surya_cap": 1.55
+  },
+  {
+   "staff": 20,
+   "measure": 0,
+   "x": 509,
+   "bbox": [
+    509,
+    3531,
+    595,
+    3554
+   ],
+   "w_sp": 6.3,
+   "cap": 57,
+   "tess": "arco.",
+   "t_tess": 0.16,
+   "surya_guard": "ARCO. ARCO. ARCO. ARCO. ARCO. ARCO.",
+   "t_surya_guard": 2.18,
+   "surya_cap": "ARCO. ARCO. AR",
+   "t_surya_cap": 0.96
+  },
+  {
+   "staff": 20,
+   "measure": 3,
+   "x": 1058,
+   "bbox": [
+    1058,
+    3500,
+    1144,
+    3516
+   ],
+   "w_sp": 6.3,
+   "cap": 57,
+   "tess": "\u2014\u2014",
+   "t_tess": 0.17,
+   "surya_guard": "",
+   "t_surya_guard": 0.33,
+   "surya_cap": "",
+   "t_surya_cap": 0.27
+  },
+  {
+   "staff": 20,
+   "measure": 6,
+   "x": 1640,
+   "bbox": [
+    1640,
+    3500,
+    1730,
+    3526
+   ],
+   "w_sp": 6.5,
+   "cap": 58,
+   "tess": "= a &",
+   "t_tess": 0.32,
+   "surya_guard": "",
+   "t_surya_guard": 0.34,
+   "surya_cap": "",
+   "t_surya_cap": 0.25
+  },
+  {
+   "staff": 20,
+   "measure": 8,
+   "x": 1939,
+   "bbox": [
+    1939,
+    3500,
+    2041,
+    3524
+   ],
+   "w_sp": 7.1,
+   "cap": 60,
+   "tess": "Cr\u00e9se.",
+   "t_tess": 0.32,
+   "surya_guard": "\u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421.",
+   "t_surya_guard": 2.82,
+   "surya_cap": "\u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421. \u0421\u0413\u0420\u0412\u0421.",
+   "t_surya_cap": 1.02
+  },
+  {
+   "staff": 21,
+   "measure": 8,
+   "x": 1937,
+   "bbox": [
+    1937,
+    3660,
+    2035,
+    3683
+   ],
+   "w_sp": 6.9,
+   "cap": 60,
+   "tess": "CreRC.",
+   "t_tess": 0.17,
+   "surya_guard": "CTPRC.",
+   "t_surya_guard": 0.45,
+   "surya_cap": "CTPRC.",
+   "t_surya_cap": 0.4
+  }
+ ]
+}

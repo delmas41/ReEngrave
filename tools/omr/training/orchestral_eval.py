@@ -57,7 +57,10 @@ from tools.omr.transcribe import transcribe
 
 ROOT = Path(__file__).resolve().parents[3]
 BENCH_DIR = ROOT / "benchmarks" / "omr-orchestral-e2e"
-SCORE_DIR = Path("/Users/seanjohnson/Desktop/gradus-vercel/public/scores")
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
+SCORE_DIR = Path(os.environ.get("REENGRAVE_SCORES_DIR")
+                 or "/Users/seanjohnson/Desktop/gradus-vercel/public/scores")
 
 # Kept small on purpose: an eighteen-part excerpt of even a few bars fills a
 # page, and the point is density per page, not length.

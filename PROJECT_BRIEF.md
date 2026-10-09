@@ -3,7 +3,7 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-08 (un-frozen; kept current with every commit alongside
+**Updated:** 2026-10-08 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
@@ -58,6 +58,15 @@ admin; the audit's security items (`docs/audit-2026-10-07-code-cleaning.md`
 §3A) were fixed the same day (ROADMAP 3.6: owners on scores, signed
 `/uploads`, safe upload names, no reset token, no default secret), leaving
 dependency pins and nginx/rate-limit hardening as follow-ups.
+
+**The "built, not merged" backlog was mostly a stale ledger** (ROADMAP 0.8,
+2026-10-08, `docs/triage-2026-10-08-built-not-merged.md`). 41 roadmap rows said
+"not merged" for work that is already on main. Nine are genuinely off main:
+four superseded, two dead at zero, two evidence-only, one parked by Sean.
+Sean answered "Yes to all" the same day: the six are dropped and the two
+evidence lanes are landed. The close-or-keep pass over the 41 merged rows
+followed the same day: 39 are done, 2 are kept open (2.26b, 2.13), and one new
+item, 2.65, puts the never-judged 09-29 rhythm tiles in front of Sean.
 
 **Read next**: [CLAUDE.md](CLAUDE.md) (the spec), [ROADMAP.md](ROADMAP.md)
 (status), [docs/DECISIONS.md](docs/DECISIONS.md) (rulings),

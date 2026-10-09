@@ -1399,7 +1399,7 @@ LEDGER_ROUND_UP = 0.25
 OWNER_FROM_STAVES_ENV = "OMR_OWNER_FROM_STAVES"
 
 
-def _owner_from_staves_enabled() -> bool:
+def owner_from_staves_enabled() -> bool:
     return os.environ.get(OWNER_FROM_STAVES_ENV, "1").strip().lower() \
         not in ("0", "", "false", "no", "off")
 
@@ -1665,7 +1665,7 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
             geom[sub.to_key()] = ([float(y) for y in st.line_ys], float(sp))
             thickness_by_key[sub.to_key()] = getattr(
                 st, "median_line_thickness_px", None)
-            if _owner_from_staves_enabled() and hasattr(st, "x_start") \
+            if owner_from_staves_enabled() and hasattr(st, "x_start") \
                     and hasattr(st, "x_end"):
                 extent_by_key[sub.to_key()] = (float(st.x_start),
                                                float(st.x_end))
@@ -1744,7 +1744,7 @@ def gather_ownership_evidence(log: Log, pws: Any, cells: Sequence[Any],
     # lane-owner-from-staves: with the flag ON, each candidate staff's cells
     # (for the head's LOCAL position) and the staves a head lies in or beside
     cells_of_staff: Optional[Dict[Tuple[int, int, int], List[Any]]] = None
-    if _owner_from_staves_enabled():
+    if owner_from_staves_enabled():
         cells_of_staff = {}
         for (page, system, staff, _m), c in cell_by_key.items():
             cells_of_staff.setdefault((page, system, staff), []).append(c)
@@ -3644,8 +3644,9 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
     """
     try:
         from ..line_detection import detect_lines
-    except Exception:                                         # noqa: BLE001
-        _stub_cv_lines(log, cells, local, "line_detection unavailable")
+    except Exception as exc:                                  # noqa: BLE001
+        _stub_cv_lines(log, cells, local, "line_detection unavailable",
+                       error=type(exc).__name__)
         return
 
     for c in cells:
@@ -3780,7 +3781,16 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                 space_c)
 
 
-def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
+def _stub_cv_lines(log: Log, cells, local, note: str,
+                   error: Optional[str] = None) -> None:
+    """File the beam/stem abstentions for a rung that cannot run.
+
+    ROADMAP 2.61b: `error` (an exception class name) means the reader EXISTS
+    and its import failed -- a defect, filed `READER_UNAVAILABLE` with
+    `detail["error"]`. With no `error` the reader is genuinely not written and
+    the word stays `NOT_IMPLEMENTED` (build progress, to `gather_coverage`).
+    """
+    reason, detail = _stub_reason(error)
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -3793,7 +3803,7 @@ def _stub_cv_lines(log: Log, cells, local, note: str) -> None:
         for quantity in (Q.BEAM_STROKE, Q.STEM):
             log.abstain(sub, quantity, reader=READERS.CV_LINES,
                         frame=frame_cell(c.measure_index),
-                        reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
+                        reason=reason, note=note, **detail)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -5835,7 +5845,6 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
     margin: Optional[float] = None
     ambiguous = False
     prev_mean = best1
-    prev_positions = (best1_pos,)
     for k, n_needed in ((2, 2), (3, 3)):
         if ambiguous or n_boxes < n_needed or chosen_k != k - 1:
             break
@@ -5851,7 +5860,7 @@ def fit_stacked_head_count(img: Any, cx: float, positions: List[int],
                 and mean_gap > -STACKED_HEAD_FIT_MARGIN):
             chosen_k, chosen_positions, chosen_mean = k, positions_k, mean_k
             margin = min(fill_gap, mean_gap if mean_gap < fill_gap else fill_gap)
-            prev_mean, prev_positions = mean_k, positions_k
+            prev_mean = mean_k
         elif (abs(fill_gap) <= STACKED_HEAD_FIT_MARGIN
               or (fill_gap > 0 and abs(mean_gap) <= STACKED_HEAD_FIT_MARGIN)):
             ambiguous = True
@@ -6246,7 +6255,6 @@ def gather_notehead_stem_cross_ink(log: Log, cells: Sequence[Any],
             shape = None
             if full_mask is not None:
                 bx = box[0]
-                lx0 = max(0, int(round(left_box[0] - bx)))
                 lx1 = max(0, int(round(left_box[0] + left_box[2] - bx)))
                 rx0 = max(0, int(round(right_box[0] - bx)))
                 rx1 = max(0, int(round(right_box[0] + right_box[2] - bx)))
@@ -6622,9 +6630,10 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
     try:
         from ..clef_locator import locate_clef
         from ..staff_header import header_cells_for_page
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         _stub_per_staff(log, cells, local, Q.CLEF_LOCATED, READERS.CV_LOCATOR,
-                        FRAME_HEADER_WINDOW, "clef_locator unavailable")
+                        FRAME_HEADER_WINDOW, "clef_locator unavailable",
+                        error=type(exc).__name__)
         return
 
     # ⚠️ ROADMAP 2.60: a header cutter that THREW is not a staff with no
@@ -6821,9 +6830,21 @@ def _clef_boxes(detections, page: int, key):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _stub_reason(error: Optional[str]) -> Tuple[str, Dict[str, Any]]:
+    """The (reason, detail) a stub files (ROADMAP 2.61b): an import that FAILED
+    is `READER_UNAVAILABLE` naming the exception class; no `error` is a reader
+    that is genuinely not written, `NOT_IMPLEMENTED`."""
+    if error:
+        return ABSTAIN.READER_UNAVAILABLE, {"error": error}
+    return ABSTAIN.NOT_IMPLEMENTED, {}
+
+
 def _stub_per_staff(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]], quantity: str,
-                    reader: str, frame: str, note: str) -> None:
+                    reader: str, frame: str, note: str,
+                    error: Optional[str] = None) -> None:
+    """One staff-level abstention per staff. `error`: see `_stub_cv_lines`."""
+    reason, detail = _stub_reason(error)
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -6834,7 +6855,7 @@ def _stub_per_staff(log: Log, cells: Sequence[Any],
             continue
         seen.add(sub.to_key())
         log.abstain(sub, quantity, reader=reader, frame=frame,
-                    reason=ABSTAIN.NOT_IMPLEMENTED, note=note)
+                    reason=reason, note=note, **detail)
 
 
 def gather_clef_seed(log: Log, cells, local, *, dossier: Any,
@@ -6978,10 +6999,11 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
     try:
         from ..key_signature_locator import locate_key_signature
         from ..staff_header import header_cells_for_page
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         _stub_per_staff(log, cells, local, Q.KEYSIG_RUN_POSITION,
                         READERS.CV_HEADER, FRAME_HEADER_WINDOW,
-                        "key_signature_locator unavailable")
+                        "key_signature_locator unavailable",
+                        error=type(exc).__name__)
         return
 
     # ⚠️ ROADMAP 2.60: a header cutter that THREW abstains
@@ -7231,9 +7253,10 @@ def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
     try:
         from ..staff_header import header_cells_for_page
         from ..time_signature_locator import locate_time_signature
-    except Exception:                                         # noqa: BLE001
+    except Exception as exc:                                  # noqa: BLE001
         _stub_per_staff(log, cells, local, Q.METER_TEMPLATE, READERS.TEMPLATE,
-                        FRAME_HEADER_WINDOW, "time_signature_locator missing")
+                        FRAME_HEADER_WINDOW, "time_signature_locator missing",
+                        error=type(exc).__name__)
         return
     # ⚠️ ROADMAP 2.60: a header cutter that THREW abstains
     # `READER_UNAVAILABLE` with the exception class, not `NO_STAFF_GEOMETRY`.
@@ -7924,7 +7947,6 @@ def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
         return
 
     image = getattr(pws.page, "rgb", None)
-    h = int(image.shape[0]) if image is not None else 0
     w = int(image.shape[1]) if image is not None else 0
 
     for sys_idx, members in sorted(by_system.items()):
@@ -8315,6 +8337,23 @@ def _scan_gate_enabled() -> bool:
         in ("1", "true", "yes", "on")
 
 
+def direction_text_enabled() -> bool:
+    """`OMR_DIRECTION_TEXT` -- the ONE reader of this flag (ROADMAP 2.61b);
+    `pipeline.py` calls this rather than re-reading the environment. DEFAULT
+    ON; a DENY-LIST (CLAUDE.md §7): a typo leaves it on.
+
+    CONVENTION AND NOT A PREFERENCE. `test_flag_default_direction.py` walks
+    the AST for `os.environ.get(<FLAG>, <default>)` compared to a literal
+    word set and decides default-ON by EVALUATING THE PREDICATE ON ITS OWN
+    DEFAULT -- so the equivalent `... in (off words)` spelled as a refusal
+    reads to that guard as a default-OFF deny-list and is reported as "a typo
+    would turn it ON". The two spellings are logically identical and only one
+    is checkable. Caught by that guard on the full suite, not by review.
+    """
+    return os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
+        "0", "", "false", "no", "off")
+
+
 def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
                            detections: Dict[str, List[Any]]) -> None:
@@ -8392,16 +8431,7 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     # rather than silently blinding the page. See CLAUDE.md, "A flag's OFF test
     # must follow its DEFAULT".
     # ⚠️⚠️ AND THE PREDICATE IS THE *ON* TEST, NOT THE OFF TEST, WHICH IS A
-    # CONVENTION AND NOT A PREFERENCE. `test_flag_default_direction.py` walks
-    # the AST for `os.environ.get(<FLAG>, <default>)` compared to a literal
-    # word set and decides default-ON by EVALUATING THE PREDICATE ON ITS OWN
-    # DEFAULT -- so the equivalent `... in (off words)` spelled as a refusal
-    # reads to that guard as a default-OFF deny-list and is reported as "a typo
-    # would turn it ON". The two spellings are logically identical and only one
-    # is checkable. Caught by that guard on the full suite, not by review.
-    enabled = os.environ.get("OMR_DIRECTION_TEXT", "1").strip().lower() not in (
-        "0", "", "false", "no", "off")
-    if not enabled:
+    if not direction_text_enabled():
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
                     note="OMR_DIRECTION_TEXT is off")

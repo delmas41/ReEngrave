@@ -201,7 +201,7 @@ export default function FileUpload() {
 
       <UploadForm
         sectionTitle="Upload PDF Scan"
-        description="Upload a scanned PDF. Audiveris will run OMR to convert it to MusicXML, then Claude Vision will compare the output against the original."
+        description="Upload a scanned PDF. The OMR engine will run to convert it to MusicXML, then Claude Vision will compare the output against the original."
         accept=".pdf"
         buttonLabel="Upload PDF"
         onSubmit={handlePdfUpload}

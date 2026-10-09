@@ -7,22 +7,35 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timedelta, timezone
 
+import bcrypt
 from jose import jwt
-from passlib.context import CryptContext
 
 from core.config import settings
 
 ALGORITHM = "HS256"
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+BCRYPT_ROUNDS = 12  # same cost passlib's bcrypt handler defaulted to
+
+# bcrypt only reads the first 72 bytes; bcrypt>=5 raises on longer input where
+# passlib silently truncated. Truncate here so long passphrases keep working
+# and hashes made before this change still verify.
+_BCRYPT_MAX_BYTES = 72
+
+
+def _pw_bytes(password: str) -> bytes:
+    return password.encode("utf-8")[:_BCRYPT_MAX_BYTES]
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password)
+    return bcrypt.hashpw(_pw_bytes(password), bcrypt.gensalt(rounds=BCRYPT_ROUNDS)).decode("ascii")
 
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return pwd_context.verify(plain, hashed)
+    try:
+        return bcrypt.checkpw(_pw_bytes(plain), hashed.encode("utf-8"))
+    except (ValueError, TypeError):
+        # Malformed / non-bcrypt stored hash: fail closed instead of 500.
+        return False
 
 
 def _create_token(data: dict, expires_delta: timedelta) -> str:

@@ -1,6 +1,6 @@
 """
 Local OMR — runs the in-house `tools.omr` pipeline (YOLOv8l + classical CV)
-in place of Audiveris.
+in place of Audiveris (the engine this replaced; the name is retired).
 
 Provides `run_local_omr(pdf_path, output_dir) -> LocalOmrResult`. The
 caller stores the returned MusicXML on `Score.musicxml_path` and the
@@ -58,7 +58,7 @@ if str(_REPO_ROOT) not in sys.path:
 
 @dataclass
 class LocalOmrResult:
-    """Mirrors AudiverisResult so callers can swap engines without changes.
+    """Mirrors ClaudeVisionResult so callers can swap engines without changes.
 
     The `omr_json_path` is unique to this engine — it points at the
     structured transcribe.py JSON, which the LilyPond exporter prefers

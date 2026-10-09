@@ -22,6 +22,20 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 — ROADMAP 1.7: main merged into the hand-truth branch (PR #63)
+
+`main` moved 27 commits (integration C and the direction-text lane); the only conflicts
+were the two append-only ledgers, resolved by keeping every entry of both sides
+(DECISIONS: main's lines, then 1.7's; this file: 1.7's entries above main's). The merge
+took CLAUDE.md to 6,010 words, so 1.7's §9 sentence was shortened back under the cap
+(5,996). Hand-truth, annotate-server and training-pipeline tests 130 passed;
+`inventory --check` clean; `staged.check` 192. **Merged again** the same evening (main had
+moved 5 more commits, ROADMAP 0.8): the same append-only ledgers plus PROJECT_BRIEF's
+"Updated" line (main's wording kept); CLAUDE.md came to 6,006, so 1.7's §9 sentence was
+cut to one clause (5,999).
+
+---
+
 ## 2026-10-08 — ROADMAP 1.7: test pages the current weights never saw
 
 Sean asked whether the hand-truth work overlaps the current weights; it did — production's
@@ -103,6 +117,149 @@ Sean decides each), then the hand boxes are run through the STAGED pipeline in
 place of the detector and rendered with LilyPond beside the print, one measure at a
 time, for Sean to mark ok / label wrong / reader wrong (plan C5, C6; DECISIONS).
 A page is truth only once every measure is ok.
+
+---
+
+## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
+
+Sean went through four batches, and the roadmap rows now match his answers
+(DECISIONS 2026-10-08).
+
+- **39 rows are `done`.** Each status now opens with "done (`<sha>`; closed
+  with Sean 2026-10-08 in the 0.8 close-or-keep pass)". The lane's text is
+  kept after it.
+- **2 rows are KEPT OPEN**, each stating what remains:
+  - 2.26b: no run has shown the bare-crook rule reach a record.
+  - 2.13: the whole-movement check, plus one Tesseract misread.
+- **New row 2.65:** Sean's print check, one tile at a time, of the 09-29
+  rhythm connections (40 tiles never judged by him), plus 2.23's 6 tiles and
+  its never-asked head-fill convention.
+
+The triage report gained a close-or-keep section. No code changed.
+
+## 2026-10-08 — ROADMAP 0.8 follow-up: Sean's "Yes to all"
+
+DECISIONS 2026-10-08:
+- **Dropped:** 2.6h and 3.2c (dead at zero).
+- **Dropped as superseded:** the 2.21 draft, 2.44, 2.44c and 2.44d. Each
+  roadmap row now opens with `dropped (...)`.
+- **2.51 evidence landed** from `lane-2.51-unboxed-ink` `78d05d85`: four
+  scripts under `benchmarks/omr-ink-gather-2026-09/unboxed-2.51/`, the
+  FINDINGS section, and two sheets in `out/print/2.51/`. Its FINDINGS section
+  was §14 on the branch; it is renumbered §15 here because main's §14 is 2.52.
+  2.52's pointer to it, which said "not on this tree", now points to §15.
+- **2.53 write-up landed** from `lane-2.53-unboxed-bars` `ad41435b`. The lane
+  wrote it as its ROADMAP row; it is now FINDINGS §16 (rule 9), with two
+  sheets in `out/print/2.53/`. The branch's re-gathered
+  `benchmarks/acceptance/quick/` outputs were NOT landed. Its "recommendation,
+  not built" is annotated as later built by 2.55.
+
+No code changed.
+
+## 2026-10-08 — ROADMAP 0.8: the "built, not merged" rows triaged against the tree
+
+**Sean: "Can you start 2. Sort the built not merged."** A docs-only commit:
+no code, no run, no measurement. Fetched the full history and every `origin/*`
+branch, then checked each branch named by an open Phase 2/3 row against
+`origin/main` 6e96227b (`merge-base --is-ancestor`, `git cherry`, the first
+landing merge, whether that merge was empty, whether the added functions are
+still on main).
+
+- **41 rows said "not merged" for work that is on main.** Each now has a bold
+  `MERGED to main (<sha>, tree-verified 2026-10-08)` prefix, with the lane's
+  text kept after it. Six flags those rows call OFF are default ON today
+  (`OMR_CELL_LINE_FIND`, `OMR_OWNER_FROM_STAVES`,
+  `OMR_FARHEAD_OWNER_LEDGERS`, `OMR_MARK_GROUPS`, `OMR_DOT_FOLLOWS_NOTE`,
+  `OMR_STEM_OWNER`).
+- **Nine rows are genuinely not on main:**
+  - Superseded: the 2.21 first draft, 2.44, 2.44c, 2.44d.
+  - Dead at zero, recommended drop: 2.6h, 3.2c.
+  - Evidence only, recommended land: 2.51, 2.53.
+  - Parked by Sean: 2.48.
+  These rows got a prefix saying so. Nothing was dropped: each drop needs
+  Sean and a DECISIONS line.
+- New: `docs/triage-2026-10-08-built-not-merged.md`, ROADMAP row 0.8 and a
+  START HERE block. CLAUDE.md §5a: how to fetch every branch in a shallow
+  cloud clone, and the fact that "not merged" is a claim to check.
+
+## 2026-10-08 — INTEGRATION C: eight audit follow-up lanes (Sonnet), one landing
+
+**Sean: "clean up the worktrees and send out agents for the follow-ups - use
+sonnet agents."** Worktrees of the 10-07 lanes removed (all clean, all
+landed). Eight lanes off `main` 69c425e8 (which had taken the other
+session's stem-owner landing overnight), each measuring its own baseline
+first, each verified again on the merged tree.
+
+- **3.6b `lane-3.6b-deps-docker` (71520b04):** python-multipart 0.0.20,
+  python-jose 3.5.0, requests 2.32.5, pillow 11.3.0; passlib + bcrypt 3.2.2
+  replaced by direct `bcrypt` (cost 12, 72-byte truncation as passlib did; a
+  hash from the old stack verifies, 6 tests); `node:22-alpine` + `npm ci`
+  (build verified); backend image non-root (uid 10001) with
+  `--proxy-headers`; nginx `client_max_body_size 60m` and `X-Forwarded-*`.
+  Images not built here. Found: no root `.dockerignore`, so every backend
+  build shipped `library/` (6.4 GB) and `benchmarks/` to the daemon —
+  added at integration. **Existing volumes need a one-time `chown`.**
+- **3.6c `lane-3.6c-auth-limits` (d065fd08):** logout blacklists both
+  tokens' jtis; the refresh cookie's path is `/api/auth` (was
+  `/api/auth/refresh`, which the browser never sent to logout; old path
+  expired on every set; still httpOnly); eight more routes rate-limited
+  with the numbers in `core/config.py`; limiter keys on the first
+  `X-Forwarded-For` hop only under `TRUST_PROXY_HEADERS` (default off; prod
+  must set it). 15 tests RED first.
+- **3.6d `lane-frontend-dead-code` (f3952e18):** four unimported components
+  and `declarations.d.ts` deleted (−776 lines); `verovio`/`pdfjs-dist`
+  uninstalled by npm; `vite build` passes; the stale `optimizeDeps.exclude`
+  dropped at integration. FOUND: `tsc --noEmit` has ~70 pre-existing errors
+  on main — the type check was never a clean gate (new todo 3.6f).
+- **3.6e `lane-audiveris-rename` (ff1b89b5):** `omr_confidence`,
+  `min_omr_confidence`, `omr_failure`; `AudiverisResult` gone; frontend
+  types match; a schema change riding 3.6's DB drop.
+- **2.61b `lane-gather-followups` (39664e3e):** `OMR_OWNER_FROM_STAVES` and
+  `OMR_DIRECTION_TEXT` each read at ONE site (`gather.owner_from_staves_enabled`,
+  `gather.direction_text_enabled`); the four `_stub_*` sites file
+  `READER_UNAVAILABLE` + `detail.error` when a reader's import throws
+  (`NOT_IMPLEMENTED` stays for the genuinely unwritten); three dead locals
+  gone. 13 tests, 7 RED first. Lesson: `wiring.details` matches a detail key
+  by bare substring, so a COMMENT containing `.own` read as a consumer of
+  `Q.GLYPH_BAND_DISTANCE.own` (CLAUDE.md §4d's third blind spot, bitten).
+- **2.61c `lane-clef-candidate-abstained` (4167dbbd):** `adjudicate_clef`
+  treats a candidate whose fit abstained as UNKNOWN — neither eliminated
+  nor supported — using a worst-case margin (each unknown credited
+  `W_KEYSIG_FIT`; the winner's own fit term dropped where fitters + unknowns
+  could cover all four clefs); under `MARGIN_FLOOR` the verdict NARROWS with
+  the unknown as a candidate; a strongly decided clef is unchanged. 8 tests,
+  5 RED first. Same pattern remains in `header.py:~366` (todo 2.61d).
+- **0.6b `lane-pyflakes-and-paths` (4d0705fe):** five unused locals, the
+  `tally` loop shadow, the mis-read `noqa` comment, `app_client` /
+  `fake_pipeline` into `backend/tests/conftest.py`, `/Users/seanjohnson`
+  literals behind `REENGRAVE_SCORES_DIR` / `REENGRAVE_WEIGHTS_DIR` /
+  `REENGRAVE_LIBRARY_DIR` with the literals as defaults. Four stray F841/F401
+  findings outside every fence fixed at integration (`ownership.py`,
+  `check_helpers.py`, `musicxml_builder.py`, `score_comparison.py`).
+- **3.0b `lane-legacy-constants-pin` (b0104579):** 90 tests pin the 18
+  constants, 36 functions (existence, callability, parameter names) and 35
+  pure examples STAGED takes from the frozen legacy modules; a failure names
+  the staged consumer; proven RED on a mutated constant and a renamed
+  parameter. Stricter than the call sites need; fine while LEGACY is frozen.
+
+Verified on the merged tree: see the integration commit message for the
+fast-tier, `staged.check` and backend numbers.
+## 2026-10-08 — ROADMAP 3.5 (STAGED): the CLI-summary tests follow the tree
+
+**`claude/jolly-kilby-67143e`.** Four slow-tier tests in
+`tools/omr/tests/test_staged_cli_pdf.py` (ROADMAP 3.3's `_render_pdf` /
+`_print_accounting_summary` tests) had failed on `origin/main` since 3.5
+(`135b7a60`, 2026-09-28) rewrote the accounting summary to two lines
+(`unread bars ("unread", read NOTHING): N` and `held-out bars ("unread"):
+N`, off `report["unread_bar_marks"]`) and made a held-out bar a red marked
+rest in the `.ly`, without touching the tests; the file is slow because its
+text names `.pdf`, so the fast tier never showed them (2.64 flagged them
+2026-10-07). The 3.5 row says done and the wording is the intended one, so
+the tests were updated, not the code (rule 10): expected words and counts
+are read off the exporter's own report, the underfull-bar LilyPond test
+asserts the marked rest and a CLEAN compile, and the bar-check parser's
+"can fail" control (rule 7) now runs on a hand-broken `.ly`. RED 4/8 →
+GREEN 9/9; `staged.check` 192 → 192; `staged/lilypond.py` untouched.
 
 ---
 

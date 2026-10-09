@@ -33,6 +33,25 @@ class Settings(BaseSettings):
     # Dev only: forgot-password returns the reset token in its body.
     expose_reset_token: bool = False
 
+    # --- Rate limits (ROADMAP 3.6c) ---
+    # slowapi limit strings, "<n>/<unit>" per client key per route; override
+    # with RATE_LIMIT_<NAME> in backend/.env. Read per request, so a test (or
+    # a restart-free setting) takes effect at once. register/login/forgot-
+    # password keep their literal limits in routers/auth.py.
+    rate_limit_refresh: str = "30/minute"
+    rate_limit_reset_password: str = "5/hour"
+    rate_limit_upload: str = "20/hour"  # POST /api/import/upload
+    rate_limit_musicxml: str = "20/hour"  # POST /api/import/musicxml
+    rate_limit_gradus: str = "20/hour"  # POST /api/gradus/
+    rate_limit_compare: str = "20/hour"  # POST /api/compare/
+    rate_limit_process_omr: str = "10/hour"  # POST /api/scores/{id}/process/omr
+    rate_limit_process_compare: str = "10/hour"  # POST /api/scores/{id}/process/compare
+    # Key the limiter on the first X-Forwarded-For hop instead of the socket
+    # address. Off by default (a client could otherwise pick its own key);
+    # set TRUST_PROXY_HEADERS=true only where every request arrives through a
+    # proxy that overwrites or appends the header (prod: Traefik + nginx).
+    trust_proxy_headers: bool = False
+
     # --- Uploads ---
     # Per-file upload cap; every upload route answers 413 above it.
     max_upload_bytes: int = 50 * 1024 * 1024

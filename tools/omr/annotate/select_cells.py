@@ -39,6 +39,7 @@ Override any source with --sources spec like:
 
 from __future__ import annotations
 
+import os
 import argparse
 import json
 import sys
@@ -61,9 +62,16 @@ from ..types import MeasureCell
 
 # Canonical default PDFs. If a path doesn't exist, we skip that source with a
 # warning rather than failing.
+# `REENGRAVE_SCORES_DIR` names the scores directory on another machine; the
+# default is the one on Sean's.
+_SCORES_DIR = os.environ.get("REENGRAVE_SCORES_DIR") or (
+    "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus")
 _DEFAULT_PDFS = {
-    "wtc": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/PDF Scores/IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf",
-    "beethoven5": "/Users/seanjohnson/Documents/Gradus-Assets/Scores/Scores For Gradus/IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf",
+    "wtc": os.path.join(
+        _SCORES_DIR, "PDF Scores",
+        "IMSLP932182-PMLP5948-well-tempered-clavier-I-book.pdf"),
+    "beethoven5": os.path.join(
+        _SCORES_DIR, "IMSLP984073-PMLP1586-symphonyno5incmi0000beet_o2b7.pdf"),
 }
 
 
