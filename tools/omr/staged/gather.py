@@ -3178,6 +3178,36 @@ def _staff_bands(pws: Any, local: Dict[int, Tuple[int, int]]
     return out
 
 
+#: The staves beside a dynamic letter's own that it can stand below or inside:
+#: the staff above, its own, the staff beneath (offsets in the system's staff
+#: ordinal). A letter cut from a padded cell reaches no further.
+_LETTER_STAFF_OFFSETS = (-1, 0, 1)
+
+
+def _letter_positions_in_staves(cells_of_staff, sub: Subject, cx: float,
+                                cy: float) -> Dict[str, float]:
+    """ROADMAP 2.68: the letter's centre, in half-steps from each neighbouring
+    staff's TOP line (0 = the top line, 8 = the bottom line, negative = above
+    the staff), keyed by the staff's offset from the cell's own as a string.
+
+    ⚠️ LOCAL (CLAUDE.md §10): each staff's own CELL grid at the letter's x
+    (`_local_position_in_candidate`), never the page-wide lines a tilted scan
+    shifts by up to ~0.8 spaces. A staff with no cell at that x (no such staff,
+    or the bar is cut differently) is LEFT OUT, not defaulted: a position that
+    was never measured is not a position. Nothing is decided here -- which staff
+    the letter belongs to is `adjudicate_dynamic`'s question."""
+    out: Dict[str, float] = {}
+    for off in _LETTER_STAFF_OFFSETS:
+        st = sub.staff + off
+        if st < 0:
+            continue
+        key = R.staff(sub.page, sub.system, st).to_key()
+        lp = _local_position_in_candidate(cells_of_staff, key, cx, cy)
+        if lp is not None:
+            out[str(off)] = float(lp)
+    return out
+
+
 def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
                            detections: Dict[str, List[Any]]) -> None:
@@ -3219,6 +3249,12 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
     other_ink = _ink_without_detections(pws, detections, cell_by_key,
                                         _page_staff_spacing(bands))
     page_letters = _dynamic_letter_boxes(detections, cell_by_key)
+    # ROADMAP 2.68 (Sean 2026-10-08/09: a dynamic belongs to the staff it is
+    # printed BELOW): each cell's staff grid, for the letter's LOCAL position
+    # against its own staff and the two beside it.
+    cells_of_staff: Dict[Tuple[int, int, int], List[Any]] = {}
+    for (pg_, sy_, st_, _m), c_ in cell_by_key.items():
+        cells_of_staff.setdefault((pg_, sy_, st_), []).append(c_)
 
     seen_cells = set()
     for cell_key, dets in detections.items():
@@ -3263,6 +3299,10 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                     # letter and a wedge can be said to share a row
                     in_hairpin_band=_in_hairpin_band((y0 + y1) / 2.0,
                                                      bottom, spacing))
+            positions = _letter_positions_in_staves(
+                cells_of_staff, sub, (x0 + x1) / 2.0, (y0 + y1) / 2.0)
+            if positions:
+                detail["local_position_in_staves"] = positions
             log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)

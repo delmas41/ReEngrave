@@ -52,6 +52,73 @@ def _staff_above(subject: Subject) -> Optional[str]:
                    staff=staff_sub.staff - 1).to_key()
 
 
+def _staff_it_is_printed_below(row: Any) -> Optional[str]:
+    """ROADMAP 2.68, Sean (DECISIONS 2026-10-08, restated 2026-10-09): *"It
+    sits below the staff it belongs to."* The key of the staff this letter is
+    printed BELOW -- or INSIDE -- read off the letter's own LOCAL positions
+    (`local_position_in_staves`: half-steps from the top line of the staff
+    above, its own and the staff beneath, each measured against that staff's
+    own cell grid at the letter's x, filed by `gather_dynamic_letters`).
+
+    The staff is the LAST one whose top line lies above the letter's centre:
+    under staff N and above staff N+1's top line that is N; inside N+1's lines
+    it is N+1. Neither distance nor an instrument range enters.
+
+    None where it cannot tell (rule 8): no positions on the row (an older
+    record), no position against its own staff, or the letter stands above
+    every staff measured -- above a system's first staff there is nothing in
+    this system to be below, and the old chain keeps what it had."""
+    pos = (row.detail or {}).get("local_position_in_staves")
+    if not isinstance(pos, dict) or "0" not in pos:
+        return None
+    try:
+        measured = {int(k): float(v) for k, v in pos.items()}
+    except (TypeError, ValueError):
+        return None
+    reached = [off for off, half_steps in measured.items() if half_steps >= 0.0]
+    if not reached:
+        return None
+    staff = row.subject.at(Kind.STAFF)
+    if staff is None or staff.staff is None:
+        return None
+    return Subject(Kind.STAFF, page=staff.page, system=staff.system,
+                   staff=staff.staff + max(reached)).to_key()
+
+
+#: Two letter boxes this much alike (IoU) are one printed letter, cut from two
+#: cells (`gather._iou` / `CONTEST_IOU`'s 0.3, the legacy dedupe's own).
+SAME_LETTER_IOU = 0.3
+
+
+def _same_ink(a: Tuple[float, float, float, float],
+              b: Tuple[float, float, float, float]) -> bool:
+    ix = min(a[2], b[2]) - max(a[0], b[0])
+    iy = min(a[3], b[3]) - max(a[1], b[1])
+    if ix <= 0 or iy <= 0:
+        return False
+    inter = ix * iy
+    union = ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+    return union > 0 and inter / union > SAME_LETTER_IOU
+
+
+def _has_a_twin_on(rows: Any, staff_key: str, row: Any) -> bool:
+    """Is the SAME printed letter also a row cut from `staff_key`'s own cell?
+    Then the copy cut from elsewhere is its duplicate. Without a twin it is
+    the only evidence the mark exists, and it is moved, not dropped."""
+    mine = (row.detail or {}).get("bbox_page_px")
+    if not mine or len(mine) != 4:
+        return False
+    box = tuple(float(v) for v in mine)
+    for other in rows:
+        if other is row or other.subject.at(Kind.STAFF).to_key() != staff_key:
+            continue
+        theirs = (other.detail or {}).get("bbox_page_px")
+        if theirs and len(theirs) == 4 and _same_ink(
+                box, tuple(float(v) for v in theirs)):
+            return True
+    return False
+
+
 def _letter_of(row: Any) -> Optional[str]:
     letter = row.detail.get("letter")
     if letter:
@@ -214,6 +281,21 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     verdict that IS decided -- that query runs first and, where it names a
     staff, `owned_by` already differs from `home` before this is reached.
 
+    ⚠️⚠️ ROADMAP 2.68, SEAN (DECISIONS 2026-10-08/09): *"It sits below the
+    staff it belongs to."* The three paragraphs above are the FALLBACK. Where
+    GATHER filed the letter's LOCAL positions against its neighbours' staves
+    (`local_position_in_staves`), the staff it is printed below (or inside) is
+    its owner and `Q.GLYPH_OWNER` is not asked: measured on the 10-09 small
+    re-gather, 43 of 213 kept Litolff letters and 23 of 94 Brahms ones stood
+    under the staff above their cell and the contest gave them to the staff
+    beneath by `distance` (3.29 vs 3.02 spaces), `range_veto` (an instrument
+    range has no say over a dynamic) or `tied`, and the 2.27c band rule that
+    should have caught the rest reads a quantity gathered only under an OFF
+    flag. Such a letter is a duplicate only where the same ink is also a row
+    of the owner's own cell (`_has_a_twin_on`); otherwise it is the mark's
+    sole evidence and MOVES. Not decided (and left to the chain): no
+    positions, or above a system's first staff.
+
     ⚠️ **THE ASSEMBLY RULE IS DELIBERATELY THE EXPORTER'S, UNCHANGED**, so
     that the only difference between this and the shipped path is the
     ownership query and the frame. It is not a good rule: measured on the
@@ -268,6 +350,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                                    subject=system)
                   if (w.detail or {}).get("bbox_page_px")]
     grand_staff_shared = 0
+    placed_below_n = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
             continue
@@ -284,9 +367,16 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             continue
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
-        owned_by = (owner.value if owner is not None and owner.value
+        # ⚠️ ROADMAP 2.68, SEAN: a dynamic sits below the staff it belongs to.
+        # Where the letter's own LOCAL position says which staff it is below,
+        # that is the owner -- `Q.GLYPH_OWNER` (distance, an instrument range,
+        # a tie) is not asked, because none of them is a reason to move a
+        # dynamic to the staff beneath it.
+        placed_below = _staff_it_is_printed_below(row)
+        owned_by = (placed_below if placed_below is not None
+                    else owner.value if owner is not None and owner.value
                     else home)
-        if owner is not None and owner.value:
+        if placed_below is None and owner is not None and owner.value:
             # ⚠️ ROADMAP 2.27d, ONLY THE CONTESTED CASE. `owner` exists
             # here only for a letter `glyph_owner` actually adjudicated --
             # i.e. one BOTH staves' padded cells caught, which is the
@@ -305,7 +395,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # (Merge of 2.27c with 2.27d: the band rule speaks ONLY where no
         # contest was decided -- `owner` absent or valueless -- so it can
         # never override a decided owner, including a grand-staff one.)
-        if owned_by == home and (owner is None or not owner.value):
+        if (placed_below is None and owned_by == home
+                and (owner is None or not owner.value)):
             band_rows = ev.rows(Q.DYNAMIC_BAND_POSITION, subject=row.subject)
             if band_rows:
                 offset = float(band_rows[-1].value)
@@ -327,7 +418,14 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # by construction) -- there is no twin on `mine` to be a duplicate
         # of, so skipping the check here is not a special case of the rule,
         # it is the rule's own premise not holding.
-        if not moved_by_band and is_relocated_copy(row.subject, owned_by):
+        if placed_below is not None:
+            # a letter placed by its position is a duplicate only where the
+            # SAME ink is also a row of this staff's own cell; else it is the
+            # sole evidence of the mark and is moved here, not dropped
+            if owned_by != home and _has_a_twin_on(rows, owned_by, row):
+                dup_dropped += 1
+                continue
+        elif not moved_by_band and is_relocated_copy(row.subject, owned_by):
             # ⚠️⚠️ A LETTER WHOSE HOME IS ANOTHER STAFF IS A SECOND COPY, NOT
             # A RESCUE, AND THE DOCSTRING ABOVE USED TO CLAIM OTHERWISE.
             # `glyph_owner` speaks only about the CONTESTED population
@@ -372,6 +470,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             no_frame += 1
             continue
         kept.append((geom[0], geom[1], geom[2], letter, row))
+        placed_below_n += placed_below is not None
 
     if not kept:
         if no_frame:
@@ -436,6 +535,10 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # between the two staves of a decided brace pair -- zero on every
         # system that never decides `Q.GROUP_SYMBOL` "brace".
         "letters_shared_on_grand_staff": grand_staff_shared,
+        # ⚠️ ROADMAP 2.68. Letters kept on the staff they are printed BELOW
+        # (Sean 2026-10-09), from their own local positions -- not by the
+        # contest, the band flag or the cell they were cut from.
+        "letters_placed_below_their_staff": placed_below_n,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
     if unspellable and not any(w["spelled"] for w in words):
