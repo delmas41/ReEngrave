@@ -9,5 +9,6 @@
  "brahms_02": "Slur (same as brahms_01: a doubled slur)",
  "brahms_03": "Tie",
  "brahms_04": "Tie",
- "stacked_below_01": "A (upper, nearer the heads) tie; B (lower) slur"
+ "stacked_below_01": "A (upper, nearer the heads) tie; B (lower) slur",
+ "stacked_below_02": "A (upper, nearer the heads) tie; B (lower) slur"
 }
