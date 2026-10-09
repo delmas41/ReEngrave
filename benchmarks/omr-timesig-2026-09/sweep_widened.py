@@ -136,13 +136,17 @@ def main() -> None:
                     help="skip the 08 corpus (it is included by default)")
     ap.add_argument("--only", default="", help="comma-separated case labels")
     ap.add_argument("--out", default="sweep.json")
+    ap.add_argument("--no-split", action="store_true",
+                    help="ROADMAP 2.72: read the stack as one whole-stack match "
+                         "only (the reader before the split-halves identity)")
     args = ap.parse_args()
 
     meters = DEFAULT_METERS
     if args.add_meters:
         extra = tuple(ADDABLE[m.strip()] for m in args.add_meters.split(","))
         meters = DEFAULT_METERS + extra
-    config = replace(DEFAULT_LOCATOR_CONFIG, meters=meters)
+    config = replace(DEFAULT_LOCATOR_CONFIG, meters=meters,
+                     split_halves=not args.no_split)
 
     cases = cases_09() if args.only_09 else CASES_08 + cases_09()
     if args.only:

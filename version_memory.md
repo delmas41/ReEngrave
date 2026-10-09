@@ -31,6 +31,24 @@ noted "part" into one mark (an arc crossing a barline is whole in no cell). New 
 Sean as a flag). README "How to box" gains the slur/tie line. Three new tests run RED first; breaking
 `_touch` and the "unsure" match in memory each turned its test red.
 
+## 2026-10-09 (evening) — 2.72 landed: meter 9/8 and the bar-9 6/8 change
+
+- Denominator re-read from its own half; courtesy past the last barline is cautionary; `locate_meter_by_halves` at bar heads;
+  `OMR_METER_TEMPLATE_AT_BAR` default ON (Sean). Fast 6,534 passed; check 192.
+
+## 2026-10-09 (evening) — 2.74 landed: a beam joins two stems, straight, thicker than a hairpin
+
+- `Q.BEAM_STROKE_INK` + ADJUDICATE refusals (thin / bowed / one stem); `line_detection.detect_beams(rescue_tall)` for beam+hairpin fusions.
+  Sean's 22 heads 20 right / 0 wrong. Fast 6,511 passed; check 192.
+
+## 2026-10-09 (afternoon) — 2.69 landed (hooks counted; flag-tip dot); 1.7 hand truth merged; 2.65 judged; dimin.
+
+- 2.69 (`lane-2.69-flag-hooks` 41637029): `gather.stem_tip_hooks` + `rhythm._stem_tip_hook_count` (a seen hook rules out the head value; counted ->
+  decided; uncounted -> narrowed over levels >= 1); `Q.DOT_STROKE_INK` / `CV_DOT_STROKE` (a dot box mostly on a stroke is not a dot). Sean's 22
+  heads 12 -> 18 right. Fast 6,474 passed; check 192.
+- 1.7 merged (`tools/omr/hand_truth/`, Sean's Brahms 317803 pdf 0 labels, 887 boxes). `dimin` in the lexicon. 2.65: 22 beam/flag heads, 6 head-fill,
+  8 held bars, 10 dynamics bars judged blind by Sean; rows 2.69-2.74 opened from his rulings (DECISIONS 2026-10-09).
+
 ## 2026-10-09 — ROADMAP 1.7: the pre-fill never queues staff lines; README records how to box
 
 Sean (2026-10-08): the detector's own `staff` boxes reached the queue on every cell. Staff

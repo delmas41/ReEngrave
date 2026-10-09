@@ -212,6 +212,33 @@ class TimeSignatureLocatorConfig:
 
     meters: tuple[tuple[int, int], ...] = DEFAULT_METERS
 
+    #: ROADMAP 2.72. Read the DENOMINATOR from its own half of the stack,
+    #: against only the denominators a meter with the stack's numerator can
+    #: have, once the whole-stack match has said where the stack is. See
+    #: `_split_reading` for what that fixes and why it is not a retune.
+    split_halves: bool = True
+
+    #: How far, in staff spaces, either side of the whole-stack match the halves
+    #: may look for their digits. The stack match has already placed the column;
+    #: this is only the slack for its two halves not sharing one x.
+    split_column_slack_spaces: float = 0.5
+
+    #: How far, in staff spaces, the denominator's centre may sit from the
+    #: stack's centre and still be that stack's second row. A time signature
+    #: centres its two rows on each other (module docstring); a digit found in
+    #: another column is unrelated ink, not this meter's denominator.
+    split_centre_tol_spaces: float = 0.6
+
+    #: ROADMAP 2.72, `locate_meter_by_halves`: the weaker half's correlation a
+    #: bar-head reading must reach. It is the header reader's OWN floor
+    #: (`min_score`), not a new number, and it was checked rather than fitted:
+    #: over 1,830 mid-staff windows on ten real scanned pages that print no
+    #: change it answers 3 (0.16%) and no column has two staves agree; the 14
+    #: windows of Brahms 1/i's printed `6/8` score 0.52-0.62. The staves'
+    #: agreement (`rhythm.METER_TEMPLATE_AT_BAR_MIN_STAVES`), not this number,
+    #: is still what a change is believed on.
+    bar_head_half_floor: float = 0.50
+
 
 DEFAULT_LOCATOR_CONFIG = TimeSignatureLocatorConfig()
 
@@ -239,6 +266,14 @@ class LocatedTimeSignature:
     runner_up_raw: str | None = None
     runner_up_score: float | None = None
     score_margin: float | None = None
+    #: ROADMAP 2.72. What the whole-stack match alone had said WHERE the bottom
+    #: half read a different denominator (None where they agree), and how far
+    #: the denominator's own winner (read from the bottom half, see
+    #: `_split_reading`) led its runner-up, on that half's own scale (None on a
+    #: reading the half did not touch: a letter form, or a denominator outside
+    #: the stack's column). RECORD ONLY, like the runner-up.
+    stack_raw: str | None = None
+    denominator_margin: float | None = None
 
     @property
     def symbol(self) -> str | None:
@@ -271,6 +306,10 @@ class LocatedTimeSignature:
             out["runner_up_raw"] = self.runner_up_raw
             out["runner_up_score"] = round(self.runner_up_score, 4)
             out["score_margin"] = round(self.score_margin, 4)
+        if self.stack_raw is not None:
+            out["stack_raw"] = self.stack_raw
+        if self.denominator_margin is not None:
+            out["denominator_margin"] = round(self.denominator_margin, 4)
         return out
 
 
@@ -397,28 +436,173 @@ def _looks_cut(
     return bool(inked_rows >= config.cut_stroke_min_fill)
 
 
-def locate_time_signature(
-    cell: MeasureCell,
-    *,
-    config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
-    min_score: float | None = None,
-    trace: dict[str, object] | None = None,
-) -> LocatedTimeSignature | None:
-    """Read the time signature in one staff's header cell, or return None.
+@lru_cache(maxsize=8)
+def _half_templates(
+    em_px: int, texts: tuple[str, ...]
+) -> dict[str, np.ndarray]:
+    """One digit-row raster per number string, at the SAME scale `_meter_templates`
+    puts that number at inside the four-space stack.
 
-    `cell` is a header cell from `staff_header.extract_header_cell` — the crop
-    running from the staff's left edge to the first barline, which is where a
-    meter is printed and, on degraded prints, is NOT the same region as the
-    staff-start measure cell.
-
-    `min_score` overrides the configured threshold. Benchmarks pass 0.0 to see
-    the near-misses; production should not.
-
-    `trace`, when given, is filled with the whole score table and the floor —
-    including on the refusals, where the return value can carry nothing. RECORD
-    ONLY: no threshold and no verdict depends on it.
+    A stack is assembled at the glyphs' natural size and resized by
+    `4 spaces / (2 * tallest glyph)`; a half is the same row at the same factor,
+    so a half-template is exactly the top (or bottom) half of what the stack
+    template for that number would have been, not a differently-scaled digit.
     """
-    floor = config.min_score if min_score is None else min_score
+    digits = _digit_templates(em_px)
+    space = em_px / 4.0
+    target_h = int(round(4 * space))
+    tallest = max(g.shape[0] for g in digits.values())
+    factor = target_h / (2.0 * tallest)
+    out: dict[str, np.ndarray] = {}
+    for text in texts:
+        if not all(c in digits for c in text):
+            continue
+        row = _row(digits, text)
+        out[text] = cv2.resize(
+            row,
+            (max(2, int(round(row.shape[1] * factor))),
+             max(2, int(round(row.shape[0] * factor)))),
+            interpolation=cv2.INTER_AREA)
+    return out
+
+
+def _half_scores(
+    strip: np.ndarray,
+    templates: dict[str, np.ndarray],
+    *,
+    half: int,
+    pad: int,
+    space: float,
+    x_lo: int,
+    x_hi: int,
+) -> dict[str, tuple[float, float]]:
+    """Each candidate number's best NCC in ONE half of the stack, and where.
+
+    `half` is 0 for the numerator (the upper two spaces) and 1 for the
+    denominator (the lower two). The search is the column `[x_lo, x_hi)` and
+    the strip's own vertical slack (`pad`, half a space -- the slack the
+    whole-stack match slides over, so a stack that matches slid by that much
+    has halves that do too).
+
+    Returns `{text: (score, centre_x)}` in strip pixels.
+    """
+    out: dict[str, tuple[float, float]] = {}
+    slack = max(1, pad)
+    half_h = int(round(2 * space))
+    x_lo = max(0, x_lo)
+    x_hi = min(strip.shape[1], x_hi)
+    for text, tpl in templates.items():
+        th, tw = tpl.shape
+        top = pad + half * half_h + (half_h - th) // 2
+        y0 = max(0, top - slack)
+        y1 = min(strip.shape[0], top + th + slack)
+        sub = strip[y0:y1, x_lo:x_hi]
+        if sub.shape[0] < th or sub.shape[1] < tw:
+            continue
+        response = cv2.matchTemplate(sub, tpl, cv2.TM_CCOEFF_NORMED)
+        _, score, _, loc = cv2.minMaxLoc(response)
+        out[text] = (float(score), x_lo + loc[0] + tw / 2.0)
+    return out
+
+
+def _split_reading(
+    strip: np.ndarray,
+    best: "LocatedTimeSignature",
+    best_at: tuple[tuple[int, int], tuple[int, int]],
+    pad: int,
+    config: TimeSignatureLocatorConfig,
+    trace: dict[str, object] | None,
+) -> "LocatedTimeSignature":
+    """Re-read the DENOMINATOR from the bottom half's own ink.
+
+    ROADMAP 2.72 (Brahms 1/i Breitkopf: a printed `9/8` read `9/4` on ten
+    staves of fourteen, every one with a runner-up within 0.09).
+
+    **Why the stack match alone gets a denominator wrong.** One normalised
+    correlation is taken over the whole four-space stack at ONE x, so the
+    numerator's width and weight set where the template sits and the
+    denominator is scored wherever that leaves it; and both halves feed ONE
+    number, so a numerator that matches well carries a denominator that does
+    not. Measured on the plate, the denominator's own half separates `8` from
+    `4` where the stack does not: on all 10 staves that read a meter the best
+    `8` leads the best `4` by 0.22-0.33 in correlation, where the stack's own
+    winner (`9/4`) led its runner-up by 0.04-0.09. Nothing about the
+    denominator's ink changed; it was being asked a question about the
+    numerator's.
+
+    **What this does and does not change.**
+
+    * The stack match still decides THAT a meter stands here, WHERE, and the
+      NUMERATOR (its score against `min_score` is the gate it always was), so
+      no staff that abstained reads now and none that read is lost: nothing
+      new enters the search, which is the property the cut-common read was
+      built to keep. ⚠️ THE NUMERATOR IS NOT RE-READ, ON MEASUREMENT: a first
+      cut re-read both halves and changed 10 of 496 staves on the 11-source
+      corpus -- 4 right to wrong, 2 wrong to right, 4 wrong to wrong -- and
+      every change but one was a NUMERATOR (Beethoven 5's two `2/4` became
+      `4/4`; Beethoven 3's `3` over a Litolff plate moved among `3`, `6` and
+      `9`). A lone numeral's correlation is a weaker witness than the stack's,
+      where the denominator beneath it disambiguates. The denominator is the
+      half the stack under-reads, so it is the half re-read.
+    * Among the listed meters that keep the stack's numerator, the bottom
+      half's own best correlation picks the denominator. The vocabulary is
+      `config.meters`, so a pair the repertoire list does not hold cannot be
+      produced.
+    * Where the winning denominator does not stand in the stack's own column
+      (centre further than `split_centre_tol_spaces` from the stack's), it is
+      not this stack's second row and the stack's reading stands, untouched.
+    * A letter form (`C`, `C|`) is one glyph and has no halves; it is returned
+      as it was.
+
+    No threshold here was fitted: the column slack and the centring tolerance
+    are geometric (half a space; a time signature centres its rows), and the
+    one comparison made is between candidate denominators, never against a
+    score.
+    """
+    if best.raw in LETTER_METERS:
+        return best
+    (x0, _y0), (_th, tw) = best_at
+    space = config.template_em_px / 4.0
+    slack = int(round(config.split_column_slack_spaces * space))
+    x_lo, x_hi = x0 - slack, x0 + tw + slack
+    same_numerator = [(n, d, raw) for n, d, raw in config.meters
+                      if raw not in LETTER_METERS and n == best.numerator]
+    dens = tuple(sorted({str(d) for _n, d, _r in same_numerator}))
+    bottom = _half_scores(strip, _half_templates(config.template_em_px, dens),
+                          half=1, pad=pad, space=space, x_lo=x_lo, x_hi=x_hi)
+    if trace is not None:
+        trace["denominator_scores"] = {
+            k: round(v[0], 4) for k, v in
+            sorted(bottom.items(), key=lambda kv: -kv[1][0])}
+    stack_centre = x0 + tw / 2.0
+    tol = config.split_centre_tol_spaces * space
+    ranked = sorted(
+        ((raw, n, d, bottom[str(d)][0]) for n, d, raw in same_numerator
+         if str(d) in bottom and abs(bottom[str(d)][1] - stack_centre) <= tol),
+        key=lambda r: -r[3])
+    if not ranked:
+        return best
+    raw, n, d, score = ranked[0]
+    margin = (score - ranked[1][3]) if len(ranked) > 1 else score
+    # ⚠️ `score`, `runner_up_*` and `score_margin` STAY ON THE STACK SCALE and
+    # keep describing what the floor was applied to -- that a meter stands
+    # here. The denominator's own evidence rides beside them, on ITS scale.
+    return replace(
+        best, numerator=n, denominator=d, raw=raw,
+        stack_raw=best.raw if raw != best.raw else None,
+        denominator_margin=margin)
+
+
+def _ink_strip(
+    cell: MeasureCell, config: TimeSignatureLocatorConfig
+) -> tuple[np.ndarray, int, float] | None:
+    """The staff's band of `cell`, as ink-positive pixels at template scale.
+
+    Returns `(strip, pad, scale)` or None where the cell has no usable
+    five-line staff. `pad` is the slack, in strip pixels, above and below the
+    four-space stack that the strip carries; `scale` is strip pixels per cell
+    pixel.
+    """
     metrics = staff_metrics(cell)
     if metrics is None:
         return None
@@ -447,6 +631,35 @@ def locate_time_signature(
     strip = ink[y0:y1, :]
     if strip.size == 0:
         return None
+    return strip, pad, scale
+
+
+def locate_time_signature(
+    cell: MeasureCell,
+    *,
+    config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
+    min_score: float | None = None,
+    trace: dict[str, object] | None = None,
+) -> LocatedTimeSignature | None:
+    """Read the time signature in one staff's header cell, or return None.
+
+    `cell` is a header cell from `staff_header.extract_header_cell` — the crop
+    running from the staff's left edge to the first barline, which is where a
+    meter is printed and, on degraded prints, is NOT the same region as the
+    staff-start measure cell.
+
+    `min_score` overrides the configured threshold. Benchmarks pass 0.0 to see
+    the near-misses; production should not.
+
+    `trace`, when given, is filled with the whole score table and the floor —
+    including on the refusals, where the return value can carry nothing. RECORD
+    ONLY: no threshold and no verdict depends on it.
+    """
+    floor = config.min_score if min_score is None else min_score
+    prepared = _ink_strip(cell, config)
+    if prepared is None:
+        return None
+    strip, pad, scale = prepared
 
     best: LocatedTimeSignature | None = None
     best_at: tuple[tuple[int, int], tuple[int, int]] | None = None
@@ -496,6 +709,10 @@ def locate_time_signature(
         best = replace(best, runner_up_raw=ranked[1][0],
                        runner_up_score=ranked[1][1],
                        score_margin=ranked[0][1] - ranked[1][1])
+    # ROADMAP 2.72: the stack match said a meter stands here; the two halves
+    # say which. See `_split_reading`.
+    if config.split_halves and best_at is not None:
+        best = _split_reading(strip, best, best_at, pad, config, trace)
     # A cut common is a common with a stroke through it, and the stroke is read
     # by POSITION after the fact rather than searched for — searching for it
     # loses to plain `C` on real cut-common pages, because a C is a subset of a
@@ -506,6 +723,90 @@ def locate_time_signature(
     ):
         best = replace(best, numerator=2, denominator=2, raw="C|")
     return best
+
+
+def locate_meter_by_halves(
+    cell: MeasureCell,
+    *,
+    config: TimeSignatureLocatorConfig = DEFAULT_LOCATOR_CONFIG,
+    min_half_score: float | None = None,
+    trace: dict[str, object] | None = None,
+) -> LocatedTimeSignature | None:
+    """Read a meter off a window that has NO header's worth of evidence, from
+    the numerator's and the denominator's OWN halves, or return None.
+
+    ROADMAP 2.72. This is the reader for a mid-staff BAR HEAD (a printed meter
+    CHANGE), where `locate_time_signature`'s whole-stack match under-reads: on
+    Brahms 1/i Breitkopf's `6/8` at bar 9 the stack scores 0.44-0.51 on all
+    fourteen staves (the floor is 0.50, so two read) and names `6/4` or `9/8`
+    on most of the rest, while the weaker of the two halves scores 0.52-0.62
+    on every one and all fourteen name `6/8`. The heavy scan's strokes are a
+    poor match to the Bravura stack as one shape and a good match to each
+    digit as one shape.
+
+    Each half is searched across the whole window, against only the numbers a
+    listed meter has there; a meter is a pair whose two rows stand in one
+    column (`split_centre_tol_spaces`); its score is the WEAKER of its two
+    halves (a meter needs both rows, so a strong numerator cannot carry a
+    missing denominator); the best pair is the reading, and it stands only if
+    that weaker half reaches `min_half_score`.
+
+    ⚠️ THE FLOOR IS NOT WHERE THE SAFETY LIVES, and it is documented as such in
+    the one place it is used (`gather.gather_meter_at_bars`): a bar head is an
+    empty window almost everywhere, so a single staff's answer here is
+    never believed on its own -- the system's staves must agree on the same
+    meter at the same bar (`rhythm.METER_TEMPLATE_AT_BAR_MIN_STAVES`).
+
+    `trace`, when given, takes both halves' score tables.
+    """
+    floor = config.bar_head_half_floor if min_half_score is None else min_half_score
+    prepared = _ink_strip(cell, config)
+    if prepared is None:
+        return None
+    strip, pad, scale = prepared
+    space = config.template_em_px / 4.0
+    digit_meters = [(n, d, raw) for n, d, raw in config.meters
+                    if raw not in LETTER_METERS]
+    nums = tuple(sorted({str(n) for n, _d, _r in digit_meters}))
+    dens = tuple(sorted({str(d) for _n, d, _r in digit_meters}))
+    top = _half_scores(strip, _half_templates(config.template_em_px, nums),
+                       half=0, pad=pad, space=space, x_lo=0, x_hi=strip.shape[1])
+    bottom = _half_scores(strip, _half_templates(config.template_em_px, dens),
+                          half=1, pad=pad, space=space, x_lo=0, x_hi=strip.shape[1])
+    if trace is not None:
+        trace["floor"] = floor
+        trace["numerator_scores"] = {
+            k: round(v[0], 4) for k, v in
+            sorted(top.items(), key=lambda kv: -kv[1][0])}
+        trace["denominator_scores"] = {
+            k: round(v[0], 4) for k, v in
+            sorted(bottom.items(), key=lambda kv: -kv[1][0])}
+    tol = config.split_centre_tol_spaces * space
+    ranked = []
+    for n, d, raw in digit_meters:
+        t, b = top.get(str(n)), bottom.get(str(d))
+        if t is None or b is None or abs(t[1] - b[1]) > tol:
+            continue
+        ranked.append((min(t[0], b[0]), raw, n, d, t, b))
+    if not ranked:
+        return None
+    ranked.sort(key=lambda r: -r[0])
+    score, raw, n, d, t, b = ranked[0]
+    if trace is not None:
+        trace["best"] = {"raw": raw, "score": round(score, 4),
+                         "numerator": round(t[0], 4),
+                         "denominator": round(b[0], 4)}
+    if score < floor:
+        return None
+    runner = ranked[1] if len(ranked) > 1 else None
+    return LocatedTimeSignature(
+        numerator=n, denominator=d, score=float(score),
+        x_canonical=int(round((t[1] + b[1]) / 2.0 / scale)),
+        raw=raw,
+        runner_up_raw=runner[1] if runner else None,
+        runner_up_score=runner[0] if runner else None,
+        score_margin=(score - runner[0]) if runner else None,
+    )
 
 
 def vote_system_time_signature(

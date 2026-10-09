@@ -138,7 +138,7 @@ class TestTheBeamReadersInputIsTheStemSet(unittest.TestCase):
         cell = _cell(0, 0, [0.0, 10.0, 500.0, 200.0], 1.0)
         log = Log()
 
-        def fake_detect_lines(c, candidates_out=None, noteheads=None):
+        def fake_detect_lines(c, candidates_out=None, noteheads=None, **_):
             # the five fields `gather_cv_lines`' observe path reads off a
             # stroke, derived by grepping that block rather than guessed
             mk = lambda i: SimpleNamespace(

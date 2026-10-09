@@ -593,6 +593,29 @@ class Q(_Vocab):
     #: window (a neighbour's head, an accidental, text, a slur/tie arc --
     #: ink this record can already name is not this quantity's to claim).
     STEM_TIP_INK = "stem_tip_ink"
+    #: ROADMAP 2.69 follow-up (Sean, 2026-10-09: *"a dot can not fully or
+    #: mostly overlap a flag but it can touch it"*). Filed on an
+    #: `augmentationDot` DETECTION's glyph subject: the share of the ink in
+    #: its own box that lies on an ELONGATED STROKE (a flag, a stem, a beam)
+    #: -- ink a line longer than any dot can fit through, off the
+    #: staff-erased raster. A round dot, touching a flag or not, scores ~0;
+    #: a "dot" that is the curled tip of a flag scores ~1. Overlap, not
+    #: contact. ABSTAINS where the raster, the staff-space unit or the box
+    #: is missing.
+    DOT_STROKE_INK = "dot_stroke_ink"
+    #: ROADMAP 2.74 (Sean, 2026-10-09: *"A beam never has an arc"* / *"The
+    #: thickness on a beam is always more than a hairpin"* / *"A beam must not
+    #: only connect to its note but also to another note"*). Filed on a CELL,
+    #: one row per `Q.BEAM_STROKE` row (CV and detector alike), keyed by
+    #: `detail["beam_row_id"]`: the stroke's median thickness (value, in staff
+    #: spaces; `detail.thickness_ratio` against the staff lines' own thickness
+    #: AT its columns), how far its centre line bows from straight
+    #: (`sagitta_spaces`) and whether a vertical run leaves its band at each
+    #: end (`end_stems`), off the UNERASED cell raster. A ruler reading, never
+    #: a naming: it says what the ink is like, not that the stroke is or is
+    #: not a beam. ABSTAINS where the stroke has too little ink under its box
+    #: or the cell has no staff-space unit.
+    BEAM_STROKE_INK = "beam_stroke_ink"
     #: ROADMAP 2.38. `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`
     #: SS2: the single biggest `duration_narrowed` class -- `beams_ambiguous`,
     #: certain=0/possible=1, "nothing certainly covers this note, but one
@@ -2043,6 +2066,13 @@ CLAIMS: "dict[str, str]" = {
     #: erased raster -- a ruler reading, same reason as `LEDGER_INK_UNDER`;
     #: it says whether flag-shaped ink stands there, never that a flag does.
     "STEM_TIP_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.69 follow-up: a line-opening ruler on the erased raster,
+    #: same reason as `STEM_TIP_INK` -- it says how much of a dot box is
+    #: stroke, never that the box is or is not a dot.
+    "DOT_STROKE_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.74: thickness, straightness and end-stem rulers over one beam
+    #: stroke's own ink -- same reason as `DOT_STROKE_INK`.
+    "BEAM_STROKE_INK": CLAIM.MEASUREMENT,
     #: ROADMAP 2.38: a windowed ink-continuity test between a stem's own tip
     #: and a candidate beam stroke, off the erased raster -- a ruler
     #: reading, same reason as `STEM_TIP_INK`; it says whether ink runs
@@ -2387,6 +2417,17 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: `gather._observe_dot_stroke_ink` -- ROADMAP 2.69 follow-up. Reads the
+    #: SAME staff-erased raster `CV_STEM_TIP` reads, so it is NOT independent
+    #: of it (one crop, one signal). Its own reader name because it asks a
+    #: different question (is the ink in THIS dot box a stroke).
+    CV_DOT_STROKE = "cv_dot_stroke"          # gather: dot box ink is a stroke
+    #: `gather.gather_beam_stroke_ink` -- ROADMAP 2.74. Reads the UNERASED
+    #: cell raster (`cell.image`), the one raster no other CV reader of this
+    #: family reads, because the staff-erase thins a beam where it crosses a
+    #: line. Its own reader name: it measures the ink UNDER a stroke some
+    #: other reader (`CV_LINES`, `DETECTOR`) named.
+    CV_BEAM_SHAPE = "cv_beam_shape"          # gather: thickness/bow/end stems
     #: ROADMAP 2.68: letter ink beside a dynamic letter, read on the PAGE render
     #: (`pws.page.rgb`) with every detected glyph blanked (`gather.
     #: _ink_without_detections`) -- not `CV_INK`'s staff-erased components.

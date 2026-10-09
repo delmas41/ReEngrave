@@ -1,0 +1,46 @@
+{
+ "item": "ROADMAP 2.72",
+ "note": "nothing of ours is drawn but the blue corner brackets; ask one at a time",
+ "tiles": [
+  {
+   "file": "tail_courtesy_page0_staff0.png",
+   "kind": "tail",
+   "staff": "staff/0/0/0",
+   "cell": "cell/0/0/0/7",
+   "frame_control_lines_on_ink": 5,
+   "question": "What do the signs inside the blue brackets, after the last barline of this system, print? (a meter? which?)",
+   "ours_before": "a CHANGE of meter at a bar 8 of this system, 9/8 (the courtesy was filed as a bar)",
+   "ours_after": "a cautionary 9/8 that governs no bar of this system and is weighed against the next system's opening"
+  },
+  {
+   "file": "tail_courtesy_page0_staff3.png",
+   "kind": "tail",
+   "staff": "staff/0/0/3",
+   "cell": "cell/0/0/3/7",
+   "frame_control_lines_on_ink": 5,
+   "question": "What do the signs inside the blue brackets, after the last barline of this system, print? (a meter? which?)",
+   "ours_before": "a CHANGE of meter at a bar 8 of this system, 9/8 (the courtesy was filed as a bar)",
+   "ours_after": "a cautionary 9/8 that governs no bar of this system and is weighed against the next system's opening"
+  },
+  {
+   "file": "system1_start_page1_staff0.png",
+   "kind": "carried",
+   "staff": "staff/1/1/0",
+   "cell": "cell/1/1/0/0",
+   "frame_control_lines_on_ink": 5,
+   "question": "Is a time signature printed anywhere inside the blue brackets (after the clef and key, before the first note)?",
+   "ours_before": "abstained (a printed change somewhere earlier on page 1 was never read)",
+   "ours_after": "6/8, carried from the bar-9 change (nothing printed here; Sean 2026-10-09: a meter holds until a printed change)"
+  },
+  {
+   "file": "system1_start_page1_staff3.png",
+   "kind": "carried",
+   "staff": "staff/1/1/3",
+   "cell": "cell/1/1/3/0",
+   "frame_control_lines_on_ink": 5,
+   "question": "Is a time signature printed anywhere inside the blue brackets (after the clef and key, before the first note)?",
+   "ours_before": "abstained (a printed change somewhere earlier on page 1 was never read)",
+   "ours_after": "6/8, carried from the bar-9 change (nothing printed here; Sean 2026-10-09: a meter holds until a printed change)"
+  }
+ ]
+}

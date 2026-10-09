@@ -517,6 +517,26 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),
+    "DOT_STROKE_INK": (
+        RELATION,
+        "ROADMAP 2.69 follow-up (Sean, 2026-10-09): the share of the ink "
+        "inside an `augmentationDot` detection's own box that lies on an "
+        "elongated stroke -- ink a line three dot-widths long fits through "
+        "(opened at 45/90/135 degrees, grown back by 0.15 spaces) -- off "
+        "the staff-ERASED raster. A relation between a detector box and the "
+        "paper under it; scoreless, same reason as `STEM_TIP_INK`.",
+        None),
+    "BEAM_STROKE_INK": (
+        RELATION,
+        "ROADMAP 2.74 (Sean, 2026-10-09: a beam is thicker than a hairpin's "
+        "line, has no arc, and stands on two stems): the median run length "
+        "of ink through one candidate beam stroke's own columns against the "
+        "staff lines' thickness AT those columns, the bow of its centre "
+        "line, and whether a vertical run leaves its band at either end -- "
+        "off the UNERASED cell raster. A relation between a located "
+        "`Q.BEAM_STROKE` row and the paper under it; scoreless, same "
+        "reason as `STEM_TIP_INK`.",
+        None),
     "BEAM_STEM_JOIN": (
         RELATION,
         "ROADMAP 2.38: a SECOND witness for one candidate beam stroke's "
@@ -704,6 +724,12 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.38. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP` do.
     "CV_BEAM_JOIN": ("staged/gather.py", "_observe_beam_stem_join"),
+    # ⚠️ ROADMAP 2.69 follow-up. Also `staged/gather.py` -- reads
+    # `image_no_staff` only, same reason `CV_STEM_TIP` does.
+    "CV_DOT_STROKE": ("staged/gather.py", "_observe_dot_stroke_ink"),
+    # ⚠️ ROADMAP 2.74. Also `staged/gather.py`; reads the UNERASED
+    # `cell.image` (the staff-erase thins a beam where it crosses a line).
+    "CV_BEAM_SHAPE": ("staged/gather.py", "gather_beam_stroke_ink"),
     # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half
     # only). Also `staged/gather.py`, and `_raster_of`'s FOUR-WORD
     # vocabulary (ERASED / INTACT / ERASED_ELSE_INTACT / OWN_ERASURE) has no

@@ -204,18 +204,18 @@ class TestTheGatherer(unittest.TestCase):
         return cells
 
     def _run(self, enabled, stamped_staves=(0, 1, 2)):
-        """⚠️ ROADMAP 0.2b: `_meter_template_at_bar_enabled()` also requires
-        `OMR_RESEARCH` to name `OMR_METER_TEMPLATE_AT_BAR` (docs/flags-2026-09
-        .md §1) — driven together with the flag itself so the ON arm still
-        reaches the code being tested."""
+        """⚠️ ROADMAP 2.72: the flag is DEFAULT ON, so the ON arm sets
+        nothing (the default is what is being exercised) and the OFF arm sets
+        the explicit off word. The pre-2.72 shape -- `OMR_RESEARCH` naming the
+        flag -- is gone with the research gate."""
         log = Log()
         dets = _detections(0, self.LOCAL, {(0, 2): ["timeSig3", "timeSig4"]})
-        env = ({G.METER_TEMPLATE_AT_BAR_ENV: "1",
-                G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV} if enabled
-               else {})
-        with mock.patch.dict(os.environ, env, clear=False):
-            if not enabled:
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(G.RESEARCH_ENV, None)
+            if enabled:
                 os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
+            else:
+                os.environ[G.METER_TEMPLATE_AT_BAR_ENV] = "0"
             G.gather_meter_at_bars(log, self._cells(stamped_staves),
                                    self.LOCAL, dets)
         return log
@@ -284,41 +284,35 @@ class TestTheGatherer(unittest.TestCase):
                     if getattr(e, "value", None) is not None}
         self.assertEqual(answered, {0})
 
-    def test_the_flag_is_an_ALLOW_LIST_because_the_default_is_OFF(self):
-        """⚠️ CLAUDE.md, *A flag's OFF test must follow its DEFAULT*: written
-        as a deny-list, a typo would switch a document ON to a mechanism whose
-        cost has never been priced.
-
-        ⚠️ `OMR_RESEARCH` granted throughout: this test is about the OWN
-        flag's word parsing, not the roadmap-0.2b umbrella."""
-        for value, expect in (("1", True), ("true", True), ("on", True),
-                              ("", False), ("yess", False), ("ON!", False),
-                              ("0", False)):
-            with mock.patch.dict(
-                    os.environ,
-                    {G.METER_TEMPLATE_AT_BAR_ENV: value,
-                     G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV}):
+    def test_the_flag_is_a_DENY_LIST_because_the_default_is_ON(self):
+        """⚠️ CLAUDE.md, *A flag's OFF test must follow its DEFAULT*: since
+        ROADMAP 2.72 this pass is ON unless switched off, so written as an
+        allow-list a typo (`=ON!`, `=yess`) would silently restore the bug
+        the default exists to fix -- an unread printed meter change."""
+        for value, expect in (("0", False), ("false", False), ("no", False),
+                              ("off", False), ("", False),
+                              ("1", True), ("yess", True), ("ON!", True)):
+            with mock.patch.dict(os.environ,
+                                 {G.METER_TEMPLATE_AT_BAR_ENV: value}):
                 self.assertIs(G._meter_template_at_bar_enabled(), expect,
                               f"{value!r}")
-
-    def test_the_research_umbrella_cannot_be_bypassed(self):
-        """Roadmap 0.2b: the own flag alone is not enough, naming it in
-        `OMR_RESEARCH` without the own flag is not enough, and naming a
-        DIFFERENT flag does not turn this one on."""
-        with mock.patch.dict(os.environ, {G.METER_TEMPLATE_AT_BAR_ENV: "1"},
-                             clear=False):
-            os.environ.pop(G.RESEARCH_ENV, None)
-            self.assertFalse(G._meter_template_at_bar_enabled())
-        with mock.patch.dict(
-                os.environ,
-                {G.RESEARCH_ENV: G.METER_TEMPLATE_AT_BAR_ENV}, clear=False):
+        with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
-            self.assertFalse(G._meter_template_at_bar_enabled())
-        with mock.patch.dict(
-                os.environ,
-                {G.METER_TEMPLATE_AT_BAR_ENV: "1",
-                 G.RESEARCH_ENV: "OMR_VERTICAL_RUNS"}, clear=False):
-            self.assertFalse(G._meter_template_at_bar_enabled())
+            self.assertIs(G._meter_template_at_bar_enabled(), True,
+                          "the DEFAULT is on")
+
+    def test_the_research_umbrella_is_no_longer_required(self):
+        """Roadmap 2.72 promoted this out of `research`: naming it in
+        `OMR_RESEARCH` is neither needed nor able to switch it off."""
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
+            os.environ.pop(G.RESEARCH_ENV, None)
+            self.assertTrue(G._meter_template_at_bar_enabled())
+        with mock.patch.dict(os.environ,
+                             {G.RESEARCH_ENV: "OMR_VERTICAL_RUNS"},
+                             clear=False):
+            os.environ.pop(G.METER_TEMPLATE_AT_BAR_ENV, None)
+            self.assertTrue(G._meter_template_at_bar_enabled())
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -473,13 +467,30 @@ class TestAConsensusReachesTheSegments(unittest.TestCase):
         v = log.verdict(Q.METER, sysj)
         return (v.value or {}).get("segments") or [], v
 
-    def test_a_bar_with_NO_glyph_anywhere_proposes_nothing(self):
-        """⚠️ THE STRUCTURAL BOUND: the gatherer only ever looks where some
-        staff saw meter-shaped ink, so this pass can add STAVES to a bar and
-        never a bar to the page. Asserted rather than assumed."""
+    def test_a_bar_with_NO_glyph_and_only_TWO_template_staves_proposes_nothing(
+            self):
+        """⚠️ THE BOUND THAT SURVIVES 2.72. A bar the detector said nothing
+        about is a bar the staves' own template readings may open, but only on
+        the quorum: two agreeing staves are below it, and with no glyph there
+        is nothing else to carry the change. (Before 2.72 this pass could add
+        staves to a bar and never a bar to the page; the gatherer's
+        candidates now include the stacked-head pair, so a printed change the
+        detector boxed as noteheads has no glyph row at all.)"""
+        segs, _ = self._segments(*self._log(
+            template_rows=[(1, (4, 4, {0, 1}), "4/4")]))
+        self.assertEqual([s["from_cell"] for s in segs], [0])
+
+    def test_a_bar_with_NO_glyph_and_a_template_CONSENSUS_carries_the_change(
+            self):
+        """ROADMAP 2.72, Brahms 1/i bar 9: `6/8` is printed on every staff,
+        the detector boxes the digits as noteheads (no `timeSig*` row on any
+        staff), and the template readings of the staves agree. RED on the
+        tree before 2.72, where the loop visited only cells with a glyph row
+        and the change was never proposed."""
         segs, _ = self._segments(*self._log(
             template_rows=[(1, (4, 4, {0, 1, 2, 3}), "4/4")]))
-        self.assertEqual([s["from_cell"] for s in segs], [0])
+        self.assertEqual([(s["from_cell"], s["raw"]) for s in segs],
+                         [(0, "3/4"), (1, "4/4")])
 
     def test_a_CONSENSUS_at_a_candidate_bar_carries_the_change(self):
         log, sysj = self._log(
