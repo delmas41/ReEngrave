@@ -686,6 +686,85 @@ def _grow_along_baseline(word, letters, band: np.ndarray, dynamic: np.ndarray,
     return (x0, y0, x1, y1, weight)
 
 
+#: HIDDEN LETTERS: ink of a word that the detection subtraction erased because
+#: the detector drew some other glyph over it. Litolff p8 prints `sempre più p`
+#: on every staff; on six of them the detector boxed the `iù` of `più` as a
+#: CLEF, a REST or an ORNAMENT, `_blank_detections` erased it, and the
+#: word's box stopped after the `p` -- the OCR was handed `sempre p`, which the
+#: lexicon accepts, and a reading that is a sentence shorter than the print
+#: went out as the marking (2026-10-09). A letter is a letter whatever the
+#: detector called it: ink under a box of one of these classes, letter-sized and
+#: letter-dense, on the word's own line and within `HIDDEN_GAP_SPACES` of its
+#: end, is the next letter of the word. Classes that stand beside a text line
+#: because they ARE notation (a notehead, a stem, a flag, an accidental, a
+#: dot, a ledger line) are not in the list, so a note next to a word is never
+#: absorbed into it. `dynamic` is not in the list on purpose: a dynamic beside
+#: a word is a real dynamic as often as a letter of the word (`p espr.`), the
+#: gap cannot tell them apart (Litolff sets the `p` of `sempre più p` 0.7 spaces
+#: after the word, as far as the `iù` stands from the `p` of `più`), and Sean's
+#: rule is that the LEXICON decides (2026-10-09: a `p` alone is piano, a `p`
+#: among the letters of a word is the word's) -- see `_confirm_or_drop_cut_tails`.
+HIDDEN_LETTER_CATEGORIES = ("clef", "rest", "time_sig_digit", "ornament")
+HIDDEN_GAP_SPACES = GROW_GAP_SPACES
+
+
+def _ink_under_letterlike_detections(raw: np.ndarray, page_dict: dict[str, Any],
+                                     spacing: float, config: BandConfig) -> np.ndarray:
+    """255 where page ink lies inside the (padded) box of a detection whose
+    category is in `HIDDEN_LETTER_CATEGORIES`, and the box is a glyph's (not a
+    span: `max_blank_width_spaces`). The ink `_blank_detections` takes out of
+    the mask under those boxes, as a separate layer."""
+    boxes = np.zeros(raw.shape, dtype=bool)
+    pad = int(round(config.detection_pad_spaces * spacing))
+    height, width = raw.shape
+    for system in page_dict.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    box = det.get("bbox_page")
+                    if (det.get("category") not in HIDDEN_LETTER_CATEGORIES
+                            or not box or len(box) != 4):
+                        continue
+                    x, y, w, h = (int(v) for v in box)
+                    if w > config.max_blank_width_spaces * spacing:
+                        continue
+                    boxes[max(0, y - pad):min(height, y + h + pad),
+                          max(0, x - pad):min(width, x + w + pad)] = True
+    return ((raw > 0) & boxes).astype(np.uint8) * 255
+
+
+def _grow_over_hidden_letters(word, letters, hidden: np.ndarray, spacing: float,
+                              config: BandConfig):
+    """Widen one word box `(x0, y0, x1, y1, weight)` over the hidden letters
+    (`HIDDEN_LETTER_CATEGORIES`) standing on its line against either end, one
+    after another. `hidden` is the band's ink under those detections; the
+    pieces are the letter-sized, letter-dense components of it. A word with no
+    letters of its own never grows, and a piece must straddle the word's
+    centre line, so a glyph above or below the line is not a letter of it."""
+    x0, y0, x1, y1, weight = word
+    own = [c for c in letters
+           if c[0] >= x0 and c[0] + c[2] <= x1 and c[1] >= y0 and c[1] + c[3] <= y1]
+    if not own or not hidden.any():
+        return word
+    centre = (float(np.median([c[1] for c in own]))
+              + float(np.median([c[1] + c[3] for c in own]))) / 2.0
+    gap = HIDDEN_GAP_SPACES * spacing
+    pieces = [c for c in _letter_components(hidden, spacing, config)
+              if c[1] <= centre <= c[1] + c[3]
+              and not (c[0] >= x0 and c[0] + c[2] <= x1)]
+    grew = True
+    while grew:
+        grew = False
+        for c in list(pieces):
+            if c[0] - x1 <= gap and x0 - (c[0] + c[2]) <= gap:
+                x0, y0 = min(x0, c[0]), min(y0, c[1])
+                x1, y1 = max(x1, c[0] + c[2]), max(y1, c[1] + c[3])
+                weight += 1
+                pieces.remove(c)
+                grew = True
+    return (x0, y0, x1, y1, weight)
+
+
 # ── Step 2: the bands, and which measure a word is in ───────────────────────
 
 def _bands_for_page(pws: PageWithStaves,
@@ -798,10 +877,12 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
     spacing_page = float(np.median([_spacing(s) for s in pws.staves]))
     raw = _page_ink(pws.page)
     mask = _blank_detections(raw, page_dict, spacing_page, config)
-    erased_page = dynamic_page = None
+    erased_page = dynamic_page = hidden_page = None
     if refine_boxes:
         erased_page = ((raw > 0) & (mask == 0)).astype(np.uint8) * 255
         dynamic_page = _dynamic_boxes(page_dict, mask.shape)
+        hidden_page = _ink_under_letterlike_detections(raw, page_dict,
+                                                       spacing_page, config)
 
     out: list[TextCandidate] = []
     for staff, placement, y_top, y_bottom in _bands_for_page(pws, config):
@@ -838,7 +919,11 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
         words = _cluster_into_words(letters, spacing, strip_config)
         if refine_boxes:
             dynamic = dynamic_page[y_top:y_bottom, x0:x1]
-            words = [_grow_along_baseline(w, letters, band, dynamic, spacing)
+            hidden = hidden_page[y_top:y_bottom, x0:x1]
+            words = [_grow_along_baseline(
+                         _grow_over_hidden_letters(w, letters, hidden, spacing,
+                                                   strip_config),
+                         letters, band, dynamic, spacing)
                      for w in words]
         for wx0, wy0, wx1, wy1, n_comp in words:
             page_box = (x0 + wx0, y_top + wy0, x0 + wx1, y_top + wy1)
@@ -1481,6 +1566,72 @@ def _dynamics_beside(page_dict, box, spacing):
     return (ux0, uy0, ux1, uy1) if took else None
 
 
+#: A reading that ENDS in a dynamic letter (`sempre p`) while another detected
+#: dynamic stands this close beyond its box (spaces) is the middle of a longer
+#: marking, not a word followed by a dynamic: the `p` is the `p` of `più`, and
+#: the `iù` after it is boxed as a dynamic and so was never part of the box
+#: (Litolff p8, 2026-10-09). 0.9 = `BandConfig.inside_word_gap_spaces`, the
+#: reach inside which ink beside a dynamic is a letter of the same word.
+CUT_TAIL_REACH_SPACES = 0.9
+
+
+def _ends_in_a_dynamic(text: str) -> bool:
+    from .direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    tokens = [t for t in (_normalise(w) for w in text.split()) if t]
+    return bool(tokens) and tokens[-1] in _DYNAMIC_LETTERS
+
+
+def _dynamic_against_the_end(page_dict, box, spacing) -> bool:
+    """Is there a detection on the box's rows, at or past its right end, that
+    may hide the rest of the word: a dynamic starting within
+    `CUT_TAIL_REACH_SPACES`, or a clef / rest / time signature / ornament (a box
+    that cannot be what it says in a line of text, `HIDDEN_LETTER_CATEGORIES`)
+    starting within `DYNAMIC_LINK_REACH_SPACES`?"""
+    x0, y0, x1, y1 = box
+    for system in page_dict.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    bx = det.get("bbox_page")
+                    category = det.get("category")
+                    if not bx or len(bx) != 4:
+                        continue
+                    if category == "dynamic":
+                        reach = CUT_TAIL_REACH_SPACES * spacing
+                    elif category in HIDDEN_LETTER_CATEGORIES:
+                        reach = DYNAMIC_LINK_REACH_SPACES * spacing
+                    else:
+                        continue
+                    dx, dy, dw, dh = (int(v) for v in bx)
+                    if dy + dh > y0 and dy < y1 and x1 <= dx <= x1 + reach:
+                        return True
+    return False
+
+
+#: A reading may be only the FRONT of what is printed: the OCR reads `sempre`
+#: from a crop of `sempre piu p` and the lexicon accepts it (Litolff p8,
+#: 2026-10-09: the same marking read as `sempre` on two staves while the third
+#: staff's longer reading was `sempre piu p`). Nothing tells a short reading
+#: from a short word except the box: a reading whose box is wider than this many
+#: staff spaces PER LETTER is read once more from the tight crop, and dropped if
+#: any rung reads the same words and then MORE (`sempre piu`). Not fuzzy: the
+#: longer string only has to begin with the accepted words; what it adds only
+#: has to be letters. 2.0 sits above 117 of 119 accepted readings on the 11
+#: review pages (median 1.3) and below the two it exists for (2.25); Brahms'
+#: broad `dim` (2.2) is also re-read and, being whole, kept.
+WIDE_BOX_SPACES_PER_LETTER = 2.0
+
+
+def _words_of(text: str) -> list[str]:
+    return re.findall(r"[^\W\d_]+", text.lower())
+
+
+def _is_the_front_of(short: str, longer: str) -> bool:
+    """Does `longer` begin with the words of `short` and then say more?"""
+    a, b = _words_of(short), _words_of(longer)
+    return bool(a) and b[:len(a)] == a and any(len(w) >= 2 for w in b[len(a):])
+
+
 def _drop_overlapping_readings(candidates, accepted_at) -> None:
     """Two readings of the same ink on one staff are ONE word, not two: keep the
     one cut from the smaller box (`piu` over `piu f`), because the metric charges
@@ -1673,9 +1824,72 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
         else:
             info["slow_wide_skipped"] = info.get("slow_wide_skipped", 0) + len(strong)
 
+    def confirm_readings():
+        # A READING THAT MAY BE CUT: it ends in a dynamic letter and another dynamic
+        # stands against its box's end. It is read again from the crop over the box
+        # and everything dynamic beside it; it survives only if that reading keeps
+        # its terms and says more. Otherwise it is dropped -- `sempre p` for a print
+        # of `sempre piu p` is a wrong marking, and an unread one is only unread.
+        kept = dropped = 0
+        for i, d in list(accepted_at.items()):
+            if not (d.dynamics and _ends_in_a_dynamic(d.text)
+                    and _dynamic_against_the_end(page_dict, candidates[i].bbox_page,
+                                                 spacing)):
+                continue
+            union = _dynamics_beside(page_dict, candidates[i].bbox_page, spacing)
+            better = None
+            if union is not None:
+                c2 = dataclasses.replace(candidates[i], bbox_page=union)
+                crop = tight_crop_for(pws.page, c2, spacing)
+                for name, fn in cheap + slow:
+                    try:
+                        text = list(getattr(fn, "tight", fn)([crop]))[0]
+                    except Exception:                                # noqa: BLE001
+                        continue
+                    hit = lexicon_lookup(text) if text else None
+                    if (hit is not None and set(d.terms) < set(hit.terms)
+                            and hit.dynamics):
+                        better = (name, hit, c2)
+                        break
+            if better is None:
+                del accepted_at[i]
+                dropped += 1
+            else:
+                name, hit, c2 = better
+                accepted_at[i] = dataclasses.replace(
+                    d, text=hit.text, terms=hit.terms, dynamics=hit.dynamics,
+                    reader=name + "-joined")
+                candidates[i] = c2
+                kept += 1
+        info["n_cut_tail_extended"] = info.get("n_cut_tail_extended", 0) + kept
+        info["n_cut_tail_dropped"] = info.get("n_cut_tail_dropped", 0) + dropped
+        # A READING THAT MAY BE THE FRONT of a longer marking (`WIDE_BOX_SPACES_PER_LETTER`).
+        fronts = 0
+        for i, d in list(accepted_at.items()):
+            letters = sum(ch.isalpha() for ch in d.text)
+            x0, _y0, x1, _y1 = candidates[i].bbox_page
+            if letters < 3 or (x1 - x0) / spacing / letters <= WIDE_BOX_SPACES_PER_LETTER:
+                continue
+            crop = tight_crop_for(pws.page, candidates[i], spacing)
+            for name, fn in cheap + slow:
+                try:
+                    text = list(getattr(fn, "tight", fn)([crop]))[0]
+                except Exception:                                    # noqa: BLE001
+                    continue
+                if text and _is_the_front_of(d.text, text):
+                    del accepted_at[i]
+                    fronts += 1
+                    break
+        info["n_front_of_a_longer_reading_dropped"] = (
+            info.get("n_front_of_a_longer_reading_dropped", 0) + fronts)
+
     t_start = t0 = time.perf_counter()
     read_indices(list(range(n)))
     info["first_looks_s"] = round(time.perf_counter() - t0, 2)
+    # Readings that may be CUT or only the FRONT of the print are settled BEFORE
+    # the siblings are proposed: a wrong reading seeds windows on every other
+    # staff at its own x, and those windows read the neighbour's ink.
+    confirm_readings()
 
     # SIBLINGS: where a word was read, look for the same word at the same x on
     # the other staves of its system (`sibling_candidates`).
@@ -1739,6 +1953,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                 break
     info["n_joined_dynamic"] = joined
     info["joined_s"] = round(time.perf_counter() - t0, 2)
+    confirm_readings()
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
     everyone = list(range(len(candidates)))
     info["n_read"] = sum(1 for i in everyone if seen[i])
