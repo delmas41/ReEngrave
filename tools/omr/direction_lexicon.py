@@ -101,8 +101,10 @@ _PART = """
 #: Dynamic WORDS — the ones spelled out rather than drawn as a glyph. The
 #: letter dynamics (`f`, `pp`) are the detector's job (`export.measure_dynamics`)
 #: and are deliberately absent, so the two readers cannot both claim one mark.
+#: `dimin` (Sean, 2026-10-09): Litolff p8 prints `dimin.`, read whole once the
+#: `sempre più p` box fix stopped cutting it to `dim`.
 _DYNAMIC_WORD = """
-    crescendo cresc decrescendo decresc diminuendo dim
+    crescendo cresc decrescendo decresc diminuendo dimin dim
     rinforzando rinf forte piano fortissimo pianissimo mezzo
     sforzando smorz
 """

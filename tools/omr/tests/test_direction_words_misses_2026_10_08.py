@@ -25,6 +25,7 @@ from tools.omr.tests.test_direction_text import (
     ("Basso", "part"), ("Bassi.", "part"), ("Vcl.", "part"),   # Litolff p4/p6/p12
     ("marc.", "expression"),                                    # Brahms p12/p24
     ("a2", "part"), ("a 2", "part"), ("a.2", "part"),           # Brahms p3/p12/p24
+    ("dimin.", "dynamic"), ("dimin", "dynamic"),                # Litolff p8 (Sean 2026-10-09)
 ])
 def test_words_sean_asked_for_are_read(text, category):
     hit = lookup(text)
