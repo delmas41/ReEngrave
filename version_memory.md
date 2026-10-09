@@ -22,6 +22,13 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 — ROADMAP 0.9: nine slow-tier failures on main, bisected and closed
+
+- Seven `TestTheEngravedTier` tests asserted the reason words 2.9 (`c3035ad5f`) folded into `fitted_no_markers`: re-posed on value + reason +
+  the reader in `Verdict.used`. `test_a_literal_score_is_seen_too` predates 2.55's `RESCUE_LOWCONF` reader: checks both sites now.
+- `capture.report` graded a `UNIT` quantity's detail keys as a location (`Q.CELL_STAFF_SPACE.half_step`, read by `adjudicate_meter` since
+  2.12l `dc84dff14`), crediting `time` with a staff-relative fact it lacks; UNIT quantities are now skipped. `check` 192 unchanged.
+
 ## 2026-10-09 — all-stages re-gather `20261009-all` and its comparison
 
 - 2.68 landed on main (`db1772bb..00473387`). Both movements re-gathered through INFER (45 / 121 min);

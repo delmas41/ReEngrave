@@ -163,8 +163,20 @@ class TestTheShapeQuestion(unittest.TestCase):
     def test_a_literal_score_is_seen_too(self) -> None:
         # The positive control for the test above: if the unpack resolution
         # broke and the literal path broke with it, both would look the same.
+        #
+        # ⚠️ TWO literal sites since ROADMAP 2.55 (d42f91963): the low-conf
+        # rescue of a boxless bar files its boxes under its OWN reader, never
+        # DETECTOR's. Each site is checked, so a site whose literal score the
+        # walker missed still fails here, and a third reader still breaks it.
         self.assertTrue(self.by_q["GLYPH_BOX"]["scored"])
-        self.assertEqual(self.by_q["GLYPH_BOX"]["readers"], ["DETECTOR"])
+        self.assertEqual(self.by_q["GLYPH_BOX"]["readers"],
+                         ["DETECTOR", "RESCUE_LOWCONF"])
+        sites = {s["where"]: s for s in self.by_q["GLYPH_BOX"]["sites"]}
+        for where, reader in (("gather_detections", "DETECTOR"),
+                              ("gather_lowconf_rescue", "RESCUE_LOWCONF")):
+            with self.subTest(where=where):
+                self.assertEqual(sites[where]["reader"], reader)
+                self.assertTrue(sites[where]["scored"])
 
     def test_a_scoreless_quantity_is_reported_scoreless(self) -> None:
         # ⚠️ The negative control. A walker that reported everything scored
