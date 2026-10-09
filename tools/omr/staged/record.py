@@ -1761,6 +1761,15 @@ class Q(_Vocab):
     #: decision answers only "whose ink, which direction".
     OTTAVA_OWNER = "ottava_owner"
     DYNAMIC = "dynamic"                      # the spelled word
+    #: ROADMAP 2.68 (Sean 2026-10-09: *"They will still need a single point to
+    #: start or end - connected to a note"*; *"If it is on a note, it starts on
+    #: the note. If it's between notes, it impacts the next one coming up"*).
+    #: Filed per STAFF of a system, not per cell: for each dynamic mark the
+    #: staff carries, the ONE note (or rest) it starts on -- the BAR is derived
+    #: from that note, never from the padded cell that happened to detect the
+    #: box. A list, one entry per mark, each carrying its own anchor or its own
+    #: reason for none (`no_following_note_in_system`, `equally_plausible`).
+    DYNAMIC_ANCHOR = "dynamic_anchor"
     DIRECTION = "direction"                  # the accepted direction text
     #: ROADMAP 2.68. Which direction word and which dynamic of ONE bar are ONE
     #: marking (`più f`, `p dolce`) -- filed per CELL by EVALUATE's
@@ -2220,6 +2229,7 @@ CLAIMS: "dict[str, str]" = {
     "PEDAL_OWNER": CLAIM.INTERPRETATION,
     "OTTAVA_OWNER": CLAIM.INTERPRETATION,
     "DYNAMIC": CLAIM.INTERPRETATION,
+    "DYNAMIC_ANCHOR": CLAIM.INTERPRETATION,
     "DIRECTION": CLAIM.INTERPRETATION,
     "MARKING": CLAIM.INTERPRETATION,
     "INSTRUMENT": CLAIM.INTERPRETATION,
