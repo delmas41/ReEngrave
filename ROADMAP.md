@@ -17,6 +17,18 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-09 (evening; main ≥ `ee4dca8e`; Sean starts the overnight himself when ready)
+
+**Landed 10-09 (all judged by Sean on the print, one tile at a time, first two stages):** 0.9 (slow-tier failures); 1.7 hand-truth tools + Sean's
+Brahms 317803 pdf 0 labels (still being labelled); 2.69 hooks counted (a seen hook rules out the head value) + flag-tip 'dot' refused; 2.74 a beam joins
+two stems, straight, thicker than a hairpin (Sean's 22 heads 12 -> 20 right, 0 wrong); 2.72 meter (9/8 read 9/4 fixed, bar-head meter reader
+`OMR_METER_TEMPLATE_AT_BAR` default ON); 2.68 dynamics stack (`sempre più`, letters of words, owner = staff printed above, one ink = one letter,
+note anchor -- `check` 193, the anchor's reader is EXPORT, Sean accepted); `dimin` in the lexicon. Sean confirmed: a carried meter holds.
+**In flight (branches, not merged):** `lane-2.73-line-cut-heads` (hollow heads cut by a line; Sean's 27 hand heads 20 -> 27, his 10 tiles none worse;
+stem-tip `occupied` follow-up), `lane-2.71-trem-slash`, `lane-dynamic-not-a-head`, `lane-rhythm-leftovers`, `lane-2.75-tie-slur`. **Held:** 2.67 terms
+(Gradus deep dive first). **Overnight (Sean runs it):** the commands in the block below are current -- `TAG=<tag> THROUGH=infer REF=origin/main nohup
+bash benchmarks/acceptance/overnight/regather_20260930.sh &`, then `compare_20261009.sh` with `BASE=20261009-all`.
+
 ## START HERE — after 2026-10-09 (main `8a74cf73`; Sean: next re-gather the night of 2026-10-09→10)
 
 **Landed:** 2.66 (direction-word boxes; tempo/technique words in a gap belong to the staff BELOW) and 2.68 (a bar's
