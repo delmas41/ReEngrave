@@ -675,6 +675,176 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
     return kept, dropped
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.74 -- a BEAM is thick, straight, and stands on two stems.
+#
+# Sean, 2026-10-09 (DECISIONS), on 2.65 tiles 1, 4, 15 and 21, where a slur, a
+# tie or a hairpin boxed as a beam made an eighth read a sixteenth or a
+# 128th: *"A beam must not only connect to its note but also to another
+# note."* / *"A beam never has an arc."* / *"The thickness on a beam is
+# always more than a hairpin."* Each is a test a stroke must PASS to count as
+# this note's beam, and each is READ OFF THE INK (`Q.BEAM_STROKE_INK`, GATHER):
+# a test that could not be read ABSTAINS -- the stroke stays and the existing
+# rules judge it -- it never passes or fails by default (rule 8).
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's
+# three lines: the numbers below. A beam is `BEAM_THICKNESS_RATIO_MIN` times
+# the staff line's own thickness, measured at the stroke's own columns on the
+# plate (a hairpin's line is about one; Brahms p1: real beams 2.4-4.4, slurs
+# and hairpin strokes 1.3-1.7, nothing between 1.7 and 2.4). Falsified by a
+# print-confirmed beam under it, a slur over it, or a real beam this drops
+# (`FINDINGS.md` §15 crops).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A beam's median thickness, in multiples of the staff line's thickness AT its
+#: own columns. Local on purpose (CLAUDE.md §10: a scan's weight changes
+#: across a system), a ratio and never a pixel count (two plates, two
+#: resolutions). Sits in the empty interval between the measured populations.
+BEAM_THICKNESS_RATIO_MIN = 2.0
+
+#: How far a beam may bow from straight, in staff spaces (the sagitta of a
+#: parabola fitted to its straightest edge or centre line). "A beam never has
+#: an arc."
+#:
+#: ⚠️ MEASURED, AND IT IS THE LOOSER OF THE TWO RULERS ON THIS PLATE. Brahms
+#: p1, 46 CV strokes: real beams read 0.00-0.20 spaces, one real beam FUSED to
+#: a slur's tail 0.30, the slur and tie strokes 0.18-0.26 -- the populations
+#: overlap, so a cut that keeps the fused beam cannot refuse a slur by its bow
+#: alone. The thickness rule (`BEAM_THICKNESS_RATIO_MIN`) does that work there
+#: (slurs 1.3-1.7 lines, beams 2.4+). The bow is kept as the second, rarer
+#: test Sean named: a THICK stroke bowed past this is not a beam either.
+BEAM_SAGITTA_MAX_SPACES = 0.40
+
+#: How far (staff spaces) a one-stem stroke may lie from a stroke that stands
+#: on two stems and still be that beam group's own secondary level (a
+#: beamlet). A secondary beam sits about 0.3-0.7 spaces from the primary.
+BEAM_BEAMLET_GAP_SPACES = 1.0
+
+
+def _beam_ink_rows(ev: Evidence, cell) -> Dict[str, Any]:
+    """`{beam row id: Q.BEAM_STROKE_INK row}` for this cell. ROADMAP 2.74."""
+    out: Dict[str, Any] = {}
+    for r in ev.rows(Q.BEAM_STROKE_INK, scope=Scope.SELF_AND_ANCESTORS,
+                     subject=cell):
+        bid = (r.detail or {}).get("beam_row_id")
+        if bid:
+            out[bid] = r
+    return out
+
+
+def _stems_a_stroke_stands_on(row, ink_row, stems, tol: float):
+    """`(distinct stem count, read)`. How many different stems the stroke
+    stands on: every read `Q.STEM` within the join tolerance of its box, plus
+    each end the INK says a vertical run leaves. `read` is False where the
+    ink reader did not say either end (then the count says nothing). ROADMAP
+    2.74.
+
+    ⚠️ PERMISSIVE ON PURPOSE, because the only use of a LOW count is to
+    refuse a stroke: a stem within `tol` of the box counts even though it
+    does not touch it (the join the CV beam reader itself used), so the
+    stroke is refused only where nothing, anywhere near it, is a stem.
+    """
+    box = _xywh(row)
+    ends = (ink_row.detail or {}).get("end_stems") or []
+    ends_read = (len(ends) == 2
+                 and all(isinstance(e, dict) and e.get("found") is not None
+                         for e in ends))
+    if box is None or not ends_read or tol <= 0:
+        return 0, False
+    xs = []
+    for s in stems:
+        sb = _xywh(s)
+        if sb is not None and _box_gap(sb, box) <= tol:
+            xs.append(sb[0] + sb[2] / 2.0)
+    for e in ends:
+        if e.get("found") and e.get("x") is not None:
+            xs.append(float(e["x"]))
+    xs.sort()
+    distinct, last = 0, None
+    for x in xs:
+        if last is None or x - last > 0.75 * tol:
+            distinct += 1
+            last = x
+    return distinct, True
+
+
+def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
+    """`(kept, {stroke id: reason}, ink rows read)`. ROADMAP 2.74.
+
+    A stroke is NOT a beam where the ink READS it so, by the first that
+    fails: `too_thin` (median thickness under `BEAM_THICKNESS_RATIO_MIN`
+    staff lines -- a hairpin's line, a slur's or tie's tapering arc),
+    `not_straight` (bowed more than `BEAM_SAGITTA_MAX_SPACES` -- a slur or a
+    tie), `one_stem` (nothing but one stem stands at either end of it -- a
+    stroke that joins its own note and no other). A stroke with no
+    `Q.BEAM_STROKE_INK` row, or whose reading left a test unread, is KEPT:
+    the existing rules (`_beyond_own_stem`, the 2.38 ink join) judge it.
+
+    ⚠️ ADDITIVE, NEVER SUBTRACTIVE OF THE RECORD, same discipline as
+    `_not_a_ledger_line`: it only removes a stroke from THIS note's count,
+    and where that leaves a stemmed head with no mark the caller applies the
+    same rule-8 narrowing 2.25b's neighbour/arc discounts do.
+
+    ⚠️ ONE STEM IS DECIDED FROM THE ENDS OF THE STROKE, NOT FROM THIS HEAD'S
+    OWN: "joins this note's stem" is `_stem_joined` and the 2.38 ink join,
+    read where they have always been read. This asks the other half -- is
+    there ANOTHER note's stem -- of the stroke itself, so a beam read for a
+    head whose own stem was never boxed is still judged.
+    """
+    ink = _beam_ink_rows(ev, cell)
+    if not ink:
+        return list(beams), {}, ()
+    why: Dict[str, str] = {}          # stroke id -> why it is not a beam
+    anchors = []                      # strokes that PASS all three, read
+    for b in beams:
+        row = ink.get(b.id)
+        if row is None:
+            continue
+        d = row.detail or {}
+        ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
+        if ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+            why[b.id] = "too_thin"
+        elif sag is not None and sag > BEAM_SAGITTA_MAX_SPACES:
+            why[b.id] = "not_straight"
+        else:
+            n, read = _stems_a_stroke_stands_on(b, row, stems, tol)
+            if read and n < 2:
+                why[b.id] = "one_stem"
+            elif read:
+                anchors.append(b)
+    # ⚠️ A BEAMLET IS A BEAM. The short secondary stroke of a dotted eighth and
+    # a sixteenth hangs from ONE stem toward its neighbour and stops; Sean's
+    # rule is about the BEAM of a group, and a stub that is part of that beam
+    # stands on its stem and under (or over) the primary stroke that stands on
+    # two. A one-stem stroke that lies within `BEAM_BEAMLET_GAP_SPACES` of a
+    # stroke that PASSED, overlapping it in x, is that group's secondary level
+    # and stays; one that stands alone (a slur's arc, a hairpin's line, the
+    # next voice's) does not. `tol` is `STEM_JOIN_TOLERANCE_SPACES` spaces, so
+    # a space is `tol / STEM_JOIN_TOLERANCE_SPACES`.
+    space = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
+    for b in beams:
+        if why.get(b.id) != "one_stem":
+            continue
+        box = _xywh(b)
+        for a in anchors:
+            ab = _xywh(a)
+            if box is None or ab is None:
+                continue
+            x_overlap = min(box[0] + box[2], ab[0] + ab[2]) - max(box[0], ab[0])
+            y_gap = max(box[1], ab[1]) - min(box[1] + box[3], ab[1] + ab[3])
+            if x_overlap > 0 and y_gap <= BEAM_BEAMLET_GAP_SPACES * space:
+                del why[b.id]
+                break
+    kept, dropped, used = [], {}, []
+    for b in beams:
+        if b.id in why:
+            dropped[b.id] = why[b.id]
+            used.append(ink[b.id])
+        else:
+            kept.append(b)
+    return kept, dropped, tuple(used)
+
+
 #: `wedge_box` (class 3, the hairpin) is NAMED, NOT BUILT -- ROADMAP 2.25b.
 #: An exploratory pass priced it on real Brahms/Litolff gathers and eye-
 #: checked crops before this decision was reverted: the `>= 2 stems`
@@ -1723,6 +1893,18 @@ def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
     return None, lo, max(lo, hi)
 
 
+def _at_level_value(base: float, level: int, n_dots: int) -> float:
+    """The written value of a head of `base` beats carrying `level` beam or
+    flag levels and `n_dots` dots -- the arithmetic every branch of
+    `adjudicate_duration` spells inline."""
+    b = base / (2 ** level) if level else base
+    t, add = b, b
+    for _ in range(n_dots):
+        add /= 2.0
+        t += add
+    return t
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -1751,7 +1933,7 @@ def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
                    Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.BEAM_STEM_JOIN),
+                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK),
     scope=Kind.GLYPH,
     # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
     # standing inside a DECIDED slur/tie's own box is discounted from this
@@ -1793,7 +1975,7 @@ def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN),
+           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",
@@ -1910,6 +2092,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     kept, neighbour_dropped = _not_the_neighbours_beam(
         ev, cell, kept, stems, own_stems)
     kept, arc_dropped = _not_a_decided_arc(ev, cell, kept, stems)
+    # ⚠️ ROADMAP 2.74 (Sean, 2026-10-09), SAME TIER: a stroke the INK reads
+    # as too thin, bowed, or standing on one stem is not a beam. Read off
+    # `Q.BEAM_STROKE_INK`; an unread test keeps the stroke (rule 8).
+    kept, ink_dropped, ink_used = _not_a_beam_by_ink(
+        ev, cell, kept, stems, _join_tolerance(ev, cell))
+    used.extend(r.id for r in ink_used)
     # ⚠️⚠️ RULE 8, APPLIED TO 2.25b (manager, before merge): discounting a
     # stroke as the neighbour's or a decided arc's own ink may not by
     # itself turn a marked note into an unmarked one. Recorded here, before
@@ -1920,7 +2108,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # covers; the SAME test 2.18b's own `beyond_stem_kept_no_other_mark`
     # runs for a different cause.
     discount_removed_all_marks = (bool(before_2_25b) and not kept
-                                  and bool(neighbour_dropped or arc_dropped))
+                                  and bool(neighbour_dropped or arc_dropped
+                                           or ink_dropped))
     # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
@@ -2051,11 +2240,16 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
                            + len(ledger_dropped) + len(neighbour_dropped)
-                           + len(arc_dropped)
+                           + len(arc_dropped) + len(ink_dropped)
                            - len(cv)),
               "beams_ledger_line": len(ledger_dropped),
               "beams_neighbour_staff": len(neighbour_dropped),
               "beams_decided_arc": len(arc_dropped),
+              # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
+              "beams_not_by_ink": len(ink_dropped),
+              "beams_not_by_ink_why": {
+                  w: sum(1 for v in ink_dropped.values() if v == w)
+                  for w in sorted(set(ink_dropped.values()))},
               "beam_side": side, "beams_far_side": len(far_side),
               "beams_beyond_stem": len(beyond),
               "beyond_stem_kept_no_other_mark": beyond_guarded,
@@ -2105,6 +2299,29 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # lets `reconcile_duration` search ADMITTED levels instead of arithmetic
     # +/-1. A note whose strokes are unambiguous still DECIDES.
     if flags_disagree:
+        # ⚠️ ROADMAP 2.74 / 2.69 (tile 15): the detector boxed ONE flag as
+        # both `flag8th*` and `flag16th*`. The stem-tip reader COUNTS the
+        # hooks at this head's own stem (2.69) -- the same fact, off the ink,
+        # from a reader that does not share the detector's box. Where its
+        # count is one of the levels the boxes vote for, it breaks the tie
+        # (the counted ink is the witness that can say which box is right);
+        # where it names a level NO box voted for, or did not count, the
+        # disagreement stands and narrows as before (never an argmax).
+        _tip, _tip_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+        if _tip:
+            _counted, _lo, _hi = _stem_tip_hook_count(_tip_rows)
+            if _counted is not None and _counted in flag_level_votes:
+                used.extend(r.id for r in _tip_rows)
+                t = _at_level_value(base, _counted, n_dots)
+                return Ruling(value={"beats": _scale(t, ratio, ev),
+                                     "written": t, "dots": n_dots,
+                                     "beam_levels": _counted},
+                              reason="hooks_counted", used=tuple(used),
+                              detail={**shared, "hooks_counted": _counted,
+                                      "flags_disagree_settled_by_hooks": True,
+                                      "flag_level_votes": {
+                                          str(k): v for k, v in
+                                          sorted(flag_level_votes.items())}})
         cands = []
         for level in sorted(flag_level_votes):
             b = base / (2 ** level)

@@ -603,6 +603,19 @@ class Q(_Vocab):
     #: contact. ABSTAINS where the raster, the staff-space unit or the box
     #: is missing.
     DOT_STROKE_INK = "dot_stroke_ink"
+    #: ROADMAP 2.74 (Sean, 2026-10-09: *"A beam never has an arc"* / *"The
+    #: thickness on a beam is always more than a hairpin"* / *"A beam must not
+    #: only connect to its note but also to another note"*). Filed on a CELL,
+    #: one row per `Q.BEAM_STROKE` row (CV and detector alike), keyed by
+    #: `detail["beam_row_id"]`: the stroke's median thickness (value, in staff
+    #: spaces; `detail.thickness_ratio` against the staff lines' own thickness
+    #: AT its columns), how far its centre line bows from straight
+    #: (`sagitta_spaces`) and whether a vertical run leaves its band at each
+    #: end (`end_stems`), off the UNERASED cell raster. A ruler reading, never
+    #: a naming: it says what the ink is like, not that the stroke is or is
+    #: not a beam. ABSTAINS where the stroke has too little ink under its box
+    #: or the cell has no staff-space unit.
+    BEAM_STROKE_INK = "beam_stroke_ink"
     #: ROADMAP 2.38. `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`
     #: SS2: the single biggest `duration_narrowed` class -- `beams_ambiguous`,
     #: certain=0/possible=1, "nothing certainly covers this note, but one
@@ -2057,6 +2070,9 @@ CLAIMS: "dict[str, str]" = {
     #: same reason as `STEM_TIP_INK` -- it says how much of a dot box is
     #: stroke, never that the box is or is not a dot.
     "DOT_STROKE_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.74: thickness, straightness and end-stem rulers over one beam
+    #: stroke's own ink -- same reason as `DOT_STROKE_INK`.
+    "BEAM_STROKE_INK": CLAIM.MEASUREMENT,
     #: ROADMAP 2.38: a windowed ink-continuity test between a stem's own tip
     #: and a candidate beam stroke, off the erased raster -- a ruler
     #: reading, same reason as `STEM_TIP_INK`; it says whether ink runs
@@ -2406,6 +2422,12 @@ class READERS(_Vocab):
     #: of it (one crop, one signal). Its own reader name because it asks a
     #: different question (is the ink in THIS dot box a stroke).
     CV_DOT_STROKE = "cv_dot_stroke"          # gather: dot box ink is a stroke
+    #: `gather.gather_beam_stroke_ink` -- ROADMAP 2.74. Reads the UNERASED
+    #: cell raster (`cell.image`), the one raster no other CV reader of this
+    #: family reads, because the staff-erase thins a beam where it crosses a
+    #: line. Its own reader name: it measures the ink UNDER a stroke some
+    #: other reader (`CV_LINES`, `DETECTOR`) named.
+    CV_BEAM_SHAPE = "cv_beam_shape"          # gather: thickness/bow/end stems
     #: ROADMAP 2.68: letter ink beside a dynamic letter, read on the PAGE render
     #: (`pws.page.rgb`) with every detected glyph blanked (`gather.
     #: _ink_without_detections`) -- not `CV_INK`'s staff-erased components.
