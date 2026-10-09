@@ -3857,6 +3857,14 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
                      float(d.width_canonical), float(d.height_canonical)),
                     blockers, space_c, heads=heads)
 
+        # ROADMAP 2.69 follow-up: is any `augmentationDot` box in this cell
+        # really the tip of a flag? Needs the cell raster, not any stem.
+        if space_c is None:
+            _grid_d = _cell_grid(c)
+            space_c = _grid_d[1] * 2.0 if _grid_d is not None else None
+        _observe_dot_stroke_ink(log, sub, frame, c,
+                                (detections or {}).get(sub.to_key()), space_c)
+
         # ROADMAP 2.38: a second, independent witness for the beams_
         # ambiguous population -- does THIS stem's own ink run unbroken
         # into THIS candidate stroke's ink at the tip? One pair at a time,
@@ -4353,6 +4361,107 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         log.observe(sub, Q.STEM_TIP_INK, found,
                     reader=READERS.CV_STEM_TIP, frame=frame,
                     stem_row_id=stem_row_id, end=end, **m, **hook_detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.69 follow-up -- is a "dot" box really the curled tip of a flag?
+#
+# Sean, 2026-10-09 (DECISIONS, on 2.65 tile 13: the detector's
+# `augmentationDot` box sits on the TIP of the note's own flag and made a plain
+# eighth a dotted one): *"a dot can not fully or mostly overlap a flag but it
+# can touch it"*. OVERLAP, not contact. A real dot is a disc: no straight line
+# longer than the disc fits inside it, whether or not it touches a flag. A
+# flag tip, a stem or a beam is a stroke: a line three dot-widths long fits.
+# The test opens the box's ink with such a line at 45/90/135 degrees (not 0:
+# an erased staff line leaves horizontal stripes), grows the survivors back
+# by 0.15 spaces within the ink, and reports the share of the box's ink that
+# survived. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond
+# Sean's two lines: a printed dot standing mostly on a stroke (a dot jammed
+# against a flag so hard the line fits through half its ink) would be read as
+# stroke. On Brahms p1 every real dot reads 0.0 and the tile-13 tip 0.93.
+# ─────────────────────────────────────────────────────────────────────────────
+
+DOT_STROKE_LINE_DOT_WIDTHS = 3.0
+DOT_STROKE_LINE_MIN_SPACES = 1.0
+DOT_STROKE_GROW_SPACES = 0.15
+DOT_STROKE_ANGLES = (45, 90, 135)
+
+
+def dot_stroke_ink(img: Any, box: Tuple[float, float, float, float],
+                   space: float) -> Optional[Dict[str, Any]]:
+    """The share of the ink inside `box` (`x, y, w, h`, canonical cell px)
+    that lies on an elongated stroke. `None` -- declined -- where the raster,
+    the unit or the box is unusable; `ink_px` 0 says the box held no ink at
+    all (then `fraction` is 0.0 and means nothing). ROADMAP 2.69 follow-up."""
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    x, y, w, h = [float(v) for v in box]
+    if w <= 0 or h <= 0:
+        return None
+    import cv2
+    import numpy as np
+    H, W = img.shape
+    L = int(round(max(DOT_STROKE_LINE_DOT_WIDTHS * max(w, h),
+                      DOT_STROKE_LINE_MIN_SPACES * space)))
+    L += 1 - L % 2
+    pad = int(L // 2 + 2)
+    x0, y0 = max(0, int(x) - pad), max(0, int(y) - pad)
+    x1, y1 = min(W, int(x + w) + pad), min(H, int(y + h) + pad)
+    bx0, by0 = int(x) - x0, int(y) - y0
+    bx1, by1 = min(x1 - x0, bx0 + int(w)), min(y1 - y0, by0 + int(h))
+    if x1 - x0 < 3 or y1 - y0 < 3 or bx1 <= bx0 or by1 <= by0 \
+            or bx0 < 0 or by0 < 0:
+        return None
+    ink = (img[y0:y1, x0:x1] == 0).astype(np.uint8)
+    keep = np.zeros_like(ink)
+    c = L // 2
+    for ang in DOT_STROKE_ANGLES:
+        k = np.zeros((L, L), np.uint8)
+        dx, dy = np.cos(np.radians(ang)), np.sin(np.radians(ang))
+        for t in np.linspace(-c, c, 4 * L):
+            k[int(round(c + t * dy)), int(round(c + t * dx))] = 1
+        keep |= cv2.morphologyEx(ink, cv2.MORPH_OPEN, k)
+    r = max(1, int(round(DOT_STROKE_GROW_SPACES * space)))
+    grow = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * r + 1, 2 * r + 1))
+    keep = cv2.dilate(keep, grow) & ink
+    inside = int(ink[by0:by1, bx0:bx1].sum())
+    on_stroke = int(keep[by0:by1, bx0:bx1].sum())
+    return {"fraction": round(on_stroke / float(inside), 4) if inside else 0.0,
+            "ink_px": inside, "line_px": L}
+
+
+def _observe_dot_stroke_ink(log: Log, sub: Subject, frame: str, cell: Any,
+                            dets: Optional[Sequence[Any]],
+                            space: Optional[float]) -> None:
+    """`Q.DOT_STROKE_INK` -- one row per `augmentationDot` detection in this
+    cell, on that detection's own glyph subject (the index into the cell's
+    detections, the same numbering `_notehead_boxes_for_cell` uses).
+    ROADMAP 2.69 follow-up."""
+    img = getattr(cell, "image_no_staff", None)
+    for gi, d in enumerate(dets or ()):
+        if not str(getattr(d, "smufl_name", "")).startswith("augmentationDot"):
+            continue
+        g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+        if img is None or getattr(img, "ndim", 0) != 2:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if not space or space <= 0:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="no cell staff-space unit")
+            continue
+        m = dot_stroke_ink(img, (float(d.x_canonical), float(d.y_canonical),
+                                 float(d.width_canonical),
+                                 float(d.height_canonical)), space)
+        if m is None:
+            log.abstain(g, Q.DOT_STROKE_INK, reader=READERS.CV_DOT_STROKE,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                        note="box off the raster")
+            continue
+        log.observe(g, Q.DOT_STROKE_INK, m.pop("fraction"),
+                    reader=READERS.CV_DOT_STROKE, frame=frame, **m)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

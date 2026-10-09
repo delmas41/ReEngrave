@@ -1145,6 +1145,11 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     return out
 
 
+#: A dot box whose ink is at least this share elongated stroke is not a dot
+#: (Sean 2026-10-09: "mostly overlap"). Real dots read 0.0 on Brahms p1.
+DOT_ON_STROKE_MIN = 0.5
+
+
 @decision(
     quantity=Q.DOT_ROLE,
     checkable=Checkable.UNCHECKABLE,
@@ -1156,15 +1161,15 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     # `TestGlyphOwnerPrecedesDotRoleInORDER` asserts the order directly.
     composed_from=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
-             "owned_by_another_staff", "on_a_barline"),
+             "owned_by_another_staff", "on_a_barline", "on_a_stroke"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -1213,6 +1218,22 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     dot_box = _xywh_head(box_rows[-1].value) if box_rows else None
     if dot_box is None:
         return Ruling.abstain("no_glyph_box")
+
+    # ⚠️⚠️ ROADMAP 2.69 FOLLOW-UP (Sean, 2026-10-09, DECISIONS): *"a dot can
+    # not fully or mostly overlap a flag but it can touch it"*. A box whose
+    # own ink mostly lies on an elongated stroke (the curled tip of a flag,
+    # a stem, a beam) is part of that mark and never a lengthening dot --
+    # overlap, not contact, is the test, so a round dot touching a flag
+    # (`Q.DOT_STROKE_INK` near 0) is untouched. ABSTAINS, never defaults: the
+    # box is not a dot, and nothing here says what it is.
+    stroke = ev.rows(Q.DOT_STROKE_INK)
+    if stroke and isinstance(stroke[-1].value, (int, float)) \
+            and float(stroke[-1].value) >= DOT_ON_STROKE_MIN:
+        return Ruling(value=None, reason="on_a_stroke",
+                      used=(stroke[-1].id,),
+                      detail={"dot_stroke_fraction": float(stroke[-1].value),
+                              "detector_class": (row.detail or {}).get(
+                                  "detector_class")})
 
     cell = ev.subject.at(Kind.CELL)
     space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
