@@ -8206,16 +8206,27 @@ def _meter_cells(detections, p: int, key):
 # The safety is the CONSENSUS, which is a structural claim about how an
 # engraver prints a meter change and not a number read off this corpus.
 
-#: Flag. DEFAULT OFF: this is a GATHER change, and a GATHER change cannot be
-#: priced without two full re-gathers — `readjudicate` rebuilds ADJUDICATE from
-#: a saved record so a new quantity never enters it, and `reexport_arm` has the
-#: mirror blind spot. Nothing in a container without weights can say what this
-#: costs on a real page, so the default flip is a human's on a measurement.
+#: Flag. DEFAULT ON since ROADMAP 2.72 (it was default OFF and `research`
+#: from 2.12i until then). Its off-switch is kept so one tree can A/B it.
 #:
-#: ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF. See CLAUDE.md, *A flag's OFF
-#: test must follow its DEFAULT*: a default-OFF flag written as a deny-list is
-#: switched ON by a typo, which for this mechanism means a meter change
-#: appearing in a file on evidence nobody asked for.
+#: ⚠️ WHY IT CAME OUT OF `research`. 2.12i left it OFF because its own gate --
+#: *state Brahms 1/i's printed `6/8` at bar 9 with a quorum* -- FAILED: the
+#: whole-stack reader named `9/8` and `6/4` on two staves of fourteen. 2.72
+#: found the cause (the stack's one correlation under-reads a heavy scan's
+#: digits; read from each half the same ink gives `6/8` on all fourteen,
+#: `time_signature_locator.locate_meter_by_halves`) and re-measured the hazard
+#: that kept it unpriced: over 1,830 empty bar-head windows on ten real scanned
+#: pages of two publishers the halves reader answered 3 (0.16%) and no column
+#: had even TWO staves agree on one meter
+#: (`benchmarks/omr-meter-digits-2026-09/FINDINGS.md`, ROADMAP 2.72). A GATHER
+#: change still cannot be priced without a full re-gather -- the default is
+#: flipped here on the PRINT (Sean's tiles 3 and 4, the held-bar sample) and
+#: on that empty-window count, and the flag stays so the arm and the base can
+#: be run on one tree.
+#:
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON. See CLAUDE.md, *A flag's OFF test
+#: must follow its DEFAULT*: written as an allow-list a typo (`=ON!`) would
+#: silently restore the bug the default exists to fix.
 METER_TEMPLATE_AT_BAR_ENV = "OMR_METER_TEMPLATE_AT_BAR"
 
 #: How wide the bar-head window is, in staff spaces.
@@ -8246,11 +8257,9 @@ METER_TEMPLATE_AT_BAR_MIN_CANDIDATE_STAVES = 1
 
 
 def _meter_template_at_bar_enabled() -> bool:
-    """`research` verdict (docs/flags-2026-09.md §1) — also requires
-    `OMR_RESEARCH` to name `OMR_METER_TEMPLATE_AT_BAR` (roadmap 0.2b)."""
-    return (os.environ.get(METER_TEMPLATE_AT_BAR_ENV, "0").strip().lower() in (
-        "1", "true", "yes", "on")
-            and research_enabled(METER_TEMPLATE_AT_BAR_ENV))
+    """Default ON (ROADMAP 2.72); `OMR_METER_TEMPLATE_AT_BAR=0` turns it off."""
+    return (os.environ.get(METER_TEMPLATE_AT_BAR_ENV, "1").strip().lower()
+            not in ("0", "", "false", "no", "off"))
 
 
 def _bar_head_window(cell: Any, spaces: float):
@@ -8289,21 +8298,39 @@ def _bar_head_window(cell: Any, spaces: float):
 
 
 def _meter_candidate_columns(detections: Dict[str, List[Any]], p: int,
-                             local: Dict[int, Tuple[int, int]]
+                             local: Dict[int, Tuple[int, int]],
+                             spacing_of: Optional[Dict[int, float]] = None
                              ) -> Dict[int, Dict[int, int]]:
     """`{system_index: {cell_index: how many staves saw meter-shaped ink}}`.
 
     ⚠️ CELL 0 IS EXCLUDED, exactly as `_meter_changes` excludes it: a glyph at
     the head of the staff states the OPENING and is the header reader's
     business, not a change.
+
+    ⚠️ ROADMAP 2.72: "METER-SHAPED INK" IS EITHER A DETECTOR `timeSig*` BOX OR
+    THE STACKED PAIR OF HEADS `_meter_digit_pair_box` TESTS. On a scan the
+    detector more often boxes a printed change's two digits as two NOTEHEADS
+    than as a time signature (ROADMAP 2.12l: 13 of 14 staves on Brahms 1/i's
+    bar 9 print `6/8` and the detector boxes `timeSig1` on one), so a column
+    gated on `timeSig*` alone is a column the detector happened to name, and
+    the change the page prints there is never asked about. The pair test is
+    the SAME geometry `notehead_precision.is_a_meter_digit` later holds the
+    boxes to (imported there, not restated here), applied loosely -- firing
+    here only spends a reader call, never decides anything; the safety is the
+    agreement of the system's staves, as it always was
+    (`rhythm.METER_TEMPLATE_AT_BAR_MIN_STAVES`).
     """
     per_system: Dict[int, Dict[int, int]] = {}
-    for _staff_index, key in sorted(local.items()):
+    for staff_index, key in sorted(local.items()):
         sys_idx = key[0]
+        spacing = (spacing_of or {}).get(staff_index)
         for cell_index, cell_dets in _meter_cells(detections, p, key):
             if cell_index == 0:
                 continue
-            if not any(d.smufl_name.startswith("timeSig") for d in cell_dets):
+            seen = any(d.smufl_name.startswith("timeSig") for d in cell_dets)
+            if not seen and spacing:
+                seen = _meter_digit_pair_box(cell_dets, spacing) is not None
+            if not seen:
                 continue
             per_system.setdefault(sys_idx, {})
             per_system[sys_idx][cell_index] = (
@@ -8332,7 +8359,7 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
     if not _meter_template_at_bar_enabled():
         return
     try:
-        from ..time_signature_locator import locate_time_signature
+        from ..time_signature_locator import locate_meter_by_halves
     except Exception:                                         # noqa: BLE001
         for staff_index, key in sorted(local.items()):
             log.abstain(R.staff(0, key[0], key[1]), Q.METER_TEMPLATE_AT_BAR,
@@ -8347,7 +8374,15 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
             by_staff_cell[(c.staff_index, c.measure_index)] = c
             page_index = c.page_index
 
-    columns = _meter_candidate_columns(detections, page_index, local)
+    from ..header_ink import staff_metrics as _staff_metrics
+    spacing_of: Dict[int, float] = {}
+    for (st, _m), c in by_staff_cell.items():
+        if st not in spacing_of:
+            m = _staff_metrics(c)
+            if m is not None:
+                spacing_of[st] = m[0]
+    columns = _meter_candidate_columns(detections, page_index, local,
+                                       spacing_of)
     for staff_index, key in sorted(local.items()):
         sys_idx, st_idx = key
         sub = R.staff(page_index, sys_idx, st_idx)
@@ -8374,7 +8409,9 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
                 continue
             trace: Dict[str, Any] = {}
             try:
-                found = locate_time_signature(window, trace=trace)
+                # ⚠️ ROADMAP 2.72: THE HALVES READER, NOT THE WHOLE-STACK ONE.
+                # See `time_signature_locator.locate_meter_by_halves`.
+                found = locate_meter_by_halves(window, trace=trace)
             except Exception:                                 # noqa: BLE001
                 log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
                             reader=READERS.TEMPLATE, frame=frame,
@@ -8387,7 +8424,8 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
                 log.abstain(sub, Q.METER_TEMPLATE_AT_BAR,
                             reader=READERS.TEMPLATE, frame=frame,
                             reason=ABSTAIN.BELOW_THRESHOLD, cell=cell_index,
-                            **{k: v for k, v in trace.items() if k != "reason"})
+                            **{k: v for k, v in trace.items()
+                               if k in ("floor", "best")})
                 continue
             log.observe(sub, Q.METER_TEMPLATE_AT_BAR,
                         (int(found.numerator), int(found.denominator)),
@@ -8396,6 +8434,9 @@ def gather_meter_at_bars(log: Log, cells: Sequence[Any],
                         raw=found.raw, runner_up=found.runner_up_raw,
                         runner_up_score=found.runner_up_score,
                         score_margin=found.score_margin,
+                        # ⚠️ ROADMAP 2.72: this score is the WEAKER of the
+                        # two halves' correlations (`locate_meter_by_halves`),
+                        # not a whole-stack one.
                         candidate_staves=n_seen)
 
 
@@ -9968,7 +10009,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_meter(log, pws, cells, local, detections)
         # ⚠️ AFTER `gather_meter`, because it reads the SAME reader on a
         # DIFFERENT crop and the header reading is the one a consumer reaches
-        # for first. Off by default — see `METER_TEMPLATE_AT_BAR_ENV`.
+        # for first. On by default since ROADMAP 2.72 — see `METER_TEMPLATE_AT_BAR_ENV`.
         gather_meter_at_bars(log, cells, local, detections)
         # ⚠️ ROADMAP 2.29, BESIDE `gather_meter_at_bars` for the same reason
         # `_bar_head_window` is shared: a second reader of the SAME mid-bar

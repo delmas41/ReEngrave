@@ -4341,9 +4341,18 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
     # the digit witness names -- and `by_cell`'s bare presence must not be
     # allowed to silently shadow the far stronger cross-staff witness below.
     cells_with_a_candidate: set = set()
-    for cell in sorted(by_cell):
+    # ⚠️ ROADMAP 2.72: A BAR THE DETECTOR SAID NOTHING ABOUT IS STILL A BAR
+    # WHERE THE STAVES' OWN TEMPLATE READINGS AGREE. This loop used to visit
+    # only cells with a `Q.METER_GLYPH` row ("this can add staves to a bar,
+    # never a bar to the page" -- true while the gatherer asked only where
+    # some staff had detected meter-shaped ink). The gatherer's candidates now
+    # include the stacked-head pair the detector boxes where it fails to box a
+    # time signature, so a printed change can reach this function with no
+    # glyph row at all; `_admit_template_consensus` below is the gate that
+    # refuses a lone or scattered reading (>= 3 staves, one meter).
+    for cell in sorted(set(by_cell) | set(templates)):
         per_staff = {}
-        for r in by_cell[cell]:
+        for r in by_cell.get(cell, ()):
             per_staff.setdefault(r.subject.staff, []).append(r)
 
         # ⚠️ THE STAVES MAY DISAGREE, AND THE MATH IS WHAT SETTLES IT. On p.62
@@ -4463,8 +4472,24 @@ def _meter_changes(ev: Evidence, opening: dict, bars: dict,
         # courtesy signature is not a restatement of anything on THIS system —
         # it names the next one, and calling it a restatement would lose it.
         reading = best["staves_reading_it"]
-        if (reading and all(last_cell.get(st) == cell for st in reading)
-                and not best["bars_fit"]):
+        # ⚠️ ROADMAP 2.72: A GLYPH IN THE TAIL IS A COURTESY BY CONSTRUCTION.
+        # `last_cell` is `Q.MEASURE_PARTITION - 1`, and since 2.47b the
+        # partition does NOT count the trailing strip a cautionary stands in
+        # (`cautionary_tail_not_a_bar`), so on Brahms 1/i p.0 the last BAR is
+        # cell 6 and the printed `9/8` courtesy stands in cell 7. The old test
+        # (`== cell`) was written when that strip WAS a cell; after 2.47b it
+        # never matched, the `9/8` fell through as a CHANGE at a cell that is
+        # not a bar, and `_adjacent_corroborated_cautionary` (2.12h) found no
+        # `cautionary` on the system before page 1's `9/8` header -- so the
+        # misread `9/4` was never weighed against it. A glyph past the last bar
+        # needs no bar test: there is no bar there to fit. At the last bar
+        # itself the old test stands (a genuine last-bar change is possible
+        # and only the bars can say).
+        if reading and (
+                all(st in last_cell and cell > last_cell[st]
+                    for st in reading)
+                or (all(last_cell.get(st) == cell for st in reading)
+                    and not best["bars_fit"])):
             cautionaries.append(dict(best, cautionary=True))
             continue
         # ⚠️ 2.12d, AND IT COMES BEFORE THE RESTATEMENT TEST FOR THE SAME
