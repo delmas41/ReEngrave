@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (evening) — 2.74 landed: a beam joins two stems, straight, thicker than a hairpin
+
+- `Q.BEAM_STROKE_INK` + ADJUDICATE refusals (thin / bowed / one stem); `line_detection.detect_beams(rescue_tall)` for beam+hairpin fusions.
+  Sean's 22 heads 20 right / 0 wrong. Fast 6,511 passed; check 192.
+
 ## 2026-10-09 (afternoon) — 2.69 landed (hooks counted; flag-tip dot); 1.7 hand truth merged; 2.65 judged; dimin.
 
 - 2.69 (`lane-2.69-flag-hooks` 41637029): `gather.stem_tip_hooks` + `rhythm._stem_tip_hook_count` (a seen hook rules out the head value; counted ->
