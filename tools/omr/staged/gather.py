@@ -3761,7 +3761,14 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # `None` and therefore no gate, never an empty one.
         heads = _notehead_boxes_for_cell(detections, sub, c, log=log)
         try:
-            found = detect_lines(c, candidates_out=runs, noteheads=heads)
+            # ⚠️ ROADMAP 2.74: `rescue_tall_beams` -- a component refused only
+            # for being too TALL is a beam fused to a hairpin's line or a
+            # slur's tail (2.65 tile 1); it is re-opened with a kernel thicker
+            # than a hairpin and read like any other. STAGED only: the legacy
+            # callers of `detect_lines` leave it off and read exactly what they
+            # always read.
+            found = detect_lines(c, candidates_out=runs, noteheads=heads,
+                                 rescue_tall_beams=True)
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
@@ -6939,6 +6946,290 @@ def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.74 -- is a stroke the detector or the CV opening called a BEAM
+# really one? Thick, straight, and standing on at least two stems.
+#
+# Sean, 2026-10-09 (DECISIONS), on 2.65 tiles 1, 4, 15 and 21 -- *"A beam must
+# not only connect to its note but also to another note."* / *"A beam never
+# has an arc."* / *"The thickness on a beam is always more than a hairpin."*
+# Strokes that a slur, a tie, a hairpin or a second reading of one beam put
+# in a cell were counted as one more beam LEVEL of every note whose column
+# they cover (tile 21: a slur's two tapering arcs read a sixteenth). This is
+# the INK half of the test: three rulers per candidate stroke, filed under
+# `Q.BEAM_STROKE_INK` and read by `rhythm.adjudicate_duration`.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's
+# three lines: that a beam's thickness is a multiple of THIS plate's staff
+# line thickness measured AT the stroke's own columns (CLAUDE.md §10: measure
+# against the staff locally; scans change weight and tilt across a system), a
+# hairpin's line being about one. Falsified by a print-confirmed beam whose
+# median thickness is under `BEAM_THICKNESS_RATIO_MIN` lines, or a hairpin
+# line or slur over it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How far past the stroke's own band a vertical run must reach to be a stem
+#: standing at that end, in staff spaces. A beam's stems run at least this far
+#: from it (a stem is ~3.5 spaces); a slur's or hairpin's end meets no such
+#: run.
+BEAM_INK_END_STEM_SPACES = 1.5
+#: How wide an end window is searched for that stem, in staff spaces either
+#: side of the stroke's end.
+BEAM_INK_END_WINDOW_SPACES = 0.4
+#: A stroke needs ink in at least this share of its own columns to be measured.
+BEAM_INK_MIN_COVER = 0.5
+#: The curvature fit ignores this many spaces at each end, where a stem or
+#: head can bulge the run.
+BEAM_INK_END_TRIM_SPACES = 0.5
+BEAM_INK_THRESHOLD = 180
+#: How far either side of a stroke the staff lines are read, in staff spaces,
+#: so a beam lying ON a line does not set the line's own thickness.
+BEAM_INK_LINE_FLANK_SPACES = 3.0
+
+
+def _ink_runs(col: Any) -> List[Tuple[int, int]]:
+    """`(start, end_exclusive)` of every run of True in a 1-D bool array."""
+    import numpy as np
+    d = np.diff(np.concatenate([[0], col.astype(np.int8), [0]]))
+    return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
+
+
+def _median_filter_1d(a: Any, k: int) -> Any:
+    import numpy as np
+    k |= 1
+    h = k // 2
+    pad = np.pad(a, h, mode="edge")
+    return np.array([np.median(pad[i:i + k]) for i in range(len(a))])
+
+
+def local_line_thickness(ink: Any, line_ys: Sequence[float], x0: int, x1: int,
+                         space: float) -> Optional[float]:
+    """The thickness, in canonical px, of this cell's staff lines AT columns
+    `x0..x1` (and `BEAM_INK_LINE_FLANK_SPACES` either side) -- read off the
+    UNERASED ink, `None` where fewer than two lines show one. ROADMAP 2.74.
+    LOCAL on purpose (CLAUDE.md §10: measure against the staff where the
+    subject is, never staff-wide).
+
+    ⚠️ A BEAM LYING ON A STAFF LINE MERGES WITH IT, and ink only ever ADDS to
+    a line's run, so the lines this reads are the lower bound of their own
+    columns: each line's 25th percentile over the columns it is read at (a
+    cell dense with stems and heads covers a line over most of a bar), then
+    the SECOND-thinnest line (the thinnest where only three are readable).
+    The pooled median was measured and refused: a two-level beam standing on
+    two of a staff's five lines pooled to 54 px against a true 23 and read a
+    real beam as a hairpin; on Litolff p3 a bar of merged stems read 58-63 px
+    on its top lines against a true 29.
+    """
+    import numpy as np
+    H, W = ink.shape
+    half = 0.2 * space
+    flank = BEAM_INK_LINE_FLANK_SPACES * space
+    cx0, cx1 = max(0, int(x0 - flank)), min(W, int(x1 + flank))
+    per_line: List[float] = []
+    for ly in line_ys:
+        lo, hi = max(0, int(ly - 0.5 * space)), min(H, int(ly + 0.5 * space) + 1)
+        if hi <= lo:
+            continue
+        vals: List[int] = []
+        for cx in range(cx0, cx1):
+            # the run that sits on the line's own row, measured over a wider
+            # slice so a line thicker than the window is not clipped to it
+            best, bov = None, 0.0
+            for rs, re_ in _ink_runs(ink[lo:hi, cx]):
+                ov = min(re_ + lo, ly + half) - max(rs + lo, ly - half)
+                if ov > bov:
+                    best, bov = (rs, re_), ov
+            if best is not None:
+                vals.append(best[1] - best[0])
+        if len(vals) >= 8:
+            per_line.append(float(np.percentile(vals, 25)))
+    if len(per_line) < 3:
+        return min(per_line) if len(per_line) >= 1 else None
+    per_line.sort()
+    return per_line[1] if len(per_line) >= 4 else per_line[0]
+
+
+def _stem_at_end(ink: Any, x_end: float, band: Tuple[float, float],
+                 space: float) -> Dict[str, Any]:
+    """Is there a vertical run at one END of a stroke that leaves its band by
+    `BEAM_INK_END_STEM_SPACES` or more? `inside` is +1 for the left end (the
+    ROADMAP 2.74."""
+    H, W = ink.shape
+    reach = BEAM_INK_END_STEM_SPACES * space
+    half = max(2, int(round(BEAM_INK_END_WINDOW_SPACES * space)))
+    xs = [int(round(x_end)) + o for o in range(-half, half + 1)]
+    xs = [x for x in xs if 0 <= x < W]
+    if not xs:
+        return {"found": None, "x": None}
+    top, bot = band
+    ymid = int(round((top + bot) / 2.0))
+    hits = []
+    for cx in xs:
+        col = ink[:, cx]
+        if not (0 <= ymid < H):
+            continue
+        # the run through the stroke's own band at this column
+        rs = _ink_runs(col)
+        for s, e in rs:
+            if s <= ymid < e or (s <= bot and e >= top):
+                if (top - s) >= reach or (e - bot) >= reach:
+                    hits.append(cx)
+                break
+    need = max(2, int(round(0.08 * space)))
+    if len(hits) >= need:
+        return {"found": True, "x": round(float(sum(hits)) / len(hits), 1)}
+    return {"found": False, "x": None}
+
+
+def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
+                    space: float, line_ys: Sequence[float]
+                    ) -> Optional[Dict[str, Any]]:
+    """Three rulers over one candidate beam stroke's own ink, off the
+    UNERASED cell raster (`gray`, uint8, 2-D). `None` -- declined -- where
+    the stroke has ink in fewer than `BEAM_INK_MIN_COVER` of its columns or
+    the unit is missing. ROADMAP 2.74.
+
+    * `thickness_px` / `thickness_spaces` / `thickness_ratio`: the median
+      length of the ink run through the stroke at each of its columns, against
+      the staff lines' own thickness AT those columns (`None` ratio where no
+      line was measurable).
+    * `sagitta_spaces`: how far the stroke's centre line bows from straight,
+      from a parabola fitted to the median-filtered centres (`None` where the
+      stroke is shorter than one space).
+    * `end_stems`: for each end (left, right) whether a vertical run leaves
+      the band there -- `found` True/False, `x` the column.
+
+    ⚠️ THE UNERASED raster, not `image_no_staff`: the staff-erase thins a beam
+    that crosses a line (a beam read 34 px thick on the erased image and 49 on
+    the original, same stroke).
+    """
+    import numpy as np
+    if gray is None or getattr(gray, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    ink = gray < BEAM_INK_THRESHOLD
+    H, W = ink.shape
+    x, y, w, h = [float(v) for v in box]
+    xi0, xi1 = max(0, int(round(x))), min(W, int(round(x + w)))
+    if xi1 - xi0 < 8:
+        return None
+    pad = int(round(0.5 * space))
+    y0, y1 = max(0, int(round(y)) - pad), min(H, int(round(y + h)) + pad)
+    if y1 <= y0:
+        return None
+    xs: List[int] = []
+    th: List[int] = []
+    cs: List[float] = []
+    tops: List[float] = []
+    bots: List[float] = []
+    for cx in range(xi0, xi1):
+        best, bov = None, 0.0
+        for s, e in _ink_runs(ink[y0:y1, cx]):
+            ov = min(e + y0, y + h) - max(s + y0, y)
+            if ov > bov:
+                best, bov = (s, e), ov
+        if best is None:
+            continue
+        xs.append(cx)
+        th.append(best[1] - best[0])
+        cs.append(y0 + (best[0] + best[1]) / 2.0)
+        tops.append(float(y0 + best[0]))
+        bots.append(float(y0 + best[1]))
+    if len(xs) < BEAM_INK_MIN_COVER * (xi1 - xi0):
+        return None
+    xs_a, th_a, cs_a = (np.array(xs, float), np.array(th, float),
+                        np.array(cs, float))
+    thick = float(np.median(th_a))
+    line = local_line_thickness(ink, line_ys, xi0, xi1, space)
+    # ⚠️ THE BOW IS THE STRAIGHTEST OF THREE LINES -- the centre and the two
+    # edges. A beam fused to a slur's tapering tail or a hairpin's line has a
+    # ragged centre but one clean straight edge; an ARC is curved on every
+    # one of them. Taking the smallest bow refuses an arc and keeps a beam
+    # with something stuck to it (a real Brahms p1 beam fused to a slur
+    # read 0.53 spaces by its centre line and 0.01 by its upper edge).
+    k = max(5, int(round(0.6 * space)))
+    trim = min(len(xs) // 6, int(round(BEAM_INK_END_TRIM_SPACES * space)))
+    sag = None
+    for edge in (cs_a, np.array(tops, float), np.array(bots, float)):
+        sm = _median_filter_1d(edge, k)
+        xx, yy = xs_a[trim:len(xs) - trim], sm[trim:len(xs) - trim]
+        if len(xx) >= 12 and (xx[-1] - xx[0]) >= space:
+            t = (xx - xx.mean()) / max(1.0, (xx[-1] - xx[0]) / 2.0)
+            bow = abs(float(np.polyfit(t, yy, 2)[0])) / space
+            sag = bow if sag is None else min(sag, bow)
+    # the stroke's own band, for the end-stem test: its median top/bottom
+    band = (float(np.median(cs_a - th_a / 2.0)), float(np.median(cs_a + th_a / 2.0)))
+    ends = [_stem_at_end(ink, xs_a[0], band, space),
+            _stem_at_end(ink, xs_a[-1], band, space)]
+    return {"thickness_px": round(thick, 2),
+            "line_px": None if line is None else round(line, 2),
+            "thickness_ratio": (None if not line else round(thick / line, 3)),
+            "thickness_spaces": round(thick / space, 3),
+            "sagitta_spaces": None if sag is None else round(sag, 4),
+            "end_stems": ends,
+            "columns": int(len(xs)),
+            "cover": round(len(xs) / float(xi1 - xi0), 3),
+            "band": [round(band[0], 1), round(band[1], 1)]}
+
+
+def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]]) -> None:
+    """`Q.BEAM_STROKE_INK` -- one row per `Q.BEAM_STROKE` row in each cell, CV
+    and detector alike, keyed by `beam_row_id`. ROADMAP 2.74.
+
+    ⚠️ AFTER `gather_cv_lines` AND `gather_detector_beams`, because it reads
+    the strokes both filed. Each stroke is measured on ITS OWN box; no stem
+    set is needed (the end-stem test reads the raster, not `Q.STEM`).
+    """
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        if sub.to_key() in seen:
+            continue
+        seen.add(sub.to_key())
+        rows = log.rows(Q.BEAM_STROKE, sub)
+        if not rows:
+            continue
+        frame = frame_cell(c.measure_index)
+        img = getattr(c, "image", None)
+        gray = None
+        if img is not None and getattr(img, "ndim", 0) >= 2:
+            if img.ndim == 3:
+                import cv2
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            else:
+                gray = img
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid is not None else None
+        line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        for r in rows:
+            v = r.value
+            if gray is None:
+                log.abstain(sub, Q.BEAM_STROKE_INK, reader=READERS.CV_BEAM_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_MASK,
+                            beam_row_id=r.id, note="cell carries no image")
+                continue
+            if not space or space <= 0 or not isinstance(v, (list, tuple)) \
+                    or len(v) < 4:
+                log.abstain(sub, Q.BEAM_STROKE_INK, reader=READERS.CV_BEAM_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                            beam_row_id=r.id, note="no cell staff-space unit")
+                continue
+            m = beam_stroke_ink(gray, tuple(float(t) for t in v[:4]), space,
+                                line_ys)
+            if m is None:
+                log.abstain(sub, Q.BEAM_STROKE_INK, reader=READERS.CV_BEAM_SHAPE,
+                            frame=frame, reason=ABSTAIN.NO_READING,
+                            beam_row_id=r.id,
+                            note="too little ink under the stroke's own box")
+                continue
+            log.observe(sub, Q.BEAM_STROKE_INK, m["thickness_spaces"],
+                        reader=READERS.CV_BEAM_SHAPE, frame=frame,
+                        beam_row_id=r.id, **m)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # The clef -- every reader, and BOTH crops
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -9667,6 +9958,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # for a contested head, read off that evidence's own rows).
         gather_head_stem_reach(log, pws, cells, local, detections)
         gather_detector_beams(log, detections)
+        # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
+        # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.
+        gather_beam_stroke_ink(log, cells, local)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
         gather_clef_seed(log, cells, local, dossier=dossier, sources=sources)

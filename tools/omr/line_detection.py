@@ -1040,6 +1040,17 @@ def _attached_stem_count(labels, label: int, stems, x: int, y: int, w: int, h: i
     return found
 
 
+#: ROADMAP 2.74: the height, in staff-line thicknesses, of the kernel a
+#: too-tall component is re-opened with (`detect_beams(rescue_tall=True)`). A
+#: hairpin's line is about one line thick; Brahms p0-1 and Litolff p1-3's beams
+#: read 2.0 or more (`rhythm.BEAM_THICKNESS_RATIO_MIN`'s measurement), so 1.75
+#: keeps the beam and removes the line.
+BEAM_RESCUE_THICKNESS_LINES = 1.75
+#: A row belongs to a rescued beam's own band where at least this share of the
+#: stroke's width is inked on it.
+BEAM_RESCUE_BAND_COVER = 0.5
+
+
 def detect_beams(
     cell,
     *,
@@ -1052,6 +1063,7 @@ def detect_beams(
     stem_end_reach_lines: float = 2.5,
     stem_anchor_min_height_lines: float = 2.8,
     min_attached_stems: int = 2,
+    rescue_tall: bool = False,
 ) -> list[LineDetection]:
     """Find beams in `cell`.
 
@@ -1072,6 +1084,20 @@ def detect_beams(
     measured on the reference sheet, error against ground truth falls from 157
     to 3 summed over four staff-line thicknesses, and it holds under
     degradation down to a 150 DPI render.
+
+    `rescue_tall` (ROADMAP 2.74, STAGED only -- default False keeps the legacy
+    pipeline byte-identical): a component refused ONLY for being taller than
+    `max_height_lines` is a beam FUSED to something thin (a hairpin's line, a
+    slur's tail -- Brahms p1 `glyph/1/0/0/0/5`, a dim. hairpin drawn so close
+    under a group's beam that the two were one component 125 px against a 115
+    ceiling, so the group's beam was never read and an eighth read a quarter).
+    It is opened once more with a kernel `BEAM_RESCUE_THICKNESS_LINES` staff
+    lines tall -- Sean (2026-10-09): *"the thickness on a beam is always more
+    than a hairpin"* -- which removes the thin ink and keeps the beam, and the
+    pieces that survive go through the SAME width/height/aspect/stem-quorum
+    tests as every other component. It can only ADD strokes where the old code
+    read none from that component, and reads nothing where the cell carries no
+    traced staff-line thickness.
 
     `max_height_lines` is 2.5 rather than 1.0 because both a stack of bars and
     a sloped bar are legitimately taller than one beam. At 1.0 an entire
@@ -1127,21 +1153,20 @@ def detect_beams(
         if s.height_canonical >= line_spacing * stem_anchor_min_height_lines
     ]
 
-    for i in range(1, num):
-        x, y, w, h, area = stats[i]
+    def _emit(lab, i, x, y, w, h, area) -> None:
         if w < min_w:
-            continue
+            return
         if h < min_h or h > max_h:
-            continue
+            return
         if area < max(6, line_spacing):
-            continue
+            return
         if w / max(1, h) < 2.0:
-            continue
+            return
         attached = _attached_stem_count(
-            labels, i, anchors, x, y, w, h, line_spacing, tolerance, end_reach
+            lab, i, anchors, x, y, w, h, line_spacing, tolerance, end_reach
         )
         if attached < min_attached_stems:
-            continue
+            return
 
         # Where the bars ARE, not where an even division would put them. A
         # stack's bars do not divide its box evenly — the box is sized by the
@@ -1150,7 +1175,7 @@ def detect_beams(
         # edges for its end-window test and the band centres for its level
         # clustering. `bands is None` means the mask could not say, and the
         # even division below is then exactly what shipped before.
-        n_bars, bands = _stacked_bar_bands(labels, i, x, y, w, h)
+        n_bars, bands = _stacked_bar_bands(lab, i, x, y, w, h)
         if bands is None:
             sub_h = max(1, h // n_bars)
             placed = [(int(y + k * (h / n_bars)), int(sub_h))
@@ -1168,6 +1193,40 @@ def detect_beams(
                 height_canonical=bar_h,
                 confidence=1.0,
             ))
+
+    tall: list[int] = []
+    for i in range(1, num):
+        x, y, w, h, area = stats[i]
+        if (rescue_tall and h > max_h and w >= min_w
+                and area >= max(6, line_spacing)):
+            tall.append(i)
+            continue
+        _emit(labels, i, x, y, w, h, area)
+
+    # ROADMAP 2.74: re-open each too-tall component with a kernel thicker than
+    # a hairpin's line, and read what survives like any other component.
+    thickness = getattr(cell, "staff_line_thickness_canonical", None)
+    if tall and thickness and thickness > 0:
+        k_h = max(3, int(round(BEAM_RESCUE_THICKNESS_LINES * float(thickness))))
+        thick_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_w, k_h))
+        kept_mask = np.zeros_like(opened)
+        for i in tall:
+            comp = ((labels == i).astype(np.uint8)) * 255
+            kept_mask |= cv2.morphologyEx(comp, cv2.MORPH_OPEN, thick_kernel)
+        num2, labels2, stats2, _ = cv2.connectedComponentsWithStats(
+            kept_mask, connectivity=8)
+        for j in range(1, num2):
+            x, y, w, h, area = stats2[j]
+            # ⚠️ TRIM TO THE BEAM'S OWN BAND. Thin ink that touched the beam
+            # over part of its width survives the opening there (it is inside
+            # a thick-enough shape) and would stretch the box. A beam's rows
+            # are covered across most of its width; an appendage's are not.
+            rows = (labels2[y:y + h, x:x + w] == j).sum(axis=1) / float(w)
+            body = np.where(rows >= BEAM_RESCUE_BAND_COVER)[0]
+            if body.size == 0:
+                continue
+            y, h = y + int(body[0]), int(body[-1] - body[0] + 1)
+            _emit(labels2, j, x, y, w, h, area)
     return out
 
 
@@ -1177,7 +1236,8 @@ def detect_beams(
 
 
 def detect_lines(cell, *, candidates_out: list | None = None,
-                 noteheads: Sequence | None = None
+                 noteheads: Sequence | None = None,
+                 rescue_tall_beams: bool = False
                  ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
@@ -1199,5 +1259,6 @@ def detect_lines(cell, *, candidates_out: list | None = None,
                          noteheads=noteheads)
     return {
         "stems": stems,
-        "beams": detect_beams(cell, stems=stems),
+        "beams": detect_beams(cell, stems=stems,
+                              rescue_tall=rescue_tall_beams),
     }

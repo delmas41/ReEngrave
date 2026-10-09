@@ -1795,3 +1795,159 @@ The same hole existed before 2.69; it is not a regression. The fix is to admit
 `reader_declined` where every `Q.BEAM_STROKE` abstention in the cell is
 `no_line_accepted`/`no_stems_to_join` (the reader ran and accepted nothing),
 never for `reader_unavailable`.
+
+---
+
+## 15. ROADMAP 2.74 -- a beam is thick, straight, and stands on two stems (2026-10-09)
+
+Path: STAGED, GATHER + ADJUDICATE only (Sean, 2026-09-30). Branch
+`lane-2.74-beam-two-stems`, off `lane-2.69-flag-hooks` + main. Sean, 2026-10-09
+(DECISIONS), on 2.65 tiles 1, 4, 15, 21: *"A beam must not only connect to its note
+but also to another note."* / *"A beam never has an arc."* / *"The thickness on a
+beam is always more than a hairpin."* and, asked: once ink is shown to be a
+hairpin, can it never be a beam?
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's three
+lines:** the numbers. A beam is >= 1.75 staff-line thicknesses thick (the staff
+lines measured AT the stroke's columns); it bows no more than 0.40 spaces; a second
+stem stands within reach (`Q.STEM` within the join tolerance, or a vertical run in the
+ink at either end). Falsified by a print-confirmed beam the tests refuse. The crops
+below are my eye, not Sean's.
+
+### 15.1 Mechanism per tile (base = the 2.69 tree `2b6f0741`, small re-gather, Brahms p0-1)
+
+| tile | printed | read | mechanism | after 2.74 |
+|---|---|---|---|---|
+| 21 `glyph/1/1/10/7/4` | 8th | 16th | two CV "beams" over a real beam are a **slur's tapering arcs** (1.5 and 1.6 staff lines thick, bow 0.18 / 0.20 spaces, no stem at either end); both overlap the head's stem box, so 2 certain levels | **eighth** (`too_thin` x2) |
+| 1 `glyph/1/0/0/0/5` | 8th | quarter | **no beam was ever read**: the group's beam and a dim. hairpin drawn under it fuse into ONE component 125 px tall against a 115 px ceiling (`line_detection.detect_beams`, `h > max_h`); nothing else stands over the head, so the head value stands | **eighth** (the fused component re-opened with a kernel 1.75 lines tall: the beam survives, the hairpin's line does not) |
+| 4 `glyph/1/0/3/3/11` | 8th | 128th..32nd (no eighth) | the cell holds **no CV beam** (the group's real beam is unread) and 12 overlapping detector `beam` boxes, none a beam (1.0-1.2 lines thick: ties, hairpin lines, staff-line residue; they stacked as levels 3-5) | narrowed `beam_discounted_uncertain`, **eighth \| quarter**, eighth first; the real beam is still unread |
+| 15 `glyph/1/1/9/0/13` | 8th | narrowed 8th \| 16th | the detector boxes ONE flag as `flag8thUp` and `flag16thUp`; **no hook count exists for this stem**: its `Q.STEM_TIP_INK` window abstains `occupied`, the two flag boxes being the "other detections" that block it | **unchanged**, still `flags_disagree` (15.5) |
+
+The `compare.py` diff shows only tiles 1, 4, 21 moved. The 22 tiles, 2.69 tree -> 2.74:
+**18 right / 2 wrong (1, 21) / 2 narrowed (4, 15) -> 20 right / 0 wrong / 2 narrowed (4, 15).**
+
+### 15.2 What was built
+
+GATHER: `Q.BEAM_STROKE_INK` (`gather.beam_stroke_ink`, `gather_beam_stroke_ink`,
+`READERS.CV_BEAM_SHAPE`), one row per `Q.BEAM_STROKE` row (CV and detector), off the
+UNERASED cell raster (the staff-erase thins a beam where it crosses a line: one read 34 px
+there and 49 on the original): `thickness_ratio` (median ink run through the stroke's
+columns / the staff lines' thickness at those columns; `None` where no line is
+measurable, never a pixel default), `sagitta_spaces` (the bow of the straightest of centre
+line, top edge and bottom edge, so a beam with a slur's tail stuck to it is not read as an
+arc), `end_stems` (a vertical run leaving the band at each end, found / not found).
+`local_line_thickness` reads each line's 25th percentile over the stroke's columns +/- 3
+spaces and takes the SECOND-thinnest line: ink only adds to a line, and the first version
+(pooled median) read 54-63 px for a true 23-29 where a beam stood on two lines or a bar of
+stems merged, which called real beams hairpins.
+
+ADJUDICATE (`rhythm._not_a_beam_by_ink`, in `adjudicate_duration` after the side and
+beyond-the-tip tests): a stroke is refused as `too_thin` (< 1.75 lines), `not_straight`
+(> 0.40 spaces) or `one_stem` (no second stem by `Q.STEM` within reach or by the ink at
+the ends). **A test that cannot be read abstains and the stroke stays** (no ratio, sagitta
+unread, an end unread). A one-stem stroke within a space of a stroke that passes is a
+**beamlet** (a dotted rhythm's short second level) and stays. Where the refusals take away
+levels the head would have had, it **narrows** (`beam_discounted_uncertain`, head value |
+one level, as 2.25b does) instead of deciding its head value from an absence the refusal
+made; no `own_stems` condition (a chord head's stem is another head's box). Also: a
+`flags_disagree` is settled by a COUNTED hook that is one of the voted levels (unit tests;
+idle on tile 15, 15.5). `line_detection.detect_beams(rescue_tall=True)`, passed by the
+staged gather only (default False: the legacy pipeline reads exactly what it did).
+
+**Thresholds, both plates.** CV strokes with a stem read at BOTH ends (the surest beams):
+Brahms p0-1 172 of 174 read >= 2.5 lines, Litolff p1-3 130 of 131 read >= 2.0; the thin
+strokes read <= 1.75 on both, with 2 strokes between 1.75 and 2.0. Hairpin lines read
+1.0-1.3. 1.75 is the midpoint of the gap. **The bow cut is the looser ruler**: every CV
+stroke at or over the thickness cut reads <= 0.23 spaces but one (a real Brahms beam fused
+to a slur's tail, 0.30), the slur arcs 0.18-0.26, so bow alone cannot separate them; the
+thickness cut does that work. `not_straight` refused **0 strokes on either plate** (unit
+tests only): thick strokes bowed past 0.40 are detector boxes over a whole cluster of ink
+(0.4-1.4 spaces) that thinness had already taken or that never counted for a head.
+
+**Cross-staff beam:** the end-stem ruler reads the raster, not the stem set, so a beam whose
+far stem stands on the neighbour staff is kept (`TestACrossStaffBeamIsKeptByItsInk`);
+`_not_the_neighbours_beam` (2.25b/2.27d) is unchanged. Not exercised by a real page here.
+
+### 15.3 Population (every `Q.DURATION` verdict standing at ADJUDICATE; base `2b6f0741`, arm
+`0f880dde`, both CLEAN records, same pages, small re-gathers)
+
+Brahms pdf p0-1: 1,862 verdicts, 1,552 same, **310 changed**.
+
+| old -> new | n |
+|---|---|
+| decided -> narrowed `beam_discounted_uncertain` | 116 |
+| narrowed `beam_certain_not_joined` -> decided | 83 |
+| narrowed `beams_ambiguous` -> narrowed `beam_discounted_uncertain` | 52 |
+| decided -> decided (value changed) | 41 |
+| narrowed `beam_certain_not_joined` -> narrowed `beam_discounted_uncertain` | 10 |
+| narrowed `beams_ambiguous` -> narrowed `beams_ambiguous` (candidates changed) | 6 |
+| decided -> narrowed `beams_ambiguous`; narrowed `beams_ambiguous` -> decided | 1; 1 |
+
+By value. Decided -> decided: 21 sixteenth -> eighth, 8 32nd -> eighth, 8 quarter -> eighth
+(the tile-1 group), 4 64th/128th -> sixteenth or eighth. Narrowed -> decided: 32 `32nd|eighth`,
+31 `eighth|sixteenth`, 11 `32nd|sixteenth` -> eighth; 10 -> sixteenth. Decided -> narrowed: 61
+eighth, 31 sixteenth, 13 dotted eighth, 6 3/16, 5 32nd/64th, 1 quarter; the eighth is a candidate
+in the eighth, dotted and quarter cases and was a REFUSED level in the sixteenth, 32nd and 64th ones.
+Litolff p1-3: 1,807 verdicts, **42 changed**: 30 decided -> narrowed `beam_discounted_uncertain`
+(29 of them eighth -> `eighth|quarter`), 9 narrowed `beams_ambiguous` -> `beam_discounted_uncertain`,
+2 decided 32nd -> sixteenth, 1 candidates changed.
+
+Strokes: Brahms 1,168 (1,166 measured, 2 `no_reading`), Litolff 490 (489, 1). Heads with >= 1
+stroke refused by the ink: Brahms 439 (`too_thin` 436, `one_stem` 33, `not_straight` 0), Litolff 89
+(82, 7, 0) -- most never counted for the head. The CV rescue added **1 stroke on Brahms (tile 1's
+beam), 0 on Litolff**.
+
+**What this costs.** The 116 + 30 decided -> narrowed are heads whose decided value rested on a
+non-beam stroke. Brahms page 0's are beamed chords whose CV stems were not read (cell `0/0/0/3` reads ONE
+stem for the group) and whose only "beam" was a detector box lying on a staff line -- right by luck, now
+honestly narrowed with the eighth first. Of Litolff's 29, the 3 I cropped are whole rests and a half note
+(a fermata) boxed as black heads and read eighth by the same junk. EVALUATE's bar arithmetic or INFER's column
+rule settles a narrowing; this lane did not price that (first two stages only).
+
+### 15.4 Real beams lost? (the control that could fail)
+
+Refused strokes I eye-checked (debug sheets in the scratchpad, not committed): 16 of the 123 detector
+strokes refused as `too_thin` with a stem found at BOTH ends and no CV stroke over their x-range (60 Brahms,
+63 Litolff) -- all staff-line residue or a tie lying between two barlines; all 18 CV strokes refused as thin
+with a stem at an end (12 Brahms, 6 Litolff) -- slurs and hairpin lines beside a group, ledger pieces under
+heads. **No real beam among them.** The kind a tighter ruler would lose is a beam fused to thin ink (Brahms
+tile 20's left group: bow 0.30 by centre line, thickness 3.0 lines): kept.
+
+### 15.5 Not done
+
+* **Tile 15** (`flags_disagree`): the settle-by-count path is built and unit-tested (a counted hook that is one
+  of the voted levels decides; a count no box voted for, or none, leaves it narrowed), but this stem has no count:
+  its `Q.STEM_TIP_INK` window is `occupied` by the flag boxes themselves, and the 2.69 count named in the brief
+  reads a DIFFERENT stem (`obs:038697`, x 834). A count at a detector-flagged stem is a GATHER change (the
+  blockers); a probe of the reader on this stem without the head cut read `crosses_both_sides`. Not made.
+* **Tile 4**: narrowed `eighth | quarter`; the group's own beam is unread (its stems are not).
+
+### 15.6 Sean's question: once ink is a hairpin, can it never be a beam? -- MEASURED, NOT BUILT
+
+The exclusion (2.25b class 3, reverted): a stroke inside a hairpin's box is not a beam. To be built only if it
+drops zero real beams on both plates. With the four tests in place, over the strokes a duration verdict used
+(200 on Brahms, 145 on Litolff):
+
+* by the gathered hairpin boxes (Brahms 42: 41 `cv_hairpins`, 1 detector): **0** strokes with >= 25% of their
+  box inside one, 1 with >= 1%, 0 with the centre inside. **Litolff p1-3: 0 hairpin boxes gathered -- that arm is
+  DEAD at zero and is not evidence.** And the CV hairpin reader **never read tile 1's dim.** (no `cv_hairpins`
+  box on that staff near x 1000-1750): a hairpin fused to a beam is exactly the ink the reader loses, so the
+  exclusion is inert where it matters.
+* by the proxy a hairpin's line IS by the ink rulers (thin, straight, refused ink over >= 25% of a counted stroke):
+  **12 of 200 Brahms, 6 of 145 Litolff** -- by eye almost all REAL beams, with a slur, a hairpin line or a second
+  reading of the same beam lying across them (`out/print/2.74/hairpin-excl/`, 5 crops, the stroke in corner brackets).
+
+So ink read as a hairpin, slur or tie does not stop the stroke beside it being a beam; what refuses a stroke is its
+own thickness, bow and stems. The exclusion would drop real beams by the proxy and is unreachable by the reader:
+**not built.** (For a stroke measured thin the answer is already yes -- refused by the thickness test, not by the label.)
+
+### 15.7 Files / gates
+
+`tools/omr/staged/gather.py` (`beam_stroke_ink`, `local_line_thickness`, `gather_beam_stroke_ink`), `record.py`
+(`Q.BEAM_STROKE_INK`, `READERS.CV_BEAM_SHAPE`), `capture.py`, `adjudicators/rhythm.py` (`_not_a_beam_by_ink`, the
+guard, `_at_level_value`, the `flags_disagree` settle), `line_detection.py` (`rescue_tall`),
+`tests/test_staged_beam_two_stems.py` (37 tests, RED first: 25 of the first 28 failed on the unrepaired tree, the 3
+passing being stays-narrowed controls). Crops `out/print/2.74/` (10 changed heads, `manifest.json` with before/after
+readings NOT shown to Sean). Gates at `0f880dde`: `pytest -m "not slow" tools/omr/tests`
+**6,511 passed, 11 skipped, 2 xfailed, 0 failed** (2.69's 6,408 + 37 here + main's merged tests);
+`python3 -m tools.omr.staged.check` TOTAL **192** (= base).
