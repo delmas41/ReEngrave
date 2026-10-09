@@ -728,6 +728,69 @@ BEAM_SAGITTA_MAX_SPACES = 0.40
 BEAM_BEAMLET_GAP_SPACES = 1.0
 
 
+#: A stroke whose box lies at least this much INSIDE the cell's notehead boxes
+#: is those heads' own ink, not a beam. ROADMAP 2.75 (Sean, 2026-10-09, 2.74
+#: review Litolff 1: printed eighth, read 32nd then 16th).
+#:
+#: ⚠️ MEASURED, `FINDINGS.md` §16. The stroke on that tile (obs:036863, a
+#: second ledger line through a row of three heads, fused with them: 1.08
+#: spaces thick, which is why 2.74's thickness test passed it) lies 0.80
+#: inside the heads' boxes. Of 1,659 CV/detector strokes on Brahms p0-1 and
+#: Litolff p1-3 the ones over 0.5 are rows of heads and ledger lines through
+#: them; a beam stands at the far end of its stems and runs BETWEEN them. The
+#: cut sits in the gap between the beams the crops show (0.0-0.3, a beam
+#: touching one head's edge) and the head rows (0.55 and up).
+BEAM_THROUGH_HEADS_MIN = 0.5
+
+
+def _notehead_glyph_boxes(ev: Evidence, cell):
+    """Canonical `(x, y, w, h)` of every DETECTOR-boxed notehead in THIS
+    cell -- the same `Q.GLYPH_BOX` family `_ledger_line_glyph_boxes` reads, at
+    the same canonical frame `Q.BEAM_STROKE` is in. ROADMAP 2.75."""
+    out = []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        v = r.value
+        if (isinstance(v, (list, tuple)) and len(v) >= 5
+                and str(v[0]).startswith("notehead")):
+            b = _xywh_head(v)
+            if b is not None:
+                out.append(b)
+    return out
+
+
+def _covered_fraction(box, others) -> float:
+    """The fraction of `box`'s area (`x, y, w, h`) that lies inside the UNION
+    of `others` -- exact (a sweep over the y breakpoints), because a row of
+    heads overlaps itself and summing the intersections would count a shared
+    corner twice."""
+    x, y, w, h = box
+    if w <= 0 or h <= 0:
+        return 0.0
+    clipped = []
+    for ox, oy, ow, oh in others:
+        x0, x1 = max(x, ox), min(x + w, ox + ow)
+        y0, y1 = max(y, oy), min(y + h, oy + oh)
+        if x1 > x0 and y1 > y0:
+            clipped.append((x0, y0, x1, y1))
+    if not clipped:
+        return 0.0
+    ys = sorted({c[1] for c in clipped} | {c[3] for c in clipped})
+    area = 0.0
+    for ya, yb in zip(ys, ys[1:]):
+        spans = sorted((c[0], c[2]) for c in clipped if c[1] <= ya and c[3] >= yb)
+        covered, last = 0.0, None
+        for a, b in spans:
+            if last is None or a > last:
+                covered += b - a
+                last = b
+            elif b > last:
+                covered += b - last
+                last = b
+        area += covered * (yb - ya)
+    return area / float(w * h)
+
+
 def _beam_ink_rows(ev: Evidence, cell) -> Dict[str, Any]:
     """`{beam row id: Q.BEAM_STROKE_INK row}` for this cell. ROADMAP 2.74."""
     out: Dict[str, Any] = {}
@@ -799,11 +862,25 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
     head whose own stem was never boxed is still judged.
     """
     ink = _beam_ink_rows(ev, cell)
-    if not ink:
-        return list(beams), {}, ()
     why: Dict[str, str] = {}          # stroke id -> why it is not a beam
+    # ⚠️ ROADMAP 2.75, FIRST, AND WITHOUT AN INK ROW: a stroke lying through the
+    # cell's own noteheads is those heads' ink (a row of heads fused by the CV
+    # opening, a ledger line through them), and its thickness, straightness and
+    # stems -- all read at the heads' end -- say nothing about a beam. It is
+    # a connection to the heads the detector boxed, never a guess from shape.
+    head_boxes = _notehead_glyph_boxes(ev, cell)
+    if head_boxes:
+        for b in beams:
+            box = _xywh(b)
+            if box is not None and _covered_fraction(box, head_boxes) \
+                    >= BEAM_THROUGH_HEADS_MIN:
+                why[b.id] = "through_heads"
+    if not ink and not why:
+        return list(beams), {}, ()
     anchors = []                      # strokes that PASS all three, read
     for b in beams:
+        if b.id in why:
+            continue
         row = ink.get(b.id)
         if row is None:
             continue
@@ -846,7 +923,8 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
     for b in beams:
         if b.id in why:
             dropped[b.id] = why[b.id]
-            used.append(ink[b.id])
+            if b.id in ink:
+                used.append(ink[b.id])
         else:
             kept.append(b)
     return kept, dropped, tuple(used)
