@@ -835,3 +835,53 @@ look wrong.
   call the retained function directly).
 - `benchmarks/omr-notehead-precision-2026-09/probe/stacked_head_2.42/
   crop_groups.py`, `crop_pitch_only.py`; crops under `out/print/2.42/`.
+
+## 2026-10-09 — a head lying ON a detected dynamic letter is the letter's ink (`on_a_dynamic_letter`)
+
+STAGED, ADJUDICATE (`notehead_precision._on_a_dynamic_letter_refusal`, reason `on_a_dynamic_letter`).
+Sean, 2.73 head tile 10 (Litolff pdf page 3, `glyph/2/0/2/1/12`): *"Not a note - dynamic p"* — the bowl of the
+`p` of `p cresc.` boxed `noteheadBlackInSpace`, decided a quarter on main. One ink, one mark: the detector also drew
+`dynamicP` on that ink.
+
+**Population** (small re-gathers on `lane-2.68-dynamic-twins` merged over main, GATHER+ADJUDICATE, records in the
+scratchpad; `readj` replays the GATHER rows and re-runs ADJUDICATE on this tree, control = the record's own verdicts, 0
+changes outside the new reason). Kept heads whose box lies at least 0.4 inside a detected dynamic-letter box (page px):
+Litolff pages 1-4 **10 of 1,112 kept heads**; Brahms pages 1-2 **3 of 1,149**. Below 0.4 the overlap is contact
+(0.0-0.3, 11 more Litolff and 3 Brahms heads, all beside letters, none touched). Crops of all 13 (blue box = the letter,
+for my own reading only): the faults are an `f`'s top hook or whole body, a `p` bowl, an `ff` — except three real
+heads.
+Rule fires on 7 Litolff + 1 Brahms; spares 3 Litolff + 2 Brahms. Re-adjudication moves exactly those 8
+`notehead -> on_a_dynamic_letter` and nothing else.
+
+**What spares a head, each measured on a real head the box test alone would have taken (the controls):**
+
+| head | what it is | why spared |
+|---|---|---|
+| Litolff `glyph/2/1/8/6/7` | beamed head right of an `sf` hook | a CV stem 7.0 spaces touches it (a letter's own stroke reads 2.1-2.5) |
+| Litolff `glyph/3/0/1/3/6` | top of an `ff` hook, a 6.5-space line stands against it | spared by that line — **a fault spared, not a note**; a barline read as a stem would do this (open) |
+| Litolff `glyph/2/1/9/10/1` | real head under an `f` | the `dynamicF` box is 6.0 spaces tall (f + note); not letter-sized |
+| Brahms `glyph/1/0/6/0/15` | real beamed head | stem 3.2 spaces |
+| Brahms `glyph/1/0/7/0/13` | real beamed head under a beam's tail boxed `dynamicF` (conf 0.43) | box 1.49 wide; every one of Sean's 12 hand-labelled `f` boxes is 1.96-2.88 (`f` only: a `p` is 1.46-1.85) |
+
+Last row first cost a real head (the first build refused it); the `DYNAMIC_F_MIN_W_SPACES` guard is the repair.
+Thresholds: head-in-letter 0.4 (the refused population is 0.41-1.00; the sibling of tile 10, a 1.2 x 2.5 box on the
+same `p`, sits at 0.41), stem 3.0 spaces, letter box at most 3.6 x 4.6 spaces (measured `f` 2.5 x 3.0-3.5, `sf`
+4.0 x 3.4, `p` 1.85 x 2.0), all measured locally against the staff's own spacing, never a fixed pixel.
+
+**What was tried and refused:** ink thickness (a distance transform in the head box): every kept head and every fault
+lands 0.38-0.66 spaces, no separation; head-in-letter fraction, letter confidence, head confidence, staff position
+each fail to separate the `sf` head from the hook fragments. The box + stem + size tests are the whole separation the
+record holds at this stage. A head box that fits inside a letter-sized box with NO 3-space stem against it and a
+letter the detector got wrong is the remaining cost; none is on the two pages.
+
+**Hand truth** (`data/hand-truth/pages/imslp317803/0.json`, 13 dynamic boxes, 250 head boxes, still `labeling`): our 486
+page-0 heads lie on none of his dynamic boxes and none of his 250 heads lies on any of our 62 letter boxes (>= 0.2),
+so the rule changes nothing on that page and the page does NOT exercise it. Reported as such, not as a pass.
+
+**Shapes with no dynamic box over them:** not built, no population measured here. Direction words (`Q.DIRECTION_WORD`,
+11 on Litolff pages 1-4) are sentence boxes over whole text lines; a head ON one is a different question, not asked.
+
+**Crops** (blind, the box bracketed, nothing of ours drawn): `out/print/dynamic-not-a-head/` — 7 newly refused heads
+Sean has not judged plus 2 spared ones as controls (the real head under the `sf` hook; the `ff` hook with the 6.5-space
+line). A tenth, the real Litolff head `glyph/2/1/9/10/1`, was dropped: its frame control FAILED (-31.9, the filed
+staff's lines are not under the crop's x), which is the control working.

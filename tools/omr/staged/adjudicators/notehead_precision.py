@@ -1635,6 +1635,174 @@ def _timesig_digit_duplicate_refusal(ev: Evidence, this_row,
                   used=(this_row.id, best.id), detail=detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A notehead box lying ON a detected dynamic letter's box is that letter's ink
+# (Sean 2026-10-09, `out/print/2.73-review` tile 10: "Not a note - dynamic p")
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGED, ADJUDICATE. The bowl of a printed `p` (of `p cresc.`) was boxed as a
+# quarter head and read as one; the hook of an `f`, and the whole body of an
+# `f` on Brahms, are boxed the same way. ONE INK, ONE MARK: the detector ALSO
+# drew a `dynamic{F,P,M,S,Z,R}` box on that ink, so the ink is a letter's.
+#
+# THE TEST IS OVERLAP WITH THE LETTER'S BOX, never proximity: at least
+# `DYNAMIC_LETTER_HEAD_ON_MIN` of the HEAD box's area lies inside a letter box.
+# A head that only touches a letter overlaps it by a few pixels; the measured
+# populations are in `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md`.
+#
+# TWO WITNESSES THAT THE BOX IS NOT THE WHOLE STORY, each measured on a real
+# head the rule would otherwise have taken (CLAUDE.md rule 7, a control that can
+# fail), and either one SPARES the head and leaves `detail["dynamic_letter_
+# signal"]` on the record:
+#   * a note's STEM touches the head and is at least `NOTE_STEM_MIN_SPACES` long.
+#     An `f`'s or `p`'s own stroke reads as a CV stem 2.1-2.5 spaces (Litolff);
+#     a beamed note's is 3.7-7.0 (the two real Litolff heads under an `sf`/`f`
+#     box).
+#   * the letter box is LETTER-SIZED (at most `DYNAMIC_LETTER_MAX_H_SPACES` x
+#     `DYNAMIC_LETTER_MAX_W_SPACES`: the measured `f` 2.5x3.0-3.5, `sf` 4.0x3.4,
+#     `p` 1.85x2.0). A 6-space `dynamicF` box holds an `f` AND the note under
+#     it; lying in it says nothing about the head.
+#
+#   * an `f` box narrower than `DYNAMIC_F_MIN_W_SPACES` (a beam's tail boxed
+#     `dynamicF` at 0.43 under a real, beamed head, Brahms `glyph/1/0/7/0/13`:
+#     1.49 wide against 1.96+ for every one of Sean's 12 labelled `f`s).
+#
+# KNOWN COST, STILL OPEN: a false letter box that is letter-sized, over a real
+# head that carries no stem of 3 spaces, would take the head. None is measured
+# on the two small re-gathers; nothing in the record separates it from the `f`
+# hook case at the box level, the ink does, and a shape classifier is not built
+# here (see the FINDINGS).
+#
+# WHERE THE LETTER LIVES: the detector files a letter under the cell it was cut
+# from, which on a condensed page is often the NEXT staff's cell (tile 10: the
+# `p` is `glyph/2/0/3/1/6`, its bowl-head `glyph/2/0/2/1/12`). So the search is
+# this cell's and the two ADJACENT staves' cell at the SAME index, in page
+# pixels (`DYNAMIC_LETTER.detail["bbox_page_px"]`), never one cell only.
+#
+# Not a word reader: a head on a direction word's letters (the `c` of `cresc.`)
+# is a different question and is reported, not refused, in the FINDINGS.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Fraction of the HEAD box's area that lies inside a letter box.
+DYNAMIC_LETTER_HEAD_ON_MIN = 0.4
+#: A box larger than this is not one letter's ink.
+DYNAMIC_LETTER_MAX_H_SPACES = 3.6
+DYNAMIC_LETTER_MAX_W_SPACES = 4.6
+#: A touching stem at least this long is a note's, not the letter's own stroke.
+NOTE_STEM_MIN_SPACES = 3.0
+#: An `f` box narrower than this is not an `f`: Sean's 12 hand-labelled `f`
+#: boxes (Brahms 317803 pdf 0) are 1.96-2.88 spaces wide, the detector's real
+#: ones 2.2-2.7; the one under a beam's tail that cost a real head was 1.49.
+#: `f` ONLY: a `p` is legitimately 1.46 (Brahms) to 1.85 (Litolff) wide.
+DYNAMIC_F_MIN_W_SPACES = 1.7
+#: How far (staff spaces) a stem may stand from the head's edge and still be
+#: ITS stem (a stem is drawn against the head; the box gap is a few pixels).
+NOTE_STEM_GAP_SPACES = 0.4
+
+DYNAMIC_LETTER_REASON = "on_a_dynamic_letter"
+
+
+def _letter_rows_near(ev: Evidence) -> List[Any]:
+    """Every `Q.DYNAMIC_LETTER` row filed on this cell or on the same-index
+    cell of the staff above or below. Subjects that do not exist return
+    nothing, which is the right answer for a system's top and bottom staff."""
+    cell = ev.subject.at(Kind.CELL)
+    staff = ev.subject.at(Kind.STAFF)
+    if cell is None or staff is None or staff.staff is None:
+        return []
+    out: List[Any] = []
+    for st in (staff.staff, staff.staff - 1, staff.staff + 1):
+        if st < 0:
+            continue
+        sub = (cell if st == staff.staff
+               else R.cell(staff.page, staff.system, st, cell.cell))
+        out.extend(ev.rows(Q.DYNAMIC_LETTER, scope=Scope.SELF_AND_DESCENDANTS,
+                           subject=sub))
+    return out
+
+
+def _box_overlap_fraction(box, other) -> float:
+    """Fraction of `box`'s area inside `other` (both `x0, y0, x1, y1`)."""
+    ix = max(0.0, min(box[2], other[2]) - max(box[0], other[0]))
+    iy = max(0.0, min(box[3], other[3]) - max(box[1], other[1]))
+    area = max(1e-9, (box[2] - box[0]) * (box[3] - box[1]))
+    return (ix * iy) / area
+
+
+def _head_has_a_note_stem(ev: Evidence, box_row, spacing: float) -> Optional[float]:
+    """The length (staff spaces) of the longest `Q.STEM` in this cell standing
+    against the head's own box and at least `NOTE_STEM_MIN_SPACES` long, or
+    None. Canonical frame, GATHER's rows read back as filed."""
+    v = box_row.value
+    x, y, w, h = (float(t) for t in v[1:5])
+    gap = NOTE_STEM_GAP_SPACES * spacing
+    best = None
+    cell = ev.subject.at(Kind.CELL)
+    for r in ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        xywh = _stem_xywh(r)
+        if xywh is None:
+            continue
+        sx, sy, sw, sh = xywh
+        if sx > x + w + gap or sx + sw < x - gap:
+            continue
+        if sy >= y + h or sy + sh <= y:
+            continue
+        length = sh / spacing
+        if length >= NOTE_STEM_MIN_SPACES and (best is None or length > best):
+            best = length
+    return best
+
+
+def _on_a_dynamic_letter_refusal(ev: Evidence, box_row, spacing: float,
+                                 detail: Dict[str, Any]) -> Optional[Ruling]:
+    """See the section comment above. `spacing` is the cell's staff space in
+    CANONICAL pixels; the page-pixel spacing is derived from the head's own two
+    frames (the `on_a_barline` branch's arithmetic)."""
+    page_box = (box_row.detail or {}).get("bbox_page_px")
+    v = box_row.value
+    if not page_box or len(page_box) != 4 or not v[3]:
+        return None
+    sp_page = spacing * (page_box[2] - page_box[0]) / float(v[3])
+    if sp_page <= 0:
+        return None
+    best = None
+    for r in _letter_rows_near(ev):
+        lb = (r.detail or {}).get("bbox_page_px")
+        if not lb or len(lb) != 4:
+            continue
+        frac = _box_overlap_fraction(page_box, lb)
+        if frac >= DYNAMIC_LETTER_HEAD_ON_MIN and (best is None or frac > best[0]):
+            best = (frac, r, lb)
+    if best is None:
+        return None
+    frac, row, lb = best
+    h_sp = (lb[3] - lb[1]) / sp_page
+    w_sp = (lb[2] - lb[0]) / sp_page
+    signal: Dict[str, Any] = {
+        "dynamic_letter": row.subject.to_key(), "letter": row.value,
+        "head_in_letter": round(frac, 3),
+        "letter_h_spaces": round(h_sp, 2), "letter_w_spaces": round(w_sp, 2)}
+    if h_sp > DYNAMIC_LETTER_MAX_H_SPACES or w_sp > DYNAMIC_LETTER_MAX_W_SPACES:
+        signal["spared"] = "letter_box_not_letter_sized"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    if str(row.value) == "dynamicF" and w_sp < DYNAMIC_F_MIN_W_SPACES:
+        signal["spared"] = "letter_box_too_narrow_for_an_f"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    stem = _head_has_a_note_stem(ev, box_row, spacing)
+    if stem is not None:
+        signal["spared"] = "has_a_note_stem"
+        signal["stem_spaces"] = round(stem, 2)
+        detail["dynamic_letter_signal"] = signal
+        return None
+    detail.update(signal)
+    # ⚠️ A LITERAL, not `DYNAMIC_LETTER_REASON`: `brakes.vocabulary_gap` reads the
+    # `reason=` slot's AST and a computed one leaves the whole module unresolved.
+    return Ruling(value=True, reason="on_a_dynamic_letter",
+                  used=(box_row.id, row.id), detail=detail)
+
+
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
     """Every `ledgerLine` glyph's canonical `(x0, x1, y_centre)` in this cell.
 
@@ -2093,6 +2261,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # search where one exists (`Q.GLYPH_BOX`'s own detector
                   # centre otherwise) -- see its own comment.
                   Q.NOTEHEAD_RECENTRE,
+                  # A head lying ON a detected dynamic letter is that letter's
+                  # ink (`_on_a_dynamic_letter_refusal`).
+                  Q.DYNAMIC_LETTER,
                   # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
                   # stacked group -- see `_stacked_head_duplicate_refusal`'s
                   # own docstring. SUPERSEDES 2.40's pair-wise use of
@@ -2123,7 +2294,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
-          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.DYNAMIC_LETTER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -2134,6 +2305,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
+                                     DYNAMIC_LETTER_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -2382,6 +2554,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     timesig_dup = _timesig_digit_duplicate_refusal(ev, box_row, detail)
     if timesig_dup is not None:
         return timesig_dup
+    # A notehead box lying ON a detected dynamic letter's box is that letter's
+    # ink (Sean 2026-10-09, `out/print/2.73-review` tile 10). Same-ink family,
+    # so it sits with the other "is this ink already another mark" questions
+    # and before the ones that ask what it MEANS.
+    on_letter = _on_a_dynamic_letter_refusal(ev, box_row, spacing, detail)
+    if on_letter is not None:
+        return on_letter
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is
