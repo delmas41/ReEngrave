@@ -17,6 +17,21 @@ re-enter.
 
 ---
 
+## START HERE — after 2026-10-08 (evening; branch `claude/roadmap-start-27498c`)
+
+**2.66 direction-word boxes, judged by Sean tile by tile** (STAGED only): stem stubs out of the letters, oversized ink
+on a word's line joins it, barlines trimmed off, sibling echoes filed at the echoed x; a TEMPO or TECHNIQUE word
+(`pizz.`, `arco`, `sord.`, `divisi`, `unis.`, `gestopft`) in the gap between two staves is the LOWER staff's (Sean x3:
+`Adagio`, `pizz.`, `arco.`); a word with a dynamic beside it is re-read with it and joined only when the OCR reads both
+(9 on the 10 pages). 10 review pages 93 -> 97 words, none lost; +14 s over 10 pages (Brahms p12 34.6 s, over the
+~30 s line). **Open, in order:** (1) **2.68** a later stage pairs a bar's words and dynamics (Sean: position joining in
+the reader refused -- it invented `f Adagio.`, `a 2 f`); Brahms p3 staff 12 `più` + `f` waits on it; (2) **2.67** the
+terms library: built on Gradus (`gradus-vercel` branch `terms-library-2026-10`, worktree `../gradus-terms-library`,
+1,747 terms, 683 abbreviations, JSON export; NOT pushed -- Sean to skim definitions), then the lexicon reads it;
+(3) expression/dynamic words: "no notes in that bar" tie-break (`PLACEMENT-CONVENTIONS.md`: they sit on a resting
+staff ~1% of the time) -- not built; (4) `ten.`/`Vcl.` are plate-glyph OCR failures (fuzzy not ruled); (5) the
+overnight re-gather THROUGH=adjudicate is still unrun.
+
 ## START HERE — after the built-not-merged triage of 2026-10-08 (ROADMAP 0.8)
 
 Tree vs ledger, nothing run: of the open rows whose branch was checked, **41 that said "not merged" are ON MAIN**

@@ -22,6 +22,15 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 (late) — ROADMAP 2.66 placement and word + dynamic
+
+- A tempo or technique word in the gap between two staves of a system is the LOWER staff's
+  (`direction_text._give_tempo_to_the_staff_below`, `ABOVE_STAFF_TERMS`; Sean on three tiles). A word with a
+  detected dynamic beside it is re-read from one crop over both and joined only if the lexicon accepts the same
+  terms plus a dynamic (9 joined on the 10 pages). Joining by position was built, measured and removed
+  (`f Adagio.`, `a 2 f`); ROADMAP 2.68 opened for a later pairing stage. Placement research (agent, read-only):
+  `benchmarks/omr-direction-text-2026-09/PLACEMENT-CONVENTIONS.md`.
+
 ## 2026-10-08 (evening) — ROADMAP 2.66: direction-word boxes on scans; 2.67 terms library opened
 
 - **2.66 (STAGED, `tools/omr/direction_text.py`)**: `find_candidates(refine_boxes=True)`, passed by
