@@ -3216,7 +3216,9 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
             cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
     # ROADMAP 2.68: the page's ink with EVERY detected glyph taken out, read
     # once per page, for `Q.DYNAMIC_LETTER_NEIGHBOURS`.
-    other_ink = _ink_without_detections(pws, detections, cell_by_key)
+    other_ink = _ink_without_detections(pws, detections, cell_by_key,
+                                        _page_staff_spacing(bands))
+    page_letters = _dynamic_letter_boxes(detections, cell_by_key)
 
     seen_cells = set()
     for cell_key, dets in detections.items():
@@ -3272,7 +3274,8 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                             note="no page raster" if other_ink is None
                             else "no staff spacing")
             else:
-                sides = letter_ink_beside(other_ink, box, spacing)
+                sides = letter_ink_beside(other_ink, box, spacing,
+                                          exclude=_same_ink_boxes(box, page_letters))
                 log.observe(g, Q.DYNAMIC_LETTER_NEIGHBOURS,
                             {"left": sides["left"], "right": sides["right"],
                              "left_spaces": sides["left_spaces"],
@@ -3307,16 +3310,74 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
 LETTER_GAP_SPACES = 0.5
 
 
+def _page_staff_spacing(bands: Dict[Any, Any]) -> Optional[float]:
+    """The page's median staff spacing, from the per-staff bands."""
+    vals = sorted(float(b[2]) for b in bands.values() if b and b[2])
+    return vals[len(vals) // 2] if vals else None
+
+
+def _dynamic_letter_boxes(detections: Dict[str, List[Any]],
+                          cell_by_key: Dict[Any, Any]) -> List[Tuple[float, ...]]:
+    """Every dynamic-letter box on the page, in page pixels, across cells."""
+    out: List[Tuple[float, ...]] = []
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for d in dets:
+            if d.smufl_name in _DYNAMIC_LETTER_CLASSES:
+                b = _page_box(c, d)
+                if b is not None:
+                    out.append(tuple(b))
+    return out
+
+
+def _same_ink_boxes(box, page_letters, share: float = 0.5) -> List[Tuple[float, ...]]:
+    """The dynamic-letter boxes that are THIS letter's own ink: its own box and
+    every other detection of a dynamic letter overlapping it by at least `share`
+    of the smaller area (the same printed `p` boxed as `dynamicP` and again as
+    `dynamicF`, or once more from the neighbouring staff's cell). They are not
+    neighbours: a letter is not its own neighbour."""
+    x0, y0, x1, y1 = box
+    area = max(1.0, (x1 - x0) * (y1 - y0))
+    out = [tuple(box)]
+    for b in page_letters:
+        ix = max(0.0, min(x1, b[2]) - max(x0, b[0]))
+        iy = max(0.0, min(y1, b[3]) - max(y0, b[1]))
+        small = max(1.0, min(area, (b[2] - b[0]) * (b[3] - b[1])))
+        if ix * iy >= share * small:
+            out.append(b)
+    return out
+
+
 def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
-                            cell_by_key: Dict[Any, Any]):
-    """The page's ink (255) with every detected glyph box blanked, DYNAMICS
-    INCLUDED -- what is left beside a dynamic letter is ink the detector did
-    not name: the other letters of a word. None if the page has no raster."""
+                            cell_by_key: Dict[Any, Any],
+                            spacing: Optional[float] = None):
+    """The page's ink (255) with every detected NOTATION glyph blanked -- what is
+    left beside a dynamic letter is ink the detector did not name as notation:
+    the other letters of a word. None if the page has no raster.
+
+    ⚠️ WHICH BOXES MAY HIDE A WORD'S LETTERS IS ONE RULE, NOT TWO
+    (`direction_text.letter_hiding_kind`, ROADMAP 2.68): a SPAN (slur, tie,
+    beam, staff -- wider than 4 spaces), a clef/rest/time/ornament box and a
+    DYNAMIC box are NOT blanked here. Measured on Brahms p0 `espr.` (2026-10-09)
+    the old rule blanked every detection under 0.25 of the page width, and the
+    slur box over the bar (843 px, 30 spaces) plus a `restWhole` box on the `r`
+    erased the `s`, `p`, `r` of the word -- the `p` had NO letter neighbour and
+    came back as piano -- and the detector's own boxes on `legato`'s letters
+    (boxed as dynamics) were blanked too, so they never counted as one another's
+    neighbours. Ink standing in a span's box is thin or enormous and the letter
+    test (`letter_ink_beside`: size, fill, own line) refuses it."""
     page = getattr(pws, "page", None)
     rgb = getattr(page, "rgb", None)
     if rgb is None:
         return None
     import cv2 as _cv2
+    from .. import direction_text as _DT
+    if not spacing:
+        spacing = float(sorted(_DT._spacing(s) for s in pws.staves)[len(pws.staves) // 2]) \
+            if getattr(pws, "staves", None) else 0.0
     gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
     _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
     h, w = mask.shape
@@ -3330,16 +3391,38 @@ def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
             if box is None:
                 continue
             x0, y0, x1, y1 = (int(round(v)) for v in box)
-            if x1 - x0 > 0.25 * w:
-                continue    # a span (beam, slur, staff), not a glyph
+            if spacing and _DT.letter_hiding_kind(
+                    getattr(d, "category", None), x1 - x0, spacing) is not None:
+                continue
+            if not spacing and x1 - x0 > 0.25 * w:
+                continue    # no spacing: the old width cut
             mask[max(0, y0 - 2):min(h, y1 + 2), max(0, x0 - 2):min(w, x1 + 2)] = 0
+    if spacing:
+        # ⚠️ A BARLINE (or a stem) THROUGH A WORD: Brahms p0 prints `legato`
+        # across a barline, the `t` touching the line and the `o` just past
+        # it; the line's component is staves tall, so the `o` had no letter
+        # neighbour (0.94 spaces to the `a`) and came back as piano. Vertical
+        # strokes taller than `VLINE_SPACES` -- no letter is -- are taken out
+        # of the mask, so what they touched is read as the pieces it is.
+        k = max(3, int(round(VLINE_SPACES * spacing)))
+        vlines = _cv2.morphologyEx(mask, _cv2.MORPH_OPEN,
+                                   _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, k)))
+        vlines = _cv2.dilate(vlines, _cv2.getStructuringElement(_cv2.MORPH_RECT, (3, 1)))
+        mask[vlines > 0] = 0
     return mask
 
 
-def letter_ink_beside(mask, box, spacing: float) -> Dict[str, Any]:
+#: Taller than any letter (an `f` is ~2.9 spaces): a barline, a stem.
+VLINE_SPACES = 4.0
+
+
+def letter_ink_beside(mask, box, spacing: float, exclude=()) -> Dict[str, Any]:
     """Is there a LETTER-sized, letter-dense piece of ink within
     `LETTER_GAP_SPACES` of this box, on its own line (overlapping its middle
-    half), on the left and on the right? Pure; `mask` is 255 = ink."""
+    half), on the left and on the right? Pure; `mask` is 255 = ink. `exclude`
+    are page boxes of this letter's OWN ink (`_same_ink_boxes`), blanked in the
+    window so a sliver of the letter outside its box, or its twin box, is not a
+    neighbour."""
     import cv2 as _cv2
     x0, y0, x1, y1 = (int(round(v)) for v in box)
     hgt = max(1, y1 - y0)
@@ -3352,8 +3435,14 @@ def letter_ink_beside(mask, box, spacing: float) -> Dict[str, Any]:
                          ("right", (x1, min(mask.shape[1], x1 + reach)))):
         nearest = None
         if b > a:
-            n, _lab, st, _c = _cv2.connectedComponentsWithStats(
-                mask[wy0:wy1, a:b], 8)
+            win = mask[wy0:wy1, a:b]
+            if len(exclude):
+                win = win.copy()
+                for ex in exclude:
+                    ex0, ey0, ex1, ey1 = (int(round(v)) for v in ex)
+                    win[max(0, ey0 - 2 - wy0):max(0, ey1 + 2 - wy0),
+                        max(0, ex0 - 2 - a):max(0, ex1 + 2 - a)] = 0
+            n, _lab, st, _c = _cv2.connectedComponentsWithStats(win, 8)
             for i in range(1, n):
                 cx, cy, cw, ch, area = (int(st[i, k]) for k in range(5))
                 if not (0.25 * spacing <= ch <= 2.2 * spacing

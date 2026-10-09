@@ -61,7 +61,7 @@ import re
 import time
 import dataclasses
 from dataclasses import dataclass
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 import cv2
 import numpy as np
@@ -342,6 +342,42 @@ def _is_inside_a_word(mask: np.ndarray, box: tuple[int, int, int, int],
     return bool(touch.size and touch.any() and not (left.size and left.any()))
 
 
+def letter_hiding_kind(category: Optional[str], width_px: float, spacing: float,
+                       config: Optional["BandConfig"] = None) -> Optional[str]:
+    """THE ONE RULE for which detector boxes may hide a word's letters
+    (ROADMAP 2.68, Sean 2026-10-09), read at BOTH sites that look for text ink
+    under the detections: `_blank_detections` / `_ink_under_letterlike_
+    detections` here (the word's candidate box) and `staged.gather.
+    _ink_without_detections` (the letter-neighbour test of a dynamic letter).
+    One of:
+
+    - `"span"`: wider than `max_blank_width_spaces` -- a slur, tie, beam, staff,
+      hairpin. Its box is mostly the paper its arc crosses, so the ink under it
+      is a word's as often as the span's; never blanked.
+    - `"letterlike"`: a clef / rest / time-signature digit / ornament box
+      (`HIDDEN_LETTER_CATEGORIES`) -- cannot be what it says in a line of text,
+      so the ink under it is letters (Litolff p8, the `iu` of `piu`).
+    - `"dynamic"`: a box the detector called a dynamic. A real dynamic and a
+      letter of a word look alike, and what separates them is the WORD, not
+      the ink: Sean's deductive rule -- a dynamic box inside a word the OCR read
+      and the lexicon accepted, in a token that is not itself a dynamic, is
+      that word's letter; its own token, or standing clear, it is a dynamic. The
+      candidate finder has no text yet and decides by ink (`_is_inside_a_word`);
+      the letter-neighbour test leaves the ink in and ADJUDICATE decides by text
+      (`adjudicators.text._letter_of_a_known_word`).
+    - `None`: a glyph that IS notation (notehead, stem, flag, accidental, dot,
+      ledger line) -- blanked, so a note beside a word is never part of it.
+    """
+    cfg = config if config is not None else BandConfig()
+    if width_px > cfg.max_blank_width_spaces * spacing:
+        return "span"
+    if category in HIDDEN_LETTER_CATEGORIES:
+        return "letterlike"
+    if category == "dynamic":
+        return "dynamic"
+    return None
+
+
 def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                       spacing: float, config: BandConfig) -> np.ndarray:
     """Erase every detected glyph from the mask.
@@ -366,9 +402,11 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                     if not box or len(box) != 4:
                         continue
                     x, y, w, h = (int(v) for v in box)
-                    if w > config.max_blank_width_spaces * spacing:
+                    kind = letter_hiding_kind(det.get("category"), w, spacing,
+                                              config)
+                    if kind == "span":
                         continue        # a span, not a glyph — see the config
-                    if (det.get("category") == "dynamic"
+                    if (kind == "dynamic"
                             and _is_inside_a_word(mask, (x, y, w, h),
                                                   spacing, config)):
                         continue
@@ -722,11 +760,11 @@ def _ink_under_letterlike_detections(raw: np.ndarray, page_dict: dict[str, Any],
             for measure in staff.get("measures", []):
                 for det in measure.get("detections", []):
                     box = det.get("bbox_page")
-                    if (det.get("category") not in HIDDEN_LETTER_CATEGORIES
-                            or not box or len(box) != 4):
+                    if not box or len(box) != 4:
                         continue
                     x, y, w, h = (int(v) for v in box)
-                    if w > config.max_blank_width_spaces * spacing:
+                    if letter_hiding_kind(det.get("category"), w, spacing,
+                                          config) != "letterlike":
                         continue
                     boxes[max(0, y - pad):min(height, y + h + pad),
                           max(0, x - pad):min(width, x + w + pad)] = True

@@ -258,10 +258,11 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
-    inside_alone = inside_unmeasured = 0
+    inside_alone = inside_unmeasured = in_a_dynamic_token = 0
     # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
     # page pixels -- a second reader (Tesseract/Surya, not the detector).
-    word_boxes = [tuple(float(v) for v in (w.detail or {})["bbox_page_px"])
+    word_boxes = [(tuple(float(v) for v in (w.detail or {})["bbox_page_px"]),
+                   str(w.value or ""))
                   for w in ev.rows(Q.DIRECTION_WORD,
                                    scope=Scope.SELF_AND_DESCENDANTS,
                                    subject=system)
@@ -347,7 +348,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             dup_dropped += 1
             continue
         # (after ownership: counted once, on the staff that keeps the letter)
-        if _inside_a_read_word(row, word_boxes):
+        if _letter_of_a_known_word(row, word_boxes):
             sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
             if not sides:
                 # inside a known word, but nobody read the ink beside it:
@@ -358,6 +359,11 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                 continue
             else:
                 inside_alone += 1
+        elif _inside_a_read_word(row, word_boxes):
+            # inside a read word's box, but the word's own text puts the spot
+            # at its dynamic (`f espr.`, `P dolce`), or two readings disagree
+            # about it: the dynamic stays
+            in_a_dynamic_token += 1
         letter = _letter_of(row)
         geom = _geometry(row)
         if letter is None:
@@ -424,6 +430,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         "letters_inside_a_read_word": inside_word,
         "letters_alone_inside_a_word_box": inside_alone,
         "letters_inside_a_word_box_unmeasured": inside_unmeasured,
+        "letters_at_a_words_dynamic_token": in_a_dynamic_token,
         # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
         # owner` moved onto this staff (or off it) because they sit
         # between the two staves of a decided brace pair -- zero on every
@@ -451,8 +458,9 @@ INSIDE_READ_WORD_SHARE = 0.5
 def _is_a_letter_of_a_known_word(sides) -> bool:
     """Sean 2026-10-09: *"When p is by itself it is piano when it is
     surrounded by other letter the context solves it ... only if it makes a
-    word we know."* The KNOWN word is the caller's test (`_inside_a_read_word`:
-    a word the OCR read AND the lexicon accepted); this is the other half --
+    word we know."* The KNOWN word is the caller's test (`_letter_of_a_known_word`:
+    a word the OCR read AND the lexicon accepted, the letter in a token of its
+    text that is not a dynamic); this is the other half --
     the letter has letter ink beside it on its own line
     (`Q.DYNAMIC_LETTER_NEIGHBOURS`). A letter with space on both sides is a
     dynamic even inside a word's box (`p espr.`: the `p` is the dynamic)."""
@@ -470,18 +478,84 @@ def _inside_a_read_word(row, word_boxes) -> bool:
     lexicon ACCEPTED is a second, independent reader saying that ink is text;
     a letter box mostly inside such a word's box is that word's letter, not a
     dynamic. Counted (`letters_inside_a_read_word`), never dropped silently.
+    This is the BOX half; `_letter_of_a_known_word` adds the TEXT half.
     """
+    return bool(_words_around(row, word_boxes))
+
+
+def _words_around(row, word_boxes):
+    """The read words whose box holds at least `INSIDE_READ_WORD_SHARE` of this
+    letter's box: `[(box, text)]`."""
     box = (row.detail or {}).get("bbox_page_px")
     if not box or not word_boxes:
-        return False
+        return []
     x0, y0, x1, y1 = (float(v) for v in box)
     area = max(1.0, (x1 - x0) * (y1 - y0))
-    for w in word_boxes:
+    out = []
+    for item in word_boxes:
+        # a bare box (no text read with it) or (box, text)
+        w, text = (item if len(item) == 2 and not isinstance(item[0], (int, float))
+                   else (item, None))
         ix = max(0.0, min(x1, w[2]) - max(x0, w[0]))
         iy = max(0.0, min(y1, w[3]) - max(y0, w[1]))
         if ix * iy >= INSIDE_READ_WORD_SHARE * area:
-            return True
-    return False
+            out.append((w, text))
+    return out
+
+
+def _letter_of_a_known_word(row, word_boxes) -> bool:
+    """Sean's DEDUCTIVE rule (2026-10-09), the TEXT half: *"only if it makes a
+    word we know"*. The letter lies inside a word the OCR read and the lexicon
+    accepted, AND the word's own text puts that spot in a token that is not a
+    dynamic. A reading with no dynamic token in it (`espr. e legato`, `A PIZZ.`)
+    holds no dynamic: every dynamic-classed box inside it is a letter of it. A
+    reading that names one (`f espr. e legato`, `P dolce`, `p cresc. f`) holds
+    the dynamic at its leading and/or trailing end: a letter standing there is
+    the dynamic, one past it is the word's. Several words may hold the same ink
+    (a sibling window, a joined reading): ALL must say `letter of the word`, or
+    nothing is decided -- the letter stays what the detector said (rule 8)."""
+    around = _words_around(row, word_boxes)
+    if not around:
+        return False
+    box = row.detail["bbox_page_px"]
+    # a word held with no text can say nothing about tokens: cannot tell
+    return all(text is not None and _token_is_a_word(box, w, text)
+               for w, text in around)
+
+
+def _token_is_a_word(letter_box, word_box, text: str) -> bool:
+    """Does the OCR'd `text`, laid along `word_box` in proportion to its
+    characters, put the letter at `letter_box` in a token that is a word rather
+    than a dynamic? The proportion is crude (an italic `p` is wider than the
+    average letter), so only the two ENDS are asked, and by the letter's OUTER
+    edge: a leading dynamic token (`f`, `P`, `fp`) claims the letters whose left
+    edge falls in its share of the box plus its space; a trailing one the
+    letters whose right edge does."""
+    from ...direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    tokens = text.split()
+    if not tokens:
+        return False
+    total = sum(len(t) for t in tokens) + len(tokens) - 1
+    width = max(1.0, word_box[2] - word_box[0])
+    per_char = width / max(1, total)
+    lead = 0
+    while lead < len(tokens) and _normalise(tokens[lead]) in _DYNAMIC_LETTERS:
+        lead += 1
+    trail = 0
+    while (trail < len(tokens) - lead
+           and _normalise(tokens[len(tokens) - 1 - trail]) in _DYNAMIC_LETTERS):
+        trail += 1
+    if lead == len(tokens):
+        return False        # the text IS a dynamic: not a word at all
+    if lead:
+        chars = sum(len(t) for t in tokens[:lead]) + lead     # tokens + one space each
+        if letter_box[0] <= word_box[0] + chars * per_char:
+            return False
+    if trail:
+        chars = sum(len(t) for t in tokens[len(tokens) - trail:]) + trail
+        if letter_box[2] >= word_box[2] - chars * per_char:
+            return False
+    return True
 
 
 def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:
