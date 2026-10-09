@@ -1706,13 +1706,12 @@ re-gather at the commit that follows 96c379fd).**
   (glyph/1/0/12/5/0, glyph/1/1/3/0/10; tile 21's family) count 1.
 - Two-hook calibration is NOT on this plate (it holds none): LilyPond-engraved
   8th/16th/32nd, stems up and down, 300 dpi, staff-erased (scratchpad,
-  not committed): 8th -> 1 (never wrong), 16th -> 2 in 10 of 12, 32nd -> 3 in
-  8 of 18, no miscount, the rest `unresolved`/refused. Unit tests draw 1, 2, 3
+  not committed): 8th -> 1 in 12 of 14 stems (never wrong), 16th -> 2 in 11 of 12, 32nd -> 3 in
+  8 of 12 real stems, no miscount, the rest `unresolved`/refused. Unit tests draw 1, 2, 3
   stacked hooks, a slash and a hook+slash (both refused), a slur on one side
   (not a second hook) and the own-head cut (with its uncut control).
 - **The 22 tiles** (`out/print/2.65/compare.py`): before 12 right / 2 wrong / 8
-  narrowed; after **18 right-valued (tiles 3, 5-12, 14, 16-20, 22) / 2 wrong
-  (1, 21) / 2 narrowed (4, 15) / 1 decided-wrong (13) / 1 right (2, 7)**. Sheet
+  narrowed; after **17 right / 3 wrong (1, 13, 21) / 2 narrowed (4, 15)**. Sheet
   B: tiles 6, 11, 12, 14, 17 decided eighth. Tile 13 (an eighth with NO dot on
   the print) is now decided 0.75: the 2.12c dot reader attached an
   `augmentationDot` box to it (the flag's tail, by the crop), a fault that was
