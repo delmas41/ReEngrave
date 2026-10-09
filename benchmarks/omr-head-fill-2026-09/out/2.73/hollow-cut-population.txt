@@ -1,0 +1,3 @@
+Litolff p1-3: black-class kept heads 740; hollow by the 0.5 cut 5; by the 0.75 cut + off-line 13
+Brahms p0-1: black-class kept heads 1007; hollow by the 0.5 cut 1; by the 0.75 cut + off-line 1
+Litolff p6: black-class kept heads 573; hollow by the 0.5 cut 2; by the 0.75 cut + off-line 12

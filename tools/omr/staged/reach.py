@@ -68,6 +68,14 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
+    Q.DYNAMIC_ANCHOR: (
+        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
+        "(Sean 2026-10-09: a dynamic is anchored to ONE note) is GATHER+"
+        "ADJUDICATE only. What EXPORT needs to read it: the anchored note's "
+        "MEASURE and the mark's offset from that note's onset (so a dynamic "
+        "printed on a barline is written in the bar it announces, not the one "
+        "that detected it), and for a hairpin a start and a stop in different "
+        "measures. The entry LEAVES this list the day `export.py` reads it."),
     Q.EMPTY_BAR_WHOLE_REST: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.52 "
         "is GATHER+ADJUDICATE only (Sean, 2026-09-30: 'I want all our tests "

@@ -1,0 +1,27 @@
+10 crops (Sean: 1-6 half, 7-8 eighth, 9 half, 10 not a note)
+ #1 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [head_and_marks]
+      follow-up: decided 2.0 beats-written dots=0 [head_and_marks]
+ #2 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [head_and_marks]
+      follow-up: decided 2.0 beats-written dots=0 [head_and_marks]
+ #3 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [head_and_marks]
+      follow-up: decided 2.0 beats-written dots=0 [head_and_marks]
+ #4 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [head_and_marks]
+      follow-up: decided 2.0 beats-written dots=0 [head_and_marks]
+ #5 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [hollow_head_bare_stem]
+      follow-up: decided 2.0 beats-written dots=0 [hollow_head_bare_stem]
+ #6 Sean=half       2.73-first: decided 2.0 beats-written dots=0 [head_and_marks]
+      follow-up: decided 2.0 beats-written dots=0 [head_and_marks]
+ #7 Sean=eighth     2.73-first: narrowed [beam_certain_not_joined]
+      follow-up: narrowed [beam_certain_not_joined]
+ #8 Sean=eighth     2.73-first: narrowed [beam_certain_not_joined]
+      follow-up: narrowed [beam_certain_not_joined]
+ #9 Sean=half       2.73-first: narrowed [head_fill_from_ink]
+      follow-up: decided 2.0 beats-written dots=0 [hollow_head_bare_stem]
+ #10 Sean=NOT A NOTE 2.73-first: narrowed [head_fill_from_ink]
+      follow-up: narrowed [head_fill_from_ink]
+
+27 hand heads:
+  new {"n": 27, "found": 27, "box_ok": 27, "single": 27, "pos_ok": 27, "half": 27, "on_line": {"n": 14, "found": 14, "box_ok": 14, "single": 14, "pos_ok": 14, "half": 14}, "in_space": {"n": 13, "found": 13, "box_ok": 13, "single": 13, "pos_ok": 13, "half": 13}}
+  new3 {"n": 27, "found": 27, "box_ok": 27, "single": 27, "pos_ok": 27, "half": 27, "on_line": {"n": 14, "found": 14, "box_ok": 14, "single": 14, "pos_ok": 14, "half": 14}, "in_space": {"n": 13, "found": 13, "box_ok": 13, "single": 13, "pos_ok": 13, "half": 13}}
+lit stem-tip rows  2.73-first: {'found': 30, 'notfound': 644, 'occupied': 1704, 'other': 0}  follow-up: {'found': 34, 'notfound': 924, 'occupied': 1419, 'other': 1}
+br stem-tip rows  2.73-first: {'found': 27, 'notfound': 815, 'occupied': 1458, 'other': 0}  follow-up: {'found': 28, 'notfound': 1001, 'occupied': 1271, 'other': 0}

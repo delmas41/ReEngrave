@@ -1281,6 +1281,68 @@ def _stacked_head_group_rows(ev: Evidence, cell, stem_id: str, side: str,
     return out
 
 
+#: A head reads FILLED where every raster reading's centre window is at least
+#: this solid -- above Sean's filled Brahms floor (0.85) and below the solid
+#: mode (>= 0.95) of both scans; ink between the two cuts decides nothing.
+FILLED_CENTER_MIN = 0.9
+
+
+def _is_hollow_class(name) -> bool:
+    n = str(name)
+    return n.startswith("noteheadHalf") or n.startswith("noteheadWhole")
+
+
+def _hollow_ink_reading(ev: Evidence, subject) -> Optional[bool]:
+    """What the head's own ink says of its fill, `Q.NOTEHEAD_INK` read at
+    `subject`'s box: `True` decisively hollow (`rhythm`'s 2.23 test, now off
+    the line's rows too), `False` solidly filled on every raster read, `None`
+    where it says neither or says nothing."""
+    from . import rhythm as _rhythm      # a call-time import: rhythm imports us
+    rows = ev.rows(Q.NOTEHEAD_INK, subject=subject)
+    if not rows:
+        return None
+    d = rows[-1].detail or {}
+    if _rhythm._ink_reads_decisively_hollow(d):
+        return True
+    centers = []
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
+        c = ((d.get(key) or {}).get("windows") or {}).get("center")
+        if c is not None:
+            centers.append(c)
+    if centers and min(centers) >= FILLED_CENTER_MIN:
+        return False
+    return None
+
+
+_SURVIVES = object()
+
+
+def _earlier_rules_heir(ev: Evidence, cell, rival_row, spacing: float):
+    """ROADMAP 2.73 -- the rules that run BEFORE 2.42 in this decision (too
+    narrow; 2.30's same-mark rule; a cut head's piece) may already have refused
+    `rival_row`. Returns `_SURVIVES` if none did; else the box that keeps the
+    rival's mark (2.30's winner, the cut head's keeper), or `None` where the
+    rival is simply not a head (too narrow) and nothing inherits.
+
+    PURE (rows only), the same reason `_would_survive_as_a_duplicate` is.
+    Without it 2.42 chose a box refused a rule earlier as its slot's keeper and
+    deleted the box that stood: Brahms 317803 pdf 0, `glyph/0/0/4/4/2`, a head
+    lost to a rival 2.30 had refused in its favour.
+    """
+    val = rival_row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return _SURVIVES
+    if _too_narrow(rival_row, spacing, {}):
+        return None
+    winner = _2_30_winner(ev, cell, val[0], rival_row, spacing)
+    if winner is not None:
+        return winner
+    standing = _head_cut_standing(ev, rival_row.subject, rival_row, spacing)
+    if standing is not None and standing[4] != rival_row.subject:
+        return standing[1]
+    return _SURVIVES
+
+
 def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
@@ -1324,6 +1386,30 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     # by `_tremolo_slash_crosses_stem`, on its OWN pass through the decision
     # -- this filter only protects the OTHER members of its group.
     group_rows = [r for r in group_rows if not _is_tremolo_slash(ev, r.subject)]
+    # ⚠️ ROADMAP 2.73 -- ONLY BOXES ON THIS HEAD COMPETE FOR ITS SLOT. The
+    # group is "every box on this stem, this side": it carries no test that two
+    # of its boxes stand on the SAME head, and the fit can call a group of two
+    # heads an octave apart ONE slot (the mean ink falls when the weaker head is
+    # added). Measured on Brahms 317803 pdf 0, five whole boxes of Sean's
+    # hand-labelled heads (IoU 0.99-1.0) were refused here in favour of the
+    # box of the OTHER head on the same stem, 3.5 staff spaces away. A box that
+    # neither overlaps nor abuts this one cannot be this head boxed twice.
+    cell_boxes = _cell_notehead_boxes(ev, cell)
+    this_box = cell_boxes.get(ev.subject)
+    spacing = _cell_staff_space(ev)
+    if this_box is not None and spacing:
+        mine = this_box.value
+        group_rows = [
+            r for r in group_rows
+            if r.subject == ev.subject
+            or (r.subject in cell_boxes
+                and isinstance(cell_boxes[r.subject].value, (list, tuple))
+                and len(cell_boxes[r.subject].value) == 5
+                and (_boxes_on_one_head(mine, cell_boxes[r.subject].value,
+                                        spacing)
+                     or not (_plausible_head_box(mine, spacing)
+                             and _plausible_head_box(
+                                 cell_boxes[r.subject].value, spacing))))]
     signal: Dict[str, Any] = {
         "k": k, "slot": slot, "pos_float": round(float(pos_float), 3),
         "margin": margin, "candidates_at_slot": len(group_rows)}
@@ -1334,9 +1420,70 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     if any(i is None for i, _r in inks):
         signal["no_ink_witness"] = True
         return None                 # cannot tell -- refuse neither (rule 8)
+    # ⚠️ ROADMAP 2.73 -- SHAPE BEFORE INK. `ink` is `max(centre, ring)` of the
+    # box's OWN window, and a box that is half a ring has the higher ring
+    # fraction by construction: the partial box beat the whole one on Sean's
+    # half notes. The boxes within `HEAD_SHAPE_MARGIN` of the most head-shaped
+    # one are the contenders; the ink chooses among THEM, as before.
+    if spacing:
+        shapes = {}
+        for _i, r in inks:
+            bx = cell_boxes.get(r.subject)
+            v = bx.value if bx is not None else None
+            shapes[r.subject] = (_box_shape(v, spacing)
+                                 if isinstance(v, (list, tuple))
+                                 and len(v) == 5 else None)
+        known = [x for x in shapes.values() if x is not None]
+        if known:
+            top = max(known)
+            contenders = [(i, r) for i, r in inks
+                          if shapes[r.subject] is not None
+                          and shapes[r.subject] >= top - HEAD_SHAPE_MARGIN]
+            if contenders:
+                signal["shape_contenders"] = len(contenders)
+                inks = contenders
+    # ⚠️ ROADMAP 2.73 -- ONE HEAD, TWO CLASSES: THE INK DECIDES WHICH. The
+    # detector often boxes one head twice, `noteheadBlack*` and `noteheadHalf*`
+    # (Litolff: 9 refused half boxes on one page lost to a black keeper). `ink`
+    # above is `max(centre, ring)`, which is higher for the filled box by
+    # construction. Where the contenders disagree on class, the head's own ink
+    # -- measured off the line's rows, `rhythm._ink_reads_decisively_hollow` --
+    # names the class: hollow ink keeps the hollow-class box, solid ink the
+    # black-class one. Ink that is neither (or a pair whose boxes read
+    # differently) leaves the ink choice above untouched (rule 8).
+    classes = {_is_hollow_class(cell_boxes[r.subject].value[0])
+               for _i, r in inks if r.subject in cell_boxes
+               and isinstance(cell_boxes[r.subject].value, (list, tuple))}
+    if len(classes) == 2:
+        reads = {_hollow_ink_reading(ev, r.subject) for _i, r in inks}
+        if len(reads) == 1 and None not in reads:
+            want_hollow = reads.pop()
+            keep = [(i, r) for i, r in inks if r.subject in cell_boxes
+                    and _is_hollow_class(cell_boxes[r.subject].value[0])
+                    == want_hollow]
+            if keep:
+                signal["class_decided_by_ink"] = ("hollow" if want_hollow
+                                                  else "filled")
+                inks = keep
     best_ink, best_row = max(inks, key=lambda t: t[0])
     if best_row.subject == ev.subject:
         return None                 # this box IS the slot's own keeper
+    # ⚠️ ROADMAP 2.73 -- THE SLOT'S WINNER MAY HAVE BEEN REFUSED, a rule earlier,
+    # IN FAVOUR OF THIS VERY BOX. Then this box is the mark's one keeper: 2.30
+    # kept it and refused the winner, and refusing it here for that same winner
+    # leaves no box on the head (Brahms 317803 pdf 0, `glyph/0/0/4/4/2`). That
+    # circle, and only that one, is broken here; every other loser of an
+    # earlier rule still takes the slot as before -- an earlier version of this
+    # change let a refused winner shield EVERY box (a beam sliver boxed as a
+    # head on Litolff survived by it), and the crops said no.
+    if spacing and best_row.subject in cell_boxes:
+        heir = _earlier_rules_heir(ev, cell, cell_boxes[best_row.subject],
+                                   spacing)
+        if heir is not _SURVIVES and heir is not None \
+                and heir.subject == ev.subject \
+                and _plausible_head_box(mine, spacing):
+            signal["winner_refused_in_favour_of_this_box"] = best_row.id
+            return None
     detail["duplicate_of"] = best_row.id
     detail["stacked_head_this_ink"] = (fdetail or {}).get("ink")
     detail["stacked_head_other_ink"] = best_ink
@@ -1430,6 +1577,244 @@ def _cell_notehead_boxes(ev: Evidence, cell) -> Dict[Any, Any]:
     return out
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.73 -- one HEAD, one box: a head cut by a line, and the keep choice
+# between boxes on one head.
+#
+# Sean (2026-10-09): *"half notes, especially ones that are on lines or ledger
+# lines, get split up into two smaller boxes instead of one large box around
+# the notehead. I think the way the boxes are automatically choosing the
+# hollow noteheads is off."* Measured on his 27 hand-labelled half heads
+# (Brahms 317803 pdf 0): the keep choices below preferred a PARTIAL box
+# (half a ring, ~0.6 sp tall) over the whole one because the partial box's
+# `max(centre, ring)` ink fraction is higher, refused a head's only whole box
+# in favour of a box on ANOTHER head that merely stood on the same stem, and
+# kept two halves of one head as two heads. See `benchmarks/omr-head-fill-
+# 2026-09/FINDINGS.md` Sec.8.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box is "head-shaped" to the degree it fills the standard head extent
+#: (`geometry.STANDARD_HEAD_*_SPACES`): `min(1, h/std_h) * min(1, w/std_w)`.
+#: Between two boxes on one head the more head-shaped one is kept unless the
+#: two differ by less than this -- then the INK decides, as before. 0.15: a
+#: box 0.7 sp tall (half a ring) scores about 0.55 against a whole box's
+#: 0.9-1.0; neither number is fitted to a tile, it is the smallest gap that
+#: never separates two boxes that both cover the head.
+HEAD_SHAPE_MARGIN = 0.15
+
+#: Two boxes are on ONE head only if they overlap or stand no farther apart
+#: than this (staff spaces) in either axis -- the halves of a cut head abut at
+#: the line. A box on the same stem and side but a third or an octave away is a
+#: different head, however the stacked-head fit slotted it.
+SAME_HEAD_MAX_GAP_SPACES = 0.15
+
+#: A whole detector box on a cut head: its centre lies this near the rebuilt
+#: head's centre vertically (a chord's neighbour a second away is 0.5 sp off,
+#: and is another head). A partial box with no cut row of its own is allowed a
+#: little more, being off-centre by construction.
+HEAD_CUT_WHOLE_MAX_DY_SPACES = 0.25
+HEAD_CUT_PARTIAL_MAX_DY_SPACES = 0.35
+
+HEAD_CUT_REASON = "head_cut_piece"
+
+
+def _box_shape(box_value, spacing: float) -> float:
+    """How head-shaped a `Q.GLYPH_BOX` value `(class, x, y, w, h)` is -- see
+    `HEAD_SHAPE_MARGIN`. 1.0 for a box at least a standard head in both
+    extents."""
+    if spacing is None or spacing <= 0:
+        return 0.0
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    return (min(1.0, h_sp / _geom.STANDARD_HEAD_HEIGHT_SPACES)
+            * min(1.0, w_sp / _geom.STANDARD_HEAD_WIDTH_SPACES))
+
+
+#: A box a notehead could be: 0.8-2.1 staff spaces wide, 0.5-1.6 tall. The
+#: detector's real heads sit well inside (Brahms and Litolff medians 1.3-1.5 sp
+#: wide; the 99th percentile of kept boxes 1.6-2.1); a beam fragment boxed as a
+#: head is 2.4-6.6 sp wide.
+PLAUSIBLE_HEAD_WIDTH_SPACES = (0.8, 2.1)
+PLAUSIBLE_HEAD_HEIGHT_SPACES = (0.5, 1.6)
+
+
+def _plausible_head_box(box_value, spacing: float) -> bool:
+    w_sp = float(box_value[3]) / spacing
+    h_sp = float(box_value[4]) / spacing
+    return (PLAUSIBLE_HEAD_WIDTH_SPACES[0] <= w_sp <= PLAUSIBLE_HEAD_WIDTH_SPACES[1]
+            and PLAUSIBLE_HEAD_HEIGHT_SPACES[0] <= h_sp
+            <= PLAUSIBLE_HEAD_HEIGHT_SPACES[1])
+
+
+def _boxes_on_one_head(a, b, spacing: float) -> bool:
+    """Do two `Q.GLYPH_BOX` values overlap, or stand within
+    `SAME_HEAD_MAX_GAP_SPACES` of each other in both axes?"""
+    gap = SAME_HEAD_MAX_GAP_SPACES * spacing
+    ax, ay, aw, ah = (float(v) for v in a[1:5])
+    bx, by, bw, bh = (float(v) for v in b[1:5])
+    dx = max(ax, bx) - min(ax + aw, bx + bw)
+    dy = max(ay, by) - min(ay + ah, by + bh)
+    return dx <= gap and dy <= gap
+
+
+def _head_cut_row_of(ev: Evidence, subject):
+    rows = ev.rows(Q.HEAD_LINE_CUT, subject=subject)
+    return rows[-1] if rows else None
+
+
+def _head_cut_standing(ev: Evidence, subject, this_row, spacing: float):
+    """ROADMAP 2.73 -- who keeps the head `subject`'s box stands on, when a line
+    cuts it? `None` where `subject` is on no cut head, else
+    `(cut_row, keeper_row, keeper_kind, member_count)`.
+
+    PURE: it reads rows and nothing else, so another decision (2.42's slot
+    competition) can ask whether a rival box would be refused here without
+    reading a verdict, whose value would depend on which box the per-subject
+    iteration reached first (`_would_survive_as_a_duplicate`'s own reason).
+
+    `Q.HEAD_LINE_CUT` (GATHER) files, on a box that is half a hollow head, the
+    standard head box centred on the line, having found the mirror hole in the
+    ink. Every box standing on that head is one mark boxed more than once:
+
+      * a detector box that is itself head-shaped (a WHOLE box: at least 0.85
+        of the standard head, centred within `HEAD_CUT_WHOLE_MAX_DY_SPACES` of
+        the rebuilt centre) KEEPS the head -- the detector's own geometry, and
+        among several the one with the most erased-raster ink;
+      * otherwise the piece carrying a cut row with the highest
+        `_notehead_duplicate_priority` keeps it (its position is already the
+        line's, `gather_notehead_positions`);
+      * any other box on the head -- a partial with no row of its own, within
+        `HEAD_CUT_PARTIAL_MAX_DY_SPACES` of the centre -- is refused.
+
+    A chord's neighbour (a second away) is not on this head and is untouched.
+    Some box always keeps the head: the last box on it is never refused.
+    """
+    cell = subject.at(Kind.CELL)
+    this_val = this_row.value
+    if cell is None or not isinstance(this_val, (list, tuple)) \
+            or len(this_val) != 5:
+        return None
+    boxes = _cell_notehead_boxes(ev, cell)
+
+    def centre(v):
+        return (float(v[1]) + float(v[3]) / 2.0,
+                float(v[2]) + float(v[4]) / 2.0)
+
+    def rebuilt(cr):
+        rx, ry, rw, rh = (float(q) for q in cr.value)
+        return rx + rw / 2.0, ry + rh / 2.0, rw
+
+    # the cut head this box stands on, if any
+    own_cut = ev.rows(Q.HEAD_LINE_CUT, subject=subject)
+    cr = own_cut[-1] if own_cut else None
+    if cr is None:
+        tx, ty = centre(this_val)
+        for subj in boxes:
+            if subj == subject:
+                continue
+            other = _head_cut_row_of(ev, subj)
+            if other is None or not isinstance(other.value, (list, tuple)):
+                continue
+            rcx, rcy, rw = rebuilt(other)
+            if (abs(ty - rcy) <= HEAD_CUT_PARTIAL_MAX_DY_SPACES * spacing
+                    and abs(tx - rcx) <= 0.5 * rw):
+                cr = other
+                break
+    if cr is None or not isinstance(cr.value, (list, tuple)):
+        return None
+    rcx, rcy, rw = rebuilt(cr)
+
+    members = []        # (subject, box row, rank, ink)
+    for subj, brow in boxes.items():
+        v = brow.value
+        if not isinstance(v, (list, tuple)) or len(v) != 5:
+            continue
+        cx, cy = centre(v)
+        carries = _head_cut_row_of(ev, subj)
+        if carries is not None and isinstance(carries.value, (list, tuple)):
+            ocx, ocy, _ow = rebuilt(carries)
+            if (abs(ocy - rcy) <= HEAD_CUT_WHOLE_MAX_DY_SPACES * spacing
+                    and abs(ocx - rcx) <= 0.5 * rw):
+                members.append((subj, brow, 1, None))
+            continue
+        if abs(cx - rcx) > 0.5 * rw:
+            continue
+        if (_box_shape(v, spacing) >= 0.85
+                and abs(cy - rcy) <= HEAD_CUT_WHOLE_MAX_DY_SPACES * spacing):
+            members.append((subj, brow, 2, _notehead_ink_net(ev, subj)))
+        elif abs(cy - rcy) <= HEAD_CUT_PARTIAL_MAX_DY_SPACES * spacing:
+            members.append((subj, brow, 0, None))
+    if not any(m[0] == subject for m in members):
+        return None
+    wholes = [m for m in members if m[2] == 2]
+    if wholes:
+        # a whole detector box keeps the head; the most erased-raster ink wins
+        # between several, an unreadable ink ranking last, then the detector
+        # score and the lower glyph index (`_notehead_duplicate_priority`)
+        keeper = max(wholes, key=lambda m: (
+            (-1.0 if m[3] is None else m[3]),)
+            + _notehead_duplicate_priority(m[1]))
+        kind = "whole_box"
+    else:
+        pieces = [m for m in members if m[2] == 1]
+        if not pieces:
+            return None
+        keeper = max(pieces, key=lambda m: _notehead_duplicate_priority(m[1]))
+        kind = "cut_piece"
+    return cr, keeper[1], kind, len(members), keeper[0]
+
+
+def _head_cut_piece_refusal(ev: Evidence, this_row, spacing: float,
+                            detail: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.73 -- is this box one PIECE of a head the ink shows a line
+    cutting, where another box on the same head keeps it? See
+    `_head_cut_standing`. A box that IS the keeper gets `detail["head_cut_
+    signal"]` and no ruling -- the caller then skips 2.30/2.42 for it, since a
+    box one decision has chosen to keep must not be refused by another."""
+    standing = _head_cut_standing(ev, ev.subject, this_row, spacing)
+    if standing is None:
+        return None
+    cr, keeper_row, kind, n_members, keeper_subject = standing
+    cd = cr.detail or {}
+    detail["head_cut_signal"] = {
+        "keeper": keeper_row.id, "keeper_kind": kind, "members": n_members,
+        "head_line_cut": cr.id,
+        # the evidence the reading rested on, carried to the verdict so a
+        # reader of the record sees WHY this was one head without opening the
+        # GATHER row
+        "line_half_step": cd.get("line_half_step"),
+        "line_half_step_float": cd.get("line_half_step_float"),
+        "holes": cd.get("holes"), "area_ratio": cd.get("area_ratio"),
+        "line_ink": cd.get("line_ink"), "detector_box": cd.get("detector_box")}
+    if keeper_subject == ev.subject:
+        return None
+    detail["duplicate_of"] = keeper_row.id
+    return Ruling(value=True, reason="head_cut_piece",
+                  used=(this_row.id, keeper_row.id, cr.id), detail=detail)
+
+
+def _is_refused_as_a_cut_piece(ev: Evidence, row, spacing: float) -> bool:
+    """Would `_head_cut_piece_refusal` refuse the box `row` -- asked of a RIVAL
+    box, by rows alone (see `_head_cut_standing`)."""
+    standing = _head_cut_standing(ev, row.subject, row, spacing)
+    return standing is not None and standing[4] != row.subject
+
+
+def _other_keeps_the_mark(this_val, this_row, other_val, other_row,
+                          spacing: float) -> bool:
+    """Of two same-class boxes on one mark, does OTHER keep it? ROADMAP 2.73:
+    the more head-shaped one, where the two differ by more than
+    `HEAD_SHAPE_MARGIN`; else the higher detector score (then the lower glyph
+    index), exactly 2.30's own priority before this item."""
+    d_shape = _box_shape(other_val, spacing) - _box_shape(this_val, spacing)
+    if d_shape > HEAD_SHAPE_MARGIN:
+        return True
+    if d_shape < -HEAD_SHAPE_MARGIN:
+        return False
+    return (_notehead_duplicate_priority(other_row)
+            > _notehead_duplicate_priority(this_row))
+
+
 def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
                                     spacing_canonical: float,
                                     detail: Dict[str, Any]
@@ -1461,7 +1846,6 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
     if not isinstance(this_val, (list, tuple)) or len(this_val) != 5:
         return None
     this_class = this_val[0]
-    this_priority = _notehead_duplicate_priority(this_row)
 
     better = None
     for subj, row in _cell_notehead_boxes(ev, cell).items():
@@ -1476,7 +1860,12 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
             continue
         if not _same_mark_centres(this_val, other_val, spacing_canonical):
             continue
-        if _notehead_duplicate_priority(row) > this_priority:
+        # ⚠️ ROADMAP 2.73 -- SHAPE BEFORE SCORE. Two same-class boxes on one
+        # mark: the more head-shaped (a whole head against half a ring) is the
+        # keeper whatever the detector's confidence; within `HEAD_SHAPE_MARGIN`
+        # of each other the confidence decides, as before.
+        if _other_keeps_the_mark(this_val, this_row, other_val, row,
+                                 spacing_canonical):
             better = row
 
     if better is not None:
@@ -1484,6 +1873,35 @@ def _notehead_duplicate_box_refusal(ev: Evidence, this_row,
         return Ruling(value=True, reason="notehead_is_a_duplicate_box",
                       used=(this_row.id, better.id), detail=detail)
     return None
+
+
+def _2_30_winner(ev: Evidence, cell, this_class: str, candidate_row,
+                 spacing_canonical: float):
+    """The box 2.30 keeps over `candidate_row`, or `None` where 2.30 does not
+    refuse it -- `_would_lose_to_2_30s_duplicate_rule`, naming the winner (the
+    highest `_notehead_duplicate_priority` among the boxes that beat it)."""
+    cand_val = candidate_row.value
+    if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
+        return None
+    best = None
+    for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
+        if subj2 == candidate_row.subject:
+            continue
+        val2 = row2.value
+        if not isinstance(val2, (list, tuple)) or len(val2) != 5:
+            continue
+        if val2[0] != this_class:
+            continue
+        if _notehead_box_iou(cand_val, val2) < NOTEHEAD_DUPLICATE_IOU_MIN:
+            continue
+        if not _same_mark_centres(cand_val, val2, spacing_canonical):
+            continue
+        if _other_keeps_the_mark(cand_val, candidate_row, val2, row2,
+                                 spacing_canonical):
+            if best is None or (_notehead_duplicate_priority(row2)
+                                > _notehead_duplicate_priority(best)):
+                best = row2
+    return best
 
 
 def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
@@ -1506,7 +1924,6 @@ def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
     cand_val = candidate_row.value
     if not isinstance(cand_val, (list, tuple)) or len(cand_val) != 5:
         return False
-    cand_priority = _notehead_duplicate_priority(candidate_row)
     for subj2, row2 in _cell_notehead_boxes(ev, cell).items():
         if subj2 == candidate_row.subject:
             continue
@@ -1519,7 +1936,8 @@ def _would_lose_to_2_30s_duplicate_rule(ev: Evidence, cell, this_class: str,
             continue
         if not _same_mark_centres(cand_val, val2, spacing_canonical):
             continue
-        if _notehead_duplicate_priority(row2) > cand_priority:
+        if _other_keeps_the_mark(cand_val, candidate_row, val2, row2,
+                                 spacing_canonical):
             return True
     return False
 
@@ -2106,6 +2524,11 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # second_refusal` directly, with its own `Evidence`, which
                   # declares them itself.
                   Q.STACKED_HEAD_FIT,
+                  # ⚠️ ROADMAP 2.73: GATHER's own reading of a hollow head a
+                  # line cuts in two (the mirror hole found in the ink) and
+                  # `Q.NOTEHEAD_INK`, whose `ink_net` the keep choice between
+                  # boxes on one head reads -- see `_head_cut_piece_refusal`.
+                  Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
                   # ⚠️ ROADMAP 2.49: GATHER's own ink split by stem x -- see
                   # `_tremolo_slash_crosses_stem`'s own docstring.
                   Q.NOTEHEAD_STEM_CROSS_INK,
@@ -2123,6 +2546,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
+          Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
@@ -2131,6 +2555,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
                                      STACKED_HEAD_REASON,
+                                     HEAD_CUT_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
@@ -2231,6 +2656,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        carries no ink witness, NEITHER is refused (rule 8). A slot held by
        only one box is untouched. See `_stacked_head_duplicate_refusal`'s
        own docstring and the module's 2.42 section comment.
+    2g. `head_cut_piece` (ROADMAP 2.73, SHIPS, runs BEFORE 2.30/2.42) -- Sean
+       (2026-10-09): a half note on a staff or ledger line is boxed as pieces,
+       not as one head. GATHER (`gather.gather_head_line_cut`,
+       `Q.HEAD_LINE_CUT`) finds, in the ink, the two half-holes either side of
+       the line and files the standard head box centred on it; every box on
+       that head is then one mark boxed more than once. A whole detector box
+       keeps the head (most erased-raster ink between several); with none, the
+       piece with the best detector score keeps it, positioned on the line.
+       The two older keep choices below now put SHAPE before INK for the same
+       reason (`HEAD_SHAPE_MARGIN`): half a ring has the higher ring fraction
+       by construction, and ink alone kept it over the whole head; and 2.42's
+       group competes only among boxes on ONE head (`_boxes_on_one_head`), not
+       among every box on the stem and side -- two real heads an octave apart
+       were one "slot" and one lost its whole box.
     2f. `is_a_time_signature_digit` (ROADMAP 2.47c, SHIPS) — a notehead-
        classed box at IoU > `TIMESIG_DIGIT_DUPLICATE_IOU_MIN` (0.9) against
        a `timeSig*`-classed box in the SAME cell is that digit's own ink,
@@ -2359,7 +2798,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # MEANS — this rule only asks whether it is the SAME ink as another
     # notehead box already in the cell. `Q.NOTEHEAD_CLASS` and `Q.GLYPH_BOX`
     # are both already filed at GATHER; nothing here re-derives a value.
-    dup = _notehead_duplicate_box_refusal(ev, box_row, spacing, detail)
+    # ⚠️ ROADMAP 2.73, BEFORE 2.30/2.42: a head a line cuts in two is the SAME
+    # ink boxed as pieces, and the pair-wise and slot-wise keep choices below
+    # compare ink in windows of the pieces' own sizes -- the partial box wins
+    # them. One decision per head, from the ink's own mirror hole, first.
+    cut_piece = _head_cut_piece_refusal(ev, box_row, spacing, detail)
+    if cut_piece is not None:
+        return cut_piece
+    # a box this decision just chose to KEEP as its head's one box is not then
+    # refused by the older same-mark rules, which compare it with the pieces
+    # this one already settled (Brahms 317803 pdf 0: both boxes of a cut head
+    # were refused, one by each rule, and the head was lost)
+    keeps_a_cut_head = "head_cut_signal" in detail
+    dup = (None if keeps_a_cut_head
+           else _notehead_duplicate_box_refusal(ev, box_row, spacing, detail))
     if dup is not None:
         return dup
     # ⚠️ ROADMAP 2.42. AFTER 2.30's narrower same-mark test (which already
@@ -2369,7 +2821,8 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # SUPERSEDES 2.40's pair-wise `same_side_second` (no longer called here --
     # see `_stacked_head_duplicate_refusal`'s own module-section comment for
     # why one group rule replaces it rather than the two competing).
-    stacked = _stacked_head_duplicate_refusal(ev, box_row, detail)
+    stacked = (None if keeps_a_cut_head
+               else _stacked_head_duplicate_refusal(ev, box_row, detail))
     if stacked is not None:
         return stacked
     # ⚠️ ROADMAP 2.47c. AFTER 2.30/2.42's same-FAMILY same-mark tests

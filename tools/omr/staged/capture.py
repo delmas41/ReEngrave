@@ -586,6 +586,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "it names no box a tremolo slash, only how much ink stands on "
         "each side of the split.",
         None),
+    "HEAD_LINE_CUT": (
+        RELATION,
+        "ROADMAP 2.73: where a hollow head's two half-holes stand either "
+        "side of a staff or ledger line, off the UNERASED canonical raster "
+        "(the line is the evidence) -- a relation between a located "
+        "notehead box that is about half a head tall and the paper it "
+        "stands on, and the standard head box that centres on the line. "
+        "Scoreless: it names no head a half note, only that the ink holds "
+        "the mirror hole across the line.",
+        None),
 
     # ── ink with no class ───────────────────────────────────────────────────
     "INK": (
@@ -757,6 +767,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # only, same reason `CV_NOTEHEAD_RECENTRE`/`CV_STACKED_HEAD_FIT` do.
     "CV_NOTEHEAD_STEM_CROSS_INK": ("staged/gather.py",
                                    "gather_notehead_stem_cross_ink"),
+    # ⚠️ ROADMAP 2.73. Also `staged/gather.py`; reads the UNERASED canonical
+    # raster (`cell.binary`), the one `CV_NOTEHEAD_INK` reads beside its
+    # erased one.
+    "CV_HEAD_LINE_CUT": ("staged/gather.py", "gather_head_line_cut"),
     # ⚠️ ROADMAP 2.52. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),

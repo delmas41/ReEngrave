@@ -28,6 +28,7 @@ emits are ASSUMPTIONS -- see ASSUMPTIONS.md.
 
 from __future__ import annotations
 
+import math
 import os
 from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
 
@@ -869,10 +870,24 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                 continue
             pos_float = (d.y_center - top_y) / half_step
             g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            # ⚠️ ROADMAP 2.73. A box that is half a hollow head cut by a line
+            # centres half a head off the head: ITS centre reads a space where
+            # the head sits ON the line. Where `gather_head_line_cut` found the
+            # mirror hole in the ink, the head's own centre is the line, and
+            # that is the position measured (the detector's own reading rides
+            # on the row, so the move is visible and countable).
+            cut_rows = log.rows(Q.HEAD_LINE_CUT, g)
+            extra: Dict[str, Any] = {}
+            if cut_rows:
+                cut_pos = (cut_rows[-1].detail or {}).get("line_half_step_float")
+                if cut_pos is not None:
+                    extra = {"from_head_cut": cut_rows[-1].id,
+                             "detector_position_float": round(pos_float, 3)}
+                    pos_float = float(cut_pos)
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
-                        rounded=int(round(pos_float)))
+                        rounded=int(round(pos_float)), **extra)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -3178,6 +3193,36 @@ def _staff_bands(pws: Any, local: Dict[int, Tuple[int, int]]
     return out
 
 
+#: The staves beside a dynamic letter's own that it can stand below or inside:
+#: the staff above, its own, the staff beneath (offsets in the system's staff
+#: ordinal). A letter cut from a padded cell reaches no further.
+_LETTER_STAFF_OFFSETS = (-1, 0, 1)
+
+
+def _letter_positions_in_staves(cells_of_staff, sub: Subject, cx: float,
+                                cy: float) -> Dict[str, float]:
+    """ROADMAP 2.68: the letter's centre, in half-steps from each neighbouring
+    staff's TOP line (0 = the top line, 8 = the bottom line, negative = above
+    the staff), keyed by the staff's offset from the cell's own as a string.
+
+    ⚠️ LOCAL (CLAUDE.md §10): each staff's own CELL grid at the letter's x
+    (`_local_position_in_candidate`), never the page-wide lines a tilted scan
+    shifts by up to ~0.8 spaces. A staff with no cell at that x (no such staff,
+    or the bar is cut differently) is LEFT OUT, not defaulted: a position that
+    was never measured is not a position. Nothing is decided here -- which staff
+    the letter belongs to is `adjudicate_dynamic`'s question."""
+    out: Dict[str, float] = {}
+    for off in _LETTER_STAFF_OFFSETS:
+        st = sub.staff + off
+        if st < 0:
+            continue
+        key = R.staff(sub.page, sub.system, st).to_key()
+        lp = _local_position_in_candidate(cells_of_staff, key, cx, cy)
+        if lp is not None:
+            out[str(off)] = float(lp)
+    return out
+
+
 def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
                            detections: Dict[str, List[Any]]) -> None:
@@ -3216,7 +3261,17 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
             cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
     # ROADMAP 2.68: the page's ink with EVERY detected glyph taken out, read
     # once per page, for `Q.DYNAMIC_LETTER_NEIGHBOURS`.
-    other_ink = _ink_without_detections(pws, detections, cell_by_key)
+    other_ink = _ink_without_detections(pws, detections, cell_by_key,
+                                        _page_staff_spacing(bands))
+    page_letters = _dynamic_letter_boxes(detections, cell_by_key)
+    # ROADMAP 2.68 (twins): the page's raw ink, for the letter's own HEIGHT.
+    raw_ink = _raw_page_ink(pws)
+    # ROADMAP 2.68 (Sean 2026-10-08/09: a dynamic belongs to the staff it is
+    # printed BELOW): each cell's staff grid, for the letter's LOCAL position
+    # against its own staff and the two beside it.
+    cells_of_staff: Dict[Tuple[int, int, int], List[Any]] = {}
+    for (pg_, sy_, st_, _m), c_ in cell_by_key.items():
+        cells_of_staff.setdefault((pg_, sy_, st_), []).append(c_)
 
     seen_cells = set()
     for cell_key, dets in detections.items():
@@ -3261,6 +3316,19 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                     # letter and a wedge can be said to share a row
                     in_hairpin_band=_in_hairpin_band((y0 + y1) / 2.0,
                                                      bottom, spacing))
+            positions = _letter_positions_in_staves(
+                cells_of_staff, sub, (x0 + x1) / 2.0, (y0 + y1) / 2.0)
+            if positions:
+                detail["local_position_in_staves"] = positions
+            if band is not None and raw_ink is not None:
+                # ROADMAP 2.68 (twins): how tall the INK in this box is, in
+                # staff spaces -- the evidence that says which letter ONE ink
+                # boxed as two classes is (an `f` rises above the x-height, a
+                # `p` does not). Absent where there is nothing to measure.
+                extent = letter_ink_extent(raw_ink, box, band[2])
+                if extent is not None:
+                    detail.update(ink_height_spaces=extent["height_spaces"],
+                                  ink_width_spaces=extent["width_spaces"])
             log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
@@ -3272,7 +3340,8 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                             note="no page raster" if other_ink is None
                             else "no staff spacing")
             else:
-                sides = letter_ink_beside(other_ink, box, spacing)
+                sides = letter_ink_beside(other_ink, box, spacing,
+                                          exclude=_same_ink_boxes(box, page_letters))
                 log.observe(g, Q.DYNAMIC_LETTER_NEIGHBOURS,
                             {"left": sides["left"], "right": sides["right"],
                              "left_spaces": sides["left_spaces"],
@@ -3300,6 +3369,87 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                         reason=ABSTAIN.NO_DETECTIONS)
 
 
+def _raw_page_ink(pws: Any):
+    """The page's ink (255) with NOTHING taken out, or None with no raster."""
+    page = getattr(pws, "page", None)
+    rgb = getattr(page, "rgb", None)
+    if rgb is None:
+        return None
+    import cv2 as _cv2
+    gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
+    _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
+    return mask
+
+
+#: A horizontal run this long (staff spaces) is a staff or ledger line, not a
+#: letter: no letter's stroke runs 2 spaces without bending.
+LETTER_LINE_SPACES = 2.0
+#: Ink under this share of a square staff space is a speck, not a part of the
+#: letter.
+LETTER_SPECK_SPACES2 = 0.08
+
+
+def letter_ink_extent(ink, box, spacing: float) -> Optional[Dict[str, float]]:
+    """How tall and how wide the INK inside a dynamic letter's box is, in staff
+    spaces, with staff lines and tall strokes (barlines, stems) taken out. Pure;
+    `ink` is 255 = ink. None where nothing but lines stood in the box.
+
+    ROADMAP 2.68 (twins). One printed letter boxed as two classes (`dynamicP`
+    and `dynamicF` on the same ink) can only be told apart by what the ink IS,
+    and the cheapest measure that separates `f` from `p` is HEIGHT: an `f`
+    rises above the x-height AND falls below it, a `p` only falls. Measured on
+    Sean's 12 hand-labelled `f` boxes (Brahms 317803 pdf 0): 2.4 to 2.6 spaces;
+    the `p`s on the same plate 1.4 to 2.1.
+
+    The lines are taken out on a crop PADDED beyond the box (2 spaces either
+    side, 3 above and below), because a staff line is only a line where its
+    run is longer than the letter is wide and a barline only a barline where
+    it is taller than the letter is tall; inside the box alone both look like
+    ink of the letter. Everything outside the box (+2 px) is then discarded.
+    """
+    import cv2 as _cv2
+    import numpy as _np
+    sp = float(spacing)
+    if sp <= 0:
+        return None
+    x0, y0, x1, y1 = (int(round(v)) for v in box)
+    px, py = int(round(2.0 * sp)), int(round(3.0 * sp))
+    H, W = ink.shape[:2]
+    cx0, cy0 = max(0, x0 - px), max(0, y0 - py)
+    cx1, cy1 = min(W, x1 + px), min(H, y1 + py)
+    if cx1 <= cx0 or cy1 <= cy0:
+        return None
+    crop = _np.array(ink[cy0:cy1, cx0:cx1], copy=True)
+    kh = max(3, int(round(LETTER_LINE_SPACES * sp)))
+    hl = _cv2.morphologyEx(crop, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (kh, 1)))
+    hl = _cv2.dilate(hl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, 3)))
+    crop[hl > 0] = 0
+    kv = max(3, int(round(VLINE_SPACES * sp)))
+    vl = _cv2.morphologyEx(crop, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, kv)))
+    vl = _cv2.dilate(vl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (3, 1)))
+    crop[vl > 0] = 0
+    # keep only what stands in the box itself
+    keep = _np.zeros_like(crop)
+    bx0, by0 = max(0, x0 - 2 - cx0), max(0, y0 - 2 - cy0)
+    bx1, by1 = min(crop.shape[1], x1 + 3 - cx0), min(crop.shape[0], y1 + 3 - cy0)
+    keep[by0:by1, bx0:bx1] = crop[by0:by1, bx0:bx1]
+    n, _lab, stats, _cen = _cv2.connectedComponentsWithStats(keep, connectivity=8)
+    parts = [i for i in range(1, n)
+             if stats[i, _cv2.CC_STAT_AREA] >= LETTER_SPECK_SPACES2 * sp * sp]
+    if not parts:
+        return None
+    left = min(stats[i, _cv2.CC_STAT_LEFT] for i in parts)
+    top = min(stats[i, _cv2.CC_STAT_TOP] for i in parts)
+    right = max(stats[i, _cv2.CC_STAT_LEFT] + stats[i, _cv2.CC_STAT_WIDTH] for i in parts)
+    bottom = max(stats[i, _cv2.CC_STAT_TOP] + stats[i, _cv2.CC_STAT_HEIGHT] for i in parts)
+    return {"height_spaces": round(float(bottom - top) / sp, 3),
+            "width_spaces": round(float(right - left) / sp, 3),
+            "bbox_page_px": [float(cx0 + left), float(cy0 + top),
+                             float(cx0 + right), float(cy0 + bottom)]}
+
+
 #: How close letter ink must stand to a dynamic letter, on its own line, for
 #: the letter to have a NEIGHBOUR: the space between two letters of one word.
 #: A dynamic beside a word stands clear of it (`direction_text`: 1.7 spaces
@@ -3307,16 +3457,74 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
 LETTER_GAP_SPACES = 0.5
 
 
+def _page_staff_spacing(bands: Dict[Any, Any]) -> Optional[float]:
+    """The page's median staff spacing, from the per-staff bands."""
+    vals = sorted(float(b[2]) for b in bands.values() if b and b[2])
+    return vals[len(vals) // 2] if vals else None
+
+
+def _dynamic_letter_boxes(detections: Dict[str, List[Any]],
+                          cell_by_key: Dict[Any, Any]) -> List[Tuple[float, ...]]:
+    """Every dynamic-letter box on the page, in page pixels, across cells."""
+    out: List[Tuple[float, ...]] = []
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for d in dets:
+            if d.smufl_name in _DYNAMIC_LETTER_CLASSES:
+                b = _page_box(c, d)
+                if b is not None:
+                    out.append(tuple(b))
+    return out
+
+
+def _same_ink_boxes(box, page_letters, share: float = 0.5) -> List[Tuple[float, ...]]:
+    """The dynamic-letter boxes that are THIS letter's own ink: its own box and
+    every other detection of a dynamic letter overlapping it by at least `share`
+    of the smaller area (the same printed `p` boxed as `dynamicP` and again as
+    `dynamicF`, or once more from the neighbouring staff's cell). They are not
+    neighbours: a letter is not its own neighbour."""
+    x0, y0, x1, y1 = box
+    area = max(1.0, (x1 - x0) * (y1 - y0))
+    out = [tuple(box)]
+    for b in page_letters:
+        ix = max(0.0, min(x1, b[2]) - max(x0, b[0]))
+        iy = max(0.0, min(y1, b[3]) - max(y0, b[1]))
+        small = max(1.0, min(area, (b[2] - b[0]) * (b[3] - b[1])))
+        if ix * iy >= share * small:
+            out.append(b)
+    return out
+
+
 def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
-                            cell_by_key: Dict[Any, Any]):
-    """The page's ink (255) with every detected glyph box blanked, DYNAMICS
-    INCLUDED -- what is left beside a dynamic letter is ink the detector did
-    not name: the other letters of a word. None if the page has no raster."""
+                            cell_by_key: Dict[Any, Any],
+                            spacing: Optional[float] = None):
+    """The page's ink (255) with every detected NOTATION glyph blanked -- what is
+    left beside a dynamic letter is ink the detector did not name as notation:
+    the other letters of a word. None if the page has no raster.
+
+    ⚠️ WHICH BOXES MAY HIDE A WORD'S LETTERS IS ONE RULE, NOT TWO
+    (`direction_text.letter_hiding_kind`, ROADMAP 2.68): a SPAN (slur, tie,
+    beam, staff -- wider than 4 spaces), a clef/rest/time/ornament box and a
+    DYNAMIC box are NOT blanked here. Measured on Brahms p0 `espr.` (2026-10-09)
+    the old rule blanked every detection under 0.25 of the page width, and the
+    slur box over the bar (843 px, 30 spaces) plus a `restWhole` box on the `r`
+    erased the `s`, `p`, `r` of the word -- the `p` had NO letter neighbour and
+    came back as piano -- and the detector's own boxes on `legato`'s letters
+    (boxed as dynamics) were blanked too, so they never counted as one another's
+    neighbours. Ink standing in a span's box is thin or enormous and the letter
+    test (`letter_ink_beside`: size, fill, own line) refuses it."""
     page = getattr(pws, "page", None)
     rgb = getattr(page, "rgb", None)
     if rgb is None:
         return None
     import cv2 as _cv2
+    from .. import direction_text as _DT
+    if not spacing:
+        spacing = float(sorted(_DT._spacing(s) for s in pws.staves)[len(pws.staves) // 2]) \
+            if getattr(pws, "staves", None) else 0.0
     gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
     _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
     h, w = mask.shape
@@ -3330,16 +3538,38 @@ def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
             if box is None:
                 continue
             x0, y0, x1, y1 = (int(round(v)) for v in box)
-            if x1 - x0 > 0.25 * w:
-                continue    # a span (beam, slur, staff), not a glyph
+            if spacing and _DT.letter_hiding_kind(
+                    getattr(d, "category", None), x1 - x0, spacing) is not None:
+                continue
+            if not spacing and x1 - x0 > 0.25 * w:
+                continue    # no spacing: the old width cut
             mask[max(0, y0 - 2):min(h, y1 + 2), max(0, x0 - 2):min(w, x1 + 2)] = 0
+    if spacing:
+        # ⚠️ A BARLINE (or a stem) THROUGH A WORD: Brahms p0 prints `legato`
+        # across a barline, the `t` touching the line and the `o` just past
+        # it; the line's component is staves tall, so the `o` had no letter
+        # neighbour (0.94 spaces to the `a`) and came back as piano. Vertical
+        # strokes taller than `VLINE_SPACES` -- no letter is -- are taken out
+        # of the mask, so what they touched is read as the pieces it is.
+        k = max(3, int(round(VLINE_SPACES * spacing)))
+        vlines = _cv2.morphologyEx(mask, _cv2.MORPH_OPEN,
+                                   _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, k)))
+        vlines = _cv2.dilate(vlines, _cv2.getStructuringElement(_cv2.MORPH_RECT, (3, 1)))
+        mask[vlines > 0] = 0
     return mask
 
 
-def letter_ink_beside(mask, box, spacing: float) -> Dict[str, Any]:
+#: Taller than any letter (an `f` is ~2.9 spaces): a barline, a stem.
+VLINE_SPACES = 4.0
+
+
+def letter_ink_beside(mask, box, spacing: float, exclude=()) -> Dict[str, Any]:
     """Is there a LETTER-sized, letter-dense piece of ink within
     `LETTER_GAP_SPACES` of this box, on its own line (overlapping its middle
-    half), on the left and on the right? Pure; `mask` is 255 = ink."""
+    half), on the left and on the right? Pure; `mask` is 255 = ink. `exclude`
+    are page boxes of this letter's OWN ink (`_same_ink_boxes`), blanked in the
+    window so a sliver of the letter outside its box, or its twin box, is not a
+    neighbour."""
     import cv2 as _cv2
     x0, y0, x1, y1 = (int(round(v)) for v in box)
     hgt = max(1, y1 - y0)
@@ -3352,8 +3582,14 @@ def letter_ink_beside(mask, box, spacing: float) -> Dict[str, Any]:
                          ("right", (x1, min(mask.shape[1], x1 + reach)))):
         nearest = None
         if b > a:
-            n, _lab, st, _c = _cv2.connectedComponentsWithStats(
-                mask[wy0:wy1, a:b], 8)
+            win = mask[wy0:wy1, a:b]
+            if len(exclude):
+                win = win.copy()
+                for ex in exclude:
+                    ex0, ey0, ex1, ey1 = (int(round(v)) for v in ex)
+                    win[max(0, ey0 - 2 - wy0):max(0, ey1 + 2 - wy0),
+                        max(0, ex0 - 2 - a):max(0, ex1 + 2 - a)] = 0
+            n, _lab, st, _c = _cv2.connectedComponentsWithStats(win, 8)
             for i in range(1, n):
                 cx, cy, cw, ch, area = (int(st[i, k]) for k in range(5))
                 if not (0.25 * spacing <= ch <= 2.2 * spacing
@@ -3961,6 +4197,22 @@ STEM_TIP_INK_DENSE = 0.30
 #: bands) must not be read as a flag. NOT CONFIRMED.
 STEM_TIP_INK_BACKGROUND_MAX = 0.20
 
+#: ROADMAP 2.73. A row of the tip window is a LINE row where ink fills both
+#: probes just beyond the two bands (`STEM_TIP_LINE_PROBE_SPACES` wide) at least
+#: this much; where lines take more than `STEM_TIP_LINE_ROWS_MAX_LOST` of the
+#: window's rows the reading is declined.
+STEM_TIP_LINE_PROBE_SPACES = 0.6
+STEM_TIP_LINE_ROW_FILL = 0.7
+STEM_TIP_LINE_ROWS_MAX_LOST = 0.5
+
+#: ROADMAP 2.73. A detection box counts as explaining ink in the tip window only
+#: if it overlaps the window by more than this much (staff spaces) in BOTH axes.
+#: Detector box edges are good to about a tenth of a space; a box that merely
+#: touches the window's edge (Litolff p6, 2.70 tiles #4/#6: an `arpeggiato` box
+#: that IS the stem's own ink ending 1 px into the window, a neighbour's head
+#: box ending 1-5 px into it) explains none of it.
+STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
+
 
 def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
                  into_sign: float, space: float) -> Optional[Dict[str, Any]]:
@@ -3994,12 +4246,43 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     y_near, y_far = tip_y + into_sign * near, tip_y + into_sign * far
     y0, y1 = (y_near, y_far) if y_near <= y_far else (y_far, y_near)
 
+    # ⚠️ ROADMAP 2.73 (coordinator, Sean's 2.70 tiles #2/#6): A STAFF OR LEDGER
+    # LINE AT THE TIP IS NOT ON THE STEM. A line crosses both bands, so it both
+    # fills the right one and breaks the left one's "no ink here" guard -- a stem
+    # that ends on a line could neither read as flagged nor as bare. The ROWS a
+    # horizontal line stands on at this x -- ink in BOTH probes just beyond the two
+    # bands, which a flag (hanging from ONE side of the tip) never reaches -- are
+    # left out of both bands. Where the lines take more than half the window the
+    # reading is declined, never read from what is left.
+    iy0w, iy1w = max(0, int(round(y0))), min(H, int(round(y1)))
+    keep_rows = None
+    lost_rows = 0
+    if iy1w > iy0w:
+        probe = STEM_TIP_LINE_PROBE_SPACES * space
+        lo_l, hi_l = int(round(stem_x0 - width - probe)), int(round(stem_x0 - width))
+        lo_r, hi_r = int(round(stem_x1 + width)), int(round(stem_x1 + width + probe))
+        keep_rows = []
+        for yy in range(iy0w, iy1w):
+            lft = ink[yy, max(0, lo_l):max(0, hi_l)]
+            rgt = ink[yy, max(0, lo_r):min(W, max(0, hi_r))]
+            on_line = bool(lft.size and rgt.size
+                           and lft.mean() >= STEM_TIP_LINE_ROW_FILL
+                           and rgt.mean() >= STEM_TIP_LINE_ROW_FILL)
+            if not on_line:
+                keep_rows.append(yy)
+        lost_rows = (iy1w - iy0w) - len(keep_rows)
+        if lost_rows > STEM_TIP_LINE_ROWS_MAX_LOST * (iy1w - iy0w) \
+                or not keep_rows:
+            return None
+
     def frac(x0: float, x1: float) -> Optional[float]:
         ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
         iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
         if ix1 <= ix0 or iy1 <= iy0:
             return None
         region = ink[iy0:iy1, ix0:ix1]
+        if keep_rows is not None and lost_rows:
+            region = ink[keep_rows, ix0:ix1]
         return float(region.sum()) / float(region.size)
 
     right = frac(stem_x1, stem_x1 + width)
@@ -4009,6 +4292,7 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     found = right >= STEM_TIP_INK_DENSE and left <= STEM_TIP_INK_BACKGROUND_MAX
     return {
         "found": bool(found), "right": round(right, 4), "left": round(left, 4),
+        "line_rows_left_out": lost_rows,
         "window_canonical": [round(stem_x1, 2), round(y0, 2),
                              round(stem_x1 + width, 2), round(y1, 2)],
     }
@@ -4393,7 +4677,10 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         width = STEM_TIP_INK_WIDTH_SPACES * space
         wy0, wy1 = sorted((tip_y + into_sign * near, tip_y + into_sign * far))
         window = (x1, wy0, x1 + width, wy1)
-        if any(_rects_overlap(window, b) for b in blockers):
+        tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
+        shrunk = (window[0] + tol, window[1] + tol, window[2] - tol,
+                  window[3] - tol)
+        if any(_rects_overlap(shrunk, b) for b in blockers):
             log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
                         frame=frame, reason=ABSTAIN.OCCUPIED,
                         stem_row_id=stem_row_id, end=end,
@@ -5957,6 +6244,229 @@ def gather_notehead_recentre(log: Log, cells: Sequence[Any],
                        runner_up=result["runner_up"])
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.73 -- a hollow head CUT BY A LINE.
+#
+# Sean (2026-10-09): *"In many of the hand label cells I have found that half
+# notes, especially ones that are on lines or ledger lines, get split up into
+# two smaller boxes instead of one large box around the notehead."* Measured
+# on his 27 hand-labelled half heads (`data/hand-truth/pages/imslp317803/0.
+# json`): a head on a line is printed as a ring with a line through its hole,
+# so the ring shows TWO white holes, one either side of the line, and the
+# detector boxes ONE of them (a box about half a head tall whose top or bottom
+# edge is on the line, class `noteheadHalfInSpace`), or both. See
+# `Q.HEAD_LINE_CUT`'s own docstring in `record.py` and
+# `benchmarks/omr-head-fill-2026-09/FINDINGS.md` Sec.8.
+#
+# ⚠️ THE EVIDENCE IS THE INK, NOT AN ASSUMPTION (Sean: look where it must be,
+# never infer): the mirror half is accepted only where the raster HOLDS a
+# second enclosed hole, of like size, standing point-symmetrically with the
+# first about the line's own centre. A head in a space has one hole, a black
+# head none, a notehead whose hole a tremolo slash splits has no line at the
+# box edge -- none of them can carry the row.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A box at most this tall (staff spaces) can be HALF a head. A whole head is
+#: `STANDARD_HEAD_HEIGHT_SPACES` (1.1); the cut halves measured on Brahms
+#: 317803 pdf 0 are 0.58-0.89 sp, and the detector's whole boxes on Sean's
+#: space heads 1.06-1.31. Between 0.89 and 1.06 nothing was measured: 0.95
+#: sits in that gap, so a whole box is never a candidate.
+HEAD_CUT_MAX_BOX_HEIGHT_SPACES = 0.95
+#: ... and at least this wide: a half-ring is as wide as the head.
+HEAD_CUT_MIN_BOX_WIDTH_SPACES = 0.9
+#: The box edge must lie within this of the line's centre (staff spaces).
+HEAD_CUT_EDGE_ON_LINE_SPACES = 0.3
+#: The search window around the box's centre, in staff spaces.
+HEAD_CUT_WINDOW_HALF_WIDTH_SPACES = 0.9
+HEAD_CUT_WINDOW_HALF_HEIGHT_SPACES = 1.0
+#: A half-hole: enclosed white, between these areas (staff spaces squared) and
+#: no bigger than this in either extent (a head's whole hole is ~0.2 sp^2).
+HEAD_CUT_HOLE_AREA_SPACES2 = (0.02, 0.45)
+HEAD_CUT_HOLE_MAX_WIDTH_SPACES = 0.95
+HEAD_CUT_HOLE_MAX_HEIGHT_SPACES = 0.7
+#: The two holes are alike in size ...
+HEAD_CUT_AREA_RATIO = (0.4, 2.5)
+#: ... stand this far apart vertically (their centres) ...
+HEAD_CUT_HOLE_SEPARATION_SPACES = (0.25, 1.1)
+#: ... and their common centre lies this near the detector box's own centre
+#: horizontally.
+HEAD_CUT_MAX_DX_SPACES = 0.5
+#: The line is read beside the head: ink in these x-bands either side of the
+#: pair's centre (staff spaces from it), on the line's own rows. A ledger line
+#: runs past the head; a slash or a stem does not. The longer side must read at
+#: least the first fill, the shorter side at least the second (a stem, a dot
+#: or a neighbouring note may stand on one side).
+HEAD_CUT_LINE_BAND_SPACES = (0.78, 0.98)
+HEAD_CUT_LINE_FILL = (0.75, 0.4)
+
+
+def _enclosed_holes(ink: Any, x0: int, y0: int, x1: int, y1: int
+                    ) -> List[Dict[str, float]]:
+    """Every white region of `ink[y0:y1, x0:x1]` (True == ink) that does not
+    touch the window's own border: enclosed by ink on every side (4-connected
+    white, so a gap one pixel wide at a corner is a leak and an honest "not
+    enclosed"). Each carries its area, centre and extent, page-of-the-raster
+    coordinates."""
+    import cv2
+    import numpy as np
+    H, W = ink.shape
+    x0, y0 = max(0, int(x0)), max(0, int(y0))
+    x1, y1 = min(W, int(x1)), min(H, int(y1))
+    if x1 - x0 < 3 or y1 - y0 < 3:
+        return []
+    white = (~ink[y0:y1, x0:x1]).astype(np.uint8)
+    n, _lab, stats, cents = cv2.connectedComponentsWithStats(white, 4)
+    h, w = white.shape
+    out = []
+    for i in range(1, n):
+        sx, sy, sw, sh, area = (int(v) for v in stats[i])
+        if sx == 0 or sy == 0 or sx + sw >= w or sy + sh >= h:
+            continue
+        out.append({"area": float(area), "cx": float(cents[i][0]) + x0,
+                    "cy": float(cents[i][1]) + y0, "w": float(sw),
+                    "h": float(sh)})
+    return out
+
+
+def head_cut_by_line(ink: Any, box: Tuple[float, float, float, float],
+                     spacing: float) -> Optional[Dict[str, Any]]:
+    """Is this about-half-a-head box one half of a hollow head a LINE cuts?
+    ROADMAP 2.73. `ink` is a cell raster as a boolean array (True == ink, the
+    UNERASED one), `box` the detector's `(x0, y0, x1, y1)` and `spacing` the
+    staff space, all in that raster's frame.
+
+    Returns `None` unless EVERY test holds: the box is about half a head
+    (`HEAD_CUT_MAX_BOX_HEIGHT_SPACES` tall, at least `..._MIN_BOX_WIDTH_...`
+    wide); the window around it holds two enclosed holes (`_enclosed_holes`),
+    one above the other, alike in size and standing the stated distance apart;
+    their common centre is the line row, within `HEAD_CUT_EDGE_ON_LINE_SPACES`
+    of the box's top or bottom edge and near the box's own centre in x; and a
+    horizontal line stands on that row, past the head on either side. Otherwise
+    the dict names the rebuilt centre `(cx, line_y)`, which edge was on the
+    line, both holes and the line's own ink.
+    """
+    if ink is None or getattr(ink, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    bx0, by0, bx1, by1 = (float(v) for v in box)
+    w, h = bx1 - bx0, by1 - by0
+    if h > HEAD_CUT_MAX_BOX_HEIGHT_SPACES * spacing \
+            or w < HEAD_CUT_MIN_BOX_WIDTH_SPACES * spacing:
+        return None
+    xc0, yc0 = (bx0 + bx1) / 2.0, (by0 + by1) / 2.0
+    holes = [hl for hl in _enclosed_holes(
+        ink, xc0 - HEAD_CUT_WINDOW_HALF_WIDTH_SPACES * spacing,
+        yc0 - HEAD_CUT_WINDOW_HALF_HEIGHT_SPACES * spacing,
+        xc0 + HEAD_CUT_WINDOW_HALF_WIDTH_SPACES * spacing,
+        yc0 + HEAD_CUT_WINDOW_HALF_HEIGHT_SPACES * spacing)
+        if (HEAD_CUT_HOLE_AREA_SPACES2[0] * spacing * spacing
+            <= hl["area"] <= HEAD_CUT_HOLE_AREA_SPACES2[1] * spacing * spacing
+            and hl["w"] <= HEAD_CUT_HOLE_MAX_WIDTH_SPACES * spacing
+            and hl["h"] <= HEAD_CUT_HOLE_MAX_HEIGHT_SPACES * spacing)]
+    best = None
+    for a in holes:
+        for b in holes:
+            if not a["cy"] < b["cy"]:
+                continue
+            line_y = (a["cy"] + b["cy"]) / 2.0
+            xc = (a["cx"] + b["cx"]) / 2.0
+            ratio = a["area"] / b["area"]
+            sep = b["cy"] - a["cy"]
+            if not (HEAD_CUT_AREA_RATIO[0] <= ratio <= HEAD_CUT_AREA_RATIO[1]
+                    and HEAD_CUT_HOLE_SEPARATION_SPACES[0] * spacing <= sep
+                    <= HEAD_CUT_HOLE_SEPARATION_SPACES[1] * spacing
+                    and abs(xc - xc0) <= HEAD_CUT_MAX_DX_SPACES * spacing):
+                continue
+            d_top, d_bot = abs(by0 - line_y), abs(by1 - line_y)
+            if min(d_top, d_bot) > HEAD_CUT_EDGE_ON_LINE_SPACES * spacing:
+                continue
+            ly = int(round(line_y))
+            fills = []
+            for sgn in (-1, 1):
+                lo = int(round(xc + sgn * HEAD_CUT_LINE_BAND_SPACES[0]
+                               * spacing))
+                hi = int(round(xc + sgn * HEAD_CUT_LINE_BAND_SPACES[1]
+                               * spacing))
+                zone = ink[max(0, ly - 1):ly + 2,
+                           max(0, min(lo, hi)):max(0, max(lo, hi))]
+                fills.append(float(zone.mean()) if zone.size else 0.0)
+            if not (max(fills) >= HEAD_CUT_LINE_FILL[0]
+                    and min(fills) >= HEAD_CUT_LINE_FILL[1]):
+                continue
+            score = -abs(math.log(ratio))
+            if best is None or score > best[0]:
+                best = (score, xc, line_y, a, b, ratio, fills,
+                        "top" if d_top <= d_bot else "bottom")
+    if best is None:
+        return None
+    _s, xc, line_y, a, b, ratio, fills, edge = best
+    return {"cx": xc, "line_y": line_y, "edge": edge, "area_ratio": ratio,
+            "holes": [a, b], "line_ink": fills}
+
+
+def gather_head_line_cut(log: Log, cells: Sequence[Any],
+                         local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """`Q.HEAD_LINE_CUT` -- ROADMAP 2.73, one row per notehead-classed glyph
+    whose box is half a head cut by a line (see `head_cut_by_line`). A second
+    reading BESIDE the detector's box, never an edit of it; no row where the
+    test does not apply (the `Q.STACKED_HEAD_FIT` convention). Runs before
+    `gather_notehead_positions`, which reads it, and `gather_notehead_ink`.
+
+    Reads `cell.binary`, the UNERASED canonical raster: the line through the
+    head is the evidence, and erasing it first would join the two half-holes
+    into one hole and leave nothing to find.
+    """
+    import numpy as np
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        raw = getattr(c, "binary", None)
+        grid = _cell_grid(c)
+        if raw is None or getattr(raw, "ndim", 0) != 2 or grid is None:
+            continue
+        top_y, half_step = grid
+        spacing = half_step * 2.0
+        ink = None
+        frame = frame_cell(c.measure_index)
+        for gi, d in enumerate(dets):
+            name = str(getattr(d, "smufl_name", ""))
+            if not name.lower().startswith(_NOTEHEAD_PREFIX) \
+                    or not is_regular_notehead(name):
+                continue
+            h_sp = float(d.height_canonical) / spacing
+            if h_sp > HEAD_CUT_MAX_BOX_HEIGHT_SPACES:
+                continue                       # already head-sized
+            if ink is None:
+                ink = (np.asarray(raw) == 0)
+            box = (float(d.x_canonical), float(d.y_canonical),
+                   float(d.x_canonical) + float(d.width_canonical),
+                   float(d.y_canonical) + float(d.height_canonical))
+            cut = head_cut_by_line(ink, box, spacing)
+            if cut is None:
+                continue
+            hx0, hx1, hy0, hy1 = _standard_head_box(cut["cx"], cut["line_y"],
+                                                    spacing)
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            log.observe(
+                g, Q.HEAD_LINE_CUT,
+                [round(hx0, 2), round(hy0, 2), round(hx1 - hx0, 2),
+                 round(hy1 - hy0, 2)],
+                reader=READERS.CV_HEAD_LINE_CUT, frame=frame,
+                line_y=round(cut["line_y"], 2),
+                line_half_step=int(round((cut["line_y"] - top_y) / half_step)),
+                line_half_step_float=round((cut["line_y"] - top_y)
+                                           / half_step, 3),
+                edge=cut["edge"], area_ratio=round(cut["area_ratio"], 3),
+                holes=[{k: round(v, 2) for k, v in hl.items()}
+                       for hl in cut["holes"]],
+                line_ink=[round(v, 3) for v in cut["line_ink"]],
+                detector_box=[round(v, 2) for v in box])
+
+
 #: The interior of a notehead's OWN box is shrunk by this fraction on every
 #: side to make the `center` window. Dense for a filled BLACK head; near-
 #: empty for a HOLLOW one (half/whole) by construction — which is exactly
@@ -6046,6 +6556,87 @@ def notehead_ink_under(img: Any, box: Tuple[float, float, float, float]
     }
 
 
+#: ROADMAP 2.73. A row of a head's box is a LINE row where a horizontal line
+#: stands on it past the head on BOTH sides: ink in the two x-bands this many
+#: staff spaces either side of the head's centre, at least this fraction in
+#: each. A staff or ledger line through a hollow head's hole reads as fill on
+#: every window that includes it (Brahms 317803 pdf 0: raw centre 0.93 against
+#: 0.60 on the staff-erased raster, a ledger line being erased by neither).
+HEAD_LINE_ROW_BAND_SPACES = (0.78, 0.98)
+HEAD_LINE_ROW_FILL = 0.6
+#: ... and a head whose box loses more than this fraction of its rows to lines
+#: has no window left to read: declined, never defaulted.
+HEAD_LINE_ROWS_MAX_LOST = 0.5
+
+
+def notehead_ink_off_line(img: Any, box: Tuple[float, float, float, float],
+                          spacing: float) -> Optional[Dict[str, Any]]:
+    """`notehead_ink_under`'s reading of a head's own box with the LINE ROWS
+    left out -- ROADMAP 2.73 (Sean: the hollow test must be measured off the
+    line's rows, so a line through the hole cannot read as fill).
+
+    `img` is the UNERASED canonical raster (0 == ink), `box` a head's
+    `(x, y, w, h)` and `spacing` the staff space, all in that frame. A row
+    counts as a line row where `HEAD_LINE_ROW_FILL` of both bands beyond the
+    head (`HEAD_LINE_ROW_BAND_SPACES` either side of its centre) is ink. The
+    `center` and `ring` windows are `notehead_ink_under`'s own (the same
+    `NOTEHEAD_INK_CENTER_SHRINK` interior), taken over the remaining rows.
+    `None` where the box is off the raster, `spacing` is unknown, or the lines
+    took more than `HEAD_LINE_ROWS_MAX_LOST` of its rows.
+    """
+    import numpy as np
+    if img is None or getattr(img, "ndim", 0) != 2 or not spacing \
+            or spacing <= 0:
+        return None
+    ink = (np.asarray(img) == 0)
+    H, W = ink.shape
+    x, y, w, h = (float(v) for v in box)
+    x0, y0 = max(0, int(round(x))), max(0, int(round(y)))
+    x1, y1 = min(W, int(round(x + w))), min(H, int(round(y + h)))
+    if x1 <= x0 or y1 <= y0:
+        return None
+    xc = (x + x + w) / 2.0
+    lo_l = int(round(xc - HEAD_LINE_ROW_BAND_SPACES[1] * spacing))
+    hi_l = int(round(xc - HEAD_LINE_ROW_BAND_SPACES[0] * spacing))
+    lo_r = int(round(xc + HEAD_LINE_ROW_BAND_SPACES[0] * spacing))
+    hi_r = int(round(xc + HEAD_LINE_ROW_BAND_SPACES[1] * spacing))
+    keep = np.ones(y1 - y0, dtype=bool)
+    for i, yy in enumerate(range(y0, y1)):
+        left = ink[yy, max(0, lo_l):max(0, hi_l)]
+        right = ink[yy, max(0, lo_r):min(W, hi_r)]
+        if left.size and right.size \
+                and left.mean() >= HEAD_LINE_ROW_FILL \
+                and right.mean() >= HEAD_LINE_ROW_FILL:
+            keep[i] = False
+    lost = int((~keep).sum())
+    if lost > HEAD_LINE_ROWS_MAX_LOST * keep.size or keep.sum() < 3:
+        return None
+    region = ink[y0:y1, x0:x1]
+    dx = int(round(NOTEHEAD_INK_CENTER_SHRINK * (x1 - x0)))
+    dy = int(round(NOTEHEAD_INK_CENTER_SHRINK * (y1 - y0)))
+    cx0, cx1 = dx, (x1 - x0) - dx
+    cy0, cy1 = dy, (y1 - y0) - dy
+    if cx1 <= cx0 or cy1 <= cy0:
+        return None
+    rows = np.arange(y1 - y0)
+    in_core_rows = (rows >= cy0) & (rows < cy1) & keep
+    core = region[in_core_rows][:, cx0:cx1]
+    outer_rows = region[keep]
+    if core.size == 0:
+        return None
+    center = float(core.sum()) / float(core.size)
+    ring_area = outer_rows.size - core.size
+    ring = (float(int(outer_rows.sum()) - int(core.sum())) / float(ring_area)
+            if ring_area > 0 else None)
+    windows = {"center": center, "ring": ring}
+    measured = {k: v for k, v in windows.items() if v is not None}
+    best_key = max(measured, key=lambda k: measured[k])
+    return {"best": round(measured[best_key], 4), "best_window": best_key,
+            "windows": {k: (None if v is None else round(v, 4))
+                        for k, v in windows.items()},
+            "line_rows_left_out": lost}
+
+
 def gather_notehead_ink(log: Log, cells: Sequence[Any],
                         local: Dict[int, Tuple[int, int]],
                         detections: Dict[str, List[Any]]) -> None:
@@ -6121,19 +6712,41 @@ def gather_notehead_ink(log: Log, cells: Sequence[Any],
                     bx0, bx1, by0, by1 = _standard_head_box(
                         ncx, ncy, space_canonical)
                     box = (bx0, by0, bx1 - bx0, by1 - by0)
+            # ⚠️ ROADMAP 2.73. A box that is half a head cut by a line reads
+            # the ink of HALF a ring; where `gather_head_line_cut` found the
+            # mirror hole, the head is the standard box centred on the line
+            # and that is the box whose fill is read (the row is cited in the
+            # detail, the detector's own box untouched on `Q.GLYPH_BOX`).
+            cut_rows = log.rows(Q.HEAD_LINE_CUT, g)
+            box_source = None
+            if cut_rows:
+                cv = cut_rows[-1].value
+                if isinstance(cv, (list, tuple)) and len(cv) == 4:
+                    box = tuple(float(v) for v in cv)
+                    box_source = cut_rows[-1].id
             m_raw = notehead_ink_under(raw_img, box) \
                 if raw_img is not None else None
             m_net = notehead_ink_under(net_img, box) \
                 if net_img is not None else None
+            # ⚠️ ROADMAP 2.73: the same reading with the LINE ROWS left out --
+            # a line through a hollow head's hole must not read as fill. A
+            # third reading beside the other two, never a replacement.
+            m_off = (notehead_ink_off_line(raw_img, box, space_canonical)
+                     if raw_img is not None and space_canonical else None)
             if m_raw is None and m_net is None:
                 log.abstain(g, Q.NOTEHEAD_INK, reader=READERS.CV_NOTEHEAD_INK,
                            frame=frame, reason=ABSTAIN.NO_MASK,
                            note="cell carries no binary/image_no_staff")
                 continue
             value = max(m["best"] for m in (m_raw, m_net) if m is not None)
+            extra: Dict[str, Any] = {}
+            if m_off is not None:
+                extra["ink_off_line"] = m_off
+            if box_source is not None:
+                extra["box_source"] = box_source
             log.observe(g, Q.NOTEHEAD_INK, round(value, 4),
                        reader=READERS.CV_NOTEHEAD_INK, frame=frame,
-                       ink_raw=m_raw, ink_net=m_net)
+                       ink_raw=m_raw, ink_net=m_net, **extra)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -9981,6 +10594,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # A grouping over the detector's page boxes; flag-gated inside.
         gather_mark_groups(log, cells, local, detections)
         gather_notehead_recentre(log, cells, local, detections)
+        # ⚠️ ROADMAP 2.73, AFTER detection and the rescue (it walks `detections`
+        # by index) and BEFORE `gather_notehead_positions` and
+        # `gather_notehead_ink`, which both read its row.
+        gather_head_line_cut(log, cells, local, detections)
         gather_notehead_positions(log, cells, local, detections)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid

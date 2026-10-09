@@ -1,0 +1,3 @@
+base note glyphs kept 354 black-class kept 251 read hollow 0 [] head_line_cut rows 0
+new note glyphs kept 354 black-class kept 251 read hollow 0 [] head_line_cut rows 0
+engraved note glyphs 371 with any refusal/position/duration difference 0
