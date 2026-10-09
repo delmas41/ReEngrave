@@ -490,13 +490,13 @@ def _stem(log, *, x, y, w=4, h=60):
                        image="no_staff", staff_lines_erased=True)
 
 
-def _stem_tip_ink(log, *, stem_row_id, end, found=True):
+def _stem_tip_ink(log, *, stem_row_id, end, found=True, **detail):
     """One `Q.STEM_TIP_INK` row -- ROADMAP 2.18c. The real row shape:
     `gather._observe_stem_tip_ink` files `end` in `{"top", "bottom"}` and
     `stem_row_id` naming the exact `Q.STEM` row it measured."""
     return log.observe(CELL, Q.STEM_TIP_INK, bool(found),
                        reader=READERS.CV_STEM_TIP, frame="cell:0",
-                       stem_row_id=stem_row_id, end=end)
+                       stem_row_id=stem_row_id, end=end, **detail)
 
 
 def _notehead_ink(log, g, *, center, ring, raster="ink_raw", best=None):
@@ -1459,8 +1459,10 @@ class TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "flag_ink_unread")
+        # ROADMAP 2.69: a hook seen rules out the head's own value (1.0), so
+        # an UNCOUNTED hook brackets the flag levels, eighth or sixteenth.
         beats = sorted(c.value["beats"] for c in v.candidates)
-        self.assertEqual(beats, [0.5, 1.0])
+        self.assertEqual(beats, [0.25, 0.5])
 
     def test_POSITIVE_CONTROL_a_clean_tip_still_DECIDES_the_head_value(self):
         """⚠️ THE CONTROL: the identical head, but the reader found no ink at
@@ -1542,6 +1544,141 @@ class TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertNotEqual(v.outcome, Outcome.DECIDED)
+
+
+class TestCountedHooksDecideAndUncountedHooksNarrow(unittest.TestCase):
+    """ROADMAP 2.69 (Sean, 2026-10-09: *"Count the hooks and if you can't
+    count use the fact that there is a hook to help later deduction
+    process"*). Sheet B of 2.65: five lone flagged EIGHTHS the stem-tip
+    reader SAW and the 2.18c narrowing left `quarter or eighth`.
+
+    (a) a hook seen rules out the head's own value; (c) a counted level
+    DECIDES; (d) seen-not-counted NARROWS among flag levels >= 1 only. The
+    tests named `*_RED` fail on the 2.18c narrowing (head value or one flag
+    level); the controls stay green on both sides.
+    """
+
+    _up_head_alone = TestAStemTipWithUnreadFlagInkNarrowsInsteadOfDeciding._up_head_alone
+
+    def _run(self, **detail):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, **detail)
+        adjudicate.run(log)
+        return g, log.verdict(Q.DURATION, g)
+
+    def test_ONE_counted_hook_DECIDES_an_eighth_RED(self):
+        g, v = self._run(hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "hooks_counted")
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.value["beam_levels"], 1)
+
+    def test_TWO_counted_hooks_DECIDE_a_sixteenth_RED(self):
+        g, v = self._run(hooks=2, hooks_min=2, hooks_max=2, hooks_reason=None)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.25)
+
+    def test_an_uncounted_hook_NARROWS_among_flag_levels_and_NEVER_the_head_value_RED(self):
+        g, v = self._run(hooks=None, hooks_min=1, hooks_max=2,
+                         hooks_reason="unresolved")
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "flag_ink_unread")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.25, 0.5])
+        self.assertTrue(all(c.value["beam_levels"] >= 1
+                            for c in v.candidates))
+        # the lower bound is the best-supported reading
+        self.assertEqual(v.candidates[0].value["beats"], 0.5)
+
+    def test_a_bracket_the_reader_names_is_the_bracket_the_note_gets_RED(self):
+        g, v = self._run(hooks=None, hooks_min=2, hooks_max=3,
+                         hooks_reason="unresolved")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.125, 0.25])
+
+    def test_a_dotted_head_keeps_its_dot_at_the_counted_level_RED(self):
+        """Tile 13 of 2.65 is a DOTTED eighth: one counted hook is 0.75."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _dot(log, gi=60, x=157, y=94)       # right of the head (155), level with it
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True,
+                      hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.75)
+        self.assertEqual(v.value["dots"], 1)
+
+    def test_rows_that_disagree_on_the_count_do_not_decide(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        s2 = _stem(log, x=135, y=38, h=60)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, hooks=1,
+                      hooks_min=1, hooks_max=1, hooks_reason=None)
+        _stem_tip_ink(log, stem_row_id=s2.id, end="top", found=True, hooks=2,
+                      hooks_min=2, hooks_max=2, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        if v.outcome is Outcome.DECIDED:          # one stem was attached
+            self.assertIn(v.value["beam_levels"], (1, 2))
+        else:
+            self.assertEqual(sorted(c.value["beam_levels"]
+                                    for c in v.candidates), [1, 2])
+
+    def test_POSITIVE_CONTROL_a_count_where_NO_hook_was_seen_is_not_read(self):
+        """⚠️ The count is read only off rows that SAW a hook: a row with
+        `found=False` that still carries `hooks=1` changes nothing -- the
+        head value stands exactly as before."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False, hooks=1,
+                      hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_a_count_at_the_WRONG_END_is_not_this_heads(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="bottom", found=True,
+                      hooks=2, hooks_min=2, hooks_max=2, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_detector_flag_still_wins_over_the_count(self):
+        """A flag BOX attached to the stem decides as before (`beam_evidence
+        == "flag"`); the stem-tip count is only the witness for the
+        population the detector never boxed."""
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _flag(log, gi=50, cls="flag8thUp", x=139, y=38)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, hooks=2,
+                      hooks_min=2, hooks_max=2, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beam_evidence"], "flag")
+
+    def test_a_hollow_head_never_reads_the_count(self):
+        """2.43: an open head is never flagged; `open_by_class` gates it."""
+        log = Log()
+        _staff_space(log)
+        _beam(log, y=2, x0=400, x1=460)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadHalf",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadHalf", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        s = _stem(log, x=135, y=38, h=60)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, hooks=1,
+                      hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.value["beats"], 2.0)
 
 
 class TestAHeadsFillIsReadFromTheInkNotOnlyTheClass(unittest.TestCase):
