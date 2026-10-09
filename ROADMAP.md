@@ -17,15 +17,28 @@ re-enter.
 
 ---
 
-## START HERE — after the all-stages re-gather of 2026-10-09 (`20261009-all`, main `00473387`)
+## START HERE — after 2026-10-09 (main `8a74cf73`; Sean: next re-gather the night of 2026-10-09→10)
 
-Results: `benchmarks/acceptance/overnight/20261009-all/SUMMARY.md`. First two stages vs last night: every glyph family
-identical; direction words new (Litolff 69 / Brahms 334, markings 10 / 89); dynamics changed in 19 / 215 bars by the
-2.68 "letter inside a read word" rule -- 12 of 12 sampled removals are word letters the detector spelled as fake
-dynamics (session's eye; **Sean to confirm on `out/print/2.68-inside-word/`**). All stages vs 09-30: Litolff notes
-0.385 -> 0.448, held bars 0.388 -> 0.270; Brahms notes 0.213 -> 0.226, held bars 0.707 -> 0.670. Records NOT adopted into
-the manifest. Next: Sean's check of the removals; `Basso p` (part names must not pair); `sempre più p` read short;
-then the 2.67 terms library.
+**Landed:** 2.66 (direction-word boxes; tempo/technique words in a gap belong to the staff BELOW) and 2.68 (a bar's
+word + dynamic paired in EVALUATE -> `Q.MARKING`, exported as ONE `<direction>`; part names never pair; Sean's
+DEDUCTIVE rule: a dynamic letter is a word's letter only AMONG letters (GATHER `Q.DYNAMIC_LETTER_NEIGHBOURS`) of a word
+the lexicon knows -- a `p` alone is piano). **The 10-09 re-gather (`20261009-all`) PREDATES the deductive rule and the
+part-name fix** -- both change what GATHER/EVALUATE record. Its results: `benchmarks/acceptance/overnight/20261009-all/
+SUMMARY.md` (first two stages vs 10-08: every glyph family identical, notes 11,399 / 24,260 matched 1:1, no note
+decision changed; words new; dynamics changed in 19 / 215 bars, 12 of 12 sampled = word letters, Sean confirmed one).
+
+**Tonight's re-gather (Sean):** from any checkout at `origin/main` (the scripts are on main; the re-gather makes its own clean worktree) --
+`TAG=20261010-night THROUGH=infer REF=origin/main nohup bash benchmarks/acceptance/overnight/regather_20260930.sh &`
+(~45 + 121 min, ~5 GB; ~29 GB free on 10-09), then
+`TAG=20261010-night BASE=20261009-all bash benchmarks/acceptance/overnight/compare_20261009.sh` (first two stages vs
+10-09, all stages vs the 09-30 acceptance, exports + PDFs; ~11 min) and
+`python3 benchmarks/acceptance/overnight/dynamics_absorbed.py library/_shared-records 20261009-all 20261010-night`
+(what the deductive rule gave back). ⚠️ acceptance refuses a dirty checkout: the compare script's temporary manifest
+and acceptance's own outputs dirty the overnight worktree on a second run -- rerun acceptance with `--force` (it records
+dirty=true) as on 10-09. **Open after that:** `sempre più p` read as `sempre p` (a short box); 2.67 the Gradus terms
+library into the lexicon (library on `gradus-vercel` branch `terms-library-2026-10`, NOT pushed; Sean skims the
+definitions first); expression/dynamic "no notes in that bar" tie-break (not built); the export writes every word
+`placement="below"`; 9 slow-tier tests failing since before 10-08 (a separate session took them).
 
 ## START HERE — after 2026-10-08 (night; 2.66 on main `db1772bb`, 2.68 on branch `claude/roadmap-start-27498c`)
 

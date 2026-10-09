@@ -22,6 +22,16 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (later) — 2.68: part names never pair; Sean's deductive word-letter rule; landed
+
+- `consequences.pair_word_and_dynamic` skips category `part` words (`Basso p` on the 10-09 re-gather).
+- GATHER `Q.DYNAMIC_LETTER_NEIGHBOURS` (`READERS.CV_LETTER_NEIGHBOURS`, `gather.letter_ink_beside`: letter ink within
+  0.5 spaces on the letter's line, every detected glyph blanked); `adjudicate_dynamic` drops a dynamic letter only when
+  it is inside a lexicon-accepted word AND has a letter beside it; counted once, after ownership. Brahms p3: 4 letters
+  removed, three `più f` markings. Fast tier 6,375 passed; `check` 192. On main `8a74cf73`.
+- Docs: CLAUDE.md §4c lists the new EVALUATE rule (an old audit aside trimmed to keep the word count), PROJECT_BRIEF
+  status 10-09, ROADMAP START HERE with tonight's re-gather commands.
+
 ## 2026-10-09 — all-stages re-gather `20261009-all` and its comparison
 
 - 2.68 landed on main (`db1772bb..00473387`). Both movements re-gathered through INFER (45 / 121 min);

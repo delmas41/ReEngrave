@@ -168,8 +168,7 @@ The adjudicators live in `staged/adjudicators/` (`structure.py`,
 `notehead_precision.py`, `family_precision.py`, `movement.py`, `position.py`,
 `rest_search.py`, `unread_mark.py`), each registered by `@decision` into
 `adjudicate.REGISTRY` and run in `adjudicate.ORDER`. The count and the order
-are DERIVED, never typed here (the 2026-10-07 audit found a typed list of 28
-against 51 in the tree):
+are DERIVED, never typed here:
 
 ```bash
 python3 -c "from tools.omr.staged import adjudicate; print(len(adjudicate.ORDER)); print(*adjudicate.ORDER)"
@@ -183,8 +182,9 @@ Each declares `wants`, `implicates`, `checked_by` and `reasons`; `inventory
 clef ⇒ pitch), `respell_accidental` (key ⇒ sounding alteration),
 `move_glyph` (ownership ⇒ pitch re-derived), `size_measure_rest` (a lone
 dotless whole rest takes the BAR's length), `reconcile_duration` (a beam
-level re-read by ±1 only where exactly one re-reading lands the bar), and
-the join. Rule order matters and is asserted: `move_glyph` runs after
+level re-read by ±1 only where exactly one re-reading lands the bar),
+`pair_word_and_dynamic` (a bar's word + its adjacent dynamic ⇒ one
+`Q.MARKING`), and the join. Rule order matters and is asserted: `move_glyph` runs after
 `respell_accidental`, which is why the sounding pitch is routed at EXPORT
 and not revised in EVALUATE.
 
@@ -409,7 +409,8 @@ filed as evidence in the record). The `claude_vision` OMR engine
 - **Two re-gathers** (Sean, 2026-09-30): the SMALL re-gather (the two count
   pages, ROADMAP 1.6/1.6b) runs during the day while we work; the FULL
   re-gather of both movements
-  (`benchmarks/acceptance/overnight/regather_20260930.sh`, `TAG=...`) runs
+  (`benchmarks/acceptance/overnight/regather_20260930.sh`, `TAG=...`; compared by
+  `compare_20261009.sh`) runs
   overnight, only as far as the stage being refined (`THROUGH=adjudicate` by
   default; later nights add stages progressively). The acceptance numbers
   need a through-infer full re-gather. Run the small

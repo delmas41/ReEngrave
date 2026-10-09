@@ -7,7 +7,7 @@
 `CLAUDE.md` and `version_memory.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
-## Where things stand (2026-10-07)
+## Where things stand (2026-10-09)
 
 **The product path is STAGED** (`tools/omr/staged/`, DECISIONS 2026-09-22):
 five stages — GATHER, ADJUDICATE, EVALUATE, INFER, EXPORT — every decision
@@ -29,11 +29,19 @@ and deciding which staff a note belongs to on scanned conductor's pages
 are the conventions in `docs/DECISIONS.md` and CLAUDE.md §10. Nothing is
 measured through EVALUATE or EXPORT until he says so.
 
+**Text on the page (2026-10-08/09, ROADMAP 2.66/2.68, on main `8a74cf73`)**:
+direction words now read on scans (Litolff 69, Brahms 334 on the 10-09 re-gather);
+a tempo or technique word between two staves belongs to the staff below (Sean);
+a word and the dynamic beside it are paired in EVALUATE and written as one
+MusicXML direction (`più f`); a dynamic letter is a word's letter only among
+letters of a word the lexicon knows (Sean's deductive rule). Results of the 10-09
+all-stages re-gather: `benchmarks/acceptance/overnight/20261009-all/SUMMARY.md`.
+
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather
 during the day (`tools.omr.acceptance_quick`), the full overnight re-gather,
 and Sean's cleanup count every two weeks. `python3 -m tools.omr.staged.check`
-is the one hygiene number and must go down (192 on 2026-10-07).
+is the one hygiene number and must go down (192 on 2026-10-07 and 2026-10-09).
 
 **Status of the pieces**: ROADMAP Phase 0 (consolidate) done apart from 0.4a;
 Phase 1 (acceptance harness) built; Phase 2 (close the foundation) in
