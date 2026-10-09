@@ -8489,7 +8489,7 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
     try:
-        candidates = DT.find_candidates(pws, page_dict)
+        candidates = DT.find_candidates(pws, page_dict, refine_boxes=True)
         readers = DT.default_readers(pws.page)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,

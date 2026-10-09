@@ -371,6 +371,21 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
     return out
 
 
+def _dynamic_boxes(page_dict: dict[str, Any], shape) -> np.ndarray:
+    """True inside every box the detector called a `dynamic`."""
+    out = np.zeros(shape, dtype=bool)
+    for system in page_dict.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    box = det.get("bbox_page")
+                    if det.get("category") != "dynamic" or not box or len(box) != 4:
+                        continue
+                    x, y, w, h = (int(v) for v in box)
+                    out[max(0, y):max(0, y + h), max(0, x):max(0, x + w)] = True
+    return out
+
+
 def _letter_components(mask: np.ndarray, spacing: float,
                        config: BandConfig) -> list[tuple[int, int, int, int, int]]:
     """(x, y, w, h, area) for every component that could be a letter.
@@ -519,6 +534,152 @@ def _cluster_into_words(components: Sequence[tuple[int, int, int, int, int]],
     return words
 
 
+#: A STUB is the rest of a detected glyph that its box cut off: the stem of a
+#: notehead blanked with its padded box survives as a thin vertical stroke, and
+#: it passes every letter test (Litolff p9, 2026-10-08: three stem stubs under
+#: `Adagio` joined the word, stretched its box down into the notes, and the OCR
+#: read `nee`; Litolff p15: the stem over `Vcl.` made the box and the reading
+#: `val.`). What separates it from an `l` or an `i` is that its END runs into
+#: ink the detection subtraction erased. Thin = this wide at most, in spaces.
+STUB_MAX_WIDTH_SPACES = 0.45
+#: ...and at least this tall; a dot-sized speck is left to the letter tests.
+STUB_MIN_HEIGHT_SPACES = 0.6
+#: How far past the stroke's top or bottom row erased ink must lie, in px.
+STUB_TOUCH_PX = 2
+
+
+def _is_a_stub(comp, erased: np.ndarray, spacing: float) -> bool:
+    """Is this component the cut-off remainder of a detected glyph?
+
+    `erased` is the band's ink that `_blank_detections` removed (255 = erased).
+    True when the component is a thin vertical stroke and erased ink lies
+    directly above its top row or below its bottom row, over its own columns:
+    the stroke CONTINUES into a detection, the way a stem continues into its
+    head. A letter that merely stands near a detection does not touch it at
+    its end.
+    """
+    x, y, w, h, _area = comp
+    if w > STUB_MAX_WIDTH_SPACES * spacing or h < STUB_MIN_HEIGHT_SPACES * spacing:
+        return False
+    rows, cols = erased.shape
+    c0, c1 = max(0, x - 1), min(cols, x + w + 1)
+    above = erased[max(0, y - STUB_TOUCH_PX):max(0, y), c0:c1]
+    below = erased[min(rows, y + h):min(rows, y + h + STUB_TOUCH_PX), c0:c1]
+    return bool((above.size and above.any()) or (below.size and below.any()))
+
+
+#: GROWING a word along its line. A piece of ink too big to be one letter --
+#: two letters fused (`Ad` of a bold `Adagio`, 2.67 x 2.10 spaces, over the
+#: 2.0-space letter cap), or letters fused to a stem (`pi` of `pizz.`, whose
+#: `p` descender runs into a stem and through it into a beamed group 15 x 5
+#: spaces) -- is refused by the letter tests, and the word arrives as `agio.` /
+#: `zz.` (Litolff p9, 2026-10-08). Such a piece may JOIN a word whose own
+#: letters already passed, never start one. It is looked for in the word's own
+#: LINE only (its rows +/- `GROW_STRIP_SPACES`), so a stem that leaves the line
+#: is cut where it leaves and the beams it reaches are not part of the piece;
+#: it must straddle the word's centre line, touch the word within
+#: `GROW_GAP_SPACES`, be at least `GROW_MIN_WIDTH_SPACES` wide, stay under
+#: these sizes and over this fill, and not be a DYNAMIC (below).
+GROW_STRIP_SPACES = 0.5     # 1.0 still reached the next staff down a stem (`pizz.`)
+GROW_GAP_SPACES = 0.6
+#: A letter's width, not a stroke's. A scanned barline or stem is 8-9 px, 0.51-
+#: 0.61 spaces (Litolff p9 x2, Brahms p24: the three it grew over on the 10
+#: review pages); the pieces this exists for are 1.46-2.67.
+GROW_MIN_WIDTH_SPACES = 1.0
+#: A piece whose ink lies this much inside the detector's DYNAMIC boxes is the
+#: dynamic, and stays the dynamic reader's: Sean 2026-10-08, read the dynamic
+#: and the word separately, then JOIN them (`_link_dynamics`). Grown over, the
+#: `f` of `più f` (99% inside) made Surya read `p rinf`, which the lexicon
+#: accepts; the `p` of `pizz.` beside `Basso` (100%) cost `Basso`. The `pi` of
+#: Litolff p9's `pizz.` is 67% inside (the detector boxed the letters as
+#: dynamics, but not the stem they are fused to) and is grown over.
+GROW_MAX_DYNAMIC_COVER = 0.9
+#: A column of a grown box is a THROUGH-STROKE (a barline or stem crossing the
+#: word's line) when ONE unbroken run of ink covers this share of the line
+#: strip's rows. Unbroken, not merely dense: the `d` of `Adagio` over the stem
+#: stub beneath it covers 91% of the strip with a 4-row gap (Litolff p9), the
+#: barline beside `pizz.` 100% in one run.
+THROUGH_STROKE_INK = 0.95
+GROW_MAX_HEIGHT_SPACES = 3.6     # = `tempo_strip_max_glyph_spaces`, the largest letter we admit anywhere
+GROW_MAX_WIDTH_SPACES = 4.0      # = `max_blank_width_spaces`: wider is a span, not glyphs
+GROW_MIN_FILL = 0.30             # `Ad` 0.47; a slur's box is ~0.03
+
+
+def _grow_along_baseline(word, letters, band: np.ndarray, dynamic: np.ndarray,
+                         spacing: float):
+    """Widen one word box `(x0, y0, x1, y1, weight)`, band coordinates, over
+    the oversized ink beside it on its own line (see `GROW_STRIP_SPACES`).
+    `letters` are the band's letter components (the word's own are those
+    inside its box); `dynamic` is True inside the detector's dynamic boxes."""
+    x0, y0, x1, y1, weight = word
+    own = [c for c in letters
+           if c[0] >= x0 and c[0] + c[2] <= x1 and c[1] >= y0 and c[1] + c[3] <= y1]
+    if not own:
+        return word
+    centre = (float(np.median([c[1] for c in own]))
+              + float(np.median([c[1] + c[3] for c in own]))) / 2.0
+    reach = int(round(GROW_STRIP_SPACES * spacing))
+    s0, s1 = max(0, y0 - reach), min(band.shape[0], y1 + reach)
+    _n, labels, stats, _c = cv2.connectedComponentsWithStats(band[s0:s1], 8)
+    gap = GROW_GAP_SPACES * spacing
+    big = []
+    for i in range(1, len(stats)):
+        x, y, w, h, area = (int(stats[i, k]) for k in range(5))
+        if not (y + s0 <= centre <= y + s0 + h):
+            continue
+        if w < GROW_MIN_WIDTH_SPACES * spacing:
+            continue
+        if h > GROW_MAX_HEIGHT_SPACES * spacing or w > GROW_MAX_WIDTH_SPACES * spacing:
+            continue
+        if area < GROW_MIN_FILL * w * h:
+            continue
+        ink = labels[y:y + h, x:x + w] == i
+        if dynamic[s0 + y:s0 + y + h, x:x + w][ink].mean() >= GROW_MAX_DYNAMIC_COVER:
+            continue
+        y += s0
+        if x >= x0 and x + w <= x1 and y >= y0 and y + h <= y1:
+            continue    # inside the word already
+        big.append((x, y, w, h))
+    wx0, wx1 = x0, x1
+    grew = True
+    while grew:
+        grew = False
+        for b in list(big):
+            bx0, by0, bx1, by1 = b[0], b[1], b[0] + b[2], b[1] + b[3]
+            if bx0 - x1 <= gap and x0 - bx1 <= gap:
+                x0, y0, x1, y1 = min(x0, bx0), min(y0, by0), max(x1, bx1), max(y1, by1)
+                weight += 1
+                big.remove(b)
+                grew = True
+    # A grown piece can carry the BARLINE its letter is fused to (`pizz.`, the
+    # `p` descender's foot runs into it): the box would start on the barline
+    # and `_measure_at` would file the word a bar early. A column whose ink
+    # crosses the word's whole line, top to bottom, is a stroke passing
+    # THROUGH it -- no letter does that. The grown margin is cut just inside
+    # the innermost such column (its ragged edge columns go with it), and any
+    # blank columns left at the new edge are dropped.
+    strip = band[s0:s1] > 0
+
+    def through(col):
+        run = best = 0
+        for v in strip[:, col]:
+            run = run + 1 if v else 0
+            best = max(best, run)
+        return best >= THROUGH_STROKE_INK * strip.shape[0]
+
+    left = [c for c in range(x0, wx0) if through(c)]
+    if left:
+        x0 = max(left) + 1
+        while x0 < wx0 and not strip[:, x0].any():
+            x0 += 1
+    right = [c for c in range(wx1, x1) if through(c)]
+    if right:
+        x1 = min(right)
+        while x1 > wx1 and not strip[:, x1 - 1].any():
+            x1 -= 1
+    return (x0, y0, x1, y1, weight)
+
+
 # ── Step 2: the bands, and which measure a word is in ───────────────────────
 
 def _bands_for_page(pws: PageWithStaves,
@@ -611,6 +772,7 @@ def _staff_dicts(page_dict: dict[str, Any]) -> dict[int, dict[str, Any]]:
 
 def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
+                    refine_boxes: bool = False,
                     ) -> list[TextCandidate]:
     """Word-shaped ink in the bands, with everything detected subtracted.
 
@@ -618,13 +780,22 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
     candidate step can be measured on its own: a word this never proposes is a
     word no reader can find, and that is a different failure from one the OCR
     got wrong.
+
+    `refine_boxes` (STAGED only -- `read_directions(scan_order=True)`; the
+    frozen legacy reader keeps the boxes it always had): drop stem stubs from
+    the letters (`_is_a_stub`) and grow each word over the oversized ink on its
+    line (`_grow_along_baseline`).
     """
     staves_by_index = _staff_dicts(page_dict)
     if not staves_by_index:
         return []
     spacing_page = float(np.median([_spacing(s) for s in pws.staves]))
-    mask = _blank_detections(_page_ink(pws.page), page_dict,
-                             spacing_page, config)
+    raw = _page_ink(pws.page)
+    mask = _blank_detections(raw, page_dict, spacing_page, config)
+    erased_page = dynamic_page = None
+    if refine_boxes:
+        erased_page = ((raw > 0) & (mask == 0)).astype(np.uint8) * 255
+        dynamic_page = _dynamic_boxes(page_dict, mask.shape)
 
     out: list[TextCandidate] = []
     for staff, placement, y_top, y_bottom in _bands_for_page(pws, config):
@@ -654,8 +825,15 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
                 max_glyph_width_spaces=max(config.max_glyph_width_spaces, big))
         else:
             strip_config = config
-        words = _cluster_into_words(
-            _letter_components(band, spacing, strip_config), spacing, strip_config)
+        letters = _letter_components(band, spacing, strip_config)
+        if refine_boxes:
+            erased = erased_page[y_top:y_bottom, x0:x1]
+            letters = [c for c in letters if not _is_a_stub(c, erased, spacing)]
+        words = _cluster_into_words(letters, spacing, strip_config)
+        if refine_boxes:
+            dynamic = dynamic_page[y_top:y_bottom, x0:x1]
+            words = [_grow_along_baseline(w, letters, band, dynamic, spacing)
+                     for w in words]
         for wx0, wy0, wx1, wy1, n_comp in words:
             page_box = (x0 + wx0, y_top + wy0, x0 + wx1, y_top + wy1)
             measure_index = _measure_at(spans, page_box[0])
@@ -1043,7 +1221,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
     the lexicon accepted — are the only way to tell a page with no text from a
     reader that could not run, and they look identical in the output otherwise.
     """
-    candidates = find_candidates(pws, page_dict, config=config)
+    candidates = find_candidates(pws, page_dict, config=config,
+                                 refine_boxes=scan_order)
     info: dict[str, Any] = {
         "n_candidates": len(candidates),
         "n_read": 0,
@@ -1215,7 +1394,10 @@ def sibling_candidates(pws, page_dict, blanked, candidates, accepted_at,
                     bx0 = min(x_lo + hx0, int(gx0 - 0.3 * sp))
                     bx1 = max(x_lo + hx1, int(gx0 + gwidth + 0.3 * sp))
                     box = (max(0, bx0), y_top + hy0, bx1, y_top + hy1)
-                    m = _measure_at(spans, box[0])
+                    # Filed where the ECHOED word is, not by the padded edge:
+                    # the pad can cross the barline the word starts after
+                    # (Litolff p9 `pizz.`, ROADMAP 2.66).
+                    m = _measure_at(spans, max(box[0], int(gx0)))
                     if m is None:
                         continue
                     out.append(TextCandidate(staff.staff_index, m, box, placement,

@@ -22,6 +22,18 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 (evening) — ROADMAP 2.66: direction-word boxes on scans; 2.67 terms library opened
+
+- **2.66 (STAGED, `tools/omr/direction_text.py`)**: `find_candidates(refine_boxes=True)`, passed by
+  `read_directions(scan_order=True)` and the staged gather's pre-check; the legacy reader keeps its boxes.
+  Stem stubs (thin strokes running into erased ink) are not letters; oversized ink on a word's own line
+  joins the word (>= 1 space wide, never >= 90% inside a dynamic box); a grown edge loses any barline
+  crossing the line; sibling windows are filed at the echoed word's x. 10 review pages 93 -> 97 words
+  (`pizz.` x2, `Adagio.`, `cresc.`), none lost, same time. Tiles `out/print/2.66/`, FINDINGS
+  `omr-direction-text-2026-09` (2.66 section), tests `test_direction_word_boxes_2026_10_08.py` (12).
+- **2.67 opened** (Sean): a large multilingual terms library with abbreviations, built on the Gradus
+  dictionary; the Gradus half is an agent's branch in `gradus-vercel`, not pushed.
+
 ## 2026-10-08 — ROADMAP 0.8: the close-or-keep pass over the 41 merged rows
 
 Sean went through four batches, and the roadmap rows now match his answers
