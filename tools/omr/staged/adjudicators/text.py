@@ -281,17 +281,6 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         if refused is not None and refused.value is True:
             not_a_letter += 1
             continue
-        if _inside_a_read_word(row, word_boxes):
-            sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
-            if not sides:
-                # inside a known word, but nobody read the ink beside it:
-                # CANNOT TELL, so it stays what the detector said (rule 8)
-                inside_unmeasured += 1
-            elif _is_a_letter_of_a_known_word(sides[-1].value):
-                inside_word += 1
-                continue
-            else:
-                inside_alone += 1
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
         owned_by = (owner.value if owner is not None and owner.value
@@ -357,6 +346,18 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             # is never offered to another.
             dup_dropped += 1
             continue
+        # (after ownership: counted once, on the staff that keeps the letter)
+        if _inside_a_read_word(row, word_boxes):
+            sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
+            if not sides:
+                # inside a known word, but nobody read the ink beside it:
+                # CANNOT TELL, so it stays what the detector said (rule 8)
+                inside_unmeasured += 1
+            elif _is_a_letter_of_a_known_word(sides[-1].value):
+                inside_word += 1
+                continue
+            else:
+                inside_alone += 1
         letter = _letter_of(row)
         geom = _geometry(row)
         if letter is None:
