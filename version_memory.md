@@ -22,6 +22,12 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 — all-stages re-gather `20261009-all` and its comparison
+
+- 2.68 landed on main (`db1772bb..00473387`). Both movements re-gathered through INFER (45 / 121 min);
+  `benchmarks/acceptance/overnight/compare_20261009.sh` compares first two stages with `20261008-night` and all stages
+  with the 09-30 acceptance; `SUMMARY.md` beside the results. Records not adopted.
+
 ## 2026-10-08 (night) — 2.66 landed on main; ROADMAP 2.68 word + dynamic pairing (branch)
 
 - 2.66 fast-forwarded onto main (`96049f83..db1772bb`).

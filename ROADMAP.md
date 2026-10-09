@@ -17,6 +17,16 @@ re-enter.
 
 ---
 
+## START HERE — after the all-stages re-gather of 2026-10-09 (`20261009-all`, main `00473387`)
+
+Results: `benchmarks/acceptance/overnight/20261009-all/SUMMARY.md`. First two stages vs last night: every glyph family
+identical; direction words new (Litolff 69 / Brahms 334, markings 10 / 89); dynamics changed in 19 / 215 bars by the
+2.68 "letter inside a read word" rule -- 12 of 12 sampled removals are word letters the detector spelled as fake
+dynamics (session's eye; **Sean to confirm on `out/print/2.68-inside-word/`**). All stages vs 09-30: Litolff notes
+0.385 -> 0.448, held bars 0.388 -> 0.270; Brahms notes 0.213 -> 0.226, held bars 0.707 -> 0.670. Records NOT adopted into
+the manifest. Next: Sean's check of the removals; `Basso p` (part names must not pair); `sempre più p` read short;
+then the 2.67 terms library.
+
 ## START HERE — after 2026-10-08 (night; 2.66 on main `db1772bb`, 2.68 on branch `claude/roadmap-start-27498c`)
 
 **2.66 is on main** (direction-word boxes; tempo/technique words in a gap belong to the staff BELOW; a word + dynamic

@@ -1,0 +1,38 @@
+all stages: NEW tree 00473387e0cab03c8c17881ec08a807e867ddb84 dirty=True (2026-10-09T09:11:23Z)  vs  OLD tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
+NEW dirty=True only because the checkout held acceptance's own outputs from a crashed first run + the temporary manifest; no code changed.
+
+== beethoven5-litolff  (09-30 -> 10-09; only numbers that moved)
+  notes_reaching_file.n                                                4480 ->       5107
+  notes_reaching_file.of                                              11644 ->      11399
+  notes_reaching_file.fraction                                       0.3847 ->      0.448
+  bars_held_out_sum.n                                                  1732 ->       1323
+  bars_held_out_sum.of                                                 4465 ->       4895
+  bars_held_out_sum.fraction                                         0.3879 ->     0.2703
+  bars_held_out_sum.noteheads_and_rests                                4192 ->       3275
+  bars_held_out_sum.bars_on_a_doubled_staff                              85 ->         62
+  bars_held_out_sum.named_in_the_export_report                         1647 ->       1261
+  bars_add_up_control.exact                                            5886 ->       6060
+  bars_add_up_control.n                                                5886 ->       6060
+  bars_add_up_control.of                                               5886 ->       6060
+  held_out.staff_not_identified                                         213 ->        137
+  held_out.of_noteheads_in_log                                        11644 ->      11399
+  held_out.fraction                                                  0.0183 ->      0.012
+  unread_bars.empty_bars_padded                                         951 ->        626
+  unread_bars.tacet_bars_not_padded_without_meter                        90 ->          0
+
+== brahms1-breitkopf  (09-30 -> 10-09; only numbers that moved)
+  notes_reaching_file.n                                                5225 ->       5483
+  notes_reaching_file.of                                              24533 ->      24260
+  notes_reaching_file.fraction                                        0.213 ->      0.226
+  bars_held_out_sum.n                                                  4283 ->       4180
+  bars_held_out_sum.of                                                 6061 ->       6236
+  bars_held_out_sum.fraction                                         0.7066 ->     0.6703
+  bars_held_out_sum.noteheads_and_rests                               12927 ->      12747
+  bars_held_out_sum.named_in_the_export_report                         4283 ->       4180
+  bars_add_up_control.exact                                            6882 ->       6669
+  bars_add_up_control.n                                                6882 ->       6669
+  bars_add_up_control.of                                               6882 ->       6669
+  held_out.of_noteheads_in_log                                        24533 ->      24260
+  held_out.fraction                                                  0.0026 ->     0.0026
+  unread_bars.empty_bars_padded                                         613 ->        424
+  unread_bars.tacet_bars_not_padded_without_meter                       328 ->        527

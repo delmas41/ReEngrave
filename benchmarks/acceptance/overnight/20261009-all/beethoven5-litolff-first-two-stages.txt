@@ -1,0 +1,50 @@
+READOUT DIFF at GATHER + ADJUDICATE   20261008-night=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261008-night.record.json
+                                      20261009-all=/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261009-all.record.json
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! PROVENANCE: the two records differ in
+!!   code      commit: 20261008-night='178d103516483feb727d5b5b51376fbddc317fe7'  20261009-all='00473387e0cab03c8c17881ec08a807e867ddb84'
+!!   env       OMR_DIRECTION_TEXT_SCAN_GATE: 20261008-night='1'  20261009-all=None
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+== family (other classes): gathered 20261008-night 15328 / 20261009-all 15328; matched 15328 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+   classes no export family claims: {'ledgerLine': 7701, 'staff': 2593, 'beam': 2580, 'arpeggiato': 1897, 'augmentationDot': 154, 'flag8thUp': 142, 'flag8thDown': 93, 'stem': 78} ...
+
+== family accidental: gathered 20261008-night 1508 / 20261009-all 1508; matched 1508 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family articulation: gathered 20261008-night 465 / 20261009-all 465; matched 465 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family clef: gathered 20261008-night 513 / 20261009-all 513; matched 513 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family dynamic: gathered 20261008-night 1573 / 20261009-all 1573; matched 1573 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family fermata: gathered 20261008-night 178 / 20261009-all 178; matched 178 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family key: gathered 20261008-night 542 / 20261009-all 542; matched 542 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family note: gathered 20261008-night 11399 / 20261009-all 11399; matched 11399 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family ornament: gathered 20261008-night 3 / 20261009-all 3; matched 3 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family rest: gathered 20261008-night 2873 / 20261009-all 2873; matched 2873 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family slur: gathered 20261008-night 1225 / 20261009-all 1225; matched 1225 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family tie: gathered 20261008-night 1419 / 20261009-all 1419; matched 1419 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family time: gathered 20261008-night 82 / 20261009-all 82; matched 82 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== family tuplet: gathered 20261008-night 13 / 20261009-all 13; matched 13 (0 in another bar); only 20261008-night 0, only 20261009-all 0
+
+== staves, bars, systems (ADJUDICATE, by key)
+   direction: 5377 of 5377 changed
+        cell/1/0/0/0: abstained:null -> decided:["Allegro con brio."]
+        cell/1/0/0/1: abstained:null -> decided:[]
+        cell/1/0/0/2: abstained:null -> decided:[]
+   dynamic: 19 of 5377 changed
+        cell/2/0/7/1: decided:["p"] -> decided:[]
+        cell/2/0/7/2: decided:["f", "f"] -> decided:["f"]
+        cell/3/0/7/14: decided:["p"] -> decided:[]
+   (bar-level values that NAME glyph indexes (event, voices) change whenever the detector's output order changes; read the glyph lines above for what moved)
+
+5396 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).
