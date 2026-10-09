@@ -1,0 +1,66 @@
+{"n": 27, "found": 20, "box_ok": 15, "single": 18, "pos_ok": 19, "half": 20, "on_line": {"n": 14, "found": 12, "box_ok": 7, "single": 10, "pos_ok": 11, "half": 12}, "in_space": {"n": 13, "found": 8, "box_ok": 8, "single": 8, "pos_ok": 8, "half": 8}}
+b4213 alfOnLine pos 11.84 box False single True pos True half True best {'key': 'glyph/0/0/4/1/3', 'cls': 'noteheadHalfInSpace', 'pos': 12, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 0.34
+      ('0/4/1/3', 'noteheadHalfInSpace', 'kept', 'half (2 beats)', 0.34)
+q564 alfOnLine pos 11.92 box False single False pos False half False best None iou 0.0
+      ('0/4/2/5', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 0.42)
+q568 alfOnLine pos 12.0 box True single True pos True half True best {'key': 'glyph/0/0/4/3/7', 'cls': 'noteheadHalfInSpace', 'pos': 12, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.52
+      ('0/4/3/2', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 0.51)
+      ('0/4/3/7', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 0.52)
+q576 alfOnLine pos 12.38 box False single False pos False half False best None iou 0.0
+      ('0/4/4/2', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+      ('0/4/4/9', 'noteheadHalfInSpace', 'refused', 'not a notehead -- notehead is a duplicate box', 0.56)
+q589 alfOnLine pos 12.31 box True single True pos True half True best {'key': 'glyph/0/0/4/5/4', 'cls': 'noteheadHalfInSpace', 'pos': 12, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/4/5/4', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+q595 alfOnLine pos 11.88 box False single True pos True half True best {'key': 'glyph/0/0/4/6/4', 'cls': 'noteheadHalfInSpace', 'pos': 12, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 0.38
+      ('0/4/6/4', 'noteheadHalfInSpace', 'kept', 'half (2 beats)', 0.38)
+q613 alfInSpace pos 16.99 box True single True pos True half True best {'key': 'glyph/0/0/5/0/9', 'cls': 'noteheadHalfInSpace', 'pos': 17, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.99
+      ('0/5/0/9', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 0.99)
+q616 alfOnLine pos 9.85 box True single True pos True half True best {'key': 'glyph/0/0/5/0/13', 'cls': 'noteheadHalfOnLine', 'pos': 10, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.99
+      ('0/5/0/13', 'noteheadHalfOnLine', 'kept', '3.0-beat (3 beats)', 0.99)
+q623 alfInSpace pos 17.17 box False single False pos False half False best None iou 0.0
+      ('0/5/1/2', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+q637 alfOnLine pos 9.77 box False single True pos True half True best {'key': 'glyph/0/0/5/1/16', 'cls': 'noteheadHalfInSpace', 'pos': 10, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.48
+      ('0/5/1/16', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 0.48)
+q643 alfInSpace pos 17.17 box True single True pos True half True best {'key': 'glyph/0/0/5/2/5', 'cls': 'noteheadHalfInSpace', 'pos': 17, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/5/2/5', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+      ('0/6/2/8', 'noteheadBlackInSpace', 'refused', 'not a notehead -- clipped fragment', 0.42)
+      ('0/6/2/14', 'noteheadHalfInSpace', 'refused', 'not a notehead -- clipped fragment', 0.42)
+q653 alfOnLine pos 10.06 box False single True pos False half True best {'key': 'glyph/0/0/5/2/16', 'cls': 'noteheadHalfInSpace', 'pos': 11, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 0.49
+      ('0/5/2/16', 'noteheadHalfInSpace', 'kept', 'half (2 beats)', 0.49)
+      ('0/5/2/17', 'noteheadHalfOnLine', 'refused', 'not a notehead -- stacked head duplicate', 0.56)
+q666 alfInSpace pos 16.93 box False single False pos False half False best None iou 0.0
+      ('0/5/3/9', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+      ('0/6/3/7', 'noteheadHalfInSpace', 'refused', 'not a notehead -- clipped fragment', 0.3)
+q670 alfOnLine pos 9.69 box False single True pos True half True best {'key': 'glyph/0/0/5/3/15', 'cls': 'noteheadHalfInSpace', 'pos': 10, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 0.25
+      ('0/5/3/14', 'noteheadHalfOnLine', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+      ('0/5/3/15', 'noteheadHalfInSpace', 'kept', 'half (2 beats)', 0.25)
+q677 alfInSpace pos 17.29 box True single True pos True half True best {'key': 'glyph/0/0/5/4/2', 'cls': 'noteheadHalfInSpace', 'pos': 17, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/5/4/2', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+      ('0/6/4/1', 'noteheadHalfInSpace', 'refused', 'not a notehead -- clipped fragment', 0.43)
+q687 alfOnLine pos 10.03 box True single True pos True half True best {'key': 'glyph/0/0/5/4/15', 'cls': 'noteheadHalfInSpace', 'pos': 10, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.53
+      ('0/5/4/15', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 0.53)
+q694 alfInSpace pos 17.03 box False single False pos False half False best None iou 0.0
+      ('0/5/5/6', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+q700 alfOnLine pos 9.85 box True single True pos True half True best {'key': 'glyph/0/0/5/5/12', 'cls': 'noteheadHalfInSpace', 'pos': 10, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.54
+      ('0/5/5/12', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 0.54)
+q703 alfInSpace pos 16.87 box False single False pos False half False best None iou 0.0
+      ('0/5/6/2', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 0.99)
+      ('0/6/6/3', 'noteheadHalfOnLine', 'refused', 'not a notehead -- clipped fragment', 0.24)
+q711 alfOnLine pos 9.56 box True single False pos True half True best {'key': 'glyph/0/0/5/6/12', 'cls': 'noteheadHalfOnLine', 'pos': 10, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 0.99
+      ('0/5/6/12', 'noteheadHalfOnLine', 'kept', '3.0-beat (3 beats)', 0.99)
+      ('0/5/6/13', 'noteheadHalfOnLine', 'kept', 'half (2 beats)', 0.34)
+q712 alfOnLine pos 10.39 box True single False pos True half True best {'key': 'glyph/0/0/5/6/13', 'cls': 'noteheadHalfOnLine', 'pos': 10, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 0.99
+      ('0/5/6/12', 'noteheadHalfOnLine', 'kept', '3.0-beat (3 beats)', 0.34)
+      ('0/5/6/13', 'noteheadHalfOnLine', 'kept', 'half (2 beats)', 0.99)
+q875 alfInSpace pos 5.04 box False single False pos False half False best None iou 0.0
+      ('0/8/1/2', 'noteheadHalfInSpace', 'refused', 'not a notehead -- stacked head duplicate', 1.0)
+q887 alfInSpace pos 4.93 box True single True pos True half True best {'key': 'glyph/0/0/8/2/3', 'cls': 'noteheadHalfInSpace', 'pos': 5, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/8/2/3', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+q894 alfInSpace pos 5.06 box True single True pos True half True best {'key': 'glyph/0/0/8/3/2', 'cls': 'noteheadHalfInSpace', 'pos': 5, 'dur': {'beats': 2.0, 'written': 2.0, 'dots': 0, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/8/3/2', 'noteheadHalfInSpace', 'kept', 'half (2 beats)', 1.0)
+q901 alfInSpace pos 5.09 box True single True pos True half True best {'key': 'glyph/0/0/8/4/2', 'cls': 'noteheadHalfInSpace', 'pos': 5, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/8/4/2', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+q907 alfInSpace pos 5.0 box True single True pos True half True best {'key': 'glyph/0/0/8/5/0', 'cls': 'noteheadHalfInSpace', 'pos': 5, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/8/5/0', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
+q913 alfInSpace pos 4.97 box True single True pos True half True best {'key': 'glyph/0/0/8/6/1', 'cls': 'noteheadHalfInSpace', 'pos': 5, 'dur': {'beats': 3.0, 'written': 3.0, 'dots': 1, 'beam_levels': 0}, 'status': 'kept'} iou 1.0
+      ('0/8/6/1', 'noteheadHalfInSpace', 'kept', '3.0-beat (3 beats)', 1.0)
