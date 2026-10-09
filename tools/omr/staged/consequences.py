@@ -1469,6 +1469,7 @@ def _marking_words(log: Log, subject: Subject):
         d = row.detail or {}
         box = d.get("bbox_page_px")
         out.append({"text": str(row.value), "row": row.id,
+                    "category": d.get("category"),
                     "box": tuple(float(v) for v in box) if box else None,
                     "dynamics": list(d.get("dynamics") or ()),
                     "includes": set(d.get("includes_dynamic_glyphs") or ())})
@@ -1562,7 +1563,11 @@ def pair_word_and_dynamic(log: Log, subject: Subject,
                              "reason": "read_together"})
             taken |= w["includes"]
     free_dyns = [d for d in dyns if not (d["glyphs"] & taken) and d["box"]]
-    free_words = [w for w in words if not w["dynamics"] and w["box"]]
+    # A PART name (`Basso`, `Vcl.`, `a 2`) says WHO plays, not how: it never
+    # takes a dynamic (the re-gather of 2026-10-09 paired `Basso p`; `a 2 f`
+    # was refused for the same reason in ROADMAP 2.66).
+    free_words = [w for w in words
+                  if not w["dynamics"] and w["box"] and w["category"] != "part"]
 
     unpaired: List[dict] = []
     if spacing is None or not free_dyns or not free_words:

@@ -17,11 +17,11 @@ CELL = R.cell(0, 0, 1, 3)
 SP = 20.0                      # one staff space, px
 
 
-def _word(log, i, text, box, dynamics=(), includes=()):
+def _word(log, i, text, box, dynamics=(), includes=(), category="expression"):
     return log.observe(R.glyph(0, 0, 1, 3, 900 + i), Q.DIRECTION_WORD, text,
                        reader=READERS.TESSERACT, frame="page",
                        bbox_page_px=list(box), dynamics=list(dynamics),
-                       includes_dynamic_glyphs=list(includes))
+                       includes_dynamic_glyphs=list(includes), category=category)
 
 
 def _letter(log, i, letter, box):
@@ -231,3 +231,12 @@ def test_a_dynamic_letter_inside_a_read_word_is_the_words_letter():
     assert T._inside_a_read_word(p, words) and T._inside_a_read_word(m, words)
     assert not T._inside_a_read_word(f, words)          # the real dynamic stays
     assert not T._inside_a_read_word(p, [])             # no word read: nothing changes
+
+
+def test_a_part_name_never_takes_a_dynamic():
+    """Litolff, re-gather 2026-10-09: `Basso p` was paired. A part name says
+    who plays; the `p` beside it is the music's dynamic."""
+    log = Log()
+    w = _word(log, 0, "Basso", (100, 50, 200, 90), category="part")
+    p = _letter(log, 1, "p", (205, 50, 235, 90))
+    assert _marking(log, _decide(log, [("p", [p.id])], [w])).value == []
