@@ -3965,6 +3965,22 @@ STEM_TIP_INK_DENSE = 0.30
 #: bands) must not be read as a flag. NOT CONFIRMED.
 STEM_TIP_INK_BACKGROUND_MAX = 0.20
 
+#: ROADMAP 2.73. A row of the tip window is a LINE row where ink fills both
+#: probes just beyond the two bands (`STEM_TIP_LINE_PROBE_SPACES` wide) at least
+#: this much; where lines take more than `STEM_TIP_LINE_ROWS_MAX_LOST` of the
+#: window's rows the reading is declined.
+STEM_TIP_LINE_PROBE_SPACES = 0.6
+STEM_TIP_LINE_ROW_FILL = 0.7
+STEM_TIP_LINE_ROWS_MAX_LOST = 0.5
+
+#: ROADMAP 2.73. A detection box counts as explaining ink in the tip window only
+#: if it overlaps the window by more than this much (staff spaces) in BOTH axes.
+#: Detector box edges are good to about a tenth of a space; a box that merely
+#: touches the window's edge (Litolff p6, 2.70 tiles #4/#6: an `arpeggiato` box
+#: that IS the stem's own ink ending 1 px into the window, a neighbour's head
+#: box ending 1-5 px into it) explains none of it.
+STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
+
 
 def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
                  into_sign: float, space: float) -> Optional[Dict[str, Any]]:
@@ -3998,12 +4014,43 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     y_near, y_far = tip_y + into_sign * near, tip_y + into_sign * far
     y0, y1 = (y_near, y_far) if y_near <= y_far else (y_far, y_near)
 
+    # ⚠️ ROADMAP 2.73 (coordinator, Sean's 2.70 tiles #2/#6): A STAFF OR LEDGER
+    # LINE AT THE TIP IS NOT ON THE STEM. A line crosses both bands, so it both
+    # fills the right one and breaks the left one's "no ink here" guard -- a stem
+    # that ends on a line could neither read as flagged nor as bare. The ROWS a
+    # horizontal line stands on at this x -- ink in BOTH probes just beyond the two
+    # bands, which a flag (hanging from ONE side of the tip) never reaches -- are
+    # left out of both bands. Where the lines take more than half the window the
+    # reading is declined, never read from what is left.
+    iy0w, iy1w = max(0, int(round(y0))), min(H, int(round(y1)))
+    keep_rows = None
+    lost_rows = 0
+    if iy1w > iy0w:
+        probe = STEM_TIP_LINE_PROBE_SPACES * space
+        lo_l, hi_l = int(round(stem_x0 - width - probe)), int(round(stem_x0 - width))
+        lo_r, hi_r = int(round(stem_x1 + width)), int(round(stem_x1 + width + probe))
+        keep_rows = []
+        for yy in range(iy0w, iy1w):
+            lft = ink[yy, max(0, lo_l):max(0, hi_l)]
+            rgt = ink[yy, max(0, lo_r):min(W, max(0, hi_r))]
+            on_line = bool(lft.size and rgt.size
+                           and lft.mean() >= STEM_TIP_LINE_ROW_FILL
+                           and rgt.mean() >= STEM_TIP_LINE_ROW_FILL)
+            if not on_line:
+                keep_rows.append(yy)
+        lost_rows = (iy1w - iy0w) - len(keep_rows)
+        if lost_rows > STEM_TIP_LINE_ROWS_MAX_LOST * (iy1w - iy0w) \
+                or not keep_rows:
+            return None
+
     def frac(x0: float, x1: float) -> Optional[float]:
         ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
         iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
         if ix1 <= ix0 or iy1 <= iy0:
             return None
         region = ink[iy0:iy1, ix0:ix1]
+        if keep_rows is not None and lost_rows:
+            region = ink[keep_rows, ix0:ix1]
         return float(region.sum()) / float(region.size)
 
     right = frac(stem_x1, stem_x1 + width)
@@ -4013,6 +4060,7 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     found = right >= STEM_TIP_INK_DENSE and left <= STEM_TIP_INK_BACKGROUND_MAX
     return {
         "found": bool(found), "right": round(right, 4), "left": round(left, 4),
+        "line_rows_left_out": lost_rows,
         "window_canonical": [round(stem_x1, 2), round(y0, 2),
                              round(stem_x1 + width, 2), round(y1, 2)],
     }
@@ -4294,7 +4342,10 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
         (float(dd.x_canonical), float(dd.y_canonical),
          float(dd.x_canonical) + float(dd.width_canonical),
          float(dd.y_canonical) + float(dd.height_canonical))
-        for dd in other_dets if float(dd.width_canonical) <= cut)
+        for dd in other_dets if float(dd.width_canonical) <= cut
+        # ⚠️ ROADMAP 2.73: a ledger line is not on the stem; `stem_tip_ink`
+        # leaves its rows out of the window rather than abstaining on it.
+        and not str(getattr(dd, "smufl_name", "")).startswith("ledgerLine"))
     return out
 
 
@@ -4345,7 +4396,10 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         width = STEM_TIP_INK_WIDTH_SPACES * space
         wy0, wy1 = sorted((tip_y + into_sign * near, tip_y + into_sign * far))
         window = (x1, wy0, x1 + width, wy1)
-        if any(_rects_overlap(window, b) for b in blockers):
+        tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
+        shrunk = (window[0] + tol, window[1] + tol, window[2] - tol,
+                  window[3] - tol)
+        if any(_rects_overlap(shrunk, b) for b in blockers):
             log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
                         frame=frame, reason=ABSTAIN.OCCUPIED,
                         stem_row_id=stem_row_id, end=end,
