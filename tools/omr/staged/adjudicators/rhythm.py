@@ -1678,6 +1678,30 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     return any(bool(r.value) for r in matched), matched
 
 
+def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
+    """What the stem-tip reader says about HOW MANY hooks, over the rows that
+    SAW one. ROADMAP 2.69 (Sean, 2026-10-09).
+
+    Returns `(counted, lo, hi)`. `counted` is an int only where EVERY row
+    that saw a hook counted the same level; otherwise `None` and `[lo, hi]`
+    is the bracket of flag levels the ink leaves open, both >= 1 -- a hook
+    seen rules out the head's own value, so level 0 is never in the bracket.
+    A row from before the count existed (no `hooks_min`/`hooks_max` in its
+    detail) brackets the two levels the old narrowing could not choose
+    between: an eighth or a sixteenth.
+    """
+    seen = [r for r in rows if r.value]
+    counts = {r.detail.get("hooks") for r in seen}
+    if seen and len(counts) == 1:
+        only = next(iter(counts))
+        if isinstance(only, int) and not isinstance(only, bool) and only >= 1:
+            return int(only), int(only), int(only)
+    lo = min((max(1, int(r.detail.get("hooks_min") or 1)) for r in seen),
+             default=1)
+    hi = max((int(r.detail.get("hooks_max") or 2) for r in seen), default=2)
+    return None, lo, max(lo, hi)
+
+
 @decision(
     quantity=Q.DURATION,
     checkable=Checkable.MIXED,
@@ -1750,7 +1774,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
-             "flag_ink_unread", "beam_discounted_uncertain",
+             "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",
              "head_fill_from_ink", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
@@ -2151,23 +2175,45 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         tip_ink, tip_ink_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
     if tip_ink:
         used.extend(r.id for r in tip_ink_rows)
-        cands = []
-        for level in (0, 1):
-            b = base / (2 ** level) if level else base
+
+        # ⚠️⚠️ ROADMAP 2.69 (Sean, 2026-10-09: *"Count the hooks and if you
+        # can't count use the fact that there is a hook to help later
+        # deduction"*) REPLACES 2.18c's head-value-or-one-flag-level
+        # narrowing. A hook SEEN on this head's own stem rules out the
+        # head's own value -- a flagged note is never a quarter -- so level
+        # 0 is in NEITHER branch below. Counted: DECIDED at that level.
+        # Seen but not counted: NARROWED over the flag levels the ink leaves
+        # open (>= 1 only), the lowest best-supported, and EVALUATE's
+        # `reconcile_duration` settles it where exactly one candidate makes
+        # the bar add up (INFER, labelled, where it does not).
+        def _at_level(level):
+            b = base / (2 ** level)
             t, add = b, b
             for _ in range(n_dots):
                 add /= 2.0
                 t += add
+            return t
+
+        counted, lo, hi = _stem_tip_hook_count(tip_ink_rows)
+        if counted is not None:
+            t = _at_level(counted)
+            return Ruling(value={"beats": _scale(t, ratio, ev), "written": t,
+                                 "dots": n_dots, "beam_levels": counted},
+                          reason="hooks_counted", used=tuple(used),
+                          detail={**shared, "hooks_counted": counted})
+        cands = []
+        for level in range(lo, hi + 1):
+            t = _at_level(level)
             cands.append(Candidate(
                 value={"beats": _scale(t, ratio, ev), "written": t,
                        "dots": n_dots, "beam_levels": level},
                 # ⚠️ SUPPORT, NOT PROBABILITY, same convention as
-                # `beams_ambiguous` above: the level the ink actually
-                # witnesses outranks the always-available head-value
-                # fallback, and the ORDER is the whole claim.
-                support=2.0 if level == 1 else 1.0))
+                # `beams_ambiguous` above: the ink's own lower bound (the
+                # hooks it certainly shows) outranks the levels it merely
+                # does not exclude, and the ORDER is the whole claim.
+                support=2.0 if level == lo else 1.0))
         return Ruling.narrow(cands, "flag_ink_unread", used=tuple(used),
-                             **shared)
+                             **shared, hooks_min=lo, hooks_max=hi)
 
     # ⚠️⚠️ ROADMAP 2.23. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
     # CONFIRMED (nobody has been asked, CLAUDE.md rule 3): a hollow
