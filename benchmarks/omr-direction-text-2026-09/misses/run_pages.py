@@ -1,5 +1,7 @@
 """Re-read pickled pages with the CURRENT direction_text; time them; draw one review image per page.
-python3 run_pages.py <outdir> tag...   (tags like lit_4, br_12; pickles from dump_page.py)"""
+python3 run_pages.py <outdir> tag...   (tags like lit_4, br_12; pickles from dump_page.py)
+Pickles are looked for in each directory of $DT_PICKLE_DIRS (colon-separated; default /private/tmp/dtmiss).
+The summary is written to <outdir>/summary.json."""
 import json, os, pickle, sys, time
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]; sys.path.insert(0, str(ROOT))
@@ -38,11 +40,19 @@ def draw(pws, boxes, words, path, title):
     cv2.imwrite(str(path), cv2.cvtColor(np.vstack([top] + strips), cv2.COLOR_RGB2BGR))
 
 out = Path(sys.argv[1]); out.mkdir(parents=True, exist_ok=True)
+if os.environ.get("DT_SLOW_BUDGET"):      # the slow rung's wall-clock budget makes two runs on a busy machine differ
+    DT.SLOW_WIDE_BUDGET_S = float(os.environ["DT_SLOW_BUDGET"])
+PICKLE_DIRS = os.environ.get("DT_PICKLE_DIRS", "/private/tmp/dtmiss").split(":")
+def _pickle(tag):
+    for d in PICKLE_DIRS:
+        if (Path(d) / f"{tag}.pkl").exists():
+            return Path(d) / f"{tag}.pkl"
+    raise FileNotFoundError(f"{tag}.pkl not in {PICKLE_DIRS}")
 cm = SU.worker_session(); cm.__enter__()
 summary = {}
 try:
     for tag in sys.argv[2:]:
-        pws, pd = pickle.load(open(f"/private/tmp/dtmiss/{tag}.pkl", "rb"))
+        pws, pd = pickle.load(open(_pickle(tag), "rb"))
         t = time.perf_counter()
         words, info = DT.read_directions(pws, pd, scan_order=True)
         dt = time.perf_counter() - t
@@ -51,8 +61,8 @@ try:
         draw(pws, info["word_boxes"], words, out / f"{name}.png", f"{name}: green = word read (reader in log)")
         summary[tag] = dict(seconds=round(dt, 1), found=len(words), n_candidates=info["n_candidates"],
                             unread=[[info["candidates"][i].staff_index, info["candidates"][i].measure_index, list(info["candidates"][i].bbox_page), t] for i, t in info.get("seen", {}).items() if sum(ch.isalpha() for x in t for ch in x) >= 3],
-                            words=[[w.staff_index, w.measure_index, w.x_page, w.text, w.reader] for w in words])
+                            words=[[w.staff_index, w.measure_index, w.x_page, w.text, w.reader, info['candidates'][w.candidate_index].n_components, list(info['candidates'][w.candidate_index].bbox_page)] for w in words])
         print(tag, round(dt, 1), "s", len(words), "words", {k: v for k, v in info.items() if k in ("first_looks_s","sibling_s","n_lettered","n_sibling_windows","n_sibling_read")}, flush=True)
 finally:
     cm.__exit__(None, None, None)
-    Path(f"/private/tmp/dtmiss/summary_{out.name}.json").write_text(json.dumps(summary, indent=1))
+    (out / "summary.json").write_text(json.dumps(summary, indent=1))
