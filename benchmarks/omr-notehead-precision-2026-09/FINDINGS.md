@@ -835,3 +835,66 @@ look wrong.
   call the retained function directly).
 - `benchmarks/omr-notehead-precision-2026-09/probe/stacked_head_2.42/
   crop_groups.py`, `crop_pitch_only.py`; crops under `out/print/2.42/`.
+
+## 2026-10-09 — a head whose INK is a detected dynamic letter's stroke is not a note (`on_a_dynamic_letter`)
+
+STAGED. GATHER measures (`gather_notehead_letter_ink`, `Q.NOTEHEAD_LETTER_INK`), ADJUDICATE decides
+(`notehead_precision._on_a_dynamic_letter_refusal`, reason `on_a_dynamic_letter`).
+Sean, 2.73 head tile 10 (Litolff pdf page 3, `glyph/2/0/2/1/12`): *"Not a note - dynamic p"* — the bowl of the `p`
+of `p cresc.`, boxed `noteheadBlackInSpace`, decided a quarter on main.
+
+**FIRST BUILD WAS WRONG AND IS REPLACED (Sean, blind tiles `dynamic-not-a-head`).** It decided on BOXES: a head at
+least 0.4 inside a letter's box was refused unless a CV stem of 3+ spaces touched it or the letter box was over 3.6 x 4.6
+spaces. Sean judged 7 of its 9 tiles right (1, 2, 4, 5, 6, 7, 8: dynamic ink; 6 was a miss it had spared) and tile 9
+wrong: *"two small notes just to the right of SF"* — they lie inside the `sf`'s wide box (the letter's box is wider than
+its ink), the CV stem rows missed one of them, and the stem rule was fitted to normal-size stems. Tile 3 (the other
+`sf` note) was kept by that build and is a note; the coordinator's note that 3 and 9 were both refused was a misreading of
+the manifest, which marked tile 3 `kept (note stem 7 spaces)`. Cause, not another cut: a box says where a detector drew a
+rectangle, not whose ink is under it.
+
+**The question is asked of the ink** (two ruler readings off the page raster, filed on the head's glyph where it lies at
+least 0.2 inside a letter box, letter searched page-wide because the detector files a letter under the next staff's cell):
+
+* `disc_spaces`, the widest filled disc inside the head box on the raw ink: a notehead is a filled blob, an `f`'s hook
+  or top is a stroke. Strokes 0.66-0.84 (all seven `f` fragments, gather values), filled heads 1.13-1.29 (the two notes at
+  `sf`, a note under an `f`, a Brahms beamed head). Threshold 0.9, mid-gap, in staff spaces.
+* `letter_ink_share`, the fraction of the letter box's ink (lines and 4-space stems taken out) the head box holds. A `p`'s
+  bowl is as filled as a head (disc 1.09-1.37) so the disc cannot refuse it, but it is most of the `p`: 0.49-0.62; a note
+  beside an `sf` is a sliver of the wide box: 0.10-0.23. Threshold 0.4.
+* Neither reads a stem: a cue/grace head with a short stem or none is kept whenever its blob is filled (test:
+  `test_a_small_filled_head_with_no_stem_is_kept`, disc 0.95).
+* One guard on the LETTER, not the head: an `f` box under 1.7 spaces wide is not an `f` (Brahms `glyph/1/0/7/0/13`, a
+  beam's tail boxed `dynamicF`, 1.49 wide against 1.96-2.88 for every one of Sean's 12 hand-labelled `f`s; a `p` is
+  legitimately 1.46-1.85).
+
+**Before/after on Sean's 9 tiles** (small re-gathers on this tree, GATHER+ADJUDICATE, first build -> this build):
+
+| tile | subject | Sean | first build | this build |
+|---|---|---|---|---|
+| 1 | Litolff `2/0/1/5/13` | dynamic ink | refused | refused (stroke, disc 0.81) |
+| 2 | Brahms `1/0/7/1/9` | dynamic ink | refused | refused (stroke, 0.66) |
+| 3 | Litolff `2/1/8/6/7` | note | kept | kept (disc 1.29, share 0.23) |
+| 4 | Litolff `2/1/0/8/8` | dynamic ink | refused | refused (stroke, 0.84) |
+| 5 | Litolff `2/0/1/2/9` | dynamic ink | refused | refused (stroke, 0.69) |
+| 6 | Litolff `3/0/1/3/6` | dynamic ink | KEPT (missed) | refused (stroke, 0.79) |
+| 7 | Litolff `2/0/7/5/6` | dynamic ink | refused | refused (stroke, 0.78) |
+| 8 | Litolff `2/0/2/1/13` | dynamic ink | refused | refused (body, share 0.50) |
+| 9 | Litolff `2/1/9/6/9` | note | REFUSED (wrong) | kept (disc 1.27, share 0.10) |
+
+All nine now agree with Sean. Population change against the unmodified-tree baseline: Litolff 7 newly refused (the six `f`
+fragments/`p` pieces above plus tile-10's `glyph/2/0/2/1/12`) and 1 relabelled (`glyph/2/0/10/2/12`, already refused as
+`belongs_to_a_nearer_staff`, a `p` fragment on a `dynamicP`, now named for what it is); Brahms 1 (tile 2). Nothing else in
+`notehead_is_not_a_notehead` moves, on 1,286 + 1,491 heads. Tile 10 itself: refused (`head_holds_the_letters_body`).
+
+**What was tried and refused:** connected-component share (a note merged with the `f` by a short stem reads 0.74, hooks
+the `f` cleaning disconnects read 0.08, no separation); head/letter confidence; staff position; ink fill (`Q.NOTEHEAD_INK`
+reads 0.65-1.0 on all of them); the first build's stem and size cuts (above).
+
+**Hand truth** (`data/hand-truth/pages/imslp317803/0.json`, still `labeling`): our page-0 heads lie on none of his 13 dynamic
+boxes and none of his 250 heads lies on one of our letter boxes, so the page does not exercise the rule; reported as that,
+not as a pass.
+
+**Open:** the thresholds sit in the middle of measured gaps from 13 heads on two pages; a thin real head (Litolff black
+heads read 0.63-0.76 at p10 on the plate, though none lies on a letter box here) that lay on a letter box would be refused as
+a stroke; a thick letter-shaped blob on a false letter box over a real head would be kept (the narrow-`f` guard covers the one
+measured). Shapes with no dynamic box over them and heads on direction-word boxes: not built.

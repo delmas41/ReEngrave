@@ -616,6 +616,23 @@ class Q(_Vocab):
     #: not a beam. ABSTAINS where the stroke has too little ink under its box
     #: or the cell has no staff-space unit.
     BEAM_STROKE_INK = "beam_stroke_ink"
+    #: ROADMAP 2.71 (Sean, 2026-10-09: *"The slash crosses both sides of the
+    #: stem with a thick line at an angle ... slashes never [connect to other
+    #: notes]"*). Filed on a CELL, one row per `Q.STEM` row the stem-slash
+    #: reader ran on, keyed by `detail["stem_row_id"]`: the NUMBER of tremolo
+    #: slashes on that stem (value, 0 where the reader ran and found none --
+    #: a READ zero, never an absence). `detail["strokes"]` lists every
+    #: stroke that crossed the stem, passing or refused, each with its
+    #: `reason` (None = a slash; else `one_sided`, `not_at_an_angle`,
+    #: `too_thin`, `not_straight`, `joins_another_stem`, `runs_on`,
+    #: `at_a_head`), its footprint `box` (canonical cell px, corners), its
+    #: `angle_deg`, `thickness_ratio` (against the staff lines' thickness) and
+    #: per-side reach in spaces; `detail["head_at_end"]` says whether a
+    #: detected notehead box stands at the stem's top / bottom end (a slashed
+    #: stem with neither is a head the detector never boxed). A ruler reading:
+    #: it says a slash is there, never that a box is or is not a note.
+    #: ABSTAINS where the cell has no erased raster or no staff-space unit.
+    STEM_SLASH = "stem_slash"
     #: ROADMAP 2.38. `benchmarks/omr-duration-narrowed-2026-09/FINDINGS.md`
     #: SS2: the single biggest `duration_narrowed` class -- `beams_ambiguous`,
     #: certain=0/possible=1, "nothing certainly covers this note, but one
@@ -1053,6 +1070,18 @@ class Q(_Vocab):
     #: reading of the page's ink (`READERS.CV_INK`), a second witness beside
     #: the detector's own letter, filed on the letter's glyph.
     DYNAMIC_LETTER_NEIGHBOURS = "dynamic_letter_neighbours"
+    #: ROADMAP (dynamic-not-a-head, Sean 2026-10-09: tile 10 *"Not a note -
+    #: dynamic p"*, tiles 3 and 9 *"two small notes just to the right of SF"*).
+    #: For a notehead box lying on a DETECTED dynamic letter's box: is the
+    #: head's ink the letter's own stroke or a filled head of its own? Two
+    #: ruler readings off the page raster, filed on the HEAD's glyph -- `disc_
+    #: spaces` (the widest filled disc inside the head box, in staff spaces: a
+    #: head is a filled blob, an `f`'s hook is a stroke) and `letter_ink_share`
+    #: (the fraction of the LETTER box's ink that lies inside the head box: a
+    #: `p`'s bowl is most of the `p`; a note beside an `sf` is a sliver of
+    #: the box). Only filed where the head lies at least 0.2 inside a letter
+    #: box; a head clear of every letter has no row, which is not a reading.
+    NOTEHEAD_LETTER_INK = "notehead_letter_ink"
 
     #: PROMOTED from the `CV_HAIRPINS` half of `WEDGE_BOX.band_offset_spaces`,
     #: and MEASURED for the detector half, which never carried one.
@@ -2109,6 +2138,9 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 2.74: thickness, straightness and end-stem rulers over one beam
     #: stroke's own ink -- same reason as `DOT_STROKE_INK`.
     "BEAM_STROKE_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.71: a tracked-stroke ruler over one stem's own ink -- same
+    #: reason as `BEAM_STROKE_INK`.
+    "STEM_SLASH": CLAIM.MEASUREMENT,
     #: ROADMAP 2.38: a windowed ink-continuity test between a stem's own tip
     #: and a candidate beam stroke, off the erased raster -- a ruler
     #: reading, same reason as `STEM_TIP_INK`; it says whether ink runs
@@ -2201,6 +2233,9 @@ CLAIMS: "dict[str, str]" = {
     "KEYSIG_RUN_POSITION": CLAIM.MEASUREMENT,
     "DYNAMIC_BAND_POSITION": CLAIM.MEASUREMENT,
     "DYNAMIC_LETTER_NEIGHBOURS": CLAIM.MEASUREMENT,
+    #: two ruler readings off the raster (a filled-disc width, an ink share);
+    #: what they MEAN for the head is `notehead_is_not_a_notehead`'s.
+    "NOTEHEAD_LETTER_INK": CLAIM.MEASUREMENT,
     "DIRECTION_BAND_POSITION": CLAIM.MEASUREMENT,
     "WEDGE_BAND_POSITION": CLAIM.MEASUREMENT,
 
@@ -2471,10 +2506,18 @@ class READERS(_Vocab):
     #: line. Its own reader name: it measures the ink UNDER a stroke some
     #: other reader (`CV_LINES`, `DETECTOR`) named.
     CV_BEAM_SHAPE = "cv_beam_shape"          # gather: thickness/bow/end stems
+    #: `gather._observe_stem_slashes` -- ROADMAP 2.71. Reads the staff-ERASED
+    #: cell raster and follows each stroke that touches a stem outward on both
+    #: sides; the ONE place a tremolo slash is named, read by the beam, hook,
+    #: rest and notehead paths so they refuse it by the same rule.
+    CV_STEM_SLASH = "cv_stem_slash"          # gather: a stroke crossing one stem
     #: ROADMAP 2.68: letter ink beside a dynamic letter, read on the PAGE render
     #: (`pws.page.rgb`) with every detected glyph blanked (`gather.
     #: _ink_without_detections`) -- not `CV_INK`'s staff-erased components.
     CV_LETTER_NEIGHBOURS = "cv_letter_neighbours"
+    #: `gather.gather_notehead_letter_ink`: a head box against a dynamic
+    #: letter's box, read off the page's raster.
+    CV_NOTEHEAD_LETTER_INK = "cv_notehead_letter_ink"
     #: `gather.gather_arc_ink` -- ROADMAP 2.60. Reads the page's own binary
     #: raster (`pws.page.binary`, the staff lines left in, like `LEDGER_
     #: FARHEAD`), so it shares a crop with every other reader of this page

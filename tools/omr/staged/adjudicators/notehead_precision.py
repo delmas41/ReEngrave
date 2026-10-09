@@ -1176,6 +1176,60 @@ def _tremolo_stem_box(ev: Evidence, cell, stem_id: Optional[str]
     return None
 
 
+#: ROADMAP 2.71 -- a second witness that this box IS the tremolo slash:
+#: GATHER's own `Q.STEM_SLASH` reading (a thick angled stroke followed out of
+#: BOTH sides of one stem, joined to no other) stands inside the box. The box
+#: must hold at least this share of the slash's CENTRE LINE and be no more than
+#: this many times the stroke's own area (length x thickness; a head with a
+#: slash across it is a bigger box
+#: and is not asked), and must sit away from both stem ends (the same POSITION
+#: test as above: a head sits AT an end, never on the shaft).
+SLASH_READ_COVER_MIN = 0.6
+SLASH_READ_BOX_MAX_FOOTPRINTS = 4.0
+
+
+def _slash_read_under_box(ev: Evidence, subject, box_xywh
+                          ) -> Optional[Tuple[Any, Dict[str, Any]]]:
+    """`(Q.STEM_SLASH row, stroke)` where a PASSING slash read by GATHER lies
+    inside `box_xywh` (a notehead-classed box, canonical cell px) on the shaft
+    of the stem it was read on; else `None`. ROADMAP 2.71. Reads the row,
+    never the raster -- the one place a slash is named is `gather.stem_slashes`.
+    """
+    cell = subject.at(Kind.CELL)
+    rows = ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    if not rows:
+        return None
+    x, y, w, h = box_xywh
+    for r in rows:
+        stem_xywh = _tremolo_stem_box(ev, cell, (r.detail or {}).get("stem_row_id"))
+        for s in (r.detail or {}).get("strokes") or ():
+            b = s.get("box")
+            if s.get("reason") is not None or not isinstance(b, (list, tuple)) \
+                    or len(b) != 4 or stem_xywh is None:
+                continue
+            line = s.get("centreline")
+            thick = float(s.get("thickness_px") or 0.0)
+            if not (isinstance(line, (list, tuple)) and len(line) == 4):
+                continue
+            lx0, ly0, lx1, ly1 = (float(v) for v in line)
+            # the share of the stroke's CENTRE LINE inside the box: a box
+            # covers a slash by covering where it runs, not the empty corners
+            # of the rectangle that bounds an angled stroke
+            n = 9
+            inside = sum(
+                1 for i in range(n)
+                if x <= lx0 + (lx1 - lx0) * i / (n - 1.0) <= x + w
+                and y <= ly0 + (ly1 - ly0) * i / (n - 1.0) <= y + h)
+            if inside / float(n) < SLASH_READ_COVER_MIN:
+                continue
+            area = max(1e-6, ((lx1 - lx0) ** 2 + (ly1 - ly0) ** 2) ** 0.5 * thick)
+            if (w * h) > SLASH_READ_BOX_MAX_FOOTPRINTS * area:
+                continue
+            if _tremolo_position_ok(box_xywh, stem_xywh):
+                return r, s
+    return None
+
+
 def _is_tremolo_slash(ev: Evidence, subject) -> bool:
     """Do ALL THREE of `subject`'s own tests pass -- the same tests
     `_tremolo_slash_crosses_stem` makes for `ev.subject`, asked here of any
@@ -1189,9 +1243,6 @@ def _is_tremolo_slash(ev: Evidence, subject) -> bool:
     """
     if not TREMOLO_SLASH_SHIPS:
         return False
-    cross_detail = _notehead_stem_cross_detail(ev, subject)
-    if cross_detail is None:
-        return False
     box_row = None
     for r in ev.rows(Q.GLYPH_BOX, subject=subject):
         box_row = r
@@ -1199,6 +1250,13 @@ def _is_tremolo_slash(ev: Evidence, subject) -> bool:
             or len(box_row.value) != 5:
         return False
     box_xywh = tuple(float(v) for v in box_row.value[1:])
+    # ROADMAP 2.71: the same second witness `_tremolo_slash_crosses_stem`
+    # takes, so a stacked group's keep-choice never picks a read slash.
+    if _slash_read_under_box(ev, subject, box_xywh) is not None:
+        return True
+    cross_detail = _notehead_stem_cross_detail(ev, subject)
+    if cross_detail is None:
+        return False
     cell = subject.at(Kind.CELL)
     stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
     if stem_xywh is None:
@@ -1226,6 +1284,26 @@ def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
     `False`. These tests assert the SIGNAL, not a refusal, the same
     discipline `TestUnladdered` uses.
     """
+    # ⚠️ ROADMAP 2.71 -- THE SECOND WITNESS, FIRST. GATHER's `Q.STEM_SLASH`
+    # followed a thick angled stroke out of both sides of one stem; if that
+    # stroke is what this box covers (and the box stands on the shaft, away
+    # from both ends), the box is the slash whatever the cell's own ink split
+    # said -- Litolff p6 `glyph/6/1/11/3/3`, a slash kept as a black head
+    # because the split read it round. It is a witness, never a fallback: the
+    # three-test reading below still runs and still records its signal.
+    if TREMOLO_SLASH_SHIPS and isinstance(this_row.value, (list, tuple)) \
+            and len(this_row.value) == 5:
+        read = _slash_read_under_box(
+            ev, this_row.subject,
+            tuple(float(v) for v in this_row.value[1:]))
+        if read is not None:
+            slash_row, stroke = read
+            detail["tremolo_slash_signal"] = {
+                "read_by": "stem_slash", "angle_deg": stroke.get("angle_deg"),
+                "thickness_ratio": stroke.get("thickness_ratio"),
+                "would_fire": True}
+            return Ruling(value=True, reason="tremolo_slash_crosses_stem",
+                          used=(this_row.id, slash_row.id), detail=detail)
     cross_detail = _notehead_stem_cross_detail(ev, this_row.subject)
     if cross_detail is None:
         return None
@@ -2053,6 +2131,116 @@ def _timesig_digit_duplicate_refusal(ev: Evidence, this_row,
                   used=(this_row.id, best.id), detail=detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# A notehead box lying ON a detected dynamic letter's box, whose ink is the
+# letter's stroke and not a filled head of its own, is the letter's ink
+# (Sean 2026-10-09, `out/print/2.73-review` tile 10: "Not a note - dynamic p")
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGED, ADJUDICATE. The bowl of a printed `p` (of `p cresc.`) was boxed as a
+# quarter head and read as one; the hook of an `f`, and the whole body of an
+# `f` on Brahms, are boxed the same way. ONE INK, ONE MARK: the detector ALSO
+# drew a `dynamic{F,P,M,S,Z,R}` box on that ink.
+#
+# ⚠️ THE FIRST BUILD DECIDED ON BOXES (head inside letter box, a 3-space CV stem
+# spares it, a letter box over 3.6 x 4.6 spaces spares it) AND WAS WRONG, per
+# Sean on the blind tiles: two small notes just to the right of an `sf` lie
+# inside the `sf`'s wide box, the CV stem rows miss one of them, and the box
+# says nothing about whose ink it is. The letter's box is wider than its ink.
+# SO THE QUESTION IS ASKED OF THE INK, filed by GATHER (`gather_notehead_
+# letter_ink`, `Q.NOTEHEAD_LETTER_INK`, one row per head lying at least 0.2
+# inside a letter box), and this reads it:
+#   * `disc_spaces` -- the widest filled disc inside the head box. A notehead is
+#     a filled blob: 1.13-1.27 on every real head measured beside a letter
+#     (the two notes at `sf`, a note under an `f`, a Brahms beamed head); an
+#     `f`'s hook or top is a stroke: 0.74-0.84 on all six measured.
+#     Below `DYNAMIC_LETTER_STROKE_DISC_SPACES` the ink is a stroke: the letter's.
+#   * `letter_ink_share` -- how much of the LETTER box's ink the head box holds.
+#     A `p`'s bowl is a filled blob as thick as a head (disc 1.09-1.24), so the
+#     disc cannot tell it from a head; it is most of the `p` (0.60-0.62), where
+#     a note beside an `sf` is a sliver of that wide box (0.11-0.22). At or
+#     above `DYNAMIC_LETTER_BODY_SHARE` the head IS the letter.
+# Neither reads a stem, so nothing here depends on a normal-size stem (a cue or
+# grace head with a short stem is kept whenever its blob is filled), and the
+# thresholds sit mid-gap of the measured populations (strokes 0.74-0.84 /
+# heads 1.13-1.27; slivers 0.08-0.22 / bodies 0.60-0.86), in staff spaces and
+# fractions, never pixels. The numbers are in `benchmarks/omr-notehead-
+# precision-2026-09/FINDINGS.md`.
+#
+# THE TEST IS STILL OVERLAP, never proximity: the head box must lie at least
+# `DYNAMIC_LETTER_HEAD_ON_MIN` inside the letter's box (contact is 0.0-0.3).
+#
+# ONE GUARD ON THE LETTER, NOT THE HEAD: an `f` box narrower than
+# `DYNAMIC_F_MIN_W_SPACES` is not an `f` (Brahms `glyph/1/0/7/0/13`, a beam's
+# tail boxed `dynamicF` at 0.43 under a real beamed head: 1.49 wide against
+# 1.96-2.88 for all 12 of Sean's hand-labelled `f`s; a `p` is 1.46-1.85).
+#
+# WHERE THE LETTER LIVES: page-wide in GATHER (the detector files it under the
+# cell it was cut from, often the next staff's -- tile 10's `p` is
+# `glyph/2/0/3/1/6`, its bowl-head `glyph/2/0/2/1/12`).
+#
+# Not a word reader: a head on a direction word's letters (the `c` of `cresc.`)
+# is a different question, reported and not refused (see the FINDINGS).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Fraction of the HEAD box's area that lies inside a letter box.
+DYNAMIC_LETTER_HEAD_ON_MIN = 0.4
+#: Widest filled disc (staff spaces) below which a head's ink is a stroke.
+DYNAMIC_LETTER_STROKE_DISC_SPACES = 0.9
+#: Share of the letter box's ink the head box holds, at or above which the head
+#: is the letter's body.
+DYNAMIC_LETTER_BODY_SHARE = 0.4
+#: An `f` box narrower than this is not an `f`.
+DYNAMIC_F_MIN_W_SPACES = 1.7
+
+DYNAMIC_LETTER_REASON = "on_a_dynamic_letter"
+
+
+def _on_a_dynamic_letter_refusal(ev: Evidence, box_row,
+                                 detail: Dict[str, Any]) -> Optional[Ruling]:
+    """See the section comment above. Reads `Q.NOTEHEAD_LETTER_INK`, the one
+    row GATHER files per head lying on a letter box; no row means the head is
+    clear of every letter (or the page had no raster), and nothing is decided."""
+    rows = ev.rows(Q.NOTEHEAD_LETTER_INK)
+    if not rows:
+        return None
+    row = rows[-1]
+    d = row.detail or {}
+    try:
+        disc = float(row.value)
+        share = float(d["letter_ink_share"])
+        on = float(d["head_in_letter"])
+    except (TypeError, ValueError, KeyError):
+        return None
+    if on < DYNAMIC_LETTER_HEAD_ON_MIN:
+        return None
+    signal: Dict[str, Any] = {
+        "dynamic_letter": d.get("letter"), "letter": d.get("letter_class"),
+        "head_in_letter": round(on, 3), "disc_spaces": round(disc, 3),
+        "letter_ink_share": round(share, 3),
+        "letter_w_spaces": d.get("letter_w_spaces"),
+        "letter_h_spaces": d.get("letter_h_spaces")}
+    w_sp = d.get("letter_w_spaces")
+    if d.get("letter_class") == "dynamicF" and w_sp is not None \
+            and float(w_sp) < DYNAMIC_F_MIN_W_SPACES:
+        signal["spared"] = "letter_box_too_narrow_for_an_f"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    if disc < DYNAMIC_LETTER_STROKE_DISC_SPACES:
+        signal["why"] = "stroke_not_a_filled_head"
+    elif share >= DYNAMIC_LETTER_BODY_SHARE:
+        signal["why"] = "head_holds_the_letters_body"
+    else:
+        signal["spared"] = "a_filled_head_of_its_own"
+        detail["dynamic_letter_signal"] = signal
+        return None
+    detail.update(signal)
+    # ⚠️ A LITERAL, not `DYNAMIC_LETTER_REASON`: `brakes.vocabulary_gap` reads the
+    # `reason=` slot's AST and a computed one leaves the whole module unresolved.
+    return Ruling(value=True, reason="on_a_dynamic_letter",
+                  used=(box_row.id, row.id), detail=detail)
+
+
 def _ledger_rungs_in_cell(ev: Evidence) -> List[Tuple[float, float, float]]:
     """Every `ledgerLine` glyph's canonical `(x0, x1, y_centre)` in this cell.
 
@@ -2511,6 +2699,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # search where one exists (`Q.GLYPH_BOX`'s own detector
                   # centre otherwise) -- see its own comment.
                   Q.NOTEHEAD_RECENTRE,
+                  # A head whose ink is a detected dynamic letter's stroke
+                  # (`_on_a_dynamic_letter_refusal`).
+                  Q.NOTEHEAD_LETTER_INK,
                   # ⚠️ ROADMAP 2.42: GATHER's own 1/2/3-head fit over a
                   # stacked group -- see `_stacked_head_duplicate_refusal`'s
                   # own docstring. SUPERSEDES 2.40's pair-wise use of
@@ -2538,7 +2729,10 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # (`_tremolo_position_ok`) now reads the matched `Q.STEM`
                   # row's own canonical box directly (`_tremolo_stem_box`),
                   # so the declaration is live again, for a different reader.
-                  Q.STEM),
+                  Q.STEM,
+                  # ⚠️ ROADMAP 2.71: GATHER's read tremolo slash -- the second
+                  # witness `_tremolo_slash_crosses_stem` takes.
+                  Q.STEM_SLASH),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -2547,7 +2741,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
-          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM),
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -2559,6 +2753,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
+                                     DYNAMIC_LETTER_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -2835,6 +3030,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     timesig_dup = _timesig_digit_duplicate_refusal(ev, box_row, detail)
     if timesig_dup is not None:
         return timesig_dup
+    # A notehead box lying ON a detected dynamic letter's box is that letter's
+    # ink (Sean 2026-10-09, `out/print/2.73-review` tile 10). Same-ink family,
+    # so it sits with the other "is this ink already another mark" questions
+    # and before the ones that ask what it MEANS.
+    on_letter = _on_a_dynamic_letter_refusal(ev, box_row, detail)
+    if on_letter is not None:
+        return on_letter
     # ⚠️ ROADMAP 2.12l. AFTER THE SHAPE RULES (a sliver or a too-narrow box is
     # not a note at all regardless of what else prints at this x) and BEFORE
     # the ownership contest (a meter digit is nobody's note, so there is

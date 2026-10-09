@@ -837,6 +837,76 @@ def _rest_has_a_stem_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
                   detail=detail)
 
 
+#: A rest-classed box must be at least this many staff spaces tall before a
+#: tremolo slash on its stem makes it a stem. Plain quarter rests measured at
+#: 2.8 (median, Brahms p1) to 3.1 (Litolff p3, p6); the slashed stem boxed as a
+#: rest is 4.5 (Litolff p6 tile 3). 3.8 sits between; NOT CONFIRMED on a plate
+#: whose rests are drawn larger than 3.4 spaces.
+REST_SLASHED_MIN_HEIGHT_SPACES = 3.8
+
+
+def _rest_on_a_slashed_stem_refusal(ev: Evidence, this_row,
+                                    detail: Dict[str, Any]
+                                    ) -> Optional[Ruling]:
+    """ROADMAP 2.71 (Sean, 2026-10-09: *"The slash crosses both sides of the
+    stem with a thick line at an angle"*): a rest-classed box lying on a stem
+    that carries a read TREMOLO SLASH is that note's stem, not a rest.
+
+    Litolff p6 (2.65 head-fill tile 3): a half note with a slash, its stem 4.5
+    spaces tall, boxed `restQuarter` by the detector and kept a quarter REST
+    -- a silence written where a note is, the head beneath it never boxed.
+    `rest_has_a_stem` cannot say this (a real quarter rest's own stroke reads
+    as a `Q.STEM`, 6 of 8 of its refusals were real rests), and `Q.STEM_SLASH`
+    can say more: of 83 rest boxes standing on a stem on Litolff p6, exactly
+    one reads a slash and it is this one. But NOT ALONE -- the reader also
+    passes two real Brahms p1 quarter rests (their zigzag crosses the
+    "stem"), so the box must also be taller than a plain rest
+    (`REST_SLASHED_MIN_HEIGHT_SPACES`). The refusal reads those facts; it
+    measures nothing. Any rest class: a rest never wears a tremolo.
+    """
+    val = this_row.value
+    if not isinstance(val, (list, tuple)) or len(val) != 5:
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    bx, by, bw, bh = (float(val[1]), float(val[2]), float(val[3]),
+                      float(val[4]))
+    rows = ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    if not rows:
+        return None
+    # ⚠️ THE HEIGHT, MEASURED (FINDINGS 2.71): a quarter rest's own diagonal
+    # strokes cross its "stem" as a slash does and the reader passes two of
+    # them on Brahms p1, so a slash alone cannot say rest-or-stem. A rest box
+    # that is TALLER than any plain rest can be is a stem with its mark: a
+    # plain quarter rest is ~3 spaces (Brahms p1 median 2.8, the two false
+    # slashes 2.8) and the slashed stem is a stem plus its head (Litolff p6
+    # tile 3: 4.5). No unit, no refusal (rule 8).
+    sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=cell)
+    if not sp_rows or float(sp_rows[-1].value) <= 0 \
+            or bh < REST_SLASHED_MIN_HEIGHT_SPACES * float(sp_rows[-1].value):
+        return None
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    on = {s.id for s in _stems_on((bx, by, bw, bh), stems)}
+    if not on:
+        return None
+    for r in rows:
+        if (r.detail or {}).get("stem_row_id") not in on:
+            continue
+        for s in (r.detail or {}).get("strokes") or ():
+            b = s.get("box")
+            if s.get("reason") is not None or not isinstance(b, (list, tuple)) \
+                    or len(b) != 4:
+                continue
+            if b[0] < bx + bw and b[2] > bx and b[1] < by + bh and b[3] > by:
+                detail["slash"] = {"angle_deg": s.get("angle_deg"),
+                                   "thickness_ratio": s.get("thickness_ratio")}
+                return Ruling(value=True, reason="rest_is_a_slashed_stem",
+                              used=(this_row.id, r.id), detail=detail)
+    return None
+
+
 def _lines_touched(page_box, line_ys, tol_px: float) -> List[float]:
     """Every staff line this box's ink TOUCHES: an edge sits within `tol_px`
     of the line, OR the line's own y falls inside the box's y-range (a line
@@ -1538,15 +1608,16 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
-                   Q.STEM),
+                   Q.STEM, Q.STEM_SLASH),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.CELL_STAFF_SPACE, Q.STEM),
+           Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_is_a_duplicate_box",
+                                     "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
                                      "rest_touches_two_staff_lines",
@@ -1619,6 +1690,12 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         stem = _rest_has_a_stem_refusal(ev, box_row, detail)
         if stem is not None:
             return stem
+        # ROADMAP 2.71, AFTER `rest_has_a_stem` so a refusal already standing
+        # keeps its reason: this one only adds the rest `rest_has_a_stem`
+        # cannot say (a quarter rest's own stroke reads as a stem).
+        slashed = _rest_on_a_slashed_stem_refusal(ev, box_row, detail)
+        if slashed is not None:
+            return slashed
         two_lines = _rest_touches_two_staff_lines_refusal(ev, box_row, detail)
         if two_lines is not None:
             return two_lines

@@ -383,6 +383,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "position of either. Sean 2026-10-09: a p alone is piano, a p among "
         "letters of a known word is the word's.",
         "dynamic"),
+    "NOTEHEAD_LETTER_INK": (
+        RELATION,
+        "dynamic-not-a-head: for a notehead box lying on a detected dynamic "
+        "letter's box, the widest filled disc in the head box (staff spaces) "
+        "and the share of the LETTER box's ink the head box holds -- a "
+        "relation between two detected boxes and the ink under them, read "
+        "off the page raster. Scoreless: it names nothing a note or a "
+        "letter, only whether the head's ink is a stroke or a filled blob.",
+        None),
     "DYNAMIC_BAND_POSITION": (
         STAFF_GRID_POSITION,
         "PROMOTED, not invented: `DYNAMIC_LETTER.band_offset_spaces` is the "
@@ -536,6 +545,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "off the UNERASED cell raster. A relation between a located "
         "`Q.BEAM_STROKE` row and the paper under it; scoreless, same "
         "reason as `STEM_TIP_INK`.",
+        None),
+    "STEM_SLASH": (
+        RELATION,
+        "ROADMAP 2.71 (Sean, 2026-10-09: a tremolo slash is a thick angled "
+        "stroke crossing BOTH sides of one stem and joined to no other "
+        "note): how many such strokes one `Q.STEM` row carries, each followed "
+        "outward from the stem on the staff-ERASED raster. A relation between "
+        "a located stem and the paper beside it; scoreless, same reason as "
+        "`STEM_TIP_INK`.",
         None),
     "BEAM_STEM_JOIN": (
         RELATION,
@@ -727,6 +745,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # (`pws.page.rgb`), every detected glyph blanked, staff lines left in: a
     # staff line is too thin to pass its letter-size test.
     "CV_LETTER_NEIGHBOURS": ("staged/gather.py", "_ink_without_detections"),
+    "CV_NOTEHEAD_LETTER_INK": ("staged/gather.py",
+                               "gather_notehead_letter_ink"),
     # ⚠️ ROADMAP 2.60. Also `staged/gather.py` -- reads the PAGE's binary
     # raster (`pws.page.binary`), staff lines left in, like `LEDGER_FARHEAD`:
     # the lines of every staff are removed by the reader itself.
@@ -740,6 +760,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.74. Also `staged/gather.py`; reads the UNERASED
     # `cell.image` (the staff-erase thins a beam where it crosses a line).
     "CV_BEAM_SHAPE": ("staged/gather.py", "gather_beam_stroke_ink"),
+    # ⚠️ ROADMAP 2.71. Also `staged/gather.py`; reads `image_no_staff`.
+    "CV_STEM_SLASH": ("staged/gather.py", "_observe_stem_slashes"),
     # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half
     # only). Also `staged/gather.py`, and `_raster_of`'s FOUR-WORD
     # vocabulary (ERASED / INTACT / ERASED_ELSE_INTACT / OWN_ERASURE) has no
