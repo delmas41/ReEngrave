@@ -1766,7 +1766,7 @@ reads only DECIDED augmentation roles, so the note is not dotted. Nothing is
 decided about what the box IS. `check` TOTAL 192 (= main); capture/producer
 entries added.
 
-**Measured (Brahms p0-1, 46 real dot boxes with ink on page 1).** Real dots: 0.0
+**Measured (Brahms p1, 44 dot boxes holding over 100 ink pixels).** Real dots: 0.0
 on every one. Refused: glyph/1/1/8/3/15 (0.93, tile 13's tip) and
 glyph/1/0/13/0/24 (1.0, 18 ink pixels, a box on the base of a stem against a
 head; crop `out/print/2.69/dot_02.png`: no dot is printed there).
