@@ -22,6 +22,15 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 — ROADMAP 1.7: Notes on a box are kept; cut-off arcs join; "unsure" comes back as a flag
+
+Sean (2026-10-09): slurs and ties are cropped off the top of some cells. A non-text box now keeps
+its Notes (`Box.note`; they were dropped before). `checks.marks()` joins touching same-family boxes
+noted "part" into one mark (an arc crossing a barline is whole in no cell). New fixed checks:
+`part_without_partner` (a lone "part" piece) and `labeler_unsure` (a box noted "unsure" returns to
+Sean as a flag). README "How to box" gains the slur/tie line. Three new tests run RED first; breaking
+`_touch` and the "unsure" match in memory each turned its test red.
+
 ## 2026-10-09 (evening) — 2.72 landed: meter 9/8 and the bar-9 6/8 change
 
 - Denominator re-read from its own half; courtesy past the last barline is cautionary; `locate_meter_by_halves` at bar heads;
@@ -39,6 +48,15 @@ pointing at headings no longer in the file.)*
   heads 12 -> 18 right. Fast 6,474 passed; check 192.
 - 1.7 merged (`tools/omr/hand_truth/`, Sean's Brahms 317803 pdf 0 labels, 887 boxes). `dimin` in the lexicon. 2.65: 22 beam/flag heads, 6 head-fill,
   8 held bars, 10 dynamics bars judged blind by Sean; rows 2.69-2.74 opened from his rulings (DECISIONS 2026-10-09).
+
+## 2026-10-09 — ROADMAP 1.7: the pre-fill never queues staff lines; README records how to box
+
+Sean (2026-10-08): the detector's own `staff` boxes reached the queue on every cell. Staff
+lines are confirmed per staff on the bench's L* boxes, never boxed, so `prefill_detector`
+and `prefill_old_labels` now skip the class and count it in the report (`boxes_not_proposed`).
+New test run RED against the unfixed tree first. `data/hand-truth/README.md` gains "How to
+box": one box per mark, stems/beams/flags, ledger lines, staff lines, system bracket (`brace`
++ Notes `bracket`), words as `text`. Branch `claude/hand-labeled-truth-1.7`.
 
 ## 2026-10-09 — ROADMAP 0.9: nine slow-tier failures on main, bisected and closed
 

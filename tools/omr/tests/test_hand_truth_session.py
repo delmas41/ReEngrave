@@ -184,6 +184,21 @@ def test_a_text_box_waits_for_its_words(live):
     assert store.load(page_path).box_by_ref(f"{a}#T0").text == "Flauti"
 
 
+
+def test_a_note_on_a_drawn_mark_is_kept(live):
+    # Sean 2026-10-09: an arc cut off by the crop is boxed piece by piece with
+    # Notes "part"; a mark he cannot name gets "unsure". Both must reach the page.
+    client, page_path, bench, a, b = live
+    st = _state(client, a)
+    st["added_detections"] = [{"id": "S0", "human_class": "slur", "notes": "part",
+                               "bbox": {"x": 10, "y": 10, "w": 200, "h": 30}},
+                              {"id": "S1", "human_class": "restQuarter",
+                               "bbox": {"x": 300, "y": 100, "w": 40, "h": 90}}]
+    _save(client, a, st)
+    page = store.load(page_path)
+    assert page.box_by_ref(f"{a}#S0").note == "part"
+    assert page.box_by_ref(f"{a}#S1").note is None  # the control: no note, none stored
+
 def test_text_and_noise_are_in_the_picker_only_in_page_store_mode(tmp_path, cut, live):
     client = live[0]
     names = {c["name"] for c in client.get("/api/classes").json()}
@@ -239,6 +254,34 @@ def test_each_fixed_check_fires_on_its_case_and_not_on_its_control():
     assert any(k == "tie_heads_differ" and t.id in ids for k, ids in kinds)
     assert not any(k == "staff_starts_without_clef" for k, _ in kinds)
 
+
+
+def test_arc_pieces_marked_part_join_into_one_mark_and_a_lone_piece_is_flagged():
+    p = _check_page()
+    p.add_cell(store.Cell(id="s0-st0-m1", kind="measure", rect=(500, 0, 1000, 400), canonical_w=500,
+                          canonical_h=400, system=0, staff=0, measure=1,
+                          staff_line_ys=[100, 120, 140, 160, 180]))
+    left = p.draw("s0-st0-m0", "slur", (300, 60, 500, 90), note="part")
+    right = p.draw("s0-st0-m1", "slur", (0, 62, 150, 92), note="part")      # page x 500..650
+    lone = p.draw("s0-st0-m0", "tie", (800, 60, 900, 80), note="part")      # no partner
+    a = p.draw("s0-st0-m0", "slur", (100, 200, 200, 220))                    # control: no note,
+    b = p.draw("s0-st0-m0", "slur", (205, 200, 300, 220))                    # touching, stays two
+    marks = checks.marks(p)
+    joined = [m for m in marks if set(m["box_ids"]) == {left.id, right.id}]
+    assert len(joined) == 1 and joined[0]["rect"] == pytest.approx((300, 60, 650, 92))
+    assert {a.id} in [set(m["box_ids"]) for m in marks] and {b.id} in [set(m["box_ids"]) for m in marks]
+    kinds = {(f.kind, tuple(f.box_ids)) for f in checks.run_all(p)}
+    assert ("part_without_partner", (lone.id,)) in kinds
+    assert not any(k == "part_without_partner" and left.id in ids for k, ids in kinds)
+
+
+def test_a_mark_labeled_unsure_comes_back_as_a_question():
+    p = _check_page()
+    u = p.draw("s0-st0-m0", "slur", (300, 60, 500, 90), note="Unsure - tie?")
+    sure = p.draw("s0-st0-m0", "slur", (600, 60, 700, 90))                  # control
+    kinds = {(f.kind, tuple(f.box_ids)) for f in checks.run_all(p)}
+    assert ("labeler_unsure", (u.id,)) in kinds
+    assert not any(k == "labeler_unsure" and sure.id in ids for k, ids in kinds)
 
 def test_a_resolved_flag_is_never_raised_again():
     p = _check_page()
@@ -330,6 +373,36 @@ def test_a_detector_box_on_an_old_human_box_is_dropped(monkeypatch, cut):
     assert sorted(q.source.split(":")[0] for q in page.queue) == ["detector", "sean-v18"]
     rest = next(q for q in page.queue if q.cls == "restQuarter")
     assert rest.rect == pytest.approx(c.to_page((500, 300, 520, 360)))
+
+
+def test_a_staff_line_is_never_queued_it_is_confirmed_per_staff(monkeypatch, cut):
+    # Sean 2026-10-08: the detector's own "staff" boxes landed in the queue on
+    # every cell; staff lines are confirmed on the L* boxes, never boxed.
+    from types import SimpleNamespace
+
+    import tools.omr.yolo_detector as yd
+    from tools.omr.hand_truth import session
+
+    page, images, mcells = cut
+    page = store.PageTruth.from_json(json.loads(json.dumps(page.to_json())))
+
+    class FakeDetector:
+        def __init__(self, *a, **k):
+            pass
+
+        def detect(self, mc, conf_threshold=0.25):
+            if (mc.system_index, mc.staff_index, mc.measure_index) != (0, 0, 1):
+                return []
+            return [SimpleNamespace(x_canonical=0, y_canonical=80, width_canonical=900, height_canonical=200,
+                                    smufl_name="staff", confidence=0.9),
+                    SimpleNamespace(x_canonical=500, y_canonical=300, width_canonical=20, height_canonical=60,
+                                    smufl_name="restQuarter", confidence=0.8)]
+
+    monkeypatch.setattr(yd, "YoloDetector", FakeDetector)
+    regions = {x.id: images[x.id] for x in page.cells if x.kind != "measure"}
+    rep = session.prefill_detector(page, mcells, regions, Path("w.pt"))
+    assert [q.cls for q in page.queue] == ["restQuarter"]  # the control: a real mark still queues
+    assert rep["boxes_not_proposed"] == {"staff": 1}
 
 
 # ------------------------------------------------------------------ perfect eyes (C6)

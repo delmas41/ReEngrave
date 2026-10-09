@@ -53,3 +53,31 @@ git add $PAGE data/hand-truth/pages/imslp317803/0.review.json
 If a save ever shows ERROR in the UI, the verdict is on disk but the page did not take
 it: `python3 -m tools.omr.hand_truth.session resync $PAGE --bench $BENCH` folds every
 saved cell back in.
+
+## How to box (Sean's questions while labeling Brahms pdf 0, 2026-10-08)
+
+- **One mark, one box, for the whole page.** A mark seen from two overlapping cells is
+  the same box; box it where it is whole, skip the cut-off copy at a crop edge.
+  Duplicates: keep the right proposal (`t`, or `c` to fix its class), `f` the other;
+  never `f` a green confirmed box to clear a new proposal on it (that deletes it everywhere).
+- **A note that belongs to another staff:** box it where you see it. Ownership is not
+  asked now; only the notes the reader cannot settle come back as a short queue later.
+- **Stems:** `stem`, head to tip; a chord shares one stem, one box. **Beams:** `beam`,
+  one box per beam line (a 16th group has two, stacked; a stub gets its own).
+  **Flags:** `flag8thUp/Down`, `flag16thUp/Down`, … — one box for the whole flag (a 16th
+  is one box), Up/Down is the stem's direction, grace notes use the `…Small` flags.
+- **Ledger lines:** `ledgerLine`, one box per stroke, including the one through a
+  notehead (head and ledger boxes overlap), and every ledger between head and staff.
+- **Staff lines:** never drawn. Confirm the five thin `L*` boxes on a staff's first
+  cell; any other `staff` pre-fill is FP (the detector no longer queues them).
+- **System bracket** (thick, hooked): `brace` with Notes `bracket`; a curly brace is
+  plain `brace`; the thin line joining the staves at the left edge is `barlineSingle`.
+- **Slurs and ties cut off by the crop:** look with **Page context** (tie = two heads on
+  one line or space; slur = different pitches). Box the arc where it is whole (often the
+  cell of the staff above, same bar). Where no cell shows it whole (it crosses a
+  barline), box each piece with Notes `part`: touching `part` pieces of one family are
+  one mark (`checks.marks`), and a lone `part` is flagged. Can't tell what a mark is:
+  box your best guess with Notes `unsure` — it comes back to you as a flag.
+- **Words** (`legato`, `Flauti`, tempo): `text`, one box per word or one-line phrase,
+  the words typed in Notes; split only where notes or a barline break it. Dynamics
+  (`p`, `f`, `sf`) keep their dynamic classes.

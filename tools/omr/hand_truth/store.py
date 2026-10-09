@@ -94,6 +94,9 @@ class Box:
     #: ``<cell_id>#<added id>`` for a box drawn in the labeling UI — the key that
     #: makes re-syncing the same saved cell idempotent (the UI autosaves).
     ref: Optional[str] = None
+    #: Sean's Notes on a non-text box: "part" (one piece of a mark the crop
+    #: cut, joined by ``checks.marks``) or "unsure" (raised back to him).
+    note: Optional[str] = None
 
     def validate(self) -> None:
         if self.origin not in ORIGINS:
@@ -233,12 +236,12 @@ class PageTruth:
     # ------------------------------------------------------------ boxes
     def draw(self, cell_id: str, cls: str, cell_rect: Rect, *, labeler: str = "sean",
              text: Optional[str] = None, owner_staff: Optional[Tuple[int, int]] = None,
-             staff_position: Optional[int] = None) -> Box:
+             staff_position: Optional[int] = None, note: Optional[str] = None) -> Box:
         """A box Sean drew in a cell's canonical frame, stored in page pixels."""
         c = self.cell(cell_id)
         box = Box(id=self._next_id("b"), cls=cls, rect=c.to_page(cell_rect), origin="drawn",
                   labeler=labeler, text=text, owner_staff=owner_staff,
-                  staff_position=staff_position, cell_id=cell_id)
+                  staff_position=staff_position, cell_id=cell_id, note=note)
         box.validate()
         self.boxes.append(box)
         return box
