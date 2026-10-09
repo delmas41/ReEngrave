@@ -1653,3 +1653,95 @@ and open; class 3 is not shipped at all.
 **3,807 passed, 3 skipped** (main's 3,797 + 10 net new, 0 failed).
 `python3 -m tools.omr.staged.check`: **TOTAL 247, unchanged.**
 ```
+
+---
+
+## 14. ROADMAP 2.69 -- count the hooks at a stem tip (2026-10-09)
+
+Path: STAGED. Sean, 2026-10-09 (DECISIONS): *"Count the hooks and if you can't
+count use the fact that there is a hook to help later deduction process ... if
+we see a hook but can't tell if it has 1 or 2 hooks then pass that along and a
+later deduction where we add up bar math could tell us if we are missing an
+eighth note then it could decide."* And, the same day (ROADMAP 2.71): a flag
+hook hangs from ONE side of the stem; a tremolo slash crosses both and is never
+a hook.
+
+**The mechanism found.** 2.18c's narrowing was `head value | one flag level`
+(`flag_ink_unread`, quarter or eighth). Sheet B of 2.65 (tiles 6, 11, 12, 14,
+17, and tile 13, a dotted case) were five-six lone flagged eighths the
+`Q.STEM_TIP_INK` reader SAW and the narrowing then left half-open towards the
+head value. Nothing counted the hooks, and nothing downstream needed to be
+told: `consequences.reconcile_duration` already searches a narrowing's OWN
+candidates (`_admitted`) and takes the one that makes the bar add up where
+exactly one does, and `collapse_duration_*` (INFER) take any narrowed verdict.
+So the change is the narrowing's CANDIDATES (levels >= 1 only) and a counted
+decision, not a new settling rule. Wired, not duplicated.
+
+**Built.** GATHER: `gather.stem_tip_hooks` (+ `_head_edge_for_end`), called from
+`_observe_stem_tip_ink` where the ink is found; the count rides in the
+`Q.STEM_TIP_INK` row's detail (`hooks`, `hooks_min`, `hooks_max`,
+`hooks_reason`, `hooks_support`) -- NO new quantity, no new reader, no new
+flag, `check` TOTAL **192, unchanged**. The reader counts distinct runs of ink
+attached to the stem in a band 0.1-0.4 spaces to its right, from the tip to
+the first notehead beside the stem (cut so the stem's own head is never a
+hook), after healing the staff-erase's stripes. It REFUSES with a reason word:
+`crosses_both_sides` (ink attached on the stem's left too -- the slash, a
+crossing slur), `head_at_this_end`, `no_room`, `too_little_ink`,
+`unresolved` (support below/above its floors, or stacked runs not hook-spaced:
+the first within 0.8 spaces of the tip, consecutive ones 0.4-1.1 apart).
+ADJUDICATE: `rhythm._stem_tip_hook_count` + the 2.18c block in
+`adjudicate_duration`: counted -> DECIDED at that level (`hooks_counted`);
+seen-not-counted -> NARROWED over `hooks_min..hooks_max` (>= 1, lowest best
+supported, reason still `flag_ink_unread`); never the head value. A row from
+before the count existed brackets 1..2.
+
+**Measured (Brahms 1 Breitkopf, pdf pages 0-1, GATHER+ADJUDICATE, small
+re-gather at the commit that follows 96c379fd).**
+- Calibration set: the 109 flag-bearing heads on page 1 with a stem, counted
+  off the dump of the cells the gather itself used: every one is a single hook
+  by eye. Counted 1: 83 (71 detector-flagged + 4 `flags_disagree` + 8 of Sean's
+  unread); counted 2 or more: **0 after the spacing guard** (before it, 3-4
+  slurs/ledger lines attached to a stem read as a second run); refused with a
+  reason: the rest. The two detector `flag16th*` boxes on single hooks
+  (glyph/1/0/12/5/0, glyph/1/1/3/0/10; tile 21's family) count 1.
+- Two-hook calibration is NOT on this plate (it holds none): LilyPond-engraved
+  8th/16th/32nd, stems up and down, 300 dpi, staff-erased (scratchpad,
+  not committed): 8th -> 1 (never wrong), 16th -> 2 in 10 of 12, 32nd -> 3 in
+  8 of 18, no miscount, the rest `unresolved`/refused. Unit tests draw 1, 2, 3
+  stacked hooks, a slash and a hook+slash (both refused), a slur on one side
+  (not a second hook) and the own-head cut (with its uncut control).
+- **The 22 tiles** (`out/print/2.65/compare.py`): before 12 right / 2 wrong / 8
+  narrowed; after **18 right-valued (tiles 3, 5-12, 14, 16-20, 22) / 2 wrong
+  (1, 21) / 2 narrowed (4, 15) / 1 decided-wrong (13) / 1 right (2, 7)**. Sheet
+  B: tiles 6, 11, 12, 14, 17 decided eighth. Tile 13 (an eighth with NO dot on
+  the print) is now decided 0.75: the 2.12c dot reader attached an
+  `augmentationDot` box to it (the flag's tail, by the crop), a fault that was
+  already in the old narrowing (0.75 / 1.5) and is not this mechanism; deciding
+  made it visible. Tiles 15 (`flags_disagree` 8th/16th: the detector boxes
+  both on one single hook -- `hooks=1` would settle it, NOT wired: a detector
+  flag box outranks the count, per the existing guard), 1 (read quarter, truly
+  eighth on a ledger line) and 21 (read sixteenth, truly eighth) are not this
+  mechanism and are untouched.
+- **Population (all Brahms p0-1 duration verdicts, 1,862 on both records):
+  8 changed, all `narrowed flag_ink_unread` -> decided: 7 -> eighth, 1 ->
+  dotted eighth.** Nothing else moved; no `flag_ink_unread` narrowing remains
+  on the page, so the uncounted->narrowed branch and the bar-math settlement
+  are exercised by unit tests only, not by a real head here.
+- Print: the two decided heads Sean has not judged
+  (`out/print/2.69/head_01.png`, `head_02.png`; manifest beside them): both
+  show one hook by eye (a single curl at the stem tip).
+
+**Gates.** RED first: the 26 new/changed tests failed on the unrepaired tree
+(controls stayed green). `pytest -m "not slow" tools/omr/tests`: 6,408 passed,
+11 skipped, 2 xfailed, 0 failed. `staged.check` TOTAL 192 (= main).
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED with Sean:**
+hooks are separate strokes leaving the stem's right side, stacked a hook
+spacing apart; falsified by a print-confirmed two-hook flag whose strokes touch
+across the 0.1-0.4 band, or a single hook whose root is split by a stray
+attached ink the guards pass. Thresholds (support .40, glitch .12, coverage .5,
+spacing .4-1.1) are set on one plate.
+
+**Not done.** Wiring the count as a witness against a detector flag box
+(`flags_disagree`, tile 15; the detector's 16th on a single hook); a real
+two-hook head from a scan (none in the gathered pages).
