@@ -502,3 +502,68 @@ nothing is a question for him -- NOT changed here.
 - Black-class heads with a decisive hollow reading on a merged plate can be a letter
   or a blob (`glyph/2/0/2/1/12`): the narrowing keeps black among the candidates.
 - 10 print crops of newly decided heads Sean has not judged: `out/print/2.73/`.
+
+
+## Sec.9. ROADMAP 2.73 follow-up -- what stood in the stem-tip window (coordinator, after Sean judged the 10 crops)
+
+Sean on the 10 crops (`out/print/2.73`): 1-6 half, 7-8 eighth, 9 half, 10 NOT A NOTE (a
+dynamic `p`); none worse than main. Open: the 2.70 tiles #4, #5 (and #2, #6) stop at 2.70's
+"stem tip MEASURED" test because the tip reads `occupied`. The brief said a staff/ledger
+line sits in the tip window.
+
+### 9a. What the record says (`out/2.73/`, lane scratch `tipwhy.py`; not a guess)
+
+The occupants of the 2.70 tiles' tip windows, off the record's own boxes (canonical px,
+staff space 100):
+- #4 (cell 6/1/11/4): an `arpeggiato` detection that IS the stem's own ink -- its box ends
+  1 px inside the window. No line.
+- #5 (6/1/6/11): the head's own doubled box ends 1 px inside the window. No line.
+- #2, #6 (6/0/4/2, 6/0/4/1): a neighbouring head's box ends 1-5 px inside the window; #6's
+  bottom window also holds two `ledgerLine` boxes.
+- #8 (Litolff p3 3/1/6/0): a real `beam_stroke` overlapping the window by 17 px, and key-
+  signature boxes: a real occupant.
+So the cause in 3 of the 4 checked is a box that TOUCHES the window, not a line in it. No
+occupant was a slur/tie (a wide arc box is already cut by the 4-space width cut), so
+"a decided arc is not a flag" was NOT built: nothing here would use it.
+
+### 9b. What changed (GATHER `Q.STEM_TIP_INK`; the hook counter `stem_tip_hooks` untouched)
+
+1. A detection box explains ink in the tip window only if it overlaps it by MORE than
+   0.1 staff space in both axes (`STEM_TIP_BLOCKER_TOLERANCE_SPACES`, detector box edges
+   being good to about that). A box that really overlaps still abstains `occupied`.
+2. The rows a horizontal line stands on at the tip's x -- ink in both probes just beyond the
+   two bands, which a flag hanging from ONE side never reaches -- are left out of both
+   bands (`line_rows_left_out`); a window that is mostly lines is declined.
+3. **Rejected, with the crops that say so:** the first build also dropped `ledgerLine`
+   detections from the blockers. 3 of 3 newly FOUND tips on Brahms p0 and one on Litolff
+   (`0/0/9/2,4,5`, `2/1/9/13`) were short thick ledger lines, no longer than the two bands,
+   read as flags -- neither excluded as line rows nor stopped by the left guard. The
+   boxes stay blockers (test pinned). Brahms p0 with the final code: 0 new found rows, tips
+   measured bare 221 -> 288, `occupied` 495 -> 428.
+
+### 9c. Re-score (follow-up alone = the merge commit `d5e2b5f8` vs `56ee7c50`, same weights)
+
+| | before the follow-up | after |
+|---|---|---|
+| Sean's 8 Litolff half notes | 3 decided half, 3 narrowed, 2 quarter | **6 decided half (#1,#2,#3,#4,#5,#7), 2 narrowed (#6, #8)** |
+| head-fill #4, a WHOLE REST boxed as a head | quarter | quarter (control holds) |
+| head-fill #5 / #6 | half / quarter | half / quarter |
+| his 27 hand heads (found / one head / box / position / half) | 27 / 27 / 27 / 27 / 27 | 27 / 27 / 27 / 27 / 27 |
+| the 10 crops against Sean (1-6 half, 7-8 eighth, 9 half, 10 not a note) | 1-6 half, 7-8 narrowed, 9 narrowed, 10 narrowed | 1-6 half, 7-8 narrowed, **9 half**, 10 narrowed |
+| engraved control | 0 cut rows, 0/251 black read hollow | the same; no verdict differs (371 heads) |
+
+Follow-up alone, population: Brahms pdf 0-1 0 heads change; Litolff p1-3 2 move
+(`2/0/7/6/1` quarter -> half, `2/1/3/11/5` narrowed -> half; both real half notes on the crop);
+Litolff p6 3 move (Sean's #2, #4, #5). No head is newly kept or refused, no position moves.
+Stem-tip rows (count pages): Litolff found 30 -> 34, bare 644 -> 924, `occupied`
+1,704 -> 1,419; Brahms found 27 -> 28, bare 815 -> 1,001, `occupied` 1,458 -> 1,271.
+
+Still not decided: #6 (its tips now read bare, but the cell holds two beam strokes and the
+2.70 rule's other gate keeps it narrowed -- not the tip) and #8 (a real beam stroke in its
+window -- rule 8). Crops #7, #8 (eighths) stay narrowed `beam_certain_not_joined`; #10 (the `p`)
+stays narrowed -- that is the dynamic-owner lane's, not this one's.
+
+### 9d. Merge with main
+
+`origin/main` (2.74 beams, 2.69 hooks + dot, 2.68) merged into this branch: no conflict, none in
+`rhythm.py` (git merged it cleanly; 204 duration/tip/hook/2.73 tests pass on the merge).
