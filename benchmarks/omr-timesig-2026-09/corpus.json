@@ -187,6 +187,16 @@
       "publisher": "unidentified scan, 2016",
       "printed": "nothing — dense orchestral continuation",
       "verified": "read off a 60 dpi full page"
+    },
+    {
+      "label": "brahms1-p2-9over8",
+      "pdf": "brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+      "page": 1,
+      "expected": ["9/8", null],
+      "work_id": "brahms-sym1-mvt1",
+      "publisher": "Breitkopf & Haertel (Brahms Saemtliche Werke)",
+      "printed": "9/8 on every staff of system 0 (the m. 8 hemiola bar; a 6/8 change follows at bar 9 on every staff); system 1 prints none",
+      "verified": "Sean, 2026-10-09, held-bar tiles 1 and 2 (out/print/2.65-held/answers.json): 'The bar is 9/8'. ROADMAP 2.72. The whole-stack reader read 9/4 on the ten staves that read."
     }
   ]
 }
