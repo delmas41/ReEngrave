@@ -345,6 +345,73 @@ class TestAStrokeThroughTheHeadsIsNotTheirBeam(unittest.TestCase):
         v = log.verdict(Q.DURATION, gs[0])
         self.assertEqual(v.value["beats"], 0.5)
 
+    def test_a_REAL_beam_under_a_cluster_sized_false_head_box_stays_RED(self):
+        """⚠️ Brahms p1 cell 1/0/0/4: the detector drew a `noteheadWholeOnLine`
+        box 3.2 spaces wide over a real stem-down beam; the beam lies 0.9
+        inside it. A box that is not head-SIZED is never evidence of where a
+        head's ink is, so the beam stays and the eighth pair reads eighth."""
+        log = Log()
+        _staff_space(log)
+        gs = []
+        for gi, x in enumerate((65, 100)):
+            g = R.glyph(0, 0, 0, 0, gi)
+            log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+            log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, 20, 20, 16),
+                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+            from tools.omr.tests.test_staged_duration import _stem
+            _stem(log, x=x, y=30, h=170)              # hangs to the beam at y=196
+            gs.append(g)
+        beam = _beam(log, y=196, x0=60, x1=120)
+        # the false box: 3.2 spaces (51 px at SPACE=16) wide, straddling the beam
+        fake = R.glyph(0, 0, 0, 0, 2)
+        log.observe(fake, Q.GLYPH_BOX, ("noteheadWholeOnLine", 62, 180, 52, 30),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _ink(log, beam, ratio=3.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, gs[0])
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_not_by_ink"], 0)
+
+    def test_CONTROL_the_same_box_head_SIZED_would_refuse_it(self):
+        """The positive control for the size filter: the box is the only thing
+        that changed (32 px = 2 spaces)."""
+        log = Log()
+        _staff_space(log)
+        gs = []
+        for gi, x in enumerate((65, 100)):
+            g = R.glyph(0, 0, 0, 0, gi)
+            log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+            log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, 20, 20, 16),
+                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+            from tools.omr.tests.test_staged_duration import _stem
+            _stem(log, x=x, y=30, h=170)
+            gs.append(g)
+        beam = _beam(log, y=196, x0=60, x1=120)
+        fake = R.glyph(0, 0, 0, 0, 2)
+        log.observe(fake, Q.GLYPH_BOX, ("noteheadBlack", 62, 180, 32, 30),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        _ink(log, beam, ratio=3.0)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, gs[0])
+        self.assertEqual(v.detail["beams_not_by_ink_why"], {"through_heads": 1})
+
+    def test_without_a_staff_space_unit_the_rule_does_not_run(self):
+        """No unit, no way to say what a head-sized box is: the stroke stays
+        (rule 8 -- an unread test never refuses)."""
+        log = Log()
+        gs = [_head_with_stem(log, gi, x)[0] for gi, x in enumerate((65, 95, 125))]
+        primary = _beam(log, y=40, x0=60, x1=150)
+        row = _beam(log, y=91, x0=60, x1=150)
+        _ink(log, primary, ratio=2.4)
+        _ink(log, row, ratio=3.9)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, gs[0])
+        self.assertNotIn("through_heads",
+                         (v.detail or {}).get("beams_not_by_ink_why", {}))
+
     def test_RULE_8_where_the_row_was_the_only_mark_the_head_is_narrowed_not_a_quarter_RED(
             self):
         log = Log()

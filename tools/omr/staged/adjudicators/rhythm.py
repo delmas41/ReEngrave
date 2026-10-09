@@ -743,18 +743,32 @@ BEAM_BEAMLET_GAP_SPACES = 1.0
 BEAM_THROUGH_HEADS_MIN = 0.5
 
 
-def _notehead_glyph_boxes(ev: Evidence, cell):
+#: A detector box wider than this (staff spaces) is not ONE notehead: a head is
+#: ~1.3 spaces wide and a whole note ~1.8 (CLAUDE.md §10). Measured on Brahms p1
+#: (`FINDINGS.md` §16): a `noteheadWholeOnLine` box 3.2 spaces wide stood over a
+#: real stem-down beam (cell 1/0/0/4) and would have refused it as "the heads'
+#: ink" -- so a box this wide is a cluster the detector drew, never evidence of
+#: where a head's ink is.
+BEAM_HEAD_BOX_MAX_SPACES = 2.2
+
+
+def _notehead_glyph_boxes(ev: Evidence, cell, space: float):
     """Canonical `(x, y, w, h)` of every DETECTOR-boxed notehead in THIS
     cell -- the same `Q.GLYPH_BOX` family `_ledger_line_glyph_boxes` reads, at
-    the same canonical frame `Q.BEAM_STROKE` is in. ROADMAP 2.75."""
+    the same canonical frame `Q.BEAM_STROKE` is in -- that is head-SIZED
+    (`BEAM_HEAD_BOX_MAX_SPACES`). `[]` where the cell has no staff-space unit:
+    without it a box cannot be judged a head, and the rule then does not run.
+    ROADMAP 2.75."""
     out = []
+    if not space or space <= 0:
+        return out
     for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
         v = r.value
         if (isinstance(v, (list, tuple)) and len(v) >= 5
                 and str(v[0]).startswith("notehead")):
             b = _xywh_head(v)
-            if b is not None:
+            if b is not None and b[2] <= BEAM_HEAD_BOX_MAX_SPACES * space:
                 out.append(b)
     return out
 
@@ -868,7 +882,8 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
     # opening, a ledger line through them), and its thickness, straightness and
     # stems -- all read at the heads' end -- say nothing about a beam. It is
     # a connection to the heads the detector boxed, never a guess from shape.
-    head_boxes = _notehead_glyph_boxes(ev, cell)
+    head_boxes = _notehead_glyph_boxes(
+        ev, cell, tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0)
     if head_boxes:
         for b in beams:
             box = _xywh(b)
