@@ -1416,3 +1416,204 @@ def reinstate_rest_between_staves(log: Log, subject: Subject,
             supersedes=refusal.id)
         return [log.record(out)]
     return []
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.68: a word and the dynamic beside it are ONE marking.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: How far apart a word and a dynamic may stand and still be one marking, in
+#: staff spaces (Sean 2026-10-08: "same line, close" -- about one and a half
+#: spaces, the reach `direction_text._link_dynamics` already uses).
+MARKING_MAX_GAP_SPACES = 1.5
+
+
+def _union_box(boxes):
+    boxes = [b for b in boxes if b]
+    if not boxes:
+        return None
+    return (min(b[0] for b in boxes), min(b[1] for b in boxes),
+            max(b[2] for b in boxes), max(b[3] for b in boxes))
+
+
+def _same_line(a, b) -> bool:
+    """Each box's vertical centre lies inside the other's height: the two
+    marks share a line of text (a `più` and the `f` beside it), where a mark a
+    line higher or lower does not."""
+    ca, cb = (a[1] + a[3]) / 2.0, (b[1] + b[3]) / 2.0
+    return a[1] <= cb <= a[3] and b[1] <= ca <= b[3]
+
+
+#: A dynamic box with at least this share of its width inside a word's box is
+#: one of the WORD's letters the detector also boxed as a dynamic -- the `p` of
+#: `più` (Brahms p3 staff 13: `dynamicP` 4781-4830 inside `più` 4782-4908) --
+#: not a dynamic printed beside it. The reader already read that ink as part
+#: of the word.
+INSIDE_WORD_SHARE = 0.5
+
+
+def _inside_word(d, w) -> bool:
+    overlap = max(0.0, min(d[2], w[2]) - max(d[0], w[0]))
+    return overlap >= INSIDE_WORD_SHARE * max(1.0, d[2] - d[0])
+
+
+def _gap(a, b) -> float:
+    """Horizontal distance between two boxes (0 where they overlap)."""
+    return max(0.0, max(a[0], b[0]) - min(a[2], b[2]))
+
+
+def _marking_words(log: Log, subject: Subject):
+    out = []
+    for row in log.rows(Q.DIRECTION_WORD, subject,
+                        scope=Scope.SELF_AND_DESCENDANTS):
+        d = row.detail or {}
+        box = d.get("bbox_page_px")
+        out.append({"text": str(row.value), "row": row.id,
+                    "box": tuple(float(v) for v in box) if box else None,
+                    "dynamics": list(d.get("dynamics") or ()),
+                    "includes": set(d.get("includes_dynamic_glyphs") or ())})
+    return out
+
+
+def _marking_dynamics(log: Log, dynamic: Optional[Verdict]):
+    if dynamic is None or dynamic.outcome is not Outcome.DECIDED:
+        return [], None
+    out, spacings = [], []
+    for run in (dynamic.detail or {}).get("words") or ():
+        if not run.get("spelled"):
+            continue
+        letters = [log.row(i) for i in run.get("letters") or ()]
+        letters = [r for r in letters if r is not None]
+        boxes = [tuple(float(v) for v in (r.detail or {}).get("bbox_page_px"))
+                 for r in letters if (r.detail or {}).get("bbox_page_px")]
+        spacings += [float(r.detail["staff_spacing_px"]) for r in letters
+                     if (r.detail or {}).get("staff_spacing_px")]
+        out.append({"text": run.get("text"), "box": _union_box(boxes),
+                    "letters": [r.id for r in letters],
+                    "glyphs": {r.subject.to_key() for r in letters}})
+    spacing = sorted(spacings)[len(spacings) // 2] if spacings else None
+    return out, spacing
+
+
+def _pair_also_reads(log: Log, subject: Subject, cause: Verdict):
+    found = log.verdict(Q.DYNAMIC, subject)
+    return (found.id,) if found is not None else ()
+
+
+@rule(consequence=Consequence.PAIR_WORD_AND_DYNAMIC,
+      cause=Q.DIRECTION, effect=Q.MARKING, scope=Kind.CELL,
+      reads_beyond_cause=_pair_also_reads,
+      bound="Pairs a direction word with ONE dynamic of the SAME cell: same "
+            "line, nothing between, at most MARKING_MAX_GAP_SPACES apart, and "
+            "only where neither could pair with anything else. Reads no ink, "
+            "changes no word, no dynamic and no note; a bar with no measured "
+            "spacing pairs nothing.")
+def pair_word_and_dynamic(log: Log, subject: Subject,
+                          direction: Verdict) -> List[Verdict]:
+    """A word and the dynamic printed beside it are ONE marking (`più f`).
+
+    Sean 2026-10-08: dynamic markings and descriptive words "only mean
+    something together", and *"we may just need a later stage to take the
+    words and letters in a bar and determine if they belong together and what
+    that means"* -- after joining them by POSITION inside the reader invented
+    `f Adagio.` and `a 2 f` (ROADMAP 2.66). Here both have already been
+    decided -- the word by `adjudicate_direction`, the dynamic by
+    `adjudicate_dynamic` (after OWNERSHIP, so a neighbour's dynamic is not in
+    this bar) -- and the pairing FOLLOWS from where they stand: same staff
+    and bar, same line, nothing printed between them (no other word or
+    dynamic of the bar), at most `MARKING_MAX_GAP_SPACES` apart. Where a
+    dynamic could pair with two words, or a word with two dynamics, the rule
+    goes SILENT for that pair and says so (`ambiguous`): EVALUATE never picks.
+
+    A marking the reader already read whole (`più f` from one OCR crop,
+    `includes_dynamic_glyphs`) is listed as `read_together`, so this cell's
+    `Q.MARKING` is the one place a consumer looks. The dynamic it includes is
+    not offered to any other word.
+
+    ⚠️ Positions are PAGE pixels on both sides (`bbox_page_px` on the word's
+    row and on each letter row) -- the only frame these two share.
+    """
+    words = _marking_words(log, subject)
+    if not words:
+        return []
+    dynamic = log.verdict(Q.DYNAMIC, subject)
+    dyns, spacing = _marking_dynamics(log, dynamic)
+
+    markings: List[dict] = []
+    taken: set = set()
+    for w in words:
+        if w["dynamics"]:
+            # The reader's text holds both (`piu f`): split it back into the
+            # word and its dynamic token(s), in print order, so a consumer
+            # writes each as its own kind inside the one marking.
+            tokens = w["text"].split()
+            dyn_set = {t.lower() for t in w["dynamics"]}
+            word = " ".join(t for t in tokens if t.lower() not in dyn_set)
+            first_dyn = next((i for i, t in enumerate(tokens)
+                              if t.lower() in dyn_set), len(tokens))
+            markings.append({"text": w["text"], "word": word or w["text"],
+                             "dynamics": w["dynamics"], "word_row": w["row"],
+                             "word_first": first_dyn > 0,
+                             "dynamic_glyphs": sorted(w["includes"]),
+                             # the bar's own spelled dynamic(s) this marking
+                             # already holds -- not to be written twice
+                             "absorbs_dynamics": [d["text"] for d in dyns
+                                                  if d["glyphs"] & w["includes"]],
+                             "reason": "read_together"})
+            taken |= w["includes"]
+    free_dyns = [d for d in dyns if not (d["glyphs"] & taken) and d["box"]]
+    free_words = [w for w in words if not w["dynamics"] and w["box"]]
+
+    unpaired: List[dict] = []
+    if spacing is None or not free_dyns or not free_words:
+        why = "no_spacing" if (spacing is None and free_dyns) else "no_dynamic_beside"
+        unpaired = [{"word": w["text"], "why": why} for w in free_words]
+    else:
+        reach = MARKING_MAX_GAP_SPACES * spacing
+        others = [w["box"] for w in free_words] + [d["box"] for d in free_dyns]
+
+        def nothing_between(a, b) -> bool:
+            lo, hi = min(a[2], b[2]), max(a[0], b[0])
+            return not any(o is not a and o is not b and _same_line(o, a)
+                           and o[0] < hi and o[2] > lo for o in others)
+
+        fits = {}
+        for wi, w in enumerate(free_words):
+            for di, d in enumerate(free_dyns):
+                if _inside_word(d["box"], w["box"]):
+                    continue    # one of the word's own letters, boxed as a dynamic
+                if (_same_line(w["box"], d["box"])
+                        and _gap(w["box"], d["box"]) <= reach
+                        and nothing_between(w["box"], d["box"])):
+                    fits.setdefault(wi, []).append(di)
+        claimed = Counter(di for dis in fits.values() for di in dis)
+        for wi, w in enumerate(free_words):
+            dis = fits.get(wi, [])
+            if not dis:
+                unpaired.append({"word": w["text"], "why": "no_dynamic_beside"})
+                continue
+            if len(dis) > 1 or claimed[dis[0]] > 1:
+                unpaired.append({"word": w["text"], "why": "ambiguous"})
+                continue
+            d = free_dyns[dis[0]]
+            word_first = w["box"][0] <= d["box"][0]
+            text = (f"{w['text']} {d['text']}" if word_first
+                    else f"{d['text']} {w['text']}")
+            markings.append({
+                "text": text, "word": w["text"], "dynamics": [d["text"]],
+                "word_first": word_first, "word_row": w["row"],
+                "dynamic_letters": d["letters"],
+                "dynamic_glyphs": sorted(d["glyphs"]),
+                "absorbs_dynamics": [d["text"]],
+                "gap_spaces": round(_gap(w["box"], d["box"]) / spacing, 2),
+                "reason": "same_line_adjacent"})
+    basis = (direction.id,) + ((dynamic.id,) if dynamic is not None else ())
+    return [log.record(Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.MARKING,
+        outcome=Outcome.DECIDED, value=[m["text"] for m in markings],
+        decider="pair_word_and_dynamic",
+        reason="paired" if any(m["reason"] == "same_line_adjacent"
+                               for m in markings) else "none_paired",
+        considered=basis, basis=basis,
+        detail={"markings": markings, "unpaired": unpaired,
+                "spacing_px": spacing}))]

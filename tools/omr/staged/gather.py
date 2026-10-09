@@ -8548,10 +8548,19 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     # sibling windows); file against ITS list so those words have a subject.
     candidates = list(info.get("candidates") or candidates)
     accepted: Dict[Tuple[int, int, int], List[Any]] = {}
+    by_candidate: Dict[int, List[Any]] = {}
     for d in found:
         accepted.setdefault(
             (int(d.staff_index), int(d.measure_index), int(d.x_page)),
             []).append(d)
+        # ⚠️ ROADMAP 2.68: the reader now stamps the candidate it read each
+        # word from, and the list above IS that reader's list, so the index is
+        # the join. The three-field key filed ONE reading on TWO candidates
+        # that share staff, bar and left x (Brahms p3 staff 12: a word's own
+        # box and a sibling window, both at x 4777) -- a duplicate word.
+        ci = int(getattr(d, "candidate_index", -1))
+        if ci >= 0:
+            by_candidate.setdefault(ci, []).append(d)
 
     n_read = int(info.get("n_read") or 0)
     n_obs = 0
@@ -8573,9 +8582,9 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
             "n_components": int(cand.n_components),
             "page_staff_index": int(cand.staff_index),
         }
-        hits = accepted.get(
+        hits = (by_candidate.get(ci) if by_candidate else accepted.get(
             (int(cand.staff_index), int(cand.measure_index),
-             int(cand.x_page)))
+             int(cand.x_page))))
         if not hits:
             # ⚠️ TWO REFUSALS, NOT ONE, AND THE RECORD CANNOT TELL THEM APART
             # PER CANDIDATE. `read_directions` reports `n_read` and `rejected`

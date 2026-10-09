@@ -399,3 +399,33 @@ class TestTheBalanceIsAnEquality(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestOneReadingIsFiledOnce(unittest.TestCase):
+    """ROADMAP 2.68: two candidates can share staff, bar and left x (Brahms p3
+    staff 12: the word's own box and a sibling window, both at x 4777). The
+    reader stamps the candidate it read; GATHER files the word there only."""
+
+    def test_a_stamped_reading_is_filed_on_its_own_candidate_only(self):
+        import dataclasses
+        from tools.omr.direction_text import TextCandidate
+        own = _cand(x=150)
+        window = TextCandidate(staff_index=0, measure_index=0,
+                               bbox_page=(150, 400, 260, 432),
+                               placement="below", n_components=3)
+        found = [dataclasses.replace(_text(window, text="piu"), candidate_index=1)]
+        log = _run(Log(), candidates=[own, window], found=found,
+                   info={"n_read": 2, "rejected": [], "conflicts": [],
+                         "candidates": [own, window]})
+        words = [r for r in log.all_rows()
+                 if getattr(r, "quantity", None) == Q.DIRECTION_WORD
+                 and not hasattr(r, "reason")]
+        self.assertEqual([w.value for w in words], ["piu"])
+
+    def test_an_unstamped_reading_still_joins_on_the_three_fields(self):
+        c = _cand()
+        log = _run(Log(), candidates=[c], found=[_text(c)])
+        words = [r for r in log.all_rows()
+                 if getattr(r, "quantity", None) == Q.DIRECTION_WORD
+                 and not hasattr(r, "reason")]
+        self.assertEqual(len(words), 1)

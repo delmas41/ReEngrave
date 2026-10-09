@@ -73,6 +73,9 @@ class Consequence(str, Enum):
     #: no new question about "is a bar complete", only WHICH staff a doubly
     #: refused box's ink belongs to.
     REINSTATE_REST_BETWEEN_STAVES = "reinstate_rest_between_staves"
+    #: ROADMAP 2.68. A bar's direction words settled, so the word and the
+    #: dynamic printed beside it on its line are ONE marking (`più f`).
+    PAIR_WORD_AND_DYNAMIC = "pair_word_and_dynamic"
 
 
 @dataclass(frozen=True)
@@ -157,6 +160,12 @@ DOWNHILL: Tuple[str, ...] = (
     # (cause rank, effect rank), so this placement is the reason, as the
     # sentence above always claimed.
     Q.REST_IS_NOT_A_REST,
+    # ⚠️ ROADMAP 2.68. Text sits apart from the music: no rule above writes a
+    # direction or a dynamic, and pairing them changes no note, so they go
+    # last. `Q.DIRECTION` is the cause; `Q.DYNAMIC` is read beside it
+    # (`reads_beyond_cause`) and needs no rank of its own.
+    Q.DIRECTION,
+    Q.MARKING,
 )
 
 

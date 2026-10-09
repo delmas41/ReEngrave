@@ -280,6 +280,12 @@ class DirectionText:
     #: `(cell_key, detector_index, (x, y, w, h))`: the same ink is the dynamic
     #: reader's AND this marking's, and is exported ONCE, as part of the marking.
     dynamic_links: tuple = ()
+    #: The index of the candidate this was read from in the list the reader
+    #: returns as `info["candidates"]` (-1 = not stamped). Two candidates can
+    #: share staff, bar and left x -- a word's own box and a sibling window cut
+    #: from the same edge (Brahms p3 staff 12, both at x 4777) -- so a join on
+    #: those three fields files one reading twice (ROADMAP 2.68).
+    candidate_index: int = -1
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -1299,7 +1305,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         )
 
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
-    out = [accepted_at[i] for i in sorted(accepted_at)]
+    out = [dataclasses.replace(accepted_at[i], candidate_index=i)
+           for i in sorted(accepted_at)]
     info["n_accepted"] = len(out)
     info["candidates"] = candidates
     return out, info
@@ -1739,7 +1746,8 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     for i in everyone:
         if i not in accepted_at:
             info["rejected"].extend(seen[i])
-    out = [accepted_at[i] for i in sorted(accepted_at)]
+    out = [dataclasses.replace(accepted_at[i], candidate_index=i)
+           for i in sorted(accepted_at)]
     info["n_accepted"] = len(out)
     info["candidates"] = candidates
     info["word_boxes"] = [candidates[i].bbox_page for i in sorted(accepted_at)]

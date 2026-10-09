@@ -22,6 +22,16 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-08 (night) — 2.66 landed on main; ROADMAP 2.68 word + dynamic pairing (branch)
+
+- 2.66 fast-forwarded onto main (`96049f83..db1772bb`).
+- 2.68: `Q.MARKING` + EVALUATE `consequences.pair_word_and_dynamic` (same staff/bar, same line, nothing between,
+  <= 1.5 spaces, ambiguous -> unpaired; a dynamic inside the word's box is its letter); `export._place_markings`
+  writes a pair as one `<direction>` (`<words>` + `<dynamics>`, print order). Fixes the first real page needed:
+  `adjudicate_dynamic` keeps each run's `letters`; a dynamic letter inside a read word is that word's
+  (`_inside_a_read_word`); gather joins a reading to its candidate by `DirectionText.candidate_index`.
+  Brahms p3: both `più f` paired and exported as one direction. `check` 192 -> 192.
+
 ## 2026-10-08 (late) — ROADMAP 2.66 placement and word + dynamic
 
 - A tempo or technique word in the gap between two staves of a system is the LOWER staff's

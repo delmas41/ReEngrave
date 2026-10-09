@@ -44,7 +44,9 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
             "name_part", "join_parts", "restate_pitch", "respell_accidental",
             "move_glyph", "apply_printed_accidental", "size_measure_rest",
             "reconcile_chord_duration", "reconcile_duration",
-            "reinstate_rest_between_staves"])
+            "reinstate_rest_between_staves",
+            # ROADMAP 2.68: text pairs last -- it changes no note
+            "pair_word_and_dynamic"])
 
     def test_reinstate_runs_after_reconcile_even_if_registered_first(self):
         """⚠️ THE CONTROL. Reverse the registration order of the meter rules
@@ -114,7 +116,10 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
                                       to_key=lambda: "s"),)):
             evaluate._pass(log, evaluate.Report([], [], []), progress=False)
         self.assertEqual(called, _names(evaluate.execution_order(stand_ins)))
-        self.assertEqual(called[-1], "reinstate_rest_between_staves")
+        # the reinstatement is still the last MUSIC rule; ROADMAP 2.68's text
+        # pairing (`Q.DIRECTION -> Q.MARKING`) runs after every one of them
+        self.assertEqual(called[-2:], ["reinstate_rest_between_staves",
+                                       "pair_word_and_dynamic"])
 
 
 if __name__ == "__main__":

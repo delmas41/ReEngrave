@@ -131,10 +131,14 @@ def _canonical_grand_staff_owner(ev: Evidence, owned_by: str) -> str:
     # owner); 2.27c adds `Q.DYNAMIC_BAND_POSITION` (the band rule for an
     # UNCONTESTED letter). Two separate branches below.
     composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
-                   Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+                   Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
+                   Q.DIRECTION_WORD),
     scope=Kind.CELL,
+    # ⚠️ ROADMAP 2.68 adds `Q.DIRECTION_WORD`: a letter inside a word the OCR
+    # read is that word's letter (`_inside_a_read_word`).
     wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
-           Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP),
+           Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
+           Q.DIRECTION_WORD),
     # ⚠️ The subjects are the cells `Q.DYNAMIC_LETTER` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()` and an abstention is a row. That is what makes this
@@ -252,7 +256,14 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                       detail={"letters": 0, "scope": "system"})
 
     kept: List[Tuple[float, float, float, str, Any]] = []
-    dup_dropped = moved_out = no_frame = not_a_letter = 0
+    dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
+    # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
+    # page pixels -- a second reader (Tesseract/Surya, not the detector).
+    word_boxes = [tuple(float(v) for v in (w.detail or {})["bbox_page_px"])
+                  for w in ev.rows(Q.DIRECTION_WORD,
+                                   scope=Scope.SELF_AND_DESCENDANTS,
+                                   subject=system)
+                  if (w.detail or {}).get("bbox_page_px")]
     grand_staff_shared = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
@@ -267,6 +278,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         refused = ev.verdict(Q.DYNAMIC_IS_NOT_A_DYNAMIC, subject=row.subject)
         if refused is not None and refused.value is True:
             not_a_letter += 1
+            continue
+        if _inside_a_read_word(row, word_boxes):
+            inside_word += 1
             continue
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
@@ -351,9 +365,12 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # ⚠️ ROADMAP 3.4g. A cell whose every letter was REFUSED reports the
         # count rather than reading as a cell nobody found a letter in — the
         # READ / DECLINED distinction, one stage along.
-        return Ruling(value=[], reason="no_letters",
-                      detail={"letters_refused_as_not_a_dynamic": not_a_letter}
-                      if not_a_letter else {})
+        empty_detail = {}
+        if not_a_letter:
+            empty_detail["letters_refused_as_not_a_dynamic"] = not_a_letter
+        if inside_word:
+            empty_detail["letters_inside_a_read_word"] = inside_word
+        return Ruling(value=[], reason="no_letters", detail=empty_detail)
 
     kept.sort()
     width = max(x1 - x0 for x0, x1, _y, _l, _r in kept) or 1.0
@@ -372,7 +389,12 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         prev_right = x1
     words.append(_close(run))
     for w in words:
-        used.extend(w.pop("_ids"))
+        # ⚠️ KEPT PER RUN AS `letters` (ROADMAP 2.68): `used` flattens every
+        # run's letters into one list, and the pairing of a word with ITS
+        # dynamic (`consequences.pair_word_and_dynamic`) needs to know which
+        # letters -- and so which page boxes -- made which dynamic.
+        w["letters"] = w.pop("_ids")
+        used.extend(w["letters"])
 
     unspellable = [w for w in words if not w["spelled"]]
     detail: Dict[str, Any] = {
@@ -383,6 +405,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # ⚠️ ROADMAP 3.4g. Letters a `Q.DYNAMIC_IS_NOT_A_DYNAMIC`
         # verdict refused, counted so a short word names its cause.
         "letters_refused_as_not_a_dynamic": not_a_letter,
+        # ⚠️ ROADMAP 2.68. Letters lying inside a word the OCR read: the `p`
+        # of `più` boxed as `dynamicP`, the `ù` as `dynamicM`.
+        "letters_inside_a_read_word": inside_word,
         # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
         # owner` moved onto this staff (or off it) because they sit
         # between the two staves of a decided brace pair -- zero on every
@@ -400,6 +425,36 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             reason="unspellable", used=used, **detail)
     return Ruling(value=[w["text"] for w in words if w["spelled"]],
                   reason="spelled", used=tuple(used), detail=detail)
+
+
+#: A letter box with at least this share of its area inside a word box is one
+#: of the word's letters (ROADMAP 2.68).
+INSIDE_READ_WORD_SHARE = 0.5
+
+
+def _inside_a_read_word(row, word_boxes) -> bool:
+    """Is this dynamic LETTER one of the letters of a word the OCR read?
+
+    The detector reads italic text letter by letter and calls some of those
+    letters dynamics: on Brahms p3 staff 12 it boxes the `p` of `più` as
+    `dynamicP` and the `ù` as `dynamicM`, and the run beside the real `f`
+    spelled `pmf`, which no dynamic is -- so the bar's dynamic abstained and
+    the word could not be paired with its `f`. A word the OCR READ and the
+    lexicon ACCEPTED is a second, independent reader saying that ink is text;
+    a letter box mostly inside such a word's box is that word's letter, not a
+    dynamic. Counted (`letters_inside_a_read_word`), never dropped silently.
+    """
+    box = (row.detail or {}).get("bbox_page_px")
+    if not box or not word_boxes:
+        return False
+    x0, y0, x1, y1 = (float(v) for v in box)
+    area = max(1.0, (x1 - x0) * (y1 - y0))
+    for w in word_boxes:
+        ix = max(0.0, min(x1, w[2]) - max(x0, w[0]))
+        iy = max(0.0, min(y1, w[3]) - max(y0, w[1]))
+        if ix * iy >= INSIDE_READ_WORD_SHARE * area:
+            return True
+    return False
 
 
 def _close(run: List[Tuple[float, float, float, str, Any]]) -> Dict[str, Any]:

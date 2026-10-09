@@ -2509,7 +2509,13 @@ def _count_directions(counters: Dict[str, int],
     kind rather than from a second hand-written table that could drift from
     it.
     """
-    for _x, kind, _text in directions:
+    for _x, kind, text in directions:
+        if kind == "marking":
+            # ROADMAP 2.68: one `<direction>`, but a `<words>` AND its
+            # `<dynamics>` reached the file -- each family counts its own.
+            counters["direction_words"] += 1
+            counters["dynamics"] += len(json.loads(text).get("dynamics") or ())
+            continue
         counters["dynamics" if kind == "dynamics" else "direction_words"] += 1
 
 
@@ -2573,6 +2579,7 @@ def _place_directions(rec: Record, runs: Dict[str, StaffRun]) -> None:
                     (float(x) if x is not None else 0.0, "dynamics", str(text)))
             cell.directions.sort()
     _place_direction_words(rec, runs)
+    _place_markings(rec, runs)
 
 
 def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
@@ -2631,6 +2638,71 @@ def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
                 cell.directions.append(
                     (float(x) if x is not None else 0.0, "words", str(text)))
             cell.directions.sort()
+
+
+def _place_markings(rec: Record, runs: Dict[str, StaffRun]) -> None:
+    """ROADMAP 2.68: a word and the dynamic beside it, written as ONE marking.
+
+    EVALUATE's `pair_word_and_dynamic` files `Q.MARKING` per cell: which word
+    and which dynamic of the bar are one marking (`più f`, `p dolce`; Sean
+    2026-10-08, they "only mean something together"). Here the word's own
+    `words` entry and the dynamic(s) the marking absorbs are taken out of the
+    cell and ONE `marking` entry is put in their place, rendered by
+    `_marking_direction_xml` as one `<direction>` holding a `<words>` and a
+    `<dynamics>` in print order. A cell with no `Q.MARKING`, or a marking the
+    rule left unpaired, writes exactly what it wrote before.
+    """
+    for key, run in runs.items():
+        for cell_index in range(run.n_measures):
+            sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
+            verdict = rec.verdict(Q.MARKING, sub) or {}
+            markings = (verdict.get("detail") or {}).get("markings") or []
+            cell = run.cells.get(cell_index)
+            if not markings or cell is None:
+                continue
+            entries = list(cell.directions)
+            for m in markings:
+                word_text = m.get("text") if m.get("reason") == "read_together" \
+                    else m.get("word")
+                at = next((i for i, (_x, kind, text) in enumerate(entries)
+                           if kind == "words" and text == word_text), None)
+                if at is None:
+                    continue
+                x = entries.pop(at)[0]
+                for dyn in m.get("absorbs_dynamics") or ():
+                    d_at = next((i for i, (_x, kind, text) in enumerate(entries)
+                                 if kind == "dynamics" and text == dyn), None)
+                    if d_at is not None:
+                        x = min(x, entries.pop(d_at)[0])
+                entries.append((x, "marking", json.dumps(
+                    {"word": m.get("word"), "dynamics": list(m.get("dynamics") or ()),
+                     "word_first": bool(m.get("word_first", True))},
+                    sort_keys=True, ensure_ascii=False)))
+            cell.directions[:] = sorted(entries)
+
+
+def _marking_direction_xml(payload: str, indent: str) -> str:
+    """One `<direction>` for a word + dynamic marking: a `<words>` and a
+    `<dynamics>` direction-type, in the order they are printed."""
+    m = json.loads(payload)
+    words = (f"{indent}  <direction-type>\n"
+             f"{indent}    <words>{_legacy._xml_escape(m['word'])}</words>\n"
+             f"{indent}  </direction-type>\n")
+    dyns = "".join(
+        f"{indent}  <direction-type>\n"
+        f"{indent}    <dynamics>"
+        + (f"<{d}/>" if d in _legacy._DYNAMIC_ELEMENTS
+           else f"<other-dynamics>{_legacy._xml_escape(d)}</other-dynamics>")
+        + "</dynamics>\n"
+        f"{indent}  </direction-type>\n" for d in m["dynamics"])
+    body = words + dyns if m.get("word_first", True) else dyns + words
+    return f'{indent}<direction placement="below">\n{body}{indent}</direction>'
+
+
+def _direction_xml(kind: str, text: str, indent: str) -> str:
+    if kind == "marking":
+        return _marking_direction_xml(text, indent)
+    return _legacy._mxl_direction((kind, text), indent)
 
 
 def _tuplet_for(rec: Record, run: StaffRun, cell_index: int,
@@ -3547,7 +3619,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # carries one frame for both. ⚠️ Placement is also exactly
                 # what stops a correctly recovered `sf` from PAIRING with a
                 # truth, so do not read a flat metric here as this being free.
-                lines.extend(_legacy._mxl_direction((kind, text), "      ")
+                lines.extend(_direction_xml(kind, text, "      ")
                              for _x, kind, text in directions)
                 _count_directions(counters, directions)
                 lines.extend(_measure_xml(rec, run, i, events, divisions,

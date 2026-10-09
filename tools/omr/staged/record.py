@@ -1745,6 +1745,12 @@ class Q(_Vocab):
     OTTAVA_OWNER = "ottava_owner"
     DYNAMIC = "dynamic"                      # the spelled word
     DIRECTION = "direction"                  # the accepted direction text
+    #: ROADMAP 2.68. Which direction word and which dynamic of ONE bar are ONE
+    #: marking (`più f`, `p dolce`) -- filed per CELL by EVALUATE's
+    #: `pair_word_and_dynamic`, a list of pairings (Sean 2026-10-08: same staff
+    #: and bar, same line, nothing between, at most ~1.5 spaces apart; a
+    #: dynamic two words could claim stays unpaired).
+    MARKING = "marking"
     INSTRUMENT = "instrument"
     SLOT_INDEX = "slot_index"
     PART_PARTITION = "part_partition"
@@ -2193,6 +2199,7 @@ CLAIMS: "dict[str, str]" = {
     "OTTAVA_OWNER": CLAIM.INTERPRETATION,
     "DYNAMIC": CLAIM.INTERPRETATION,
     "DIRECTION": CLAIM.INTERPRETATION,
+    "MARKING": CLAIM.INTERPRETATION,
     "INSTRUMENT": CLAIM.INTERPRETATION,
     "SLOT_INDEX": CLAIM.INTERPRETATION,
     "PART_PARTITION": CLAIM.INTERPRETATION,
