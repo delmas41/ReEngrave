@@ -1492,6 +1492,40 @@ def _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> N
                                             measure_index=m)
 
 
+def _give_tempo_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> None:
+    """A TEMPO word is printed ABOVE the staff it governs (Sean 2026-10-08, on
+    the oboe's `Adagio`, Litolff p9: *"it belongs to the staff beneath it ...
+    tempo is always above the staff. Also there are no notes in the staff above
+    so it wouldn't make sense to give that word there"*). The band that finds a
+    word in the gap between two staves of one system is the UPPER staff's, so a
+    tempo word found there is the next staff's -- wherever in the gap it sits
+    -- and is placed `above` it. Under a system's last staff there is no staff
+    beneath in the system and the word stays. Expression words keep the band's
+    answer (the staff above); see `PLACEMENT-CONVENTIONS.md`."""
+    ordered = sorted(pws.staves, key=lambda s: s.top_y)
+    by_index = {s.staff_index: s for s in ordered}
+    staff_dicts = _staff_dicts(page_dict)
+    for i, d in list(accepted_at.items()):
+        if d.category != "tempo" or d.placement != "below":
+            continue
+        c = candidates[i]
+        staff = by_index.get(c.staff_index)
+        if staff is None:
+            continue
+        later = [s for s in ordered if s.top_y > staff.top_y]
+        if not later or later[0].system_index != staff.system_index:
+            continue
+        nxt = later[0]
+        sd = staff_dicts.get(nxt.staff_index)
+        m = _measure_at(_measure_spans(sd), c.bbox_page[0]) if sd else None
+        if m is None:
+            continue
+        accepted_at[i] = dataclasses.replace(d, staff_index=nxt.staff_index,
+                                             measure_index=m, placement="above")
+        candidates[i] = dataclasses.replace(c, staff_index=nxt.staff_index,
+                                            measure_index=m, placement="above")
+
+
 def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                     blanked, config, info):
     """The reading order for a page that is not proven born-digital (a scan).
@@ -1611,6 +1645,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     info["sibling_s"] = round(time.perf_counter() - t0, 2)
     _drop_overlapping_readings(candidates, accepted_at)
     _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at)
+    _give_tempo_to_the_staff_below(pws, page_dict, candidates, accepted_at)
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
     everyone = list(range(len(candidates)))
     info["n_read"] = sum(1 for i in everyone if seen[i])

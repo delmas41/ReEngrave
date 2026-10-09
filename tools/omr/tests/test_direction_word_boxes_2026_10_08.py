@@ -147,3 +147,42 @@ def test_a_sibling_window_is_filed_in_the_bar_of_the_word_it_echoes():
                                SPACING, DEFAULT_BAND_CONFIG)
     assert [c.staff_index for c in extra] == [1]
     assert extra[0].measure_index == 1
+
+
+# ── a tempo word belongs to the staff BELOW it (Sean 2026-10-08) ──────────
+
+def _two_staff_reading(category, terms, text, system_of_lower=0):
+    from tools.omr.direction_text import DirectionText, TextCandidate
+    from tools.omr.tests.test_direction_text import _page_dict, _pws, _staff
+    pws = _pws([_staff(0, 500), _staff(1, 1000, system=system_of_lower)])
+    page_dict = _page_dict([0, 1], [(100, 1000), (1000, 2000)])
+    # printed in the gap under staff 0 (bottom line 660) and over staff 1 (top 1000)
+    cands = [TextCandidate(0, 1, (1100, 760, 1300, 800), "below", 6)]
+    accepted = {0: DirectionText(0, 1, 1100, text, category, "below", terms, "tesseract")}
+    return pws, page_dict, cands, accepted
+
+
+def test_a_tempo_word_in_the_gap_is_the_lower_staffs():
+    """Litolff p9: the oboe's `Adagio`, printed in the gap ABOVE the oboe staff,
+    was filed on the empty staff over it. Sean: 'it belongs to the staff
+    beneath it ... tempo is always above the staff.'"""
+    pws, page_dict, cands, accepted = _two_staff_reading("tempo", ("adagio",), "Adagio.")
+    DT._give_tempo_to_the_staff_below(pws, page_dict, cands, accepted)
+    d = accepted[0]
+    assert (d.staff_index, d.measure_index, d.placement) == (1, 1, "above")
+    assert cands[0].staff_index == 1
+
+
+def test_an_expression_word_in_the_gap_stays_the_upper_staffs():
+    pws, page_dict, cands, accepted = _two_staff_reading("expression", ("dolce",), "dolce")
+    DT._give_tempo_to_the_staff_below(pws, page_dict, cands, accepted)
+    assert (accepted[0].staff_index, accepted[0].placement) == (0, "below")
+
+
+def test_a_tempo_word_under_a_systems_last_staff_stays_there():
+    """No staff beneath it in the system: the foot of a system (Brahms p3
+    `Allegro` under the basses) is not moved onto the next system."""
+    pws, page_dict, cands, accepted = _two_staff_reading("tempo", ("allegro",), "Allegro",
+                                                         system_of_lower=1)
+    DT._give_tempo_to_the_staff_below(pws, page_dict, cands, accepted)
+    assert (accepted[0].staff_index, accepted[0].placement) == (0, "below")
