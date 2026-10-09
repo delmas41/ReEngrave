@@ -240,3 +240,28 @@ def test_a_part_name_never_takes_a_dynamic():
     w = _word(log, 0, "Basso", (100, 50, 200, 90), category="part")
     p = _letter(log, 1, "p", (205, 50, 235, 90))
     assert _marking(log, _decide(log, [("p", [p.id])], [w])).value == []
+
+
+# ── the deductive rule: among letters AND a known word (Sean 2026-10-09) ──
+
+def test_a_letter_has_a_neighbour_only_when_letter_ink_touches_it_on_its_line():
+    import numpy as np
+    from tools.omr.staged.gather import letter_ink_beside
+    sp = 20.0
+    mask = np.zeros((200, 400), np.uint8)
+    mask[100:120, 100:114] = 255                 # the `p` itself (taken out below)
+    mask[102:120, 118:126] = 255                 # an `i` 4 px to its right
+    mask[100:120, 100:114] = 0                   # (the detector's box is blanked)
+    s = letter_ink_beside(mask, (100, 100, 114, 120), sp)
+    assert s["right"] and not s["left"]
+    mask[:, :] = 0
+    mask[100:120, 140:154] = 255                 # the next mark 1.3 spaces away
+    s = letter_ink_beside(mask, (100, 100, 114, 120), sp)
+    assert not s["right"] and not s["left"]       # a p by itself
+
+
+def test_alone_inside_a_word_box_is_still_a_dynamic():
+    from tools.omr.staged.adjudicators import text as T
+    assert T._is_a_letter_of_a_known_word({"left": False, "right": True})
+    assert not T._is_a_letter_of_a_known_word({"left": False, "right": False})
+    assert not T._is_a_letter_of_a_known_word(None)

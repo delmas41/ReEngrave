@@ -375,6 +375,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "the STAFF with the bar in `detail['cell']`, exactly as `METER_GLYPH` "
         "is.",
         "time"),
+    "DYNAMIC_LETTER_NEIGHBOURS": (
+        RELATION,
+        "ROADMAP 2.68: whether letter ink touches a dynamic letter on its own "
+        "line, left and right (and how far the nearest is, in spaces) -- a "
+        "relation between the letter's box and the ink beside it, not a "
+        "position of either. Sean 2026-10-09: a p alone is piano, a p among "
+        "letters of a known word is the word's.",
+        "dynamic"),
     "DYNAMIC_BAND_POSITION": (
         STAFF_GRID_POSITION,
         "PROMOTED, not invented: `DYNAMIC_LETTER.band_offset_spaces` is the "
@@ -685,6 +693,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.18c. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER` does.
     "CV_STEM_TIP": ("staged/gather.py", "_observe_stem_tip_ink"),
+    # ⚠️ ROADMAP 2.68. Also `staged/gather.py` -- reads the PAGE render
+    # (`pws.page.rgb`), every detected glyph blanked, staff lines left in: a
+    # staff line is too thin to pass its letter-size test.
+    "CV_LETTER_NEIGHBOURS": ("staged/gather.py", "_ink_without_detections"),
     # ⚠️ ROADMAP 2.60. Also `staged/gather.py` -- reads the PAGE's binary
     # raster (`pws.page.binary`), staff lines left in, like `LEDGER_FARHEAD`:
     # the lines of every staff are removed by the reader itself.

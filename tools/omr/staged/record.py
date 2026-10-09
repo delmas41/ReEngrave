@@ -996,6 +996,13 @@ class Q(_Vocab):
     #: PROMOTED from `DYNAMIC_LETTER.band_offset_spaces`: the same number, on
     #: a row of its own so it can be a second witness.
     DYNAMIC_BAND_POSITION = "dynamic_band_position"
+    #: ROADMAP 2.68 (Sean 2026-10-09: *"When p is by itself it is piano when
+    #: it is surrounded by other letter the context solves it"*). Is there
+    #: LETTER ink touching this dynamic letter on its own line -- left, right
+    #: -- once every detected glyph (dynamics included) is taken out? A
+    #: reading of the page's ink (`READERS.CV_INK`), a second witness beside
+    #: the detector's own letter, filed on the letter's glyph.
+    DYNAMIC_LETTER_NEIGHBOURS = "dynamic_letter_neighbours"
 
     #: PROMOTED from the `CV_HAIRPINS` half of `WEDGE_BOX.band_offset_spaces`,
     #: and MEASURED for the detector half, which never carried one.
@@ -2121,6 +2128,7 @@ CLAIMS: "dict[str, str]" = {
     "CLEF_POSITION": CLAIM.MEASUREMENT,
     "KEYSIG_RUN_POSITION": CLAIM.MEASUREMENT,
     "DYNAMIC_BAND_POSITION": CLAIM.MEASUREMENT,
+    "DYNAMIC_LETTER_NEIGHBOURS": CLAIM.MEASUREMENT,
     "DIRECTION_BAND_POSITION": CLAIM.MEASUREMENT,
     "WEDGE_BAND_POSITION": CLAIM.MEASUREMENT,
 
@@ -2379,6 +2387,10 @@ class READERS(_Vocab):
     #: because it asks a different question (is there flag-shaped ink AT
     #: THIS STEM'S TIP) with a different test from either.
     CV_STEM_TIP = "cv_stem_tip"              # gather: flag ink at a stem tip
+    #: ROADMAP 2.68: letter ink beside a dynamic letter, read on the PAGE render
+    #: (`pws.page.rgb`) with every detected glyph blanked (`gather.
+    #: _ink_without_detections`) -- not `CV_INK`'s staff-erased components.
+    CV_LETTER_NEIGHBOURS = "cv_letter_neighbours"
     #: `gather.gather_arc_ink` -- ROADMAP 2.60. Reads the page's own binary
     #: raster (`pws.page.binary`, the staff lines left in, like `LEDGER_
     #: FARHEAD`), so it shares a crop with every other reader of this page

@@ -3214,6 +3214,9 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
         key = local.get(c.staff_index)
         if key is not None:
             cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    # ROADMAP 2.68: the page's ink with EVERY detected glyph taken out, read
+    # once per page, for `Q.DYNAMIC_LETTER_NEIGHBOURS`.
+    other_ink = _ink_without_detections(pws, detections, cell_by_key)
 
     seen_cells = set()
     for cell_key, dets in detections.items():
@@ -3261,6 +3264,21 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
             log.observe(g, Q.DYNAMIC_LETTER, d.smufl_name,
                         reader=READERS.DETECTOR, frame=FRAME_PAGE,
                         score=float(d.confidence), **detail)
+            spacing = band[2] if band is not None else None
+            if other_ink is None or not spacing:
+                log.abstain(g, Q.DYNAMIC_LETTER_NEIGHBOURS,
+                            reader=READERS.CV_LETTER_NEIGHBOURS, frame=FRAME_PAGE,
+                            reason=ABSTAIN.READER_UNAVAILABLE,
+                            note="no page raster" if other_ink is None
+                            else "no staff spacing")
+            else:
+                sides = letter_ink_beside(other_ink, box, spacing)
+                log.observe(g, Q.DYNAMIC_LETTER_NEIGHBOURS,
+                            {"left": sides["left"], "right": sides["right"],
+                             "left_spaces": sides["left_spaces"],
+                             "right_spaces": sides["right_spaces"]},
+                            reader=READERS.CV_LETTER_NEIGHBOURS,
+                            frame=FRAME_PAGE, gap_spaces=LETTER_GAP_SPACES)
         if n == 0:
             # ⚠️ NOT `NO_INK`. This loop is over `detections.items()`, so the
             # detector fired HERE and what it returned simply holds no
@@ -3280,6 +3298,77 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
             log.abstain(sub, Q.DYNAMIC_LETTER, reader=READERS.DETECTOR,
                         frame=frame_cell(c.measure_index),
                         reason=ABSTAIN.NO_DETECTIONS)
+
+
+#: How close letter ink must stand to a dynamic letter, on its own line, for
+#: the letter to have a NEIGHBOUR: the space between two letters of one word.
+#: A dynamic beside a word stands clear of it (`direction_text`: 1.7 spaces
+#: measured; a letter inside `espr.` 0.5-0.9 with the dynamic boxes taken out).
+LETTER_GAP_SPACES = 0.5
+
+
+def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
+                            cell_by_key: Dict[Any, Any]):
+    """The page's ink (255) with every detected glyph box blanked, DYNAMICS
+    INCLUDED -- what is left beside a dynamic letter is ink the detector did
+    not name: the other letters of a word. None if the page has no raster."""
+    page = getattr(pws, "page", None)
+    rgb = getattr(page, "rgb", None)
+    if rgb is None:
+        return None
+    import cv2 as _cv2
+    gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
+    _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
+    h, w = mask.shape
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for d in dets:
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            x0, y0, x1, y1 = (int(round(v)) for v in box)
+            if x1 - x0 > 0.25 * w:
+                continue    # a span (beam, slur, staff), not a glyph
+            mask[max(0, y0 - 2):min(h, y1 + 2), max(0, x0 - 2):min(w, x1 + 2)] = 0
+    return mask
+
+
+def letter_ink_beside(mask, box, spacing: float) -> Dict[str, Any]:
+    """Is there a LETTER-sized, letter-dense piece of ink within
+    `LETTER_GAP_SPACES` of this box, on its own line (overlapping its middle
+    half), on the left and on the right? Pure; `mask` is 255 = ink."""
+    import cv2 as _cv2
+    x0, y0, x1, y1 = (int(round(v)) for v in box)
+    hgt = max(1, y1 - y0)
+    r0, r1 = y0 + hgt // 4, y1 - hgt // 4
+    gap = LETTER_GAP_SPACES * spacing
+    reach = int(round(gap + 2.0 * spacing))
+    wy0, wy1 = max(0, y0 - hgt), min(mask.shape[0], y1 + hgt)
+    out: Dict[str, Any] = {}
+    for side, (a, b) in (("left", (max(0, x0 - reach), x0)),
+                         ("right", (x1, min(mask.shape[1], x1 + reach)))):
+        nearest = None
+        if b > a:
+            n, _lab, st, _c = _cv2.connectedComponentsWithStats(
+                mask[wy0:wy1, a:b], 8)
+            for i in range(1, n):
+                cx, cy, cw, ch, area = (int(st[i, k]) for k in range(5))
+                if not (0.25 * spacing <= ch <= 2.2 * spacing
+                        and cw <= 2.0 * spacing and area >= 0.16 * cw * ch):
+                    continue    # not a letter's size or fill (a stem, a slur)
+                gy0, gy1 = wy0 + cy, wy0 + cy + ch
+                if gy1 < r0 or gy0 > r1:
+                    continue    # not on the letter's own line
+                dist = (x0 - (a + cx + cw)) if side == "left" else ((a + cx) - x1)
+                dist = max(0, dist)
+                nearest = dist if nearest is None else min(nearest, dist)
+        out[side] = nearest is not None and nearest <= gap
+        out[f"{side}_spaces"] = (round(nearest / spacing, 2)
+                                 if nearest is not None else None)
+    return out
 
 
 def _in_hairpin_band(y: float, bottom_line: float, spacing: float) -> bool:

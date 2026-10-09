@@ -132,13 +132,14 @@ def _canonical_grand_staff_owner(ev: Evidence, owned_by: str) -> str:
     # UNCONTESTED letter). Two separate branches below.
     composed_from=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
                    Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-                   Q.DIRECTION_WORD),
+                   Q.DIRECTION_WORD, Q.DYNAMIC_LETTER_NEIGHBOURS),
     scope=Kind.CELL,
-    # ⚠️ ROADMAP 2.68 adds `Q.DIRECTION_WORD`: a letter inside a word the OCR
-    # read is that word's letter (`_inside_a_read_word`).
+    # ⚠️ ROADMAP 2.68 adds `Q.DIRECTION_WORD` and `Q.DYNAMIC_LETTER_NEIGHBOURS`:
+    # a letter AMONG letters that make a KNOWN word is that word's letter
+    # (`_is_a_letter_of_a_known_word`).
     wants=(Q.DYNAMIC_LETTER, Q.GLYPH_OWNER, Q.DYNAMIC_BAND_POSITION,
            Q.DYNAMIC_IS_NOT_A_DYNAMIC, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.DIRECTION_WORD),
+           Q.DIRECTION_WORD, Q.DYNAMIC_LETTER_NEIGHBOURS),
     # ⚠️ The subjects are the cells `Q.DYNAMIC_LETTER` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()` and an abstention is a row. That is what makes this
@@ -257,6 +258,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 
     kept: List[Tuple[float, float, float, str, Any]] = []
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
+    inside_alone = inside_unmeasured = 0
     # ⚠️ ROADMAP 2.68: the words the OCR read anywhere on this system, in
     # page pixels -- a second reader (Tesseract/Surya, not the detector).
     word_boxes = [tuple(float(v) for v in (w.detail or {})["bbox_page_px"])
@@ -280,8 +282,16 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             not_a_letter += 1
             continue
         if _inside_a_read_word(row, word_boxes):
-            inside_word += 1
-            continue
+            sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
+            if not sides:
+                # inside a known word, but nobody read the ink beside it:
+                # CANNOT TELL, so it stays what the detector said (rule 8)
+                inside_unmeasured += 1
+            elif _is_a_letter_of_a_known_word(sides[-1].value):
+                inside_word += 1
+                continue
+            else:
+                inside_alone += 1
         home = row.subject.at(Kind.STAFF).to_key()
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
         owned_by = (owner.value if owner is not None and owner.value
@@ -405,9 +415,14 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         # ⚠️ ROADMAP 3.4g. Letters a `Q.DYNAMIC_IS_NOT_A_DYNAMIC`
         # verdict refused, counted so a short word names its cause.
         "letters_refused_as_not_a_dynamic": not_a_letter,
-        # ⚠️ ROADMAP 2.68. Letters lying inside a word the OCR read: the `p`
-        # of `più` boxed as `dynamicP`, the `ù` as `dynamicM`.
+        # ⚠️ ROADMAP 2.68. Letters AMONG letters of a word the OCR read and
+        # the lexicon knows: the `p` of `più` boxed as `dynamicP`. Kept: a
+        # letter inside such a word's box with no letter beside it (a `p`
+        # standing alone is piano -- Sean 2026-10-09), and one whose
+        # neighbours were never read.
         "letters_inside_a_read_word": inside_word,
+        "letters_alone_inside_a_word_box": inside_alone,
+        "letters_inside_a_word_box_unmeasured": inside_unmeasured,
         # ⚠️ ROADMAP 2.27d. Contested letters `_canonical_grand_staff_
         # owner` moved onto this staff (or off it) because they sit
         # between the two staves of a decided brace pair -- zero on every
@@ -430,6 +445,17 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
 #: A letter box with at least this share of its area inside a word box is one
 #: of the word's letters (ROADMAP 2.68).
 INSIDE_READ_WORD_SHARE = 0.5
+
+
+def _is_a_letter_of_a_known_word(sides) -> bool:
+    """Sean 2026-10-09: *"When p is by itself it is piano when it is
+    surrounded by other letter the context solves it ... only if it makes a
+    word we know."* The KNOWN word is the caller's test (`_inside_a_read_word`:
+    a word the OCR read AND the lexicon accepted); this is the other half --
+    the letter has letter ink beside it on its own line
+    (`Q.DYNAMIC_LETTER_NEIGHBOURS`). A letter with space on both sides is a
+    dynamic even inside a word's box (`p espr.`: the `p` is the dynamic)."""
+    return isinstance(sides, dict) and bool(sides.get("left") or sides.get("right"))
 
 
 def _inside_a_read_word(row, word_boxes) -> bool:
