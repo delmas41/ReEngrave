@@ -424,5 +424,200 @@ class TestAStrokeThroughTheHeadsIsNotTheirBeam(unittest.TestCase):
         self.assertEqual(v.reason, "beam_discounted_uncertain")
 
 
+# ═════════════════════════════════════════════════════════════════════════════
+# PART C -- Sean's review of the 10 crops (`out/print/rhythm-leftovers-review/`):
+# tiles 8 and 9 still WRONG (printed eighths read 16th and 32nd), tiles 5 and 7
+# LOST a right decision. The fixtures below are the REAL measured geometry of the
+# cells (canonical px, Litolff p3, staff space 100) -- the numbers in the record.
+# ═════════════════════════════════════════════════════════════════════════════
+
+def _stroke(log, box, *, cv=True):
+    x, y, w, h = box
+    return log.observe(CELL, Q.BEAM_STROKE, (x, y, w, h),
+                       reader=READERS.CV_LINES if cv else READERS.DETECTOR,
+                       frame="cell:0", x0=x, x1=x + w, y_center=y + h / 2.0,
+                       image="no_staff" if cv else "original",
+                       staff_lines_erased=cv)
+
+
+def _head(log, gi, box, cls="noteheadBlackInSpace"):
+    g = R.glyph(0, 0, 0, 0, gi)
+    log.observe(g, Q.NOTEHEAD_CLASS, cls, reader=READERS.DETECTOR,
+                frame="cell:0", score=0.9)
+    log.observe(g, Q.GLYPH_BOX, (cls,) + tuple(box),
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+    return g
+
+
+def _real_stem(log, box):
+    from tools.omr.tests.test_staged_duration import _stem
+    return _stem(log, x=box[0], y=box[1], w=box[2], h=box[3])
+
+
+def _ink_row(log, stroke, ratio, sag, ends):
+    return _ink(log, stroke, ratio=ratio, sag=sag, ends=ends)
+
+
+class TestTwoVoicesShareOneHead(unittest.TestCase):
+    """Tiles 8 and 9: one printed head, a stem each way, a beam for each."""
+
+    def _tile8(self, log):
+        _staff_space(log, 100)
+        g = _head(log, 0, (143, 523, 139, 124))
+        _head(log, 1, (296, 527, 124, 119))
+        _head(log, 2, (569, 531, 140, 132))
+        _head(log, 3, (746, 530, 128, 107))
+        for b in ((673, 344, 32, 318), (851, 344, 25, 318),
+                  (261, 351, 19, 311), (400, 351, 26, 311),
+                  (299, 547, 25, 419), (743, 554, 31, 412),
+                  (146, 560, 26, 413), (565, 566, 25, 394)):
+            _real_stem(log, b)
+        top = _stroke(log, (255, 343, 622, 64))
+        led1 = _stroke(log, (141, 584, 286, 19))
+        led2 = _stroke(log, (560, 622, 152, 39))
+        bot = _stroke(log, (154, 895, 628, 70))
+        top_o = _stroke(log, (260, 348, 609, 52), cv=False)
+        bot_o = _stroke(log, (130, 899, 658, 58), cv=False)
+        _ink_row(log, top, 1.956, 0.0042, (True, True))
+        _ink_row(log, led1, 3.719, 0.0, (True, True))
+        _ink_row(log, led2, 2.765, 0.0, (True, True))
+        _ink_row(log, bot, 2.044, 0.0475, (True, True))
+        _ink_row(log, top_o, 1.956, 0.0026, (True, True))
+        _ink_row(log, bot_o, 2.015, 0.0468, (True, True))
+        return g
+
+    def test_tile_8_a_unison_of_two_eighth_voices_reads_EIGHTH_RED(self):
+        log = Log()
+        g = self._tile8(log)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_tile_9_unison_with_a_stemless_bar_under_a_beam_reads_EIGHTH_RED(
+            self):
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (412, 431, 136, 130), "noteheadBlackOnLine")
+        _head(log, 1, (230, 436, 148, 136), "noteheadBlackOnLine")
+        _head(log, 2, (580, 435, 130, 129), "noteheadBlackOnLine")
+        for b in ((507, 201, 25, 344), (350, 208, 25, 337), (669, 214, 25, 337),
+                  (419, 451, 31, 413), (244, 464, 38, 412), (575, 464, 38, 400)):
+            _real_stem(log, b)
+        top = _stroke(log, (345, 207, 344, 56))
+        row = _stroke(log, (220, 475, 519, 50))
+        bot = _stroke(log, (245, 800, 375, 63))
+        bar = _stroke(log, (283, 900, 243, 32))
+        _ink_row(log, top, 2.286, 0.0017, (True, True))
+        _ink_row(log, row, 4.179, 0.0364, (True, False))
+        _ink_row(log, bot, 2.643, 0.0681, (True, True))
+        _ink_row(log, bar, 3.036, 0.0033, (False, False))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_not_by_ink_why"].get("no_stem_at_ends"),
+                         1)
+
+    def test_CONTROL_two_voices_that_DIFFER_are_a_range_never_one_voices_value(
+            self):
+        """Up voice one beam, down voice two beams: the head is NARROWED
+        between them, not decided as either (rule 8)."""
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (143, 523, 139, 124))
+        _real_stem(log, (261, 351, 19, 311))          # up
+        _real_stem(log, (146, 560, 26, 413))          # down
+        up = _stroke(log, (255, 343, 622, 64))
+        d1 = _stroke(log, (154, 895, 628, 70))
+        d2 = _stroke(log, (154, 840, 628, 40))
+        for st in (up, d1, d2):
+            _ink_row(log, st, 2.3, 0.01, (True, True))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(sorted(c.value["beam_levels"] for c in v.candidates),
+                         [1, 2])
+
+    def test_CONTROL_a_head_with_ONE_stem_is_unchanged_by_the_voice_rule(self):
+        """A single-stem head under a real 16th (two beams) stays a 16th."""
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (143, 523, 139, 124))
+        _real_stem(log, (146, 560, 26, 413))          # down only
+        a = _stroke(log, (154, 895, 628, 70))
+        b = _stroke(log, (154, 840, 628, 40))
+        for st in (a, b):
+            _ink_row(log, st, 2.3, 0.01, (True, True))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.25)
+
+
+class TestARealBeamUnderAFalseLedgerBoxIsKept(unittest.TestCase):
+    """Tile 7 (Litolff p3 cell 3/0/7/4): the detector drew a `ledgerLine` box
+    over a real stem-down beam; 2.25 refused the beam, so the head's only
+    counted 'level' was the ledger line through the heads (right by luck) and
+    2.75's through-the-heads rule then left it with none."""
+
+    def _tile7(self, log, *, beam_ink=(2.357, 0.0008, (True, True))):
+        _staff_space(log, 100)
+        g = _head(log, 0, (832, 428, 149, 128), "noteheadBlackOnLine")
+        _head(log, 1, (654, 441, 143, 137), "noteheadBlackOnLine")
+        _head(log, 2, (454, 435, 148, 131), "noteheadBlackOnLine")
+        _head(log, 3, (750, 785, 123, 69))            # false head over the beam end
+        for b in ((838, 464, 25, 394), (656, 470, 32, 400), (157, 345, 43, 519)):
+            _real_stem(log, b)
+        led = R.glyph(0, 0, 0, 0, 4)
+        log.observe(led, Q.GLYPH_BOX, ("ledgerLine", 405, 795, 650, 31),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.6)
+        row = _stroke(log, (426, 475, 581, 44))
+        beam = _stroke(log, (458, 794, 412, 63))
+        _ink_row(log, row, 3.607, 0.1053, (True, False))
+        _ink_row(log, beam, *beam_ink)
+        return g
+
+    def test_the_beam_is_counted_and_the_head_decides_EIGHTH_RED(self):
+        log = Log()
+        g = self._tile7(log)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_ledger_line"], 0)
+
+    def test_CONTROL_a_THIN_stroke_under_a_ledger_box_is_still_a_ledger_line(
+            self):
+        log = Log()
+        g = self._tile7(log, beam_ink=(1.2, 0.0008, (True, True)))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["beams_ledger_line"], 1)
+
+    def test_CONTROL_a_stroke_with_a_stem_at_ONE_end_under_a_ledger_box_is_still_a_ledger_line(
+            self):
+        log = Log()
+        g = self._tile7(log, beam_ink=(2.357, 0.0008, (True, False)))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.detail["beams_ledger_line"], 1)
+
+    def test_CONTROL_the_row_through_the_heads_alone_is_not_counted(self):
+        """Tile 5's shape (a head's own blob read as a stroke, no beam over
+        it): narrowed, the honest answer -- the printed flag is not read."""
+        log = Log()
+        _staff_space(log, 100)
+        g = _head(log, 0, (832, 428, 149, 128), "noteheadBlackOnLine")
+        _head(log, 1, (654, 441, 143, 137), "noteheadBlackOnLine")
+        _head(log, 2, (454, 435, 148, 131), "noteheadBlackOnLine")
+        _real_stem(log, (838, 464, 25, 394))
+        row = _stroke(log, (426, 475, 581, 44))
+        _ink_row(log, row, 3.607, 0.1053, (True, False))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+
+
 if __name__ == "__main__":
     unittest.main()
