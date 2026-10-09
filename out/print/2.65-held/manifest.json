@@ -1,0 +1,61 @@
+{
+ "question": "What does this staff print in the blue bar?",
+ "tiles": [
+  {
+   "n": 1,
+   "cell": "cell/1/0/0/0",
+   "staff_name": "Flute",
+   "file": "held_1.png",
+   "record_says_0929": "HEADER (bar 8). Print: 9/8. Template read 9/4 on 10 staves (runner-up 6/4); a 'noteheadWhole' c4.0 event stands where the digits are."
+  },
+  {
+   "n": 2,
+   "cell": "cell/1/0/1/0",
+   "staff_name": "Oboe",
+   "file": "held_2.png",
+   "record_says_0929": "HEADER (bar 8). Print: 9/8. Four 'noteheadWhole' heads, one c4.0 chord event, stand where the digits are."
+  },
+  {
+   "n": 3,
+   "cell": "cell/1/0/0/1",
+   "staff_name": "Flute",
+   "file": "held_3.png",
+   "record_says_0929": "BAR 9. Print: a 6/8 change on every staff. No meter reader fired here; three heads (c4.0 chord) stand where the digits are."
+  },
+  {
+   "n": 4,
+   "cell": "cell/1/0/3/1",
+   "staff_name": "Bassoon",
+   "file": "held_4.png",
+   "record_says_0929": "BAR 9. Print: 6/8 change. Two 'noteheadWhole' heads (c2.0) stand where the digits are."
+  },
+  {
+   "n": 5,
+   "cell": "cell/1/0/5/2",
+   "staff_name": null,
+   "file": "held_5.png",
+   "record_says_0929": "RELEASED by 2.19. One whole rest + 11 boxes refused not_a_notehead:too_narrow; size_measure_rest now marks it the bar."
+  },
+  {
+   "n": 6,
+   "cell": "cell/1/0/1/4",
+   "staff_name": "Oboe",
+   "file": "held_6.png",
+   "record_says_0929": "RELEASED by 2.19. One whole rest + a second box on it refused rest_is_a_duplicate_box (2.15)."
+  },
+  {
+   "n": 7,
+   "cell": "cell/1/0/7/3",
+   "staff_name": "Trumpet",
+   "file": "held_7.png",
+   "record_says_0929": "RELEASED by 2.19. One whole rest + staff 8's whole rest seen through the pad (glyph_owner DECIDED staff/1/0/8, distance). BLUE = staff 8."
+  },
+  {
+   "n": 8,
+   "cell": "cell/1/1/0/7",
+   "staff_name": "Flute",
+   "file": "held_8.png",
+   "record_says_0929": "STILL HELD. A lone whole rest on system 1, where Q.METER abstains (carry_not_corroborated) so size_measure_rest never runs; the file carries 9/4 and 2.8 judges 4.0 against 9.0."
+  }
+ ]
+}
