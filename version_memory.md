@@ -22,6 +22,14 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (afternoon) — 2.69 landed (hooks counted; flag-tip dot); 1.7 hand truth merged; 2.65 judged; dimin.
+
+- 2.69 (`lane-2.69-flag-hooks` 41637029): `gather.stem_tip_hooks` + `rhythm._stem_tip_hook_count` (a seen hook rules out the head value; counted ->
+  decided; uncounted -> narrowed over levels >= 1); `Q.DOT_STROKE_INK` / `CV_DOT_STROKE` (a dot box mostly on a stroke is not a dot). Sean's 22
+  heads 12 -> 18 right. Fast 6,474 passed; check 192.
+- 1.7 merged (`tools/omr/hand_truth/`, Sean's Brahms 317803 pdf 0 labels, 887 boxes). `dimin` in the lexicon. 2.65: 22 beam/flag heads, 6 head-fill,
+  8 held bars, 10 dynamics bars judged blind by Sean; rows 2.69-2.74 opened from his rulings (DECISIONS 2026-10-09).
+
 ## 2026-10-09 — ROADMAP 0.9: nine slow-tier failures on main, bisected and closed
 
 - Seven `TestTheEngravedTier` tests asserted the reason words 2.9 (`c3035ad5f`) folded into `fitted_no_markers`: re-posed on value + reason +
