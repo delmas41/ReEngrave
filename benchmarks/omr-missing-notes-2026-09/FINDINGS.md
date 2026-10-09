@@ -2046,3 +2046,48 @@ failed (the 3 passing: a real second level, a dotted-8th beamlet, a stroke near 
 failed on the previous commit's rule (the control that a head-SIZED box still refuses passed). Crops: `out/print/rhythm-leftovers/`
 (10 changed heads Sean has not judged, 5 per plate, `manifest.json` with before/after NOT shown). Gates: `pytest -m "not slow"
 tools/omr/tests` **6,559 passed, 11 skipped, 2 xfailed, 0 failed**; `python3 -m tools.omr.staged.check` TOTAL **192** (= base).
+
+### 16.6 Sean's review of the 10 crops (`out/print/rhythm-leftovers-review/`): tiles 5, 7, 8, 9 (2026-10-09)
+
+Sean, blind: all ten are EIGHTHS except 1 (16th) and 2 (dotted quarter). On `b6558cf9` tiles 1, 3, 6, 10 were newly right,
+2 narrowed with the answer in it, 4 unchanged narrowed, **8 (read 16th) and 9 (read 32nd) still wrong, 5 and 7 lost a right
+decision**. Measured per tile on the record (strokes with their ink rows, stems, heads; scratchpad overlays, not committed):
+
+* **Tiles 8 and 9 (Litolff p3 cells 2/0/3/1 and 2/0/0/5): one printed head SHARED BY TWO VOICES.** The head carries an up-stem
+  to a beam above AND a down-stem to a beam below (a unison of two eighth voices); `Q.STEM_DIRECTION` says `stems_disagree`, so
+  `side` is `None` and `_beam_levels` counted both beams as levels of one stem: 2 (16th), plus a third stroke on tile 9. That
+  third stroke (`obs:020007`, 243 x 32 px, 3.0 line thicknesses, **a stem at NEITHER end**) is a bar under the lower beam (the
+  foot of a dynamic letter); `_stems_a_stroke_stands_on` counted it as standing on two stems because stems pass within the
+  join tolerance of its box. Not a staff line, not a split beam, not a fused ledger (the ledger-through-heads strokes `020448/9` and
+  `020005` were already refused). Fix: (a) a head with a stem each way counts each stem's beams against ITS side only
+  (`rhythm._voice_stems`, the `voice_levels` block; the head's level is the voices' range: equal -> that level, different ->
+  NARROWED, never one voice's value for both -- `detail.beam_voices`); (b) a stroke the ink READ at both ends and found a
+  stem at NEITHER is refused `no_stem_at_ends`.
+* **Tile 7 (Litolff p3 cell 3/0/7/4): a real beam was refused as a ledger line, and 2.74's through-the-heads rule then
+  removed the stroke that had supplied the (lucky) level.** The detector drew a `ledgerLine` box [405,795,1055,826] over the
+  stem-down beam [458,794,412,63] (2.36 line thicknesses, straight, a stem at both ends); 2.25's `_not_a_ledger_line` refuses any
+  stroke that overlaps such a box. The eighth on `main` came from the ledger line through the heads (`obs:036811`), right by
+  luck. Fix: a stroke that passes every beam test the ink can read -- thick, straight, a stem found at BOTH ends, not lying
+  through the heads (`_beam_anchor_ids`) -- is exempt from the ledger-box refusal. A thin stroke, or one with a stem at one end,
+  under a ledger box is still a ledger line (tests).
+* **Tile 5 (Brahms p1 cell 1/0/3/4): NO beam is lost -- there is none.** The head is the lower one of a pair; its eighth is the
+  FLAG at the bottom of its down-stem. `main`'s decided eighth came from the head's own blob (`obs:034934`, 123 x 46 px, 0.93 inside the
+  head box) read as a one-level "beam", exactly the false stroke the through-the-heads rule refuses. The flag is not read:
+  the stem's bottom tip window is `occupied` by a `tie` box [800,632,306,56] hung under it, and on the raster the window
+  reads `right` 0.26 (< 0.30). The hook COUNTER on that stem counts one hook (probe), so the cause is the blocker and the density
+  floor, not the mark. Left NARROWED `eighth | quarter` (the answer is in it); NOT fixed: letting a tie box through, or lowering the
+  density floor, changes every tip window on the plate and needs its own item.
+
+**Measured (clean re-gathers, base = origin/main `f2a0efb1`, arm = `0d08e10c`).** Sean's 10: **7 right** (1, 3, 6, 7, 8, 9, 10), 2, 4 and 5 narrowed with the answer in them, **0 wrong**. Sean's 22: **21 right / 0 wrong / 1 narrowed (4)**
+(only tile 15 moved). The other judged heads (2.69's 2, 2.73's 10, 2.74's 10) unchanged except Litolff 1 -> eighth.
+Population: Brahms p0-1 **24 of 1,491** changed (4 `beam_certain_not_joined` -> decided eighth, 4 -> `beam_discounted_uncertain` same pair, 3 `beams_ambiguous` candidates changed,
+3 `flags_disagree` -> eighth, 3 decided 16th -> eighth, 2 32nd -> 16th, 3 decided eighth -> narrowed eighth|quarter, 1 dotted eighth ->
+narrowed, 1 ambiguous -> eighth);
+Litolff p1-3 **74 of 1,286**: 32 decided 16th -> eighth, **16 decided quarter -> eighth** (real beams the ledger-box rule had dropped; I
+eye-checked 8 of the 16 on crops: all beamed eighths), 4 decided eighth -> narrowed, 3 32nd -> eighth, 3 32nd -> 16th, 2 64th -> eighth,
+and 14 narrowed -> decided/narrowed. `Q.STEM_TIP_INK`: Brahms found 28 -> 104, counted 11 -> 52 (all single hooks).
+Crops of 10 changed heads Sean has not judged: `out/print/rhythm-leftovers-2/` (head 7 is the false notehead box over tile 7's beam:
+expect "not a note").
+Tests: `test_staged_rhythm_leftovers.py` now 33; RED first on `b6558cf9`: 4 of the 8 new tests failed (tiles 7, 8, 9 on real
+measured geometry, and the voices-that-differ range); controls (one stem, thin stroke under a ledger box, one-end stroke, a
+row through heads alone) stayed green.
