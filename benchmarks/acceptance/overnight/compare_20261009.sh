@@ -3,6 +3,8 @@
 # two ways (Sean 2026-10-08 night: "compare the output of the first 2 stages with
 # last night as well as a full/all stages output"):
 #
+# ⚠️ `--arm env` too: BASE was gathered with OMR_DIRECTION_TEXT_SCAN_GATE=1 (no
+# direction words on scans) and TAG without it -- a declared part of the change.
 #   A. FIRST TWO STAGES vs last night's re-gather (BASE, through ADJUDICATE):
 #      `readout diff` per movement (GATHER + ADJUDICATE only, by construction),
 #      the coloured print of each count page (`readout html --against`), and a
@@ -35,11 +37,11 @@ for doc in beethoven5-litolff brahms1-breitkopf; do
   B=$R/$doc-mvt1-whole-$TAG.record.json
   [ -s "$B" ] || { echo "$doc: no record $B" >> "$SUM/README.txt"; continue; }
   # A. first two stages
-  python3 -m tools.omr.staged.readout diff "$A" "$B" --arm code --arm settings \
+  python3 -m tools.omr.staged.readout diff "$A" "$B" --arm code --arm settings --arm env \
       --label-a "$BASE" --label-b "$TAG" \
       --json "$OUT/$doc-first-two-stages.json" --out "$SUM/$doc-first-two-stages.txt" \
       > "$OUT/$doc-diff.log" 2>&1 || echo "$doc: readout diff exit $?" >> "$SUM/README.txt"
-  python3 -m tools.omr.staged.readout html "$B" --against "$A" --arm code --arm settings \
+  python3 -m tools.omr.staged.readout html "$B" --against "$A" --arm code --arm settings --arm env \
       --page "$page" --label-a "$BASE" --label-b "$TAG" \
       --out "$OUT/$doc-count-page.html" > "$OUT/$doc-html.log" 2>&1 \
       || echo "$doc: readout html exit $?" >> "$SUM/README.txt"
@@ -57,7 +59,8 @@ done
 python3 "$HERE/text_counts.py" "$R" "$BASE" "$TAG" > "$SUM/text-words-and-markings.txt" 2>&1
 
 # B. all-stages acceptance on the new records, through a temporary manifest
-python3 - "$R" "$TAG" "$OUT/manifest.json" <<'EOF'
+MAN=$WT/benchmarks/acceptance/manifest-$TAG.json   # inside the checkout: acceptance prints it relative to the repo
+python3 - "$R" "$TAG" "$MAN" <<'EOF'
 import json, sys
 R, tag, out = sys.argv[1:4]
 m = json.load(open("benchmarks/acceptance/manifest.json"))
@@ -67,7 +70,7 @@ for d in m["documents"]:
                    "md5": None, "note": f"temporary: compare_20261009.sh, re-gather {tag}"}
 json.dump(m, open(out, "w"), indent=1)
 EOF
-python3 -m tools.omr.acceptance --manifest "$OUT/manifest.json" --out "$OUT/current.json" \
+python3 -m tools.omr.acceptance --manifest "$MAN" --out "$OUT/current.json" \
     --step-timeout 3600 > "$OUT/acceptance.log" 2>&1 \
     || echo "acceptance exit $? (see $OUT/acceptance.log)" >> "$SUM/README.txt"
 cp "$OUT/current.json" "$SUM/current.json" 2>/dev/null
