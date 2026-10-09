@@ -1176,6 +1176,60 @@ def _tremolo_stem_box(ev: Evidence, cell, stem_id: Optional[str]
     return None
 
 
+#: ROADMAP 2.71 -- a second witness that this box IS the tremolo slash:
+#: GATHER's own `Q.STEM_SLASH` reading (a thick angled stroke followed out of
+#: BOTH sides of one stem, joined to no other) stands inside the box. The box
+#: must hold at least this share of the slash's CENTRE LINE and be no more than
+#: this many times the stroke's own area (length x thickness; a head with a
+#: slash across it is a bigger box
+#: and is not asked), and must sit away from both stem ends (the same POSITION
+#: test as above: a head sits AT an end, never on the shaft).
+SLASH_READ_COVER_MIN = 0.6
+SLASH_READ_BOX_MAX_FOOTPRINTS = 4.0
+
+
+def _slash_read_under_box(ev: Evidence, subject, box_xywh
+                          ) -> Optional[Tuple[Any, Dict[str, Any]]]:
+    """`(Q.STEM_SLASH row, stroke)` where a PASSING slash read by GATHER lies
+    inside `box_xywh` (a notehead-classed box, canonical cell px) on the shaft
+    of the stem it was read on; else `None`. ROADMAP 2.71. Reads the row,
+    never the raster -- the one place a slash is named is `gather.stem_slashes`.
+    """
+    cell = subject.at(Kind.CELL)
+    rows = ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    if not rows:
+        return None
+    x, y, w, h = box_xywh
+    for r in rows:
+        stem_xywh = _tremolo_stem_box(ev, cell, (r.detail or {}).get("stem_row_id"))
+        for s in (r.detail or {}).get("strokes") or ():
+            b = s.get("box")
+            if s.get("reason") is not None or not isinstance(b, (list, tuple)) \
+                    or len(b) != 4 or stem_xywh is None:
+                continue
+            line = s.get("centreline")
+            thick = float(s.get("thickness_px") or 0.0)
+            if not (isinstance(line, (list, tuple)) and len(line) == 4):
+                continue
+            lx0, ly0, lx1, ly1 = (float(v) for v in line)
+            # the share of the stroke's CENTRE LINE inside the box: a box
+            # covers a slash by covering where it runs, not the empty corners
+            # of the rectangle that bounds an angled stroke
+            n = 9
+            inside = sum(
+                1 for i in range(n)
+                if x <= lx0 + (lx1 - lx0) * i / (n - 1.0) <= x + w
+                and y <= ly0 + (ly1 - ly0) * i / (n - 1.0) <= y + h)
+            if inside / float(n) < SLASH_READ_COVER_MIN:
+                continue
+            area = max(1e-6, ((lx1 - lx0) ** 2 + (ly1 - ly0) ** 2) ** 0.5 * thick)
+            if (w * h) > SLASH_READ_BOX_MAX_FOOTPRINTS * area:
+                continue
+            if _tremolo_position_ok(box_xywh, stem_xywh):
+                return r, s
+    return None
+
+
 def _is_tremolo_slash(ev: Evidence, subject) -> bool:
     """Do ALL THREE of `subject`'s own tests pass -- the same tests
     `_tremolo_slash_crosses_stem` makes for `ev.subject`, asked here of any
@@ -1189,9 +1243,6 @@ def _is_tremolo_slash(ev: Evidence, subject) -> bool:
     """
     if not TREMOLO_SLASH_SHIPS:
         return False
-    cross_detail = _notehead_stem_cross_detail(ev, subject)
-    if cross_detail is None:
-        return False
     box_row = None
     for r in ev.rows(Q.GLYPH_BOX, subject=subject):
         box_row = r
@@ -1199,6 +1250,13 @@ def _is_tremolo_slash(ev: Evidence, subject) -> bool:
             or len(box_row.value) != 5:
         return False
     box_xywh = tuple(float(v) for v in box_row.value[1:])
+    # ROADMAP 2.71: the same second witness `_tremolo_slash_crosses_stem`
+    # takes, so a stacked group's keep-choice never picks a read slash.
+    if _slash_read_under_box(ev, subject, box_xywh) is not None:
+        return True
+    cross_detail = _notehead_stem_cross_detail(ev, subject)
+    if cross_detail is None:
+        return False
     cell = subject.at(Kind.CELL)
     stem_xywh = _tremolo_stem_box(ev, cell, cross_detail.get("stem"))
     if stem_xywh is None:
@@ -1226,6 +1284,26 @@ def _tremolo_slash_crosses_stem(ev: Evidence, this_row,
     `False`. These tests assert the SIGNAL, not a refusal, the same
     discipline `TestUnladdered` uses.
     """
+    # ⚠️ ROADMAP 2.71 -- THE SECOND WITNESS, FIRST. GATHER's `Q.STEM_SLASH`
+    # followed a thick angled stroke out of both sides of one stem; if that
+    # stroke is what this box covers (and the box stands on the shaft, away
+    # from both ends), the box is the slash whatever the cell's own ink split
+    # said -- Litolff p6 `glyph/6/1/11/3/3`, a slash kept as a black head
+    # because the split read it round. It is a witness, never a fallback: the
+    # three-test reading below still runs and still records its signal.
+    if TREMOLO_SLASH_SHIPS and isinstance(this_row.value, (list, tuple)) \
+            and len(this_row.value) == 5:
+        read = _slash_read_under_box(
+            ev, this_row.subject,
+            tuple(float(v) for v in this_row.value[1:]))
+        if read is not None:
+            slash_row, stroke = read
+            detail["tremolo_slash_signal"] = {
+                "read_by": "stem_slash", "angle_deg": stroke.get("angle_deg"),
+                "thickness_ratio": stroke.get("thickness_ratio"),
+                "would_fire": True}
+            return Ruling(value=True, reason="tremolo_slash_crosses_stem",
+                          used=(this_row.id, slash_row.id), detail=detail)
     cross_detail = _notehead_stem_cross_detail(ev, this_row.subject)
     if cross_detail is None:
         return None
@@ -2651,7 +2729,10 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # (`_tremolo_position_ok`) now reads the matched `Q.STEM`
                   # row's own canonical box directly (`_tremolo_stem_box`),
                   # so the declaration is live again, for a different reader.
-                  Q.STEM),
+                  Q.STEM,
+                  # ⚠️ ROADMAP 2.71: GATHER's read tremolo slash -- the second
+                  # witness `_tremolo_slash_crosses_stem` takes.
+                  Q.STEM_SLASH),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -2660,7 +2741,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
-          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK),
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",

@@ -4093,12 +4093,18 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
             blockers = _stem_tip_blockers(
                 found.get("beams") or (),
                 (detections or {}).get(sub.to_key()) or (), space_c)
+            # ROADMAP 2.71: the tremolo slashes on these stems are named ONCE,
+            # here, and the tip reader below is handed the raster with them
+            # blanked -- a slash is not a hook.
+            slashes = _observe_stem_slashes(log, sub, frame, c,
+                                            stem_rows_logged, heads, space_c)
             for d, row_id in stem_rows_logged:
                 _observe_stem_tip_ink(
                     log, sub, frame, c, row_id,
                     (float(d.x_canonical), float(d.y_canonical),
                      float(d.width_canonical), float(d.height_canonical)),
-                    blockers, space_c, heads=heads)
+                    blockers, space_c, heads=heads,
+                    slashes=slashes.get(row_id))
 
         # ROADMAP 2.69 follow-up: is any `augmentationDot` box in this cell
         # really the tip of a flag? Needs the cell raster, not any stem.
@@ -4579,9 +4585,15 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                           stem_box: Tuple[float, float, float, float],
                           blockers: Sequence[Tuple[float, float, float, float]],
                           space: Optional[float],
-                          heads: Optional[Sequence[Tuple[float, float, float, float]]] = None
+                          heads: Optional[Sequence[Tuple[float, float, float, float]]] = None,
+                          slashes: Optional[Sequence[Dict[str, Any]]] = None
                           ) -> None:
     """`Q.STEM_TIP_INK` -- one row per (`Q.STEM` row, end). ROADMAP 2.18c.
+
+    ROADMAP 2.71: `slashes` is `stem_slashes`'s reading of THIS stem; the
+    window and the hook counter read the raster with every passing slash
+    blanked (`blank_slashes`), so a tremolo slash is neither flag-shaped ink
+    nor a hook, and a real hook on the same stem is still found and counted.
 
     ROADMAP 2.69: where the ink IS found, the row's detail also carries the
     HOOK COUNT (`stem_tip_hooks`: `hooks`, `hooks_min`, `hooks_max`,
@@ -4616,6 +4628,8 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         stem_row_id=stem_row_id, end=end,
                         note="no cell staff-space unit")
         return
+    if slashes:
+        img = blank_slashes(img, slashes)
     for end, tip_y, into_sign in (("top", y0, 1.0), ("bottom", y1, -1.0)):
         near, far = STEM_TIP_INK_NEAR_SPACES * space, STEM_TIP_INK_FAR_SPACES * space
         width = STEM_TIP_INK_WIDTH_SPACES * space
@@ -4655,6 +4669,411 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         log.observe(sub, Q.STEM_TIP_INK, found,
                     reader=READERS.CV_STEM_TIP, frame=frame,
                     stem_row_id=stem_row_id, end=end, **m, **hook_detail)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.71 -- the TREMOLO SLASH, named once.
+#
+# Sean, 2026-10-09 (DECISIONS): *"The trem slash is very different from a
+# beam. Beams have to be connected to other notes - slashes never are. The
+# hook of a flag is very different from a slash. The slash crosses both sides
+# of the stem with a thick line at an angle."* A slash is a THICK, ANGLED
+# stroke that crosses BOTH sides of ONE stem and is joined to no other note's
+# stem. It is its own mark (a tremolo): never a beam level, never a flag hook,
+# never a rest, never a notehead, and it never shortens the written value.
+#
+# This is the ONE place a slash is named. `Q.STEM_SLASH` says how many a stem
+# carries and where; the beam path (`rhythm._not_a_slash`), the hook and
+# stem-tip readers (`blank_slashes`, below), the rest refusal
+# (`family_precision`) and the notehead refusal (`notehead_precision`) all read
+# it, so they refuse the same ink by the same rule.
+#
+# HOW IT IS READ. Each stroke that touches the stem is FOLLOWED OUTWARD from
+# the stem's edge, column by column, on each side (a run of ink overlapping the
+# previous column's, stopping where it merges into something taller than
+# itself). A slash is a left track and a right track that meet at the stem
+# (contact intervals within `STEM_SLASH_CONTACT_GAP_SPACES`), run
+# `STEM_SLASH_MIN_REACH_SPACES` or more out from it on BOTH sides, lie on one
+# straight line (a slur bows, a head does not continue), lean at least
+# `STEM_SLASH_MIN_ANGLE_DEG` off horizontal (a ledger line through a stem is
+# level), are at least `STEM_SLASH_MIN_THICKNESS_RATIO` staff-line thicknesses
+# thick measured across the stroke (a slur's or hairpin's line is about one),
+# and neither run on to another stem (a beam) nor stand on a head's end (a
+# chord's head on each side). Each refusal is a reason word on the stroke, so
+# `Q.STEM_SLASH` is a measurement with its own refusals, never a bare count.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's
+# two lines: the numbers. They are set on Litolff p6 (a bold MERGING plate:
+# 7 slashed stems read, every one a slash by eye in the tiles looked at) and
+# Brahms p0-1 (17 read; the two quarter rests the reader also passes are
+# caught downstream by the rest's own height -- `family_precision`) and are
+# untested on a plate whose slashes are steeper than ~55 degrees or shorter
+# than 0.7 spaces. Falsified by a
+# print-confirmed slash the reader refuses (a tremolo drawn level; one that
+# reaches under 0.35 spaces from the stem) or a stroke it passes that Sean
+# reads as something else.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A stroke must reach at least this far out from the stem on BOTH sides.
+STEM_SLASH_MIN_REACH_SPACES = 0.35
+#: ... and no further than this before it is something longer than a slash
+#: (a beam, a tie, a staff-line residue): the tracker stops here and the
+#: stroke is refused `runs_on`.
+STEM_SLASH_MAX_REACH_SPACES = 1.9
+#: The left and right contact intervals (where the stroke meets the stem's
+#: edges) must lie within this far of overlapping: a straight stroke at 30
+#: degrees shifts ~0.2 spaces across a stem.
+STEM_SLASH_CONTACT_GAP_SPACES = 0.35
+#: A contact interval shorter than this is a speck; taller than this is a
+#: head or a clump, never a slash's own thickness.
+STEM_SLASH_MIN_CONTACT_SPACES = 0.10
+STEM_SLASH_MAX_CONTACT_SPACES = 1.3
+#: The tracked centre points of both sides lie on one line to within this.
+STEM_SLASH_MAX_RESIDUAL_SPACES = 0.15
+#: Off horizontal. A tremolo slash is drawn at an angle; a ledger line
+#: through a stem is level (0-5 degrees on the plates read).
+STEM_SLASH_MIN_ANGLE_DEG = 12.0
+#: Thickness ACROSS the stroke over the staff line's thickness; a hairpin's
+#: line or a slur's tapering end reads 1.0-1.3, a slash 2.0 and over.
+STEM_SLASH_MIN_THICKNESS_RATIO = 1.4
+#: A notehead box whose centre is this near the stem's end, and whose rows
+#: hold the stroke, explains it (a chord's second puts a head on each side).
+STEM_SLASH_HEAD_END_SPACES = 1.1
+
+#: ⚠️ A QUARTER REST READ AS A "STEM" (the CV stem reader finds its own stroke --
+#: 2.33b) HAS DIAGONAL STROKES THAT CROSS ITS AXIS EXACTLY AS A SLASH DOES, and
+#: this reader passes two of them on Brahms p1 (FINDINGS 2.71). A test of "how
+#: long is the plain thin stretch of the stem" (`bare_stem_spaces`, recorded on
+#: every stroke) was built to refuse them and MEASURED AND REFUSED: the real
+#: Litolff p6 slashes read 0.57-1.08 (a bold plate, a hollow head merged at one
+#: end), the two Brahms rests 0.95 and 1.06 -- the populations overlap. So the
+#: reader keeps what it measures, and the one decision that must tell a rest
+#: from a slashed stem (`family_precision`) asks the box's own HEIGHT as well.
+#: A row is "bare stem" where the ink run through the stem's centre is no wider
+#: than the stem's own width times this, plus a little slack.
+STEM_SLASH_BARE_WIDTH_FACTOR = 1.5
+
+SLASH_REASONS = ("one_sided", "not_at_an_angle", "too_thin", "not_straight",
+                 "joins_another_stem", "runs_on", "at_a_head", "too_short")
+
+
+def _bare_stem_spaces(ink: Any, box: Tuple[float, float, float, float],
+                      core: Tuple[int, int], space: float) -> float:
+    """The longest stretch (in spaces) of consecutive rows of this stem box
+    where the ink run through the stem's centre is no wider than the stem
+    itself -- how long the stem is a plain line. ROADMAP 2.71."""
+    H, W = ink.shape
+    x, y, w, h = [int(round(v)) for v in box]
+    c0, c1 = core
+    mid = (c0 + c1) // 2
+    limit = STEM_SLASH_BARE_WIDTH_FACTOR * max(1, c1 - c0) + 0.06 * space
+    best = cur = 0
+    for yy in range(max(0, y), min(H, y + h)):
+        row = ink[yy]
+        if not (0 <= mid < W) or not row[mid]:
+            cur = 0
+            continue
+        a = mid
+        while a > 0 and row[a - 1]:
+            a -= 1
+        b = mid
+        while b < W - 1 and row[b + 1]:
+            b += 1
+        if (b - a + 1) <= limit:
+            cur += 1
+            best = max(best, cur)
+        else:
+            cur = 0
+    return best / float(space)
+
+
+def _col_runs(col: Any) -> List[Tuple[int, int]]:
+    import numpy as np
+    d = np.diff(np.concatenate([[0], np.asarray(col, np.int8), [0]]))
+    return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
+
+
+def _stem_core(ink: Any, box: Tuple[float, float, float, float]
+               ) -> Optional[Tuple[int, int]]:
+    """The stem's OWN columns `(c0, c1)`: the median width and centre of the
+    ink run through the stem box's middle three fifths. A CV stem box can be
+    wider than the stem (it may swallow a slash's root); the median is not."""
+    import numpy as np
+    H, W = ink.shape
+    x, y, w, h = [int(round(v)) for v in box]
+    mid = x + w / 2.0
+    lo = max(0, x - 6)
+    ws, cs = [], []
+    for yy in range(max(0, y + h // 5), min(H, y + h - h // 5)):
+        best = None
+        for s, e in _col_runs(ink[yy, lo:min(W, x + w + 6)]):
+            s += lo
+            e += lo
+            if best is None or abs((s + e) / 2.0 - mid) < abs((best[0] + best[1]) / 2.0 - mid):
+                best = (s, e)
+        if best:
+            ws.append(best[1] - best[0])
+            cs.append((best[0] + best[1]) / 2.0)
+    if not ws:
+        return None
+    wc, cc = float(np.median(ws)), float(np.median(cs))
+    return int(round(cc - wc / 2.0)), int(round(cc + wc / 2.0))
+
+
+def _track_stroke(ink: Any, start_x: int, direction: int,
+                  interval: Tuple[int, int], space: float,
+                  max_reach: int) -> List[Tuple[int, int, int]]:
+    """Follow one stroke outward from the stem: `[(x, y0, y1), ...]`, one per
+    column, each the run that overlaps the previous column's the most. It
+    STOPS where the stroke ends or swells past `1.7 x` its first thickness
+    (it has merged into a head, a beam or a clump)."""
+    H, W = ink.shape
+    a, b = interval
+    first = b - a
+    pad = int(0.35 * space)
+    out: List[Tuple[int, int, int]] = []
+    for dx in range(0, max_reach):
+        x = start_x + direction * dx
+        if not (0 <= x < W):
+            break
+        lo = max(0, a - pad)
+        best = None
+        for s, e in _col_runs(ink[lo:min(H, b + pad), x]):
+            s += lo
+            e += lo
+            ov = min(e, b) - max(s, a)
+            if ov > 0 and (best is None or ov > best[2]):
+                best = (s, e, ov)
+        if best is None:
+            break
+        s, e, _ = best
+        if (e - s) > 1.7 * first + 0.1 * space:
+            break
+        out.append((x, s, e))
+        a, b = s, e
+    return out
+
+
+def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
+                 space: float, line_px: float,
+                 other_stems: Sequence[Tuple[float, float, float, float]] = (),
+                 heads: Sequence[Tuple[float, float, float, float]] = ()
+                 ) -> List[Dict[str, Any]]:
+    """Every stroke that crosses ONE stem, each with a `reason` (`None` = a
+    tremolo slash; else one of `SLASH_REASONS`). ROADMAP 2.71.
+
+    `ink` is the staff-ERASED raster as a bool array (True = ink), `box` the
+    stem's `(x, y, w, h)`, all in the SAME canonical cell pixels; `space` the
+    staff space and `line_px` the staff line's thickness in those pixels;
+    `other_stems` and `heads` are `(x, y, w, h)` boxes in that frame. An
+    empty list means the reader RAN and no stroke crosses this stem; it never
+    returns `None`. Pure: it decides nothing about any glyph.
+    """
+    import math
+    import numpy as np
+    if ink is None or getattr(ink, "ndim", 0) != 2 or not space or space <= 0:
+        return []
+    H, W = ink.shape
+    core = _stem_core(ink, box)
+    if core is None:
+        return []
+    c0, c1 = core
+    x, y, w, h = [float(v) for v in box]
+    bare = _bare_stem_spaces(ink, box, core, space)
+    near = max(2, int(round(0.12 * space)))
+    max_reach = int(round(STEM_SLASH_MAX_REACH_SPACES * space))
+    ya, yb = int(max(0, y)), int(min(H, y + h))
+    contacts: Dict[str, list] = {"left": [], "right": []}
+    for side, sx, d in (("left", c0 - 2, -1), ("right", c1 + 1, 1)):
+        xa, xb = (sx - near, sx) if d < 0 else (sx, sx + near)
+        band = ink[ya:yb, max(0, xa):max(0, xb)]
+        if band.size == 0:
+            continue
+        occupied = band.mean(axis=1) >= 0.6
+        for a, b in _col_runs(occupied):
+            if b - a < STEM_SLASH_MIN_CONTACT_SPACES * space \
+                    or b - a > STEM_SLASH_MAX_CONTACT_SPACES * space:
+                continue
+            a += ya
+            b += ya
+            contacts[side].append(
+                ((a, b), _track_stroke(ink, sx, d, (a, b), space, max_reach)))
+    strokes: List[Dict[str, Any]] = []
+    used_right = set()
+    for (la, lb), ltr in contacts["left"]:
+        for ri, ((ra, rb), rtr) in enumerate(contacts["right"]):
+            if ri in used_right:
+                continue
+            if max(la, ra) - min(lb, rb) > STEM_SLASH_CONTACT_GAP_SPACES * space:
+                continue
+            used_right.add(ri)
+            lreach = (abs(ltr[-1][0] - (c0 - 2)) if ltr else 0)
+            rreach = (abs(rtr[-1][0] - (c1 + 1)) if rtr else 0)
+            half_core = (c1 - c0) / 2.0
+            pts = ([(-(abs(px - (c0 - 2)) + half_core), (s + e) / 2.0)
+                    for px, s, e in ltr]
+                   + [((abs(px - (c1 + 1)) + half_core), (s + e) / 2.0)
+                      for px, s, e in rtr])
+            lens = [e - s for _x, s, e in ltr] + [e - s for _x, s, e in rtr]
+            rec: Dict[str, Any] = {
+                "reason": None,
+                "left_reach": round(lreach / space, 3),
+                "right_reach": round(rreach / space, 3),
+                "contact": [[la, lb], [ra, rb]]}
+            runs = list(ltr) + list(rtr)
+            if len(pts) < 8:
+                rec["reason"] = "too_short"
+                strokes.append(rec)
+                break
+            X = np.array([p[0] for p in pts], float)
+            Y = np.array([p[1] for p in pts], float)
+            A = np.vstack([X, np.ones_like(X)]).T
+            (m, k), *_ = np.linalg.lstsq(A, Y, rcond=None)
+            resid = float(np.sqrt(np.mean((A @ np.array([m, k]) - Y) ** 2)))
+            ang = math.degrees(math.atan(abs(m)))
+            thick = float(np.median(lens)) * math.cos(math.atan(m))
+            ratio = thick / float(line_px) if line_px and line_px > 0 else None
+            cy = float(np.mean(Y))
+            px0 = min(r[0] for r in runs)
+            px1 = max(r[0] for r in runs)
+            xc = (c0 + c1) / 2.0
+            rec.update(
+                angle_deg=round(ang, 1),
+                thickness_ratio=(None if ratio is None else round(ratio, 3)),
+                residual_spaces=round(resid / space, 3), y=round(cy, 1),
+                bare_stem_spaces=round(bare, 2),
+                box=[float(px0), float(min(r[1] for r in runs)),
+                     float(px1 + 1), float(max(r[2] for r in runs))],
+                # the stroke's own centre line `[x0, y0, x1, y1]` and its
+                # thickness across, so a consumer asks whether a BOX covers
+                # the stroke, never whether it covers a bounding rectangle
+                # that is mostly paper at an angle
+                centreline=[float(px0), round(float(m * (px0 - xc) + k), 1),
+                            float(px1), round(float(m * (px1 - xc) + k), 1)],
+                thickness_px=round(thick, 1),
+                _runs=runs)
+            reason = None
+            if min(lreach, rreach) < STEM_SLASH_MIN_REACH_SPACES * space:
+                reason = "one_sided"
+            elif ang < STEM_SLASH_MIN_ANGLE_DEG:
+                reason = "not_at_an_angle"
+            elif resid > STEM_SLASH_MAX_RESIDUAL_SPACES * space:
+                reason = "not_straight"
+            elif ratio is not None and ratio < STEM_SLASH_MIN_THICKNESS_RATIO:
+                reason = "too_thin"
+            else:
+                for sx0, sy0, sw, sh in other_stems:
+                    if not (sy0 - 0.5 * space <= cy <= sy0 + sh + 0.5 * space):
+                        continue
+                    if (sx0 + sw <= c0 - 0.2 * space
+                            and sx0 + sw >= c0 - lreach - 0.5 * space):
+                        reason = "joins_another_stem"
+                    if (sx0 >= c1 + 0.2 * space
+                            and sx0 <= c1 + rreach + 0.5 * space):
+                        reason = "joins_another_stem"
+                if reason is None and max(lreach, rreach) >= max_reach - 2:
+                    reason = "runs_on"
+                if reason is None:
+                    # A head box at one end of the stem explains a stroke at
+                    # THAT end -- but only where the stem's OTHER end has no
+                    # head box. A stem has its head at one end; with boxes at
+                    # both ends the one on the stroke is the suspect, and the
+                    # detector boxing a slash as a notehead (2.49) is how that
+                    # happens (Litolff p6 `glyph/6/1/11/3/3`).
+                    near_x = [(hx, hy, hw, hh) for hx, hy, hw, hh in heads or ()
+                              if hx < x + w + 1.8 * space
+                              and hx + hw > x - 1.8 * space]
+                    at_top = any(abs(hy + hh / 2.0 - y) <= STEM_SLASH_HEAD_END_SPACES * space
+                                 for _hx, hy, _hw, hh in near_x)
+                    at_bot = any(abs(hy + hh / 2.0 - (y + h)) <= STEM_SLASH_HEAD_END_SPACES * space
+                                 for _hx, hy, _hw, hh in near_x)
+                    for hx, hy, hw, hh in near_x:
+                        hcy = hy + hh / 2.0
+                        end = ("top" if abs(hcy - y) <= STEM_SLASH_HEAD_END_SPACES * space
+                               else "bottom" if abs(hcy - (y + h)) <= STEM_SLASH_HEAD_END_SPACES * space
+                               else None)
+                        if end is None or (at_top and at_bot):
+                            continue
+                        if (hy - 0.2 * space <= cy <= hy + hh + 0.2 * space
+                                and hx < c1 + rreach and hx + hw > c0 - lreach):
+                            reason = "at_a_head"
+                            break
+            rec["reason"] = reason
+            strokes.append(rec)
+            break
+    return strokes
+
+
+def blank_slashes(img: Any, strokes: Sequence[Dict[str, Any]],
+                  pad_px: int = 2) -> Any:
+    """`img` (uint8, 0 = ink) with every PASSING slash's own ink whitened,
+    its tracked run in each column widened by `pad_px`. The stem is untouched
+    (a track starts at its edge). Returns `img` itself where no slash passes,
+    so a stem without one reads byte-identically to before. ROADMAP 2.71.
+
+    One rule for every reader of the stem's neighbourhood: the hook counter
+    and the tip-ink window are handed this, so a slash is not a hook, and a
+    real hook beside one still counts."""
+    runs = [r for s in strokes if s.get("reason") is None
+            for r in (s.get("_runs") or ())]
+    if not runs or img is None:
+        return img
+    out = img.copy()
+    H, W = out.shape[:2]
+    for px, s, e in runs:
+        if 0 <= px < W:
+            out[max(0, s - pad_px):min(H, e + pad_px), px] = 255
+    return out
+
+
+def _observe_stem_slashes(log: Log, sub: Subject, frame: str, cell: Any,
+                          stem_rows: Sequence[Tuple[Any, str]],
+                          heads: Optional[Sequence[Tuple[float, float, float, float]]],
+                          space: Optional[float]
+                          ) -> Dict[str, List[Dict[str, Any]]]:
+    """`Q.STEM_SLASH` -- one row per `Q.STEM` row of this cell, value = how
+    many tremolo slashes it carries (a READ zero where none), detail = every
+    stroke that crossed it with its reason. ROADMAP 2.71. Returns
+    `{stem row id: strokes}` (the strokes still carrying their ink runs) for
+    the stem-tip reader that follows, which reads a raster with the slash
+    blanked. ABSTAINS, filing no zero, where the cell has no erased raster or
+    no staff-space unit."""
+    img = getattr(cell, "image_no_staff", None)
+    if img is None or getattr(img, "ndim", 0) != 2:
+        log.abstain(sub, Q.STEM_SLASH, reader=READERS.CV_STEM_SLASH, frame=frame,
+                    reason=ABSTAIN.NO_MASK, note="cell carries no image_no_staff")
+        return {}
+    if not space or space <= 0:
+        log.abstain(sub, Q.STEM_SLASH, reader=READERS.CV_STEM_SLASH, frame=frame,
+                    reason=ABSTAIN.NO_STAFF_GEOMETRY,
+                    note="no cell staff-space unit")
+        return {}
+    ink = img == 0
+    line_px = float(getattr(cell, "staff_line_thickness_canonical", 0) or 0)
+    boxes = [(float(d.x_canonical), float(d.y_canonical),
+              float(d.width_canonical), float(d.height_canonical))
+             for d, _rid in stem_rows]
+    out: Dict[str, List[Dict[str, Any]]] = {}
+    for i, (d, rid) in enumerate(stem_rows):
+        others = [b for j, b in enumerate(boxes) if j != i]
+        strokes = stem_slashes(ink, boxes[i], space, line_px, others, heads or ())
+        out[rid] = strokes
+        x, y, w, h = boxes[i]
+        head_at = {"top": False, "bottom": False}
+        for hx, hy, hw, hh in heads or ():
+            hcy = hy + hh / 2.0
+            if hx < x + w + 1.8 * space and hx + hw > x - 1.8 * space:
+                if abs(hcy - y) <= STEM_SLASH_HEAD_END_SPACES * space:
+                    head_at["top"] = True
+                if abs(hcy - (y + h)) <= STEM_SLASH_HEAD_END_SPACES * space:
+                    head_at["bottom"] = True
+        n = sum(1 for s in strokes if s["reason"] is None)
+        filed = [{k: v for k, v in s.items() if not k.startswith("_")}
+                 for s in strokes]
+        log.observe(sub, Q.STEM_SLASH, n, reader=READERS.CV_STEM_SLASH,
+                    frame=frame, stem_row_id=rid, strokes=filed,
+                    head_at_end=head_at)
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
