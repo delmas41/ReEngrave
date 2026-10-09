@@ -1408,6 +1408,7 @@ def sibling_candidates(pws, page_dict, blanked, candidates, accepted_at,
 DYNAMIC_LINK_REACH_SPACES = 1.5
 
 
+
 def _link_dynamics(page_dict, candidates, accepted_at, spacing) -> None:
     """Tie each marking that CONTAINS a dynamic (`più f`) to the detector's
     dynamic glyph(s) standing beside or inside its box, and flag those glyphs
@@ -1440,6 +1441,37 @@ def _link_dynamics(page_dict, candidates, accepted_at, spacing) -> None:
                                   (int(dx), int(dy), int(dw), int(dh))))
         if links:
             accepted_at[i] = dataclasses.replace(d, dynamic_links=tuple(links))
+
+
+def _dynamics_beside(page_dict, box, spacing):
+    """The detector's dynamic boxes standing beside a word on its line: each
+    overlaps the word's rows and starts within `DYNAMIC_LINK_REACH_SPACES` of
+    the word or of a dynamic already taken (chained), and is not inside the
+    word's own box. Returns the union box of the word and them, or None."""
+    reach = DYNAMIC_LINK_REACH_SPACES * spacing
+    x0, y0, x1, y1 = box
+    dyn = []
+    for system in page_dict.get("systems", []):
+        for staff in system.get("staves", []):
+            for measure in staff.get("measures", []):
+                for det in measure.get("detections", []):
+                    bx = det.get("bbox_page")
+                    if det.get("category") == "dynamic" and bx and len(bx) == 4:
+                        dx, dy, dw, dh = (int(v) for v in bx)
+                        if dy + dh > y0 and dy < y1 and not (dx >= x0 and dx + dw <= x1):
+                            dyn.append((dx, dy, dx + dw, dy + dh))
+    ux0, uy0, ux1, uy1 = x0, y0, x1, y1
+    took = []
+    grew = True
+    while grew:
+        grew = False
+        for d in list(dyn):
+            if d[0] <= ux1 + reach and d[2] >= ux0 - reach:
+                ux0, uy0, ux1, uy1 = min(ux0, d[0]), min(uy0, d[1]), max(ux1, d[2]), max(uy1, d[3])
+                dyn.remove(d)
+                took.append(d)
+                grew = True
+    return (ux0, uy0, ux1, uy1) if took else None
 
 
 def _drop_overlapping_readings(candidates, accepted_at) -> None:
@@ -1646,6 +1678,43 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     _drop_overlapping_readings(candidates, accepted_at)
     _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at)
     _give_tempo_to_the_staff_below(pws, page_dict, candidates, accepted_at)
+    # WORD + DYNAMIC, READ TOGETHER (Sean 2026-10-08: they "only mean
+    # something together"; ROADMAP 2.66 tile 5). A word accepted WITHOUT a
+    # dynamic, with a detected dynamic beside it on its line, is read once more
+    # from one tight crop over both; the marking is replaced only if the lexicon
+    # accepts the SAME terms plus a dynamic token (`piu` -> `piu f`). The
+    # detector's classes are not used for the letters: it boxes the `ù` of
+    # `più` as a dynamic `m`, and `più mf` would be invented. Where the OCR
+    # cannot read the two together the word stays alone: joining by POSITION
+    # was tried and refused (10 review pages: `f Adagio.`, `a 2 f`); deciding
+    # which words and dynamics of a bar belong together is a later stage's
+    # (Sean 2026-10-08, ROADMAP 2.68).
+    t0 = time.perf_counter()
+    joined = 0
+    for i, d in list(accepted_at.items()):
+        if d.dynamics:
+            continue
+        union = _dynamics_beside(page_dict, candidates[i].bbox_page, spacing)
+        if union is None:
+            continue
+        c2 = dataclasses.replace(candidates[i], bbox_page=union)
+        crop = tight_crop_for(pws.page, c2, spacing)
+        for name, fn in cheap + slow:
+            try:
+                text = list(getattr(fn, "tight", fn)([crop]))[0]
+            except Exception:                                    # noqa: BLE001
+                continue
+            hit = lexicon_lookup(text) if text else None
+            if (hit is not None and hit.dynamics
+                    and set(d.terms) <= set(hit.terms)):
+                accepted_at[i] = dataclasses.replace(
+                    d, text=hit.text, terms=hit.terms, dynamics=hit.dynamics,
+                    reader=name + "-joined")
+                candidates[i] = c2
+                joined += 1
+                break
+    info["n_joined_dynamic"] = joined
+    info["joined_s"] = round(time.perf_counter() - t0, 2)
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
     everyone = list(range(len(candidates)))
     info["n_read"] = sum(1 for i in everyone if seen[i])

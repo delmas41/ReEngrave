@@ -186,3 +186,49 @@ def test_a_tempo_word_under_a_systems_last_staff_stays_there():
                                                          system_of_lower=1)
     DT._give_tempo_to_the_staff_below(pws, page_dict, cands, accepted)
     assert (accepted[0].staff_index, accepted[0].placement) == (0, "below")
+
+
+# ── word + dynamic read together (Sean 2026-10-08) ─────────────────────────
+
+def _piu_f_page(with_dynamic=True):
+    import cv2
+    from tools.omr.tests.test_direction_text import _page_dict, _pws, _staff
+    pws = _pws([_staff(0, 500), _staff(1, 1200)])
+    for k in range(3):                                   # `più`, three letters
+        cv2.rectangle(pws.page.rgb, (400 + k * 30, 760), (422 + k * 30, 794), (0, 0, 0), -1)
+    cv2.rectangle(pws.page.rgb, (520, 750), (556, 800), (0, 0, 0), -1)     # the `f`
+    dets = {0: [{"category": "dynamic", "class": "dynamicF",
+                 "bbox_page": [518, 748, 40, 54]}]} if with_dynamic else {}
+    return pws, _page_dict([0, 1], [(100, 1000), (1000, 2000)], dets)
+
+
+def _reader(narrow, wide, calls):
+    def read(crops):
+        calls.append(len(crops))
+        return [wide if c.shape[1] > 450 else narrow for c in crops]   # word alone ~364 px, with its `f` ~516
+    return read
+
+
+def test_a_word_beside_a_dynamic_is_read_with_it_as_one_marking():
+    pws, page_dict = _piu_f_page()
+    calls = []
+    words, info = DT.read_directions(pws, page_dict, scan_order=True, readers=[
+        ("tesseract", _reader("piu", "piu f", calls)), ("surya", _reader("", "", []))])
+    assert [(w.text, w.dynamics) for w in words] == [("piu f", ("f",))]
+    assert info["n_joined_dynamic"] == 1
+
+
+def test_the_joined_reading_must_keep_the_words_own_terms():
+    """The OCR's `dolce f` is not the word it read (`piu`): refused, and the word
+    stays alone -- nothing is joined by position (that is a later stage's)."""
+    pws, page_dict = _piu_f_page()
+    words, _info = DT.read_directions(pws, page_dict, scan_order=True, readers=[
+        ("tesseract", _reader("piu", "dolce f", [])), ("surya", _reader("", "", []))])
+    assert [(w.text, w.dynamics) for w in words] == [("piu", ())]
+
+
+def test_no_dynamic_beside_the_word_means_no_second_read():
+    pws, page_dict = _piu_f_page(with_dynamic=False)
+    words, info = DT.read_directions(pws, page_dict, scan_order=True, readers=[
+        ("tesseract", _reader("piu", "piu f", [])), ("surya", _reader("", "", []))])
+    assert info["n_joined_dynamic"] == 0
