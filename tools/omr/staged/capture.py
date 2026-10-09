@@ -1902,8 +1902,18 @@ def families() -> Dict[str, Any]:
             # carry a staff-grid float as the value and cell-frame keys beside
             # it, so they read as `canonical/page` — *"does not compose"* about
             # the two families that do.
+            #
+            # ⚠️ A UNIT IS A RULER, NOT A LOCATION, and grading its detail keys
+            # credited `time` with a staff-relative location from 2.12l
+            # (dc84dff14) on: `adjudicate_meter` began reading
+            # `Q.CELL_STAFF_SPACE` to measure a digit pair's gap, and that
+            # row's `half_step` -- the size of the grid, not a place on it --
+            # read as `staff_relative`. `UNSCORED` already says what kind of
+            # fact it is; this reads it.
             "location_frames": sorted(
-                {g for q in reads for g in _location_grade(by_q[q]["detail"])}
+                {g for q in reads
+                 if UNSCORED.get(q, (None,))[0] != UNIT
+                 for g in _location_grade(by_q[q]["detail"])}
                 | ({COMPOSES} if position else set())),
         })
     return {"rows": rows, "observe": obs, "rasters": ras}

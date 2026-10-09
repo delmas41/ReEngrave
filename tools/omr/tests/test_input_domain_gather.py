@@ -222,6 +222,25 @@ def _contested(log: Log, domain: str | None) -> None:
                     tier="container", source_kind="container")
 
 
+def _answered_by(log: Log, v) -> str:
+    """Which header reader the verdict USED -- `"locator"` or `"template"`.
+
+    ⚠️ ROADMAP 2.9 (c3035ad5f) folded the three reason words this class once
+    asserted on (`fitted`, `fitted_by_template`, `fitted_by_template_engraved`)
+    into ONE, `fitted_no_markers`; the precedence is unchanged in code and
+    which reader answered moved to `detail["decided_by"]` -- which, on the
+    LOCATOR branch, copies the locator row's own `decided_by` and is None on
+    these fixtures. So the reader is read off `Verdict.used`, the rows the
+    decision says it weighed, which names it on every branch.
+    """
+    used = set(v.used)
+    by = {"locator": Q.KEYSIG_CLEF_FIT, "template": Q.KEYSIG_TEMPLATE_FIT}
+    hit = [name for name, q in by.items()
+           if any(r.id in used for r in log.rows(q, STAFF))]
+    assert len(hit) == 1, (hit, v.used)
+    return hit[0]
+
+
 class TestTheEngravedTier(_FlagCase):
 
     def _verdict(self, domain, flag):
@@ -229,29 +248,31 @@ class TestTheEngravedTier(_FlagCase):
         log = Log()
         _contested(log, domain)
         adjudicate.run(log)
-        return log.verdict(Q.KEY_SIGNATURE, STAFF)
+        v = log.verdict(Q.KEY_SIGNATURE, STAFF)
+        self.assertEqual(v.reason, "fitted_no_markers")
+        return v, _answered_by(log, v), v.detail.get("decided_by")
 
     def test_ENGRAVED_and_flag_ON_takes_the_TEMPLATE(self):
-        v = self._verdict("engraved", "1")
+        v, by, decided_by = self._verdict("engraved", "1")
         self.assertEqual(v.value, -3)
-        self.assertEqual(v.reason, "fitted_by_template_engraved")
+        self.assertEqual((by, decided_by), ("template", "template_engraved"))
 
     def test_a_SCAN_is_UNCHANGED(self):
-        v = self._verdict("scanned", "1")
+        v, by, _ = self._verdict("scanned", "1")
         self.assertEqual(v.value, -1)
-        self.assertEqual(v.reason, "fitted")
+        self.assertEqual(by, "locator")
 
     def test_NO_IDENTITY_ROW_is_UNCHANGED(self):
         """A record gathered before this rung existed, or a PDF the
         classifier abstained on."""
-        v = self._verdict(None, "1")
+        v, by, _ = self._verdict(None, "1")
         self.assertEqual(v.value, -1)
-        self.assertEqual(v.reason, "fitted")
+        self.assertEqual(by, "locator")
 
     def test_the_FLAG_OFF_is_UNCHANGED_even_on_engraved_input(self):
-        v = self._verdict("engraved", "0")
+        v, by, _ = self._verdict("engraved", "0")
         self.assertEqual(v.value, -1)
-        self.assertEqual(v.reason, "fitted")
+        self.assertEqual(by, "locator")
 
     def test_the_gaps_only_tier_still_answers_where_the_locator_is_SILENT(self):
         """⚠️ The shipped behaviour this change must not disturb: with no
@@ -270,8 +291,11 @@ class TestTheEngravedTier(_FlagCase):
                             reader=READERS.CONTAINER, frame="page")
             adjudicate.run(log)
             v = log.verdict(Q.KEY_SIGNATURE, STAFF)
-            self.assertEqual((v.value, v.reason), (-3, "fitted_by_template"),
-                             f"{domain}/{flag}")
+            self.assertEqual(
+                (v.value, v.reason, _answered_by(log, v),
+                 v.detail.get("decided_by")),
+                (-3, "fitted_no_markers", "template", "template"),
+                f"{domain}/{flag}")
 
     def test_an_engraved_row_with_NO_TEMPLATE_FIT_falls_through(self):
         os.environ[H.ENGRAVED_KEYSIG_ENV] = "1"
@@ -284,7 +308,8 @@ class TestTheEngravedTier(_FlagCase):
                     reader=READERS.CONTAINER, frame="page")
         adjudicate.run(log)
         v = log.verdict(Q.KEY_SIGNATURE, STAFF)
-        self.assertEqual((v.value, v.reason), (-1, "fitted"))
+        self.assertEqual((v.value, v.reason, _answered_by(log, v)),
+                         (-1, "fitted_no_markers", "locator"))
 
     def test_a_template_fit_for_ANOTHER_CLEF_is_not_taken_on_engraved_input(self):
         os.environ[H.ENGRAVED_KEYSIG_ENV] = "1"
@@ -300,7 +325,8 @@ class TestTheEngravedTier(_FlagCase):
                     reader=READERS.CONTAINER, frame="page")
         adjudicate.run(log)
         v = log.verdict(Q.KEY_SIGNATURE, STAFF)
-        self.assertEqual((v.value, v.reason), (-1, "fitted"))
+        self.assertEqual((v.value, v.reason, _answered_by(log, v)),
+                         (-1, "fitted_no_markers", "locator"))
 
 
 class TestTheDocumentRowIsReachableFromAStaff(_FlagCase):
