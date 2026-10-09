@@ -48,15 +48,16 @@ def _cells(log, n, staff_i=0):
                     reader=READERS.GEOMETRY, frame=f"cell:{m}")
 
 
-def _head(log, cell, gi, x, step, staff_i=0, *, read=True):
+def _head(log, cell, gi, x, step, staff_i=0, *, read=True, h=None):
     """A head at half-step `step` from the top line: page box starts at `x`,
     centre y = TOP + 5 * step. `read=False` files no position row."""
     g = R.glyph(0, 0, staff_i, cell, gi)
     yc = TOP + 5.0 * step
-    log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", 0, 0, H_W, H_H),
+    hh = H_H if h is None else h
+    log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", 0, 0, H_W, hh),
                 reader=READERS.DETECTOR, frame=f"cell:{cell}", score=0.9,
                 category="notehead",
-                bbox_page_px=[x, yc - H_H / 2, x + H_W, yc + H_H / 2])
+                bbox_page_px=[x, yc - hh / 2, x + H_W, yc + hh / 2])
     if read:
         log.observe(g, Q.NOTEHEAD_STAFF_POSITION, float(step),
                     reader=READERS.GEOMETRY, frame=f"cell:{cell}",
@@ -192,7 +193,7 @@ class TestTheControlsThatMustNotChange(unittest.TestCase):
         _cells(log, 2)
         a = _head(log, 0, 0, 40.0, 14)           # far head, ledgers unread
         b = _head(log, 0, 1, 120.0, 13)          # far head, ledgers READ
-        arc = _arc(log, 0, 5, 55.0, 115.0, y0=162.0, y1=168.0, cls="tie")
+        arc = _arc(log, 0, 5, 55.0, 115.0, y0=150.0, y1=156.0, cls="tie")
         log.abstain(a, Q.FAR_HEAD_LEDGER_POSITION, reader=READERS.LEDGER_FARHEAD,
                     frame="cell:0", reason=ABSTAIN.LEDGER_NOT_READ)
         log.observe(b, Q.FAR_HEAD_LEDGER_POSITION, 13.0,
@@ -219,85 +220,136 @@ class TestTheControlsThatMustNotChange(unittest.TestCase):
         (v,) = _decide(log, arc)
         self.assertEqual(v.value, "tie")
 
-    def test_a_chord_end_with_NO_same_pitch_pairing_is_not_called_a_slur(self):
-        """Chord to chord, every DETECTED pairing a different pitch. The
-        partner may be a note nobody detected (fused or doubled boxes), so the
-        slur direction does not fire at a chord -- the class stands. (The
-        first version slurred tied chords: Brahms p0 bar 3.)"""
+    # ── CHORD ENDS (Sean, 2026-10-09): an arc ABOVE the notes joins the TOP
+    # note of each end's chord, an arc BELOW the BOTTOM note; tie vs slur is
+    # decided on THAT pair only. Heads: x=40 start chord, x=120 stop chord;
+    # step 2 -> y 110 (top), step 8 -> y 140 (bottom).
+
+    def _chords(self, start, stop, *, arc_y, cls):
+        log = Log()
+        _cells(log, 2)
+        gi = 0
+        for x, steps in ((40.0, start), (120.0, stop)):
+            for st in steps:
+                _head(log, 0, gi, x, st)
+                gi += 1
+        arc = _arc(log, 0, 20, 55.0, 115.0, y0=arc_y, y1=arc_y + 6.0, cls=cls)
+        (v,) = _decide(log, arc)
+        return v
+
+    def test_TOP_notes_match_BOTTOM_notes_differ_an_arc_ABOVE_is_a_tie(self):
+        v = self._chords((2, 8), (2, 7), arc_y=94.0, cls="slur")
+        self.assertEqual(v.value, "tie")
+        two = v.detail["grammar"]["tie_slur_rule"]["two_note"]
+        self.assertEqual((two["arc_side"], two["start_step"], two["stop_step"]),
+                         ("above", 2, 2))
+
+    def test_TOP_notes_match_BOTTOM_notes_differ_an_arc_BELOW_is_a_slur(self):
+        """The same chords, the arc printed under them: it joins the bottom
+        notes (8 and 7, a step apart) -- the matching top notes are not its."""
+        v = self._chords((2, 8), (2, 7), arc_y=150.0, cls="tie")
+        self.assertEqual(v.value, "slur")
+        two = v.detail["grammar"]["tie_slur_rule"]["two_note"]
+        self.assertEqual((two["arc_side"], two["start_step"], two["stop_step"]),
+                         ("below", 8, 7))
+
+    def test_BOTTOM_notes_match_TOP_notes_differ_an_arc_BELOW_is_a_tie(self):
+        v = self._chords((2, 8), (3, 8), arc_y=150.0, cls="slur")
+        self.assertEqual(v.value, "tie")
+
+    def test_BOTTOM_notes_match_TOP_notes_differ_an_arc_ABOVE_is_a_slur(self):
+        v = self._chords((2, 8), (3, 8), arc_y=94.0, cls="tie")
+        self.assertEqual(v.value, "slur")
+
+    def test_the_class_is_never_overturned_by_the_OTHER_sides_pair(self):
+        """The rejected version (any same-pitch pair in the columns -> tie)
+        made this arc a tie: the bottom notes match, the arc is above."""
+        v = self._chords((2, 8), (3, 8), arc_y=94.0, cls="slur")
+        self.assertEqual(v.value, "slur")
+
+    def test_an_arc_BETWEEN_the_notes_of_a_chord_has_no_extreme_note(self):
+        for cls in ("tie", "slur"):
+            with self.subTest(cls=cls):
+                v = self._chords((2, 8), (2, 8), arc_y=122.0, cls=cls)
+                self.assertEqual(v.value, cls)
+                self.assertEqual(v.detail["grammar"]["tie_slur_rule"]
+                                 ["two_note"]["relation"], "side_unclear")
+
+    def test_an_extreme_note_with_NO_STEP_is_unreadable_and_the_class_stands(self):
+        """A chord fused into ONE tall box: its top / bottom head-sized ends
+        have no staff position. Abstain (keep the class), never guess -- the
+        litolff_02 / litolff_03 shape."""
         for cls in ("tie", "slur"):
             with self.subTest(cls=cls):
                 log = Log()
                 _cells(log, 2)
-                for gi, (x, step) in enumerate(((40.0, 4), (40.0, 9),
-                                                (120.0, 6), (120.0, 8))):
-                    _head(log, 0, gi, x, step)
-                arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls=cls)
+                _head(log, 0, 0, 40.0, 2, h=30.0)       # fused chord, one box
+                _head(log, 0, 1, 120.0, 2)
+                arc = _arc(log, 0, 5, 55.0, 115.0, y0=90.0, y1=96.0, cls=cls)
                 (v,) = _decide(log, arc)
                 self.assertEqual(v.value, cls)
-                self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]
-                                 ["relation"], "chord_no_same_pitch")
+                two = v.detail["grammar"]["tie_slur_rule"]["two_note"]
+                self.assertEqual(two["relation"], "unread")
+                self.assertEqual(two["start_step_source"], "tall_box_end")
 
-    def test_the_positive_control_single_heads_a_step_apart_ARE_a_slur(self):
+    def test_the_positive_control_the_same_ends_as_plain_heads_are_decided(self):
         log = Log()
-        _two_heads(log, 4, 6, cls="tie")
-        a = R.glyph(0, 0, 0, 0, 5)
-        (v,) = _decide(log, a)
-        self.assertEqual(v.value, "slur")
+        _cells(log, 2)
+        _head(log, 0, 0, 40.0, 2)
+        _head(log, 0, 1, 120.0, 2)
+        arc = _arc(log, 0, 5, 55.0, 115.0, y0=90.0, y1=96.0, cls="slur")
+        (v,) = _decide(log, arc)
+        self.assertEqual(v.value, "tie")
 
-    def test_a_chord_end_with_one_member_UNREAD_does_not_prove_no_pairing(self):
-        """The unread member may be the partner: the class stands."""
+    def test_a_boxed_refused_as_a_duplicate_can_be_the_extreme_note(self):
+        """A member the detector refused as a duplicate of a head (its ink is
+        a real head's) is found as the chord's extreme note; it has a step."""
         log = Log()
         _cells(log, 2)
         _head(log, 0, 0, 40.0, 4)
-        _head(log, 0, 1, 40.0, 9, read=False)
-        _head(log, 0, 2, 120.0, 6)
-        _head(log, 0, 3, 120.0, 8)
-        arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls="tie")
-        (v,) = _decide(log, arc)
+        dup = _head(log, 0, 1, 40.0, 2)             # the real TOP note, refused
+        _head(log, 0, 2, 120.0, 2)
+        arc = _arc(log, 0, 5, 55.0, 115.0, y0=90.0, y1=96.0, cls="slur")
+        log.freeze()
+        log.record(Verdict(id=log._next_id("vrd"), subject=dup,
+                           quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                           outcome=Outcome.DECIDED, value=True, decider="t",
+                           reason="stacked_head_duplicate"))
+        adjudicate.run(log, order=ORDER)
+        v = log.verdict(Q.ARC_KIND, arc)
         self.assertEqual(v.value, "tie")
-        self.assertEqual(v.detail["grammar"]["tie_slur_rule"]["two_note"]["relation"],
-                         "unread")
 
-    def test_a_tied_chord_arc_nearest_the_OTHER_notes_is_still_a_tie(self):
-        """Sean 2026-10-09 (litolff_02 / litolff_03 tiles): a two-note chord
-        tied across the barline, the arc printed nearest one note at each end
-        but those two are a step apart. The OTHER pair is one pitch, and
-        "if they are close to note heads that are the same it is a tie"."""
+    def test_a_refused_duplicate_ON_a_head_is_that_head_not_a_lower_note(self):
+        """litolff_06: the second box of ONE head, 2-5 px lower, must not make
+        a note a step below it (the arc below would then 'differ')."""
         log = Log()
         _cells(log, 2)
-        for gi, (x, step) in enumerate(((40.0, 4), (40.0, 9), (120.0, 5), (120.0, 9))):
-            _head(log, 0, gi, x, step)
-        arc = _arc(log, 0, 8, 55.0, 115.0, y0=109.0, y1=115.0, cls="tie")
-        (v,) = _decide(log, arc)
+        _head(log, 0, 0, 40.0, 6)
+        dup = _head(log, 0, 1, 40.0, 7)             # same head, drawn lower
+        _head(log, 0, 2, 120.0, 6)
+        arc = _arc(log, 0, 5, 55.0, 115.0, y0=146.0, y1=152.0, cls="slur")
+        log.freeze()
+        log.record(Verdict(id=log._next_id("vrd"), subject=dup,
+                           quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                           outcome=Outcome.DECIDED, value=True, decider="t",
+                           reason="stacked_head_duplicate"))
+        adjudicate.run(log, order=ORDER)
+        v = log.verdict(Q.ARC_KIND, arc)
         self.assertEqual(v.value, "tie")
-        two = v.detail["grammar"]["tie_slur_rule"]["two_note"]
-        self.assertEqual(two["relation"], "same")
-        self.assertEqual(two["pairs_at_one_pitch"], 1)
 
-    def test_the_same_chord_tie_across_a_BARLINE_half_arc(self):
-        """The litolff_02 shape: the arc is the right half of a tie cut at the
-        barline, the heads in the next bar are a two-note chord."""
+    def test_a_tied_chord_arc_BELOW_across_a_barline_joins_the_bottom_notes(self):
+        """The litolff_02 shape with readable heads: the right half of a tie
+        cut at the barline, a two-note chord each side, the arc under it."""
         log = Log()
         _cells(log, 3)
         for gi, (x, step) in enumerate(((150.0, 4), (150.0, 9))):
             _head(log, 0, gi, x, step)
         for gi, (x, step) in enumerate(((230.0, 5), (230.0, 9))):
             _head(log, 1, gi, x, step)
-        h1 = _arc(log, 0, 8, 165.0, 200.0, y0=109.0, y1=115.0, cls="tie")
-        h2 = _arc(log, 1, 8, 200.0, 222.0, y0=109.0, y1=115.0, cls="tie")
+        h1 = _arc(log, 0, 8, 165.0, 200.0, y0=156.0, y1=162.0, cls="slur")
+        h2 = _arc(log, 1, 8, 200.0, 222.0, y0=156.0, y1=162.0, cls="slur")
         v1, v2 = _decide(log, h1, h2)
         self.assertEqual((v1.value, v2.value), ("tie", "tie"))
-
-    def test_a_chord_member_at_one_pitch_makes_a_SLUR_class_a_tie(self):
-        log = Log()
-        _cells(log, 2)
-        _head(log, 0, 0, 40.0, 4)
-        _head(log, 0, 1, 40.0, 5)                # a chord member at the start
-        _head(log, 0, 2, 120.0, 4)
-        arc = _arc(log, 0, 5, 55.0, 115.0, cls="slur")
-        (v,) = _decide(log, arc)
-        self.assertEqual(v.value, "tie")
-        self.assertTrue(v.detail["grammar"]["tie_slur_rule"]["two_note"]["chord"])
 
     def test_a_sliver_is_not_judged(self):
         log = Log()

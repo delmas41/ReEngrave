@@ -973,3 +973,54 @@ Open: `adjudicate_tie_pair` still pairs only single same-position heads, so a
 tie recognised through a duplicate or a half-box abstains `no_pair_at_one_
 position` there -- the kind is right, the `<tied>` pairing for these chord
 ties is unwritten (EXPORT unmeasured).
+
+
+### 16.9 Sean REJECTED 16.8's "any same-pitch pairing in the column" -- the top/bottom rule
+
+Sean (DECISIONS 2026-10-09): *"It is possible for the notes to switch up and
+have a tie on one end and a slur on another ... if the arc is above it needs to
+match the notes at the top; if it is below it needs to match the notes on the
+bottom."* Rebuilt: at each end the candidates are still the column (usable
+heads, boxes refused as a duplicate, the two head-sized ends of a tall fused
+box), but the arc joins only the EXTREME one on its own side -- the top note if
+the arc lies above the end's notes, the bottom note if below -- and tie vs slur
+is decided on that pair alone. An arc inside a chord's extent, or above one end
+and below the other, has no extreme note (`side_unclear`); an extreme with no
+staff step (a tall box's end) is unreadable (`unread`); both leave the
+detector's class. A refused box that sits on a usable head (vertical overlap
+>= half) is that head drawn twice and is not a candidate (it had made
+litolff_06 a lower note a step below its own head).
+
+Red first: six tests failed on a0d77e6a (top matches / bottom differs: arc above
+tie, arc below slur; the reverse; the other side's pair never overturns the
+class; an arc between the notes; a tall-box extreme with no step; and the
+duplicate-on-a-head control).
+
+**Sean's 12 tiles, fresh re-gather of the merged tree: single arcs 8 of 10,
+stacked 2 of 2.** litolff_02 and litolff_03 (his two ties): both now keep the
+detector's TIE -- by ABSTENTION, not by a reading: at each the start chord is
+ONE tall box (`diag_litolff_*`: 32 and 38 px against a 21 px head), its bottom
+end has no staff step, so the arc below it cannot be matched to a note;
+`out/print/2.75-chords/`. Two tiles that the any-pair rule had right are now
+wrong, and the rule is not bent for them:
+
+* litolff_04 (Sean: tie, detector: slur): the stop "head" is a 48 x 45 px
+  merged blob (head + barline ink). Its bottom end has no step -> unread -> the
+  detector's SLUR stands. `diag_litolff_04.png`.
+* litolff_06 (Sean: tie, detector: slur): not a chord at all. Two hatched
+  heads of one height, boxes 6.5 px (0.28 spaces) apart, rounded to steps 7 and
+  6 by the staff grid: both instruments say "different" (the dy is inside the
+  0.25-0.43 band where a half-step should read ~0.5 and a unison 0). A
+  threshold would only turn it into an abstention, and the detector's class is
+  slur: still wrong. `diag_litolff_06.png`.
+
+Hand truth (Brahms p0, 61 matched): **55 right**, unchanged. The ~79 chord
+slur->tie flips of the any-pair rule (45 Litolff + 34 Brahms), under this rule:
+Litolff 21 stay TIE, 24 return to the detector's slur (12 top/bottom notes
+differ, 8 unread, 4 conflict); Brahms 30 stay TIE, 4 return to slur (2 differ
+by the extreme pair, 2 unread). Chord tie->slur: Brahms 5 (4 stay slur -- the
+extreme notes differ, e.g. p0 bar 3 `glyph/0/0/3/2/10`, top steps 2 vs 3 --
+which Sean should judge, crop `chords_brahms_02`), Litolff 0 from the any-pair
+version, 13 vs the detector in all. 5 blind chord crops of unjudged changed
+arcs: `out/print/2.75-chords/`. Fast tier 6,724 passed; `check` 193 (merge's
+`reach` +1).
