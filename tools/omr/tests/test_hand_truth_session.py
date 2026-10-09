@@ -332,6 +332,36 @@ def test_a_detector_box_on_an_old_human_box_is_dropped(monkeypatch, cut):
     assert rest.rect == pytest.approx(c.to_page((500, 300, 520, 360)))
 
 
+def test_a_staff_line_is_never_queued_it_is_confirmed_per_staff(monkeypatch, cut):
+    # Sean 2026-10-08: the detector's own "staff" boxes landed in the queue on
+    # every cell; staff lines are confirmed on the L* boxes, never boxed.
+    from types import SimpleNamespace
+
+    import tools.omr.yolo_detector as yd
+    from tools.omr.hand_truth import session
+
+    page, images, mcells = cut
+    page = store.PageTruth.from_json(json.loads(json.dumps(page.to_json())))
+
+    class FakeDetector:
+        def __init__(self, *a, **k):
+            pass
+
+        def detect(self, mc, conf_threshold=0.25):
+            if (mc.system_index, mc.staff_index, mc.measure_index) != (0, 0, 1):
+                return []
+            return [SimpleNamespace(x_canonical=0, y_canonical=80, width_canonical=900, height_canonical=200,
+                                    smufl_name="staff", confidence=0.9),
+                    SimpleNamespace(x_canonical=500, y_canonical=300, width_canonical=20, height_canonical=60,
+                                    smufl_name="restQuarter", confidence=0.8)]
+
+    monkeypatch.setattr(yd, "YoloDetector", FakeDetector)
+    regions = {x.id: images[x.id] for x in page.cells if x.kind != "measure"}
+    rep = session.prefill_detector(page, mcells, regions, Path("w.pt"))
+    assert [q.cls for q in page.queue] == ["restQuarter"]  # the control: a real mark still queues
+    assert rep["boxes_not_proposed"] == {"staff": 1}
+
+
 # ------------------------------------------------------------------ perfect eyes (C6)
 def test_the_stand_in_detector_returns_the_truth_boxes_a_cell_holds(cut):
     from tools.omr.hand_truth.perfect_eyes import PageTruthDetector

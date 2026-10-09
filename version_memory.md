@@ -22,6 +22,15 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 — ROADMAP 1.7: the pre-fill never queues staff lines; README records how to box
+
+Sean (2026-10-08): the detector's own `staff` boxes reached the queue on every cell. Staff
+lines are confirmed per staff on the bench's L* boxes, never boxed, so `prefill_detector`
+and `prefill_old_labels` now skip the class and count it in the report (`boxes_not_proposed`).
+New test run RED against the unfixed tree first. `data/hand-truth/README.md` gains "How to
+box": one box per mark, stems/beams/flags, ledger lines, staff lines, system bracket (`brace`
++ Notes `bracket`), words as `text`. Branch `claude/hand-labeled-truth-1.7`.
+
 ## 2026-10-09 — ROADMAP 0.9: nine slow-tier failures on main, bisected and closed
 
 - Seven `TestTheEngravedTier` tests asserted the reason words 2.9 (`c3035ad5f`) folded into `fitted_no_markers`: re-posed on value + reason +

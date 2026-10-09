@@ -187,6 +187,19 @@ def _iou(a: Rect, b: Rect) -> float:
     return inter / ua if ua > 0 else 0.0
 
 
+# Classes never queued: a staff line is confirmed per staff on the bench's L*
+# boxes (bench.STAFF_LINE_CLASS), never boxed (Sean, 2026-10-08).
+NOT_PROPOSED = frozenset({bench_mod.STAFF_LINE_CLASS})
+
+
+def _skip(report: Dict, cls: str) -> bool:
+    if cls not in NOT_PROPOSED:
+        return False
+    skipped = report.setdefault("boxes_not_proposed", {})
+    skipped[cls] = skipped.get(cls, 0) + 1
+    return True
+
+
 def propose_deduped(page: PageTruth, cls: str, rect: Rect, source: str,
                     score: Optional[float] = None, iou: float = 0.5) -> bool:
     """Queue a proposal unless the same mark (same family, IoU >= ``iou``) is
@@ -262,6 +275,8 @@ def prefill_old_labels(page: PageTruth, pdf: Path, *, dpi: Optional[int] = None,
                 continue
             r = (x0 + (cx - bw / 2) * cw * sx, y0 + (cy - bh / 2) * ch * sy,
                  x0 + (cx + bw / 2) * cw * sx, y0 + (cy + bh / 2) * ch * sy)
+            if _skip(report, names[k]):
+                continue
             if propose_deduped(page, names[k], r, source=f"sean-{version.split('-')[0]}"):
                 report["boxes_queued"] += 1
             else:
@@ -288,6 +303,8 @@ def prefill_detector(page: PageTruth, measure_cells_list: list, region_images: D
                              bbox_page_px=(x0, y0, x1, y1), staff_line_ys_canonical=[],
                              upscale_factor=c.canonical_h / max(1, y1 - y0))
         for d in det.detect(mc, conf_threshold=conf):
+            if _skip(report, d.smufl_name):
+                continue
             r = c.to_page((d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical,
                            d.y_canonical + d.height_canonical))
             if propose_deduped(page, d.smufl_name, r, source=f"detector:{Path(weights).name}",
