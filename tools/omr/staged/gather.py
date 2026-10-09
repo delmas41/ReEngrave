@@ -4342,10 +4342,7 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
         (float(dd.x_canonical), float(dd.y_canonical),
          float(dd.x_canonical) + float(dd.width_canonical),
          float(dd.y_canonical) + float(dd.height_canonical))
-        for dd in other_dets if float(dd.width_canonical) <= cut
-        # ⚠️ ROADMAP 2.73: a ledger line is not on the stem; `stem_tip_ink`
-        # leaves its rows out of the window rather than abstaining on it.
-        and not str(getattr(dd, "smufl_name", "")).startswith("ledgerLine"))
+        for dd in other_dets if float(dd.width_canonical) <= cut)
     return out
 
 

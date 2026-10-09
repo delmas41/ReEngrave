@@ -13,9 +13,9 @@ the window, #6's are two neighbouring head boxes ending 1-5 px into it and a
   1. a detection box overlapping the tip window by LESS than 0.1 staff space in
      either axis (`STEM_TIP_BLOCKER_TOLERANCE_SPACES`; the detector's box edges are
      good to about that) explains none of its ink;
-  2. a `ledgerLine` detection is not a blocker, and the ROWS a horizontal line
-     stands on at the tip's x (ink in both probes just beyond the two bands: a flag
-     hangs from ONE side) are left out of both bands.
+  2. the ROWS a horizontal line stands on at the tip's x (ink in both probes just
+     beyond the two bands: a flag hangs from ONE side) are left out of both bands.
+     (A `ledgerLine` DETECTION stays a blocker: see the test that says why.)
 
 Controls (a refusal test passes by refusing everything): a real flag at a tip on a
 line still reads as a flag; a box that really overlaps the window still blocks; a
@@ -116,13 +116,30 @@ class TestALineAtTheTipIsNotOnTheStem(unittest.TestCase):
 
 class TestWhatBlocksTheWindow(unittest.TestCase):
 
-    def test_a_ledger_line_detection_is_not_a_blocker(self):
+    def test_a_ledger_line_detection_STILL_blocks(self):
+        """⚠️ An earlier build of this change dropped `ledgerLine` boxes from the
+        blockers and relied on the line-row exclusion instead: on the real gather
+        that made 14 stem tips on ledger lines read FOUND (Brahms 317803 p0 `0/0/9/
+        2,4,5`, Litolff `2/1/9/13`): a SHORT ledger line, thick and no longer than the
+        two bands, is neither excluded as a line row nor stopped by the left guard
+        (crops in FINDINGS 8i). The detection box stays a blocker."""
         ledger = _Det("ledgerLine", 170, 125, 60, 10)
-        self.assertEqual(gather._stem_tip_blockers([], [ledger], SP), [])
+        self.assertEqual(len(gather._stem_tip_blockers([], [ledger], SP)), 1)
 
-    def test_CONTROL_any_other_local_detection_of_that_box_still_is(self):
-        note = _Det("noteheadBlackInSpace", 170, 125, 60, 10)
-        self.assertEqual(len(gather._stem_tip_blockers([], [note], SP)), 1)
+    def test_a_short_ledger_line_no_longer_than_the_bands_is_not_read_as_a_flag(self):
+        """The failure the test above guards: a stem tip with a short thick ledger
+        line standing on one side only is NOT a flag -- through the observer, with
+        its detection box as the blocker, it abstains."""
+        log = Log()
+        img = _paper()
+        _draw(img, STEM_X1, 128, 206, 138)          # short line, right side only
+        blockers = gather._stem_tip_blockers(
+            [], [_Det("ledgerLine", STEM_X1, 128, 12, 10)], SP)
+        gather._observe_stem_tip_ink(log, SUB, "cell:0", FakeCell(img),
+                                     "obs:stem", STEM_BOX, blockers, SP)
+        log.freeze()
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
+        self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
 
     def test_a_box_that_only_touches_the_window_edge_does_not_abstain(self):
         """`arpeggiato` over the stem's own ink, 1 px into the window."""
@@ -147,21 +164,6 @@ class TestWhatBlocksTheWindow(unittest.TestCase):
         log.freeze()
         abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
         self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
-
-    def test_a_flag_at_a_tip_on_a_ledger_line_with_its_detection_is_measured(self):
-        """Both fixes together, through the observer: the `ledgerLine` box is not a
-        blocker, the line rows are left out, the flag is found."""
-        log = Log()
-        img = _paper()
-        _flag(img)
-        _line(img)
-        blockers = gather._stem_tip_blockers(
-            [], [_Det("ledgerLine", 170, 130, 60, 10)], SP)
-        gather._observe_stem_tip_ink(log, SUB, "cell:0", FakeCell(img),
-                                     "obs:stem", STEM_BOX, blockers, SP)
-        log.freeze()
-        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
-        self.assertTrue(rows["top"].value)
 
 
 if __name__ == "__main__":
