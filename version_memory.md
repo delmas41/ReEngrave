@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (session end) — 2.76 and 2.71 landed; Sean's labels 1,342 boxes on main
+
+- 2.76 `Q.NOTEHEAD_LETTER_INK` (a head box that is a dynamic letter's stroke/body is refused); 2.71 `Q.STEM_SLASH` (tremolo slash is its own mark).
+- In flight: 2.75 (tie/slur chord rule), 2.77 rhythm leftovers. New todo 2.78 (one stem, one value -- confirm with Sean).
+
 ## 2026-10-09 (night) — 2.73 landed: hollow heads cut by a line
 
 - `Q.HEAD_LINE_CUT`, head-shaped duplicate keep, ink names the fill (cut 0.75), stem-tip window ignores grazing boxes and line rows.

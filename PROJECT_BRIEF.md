@@ -37,8 +37,13 @@ MusicXML direction (`più f`); a dynamic letter is a word's letter only among
 letters of a word the lexicon knows (Sean's deductive rule). Results of the 10-09
 all-stages re-gather: `benchmarks/acceptance/overnight/20261009-all/SUMMARY.md`.
 
+**Reading fixes judged on the print (2026-10-09)**: flag hooks counted; a beam must join two stems, be straight and
+thicker than a hairpin; the meter's denominator read on its own; dynamics owned by the staff printed above them, one
+ink one letter, anchored to a note; hollow heads cut by a staff line rebuilt; tremolo slashes and dynamic letters are
+not noteheads. Every ruling is a dated line in `docs/DECISIONS.md`.
+
 **Truth is moving to hand-labeled pages** (ROADMAP 1.7, Sean 2026-10-08): the first page, Brahms
-317803 pdf 0, is being labeled (887 boxes by Sean, merged to main 2026-10-09); the plan labels every bit of ink on a movement's first page and
+317803 pdf 0, is being labeled (1,342 boxes by Sean on main 2026-10-09); the plan labels every bit of ink on a movement's first page and
 its count page, cell by cell, stored in page pixels, across several publishers, and
 retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
 Each page is double-checked by Claude (flags only) and then rendered through
