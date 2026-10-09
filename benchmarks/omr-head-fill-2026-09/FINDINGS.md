@@ -265,3 +265,96 @@ problem, not this rule).
    second pass over the SAME re-gather would show whether this rule's one
    narrowed case actually resolves once the meter is decided.
 
+
+
+## Sec.7. ROADMAP 2.70 -- a hollow head with nothing on its stem is a half note
+
+PATH: STAGED, ADJUDICATE (`rhythm.adjudicate_duration`, the 2.23 block).
+Branch `lane-2.70-hollow-half`. Not merged.
+
+CONVENTION CONFIRMED (Sean, DECISIONS 2026-10-09, answering Sec.2's
+"CONVENTION ASSUMED"): *"A hollow note with nothing on the stem is always a
+half note."* Evidence he judged blind: `out/print/2.65-headfill/`
+(`answers.json`, `compare-20261009-all.txt`).
+
+### 7a. Why the tiles failed on today's tree (measured, `--through adjudicate`, Litolff pdf p6 alone, `--weights auto`)
+
+Today's detector boxes tiles 5 and 6 TWICE -- a `noteheadBlack*` and a
+`noteheadHalf*` box on one head -- and the duplicate rules keep the BLACK one
+and refuse the half (`stacked_head_duplicate` for tile 5, `notehead_is_a_
+duplicate_box` for tile 6). On this page 9 refused half boxes lost to a
+black keeper; the stacked-head keep choice is "the box with the most ink"
+(`notehead_ink_under`'s `best`), which prefers a filled box over a hollow
+one by construction -- a bias that deletes half notes. NOT changed here.
+
+| tile | Sean | today's box | why 2.23 did not narrow it, why nothing decides it |
+|---|---|---|---|
+| 5 | half | black `glyph/6/1/1/0/10` | ink reads hollow (centre 0.4745 on both rasters, ring 0.79), stem attached, tip ink read none. Gated out by `beam_evidence == "reader_declined"`: the cell holds NO beam, so `Q.BEAM_STROKE` is DECLINED (abstention `no_line_accepted`: the reader RAN and accepted nothing) and `Evidence.state` calls that declined. A reader that looked and found none was spelled "cannot tell". |
+| 6 | half | black `glyph/6/0/8/3/4` | THREE causes, none the gate: ink `net` centre 0.6036 (> the 0.5 cut; `raw` 0.93 because the staff line passes through an on-line head's hole); the black box ends 2 px short of its stem (`stems_on` is overlap with no tolerance, so `own_stems` is empty -- only the refused half twin touches it); and the keeper of the double detection is the black box. Not fixed: loosening the cut to 0.61 would be fitting one tile. |
+| 3 | half + slash | none | the detector draws NO head box here today; a `restQuarter` box (iou 0.43) covers the stem and slash. Unreachable by ADJUDICATE; 2.71 is not what blocks it (the cell's one beam stroke is a neighbour's, y 0-65). |
+| 4 | whole rest | black `glyph/6/0/0/9/1` | ink_net reads hollow (centre 0.23) but there is NO stem, so the new rule does not apply; today's tree decides quarter (unchanged -- the refusal control holds: not half). |
+
+### 7b. What is built
+
+`hollow_head_bare_stem` (new reason on `adjudicate_duration`): DECIDES `half`
+(dots apply) where ALL hold -- the detector class is black; `Q.NOTEHEAD_INK`
+reads decisively hollow by 2.23's own cut (NOT loosened); the head has its
+OWN stem; no beam stroke was read over it BEFORE 2.43's hollow-zeroing
+(`strokes_before_hollow == (0, 0, 0)`); no flag box attached; the stem tip
+was MEASURED and shows no hook (`_stem_tip_flag_ink` is False; a tip nobody
+measured stays "cannot tell"); and the CV beam reader LOOKED
+(`_beam_reader_looked`: strokes filed, or every abstention is
+`no_line_accepted`/`no_stems_to_join` -- never `not_implemented`/
+`reader_unavailable`). A hollow head with no stem keeps 2.23's NARROWING
+(whole, or a whole rest boxed as a head -- never half). The 2.18c block and
+`_stem_tip_flag_ink` are untouched (fence: `lane-2.69-flag-hooks`); the rule
+CALLS `_stem_tip_flag_ink` for cells the old spelling skipped, so a signature
+change there needs a merge look.
+
+⚠️ Found, not changed: with the beam reader's `ran_empty` read as `reader_
+declined`, 2.18c's `flag_ink_unread` narrowing is ALSO unreachable in any
+beamless cell (the existing tests add a decoy beam to reach it). That is the
+2.69 lane's block.
+
+⚠️ Found, not changed: a hollow-reading head with a beam stroke READ over its
+stem (strokes_before_hollow > 0) is narrowed `[black, half, whole]` by 2.23
+-- the read beam levels (eighth ...) are not candidates. 2.43 zeroes the
+strokes for any open-reading head and 2.23 then ignores them. This rule
+stands down there (test `test_a_beam_joined_to_this_stem_blocks_it`), but the
+narrowing itself drops a read beam.
+
+### 7c. Red -> green
+
+`tools/omr/tests/test_staged_duration.py::
+TestAHollowHeadWithNothingOnItsStemIsAHalfNote` (13 tests). Against the
+unrepaired tree (`rhythm.py` reverted): 4 FAIL (`bare stem under hollow ink
+is DECIDED half`, `reaches a cell the beam reader RAN in and accepted
+nothing`, `a dot still lengthens the half`, `the ink row is in the basis`),
+9 pass -- the refusal/positive controls: beam reader never ran, no stem,
+stemless hollow head in a beamless cell (whole-rest control), beam joined to
+the stem (`strokes_before_hollow` read non-zero in the same fixture), flag on
+the stem, hook at the tip, tip unread, black ink agrees (quarter), ink not
+decisive (0.6). Green on the repaired tree.
+
+### 7d. Population (GATHER+ADJUDICATE, base arm = the same tree with the rule's gate forced to "cannot tell", `scr` wrapper in the lane scratch)
+
+| page(s) | black-class kept heads | ink reads hollow | stem + eligible | duration changed |
+|---|--:|--:|--:|--:|
+| Litolff pdf p6 | 669 | 3 | 1 (tile 5) | **1** (quarter -> half) |
+| Litolff pdf p3 | 252 | 3 | 0 (all stemless) | 0 |
+| Brahms pdf p0-1 | 1,054 | 1 | 0 (stemless) | 0 |
+| engraved Beethoven fixture p0-2 | 262 | **0** (centre 1.0 on all 262, both rasters) | 0 | 0 |
+
+The rule is correct and dead-small: the 0.5 ink cut admits 7 of 1,975
+scan black heads. The loss is upstream of this rule -- the CUT and the DEDUPE.
+Eight Litolff heads the detector calls black, that carry a stem, and whose ink
+centre reads 0.50-0.72 (ring gap >= 0.1) were cropped
+(`out/print/2.70/halfnote_01..08.png`, manifest alongside) and look like half
+notes by eye; they are NOT decided and NOT judged by Sean. They are the
+question for the next step (what cut, measured against his answers, never
+fitted to them).
+
+### 7e. Gates
+
+`pytest -m "not slow" tools/omr/tests -q` and `python3 -m tools.omr.staged.
+check` -- numbers in the lane report.

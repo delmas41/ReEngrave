@@ -2188,3 +2188,176 @@ class TestAPossibleBeamMustLieOverThisNotesOwnStem(unittest.TestCase):
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "beams_ambiguous")
+
+
+class TestAHollowHeadWithNothingOnItsStemIsAHalfNote(unittest.TestCase):
+    """ROADMAP 2.70 (Sean, DECISIONS 2026-10-09): *"A hollow note with
+    nothing on the stem is always a half note."* Where the ink reads a
+    detector-BLACK head decisively hollow (2.23), the head has its own stem
+    and NOTHING is on that stem -- no beam, no flag, no hook at the tip --
+    ADJUDICATE DECIDES half; the ink outranks the detector's black class.
+    A hollow head with NO stem stays 2.23's narrowing (a whole note is not a
+    half note, and a whole REST boxed as a black head must never become one).
+
+    ⚠️ "NOTHING ON THE STEM" NEEDS A READER THAT LOOKED. A beam reader that
+    ran and accepted no stroke (`no_line_accepted`, `no_stems_to_join`) is a
+    reading; one that never ran (`not_implemented`) is "cannot tell" (rule
+    8). Litolff p6 `glyph/6/1/1/0/10` was gated out by 2.23 for exactly that
+    conflation: the cell holds no beam at all, so the reader's state was
+    DECLINED, which the code spelled `reader_declined`.
+    """
+
+    def _hollow_head(self, log, *, stem=True, tip="none", beam="ran_empty",
+                     center=0.1, ring=0.6, dots=0):
+        """A stem-up detector-BLACK head whose ink reads hollow.
+
+        tip: "none" (the tip was read: no ink), "found", or "unread" (no
+        `Q.STEM_TIP_INK` row at all). beam: "ran_empty" (the CV reader ran
+        and accepted nothing, the real shape of a beamless cell), "decoy" (a
+        beam far away, state READ), "declined" (reader never ran), or
+        "over" (a stroke joins this stem's top).
+        """
+        _staff_space(log)
+        if beam == "ran_empty":
+            log.abstain(CELL, Q.BEAM_STROKE, reader=READERS.CV_LINES,
+                        frame="cell:0", reason=ABSTAIN.NO_LINE_ACCEPTED)
+        elif beam == "decoy":
+            _beam(log, y=2, x0=400, x1=460)
+        elif beam == "declined":
+            log.abstain(CELL, Q.BEAM_STROKE, reader=READERS.CV_LINES,
+                        frame="cell:0", reason=ABSTAIN.NOT_IMPLEMENTED)
+        elif beam == "over":
+            _beam(log, y=36, x0=120, x1=220)
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
+                    reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        for n in range(dots):
+            _dot(log, gi=900 + n, x=135 + 24 + n * 8, y=94)
+        if stem:
+            s = _stem(log, x=135, y=38, h=60)
+            if tip == "none":
+                _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+            elif tip == "found":
+                _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True)
+        _notehead_ink(log, g, center=center, ring=ring)
+        return g
+
+    def _duration(self, log, g):
+        adjudicate.run(log)
+        return log.verdict(Q.DURATION, g)
+
+    def test_a_bare_stem_under_hollow_ink_is_DECIDED_half(self):
+        log = Log()
+        g = self._hollow_head(log, beam="decoy")
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 2.0)
+        self.assertEqual(v.value["head_fill"], "half")
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_it_reaches_a_cell_the_beam_reader_RAN_in_and_accepted_nothing(self):
+        """⚠️ The real shape of a beamless cell (Litolff p6 tile 5): no beam
+        row at all, the reader's abstention says `no_line_accepted`. The
+        reader LOOKED; that is a reading, not a decline."""
+        log = Log()
+        g = self._hollow_head(log, beam="ran_empty")
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 2.0)
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_a_beam_reader_that_NEVER_RAN_is_cannot_tell_not_nothing(self):
+        """Rule 8: `not_implemented` is not a reading. Unchanged: the head
+        keeps the detector's quarter."""
+        log = Log()
+        g = self._hollow_head(log, beam="declined")
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_hollow_head_with_NO_STEM_is_not_a_half_note(self):
+        """A stemless hollow head is a WHOLE note (or a whole rest boxed as a
+        head, Litolff p6 tile 4): it keeps 2.23's narrowing, never half."""
+        log = Log()
+        g = self._hollow_head(log, stem=False, beam="decoy")
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_a_stemless_hollow_head_in_a_beamless_cell_is_NOT_decided_half(self):
+        """The whole-rest refusal control in the cell shape that matters: the
+        beam reader ran and accepted nothing (the relaxation 2.70 adds), the
+        ink reads hollow, and there is NO stem. The relaxation must not
+        decide this -- no stem, no half."""
+        log = Log()
+        g = self._hollow_head(log, stem=False, beam="ran_empty")
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertNotEqual(v.value if v.value is None else
+                            v.value.get("head_fill"), "half")
+
+    def test_a_beam_joined_to_this_stem_blocks_it(self):
+        """A black head whose ink merely LOOKS hollow but whose stem carries
+        a beam is the 2.23 false positive (two of eight on Litolff p6)."""
+        log = Log()
+        g = self._hollow_head(log, beam="over")
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_a_flag_on_this_stem_blocks_it(self):
+        log = Log()
+        g = self._hollow_head(log, beam="decoy")
+        _flag(log, gi=50, cls="flag8thUp", x=139, y=38)
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_a_hook_seen_at_the_tip_blocks_it(self):
+        log = Log()
+        g = self._hollow_head(log, beam="decoy", tip="found")
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.reason, "flag_ink_unread")
+
+    def test_a_tip_nobody_looked_at_is_cannot_tell(self):
+        """Rule 8: no `Q.STEM_TIP_INK` row is no evidence that the stem is
+        bare. The head keeps 2.23's narrowing."""
+        log = Log()
+        g = self._hollow_head(log, beam="decoy", tip="unread")
+        v = self._duration(log, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
+    def test_POSITIVE_CONTROL_ink_that_agrees_with_black_stays_a_quarter(self):
+        log = Log()
+        g = self._hollow_head(log, beam="decoy", center=1.0, ring=0.75)
+        v = self._duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_ink_that_is_not_decisive_stays_a_quarter(self):
+        """No loosening of 2.23's cut: centre 0.6 is not hollow."""
+        log = Log()
+        g = self._hollow_head(log, beam="decoy", center=0.6, ring=0.8)
+        v = self._duration(log, g)
+        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.reason, "head_and_marks")
+
+    def test_a_dot_still_lengthens_the_half(self):
+        log = Log()
+        g = self._hollow_head(log, beam="decoy", dots=1)
+        v = self._duration(log, g)
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.value["beats"], 3.0)
+        self.assertEqual(v.value["dots"], 1)
+
+    def test_the_ink_row_is_in_the_basis_and_the_reading_is_on_the_detail(self):
+        log = Log()
+        g = self._hollow_head(log, beam="ran_empty")
+        row = log.rows(Q.NOTEHEAD_INK, g)[-1]
+        v = self._duration(log, g)
+        self.assertIn(row.id, v.basis)
+        self.assertEqual(v.detail["beam_reader"], "ran_empty:no_line_accepted")

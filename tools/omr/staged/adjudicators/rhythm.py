@@ -131,6 +131,41 @@ def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
     return False
 
 
+#: ROADMAP 2.70. The abstention reasons that say the CV beam reader RAN on
+#: the cell and found no stroke to accept -- a reading ("looked, none"), unlike
+#: `not_implemented`/`reader_unavailable` ("did not look"). The reasons are
+#: `gather_cv_lines`' own: `no_line_accepted` (it ran, accepted nothing of the
+#: kind) and `no_stems_to_join` (fewer than two stems in the cell, so nothing
+#: for a beam to join -- a claim about OUR stem reading, not the print; it is
+#: accepted here only because the caller already requires THIS head's own stem
+#: and a hollow-reading ink).
+_BEAM_READER_RAN_EMPTY = (ABSTAIN.NO_LINE_ACCEPTED, ABSTAIN.NO_STEMS_TO_JOIN)
+
+
+def _beam_reader_looked(ev: Evidence, cell) -> Optional[str]:
+    """Did the CV beam reader look at this cell? ROADMAP 2.70.
+
+    `"read"` -- it filed strokes; `"ran_empty:<reason>"` -- it ran and every
+    abstention it filed says it accepted none (a cell with no beam at all has
+    NO stroke row, so `Evidence.state` calls it DECLINED, and
+    `adjudicate_duration` spells that `reader_declined`: Litolff p6
+    `glyph/6/1/1/0/10`, a half note, was gated out of 2.23 by exactly that
+    conflation); `None` -- it never ran, or ran and failed, which is "cannot
+    tell" (rule 8) and never "nothing".
+    """
+    state = ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                     subject=cell)
+    if state is State.READ:
+        return "read"
+    if state is not State.DECLINED:
+        return None
+    reasons = [r.reason for r in ev.refusals(
+        Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)]
+    if reasons and all(r in _BEAM_READER_RAN_EMPTY for r in reasons):
+        return "ran_empty:" + sorted(set(reasons))[0]
+    return None
+
+
 def _kept_beams(ev: Evidence, cell):
     """CV strokes, plus the YOLO boxes no CV stroke already explains.
 
@@ -1752,7 +1787,7 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "beam_discounted_uncertain",
              "beam_certain_not_joined",
-             "head_fill_from_ink", "no_notehead",
+             "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
     mode=Mode.ADDITIVE,
@@ -1931,6 +1966,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # tracing), and BEFORE `levels` and `beam_evidence` are read from it, so
     # every branch downstream (`beams_ambiguous`, `beam_certain_not_joined`,
     # `beam_discounted_uncertain`) sees an unambiguous zero and never fires.
+    # ⚠️ ROADMAP 2.70: what the strokes said BEFORE the override just below
+    # zeroed them. A hollow-reading head whose stem a beam is joined to is the
+    # 2.23 false positive (a black head read hollow), so the bare-stem rule
+    # must see the strokes the override hid.
+    strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
         certain_conflicts = ()
@@ -2195,40 +2235,81 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # one candidate lands the bar's own arithmetic exactly. Where the ink is
     # not decisive, this note is unchanged -- a fallback never converts
     # "cannot tell" into an answer (rule 8).
-    if beam_evidence == "none_over_this_note" and not flag_levels \
-            and not tip_ink and base == _HEAD_BEATS["noteheadBlack"]:
-        fill_row = None
+    fill_row = None
+    if not flag_levels and not tip_ink \
+            and base == _HEAD_BEATS["noteheadBlack"]:
         ink_rows = ev.rows(Q.NOTEHEAD_INK)
         if ink_rows:
             fill_row = ink_rows[-1]
-        if fill_row is not None:
-            ink_detail = fill_row.detail or {}
-            if _ink_reads_decisively_hollow(ink_detail):
-                used.append(fill_row.id)
-                cands = []
-                for fill_base, name, support in (
-                        (base, "black", 1.0),
-                        (2.0, "half", 2.0),
-                        (4.0, "whole", 1.0)):
-                    t, add = fill_base, fill_base
-                    for _ in range(n_dots):
-                        add /= 2.0
-                        t += add
-                    cands.append(Candidate(
-                        value={"beats": _scale(t, ratio, ev), "written": t,
-                              "dots": n_dots, "beam_levels": 0,
-                              "head_fill": name},
-                        # ⚠️ SUPPORT, NOT PROBABILITY, same convention as
-                        # every other branch above: `half` outranks the
-                        # always-available detector reading because it is
-                        # the single-step misread §17b's own crops show
-                        # (a lone quarter-valued chord in a 2/4 bar); `whole`
-                        # is the rarer two-step misread and ranks with the
-                        # detector's own reading, not above it.
-                        support=support))
-                return Ruling.narrow(cands, "head_fill_from_ink",
-                                     used=tuple(used), **shared,
-                                     notehead_ink=ink_detail)
+    ink_hollow = (fill_row is not None
+                  and _ink_reads_decisively_hollow(fill_row.detail or {}))
+
+    # ⚠️⚠️ ROADMAP 2.70 (Sean, DECISIONS 2026-10-09): *"A hollow note with
+    # nothing on the stem is always a half note."* CONVENTION CONFIRMED. The
+    # ink outranks the detector's black class where ALL of these hold: the
+    # ink reads the head decisively hollow (2.23's own cut, NOT loosened);
+    # the head has its OWN stem (a stemless hollow head is a WHOLE note, or a
+    # whole rest boxed as a head, never a half -- it keeps the 2.23 narrowing
+    # below); and NOTHING is on that stem, each part READ and none assumed:
+    # no beam stroke joined to it (`strokes_before_hollow`, the readings a
+    # hollow head's fixed-zero hides), no attached flag box, no hook at the
+    # tip (a tip nobody measured is "cannot tell"), and a CV beam reader that
+    # LOOKED (`_beam_reader_looked`) -- a cell with no beam at all is
+    # `ran_empty`, not `reader_declined`. A tremolo slash on the stem is NOT
+    # a beam (ROADMAP 2.71, built apart); if the beam reader counts one as a
+    # stroke this rule stands down, which is the safe direction.
+    if ink_hollow and own_stems and not flags \
+            and strokes_before_hollow == (0, 0, 0):
+        beam_reader = _beam_reader_looked(ev, cell)
+        tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
+        if tip_looked is None and beam_reader is not None:
+            # `tip_ink` is only asked above where the old spelling of "the
+            # reader spoke" held; ask it here for a cell that ran empty.
+            tip_looked, tip_rows = _stem_tip_flag_ink(ev, cell, own_stems,
+                                                      side)
+        if beam_reader is not None and tip_looked is False:
+            used.append(fill_row.id)
+            used.extend(r.id for r in tip_rows)
+            t, add = 2.0, 2.0
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            return Ruling(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": 0,
+                       "head_fill": "half"},
+                reason="hollow_head_bare_stem", used=tuple(used),
+                detail={**shared, "beam_reader": beam_reader,
+                        "stem_tip_hook": False,
+                        "notehead_ink": fill_row.detail or {}})
+
+    if beam_evidence == "none_over_this_note" and ink_hollow:
+        ink_detail = fill_row.detail or {}
+        used.append(fill_row.id)
+        cands = []
+        for fill_base, name, support in (
+                (base, "black", 1.0),
+                (2.0, "half", 2.0),
+                (4.0, "whole", 1.0)):
+            t, add = fill_base, fill_base
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                      "dots": n_dots, "beam_levels": 0,
+                      "head_fill": name},
+                # ⚠️ SUPPORT, NOT PROBABILITY, same convention as
+                # every other branch above: `half` outranks the
+                # always-available detector reading because it is
+                # the single-step misread §17b's own crops show
+                # (a lone quarter-valued chord in a 2/4 bar); `whole`
+                # is the rarer two-step misread and ranks with the
+                # detector's own reading, not above it.
+                support=support))
+        return Ruling.narrow(cands, "head_fill_from_ink",
+                             used=tuple(used), **shared,
+                             notehead_ink=ink_detail)
 
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},
