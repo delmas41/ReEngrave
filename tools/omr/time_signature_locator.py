@@ -537,12 +537,13 @@ def _split_reading(
       no staff that abstained reads now and none that read is lost: nothing
       new enters the search, which is the property the cut-common read was
       built to keep. ⚠️ THE NUMERATOR IS NOT RE-READ, ON MEASUREMENT: a first
-      cut re-read both halves and flipped 8 of 496 staves on the 11-source
-      corpus the WRONG way (Beethoven 3's `3` over a Litolff plate, Beethoven
-      5's `2`), every one a NUMERATOR — a lone numeral's correlation is a
-      weaker witness than the stack's, where the denominator beneath it
-      disambiguates. The denominator is the half the stack under-reads, so it
-      is the half re-read.
+      cut re-read both halves and changed 10 of 496 staves on the 11-source
+      corpus -- 4 right to wrong, 2 wrong to right, 4 wrong to wrong -- and
+      every change but one was a NUMERATOR (Beethoven 5's two `2/4` became
+      `4/4`; Beethoven 3's `3` over a Litolff plate moved among `3`, `6` and
+      `9`). A lone numeral's correlation is a weaker witness than the stack's,
+      where the denominator beneath it disambiguates. The denominator is the
+      half the stack under-reads, so it is the half re-read.
     * Among the listed meters that keep the stack's numerator, the bottom
       half's own best correlation picks the denominator. The vocabulary is
       `config.meters`, so a pair the repertoire list does not hold cannot be

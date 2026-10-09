@@ -287,3 +287,189 @@ abstentions sharing the same `system/0/0` source.
   y-gap) is untouched; only the CROSS-STAFF COVERAGE floor moved. A future
   false positive at ≥0.8 coverage (a genuinely orchestra-wide unison
   note-plus-dot figure) is not excluded by construction.
+
+---
+
+## ROADMAP 2.72 — Brahms 1/i p.2: `9/8` read `9/4`, the bar-9 `6/8` change never read, `system/1/1` abstained
+
+2026-10-09, branch `lane-2.72-meter`, off `origin/main` `404285f3`+. STAGED,
+GATHER + ADJUDICATE only. Truth is Sean's, off the print (held-bar tiles 1-4,
+`out/print/2.65-held/answers.json`, DECISIONS 2026-10-09): bar 8 (the header
+of pdf page 1) prints **9/8** on every staff; bar 9 prints a **6/8** change on
+every staff, two voices, each adding up; a meter holds until a printed change
+(CONFIRMED, not asked again).
+
+### The three failures, traced
+
+**1. The header read `9/4` — GATHER (the whole-stack correlation) and, once
+that is fixed, ADJUDICATE (a courtesy filed as a change).**
+
+* *GATHER.* `time_signature_locator.locate_time_signature` takes ONE
+  normalised correlation of a four-space Bravura stack at one x. The
+  numerator's width and weight set where the stack sits; the denominator is
+  scored wherever that leaves it, and both halves feed one number. On the
+  plate's 14 header cells the stack reads `9/4` on all 10 staves that clear
+  its floor (4 are under 0.50), every one with a runner-up within 0.04-0.09
+  (`9/8` never second). Read from its own bottom half, the best `8` leads the
+  best `4` on **10 of 10** staves by **0.22-0.33**. The ink never changed; the
+  question put to it was about the numerator's shape. (`image_no_staff` also
+  loses the rows of the 8's top and bottom arcs where they stand on staff
+  lines — the lower half reads as an `A` — which the stack cannot see round
+  and the half-template, searched with a half-space of vertical slack, can.)
+* *ADJUDICATE.* The page before prints a courtesy `9/8` after its last
+  barline; 2.12h routes a vote that contradicts a corroborated courtesy to
+  the carry ladder. It never fired: 2.47b stopped counting that trailing strip
+  in `Q.MEASURE_PARTITION` (`cautionary_tail_not_a_bar`: 7 bars, last bar =
+  cell 6) while `_meter_changes` still tested `last_cell == cell`, so the
+  `9/8` in cell 7 was filed as a CHANGE at a cell that is not a bar and
+  `value["cautionary"]` stayed empty. A glyph past the last bar is a
+  courtesy by construction.
+
+**2. The bar-9 `6/8` was never read — three independent reasons.**
+
+* `OMR_METER_TEMPLATE_AT_BAR` was `research`/OFF. Its own gate (2.12i: state
+  this `6/8` with a quorum) FAILED: the stack scores **0.44-0.51** on all 14
+  windows against a floor of 0.50 (2 read), naming `6/4` or `9/8`.
+* Its candidate columns needed a detector `timeSig*` box. The detector boxes
+  these digits as NOTEHEADS (2.12l: 13 of 14 staves; the one `timeSig1` is
+  staff 9's), so the column opened by luck on this page and would not on
+  another.
+* `_meter_changes` visited only cells with a `Q.METER_GLYPH` row; a column
+  opened by the template readings of the staves alone was never evaluated.
+
+**3. `system/1/1` abstained `meter_change_digits_misread`** because its carry
+source (`system/1/0`) held a change it never read; with the change read
+(`6/8` at cell 1, 14 of 14 staves) the carry is `6/8` and the system is
+DECIDED `carried`.
+
+### What the bars say (asked, as the brief required)
+
+Nothing, for either meter. `system/1/0`, 13 staves with a summable bar in
+cell 0: **no staff sums to 4.5 (9/8) or to 9.0 (9/4)**; the sums are all
+singletons (10.0, 7.75, 3.5, 8.0 ...), so `bars_assessable: 0` for the carry.
+Across the system's 7 cells: 2 staves sum to 3.0 (6/8) in each of cells 2, 5
+and 6, 1 staff sums to 4.5 in each of 2, 5 and 6, 1 staff sums to 9.0 in
+cell 1. The bars cannot weigh 9/8 against 9/4 on this page (shattered heads,
+`benchmarks/omr-bar-sum-holdout-2026-09/`); the READER and the courtesy
+decide, and they now agree. Rule 8 holds: with only the ADJUDICATE fix (the
+courtesy filed correctly, the header still `9/4`) `system/1/0` ABSTAINS
+`meter_return_not_read` rather than asserting either — the `9/4` is no
+longer decided against a corroborated courtesy.
+
+### What was built
+
+`tools/omr/time_signature_locator.py`
+
+* `_split_reading` (used by `locate_time_signature`; `config.split_halves`):
+  the stack decides THAT a meter stands, WHERE, and the NUMERATOR (its floor
+  unchanged); the DENOMINATOR is re-read from the bottom half among the
+  listed meters that keep that numerator. Records `stack_raw` (where it
+  differs) and `denominator_margin`. A letter form is untouched; a
+  denominator outside the stack's column is refused and the stack stands.
+  **A first cut re-read the NUMERATOR too and was refused on measurement**:
+  on the 11-source header corpus it changed 10 of 496 staves — 4 right to
+  wrong, 2 wrong to right, 4 wrong to wrong (Beethoven 5's two `2/4` became
+  `4/4`; Beethoven 3's `3` on a Litolff plate moved among `3`, `6`, `9`;
+  Dvorak 9) — all numerators but one. The shipped cut moves **0 of 496**
+  (`sweep_widened.py --per-staff`; `--no-split` is the old reader), and
+  `corpus.json` gains `brahms1-p2-9over8`: stack-only **WRONG** (`9/4`),
+  split **OK**; the old 11 sources stay WRONG 0 / correct 9 / missed 3 /
+  silent 39.
+* `locate_meter_by_halves` (the bar-head reader): each half searched on its
+  own with the strip's own half-space vertical slack, a meter = the best
+  consistent (one column) listed pair, score = the WEAKER half, floor = the
+  header's own `min_score` 0.50 — **no new number**.
+
+`tools/omr/staged/gather.py`: `gather_meter_at_bars` uses the halves reader;
+`_meter_candidate_columns` also opens on the stacked-head pair
+`notehead_precision.is_a_meter_digit` tests (loose, no quorum; a firing only
+spends a reader call); `OMR_METER_TEMPLATE_AT_BAR` default **ON** (deny-list)
+and out of `OMR_RESEARCH`; the flag stays as the one-tree A/B switch.
+`rhythm._meter_changes`: a glyph in the tail (`cell > last bar`) is a
+cautionary; cells the staves' template readings agree on (>= 3 staves, one
+meter) are visited with no glyph row.
+
+### The hazard that kept the flag off, re-measured
+
+`benchmarks/omr-meter-template-changes-2026-09/probe/empty_window.py`'s own
+mid-staff bar-head windows (1,830 here, the probe's slicing rule; ten real
+scanned pages: Brahms 1 p6, 22, 42-45; Beethoven 5 / Litolff p56, 57, 63,
+86), none printing a change, so every answer is false. The halves reader's
+weaker-half score over them: max 0.526, p99 0.469, median 0.294.
+
+| floor | answered | rate | columns with 2 staves agreeing | with 3 |
+|---|--:|--:|--:|--:|
+| 0.42 | 143 | 7.81% | 28 | 4 |
+| 0.45 | 60 | 3.28% | 9 | 2 |
+| 0.48 | 10 | 0.55% | 1 | 0 |
+| **0.50 (shipped)** | **3** | **0.16%** | **0** | **0** |
+
+The stack reader at the same floor answered 16 of 1,612 (0.99%) with 2
+columns of two staves agreeing (2.12i's table). The floor is NOT read off a
+gap — the false scores thin out smoothly (the 2.12i warning stands) — it is
+the header's own value, and the safety is still the three-staff quorum
+(`METER_TEMPLATE_AT_BAR_MIN_STAVES`), which measured zero false columns here
+at every floor from 0.48 up. The 14 true windows of the plate score
+**0.52-0.62** (the weaker half): headroom over 0.50 is 0.02 on the weakest
+one. That is thin, and it is one plate.
+
+### Re-score (small re-gather, GATHER+ADJUDICATE only, clean tree `0510ce3d`)
+
+`acceptance_quick --doc brahms1-breitkopf|beethoven5-litolff`; base = the
+manager's `404285f3` records, arm = this branch.
+
+**Sean's tiles 1-4, the meter in force at each tile's bar** (`record.meter_at`
+on the system verdict at the tile's cell):
+
+| tile | cell | Sean | before | after |
+|---|---|---|---|---|
+| 1 | `cell/1/0/0/0` | 9/8 | 9/4 WRONG | **9/8** RIGHT |
+| 2 | `cell/1/0/1/0` | 9/8 | 9/4 WRONG | **9/8** RIGHT |
+| 3 | `cell/1/0/0/1` | 6/8 | 9/4 WRONG | **6/8** RIGHT |
+| 4 | `cell/1/0/3/1` | 6/8 | 9/4 WRONG | **6/8** RIGHT |
+
+(Tiles 5-8, the whole rests, were already right; tile 8's lone rest sits on
+`system/1/1`, which now has a meter — the EVALUATE rule that would size it is
+outside this item's two stages.)
+
+**Population, every system whose `Q.METER` verdict changes:**
+
+*Brahms pdf p.0-1* (3 systems, 3 changed): `system/0/0` DECIDED 6/8 with a
+`9/8` CHANGE at cell 7 -> DECIDED 6/8 with the `9/8` a CAUTIONARY (14 of 14
+staves read it in the tail window); `system/1/0` DECIDED `9/4` -> DECIDED
+`9/8` with a `6/8` change at cell 1 (14 of 14 staves, support 42.5);
+`system/1/1` ABSTAINED `meter_change_digits_misread` -> DECIDED `carried`
+6/8. Bar-head windows asked 232, answered 28 (14 + 14, the two real
+columns), no false column. Staff-bars whose summed durations equal the meter
+in force (a control, not a headline): **41 -> 68 of 204** that have a sum.
+
+*Litolff pdf p.0-3 (count page p.3)*: **0 of 5 systems change** (the `2/4` on
+`system/1/0` voted, carried on the rest, identical), 327 -> 327 of 484. Bar-
+head windows asked 417, answered 2 (one staff each, no quorum, no change).
+
+Crops of the changed meters Sean has not judged (the page-0 courtesy `9/8`
+and the carried `6/8` at the start of `system/1/1`): `out/print/2.72/`
+(`manifest.json`); the frame control (the record's staff lines must land on
+dark rows of the render) can fail and did not.
+
+### Not done, named rather than hidden
+
+* **The header's staves under the stack floor.** 4 of 14 Brahms header staves
+  score under 0.50 on the stack and stay unread; the halves would read all 14
+  (the first cut did) but the same first cut flipped Litolff numerators, so
+  the header presence rule is untouched. A presence rule on the halves for
+  the header would need its own empty-header measurement.
+* **Litolff pdf p.62 prints a real `3/4` change** (`system/0/0` cell 6, 17
+  staves, digits ~1.3 spaces tall): the halves floor 0.50 admits 2 staves (no
+  quorum); at 0.42 it names `3/4` on 4 and `9/4` on 3 — the numeral half is
+  the weak one on that plate (0.36-0.51) while every denominator `4` scores
+  0.58-0.73. Pooling the per-staff half tables across the system (a change is
+  ONE printed event witnessed by every staff) puts `3` first by 0.015 —
+  thin. It needs the tables filed with the rows; not done (the page reads
+  nothing before or after).
+* The whole movement is not re-gathered (proof budget); the other
+  `meter_change_digits_misread` abstentions that share a source are
+  unmeasured past pages 0-1.
+* CONVENTION: none new. The one-column test for a pair (centres within 0.6
+  space) is geometric (a time signature centres its two rows), not
+  confirmed with Sean.
