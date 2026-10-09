@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (evening) — 2.72 landed: meter 9/8 and the bar-9 6/8 change
+
+- Denominator re-read from its own half; courtesy past the last barline is cautionary; `locate_meter_by_halves` at bar heads;
+  `OMR_METER_TEMPLATE_AT_BAR` default ON (Sean). Fast 6,534 passed; check 192.
+
 ## 2026-10-09 (evening) — 2.74 landed: a beam joins two stems, straight, thicker than a hairpin
 
 - `Q.BEAM_STROKE_INK` + ADJUDICATE refusals (thin / bowed / one stem); `line_detection.detect_beams(rescue_tall)` for beam+hairpin fusions.
