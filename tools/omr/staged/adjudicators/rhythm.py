@@ -2188,7 +2188,19 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # WITHOUT its `own_stems` condition (a chord head shares a stem no box of
     # its own overlaps, and Brahms p1 page 0 holds ~45 of them: beamed
     # eighths whose only 'beam' was a detector box lying on a staff line).
-    ink_removed_all_marks = bool(pre_ink) and not kept and bool(ink_dropped)
+    # It fires only where the strokes the ink refused WOULD HAVE COUNTED for
+    # this head (a stroke over some other note's column, or one the beyond-the-
+    # tip guard restored for nothing, never marked it): the head had a level
+    # before the ink refused it and has none after.
+    pre_possible = 0
+    if ink_dropped and not possible:
+        pre_joined, _ = _stem_joined(pre_ink, stems, head_box)
+        pre_witness, _ = _beam_join_witness(ev, cell, pre_ink, own_stems, side)
+        _pc, pre_possible, _pk = _beam_levels(
+            pre_ink, x_center, head_width, pre_joined, pre_witness,
+            stem_x=stem_x)
+    ink_removed_all_marks = bool(ink_dropped) and pre_possible > 0 \
+        and not possible
     used.extend(s.id for s in attached)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is

@@ -393,6 +393,21 @@ class TestTheInksRefusalsNeverDecideTheHeadValueFromAbsence(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 0.5)
 
+    def test_a_stroke_that_never_covered_this_heads_column_is_not_the_inks_removal(
+            self):
+        """2.65 tile 2: a tied quarter under a thin detector box that lies
+        beside it. The ink refuses the box, but the box never marked THIS
+        head, so nothing was removed from it and the quarter stands."""
+        log = Log()
+        _staff_space(log)
+        g, _s = _head_with_stem(log, 0, 135)
+        beside = _beam(log, y=40, x0=300, x1=500, reader=READERS.DETECTOR)
+        _ink(log, beside, ratio=1.2, sag=0.0, ends=(False, False))
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+
     def test_a_stroke_the_SIDE_test_refuses_anyway_is_not_the_inks_removal(
             self):
         """The stroke lies across the head from its stem: the existing side
