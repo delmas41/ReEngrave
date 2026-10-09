@@ -22,6 +22,12 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (night) — 2.68 dynamics stack landed; 2.75 opened
+
+- `sempre più p`; one letter-hiding rule at both sites; dynamics owned by the staff printed above them; twin boxes = one letter; note anchor
+  (`Q.DYNAMIC_ANCHOR`, unread until export -> check 193, Sean accepted). Sean's bars 17/20 + 9/10. Fast 6,625 passed. `dimin` in the lexicon.
+- 2.75 opened (tie vs slur by Sean's two-note and stacked-arc rules); 2.67 terms held for the Gradus review.
+
 ## 2026-10-09 (evening) — 2.72 landed: meter 9/8 and the bar-9 6/8 change
 
 - Denominator re-read from its own half; courtesy past the last barline is cautionary; `locate_meter_by_halves` at bar heads;
