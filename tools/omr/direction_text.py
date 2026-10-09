@@ -1524,21 +1524,38 @@ def _give_a_due_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> N
                                             measure_index=m)
 
 
+#: TECHNIQUE words are printed ABOVE the staff they govern, like tempo (Sean
+#: 2026-10-08 on `out/print/2.66/tile_01b.png`, the `pizz.` under staff 10 of
+#: Litolff p9: *"It belongs to the staff below"*; the placement research,
+#: `PLACEMENT-CONVENTIONS.md`: technique words above their staff 97.5% in the
+#: orchestral encodings, `gestopft` 88%). Only lexicon terms are listed.
+ABOVE_STAFF_TERMS = frozenset({
+    "pizz", "pizzicato", "arco", "sord", "sordino", "sordini",
+    "divisi", "unis", "gestopft",
+})
+
+
+def _printed_above_its_staff(d) -> bool:
+    return d.category == "tempo" or bool(ABOVE_STAFF_TERMS & set(d.terms))
+
+
 def _give_tempo_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> None:
-    """A TEMPO word is printed ABOVE the staff it governs (Sean 2026-10-08, on
-    the oboe's `Adagio`, Litolff p9: *"it belongs to the staff beneath it ...
-    tempo is always above the staff. Also there are no notes in the staff above
-    so it wouldn't make sense to give that word there"*). The band that finds a
-    word in the gap between two staves of one system is the UPPER staff's, so a
-    tempo word found there is the next staff's -- wherever in the gap it sits
-    -- and is placed `above` it. Under a system's last staff there is no staff
-    beneath in the system and the word stays. Expression words keep the band's
-    answer (the staff above); see `PLACEMENT-CONVENTIONS.md`."""
+    """A TEMPO or TECHNIQUE word (`_printed_above_its_staff`) is printed ABOVE
+    the staff it governs (Sean 2026-10-08, on the oboe's `Adagio`, Litolff p9:
+    *"it belongs to the staff beneath it ... tempo is always above the staff.
+    Also there are no notes in the staff above so it wouldn't make sense to give
+    that word there"*; and on that page's `pizz.`, `ABOVE_STAFF_TERMS`). The
+    band that finds a word in the gap between two staves of one system is the
+    UPPER staff's, so such a word found there is the next staff's -- wherever
+    in the gap it sits -- and is placed `above` it. Under a system's last staff
+    there is no staff beneath in the system and the word stays. Expression and
+    dynamic words keep the band's answer (the staff above): they are printed
+    BELOW their staff (`PLACEMENT-CONVENTIONS.md`)."""
     ordered = sorted(pws.staves, key=lambda s: s.top_y)
     by_index = {s.staff_index: s for s in ordered}
     staff_dicts = _staff_dicts(page_dict)
     for i, d in list(accepted_at.items()):
-        if d.category != "tempo" or d.placement != "below":
+        if not _printed_above_its_staff(d) or d.placement != "below":
             continue
         c = candidates[i]
         staff = by_index.get(c.staff_index)

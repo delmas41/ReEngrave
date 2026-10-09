@@ -232,3 +232,11 @@ def test_no_dynamic_beside_the_word_means_no_second_read():
     words, info = DT.read_directions(pws, page_dict, scan_order=True, readers=[
         ("tesseract", _reader("piu", "piu f", [])), ("surya", _reader("", "", []))])
     assert info["n_joined_dynamic"] == 0
+
+
+def test_a_technique_word_in_the_gap_is_the_lower_staffs():
+    """Litolff p9: `pizz.` printed under staff 10 belongs to staff 11 (Sean:
+    'It belongs to the staff below')."""
+    pws, page_dict, cands, accepted = _two_staff_reading("expression", ("pizz",), "pizz.")
+    DT._give_tempo_to_the_staff_below(pws, page_dict, cands, accepted)
+    assert (accepted[0].staff_index, accepted[0].placement) == (1, "above")
