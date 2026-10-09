@@ -1,0 +1,13 @@
+{
+ "litolff_01": "Slur - different notes",
+ "litolff_02": "Tie - same note",
+ "litolff_03": "Tie",
+ "litolff_04": "Tie",
+ "litolff_05": "Tie -- as a rule, wherever the arc sits, if it is close to noteheads that are the same, it is a tie",
+ "litolff_06": "Tie",
+ "brahms_01": "Slur (looks like two slur markings; the upper one seems unnecessary -- typo or an unfamiliar convention for rhythmic grouping)",
+ "brahms_02": "Slur (same as brahms_01: a doubled slur)",
+ "brahms_03": "Tie",
+ "brahms_04": "Tie",
+ "stacked_below_01": "A (upper, nearer the heads) tie; B (lower) slur"
+}

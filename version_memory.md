@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (night) — 2.73 landed: hollow heads cut by a line
+
+- `Q.HEAD_LINE_CUT`, head-shaped duplicate keep, ink names the fill (cut 0.75), stem-tip window ignores grazing boxes and line rows.
+  Sean's 27 hand half heads 27/27; 8 Litolff halves 6 half + 2 narrowed. Fast 6,684 passed; check 193.
+
 ## 2026-10-09 (night) — 2.68 dynamics stack landed; 2.75 opened
 
 - `sempre più p`; one letter-hiding rule at both sites; dynamics owned by the staff printed above them; twin boxes = one letter; note anchor
