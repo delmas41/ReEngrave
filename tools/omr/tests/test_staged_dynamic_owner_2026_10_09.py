@@ -137,6 +137,32 @@ class TestADynamicBelongsToTheStaffItIsPrintedBelow(unittest.TestCase):
         self.assertEqual(log.verdict(Q.DYNAMIC, CELL_U).value, ["f"])
         self.assertEqual(log.verdict(Q.DYNAMIC, CELL_L).value, [])
 
+    def test_a_twin_boxed_as_half_the_letter_is_still_the_same_letter(self):
+        """Brahms p0, the oboe's `f legato`: the same `f` boxed 71x81 from the
+        oboe's cell and 42x39 (its lower part) from the clarinet's -- IoU 0.28,
+        but the small box lies wholly in the large one. Kept twice it spelled
+        `ff` (tiles 3 and 4, A1's first run). RED against an IoU test."""
+        log = Log()
+        g_u = R.glyph(0, 0, 0, 0, 0)
+        g_l = R.glyph(0, 0, 1, 0, 0)
+        _letter(log, g_u, "f", positions=GAP_U, x0=100.0, x1=171.0, y=100.0)      # 71 wide, 10 high box
+        log.observe(g_l, Q.DYNAMIC_LETTER, "dynamicF", reader=READERS.DETECTOR,
+                    frame=G.FRAME_PAGE, score=0.8, letter="f", cell_frame="cell:0",
+                    bbox_page_px=[101.0, 100.0, 143.0, 105.0], x_center_page=122.0,
+                    y_center_page=102.5, staff_bottom_line_page=90.0, staff_spacing_px=10.0,
+                    band_offset_spaces=1.25, in_hairpin_band=True, local_position_in_staves=GAP_L)
+        _run(log)
+        self.assertEqual(log.verdict(Q.DYNAMIC, CELL_U).value, ["f"])
+        self.assertEqual(log.verdict(Q.DYNAMIC, CELL_U).detail["letters_dropped_as_duplicate"], 1)
+
+    def test_CONTROL_two_neighbouring_letters_are_not_one_letter(self):
+        """`ff`: two boxes side by side share no area -- both are kept."""
+        log = Log()
+        _letter(log, R.glyph(0, 0, 0, 0, 0), "f", positions=GAP_U, x0=100.0, x1=110.0)
+        _letter(log, R.glyph(0, 0, 1, 0, 0), "f", positions=GAP_L, x0=111.0, x1=121.0)
+        _run(log)
+        self.assertEqual(log.verdict(Q.DYNAMIC, CELL_U).value, ["ff"])
+
     def test_the_counts_say_which_rule_decided(self):
         log = _run(_twins(GAP_U, GAP_L))
         self.assertEqual(log.verdict(Q.DYNAMIC, CELL_U).detail["letters_placed_below_their_staff"], 1)

@@ -85,9 +85,12 @@ def _staff_it_is_printed_below(row: Any) -> Optional[str]:
                    staff=staff.staff + max(reached)).to_key()
 
 
-#: Two letter boxes this much alike (IoU) are one printed letter, cut from two
-#: cells (`gather._iou` / `CONTEST_IOU`'s 0.3, the legacy dedupe's own).
-SAME_LETTER_IOU = 0.3
+#: Two letter boxes overlapping by this share of the SMALLER area are one
+#: printed letter cut from two cells (`gather._same_ink_boxes`' own 0.5). Not
+#: IoU: the same `f` boxed tall from one cell and as its lower half from the
+#: other overlaps at IoU 0.28 (Brahms p0, the oboe's `f legato`) and was kept
+#: twice -- `ff`.
+SAME_LETTER_SHARE = 0.5
 
 
 def _same_ink(a: Tuple[float, float, float, float],
@@ -96,9 +99,9 @@ def _same_ink(a: Tuple[float, float, float, float],
     iy = min(a[3], b[3]) - max(a[1], b[1])
     if ix <= 0 or iy <= 0:
         return False
-    inter = ix * iy
-    union = ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
-    return union > 0 and inter / union > SAME_LETTER_IOU
+    small = max(1.0, min((a[2] - a[0]) * (a[3] - a[1]),
+                         (b[2] - b[0]) * (b[3] - b[1])))
+    return ix * iy >= SAME_LETTER_SHARE * small
 
 
 def _has_a_twin_on(rows: Any, staff_key: str, row: Any) -> bool:
