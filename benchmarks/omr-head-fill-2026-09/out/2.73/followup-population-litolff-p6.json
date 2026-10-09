@@ -1,0 +1,143 @@
+{
+ "summary": {
+  "base_heads": 834,
+  "arm_heads": 834,
+  "same_key": 834,
+  "only_base": 0,
+  "only_arm": 0,
+  "head_line_cut_rows": 0,
+  "newly_kept": 0,
+  "newly_refused": 0,
+  "position_moved": 0,
+  "duration_moved": 3,
+  "newly_refused_by_reason_now": [],
+  "newly_kept_were_refused_by": [],
+  "duration_moves": [
+   [
+    "(1.0,) -> (2.0,) [hollow_head_bare_stem]",
+    2
+   ],
+   [
+    "(None,) -> (2.0,) [hollow_head_bare_stem]",
+    1
+   ]
+  ],
+  "position_moves": []
+ },
+ "newly_kept": [],
+ "newly_refused": [],
+ "position_moved": [],
+ "duration_moved": [
+  [
+   "glyph/6/0/4/2/6",
+   {
+    "status": "narrowed",
+    "why": "length still open: half (2 beats) | quarter (1 beat) | whole (4 beats) -- head fill from ink",
+    "pos": 1,
+    "dur": [
+     "narrowed",
+     null,
+     "head_fill_from_ink"
+    ],
+    "cls": "noteheadBlackOnLine",
+    "box": [
+     836.32,
+     1002.88,
+     862.72,
+     1026.56
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 1,
+    "dur": [
+     "decided",
+     2.0,
+     "hollow_head_bare_stem"
+    ],
+    "cls": "noteheadBlackOnLine",
+    "box": [
+     836.32,
+     1002.88,
+     862.72,
+     1026.56
+    ]
+   }
+  ],
+  [
+   "glyph/6/1/11/4/1",
+   {
+    "status": "kept",
+    "why": "quarter (1 beat)",
+    "pos": 7,
+    "dur": [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1262.43,
+     3615.0225,
+     1286.5275,
+     3630.1425
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 7,
+    "dur": [
+     "decided",
+     2.0,
+     "hollow_head_bare_stem"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1262.43,
+     3615.0225,
+     1286.5275,
+     3630.1425
+    ]
+   }
+  ],
+  [
+   "glyph/6/1/6/11/3",
+   {
+    "status": "kept",
+    "why": "quarter (1 beat)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     2448.95,
+     2924.02,
+     2473.835,
+     2947.4875
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     2.0,
+     "hollow_head_bare_stem"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     2448.95,
+     2924.02,
+     2473.835,
+     2947.4875
+    ]
+   }
+  ]
+ ]
+}

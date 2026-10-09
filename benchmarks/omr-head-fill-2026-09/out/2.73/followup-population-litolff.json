@@ -1,0 +1,106 @@
+{
+ "summary": {
+  "base_heads": 1286,
+  "arm_heads": 1286,
+  "same_key": 1286,
+  "only_base": 0,
+  "only_arm": 0,
+  "head_line_cut_rows": 2,
+  "newly_kept": 0,
+  "newly_refused": 0,
+  "position_moved": 0,
+  "duration_moved": 2,
+  "newly_refused_by_reason_now": [],
+  "newly_kept_were_refused_by": [],
+  "duration_moves": [
+   [
+    "(1.0,) -> (2.0,) [hollow_head_bare_stem]",
+    1
+   ],
+   [
+    "(None,) -> (2.0,) [hollow_head_bare_stem]",
+    1
+   ]
+  ],
+  "position_moves": []
+ },
+ "newly_kept": [],
+ "newly_refused": [],
+ "position_moved": [],
+ "duration_moved": [
+  [
+   "glyph/2/0/7/6/1",
+   {
+    "status": "kept",
+    "why": "quarter (1 beat)",
+    "pos": 7,
+    "dur": [
+     "decided",
+     1.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1234.48,
+     1489.24,
+     1261.36,
+     1507.48
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 7,
+    "dur": [
+     "decided",
+     2.0,
+     "hollow_head_bare_stem"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1234.48,
+     1489.24,
+     1261.36,
+     1507.48
+    ]
+   }
+  ],
+  [
+   "glyph/2/1/3/11/5",
+   {
+    "status": "narrowed",
+    "why": "length still open: half (2 beats) | quarter (1 beat) | whole (4 beats) -- head fill from ink",
+    "pos": 5,
+    "dur": [
+     "narrowed",
+     null,
+     "head_fill_from_ink"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     2103.64,
+     2593.1775,
+     2128.84,
+     2609.085
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     2.0,
+     "hollow_head_bare_stem"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     2103.64,
+     2593.1775,
+     2128.84,
+     2609.085
+    ]
+   }
+  ]
+ ]
+}

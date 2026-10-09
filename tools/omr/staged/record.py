@@ -899,6 +899,33 @@ class Q(_Vocab):
     #: side.
     NOTEHEAD_STEM_CROSS_INK = "notehead_stem_cross_ink"
 
+    #: ⚠️⚠️ ROADMAP 2.73 -- A HOLLOW HEAD CUT BY A LINE (Sean, 2026-10-09: *"half
+    #: notes, especially ones that are on lines or ledger lines, get split up
+    #: into two smaller boxes instead of one large box around the notehead"*).
+    #: A staff or ledger line through a half note's hole splits the ring into
+    #: two half-rings; the detector then boxes ONE of them (about half a head
+    #: tall, top or bottom edge ON the line) and calls it `noteheadHalfInSpace`.
+    #: GATHER, one row per notehead-classed glyph whose box is about half a
+    #: head tall, whose top or bottom edge lies on a horizontal line at the
+    #: head's own x, AND across whose line the INK holds the mirror hole: two
+    #: enclosed white holes (the head's two half-holes), one above the line and
+    #: one below it, of like size, standing point-symmetrically about the
+    #: line's own centre. `value` is `[x, y, w, h]`, the STANDARD head box
+    #: (`geometry.standard_head_box`) centred on that point in the cell's own
+    #: canonical frame; `detail` carries `line_y` (the line's row), `line_half_
+    #: step` (that row as a staff half-step, `Q.NOTEHEAD_STAFF_POSITION`'s own
+    #: units, rounded), `edge` (`top`/`bottom`: which edge of the detector box
+    #: stands on the line), `holes` (both holes' areas and centres), `area_
+    #: ratio`, and `line_ink` (the line's own ink either side of the head).
+    #: NEVER an edit to `Q.GLYPH_BOX`: the detector's box stays on the record
+    #: untouched and this is a second reading beside it, under its own reader.
+    #: ⚠️ NO ROW AT ALL where the box is already head-sized, where no line
+    #: stands at an edge, or where the ink holds no mirror hole -- "this
+    #: measurement does not apply here" (the `Q.STACKED_HEAD_FIT` convention),
+    #: never a guessed rebuild. A head genuinely in a space has ONE hole, a
+    #: black head none: neither can ever carry this row.
+    HEAD_LINE_CUT = "head_line_cut"
+
     #: ⚠️⚠️⚠️ REMOVED, TWICE — Sean, scope change: the whole-group ink fit
     #: does not decide pitch, AND NEITHER DOES A ROUNDING-RESIDUAL RULE. The
     #: real cause of the wrong pitches above the staff is that printed
@@ -2110,6 +2137,12 @@ CLAIMS: "dict[str, str]" = {
     #: that the box is a slash (that is ADJUDICATE's `tremolo_slash_
     #: crosses_stem`, INTERPRETATION).
     "NOTEHEAD_STEM_CROSS_INK": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.73: where the ink shows a head's two half-holes standing
+    #: either side of a line, and the standard head box that centres there --
+    #: a ruler reading, same reason as `NOTEHEAD_RECENTRE`; it says what the ink
+    #: holds around a line, never that the head is a half note (that is the
+    #: duration decision's, INTERPRETATION).
+    "HEAD_LINE_CUT": CLAIM.MEASUREMENT,
 
     # ── relations between things already located ───────────────────────────
     #: ⚠️ A JUDGEMENT CALL, NAMED — MEASUREMENT and not COVERAGE, though
@@ -2498,6 +2531,12 @@ class READERS(_Vocab):
     #: its matched `Q.STEM` row's centre x rather than asking where the
     #: box's own fill peaks.
     CV_NOTEHEAD_STEM_CROSS_INK = "cv_notehead_stem_cross_ink"  # gather: ink split by stem x
+    #: `gather.gather_head_line_cut` -- ROADMAP 2.73. Reads the cell's UNERASED
+    #: canonical raster (`cell.binary`): the line through the head is the
+    #: evidence, so erasing it first would erase the two half-holes' common
+    #: wall. Shares that raster with `CV_NOTEHEAD_INK`'s raw reading (one crop,
+    #: one signal).
+    CV_HEAD_LINE_CUT = "cv_head_line_cut"  # gather: two half-holes across a line
     #: `gather.gather_head_stem_reach` -- ROADMAP 2.58d. Reads the page's
     #: ORIGINAL raster beside each contested head's box (the staff lines left
     #: in: a vertical stem run is not broken by them).

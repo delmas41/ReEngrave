@@ -265,3 +265,305 @@ problem, not this rule).
    second pass over the SAME re-gather would show whether this rule's one
    narrowed case actually resolves once the meter is decided.
 
+
+
+## Sec.7. ROADMAP 2.70 -- a hollow head with nothing on its stem is a half note
+
+PATH: STAGED, ADJUDICATE (`rhythm.adjudicate_duration`, the 2.23 block).
+Branch `lane-2.70-hollow-half`. Not merged.
+
+CONVENTION CONFIRMED (Sean, DECISIONS 2026-10-09, answering Sec.2's
+"CONVENTION ASSUMED"): *"A hollow note with nothing on the stem is always a
+half note."* Evidence he judged blind: `out/print/2.65-headfill/`
+(`answers.json`, `compare-20261009-all.txt`).
+
+### 7a. Why the tiles failed on today's tree (measured, `--through adjudicate`, Litolff pdf p6 alone, `--weights auto`)
+
+Today's detector boxes tiles 5 and 6 TWICE -- a `noteheadBlack*` and a
+`noteheadHalf*` box on one head -- and the duplicate rules keep the BLACK one
+and refuse the half (`stacked_head_duplicate` for tile 5, `notehead_is_a_
+duplicate_box` for tile 6). On this page 9 refused half boxes lost to a
+black keeper; the stacked-head keep choice is "the box with the most ink"
+(`notehead_ink_under`'s `best`), which prefers a filled box over a hollow
+one by construction -- a bias that deletes half notes. NOT changed here.
+
+| tile | Sean | today's box | why 2.23 did not narrow it, why nothing decides it |
+|---|---|---|---|
+| 5 | half | black `glyph/6/1/1/0/10` | ink reads hollow (centre 0.4745 on both rasters, ring 0.79), stem attached, tip ink read none. Gated out by `beam_evidence == "reader_declined"`: the cell holds NO beam, so `Q.BEAM_STROKE` is DECLINED (abstention `no_line_accepted`: the reader RAN and accepted nothing) and `Evidence.state` calls that declined. A reader that looked and found none was spelled "cannot tell". |
+| 6 | half | black `glyph/6/0/8/3/4` | THREE causes, none the gate: ink `net` centre 0.6036 (> the 0.5 cut; `raw` 0.93 because the staff line passes through an on-line head's hole); the black box ends 2 px short of its stem (`stems_on` is overlap with no tolerance, so `own_stems` is empty -- only the refused half twin touches it); and the keeper of the double detection is the black box. Not fixed: loosening the cut to 0.61 would be fitting one tile. |
+| 3 | half + slash | none | the detector draws NO head box here today; a `restQuarter` box (iou 0.43) covers the stem and slash. Unreachable by ADJUDICATE; 2.71 is not what blocks it (the cell's one beam stroke is a neighbour's, y 0-65). |
+| 4 | whole rest | black `glyph/6/0/0/9/1` | ink_net reads hollow (centre 0.23) but there is NO stem, so the new rule does not apply; today's tree decides quarter (unchanged -- the refusal control holds: not half). |
+
+### 7b. What is built
+
+`hollow_head_bare_stem` (new reason on `adjudicate_duration`): DECIDES `half`
+(dots apply) where ALL hold -- the detector class is black; `Q.NOTEHEAD_INK`
+reads decisively hollow by 2.23's own cut (NOT loosened); the head has its
+OWN stem; no beam stroke was read over it BEFORE 2.43's hollow-zeroing
+(`strokes_before_hollow == (0, 0, 0)`); no flag box attached; the stem tip
+was MEASURED and shows no hook (`_stem_tip_flag_ink` is False; a tip nobody
+measured stays "cannot tell"); and the CV beam reader LOOKED
+(`_beam_reader_looked`: strokes filed, or every abstention is
+`no_line_accepted`/`no_stems_to_join` -- never `not_implemented`/
+`reader_unavailable`). A hollow head with no stem keeps 2.23's NARROWING
+(whole, or a whole rest boxed as a head -- never half). The 2.18c block and
+`_stem_tip_flag_ink` are untouched (fence: `lane-2.69-flag-hooks`); the rule
+CALLS `_stem_tip_flag_ink` for cells the old spelling skipped, so a signature
+change there needs a merge look.
+
+⚠️ Found, not changed: with the beam reader's `ran_empty` read as `reader_
+declined`, 2.18c's `flag_ink_unread` narrowing is ALSO unreachable in any
+beamless cell (the existing tests add a decoy beam to reach it). That is the
+2.69 lane's block.
+
+⚠️ Found, not changed: a hollow-reading head with a beam stroke READ over its
+stem (strokes_before_hollow > 0) is narrowed `[black, half, whole]` by 2.23
+-- the read beam levels (eighth ...) are not candidates. 2.43 zeroes the
+strokes for any open-reading head and 2.23 then ignores them. This rule
+stands down there (test `test_a_beam_joined_to_this_stem_blocks_it`), but the
+narrowing itself drops a read beam.
+
+### 7c. Red -> green
+
+`tools/omr/tests/test_staged_duration.py::
+TestAHollowHeadWithNothingOnItsStemIsAHalfNote` (13 tests). Against the
+unrepaired tree (`rhythm.py` reverted): 4 FAIL (`bare stem under hollow ink
+is DECIDED half`, `reaches a cell the beam reader RAN in and accepted
+nothing`, `a dot still lengthens the half`, `the ink row is in the basis`),
+9 pass -- the refusal/positive controls: beam reader never ran, no stem,
+stemless hollow head in a beamless cell (whole-rest control), beam joined to
+the stem (`strokes_before_hollow` read non-zero in the same fixture), flag on
+the stem, hook at the tip, tip unread, black ink agrees (quarter), ink not
+decisive (0.6). Green on the repaired tree.
+
+### 7d. Population (GATHER+ADJUDICATE, base arm = the same tree with the rule's gate forced to "cannot tell", `scr` wrapper in the lane scratch)
+
+| page(s) | black-class kept heads | ink reads hollow | stem + eligible | duration changed |
+|---|--:|--:|--:|--:|
+| Litolff pdf p6 | 669 | 3 | 1 (tile 5) | **1** (quarter -> half) |
+| Litolff pdf p3 | 252 | 3 | 0 (all stemless) | 0 |
+| Brahms pdf p0-1 | 1,054 | 1 | 0 (stemless) | 0 |
+| engraved Beethoven fixture p0-2 | 262 | **0** (centre 1.0 on all 262, both rasters) | 0 | 0 |
+
+The rule is correct and dead-small: the 0.5 ink cut admits 7 of 1,975
+scan black heads. The loss is upstream of this rule -- the CUT and the DEDUPE.
+Eight Litolff heads the detector calls black, that carry a stem, and whose ink
+centre reads 0.50-0.72 (ring gap >= 0.1) were cropped
+(`out/print/2.70/halfnote_01..08.png`, manifest alongside) and look like half
+notes by eye; they are NOT decided and NOT judged by Sean. They are the
+question for the next step (what cut, measured against his answers, never
+fitted to them).
+
+### 7e. Gates
+
+`pytest -m "not slow" tools/omr/tests -q` and `python3 -m tools.omr.staged.
+check` -- numbers in the lane report.
+
+
+## Sec.8. ROADMAP 2.73 -- a hollow head CUT BY A LINE is one head
+
+PATH: STAGED, GATHER+ADJUDICATE only (first two stages, Sean 2026-09-30). Branch
+`lane-2.73-line-cut-heads`, built on `lane-2.70-hollow-half` (subsumes it: its
+`hollow_head_bare_stem` rule and beamless-cell gate fix are kept unchanged) merged
+with main. Not merged.
+
+Sean (2026-10-09): *"half notes, especially ones that are on lines or ledger
+lines, get split up into two smaller boxes instead of one large box around the
+notehead. I think the way the boxes are automatically choosing the hollow noteheads
+is off."* Artefacts: `out/2.73/`.
+
+### 8a. The mechanism, measured (Brahms 317803 pdf 0, Sean's 27 hand-labelled half heads, 600 dpi)
+
+`score_handtruth_2_73.py` is the first scorer on the hand truth: a hand head is
+FOUND when a kept notehead box's centre lies within 0.6 sp of his box's centre;
+SINGLE when only one does; POSITION when ADJUDICATE's position (`notehead_position`
+where decided, else GATHER's rounded `notehead_staff_position`) is the line/space
+his box centre reads against the hand cell's own staff lines; HALF when the
+duration is a half or a dotted half. (27 raw boxes; `q711`/`q712` are two prefill
+halves of ONE head that he confirmed unfixed -- both count against the one merged
+head.) Before, on `lane-2.70-hollow-half` + main: found 20, single 18, position 19,
+half 20 (of 27). Four distinct causes, none of them the hollow reading itself:
+
+1. **A head on a line is a ring with a line through its hole**: two white half-holes,
+   one either side. The detector boxes ONE of them (0.58-0.89 sp tall, top or
+   bottom edge ON the line, class `noteheadHalfInSpace`), sometimes both.
+   14 of 14 on-line heads show it (`proto`: two enclosed holes of like size,
+   point-symmetric about the line; 0 of 11 other partial boxes on the page, 0 of
+   13 in-space heads, do).
+2. **2.42's slot competition was not per head**: `Q.STACKED_HEAD_FIT` groups every
+   box on one stem and side; an octave apart (Violoncello e Basso doubling, 3.5 sp)
+   the fit calls them ONE slot, and the box with more ink deleted the WHOLE box
+   (IoU 0.99-1.0 with Sean's) of the other head. 5 of his 13 in-space heads.
+3. **`max(centre, ring)` ink prefers half a ring**: the partial box has the higher
+   ring fraction by construction, so the keep choice kept it over the whole head.
+4. **Circles**: one rule keeps a box, the next refuses it (2.30 keeps A and
+   refuses B; 2.42 then keeps B -- already refused -- and refuses A): both lost.
+   4 of his 14 on-line heads lost every box this way.
+
+### 8b. What is built
+
+- GATHER `Q.HEAD_LINE_CUT` (`READERS.CV_HEAD_LINE_CUT`, `gather.head_cut_by_line` /
+  `gather_head_line_cut`): a box <= 0.95 sp tall, >= 0.9 sp wide, whose edge is
+  within 0.3 sp of a line row, with the MIRROR HOLE in the unerased raster (two
+  enclosed holes, areas 0.02-0.45 sp^2 and within 0.4-2.5x of each other, centres
+  0.25-1.1 sp apart, common centre within 0.5 sp of the box, a line running past the
+  head: the longer side >= 0.75 ink, the shorter >= 0.4). Files the standard head box
+  centred on the line; never edits `Q.GLYPH_BOX`. `gather_notehead_positions` files
+  the line as the head's position (`from_head_cut`, the detector's own reading rides
+  on the row); `gather_notehead_ink` reads the ink on the rebuilt head and adds
+  `ink_off_line`, the same windows with the line rows left out.
+- ADJUDICATE `head_cut_piece` (one decision per cut head; a whole box keeps it, else
+  the best piece, never the last box); 2.42 competes only among boxes on one head
+  (overlap or <= 0.15 sp, unless both are implausible as heads), shape (head-
+  filling) before ink, and the INK names the class of a black/half pair; 2.30 shape
+  before score; the keep/refuse circle broken only where the winner was refused in
+  favour of THIS box and this box could be a head.
+- `rhythm`: the 2.23 hollow cut 0.5 -> 0.75 (Sean's 222 filled Brahms heads read
+  centre >= 0.85, 5th percentile 1.0; Litolff p3 black-class kept heads 207/228
+  >= 0.95; his 8 Litolff half notes 0.51-0.72) and `ink_off_line` may decide. **The
+  cut was chosen under both floors, not at the tiles -- but his 8 tiles sit between
+  0.5 and 0.75 and were looked at before the cut moved; it is not a blind test.**
+
+### 8c. Scorecard (Sean's 27 half heads; the page was also the development page)
+
+| | found | one head | box (IoU>=0.5, detector or rebuilt) | position | half / dotted half |
+|---|--:|--:|--:|--:|--:|
+| before | 20 | 18 | 15 | 19 | 20 |
+| after | **27** | **27** | **27** | **27** | **27** |
+
+14 on a line and 13 in a space, each 27/27 after. **This page is where the
+mechanism was found and its thresholds checked, so 27/27 is not an out-of-sample
+number; the out-of-sample evidence is 8d-8f.**
+
+### 8d. Population (GATHER+ADJUDICATE small re-gathers, same weights, glyph keys
+identical in both arms, base = `b408558e`, arm = `18ba2671`) -- position and duration APART
+
+| | heads | newly kept | newly refused | position moved | duration moved (kept in both) |
+|---|--:|--:|--:|--:|--:|
+| Brahms pdf 0-1 | 1,491 | 13 | 5 | 1 (11 -> 10, a cut piece) | 0 |
+| Litolff pdf 1-3 | 1,286 | 15 | 6 | 2 (both a cut head's, to the line) | 6 |
+
+Brahms: 13 newly kept = Sean's 9 + his whole + 1 tremolo-slash swap (kept junk for
+kept junk) + 2 real beamed heads on pdf 1 the old rule refused. Litolff: the 15 are
+halves (or the black twin of a head already kept) plus 2 quarters; the 6 refused are
+the other box of a head whose twin is now kept. Duration moves on Litolff: 3
+quarter -> NARROWED half/black/whole (ink reads hollow; one is a `p` dynamic's bowl
+boxed as a head, `glyph/2/0/2/1/12`), 2 narrowed -> narrowed with the hollow
+candidates, 1 quarter -> half (`hollow_head_bare_stem`). Black-class kept heads the
+ink reads decisively hollow: Litolff p1-3 5 -> 13 of 740, Litolff p6 2 -> 12 of 573,
+Brahms 1 -> 1 of 1,007.
+
+### 8e. Sean's 8 Litolff half notes + head-fill tiles 5, 6 (blind, judged 2026-10-09)
+
+`out/2.73/sean-tiles-before-after.txt`. Before: 0 of 8 half (all quarter). After: 3
+DECIDED half (#1, #3, #7), 3 NARROWED with half a candidate (#2, #6, #8), 2 still
+quarter (#4, #5). Head-fill #5 half (now via the half-class box), #6 still quarter;
+#4 (a WHOLE REST boxed as a head) stays quarter -- the control holds: never half.
+Why #4 and #5 stay quarter, and #2, #6, #8 stay narrowed: the ink
+reads hollow (centre 0.52-0.57, ring gap 0.26-0.33) but the cell has fewer than two
+stems so the beam reader abstains `no_stems_to_join`, and the stem-tip reader abstains
+`occupied` -- 2.70's bare-stem rule needs the tip MEASURED, so it says cannot tell.
+Head-fill #6 (not one of the 8): the ink_net window reads hollow (0.60) but the black box ends short of its stem (`stems_attached` 0), so there is no own stem to test. Sean's rule
+("hollow + nothing on the stem = half") is not wired where "nothing on the stem" is
+unmeasured; whether an `occupied` tip on a decisively hollow head may count as
+nothing is a question for him -- NOT changed here.
+
+### 8f. Controls
+
+- Engraved Beethoven fixture p0-2 (`out/2.73/engraved-control.txt`): 371 note glyphs,
+  0 `head_line_cut` rows, 0 black-class heads read hollow (0 of 251), and NOT ONE
+  refusal, position or duration differs between arms; the positive control: 103 of 103
+  half-class heads read hollow.
+- `head_cut_by_line`: in-space hollow head (one hole), black head with a line through
+  it, head-sized box, box edge off the line, two holes with no line past the head
+  (a slash), a chord second -- each returns None; 0 of 11 other partial boxes on
+  Brahms pdf 0 carry a row. On Litolff pdf 1-3 exactly 2 rows are filed, both on
+  black-class kept boxes (`glyph/1/0/7/1/1` an eighth on a ledger line, `glyph/2/1/4/14/6`
+  a quarter on a staff line) and both are real heads cut by a line on the crop: their positions move to the line (9 -> 8, 1 -> 2),
+  the whole of Litolff's "position moved" above. Their durations did not move.
+- Whole-rest box (head-fill #4) stays quarter; a chord's neighbour a second away is
+  not merged (`TestOneHeadOneBox`); a refused winner no longer shields a beam sliver
+  boxed as a head (an earlier version of this change did: Brahms `0/0/10/1/16`, Litolff
+  `2/0/8/13/9`; caught on the crops, fixed, test pinned).
+
+### 8g. Red -> green, gates
+
+`tools/omr/tests/test_staged_head_line_cut_2_73.py` (37): against the unrepaired tree
+(HEAD before the commit, extracted by `git archive`) 29 FAIL, 8 pass (the controls).
+`test_staged_duration.py`'s "not decisive" fixture moved 0.6 -> 0.85 with the cut.
+`pytest -m "not slow" tools/omr/tests`: 6,475 passed, 11 skipped, 0 failed.
+`staged.check` TOTAL 192 (unchanged; `wiring`, `inventory`, `reach`, `capture` ok).
+
+### 8h. Not done, found
+
+- `Q.GLYPH_BOX` stays the detector's partial box; downstream consumers that read
+  the box (stem association, the 2.70 stem test) still see half a head. The rebuilt
+  head is on `Q.HEAD_LINE_CUT`.
+- Black-class heads with a decisive hollow reading on a merged plate can be a letter
+  or a blob (`glyph/2/0/2/1/12`): the narrowing keeps black among the candidates.
+- 10 print crops of newly decided heads Sean has not judged: `out/print/2.73/`.
+
+
+## Sec.9. ROADMAP 2.73 follow-up -- what stood in the stem-tip window (coordinator, after Sean judged the 10 crops)
+
+Sean on the 10 crops (`out/print/2.73`): 1-6 half, 7-8 eighth, 9 half, 10 NOT A NOTE (a
+dynamic `p`); none worse than main. Open: the 2.70 tiles #4, #5 (and #2, #6) stop at 2.70's
+"stem tip MEASURED" test because the tip reads `occupied`. The brief said a staff/ledger
+line sits in the tip window.
+
+### 9a. What the record says (`out/2.73/`, lane scratch `tipwhy.py`; not a guess)
+
+The occupants of the 2.70 tiles' tip windows, off the record's own boxes (canonical px,
+staff space 100):
+- #4 (cell 6/1/11/4): an `arpeggiato` detection that IS the stem's own ink -- its box ends
+  1 px inside the window. No line.
+- #5 (6/1/6/11): the head's own doubled box ends 1 px inside the window. No line.
+- #2, #6 (6/0/4/2, 6/0/4/1): a neighbouring head's box ends 1-5 px inside the window; #6's
+  bottom window also holds two `ledgerLine` boxes.
+- #8 (Litolff p3 3/1/6/0): a real `beam_stroke` overlapping the window by 17 px, and key-
+  signature boxes: a real occupant.
+So the cause in 3 of the 4 checked is a box that TOUCHES the window, not a line in it. No
+occupant was a slur/tie (a wide arc box is already cut by the 4-space width cut), so
+"a decided arc is not a flag" was NOT built: nothing here would use it.
+
+### 9b. What changed (GATHER `Q.STEM_TIP_INK`; the hook counter `stem_tip_hooks` untouched)
+
+1. A detection box explains ink in the tip window only if it overlaps it by MORE than
+   0.1 staff space in both axes (`STEM_TIP_BLOCKER_TOLERANCE_SPACES`, detector box edges
+   being good to about that). A box that really overlaps still abstains `occupied`.
+2. The rows a horizontal line stands on at the tip's x -- ink in both probes just beyond the
+   two bands, which a flag hanging from ONE side never reaches -- are left out of both
+   bands (`line_rows_left_out`); a window that is mostly lines is declined.
+3. **Rejected, with the crops that say so:** the first build also dropped `ledgerLine`
+   detections from the blockers. 3 of 3 newly FOUND tips on Brahms p0 and one on Litolff
+   (`0/0/9/2,4,5`, `2/1/9/13`) were short thick ledger lines, no longer than the two bands,
+   read as flags -- neither excluded as line rows nor stopped by the left guard. The
+   boxes stay blockers (test pinned). Brahms p0 with the final code: 0 new found rows, tips
+   measured bare 221 -> 288, `occupied` 495 -> 428.
+
+### 9c. Re-score (follow-up alone = the merge commit `d5e2b5f8` vs `56ee7c50`, same weights)
+
+| | before the follow-up | after |
+|---|---|---|
+| Sean's 8 Litolff half notes | 3 decided half, 3 narrowed, 2 quarter | **6 decided half (#1,#2,#3,#4,#5,#7), 2 narrowed (#6, #8)** |
+| head-fill #4, a WHOLE REST boxed as a head | quarter | quarter (control holds) |
+| head-fill #5 / #6 | half / quarter | half / quarter |
+| his 27 hand heads (found / one head / box / position / half) | 27 / 27 / 27 / 27 / 27 | 27 / 27 / 27 / 27 / 27 |
+| the 10 crops against Sean (1-6 half, 7-8 eighth, 9 half, 10 not a note) | 1-6 half, 7-8 narrowed, 9 narrowed, 10 narrowed | 1-6 half, 7-8 narrowed, **9 half**, 10 narrowed |
+| engraved control | 0 cut rows, 0/251 black read hollow | the same; no verdict differs (371 heads) |
+
+Follow-up alone, population: Brahms pdf 0-1 0 heads change; Litolff p1-3 2 move
+(`2/0/7/6/1` quarter -> half, `2/1/3/11/5` narrowed -> half; both real half notes on the crop);
+Litolff p6 3 move (Sean's #2, #4, #5). No head is newly kept or refused, no position moves.
+Stem-tip rows (count pages): Litolff found 30 -> 34, bare 644 -> 924, `occupied`
+1,704 -> 1,419; Brahms found 27 -> 28, bare 815 -> 1,001, `occupied` 1,458 -> 1,271.
+
+Still not decided: #6 (its tips now read bare, but the cell holds two beam strokes and the
+2.70 rule's other gate keeps it narrowed -- not the tip) and #8 (a real beam stroke in its
+window -- rule 8). Crops #7, #8 (eighths) stay narrowed `beam_certain_not_joined`; #10 (the `p`)
+stays narrowed -- that is the dynamic-owner lane's, not this one's.
+
+### 9d. Merge with main
+
+`origin/main` (2.74 beams, 2.69 hooks + dot, 2.68) merged into this branch: no conflict, none in
+`rhythm.py` (git merged it cleanly; 204 duration/tip/hook/2.73 tests pass on the merge).

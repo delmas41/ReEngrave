@@ -1,0 +1,751 @@
+{
+ "summary": {
+  "base_heads": 1491,
+  "arm_heads": 1491,
+  "same_key": 1491,
+  "only_base": 0,
+  "only_arm": 0,
+  "head_line_cut_rows": 14,
+  "newly_kept": 13,
+  "newly_refused": 5,
+  "position_moved": 1,
+  "duration_moved": 0,
+  "newly_refused_by_reason_now": [
+   [
+    "not a notehead -- head cut piece",
+    3
+   ],
+   [
+    "not a notehead -- notehead is a duplicate box",
+    2
+   ]
+  ],
+  "newly_kept_were_refused_by": [
+   [
+    "not a notehead -- stacked head duplicate",
+    11
+   ],
+   [
+    "not a notehead -- notehead is a duplicate box",
+    2
+   ]
+  ],
+  "duration_moves": [],
+  "position_moves": [
+   [
+    "11 -> 10",
+    1
+   ]
+  ]
+ },
+ "newly_kept": [
+  [
+   "glyph/0/0/4/2/5",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2710.65,
+     3264.025,
+     2750.95,
+     3286.125
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2710.65,
+     3264.025,
+     2750.95,
+     3286.125
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/4/3/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3142.925,
+     3261.425,
+     3182.9,
+     3287.75
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3142.925,
+     3261.425,
+     3182.9,
+     3287.75
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/4/4/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3613.15,
+     3256.225,
+     3653.125,
+     3286.125
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 12,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3613.15,
+     3256.225,
+     3653.125,
+     3286.125
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/1/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2229.12,
+     3742.36,
+     2271.04,
+     3781.08
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2229.12,
+     3742.36,
+     2271.04,
+     3781.08
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/3/14",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 10,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     3140.36,
+     3628.12,
+     3187.08,
+     3655.96
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 10,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     3140.36,
+     3628.12,
+     3187.08,
+     3655.96
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/3/9",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3141.64,
+     3736.92,
+     3186.44,
+     3778.84
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3141.64,
+     3736.92,
+     3186.44,
+     3778.84
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/5/6",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     4146.36,
+     3740.44,
+     4188.6,
+     3778.52
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     4146.36,
+     3740.44,
+     4188.6,
+     3778.52
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/6/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     4720.09375,
+     3735.34375,
+     4762.71875,
+     3774.1875
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 17,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     4720.09375,
+     3735.34375,
+     4762.71875,
+     3774.1875
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/7/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- notehead is a duplicate box",
+    "pos": 5,
+    "dur": [
+     "decided",
+     4.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadWholeInSpace",
+    "box": [
+     5426.4,
+     3548.44,
+     5470.24,
+     3587.16
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "whole (4 beats)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     4.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadWholeInSpace",
+    "box": [
+     5426.4,
+     3548.44,
+     5470.24,
+     3587.16
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/8/1/2",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 5,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2229.12,
+     4718.68,
+     2271.68,
+     4752.6
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2229.12,
+     4718.68,
+     2271.68,
+     4752.6
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/8/5/5",
+   {
+    "status": "refused",
+    "why": "not a notehead -- notehead is a duplicate box",
+    "pos": -1,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4181.56,
+     4620.12,
+     4214.84,
+     4652.44
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": -1,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4181.56,
+     4620.12,
+     4214.84,
+     4652.44
+    ]
+   }
+  ],
+  [
+   "glyph/1/0/2/0/11",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 7,
+    "dur": [
+     "narrowed",
+     null,
+     "beam_certain_not_joined"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1309.28466796875,
+     1122.51611328125,
+     1349.8828125,
+     1151.93505859375
+    ]
+   },
+   {
+    "status": "narrowed",
+    "why": "length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beam certain not joined",
+    "pos": 7,
+    "dur": [
+     "narrowed",
+     null,
+     "beam_certain_not_joined"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1309.28466796875,
+     1122.51611328125,
+     1349.8828125,
+     1151.93505859375
+    ]
+   }
+  ],
+  [
+   "glyph/1/0/2/0/35",
+   {
+    "status": "refused",
+    "why": "not a notehead -- stacked head duplicate",
+    "pos": 3,
+    "dur": [
+     "narrowed",
+     null,
+     "beam_certain_not_joined"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1655.25146484375,
+     1070.150390625,
+     1691.73095703125,
+     1098.98095703125
+    ]
+   },
+   {
+    "status": "narrowed",
+    "why": "length still open: eighth (0.5 beats) | sixteenth (0.25 beats) -- beam certain not joined",
+    "pos": 3,
+    "dur": [
+     "narrowed",
+     null,
+     "beam_certain_not_joined"
+    ],
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1655.25146484375,
+     1070.150390625,
+     1691.73095703125,
+     1098.98095703125
+    ]
+   }
+  ]
+ ],
+ "newly_refused": [
+  [
+   "glyph/0/0/4/3/7",
+   {
+    "status": "kept",
+    "why": "3.0-beat (3 beats)",
+    "pos": 12,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3142.275,
+     3247.125,
+     3182.575,
+     3272.15
+    ]
+   },
+   {
+    "status": "refused",
+    "why": "not a notehead -- head cut piece",
+    "pos": 12,
+    "dur": [
+     "decided",
+     3.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3142.275,
+     3247.125,
+     3182.575,
+     3272.15
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/3/15",
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 10,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3141.64,
+     3645.08,
+     3190.92,
+     3668.12
+    ]
+   },
+   {
+    "status": "refused",
+    "why": "not a notehead -- head cut piece",
+    "pos": 10,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     3141.64,
+     3645.08,
+     3190.92,
+     3668.12
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/6/13",
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 10,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4719.40625,
+     3637.71875,
+     4760.3125,
+     3664.53125
+    ]
+   },
+   {
+    "status": "refused",
+    "why": "not a notehead -- head cut piece",
+    "pos": 10,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4719.40625,
+     3637.71875,
+     4760.3125,
+     3664.53125
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/5/7/1",
+   {
+    "status": "kept",
+    "why": "whole (4 beats)",
+    "pos": 5,
+    "dur": [
+     "decided",
+     4.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadWholeInSpace",
+    "box": [
+     5425.76,
+     3549.72,
+     5470.24,
+     3574.68
+    ]
+   },
+   {
+    "status": "refused",
+    "why": "not a notehead -- notehead is a duplicate box",
+    "pos": 5,
+    "dur": [
+     "decided",
+     4.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadWholeInSpace",
+    "box": [
+     5425.76,
+     3549.72,
+     5470.24,
+     3574.68
+    ]
+   }
+  ],
+  [
+   "glyph/0/0/8/5/3",
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": -1,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4188.6,
+     4620.44,
+     4214.52,
+     4647.0
+    ]
+   },
+   {
+    "status": "refused",
+    "why": "not a notehead -- notehead is a duplicate box",
+    "pos": -1,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfOnLine",
+    "box": [
+     4188.6,
+     4620.44,
+     4214.52,
+     4647.0
+    ]
+   }
+  ]
+ ],
+ "position_moved": [
+  [
+   "glyph/0/0/5/2/16",
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 11,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2711.0,
+     3646.36,
+     2758.68,
+     3668.76
+    ]
+   },
+   {
+    "status": "kept",
+    "why": "half (2 beats)",
+    "pos": 10,
+    "dur": [
+     "decided",
+     2.0,
+     "head_and_marks"
+    ],
+    "cls": "noteheadHalfInSpace",
+    "box": [
+     2711.0,
+     3646.36,
+     2758.68,
+     3668.76
+    ]
+   }
+  ]
+ ],
+ "duration_moved": []
+}

@@ -1,0 +1,142 @@
+{
+ "question": "What note value is the note in the red brackets (half, quarter, ...) -- or is it not a note?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "halfnote_01.png",
+   "subject": "glyph/6/0/1/11/3",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    2297.2,
+    508.1,
+    2322.85,
+    530.3
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 2,
+   "file": "halfnote_02.png",
+   "subject": "glyph/6/0/4/2/6",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    836.32,
+    1002.88,
+    862.72,
+    1026.56
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 3,
+   "file": "halfnote_03.png",
+   "subject": "glyph/6/0/8/10/3",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    2148.565,
+    1544.9625,
+    2174.5525,
+    1568.745
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 4,
+   "file": "halfnote_04.png",
+   "subject": "glyph/6/1/11/4/1",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    1262.43,
+    3615.0225,
+    1286.5275,
+    3630.1425
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 5,
+   "file": "halfnote_05.png",
+   "subject": "glyph/6/1/6/11/3",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    2448.95,
+    2924.02,
+    2473.835,
+    2947.4875
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 6,
+   "file": "halfnote_06.png",
+   "subject": "glyph/6/0/4/1/6",
+   "label": "Beethoven 5 (Litolff), pdf page 7",
+   "pdf_page_index": 6,
+   "dpi": 600,
+   "page_box": [
+    675.52,
+    1009.6,
+    703.2,
+    1025.92
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "verdict_none_yet": null,
+   "today": "narrowed:head_fill_from_ink"
+  },
+  {
+   "n": 7,
+   "file": "halfnote_07.png",
+   "subject": "glyph/3/1/5/13/2",
+   "label": "Beethoven 5 (Litolff), pdf page 4",
+   "pdf_page_index": 3,
+   "dpi": 600,
+   "page_box": [
+    2074.7075,
+    3201.87,
+    2100.785,
+    3223.0675
+   ],
+   "detector_class": "noteheadBlackOnLine",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  },
+  {
+   "n": 8,
+   "file": "halfnote_08.png",
+   "subject": "glyph/3/1/6/0/9",
+   "label": "Beethoven 5 (Litolff), pdf page 4",
+   "pdf_page_index": 3,
+   "dpi": 600,
+   "page_box": [
+    542.2850000000001,
+    3341.5775,
+    564.965,
+    3364.2575
+   ],
+   "detector_class": "noteheadBlackInSpace",
+   "verdict_none_yet": null,
+   "today": "decided:head_and_marks 1.0 beats"
+  }
+ ],
+ "note": "These 8 are NOT decided by 2.70 (it decided none on these pages besides the already-judged tile 5). They are the Litolff heads the detector calls black, that have a stem, and whose ink reads near-hollow (centre 0.50-0.72) -- the 0.5 cut, which 2.70 does not loosen, leaves them at their detector value. Asked blind: is each a half note?"
+}
