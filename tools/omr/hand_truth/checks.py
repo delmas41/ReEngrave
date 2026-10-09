@@ -23,12 +23,20 @@ is one space tall).
 ``tie_heads_differ``   a tie whose two end heads sit at different heights
                        (a tie's two heads are at one staff position, §10)
 ``staff_starts_without_clef`` a staff's first measure cell holds no clef box
+``part_without_partner`` a box noted "part" (one piece of a mark the crop cut)
+                       that no other piece of its family touches
+``labeler_unsure``     a box Sean noted "unsure" — his question, back to him
+
+``marks`` joins the "part" pieces into one mark each (Sean 2026-10-09: an arc
+crossing a barline is whole in no cell); a box with no such note is one mark,
+even beside another of its family.
 
 Deliberately NOT checked: a missing KEY signature — C major prints none, so its
 absence cannot be told from a miss (rule 8).
 """
 from __future__ import annotations
 
+import re
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
@@ -95,6 +103,47 @@ def _raise(page: PageTruth, known: set, out: List[Flag], kind: str, message: str
     out.append(page.raise_flag(kind, message, by=BY, box_ids=list(box_ids), rect=rect, cell_id=cell_id))
 
 
+def _noted(b: Box, word: str) -> bool:
+    return bool(b.note) and word in re.findall(r"[a-z]+", b.note.lower())
+
+
+def _touch(a: Rect, b: Rect, tol: float) -> bool:
+    return a[0] <= b[2] + tol and b[0] <= a[2] + tol and a[1] <= b[3] + tol and b[1] <= a[3] + tol
+
+
+def _part_groups(page: PageTruth, tol: float) -> List[List[Box]]:
+    """The "part" pieces, grouped by family into touching chains (union-find)."""
+    parts = [b for b in page.boxes if _noted(b, "part")]
+    root = list(range(len(parts)))
+
+    def find(i: int) -> int:
+        while root[i] != i:
+            root[i] = root[root[i]]
+            i = root[i]
+        return i
+
+    for i, a in enumerate(parts):
+        for j in range(i + 1, len(parts)):
+            b = parts[j]
+            if family_of(a.cls) == family_of(b.cls) and _touch(a.rect, b.rect, tol):
+                root[find(i)] = find(j)
+    groups: Dict[int, List[Box]] = {}
+    for i, b in enumerate(parts):
+        groups.setdefault(find(i), []).append(b)
+    return list(groups.values())
+
+
+def marks(page: PageTruth) -> List[Dict]:
+    """One entry per printed mark: a box, or the "part" pieces of one mark joined."""
+    tol = 0.5 * (staff_space(page) or 10.0)
+    out = [{"cls": b.cls, "rect": b.rect, "box_ids": [b.id]} for b in page.boxes if not _noted(b, "part")]
+    for g in _part_groups(page, tol):
+        out.append({"cls": g[0].cls, "box_ids": [b.id for b in g],
+                    "rect": (min(b.rect[0] for b in g), min(b.rect[1] for b in g),
+                             max(b.rect[2] for b in g), max(b.rect[3] for b in g))})
+    return out
+
+
 def run_all(page: PageTruth, ink: Optional[InkReport] = None) -> List[Flag]:
     """Run every fixed check; raise only flags not raised before. Returns the new ones."""
     known = _known(page)
@@ -106,6 +155,15 @@ def run_all(page: PageTruth, ink: Optional[InkReport] = None) -> List[Flag]:
                    f"ink with no box ({u['area']} px, {int(u['covered_frac'] * 100)}% boxed)",
                    rect=tuple(float(v) for v in u["rect"]))
     boxes = page.boxes
+    for b in boxes:
+        if _noted(b, "unsure"):
+            _raise(page, known, new, "labeler_unsure", f"{b.cls} {b.id}: you noted {b.note!r}",
+                   box_ids=(b.id,), cell_id=b.cell_id)
+    for g in _part_groups(page, 0.5 * (sp or 10.0)):
+        if len(g) == 1:
+            _raise(page, known, new, "part_without_partner",
+                   f"{g[0].cls} {g[0].id} is noted part, but no other piece of it touches it",
+                   box_ids=(g[0].id,), cell_id=g[0].cell_id)
     for i, a in enumerate(boxes):
         for b in boxes[i + 1:]:
             if family_of(a.cls) == family_of(b.cls) and _iou(a.rect, b.rect) >= 0.8:

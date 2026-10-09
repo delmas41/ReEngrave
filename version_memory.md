@@ -22,6 +22,15 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 — ROADMAP 1.7: Notes on a box are kept; cut-off arcs join; "unsure" comes back as a flag
+
+Sean (2026-10-09): slurs and ties are cropped off the top of some cells. A non-text box now keeps
+its Notes (`Box.note`; they were dropped before). `checks.marks()` joins touching same-family boxes
+noted "part" into one mark (an arc crossing a barline is whole in no cell). New fixed checks:
+`part_without_partner` (a lone "part" piece) and `labeler_unsure` (a box noted "unsure" returns to
+Sean as a flag). README "How to box" gains the slur/tie line. Three new tests run RED first; breaking
+`_touch` and the "unsure" match in memory each turned its test red.
+
 ## 2026-10-09 — ROADMAP 1.7: the pre-fill never queues staff lines; README records how to box
 
 Sean (2026-10-08): the detector's own `staff` boxes reached the queue on every cell. Staff

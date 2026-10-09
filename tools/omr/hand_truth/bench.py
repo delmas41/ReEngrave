@@ -271,18 +271,21 @@ def sync_cell(page: PageTruth, bench: Path, cell_id: str) -> Set[str]:
             continue
         rect = c.to_page(_bbox_to_rect(a["bbox"]))
         text = (a.get("notes") or "").strip() or None
+        note = None if cls == TEXT else text
         b = page.box_by_ref(ref)
         if cls == TEXT and not text:
             _flag_once(page, "text_without_words", f"type the printed words of {ref} in Notes", cell_id)
             continue
         if b is None:
-            b = page.draw(cell_id, cls, _bbox_to_rect(a["bbox"]), text=text if cls == TEXT else None)
+            b = page.draw(cell_id, cls, _bbox_to_rect(a["bbox"]), text=text if cls == TEXT else None,
+                          note=note)
             b.ref = ref
             rects_changed.append(b.rect)
-        elif b.cls != cls or b.rect != rect or (cls == TEXT and b.text != text):
+        elif b.cls != cls or b.rect != rect or (cls == TEXT and b.text != text) or b.note != note:
             old = b.rect
             b.cls, b.rect = cls, rect
             b.text = text if cls == TEXT else None
+            b.note = note
             b.validate()
             rects_changed += [old, rect]
     for b in [b for b in page.boxes if b.ref and b.ref.startswith(f"{cell_id}#") and b.ref not in present]:

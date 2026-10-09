@@ -72,6 +72,12 @@ saved cell back in.
   cell; any other `staff` pre-fill is FP (the detector no longer queues them).
 - **System bracket** (thick, hooked): `brace` with Notes `bracket`; a curly brace is
   plain `brace`; the thin line joining the staves at the left edge is `barlineSingle`.
+- **Slurs and ties cut off by the crop:** look with **Page context** (tie = two heads on
+  one line or space; slur = different pitches). Box the arc where it is whole (often the
+  cell of the staff above, same bar). Where no cell shows it whole (it crosses a
+  barline), box each piece with Notes `part`: touching `part` pieces of one family are
+  one mark (`checks.marks`), and a lone `part` is flagged. Can't tell what a mark is:
+  box your best guess with Notes `unsure` — it comes back to you as a flag.
 - **Words** (`legato`, `Flauti`, tempo): `text`, one box per word or one-line phrase,
   the words typed in Notes; split only where notes or a barline break it. Dynamics
   (`p`, `f`, `sf`) keep their dynamic classes.
