@@ -7526,6 +7526,186 @@ def gather_head_stem_reach(log: Log, pws: Any, cells: Sequence[Any],
     return census
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# dynamic-not-a-head -- is a head that lies on a dynamic letter's box a filled
+# head of its own, or the letter's stroke?
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A head box is measured against a letter only where at least this fraction of
+#: the HEAD box's area lies inside the letter's box. Below it the two boxes
+#: merely touch; ADJUDICATE's own floor (0.4) is higher, and this lower one only
+#: keeps the touching cases on the record.
+HEAD_ON_LETTER_FILE_FLOOR = 0.2
+
+
+def _strip_lines_and_stems(crop: Any, sp: float) -> Any:
+    """`crop` (255 = ink) with the staff and ledger lines (horizontal runs of
+    `LETTER_LINE_SPACES`) and the long stems/barlines (vertical runs of
+    `VLINE_SPACES`) taken out -- `letter_ink_extent`'s own two removals, in
+    its own order, restated so a measurement of a LETTER's ink and of a HEAD
+    on it read the same cleaned ink."""
+    import cv2 as _cv2
+    out = crop.copy()
+    kh = max(3, int(round(LETTER_LINE_SPACES * sp)))
+    hl = _cv2.morphologyEx(out, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (kh, 1)))
+    hl = _cv2.dilate(hl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, 3)))
+    out[hl > 0] = 0
+    kv = max(3, int(round(VLINE_SPACES * sp)))
+    vl = _cv2.morphologyEx(out, _cv2.MORPH_OPEN,
+                           _cv2.getStructuringElement(_cv2.MORPH_RECT, (1, kv)))
+    vl = _cv2.dilate(vl, _cv2.getStructuringElement(_cv2.MORPH_RECT, (3, 1)))
+    out[vl > 0] = 0
+    return out
+
+
+def head_letter_ink(ink: Any, head_box: Sequence[float],
+                    letter_box: Sequence[float], sp: float
+                    ) -> Optional[Dict[str, float]]:
+    """Two ruler readings for a head box that lies on a dynamic letter's box.
+    Pure; `ink` is the page's ink (255 = ink), boxes are page pixels
+    `(x0, y0, x1, y1)`, `sp` is the staff space in page pixels.
+
+    * `disc_spaces`: the diameter, in staff spaces, of the widest filled disc
+      inside the HEAD box, off the RAW ink (the staff lines left in: a head
+      on a line is one blob with it, and a line is only ~0.3 spaces wide). A
+      notehead is a filled blob (measured 1.13-1.27 on every real head near
+      a letter); an `f`'s hook or top is a stroke (0.74-0.84).
+    * `letter_ink_share`: the fraction of the LETTER box's ink (lines and
+      long stems taken out) that lies inside the head box. A `p`'s bowl is
+      most of the `p` (0.60-0.62); a note printed beside an `sf` is a sliver
+      of that wide box (0.11-0.22); an `f`'s hook is also a sliver (0.08-0.14),
+      which is why the disc reading exists.
+
+    None where the crop is empty or `sp` is not positive."""
+    import cv2 as _cv2
+    import numpy as _np
+    if sp <= 0:
+        return None
+    H, W = ink.shape[:2]
+    hx0, hy0, hx1, hy1 = (int(round(v)) for v in head_box)
+    lx0, ly0, lx1, ly1 = (int(round(v)) for v in letter_box)
+    pad = int(round(2.0 * sp))
+    cx0 = max(0, min(hx0, lx0) - pad)
+    cy0 = max(0, min(hy0, ly0) - pad)
+    cx1 = min(W, max(hx1, lx1) + pad)
+    cy1 = min(H, max(hy1, ly1) + pad)
+    if cx1 <= cx0 or cy1 <= cy0:
+        return None
+    crop = _np.array(ink[cy0:cy1, cx0:cx1], copy=True)
+    dist = _cv2.distanceTransform((crop > 0).astype(_np.uint8),
+                                  _cv2.DIST_L2, 5)
+
+    def window(a, b):
+        x0, y0, x1, y1 = b
+        return a[max(0, y0 - cy0):max(0, y1 - cy0),
+                 max(0, x0 - cx0):max(0, x1 - cx0)]
+
+    head_dist = window(dist, (hx0, hy0, hx1, hy1))
+    if head_dist.size == 0:
+        return None
+    clean = _strip_lines_and_stems(crop, sp)
+    letter_ink = int((window(clean, (lx0, ly0, lx1, ly1)) > 0).sum())
+    ix0, iy0 = max(hx0, lx0), max(hy0, ly0)
+    ix1, iy1 = min(hx1, lx1), min(hy1, ly1)
+    inside = (int((window(clean, (ix0, iy0, ix1, iy1)) > 0).sum())
+              if ix1 > ix0 and iy1 > iy0 else 0)
+    return {"disc_spaces": round(2.0 * float(head_dist.max()) / sp, 3),
+            "letter_ink_share": round(inside / max(1, letter_ink), 3),
+            "letter_ink_px": letter_ink}
+
+
+def gather_notehead_letter_ink(log: Log, pws: Any, cells: Sequence[Any],
+                               local: Dict[int, Tuple[int, int]],
+                               detections: Dict[str, List[Any]]
+                               ) -> Dict[str, int]:
+    """`Q.NOTEHEAD_LETTER_INK` for every notehead box lying at least
+    `HEAD_ON_LETTER_FILE_FLOOR` inside a detected dynamic letter's box, filed
+    on the HEAD's glyph against the letter it overlaps most. Runs after
+    `gather_detections` only (it reads the detections and the page raster).
+
+    ⚠️ THE LETTERS ARE SEARCHED PAGE-WIDE, across cells and staves: the detector
+    files a letter under the cell it was cut from, which on a condensed page is
+    often the next staff's (Litolff `glyph/2/0/3/1/6`, the `p` whose bowl is
+    the head `glyph/2/0/2/1/12`). A population of tens per page, so the double
+    loop is cheap.
+
+    Reads the page's RAW raster (`_raw_page_ink`, threshold 180, the one the
+    letter's own ink height reads). A page with no raster files nothing."""
+    census = {"heads": 0, "on_a_letter": 0}
+    raw = _raw_page_ink(pws)
+    if raw is None:
+        return census
+    cell_by_key = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    sp_by_staff: Dict[Tuple[int, int], float] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        ys = [float(y) for y in st.line_ys]
+        if key is not None and len(ys) >= 2:
+            sp_by_staff[(key[0], key[1])] = (ys[-1] - ys[0]) / (len(ys) - 1)
+    letters: List[Tuple[Any, str, Tuple[float, ...]]] = []
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            if d.smufl_name in _DYNAMIC_LETTER_CLASSES:
+                b = _page_box(c, d)
+                if b is not None:
+                    letters.append((R.glyph(sub.page, sub.system, sub.staff,
+                                            sub.cell, gi), d.smufl_name,
+                                    tuple(float(v) for v in b)))
+    if not letters:
+        return census
+    for cell_key, dets in detections.items():
+        sub = Subject.from_key(cell_key)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        sp = sp_by_staff.get((sub.system, sub.staff))
+        if c is None or not sp:
+            continue
+        for gi, d in enumerate(dets):
+            if not str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX):
+                continue
+            box = _page_box(c, d)
+            if box is None:
+                continue
+            census["heads"] += 1
+            hx0, hy0, hx1, hy1 = (float(v) for v in box)
+            area = max(1e-9, (hx1 - hx0) * (hy1 - hy0))
+            best = None
+            for lg, cls, lb in letters:
+                ix = max(0.0, min(hx1, lb[2]) - max(hx0, lb[0]))
+                iy = max(0.0, min(hy1, lb[3]) - max(hy0, lb[1]))
+                frac = ix * iy / area
+                if frac >= HEAD_ON_LETTER_FILE_FLOOR and (
+                        best is None or frac > best[0]):
+                    best = (frac, lg, cls, lb)
+            if best is None:
+                continue
+            frac, lg, cls, lb = best
+            res = head_letter_ink(raw, box, lb, sp)
+            if res is None:
+                continue
+            census["on_a_letter"] += 1
+            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+            log.observe(g, Q.NOTEHEAD_LETTER_INK, res["disc_spaces"],
+                        reader=READERS.CV_NOTEHEAD_LETTER_INK,
+                        frame=FRAME_PAGE,
+                        letter_ink_share=res["letter_ink_share"],
+                        head_in_letter=round(frac, 3),
+                        letter=lg.to_key(), letter_class=cls,
+                        letter_w_spaces=round((lb[2] - lb[0]) / sp, 3),
+                        letter_h_spaces=round((lb[3] - lb[1]) / sp, 3),
+                        head_box_page=[round(v, 2) for v in box],
+                        sp=round(float(sp), 3))
+    return census
+
+
 def gather_detector_beams(log: Log, detections: Dict[str, List[Any]]) -> None:
     """The DETECTOR's beam boxes, kept as rows beside the CV strokes.
 
@@ -10615,6 +10795,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.58d, AFTER `gather_ownership_evidence` (it files only
         # for a contested head, read off that evidence's own rows).
         gather_head_stem_reach(log, pws, cells, local, detections)
+        # dynamic-not-a-head: AFTER the detections (it reads them) -- a head box
+        # lying on a dynamic letter's box, measured against the raw raster.
+        gather_notehead_letter_ink(log, pws, cells, local, detections)
         gather_detector_beams(log, detections)
         # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
         # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.

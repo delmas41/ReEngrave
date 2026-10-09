@@ -383,6 +383,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "position of either. Sean 2026-10-09: a p alone is piano, a p among "
         "letters of a known word is the word's.",
         "dynamic"),
+    "NOTEHEAD_LETTER_INK": (
+        RELATION,
+        "dynamic-not-a-head: for a notehead box lying on a detected dynamic "
+        "letter's box, the widest filled disc in the head box (staff spaces) "
+        "and the share of the LETTER box's ink the head box holds -- a "
+        "relation between two detected boxes and the ink under them, read "
+        "off the page raster. Scoreless: it names nothing a note or a "
+        "letter, only whether the head's ink is a stroke or a filled blob.",
+        None),
     "DYNAMIC_BAND_POSITION": (
         STAFF_GRID_POSITION,
         "PROMOTED, not invented: `DYNAMIC_LETTER.band_offset_spaces` is the "
@@ -727,6 +736,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # (`pws.page.rgb`), every detected glyph blanked, staff lines left in: a
     # staff line is too thin to pass its letter-size test.
     "CV_LETTER_NEIGHBOURS": ("staged/gather.py", "_ink_without_detections"),
+    "CV_NOTEHEAD_LETTER_INK": ("staged/gather.py",
+                               "gather_notehead_letter_ink"),
     # ⚠️ ROADMAP 2.60. Also `staged/gather.py` -- reads the PAGE's binary
     # raster (`pws.page.binary`), staff lines left in, like `LEDGER_FARHEAD`:
     # the lines of every staff are removed by the reader itself.
