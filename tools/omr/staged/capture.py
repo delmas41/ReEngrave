@@ -537,6 +537,15 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "`Q.BEAM_STROKE` row and the paper under it; scoreless, same "
         "reason as `STEM_TIP_INK`.",
         None),
+    "STEM_SLASH": (
+        RELATION,
+        "ROADMAP 2.71 (Sean, 2026-10-09: a tremolo slash is a thick angled "
+        "stroke crossing BOTH sides of one stem and joined to no other "
+        "note): how many such strokes one `Q.STEM` row carries, each followed "
+        "outward from the stem on the staff-ERASED raster. A relation between "
+        "a located stem and the paper beside it; scoreless, same reason as "
+        "`STEM_TIP_INK`.",
+        None),
     "BEAM_STEM_JOIN": (
         RELATION,
         "ROADMAP 2.38: a SECOND witness for one candidate beam stroke's "
@@ -730,6 +739,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.74. Also `staged/gather.py`; reads the UNERASED
     # `cell.image` (the staff-erase thins a beam where it crosses a line).
     "CV_BEAM_SHAPE": ("staged/gather.py", "gather_beam_stroke_ink"),
+    # ⚠️ ROADMAP 2.71. Also `staged/gather.py`; reads `image_no_staff`.
+    "CV_STEM_SLASH": ("staged/gather.py", "_observe_stem_slashes"),
     # ⚠️ ROADMAP 2.23 (ported from `claude/no-ink-head-2.6h`, GATHER half
     # only). Also `staged/gather.py`, and `_raster_of`'s FOUR-WORD
     # vocabulary (ERASED / INTACT / ERASED_ELSE_INTACT / OWN_ERASURE) has no

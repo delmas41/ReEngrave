@@ -439,6 +439,76 @@ def _not_a_ledger_line(beams, ledger_boxes):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.71 -- a TREMOLO SLASH is not a beam level (Sean, 2026-10-09:
+# *"The trem slash is very different from a beam. Beams have to be connected to
+# other notes - slashes never are. ... The slash crosses both sides of the stem
+# with a thick line at an angle."*). `gather.stem_slashes` names it ONCE
+# (`Q.STEM_SLASH`: a thick angled stroke crossing both sides of one stem and
+# joined to no other stem); a beam stroke that IS that ink is dropped from the
+# count here, by the same fact the hook reader blanked it by.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A stroke is the slash's own ink where at least this share of its box lies
+#: inside the slash's footprint (padded by `SLASH_FOOTPRINT_PAD_SPACES`) AND it
+#: is no wider than the footprint plus `SLASH_EXTRA_WIDTH_SPACES` -- a long beam
+#: that merely passes the footprint is not the slash.
+SLASH_STROKE_INSIDE_MIN = 0.6
+SLASH_FOOTPRINT_PAD_SPACES = 0.3
+SLASH_EXTRA_WIDTH_SPACES = 0.8
+
+
+def _slash_footprints(ev: Evidence, cell) -> List[Tuple[float, float, float, float]]:
+    """Every PASSING slash's footprint `(x0, y0, x1, y1)` in this cell's
+    canonical frame, read off `Q.STEM_SLASH` (GATHER). Empty where no row says
+    a slash stands here -- a cell the reader never ran on drops nothing."""
+    out: List[Tuple[float, float, float, float]] = []
+    for r in ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        for s in (r.detail or {}).get("strokes") or ():
+            b = s.get("box")
+            if s.get("reason") is None and isinstance(b, (list, tuple)) \
+                    and len(b) == 4:
+                out.append(tuple(float(v) for v in b))
+    return out
+
+
+def _not_a_slash(ev: Evidence, cell, beams):
+    """`(kept, dropped, rows)`. ROADMAP 2.71. A beam stroke that is a read
+    tremolo slash's own ink is not this note's beam level; it also does not
+    NARROW the head (it is a mark of another kind, not an absence), so the
+    caller keeps it out of the rule-8 guards."""
+    feet = _slash_footprints(ev, cell)
+    if not feet:
+        return list(beams), [], ()
+    space_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                         subject=cell)
+    space = float(space_rows[-1].value) if space_rows else 0.0
+    pad = SLASH_FOOTPRINT_PAD_SPACES * space
+    extra = SLASH_EXTRA_WIDTH_SPACES * space
+    kept, dropped = [], []
+    for b in beams:
+        box = _xywh(b)
+        hit = False
+        if box is not None and box[2] > 0 and box[3] > 0:
+            bx0, by0, bx1, by1 = box[0], box[1], box[0] + box[2], box[1] + box[3]
+            for fx0, fy0, fx1, fy1 in feet:
+                ix = min(bx1, fx1 + pad) - max(bx0, fx0 - pad)
+                iy = min(by1, fy1 + pad) - max(by0, fy0 - pad)
+                if ix <= 0 or iy <= 0:
+                    continue
+                if (ix * iy) / (box[2] * box[3]) >= SLASH_STROKE_INSIDE_MIN \
+                        and box[2] <= (fx1 - fx0) + extra:
+                    hit = True
+                    break
+        (dropped if hit else kept).append(b)
+    used = tuple(r for r in ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_ANCESTORS,
+                                     subject=cell)
+                 if any(s.get("reason") is None
+                        for s in (r.detail or {}).get("strokes") or ())
+                 ) if dropped else ()
+    return kept, dropped, used
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.25b -- the three larger classes 2.25 named and did not build:
 # a stroke that belongs to the NEIGHBOUR staff through the cell's own pad, a
 # stroke that is a decided SLUR/TIE's own ink, and a stroke inside a hairpin.
@@ -1940,8 +2010,11 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
                    Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK),
+                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH),
     scope=Kind.GLYPH,
+    # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
+    # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
+    # and with it the value and the OUTCOME, depends on it.
     # ⚠️ `Q.ARC_BOX`/`Q.ARC_KIND` JOIN AT ROADMAP 2.25b: a beam stroke
     # standing inside a DECIDED slur/tie's own box is discounted from this
     # note's beam count (`_not_a_decided_arc`) unless it joins >= 2 of this
@@ -1982,7 +2055,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK),
+           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",
@@ -2088,6 +2161,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # composed from.
     ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
     kept, ledger_dropped = _not_a_ledger_line(kept, ledger_boxes)
+    # ⚠️ ROADMAP 2.71 (Sean, 2026-10-09): a stroke that is a read TREMOLO
+    # SLASH's own ink is not a beam level of anything. Same tier as the ledger
+    # line, and BEFORE every guard below on purpose: a slash is a mark of
+    # another kind, not an absence, so removing it never narrows the head
+    # (rule 8 guards a note a refused stroke WOULD have marked).
+    kept, slash_dropped, slash_used = _not_a_slash(ev, cell, kept)
+    used.extend(r.id for r in slash_used)
     # ⚠️ ROADMAP 2.25b, SAME TIER: a stroke that is the NEIGHBOUR staff's own
     # beam (through the cell's pad) or a DECIDED slur/tie's own ink -- each a
     # CONNECTION to a fact already on the record about the OTHER object,
@@ -2270,10 +2350,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
               "yolo_kept": (len(kept) + len(far_side) + len(beyond)
-                           + len(ledger_dropped) + len(neighbour_dropped)
+                           + len(ledger_dropped) + len(slash_dropped)
+                           + len(neighbour_dropped)
                            + len(arc_dropped) + len(ink_dropped)
                            - len(cv)),
               "beams_ledger_line": len(ledger_dropped),
+              # ⚠️ ROADMAP 2.71: strokes that were a tremolo slash's own ink.
+              "beams_slash": len(slash_dropped),
               "beams_neighbour_staff": len(neighbour_dropped),
               "beams_decided_arc": len(arc_dropped),
               # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.

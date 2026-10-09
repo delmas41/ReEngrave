@@ -265,3 +265,125 @@ problem, not this rule).
    second pass over the SAME re-gather would show whether this rule's one
    narrowed case actually resolves once the meter is decided.
 
+
+
+## Sec.7. ROADMAP 2.71 -- the tremolo slash is its own mark (2026-10-09)
+
+Path: STAGED, GATHER + ADJUDICATE only. Branch `lane-2.71-trem-slash`, off main
+`0a06e5c2`. Sean, 2026-10-09 (DECISIONS): *"The trem slash is very different from a
+beam. Beams have to be connected to other notes - slashes never are. The hook of a flag
+is very different from a slash. The slash crosses both sides of the stem with a thick
+line at an angle."* / *"A hollow note with nothing on the stem is always a half note."*
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond those lines:** the
+numbers (`gather.STEM_SLASH_*`). A slash is read when a stroke followed outward from a
+stem's edge on both sides reaches >= 0.35 spaces each way, lies on one straight line
+(residual <= 0.15 spaces), leans >= 12 degrees, is >= 1.4 staff-line thicknesses thick
+across, and neither runs on to another stem nor stands on a head's end. Set on two plates
+(Litolff p1-3 + p6, Brahms p0-1). Falsified by a print-confirmed slash it refuses
+(a level one; a very short one) or a stroke it passes that Sean reads as something else.
+Every crop below is my eye, not Sean's.
+
+### 7.1 What a slash did on today's tree (a / b / c)
+
+(a) **Became a beam level?** Not on these pages: 2.74's one-stem / thin tests already
+refuse the slash strokes the CV reader boxes (zero duration verdicts on Litolff p6 or p1-3
+count a slash as a level). The one place a slash-footprint stroke still reached the beam
+tier is Brahms p1 cell 1/0/4/3 (4 narrowed heads, see 7.4), and its verdicts did not change.
+Where it DID leak was the stem-tip reader: Litolff p6 cell 6/1/3/1's top tip read
+`found=True` (`head_at_this_end`, ink 0.50 right / 0.18 left) off the slash -- a flag-shaped
+reading the 2.69 narrowing would have turned into `eighth|...` -- and now reads `found=False`.
+(b) **Boxed as another glyph?** Yes, three ways. A **notehead** box on the slash, kept as a
+head: Litolff p6 `glyph/6/1/11/3/3` (black, narrowed `beam_discounted_uncertain`), Litolff p2-3
+four more (+1 refused only as a duplicate), Brahms p0 two -- 2.49's three-test refusal had
+missed these (its split read them round). A **rest** box on the stem: Litolff p6
+`glyph/6/1/11/5/2` (`restQuarter`, 4.5 spaces tall, decided a quarter REST).
+(c) **Blocked the half?** The rest box is the case that matters (7.3): it replaced the note,
+so the hollow head the ink shows has no box and no decision at all. A slash over a hollow head
+that IS boxed did not block the half: 2.43's hollow zeroing already drops beam levels there.
+
+### 7.2 What was built
+
+GATHER `Q.STEM_SLASH` (`gather.stem_slashes`, `_observe_stem_slashes`, `READERS.CV_STEM_SLASH`;
+one row per `Q.STEM`, value = number of slashes, a READ zero where none; `detail.strokes` lists
+every stroke that crossed the stem with its `reason` -- `None` for a slash, else `one_sided`,
+`not_at_an_angle`, `too_thin`, `not_straight`, `joins_another_stem`, `runs_on`, `at_a_head`,
+`too_short` -- its angle, thickness ratio, reach, footprint box and centre line, plus
+`head_at_end` and `bare_stem_spaces`). The ONE place a slash is named; four readers consume it:
+* **hook / tip reader** (`gather._observe_stem_tip_ink`, now handed the raster with the slash
+  blanked -- `blank_slashes`): a slash is not a hook, and a real hook beside one is still
+  counted (unit-tested both ways; 2.69's own both-sides refusal stays as the fallback);
+* **beam path** (`rhythm._not_a_slash`, a tier before the 2.25b/2.74 guards): a stroke inside a
+  read slash's footprint is not a level and, being a mark of another kind and not an absence,
+  never narrows the head (`beams_slash` in the verdict detail);
+* **rest** (`family_precision._rest_on_a_slashed_stem_refusal`, `rest_is_a_slashed_stem`, after
+  `rest_has_a_stem` so no standing reason changes): a rest box on a slashed stem AND taller
+  than 3.8 spaces is the note's stem;
+* **notehead** (`notehead_precision._slash_read_under_box`, the second witness inside
+  `_tremolo_slash_crosses_stem` and `_is_tremolo_slash`): a notehead-classed box holding most of
+  a read slash's centre line, on the shaft, is the slash.
+Shared helpers edited, named for the fence: `gather._observe_stem_tip_ink` (one keyword + one
+line; `lane-rhythm-leftovers`/2.73 also touch the tip test), `rhythm.adjudicate_duration` (one
+tier after the ledger-line tier, one detail key), `notehead_precision._tremolo_slash_crosses_stem`
+/ `_is_tremolo_slash` (2.73's `stacked_head_duplicate` is the next function down and is
+untouched).
+
+### 7.3 The missing head (what would recover it)
+
+Litolff p6 tile 3 is the case where nothing is left to adjudicate: the detector's only boxes
+are the stem+slash as `restQuarter` and a tie; the half note's ring (hollow, on the bottom
+line, left of the stem) has no box. `Q.STEM_SLASH` now records `head_at_end` per stem: a
+slashed stem with no head box at either end is the population. Litolff p6: 1 of 7 (this one);
+Litolff p1-3: 2 of 13 (3/0/9/0 and 3/0/10/4 -- the only box there was the slash itself, now
+refused); Brahms p0-1: 5 of 20, of which two are real quarter rests and two stroke crossings of
+a barline-like stem (7.4). **Recovery, NOT built (never invent a head; no head in the record
+to file a value against):** a GATHER reader that files a head from ink at the stem's head end
+-- 2.73's line-cut-head rebuild is the same shape (`lane-2.73-line-cut-heads`, not in main) --
+then ADJUDICATE reads the fill off that ink and the half rule (2.70) takes it. The rest refusal
+is the half of this that needed no new reader: the bar no longer holds a silence where a note
+stands, it holds an unread mark.
+
+### 7.4 Population (base = main `0a06e5c2` on a clean copy; arm = this branch; the small
+re-gathers, `--through adjudicate`)
+
+| page(s) | stems read | slashes read | notehead boxes refused (new) | rests refused (new) | duration verdicts changed |
+|---|---|---|---|---|---|
+| Litolff p6 | 618 | 7 | 1 | 1 | 0 |
+| Litolff p1-3 | 1,189 | 13 | 5 (4 kept, 1 was a duplicate) | 0 | 0 |
+| Brahms p0-1 | 1,150 | 20 | 2 | 0 | 0 |
+
+Stem-tip rows that flipped `found` or the hook reading: 1 (p6 cell 6/1/3/1, True -> False), the
+rest only density. **No duration verdict moved anywhere**, nor any other family. The cost:
+the reader passes some strokes that are not slashes -- two real Brahms p1 quarter rests (their
+zigzag crosses the CV "stem" exactly as a slash does; kept rests by the rest rule's height
+test, measured median 2.8 spaces against the 4.5 of tile 3) and one slur/barline crossing
+(Brahms p1 cell 1/0/4/3, 4 clipped heads whose verdicts were already `beam_discounted_uncertain`
+and did not change). Not eye-checked: Brahms cells 0/0/10/0 (angle 50) and 1/0/3/4 (angle 13,
+thickness 5.3 lines).
+
+### 7.5 Measured and refused
+
+* **A "how long is the plain thin stretch of the stem" test** to separate a quarter rest from a
+  slashed stem (`bare_stem_spaces`, still recorded): the real Litolff slashes read 0.57-1.08,
+  the two Brahms rests 0.95 and 1.06. The populations overlap; built as a reader refusal,
+  it took four of seven real slashes on p6 and the tile 3 rest with it (run, saw it, removed).
+  The rest rule asks the box's own height instead.
+* **A bounding-rectangle test of "the box covers the slash"** (first build): an angled stroke's
+  rectangle is mostly paper and the detector's box held 64% of it; the stroke's centre line
+  holds the right share (the missed p6 `11/3/3` -> refused).
+* **A head box at a stem end explaining the stroke there**: with boxes at BOTH ends the one on the
+  slash is the suspect (a stem has its head at one end; the detector boxes slashes as heads), so
+  `at_a_head` applies only where the other end has no head box.
+
+### 7.6 Tests, gates
+
+`tools/omr/tests/test_staged_stem_slash.py` (38). RED first: written before any implementation,
+26 of 33 failed on the unrepaired tree (the 7 that passed are controls that cannot fail there:
+a bare stem reads nothing, a half note without a slash is unchanged, ...). Controls in the
+same class: a real slash read; a one-hook flag not a slash (and still counted beside one); a
+real two-note beam stays a beam; a plain half note unchanged; a staccato dot / accent beside a
+stem not a slash; a chord head at the stem end not a slash; a quarter-rest-height box with a
+slash row stays a rest; a real head at the stem end beside a slash kept.
+Crops: `out/print/2.71/` (`tile_01..09.png`, `manifest.json`, `render.py`) -- blind, subject
+bracketed, nothing of ours drawn; by my eye all 9 brackets sit on a slash at a stem's tip
+(tile 5 is tile 3's stem+slash box, the one the rest rule refuses).
