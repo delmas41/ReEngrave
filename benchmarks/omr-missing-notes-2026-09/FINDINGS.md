@@ -1951,3 +1951,98 @@ passing being stays-narrowed controls). Crops `out/print/2.74/` (10 changed head
 readings NOT shown to Sean). Gates at `0f880dde`: `pytest -m "not slow" tools/omr/tests`
 **6,511 passed, 11 skipped, 2 xfailed, 0 failed** (2.69's 6,408 + 37 here + main's merged tests);
 `python3 -m tools.omr.staged.check` TOTAL **192** (= base).
+
+---
+
+## 16. Two leftovers Sean judged EIGHTHS: 2.65 tile 15 and 2.74 review Litolff 1 (2026-10-09)
+
+Path: STAGED, GATHER + ADJUDICATE only. Branch `lane-rhythm-leftovers`, off `0a06e5c2` (main with 2.69 + 2.74
+merged). Sean, 2026-10-09, blind: the Brahms tile-15 head is an EIGHTH; the Litolff head of the 2.74 review is an
+EIGHTH. Base and arm are both CLEAN small re-gathers (`dirty: False`), same pages, same machine, base `0a06e5c2`,
+arm `b6558cf9`; the brief's two hypotheses were checked and one was REFUTED (B, below).
+
+### 16.1 A -- 2.65 tile 15 (`glyph/1/1/9/0/13`): the flag box blocked its own stem's tip
+
+Cause, measured on the base record. The detector draws ONE printed flag twice, `flag8thUp` (1890,422)-(1956,625) and
+`flag16thUp` (1890,427)-(1956,625) on the stem (1884-1896, tip y 407, staff space 66.75): two near-identical boxes, so the
+flag-class vote ties 1:1 (`flags_disagree`). 2.74's settle-by-count was built and idle because
+`gather._stem_tip_blockers` hands every detection of the cell (width under the staff-width cut) to
+`_observe_stem_tip_ink` as "ink the record can already name", and the two flag boxes lie entirely over the stem's own tip window
+(x 1896-1956, y 474-574) -> `occupied` before the ink was read. Run on that cell's own raster, the reader counts
+**one hook** (`stem_tip_ink` found, right 0.38 / left 0.05; `stem_tip_hooks` hooks 1, support [1.0, 0, 0, 0]), with the
+head cut at y 604; without the head cut it reads `crosses_both_sides` (the 2.74 probe), which is why the head edge matters.
+
+Fix (the function is `gather._stem_tip_blockers`, new keyword `own_stem=`; the call site in `gather_cv_lines` now
+computes blockers PER STEM): a detected FLAG box that hangs off THIS stem's tip (left edge within 0.6 spaces of the
+stem's side, near edge within 0.8 spaces of its top or bottom tip: `STEM_TIP_OWN_FLAG_X_SPACES`,
+`STEM_TIP_OWN_FLAG_TIP_SPACES`, `_flag_box_hangs_off_stem`) is set aside. Nothing else is: a flag of ANOTHER stem, a flag
+box starting mid-stem, a tie, a beam stroke, anything not a flag box still blocks; `own_stem=None` is the pre-change call
+byte for byte. A flag box is never evidence of a hook: the window is still READ off the ink (a flag box over a bare stem
+files `found False`, no count). The settle itself is 2.74's, unchanged: a counted hook that is one of the voted levels
+decides (`hooks_counted`, `flags_disagree_settled_by_hooks`); a count no box voted for, or none, leaves it narrowed. The
+detector's class score is never the tie-break.
+
+This did NOT touch `lane-2.73-line-cut-heads`' tip test (its diff reads `_stem_tip_flag_ink`'s rows in `rhythm.py`; `_stem_tip_blockers` and `_observe_stem_tip_ink` are not in it).
+
+### 16.2 B -- 2.74 review Litolff 1 (`glyph/3/0/7/6/2`): not a beamlet; the heads' own row
+
+The brief's hypothesis (a short secondary stroke kept by 2.74's beamlet rule) is REFUTED. The cell holds three CV strokes
+(canonical px, space 100): `obs:036861` [595,494,419,63], the real beam (2.36 line thicknesses, two stems found, kept);
+`obs:036862` [395,1088,425,37] (1.25, refused `too_thin`); `obs:036863` [476,1188,350,37]. The third is the one that made
+the 16th: **the second ledger line through the row of three heads, fused with them** (thickness 108 px = 1.08 spaces,
+3.86 lines, straight, a stem found at one end, a second stem within the join tolerance -> it passes all three of 2.74's
+tests) -- 0.80 of its box lies inside the three notehead boxes, and the detector boxed no `ledgerLine` there, so 2.25's ledger
+rule never saw it. `rhythm._on_stem_side`'s own docstring names the fault: *"a stroke lying THROUGH the head (the CV opening
+fuses a row of heads into one horizontal run) ... is a beam reader's false positive"*. The beamlet rule is not involved:
+the stroke is 6 spaces from the primary beam, farther than `BEAM_BEAMLET_GAP_SPACES`, and a beamlet is untouched (control test).
+
+Fix (`rhythm._not_a_beam_by_ink`, first tier, new `_notehead_glyph_boxes`, `_covered_fraction`,
+`BEAM_THROUGH_HEADS_MIN = 0.5`, `BEAM_HEAD_BOX_MAX_SPACES = 2.2`): a stroke whose box lies at least half (exact union) inside the
+cell's HEAD-SIZED notehead boxes is those heads' ink -- refused `through_heads`, whether or not the ink reader measured
+it. It reuses 2.74's refusal plumbing, so rule 8 holds: where it was the head's only mark the head is NARROWED
+(`beam_discounted_uncertain`, head value | one level), never decided from the absence. Head-sized matters: the first
+version of the rule (commit `34972ddc`) refused a REAL stem-down beam on Brahms p1 cell 1/0/0/4 (`obs:033787`, [143,668,237,56])
+because the detector drew a `noteheadWholeOnLine` box 3.2 spaces wide over it (213 x 93 px at space 66.75); a box wider than
+2.2 spaces is a cluster, not a head, and with no staff-space unit the rule does not run (`b6558cf9`, RED first on both).
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's three beam lines: a beam is drawn at the far end of
+its stems and runs BETWEEN them, never through a notehead (CLAUDE.md §10); the cuts are 0.5 and 2.2. Falsified by a
+print-confirmed beam lying half inside head-sized boxes (a very short-stemmed cluster). My eye-check: the 34 refused strokes
+that a base duration verdict USED as a level (23 Litolff p1-3, 11 Brahms p0-1; contact sheets in the scratchpad, not
+committed) are all a ledger line through or touching a head or a fused head row; none is a beam but the one the size cut now keeps.
+
+### 16.3 Sean's 22 tiles (`out/print/2.65/compare.py`), base -> arm
+
+20 right / 0 wrong / 2 narrowed (4, 15) -> **21 right / 0 wrong / 1 narrowed (4)**. Only tile 15 moved:
+`narrowed flags_disagree 8th|16th` -> **decided eighth**. Tile 4 (the group's own beam unread) is unchanged,
+`beam_discounted_uncertain` eighth|quarter. The other judged heads (2.69's 2, 2.74's 10, 2.73's 10) are unchanged except
+the target: **2.74 Litolff 1 sixteenth -> eighth (right)**; Brahms 2.74 tiles 1-9 and 2.73 tiles 7-8 identical.
+
+### 16.4 Population (every note-family `Q.DURATION` verdict standing at ADJUDICATE)
+
+| plate | verdicts | changed | what |
+|---|---|---|---|
+| Brahms p0-1 | 1,491 | **8** | 2 `flags_disagree` -> decided eighth (A: tile 15 and one more); 1 `beams_ambiguous` 8th/16th -> eighth; 2 decided 32nd -> 16th; 1 decided eighth -> narrowed eighth\|quarter; 1 decided dotted eighth -> narrowed dotted 8th\|dotted quarter; 1 `beam_certain_not_joined` -> `beam_discounted_uncertain` (same pair) |
+| Litolff p1-3 | 1,286 | **45** | 16 decided 16th -> eighth; 8 decided eighth -> narrowed eighth\|quarter; 6 decided 32nd -> 16th; 3 decided 64th -> 32nd; 3 narrowed 8th\|16th -> decided eighth; 1 narrowed 32nd\|16th -> decided 16th; 8 narrowed -> narrowed (candidates changed) |
+
+`Q.STEM_TIP_INK` (A): Brahms rows read 842 -> **1,006**, windows found 27 -> 92, hooks counted 11 -> **47, every one a single
+hook** (no two-hook count on this plate); `occupied` abstentions 1,458 -> 1,294 (164 windows now read). Litolff 674 -> 684 rows,
+found 30 -> 33, counted 10 -> 13 (`occupied` 1,704 -> 1,694). These rows feed `flags_disagree` only (a flag-boxed head never
+reads them otherwise), which is why 164 more windows moved 2 verdicts. Three Brahms and one Litolff `flags_disagree` remain:
+their own tip is still `occupied` by something that is not a flag box, or the head is at that end -> they stay narrowed.
+
+**What this costs.** The 8 + 2 decided -> narrowed are heads whose decided value rested on a heads'-row / ledger stroke:
+right by luck (their real beam lay beyond the tip, or was unread -- on `glyph/2/1/7/8/0` the real beam [167,794,571,69] lies 0
+inside any head and was not what the base counted either), now honestly `eighth | quarter`. EVALUATE's bar arithmetic
+or INFER settles a narrowing; not priced here.
+
+### 16.5 Files / gates
+
+`tools/omr/staged/gather.py` (`_stem_tip_blockers`, `_flag_box_hangs_off_stem`, `_is_flag_detection`, the per-stem call in
+`gather_cv_lines`), `adjudicators/rhythm.py` (`_not_a_beam_by_ink`, `_notehead_glyph_boxes`, `_covered_fraction`),
+`tests/test_staged_rhythm_leftovers.py` (25 tests). RED first, on the unrepaired tree: A 11 of 15 failed (the 4 that
+passed: the legacy call, "today the flag boxes make the tip occupied", and the two call-site controls that draw no flag box over the hook or a tie); B 4 of 7
+failed (the 3 passing: a real second level, a dotted-8th beamlet, a stroke near but not through the heads); the size cut: 2 of 3
+failed on the previous commit's rule (the control that a head-SIZED box still refuses passed). Crops: `out/print/rhythm-leftovers/`
+(10 changed heads Sean has not judged, 5 per plate, `manifest.json` with before/after NOT shown). Gates: `pytest -m "not slow"
+tools/omr/tests` **6,559 passed, 11 skipped, 2 xfailed, 0 failed**; `python3 -m tools.omr.staged.check` TOTAL **192** (= base).
