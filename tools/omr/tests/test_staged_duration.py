@@ -2339,9 +2339,11 @@ class TestAHollowHeadWithNothingOnItsStemIsAHalfNote(unittest.TestCase):
         self.assertEqual(v.reason, "head_and_marks")
 
     def test_ink_that_is_not_decisive_stays_a_quarter(self):
-        """No loosening of 2.23's cut: centre 0.6 is not hollow."""
+        """Centre 0.85 is not hollow: it is the floor of Sean's 222 hand-
+        labelled FILLED heads (ROADMAP 2.73 raised the cut from 0.5 to 0.75,
+        under that floor and not over it)."""
         log = Log()
-        g = self._hollow_head(log, beam="decoy", center=0.6, ring=0.8)
+        g = self._hollow_head(log, beam="decoy", center=0.85, ring=0.95)
         v = self._duration(log, g)
         self.assertEqual(v.value["beats"], 1.0)
         self.assertEqual(v.reason, "head_and_marks")

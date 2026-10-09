@@ -87,8 +87,20 @@ DOT_BELOW_NOTE_MAX_SPACES = 0.25
 #: which agrees with the truth at F1 0.951 on this fixture): every
 #: confirmed BLACK head reads `center == 1.0` (532/532); every confirmed
 #: HOLLOW HALF head reads `center <= 0.4486` (206/206) -- a clean gap with
-#: no overlap. `0.5` sits inside it with margin either way.
-HEAD_FILL_HOLLOW_CENTER_MAX = 0.5
+#: no overlap.
+#:
+#: ⚠️ ROADMAP 2.73 RAISED THIS FROM 0.5 TO 0.75, ON SCANS, BY MEASUREMENT AND
+#: NOT BY FITTING THE TILES THAT PROMPTED IT. The engraved gap is wide; a scan
+#: is not engraved: Litolff's half-note hole is a thin slanted sliver, so its
+#: centre window reads mostly ink (Sean's 8 judged Litolff half notes read
+#: 0.51-0.72 and every one missed the 0.5 cut). The cut now sits where the
+#: FILLED heads stop: Sean's 222 hand-labelled black heads on Brahms 317803
+#: pdf 0 read `center >= 0.85` (5th percentile 1.0; his 23 half heads read
+#: 0.08-0.84), and on Litolff p3 207 of 228 black-class kept heads read
+#: >= 0.95 (`benchmarks/omr-head-fill-2026-09/FINDINGS.md` §8). 0.75 is under
+#: both floors; the engraved control still reads 0 of 262 black heads
+#: hollow. Together with the ring gap below, which a filled head cannot meet.
+HEAD_FILL_HOLLOW_CENTER_MAX = 0.75
 
 #: ROADMAP 2.23 -- the `ring` window must clear `center` by at least this
 #: much (same source, same 372 heads): every confirmed HOLLOW HALF head
@@ -117,7 +129,11 @@ def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
     not require both to agree, only that at least one is decisive and
     neither one's own `center`/`ring` pair is missing where it reads.
     """
-    for key in ("ink_raw", "ink_net"):
+    # ⚠️ ROADMAP 2.73: `ink_off_line` is the same reading with the line rows
+    # left out, so a staff or ledger line through the hole (which reads as
+    # fill on the other two) cannot hide a hollow head. Any ONE decisive
+    # reading is enough; none is required to agree.
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
         reading = ink_detail.get(key)
         if not isinstance(reading, dict):
             continue
