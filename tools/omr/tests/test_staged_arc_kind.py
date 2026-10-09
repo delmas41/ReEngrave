@@ -2,9 +2,19 @@
 
 ⚠️ THE POINT OF THESE TESTS IS THE REFUSAL AS MUCH AS THE DECISION.
 `OMR_ARC_RECLASS` measured the position-grammar veto at +130 scan edits, ALL
-in the tie->slur half, and is default-off. This adjudicator must record the
-grammar and never act on it — so the tests that matter most are the ones
+in the tie->slur half, and is default-off. This adjudicator records the
+grammar (`detail["grammar"]`, the CELL-FRAME comparison these fixtures build)
+and does not act on it -- so the tests that matter most are the ones
 asserting a DISAGREEING grammar changes nothing.
+
+ROADMAP 2.75 (Sean, 2026-10-09) ADDED a rule that DOES act, on a different
+and stricter basis -- the arc's two end heads in PAGE pixels, their staff
+steps READ and agreeing with the heads' heights, a single head at each end,
+nothing between, the accidental state proved -- and is tested in
+`test_staged_arc_kind_two_note.py`. These fixtures carry no page frame
+(`bbox_page_px`), so that rule is NOT EVALUATED for them (`why:
+no_page_frame`), which is why the detector's class still decides here: the
+tests below pin the cell-frame grammar's recording, not the two-note rule.
 """
 
 import unittest

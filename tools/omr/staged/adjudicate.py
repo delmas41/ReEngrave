@@ -975,6 +975,17 @@ ORDER: Tuple[str, ...] = (
     # ownership, with identity and clef available
     Q.GLYPH_OWNER,
     Q.ARC_OWNER,
+    # ⚠️ ROADMAP 2.75, BEFORE `Q.ARC_KIND`. Sean's rule (2026-10-09: an arc
+    # joining two notes of the SAME pitch is a tie, of different pitch a
+    # slur) needs each end head's staff position AS ADJUDICATED -- a far head
+    # takes its position from its printed ledgers (`Q.NOTEHEAD_POSITION`,
+    # which reads GATHER rows only, so moving it up constrains nothing else)
+    # -- and whether a printed accidental alters it (`Q.ACCIDENTAL_OWNER`,
+    # whose every input is a refusal or `Q.GLYPH_OWNER`, both above). ADJUDICATE
+    # reads a frozen log, so a verdict decided after `arc_kind` would be None
+    # here and the rule would read "unread" for every head.
+    Q.ACCIDENTAL_OWNER,
+    Q.NOTEHEAD_POSITION,
     Q.ARC_KIND,
     # ⚠️ ROADMAP 3.2b, AFTER ALL THREE IT READS: `Q.ARC_KIND` (only a tie is
     # paired), `Q.ARC_OWNER` (the staff whose heads are searched) and
@@ -1002,7 +1013,7 @@ ORDER: Tuple[str, ...] = (
     # sounding pitch of every later note of that pitch in the bar, and a
     # reader of this record should find the owner already settled when it asks
     # what a bar contains.
-    Q.ACCIDENTAL_OWNER,
+    # (`Q.ACCIDENTAL_OWNER` moved up beside `Q.ARC_KIND`, ROADMAP 2.75.)
     # ⚠️ BESIDE THE ARTICULATION AND NOT AFTER THE RHYTHM. A fermata's
     # carriers are noteheads and RESTS, both of which are GATHER rows
     # (`Q.GLYPH_BOX`), so this needs no verdict of any kind -- putting it
@@ -1112,7 +1123,7 @@ ORDER: Tuple[str, ...] = (
     # POSITION`) and `subjects_from` is the first, so it only runs on a far
     # head GATHER read a ledger for. Its verdict is read by EVALUATE's
     # `restate_pitch`, so its position in this list constrains nothing.
-    Q.NOTEHEAD_POSITION,
+    # (`Q.NOTEHEAD_POSITION` moved up beside `Q.ARC_KIND`, ROADMAP 2.75.)
     # ⚠️⚠️ AFTER `VOICES`, AND IT SAT BESIDE THE FERMATA UNTIL THE INVENTORY
     # SAID OTHERWISE. Both ends of a hairpin must come from ONE voice --
     # MusicXML pairs a wedge within a `<voice>` stream, so a start in voice 1

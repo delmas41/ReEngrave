@@ -2184,24 +2184,375 @@ def _s6_stack_view(arc_id, arc_box, siblings):
     return out
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.75 -- TIE OR SLUR BY SEAN'S TWO-NOTE RULE (2026-10-09)
+#
+#   *"If an arc only goes from one note to the next and they are both on the
+#   same pitch it can only be a tie - never a slur. A slur requires different
+#   notes if only 2 are involved."*
+#   *"If there are 2 arcs - one over the other - then the tie will always be
+#   the bottom and the slur on top."*
+#
+# THE HISTORY THIS MUST RESPECT. The same comparison existed as
+# `OMR_ARC_RECLASS` (an export-time veto) and was REFUSED on OMR-NED: +130 scan
+# edits, ALL in the tie->slur half, because a scan's pitch at an arc's ends
+# was unreliable. OMR-NED is retired as evidence (DECISIONS 2026-09-08) and
+# positions are now read LOCALLY, but the risk is the same: a misread end
+# position turns a real tie into a slur. So the rule below DECIDES only where
+# every fact it needs was READ, and says what it could not read:
+#
+#   * the arc's two END HEADS are the ones `_flank_search` finds (the pairing
+#     `adjudicate_tie_pair` uses) -- a single head at each end, none between;
+#   * each end's staff step is `Q.NOTEHEAD_POSITION` where GATHER read a far
+#     head's ledgers (an abstained far head is UNREAD, never its geometry), the
+#     geometry step for a head on or beside the staff -- and the step must
+#     AGREE with the heads' vertical offset in the page (two instruments, one
+#     question; a disagreement is `conflict`, not an answer);
+#   * "the same sounding accidental" is proved only as "no printed accidental
+#     on the stop head" (same bar) -- an arc whose stop head wears a printed
+#     accidental, or has an unclaimed accidental glyph beside it, is not
+#     proved a tie;
+#   * a tie across a barline is two half-arcs; each is judged by the heads
+#     across the barline it names (the last head before it, the first after)
+#     -- and the far head does not restate its accidental, so a crossing
+#     pair is "unchanged" only when NEITHER end wears one;
+#   * an arc cut at BOTH barlines, a chord or second voice at an end, or an
+#     end with no head near it is not judged (`why` says which).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Two stacked arcs are "one over the other" only if the gap between their
+#: boxes is under this many staff spaces. NOT swept; the S6 dose-response
+#: (benchmarks/omr-arc-grammar-2026-09) decays past 3 spaces, and the number
+#: is recorded with every decision so it can be priced from the record.
+STACK_MAX_GAP_SPACES = 4.0
+
+#: How much arc there must be to say what it joins: an arc that is not cut by
+#: a barline must be at least this many head widths wide, and each of its two
+#: ends within `ARC_END_MAX_DX_HEADS` head widths of the head it is read as
+#: leaving / reaching. NOT swept: chosen by eye on the two small re-gathers'
+#: slivers (0.45 and 0.66 widths -- staff-line ink, not arcs) and recorded with
+#: every decision (`arc_width_widths`, `start_dx_widths`, `stop_dx_widths`).
+ARC_MIN_WIDTH_HEADS = 1.5
+ARC_END_MAX_DX_HEADS = 1.5
+
+#: A printed accidental glyph with no owner counts as "possibly this head's"
+#: when its right edge stands within this many head widths LEFT of the head and
+#: within this many head heights of its centre -- a looser READ of "something
+#: stands there" than the owner decision's own window, on purpose: an
+#: unclaimed accidental is an UNREAD one, and unread must not read as absent.
+ACC_NEAR_DX_HEAD_WIDTHS = 3.0
+ACC_NEAR_DY_HEAD_HEIGHTS = 1.5
+
+_ACC_NOT_AN_ACCIDENTAL = ("refused_not_an_accidental",
+                          "is_a_key_signature_marker",
+                          "head_belongs_to_a_nearer_staff")
+
+
+def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
+    """`(half-step from the top line, how it was read)` or `(None, why not)`.
+
+    A far head's position is its LEDGER reading (`Q.NOTEHEAD_POSITION`, ROADMAP
+    2.56) and nothing else: where that reader abstained the geometry's
+    extrapolation is NOT substituted (CLAUDE.md rule 8) -- the head is unread.
+    """
+    from ...annotate.ledger_grid import far_head_needs_ledger_read
+    v = ev.verdict(Q.NOTEHEAD_POSITION, subject=head_row.subject)
+    if v is not None:
+        if v.outcome is Outcome.DECIDED and v.value is not None:
+            return int(v.value), "ledger"
+        return None, "far_head_ledger_unread"
+    for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=head_row.subject):
+        r = (p.detail or {}).get("rounded")
+        if r is None:
+            continue
+        if far_head_needs_ledger_read(float(r)):
+            return None, "far_head_no_ledger_reading"
+        return int(r), "geometry"
+    return None, "no_position"
+
+
+def _accidental_state(ev: Evidence, head: Tuple) -> str:
+    """`printed` / `unknown` / `none` -- is a printed accidental on this head?
+
+    `printed`: an accidental glyph's owner verdict DECIDED this head. `unknown`:
+    an accidental glyph the owner decision did NOT place stands where this
+    head's would (an unread accidental is not an absent one). `none`: neither.
+    """
+    row, _i, xc, yc, w, h = head
+    key = row.subject.to_key()
+    cell = row.subject.at(Kind.CELL)
+    state = "none"
+    for a in ev.rows(Q.ACCIDENTAL_STAFF_POSITION,
+                     scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        ow = ev.verdict(Q.ACCIDENTAL_OWNER, subject=a.subject)
+        if ow is not None and ow.outcome is Outcome.DECIDED:
+            if ow.value == key:
+                return "printed"
+            continue
+        if ow is not None and ow.reason in _ACC_NOT_AN_ACCIDENTAL:
+            continue
+        for b in ev.rows(Q.GLYPH_BOX, subject=a.subject):
+            pb = (b.detail or {}).get("bbox_page_px")
+            if not pb or len(pb) != 4:
+                continue
+            bx1, bc = float(pb[2]), (float(pb[1]) + float(pb[3])) / 2.0
+            if (xc - ACC_NEAR_DX_HEAD_WIDTHS * w <= bx1 <= xc
+                    and abs(bc - yc) <= ACC_NEAR_DY_HEAD_HEIGHTS * h):
+                state = "unknown"
+    return state
+
+
+def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
+    """What the arc JOINS: its two end heads, their steps, and the accidental
+    state -- or why that could not be read. Records only; `_two_note_verdict`
+    says what Sean's rule makes of it."""
+    if fs.abstain is not None:
+        return {"evaluated": False, "why": fs.abstain[0]}
+    cut_l, cut_r = fs.counts["cut_left"], fs.counts["cut_right"]
+    if cut_l and cut_r:
+        return {"evaluated": False, "why": "arc_cut_at_both_barlines"}
+    # ⚠️ A HALF-ARC OF A TIE CUT BY A BARLINE (the canonical tie): one end is
+    # the barline, so its head is the NEAREST head across it -- the last head
+    # of the bar before / the first of the bar after -- and the flank search
+    # has offered every head of that bar. The other half of the same tie
+    # names the same two heads, so both halves get one answer.
+    lefts = ([t for t in fs.lefts if t[3] == fs.cell_index - 1]
+             if cut_l else fs.lefts)
+    rights = ([t for t in fs.rights if t[3] == fs.cell_index + 1]
+              if cut_r else fs.rights)
+    if not lefts or not rights:
+        return {"evaluated": False, "why": "no_head_across_the_barline"}
+    S = min(lefts, key=lambda t: abs(t[0]))
+    E = min(rights, key=lambda t: abs(t[0]))
+    head_of = {h[0].id: h for h in fs.heads}
+    hs, he = head_of[S[2].id], head_of[E[2].id]
+    out: Dict[str, Any] = {"evaluated": True, "start": S[2].subject.to_key(),
+                           "stop": E[2].subject.to_key(),
+                           "crosses_barline": S[3] != E[3],
+                           "half_arc": ("left" if cut_l else
+                                        "right" if cut_r else None)}
+    # ⚠️ ONE HEAD AT EACH END. A second candidate in the same column (a chord
+    # member, a unison, another voice) makes "the note the arc leaves" a
+    # choice this rule has no evidence to make.
+    for name, side, chosen, edge in (("start", lefts, hs, fs.ax0),
+                                     ("stop", rights, he, fs.ax1)):
+        tol = chosen[4] * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
+        for t in side:
+            if t[2].id == chosen[0].id:
+                continue
+            xc = edge - t[0] if name == "start" else edge + t[0]
+            if abs(xc - chosen[2]) <= tol:
+                out.update(evaluated=False,
+                           why="chord_or_second_voice_at_an_end")
+                return out
+    out["start_dx_widths"] = (None if cut_l else round(S[0] / hs[4], 2))
+    out["stop_dx_widths"] = (None if cut_r else round(E[0] / he[4], 2))
+    out["arc_width_widths"] = round((fs.ax1 - fs.ax0) / hs[4], 2)
+    # ⚠️ THE ARC MUST ACTUALLY REACH ITS HEADS. The flank windows are the tie
+    # pairing's (a head up to 3 widths past an end), loose enough to find a
+    # tie's partner and far too loose to say what an arc JOINS: a sliver of
+    # ink 0.5 head widths long, or an arc ending 2 widths from the nearest
+    # head, joins nothing. A cut end is the barline's and is not measured.
+    if not cut_l and not cut_r and out["arc_width_widths"] < ARC_MIN_WIDTH_HEADS:
+        out.update(evaluated=False, why="arc_narrower_than_a_head_and_a_half")
+        return out
+    for name, dx, cut in (("start", out["start_dx_widths"], cut_l),
+                          ("stop", out["stop_dx_widths"], cut_r)):
+        if not cut and abs(dx) > ARC_END_MAX_DX_HEADS:
+            out.update(evaluated=False, why="arc_end_far_from_its_head")
+            return out
+    out["between"] = bool(fs.head_between(S[3], hs[2], E[3], he[2],
+                                          (S[2].id, E[2].id)))
+    s_step, s_src = _head_step(ev, S[2])
+    e_step, e_src = _head_step(ev, E[2])
+    out.update(start_step=s_step, stop_step=e_step,
+               start_step_source=s_src, stop_step_source=e_src,
+               dy_spaces=round(abs(hs[3] - he[3]) / fs.avg_h, 3))
+    limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
+    near = out["dy_spaces"] <= limit
+    if s_step is None or e_step is None:
+        out["relation"] = "unread"
+    elif s_step == e_step:
+        out["relation"] = "same" if near else "conflict"
+    else:
+        out["relation"] = "different" if not near else "conflict"
+    if out["relation"] == "same":
+        acc_e = _accidental_state(ev, he)
+        acc_s = acc_e if S[3] == E[3] else _accidental_state(ev, hs)
+        if S[3] == E[3]:
+            out["accidental"] = ("unchanged" if acc_e == "none" else
+                                 "printed" if acc_e == "printed" else "unknown")
+        else:
+            out["accidental"] = ("unchanged" if acc_e == acc_s == "none" else
+                                 "printed" if "printed" in (acc_e, acc_s)
+                                 else "unknown")
+        out["stop_accidental"] = acc_e
+    out["_heads"] = (hs[3], he[3], hs[4])
+    return out
+
+
+def _two_note_verdict(kind: str, tn: Dict[str, Any]
+                      ) -> Tuple[Optional[str], Optional[str]]:
+    """Sean's two-note rule on one arc: `(kind | "abstain" | None, rule)`.
+    `None` = the rule has no opinion and the detector's class stands."""
+    if not tn.get("evaluated"):
+        return None, None
+    rel = tn["relation"]
+    if tn["between"]:
+        # ⚠️ THREE OR MORE ONSETS. Different ends make a tie impossible
+        # (a tie joins one pitch); SAME ends prove nothing -- C D C under a
+        # slur, or a tie with another voice's note between -- so the detector
+        # stands. A slur over three notes is a slur already.
+        if rel == "different" and kind == "tie":
+            return "slur", "three_or_more_notes_ends_differ"
+        return None, None
+    if rel == "different":
+        return "slur", "two_notes_different_pitch"
+    if rel == "same":
+        if tn["accidental"] == "unchanged":
+            return "tie", "two_notes_same_pitch"
+        if tn["accidental"] == "unknown" and kind == "slur":
+            # ⚠️ RULE 8. Two notes at one step cannot be a slur, and whether
+            # they are one PITCH needs an accidental nobody could read.
+            return "abstain", "same_pitch_accidental_unread"
+    return None, None
+
+
+def _stack_reading(ev: Evidence, arc: Any, fs: "_Flank",
+                   tn: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Is exactly ONE other arc stacked over/under this one's two notes?
+
+    Same staff, same two end heads (ends within a head width), the boxes
+    DISJOINT in y (overlapping boxes are a duplicate detection, not a stack),
+    both on the same side of the heads. `role` is `nearer` / `farther` than the
+    other arc to the heads. Sean: above the notes the lower is the tie; below
+    them the tie is taken to be the one nearer the heads (CONVENTION ASSUMED,
+    NOT CONFIRMED -- an engraved tie hugs its heads).
+    """
+    if not tn.get("evaluated"):
+        return None
+    y_s, y_e, w = tn["_heads"]
+    head_yc = (y_s + y_e) / 2.0
+    mine_above = fs.arc_yc < head_yc
+    cell = ev.subject.at(Kind.CELL)
+    sibs = []
+    for r in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell):
+        if r.subject == ev.subject:
+            continue
+        pb = (r.detail or {}).get("bbox_page_px")
+        if not pb or len(pb) != 4:
+            continue
+        nv = ev.verdict(Q.ARC_IS_NOT_AN_ARC, subject=r.subject)
+        if (nv is not None and nv.outcome is Outcome.DECIDED
+                and nv.value is True):
+            continue
+        # ⚠️ THE SIBLING MUST BE THIS STAFF'S, AND SAID SO. A measure cell is
+        # padded into the neighbour (CLAUDE.md §10), so the cell holds the
+        # next staff's arcs too -- the first crops of "stacked below" pairs
+        # were an arc under one staff and the arc over the staff beneath it.
+        # No owner verdict is not "same staff"; it is not a stack partner.
+        ow = ev.verdict(Q.ARC_OWNER, subject=r.subject)
+        if (ow is None or ow.outcome is not Outcome.DECIDED
+                or ow.value != fs.home):
+            continue
+        bx0, by0, bx1, by1 = (float(v) for v in pb)
+        if abs(bx0 - fs.ax0) > w or abs(bx1 - fs.ax1) > w:
+            continue
+        gap = max(by0 - fs.ay1, fs.ay0 - by1)
+        if gap <= 0 or gap / fs.avg_h > STACK_MAX_GAP_SPACES:
+            continue
+        sib_c = (by0 + by1) / 2.0
+        if (sib_c < head_yc) != mine_above:
+            continue
+        # the arc's own window (`_flank_search`): within 3 head heights of
+        # the heads it joins, with the legacy pixel floor
+        if abs(sib_c - head_yc) > max(
+                fs.avg_h * TIE_FLANK_MAX_DY_HEAD_HEIGHTS,
+                TIE_FLANK_MIN_DY_PX):
+            continue
+        sibs.append((r, sib_c, gap))
+    if not sibs:
+        return None
+    if len(sibs) > 1:
+        return {"role": None, "why": "more_than_two_arcs_stacked",
+                "n_siblings": len(sibs)}
+    r, sib_c, gap = sibs[0]
+    nearer = abs(fs.arc_yc - head_yc) < abs(sib_c - head_yc)
+    return {"role": "nearer" if nearer else "farther",
+            "side": "above" if mine_above else "below",
+            "gap_spaces": round(gap / fs.avg_h, 3),
+            "other": r.subject.to_key()}
+
+
+def _kind_with_rules(kind: str, tn: Dict[str, Any],
+                     stack: Optional[Dict[str, Any]]
+                     ) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """`(kind | None for abstain, rule, conflict)` -- the detector's class
+    `kind` after Sean's two rules. Positions outrank the stack: "can only be a
+    tie / never a slur" is stated as a law, the stack as the usual layout."""
+    pos_kind, rule = _two_note_verdict(kind, tn)
+    if pos_kind == "abstain":
+        return None, rule, None
+    role = (stack or {}).get("role")
+    if role is None:
+        return (pos_kind or kind), rule, None
+    want = "tie" if role == "nearer" else "slur"
+    if pos_kind is None:
+        if want == "tie" and (not tn.get("evaluated") or tn.get("between")):
+            return kind, None, "stacked_nearer_but_not_a_two_note_arc"
+        return want, ("stacked_nearer_is_tie" if want == "tie"
+                      else "stacked_farther_is_slur"), None
+    if pos_kind == want:
+        return want, rule, None
+    # the two rules disagree
+    if pos_kind == "slur":
+        return "slur", rule, "stack_says_tie_notes_differ"
+    # positions say tie (two notes, one pitch), the stack says slur
+    if kind == "tie":
+        return "tie", rule, "stack_says_slur_two_same_pitch_notes"
+    return (None, "stack_slur_over_two_same_pitch_notes",
+            "stack_says_slur_two_same_pitch_notes")
+
+
 @decision(
     quantity=Q.ARC_KIND,
     checkable=Checkable.MIXED,
     checked_by=(
-        "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR",
-        "of two arcs STACKED over the same notes the lower is a tie and the upper a slur (Sean, 2026-09-11) -- recorded, never acted on",
+        "a TIE joins two heads of the SAME staff step; an arc whose flanked heads sit on different steps is a SLUR (Sean, 2026-10-09: two notes of one pitch can only be a tie, two of different pitch only a slur) -- decided where both ends' steps were READ",
+        "of two arcs STACKED over the same notes the lower is a tie and the upper a slur (Sean, 2026-09-11 and 2026-10-09)",
     ),
-    implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.CLEF),
-    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
+    implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_POSITION,
+                Q.ACCIDENTAL_OWNER, Q.CLEF),
+    composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM,
+                   Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.GLYPH_BOX` is declared because a notehead's STEP row carries no x:
     # the step is joined to a position through the box on the SAME glyph. The
     # harness refused the read until it was declared (`UndeclaredEvidence`),
     # which is `Evidence` doing its job -- a decision may only read what it
     # says it reads, so `missing` and `declined` can mean something.
-    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM),
+    #
+    # ROADMAP 2.75 adds what `_flank_search` (the tie pairing's own head
+    # search) reads, plus the two verdicts the two-note rule needs that were
+    # decided AFTER this one until `adjudicate.ORDER` moved them up:
+    # `Q.NOTEHEAD_POSITION` (a far head's ledger-read position) and
+    # `Q.ACCIDENTAL_OWNER` (which head a printed accidental alters).
+    wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM,
+           Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
+           Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER),
     subjects_from=Q.ARC_BOX,
-    reasons=("tie", "slur", "no_arc_box", "no_evidence"),
+    # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
+    # (`two_notes_same_pitch`, `two_notes_different_pitch`,
+    # `three_or_more_notes_ends_differ`, `stacked_nearer_is_tie`,
+    # `stacked_farther_is_slur`, or None where the detector's class stood) is
+    # `detail["grammar"]["tie_slur_rule"]["rule"]`. Only the two ABSTENTIONS
+    # carry a reason of their own, as literals at their Ruling sites, so
+    # `brakes` can still resolve this decision's vocabulary.
+    reasons=("tie", "slur", "no_arc_box", "no_evidence",
+             "same_pitch_accidental_unread",
+             "stack_slur_over_two_same_pitch_notes"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_kind(ev: Evidence) -> Ruling:
@@ -2318,8 +2669,48 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
         grammar["why"] = ("fewer than two noteheads under the arc's padded "
                           "span -- no pair to compare steps across")
 
+    # ⚠️ ROADMAP 2.75 -- SEAN'S TWO-NOTE AND STACK RULES (see the block
+    # above `_head_step`). A box the arc-not-an-arc decision refused (a staff
+    # line, a barline) is not judged: the refusal stands, the class is the
+    # detector's and no rule runs on it.
+    detector = kind
+    rule = None
+    extra_used: Tuple[str, ...] = ()
+    refused = ev.verdict(Q.ARC_IS_NOT_AN_ARC)
+    if (refused is not None and refused.outcome is Outcome.DECIDED
+            and refused.value is True):
+        grammar["tie_slur_rule"] = {
+            "two_note": {"evaluated": False, "why": "refused_not_an_arc"},
+            "rule": None, "detector_class": detector}
+    else:
+        fs = _flank_search(ev, arc)
+        two_note = _two_note_reading(ev, arc, fs)
+        stack = _stack_reading(ev, arc, fs, two_note)
+        final, rule, conflict = _kind_with_rules(kind, two_note, stack)
+        if two_note.get("evaluated"):
+            extra_used = tuple(
+                t[2].id for t in list(fs.lefts) + list(fs.rights)
+                if t[2].subject.to_key() in (two_note["start"],
+                                             two_note["stop"]))
+        grammar["tie_slur_rule"] = {
+            "two_note": {k: v for k, v in two_note.items() if k != "_heads"},
+            "stack": stack, "rule": rule, "conflict": conflict,
+            "detector_class": detector}
+        if final is None:
+            if rule == "same_pitch_accidental_unread":
+                return Ruling(value=None, reason="same_pitch_accidental_unread",
+                              used=(arc.id,) + extra_used,
+                              detail={"grammar": grammar,
+                                      "detector_class": str(arc.value)})
+            return Ruling(value=None,
+                          reason="stack_slur_over_two_same_pitch_notes",
+                          used=(arc.id,) + extra_used,
+                          detail={"grammar": grammar,
+                                  "detector_class": str(arc.value)})
+        kind = final
+
     return Ruling(value=kind, reason=kind,
-                  used=(arc.id,) + tuple(f[2] for f in flanked),
+                  used=(arc.id,) + tuple(f[2] for f in flanked) + extra_used,
                   detail={"grammar": grammar,
                           "detector_class": str(arc.value),
                           "confidence": arc.score})
@@ -2349,6 +2740,211 @@ TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS = 1.0
 TIE_FLANK_MAX_DY_HEAD_HEIGHTS = 3.0
 TIE_FLANK_MIN_DY_PX = 30.0
 
+
+@dataclass
+class _Flank:
+    """The heads an arc's two ends reach -- ONE search, read by both
+    `adjudicate_tie_pair` (which heads a tie joins) and `adjudicate_arc_kind`
+    (ROADMAP 2.75: how many notes an arc joins, and at what pitch).
+
+    MOVED, NOT REWRITTEN, out of `adjudicate_tie_pair` so the kind decision
+    and the pairing can never be reading different heads of one arc (the
+    reason `geom` exists inside `adjudicate_arc_kind` for S4). `abstain` is
+    `(reason, detail)` when the search cannot run; otherwise every field is
+    the tie pairing's own local of the same name.
+    """
+    abstain: Optional[Tuple[str, Dict[str, Any]]] = None
+    ax0: float = 0.0
+    ay0: float = 0.0
+    ax1: float = 0.0
+    ay1: float = 0.0
+    arc_yc: float = 0.0
+    home: str = ""
+    cell_index: int = 0
+    heads: Any = None
+    avg_h: float = 0.0
+    lefts: Any = None
+    rights: Any = None
+    counts: Any = None
+    head_between: Any = None
+
+
+def _flank_search(ev: Evidence, arc: Any) -> "_Flank":
+    """The flank search of `adjudicate_tie_pair`, unchanged (its docstring
+    carries the reasoning for every window)."""
+    box = arc.detail.get("bbox_page_px")
+    if not box or len(box) != 4:
+        return _Flank(abstain=("no_page_frame", {}))
+    ax0, ay0, ax1, ay1 = (float(v) for v in box)
+    arc_yc = (ay0 + ay1) / 2.0
+
+    owner = ev.verdict(Q.ARC_OWNER)
+    home = (owner.value if owner is not None and isinstance(owner.value, str)
+            and owner.value else ev.subject.at(Kind.STAFF).to_key())
+    staff = R.Subject.from_key(home)
+    cell_index = ev.subject.cell or 0
+
+    def cell_subject(i: int) -> "R.Subject":
+        return R.Subject(Kind.CELL, page=staff.page, system=staff.system,
+                         staff=staff.staff, cell=i)
+
+    def cell_box(i: int):
+        if i < 0:
+            return None
+        for row in ev.rows(Q.CELL_BOX, subject=cell_subject(i)):
+            v = row.value
+            if isinstance(v, (list, tuple)) and len(v) == 4:
+                return tuple(float(x) for x in v)
+        return None
+
+    own_box = cell_box(cell_index)
+    has_prev = cell_box(cell_index - 1) is not None
+    has_next = cell_box(cell_index + 1) is not None
+
+    heads = []
+    for i in (cell_index - 1, cell_index, cell_index + 1):
+        if i < 0:
+            continue
+        for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                           subject=cell_subject(i)):
+            if (row.detail or {}).get("category") != "notehead":
+                continue
+            b = row.detail.get("bbox_page_px")
+            if not b or len(b) != 4:
+                continue
+            x0, y0, x1, y1 = (float(v) for v in b)
+            if x1 <= x0 or y1 <= y0:
+                continue
+            heads.append((row, i, (x0 + x1) / 2.0, (y0 + y1) / 2.0,
+                          x1 - x0, y1 - y0))
+    if not heads:
+        return _Flank(abstain=("no_start_head", {"heads_in_reach": 0}))
+    avg_h = sum(h[5] for h in heads) / len(heads)
+    y_tol = max(avg_h * TIE_FLANK_MAX_DY_HEAD_HEIGHTS, TIE_FLANK_MIN_DY_PX)
+
+    # ⚠️ A TIE CUT BY A BARLINE IS DETECTED AS TWO ARCS, and the half that
+    # begins AT the barline has its start head a whole first-half away -- past
+    # any fixed reach. `_legacy._SLUR_BOUNDARY_SPACES` (0.5 spaces, IMPORTED,
+    # measured for the legacy merge) says when an arc's end sits ON its bar's
+    # edge; such an end searches the WHOLE adjacent bar instead of 3 widths.
+    # Where there is no adjacent bar the arc is cut by the SYSTEM's edge.
+    from ...export import _SLUR_BOUNDARY_SPACES
+    edge_tol = _SLUR_BOUNDARY_SPACES * avg_h
+    cut_left = own_box is not None and abs(ax0 - own_box[0]) <= edge_tol
+    cut_right = own_box is not None and abs(ax1 - own_box[2]) <= edge_tol
+    # ⚠️ DECISIONS 2026-10-01 (Sean, on the 2.52 sheet): "the notes have to be
+    # next to each other regardless of measures/barlines" -- a tied whole or
+    # half note that FILLS its own bar, tying to the next bar's first note,
+    # is drawn edge-to-edge of its own bar and is a REAL tie, not a refusal.
+    # The earlier rule ("can never cross a whole bar") conflated two
+    # different things: an arc cut at both of ITS OWN bar's edges with a note
+    # of its own inside that bar (the filled-whole-note case, real) and an
+    # arc cut at both edges of a bar that holds NO notehead AT ALL (the
+    # staff-line-read-as-a-tie case the first Litolff crop found, `3.2b`
+    # FINDINGS). Only the second is refused here; the first falls through to
+    # the ordinary flank search below, which already extends across a cut
+    # edge into the adjacent bar.
+    if cut_left and cut_right and not any(h[1] == cell_index for h in heads):
+        return _Flank(abstain=("spans_a_whole_bar",
+                                {"own_bar_heads": 0}))
+
+    def usable(row) -> bool:
+        # ⚠️ Asked only of a head already inside a window, so the verdicts
+        # this decision reads -- and the ids it files as considered -- are the
+        # handful that could matter, not every head of three bars.
+        own = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+        if own is not None and _is_relocated_copy(row.subject, own.value):
+            return False
+        np_ = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=row.subject)
+        return not (np_ is not None and np_.outcome is Outcome.DECIDED
+                    and np_.value is True)
+
+    lefts, rights = [], []
+    for row, i, xc, yc, w, _h in heads:
+        if abs(yc - arc_yc) > y_tol:
+            continue
+        reach = w * TIE_FLANK_MAX_DX_HEAD_WIDTHS
+        inside = -w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
+        dxl = ax0 - xc
+        dxr = xc - ax1
+        # ⚠️ A head can be a start only LEFT of the arc's middle and a stop
+        # only right of it, so one head is never both ends of one arc.
+        mid = (ax0 + ax1) / 2.0
+        if xc < mid and dxl >= inside and (
+                dxl < reach or (cut_left and i == cell_index - 1)) \
+                and usable(row):
+            lefts.append((dxl, yc, row, i))
+        if xc > mid and dxr >= inside and (
+                dxr < reach or (cut_right and i == cell_index + 1)) \
+                and usable(row):
+            rights.append((dxr, yc, row, i))
+
+    counts = {"lefts": len(lefts), "rights": len(rights),
+              "cut_left": cut_left, "cut_right": cut_right}
+    # ⚠️ "THE SYSTEM STARTS/ENDS HERE" IS A FACT ABOUT THE STAFF, NOT ABOUT
+    # THE ARC: nothing on this staff precedes the arc in the system's first
+    # bar (a continuation is engraved after the clef and key, which are not
+    # heads), or nothing follows it in the system's last bar. It bounds the
+    # cross-system population from above; the partner is on another system
+    # and this decision cannot see it.
+    starts_system = not has_prev and not any(
+        h[1] == cell_index and h[2] < ax0 for h in heads)
+    ends_system = not has_next and not any(
+        h[1] == cell_index and h[2] > ax1 for h in heads)
+    if not lefts and starts_system:
+        return _Flank(abstain=("enters_from_previous_system", dict(counts)))
+    if not rights and ends_system:
+        return _Flank(abstain=("runs_off_the_system", dict(counts)))
+    if not lefts and not rights:
+        # ⚠️ Usually the TWIN of a tie filed on the NEXT staff: a measure
+        # cell is padded into its neighbour, and `arc_owner` asks which heads
+        # an arc COVERS -- a tie covers none, so it cannot move one. Its twin
+        # on the right staff pairs there; this copy says so and stops.
+        return _Flank(abstain=("no_head_near_the_arc", dict(counts)))
+    if not lefts:
+        return _Flank(abstain=("no_start_head", dict(counts)))
+    if not rights:
+        return _Flank(abstain=("no_stop_head", dict(counts)))
+
+    # ⚠️ DECISIONS 2026-10-01: "the notes have to be next to each other" --
+    # ADJACENT in time, nothing of the arc's own voice/staff between them,
+    # whichever position it sits at. `_between` reads the full three-bar
+    # head population (not just the ones already windowed into `lefts`/
+    # `rights`) because the intervening note may sit at a THIRD position,
+    # outside either flank window, and still break adjacency.
+    def order_key(i: int, xc: float) -> Any:
+        return (i, xc)
+
+    def head_between(il: int, xl: float, ir: int, xr: float,
+                      exclude_ids: tuple) -> bool:
+        lo, hi = order_key(il, xl), order_key(ir, xr)
+        if lo > hi:
+            lo, hi = hi, lo
+        for row, i, xc, _yc, w, _h in heads:
+            if row.id in exclude_ids or not usable(row):
+                continue
+            if not (lo < order_key(i, xc) < hi):
+                continue
+            # ⚠️ A head at (near enough) the SAME x as one of the pair's own
+            # endpoints is that endpoint's OWN CHORD -- a simultaneous note,
+            # not one "between" it in time. Same overlap tolerance the flank
+            # search itself uses (`TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS`), so a
+            # chord's stacked onsets never read as intervening notes. Found
+            # on Litolff p3 (`glyph/3/0/0/0/5`): the stop head's own chord
+            # partners, ~1-2 px apart in x, were read as notes between it
+            # and the start before this exemption.
+            tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
+            if i == il and abs(xc - xl) <= tol:
+                continue
+            if i == ir and abs(xc - xr) <= tol:
+                continue
+            return True
+        return False
+
+    return _Flank(ax0=ax0, ay0=ay0, ax1=ax1, ay1=ay1, arc_yc=arc_yc,
+                  home=home, cell_index=cell_index, heads=heads, avg_h=avg_h,
+                  lefts=lefts, rights=rights, counts=counts,
+                  head_between=head_between)
 
 @decision(
     quantity=Q.TIE_PAIR,
@@ -2448,139 +3044,31 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
             or kind.value != "tie":
         return Ruling.abstain("not_a_tie",
                               kind=None if kind is None else kind.value)
-    box = arc.detail.get("bbox_page_px")
-    if not box or len(box) != 4:
-        return Ruling.abstain("no_page_frame")
-    ax0, ay0, ax1, ay1 = (float(v) for v in box)
-    arc_yc = (ay0 + ay1) / 2.0
-
-    owner = ev.verdict(Q.ARC_OWNER)
-    home = (owner.value if owner is not None and isinstance(owner.value, str)
-            and owner.value else ev.subject.at(Kind.STAFF).to_key())
-    staff = R.Subject.from_key(home)
-    cell_index = ev.subject.cell or 0
-
-    def cell_subject(i: int) -> "R.Subject":
-        return R.Subject(Kind.CELL, page=staff.page, system=staff.system,
-                         staff=staff.staff, cell=i)
-
-    def cell_box(i: int):
-        if i < 0:
-            return None
-        for row in ev.rows(Q.CELL_BOX, subject=cell_subject(i)):
-            v = row.value
-            if isinstance(v, (list, tuple)) and len(v) == 4:
-                return tuple(float(x) for x in v)
-        return None
-
-    own_box = cell_box(cell_index)
-    has_prev = cell_box(cell_index - 1) is not None
-    has_next = cell_box(cell_index + 1) is not None
-
-    heads = []
-    for i in (cell_index - 1, cell_index, cell_index + 1):
-        if i < 0:
-            continue
-        for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                           subject=cell_subject(i)):
-            if (row.detail or {}).get("category") != "notehead":
-                continue
-            b = row.detail.get("bbox_page_px")
-            if not b or len(b) != 4:
-                continue
-            x0, y0, x1, y1 = (float(v) for v in b)
-            if x1 <= x0 or y1 <= y0:
-                continue
-            heads.append((row, i, (x0 + x1) / 2.0, (y0 + y1) / 2.0,
-                          x1 - x0, y1 - y0))
-    if not heads:
-        return Ruling.abstain("no_start_head", heads_in_reach=0)
-    avg_h = sum(h[5] for h in heads) / len(heads)
-    y_tol = max(avg_h * TIE_FLANK_MAX_DY_HEAD_HEIGHTS, TIE_FLANK_MIN_DY_PX)
-
-    # ⚠️ A TIE CUT BY A BARLINE IS DETECTED AS TWO ARCS, and the half that
-    # begins AT the barline has its start head a whole first-half away -- past
-    # any fixed reach. `_legacy._SLUR_BOUNDARY_SPACES` (0.5 spaces, IMPORTED,
-    # measured for the legacy merge) says when an arc's end sits ON its bar's
-    # edge; such an end searches the WHOLE adjacent bar instead of 3 widths.
-    # Where there is no adjacent bar the arc is cut by the SYSTEM's edge.
-    from ...export import _SLUR_BOUNDARY_SPACES
-    edge_tol = _SLUR_BOUNDARY_SPACES * avg_h
-    cut_left = own_box is not None and abs(ax0 - own_box[0]) <= edge_tol
-    cut_right = own_box is not None and abs(ax1 - own_box[2]) <= edge_tol
-    # ⚠️ DECISIONS 2026-10-01 (Sean, on the 2.52 sheet): "the notes have to be
-    # next to each other regardless of measures/barlines" -- a tied whole or
-    # half note that FILLS its own bar, tying to the next bar's first note,
-    # is drawn edge-to-edge of its own bar and is a REAL tie, not a refusal.
-    # The earlier rule ("can never cross a whole bar") conflated two
-    # different things: an arc cut at both of ITS OWN bar's edges with a note
-    # of its own inside that bar (the filled-whole-note case, real) and an
-    # arc cut at both edges of a bar that holds NO notehead AT ALL (the
-    # staff-line-read-as-a-tie case the first Litolff crop found, `3.2b`
-    # FINDINGS). Only the second is refused here; the first falls through to
-    # the ordinary flank search below, which already extends across a cut
-    # edge into the adjacent bar.
-    if cut_left and cut_right and not any(h[1] == cell_index for h in heads):
-        return Ruling.abstain("spans_a_whole_bar", **
-                              {"own_bar_heads": 0})
-
-    def usable(row) -> bool:
-        # ⚠️ Asked only of a head already inside a window, so the verdicts
-        # this decision reads -- and the ids it files as considered -- are the
-        # handful that could matter, not every head of three bars.
-        own = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
-        if own is not None and _is_relocated_copy(row.subject, own.value):
-            return False
-        np_ = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=row.subject)
-        return not (np_ is not None and np_.outcome is Outcome.DECIDED
-                    and np_.value is True)
-
-    lefts, rights = [], []
-    for row, i, xc, yc, w, _h in heads:
-        if abs(yc - arc_yc) > y_tol:
-            continue
-        reach = w * TIE_FLANK_MAX_DX_HEAD_WIDTHS
-        inside = -w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
-        dxl = ax0 - xc
-        dxr = xc - ax1
-        # ⚠️ A head can be a start only LEFT of the arc's middle and a stop
-        # only right of it, so one head is never both ends of one arc.
-        mid = (ax0 + ax1) / 2.0
-        if xc < mid and dxl >= inside and (
-                dxl < reach or (cut_left and i == cell_index - 1)) \
-                and usable(row):
-            lefts.append((dxl, yc, row, i))
-        if xc > mid and dxr >= inside and (
-                dxr < reach or (cut_right and i == cell_index + 1)) \
-                and usable(row):
-            rights.append((dxr, yc, row, i))
-
-    counts = {"lefts": len(lefts), "rights": len(rights),
-              "cut_left": cut_left, "cut_right": cut_right}
-    # ⚠️ "THE SYSTEM STARTS/ENDS HERE" IS A FACT ABOUT THE STAFF, NOT ABOUT
-    # THE ARC: nothing on this staff precedes the arc in the system's first
-    # bar (a continuation is engraved after the clef and key, which are not
-    # heads), or nothing follows it in the system's last bar. It bounds the
-    # cross-system population from above; the partner is on another system
-    # and this decision cannot see it.
-    starts_system = not has_prev and not any(
-        h[1] == cell_index and h[2] < ax0 for h in heads)
-    ends_system = not has_next and not any(
-        h[1] == cell_index and h[2] > ax1 for h in heads)
-    if not lefts and starts_system:
-        return Ruling.abstain("enters_from_previous_system", **counts)
-    if not rights and ends_system:
-        return Ruling.abstain("runs_off_the_system", **counts)
-    if not lefts and not rights:
-        # ⚠️ Usually the TWIN of a tie filed on the NEXT staff: a measure
-        # cell is padded into its neighbour, and `arc_owner` asks which heads
-        # an arc COVERS -- a tie covers none, so it cannot move one. Its twin
-        # on the right staff pairs there; this copy says so and stops.
-        return Ruling.abstain("no_head_near_the_arc", **counts)
-    if not lefts:
-        return Ruling.abstain("no_start_head", **counts)
-    if not rights:
-        return Ruling.abstain("no_stop_head", **counts)
+    fs = _flank_search(ev, arc)
+    if fs.abstain is not None:
+        # ⚠️ ONE LITERAL `Ruling.abstain` SITE PER REASON, as before the search
+        # moved into `_flank_search`: `brakes` resolves a decision's declared
+        # vocabulary by finding each reason as a literal at a Ruling site, and
+        # a reason passed through a variable made `tie_pair` UNRESOLVED (a new
+        # open finding) for no change in what it returns.
+        why, extra = fs.abstain
+        if why == "no_page_frame":
+            return Ruling.abstain("no_page_frame", **extra)
+        if why == "no_start_head":
+            return Ruling.abstain("no_start_head", **extra)
+        if why == "no_stop_head":
+            return Ruling.abstain("no_stop_head", **extra)
+        if why == "spans_a_whole_bar":
+            return Ruling.abstain("spans_a_whole_bar", **extra)
+        if why == "enters_from_previous_system":
+            return Ruling.abstain("enters_from_previous_system", **extra)
+        if why == "runs_off_the_system":
+            return Ruling.abstain("runs_off_the_system", **extra)
+        return Ruling.abstain("no_head_near_the_arc", **extra)
+    ax0, ay0, ax1, ay1, arc_yc = fs.ax0, fs.ay0, fs.ax1, fs.ay1, fs.arc_yc
+    home, heads, avg_h = fs.home, fs.heads, fs.avg_h
+    lefts, rights, counts = fs.lefts, fs.rights, fs.counts
+    head_between = fs.head_between
 
     limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
 
@@ -2594,41 +3082,6 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     # DIFFERENT positions each with a pair -- a tied chord -- or two heads at
     # one x) is NARROWED, never argmaxed.
     #
-    # ⚠️ DECISIONS 2026-10-01: "the notes have to be next to each other" --
-    # ADJACENT in time, nothing of the arc's own voice/staff between them,
-    # whichever position it sits at. `_between` reads the full three-bar
-    # head population (not just the ones already windowed into `lefts`/
-    # `rights`) because the intervening note may sit at a THIRD position,
-    # outside either flank window, and still break adjacency.
-    def order_key(i: int, xc: float) -> Any:
-        return (i, xc)
-
-    def head_between(il: int, xl: float, ir: int, xr: float,
-                      exclude_ids: tuple) -> bool:
-        lo, hi = order_key(il, xl), order_key(ir, xr)
-        if lo > hi:
-            lo, hi = hi, lo
-        for row, i, xc, _yc, w, _h in heads:
-            if row.id in exclude_ids or not usable(row):
-                continue
-            if not (lo < order_key(i, xc) < hi):
-                continue
-            # ⚠️ A head at (near enough) the SAME x as one of the pair's own
-            # endpoints is that endpoint's OWN CHORD -- a simultaneous note,
-            # not one "between" it in time. Same overlap tolerance the flank
-            # search itself uses (`TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS`), so a
-            # chord's stacked onsets never read as intervening notes. Found
-            # on Litolff p3 (`glyph/3/0/0/0/5`): the stop head's own chord
-            # partners, ~1-2 px apart in x, were read as notes between it
-            # and the start before this exemption.
-            tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
-            if i == il and abs(xc - xl) <= tol:
-                continue
-            if i == ir and abs(xc - xr) <= tol:
-                continue
-            return True
-        return False
-
     pairs = []
     blocked_by_intervening = 0
     for dxl, yl, rl, il in lefts:

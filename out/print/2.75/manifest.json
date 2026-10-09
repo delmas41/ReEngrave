@@ -1,0 +1,299 @@
+{
+ "roadmap_item": "2.75",
+ "what": "Blind crops for Sean (2026-10-09 tie/slur rule). arcs: the bracketed arc, question 'Is the bracketed arc a tie or a slur?'. stacked_below: two arcs under their notes, A upper / B lower, question 'Which arc is the tie?' -- the assumed convention (the arc NEARER the heads, i.e. the upper of two arcs under the notes, is the tie) is NOT CONFIRMED. Our reading is in this file only, never on a tile. Frame control: the ink fraction inside the bracketed box vs the same box shifted 300 px (arcs: frame >> shifted on every tile). For the two stacked tiles the shifted box landed on other notation (dense page), so the control is inconclusive there; the brackets were checked on the arcs by eye.",
+ "docs": {
+  "litolff": "Beethoven 5 mvt 1, Litolff 984073, small re-gather pdf 0-3 (count page p3)",
+  "brahms": "Brahms 1 mvt 1, Breitkopf 317803, small re-gather pdf 0-1"
+ },
+ "tree": "origin/main 0a06e5c2 + lane-2.75-tie-slur",
+ "arcs": [
+  {
+   "n": 1,
+   "tile": "litolff_01.png",
+   "subject": "glyph/3/1/1/5/1",
+   "pdf_page_index": 3,
+   "arc_box_page_px": [
+    1167.5,
+    2476.9,
+    1208.1,
+    2488.9
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.645,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "tie",
+   "ours_after": "slur",
+   "rule": "two_notes_different_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "tile": "litolff_02.png",
+   "subject": "glyph/3/0/4/4/5",
+   "pdf_page_index": 3,
+   "arc_box_page_px": [
+    1217.7,
+    1045.4,
+    1335.0,
+    1062.5
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.374,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "tie",
+   "ours_after": "slur",
+   "rule": "two_notes_different_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "tile": "litolff_03.png",
+   "subject": "glyph/2/1/2/12/0",
+   "pdf_page_index": 2,
+   "arc_box_page_px": [
+    2243.1,
+    2481.3,
+    2326.0,
+    2501.3
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.335,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "tie",
+   "ours_after": "slur",
+   "rule": "two_notes_different_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "tile": "litolff_04.png",
+   "subject": "glyph/2/0/7/9/0",
+   "pdf_page_index": 2,
+   "arc_box_page_px": [
+    1547.1,
+    1508.6,
+    1649.6,
+    1533.6
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.206,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "slur",
+   "ours_after": "tie",
+   "rule": "two_notes_same_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 5,
+   "tile": "litolff_05.png",
+   "subject": "glyph/3/0/3/5/0",
+   "pdf_page_index": 3,
+   "arc_box_page_px": [
+    1392.4,
+    830.1,
+    1508.4,
+    850.6
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.206,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "slur",
+   "ours_after": "tie",
+   "rule": "two_notes_same_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 6,
+   "tile": "litolff_06.png",
+   "subject": "glyph/3/1/3/8/0",
+   "pdf_page_index": 3,
+   "arc_box_page_px": [
+    1507.3,
+    2889.7,
+    1610.8,
+    2915.5
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.203,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "litolff",
+   "detector_class_before": "slur",
+   "ours_after": "tie",
+   "rule": "two_notes_same_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 1,
+   "tile": "brahms_01.png",
+   "subject": "glyph/1/1/9/3/13",
+   "pdf_page_index": 1,
+   "arc_box_page_px": [
+    3037.6,
+    6344.1,
+    3127.9,
+    6368.9
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.275,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "brahms",
+   "detector_class_before": "tie",
+   "ours_after": "slur",
+   "rule": "two_notes_different_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "tile": "brahms_02.png",
+   "subject": "glyph/1/1/10/3/17",
+   "pdf_page_index": 1,
+   "arc_box_page_px": [
+    3024.3,
+    6516.5,
+    3126.7,
+    6544.9
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.373,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "brahms",
+   "detector_class_before": "tie",
+   "ours_after": "slur",
+   "rule": "two_notes_different_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 3,
+   "tile": "brahms_03.png",
+   "subject": "glyph/1/0/1/2/1",
+   "pdf_page_index": 1,
+   "arc_box_page_px": [
+    2658.3,
+    776.6,
+    2764.3,
+    801.1
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.334,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "brahms",
+   "detector_class_before": "slur",
+   "ours_after": "tie",
+   "rule": "two_notes_same_pitch",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 4,
+   "tile": "brahms_04.png",
+   "subject": "glyph/1/0/2/5/8",
+   "pdf_page_index": 1,
+   "arc_box_page_px": [
+    4478.2,
+    1174.5,
+    4607.9,
+    1201.4
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.244,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "doc": "brahms",
+   "detector_class_before": "slur",
+   "ours_after": "tie",
+   "rule": "two_notes_same_pitch",
+   "VERDICT_none_yet": null
+  }
+ ],
+ "stacked_below": [
+  {
+   "n": 1,
+   "tile": "stacked_below_01.png",
+   "A_upper": "glyph/1/1/9/2/23",
+   "B_lower": "glyph/1/1/9/2/11",
+   "pdf_page_index": 1,
+   "A_box_page_px": [
+    2434.6,
+    6360.0,
+    2541.4,
+    6383.9
+   ],
+   "B_box_page_px": [
+    2431.4,
+    6371.5,
+    2642.5,
+    6409.4
+   ],
+   "dpi": 600,
+   "frame_ink_vs_shifted_control": {
+    "A": [
+     0.283,
+     0.089
+    ],
+    "B": [
+     0.286,
+     0.335
+    ]
+   },
+   "question": "Which arc is the tie, A or B? (or both / neither)",
+   "doc": "brahms",
+   "A_detector": "slur",
+   "A_ours": "tie",
+   "B_detector": "slur",
+   "B_ours": "slur",
+   "assumed_tie": "the NEARER-to-heads arc (A)",
+   "VERDICT_none_yet": null
+  },
+  {
+   "n": 2,
+   "tile": "stacked_below_02.png",
+   "A_upper": "glyph/1/0/0/3/24",
+   "B_lower": "glyph/1/0/0/3/28",
+   "pdf_page_index": 1,
+   "A_box_page_px": [
+    3189.4,
+    557.3,
+    3291.1,
+    579.4
+   ],
+   "B_box_page_px": [
+    3177.4,
+    599.3,
+    3393.5,
+    662.5
+   ],
+   "dpi": 600,
+   "frame_ink_vs_shifted_control": {
+    "A": [
+     0.506,
+     0.54
+    ],
+    "B": [
+     0.357,
+     0.26
+    ]
+   },
+   "question": "Which arc is the tie, A or B? (or both / neither)",
+   "doc": "brahms",
+   "A_detector": "tie",
+   "A_ours": "tie",
+   "B_detector": "slur",
+   "B_ours": "slur",
+   "assumed_tie": "the NEARER-to-heads arc (A)",
+   "VERDICT_none_yet": null
+  }
+ ]
+}

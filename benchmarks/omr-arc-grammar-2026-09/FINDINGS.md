@@ -768,3 +768,162 @@ reproducible.
 4. **S4 only if an arc's ENDPOINTS are traced rather than boxed.** Nothing
    short of that will revive it, and it should not be re-tried on box geometry
    on any document.
+
+
+## 16. ROADMAP 2.75 -- Sean's two-note rule DECIDES `Q.ARC_KIND` (2026-10-09), STAGED, GATHER+ADJUDICATE only
+
+Branch `lane-2.75-tie-slur`. Path: **STAGED** (`adjudicators/ownership.py`
+`adjudicate_arc_kind`; the legacy `OMR_ARC_RECLASS` is untouched and still off).
+
+**Sean, 2026-10-09:** *"If an arc only goes from one note to the next and they
+are both on the same pitch it can only be a tie - never a slur. A slur requires
+different notes if only 2 are involved."* and *"if there are 2 arcs - one over
+the other - then the tie will always be the bottom and the slur on top."*
+
+### 16.1 What changed (and what did not)
+
+* `adjudicate_arc_kind` no longer lets the detector's class decide where its
+  arc's two END HEADS were READ. The class still decides everywhere else, and
+  `detail["grammar"]["tie_slur_rule"]` records, for EVERY arc, what the rule
+  saw (`two_note`: whether and why it was or was not evaluated; `stack`;
+  `rule`; `conflict`; `detector_class`). A decided arc's `reason` stays `tie` /
+  `slur`; the rule that decided it is `tie_slur_rule.rule`.
+* The end heads are found by the tie pairing's own search -- moved, not
+  rewritten, out of `adjudicate_tie_pair` into `_flank_search` -- so the kind
+  and the pairing can never read different heads of one arc. A single head at
+  each end, none between; an arc cut by ONE barline is judged by the nearest
+  head across it (both halves of a tie get one answer).
+* A head's step is `Q.NOTEHEAD_POSITION` where a far head's LEDGERS were read
+  (an abstained far head is UNREAD: the geometry is never substituted, rule 8),
+  else the geometry step; the step must AGREE with the heads' vertical offset
+  (`TIE_SAME_POSITION_MAX_SPACES`, 0.25): two instruments, one question. A
+  disagreement is `conflict` and the class stands.
+* "Same sounding accidental" is PROVED only as no printed accidental on the
+  stop head (and, across a barline, on either end); a printed accidental keeps
+  the class; an UNCLAIMED accidental glyph beside a slur-classed same-step arc
+  ABSTAINS (`same_pitch_accidental_unread`).
+* Two `adjudicate.ORDER` moves: `accidental_owner` and `notehead_position` now
+  stand just before `arc_kind` (ADJUDICATE reads a frozen log; both read GATHER
+  rows and refusals only, so nothing else's inputs moved).
+* Not judged (the class stands, `why` recorded): a chord or second voice at an
+  end, an arc cut at BOTH barlines, an arc narrower than 1.5 head widths or
+  ending more than 1.5 widths from its head (staff-line slivers), a box refused
+  as not-an-arc (2.60 -- that refusal is untouched), any end whose position was
+  not read.
+* The stack rule is built (nearer the heads = tie, farther = slur; positions
+  outrank it; an upper slur over two same-pitch notes abstains) and fires **0
+  times** on both pages -- see 16.4.
+
+### 16.2 Population (small re-gathers on `origin/main` 0a06e5c2: Brahms pdf 0-1, Litolff pdf 0-3; `out/2.75-*.rows.json`)
+
+Control first: a replay of ADJUDICATE on the OLD code reproduces the records'
+own `arc_kind` verdicts **1,034 of 1,034 (Brahms) and 512 of 512 (Litolff)**;
+the new code changes 127 of them (81 + 46), so the control can fail.
+
+| arcs kept (not refused as not-an-arc) | Brahms (630) | Litolff (407) |
+|---|---:|---:|
+| two notes, SAME step, detector said SLUR -> TIE | 66 | 30 |
+| two notes, DIFFERENT step, detector said TIE -> SLUR | 4 | 15 |
+| 3+ notes, ends DIFFERENT, detector said TIE -> SLUR | 9 | 0 |
+| detector SLUR, same step, accidental unreadable -> ABSTAIN | 2 | 1 |
+| two notes same step, detector TIE (confirmed) | 114 | 15 |
+| two notes different step, detector SLUR (confirmed) | 6 | 26 |
+| class stands: a printed accidental on the stop head | 31 | 2 |
+| class stands: an end position UNREAD / the two instruments disagree | 4 / 0 | 27 / 9 |
+| not judged at all | 317 | 270 |
+
+Not judged splits (Brahms / Litolff): `no_head_near_the_arc` 93/86 (the arc is
+the NEIGHBOUR staff's, caught in the cell pad), `chord_or_second_voice_at_an_end`
+77/71, `no_start_head`+`no_stop_head` 62/54, `enters_from_previous_system`+
+`runs_off_the_system` 44/39, `spans_a_whole_bar` 20/1, `arc_cut_at_both_
+barlines` 11/12, `arc_end_far_from_its_head` 8/1, `arc_narrower_than_a_head_
+and_a_half` 2/6.
+
+### 16.3 Sean's hand-labelled Brahms page (`data/hand-truth/pages/imslp317803/0.json`, labeler `sean`, 73 tie/slur boxes, labelling in progress)
+
+Each truth box matched to the kept arc with the highest IoU (>= 0.30); 61 of
+73 match:
+
+|  | before | after |
+|---|---:|---:|
+| truth SLUR -> ours slur | 30 | 31 |
+| truth SLUR -> ours tie | 2 | 1 |
+| truth TIE -> ours tie | 18 | 23 |
+| truth TIE -> ours slur | 11 | 6 |
+| **right, of 61 matched** | **48** | **54** |
+
+Every arc the rule CHANGED that Sean has labelled is right (8 of 8: 7
+slur->tie, 1 tie->slur); none of his labelled arcs was made wrong. The 6 truth
+ties still read slur are arcs the rule did not judge (the neighbour staff's
+copy, a chord end, no head near the arc) -- not a rule failure. In-sample
+caveat: Sean's boxes are `prefill-confirmed` from the same detector, and 9
+truth ties have no matching arc at all (a GATHER matter).
+
+### 16.4 Stacked pairs (the second rule)
+
+Strict stack (one staff by a DECIDED `arc_owner`, same two end heads, boxes
+disjoint in y, same side of the heads, a single head at each end): **0** on
+both pages. The geometry-only scan (`probe/tie_slur_2_75/nested.py`: x-spans
+overlap >= 80% and share an end, y-disjoint, gap <= 3 spaces, one decided
+owner) finds 138 pairs on Brahms (71 above, 17 below, 50 with the heads
+between them) and 71 on Litolff (12 above, 7 below, 52 straddling) -- but the
+crops show most are NOT one tie and one slur over the same notes: duplicate
+detections, tied-chord ties, and the next staff's arc given the same owner
+(`arc_owner` decided it onto this staff). Where a real pair exists it is the
+usual nested one -- an inner two-note arc and an outer arc over 3+ notes -- and
+the two-note rule already makes the inner a tie and leaves the outer a slur, so
+the stack rule changes nothing there. Two clean below-the-notes pairs are
+cropped for Sean (`out/print/2.75/stacked_below_*`); in both the arc NEARER
+the heads is the inner two-note arc.
+
+**CONVENTION ASSUMED / NOT CONFIRMED** for arcs under the notes: the nearer arc
+(the UPPER of the two) is the tie -- an engraved tie hugs its heads -- where
+Sean's sentence says "bottom". FALSIFIED by Sean answering B on either tile.
+
+### 16.5 Risk side, and what was checked
+
+The refused flag lost on tie->slur (+130 scan edits). Here that half fires 28
+times (13 Brahms, 15 Litolff) and was looked at by eye: 12 Litolff and 4 Brahms
+crops of the tie->slur arcs (short curves joining a note to the next note at a
+different height, and arcs whose ends differ). Two Litolff boxes were not arcs
+at all (staff-line ink 11 and 15 px wide) -- those are now
+`arc_narrower_than_a_head_and_a_half` and not judged; one 43 x 5 px sliver in a
+staff gap is still judged (what kind a non-arc is called is moot, and the
+refusal of it belongs to 2.60). Frame control on the 10 arc crops: ink inside
+the bracketed box 0.20-0.65 against 0.000 for the same box shifted 300 px,
+every tile. On the 2 stacked tiles the shifted box landed on other notation
+(dense page), so that control is inconclusive there and the brackets were
+checked on the arcs by eye. 10 changed arcs + 2 stacked-below pairs are in
+`out/print/2.75/` for Sean (blind; our reading only in `manifest.json`).
+
+### 16.6 Reproduce
+
+```bash
+# small re-gathers (record on the tree under test)
+python3 -m tools.omr.acceptance_quick --doc brahms1-breitkopf --out-root $OUT
+python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff --out-root $OUT
+P=benchmarks/omr-arc-grammar-2026-09/probe/tie_slur_2_75
+PYTHONPATH=. python3 $P/replay.py $REC rows.json      # ADJUDICATE through tie_pair, one row per arc
+PYTHONPATH=. python3 $P/control.py $REC rows_old.json # OLD code must give the record's own verdicts N of N
+python3 $P/pop.py rows.json                           # the table in 16.2
+PYTHONPATH=. python3 $P/score.py rows.json --list     # 16.3 against the hand-labelled page
+PYTHONPATH=. python3 $P/nested.py $REC --list         # 16.4
+```
+
+`out/2.75-brahms.rows.json` and `out/2.75-litolff.rows.json` hold the new
+code's per-arc rows (`2.75-*-old.rows.json`: the old code's), so every figure in
+16.2-16.4 re-reads from a checkout without the 108 MB / 48 MB records.
+
+### 16.7 What is NOT established
+
+* Whether the 31 Brahms arcs whose stop head wears a printed accidental hide
+  further ties: a tie across a barline whose start head wears an accidental is
+  left alone on purpose (the barline cancels it; a slur to the natural is
+  indistinguishable by position).
+* The `0.25` same-position limit (legacy) and the `1.5`-width arc floors
+  (eyeballed on two slivers) are not swept.
+* Litolff's merged plate: the 15 tie->slur on its count pages look right by eye
+  (adjacent notes a step apart under a short curve) but none is Sean-judged.
+* Not measured: EXPORT. Only the first two stages were run, per Sean's
+  2026-09-30 instruction; `adjudicate_tie_pair` pairs a reclassified tie
+  (tested), and whether the file then carries fewer edits is unmeasured.
