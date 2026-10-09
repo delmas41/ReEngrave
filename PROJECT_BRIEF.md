@@ -37,6 +37,20 @@ MusicXML direction (`più f`); a dynamic letter is a word's letter only among
 letters of a word the lexicon knows (Sean's deductive rule). Results of the 10-09
 all-stages re-gather: `benchmarks/acceptance/overnight/20261009-all/SUMMARY.md`.
 
+**Truth is moving to hand-labeled pages** (ROADMAP 1.7, Sean 2026-10-08): the first page, Brahms
+317803 pdf 0, is being labeled (887 boxes by Sean, merged to main 2026-10-09); the plan labels every bit of ink on a movement's first page and
+its count page, cell by cell, stored in page pixels, across several publishers, and
+retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
+Each page is double-checked by Claude (flags only) and then rendered through
+LilyPond beside the print, measure by measure, before it counts as truth.
+The store, the completeness check, the training export and a generated
+inventory with the weights lineage are built (`tools/omr/hand_truth/`,
+`data/hand-truth/INVENTORY.json`), and so is the whole labeling loop — cut a
+page, label it cell by cell in the existing UI, Claude's check, the reader with
+perfect eyes, a bar-by-bar LilyPond review (runbook: `data/hand-truth/README.md`).
+The first page to label is Brahms 317803 PDF index 0; the test pages (Brahms pdf 0,
+Litolff 984073 pdf 2, Dvořák 405834 pdf 4) hold nothing the current weights trained on.
+
 **How it is measured**: the acceptance set in CLAUDE.md §6 (Litolff
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather
 during the day (`tools.omr.acceptance_quick`), the full overnight re-gather,
