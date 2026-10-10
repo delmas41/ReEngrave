@@ -35,12 +35,28 @@ from tools.omr.staged.record import Log, Q, READERS
 HEAD_Y, HEAD_H = 40.0, 20.0
 
 
-def _head(log, gi, x=97.0, y=HEAD_Y, *, w=20.0, h=HEAD_H, staff=0):
+def _head(log, gi, x=97.0, y=HEAD_Y, *, w=20.0, h=HEAD_H, staff=0,
+          stem="down"):
+    """A notehead with ONE CV stem touching it (round 2: the owner reads each
+    head's stem verdict). `stem="down"` suits the default ABOVE mark; BELOW marks
+    pass `stem="up"`; `stem=None` files none."""
     g = R.glyph(0, 0, staff, 0, gi)
     log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", x, y, w, h),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9,
                 category="notehead")
+    log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine",
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+    if stem == "up":
+        _stem(log, x + w - 3, y - 40, 40 + h / 2)
+    elif stem == "down":
+        _stem(log, x, y + h / 2, 40 + h / 2)
     return g
+
+
+def _stem(log, x, y, h, w=3.0):
+    log.observe(R.cell(0, 0, 0, 0), Q.STEM, (x, y, w, h),
+                reader=READERS.CV_LINES, frame="cell:0", x0=x, x1=x + w,
+                y_center=y + h / 2, image="no_staff", staff_lines_erased=True)
 
 
 def _mark(log, gi, x, y, cls, *, w=6.0, h=6.0):
@@ -60,20 +76,21 @@ def _decide(log, gi=0):
     return log.verdict(Q.ARTICULATION_OWNER, R.glyph(0, 0, 0, 0, gi))
 
 
-class TestAContradictedClassIsNamedNotLumpedWithNoNotehead(unittest.TestCase):
-    """Today a mark whose class says ABOVE and which stands BELOW every head in
-    reach abstains `no_notehead` -- the same word as a cell with no head at
-    all, so the population the class and the geometry disagree on is
-    invisible. Both are abstentions and neither changes; only the NAME and the
-    recorded measurement do."""
+class TestAClassContradictedByTheHeadIsNoNotehead(unittest.TestCase):
+    """ROADMAP 2.12f ROUND 2 REVERTS the round-1 relabel. A mark whose class says
+    ABOVE and which stands BELOW every head in the cell abstains `no_notehead`
+    again: Sean (tiles 1, 2, 5, 11) found the class RIGHT and the head it names in
+    the NEIGHBOUR staff, so `no_notehead` is the true statement and
+    `suffix_contradicts_geometry` misstated it. What round 1 added that stays is
+    the MEASUREMENT: `suffix_side` and `measured_side` ride the abstention."""
 
-    def test_RED_class_above_but_measured_below_the_only_head(self):
+    def test_class_above_but_measured_below_the_only_head(self):
         log = Log()
         _mark(log, 0, 100.0, 80.0, "articAccentAbove")   # y 80..86: under the head
-        _head(log, 1)
+        _head(log, 1, stem="up")        # the stem convention even AGREES with it
         v = _decide(log)
         self.assertEqual(v.outcome, "abstained")
-        self.assertEqual(v.reason, "suffix_contradicts_geometry")
+        self.assertEqual(v.reason, "no_notehead")
         self.assertEqual(v.detail["suffix_side"], "above")
         self.assertEqual(v.detail["measured_side"], "below")
         self.assertIn("gap_head_heights", v.detail)
@@ -83,37 +100,32 @@ class TestAContradictedClassIsNamedNotLumpedWithNoNotehead(unittest.TestCase):
         refusal above is not refusing everything."""
         log = Log()
         _mark(log, 0, 100.0, 80.0, "articAccentBelow")
-        head = _head(log, 1)
+        head = _head(log, 1, stem="up")
         v = _decide(log)
         self.assertEqual(v.outcome, "decided")
         self.assertEqual(v.value, head.to_key())
         self.assertEqual(v.detail["measured_side"], "below")
 
-    def test_a_head_far_out_of_reach_on_the_other_side_is_NOT_a_contradiction(self):
-        """A head seven head-heights away says nothing about the mark's side:
-        the agreement between class and geometry falls to chance there (the
-        measured curve, FINDINGS Sec.2.12f). Naming it a contradiction would
-        be the same lumping in the other direction."""
+    def test_a_head_far_below_is_also_no_notehead(self):
         log = Log()
         _mark(log, 0, 100.0, 200.0, "articAccentAbove")  # 140px under the head
-        _head(log, 1)
-        v = _decide(log)
-        self.assertEqual(v.outcome, "abstained")
-        self.assertEqual(v.reason, "no_notehead")
+        _head(log, 1, stem="up")
+        self.assertEqual(_decide(log).reason, "no_notehead")
 
     def test_a_cell_with_no_head_in_the_x_window_stays_no_notehead(self):
         log = Log()
         _mark(log, 0, 100.0, 80.0, "articAccentAbove")
-        _head(log, 1, x=400.0)                           # same cell, far in x
+        _head(log, 1, x=400.0, stem="up")                # same cell, far in x
         v = _decide(log)
         self.assertEqual(v.reason, "no_notehead")
+        self.assertNotIn("measured_side", v.detail)      # no head to measure
 
     def test_the_contradicting_head_must_be_this_staffs_own(self):
         """ROADMAP 2.27 composes: a head `glyph_owner` DECIDED belongs to the
         neighbour is not evidence about this staff's mark, on either side."""
         log = Log()
         _mark(log, 0, 100.0, 80.0, "articAccentAbove")
-        ghost = _head(log, 1)
+        ghost = _head(log, 1, stem="up")
         home, neighbour = R.staff(0, 0, 0), R.staff(0, 0, 1)
         log.observe(ghost, Q.GLYPH_BAND_DISTANCE, 4.0, reader=READERS.GEOMETRY,
                     frame="page", candidate=home.to_key(), own=True,
@@ -129,10 +141,9 @@ class TestAContradictedClassIsNamedNotLumpedWithNoNotehead(unittest.TestCase):
 class TestLevelWithTheHeadAbstains(unittest.TestCase):
     """A mark never overlaps the notehead it is printed against. One whose
     centre stands inside the head's own vertical extent is neither above nor
-    below it, and the old centre-against-centre test called it ABOVE or BELOW
-    by a hair."""
+    below it."""
 
-    def test_RED_a_mark_centred_inside_the_heads_extent(self):
+    def test_a_mark_centred_inside_the_heads_extent(self):
         log = Log()
         _mark(log, 0, 100.0, 44.0, "articAccentAbove")   # y 44..50, centre 47
         _head(log, 1)                                     # head centre 50
@@ -152,12 +163,12 @@ class TestLevelWithTheHeadAbstains(unittest.TestCase):
     def test_level_is_symmetric_below_the_centre(self):
         log = Log()
         _mark(log, 0, 100.0, 51.0, "articAccentBelow")   # y 51..57, centre 54
-        _head(log, 1)
+        _head(log, 1, stem="up")
         self.assertEqual(_decide(log).reason, "level_with_head")
 
 
 class TestADecidedOwnerCarriesTheMeasurement(unittest.TestCase):
-    def test_RED_the_decided_verdict_records_what_was_measured(self):
+    def test_the_decided_verdict_records_what_was_measured(self):
         log = Log()
         _mark(log, 0, 100.0, 0.0, "articTenutoAbove")    # y 0..6 -> gap 34px
         head = _head(log, 1)
@@ -167,82 +178,38 @@ class TestADecidedOwnerCarriesTheMeasurement(unittest.TestCase):
         self.assertEqual(v.detail["measured_side"], "above")
         self.assertAlmostEqual(v.detail["gap_head_heights"], 34.0 / HEAD_H,
                                places=3)
-        self.assertFalse(v.detail["other_side_head_in_reach"])
 
-    def test_a_mark_between_two_heads_records_that_the_class_chose(self):
-        """The mark stands between the upper head and the lower one. The
-        class says ABOVE, so the owner is the lower head -- the old rule's
-        pick, unchanged -- but the geometry alone could not have chosen, and
-        that is now on the verdict (`other_side_head_in_reach`) for the INFER
-        rule that would own such a tie-break."""
+    def test_a_mark_between_two_heads_goes_to_the_head_the_class_names(self):
+        """The mark stands between the upper head and the lower one. The class
+        says ABOVE, so only the lower head (the mark is above it) is a candidate;
+        the upper head, which the mark is below, is not. (The upper head files no
+        stem: an up-stem upper head over a down-stem lower one is a two-voice
+        column, where the convention is the stem side and this mark abstains --
+        `test_staged_articulation_stem_side_2026_10_09.py`.)"""
         log = Log()
         _mark(log, 0, 100.0, 30.0, "articAccentAbove")   # y 30..36
-        _head(log, 1, y=0.0)                              # upper, y 0..20
+        _head(log, 1, y=0.0, stem=None)                   # upper, y 0..20
         lower = _head(log, 2, y=60.0)                     # lower, y 60..80
         v = _decide(log)
         self.assertEqual(v.outcome, "decided")
         self.assertEqual(v.value, lower.to_key())
-        self.assertTrue(v.detail["other_side_head_in_reach"])
-
-    def test_POSITIVE_CONTROL_one_head_only_records_False(self):
-        log = Log()
-        _mark(log, 0, 100.0, 30.0, "articAccentAbove")
-        _head(log, 1, y=60.0)
-        v = _decide(log)
-        self.assertFalse(v.detail["other_side_head_in_reach"])
-
-
-class TestTheNearerHeadOfAColumnIsRecordedNotActedOn(unittest.TestCase):
-    """The pick is NEAREST IN X ONLY (the legacy rule's), so within a column of
-    heads sharing an x it is whichever the detector listed first. On Brahms 1
-    the pick is not the nearest declared-side head in 126 of 802 decided
-    owners, and in 91 the owner is over 2.5 head heights from its mark while a
-    nearer head stands a median 0.3 from it. This lane RECORDS that and does
-    not change the pick -- 16 % of the decided population, and no print has
-    adjudicated it -- so the test PINS the current pick (a deliberate
-    follow-up flips it on purpose, not by accident) and asserts the record."""
-
-    def _column(self):
-        log = Log()
-        _mark(log, 0, 100.0, 0.0, "articTenutoAbove")        # y 0..6
-        near = _head(log, 1, x=97.0, y=20.0)                  # gap 14  (0.7 heights)
-        far = _head(log, 2, x=95.0, y=100.0)                  # gap 94 (4.7 heights), dx 2 < 4
-        return log, near, far
-
-    def test_RED_the_x_nearest_head_still_wins_and_the_nearer_is_named(self):
-        log, near, far = self._column()
-        v = _decide(log)
-        self.assertEqual(v.outcome, "decided")
-        self.assertEqual(v.value, far.to_key(), "the pick is not changed here")
-        self.assertEqual(v.detail["nearest_declared_side_head"], near.to_key())
-        self.assertAlmostEqual(
-            v.detail["nearest_declared_side_gap_head_heights"], 14.0 / HEAD_H,
-            places=3)
-
-    def test_POSITIVE_CONTROL_when_the_pick_IS_the_nearest_they_agree(self):
-        log = Log()
-        _mark(log, 0, 100.0, 0.0, "articTenutoAbove")
-        only = _head(log, 1, x=97.0, y=20.0)
-        v = _decide(log)
-        self.assertEqual(v.value, only.to_key())
-        self.assertEqual(v.detail["nearest_declared_side_head"], only.to_key())
-        self.assertAlmostEqual(v.detail["gap_head_heights"],
-                               v.detail["nearest_declared_side_gap_head_heights"])
 
 
 class TestTheOwnerThatDecidedBeforeStillDecidesTheSameHead(unittest.TestCase):
-    """The change is bookkeeping and two named refusals: it must not move a
-    mark the old rule placed, on either side."""
+    """The rule moved from nearest-in-x to nearest-by-gap and reads the stem; a
+    mark on the NOTEHEAD side of a lone head still goes to that head, on both
+    sides."""
 
     def test_above_and_below_both_keep_their_head(self):
-        for cls, y in (("articAccentAbove", 0.0), ("articAccentBelow", 80.0)):
+        for cls, y, stem in (("articAccentAbove", 0.0, "down"),
+                             ("articAccentBelow", 80.0, "up")):
             log = Log()
             _mark(log, 0, 100.0, y, cls)
-            head = _head(log, 1)
+            head = _head(log, 1, stem=stem)
             v = _decide(log)
             self.assertEqual(v.outcome, "decided", cls)
             self.assertEqual(v.value, head.to_key(), cls)
-            self.assertEqual(v.reason, "nearest_on_declared_side", cls)
+            self.assertEqual(v.reason, "nearest_on_notehead_side", cls)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

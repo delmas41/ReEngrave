@@ -991,7 +991,8 @@ ORDER: Tuple[str, ...] = (
     # `Q.ARTICULATION_MARK` at all), but the two are natural neighbours: both
     # place a small mark against the head it belongs to.
     Q.DOT_ROLE,
-    Q.ARTICULATION_OWNER,
+    # (`Q.ARTICULATION_OWNER` MOVED, ROADMAP 2.12f round 2: see after
+    # `Q.STEM_DIRECTION` below.)
     # ⚠️ BESIDE THE ARTICULATION AND BEFORE THE RHYTHM, and the placement is
     # the same argument the fermata makes just below: its evidence is GATHER
     # rows only (`Q.ACCIDENTAL_STAFF_POSITION`, `Q.NOTEHEAD_STAFF_POSITION`,
@@ -1033,6 +1034,13 @@ ORDER: Tuple[str, ...] = (
     # afterwards it would arrive too late to separate them, which is the
     # `TUPLET_RATIO` before `DURATION` lesson in a second family.
     Q.STEM_DIRECTION,
+    # ⚠️ ROADMAP 2.12f ROUND 2, AFTER `Q.STEM_DIRECTION`. An articulation sits
+    # on the NOTEHEAD side, opposite the stem (Sean, DECISIONS 2026-10-09), so
+    # its owner is picked by reading each candidate head's stem VERDICT. ADJUDICATE
+    # reads a frozen log, and a verdict decided later than its reader reads as a
+    # hole -- here the stem would read "unread" on every head. It used to stand
+    # beside `Q.DOT_ROLE` because it read GATHER rows only; nothing else reads it.
+    Q.ARTICULATION_OWNER,
     # ⚠️ BEFORE THE DURATION AND THE EVENTS, though nothing in ADJUDICATE reads
     # its verdict today: this asks whether a glyph is a notehead AT ALL, and a
     # question about what a thing IS cannot honestly be settled after the
