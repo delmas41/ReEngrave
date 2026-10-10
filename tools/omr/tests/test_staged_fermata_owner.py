@@ -133,7 +133,10 @@ class TestWhatItHangsOver(unittest.TestCase):
         _carrier(log, 1, 100.0)
         v = _decide(log)
         self.assertEqual(v.outcome, "decided")
-        self.assertEqual(v.detail["side"], "below")
+        # ROADMAP 2.12f: the key is `suffix_side` now (the side the CLASS
+        # names), because `measured_side` stands beside it -- the same fact,
+        # renamed so the two cannot be confused. Still read by nothing.
+        self.assertEqual(v.detail["suffix_side"], "below")
         self.assertEqual(v.detail["detector_class"], "fermataBelow")
 
 

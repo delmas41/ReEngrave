@@ -3391,54 +3391,167 @@ def _owned_by_a_different_staff(ev: Evidence, row: Any, home: str) -> bool:
     return owned_by != home
 
 
+#: ROADMAP 2.12f ROUND 2. Two heads whose edge gaps to a mark differ by less than
+#: this many NOTEHEAD HEIGHTS are "about equally near", and the geometry cannot
+#: choose between them.
+#:
+#: DERIVED, NOT SWEPT: the smallest legitimate difference between two stacked
+#: heads' gaps is ONE STAFF STEP (half a staff space) -- 0.38 of a head height at
+#: the ~1.3 heights-per-space the detector's boxes measure (Brahms, whole
+#: movement). A tolerance under half of that never turns a real chord step into a
+#: tie, and sits above the detector's own box noise.
+ARTIC_TIE_HEAD_HEIGHTS = 0.25
+
+#: ROADMAP 2.12f ROUND 2. Heads within this many NOTEHEAD WIDTHS of one another
+#: in x are ONE COLUMN, for deciding whether two voices share it (opposite stems).
+#: DERIVED: a second's two heads touch and stand exactly one head width apart, and
+#: the next column is two or more away; 1.1 allows 10 % for box noise.
+ARTIC_COLUMN_HEAD_WIDTHS = 1.1
+
+
+def _artic_vertical(my: float, y0: float, y1: float,
+                    head_y: float, head_h: float) -> Tuple[str, float]:
+    """`(side, gap)` of an articulation against ONE notehead, in the cell's own
+    canonical frame -- a mark and the head beside it were cut from ONE cell, so
+    the difference of two y values is a LOCAL measurement (CLAUDE.md §10), no
+    staff-wide value involved.
+
+    `side` is `"above"`, `"below"` or `"level"`: level when the mark's centre
+    stands inside the head's own vertical extent, which an articulation never
+    does (it is printed against the head, not on it) -- so neither side is
+    claimed. `gap` is the signed edge-to-edge distance in canonical pixels
+    (negative where the two boxes overlap).
+
+    ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so ABOVE has the smaller y.
+    """
+    head_bottom = head_y + head_h
+    if my < head_y:
+        return "above", head_y - y1
+    if my > head_bottom:
+        return "below", y0 - head_bottom
+    # inside the head's extent: report the gap towards the nearer edge
+    if my < head_y + head_h / 2.0:
+        return "level", head_y - y1
+    return "level", y0 - head_bottom
+
+
+#: ROADMAP 2.12f ROUND 2. Two detections of ONE physical glyph (a mark standing in
+#: the gap between two staves is cut into BOTH staves' padded cells) share most
+#: of their page box; two different marks of one bar are at least a mark-width
+#: apart in x, so their boxes do not overlap at all.
+ARTIC_TWIN_IOU_MIN = 0.3
+
+
+def _boxes_are_one_ink(a, b) -> bool:
+    """Same physical glyph, two detections: page-pixel boxes `[x0, y0, x1, y1]`
+    that overlap by `ARTIC_TWIN_IOU_MIN`, or whose centres sit within half the
+    larger box's size on each axis. PAGE pixels, because a canonical cell
+    coordinate cannot answer a cross-staff question (CLAUDE.md §10)."""
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    inter = ix * iy
+    union = ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1])
+             - inter)
+    if union > 0 and inter / union >= ARTIC_TWIN_IOU_MIN:
+        return True
+    w = max(a[2] - a[0], b[2] - b[0])
+    h = max(a[3] - a[1], b[3] - b[1])
+    return (abs((a[0] + a[2]) / 2.0 - (b[0] + b[2]) / 2.0) <= 0.5 * w
+            and abs((a[1] + a[3]) / 2.0 - (b[1] + b[3]) / 2.0) <= 0.5 * h)
+
+
+def _same_ink_twins(ev: Evidence, mark: Any) -> List[str]:
+    """Glyph keys of the OTHER articulation marks of this system, in OTHER cells,
+    whose page box is the same ink as this mark's.
+
+    ⚠️ A GATHER FACT AND NOT A VERDICT, and it is recorded rather than searched
+    on. A measure cell is padded ~4 staff spaces and reaches the neighbour
+    staff's ink (CLAUDE.md §10), so a mark in the gap is routinely detected a
+    SECOND time in the neighbour's cell. Where that twin is DECIDED the mark IS
+    owned -- via the neighbour's cell -- and the `no_notehead` in this cell is the
+    TRUE statement. Nothing here searches across staves, and nothing relocates a
+    mark: a resolved cross-staff contest DROPS the loser (§10). Measured on Brahms
+    1 (whole movement): 328 of the 461 abstained marks, and 110 of the 127 with a
+    head on the declared side in another staff, have a DECIDED twin.
+    """
+    box = (mark.detail or {}).get("bbox_page_px")
+    if not box:
+        return []
+    mine = ev.subject.at(Kind.CELL).to_key()
+    twins = []
+    for r in ev.rows(Q.ARTICULATION_MARK, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=ev.subject.at(Kind.SYSTEM)):
+        if r.subject.at(Kind.CELL).to_key() == mine:
+            continue
+        other = (r.detail or {}).get("bbox_page_px")
+        if other and _boxes_are_one_ink(box, other):
+            twins.append(r.subject.to_key())
+    return sorted(twins)
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
-    composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
+    composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER,
+                   Q.STEM_DIRECTION),
     scope=Kind.GLYPH,
-    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
+    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.STEM_DIRECTION),
     subjects_from=Q.ARTICULATION_MARK,
-    reasons=("nearest_on_declared_side", "no_notehead", "no_side_declared",
-             "no_evidence", "owned_by_another_staff"),
+    reasons=("nearest_on_notehead_side", "heads_about_equally_near",
+             "no_notehead", "no_side_declared", "no_evidence",
+             "owned_by_another_staff", "level_with_head",
+             "stem_direction_unread", "stem_contradicts_class_side"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
-    """Which notehead a staccato, accent, marcato, tenuto or staccatissimo is
-    printed against.
+    """Which notehead a staccatissimo, accent, marcato or tenuto is printed
+    against: the NEAREST head whose NOTEHEAD side faces the mark.
 
-    The rule is the one the engraving makes true and it is NOT re-derived here:
-    a mark is printed directly above or below its notehead, so it goes to the
-    notehead nearest it in X **on the side its own class names**, within
-    `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS`. `transcribe._attach_articulations_in_cell`
-    has said that since the seventh export gap was closed, and its constant is
-    IMPORTED rather than restated -- it was swept over eight engraved works and
-    sits on a flat plateau (0.50 through 2.50 identical, 197 placed at
-    precision 0.980) with a cliff below at 0.30, so this project has paid for
-    that number once.
+    THE RULE (Sean, DECISIONS 2026-10-09 -- confirmed, not assumed): an
+    articulation sits on the notehead side, opposite the stem. Stem up -> the mark
+    is below the head; stem down -> above. With two voices on one staff (opposite
+    stems in one column) it goes on the STEM side instead. The mark's owner is the
+    nearest head, measured locally, for which that holds.
 
-    ⚠️ THE UNIT IS A NOTEHEAD WIDTH, NOT THE MARK'S OWN BOX. That is the
-    mistake the augmentation-dot gate made and paid 193 edits for: a mark's
-    bounding box is small and mostly detector noise, so a threshold derived
-    from it moves with the noise rather than with the engraving.
+    TWO READERS, BOTH RECORDED. The class SUFFIX (the detector: the side the mark
+    is printed on) and the STEM direction (the CV rung: `Q.STEM_DIRECTION`) are
+    different readers. The suffix still GATES the candidates -- only a head the
+    mark stands on the declared side of is considered -- because Sean found it
+    right on every real articulation (10 of 10), and because where it excludes
+    every head in the cell the head is in the NEIGHBOUR staff and `no_notehead` is
+    the true statement. The stem convention SELECTS among the candidates. Where
+    the two readers disagree, or the stem is unread, or two heads qualify about
+    equally, the mark abstains or narrows with a reason word and is never given to
+    the head nearest in x (CLAUDE.md rule 8):
 
-    ⚠️ A MARK WITH NO NOTEHEAD ON THE CORRECT SIDE ABSTAINS rather than taking
-    the nearest thing available. 21 of 218 across the legacy corpus do, and
-    abstaining there is why that precision is 0.980 -- a mark labelled `Above`
-    sitting below every notehead in the cell belongs to none of them.
+      `stem_contradicts_class_side`  every candidate's stem is read and puts the
+                                     mark on its STEM side (a single voice)
+      `stem_direction_unread`        the nearest candidates' stems are unread
+      `heads_about_equally_near`     NARROWED: two candidates within
+                                     `ARTIC_TIE_HEAD_HEIGHTS` of one another
 
-    ⚠️ THE CELL'S OWN CANONICAL FRAME IS CORRECT HERE, and saying so matters
-    because the sibling decision one function up needs the opposite. An
-    articulation and the notehead it names were cut from ONE cell, so they
-    share a frame by construction; it is `arc_owner`, which asks about OTHER
-    staves, that needs page pixels. A canonical x compared across two staves
-    is meaningless -- the fault that made `Q.ONSET_COLUMN` report 1,062
-    columns of nothing.
+    THE X WINDOW IS A GATE, NOT THE SELECTOR. `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS` is
+    imported (swept over eight engraved works onto a flat plateau); it bounds
+    which heads are in the mark's column. WHICH head of the column is decided by
+    edge gap -- the old pick was nearest in x and took the head ~3 heights away
+    in 126 of 802 decided Brahms marks (Sean, tiles 7, 9, 10: all wrong, the mark
+    belongs to the head it touches).
 
-    ⚠️ `no_side_declared` HAS ZERO REACH ON THE DOCUMENT THIS LANDED WITH and
-    is here anyway. `class_aliases.COARSER_THAN_CANONICAL` records
-    `articulationAccent` / `Staccato` / `Tenuto` as coarser spellings that
-    carry no side, and `_artic_side` returns None for them rather than
-    guessing. All 24 marks on Litolff `984073` p1-3 name a side, so that branch
-    is unexercised by the page and is tested directly instead.
+    ⚠️ THE UNIT IS A NOTEHEAD, NOT THE MARK'S OWN BOX: the median width for x and
+    the median height for y, so one merged or clipped detection does not set the
+    limit for the whole cell.
+
+    ⚠️ THE CELL'S OWN CANONICAL FRAME IS CORRECT HERE. An articulation and the head
+    it names were cut from ONE cell, so a difference of two y values is a LOCAL
+    measurement (CLAUDE.md §10). It is `arc_owner`, which asks about OTHER staves,
+    that needs page pixels. A mark whose head is in the neighbour staff is
+    detected a second time in that staff's cell: `same_ink_twins` records it.
+
+    ⚠️ `Q.STEM_DIRECTION` IS READ AS A VERDICT, so it must precede this decision in
+    `adjudicate.ORDER` (it does since 2.12f round 2); decided later it would read
+    as a hole on every head.
+
+    ⚠️ `no_side_declared` HAS ZERO REACH on both plates: the coarse spellings
+    `class_aliases.COARSER_THAN_CANONICAL` records carry no side and never appear.
     """
     marks = ev.rows(Q.ARTICULATION_MARK)
     if not marks:
@@ -3453,6 +3566,8 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_side_declared",
                               detector_class=str(mark.value))
     name, above = kind
+    suffix_side = "above" if above else "below"
+    twins = _same_ink_twins(ev, mark)
 
     cell = ev.subject.at(Kind.CELL)
     home = ev.subject.at(Kind.STAFF).to_key()
@@ -3461,62 +3576,156 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                  if (r.detail or {}).get("category") == "notehead"
                  and isinstance(r.value, (list, tuple)) and len(r.value) >= 5]
     if not all_heads:
-        return Ruling.abstain("no_notehead", articulation=name)
-    # ⚠️ ROADMAP 2.27: a candidate `glyph_owner` already DECIDED belongs to
-    # the neighbour staff is dropped BEFORE the side/distance test ever sees
-    # it -- reported apart from `no_notehead` so a mark with nothing of its
-    # own in this cell can be told from one whose only candidates are the
-    # neighbour's ink.
+        return Ruling.abstain("no_notehead", articulation=name,
+                              suffix_side=suffix_side, same_ink_twins=twins)
+    # ⚠️ ROADMAP 2.27: a candidate `glyph_owner` already DECIDED belongs to the
+    # neighbour staff is dropped BEFORE the side/distance test ever sees it --
+    # reported apart from `no_notehead` so a mark with nothing of its own in this
+    # cell can be told from one whose only candidates are the neighbour's ink.
     heads = [r for r in all_heads if not _owned_by_a_different_staff(ev, r, home)]
     if not heads:
         return Ruling.abstain("owned_by_another_staff", articulation=name,
-                              n_candidates=len(all_heads))
+                              n_candidates=len(all_heads), same_ink_twins=twins)
 
     # ⚠️ THE MEDIAN NOTEHEAD WIDTH, exactly as the legacy pass takes it -- one
-    # clipped or merged detection must not set the limit for the whole cell.
+    # clipped or merged detection must not set the limit for the whole cell --
+    # and the median HEIGHT in the other axis.
     widths = sorted(float(h.value[3]) for h in heads)
     nh_width = widths[len(widths) // 2] or 1.0
     limit = nh_width * _legacy_articulation._ARTIC_MAX_DX_NOTEHEAD_WIDTHS
+    heights = sorted(float(h.value[4]) for h in heads)
+    nh_height = heights[len(heights) // 2] or 1.0
 
     mx = (float(mark.detail.get("x0", 0.0))
           + float(mark.detail.get("x1", 0.0))) / 2.0
-    my = (float(mark.detail.get("y0", 0.0))
-          + float(mark.detail.get("y1", 0.0))) / 2.0
+    y0 = float(mark.detail.get("y0", 0.0))
+    y1 = float(mark.detail.get("y1", 0.0))
+    my = (y0 + y1) / 2.0
 
-    best: Optional[Tuple[float, object]] = None
+    # Every head in the mark's column, with where the mark stands against it.
+    # ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE (`_artic_vertical`).
+    window = []                                  # (dx, head, side, gap)
     for h in heads:
         _cls, hx, hy, hw, hh = h.value[:5]
-        hyc = float(hy) + float(hh) / 2.0
-        # ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so a mark printed ABOVE
-        # its notehead has the SMALLER y of the two. Stated because the sign
-        # is the whole of the side test and reads backwards.
-        if above and my >= hyc:
-            continue
-        if not above and my <= hyc:
-            continue
         dx = abs(mx - (float(hx) + float(hw) / 2.0))
         if dx > limit:
             continue
-        if best is None or dx < best[0]:
-            best = (dx, h)
-    if best is None:
-        return Ruling.abstain("no_notehead", articulation=name,
-                              side="above" if above else "below",
-                              notehead_width=nh_width,
-                              limit_canonical_px=limit)
+        side, gap = _artic_vertical(my, y0, y1, float(hy), float(hh))
+        window.append((dx, h, side, gap))
+    near_any = min(window, key=lambda w: abs(w[3]), default=None)
 
-    dx, head = best
+    base = {"articulation": name, "suffix_side": suffix_side,
+            "same_ink_twins": twins, "detector_class": str(mark.value)}
+    if near_any is not None:
+        base.update(nearest_head=near_any[1].subject.to_key(),
+                    measured_side=near_any[2],
+                    gap_head_heights=near_any[3] / nh_height)
+        if near_any[2] == "level":
+            # ⚠️ A mark centred inside a head's own vertical extent is neither
+            # above nor below it, and an articulation never overlaps the head it
+            # is printed against. It abstains; no farther head is given it.
+            return Ruling(value=None, reason="level_with_head",
+                          used=(mark.id, near_any[1].id), detail=base)
+
+    # THE CLASS GATES the candidates: heads the mark stands on the declared side
+    # of. None in this cell -> the head is not in this cell (Sean, tiles 1, 2, 5,
+    # 11: the class was right and the head is in the NEXT staff), and the old,
+    # true `no_notehead` stands. The measurement stays in the detail.
+    cands = [w for w in window if w[2] == suffix_side]
+    if not cands:
+        return Ruling.abstain("no_notehead", notehead_width=nh_width,
+                              limit_canonical_px=limit, **base)
+
+    def stem_of(h):
+        v = ev.verdict(Q.STEM_DIRECTION, subject=h.subject)
+        if v is not None and v.outcome is Outcome.DECIDED \
+                and v.value in ("up", "down"):
+            return v.value
+        return None
+
+    def other_voice(h, direction) -> bool:
+        """Another head in this head's column whose stem points the OTHER way."""
+        cx = float(h.value[1]) + float(h.value[3]) / 2.0
+        for o in heads:
+            if o is h:
+                continue
+            ox = float(o.value[1]) + float(o.value[3]) / 2.0
+            if abs(ox - cx) <= ARTIC_COLUMN_HEAD_WIDTHS * nh_width:
+                od = stem_of(o)
+                if od is not None and od != direction:
+                    return True
+        return False
+
+    rows = []                         # (gap, dx, head, side, stem, two_voice, state)
+    for dx, h, side, gap in cands:
+        sd = stem_of(h)
+        if sd is None:
+            rows.append((gap, dx, h, side, None, False, "unread"))
+            continue
+        tv = other_voice(h, sd)
+        notehead_side = "below" if sd == "up" else "above"
+        required = (("above" if sd == "up" else "below") if tv
+                    else notehead_side)
+        rows.append((gap, dx, h, side, sd, tv,
+                     "ok" if suffix_side == required else "against"))
+
+    live = sorted((r for r in rows if r[6] != "against"), key=lambda r: r[0])
+    if not live:
+        g, _dx, h, _s, sd, tv, _st = min(rows, key=lambda r: r[0])
+        return Ruling(
+            value=None, reason="stem_contradicts_class_side",
+            used=(mark.id, h.id),
+            detail={**base, "nearest_head": h.subject.to_key(),
+                    "measured_side": suffix_side,
+                    "gap_head_heights": g / nh_height,
+                    "stem_direction": sd,
+                    "notehead_side": "below" if sd == "up" else "above",
+                    "two_voice": tv})
+
+    # Heads about as near as the nearest live one: the geometry cannot separate
+    # them. A nearer head whose stem is UNREAD is among them -- it may be the
+    # owner, and giving the mark to a farther head that qualifies is the far pick
+    # Sean found wrong.
+    tol = ARTIC_TIE_HEAD_HEIGHTS * nh_height
+    near = [r for r in live if r[0] <= live[0][0] + tol]
+    if not any(r[6] == "ok" for r in near):
+        g, _dx, h, _s, _sd, _tv, _st = near[0]
+        return Ruling(
+            value=None, reason="stem_direction_unread",
+            used=(mark.id, h.id),
+            detail={**base, "nearest_head": h.subject.to_key(),
+                    "measured_side": suffix_side,
+                    "gap_head_heights": g / nh_height,
+                    "n_unread_nearest": len(near)})
+    if len(near) > 1:
+        return Ruling.narrow(
+            [R.Candidate(r[2].subject.to_key(), -r[0] / nh_height)
+             for r in near],
+            "heads_about_equally_near",
+            used=(mark.id,) + tuple(r[2].id for r in near),
+            **{**base, "unread_in_tie": [r[2].subject.to_key() for r in near
+                                         if r[6] == "unread"]})
+
+    g, dx, head, side, sd, tv, _st = near[0]
     return Ruling(
-        value=head.subject.to_key(), reason="nearest_on_declared_side",
+        value=head.subject.to_key(), reason="nearest_on_notehead_side",
         used=(mark.id, head.id),
-        # ⚠️ THE KIND TRAVELS WITH THE OWNER. The quantity names the NOTEHEAD,
-        # and an exporter holding only that would have to re-read the mark's
-        # class to know whether to write `<staccato/>` or `<accent/>` -- which
-        # is the re-derivation this stage exists to remove.
+        # ⚠️ THE KIND TRAVELS WITH THE OWNER. The quantity names the NOTEHEAD, and
+        # an exporter holding only that would have to re-read the mark's class to
+        # know whether to write `<staccato/>` or `<accent/>` -- the re-derivation
+        # this stage exists to remove. BOTH READERS TRAVEL TOO: the class's side
+        # and the stem's, so a disagreement is countable downstream.
         detail={"articulation": name,
-                "side": "above" if above else "below",
+                "suffix_side": suffix_side,
+                "measured_side": side,
+                "stem_direction": sd,
+                "notehead_side": "below" if sd == "up" else "above",
+                "stem_rule": "stem_side" if tv else "notehead_side",
+                "two_voice": tv,
+                "gap_head_heights": g / nh_height,
                 "dx_canonical_px": dx,
                 "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+                "same_ink_twins": twins,
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
 
@@ -4205,6 +4414,23 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
         reason = "nearest_in_bar"
 
     lo, hi = _span(hit)
+    # ⚠️ ROADMAP 2.12f, THE FERMATA HALF -- RECORD-ONLY, AND THAT IS THE POINT.
+    # Where the mark stands against the carrier it was given to, measured the
+    # way an articulation's is (`_artic_vertical`, the cell's own frame), set
+    # beside the side its class names. NOTHING READS EITHER: the side is not a
+    # constraint on a fermata (the docstring above says why), `_mxl_note`
+    # writes `type="upright"` unconditionally, and wiring this into the pick
+    # would press into service a test the family cannot pass. It is written on
+    # the verdict so the disagreement is countable before anything consumes it.
+    suffix_side = (mark.detail or {}).get("side")
+    try:
+        fy0 = float(mark.detail.get("y0", 0.0))
+        fy1 = float(mark.detail.get("y1", 0.0))
+        _c, _x, cy, _w, ch = hit.value[:5]
+        measured_side, _gap = _artic_vertical((fy0 + fy1) / 2.0, fy0, fy1,
+                                              float(cy), float(ch))
+    except (TypeError, ValueError):
+        measured_side = None
     return Ruling(
         value=hit.subject.to_key(), reason=reason,
         used=(mark.id, hit.id),
@@ -4216,7 +4442,11 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
                 "carrier_class": str(hit.value[0]),
                 "dx_canonical_px": abs((lo + hi) / 2.0 - mx),
                 "n_carriers": len(carriers),
-                "side": (mark.detail or {}).get("side"),
+                "suffix_side": suffix_side,
+                "measured_side": measured_side,
+                "side_agrees": (None if suffix_side is None
+                                or measured_side is None
+                                else suffix_side == measured_side),
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
 
@@ -4318,20 +4548,28 @@ def adjudicate_ornament_owner(ev: Evidence) -> Ruling:
                               limit_canonical_px=limit)
 
     dx, head = best
-    return Ruling(
-        value=head.subject.to_key(),
-        reason=("nearest_on_declared_side" if side
-                else "nearest_either_side"),
-        used=(mark.id, head.id),
+    # ⚠️ ROADMAP 2.12f ROUND 2: ONE LITERAL REASON PER RETURN SITE, behaviour
+    # unchanged. This was `reason=("nearest_on_declared_side" if side else
+    # "nearest_either_side")`; `brakes` section 5 resolves a declared reason by
+    # reading the string at a `Ruling` site, and the articulation owner (which
+    # used to return `nearest_on_declared_side` as a literal) is no longer the
+    # site that made a conditional here read as resolved.
+    ornament_detail = {
         # ⚠️ THE KIND AND THE STROKE COUNT TRAVEL WITH THE OWNER, so an
         # exporter holding only the subject key need not re-read the mark's
         # class to know whether to write `<trill-mark/>` or a `<tremolo>` of
         # three strokes -- the re-derivation this stage exists to remove.
-        detail={"ornament": kind, "strokes": detail.get("strokes"),
-                "side": side, "dx_canonical_px": dx,
-                "dx_notehead_widths": (dx / nh_width) if nh_width else None,
-                "detector_class": str(mark.value),
-                "confidence": mark.score})
+        "ornament": kind, "strokes": detail.get("strokes"),
+        "side": side, "dx_canonical_px": dx,
+        "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+        "detector_class": str(mark.value),
+        "confidence": mark.score}
+    if side:
+        return Ruling(value=head.subject.to_key(),
+                      reason="nearest_on_declared_side",
+                      used=(mark.id, head.id), detail=ornament_detail)
+    return Ruling(value=head.subject.to_key(), reason="nearest_either_side",
+                  used=(mark.id, head.id), detail=ornament_detail)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

@@ -27,12 +27,29 @@ HOME = R.staff(0, 0, 0)
 NEIGHBOUR = R.staff(0, 0, 1)
 
 
-def _head(log, gi, x, y, *, w=20.0, h=20.0, staff=0):
+def _head(log, gi, x, y, *, w=20.0, h=20.0, staff=0, stem="down"):
+    """A notehead with ONE CV stem touching it (ROADMAP 2.12f round 2: the owner
+    reads each head's `Q.STEM_DIRECTION`, so a head with no stem row is a head
+    whose direction is unread). `stem="down"` is the default because the default
+    mark is an ABOVE mark, and an above mark is on a stem-down head's notehead
+    side; the BELOW tests pass `stem="up"`. `stem=None` files no stem."""
     g = R.glyph(0, 0, staff, 0, gi)
     log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", x, y, w, h),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9,
                 category="notehead")
+    log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine",
+                reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+    if stem == "up":
+        _stem(log, x + w - 3, y - 40, 40 + h / 2)
+    elif stem == "down":
+        _stem(log, x, y + h / 2, 40 + h / 2)
     return g
+
+
+def _stem(log, x, y, h, w=3.0):
+    log.observe(R.cell(0, 0, 0, 0), Q.STEM, (x, y, w, h),
+                reader=READERS.CV_LINES, frame="cell:0", x0=x, x1=x + w,
+                y_center=y + h / 2, image="no_staff", staff_lines_erased=True)
 
 
 def _owned_by_the_neighbour(log, glyph, *, near=1.0, far=4.0):
@@ -99,19 +116,20 @@ class TestTheMarkGoesToTheNoteheadUnderIt(unittest.TestCase):
         """⚠️ THE OTHER SIDE. Without this, inverting the y comparison passes."""
         log = Log()
         _mark(log, 0, 100.0, 80.0, cls="articStaccatoBelow")
-        head = _head(log, 1, 97.0, 40.0)
+        head = _head(log, 1, 97.0, 40.0, stem="up")
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.outcome, "decided")
         self.assertEqual(v.value, head.to_key())
 
-    def test_the_NEAREST_in_x_wins(self):
+    def test_the_NEAREST_by_gap_wins_not_the_nearest_in_x(self):
+        """ROADMAP 2.12f round 2 (Sean, tiles 7, 9, 10): the x window GATES the
+        column, the edge gap SELECTS within it. Both heads below the mark are in
+        its column; the nearer in x is the farther in y and does NOT win."""
         log = Log()
-        # ⚠️ CENTRES, not corners: the mark spans 100-106 so its centre is
-        # 103, and a 20px head at x takes centre x+10. The first draft of this
-        # test put the "far" head NEARER and read as a code failure.
+        # ⚠️ CENTRES, not corners: the mark spans 100-106 so its centre is 103.
         _mark(log, 0, 100.0, 0.0)
-        _head(log, 1, 82.0, 40.0)            # centre  92, dx 11
-        near = _head(log, 2, 94.0, 40.0)     # centre 104, dx  1
+        _head(log, 1, 96.0, 100.0)           # centre 106, dx  3  (x-nearer)
+        near = _head(log, 2, 88.0, 20.0)     # centre  98, dx  5, TOUCHING
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.value, near.to_key())
 
@@ -119,7 +137,7 @@ class TestTheMarkGoesToTheNoteheadUnderIt(unittest.TestCase):
         """A tenuto must not reach the file as a staccato."""
         log = Log()
         _mark(log, 0, 100.0, 80.0, cls="articTenutoBelow")
-        _head(log, 1, 97.0, 40.0)
+        _head(log, 1, 97.0, 40.0, stem="up")
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.detail["articulation"], "tenuto")
 
@@ -133,7 +151,12 @@ class TestTheRefusals(unittest.TestCase):
         _head(log, 1, 97.0, 40.0)
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.outcome, "abstained")
+        # ROADMAP 2.12f ROUND 2: `no_notehead` IS the true statement here (Sean,
+        # tiles 1, 2, 5, 11 -- the class was right and the head is in the
+        # NEIGHBOUR staff), so the round-1 relabel `suffix_contradicts_geometry`
+        # is reverted. The measurement stays in the detail.
         self.assertEqual(v.reason, "no_notehead")
+        self.assertEqual(v.detail["measured_side"], "below")
 
         log2 = Log()                          # positive control: move it above
         _mark(log2, 0, 100.0, 0.0)
@@ -182,7 +205,7 @@ class TestTheRefusals(unittest.TestCase):
         _mark(log2, 0, 100.0, 0.0, cls="articStaccatoAbove")
         _head(log2, 1, 97.0, 40.0)
         self.assertEqual(_decide(log2, R.glyph(0, 0, 0, 0, 0)).reason,
-                         "nearest_on_declared_side")
+                         "nearest_on_notehead_side")
 
     def test_a_mark_outside_the_five_exported_kinds_abstains(self):
         """`_ARTICULATION_KINDS` is the legacy list and is not widened here."""
