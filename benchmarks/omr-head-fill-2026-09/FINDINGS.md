@@ -1090,8 +1090,11 @@ marked by a corner bracket, a frame control in `manifest.json` that can fail, sh
   **193** (`out/2.78/p2-check-final.txt`, the run on the final code head).
 * Existing tests edited: `test_staged_evaluate_order.py` (the pinned rule order now includes `share_stem_value` before the meter rules) and
   `test_stage_review_evidence.py` (two quantities added to the set of stages that see a human box).
-* Fast tier (`pytest tools/omr/tests -m "not slow"`) on the final code head `5f1c71c3`, `tools/` clean throughout: **6,802 passed, 11 skipped,
-  2 xfailed, 825 deselected as slow, 0 failed**, 583 s. Every later commit on the branch touches only `benchmarks/` and `out/`.
+* Fast tier (`pytest tools/omr/tests -m "not slow"`), `tools/` clean throughout each run: on `5f1c71c3` (this lane's last code commit)
+  **6,802 passed, 11 skipped, 2 xfailed, 825 deselected as slow, 0 failed**, 583 s; then again on `565af7f9`, the merge of `origin/main`
+  `40875f6a` (2.12f landed; it touches `adjudicate.py` and `ownership.py`, merged without conflict, `ORDER` holds both lanes' entries):
+  **6,841 passed, 11 skipped, 2 xfailed, 825 deselected, 0 failed**, 576 s. `check` on the merged head: N = **193**
+  (`out/2.78/p2-check-merged.txt`). Every commit after the merge touches only `benchmarks/` and `out/`.
 
 ### 12.9 Not done / limits
 
