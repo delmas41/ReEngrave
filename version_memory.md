@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (night) — 2.12f landed: an articulation's owner faces it across the notehead
+
+- `adjudicate_articulation_owner`: nearest head whose notehead side faces the mark (opposite the stem; two voices -> stem side), suffix side recorded beside the measured side; Brahms 89 marks moved (86 to the touching head). `d4084863`. Sean's tiles for round 2 pending.
+
 ## 2026-10-09 (evening session) — 2.78 confirmed, 2.61d landed, lanes 2.78 and 2.12f sent
 
 - Sean confirmed 2.78 (*"one stem one value, no exceptions"*, DECISIONS). Lane `lane-2.78-one-stem-one-value` sent for Phase 1 only (population + blind tiles; no rule until Sean says which head is wrong); lane `lane-2.12f-artic-side` sent (Sean's pick).

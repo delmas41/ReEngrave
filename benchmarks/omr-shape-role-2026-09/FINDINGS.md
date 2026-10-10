@@ -2691,3 +2691,441 @@ NMS or downstream in ADJUDICATE); the invisible half (sub-threshold splits)
 is still unreached — per FINDINGS §(c)/(e) above, that needs raw per-class
 score access before NMS, which `ultralytics 8.4.50`'s `results.boxes` does
 not expose.
+
+
+---
+
+# PART 10 — §2.12f: AN ARTICULATION'S SIDE IS MEASURED AGAINST ITS HEAD, AND THE CLASS IS RECORDED, NOT OVERTURNED
+
+Branch `lane-2.12f-artic-side`. **STAGED, ADJUDICATE.** Not merged. ROADMAP row 2.12f
+said *"todo — 1,134; one re-gather; the fermata half stays record-only."* Three
+parts of that row did not survive the tree; they are listed under "What
+contradicted this brief" and the numbers they replace are in the first table.
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED** (CLAUDE.md rule 3 —
+nobody was asked before the code; the tiles below are the question). *An
+articulation's side is where its ink sits relative to the notehead it belongs to:
+above that head or below it. Measure that, not the class name.* It is falsified
+by a Sean-adjudicated crop in which the class names a side, the mark is measured
+on the other, and the mark belongs to a head **in the same cell**. The first look
+at the print read the other way (below), which is why the decision records the
+disagreement and does not overturn the class.
+
+## 1. REACH, before anything else
+
+Every number below is a count over rows on a saved record, re-adjudicated on one
+tree (§4). `Q.ARTICULATION_MARK` rows only — since 2.12c every `articStaccato*` box
+is `Q.AUG_DOT`, and since 2.12g the Above/Below twins are one box.
+
+| record | marks reaching the decision | owner decided | `no_notehead` | `owned_by_another_staff` |
+|---|--:|--:|--:|--:|
+| Brahms 1 Breitkopf, whole movement (shared record 20261009-all) | **1,263** | 802 | 427 | 34 |
+| Beethoven 5 Litolff, whole movement | 18 | 15 | 3 | 0 |
+| Brahms count pages (pdf 0–1, small re-gather, tree `3ec53272`) | 4 | 2 | 1 | 1 |
+| Litolff count pages (pdf 1–3, small re-gather) | 2 | 1 | 1 | 0 |
+
+Brahms by class: accent 479 (340 Above / 139 Below), staccatissimo 735 (379 / 356),
+tenuto 30, marcato 19. **The audit's 1,134** (Litolff 139, Breitkopf 989, engraved
+6) counted `articStaccato*` marks that 2.12c has since moved off this quantity and
+compared each mark with *the nearest head in x, any side, no ownership filter*. The
+same measure re-run on today's tree gives **274** (Brahms 272, Litolff 2). The
+engraved fixture's MusicXML holds no articulation at all (`grep -c` 0), so it has no
+truth to measure a side against and was not re-gathered.
+
+**What the item as built can move on the acceptance set: 20 abstentions
+relabelled on the whole Brahms movement, 0 on Litolff, 0 on the four count-page
+marks, 0 decided owners.** That is the honest size of "the suffix versus the
+geometry" once the staccati are gone, and it is stated before any result.
+
+## 2. THE MEASUREMENT THAT CHANGED THE DESIGN
+
+Side-blind, every mark against the nearest head in its own cell (probe
+`probe/artic_side.py`): of 1,212 measurable Brahms marks, **161 (13 %) name a side
+the nearest head contradicts**. 78 % of those stand 3+ staff spaces from any head
+(they belong to a head that is not there), and the contradiction is not a property
+of the suffix: **agreement of the class with the nearest head's geometry, by edge gap
+in head heights, over the 1,228 Brahms + Litolff marks**:
+
+| gap, head heights | agree | disagree | |
+|---|--:|--:|--:|
+| [0.00, 1.50) | 1,029 | 16 | 98.5 % |
+| [1.50, 2.50) | 24 | 14 | 63 % |
+| [2.50, …) | 14 | 131 | 10 % — below chance |
+
+That curve is `ARTIC_REACH_HEAD_HEIGHTS = 1.5` (`ownership.py`): inside it the class
+and the geometry are one story; outside it the nearest head says nothing about the
+mark. The class and the box are ONE detection (CLAUDE.md §4b `correlated_groups`),
+so this is a consistency measurement and not two witnesses voting.
+
+**The print, then (rule 7 — who says it is right).** The 15 Brahms marks the class
+and the nearest in-cell head disagree on *within reach* were cropped (scratch,
+`out/print` holds only the blind tiles). By my reading, **~11 are accents standing in
+the gap between two staves, directly over a head of the staff below** — the class
+(`Above`) is right, the head it names is in the neighbour staff's cell, and the
+in-cell nearest head is the wrong witness. One is a dynamic's tail read as a tenuto,
+one stands between two heads and is genuinely ambiguous, two are suffixes that are
+wrong with the owner in the cell. *Overturning the class on that population attaches
+a correct mark to a wrong note.* Of the 1,212 measurable marks, **182 have no head in
+reach at all, and 127 of those have a head on the declared side in another staff** (page
+pixels, same x window, within the same reach) — the real size of the cross-staff loss.
+I am the reader here, not Sean; the tiles are how that is checked.
+
+## 3. THE STAGE, by §4a
+
+*Does the answer FOLLOW or is it merely BEST?* The side of a mark against a head
+FOLLOWS from two boxes in one frame, and it may be unknowable (level; no head in
+reach; the class and the box disagree), so it is an ADJUDICATE question with a right
+to abstain. It is not INFER: the one place a choice between two answers *is* made —
+a mark between two heads of a column, given to the head the class names — is a
+tie-break with no decision above it, which is INFER's job and is not built here; it is
+**recorded** (`other_side_head_in_reach`) so it is countable first.
+
+**No new quantity.** The decision is `adjudicate_articulation_owner`, reasons
+`nearest_on_declared_side`, `no_notehead`, `no_side_declared`, `no_evidence`,
+`owned_by_another_staff` and two new: **`suffix_contradicts_geometry`**,
+**`level_with_head`**. A separate `Q.ARTICULATION_SIDE` was weighed and rejected: for a
+decided owner its value equals the class by construction (the pick already requires
+the head on the declared side — 802 of 802), which is a computation and not a
+measurement (rule 7); everything it could say that the owner cannot is a reason word
+and a detail field; and it would have been a producer-only quantity with no consumer
+(`reach` +1, `check` 194).
+
+What each verdict now carries: `suffix_side` (the class) beside `measured_side`
+(`_artic_vertical`: the mark's box against the head's box in the cell's own frame — a
+difference of two y values read at one x, local by construction, CLAUDE.md §10),
+`gap_head_heights`, `other_side_head_in_reach`, and `nearest_declared_side_head` with
+its gap. `Q.ARTICULATION_POSITION` (the staff ruler) is **not** read: it files no row
+unless `OMR_FAMILY_POSITIONS` is on, and a rule resting on it would be inert exactly
+where it is needed (the same finding `reach.py` records for `Q.REST_POSITION`).
+
+## 4. BASE vs ARM — one tree, one record, control first
+
+`benchmarks/omr-shape-role-2026-09/readjudicate_artic_side.py` rebuilds a Log from the
+record's GATHER rows and runs the ownership chain on THIS tree; base = `3ec53272`
+(clean), arm = `8874025d` (clean). ADJUDICATE-only, so a saved record is a valid input;
+a GATHER change would be invisible to it. **Control, printed before any delta —
+`glyph_owner` rebuilt == the record's own:** Litolff count pages 1,135 of 1,135;
+Brahms count pages 1,766 of 1,778; Litolff whole 9,414 of 9,423; Brahms whole 33,767
+of 34,106. The shortfalls are `reconcile_dot_owners` (2.59) supersedes, which need
+`Q.DOT_ROLE` — a decision outside this chain — and touch dots, not heads. Base and arm
+print the identical number on every record.
+
+Brahms, whole movement (`compare_artic_side.py`):
+
+| base → arm | n |
+|---|--:|
+| decided `nearest_on_declared_side` → same, **same head** | **802 of 802** |
+| `no_notehead` → `no_notehead` | 407 |
+| `no_notehead` → **`suffix_contradicts_geometry`** | **20** |
+| `owned_by_another_staff` → same | 34 |
+| `level_with_head` (new) | 0 |
+
+**Invariants, each a number that can fail:** no base-decided owner moved (0
+violations); no base-abstained mark became decided (0); every arm-decided owner's
+`measured_side` equals the class's side (802 of 802 — by construction, reported as
+such); fermata owner outcome and value identical (Brahms 12/12, Litolff whole 178/178,
+Litolff count pages 63/63). **Marks whose side changed against the class: 0, by
+design.**
+
+Decided-owner measurements (arm): **147 of 802 are beyond reach**
+(> 1.5 head heights from their mark); 3 have a head on the other side also in reach.
+
+**The small re-gather, both documents, through the real CLI** (`acceptance_quick --doc …`,
+GATHER + ADJUDICATE only, each arm its own `--out-root`): base `3ec53272` clean, arm
+`20307e4e` clean, arm run with `--against` the base record. **`readout diff` reports no
+differences on either count page** (Litolff 4 m 04 s, Brahms 9 m 34 s of wall time — the tell
+that nothing was cached). That is the prediction, not a surprise: those two pages hold 2 and
+4 articulation marks, none of which the lane relabels. What the runs add is end-to-end: the
+new verdict fields and reason words survive the record writer, `readout` and the stage
+summary.
+
+**Fast tier on the branch head `8874025d`: 6,754 passed, 0 failed, 11 skipped, 825
+deselected, 2 xfailed (8 m 56 s).** `check` N: 193 on this base, 193 on the arm.
+
+## 5. THE FERMATA HALF — measured, recorded, read by nothing
+
+`fermata_owner`'s verdict gains `suffix_side`, `measured_side` (against the carrier it
+chose, `above`/`below`/`level`) and `side_agrees`; its pick is untouched.
+
+| record | decided carriers | measured above / below / level | class agrees |
+|---|--:|--:|--:|
+| Litolff whole | 156 | 89 / 62 / 5 | 88 (56 %) |
+| Litolff count pages | 56 | 40 / 16 / 0 | 40 |
+| Brahms whole | 11 | 6 / 4 / 1 | 4 |
+
+**44 % disagreement is not a finding about `fermataAbove`.** 44 of the 103
+`fermataAbove`-over-a-notehead marks measure *below* their carrier: the carrier is
+chosen by x alone inside the cell (its docstring says so), so a fermata printed above
+a staff but filed in the cell of the staff above it is "contained" by *that* staff's
+note and stands under it. The right ruler for a fermata's side is the staff
+(`Q.FERMATA_POSITION`, also off by default), not a head chosen without regard to
+height. Recorded as asked; nothing consumes it.
+
+## 6. WHAT WAS FOUND THAT IS NOT THIS ITEM
+
+1. **The landed owner pick is not the nearest head on the declared side in 126 of 802
+   decided Brahms marks (16 %).** It is nearest *in x only*; a column of two or three
+   heads on one stem shares an x to a pixel or two, so which one wins is the order the
+   detector listed them. By the decision's own record (non-foreign heads only): in 124
+   the nearest declared-side head is closer by more than a quarter head height, and in
+   **91 the owner is over 2.5 head heights from its mark while the nearer head stands a
+   median 0.3 heights from it**; four crops (scratch) show the mark touching the nearer
+   head. **Not changed here** (rule 5: it moves 16 % of the decided population and no
+   print has adjudicated it); the nearer head and its gap are written on every decided
+   verdict, so the fix is a one-line comparison. Three of the blind tiles ask this
+   question. The legacy `_attach_articulations_in_cell` has the same pick. (A first count
+   from the probe, 119, used a head set that did not drop heads `glyph_owner` gave to the
+   neighbour; the figures above are the decision's.)
+2. **A cross-staff articulation owner is the real loss: 127 of 1,212 Brahms marks (10 %).**
+   A mark filed in a cell with no head in reach whose class names a side where a head
+   stands in the *neighbouring* staff. The class is the direction hint; page-pixel boxes
+   (`bbox_page_px` on both rows) are the frame (`arc_owner` is the precedent). This is
+   a new ROADMAP item, not 2.12f.
+3. `adjudicate_ornament_owner` has the same suffix-as-premise pick. Reach is ~0 (no
+   tremolo detections in the repository), so it was left alone.
+4. `no_side_declared` still has zero reach on every record (no coarse
+   `articulationAccent`/`Tenuto` class appears on either plate).
+
+## 7. TESTS, RED FIRST
+
+`tools/omr/tests/test_staged_articulation_side_2026_10_09.py` (18 tests). Run
+against the unrepaired `ownership.py` (swapped aside, restored, `cmp`-verified):
+**13 fail** — the contradiction word, the level abstention, the measurement fields,
+the nearer-head record, the fermata fields — **and 5 pass**: the refusal controls and
+regression guards that must pass on both (a head beyond reach stays `no_notehead`; a
+head in another x window stays `no_notehead`; a head `glyph_owner` gave to the
+neighbour stays `owned_by_another_staff`; above/below both keep their head; a fermata's
+owner is identical whatever its side). Each refusal sits beside the same page with one
+fact changed that decides. Two existing assertions change on purpose
+(`test_staged_articulation_owner.py`, the contradiction reason word;
+`test_staged_fermata_owner.py`, `side` → `suffix_side`). `check` N 193 → 193 (the first
+cut returned a computed `reason=` and opened one `brakes` finding; literal reasons at
+each return site closed it).
+
+## 8. THE TILES — blind, for Sean
+
+`out/print/2.12f-review/tile_01.png … tile_12.png`, `manifest.json` (dpi, per tile `n`,
+`file`, `pdf_page_index`, `page_box_600dpi`, `subject`, `question`, and the
+`read_before` / `read_after` / `category` fields **Sean never sees**). Cut from the PDF at
+the gather's own 600 dpi in the gather's own pixel frame
+(`frame.render_page_matching_gather`); a red corner bracket on the exact mark and nothing
+of ours drawn; one neutral question on every tile. The mix is 5 changed decisions, 1
+unchanged cross-staff abstention, 3 unchanged far picks, 1 between-two-heads, 1 clear
+control, 1 Litolff abstention; order shuffled (seed 20261009).
+
+**Frame control, which can fail** (`cut_artic_tiles.py`): the ink in the mark's box must
+be ≥ 1.5× the mean of the eight boxes around it with its centroid at the box centre.
+**11 of 12 real boxes pass; the same test on a box shifted (40, 40) px passes 2 of 12.**
+Tile 04 (Litolff) misses by a hair — centroid x-offset 0.33 against 0.3, on a `>` glyph
+that is not symmetric about its box. Two earlier controls could not tell the frame from a
+wrong one (7 of 12 real vs 5 shifted; 12 vs 7) and were replaced, not kept.
+
+## 9. WHAT CONTRADICTED THIS BRIEF
+
+* **"`adjudicate_articulation_owner` … never check[s] the suffix side against the head's
+  y."** It has since 2026-09-10: it requires the head on the side the class names. What it
+  never did was *measure* the side or *say* when the two disagree.
+* **"EXPORT's placement needs a one-line change to read the decided side."** EXPORT writes
+  no `placement` at all. `_mxl_note` emits `<accent/>` etc. with no attribute, and its comment
+  says *"the pipeline has no opinion about [placement]"*. A decided side has no consumer;
+  writing `placement="above|below"` is a change to the frozen legacy renderer
+  (`tools/omr/export.py`) and is the first consumer to name when someone wants one.
+* **"1,134"** is 274 by the audit's own measure on today's tree, and 20 as the
+  population this lane can move (§1).
+* **"Where the geometry is clear, it decides."** In-cell geometry is not clear on the
+  dominant disagreement population, because the owner is not in the cell (§2).
+
+## 10. LANDING
+
+Not merged. Expected merge conflict: none in `ownership.py` (this lane edits only
+`adjudicate_articulation_owner`, `adjudicate_fermata_owner` and adds
+`ARTIC_REACH_HEAD_HEIGHTS` / `_artic_vertical` between them; the 2.75 lane's functions
+are elsewhere in the file); `adjudicate.ORDER` is **not** touched (no new decision).
+
+
+---
+
+# PART 11 — §2.12f ROUND 2: THE OWNER IS THE NEAREST HEAD WHOSE NOTEHEAD SIDE FACES THE MARK
+
+Same branch, `lane-2.12f-artic-side`. STAGED, ADJUDICATE. Not merged. Round 1 (Part 10)
+recorded the suffix-versus-geometry disagreement and was judged by Sean on 12 blind
+tiles; this round builds what he raised from the print.
+
+## 1. What Sean said, and the rule that follows
+
+`out/print/2.12f-review/answers.json`, DECISIONS 2026-10-09. **The class suffix's side
+was RIGHT on every real articulation (10 of 10).** Tiles 1, 2, 5, 11: the mark belongs to
+the note on the suffix's side, which on 1, 2 and 5 is the note beneath it in the NEXT
+staff — so round 1's relabel `suffix_contradicts_geometry` misstated them and the old
+`no_notehead` was the true statement. Tiles 7, 9, 10 (the far picks): ALL WRONG, the
+mark belongs to the head it touches. Tiles 4 and 8 are not articulations (a piece of a
+tie, *"the box is too small"*; *"part of a p dynamic"*). On 12: *"the articulation is on
+the opposite side of the stem."*
+
+**The rule, CONFIRMED (Sean, DECISIONS 2026-10-09 — not assumed, not measured on the
+plates):** an articulation sits on the NOTEHEAD side, opposite the stem (stem up → below
+the head, stem down → above); with two voices on one staff (opposite stems in one column)
+it goes on the STEM side. The owner is the nearest head, measured locally, for which that
+holds.
+
+## 2. What was built
+
+`adjudicate_articulation_owner` (`ownership.py`), reasons:
+
+| | |
+|---|---|
+| decided | `nearest_on_notehead_side` (detail: `suffix_side`, `measured_side`, `stem_direction`, `notehead_side`, `stem_rule` = `notehead_side` / `stem_side`, `two_voice`, `gap_head_heights`, `same_ink_twins`) |
+| NARROWED | `heads_about_equally_near` (two candidates within `ARTIC_TIE_HEAD_HEIGHTS` = 0.25 of a head height — under half of one staff step, 0.38 — so a real chord step is never a tie) |
+| abstained | `no_notehead` (the round-1 relabel is REVERTED; `suffix_side` / `measured_side` stay in the detail), `stem_direction_unread`, `stem_contradicts_class_side`, `level_with_head`, `owned_by_another_staff`, `no_side_declared`, `no_evidence` |
+
+**Two readers, both recorded.** The class suffix (the detector) and the stem direction (the
+CV rung, `Q.STEM_DIRECTION`) are different readers. **The suffix still GATES the candidates**
+(a head the mark stands on the declared side of) and the stem convention SELECTS among them;
+where they cannot agree, or the stem is unread, the mark abstains or narrows and is NEVER
+given to the head nearest in x. The x window (`_ARTIC_MAX_DX_NOTEHEAD_WIDTHS`, imported) is a
+GATE; the winner is nearest by edge gap. A nearer head with an unread stem blocks a farther
+one that qualifies (giving the mark to the farther head is the far pick Sean found wrong).
+
+**Why the suffix still gates** (a measurement, from the coordinator's brief step 2 read
+literally): a stem-only rule, with no class gate, would have decided an in-cell head on all
+five neighbour-staff tiles (1, 2, 5, 6, 11) — each has an in-cell head whose stem even makes
+the convention agree with the mark (tile 1: head `18/0/2/0/3`, mark below it, stem up; tile
+5: `19/1/10/1/4`; tile 6: `9/0/10/2/0`, 3.5 heads away; tile 11: `2/1/8/0/4`; tile 2:
+`23/1/3/4/6`, 5.1 heads away) — and Sean says every one of them belongs to a note in the
+other staff. Dropping the gate would convert the true `no_notehead` into five wrong decisions.
+
+**ADJUDICATE, and why (§4a):** which head a mark is printed against FOLLOWS from two readers'
+evidence and may be unknowable; that is a decision with a right to abstain. The one
+tie-break that is a *choice* (a suffix-corroborated collapse of `stem_direction_unread`) is
+INFER's, labelled, and is not built (§6).
+
+**`adjudicate.ORDER`:** `Q.ARTICULATION_OWNER` MOVED to just after `Q.STEM_DIRECTION` (it
+reads that verdict; decided later it reads as a hole on every head). Two hunks in
+`adjudicate.py`: a one-line comment where it stood, the name after `Q.STEM_DIRECTION`.
+`adjudicate_ornament_owner`: one computed `reason=` split into two literal returns,
+behaviour unchanged — `brakes` section 5 resolves a declared reason by its literal at a
+`Ruling` site and the ornament owner had been resolving through the articulation owner's
+literal; without it `check` N rose to 194.
+
+## 3. The cross-staff check, BEFORE any search was written
+
+A measure cell is padded ~4 staff spaces and reaches the neighbour staff's ink (CLAUDE.md
+§10), so a mark in the gap may already be detected a SECOND time in the neighbour's cell, on
+the same ink, and decided there. Measured from page boxes (`probe/artic_same_ink_twin.py`;
+two glyphs of one mark share IoU ≥ 0.3 or a centre within half a box):
+
+| Brahms 1, whole movement | n | has a same-ink twin in another cell | a twin is DECIDED |
+|---|--:|--:|--:|
+| round-1 abstained marks (`no_notehead` + `owned_by_another_staff`) | 461 | 331 | **328** |
+| **round 1's "127"** (no head in reach, a declared-side head in another staff) | 127 | 111 | **110** |
+| round 2: `no_notehead` | 427 | 307 | **247** |
+| round 2: `owned_by_another_staff` | 34 | 24 | 22 |
+
+**So the cross-staff search round 1 proposed would have been the wrong build:** 110 of the
+127 are ALREADY owned, in the neighbour's cell, and the `no_notehead` in this cell is the true
+statement. Searching across staves would have double-counted them, and §10 says a resolved
+cross-staff contest DROPS the loser and never relocates it. What is built instead is a RECORD:
+`same_ink_twins` (the other glyphs, in other cells, on the same page box) on every verdict.
+It is a GATHER fact, needs no verdict of another subject, and the pairing "abstained here,
+decided there" is a one-line join over the record (`compare_artic_r2.py`).
+
+It also surfaced a fault: **36 decided Brahms marks had a DECIDED twin owning a DIFFERENT
+head** (one mark, two owners; the exporter writes it twice). After round 2 there are **16**.
+A twin de-duplication (drop the loser, record why) is a follow-up item, not built here.
+**16 of the 127 have no twin at all** — those, and tile 5, are the only ones a cross-staff
+owner would actually recover.
+
+## 4. Population, before and after (re-adjudication, one tree, control first)
+
+`readjudicate_artic_side.py` on the saved records; base = the rule as it stood before 2.12f
+(`3ec53272`), round 2 = `32829a64` (clean; identical to the dirty-tree run). **Control —
+`glyph_owner` rebuilt == the record's own:** Litolff count pages 1,135 of 1,135; Brahms count
+pages 1,766 of 1,778; Litolff whole 9,414 of 9,423; Brahms whole 33,767 of 34,106 — the same
+numbers for base and round 2 (the shortfall is `reconcile_dot_owners`, outside the chain).
+
+**Brahms 1, whole movement (1,263 marks):**
+
+| base → round 2 | n |
+|---|--:|
+| decided → decided, **same head** | 572 |
+| decided → decided, **MOVED head** | **89** (86 to the head round 1 recorded as touching; 3 to another) |
+| decided → abstained `stem_direction_unread` | 107 |
+| decided → abstained `stem_contradicts_class_side` | 28 |
+| decided → NARROWED `heads_about_equally_near` | 6 |
+| abstained → abstained (`no_notehead` 427, `owned_by_another_staff` 34) | 461 |
+| abstained → decided | **0** |
+
+Decided 802 → 661 (651 on the notehead side, 10 on the stem side of a two-voice column).
+**Invariants, each a number that can fail:** no base-abstained mark became decided (0 — the
+class gates the candidates and the x window is unchanged); every decided owner's measured
+side equals the class's side (661 of 661, by construction, reported as such); the fermata
+owner is identical (12 of 12 Brahms, 178 of 178 Litolff whole, 63 of 63 count pages).
+
+**Beethoven 5 Litolff, whole movement (18 marks):** 12 decided same head, 3 `no_notehead`,
+2 `stem_direction_unread`, 1 NARROWED; 0 moved. **Count pages:** Litolff pdf 1–3, 2 marks —
+1 decided, same head; 1 `no_notehead`. Brahms pdf 0–1, 4 marks — 1 decided same head, 1 →
+`stem_contradicts_class_side`, 1 `no_notehead`, 1 `owned_by_another_staff`.
+
+**The cost, named:** 135 marks that were decided now are not — 107 for an unread stem, 28 for
+a stem that contradicts the class — and only 6 of those 135 have a decided twin (2 and 4).
+The 107 are real
+owners lost to a stem the CV rung did not read: **68 have a touching nearest head
+(≤ 0.6 head heights) and in 78 the old rule's pick IS that nearest head.** That is rule 8
+doing what it says; restoring them honestly is an INFER rule (suffix-corroborated,
+labelled), and the counts are the case for it.
+
+## 5. The 12 round-1 tiles, re-scored against Sean's answers (`rescore_artic_tiles.py`)
+
+All 10 articulation tiles score as Sean answered; 4 and 8 are not articulations.
+
+| tile | Sean | round 2 |
+|--:|---|---|
+| 1 | belongs to the note beneath (next staff) | `no_notehead`; twin `18/0/3/0/18` DECIDED, its owner stands BELOW the mark |
+| 2 | beneath | `no_notehead`; twin `23/1/4/4/0` DECIDED, owner BELOW |
+| 3 | note above; mark below it | decided, SAME head |
+| 4 | not an articulation (a piece of a tie) | `no_notehead` — refusal candidate |
+| 5 | beneath | `no_notehead`; **no twin recorded** — the one a cross-staff owner would recover |
+| 6 | marcato beneath its note → the note ABOVE, other staff | `no_notehead`; twin `9/0/9/2/2` DECIDED, owner ABOVE the mark |
+| 7 | the note directly above | decided on the touching head `6/0/5/2/0` (0.26 heads); was `6/0/5/2/5` |
+| 8 | not an articulation (part of a `p`) | `no_notehead` — refusal candidate |
+| 9 | the note directly beneath | decided on the touching head `10/0/5/4/5` (0.10); was `10/0/5/4/6` |
+| 10 | the note directly above | decided on the touching head `24/0/5/7/6` (0.40); was `24/0/5/7/21` |
+| 11 | the mark is ABOVE its note (corrected) | `no_notehead`; twin `2/1/9/0/11` DECIDED, owner BELOW the mark |
+| 12 | beneath (opposite the stem) | decided, SAME head |
+
+**Candidate, not built (rule 9: no new check without a roadmap item):** a family-precision
+refusal for an articulation box that is a tie fragment (tile 4) or the tail of a dynamic
+letter (tile 8).
+
+## 6. What is open
+
+* **`stem_direction_unread` (107 Brahms, 2 Litolff)** — an INFER collapse, suffix-corroborated
+  and labelled, once Sean says whether a touching head with an unread stem may take the mark.
+* **Twin de-duplication (16 marks with two owners)** — drop the loser, record why (§10).
+* **No distance bound on the winner.** Three marks moved to a head ~5.8 heights away (the
+  touching head did not qualify, a far one did). One is in the new tile batch; Sean's answer
+  decides whether a bound belongs, and no number is invented before it.
+* **EXPORT still writes no `placement`** (round 1, §9) — a decided side has no consumer.
+
+## 7. Tests, RED first
+
+`test_staged_articulation_stem_side_2026_10_09.py` (24 tests): against the unrepaired head
+(`ownership.py` and `adjudicate.py` swapped aside, restored, `cmp`-verified) **17 fail, 7
+pass** — the controls and guards that must pass on both. Each refusal sits beside the same
+page with one fact changed that decides (stem flipped; a lone head vs a column; an unread
+head farther than the owner is no veto; a mark elsewhere on the page is not a twin). Existing
+owner and round-1 tests changed on purpose: stems on the fixtures, `nearest_on_notehead_side`,
+the relabel tests reverted, the recorded-not-acted far-pick class dropped (it is now the rule).
+
+**Fast tier on the code head `32829a64`: 6,780 passed, 0 failed, 11 skipped, 825 deselected,
+2 xfailed (9 m 44 s).** Every later commit on the branch touches nothing under `tools/`.
+**`check` N: 193 before (this base), 193 after.**
+
+## 8. The new blind tiles — `out/print/2.12f-r2-review/`
+
+12 tiles of CHANGED owners (moved to the touching head, moved elsewhere, decided →
+abstained for a stem reason, NARROWED, a two-voice stem-side decision, one unchanged control;
+one from the second plate), none Sean judged in round 1, same style: a red corner bracket on
+the exact mark, nothing of ours drawn, one neutral question. `manifest.json` carries
+`read_before` / `read_after` / `category`, which Sean never sees. Frame control that can fail:
+**12 of 12 real boxes pass, a (40, 40)-shifted box passes 2 of 12.** They do not block landing.
