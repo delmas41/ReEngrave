@@ -9,7 +9,7 @@
   },
   "2": {
    "sean": "Connected to note below",
-   "verdict": "wrong (ours: note above, stem_side rule, gap 1.63 heads)"
+   "verdict": "right (stem_side rule: mark at the stem tip, owner = note below; two voices)"
   },
   "3": {
    "sean": "Connected to note below",
@@ -25,7 +25,7 @@
   },
   "6": {
    "sean": "Connected to note below",
-   "verdict": "abstained (answer: note below)"
+   "verdict": "abstained (stem_contradicts_class_side) -- Sean: long chord stem, mark at the tip near the staff, owner = the chord below"
   },
   "7": {
    "sean": "Ledger line",
@@ -37,7 +37,7 @@
   },
   "9": {
    "sean": "Connected to note above",
-   "verdict": "wrong (ours: note below, stem_side rule, gap 5.82 heads)"
+   "verdict": "right (stem_side rule: mark at the stem tip, owner = note above; long stem, gap 5.82 heads)"
   },
   "10": {
    "sean": "Connected to note above",
@@ -52,5 +52,5 @@
    "verdict": "right (control)"
   }
  },
- "summary": "decided 6: 4 right, 2 wrong (both by the stem_side rule at a far gap); 3 of the bracketed marks are LEDGER LINES read as articulations; 3 abstained/narrowed where Sean names the owner"
+ "summary": "decided 6: 6 right (4 notehead_side, 2 stem_side); 3 bracketed marks are LEDGER LINES read as articulations (1, 4, 7); 3 abstained/narrowed where Sean names the owner (3 below, 5 above, 6 below). Corrected 2026-10-10: 2 and 9 were first mis-scored wrong (the stem_side wording was read backwards)."
 }

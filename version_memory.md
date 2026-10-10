@@ -28,7 +28,7 @@ pointing at headings no longer in the file.)*
 - The 43 waiting blind tiles (2.78, 2.12f, 2.75, rhythm-leftovers-3, 2.79) published to Sean as a private answer gallery; answers come back through the page's store and get filed into each set's answers.json.
 - Sean judged the 12 2.78 phase-2 tiles: 10 right, 2 wrong (5: 16ths written as eighths; 6: eighths written as quarters -- the stem value sided with the wrong head). `out/print/2.78-phase2-review/answers.json`; DECISIONS line.
 - Brahms bar-number drift traced (diagnosis only, no code): candidates = first-ending bars counted (p10 s1, +2) and a courtesy key after p11 s1's last barline kept as a bar (+1); Litolff = a stray barline column (p6 s1, p13-14). Question to Sean pending.
-- Sean answered the other 31 gallery tiles: 2.12f 4 right / 2 wrong of 6 decided, 3 marks are ledger lines; 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
+- Sean answered the other 31 gallery tiles: 2.12f 6/6 decided right (2 and 9 first mis-scored, corrected), 3 marks are ledger lines; Sean's articulation-side convention recorded (notehead side, except two voices or a long chord stem -> stem side); 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
 
 ## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
 
