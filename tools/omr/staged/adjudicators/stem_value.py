@@ -61,10 +61,24 @@ and is `notehead_precision`'s), never overturns the head's own `Q.DURATION`
 verdict (it files its own beside it), and never writes where the stem has one
 head (`lone_head`). A stem none of whose members is read is `stem_unread`.
 
-⚠️ EXPORT AND EVALUATE DO NOT READ IT YET. ROADMAP 2.78 is GATHER+ADJUDICATE
-only (Sean, 2026-09-30); `reach.KNOWN_GAPS` names `Q.STEM_VALUE` producer-only
-until `export._events` (a mode vote over the heads' durations) and
-`reconcile_duration` (it must run after this) read it.
+WHO READS IT. EVALUATE's `consequences.share_stem_value` (cause `Q.STEM_VALUE`,
+effect `Q.DURATION`, single pass, ranked before `Q.METER` in `evaluate.DOWNHILL`
+so it runs before every meter rule) restates a head's standing duration to
+its stem's value where the stem's value is DECIDED and the head's differs, or
+settles a head's narrowed duration to it. A NARROWED stem value fires nothing.
+The restatement is there, not here, because a decision never overturns another
+decision's verdict in its own quantity -- EVALUATE is the stage for what
+follows necessarily.
+
+⚠️ NOT BUILT, AND STILL OPEN: where the stem value is NARROWED (levels unread,
+two dot counts, a hollow head under a certain beam) this rule fires nothing, so
+the heads keep their own, possibly disagreeing, durations and
+`export._events` (-> `voicing.group_chords_in_measure`) still takes a chord's
+duration as the MODE of its heads' durations -- an argmax over a disagreement.
+The right behaviour there is to HOLD THE STEM OUT AND COUNT IT, never to write
+a mode; it is an EXPORT change and belongs to a roadmap item of its own. For a
+DECIDED stem value the heads agree by the time EXPORT runs and the vote has
+nothing to decide.
 """
 from __future__ import annotations
 

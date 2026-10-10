@@ -83,19 +83,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "`size_measure_rest`/`export.py` so a found whole rest actually "
         "sizes the bar is explicitly OUT of scope for this lane and is the "
         "obvious next item if the search is confirmed against the print."),
-    Q.STEM_VALUE: (
-        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.78 "
-        "(Sean 2026-10-09: one stem, one value) is GATHER+ADJUDICATE only (Sean, "
-        "2026-09-30: 'I want all our tests for now to just be the first 2 "
-        "stages'). Its consumers are two and both are later stages: "
-        "`export._events` (-> `voicing.group_chords_in_measure`) takes a chord's "
-        "duration as the MODE of its heads' durations -- an argmax over a "
-        "disagreement, order-dependent on a tie -- and must read this verdict "
-        "instead where it is DECIDED and hold the stem out where it is NARROWED "
-        "(never write a mode); and EVALUATE's `reconcile_duration` must run AFTER "
-        "it, or it will 'land a bar' by changing one head of a stem and leave two "
-        "values on one stem. Neither is built, so no stage past ADJUDICATE moves. "
-        "The entry LEAVES this list the day `export.py` reads it."),
     Q.HUMAN_VERDICT_STANCE: (
         "⚠️ PRODUCER ONLY BY DESIGN, NOT AN UNCLOSED GAP — roadmap 3.4. A "
         "human's `agree`/`disagree` is filed AGAINST a verdict and must never "

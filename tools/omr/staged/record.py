@@ -1423,10 +1423,10 @@ class Q(_Vocab):
     #: `value` is `{beats, written, dots, beam_levels, head_fill, stem}`;
     #: NARROWED where the stem's own evidence cannot say (a hollow head under a
     #: beam certain at the tip, two dot counts, levels unread), ABSTAINED where
-    #: no member is read. It never overturns a head's own `Q.DURATION` and never
-    #: refuses a box. ⚠️ PRODUCER ONLY: ROADMAP 2.78 is GATHER+ADJUDICATE only,
-    #: so EXPORT (`export._events`, a mode vote) and `reconcile_duration` do not
-    #: read it yet -- `reach.KNOWN_GAPS` says so.
+    #: no member is read. This DECISION never overturns a head's own
+    #: `Q.DURATION` and never refuses a box; EVALUATE's `share_stem_value` is the
+    #: consumer that restates a head's duration to a DECIDED stem value (a
+    #: NARROWED one fires nothing), before any meter rule runs.
     STEM_VALUE = "stem_value"
     #: Whether a glyph the DETECTOR called a notehead is in fact the ink of a
     #: WHOLE REST -- `True`, `False`, or an abstention where it cannot be told.
