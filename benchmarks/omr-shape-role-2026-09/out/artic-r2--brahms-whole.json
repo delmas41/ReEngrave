@@ -1,0 +1,670 @@
+{
+ "fermata": {
+  "owner_identical": 12
+ },
+ "invariants": {
+  "decided_measured_side_equals_class": 661
+ },
+ "label": "brahms-whole",
+ "marks": 1263,
+ "moved": [
+  {
+   "from": "glyph/4/1/5/4/5",
+   "round1_nearest_declared_side_head": "glyph/4/1/5/4/4",
+   "subject": "glyph/4/1/5/4/11",
+   "to": "glyph/4/1/5/4/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/0/5/5/11",
+   "round1_nearest_declared_side_head": "glyph/5/0/5/5/1",
+   "subject": "glyph/5/0/5/5/14",
+   "to": "glyph/5/0/5/5/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/0/2/4",
+   "round1_nearest_declared_side_head": "glyph/5/1/0/2/1",
+   "subject": "glyph/5/1/0/2/11",
+   "to": "glyph/5/1/0/2/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/1/4/9",
+   "round1_nearest_declared_side_head": "glyph/5/1/1/4/3",
+   "subject": "glyph/5/1/1/4/15",
+   "to": "glyph/5/1/1/4/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/1/5/7",
+   "round1_nearest_declared_side_head": "glyph/5/1/1/5/2",
+   "subject": "glyph/5/1/1/5/6",
+   "to": "glyph/5/1/1/5/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/1/5/8",
+   "round1_nearest_declared_side_head": "glyph/5/1/1/5/3",
+   "subject": "glyph/5/1/1/5/18",
+   "to": "glyph/5/1/1/5/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/2/3/12",
+   "round1_nearest_declared_side_head": "glyph/5/1/2/3/4",
+   "subject": "glyph/5/1/2/3/13",
+   "to": "glyph/5/1/2/3/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/5/2/8",
+   "round1_nearest_declared_side_head": "glyph/5/1/5/2/1",
+   "subject": "glyph/5/1/5/2/2",
+   "to": "glyph/5/1/5/2/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/5/6/10",
+   "round1_nearest_declared_side_head": "glyph/5/1/5/6/0",
+   "subject": "glyph/5/1/5/6/13",
+   "to": "glyph/5/1/5/6/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/6/9/10",
+   "round1_nearest_declared_side_head": "glyph/5/1/6/9/1",
+   "subject": "glyph/5/1/6/9/0",
+   "to": "glyph/5/1/6/9/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/7/8/21",
+   "round1_nearest_declared_side_head": "glyph/5/1/7/8/2",
+   "subject": "glyph/5/1/7/8/8",
+   "to": "glyph/5/1/7/8/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/9/4/4",
+   "round1_nearest_declared_side_head": "glyph/5/1/9/4/1",
+   "subject": "glyph/5/1/9/4/20",
+   "to": "glyph/5/1/9/4/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/9/7/12",
+   "round1_nearest_declared_side_head": "glyph/5/1/9/7/2",
+   "subject": "glyph/5/1/9/7/10",
+   "to": "glyph/5/1/9/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/10/9/3",
+   "round1_nearest_declared_side_head": "glyph/5/1/10/9/1",
+   "subject": "glyph/5/1/10/9/6",
+   "to": "glyph/5/1/10/9/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/11/4/9",
+   "round1_nearest_declared_side_head": "glyph/5/1/11/4/2",
+   "subject": "glyph/5/1/11/4/12",
+   "to": "glyph/5/1/11/4/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/11/6/7",
+   "round1_nearest_declared_side_head": "glyph/5/1/11/6/1",
+   "subject": "glyph/5/1/11/6/18",
+   "to": "glyph/5/1/11/6/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/5/1/11/8/3",
+   "round1_nearest_declared_side_head": "glyph/5/1/11/8/0",
+   "subject": "glyph/5/1/11/8/1",
+   "to": "glyph/5/1/11/8/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/6/0/5/0/6",
+   "round1_nearest_declared_side_head": "glyph/6/0/5/0/3",
+   "subject": "glyph/6/0/5/0/16",
+   "to": "glyph/6/0/5/0/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/6/0/5/2/5",
+   "round1_nearest_declared_side_head": "glyph/6/0/5/2/0",
+   "subject": "glyph/6/0/5/2/4",
+   "to": "glyph/6/0/5/2/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/8/1/5/6/5",
+   "round1_nearest_declared_side_head": "glyph/8/1/5/6/4",
+   "subject": "glyph/8/1/5/6/0",
+   "to": "glyph/8/1/5/6/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/0/3/6/5",
+   "round1_nearest_declared_side_head": "glyph/9/0/3/6/4",
+   "subject": "glyph/9/0/3/6/8",
+   "to": "glyph/9/0/3/6/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/0/6/6/5",
+   "round1_nearest_declared_side_head": "glyph/9/0/6/6/2",
+   "subject": "glyph/9/0/6/6/9",
+   "to": "glyph/9/0/6/6/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/1/1/1/5",
+   "round1_nearest_declared_side_head": "glyph/9/1/1/1/0",
+   "subject": "glyph/9/1/1/1/3",
+   "to": "glyph/9/1/1/1/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/1/2/1/4",
+   "round1_nearest_declared_side_head": "glyph/9/1/2/1/1",
+   "subject": "glyph/9/1/2/1/2",
+   "to": "glyph/9/1/2/1/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/1/3/1/5",
+   "round1_nearest_declared_side_head": "glyph/9/1/3/1/13",
+   "subject": "glyph/9/1/3/1/23",
+   "to": "glyph/9/1/3/1/13",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/9/1/6/1/2",
+   "round1_nearest_declared_side_head": "glyph/9/1/6/1/0",
+   "subject": "glyph/9/1/6/1/1",
+   "to": "glyph/9/1/6/1/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/0/5/4/6",
+   "round1_nearest_declared_side_head": "glyph/10/0/5/4/5",
+   "subject": "glyph/10/0/5/4/1",
+   "to": "glyph/10/0/5/4/5",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/0/5/7/8",
+   "round1_nearest_declared_side_head": "glyph/10/0/5/7/2",
+   "subject": "glyph/10/0/5/7/12",
+   "to": "glyph/10/0/5/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/0/5/8/7",
+   "round1_nearest_declared_side_head": "glyph/10/0/5/8/0",
+   "subject": "glyph/10/0/5/8/10",
+   "to": "glyph/10/0/5/8/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/0/6/5/3",
+   "round1_nearest_declared_side_head": "glyph/10/0/6/5/0",
+   "subject": "glyph/10/0/6/5/5",
+   "to": "glyph/10/0/6/5/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/1/3/1/7",
+   "round1_nearest_declared_side_head": "glyph/10/1/3/1/3",
+   "subject": "glyph/10/1/3/1/4",
+   "to": "glyph/10/1/3/1/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/10/1/3/1/7",
+   "round1_nearest_declared_side_head": "glyph/10/1/3/1/3",
+   "subject": "glyph/10/1/3/1/20",
+   "to": "glyph/10/1/3/1/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/11/0/2/2/7",
+   "round1_nearest_declared_side_head": "glyph/11/0/2/2/16",
+   "subject": "glyph/11/0/2/2/11",
+   "to": "glyph/11/0/2/2/16",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/11/0/3/2/6",
+   "round1_nearest_declared_side_head": "glyph/11/0/3/2/1",
+   "subject": "glyph/11/0/3/2/5",
+   "to": "glyph/11/0/3/2/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/11/0/6/3/3",
+   "round1_nearest_declared_side_head": "glyph/11/0/6/3/0",
+   "subject": "glyph/11/0/6/3/7",
+   "to": "glyph/11/0/6/3/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/17/1/3/3/9",
+   "round1_nearest_declared_side_head": "glyph/17/1/3/3/4",
+   "subject": "glyph/17/1/3/3/16",
+   "to": "glyph/17/1/3/3/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/17/1/6/4/10",
+   "round1_nearest_declared_side_head": "glyph/17/1/6/4/7",
+   "subject": "glyph/17/1/6/4/5",
+   "to": "glyph/17/1/6/4/7",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/18/0/3/0/11",
+   "round1_nearest_declared_side_head": "glyph/18/0/3/0/10",
+   "subject": "glyph/18/0/3/0/18",
+   "to": "glyph/18/0/3/0/10",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/18/0/3/1/15",
+   "round1_nearest_declared_side_head": "glyph/18/0/3/1/9",
+   "subject": "glyph/18/0/3/1/18",
+   "to": "glyph/18/0/3/1/9",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/18/0/7/6/16",
+   "round1_nearest_declared_side_head": "glyph/18/0/7/6/7",
+   "subject": "glyph/18/0/7/6/0",
+   "to": "glyph/18/0/7/6/7",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/18/1/11/0/10",
+   "round1_nearest_declared_side_head": "glyph/18/1/11/0/1",
+   "subject": "glyph/18/1/11/0/15",
+   "to": "glyph/18/1/11/0/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/19/0/3/6/14",
+   "round1_nearest_declared_side_head": "glyph/19/0/3/6/5",
+   "subject": "glyph/19/0/3/6/10",
+   "to": "glyph/19/0/3/6/5",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/19/0/3/7/10",
+   "round1_nearest_declared_side_head": "glyph/19/0/3/7/1",
+   "subject": "glyph/19/0/3/7/19",
+   "to": "glyph/19/0/3/7/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/19/1/3/8/4",
+   "round1_nearest_declared_side_head": "glyph/19/1/3/8/2",
+   "subject": "glyph/19/1/3/8/9",
+   "to": "glyph/19/1/3/8/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/19/1/3/8/6",
+   "round1_nearest_declared_side_head": "glyph/19/1/3/8/5",
+   "subject": "glyph/19/1/3/8/10",
+   "to": "glyph/19/1/3/8/5",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/20/0/5/0/4",
+   "round1_nearest_declared_side_head": "glyph/20/0/5/0/1",
+   "subject": "glyph/20/0/5/0/6",
+   "to": "glyph/20/0/5/0/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/22/1/3/7/3",
+   "round1_nearest_declared_side_head": "glyph/22/1/3/7/2",
+   "subject": "glyph/22/1/3/7/0",
+   "to": "glyph/22/1/3/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/23/0/3/8/9",
+   "round1_nearest_declared_side_head": "glyph/23/0/3/8/7",
+   "subject": "glyph/23/0/3/8/3",
+   "to": "glyph/23/0/3/8/7",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/23/1/1/0/4",
+   "round1_nearest_declared_side_head": "glyph/23/1/1/0/1",
+   "subject": "glyph/23/1/1/0/6",
+   "to": "glyph/23/1/1/0/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/23/1/2/4/7",
+   "round1_nearest_declared_side_head": "glyph/23/1/2/4/12",
+   "subject": "glyph/23/1/2/4/1",
+   "to": "glyph/23/1/2/4/12",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/23/1/3/0/10",
+   "round1_nearest_declared_side_head": "glyph/23/1/3/0/4",
+   "subject": "glyph/23/1/3/0/1",
+   "to": "glyph/23/1/3/0/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/23/1/3/2/13",
+   "round1_nearest_declared_side_head": "glyph/23/1/3/2/2",
+   "subject": "glyph/23/1/3/2/0",
+   "to": "glyph/23/1/3/2/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/3/5/4",
+   "round1_nearest_declared_side_head": "glyph/24/0/3/5/0",
+   "subject": "glyph/24/0/3/5/9",
+   "to": "glyph/24/0/3/5/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/5/3/5",
+   "round1_nearest_declared_side_head": "glyph/24/0/5/3/2",
+   "subject": "glyph/24/0/5/3/1",
+   "to": "glyph/24/0/5/3/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/5/7/21",
+   "round1_nearest_declared_side_head": "glyph/24/0/5/7/6",
+   "subject": "glyph/24/0/5/7/4",
+   "to": "glyph/24/0/5/7/6",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/5/7/10",
+   "round1_nearest_declared_side_head": "glyph/24/0/5/7/2",
+   "subject": "glyph/24/0/5/7/19",
+   "to": "glyph/24/0/5/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/10/0/11",
+   "round1_nearest_declared_side_head": "glyph/24/0/10/0/8",
+   "subject": "glyph/24/0/10/0/2",
+   "to": "glyph/24/0/10/0/8",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/0/11/0/10",
+   "round1_nearest_declared_side_head": "glyph/24/0/11/0/6",
+   "subject": "glyph/24/0/11/0/1",
+   "to": "glyph/24/0/11/0/6",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/4/16",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/4/3",
+   "subject": "glyph/24/1/0/4/24",
+   "to": "glyph/24/1/0/4/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/6/7",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/6/1",
+   "subject": "glyph/24/1/0/6/8",
+   "to": "glyph/24/1/0/6/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/7/14",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/7/2",
+   "subject": "glyph/24/1/0/7/22",
+   "to": "glyph/24/1/0/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/8/8",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/8/1",
+   "subject": "glyph/24/1/0/8/25",
+   "to": "glyph/24/1/0/8/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/8/12",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/8/6",
+   "subject": "glyph/24/1/0/8/41",
+   "to": "glyph/24/1/0/8/6",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/0/8/11",
+   "round1_nearest_declared_side_head": "glyph/24/1/0/8/10",
+   "subject": "glyph/24/1/0/8/44",
+   "to": "glyph/24/1/0/8/10",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/1/5/16",
+   "round1_nearest_declared_side_head": "glyph/24/1/1/5/0",
+   "subject": "glyph/24/1/1/5/13",
+   "to": "glyph/24/1/1/5/0",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/1/6/11",
+   "round1_nearest_declared_side_head": "glyph/24/1/1/6/3",
+   "subject": "glyph/24/1/1/6/13",
+   "to": "glyph/24/1/1/6/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/1/7/22",
+   "round1_nearest_declared_side_head": "glyph/24/1/1/7/2",
+   "subject": "glyph/24/1/1/7/19",
+   "to": "glyph/24/1/1/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/2/8/20",
+   "round1_nearest_declared_side_head": "glyph/24/1/2/8/3",
+   "subject": "glyph/24/1/2/8/23",
+   "to": "glyph/24/1/2/8/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/2/8/8",
+   "round1_nearest_declared_side_head": "glyph/24/1/2/8/2",
+   "subject": "glyph/24/1/2/8/26",
+   "to": "glyph/24/1/2/8/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/3/7/10",
+   "round1_nearest_declared_side_head": "glyph/24/1/3/7/2",
+   "subject": "glyph/24/1/3/7/5",
+   "to": "glyph/24/1/3/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/3/7/20",
+   "round1_nearest_declared_side_head": "glyph/24/1/3/7/3",
+   "subject": "glyph/24/1/3/7/15",
+   "to": "glyph/24/1/3/7/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/3/8/23",
+   "round1_nearest_declared_side_head": "glyph/24/1/3/8/1",
+   "subject": "glyph/24/1/3/8/4",
+   "to": "glyph/24/1/3/8/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/3/8/7",
+   "round1_nearest_declared_side_head": "glyph/24/1/3/8/2",
+   "subject": "glyph/24/1/3/8/9",
+   "to": "glyph/24/1/3/8/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/4/0/9",
+   "round1_nearest_declared_side_head": "glyph/24/1/4/0/9",
+   "subject": "glyph/24/1/4/0/3",
+   "to": "glyph/24/1/4/0/6",
+   "to_is_that_head": false
+  },
+  {
+   "from": "glyph/24/1/4/1/1",
+   "round1_nearest_declared_side_head": "glyph/24/1/4/1/1",
+   "subject": "glyph/24/1/4/1/0",
+   "to": "glyph/24/1/4/1/4",
+   "to_is_that_head": false
+  },
+  {
+   "from": "glyph/24/1/4/2/2",
+   "round1_nearest_declared_side_head": "glyph/24/1/4/2/2",
+   "subject": "glyph/24/1/4/2/0",
+   "to": "glyph/24/1/4/2/5",
+   "to_is_that_head": false
+  },
+  {
+   "from": "glyph/24/1/5/3/9",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/3/2",
+   "subject": "glyph/24/1/5/3/12",
+   "to": "glyph/24/1/5/3/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/5/4/10",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/4/3",
+   "subject": "glyph/24/1/5/4/15",
+   "to": "glyph/24/1/5/4/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/5/5/10",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/5/1",
+   "subject": "glyph/24/1/5/5/14",
+   "to": "glyph/24/1/5/5/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/5/7/18",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/7/4",
+   "subject": "glyph/24/1/5/7/1",
+   "to": "glyph/24/1/5/7/4",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/5/7/14",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/7/2",
+   "subject": "glyph/24/1/5/7/27",
+   "to": "glyph/24/1/5/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/5/8/12",
+   "round1_nearest_declared_side_head": "glyph/24/1/5/8/2",
+   "subject": "glyph/24/1/5/8/29",
+   "to": "glyph/24/1/5/8/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/7/0/15",
+   "round1_nearest_declared_side_head": "glyph/24/1/7/0/1",
+   "subject": "glyph/24/1/7/0/3",
+   "to": "glyph/24/1/7/0/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/7/1/17",
+   "round1_nearest_declared_side_head": "glyph/24/1/7/1/3",
+   "subject": "glyph/24/1/7/1/0",
+   "to": "glyph/24/1/7/1/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/7/5/10",
+   "round1_nearest_declared_side_head": "glyph/24/1/7/5/1",
+   "subject": "glyph/24/1/7/5/9",
+   "to": "glyph/24/1/7/5/1",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/7/7/7",
+   "round1_nearest_declared_side_head": "glyph/24/1/7/7/2",
+   "subject": "glyph/24/1/7/7/10",
+   "to": "glyph/24/1/7/7/2",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/24/1/7/8/11",
+   "round1_nearest_declared_side_head": "glyph/24/1/7/8/3",
+   "subject": "glyph/24/1/7/8/18",
+   "to": "glyph/24/1/7/8/3",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/25/0/2/1/21",
+   "round1_nearest_declared_side_head": "glyph/25/0/2/1/11",
+   "subject": "glyph/25/0/2/1/6",
+   "to": "glyph/25/0/2/1/11",
+   "to_is_that_head": true
+  },
+  {
+   "from": "glyph/25/0/5/2/21",
+   "round1_nearest_declared_side_head": "glyph/25/0/5/2/4",
+   "subject": "glyph/25/0/5/2/0",
+   "to": "glyph/25/0/5/2/4",
+   "to_is_that_head": true
+  }
+ ],
+ "moved_owners": {
+  "n": 89,
+  "where": {
+   "to another head": 3,
+   "to the round-1 nearest declared-side head": 86
+  }
+ },
+ "r2_by_rule_and_reason": {
+  "abstained:no_notehead": 427,
+  "abstained:owned_by_another_staff": 34,
+  "abstained:stem_contradicts_class_side": 28,
+  "abstained:stem_direction_unread": 107,
+  "decided:notehead_side": 651,
+  "decided:single_voice": 651,
+  "decided:stem_side": 10,
+  "decided:two_voice": 10,
+  "narrowed:heads_about_equally_near": 6
+ },
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 427,
+  "abstained/owned_by_another_staff -> abstained/owned_by_another_staff": 34,
+  "decided/nearest_on_declared_side -> abstained/stem_contradicts_class_side": 28,
+  "decided/nearest_on_declared_side -> abstained/stem_direction_unread": 107,
+  "decided/nearest_on_declared_side -> decided/nearest_on_notehead_side (MOVED head)": 89,
+  "decided/nearest_on_declared_side -> decided/nearest_on_notehead_side (SAME head)": 572,
+  "decided/nearest_on_declared_side -> narrowed/heads_about_equally_near": 6
+ },
+ "twins": {
+  "   ... the two owners differ": 16,
+  "abstained": 602,
+  "abstained, a twin is DECIDED (owned via the neighbour's cell)": 275,
+  "abstained, has a same-ink twin in another cell": 401,
+  "decided": 661,
+  "decided AND a twin is decided (one mark, two owners)": 16
+ }
+}
