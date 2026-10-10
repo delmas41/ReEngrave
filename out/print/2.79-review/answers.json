@@ -1,0 +1,36 @@
+{
+ "judge": "sean",
+ "date": "2026-10-10",
+ "via": "blind-tile gallery (claude.ai artifact Xs8UKjLo9Ug1xMNBzkyuS6)",
+ "answers": {
+  "1": {
+   "sean": "Yes",
+   "verdict": "right"
+  },
+  "2": {
+   "sean": "Yes",
+   "verdict": "right"
+  },
+  "3": {
+   "sean": "Yes",
+   "verdict": "right"
+  },
+  "4": {
+   "sean": "No 8th note, 3 8th rests, 2 8th notes with a beam",
+   "verdict": "right"
+  },
+  "5": {
+   "sean": "No 8 note, 2 8th rests, quarter rest, 8th rest",
+   "verdict": "wrong (ours: quarter note + 8th rest + quarter rest + 8th rest; print: 8th note, 2 8th rests, quarter rest, 8th rest)"
+  },
+  "6": {
+   "sean": "No 8th note, 3 8th rests, 2 8th note with a beam",
+   "verdict": "right"
+  },
+  "7": {
+   "sean": "No Same as",
+   "verdict": "right (\"same as\" 6)"
+  }
+ },
+ "summary": "6 of 7 right; bar 13 contrabass: the note is an eighth (we wrote a quarter) and one eighth rest is missing -- the bar still adds to 6/8"
+}

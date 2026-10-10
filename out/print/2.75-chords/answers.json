@@ -1,0 +1,28 @@
+{
+ "judge": "sean",
+ "date": "2026-10-10",
+ "via": "blind-tile gallery (claude.ai artifact Xs8UKjLo9Ug1xMNBzkyuS6)",
+ "answers": {
+  "1": {
+   "sean": "Tie",
+   "verdict": "right"
+  },
+  "2": {
+   "sean": "Slur",
+   "verdict": "right"
+  },
+  "3": {
+   "sean": "Slur",
+   "verdict": "right"
+  },
+  "4": {
+   "sean": "Tie",
+   "verdict": "right"
+  },
+  "5": {
+   "sean": "Slur",
+   "verdict": "right"
+  }
+ },
+ "summary": "5 of 5 right (tie/slur by the top/bottom rule)"
+}
