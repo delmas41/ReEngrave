@@ -615,6 +615,13 @@ class Q(_Vocab):
     #: a naming: it says what the ink is like, not that the stroke is or is
     #: not a beam. ABSTAINS where the stroke has too little ink under its box
     #: or the cell has no staff-space unit.
+    #: ROADMAP 2.82: `detail.core` -- the longest stretch of the stroke where
+    #: the ink is beam-thick (`None` where none is), with its own `x0`/`x1`,
+    #: `spaces`, `thickness_ratio`, `band` and `end_stems` read at ITS ends
+    #: (each end: `found`, `x`, `through` -- the run leaves the band on BOTH
+    #: sides, a barline -- and `side`, "up"/"down", where a stem runs to). The
+    #: median above is taken over every column of the stroke's BOX, and a box
+    #: wider than its beam reads the bare staff line beside it.
     BEAM_STROKE_INK = "beam_stroke_ink"
     #: ROADMAP 2.71 (Sean, 2026-10-09: *"The slash crosses both sides of the
     #: stem with a thick line at an angle ... slashes never [connect to other
