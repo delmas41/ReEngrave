@@ -277,8 +277,8 @@ class TestTheObserver(unittest.TestCase):
         rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
         self.assertNotIn("top", rows)
 
-    def test_a_blocker_over_the_NEW_window_abstains_occupied(self):
-        """The window now starts at the tip: a beam stroke box standing over the tip itself (0.3 spaces in) blocks it --
+    def test_a_blocker_over_the_ink_at_the_tip_itself_abstains_occupied(self):
+        """The reader now starts at the tip: a beam stroke box standing over the flag's ROOT (0.3 spaces in) blocks it --
         under the old window (1.0 back) the same box did not overlap it at all."""
         img = _paper()
         _stem(img)
@@ -287,6 +287,39 @@ class TestTheObserver(unittest.TestCase):
         log = self._run(img, blockers=[blocker])
         abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
         self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
+
+    def test_a_box_standing_NEAR_the_tip_but_not_over_its_ink_does_not_block_RED_against_the_window_rule(self):
+        """⚠️ THE REGRESSION THE FIRST ARM FOUND (Brahms pdf 1 `glyph/1/0/3/3/0`): the window a flag needs is 1.5 spaces
+        wide, and an accidental standing 1.3 spaces from the stem overlapped it, so a flag the old reader had counted went
+        unread. A box can explain only the ink it COVERS: this one covers none of the stem's."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        _draw(img, STEM_X1 + 26, TOP_Y + 20, STEM_X1 + 36, TOP_Y + 40)       # a flat's ink, apart from the flag
+        flat = (STEM_X1 + 24.0, TOP_Y + 14.0, STEM_X1 + 38.0, TOP_Y + 46.0)   # its box (corners): 1.2 spaces out
+        log = self._run(img, blockers=[flat])
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
+
+    def test_CONTROL_a_box_over_the_ink_attached_to_the_tip_still_blocks(self):
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        over_arm = (STEM_X1 + 10.0, TOP_Y + 20.0, STEM_X1 + 20.0, TOP_Y + 40.0)   # covers the flag's arm
+        log = self._run(img, blockers=[over_arm])
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
+        self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
+
+    def test_a_ledger_line_box_covering_only_a_thin_crossing_line_does_not_block_the_flag(self):
+        """The line's rows are left out of the reading, so a `ledgerLine` box over them covers none of the ink READ."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        _draw(img, STEM_X0 - 8, TOP_Y + 60, STEM_X1 + 26, TOP_Y + 66)
+        ledger = (STEM_X0 - 8.0, TOP_Y + 60.0, STEM_X1 + 26.0, TOP_Y + 66.0)
+        log = self._run(img, blockers=[ledger])
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
 
     def test_the_stems_own_flag_box_does_not_block_its_own_tip(self):
         """2.75 stays: a detected flag box hanging off THIS stem is set aside, so the ink is still read."""

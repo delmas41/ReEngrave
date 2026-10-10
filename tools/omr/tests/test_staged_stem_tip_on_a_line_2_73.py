@@ -154,6 +154,7 @@ class TestWhatBlocksTheWindow(unittest.TestCase):
         its detection box as the blocker, it abstains."""
         log = Log()
         img = _paper()
+        _stem(img)
         _draw(img, STEM_X1, 128, 206, 138)          # short line, right side only
         blockers = gather._stem_tip_blockers(
             [], [_Det("ledgerLine", STEM_X1, 128, 12, 10)], SP)

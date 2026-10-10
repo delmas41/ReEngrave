@@ -4205,11 +4205,12 @@ STEM_TIP_INK_REACH_SPACES = 2.6
 #: within this far of the box is the stem's own edge, not a mark.
 STEM_TIP_INK_SEED_SPACES = 1.0
 STEM_TIP_INK_EDGE_SPACES = 0.15
-#: The shape. His 21 read flags: out 0.50 .. 1.34, arm 0.62 .. 2.5 spaces, first ink 0.42 .. 0.81 spaces from the tip; the nearest
-#: non-flags (ledger-line stubs, a staff-line remnant) 0.31 .. 1.4 out with an arm of 0.06 .. 0.37 starting 1.1 .. 3.0 spaces in.
+#: The shape. His 21 read flags: out 0.50 .. 1.34, arm 0.62 .. 2.5 spaces, first ink 0.42 .. 0.81 spaces from the tip (a 22nd, Brahms
+#: pdf 1 `glyph/1/0/3/3/0`, out 0.66, arm 0.55); the nearest non-flags (ledger-line stubs, a staff-line remnant) 0.31 .. 1.4 out with an
+#: arm of 0.06 .. 0.37 starting 1.1 .. 3.0 spaces in. ARM_MIN stands midway between the largest non-flag arm and the smallest flag's.
 STEM_TIP_INK_OUT_MIN_SPACES = 0.45
 STEM_TIP_INK_OUT_MAX_SPACES = 1.5
-STEM_TIP_INK_ARM_MIN_SPACES = 0.5
+STEM_TIP_INK_ARM_MIN_SPACES = 0.45
 STEM_TIP_INK_ARM_U_SPACES = 0.35
 STEM_TIP_INK_ROOT_MAX_SPACES = 1.2
 #: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only.
@@ -4267,7 +4268,9 @@ def _tip_line_rows(right: Any, left: Any, us: Any, ul: Any, space: float
 
 def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
                  into_sign: float, space: float,
-                 head_edge: Optional[float] = None) -> Optional[Dict[str, Any]]:
+                 head_edge: Optional[float] = None,
+                 blockers: Optional[Sequence[Tuple[float, float, float, float]]] = None
+                 ) -> Optional[Dict[str, Any]]:
     """Does a FLAG hang from this stem's tip? ROADMAP 2.18c, REPLACED AT 2.83 (see the block above).
 
     `stem_x0`, `stem_x1`, `tip_y`, `head_edge` and `space` are all in the SAME canonical CELL pixels `Q.STEM`'s own box is
@@ -4275,7 +4278,12 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     `+1.0` to test the stem's TOP as its tip (walk DOWN, into the body -- an up-stem's shape) or `-1.0` to test the BOTTOM;
     GATHER does not know which end is the true tip -- that is `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE --
     so the caller asks both and files one row each. `head_edge` is where the stem's own head begins along the walk (the same
-    value `stem_tip_hooks` takes): the window stops short of it.
+    value `stem_tip_hooks` takes): the window stops short of it. `blockers` are the corner boxes (`x0, y0, x1, y1`) of every
+    OTHER mark the record already names here (`_stem_tip_blockers`): a box that covers INK ATTACHED TO THE STEM makes the tip
+    `occupied` (`found None`, `why = "occupied"`) -- that ink is that mark's, not a flag's. ⚠️ A box that merely stands NEAR the
+    tip does not: 2.18c abstained on any box overlapping its window, and the wider window this reader needs (a flag stands out
+    to 1.34 spaces) then overlapped a flat 1.3 spaces from the stem and lost a flag the old reader had counted (Brahms pdf 1
+    `glyph/1/0/3/3/0`, FINDINGS 2.83): what a box can explain is the ink it covers.
 
     Returns `None` where the raster or the window falls entirely off it. Otherwise a dict with `found` (`True` / `False` /
     `None`, see above) and `why` (the reason word), plus what was measured: `right` / `left` (ink density of the 0.9-space
@@ -4348,6 +4356,19 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     if area < STEM_TIP_INK_EMPTY_AREA:
         out.update(found=False, why="empty")
         return out
+    if blockers:
+        tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
+        keep_idx, far_cols = np.where(keep)[0], np.where(edge_r)[0]
+        for bx0, by0, bx1, by1 in blockers:
+            c0, c1 = int(np.floor(bx0 + tol - xa)), int(np.ceil(bx1 - tol - xa))
+            r0, r1 = int(np.floor(by0 + tol - ya)), int(np.ceil(by1 - tol - ya))
+            if c1 <= c0 or r1 <= r0:
+                continue
+            rsel = np.where((keep_idx >= r0) & (keep_idx < r1))[0]
+            csel = np.where((far_cols >= c0) & (far_cols < c1))[0]
+            if rsel.size and csel.size and right_far[np.ix_(rsel, csel)].any():
+                out["why"] = "occupied"
+                return out
     reach = float(us[edge_r][np.where(right_far.any(axis=0))[0]].max())
     out["out"] = round(reach, 2)
     if reach > STEM_TIP_INK_OUT_MAX_SPACES:
@@ -4774,25 +4795,8 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="a notehead stands at this end of the stem: its "
                              "ink is the head's own, not a hook's")
             continue
-        far = STEM_TIP_INK_FAR_SPACES
-        if edge is not None:
-            far = min(far, (edge - tip_y) * into_sign / space - 0.1)
-        far = max(far, STEM_TIP_INK_NEAR_SPACES)
-        wy0, wy1 = sorted((tip_y + into_sign * STEM_TIP_INK_NEAR_SPACES * space,
-                           tip_y + into_sign * far * space))
-        window = (x1, wy0, x1 + STEM_TIP_INK_OUT_MAX_SPACES * space, wy1)
-        tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
-        shrunk = (window[0] + tol, window[1] + tol, window[2] - tol,
-                  window[3] - tol)
-        if any(_rects_overlap(shrunk, b) for b in blockers):
-            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
-                        frame=frame, reason=ABSTAIN.OCCUPIED,
-                        stem_row_id=stem_row_id, end=end,
-                        note="a beam stroke or another detection already "
-                             "explains ink in this window")
-            continue
         m = stem_tip_ink(img, x0, x1, tip_y, into_sign, space,
-                         head_edge=edge)
+                         head_edge=edge, blockers=blockers)
         if m is None:
             log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
@@ -4800,6 +4804,14 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="window off the raster")
             continue
         found = m.pop("found")
+        if found is None and m.get("why") == "occupied":
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.OCCUPIED,
+                        stem_row_id=stem_row_id, end=end,
+                        note="a beam stroke or another detection already "
+                             "explains the ink attached to this stem tip",
+                        **m)
+            continue
         if found is None:
             # ROADMAP 2.83, RULE 8: ink hangs here that is not flag-shaped (or the tip cannot be read). CANNOT TELL --
             # never filed as `False`, which the bare-stem readers take as a positive "nothing hangs from this tip".

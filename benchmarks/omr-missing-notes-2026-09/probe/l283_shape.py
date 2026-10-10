@@ -22,7 +22,7 @@ NEAR = -0.3          # the window starts this far PAST the tip (a rounded tip, a
 FAR = 3.6            # and runs this far back along the stem, cut at the stem's own head
 OUT_MIN = 0.45       # a flag stands out at least this far from the stem's right edge
 OUT_MAX = 1.5        # ... and no farther (a beam / slur that runs on is not a flag)
-ARM_MIN = 0.5        # ink at least this far out (u > ARM_U) on at least this length of the stem (his flags: 0.62 .. 2.5)
+ARM_MIN = 0.45       # ink at least this far out (u > ARM_U) on at least this length of the stem (flags 0.55 .. 2.5; non-flags <= 0.37)
 ARM_U = 0.35
 ROOT_T_MAX = 1.2     # a flag's ink starts within this far of the tip (measured on his 21 read flags: 0.42 .. 0.81)
 EDGE_U = 0.15       # ink nearer the stem than this is the stem's own edge, not a mark
