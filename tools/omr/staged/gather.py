@@ -4241,6 +4241,11 @@ STEM_TIP_FRAG_GAP_SPACES = 0.35
 STEM_TIP_FRAG_T_MAX_SPACES = 1.6
 STEM_TIP_FRAG_AREA_MIN = 0.25
 STEM_TIP_FRAG_WIDTH_MIN_SPACES = 0.3
+#: A fragment at least this share of which stands under ANOTHER mark's detection box (`blockers`; a rest, a beam stroke, a head) is that
+#: mark's ink, not a piece of the flag, and is not taken in: the first v4 re-gather lost 7 flags (Brahms pdf 25 `glyph/25/0/4/0/7`, six on
+#: Litolff) because a neighbouring `rest8th` or beam stroke standing 0.2-0.3 spaces from the flag was unioned with it and then made the
+#: tip `occupied`. The stem's OWN flag boxes are not blockers, so a broken flag under its own box is still taken in.
+STEM_TIP_FRAG_EXPLAINED = 0.5
 
 #: ROADMAP 2.73, REWRITTEN AT 2.83. A ROW A LINE CROSSES: attached ink standing out on BOTH sides of the stem at one row (the
 #: stem's side `STEM_TIP_LINE_NEAR_U` on each, and beyond it on at least one) is a staff- or ledger-line stub or a slur's belly,
@@ -4362,10 +4367,20 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
         frag_labels.append(i)
     if frag_labels:
         dist = cv2.distanceTransform((~comp).astype(np.uint8), cv2.DIST_L2, 3)
+        boxed = np.zeros(sub.shape, dtype=bool)          # the ink another mark's box explains (`blockers`, edges trimmed)
+        tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
+        for bx0, by0, bx1, by1 in (blockers or ()):
+            c0, c1 = max(0, int(np.floor(bx0 + tol - xa))), min(sub.shape[1], int(np.ceil(bx1 - tol - xa)))
+            r0, r1 = max(0, int(np.floor(by0 + tol - ya))), min(sub.shape[0], int(np.ceil(by1 - tol - ya)))
+            if c1 > c0 and r1 > r0:
+                boxed[r0:r1, c0:c1] = True
         for i in frag_labels:
             m = lab == i
-            if float(dist[m].min()) <= STEM_TIP_FRAG_GAP_SPACES * space:
-                comp = comp | m
+            if float(dist[m].min()) > STEM_TIP_FRAG_GAP_SPACES * space:
+                continue
+            if float(boxed[m].mean()) >= STEM_TIP_FRAG_EXPLAINED:
+                continue                                  # another mark's ink (a rest, a beam): a box explains the ink it covers
+            comp = comp | m
     right = comp & (us[None, :] > 0.04)
     left = comp & (ul[None, :] > 0.04)
     on_line, bar = _tip_line_rows(right, left, us, ul, space)

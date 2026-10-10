@@ -1,5 +1,5 @@
 base: faf913f42a791ddf8077968100fb981b279095a6 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-base/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
-arm: 3bcb8e951afbd5b45c0fd65d840326f1f35ca097 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm3/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+arm: 5245d96898caa7777e130c7abcbd4b8c5a59a1d3 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm4/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
 
 truth black heads judged: 294  by kind: {'bare': 119, 'flag': 40, 'beam': 135}
 
@@ -40,11 +40,11 @@ truth black heads judged: 294  by kind: {'bare': 119, 'flag': 40, 'beam': 135}
 
 == GUARD: tip rows at the true tip of heads whose stem carries NO flag (bare + beam), arm
    no_stem                                       88
-   abstained:ambiguous:crosses_both_sides        73
+   abstained:ambiguous:crosses_both_sides        71
    none                                          44
-   abstained:occupied:occupied                   31
-   abstained:ambiguous:ink_not_flag_shaped       11
-   abstained:ambiguous:runs_on                   7
+   abstained:occupied:occupied                   30
+   abstained:ambiguous:ink_not_flag_shaped       12
+   abstained:ambiguous:runs_on                   9
    NEWLY read as a flag where his boxes show none: 0 []
 
 == his level>=1 heads that base does not decide right (44), base -> arm

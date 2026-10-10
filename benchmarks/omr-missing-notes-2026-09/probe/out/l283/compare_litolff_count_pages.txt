@@ -1,21 +1,21 @@
-arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm3/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
-   provenance 3bcb8e951afbd5b45c0fd65d840326f1f35ca097 dirty=False
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm4/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+   provenance 5245d96898caa7777e130c7abcbd4b8c5a59a1d3 dirty=False
 base /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-base/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
    provenance faf913f42a791ddf8077968100fb981b279095a6 dirty=False
 
 heads with a standing duration verdict: base 1286  arm 1286  in both 1286 (only base 0, only arm 0); box moved > 1px in 0
 
 Q.STEM_TIP_INK census
-  abstained:ambiguous:crosses_both_sides                  base      0   arm    695
-  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     52
+  abstained:ambiguous:crosses_both_sides                  base      0   arm    653
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     67
   abstained:ambiguous:no_room                             base      0   arm    125
-  abstained:ambiguous:runs_on                             base      0   arm     26
+  abstained:ambiguous:runs_on                             base      0   arm     30
   abstained:no_staff_geometry                             base      1   arm      0
   abstained:occupied                                      base   1407   arm      0
   abstained:occupied:head_at_this_end                     base      0   arm    896
-  abstained:occupied:occupied                             base      0   arm    321
-  observed:flag                                           base     39   arm     31
-  observed:none                                           base    931   arm    232
+  abstained:occupied:occupied                             base      0   arm    329
+  observed:flag                                           base     39   arm     34
+  observed:none                                           base    931   arm    244
 
 duration verdicts changed (matched heads): 9 of 1286
       5  decided:head_and_marks{0}  ->  decided:hollow_head_bare_stem{0}

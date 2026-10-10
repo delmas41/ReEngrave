@@ -193,8 +193,43 @@ class TestABrokenFlagIsStillAFlag(unittest.TestCase):
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
         self.assertNotEqual(m["found"], True, m)
 
-    def test_a_box_over_the_fragment_makes_the_tip_occupied(self):
-        """The fragment is ink of the flag the reader claims, so a detection covering it blocks, as one covering the wedge does."""
+    def test_a_neighbouring_marks_ink_under_its_own_box_is_not_taken_into_the_flag_RED(self):
+        """⚠️ The first v4 re-gather lost 7 flags: a `rest8th` (Brahms pdf 25 `glyph/25/0/4/0/7`) or a beam stroke standing 0.25 spaces from a
+        flag was taken as a fragment of it (it is within the gap and wide enough), so the union ran on or sat under that mark's box. A box
+        explains the ink it COVERS: a fragment standing under one is that mark's, and the flag is read without it."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        _draw(img, STEM_X1 + 21, TOP_Y + 20, STEM_X1 + 41, TOP_Y + 50)           # a rest's blob, 5 px (0.25 spaces) from the arm
+        rest_box = (STEM_X1 + 19.0, TOP_Y + 18.0, STEM_X1 + 43.0, TOP_Y + 52.0)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP, blockers=[rest_box])
+        self.assertTrue(m["found"], m)
+        self.assertEqual(m["covered_area"] if "covered_area" in m else 0.0, 0.0, m)
+
+    def test_CONTROL_the_same_blob_with_NO_box_over_it_still_runs_on_and_is_not_a_flag(self):
+        """Nothing explains the extra ink, so it is taken as part of the attached ink and the reader says it cannot tell (rule 8) -- the
+        fragment rule only lets a DETECTION explain ink away, never the reader's own say-so."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        _draw(img, STEM_X1 + 21, TOP_Y + 20, STEM_X1 + 41, TOP_Y + 50)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP, blockers=[])
+        self.assertIsNone(m["found"], m)
+
+    def test_CONTROL_a_blob_that_TOUCHES_the_flag_under_a_box_still_makes_the_tip_occupied(self):
+        """Touching ink is attached, not a fragment: the box over it still makes the tip `occupied`."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        _draw(img, STEM_X1 + 16, TOP_Y + 20, STEM_X1 + 36, TOP_Y + 50)           # joined to the arm
+        rest_box = (STEM_X1 + 14.0, TOP_Y + 18.0, STEM_X1 + 38.0, TOP_Y + 52.0)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP, blockers=[rest_box])
+        self.assertIsNone(m["found"], m)
+        self.assertEqual(m["why"], "occupied", m)
+
+    def test_a_box_over_PART_of_the_fragment_makes_the_tip_occupied(self):
+        """The fragment is ink of the flag the reader claims, so a detection covering part of it (less than half: the rest of it is the
+        flag's) blocks, as one covering the wedge does."""
         img = _paper()
         _stem(img)
         _broken_flag(img)
