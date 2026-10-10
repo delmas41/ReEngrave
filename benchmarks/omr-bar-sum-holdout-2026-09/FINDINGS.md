@@ -2568,3 +2568,220 @@ The remaining ~16% of the sampled +1.0 bucket (multi-event bars, 94 of
 combination of the two causes above rather than a new one, but this was
 not measured. No EXPORT or held-bar-accounting change is proposed
 anywhere in this section, per brief.
+
+
+---
+
+## 2.79 — a whole-bar rest takes the meter in force at ITS bar, and a lone rest of any other length is never written (2026-10-10)
+
+Branch `lane-2.79-rest-meter` off `6762622c`. Trigger: overnight `20261010-night`
+(main `26fdb4d0`), acceptance control `bars_add_up` on Brahms 1/i Breitkopf
+`317803`: **6,950 of 6,979 exact and 29 OVERFULL**, last night 6,669 of 6,669.
+Every figure below is a proxy or a control, never an objective (CLAUDE.md §6a).
+"Print" statements are by reading the crops in `out/print/2.79-review/` and are
+**not Sean's**.
+
+### 2.79a. The two meters, and which was wrong
+
+There is ONE `Q.METER` verdict per SYSTEM on the staged path and no per-staff
+meter, so the brief's hypothesis -- *a per-staff meter that did not take the
+bar-9 return* -- is contradicted by the tree. `system/1/0` is decided
+(`voted`) with `segments = [(0, 9/8), (1, 6/8, corroborated)]` and a top-level
+`numerator/denominator` of **9/8** -- by `rhythm._with_segments`'s own
+construction, the OPENING segment. The return was taken, on every staff (it is
+a system fact), and `record.meter_at` answers 6/8 for cells 1..6.
+
+| reader | what it reads | bars 10-14 (cells 2-6) |
+|---|---|---|
+| EXPORT's `<time>` (`export._part_xml`) | `meter_at(run.meter, i)` | **6/8** |
+| EVALUATE's `size_measure_rest` | `meter.value["numerator"]` -- the top level | **9/8** (4.5 beats) |
+
+`meter_at`'s docstring says exactly this to every consumer: the top level
+*"describe[s] the FIRST segment ... deliberately NOT the thing consumers should
+read -- a bar past a change would get the wrong answer -- which is why every
+consumer goes through here and a test asserts it"*. Nothing tested it in
+`consequences.py`. Three
+EVALUATE rules read the top level (`size_measure_rest`, `reconcile_duration`,
+`reinstate_rest_between_staves`) -- the only three; nothing else on the staged
+path does (grep, whole tree).
+
+Why 29 and why only some staves: `size_measure_rest` fires only where a whole
+rest was actually READ. The parts whose rests in bars 10-14 are `R48` (Flute,
+Bassoon, Violins, Viola, Cello) have no `size_measure_rest` verdict there --
+their bars were read as nothing and took the eventless-bar branch, which sizes
+by `judged` (the written meter) and was right. The 29 overfull bars are exactly
+the 29 `size_measure_rest` verdicts on cells whose `meter_at` is not the
+opening (staves 1, 2, 4-8, 13; record scan below).
+
+The padded branch (`empty_bars_padded`, brief's candidate 2) is NOT involved.
+
+### 2.79b. The hole
+
+`export._bar_holds_out` treated a lone measure rest as the bar "whatever the
+meter" and never compared its `<duration>` with anything. The CONVENTION is
+right (CLAUDE.md §10: a whole rest means the BAR); the exemption was wider
+than it. A measure rest stands for the bar, so its length IS the written
+meter's, and "does it fill the bar" is answered by that equality. Three
+fixtures pinned the hole -- `test_staged_bar_sum_holdout.py` (a 4.0 measure rest
+in a 2/4 bar, asserted NOT held out), `test_staged_duplicate_rest.py` and
+`test_staged_unread_bar_marks.py` (the same 4.0-in-2/4 shape inside `_bar()`) --
+and are corrected to the meter's 2.0, with the reason in each. `size_measure_rest`
+never leaves that shape (it sets `measure_rest` and the bar's length together).
+
+### 2.79c. The fix, and its stage (§4a)
+
+* **EVALUATE** (commit `373f4a2b`): `consequences._bar_beats_at(meter, subject)`
+  reads `record.meter_at(meter.value, subject.cell)`; `size_measure_rest` uses
+  it. The answer FOLLOWS (a whole rest is the bar; the bar's meter is decided),
+  so it is EVALUATE's. A bar no segment covers gets NO meter and no assertion
+  (rule 8) -- the old reading sized it by the top level, a meter nobody read.
+* **EXPORT** (same commit): `_bar_holds_out`'s lone-measure-rest branch compares
+  the rest's `_event_units` with the written meter's; a disagreement is held out
+  and counted exactly as any bar that does not add up, with the voice entry
+  `measure_rest_length_disagrees: true` in the held-bar detail. Shared by the
+  MusicXML and LilyPond writers (`lilypond.py` calls the same function). **Held
+  out, not sized**: a second sizer in the writer would be a second opinion about
+  the bar, and a disagreement between EVALUATE's length and the file's meter is
+  "cannot tell which" (rule 8). It is quiet on a correct run (0 flagged on every
+  re-gather below; the whole-record re-export in 2.79f is the deliberate
+  exception, run with EVALUATE's stale verdicts).
+* **EVALUATE, separate commit** (`d04fd058`): `reconcile_duration` and
+  `reinstate_rest_between_staves` read the same field the same wrong way and now
+  use the same helper. Separate because it changes MORE than the rest sizing
+  (2.79e) -- the manager can take `373f4a2b` alone (it is green by itself).
+
+### 2.79d. Tests -- RED first, no source-text assertions
+
+`test_staged_rest_meter_2_79.py` (21 tests) and
+`test_staged_rest_meter_siblings_2_79.py` (2). Run against the UNREPAIRED tree
+before any edit, as one file of 23 (split afterwards): **11 failed, 12 passed**
+(the failures read
+`4.5 != 3.0`, `unexpectedly None`, and the seam test `(4, 0) != (0, 0)`: 4
+overfull, 0 short), then the EXPORT tests failed alone with the EVALUATE fix in
+place (5 failed) -- each half is RED for its own reason. Positive controls: a
+rest at cell 0 of the same system is still 4.5 (9/8); an unchanged meter and a
+verdict with no `segments` key still size alike; a lone rest of the meter's
+length is still written as the bar; the same 4.5-beat rest under a written 9/8
+is NOT held; no written meter means no verdict; a rest not flagged
+`measure_rest` is summed as before; the held bar is quiet when EVALUATE is
+right. **The seam test** builds a real `Log` with the segmented meter, runs
+`evaluate.run`, serialises it and writes the file: the two halves' own tests
+passed together while the seam was broken, which is how this shipped.
+
+### 2.79e. Measured -- small re-gather through export (pdf p0-1), three trees
+
+`acceptance_quick --doc brahms1-breitkopf --full`, ~10 min each. Base =
+`6762622c` (reproduces the overnight fault: same 29 bars, same `R18`=9/8 at
+divisions 4).
+
+| Brahms p0-1 | base | `373f4a2b` | + `d04fd058` |
+|---|---|---|---|
+| `bars_add_up` exact / short / **overfull** | 279 / 0 / **29** of 308 | 308 / 0 / **0** | 308 / 0 / **0** |
+| bars held out (2.8) | 106 | 106 | 102 |
+| empty bars padded | 7 | 7 | 7 |
+| notes / rests reaching the file | 434 / 60 | 434 / 60 | 444 / 72 |
+| `measure_rests_read` | 72 | 72 | 72 |
+| `notes_not_written_total` | 1,296 | 1,296 | 1,274 |
+| MusicXML bars changed vs base | -- | **29, only those** | 33 |
+| held bars flagged `measure_rest_length_disagrees` | -- | 0 | 0 |
+
+Commit 1 changes 29 of 308 bars (`R18[M]` -> `R12[M]`) and 29 verdicts
+(`size_measure_rest` 4.5 -> 3.0); no other EVALUATE verdict moves. Litolff
+p0-3, base vs both commits: `bars_add_up` 984 / 984, **0 bars changed**.
+
+**Every other changed bar (commit 2 only), 4 bars -- all held out before, all
+written after, each by `reconcile_duration` now landing on 3.0:**
+
+| bar | before | after | print |
+|---|---|---|---|
+| Cello 10 | held out (`R12[M]`) | `n2 R2 R2 R2 n2 n2` | right |
+| Cello 13 | held out | same | right |
+| Cello 14 | held out | same | right |
+| **Contrabass 13** | held out | `n4 R2 R4 R2` | **WRONG** |
+
+Contrabass 13 prints an eighth note, two eighth rests, a quarter rest and an
+eighth rest. The detector missed one eighth rest; the bar is then short by an
+eighth and exactly ONE re-reading of one note lands it, so `reconcile_duration`
+lengthens the eighth to a quarter. That is the rule's own known hazard (its
+bound says "unique"; it does not say "and not a missing rest"), now reachable
+here because it lands on the right length. The file is now a bar that adds up
+to the wrong music, and the bar-sum control cannot say so. **That is what to
+decide about commit 2.** It also removes 3 landings that were wrong-by-meter
+(Oboe 11, Clarinet 14, staff 8 bar 9: landed on 4.5, all in bars EXPORT held
+out anyway), and `reinstate_rest_between_staves` fires 3 times at
+`glyph/1/0/3/5/{0,1,2}` -- Sean's own 2.45 anchor, 0 before (DECISIONS
+2026-09-30, "they belong to the lower staff"). The Bassoon bar 13 it belongs to
+stays held out: with the three eighth rests back the bar is 5.5 quarters as one
+voice against 3.0 (no voice split there).
+
+### 2.79f. Measured -- the whole movement, from the saved records
+
+* **Footprint.** Verdict scan of the whole `20261010-night` records
+  (`record_io.load_record`, once): **1 of 53 Brahms systems** carries a segment
+  that differs from its opening -- `system/1/0` -- and **0 of 31 Litolff**. On
+  Brahms the rules fire on those cells 29 times (`size_measure_rest`), 3
+  (`reconcile_duration`), 1 (`reconcile_chord_duration`, which does not read the
+  value). So neither commit can move any Litolff verdict, and on Brahms only
+  system 1/0, which the small re-gather above covers completely. The
+  whole-movement figure for the EVALUATE fix is therefore expected, NOT
+  measured: it needs a re-gather.
+* **The EXPORT guard on the real record.** `python3 -m tools.omr.staged.export`
+  on `brahms1-breitkopf-mvt1-whole-20261010-night.record.json` (its EVALUATE
+  verdicts still hold the 4.5-beat rests -- the exact fault state) with the
+  guard: `bars_add_up` **6,950 + 29 overfull of 6,979 -> 6,979 of 6,979, 0
+  overfull, 0 short**; bars held out 2,755 -> 2,784 (+29), `measure_rests_read`
+  895 -> 866, notes reaching the file **7,189 unchanged**; `balanced`, and
+  `status_census` `unaccounted` empty; 29 held bars flagged
+  `measure_rest_length_disagrees`, **exactly the 29, and no other bar of 6,979
+  changed** (per-measure XML diff against the overnight file). That is the
+  guard working as the backstop on its own, with EVALUATE un-fixed.
+* **Litolff**, same re-export of `beethoven5-litolff-mvt1-whole-20261010-night`:
+  `bars_add_up` **6,060 of 6,060**; 0 of 6,060 measures changed; held 1,064,
+  padded 708, notes 5,589, `measure_rests_read` 1,089 -- all as overnight.
+
+### 2.79g. Print crops (for Sean's later look)
+
+`out/print/2.79-review/` -- 7 tiles of Brahms pdf page 1, system 0, cut at the
+gather's own 600 dpi from `render_page`'s frame, a red corner bracket on the
+bar (following the staff, not the 4-space-padded cell, which on a conductor's
+page frames three staves) and nothing of ours drawn. `manifest.json` holds our
+reading of the bracketed bar under each of the three trees. Frame control: the
+five staff lines the record filed must carry >= 2x the ink of the rows between
+them (46-87x on the rest bars, 5.6-8x on the bars with notes), and the same
+test shifted half a space (the NEGATIVE control) reads 0.01-0.17 and must fail
+-- the script asserts both. Tiles 1-3 are whole-bar-rest bars the fix resized
+(Contrabassoon 10, Oboe 12, Contrabass 14); 4-7 are the four commit-2 bars. The
+question for Sean: *in the bracketed bar, is there one whole rest and nothing
+else, and is the bar six eighths (the 6/8 printed at bar 9)?* -- and for 4-7,
+*is what we now write what is printed?*
+
+### 2.79h. Open, named, not built
+
+* `reconcile_duration` cannot tell a lengthened note from a missed rest
+  (Contrabass 13). A repair needs a witness it does not have; not attempted.
+* The whole-movement EVALUATE effect (29 rests + commit 2's 4 bars + 3 reinstated
+  rests, expected from the footprint scan) needs a re-gather to be measured.
+* `lilypond.py`'s lone-measure-rest branch builds its bar from `meter`, not
+  `judged`, so where a bar has no meter of its own but the part carries one it
+  renders a 4.0 rest -- not touched, and not seen on either small re-gather
+  (LilyPond's own bar-check failures: Brahms 0 / 0 / 0 across the three trees,
+  Litolff 2 / 2 before and after, unchanged).
+
+### 2.79i. Gate
+
+Fast tier on the final head (`pytest tools/omr/tests -m "not slow"`): **6,973
+passed, 11 skipped, 2 xfailed, 825 deselected**, exit 0 (a first run with `-x`
+stopped at `test_staged_duplicate_rest` -- one of the three fixtures above -- and
+is not the figure). `python3 -m tools.omr.staged.check`: **N = 192**, base 192,
+no new open finding. Scratch (`l279-*`) was kept outside the tree.
+
+### 2.79j. Files
+
+`tools/omr/staged/consequences.py` (`_bar_beats_at` and its three callers),
+`tools/omr/staged/export.py` (`_bar_holds_out`), `tools/omr/tests/
+test_staged_rest_meter_2_79.py`, `test_staged_rest_meter_siblings_2_79.py`, the
+three corrected fixtures named in 2.79b, `out/print/2.79-review/` (7 tiles +
+`manifest.json`), and under `probe/`: `2.79_crops.py` (the tiles and their frame
+control), `2.79_segment_footprint.py` (which verdicts sit on a cell whose
+`meter_at` differs from the opening, from a saved record), `2.79_diff_musicxml.py`
+(per-part, per-bar diff of two exports).
