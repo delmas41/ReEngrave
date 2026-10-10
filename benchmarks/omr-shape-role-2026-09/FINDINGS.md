@@ -3129,3 +3129,136 @@ one from the second plate), none Sean judged in round 1, same style: a red corne
 the exact mark, nothing of ours drawn, one neutral question. `manifest.json` carries
 `read_before` / `read_after` / `category`, which Sean never sees. Frame control that can fail:
 **12 of 12 real boxes pass, a (40, 40)-shifted box passes 2 of 12.** They do not block landing.
+
+
+---
+
+# PART 12 — §2.12m: AN ARTICULATION AT THE TIP OF A LONG CHORD STEM IS THE CHORD'S
+
+Branch `lane-2.12g-long-stem` (off main `40ab373a`). ⚠️ The brief named this item "2.12g"; ROADMAP 2.12g is already the role-twin collapse (`6dd32d46`, done), and 2.12h–l are taken, so the row is **2.12m** (rule 10: the tree outranks the brief). The branch keeps the name it was dispatched under. STAGED, ADJUDICATE only
+(`adjudicate_articulation_owner`, `ownership.py`). **Built on the lane, not merged; not
+measured on a plate** — this container has no library, no weights and no record holding a
+single articulation (the committed engraved record `engraved-p0p2-20260930b` has 0 marks:
+base and arm both print `marks: 0`, so the cloud reach is ZERO by construction, not by
+result). The Mac measures it (§6).
+
+## 1. What Sean said
+
+DECISIONS 2026-10-10 (on the 2.12f round-2 tiles, branch `claude/roadmap-continuation-q883`):
+*"The rule of note side works well in almost every case - it doesn't when there are multiple
+voices and stems going in both directions Or if like in tile 6 the stem is very long because
+it has multiple notes and one of the notes is far away from the staff - then it will go
+closer to the notes."* Tile 6 (`out/print/2.12f-r2-review/tile_06.png`, Brahms 317803 pdf
+23, mark `glyph/23/1/7/9/4`): an accent above the staff at the tip of an UP stem whose chord
+reaches down onto ledger lines below the staff; Sean: *"Connected to note below"*. Round 2
+abstained there `stem_contradicts_class_side` (nearest head `glyph/23/1/7/9/2`, gap 2.22
+heads, stem up). Case (a), two voices, was already decided by round 2's `stem_side` rule —
+tiles 2 and 9 right (DECISIONS 2026-10-10, the manager's correction) — and is not touched.
+
+## 2. What the authorities say (research, 2026-10-10)
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — for every point below that is
+not Sean's own sentence in §1. Sean has confirmed (a) and (b) as RULES; he has NOT confirmed
+the thresholds in §3 nor any authority's wording.
+
+| point | source | status |
+|---|---|---|
+| Single voice: notehead side; outside the staff except staccato (and tenuto) | Dorico, *Positions of articulations* (quoted in `docs/engraving-conventions.md` C51); IU JSoM *Music Notation Style Guide* ("Place on note head side, outside staff (except staccato)") | literature, agrees with Sean 2026-10-09 |
+| Two voices sharing a staff: articulation at the END OF EACH STEM, never on the notehead side, and not closer to the note than the stem end | Gould, *Behind Bars* pp. 117–118, as quoted by a reviewer in [opensheetmusicdisplay PR #1823](https://github.com/opensheetmusicdisplay/opensheetmusicdisplay/pull/1823) (SECOND-HAND: the book's text was not retrieved); Dorico help, *Positions of articulations*: "If multiple voices are active, articulations are placed at the end of the stem side of a note or chord" (search-engine extract; steinberg.help did not resolve from this container) | literature, = Sean's (a) |
+| LilyPond: a script's side is RELATIVE TO ITS STEM, opposite by default (`side-relative-direction . DOWN` for accent, staccato, tenuto, marcato, staccatissimo; `Script_interface::get_direction` = relative-dir × the stem's direction); in polyphony `\voiceOne/\voiceTwo` set `Script.direction` with the voice (`direction-polyphonic-grobs` includes `Script`) — i.e. stem side | LilyPond 2.24 source: `scm/script.scm` `default-script-alist`, `lily/script-interface.cc`, `scm/music-functions.scm` (fetched from gitlab.com/lilypond) | engine behaviour, = (a) |
+| Distance: LilyPond pads a script **0.20 staff spaces** off its support (`padding . 0.20`; fermata 0.40) and **0.25** off the staff (`Script.staff-padding`); staccato/tenuto `quantize-position #t` (into a space) | same source | engine numbers, used to DERIVE the bound in §3 |
+| x: a stem-side staccato/staccatissimo is pulled onto the STEM (`toward-stem-shift . 1.0`); accent/marcato/tenuto stay centred on the head | LilyPond `script.scm`; Dorico (C51: "stem-side staccato/staccatissimo centre on the STEM itself") | engine behaviour |
+| Fermata: own placement (above; below only for a lower voice); not an articulation here (`adjudicate_fermata_owner`) | LilyPond `fermata (direction . UP)`; C51 neighbour | unchanged |
+| Marcato: above the staff regardless of stem in a single voice | Dorico (C51 Known exceptions) | not built: a marcato on the stem side reaches this rule only with all its other conditions met |
+| **Long chord stem → stem side (Sean's (b))** | **NOT FOUND in any source searched**: LilyPond has no such exception (single voice is always `side-relative-direction DOWN`, whatever the chord's span); no Gould/Ross/Read/Stone/MOLA text on it was retrievable (searches returned only tables of contents; the Gould book itself is not online). A Ultimate Music Theory page puts an accent "in the first empty space below or above each notehead", and the MICS 2020 engraving paper centres on the notehead "above or below the stave, whichever is closest to the notehead" — the latter is the nearest literature to (b): it measures nearness to the STAFF, which for a chord running far onto ledgers is the stem end | **Sean's convention, CONFIRMED by him as a rule; the literature neither confirms nor contradicts it** |
+
+WHAT WOULD FALSIFY (b) as built: on the Brahms whole movement, a mark the rule decides at a
+long chord stem's tip that Sean, blind, gives to another note (a different chord, or the
+notehead side of the next note); or tile-6-class marks standing farther than 1 space from a
+read tip (the bound, §3).
+
+## 3. The rule built
+
+`ownership.py` `_long_chord_stem_tip` (new) and its call in `adjudicate_articulation_owner`'s
+`not live` branch (where round 2 returned `stem_contradicts_class_side`). It DECIDES
+`stem_tip_of_long_chord` (`stem_rule: long_chord_stem`) only when ALL hold, each a READ row:
+
+1. the NEAREST candidate's stem is decided and puts the mark on its stem side, single voice
+   (two voices never reach here with the mark on the stem side — round 2's `required`);
+2. exactly ONE `Q.STEM` row is attached to that head, by `rhythm._stems_on` — the attachment
+   `Q.STEM_DIRECTION` itself uses, imported, not re-derived;
+3. that stem carries ≥ 2 heads (a chord) and one of them stands on a LEDGER position on the
+   notehead side: `Q.NOTEHEAD_STAFF_POSITION` ≥ **9.5** (up stem) or ≤ **−1.5** (down) —
+   DERIVED from the grid (bottom line 8, first ledger 10; a head in the first space outside
+   the staff needs no ledger and its stem is an ordinary one);
+4. the mark's centre is BEYOND the stem's tip and its near edge within
+   **`ARTIC_STEM_TIP_MAX_GAP_SPACES = 1.0`** staff space of it (`Q.CELL_STAFF_SPACE`; overlap
+   allowed — tile 6's accent touches the tip). CONVENTION ASSUMED: twice LilyPond's largest
+   script padding plus a half-space quantum; NOT MEASURED HERE;
+5. the mark's x-centre within **one notehead width** of the stem (centred on the stem, or on
+   the head half a head from it).
+
+Any failure keeps `stem_contradicts_class_side`, with `detail.long_chord_stem` naming the
+first failed condition (`two_voice`, `no_staff_space`, `no_stem_row`, `several_stems`,
+`not_a_chord`, `no_ledger_head_on_stem`, `mark_not_at_stem_tip`) and the measurements
+under `long_chord_*` — so the Mac's readjudication counts WHY each of the 28 Brahms
+`stem_contradicts_class_side` marks (Part 11 §4) stayed abstained. The decided owner is
+the chord's head nearest the mark (the tip end), with the far head, its position, the
+tip gap in spaces and the chord size in `detail`.
+
+⚠️ The cell grid, not a per-x line reading (§10 "measure locally"): the far head's position
+is `Q.NOTEHEAD_STAFF_POSITION` (the cell's staff grid) and the unit `Q.CELL_STAFF_SPACE` —
+the cell is one bar, and the cut (9.5 against heads at 10+) is a half-step wide. A second,
+independent witness exists and is NOT read yet: `Q.FAR_HEAD_LEDGER_POSITION` (2.56, counted
+off the printed ledgers) — the ledger lanes own that reader.
+
+## 4. Tests, RED first
+
+`tools/omr/tests/test_staged_articulation_long_chord_stem_2026_10_10.py` (11 tests), run
+against the unmodified tree (`40ab373a`) first: **11 of 11 failed** — the 4 decide tests on
+`abstained != decided` (tile 6 drawn, its down-stem mirror, a mark touching the tip, a
+staccato centred on the stem), the 7 refusals on the missing `long_chord_stem` detail (their
+OUTCOME, `stem_contradicts_class_side`, already held — they are refusals beside a positive
+control, each the decided page with ONE fact changed: a far mark 2 spaces beyond the tip
+that no stem reaches; a mark below the tip; no ledger head (far head at position 9); a lone
+head; the far head's position unread; no staff space; a mark off the stem in x). After:
+11 of 11 pass; round 2's 24 (`test_staged_articulation_stem_side_2026_10_09.py`, including
+its single-head stem-side abstention) unchanged and passing.
+
+`check`: **192 before, 192 after.** Fast tier (cloud, this branch): **7,047 passed, 4 failed** — the same 4 `test_positional_store.py` failures main has here (version_memory, 1.7 stems entry); 57 skipped, 825 deselected.
+
+## 5. What is open
+
+* Reach on the plates is unknown here (cloud: 0 marks on the only committed record).
+  Upper bound on Brahms whole: the 28 `stem_contradicts_class_side` marks of Part 11 §4.
+* Long stems with the far head outside the cell's padding (> ~4 spaces) have no head row
+  to read: `no_ledger_head_on_stem`, abstained. A stem-LENGTH witness (the stem itself
+  longer than a normal 3.5-space stem + the chord's span) is the candidate second test,
+  not built — no number before the Mac counts the population.
+* Marcato on the stem side is not special-cased.
+
+## 6. What the Mac must run
+
+On the Mac, two worktrees: BASE = `origin/main` (`40ab373a` or later), ARM =
+`lane-2.12g-long-stem`. Same command in each, on each shared record (Brahms 317803
+whole movement and count pages; Litolff 984073 whole and count pages — the records Part 11
+§4 used):
+
+    python3 benchmarks/omr-shape-role-2026-09/readjudicate_artic_side.py <record> \
+        --label base --out out/2.12m/<doc>-base.json        # in the BASE tree
+    python3 benchmarks/omr-shape-role-2026-09/readjudicate_artic_side.py <record> \
+        --label arm  --out out/2.12m/<doc>-arm.json         # in the ARM tree
+    python3 benchmarks/omr-shape-role-2026-09/compare_artic_r2.py \
+        out/2.12m/<doc>-base.json out/2.12m/<doc>-arm.json
+
+The control (`glyph_owner` rebuilt == the record's) must print N of N as in Part 11 §4
+before any delta is read. EXPECTED: only `abstained/stem_contradicts_class_side` →
+`decided/stem_tip_of_long_chord` transitions; every other row identical (the rule runs only
+in that branch). Print the population first; zero is DEAD and says so.
+
+Tiles for Sean (blind, `cut_artic_tiles.py`'s style: red corner bracket on the exact mark,
+nothing of ours drawn, one neutral question — "Which note does the mark in the brackets
+belong to?"): **every** newly decided `stem_tip_of_long_chord` mark (expected ≤ 28), plus
+up to 4 that stayed `stem_contradicts_class_side` with `long_chord_stem` =
+`no_ledger_head_on_stem` or `mark_not_at_stem_tip` (the refusals), plus tile 6
+(`glyph/23/1/7/9/4`) as the control the rule must now decide.

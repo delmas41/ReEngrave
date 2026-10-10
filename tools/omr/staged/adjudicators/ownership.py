@@ -3489,17 +3489,124 @@ def _same_ink_twins(ev: Evidence, mark: Any) -> List[str]:
     return sorted(twins)
 
 
+#: ── ROADMAP 2.12m, the articulation at the TIP of a long chord stem ──────────
+#:
+#: Sean (DECISIONS 2026-10-10, on 2.12f tile 6): the notehead-side rule fails
+#: *"if ... the stem is very long because it has multiple notes and one of the
+#: notes is far away from the staff - then it will go closer to the notes"*. The
+#: mark then sits at the stem's TIP, on the stem side, near the staff.
+#:
+#: A head "far from the staff" is one on a LEDGER position on the notehead side:
+#: in `Q.NOTEHEAD_STAFF_POSITION`'s half-steps (top line 0, bottom line 8) the
+#: first ledger below is 10 and above is -2, so the cut is half a step inside
+#: each -- a head in the first space outside the staff (9 / -1) needs no ledger
+#: and its chord's stem is an ordinary one. DERIVED from the grid, not swept.
+ARTIC_LEDGER_POSITION_BELOW = 9.5
+ARTIC_LEDGER_POSITION_ABOVE = -1.5
+
+#: How far beyond the stem's tip the mark's NEAR edge may stand, in STAFF SPACES
+#: (`Q.CELL_STAFF_SPACE`, the cell's own unit). CONVENTION ASSUMED, NOT MEASURED:
+#: LilyPond pads a script 0.20 spaces off its support (`default-script-alist`,
+#: `padding . 0.20`) and 0.25 off the staff (`Script.staff-padding`); a small
+#: articulation is quantised into the next free space (Dorico, registry C51's
+#: neighbour). One space is twice the larger padding plus a half-space quantum
+#: and is still less than the 2-space gap at which a mark reads as unattached.
+#: WHAT WOULD FALSIFY IT: Sean's tile-6 class of marks measured on the plates
+#: (Mac readjudicate) standing beyond 1 space of a read tip.
+ARTIC_STEM_TIP_MAX_GAP_SPACES = 1.0
+
+#: The mark's x-centre within this many NOTEHEAD WIDTHS of the stem's centre.
+#: A stem-side mark is centred on the stem (staccato: Dorico, LilyPond
+#: `toward-stem-shift 1.0`) or on the head, whose centre stands half a head from
+#: its stem -- both inside one head width.
+ARTIC_STEM_TIP_MAX_DX_HEAD_WIDTHS = 1.0
+
+
+def _long_chord_stem_tip(ev: Evidence, head, direction: str, heads, *,
+                         mx: float, y0: float, y1: float, my: float,
+                         nh_width: float, cell):
+    """ROADMAP 2.12m: is this mark at the TIP of `head`'s stem, a long CHORD stem
+    reaching a ledger head on the notehead side? Returns `(ok, why, detail)`;
+    `why` names the first condition that failed (or `"ok"`).
+
+    POSITIVE EVIDENCE ONLY (CLAUDE.md rules 6 and 8): every condition is a READ
+    row -- the stem's extent (`Q.STEM`, attached exactly as `Q.STEM_DIRECTION`
+    attaches it, by `rhythm._stems_on`), each chord head's own position
+    (`Q.NOTEHEAD_STAFF_POSITION`), the unit (`Q.CELL_STAFF_SPACE`). A missing
+    row is a failed condition, never a default.
+
+    ⚠️ THE CELL'S CANONICAL FRAME, as the rest of this decision: the mark, the
+    stem and the heads were cut from ONE cell, so the tip-to-mark distance is a
+    local difference of two y values (CLAUDE.md §10). The far head's position is
+    the cell's own staff grid, which is what `Q.NOTEHEAD_STAFF_POSITION` reads.
+    """
+    # Imported here: `rhythm` imports this module at load time.
+    from . import rhythm as _rhythm
+
+    sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=cell)
+    space = float(sp_rows[-1].value) if sp_rows else 0.0
+    if space <= 0.0:
+        return False, "no_staff_space", {}
+    hbox = _rhythm._xywh_head(head.value)
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    mine = _rhythm._stems_on(hbox, stems) if hbox else []
+    if len(mine) != 1:
+        return False, ("no_stem_row" if not mine else "several_stems"), {}
+    stem = mine[0]
+    sx, sy, sw, sh = _rhythm._xywh(stem)
+    chord = [h for h in heads if _rhythm._xywh_head(h.value) is not None
+             and _rhythm._boxes_overlap(_rhythm._xywh_head(h.value),
+                                        (sx, sy, sw, sh))]
+    detail = {"stem_row": stem.id, "chord_heads": len(chord)}
+    if len(chord) < 2:
+        return False, "not_a_chord", detail
+    far, far_pos = None, None
+    for h in chord:
+        pr = ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=h.subject)
+        if not pr:
+            continue
+        pos = float(pr[-1].value)
+        beyond = (pos >= ARTIC_LEDGER_POSITION_BELOW if direction == "up"
+                  else pos <= ARTIC_LEDGER_POSITION_ABOVE)
+        if beyond and (far_pos is None or abs(pos - 4.0) > abs(far_pos - 4.0)):
+            far, far_pos = h, pos
+    if far is None:
+        return False, "no_ledger_head_on_stem", detail
+    detail.update(far_head=far.subject.to_key(), far_head_position=far_pos)
+    # ⚠️ LARGER CANONICAL y IS LOWER: an up stem's tip is its TOP.
+    if direction == "up":
+        tip = sy
+        beyond_tip = my < tip
+        gap = tip - y1
+    else:
+        tip = sy + sh
+        beyond_tip = my > tip
+        gap = y0 - tip
+    gap_spaces = gap / space
+    dx_stem = abs(mx - (sx + sw / 2.0))
+    detail.update(tip_gap_spaces=gap_spaces,
+                  dx_stem_head_widths=(dx_stem / nh_width) if nh_width else None)
+    if (not beyond_tip or gap_spaces > ARTIC_STEM_TIP_MAX_GAP_SPACES
+            or dx_stem > ARTIC_STEM_TIP_MAX_DX_HEAD_WIDTHS * nh_width):
+        return False, "mark_not_at_stem_tip", detail
+    return True, "ok", detail
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER,
-                   Q.STEM_DIRECTION),
+                   Q.STEM_DIRECTION, Q.STEM, Q.NOTEHEAD_STAFF_POSITION,
+                   Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
-    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.STEM_DIRECTION),
+    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.STEM_DIRECTION,
+           Q.STEM, Q.NOTEHEAD_STAFF_POSITION, Q.CELL_STAFF_SPACE),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=("nearest_on_notehead_side", "heads_about_equally_near",
              "no_notehead", "no_side_declared", "no_evidence",
              "owned_by_another_staff", "level_with_head",
-             "stem_direction_unread", "stem_contradicts_class_side"),
+             "stem_direction_unread", "stem_contradicts_class_side",
+             "stem_tip_of_long_chord"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
@@ -3524,7 +3631,15 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     the head nearest in x (CLAUDE.md rule 8):
 
       `stem_contradicts_class_side`  every candidate's stem is read and puts the
-                                     mark on its STEM side (a single voice)
+                                     mark on its STEM side (a single voice);
+                                     `detail.long_chord_stem` names why 2.12m's
+                                     exception did not apply
+      `stem_tip_of_long_chord`       DECIDED (ROADMAP 2.12m, Sean 2026-10-10,
+                                     tile 6): that stem side IS the convention
+                                     -- the nearest candidate's stem is a chord
+                                     stem reaching a LEDGER head on the notehead
+                                     side and the mark stands at its tip
+                                     (`_long_chord_stem_tip`)
       `stem_direction_unread`        the nearest candidates' stems are unread
       `heads_about_equally_near`     NARROWED: two candidates within
                                      `ARTIC_TIE_HEAD_HEIGHTS` of one another
@@ -3672,6 +3787,36 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     live = sorted((r for r in rows if r[6] != "against"), key=lambda r: r[0])
     if not live:
         g, _dx, h, _s, sd, tv, _st = min(rows, key=lambda r: r[0])
+        # ⚠️ ROADMAP 2.12m (Sean, DECISIONS 2026-10-10, case (b)): the mark is
+        # on the STEM side of a single voice. Where the NEAREST candidate's stem
+        # is a long CHORD stem reaching a ledger head on the notehead side and
+        # the mark stands at that stem's TIP, the mark is the chord's. Two
+        # voices (case (a)) never reach here as "against" on the stem side --
+        # `required` above already puts their mark there. Every failed
+        # condition keeps the old abstention and is named.
+        why, chord_detail = "two_voice", {}
+        if not tv:
+            ok, why, chord_detail = _long_chord_stem_tip(
+                ev, h, sd, heads, mx=mx, y0=y0, y1=y1, my=my,
+                nh_width=nh_width, cell=cell)
+            if ok:
+                return Ruling(
+                    value=h.subject.to_key(), reason="stem_tip_of_long_chord",
+                    used=(mark.id, h.id, chord_detail["stem_row"]),
+                    detail={"articulation": name,
+                            "suffix_side": suffix_side,
+                            "measured_side": suffix_side,
+                            "stem_direction": sd,
+                            "notehead_side": "below" if sd == "up" else "above",
+                            "stem_rule": "long_chord_stem",
+                            "two_voice": False,
+                            "gap_head_heights": g / nh_height,
+                            "dx_canonical_px": _dx,
+                            "dx_notehead_widths": (_dx / nh_width) if nh_width else None,
+                            "same_ink_twins": twins,
+                            "detector_class": str(mark.value),
+                            "confidence": mark.score,
+                            **chord_detail})
         return Ruling(
             value=None, reason="stem_contradicts_class_side",
             used=(mark.id, h.id),
@@ -3680,7 +3825,9 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                     "gap_head_heights": g / nh_height,
                     "stem_direction": sd,
                     "notehead_side": "below" if sd == "up" else "above",
-                    "two_voice": tv})
+                    "two_voice": tv,
+                    "long_chord_stem": why,
+                    **{f"long_chord_{k}": v for k, v in chord_detail.items()}})
 
     # Heads about as near as the nearest live one: the geometry cannot separate
     # them. A nearer head whose stem is UNREAD is among them -- it may be the

@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 2.12m built on lane: an articulation at a long chord stem's tip
+
+- `lane-2.12g-long-stem` (not merged; the brief's "2.12g" is taken, row is 2.12m): `adjudicate_articulation_owner` decides `stem_tip_of_long_chord` for Sean's 2.12f tile-6 case (a chord stem reaching a ledger head, the mark at its tip) on positive evidence only; every other `stem_contradicts_class_side` stays abstained with the failed condition named. Research on stem-side placement (Gould 2nd-hand, Dorico, LilyPond source) in FINDINGS `omr-shape-role-2026-09` Part 12. 11 RED-first tests; `check` 192 -> 192. Needs the Mac readjudication + blind tiles.
+
 ## 2026-10-10 (night) — 1.7 stems landed
 
 - `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
