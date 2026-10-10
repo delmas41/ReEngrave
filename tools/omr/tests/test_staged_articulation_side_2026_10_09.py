@@ -194,11 +194,12 @@ class TestADecidedOwnerCarriesTheMeasurement(unittest.TestCase):
 
 class TestTheNearerHeadOfAColumnIsRecordedNotActedOn(unittest.TestCase):
     """The pick is NEAREST IN X ONLY (the legacy rule's), so within a column of
-    heads sharing an x it is whichever the detector listed first. 119 of 802
-    decided Brahms owners are 2.5-5 head heights from their mark while a head
-    on the same declared side stands 0.2-0.6 from it. This lane RECORDS that
-    and does not change the pick -- 15 % of the decided population, and no
-    print has adjudicated it -- so the test PINS the current pick (a deliberate
+    heads sharing an x it is whichever the detector listed first. On Brahms 1
+    the pick is not the nearest declared-side head in 126 of 802 decided
+    owners, and in 91 the owner is over 2.5 head heights from its mark while a
+    nearer head stands a median 0.3 from it. This lane RECORDS that and does
+    not change the pick -- 16 % of the decided population, and no print has
+    adjudicated it -- so the test PINS the current pick (a deliberate
     follow-up flips it on purpose, not by accident) and asserts the record."""
 
     def _column(self):

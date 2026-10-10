@@ -2998,11 +2998,13 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     # is NEAREST IN X ONLY (the legacy rule's, imported), and a column of two
     # or three heads on one stem shares an x to within a pixel or two -- so
     # which head of the column wins is the order the detector listed them in.
-    # On Brahms 1 (whole movement) 119 of 802 decided owners are 2.5-5 head
-    # heights from their mark while a head on the SAME declared side stands
-    # 0.2-0.6 heights from it (four crops: the mark touches the nearer head).
-    # The nearest declared-side head and its gap are written here so the
-    # follow-up is a one-line comparison and not a re-measurement.
+    # On Brahms 1 (whole movement), by THIS decision's own record: in 126 of
+    # 802 decided owners the pick is not the nearest declared-side head, in 124
+    # of them the nearest is closer by more than a quarter head height, and in
+    # 91 the owner stands more than 2.5 heights from its mark while the nearer
+    # head stands a median 0.3 heights from it (four crops: the mark touches the
+    # nearer head). The nearest declared-side head and its gap are written here
+    # so the follow-up is a one-line comparison and not a re-measurement.
     near_gap, near_head = min(declared, key=lambda d: abs(d[0]))
     return Ruling(
         value=head.subject.to_key(), reason="nearest_on_declared_side",

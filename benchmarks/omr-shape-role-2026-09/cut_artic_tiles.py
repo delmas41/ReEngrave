@@ -13,9 +13,12 @@ every tile, so a tile cannot say what we read. `manifest.json` carries
 `read_before` / `read_after`, which Sean never sees.
 
 THE FRAME CONTROL THAT CAN FAIL (CLAUDE.md Sec.6b): the ink inside the mark's
-own box must beat the ink in the four boxes displaced by one box in each
-direction. It is also run on a box shifted 40 px, which MUST lose on most
-tiles -- a control that passes whatever it is shown is not one.
+own box must be at least FRAME_RATIO_MIN times the mean ink of the eight boxes
+around it AND its centroid must sit at the box centre (FRAME_CENTROID_MAX). The
+same test is run on the box shifted (40, 40) px, which MUST fail on most tiles
+-- a control that passes whatever it is shown is not one. (Two earlier drafts
+could not tell the frame from a wrong one -- 7 of 12 real vs 5 of 12 shifted,
+then 12 vs 7 -- on notation this dense, and were replaced.)
 """
 from __future__ import annotations
 
@@ -51,15 +54,34 @@ def _ink(binary, box):
     return float((binary[y0:y1, x0:x1] == 0).mean())
 
 
-def frame_control(binary, box, shift=0):
-    """ink(box) vs the best of the four neighbours one box away. >1 passes."""
-    x0, y0, x1, y1 = box
-    y0, y1 = y0 + shift, y1 + shift
+#: A detector box is TIGHT on a small dark glyph, so (a) the ink inside it is
+#: concentrated -- at least FRAME_RATIO_MIN times the mean ink of the eight boxes
+#: around it -- and (b) the ink's centroid sits near the box centre, within
+#: FRAME_CENTROID_MAX of the box's own size on each axis.
+FRAME_RATIO_MIN = 1.5
+FRAME_CENTROID_MAX = 0.3
+
+
+def frame_control(binary, box, shift=(0, 0)):
+    """`(ratio, centroid_offset, passes)` for `box` displaced by `shift` px."""
+    dx0, dy0 = shift
+    x0, y0, x1, y1 = box[0] + dx0, box[1] + dy0, box[2] + dx0, box[3] + dy0
     w, h = x1 - x0, y1 - y0
     here = _ink(binary, (x0, y0, x1, y1))
-    around = max(_ink(binary, (x0 + dx * w, y0 + dy * h, x1 + dx * w, y1 + dy * h))
-                 for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)))
-    return here, around, (here / around) if around > 1e-9 else float("inf")
+    ring = [_ink(binary, (x0 + dx * w, y0 + dy * h, x1 + dx * w, y1 + dy * h))
+            for dx in (-1, 0, 1) for dy in (-1, 0, 1) if (dx, dy) != (0, 0)]
+    around = sum(ring) / len(ring)
+    ratio = (here / around) if around > 1e-9 else float("inf")
+    bx0, by0, bx1, by1 = [int(round(v)) for v in (x0, y0, x1, y1)]
+    sub = binary[max(0, by0):by1, max(0, bx0):bx1] == 0
+    if not sub.any():
+        return ratio, (1.0, 1.0), False
+    ys, xs = np.nonzero(sub)
+    off = (abs(xs.mean() + 0.5 - sub.shape[1] / 2.0) / max(1, sub.shape[1]),
+           abs(ys.mean() + 0.5 - sub.shape[0] / 2.0) / max(1, sub.shape[0]))
+    ok = (ratio >= FRAME_RATIO_MIN and off[0] <= FRAME_CENTROID_MAX
+          and off[1] <= FRAME_CENTROID_MAX)
+    return ratio, off, ok
 
 
 def bracket(img, box, pad, arm, thick):
@@ -90,12 +112,11 @@ def main(argv=None) -> int:
             cache[key] = (cv2.cvtColor(pg.rgb, cv2.COLOR_RGB2BGR), pg.binary)
         rgb, binary = cache[key]
         mb = [float(v) for v in t["mark_bbox_page"]]
-        here, around, ratio = frame_control(binary, mb)
-        _h2, _a2, ratio_shift = frame_control(binary, mb, shift=40)
+        ratio, off, ok = frame_control(binary, mb)
+        _r2, _o2, ok_shift = frame_control(binary, mb, shift=(40, 40))
         ctl["n"] += 1
-        ctl["real_pass"] += int(ratio > 1.0)
-        ctl["shifted_pass"] += int(ratio_shift > 1.0)
-        mh = mb[3] - mb[1]
+        ctl["real_pass"] += int(ok)
+        ctl["shifted_pass"] += int(ok_shift)
         # a staff space ~ 2.2 x a tenuto/accent box height on these scans; the
         # window is sized from the doc, not from the mark, so tiles are alike
         space = 25.0 if t["doc"] == "brahms" else 15.5
@@ -131,13 +152,20 @@ def main(argv=None) -> int:
             "subject": t["subject"], "question": QUESTION,
             "read_before": t["read_before"], "read_after": t["read_after"],
             "category": t.get("category"),
-            "frame_control_ink_ratio": round(ratio, 2)})
-        print(fn, t["doc"], t["subject"], "ink ratio %.2f (shifted 40px: %.2f)"
-              % (ratio, ratio_shift))
+            "frame_control": {"ink_ratio": round(ratio, 2),
+                              "centroid_offset": [round(off[0], 2),
+                                                  round(off[1], 2)],
+                              "passes": bool(ok)}})
+        print(fn, t["doc"], t["subject"], "ratio %.2f centroid %s pass=%s | "
+              "shifted (40,40) pass=%s" % (ratio, [round(o, 2) for o in off],
+                                           ok, ok_shift))
     manifest["frame_control"] = {
         "tiles": ctl["n"],
-        "real_box_beats_its_neighbours": ctl["real_pass"],
-        "SHIFTED_box_beats_its_neighbours(control, must be low)": ctl["shifted_pass"]}
+        "ratio_threshold": FRAME_RATIO_MIN,
+        "centroid_offset_max": FRAME_CENTROID_MAX,
+        "real_box_passes": ctl["real_pass"],
+        "SHIFTED_(40,40)px_box_passes(control, must be low)":
+            ctl["shifted_pass"]}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=1))
     print(json.dumps(manifest["frame_control"], indent=1))
     return 0
