@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 2.77 landed with Sean's round-2 fixes
+
+- Rhythm leftovers + 2.77b: a beam piece is not a head; a sloped beam keeps its stems; a head's copy owned by another staff abstains. `f25b674c`; `check` 192. Next: the overnight `20261010-night`.
+
 ## 2026-10-10 (night) — 2.75 landed: tie vs slur by Sean's rules
 
 - `adjudicate_arc_kind`: two-note same pitch = tie, chords by top/bottom notes, stacked = nearer is the tie; a head's refused half-boxes read with it. Sean's tiles 9/10 + 2/2. `8768808a`; `check` 192.
