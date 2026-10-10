@@ -2078,7 +2078,7 @@ decision**. Measured per tile on the record (strokes with their ink rows, stems,
   floor, not the mark. Left NARROWED `eighth | quarter` (the answer is in it); NOT fixed: letting a tie box through, or lowering the
   density floor, changes every tip window on the plate and needs its own item.
 
-**Measured (clean re-gathers, base = origin/main `f2a0efb1`, arm = `0d08e10c`).** Sean's 10: **7 right** (1, 3, 6, 7, 8, 9, 10), 2, 4 and 5 narrowed with the answer in them, **0 wrong**. Sean's 22: **21 right / 0 wrong / 1 narrowed (4)**
+**Measured (clean re-gathers on the merged tree after 2.71/2.76: base = origin/main `3ec53272`, arm = `61d4c88a`; the same 24 / 74 changes and the same table on the earlier base `f2a0efb1`/`0d08e10c`).** Sean's 10: **7 right** (1, 3, 6, 7, 8, 9, 10), 2, 4 and 5 narrowed with the answer in them, **0 wrong**. Sean's 22: **21 right / 0 wrong / 1 narrowed (4)**
 (only tile 15 moved). The other judged heads (2.69's 2, 2.73's 10, 2.74's 10) unchanged except Litolff 1 -> eighth.
 Population: Brahms p0-1 **24 of 1,491** changed (4 `beam_certain_not_joined` -> decided eighth, 4 -> `beam_discounted_uncertain` same pair, 3 `beams_ambiguous` candidates changed,
 3 `flags_disagree` -> eighth, 3 decided 16th -> eighth, 2 32nd -> 16th, 3 decided eighth -> narrowed eighth|quarter, 1 dotted eighth ->
@@ -2091,3 +2091,5 @@ expect "not a note").
 Tests: `test_staged_rhythm_leftovers.py` now 33; RED first on `b6558cf9`: 4 of the 8 new tests failed (tiles 7, 8, 9 on real
 measured geometry, and the voices-that-differ range); controls (one stem, thin stroke under a ledger box, one-end stroke, a
 row through heads alone) stayed green.
+
+Gates at `61d4c88a`: `pytest -m "not slow" tools/omr/tests` **6,769 passed, 11 skipped, 2 xfailed, 0 failed**; `staged.check` TOTAL **193** (= origin/main's 193). The merge conflict with 2.71 was in `gather_cv_lines` only (per-stem blockers vs the new `slashes=` argument): both kept; 2.73 touched no stem-tip function.
