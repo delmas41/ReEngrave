@@ -107,12 +107,21 @@ def _duration(log, g):
 class TestALosingCopyHasNoDurationOfItsOwn(unittest.TestCase):
     """Crop 9: the contest's loser counted the other staff's beam."""
 
-    def _fixture(self, owner=None, outcome=Outcome.DECIDED):
+    def _fixture(self, owner=None, outcome=Outcome.DECIDED, twin="staff/0/0/1"):
         log = Log()
         _staff_space(log, 100)
         g = _head(log, 0, (561, 1, 159, 133), "noteheadBlackOnLine")
         if owner is not None:
             _owner(log, g, owner, outcome)
+        if twin is not None:
+            # the physical-mark group `gather_mark_groups` files on EVERY copy:
+            # this head and its twin on `twin`'s staff
+            other = R.glyph(0, 0, int(twin.rsplit("/", 1)[1]), 0, 9)
+            for sub in (g, other):
+                log.observe(sub, Q.MARK_GROUP, "mg/0/0/1",
+                            reader=READERS.GEOMETRY, frame="cell:0",
+                            family="notehead", size=2, rep=g.to_key(),
+                            members=[other.to_key(), g.to_key()])
         return log, g
 
     def test_a_copy_the_contest_awarded_to_another_staff_abstains_RED(self):
@@ -120,6 +129,19 @@ class TestALosingCopyHasNoDurationOfItsOwn(unittest.TestCase):
         v = _duration(log, g)
         self.assertEqual(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "owned_by_another_staff")
+
+    def test_CONTROL_a_loser_with_NO_twin_on_the_owner_keeps_its_duration(self):
+        """A lone copy (the owner's box refused, a record gathered without mark
+        groups, the relocation population) is the only reading of that head."""
+        log, g = self._fixture(owner="staff/0/0/1", twin=None)
+        v = _duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+
+    def test_CONTROL_a_group_member_on_the_HOME_staff_is_no_twin_on_the_owner(
+            self):
+        log, g = self._fixture(owner="staff/0/0/1", twin="staff/0/0/0")
+        v = _duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
 
     def test_CONTROL_the_owner_keeps_its_duration(self):
         log, g = self._fixture(owner="staff/0/0/0")
@@ -136,7 +158,7 @@ class TestALosingCopyHasNoDurationOfItsOwn(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.DECIDED)
 
     def test_CONTROL_an_uncontested_head_is_untouched(self):
-        log, g = self._fixture()
+        log, g = self._fixture(twin=None)
         v = _duration(log, g)
         self.assertEqual(v.outcome, Outcome.DECIDED)
 

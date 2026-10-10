@@ -2310,8 +2310,10 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
                    Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
                    # ⚠️ ROADMAP 2.77b: the head's own stem direction where no
                    # CV stem is attached (`_own_stem_side`), so the beams that
-                   # can be its own, and with them the value, depend on it.
-                   Q.HEAD_STEM_REACH),
+                   # can be its own, and with them the value, depend on it;
+                   # and the physical-mark group that says the owner holds a
+                   # twin of a contest's losing copy.
+                   Q.HEAD_STEM_REACH, Q.MARK_GROUP),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -2357,7 +2359,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH),
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",
@@ -2402,23 +2404,36 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_notehead")
 
     # ⚠️⚠️ ROADMAP 2.77b (Sean, 2026-10-09, rhythm-leftovers-2 crop 9): A COPY
-    # THE CONTEST AWARDED TO ANOTHER STAFF HAS NO DURATION OF ITS OWN. The
-    # detector boxed ONE printed head in each of two staves' padded cells and
-    # `glyph_owner` named one the winner; a resolved contest DROPS the loser,
-    # it never relocates it (CLAUDE.md §10; `is_relocated_copy` is the one test
-    # EXPORT, `consequences._left_the_bar` and the articulation owners apply).
-    # The winner's stem points TOWARD its own staff (`stem_toward_staff`), so
-    # the loser's stem runs away from the staff it was cut from and its tip,
-    # its beam and its flag all lie in the OWNER's cell, which the owner reads;
-    # what the loser's home cell holds is that staff's own notes' marks. Crop
-    # 9's loser counted two of those and decided a SIXTEENTH on a printed
-    # eighth, a value nothing writes and every population count then included.
-    # An owner that ABSTAINED names no loser, so nothing is abstained here.
+    # THE CONTEST AWARDED TO ANOTHER STAFF, WHOSE TWIN THAT STAFF HOLDS, HAS NO
+    # DURATION OF ITS OWN. The detector boxed ONE printed head in each of two
+    # staves' padded cells and `glyph_owner` named one the winner; a resolved
+    # contest DROPS the loser, it never relocates it (CLAUDE.md §10;
+    # `is_relocated_copy` is the one test EXPORT, `consequences._left_the_bar`
+    # and the articulation owners apply). What the loser's home cell holds
+    # around it is the home staff's own notes' marks, not this head's: crop 9's
+    # loser counted two of them (a beam below the head against a stem that
+    # runs up) and decided a SIXTEENTH on a printed eighth, a value nothing
+    # writes and every population count then included.
+    #
+    # THE TWIN IS READ OFF `Q.MARK_GROUP` (the same physical mark filed on the
+    # owner staff), not assumed: a lone copy -- the owner's box refused, a
+    # record gathered without mark groups, `OMR_RELOCATE_AT_EXPORT`'s own
+    # population -- is the only reading of that head there is and keeps its
+    # duration. An owner that ABSTAINED names no loser either.
     owner = ev.verdict(Q.GLYPH_OWNER)
     if owner is not None and owner.outcome is Outcome.DECIDED \
             and is_relocated_copy(ev.subject, owner.value):
-        return Ruling.abstain("owned_by_another_staff", owner=owner.value,
-                              head=str(head))
+        me = ev.subject.to_key()
+        twin = None
+        for g in ev.rows(Q.MARK_GROUP):
+            for m in (g.detail or {}).get("members") or ():
+                ms = Subject.from_key(m).at(Kind.STAFF) if m != me else None
+                if ms is not None and ms.to_key() == owner.value:
+                    twin = m
+        if twin is not None:
+            return Ruling.abstain("owned_by_another_staff",
+                                  owner=owner.value, twin=twin,
+                                  head=str(head))
 
     base = None
     for name, beats in _HEAD_BEATS.items():
