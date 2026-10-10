@@ -4090,19 +4090,23 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         if stem_rows_logged:
             grid = _cell_grid(c)
             space_c = grid[1] * 2.0 if grid is not None else None
-            blockers = _stem_tip_blockers(
-                found.get("beams") or (),
-                (detections or {}).get(sub.to_key()) or (), space_c)
             # ROADMAP 2.71: the tremolo slashes on these stems are named ONCE,
             # here, and the tip reader below is handed the raster with them
             # blanked -- a slash is not a hook.
             slashes = _observe_stem_slashes(log, sub, frame, c,
                                             stem_rows_logged, heads, space_c)
             for d, row_id in stem_rows_logged:
+                stem_xywh = (float(d.x_canonical), float(d.y_canonical),
+                             float(d.width_canonical),
+                             float(d.height_canonical))
+                # ⚠️ ROADMAP 2.75: blockers PER STEM, so a flag box hanging
+                # off THIS stem's tip does not make its own tip occupied.
+                blockers = _stem_tip_blockers(
+                    found.get("beams") or (),
+                    (detections or {}).get(sub.to_key()) or (), space_c,
+                    own_stem=stem_xywh)
                 _observe_stem_tip_ink(
-                    log, sub, frame, c, row_id,
-                    (float(d.x_canonical), float(d.y_canonical),
-                     float(d.width_canonical), float(d.height_canonical)),
+                    log, sub, frame, c, row_id, stem_xywh,
                     blockers, space_c, heads=heads,
                     slashes=slashes.get(row_id))
 
@@ -4546,8 +4550,46 @@ def _rects_overlap(a: Tuple[float, float, float, float],
     return ax0 < bx1 and bx0 < ax1 and ay0 < by1 and by0 < ay1
 
 
+#: How far (staff spaces) a detected flag box's left edge may stand from the
+#: stem it hangs off, and how far (spaces) its near edge may stand from that
+#: stem's tip. Measured on Brahms p1 tile 15 (ROADMAP 2.65/2.69 leftover): the
+#: detector's `flag8thUp`/`flag16thUp` boxes over one flag start a hair INSIDE
+#: the stem (left edge +0.1 spaces from its left) and 0.2-0.3 spaces under the
+#: tip. NOT CONFIRMED beyond that plate; a flag whose box starts farther out is
+#: simply not set aside (it stays a blocker -- the old behaviour).
+STEM_TIP_OWN_FLAG_X_SPACES = 0.6
+STEM_TIP_OWN_FLAG_TIP_SPACES = 0.8
+
+
+def _is_flag_detection(d: Any) -> bool:
+    return str(getattr(d, "smufl_name", "") or "").startswith("flag")
+
+
+def _flag_box_hangs_off_stem(dd: Any, stem_box: Tuple[float, float, float, float],
+                             space: float) -> bool:
+    """Is this detected FLAG box the flag of THIS stem (either tip)?
+
+    A flag is drawn off its stem's tip, so its box starts at the stem's side
+    (`STEM_TIP_OWN_FLAG_X_SPACES`) and its near edge stands within
+    `STEM_TIP_OWN_FLAG_TIP_SPACES` of the top or the bottom tip. Anything else
+    -- another stem's flag, a flag box starting mid-stem -- is not this
+    stem's own.
+    """
+    sx, sy, sw, sh = stem_box
+    bx0, by0 = float(dd.x_canonical), float(dd.y_canonical)
+    bx1, by1 = bx0 + float(dd.width_canonical), by0 + float(dd.height_canonical)
+    if not (sx - STEM_TIP_OWN_FLAG_X_SPACES * space <= bx0
+            <= sx + sw + STEM_TIP_OWN_FLAG_X_SPACES * space):
+        return False
+    reach = STEM_TIP_OWN_FLAG_TIP_SPACES * space
+    top, bottom = sy, sy + sh
+    return (abs(by0 - top) <= reach and by1 > top) \
+        or (abs(by1 - bottom) <= reach and by0 < bottom)
+
+
 def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
-                       space: Optional[float]
+                       space: Optional[float],
+                       own_stem: Optional[Tuple[float, float, float, float]] = None
                        ) -> List[Tuple[float, float, float, float]]:
     """Every box (`x0, y0, x1, y1` corners) that already explains ink in
     THIS cell, for `_observe_stem_tip_ink`'s window guard.
@@ -4562,6 +4604,18 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
     cut 1380 of 1584 window attempts abstained `occupied` before any of
     them was measured. A box this wide never "explains" one narrow window's
     ink -- it explains the whole page.
+
+    ⚠️⚠️ ROADMAP 2.75 (Sean, 2026-10-09: the two flag boxes on Brahms p1
+    tile 15, an eighth). `own_stem` (`x, y, w, h`, the stem the window will be
+    read at): a detected FLAG box hanging off THAT stem's tip is not "other ink
+    this record can already name" -- it is the mark the hook reader counts
+    UNDER, and the detector often draws one flag twice (`flag8thUp` and
+    `flag16thUp` over the same ink), which blocked the stem's own tip and kept
+    the 2.69 hook count from ever being filed. It is set aside here and ONLY
+    here: a flag of ANOTHER stem, a tie, a beam stroke, anything not a flag
+    box still blocks, and a flag box is never evidence of a hook by itself --
+    the window is still READ off the ink (`stem_tip_ink`). `own_stem=None` is
+    the pre-2.75 call, byte for byte.
     """
     out = [
         (float(bd.x_canonical), float(bd.y_canonical),
@@ -4576,7 +4630,9 @@ def _stem_tip_blockers(beams: Iterable[Any], other_dets: Iterable[Any],
         (float(dd.x_canonical), float(dd.y_canonical),
          float(dd.x_canonical) + float(dd.width_canonical),
          float(dd.y_canonical) + float(dd.height_canonical))
-        for dd in other_dets if float(dd.width_canonical) <= cut)
+        for dd in other_dets if float(dd.width_canonical) <= cut
+        and not (own_stem is not None and _is_flag_detection(dd)
+                 and _flag_box_hangs_off_stem(dd, own_stem, space)))
     return out
 
 

@@ -1,0 +1,133 @@
+{
+ "roadmap_item": "rhythm-leftovers-3",
+ "dpi": 600,
+ "what": "WRITTEN-copy heads whose duration (or not-a-notehead) verdict changed under 2.77b, not yet judged by Sean; plain crops, the head in red corner brackets, nothing of ours drawn",
+ "heads": [
+  {
+   "n": 1,
+   "tile": "head_01.png",
+   "subject": "glyph/0/0/0/6/6",
+   "pdf_page_index": 0,
+   "page_box": [
+    5275.25,
+    1452.53125,
+    5317.1875,
+    1488.28125
+   ],
+   "dpi": 600,
+   "plate": "Breitkopf 317803",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "decided quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)"
+  },
+  {
+   "n": 2,
+   "tile": "head_02.png",
+   "subject": "glyph/2/1/7/13/3",
+   "pdf_page_index": 2,
+   "page_box": [
+    2363.9575,
+    3190.9975,
+    2389.4725,
+    3215.8825
+   ],
+   "dpi": 600,
+   "plate": "Litolff 984073",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "decided eighth (0.5 beats)"
+  },
+  {
+   "n": 3,
+   "tile": "head_03.png",
+   "subject": "glyph/2/1/5/13/1",
+   "pdf_page_index": 2,
+   "page_box": [
+    2420.0275,
+    2902.3875,
+    2446.8025,
+    2923.965
+   ],
+   "dpi": 600,
+   "plate": "Litolff 984073",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "decided quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)"
+  },
+  {
+   "n": 4,
+   "tile": "head_04.png",
+   "subject": "glyph/2/1/7/13/2",
+   "pdf_page_index": 2,
+   "page_box": [
+    2416.72,
+    3194.305,
+    2441.92,
+    3216.1975
+   ],
+   "dpi": 600,
+   "plate": "Litolff 984073",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "narrowed(beam_certain_not_joined) eighth (0.5 beats)|quarter (1 beat)"
+  },
+  {
+   "n": 5,
+   "tile": "head_05.png",
+   "subject": "glyph/0/0/0/1/3",
+   "pdf_page_index": 0,
+   "page_box": [
+    2227.1325,
+    1533.545,
+    2267.445,
+    1569.9875
+   ],
+   "dpi": 600,
+   "plate": "Breitkopf 317803",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "decided 1.5-beat (1.5 beats)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) 0.75-beat (0.75 beats)|1.5-beat (1.5 beats)"
+  },
+  {
+   "n": 6,
+   "tile": "head_06.png",
+   "subject": "glyph/2/1/7/13/0",
+   "pdf_page_index": 2,
+   "page_box": [
+    2342.695,
+    3175.72,
+    2365.69,
+    3197.2975
+   ],
+   "dpi": 600,
+   "plate": "Litolff 984073",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "decided eighth (0.5 beats)"
+  },
+  {
+   "n": 7,
+   "tile": "head_07.png",
+   "subject": "glyph/0/0/0/6/7",
+   "pdf_page_index": 0,
+   "page_box": [
+    5055.9375,
+    1465.9375,
+    5097.53125,
+    1503.40625
+   ],
+   "dpi": 600,
+   "plate": "Breitkopf 317803",
+   "question": "What is the printed value of the note in the red brackets?",
+   "VERDICT_none_yet": null,
+   "ours_before_NOT_SHOWN_TO_SEAN": "decided quarter (1 beat)",
+   "ours_after_NOT_SHOWN_TO_SEAN": "narrowed(beam_discounted_uncertain) eighth (0.5 beats)|quarter (1 beat)"
+  }
+ ]
+}
