@@ -1399,6 +1399,35 @@ class Q(_Vocab):
     #: a substring test, and why this is a separate name rather than a detail
     #: field on that row.
     STEM_DIRECTION = "stem_direction"
+    #: ⚠️⚠️ ROADMAP 2.78 -- WHICH STEM A NOTEHEAD BOX STANDS ON, FILED ONCE.
+    #: Until this verdict NOTHING on the record said "these heads share a
+    #: stem": ADJUDICATE re-derived a bare box overlap with `Q.STEM` privately
+    #: in `rhythm._stems_on`, `notehead_precision._stem_rows_on` and
+    #: `gather._stacked_boxes_overlap`; `Q.EVENT` is an x-cluster (12 of 90 and
+    #: 6 of 93 stem groups were split across events, 74 of 154 and 98 of 185
+    #: multi-head events stood on no shared stem); and EXPORT mode-votes a
+    #: chord's duration. `value` is the canonical `Q.STEM` row id (the tallest
+    #: of a set of rows that are the same physical stem), so every head of a
+    #: chord carries the SAME string. DECIDED where one stem touches the box (or
+    #: one of several is FLUSH with a side of it, CLAUDE.md §10), NARROWED
+    #: between stems that are equally plausible, ABSTAINED where none touches.
+    #: ⚠️ It is filed for every notehead box, refused or kept: whether the box is
+    #: a head is `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`'s question, which stem it touches
+    #: is geometry. See `adjudicators/stem_value.py`.
+    HEAD_STEM = "head_stem"
+    #: ⚠️⚠️ ROADMAP 2.78 -- THE WRITTEN VALUE OF THE STEM A NOTEHEAD STANDS ON,
+    #: AS IT APPLIES TO THAT HEAD (Sean, DECISIONS 2026-10-09: *"no exceptions"*,
+    #: and on the 14 blind tiles of `out/print/2.78-review/`: the value belongs to
+    #: the STEM; read it from the stem's own evidence -- beams and flags at its
+    #: tip, the hollow heads, the dots -- and a head that disagrees takes it).
+    #: `value` is `{beats, written, dots, beam_levels, head_fill, stem}`;
+    #: NARROWED where the stem's own evidence cannot say (a hollow head under a
+    #: beam certain at the tip, two dot counts, levels unread), ABSTAINED where
+    #: no member is read. It never overturns a head's own `Q.DURATION` and never
+    #: refuses a box. ⚠️ PRODUCER ONLY: ROADMAP 2.78 is GATHER+ADJUDICATE only,
+    #: so EXPORT (`export._events`, a mode vote) and `reconcile_duration` do not
+    #: read it yet -- `reach.KNOWN_GAPS` says so.
+    STEM_VALUE = "stem_value"
     #: Whether a glyph the DETECTOR called a notehead is in fact the ink of a
     #: WHOLE REST -- `True`, `False`, or an abstention where it cannot be told.
     #:
@@ -2274,6 +2303,10 @@ CLAIMS: "dict[str, str]" = {
     "UNREAD_MARK": CLAIM.INTERPRETATION,
     "VOICES": CLAIM.INTERPRETATION,
     "STEM_DIRECTION": CLAIM.INTERPRETATION,
+    # ROADMAP 2.78: which stem a head stands on (an overlap, and where two
+    # stems touch one box the side rule picks) and the value that stem carries.
+    "HEAD_STEM": CLAIM.INTERPRETATION,
+    "STEM_VALUE": CLAIM.INTERPRETATION,
     "TUPLET_RATIO": CLAIM.INTERPRETATION,
     "GLYPH_OWNER": CLAIM.INTERPRETATION,
     "NOTEHEAD_IS_A_WHOLE_REST": CLAIM.INTERPRETATION,
