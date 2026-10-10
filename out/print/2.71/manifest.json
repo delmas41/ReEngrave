@@ -1,0 +1,140 @@
+{
+ "dpi": 600,
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1204,
+    1957,
+    1232,
+    1973
+   ],
+   "subject": "glyph/3/0/10/4/1",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    538,
+    1819,
+    565,
+    1832
+   ],
+   "subject": "glyph/3/0/9/0/3",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    4737,
+    6709,
+    4772,
+    6746
+   ],
+   "subject": "glyph/0/0/13/6/14",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    3627,
+    3150,
+    3663,
+    3177
+   ],
+   "subject": "glyph/0/0/4/4/7",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "pdf_page_index": 6,
+   "page_box_600dpi": [
+    1483,
+    3562,
+    1500,
+    3633
+   ],
+   "subject": "glyph/6/1/11/5/2",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "restQuarter kept (decided quarter rest)",
+   "read_after": "refused: rest_is_a_slashed_stem"
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    2222,
+    3230,
+    2249,
+    3252
+   ],
+   "subject": "glyph/2/1/8/12/1",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1374,
+    1284,
+    1402,
+    1300
+   ],
+   "subject": "glyph/3/0/6/5/2",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "head kept",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "pdf_page_index": 6,
+   "page_box_600dpi": [
+    1070,
+    3571,
+    1097,
+    3589
+   ],
+   "subject": "glyph/6/1/11/3/3",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "black head, narrowed (beam_discounted_uncertain)",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1546,
+    1948,
+    1568,
+    1966
+   ],
+   "subject": "glyph/3/0/10/6/5",
+   "question": "Is the box in the red brackets a notehead, a rest, or something else? (and what is printed there)",
+   "read_before": "refused: notehead_is_a_duplicate_box",
+   "read_after": "refused: tremolo_slash_crosses_stem"
+  }
+ ]
+}

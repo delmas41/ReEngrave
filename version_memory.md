@@ -22,6 +22,16 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-09 (evening session) — 2.78 confirmed, 2.61d landed, lanes 2.78 and 2.12f sent
+
+- Sean confirmed 2.78 (*"one stem one value, no exceptions"*, DECISIONS). Lane `lane-2.78-one-stem-one-value` sent for Phase 1 only (population + blind tiles; no rule until Sean says which head is wrong); lane `lane-2.12f-artic-side` sent (Sean's pick).
+- 2.61d: `header._staff_reading` abstains `keysig_fit_unknown` where the settled clef's own fit threw, instead of a false `run_fits_no_slot_table` contradiction; reuses `clef._unknown_fit_candidates` (now subject-explicit). Reach zero on both `20261009-all` records; `check` 193.
+
+## 2026-10-09 (session end) — 2.76 and 2.71 landed; Sean's labels 1,342 boxes on main
+
+- 2.76 `Q.NOTEHEAD_LETTER_INK` (a head box that is a dynamic letter's stroke/body is refused); 2.71 `Q.STEM_SLASH` (tremolo slash is its own mark).
+- In flight: 2.75 (tie/slur chord rule), 2.77 rhythm leftovers. New todo 2.78 (one stem, one value -- confirm with Sean).
+
 ## 2026-10-09 (night) — 2.73 landed: hollow heads cut by a line
 
 - `Q.HEAD_LINE_CUT`, head-shaped duplicate keep, ink names the fill (cut 0.75), stem-tip window ignores grazing boxes and line rows.
