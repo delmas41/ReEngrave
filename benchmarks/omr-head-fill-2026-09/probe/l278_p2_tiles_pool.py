@@ -4,7 +4,9 @@ PATH: STAGED, GATHER + ADJUDICATE only. Reads `l278_p2_arm.py`'s output (`--out`
 `l278_tiles.py` takes (`--pop`, `--select`), and prints the pool by cause so the choice is on the page.
 
     python3 benchmarks/omr-head-fill-2026-09/probe/l278_p2_tiles_pool.py \
-        --arm lit=ARM_LIT.json --arm brahms=ARM_BRAHMS.json --out-dir DIR [--n 10]
+        --arm lit_B=ARM.json --arm lit_X=ARM.json --arm brahms_X=ARM.json --out-dir DIR [--n 10]
+
+A label is `<doc>_<tag>` (the tag keeps two records of one document apart: stem row ids restart per record).
 
 A change is one of (a stem can be several): LEVELS (the beams/flags now read from the stem's tip), DOTS (the
 stem's dot reaches a head that lacked it), BASE (a hollow head's half now holds the stem, or the reverse),
@@ -126,7 +128,7 @@ def main(argv=None):
         json.dump({doc: {"groups": groups}}, open(os.path.join(a.out_dir, f"pool-{doc}.json"), "w"))
     print("changed-decision stems (none of the 14), by cause (a stem may count under several):")
     for c, items in sorted(pool.items()):
-        print(f"   {c:<22}{len(items):>4}   lit {sum(1 for d, _ in items if d == 'lit')}  brahms {sum(1 for d, _ in items if d == 'brahms')}")
+        print(f"   {c:<22}{len(items):>4}   lit {sum(1 for d, _ in items if d.startswith('lit'))}  brahms {sum(1 for d, _ in items if d.startswith('brahms'))}")
     picked, seen = [], set()
     order = ["LEVELS", "DOTS", "BASE", "NARROWED_TO_DECIDED", "DECIDED_TO_NARROWED", "WHOLE", "OTHER"]
     turn = 0
@@ -134,7 +136,7 @@ def main(argv=None):
         progressed = False
         for c in order:
             for doc_pref in (("lit", "brahms") if turn % 2 == 0 else ("brahms", "lit")):
-                cand = [(d, r) for d, r in pool.get(c, []) if d == doc_pref and (d, r["stem"]) not in seen]
+                cand = [(d, r) for d, r in pool.get(c, []) if d.startswith(doc_pref) and (d, r["stem"]) not in seen]
                 if cand and len(picked) < a.n:
                     d, r = cand[0]
                     seen.add((d, r["stem"]))

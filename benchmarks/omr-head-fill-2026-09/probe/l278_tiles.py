@@ -30,6 +30,11 @@ import random
 import sys
 
 TITLES = {"lit": "Beethoven 5 (Litolff)", "brahms": "Brahms 1 (Breitkopf)"}
+
+
+def _title(doc):
+    """`lit_B` -> the document title: the tag after `_` only keeps records of one document apart."""
+    return TITLES.get(doc, TITLES.get(doc.split("_")[0], doc))
 QUESTION = ("What note value is printed on this stem, and is every mark on it "
             "a notehead?")
 HALF_W, HALF_H = 260, 190        # window half-size at 600 dpi, as 2.71's tiles
@@ -138,7 +143,7 @@ def main(argv=None):
         out = Image.new("RGB", (im.width, im.height + 60), "white")
         out.paste(im, (0, 60))
         ImageDraw.Draw(out).text(
-            (10, 12), f"Tile {n} of {len(sel)} -- {TITLES.get(doc, doc)}",
+            (10, 12), f"Tile {n} of {len(sel)} -- {_title(doc)}",
             fill="black", font=font)
         fn = f"tile_{n:02d}.png"
         out.save(os.path.join(a.out, fn))

@@ -1,0 +1,15 @@
+re-adjudicated in 49s: 26110 verdicts (record had 26110)
+== control: the replay reproduces the record's own verdicts for what the rule reads ==
+   duration                       compared  2463  identical  2463  (record 2463, replay 2463, replay-only 0)
+   stem_direction                 compared  1806  identical  1806  (record 1806, replay 1806, replay-only 0)
+   notehead_is_not_a_notehead     compared  1806  identical  1806  (record 1806, replay 1806, replay-only 0)
+   notehead_is_a_whole_rest       compared  1806  identical  1806  (record 1806, replay 1806, replay-only 0)
+   glyph_owner                    compared  2670  identical  2670  (record 2670, replay 2670, replay-only 0)
+   CONTROL PASSED
+== Sean's 14 stems (this document's tiles) ==
+== population (kept heads on a stem with >= 2 kept members) ==
+   multi-member stems: 168
+   BEFORE (the heads' own readings): {'all narrowed, differ': 3, 'agree (all decided, one value)': 121, 'all narrowed, identical': 29, 'decided heads DISAGREE': 13, 'one value decided, others narrowed/unread': 2}
+   AFTER  (the stem value):          {'all narrowed, identical': 32, 'agree (all decided, one value)': 136}
+   stem_value reasons over those heads: {'decided:stem_agrees': 243, 'decided:stem_value_from_evidence': 31, 'narrowed:stem_levels_unread': 64}
+   heads whose value CHANGED: 19
