@@ -1,0 +1,4 @@
+matched glyph pairs 5342  only in base 0  only in arm 0
+notehead boxes matched 1286; status moved between kept and refused/given_away: 1
+   glyph/2/1/9/11/1       -> glyph/2/1/9/11/1       kept -> refused   not a notehead -- tremolo slash crosses stem   Sean tile 7
+status transitions (base -> arm): {'kept->refused': 1}

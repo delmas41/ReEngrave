@@ -1,0 +1,5 @@
+re-adjudicated in 23s: 19433 verdicts (record had 16861)
+lit: kept notehead boxes 988; refused-as-slash boxes 8
+  (a) twins of a refused slash box: 0: []
+  (b) slash shape+crossing pass, ONLY position fails: 1: [('glyph/2/1/8/13/5', 'T11')]
+  (c) cross-class duplicates on one stem (IoU >= 0.5): 1: [('glyph/2/1/8/2/6', 'glyph/2/1/8/2/7', 'T14', 'T14')]

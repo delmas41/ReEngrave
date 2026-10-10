@@ -1,0 +1,18 @@
+arm A lit: kept heads 988
+    join       {'abstained:no_stem': 223, 'decided:one_stem': 656, 'decided:stem_by_reach': 10, 'decided:stem_by_side': 40, 'narrowed:two_stems': 59}
+    stem value {'abstained:ambiguous_stem': 59, 'abstained:lone_head': 537, 'abstained:no_stem': 223, 'decided:stem_agrees': 140, 'decided:stem_value_from_evidence': 25, 'narrowed:stem_levels_unread': 4}
+arm A brahms: kept heads 1095
+    join       {'abstained:no_stem': 224, 'decided:one_stem': 823, 'decided:stem_by_side': 42, 'narrowed:two_stems': 6}
+    stem value {'abstained:ambiguous_stem': 6, 'abstained:lone_head': 687, 'abstained:no_stem': 224, 'decided:stem_agrees': 127, 'decided:stem_value_from_evidence': 15, 'narrowed:stem_levels_unread': 36}
+arm B lit: kept heads 987
+    join       {'abstained:no_stem': 223, 'decided:one_stem': 655, 'decided:stem_by_reach': 10, 'decided:stem_by_side': 40, 'narrowed:two_stems': 59}
+    stem value {'abstained:ambiguous_stem': 59, 'abstained:lone_head': 538, 'abstained:no_stem': 223, 'decided:stem_agrees': 140, 'decided:stem_value_from_evidence': 23, 'narrowed:stem_levels_unread': 4}
+arm B brahms: kept heads 1094
+    join       {'abstained:no_stem': 224, 'decided:one_stem': 822, 'decided:stem_by_side': 42, 'narrowed:two_stems': 6}
+    stem value {'abstained:ambiguous_stem': 6, 'abstained:lone_head': 688, 'abstained:no_stem': 224, 'decided:stem_agrees': 127, 'decided:stem_value_from_evidence': 13, 'narrowed:stem_levels_unread': 36}
+arm X lit: kept heads 2252
+    join       {'abstained:no_stem': 557, 'decided:one_stem': 1495, 'decided:stem_by_flush': 6, 'decided:stem_by_reach': 4, 'decided:stem_by_side': 33, 'narrowed:two_stems': 157}
+    stem value {'abstained:ambiguous_stem': 157, 'abstained:lone_head': 1006, 'abstained:no_stem': 557, 'abstained:not_a_member': 3, 'decided:stem_agrees': 386, 'decided:stem_value_from_evidence': 129, 'narrowed:stem_levels_unread': 12, 'narrowed:stem_values_open': 2}
+arm X brahms: kept heads 1171
+    join       {'abstained:no_stem': 371, 'decided:one_stem': 767, 'decided:stem_by_side': 27, 'narrowed:two_stems': 6}
+    stem value {'abstained:ambiguous_stem': 6, 'abstained:lone_head': 456, 'abstained:no_stem': 371, 'decided:stem_agrees': 243, 'decided:stem_value_from_evidence': 31, 'narrowed:stem_levels_unread': 64}
