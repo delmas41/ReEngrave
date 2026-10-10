@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 1.7 stems landed
+
+- `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
+
 ## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
 
 - 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
