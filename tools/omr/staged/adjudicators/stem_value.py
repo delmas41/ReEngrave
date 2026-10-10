@@ -41,15 +41,20 @@ TWO DECISIONS, IN THIS ORDER, BOTH AFTER `Q.DURATION`:
            a head far from the tip also sees strokes BETWEEN the heads, which
            are not beams (tile 1: one head 16th, the other 8th, Sean: 8th). An
            open head is never beamed (2.43), so a hollow stem is level 0.
-    DOTS   the stem's: a dot read for ANY head of a stem is the chord's (tile
-           13: one head lacked its dot, Sean: "2 dotted half notes").
+    DOTS   the stem's: a dot read for a head of a stem is the chord's (tile 13:
+           one head lacked its dot, Sean: "2 dotted half notes"). On a HOLLOW
+           stem only the hollow (and whole-class) heads' dots count: a filled box
+           on a hollow stem is the slash or a duplicate in every one of Sean's
+           non-note cases, and a dot near it belongs to something else.
 
-    CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (the coordinator
-    is asking Sean): **a whole-note-class box on a stem is never a whole note**,
-    since whole notes have no stem (tiles 5 and 9). Such a box casts no vote for
-    the stem's base or levels; it still takes the stem's value. Falsified by a
-    print where a stem genuinely rises from a whole note's head. Held in
-    `WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE`.
+    RULE, CONFIRMED (Sean, DECISIONS 2026-10-09, on tiles 5 and 9): **"Whole
+    notes never have stems."** A box standing on a stem is never a whole note.
+    A whole-class box on a shared stem therefore casts no vote for the stem's
+    base or levels and takes the stem's value, and a whole VALUE (base >= 4) is
+    not among the values a stem can have: it is dropped from a narrowing. There
+    is no switch for it. (It was an assumption until Sean confirmed it; a test
+    holds the control that can fail -- with `_stands_on_a_stem_so_not_whole`
+    removed, tile 9's stem is decided a half.)
 
 WHAT IT DOES NOT DO. It never refuses a box (a refusal needs a per-box witness
 and is `notehead_precision`'s), never overturns the head's own `Q.DURATION`
@@ -98,16 +103,22 @@ STEM_MIN_REACH_SPACES = 0.8
 #: through-stem) is still that box's stem when it is the only one.
 STEM_FLUSH_MAX = 0.3
 
-#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (asked of Sean by
-#: the coordinator, 2026-10-09): a whole-note-class box on a stem is never a
-#: whole note. Tiles 5 (a dotted-half chord, one head boxed `noteheadWhole`) and
-#: 9 (a beamed eighth, a smeared blob boxed `noteheadWhole`) are the evidence;
-#: Sean read both as the stem's value, not as a whole note.
-WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE = True
-
 #: The head base (beats, before any beam, flag or dot) at or above which a head
 #: is HOLLOW: a half note is 2.0, a whole 4.0, a black head 1.0.
 HOLLOW_BASE_MIN = 2.0
+
+#: The head base of a WHOLE note. RULE, CONFIRMED (Sean, DECISIONS 2026-10-09,
+#: tiles 5 and 9: *"Whole notes never have stems"*): no stem carries a head of
+#: this base or more, so a whole VALUE is never a stem's value.
+WHOLE_BASE = 4.0
+
+
+def _stands_on_a_stem_so_not_whole(cls: str) -> bool:
+    """A detector class that names a WHOLE note (or a double whole) on a box that
+    stands on a stem: by Sean's rule (*"Whole notes never have stems"*) it is not
+    one, so it casts no vote for the stem's base or levels. Spelled as a function
+    so the rule has ONE place -- and a control that can fail (a test replaces it)."""
+    return cls.lower().startswith(("noteheadwhole", "noteheaddoublewhole"))
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -333,8 +344,7 @@ class _Member:
         self.verdict = verdict
         self.box = box
         self.cls = cls
-        self.whole_class = cls.lower().startswith(
-            ("noteheadwhole", "noteheaddoublewhole"))
+        self.whole_class = _stands_on_a_stem_so_not_whole(cls)
         self.outcome = "none" if verdict is None else verdict.outcome.value
         self.options = _options(verdict)
         self.direction = direction
@@ -354,8 +364,9 @@ class _Member:
 
     @property
     def counts_for_base(self) -> bool:
-        """A whole-class box on a stem casts no vote for base or levels."""
-        return not (WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE and self.whole_class)
+        """A whole-class box on a stem casts no vote for base or levels
+        ("Whole notes never have stems", Sean, DECISIONS 2026-10-09)."""
+        return not self.whole_class
 
 
 def _parts(value: Dict[str, Any]) -> Optional[Tuple[float, int, int]]:
@@ -551,10 +562,18 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
         common = set.intersection(*sets)
         base_opts = sorted(common) if common else sorted(set.union(*sets))
         why["base_from"] = "narrowed_common" if common else "narrowed_union"
-    elif members and WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE and any(
-            m.whole_class for m in members):
+        # "Whole notes never have stems": a whole base is not among a stem's
+        # options. Where EVERY option was a whole, the hollow reading that is
+        # left is the half (an open head on a stem is a half note, 2.70).
+        no_whole = [b for b in base_opts if b < WHOLE_BASE]
+        if len(no_whole) != len(base_opts):
+            why["whole_excluded"] = True
+        base_opts = no_whole or [2.0]
+    elif any(m.whole_class for m in members):
+        # nothing else on the stem is read, and the only open head is a box
+        # classed as a whole: on a stem that box is a half
         base_opts = [2.0]
-        why["base_from"] = "whole_class_box_is_a_half"
+        why["base_from"] = "whole_class_box_on_a_stem_is_a_half"
     else:
         return Ruling.abstain("stem_unread")
 
@@ -589,10 +608,15 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
             why["levels_from"] = "none_read"
 
     # ── DOTS: the stem's ────────────────────────────────────────────────────
-    decided_dots = {m.options[0][2] for m in members if m.decided}
+    # On a HOLLOW stem a dot read for a decided FILLED box is not the stem's
+    # (that box is the slash or a duplicate in every non-note case Sean judged):
+    # only the hollow heads' and whole-class boxes' dots count there.
+    dot_voters = ([m for m in members if m not in filled]
+                  if base_opts == [2.0] else members)
+    decided_dots = {m.options[0][2] for m in dot_voters if m.decided}
     positive = {d for d in decided_dots if d > 0}
     if not positive:
-        for m in members:
+        for m in dot_voters:
             if m.narrowed and all(o[2] > 0 for o in m.options):
                 positive |= {o[2] for o in m.options}
     dots_opts = sorted(positive) if positive else [0]

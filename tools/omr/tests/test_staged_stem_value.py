@@ -362,9 +362,10 @@ class TestSeansTiles(_Case):
 
     def test_tile_9_the_whole_class_box_must_not_make_a_beamed_stem_a_half(self):
         """A smeared blob boxed `noteheadWhole` and a black head narrowed
-        quarter|eighth: Sean read an EIGHTH. With the convention the whole-class
-        box casts no vote and the stem stays NARROWED, the answer inside; without
-        it the box's hollow reading would have decided a half."""
+        quarter|eighth: Sean read an EIGHTH. *"Whole notes never have stems"*
+        (Sean, DECISIONS 2026-10-09): the whole-class box casts no vote and the
+        stem stays NARROWED, the answer inside; had its hollow reading counted
+        it would have decided a half."""
         s = Stem(direction="down")
         s.head(0, "noteheadBlackOnLine", 6, narrowed=[(1.0, 0, 0), (0.5, 0, 1)])
         s.head(1, "noteheadWholeOnLine", 66, decided=(4.0, 0, 0))
@@ -376,11 +377,12 @@ class TestSeansTiles(_Case):
         self.assertEqual({c.value["written"] for c in s.value(1).candidates},
                          {1.0, 0.5})
 
-    def test_tile_9_CONTROL_the_convention_is_what_decides_it(self):
-        """The control that can fail: with the convention OFF the whole-class
-        box votes HOLLOW and the same stem is decided a half."""
-        old = SV.WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE
-        SV.WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE = False
+    def test_tile_9_CONTROL_the_whole_notes_rule_is_what_decides_it(self):
+        """The control that can fail: replace the rule's predicate by one that
+        never recognises a whole-class box, and the box votes HOLLOW and the
+        same stem is decided a half."""
+        old = SV._stands_on_a_stem_so_not_whole
+        SV._stands_on_a_stem_so_not_whole = lambda cls: False
         try:
             s = Stem(direction="down")
             s.head(0, "noteheadBlackOnLine", 6,
@@ -389,7 +391,30 @@ class TestSeansTiles(_Case):
             s.run()
             self.assertValue(s.value(0), 2.0)
         finally:
-            SV.WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE = old
+            SV._stands_on_a_stem_so_not_whole = old
+
+    def test_a_WHOLE_value_is_never_among_a_stems_options(self):
+        """*"Whole notes never have stems"*: a pair of heads each narrowed
+        black|half|whole (2.23's ink narrowing) on one stem keeps black and
+        half, never the whole."""
+        s = Stem()
+        three = [(1.0, 0, 0), (2.0, 0, 0), (4.0, 0, 0)]
+        s.head(0, "noteheadBlackOnLine", 60, narrowed=three)
+        s.head(1, "noteheadBlackInSpace", 30, narrowed=three)
+        s.run()
+        v = s.value(0)
+        self.assertIs(v.outcome, Outcome.NARROWED)
+        self.assertEqual({c.value["written"] for c in v.candidates}, {1.0, 2.0})
+        self.assertTrue(v.detail["evidence"]["whole_excluded"])
+
+    def test_the_only_open_head_is_a_whole_class_box_so_the_stem_is_a_half(self):
+        """Nothing else on the stem is read and the open head is boxed as a
+        whole: on a stem it is a half."""
+        s = Stem()
+        s.head(0, "noteheadWholeOnLine", 60, decided=(4.0, 0, 0))
+        s.head(1, "noteheadBlack", 30, abstain=True)
+        s.run()
+        self.assertValue(s.value(0), 2.0)
 
     def test_the_controls_10_and_12_stems_that_already_agree_are_untouched(self):
         """Tile 10 (two halves) and tile 12 (two dotted halves) were right and
@@ -507,6 +532,27 @@ class TestWhereItCannotSay(_Case):
         self.assertIs(v.outcome, Outcome.NARROWED)
         self.assertEqual({c.value["beam_levels"] for c in v.candidates}, {1, 2})
 
+    def test_on_a_HOLLOW_stem_a_dot_read_for_a_FILLED_box_is_not_the_stems(self):
+        """A filled box on a hollow stem is the slash or a duplicate in every
+        non-note case Sean judged; a dot read beside it is not the chord's."""
+        s = Stem()
+        s.head(0, "noteheadHalfInSpace", 60, decided=(2.0, 0, 0))
+        s.head(1, "noteheadBlackOnLine", 8, decided=(1.5, 1, 0))
+        s.run()
+        self.assertValue(s.value(0), 2.0, 0)
+        self.assertValue(s.value(1), 2.0, 0)
+
+    def test_the_SAME_dot_on_a_hollow_head_IS_the_stems(self):
+        """The control: the dot read for the HOLLOW head reaches the whole stem
+        (tile 13), so it is the filled box's class that is refused as a voter,
+        not the dot."""
+        s = Stem()
+        s.head(0, "noteheadHalfInSpace", 60, decided=(3.0, 1, 0))
+        s.head(1, "noteheadBlackOnLine", 8, decided=(1.0, 0, 0))
+        s.run()
+        self.assertValue(s.value(0), 3.0, 1)
+        self.assertValue(s.value(1), 3.0, 1)
+
     def test_every_member_unread_ABSTAINS(self):
         s = Stem()
         s.head(0, "noteheadBlack", 60, abstain=True)
@@ -598,8 +644,12 @@ class TestRegistration(unittest.TestCase):
         self.assertLess(order.index(Q.HEAD_STEM), order.index(Q.STEM_VALUE))
         self.assertLess(order.index(Q.STEM_VALUE), order.index(Q.EVENT))
 
-    def test_the_convention_is_named_and_on(self):
-        self.assertTrue(SV.WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE)
+    def test_the_whole_notes_rule_has_no_switch(self):
+        """Confirmed by Sean (DECISIONS 2026-10-09): a rule, not an assumption,
+        so the old toggle is gone and the rule has one named place."""
+        self.assertFalse(hasattr(SV, "WHOLE_CLASS_BOX_ON_A_STEM_IS_NOT_WHOLE"))
+        self.assertTrue(SV._stands_on_a_stem_so_not_whole("noteheadWholeOnLine"))
+        self.assertFalse(SV._stands_on_a_stem_so_not_whole("noteheadHalfOnLine"))
 
 
 if __name__ == "__main__":
