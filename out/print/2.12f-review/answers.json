@@ -1,0 +1,14 @@
+{
+ "1": "the accent belongs to the note beneath it",
+ "2": "Beneath (the mark belongs to the note beneath it)",
+ "3": "It belongs to the note above (the mark is below that note)",
+ "4": "NOT an articulation: that is a tie that belongs to the notes it connects beneath it, but the box is too small",
+ "5": "Beneath (the mark belongs to the note beneath it)",
+ "6": "CORRECTED by Sean: the marcato is beneath the note it belongs to, so it is connected to the note ABOVE it (first answer \"Beneath\" withdrawn)",
+ "7": "The articulation is beneath the note it affects (i.e. belongs to the note directly above it)",
+ "8": "NOT an articulation: that is part of a p dynamic",
+ "9": "The articulation is above the note it affects (belongs to the note directly beneath it)",
+ "10": "The articulation is beneath the note (belongs to the note directly above it)",
+ "11": "CORRECTED by Sean: the articulation is ABOVE the note (first answer \"beneath\" withdrawn)",
+ "12": "Beneath (the articulation is beneath its note). Sean: it looks like the convention is that the articulation is on the opposite side of the stem"
+}
