@@ -6564,10 +6564,10 @@
   },
   {
    "cell_id": "s0-st3-m0",
-   "cls": "accidentalFlat",
+   "cls": "keyFlat",
    "id": "q415",
    "labeler": "sean",
-   "origin": "prefill-confirmed",
+   "origin": "prefill-fixed",
    "owner_staff": null,
    "rect": [
     1453.017578125,
@@ -11358,7 +11358,7 @@
   },
   {
    "cell_id": "s0-st5-m7",
-   "cls": "noteheadWholeInSpace",
+   "cls": "timeSig8",
    "id": "q713",
    "labeler": "sean",
    "origin": "prefill-fixed",
@@ -22811,6 +22811,74 @@
     6121.550751879699
    ],
    "ref": "s0-st11-m7#H1",
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st4-m0",
+   "cls": "timeSig8",
+   "id": "b4348",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    1503.0,
+    3137.0,
+    1550.0,
+    3197.0
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st0-m6",
+   "cls": "ledgerLine",
+   "id": "b4349",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    5042.0,
+    1483.4,
+    5107.0,
+    1492.6
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st0-m6",
+   "cls": "ledgerLine",
+   "id": "b4350",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    5048.0,
+    1517.4,
+    5109.0,
+    1526.6
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st0-m6",
+   "cls": "ledgerLine",
+   "id": "b4351",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    5046.0,
+    1549.4,
+    5106.0,
+    1558.6
+   ],
+   "ref": null,
    "staff_position": null,
    "text": null
   }
