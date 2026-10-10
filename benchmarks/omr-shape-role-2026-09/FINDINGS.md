@@ -2830,6 +2830,15 @@ design.**
 Decided-owner measurements (arm): **147 of 802 are beyond reach**
 (> 1.5 head heights from their mark); 3 have a head on the other side also in reach.
 
+**The small re-gather, both documents, through the real CLI** (`acceptance_quick --doc …`,
+GATHER + ADJUDICATE only, each arm its own `--out-root`): base `3ec53272` clean, arm
+`20307e4e` clean, arm run with `--against` the base record. **`readout diff` reports no
+differences on either count page** (Litolff 4 m 04 s, Brahms 9 m 34 s of wall time — the tell
+that nothing was cached). That is the prediction, not a surprise: those two pages hold 2 and
+4 articulation marks, none of which the lane relabels. What the runs add is end-to-end: the
+new verdict fields and reason words survive the record writer, `readout` and the stage
+summary.
+
 **Fast tier on the branch head `8874025d`: 6,754 passed, 0 failed, 11 skipped, 825
 deselected, 2 xfailed (8 m 56 s).** `check` N: 193 on this base, 193 on the arm.
 
