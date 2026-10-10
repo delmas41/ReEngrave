@@ -2093,3 +2093,133 @@ measured geometry, and the voices-that-differ range); controls (one stem, thin s
 row through heads alone) stayed green.
 
 Gates at `61d4c88a`: `pytest -m "not slow" tools/omr/tests` **6,769 passed, 11 skipped, 2 xfailed, 0 failed**; `staged.check` TOTAL **193** (= origin/main's 193). The merge conflict with 2.71 was in `gather_cv_lines` only (per-stem blockers vs the new `slashes=` argument): both kept; 2.73 touched no stem-tip function.
+
+### 16.7 2.77b -- Sean's second review (`out/print/rhythm-leftovers-2/`): crops 9, 8 and 7 (2026-10-10)
+
+Path: STAGED, GATHER + ADJUDICATE (the gate); EVALUATE reported beside it. Branch `lane-2.77b`, off `origin/lane-rhythm-leftovers`
+`eae25f3c`, merged with origin/main `655407c2` (2.12f, 2.78) -- the merge was clean. **Base** = that branch tip + main with no 2.77b change
+(`25c2c276`), **arm** = `33557d81` (the same + the three changes); both are CLEAN small re-gathers (`dirty: False`) of the two count pages on
+one machine, each `--through adjudicate`. Sean's round 2 at the start: 1, 3, 5, 6, 10 newly right; 2 and 4 narrowed with the answer; 8 lost a
+right decision; 9 still wrong; 7 is not a notehead (his words: *"a beam that connects 8th notes but is not a notehead"*).
+
+**A -- crop 9 (`glyph/2/0/3/1/4`, Litolff p3, a printed EIGHTH read a 16th).** Verified on the print and the record: the head hangs below staff
+2, its stem runs UP 4.45 spaces (`Q.HEAD_STEM_REACH` up, tip y 672) to a beam on staff 2's top line. The detector boxed it twice
+(`glyph/2/0/2/1/3` in staff 2's cell, `glyph/2/0/3/1/4` in staff 3's padded cell); `glyph_owner` names staff 2 for both
+(`stem_toward_staff`). The staff-3 copy counted two strokes of STAFF 3's own group (a beam below the head, against a stem that runs up):
+`stems_attached` 0, `beam_side` None because its direction came from `beam_mate` (`down`, borrowed from those very strokes),
+`beams_neighbour_staff` 0 (judged against the FILED staff). The staff-2 copy, the one EXPORT writes, decided a QUARTER: nothing at its stem tip
+was ever read. Three changes, ADJUDICATE (`rhythm.py`):
+* **The loser abstains** (`owned_by_another_staff`) where the owner staff holds a TWIN of the mark (a `Q.MARK_GROUP` member on the owner's
+  staff). A lone copy keeps its duration (a first version without the twin test broke `test_dot_not_a_note`'s "note owned by another staff" and
+  would have starved `OMR_RELOCATE_AT_EXPORT`'s own population). EXPORT counts it under the name it always had (`export.py`, 8 lines, so
+  `status_census` does not read it as a reading gap). Litolff p0-3: **130 of 1,286** duration verdicts, Brahms p0-1 **84 of 1,491** (values
+  nothing writes, which every population count included).
+* **A head's beams are the ones its OWN stem reaches, also where the CV found no stem** (`_own_stem_side`): `Q.HEAD_STEM_REACH`'s up/down
+  becomes the side where no `stem_projection` was decided, and a beam on the far side is not the head's. MEASURED, not chosen: the ruler agrees
+  with the head's own CV-stem direction (`stem_projection`) on **306 of 307** heads at 2.0 spaces of run or more (100% at 2.0-2.5, 100% at
+  2.5-3.0, 208 of 209 over 3.0) and on 27 of 29 at 1.5-2.0 and 23 of 30 under 1.5 (a stacked neighbour's ink). `REACH_STEM_MIN_SPACES = 2.0`, also
+  the CV stem finder's own floor. The first version had no floor and narrowed Brahms eighths whose stem runs down (a neighbouring head's 1.06-space
+  run read `up`); the floor removed 12 of those 20 Brahms changes.
+* **RULE 8 for the same heads** (`beam_discounted_uncertain`, the 2.25b/2.74 shape): a head with a RULER stem and no CV stem whose only candidate
+  strokes were discounted (the neighbour's beam, a decided arc) or put on the far side is NARROWED, eighth | quarter, never decided a quarter from
+  the absence of a mark: its tip was never examined.
+
+Why crop 9's owner is not decided EIGHTH here (the "can the beam be read" question, answered): the CV stem finder finds no stem for it. Two heads
+a second apart fuse in the vertical opening into ONE component 127 px wide against a 60 px cap (`RUN_TOO_WIDE`; canonical px, space 100: x 578,
+w 127, y 427-1004), and `detect_beams` needs two anchor stems that END at a slab; the slab at the stem tip (x 331-877, y 426-553, ON staff 2's
+top line) has one. The existing column-profile reader finds both: with `detect_stems(enable_stroke_reader=True)` the cell returns the stem
+(x 667, y 427-985) and the beam (331, 426, 546, 127). `OMR_STEM_STROKE` is default OFF (2.17 priced it at file level on Breitkopf p1: +450 stem
+rows, `duration_narrowed` unchanged, notes written 226 -> 222) and I did NOT flip it. **Experiment, Litolff p0-3 only, arm code with
+`OMR_STEM_STROKE=1`** (own out-root, scratch): crop 9's owner reads **eighth, decided** (right) and none of the 20 judged heads reads worse; but 81 of
+1,286 duration verdicts change and narrowed rises 81 -> 109 (10 quarter -> eighth, 12 narrowed -> eighth, 34 quarter -> narrowed, 7 -> `beam_certain_not_joined`).
+Not priced on Brahms, not print-checked beyond the judged heads. **The reading is a GATHER item on the stem finder for stacked heads, not a
+duration rule; it needs its own roadmap row.** Population of the ruler-only heads (owner, stem read by the ruler, no CV stem, nothing read at the
+tip, decided a quarter): 10 on Litolff p0-3 and 16 on Brahms p0-1; my eye-check of their crops (not Sean's): about a third print a flag or beam
+the record never reads, the rest are plain quarters or halves -- which is why they are NOT all narrowed (that would turn about as many right
+answers into narrowed as wrong ones), only the ones that had a candidate stroke taken away.
+
+**B -- crop 8 (`glyph/2/1/7/13/1`, an EIGHTH right before 2.77).** Verified: a 4-head chord under a SLOPED beam, `obs:023316`
+[211,629,482,139], 2.72 line thicknesses, straight; the ink reader's end window found a stem at NEITHER end although four CV stems END inside its
+box (three tips, y 687, 706 and 738, inside 629-768; a fourth 39 px under it). 2.77's `no_stem_at_ends` refused it, and the other stroke
+(`obs:023317`, a 114-px band through the row of heads) was refused by `beams_ledger_line` -- CORRECTLY: it is the ledger line through the heads (a
+`ledgerLine` box overlaps it), not a beam; the ledger-box rule took nothing it should not have. Fix (`rhythm._stems_ending_in`,
+`BEAM_STEMS_ENDING_MIN = 2`): a stroke the ink read with no stem at either end is still refused UNLESS two or more DIFFERENT read stems end inside its
+box -- a stem each side of a beam (Sean, 2.74), counted off the CV stem rows. Measured over the 109 strokes the ink read at both ends with a stem at
+neither (thick, straight; Litolff p0-3 and Brahms p0-1): **5 have two or more stems ending inside, all 5 are printed beams on the page crops** (4 of 5
+detector boxes; the ink end window misses the stem of a sloped beam); the dynamic letter's foot bar 2.77 was built to refuse has none (its stems
+end 24-36 px above it) and stays refused; 5 have exactly one and 99 none (not eye-checked; they stay refused, as before). A tolerance of the join's
+size (80 px) would have credited the foot bar, so the test is INSIDE the box.
+
+**C -- crop 7 (`glyph/3/0/7/4/13`, Litolff p3).** `noteheadBlackInSpace`, 1.23 x 0.69 spaces, 85% inside the stem-down beam `obs:037765`
+(66 px thick, straight, a stem found at BOTH ends). **A flatness floor is measured NOT to be a test** and was not built: print-confirmed heads of the
+notehead-width crop pass (a model reading the print, not Sean) include 6 of 102 boxed 0.34-0.69 spaces tall (a head the crop cut, a partial box over
+one head of a stack), and Sean's 361 hand-confirmed Brahms p0 boxes (`data/hand-truth/pages/imslp317803/0.json`) include four under 0.8 (one is a
+dot, mislabelled; two are partial boxes over heads of stacks; one is a real wide flat head) -- no height separates them from the crop-7 box. The
+refusal needs the beam as a second witness (`notehead_precision._beam_piece_refusal`, reason `is_a_beam_piece`, ONE call in
+`adjudicate_notehead_is_not_a_notehead`, between the `is_a_dot` return and the 2.49 tremolo call): a REGULAR-head box (`geometry.is_regular_notehead`:
+never a `*Small` cue head, never a whole note) at least **0.7** inside a stroke that passes the 2.74/2.77 beam tests (thick, straight, a stem at both
+ends or two read stems ending inside) AND no taller than **0.9** spaces. Margins, over every detector notehead box of both re-gathers (Litolff
+1,286, Brahms 1,491): the share inside a read beam stroke is **0.21 at most over Sean's 361 hand-confirmed heads** (re-measured on the arm
+record); the boxes covered by 0.5 or more fall into two groups by height, 0.69 and 0.75 (crop 7 and one 4.1-spaces-wide box on a beam) and
+1.10 and up (head-sized boxes under the bounding box of a SLOPED beam) -- nothing between 0.75 and 1.10, and the cuts sit in those gaps. Population:
+**2 boxes** refused, both Litolff p3 and both beams on the print crop: crop 7 (`notehead` -> `is_a_beam_piece`) and `glyph/2/0/8/13/9`, a stem-up
+group's beam, which was already refused as `stacked_head_duplicate` (the reason changed, nothing else). Brahms: 0. Expected merge conflict with
+any lane touching `adjudicate_notehead_is_not_a_notehead`: the added call, and the `reasons=` / `composed_from` / `wants` tuples of that decorator
+(`Q.BEAM_STROKE`, `Q.BEAM_STROKE_INK`).
+
+**Sean's 20 heads (both rounds), one line each** -- ADJUDICATE, the head a file would carry (the surviving box of the print head, the owner's
+copy), base -> arm; regenerated from the two record sets by scratch scripts (not committed):
+
+| tile | Sean | base | arm | class |
+|---|---|---|---|---|
+| R1-1 Brahms | 16th | 16th | 16th | right |
+| R1-2 | dotted quarter | narrowed | narrowed | narrowed with the answer |
+| R1-3 | eighth | eighth | eighth | right |
+| R1-4 | eighth | narrowed | narrowed (eighth / quarter) | narrowed with the answer |
+| R1-5 | eighth | narrowed | narrowed (eighth / quarter) | narrowed with the answer |
+| R1-6 Litolff | eighth | eighth | eighth | right |
+| R1-7 | eighth | eighth | eighth | right |
+| R1-8 | eighth | eighth | eighth | right |
+| R1-9 | eighth | eighth | eighth | right |
+| R1-10 | eighth | eighth | eighth | right |
+| R2-1 Brahms | 8th | eighth | eighth | right |
+| R2-2 | 8th | narrowed | narrowed (eighth / quarter) | narrowed with the answer |
+| R2-3 | 8th | eighth | eighth | right |
+| R2-4 | 8th | narrowed | narrowed (eighth / quarter) | narrowed with the answer |
+| R2-5 | 8th | eighth | eighth | right |
+| R2-6 Litolff | 8th | eighth | eighth | right |
+| **R2-7** | not a notehead | decided eighth | **refused, `is_a_beam_piece`** | **right** |
+| **R2-8** | 8th | narrowed | **eighth, decided** | **right** |
+| **R2-9** | 8th | quarter (the written copy; its twin read a 16th) | narrowed (eighth / quarter); the twin abstains | narrowed with the answer -- **not right** |
+| R2-10 | 8th | eighth | eighth | right |
+
+**No judged head ends worse.** Tiles 7 and 8 are right; tile 9 is NOT: the written copy was wrong and is now narrowed with the answer in it, and the
+copy that read a 16th no longer reads anything. The 44 heads of Sean's earlier reviews (2.65's 22 tiles, 2.69, 2.73, 2.74) read identically (0 changed
+of 44 matched, by box overlap). Through EVALUATE (the log rebuilt from each record with row ids remapped, then `adjudicate.run` and `evaluate.run`,
+base and arm each on its own tree): the 20 read the SAME on base and arm; against ADJUDICATE, `share_stem_value` (2.78) settles R1-2 to a dotted
+quarter (`stem_value_follows`, right) and `reconcile_chord_duration` (`chord_mate_shares_the_stem`) decides R1-4 a QUARTER (wrong, on base as well:
+not this lane's).
+
+**Population (every note-family `Q.DURATION` verdict at ADJUDICATE, base -> arm):**
+
+| plate | verdicts | decided | narrowed | abstained | changed | of which the loser abstaining | written heads changed |
+|---|---|---|---|---|---|---|---|
+| Litolff p0-3 | 1,286 | 1,190 -> 1,075 | 96 -> 81 | 0 -> 130 | 146 | 130 | **16** |
+| Brahms p0-1 | 1,491 | 1,225 -> 1,158 | 266 -> 249 | 0 -> 84 | 91 | 84 | **7** |
+
+The 23 written-head changes, old -> new: decided quarter -> narrowed (eighth | quarter) 9; decided eighth -> narrowed 4; decided dotted quarter ->
+narrowed (0.75 | 1.5) 1; narrowed -> decided eighth 3 (crop 8's chord); narrowed -> narrowed (the reason or the candidates) 6. The decided -> narrowed
+ones are heads whose answer rested on a far-side or neighbour's stroke, or on the absence of one under a stem nobody examined (my eye on the crops,
+not Sean's: about as many print a flag or beam the record never read as print the plain value). `Q.STEM_TIP_INK` is identical on both arms
+(Litolff 970 rows / 39 found / 13 counted, Brahms 1,219 / 104 / 52): no GATHER row moved.
+
+Crops of 7 changed heads Sean has not judged: `out/print/rhythm-leftovers-3/` (`manifest.json`, readings hidden). Only 7 exist because only 7 written
+heads changed and are unjudged; tiles 2, 4 and 6 are members of crop 8's own chord (one beam), tile 5 is a plain dotted quarter that now narrows.
+
+Tests `tools/omr/tests/test_staged_rhythm_2_77b.py`: 24, RED first on the unrepaired tree (6 failed: the loser, the ruler's side x2, crop 8 and the
+two-stem bar, crop 7; the controls -- a thin stroke, a stroke no stem stands on, a half-covered box, a flat box away from any beam, a cue head, a
+head-sized box, stems that end above a bar, one stem inside, an owner, an abstained owner, a lone copy -- green throughout). Gates at `33557d81` (code
+identical to the final head): `pytest -m "not slow" tools/omr/tests` **6,900 passed, 11 skipped, 2 xfailed, 0 failed**; `staged.check` TOTAL **193**
+(= base; every check's count identical). ⚠️ A rebuild of a record into a fresh `Log` (the `readjudicate` pattern) MUST remap row ids: the first
+rebuild here reproduced nothing that joins through `beam_row_id` (the crop-7 box read `notehead`, not `is_a_beam_piece`) until the ids in each row's
+detail were remapped.
