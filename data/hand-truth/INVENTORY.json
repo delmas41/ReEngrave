@@ -161,11 +161,11 @@
  "hand_truth_pages": [
   {
    "box_origin": {
-    "drawn": 377,
-    "prefill-confirmed": 895,
-    "prefill-fixed": 70
+    "drawn": 381,
+    "prefill-confirmed": 894,
+    "prefill-fixed": 71
    },
-   "boxes": 1342,
+   "boxes": 1346,
    "cells": 202,
    "edition": "imslp317803",
    "families_complete": [],
