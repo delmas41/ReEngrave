@@ -661,17 +661,20 @@ def _carry_terms(ev: Evidence, *,
 UNKNOWN_FIT_KEY = "keysig_fit_unknown"
 
 
-def _unknown_fit_candidates(ev: Evidence,
-                            fits: Sequence[Any]) -> Tuple[str, ...]:
+def _unknown_fit_candidates(ev: Evidence, fits: Sequence[Any],
+                            subject=None) -> Tuple[str, ...]:
     """The slot-table clefs whose fit is an ABSTENTION, not a reading.
 
     A refusal naming a `candidate` makes that clef unknown; one naming none
     makes every clef without a fit row unknown (we cannot say which it was).
     A clef with a fit ROW is read and is never unknown.
+
+    `subject` is the staff to ask, for `header._staff_reading` (ROADMAP
+    2.61d), whose system-key caller reads every staff of its system.
     """
     read = {str(r.value) for r in fits}
     unknown: List[str] = []
-    for refusal in ev.refusals(Q.KEYSIG_CLEF_FIT):
+    for refusal in ev.refusals(Q.KEYSIG_CLEF_FIT, subject=subject):
         named = refusal.detail.get("candidate")
         names = ([str(named)] if named is not None
                  else [c for c in _SLOT_TABLE_CLEFS])
