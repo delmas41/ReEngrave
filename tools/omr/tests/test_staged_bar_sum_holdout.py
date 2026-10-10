@@ -154,14 +154,23 @@ class TestTheBarThatDOESAddUpIsStillWritten(unittest.TestCase):
 class TestTheWholeRestConvention(unittest.TestCase):
     def test_a_lone_whole_rest_is_the_BAR_whatever_the_meter(self):
         """⚠️ CLAUDE.md §10: a whole rest means the BAR whatever the meter.
-        `<rest measure="yes"/>` carries no note value, so there is nothing to
-        measure against the meter — and judging it by its `<duration>` would
-        hold out the one bar the convention exists for. Here the rest is
-        written four quarters long in a 2/4 bar, which is the shape
-        `size_measure_rest` leaves behind where it could not size it."""
+        `<rest measure="yes"/>` carries no note value of its own, so it is not
+        summed like a note: the glyph stands for the bar, and a bar is as long
+        as the meter in force. Here the rest is two quarters long in a 2/4
+        bar, which is the shape `size_measure_rest` leaves behind.
+
+        ⚠️ ROADMAP 2.79 CHANGED THIS FIXTURE, AND SAYS SO. It was written four
+        quarters long in a 2/4 bar -- "the shape `size_measure_rest` leaves
+        behind where it could not size it" -- and asserted NOT held out. But
+        `size_measure_rest` never leaves that shape (it sets `measure_rest`
+        and the bar's length together, or neither); the fixture was the HOLE:
+        a rest longer than the bar the file declares, written as it was, which
+        is exactly what 29 Brahms bars were. That shape is now held out, in
+        `test_staged_rest_meter_2_79.py`. The convention this test names is
+        unchanged: a whole rest is the BAR whatever the meter."""
         page = _bar([])
         _add_rest(page, 5, "restWhole",
-                  {"beats": 4.0, "written": 4.0, "dots": 0, "is_rest": True,
+                  {"beats": 2.0, "written": 2.0, "dots": 0, "is_rest": True,
                    "measure_rest": True})
         _xml, rep = SX.to_musicxml(page)
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 0)

@@ -115,8 +115,11 @@ class TestTheControlIsUnmarked(unittest.TestCase):
 
     def _page(self):
         page = _bar([])
+        # ⚠️ ROADMAP 2.79: 2.0 beats, the length of `_bar`'s 2/4 -- a measure
+        # rest IS the written bar. It was written 4.0 (a whole rest in a 2/4
+        # bar), which EXPORT now holds out as a bar that does not add up.
         _add_rest(page, 5, "restWhole",
-                  {"beats": 4.0, "written": 4.0, "dots": 0, "is_rest": True,
+                  {"beats": 2.0, "written": 2.0, "dots": 0, "is_rest": True,
                    "measure_rest": True})
         return page
 
