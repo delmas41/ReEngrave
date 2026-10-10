@@ -1,0 +1,140 @@
+=== beethoven5-litolff: kept -> narrowed notes: 388;  narrowed -> kept: 89
+
+-- tonight's narrowing REASON (kept -> narrowed)
+     329  beam discounted uncertain
+      36  beams ambiguous
+      19  head fill from ink
+       3  beam certain not joined
+       1  flag ink unread
+
+-- is last night's value among tonight's candidates?
+     329  last night's answer is still one of tonight's candidates
+      59  last night's answer is ruled out by tonight's candidates
+
+-- last night's decided value (beats) -> tonight's candidates (beats), by reason
+   [beam discounted uncertain] 329
+        278       0.5 -> 0.5 | 1
+         23      0.25 -> 0.5 | 1
+         20         1 -> 0.5 | 1
+          4    0.0625 -> 0.5 | 1
+          2  0.333333 -> 0.333333 | 0.666667
+          2     0.125 -> 0.5 | 1
+   [beams ambiguous] 36
+          8       0.5 -> 1 | 0.5
+          7         1 -> 1 | 0.5
+          6     0.125 -> 1 | 0.5
+          6     0.125 -> 0.5 | 0.25
+          5      0.25 -> 1 | 0.5
+          3    0.0625 -> 1 | 0.5
+          1    0.0625 -> 0.5 | 0.25
+   [head fill from ink] 19
+         14         1 -> 2 | 1 | 4
+          5       0.5 -> 2 | 1 | 4
+   [beam certain not joined] 3
+          1     0.125 -> 1 | 0.25
+          1     0.125 -> 1 | 0.5
+          1      0.25 -> 1 | 0.5
+   [flag ink unread] 1
+          1         1 -> 0.5 | 0.25
+
+-- narrowed -> kept: last night's REASON, then last night's candidates -> tonight's value
+      54  beams ambiguous
+      21  flag ink unread
+       8  beam discounted uncertain
+       5  head fill from ink
+       1  beam certain not joined
+   [beams ambiguous] 54
+         18  0.25 | 0.125 -> 0.5
+         17  0.5 | 0.25 -> 0.5
+         10  0.125 | 0.0625 -> 0.5
+          3  0.25 | 0.125 -> 0.25
+          2  0.5 | 0.25 | 0.125 -> 0.5
+          1  0.25 | 0.125 | 0.0625 -> 0.5
+          1  1 | 0.5 -> 0.5
+          1  0.125 | 0.0625 | 0.03125 -> 0.5
+          1  1 | 0.5 -> 2
+   [flag ink unread] 21
+         21  0.5 | 1 -> 0.5
+   [beam discounted uncertain] 8
+          4  0.5 | 1 -> 2
+          4  0.5 | 1 -> 0.5
+   [head fill from ink] 5
+          5  2 | 1 | 4 -> 2
+   [beam certain not joined] 1
+          1  0.5 | 0.25 -> 0.5
+
+=== layer 2: the same note's duration-verdict counters, last night -> tonight
+    (a counter absent in last night's verdict is 0: the guard did not exist)
+   (notes without a verdict row on one side: 0)
+
+-- kept -> narrowed: what differs between the nights' guard counters
+     183  ink refused too_thin (0->1)   [beam_discounted_uncertain 172, head_fill_from_ink 8, beams_ambiguous 3]
+      44  ink refused through_heads (0->1)   [beam_discounted_uncertain 40, beams_ambiguous 3, flag_ink_unread 1]
+      31  no guard counter changed   [beams_ambiguous 18, head_fill_from_ink 10, beam_certain_not_joined 2, beam_discounted_uncertain 1]
+      21  ink refused too_thin (0->2)   [beam_discounted_uncertain 21]
+      18  stem side None->down   [beam_discounted_uncertain 14, beams_ambiguous 3, head_fill_from_ink 1]
+      15  ink refused too_thin (0->1) + stem side None->down   [beam_discounted_uncertain 15]
+      14  ink refused one_stem (0->1)   [beam_discounted_uncertain 14]
+      11  far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 10, beam_certain_not_joined 1]
+       7  ink refused through_heads/too_thin (0->3)   [beams_ambiguous 6, beam_discounted_uncertain 1]
+       6  ink refused through_heads/too_thin (0->2)   [beam_discounted_uncertain 3, beams_ambiguous 3]
+       6  ink refused one_stem (0->1) + stem side None->up   [beam_discounted_uncertain 6]
+       4  ink refused no_stem_at_ends (0->1)   [beam_discounted_uncertain 4]
+       4  ink refused too_thin (0->1) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 4]
+       4  ink refused too_thin (0->4)   [beam_discounted_uncertain 4]
+       3  stem side None->up   [beam_discounted_uncertain 3]
+       3  far-side strokes 0->1 + stem side None->up   [beam_discounted_uncertain 3]
+       3  ink refused through_heads (0->2)   [beam_discounted_uncertain 3]
+       2  ink refused too_thin (0->1) + stem side None->up   [beam_discounted_uncertain 2]
+       2  ink refused no_stem_at_ends (0->1) + stem side None->down   [beam_discounted_uncertain 2]
+       2  ink refused too_thin (0->3)   [beam_discounted_uncertain 2]
+       2  ink refused one_stem/too_thin (0->2)   [beam_discounted_uncertain 2]
+       1  ink refused through_heads (0->1) + far-side strokes 0->1   [beam_discounted_uncertain 1]
+       1  far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->2) + stem side None->down   [beam_discounted_uncertain 1]
+
+-- kept -> narrowed: other inputs that also differ on the same notes (GATHER-side readings)
+     300  -
+      67  beams_by_stem 1->0
+       6  beams_by_stem 3->1
+       5  beams_by_stem 2->1
+       3  beams_by_stem 4->1
+       3  beams_by_stem 2->0
+       2  beams_by_stem 0->1
+       1  beams_by_stem 3->2
+       1  beams_by_stem 4->3
+
+-- notes whose strokes the ink newly refused, by the ink's reason(s) (tonight's verdict)
+     232  too_thin
+      48  through_heads
+      20  one_stem
+      13  through_heads/too_thin
+       6  no_stem_at_ends
+       2  one_stem/too_thin
+
+=== layer 2: narrowed -> kept
+      24  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->1)
+      19  tonight decided by `hooks_counted`; last night `flag_ink_unread`; no guard counter changed
+       8  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->2)
+       4  tonight decided by `hollow_head_bare_stem`; last night `beam_discounted_uncertain`; no guard counter changed
+       4  tonight decided by `head_and_marks`; last night `beam_discounted_uncertain`; no guard counter changed
+       4  tonight decided by `head_and_marks`; last night `beams_ambiguous`; no guard counter changed
+       4  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->3)
+       3  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->4)
+       3  tonight decided by `hollow_head_bare_stem`; last night `head_fill_from_ink`; no guard counter changed
+       2  tonight decided by `hollow_head_bare_stem`; last night `head_fill_from_ink`; ink refused too_thin (0->1)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused too_thin (0->1)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused too_thin (0->2)
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused no_stem_at_ends/through_heads (0->2)
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->1) + stem side None->up
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; far-side strokes 0->1 + stem side None->down
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads/too_thin (0->3)
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->1) + stem side None->down
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads/too_thin (0->2)
+       1  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused through_heads (0->1)
+       1  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused through_heads (0->1)
+       1  tonight decided by `hollow_head_bare_stem`; last night `beams_ambiguous`; ink refused too_thin (0->1)
+       1  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused too_thin (0->1)
+
+=== the drawn systems: kept -> narrowed notes by the guard input that differs
+   p15 s1: 44 notes: ink refused: too_thin x33; far-side strokes 0->1 + stem side None->down x6; ink refused: through_heads x3; ink refused: through_heads/too_thin x1; no guard counter changed x1

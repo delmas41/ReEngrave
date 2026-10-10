@@ -1,0 +1,43 @@
+== beethoven5-litolff: note transitions in the diff (family note)
+         kept -> kept       7487
+      refused -> refused    1443
+   given_away -> given_away 1327
+     narrowed -> narrowed   402
+         kept -> narrowed   388
+         kept -> refused    118
+      refused -> kept       107
+     narrowed -> kept       89
+     narrowed -> refused    15
+   given_away -> refused    11
+      refused -> given_away 7
+      refused -> narrowed   3
+         kept -> abstained  1
+     narrowed -> abstained  1
+   kept->narrowed notes 388 in 183 distinct bars (of 505 bars x staves not counted; 31 systems)
+   bars by number of newly undecided notes: 1:91, 2:47, 3:22, 4:9, 5:6, 6:2, 7:1, 9:2, 10:1, 12:2
+
+== beethoven5-litolff: top 10 bars (page/system/bar-in-system -> export bar)
+   p15 s1 bar 3/20 (export bar 456, printed 454 (by eye)): 12 notes on 4 staves [0 1 3 4]
+   p15 s1 bar 4/20 (export bar 457, printed 455 (by eye)): 12 notes on 4 staves [0 1 2 3]
+   p10 s1 bar 8/15 (export bar 296, printed 295 (by eye)): 10 notes on 3 staves [2 4 9]
+   p7 s0 bar 16/17 (export bar 187, printed 186 (by eye)): 9 notes on 4 staves [0 2 5 9]
+   p16 s0 bar 1/17 (export bar 474, printed 472 (by eye)): 9 notes on 4 staves [0 1 2 3]
+   p3 s0 bar 4/16 (export bar 52, printed 52 (margin reader agrees)): 7 notes on 1 staves [9]
+   p10 s0 bar 5/14 (export bar 279, printed 278 (by eye)): 6 notes on 1 staves [3]
+   p16 s1 bar 8/15 (export bar 498, printed 496 (by eye)): 6 notes on 1 staves [0]
+   p12 s0 bar 3/15 (export bar 341, printed 340 (by eye)): 5 notes on 3 staves [8 9 10]
+   p13 s0 bar 4/16 (export bar 370, printed 369 (by eye)): 5 notes on 1 staves [3]
+
+== beethoven5-litolff: top systems by newly undecided notes
+   p15 s1: 44 notes in 11 bars, 9 staves
+   p14 s1: 27 notes in 11 bars, 8 staves
+   p7 s0: 24 notes in 7 bars, 6 staves
+   p16 s0: 23 notes in 5 bars, 5 staves
+   p12 s0: 20 notes in 8 bars, 6 staves
+   p10 s1: 18 notes in 8 bars, 8 staves
+   p13 s0: 18 notes in 11 bars, 5 staves
+   p5 s0: 17 notes in 8 bars, 8 staves
+   p16 s1: 16 notes in 7 bars, 6 staves
+   p11 s1: 16 notes in 10 bars, 5 staves
+   p14 s0: 15 notes in 9 bars, 7 staves
+   p4 s1: 14 notes in 8 bars, 7 staves

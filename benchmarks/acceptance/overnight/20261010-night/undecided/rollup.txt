@@ -1,0 +1,81 @@
+=== brahms1-breitkopf: 1991 notes kept -> narrowed
+  reason `beam discounted uncertain`: 1976
+       1629  2.74 (ink: too thin / bowed / one stem)
+        161  2.77b (stem side read by the ruler)
+        143  2.74 (ink: too thin / bowed / one stem) + 2.77b (stem side read by the ruler)
+         22  2.77/2.77b (ink: through the heads / no stem at the ends)
+         20  2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+          1  2.77/2.77b (ink: through the heads / no stem at the ends) + 2.77b (stem side read by the ruler)
+  reason `head fill from ink`: 7
+          5  2.74 (ink: too thin / bowed / one stem)
+          2  no guard input differs between the nights
+  reason `beam certain not joined`: 4
+          3  2.74 (ink: too thin / bowed / one stem)
+          1  2.77b (stem side read by the ruler)
+  reason `beams ambiguous`: 3
+          2  no guard input differs between the nights
+          1  2.74 (ink: too thin / bowed / one stem)
+  reason `flags disagree`: 1
+          1  2.74 (ink: too thin / bowed / one stem)
+  marginal: notes carrying each guard input (a note can carry several)
+       1802  2.74 (ink: too thin / bowed / one stem)
+        306  2.77b (stem side read by the ruler)
+         43  2.77/2.77b (ink: through the heads / no stem at the ends)
+
+=== brahms1-breitkopf: 344 notes narrowed -> kept
+        216  last night `beam_certain_not_joined` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem)
+         46  last night `flag_ink_unread` -> tonight `hooks_counted`  via 2.69 (hooks are counted at the stem tip)
+         39  last night `flags_disagree` -> tonight `hooks_counted`  via 2.69 (hooks are counted at the stem tip)
+         12  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem)
+          7  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem) + 2.77b (stem side read by the ruler)
+          6  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.77/2.77b (ink: through the heads / no stem at the ends)
+          4  last night `beam_certain_not_joined` -> tonight `head_and_marks`  via 2.77/2.77b (ink: through the heads / no stem at the ends)
+          4  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.77b (stem side read by the ruler)
+          4  last night `head_fill_from_ink` -> tonight `hollow_head_bare_stem`  via 2.70 (hollow head, bare stem = half)
+          4  last night `beam_discounted_uncertain` -> tonight `head_and_marks`  via arc decision changed (decided-arc strokes differ)
+          1  last night `beam_certain_not_joined` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+          1  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+
+=== beethoven5-litolff: 388 notes kept -> narrowed
+  reason `beam discounted uncertain`: 329
+        215  2.74 (ink: too thin / bowed / one stem)
+         48  2.77/2.77b (ink: through the heads / no stem at the ends)
+         31  2.77b (stem side read by the ruler)
+         28  2.74 (ink: too thin / bowed / one stem) + 2.77b (stem side read by the ruler)
+          4  2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+          2  2.77/2.77b (ink: through the heads / no stem at the ends) + 2.77b (stem side read by the ruler)
+          1  no guard input differs between the nights
+  reason `beams ambiguous`: 36
+         18  no guard input differs between the nights
+          9  2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+          3  2.77/2.77b (ink: through the heads / no stem at the ends)
+          3  2.74 (ink: too thin / bowed / one stem)
+          3  2.77b (stem side read by the ruler)
+  reason `head fill from ink`: 19
+         10  no guard input differs between the nights
+          8  2.74 (ink: too thin / bowed / one stem)
+          1  2.77b (stem side read by the ruler)
+  reason `beam certain not joined`: 3
+          2  no guard input differs between the nights
+          1  2.77b (stem side read by the ruler)
+  reason `flag ink unread`: 1
+          1  2.77/2.77b (ink: through the heads / no stem at the ends)
+  marginal: notes carrying each guard input (a note can carry several)
+        267  2.74 (ink: too thin / bowed / one stem)
+         67  2.77/2.77b (ink: through the heads / no stem at the ends)
+         66  2.77b (stem side read by the ruler)
+
+=== beethoven5-litolff: 89 notes narrowed -> kept
+         40  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.77/2.77b (ink: through the heads / no stem at the ends)
+         21  last night `flag_ink_unread` -> tonight `hooks_counted`  via 2.69 (hooks are counted at the stem tip)
+          5  last night `head_fill_from_ink` -> tonight `hollow_head_bare_stem`  via 2.70 (hollow head, bare stem = half)
+          4  last night `beam_discounted_uncertain` -> tonight `hollow_head_bare_stem`  via 2.70 (hollow head, bare stem = half)
+          4  last night `beam_discounted_uncertain` -> tonight `head_and_marks`  via no guard input differs between the nights
+          4  last night `beams_ambiguous` -> tonight `head_and_marks`  via no guard input differs between the nights
+          4  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem)
+          2  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.77/2.77b (ink: through the heads / no stem at the ends) + 2.77b (stem side read by the ruler)
+          2  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.74 (ink: too thin / bowed / one stem) + 2.77/2.77b (ink: through the heads / no stem at the ends)
+          1  last night `beams_ambiguous` -> tonight `head_and_marks`  via 2.77b (stem side read by the ruler)
+          1  last night `beam_certain_not_joined` -> tonight `head_and_marks`  via 2.77/2.77b (ink: through the heads / no stem at the ends)
+          1  last night `beams_ambiguous` -> tonight `hollow_head_bare_stem`  via 2.70 (hollow head, bare stem = half)
+

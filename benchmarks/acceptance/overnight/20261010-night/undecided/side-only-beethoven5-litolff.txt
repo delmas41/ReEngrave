@@ -1,0 +1,7 @@
+beethoven5-litolff: 36 notes with the stem side as the only newly-differing guard input
+    12  far-side strokes dropped   stems_attached=0
+    10  neighbour-staff strokes dropped   stems_attached=0
+     8  decided-arc strokes dropped   stems_attached=0
+     3  no stroke dropped by any counter   stems_attached=0
+     2  decided-arc strokes dropped + far-side strokes dropped   stems_attached=0
+     1  far-side strokes dropped   stems_attached=2
