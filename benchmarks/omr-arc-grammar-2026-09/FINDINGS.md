@@ -1177,3 +1177,18 @@ staff spaces (on Litolff a head box averages 1.2-1.3 spaces), so its 0.25 limit 
 * litolff_06's pairing and the kept head's pitch (16.10.1), litolff_04's head count
   and centre (16.10.2): two candidate items, neither built;
 * Sean's judgement of the five chord tiles.
+
+### 16.10.6 On the merged head (main 655407c2: 2.12f and 2.78 landed), `afaa217f`
+
+`adjudicate.ORDER` merged without a conflict and keeps every lane's entries
+(`accidental_owner` and `notehead_position` before `arc_kind`; 2.12f's
+`articulation_owner` after `stem_direction`; 2.78's `head_stem` and `stem_value`).
+2.78 changed `gather._stem_core`, so the proof is a FRESH clean-tree small
+re-gather on the merged head (Litolff pdf 1-3, Brahms pdf 0-1, not a replay): the
+replay control still reproduces its own `arc_kind` verdicts 512 of 512 and 1,034 of
+1,034; Sean's tiles singles **9 of 10**, stacked **2 of 2** (litolff_04 the one
+miss); arcs judged 210 / 393, reached by the piece reading 2 / 0, changed vs the
+base 2 / 0 -- identical to 16.10.1 -- and the five chord tiles' readings are
+unchanged. Fast tier **6,891 passed**, 11 skipped, 2 xfailed (6,830 on the
+intermediate merge with 2.12f); `check` **192** against 193 on main 655407c2 (the
+one finding left is the closed `KNOWN_GAPS` entry for `Q.CELL_STAFF_SPACE.half_step`).
