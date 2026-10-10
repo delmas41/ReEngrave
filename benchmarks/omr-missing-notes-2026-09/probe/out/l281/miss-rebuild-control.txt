@@ -1,0 +1,14 @@
+rebuilt 14112 rows, 0 id-like detail values with no mapped row (0s)
+re-adjudicated (15s)
+CONTROL page 0: 507 of 507 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l281m/cap-brahms-p0.json
+CONTROL page 2: 996 of 996 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 7: 861 of 861 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 20: 955 of 955 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 24: 1648 of 1648 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 25: 1165 of 1165 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 10: 888 of 888 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 13: 1202 of 1202 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+CONTROL page 15: 1268 of 1268 duration verdicts reproduced exactly, 0 differ, 0 absent from the rebuild
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l281m/cap-break.json
+BREAK-CONTROL: differ = 42

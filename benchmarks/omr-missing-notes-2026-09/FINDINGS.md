@@ -2376,3 +2376,25 @@ stratified (17.5), not a simple random draw: a simple one would put ~8 tiles on 
 `l281_run_all.sh`), `probe/out/l281/` (population CSVs per record, `hand-truth-score-*.txt`, `later-stages-*.txt`, `tip-ink-probe.txt`,
 `tiles-our-reading.txt`), `out/print/2.81-review/` (the tiles), `out/print/2.81-hand-truth-check/` (the crops above). `staged.check` TOTAL **192**
 (= main, re-run with the probes in the tree). No test was added or run: no product code changed.
+
+### 17.9 The misses in context (Sean, 2026-10-10: *"Can we look closer at the 1/4 of quarters that are missing - I would like to see if I can identify some patterns"*)
+
+`out/print/2.81-misses/` (`miss_01.png` ... `miss_16.png`, `manifest.json`, `table.txt`): 16 phone-sized images (1000 px wide, panels
+stacked): the clean print with a red bracket on the miss, then the same crop with OUR reading drawn on -- the stem we attached or "no stem
+decided", every stroke refused as a beam with the test that refused it, any beam kept, the tip window, any flag box. Images 1-8 are Sean's
+tiles 04, 09, 27, 22, 02, 11, 29, 07; 9-11 the three beam groups of the hand-truth page (17 heads); 12-15 its flagged eighths (the two heads
+sharing a bar in one image); 16 the flag the page does not box. The hand-truth page is the CORRECTED one (1,346 boxes): the same 22 wrong.
+`table.txt` is the manager's table of MEASURED FACTS (no conclusion): per head the tip state and the tip window's right/left densities
+against the 0.30/0.20 cut, the stem, the distance from the stem tip to the nearest candidate stroke, the counters; per stroke its refusal,
+thickness against 2.74's 1.75, bow, stems at its ends, size, slope estimated from the box, over/under the heads, and where it sits against the
+LOCAL staff lines (read off the print at the crop: the record's global lines are 0.36-0.62 spaces off at Brahms pdf 20 and 7).
+
+**How the per-stroke refusals were got.** The saved verdicts carry counts, not which stroke each count was. `probe/l281_miss_rebuild.py`
+re-runs ADJUDICATE over one page's saved GATHER rows (streamed out of the overnight records with `ijson`; ids remapped as FINDINGS 2.77b
+requires) with the stroke filters in `rhythm.adjudicate_duration` wrapped to note what each was given and dropped (results returned
+unchanged). **Control, every page:** each saved `adjudicate_duration` verdict on the page is reproduced exactly (Brahms p0 507/507, p2 996,
+p7 861, p20 955, p24 1,648, p25 1,165; Litolff p10 888, p13 1,202, p15 1,268), and the break that must fail (every stroke on page 0 made
+thick) moves 42 verdicts. Each image's frame control: every bracketed head holds more ink than the same box moved diagonally by 1.6 head
+widths (all 16 pass; the stroke-box numbers are recorded, not gated: a detector box is loose around its stroke).
+
+Run it all: `SCRATCH=... probe/l281_miss_run_all.sh` (machine-local).
