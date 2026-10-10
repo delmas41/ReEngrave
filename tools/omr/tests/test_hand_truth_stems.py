@@ -329,6 +329,18 @@ class TestMissedStemCauses:
         assert table["chord (2+ heads on it)"] == {"missed": 1, "found": 0, "found_share": 0.0}
         assert table["closest two heads a third apart (2 steps)"]["missed"] == 1
 
+    def test_staff_lines_crossed_counts_the_lines_inside_the_stems_extent_and_is_unread_without_them(self):
+        lines = [20.0, 40.0, 60.0, 80.0, 100.0]
+        assert SS.stem_facts(_it(0, (100, 10, 104, 90)), SP, [], [], [], lines)["staff_lines_crossed"] == 4
+        assert SS.stem_facts(_it(0, (100, 110, 104, 160)), SP, [], [], [], lines)["staff_lines_crossed"] == 0
+        assert SS.stem_facts(_it(0, (100, 0, 104, 120)), SP, [], [], [], lines)["staff_lines_crossed"] == 5
+        assert SS.stem_facts(_it(0, (100, 10, 104, 90)), SP, [], [], [])["staff_lines_crossed"] is None  # not 0
+        table = SS.feature_table([{"length_spaces": 4.0, "chord": False, "stacked_heads": False,
+                                   "touches_a_beam_box": False, "touches_a_slur_or_tie_box": False, "heads_on_it": 1,
+                                   "closest_heads_apart_in_steps": None, "heads_on_both_sides_of_the_stem": False,
+                                   "staff_lines_crossed": 5}], [])
+        assert table["crosses all five staff lines"]["missed"] == 1 and table["crosses no staff line (wholly outside the staff)"]["missed"] == 0
+
     def test_stem_sets_equal_refuses_a_record_whose_stems_differ(self, page, items):
         a = C.run_of(C.synthetic_result(page, items, up=2.5))
         same = C.synthetic_result(page, items, up=2.5)

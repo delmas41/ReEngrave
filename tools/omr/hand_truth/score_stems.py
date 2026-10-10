@@ -580,7 +580,9 @@ def score_stems(page, items: Sequence[S.TruthItem], glyphs: Sequence[S.ReadGlyph
     heads_no_stem = [h for h in items if h.family == "notehead" and scope.holds(h.rect)
                      and not head_has_stem(h.rect, t_stems, bands.get(h.cell_id, sp_all))]
     inv_why = explain_invented(m, items, heads_no_stem)
-    cause_in = cause_inputs or {}
+    band_by = {b.cell_id: b for b in S.staff_bands(page)}
+    cause_in = dict(cause_inputs or {})
+    cause_in["lines_of"] = {t.idx: band_by[t.cell_id].lines for t in t_stems if t.cell_id in band_by}
     causes = explain_missed(m, items, cause_in)
     cv_for_heads = CvRead(True, cv_idx, cv.declined, cv.frame_agreement, by_row)
     out["cv_stem"] = {
@@ -764,6 +766,7 @@ def explain_missed(m: StemMatch, items: Sequence[S.TruthItem], inputs: Dict[str,
     cause is only what the record itself says: a CV fragment in the column or nothing."""
     runs: Sequence[Dict[str, Any]] = inputs.get("runs") or ()
     ink = inputs.get("ink")
+    lines_of: Dict[int, Sequence[float]] = inputs.get("lines_of") or {}
     heads = [it for it in items if it.family == "notehead"]
     beams = [it for it in items if it.family == "beam"]
     arcs = [it for it in items if it.family in ("slur", "tie")]
@@ -773,7 +776,7 @@ def explain_missed(m: StemMatch, items: Sequence[S.TruthItem], inputs: Dict[str,
     for ti in m.missed:
         t = next(x for x in m.truth if x.idx == ti)
         sp = m.sp_of[ti]
-        facts = stem_facts(t, sp, heads, beams, arcs)
+        facts = stem_facts(t, sp, heads, beams, arcs, lines_of.get(ti))
         cause = None
         if m.in_column[ti]:
             cause = "a CV stem covers only a fragment of it"
@@ -800,15 +803,16 @@ def explain_missed(m: StemMatch, items: Sequence[S.TruthItem], inputs: Dict[str,
         by_truth[ti] = cause
         facts["id"], facts["cell"], facts["cause"] = t.id, t.cell_id, cause
         facts_rows.append(facts)
-    found_facts = [stem_facts(next(x for x in m.truth if x.idx == ti), m.sp_of[ti], heads, beams, arcs)
-                   for ti in m.found]
+    found_facts = [stem_facts(next(x for x in m.truth if x.idx == ti), m.sp_of[ti], heads, beams, arcs,
+                              lines_of.get(ti)) for ti in m.found]
     return {"by_cause": dict(by_cause), "by_truth_idx": by_truth,
             "facts": {"missed": facts_rows, "found_rates": feature_table(facts_rows, found_facts)}}
 
 
 def stem_facts(t: S.TruthItem, sp: float, heads: Sequence[S.TruthItem], beams: Sequence[S.TruthItem],
-               arcs: Sequence[S.TruthItem]) -> Dict[str, Any]:
-    """Facts about one truth stem, each a measurement of Sean's boxes in this stem's own staff space."""
+               arcs: Sequence[S.TruthItem], lines: Optional[Sequence[float]] = None) -> Dict[str, Any]:
+    """Facts about one truth stem, each a measurement of Sean's boxes in this stem's own staff space.
+    ``lines`` (the stem's own staff's five line ys, page px, at its cell) adds how many of them the stem crosses."""
     r = t.rect
     mine = [h for h in heads if _box_gap(h.rect, r) <= HEAD_STEM_TOUCH_SPACES * sp]
     stacked = False
@@ -824,6 +828,7 @@ def stem_facts(t: S.TruthItem, sp: float, heads: Sequence[S.TruthItem], beams: S
             "heads_on_it": len(mine), "chord": len(mine) >= 2, "stacked_heads": stacked,
             "closest_heads_apart_in_steps": steps[0] if steps else None,
             "heads_on_both_sides_of_the_stem": len(sides) == 2,
+            "staff_lines_crossed": None if lines is None else sum(1 for y in lines if r[1] < y < r[3]),
             "touches_a_beam_box": touch(beams), "touches_a_slur_or_tie_box": touch(arcs)}
 
 
@@ -840,6 +845,9 @@ def feature_table(missed: Sequence[Dict[str, Any]], found: Sequence[Dict[str, An
         "closest two heads a fourth or more apart": lambda f: (f["closest_heads_apart_in_steps"] or 0) >= 3,
         "heads on both sides of the stem": lambda f: f["heads_on_both_sides_of_the_stem"],
         "one head on it": lambda f: f["heads_on_it"] == 1,
+        "crosses no staff line (wholly outside the staff)": lambda f: f.get("staff_lines_crossed") == 0,
+        "crosses 1-4 staff lines": lambda f: f.get("staff_lines_crossed") in (1, 2, 3, 4),
+        "crosses all five staff lines": lambda f: f.get("staff_lines_crossed") == 5,
         "touches a beam box": lambda f: f["touches_a_beam_box"],
         "touches a slur or tie box": lambda f: f["touches_a_slur_or_tie_box"],
         "no head box on it": lambda f: f["heads_on_it"] == 0,
