@@ -170,11 +170,14 @@ def _bar_beats_at(meter: Verdict, subject: Subject) -> Optional[float]:
     fact, two answers: the overnight control `bars_add_up` read 29 overfull
     bars.
 
-    ⚠️ ONLY `size_measure_rest` ASKS HERE SO FAR. `reconcile_duration` and
-    `reinstate_rest_between_staves` still read the opening segment (the same
-    defect, a separate change: it lets `reconcile_duration` fire on bars it
-    could not fire on before, and one of those four bars is a wrong note --
-    `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §2.79).
+    ⚠️ ALL THREE ASK HERE: `size_measure_rest`, `reconcile_duration` and
+    `reinstate_rest_between_staves`. Connecting the second is a change of its
+    own with an effect of its own: `reconcile_duration` now lands bars on the
+    RIGHT length, so it fires on bars it could not fire on before -- on
+    Brahms p0-1 four, of which the print shows three right and one wrong
+    (a missing rest read as a lengthened note; the rule's own known hazard,
+    not this helper's) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+    §2.79.
 
     ⚠️ `subject.cell` IS THE BAR, on a cell and on a glyph alike (a glyph's
     cell is the bar it stands in), so every rule asks with the subject it
@@ -643,11 +646,12 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     exactly, NOTHING changes and the warning stands. It must never condemn the
     cheapest member.
     """
-    value = meter.value or {}
-    num, den = value.get("numerator"), value.get("denominator")
-    if not num or not den:
+    # ⚠️ ROADMAP 2.79: the meter in force at THIS bar (`_bar_beats_at`), not
+    # the opening segment of the system's verdict. In a 6/8 bar of a system
+    # that opens in 9/8 this rule was trying to land the bar on 4.5 beats.
+    expected = _bar_beats_at(meter, subject)
+    if expected is None:
         return []
-    expected = float(num) * 4.0 / float(den)
 
     # ⚠️⚠️ ROADMAP 2.22: "THE BAR" MEANS WHAT IS STILL IN IT -- 2.19's fault,
     # found again in the second EVALUATE rule that sums a cell. `_standing`
@@ -1489,11 +1493,10 @@ def reinstate_rest_between_staves(log: Log, subject: Subject,
         return []          # not a cross-staff contest at all -- an ordinary
                             # off-staff refusal, untouched
 
-    value = meter.value or {}
-    num, den = value.get("numerator"), value.get("denominator")
-    if not num or not den:
+    # ⚠️ ROADMAP 2.79: the meter in force at THIS bar (`_bar_beats_at`).
+    bar_len = _bar_beats_at(meter, subject)
+    if bar_len is None:
         return []
-    bar_len = float(num) * 4.0 / float(den)
 
     own_cell = subject.at(Kind.CELL)
     own_voices = _voice_count(log, own_cell)
