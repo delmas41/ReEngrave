@@ -22,6 +22,7 @@ import l283_shape_k as SH  # noqa: E402
 
 KS = (0.06,)
 FRAG = (0.35, 1.6, 0.25, 0.3)
+SHAPE_NEW = (0.33, 0.40, 1.2, 0.8, 1.0, 1.6)
 
 
 def main():
@@ -53,7 +54,7 @@ def main():
         if here:
             continue
         for k in KS:
-            m = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, kclose=k, frag=FRAG)
+            m = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, kclose=k, frag=FRAG, shape=SHAPE_NEW)
             tab[k][r["label"]][m["v"] + ":" + m["why"]] += 1
             if r["label"] != "flag" and m["v"] == "flag":
                 fp[k].append(r["stem"])
@@ -93,7 +94,7 @@ def main():
                 if t_near > 0.3 and (head_t is None or t_near < head_t):
                     head_t = t_near - 0.1
             for k in KS:
-                res = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, kclose=k, frag=FRAG)
+                res = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, kclose=k, frag=FRAG, shape=SHAPE_NEW)
                 print(key, f"k={k:.2f}", {kk: res.get(kk) for kk in ("v", "why", "area", "out", "arm", "t_first", "left")})
 
 

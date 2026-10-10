@@ -73,7 +73,7 @@ def main():
         edge, here = G._head_edge_for_end(heads, x, x + w, tip_y, sign, sp)
         img = (~c["img"]).astype("uint8") * 255
         res = None if here else G.stem_tip_ink(img, x, x + w, tip_y, sign, sp, head_edge=edge, blockers=blockers)
-        print(key, "direction", sd["value"], "head_here", here, "->", res if res is None else {k: res.get(k) for k in ("found", "why", "area", "out", "arm", "t_first", "left_area")})
+        print(key, "direction", sd["value"], "head_here", here, "->", res if res is None else {k: res.get(k) for k in ("found", "why", "area", "out", "arm", "t_first", "left_area", "covered_area")})
 
 
 if __name__ == "__main__":

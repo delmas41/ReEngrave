@@ -34,7 +34,7 @@ LINE_FILL = 0.6
 LINE_MAX_THICK = 0.45  # spaces: a crossing stub thicker than this is a bar, not a line
 
 
-def read(ink, x0, x1, tip_y, sign, space, head_t=None, kclose=0.06, frag=None):
+def read(ink, x0, x1, tip_y, sign, space, head_t=None, kclose=0.06, frag=None, shape=None):
     import cv2
     H, W = ink.shape
     far = FAR if head_t is None else min(FAR, head_t)
@@ -125,7 +125,13 @@ def read(ink, x0, x1, tip_y, sign, space, head_t=None, kclose=0.06, frag=None):
     d["t_first"] = round(t_first, 2)
     # A flag HANGS FROM THE TIP: its ink starts within `ROOT_T_MAX` of it. Ink that starts further in (a ledger line's
     # stub cut by the window's far edge, a neighbour's mark touching the stem mid-way) is something else.
-    if out >= OUT_MIN and arm >= ARM_MIN and t_first <= ROOT_T_MAX:
+    if shape is None:
+        ok = out >= OUT_MIN and arm >= ARM_MIN and t_first <= ROOT_T_MAX
+    else:
+        out_min, arm_min, root_thin, big_out, big_arm, root_big = shape
+        ok = out >= out_min and arm >= arm_min and (t_first <= root_thin or
+                                                    (out >= big_out and arm >= big_arm and t_first <= root_big))
+    if ok:
         return dict(d, v="flag", why="shaped")
     return dict(d, v="decline", why="ink_not_flag_shaped")
 

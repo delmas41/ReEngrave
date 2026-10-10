@@ -1,7 +1,7 @@
 q137    flag8thDown stem b4086  heads 2  base ['not_read', 'wrong']  ->  arm ['not_read', 'wrong']   arm tip: ['no_stem']
 q138    flag8thDown stem b4084  heads 2  base ['wrong', 'wrong']  ->  arm ['wrong', 'wrong']   arm tip: ['no_stem']
 q40     flag8thDown stem b4106  heads 2  base ['wrong', 'wrong']  ->  arm ['wrong', 'wrong']   arm tip: ['no_stem']
-q271    flag8thDown stem b4134  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['abstained:ambiguous:ink_not_flag_shaped']
+q271    flag8thDown stem b4134  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['flag']
 q270    flag8thDown stem b4132  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
 q199    flag8thDown stem b4115  heads 2  base ['not_read', 'not_read']  ->  arm ['not_read', 'not_read']   arm tip: ['no_stem']
 q316    flag8thDown stem b4138  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['flag']

@@ -10,7 +10,11 @@ best out-of-sample test this lane has: every one of those heads stood in the 2.8
 
 The tip row at the head's own stem tip (the end its decided direction points away from) is printed beside each.
 
-    python3 l283_sean_tiles.py --arm-records NAME=path.json ...   # every arm record that holds a tile page
+    python3 l283_sean_tiles.py --arm-records brahms=path.json litolff=path.json ...   # every arm record that holds a tile page
+
+⚠️ A glyph key is `glyph/<pdf page>/...` and the two scores' keys COLLIDE (Brahms pdf 2 and Litolff pdf 2 are both `glyph/2/...`): a
+record is chosen by the tile's movement AND the key, never by the key alone (the first run of this script read three Brahms tiles
+off the Litolff count-page record).
 """
 import argparse
 import json
@@ -40,15 +44,16 @@ def levels(v):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--arm-records", nargs="+", required=True, help="path.json ...")
+    ap.add_argument("--arm-records", nargs="+", required=True, help="movement=path.json ...")
     ap.add_argument("--tiles", default=str(REPO / "out/print/2.81-review"))
     a = ap.parse_args()
     man = json.loads((Path(a.tiles) / "manifest.json").read_text())
     ans = json.loads((Path(a.tiles) / "answers.json").read_text())
     runs = []
-    for p in a.arm_records:
-        runs.append(RD.load_run(p))
-        print("loaded", p, "pages", runs[-1].pages()[:30])
+    for spec in a.arm_records:
+        mv, p = spec.split("=", 1)
+        runs.append((mv, RD.load_run(p)))
+        print("loaded", mv, p, "pages", runs[-1][1].pages()[:30])
     rows = []
     for t in man["tiles"]:
         if t["kind"] != "sample":
@@ -56,7 +61,7 @@ def main():
         h = t["hidden"]
         key = h["key"]
         word = ans.get(t["id"])
-        run = next((r for r in runs if key in r.glyphs), None)
+        run = next((r for mv, r in runs if mv == h["movement"] and key in r.glyphs), None)
         if run is None:
             rows.append((t["id"], key, word, "NOT IN ANY ARM RECORD", None, None))
             continue

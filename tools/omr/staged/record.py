@@ -589,7 +589,7 @@ class Q(_Vocab):
     #: thin arm of his flags and read 20 of his 21 as bare). `value` is now
     #: whether the ink CONNECTED to the stem at that end, to its RIGHT, from the
     #: tip itself back to the stem's own head, is FLAG-SHAPED (starts at the tip,
-    #: stands out 0.45-1.5 spaces, an arm of 0.5), off the staff-ERASED raster
+    #: stands out 0.33-1.5 spaces, an arm of 0.4), off the staff-ERASED raster
     #: (CLAUDE.md SS9), sized from his flag boxes (FINDINGS 2.83). `False` is a
     #: positive "nothing hangs from this tip" and nothing else: where ink hangs
     #: there that is not flag-shaped (a beam or slur that runs on, ink on both

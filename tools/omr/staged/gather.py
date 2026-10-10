@@ -4205,17 +4205,28 @@ STEM_TIP_INK_REACH_SPACES = 2.6
 #: within this far of the box is the stem's own edge, not a mark.
 STEM_TIP_INK_SEED_SPACES = 1.0
 STEM_TIP_INK_EDGE_SPACES = 0.15
-#: The shape. His 21 read flags: out 0.50 .. 1.34, arm 0.62 .. 2.5 spaces, first ink 0.42 .. 0.81 spaces from the tip (a 22nd, Brahms
-#: pdf 1 `glyph/1/0/3/3/0`, out 0.66, arm 0.55); the nearest non-flags (ledger-line stubs, a staff-line remnant) 0.31 .. 1.4 out with an
-#: arm of 0.06 .. 0.37 starting 1.1 .. 3.0 spaces in. ARM_MIN stands midway between the largest non-flag arm and the smallest flag's.
-STEM_TIP_INK_OUT_MIN_SPACES = 0.45
+#: The shape. His 21 read flags: out 0.50 .. 1.34, arm 0.62 .. 2.5 spaces, first ink 0.42 .. 0.81 spaces from the tip; the nearest non-flags
+#: (ledger-line stubs, a staff-line remnant) 0.31 .. 1.4 out with an arm of 0.06 .. 0.37 starting 1.1 .. 3.0 spaces in. The first
+#: re-gathers then showed flags his page does not hold -- HUGGING flags whose arm stays within 0.33-0.45 spaces of the stem (Brahms pdf
+#: 25: 8 of 82 stems the cuts declined, every one a flag on the print) and a big Litolff flag whose ink starts 1.33 spaces from the tip --
+#: so a flag is read as EITHER a thin one (out >= `STEM_TIP_INK_OUT_MIN_SPACES`, arm >= `STEM_TIP_INK_ARM_MIN_SPACES`, root within
+#: `STEM_TIP_INK_ROOT_MAX_SPACES`) OR a developed one (out >= `STEM_TIP_INK_BIG_OUT_SPACES`, arm >= `STEM_TIP_INK_BIG_ARM_SPACES`, root
+#: within `STEM_TIP_INK_ROOT_BIG_SPACES`). ARM_MIN stands between the largest non-flag arm (0.37) and the smallest flag's (0.41).
+STEM_TIP_INK_OUT_MIN_SPACES = 0.33
 STEM_TIP_INK_OUT_MAX_SPACES = 1.5
-STEM_TIP_INK_ARM_MIN_SPACES = 0.45
+STEM_TIP_INK_ARM_MIN_SPACES = 0.40
 STEM_TIP_INK_ARM_U_SPACES = 0.35
 STEM_TIP_INK_ROOT_MAX_SPACES = 1.2
-#: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only.
-STEM_TIP_INK_LEFT_AREA_MAX = 0.05
+STEM_TIP_INK_BIG_OUT_SPACES = 0.8
+STEM_TIP_INK_BIG_ARM_SPACES = 1.0
+STEM_TIP_INK_ROOT_BIG_SPACES = 1.6
+#: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only. A speck under this is the
+#: stem's own noise (Brahms pdf 21 `glyph/21/1/7/0/8`: a flag read `crosses_both_sides` at 0.05).
+STEM_TIP_INK_LEFT_AREA_MAX = 0.08
 STEM_TIP_INK_EMPTY_AREA = 0.02
+#: A detection box explains the attached ink only where it COVERS at least this much of it (square spaces): detector boxes are loose, and
+#: a neighbouring rest's box edge grazed a flag's outer arm by 0.001 (Brahms pdf 25 `glyph/25/0/13/1/3`).
+STEM_TIP_COVER_AREA_MIN = 0.05
 #: ⚠️ BROKEN FLAGS (ROADMAP 2.83, found by Sean's tile 04 and a by-eye scan of Brahms pdf 1 and 20). A scan and the staff-line eraser
 #: often leave a hairline break between a flag's wedge at the tip and its arm, so the arm is a SEPARATE component and the attached ink
 #: alone (a stub: out 0.3, no arm) is not flag-shaped. A component the reader would otherwise leave out is taken as part of the flag
@@ -4394,9 +4405,12 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
                 continue
             rsel = np.where((keep_idx >= r0) & (keep_idx < r1))[0]
             csel = np.where((far_cols >= c0) & (far_cols < c1))[0]
-            if rsel.size and csel.size and right_far[np.ix_(rsel, csel)].any():
-                out["why"] = "occupied"
-                return out
+            if rsel.size and csel.size:
+                covered = float(right_far[np.ix_(rsel, csel)].sum()) / (space * space)
+                out["covered_area"] = max(out.get("covered_area", 0.0), round(covered, 3))
+                if covered >= STEM_TIP_COVER_AREA_MIN:
+                    out["why"] = "occupied"
+                    return out
     reach = float(us[edge_r][np.where(right_far.any(axis=0))[0]].max())
     out["out"] = round(reach, 2)
     if reach > STEM_TIP_INK_OUT_MAX_SPACES:
@@ -4405,8 +4419,11 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     arm = float(right[:, us > STEM_TIP_INK_ARM_U_SPACES].any(axis=1).sum()) / space
     t_first = float(ts_kept[right_far.any(axis=1)].min())
     out.update(arm=round(arm, 2), t_first=round(t_first, 2))
-    if reach >= STEM_TIP_INK_OUT_MIN_SPACES and arm >= STEM_TIP_INK_ARM_MIN_SPACES \
-            and t_first <= STEM_TIP_INK_ROOT_MAX_SPACES:
+    thin = reach >= STEM_TIP_INK_OUT_MIN_SPACES and arm >= STEM_TIP_INK_ARM_MIN_SPACES \
+        and t_first <= STEM_TIP_INK_ROOT_MAX_SPACES
+    developed = reach >= STEM_TIP_INK_BIG_OUT_SPACES and arm >= STEM_TIP_INK_BIG_ARM_SPACES \
+        and t_first <= STEM_TIP_INK_ROOT_BIG_SPACES
+    if thin or developed:
         out.update(found=True, why="shaped")
         return out
     out["why"] = "ink_not_flag_shaped"

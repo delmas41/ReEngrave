@@ -98,14 +98,49 @@ class TestTheFlagIsReadWhereItStands(unittest.TestCase):
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, BOTTOM_Y, -1.0, SP)
         self.assertIs(m["found"], False, m)
 
-    def test_a_thin_flag_with_no_arm_is_not_flag_shaped(self):
+    def test_a_wedge_with_no_arm_is_not_flag_shaped(self):
         """A root wedge alone (an eroded flag, a speck at the tip) is ink hanging there that is not a flag: cannot tell,
         never 'no flag' and never 'a flag'."""
         img = _paper()
         _stem(img)
-        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 12, TOP_Y + 8)
+        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 12, TOP_Y + 6)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
         self.assertIsNone(m["found"], m)
+
+    def test_a_HUGGING_flag_that_stays_within_0_4_spaces_of_the_stem_is_found_RED(self):
+        """Sean: 'the flag stays closer to the stem at the tip but the shape is undeniable'. The first cuts wanted the ink to
+        stand out 0.45; on Brahms pdf 25, 8 of the 82 stems they declined were flags that stand out 0.36-0.44 (arm 0.47-0.58)."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 9, TOP_Y + 10)           # out 0.4, an arm of 0.5 along the stem
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertTrue(m["found"], m)
+
+    def test_CONTROL_a_staff_line_remnant_stub_a_space_in_is_not_a_hugging_flag(self):
+        """The same 0.4 out but only 0.3 along the stem, a space and more from the tip: what a staff line leaves beside a stem
+        (Sean's page: out 0.37-0.38, arm 0.37, first ink 1.1-1.2 spaces in)."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y + 22, STEM_X1 + 9, TOP_Y + 29)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertNotEqual(m["found"], True, m)
+
+    def test_a_DEVELOPED_flag_whose_ink_starts_1_4_spaces_from_the_tip_is_found_RED(self):
+        """Litolff pdf 10 `glyph/10/0/9/0/2`: a full flag (out 1.08, arm 1.5) whose ink begins 1.33 spaces below the tip."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y + 28, STEM_X1 + 14, TOP_Y + 40)
+        _draw(img, STEM_X1 + 11, TOP_Y + 40, STEM_X1 + 17, TOP_Y + 80)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertTrue(m["found"], m)
+
+    def test_CONTROL_a_THIN_mark_1_4_spaces_from_the_tip_is_not_a_flag(self):
+        """The thin class keeps its root within 1.2 spaces of the tip: a hugging mark that starts further in is not a flag."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y + 28, STEM_X1 + 9, TOP_Y + 40)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertNotEqual(m["found"], True, m)
 
 
 def _broken_flag(img, gap=4):
@@ -381,6 +416,17 @@ class TestTheObserver(unittest.TestCase):
         _draw(img, STEM_X0 - 8, TOP_Y + 60, STEM_X1 + 26, TOP_Y + 66)
         ledger = (STEM_X0 - 8.0, TOP_Y + 60.0, STEM_X1 + 26.0, TOP_Y + 66.0)
         log = self._run(img, blockers=[ledger])
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
+
+    def test_a_box_that_only_GRAZES_the_flag_does_not_block_RED_against_the_any_overlap_rule(self):
+        """Brahms pdf 25 `glyph/25/0/13/1/3`: a neighbouring rest's loose box edge covered 0.001 square spaces of a flag's outer arm and
+        blocked the tip. A box explains the ink it COVERS; it must cover at least `STEM_TIP_COVER_AREA_MIN` of it."""
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        graze = (STEM_X1 + 12.0, TOP_Y + 42.0, STEM_X1 + 30.0, TOP_Y + 60.0)     # a loose corner: past the 0.1-space edge tolerance, over 12 px of the arm
+        log = self._run(img, blockers=[graze])
         rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
         self.assertTrue(rows["top"].value)
 

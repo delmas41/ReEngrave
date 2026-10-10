@@ -1,30 +1,30 @@
-arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm2/brahms-t4.record.json
-   provenance 824d040cde54d7eee79309a146198fa6bba09a52 dirty=False
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm3/brahms-t4.record.json
+   provenance 3bcb8e951afbd5b45c0fd65d840326f1f35ca097 dirty=False
 base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-brahms.json: 19291 verdicts
 
 heads with a standing duration verdict: base 2778  arm 2778  in both 2778 (only base 0, only arm 0); box moved > 1px in 0
 
 Q.STEM_TIP_INK census
   abstained:ambiguous:crosses_both_sides                  base      0   arm    786
-  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm    165
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     85
   abstained:ambiguous:no_room                             base      0   arm    272
-  abstained:ambiguous:runs_on                             base      0   arm     66
+  abstained:ambiguous:runs_on                             base      0   arm     73
   abstained:occupied:head_at_this_end                     base      0   arm   1722
-  abstained:occupied:occupied                             base      0   arm    271
-  observed:flag                                           base      0   arm    460
-  observed:none                                           base      0   arm    656
+  abstained:occupied:occupied                             base      0   arm    455
+  observed:flag                                           base      0   arm    545
+  observed:none                                           base      0   arm    460
 
-duration verdicts changed (matched heads): 53 of 2778
-     19  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+duration verdicts changed (matched heads): 52 of 2778
+     18  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
      10  decided:head_and_marks{0}  ->  decided:head_and_marks{1}
       8  narrowed:flags_disagree{1,2}  ->  decided:hooks_counted{1}
       8  narrowed:beam_discounted_uncertain{0,1}  ->  decided:head_and_marks{1}
-      7  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
-      1  decided:hooks_counted{1}  ->  decided:head_and_marks{0}
+      6  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      2  decided:hooks_counted{1}  ->  decided:head_and_marks{0}
 
 2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 324
-    297  narrowed beam_discounted_uncertain levels [0, 1]
-     19  decided level 1 (hooks_counted)
+    298  narrowed beam_discounted_uncertain levels [0, 1]
+     18  decided level 1 (hooks_counted)
       8  decided level 1 (head_and_marks)
-  (status of those heads in the arm: {'narrowed': 297, 'kept': 27} )
-wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_brahms-t4.json 53
+  (status of those heads in the arm: {'narrowed': 298, 'kept': 26} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_brahms-t4.json 52

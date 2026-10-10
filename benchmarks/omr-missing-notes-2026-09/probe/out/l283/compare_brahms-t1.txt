@@ -1,18 +1,18 @@
-arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm2/brahms-t1.record.json
-   provenance 824d040cde54d7eee79309a146198fa6bba09a52 dirty=False
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm3/brahms-t1.record.json
+   provenance 3bcb8e951afbd5b45c0fd65d840326f1f35ca097 dirty=False
 base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-brahms.json: 19291 verdicts
 
 heads with a standing duration verdict: base 1806  arm 1806  in both 1806 (only base 0, only arm 0); box moved > 1px in 0
 
 Q.STEM_TIP_INK census
-  abstained:ambiguous:crosses_both_sides                  base      0   arm    590
-  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     59
+  abstained:ambiguous:crosses_both_sides                  base      0   arm    588
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     56
   abstained:ambiguous:no_room                             base      0   arm    164
   abstained:ambiguous:runs_on                             base      0   arm     32
   abstained:occupied:head_at_this_end                     base      0   arm    841
-  abstained:occupied:occupied                             base      0   arm    235
-  observed:flag                                           base      0   arm     84
-  observed:none                                           base      0   arm    305
+  abstained:occupied:occupied                             base      0   arm    333
+  observed:flag                                           base      0   arm     99
+  observed:none                                           base      0   arm    197
 
 duration verdicts changed (matched heads): 16 of 1806
      10  decided:head_and_marks{0}  ->  decided:head_and_marks{1}

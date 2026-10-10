@@ -24,6 +24,7 @@ from tools.omr.staged import readout as RD  # noqa: E402
 from tools.omr.staged.record import Q  # noqa: E402
 
 FRAG = (0.35, 1.6, 0.25, 0.3)
+SHAPE_NEW = (0.33, 0.40, 1.2, 0.8, 1.0, 1.6)
 
 
 def sig(stems):
@@ -76,8 +77,8 @@ def main():
                 head_t = t_near - 0.1
         if here:
             continue
-        r0 = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t)
-        r1 = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, frag=FRAG)
+        r0 = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, frag=FRAG)
+        r1 = SH.read(c["img"], x, x + w, tip_y, sign, s, head_t=head_t, frag=FRAG, shape=SHAPE_NEW)
         tally[(r0["v"], r1["v"])] += 1
         if r1["v"] == "flag" and r0["v"] != "flag":
             shown.append((key, c, (x, y, w, h), sign, r1))
