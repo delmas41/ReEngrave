@@ -131,9 +131,11 @@ def head_table(run_old, run_new, doc, pages=None):
         hs = run_new.standing(key, "head_stem", "ADJUDICATE")
         out[key] = {"own": own, "stem_value": sv,
                     "join": None if hs is None else {"outcome": hs["outcome"], "reason": hs["reason"],
-                                                     "stem": hs.get("value")},
+                                                     "stem": hs.get("value"),
+                                                     "stem_box": (hs.get("detail") or {}).get("stem_box")},
                     "cls": g.cls, "page": g.page, "cell": g.cell_key,
-                    "box_page": list(g.box_page) if g.box_page else None}
+                    "box_page": list(g.box_page) if g.box_page else None,
+                    "box_canon": list(g.box_canon) if g.box_canon else None}
     return out
 
 
@@ -221,13 +223,23 @@ def stem_tables(heads):
                                 "stem_value": h["stem_value"], "cls": h["cls"], "page": h["page"],
                                 "box_page": h["box_page"],
                                 "members": [k for k, _h in members]})
+    # every multi-member stem, changed or not, for the tile pool and its controls
+    stems_out = []
+    for (cell, stem), members in sorted(multi.items()):
+        stems_out.append({"cell": cell, "stem": stem, "page": members[0][1]["page"],
+                          "stem_box": members[0][1]["join"].get("stem_box"),
+                          "changed": any(_vals(h["own"]) != _vals(h["stem_value"]) for _k, h in members),
+                          "heads": [{"key": k, **{kk: h[kk] for kk in ("own", "stem_value", "cls", "box_page",
+                                                                       "box_canon")}} for k, h in members]})
+    tables_extra = {"stems": stems_out}
     reasons = collections.Counter()
     for _k, members in multi.items():
         for _kk, h in members:
             if h["stem_value"]:
                 reasons[(h["stem_value"]["outcome"], h["stem_value"]["reason"])] += 1
     return {"multi_member_stems": len(multi), "before": dict(before), "after": dict(after),
-            "reasons": {f"{a}:{b}": n for (a, b), n in sorted(reasons.items())}}, changed
+            "reasons": {f"{a}:{b}": n for (a, b), n in sorted(reasons.items())},
+            **tables_extra}, changed
 
 
 def main(argv=None):

@@ -58,7 +58,8 @@ def main(argv=None):
         blob = json.load(open(v))
         (label, body), = [(kk, vv) for kk, vv in blob.items()
                           if isinstance(vv, dict) and "groups" in vv]
-        pop[k] = {g["stem"]: g for g in body["groups"]}
+        # a stem row id is unique per record; two pools of one document are merged
+        pop.setdefault(k, {}).update({g["stem"]: g for g in body["groups"]})
     sel = json.load(open(a.select))
     random.Random(a.seed).shuffle(sel)
     os.makedirs(a.out, exist_ok=True)
@@ -153,7 +154,10 @@ def main(argv=None):
             "picked_because": s.get("note"),
             "read_ours": [{"head": h["key"], "class": h["cls"],
                            "outcome": h["outcome"], "reason": h["reason"],
-                           "values": h["vals"]} for h in g["heads"]],
+                           "values": h["vals"],
+                           # ROADMAP 2.78 Phase 2: the stem's value as it now applies to this head
+                           **({"stem_value_after": h["after"]} if h.get("after") else {})}
+                          for h in g["heads"]],
             "slash_rows_on_stem": g.get("slash_rows_on_stem"),
         })
     json.dump({"dpi": dpi, "note": ("tiles cut from the gather's own deskewed "
