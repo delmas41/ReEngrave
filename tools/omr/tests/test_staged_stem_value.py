@@ -165,8 +165,9 @@ class TestTheJoin(_Case):
 
     def test_two_distinct_stems_one_FLUSH_the_side_rule_picks_it(self):
         """A stem stands at the side of its head (CLAUDE.md §10): of two stems
-        that touch a box, only the one flush with a side is its stem."""
-        s = Stem()
+        that touch a box, only the one flush with a side is its stem. (No
+        direction is read here, so only the bare flush test is left.)"""
+        s = Stem(direction=None)
         other = _stem(s.log, x=90, y=0, w=4, h=80)        # through its middle
         s.head(0, "noteheadBlack", 60, decided=(1.0, 0, 0))
         s.run()
@@ -176,10 +177,10 @@ class TestTheJoin(_Case):
         self.assertEqual(j.reason, "stem_by_flush")
         self.assertEqual(j.detail["rivals"], [other.id])
 
-    def test_two_distinct_stems_BOTH_flush_NARROWS(self):
-        """A box with a stem at each side is equally two heads' stem: not
-        decided (rule 8)."""
-        s = Stem()
+    def test_two_distinct_stems_BOTH_flush_and_no_direction_NARROWS(self):
+        """A box with a stem at each side is equally two heads' stem, and with
+        no direction read nothing names a side: not decided (rule 8)."""
+        s = Stem(direction=None)
         _stem(s.log, x=82, y=0, w=4, h=80)                # at its LEFT side
         s.head(0, "noteheadBlack", 60, decided=(1.0, 0, 0))
         s.run()
@@ -187,6 +188,33 @@ class TestTheJoin(_Case):
         self.assertIs(j.outcome, Outcome.NARROWED)
         self.assertEqual(j.reason, "two_stems")
         self.assertEqual(len(j.candidates), 2)
+
+    def test_the_stem_DIRECTION_names_the_side_up_is_right(self):
+        """Brahms p0 `glyph/0/0/1/6/2`-style: a stem flush at each side of one
+        box, the head's own stem pointing UP -> the stem at its RIGHT is its."""
+        s = Stem(direction="up")
+        left = _stem(s.log, x=82, y=0, w=4, h=80)
+        s.head(0, "noteheadBlack", 60, decided=(1.0, 0, 0))
+        s.run()
+        j = s.join(0)
+        self.assertIs(j.outcome, Outcome.DECIDED)
+        self.assertEqual(j.value, s.row.id)               # x=100: the RIGHT one
+        self.assertEqual(j.reason, "stem_by_side")
+        self.assertEqual(j.detail["rivals"], [left.id])
+        self.assertEqual(j.detail["direction"], "up")
+
+    def test_the_stem_DIRECTION_CONTROL_down_is_left_so_the_choice_FLIPS(self):
+        """The control that can fail: the same two stems with the head's stem
+        pointing DOWN -> the stem at its LEFT is its. A rule that ignored the
+        direction (or always took the right one) would not flip."""
+        s = Stem(direction="down")
+        left = _stem(s.log, x=82, y=0, w=4, h=80)
+        s.head(0, "noteheadBlack", 60, decided=(1.0, 0, 0))
+        s.run()
+        j = s.join(0)
+        self.assertIs(j.outcome, Outcome.DECIDED)
+        self.assertEqual(j.value, left.id)
+        self.assertEqual(j.reason, "stem_by_side")
 
     def test_tile_7_a_stem_FRAGMENT_inside_the_heads_height_is_not_its_stem(self):
         """Litolff p2 `glyph/2/1/9/11/3`: a big hollow box touched by a long
@@ -208,8 +236,9 @@ class TestTheJoin(_Case):
 
     def test_tile_7_CONTROL_two_stems_that_both_REACH_still_narrow(self):
         """The control that can fail: give the left stem a real length and the
-        reach test no longer separates them, so the join is NARROWED again."""
-        s = Stem(y=0, h=200)
+        reach test no longer separates them, so the join is NARROWED again
+        (no direction is read, so the side rule has nothing to say either)."""
+        s = Stem(y=0, h=200, direction=None)
         s.log.observe(CELL, Q.CELL_STAFF_SPACE, 10.0, reader=READERS.GEOMETRY,
                       frame="cell:0")
         _stem(s.log, x=84, y=0, w=4, h=200)                   # reaches 100 px
@@ -219,8 +248,9 @@ class TestTheJoin(_Case):
         self.assertIs(s.join(0).outcome, Outcome.NARROWED)
 
     def test_without_a_staff_space_the_reach_test_is_SKIPPED_not_defaulted(self):
-        """Rule 6: no unit, no reach test -- the side rule alone, as before."""
-        s = Stem(y=0, h=200)
+        """Rule 6: no unit, no reach test -- with no direction read either, only
+        the bare flush test is left, and both stems are flush."""
+        s = Stem(y=0, h=200, direction=None)
         _stem(s.log, x=84, y=96, w=4, h=44)
         s.head(0, "noteheadHalfInSpace", 100, w=20, h=40,
                decided=(2.0, 0, 0))
@@ -493,7 +523,7 @@ class TestWhereItCannotSay(_Case):
         self.assertEqual(s.value(0).reason, "lone_head")
 
     def test_a_head_whose_join_is_NARROWED_has_an_ambiguous_stem(self):
-        s = Stem()
+        s = Stem(direction=None)
         _stem(s.log, x=82, y=0, w=4, h=80)
         s.head(0, "noteheadBlack", 60, decided=(1.0, 0, 0))
         s.run()

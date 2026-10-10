@@ -189,12 +189,12 @@ def _flush_word(frac: Optional[float]) -> str:
     # ⚠️ GATHER ROWS ONLY. A notehead's box and the cell's stems are the whole
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
-    wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE),
+    wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=("one_stem", "stem_by_reach", "stem_by_flush", "two_stems",
-             "no_stem", "no_evidence"),
+    reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
+             "two_stems", "no_stem", "no_evidence"),
     mode=Mode.ADDITIVE,
-    composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE),
+    composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION),
 )
 def adjudicate_head_stem(ev: Evidence) -> Ruling:
     """Which stem does this notehead box stand on?
@@ -281,8 +281,25 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
                           used=used, detail=d)
         if long_enough:
             candidates_ = long_enough
-    # then the engraving: a stem stands at the SIDE of its head, so where
-    # exactly one of those that remain is flush, it is this head's.
+    # then the engraving's side rule (CLAUDE.md §10, *"up -> right, down -> left;
+    # right-and-down does not exist (96 of 96 against print)"*): a stem pointing
+    # UP stands at the RIGHT of its head, one pointing DOWN at its LEFT. The
+    # direction is this head's own `Q.STEM_DIRECTION`, read where it is DECIDED;
+    # a direction nobody read names no side (rule 6, never defaulted).
+    dirv = ev.verdict(Q.STEM_DIRECTION)
+    if (dirv is not None and dirv.outcome is Outcome.DECIDED
+            and dirv.value in ("up", "down")):
+        side = "right" if dirv.value == "up" else "left"
+        on_side = [i for i in candidates_ if _flush_word(
+            _x_frac(physical[i]["box"], head)) == side]
+        if len(on_side) == 1:
+            d = detail_of(on_side[0])
+            d["rivals"] = [i for i in candidates_ if i != on_side[0]]
+            d["direction"] = dirv.value
+            return Ruling(value=on_side[0], reason="stem_by_side",
+                          used=used + (dirv.id,), detail=d)
+    # last, the bare flush test: where exactly one of those that remain is
+    # flush with a side of the head, it is this head's.
     ranked = sorted(candidates_, key=lambda i: _flush_distance(
         _x_frac(physical[i]["box"], head)))
     flush = [i for i in ranked if _flush_distance(
