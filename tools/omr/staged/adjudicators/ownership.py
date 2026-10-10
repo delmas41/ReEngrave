@@ -21,8 +21,8 @@ from typing import Any, Dict, FrozenSet, Iterable, List, Optional, Sequence, Tup
 from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
-from ..gather import (CONTEST_IOU, LEDGER_ROUND_UP,
-                      PAGE_EDGE_MARGIN_SPACES, _iou,
+from ..gather import (CONTEST_IOU, HEAD_CUT_MAX_BOX_HEIGHT_SPACES,
+                      LEDGER_ROUND_UP, PAGE_EDGE_MARGIN_SPACES, _iou,
                       owner_from_staves_enabled)
 from ..record import Kind, Outcome, Q, Scope
 # ⚠️ ROADMAP 2.27d: the shared "is this staff one half of a decided brace
@@ -2242,6 +2242,17 @@ ARC_MIN_WIDTH_HEADS = 1.5
 TALL_BOX_HEAD_HEIGHTS = 1.4
 ARC_END_MAX_DX_HEADS = 1.5
 
+#: ROADMAP 2.75b. A refused "duplicate" box SMALLER THAN A HEAD that overlaps a
+#: kept head by at least half of its own height is a PIECE of that head -- Sean,
+#: 2.73: *half notes, especially ones on lines, get split up into two smaller
+#: boxes instead of one large box around the notehead* -- and the pieces plus
+#: the kept box tile the head. "Smaller than a head" is the 2.73 reader's own
+#: line (`gather.HEAD_CUT_MAX_BOX_HEIGHT_SPACES`, 0.95 spaces: a whole box is
+#: never a candidate there). A refused box the size of a head or taller is NOT a
+#: piece: a copy of the head offset by a few pixels, or a fused chord box (c.f.
+#: `TALL_BOX_HEAD_HEIGHTS`), and says nothing about where THIS head's centre is.
+_DUPLICATE_REASONS = ("stacked_head_duplicate", "notehead_is_a_duplicate_box")
+
 #: A printed accidental glyph with no owner counts as "possibly this head's"
 #: when its right edge stands within this many head widths LEFT of the head and
 #: within this many head heights of its centre -- a looser READ of "something
@@ -2276,6 +2287,73 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
             return None, "far_head_no_ledger_reading"
         return int(r), "geometry"
     return None, "no_position"
+
+
+def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
+                 t: Tuple) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.75b -- where ONE HEAD is, when the detector drew it in pieces.
+
+    `None` = nothing to say: the head has no refused PIECE (see
+    `_DUPLICATE_REASONS`), is a far head read from its ledgers, was placed by the
+    line-cut reader already, is itself a tall (fused) box, or the bar's staff
+    space is not on the record (a piece cannot be told from a head without it).
+    Otherwise the head's extent is the UNION of the kept box and its pieces;
+    `yc` is that union's centre in page pixels and `pos` its half-step position
+    in the head's OWN bar's grid (the kept row's position shifted by the offset
+    in that bar's half-steps -- the grid every position reading on the page uses).
+
+    litolff_06 (Sean: a TIE) is the shape: one half note ON the fourth line,
+    boxed three times (a whole box and its two halves). The pipeline keeps one
+    box and refuses the others, and the kept box sat 3-4 px below the head's
+    centre, so it read step 7 against its partner's 6. The kept box and the two
+    halves tile the head; the union's centre reads 6.0-6.3.
+    """
+    row, i, xc, yc, w, h = t
+    if h > TALL_BOX_HEAD_HEIGHTS * avg_h:
+        return None                       # a tall box is `half`-candidate territory
+    step, src = _head_step(ev, row)
+    if src != "geometry":
+        return None                       # a far head is read from its ledgers
+    pr = next((p for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=row.subject)
+               if (p.detail or {}).get("rounded") is not None), None)
+    if pr is None or (pr.detail or {}).get("from_head_cut") is not None:
+        return None
+    # the bar's own unit: the cell's staff space is canonical, the head's box is
+    # on the record in both frames, so page px per canonical unit is THIS bar's.
+    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
+    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
+    half_canon = ((cell_rows[0].detail or {}).get("half_step")
+                  if cell_rows else None)
+    canon_h = None
+    if box_rows and isinstance(box_rows[0].value, (list, tuple)) \
+            and len(box_rows[0].value) >= 5:
+        canon_h = float(box_rows[0].value[4])
+    if not half_canon or not canon_h or h <= 0:
+        return None
+    half_page = float(half_canon) * (h / canon_h)
+    piece_max = HEAD_CUT_MAX_BOX_HEIGHT_SPACES * 2.0 * half_page
+    tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS * 0.5
+    members = [t]
+    for u in heads:
+        if (u[0].id == row.id or u[1] != i or abs(u[2] - xc) > tol
+                or usable(u[0]) or u[5] > piece_max):
+            continue
+        nv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=u[0].subject)
+        if not (nv is not None and nv.outcome is Outcome.DECIDED
+                and nv.value is True and nv.reason in _DUPLICATE_REASONS):
+            continue
+        if (min(yc + h / 2.0, u[3] + u[5] / 2.0)
+                - max(yc - h / 2.0, u[3] - u[5] / 2.0)) >= 0.5 * u[5]:
+            members.append(u)
+    if len(members) == 1:
+        return None
+    y0 = min(m[3] - m[5] / 2.0 for m in members)
+    y1 = max(m[3] + m[5] / 2.0 for m in members)
+    yc_ext = (y0 + y1) / 2.0
+    pos = float(pr.value) + (yc_ext - yc) / half_page
+    return {"members": len(members), "kept_step": step, "yc": yc_ext,
+            "union_spaces": round((y1 - y0) / (2.0 * half_page), 3),
+            "pos": round(pos, 3), "step": int(round(pos))}
 
 
 def _accidental_state(ev: Evidence, head: Tuple) -> str:
@@ -2353,6 +2431,17 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     # head-sized end) or refused a member as a duplicate of a head; an extreme
     # note with no staff step (a tall box's end) is unreadable and the rule
     # has no opinion -- the detector's class stands.
+    #: head id -> `_head_extent`'s reading, for every head of these columns that
+    #: the detector drew in more than one box (ROADMAP 2.75b)
+    ext: Dict[Any, Dict[str, Any]] = {}
+
+    def _with_extent(t):
+        e = _head_extent(ev, fs.heads, fs.usable, fs.avg_h, t)
+        if e is None:
+            return t
+        ext[t[0].id] = e
+        return (t[0], t[1], t[2], e["yc"], t[4], t[5])
+
     def _column(chosen):
         """Every candidate partner at one end: the usable heads in its column
         (`head`), the boxes refused as a DUPLICATE of a head (`dup` -- the ink
@@ -2364,12 +2453,14 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
         one."""
         tol = chosen[4] * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS
         out_c = []
+        boxed = {}                 # head id -> its detector box, before any extent
         for t in fs.heads:
             if t[1] != chosen[1] or abs(t[2] - chosen[2]) > tol * 1.5:
                 continue
             if t[0].id == chosen[0].id or fs.usable(t[0]):
                 if abs(t[2] - chosen[2]) <= tol:
-                    out_c.append((t, "head"))
+                    boxed[t[0].id] = t
+                    out_c.append((_with_extent(t), "head"))
                 if t[5] > TALL_BOX_HEAD_HEIGHTS * fs.avg_h:
                     for yc in (t[3] - t[5] / 2.0 + fs.avg_h / 2.0,
                                t[3] + t[5] / 2.0 - fs.avg_h / 2.0):
@@ -2387,7 +2478,7 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
         # lower, read as a lower NOTE a step below the head across the
         # barline). Only a refused box standing clear of every usable head is
         # a member of its own -- the stacked second note of a chord.
-        heads_ = [c[0] for c in out_c if c[1] == "head"]
+        heads_ = [boxed.get(c[0][0].id, c[0]) for c in out_c if c[1] == "head"]
         kept = []
         for c in out_c:
             if c[1] == "dup":
@@ -2423,8 +2514,16 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
 
     def _step_of(c):
-        return ((None, "tall_box_end") if c[1] == "half"
-                else _head_step(ev, c[0][0]))
+        if c[1] == "half":
+            return None, "tall_box_end"
+        e = ext.get(c[0][0].id)
+        if e is not None:
+            return e["step"], "geometry_extent"
+        return _head_step(ev, c[0][0])
+
+    def _ext_note(c):
+        e = ext.get(c[0][0].id)
+        return None if e is None else {k: v for k, v in e.items() if k != "yc"}
 
     def _side(col):
         ys = [c[0][3] for c in col]
@@ -2463,6 +2562,10 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
                stop_step_source=_step_of(cb)[1],
                start_candidate=ca[1], stop_candidate=cb[1], arc_side=side,
                dy_spaces=round(dy, 3), relation=relation)
+    for name, c in (("start_extent", ca), ("stop_extent", cb)):
+        note = _ext_note(c)
+        if note is not None:
+            out[name] = note
     if relation == "same":
         acc_b = _accidental_state(ev, b)
         acc_a = acc_b if a[1] == b[1] else _accidental_state(ev, a)
@@ -2616,7 +2719,8 @@ def _kind_with_rules(kind: str, tn: Dict[str, Any],
     implicates=(Q.ARC_KIND, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_POSITION,
                 Q.ACCIDENTAL_OWNER, Q.CLEF),
     composed_from=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM,
-                   Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_OWNER),
+                   Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_OWNER,
+                   Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
     # ⚠️ `Q.GLYPH_BOX` is declared because a notehead's STEP row carries no x:
     # the step is joined to a position through the box on the SAME glyph. The
@@ -2632,7 +2736,8 @@ def _kind_with_rules(kind: str, tn: Dict[str, Any],
     wants=(Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM,
            Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
-           Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER),
+           Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER,
+           Q.CELL_STAFF_SPACE),
     subjects_from=Q.ARC_BOX,
     # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
     # (`two_notes_same_pitch`, `two_notes_different_pitch`,

@@ -598,10 +598,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "its size, so a reader can tell *this page prints no rests* from "
         "*this staff has one line and twenty marks nobody could put on a "
         "grid*. Read by nothing, like the ten positions it accounts for."),
-    "DETAIL Q.CELL_STAFF_SPACE.half_step": (
-        "the half-step the spacing was doubled from. The duration reader "
-        "consumes the SPACING; the half-step is the intermediate it came "
-        "from, kept so a reader can check the doubling."),
     "DETAIL Q.CLEF_LOCATED.line_source": (
         "whether the clef's LINE was measured or defaulted — which is the "
         "distinction `clef_geometry` exists to make. ⚠️ WORTH OPENING: a "
