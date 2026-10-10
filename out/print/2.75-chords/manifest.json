@@ -1,6 +1,8 @@
 {
  "roadmap_item": "2.75",
- "what": "Blind crops (Sean 2026-10-09 top/bottom rule): chord ends, arcs the rule CHANGED that Sean has not judged. Question: 'Is the bracketed arc a tie or a slur?'. Our reading only in this file. Frame control = ink in the bracketed box vs the same box shifted 300 px; chords_brahms_02's shifted box landed on other notation (0.28 vs 0.38) so its control is weak -- the bracket was checked on the arc by eye. diag_litolff_04/06.png are NOT blind: the two judged tiles the rule now gets wrong, with the paired heads drawn.",
+ "what": "Blind crops (Sean 2026-10-09 top/bottom rule): chord ends, arcs the rule decided that Sean has not judged. Question: 'Is the bracketed arc a tie or a slur?'. Nothing of ours is drawn on a tile; our reading is in this file only. Frame control = ink in the bracketed box vs the same box shifted 300 px; chords_brahms_02's shifted box landed on other notation (0.28 vs 0.38) so its control is weak -- the bracket was checked on the arc by eye. diag_litolff_04/06.png are NOT blind: the two judged tiles that were wrong under the rule, with the paired heads drawn (06 is now right).",
+ "regenerated": "2026-10-09 on lane-2.75-tie-slur-b. The previous lane's five readings were unchanged by 2.75b (litolff_01 tie, litolff_02 slur, brahms_01 tie, brahms_02 slur); its chords_brahms_03 (glyph/1/0/2/5/8) is the arc Sean already judged as brahms_04 (Tie), so it was replaced by chords_litolff_03 -- an arc BELOW whose top notes match and whose bottom notes differ (our reading: slur, where the rejected any-pair rule would say tie).",
+ "records": "arm small re-gathers on d75c0be9 (clean tree), readings re-verified on the merged head a336beaf (replay reproduces the arm's arc_kind 512 of 512 Litolff, 1034 of 1034 Brahms)",
  "arcs": [
   {
    "n": 1,
@@ -17,6 +19,7 @@
    "frame_ink_fraction": 0.406,
    "control_shifted_300px_ink_fraction": 0.0,
    "question": "Is the bracketed arc a tie or a slur?",
+   "VERDICT_none_yet": null,
    "doc": "litolff",
    "detector_class_before": "slur",
    "ours_after": "tie",
@@ -25,7 +28,10 @@
     3,
     3
    ],
-   "VERDICT_none_yet": null
+   "relation": "same",
+   "start_column": 2,
+   "stop_column": 2,
+   "rule": "two_notes_same_pitch"
   },
   {
    "n": 2,
@@ -42,6 +48,7 @@
    "frame_ink_fraction": 0.372,
    "control_shifted_300px_ink_fraction": 0.0,
    "question": "Is the bracketed arc a tie or a slur?",
+   "VERDICT_none_yet": null,
    "doc": "litolff",
    "detector_class_before": "tie",
    "ours_after": "slur",
@@ -50,7 +57,39 @@
     0,
     -1
    ],
-   "VERDICT_none_yet": null
+   "relation": "different",
+   "start_column": 1,
+   "stop_column": 1,
+   "rule": "two_notes_different_pitch"
+  },
+  {
+   "n": 3,
+   "tile": "chords_litolff_03.png",
+   "subject": "glyph/3/1/2/6/2",
+   "pdf_page_index": 3,
+   "arc_box_page_px": [
+    1250.0,
+    2673.2,
+    1343.3,
+    2696.1
+   ],
+   "dpi": 600,
+   "frame_ink_fraction": 0.417,
+   "control_shifted_300px_ink_fraction": 0.0,
+   "question": "Is the bracketed arc a tie or a slur?",
+   "VERDICT_none_yet": null,
+   "doc": "litolff",
+   "detector_class_before": "slur",
+   "ours_after": "slur",
+   "arc_side": "below",
+   "paired_steps": [
+    1,
+    2
+   ],
+   "relation": "different",
+   "start_column": 2,
+   "stop_column": 2,
+   "rule": "two_notes_different_pitch"
   },
   {
    "n": 1,
@@ -67,6 +106,7 @@
    "frame_ink_fraction": 0.369,
    "control_shifted_300px_ink_fraction": 0.0,
    "question": "Is the bracketed arc a tie or a slur?",
+   "VERDICT_none_yet": null,
    "doc": "brahms",
    "detector_class_before": "slur",
    "ours_after": "tie",
@@ -75,7 +115,10 @@
     -4,
     -4
    ],
-   "VERDICT_none_yet": null
+   "relation": "same",
+   "start_column": 2,
+   "stop_column": 2,
+   "rule": "two_notes_same_pitch"
   },
   {
    "n": 2,
@@ -92,6 +135,7 @@
    "frame_ink_fraction": 0.377,
    "control_shifted_300px_ink_fraction": 0.276,
    "question": "Is the bracketed arc a tie or a slur?",
+   "VERDICT_none_yet": null,
    "doc": "brahms",
    "detector_class_before": "tie",
    "ours_after": "slur",
@@ -100,32 +144,10 @@
     2,
     3
    ],
-   "VERDICT_none_yet": null
-  },
-  {
-   "n": 3,
-   "tile": "chords_brahms_03.png",
-   "subject": "glyph/1/0/2/5/8",
-   "pdf_page_index": 1,
-   "arc_box_page_px": [
-    4478.2,
-    1174.5,
-    4607.9,
-    1201.4
-   ],
-   "dpi": 600,
-   "frame_ink_fraction": 0.244,
-   "control_shifted_300px_ink_fraction": 0.0,
-   "question": "Is the bracketed arc a tie or a slur?",
-   "doc": "brahms",
-   "detector_class_before": "slur",
-   "ours_after": "tie",
-   "arc_side": "below",
-   "paired_steps": [
-    8,
-    8
-   ],
-   "VERDICT_none_yet": null
+   "relation": "different",
+   "start_column": 2,
+   "stop_column": 2,
+   "rule": "two_notes_different_pitch"
   }
  ]
 }

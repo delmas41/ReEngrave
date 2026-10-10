@@ -1024,3 +1024,156 @@ which Sean should judge, crop `chords_brahms_02`), Litolff 0 from the any-pair
 version, 13 vs the detector in all. 5 blind chord crops of unjudged changed
 arcs: `out/print/2.75-chords/`. Fast tier 6,724 passed; `check` 193 (merge's
 `reach` +1).
+
+
+## 16.10. 2.75b -- the two reading faults of 16.9: one is fixed, one is honestly unread (lane `lane-2.75-tie-slur-b`)
+
+Path: **STAGED**, GATHER + ADJUDICATE only. Base = the merged tree `9b347c51`
+(`lane-2.75-tie-slur` dc81fd1d + main 5e78fdf1), arm = `d75c0be9` (this lane's
+one code commit), both CLEAN-tree small re-gathers (Litolff pdf 1-3, Brahms pdf
+0-1, own `--out-root` each, arm run with `--against` the base record). Control
+first: a replay of ADJUDICATE on the unchanged tree reproduces the base records'
+own `arc_kind` verdicts **512 of 512 (Litolff) and 1,034 of 1,034 (Brahms)**, and
+the base re-scores Sean's 12 tiles exactly as 16.9 recorded them (8 of 10 singles,
+2 of 2 stacked), so the faults below are real and not a changed tree. After
+merging main (2.12f, `40875f6a`, head `a336beaf`) the same replay reproduces the
+ARM records' verdicts 512 of 512 and 1,034 of 1,034.
+
+### 16.10.1 litolff_06 (Sean: tie) -- the position, not the rule: ONE HEAD, BOXED THREE TIMES
+
+`dy_spaces` said 0.314 and the steps said 7 and 6. The record on the start head
+(`glyph/3/1/3/8/5`, `diag_litolff_06_three_boxes_one_head.png`): the detector drew
+the half note ON the fourth line three times -- a whole box (kept, y 2861.8-2879.8,
+centre 2870.8, position 6.7 -> **7**), its upper half (`8/4`, 2855.7-2870.3, 5.7 -> 6,
+refused `stacked_head_duplicate`) and its lower half (`8/3`, 2866.5-2879.5, 6.98 ->
+7, refused `notehead_is_a_duplicate_box`). Sean's own 2.73: *half notes, especially
+ones on lines, get split up into two smaller boxes*. The ring on the print spans
+y ~2856-2879 (centre ~2867.5, on the line); the three boxes TILE it, and the
+centre of their union is 2867.7 -> position 6.31 -> **6**. The stop head (a single
+box, centre 2864.96, 6.1 -> 6) is on the same line. Nothing about the arc rule
+was wrong and the arc decision read the right heads; the kept box's centre was
+3-4 px low. "Measured locally" was not the fault either: the two heads' bar grids,
+derived from their own glyph rows (canonical centre - position x half-step), agree
+to ~1 px (7 canonical units = 1.1 px) -- it is the BOX centre that carries the
+0.6-step error. The thresholds in the old note (0.25-0.43)
+would have turned it into an abstention, and the class is slur: still wrong.
+
+**Fix (ADJUDICATE, `adjudicate_arc_kind`, the end-head reading):** `_head_extent`.
+A refused duplicate box SMALLER THAN A HEAD (<= `gather.HEAD_CUT_MAX_BOX_HEIGHT_
+SPACES`, 0.95 spaces -- the 2.73 reader's own line between a half-head and a
+head), standing on the kept head (overlap >= half its height, centre within half
+a head width in x), is a PIECE of it; the head is read at the centre of the union
+of the kept box and its pieces, in its own bar's grid (kept row's position + the
+offset in that bar's half-steps; scale from the same glyph row's page/canonical
+heights and `Q.CELL_STAFF_SPACE`, which closes a `KNOWN_GAPS` entry: `check`
+193 -> 192). No pieces, a far head (ledger-read), a head 2.73 already placed, a
+tall (fused) box, or no staff-space unit on the record: nothing changes. `detail
+.grammar.tie_slur_rule.two_note.start_extent / stop_extent` record `members`,
+`kept_step`, `union_spaces`, `pos`, `step`; `start_step_source` reads
+`geometry_extent`.
+
+**A first version took the union of EVERY refused box overlapping the head and was
+thrown away on the crops.** It moved 9 Litolff arcs: litolff_06 (both halves), and
+7 that went to "unread" because the union came out taller than 1.7 spaces. Crops of
+the clusters (`glyph/3/1/3/0/6` and `glyph/3/1/5/11/3`, unions 1.74 spaces, and
+`glyph/3/0/5/2/8`, 1.94, kept as `diag_one_head_two_boxes_union_1.94sp.png`): ONE head
+each, the second box a full-size copy shifted a few px or stretched into blank paper;
+and `glyph/2/1/3/12/6` (`diag_two_heads_boxes_union_2.01sp.png`, 2.01): TWO heads, a
+fused box over both. Union height does not separate them (Litolff's 60 clusters --
+Brahms has 8 -- run continuously from 1.0 to 4.1 spaces, and the centre offsets of
+its 68 refused boxes from 0.00 to 1.25 spaces, with no gap), so no bound on "one
+head" was kept: only boxes the size of a PIECE count, which is a statement about the
+boxes' kind (2.73), not a threshold fitted to a tile.
+
+Population (the arm prints it first; it is small, and said so): Litolff pdf 1-3 --
+512 arcs, 407 kept (not refused as not-an-arc), **210 judged by the two-note rule**,
+**2 reached by the piece reading** (both halves of litolff_06's tie), 2 changed
+(`slur -> tie`). Heads: 3 of 1,109 kept Litolff heads and 3 of 1,154 Brahms heads
+have a refused piece at all; the union moves a step on 2 Litolff heads (one is this
+one, the other a ledger-read far head the arc rule does not use) and on 0 Brahms
+heads. Brahms pdf 0-1 -- 1,034 arcs, 630 kept, 393 judged, **0 reached, 0 changed**.
+`readout diff` base vs arm (`--arm code`): Litolff **2 differences** (both `arc_kind`
+slur -> tie), GATHER identical on every family; Brahms **ZERO differences**.
+Sean's hand-labelled Brahms page (`data/hand-truth/pages/imslp317803/0.json`, now
+140 truth boxes, 125 matched): 109 right, base = arm. Not shown: any difference on
+engraved or export, by design (first two stages).
+
+Tests (`test_staged_arc_kind_head_extent_2026_10_09.py`, 10): **red first** -- 3
+fail on the unrepaired `ownership.py` (litolff_06 as a tie, the one-step-lower
+head, the half-box piece), 7 controls pass on it: two steps lower is a slur; a
+refused box the size of a head, beside the head, not overlapping it, and a half-box
+with no refusal are NOT pieces; a ledger-read head is never moved by its pieces.
+
+What it does NOT do: the kept head's own PITCH (`restate_pitch` reads the kept box)
+stays a step off for that head, and `adjudicate_tie_pair` for litolff_06 still
+abstains `no_pair_at_one_position` (its boxes are 5.8 px apart): the KIND is right,
+the `<tied>` pairing and that head's pitch are not. Both need the head's position
+decided once for ordinary heads (`Q.NOTEHEAD_POSITION` is far heads only), a
+decision that reaches 3 of 1,109 heads on these pages -- not built here.
+
+### 16.10.2 litolff_04 (Sean: tie) -- NOT a barline blob; an oversize box, and it stays unread
+
+The old note read the stop box as "head + barline ink". The record and the crop
+(`diag_litolff_04_oversize_box_one_head.png`): `glyph/2/0/7/10/3`, 48.5 x 45 px
+(2.05 head widths x 2.19 head heights), `noteheadBlackOnLine`, conf 0.26, holds ONE
+hollow head (the ring and its slash, bottom space, ~1495.5) at its right, the rising
+end of the same tie's right half-arc at its lower left, and the stem's column; the
+barline touches its left edge but is not inside it. The box centre (1498.9) reads
+7.48 -- on a rounding boundary (residual 0.48) -- while the head is at 7.0. The
+reading that is wrong is the BOX, and the box is the same size class as the two
+fused-chord boxes Sean judged as ties (litolff_03's start is 1.98 x 1.86), so size
+cannot say "one head with other ink" from "two heads fused". ADJUDICATE has no
+raster, so the head's own centre cannot be measured there; the arc's two readings
+(one head at 7.0 -> tie; two heads, bottom at ~9 -> slur) are both live, the
+decision says `unread` (`stop_step_source: tall_box_end`) and the detector's class
+stands. **Still WRONG on the tile, honestly unread.** What would resolve it is a
+GATHER ink reading of how many head rings a tall box holds and where (not built;
+a new item). Its population: Litolff pdf 1-3 -- of the 54 judged arcs that stay
+unread, **19 end on a tall box** (17 for that reason alone) and 37 on a far head
+whose ledgers were not read (2 are both; the small re-gather pools too few heads
+for the far-head reader); Brahms -- 7 unread of 393 judged, 3 on a tall box, 4 on a
+far head.
+Detector class on those 19: 11 tie, 8 slur, so the class is not noise there, and
+litolff_02/03 (also tall-box ends) are right only because it stands.
+
+### 16.10.3 Sean's 12 judged tiles, re-scored on the arm records
+
+| tile | Sean | ours | before 2.75b |
+|---|---|---|---|
+| litolff_01 | slur | slur (different pitch) | right |
+| litolff_02 | tie | tie (unread, class stands) | right by abstention |
+| litolff_03 | tie | tie (unread, class stands) | right by abstention |
+| litolff_04 | tie | **slur** (unread, class stands) | WRONG |
+| litolff_05 | tie | tie (same pitch) | right |
+| litolff_06 | tie | **tie (same pitch, extent)** | WRONG |
+| brahms_01 | slur | slur | right |
+| brahms_02 | slur | slur | right |
+| brahms_03 | tie | tie | right |
+| brahms_04 | tie | tie | right |
+| stacked_below_01 | A tie, B slur | A tie, B slur | right |
+| stacked_below_02 | A tie, B slur | A tie, B slur | right |
+
+Singles **9 of 10** (8 before), stacked **2 of 2**; of the 9, two are right only
+because the detector's class stands where the rule is unread. In-sample: litolff_06
+is the case the fix was written for.
+
+### 16.10.4 The five chord tiles (`out/print/2.75-chords/`, NOT shown to Sean)
+
+Re-checked against the current build (and re-cut from the arm records; four of the
+five PNGs came out byte-identical to the previous lane's, which says the gather is
+stable there): the readings did not move. `chords_brahms_03` was the arc Sean
+already judged as brahms_04 (glyph/1/0/2/5/8, "Tie"), so it was replaced by
+`chords_litolff_03` (glyph/3/1/2/6/2): an arc BELOW whose top notes match and whose
+bottom notes differ -- the discriminating shape for the top/bottom rule (the any-pair
+rule would say tie; ours: slur). Readings are in `manifest.json` only. A unit worth
+knowing: `dy_spaces` in the arc decision is measured in AVERAGE HEAD HEIGHTS, not
+staff spaces (on Litolff a head box averages 1.2-1.3 spaces), so its 0.25 limit is
+~0.3 spaces; the field name is misleading, the behaviour is as measured before.
+
+### 16.10.5 Open
+
+* the chord-tie `<tied>` pairing for export (`adjudicate_tie_pair` pairs single
+  same-position heads only), unchanged;
+* litolff_06's pairing and the kept head's pitch (16.10.1), litolff_04's head count
+  and centre (16.10.2): two candidate items, neither built;
+* Sean's judgement of the five chord tiles.
