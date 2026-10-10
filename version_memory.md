@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (day) — 2.79 landed: a whole-bar rest takes the meter of its own bar
+
+- `size_measure_rest` reads `meter_at` the bar; `_bar_holds_out` holds out a lone rest of the wrong length. The 29 overfull Brahms bars are gone. `fd440b1b`. The sibling-rules commit `d04fd058` is held for Sean.
+
 ## 2026-10-10 (morning) — overnight `20261010-night` read; START HERE
 
 - Re-gather of main `26fdb4d0` vs `20261009-all`: GATHER identical; notes to file Litolff 5,589 (+482), Brahms 7,189 (+1,706); 29 overfull Brahms bars (bars 10-14, rests sized 9/8 under 6/8) -- control broken, item to open. `benchmarks/acceptance/overnight/20261010-night/SUMMARY.md`.
