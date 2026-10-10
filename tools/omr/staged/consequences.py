@@ -355,6 +355,107 @@ def _chord_duration_also_reads(log: Log, subject: Subject,
     return [v.id for v in _standing(log, subject, Q.DURATION)]
 
 
+def _same_value(own: Any, stem: Any) -> bool:
+    """Do a duration value and a stem value say the SAME written value?
+    `written`, `dots` and `beam_levels` are the identity of a value; `beats`
+    follows from them and the head's own tuplet scale."""
+    if not isinstance(own, dict) or not isinstance(stem, dict):
+        return False
+    try:
+        return (abs(float(own["written"]) - float(stem["written"])) < 1e-9
+                and int(own.get("dots") or 0) == int(stem.get("dots") or 0)
+                and int(own.get("beam_levels") or 0)
+                == int(stem.get("beam_levels") or 0))
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _stem_value_also_reads(log: Log, subject: Subject,
+                           stem_value: Verdict) -> List[str]:
+    """Declared for `run_over`: this rule's effect is its OWN head's standing
+    duration, which it reads beside its cause."""
+    own = log.verdict(Q.DURATION, subject)
+    return [own.id] if own is not None else []
+
+
+@rule(consequence=Consequence.SHARE_STEM_VALUE,
+      cause=Q.STEM_VALUE, effect=Q.DURATION, scope=Kind.GLYPH,
+      single_pass=True,
+      reads_beyond_cause=_stem_value_also_reads,
+      bound="Fires on ONE notehead only where its own `Q.STEM_VALUE` is "
+            "DECIDED and its standing `Q.DURATION` is DECIDED or NARROWED "
+            "and does not already say the same written value. Rewrites that "
+            "one duration's `beats`/`written`/`dots`/`beam_levels` to the "
+            "stem's, once, and touches nothing else on the verdict. A "
+            "NARROWED or ABSTAINED stem value fires nothing (EVALUATE goes "
+            "silent where two answers both fit), a head whose duration "
+            "ABSTAINED is not given one, a rest is never touched, and a "
+            "head ADJUDICATE took out of the stem (refused, another staff's "
+            "copy) has no stem value at all. Adds, deletes and re-pitches no "
+            "note; the revision is single-pass because the stem value READ "
+            "this head's duration and nothing is re-derived from the result.")
+def share_stem_value(log: Log, subject: Subject,
+                     stem_value: Verdict) -> List[Verdict]:
+    """One stem, one value: every head on a stem takes the stem's value.
+
+    ⚠️ ROADMAP 2.78, SEAN, DECISIONS 2026-10-09: *"no exceptions"*. The stem's
+    value was decided in ADJUDICATE (`adjudicators/stem_value.py`) from the
+    stem's own evidence -- the hollow heads, the beams at its tip, the dots --
+    and a head that disagrees takes it. This is where that decision reaches the
+    duration every later reader (the bar sums, INFER, EXPORT) actually reads.
+
+    ⚠️ WHY A DECIDED OWN DURATION MAY BE OVERRIDDEN HERE AND NOT IN INFER:
+    INFER may only collapse a NARROWED verdict to its own candidates; this is
+    EVALUATE -- what FOLLOWS -- and the convention (one stem, one value) is
+    forced, so a head that disagrees with its stem is wrong by construction. The
+    evidence for WHICH value is the stem's, and its refusals to say, are
+    ADJUDICATE's: this rule fires only on a DECIDED stem value.
+
+    ⚠️ WHAT THIS DOES NOT COVER: a NARROWED stem value fires nothing here, so
+    its heads keep durations that may disagree and `export._events` still takes
+    a chord's duration as the mode of its heads' -- an argmax over a
+    disagreement. Holding that stem out and counting it is an EXPORT change and
+    is not built (see `adjudicators/stem_value.py`).
+    """
+    # ⚠️ THE STANDING STEM VALUE, read here rather than trusted from the
+    # argument: it is the verdict the rule acts on, and `reach` finds a
+    # consumer only where a body reads the quantity.
+    stem_value = log.verdict(Q.STEM_VALUE, subject) or stem_value
+    if stem_value.outcome is not Outcome.DECIDED:
+        return []
+    value = stem_value.value
+    if not isinstance(value, dict):
+        return []
+    own = log.verdict(Q.DURATION, subject)
+    if own is None or own.outcome is Outcome.ABSTAINED or _is_rest(own):
+        return []
+    if own.outcome is Outcome.DECIDED and _same_value(own.value, value):
+        return []
+    base = dict(own.value) if (own.outcome is Outcome.DECIDED
+                               and isinstance(own.value, dict)) else {}
+    new_value = {**base,
+                 "beats": value["beats"], "written": value["written"],
+                 "dots": value["dots"], "beam_levels": value["beam_levels"],
+                 "head_fill": value.get("head_fill"),
+                 "shared_stem": value.get("stem")}
+    was = ({"outcome": "decided", "written": own.value.get("written"),
+            "dots": own.value.get("dots"),
+            "beam_levels": own.value.get("beam_levels")}
+           if own.outcome is Outcome.DECIDED and isinstance(own.value, dict)
+           else {"outcome": own.outcome.value,
+                 "candidates": [c.value for c in own.candidates]})
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED, value=new_value,
+        decider="share_stem_value", reason="stem_value_follows",
+        considered=(own.id, stem_value.id), used=(own.id, stem_value.id),
+        basis=(own.id, stem_value.id),
+        detail={"was": was, "stem": value.get("stem"),
+                "stem_value_reason": stem_value.reason},
+        supersedes=own.id, single_pass_revision=True)
+    return [log.record(out)]
+
+
 @rule(consequence=Consequence.RECONCILE_CHORD_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       reads_beyond_cause=_chord_duration_also_reads,

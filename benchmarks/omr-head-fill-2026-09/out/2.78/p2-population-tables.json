@@ -1,0 +1,146 @@
+{
+ "A-lit-all": {
+  "multi_member_stems": 82,
+  "before": {
+   "agree (all decided, one value)": 68,
+   "all narrowed, identical": 2,
+   "decided heads DISAGREE": 11,
+   "one value decided, others narrowed/unread": 1
+  },
+  "after": {
+   "agree (all decided, one value)": 80,
+   "all narrowed, identical": 2
+  },
+  "changed_heads": 12,
+  "reasons": {
+   "decided:stem_agrees": 140,
+   "decided:stem_value_from_evidence": 25,
+   "narrowed:stem_levels_unread": 4
+  }
+ },
+ "A-lit-count": {
+  "multi_member_stems": 40,
+  "before": {
+   "decided heads DISAGREE": 8,
+   "agree (all decided, one value)": 32
+  },
+  "after": {
+   "agree (all decided, one value)": 40
+  },
+  "changed_heads": 8,
+  "reasons": {
+   "decided:stem_agrees": 65,
+   "decided:stem_value_from_evidence": 17
+  }
+ },
+ "A-brahms-all": {
+  "multi_member_stems": 89,
+  "before": {
+   "agree (all decided, one value)": 63,
+   "all narrowed, identical": 17,
+   "decided heads DISAGREE": 5,
+   "one value decided, others narrowed/unread": 4
+  },
+  "after": {
+   "agree (all decided, one value)": 71,
+   "all narrowed, identical": 18
+  },
+  "changed_heads": 9,
+  "reasons": {
+   "decided:stem_agrees": 127,
+   "decided:stem_value_from_evidence": 15,
+   "narrowed:stem_levels_unread": 36
+  }
+ },
+ "A-brahms-count": {
+  "multi_member_stems": 34,
+  "before": {
+   "agree (all decided, one value)": 26,
+   "one value decided, others narrowed/unread": 2,
+   "all narrowed, identical": 5,
+   "decided heads DISAGREE": 1
+  },
+  "after": {
+   "agree (all decided, one value)": 28,
+   "all narrowed, identical": 6
+  },
+  "changed_heads": 3,
+  "reasons": {
+   "decided:stem_agrees": 53,
+   "decided:stem_value_from_evidence": 3,
+   "narrowed:stem_levels_unread": 12
+  }
+ },
+ "B-lit-all": {
+  "multi_member_stems": 81,
+  "before": {
+   "agree (all decided, one value)": 68,
+   "all narrowed, identical": 2,
+   "decided heads DISAGREE": 10,
+   "one value decided, others narrowed/unread": 1
+  },
+  "after": {
+   "agree (all decided, one value)": 79,
+   "all narrowed, identical": 2
+  },
+  "changed_heads": 11,
+  "reasons": {
+   "decided:stem_agrees": 140,
+   "decided:stem_value_from_evidence": 23,
+   "narrowed:stem_levels_unread": 4
+  }
+ },
+ "B-lit-count": {
+  "multi_member_stems": 40,
+  "before": {
+   "decided heads DISAGREE": 8,
+   "agree (all decided, one value)": 32
+  },
+  "after": {
+   "agree (all decided, one value)": 40
+  },
+  "changed_heads": 8,
+  "reasons": {
+   "decided:stem_agrees": 65,
+   "decided:stem_value_from_evidence": 17
+  }
+ },
+ "B-brahms-all": {
+  "multi_member_stems": 88,
+  "before": {
+   "agree (all decided, one value)": 63,
+   "all narrowed, identical": 17,
+   "decided heads DISAGREE": 5,
+   "one value decided, others narrowed/unread": 3
+  },
+  "after": {
+   "agree (all decided, one value)": 70,
+   "all narrowed, identical": 18
+  },
+  "changed_heads": 8,
+  "reasons": {
+   "decided:stem_agrees": 127,
+   "decided:stem_value_from_evidence": 13,
+   "narrowed:stem_levels_unread": 36
+  }
+ },
+ "B-brahms-count": {
+  "multi_member_stems": 33,
+  "before": {
+   "agree (all decided, one value)": 26,
+   "one value decided, others narrowed/unread": 1,
+   "all narrowed, identical": 5,
+   "decided heads DISAGREE": 1
+  },
+  "after": {
+   "agree (all decided, one value)": 27,
+   "all narrowed, identical": 6
+  },
+  "changed_heads": 2,
+  "reasons": {
+   "decided:stem_agrees": 53,
+   "decided:stem_value_from_evidence": 1,
+   "narrowed:stem_levels_unread": 12
+  }
+ }
+}

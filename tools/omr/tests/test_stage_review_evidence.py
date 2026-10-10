@@ -347,9 +347,17 @@ ADD = {"id": "act-add", "t": "2026-09-23T12:01:00", "stage": "gather",
 #: quantities a human box RECEIVES a verdict on today. A change that starts or
 #: stops reading a human box fails HERE, visibly, with the quantity named —
 #: which is the point: the honest table must not be able to rot.
+#:
+#: ROADMAP 2.78 added `Q.HEAD_STEM` (which stem a notehead box stands on) and
+#: `Q.STEM_VALUE` (that stem's written value). Both are filed on every notehead
+#: SUBJECT, so a human's box gets a join and, with a stem-mate, a stem value.
+#: Neither reads a human row: the box is a `Q.GLYPH_BOX` + `Q.NOTEHEAD_CLASS`
+#: subject like any other, its join is a box overlap with the cell's `Q.STEM`
+#: rows, and its stem value is built from the heads' own duration verdicts.
 STAGES_THAT_SEE_A_HUMAN_BOX = {
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.STEM_DIRECTION,
     Q.NOTEHEAD_IS_A_WHOLE_REST, Q.DURATION, Q.PITCH,
+    Q.HEAD_STEM, Q.STEM_VALUE,
 }
 
 

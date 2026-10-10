@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 2.78 landed: one stem, one value
+
+- `Q.HEAD_STEM` + `Q.STEM_VALUE` (`adjudicators/stem_value.py`), EVALUATE `share_stem_value`; slash reader widened. Sean's 14 stems 12 right / 1 narrowed / 0 wrong. `b4073e38`.
+
 ## 2026-10-09 (night) — 2.12f landed: an articulation's owner faces it across the notehead
 
 - `adjudicate_articulation_owner`: nearest head whose notehead side faces the mark (opposite the stem; two voices -> stem side), suffix side recorded beside the measured side; Brahms 89 marks moved (86 to the touching head). `d4084863`. Sean's tiles for round 2 pending.

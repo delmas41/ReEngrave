@@ -1,0 +1,43 @@
+record /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-quick-brahms/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json commit f027c8e7810441fdfd5f8782450da30b229b8615 dirty False
+
+=== brahms  pages all ===
+notehead boxes by ADJUDICATE status: {'given_away': 57, 'kept': 922, 'narrowed': 173, 'refused': 339}
+kept heads 1095; with >=1 stem 871; on 2+ stems 48; no stem 224
+stems carrying >=2 kept heads: 93 (duplicate stem rows with the same head-set, counted once: 5)
+  by head count: {2: 93}
+-- all gathered pages: 93 multi-head stems
+   agree                       66
+   a_fill                       0
+   b_dots                       2
+        dots                                        2
+   c_decided_vs_unsettled       4
+        c2_narrowed_excludes_it                     4
+   d_other                     21
+        d1a_whole_vs_half_class                     1
+        d1b_beam_or_flag_level_only                 2
+        d2_all_narrowed_identical                  18
+   stems with >=1 head UNREAD (abstained / no verdict): 0
+-- count page 1: 36 multi-head stems
+   agree                       27
+   a_fill                       0
+   b_dots                       0
+   c_decided_vs_unsettled       2
+        c2_narrowed_excludes_it                     2
+   d_other                      7
+        d1a_whole_vs_half_class                     1
+        d2_all_narrowed_identical                   6
+   stems with >=1 head UNREAD (abstained / no verdict): 0
+  page 0: kept heads 435, multi-head stems 57  agree=39  b=2  c=2  d=14
+  page 1: kept heads 660, multi-head stems 36  agree=27  c=2  d=7
+-- the agree control by value (written, dots, fill): {(0.25, 0, 'filled', 1.0, 2): 1, (0.5, 0, 'filled', 1.0, 1): 47, (1.0, 0, 'filled', 1.0, 0): 2, (1.5, 1, 'filled', 1.0, 0): 9, (2.0, 0, 'hollow', 2.0, 0): 1, (3.0, 1, 'hollow', 2.0, 0): 5, (4.0, 0, 'hollow', 4.0, 0): 1}
+-- multi-head stems with a dot read on any head: 27 (dot disagreement needs this population; (b) is only a result where it is nonzero)
+-- kept heads by number of stem rows overlapped: {0: 224, 1: 823, 2: 47, 3: 1}
+-- group heads whose stem centre stands in the MIDDLE half of the head (5 of 186): a stem is flush with a head's side, so these are loose joins
+-- Q.EVENT (x-cluster chords) vs stem groups: {'stem_groups': 93, 'heads_all_in_one_event': 87, 'heads_split_across_events': 6, 'head_without_event': 0, 'events_with_2plus_kept_heads': 185, 'of_those_with_no_shared_stem': 98}
+-- controls
+  filed-join cross-check: {'heads_with_filed_join': 332, 'first_overlap_equals_filed': 332, 'filed_but_no_overlap_here': 0}
+  cell affine residual px over groups: max 0.00, median 0.00  (a COMPUTATION, not a control: GATHER derives each page box from the canonical one by this same affine; the frame control is `frame_control` on the render, run by l278_tiles.py)
+  NEGATIVE control (stems slid 10 head-widths right): multi-head stems 93 -> 8  (a nonzero floor is the slid stem landing on a NEIGHBOUR chord on a dense plate)
+  NEGATIVE control (stems slid 12 head-heights down): multi-head stems 93 -> 0
+  POSITIVE control: heads of one stem share a column (centre spread <= 1.2 head widths): 93 of 93
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-pop-brahms.json

@@ -1,0 +1,16 @@
+[
+ {"doc": "lit", "stem": "obs:023597", "note": "(a) fill: HalfOnLine hollow + BlackInSpace filled, a stem-slash row on the stem (the 2.71 class the slash refusal still keeps)"},
+ {"doc": "lit", "stem": "obs:023868", "note": "(a) fill: BlackOnLine filled + HalfInSpace hollow (2.04 sp tall box overlapping two stem rows): is the join even one stem?"},
+ {"doc": "lit", "stem": "obs:037039", "note": "(a) fill: three heads on one stem, two HalfInSpace hollow + a small BlackInSpace read eighth"},
+ {"doc": "lit", "stem": "obs:038306", "note": "(a) fill: HalfInSpace hollow + small BlackOnLine (1.0 x 0.81 sp), a stem-slash row on the stem"},
+ {"doc": "lit", "stem": "obs:023410", "note": "(c2) HalfOnLine decided hollow + BlackOnLine NARROWED eighth|quarter (candidates exclude the half)"},
+ {"doc": "brahms", "stem": "obs:039384", "note": "(c2) dotted half DECIDED + BlackOnLine narrowed eighth|quarter; the stem runs through the middle of the black box (x frac 0.49)"},
+ {"doc": "brahms", "stem": "obs:009105", "note": "(c2) dotted half DECIDED + BlackOnLine narrowed eighth|quarter, a stem-slash row on the stem"},
+ {"doc": "brahms", "stem": "obs:008886", "note": "(b) dots: dotted half + undotted half (small 0.7 sp box, 5 head-heights from the stem end)"},
+ {"doc": "brahms", "stem": "obs:009128", "note": "(b) dots: dotted half + undotted half (small box, stem at 0.21 of its width), a stem-slash row on the stem"},
+ {"doc": "brahms", "stem": "obs:034176", "note": "(c2) a WholeOnLine box 2.68 sp wide DECIDED whole + an ordinary-looking BlackOnLine (1.38 x 1.33 sp at the stem's edge) narrowed: here the HOLLOW reading may be the wrong one (tests the rule's direction)"},
+ {"doc": "lit", "stem": "obs:037466", "note": "(d1b) beamed chord: one head 16th, the other eighth"},
+ {"doc": "brahms", "stem": "obs:035946", "note": "(d1a) whole-class box (dotted whole) + half-class box (dotted half) on one stem"},
+ {"doc": "lit", "stem": "obs:023587", "note": "CONTROL agree: half chord, a stem-slash row on the stem, both heads decided half (same system/staff as tile obs:023597)"},
+ {"doc": "brahms", "stem": "obs:008879", "note": "CONTROL agree: dotted half chord, both heads decided dotted half (neighbour of obs:008886)"}
+]

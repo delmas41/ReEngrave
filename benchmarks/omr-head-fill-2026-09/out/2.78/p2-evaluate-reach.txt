@@ -1,0 +1,31 @@
+== litolff-p3: beethoven5-litolff-p3.record.json
+   stem values: decided 163, narrowed 4, other 1119
+   share_stem_value firings: 11   by kind: {'decided_restated': 10, 'narrowed_settled': 1}
+         5  (0.25, 0, 2) -> (0.5, 0, 1)
+         3  (1.0, 0, 0) -> (2.0, 0, 0)
+         1  narrowed -> (2.0, 0, 0)
+         1  (0.5, 0, 1) -> (2.0, 0, 0)
+         1  (0.5, 0, 1) -> (1.0, 0, 0)
+   stems with >=2 joined heads, by their heads' STANDING durations
+      after ADJUDICATE : {'(joined heads excluded as not_a_member)': 119, 'agree (all decided, one value)': 68, 'unsettled (a head narrowed/abstained)': 3, 'DISAGREE (decided heads differ)': 10}
+      after EVALUATE   : {'(joined heads excluded as not_a_member)': 119, 'agree (all decided, one value)': 79, 'unsettled (a head narrowed/abstained)': 2}
+== brahms-p1: brahms1-breitkopf-p1.record.json
+   stem values: decided 140, narrowed 36, other 1315
+   share_stem_value firings: 7   by kind: {'decided_restated': 5, 'narrowed_settled': 2}
+         2  (2.0, 0, 0) -> (3.0, 1, 0)
+         1  (0.25, 0, 2) -> (0.5, 0, 1)
+         1  (0.75, 1, 1) -> (1.5, 1, 0)
+         1  narrowed -> (2.0, 0, 0)
+         1  narrowed -> (3.0, 1, 0)
+         1  (6.0, 1, 0) -> (3.0, 1, 0)
+   stems with >=2 joined heads, by their heads' STANDING durations
+      after ADJUDICATE : {'(joined heads excluded as not_a_member)': 40, 'agree (all decided, one value)': 63, 'unsettled (a head narrowed/abstained)': 20, 'DISAGREE (decided heads differ)': 5}
+      after EVALUATE   : {'(joined heads excluded as not_a_member)': 40, 'agree (all decided, one value)': 70, 'unsettled (a head narrowed/abstained)': 17, 'DISAGREE (decided heads differ)': 1}
+      still disagreeing: obs:034176  [(1.0, 0, 0), (4.0, 0, 0)]
+== engraved-p0p2: engraved-p0p2-20260929.record.json
+   stem values: decided 12, narrowed 0, other 360
+   share_stem_value firings: 0   by kind: {}
+   stems with >=2 joined heads, by their heads' STANDING durations
+      after ADJUDICATE : {'(joined heads excluded as not_a_member)': 0, 'agree (all decided, one value)': 4}
+      after EVALUATE   : {'(joined heads excluded as not_a_member)': 0, 'agree (all decided, one value)': 4}
+== engraved page 0 gathered on this tree (EVALUATE ran inside the CLI): stem_value verdicts abstained:lone_head 73, share_stem_value firings 0, noteheads 73 each on its own stem -- a population of ZERO multi-head stems, so this control cannot fail; the p0p2 replay above is the one with a population

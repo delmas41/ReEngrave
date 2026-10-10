@@ -60,6 +60,14 @@ class Consequence(str, Enum):
     #: under the first's name (`test_the_rule_is_downhill_and_carries_a_bound`
     #: picks `RULES` by consequence and expects exactly one).
     RECONCILE_CHORD_DURATION = "reconcile_chord_duration"
+    #: ROADMAP 2.78 (Sean, DECISIONS 2026-10-09: *"one stem, one value, no
+    #: exceptions"*). A stem's value is DECIDED (`Q.STEM_VALUE`, ADJUDICATE), so
+    #: every head on it is restated to that value. Cause is the STEM VALUE, not
+    #: the meter, so it runs BEFORE every meter-caused rule: the bar sums
+    #: `reconcile_duration` and the held-out-bar test read chords whose heads
+    #: already agree, and EXPORT's mode vote over a chord's heads has nothing
+    #: left to vote on.
+    SHARE_STEM_VALUE = "share_stem_value"
     MOVE_GLYPH = "move_glyph"                # ownership settled
     JOIN_PARTS = "join_parts"                # part boundaries settled
     NAME_PART = "name_part"                  # instrument settled
@@ -146,6 +154,13 @@ DOWNHILL: Tuple[str, ...] = (
     # `restate_pitch`'s job and would be a second spelling of it.
     Q.ACCIDENTAL_OWNER,
     Q.ACCIDENTAL,
+    # ⚠️ ROADMAP 2.78, ABOVE `Q.METER` ON PURPOSE. `share_stem_value`'s cause
+    # is a stem's value (an ADJUDICATE verdict), its effect is `Q.DURATION`,
+    # and `execution_order` sorts by the cause's rank: placed above the meter
+    # it runs BEFORE `size_measure_rest`, `reconcile_chord_duration` and
+    # `reconcile_duration`, so none of them sums or re-reads a chord whose
+    # heads still disagree.
+    Q.STEM_VALUE,
     Q.METER,
     Q.DURATION,
     # ⚠️ ROADMAP 2.45. Downhill of `Q.DURATION` on purpose: the rule that

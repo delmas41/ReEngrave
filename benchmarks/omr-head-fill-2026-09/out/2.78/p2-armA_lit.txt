@@ -1,0 +1,30 @@
+re-adjudicated in 20s: 19433 verdicts (record had 16861)
+== control: the replay reproduces the record's own verdicts for what the rule reads ==
+   duration                       compared  1807  identical  1807  (record 1807, replay 1807, replay-only 0)
+   stem_direction                 compared  1286  identical  1286  (record 1286, replay 1286, replay-only 0)
+   notehead_is_not_a_notehead     compared  1286  identical  1286  (record 1286, replay 1286, replay-only 0)
+   notehead_is_a_whole_rest       compared  1286  identical  1286  (record 1286, replay 1286, replay-only 0)
+   glyph_owner                    compared  1135  identical  1135  (record 1135, replay 1135, replay-only 0)
+   CONTROL PASSED
+== Sean's 14 stems (this document's tiles) ==
+   T1  glyph/3/0/5/2/0       BlackOnLine       kept    want 0.5  own {(0.25, 0, 2)}  ->  stem value {(0.5, 0, 1)}  [stem_value_from_evidence]  RIGHT
+   T1  glyph/3/0/5/2/3       BlackInSpace      kept    want 0.5  own {(0.5, 0, 1)}  ->  stem value {(0.5, 0, 1)}  [stem_value_from_evidence]  RIGHT
+   T2  glyph/3/0/0/1/2       HalfInSpace       kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T2  glyph/3/0/0/1/8       HalfInSpace       kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T2  glyph/3/0/0/1/11      BlackInSpace      kept    want 2.0  own {(0.5, 0, 1)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T6  glyph/3/0/10/5/1      HalfInSpace       kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T6  glyph/3/0/10/5/5      BlackOnLine       kept    want 2.0  own {(1.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T7  glyph/2/1/9/11/1      BlackOnLine       kept    want 2.0  own {(1.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T7  glyph/2/1/9/11/3      HalfInSpace       kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T10 glyph/2/1/8/11/0      HalfOnLine        kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_agrees]  RIGHT
+   T10 glyph/2/1/8/11/4      HalfOnLine        kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_agrees]  RIGHT
+   T11 glyph/2/1/8/13/3      HalfOnLine        kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T11 glyph/2/1/8/13/5      BlackInSpace      kept    want 2.0  own {(1.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T14 glyph/2/1/8/2/6       HalfOnLine        kept    want 2.0  own {(2.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+   T14 glyph/2/1/8/2/7       BlackOnLine       kept    want 2.0  own {(0.5, 0, 1), (1.0, 0, 0)}  ->  stem value {(2.0, 0, 0)}  [stem_value_from_evidence]  RIGHT
+== population (kept heads on a stem with >= 2 kept members) ==
+   multi-member stems: 82
+   BEFORE (the heads' own readings): {'agree (all decided, one value)': 68, 'all narrowed, identical': 2, 'decided heads DISAGREE': 11, 'one value decided, others narrowed/unread': 1}
+   AFTER  (the stem value):          {'agree (all decided, one value)': 80, 'all narrowed, identical': 2}
+   stem_value reasons over those heads: {'decided:stem_agrees': 140, 'decided:stem_value_from_evidence': 25, 'narrowed:stem_levels_unread': 4}
+   heads whose value CHANGED: 12

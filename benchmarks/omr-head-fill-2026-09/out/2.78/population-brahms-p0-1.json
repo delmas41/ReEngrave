@@ -1,0 +1,7464 @@
+{
+ "record": "/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-quick-brahms/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json",
+ "provenance": "f027c8e7810441fdfd5f8782450da30b229b8615",
+ "dirty": false,
+ "brahms": {
+  "pages": null,
+  "status_counts": {
+   "kept": 922,
+   "narrowed": 173,
+   "refused": 339,
+   "given_away": 57
+  },
+  "kept_heads": 1095,
+  "groups": [
+   {
+    "stem": "obs:008270",
+    "cell": "cell/0/0/0/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.03,
+      "key": "glyph/0/0/0/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.7367,
+      "box_page": [
+       1649.44921875,
+       1499.451171875,
+       1691.26171875,
+       1538.650390625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/0/0/20",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.03,
+      "end_dist_heads": 3.04,
+      "ink_center": 1.0,
+      "ink_ring": 0.9555,
+      "box_page": [
+       1647.271484375,
+       1616.177734375,
+       1690.826171875,
+       1649.279296875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1647.3,
+     1512.5,
+     1654.2,
+     1733.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008313",
+    "cell": "cell/0/0/0/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/0/1/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.27,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.7728,
+      "box_page": [
+       2396.7675,
+       1533.8675,
+       2437.725,
+       1570.6325
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/0/1/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.21,
+      "end_dist_heads": 1.05,
+      "ink_center": 1.0,
+      "ink_ring": 0.8471,
+      "box_page": [
+       2396.7675,
+       1566.7625,
+       2438.6925,
+       1605.785
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2397.1,
+     1545.5,
+     2402.2,
+     1690.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008324",
+    "cell": "cell/0/0/0/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.05,
+      "key": "glyph/0/0/0/2/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.13,
+      "end_dist_heads": 0.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.7603,
+      "box_page": [
+       2705.83,
+       1566.7625,
+       2747.11,
+       1603.205
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/0/2/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.13,
+      "end_dist_heads": 1.09,
+      "ink_center": 1.0,
+      "ink_ring": 0.8329,
+      "box_page": [
+       2705.185,
+       1600.9475,
+       2748.4,
+       1637.3899999999999
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2705.2,
+     1579.3,
+     2711.0,
+     1725.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008323",
+    "cell": "cell/0/0/0/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/0/2/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.42,
+      "h_sp": 1.1,
+      "end_dist_heads": 0.27,
+      "ink_center": 1.0,
+      "ink_ring": 0.7492,
+      "box_page": [
+       2877.0775,
+       1470.335,
+       2922.8725,
+       1505.81
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/0/2/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.16,
+      "end_dist_heads": 1.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.8479,
+      "box_page": [
+       2878.3675,
+       1503.5525,
+       2919.6475,
+       1540.9625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2877.1,
+     1478.4,
+     2886.1,
+     1653.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008336",
+    "cell": "cell/0/0/0/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.13,
+      "key": "glyph/0/0/0/3/3",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.11,
+      "end_dist_heads": 0.27,
+      "ink_center": 1.0,
+      "ink_ring": 0.7626,
+      "box_page": [
+       3458.33,
+       1452.275,
+       3500.255,
+       1488.0725
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/0/0/0/3/9",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.06,
+      "end_dist_heads": 1.35,
+      "ink_center": 1.0,
+      "ink_ring": 0.9315,
+      "box_page": [
+       3458.0075,
+       1489.3625,
+       3500.255,
+       1523.5475
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3459.9,
+     1460.3,
+     3468.0,
+     1653.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008343",
+    "cell": "cell/0/0/0/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/0/4/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7598,
+      "box_page": [
+       3938.0975,
+       1470.6575,
+       3979.3775,
+       1510.325
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/0/0/0/4/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.18,
+      "end_dist_heads": 1.05,
+      "ink_center": 1.0,
+      "ink_ring": 0.8381,
+      "box_page": [
+       3937.13,
+       1503.5525,
+       3980.6675,
+       1541.6075
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3939.1,
+     1482.6,
+     3945.8,
+     1659.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008368",
+    "cell": "cell/0/0/1/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.05,
+      "key": "glyph/0/0/1/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7487,
+      "box_page": [
+       1647.70703125,
+       1885.451171875,
+       1689.083984375,
+       1922.908203125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/1/0/15",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.02,
+      "end_dist_heads": 3.07,
+      "ink_center": 1.0,
+      "ink_ring": 0.9461,
+      "box_page": [
+       1645.09375,
+       2002.61328125,
+       1688.212890625,
+       2035.279296875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1646.4,
+     1896.8,
+     1653.4,
+     2119.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008412",
+    "cell": "cell/0/0/1/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/1/1/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.18,
+      "end_dist_heads": 0.23,
+      "ink_center": 1.0,
+      "ink_ring": 0.7576,
+      "box_page": [
+       2395.52,
+       1918.12,
+       2436.8,
+       1955.88
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/1/1/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.27,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.8515,
+      "box_page": [
+       2395.52,
+       1953.0,
+       2436.16,
+       1989.48
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2397.1,
+     1928.4,
+     2402.9,
+     2077.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008422",
+    "cell": "cell/0/0/1/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.13,
+      "key": "glyph/0/0/1/2/1",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.39,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.28,
+      "ink_center": 1.0,
+      "ink_ring": 0.7578,
+      "box_page": [
+       2702.04,
+       1951.08,
+       2746.52,
+       1988.52
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/1/2/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.18,
+      "end_dist_heads": 1.16,
+      "ink_center": 1.0,
+      "ink_ring": 0.8453,
+      "box_page": [
+       2704.6,
+       1984.3600000000001,
+       2748.44,
+       2022.12
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2704.3,
+     1959.4,
+     2711.0,
+     2109.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008431",
+    "cell": "cell/0/0/1/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/1/3/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7624,
+      "box_page": [
+       3315.4,
+       1982.12,
+       3356.68,
+       2019.56
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/1/3/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.13,
+      "end_dist_heads": 1.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.873,
+      "box_page": [
+       3315.4,
+       2016.68,
+       3357.0,
+       2052.84
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3317.0,
+     1993.3,
+     3323.1,
+     2137.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008438",
+    "cell": "cell/0/0/1/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/1/4/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.16,
+      "end_dist_heads": 0.26,
+      "ink_center": 1.0,
+      "ink_ring": 0.7925,
+      "box_page": [
+       4004.88,
+       1951.4,
+       4047.44,
+       1988.52
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/1/4/11",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.19,
+      "end_dist_heads": 1.12,
+      "ink_center": 1.0,
+      "ink_ring": 0.8657,
+      "box_page": [
+       4005.52,
+       1984.04,
+       4046.8,
+       2022.12
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4006.2,
+     1960.4,
+     4011.3,
+     2115.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008439",
+    "cell": "cell/0/0/1/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/0/0/1/4/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.27,
+      "ink_center": 1.0,
+      "ink_ring": 0.77,
+      "box_page": [
+       3870.8,
+       1981.8,
+       3912.4,
+       2019.24
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/1/4/9",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.19,
+      "ink_center": 1.0,
+      "ink_ring": 0.87,
+      "box_page": [
+       3872.7200000000003,
+       2015.72,
+       3914.0,
+       2052.2
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3872.1,
+     1990.4,
+     3879.1,
+     2138.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008463",
+    "cell": "cell/0/0/1/6",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.04,
+      "key": "glyph/0/0/1/6/0",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.7848,
+      "box_page": [
+       4934.9375,
+       1896.28125,
+       4975.84375,
+       1935.125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/1/6/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.2,
+      "end_dist_heads": 2.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.8086,
+      "box_page": [
+       4933.21875,
+       1980.15625,
+       4975.84375,
+       2018.65625
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4934.2,
+     1910.0,
+     4939.1,
+     2108.0
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008464",
+    "cell": "cell/0/0/1/6",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.04,
+      "key": "glyph/0/0/1/6/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.15,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7716,
+      "box_page": [
+       5276.625,
+       1949.21875,
+       5316.84375,
+       1986.0
+      ],
+      "n_stems": 2
+     },
+     {
+      "stem_x_frac": 0.05,
+      "key": "glyph/0/0/1/6/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.11,
+      "end_dist_heads": 1.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.8861,
+      "box_page": [
+       5275.9375,
+       1983.25,
+       5317.1875,
+       2018.65625
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     5275.2,
+     1960.2,
+     5281.1,
+     2106.0
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008482",
+    "cell": "cell/0/0/2/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.02,
+      "key": "glyph/0/0/2/0/4",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 0.95,
+      "end_dist_heads": -0.03,
+      "ink_center": 1.0,
+      "ink_ring": 0.7056,
+      "box_page": [
+       1646.8359375,
+       2253.59375,
+       1688.212890625,
+       2284.08203125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.03,
+      "key": "glyph/0/0/2/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.2,
+      "end_dist_heads": 2.83,
+      "ink_center": 1.0,
+      "ink_ring": 0.7774,
+      "box_page": [
+       1646.400390625,
+       2367.70703125,
+       1689.083984375,
+       2406.03515625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1644.2,
+     2269.7,
+     1651.2,
+     2495.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008483",
+    "cell": "cell/0/0/2/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/0/0/2/0/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.12,
+      "end_dist_heads": 1.11,
+      "ink_center": 1.0,
+      "ink_ring": 0.86,
+      "box_page": [
+       1851.54296875,
+       2305.423828125,
+       1894.2265625,
+       2341.138671875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/2/0/14",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.7316,
+      "box_page": [
+       1853.28515625,
+       2271.451171875,
+       1894.2265625,
+       2308.908203125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1853.3,
+     2283.6,
+     1860.3,
+     2432.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008512",
+    "cell": "cell/0/0/2/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/2/1/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.7553,
+      "box_page": [
+       2544.64,
+       2304.44,
+       2587.2,
+       2342.52
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/2/1/9",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.12,
+      "end_dist_heads": 1.14,
+      "ink_center": 1.0,
+      "ink_ring": 0.8948,
+      "box_page": [
+       2544.32,
+       2339.64,
+       2587.2,
+       2375.48
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2545.0,
+     2316.6,
+     2551.0,
+     2468.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008526",
+    "cell": "cell/0/0/2/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.06,
+      "key": "glyph/0/0/2/2/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.7754,
+      "box_page": [
+       2877.08,
+       2336.76,
+       2919.64,
+       2373.24
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.06,
+      "key": "glyph/0/0/2/2/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.18,
+      "end_dist_heads": 1.06,
+      "ink_center": 1.0,
+      "ink_ring": 0.8556,
+      "box_page": [
+       2877.08,
+       2370.68,
+       2918.68,
+       2408.44
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2877.1,
+     2349.6,
+     2882.2,
+     2494.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008535",
+    "cell": "cell/0/0/2/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.99,
+      "key": "glyph/0/0/2/3/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.7907,
+      "box_page": [
+       3457.16,
+       2467.64,
+       3497.48,
+       2503.48
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.0,
+      "key": "glyph/0/0/2/3/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.14,
+      "ink_center": 1.0,
+      "ink_ring": 0.7992,
+      "box_page": [
+       3456.84,
+       2433.7200000000003,
+       3497.16,
+       2470.2
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3494.0,
+     2350.5,
+     3500.0,
+     2493.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008536",
+    "cell": "cell/0/0/2/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/0/0/2/3/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.07,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.8065,
+      "box_page": [
+       3316.68,
+       2498.04,
+       3359.24,
+       2532.2799999999997
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/0/0/2/3/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.13,
+      "end_dist_heads": 1.13,
+      "ink_center": 1.0,
+      "ink_ring": 0.8066,
+      "box_page": [
+       3316.36,
+       2464.44,
+       3360.2,
+       2500.6
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3354.1,
+     2375.5,
+     3361.2,
+     2523.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008552",
+    "cell": "cell/0/0/2/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d1b_beam_or_flag_level_only",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/0/0/2/4/0",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.12,
+      "end_dist_heads": 1.13,
+      "ink_center": 1.0,
+      "ink_ring": 0.844,
+      "box_page": [
+       3614.48,
+       2466.04,
+       3655.44,
+       2501.88
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/0/0/2/4/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.05,
+      "end_dist_heads": 0.26,
+      "ink_center": 1.0,
+      "ink_ring": 0.8074,
+      "box_page": [
+       3614.16,
+       2499.0,
+       3655.76,
+       2532.6
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3651.3,
+     2375.5,
+     3656.1,
+     2524.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008550",
+    "cell": "cell/0/0/2/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/2/4/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.27,
+      "h_sp": 1.16,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.8035,
+      "box_page": [
+       4006.16,
+       2467.0,
+       4046.8,
+       2504.12
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/0/0/2/4/10",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.16,
+      "end_dist_heads": 1.13,
+      "ink_center": 1.0,
+      "ink_ring": 0.8162,
+      "box_page": [
+       4006.16,
+       2433.08,
+       4048.08,
+       2470.2
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4043.3,
+     2348.6,
+     4049.0,
+     2493.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008551",
+    "cell": "cell/0/0/2/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/0/0/2/4/5",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.09,
+      "end_dist_heads": 0.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.8386,
+      "box_page": [
+       3939.2799999999997,
+       2484.92,
+       3979.6,
+       2519.8
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.85,
+      "key": "glyph/0/0/2/4/12",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.42,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8952,
+      "box_page": [
+       3939.2799999999997,
+       2449.7200000000003,
+       3984.7200000000003,
+       2486.2
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3973.2,
+     2361.4,
+     3982.2,
+     2513.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008586",
+    "cell": "cell/0/0/2/5",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/0/0/2/5/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.25,
+        0,
+        "filled",
+        1.0,
+        2
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.11,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.7734,
+      "box_page": [
+       4511.8,
+       2435.32,
+       4553.4,
+       2470.84
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/0/0/2/5/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.25,
+        0,
+        "filled",
+        1.0,
+        2
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.25,
+      "end_dist_heads": 1.08,
+      "ink_center": 1.0,
+      "ink_ring": 0.8206,
+      "box_page": [
+       4511.8,
+       2398.52,
+       4553.4,
+       2438.52
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4547.0,
+     2314.4,
+     4554.0,
+     2461.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008593",
+    "cell": "cell/0/0/2/6",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/2/6/6",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.19,
+      "ink_center": 1.0,
+      "ink_ring": 0.8631,
+      "box_page": [
+       4932.53125,
+       2350.34375,
+       4975.5,
+       2388.5
+      ],
+      "n_stems": 2
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/2/6/10",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.15,
+      "end_dist_heads": 1.12,
+      "ink_center": 1.0,
+      "ink_ring": 0.9587,
+      "box_page": [
+       4932.53125,
+       2384.71875,
+       4975.5,
+       2421.5
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4934.2,
+     2362.0,
+     4940.1,
+     2507.1
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008607",
+    "cell": "cell/0/0/3/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/3/0/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.7362,
+      "box_page": [
+       1645.96484375,
+       2689.98828125,
+       1687.77734375,
+       2728.31640625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.06,
+      "key": "glyph/0/0/3/0/10",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.05,
+      "end_dist_heads": 2.88,
+      "ink_center": 1.0,
+      "ink_ring": 0.9567,
+      "box_page": [
+       1646.8359375,
+       2804.537109375,
+       1687.341796875,
+       2838.509765625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1646.4,
+     2703.5,
+     1652.1,
+     2919.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008637",
+    "cell": "cell/0/0/3/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/3/1/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.23,
+      "h_sp": 1.16,
+      "end_dist_heads": 1.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.8527,
+      "box_page": [
+       2397.735,
+       2755.045,
+       2437.4025,
+       2792.455
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/3/1/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.22,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.3,
+      "ink_center": 1.0,
+      "ink_ring": 0.7729,
+      "box_page": [
+       2397.735,
+       2722.4725,
+       2437.08,
+       2758.5925
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2398.1,
+     2729.6,
+     2405.2,
+     2884.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008638",
+    "cell": "cell/0/0/3/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/0/0/3/1/9",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.0,
+      "end_dist_heads": 0.55,
+      "ink_center": 1.0,
+      "ink_ring": 0.977,
+      "box_page": [
+       2546.4075,
+       2773.105,
+       2587.6875,
+       2805.355
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.92,
+      "key": "glyph/0/0/3/1/11",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.15,
+      "end_dist_heads": -0.45,
+      "ink_center": 1.0,
+      "ink_ring": 0.8764,
+      "box_page": [
+       2546.085,
+       2736.34,
+       2588.01,
+       2773.4275
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2583.2,
+     2771.5,
+     2586.1,
+     2843.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008651",
+    "cell": "cell/0/0/3/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/0/0/3/2/0",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.746,
+      "box_page": [
+       2705.185,
+       2754.0775,
+       2748.0775,
+       2790.1975
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/3/2/1",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.17,
+      "end_dist_heads": 1.12,
+      "ink_center": 1.0,
+      "ink_ring": 0.8872,
+      "box_page": [
+       2706.1525,
+       2786.9725,
+       2747.755,
+       2824.705
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2706.2,
+     2763.4,
+     2714.2,
+     2908.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008662",
+    "cell": "cell/0/0/3/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/3/3/1",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7477,
+      "box_page": [
+       3316.1075,
+       2787.295,
+       3360.29,
+       2824.06
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/3/3/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.16,
+      "end_dist_heads": 1.11,
+      "ink_center": 1.0,
+      "ink_ring": 0.8395,
+      "box_page": [
+       3316.7525,
+       2821.1575,
+       3359.0,
+       2858.5675
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3317.1,
+     2798.3,
+     3323.2,
+     2933.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008660",
+    "cell": "cell/0/0/3/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/3/3/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8113,
+      "box_page": [
+       3138.41,
+       2821.8025,
+       3179.045,
+       2858.5675
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/0/0/3/3/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.17,
+      "end_dist_heads": 1.16,
+      "ink_center": 1.0,
+      "ink_ring": 0.8238,
+      "box_page": [
+       3138.0875,
+       2786.9725,
+       3181.3025,
+       2824.705
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3175.2,
+     2703.4,
+     3181.0,
+     2849.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008661",
+    "cell": "cell/0/0/3/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/3/3/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.16,
+      "ink_center": 1.0,
+      "ink_ring": 0.7585,
+      "box_page": [
+       3457.3625,
+       2755.045,
+       3497.9975,
+       2791.165
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/3/3/9",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.11,
+      "ink_center": 1.0,
+      "ink_ring": 0.8458,
+      "box_page": [
+       3457.04,
+       2789.5525,
+       3498.6425,
+       2826.3175
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3458.0,
+     2767.3,
+     3464.1,
+     2910.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008684",
+    "cell": "cell/0/0/3/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/3/4/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.7476,
+      "box_page": [
+       3872.3075,
+       2786.005,
+       3913.91,
+       2822.77
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.04,
+      "key": "glyph/0/0/3/4/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.2,
+      "h_sp": 1.12,
+      "end_dist_heads": 1.13,
+      "ink_center": 1.0,
+      "ink_ring": 0.8743,
+      "box_page": [
+       3874.565,
+       2821.1575,
+       3913.265,
+       2857.2775
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3873.9,
+     2798.3,
+     3878.1,
+     2933.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008681",
+    "cell": "cell/0/0/3/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.0,
+      "key": "glyph/0/0/3/4/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.24,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.3,
+      "ink_center": 1.0,
+      "ink_ring": 0.8205,
+      "box_page": [
+       3613.34,
+       2821.1575,
+       3653.33,
+       2857.9225
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/0/0/3/4/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.14,
+      "end_dist_heads": 1.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.8175,
+      "box_page": [
+       3613.985,
+       2787.295,
+       3654.62,
+       2824.06
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3650.1,
+     2701.5,
+     3656.2,
+     2850.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008682",
+    "cell": "cell/0/0/3/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/3/4/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.1,
+      "end_dist_heads": 1.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.9019,
+      "box_page": [
+       4005.8225,
+       2788.2625,
+       4048.07,
+       2823.7375
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/3/4/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.15,
+      "end_dist_heads": 0.21,
+      "ink_center": 1.0,
+      "ink_ring": 0.792,
+      "box_page": [
+       4006.145,
+       2754.7225,
+       4050.3275,
+       2791.81
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4005.8,
+     2765.4,
+     4012.9,
+     2907.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008683",
+    "cell": "cell/0/0/3/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/3/4/10",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 0.92,
+      "end_dist_heads": 1.37,
+      "ink_center": 1.0,
+      "ink_ring": 0.9696,
+      "box_page": [
+       3938.0975,
+       2806.3225,
+       3979.7,
+       2835.9925
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/3/4/14",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.08,
+      "end_dist_heads": 0.26,
+      "ink_center": 1.0,
+      "ink_ring": 0.9263,
+      "box_page": [
+       3938.42,
+       2772.1375,
+       3979.055,
+       2806.9674999999997
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3938.1,
+     2780.5,
+     3944.9,
+     2922.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008718",
+    "cell": "cell/0/0/3/6",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/3/6/2",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.23,
+      "h_sp": 1.1,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.8166,
+      "box_page": [
+       5275.9375,
+       2641.15625,
+       5315.8125,
+       2676.5625
+      ],
+      "n_stems": 2
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/0/0/3/6/11",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.06,
+      "end_dist_heads": 1.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.9332,
+      "box_page": [
+       5273.875,
+       2678.625,
+       5316.84375,
+       2713.0
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     5275.2,
+     2650.4,
+     5282.1,
+     2808.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008720",
+    "cell": "cell/0/0/3/6",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/0/0/3/6/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7537,
+      "box_page": [
+       4711.5,
+       2691.34375,
+       4755.84375,
+       2728.125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/3/6/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.16,
+      "end_dist_heads": 1.07,
+      "ink_center": 1.0,
+      "ink_ring": 0.8611,
+      "box_page": [
+       4713.5625,
+       2723.65625,
+       4755.84375,
+       2761.125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4713.2,
+     2702.3,
+     4720.1,
+     2851.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008821",
+    "cell": "cell/0/0/4/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "c_decided_vs_unsettled",
+    "sub": "c2_narrowed_excludes_it",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.65,
+      "key": "glyph/0/0/4/2/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.29,
+      "h_sp": 1.05,
+      "end_dist_heads": 0.35,
+      "ink_center": 0.9976,
+      "ink_ring": 0.6437,
+      "box_page": [
+       2725.925,
+       3142.475,
+       2767.85,
+       3176.6
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.06,
+      "key": "glyph/0/0/4/2/5",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        2.0,
+        0,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.24,
+      "h_sp": 0.68,
+      "end_dist_heads": 0.01,
+      "ink_center": 0.7634,
+      "ink_ring": 0.6882,
+      "box_page": [
+       2710.65,
+       3264.025,
+       2750.95,
+       3286.125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 1,
+    "stem_box_page": [
+     2750.3,
+     3147.7,
+     2756.2,
+     3275.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008827",
+    "cell": "cell/0/0/4/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.03,
+      "key": "glyph/0/0/4/3/2",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        2.0,
+        0,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.23,
+      "h_sp": 0.81,
+      "end_dist_heads": 0.07,
+      "ink_center": 0.7472,
+      "ink_ring": 0.6581,
+      "box_page": [
+       3142.925,
+       3261.425,
+       3182.9,
+       3287.75
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/0/0/4/3/5",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        2.0,
+        0,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 0.83,
+      "h_sp": 1.1,
+      "end_dist_heads": 0.45,
+      "ink_center": 0.9988,
+      "ink_ring": 0.6381,
+      "box_page": [
+       3181.6,
+       3132.725,
+       3208.575,
+       3168.475
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 1,
+    "stem_box_page": [
+     3181.3,
+     3134.4,
+     3187.1,
+     3276.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008860",
+    "cell": "cell/0/0/5/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.0,
+      "key": "glyph/0/0/5/0/9",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.2,
+      "ink_center": 0.1964,
+      "ink_ring": 0.6862,
+      "box_page": [
+       1651.626953125,
+       3741.435546875,
+       1694.310546875,
+       3780.19921875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.86,
+      "key": "glyph/0/0/5/0/13",
+      "cls": "noteheadHalfOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.56,
+      "h_sp": 1.31,
+      "end_dist_heads": 2.66,
+      "ink_center": 0.8359,
+      "ink_ring": 0.6998,
+      "box_page": [
+       1651.19140625,
+       3625.580078125,
+       1701.279296875,
+       3667.392578125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1690.4,
+     3535.4,
+     1698.2,
+     3768.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008879",
+    "cell": "cell/0/0/5/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.02,
+      "key": "glyph/0/0/5/1/2",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.31,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.23,
+      "ink_center": 0.2738,
+      "ink_ring": 0.6999,
+      "box_page": [
+       2229.12,
+       3742.36,
+       2271.04,
+       3781.08
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.01,
+      "key": "glyph/0/0/5/1/16",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 0.82,
+      "end_dist_heads": 3.77,
+      "ink_center": 0.7232,
+      "ink_ring": 0.7239,
+      "box_page": [
+       2228.16,
+       3626.2,
+       2271.36,
+       3652.44
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2268.2,
+     3540.4,
+     2275.2,
+     3770.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008886",
+    "cell": "cell/0/0/5/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "b_dots",
+    "sub": "dots",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.0,
+      "key": "glyph/0/0/5/2/5",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.13,
+      "end_dist_heads": 0.22,
+      "ink_center": 0.2335,
+      "ink_ring": 0.6882,
+      "box_page": [
+       2711.32,
+       3743.64,
+       2753.88,
+       3779.8
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.9,
+      "key": "glyph/0/0/5/2/16",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        2.0,
+        0,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 0.7,
+      "end_dist_heads": 5.0,
+      "ink_center": 0.7524,
+      "ink_ring": 0.7438,
+      "box_page": [
+       2711.0,
+       3646.36,
+       2758.68,
+       3668.76
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2751.0,
+     3538.5,
+     2757.1,
+     3769.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008893",
+    "cell": "cell/0/0/5/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/0/0/5/3/9",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.4,
+      "h_sp": 1.31,
+      "end_dist_heads": 0.2,
+      "ink_center": 0.2577,
+      "ink_ring": 0.7108,
+      "box_page": [
+       3141.64,
+       3736.92,
+       3186.44,
+       3778.84
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.92,
+      "key": "glyph/0/0/5/3/14",
+      "cls": "noteheadHalfOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.46,
+      "h_sp": 0.87,
+      "end_dist_heads": 3.79,
+      "ink_center": 0.7354,
+      "ink_ring": 0.7127,
+      "box_page": [
+       3140.36,
+       3628.12,
+       3187.08,
+       3655.96
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3180.0,
+     3536.6,
+     3187.1,
+     3766.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008900",
+    "cell": "cell/0/0/5/4",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/5/4/2",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.27,
+      "end_dist_heads": 0.17,
+      "ink_center": 0.221,
+      "ink_ring": 0.6336,
+      "box_page": [
+       3618.64,
+       3743.32,
+       3661.84,
+       3783.96
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.87,
+      "key": "glyph/0/0/5/4/15",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 0.72,
+      "end_dist_heads": 4.94,
+      "ink_center": 0.7005,
+      "ink_ring": 0.7073,
+      "box_page": [
+       3618.32,
+       3645.08,
+       3667.6,
+       3668.12
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3658.0,
+     3538.5,
+     3664.1,
+     3770.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008907",
+    "cell": "cell/0/0/5/5",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/5/5/6",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.32,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.16,
+      "ink_center": 0.1956,
+      "ink_ring": 0.6113,
+      "box_page": [
+       4146.36,
+       3740.44,
+       4188.6,
+       3778.52
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.01,
+      "key": "glyph/0/0/5/5/12",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 0.89,
+      "end_dist_heads": 3.96,
+      "ink_center": 0.7427,
+      "ink_ring": 0.7233,
+      "box_page": [
+       4146.36,
+       3638.36,
+       4187.32,
+       3666.84
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     4185.1,
+     3538.5,
+     4190.2,
+     3765.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008922",
+    "cell": "cell/0/0/5/7",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.3,
+      "key": "glyph/0/0/5/7/0",
+      "cls": "noteheadWholeInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        4.0,
+        0,
+        "hollow",
+        4.0,
+        0
+       ]
+      ],
+      "w_sp": 1.44,
+      "h_sp": 1.01,
+      "end_dist_heads": -0.29,
+      "ink_center": 0.0097,
+      "ink_ring": 0.7389,
+      "box_page": [
+       5424.48,
+       3581.7200000000003,
+       5470.56,
+       3614.04
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.27,
+      "key": "glyph/0/0/5/7/2",
+      "cls": "noteheadWholeInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        4.0,
+        0,
+        "hollow",
+        4.0,
+        0
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.53,
+      "ink_center": 0.5536,
+      "ink_ring": 0.8238,
+      "box_page": [
+       5426.4,
+       3548.44,
+       5470.24,
+       3587.16
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     5436.0,
+     3522.5,
+     5440.2,
+     3588.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008931",
+    "cell": "cell/0/0/6/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/6/0/7",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.24,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.8093,
+      "box_page": [
+       1860.25390625,
+       3922.5390625,
+       1899.888671875,
+       3958.25390625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/0/0/6/0/12",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.24,
+      "h_sp": 1.02,
+      "end_dist_heads": 1.23,
+      "ink_center": 1.0,
+      "ink_ring": 0.9701,
+      "box_page": [
+       1860.25390625,
+       3956.51171875,
+       1899.888671875,
+       3989.177734375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1861.1,
+     3932.6,
+     1865.0,
+     4091.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008957",
+    "cell": "cell/0/0/6/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/0/0/6/1/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.3,
+      "h_sp": 1.16,
+      "end_dist_heads": 0.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.7664,
+      "box_page": [
+       2229.76,
+       3937.76,
+       2271.36,
+       3974.88
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.04,
+      "key": "glyph/0/0/6/1/11",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.21,
+      "h_sp": 1.03,
+      "end_dist_heads": 0.75,
+      "ink_center": 1.0,
+      "ink_ring": 0.9262,
+      "box_page": [
+       2192.96,
+       3957.92,
+       2231.68,
+       3990.88
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2231.0,
+     3949.6,
+     2235.2,
+     4090.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008969",
+    "cell": "cell/0/0/6/2",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.88,
+      "key": "glyph/0/0/6/2/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.33,
+      "ink_center": 1.0,
+      "ink_ring": 0.705,
+      "box_page": [
+       2881.24,
+       4094.88,
+       2928.2799999999997,
+       4132.96
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/6/2/12",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.75,
+        1,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.25,
+      "h_sp": 1.07,
+      "end_dist_heads": 2.94,
+      "ink_center": 1.0,
+      "ink_ring": 0.9422,
+      "box_page": [
+       2883.16,
+       3988.0,
+       2923.16,
+       4022.24
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2920.0,
+     3904.5,
+     2925.1,
+     4126.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008978",
+    "cell": "cell/0/0/6/3",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/0/0/6/3/2",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.32,
+      "h_sp": 1.13,
+      "end_dist_heads": 0.18,
+      "ink_center": 1.0,
+      "ink_ring": 0.7824,
+      "box_page": [
+       3140.36,
+       4036.96,
+       3182.6,
+       4073.12
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/0/0/6/3/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.2,
+      "end_dist_heads": 1.02,
+      "ink_center": 1.0,
+      "ink_ring": 0.7895,
+      "box_page": [
+       3140.36,
+       4003.04,
+       3183.24,
+       4041.44
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3179.1,
+     3928.5,
+     3184.2,
+     4061.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:008999",
+    "cell": "cell/0/0/7/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.92,
+      "key": "glyph/0/0/7/0/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.15,
+      "end_dist_heads": 0.21,
+      "ink_center": 1.0,
+      "ink_ring": 0.7776,
+      "box_page": [
+       1651.626953125,
+       4444.451171875,
+       1695.181640625,
+       4481.47265625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.99,
+      "key": "glyph/0/0/7/0/14",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        1.5,
+        1,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.27,
+      "h_sp": 1.16,
+      "end_dist_heads": 2.59,
+      "ink_center": 1.0,
+      "ink_ring": 0.9521,
+      "box_page": [
+       1651.19140625,
+       4336.0,
+       1692.1328125,
+       4373.45703125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1688.2,
+     4257.6,
+     1695.2,
+     4470.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:009000",
+    "cell": "cell/0/0/7/0",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.03,
+      "key": "glyph/0/0/7/0/8",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.2,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.11,
+      "ink_center": 1.0,
+      "ink_ring": 0.7685,
+      "box_page": [
+       1858.076171875,
+       4444.451171875,
+       1896.83984375,
+       4480.6015625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.99,
+      "key": "glyph/0/0/7/0/11",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.26,
+      "h_sp": 1.15,
+      "end_dist_heads": 2.62,
+      "ink_center": 1.0,
+      "ink_ring": 0.9692,
+      "box_page": [
+       1858.076171875,
+       4336.87109375,
+       1898.58203125,
+       4373.892578125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1895.1,
+     4258.5,
+     1901.2,
+     4466.7
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:009105",
+    "cell": "cell/0/0/8/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "c_decided_vs_unsettled",
+    "sub": "c2_narrowed_excludes_it",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 1.01,
+      "key": "glyph/0/0/8/1/2",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.06,
+      "end_dist_heads": 0.11,
+      "ink_center": 0.195,
+      "ink_ring": 0.7601,
+      "box_page": [
+       2229.12,
+       4718.68,
+       2271.68,
+       4752.6
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.55,
+      "key": "glyph/0/0/8/1/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.27,
+      "end_dist_heads": 0.42,
+      "ink_center": 0.9345,
+      "ink_ring": 0.5681,
+      "box_page": [
+       2246.4,
+       4617.24,
+       2293.44,
+       4657.88
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 1,
+    "stem_box_page": [
+     2269.1,
+     4620.4,
+     2275.2,
+     4739.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:009128",
+    "cell": "cell/0/0/8/5",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "b_dots",
+    "sub": "dots",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/0/0/8/5/0",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.4,
+      "h_sp": 1.3,
+      "end_dist_heads": 0.13,
+      "ink_center": 0.2308,
+      "ink_ring": 0.7487,
+      "box_page": [
+       4146.04,
+       4714.2,
+       4190.84,
+       4755.8
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.21,
+      "key": "glyph/0/0/8/5/5",
+      "cls": "noteheadHalfOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        2.0,
+        0,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.04,
+      "h_sp": 1.01,
+      "end_dist_heads": 0.46,
+      "ink_center": 0.9977,
+      "ink_ring": 0.6052,
+      "box_page": [
+       4181.56,
+       4620.12,
+       4214.84,
+       4652.44
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 1,
+    "stem_box_page": [
+     4186.0,
+     4621.4,
+     4191.2,
+     4740.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:010106",
+    "cell": "cell/0/0/11/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.9,
+      "key": "glyph/0/0/11/1/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.34,
+      "h_sp": 1.15,
+      "end_dist_heads": -0.5,
+      "ink_center": 1.0,
+      "ink_ring": 0.7631,
+      "box_page": [
+       2548.665,
+       5979.15,
+       2591.88,
+       6016.2375
+      ],
+      "n_stems": 2
+     },
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/0/0/11/1/13",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.28,
+      "h_sp": 1.15,
+      "end_dist_heads": 0.41,
+      "ink_center": 1.0,
+      "ink_ring": 0.8636,
+      "box_page": [
+       2548.9875,
+       6013.0125,
+       2590.2675,
+       6050.1
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2586.1,
+     6016.2,
+     2589.0,
+     6099.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:010525",
+    "cell": "cell/0/0/12/1",
+    "page": 0,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d1b_beam_or_flag_level_only",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/0/0/12/1/1",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.25,
+        0,
+        "filled",
+        1.0,
+        2
+       ]
+      ],
+      "w_sp": 1.37,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.15,
+      "ink_center": 1.0,
+      "ink_ring": 0.7232,
+      "box_page": [
+       2602.88,
+       6343.04,
+       2646.7200000000003,
+       6381.76
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.88,
+      "key": "glyph/0/0/12/1/15",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.27,
+      "h_sp": 1.19,
+      "end_dist_heads": 0.42,
+      "ink_center": 1.0,
+      "ink_ring": 0.8891,
+      "box_page": [
+       2571.2,
+       6443.2,
+       2611.84,
+       6481.28
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2603.8,
+     6356.5,
+     2609.9,
+     6478.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033840",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/1/0/0/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.745,
+      "box_page": [
+       1727.03369140625,
+       516.08740234375,
+       1768.80859375,
+       549.625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/1/0/0/0/31",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.51,
+      "h_sp": 1.19,
+      "end_dist_heads": 2.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.922,
+      "box_page": [
+       1726.4453125,
+       584.33935546875,
+       1767.6318359375,
+       616.7001953125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1727.0,
+     525.5,
+     1735.3,
+     690.8
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033833",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/1/0/0/0/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.27,
+      "ink_center": 1.0,
+      "ink_ring": 0.7506,
+      "box_page": [
+       1470.50048828125,
+       489.02197265625,
+       1509.33349609375,
+       522.5595703125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/0/0/37",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.17,
+      "end_dist_heads": 2.37,
+      "ink_center": 1.0,
+      "ink_ring": 0.8679,
+      "box_page": [
+       1472.265625,
+       556.09716796875,
+       1510.51025390625,
+       587.86962890625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1472.3,
+     496.7,
+     1479.3,
+     674.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033835",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/1/0/0/0/10",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.28,
+      "end_dist_heads": 0.21,
+      "ink_center": 1.0,
+      "ink_ring": 0.7561,
+      "box_page": [
+       1566.40625,
+       489.02197265625,
+       1604.65087890625,
+       523.736328125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.16,
+      "key": "glyph/1/0/0/0/32",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.58,
+      "h_sp": 1.06,
+      "end_dist_heads": 2.64,
+      "ink_center": 1.0,
+      "ink_ring": 0.9035,
+      "box_page": [
+       1563.46435546875,
+       560.80419921875,
+       1606.416015625,
+       589.634765625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1566.4,
+     499.0,
+     1574.1,
+     674.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033832",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.15,
+      "key": "glyph/1/0/0/0/11",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.25,
+      "end_dist_heads": 0.21,
+      "ink_center": 1.0,
+      "ink_ring": 0.7103,
+      "box_page": [
+       1212.2021484375,
+       486.66845703125,
+       1252.2119140625,
+       520.79443359375
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/1/0/0/0/43",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.15,
+      "end_dist_heads": 2.39,
+      "ink_center": 1.0,
+      "ink_ring": 0.9103,
+      "box_page": [
+       1213.37890625,
+       555.5087890625,
+       1251.62353515625,
+       586.69287109375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1215.1,
+     496.7,
+     1221.0,
+     673.8
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033839",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/0/0/15",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.7231,
+      "box_page": [
+       1108.6474609375,
+       512.55712890625,
+       1149.24560546875,
+       546.0947265625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/1/0/0/0/18",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.51,
+      "h_sp": 1.17,
+      "end_dist_heads": 1.13,
+      "ink_center": 1.0,
+      "ink_ring": 0.8287,
+      "box_page": [
+       1107.470703125,
+       543.7412109375,
+       1148.6572265625,
+       575.513671875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1109.2,
+     523.7,
+     1115.1,
+     673.8
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:033836",
+    "cell": "cell/1/0/0/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/1/0/0/0/24",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8057,
+      "box_page": [
+       1657.0166015625,
+       500.78955078125,
+       1695.849609375,
+       533.73876953125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/1/0/0/0/28",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 1.25,
+      "end_dist_heads": 2.31,
+      "ink_center": 1.0,
+      "ink_ring": 0.808,
+      "box_page": [
+       1655.25146484375,
+       570.806640625,
+       1695.849609375,
+       604.9326171875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1656.4,
+     509.0,
+     1664.1,
+     679.7
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034170",
+    "cell": "cell/1/0/0/4",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.05,
+      "key": "glyph/1/0/0/4/13",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        0.25,
+        0,
+        "filled",
+        1.0,
+        2
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.23,
+      "end_dist_heads": -0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.7962,
+      "box_page": [
+       3989.21484375,
+       517.9423828125,
+       4026.919921875,
+       551.5341796875
+      ],
+      "n_stems": 2
+     },
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/1/0/0/4/33",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beams_ambiguous",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        0.25,
+        0,
+        "filled",
+        1.0,
+        2
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.31,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.826,
+      "box_page": [
+       3955.2802734375,
+       501.4892578125,
+       3992.9853515625,
+       537.1376953125
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3988.2,
+     429.2,
+     3994.0,
+     527.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034176",
+    "cell": "cell/1/0/0/4",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "c_decided_vs_unsettled",
+    "sub": "c2_narrowed_excludes_it",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/1/0/0/4/15",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_certain_not_joined",
+      "vals": [
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ],
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.33,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8159,
+      "box_page": [
+       3631.0166015625,
+       516.9140625,
+       3668.7216796875,
+       553.248046875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.04,
+      "key": "glyph/1/0/0/4/35",
+      "cls": "noteheadWholeOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        4.0,
+        0,
+        "hollow",
+        4.0,
+        0
+       ]
+      ],
+      "w_sp": 2.68,
+      "h_sp": 1.17,
+      "end_dist_heads": 0.04,
+      "ink_center": 0.8979,
+      "ink_ring": 0.621,
+      "box_page": [
+       3631.359375,
+       618.0322265625,
+       3704.3701171875,
+       649.91015625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3631.0,
+     526.2,
+     3637.2,
+     635.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034169",
+    "cell": "cell/1/0/0/4",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.07,
+      "key": "glyph/1/0/0/4/20",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.12,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.8814,
+      "box_page": [
+       3871.6435546875,
+       519.3134765625,
+       3910.7197265625,
+       549.8203125
+      ],
+      "n_stems": 3
+     },
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/1/0/0/4/21",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.4,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.61,
+      "ink_center": 1.0,
+      "ink_ring": 0.8795,
+      "box_page": [
+       3838.39453125,
+       504.2314453125,
+       3876.4423828125,
+       537.48046875
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     3871.3,
+     428.1,
+     3877.1,
+     541.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034653",
+    "cell": "cell/1/0/1/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/1/0/5",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.7801,
+      "box_page": [
+       1657.60498046875,
+       756.716796875,
+       1696.43798828125,
+       789.666015625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/1/0/1/0/16",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 1.3,
+      "end_dist_heads": 2.27,
+      "ink_center": 1.0,
+      "ink_ring": 0.7738,
+      "box_page": [
+       1655.25146484375,
+       829.08740234375,
+       1695.849609375,
+       864.39013671875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1657.0,
+     766.7,
+     1665.3,
+     938.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034655",
+    "cell": "cell/1/0/1/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.17,
+      "key": "glyph/1/0/1/0/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 1.28,
+      "end_dist_heads": 0.3,
+      "ink_center": 1.0,
+      "ink_ring": 0.7663,
+      "box_page": [
+       1106.2939453125,
+       772.60302734375,
+       1148.06884765625,
+       807.3173828125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/1/0/1/0/22",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 1.25,
+      "end_dist_heads": 1.14,
+      "ink_center": 1.0,
+      "ink_ring": 0.8539,
+      "box_page": [
+       1109.23583984375,
+       801.43359375,
+       1149.833984375,
+       835.5595703125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1110.4,
+     779.7,
+     1116.3,
+     933.8
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034657",
+    "cell": "cell/1/0/1/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/1/0/1/0/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.25,
+      "end_dist_heads": 0.26,
+      "ink_center": 1.0,
+      "ink_ring": 0.7842,
+      "box_page": [
+       1728.21044921875,
+       774.3681640625,
+       1766.455078125,
+       808.494140625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/1/0/1/0/30",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 1.23,
+      "end_dist_heads": 2.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.921,
+      "box_page": [
+       1727.03369140625,
+       843.796875,
+       1768.80859375,
+       877.33447265625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1729.4,
+     782.6,
+     1736.4,
+     941.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034651",
+    "cell": "cell/1/0/1/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.13,
+      "key": "glyph/1/0/1/0/15",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.49,
+      "h_sp": 1.25,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.7314,
+      "box_page": [
+       1471.0888671875,
+       746.71435546875,
+       1511.68701171875,
+       780.84033203125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/1/0/1/0/31",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.21,
+      "end_dist_heads": 2.34,
+      "ink_center": 1.0,
+      "ink_ring": 0.9133,
+      "box_page": [
+       1471.0888671875,
+       816.14306640625,
+       1509.921875,
+       849.09228515625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1472.3,
+     755.5,
+     1480.5,
+     937.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034650",
+    "cell": "cell/1/0/1/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.13,
+      "key": "glyph/1/0/1/0/19",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.29,
+      "ink_center": 1.0,
+      "ink_ring": 0.7373,
+      "box_page": [
+       1311.63818359375,
+       745.53759765625,
+       1351.64794921875,
+       779.0751953125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/1/0/1/0/49",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.23,
+      "end_dist_heads": 2.34,
+      "ink_center": 1.0,
+      "ink_ring": 0.9023,
+      "box_page": [
+       1312.81494140625,
+       814.3779296875,
+       1351.64794921875,
+       847.91552734375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1313.4,
+     752.6,
+     1320.5,
+     937.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034963",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.9,
+      "key": "glyph/1/0/2/0/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.26,
+      "end_dist_heads": 0.31,
+      "ink_center": 1.0,
+      "ink_ring": 0.755,
+      "box_page": [
+       1408.13232421875,
+       1134.8720703125,
+       1448.14208984375,
+       1169.58642578125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.0,
+      "key": "glyph/1/0/2/0/33",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.39,
+      "h_sp": 1.07,
+      "end_dist_heads": 2.66,
+      "ink_center": 1.0,
+      "ink_ring": 0.9473,
+      "box_page": [
+       1405.77880859375,
+       1070.150390625,
+       1444.0234375,
+       1099.5693359375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1440.5,
+     989.5,
+     1447.6,
+     1163.1
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034965",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/1/0/2/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.7605,
+      "box_page": [
+       1655.83984375,
+       1136.048828125,
+       1695.26123046875,
+       1169.58642578125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.06,
+      "key": "glyph/1/0/2/0/35",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.05,
+      "end_dist_heads": 2.66,
+      "ink_center": 1.0,
+      "ink_ring": 0.9485,
+      "box_page": [
+       1655.25146484375,
+       1070.150390625,
+       1691.73095703125,
+       1098.98095703125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1690.6,
+     1000.1,
+     1697.0,
+     1161.3
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034961",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.97,
+      "key": "glyph/1/0/2/0/6",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.24,
+      "end_dist_heads": 2.26,
+      "ink_center": 1.0,
+      "ink_ring": 0.7937,
+      "box_page": [
+       1213.37890625,
+       1051.322265625,
+       1249.8583984375,
+       1085.4482421875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/1/0/2/0/25",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.48,
+      "h_sp": 1.09,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8764,
+      "box_page": [
+       1210.43701171875,
+       1123.1044921875,
+       1251.03515625,
+       1153.11181640625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1245.2,
+     989.5,
+     1252.2,
+     1145.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034966",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/1/0/2/0/9",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.35,
+      "h_sp": 1.18,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.8623,
+      "box_page": [
+       1729.38720703125,
+       1150.75830078125,
+       1766.455078125,
+       1183.119140625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/1/0/2/0/20",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.3,
+      "end_dist_heads": 2.19,
+      "ink_center": 1.0,
+      "ink_ring": 0.7636,
+      "box_page": [
+       1728.798828125,
+       1078.3876953125,
+       1767.6318359375,
+       1114.27880859375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1762.3,
+     1009.5,
+     1769.4,
+     1174.9
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034964",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/1/0/2/0/10",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.25,
+      "ink_center": 1.0,
+      "ink_ring": 0.9087,
+      "box_page": [
+       1470.50048828125,
+       1121.927734375,
+       1509.33349609375,
+       1155.46533203125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.95,
+      "key": "glyph/1/0/2/0/16",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.39,
+      "h_sp": 1.3,
+      "end_dist_heads": 2.17,
+      "ink_center": 1.0,
+      "ink_ring": 0.7805,
+      "box_page": [
+       1471.67724609375,
+       1051.322265625,
+       1509.921875,
+       1087.21337890625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1505.2,
+     989.5,
+     1510.5,
+     1147.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:034962",
+    "cell": "cell/1/0/2/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/1/0/2/0/11",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.48,
+      "h_sp": 1.07,
+      "end_dist_heads": 0.62,
+      "ink_center": 1.0,
+      "ink_ring": 0.9155,
+      "box_page": [
+       1309.28466796875,
+       1122.51611328125,
+       1349.8828125,
+       1151.93505859375
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.93,
+      "key": "glyph/1/0/2/0/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.22,
+      "end_dist_heads": 2.38,
+      "ink_center": 1.0,
+      "ink_ring": 0.8036,
+      "box_page": [
+       1310.46142578125,
+       1052.4990234375,
+       1349.8828125,
+       1086.03662109375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1343.4,
+     989.5,
+     1350.5,
+     1155.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035063",
+    "cell": "cell/1/0/2/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.99,
+      "key": "glyph/1/0/2/1/16",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.49,
+      "ink_center": 1.0,
+      "ink_ring": 0.8085,
+      "box_page": [
+       1982.93359375,
+       1163.1513671875,
+       2019.560546875,
+       1196.5654296875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.92,
+      "key": "glyph/1/0/2/1/21",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.51,
+      "h_sp": 1.15,
+      "end_dist_heads": 2.63,
+      "ink_center": 1.0,
+      "ink_ring": 0.9168,
+      "box_page": [
+       1981.005859375,
+       1097.6083984375,
+       2022.4521484375,
+       1129.0947265625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2016.0,
+     1023.1,
+     2022.1,
+     1196.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035236",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/1/0/3/0/1",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.25,
+      "end_dist_heads": 0.16,
+      "ink_center": 1.0,
+      "ink_ring": 0.7375,
+      "box_page": [
+       1727.6220703125,
+       1339.7412109375,
+       1767.04345703125,
+       1373.8671875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/1/0/3/0/22",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 1.08,
+      "end_dist_heads": 2.52,
+      "ink_center": 1.0,
+      "ink_ring": 0.9401,
+      "box_page": [
+       1727.6220703125,
+       1410.93505859375,
+       1769.39697265625,
+       1440.35400390625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1729.4,
+     1351.5,
+     1735.3,
+     1507.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035229",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.12,
+      "key": "glyph/1/0/3/0/3",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.31,
+      "ink_center": 1.0,
+      "ink_ring": 0.7246,
+      "box_page": [
+       1213.37890625,
+       1312.08740234375,
+       1253.388671875,
+       1345.625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/1/0/3/0/29",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.43,
+      "h_sp": 1.21,
+      "end_dist_heads": 2.38,
+      "ink_center": 1.0,
+      "ink_ring": 0.9325,
+      "box_page": [
+       1215.14404296875,
+       1380.33935546875,
+       1253.97705078125,
+       1413.28857421875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1215.1,
+     1318.6,
+     1221.0,
+     1480.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035230",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/3/0/4",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.7154,
+      "box_page": [
+       1473.4423828125,
+       1312.08740234375,
+       1512.86376953125,
+       1345.625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.06,
+      "key": "glyph/1/0/3/0/20",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.36,
+      "h_sp": 1.17,
+      "end_dist_heads": 2.41,
+      "ink_center": 1.0,
+      "ink_ring": 0.9253,
+      "box_page": [
+       1474.619140625,
+       1381.51611328125,
+       1511.68701171875,
+       1413.28857421875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1473.4,
+     1320.9,
+     1480.5,
+     1498.6
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035231",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/3/0/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.51,
+      "h_sp": 1.25,
+      "end_dist_heads": 0.21,
+      "ink_center": 1.0,
+      "ink_ring": 0.709,
+      "box_page": [
+       1568.17138671875,
+       1311.4990234375,
+       1609.35791015625,
+       1345.625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.1,
+      "key": "glyph/1/0/3/0/17",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.19,
+      "end_dist_heads": 2.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.8704,
+      "box_page": [
+       1567.5830078125,
+       1380.33935546875,
+       1607.00439453125,
+       1412.7001953125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1569.3,
+     1321.5,
+     1574.1,
+     1491.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035233",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.14,
+      "key": "glyph/1/0/3/0/7",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.28,
+      "end_dist_heads": 0.23,
+      "ink_center": 1.0,
+      "ink_ring": 0.7977,
+      "box_page": [
+       1657.60498046875,
+       1325.6201171875,
+       1695.26123046875,
+       1360.33447265625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.17,
+      "key": "glyph/1/0/3/0/12",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.51,
+      "h_sp": 1.23,
+      "end_dist_heads": 2.31,
+      "ink_center": 1.0,
+      "ink_ring": 0.7896,
+      "box_page": [
+       1655.83984375,
+       1395.63720703125,
+       1697.0263671875,
+       1429.1748046875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1659.4,
+     1335.0,
+     1666.4,
+     1501.5
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035232",
+    "cell": "cell/1/0/3/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/1/0/3/0/11",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.21,
+      "end_dist_heads": 0.23,
+      "ink_center": 1.0,
+      "ink_ring": 0.7715,
+      "box_page": [
+       1315.16845703125,
+       1313.8525390625,
+       1353.4130859375,
+       1346.8017578125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.11,
+      "key": "glyph/1/0/3/0/25",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.54,
+      "h_sp": 1.12,
+      "end_dist_heads": 2.46,
+      "ink_center": 1.0,
+      "ink_ring": 0.9075,
+      "box_page": [
+       1313.4033203125,
+       1382.69287109375,
+       1355.17822265625,
+       1413.28857421875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1315.2,
+     1322.7,
+     1321.1,
+     1499.8
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035376",
+    "cell": "cell/1/0/3/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.09,
+      "key": "glyph/1/0/3/1/2",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.7797,
+      "box_page": [
+       2217.1533203125,
+       1239.0166015625,
+       2256.671875,
+       1272.4306640625
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.16,
+      "key": "glyph/1/0/3/1/13",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.59,
+      "h_sp": 1.26,
+      "end_dist_heads": 2.77,
+      "ink_center": 1.0,
+      "ink_ring": 0.8175,
+      "box_page": [
+       2213.9404296875,
+       1339.9013671875,
+       2257.314453125,
+       1374.279296875
+      ],
+      "n_stems": 2
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2217.2,
+     1248.3,
+     2224.2,
+     1452.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035377",
+    "cell": "cell/1/0/3/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.06,
+      "key": "glyph/1/0/3/1/4",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.14,
+      "end_dist_heads": 0.2,
+      "ink_center": 1.0,
+      "ink_ring": 0.8239,
+      "box_page": [
+       2084.4609375,
+       1242.2294921875,
+       2122.0517578125,
+       1273.39453125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.08,
+      "key": "glyph/1/0/3/1/10",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.21,
+      "end_dist_heads": 2.95,
+      "ink_center": 1.0,
+      "ink_ring": 0.8177,
+      "box_page": [
+       2083.4970703125,
+       1341.1865234375,
+       2123.015625,
+       1374.279296875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2083.2,
+     1251.5,
+     2090.2,
+     1455.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035469",
+    "cell": "cell/1/0/3/4",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/1/0/3/4/0",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.23,
+      "end_dist_heads": 2.48,
+      "ink_center": 1.0,
+      "ink_ring": 0.8654,
+      "box_page": [
+       3707.455078125,
+       1327.6533203125,
+       3746.8740234375,
+       1361.2451171875
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.04,
+      "key": "glyph/1/0/3/4/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.33,
+      "h_sp": 1.26,
+      "end_dist_heads": 2.79,
+      "ink_center": 1.0,
+      "ink_ring": 0.8221,
+      "box_page": [
+       3743.103515625,
+       1342.392578125,
+       3779.4375,
+       1376.669921875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 1,
+    "stem_box_page": [
+     3740.0,
+     1261.2,
+     3749.3,
+     1455.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035947",
+    "cell": "cell/1/0/5/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d2_all_narrowed_identical",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/1/0/5/0/1",
+      "cls": "noteheadBlackInSpace",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.41,
+      "h_sp": 1.28,
+      "end_dist_heads": 0.22,
+      "ink_center": 1.0,
+      "ink_ring": 0.8141,
+      "box_page": [
+       1566.99462890625,
+       1970.6083984375,
+       1605.82763671875,
+       2005.9111328125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/1/0/5/0/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.45,
+      "h_sp": 1.24,
+      "end_dist_heads": 2.72,
+      "ink_center": 1.0,
+      "ink_ring": 0.8169,
+      "box_page": [
+       1566.99462890625,
+       1877.05615234375,
+       1607.00439453125,
+       1911.18212890625
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1601.1,
+     1801.2,
+     1609.4,
+     1995.9
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035946",
+    "cell": "cell/1/0/5/0",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "d_other",
+    "sub": "d1a_whole_vs_half_class",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.88,
+      "key": "glyph/1/0/5/0/14",
+      "cls": "noteheadWholeOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        6.0,
+        1,
+        "hollow",
+        4.0,
+        0
+       ]
+      ],
+      "w_sp": 1.93,
+      "h_sp": 1.22,
+      "end_dist_heads": 2.83,
+      "ink_center": 0.8116,
+      "ink_ring": 0.6632,
+      "box_page": [
+       984.49951171875,
+       1876.4677734375,
+       1037.45361328125,
+       1910.00537109375
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/1/0/5/0/21",
+      "cls": "noteheadHalfInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.65,
+      "h_sp": 1.22,
+      "end_dist_heads": 0.25,
+      "ink_center": 0.2258,
+      "ink_ring": 0.7323,
+      "box_page": [
+       988.6181640625,
+       1970.6083984375,
+       1033.92333984375,
+       2004.14599609375
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     1027.5,
+     1798.2,
+     1035.1,
+     1995.9
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:035965",
+    "cell": "cell/1/0/5/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.96,
+      "key": "glyph/1/0/5/1/0",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.4,
+      "h_sp": 0.99,
+      "end_dist_heads": 0.3,
+      "ink_center": 1.0,
+      "ink_ring": 0.8547,
+      "box_page": [
+       1983.576171875,
+       1925.236328125,
+       2022.130859375,
+       1952.5458984375
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/1/0/5/1/7",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.46,
+      "h_sp": 1.28,
+      "end_dist_heads": 2.67,
+      "ink_center": 1.0,
+      "ink_ring": 0.7869,
+      "box_page": [
+       1981.3271484375,
+       1823.06640625,
+       2021.48828125,
+       1858.408203125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2017.3,
+     1746.3,
+     2024.1,
+     1947.1
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:036135",
+    "cell": "cell/1/0/6/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.91,
+      "key": "glyph/1/0/6/1/0",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.47,
+      "h_sp": 1.24,
+      "end_dist_heads": 0.32,
+      "ink_center": 1.0,
+      "ink_ring": 0.7596,
+      "box_page": [
+       1984.21875,
+       2158.74609375,
+       2024.3798828125,
+       2192.4814453125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 1.03,
+      "key": "glyph/1/0/6/1/17",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.38,
+      "h_sp": 1.07,
+      "end_dist_heads": 2.58,
+      "ink_center": 1.0,
+      "ink_ring": 0.9658,
+      "box_page": [
+       1981.9697265625,
+       2065.2509765625,
+       2019.560546875,
+       2094.48828125
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2017.3,
+     2004.5,
+     2024.1,
+     2186.4
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:036975",
+    "cell": "cell/1/0/10/1",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "agree",
+    "sub": "",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.94,
+      "key": "glyph/1/0/10/1/5",
+      "cls": "noteheadBlackInSpace",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.39,
+      "h_sp": 1.05,
+      "end_dist_heads": 0.24,
+      "ink_center": 1.0,
+      "ink_ring": 0.8436,
+      "box_page": [
+       1987.7529296875,
+       3098.7138671875,
+       2025.986328125,
+       3127.6298828125
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.97,
+      "key": "glyph/1/0/10/1/9",
+      "cls": "noteheadBlackOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ]
+      ],
+      "w_sp": 1.36,
+      "h_sp": 1.2,
+      "end_dist_heads": 2.29,
+      "ink_center": 1.0,
+      "ink_ring": 0.8265,
+      "box_page": [
+       1987.1103515625,
+       3028.0302734375,
+       2024.701171875,
+       3061.123046875
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     2021.2,
+     2952.2,
+     2026.3,
+     3120.2
+    ],
+    "affine_residual_px": 0.0
+   },
+   {
+    "stem": "obs:039384",
+    "cell": "cell/1/1/7/7",
+    "page": 1,
+    "n_heads": 2,
+    "primary": "c_decided_vs_unsettled",
+    "sub": "c2_narrowed_excludes_it",
+    "any_unread": false,
+    "heads": [
+     {
+      "stem_x_frac": 0.98,
+      "key": "glyph/1/1/7/7/3",
+      "cls": "noteheadHalfOnLine",
+      "status": "kept",
+      "outcome": "decided",
+      "reason": "head_and_marks",
+      "vals": [
+       [
+        3.0,
+        1,
+        "hollow",
+        2.0,
+        0
+       ]
+      ],
+      "w_sp": 1.6,
+      "h_sp": 1.23,
+      "end_dist_heads": 0.26,
+      "ink_center": 0.6939,
+      "ink_ring": 0.6444,
+      "box_page": [
+       5019.4175,
+       5812.1175,
+       5063.0175,
+       5845.635
+      ],
+      "n_stems": 1
+     },
+     {
+      "stem_x_frac": 0.49,
+      "key": "glyph/1/1/7/7/5",
+      "cls": "noteheadBlackOnLine",
+      "status": "narrowed",
+      "outcome": "narrowed",
+      "reason": "beam_discounted_uncertain",
+      "vals": [
+       [
+        0.5,
+        0,
+        "filled",
+        1.0,
+        1
+       ],
+       [
+        1.0,
+        0,
+        "filled",
+        1.0,
+        0
+       ]
+      ],
+      "w_sp": 1.57,
+      "h_sp": 0.98,
+      "end_dist_heads": 0.55,
+      "ink_center": 0.9361,
+      "ink_ring": 0.6331,
+      "box_page": [
+       5041.2175,
+       5735.8175,
+       5084.0,
+       5762.5225
+      ],
+      "n_stems": 1
+     }
+    ],
+    "slash_rows_on_stem": 0,
+    "stem_box_page": [
+     5059.2,
+     5734.5,
+     5065.2,
+     5837.5
+    ],
+    "affine_residual_px": 0.0
+   }
+  ],
+  "duplicate_stem_rows": 5,
+  "filed_join_check": {
+   "heads_with_filed_join": 332,
+   "first_overlap_equals_filed": 332,
+   "filed_but_no_overlap_here": 0
+  }
+ }
+}
