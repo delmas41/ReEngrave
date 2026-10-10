@@ -1,0 +1,376 @@
+doc,page,system,cell,bar_in_system,bars_in_system,export_bar,printed_bar_confirmed,printed_bar_by_eye,system_start_margin_reading,system_start_state,system_start_export_minus_printed,kept_to_narrowed,narrowed_to_kept,net_undecided,staves_with_new_undecided,staves,reasons,notes_in_bar_tonight_kept,notes_in_bar_tonight_narrowed,notes_in_bar_tonight_other
+brahms1-breitkopf,13,1,9,10,12,263,,260,,abstained,,30,0,30,10,0 1 2 3 4 9 10 11 12 13,beam discounted uncertain x30,6,31,15
+brahms1-breitkopf,18,1,5,6,8,351,,348,8,disagree,338,24,26,-2,7,0 2 3 5 11 12 13,beam discounted uncertain x24,43,28,29
+brahms1-breitkopf,13,1,8,9,12,262,,259,,abstained,,23,0,23,8,0 1 2 3 10 11 12 13,beam discounted uncertain x23,5,32,20
+brahms1-breitkopf,3,0,9,10,10,47,47,47,38,agree,,22,6,16,6,1 5 9 11 12 13,beam discounted uncertain x22,30,24,18
+brahms1-breitkopf,25,0,1,2,10,476,,473,,abstained,,22,17,5,9,0 1 2 3 4 9 10 11 12,beam discounted uncertain x22,30,28,32
+brahms1-breitkopf,13,1,3,4,12,257,,254,,abstained,,20,0,20,9,2 3 4 5 9 10 11 12 13,beam discounted uncertain x20,2,25,25
+brahms1-breitkopf,16,1,4,5,9,322,,319,,abstained,,19,0,19,11,1 2 3 4 5 7 9 10 11 12 13,beam discounted uncertain x19,16,22,28
+brahms1-breitkopf,23,1,8,9,10,455,,452,,abstained,,19,0,19,5,0 8 9 11 12,beam discounted uncertain x19,39,23,21
+brahms1-breitkopf,14,1,5,6,9,281,,278,273,disagree,3,18,0,18,5,0 3 5 7 9,beam discounted uncertain x18,11,19,13
+brahms1-breitkopf,18,0,2,3,7,341,,338,,abstained,,18,1,17,6,1 2 4 5 9 10,beam discounted uncertain x18,43,30,24
+brahms1-breitkopf,0,0,2,3,7,3,,,,abstained,,17,0,17,6,0 4 6 9 10 12,beam discounted uncertain x17,22,20,4
+brahms1-breitkopf,13,1,5,6,12,259,,256,,abstained,,17,1,16,9,2 3 4 5 9 10 11 12 13,beam discounted uncertain x17,3,26,23
+brahms1-breitkopf,25,1,7,8,10,492,,,8,disagree,477,17,1,16,8,0 1 2 3 7 8 9 11,beam discounted uncertain x17,10,21,17
+brahms1-breitkopf,2,0,3,4,6,26,,,,abstained,,16,0,16,6,0 1 2 3 7 11,beam discounted uncertain x16,33,25,31
+brahms1-breitkopf,2,0,4,5,6,27,,,,abstained,,15,0,15,4,0 3 9 12,beam discounted uncertain x15,37,20,16
+brahms1-breitkopf,13,1,7,8,12,261,,258,,abstained,,15,0,15,9,0 1 2 4 9 10 11 12 13,beam discounted uncertain x15,5,30,21
+brahms1-breitkopf,21,1,1,2,11,402,,,398,disagree,3,14,0,14,5,3 4 6 9 10,beam discounted uncertain x14,9,20,7
+brahms1-breitkopf,0,0,1,2,7,2,,,,abstained,,13,0,13,6,0 1 2 4 6 11,beam discounted uncertain x13,40,22,7
+brahms1-breitkopf,0,0,3,4,7,4,,,,abstained,,13,0,13,3,0 9 10,beam discounted uncertain x13,43,17,6
+brahms1-breitkopf,1,0,0,1,7,8,8,,8,agree,,13,69,-56,6,2 3 5 7 9 11,beam discounted uncertain x13,148,30,35
+brahms1-breitkopf,2,0,5,6,6,28,,,,abstained,,13,8,5,5,1 2 9 11 12,beam discounted uncertain x13,45,19,20
+brahms1-breitkopf,6,1,0,1,9,106,,,6,disagree,100,13,1,12,5,2 3 5 8 10,beam discounted uncertain x11; head fill from ink x2,29,19,93
+brahms1-breitkopf,13,1,2,3,12,256,,253,,abstained,,13,0,13,6,1 2 4 10 11 12,beam discounted uncertain x13,7,27,20
+brahms1-breitkopf,13,1,4,5,12,258,,255,,abstained,,13,0,13,8,1 2 4 5 9 10 11 12,beam discounted uncertain x13,8,25,25
+brahms1-breitkopf,16,0,7,8,12,313,,310,,abstained,,13,0,13,5,1 3 4 10 12,beam discounted uncertain x13,9,17,17
+brahms1-breitkopf,22,0,4,5,12,416,,413,409,disagree,3,13,0,13,6,0 1 2 3 4 7,beam discounted uncertain x13,6,16,2
+brahms1-breitkopf,3,0,1,2,10,39,39,39,38,agree,,12,0,12,4,0 1 2 3,beam discounted uncertain x12,6,12,14
+brahms1-breitkopf,13,1,6,7,12,260,,257,,abstained,,12,0,12,5,0 1 2 4 7,beam discounted uncertain x12,2,23,13
+brahms1-breitkopf,14,1,1,2,9,277,,274,273,disagree,3,12,0,12,3,0 3 9,beam discounted uncertain x12,16,15,21
+brahms1-breitkopf,14,1,3,4,9,279,,276,273,disagree,3,12,0,12,6,0 2 3 7 8 9,beam discounted uncertain x12,16,15,12
+brahms1-breitkopf,14,1,4,5,9,280,,277,273,disagree,3,12,0,12,5,0 2 3 8 9,beam discounted uncertain x12,14,20,12
+brahms1-breitkopf,22,0,2,3,12,414,,411,409,disagree,3,12,0,12,6,0 1 2 3 4 7,beam discounted uncertain x12,5,16,9
+brahms1-breitkopf,6,0,7,8,9,104,,,,abstained,,11,1,10,5,1 2 3 7 11,beam discounted uncertain x11,16,13,22
+brahms1-breitkopf,15,1,8,9,12,302,,,9,disagree,285,11,0,11,5,8 9 10 11 12,beam discounted uncertain x11,8,13,16
+brahms1-breitkopf,16,0,1,2,12,307,,304,,abstained,,11,0,11,4,3 4 11 13,beam discounted uncertain x11,14,14,19
+brahms1-breitkopf,18,1,1,2,8,347,,344,8,disagree,338,11,2,9,3,9 10 12,beam discounted uncertain x11,32,21,18
+brahms1-breitkopf,19,0,8,9,11,362,,,5,disagree,349,11,0,11,8,0 1 2 3 9 10 11 12,beam discounted uncertain x11,4,16,6
+brahms1-breitkopf,19,1,1,2,9,366,,,86,disagree,279,11,0,11,5,0 1 3 4 5,beam discounted uncertain x10; head fill from ink x1,20,16,23
+brahms1-breitkopf,21,1,9,10,11,410,,,398,disagree,3,11,0,11,5,0 1 2 3 6,beam discounted uncertain x11,5,14,4
+brahms1-breitkopf,24,0,3,4,9,460,,,454,disagree,3,11,0,11,4,0 3 6 7,beam discounted uncertain x11,31,11,17
+brahms1-breitkopf,26,0,6,7,9,501,,,493,disagree,2,11,6,5,6,0 4 8 10 11 12,beam discounted uncertain x11,12,16,19
+brahms1-breitkopf,26,1,3,4,11,507,,,,abstained,,11,4,7,5,1 4 8 9 11,beam discounted uncertain x10; flags disagree x1,34,15,17
+brahms1-breitkopf,3,0,5,6,10,43,43,43,38,agree,,10,0,10,3,9 10 12,beam discounted uncertain x10,11,14,3
+brahms1-breitkopf,5,0,2,3,8,81,,,,abstained,,10,1,9,4,0 1 2 3,beam discounted uncertain x9; beams ambiguous x1,31,15,28
+brahms1-breitkopf,6,1,6,7,9,112,,,6,disagree,100,10,0,10,6,1 2 3 6 8 10,beam discounted uncertain x10,15,13,8
+brahms1-breitkopf,9,0,4,5,9,165,165,,161,agree,,10,0,10,3,0 6 7,beam discounted uncertain x10,21,12,7
+brahms1-breitkopf,12,0,3,4,14,221,,,,abstained,,10,0,10,4,0 5 12 13,beam discounted uncertain x10,11,10,11
+brahms1-breitkopf,13,0,8,9,12,250,,,,abstained,,10,0,10,3,0 2 3,beam discounted uncertain x10,15,10,16
+brahms1-breitkopf,15,1,6,7,12,300,,,9,disagree,285,10,0,10,5,7 8 9 10 11,beam discounted uncertain x10,9,21,24
+brahms1-breitkopf,16,1,3,4,9,321,,318,,abstained,,10,0,10,6,0 2 3 7 9 12,beam discounted uncertain x7; beam certain not joined x3,29,11,18
+brahms1-breitkopf,16,1,5,6,9,323,,320,,abstained,,10,0,10,7,1 4 5 7 9 12 13,beam discounted uncertain x10,20,17,16
+brahms1-breitkopf,21,0,6,7,9,398,,,389,disagree,3,10,0,10,3,1 3 4,beam discounted uncertain x10,17,10,11
+brahms1-breitkopf,22,0,6,7,12,418,,415,409,disagree,3,10,0,10,6,0 1 2 3 6 7,beam discounted uncertain x10,6,15,4
+brahms1-breitkopf,22,1,2,3,13,426,426,,424,agree,,10,0,10,5,4 6 7 8 9,beam discounted uncertain x10,2,10,7
+brahms1-breitkopf,25,1,1,2,10,486,,,8,disagree,477,10,0,10,5,0 3 6 7 8,beam discounted uncertain x10,16,13,10
+brahms1-breitkopf,4,1,8,9,9,78,78,,70,agree,,9,1,8,5,0 3 10 11 13,beam discounted uncertain x9,26,17,14
+brahms1-breitkopf,5,1,9,10,10,96,96,,87,agree,,9,0,9,5,0 3 9 11 12,beam discounted uncertain x9,25,12,19
+brahms1-breitkopf,7,1,4,5,12,128,,,24,disagree,100,9,11,-2,6,1 3 6 7 9 10,beam discounted uncertain x9,29,13,8
+brahms1-breitkopf,7,1,10,11,12,134,,,24,disagree,100,9,0,9,4,1 2 3 9,beam discounted uncertain x9,7,10,7
+brahms1-breitkopf,8,1,2,3,12,151,,,449,disagree,-300,9,0,9,5,2 5 7 8 9,beam discounted uncertain x9,1,11,3
+brahms1-breitkopf,12,0,7,8,14,225,,,,abstained,,9,0,9,5,0 1 5 12 13,beam discounted uncertain x9,9,10,10
+brahms1-breitkopf,14,0,3,4,10,269,,,,abstained,,9,0,9,4,9 10 12 13,beam discounted uncertain x9,27,11,27
+brahms1-breitkopf,18,0,4,5,7,343,,340,,abstained,,9,0,9,5,0 1 4 9 12,beam discounted uncertain x9,32,16,14
+brahms1-breitkopf,20,0,6,7,9,380,,,3,disagree,371,9,0,9,5,1 3 8 9 11,beam discounted uncertain x9,15,13,7
+brahms1-breitkopf,20,1,5,6,9,388,,,38,disagree,345,9,1,8,5,0 1 2 4 8,beam discounted uncertain x9,13,12,5
+brahms1-breitkopf,21,1,2,3,11,403,,,398,disagree,3,9,7,2,6,3 4 6 7 9 10,beam discounted uncertain x9,28,11,13
+brahms1-breitkopf,22,0,8,9,12,420,,417,409,disagree,3,9,0,9,5,2 3 5 6 7,beam discounted uncertain x9,7,12,3
+brahms1-breitkopf,0,0,4,5,7,5,,,,abstained,,8,0,8,2,0 2,beam discounted uncertain x8,52,12,5
+brahms1-breitkopf,0,0,5,6,7,6,,,,abstained,,8,0,8,1,1,beam discounted uncertain x8,51,12,4
+brahms1-breitkopf,5,0,4,5,8,83,,,,abstained,,8,11,-3,5,1 2 3 9 11,beam discounted uncertain x8,47,15,37
+brahms1-breitkopf,6,1,5,6,9,111,,,6,disagree,100,8,0,8,5,2 3 4 6 8,beam discounted uncertain x8,21,11,17
+brahms1-breitkopf,7,0,7,8,9,122,,,,abstained,,8,0,8,4,1 2 3 5,beam discounted uncertain x8,18,10,5
+brahms1-breitkopf,8,0,8,9,13,144,,,186,disagree,-50,8,0,8,4,1 2 3 9,beam discounted uncertain x8,4,10,3
+brahms1-breitkopf,11,0,2,3,11,198,,,494,disagree,-298,8,0,8,4,0 1 9 10,beam discounted uncertain x8,36,24,35
+brahms1-breitkopf,12,0,5,6,14,223,,,,abstained,,8,0,8,4,0 5 7 12,beam discounted uncertain x8,12,9,16
+brahms1-breitkopf,12,1,3,4,10,235,,,,abstained,,8,0,8,4,0 1 2 3,beam discounted uncertain x8,15,10,21
+brahms1-breitkopf,15,1,4,5,12,298,,,9,disagree,285,8,0,8,4,9 10 11 12,beam discounted uncertain x8,8,9,34
+brahms1-breitkopf,16,0,3,4,12,309,,306,,abstained,,8,0,8,4,3 4 12 13,beam discounted uncertain x8,8,14,12
+brahms1-breitkopf,16,0,4,5,12,310,,307,,abstained,,8,0,8,4,2 4 10 12,beam discounted uncertain x8,16,11,19
+brahms1-breitkopf,16,0,9,10,12,315,,312,,abstained,,8,0,8,5,2 4 11 12 13,beam discounted uncertain x8,18,9,14
+brahms1-breitkopf,17,1,5,6,6,338,,,3,disagree,330,8,1,7,3,0 1 10,beam discounted uncertain x8,39,12,25
+brahms1-breitkopf,19,0,2,3,11,356,,,5,disagree,349,8,0,8,8,0 1 2 3 6 10 11 12,beam discounted uncertain x8,2,16,15
+brahms1-breitkopf,21,1,3,4,11,404,,,398,disagree,3,8,1,7,5,3 6 7 9 10,beam discounted uncertain x8,21,19,15
+brahms1-breitkopf,22,0,7,8,12,419,,416,409,disagree,3,8,0,8,4,2 3 6 7,beam discounted uncertain x8,9,11,3
+brahms1-breitkopf,22,1,1,2,13,425,425,,424,agree,,8,0,8,5,2 4 7 8 9,beam discounted uncertain x8,1,11,6
+brahms1-breitkopf,22,1,3,4,13,427,427,,424,agree,,8,0,8,4,6 7 8 9,beam discounted uncertain x8,4,8,4
+brahms1-breitkopf,24,1,8,9,9,474,,,463,disagree,3,8,0,8,3,0 4 13,beam discounted uncertain x8,64,13,34
+brahms1-breitkopf,25,1,5,6,10,490,,,8,disagree,477,8,0,8,5,1 2 7 8 9,beam discounted uncertain x8,15,16,10
+brahms1-breitkopf,1,0,3,4,7,11,11,,8,agree,,7,2,5,4,3 9 10 11,beam discounted uncertain x7,35,12,27
+brahms1-breitkopf,3,1,0,1,11,48,,,8,disagree,40,7,0,7,3,3 4 5,beam discounted uncertain x7,36,10,22
+brahms1-breitkopf,3,1,5,6,11,53,,,8,disagree,40,7,0,7,4,0 1 9 13,beam discounted uncertain x7,8,9,18
+brahms1-breitkopf,5,0,0,1,8,79,,,,abstained,,7,0,7,3,0 1 2,beam discounted uncertain x6; beams ambiguous x1,32,7,44
+brahms1-breitkopf,5,0,3,4,8,82,,,,abstained,,7,1,6,4,0 1 2 10,beam discounted uncertain x7,45,10,39
+brahms1-breitkopf,7,0,5,6,9,120,,,,abstained,,7,0,7,5,0 2 3 7 10,beam discounted uncertain x7,14,16,10
+brahms1-breitkopf,8,0,2,3,13,138,,,186,disagree,-50,7,0,7,5,1 2 3 5 9,beam discounted uncertain x7,6,13,13
+brahms1-breitkopf,8,0,4,5,13,140,,,186,disagree,-50,7,0,7,4,1 3 5 9,beam discounted uncertain x7,5,12,4
+brahms1-breitkopf,8,1,1,2,12,150,,,449,disagree,-300,7,0,7,5,2 5 7 8 9,beam discounted uncertain x7,3,8,2
+brahms1-breitkopf,9,1,4,5,9,174,,,10,disagree,160,7,1,6,3,6 8 12,beam discounted uncertain x7,39,12,16
+brahms1-breitkopf,11,1,4,5,11,211,,,205,disagree,2,7,0,7,2,9 10,beam discounted uncertain x7,4,11,10
+brahms1-breitkopf,12,1,1,2,10,233,,,,abstained,,7,0,7,3,0 2 3,beam discounted uncertain x7,33,7,16
+brahms1-breitkopf,13,0,9,10,12,251,,,,abstained,,7,0,7,4,0 2 3 4,beam discounted uncertain x7,18,10,12
+brahms1-breitkopf,13,1,1,2,12,255,,252,,abstained,,7,0,7,5,1 2 3 4 5,beam discounted uncertain x7,16,15,26
+brahms1-breitkopf,14,0,5,6,10,271,,,,abstained,,7,0,7,4,0 2 3 4,beam discounted uncertain x7,30,9,21
+brahms1-breitkopf,16,0,5,6,12,311,,308,,abstained,,7,0,7,4,4 10 12 13,beam discounted uncertain x7,15,15,23
+brahms1-breitkopf,18,0,1,2,7,340,,337,,abstained,,7,0,7,4,5 7 9 10,beam discounted uncertain x7,46,14,28
+brahms1-breitkopf,19,0,7,8,11,361,,,5,disagree,349,7,0,7,5,1 2 3 9 12,beam discounted uncertain x7,21,10,12
+brahms1-breitkopf,19,1,2,3,9,367,,,86,disagree,279,7,2,5,5,3 5 8 11 12,beam discounted uncertain x7,33,10,19
+brahms1-breitkopf,22,1,4,5,13,428,428,,424,agree,,7,0,7,4,4 7 8 9,beam discounted uncertain x7,5,9,5
+brahms1-breitkopf,23,1,9,10,10,456,,453,,abstained,,7,0,7,3,0 6 7,beam discounted uncertain x7,34,7,10
+brahms1-breitkopf,26,1,2,3,11,506,,,,abstained,,7,0,7,3,8 10 11,beam discounted uncertain x7,23,10,12
+brahms1-breitkopf,26,1,5,6,11,509,,,,abstained,,7,0,7,4,8 9 10 11,beam discounted uncertain x7,32,14,14
+brahms1-breitkopf,3,1,2,3,11,50,,,8,disagree,40,6,0,6,2,3 9,beam discounted uncertain x6,50,17,33
+brahms1-breitkopf,3,1,8,9,11,56,,,8,disagree,40,6,2,4,1,1,beam discounted uncertain x6,57,11,23
+brahms1-breitkopf,4,1,3,4,9,73,73,,70,agree,,6,1,5,4,2 3 12 13,beam discounted uncertain x6,31,15,17
+brahms1-breitkopf,5,0,6,7,8,85,,,,abstained,,6,2,4,4,5 7 9 12,beam discounted uncertain x6,37,10,31
+brahms1-breitkopf,7,0,2,3,9,117,,,,abstained,,6,0,6,3,0 1 3,beam discounted uncertain x6,19,8,5
+brahms1-breitkopf,8,0,6,7,13,142,,,186,disagree,-50,6,0,6,5,1 2 3 5 9,beam discounted uncertain x6,10,7,3
+brahms1-breitkopf,8,0,10,11,13,146,,,186,disagree,-50,6,0,6,3,7 8 9,beam discounted uncertain x6,2,6,0
+brahms1-breitkopf,11,0,1,2,11,197,,,494,disagree,-298,6,0,6,5,1 2 6 9 10,beam discounted uncertain x6,20,19,31
+brahms1-breitkopf,12,0,1,2,14,219,,,,abstained,,6,0,6,4,0 5 9 10,beam discounted uncertain x6,11,10,5
+brahms1-breitkopf,13,0,3,4,12,245,,,,abstained,,6,0,6,3,2 3 4,beam discounted uncertain x6,15,9,9
+brahms1-breitkopf,13,1,11,12,12,265,,262,,abstained,,6,0,6,3,9 10 12,beam discounted uncertain x6,16,7,16
+brahms1-breitkopf,14,0,7,8,10,273,,,,abstained,,6,1,5,3,10 12 13,beam discounted uncertain x6,12,9,9
+brahms1-breitkopf,14,1,0,1,9,276,,273,273,disagree,3,6,0,6,3,1 3 9,beam discounted uncertain x6,19,8,25
+brahms1-breitkopf,15,0,6,7,9,291,,,8,disagree,277,6,0,6,3,2 3 8,beam discounted uncertain x6,13,9,11
+brahms1-breitkopf,15,1,7,8,12,301,,,9,disagree,285,6,0,6,3,2 8 12,beam discounted uncertain x6,12,9,25
+brahms1-breitkopf,15,1,9,10,12,303,,,9,disagree,285,6,1,5,4,3 4 11 12,beam discounted uncertain x6,15,8,18
+brahms1-breitkopf,15,1,10,11,12,304,,,9,disagree,285,6,0,6,3,9 11 12,beam discounted uncertain x6,16,12,15
+brahms1-breitkopf,16,0,6,7,12,312,,309,,abstained,,6,0,6,4,1 4 9 11,beam discounted uncertain x6,15,15,23
+brahms1-breitkopf,16,1,1,2,9,319,,316,,abstained,,6,0,6,4,0 11 12 13,beam discounted uncertain x6,22,9,19
+brahms1-breitkopf,19,0,10,11,11,364,,,5,disagree,349,6,0,6,4,0 3 11 12,beam discounted uncertain x6,23,11,23
+brahms1-breitkopf,21,0,1,2,9,393,,,389,disagree,3,6,0,6,4,1 3 4 10,beam discounted uncertain x6,16,7,13
+brahms1-breitkopf,21,0,8,9,9,400,,,389,disagree,3,6,0,6,3,1 3 4,beam discounted uncertain x6,16,11,9
+brahms1-breitkopf,22,0,1,2,12,413,,410,409,disagree,3,6,0,6,4,0 1 4 7,beam discounted uncertain x6,9,10,4
+brahms1-breitkopf,22,0,3,4,12,415,,412,409,disagree,3,6,0,6,4,0 2 4 7,beam discounted uncertain x6,7,10,5
+brahms1-breitkopf,22,0,5,6,12,417,,414,409,disagree,3,6,0,6,4,0 1 2 7,beam discounted uncertain x6,6,8,7
+brahms1-breitkopf,23,1,2,3,10,449,,446,,abstained,,6,0,6,3,8 11 12,beam discounted uncertain x6,26,6,15
+brahms1-breitkopf,25,0,9,10,10,484,,481,,abstained,,6,0,6,3,0 6 9,beam discounted uncertain x6,19,12,3
+brahms1-breitkopf,26,0,2,3,9,497,,,493,disagree,2,6,0,6,3,0 2 9,beam discounted uncertain x6,8,8,9
+brahms1-breitkopf,26,0,4,5,9,499,,,493,disagree,2,6,0,6,2,2 3,beam discounted uncertain x6,14,8,12
+brahms1-breitkopf,3,1,4,5,11,52,,,8,disagree,40,5,1,4,3,9 11 12,beam discounted uncertain x5,3,5,4
+brahms1-breitkopf,3,1,6,7,11,54,,,8,disagree,40,5,0,5,2,0 13,beam discounted uncertain x5,21,13,6
+brahms1-breitkopf,4,0,10,11,11,69,,,9,disagree,50,5,0,5,1,9,beam discounted uncertain x5,21,8,15
+brahms1-breitkopf,5,1,6,7,10,93,93,,87,agree,,5,1,4,4,2 5 11 12,beam discounted uncertain x5,27,6,9
+brahms1-breitkopf,6,0,2,3,9,99,,,,abstained,,5,0,5,3,8 9 11,beam discounted uncertain x5,30,7,30
+brahms1-breitkopf,6,1,2,3,9,108,,,6,disagree,100,5,0,5,3,0 4 6,beam discounted uncertain x5,25,5,23
+brahms1-breitkopf,7,1,3,4,12,127,,,24,disagree,100,5,0,5,4,1 2 3 9,beam discounted uncertain x5,35,7,14
+brahms1-breitkopf,8,0,5,6,13,141,,,186,disagree,-50,5,0,5,4,1 2 3 5,beam discounted uncertain x5,7,5,6
+brahms1-breitkopf,8,0,7,8,13,143,,,186,disagree,-50,5,0,5,3,1 3 5,beam discounted uncertain x5,6,12,0
+brahms1-breitkopf,8,0,12,13,13,148,,,186,disagree,-50,5,0,5,3,7 8 9,beam discounted uncertain x5,3,6,0
+brahms1-breitkopf,8,1,3,4,12,152,,,449,disagree,-300,5,0,5,3,5 7 9,beam discounted uncertain x5,8,6,1
+brahms1-breitkopf,9,1,6,7,9,176,,,10,disagree,160,5,0,5,3,2 6 8,beam discounted uncertain x5,42,7,4
+brahms1-breitkopf,11,0,3,4,11,199,,,494,disagree,-298,5,0,5,3,0 1 3,beam discounted uncertain x4; head fill from ink x1,19,6,16
+brahms1-breitkopf,11,0,9,10,11,205,,,494,disagree,-298,5,0,5,2,0 10,beam discounted uncertain x5,7,13,13
+brahms1-breitkopf,12,1,7,8,10,239,,,,abstained,,5,0,5,3,2 6 11,beam discounted uncertain x5,23,8,21
+brahms1-breitkopf,12,1,9,10,10,241,,,,abstained,,5,0,5,3,0 3 11,beam discounted uncertain x5,29,11,19
+brahms1-breitkopf,14,0,0,1,10,266,,,,abstained,,5,1,4,4,0 2 5 9,beam discounted uncertain x4; beams ambiguous x1,33,19,42
+brahms1-breitkopf,15,1,3,4,12,297,,,9,disagree,285,5,0,5,3,8 9 12,beam discounted uncertain x5,8,5,21
+brahms1-breitkopf,15,1,5,6,12,299,,,9,disagree,285,5,0,5,2,4 9,beam discounted uncertain x5,26,5,30
+brahms1-breitkopf,16,0,11,12,12,317,,314,,abstained,,5,0,5,4,0 3 4 9,beam discounted uncertain x5,22,9,18
+brahms1-breitkopf,16,1,2,3,9,320,,317,,abstained,,5,0,5,5,1 3 9 11 13,beam discounted uncertain x5,22,8,22
+brahms1-breitkopf,18,1,2,3,8,348,,345,8,disagree,338,5,0,5,2,3 5,beam discounted uncertain x5,38,12,26
+brahms1-breitkopf,18,1,6,7,8,352,,349,8,disagree,338,5,0,5,3,3 5 9,beam discounted uncertain x4; head fill from ink x1,40,8,26
+brahms1-breitkopf,19,0,3,4,11,357,,,5,disagree,349,5,0,5,5,6 9 11 12 13,beam discounted uncertain x5,14,12,14
+brahms1-breitkopf,19,0,9,10,11,363,,,5,disagree,349,5,0,5,5,1 3 4 10 11,beam discounted uncertain x5,4,14,9
+brahms1-breitkopf,19,1,4,5,9,369,,,86,disagree,279,5,0,5,2,0 8,beam discounted uncertain x5,34,6,9
+brahms1-breitkopf,20,1,4,5,9,387,,,38,disagree,345,5,1,4,3,2 3 9,beam discounted uncertain x5,22,6,5
+brahms1-breitkopf,20,1,7,8,9,390,,,38,disagree,345,5,0,5,3,3 4 7,beam discounted uncertain x5,8,5,3
+brahms1-breitkopf,21,0,0,1,9,392,,,389,disagree,3,5,0,5,2,1 10,beam discounted uncertain x5,10,8,14
+brahms1-breitkopf,21,1,8,9,11,409,,,398,disagree,3,5,0,5,2,1 3,beam discounted uncertain x5,6,10,6
+brahms1-breitkopf,22,0,9,10,12,421,,418,409,disagree,3,5,0,5,3,3 6 7,beam discounted uncertain x5,12,7,1
+brahms1-breitkopf,22,1,10,11,13,434,434,,424,agree,,5,0,5,3,6 7 10,beam discounted uncertain x5,5,5,8
+brahms1-breitkopf,23,1,0,1,10,447,,444,,abstained,,5,0,5,3,0 1 8,beam discounted uncertain x5,32,5,16
+brahms1-breitkopf,23,1,7,8,10,454,,451,,abstained,,5,0,5,2,0 7,beam discounted uncertain x5,33,19,20
+brahms1-breitkopf,25,0,0,1,10,475,,472,,abstained,,5,14,-9,3,0 5 10,beam discounted uncertain x4; head fill from ink x1,59,6,10
+brahms1-breitkopf,26,0,8,9,9,503,,,493,disagree,2,5,0,5,2,1 3,beam discounted uncertain x5,19,8,11
+brahms1-breitkopf,1,1,0,1,8,15,,,,abstained,,4,5,-1,3,3 9 10,beam discounted uncertain x4,30,4,16
+brahms1-breitkopf,2,1,2,3,9,31,31,,29,agree,,4,0,4,2,3 5,beam discounted uncertain x4,9,4,21
+brahms1-breitkopf,4,0,2,3,11,61,,,9,disagree,50,4,0,4,2,0 13,beam discounted uncertain x4,16,8,10
+brahms1-breitkopf,4,0,3,4,11,62,,,9,disagree,50,4,0,4,2,12 13,beam discounted uncertain x4,21,5,12
+brahms1-breitkopf,5,1,0,1,10,87,87,,87,agree,,4,4,0,2,12 13,beam discounted uncertain x4,45,10,36
+brahms1-breitkopf,5,1,2,3,10,89,89,,87,agree,,4,0,4,2,9 10,beam discounted uncertain x4,33,7,28
+brahms1-breitkopf,5,1,8,9,10,95,95,,87,agree,,4,0,4,2,9 13,beam discounted uncertain x4,21,12,14
+brahms1-breitkopf,6,1,3,4,9,109,,,6,disagree,100,4,2,2,2,4 6,beam discounted uncertain x4,30,6,6
+brahms1-breitkopf,6,1,7,8,9,113,,,6,disagree,100,4,0,4,1,0,beam discounted uncertain x4,19,6,5
+brahms1-breitkopf,7,1,0,1,12,124,,,24,disagree,100,4,0,4,3,1 2 3,beam discounted uncertain x4,19,14,7
+brahms1-breitkopf,7,1,2,3,12,126,,,24,disagree,100,4,0,4,2,1 7,beam discounted uncertain x4,14,14,7
+brahms1-breitkopf,8,0,1,2,13,137,,,186,disagree,-50,4,0,4,3,1 3 9,beam discounted uncertain x4,8,7,11
+brahms1-breitkopf,8,0,3,4,13,139,,,186,disagree,-50,4,0,4,3,1 3 5,beam discounted uncertain x4,8,5,8
+brahms1-breitkopf,8,1,8,9,12,157,,,449,disagree,-300,4,0,4,2,6 9,beam discounted uncertain x4,9,4,5
+brahms1-breitkopf,10,0,2,3,9,181,,,479,disagree,-300,4,0,4,1,0,beam discounted uncertain x4,41,4,14
+brahms1-breitkopf,10,1,1,2,8,189,,,488,disagree,-300,4,1,3,3,0 1 3,beam discounted uncertain x4,18,4,14
+brahms1-breitkopf,11,0,8,9,11,204,,,494,disagree,-298,4,6,-2,2,12 13,beam discounted uncertain x4,16,7,14
+brahms1-breitkopf,11,1,3,4,11,210,,,205,disagree,2,4,1,3,2,0 1,beam discounted uncertain x4,22,4,23
+brahms1-breitkopf,11,1,5,6,11,212,,,205,disagree,2,4,1,3,2,12 13,beam discounted uncertain x4,7,11,24
+brahms1-breitkopf,12,1,2,3,10,234,,,,abstained,,4,0,4,2,0 3,beam discounted uncertain x4,30,10,21
+brahms1-breitkopf,13,0,1,2,12,243,,,,abstained,,4,0,4,3,0 3 6,beam discounted uncertain x4,19,11,14
+brahms1-breitkopf,13,0,2,3,12,244,,,,abstained,,4,0,4,1,2,beam discounted uncertain x4,21,5,17
+brahms1-breitkopf,13,0,4,5,12,246,,,,abstained,,4,0,4,2,9 11,beam discounted uncertain x4,12,4,7
+brahms1-breitkopf,13,0,11,12,12,253,,,,abstained,,4,0,4,1,10,beam discounted uncertain x4,15,6,11
+brahms1-breitkopf,14,1,2,3,9,278,,275,273,disagree,3,4,0,4,3,0 1 9,beam discounted uncertain x4,19,11,10
+brahms1-breitkopf,14,1,6,7,9,282,,279,273,disagree,3,4,0,4,3,7 8 9,beam discounted uncertain x4,19,8,11
+brahms1-breitkopf,16,0,2,3,12,308,,305,,abstained,,4,0,4,2,4 13,beam discounted uncertain x4,20,8,20
+brahms1-breitkopf,18,0,3,4,7,342,,339,,abstained,,4,0,4,3,7 9 10,beam discounted uncertain x4,35,14,21
+brahms1-breitkopf,18,1,7,8,8,353,,350,8,disagree,338,4,0,4,2,3 9,beam discounted uncertain x4,52,16,29
+brahms1-breitkopf,19,0,1,2,11,355,,,5,disagree,349,4,0,4,4,4 10 11 12,beam discounted uncertain x4,19,6,27
+brahms1-breitkopf,19,0,4,5,11,358,,,5,disagree,349,4,0,4,2,0 6,beam discounted uncertain x4,30,10,14
+brahms1-breitkopf,21,1,5,6,11,406,,,398,disagree,3,4,0,4,3,1 2 3,beam discounted uncertain x4,11,11,6
+brahms1-breitkopf,22,0,10,11,12,422,,419,409,disagree,3,4,0,4,2,6 8,beam discounted uncertain x4,6,4,0
+brahms1-breitkopf,22,0,11,12,12,423,,420,409,disagree,3,4,0,4,2,7 8,beam discounted uncertain x4,2,5,4
+brahms1-breitkopf,23,1,4,5,10,451,,448,,abstained,,4,2,2,2,0 12,beam discounted uncertain x4,27,6,7
+brahms1-breitkopf,23,1,6,7,10,453,,450,,abstained,,4,0,4,1,0,beam discounted uncertain x4,41,8,11
+brahms1-breitkopf,24,1,1,2,9,467,,,463,disagree,3,4,2,2,2,3 5,beam discounted uncertain x4,37,4,17
+brahms1-breitkopf,25,0,7,8,10,482,,479,,abstained,,4,2,2,2,6 9,beam discounted uncertain x4,21,6,10
+brahms1-breitkopf,2,1,5,6,9,34,34,,29,agree,,3,0,3,1,2,beam discounted uncertain x3,8,5,10
+brahms1-breitkopf,3,1,1,2,11,49,,,8,disagree,40,3,0,3,2,3 13,beam discounted uncertain x3,52,15,24
+brahms1-breitkopf,4,0,6,7,11,65,,,9,disagree,50,3,0,3,1,0,beam discounted uncertain x3,32,5,15
+brahms1-breitkopf,5,0,7,8,8,86,,,,abstained,,3,4,-1,2,12 13,beam discounted uncertain x3,61,7,30
+brahms1-breitkopf,5,1,4,5,10,91,91,,87,agree,,3,0,3,1,10,beam discounted uncertain x3,24,14,15
+brahms1-breitkopf,6,0,0,1,9,97,,,,abstained,,3,3,0,2,8 10,beam discounted uncertain x3,32,4,114
+brahms1-breitkopf,6,0,8,9,9,105,,,,abstained,,3,0,3,2,5 11,beam discounted uncertain x3,25,3,19
+brahms1-breitkopf,7,1,9,10,12,133,,,24,disagree,100,3,0,3,1,1,beam discounted uncertain x3,4,3,3
+brahms1-breitkopf,8,0,9,10,13,145,,,186,disagree,-50,3,0,3,1,1,beam discounted uncertain x3,13,6,7
+brahms1-breitkopf,8,0,11,12,13,147,,,186,disagree,-50,3,0,3,2,8 9,beam discounted uncertain x3,5,3,1
+brahms1-breitkopf,8,1,5,6,12,154,,,449,disagree,-300,3,1,2,2,6 7,beam discounted uncertain x3,7,4,3
+brahms1-breitkopf,9,1,1,2,9,171,,,10,disagree,160,3,0,3,3,3 8 9,beam discounted uncertain x3,32,6,6
+brahms1-breitkopf,10,1,2,3,8,190,,,488,disagree,-300,3,0,3,2,0 3,beam discounted uncertain x3,4,15,22
+brahms1-breitkopf,10,1,6,7,8,194,,,488,disagree,-300,3,0,3,2,1 12,beam discounted uncertain x3,31,14,16
+brahms1-breitkopf,11,0,6,7,11,202,,,494,disagree,-298,3,0,3,2,3 10,beam discounted uncertain x3,23,3,21
+brahms1-breitkopf,11,1,6,7,11,213,,,205,disagree,2,3,0,3,2,6 10,beam discounted uncertain x3,6,12,17
+brahms1-breitkopf,11,1,7,8,11,214,,,205,disagree,2,3,0,3,2,1 13,beam discounted uncertain x3,17,5,13
+brahms1-breitkopf,11,1,9,10,11,216,,,205,disagree,2,3,0,3,2,3 12,beam discounted uncertain x3,9,11,24
+brahms1-breitkopf,13,1,10,11,12,264,,261,,abstained,,3,0,3,1,6,beam discounted uncertain x3,19,3,20
+brahms1-breitkopf,14,0,1,2,10,267,,,,abstained,,3,0,3,2,0 3,beam discounted uncertain x3,33,11,27
+brahms1-breitkopf,14,0,2,3,10,268,,,,abstained,,3,0,3,2,1 6,beam discounted uncertain x3,25,8,36
+brahms1-breitkopf,14,0,4,5,10,270,,,,abstained,,3,0,3,2,3 6,beam discounted uncertain x3,38,13,32
+brahms1-breitkopf,16,0,10,11,12,316,,313,,abstained,,3,0,3,3,4 5 11,beam discounted uncertain x3,20,8,19
+brahms1-breitkopf,16,1,0,1,9,318,,315,,abstained,,3,0,3,3,2 5 9,beam discounted uncertain x3,21,9,13
+brahms1-breitkopf,17,0,0,1,6,327,,,,abstained,,3,0,3,1,1,beam discounted uncertain x3,64,11,35
+brahms1-breitkopf,17,1,0,1,6,333,,,3,disagree,330,3,0,3,1,0,beam discounted uncertain x3,69,9,37
+brahms1-breitkopf,18,0,0,1,7,339,,336,,abstained,,3,0,3,2,1 3,beam discounted uncertain x3,56,9,27
+brahms1-breitkopf,19,0,5,6,11,359,,,5,disagree,349,3,0,3,2,0 4,beam discounted uncertain x3,32,10,15
+brahms1-breitkopf,19,1,6,7,9,371,,,86,disagree,279,3,1,2,2,5 9,beam discounted uncertain x3,37,8,11
+brahms1-breitkopf,20,0,2,3,9,376,,,3,disagree,371,3,2,1,2,9 11,beam discounted uncertain x3,17,3,1
+brahms1-breitkopf,20,1,8,9,9,391,,,38,disagree,345,3,0,3,2,2 7,beam discounted uncertain x3,8,5,3
+brahms1-breitkopf,21,1,0,1,11,401,,,398,disagree,3,3,1,2,3,2 3 6,beam discounted uncertain x3,27,10,10
+brahms1-breitkopf,21,1,7,8,11,408,,,398,disagree,3,3,0,3,2,1 4,beam discounted uncertain x3,5,3,6
+brahms1-breitkopf,23,0,2,3,10,439,,,3,disagree,434,3,0,3,3,0 1 10,beam discounted uncertain x3,16,14,8
+brahms1-breitkopf,23,1,3,4,10,450,,447,,abstained,,3,0,3,2,1 9,beam discounted uncertain x3,37,13,20
+brahms1-breitkopf,24,0,0,1,9,457,,,454,disagree,3,3,0,3,2,2 5,beam discounted uncertain x3,46,5,21
+brahms1-breitkopf,25,1,3,4,10,488,,,8,disagree,477,3,0,3,2,6 8,beam discounted uncertain x3,22,6,7
+brahms1-breitkopf,0,0,6,7,7,7,,,,abstained,,2,1,1,1,0,beam discounted uncertain x2,71,4,8
+brahms1-breitkopf,2,1,4,5,9,33,33,,29,agree,,2,4,-2,1,2,beam discounted uncertain x2,9,4,14
+brahms1-breitkopf,3,0,0,1,10,38,38,38,38,agree,,2,0,2,2,0 1,beam discounted uncertain x2,11,7,19
+brahms1-breitkopf,3,0,2,3,10,40,40,40,38,agree,,2,3,-1,1,1,beam discounted uncertain x2,26,5,38
+brahms1-breitkopf,3,0,8,9,10,46,46,46,38,agree,,2,5,-3,1,1,beam discounted uncertain x2,45,2,15
+brahms1-breitkopf,3,1,10,11,11,58,,,8,disagree,40,2,0,2,2,10 11,beam discounted uncertain x2,4,4,3
+brahms1-breitkopf,4,0,1,2,11,60,,,9,disagree,50,2,0,2,1,13,beam discounted uncertain x2,22,2,9
+brahms1-breitkopf,4,1,2,3,9,72,72,,70,agree,,2,0,2,2,12 13,beam discounted uncertain x2,23,2,8
+brahms1-breitkopf,4,1,4,5,9,74,74,,70,agree,,2,0,2,2,11 13,beam discounted uncertain x2,45,2,20
+brahms1-breitkopf,5,0,1,2,8,80,,,,abstained,,2,0,2,1,2,beam discounted uncertain x2,20,17,19
+brahms1-breitkopf,5,0,5,6,8,84,,,,abstained,,2,3,-1,2,12 13,beam discounted uncertain x2,47,6,39
+brahms1-breitkopf,6,0,3,4,9,100,,,,abstained,,2,0,2,2,1 8,beam discounted uncertain x2,15,3,8
+brahms1-breitkopf,7,0,4,5,9,119,,,,abstained,,2,0,2,2,7 10,beam discounted uncertain x2,18,6,6
+brahms1-breitkopf,7,0,8,9,9,123,,,,abstained,,2,0,2,2,3 9,beam discounted uncertain x2,23,10,0
+brahms1-breitkopf,7,1,1,2,12,125,,,24,disagree,100,2,2,0,2,2 6,beam discounted uncertain x2,25,8,8
+brahms1-breitkopf,7,1,5,6,12,129,,,24,disagree,100,2,0,2,1,6,beam discounted uncertain x2,13,5,0
+brahms1-breitkopf,7,1,8,9,12,132,,,24,disagree,100,2,0,2,1,1,beam discounted uncertain x2,4,2,3
+brahms1-breitkopf,9,0,1,2,9,162,162,,161,agree,,2,0,2,1,6,beam discounted uncertain x2,28,5,7
+brahms1-breitkopf,9,1,0,1,9,170,,,10,disagree,160,2,0,2,2,10 11,beam discounted uncertain x2,39,2,9
+brahms1-breitkopf,9,1,3,4,9,173,,,10,disagree,160,2,0,2,2,2 10,beam discounted uncertain x2,21,10,10
+brahms1-breitkopf,9,1,5,6,9,175,,,10,disagree,160,2,0,2,1,1,beam discounted uncertain x2,24,6,7
+brahms1-breitkopf,10,0,0,1,9,179,,,479,disagree,-300,2,0,2,1,12,beam discounted uncertain x2,53,3,29
+brahms1-breitkopf,11,0,5,6,11,201,,,494,disagree,-298,2,0,2,1,12,beam discounted uncertain x2,7,2,9
+brahms1-breitkopf,11,1,8,9,11,215,,,205,disagree,2,2,0,2,2,10 12,beam discounted uncertain x2,12,6,19
+brahms1-breitkopf,12,0,4,5,14,222,,,,abstained,,2,0,2,1,3,beam discounted uncertain x2,16,4,16
+brahms1-breitkopf,12,0,6,7,14,224,,,,abstained,,2,0,2,2,5 11,beam discounted uncertain x2,12,2,8
+brahms1-breitkopf,12,0,9,10,14,227,,,,abstained,,2,0,2,2,5 7,beam discounted uncertain x2,11,5,13
+brahms1-breitkopf,12,0,12,13,14,230,,,,abstained,,2,0,2,1,11,beam discounted uncertain x2,18,2,6
+brahms1-breitkopf,12,1,4,5,10,236,,,,abstained,,2,0,2,1,9,beam discounted uncertain x2,12,6,11
+brahms1-breitkopf,13,0,0,1,12,242,,,,abstained,,2,0,2,1,0,beam discounted uncertain x2,30,10,19
+brahms1-breitkopf,13,0,5,6,12,247,,,,abstained,,2,0,2,1,10,beam discounted uncertain x2,10,2,8
+brahms1-breitkopf,13,0,10,11,12,252,,,,abstained,,2,0,2,1,13,beam discounted uncertain x2,16,2,15
+brahms1-breitkopf,14,1,7,8,9,283,,280,273,disagree,3,2,0,2,1,8,beam discounted uncertain x2,21,5,14
+brahms1-breitkopf,14,1,8,9,9,284,,281,273,disagree,3,2,0,2,2,3 8,beam discounted uncertain x2,18,5,8
+brahms1-breitkopf,15,0,3,4,9,288,,,8,disagree,277,2,0,2,1,2,beam discounted uncertain x2,18,8,8
+brahms1-breitkopf,15,0,4,5,9,289,,,8,disagree,277,2,0,2,1,9,beam discounted uncertain x2,20,3,4
+brahms1-breitkopf,15,0,5,6,9,290,,,8,disagree,277,2,0,2,2,3 5,beam discounted uncertain x2,14,11,7
+brahms1-breitkopf,15,1,1,2,12,295,,,9,disagree,285,2,0,2,2,9 11,beam discounted uncertain x2,4,4,17
+brahms1-breitkopf,16,0,0,1,12,306,,303,,abstained,,2,0,2,2,4 12,beam discounted uncertain x2,10,10,18
+brahms1-breitkopf,17,0,2,3,6,329,,,,abstained,,2,0,2,1,0,beam discounted uncertain x2,74,10,40
+brahms1-breitkopf,17,0,4,5,6,331,,,,abstained,,2,0,2,1,2,beam discounted uncertain x2,43,8,23
+brahms1-breitkopf,18,0,5,6,7,344,,341,,abstained,,2,0,2,1,1,beam discounted uncertain x2,33,3,23
+brahms1-breitkopf,19,0,6,7,11,360,,,5,disagree,349,2,0,2,1,2,beam discounted uncertain x2,77,5,12
+brahms1-breitkopf,19,1,3,4,9,368,,,86,disagree,279,2,0,2,2,8 10,beam discounted uncertain x2,36,8,11
+brahms1-breitkopf,20,0,5,6,9,379,,,3,disagree,371,2,0,2,2,8 9,beam discounted uncertain x2,20,3,7
+brahms1-breitkopf,21,0,4,5,9,396,,,389,disagree,3,2,0,2,1,3,beam discounted uncertain x2,23,4,15
+brahms1-breitkopf,21,0,7,8,9,399,,,389,disagree,3,2,1,1,1,1,beam discounted uncertain x2,22,6,14
+brahms1-breitkopf,21,1,6,7,11,407,,,398,disagree,3,2,0,2,1,1,beam discounted uncertain x2,6,2,2
+brahms1-breitkopf,21,1,10,11,11,411,,,398,disagree,3,2,0,2,1,1,beam discounted uncertain x2,5,2,2
+brahms1-breitkopf,22,1,9,10,13,433,433,,424,agree,,2,0,2,2,6 10,beam discounted uncertain x2,9,2,9
+brahms1-breitkopf,23,0,4,5,10,441,,,3,disagree,434,2,0,2,2,0 8,beam discounted uncertain x2,21,13,4
+brahms1-breitkopf,24,1,4,5,9,470,,,463,disagree,3,2,2,0,1,3,beam discounted uncertain x2,37,3,20
+brahms1-breitkopf,25,0,8,9,10,483,,480,,abstained,,2,0,2,1,0,beam discounted uncertain x2,20,8,12
+brahms1-breitkopf,26,0,3,4,9,498,,,493,disagree,2,2,0,2,2,0 5,beam discounted uncertain x1; beam certain not joined x1,20,6,12
+brahms1-breitkopf,26,0,7,8,9,502,,,493,disagree,2,2,0,2,2,0 8,beam discounted uncertain x2,26,6,10
+brahms1-breitkopf,26,1,1,2,11,505,,,,abstained,,2,0,2,2,8 9,beam discounted uncertain x2,19,6,16
+brahms1-breitkopf,26,1,4,5,11,508,,,,abstained,,2,1,1,2,0 10,beam discounted uncertain x2,35,14,31
+brahms1-breitkopf,26,1,10,11,11,514,,,,abstained,,2,0,2,1,2,beam discounted uncertain x2,12,6,7
+brahms1-breitkopf,1,0,4,5,7,12,12,,8,agree,,1,10,-9,1,3,beam discounted uncertain x1,50,5,9
+brahms1-breitkopf,2,0,1,2,6,24,,,,abstained,,1,11,-10,1,12,head fill from ink x1,56,3,25
+brahms1-breitkopf,2,0,2,3,6,25,,,,abstained,,1,0,1,1,0,beam discounted uncertain x1,37,10,38
+brahms1-breitkopf,2,1,0,1,9,29,29,,29,agree,,1,0,1,1,0,beam discounted uncertain x1,33,1,21
+brahms1-breitkopf,2,1,3,4,9,32,32,,29,agree,,1,0,1,1,5,beam discounted uncertain x1,13,4,21
+brahms1-breitkopf,3,0,6,7,10,44,44,44,38,agree,,1,0,1,1,9,beam discounted uncertain x1,16,4,3
+brahms1-breitkopf,3,0,7,8,10,45,45,45,38,agree,,1,0,1,1,12,beam discounted uncertain x1,31,1,10
+brahms1-breitkopf,3,1,3,4,11,51,,,8,disagree,40,1,0,1,1,9,beam discounted uncertain x1,20,1,13
+brahms1-breitkopf,3,1,7,8,11,55,,,8,disagree,40,1,0,1,1,0,beam discounted uncertain x1,21,14,12
+brahms1-breitkopf,4,0,4,5,11,63,,,9,disagree,50,1,0,1,1,12,beam discounted uncertain x1,32,4,15
+brahms1-breitkopf,4,1,5,6,9,75,75,,70,agree,,1,0,1,1,1,beam discounted uncertain x1,55,5,25
+brahms1-breitkopf,5,1,5,6,10,92,92,,87,agree,,1,0,1,1,2,beam discounted uncertain x1,27,3,11
+brahms1-breitkopf,5,1,7,8,10,94,94,,87,agree,,1,0,1,1,10,beam discounted uncertain x1,15,19,15
+brahms1-breitkopf,6,0,1,2,9,98,,,,abstained,,1,1,0,1,10,beam discounted uncertain x1,26,2,28
+brahms1-breitkopf,6,0,5,6,9,102,,,,abstained,,1,0,1,1,7,beam discounted uncertain x1,27,2,23
+brahms1-breitkopf,6,0,6,7,9,103,,,,abstained,,1,2,-1,1,8,beam discounted uncertain x1,20,2,19
+brahms1-breitkopf,6,1,8,9,9,114,,,6,disagree,100,1,0,1,1,10,beam discounted uncertain x1,10,5,16
+brahms1-breitkopf,7,0,3,4,9,118,,,,abstained,,1,0,1,1,5,beam discounted uncertain x1,13,6,6
+brahms1-breitkopf,7,0,6,7,9,121,,,,abstained,,1,2,-1,1,5,beam discounted uncertain x1,25,3,13
+brahms1-breitkopf,7,1,7,8,12,131,,,24,disagree,100,1,0,1,1,1,beam discounted uncertain x1,4,2,3
+brahms1-breitkopf,8,1,0,1,12,149,,,449,disagree,-300,1,0,1,1,2,beam discounted uncertain x1,4,9,27
+brahms1-breitkopf,8,1,4,5,12,153,,,449,disagree,-300,1,0,1,1,2,beam discounted uncertain x1,13,1,5
+brahms1-breitkopf,8,1,11,12,12,160,,,449,disagree,-300,1,0,1,1,10,beam discounted uncertain x1,17,1,6
+brahms1-breitkopf,9,0,5,6,9,166,166,,161,agree,,1,0,1,1,11,beam discounted uncertain x1,48,5,7
+brahms1-breitkopf,9,0,8,9,9,169,169,,161,agree,,1,0,1,1,10,beam discounted uncertain x1,46,4,10
+brahms1-breitkopf,10,0,1,2,9,180,,,479,disagree,-300,1,0,1,1,12,beam discounted uncertain x1,40,1,14
+brahms1-breitkopf,10,0,5,6,9,184,,,479,disagree,-300,1,0,1,1,4,beam discounted uncertain x1,42,1,17
+brahms1-breitkopf,10,1,5,6,8,193,,,488,disagree,-300,1,0,1,1,2,beam discounted uncertain x1,33,9,15
+brahms1-breitkopf,11,0,0,1,11,196,,,494,disagree,-298,1,0,1,1,12,beam discounted uncertain x1,54,15,25
+brahms1-breitkopf,11,1,0,1,11,207,,,205,disagree,2,1,2,-1,1,3,beam discounted uncertain x1,24,1,24
+brahms1-breitkopf,11,1,1,2,11,208,,,205,disagree,2,1,0,1,1,0,beam discounted uncertain x1,9,2,16
+brahms1-breitkopf,11,1,2,3,11,209,,,205,disagree,2,1,0,1,1,11,beam discounted uncertain x1,5,5,4
+brahms1-breitkopf,12,0,10,11,14,228,,,,abstained,,1,0,1,1,0,beam discounted uncertain x1,16,1,10
+brahms1-breitkopf,12,1,0,1,10,232,,,,abstained,,1,0,1,1,3,beam discounted uncertain x1,29,6,13
+brahms1-breitkopf,12,1,8,9,10,240,,,,abstained,,1,0,1,1,6,beam discounted uncertain x1,31,1,15
+brahms1-breitkopf,13,0,6,7,12,248,,,,abstained,,1,0,1,1,11,beam discounted uncertain x1,21,1,13
+brahms1-breitkopf,13,0,7,8,12,249,,,,abstained,,1,0,1,1,3,beam discounted uncertain x1,16,10,17
+brahms1-breitkopf,14,0,6,7,10,272,,,,abstained,,1,0,1,1,6,beam discounted uncertain x1,20,3,13
+brahms1-breitkopf,14,0,9,10,10,275,,,,abstained,,1,0,1,1,13,beam discounted uncertain x1,15,2,12
+brahms1-breitkopf,15,0,0,1,9,285,,,8,disagree,277,1,0,1,1,8,beam discounted uncertain x1,22,2,9
+brahms1-breitkopf,15,0,7,8,9,292,,,8,disagree,277,1,0,1,1,3,beam discounted uncertain x1,12,4,10
+brahms1-breitkopf,15,1,11,12,12,305,,,9,disagree,285,1,0,1,1,12,beam discounted uncertain x1,10,8,16
+brahms1-breitkopf,16,0,8,9,12,314,,311,,abstained,,1,0,1,1,4,beam discounted uncertain x1,16,8,16
+brahms1-breitkopf,16,1,6,7,9,324,,321,,abstained,,1,0,1,1,7,beam discounted uncertain x1,70,3,31
+brahms1-breitkopf,17,0,5,6,6,332,,,,abstained,,1,0,1,1,0,beam discounted uncertain x1,65,10,38
+brahms1-breitkopf,17,1,1,2,6,334,,,3,disagree,330,1,0,1,1,1,beam discounted uncertain x1,69,13,35
+brahms1-breitkopf,18,1,3,4,8,349,,346,8,disagree,338,1,0,1,1,5,beam discounted uncertain x1,49,15,24
+brahms1-breitkopf,18,1,4,5,8,350,,347,8,disagree,338,1,1,0,1,13,beam discounted uncertain x1,52,7,16
+brahms1-breitkopf,19,1,0,1,9,365,,,86,disagree,279,1,0,1,1,6,beam discounted uncertain x1,27,5,16
+brahms1-breitkopf,19,1,5,6,9,370,,,86,disagree,279,1,0,1,1,8,beam discounted uncertain x1,37,8,6
+brahms1-breitkopf,20,0,3,4,9,377,,,3,disagree,371,1,3,-2,1,12,beam discounted uncertain x1,22,1,3
+brahms1-breitkopf,20,1,1,2,9,384,,,38,disagree,345,1,0,1,1,10,beam discounted uncertain x1,22,1,6
+brahms1-breitkopf,21,0,2,3,9,394,,,389,disagree,3,1,0,1,1,4,beam discounted uncertain x1,15,3,10
+brahms1-breitkopf,21,0,3,4,9,395,,,389,disagree,3,1,0,1,1,10,beam discounted uncertain x1,19,5,12
+brahms1-breitkopf,21,0,5,6,9,397,,,389,disagree,3,1,0,1,1,3,beam discounted uncertain x1,19,4,9
+brahms1-breitkopf,22,1,6,7,13,430,430,,424,agree,,1,0,1,1,4,beam discounted uncertain x1,9,2,4
+brahms1-breitkopf,23,1,1,2,10,448,,445,,abstained,,1,2,-1,1,0,beam discounted uncertain x1,40,15,25
+brahms1-breitkopf,24,0,1,2,9,458,,,454,disagree,3,1,0,1,1,2,beam discounted uncertain x1,40,14,21
+brahms1-breitkopf,24,0,2,3,9,459,,,454,disagree,3,1,0,1,1,7,beam discounted uncertain x1,49,13,19
+brahms1-breitkopf,25,1,2,3,10,487,,,8,disagree,477,1,0,1,1,0,beam discounted uncertain x1,24,5,6
+brahms1-breitkopf,25,1,4,5,10,489,,,8,disagree,477,1,0,1,1,7,beam discounted uncertain x1,14,3,14
+brahms1-breitkopf,25,1,6,7,10,491,,,8,disagree,477,1,0,1,1,9,beam discounted uncertain x1,17,3,12
+brahms1-breitkopf,26,0,0,1,9,495,,,493,disagree,2,1,0,1,1,4,beam discounted uncertain x1,16,1,8
+brahms1-breitkopf,26,0,5,6,9,500,,,493,disagree,2,1,0,1,1,1,beam discounted uncertain x1,23,5,11
+brahms1-breitkopf,26,1,6,7,11,510,,,,abstained,,1,0,1,1,11,beam discounted uncertain x1,31,7,10
+brahms1-breitkopf,26,1,8,9,11,512,,,,abstained,,1,0,1,1,11,beam discounted uncertain x1,15,1,7

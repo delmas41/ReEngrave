@@ -1,0 +1,191 @@
+=== brahms1-breitkopf: kept -> narrowed notes: 1991;  narrowed -> kept: 344
+
+-- tonight's narrowing REASON (kept -> narrowed)
+    1976  beam discounted uncertain
+       7  head fill from ink
+       4  beam certain not joined
+       3  beams ambiguous
+       1  flags disagree
+
+-- is last night's value among tonight's candidates?
+    1333  last night's answer is still one of tonight's candidates
+     658  last night's answer is ruled out by tonight's candidates
+
+-- last night's decided value (beats) -> tonight's candidates (beats), by reason
+   [beam discounted uncertain] 1976
+        619      0.75 -> 0.75 | 1.5
+        567       0.5 -> 0.5 | 1
+        223     0.375 -> 0.75 | 1.5
+        170      0.25 -> 0.5 | 1
+        107    0.1875 -> 0.75 | 1.5
+         72       1.5 -> 0.75 | 1.5
+         65         1 -> 0.5 | 1
+         57     0.125 -> 0.5 | 1
+         35   0.09375 -> 0.75 | 1.5
+         24    0.0625 -> 0.5 | 1
+         12  0.046875 -> 0.75 | 1.5
+          7   0.03125 -> 0.5 | 1
+   [head fill from ink] 7
+          6         1 -> 2 | 1 | 4
+          1       0.5 -> 2 | 1 | 4
+   [beam certain not joined] 4
+          3    0.0625 -> 1 | 0.5
+          1       0.5 -> 1 | 0.5
+   [beams ambiguous] 3
+          1       1.5 -> 1.5 | 0.75
+          1     0.375 -> 1.5 | 0.75
+          1       0.5 -> 1 | 0.5
+   [flags disagree] 1
+          1    0.0625 -> 0.5 | 0.25
+
+-- narrowed -> kept: last night's REASON, then last night's candidates -> tonight's value
+     221  beam certain not joined
+      46  flag ink unread
+      39  flags disagree
+      30  beams ambiguous
+       4  head fill from ink
+       4  beam discounted uncertain
+   [beam certain not joined] 221
+        111  0.5 | 0.25 -> 0.5
+         32  0.5 | 0.125 -> 0.5
+         32  1 | 0.5 -> 0.5
+         23  0.25 | 0.125 -> 0.5
+         17  0.25 | 0.125 -> 0.25
+          5  0.125 | 0.0625 -> 0.25
+          1  0.75 | 0.375 -> 0.5
+   [flag ink unread] 46
+         45  0.5 | 1 -> 0.5
+          1  0.75 | 1.5 -> 0.5
+   [flags disagree] 39
+         39  0.5 | 0.25 -> 0.5
+   [beams ambiguous] 30
+          9  0.5 | 0.25 -> 0.5
+          7  0.25 | 0.125 -> 0.25
+          2  1 | 0.5 -> 1
+          2  0.125 | 0.0625 -> 0.25
+          2  0.25 | 0.125 -> 0.5
+          2  1.5 | 0.75 -> 1.5
+          1  0.03125 | 0.015625 -> 0.5
+          1  0.0625 | 0.03125 -> 0.5
+          1  0.5 | 0.25 | 0.125 -> 0.5
+          1  0.09375 | 0.046875 -> 0.75
+   [head fill from ink] 4
+          4  2 | 1 | 4 -> 2
+   [beam discounted uncertain] 4
+          2  0.5 | 1 -> 1
+          2  0.75 | 1.5 -> 1.5
+
+=== layer 2: the same note's duration-verdict counters, last night -> tonight
+    (a counter absent in last night's verdict is 0: the guard did not exist)
+   (notes without a verdict row on one side: 0)
+
+-- kept -> narrowed: what differs between the nights' guard counters
+     729  ink refused too_thin (0->1)   [beam_discounted_uncertain 723, head_fill_from_ink 3, beam_certain_not_joined 3]
+     420  ink refused too_thin (0->2)   [beam_discounted_uncertain 420]
+     219  ink refused too_thin (0->3)   [beam_discounted_uncertain 218, head_fill_from_ink 1]
+      95  stem side None->down   [beam_discounted_uncertain 95]
+      94  ink refused too_thin (0->4)   [beam_discounted_uncertain 92, beams_ambiguous 1, flags_disagree 1]
+      61  ink refused too_thin (0->1) + stem side None->down   [beam_discounted_uncertain 61]
+      54  ink refused too_thin (0->5)   [beam_discounted_uncertain 54]
+      43  far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 43]
+      34  ink refused not_straight (0->1)   [beam_discounted_uncertain 34]
+      22  ink refused too_thin (0->6)   [beam_discounted_uncertain 22]
+      16  stem side None->up   [beam_discounted_uncertain 15, beam_certain_not_joined 1]
+      14  ink refused one_stem (0->1)   [beam_discounted_uncertain 13, head_fill_from_ink 1]
+      13  ink refused too_thin (0->1) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 13]
+      12  ink refused too_thin (0->7)   [beam_discounted_uncertain 12]
+      11  ink refused too_thin (0->2) + stem side None->down   [beam_discounted_uncertain 11]
+      11  ink refused no_stem_at_ends (0->1)   [beam_discounted_uncertain 11]
+      10  ink refused through_heads (0->1)   [beam_discounted_uncertain 10]
+      10  ink refused one_stem/too_thin (0->3)   [beam_discounted_uncertain 10]
+      10  ink refused too_thin (0->2) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 10]
+       9  ink refused too_thin (0->3) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 9]
+       8  ink refused one_stem/too_thin (0->2)   [beam_discounted_uncertain 8]
+       7  ink refused one_stem/too_thin (0->4)   [beam_discounted_uncertain 7]
+       7  ink refused no_stem_at_ends/too_thin (0->4)   [beam_discounted_uncertain 7]
+       6  ink refused too_thin (0->3) + stem side None->down   [beam_discounted_uncertain 6]
+       6  ink refused too_thin (0->2) + far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 6]
+       5  ink refused no_stem_at_ends/too_thin (0->3)   [beam_discounted_uncertain 5]
+       5  ink refused too_thin (0->1) + stem side None->up   [beam_discounted_uncertain 5]
+       5  ink refused not_straight/too_thin (0->2)   [beam_discounted_uncertain 5]
+       5  far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 5]
+       4  no guard counter changed   [beams_ambiguous 2, head_fill_from_ink 2]
+       3  ink refused too_thin (0->8)   [beam_discounted_uncertain 3]
+       3  far-side strokes 0->1 + stem side None->up   [beam_discounted_uncertain 3]
+       3  ink refused through_heads/too_thin (0->4)   [beam_discounted_uncertain 3]
+       3  ink refused not_straight/too_thin (0->3)   [beam_discounted_uncertain 3]
+       3  ink refused one_stem (0->1) + stem side None->down   [beam_discounted_uncertain 3]
+       3  ink refused one_stem (0->2)   [beam_discounted_uncertain 3]
+       3  ink refused too_thin (0->3) + stem side None->up   [beam_discounted_uncertain 3]
+       2  ink refused too_thin (0->9)   [beam_discounted_uncertain 2]
+       2  ink refused too_thin (0->4) + far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 2]
+       2  ink refused too_thin (0->1) + far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 2]
+       2  ink refused too_thin (0->2) + far-side strokes 0->3 + stem side None->down   [beam_discounted_uncertain 2]
+       2  ink refused no_stem_at_ends/too_thin (0->2)   [beam_discounted_uncertain 2]
+       1  ink refused too_thin (0->4) + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->2) + stem side None->up   [beam_discounted_uncertain 1]
+       1  ink refused not_straight (0->1) + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->7) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->3) + far-side strokes 0->2 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->3) + far-side strokes 0->3 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->5) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused through_heads/too_thin (0->2)   [beam_discounted_uncertain 1]
+       1  ink refused through_heads/too_thin (0->3)   [beam_discounted_uncertain 1]
+       1  ink refused one_stem/too_thin (0->2) + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused one_stem (0->1) + far-side strokes 0->1 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused no_stem_at_ends (0->2)   [beam_discounted_uncertain 1]
+       1  ink refused no_stem_at_ends (0->2) + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused too_thin (0->1) + far-side strokes 0->3 + stem side None->down   [beam_discounted_uncertain 1]
+       1  ink refused no_stem_at_ends/too_thin (0->5)   [beam_discounted_uncertain 1]
+
+-- kept -> narrowed: other inputs that also differ on the same notes (GATHER-side readings)
+    1525  -
+     399  beams_by_stem 1->0
+      52  beams_by_stem 2->0
+      12  beams_by_stem 3->0
+       1  beams_by_stem 4->0
+       1  beams_by_stem 0->1
+       1  beams_by_stem 2->1
+
+-- notes whose strokes the ink newly refused, by the ink's reason(s) (tonight's verdict)
+    1692  too_thin
+      35  not_straight
+      26  one_stem/too_thin
+      21  one_stem
+      15  no_stem_at_ends/too_thin
+      13  no_stem_at_ends
+      10  through_heads
+       8  not_straight/too_thin
+       5  through_heads/too_thin
+
+=== layer 2: narrowed -> kept
+     141  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->1)
+      65  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->2)
+      36  tonight decided by `hooks_counted`; last night `flags_disagree`; no guard counter changed
+      33  tonight decided by `hooks_counted`; last night `flag_ink_unread`; no guard counter changed
+       9  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused too_thin (0->1)
+       6  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->3)
+       6  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused too_thin (0->1)
+       4  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused no_stem_at_ends (0->1)
+       4  tonight decided by `head_and_marks`; last night `beam_discounted_uncertain`; decided-arc strokes 1->0 + far-side strokes 0->1
+       3  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused one_stem (0->1)
+       2  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->6)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; far-side strokes 0->1 + stem side None->up
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->1)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused too_thin (0->1) + stem side None->down
+       2  tonight decided by `hollow_head_bare_stem`; last night `head_fill_from_ink`; no guard counter changed
+       2  tonight decided by `hooks_counted`; last night `flags_disagree`; ink refused too_thin (0->1)
+       2  tonight decided by `hollow_head_bare_stem`; last night `head_fill_from_ink`; ink refused too_thin (0->1)
+       2  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused too_thin (0->2)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->3)
+       2  tonight decided by `head_and_marks`; last night `beams_ambiguous`; far-side strokes 0->1 + stem side None->down
+       1  tonight decided by `head_and_marks`; last night `beams_ambiguous`; ink refused through_heads (0->2)
+       1  tonight decided by `hooks_counted`; last night `flags_disagree`; ink refused too_thin (0->2)
+       1  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->7)
+       1  tonight decided by `head_and_marks`; last night `beam_certain_not_joined`; ink refused too_thin (0->5)
+       1  tonight decided by `hooks_counted`; last night `flag_ink_unread`; ink refused no_stem_at_ends/too_thin (0->3)
+
+=== the drawn systems: kept -> narrowed notes by the guard input that differs
+   p13 s1: 159 notes: ink refused: too_thin x153; far-side strokes 0->2 + stem side None->down x2; ink refused: no_stem_at_ends/too_thin x2; far-side strokes 0->1 + stem side None->down x1; ink refused: one_stem/too_thin x1
+   p22 s0: 83 notes: ink refused: too_thin x83
+   p16 s0: 76 notes: ink refused: too_thin x68; stem side None->down x4; ink refused: one_stem/too_thin x2; ink refused: not_straight x1; stem side None->up x1

@@ -1,0 +1,36 @@
+brahms1-breitkopf: kept -> narrowed 1991 (exclusive partition by item whose guard input differs)
+    1639   82.3%  2.74
+     162    8.1%  2.77b
+     143    7.2%  2.74 + 2.77b
+      22    1.1%  2.77/2.77b
+      20    1.0%  2.74 + 2.77/2.77b
+       4    0.2%  none differs
+       1    0.1%  2.77/2.77b + 2.77b
+brahms1-breitkopf: narrowed -> kept 344
+     228   66.3%  head_and_marks via 2.74
+      85   24.7%  hooks_counted
+      10    2.9%  head_and_marks via 2.77/2.77b
+       7    2.0%  head_and_marks via 2.74 + 2.77b
+       4    1.2%  head_and_marks via 2.77b
+       4    1.2%  hollow_head_bare_stem
+       4    1.2%  head_and_marks via arc decision changed
+       2    0.6%  head_and_marks via 2.74 + 2.77/2.77b
+
+beethoven5-litolff: kept -> narrowed 388 (exclusive partition by item whose guard input differs)
+     226   58.2%  2.74
+      52   13.4%  2.77/2.77b
+      36    9.3%  2.77b
+      31    8.0%  none differs
+      28    7.2%  2.74 + 2.77b
+      13    3.4%  2.74 + 2.77/2.77b
+       2    0.5%  2.77/2.77b + 2.77b
+beethoven5-litolff: narrowed -> kept 89
+      41   46.1%  head_and_marks via 2.77/2.77b
+      21   23.6%  hooks_counted
+      10   11.2%  hollow_head_bare_stem
+       8    9.0%  head_and_marks via none differs
+       4    4.5%  head_and_marks via 2.74
+       2    2.2%  head_and_marks via 2.77/2.77b + 2.77b
+       2    2.2%  head_and_marks via 2.74 + 2.77/2.77b
+       1    1.1%  head_and_marks via 2.77b
+

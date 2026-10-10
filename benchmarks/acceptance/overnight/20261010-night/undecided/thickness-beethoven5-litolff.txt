@@ -1,0 +1,13 @@
+beethoven5-litolff: 3985 Q.BEAM_STROKE_INK rows, 3985 with a thickness_ratio
+     0 .. 0.5        1   <-- below the cut: refused as too_thin
+   0.5 .. 0.75       9   <-- below the cut: refused as too_thin
+  0.75 .. 1.0      113 #####  <-- below the cut: refused as too_thin
+   1.0 .. 1.25    1273 ############################################################  <-- below the cut: refused as too_thin
+  1.25 .. 1.5      345 ################  <-- below the cut: refused as too_thin
+   1.5 .. 1.75     180 ########  <-- below the cut: refused as too_thin
+  1.75 .. 2.0       99 ####
+   2.0 .. 2.5     1113 ####################################################
+   2.5 .. 3.0      440 ####################
+   3.0 .. 4.0      287 #############
+   4.0 .. 6.0      125 #####
+  below 1.75: 1921 (48%); between 1.5 and 1.75: 180; between 1.75 and 2.0: 99

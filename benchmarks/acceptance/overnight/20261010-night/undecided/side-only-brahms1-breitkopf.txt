@@ -1,0 +1,9 @@
+brahms1-breitkopf: 162 notes with the stem side as the only newly-differing guard input
+    61  decided-arc strokes dropped   stems_attached=0
+    38  neighbour-staff strokes dropped   stems_attached=0
+    33  far-side strokes dropped   stems_attached=0
+    12  decided-arc strokes dropped + far-side strokes dropped   stems_attached=0
+    11  neighbour-staff strokes dropped + decided-arc strokes dropped   stems_attached=0
+     5  neighbour-staff strokes dropped + far-side strokes dropped   stems_attached=0
+     1  neighbour-staff strokes dropped + decided-arc strokes dropped + far-side strokes dropped   stems_attached=0
+     1  no stroke dropped by any counter   stems_attached=2

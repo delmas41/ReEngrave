@@ -1,0 +1,42 @@
+== brahms1-breitkopf: note transitions in the diff (family note)
+         kept -> kept       12119
+      refused -> refused    4503
+   given_away -> given_away 3066
+         kept -> narrowed   1991
+     narrowed -> narrowed   1821
+     narrowed -> kept       344
+      refused -> kept       247
+         kept -> refused    82
+      refused -> narrowed   48
+     narrowed -> refused    25
+   given_away -> refused    9
+      refused -> given_away 3
+         kept -> abstained  2
+   kept->narrowed notes 1991 in 375 distinct bars (of 514 bars x staves not counted; 53 systems)
+   bars by number of newly undecided notes: 1:66, 2:58, 3:37, 4:38, 5:36, 6:29, 7:23, 8:21, 9:12, 10:13, 11:10, 12:6, 13:9, 14:1, 15:2, 16:1, 17:3, 18:2, 19:2, 20:1, 22:2, 23:1, 24:1, 30:1
+
+== brahms1-breitkopf: top 10 bars (page/system/bar-in-system -> export bar)
+   p13 s1 bar 10/12 (export bar 263, printed 260 (by eye)): 30 notes on 10 staves [0 1 2 3 4 9 10 11 12 13]
+   p18 s1 bar 6/8 (export bar 351, printed 348 (by eye)): 24 notes on 7 staves [0 2 3 5 11 12 13]
+   p13 s1 bar 9/12 (export bar 262, printed 259 (by eye)): 23 notes on 8 staves [0 1 2 3 10 11 12 13]
+   p3 s0 bar 10/10 (export bar 47, printed 47 (margin reader agrees)): 22 notes on 6 staves [1 5 9 11 12 13]
+   p25 s0 bar 2/10 (export bar 476, printed 473 (by eye)): 22 notes on 9 staves [0 1 2 3 4 9 10 11 12]
+   p13 s1 bar 4/12 (export bar 257, printed 254 (by eye)): 20 notes on 9 staves [2 3 4 5 9 10 11 12 13]
+   p16 s1 bar 5/9 (export bar 322, printed 319 (by eye)): 19 notes on 11 staves [1 2 3 4 5 7 9 10 11 12 13]
+   p23 s1 bar 9/10 (export bar 455, printed 452 (by eye)): 19 notes on 5 staves [0 8 9 11 12]
+   p14 s1 bar 6/9 (export bar 281, printed 278 (by eye)): 18 notes on 5 staves [0 3 5 7 9]
+   p18 s0 bar 3/7 (export bar 341, printed 338 (by eye)): 18 notes on 6 staves [1 2 4 5 9 10]
+
+== brahms1-breitkopf: top systems by newly undecided notes
+   p13 s1: 159 notes in 11 bars, 13 staves
+   p22 s0: 83 notes in 11 bars, 9 staves
+   p16 s0: 76 notes in 12 bars, 11 staves
+   p14 s1: 72 notes in 9 bars, 8 staves
+   p8 s0: 63 notes in 12 bars, 7 staves
+   p0 s0: 61 notes in 6 bars, 9 staves
+   p21 s1: 61 notes in 10 bars, 9 staves
+   p15 s1: 60 notes in 10 bars, 9 staves
+   p19 s0: 55 notes in 10 bars, 11 staves
+   p16 s1: 54 notes in 7 bars, 12 staves
+   p23 s1: 54 notes in 9 bars, 8 staves
+   p3 s0: 52 notes in 8 bars, 10 staves

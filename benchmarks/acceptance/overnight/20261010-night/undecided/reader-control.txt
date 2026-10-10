@@ -1,0 +1,7 @@
+sections: {'bar_totals': 503, 'boxes': 11912, 'cell_totals': 3932, 'cells': 5377, 'dur': 882, 'staves': 331}
+IDENTICAL
+control: a perturbed copy is reported different (comparison can fail)
+--- last night's record, --dur-only --side a
+sections: {'bar_totals': 213, 'boxes': 477, 'cell_totals': 309, 'cells': 0, 'dur': 477, 'staves': 0}
+IDENTICAL
+control: a perturbed copy is reported different (comparison can fail)

@@ -1,0 +1,10 @@
+brahms1-breitkopf: 4 notes with no guard counter changed; 1 of them carry a GATHER change line
+      3  (no GATHER line)
+      1  GATHER notehead_letter_ink
+   tonight's reasons: {'beams ambiguous': 2, 'head fill from ink': 2}
+beethoven5-litolff: 31 notes with no guard counter changed; 1 of them carry a GATHER change line
+     30  (no GATHER line)
+      1  GATHER head_line_cut
+      1  GATHER notehead_ink
+      1  GATHER notehead_staff_position
+   tonight's reasons: {'head fill from ink': 10, 'beams ambiguous': 18, 'beam certain not joined': 2, 'beam discounted uncertain': 1}
