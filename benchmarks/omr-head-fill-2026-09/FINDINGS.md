@@ -688,3 +688,426 @@ slash row stays a rest; a real head at the stem end beside a slash kept.
 Crops: `out/print/2.71/` (`tile_01..09.png`, `manifest.json`, `render.py`) -- blind, subject
 bracketed, nothing of ours drawn; by my eye all 9 brackets sit on a slash at a stem's tip
 (tile 5 is tile 3's stem+slash box, the one the rest rule refuses).
+
+## Sec.11. 2.78 one stem, one value — Phase 1 (2026-10-09)
+
+Path: STAGED, GATHER + ADJUDICATE only. Branch `lane-2.78-one-stem-one-value`, base main
+`3ec53272` + the docs-only `f027c8e7` (the brief said the base already held it; it did not,
+so it was fast-forwarded in). Both small re-gathers are on that tree, clean (`dirty False`,
+commit `f027c8e7`). **No product code. Nothing is built, nothing is judged yet: the tiles in
+`out/print/2.78-review/` are waiting for Sean.**
+
+**The rule (Sean, DECISIONS 2026-10-09, "no exceptions"):** every notehead on ONE stem has the
+SAME written value; a stem carrying a hollow head cannot also carry a filled one; a filled
+'head' box on a half note's stem is not a note (a slash or a misreading). **CONVENTION ASSUMED /
+WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond that line:** (i) that "value" includes DOTS (a
+dotted chord is dotted on every head) -- the brief says so, DECISIONS says "the same written
+value"; falsified by Sean reading a tile where one head of a chord is dotted and the other is
+not (tiles 3 and 13 ask; by my eye the print shows a dot beside BOTH heads in tile 13 and in
+the dotted chords of tiles 5 and 12, and tile 3's second box looks like a slash at the stem's
+tip, not a head);
+(ii) that the repair direction for a fill conflict is "the filled box is the non-note" in every
+case, not only the slash ones (tiles 2, 6, 7, 11 ask; **tile 9 is the counter-case**: by my
+eye its DECIDED hollow whole-class box is a smeared black blob at the top of a beamed stem, so
+there the hollow reading is the wrong one, and tile 14 looks like one half note carrying a
+duplicate filled box).
+
+### 11.1 The join: what the record says about "these heads share a stem"
+
+**No verdict says it. That is the finding.** What exists:
+
+| where | what it is | why it is not the join |
+|---|---|---|
+| `Q.STEM` (GATHER, one row per CV stem, `[x, y, w, h]` canonical, filed on the CELL) | the stems | says nothing about heads |
+| `Q.NOTEHEAD_STEM_CROSS_INK.detail.stem` (GATHER, per head) | the stem row a head was split against | the FIRST overlapping row only; no row where the head leaves no area on one side; a measurement, never a verdict |
+| `Q.STACKED_HEAD_FIT.detail.stem` (GATHER, per head) | stem + side | only heads on the SAME side of a stem |
+| `rhythm._stems_on`, `notehead_precision._stem_rows_on`, `gather._stacked_boxes_overlap` | a bare box-overlap test, no tolerance, recomputed privately in each reader | three copies, never filed |
+| `Q.STEM_DIRECTION` (ADJUDICATE, per head) | which way the stem points, decided "from the whole group on the stem" | its `detail.heads_on_stem` is the number of noteheads in the whole CELL (the code passes `len(_heads_in(ev, cell))`; it reads 5 on both heads of the 2-head stem in `cell/3/0/5/2`, a cell that holds 5 noteheads), not on the stem: mis-named |
+| `Q.EVENT` (ADJUDICATE, per cell) | chord = heads within an x tolerance, blocked only by an explicit opposite stem direction | not stems: of the 90 / 93 stem groups below, 12 / 6 are split across events, and 74 of 154 / 98 of 185 multi-head events stand on no shared stem |
+| `export._events` -> `voicing.group_chords_in_measure` (EXPORT) | a chord's duration is the MODE of its heads' durations, `Counter.most_common(1)` | on a two-head disagreement that is whichever head came first in x order: an argmax over a disagreement (rule 8), and it is where the stem rule is "enforced" today |
+
+This probe uses `rhythm._boxes_overlap` between each kept notehead's `Q.GLYPH_BOX` and the
+`Q.STEM` rows of its own cell (the join ADJUDICATE's duration decision actually uses),
+cross-checked against the filed `cross_ink` stem: 414 of 414 (Litolff) and 332 of 332 (Brahms)
+agree -- but that is the same test written twice, so it is a consistency check, not evidence.
+Looseness of the join, measured: 109 of 765 (Litolff) and 48 of 871 (Brahms) stemmed heads
+overlap 2+ stem rows (12 / 5 stem groups are the same head-set from duplicate rows, counted
+once); 7 of 187 / 5 of 186 group heads have the stem's centre in the MIDDLE half of the head's
+width, where a real stem is flush with a side (CLAUDE.md §10). 223 / 224 kept heads have no
+stem row at all (whole notes, missed stems); the rule cannot touch them.
+
+### 11.2 Population (small re-gathers, `--through adjudicate`, `acceptance_quick`)
+
+A HEAD is a notehead-family box ADJUDICATE kept, narrowed or abstained (refused / given-away
+boxes are not heads). Litolff pages 1-3 (movement start through the count page, pdf 3): 988
+heads (933 decided + 55 narrowed, 0 abstained; 192 refused, 106 given away). Brahms pages 0-1
+(count page pdf 1): 1,095 heads (922 + 173 narrowed, 0 abstained; 339 refused, 57 given away).
+
+| stems carrying 2+ heads | Litolff all (p3 only) | Brahms all (p1 only) | both, all |
+|---|---|---|---|
+| **multi-head stems** | **90 (42)** | **93 (36)** | **183** |
+| agree: every head decided, one value (the CONTROL) | 76 (34) | 66 (27) | 142 |
+| (a) decided heads disagree on FILL (hollow vs filled) | 5 (2) | 0 (0) | 5 |
+| (b) decided heads disagree on DOTS | 0 (0) | 2 (0) | 2 |
+| (c) decided heads agree, another head NARROWED / ABSTAINED | 1 (0) | 4 (2) | 5 |
+| &nbsp;&nbsp;c1 the narrowing still holds the decided value | 0 | 0 | 0 |
+| &nbsp;&nbsp;c2 the narrowing EXCLUDES the decided value (a hidden contradiction) | 1 (0) | 4 (2) | 5 |
+| &nbsp;&nbsp;c3 abstained (unread) | 0 | 0 | 0 |
+| (d) anything else | 8 (6) | 21 (7) | 29 |
+| &nbsp;&nbsp;d1a whole-class box + half-class box (fill, dots equal) | 0 | 1 (1) | 1 |
+| &nbsp;&nbsp;d1b decided heads differ only in beam/flag level | 6 (6) | 2 (0) | 8 |
+| &nbsp;&nbsp;d2 no head decided: both narrowed IDENTICALLY | 2 (0) | 18 (6) | 20 |
+| stems with >= 1 head UNREAD (abstained) | 0 | 0 | 0 |
+
+Stems the rule would flag as a CONTRADICTION (a + b + c2): **6 of 90, 6 of 93, 12 of 183
+(6.6 %)**; with the level / class disagreements (d1): 21 of 183. d2 is agreement in ignorance:
+one narrowed fact held twice. Heads on a multi-head stem: 187 of 988 (Litolff), 186 of 1,095
+(Brahms) head-memberships. Everything is from ONE count-page range per document; the pages
+differ (Litolff p3: a 2, d1b 6, no c; Brahms p1: c2 2, d1a 1, d2 6, no a or b), so the split
+between causes is not stable across plates and n is small.
+
+**Two populations are empty, and an empty population is not a pass.** (c1) and (c3) are zero
+on both plates: no narrowing on either plate still holds a decided mate's value, and no head is
+abstained (`duration` abstains only on `no_notehead`/`unknown_head`/rests). Nothing here can say
+whether a "transfer the stem's value to an unread head" step is right. (b) is zero on Litolff
+because **no multi-head stem on Litolff p1-3 carries a dot at all** (0 of 90); on Brahms 27 of
+93 do, and 2 disagree.
+
+Mechanism, as far as the record shows (my reading of the verdict `detail`, not Sean's):
+* (a) + (c2) -- 10 stems, each a hollow head decided beside a filled box (5 + 5; the filled box
+  is DECIDED in (a) and NARROWED eighth|quarter in (c2)). Per filled box, from the record:
+  6 of 10 have the stem's centre in the middle half of the box (0.49-0.67 of its width; a real
+  head has its stem flush with a side, §10), 2 are small boxes at the edge (1.14 x 0.90 and
+  1.00 x 0.81 sp), and **2 look like ordinary heads standing at the stem's edge** (Litolff
+  `cell/2/1/8/2` 1.6 x 1.45 sp at 0.94; Brahms `cell/1/0/0/4` 1.38 x 1.33 at 0.08, where the
+  DECIDED box beside it is a 2.68 sp wide whole-class box). So in those 2 the hollow reading,
+  not the filled one, may be the wrong one: Sean's tiles 14 and 9 decide whether the rule's
+  direction ("the filled box is the non-note") holds there. By my eye tile 9 is exactly that
+  counter-case: the stem carries a beam, and a hollow head is never beamed (2.43), so a hollow
+  reading on that stem is the misreading.
+* (b) -- 2 stems: the undotted half box is 1.49 x 0.70 sp (a half-height box, 5.0 head-heights
+  from the stem end) and 1.04 x 1.01 sp (narrower than a head).
+* A `Q.STEM_SLASH` row on the stem is a weak separator by itself: it stands on 5 of the 12
+  contradiction stems (a + b + c2) against 5 of the 142 agreeing ones (those agree because 2.71
+  already refused the slash box); it misses 7 of 12.
+* (d1b) -- the same stem, two readings of its beams: `glyph/3/0/5/2/0` counts 2 strokes
+  (`beams_by_stem` 2, `beams_far_side` 0) and `/3` counts 1 (`beams_by_stem` 1, `beams_far_side`
+  1), both with `stems_attached` 1 and the same `beam_side` up. Inferred from those detail
+  fields, not traced further: each head re-derives the level from the strokes on its own side
+  of ITS OWN position along the stem, while the level is a property of the STEM's tip. Same
+  numbers on `3/0/7/6` (2 strokes vs 1, `beams_far_side` 0 vs 2).
+* (b) -- Brahms `cell/0/0/5/2`: a dotted half and an undotted half on one stem; by my eye the
+  print shows a dot beside both heads (tile 13).
+
+### 11.3 Controls
+
+* **Reach first**: 90 and 93 multi-head stems -- not dead. Rule 8 / rule 7's empty-population
+  warning applies to (b) on Litolff, (c1), (c3), above.
+* **The join has a negative control that can fail**: sliding every stem box 10 head-widths right
+  takes the multi-head stems 90 -> 0 (Litolff) and 93 -> 8 (Brahms; the slid stem lands on a
+  neighbouring chord on the denser plate); sliding 12 head-heights down takes both to 0.
+* **The "agree" control is not one value**: Litolff 19 beamed eighths, 28 quarters, 29 halves;
+  Brahms 47 eighths, 9 dotted quarters, 5 dotted halves, 2 quarters, 1 each of sixteenth, half,
+  whole. Not all one class.
+* **Not controls**: the page-box affine residual (0.00 everywhere) is a computation -- GATHER
+  derives each page box from the canonical one by the same affine; "heads of a stem share a
+  column" (90 of 90, 93 of 93) follows from the join. The control that can fail on the page is
+  the frame control below.
+* **Frame control on the tiles** (`readout.frame_control`, mean ink on the staff lines minus half
+  a space off them, on the same deskewed raster the boxes live in): Litolff p3 +116.7, p2
+  +108.8; Brahms p0 +214.1, p1 +159.2; the same renders rolled half a space down read -117.4,
+  -112.8, -212.2, -158.5. Litolff's deskew is 0.25 degrees, which is why the tiles are cut from
+  `render_page(...).rgb` and not re-rendered from the PDF as 2.71's were.
+* **Who says it's right**: nobody yet. Every cause above is my reading of the record; the tiles
+  are Sean's to judge.
+
+### 11.4 Tiles for Sean: `out/print/2.78-review/` (14, blind, order shuffled)
+
+Each is the page at 600 dpi, x2, a red corner bracket on the stem and every head on it, nothing
+else drawn, one question: *What note value is printed on this stem, and is every mark on it a
+notehead?* `manifest.json` holds our readings per head and the cause; it is not shown to the
+judge. Spread: 4 fill (a), 4 hollow-vs-narrowed (c2), 2 dots (b), 1 beam level (d1b), 1 whole
+vs half class (d1a), and **2 controls where every head agrees** (a half chord with a slash row
+that 2.71 already handles, and a dotted-half chord, each a neighbour of a conflict stem), so a
+judge who calls everything a conflict is caught. Selection spec: `out/2.78/tile-selection.json`.
+Not covered, deliberately: d2 (no contradiction) and (c1)/(c3) (no population).
+
+### 11.5 Proposal: where the rule belongs (NOT built; waits for Sean's tiles)
+
+CLAUDE.md §4a, does the answer FOLLOW or is it BEST?
+* **That a stem has one value FOLLOWS** -- it is the convention, Sean says no exceptions, so a
+  stem whose heads hold two values is a contradiction in every case. Detecting it is forced.
+  That is not INFER's: INFER may only collapse a NARROWED verdict to its own candidates and
+  never overturns a DECIDED one, and (a), (b), (d1) are DECIDED against DECIDED.
+* **Which head is wrong does NOT follow.** The convention says one reading is wrong, not which.
+  Where the evidence cannot say, rule 8: narrow or abstain, never pick, and never the exporter's
+  mode vote.
+
+So, in order:
+1. **ADJUDICATE, a connection (rule 6): file the join once.** One per-head verdict (name left
+   open; `Q.HEAD_STEM` is the shape `Q.STEM_DIRECTION` already has, filed on the head, derived
+   from the group): DECIDED where exactly one distinct stem row is flush with a side of the head,
+   NARROWED where two distinct stems reach it, ABSTAINED where none. It replaces the three
+   private box-overlap copies, and it is where the duplicate-row and mid-body cases (11.1) are
+   decided instead of counted.
+2. **ADJUDICATE, a new decision ordered after `duration` and before `event`, in its own file**
+   (so it touches none of the fenced functions in `rhythm.py` / `gather.py` / `ownership.py`),
+   filing its own per-stem value; per component:
+   * all heads decided and equal -> files nothing new (the control, 142 of 183);
+   * a narrowing whose candidates still hold the decided mates' value, or narrowings with ONE
+     common candidate -> that FOLLOWS (an intersection), so it is the stem's DECIDED value.
+     Population today: 0, so it cannot be priced;
+   * **a contradiction (a, b, c2, d1) -> never decided by a vote.** Fill: Sean's ruling names the
+     filled box as the non-note, but the refusal (`notehead_is_not_a_notehead`) may fire only
+     where a per-box witness already on the record agrees -- candidates: a `Q.STEM_SLASH` row on
+     the stem, the stem through the middle of the box, a box smaller than a head, off the stem
+     end -- and their separating power is exactly what Sean's tiles measure (the slash row alone
+     misses 7 of 12). The witnesses can also point the OTHER way: a beam joined to the stem
+     rules out a hollow head (2.43), which is the reading to refuse on tile 9 by my eye. So the
+     direction is per-box evidence; whether Sean's "filled box on a hollow stem" may also stand
+     alone as the direction when the evidence is silent is the question tiles 2, 6, 7, 11 put to
+     him, not yet a default. Where no witness holds: both readings stay as a NARROWING and the stem is
+     `stem_value_conflict`, which EXPORT must count and hold out (the 2.8 mechanism), not write;
+   * dots: a decided augmentation dot (`Q.DOT_ROLE`) read for any head of the stem is the
+     chord's, if Sean's reading (i) holds; else narrow;
+   * levels (d1b): one count per STEM from the strokes joined to that stem (`Q.BEAM_STEM_JOIN`),
+     not a recount per head position; disagreement narrows.
+3. **EVALUATE / EXPORT only consume it**: `reconcile_duration` must run after the stem step (it
+   changes one note to land a bar; on a chord that would put two values on one stem), and
+   `export._events` stops mode-voting a stem it has a `stem_value_conflict` for.
+
+It goes in ADJUDICATE rather than EVALUATE because Sean's 2026-09-30 rule is that every test is
+GATHER + ADJUDICATE only, and a stem rule that exists only at EVALUATE cannot be measured the way
+this lane is measured. The one thing that does need a stage past ADJUDICATE is the consumers (3).
+
+Open for Sean, one line each, on the tiles: is the filled box on a hollow stem the non-note in
+EVERY case (not only the slash)? is a dotted chord's dot on every head? does a stem with two
+beam levels read as the higher or is it a misread of one head?
+
+### 11.6 Not done / limits
+
+No product code, no flag, no test. The records are 113 MB each and are not committed
+(`/private/.../scratchpad/l278-quick-{lit,brahms}`, regenerable: `python3 -m
+tools.omr.acceptance_quick --doc <id> --out-root <dir>`, 349 s and 713 s). `check` N before
+193 (`out/2.78/check-before.txt`). One count page per plate; c1, c3 and (b)-on-Litolff are empty.
+
+Reproduce (from the repo root, records as above):
+`python3 benchmarks/omr-head-fill-2026-09/probe/l278_population.py REC.json --count-page N
+--json out.json`; tiles:
+`python3 benchmarks/omr-head-fill-2026-09/probe/l278_tiles.py --record lit=REC --pop lit=out.json
+... --select benchmarks/omr-head-fill-2026-09/out/2.78/tile-selection.json --out out/print/2.78-review`.
+Outputs: `out/2.78/population-{litolff-p1-3,brahms-p0-1}.{txt,json}`.
+
+## Sec.12. 2.78 one stem, one value — Phase 2 (2026-10-09)
+
+Path: STAGED. Measurement is GATHER + ADJUDICATE (CLAUDE.md §6b); the one EVALUATE rule below is priced by a REACH print only, never
+scored. Branch `lane-2.78-one-stem-one-value`, off main with the Phase 1 branch (Sean's answers `102b92bc`) merged. Built on Sean's ruling
+on the 14 blind tiles (DECISIONS, 2026-10-09): the value belongs to the STEM; it is read from the stem's own evidence (beams and flags, the
+hollow heads, the dots); a head that disagrees takes the stem's value; a box is refused ONLY with a per-box witness (a slash crossing it, or
+a duplicate of another head at the same position), never by fill alone. **Not merged.**
+
+**RULE, CONFIRMED (Sean, DECISIONS 2026-10-09): *"Whole notes never have stems."*** (tiles 5 and 9.) A box on a stem is therefore never a
+whole note: a whole-class box standing on a shared stem casts no vote for the stem's base or levels and takes the stem's value, and a whole
+VALUE is not among the values a stem can have (it is dropped from a narrowing). It was an assumption until the coordinator relayed Sean's
+answer; it is a rule in the code now, with no switch. Tile 9 is the case it decides, and the test holds a control that can fail: with the
+rule's predicate removed the same stem is decided a half.
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED** (two, each a documented rule in the code, both put to Sean on the new tiles):
+
+1. *A stem's beam level is what the head NEAREST ITS TIP reads* (tile 1: one head a 16th, the other an eighth, Sean: eighth). A head far from
+   the tip also sees strokes BETWEEN the heads, which are not beams. A physical argument with ONE judged case behind it. The same pattern
+   moves the beam level of 59 heads in the four records measured (58 down, 1 up: `out/2.78/p2-level-changes.txt`), and new tiles 5, 6, 7, 9
+   and 10 ask. Falsified by a stem where the tip-nearest head's count is wrong and the far head's right.
+2. *On a hollow stem, a dot read for a decided FILLED box is not the stem's* (a filled box on a hollow stem is the slash or a duplicate in
+   6 of Sean's 6 non-note cases; a dot near it belongs to something else). Not judged; only the hollow heads' and whole-class boxes' dots
+   count there. Falsified by a dotted hollow chord whose only dot was read on a filled box. New tiles 4 and 12 ask about dots.
+
+### 12.1 Two readings of Sean's answers I could not take, and why it changes nothing built
+
+DECISIONS says the filled box is a real half note on tiles 11 and 7. The print says otherwise, by my eye (not Sean's): on tile 11 (and its
+stated twin, tile 10) the black box is the thick black blob at the stem's TIP, and the second half note is a hollow head mid-stem with the
+slash through it that has NO box at all; on tile 7 the black box is the blob at the tip and "2 half notes" are the two stacked hollow heads
+at the bottom, which the detector boxed as ONE 2.04-space-tall box. The count the answer gives (2 notes) equals the number of boxes only by
+coincidence. Nothing built depends on it: the stem decision files a value and refuses nothing, so a filled box without a witness is kept and
+takes the stem's half either way (the T11-style control in the tests asserts exactly that). **But see 12.4: the slash fix refuses tile 7's
+black box, which the brief's list of expected refusals (tiles 2, 3, 4, 6, 8, 14) did not include. That is the one place this reading
+matters, and it is Sean's to settle.**
+
+### 12.2 What was built
+
+* **`Q.HEAD_STEM`** (ADJUDICATE, `adjudicators/stem_value.py`, after `Q.DURATION` in `adjudicate.ORDER`): the head-to-stem join, filed once on
+  each notehead (value: the stem row id). Reasons: `one_stem`; `stem_by_reach` (two stems touch it, only one reaches 0.8 of a staff space
+  past the head — a fragment does not); `stem_by_side` (the stem on the side CLAUDE.md §10 puts it: up → the head's right, down → its left,
+  96 of 96, read from the decided `Q.STEM_DIRECTION`); `stem_by_flush`; `two_stems` NARROWED when none of these settles it; `no_stem`
+  ABSTAINED. A refused box and another staff's relocated copy are still JOINED (it is geometry) but are not members of the value.
+* **`Q.STEM_VALUE`** (same file): the stem's written value as it applies to that head, `{beats, written, dots, beam_levels, head_fill,
+  stem}`. Base from the hollow heads (a hollow head is a half; a hollow head under a certain beam narrows, 2.43), levels from the head
+  nearest the tip, dots from the heads that may carry them. DECIDED (`stem_agrees` when the head already says it,
+  `stem_value_from_evidence` when it differs); NARROWED `stem_levels_unread` where the stem's own evidence cannot say; ABSTAINED
+  `lone_head`, `ambiguous_stem`, `no_stem`, `not_a_member`. It never overturns a head's own `Q.DURATION` and never refuses a box.
+* **`consequences.share_stem_value`** (EVALUATE, one rule): where the stem value is DECIDED and a head's standing duration differs (or is
+  narrowed), the duration is restated to the stem's, once, `single_pass`, ranked above `Q.METER` in `evaluate.DOWNHILL` so it runs before
+  every meter rule and the bar sums read heads that agree. Without it `Q.STEM_VALUE` is producer-only and `check` N is 194 (see 12.8). A
+  NARROWED stem value fires nothing.
+* **`gather.py`, the tremolo-slash reader** (12.5): two narrow fixes that give `Q.STEM_SLASH` back three real slashes it missed, two of them on
+  tiles 7 and 8.
+* `readout._hv` renders the new quantity; `test_stage_review_evidence.STAGES_THAT_SEE_A_HUMAN_BOX` names the two new quantities.
+
+### 12.3 The score on Sean's 14 (replay of the fresh GATHER, final tree, `p2-armB_*.txt`; value read off `Q.STEM_VALUE`)
+
+The control comes first: the replay reproduces the record's own verdicts for what the rule reads (duration 1807/1807, stem direction
+1286/1286, the two notehead refusals 1286/1286, owner 1135/1135 on Litolff p3; same on Brahms p1), and **the control can fail**: with one
+GATHER row perturbed it reports "CONTROL FAILED: 5 verdicts differ" and exits 1 (`out/2.78/p2-break-control.txt`).
+
+| tile | doc | Sean's value | our stem value | verdict |
+|---|---|---|---|---|
+| T1 | Litolff | eighth | eighth (the 16th head takes the tip-nearest head's count) | right |
+| T2 | Litolff | half | half (the black box beside two hollow halves takes the half) | right |
+| T3 | Brahms | dotted half | dotted half (the undotted half takes the dot) | right |
+| T4 | Brahms | dotted half | dotted half (the black box takes it) | right |
+| T5 | Brahms | dotted half | dotted half (the whole-class box, 6.0, takes it: whole notes never have stems) | right |
+| T6 | Litolff | half | half | right |
+| T7 | Litolff | half | the black box is REFUSED (slash crossing it, 12.4); the remaining head keeps its own half and the stem value is `lone_head` | right for the head left; the refusal is outside the brief's list |
+| T8 | Brahms | dotted half | the black box is REFUSED (a twin of a refused slash box); the dotted half is `lone_head` | right; refusal on the list |
+| T9 | Brahms | eighth | NARROWED quarter or eighth (`stem_levels_unread`), answer inside; the whole-class head is dropped from the vote | narrowed, answer inside |
+| T10 | Litolff | half | half (`stem_agrees`), kept | right |
+| T11 | Litolff | half | half; the black box is KEPT (no witness) and takes the half | right (the real-note control) |
+| T12 | Brahms | dotted half | dotted half (`stem_agrees`) | right |
+| T13 | Brahms | dotted half | dotted half (the undotted half takes the dot) | right |
+| T14 | Litolff | half | half (the black box beside a hollow head takes the half) | right |
+
+12 right, 1 narrowed with the answer inside (T9), 0 wrong; T7 and T8 each have a refused box that is not scored (not a member) and a
+remaining head that is right. Tiles 2, 3, 4, 6 and 14 (Sean: the black box is not a note) have NO refusal: those boxes are kept and their
+VALUE is what is corrected (12.4 says why no witness was built for them).
+
+### 12.4 Refusals: only with a per-box witness
+
+Two boxes are refused across both count pages, both by `Q.STEM_SLASH` crossing them (`out/2.78/p2-refusal-diff-*.txt`): tile 8 (Brahms) and
+tile 7 (Litolff). Everything else is unchanged (matched glyph pairs 5,342 and 5,717; 0 only in base, 0 only in arm). I looked for the
+other per-box witnesses the ruling names (`out/2.78/p2-refusal-witnesses-*.txt`, over the kept boxes: 988 Litolff, 1,095 Brahms) and
+**found a population of about one each, so none was built**:
+
+* (a) a twin of an already-refused slash box: none on Litolff, one on Brahms (tile 8, which the slash reader now refuses anyway);
+* (c) a cross-class duplicate on one stem (IoU >= 0.5 with another head): one on Litolff (tile 14, the pair `glyph/2/1/8/2/6` and
+  `glyph/2/1/8/2/7`), none on Brahms. A witness exists for tile 14's box and I did not refuse it: one case is not a rule, and the box is
+  kept and takes the half, which is the value Sean gave;
+* (b) a box that passes the slash shape and the stem crossing and fails ONLY the tip-position test: one on Litolff (tile 11) and three on
+  Brahms (tile 4 and two with no judged tile). **Tile 4's box is not a note (Sean) and tile 11's is (DECISIONS), and both sit in this
+  class**, so shape plus crossing cannot separate them; that is the reason a refusal by shape or fill alone must not be built.
+
+Tiles 2, 3 and 6 have no witness at all, so their boxes are kept and corrected in VALUE.
+
+**For Sean, because it is not on the brief's list: tile 7's black box (`glyph/2/1/9/11/1`, Litolff) is now refused as a tremolo slash.** It
+comes ONLY from the slash-reader fix (`45fcbe14`), which can be reverted on its own. By my eye the box is the blob at the tip and not a
+note (12.1); DECISIONS reads it as a real half note. If Sean's reading is right, the cost is one box.
+
+### 12.5 Why `Q.STEM_SLASH` missed tiles 7 and 8, and the fix
+
+Captured on the real ink (`out/2.78/p2-slash-ab.txt`), two causes in `stem_slashes`/`_track_stroke`: (1) a BOLD slash's contact with the
+stem runs longer than the contact cap (1.3 spaces), so it was thrown out as a clump; (2) the stem flares at its tip, so the stroke's first
+column read no ink and the tracker gave up. Fixes: `STEM_SLASH_MAX_CONTACT_SPACES` 1.3 → 1.6, and `_track_stroke` retries up to
+`round(0.06 * space)` columns further out only when the FIRST column tracked nothing (`STEM_SLASH_START_SKIP_SPACES`). A/B on the two
+records, base vs arm: stems with a slash 13 → 15 (Litolff, of 1,189 stems), 20 → 21 (Brahms, of 1,150): **3 of 2,339, each a real slash
+by eye** on the ink (`out/print/2.78-slash-fix/`: three raw ink crops of the stems whose status changed, not ruled print crops). Both
+changes carry a control restoring the old value and failing, and the "clump over the cap" control still rejects. Neither touches a fenced
+function. A GATHER change, so it is priced by two fresh gathers (the `B` arm), not by replay. It is its own commit (`45fcbe14`).
+
+### 12.6 Population, before and after (kept heads on a stem with >= 2 kept members)
+
+Stem values (ADJUDICATE), replay of the FRESH GATHER on the final tree:
+
+| page | multi-member stems | heads' own readings: agree / all-narrowed-identical / decided DISAGREE / mixed | after the stem value: agree / all-narrowed | heads whose value changed |
+|---|---|---|---|---|
+| Litolff p3 (count page) | 81 | 68 / 2 / **10** / 1 | 79 / 2 | 11 |
+| Brahms p1 (count page) | 88 | 63 / 17 / **5** / 3 | 70 / 18 | 8 |
+| Litolff, other pages (arm X) | 261 | 191 / 7 / **56** / 6 (+1 narrowed-differ) | 254 / 7 | 69 |
+| Brahms, other pages (arm X) | 168 | 121 / 29 / **13** / 2 (+3 narrowed-differ) | 136 / 32 | 19 |
+
+The same table on Phase 1's gather rows (arm A, `p2-armA_*.txt`, which lack the slash fix) agrees within one stem (Litolff 82 stems, 11
+disagree → 0, 12 heads changed; Brahms 89 stems, 5 → 0, 9 changed). The count pages' ADJUDICATE table says "after: no stem with decided
+heads that disagree"; the EVALUATE row below is what the STANDING durations say, and they are not quite the same (Brahms, one stem).
+Stem-value reasons over the count pages: Litolff `stem_agrees` 140, `stem_value_from_evidence` 23, NARROWED `stem_levels_unread` 4;
+Brahms 127 / 13 / 36. The join: Litolff `one_stem` 655, `stem_by_side` 40, `stem_by_reach` 10, `two_stems` NARROWED 59, `no_stem` 223;
+Brahms 822 / 42 / 0 / 6 / 224 (`p2-stem-value-distribution.txt`).
+
+**What EVALUATE adds, a reach print** (`out/2.78/p2-evaluate-reach.txt`; the replay with ADJUDICATE then EVALUATE; reach, not accuracy):
+
+| record | decided stem values | `share_stem_value` firings | stems with a decided-heads DISAGREEMENT, after ADJUDICATE → after EVALUATE |
+|---|---|---|---|
+| Litolff p3 | 163 | 11 (10 decided restated, 1 narrowed settled) | 10 → **0** |
+| Brahms p1 | 140 | 7 (5 restated, 2 settled) | 5 → **1** |
+| engraved p0–p2 (control) | 12 | **0** | 0 → 0 (4 multi-head stems, all agreeing) |
+
+* The firings are the same 11 and 8 heads as the ADJUDICATE table except ONE: Brahms p1's tile 9 (`obs:034176`). That stem's value is
+  NARROWED (quarter or eighth), so EVALUATE is silent by design, and its whole-class box keeps its decided 4.0 — **a decided whole on a
+  stem, which Sean's confirmed rule says cannot be.** The follow-on that would close it: where a head's DECIDED value is a whole and it
+  stands on a stem, the whole is impossible (it follows), so narrow that head's duration to the stem's candidates. NOT BUILT: it turns a
+  decided verdict into a narrowing in EVALUATE, which wants Sean's look, and it is one head on this page.
+* The engraved control has a real population (12 decided multi-head stems, all already agreeing) and fires zero times. A freshly gathered
+  engraved page 0 has 73 noteheads each on its own stem, so it cannot test the rule and is not claimed as a control.
+* The transitions on the count pages (18 firings): `(0.25,0,2)->(0.5,0,1)` ×6 (a 16th beside an eighth on a stem, the tile 1 pattern),
+  `(1.0,0,0)->(2.0,0,0)` ×3 and `(2.0,0,0)->(3.0,1,0)` ×2 (the tile 2/6/13 patterns), three narrowed durations settled (to a half, a half
+  and a dotted half), and four single other moves: an eighth to a quarter and an eighth to a half (Litolff), a dotted eighth to a dotted
+  quarter and a dotted whole to a dotted half (Brahms). The eighth-to-a-half one is the RISKY direction (the stem has a hollow head and
+  the tip-nearest head read a beam) and has no judged case; new tile 6 is the nearest.
+* Level changes over all four records: `(2→1)` 44, `(3→1)` 5, `(4→1)` 2, `(1→0)` 6, `(2→0)` 1, `(0→1)` 1 — 58 heads went DOWN, 1 UP: the
+  rule overwhelmingly removes strokes the far head counted BETWEEN the heads.
+
+### 12.7 The 12 new blind tiles: `out/print/2.78-phase2-review/` (NOT shown to Sean; he judges later; they do not block landing)
+
+Same style as `2.78-review/`: a crop at 600 dpi cut from the gather's own deskewed raster, with the staff lines drawn, the subject stem
+marked by a corner bracket, a frame control in `manifest.json` that can fail, shuffled order, no readings on the images. Our readings are in
+`manifest.json` only. Seed 2782. None of the 14 judged stems appears. Ten are decisions that CHANGED and two are controls that did not:
+
+| tile | page | cause | what our reading does |
+|---|---|---|---|
+| 1 | Litolff p7 | changed, BASE | two black-classed boxes and a half head on one stem become halves (three heads) |
+| 2 | Litolff p1 | control, unchanged | beamed: both heads already read the same eighth |
+| 3 | Litolff p1 | control, unchanged | hollow: both heads already read the same half |
+| 4 | Brahms p2 | changed, DOTS | an undotted half takes the dotted half beside it, hollow heads only |
+| 5 | Brahms p0 | changed, LEVELS 2→1 | the other plate: a 16th takes the eighth at the tip |
+| 6 | Litolff p7 | changed, LEVELS 1→0 | the RISKY direction: the stem becomes a quarter because the tip-nearest head read no beam |
+| 7 | Litolff p3 | changed, LEVELS 2→1 | the NEIGHBOUR of judged tile 1 in the same beamed group (lower head a 16th, tip-nearest an eighth); Sean's tile 1 answer should carry |
+| 8 | Litolff p6 | changed, BASE | a decided black box beside a decided half head becomes a half |
+| 9 | Litolff p5 | changed, NARROWED→DECIDED | a head narrowed 16th or eighth beside a decided eighth |
+| 10 | Litolff p5 | changed, LEVELS 3→1 | the far head read a 32nd, the tip-nearest an eighth |
+| 11 | Litolff p6 | changed, BASE+LEVELS+WHOLE | a whole-class box on the stem of a beamed eighth: the confirmed rule |
+| 12 | Brahms p3 | changed, DOTS | a filled quarter takes the dotted quarter beside it, no hollow head |
+
+(Page numbers are PDF page indexes, so p3 on Litolff is the count page for a stem not among the 14.)
+
+### 12.8 Tests, `check`, fast tier
+
+* `test_staged_stem_value.py` (42): the join, Sean's tile patterns, the keep-the-real-note control (T11), narrowing, the whole-notes rule
+  with a control that can fail, refused/relocated heads not members. `test_staged_stem_slash_reader_2_78.py` (7). `test_staged_share_stem_value.py`
+  (12). All written RED first, each against a clean copy of the parent: the stem tests (ImportError, `stem_value` did not exist), the slash
+  tests (4 of 7 fail there; the 3 that pass are controls of the old behaviour), and the EVALUATE tests (**7 fail, the 5 stay-silent controls
+  pass as they must**, which a tree with no rule cannot do otherwise). The agree-already control was run with the rule's equality guard
+  broken and fails (`CONTROL FAILED AS IT SHOULD`).
+* `check`: baseline N = 193 on main. With only the two new decisions N was **194**, the +1 being `reach`'s finding that `Q.STEM_VALUE` had no
+  live consumer. Adding a `KNOWN_GAPS` entry (the producer-only route other quantities take) would have hidden it, and CLAUDE.md §4d says a
+  finding leaves the list when it is WIRED, not when it is explained. `share_stem_value` is the consumer, the gap entry is removed, and N is
+  **193** (`out/2.78/p2-check-final.txt`, the run on the final code head).
+* Existing tests edited: `test_staged_evaluate_order.py` (the pinned rule order now includes `share_stem_value` before the meter rules) and
+  `test_stage_review_evidence.py` (two quantities added to the set of stages that see a human box).
+* Fast tier (`pytest tools/omr/tests -m "not slow"`), `tools/` clean throughout each run: on `5f1c71c3` (this lane's last code commit)
+  **6,802 passed, 11 skipped, 2 xfailed, 825 deselected as slow, 0 failed**, 583 s; then again on `565af7f9`, the merge of `origin/main`
+  `40875f6a` (2.12f landed; it touches `adjudicate.py` and `ownership.py`, merged without conflict, `ORDER` holds both lanes' entries):
+  **6,841 passed, 11 skipped, 2 xfailed, 825 deselected, 0 failed**, 576 s. `check` on the merged head: N = **193**
+  (`out/2.78/p2-check-merged.txt`). Every commit after the merge touches only `benchmarks/` and `out/`.
+
+### 12.9 Not done / limits
+
+* **EXPORT is unchanged.** Where a stem value is NARROWED, EVALUATE is silent, the heads keep their own durations, and `export._events`
+  (`voicing.group_chords_in_measure`) still takes a chord's duration as the MODE of its heads' — an argmax over a disagreement. Holding that
+  stem out and counting it is an export change and has no roadmap item yet. A DECIDED stem value is restated first, so the vote has nothing
+  to decide there.
+* **A narrowed duration that `share_stem_value` settles is now written** where it used to be counted under `duration_narrowed`: 1 on
+  Litolff p3 and 2 on Brahms p1. That is the rule doing what it is for, and also a change to the export refusal count that I did not
+  measure at the exported-file level (this lane measures GATHER+ADJUDICATE only).
+* **The leftover decided whole on a narrowed stem** (12.6, Brahms p1, tile 9's stem), and the same pattern is unmeasured on other pages.
+* The two assumptions at the top, and the tile 7 refusal (12.4), are Sean's to settle.
+* `Q.STEM_VALUE` reads only the head's own beam levels and the stem's heads; it does not read the bar. Whether a stem's value fits the meter
+  is `reconcile_duration`'s, after this rule.
+* No whole-movement run was made. The overnight re-gather will price the GATHER change (the slash reader) properly; the replay prices only
+  the ADJUDICATE and EVALUATE changes.

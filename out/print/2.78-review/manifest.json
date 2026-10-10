@@ -1,0 +1,818 @@
+{
+ "dpi": 600,
+ "note": "tiles cut from the gather's own deskewed raster; the bracket is the union of the stem box and its heads' boxes; ours is never shown to the judge",
+ "frame_control": [
+  {
+   "page": 3,
+   "frame_control": 116.69131189982238,
+   "shifted_half_space": -117.35441421977579,
+   "skew_correction_deg": 0.2499917447566986
+  },
+  {
+   "page": 0,
+   "frame_control": 214.14267809284541,
+   "shifted_half_space": -212.16573425664467,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 1,
+   "frame_control": 159.15914856275037,
+   "shifted_half_space": -158.47302267136973,
+   "skew_correction_deg": 0.0
+  },
+  {
+   "page": 2,
+   "frame_control": 108.77156438503849,
+   "shifted_half_space": -112.84358549873059,
+   "skew_correction_deg": 0.2499917447566986
+  }
+ ],
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    951,
+    1124,
+    977,
+    1243
+   ],
+   "subject": [
+    "glyph/3/0/5/2/0",
+    "glyph/3/0/5/2/3"
+   ],
+   "stem_row": "obs:037466",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "d_other",
+   "cause_sub": "d1b_beam_or_flag_level_only",
+   "picked_because": "(d1b) beamed chord: one head 16th, the other eighth",
+   "read_ours": [
+    {
+     "head": "glyph/3/0/5/2/0",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.25,
+       0,
+       "filled",
+       1.0,
+       2
+      ]
+     ]
+    },
+    {
+     "head": "glyph/3/0/5/2/3",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    663,
+    379,
+    686,
+    487
+   ],
+   "subject": [
+    "glyph/3/0/0/1/2",
+    "glyph/3/0/0/1/8",
+    "glyph/3/0/0/1/11"
+   ],
+   "stem_row": "obs:037039",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "a_fill",
+   "cause_sub": "fill",
+   "picked_because": "(a) fill: three heads on one stem, two HalfInSpace hollow + a small BlackInSpace read eighth",
+   "read_ours": [
+    {
+     "head": "glyph/3/0/0/1/2",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/3/0/0/1/8",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/3/0/0/1/11",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    4146,
+    4620,
+    4215,
+    4756
+   ],
+   "subject": [
+    "glyph/0/0/8/5/0",
+    "glyph/0/0/8/5/5"
+   ],
+   "stem_row": "obs:009128",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "b_dots",
+   "cause_sub": "dots",
+   "picked_because": "(b) dots: dotted half + undotted half (small box, stem at 0.21 of its width), a stem-slash row on the stem",
+   "read_ours": [
+    {
+     "head": "glyph/0/0/8/5/0",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/0/0/8/5/5",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 1
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    2229,
+    4617,
+    2293,
+    4753
+   ],
+   "subject": [
+    "glyph/0/0/8/1/2",
+    "glyph/0/0/8/1/3"
+   ],
+   "stem_row": "obs:009105",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "c_decided_vs_unsettled",
+   "cause_sub": "c2_narrowed_excludes_it",
+   "picked_because": "(c2) dotted half DECIDED + BlackOnLine narrowed eighth|quarter, a stem-slash row on the stem",
+   "read_ours": [
+    {
+     "head": "glyph/0/0/8/1/2",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/0/0/8/1/3",
+     "class": "noteheadBlackOnLine",
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "values": [
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ],
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 1
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "pdf_page_index": 1,
+   "page_box_600dpi": [
+    984,
+    1798,
+    1037,
+    2004
+   ],
+   "subject": [
+    "glyph/1/0/5/0/14",
+    "glyph/1/0/5/0/21"
+   ],
+   "stem_row": "obs:035946",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "d_other",
+   "cause_sub": "d1a_whole_vs_half_class",
+   "picked_because": "(d1a) whole-class box (dotted whole) + half-class box (dotted half) on one stem",
+   "read_ours": [
+    {
+     "head": "glyph/1/0/5/0/14",
+     "class": "noteheadWholeOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       6.0,
+       1,
+       "hollow",
+       4.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/1/0/5/0/21",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1368,
+    1942,
+    1406,
+    2008
+   ],
+   "subject": [
+    "glyph/3/0/10/5/1",
+    "glyph/3/0/10/5/5"
+   ],
+   "stem_row": "obs:038306",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "a_fill",
+   "cause_sub": "fill",
+   "picked_because": "(a) fill: HalfInSpace hollow + small BlackOnLine (1.0 x 0.81 sp), a stem-slash row on the stem",
+   "read_ours": [
+    {
+     "head": "glyph/3/0/10/5/1",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/3/0/10/5/5",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 1
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    2100,
+    3409,
+    2133,
+    3512
+   ],
+   "subject": [
+    "glyph/2/1/9/11/1",
+    "glyph/2/1/9/11/3"
+   ],
+   "stem_row": "obs:023868",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "a_fill",
+   "cause_sub": "fill",
+   "picked_because": "(a) fill: BlackOnLine filled + HalfInSpace hollow (2.04 sp tall box overlapping two stem rows): is the join even one stem?",
+   "read_ours": [
+    {
+     "head": "glyph/2/1/9/11/1",
+     "class": "noteheadBlackOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/2/1/9/11/3",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "pdf_page_index": 1,
+   "page_box_600dpi": [
+    5019,
+    5734,
+    5084,
+    5846
+   ],
+   "subject": [
+    "glyph/1/1/7/7/3",
+    "glyph/1/1/7/7/5"
+   ],
+   "stem_row": "obs:039384",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "c_decided_vs_unsettled",
+   "cause_sub": "c2_narrowed_excludes_it",
+   "picked_because": "(c2) dotted half DECIDED + BlackOnLine narrowed eighth|quarter; the stem runs through the middle of the black box (x frac 0.49)",
+   "read_ours": [
+    {
+     "head": "glyph/1/1/7/7/3",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/1/1/7/7/5",
+     "class": "noteheadBlackOnLine",
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "values": [
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ],
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "pdf_page_index": 1,
+   "page_box_600dpi": [
+    3631,
+    517,
+    3704,
+    650
+   ],
+   "subject": [
+    "glyph/1/0/0/4/15",
+    "glyph/1/0/0/4/35"
+   ],
+   "stem_row": "obs:034176",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "c_decided_vs_unsettled",
+   "cause_sub": "c2_narrowed_excludes_it",
+   "picked_because": "(c2) a WholeOnLine box 2.68 sp wide DECIDED whole + an ordinary-looking BlackOnLine (1.38 x 1.33 sp at the stem's edge) narrowed: here the HOLLOW reading may be the wrong one (tests the rule's direction)",
+   "read_ours": [
+    {
+     "head": "glyph/1/0/0/4/15",
+     "class": "noteheadBlackOnLine",
+     "outcome": "narrowed",
+     "reason": "beam_certain_not_joined",
+     "values": [
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ],
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ]
+     ]
+    },
+    {
+     "head": "glyph/1/0/0/4/35",
+     "class": "noteheadWholeOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       4.0,
+       0,
+       "hollow",
+       4.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    2100,
+    3230,
+    2128,
+    3335
+   ],
+   "subject": [
+    "glyph/2/1/8/11/0",
+    "glyph/2/1/8/11/4"
+   ],
+   "stem_row": "obs:023587",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "agree",
+   "cause_sub": "",
+   "picked_because": "CONTROL agree: half chord, a stem-slash row on the stem, both heads decided half (same system/staff as tile obs:023597)",
+   "read_ours": [
+    {
+     "head": "glyph/2/1/8/11/0",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/2/1/8/11/4",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 1
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    2344,
+    3238,
+    2379,
+    3339
+   ],
+   "subject": [
+    "glyph/2/1/8/13/3",
+    "glyph/2/1/8/13/5"
+   ],
+   "stem_row": "obs:023597",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "a_fill",
+   "cause_sub": "fill",
+   "picked_because": "(a) fill: HalfOnLine hollow + BlackInSpace filled, a stem-slash row on the stem (the 2.71 class the slash refusal still keeps)",
+   "read_ours": [
+    {
+     "head": "glyph/2/1/8/13/3",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/2/1/8/13/5",
+     "class": "noteheadBlackInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 1
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    2228,
+    3540,
+    2275,
+    3781
+   ],
+   "subject": [
+    "glyph/0/0/5/1/2",
+    "glyph/0/0/5/1/16"
+   ],
+   "stem_row": "obs:008879",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "agree",
+   "cause_sub": "",
+   "picked_because": "CONTROL agree: dotted half chord, both heads decided dotted half (neighbour of obs:008886)",
+   "read_ours": [
+    {
+     "head": "glyph/0/0/5/1/2",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/0/0/5/1/16",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "pdf_page_index": 0,
+   "page_box_600dpi": [
+    2711,
+    3538,
+    2759,
+    3780
+   ],
+   "subject": [
+    "glyph/0/0/5/2/5",
+    "glyph/0/0/5/2/16"
+   ],
+   "stem_row": "obs:008886",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "b_dots",
+   "cause_sub": "dots",
+   "picked_because": "(b) dots: dotted half + undotted half (small 0.7 sp box, 5 head-heights from the stem end)",
+   "read_ours": [
+    {
+     "head": "glyph/0/0/5/2/5",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       3.0,
+       1,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/0/0/5/2/16",
+     "class": "noteheadHalfInSpace",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    780,
+    3243,
+    806,
+    3316
+   ],
+   "subject": [
+    "glyph/2/1/8/2/6",
+    "glyph/2/1/8/2/7"
+   ],
+   "stem_row": "obs:023410",
+   "question": "What note value is printed on this stem, and is every mark on it a notehead?",
+   "cause": "c_decided_vs_unsettled",
+   "cause_sub": "c2_narrowed_excludes_it",
+   "picked_because": "(c2) HalfOnLine decided hollow + BlackOnLine NARROWED eighth|quarter (candidates exclude the half)",
+   "read_ours": [
+    {
+     "head": "glyph/2/1/8/2/6",
+     "class": "noteheadHalfOnLine",
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "values": [
+      [
+       2.0,
+       0,
+       "hollow",
+       2.0,
+       0
+      ]
+     ]
+    },
+    {
+     "head": "glyph/2/1/8/2/7",
+     "class": "noteheadBlackOnLine",
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "values": [
+      [
+       0.5,
+       0,
+       "filled",
+       1.0,
+       1
+      ],
+      [
+       1.0,
+       0,
+       "filled",
+       1.0,
+       0
+      ]
+     ]
+    }
+   ],
+   "slash_rows_on_stem": 0
+  }
+ ]
+}

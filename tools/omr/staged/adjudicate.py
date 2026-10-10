@@ -1051,6 +1051,14 @@ ORDER: Tuple[str, ...] = (
     Q.NOTEHEAD_IS_A_WHOLE_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
+    # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads
+    # GATHER rows only, so it could stand anywhere; the VALUE reads every
+    # head's DURATION verdict (and `Q.STEM_DIRECTION`, `Q.GLYPH_OWNER`, the two
+    # notehead refusals), so it must stand after all of them, and it stands
+    # before the events so a later consumer of "one chord, one value" finds it
+    # already decided rather than having to move it.
+    Q.HEAD_STEM,
+    Q.STEM_VALUE,
     # ⚠️ EVENTS BEFORE THE METER, and it is the bar sum that forces it. A bar
     # is summed over EVENTS, not over noteheads -- a chord's members sound
     # together and advance time once -- so anything that checks a bar against

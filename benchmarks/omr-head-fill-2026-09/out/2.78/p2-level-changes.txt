@@ -1,0 +1,6 @@
+lit B level changes (own levels -> stem levels): {(1, 0): 2, (2, 1): 5}
+brahms B level changes (own levels -> stem levels): {(1, 0): 1, (2, 1): 1}
+lit X level changes (own levels -> stem levels): {(0, 1): 1, (1, 0): 3, (2, 0): 1, (2, 1): 36, (3, 1): 5, (4, 1): 2}
+brahms X level changes (own levels -> stem levels): {(2, 1): 2}
+ALL: {(0, 1): 1, (1, 0): 6, (2, 0): 1, (2, 1): 44, (3, 1): 5, (4, 1): 2}
+heads whose level went DOWN (the tip-nearest head read fewer strokes): 58  UP: 1

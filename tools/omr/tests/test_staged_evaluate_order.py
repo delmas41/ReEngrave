@@ -42,7 +42,11 @@ class TestTheExecutionOrderIsDeclared(unittest.TestCase):
         order = _names(evaluate.execution_order())
         self.assertEqual(order, [
             "name_part", "join_parts", "restate_pitch", "respell_accidental",
-            "move_glyph", "apply_printed_accidental", "size_measure_rest",
+            "move_glyph", "apply_printed_accidental",
+            # ROADMAP 2.78: a stem's value reaches its heads' durations BEFORE
+            # any meter rule reads them (the bar sums read heads that agree)
+            "share_stem_value",
+            "size_measure_rest",
             "reconcile_chord_duration", "reconcile_duration",
             "reinstate_rest_between_staves",
             # ROADMAP 2.68: text pairs last -- it changes no note

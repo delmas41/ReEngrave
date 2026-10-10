@@ -1,0 +1,4 @@
+lit BASE (stem rows, stems with a slash, slashes, commit, dirty): (1189, 13, 13, 'f027c8e7810441fdfd5f8782450da30b229b8615', False)
+lit ARM  (same): (1189, 15, 15, '6240f91b847c07f024eb1182662b00117439d03f', False)
+brahms BASE (stem rows, stems with a slash, slashes, commit, dirty): (1150, 20, 20, 'f027c8e7810441fdfd5f8782450da30b229b8615', False)
+brahms ARM  (same): (1150, 21, 21, '6240f91b847c07f024eb1182662b00117439d03f', False)

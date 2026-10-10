@@ -1,0 +1,11 @@
+lit: stems 1189  passing slashes shipped 13  patched 15
+   DIFFERS box (213.0, 451.0, 43.0, 607.0) shipped [('one_sided', 31.5)] 
+          patched [(None, 26.0, 0.92, 0.48, 2.948), ('not_at_an_angle', 8.4, 0.93, 0.36, 2.73)]
+          crop /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-slashab-lit-777.png (1049, 556)
+   DIFFERS box (337.0, 262.0, 32.0, 482.0) shipped [('one_sided', 12.6)] 
+          patched [('one_sided', 12.6, 0.65, 0.0, 1.959), (None, 27.6, 0.65, 0.64, 2.897)]
+          crop /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-slashab-lit-1018.png (1044, 632)
+brahms: stems 1150  passing slashes shipped 20  patched 21
+   DIFFERS box (309.0, 398.0, 22.0, 378.0) shipped [('one_sided', 19.1)] 
+          patched [(None, 28.4, 0.63, 0.7, 2.037)]
+          crop /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l278-slashab-brahms-943.png (978, 622)

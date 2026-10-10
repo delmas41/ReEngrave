@@ -543,7 +543,9 @@ def human_value(quantity: str, v: dict, own_staff: Optional[str] = None) -> str:
 
 
 def _hv(quantity: str, value: Any, own_staff: Optional[str]) -> str:
-    if quantity == Q.DURATION:
+    # ROADMAP 2.78: a stem's value is a duration-shaped dict
+    # (`beats`/`written`/`dots`), spelled the same way a head's own is.
+    if quantity in (Q.DURATION, Q.STEM_VALUE):
         return plain_duration(value) if isinstance(value, dict) else _short(value)
     if quantity == Q.GLYPH_OWNER and isinstance(value, str):
         return "own staff" if value == own_staff else value

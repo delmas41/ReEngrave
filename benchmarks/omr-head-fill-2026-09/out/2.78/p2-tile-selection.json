@@ -1,0 +1,14 @@
+[
+ {"doc": "lit_B", "stem": "obs:037467", "note": "LEVELS 2->1: the second stem of tile 1's beamed pair (lower head read a 16th, the tip-nearest head an eighth)"},
+ {"doc": "lit_X", "stem": "obs:037973", "note": "LEVELS 3->1: the far head read a 32nd, the tip-nearest head an eighth (Litolff p5)"},
+ {"doc": "brahms_B", "stem": "obs:010525", "note": "LEVELS 2->1 on the OTHER plate (Brahms p0)"},
+ {"doc": "lit_X", "stem": "obs:078468", "note": "LEVELS 1->0, the RISKY direction: the stem becomes a quarter because the tip-nearest head read no beam (Litolff p7)"},
+ {"doc": "brahms_X", "stem": "obs:016475", "note": "DOTS: an undotted half takes the dotted half beside it (Brahms p2), hollow heads only"},
+ {"doc": "brahms_X", "stem": "obs:049614", "note": "DOTS: a filled quarter takes the dotted quarter beside it (Brahms p3), no hollow head"},
+ {"doc": "lit_X", "stem": "obs:079080", "note": "BASE: two black-classed boxes and a half head on one stem become halves (Litolff p7, three heads)"},
+ {"doc": "lit_X", "stem": "obs:059115", "note": "BASE: a decided black box beside a decided half head becomes a half (Litolff p6)"},
+ {"doc": "lit_X", "stem": "obs:036733", "note": "NARROWED->DECIDED: a head narrowed 16th|eighth beside a decided eighth (Litolff p5)"},
+ {"doc": "lit_X", "stem": "obs:060127", "note": "WHOLE: a whole-class box on the stem of a beamed eighth (Litolff p6): the confirmed rule 'whole notes never have stems'"},
+ {"doc": "lit_B", "stem": "obs:004476", "note": "CONTROL unchanged (beamed): both heads already read the same eighth"},
+ {"doc": "lit_B", "stem": "obs:004618", "note": "CONTROL unchanged (hollow): both heads already read the same half"}
+]
