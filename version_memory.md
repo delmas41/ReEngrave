@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
+
+- 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
+- 2.81 measured (~0.76, below 95%) and its misses imaged; 2.83 (flag tip) and 1.7-stems (stem measurement) running at session end. ROADMAP START HERE names the next session's plan.
+
 ## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
 
 - `tools/omr/hand_truth/score.py` scores a record against Sean's hand-labelled page at GATHER+ADJUDICATE, with controls that fail; first score on Brahms 317803 pdf 0 in `benchmarks/hand-truth-score-2026-10/`.
