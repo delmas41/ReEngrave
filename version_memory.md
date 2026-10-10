@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
+
+- `tools/omr/hand_truth/score.py` scores a record against Sean's hand-labelled page at GATHER+ADJUDICATE, with controls that fail; first score on Brahms 317803 pdf 0 in `benchmarks/hand-truth-score-2026-10/`.
+
 ## 2026-10-10 (day) — 2.79 landed: a whole-bar rest takes the meter of its own bar
 
 - `size_measure_rest` reads `meter_at` the bar; `_bar_holds_out` holds out a lone rest of the wrong length. The 29 overfull Brahms bars are gone. `fd440b1b`. The sibling-rules commit `d04fd058` is held for Sean.
