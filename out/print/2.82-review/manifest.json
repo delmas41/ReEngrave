@@ -1,0 +1,332 @@
+{
+ "question": "What is the printed value of the note in the red brackets?",
+ "seed": 282,
+ "frame_sizes": {
+  "brahms": 22,
+  "litolff": 21
+ },
+ "tile_scale": "32 px per staff space on every tile (600 dpi page, normalised)",
+ "tiles": [
+  {
+   "id": "tile_01",
+   "file": "tile_01.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/18/1/3/2/8",
+    "movement": "brahms",
+    "pdf_page": 18,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     2121.2,
+     4677.9,
+     2159.9,
+     4705.4
+    ]
+   },
+   "window_page_px": [
+    1968,
+    4491,
+    2312,
+    4892
+   ],
+   "space_px_native": 28.66,
+   "frame_control": {
+    "inside": 0.962,
+    "left": 0.859,
+    "right": 0.817
+   }
+  },
+  {
+   "id": "tile_02",
+   "file": "tile_02.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/0/0/0/3/3",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     3458.3,
+     1452.3,
+     3500.3,
+     1488.1
+    ],
+    "hand_truth": {
+     "written_beats": 0.5,
+     "levels": 1,
+     "our_after_judged": "right"
+    }
+   },
+   "window_page_px": [
+    3285,
+    1244,
+    3672,
+    1695
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.789,
+    "left": 0.382,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_03",
+   "file": "tile_03.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/18/0/5/2/8",
+    "movement": "brahms",
+    "pdf_page": 18,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "narrowed beams_ambiguous [0.5, 1.0]",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2850.5,
+     1690.8,
+     2890.5,
+     1725.8
+    ]
+   },
+   "window_page_px": [
+    2684,
+    1491,
+    3056,
+    1925
+   ],
+   "space_px_native": 31.01,
+   "frame_control": {
+    "inside": 0.904,
+    "left": 0.542,
+    "right": 0.423
+   }
+  },
+  {
+   "id": "tile_04",
+   "file": "tile_04.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/10/1/9/7/1",
+    "movement": "litolff",
+    "pdf_page": 10,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     1638.7,
+     3489.6,
+     1659.9,
+     3510.8
+    ]
+   },
+   "window_page_px": [
+    1554,
+    3389,
+    1743,
+    3610
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.871,
+    "left": 0.322,
+    "right": 0.741
+   }
+  },
+  {
+   "id": "tile_05",
+   "file": "tile_05.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/18/0/5/2/11",
+    "movement": "brahms",
+    "pdf_page": 18,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2769.0,
+     1692.0,
+     2807.7,
+     1724.6
+    ]
+   },
+   "window_page_px": [
+    2602,
+    1491,
+    2974,
+    1925
+   ],
+   "space_px_native": 31.01,
+   "frame_control": {
+    "inside": 0.909,
+    "left": 0.491,
+    "right": 0.6
+   }
+  },
+  {
+   "id": "tile_06",
+   "file": "tile_06.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/18/0/5/2/4",
+    "movement": "brahms",
+    "pdf_page": 18,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "narrowed beams_ambiguous [0.5, 1.0]",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2851.1,
+     1663.2,
+     2889.6,
+     1696.1
+    ]
+   },
+   "window_page_px": [
+    2684,
+    1462,
+    3056,
+    1896
+   ],
+   "space_px_native": 31.01,
+   "frame_control": {
+    "inside": 0.838,
+    "left": 0.54,
+    "right": 0.423
+   }
+  },
+  {
+   "id": "tile_07",
+   "file": "tile_07.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/10/1/9/7/12",
+    "movement": "litolff",
+    "pdf_page": 10,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1562.4,
+     3481.6,
+     1591.6,
+     3490.8
+    ]
+   },
+   "window_page_px": [
+    1482,
+    3375,
+    1671,
+    3596
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.896,
+    "left": 0.207,
+    "right": 0.778
+   }
+  },
+  {
+   "id": "tile_08",
+   "file": "tile_08.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/10/1/9/7/2",
+    "movement": "litolff",
+    "pdf_page": 10,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1609.9,
+     3461.4,
+     1632.7,
+     3481.4
+    ]
+   },
+   "window_page_px": [
+    1526,
+    3361,
+    1715,
+    3581
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.861,
+    "left": 0.741,
+    "right": 0.539
+   }
+  },
+  {
+   "id": "tile_09",
+   "file": "tile_09.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/10/1/9/7/5",
+    "movement": "litolff",
+    "pdf_page": 10,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "decided 0.5",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1562.6,
+     3460.6,
+     1588.3,
+     3481.2
+    ]
+   },
+   "window_page_px": [
+    1480,
+    3360,
+    1669,
+    3581
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.882,
+    "left": 0.434,
+    "right": 0.68
+   }
+  },
+  {
+   "id": "tile_10",
+   "file": "tile_10.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "hidden": {
+    "key": "glyph/13/1/2/9/2",
+    "movement": "litolff",
+    "pdf_page": 13,
+    "before_2_74": "narrowed beam_discounted_uncertain [0.5, 1.0]",
+    "after_2_82": "narrowed beams_ambiguous [0.5, 1.0]",
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1628.3,
+     2434.0,
+     1651.5,
+     2453.4
+    ]
+   },
+   "window_page_px": [
+    1545,
+    2333,
+    1734,
+    2553
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.822,
+    "left": 0.592,
+    "right": 0.432
+   }
+  }
+ ],
+ "frame_control": {
+  "n": 10,
+  "true_frame_inside_beats_both_neighbours": 10,
+  "wrong_frame_(page_shifted_1.6_heads)_inside_beats_both": 0,
+  "reading": "the control can fail: it must pass on the true frame and mostly fail on the shifted one"
+ }
+}

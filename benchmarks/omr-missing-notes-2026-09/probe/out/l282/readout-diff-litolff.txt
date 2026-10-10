@@ -1,0 +1,26 @@
+READOUT DIFF at GATHER + ADJUDICATE   A=l282-sp/l282-base/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+                                      B=l282-sp/l282-arm3/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! PROVENANCE: the two records differ in
+!!   code      commit: A='d4131ce4fd1ed5e9972ed4a2df6a23fe44b76d22'  B='aeee5c2cdc6bf75a5e2e021e9d73eeb08d396e48'
+!!   code      dirty: A=False  B=True
+!! WARNING: B was built from a DIRTY tree: a SHA cannot name uncommitted edits
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+== family note: gathered A 1286 / B 1286; matched 1286 (0 in another bar); only A 0, only B 0
+   ADJUDICATE status A -> B: {'narrowed -> kept': 7}
+   ADJUDICATE duration: 7 of 1286 changed answer
+           7  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   e.g. duration: glyph/3/0/9/3/1 ~ glyph/3/0/9/3/1, glyph/3/0/9/3/4 ~ glyph/3/0/9/3/4, glyph/3/0/9/3/5 ~ glyph/3/0/9/3/5, glyph/3/0/9/3/7 ~ glyph/3/0/9/3/7, glyph/3/0/9/3/8 ~ glyph/3/0/9/3/8
+
+== matched glyphs that changed (7 shown of 7)
+   glyph/3/0/9/3/1 ~ glyph/3/0/9/3/1 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/4 ~ glyph/3/0/9/3/4 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/5 ~ glyph/3/0/9/3/5 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/7 ~ glyph/3/0/9/3/7 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/8 ~ glyph/3/0/9/3/8 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/10 ~ glyph/3/0/9/3/10 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/3/0/9/3/11 ~ glyph/3/0/9/3/11 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+
+7 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).
