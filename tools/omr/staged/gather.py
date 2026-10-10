@@ -4726,8 +4726,25 @@ STEM_SLASH_MAX_REACH_SPACES = 1.9
 STEM_SLASH_CONTACT_GAP_SPACES = 0.35
 #: A contact interval shorter than this is a speck; taller than this is a
 #: head or a clump, never a slash's own thickness.
+#:
+#: ⚠️ 1.3 -> 1.6 (ROADMAP 2.78, 2026-10-09). Litolff p2 `cell/2/1/9/11` (2.78
+#: tile 7, Sean: *"2 half notes with a trem slash"*): a bold slash's contact with
+#: the stem measured 1.37 spaces on its left side and was refused here as a
+#: clump, so `Q.STEM_SLASH` read a stem Sean reads as slashed as `one_sided`.
+#: MEASURED across every stem of Litolff p1-3 and Brahms p0-1 (2,339 stems):
+#: raising the cap changes the passing-slash count on ONE stem (tile 7's).
 STEM_SLASH_MIN_CONTACT_SPACES = 0.10
-STEM_SLASH_MAX_CONTACT_SPACES = 1.3
+STEM_SLASH_MAX_CONTACT_SPACES = 1.6
+#: ⚠️ ROADMAP 2.78. The tracker starts at the column just outside the stem's
+#: MEDIAN core, and on a stem that flares (a slash's root, a thicker top) that
+#: column can already hold stem ink, so the first run is taller than the
+#: stroke's own contact and the `swelled past 1.7x` stop fires on column ZERO
+#: and returns nothing (Brahms p1 `cell/1/1/7/7`, 2.78 tile 8, Sean: *"Dotted
+#: half with a trem slash"*, read `one_sided` with a left reach of 0.0). The
+#: tracker may therefore start up to this far further out, in staff spaces,
+#: before it gives up. It changes only a stroke that tracked NOTHING before
+#: (the first column that works returns at once, byte-identical to before).
+STEM_SLASH_START_SKIP_SPACES = 0.06
 #: The tracked centre points of both sides lie on one line to within this.
 STEM_SLASH_MAX_RESIDUAL_SPACES = 0.15
 #: Off horizontal. A tremolo slash is drawn at an angle; a ledger line
@@ -4823,6 +4840,25 @@ def _stem_core(ink: Any, box: Tuple[float, float, float, float]
 def _track_stroke(ink: Any, start_x: int, direction: int,
                   interval: Tuple[int, int], space: float,
                   max_reach: int) -> List[Tuple[int, int, int]]:
+    """`_track_stroke_from` at `start_x`, and where that tracks NOTHING at the
+    next columns outward, up to `STEM_SLASH_START_SKIP_SPACES` of them. ROADMAP
+    2.78: the first column sits beside a stem that may flare, and a stroke that
+    works at its first column returns at once, exactly as before."""
+    out = _track_stroke_from(ink, start_x, direction, interval, space,
+                             max_reach)
+    if out:
+        return out
+    for skip in range(1, int(round(STEM_SLASH_START_SKIP_SPACES * space)) + 1):
+        out = _track_stroke_from(ink, start_x + direction * skip, direction,
+                                 interval, space, max_reach)
+        if out:
+            return out
+    return []
+
+
+def _track_stroke_from(ink: Any, start_x: int, direction: int,
+                       interval: Tuple[int, int], space: float,
+                       max_reach: int) -> List[Tuple[int, int, int]]:
     """Follow one stroke outward from the stem: `[(x, y0, y1), ...]`, one per
     column, each the run that overlaps the previous column's the most. It
     STOPS where the stroke ends or swells past `1.7 x` its first thickness
