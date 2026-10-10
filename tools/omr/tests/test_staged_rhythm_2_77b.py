@@ -145,31 +145,50 @@ class TestAStemTheCvNeverFoundStillSaysWhichWayItRuns(unittest.TestCase):
     """`Q.HEAD_STEM_REACH` is the head's own ink: an up-stem's beam is ABOVE
     the head. A beam below it is the next voice's (or the next staff's)."""
 
-    def _fixture(self, direction):
+    def _fixture(self, direction, *, beam_above=False):
         log = Log()
         _staff_space(log, 100)
         g = _head(log, 0, (100, 100, 140, 120), "noteheadBlackOnLine")
-        # a beam lying BELOW the head (y 300-360), over its column; two read
-        # stems stand on it so it passes every ink test -- it is somebody
-        # else's beam, on the far side of an up-stem
-        _stem(log, (110, 300, 30, 200))
-        _stem(log, (400, 300, 30, 200))
-        s = _stroke(log, (100, 300, 330, 60))
+        # a beam over the head's column, two read stems standing on it so it
+        # passes every ink test; none of the stems touches the head's box
+        y = 20 if beam_above else 300
+        if beam_above:
+            _stem(log, (300, 20, 30, 200))
+            _stem(log, (400, 20, 30, 200))
+        else:
+            _stem(log, (110, 300, 30, 200))
+            _stem(log, (400, 300, 30, 200))
+        s = _stroke(log, (100, y, 330, 60))
         _ink(log, s, ratio=2.4, sag=0.01, ends=(True, True))
         if direction:
             _reach(log, g, direction)
         return log, g
 
     def test_an_UP_stem_does_not_own_a_beam_below_it_RED(self):
+        """...and where that beam was the head's ONLY candidate mark the head
+        is NARROWED, never decided a quarter from the absence of a mark: the
+        stem's tip was never examined (no CV stem is attached) -- rule 8."""
         log, g = self._fixture("up")
         v = _duration(log, g)
         self.assertEqual(v.detail["beam_side"], "up")
         self.assertEqual(v.detail["beams_far_side"], 1)
-        self.assertEqual(v.value["beats"], 1.0)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "beam_discounted_uncertain")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
+                         [0.5, 1.0])
+
+    def test_CONTROL_an_UP_stem_owns_a_beam_ABOVE_it(self):
+        """The positive control: the SAME head and ruler reading with the beam
+        on the stem's own side counts it -- so the rule is not 'refuse all'."""
+        log, g = self._fixture("up", beam_above=True)
+        v = _duration(log, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.detail["beams_far_side"], 0)
 
     def test_CONTROL_a_DOWN_stem_owns_the_same_beam(self):
-        """The positive control: the SAME fixture, the stem turned the other
-        way, counts the beam -- so the rule above cannot be 'refuse all'."""
+        """The positive control: the stem turned the other way counts the
+        beam below it."""
         log, g = self._fixture("down")
         v = _duration(log, g)
         self.assertEqual(v.detail["beams_far_side"], 0)
@@ -179,6 +198,23 @@ class TestAStemTheCvNeverFoundStillSaysWhichWayItRuns(unittest.TestCase):
         log, g = self._fixture("down")
         v = _duration(log, g)
         self.assertEqual(v.detail["beam_side"], "down")
+
+    def test_CONTROL_a_short_run_beside_the_head_is_a_neighbouring_head_not_a_stem(
+            self):
+        """Measured: the ruler agrees with the head's own CV stem on 306 of 307
+        heads at 2.0 spaces or more, and on 77-93% below it (a stacked
+        neighbour's ink). A 1.2-space run says nothing about the side."""
+        log2 = Log()
+        _staff_space(log2, 100)
+        g2 = _head(log2, 0, (100, 100, 140, 120), "noteheadBlackOnLine")
+        _stem(log2, (110, 300, 30, 200))
+        _stem(log2, (400, 300, 30, 200))
+        s2 = _stroke(log2, (100, 300, 330, 60))
+        _ink(log2, s2, ratio=2.4, sag=0.01, ends=(True, True))
+        _reach(log2, g2, "up", up_ext=1.2)
+        v = _duration(log2, g2)
+        self.assertIsNone(v.detail["beam_side"])
+        self.assertEqual(v.detail["beams_far_side"], 0)
 
     def test_CONTROL_a_stem_that_runs_both_ways_is_no_side(self):
         log, g = self._fixture("both")

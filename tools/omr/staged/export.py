@@ -1026,6 +1026,16 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # A `<note>` needs ONE duration, so a note whose duration is
             # narrowed cannot be written. It is dropped and COUNTED: the
             # shortfall belongs in the record, not in the silence.
+            #
+            # ⚠️ ROADMAP 2.77b: a contest's LOSING copy abstains its duration
+            # (`adjudicate_duration`, `owned_by_another_staff`) because its marks
+            # lie in the owner's cell. It is still the loser and still counted
+            # under the name EXPORT has always given it -- not folded into the
+            # `duration_abstained` shortfall, which would read as a reading gap.
+            if (dur_v and dur_v["outcome"] == "abstained"
+                    and dur_v.get("reason") == "owned_by_another_staff"):
+                _drop("owned_by_another_staff", s)
+                continue
             _drop(("rest_" if is_rest else "") + "duration_"
                   + (dur_v["outcome"] if dur_v else "absent"), s)
             continue

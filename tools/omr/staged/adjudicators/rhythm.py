@@ -26,7 +26,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
-                          Term, decision, tally)
+                          Term, decision, is_relocated_copy, tally)
 from collections import Counter
 
 from ... import transcribe as _legacy_stems
@@ -1027,6 +1027,56 @@ def _stems_a_stroke_stands_on(row, ink_row, stems, tol: float):
     return distinct, True
 
 
+#: A stroke stands on stems where at least this many DIFFERENT read stems END
+#: inside its box. ROADMAP 2.77b (Sean, 2.74: *"A beam must not only connect to
+#: its note but also to another note."*) -- the same two stems, counted off the
+#: CV stem rows instead of the ink reader's end window.
+#:
+#: ⚠️ MEASURED, `FINDINGS.md` §16.7. Over the 109 strokes the ink reader read
+#: at BOTH ends with a stem found at NEITHER (thick and straight: the population
+#: 2.77's `no_stem_at_ends` refuses) on Litolff p0-3 and Brahms p0-1, 5 have two
+#: or more read stems ending inside their box, and all 5 are printed beams on
+#: the page crops (a sloped beam's end window misses its stem; 4 of the 5 are
+#: detector boxes); the dynamic letter's foot bar 2.77 was built to refuse has
+#: none (its stems end 24-36 px above it); 5 have exactly one and 99 none (not
+#: eye-checked: they stay refused, as before).
+BEAM_STEMS_ENDING_MIN = 2
+
+#: Two read stems closer than this (staff spaces, centre to centre) are one
+#: stem read twice (a stem fused to a head and cut in two), not two stems.
+BEAM_STEMS_ENDING_SEPARATION_SPACES = 0.4
+
+
+def _stems_ending_in(box, stems, separation: float) -> int:
+    """How many DIFFERENT read `Q.STEM` stems END inside this stroke's box: the
+    stem overlaps the box in x and its top or bottom edge lies within the box's
+    y range. A stem that merely passes beside or through a stroke (a bar under
+    a beam, a secondary beam across stems) ends elsewhere and is not counted.
+    ROADMAP 2.77b.
+
+    ⚠️ INSIDE THE BOX, NOT WITHIN A TOLERANCE OF IT, and measured: the stems
+    that stand on a dynamic letter's foot bar (Litolff p3) end 24-36 px above
+    it and a tolerance of the join's size (80 px) would credit them."""
+    bx, by, bw, bh = box
+    xs = []
+    for s in stems:
+        sb = _xywh(s)
+        if sb is None:
+            continue
+        sx, sy, sw, sh = sb
+        if sx + sw < bx or sx > bx + bw:
+            continue
+        if by <= sy <= by + bh or by <= sy + sh <= by + bh:
+            xs.append(sx + sw / 2.0)
+    xs.sort()
+    distinct, last = 0, None
+    for x in xs:
+        if last is None or x - last > separation:
+            distinct += 1
+            last = x
+    return distinct
+
+
 def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
     """`(kept, {stroke id: reason}, ink rows read)`. ROADMAP 2.74.
 
@@ -1083,13 +1133,24 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
         else:
             n, read = _stems_a_stroke_stands_on(b, row, stems, tol)
             ends = d.get("end_stems") or []
-            if read and not any(e.get("found") for e in ends):
+            if read and not any(e.get("found") for e in ends) \
+                    and _stems_ending_in(
+                        _xywh(b), stems,
+                        BEAM_STEMS_ENDING_SEPARATION_SPACES
+                        * (tol / STEM_JOIN_TOLERANCE_SPACES)
+                        ) < BEAM_STEMS_ENDING_MIN:
                 # ⚠️ ROADMAP 2.75: the ink READ both ends and found a stem at
                 # NEITHER. A beam stands on its stems; a stem merely NEAR the
                 # box (which `_stems_a_stroke_stands_on` counts, permissively)
                 # is not one at its end. A beamlet has one stem at one end.
                 # Litolff p3 tile 9: a 243 x 32 px bar under a real beam (the
                 # foot of an `f`), counted as a third level.
+                # ⚠️ ROADMAP 2.77b (crop 8): ... UNLESS two or more read stems
+                # END inside the stroke's own box -- the ink reader's end
+                # window is a column probe and misses the stem of a SLOPED
+                # beam; the CV stem rows are the second witness (a stem each
+                # side of a beam). Such a stroke falls through to the tests
+                # below like any other.
                 why[b.id] = "no_stem_at_ends"
             elif read and n < 2:
                 why[b.id] = "one_stem"
@@ -2016,6 +2077,18 @@ def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
     return witness, tuple(used)
 
 
+#: The shortest run of ink (staff spaces) beside a head the ruler's direction is
+#: believed for. ROADMAP 2.77b. It is the CV stem finder's own floor
+#: (`line_detection.detect_stems`, `min_height_lines=2.0`: nothing shorter is a
+#: stem anywhere in the pipeline), and it is MEASURED: over the 366 heads of
+#: Litolff p0-3 and Brahms p0-1 whose own CV stem decided a direction
+#: (`stem_projection`) and whose ruler read up or down, the ruler agrees with
+#: that direction on **306 of 307 at 2.0 spaces or more** (100% at 2.0-2.5, 100%
+#: at 2.5-3.0, 208 of 209 over 3.0) and on 27 of 29 at 1.5-2.0 and 23 of 30
+#: under 1.5 -- the short runs are a neighbouring head of a stack, not a stem.
+REACH_STEM_MIN_SPACES = 2.0
+
+
 def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
     """The way THIS head's own stem points, or `(None, None)`.
 
@@ -2027,10 +2100,27 @@ def _own_stem_side(ev: Evidence) -> Tuple[Optional[str], Any]:
     column test then stands exactly as it was before 2.18.
     """
     v = ev.verdict(Q.STEM_DIRECTION)
-    if (v is None or v.outcome is not Outcome.DECIDED
-            or v.reason != "stem_projection" or v.value not in ("up", "down")):
-        return None, None
-    return str(v.value), v
+    if (v is not None and v.outcome is Outcome.DECIDED
+            and v.reason == "stem_projection" and v.value in ("up", "down")):
+        return str(v.value), v
+    # ⚠️ ROADMAP 2.77b (Sean, 2026-10-09, rhythm-leftovers-2 crop 9): WHERE NO
+    # CV STEM IS ATTACHED THE HEAD'S OWN INK STILL SAYS WHICH WAY ITS STEM
+    # RUNS. `Q.HEAD_STEM_REACH` is a ruler on the page raster beside THIS
+    # head (never a stroke, so the strokes cannot vouch for themselves, which
+    # is why `beam_mate` stays excluded above): `up` or `down` is the one
+    # direction a vertical run of ink leaves the head. The crop-9 head had its
+    # stem read `up` 4.45 spaces and no CV stem at all (two stacked heads fuse
+    # into one too-WIDE component, `RUN_TOO_WIDE`), so its direction came from
+    # `beam_mate` (`down`, from the NEXT staff's beam below it) and the beam
+    # across the head's own bottom counted as its own. `both` and `none`
+    # claim nothing and leave the column test exactly as it was.
+    reach = ev.rows(Q.HEAD_STEM_REACH)
+    if reach and reach[-1].value in ("up", "down"):
+        d = reach[-1].detail or {}
+        ext = d.get("up_ext" if reach[-1].value == "up" else "down_ext")
+        if isinstance(ext, (int, float)) and ext >= REACH_STEM_MIN_SPACES:
+            return str(reach[-1].value), reach[-1]
+    return None, None
 
 
 def _on_stem_side(beams, head_box, side):
@@ -2217,7 +2307,11 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
                    Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH),
+                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
+                   # ⚠️ ROADMAP 2.77b: the head's own stem direction where no
+                   # CV stem is attached (`_own_stem_side`), so the beams that
+                   # can be its own, and with them the value, depend on it.
+                   Q.HEAD_STEM_REACH),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -2262,13 +2356,15 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH),
+           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
+           Q.HEAD_STEM_REACH),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
-             "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs"),
+             "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
+             "owned_by_another_staff"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -2304,6 +2400,25 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     head = _head_class(ev)
     if head is None:
         return Ruling.abstain("no_notehead")
+
+    # ⚠️⚠️ ROADMAP 2.77b (Sean, 2026-10-09, rhythm-leftovers-2 crop 9): A COPY
+    # THE CONTEST AWARDED TO ANOTHER STAFF HAS NO DURATION OF ITS OWN. The
+    # detector boxed ONE printed head in each of two staves' padded cells and
+    # `glyph_owner` named one the winner; a resolved contest DROPS the loser,
+    # it never relocates it (CLAUDE.md §10; `is_relocated_copy` is the one test
+    # EXPORT, `consequences._left_the_bar` and the articulation owners apply).
+    # The winner's stem points TOWARD its own staff (`stem_toward_staff`), so
+    # the loser's stem runs away from the staff it was cut from and its tip,
+    # its beam and its flag all lie in the OWNER's cell, which the owner reads;
+    # what the loser's home cell holds is that staff's own notes' marks. Crop
+    # 9's loser counted two of those and decided a SIXTEENTH on a printed
+    # eighth, a value nothing writes and every population count then included.
+    # An owner that ABSTAINED names no loser, so nothing is abstained here.
+    owner = ev.verdict(Q.GLYPH_OWNER)
+    if owner is not None and owner.outcome is Outcome.DECIDED \
+            and is_relocated_copy(ev.subject, owner.value):
+        return Ruling.abstain("owned_by_another_staff", owner=owner.value,
+                              head=str(head))
 
     base = None
     for name, beats in _HEAD_BEATS.items():
@@ -2407,7 +2522,17 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # to can be its beams (`_on_stem_side`). No own stem direction -> no side
     # -> every stroke stays, exactly as before.
     side, side_verdict = _own_stem_side(ev)
+    # ⚠️ ROADMAP 2.77b: a stem the RULER read where the CV rung attached none.
+    # Such a head HAS a stem whose tip nothing examined (two stacked heads fuse
+    # into one too-wide component and the CV finds no stem at all), so a mark
+    # that is discounted or put on the far side of it is NOT evidence that the
+    # head carries none -- rule 8 applies exactly as it does to a CV stem.
+    reach_stem = (side is not None and not own_stems
+                  and getattr(side_verdict, "quantity", None)
+                  == Q.HEAD_STEM_REACH)
     kept, far_side = _on_stem_side(kept, head_box, side)
+    # the side test alone emptied the head's candidate strokes (reach stem only)
+    far_removed_all_marks = reach_stem and bool(far_side) and not kept
     if side_verdict is not None:
         used.append(side_verdict.id)
     # ⚠️ ROADMAP 2.18b: `STEM_JOIN_TOLERANCE_SPACES` in THIS cell's pixels
@@ -2741,7 +2866,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
     # DECISIONS 2026-09-30), so a discount that removed its candidate
     # strokes must not narrow it toward one anyway.
-    if (((discount_removed_all_marks and own_stems) or ink_removed_all_marks)
+    if (((discount_removed_all_marks and (own_stems or reach_stem))
+         or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
             and not flag_levels and not hollow):
         cands = []

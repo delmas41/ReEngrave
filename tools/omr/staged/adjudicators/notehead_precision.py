@@ -642,6 +642,110 @@ def _dot_sized(box_row, spacing_canonical: float,
     return w_sp <= DOT_SIZED_MAX_SPACES and h_sp <= DOT_SIZED_MAX_SPACES
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.77b -- a flat box lying INSIDE a read beam is that beam's ink.
+#
+# Sean (2026-10-09, `out/print/rhythm-leftovers-2` crop 7, Litolff p3
+# `glyph/3/0/7/4/13`): *"the red box is around a beam that connects 8th notes,
+# but is not a notehead."* The detector boxed `noteheadBlackInSpace`, 1.23 x
+# 0.69 spaces, over the end of a stem-down beam; 85% of the box lies inside the
+# beam's stroke, which the CV beam reader read (2.36 staff lines thick,
+# straight, a stem found at BOTH ends).
+#
+# ⚠️ FLATNESS ALONE IS NOT A TEST AND IS MEASURED NOT TO BE ONE. Print-confirmed
+# real heads are boxed as flat as 0.34 spaces (6 of 102 at or under 0.69: a head
+# the crop cut, a partial box over one head of a stack; `omr-notehead-width-
+# 2026-09` crop pass, whose adjudicator was a model reading the print, not
+# Sean), and Sean's own 361 hand-confirmed Brahms p0 boxes include four under
+# 0.8 (a dot, partial boxes over heads of stacks, one wide flat head). A height
+# floor would cost real notes, so the refusal needs the beam as a second
+# witness: the box lies in a stroke the beam reader read AND the box is flat.
+#
+# MEASURED (`FINDINGS.md` §16.7), every detector notehead box on Litolff p0-3
+# (1,286) and Brahms p0-1 (1,491): the share of a box inside a read beam stroke
+# is 0.21 at most over Sean's 361 hand-confirmed heads (Brahms p0); over the
+# boxes the beam strokes cover by 0.5 or more, the HEIGHTS fall in two groups,
+# 0.69 / 0.75 (the crop-7 box and one 4.1-spaces-wide box on a beam) and 1.10
+# and up (head-sized boxes under the bounding box of a SLOPED beam, which is
+# tall) -- nothing between 0.75 and 1.10. The cuts sit in those gaps.
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED beyond Sean's one
+# verdict: *all regular noteheads are the same size* (Sean, 2.39; the standard
+# head is `geometry.STANDARD_HEAD_HEIGHT_SPACES` tall), so a regular-head box
+# well under that, standing in a beam the CV reader read, is the beam's ink.
+# Falsified by a print-confirmed head that lies 70% inside a read beam stroke
+# and is boxed under 0.9 spaces tall.
+#
+# ⚠️ ONLY REGULAR HEADS (`geometry.is_regular_notehead`): a cue/grace head
+# (`*Small`) and a whole note are other populations this was not measured on.
+# ─────────────────────────────────────────────────────────────────────────────
+
+BEAM_PIECE_REASON = "is_a_beam_piece"
+#: The share of the box that must lie inside ONE read beam stroke.
+BEAM_PIECE_COVER_MIN = 0.7
+#: The box is no taller than this many staff spaces.
+BEAM_PIECE_HEIGHT_MAX_SPACES = 0.9
+
+
+def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
+                        detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`Ruling(True, "is_a_beam_piece")` where this regular-head box is flat and
+    lies inside a beam stroke the CV reader read, else None. ROADMAP 2.77b.
+
+    A stroke is READ as a beam by the same tests 2.74/2.77 apply in
+    `rhythm._not_a_beam_by_ink` (thick, straight, standing on stems -- a stem
+    found at both ends of it, or two read stems ending inside it); a stroke
+    with no ink row, or a test left unread, is not one (rule 8: the box is not
+    refused on a guess). Imported LAZILY: `rhythm` imports this module."""
+    name, x, y, w, h = box_row.value
+    if not _geom.is_regular_notehead(name) or spacing_canonical <= 0:
+        return None
+    height_spaces = h / spacing_canonical
+    if height_spaces > BEAM_PIECE_HEIGHT_MAX_SPACES or w <= 0 or h <= 0:
+        return None
+    from . import rhythm as _rh
+    cell = ev.subject.at(Kind.CELL)
+    strokes = ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=cell)
+    if not strokes:
+        return None
+    ink = {}
+    for r in ev.rows(Q.BEAM_STROKE_INK, scope=Scope.SELF_AND_ANCESTORS,
+                     subject=cell):
+        bid = (r.detail or {}).get("beam_row_id")
+        if bid:
+            ink[bid] = r
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    sep = (_rh.BEAM_STEMS_ENDING_SEPARATION_SPACES * spacing_canonical)
+    head = (float(x), float(y), float(w), float(h))
+    for s in strokes:
+        sbox = _rh._xywh(s)
+        row = ink.get(s.id)
+        if sbox is None or row is None:
+            continue
+        d = row.detail or {}
+        ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
+        if ratio is None or sag is None \
+                or ratio < _rh.BEAM_THICKNESS_RATIO_MIN \
+                or sag > _rh.BEAM_SAGITTA_MAX_SPACES:
+            continue
+        ends = d.get("end_stems") or []
+        both_ends = (len(ends) == 2 and all(
+            isinstance(e, dict) and e.get("found") for e in ends))
+        if not both_ends and _rh._stems_ending_in(sbox, stems, sep) \
+                < _rh.BEAM_STEMS_ENDING_MIN:
+            continue
+        cover = _rh._covered_fraction(head, [sbox])
+        if cover < BEAM_PIECE_COVER_MIN:
+            continue
+        detail["beam_piece"] = {"stroke": s.id,
+                                "cover": round(cover, 3),
+                                "height_spaces": round(height_spaces, 3)}
+        return Ruling(value=True, reason="is_a_beam_piece",
+                      used=(box_row.id, s.id, row.id), detail=detail)
+    return None
+
+
 #: ROADMAP 2.30 — the SAME floor `family_precision.REST_DUPLICATE_IOU_MIN`
 #: measured for rests (ROADMAP 2.15), cited here rather than restated. NOT
 #: imported: `family_precision` imports FROM this module
@@ -2723,6 +2827,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ⚠️ ROADMAP 2.49: GATHER's own ink split by stem x -- see
                   # `_tremolo_slash_crosses_stem`'s own docstring.
                   Q.NOTEHEAD_STEM_CROSS_INK,
+                  # ⚠️ ROADMAP 2.77b: the beam strokes the CV reader read and
+                  # their ink rows -- see `_beam_piece_refusal`.
+                  Q.BEAM_STROKE, Q.BEAM_STROKE_INK,
                   # ⚠️ ROADMAP 2.49 REDESIGN -- RE-ADDED. 2.42's own comment
                   # above notes `Q.STEM` was dropped when 2.40's pair-wise
                   # rule was superseded; the POSITION test
@@ -2741,7 +2848,8 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
-          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH),
+          Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
+          Q.BEAM_STROKE, Q.BEAM_STROKE_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -2754,6 +2862,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      "is_a_meter_digit",
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
                                      DYNAMIC_LETTER_REASON,
+                                     BEAM_PIECE_REASON,
                                      "notehead",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
@@ -2977,6 +3086,11 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                               used=tuple(used), detail=detail)
         return Ruling(value=True, reason="is_a_dot",
                       used=tuple(used), detail=detail)
+    # ROADMAP 2.77b: a flat regular-head box lying inside a read beam stroke is
+    # that beam's ink (Sean, crop 7). Its own helper; one call.
+    beam_piece = _beam_piece_refusal(ev, box_row, spacing, detail)
+    if beam_piece is not None:
+        return beam_piece
     # ⚠️ ROADMAP 2.49. AFTER THE OTHER SHAPE RULES (a sliver or too-narrow
     # box is not a note regardless of what else is in the cell) and BEFORE
     # 2.30/2.42's same-mark rules below: a tremolo slash is not "the same
