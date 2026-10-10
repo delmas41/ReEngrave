@@ -17,6 +17,21 @@ re-enter.
 
 ---
 
+## START HERE — after the night of 2026-10-09→10 (main ≥ the commit naming this block)
+
+**Landed, each on a green fast tier on the merge (Sean: *"Fix then land ... let everything else that is running land"*):** 2.61d (key fit unknown);
+2.12f (an articulation's owner faces it across the notehead -- opposite the stem); 2.78 (one stem, one value: `Q.HEAD_STEM`, `Q.STEM_VALUE`,
+EVALUATE `share_stem_value`); 2.75 (tie vs slur by Sean's rules); 2.77 + 2.77b (rhythm leftovers + Sean's crops 7/8/9). `check` 192.
+**Overnight `20261010-night`** (main `26fdb4d0`, through INFER; the manager ran it at Sean's request) vs `20261009-all`:
+`benchmarks/acceptance/overnight/20261010-night/SUMMARY.md` -- GATHER boxes identical; notes reaching the file Litolff 5,107 -> 5,589, Brahms
+5,483 -> 7,189 (bar 8's 9/8 and bar 9's return to 6/8 now read); ⚠️ **control broken: 29 overfull Brahms bars** (bars 10-14, whole-bar rests
+sized 9/8 under a written 6/8; the hold-out lets a lone whole-bar rest through) -- needs an item; ⚠️ Brahms notes kept -> narrowed 1,991, not
+attributed. **Sean's blind tiles waiting** (readings in each `manifest.json`): `out/print/2.78-phase2-review/` (12) + 2.78 tile 7's box,
+`out/print/2.12f-r2-review/` (12), `out/print/2.75-chords/` (5), `out/print/rhythm-leftovers-3/` (7). **Candidate items (ask Sean):** a
+GATHER stem finder for stacked heads (crop 9's beam on the staff line); a GATHER ink reader for a tall box holding a head + arc end
+(litolff_04); a position decision for ordinary heads (`adjudicate_tie_pair`); articulation twin de-dup, distance bound, touching head with
+an unread stem (107); EXPORT stop mode-voting a chord on a narrowed stem; a tie piece / `p` letter read as an articulation.
+
 ## START HERE — after 2026-10-09 (session end; main ≥ the commit naming this block; Sean starts the overnight himself)
 
 **Landed 10-09, every one judged by Sean blind one tile at a time (first two stages):** 0.9; 1.7 hand-truth tools + Sean's Brahms 317803 pdf 0

@@ -1,0 +1,41 @@
+all stages: NEW tree 26fdb4d06eb3ddf0e47040bf8aa60564645a4a27 dirty=True (2026-10-10T11:38:05Z)  vs  OLD acceptance 2026-09-30 tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
+NEW dirty=True only because the overnight checkout holds acceptance's own outputs + the temporary manifest; no code changed.
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          4480 ->         5589
+  notes_reaching_file.of                                                        11644 ->        11399
+  notes_reaching_file.fraction                                           0.38474750944692543 -> 0.4903061672076498
+  bars_held_out_sum.n                                                            1732 ->         1064
+  bars_held_out_sum.of                                                           4465 ->         4813
+  bars_held_out_sum.fraction                                             0.38790593505039195 -> 0.22106794099314356
+  bars_held_out_sum.noteheads_and_rests                                          4192 ->         2575
+  bars_held_out_sum.bars_on_a_doubled_staff                                        85 ->           55
+  bars_held_out_sum.named_in_the_export_report                                   1647 ->         1009
+  bars_add_up_control.exact                                                      5886 ->         6060
+  bars_add_up_control.n                                                          5886 ->         6060
+  bars_add_up_control.of                                                         5886 ->         6060
+  held_out.staff_not_identified                                                   213 ->          133
+  held_out.of_noteheads_in_log                                                  11644 ->        11399
+  held_out.fraction                                                      0.018292682926829267 -> 0.011667690148258619
+  unread_bars.empty_bars_padded                                                   951 ->          708
+  unread_bars.tacet_bars_not_padded_without_meter                                  90 ->            0
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5225 ->         7189
+  notes_reaching_file.of                                                        24533 ->        24260
+  notes_reaching_file.fraction                                           0.21297843720702728 -> 0.29633140972794725
+  bars_held_out_sum.n                                                            4283 ->         2755
+  bars_held_out_sum.of                                                           6061 ->         5964
+  bars_held_out_sum.fraction                                             0.7066490678105923 -> 0.4619382964453387
+  bars_held_out_sum.noteheads_and_rests                                         12927 ->         8573
+  bars_held_out_sum.named_in_the_export_report                                   4283 ->         2755
+  bars_add_up_control.exact                                                      6882 ->         6950
+  bars_add_up_control.overfull                                                      0 ->           29
+  bars_add_up_control.n                                                          6882 ->         6950
+  bars_add_up_control.of                                                         6882 ->         6979
+  bars_add_up_control.fraction                                                    1.0 -> 0.9958446768878063
+  held_out.staff_not_identified                                                    63 ->           64
+  held_out.of_noteheads_in_log                                                  24533 ->        24260
+  held_out.fraction                                                      0.0025679696735009987 -> 0.0026380873866446827
+  unread_bars.empty_bars_padded                                                   613 ->          696
+  unread_bars.tacet_bars_not_padded_without_meter                                 328 ->          217

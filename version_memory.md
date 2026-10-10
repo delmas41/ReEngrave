@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (morning) — overnight `20261010-night` read; START HERE
+
+- Re-gather of main `26fdb4d0` vs `20261009-all`: GATHER identical; notes to file Litolff 5,589 (+482), Brahms 7,189 (+1,706); 29 overfull Brahms bars (bars 10-14, rests sized 9/8 under 6/8) -- control broken, item to open. `benchmarks/acceptance/overnight/20261010-night/SUMMARY.md`.
+
 ## 2026-10-10 (night) — 2.77 landed with Sean's round-2 fixes
 
 - Rhythm leftovers + 2.77b: a beam piece is not a head; a sloped beam keeps its stems; a head's copy owned by another staff abstains. `f25b674c`; `check` 192. Next: the overnight `20261010-night`.

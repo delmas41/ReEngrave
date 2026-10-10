@@ -1,0 +1,33 @@
+all stages: NEW tree 26fdb4d06eb3ddf0e47040bf8aa60564645a4a27 dirty=True (2026-10-10T11:38:05Z)  vs  OLD 20261009-all (last night) tree 00473387e0cab03c8c17881ec08a807e867ddb84 (2026-10-09T09:11:23Z)
+NEW dirty=True only because the overnight checkout holds acceptance's own outputs + the temporary manifest; no code changed.
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5107 ->         5589
+  notes_reaching_file.fraction                                           0.44802175629441177 -> 0.4903061672076498
+  bars_held_out_sum.n                                                            1323 ->         1064
+  bars_held_out_sum.of                                                           4895 ->         4813
+  bars_held_out_sum.fraction                                             0.27027579162410625 -> 0.22106794099314356
+  bars_held_out_sum.noteheads_and_rests                                          3275 ->         2575
+  bars_held_out_sum.bars_on_a_doubled_staff                                        62 ->           55
+  bars_held_out_sum.named_in_the_export_report                                   1261 ->         1009
+  held_out.staff_not_identified                                                   137 ->          133
+  held_out.fraction                                                      0.012018598122642337 -> 0.011667690148258619
+  unread_bars.empty_bars_padded                                                   626 ->          708
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5483 ->         7189
+  notes_reaching_file.fraction                                           0.22600989282769993 -> 0.29633140972794725
+  bars_held_out_sum.n                                                            4180 ->         2755
+  bars_held_out_sum.of                                                           6236 ->         5964
+  bars_held_out_sum.fraction                                             0.6703014753046825 -> 0.4619382964453387
+  bars_held_out_sum.noteheads_and_rests                                         12747 ->         8573
+  bars_held_out_sum.named_in_the_export_report                                   4180 ->         2755
+  bars_add_up_control.exact                                                      6669 ->         6950
+  bars_add_up_control.overfull                                                      0 ->           29
+  bars_add_up_control.n                                                          6669 ->         6950
+  bars_add_up_control.of                                                         6669 ->         6979
+  bars_add_up_control.fraction                                                    1.0 -> 0.9958446768878063
+  held_out.staff_not_identified                                                    63 ->           64
+  held_out.fraction                                                      0.0025968672712283593 -> 0.0026380873866446827
+  unread_bars.empty_bars_padded                                                   424 ->          696
+  unread_bars.tacet_bars_not_padded_without_meter                                 527 ->          217
