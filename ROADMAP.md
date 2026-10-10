@@ -21,8 +21,10 @@ re-enter.
 
 **Sean's plan for the next session:** pick up the two lanes still running at session end -- `lane-2.83-flag-tip` (2.83: the eighth's flag at the stem
 tip; the 2.18c window skips the first 1.0 sp at the tip, never measured -- Sean: *"the flag stays closer to the stem at the tip"*) and `lane-1.7-stems`
-(measure CV stem recall/attachment against Sean's 227 stem boxes, misses by cause, scorer credits CV stems; measurement only) -- check `git ls-remote origin
-lane-2.83-flag-tip lane-1.7-stems` first and restart either from its row if it never pushed. Then **#1 the stem finder** (2.82's root cause: the CV finder
+(**FINISHED at session end, `8f6773e2`, not merged -- land it**: CV stems found 173/227 = 0.76, invented 68 (clefs, keys, digits, accidentals, rests),
+right stem on 215/321 stemmed heads; 45 of 54 misses = two heads a third apart fused with the stem into a ~1-space run refused by `line_detection.detect_stems`
+`max_width_lines = 0.6`, 6 = `_drop_paired_strokes` pairing a stem with an accidental; FINDINGS `hand-truth-score-2026-10` §8) -- check `git ls-remote
+origin lane-2.83-flag-tip` first and restart 2.83 from its row if it never pushed. Then **#1 the stem finder** (2.82's root cause: the CV finder
 refuses a stem fused with stacked heads as too WIDE; under missed beams, flags and most 'bare stem' notes -- open the item once 1.7-stems sizes it) and
 **#2 2.81 phase 2** ('bare stem -> quarter' is ~0.76 on Sean's tiles, below his 95%: carry it as a labelled INFER likelihood settled by bar math; flip the
 narrowing that ranks eighth above quarter; re-measure the population after #1). **Landed this session:** 2.61d, 2.12f, 2.78, 2.75, 2.77+2.77b, 2.79 (fix;
