@@ -1,0 +1,6 @@
+{
+ "n": 10,
+ "true_frame_inside_beats_both_neighbours": 10,
+ "wrong_frame_(page_shifted_1.6_heads)_inside_beats_both": 0,
+ "reading": "the control can fail: it must pass on the true frame and mostly fail on the shifted one"
+}

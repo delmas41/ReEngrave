@@ -837,6 +837,162 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
 #: from the hairpin line's own ~1.0-1.3.
 BEAM_THICKNESS_RATIO_MIN = 1.75
 
+
+#: ROADMAP 2.82: a stem the ink read at an end of a core must lead to a HEAD the detector
+#: boxed -- the head's near edge within this many staff spaces of the beam, on the side
+#: the stem runs to, and its box reaching the stem's column within `BEAM_CORE_HEAD_X_SPACES`.
+#: Stems run ~3.5 spaces (a chord's outer head sits a space or two farther); 5.5 is the
+#: slack. ⚠️ MEASURED, `FINDINGS.md` 2.82: on Litolff's merging plate a thick staff line
+#: between a bar's barlines or lattice verticals "stands on a stem at each end" by the ink
+#: alone (3 of the first 15 strokes the ink-only rule rescued were exactly that); a vertical
+#: run that leads to no detected head is not a stem of a beam.
+BEAM_CORE_HEAD_REACH_SPACES = 5.5
+BEAM_CORE_HEAD_X_SPACES = 0.4
+
+
+def _head_at_the_far_end(end: Dict[str, Any], band, heads, space: float) -> bool:
+    """Is a detector-boxed head standing at the far end of the stem the ink read at
+    `end` (`gather._stem_at_end`: `x`, `side`)? `heads` are canonical `(x, y, w, h)`
+    boxes; `band` the core's `(top, bottom)`. False where `side`/`x` are unread, or
+    there is no unit (rule 8: not placed, not a stem to a head)."""
+    x, side = end.get("x"), end.get("side")
+    if x is None or side not in ("up", "down") or not space or space <= 0 \
+            or not band or len(band) < 2:
+        return False
+    top, bot = float(band[0]), float(band[1])
+    reach = BEAM_CORE_HEAD_REACH_SPACES * space
+    pad = BEAM_CORE_HEAD_X_SPACES * space
+    for hx, hy, hw, hh in heads or ():
+        if not (hx - pad <= float(x) <= hx + hw + pad):
+            continue
+        if side == "up" and top - reach <= hy + hh <= top + 0.5 * space:
+            return True
+        if side == "down" and bot - 0.5 * space <= hy <= bot + reach:
+            return True
+    return False
+
+
+def _core_beam_on_two_stems(detail: Dict[str, Any], heads=(), space: float = 0.0):
+    """The stroke's CORE (`gather.beam_stroke_ink`, ROADMAP 2.82) where it is
+    beam-thick (`BEAM_THICKNESS_RATIO_MIN`) and the ink read a stem at BOTH of its
+    ends that leads to a detector-boxed head, else `None`. `found: None` (the ink could
+    not say) is not a stem (rule 8), and a record from before 2.82 has no `core` key at
+    all: both give `None`, so such a stroke is judged by its median exactly as it was.
+    `heads` empty -> no stem leads to one -> never rescued."""
+    core = (detail or {}).get("core")
+    if not isinstance(core, dict):
+        return None
+    ratio = core.get("thickness_ratio")
+    if ratio is None or ratio < BEAM_THICKNESS_RATIO_MIN:
+        return None
+    ends = core.get("end_stems") or []
+    # ⚠️ A STEM, NOT A BARLINE: a run that leaves the band on BOTH sides (`through`) is
+    # a barline or merged staff-line ink; a stem hangs from its beam on one side.
+    # `through` unread (`None`/absent) is not "no" (rule 8).
+    if not (len(ends) == 2 and all(isinstance(e, dict) and e.get("found") is True
+                                   and e.get("through") is False for e in ends)):
+        return None
+    if not all(_head_at_the_far_end(e, core.get("band"), heads, space) for e in ends):
+        return None
+    return core
+
+
+#: ROADMAP 2.82 (Sean, 2026-10-10: *"The 'doesn't touch more than one stem' is off"*). A stroke
+#: is refused `one_stem` only where the record POSITIVELY says no second note stands at it:
+#: fewer than this many distinct detector-boxed head columns within a stem's reach of it.
+BEAM_ONE_STEM_HEAD_COLUMNS_MIN = 2
+#: Two head boxes closer than this (spaces, centre to centre) are one column (a chord).
+BEAM_HEAD_COLUMN_SEPARATION_SPACES = 0.7
+
+
+def _head_columns_at_stroke(box, heads, space: float) -> int:
+    """How many distinct detector-boxed head COLUMNS stand at a stroke: a head whose box
+    reaches the stroke's x-range (a head-box's slack on each side) and whose box lies
+    within `BEAM_CORE_HEAD_REACH_SPACES` of the stroke's box vertically, on either side.
+    Heads one `BEAM_HEAD_COLUMN_SEPARATION_SPACES` apart are one column (a chord).
+    ROADMAP 2.82. `0` where there is no unit (nothing is claimed)."""
+    if box is None or not space or space <= 0:
+        return 0
+    bx, by, bw, bh = box
+    pad = BEAM_CORE_HEAD_X_SPACES * space
+    reach = BEAM_CORE_HEAD_REACH_SPACES * space
+    xs = []
+    for hx, hy, hw, hh in heads or ():
+        if hx + hw < bx - pad or hx > bx + bw + pad:
+            continue
+        if max(by - (hy + hh), hy - (by + bh), 0.0) > reach:
+            continue
+        xs.append(hx + hw / 2.0)
+    cols, last = 0, None
+    for x in sorted(xs):
+        if last is None or x - last > BEAM_HEAD_COLUMN_SEPARATION_SPACES * space:
+            cols += 1
+            last = x
+    return cols
+
+
+def _core_reads_no_stem_at_either_end(detail: Dict[str, Any]) -> bool:
+    """POSITIVE evidence of no stem: the stroke's thick CORE was read, and the ink READ `found: False` at BOTH
+    of its ends (not `None`: unread is not "absent"). Where the thick ink of a stroke stops at nothing at
+    either end it is a stretch of something else -- a hairpin's thick end (Brahms pdf 18, two 17-space
+    boxes at 1.82 lines whose cores read no stem at either end), a staff-line residue. ROADMAP 2.82."""
+    core = (detail or {}).get("core")
+    if not isinstance(core, dict):
+        return False
+    ends = core.get("end_stems") or []
+    return len(ends) == 2 and all(isinstance(e, dict) and e.get("found") is False for e in ends)
+
+
+def _may_be_a_second_stem(box, heads, space: float, detail: Optional[Dict[str, Any]] = None) -> bool:
+    """`one_stem` needs POSITIVE evidence that no other stem stands at the stroke (rule 8: "cannot
+    tell" is not "only one stem"). The stem finder refuses a stem fused with the stack of heads on
+    it (`too WIDE`, 37 of the 37 undecided heads under Sean's hand-truth beams), so a second stem
+    that was never registered is the COMMON case: where two or more distinct heads stand at the
+    stroke there is something for a second stem to hang from, the count of REGISTERED stems says
+    nothing, and the stroke stays. The 2.74 `one_stem` refusals this keeps (Litolff pdf 10 tile
+    02: four fused columns under an 8-space bar; pdf 13 tile 29: two) were printed eighths.
+
+    ⚠️ THE FIRST VERSION OF THIS (heads alone) KEPT TWO HAIRPIN BOXES and read Brahms pdf 18's
+    heads sixteenth and dotted eighth: a 17-space box has two head columns under it wherever it
+    lies. So heads are NOT enough where the ink itself READ the thick core's two ends and found
+    no stem at either (`_core_reads_no_stem_at_either_end`): that is positive evidence of no
+    stem, and the refusal stands."""
+    if _core_reads_no_stem_at_either_end(detail):
+        return False
+    return _head_columns_at_stroke(box, heads, space) >= BEAM_ONE_STEM_HEAD_COLUMNS_MIN
+
+
+def stroke_thin_by_ink(detail: Dict[str, Any], heads=(), space: float = 0.0) -> bool:
+    """`too_thin`: the stroke's median thickness is under `BEAM_THICKNESS_RATIO_MIN`
+    staff lines AND no beam-thick core of it stands on a stem at each end. An unread
+    thickness is not thin. ONE spelling, read by `_not_a_beam_by_ink`,
+    `_beam_anchor_ids` and `notehead_precision._beam_piece_refusal`. ROADMAP 2.82.
+
+    ⚠️ WHY THE CORE: the median is taken over every column of the stroke's box, and a
+    detector box that runs past its beam reads a bare staff line in those columns
+    (Brahms 317803 pdf 0, q82: a beam 3.2 lines thick in a box 58% staff line, median
+    1.3). A beam is thick where it IS and stands on stems at both ends of THAT --
+    Sean's own test ("a beam must not only connect to its note but also to another
+    note"), applied at the ends of the thick ink. A hairpin's thick end stands on
+    nothing."""
+    ratio = (detail or {}).get("thickness_ratio")
+    if ratio is None or ratio >= BEAM_THICKNESS_RATIO_MIN:
+        return False
+    return _core_beam_on_two_stems(detail, heads, space) is None
+
+
+def stroke_end_stems(detail: Dict[str, Any], heads=(), space: float = 0.0):
+    """The two ends' stem readings of a stroke: its CORE's where the median is thin
+    and the core stands on two stems (`stroke_thin_by_ink` said no for that reason),
+    else the box's own. ROADMAP 2.82."""
+    ratio = (detail or {}).get("thickness_ratio")
+    if ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+        core = _core_beam_on_two_stems(detail, heads, space)
+        if core is not None:
+            return core.get("end_stems") or []
+    return (detail or {}).get("end_stems") or []
+
+
 #: How far a beam may bow from straight, in staff spaces (the sagitta of a
 #: parabola fitted to its straightest edge or centre line). "A beam never has
 #: an arc."
@@ -942,14 +1098,15 @@ def _beam_anchor_ids(ev: Evidence, cell, beams, tol: float, head_boxes):
     ROADMAP 2.75."""
     ink = _beam_ink_rows(ev, cell)
     out = set()
+    space = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
     for b in beams:
         row = ink.get(b.id)
         if row is None:
             continue
         d = row.detail or {}
         ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
-        ends = d.get("end_stems") or []
-        if ratio is None or sag is None or ratio < BEAM_THICKNESS_RATIO_MIN \
+        ends = stroke_end_stems(d, head_boxes, space)
+        if ratio is None or sag is None or stroke_thin_by_ink(d, head_boxes, space) \
                 or sag > BEAM_SAGITTA_MAX_SPACES:
             continue
         if not (len(ends) == 2 and all(isinstance(e, dict) and e.get("found")
@@ -1077,15 +1234,30 @@ def _stems_ending_in(box, stems, separation: float) -> int:
     return distinct
 
 
-def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
+def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
+                       head_x: Optional[float] = None):
     """`(kept, {stroke id: reason}, ink rows read)`. ROADMAP 2.74.
+
+    `head_x` (ROADMAP 2.82): the centre of the head being judged, canonical x. A stroke
+    whose MEDIAN is thin but whose beam-thick CORE stands on a stem at each end
+    (`stroke_thin_by_ink`) is a beam -- OF THE HEADS UNDER THAT CORE. Its box may run far
+    past the core (the detector's does), and a head under only the overshoot is NOT
+    under this beam: for it the stroke is refused `beyond_core`, exactly the refusal
+    2.74 made of the whole stroke, so such a head narrows as it did and is never
+    decided from a beam it does not stand under (rule 8). `None` -> no head to place
+    against the core, and a rescued stroke stays.
 
     A stroke is NOT a beam where the ink READS it so, by the first that
     fails: `too_thin` (median thickness under `BEAM_THICKNESS_RATIO_MIN`
-    staff lines -- a hairpin's line, a slur's or tie's tapering arc),
+    staff lines -- a hairpin's line, a slur's or tie's tapering arc -- AND no
+    beam-thick core of it standing on a stem at each end that leads to a head,
+    `stroke_thin_by_ink`, ROADMAP 2.82; `beyond_core`: such a core's stroke,
+    for a head that is under only its overshoot),
     `not_straight` (bowed more than `BEAM_SAGITTA_MAX_SPACES` -- a slur or a
     tie), `one_stem` (nothing but one stem stands at either end of it -- a
-    stroke that joins its own note and no other). A stroke with no
+    stroke that joins its own note and no other; ROADMAP 2.82: only where the
+    record POSITIVELY says no second note stands there, `_may_be_a_second_stem`).
+    A stroke with no
     `Q.BEAM_STROKE_INK` row, or whose reading left a test unread, is KEPT:
     the existing rules (`_beyond_own_stem`, the 2.38 ink join) judge it.
 
@@ -1126,19 +1298,48 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
             continue
         d = row.detail or {}
         ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
-        if ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+        pad = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
+        if stroke_thin_by_ink(d, head_boxes, pad):
             why[b.id] = "too_thin"
         elif sag is not None and sag > BEAM_SAGITTA_MAX_SPACES:
             why[b.id] = "not_straight"
+        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+            # ⚠️ ROADMAP 2.82: a thin MEDIAN kept by its CORE -- the beam-thick ink of
+            # this box stands on a stem at each of its two ends (each leading to a head
+            # the detector boxed), read off the ink. That IS "a beam must also connect
+            # to another note"; the box's own ends (which overshoot the beam) and the
+            # stems near the box say nothing the core's ends do not, so the stem tests
+            # below are not run on it.
+            core = _core_beam_on_two_stems(d, head_boxes, pad)
+            if head_x is not None and pad > 0 and not (
+                    core["x0"] - pad <= head_x <= core["x1"] + pad):
+                # ...but only for the heads UNDER the core (a space of slack: the outer
+                # note's centre is half a head past its beam's end, CLAUDE.md §10).
+                why[b.id] = "beyond_core"
+            else:
+                anchors.append(b)
         else:
             n, read = _stems_a_stroke_stands_on(b, row, stems, tol)
             ends = d.get("end_stems") or []
-            if read and not any(e.get("found") for e in ends) \
-                    and _stems_ending_in(
-                        _xywh(b), stems,
-                        BEAM_STEMS_ENDING_SEPARATION_SPACES
-                        * (tol / STEM_JOIN_TOLERANCE_SPACES)
-                        ) < BEAM_STEMS_ENDING_MIN:
+            no_stem_at_ends = read and not any(e.get("found") for e in ends) \
+                and _stems_ending_in(
+                    _xywh(b), stems,
+                    BEAM_STEMS_ENDING_SEPARATION_SPACES
+                    * (tol / STEM_JOIN_TOLERANCE_SPACES)
+                    ) < BEAM_STEMS_ENDING_MIN
+            core = _core_beam_on_two_stems(d, head_boxes, pad) \
+                if (no_stem_at_ends or (read and n < 2)) else None
+            if core is not None:
+                # ⚠️ ROADMAP 2.82: THE BOX'S OWN ENDS ARE NOT A BEAM'S ENDS (a detector box
+                # overshoots or undershoots its beam), so a stem not found at them says
+                # nothing; the thick CORE's ends are, and they read a stem each, leading to a
+                # head. The stem tests are answered by the core, for the heads under it.
+                if head_x is not None and pad > 0 and not (
+                        core["x0"] - pad <= head_x <= core["x1"] + pad):
+                    why[b.id] = "beyond_core"
+                else:
+                    anchors.append(b)
+            elif no_stem_at_ends:
                 # ⚠️ ROADMAP 2.75: the ink READ both ends and found a stem at
                 # NEITHER. A beam stands on its stems; a stem merely NEAR the
                 # box (which `_stems_a_stroke_stands_on` counts, permissively)
@@ -1153,7 +1354,14 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float):
                 # below like any other.
                 why[b.id] = "no_stem_at_ends"
             elif read and n < 2:
-                why[b.id] = "one_stem"
+                # ⚠️ ROADMAP 2.82 (Sean, 2026-10-10): "cannot tell" is not "only one stem".
+                # `n` counts REGISTERED stems, and the stem finder refuses a stem fused with
+                # its stack of heads, so a second stem that was never registered is the common
+                # case. Refused only where the record says nothing else stands here: fewer than
+                # two distinct heads at the stroke. Otherwise it stays (not an anchor: nothing
+                # vouches for it, so it lends no beamlet its quorum).
+                if not _may_be_a_second_stem(_xywh(b), head_boxes, pad, d):
+                    why[b.id] = "one_stem"
             elif read:
                 anchors.append(b)
     # ⚠️ A BEAMLET IS A BEAM. The short secondary stroke of a dotted eighth and
@@ -2565,7 +2773,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # not one the ink "removed".
     pre_ink = list(kept)
     kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-        ev, cell, kept, stems, tol)
+        ev, cell, kept, stems, tol, head_x=x_center)
     joined, attached = _stem_joined(kept, stems, head_box)
     # ⚠️ ROADMAP 2.43: THIS HEAD'S OWN STEM'S PADDED X-SPAN, gating
     # `_beam_levels`'s merely-POSSIBLE column match (`None` where this head
@@ -2594,7 +2802,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         kept, beyond, beyond_guarded = kept_all, [], True
         pre_ink = list(kept)
         kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-            ev, cell, kept, stems, tol)
+            ev, cell, kept, stems, tol, head_x=x_center)
         joined, attached = _stem_joined(kept, stems, head_box)
         join_witness, join_used = _beam_join_witness(ev, cell, kept,
                                                       own_stems, side)

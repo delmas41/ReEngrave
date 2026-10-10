@@ -1,0 +1,12 @@
+one_stem refusals: (head, stroke) pairs / distinct strokes, base -> full
+  bra01: 8 pairs / 1 strokes  ->  0 pairs / 0 strokes
+  bra12: 2 pairs / 1 strokes  ->  0 pairs / 0 strokes
+  bra18: 18 pairs / 3 strokes  ->  6 pairs / 2 strokes
+  bra23: 6 pairs / 2 strokes  ->  6 pairs / 2 strokes
+  lit03: 7 pairs / 1 strokes  ->  0 pairs / 0 strokes
+  lit08: 0 pairs / 0 strokes  ->  0 pairs / 0 strokes
+  lit10: 9 pairs / 1 strokes  ->  0 pairs / 0 strokes
+  lit13: 5 pairs / 1 strokes  ->  0 pairs / 0 strokes
+TOTAL {'base': [55, 10], 'full': [12, 4]}
+bra18 still one_stem: ['obs:033935', 'obs:033936']
+bra23 still one_stem: ['obs:030181', 'obs:030266']

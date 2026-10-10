@@ -1,0 +1,26 @@
+== 1. head duration verdicts ==
+   base -> thin: 6 heads changed
+         6  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+   thin -> full: 2 heads changed
+         2  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+   base -> full: 8 heads changed
+         8  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+
+== 2. ink refusals per (head, stroke) by reason ==
+   base  {'too_thin': 1008, 'through_heads': 67, 'no_stem_at_ends': 33, 'one_stem': 8}
+   thin  {'too_thin': 1000, 'beyond_core': 2, 'through_heads': 67, 'no_stem_at_ends': 33, 'one_stem': 8}
+   full  {'too_thin': 997, 'beyond_core': 8, 'through_heads': 67, 'no_stem_at_ends': 33}
+
+== 3. on Sean's page: strokes refused (by any head) -- real beams vs not ==
+   one_stem         base  strokes refused:   0  
+   one_stem         full  strokes refused:   0  
+   no_stem_at_ends  base  strokes refused:   0  
+   no_stem_at_ends  full  strokes refused:   0  
+   too_thin         base  strokes refused:  30  REAL BEAM: 1; not a beam: slur: 4; not a beam: tie: 1; not a beam: unboxed ink / none: 24
+   too_thin         full  strokes refused:  29  not a beam: slur: 4; not a beam: tie: 1; not a beam: unboxed ink / none: 24
+   beyond_core      base  strokes refused:   0  
+   beyond_core      full  strokes refused:   1  REAL BEAM: 1
+
+   one_stem [base] strokes on the page:
+
+   one_stem [full] strokes on the page:

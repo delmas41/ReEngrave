@@ -1,0 +1,55 @@
+truth beams in the 89 fully labeled cells: 41; excluding the truth slip q883: 40
+
+== (a) THICKNESS: does a beam that LIES ON a staff line measure thin? ==
+   a staff line passes through the beam     n=17  best stroke per beam: min 1.30 median 3.21 max 3.95; beams whose BEST stroke is under 1.75: ['q82']; beams with no stroke at all: ['b4130', 'b4189']
+   clear of every line                      n=23  best stroke per beam: min 2.62 median 3.21 max 3.62; beams whose BEST stroke is under 1.75: []; beams with no stroke at all: []
+
+== (b) STEMS: every head under a truth beam ==
+   heads under the 40 real truth beams: 170; with a DECIDED stem: 133; not: 37
+      stem decided     | the CV stem finder saw: accepted stem: 133
+      stem NOT decided | the CV stem finder saw: run refused too WIDE (fused with the heads' stack): 37
+
+== per truth beam ==
+   q82      heads  6 decided stem  2 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [1.3]
+   q104     heads  6 decided stem  2 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [2.65]
+   q113     heads  6 decided stem  2 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.37]
+   q216     heads  6 decided stem  2 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [2.96]
+   q228     heads  6 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [2.83, 2.83]
+   b4130    heads  5 decided stem  0 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios []
+   q349     heads  6 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 2 | stroke ratios [3.79, 3.79]
+   q359     heads  6 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.58, 3.58, 3.63]
+   q368     heads  6 decided stem  2 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.26, 3.26]
+   q457     heads  6 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.39, 3.39]
+   q472     heads  6 decided stem  6 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.21, 3.26, 3.26]
+   b4189    heads  4 decided stem  0 | CV stroke today: NO  | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios []
+   q545     heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.21, 3.21]
+   q549     heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.21, 3.21]
+   q870     heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.58, 3.58, 3.62]
+   q871     heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.46, 3.46, 3.46]
+   q955     heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.05, 3.05]
+   b4053    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.05]
+   b4239    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.26]
+   b4240    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.21]
+   q1089    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.21, 3.21]
+   b4241    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.21]
+   q1112    heads  5 decided stem  5 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.29, 3.29, 3.29]
+   q1118    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [3.44, 3.6]
+   q1119    heads  5 decided stem  5 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.17, 3.17]
+   b4251    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 1 | stroke ratios [2.9]
+   q1216    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.26, 3.32, 3.32]
+   q1217    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.21, 3.21]
+   q1231    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.21, 3.26]
+   q1232    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.05, 3.1]
+   q1246    heads  5 decided stem  5 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [2.7, 2.7, 2.84]
+   q1247    heads  5 decided stem  5 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.23, 3.23]
+   q1257    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.29, 3.35]
+   q1258    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [2.5, 2.62]
+   q1333    heads  4 decided stem  4 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.1, 3.1, 3.1]
+   q1335    heads  2 decided stem  2 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [3.1, 3.1]
+   q1359    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [1.42, 3.21, 3.21]
+   q1361    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [1.63, 3.21, 3.21, 3.21]
+   q1383    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 0 | stroke ratios [1.58, 3.26, 3.26, 3.26]
+   b3971    heads  3 decided stem  3 | CV stroke today: yes | CV stroke if the fused columns anchored: yes | lines through 2 | stroke ratios [3.95]
+
+== (b') COUNTERFACTUAL: truth beams with a CV stroke over them: today 33/40; if the 'too WIDE' fused columns of anchor height anchored: 40/40 ==
+   cells re-run with fused anchors: 12 of 25 read; CV strokes added: 7; of them standing where Sean's truth has NO beam, inside his fully labeled cells: 0 []

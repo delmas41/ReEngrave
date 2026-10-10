@@ -1,0 +1,5 @@
+heads: base 3505, arm 727, in both 727; same box 727
+duration verdicts changed: 0 of 727
+
+the 2.81 population (base `beam_discounted_uncertain`): 46
+     46  -> narrowed beam_discounted_uncertain [0.5, 1.0]

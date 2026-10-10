@@ -8289,6 +8289,34 @@ BEAM_INK_THRESHOLD = 180
 #: so a beam lying ON a line does not set the line's own thickness.
 BEAM_INK_LINE_FLANK_SPACES = 3.0
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.82 -- the CORE of a stroke: where its ink is beam-thick.
+#
+# `thickness_ratio` is the MEDIAN of the ink run through every column of the stroke's
+# box. A detector box that runs past its beam reads the ink that is NOT the beam in
+# those columns: Brahms 317803 pdf 0 (Sean's hand truth) staff 0 bar 3, a real beam
+# 0.6 spaces thick in a box 362 px wide over a 152 px beam, 58% of its columns a bare
+# staff line -- median 1.3 lines, refused `too_thin`, and six beamed heads read
+# "eighth or quarter". The cut is not wrong (every beam stroke that fits its beam
+# measures 2.5-3.9 lines on that page); the reading was taken over columns that are
+# not the beam's. `FINDINGS.md` 2.82.
+#
+# The CORE is the longest stretch of consecutive columns (median-smoothed over
+# `BEAM_INK_CORE_SMOOTH_SPACES` so one white speck does not break a beam) whose ink run
+# is at least `BEAM_INK_CORE_RATIO` staff lines, at least `BEAM_INK_CORE_MIN_SPACES`
+# long, with the thickness it holds there and whether a stem stands at EACH END of the
+# core -- off the same ink. A reading; the verdict on it is `rhythm`'s.
+#
+# ⚠️ `BEAM_INK_CORE_RATIO` IS `rhythm.BEAM_THICKNESS_RATIO_MIN` AND A TEST PINS THEM
+# EQUAL: gather may not import an adjudicator, and two spellings of one number drift.
+# ─────────────────────────────────────────────────────────────────────────────
+
+BEAM_INK_CORE_RATIO = 1.75
+#: A stretch shorter than this is a head, a stem's foot or a blot. A notehead is ~1.3
+#: spaces wide, and the beam between two stems of the closest-set group is longer.
+BEAM_INK_CORE_MIN_SPACES = 2.0
+BEAM_INK_CORE_SMOOTH_SPACES = 0.3
+
 
 def _ink_runs(col: Any) -> List[Tuple[int, int]]:
     """`(start, end_exclusive)` of every run of True in a 1-D bool array."""
@@ -8367,6 +8395,9 @@ def _stem_at_end(ink: Any, x_end: float, band: Tuple[float, float],
     top, bot = band
     ymid = int(round((top + bot) / 2.0))
     hits = []
+    thru = []
+    ups = []
+    downs = []
     for cx in xs:
         col = ink[:, cx]
         if not (0 <= ymid < H):
@@ -8377,11 +8408,67 @@ def _stem_at_end(ink: Any, x_end: float, band: Tuple[float, float],
             if s <= ymid < e or (s <= bot and e >= top):
                 if (top - s) >= reach or (e - bot) >= reach:
                     hits.append(cx)
+                    if (top - s) >= reach and (e - bot) >= reach:
+                        thru.append(cx)
+                    elif (top - s) >= reach:
+                        ups.append(cx)
+                    else:
+                        downs.append(cx)
                 break
     need = max(2, int(round(0.08 * space)))
     if len(hits) >= need:
-        return {"found": True, "x": round(float(sum(hits)) / len(hits), 1)}
-    return {"found": False, "x": None}
+        # ⚠️ ROADMAP 2.82: `through` -- the run leaves the band by `reach` on BOTH sides.
+        # A stem hangs from its beam on ONE side (the beam is flush at the stem's far
+        # end); a run that goes both ways through the band is a BARLINE or a lattice of
+        # merged staff-line ink. `side` -- WHICH side the stem runs to ("up": above
+        # the band, "down": below), so a consumer can look for the head at its far end.
+        side = ("both" if len(thru) >= need else
+                "up" if len(ups) >= len(downs) else "down")
+        return {"found": True, "x": round(float(sum(hits)) / len(hits), 1),
+                "through": len(thru) >= need, "side": side}
+    return {"found": False, "x": None, "through": False, "side": None}
+
+
+def _beam_core(ink: Any, xs: Any, th: Any, tops: Sequence[float],
+               bots: Sequence[float], line: Optional[float], space: float
+               ) -> Optional[Dict[str, Any]]:
+    """The core of one stroke (see the 2.82 block above), or `None` where no stretch of
+    `BEAM_INK_CORE_MIN_SPACES` is `BEAM_INK_CORE_RATIO` lines thick, or where no staff
+    line was measurable (never a pixel default). `xs`/`th` are the per-column x and ink
+    run length `beam_stroke_ink` already read; columns with no ink are absent from
+    them, so a stretch is only consecutive where `xs` is."""
+    import numpy as np
+    if not line or line <= 0 or len(xs) < 3:
+        return None
+    k = max(3, int(round(BEAM_INK_CORE_SMOOTH_SPACES * space)))
+    sm = _median_filter_1d(th, k)
+    thick = sm >= BEAM_INK_CORE_RATIO * line
+    best = None                                  # (length in columns, first, last)
+    i, n = 0, len(xs)
+    while i < n:
+        if not thick[i]:
+            i += 1
+            continue
+        j = i
+        while j + 1 < n and thick[j + 1] and xs[j + 1] == xs[j] + 1:
+            j += 1
+        length = int(xs[j] - xs[i] + 1)
+        if best is None or length > best[0]:
+            best = (length, i, j)
+        i = j + 1
+    if best is None or best[0] < BEAM_INK_CORE_MIN_SPACES * space:
+        return None
+    _, a, b = best
+    x0, x1 = float(xs[a]), float(xs[b])
+    core_th = float(np.median(th[a:b + 1]))
+    band = (float(np.median(np.asarray(tops[a:b + 1], float))),
+            float(np.median(np.asarray(bots[a:b + 1], float))))
+    return {"x0": x0, "x1": x1, "spaces": round((x1 - x0 + 1) / space, 3),
+            "thickness_px": round(core_th, 2),
+            "thickness_ratio": round(core_th / line, 3),
+            "end_stems": [_stem_at_end(ink, x0, band, space),
+                          _stem_at_end(ink, x1, band, space)],
+            "band": [round(band[0], 1), round(band[1], 1)]}
 
 
 def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
@@ -8401,6 +8488,9 @@ def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
       stroke is shorter than one space).
     * `end_stems`: for each end (left, right) whether a vertical run leaves
       the band there -- `found` True/False, `x` the column.
+    * `core` (ROADMAP 2.82): the longest stretch where the run is
+      `BEAM_INK_CORE_RATIO` lines thick or more, with its own `x0`/`x1`, `spaces`,
+      `thickness_ratio` and `end_stems` read at ITS ends; `None` where there is none.
 
     ⚠️ THE UNERASED raster, not `image_no_staff`: the staff-erase thins a beam
     that crosses a line (a beam read 34 px thick on the erased image and 49 on
@@ -8471,7 +8561,10 @@ def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
             "end_stems": ends,
             "columns": int(len(xs)),
             "cover": round(len(xs) / float(xi1 - xi0), 3),
-            "band": [round(band[0], 1), round(band[1], 1)]}
+            "band": [round(band[0], 1), round(band[1], 1)],
+            # ROADMAP 2.82: where the ink is beam-thick, and whether a stem stands at
+            # each end of THAT -- `None` where nothing is (or no line was measurable).
+            "core": _beam_core(ink, xs_a, th_a, tops, bots, line, space)}
 
 
 def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],

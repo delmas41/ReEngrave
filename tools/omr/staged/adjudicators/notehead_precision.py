@@ -718,6 +718,7 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
     sep = (_rh.BEAM_STEMS_ENDING_SEPARATION_SPACES * spacing_canonical)
     head = (float(x), float(y), float(w), float(h))
+    beam_heads = _rh._notehead_glyph_boxes(ev, cell, spacing_canonical)
     for s in strokes:
         sbox = _rh._xywh(s)
         row = ink.get(s.id)
@@ -726,10 +727,10 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
         d = row.detail or {}
         ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
         if ratio is None or sag is None \
-                or ratio < _rh.BEAM_THICKNESS_RATIO_MIN \
+                or _rh.stroke_thin_by_ink(d, beam_heads, spacing_canonical) \
                 or sag > _rh.BEAM_SAGITTA_MAX_SPACES:
             continue
-        ends = d.get("end_stems") or []
+        ends = _rh.stroke_end_stems(d, beam_heads, spacing_canonical)
         both_ends = (len(ends) == 2 and all(
             isinstance(e, dict) and e.get("found") for e in ends))
         if not both_ends and _rh._stems_ending_in(sbox, stems, sep) \
