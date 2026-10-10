@@ -153,6 +153,48 @@ def _standing(log: Log, subject: Subject, quantity: str) -> List[Verdict]:
     return [v for v in rows if v.id not in superseded]
 
 
+def _bar_beats_at(meter: Verdict, subject: Subject) -> Optional[float]:
+    """The length, in quarters, of the meter WRITTEN IN FORCE at THIS bar --
+    or None where no meter is in force at it.
+
+    ⚠️⚠️ ROADMAP 2.79: THE ONE WAY A CONSEQUENCE READS A `Q.METER` VERDICT.
+    The verdict is a SYSTEM's, and a system may print a change: its `value`
+    carries `segments`, one per stretch with the `from_cell` it starts at, and
+    its top-level `numerator`/`denominator` describe the FIRST segment only --
+    `record.meter_at`'s docstring says in so many words that consumers must
+    not read them, *"a bar past a change would get the wrong answer"*. Three
+    rules here read them anyway, and on Brahms 1/i Breitkopf p1 (9/8 at bar 8,
+    a printed return to 6/8 at bar 9) `size_measure_rest` sized 29 whole-bar
+    rests 9/8 long under the `<time>` of 6/8 that EXPORT, which does go
+    through `meter_at`, had written for the same bars. Two readers of one
+    fact, two answers: the overnight control `bars_add_up` read 29 overfull
+    bars.
+
+    ⚠️ ONLY `size_measure_rest` ASKS HERE SO FAR. `reconcile_duration` and
+    `reinstate_rest_between_staves` still read the opening segment (the same
+    defect, a separate change: it lets `reconcile_duration` fire on bars it
+    could not fire on before, and one of those four bars is a wrong note --
+    `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §2.79).
+
+    ⚠️ `subject.cell` IS THE BAR, on a cell and on a glyph alike (a glyph's
+    cell is the bar it stands in), so every rule asks with the subject it
+    was handed.
+
+    ⚠️ NONE IS A REAL ANSWER, NOT A GAP: `meter_at` returns None for a bar no
+    segment covers -- "3/4 from bar 8, unknown before" -- and the old reading
+    answered 3/4 for bars 0-7 anyway, a meter nobody read. Every caller
+    treats None as "no meter, no assertion" (rule 8), exactly as it already
+    treats a meter with no numerator.
+    """
+    here = R.meter_at(meter.value, subject.cell)
+    if not here:
+        return None
+    num, den = here.get("numerator"), here.get("denominator")
+    if not num or not den:
+        return None
+    return float(num) * 4.0 / float(den)
+
+
 def _is_rest(v: Verdict) -> bool:
     """⚠️ A NARROWED verdict has no `value`; its candidates say what it is
     (2.22: without this a narrowed REST read as "not a rest", and the
@@ -203,9 +245,12 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
     has when it reads one rest. Putting it here is what lets the bound be
     stated and the meter be known.
     """
-    value = meter.value or {}
-    num, den = value.get("numerator"), value.get("denominator")
-    if not num or not den:
+    # ⚠️⚠️ ROADMAP 2.79: THE METER IN FORCE AT THIS BAR, NOT THE SYSTEM'S
+    # OPENING ONE. See `_bar_beats_at`: the rest's length must be the length
+    # of the `<time>` EXPORT writes at this bar, and EXPORT writes it through
+    # `record.meter_at`.
+    beats = _bar_beats_at(meter, subject)
+    if beats is None:
         # ⚠️ NO METER, NO ASSERTION. Sizing a bar we never read the meter of
         # would be a guess dressed as a fact, and the legacy exporter withholds
         # `measure="yes"` for the same reason.
@@ -238,7 +283,6 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
     if only.detail.get("rest") != "restWhole" or only.value.get("dots"):
         return []
 
-    beats = float(num) * 4.0 / float(den)
     detail = {**only.detail, "bar_beats": beats}
     if set_aside:
         detail["set_aside"] = set_aside

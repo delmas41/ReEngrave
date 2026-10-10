@@ -184,11 +184,15 @@ def _duplicate_bar(*, refuse_gi=None, second_cls="restWhole"):
     than re-deriving the adjudicator's answer by hand.
     """
     page = _bar([])
+    # ⚠️ ROADMAP 2.79: each rest is 2.0 beats, the length of `_bar`'s 2/4 -- a
+    # measure rest IS the written bar (a 4.0 rest in a 2/4 bar is now held out
+    # on its own, which would make the REPAIRED test below fail for the wrong
+    # reason). Two of them still sum to 4.0 against 2.0 unrepaired.
     _add_rest(page, 5, "restWhole",
-             {"beats": 4.0, "written": 4.0, "dots": 0, "is_rest": True,
+             {"beats": 2.0, "written": 2.0, "dots": 0, "is_rest": True,
               "measure_rest": True})
     _add_rest(page, 6, second_cls,
-             {"beats": 4.0, "written": 4.0, "dots": 0, "is_rest": True,
+             {"beats": 2.0, "written": 2.0, "dots": 0, "is_rest": True,
               "measure_rest": True})
     if refuse_gi is not None:
         sub = f"glyph/0/0/0/0/{refuse_gi}"
@@ -204,8 +208,9 @@ class TestDuplicateRestExport(unittest.TestCase):
         refusal (today's tree before ADJUDICATE ever decides one — the
         starting point ROADMAP 2.15 named), two DECIDED measure rests are
         neither one LONE the way `_bar_holds_out` requires, so both are
-        summed at 4.0 quarters each and the bar is held out as a bar that
-        does not add up — the exact double-count this item exists to fix."""
+        summed at 2.0 quarters each (4.0 against the 2/4 bar) and the bar is
+        held out as a bar that does not add up — the exact double-count this
+        item exists to fix."""
         _xml, rep = SX.to_musicxml(_duplicate_bar())
         self.assertEqual(rep["bars_held_out_sum"]["bars"], 1)
         self.assertEqual(rep["written"].get("measure_rests_read", 0), 0)

@@ -4131,9 +4131,14 @@ def _bar_holds_out(events: List[Dict[str, Any]],
       is the one that cannot let a wrong bar through the control.
     * **a chord is one event** (`_event_units`, CLAUDE.md §10).
     * **a LONE measure rest IS the bar, whatever the meter** (CLAUDE.md §10:
-      a whole rest means the BAR). It is the one event that is not measured
-      against the meter at all -- `<rest measure="yes"/>` carries no note
-      value to compare. ⚠️ LONE: a measure rest sharing its voice with
+      a whole rest means the BAR) -- it is not summed like a note, because
+      `<rest measure="yes"/>` carries no note value of its own to compare.
+      ⚠️ BUT ITS `<duration>` IS THE METER'S LENGTH OR IT IS NOT THE BAR
+      (ROADMAP 2.79): the glyph stands for the bar, so the bar is the one the
+      file WRITES, and a lone rest of any other length is held out like any
+      bar that does not add up. It used to be exempt from the meter
+      altogether, and 29 rests sized for a different meter than the `<time>`
+      beside them went through. ⚠️ LONE: a measure rest sharing its voice with
       anything else is NOT the bar, and that voice is summed and judged like
       any other, because two events cannot both occupy the whole bar.
     * **no meter, no verdict** (`_bar_quarters`).
@@ -4159,7 +4164,36 @@ def _bar_holds_out(events: List[Dict[str, Any]],
             len(stream) == 1
             and bool((stream[0].get("rest") or {}).get("measure_rest")))
         if lone_measure_rest:
-            voices.append({"units": want, "is_the_bar": True})
+            # ⚠️⚠️ ROADMAP 2.79: THE BAR IS THE WRITTEN BAR. This branch used
+            # to record `units: want` without looking, so a lone measure rest
+            # was the one event never measured against the meter at all --
+            # and on Brahms 1/i Breitkopf 29 of them were written 9/8 long
+            # (`<duration>` 72) under a `<time>` of 6/8 the same file had
+            # just declared (EVALUATE had read the system's OPENING meter,
+            # EXPORT writes the one in force at the bar). The acceptance
+            # control `bars_add_up` caught what this did not, which is the
+            # control working and this exemption being wider than the
+            # convention it serves.
+            #
+            # ⚠️ THE CONVENTION IS UNCHANGED AND SO IS ITS DOMAIN. A whole
+            # rest means the BAR whatever the meter, so the rest's length IS
+            # the meter's and "does it fill the bar" is answered by that
+            # equality and by nothing else -- not by the glyph's own value
+            # (a `restWhole` is 4.0 and is correct in 4/4 and in 6/8 alike
+            # once sized). A rest that says otherwise means two parts of the
+            # system disagree about how long this bar is, and we cannot say
+            # which is right: HELD OUT AND COUNTED like every bar that does
+            # not add up (rule 8), never trimmed or re-timed here -- sizing
+            # is `consequences.size_measure_rest`'s, from the same
+            # `meter_at`, and a second sizer in the writer would be a second
+            # opinion about the bar. On a correct run this is quiet.
+            rest_units = _event_units(stream[0], divisions)
+            disagrees = rest_units != want
+            voice = {"units": rest_units, "is_the_bar": True}
+            if disagrees:
+                voice["measure_rest_length_disagrees"] = True
+                bad = True
+            voices.append(voice)
             continue
         units = sum(_event_units(ev, divisions) for ev in stream)
         voices.append({"units": units, "is_the_bar": False})
