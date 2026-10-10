@@ -2741,6 +2741,59 @@ def _owned_by_a_different_staff(ev: Evidence, row: Any, home: str) -> bool:
     return owned_by != home
 
 
+#: ROADMAP 2.12f. How far a notehead may stand from an articulation, in
+#: NOTEHEAD HEIGHTS measured edge to edge, and still be a witness to the mark's
+#: SIDE. The unit is the head and not the mark's own box -- the same discipline
+#: as `_ARTIC_MAX_DX_NOTEHEAD_WIDTHS` -- and it needs no staff-space row, so a
+#: cell with none loses nothing.
+#:
+#: ⚠️ MEASURED, NOT INHERITED, and the measurement is the curve it is cut at,
+#: not a round number. Over the 1,228 articulation marks of the two whole
+#: movements (Brahms 1 Breitkopf 1,212; Beethoven 5 Litolff 16 -- the shared
+#: records of 2026-10-09, `probe/artic_side.py`), the side the CLASS names
+#: against the side the nearest head's geometry gives, by that head's edge gap:
+#:
+#:     gap, head heights    agree   disagree
+#:     [0.00, 1.50)          1,029        16     98.5 % agree
+#:     [1.50, 2.50)             24        14     63 %
+#:     [2.50, ...)              14       131     10 %  <- below chance: these
+#:                                                       marks belong to a
+#:                                                       head that is not here
+#:
+#: Inside 1.5 the geometry and the class are one story; outside it the nearest
+#: head says nothing about the mark, so a disagreement there is not a
+#: contradiction and is NOT NAMED as one (`no_notehead` stays `no_notehead`).
+#: The class and the box are ONE detection (CLAUDE.md §4b `correlated_groups`),
+#: so this curve is a consistency measurement and not two witnesses voting.
+ARTIC_REACH_HEAD_HEIGHTS = 1.5
+
+
+def _artic_vertical(my: float, y0: float, y1: float,
+                    head_y: float, head_h: float) -> Tuple[str, float]:
+    """`(side, gap)` of an articulation against ONE notehead, in the cell's own
+    canonical frame -- a mark and the head beside it were cut from ONE cell, so
+    the difference of two y values is a LOCAL measurement (CLAUDE.md §10), no
+    staff-wide value involved.
+
+    `side` is `"above"`, `"below"` or `"level"`: level when the mark's centre
+    stands inside the head's own vertical extent, which an articulation never
+    does (it is printed against the head, not on it) -- so neither side is
+    claimed. `gap` is the signed edge-to-edge distance in canonical pixels
+    (negative where the two boxes overlap).
+
+    ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so ABOVE has the smaller y.
+    """
+    head_bottom = head_y + head_h
+    if my < head_y:
+        return "above", head_y - y1
+    if my > head_bottom:
+        return "below", y0 - head_bottom
+    # inside the head's extent: report the gap towards the nearer edge
+    if my < head_y + head_h / 2.0:
+        return "level", head_y - y1
+    return "level", y0 - head_bottom
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
@@ -2748,7 +2801,8 @@ def _owned_by_a_different_staff(ev: Evidence, row: Any, home: str) -> bool:
     wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=("nearest_on_declared_side", "no_notehead", "no_side_declared",
-             "no_evidence", "owned_by_another_staff"),
+             "no_evidence", "owned_by_another_staff",
+             "suffix_contradicts_geometry", "level_with_head"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
@@ -2774,6 +2828,22 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     the nearest thing available. 21 of 218 across the legacy corpus do, and
     abstaining there is why that precision is 0.980 -- a mark labelled `Above`
     sitting below every notehead in the cell belongs to none of them.
+
+    ⚠️ ROADMAP 2.12f -- THE SIDE IS NOW MEASURED AGAINST THE HEAD, AND THE
+    CLASS IS STILL NOT OVERTURNED. CONVENTION ASSUMED / WHAT WOULD FALSIFY IT /
+    NOT CONFIRMED: an articulation's side is where its ink sits relative to the
+    notehead it belongs to. Every verdict now carries `suffix_side` (what the
+    class names) beside `measured_side` (`_artic_vertical`, from the mark's box
+    and the head's box in the cell's own frame -- a local measurement). Where
+    they contradict within `ARTIC_REACH_HEAD_HEIGHTS` the mark abstains
+    `suffix_contradicts_geometry` instead of the old, lumped `no_notehead`;
+    where the mark stands inside the head's own vertical extent it abstains
+    `level_with_head`. Neither party overrules the other, because the class and
+    the box are ONE detection: of 15 sampled Brahms contradictions ~11 were
+    marks in the gap between two staves whose class was RIGHT and whose head is
+    in the neighbour staff's cell (FINDINGS Sec.2.12f). `Q.ARTICULATION_
+    POSITION`, the staff ruler, is not read: it files no row unless
+    `OMR_FAMILY_POSITIONS` is on, and a rule resting on it would be inert.
 
     ⚠️ THE CELL'S OWN CANONICAL FRAME IS CORRECT HERE, and saying so matters
     because the sibling decision one function up needs the opposite. An
@@ -2827,15 +2897,31 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     widths = sorted(float(h.value[3]) for h in heads)
     nh_width = widths[len(widths) // 2] or 1.0
     limit = nh_width * _legacy_articulation._ARTIC_MAX_DX_NOTEHEAD_WIDTHS
+    # ⚠️ ROADMAP 2.12f: the SAME median discipline in the other axis, so the
+    # reach below is a count of notehead heights and not of the mark's own box.
+    heights = sorted(float(h.value[4]) for h in heads)
+    nh_height = heights[len(heights) // 2] or 1.0
+    reach = nh_height * ARTIC_REACH_HEAD_HEIGHTS
+    suffix_side = "above" if above else "below"
 
     mx = (float(mark.detail.get("x0", 0.0))
           + float(mark.detail.get("x1", 0.0))) / 2.0
-    my = (float(mark.detail.get("y0", 0.0))
-          + float(mark.detail.get("y1", 0.0))) / 2.0
+    y0 = float(mark.detail.get("y0", 0.0))
+    y1 = float(mark.detail.get("y1", 0.0))
+    my = (y0 + y1) / 2.0
 
+    # Every head the x window admits, with where the mark stands against it --
+    # measured once, for the pick and for the two things recorded about it.
+    window = []                                  # (dx, head, side, gap)
+    declared = []                                # (gap, head): on the class's side
     best: Optional[Tuple[float, object]] = None
     for h in heads:
         _cls, hx, hy, hw, hh = h.value[:5]
+        dx = abs(mx - (float(hx) + float(hw) / 2.0))
+        if dx > limit:
+            continue
+        side, gap = _artic_vertical(my, y0, y1, float(hy), float(hh))
+        window.append((dx, h, side, gap))
         hyc = float(hy) + float(hh) / 2.0
         # ⚠️ LARGER CANONICAL y IS LOWER ON THE PAGE, so a mark printed ABOVE
         # its notehead has the SMALLER y of the two. Stated because the sign
@@ -2844,18 +2930,80 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
             continue
         if not above and my <= hyc:
             continue
-        dx = abs(mx - (float(hx) + float(hw) / 2.0))
-        if dx > limit:
-            continue
+        declared.append((gap, h))
         if best is None or dx < best[0]:
             best = (dx, h)
+
     if best is None:
+        # ⚠️ ROADMAP 2.12f. TWO different facts used to wear one word. NO HEAD
+        # IN REACH at all, and a head in reach that stands on the OTHER side of
+        # the mark from the one its class names -- the class and the geometry
+        # then contradict, and both are one detection, so neither may overrule
+        # the other: the mark ABSTAINS either way (CLAUDE.md rule 8) and says
+        # which. The contradicting head is the nearest by edge gap, and only a
+        # head within `ARTIC_REACH_HEAD_HEIGHTS` counts: beyond it the head
+        # says nothing about the mark (the curve is cited at the constant).
+        #
+        # ⚠️⚠️ THE CLASS IS NOT OVERTURNED, and that is a measurement and not a
+        # caution: of 15 Brahms marks the class and the nearest in-cell head
+        # disagreed on, ~11 stood in the gap BETWEEN two staves, directly over
+        # a head of the staff below, and the class was right -- the head the
+        # mark belongs to is simply not in this cell. Overturning the class
+        # there attaches a correct mark to a wrong note
+        # (`benchmarks/omr-shape-role-2026-09/FINDINGS.md` Sec.2.12f).
+        near = min(window, key=lambda w: abs(w[3]), default=None)
+        if near is not None and near[3] <= reach:
+            ndx, nh, nside, ngap = near
+            detail = {"articulation": name, "suffix_side": suffix_side,
+                      "measured_side": nside, "head": nh.subject.to_key(),
+                      "gap_head_heights": ngap / nh_height,
+                      "detector_class": str(mark.value)}
+            # ⚠️ LITERAL REASONS AT EACH SITE, not one computed expression:
+            # `brakes` section 5 resolves a reason by reading the string at a
+            # `Ruling` site, and a conditional reads as UNRESOLVED.
+            if nside == "level":
+                return Ruling(value=None, reason="level_with_head",
+                              used=(mark.id, nh.id), detail=detail)
+            return Ruling(value=None, reason="suffix_contradicts_geometry",
+                          used=(mark.id, nh.id), detail=detail)
         return Ruling.abstain("no_notehead", articulation=name,
-                              side="above" if above else "below",
+                              suffix_side=suffix_side,
                               notehead_width=nh_width,
                               limit_canonical_px=limit)
 
     dx, head = best
+    _cls, _hx, hy, _hw, hh = head.value[:5]
+    measured_side, gap = _artic_vertical(my, y0, y1, float(hy), float(hh))
+    if measured_side == "level":
+        # ⚠️ ROADMAP 2.12f. A mark centred inside its own notehead's vertical
+        # extent is neither above nor below it, and the centre-against-centre
+        # test above called it one or the other by a hair. It abstains.
+        return Ruling(value=None, reason="level_with_head",
+                      used=(mark.id, head.id),
+                      detail={"articulation": name, "suffix_side": suffix_side,
+                              "measured_side": measured_side,
+                              "head": head.subject.to_key(),
+                              "gap_head_heights": gap / nh_height,
+                              "detector_class": str(mark.value)})
+    # ⚠️ RECORDED FOR THE TIE-BREAK THAT IS NOT THIS STAGE'S: a mark standing
+    # between two heads of one column was given to the head on the side its
+    # class names -- the geometry alone could not have chosen. That is a guess
+    # between two candidates and belongs to INFER, labelled; here it is only
+    # written down, so the population is countable before such a rule exists.
+    other_side_in_reach = any(
+        h is not head and s != measured_side and abs(g) <= reach
+        for _dx, h, s, g in window)
+    # ⚠️ RECORDED, AND NOT ACTED ON, because acting on it moves 15 % of the
+    # decided population and no print has adjudicated that yet. The pick above
+    # is NEAREST IN X ONLY (the legacy rule's, imported), and a column of two
+    # or three heads on one stem shares an x to within a pixel or two -- so
+    # which head of the column wins is the order the detector listed them in.
+    # On Brahms 1 (whole movement) 119 of 802 decided owners are 2.5-5 head
+    # heights from their mark while a head on the SAME declared side stands
+    # 0.2-0.6 heights from it (four crops: the mark touches the nearer head).
+    # The nearest declared-side head and its gap are written here so the
+    # follow-up is a one-line comparison and not a re-measurement.
+    near_gap, near_head = min(declared, key=lambda d: abs(d[0]))
     return Ruling(
         value=head.subject.to_key(), reason="nearest_on_declared_side",
         used=(mark.id, head.id),
@@ -2864,7 +3012,12 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
         # class to know whether to write `<staccato/>` or `<accent/>` -- which
         # is the re-derivation this stage exists to remove.
         detail={"articulation": name,
-                "side": "above" if above else "below",
+                "suffix_side": suffix_side,
+                "measured_side": measured_side,
+                "gap_head_heights": gap / nh_height,
+                "other_side_head_in_reach": other_side_in_reach,
+                "nearest_declared_side_head": near_head.subject.to_key(),
+                "nearest_declared_side_gap_head_heights": near_gap / nh_height,
                 "dx_canonical_px": dx,
                 "dx_notehead_widths": (dx / nh_width) if nh_width else None,
                 "detector_class": str(mark.value),
@@ -3555,6 +3708,23 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
         reason = "nearest_in_bar"
 
     lo, hi = _span(hit)
+    # ⚠️ ROADMAP 2.12f, THE FERMATA HALF -- RECORD-ONLY, AND THAT IS THE POINT.
+    # Where the mark stands against the carrier it was given to, measured the
+    # way an articulation's is (`_artic_vertical`, the cell's own frame), set
+    # beside the side its class names. NOTHING READS EITHER: the side is not a
+    # constraint on a fermata (the docstring above says why), `_mxl_note`
+    # writes `type="upright"` unconditionally, and wiring this into the pick
+    # would press into service a test the family cannot pass. It is written on
+    # the verdict so the disagreement is countable before anything consumes it.
+    suffix_side = (mark.detail or {}).get("side")
+    try:
+        fy0 = float(mark.detail.get("y0", 0.0))
+        fy1 = float(mark.detail.get("y1", 0.0))
+        _c, _x, cy, _w, ch = hit.value[:5]
+        measured_side, _gap = _artic_vertical((fy0 + fy1) / 2.0, fy0, fy1,
+                                              float(cy), float(ch))
+    except (TypeError, ValueError):
+        measured_side = None
     return Ruling(
         value=hit.subject.to_key(), reason=reason,
         used=(mark.id, hit.id),
@@ -3566,7 +3736,11 @@ def adjudicate_fermata_owner(ev: Evidence) -> Ruling:
                 "carrier_class": str(hit.value[0]),
                 "dx_canonical_px": abs((lo + hi) / 2.0 - mx),
                 "n_carriers": len(carriers),
-                "side": (mark.detail or {}).get("side"),
+                "suffix_side": suffix_side,
+                "measured_side": measured_side,
+                "side_agrees": (None if suffix_side is None
+                                or measured_side is None
+                                else suffix_side == measured_side),
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
 

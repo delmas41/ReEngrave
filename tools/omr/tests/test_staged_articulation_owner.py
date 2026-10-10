@@ -133,7 +133,13 @@ class TestTheRefusals(unittest.TestCase):
         _head(log, 1, 97.0, 40.0)
         v = _decide(log, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.outcome, "abstained")
-        self.assertEqual(v.reason, "no_notehead")
+        # ROADMAP 2.12f: still an ABSTENTION, and still not overturned -- but
+        # it is no longer called `no_notehead`, because a head IS in reach and
+        # stands on the other side of the mark from the one the class names.
+        # That is a contradiction and carries its own word
+        # (`test_staged_articulation_side_2026_10_09.py`); `no_notehead` is
+        # for a mark with no head in reach at all, tested below and there.
+        self.assertEqual(v.reason, "suffix_contradicts_geometry")
 
         log2 = Log()                          # positive control: move it above
         _mark(log2, 0, 100.0, 0.0)
