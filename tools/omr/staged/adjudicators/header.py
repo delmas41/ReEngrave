@@ -9,6 +9,7 @@ from typing import Dict, List, Optional
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from .. import movements as _movements
 from ..record import DOCUMENT, Kind, Outcome, Q, Scope, State
+from .clef import UNKNOWN_FIT_KEY, _unknown_fit_candidates
 
 #: ⚠️⚠️ DEFAULT **ON** SINCE 2026-09-22 (evening) — **SEAN'S CALL**, on the
 #: measurement in `benchmarks/omr-document-identity-2026-09/FINDINGS.md`: key
@@ -422,6 +423,17 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
                       used=(tpl_row.id, clef.id),
                       detail=dict(_template_detail(tpl_row),
                                   decided_by="template"))
+
+    # ⚠️ ROADMAP 2.61d, the 2.61c pattern: the settled clef's fit THREW (an
+    # Abstention on `Q.KEYSIG_CLEF_FIT`), so whether the run fits its slot
+    # table is UNKNOWN. Neither branch below may speak: `no_run` and
+    # `no_evidence` describe a fit that ran, and `run_fits_no_slot_table` is a
+    # contradiction implicating the clef (rule 8).
+    unknown = _unknown_fit_candidates(ev, fits, subject=subject)
+    if str(clef.value) in unknown:
+        return Ruling.abstain("keysig_fit_unknown", clef=str(clef.value),
+                              **{UNKNOWN_FIT_KEY: list(unknown)},
+                              **_marker_ink(ev, subject))
 
     if not fits:
         state = ev.state(Q.KEYSIG_RUN_POSITION, subject=subject)
@@ -1291,7 +1303,8 @@ def adjudicate_system_key(ev: Evidence) -> Ruling:
     scope=Kind.STAFF,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.PART_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
     reasons=("markers", "fitted_no_markers", "needs_clef",
-             "run_fits_no_slot_table", "no_run", "mixed_marker_kinds",
+             "run_fits_no_slot_table", "no_run", "keysig_fit_unknown",
+             "mixed_marker_kinds",
              "natural_markers", "too_many_markers", "no_cell_scale",
              "disagrees_with_system", "disagrees_with_document",
              "disagrees_with_part", "no_evidence"),
