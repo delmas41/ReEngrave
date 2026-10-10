@@ -4216,6 +4216,20 @@ STEM_TIP_INK_ROOT_MAX_SPACES = 1.2
 #: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only.
 STEM_TIP_INK_LEFT_AREA_MAX = 0.05
 STEM_TIP_INK_EMPTY_AREA = 0.02
+#: ⚠️ BROKEN FLAGS (ROADMAP 2.83, found by Sean's tile 04 and a by-eye scan of Brahms pdf 1 and 20). A scan and the staff-line eraser
+#: often leave a hairline break between a flag's wedge at the tip and its arm, so the arm is a SEPARATE component and the attached ink
+#: alone (a stub: out 0.3, no arm) is not flag-shaped. A component the reader would otherwise leave out is taken as part of the flag
+#: where it stands within `STEM_TIP_FRAG_GAP_SPACES` of the stem-attached ink, wholly right of the stem's edge, starts within
+#: `STEM_TIP_FRAG_T_MAX_SPACES` of the tip, holds at least `STEM_TIP_FRAG_AREA_MIN` square spaces and is at least
+#: `STEM_TIP_FRAG_WIDTH_MIN_SPACES` wide (a neighbour's stem is a 0.2-wide line and is never taken). The union is then read by the
+#: SAME shape test and covered by the SAME blockers, so a beam fragment runs on, a detection's ink makes the tip `occupied`, and a
+#: ledger stub has no arm. MEASURED: of 34 + 14 + 1 stems on Brahms pdf 20, pdf 1 and Litolff pdf 3 the attached-only reader declined
+#: and this reads as a flag, every one looked at on the print is a flag; on Sean's page it adds 1 of his 21 and reads none of the 131
+#: non-flags.
+STEM_TIP_FRAG_GAP_SPACES = 0.35
+STEM_TIP_FRAG_T_MAX_SPACES = 1.6
+STEM_TIP_FRAG_AREA_MIN = 0.25
+STEM_TIP_FRAG_WIDTH_MIN_SPACES = 0.3
 
 #: ROADMAP 2.73, REWRITTEN AT 2.83. A ROW A LINE CROSSES: attached ink standing out on BOTH sides of the stem at one row (the
 #: stem's side `STEM_TIP_LINE_NEAR_U` on each, and beyond it on at least one) is a staff- or ledger-line stub or a slur's belly,
@@ -4229,12 +4243,10 @@ STEM_TIP_LINE_FAR_U_SPACES = 0.90
 STEM_TIP_LINE_FILL = 0.6
 STEM_TIP_LINE_MAX_THICK_SPACES = 0.45
 
-#: ROADMAP 2.73. A detection box counts as explaining ink in the tip window only
-#: if it overlaps the window by more than this much (staff spaces) in BOTH axes.
-#: Detector box edges are good to about a tenth of a space; a box that merely
-#: touches the window's edge (Litolff p6, 2.70 tiles #4/#6: an `arpeggiato` box
-#: that IS the stem's own ink ending 1 px into the window, a neighbour's head
-#: box ending 1-5 px into it) explains none of it.
+#: ROADMAP 2.73 (applied to the ink since 2.83). A detection box counts as explaining the ink at the tip only if it covers that ink
+#: by more than this much (staff spaces) in BOTH axes. Detector box edges are good to about a tenth of a space; a box that merely
+#: touches the ink's edge (Litolff p6, 2.70 tiles #4/#6: an `arpeggiato` box that IS the stem's own ink ending 1 px into the
+#: window, a neighbour's head box ending 1-5 px into it) explains none of it.
 STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 
 
@@ -4316,7 +4328,7 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     sub = ink[ya:yb, xa:xb].astype(np.uint8)
     k = max(1, int(round(0.06 * space)))
     sub = cv2.morphologyEx(sub, cv2.MORPH_CLOSE, np.ones((k, k), np.uint8))
-    _n, lab = cv2.connectedComponents(sub, connectivity=8)
+    n_lab, lab, lab_stats, _cent = cv2.connectedComponentsWithStats(sub, connectivity=8)
     sx0, sx1 = max(0, int(round(stem_x0)) - xa), min(sub.shape[1], int(round(stem_x1)) - xa + 1)
     ts = (np.arange(ya, yb) - tip_y) * into_sign / space           # spaces from the tip, + toward the head
     us = (np.arange(xa, xb) - stem_x1) / space                     # spaces right of the stem's right edge
@@ -4327,6 +4339,22 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
         out["why"] = "no_stem_ink"
         return out
     comp = np.isin(lab, list(seeds))
+    # BROKEN FLAGS: the fragments a hairline break leaves beside the attached ink (see `STEM_TIP_FRAG_*`)
+    frag_labels = []
+    for i in range(1, n_lab):
+        if i in seeds:
+            continue
+        fx, fy, fw, fh, farea = (int(v) for v in lab_stats[i])
+        if farea < STEM_TIP_FRAG_AREA_MIN * space * space or fw < STEM_TIP_FRAG_WIDTH_MIN_SPACES * space \
+                or us[fx] < 0.05 or min(ts[fy], ts[fy + fh - 1]) > STEM_TIP_FRAG_T_MAX_SPACES:
+            continue
+        frag_labels.append(i)
+    if frag_labels:
+        dist = cv2.distanceTransform((~comp).astype(np.uint8), cv2.DIST_L2, 3)
+        for i in frag_labels:
+            m = lab == i
+            if float(dist[m].min()) <= STEM_TIP_FRAG_GAP_SPACES * space:
+                comp = comp | m
     right = comp & (us[None, :] > 0.04)
     left = comp & (ul[None, :] > 0.04)
     on_line, bar = _tip_line_rows(right, left, us, ul, space)

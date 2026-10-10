@@ -1,0 +1,13 @@
+q33 glyph/0/0/0/1/6 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/0/1/15', 0, 'no_stem')]
+q42 glyph/0/0/0/1/15 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/0/1/6', 0, 'no_stem')]
+q129 glyph/0/0/0/6/3 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/0/6/13', 0, 'no_stem')]
+q132 glyph/0/0/0/6/6 ['narrowed+', ['beam_discounted_uncertain', [0, 1]]] mates: [('glyph/0/0/0/6/8', 0, 'no_stem')]
+q134 glyph/0/0/0/6/8 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/0/6/6', None, 'no_stem')]
+q139 glyph/0/0/0/6/13 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/0/6/3', 0, 'no_stem')]
+q187 glyph/0/0/1/1/2 ['narrowed+', ['beam_discounted_uncertain', [0, 1]]] mates: [('glyph/0/0/1/1/13', None, 'no_stem')]
+q197 glyph/0/0/1/1/13 ['narrowed+', ['beam_discounted_uncertain', [0, 1]]] mates: [('glyph/0/0/1/1/2', None, 'no_stem')]
+q387 glyph/0/0/2/6/3 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/2/6/5', None, 'no_stem'), ('glyph/0/0/2/6/9', 0, 'no_stem')]
+q393 glyph/0/0/2/6/9 ['wrong', ['head_and_marks', 0]] mates: [('glyph/0/0/2/6/3', 0, 'no_stem'), ('glyph/0/0/2/6/5', None, 'no_stem')]
+
+7 ('no such mate', 'wrong')
+3 ('no such mate', 'narrowed+')

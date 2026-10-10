@@ -1,0 +1,33 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm2/litolff-t.record.json
+   provenance 824d040cde54d7eee79309a146198fa6bba09a52 dirty=False
+base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-litolff.json: 7251 verdicts
+
+heads with a standing duration verdict: base 5999  arm 5999  in both 5999 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base      0   arm   2453
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm    291
+  abstained:ambiguous:no_room                             base      0   arm    531
+  abstained:ambiguous:runs_on                             base      0   arm     47
+  abstained:occupied:head_at_this_end                     base      0   arm   3337
+  abstained:occupied:occupied                             base      0   arm    896
+  observed:flag                                           base      0   arm    115
+  observed:none                                           base      0   arm   1104
+
+duration verdicts changed (matched heads): 53 of 5999
+     11  decided:hollow_head_bare_stem{0}  ->  narrowed:head_fill_from_ink{0}
+      9  narrowed:head_fill_from_ink{0}  ->  decided:hollow_head_bare_stem{0}
+      9  decided:head_and_marks{0}  ->  decided:hollow_head_bare_stem{0}
+      7  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+      6  narrowed:flag_ink_unread{1,2}  ->  decided:head_and_marks{0}
+      5  decided:hooks_counted{1}  ->  decided:head_and_marks{0}
+      2  decided:head_and_marks{0}  ->  decided:head_and_marks{1}
+      2  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      1  narrowed:flag_ink_unread{1,2}  ->  narrowed:head_fill_from_ink{0}
+      1  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 367
+    366  narrowed beam_discounted_uncertain levels [0, 1]
+      1  decided level 1 (hooks_counted)
+  (status of those heads in the arm: {'narrowed': 366, 'kept': 1} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_litolff-t.json 53

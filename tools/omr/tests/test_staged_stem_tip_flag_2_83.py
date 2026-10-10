@@ -108,6 +108,69 @@ class TestTheFlagIsReadWhereItStands(unittest.TestCase):
         self.assertIsNone(m["found"], m)
 
 
+def _broken_flag(img, gap=4):
+    """The flag of `_flag_up_stem` with a HAIRLINE BREAK between its wedge at the tip and its arm (a scan and the staff-line eraser leave
+    one): the arm starts `gap` px (0.2 spaces at 4) beyond the wedge's corner and is a separate component."""
+    _draw(img, STEM_X1, TOP_Y, STEM_X1 + 8, TOP_Y + 12)                       # the wedge, attached
+    _draw(img, STEM_X1 + 8 + gap, TOP_Y + 12 + gap, STEM_X1 + 17 + gap, TOP_Y + 50)   # the arm, detached
+
+
+class TestABrokenFlagIsStillAFlag(unittest.TestCase):
+    """⚠️ Sean's 2.81 tile 04 and a by-eye scan of Brahms pdf 20 (34 stems) and pdf 1 (14): the arm of a flag is its own component, 0.1-0.3
+    spaces from the wedge. The attached ink alone is a stub (out 0.3, no arm) and was declined; a component within 0.35 spaces, right of the
+    stem, wide enough not to be a stem and starting near the tip is part of the flag."""
+
+    def test_a_flag_whose_arm_is_a_separate_fragment_is_found_RED(self):
+        img = _paper()
+        _stem(img)
+        _broken_flag(img)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertTrue(m["found"], m)
+
+    def test_CONTROL_the_wedge_alone_is_still_not_a_flag(self):
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 8, TOP_Y + 12)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIsNone(m["found"], m)
+
+    def test_CONTROL_an_arm_far_from_the_wedge_is_not_taken(self):
+        """0.8 spaces of paper between them: another mark's, not this flag's."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 8, TOP_Y + 12)
+        _draw(img, STEM_X1 + 8 + 16, TOP_Y + 12 + 16, STEM_X1 + 17 + 16, TOP_Y + 50)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertNotEqual(m["found"], True, m)
+
+    def test_CONTROL_a_neighbouring_stem_beside_the_tip_is_not_a_fragment(self):
+        """A second stem 1 space to the right (a second voice): a 0.2-wide line, never taken, so the bare stem reads bare."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1 + 20, TOP_Y, STEM_X1 + 24, BOTTOM_Y)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIs(m["found"], False, m)
+
+    def test_CONTROL_a_detached_beam_piece_runs_on_and_is_not_a_flag(self):
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1 + 4, TOP_Y, STEM_X1 + 94, TOP_Y + 12)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertNotEqual(m["found"], True, m)
+
+    def test_a_box_over_the_fragment_makes_the_tip_occupied(self):
+        """The fragment is ink of the flag the reader claims, so a detection covering it blocks, as one covering the wedge does."""
+        img = _paper()
+        _stem(img)
+        _broken_flag(img)
+        log = Log()
+        over_arm = (STEM_X1 + 10.0, TOP_Y + 24.0, STEM_X1 + 24.0, TOP_Y + 44.0)
+        gather._observe_stem_tip_ink(log, SUB, "cell:0", FakeCell(img), "obs:stem-1", STEM_BOX, [over_arm], SP)
+        log.freeze()
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
+        self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
+
+
 class TestWhatIsNotAFlag(unittest.TestCase):
     """Each control is drawn on the tip of a stem that has a REAL flag elsewhere in the cell reading, so the reader is
     known able to say True; none of these may."""

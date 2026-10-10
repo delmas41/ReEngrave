@@ -1,0 +1,32 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm2/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+   provenance 824d040cde54d7eee79309a146198fa6bba09a52 dirty=False
+base /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-base/quick/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+   provenance faf913f42a791ddf8077968100fb981b279095a6 dirty=False
+
+heads with a standing duration verdict: base 1286  arm 1286  in both 1286 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base      0   arm    695
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm     58
+  abstained:ambiguous:no_room                             base      0   arm    125
+  abstained:ambiguous:runs_on                             base      0   arm      8
+  abstained:no_staff_geometry                             base      1   arm      0
+  abstained:occupied                                      base   1407   arm      0
+  abstained:occupied:head_at_this_end                     base      0   arm    896
+  abstained:occupied:occupied                             base      0   arm    280
+  observed:flag                                           base     39   arm     35
+  observed:none                                           base    931   arm    281
+
+duration verdicts changed (matched heads): 11 of 1286
+      5  decided:head_and_marks{0}  ->  decided:hollow_head_bare_stem{0}
+      2  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+      1  narrowed:flag_ink_unread{1,2}  ->  narrowed:head_fill_from_ink{0}
+      1  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+      1  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      1  narrowed:head_fill_from_ink{0}  ->  decided:hollow_head_bare_stem{0}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 41
+     40  narrowed beam_discounted_uncertain levels [0, 1]
+      1  decided level 1 (hooks_counted)
+  (status of those heads in the arm: {'narrowed': 40, 'kept': 1} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_litolff_count.json 11

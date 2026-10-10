@@ -1,0 +1,97 @@
+base: faf913f42a791ddf8077968100fb981b279095a6 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-base/quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+arm: 824d040cde54d7eee79309a146198fa6bba09a52 dirty=False /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm2/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+
+truth black heads judged: 294  by kind: {'bare': 119, 'flag': 40, 'beam': 135}
+
+== truth flag (n=40)
+   base: {'wrong': 7, 'narrowed+': 6, 'right': 26, 'abstained': 1}
+   arm:  {'wrong': 7, 'narrowed+': 4, 'right': 28, 'abstained': 1}
+     right      -> right      26
+     wrong      -> wrong      7
+     narrowed+  -> narrowed+  4
+     narrowed+  -> right      2
+     abstained  -> abstained  1
+
+== truth beam (n=135)
+   base: {'narrowed+': 25, 'right': 105, 'abstained': 1, 'wrong': 4}
+   arm:  {'narrowed+': 25, 'right': 105, 'abstained': 1, 'wrong': 4}
+     right      -> right      105
+     narrowed+  -> narrowed+  25
+     wrong      -> wrong      4
+     abstained  -> abstained  1
+
+== truth bare (n=119)
+   base: {'narrowed+': 54, 'right': 63, 'abstained': 1, 'wrong': 1}
+   arm:  {'narrowed+': 54, 'right': 63, 'abstained': 1, 'wrong': 1}
+     right      -> right      63
+     narrowed+  -> narrowed+  54
+     abstained  -> abstained  1
+     wrong      -> wrong      1
+
+== tip row of the true tip end (flag heads), base -> arm
+   none                                     -> flag                                     18
+   no_stem                                  -> no_stem                                  10
+   none                                     -> abstained:ambiguous:no_room              4
+   none                                     -> abstained:ambiguous:ink_not_flag_shaped  2
+   abstained:occupied                       -> abstained:occupied:occupied              2
+   abstained:occupied                       -> flag                                     1
+   abstained:occupied                       -> abstained:ambiguous:no_room              1
+   flag                                     -> flag                                     1
+   none                                     -> abstained:ambiguous:crosses_both_sides   1
+
+== GUARD: tip rows at the true tip of heads whose stem carries NO flag (bare + beam), arm
+   no_stem                                       88
+   abstained:ambiguous:crosses_both_sides        73
+   none                                          45
+   abstained:occupied:occupied                   31
+   abstained:ambiguous:ink_not_flag_shaped       11
+   abstained:ambiguous:runs_on                   6
+   NEWLY read as a flag where his boxes show none: 0 []
+
+== his level>=1 heads that base does not decide right (44), base -> arm
+   q110     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q118     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q119     beam  L=1  base abstained  refused  ->  arm abstained  refused   tip none -> abstained:ambiguous:runs_on
+   q219     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q222     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q249     beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q251     beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q252     beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q255     beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q256     beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q360     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q364     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1])  ->  arm narrowed+  ('beams_ambiguous', [0, 1])   tip no_stem -> no_stem
+   q369     beam  L=1  base wrong      ('head_and_marks', 2)  ->  arm wrong      ('head_and_marks', 2)   tip no_stem -> no_stem
+   q370     beam  L=1  base wrong      ('head_and_marks', 2)  ->  arm wrong      ('head_and_marks', 2)   tip none -> abstained:ambiguous:crosses_both_sides
+   q374     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1, 2])  ->  arm narrowed+  ('beams_ambiguous', [0, 1, 2])   tip no_stem -> no_stem
+   q375     beam  L=1  base wrong      ('head_and_marks', 2)  ->  arm wrong      ('head_and_marks', 2)   tip no_stem -> no_stem
+   q376     beam  L=1  base wrong      ('head_and_marks', 2)  ->  arm wrong      ('head_and_marks', 2)   tip none -> abstained:ambiguous:crosses_both_sides
+   q377     beam  L=1  base narrowed+  ('beams_ambiguous', [0, 1, 2])  ->  arm narrowed+  ('beams_ambiguous', [0, 1, 2])   tip no_stem -> no_stem
+   q67      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip none -> abstained:ambiguous:crosses_both_sides
+   q68      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q69      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q70      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q73      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip none -> abstained:ambiguous:crosses_both_sides
+   q75      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q85      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q86      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q90      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip none -> abstained:ambiguous:crosses_both_sides
+   q92      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip none -> abstained:ambiguous:crosses_both_sides
+   q93      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q95      beam  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q1009    flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip abstained:occupied -> abstained:occupied:occupied
+   q1194    flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm right      ('hooks_counted', 1)   tip none -> flag
+   q129     flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q132     flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q134     flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q139     flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q1419    flag  L=1  base narrowed+  ('flags_disagree', [1, 2])  ->  arm right      ('hooks_counted', 1)   tip none -> flag
+   q187     flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q197     flag  L=1  base narrowed+  ('beam_discounted_uncertain', [0, 1])  ->  arm narrowed+  ('beam_discounted_uncertain', [0, 1])   tip no_stem -> no_stem
+   q33      flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q387     flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q393     flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q42      flag  L=1  base wrong      ('head_and_marks', 0)  ->  arm wrong      ('head_and_marks', 0)   tip no_stem -> no_stem
+   q741     flag  L=1  base abstained  refused  ->  arm abstained  refused   tip none -> abstained:ambiguous:no_room
+
+== NEWLY WRONG (decided at another level than his, where base was not): 0

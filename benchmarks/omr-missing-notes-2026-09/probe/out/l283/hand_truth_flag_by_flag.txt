@@ -1,0 +1,42 @@
+q137    flag8thDown stem b4086  heads 2  base ['not_read', 'wrong']  ->  arm ['not_read', 'wrong']   arm tip: ['no_stem']
+q138    flag8thDown stem b4084  heads 2  base ['wrong', 'wrong']  ->  arm ['wrong', 'wrong']   arm tip: ['no_stem']
+q40     flag8thDown stem b4106  heads 2  base ['wrong', 'wrong']  ->  arm ['wrong', 'wrong']   arm tip: ['no_stem']
+q271    flag8thDown stem b4134  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['abstained:ambiguous:ink_not_flag_shaped']
+q270    flag8thDown stem b4132  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q199    flag8thDown stem b4115  heads 2  base ['not_read', 'not_read']  ->  arm ['not_read', 'not_read']   arm tip: ['no_stem']
+q316    flag8thDown stem b4138  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['flag']
+q399    flag8thDown stem q402   heads 2  base ['wrong', 'wrong']  ->  arm ['wrong', 'wrong']   arm tip: ['no_stem']
+q396    flag8thDown stem q404   heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['flag']
+q512    no stem box of his
+q511    no stem box of his
+q442    flag8thDown stem b4177  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['abstained:ambiguous:no_room']
+q749    flag8thDown stem b4015  heads 2  base ['abstained', 'right']  ->  arm ['abstained', 'right']   arm tip: ['abstained:ambiguous:no_room']
+b4046   flag8thUp   stem b4048  heads 2  base ['right', 'right']  ->  arm ['right', 'right']   arm tip: ['flag']
+q1083   flag8thDown stem b4250  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1041   flag8thDown stem b4066  heads 1  base ['not_read']  ->  arm ['not_read']   arm tip: ['abstained:occupied:occupied']
+q1043   flag8thDown stem q1039  heads 1  base ['right']  ->  arm ['right']   arm tip: ['abstained:occupied:occupied']
+q1054   flag8thDown stem b4238  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q946    flag8thDown stem q967   heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q983    flag8thDown stem q1002  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1197   flag8thDown stem b4272  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1183   flag8thDown stem b4268  heads 1  base ['right']  ->  arm ['right']   arm tip: ['abstained:ambiguous:no_room']
+q1181   flag8thDown stem b3981  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+b4274   flag8thDown stem b4273  heads 1  base ['not_read']  ->  arm ['right']   arm tip: ['flag']
+q1218   flag8thDown stem b4282  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1227   flag8thDown stem b4289  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1163   no stem box of his
+q1139   flag8thDown stem b3977  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1414   flag8thUp   stem b4339  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1259   flag8thUp   stem b4337  heads 1  base ['right']  ->  arm ['right']   arm tip: ['flag']
+q1305   no stem box of his
+q1309   no stem box of his
+q1422   flag8thDown stem b4340  heads 1  base ['right']  ->  arm ['right']   arm tip: ['abstained:ambiguous:crosses_both_sides']
+q1421   flag8thDown stem b4342  heads 1  base ['read']  ->  arm ['right']   arm tip: ['flag']
+
+per flag, best state of its heads, base -> arm:
+  right        -> right        21
+  no_stem_box  ->              5
+  not_read     -> not_read     3
+  wrong        -> wrong        3
+  not_read     -> right        1
+  read         -> right        1
