@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 2.75 landed: tie vs slur by Sean's rules
+
+- `adjudicate_arc_kind`: two-note same pitch = tie, chords by top/bottom notes, stacked = nearer is the tie; a head's refused half-boxes read with it. Sean's tiles 9/10 + 2/2. `8768808a`; `check` 192.
+
 ## 2026-10-10 (night) — 2.78 landed: one stem, one value
 
 - `Q.HEAD_STEM` + `Q.STEM_VALUE` (`adjudicators/stem_value.py`), EVALUATE `share_stem_value`; slash reader widened. Sean's 14 stems 12 right / 1 narrowed / 0 wrong. `b4073e38`.
