@@ -1375,6 +1375,68 @@ def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
     return out, levels
 
 
+def _flags_on_reach_stem(ev: Evidence, cell, head_box, side: str, reach_row, tol: float):
+    """The detector's flag boxes standing at the tip of the stem `Q.HEAD_STEM_REACH` read: (rows, levels). ROADMAP 2.83.
+
+    ⚠️⚠️ `_attached_flags` joins a flag to the CV stem that touches the head, so a head whose stem the CV rung never found
+    (two stacked heads fuse into one too-wide component) could not carry a flag the detector HAD boxed at its stem's tip --
+    `flags_attached` 0 and a quarter written (Sean's page, `q129`/`q132`). The ruler (`Q.HEAD_STEM_REACH`, a ruler on the page
+    raster beside THIS head, never a stroke) says which way the stem runs and where it ENDS (`down_tip_y` / `up_tip_y`, page
+    px); the stem stands on the head's side edge CLAUDE.md 10 fixes (down -> left, up -> right). That stands in for the CV stem,
+    and a flag box attaches only where it hangs off THAT tip by the CV path's own test (`gather._flag_box_hangs_off_stem`: its
+    left edge within `STEM_TIP_OWN_FLAG_X_SPACES` of the stem, its tip-side edge within `STEM_TIP_OWN_FLAG_TIP_SPACES` of the
+    tip) AND its class direction agrees with the ruler's. A refused flag is skipped, as in `_attached_flags`. No ruler row, no
+    tip, no cell unit: nothing attaches (no tip to hang a flag from is not a licence to guess one onto the head).
+    """
+    from .. import gather as _gather
+    d = reach_row.detail or {}
+    page_head = d.get("head_box_page")
+    tip_page = d.get("down_tip_y" if side == "down" else "up_tip_y")
+    if not page_head or len(page_head) < 4 or tip_page is None or tol <= 0:
+        return [], 0
+    hx, hy, hw, hh = head_box
+    px0, py0, px1, py1 = (float(v) for v in page_head[:4])
+    if px1 <= px0 or hw <= 0:
+        return [], 0
+    scale = hw / (px1 - px0)                       # canonical px per page px: one scale, both axes
+    tip = hy + (float(tip_page) - py0) * scale     # the ruler's tip, in this cell's frame
+    space = tol / STEM_JOIN_TOLERANCE_SPACES
+    if side == "down":
+        sx0, sx1 = hx - 0.1 * space, hx + 0.25 * space
+        top, bottom = hy + hh / 2.0, tip
+    else:
+        sx0, sx1 = hx + hw - 0.25 * space, hx + hw + 0.1 * space
+        top, bottom = tip, hy + hh / 2.0
+    x_slack = _gather.STEM_TIP_OWN_FLAG_X_SPACES * space
+    reach = _gather.STEM_TIP_OWN_FLAG_TIP_SPACES * space
+    boxes = _cell_boxes(ev, cell)
+    out = []
+    for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if _flag_class_direction(f.value) != side:
+            continue
+        refusal = ev.verdict(Q.FLAG_IS_NOT_A_FLAG, subject=f.subject)
+        if refusal is not None and refusal.outcome is Outcome.DECIDED \
+                and refusal.value is True:
+            continue
+        box_row = boxes.get(f.subject.to_key())
+        box = _xywh_head(box_row.value) if box_row else None
+        if box is None:
+            continue
+        bx0, by0, bw, bh = box
+        by1 = by0 + bh
+        if not (sx0 - x_slack <= bx0 <= sx1 + x_slack):
+            continue
+        if (side == "up" and abs(by0 - top) <= reach and by1 > top) \
+                or (side == "down" and abs(by1 - bottom) <= reach and by0 < bottom):
+            out.append(f)
+    levels = 0
+    for f in out:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            levels = max(levels, lv)
+    return out, levels
+
+
 def _in_augmentation_window(dot_box, head_box, max_above, max_below):
     """Does `dot_box` sit in `head_box`'s augmentation-dot window?
 
@@ -2690,6 +2752,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         beam_evidence = "none_over_this_note"
 
     flags, flag_levels = _attached_flags(ev, cell, attached, tol)
+    # ⚠️⚠️ ROADMAP 2.83: A HEAD WHOSE STEM ONLY THE RULER READ carries the flag the detector boxed at THAT stem's tip. The CV
+    # path above joins a flag through a CV stem; with none, `_flags_on_reach_stem` stands the ruler's own stem in for it.
+    if not flags and reach_stem and head_box is not None:
+        flags, flag_levels = _flags_on_reach_stem(ev, cell, head_box, side, side_verdict, tol)
     # ⚠️⚠️ ROADMAP 2.18b, RULE 8: FLAGS THAT DISAGREE NARROW. `_attached_flags`
     # returns the MAX of its flags' levels, which is right while they agree
     # (two boxes, one glyph). Where one mark is boxed as `flag8th*` AND
@@ -2881,10 +2947,20 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
     # DECISIONS 2026-09-30), so a discount that removed its candidate
     # strokes must not narrow it toward one anyway.
+    # ⚠️⚠️ ROADMAP 2.83: A HOOK THE TIP READER SAW OUTRANKS THE DISCOUNT. This branch narrows between the head value and ONE
+    # beam level (ranking the beam level above the head's own) because every candidate stroke was refused; it sat BEFORE the
+    # stem-tip reading below, so a head whose own stem tip carries a flag the tip reader SAW never reached it (3,604 of 24,260
+    # Brahms heads stand in it, FINDINGS 17). The same rows the 2.18c block below reads, asked one block earlier, in this
+    # helper's own name so a neighbouring edit to the narrowing does not collide: where a hook IS read at this head's own
+    # tip the branch stands down and the block below DECIDES the counted level or NARROWS over the flag levels (>= 1).
+    tip_first = False
+    if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
+            and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
+        tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
     if (((discount_removed_all_marks and (own_stems or reach_stem))
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow):
+            and not flag_levels and not hollow and not tip_first):
         cands = []
         for level in (0, 1):
             b = base / (2 ** level) if level else base

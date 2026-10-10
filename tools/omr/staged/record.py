@@ -581,17 +581,26 @@ class Q(_Vocab):
     #: `cannot tell` the pipeline was writing as `quarter` (rule 8). One row
     #: per (`Q.STEM` row, END) -- GATHER does not know which end of a stem is
     #: its TIP (that is `Q.STEM_DIRECTION`'s question, decided later in
-    #: ADJUDICATE), so both the box's top and its bottom are asked. `value`
-    #: is whether a window to the stem's RIGHT, walking 1.0-2.5 staff spaces
-    #: from that end back toward the body, reads densely inked while the
-    #: mirrored window on the LEFT does not -- read off the staff-ERASED
-    #: raster (CLAUDE.md SS9), reusing `ledger_rung_ink`'s own windowed-
-    #: density-with-background-contrast shape. `detail.stem_row_id` joins it
-    #: back to the exact `Q.STEM` row it measured; ABSTAINS -- never
-    #: defaults -- where the raster or the cell's staff-space unit is
-    #: missing, or a beam stroke or ANY other detection already occupies the
-    #: window (a neighbour's head, an accidental, text, a slur/tie arc --
-    #: ink this record can already name is not this quantity's to claim).
+    #: ADJUDICATE), so both the box's top and its bottom are asked.
+    #:
+    #: ROADMAP 2.83 (Sean, 2026-10-10: *"8th note flags ... not being seen ...
+    #: make sure the reader box is big enough"*) REPLACED the window 2.18c
+    #: described here (1.0-2.5 spaces back, a 0.30 density cut: it sat on the
+    #: thin arm of his flags and read 20 of his 21 as bare). `value` is now
+    #: whether the ink CONNECTED to the stem at that end, to its RIGHT, from the
+    #: tip itself back to the stem's own head, is FLAG-SHAPED (starts at the tip,
+    #: stands out 0.45-1.5 spaces, an arm of 0.5), off the staff-ERASED raster
+    #: (CLAUDE.md SS9), sized from his flag boxes (FINDINGS 2.83). `False` is a
+    #: positive "nothing hangs from this tip" and nothing else: where ink hangs
+    #: there that is not flag-shaped (a beam or slur that runs on, ink on both
+    #: sides, a bar across the tip) or the tip cannot be read, the reader
+    #: ABSTAINS (`ambiguous`, `detail.why` and the measures) -- cannot tell is
+    #: never filed as clean (rule 8). `detail.stem_row_id` joins it back to the
+    #: exact `Q.STEM` row it measured; it also ABSTAINS where the raster or the
+    #: cell's staff-space unit is missing, where a notehead stands at that end,
+    #: or where a beam stroke or ANY other detection already occupies the
+    #: window (a neighbour's head, an accidental, text, a slur/tie arc -- ink
+    #: this record can already name is not this quantity's to claim).
     STEM_TIP_INK = "stem_tip_ink"
     #: ROADMAP 2.69 follow-up (Sean, 2026-10-09: *"a dot can not fully or
     #: mostly overlap a flag but it can touch it"*). Filed on an

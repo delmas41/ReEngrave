@@ -4168,48 +4168,65 @@ def _stub_cv_lines(log: Log, cells, local, note: str,
 # detector's own flag boxes already witness for the other 106 (2.18b SS11.4a).
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (2.18c). CLAUDE.
-#: md SS10 already states "a flag hangs from the stem's end"; the CONVENTION
-#: this item adds is WHERE, relative to the tip, and on WHICH SIDE. Bravura's
-#: own flag glyphs (the reference font `capture.py`'s exemplar already
-#: leans on) run roughly 1.7-2.4 staff spaces from the stem to their far
-#: corner and sit to the stem's RIGHT whichever way the stem points -- an
-#: up-stem's flag hangs DOWN-right from the top tip, back toward the head; a
-#: down-stem's hangs UP-right from the bottom tip, likewise back toward the
-#: head. So the window tested walks INTO the stem's own body from either
-#: end, 1.0 to 2.5 staff spaces, never past the tip and never to the left.
-#: Falsified by a print-confirmed flag whose hook sits entirely inside 1.0
-#: space of its tip, reaches past 2.5, or hangs to the stem's LEFT. NOT
-#: CONFIRMED -- argued from CLAUDE.md's own convention and from Bravura's
-#: published metrics, never measured against a Breitkopf flag crop.
-STEM_TIP_INK_NEAR_SPACES = 1.0
-STEM_TIP_INK_FAR_SPACES = 2.5
-#: The tested (and background) window's WIDTH, to the stem's right (and
-#: left), in the cell's own staff spaces. NOT CONFIRMED against a print --
-#: wide enough that a hook curling out by less than a head's own width
-#: (CLAUDE.md SS10: "a notehead is ~1.3 staff spaces wide") still falls
-#: inside it, narrow enough that it should not usually reach a neighbouring
-#: stem a beat away.
+#: ⚠️⚠️ ROADMAP 2.83 (Sean, 2026-10-10, DECISIONS) REPLACES 2.18c's WINDOW. 2.18c tested ink 1.0-2.5 staff spaces back from
+#: the tip, 0.9 wide, at a density of 0.30, and called every one of those numbers CONVENTION ASSUMED / NOT CONFIRMED, falsified
+#: by "a print-confirmed flag whose hook sits entirely inside 1.0 space of its tip". Sean: *"There are 8th note flags that are
+#: not being seen. We need to make sure the reader box is big enough. Sometimes the flag stays closer to the stem at the tip but
+#: the flag shape is undeniable."* MEASURED, on his hand-truth page (Brahms 317803 pdf 0, his 34 `flag8th*` boxes, FINDINGS
+#: 2.83, `probe/l283_flag_geometry.py`), in LOCAL staff spaces along the stem from its tip (t = 0 at the tip, + toward the head)
+#: and out from its right edge (u): a flag's box begins at t = 0.07 (median; -0.19 .. 0.43), ends at t = 3.12 (2.82 .. 3.76) and
+#: stands out to u = 1.13 (0.84 .. 1.34); on the staff-ERASED raster the reader sees, its ink is a wedge ROOT at the tip and a thin
+#: ARM 0.6-1.1 spaces out, and the arm alone is what 2.18c's window sampled: 20 of his 21 flags (the ones the CV rung found a stem
+#: for) read 0.13-0.29 against 0.30. NUMBERS BELOW ARE THAT PAGE'S, chosen on it, each with its margin in FINDINGS 2.83; they are
+#: CONVENTION ASSUMED beyond it (Litolff, any other plate) and WOULD BE FALSIFIED by a print-confirmed eighth flag this reads
+#: as `None` or `False`, or by a print-confirmed non-flag it reads `True`.
+#:
+#: WHAT IS READ. Not a density: the ink CONNECTED to the stem near its tip (a flag hangs from it), from the tip itself back
+#: toward the stem's own head, on the stem's RIGHT (a flag is printed on one side of its stem). Three answers, and only the
+#: first two are claims:
+#:   `found True`   the attached ink starts at the tip (<= `STEM_TIP_INK_ROOT_MAX_SPACES`), stands out between
+#:                  `STEM_TIP_INK_OUT_MIN_SPACES` and `STEM_TIP_INK_OUT_MAX_SPACES` and has an arm of at least
+#:                  `STEM_TIP_INK_ARM_MIN_SPACES` -- a hook.
+#:   `found False`  NOTHING hangs from the tip (attached ink under `STEM_TIP_INK_EMPTY_AREA` square spaces).
+#:   `found None`   ink hangs there that is not flag-shaped (a beam or a slur that runs on, ink on BOTH sides, a bar across the
+#:                  tip, a stub that starts nowhere near it) or the tip cannot be read at all: CANNOT TELL. It is never turned
+#:                  into `False` (CLAUDE.md rule 8): the bare-stem readers use `False` as a positive "nothing here".
+STEM_TIP_INK_NEAR_SPACES = -0.3
+STEM_TIP_INK_FAR_SPACES = 3.6
+#: The window starts this far PAST the tip (a rounded tip, a flag root drawn over the stem's end) and runs back this far, but
+#: never into the stem's own head (`head_edge`): the head's ink is attached to the stem too. A window shallower than
+#: `STEM_TIP_INK_MIN_DEPTH_SPACES` (a head close to the tip) cannot say either way.
+STEM_TIP_INK_MIN_DEPTH_SPACES = 1.2
+#: The width of the density bands reported as `right` / `left` (the 2.18c numbers, kept as a MEASURE for the trace and the print
+#: checks; they decide nothing now), and how far right the connected ink is followed, so a beam that runs on shows itself.
 STEM_TIP_INK_WIDTH_SPACES = 0.9
-#: A window at or above this ink fraction counts as inked. NOT CONFIRMED
-#: against a flag crop specifically; borrowed from `LEDGER_RUNG_INK_DENSE`'s
-#: own reasoning -- reads down for a lighter scan, not calibrated separately
-#: for this mark family.
-STEM_TIP_INK_DENSE = 0.30
-#: The BACKGROUND guard: the mirrored window on the stem's LEFT must read AT
-#: OR BELOW this fraction, or whatever inked the right side inked the left
-#: one too -- a flag never prints on both sides of one stem, so a page
-#: uniformly dirty at this y (bleed-through, a stain, a slur crossing both
-#: bands) must not be read as a flag. NOT CONFIRMED.
-STEM_TIP_INK_BACKGROUND_MAX = 0.20
+STEM_TIP_INK_REACH_SPACES = 2.6
+#: The stem's own ink in the first spaces from the tip seeds the connected ink. A stem box is a little thinner than its ink: ink
+#: within this far of the box is the stem's own edge, not a mark.
+STEM_TIP_INK_SEED_SPACES = 1.0
+STEM_TIP_INK_EDGE_SPACES = 0.15
+#: The shape. His 21 read flags: out 0.50 .. 1.34, arm 0.62 .. 2.5 spaces, first ink 0.42 .. 0.81 spaces from the tip; the nearest
+#: non-flags (ledger-line stubs, a staff-line remnant) 0.31 .. 1.4 out with an arm of 0.06 .. 0.37 starting 1.1 .. 3.0 spaces in.
+STEM_TIP_INK_OUT_MIN_SPACES = 0.45
+STEM_TIP_INK_OUT_MAX_SPACES = 1.5
+STEM_TIP_INK_ARM_MIN_SPACES = 0.5
+STEM_TIP_INK_ARM_U_SPACES = 0.35
+STEM_TIP_INK_ROOT_MAX_SPACES = 1.2
+#: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only.
+STEM_TIP_INK_LEFT_AREA_MAX = 0.05
+STEM_TIP_INK_EMPTY_AREA = 0.02
 
-#: ROADMAP 2.73. A row of the tip window is a LINE row where ink fills both
-#: probes just beyond the two bands (`STEM_TIP_LINE_PROBE_SPACES` wide) at least
-#: this much; where lines take more than `STEM_TIP_LINE_ROWS_MAX_LOST` of the
-#: window's rows the reading is declined.
-STEM_TIP_LINE_PROBE_SPACES = 0.6
-STEM_TIP_LINE_ROW_FILL = 0.7
-STEM_TIP_LINE_ROWS_MAX_LOST = 0.5
+#: ROADMAP 2.73, REWRITTEN AT 2.83. A ROW A LINE CROSSES: attached ink standing out on BOTH sides of the stem at one row (the
+#: stem's side `STEM_TIP_LINE_NEAR_U` on each, and beyond it on at least one) is a staff- or ledger-line stub or a slur's belly,
+#: never a flag. A run of such rows no thicker than `STEM_TIP_LINE_MAX_THICK_SPACES` is a line and is left out of every measure
+#: (a ledger line is ~0.3 spaces thick; the legs of a tip standing ON a line are why 2.73 existed); a thicker run is a BAR (a beam
+#: crossing the tip measures 0.46 .. 0.62) and the tip is not readable. Where lines take more than half the window the reading is
+#: declined. The ledger line's far end reaches the stem's head side (it is centred on the head, not on the stem), so the two
+#: sides are NOT symmetric: that is why the test is "both near, either far".
+STEM_TIP_LINE_NEAR_U_SPACES = 0.30
+STEM_TIP_LINE_FAR_U_SPACES = 0.90
+STEM_TIP_LINE_FILL = 0.6
+STEM_TIP_LINE_MAX_THICK_SPACES = 0.45
 
 #: ROADMAP 2.73. A detection box counts as explaining ink in the tip window only
 #: if it overlaps the window by more than this much (staff spaces) in BOTH axes.
@@ -4220,88 +4237,131 @@ STEM_TIP_LINE_ROWS_MAX_LOST = 0.5
 STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 
 
+def _tip_line_rows(right: Any, left: Any, us: Any, ul: Any, space: float
+                   ) -> Tuple[Any, Optional[float]]:
+    """`(on_line, bar)`: which rows of the attached ink a THIN LINE crosses, and the thickness (spaces) of the first run
+    that is a BAR instead (`None` if none is). `right`/`left` are boolean masks (rows x columns) of the stem-attached ink
+    on each side, `us`/`ul` the distance of each column from the stem's right/left edge in spaces. ROADMAP 2.83 (the
+    one spelling both `stem_tip_ink` and `stem_tip_hooks` use, so the two readers drop the same rows)."""
+    import numpy as np
+
+    def fill(m: Any, u: Any, lo: float, hi: float) -> Any:
+        cols = (u >= lo) & (u <= hi)
+        return m[:, cols].mean(axis=1) if cols.any() else np.zeros(m.shape[0])
+    near = (fill(right, us, 0.04, STEM_TIP_LINE_NEAR_U_SPACES) >= STEM_TIP_LINE_FILL) \
+        & (fill(left, ul, 0.04, STEM_TIP_LINE_NEAR_U_SPACES) >= STEM_TIP_LINE_FILL)
+    far = (fill(right, us, STEM_TIP_LINE_NEAR_U_SPACES, STEM_TIP_LINE_FAR_U_SPACES) >= STEM_TIP_LINE_FILL) \
+        | (fill(left, ul, STEM_TIP_LINE_NEAR_U_SPACES, STEM_TIP_LINE_FAR_U_SPACES) >= STEM_TIP_LINE_FILL)
+    on_line = near & far
+    run = 0
+    for v in list(on_line) + [False]:
+        if v:
+            run += 1
+            continue
+        if run > STEM_TIP_LINE_MAX_THICK_SPACES * space:
+            return on_line, run / space
+        run = 0
+    # a stripe's rows one pixel either side belong to it
+    return on_line | np.roll(on_line, 1) | np.roll(on_line, -1), None
+
+
 def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
-                 into_sign: float, space: float) -> Optional[Dict[str, Any]]:
-    """Is there flag-shaped ink to the RIGHT of a stem's tip, reaching back
-    toward the head? ROADMAP 2.18c.
+                 into_sign: float, space: float,
+                 head_edge: Optional[float] = None) -> Optional[Dict[str, Any]]:
+    """Does a FLAG hang from this stem's tip? ROADMAP 2.18c, REPLACED AT 2.83 (see the block above).
 
-    `stem_x0`, `stem_x1`, `tip_y` and `space` are all in the SAME canonical
-    CELL pixels `Q.STEM`'s own box is in -- this function does no frame
-    conversion, the same contract `ledger_rung_ink` states for itself.
-    `into_sign` is `+1.0` to test the stem's TOP as its tip (walk DOWN, into
-    the body -- an up-stem's shape) or `-1.0` to test the BOTTOM (walk UP);
-    GATHER does not know which end is the true tip -- that is
-    `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE -- so the
-    caller asks both and files one row each.
+    `stem_x0`, `stem_x1`, `tip_y`, `head_edge` and `space` are all in the SAME canonical CELL pixels `Q.STEM`'s own box is
+    in -- this function does no frame conversion, the same contract `ledger_rung_ink` states for itself. `into_sign` is
+    `+1.0` to test the stem's TOP as its tip (walk DOWN, into the body -- an up-stem's shape) or `-1.0` to test the BOTTOM;
+    GATHER does not know which end is the true tip -- that is `Q.STEM_DIRECTION`'s question, decided later in ADJUDICATE --
+    so the caller asks both and files one row each. `head_edge` is where the stem's own head begins along the walk (the same
+    value `stem_tip_hooks` takes): the window stops short of it.
 
-    Two bins: RIGHT (the tested band, must be densely inked) and LEFT (the
-    mirrored background band, must NOT be -- the guard against ink this
-    window did not cause, e.g. a stain or a shallow beam remnant the caller's
-    own blocker check missed).
-
-    Returns `None` -- declined, never defaulted -- where the raster or
-    either band falls entirely off it.
+    Returns `None` where the raster or the window falls entirely off it. Otherwise a dict with `found` (`True` / `False` /
+    `None`, see above) and `why` (the reason word), plus what was measured: `right` / `left` (ink density of the 0.9-space
+    bands beside the stem, lines left out; a MEASURE, decides nothing), `area` (attached ink right of the stem, square
+    spaces), `left_area`, `out`, `arm` and `t_first` (spaces), `line_rows_left_out` (rows) and `window_canonical`.
     """
     if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
         return None
+    import cv2
+    import numpy as np
     ink = (img == 0)
     H, W = ink.shape
-    width = STEM_TIP_INK_WIDTH_SPACES * space
-    near = STEM_TIP_INK_NEAR_SPACES * space
-    far = STEM_TIP_INK_FAR_SPACES * space
-    y_near, y_far = tip_y + into_sign * near, tip_y + into_sign * far
-    y0, y1 = (y_near, y_far) if y_near <= y_far else (y_far, y_near)
-
-    # ⚠️ ROADMAP 2.73 (coordinator, Sean's 2.70 tiles #2/#6): A STAFF OR LEDGER
-    # LINE AT THE TIP IS NOT ON THE STEM. A line crosses both bands, so it both
-    # fills the right one and breaks the left one's "no ink here" guard -- a stem
-    # that ends on a line could neither read as flagged nor as bare. The ROWS a
-    # horizontal line stands on at this x -- ink in BOTH probes just beyond the two
-    # bands, which a flag (hanging from ONE side of the tip) never reaches -- are
-    # left out of both bands. Where the lines take more than half the window the
-    # reading is declined, never read from what is left.
-    iy0w, iy1w = max(0, int(round(y0))), min(H, int(round(y1)))
-    keep_rows = None
-    lost_rows = 0
-    if iy1w > iy0w:
-        probe = STEM_TIP_LINE_PROBE_SPACES * space
-        lo_l, hi_l = int(round(stem_x0 - width - probe)), int(round(stem_x0 - width))
-        lo_r, hi_r = int(round(stem_x1 + width)), int(round(stem_x1 + width + probe))
-        keep_rows = []
-        for yy in range(iy0w, iy1w):
-            lft = ink[yy, max(0, lo_l):max(0, hi_l)]
-            rgt = ink[yy, max(0, lo_r):min(W, max(0, hi_r))]
-            on_line = bool(lft.size and rgt.size
-                           and lft.mean() >= STEM_TIP_LINE_ROW_FILL
-                           and rgt.mean() >= STEM_TIP_LINE_ROW_FILL)
-            if not on_line:
-                keep_rows.append(yy)
-        lost_rows = (iy1w - iy0w) - len(keep_rows)
-        if lost_rows > STEM_TIP_LINE_ROWS_MAX_LOST * (iy1w - iy0w) \
-                or not keep_rows:
-            return None
-
-    def frac(x0: float, x1: float) -> Optional[float]:
-        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
-        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
-        if ix1 <= ix0 or iy1 <= iy0:
-            return None
-        region = ink[iy0:iy1, ix0:ix1]
-        if keep_rows is not None and lost_rows:
-            region = ink[keep_rows, ix0:ix1]
-        return float(region.sum()) / float(region.size)
-
-    right = frac(stem_x1, stem_x1 + width)
-    left = frac(stem_x0 - width, stem_x0)
-    if right is None or left is None:
+    far = STEM_TIP_INK_FAR_SPACES
+    if head_edge is not None:
+        far = min(far, (head_edge - tip_y) * into_sign / space - 0.1)
+    far = max(far, STEM_TIP_INK_NEAR_SPACES)
+    ya, yb = sorted((tip_y + into_sign * STEM_TIP_INK_NEAR_SPACES * space, tip_y + into_sign * far * space))
+    xa = max(0, int(round(stem_x0 - 1.0 * space)))
+    xb = min(W, int(round(stem_x1 + STEM_TIP_INK_REACH_SPACES * space)))
+    ya, yb = max(0, int(round(ya))), min(H, int(round(yb)))
+    if yb - ya < 4 or xb - xa < 4:
         return None
-    found = right >= STEM_TIP_INK_DENSE and left <= STEM_TIP_INK_BACKGROUND_MAX
-    return {
-        "found": bool(found), "right": round(right, 4), "left": round(left, 4),
-        "line_rows_left_out": lost_rows,
-        "window_canonical": [round(stem_x1, 2), round(y0, 2),
-                             round(stem_x1 + width, 2), round(y1, 2)],
-    }
+    out: Dict[str, Any] = {
+        "found": None, "why": None,
+        "window_canonical": [round(stem_x1, 2), round(ya, 2),
+                             round(stem_x1 + STEM_TIP_INK_WIDTH_SPACES * space, 2), round(yb, 2)]}
+    if far < STEM_TIP_INK_MIN_DEPTH_SPACES:
+        out["why"] = "no_room"
+        return out
+    sub = ink[ya:yb, xa:xb].astype(np.uint8)
+    k = max(1, int(round(0.06 * space)))
+    sub = cv2.morphologyEx(sub, cv2.MORPH_CLOSE, np.ones((k, k), np.uint8))
+    _n, lab = cv2.connectedComponents(sub, connectivity=8)
+    sx0, sx1 = max(0, int(round(stem_x0)) - xa), min(sub.shape[1], int(round(stem_x1)) - xa + 1)
+    ts = (np.arange(ya, yb) - tip_y) * into_sign / space           # spaces from the tip, + toward the head
+    us = (np.arange(xa, xb) - stem_x1) / space                     # spaces right of the stem's right edge
+    ul = (stem_x0 - np.arange(xa, xb)) / space                     # spaces left of its left edge
+    seed_rows = (ts >= STEM_TIP_INK_NEAR_SPACES) & (ts <= STEM_TIP_INK_SEED_SPACES)
+    seeds = set(np.unique(lab[np.ix_(seed_rows, np.arange(sx0, sx1))]).tolist()) - {0} if sx1 > sx0 else set()
+    if not seeds:
+        out["why"] = "no_stem_ink"
+        return out
+    comp = np.isin(lab, list(seeds))
+    right = comp & (us[None, :] > 0.04)
+    left = comp & (ul[None, :] > 0.04)
+    on_line, bar = _tip_line_rows(right, left, us, ul, space)
+    if bar is not None:
+        out.update(why="crosses_both_sides", bar=round(bar, 2), line_rows_left_out=0)
+        return out
+    out["line_rows_left_out"] = int(on_line.sum())
+    keep = ~on_line
+    if keep.sum() < 0.5 * len(keep):
+        out["why"] = "lines_take_the_window"
+        return out
+    # the density bands (a measure for the trace; 2.18c's numbers, read over the rows no line crosses)
+    wcols_r = (us > 0.0) & (us <= STEM_TIP_INK_WIDTH_SPACES)
+    wcols_l = (ul > 0.0) & (ul <= STEM_TIP_INK_WIDTH_SPACES)
+    ink_sub = ink[ya:yb, xa:xb][keep]
+    out["right"] = round(float(ink_sub[:, wcols_r].mean()), 4) if wcols_r.any() else 0.0
+    out["left"] = round(float(ink_sub[:, wcols_l].mean()), 4) if wcols_l.any() else 0.0
+    right, left, ts_kept = right[keep], left[keep], ts[keep]
+    edge_r, edge_l = us >= STEM_TIP_INK_EDGE_SPACES, ul >= STEM_TIP_INK_EDGE_SPACES
+    left_area = float(left[:, edge_l].sum()) / (space * space)
+    right_far = right[:, edge_r]
+    area = float(right_far.sum()) / (space * space)
+    out.update(area=round(area, 3), left_area=round(left_area, 3))
+    if left_area > STEM_TIP_INK_LEFT_AREA_MAX:
+        out["why"] = "crosses_both_sides"
+        return out
+    if area < STEM_TIP_INK_EMPTY_AREA:
+        out.update(found=False, why="empty")
+        return out
+    reach = float(us[edge_r][np.where(right_far.any(axis=0))[0]].max())
+    out["out"] = round(reach, 2)
+    if reach > STEM_TIP_INK_OUT_MAX_SPACES:
+        out["why"] = "runs_on"
+        return out
+    arm = float(right[:, us > STEM_TIP_INK_ARM_U_SPACES].any(axis=1).sum()) / space
+    t_first = float(ts_kept[right_far.any(axis=1)].min())
+    out.update(arm=round(arm, 2), t_first=round(t_first, 2))
+    if reach >= STEM_TIP_INK_OUT_MIN_SPACES and arm >= STEM_TIP_INK_ARM_MIN_SPACES \
+            and t_first <= STEM_TIP_INK_ROOT_MAX_SPACES:
+        out.update(found=True, why="shaped")
+        return out
+    out["why"] = "ink_not_flag_shaped"
+    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -4426,6 +4486,9 @@ def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     lx0 = max(0, int(round(stem_x0 - STEM_TIP_HOOKS_LEFT_SPACES * space)))
     lx1 = int(round(stem_x0 - STEM_TIP_HOOKS_NEAR_SPACES * space))
     bx1 = min(W, bx1)
+    # ROADMAP 2.83: the attached ink is followed out to where a LINE's far end stands, so the rows a thin line crosses
+    # can be told (`_tip_line_rows`, the one spelling `stem_tip_ink` uses too); the runs are still counted in the band.
+    cx1 = min(W, max(bx1, int(round(stem_x1 + STEM_TIP_LINE_FAR_U_SPACES * space))))
     if iy1 - iy0 < 3 or bx1 - bx0 < 3 or lx1 <= lx0 or bx0 >= W:
         return None
 
@@ -4438,7 +4501,7 @@ def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     # short for even two hooks cannot say how many there are.
     if (iy1 - iy0) < 1.2 * space:
         return verdict(None, 1, 2, HOOKS_UNCOUNTED_NO_ROOM)
-    ink = (img[iy0:iy1, lx0:bx1] == 0).astype(np.uint8)
+    ink = (img[iy0:iy1, lx0:cx1] == 0).astype(np.uint8)
     k = max(1, int(round(STEM_TIP_HOOKS_CLOSE_SPACES * space)))
     ink = cv2.morphologyEx(ink, cv2.MORPH_CLOSE, np.ones((k, k), np.uint8))
     _n, lab = cv2.connectedComponents(ink, connectivity=8)
@@ -4448,7 +4511,13 @@ def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     if not seeds:
         return verdict(None, 1, 2, HOOKS_UNCOUNTED_TOO_LITTLE)
     comp = np.isin(lab, list(seeds))
-    left = comp[:, :max(0, lx1 - lx0)]
+    xs = np.arange(lx0, cx1)
+    us, ul = (xs - stem_x1) / space, (stem_x0 - xs) / space
+    on_line, bar = _tip_line_rows(comp & (us[None, :] > 0.04), comp & (ul[None, :] > 0.04), us, ul, space)
+    if bar is not None:
+        return verdict(None, 1, 2, HOOKS_UNCOUNTED_BOTH_SIDES)
+    keep = ~on_line
+    left = comp[:, :max(0, lx1 - lx0)] & keep[:, None]
     tmin = max(2, int(round(STEM_TIP_HOOKS_MIN_THICK_SPACES * space)))
     gmin = max(2, int(round(STEM_TIP_HOOKS_MIN_GAP_SPACES * space)))
     # Ink attached to the stem on its LEFT too: either dense over the whole
@@ -4464,7 +4533,7 @@ def stem_tip_hooks(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     if left.size and (float(left.sum()) / float(left.size) > STEM_TIP_HOOKS_LEFT_MAX
                       or left_cols > 0.3 * near_left.shape[1]):
         return verdict(None, 1, 2, HOOKS_UNCOUNTED_BOTH_SIDES)
-    band = comp[:, bx0 - lx0:]
+    band = comp[:, bx0 - lx0:bx1 - lx0] & keep[:, None]
     ks: List[int] = []
     starts: List[List[float]] = []          # per column, run near-edges (spaces from the tip)
     for cx in range(band.shape[1]):
@@ -4658,14 +4727,21 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
     stays the 2.18c boolean -- *a hook is there* -- and the count is the
     reader's detail, `None` with a reason word where the ink cannot say.
 
-    Reuses `ledger_rung_ink`'s own shape: a windowed density test off the
-    staff-ERASED raster (CLAUDE.md SS9 -- erase for the CV consumer, never
-    the detector), with a background band for contrast. `blockers` is every
-    `Q.BEAM_STROKE` box already read in this cell PLUS every OTHER detection
-    box the detector drew here (a neighbour's notehead, an accidental, text,
-    a slur/tie arc, a second flag reading) -- ink this record can already
-    name is not this quantity's to re-claim, so a window either overlaps is
-    ABSTAINED, never measured.
+    ROADMAP 2.83: the reading is `stem_tip_ink`'s SHAPE test over the ink
+    connected to the stem (the module block above says what was measured and
+    why 2.18c's density window missed Sean's flags), off the staff-ERASED
+    raster (CLAUDE.md SS9 -- erase for the CV consumer, never the detector).
+    Three outcomes, one row or one abstention per end: a flag-shaped hook is
+    `True`; nothing hanging from the tip is `False`; ink that is not
+    flag-shaped (or an unreadable tip) is an `ambiguous` ABSTENTION carrying
+    what was measured -- never `False`. The end a notehead stands at has no
+    tip (abstains `occupied`, `why = head_at_this_end`), and the window stops
+    short of the stem's own head. `blockers` is every `Q.BEAM_STROKE` box
+    already read in this cell PLUS every OTHER detection box the detector drew
+    here (a neighbour's notehead, an accidental, text, a slur/tie arc, a
+    second flag reading) -- ink this record can already name is not this
+    quantity's to re-claim, so a window either overlaps is ABSTAINED, never
+    measured.
     """
     x0, y0, w, h = stem_box
     x1, y1 = x0 + w, y0 + h
@@ -4687,10 +4763,24 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
     if slashes:
         img = blank_slashes(img, slashes)
     for end, tip_y, into_sign in (("top", y0, 1.0), ("bottom", y1, -1.0)):
-        near, far = STEM_TIP_INK_NEAR_SPACES * space, STEM_TIP_INK_FAR_SPACES * space
-        width = STEM_TIP_INK_WIDTH_SPACES * space
-        wy0, wy1 = sorted((tip_y + into_sign * near, tip_y + into_sign * far))
-        window = (x1, wy0, x1 + width, wy1)
+        # ROADMAP 2.83: the stem's own head first -- the window stops short of it, and the end a head stands at has no tip.
+        edge, head_here = _head_edge_for_end(heads, x0, x1, tip_y, into_sign,
+                                             space)
+        if head_here:
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.OCCUPIED,
+                        stem_row_id=stem_row_id, end=end,
+                        why=HOOKS_UNCOUNTED_HEAD_AT_END,
+                        note="a notehead stands at this end of the stem: its "
+                             "ink is the head's own, not a hook's")
+            continue
+        far = STEM_TIP_INK_FAR_SPACES
+        if edge is not None:
+            far = min(far, (edge - tip_y) * into_sign / space - 0.1)
+        far = max(far, STEM_TIP_INK_NEAR_SPACES)
+        wy0, wy1 = sorted((tip_y + into_sign * STEM_TIP_INK_NEAR_SPACES * space,
+                           tip_y + into_sign * far * space))
+        window = (x1, wy0, x1 + STEM_TIP_INK_OUT_MAX_SPACES * space, wy1)
         tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
         shrunk = (window[0] + tol, window[1] + tol, window[2] - tol,
                   window[3] - tol)
@@ -4701,7 +4791,8 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="a beam stroke or another detection already "
                              "explains ink in this window")
             continue
-        m = stem_tip_ink(img, x0, x1, tip_y, into_sign, space)
+        m = stem_tip_ink(img, x0, x1, tip_y, into_sign, space,
+                         head_edge=edge)
         if m is None:
             log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
                         frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
@@ -4709,19 +4800,22 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="window off the raster")
             continue
         found = m.pop("found")
+        if found is None:
+            # ROADMAP 2.83, RULE 8: ink hangs here that is not flag-shaped (or the tip cannot be read). CANNOT TELL --
+            # never filed as `False`, which the bare-stem readers take as a positive "nothing hangs from this tip".
+            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                        frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        stem_row_id=stem_row_id, end=end,
+                        note="ink at this tip is not flag-shaped (or the tip "
+                             "is unreadable): cannot tell, not 'no flag'",
+                        **m)
+            continue
         hook_detail: Dict[str, Any] = {}
         if found:
-            edge, head_here = _head_edge_for_end(heads, x0, x1, tip_y,
-                                                 into_sign, space)
-            if head_here:
-                hook_detail = {"hooks": None, "hooks_min": 1, "hooks_max": 2,
-                               "hooks_reason": HOOKS_UNCOUNTED_HEAD_AT_END,
-                               "hooks_support": []}
-            else:
-                counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign,
-                                         space, head_edge=edge)
-                if counted is not None:
-                    hook_detail = counted
+            counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space,
+                                     head_edge=edge)
+            if counted is not None:
+                hook_detail = counted
         log.observe(sub, Q.STEM_TIP_INK, found,
                     reader=READERS.CV_STEM_TIP, frame=frame,
                     stem_row_id=stem_row_id, end=end, **m, **hook_detail)

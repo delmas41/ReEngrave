@@ -31,7 +31,7 @@ import numpy as np
 
 from tools.omr.staged import consequences, gather
 from tools.omr.staged import record as R
-from tools.omr.staged.record import Candidate, Log, Outcome, Q, Verdict
+from tools.omr.staged.record import ABSTAIN, Candidate, Log, Outcome, Q, Verdict
 
 SP = 40.0                              # one staff space, canonical px
 STEM_X0, STEM_X1 = 300.0, 306.0        # a 6px-wide stem
@@ -252,19 +252,26 @@ class TestTheRowCarriesTheCount(unittest.TestCase):
         self.assertFalse(rows["top"].value)
         self.assertNotIn("hooks", rows["top"].detail)
 
-    def test_a_head_at_the_end_files_the_reason_word_not_a_count(self):
+    def test_a_head_at_the_end_is_not_a_tip_so_no_row_and_no_count(self):
         """The same ink asked at the HEAD'S end of the stem: this end is not
-        a flag's tip, so the row says so and counts nothing."""
+        a flag's tip. ROADMAP 2.83: it was filed as a found row whose count
+        said so; the window now stops short of the stem's own head and an end a
+        head stands at abstains OCCUPIED with the reason word, so no row can
+        carry a count at all (the head's ink is not a hook)."""
         img = _paper()
         _stem(img)
         _hook(img, FAR_Y - 3 - 0.0 * SP, down=False)
         heads = [(STEM_X0 - 50.0, FAR_Y - 20.0, 52.0, 40.0)]
-        rows = _file(img, heads=heads)
-        bottom = rows["bottom"]
-        if bottom.value:
-            self.assertIsNone(bottom.detail["hooks"])
-            self.assertEqual(bottom.detail["hooks_reason"],
-                             gather.HOOKS_UNCOUNTED_HEAD_AT_END)
+        log = Log()
+        gather._observe_stem_tip_ink(log, SUB, "cell:0", FakeCell(img),
+                                     "obs:stem-1", STEM_BOX, [], SP, heads=heads)
+        log.freeze()
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
+        self.assertNotIn("bottom", rows)
+        self.assertEqual(abst["bottom"].reason, ABSTAIN.OCCUPIED)
+        self.assertEqual(abst["bottom"].detail["why"],
+                         gather.HOOKS_UNCOUNTED_HEAD_AT_END)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

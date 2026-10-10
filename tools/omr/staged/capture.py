@@ -519,10 +519,11 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         None),
     "STEM_TIP_INK": (
         RELATION,
-        "ROADMAP 2.18c: a windowed ink density test 1.0-2.5 staff spaces "
-        "past a stem's own TOP and BOTTOM (GATHER does not know which end "
-        "is the true tip), to the stem's right, off the staff-ERASED "
-        "raster, with the mirrored window on the left as background — a "
+        "ROADMAP 2.18c, reshaped at 2.83: the shape of the ink connected "
+        "to a stem's own TOP and BOTTOM (GATHER does not know which end "
+        "is the true tip), from the tip back toward the stem's head, to "
+        "the stem's right, off the staff-ERASED raster -- flag-shaped, "
+        "nothing hanging there, or cannot tell (an abstention) -- a "
         "relation between a located `Q.STEM` row and the paper beside it. "
         "Scoreless, same reason as `LEDGER_RUNG_INK`.",
         None),

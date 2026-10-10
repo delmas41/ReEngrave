@@ -24,6 +24,16 @@ beside it still abstains. NO TEST ASSERTS ON MODULE SOURCE TEXT (CLAUDE.md 6c).
 
 RUN RED FIRST against the unrepaired tree (HEAD before the commit): the
 touching-box, ledger-box and flag-on-a-thick-line tests FAIL.
+
+⚠️ ROADMAP 2.83 REWROTE THE LINE-ROW RULE (the window it ran in changed, and the rule is
+now the one `_tip_line_rows` shares with the hook counter): a line is ink attached to
+the stem on BOTH sides at one row, standing out past the stem's side on at least one
+(a ledger line is centred on the HEAD, so it is longer on that side), and a run of
+such rows no thicker than 0.45 spaces is left out; a thicker run is a BAR (a beam
+crossing the tip: 0.46-0.62 spaces on Brahms) and the tip is unreadable. These tests
+therefore draw the stem and a line the thickness a ledger line really is (0.3
+spaces; they drew 0.5, a beam's), and a window the lines fill is `found None`, not
+a missing return.
 """
 
 from __future__ import annotations
@@ -51,12 +61,20 @@ def _draw(img, x0, y0, x1, y1):
     img[int(round(y0)):int(round(y1)), int(round(x0)):int(round(x1))] = 0
 
 
+def _stem(img):
+    _draw(img, STEM_X0, TOP_Y, STEM_X1, BOTTOM_Y)
+
+
 def _flag(img):
-    _draw(img, STEM_X1, 120, 212, 150)          # the tested band, right of the tip
+    """A wedge root at the tip and a thin arm, right of the stem (the stem is drawn too: the reader reads the ink
+    CONNECTED to it)."""
+    _stem(img)
+    _draw(img, STEM_X1, TOP_Y, 208, 112)
+    _draw(img, 205, 112, 211, 150)
 
 
-def _line(img, y=130, thick=10):
-    """A ledger line through the tip window, running well past both bands."""
+def _line(img, y=130, thick=6):
+    """A ledger line through the tip window, running well past both sides (0.3 spaces: a ledger line's thickness)."""
     _draw(img, 130, y, 270, y + thick)
 
 
@@ -88,13 +106,16 @@ class TestALineAtTheTipIsNotOnTheStem(unittest.TestCase):
     def test_a_bare_stem_ending_on_a_line_still_reads_bare(self):
         """The line must not be read AS the flag either."""
         img = _paper()
+        _stem(img)
         _line(img)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
-        self.assertFalse(m["found"])
+        self.assertIs(m["found"], False)
         self.assertGreater(m["line_rows_left_out"], 0)
 
     def test_a_clean_tip_leaves_no_rows_out(self):
-        m = gather.stem_tip_ink(_paper(), STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        img = _paper()
+        _stem(img)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
         self.assertEqual(m["line_rows_left_out"], 0)
 
     def test_ink_on_both_sides_that_is_NOT_a_line_still_fails_the_guard(self):
@@ -104,14 +125,15 @@ class TestALineAtTheTipIsNotOnTheStem(unittest.TestCase):
         _flag(img)
         _draw(img, 172, 120, STEM_X0, 150)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
-        self.assertFalse(m["found"])
+        self.assertNotEqual(m["found"], True)
         self.assertEqual(m["line_rows_left_out"], 0)
 
     def test_a_window_that_is_mostly_lines_is_declined_not_read(self):
         img = _paper()
-        _draw(img, 130, 115, 270, 155)             # a 2-space smear across all of it
-        self.assertIsNone(
-            gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP))
+        _stem(img)
+        _draw(img, 130, 115, 270, 155)             # a 2-space smear across most of it
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIsNone(m["found"])              # cannot tell: never "clean" and never a flag
 
 
 class TestWhatBlocksTheWindow(unittest.TestCase):

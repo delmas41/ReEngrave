@@ -13,6 +13,16 @@ own shape (a tested band with a background band for contrast).
 ⚠️ RUN RED FIRST: every test below fails to import before `gather.stem_tip_
 ink` / `gather._observe_stem_tip_ink` / `Q.STEM_TIP_INK` /
 `READERS.CV_STEM_TIP` exist.
+
+⚠️ ROADMAP 2.83 (Sean, 2026-10-10) REPLACED THE WINDOW these tests were written
+for (1.0-2.5 spaces back, 0.9 wide, a 0.30 density cut: measured, it sat on the
+thin arm of Sean's flags and read 20 of his 21 as bare). The reader now reads the
+ink CONNECTED to the stem at its tip, so every raster below DRAWS THE STEM (a
+flag is ink hanging from one; a rectangle of ink beside nothing is not read) and
+the flag is drawn the way his measure: a wedge root at the tip and a thin arm.
+The new behaviour has its own file (`test_staged_stem_tip_flag_2_83.py`); what is
+kept here is the contract that did not change: one row per end, the guards, the
+abstentions.
 """
 
 from __future__ import annotations
@@ -39,6 +49,17 @@ def _draw(img, x0, y0, x1, y1):
     img[int(round(y0)):int(round(y1)), int(round(x0)):int(round(x1))] = 0
 
 
+def _stem_ink(img):
+    """The stem itself (the reader's ink is the ink CONNECTED to it)."""
+    _draw(img, STEM_X0, TOP_Y, STEM_X1, BOTTOM_Y)
+
+
+def _flag_top(img):
+    """An up-stem's flag at the TOP tip: a wedge root and a thin arm."""
+    _draw(img, STEM_X1, TOP_Y, 208, 112)
+    _draw(img, 205, 112, 211, 150)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Part 1 -- the pure measurement, on synthetic rasters (0 = ink)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -51,18 +72,20 @@ class TestTheMeasurement(unittest.TestCase):
         """An up-stem's tip: ink drawn exactly in the tested band, to the
         RIGHT of the stem, nothing on the mirrored LEFT (background)."""
         img = _paper()
-        _draw(img, STEM_X1, 120, 212, 150)     # right band, [120,150]
+        _stem_ink(img)
+        _flag_top(img)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
         self.assertTrue(m["found"])
-        self.assertGreaterEqual(m["right"], gather.STEM_TIP_INK_DENSE)
-        self.assertLessEqual(m["left"], gather.STEM_TIP_INK_BACKGROUND_MAX)
+        self.assertGreater(m["right"], 0.0)
+        self.assertEqual(m["left_area"], 0.0)
 
     def test_POSITIVE_CONTROL_a_clean_tip_is_not_found(self):
         """⚠️ THE CONTROL, RUN FAILING FIRST if the density floor were 0: an
         untouched raster proves `found` can be False, not only True."""
         img = _paper()
+        _stem_ink(img)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
-        self.assertFalse(m["found"])
+        self.assertIs(m["found"], False)
         self.assertEqual(m["right"], 0.0)
 
     def test_ink_on_BOTH_sides_fails_the_background_guard(self):
@@ -71,16 +94,19 @@ class TestTheMeasurement(unittest.TestCase):
         crossing slur), so `found` must stay False even though the RIGHT
         band alone would pass."""
         img = _paper()
-        _draw(img, STEM_X1, 120, 212, 150)         # right
-        _draw(img, 172, 120, STEM_X0, 150)         # mirrored left
+        _stem_ink(img)
+        _flag_top(img)
+        _draw(img, 160, 112, STEM_X0, 128)         # a mark through the left too: thicker than a line
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
-        self.assertFalse(m["found"])
+        self.assertNotEqual(m["found"], True)
 
     def test_the_BOTTOM_tip_walks_UP_into_the_stem_symmetrically(self):
         """A down-stem's tip: `into_sign=-1.0` walks UP from `BOTTOM_Y`, so
         the SAME window shape as the top case lands ABOVE the tip."""
         img = _paper()
-        _draw(img, STEM_X1, 250, 212, 280)         # BOTTOM_Y - (50..20)
+        _stem_ink(img)
+        _draw(img, STEM_X1, 288, 208, BOTTOM_Y)    # the flag mirrored: root at the bottom tip, arm up
+        _draw(img, 205, 250, 211, 288)
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, BOTTOM_Y, -1.0, SP)
         self.assertTrue(m["found"])
 
@@ -155,7 +181,8 @@ class FakeCell:
 
 def _stem_cell_with_top_ink():
     img = _paper()
-    _draw(img, STEM_X1, 120, 212, 150)     # only the TOP window is inked
+    _stem_ink(img)
+    _flag_top(img)                         # only the TOP tip carries a flag
     return FakeCell(image_no_staff=img)
 
 
@@ -184,7 +211,7 @@ class TestGatherIntegration(unittest.TestCase):
         """A beam stroke overlapping the TOP window means that ink is
         already named -- this reader must not re-claim it."""
         log = Log()
-        blocker = (STEM_X1, 125.0, 212.0, 135.0)      # corners, inside [120,150]
+        blocker = (STEM_X1, 125.0, 212.0, 135.0)      # corners, inside the window the top tip is read in
         gather._observe_stem_tip_ink(log, SUB, "cell:0",
                                      _stem_cell_with_top_ink(), "obs:stem-1",
                                      STEM_BOX, [blocker], SP)
