@@ -1,0 +1,18 @@
+== brahms: population 3604
+all heads, duration verdicts written by EVALUATE / INFER (the stage control):
+   ('EVALUATE', 'reconcile_chord_duration', 'decided'): 25
+   ('EVALUATE', 'reconcile_duration', 'decided'): 353
+   ('EVALUATE', 'share_stem_value', 'decided'): 163
+   ('INFER', 'infer:collapse_duration_to_barline', 'decided'): 9
+population: current verdict by (stage, decider, outcome, beam level):
+   ('ADJUDICATE', 'adjudicate_duration', 'narrowed', None): 3387
+   ('EVALUATE', 'reconcile_duration', 'decided', 0): 154
+   ('EVALUATE', 'share_stem_value', 'decided', 0): 30
+   ('EVALUATE', 'reconcile_duration', 'decided', 1): 23
+   ('EVALUATE', 'reconcile_chord_duration', 'decided', 0): 10
+settled by a later stage: 217 of 3604 (6.0%); INFER 0
+  settled to beam level: {0: 194, 1: 23}
+  settled outside the narrowing's own candidates: 0
+hand truth (page 0): judged 76; settled by a later stage 2
+   glyph/0/0/0/1/3 EVALUATE level 0 truth right (truth level 0)
+   glyph/0/0/2/4/3 EVALUATE level 0 truth right (truth level 0)

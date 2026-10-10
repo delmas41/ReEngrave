@@ -1,0 +1,8 @@
+truth heads in fully labeled cells: 339 (of 361); space 32.0px
+status: {'ok': 321, 'no_truth_stem': 18}
+fill: {'black': 294, 'open': 27}
+levels (all): {0: 146, 1: 144, 2: 31}
+levels (black): {0: 119, 1: 144, 2: 31}
+dots: {1: 105, 0: 215, 2: 1}
+tremolo: {0: 310, 1: 11}
+written (black): {1.5: 75, 1.0: 44, 0.5: 139, 0.75: 5, 0.25: 31}

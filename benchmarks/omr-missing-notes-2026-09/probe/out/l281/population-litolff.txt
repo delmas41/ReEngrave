@@ -1,0 +1,27 @@
+== litolff: record 26fdb4d06eb3ddf0e47040bf8aa60564645a4a27 dirty=False
+heads (note glyph boxes): 11399
+ADJUDICATE statuses: decided=7683, narrowed=793, abstained=2, refused=1587, given_away=1334
+narrowed by reason: {'beam_discounted_uncertain': 584, 'beams_ambiguous': 150, 'head_fill_from_ink': 40, 'flag_ink_unread': 8, 'beam_certain_not_joined': 7, 'flags_disagree': 4}
+
+POPULATION P (filled head, narrowed beam_discounted_uncertain): 584
+  tip no_stem        269
+  tip clean          180
+  tip occupied       127
+  tip no_side          3
+  tip hook_seen        3
+  tip other_abst       1
+  tip left_inked       1
+  (window clean) x (a stroke box at the stem tip): {('clean', True): 47, ('clean', False): 133}
+  dots attached: {0: 583, 1: 1}
+  ink refusal reasons (any): {'through_heads': 54, 'too_thin': 319, 'one_stem': 28, 'no_stem_at_ends': 10}
+  stroke classes: ink>0 401  neighbour>0 117  arc>0 95  far>0 75  none 0
+
+FINAL STATE of P (what the later stages did):
+  ('ADJUDICATE', 'adjudicate_duration', 'narrowed')                      471
+  ('EVALUATE', 'reconcile_duration', 'decided')                          76
+  ('EVALUATE', 'share_stem_value', 'decided')                            21
+  ('EVALUATE', 'reconcile_chord_duration', 'decided')                    15
+  ('INFER', 'infer:collapse_duration_to_barline', 'decided')             1
+
+FINAL beam level where decided:
+   {0: 103, 1: 10}

@@ -1,0 +1,20 @@
+== bquick: record 46b35ad5e8d5da905a0401e614f2bbee97cf893d dirty=False
+heads (note glyph boxes): 1491
+ADJUDICATE statuses: decided=923, narrowed=171, abstained=0, refused=340, given_away=57
+narrowed by reason: {'beam_discounted_uncertain': 155, 'beams_ambiguous': 13, 'flags_disagree': 2, 'beam_certain_not_joined': 1}
+
+POPULATION P (filled head, narrowed beam_discounted_uncertain): 155
+  tip clean           74
+  tip no_stem         53
+  tip occupied        25
+  tip hook_seen        3
+  (window clean) x (a stroke box at the stem tip): {('clean', False): 37, ('clean', True): 37}
+  dots attached: {1: 39, 0: 115, 2: 1}
+  ink refusal reasons (any): {'too_thin': 107, 'through_heads': 3, 'one_stem': 4, 'no_stem_at_ends': 6}
+  stroke classes: ink>0 110  neighbour>0 44  arc>0 80  far>0 21  none 0
+
+FINAL STATE of P (what the later stages did):
+  ('ADJUDICATE', 'adjudicate_duration', 'narrowed')                      155
+
+FINAL beam level where decided:
+   {}

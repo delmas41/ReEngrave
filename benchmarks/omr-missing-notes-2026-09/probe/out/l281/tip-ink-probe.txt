@@ -1,0 +1,15 @@
+right       n=54 tip-ink value: min 0.0 p25 0.002 median 0.048 p75 0.154 max 0.238
+    [0.0, 0.0, 0.0, 0.0, 0.001, 0.001, 0.001, 0.001, 0.002, 0.002, 0.002, 0.002, 0.002, 0.002, 0.007, 0.009, 0.01, 0.012, 0.014, 0.014, 0.016, 0.023, 0.025, 0.039, 0.039, 0.044, 0.048, 0.048, 0.053, 0.053, 0.056, 0.056, 0.058, 0.058, 0.06, 0.06, 0.071, 0.072, 0.082, 0.082, 0.154, 0.161, 0.161, 0.199, 0.207, 0.208, 0.208, 0.218, 0.222, 0.222, 0.223, 0.234, 0.238, 0.238]
+wrong_beam  n=22 tip-ink value: min 0.08 p25 0.224 median 0.229 p75 0.233 max 0.272
+    [0.08, 0.114, 0.133, 0.146, 0.146, 0.224, 0.224, 0.225, 0.225, 0.226, 0.226, 0.229, 0.229, 0.23, 0.23, 0.233, 0.233, 0.253, 0.253, 0.27, 0.27, 0.272]
+
+cut (error-weighted x5, chosen ON THIS PAGE -- an upper bound on what it would do elsewhere): value <= 0.072: keeps 38 of 54 right heads, lets through 0 of 22 wrong
+
+per tip status:
+  clean_nostroke  right=10 wrong= 0  median value right=0.001 wrong=nan
+  clean_stroke    right=21 wrong= 5  median value right=0.060 wrong=0.226
+  occupied        right= 3 wrong= 1  median value right=0.009 wrong=0.114
+  no_stem         right=20 wrong=16  median value right=0.056 wrong=0.229
+
+wrong heads' values: [(0.08, 'glyph/0/0/0/6/6'), (0.114, 'glyph/0/0/9/3/3'), (0.133, 'glyph/0/0/10/3/4'), (0.146, 'glyph/0/0/1/1/13'), (0.146, 'glyph/0/0/1/1/2'), (0.224, 'glyph/0/0/0/4/2'), (0.224, 'glyph/0/0/0/4/9'), (0.225, 'glyph/0/0/1/5/5'), (0.225, 'glyph/0/0/1/5/9'), (0.226, 'glyph/0/0/0/4/6'), (0.226, 'glyph/0/0/0/4/8'), (0.229, 'glyph/0/0/0/3/11'), (0.229, 'glyph/0/0/0/3/4'), (0.23, 'glyph/0/0/1/5/2'), (0.23, 'glyph/0/0/1/5/8'), (0.233, 'glyph/0/0/0/4/1'), (0.233, 'glyph/0/0/0/4/11'), (0.253, 'glyph/0/0/0/3/5'), (0.253, 'glyph/0/0/0/3/6'), (0.27, 'glyph/0/0/0/3/3'), (0.27, 'glyph/0/0/0/3/9'), (0.272, 'glyph/0/0/1/5/4')]
+highest right heads: [(0.238, 'glyph/0/0/0/2/3'), (0.238, 'glyph/0/0/0/2/2'), (0.234, 'glyph/0/0/10/2/2'), (0.223, 'glyph/0/0/10/3/3'), (0.222, 'glyph/0/0/1/5/6'), (0.222, 'glyph/0/0/1/5/1')]

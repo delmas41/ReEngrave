@@ -1,0 +1,81 @@
+== brahms (record 26fdb4d06eb3ddf0e47040bf8aa60564645a4a27); page-0 heads 486; population members on the page 91
+judge: {'right': 54, 'wrong_beam': 22, 'no_truth_head': 4, 'unscored': 11}
+
+PRINT CHECK: 1 head(s) right by Sean's boxes, a flag/beam on the print his page does not box: {'no_stem': 1}; ['glyph/0/0/9/2/2']
+  with the correction (agent-read):  all 53/76 = 0.697  (95% Wilson 0.587-0.789)
+    tip clean_nostroke 10/10 = 1.000  (95% Wilson 0.722-1.000)
+    tip clean_stroke   21/26 = 0.808  (95% Wilson 0.621-0.915)
+    tip occupied       3/4 = 0.750  (95% Wilson 0.301-0.954)
+    tip no_stem        19/36 = 0.528  (95% Wilson 0.370-0.680)
+
+BOUNDED (heads with an unboxed stem but THEIR flag/beam box counted wrong; never counted right):
+  all:              54/76 = 0.711  (95% Wilson 0.600-0.800)
+  tip clean_nostroke:  10/10 = 1.000  (95% Wilson 0.722-1.000)
+  tip clean_stroke:  21/26 = 0.808  (95% Wilson 0.621-0.915)
+  tip occupied   :  3/4 = 0.750  (95% Wilson 0.301-0.954)
+  tip no_stem    :  20/36 = 0.556  (95% Wilson 0.396-0.705)
+  tip clean (window) any: 31/36 = 0.861  (95% Wilson 0.713-0.939)
+  UNJUDGEABLE (stem unboxed, no mark of his near): {}
+  FALSE HEADS (no truth head under the box): {'no_stem': 1, 'clean_nostroke': 1, 'occupied': 2}
+
+PRECISION OF 'level 0 = the head's own value' over judged members:
+  all judged:       54/76 = 0.711  (95% Wilson 0.600-0.800)
+  tip clean (window) any: 31/36 = 0.861  (95% Wilson 0.713-0.939)
+  tip clean_nostroke:  10/10 = 1.000  (95% Wilson 0.722-1.000)
+  tip clean_stroke:  21/26 = 0.808  (95% Wilson 0.621-0.915)
+  tip occupied   :  3/4 = 0.750  (95% Wilson 0.301-0.954)
+  tip no_stem    :  20/36 = 0.556  (95% Wilson 0.396-0.705)
+
+by tip status x judge:
+  ('clean_nostroke', 'no_truth_head'): 1
+  ('clean_nostroke', 'right'): 10
+  ('clean_nostroke', 'unscored'): 5
+  ('clean_stroke', 'right'): 21
+  ('clean_stroke', 'unscored'): 4
+  ('clean_stroke', 'wrong_beam'): 5
+  ('no_stem', 'no_truth_head'): 1
+  ('no_stem', 'right'): 20
+  ('no_stem', 'unscored'): 1
+  ('no_stem', 'wrong_beam'): 16
+  ('occupied', 'no_truth_head'): 2
+  ('occupied', 'right'): 3
+  ('occupied', 'unscored'): 1
+  ('occupied', 'wrong_beam'): 1
+
+our dots vs truth dots (judged members): {(1, 1): 27, (0, 0): 44, (1, 0): 1, (0, 1): 3, (2, 1): 1}
+
+INDEPENDENT UNITS (heads sharing a stem, beam or flag counted once): 44 groups over 76 heads; 37 groups all right, 7 groups with a wrong head (mixed groups: 0)
+  by group:    37/44 = 0.841  (95% Wilson 0.706-0.921)
+  wrong groups by what his boxes show: {'beam': 3, 'flag': 4} ; heads per wrong group: [1, 1, 1, 2, 5, 6, 6]
+  match quality (the frame): IoU >= 0.99 on 74 of 76 judged heads; min 0.78
+
+wrong cases by what Sean's boxes show on the stem: {'beam level 1': 17, 'flag level 1': 5}
+
+wrong cases:
+  glyph/0/0/0/3/3 tip=clean_stroke wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m3 truth q67
+  glyph/0/0/0/3/4 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m3 truth q68
+  glyph/0/0/0/3/5 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st0-m3 truth q69
+  glyph/0/0/0/3/6 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st0-m3 truth q70
+  glyph/0/0/0/3/9 tip=clean_stroke wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m3 truth q73
+  glyph/0/0/0/3/11 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m3 truth q75
+  glyph/0/0/0/4/1 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m4 truth q85
+  glyph/0/0/0/4/2 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m4 truth q86
+  glyph/0/0/0/4/6 tip=clean_stroke wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st0-m4 truth q90
+  glyph/0/0/0/4/8 tip=clean_stroke wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st0-m4 truth q92
+  glyph/0/0/0/4/9 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m4 truth q93
+  glyph/0/0/0/4/11 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m4 truth q95
+  glyph/0/0/0/6/6 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st0-m6 truth q132
+  glyph/0/0/1/1/2 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st1-m1 truth q187
+  glyph/0/0/1/1/13 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st1-m1 truth q197
+  glyph/0/0/1/5/2 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st1-m5 truth q249
+  glyph/0/0/1/5/4 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st1-m5 truth q251
+  glyph/0/0/1/5/5 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st1-m5 truth q252
+  glyph/0/0/1/5/8 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st1-m5 truth q255
+  glyph/0/0/1/5/9 tip=no_stem wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st1-m5 truth q256
+  glyph/0/0/9/3/3 tip=occupied wrong_beam truth_levels=1 truth_cls=noteheadBlackInSpace cell=s0-st9-m3 truth q1009
+  glyph/0/0/10/3/4 tip=clean_stroke wrong_beam truth_levels=1 truth_cls=noteheadBlackOnLine cell=s0-st10-m3 truth q1194
+
+final state of the judged members (what the later stages did):
+  ('right', 'ADJUDICATE', 'narrowed', None): 52
+  ('right', 'EVALUATE', 'decided', 0): 2
+  ('wrong_beam', 'ADJUDICATE', 'narrowed', None): 22

@@ -1,0 +1,1504 @@
+{
+ "question": "What is the printed value of the note in the red brackets?",
+ "seed": 20261010,
+ "plan": {
+  "A": {
+   "brahms": 14,
+   "litolff": 6
+  },
+  "B": {
+   "brahms": 6,
+   "litolff": 4
+  }
+ },
+ "frame_sizes": {
+  "brahms/A": 1181,
+  "brahms/B": 2332,
+  "litolff/A": 133,
+  "litolff/B": 451
+ },
+ "excluded": "Brahms pdf page 0 (the hand-truth page) from the sample frame",
+ "tile_scale": "32 px per staff space on every tile (600 dpi page, normalised)",
+ "tiles": [
+  {
+   "id": "tile_01",
+   "file": "tile_01.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/11/0/3/2/0",
+    "movement": "brahms",
+    "pdf_page": 11,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1771.9,
+     1408.25,
+     1815.625,
+     1442.625
+    ]
+   },
+   "window_page_px": [
+    1628,
+    1204,
+    1958,
+    1486
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.753,
+    "left": 0.256,
+    "right": 0.076
+   }
+  },
+  {
+   "id": "tile_02",
+   "file": "tile_02.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/10/1/9/7/5",
+    "movement": "litolff",
+    "pdf_page": 10,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "one_stem": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1562.6025,
+     3460.605,
+     1588.275,
+     3481.2375
+    ]
+   },
+   "window_page_px": [
+    1480,
+    3360,
+    1669,
+    3581
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.882,
+    "left": 0.434,
+    "right": 0.68
+   }
+  },
+  {
+   "id": "tile_03",
+   "file": "tile_03.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/15/1/8/8/0",
+    "movement": "brahms",
+    "pdf_page": 15,
+    "stratum": "B",
+    "tip_status": "clean",
+    "stroke_at_tip": true,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 2
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     3890.55,
+     5967.05,
+     3936.75,
+     6001.7
+    ]
+   },
+   "window_page_px": [
+    3748,
+    5820,
+    4078,
+    6068
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.722,
+    "left": 0.223,
+    "right": 0.025
+   }
+  },
+  {
+   "id": "control_1",
+   "file": "control_1.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/10/2/2",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "bare",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (page 0): no beam or flag on its stem: a quarter / dotted quarter",
+     "truth_levels": 0,
+     "truth_dots": 0,
+     "truth_id": "q1175"
+    },
+    "our_reading": "narrowed (see key)",
+    "head_box_page_px": [
+     2712.6,
+     5518.96,
+     2752.28,
+     5554.8
+    ]
+   },
+   "window_page_px": [
+    2540,
+    5442,
+    2924,
+    5730
+   ],
+   "space_px_native": 32.0,
+   "frame_control": {
+    "inside": 0.879,
+    "left": 0.378,
+    "right": 0.221
+   }
+  },
+  {
+   "id": "tile_04",
+   "file": "tile_04.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/20/0/11/2/3",
+    "movement": "brahms",
+    "pdf_page": 20,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 2
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     2156.225,
+     3563.0,
+     2193.35,
+     3596.0
+    ]
+   },
+   "window_page_px": [
+    2009,
+    3413,
+    2339,
+    3660
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.873,
+    "left": 0.216,
+    "right": 0.176
+   }
+  },
+  {
+   "id": "tile_05",
+   "file": "tile_05.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/16/1/2/1/3",
+    "movement": "brahms",
+    "pdf_page": 16,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     1461.15,
+     4391.85,
+     1499.375,
+     4423.475
+    ]
+   },
+   "window_page_px": [
+    1315,
+    4347,
+    1645,
+    4594
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.861,
+    "left": 0.288,
+    "right": 0.09
+   }
+  },
+  {
+   "id": "control_2",
+   "file": "control_2.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/0/4/9",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "beamed",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (page 0): a beam or flag is on this head's stem: NOT a quarter",
+     "truth_levels": 1,
+     "truth_dots": 0,
+     "truth_id": "q93"
+    },
+    "our_reading": "narrowed (see key)",
+    "head_box_page_px": [
+     3869.7275,
+     1523.225,
+     3911.975,
+     1559.0225
+    ]
+   },
+   "window_page_px": [
+    3697,
+    1315,
+    4084,
+    1766
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.967,
+    "left": 0.0,
+    "right": 0.698
+   }
+  },
+  {
+   "id": "tile_06",
+   "file": "tile_06.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/1/0/2/6/3",
+    "movement": "brahms",
+    "pdf_page": 1,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     5052.03173828125,
+     1075.92138671875,
+     5090.21923828125,
+     1105.45703125
+    ]
+   },
+   "window_page_px": [
+    4906,
+    933,
+    5235,
+    1180
+   ],
+   "space_px_native": 27.45,
+   "frame_control": {
+    "inside": 0.939,
+    "left": 0.229,
+    "right": 0.254
+   }
+  },
+  {
+   "id": "tile_07",
+   "file": "tile_07.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/7/0/0/2/10",
+    "movement": "brahms",
+    "pdf_page": 7,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     2008.325,
+     641.25,
+     2035.825,
+     666.275
+    ]
+   },
+   "window_page_px": [
+    1857,
+    461,
+    2187,
+    846
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.781,
+    "left": 0.187,
+    "right": 0.199
+   }
+  },
+  {
+   "id": "tile_08",
+   "file": "tile_08.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/23/1/2/5/4",
+    "movement": "brahms",
+    "pdf_page": 23,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     3120.62,
+     4455.9075,
+     3158.6375,
+     4490.3175
+    ]
+   },
+   "window_page_px": [
+    2973,
+    4322,
+    3306,
+    4614
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.87,
+    "left": 0.417,
+    "right": 0.184
+   }
+  },
+  {
+   "id": "tile_09",
+   "file": "tile_09.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/25/0/12/1/0",
+    "movement": "brahms",
+    "pdf_page": 25,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 2
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     1471.955,
+     3756.56,
+     1508.03,
+     3789.0275
+    ]
+   },
+   "window_page_px": [
+    1323,
+    3611,
+    1656,
+    3861
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.848,
+    "left": 0.595,
+    "right": 0.148
+   }
+  },
+  {
+   "id": "tile_10",
+   "file": "tile_10.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/12/0/5/9/1",
+    "movement": "litolff",
+    "pdf_page": 12,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1634.6875,
+     1109.1025,
+     1657.6825,
+     1129.8925
+    ]
+   },
+   "window_page_px": [
+    1551,
+    1083,
+    1740,
+    1225
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.81,
+    "left": 0.452,
+    "right": 0.206
+   }
+  },
+  {
+   "id": "tile_11",
+   "file": "tile_11.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/2/0/9/2/4",
+    "movement": "brahms",
+    "pdf_page": 2,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     3193.0546875,
+     2480.154296875,
+     3233.208984375,
+     2514.52880859375
+    ]
+   },
+   "window_page_px": [
+    3046,
+    2303,
+    3379,
+    2691
+   ],
+   "space_px_native": 27.76,
+   "frame_control": {
+    "inside": 0.777,
+    "left": 0.286,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_12",
+   "file": "tile_12.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/26/1/3/4/6",
+    "movement": "brahms",
+    "pdf_page": 26,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2896.3475,
+     4756.685,
+     2934.6425,
+     4792.205
+    ]
+   },
+   "window_page_px": [
+    2748,
+    4617,
+    3081,
+    4904
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.843,
+    "left": 0.416,
+    "right": 0.187
+   }
+  },
+  {
+   "id": "tile_13",
+   "file": "tile_13.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/2/0/9/4/1",
+    "movement": "brahms",
+    "pdf_page": 2,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 3
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     4157.7294921875,
+     2514.9921875,
+     4198.134765625,
+     2547.6396484375
+    ]
+   },
+   "window_page_px": [
+    4011,
+    2463,
+    4344,
+    2713
+   ],
+   "space_px_native": 27.72,
+   "frame_control": {
+    "inside": 0.843,
+    "left": 0.0,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_14",
+   "file": "tile_14.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/19/0/4/9/1",
+    "movement": "brahms",
+    "pdf_page": 19,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     4939.275,
+     1444.15,
+     4978.875,
+     1477.425
+    ]
+   },
+   "window_page_px": [
+    4794,
+    1394,
+    5124,
+    1642
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.802,
+    "left": 0.154,
+    "right": 0.001
+   }
+  },
+  {
+   "id": "tile_15",
+   "file": "tile_15.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/21/1/2/9/7",
+    "movement": "brahms",
+    "pdf_page": 21,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 6
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     4859.48,
+     4651.48,
+     4897.84,
+     4680.6
+    ]
+   },
+   "window_page_px": [
+    4710,
+    4470,
+    5046,
+    4862
+   ],
+   "space_px_native": 28.0,
+   "frame_control": {
+    "inside": 0.937,
+    "left": 0.57,
+    "right": 0.857
+   }
+  },
+  {
+   "id": "tile_16",
+   "file": "tile_16.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/11/1/0/1/2",
+    "movement": "litolff",
+    "pdf_page": 11,
+    "stratum": "B",
+    "tip_status": "occupied",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "through_heads": 1
+    },
+    "later_stages": {
+     "stage": "EVALUATE",
+     "decider": "reconcile_duration",
+     "outcome": "decided",
+     "beam_levels": 0,
+     "written": 1.0
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     672.42,
+     1874.9375,
+     697.305,
+     1895.57
+    ]
+   },
+   "window_page_px": [
+    590,
+    1797,
+    779,
+    1939
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.77,
+    "left": 0.0,
+    "right": 0.49
+   }
+  },
+  {
+   "id": "tile_17",
+   "file": "tile_17.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/9/1/12/4/3",
+    "movement": "brahms",
+    "pdf_page": 9,
+    "stratum": "B",
+    "tip_status": "clean",
+    "stroke_at_tip": true,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     2785.779296875,
+     6997.8046875,
+     2823.96484375,
+     7025.94140625
+    ]
+   },
+   "window_page_px": [
+    2644,
+    6934,
+    2965,
+    7174
+   ],
+   "space_px_native": 26.7,
+   "frame_control": {
+    "inside": 0.923,
+    "left": 0.412,
+    "right": 0.216
+   }
+  },
+  {
+   "id": "tile_18",
+   "file": "tile_18.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/23/1/12/4/0",
+    "movement": "brahms",
+    "pdf_page": 23,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2742.6775,
+     7101.96,
+     2779.585,
+     7136.0925
+    ]
+   },
+   "window_page_px": [
+    2594,
+    7031,
+    2927,
+    7281
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.78,
+    "left": 0.347,
+    "right": 0.139
+   }
+  },
+  {
+   "id": "tile_19",
+   "file": "tile_19.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/16/0/4/1/1",
+    "movement": "brahms",
+    "pdf_page": 16,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     1317.925,
+     1512.775,
+     1356.425,
+     1543.3
+    ]
+   },
+   "window_page_px": [
+    1172,
+    1370,
+    1502,
+    1618
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.962,
+    "left": 0.486,
+    "right": 0.329
+   }
+  },
+  {
+   "id": "tile_20",
+   "file": "tile_20.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/12/0/5/10/1",
+    "movement": "litolff",
+    "pdf_page": 12,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1799.2625,
+     1154.4625,
+     1822.415,
+     1176.5125
+    ]
+   },
+   "window_page_px": [
+    1716,
+    1047,
+    1905,
+    1201
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.775,
+    "left": 0.438,
+    "right": 0.174
+   }
+  },
+  {
+   "id": "tile_21",
+   "file": "tile_21.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/13/0/10/4/1",
+    "movement": "litolff",
+    "pdf_page": 13,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "EVALUATE",
+     "decider": "reconcile_duration",
+     "outcome": "decided",
+     "beam_levels": 0,
+     "written": 1.0
+    },
+    "head_class": "noteheadBlackInSpace",
+    "head_box_page_px": [
+     1144.645,
+     1861.31,
+     1166.19,
+     1879.6
+    ]
+   },
+   "window_page_px": [
+    1062,
+    1778,
+    1248,
+    1918
+   ],
+   "space_px_native": 15.5,
+   "frame_control": {
+    "inside": 0.951,
+    "left": 0.584,
+    "right": 0.725
+   }
+  },
+  {
+   "id": "tile_22",
+   "file": "tile_22.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/15/0/5/0/6",
+    "movement": "litolff",
+    "pdf_page": 15,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     526.9175,
+     1269.285,
+     550.0975,
+     1287.585
+    ]
+   },
+   "window_page_px": [
+    447,
+    1150,
+    630,
+    1311
+   ],
+   "space_px_native": 15.25,
+   "frame_control": {
+    "inside": 0.806,
+    "left": 0.037,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_23",
+   "file": "tile_23.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/4/0/9/10/5",
+    "movement": "litolff",
+    "pdf_page": 4,
+    "stratum": "B",
+    "tip_status": "occupied",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1957.5225,
+     1756.5675,
+     1981.1475,
+     1777.9875
+    ]
+   },
+   "window_page_px": [
+    1874,
+    1720,
+    2063,
+    1862
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.828,
+    "left": 0.238,
+    "right": 0.766
+   }
+  },
+  {
+   "id": "tile_24",
+   "file": "tile_24.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/15/0/5/14/1",
+    "movement": "litolff",
+    "pdf_page": 15,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "through_heads": 1
+    },
+    "later_stages": {
+     "stage": "EVALUATE",
+     "decider": "share_stem_value",
+     "outcome": "decided",
+     "beam_levels": 0,
+     "written": 1.0
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1886.115,
+     1261.8125,
+     1908.5325,
+     1283.315
+    ]
+   },
+   "window_page_px": [
+    1805,
+    1141,
+    1988,
+    1307
+   ],
+   "space_px_native": 15.25,
+   "frame_control": {
+    "inside": 0.795,
+    "left": 0.077,
+    "right": 0.571
+   }
+  },
+  {
+   "id": "tile_25",
+   "file": "tile_25.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/16/1/5/10/0",
+    "movement": "litolff",
+    "pdf_page": 16,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1948.32,
+     2842.4,
+     1972.96,
+     2862.56
+    ]
+   },
+   "window_page_px": [
+    1864,
+    2728,
+    2056,
+    2888
+   ],
+   "space_px_native": 16.0,
+   "frame_control": {
+    "inside": 0.741,
+    "left": 0.23,
+    "right": 0.022
+   }
+  },
+  {
+   "id": "control_3",
+   "file": "control_3.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/11/2/7",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "bare",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (page 0): no beam or flag on its stem: a quarter / dotted quarter",
+     "truth_levels": 0,
+     "truth_dots": 1,
+     "truth_id": "q1322"
+    },
+    "our_reading": "narrowed (see key)",
+    "head_box_page_px": [
+     2709.3775,
+     5995.92,
+     2752.27,
+     6034.2975
+    ]
+   },
+   "window_page_px": [
+    2537,
+    5829,
+    2924,
+    6119
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.912,
+    "left": 0.498,
+    "right": 0.276
+   }
+  },
+  {
+   "id": "tile_26",
+   "file": "tile_26.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/3/0/2/1/3",
+    "movement": "brahms",
+    "pdf_page": 3,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {
+     "too_thin": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1435.935,
+     1049.4575,
+     1476.45,
+     1080.815
+    ]
+   },
+   "window_page_px": [
+    1289,
+    870,
+    1622,
+    1259
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.903,
+    "left": 0.46,
+    "right": 0.398
+   }
+  },
+  {
+   "id": "tile_27",
+   "file": "tile_27.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/24/1/12/7/3",
+    "movement": "brahms",
+    "pdf_page": 24,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "EVALUATE",
+     "decider": "reconcile_duration",
+     "outcome": "decided",
+     "beam_levels": 1,
+     "written": 0.5
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     4898.97,
+     7025.6275,
+     4938.6525,
+     7060.315
+    ]
+   },
+   "window_page_px": [
+    4752,
+    6877,
+    5085,
+    7127
+   ],
+   "space_px_native": 27.75,
+   "frame_control": {
+    "inside": 0.787,
+    "left": 0.225,
+    "right": 0.404
+   }
+  },
+  {
+   "id": "control_4",
+   "file": "control_4.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/1/5/2",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "beamed",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (page 0): a beam or flag is on this head's stem: NOT a quarter",
+     "truth_levels": 1,
+     "truth_dots": 0,
+     "truth_id": "q249"
+    },
+    "our_reading": "narrowed (see key)",
+    "head_box_page_px": [
+     4441.08,
+     1933.48,
+     4484.92,
+     1973.48
+    ]
+   },
+   "window_page_px": [
+    4270,
+    1729,
+    4655,
+    2177
+   ],
+   "space_px_native": 32.0,
+   "frame_control": {
+    "inside": 0.831,
+    "left": 0.163,
+    "right": 0.907
+   }
+  },
+  {
+   "id": "tile_28",
+   "file": "tile_28.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/26/1/11/4/2",
+    "movement": "brahms",
+    "pdf_page": 26,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5",
+    "dots_read": 1,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     2884.7025,
+     6913.1475,
+     2922.8525,
+     6946.665
+    ]
+   },
+   "window_page_px": [
+    2740,
+    6764,
+    3067,
+    7009
+   ],
+   "space_px_native": 27.25,
+   "frame_control": {
+    "inside": 0.802,
+    "left": 0.262,
+    "right": 0.023
+   }
+  },
+  {
+   "id": "tile_29",
+   "file": "tile_29.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/13/1/2/9/1",
+    "movement": "litolff",
+    "pdf_page": 13,
+    "stratum": "B",
+    "tip_status": "no_stem",
+    "stroke_at_tip": null,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {
+     "one_stem": 1
+    },
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1599.955,
+     2434.5125,
+     1622.4775,
+     2454.3575
+    ]
+   },
+   "window_page_px": [
+    1516,
+    2334,
+    1705,
+    2554
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.84,
+    "left": 0.708,
+    "right": 0.731
+   }
+  },
+  {
+   "id": "tile_30",
+   "file": "tile_30.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/4/1/3/1/3",
+    "movement": "brahms",
+    "pdf_page": 4,
+    "stratum": "A",
+    "tip_status": "clean",
+    "stroke_at_tip": false,
+    "our_reading": "narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0",
+    "dots_read": 0,
+    "ink_refusals": {},
+    "later_stages": {
+     "stage": "ADJUDICATE",
+     "decider": "adjudicate_duration",
+     "outcome": "narrowed",
+     "beam_levels": null,
+     "written": null
+    },
+    "head_class": "noteheadBlackOnLine",
+    "head_box_page_px": [
+     1648.87,
+     4747.0425,
+     1687.2925,
+     4779.7425
+    ]
+   },
+   "window_page_px": [
+    1504,
+    4703,
+    1831,
+    5005
+   ],
+   "space_px_native": 27.25,
+   "frame_control": {
+    "inside": 0.801,
+    "left": 0.0,
+    "right": 0.0
+   }
+  }
+ ],
+ "frame_control": {
+  "n": 34,
+  "true_frame_inside_beats_both_neighbours": 33,
+  "wrong_frame_(page_shifted_1.6_heads)_inside_beats_both": 0,
+  "reading": "the control can fail: it must pass on the true frame and mostly fail on the shifted one"
+ }
+}

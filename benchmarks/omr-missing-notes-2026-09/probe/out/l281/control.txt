@@ -1,0 +1,3 @@
+compared 1491 heads, tip rows/abstentions (1219, 1081); differences: NONE
+perturbed copy (head glyph/0/0/0/1/3): differences {'narrowed reason differs': 1}
+CONTROL OK: identical on every head; a perturbed copy is reported different

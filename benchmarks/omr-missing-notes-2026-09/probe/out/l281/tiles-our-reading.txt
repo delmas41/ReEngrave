@@ -1,0 +1,36 @@
+question: What is the printed value of the note in the red brackets? | seed 20261010 | frame sizes {'brahms/A': 1181, 'brahms/B': 2332, 'litolff/A': 133, 'litolff/B': 451}
+frame control: {'n': 34, 'true_frame_inside_beats_both_neighbours': 33, 'wrong_frame_(page_shifted_1.6_heads)_inside_beats_both': 0, 'reading': 'the control can fail: it must pass on the true frame and mostly fail on the shifted one'}
+control_1  CONTROL bare   glyph/0/0/10/2/2  truth: levels=0 dots=0
+control_2  CONTROL beamed glyph/0/0/0/4/9  truth: levels=1 dots=0
+control_3  CONTROL bare   glyph/0/0/11/2/7  truth: levels=0 dots=1
+control_4  CONTROL beamed glyph/0/0/1/5/2  truth: levels=1 dots=0  <-- FRAME CONTROL DID NOT PASS
+tile_01  brahms   p11  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/11/0/3/2/0
+tile_02  litolff  p10  stratum B  tip=no_stem   stroke_at_tip=None  dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/10/1/9/7/5
+tile_03  brahms   p15  stratum B  tip=clean     stroke_at_tip=True  dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/15/1/8/8/0
+tile_04  brahms   p20  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/20/0/11/2/3
+tile_05  brahms   p16  stratum A  tip=clean     stroke_at_tip=False dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/16/1/2/1/3
+tile_06  brahms   p1   stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/1/0/2/6/3
+tile_07  brahms   p7   stratum B  tip=no_stem   stroke_at_tip=None  dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/7/0/0/2/10
+tile_08  brahms   p23  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/23/1/2/5/4
+tile_09  brahms   p25  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/25/0/12/1/0
+tile_10  litolff  p12  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/12/0/5/9/1
+tile_11  brahms   p2   stratum B  tip=no_stem   stroke_at_tip=None  dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/2/0/9/2/4
+tile_12  brahms   p26  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/26/1/3/4/6
+tile_13  brahms   p2   stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/2/0/9/4/1
+tile_14  brahms   p19  stratum A  tip=clean     stroke_at_tip=False dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/19/0/4/9/1
+tile_15  brahms   p21  stratum B  tip=no_stem   stroke_at_tip=None  dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/21/1/2/9/7
+tile_16  litolff  p11  stratum B  tip=occupied  stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=EVALUATE/decided/L0  glyph/11/1/0/1/2
+tile_17  brahms   p9   stratum B  tip=clean     stroke_at_tip=True  dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/9/1/12/4/3
+tile_18  brahms   p23  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/23/1/12/4/0
+tile_19  brahms   p16  stratum A  tip=clean     stroke_at_tip=False dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/16/0/4/1/1
+tile_20  litolff  p12  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/12/0/5/10/1
+tile_21  litolff  p13  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=EVALUATE/decided/L0  glyph/13/0/10/4/1
+tile_22  litolff  p15  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/15/0/5/0/6
+tile_23  litolff  p4   stratum B  tip=occupied  stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/4/0/9/10/5
+tile_24  litolff  p15  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=EVALUATE/decided/L0  glyph/15/0/5/14/1
+tile_25  litolff  p16  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/16/1/5/10/0
+tile_26  brahms   p3   stratum B  tip=no_stem   stroke_at_tip=None  dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/3/0/2/1/3
+tile_27  brahms   p24  stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=EVALUATE/decided/L1  glyph/24/1/12/7/3
+tile_28  brahms   p26  stratum A  tip=clean     stroke_at_tip=False dots=1  ours: narrowed beam_levels=1 written=0.75 | beam_levels=0 written=1.5  later=ADJUDICATE/narrowed  glyph/26/1/11/4/2
+tile_29  litolff  p13  stratum B  tip=no_stem   stroke_at_tip=None  dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/13/1/2/9/1
+tile_30  brahms   p4   stratum A  tip=clean     stroke_at_tip=False dots=0  ours: narrowed beam_levels=1 written=0.5 | beam_levels=0 written=1.0  later=ADJUDICATE/narrowed  glyph/4/1/3/1/3

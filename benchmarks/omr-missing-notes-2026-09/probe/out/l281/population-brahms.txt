@@ -1,0 +1,24 @@
+== brahms: record 26fdb4d06eb3ddf0e47040bf8aa60564645a4a27 dirty=False
+heads (note glyph boxes): 24260
+ADJUDICATE statuses: decided=12710, narrowed=3860, abstained=2, refused=4619, given_away=3069
+narrowed by reason: {'beam_discounted_uncertain': 3604, 'beams_ambiguous': 182, 'flags_disagree': 32, 'beam_certain_not_joined': 26, 'head_fill_from_ink': 12, 'flag_ink_unread': 4}
+
+POPULATION P (filled head, narrowed beam_discounted_uncertain): 3604
+  tip clean         1825
+  tip no_stem       1167
+  tip occupied       562
+  tip hook_seen       46
+  tip left_inked       4
+  (window clean) x (a stroke box at the stem tip): {('clean', False): 1197, ('clean', True): 628}
+  dots attached: {1: 1837, 0: 1763, 2: 4}
+  ink refusal reasons (any): {'too_thin': 2464, 'through_heads': 18, 'one_stem': 61, 'no_stem_at_ends': 41, 'not_straight': 61}
+  stroke classes: ink>0 2554  neighbour>0 630  arc>0 1578  far>0 941  none 0
+
+FINAL STATE of P (what the later stages did):
+  ('ADJUDICATE', 'adjudicate_duration', 'narrowed')                      3387
+  ('EVALUATE', 'reconcile_duration', 'decided')                          177
+  ('EVALUATE', 'share_stem_value', 'decided')                            30
+  ('EVALUATE', 'reconcile_chord_duration', 'decided')                    10
+
+FINAL beam level where decided:
+   {0: 194, 1: 23}

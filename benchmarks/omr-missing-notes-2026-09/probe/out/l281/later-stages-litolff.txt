@@ -1,0 +1,18 @@
+== litolff: population 584
+all heads, duration verdicts written by EVALUATE / INFER (the stage control):
+   ('EVALUATE', 'reconcile_chord_duration', 'decided'): 22
+   ('EVALUATE', 'reconcile_duration', 'decided'): 231
+   ('EVALUATE', 'share_stem_value', 'decided'): 105
+   ('INFER', 'infer:collapse_duration_by_column', 'decided'): 1
+   ('INFER', 'infer:collapse_duration_to_barline', 'decided'): 2
+population: current verdict by (stage, decider, outcome, beam level):
+   ('ADJUDICATE', 'adjudicate_duration', 'narrowed', None): 471
+   ('EVALUATE', 'reconcile_duration', 'decided', 0): 68
+   ('EVALUATE', 'share_stem_value', 'decided', 0): 21
+   ('EVALUATE', 'reconcile_chord_duration', 'decided', 0): 13
+   ('EVALUATE', 'reconcile_duration', 'decided', 1): 8
+   ('EVALUATE', 'reconcile_chord_duration', 'decided', 1): 2
+   ('INFER', 'infer:collapse_duration_to_barline', 'decided', 0): 1
+settled by a later stage: 113 of 584 (19.3%); INFER 1
+  settled to beam level: {0: 103, 1: 10}
+  settled outside the narrowing's own candidates: 0
