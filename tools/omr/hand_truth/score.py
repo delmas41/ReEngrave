@@ -58,9 +58,15 @@ WHAT IT SCORES, AND WHAT IT REFUSES.
   warning about precision, not a count of missed marks (see the FINDINGS and the ``ink-uncovered``
   crops).
 
-NOT YET (next steps, each a decision for Sean or a lane): the CV readers as a second SOURCE (stems,
-beams, barlines, braces are not detector classes; the record holds them as ``Q.STEM`` /
-``Q.BEAM_STROKE`` / ``Q.BARLINE_COLUMN`` rows in a cell frame); instrument names; the far-head position
+STEMS (ROADMAP 1.7, Sean 2026-10-10 *"How reliably are we finding stems?"*): the stem family has TWO sources,
+shown side by side -- the detector's ``stem`` class (``families["stem"]``, unchanged) and the CV reader the product
+uses (``Q.STEM``, scored in ``score_stems`` into ``report["stems"]``: found / missed / invented per staff, the
+per-head ``Q.HEAD_STEM`` attachment and ``Q.STEM_DIRECTION``, and the misses by cause). ``--stem-runs`` and
+``--stem-ink`` tie a miss to the filter that refused it.
+
+NOT YET (next steps, each a decision for Sean or a lane): the other CV readers as a source (beams, barlines,
+braces are not detector classes; the record holds them as ``Q.BEAM_STROKE`` /
+``Q.BARLINE_COLUMN`` rows in a cell frame); instrument names; the far-head position
 from the ledgers rather than extrapolated lines; the third ``acceptance_quick`` view (the count page
 must be labeled first); Sean's own ``owner_staff`` / ``staff_position`` for far heads.
 """
@@ -993,8 +999,11 @@ def record_weights(run: RO.Run) -> Optional[str]:
 
 def score(page: PageTruth, run: RO.Run, *, page_index: Optional[int] = None, derive: bool = False,
           inventory_path: Path = INVENTORY_PATH, trained_cells: Optional[Sequence[str]] = None,
-          items: Optional[Sequence[TruthItem]] = None, ink: Any = None) -> Dict[str, Any]:
+          items: Optional[Sequence[TruthItem]] = None, ink: Any = None,
+          stem_cause_inputs: Optional[Dict[str, Any]] = None, cv_override: Any = None) -> Dict[str, Any]:
     """``items`` lets a control hand in a TRANSFORMED truth (an owner shift); the real call leaves it None.
+    ``stem_cause_inputs`` / ``cv_override`` feed ``score_stems`` (the vertical runs and ink raster that tie a
+    missed stem to a filter; a transformed ``CvRead`` for a control).
     ``ink`` is a ``completeness.InkReport`` for the page (needs the PDF): with it, the scorer also reports
     how much ink inside the SCORED cells has no truth box -- the truth's own completeness control, which
     bounds every precision figure -- and separates a spurious record box over unboxed ink from one over
@@ -1043,6 +1052,12 @@ def score(page: PageTruth, run: RO.Run, *, page_index: Optional[int] = None, der
         "noteheads": score_noteheads(page, items, glyphs, matches, trained_cells=trained_cells),
         "headers": score_headers(page, items, run, pi),
     }
+    from tools.omr.hand_truth import score_stems as SS  # lazy: score_stems imports this module
+
+    stems = SS.score_stems(page, items, glyphs, matches, run, pi, fam_scores,
+                           cause_inputs=stem_cause_inputs, cv_override=cv_override)
+    report["stems"] = SS.public(stems)
+    report["_stems"] = stems
     report["_uncovered"] = uncovered
     report["_matches"] = matches
     report["_page"] = page
@@ -1152,6 +1167,10 @@ def render(report: Dict[str, Any]) -> str:
         L.append(f"{fam:<24}{g['truth']:>6}{g['read']:>6} | {_fmt(g['recall']):>6}{_fmt(g['precision']):>7} | "
                  f"{_fmt(a['recall']):>6}{_fmt(a['precision']):>7} | {drawn:>9}"
                  f"{_fmt((org.get('prefill-confirmed') or {}).get('recall')):>9}  {d['lost_by_adjudicate']}")
+        cvs = ((r.get("stems") or {}).get("cv_stem") or {}) if fam == "stem" else {}
+        if cvs.get("status") == "scored":  # the second source of the stem family, beside the detector class
+            L.append(f"{'  stem (CV Q.STEM)':<24}{cvs['truth']:>6}{cvs['read']:>6} | {_fmt(cvs['recall']):>6}"
+                     f"{_fmt(cvs['precision']):>7} | {'-':>6}{'-':>7} | {'-':>9}{'-':>9}  (Q.STEM is not adjudicated)")
     c = r["classes"]
     L.append("")
     L.append(f"classes the truth has and the detector never produced: {c['truth_classes_the_detector_never_produced']}")
@@ -1175,6 +1194,11 @@ def render(report: Dict[str, Any]) -> str:
             L.append(f"      owner read from {b['owner_read_basis']}  (uncontested = no glyph_owner verdict: "
                      "the head stays on the staff it was cut from)")
             L.append(f"      position delta (read - truth) {b['position_delta_read_minus_truth']}")
+    if r.get("stems"):
+        from tools.omr.hand_truth import score_stems as SS
+
+        L.append("")
+        L.append(SS.render(r["stems"]).rstrip())
     h = r["headers"]
     L.append("")
     L.append("PER STAFF (system header)  clef / key / meter against the first cell, cautionary meter against the last")
@@ -1215,6 +1239,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--crops-dir", type=Path)
     ap.add_argument("--crop-cells", default="", help="comma-separated cell ids to cut whole, truth + record drawn")
     ap.add_argument("--crop-ink", default="", help="'x,y;x,y' page points to cut ink-control diagnostic windows at")
+    ap.add_argument("--stem-runs", type=Path,
+                    help="a record of the same page gathered with OMR_VERTICAL_RUNS: names the filter that refused each "
+                         "missed stem (refused if its Q.STEM rows differ from --record's)")
+    ap.add_argument("--stem-ink", action="store_true",
+                    help="with --pdf: read the raster at each missed stem's column (longest unbroken ink run)")
     ap.add_argument("--out", type=Path, help="write the report as JSON")
     ap.add_argument("--force", action="store_true", help="print the numbers even if the frame control failed")
     a = ap.parse_args(list(argv) if argv is not None else None)
@@ -1231,9 +1260,28 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         from tools.omr.hand_truth.session import _ink_report
 
         ink = _ink_report(page, str(a.pdf))
-    rep = score(page, run, page_index=a.page_index, derive=a.derive, ink=ink)
+    cause: Dict[str, Any] = {}
+    if a.stem_runs:
+        from tools.omr.hand_truth import score_stems as SS
+        from tools.omr.staged import record_io
+
+        other = record_io.load_record(str(a.stem_runs))
+        pi = page.pdf_page_index if a.page_index is None else a.page_index
+        same, n_a, n_b = SS.stem_sets_equal(run, other, pi)
+        if not same:
+            ap.error(f"--stem-runs holds {n_b} Q.STEM rows on page {pi} against --record's {n_a}, and they differ: "
+                     "its vertical runs are not evidence about this record's stems")
+        cause["runs"] = SS.read_vertical_runs(other, pi)
+    if a.stem_ink:
+        if not a.pdf:
+            ap.error("--stem-ink needs --pdf")
+        from tools.omr.hand_truth import score_stems as SS
+        from tools.omr.hand_truth.session import _render
+
+        cause["ink"] = SS.InkColumns(_render(a.pdf, page.pdf_page_index, page.dpi).binary < 128)
+    rep = score(page, run, page_index=a.page_index, derive=a.derive, ink=ink, stem_cause_inputs=cause or None)
     if not rep["frame_control"]["ok"] and not a.force:
-        print(render({**rep, "families": {}, "noteheads": {"status": "withheld"},
+        print(render({**rep, "families": {}, "noteheads": {"status": "withheld"}, "stems": None,
                       "headers": {"summary": {}, "staves": []}}))
         print("FRAME CONTROL FAILED: the record and the truth are not in one page frame, so every number "
               "below it would be fiction. Re-run with --force to print them anyway.")
