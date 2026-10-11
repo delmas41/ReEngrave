@@ -3379,7 +3379,17 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                         "stem_tip_hook": False,
                         "notehead_ink": fill_row.detail or {}})
 
-    if beam_evidence == "none_over_this_note" and ink_hollow:
+    # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8. 2.70 DECIDES a half in a BEAMLESS cell (the beam reader RAN and accepted nothing, so
+    # `beam_evidence` reads `reader_declined`) over a tip read clean; where the tip is NOT read clean the head fell through all of this to
+    # `head_and_marks` -- the detector's black, DECIDED, over ink that reads the head decisively hollow. That was `cannot tell` written as an
+    # answer, and the new tip reader declines more tips than the 2.18c window did (Litolff pdf 3 `glyph/2/0/7/6/1`: a hollow half note main
+    # decided a half, the shape reader cannot tell, and a quarter was decided). MEASURED on the Litolff tile pages: of 32 such one-head
+    # boxes (main decides the same 33), 9 of the 12 looked at on the print were hollow heads and 3 were not clear. The same NARROWING 2.23 gives a head in a cell with beams (the detector's
+    # black, half, whole; Sean's answer inside) now also covers the beamless-and-looked cell -- only on a box that holds ONE head
+    # (`HEAD_BOX_MAX_SPACES`): a cluster box's ink windows say nothing about a head, and it keeps the detector's black as it did.
+    beamless_looked = (beam_evidence == "reader_declined" and one_head_box
+                       and _beam_reader_looked(ev, cell) is not None)
+    if (beam_evidence == "none_over_this_note" or beamless_looked) and ink_hollow:
         ink_detail = fill_row.detail or {}
         used.append(fill_row.id)
         cands = []

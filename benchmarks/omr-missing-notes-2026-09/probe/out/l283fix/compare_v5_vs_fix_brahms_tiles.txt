@@ -1,0 +1,28 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix/brahms-tiles.record.json
+   provenance 2fb8dae8276c2697c9b5d7733abe99ead4b188ca dirty=False
+base /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-v5/brahms-tiles.record.json
+   provenance 28f1bda4fbba8cfb81ce7c2de228ead08e84c3b2 dirty=False
+
+heads with a standing duration verdict: base 4275  arm 4275  in both 4275 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base    605   arm    598
+  abstained:ambiguous:ink_not_flag_shaped                 base    222   arm    211
+  abstained:ambiguous:ink_past_the_tip                    base      0   arm     11
+  abstained:ambiguous:no_room                             base    218   arm    216
+  abstained:ambiguous:runs_on                             base    158   arm    138
+  abstained:occupied:head_at_this_end                     base   2456   arm   2456
+  abstained:occupied:occupied                             base    213   arm    210
+  observed:flag                                           base    409   arm    445
+  observed:none                                           base    851   arm    847
+
+duration verdicts changed (matched heads): 8 of 4275
+      2  decided:hooks_counted{1}  ->  narrowed:beam_discounted_uncertain{0,1}
+      2  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      2  narrowed:flag_ink_unread{1,2}  ->  decided:head_and_marks{0}
+      2  narrowed:flag_ink_unread{1,2}  ->  narrowed:beam_discounted_uncertain{0,1}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 690
+    690  narrowed beam_discounted_uncertain levels [0, 1]
+  (status of those heads in the arm: {'narrowed': 690} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_v5_fix_brahms_tiles.json 8

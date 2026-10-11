@@ -1,0 +1,32 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix/litolff-t.record.json
+   provenance 2fb8dae8276c2697c9b5d7733abe99ead4b188ca dirty=False
+base /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-v5/litolff-t.record.json
+   provenance 28f1bda4fbba8cfb81ce7c2de228ead08e84c3b2 dirty=False
+
+heads with a standing duration verdict: base 5999  arm 5999  in both 5999 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base   1602   arm   1573
+  abstained:ambiguous:ink_not_flag_shaped                 base    421   arm    417
+  abstained:ambiguous:ink_past_the_tip                    base      0   arm     23
+  abstained:ambiguous:no_room                             base    339   arm    334
+  abstained:ambiguous:runs_on                             base     82   arm     70
+  abstained:occupied:head_at_this_end                     base   3575   arm   3575
+  abstained:occupied:occupied                             base    518   arm    507
+  observed:flag                                           base    170   arm    209
+  observed:none                                           base   1115   arm   1114
+
+duration verdicts changed (matched heads): 20 of 5999
+      7  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+      6  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      2  decided:head_and_marks{0}  ->  narrowed:flag_ink_unread{1,2}
+      2  decided:hollow_head_bare_stem{0}  ->  narrowed:head_fill_from_ink{0}
+      1  decided:head_and_marks{0}  ->  narrowed:tip_readers_disagree{0,1}
+      1  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+      1  narrowed:head_fill_from_ink{0}  ->  narrowed:flag_ink_unread{1,2}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 317
+    316  narrowed beam_discounted_uncertain levels [0, 1]
+      1  decided level 1 (hooks_counted)
+  (status of those heads in the arm: {'narrowed': 316, 'kept': 1} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_v5_fix_litolff_t.json 20

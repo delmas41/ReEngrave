@@ -212,9 +212,12 @@ class TestADisputedTipNarrowsAndNeverDecidesZero(unittest.TestCase):
     the hook counter under it) reads a hook, the two witnesses DISAGREE: the head is NARROWED between its own level 0 and the hook's
     level, with no ordering claim -- never decided 0, and never decided as the hook."""
 
-    def _up_head_alone(self, log, *, hollow=False, box_h=16):
+    def _up_head_alone(self, log, *, hollow=False, box_h=16, beam="decoy"):
         _staff_space(log)
-        _beam(log, y=2, x0=400, x1=460)               # a decoy beam far away: the beam reader READ the cell
+        if beam == "ran_empty":                       # a BEAMLESS cell: the CV beam reader ran and accepted nothing
+            log.abstain(CELL, Q.BEAM_STROKE, reader=READERS.CV_LINES, frame="cell:0", reason=ABSTAIN.NO_LINE_ACCEPTED)
+        else:
+            _beam(log, y=2, x0=400, x1=460)           # a decoy beam far away: the beam reader READ the cell
         g = R.glyph(0, 0, 0, 0, 0)
         log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, box_h), reader=READERS.DETECTOR, frame="cell:0", score=0.9)
@@ -331,6 +334,46 @@ class TestADisputedTipNarrowsAndNeverDecidesZero(unittest.TestCase):
             adjudicate.run(log)
             v = log.verdict(Q.DURATION, g)
             self.assertEqual(v.reason == "hollow_head_bare_stem", expect_half, (h_spaces, v.reason))
+
+    def test_a_hollow_head_in_a_BEAMLESS_cell_whose_tip_cannot_be_read_is_NARROWED_not_decided_black_RED(self):
+        """⚠️ Rule 8, found by the count-page diff (Litolff pdf 3 `glyph/2/0/7/6/1`, a hollow half note): in a cell the beam reader ran in and
+        accepted nothing, 2.70 decides the half over a clean tip, and with the tip NOT read clean the head used to fall through to the
+        detector's black, DECIDED. Hollow ink on a one-head box now narrows (black, half, whole: the answer inside), as it does in a cell with beams."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True, beam="ran_empty")
+        # no tip row at all: the tip reader could not tell
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates), [1.0, 2.0, 4.0])
+
+    def test_CONTROL_the_same_beamless_cell_with_a_CLEAN_tip_is_still_decided_half(self):
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True, beam="ran_empty")
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_CONTROL_a_beamless_cell_hollow_reading_on_a_CLUSTER_box_keeps_the_detectors_black(self):
+        """A box 3 spaces tall is not one head: its ink windows say nothing about a head, so the detector's black stands (as in main)."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True, box_h=3 * 16, beam="ran_empty")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "head_and_marks")
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_CONTROL_a_FILLED_head_in_a_beamless_cell_is_still_decided_black(self):
+        """No hollow reading, no narrowing: an ordinary quarter in a beamless cell decides as before."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=False, beam="ran_empty")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
 
 
 if __name__ == "__main__":

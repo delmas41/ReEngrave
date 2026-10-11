@@ -1,0 +1,31 @@
+/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-v5/litolff-t.record.json 5999 heads with a box
+  hollow_head_bare_stem    n=   45 height spaces: min 0.79 p10 1.00 median 1.41 p90 3.24 p99 3.95 max 3.95; >1.8: 9  >2.2: 9
+  head_fill_from_ink       n=   46 height spaces: min 0.37 p10 0.71 median 1.18 p90 3.03 p99 4.56 max 4.56; >1.8: 11  >2.2: 9
+  head_and_marks           n= 4547 height spaces: min 0.25 p10 1.05 median 1.31 p90 1.51 p99 2.85 max 6.07; >1.8: 186  >2.2: 112
+     TALL hollow-decided glyph/4/1/4/11/4  h 3.95 w 1.49
+     TALL hollow-decided glyph/15/1/1/0/13  h 3.44 w 1.46
+     TALL hollow-decided glyph/13/0/5/4/2  h 3.30 w 1.48
+     TALL hollow-decided glyph/4/0/7/7/10  h 3.29 w 1.54
+     TALL hollow-decided glyph/4/1/4/1/2  h 3.24 w 1.56
+     TALL hollow-decided glyph/4/0/3/9/8  h 3.22 w 1.70
+     TALL hollow-decided glyph/15/1/5/11/3  h 2.91 w 1.45
+     TALL hollow-decided glyph/15/1/3/17/5  h 2.82 w 1.41
+     TALL hollow-decided glyph/4/0/3/10/11  h 2.67 w 1.55
+/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix/litolff-t.record.json 5999 heads with a box
+  hollow_head_bare_stem    n=   36 height spaces: min 0.79 p10 1.00 median 1.34 p90 1.53 p99 1.58 max 1.58; >1.8: 0  >2.2: 0
+  head_fill_from_ink       n=   47 height spaces: min 0.37 p10 0.71 median 1.18 p90 3.22 p99 3.88 max 3.88; >1.8: 12  >2.2: 10
+  head_and_marks           n= 4545 height spaces: min 0.25 p10 1.05 median 1.31 p90 1.51 p99 2.93 max 6.07; >1.8: 193  >2.2: 119
+/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-v5/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json 1286 heads with a box
+  hollow_head_bare_stem    n=   16 height spaces: min 0.79 p10 1.01 median 1.43 p90 3.18 p99 4.12 max 4.12; >1.8: 6  >2.2: 6
+  head_fill_from_ink       n=    9 height spaces: min 0.28 p10 0.28 median 1.71 p90 3.98 p99 3.98 max 3.98; >1.8: 4  >2.2: 2
+  head_and_marks           n= 1069 height spaces: min 0.28 p10 1.05 median 1.30 p90 1.53 p99 3.00 max 6.96; >1.8: 42  >2.2: 21
+     TALL hollow-decided glyph/2/0/4/3/10  h 4.12 w 1.52
+     TALL hollow-decided glyph/3/1/7/1/4  h 3.18 w 1.48
+     TALL hollow-decided glyph/3/1/4/12/3  h 2.80 w 1.51
+     TALL hollow-decided glyph/2/0/5/2/5  h 2.63 w 1.59
+     TALL hollow-decided glyph/2/0/4/3/3  h 2.49 w 1.51
+     TALL hollow-decided glyph/3/0/8/7/8  h 2.37 w 1.42
+/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json 1286 heads with a box
+  hollow_head_bare_stem    n=   10 height spaces: min 0.79 p10 1.01 median 1.33 p90 1.44 p99 1.44 max 1.44; >1.8: 0  >2.2: 0
+  head_fill_from_ink       n=    8 height spaces: min 0.28 p10 0.28 median 1.83 p90 3.98 p99 3.98 max 3.98; >1.8: 4  >2.2: 2
+  head_and_marks           n= 1075 height spaces: min 0.28 p10 1.05 median 1.30 p90 1.55 p99 3.06 max 6.96; >1.8: 48  >2.2: 27
