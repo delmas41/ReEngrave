@@ -230,9 +230,28 @@ def stem_finder_repairs() -> frozenset:
 THIN_STEM_PROTRUDE_SPACES = 0.8
 
 
+#: Marks whose own strokes are NOT stems, with the share of a stroke's area that
+#: must lie inside the mark's box for the stroke to be the mark's own. `kind` is
+#: spelled by the caller from the detector's class name (`mark_kind`).
+#:
+#: A stem is never drawn inside a clef, a key signature or a time-signature
+#: numeral, so a half-inside stroke there is already the mark's (the detector's
+#: boxes on a scan are loose or tight by a few pixels): 0.5. An accidental or a
+#: rest sits BESIDE a stem and its box can brush one: 0.8.
+#:
+#: A FLAG IS NOT IN THIS TABLE, and that was measured, not assumed. The
+#: detector's flag box wraps a SHORT flagged stem (2 spaces: stem, tip and
+#: curve) whole -- on Sean's Brahms page 0 a 0.8 share refused two of his real
+#: stems (b4282, b4289) -- so "inside a flag box" cannot tell the stem from the
+#: flag's rising curve. 8 curve strokes stay invented until something that CAN
+#: tell them apart (the curve does not stand at a head's side) is built.
+OWNER_MIN_SHARE = {"clef": 0.5, "key": 0.5, "digit": 0.5,
+                   "accidental": 0.8, "rest": 0.8}
+OWNER_KINDS = tuple(OWNER_MIN_SHARE)
+
+
 def mark_kind(smufl_name: str) -> str | None:
-    """The kind of mark a detector class name is (accidental, key, clef, digit,
-    flag, rest), or None."""
+    """The `OWNER_KINDS` a detector class name belongs to, or None."""
     n = str(smufl_name)
     low = n.lower()
     if low.startswith("accidental"):
@@ -259,6 +278,14 @@ def _inside_share(stroke, mark) -> float:
     ih = min(sy1, my + mh) - max(sy0, my)
     area = max(1, stroke.width_canonical * stroke.height_canonical)
     return max(0.0, iw) * max(0.0, ih) / area
+
+
+def _owned_by(stroke, marks, kinds) -> str | None:
+    """The kind of the first mark in `kinds` that owns `stroke`, or None."""
+    for kind, box in marks:
+        if kind in kinds and _inside_share(stroke, box) >= OWNER_MIN_SHARE[kind]:
+            return kind
+    return None
 
 
 def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
@@ -898,6 +925,12 @@ def detect_stems(
             height_canonical=int(h),
             confidence=1.0,
         ))
+    # OMR_STEM_FINDER=refuse_owned: a stroke that lies inside a clef, key
+    # signature, time-signature digit, accidental, flag or rest box is that
+    # mark's own stroke (1.7 stems: 65 of the 68 strokes that are not Sean's
+    # stems lie on exactly these). ONLY where the caller supplied the boxes.
+    if "refuse_owned" in stem_finder and marks is not None:
+        out = [s for s in out if _owned_by(s, marks, OWNER_KINDS) is None]
     on_acc = None
     if "pair_evidence" in stem_finder and marks is not None:
         on_acc = [any(k in ("accidental", "key") and _inside_share(s, b) >= 0.5
@@ -931,10 +964,17 @@ def detect_stems(
             kept_boxes = {(s.x_canonical, s.y_canonical,
                            s.width_canonical, s.height_canonical)
                           for s in out}
+            before_boxes = {(s.x_canonical, s.y_canonical,
+                             s.width_canonical, s.height_canonical)
+                            for s in before}
             for i, cand in enumerate(candidates_out):
                 if cand.outcome != RUN_ACCEPTED:
                     continue
                 if (cand.x, cand.y, cand.w, cand.h) in kept_boxes:
+                    continue
+                # a stroke `refuse_owned` removed BEFORE the pair rule never
+                # reached it: it stays as recorded, not PAIRED
+                if (cand.x, cand.y, cand.w, cand.h) not in before_boxes:
                     continue
                 candidates_out[i] = replace(cand, outcome=RUN_PAIRED)
     # ── `OMR_STEM_STROKE`: the column profile, ADDED, never substituted ──

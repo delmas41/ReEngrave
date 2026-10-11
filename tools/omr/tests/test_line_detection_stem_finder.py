@@ -161,3 +161,55 @@ def test_mark_kind_vocabulary():
     assert mark_kind("flag8thDown") == "flag" and mark_kind("restWhole") == "rest"
     assert mark_kind("accidentalSharp") == "accidental"
     assert mark_kind("noteheadBlackInSpace") is None and mark_kind("stem") is None
+
+
+# ── refuse_owned ────────────────────────────────────────────────────────────
+
+def _clef_stroke(img):
+    _rect(img, 400, 150, 410, 450)            # a clef's spine, 3 spaces
+
+
+def test_owned_stroke_is_a_stem_in_the_shipped_reader():
+    assert len(detect_stems(_cell(_clef_stroke), stem_finder=OFF)) == 1
+
+
+def test_refuse_owned_refuses_a_stroke_inside_a_clef_box():
+    marks = [("clef", (380, 120, 90, 360))]
+    assert detect_stems(_cell(_clef_stroke), marks=marks,
+                        stem_finder=frozenset({"refuse_owned"})) == []
+
+
+def test_refuse_owned_control_a_stem_touching_a_flag_box_stays():
+    # the flag box covers only the stem's tip: a small share of the stroke
+    cell = _cell(lambda i: _rect(i, 400, 200, 408, 700))
+    marks = [("flag", (400, 200, 70, 120))]
+    assert len(detect_stems(cell, marks=marks,
+                            stem_finder=frozenset({"refuse_owned"}))) == 1
+
+
+def test_refuse_owned_control_a_short_flagged_stem_inside_its_flag_box_stays():
+    # Brahms b4282/b4289: the detector's flag box wraps a 2-space flagged stem
+    # whole, so a flag is NOT an owner (a 0.8 share refused two real stems)
+    cell = _cell(lambda i: _rect(i, 400, 300, 408, 520))
+    marks = [("flag", (390, 290, 80, 250))]
+    assert len(detect_stems(cell, marks=marks,
+                            stem_finder=frozenset({"refuse_owned"}))) == 1
+
+
+def test_refuse_owned_a_half_inside_numeral_stroke_is_refused():
+    cell = _cell(lambda i: _rect(i, 400, 200, 406, 500))
+    marks = [("digit", (380, 150, 60, 220))]    # 170 of 300 px inside = 0.57
+    assert detect_stems(cell, marks=marks,
+                        stem_finder=frozenset({"refuse_owned"})) == []
+
+
+def test_refuse_owned_control_a_stem_beside_an_accidental_box_stays():
+    cell = _cell(lambda i: _rect(i, 400, 200, 408, 700))
+    marks = [("accidental", (330, 380, 60, 260))]
+    assert len(detect_stems(cell, marks=marks,
+                            stem_finder=frozenset({"refuse_owned"}))) == 1
+
+
+def test_refuse_owned_without_boxes_does_nothing():
+    assert len(detect_stems(_cell(_clef_stroke), marks=None,
+                            stem_finder=frozenset({"refuse_owned"}))) == 1
