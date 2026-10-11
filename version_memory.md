@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
+
+- `lane-tenuto-ledger` (`cc58e6bc`) merged (Sean: "land"). STAGED, ADJUDICATE: `adjudicate_articulation_is_not_an_articulation` refuses an `articTenuto*` dash lying between a head of its bar and the staff that OWNS that head (`ledger_between_staff_and_note`), abstains where that owner is unread; moved after `Q.GLYPH_OWNER` in ORDER. Census: 42 tenuto boxes on both whole movements, 0 real tenutos. Sean's 12 blind tiles: 0 wrong, mirror below the staff holds. 23 tests (RED 10 on origin/main). FINDINGS `benchmarks/omr-tenuto-ledger-2026-10/` §6.
+- Next in the landing order: stem finder 2.87 -> 2.83 -> 2.12m.
+
 ## 2026-10-11 -- crops-bar-drift landed on main
 
 - 5 crops under `out/print/bar-drift/` (Brahms 317803 pdf p10/p11, bar-number drift) and Sean's two DECISIONS lines: 1st-ending bars are uncounted (188 -> 194 -> 205); the courtesy key signature at p11 is not a bar. Crops and DECISIONS only, no code.
