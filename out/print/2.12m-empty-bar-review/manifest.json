@@ -1,0 +1,348 @@
+{
+ "dpi": 600,
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "pdf_page_index": 9,
+   "page_box_600dpi": [
+    1191,
+    5322,
+    1247,
+    5352
+   ],
+   "subject": "glyph/9/1/6/0/5",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/9/1/6/0/7 (other staff staff/9/1/5 empty), owner page box [1190.859375, 5356.708984375, 1229.30859375, 5387.99609375]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 1.88,
+    "centroid_offset": [
+     0.03,
+     0.09
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "pdf_page_index": 5,
+   "page_box_600dpi": [
+    3954,
+    5964,
+    4007,
+    5984
+   ],
+   "subject": "glyph/5/1/9/6/3",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/5/1/9/6/8 (other staff staff/5/1/8 empty), owner page box [3946.5875, 6027.4925, 3986.645, 6062.645]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 7.78,
+    "centroid_offset": [
+     0.02,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "pdf_page_index": 9,
+   "page_box_600dpi": [
+    5276,
+    1944,
+    5331,
+    1973
+   ],
+   "subject": "glyph/9/0/6/8/2",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/9/0/6/8/13 (other staff staff/9/0/5 empty), owner page box [5277.45, 1980.9, 5313.475, 2011.15]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 2.92,
+    "centroid_offset": [
+     0.03,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "pdf_page_index": 4,
+   "page_box_600dpi": [
+    1573,
+    3111,
+    1580,
+    3119
+   ],
+   "subject": "glyph/4/1/7/7/2",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_contradicts_class_side",
+   "read_after": "decided other_staff_bar_empty: owner glyph/4/1/7/7/0 (other staff staff/4/1/6 empty), owner page box [1560.96, 3131.64, 1587.2, 3154.36]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 14.33,
+    "centroid_offset": [
+     0.0,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "pdf_page_index": 12,
+   "page_box_600dpi": [
+    1419,
+    380,
+    1443,
+    386
+   ],
+   "subject": "glyph/12/0/0/7/9",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/12/0/0/7/0 (other staff staff/12/0/1 empty), owner page box [1418.74, 353.56, 1446.145, 374.98]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 7.26,
+    "centroid_offset": [
+     0.01,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "pdf_page_index": 9,
+   "page_box_600dpi": [
+    3158,
+    1924,
+    3213,
+    1954
+   ],
+   "subject": "glyph/9/0/6/4/5",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/9/0/6/4/9 (other staff staff/9/0/5 empty), owner page box [3160.875, 1977.325, 3199.1, 2009.775]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 2.98,
+    "centroid_offset": [
+     0.03,
+     0.08
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "pdf_page_index": 18,
+   "page_box_600dpi": [
+    1944,
+    2529,
+    1996,
+    2559
+   ],
+   "subject": "glyph/18/0/9/1/28",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/18/0/9/1/5 (other staff staff/18/0/8 empty), owner page box [1947.14501953125, 2581.4765625, 1984.77294921875, 2616.974609375]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 3.45,
+    "centroid_offset": [
+     0.03,
+     0.1
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "pdf_page_index": 4,
+   "page_box_600dpi": [
+    4420,
+    2568,
+    4471,
+    2598
+   ],
+   "subject": "glyph/4/0/9/8/8",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/4/0/9/8/4 (other staff staff/4/0/8 empty), owner page box [4418.25, 2617.95, 4454.275, 2649.575]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 5.92,
+    "centroid_offset": [
+     0.03,
+     0.07
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "pdf_page_index": 19,
+   "page_box_600dpi": [
+    4162,
+    5900,
+    4214,
+    5929
+   ],
+   "subject": "glyph/19/1/8/6/5",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/19/1/8/6/0 (other staff staff/19/1/7 empty), owner page box [4158.375, 5945.825, 4196.05, 5978.275]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 4.41,
+    "centroid_offset": [
+     0.0,
+     0.13
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    4458,
+    1198,
+    4469,
+    1209
+   ],
+   "subject": "glyph/3/0/2/7/0",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/3/0/2/7/1 (other staff staff/3/0/1 empty), owner page box [4443.965, 1217.0675, 4480.3175, 1229.0]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 18.17,
+    "centroid_offset": [
+     0.01,
+     0.06
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    4739,
+    5165,
+    4748,
+    5174
+   ],
+   "subject": "glyph/3/1/5/8/8",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/3/1/5/8/7 (other staff staff/3/1/4 empty), owner page box [4721.525, 5185.425, 4760.575, 5218.15]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 21.96,
+    "centroid_offset": [
+     0.06,
+     0.02
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "pdf_page_index": 2,
+   "page_box_600dpi": [
+    1469,
+    3072,
+    1475,
+    3078
+   ],
+   "subject": "glyph/2/1/6/6/7",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/2/1/6/6/8 (other staff staff/2/1/5 empty), owner page box [1456.815, 3084.765, 1481.8575, 3105.3975]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 51.33,
+    "centroid_offset": [
+     0.01,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 13,
+   "file": "tile_13.png",
+   "pdf_page_index": 3,
+   "page_box_600dpi": [
+    1165,
+    5897,
+    1220,
+    5913
+   ],
+   "subject": "glyph/3/1/9/0/5",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/3/1/9/0/4 (other staff staff/3/1/8 empty), owner page box [1164.4462890625, 5920.6435546875, 1202.5810546875, 5953.439453125]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 2.62,
+    "centroid_offset": [
+     0.12,
+     0.07
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 14,
+   "file": "tile_14.png",
+   "pdf_page_index": 9,
+   "page_box_600dpi": [
+    2628,
+    5303,
+    2681,
+    5331
+   ],
+   "subject": "glyph/9/1/6/3/4",
+   "question": "Which note does the mark in the brackets belong to, and is it above or below that note?",
+   "read_before": "abstained/stem_direction_unread",
+   "read_after": "decided other_staff_bar_empty: owner glyph/9/1/6/3/5 (other staff staff/9/1/5 empty), owner page box [2627.025, 5350.7, 2661.95, 5382.05]",
+   "category": "empty_bar",
+   "frame_control": {
+    "ink_ratio": 2.78,
+    "centroid_offset": [
+     0.0,
+     0.12
+    ],
+    "passes": true
+   }
+  }
+ ],
+ "frame_control": {
+  "tiles": 14,
+  "ratio_threshold": 1.5,
+  "centroid_offset_max": 0.3,
+  "real_box_passes": 14,
+  "SHIFTED_(40,40)px_box_passes(control, must be low)": 1
+ }
+}

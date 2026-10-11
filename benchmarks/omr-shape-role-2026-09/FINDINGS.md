@@ -3500,3 +3500,32 @@ Two more conventions from Sean in the same answer, recorded, NOT built:
   notes is the notes' staff's. A resolver for twin conflicts / cross-staff owners.
 * *"When there are multiple voices it will often choose whichever side it can be closest
   to the notes it applies to"* — a TENDENCY ("often"), so INFER-grade at most.
+
+## 10. The other staff's bar is empty → the mark is the noted staff's (built `408398f6`)
+
+Sean: *"when the other system in question has an empty measure then it has to belong to
+the one with notes in it"*. STAGED, ADJUDICATE, `adjudicate_articulation_owner`, reason
+`other_staff_bar_empty`. Acts only where the decision would abstain for a STEM reason
+(`stem_direction_unread`, `stem_contradicts_class_side`). The other staff is the one on
+the mark's declared side. EMPTY is read, never defaulted: no notehead in that bar is that
+staff's (a decided `Q.GLYPH_OWNER` naming it, or an undecided head filed in its cell) AND
+its own cell holds a `restWhole`. Then the mark goes to the head the stem reason was
+about, alone within the tie tolerance; otherwise the old abstention with
+`other_staff_bar` = `has_notes` / `no_measure_rest` / `empty` (tie) named.
+
+**Population first** (`probe_bars` over the saved records, before any code): Brahms whole
+10 stem-reason abstentions with an empty neighbouring bar holding a whole rest (4 with a
+twin there, 6 without), Litolff whole 1. **Measured** (arm2 `787fa6af` → arm3
+`408398f6`, clean; controls unchanged): Brahms whole **9** → decided (the 10th: two heads
+level, still abstained `empty`), Litolff whole **1**, Brahms p0-p3 3 (one the same mark as
+whole), Litolff p1-p4 2 (`4/1/7/7/2` was `stem_contradicts_class_side` in a two-voice
+column). Every other row identical but for the new detail key; fermatas identical. Still
+abstained on Brahms whole, by `other_staff_bar`: `has_notes` 96, `no_measure_rest` 13,
+`empty` 1. Tests `test_staged_articulation_empty_bar_2026_10_10.py` (7): 2 decide RED
+against `7dea977d`, 5 refusals each the decided page with one fact changed (a note there;
+nothing read; a quarter rest; no staff on that side; two heads level). Articulation tests
+76 of 76; `check` 192 → 192.
+
+**Tiles** `out/print/2.12m-empty-bar-review/` — 14 unique marks (seed 20261012; the
+count-page records carry no PDF path, filled from the same edition's whole record; frame
+control **14 of 14 real, 1 of 14 shifted**), waiting on Sean.
