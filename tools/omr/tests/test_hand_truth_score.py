@@ -61,7 +61,9 @@ def synth_truth(*, sean_owners: bool = False, all_ink: bool = True, cautionary: 
                 sp_mid = (4 - pos) if sean_owners else None  # steps from the middle line, up positive
                 box("noteheadBlackInSpace" if pos % 2 else "noteheadBlackOnLine",
                     (x - 12, cy - 10, x + 12, cy + 10), origin, cid, owner, sp_mid)
-            box("stem", (x0 + 130, top + 5, x0 + 134, top + 70), "prefill-confirmed", cid)
+            # a DOWN stem stands at the LEFT edge of its head (CLAUDE.md §10), so the stem control's truth direction is
+            # judged: the head box is x0+108..132 and this stem's centre is left of the head's
+            box("stem", (x0 + 105, top + 5, x0 + 109, top + 70), "prefill-confirmed", cid)
             box("slur", (x0 + 100, top - 30, x0 + 300, top - 5), "drawn", cid)
             # a far head: 3 staff spaces above the top line, with its ledger lines
             box("noteheadBlackOnLine", (x0 + 330, top - 3 * SP - 10, x0 + 354, top - 3 * SP + 10), "drawn", cid)

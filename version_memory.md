@@ -22,6 +22,74 @@ pointing at headings no longer in the file.)*
 
 ---
 
+
+## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (LANDED on main, Sean: "Yes")
+
+- Census of every 2.13 read on both acceptance movements against the plate (84 systems; frame control re-reads the record 84/84). Tesseract: Brahms 13 right / **22 wrong** of 35 decided (bold 1→4, leading 1 lost to the bracket curl, 6-space crop clips the third digit); Litolff 21 / 7.
+- `bar_number_text.read_crops_surya` (8-space crop, 60 px pad, 2x, 16 tokens) via `gather._printed_bar_numbers_surya`, filed under `READERS.SURYA`; `gather()` passes `surya=surya_fallback`. Shipped function on the real raster: Brahms 32 / 0 wrong, Litolff 27 / 0. No cascade (Tesseract where Surya is silent: 5 right / 7 wrong). No new flag; ADJUDICATE/EXPORT untouched.
+- `printed_bar_check`: deltas now clean steps (Brahms −2 at 194, −3 at 215; Litolff −1 at 171, −2 at 430). Tests RED first (10/10), `check` 192 unchanged. FINDINGS `omr-bar-number-2026-09` §7; crops for Sean in `out/print/2.13b-bar-number/`.
+- Sean confirmed all 84 plate-reading tiles the same day (DECISIONS); the counts stand against print truth.
+
+## 2026-10-11 — 2.87 the stem finder LANDED on main, switch ON on STAGED
+
+- Sean: *"Land switch on"*. `219301ba`: `STEM_FINDER_STAGED_DEFAULT` = thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head; `OMR_STEM_FINDER` unset -> that set on STAGED, set -> exactly the list; LEGACY's default stays empty (frozen). `head_contact` built, OFF. Tests RED first (6 of 7).
+- Control: Brahms acceptance_quick re-gather with the env UNSET on the committed tree (clean): Q.STEM rows identical to the measured arm `f1` on pdf 0 and 1 (326, 648); base differs (358 vs 326). Sean's page: 227/234 found, 18 not stems, 320/335 heads on the right stem, 0 narrowed.
+- 2.83 trial merge on top: only `omr-missing-notes-2026-09/FINDINGS.md` conflicts (two section 18s: keep both, renumber 2.83's); code auto-merges, 153 tests pass. 2.83 must re-measure with the stem finder on.
+
+## 2026-10-11 — 2.87 round 2: `head_contact` and `one_stem_per_head` (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- STAGED ADJUDICATE only, no GATHER change. Two new names on the `OMR_STEM_FINDER` allow-list (default empty): `head_contact` -> new quantity `Q.STEM_HEAD_CONTACT` (`stem_value.adjudicate_stem_head_contact`, cell-level verdict listing the strokes that touch no notehead; a stroke cut by the crop edge is not judged), read by `rhythm._not_a_decided_arc`, `_not_the_neighbours_beam`, `_not_a_beam_by_ink` and `family_precision` rest-has-a-stem / slashed-stem; `one_stem_per_head` inside `adjudicate_head_stem` (reasons `stem_by_one_per_head`, `unison_two_voices`).
+- CONVENTION (Sean 2026-10-11): every stem touches a notehead; every black head has one stem except a unison, whose two stems go in different directions. FINDINGS `hand-truth-score-2026-10` 9.7. `staged.check` open 192 -> 192. Measured on re-adjudicated `f1` records: Sean's page heads right 319 -> 320 of 335 (`q1322` decided); `head_contact` negative on Litolff p3 (two eighths narrowed), 0 on Brahms p1.
+- Fence: `adjudicate_duration` body and `_attached_flags` untouched (lane 2.83); only the decorator's `wants`/`composed_from` gained `Q.STEM_HEAD_CONTACT`.
+
+- Round 2 (Sean, 9 tiles): unison 5/5 right, controls 2/2; tiles 5-6 eighths -> `head_contact` wrong on both, stays OFF; `one_stem_per_head` confirmed.
+
+## 2026-10-11 — 2.87 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
+- Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.
+- Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
+- Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
+- Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
+- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 = the boxed mark is a notehead (his truth gives `q1322` two real stems; first misread as notehead ink, corrected) -> 227 of 245 stem strokes real, 18 not. FINDINGS 9.6; DECISIONS. Not landed.
+- Sean: add the 7 stems to his hand truth -> `b4352`-`b4358` (234 stems; INVENTORY regenerated). Re-scored base -> arm: found 175 -> 227 of 234, invented 66 -> 18, heads right 218 -> 319 of 335.
+
+## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
+
+- `lane-tenuto-ledger` (`cc58e6bc`) merged (Sean: "land"). STAGED, ADJUDICATE: `adjudicate_articulation_is_not_an_articulation` refuses an `articTenuto*` dash lying between a head of its bar and the staff that OWNS that head (`ledger_between_staff_and_note`), abstains where that owner is unread; moved after `Q.GLYPH_OWNER` in ORDER. Census: 42 tenuto boxes on both whole movements, 0 real tenutos. Sean's 12 blind tiles: 0 wrong, mirror below the staff holds. 23 tests (RED 10 on origin/main). FINDINGS `benchmarks/omr-tenuto-ledger-2026-10/` §6.
+- Next in the landing order: stem finder 2.87 -> 2.83 -> 2.12m.
+
+## 2026-10-11 -- crops-bar-drift landed on main
+
+- 5 crops under `out/print/bar-drift/` (Brahms 317803 pdf p10/p11, bar-number drift) and Sean's two DECISIONS lines: 1st-ending bars are uncounted (188 -> 194 -> 205); the courtesy key signature at p11 is not a bar. Crops and DECISIONS only, no code.
+- Next in the landing order: tenuto 2.84 (`lane-tenuto-ledger`, Mac session) -> stem finder 2.87 -> 2.83 -> 2.12m.
+
+## 2026-10-11 -- q883 landed on main (PR #68, merge `dc6f90d9`)
+
+- Sean's blind answers now on main: 2.78 phase 2, 2.12f r2, 2.75 chords, rhythm-leftovers-3, 2.79, 2.12m (3 right, 2 wrong of 5 decided -- not landing as built), 2.84 tenuto tiles (0 tenutos: 5 ledgers, 6 other ink); ROADMAP rows 2.85 and 2.86; box `q883` removed from `data/hand-truth/pages/imslp317803/0.json` (a staff line, not a beam).
+- Coordination: 2.84 = tenuto (`lane-tenuto-ledger`); the stem finder is renumbered 2.87. Agreed landing order: q883 -> crops-bar-drift -> tenuto 2.84 -> stem finder 2.87 -> 2.83 -> 2.12m.
+- Checks (cloud, no library/weights/skimage): answers.json and hand-truth JSON parse; hand-truth tests 54 passed, 86 failed (missing `skimage`), 1 skipped -- identical counts on bare origin/main.
+
+## 2026-10-10 (evening) — q883 crop for Sean; blind-tile gallery
+
+- `out/print/2.82/q883-for-sean.png`: Sean's beam box `q883` redrawn in red over the 2.82 truth crop, sent to Sean to confirm it is a staff line, not a beam (truth slip; not yet removed from `data/hand-truth/pages/imslp317803/0.json`).
+- The 43 waiting blind tiles (2.78, 2.12f, 2.75, rhythm-leftovers-3, 2.79) published to Sean as a private answer gallery; answers come back through the page's store and get filed into each set's answers.json.
+- Sean judged the 12 2.78 phase-2 tiles: 10 right, 2 wrong (5: 16ths written as eighths; 6: eighths written as quarters -- the stem value sided with the wrong head). `out/print/2.78-phase2-review/answers.json`; DECISIONS line.
+- Brahms bar-number drift traced (diagnosis only, no code): candidates = first-ending bars counted (p10 s1, +2) and a courtesy key after p11 s1's last barline kept as a bar (+1); Litolff = a stray barline column (p6 s1, p13-14). Question to Sean pending.
+- Sean answered the other 31 gallery tiles: 2.12f 6/6 decided right (2 and 9 first mis-scored, corrected), 3 marks are ledger lines; Sean's articulation-side convention recorded (notehead side, except two voices or a long chord stem -> stem side); 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
+- Sean: q883 is not a beam -> removed from his Brahms page (1,345 boxes); INVENTORY regenerated.
+- Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
+- Sean's 21 gallery answers (2026-10-11): 2.12m 3 right / 2 wrong of 5 decided (it picked the upper staff's stem-down chord; the accent was the lower chord's) -> not landing as built; 2.84 tenuto tiles: 0 tenutos, 5 ledgers, 6 other ink (E, beam, half note, p, slur, accent area); mirror confirmed. answers.json in both review dirs.
+
+## 2026-10-10 (night) — 1.7 stems landed
+
+- `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
+
+
+## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
+
+- 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
+- 2.81 measured (~0.76, below 95%) and its misses imaged; 2.83 (flag tip) and 1.7-stems (stem measurement) running at session end. ROADMAP START HERE names the next session's plan.
 ## 2026-10-11 (day) — 2.83 flag-tip: Sean's blind answers recorded
 
 - `out/print/2.83-review/answers.json` (branch `lane-2.83-flag-tip`, not merged to main): arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow).

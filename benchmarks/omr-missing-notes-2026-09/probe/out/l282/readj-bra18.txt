@@ -1,0 +1,16 @@
+== 1. head duration verdicts ==
+   base -> thin: 6 heads changed
+         4  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+         2  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  narrowed [0.5, 1.0] beams_ambiguous
+   thin -> full: 9 heads changed
+         4  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+         2  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  narrowed [0.5, 1.0] beams_ambiguous
+         2  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.25 head_and_marks
+         1  narrowed [0.75, 1.5] beam_discounted_uncertain  ->  decided 0.375 head_and_marks
+   base -> full: 15 heads changed
+         8  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+         4  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  narrowed [0.5, 1.0] beams_ambiguous
+         2  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.25 head_and_marks
+         1  narrowed [0.75, 1.5] beam_discounted_uncertain  ->  decided 0.375 head_and_marks
+
+== 2. ink refusals per (head, stroke) by reason ==

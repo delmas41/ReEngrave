@@ -3,11 +3,11 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-08 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-10-10 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
-## Where things stand (2026-10-09)
+## Where things stand (2026-10-10)
 
 **The product path is STAGED** (`tools/omr/staged/`, DECISIONS 2026-09-22):
 five stages — GATHER, ADJUDICATE, EVALUATE, INFER, EXPORT — every decision
@@ -42,8 +42,10 @@ thicker than a hairpin; the meter's denominator read on its own; dynamics owned 
 ink one letter, anchored to a note; hollow heads cut by a staff line rebuilt; tremolo slashes and dynamic letters are
 not noteheads. Every ruling is a dated line in `docs/DECISIONS.md`.
 
+**Reading fixes landed 2026-10-09/10 (night and day)**: every note on one stem shares one written value, and a whole note never has a stem (2.78); an articulation belongs to the note whose notehead side faces it, opposite the stem (2.12f); tie vs slur by Sean's two-note, chord (top/bottom) and stacked-arc rules (2.75); a whole-bar rest takes the meter of its own bar (2.79); a beam whose thick core stands on two stems counts, and 'touches one stem' needs positive evidence (2.82). The overnight `20261010-night` re-gather vs `20261009-all`: `benchmarks/acceptance/overnight/20261010-night/SUMMARY.md`. **The stem finder is the next lever**: it refuses a stem fused with stacked noteheads as too wide, and that one fault sits under missed beams, missed flags and most 'bare stem' notes (2.82 FINDINGS §18).
+
 **Truth is moving to hand-labeled pages** (ROADMAP 1.7, Sean 2026-10-08): the first page, Brahms
-317803 pdf 0, is being labeled (1,342 boxes by Sean on main 2026-10-09); the plan labels every bit of ink on a movement's first page and
+317803 pdf 0, is being labeled (1,346 boxes by Sean, 89 of 112 bar cells; 4 slips the scorer caught corrected 2026-10-10); the D1 scorer compares a record with it at GATHER+ADJUDICATE (`python3 -m tools.omr.hand_truth.score`, controls that fail); the plan labels every bit of ink on a movement's first page and
 its count page, cell by cell, stored in page pixels, across several publishers, and
 retires the MXL as scan truth ([plan](docs/plan-2026-10-08-hand-labeled-truth.md)).
 Each page is double-checked by Claude (flags only) and then rendered through
@@ -60,7 +62,7 @@ Litolff 984073 pdf 2, Dvořák 405834 pdf 4) hold nothing the current weights tr
 Beethoven 5, Breitkopf Brahms 1, one engraved render), the small re-gather
 during the day (`tools.omr.acceptance_quick`), the full overnight re-gather,
 and Sean's cleanup count every two weeks. `python3 -m tools.omr.staged.check`
-is the one hygiene number and must go down (192 on 2026-10-07 and 2026-10-09).
+is the one hygiene number and must go down (192 on 2026-10-07, 10-09 and 10-10).
 
 **Status of the pieces**: ROADMAP Phase 0 (consolidate) done apart from 0.4a;
 Phase 1 (acceptance harness) built; Phase 2 (close the foundation) in

@@ -1,0 +1,9 @@
+== 1. head duration verdicts ==
+   base -> thin: 0 heads changed
+   thin -> full: 0 heads changed
+   base -> full: 0 heads changed
+
+== 2. ink refusals per (head, stroke) by reason ==
+   base  {'too_thin': 186, 'no_stem_at_ends': 14, 'one_stem': 6, 'through_heads': 1}
+   thin  {'too_thin': 186, 'no_stem_at_ends': 14, 'one_stem': 6, 'through_heads': 1}
+   full  {'too_thin': 186, 'no_stem_at_ends': 14, 'one_stem': 6, 'through_heads': 1}

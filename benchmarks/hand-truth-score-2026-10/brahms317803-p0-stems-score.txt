@@ -1,0 +1,137 @@
+HAND-TRUTH SCORE  imslp317803:0 (state labeling)  --  GATHER + ADJUDICATE only
+record out/l17s-quick/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+  weights /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2f2e0afcb3ad202d/tools/omr/training/data/weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt  dpi 600  commit cc2ef5a35f  dirty False
+
+SCOPE  89 of 202 cells fully labeled (unscored: {'measure': 23, 'top': 31, 'margin': 53, 'bottom': 6}); truth boxes 1346, 1275 in scored cells; record boxes in scored cells 1397 of 1776 on the page
+  truth boxes by origin {'prefill-confirmed': 894, 'prefill-fixed': 71, 'drawn': 381}  --  a prefill-confirmed box IS the production detector's box
+  owner_staff / staff_position written by Sean: 0 of 1346 boxes; derived reference ON
+  trained/not-trained split: production scan weights; 0 cell(s) of this page in their training set
+  TRUTH COMPLETENESS (the repo's ink control over the scored cells): 529 ink component(s) of 3516 on the page are under half covered by truth boxes (234752 px). On a thick-lined scan that count includes staff-line slivers and unboxed barlines as well as missed marks, so it WARNS that precision is a lower bound; it does not count missed marks
+
+FRAME CONTROL  OK  dpi {'record': 600, 'truth': 600}  cells {'compared': 112, 'of': 112, 'max_abs_diff_px': 0.0, 'median_abs_diff_px': 0.0}  staff space 32.01px
+    drawn              n   28  median dx  -0.27  dy   0.26  (p10..p90 dx -5.4..2.63, dy -3.58..3.54)
+    prefill-confirmed  n  834  median dx  -0.03  dy  -0.06  (p10..p90 dx -0.14..0.0, dy -0.13..0.0)
+    prefill-fixed      n   24  median dx  -0.08  dy    0.0  (p10..p90 dx -3.26..3.91, dy -11.37..10.7)
+
+FAMILIES   recall / precision at GATHER (every detector box) and at ADJUDICATE (boxes it kept)
+family                   truth  read |  G rec G prec |  A rec A prec | drawn m/n conf rec  lost@A
+notehead                   338   390 |  1.000  0.867 |  0.985  0.951 |       6/6    1.000  5
+stem                       227    16 |  0.057  0.812 |  0.057  0.812 |     0/212    1.000  0
+  stem (CV Q.STEM)         227   243 |  0.762  0.720 |      -      - |         -        -  (Q.STEM is not adjudicated)
+ledger_line                226   184 |  0.695  0.853 |  0.695  0.975 |      4/73    1.000  0
+augmentation_dot           109   110 |  0.991  0.982 |  0.982  0.991 |       0/1    1.000  1
+tie                         70   157 |  0.586  0.261 |  0.614  0.672 |      2/10    1.000  10
+slur                        63   131 |  0.921  0.443 |  0.889  0.727 |       6/7    1.000  2
+beam                        41   144 |  0.805  0.229 |  0.805  0.264 |       0/8    1.000  0
+time_signature_digit        38    46 |  0.842  0.696 |  0.842  0.696 |       0/4    1.000  0
+accidental                  34    54 |  1.000  0.630 |  1.000  0.641 |       7/7    1.000  0
+flag                        31    35 |  0.935  0.829 |  0.935  0.853 |       1/2    1.000  0
+barline                     30     0 |  0.000    n/a |  0.000    n/a |      0/29      n/a  0
+rest                        16    20 |  1.000  0.800 |  1.000  0.941 |         -    1.000  0
+key_accidental              12    12 |  0.917  0.917 |  0.917  0.917 |         -    1.000  0
+tremolo                     11     0 |  0.000    n/a |  0.000    n/a |       0/6      n/a  0
+dynamic_letter               9    34 |  0.889  0.235 |  0.889  0.286 |       1/1    1.000  0
+brace                        8     0 |  0.000    n/a |  0.000    n/a |       0/8      n/a  0
+clef                         8    11 |  1.000  0.727 |  1.000  0.727 |       1/1    1.000  0
+text                         4     0 |  0.000    n/a |  0.000    n/a |       0/4      n/a  0
+articulation                 0     1 |    n/a  0.000 |    n/a  0.000 |         -      n/a  0
+class:arpeggiato             0     2 |    n/a  0.000 |    n/a  0.000 |         -      n/a  0
+staff_line                   1    66 | NOT SCORED: staff lines are confirmed per staff (lines_right), not boxed in the truth
+
+classes the truth has and the detector never produced: {'barlineDouble': 3, 'barlineSingle': 27, 'brace': 8, 'text': 4, 'tremolo1': 11}
+classes the detector produced and the truth never has: {'arpeggiato': 2, 'articTenutoBelow': 1, 'dynamicM': 2, 'dynamicP': 6, 'dynamicZ': 1, 'flag16thDown': 1, 'noteheadWholeInSpace': 12, 'staff': 50}
+
+NOTEHEADS (ADJUDICATE)  position unit: half-steps down from the top line (middle line = 4)
+  all                truth  338  matched  333  missed    5
+      owner     right  333  wrong    0  abstained    0  no_truth    0  accuracy of judged 1.000  truth source {'derived:staff': 243, 'derived:ledger': 90}
+      position  right  331  wrong    1  abstained    1  no_truth    0  accuracy of judged 0.997  truth source {'derived:staff': 243, 'derived:ledger': 90}
+      owner read from {'decided': 126, 'uncontested': 207}  (uncontested = no glyph_owner verdict: the head stays on the staff it was cut from)
+      position delta (read - truth) {'-1': 1, '0': 331}
+  trained_cells      truth    0  matched    0  missed    0
+  not_trained_cells  truth  338  matched  333  missed    5
+      owner     right  333  wrong    0  abstained    0  no_truth    0  accuracy of judged 1.000  truth source {'derived:staff': 243, 'derived:ledger': 90}
+      position  right  331  wrong    1  abstained    1  no_truth    0  accuracy of judged 0.997  truth source {'derived:staff': 243, 'derived:ledger': 90}
+      owner read from {'decided': 126, 'uncontested': 207}  (uncontested = no glyph_owner verdict: the head stays on the staff it was cut from)
+      position delta (read - truth) {'-1': 1, '0': 331}
+
+STEMS  two sources for the stem family (the detector CLASS, and the CV reader the product uses)
+  detector class `stem`   truth  227  read   16  GATHER recall 0.057 precision 0.812  ADJUDICATE recall 0.057
+  CV stems (Q.STEM)       truth  227  read  243  found 173 (whole 172)  recall 0.762  precision 0.720 (68 not Sean's)
+  either source           found 175 of 227  recall 0.771  (2 only the detector class boxed)
+    match: column within 0.25 local space, sharing 0.5 of the shorter's length; found = 0.5 of the truth stem covered
+    Q.STEM rows on the page 358, declined (no frame) 0, outside scored cells 115; frame {'cells_with_a_factor': 112, 'cells_checked_two_ways': 112, 'worst_relative_disagreement': 0.00193, 'cells_distrusted': 0}
+    CV stems that are not Sean's, by what lies under them: {'lies on a truth accidental': 10, 'lies on a truth time_signature_digit': 16, 'lies on a truth flag': 13, 'lies on a truth key_accidental': 11, 'lies on a truth clef': 13, "touches a head of Sean's that has no stem box": 3, 'lies on a truth rest': 2}
+    per staff (system.staff: found/truth, valid/read):
+      0.0   found   6/21  recall 0.286   valid   6/9   precision 0.667
+      0.1   found   7/21  recall 0.333   valid   7/11  precision 0.636
+      0.2   found   9/21  recall 0.429   valid   9/14  precision 0.643
+      0.3   found  10/15  recall 0.667   valid  10/21  precision 0.476
+      0.4   found  12/12  recall 1.000   valid  12/17  precision 0.706
+      0.5   found   7/7   recall 1.000   valid   7/13  precision 0.538
+      0.6   found   4/7   recall 0.571   valid   4/12  precision 0.333
+      0.7   found   2/2   recall 1.000   valid   2/6   precision 0.333
+      0.8   found  12/12  recall 1.000   valid  12/15  precision 0.800
+      0.9   found  35/36  recall 0.972   valid  35/37  precision 0.946
+      0.10  found  32/33  recall 0.970   valid  34/47  precision 0.723
+      0.11  found  34/37  recall 0.919   valid  37/41  precision 0.902
+      ?     found   3/3   recall 1.000   valid   0/0   precision   n/a
+    missed stems by cause: {'stem opening produced a run and refused it: PAIRED': 6, 'stem opening produced a run and refused it: too WIDE': 45, 'stem opening produced a run and refused it: PAIRED + too WIDE': 3}
+    how often a stem WITH each fact was found (a fact common among the found is not what loses a stem):
+      short (< 2.5 spaces)                       missed   0  found   6  found share 1.000
+      long (>= 4.5 spaces)                       missed  17  found  54  found share 0.761
+      chord (2+ heads on it)                     missed  49  found  52  found share 0.515
+      stacked heads (a step or a second apart)   missed  49  found  39  found share 0.443
+      closest two heads a second apart (1 step)  missed   1  found   4  found share 0.800
+      closest two heads a third apart (2 steps)  missed  48  found  35  found share 0.422
+      closest two heads a fourth or more apart   missed   0  found  13  found share 1.000
+      heads on both sides of the stem            missed   0  found   8  found share 1.000
+      one head on it                             missed   5  found 121  found share 0.960
+      crosses no staff line (wholly outside the staff) missed   0  found  10  found share 1.000
+      crosses 1-4 staff lines                    missed  52  found 141  found share 0.731
+      crosses all five staff lines               missed   2  found  22  found share 0.917
+      touches a beam box                         missed  17  found  86  found share 0.835
+      touches a slur or tie box                  missed  23  found  66  found share 0.742
+      no head box on it                          missed   0  found   0  found share   n/a
+
+STEMS PER HEAD  321 of 338 heads have a stem box of Sean's; 17 have none (unjudged: a truth gap or a whole note, never a false positive)
+  attached the RIGHT stem 215 of 321 = 0.670   (of the 317 also read as a head at ADJUDICATE: 0.672)
+  Q.HEAD_STEM standing: {'abstained': 101, 'decided': 220}  abstain reasons {'no_stem': 101}
+  every outcome: {'abstained_stem_not_found': 97, 'right': 215, 'wrong_invented_stem': 5, 'abstained_stem_was_found': 4}
+  heads WITHOUT the right stem, by cause: {'stem not found by CV (stem opening produced a run and refused it: PAIRED + too WIDE)': 4, 'stem not found by CV (stem opening produced a run and refused it: too WIDE)': 89, 'stem not found by CV (stem opening produced a run and refused it: PAIRED)': 9, 'stem found, not attached to the head': 4}
+  found but not attached: the found stem stands this far (spaces) from the head box: [0.0, 0.02, 0.02, 0.1]
+  attached to a stem that is not the head's: {'lies on a truth flag': 5}
+  Q.DURATION standing at ADJUDICATE, by whether the head got its right stem: {'right stem': {'narrowed': 41, 'decided': 174}, 'no right stem': {'narrowed': 44, 'decided': 61, 'abstained': 1}}
+  Q.HEAD_STEM_REACH beside the head (contested heads only): {'heads_with_a_reach_row': 122, 'values': {'down': 49, 'both': 12, 'up': 32, 'none': 29}, 'up_or_down_against_a_judged_truth_direction': 78, 'agrees': 69}
+  Q.STEM_DIRECTION {'right': 247, 'abstained': 55, 'no_truth': 16, 'wrong': 3}  right of judged 0.988 (truth direction ambiguous on 17 heads)
+
+PER STAFF (system header)  clef / key / meter against the first cell, cautionary meter against the last
+  clef   {'unscored': 6, 'right': 8}  accuracy of judged 1.000
+  key    {'unscored': 6, 'right': 8}  accuracy of judged 1.000
+  meter  {'unscored': 6, 'right': 8}  accuracy of judged 1.000
+  cautionary {'right': 11, 'unscored': 3}  accuracy of judged 1.000
+  staff 0.0   UNSCORED (first measure cell is not fully labeled)   cautionary truth 9/8 read 9/8 right
+  staff 0.1   UNSCORED (first measure cell is not fully labeled)   cautionary truth 9/8 read 9/8 right
+  staff 0.2   UNSCORED (first measure cell is not fully labeled)   cautionary truth 9/8 read 9/8 right
+  staff 0.3   clef truth bass    read bass   [decided] right     key truth   -3 read   -3[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.4   clef truth bass    read bass   [decided] right     key truth   -3 read   -3[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.5   clef truth treble  read treble [decided] right     key truth    0 read    0[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.6   clef truth treble  read treble [decided] right     key truth    0 read    0[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.7   clef truth treble  read treble [decided] right     key truth    0 read    0[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.8   clef truth bass    read bass   [decided] right     key truth    0 read    0[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.9   UNSCORED (first measure cell is not fully labeled)   cautionary truth 9/8 read 9/8 right
+  staff 0.10  clef truth treble  read treble [decided] right     key truth   -3 read   -3[decided] right     meter truth 6/8 read 6/8[decided] right   cautionary truth 9/8 read 9/8 right
+  staff 0.11  clef truth alto    read alto   [decided] right     key truth   -3 read   -3[decided] right     meter truth 6/8 read 6/8[decided] right
+  staff 0.12  UNSCORED (first measure cell is not fully labeled)
+  staff 0.13  UNSCORED (first measure cell is not fully labeled)
+
+COMMONEST MISSES (ADJUDICATE view; 'CV-only' = a class the detector never produced on this page)
+   212  stem/stem  because missed  e.g. cell s0-st0-m6 box b4083  origins {'drawn': 212}
+    61  ledger_line/ledgerLine  because missed  e.g. cell s0-st0-m5 box b4070  origins {'drawn': 61}
+    27  barline/barlineSingle [CV-only]  because missed  e.g. cell s0-st0-m5 box b4091  origins {'drawn': 26, 'prefill-fixed': 1}
+    14  tie/tie  because other_family  e.g. cell s0-st5-m0 box b4062  origins {'drawn': 4, 'prefill-fixed': 10}
+     8  beam/beam  because missed  e.g. cell s0-st1-m5 box b4130  origins {'drawn': 8}
+     8  brace/brace [CV-only]  because missed  e.g. cell s0-st3-m0 box b4171  origins {'drawn': 8}
+     8  ledger_line/ledgerLine  because other_family  e.g. cell s0-st0-m5 box b4069  origins {'drawn': 8}
+     6  tie/tie  because lost_by_adjudicate: not a arc -- ink is a staff line  e.g. cell s0-st5-m2 box q639  origins {'prefill-confirmed': 6}
+     6  tremolo/tremolo1 [CV-only]  because other_family  e.g. cell s0-st4-m2 box q563  origins {'prefill-fixed': 4, 'drawn': 2}
+     5  slur/slur  because other_family  e.g. cell s0-st1-m1 box b4108  origins {'drawn': 1, 'prefill-fixed': 4}

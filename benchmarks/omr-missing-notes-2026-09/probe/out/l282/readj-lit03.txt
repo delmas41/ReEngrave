@@ -1,0 +1,11 @@
+== 1. head duration verdicts ==
+   base -> thin: 0 heads changed
+   thin -> full: 7 heads changed
+         7  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+   base -> full: 7 heads changed
+         7  narrowed [0.5, 1.0] beam_discounted_uncertain  ->  decided 0.5 head_and_marks
+
+== 2. ink refusals per (head, stroke) by reason ==
+   base  {'through_heads': 56, 'too_thin': 66, 'no_stem_at_ends': 4, 'one_stem': 7}
+   thin  {'through_heads': 56, 'too_thin': 66, 'no_stem_at_ends': 4, 'one_stem': 7}
+   full  {'through_heads': 56, 'too_thin': 66, 'no_stem_at_ends': 4}

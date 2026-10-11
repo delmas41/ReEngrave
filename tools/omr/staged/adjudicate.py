@@ -954,6 +954,10 @@ ORDER: Tuple[str, ...] = (
     # _ledger_rungs_in_cell` reads this decision's VERDICT so a refused rung
     # is not counted in ADJUDICATE's own ladder search. The reverse order
     # would let a staff-line fragment vouch for a note.
+    # ROADMAP 2.87 (`head_contact`): GATHER rows only, ahead of its consumers
+    # (the rest-has-a-stem refusal just below, the beam-joins-N-stems tests in
+    # `duration`).
+    Q.STEM_HEAD_CONTACT,
     Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ⚠️ THESE DEPEND ON NOTHING, and nothing in ADJUDICATE depends on most of
@@ -968,12 +972,20 @@ ORDER: Tuple[str, ...] = (
     Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
     Q.ARC_IS_NOT_AN_ARC,
     Q.DYNAMIC_IS_NOT_A_DYNAMIC,
-    Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
+    # (`Q.ARTICULATION_IS_NOT_AN_ARTICULATION` MOVED, ROADMAP 2.84: see after
+    # `Q.GLYPH_OWNER` below.)
     # ── roadmap 3.4g-4 ──────────────────────────────────────────────────────
     Q.FLAG_IS_NOT_A_FLAG,
     Q.TUPLET_MARKER_IS_NOT_A_MARKER,
     # ownership, with identity and clef available
     Q.GLYPH_OWNER,
+    # ⚠️ ROADMAP 2.84, AFTER `Q.GLYPH_OWNER` AND BEFORE `Q.ARTICULATION_OWNER`.
+    # A tenuto-classed dash is a LEDGER LINE when a head in its column stands
+    # on it or farther out from the staff that OWNS that head -- so the owner
+    # must already be decided (a padded cell holds the neighbour staff's
+    # ledgers: 23 of Brahms's 30 tenuto boxes). Its only consumer is EXPORT
+    # (`_place_articulations`), so moving it later constrains nothing.
+    Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
     Q.ARC_OWNER,
     # ⚠️ ROADMAP 2.75, BEFORE `Q.ARC_KIND`. Sean's rule (2026-10-09: an arc
     # joining two notes of the SAME pitch is a tie, of different pitch a

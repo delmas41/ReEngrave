@@ -1,0 +1,11 @@
+('REAL BEAM', 'not thin before', 'not thin after') 75
+('REAL BEAM', 'thin before', 'not thin after') 3
+('REAL BEAM', 'thin before', 'thin after') 2
+('not a beam', 'not thin before', 'not thin after') 12
+('not a beam', 'thin before', 'not thin after') 1
+('not a beam', 'thin before', 'thin after') 96
+rescued (thin before, not thin after):
+   obs:013310 detector 1.421 label beam is_beam True core 4.4 cov {'beam': [0.1, 1.0], 'slur': [0.99, 0.95]}
+   obs:013311 detector 1.632 label beam is_beam True core 4.4 cov {'beam': [0.14, 1.0], 'slur': [0.99, 0.96]}
+   obs:013316 detector 1.579 label slur is_beam False core 2.5 cov {'slur': [0.94, 0.99], 'beam': [0.05, 0.41]}
+   obs:013178 detector 1.3 label beam is_beam True core 4.6 cov {'beam': [0.42, 0.84]}

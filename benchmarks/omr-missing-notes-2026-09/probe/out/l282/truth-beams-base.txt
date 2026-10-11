@@ -1,0 +1,164 @@
+strokes filed in fully labeled cells of page 0: 191
+by reader: {'cv_lines': 50, 'detector': 141}
+by label: {'beam': 80, 'ledger_line': 11, 'slur': 34, 'notehead': 1, 'unboxed ink / none': 50, 'tie': 14, 'rest': 1}
+ink reading missing: 2 {('tie', 'no_reading'): 2}
+
+== thickness_ratio histogram, reader=detector ==
+  REAL BEAM  (n=47): [0,1):0  [1,1.25):1  [1.25,1.5):2  [1.5,1.75):2  [1.75,2):0  [2,2.5):0  [2.5,3):6  [3,4):36  [4,99):0
+  not-beam rest                (n=1): [0,1):0  [1,1.25):0  [1.25,1.5):0  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):1  [4,99):0
+  not-beam slur                (n=29): [0,1):0  [1,1.25):0  [1.25,1.5):13  [1.5,1.75):16  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):0  [4,99):0
+  not-beam tie                 (n=12): [0,1):7  [1,1.25):4  [1.25,1.5):1  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):0  [4,99):0
+  not-beam unboxed ink / none  (n=50): [0,1):2  [1,1.25):32  [1.25,1.5):10  [1.5,1.75):4  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):2  [4,99):0
+  NOT A BEAM (n=92): [0,1):9  [1,1.25):36  [1.25,1.5):24  [1.5,1.75):20  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):3  [4,99):0
+
+== thickness_ratio histogram, reader=ALL ==
+  REAL BEAM  (n=80): [0,1):0  [1,1.25):1  [1.25,1.5):2  [1.5,1.75):2  [1.75,2):0  [2,2.5):0  [2.5,3):10  [3,4):65  [4,99):0
+  not-beam ledger_line         (n=11): [0,1):0  [1,1.25):1  [1.25,1.5):3  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):2  [4,99):5
+  not-beam notehead            (n=1): [0,1):0  [1,1.25):0  [1.25,1.5):0  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):0  [4,99):1
+  not-beam rest                (n=1): [0,1):0  [1,1.25):0  [1.25,1.5):0  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):1  [4,99):0
+  not-beam slur                (n=34): [0,1):0  [1,1.25):0  [1.25,1.5):14  [1.5,1.75):19  [1.75,2):1  [2,2.5):0  [2.5,3):0  [3,4):0  [4,99):0
+  not-beam tie                 (n=12): [0,1):7  [1,1.25):4  [1.25,1.5):1  [1.5,1.75):0  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):0  [4,99):0
+  not-beam unboxed ink / none  (n=50): [0,1):2  [1,1.25):32  [1.25,1.5):10  [1.5,1.75):4  [1.75,2):0  [2,2.5):0  [2.5,3):0  [3,4):2  [4,99):0
+  NOT A BEAM (n=109): [0,1):9  [1,1.25):37  [1.25,1.5):28  [1.5,1.75):23  [1.75,2):1  [2,2.5):0  [2.5,3):0  [3,4):5  [4,99):6
+
+== thickness in staff SPACES (denominator-free) ==
+  REAL BEAM   n=80 min 0.20 p10 0.58 p25 0.60 med 0.61 p75 0.62 p90 0.65 max 0.75
+  NOT A BEAM  n=109 min 0.13 p10 0.19 p25 0.21 med 0.26 p75 0.29 p90 0.31 max 0.93
+== line_px / space_px (the denominator, in spaces) ==
+  all measured strokes n=189 min 0.372 med 0.589 max 0.719
+
+== every truth beam in the scored cells: the strokes that cover it ==
+  truth beams in fully labeled cells: 41
+  q82 152x31  detector ratio=1.3 thick=26.0px line=20.0px (0.26 sp) sag=0.0474 ends=[False, True] lines_through=1 cover_of_truth=0.84   <- REFUSED too_thin
+  q104 150x33  detector ratio=2.652 thick=61.0px line=23.0px (0.61 sp) sag=0.0558 ends=[False, True] lines_through=1 cover_of_truth=0.68
+  q113 143x29  detector ratio=3.368 thick=64.0px line=19.0px (0.64 sp) sag=0.003 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  b4130 152x34  detector ratio=1.15 thick=23.0px line=20.0px (0.23 sp) sag=0.0001 ends=[False, True] lines_through=1 cover_of_truth=0.06   <- REFUSED too_thin
+  q228 132x32  detector ratio=2.826 thick=65.0px line=23.0px (0.65 sp) sag=0.0018 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q228 132x32  cv_lines ratio=2.826 thick=65.0px line=23.0px (0.65 sp) sag=0.0005 ends=[True, True] lines_through=0 cover_of_truth=0.81
+  q216 141x31  detector ratio=2.955 thick=65.0px line=22.0px (0.65 sp) sag=0.0209 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q368 141x36  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0008 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q368 141x36  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0013 ends=[True, True] lines_through=0 cover_of_truth=0.77
+  q359 135x30  detector ratio=3.579 thick=68.0px line=19.0px (0.68 sp) sag=0.0475 ends=[False, True] lines_through=2 cover_of_truth=1.0
+  q359 135x30  detector ratio=3.579 thick=68.0px line=19.0px (0.68 sp) sag=0.0481 ends=[False, True] lines_through=2 cover_of_truth=0.79
+  q359 135x30  cv_lines ratio=3.632 thick=69.0px line=19.0px (0.69 sp) sag=0.1923 ends=[True, True] lines_through=1 cover_of_truth=0.55
+  q349 144x32  detector ratio=3.789 thick=72.0px line=19.0px (0.72 sp) sag=0.0504 ends=[True, True] lines_through=1 cover_of_truth=1.0
+  q349 144x32  cv_lines ratio=3.789 thick=72.0px line=19.0px (0.72 sp) sag=0.0303 ends=[True, True] lines_through=1 cover_of_truth=0.59
+  b4189 149x36: NO STROKE COVERS IT
+  q472 133x37  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0072 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q472 133x37  cv_lines ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0078 ends=[True, True] lines_through=0 cover_of_truth=0.72
+  q472 133x37  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0064 ends=[True, True] lines_through=0 cover_of_truth=0.72
+  q457 138x36  detector ratio=3.389 thick=61.0px line=18.0px (0.61 sp) sag=0.0002 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q457 138x36  cv_lines ratio=3.389 thick=61.0px line=18.0px (0.61 sp) sag=0.0031 ends=[True, True] lines_through=0 cover_of_truth=0.73
+  q545 135x15  cv_lines ratio=3.214 thick=45.0px line=14.0px (0.602 sp) sag=0.0 ends=[True, True] lines_through=1 cover_of_truth=1.0
+  q545 135x15  detector ratio=3.214 thick=45.0px line=14.0px (0.602 sp) sag=0.0 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q549 163x10  cv_lines ratio=3.214 thick=45.0px line=14.0px (0.602 sp) sag=0.0073 ends=[True, True] lines_through=1 cover_of_truth=1.0
+  q549 163x10  detector ratio=3.214 thick=45.0px line=14.0px (0.602 sp) sag=0.0128 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q871 138x7  detector ratio=3.462 thick=45.0px line=13.0px (0.612 sp) sag=0.0018 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q871 138x7  cv_lines ratio=3.462 thick=45.0px line=13.0px (0.612 sp) sag=0.0016 ends=[True, True] lines_through=1 cover_of_truth=0.89
+  q871 138x7  detector ratio=3.462 thick=45.0px line=13.0px (0.612 sp) sag=0.0018 ends=[True, True] lines_through=1 cover_of_truth=0.89
+  q870 161x9  cv_lines ratio=3.625 thick=43.5px line=12.0px (0.592 sp) sag=0.0234 ends=[True, True] lines_through=1 cover_of_truth=1.0
+  q870 161x9  detector ratio=3.583 thick=43.0px line=12.0px (0.585 sp) sag=0.0223 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q870 161x9  detector ratio=3.583 thick=43.0px line=12.0px (0.585 sp) sag=0.0225 ends=[True, True] lines_through=1 cover_of_truth=0.61
+  q883 559x38  detector ratio=1.0 thick=20.0px line=20.0px (0.2 sp) sag=0.0056 ends=[True, True] lines_through=1 cover_of_truth=1.0   <- REFUSED too_thin
+  b4053 123x24  cv_lines ratio=3.05 thick=61.0px line=20.0px (0.61 sp) sag=0.0156 ends=[True, True] lines_through=1 cover_of_truth=0.68
+  b4240 127x26  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0011 ends=[True, False] lines_through=1 cover_of_truth=0.64
+  q955 201x25  detector ratio=3.05 thick=61.0px line=20.0px (0.61 sp) sag=0.0091 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q955 201x25  cv_lines ratio=3.05 thick=61.0px line=20.0px (0.61 sp) sag=0.0092 ends=[True, True] lines_through=1 cover_of_truth=0.83
+  b4239 220x25  cv_lines ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0077 ends=[True, False] lines_through=1 cover_of_truth=0.73
+  b4241 117x29  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0213 ends=[True, True] lines_through=1 cover_of_truth=0.55
+  b4251 180x22  cv_lines ratio=2.9 thick=58.0px line=20.0px (0.619 sp) sag=0.0046 ends=[True, True] lines_through=1 cover_of_truth=0.83
+  q1089 238x21  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0147 ends=[True, True] lines_through=1 cover_of_truth=0.99
+  q1089 238x21  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0141 ends=[True, True] lines_through=1 cover_of_truth=0.85
+  q1118 153x19  detector ratio=3.6 thick=54.0px line=15.0px (0.576 sp) sag=0.0149 ends=[True, True] lines_through=1 cover_of_truth=1.0
+  q1118 153x19  cv_lines ratio=3.438 thick=55.0px line=16.0px (0.587 sp) sag=0.009 ends=[True, True] lines_through=1 cover_of_truth=0.89
+  q1119 223x18  detector ratio=3.167 thick=57.0px line=18.0px (0.608 sp) sag=0.0006 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1119 223x18  cv_lines ratio=3.167 thick=57.0px line=18.0px (0.608 sp) sag=0.0012 ends=[True, True] lines_through=0 cover_of_truth=0.98
+  q1112 214x16  detector ratio=3.294 thick=56.0px line=17.0px (0.597 sp) sag=0.0031 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1112 214x16  cv_lines ratio=3.294 thick=56.0px line=17.0px (0.597 sp) sag=0.0021 ends=[True, True] lines_through=0 cover_of_truth=0.96
+  q1112 214x16  detector ratio=3.294 thick=56.0px line=17.0px (0.597 sp) sag=0.0001 ends=[True, True] lines_through=0 cover_of_truth=0.74
+  q1246 221x25  detector ratio=2.7 thick=54.0px line=20.0px (0.581 sp) sag=0.0006 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1246 221x25  cv_lines ratio=2.842 thick=54.0px line=19.0px (0.581 sp) sag=0.0004 ends=[True, True] lines_through=0 cover_of_truth=0.95
+  q1246 221x25  detector ratio=2.7 thick=54.0px line=20.0px (0.581 sp) sag=0.0002 ends=[True, True] lines_through=0 cover_of_truth=0.66
+  q1247 216x32  detector ratio=3.235 thick=55.0px line=17.0px (0.591 sp) sag=0.0097 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1247 216x32  cv_lines ratio=3.235 thick=55.0px line=17.0px (0.591 sp) sag=0.0089 ends=[True, True] lines_through=0 cover_of_truth=0.84
+  q1258 165x23  cv_lines ratio=2.619 thick=55.0px line=21.0px (0.591 sp) sag=0.0176 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1258 165x23  detector ratio=2.5 thick=55.0px line=22.0px (0.591 sp) sag=0.0189 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1257 158x25  detector ratio=3.294 thick=56.0px line=17.0px (0.602 sp) sag=0.0119 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1257 158x25  cv_lines ratio=3.353 thick=57.0px line=17.0px (0.613 sp) sag=0.0027 ends=[True, True] lines_through=0 cover_of_truth=0.92
+  q1217 112x19  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0117 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1217 112x19  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0108 ends=[True, True] lines_through=0 cover_of_truth=0.97
+  q1232 106x22  detector ratio=3.053 thick=58.0px line=19.0px (0.58 sp) sag=0.0013 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1232 106x22  cv_lines ratio=3.105 thick=59.0px line=19.0px (0.59 sp) sag=0.0059 ends=[True, True] lines_through=0 cover_of_truth=0.83
+  q1216 204x12  cv_lines ratio=3.316 thick=63.0px line=19.0px (0.63 sp) sag=0.0023 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1216 204x12  detector ratio=3.316 thick=63.0px line=19.0px (0.63 sp) sag=0.001 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1216 204x12  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0005 ends=[True, True] lines_through=0 cover_of_truth=0.97
+  q1231 260x33  cv_lines ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0036 ends=[True, True] lines_through=0 cover_of_truth=0.65
+  q1231 260x33  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0006 ends=[True, True] lines_through=0 cover_of_truth=0.64
+  q1231 260x33  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0017 ends=[True, True] lines_through=0 cover_of_truth=0.46
+  q1231 260x33  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.001 ends=[True, True] lines_through=0 cover_of_truth=0.4
+  q1383 142x36  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0225 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1383 142x36  detector ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0219 ends=[True, True] lines_through=0 cover_of_truth=0.81
+  q1383 142x36  cv_lines ratio=3.263 thick=62.0px line=19.0px (0.62 sp) sag=0.0188 ends=[True, True] lines_through=0 cover_of_truth=0.8
+  q1383 142x36  detector ratio=1.579 thick=30.0px line=19.0px (0.3 sp) sag=1.2761 ends=[True, False] lines_through=0 cover_of_truth=0.7   <- REFUSED too_thin
+  q1359 133x38  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0196 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1359 133x38  detector ratio=1.421 thick=27.0px line=19.0px (0.27 sp) sag=0.0163 ends=[False, True] lines_through=0 cover_of_truth=1.0   <- REFUSED too_thin
+  q1359 133x38  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0179 ends=[True, True] lines_through=0 cover_of_truth=0.73
+  q1333 138x34  detector ratio=3.1 thick=62.0px line=20.0px (0.62 sp) sag=0.0135 ends=[True, True] lines_through=0 cover_of_truth=1.0
+  q1333 138x34  cv_lines ratio=3.1 thick=62.0px line=20.0px (0.62 sp) sag=0.0117 ends=[True, True] lines_through=0 cover_of_truth=0.85
+  q1333 138x34  detector ratio=3.1 thick=62.0px line=20.0px (0.62 sp) sag=0.013 ends=[True, True] lines_through=0 cover_of_truth=0.77
+  b3971 154x44  cv_lines ratio=3.947 thick=75.0px line=19.0px (0.75 sp) sag=0.027 ends=[True, True] lines_through=2 cover_of_truth=0.86
+  b3971 154x44  detector ratio=1.579 thick=30.0px line=19.0px (0.3 sp) sag=0.7546 ends=[True, False] lines_through=0 cover_of_truth=0.41   <- REFUSED too_thin
+  q1361 135x37  detector ratio=1.632 thick=31.0px line=19.0px (0.31 sp) sag=0.0125 ends=[False, True] lines_through=0 cover_of_truth=1.0   <- REFUSED too_thin
+  q1361 135x37  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0086 ends=[True, True] lines_through=0 cover_of_truth=0.99
+  q1361 135x37  detector ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0106 ends=[True, True] lines_through=0 cover_of_truth=0.76
+  q1361 135x37  cv_lines ratio=3.211 thick=61.0px line=19.0px (0.61 sp) sag=0.0023 ends=[True, True] lines_through=0 cover_of_truth=0.72
+  q1335 139x37  detector ratio=3.1 thick=62.0px line=20.0px (0.62 sp) sag=0.0165 ends=[True, True] lines_through=0 cover_of_truth=0.99
+  q1335 139x37  cv_lines ratio=3.1 thick=62.0px line=20.0px (0.62 sp) sag=0.0074 ends=[True, True] lines_through=0 cover_of_truth=0.75
+  q1335 139x37  detector ratio=1.368 thick=26.0px line=19.0px (0.26 sp) sag=0.11 ends=[True, False] lines_through=0 cover_of_truth=0.27   <- REFUSED too_thin
+
+  truth beams: 41; kept by >= 1 stroke at ratio >= 1.75 (or unmeasured): 37; EVERY covering stroke refused too_thin: 3; no stroke covers: 1
+
+== per truth beam: is a covering stroke KEPT by the thickness test? (a stroke 'covers' a truth beam when it covers >= 0.5 of it) ==
+   truth beam   covering strokes (reader ratio core)                          before(2.74)  after(2.82)
+   q82      152x31  det 1.3                                                                        refused too_thin refused too_thin
+   q104     150x33  det 2.652                                                                      KEPT             KEPT
+   q113     143x29  det 3.368                                                                      KEPT             KEPT
+   b4130    152x34  -                                                                              no stroke        no stroke
+   q228     132x32  det 2.826; cv_ 2.826                                                           KEPT             KEPT
+   q216     141x31  det 2.955                                                                      KEPT             KEPT
+   q368     141x36  det 3.263; det 3.263                                                           KEPT             KEPT
+   q359     135x30  det 3.579; det 3.579; cv_ 3.632                                                KEPT             KEPT
+   q349     144x32  det 3.789; cv_ 3.789                                                           KEPT             KEPT
+   b4189    149x36  -                                                                              no stroke        no stroke
+   q472     133x37  det 3.263; cv_ 3.263; det 3.211                                                KEPT             KEPT
+   q457     138x36  det 3.389; cv_ 3.389                                                           KEPT             KEPT
+   q545     135x15  cv_ 3.214; det 3.214                                                           KEPT             KEPT
+   q549     163x10  cv_ 3.214; det 3.214                                                           KEPT             KEPT
+   q871     138x7  det 3.462; cv_ 3.462; det 3.462                                                KEPT             KEPT
+   q870     161x9  cv_ 3.625; det 3.583; det 3.583                                                KEPT             KEPT
+   q883     559x38  det 1.0                                                                        refused too_thin refused too_thin
+   b4053    123x24  cv_ 3.05                                                                       KEPT             KEPT
+   b4240    127x26  cv_ 3.211                                                                      KEPT             KEPT
+   q955     201x25  det 3.05; cv_ 3.05                                                             KEPT             KEPT
+   b4239    220x25  cv_ 3.263                                                                      KEPT             KEPT
+   b4241    117x29  cv_ 3.211                                                                      KEPT             KEPT
+   b4251    180x22  cv_ 2.9                                                                        KEPT             KEPT
+   q1089    238x21  det 3.211; cv_ 3.211                                                           KEPT             KEPT
+   q1118    153x19  det 3.6; cv_ 3.438                                                             KEPT             KEPT
+   q1119    223x18  det 3.167; cv_ 3.167                                                           KEPT             KEPT
+   q1112    214x16  det 3.294; cv_ 3.294; det 3.294                                                KEPT             KEPT
+   q1246    221x25  det 2.7; cv_ 2.842; det 2.7                                                    KEPT             KEPT
+   q1247    216x32  det 3.235; cv_ 3.235                                                           KEPT             KEPT
+   q1258    165x23  cv_ 2.619; det 2.5                                                             KEPT             KEPT
+   q1257    158x25  det 3.294; cv_ 3.353                                                           KEPT             KEPT
+   q1217    112x19  det 3.211; cv_ 3.211                                                           KEPT             KEPT
+   q1232    106x22  det 3.053; cv_ 3.105                                                           KEPT             KEPT
+   q1216    204x12  cv_ 3.316; det 3.316; det 3.263                                                KEPT             KEPT
+   q1231    260x33  cv_ 3.263; det 3.211                                                           KEPT             KEPT
+   q1383    142x36  det 3.263; det 3.263; cv_ 3.263; det 1.579                                     KEPT             KEPT
+   q1359    133x38  det 3.211; det 1.421; cv_ 3.211                                                KEPT             KEPT
+   q1333    138x34  det 3.1; cv_ 3.1; det 3.1                                                      KEPT             KEPT
+   b3971    154x44  cv_ 3.947                                                                      KEPT             KEPT
+   q1361    135x37  det 1.632; det 3.211; det 3.211; cv_ 3.211                                     KEPT             KEPT
+   q1335    139x37  det 3.1; cv_ 3.1                                                               KEPT             KEPT
+   before -> after: {('refused too_thin', 'refused too_thin'): 2, ('KEPT', 'KEPT'): 37, ('no stroke', 'no stroke'): 2}
