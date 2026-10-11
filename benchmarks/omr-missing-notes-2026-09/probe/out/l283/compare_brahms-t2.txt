@@ -1,5 +1,5 @@
-arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm4/brahms-t2.record.json
-   provenance 5245d96898caa7777e130c7abcbd4b8c5a59a1d3 dirty=False
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm5/brahms-t2.record.json
+   provenance b438cda77c1e6b8c1534a77b03dc745418553b96 dirty=False
 base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-brahms.json: 19291 verdicts
 
 heads with a standing duration verdict: base 4169  arm 4169  in both 4169 (only base 0, only arm 0); box moved > 1px in 0
@@ -8,11 +8,11 @@ Q.STEM_TIP_INK census
   abstained:ambiguous:crosses_both_sides                  base      0   arm   1178
   abstained:ambiguous:ink_not_flag_shaped                 base      0   arm    110
   abstained:ambiguous:no_room                             base      0   arm    400
-  abstained:ambiguous:runs_on                             base      0   arm    130
+  abstained:ambiguous:runs_on                             base      0   arm    131
   abstained:occupied:head_at_this_end                     base      0   arm   2482
-  abstained:occupied:occupied                             base      0   arm    742
-  observed:flag                                           base      0   arm    265
-  observed:none                                           base      0   arm    991
+  abstained:occupied:occupied                             base      0   arm    501
+  observed:flag                                           base      0   arm    268
+  observed:none                                           base      0   arm   1228
 
 duration verdicts changed (matched heads): 58 of 4169
      25  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
