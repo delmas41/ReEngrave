@@ -106,7 +106,7 @@ The print's way writes `number="189"` and `number="190"` twice in each part.
 - **Verovio** loads the file but adds 24 warning lines (12 of them "slur/tie … is not encoded in the measure of its start"). Base has 49 lines, arm 73.
 - **Giving the 1st-ending bars unique tokens** (`189a`, `190a`) brings it back to 49, identical to base.
 - **The gradus reference encoding** counts straight through instead (2nd ending = 191).
-- **As built:** the literal rule, duplicates and all. Whether the 1st-ending bars should carry a suffix is Sean's call.
+- **As built:** the literal rule, duplicates and all. Sean, 2026-10-11 (tile 5): *"I want the same numbers as the original"*, so the duplicates stay; Verovio's warnings are a known cost.
 
 ## 7. Blind tiles: `out/print/2.85-review/`
 
@@ -117,7 +117,12 @@ Five tiles. The questions are in `QUESTIONS.md`. Nothing of ours is drawn on the
   - 2 = backward repeat (p10 s1)
   - 4 = forward repeat (p3 s0)
   - 5 = **CONTROL**: a plain double barline (p11 s1, before the key change), with dotted notes beside it. It must be answered "no repeat".
-- **Answers:** none yet.
+- **Answers** (Sean, blind, 2026-10-11; `answers.json`): **4 of 5 agree.**
+  - Tile 2: repeat sign, dots on the left. Agrees.
+  - Tile 3: 2nd ending, 1 bar of it. Agrees.
+  - Tile 4: dots on the right. Agrees.
+  - Tile 5, the control: *"a double barline"*, so not a repeat. Agrees. He added *"we need to figure out the barline because I want the same numbers as the original"*: that is 2.86's tail, and the answer to §6 is to keep the print's numbers.
+  - Tile 1: *"1 bar of a first ending"*. **Ours says 2 bars.** On the tile the bracket spans a barline. The reference encoding (189–190) and the printed numbers (188 → 194 with 5 second-ending bars) both need 2. Asked again with the barline marked (`tile_01_question.png`); not changed until he answers.
 
 ## 8. Tests and checks
 
