@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 — 2.86 measured on the Mac: DEAD on both whole movements
+
+- `probe/readjudicate_2_86.py` base (origin/main `26cb57c6`) vs arm (`e6243ecc`) on the 20261010-night shared records: 0 systems move (Brahms 514/514, Litolff 505/505; base reproduces the saved partition on every staff). p11 s1's key-shaped vote is 1/14 -- the detector reads each cancelling natural as `keySharp` with a same-x duplicate box. New `probe/tail_census_2_86.py`, outputs `probe/out-2.86/`, crops `out/print/2.86/`. FINDINGS `omr-measure-partition-2026-09` §14d; ROADMAP 2.86 row.
+
 ## 2026-10-11 — 2.86 built on lane (not merged): a mixed cautionary key tail is not a bar
 
 - `lane-2.86-cautionary-tail`: STAGED `adjudicate_measure_partition` demotes a system's trailing strip whose ink is key-shaped on most staves (naturals then one kind of flat/sharp, key- or accidental-classed; tie/slur ends neutral) only where this and the NEXT system's decided `Q.SYSTEM_KEY` differ (`cautionary_key_tail_not_a_bar`; otherwise `mixed_tail_kept` says why). `Q.MEASURE_PARTITION` moved after `Q.SYSTEM_KEY` in ORDER. Also: 2.47bc's duplicate-ink excuse now `timeSig*` only, as documented. 19 tests (10 RED on origin/main); `check` 192 -> 192. FINDINGS `omr-measure-partition-2026-09` §14; Mac probe `probe/readjudicate_2_86.py`.

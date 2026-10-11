@@ -1,0 +1,474 @@
+{
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/beethoven5-litolff-mvt1-whole-20261010-night.record.json",
+ "tree": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/wt-base",
+ "systems": [
+  {
+   "system": "system/1/0",
+   "bars": 16,
+   "bars_by_staff": {
+    "16": 12
+   },
+   "saved_bars": {
+    "16": 12
+   },
+   "reasons": {
+    "read": 12
+   },
+   "detail": null,
+   "bars_through_here": 16
+  },
+  {
+   "system": "system/2/0",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 33
+  },
+  {
+   "system": "system/2/1",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 11
+   },
+   "saved_bars": {
+    "15": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 48
+  },
+  {
+   "system": "system/3/0",
+   "bars": 16,
+   "bars_by_staff": {
+    "16": 11
+   },
+   "saved_bars": {
+    "16": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 64
+  },
+  {
+   "system": "system/3/1",
+   "bars": 18,
+   "bars_by_staff": {
+    "18": 8
+   },
+   "saved_bars": {
+    "18": 8
+   },
+   "reasons": {
+    "read": 8
+   },
+   "detail": null,
+   "bars_through_here": 82
+  },
+  {
+   "system": "system/4/0",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 11
+   },
+   "saved_bars": {
+    "15": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 97
+  },
+  {
+   "system": "system/4/1",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 11
+   },
+   "saved_bars": {
+    "15": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 112
+  },
+  {
+   "system": "system/5/0",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 9
+   },
+   "saved_bars": {
+    "17": 9
+   },
+   "reasons": {
+    "read": 9
+   },
+   "detail": null,
+   "bars_through_here": 129
+  },
+  {
+   "system": "system/5/1",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 7
+   },
+   "saved_bars": {
+    "15": 7
+   },
+   "reasons": {
+    "read": 7
+   },
+   "detail": null,
+   "bars_through_here": 144
+  },
+  {
+   "system": "system/6/0",
+   "bars": 13,
+   "bars_by_staff": {
+    "13": 10
+   },
+   "saved_bars": {
+    "13": 10
+   },
+   "reasons": {
+    "read": 10
+   },
+   "detail": null,
+   "bars_through_here": 157
+  },
+  {
+   "system": "system/6/1",
+   "bars": 14,
+   "bars_by_staff": {
+    "14": 12
+   },
+   "saved_bars": {
+    "14": 12
+   },
+   "reasons": {
+    "read": 12
+   },
+   "detail": null,
+   "bars_through_here": 171
+  },
+  {
+   "system": "system/7/0",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 188
+  },
+  {
+   "system": "system/7/1",
+   "bars": 18,
+   "bars_by_staff": {
+    "18": 11
+   },
+   "saved_bars": {
+    "18": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 206
+  },
+  {
+   "system": "system/8/0",
+   "bars": 22,
+   "bars_by_staff": {
+    "22": 9
+   },
+   "saved_bars": {
+    "22": 9
+   },
+   "reasons": {
+    "read": 9
+   },
+   "detail": null,
+   "bars_through_here": 228
+  },
+  {
+   "system": "system/8/1",
+   "bars": 19,
+   "bars_by_staff": {
+    "19": 11
+   },
+   "saved_bars": {
+    "19": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 247
+  },
+  {
+   "system": "system/9/0",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 12
+   },
+   "saved_bars": {
+    "15": 12
+   },
+   "reasons": {
+    "read": 12
+   },
+   "detail": null,
+   "bars_through_here": 262
+  },
+  {
+   "system": "system/9/1",
+   "bars": 12,
+   "bars_by_staff": {
+    "12": 10
+   },
+   "saved_bars": {
+    "12": 10
+   },
+   "reasons": {
+    "read": 10
+   },
+   "detail": null,
+   "bars_through_here": 274
+  },
+  {
+   "system": "system/10/0",
+   "bars": 14,
+   "bars_by_staff": {
+    "14": 11
+   },
+   "saved_bars": {
+    "14": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 288
+  },
+  {
+   "system": "system/10/1",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 11
+   },
+   "saved_bars": {
+    "15": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 303
+  },
+  {
+   "system": "system/11/0",
+   "bars": 18,
+   "bars_by_staff": {
+    "18": 9
+   },
+   "saved_bars": {
+    "18": 9
+   },
+   "reasons": {
+    "read": 9
+   },
+   "detail": null,
+   "bars_through_here": 321
+  },
+  {
+   "system": "system/11/1",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 338
+  },
+  {
+   "system": "system/12/0",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 12
+   },
+   "saved_bars": {
+    "15": 12
+   },
+   "reasons": {
+    "read": 12
+   },
+   "detail": null,
+   "bars_through_here": 353
+  },
+  {
+   "system": "system/12/1",
+   "bars": 13,
+   "bars_by_staff": {
+    "13": 11
+   },
+   "saved_bars": {
+    "13": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 366
+  },
+  {
+   "system": "system/13/0",
+   "bars": 16,
+   "bars_by_staff": {
+    "16": 11
+   },
+   "saved_bars": {
+    "16": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 382
+  },
+  {
+   "system": "system/13/1",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 399
+  },
+  {
+   "system": "system/14/0",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 12
+   },
+   "saved_bars": {
+    "15": 12
+   },
+   "reasons": {
+    "read": 12
+   },
+   "detail": null,
+   "bars_through_here": 414
+  },
+  {
+   "system": "system/14/1",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 431
+  },
+  {
+   "system": "system/15/0",
+   "bars": 22,
+   "bars_by_staff": {
+    "22": 11
+   },
+   "saved_bars": {
+    "22": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 453
+  },
+  {
+   "system": "system/15/1",
+   "bars": 20,
+   "bars_by_staff": {
+    "20": 11
+   },
+   "saved_bars": {
+    "20": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 473
+  },
+  {
+   "system": "system/16/0",
+   "bars": 17,
+   "bars_by_staff": {
+    "17": 11
+   },
+   "saved_bars": {
+    "17": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 490
+  },
+  {
+   "system": "system/16/1",
+   "bars": 15,
+   "bars_by_staff": {
+    "15": 11
+   },
+   "saved_bars": {
+    "15": 11
+   },
+   "reasons": {
+    "read": 11
+   },
+   "detail": null,
+   "bars_through_here": 505
+  }
+ ],
+ "reasons": {
+  "read": 331
+ }
+}

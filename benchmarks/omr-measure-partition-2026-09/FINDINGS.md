@@ -990,3 +990,85 @@ one record, two trees. Verified on a synthetic record built from the tests:
 base 11 bars, arm 10 on the contested system. Expectation to check: Brahms
 p11 s1 -1, the running total from p13 on down by 1, Litolff unchanged or
 explained; every other system that moves needs its tail cropped.
+
+### 14d. The Mac run: DEAD on both movements -- the vote never reaches a majority
+
+2026-10-11, base = origin/main `26cb57c6` (detached worktree), arm =
+`e6243ecc`, one record each, `probe/readjudicate_2_86.py` run once per tree.
+Records: the newest whole-movement shared records,
+`library/_shared-records/{brahms1-breitkopf,beethoven5-litolff}-mvt1-whole-20261010-night.record.json`
+(gathered through INFER on origin/main `26fdb4d0`, `--pages 0-26` / `1-16`).
+Outputs: `probe/out-2.86/`.
+
+**Page numbers are pdf indexes.** The gather ran `--pages 0-26`; the record's
+own tail-key boxes on `page/11` land on the key flats of pdf index 11 rendered
+at 600 dpi (ink 0.49-0.59 inside three boxes; the same boxes 120 px right:
+0.00-0.13; on pdf 10 / 12: 0.06-0.29; at 300 dpi they fall off the page), and
+the print's own bar number 215 at pdf 12 system 0 (crop below) matches
+DECISIONS' 205 at pdf 11 system 1 plus that system's ten bars.
+
+**Control that can fail: the probe reproduces the saved partition.** The base
+tree's re-decided bars equal the record's saved `Q.MEASURE_PARTITION` on every
+staff of both records (0 systems differ).
+
+| record | staves | base bars | arm bars | systems that move | reasons (both trees) |
+|---|--:|--:|--:|--:|---|
+| Brahms 317803 whole mvt1 | 691 | 514 | 514 | **0** | `read` 677, `cautionary_tail_not_a_bar` 14 (p0 s0, 9/14, 2.47b) |
+| Litolff 984073 whole mvt1 | 331 | 505 | 505 | **0** | `read` 331 |
+
+- **p11 s1 does not move: 11 bars on both trees.** Not `next_key_not_decided`
+  -- the arm writes NO `mixed_tail_kept` anywhere, because the key-shaped vote
+  is under majority on every system of both records, so it returns before the
+  key connection. The connection itself WOULD pass on p11 s1: its saved
+  `Q.SYSTEM_KEY` is DECIDED, corroborated `[2]` (tally 2:9, -3:1), and p12
+  s0's is DECIDED `[-3]` (tally -3:10). They differ.
+- **The vote on p11 s1 is 1 yes of 14 voting** (`probe/out-2.86/brahms-p11-s1-tail-boxes.txt`,
+  `tail-census-*.json`). The print (crop below) shows two naturals then
+  three flats on 11 staves, one flat on the B-flat clarinets, nothing on
+  horns, trumpets and timpani. Per staff the record holds:
+  1. **Every cancelling natural is read as `keySharp`**, almost always with a
+     second box of another class at the SAME x (keySharp+keyFlat,
+     keySharp+keyNatural, keySharp+keyFlat+keyNatural; staff 10 holds all
+     three on one glyph). 10 of the 11 key-carrying staves therefore carry
+     two signed kinds and vote NO. A clean `keyNatural` alone occurs nowhere.
+  2. **Non-key ink the vote counts as disqualifying**: a `staff`-class box
+     spanning the strip on 10 staves, `beam`-class horizontal boxes on 8
+     (the strip's staff lines / bleed), and on staff 0 a `fingering1` and a
+     `rest8th` that are not on the print.
+  3. **Cross-staff bleed**: staff 0's tail also holds staff 1's flat
+     (y 1200 in the cell frame), staff 9 holds staff 10's, and staff 2's one
+     real flat is triple-boxed (keyFlat x2 + clefF). The three staves that
+     print NOTHING (horns, trumpets, timpani) hold only `beam` boxes and vote
+     NO instead of abstaining.
+  Relaxations measured as a control only (NOT built): treating
+  `staff`/`beam`/`ledgerLine` as neutral, and additionally reading every
+  `keySharp` as a natural, both still reach **0** systems on either record
+  -- on p11 s1 the co-located duplicates put a "natural" right of a flat or
+  leave two kinds. So no tuning of this vote's class lists rescues it; the
+  tail's classes are not a reliable witness at this cell width (§10e's open
+  question, now answered for Brahms p11: yes, the duplicate-class defect
+  recurs).
+- **The `timeSig*`-only duplicate-ink fix moves nothing on either record**
+  (base and arm identical on every staff; Brahms p0 s0 is still demoted by
+  2.47b at 9/14).
+- What does separate p11 s1 from every other Brahms system in the census:
+  head/rest-classed boxes in the tail on **1 of 14** staves (staff 0's
+  spurious `rest8th`), against 7-14 of 10-14 on every other system whose tail
+  holds key-classed ink on 3+ staves. Observation only; not built, not crop-checked beyond
+  p11 s1.
+
+Crops (600 dpi, gather frame, ruler in page px, subject marked with red
+corners and nothing else of ours), `out/print/2.86/`:
+`brahms_p11_s1_tail_and_p12_s0_head.png` (the strip after p11 s1's last
+barline, beside the head of p12 s0) and `brahms_p9_s1_tail_control.png`
+(negative control: a full bar of notes, key unchanged into p10 s0). No other
+system moved, so there are no others to crop; and since the arm reached no
+majority anywhere, no tail ends as `next_key_unchanged` to serve as a control
+-- p9 s1 is a hand-picked stand-in (the tail with key-classed ink on 11
+staves and an unchanged next key). Sean already ruled p11 s1's strip is not a
+bar (DECISIONS 2026-10-10); the question is not re-asked.
+
+**Verdict: the lane does not fix the evidence it was opened for. Do not
+merge as is.** The key connection holds on p11 s1; the per-staff
+"key-shaped" vote is the dead part, because it trusts detector classes the
+tail does not have.
