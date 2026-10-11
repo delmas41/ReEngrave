@@ -3537,3 +3537,42 @@ LEDGER LINE the detector called `articTenutoBelow`, and the rule gave it an owne
 first, also `articTenutoBelow`; r1 tiles 4 and 8 were a tie fragment and part of a `p`):
 a family-precision refusal for a tenuto box lying on a ledger line is the candidate next
 item, not built.
+
+## 11. One printed mark, two owners — drop the loser (built `b1c0061f`, after merging main)
+
+Sean (2026-10-11): *"Drop the losing owner. The tenuto fix is already on main as 2.84, so
+merge main first."* Main merged at `aed05e48` (2.84 tenuto vs ledger, 2.87 stem finder,
+2.13b; conflicts only in DECISIONS / version_memory, both sides kept). **The merge's own
+effect on the saved records (arm3 `408398f6` → `aed05e48`, clean): 1 row** — Litolff p1-p4
+`glyph/4/1/7/7/2` moves from `other_staff_bar_empty` to `nearest_on_notehead_side` on the
+SAME head (2.87 now reads its stem); every other row identical on all four records.
+
+**Population first** (on arm3): Brahms whole 10 marks decided in two cells on two different
+heads; Litolff p1-p4 3; Brahms p0-p3 1; Litolff whole 0. By page box, 5 of the 14 pairs are
+the SAME printed head twice (IoU 0.28-0.96, same side), 7 Brahms pairs point to opposite
+sides of the mark — and the detector labelled the two copies differently (`…Above` in one
+cell, `…Below` in the other), with neither confidence nor gap separating Sean's tiles 1 and 7.
+
+**Built** — `ownership.reconcile_articulation_twins`, run by `adjudicate.run` right after
+`Q.ARTICULATION_OWNER` (the `reconcile_dot_owners` pattern: the loser is SUPERSEDED by an
+abstention naming the winner; nothing relocated; page pixels throughout): one printed head
+→ `duplicate_of_twin` (the copy whose head is its own staff's is kept); same side → the
+nearer by more than the tie tolerance (`lost_to_twin`), else both `twin_owners_disagree`;
+opposite sides → the more specific rule wins (empty bar / shared head > two voices > long
+chord stem > notehead side — CONVENTION ASSUMED, from tiles 1 and 7 only), equal → both
+`twin_owners_disagree`. Tests `test_staged_articulation_twin_owners_2026_10_11.py` (8): RED
+against `aed05e48` (function absent — all 8, the 2 controls included), GREEN after.
+Articulation tests 166 of 166; fast tier on `b1c0061f` **7,232 passed, 0 failed**, 12 skipped, 825 deselected, 2 xfailed (15 m 37 s); `check` 192 → 192 (both trees).
+
+**Measured** (`aed05e48` → `b1c0061f`, clean; controls unchanged): Brahms whole 14 copies
+superseded — 2 `duplicate_of_twin`, 4 `lost_to_twin` (tile 1's upper copy and tile 7's
+upper copy, both as Sean ruled; `9/1/4/1/12` to a two-voice twin; `5/1/0/5/9` to a nearer
+same-side twin), 8 `twin_owners_disagree` (4 pairs, notehead side vs notehead side on
+opposite sides: those marks are now unowned and counted). Brahms p0-p3 1 duplicate,
+Litolff p1-p4 3 duplicates, Litolff whole 0. **Decided copies left with a decided twin on a
+different head: 0 on every record.** Every other row identical; fermatas identical.
+
+**Tiles** `out/print/2.12m-twin-owners-review/` (6, seed 20261013): the 2 judged winners and
+the 4 dropped pairs. Frame control 5 of 6 real, 0 of 6 shifted — ⚠️ tile 2 FAILS it (ink
+ratio 1.42: two heads crowd the box); checked by eye, the bracket is on the accent, sent
+anyway and recorded here.
