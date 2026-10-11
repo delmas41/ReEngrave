@@ -23,7 +23,9 @@
      0.09
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 2,
@@ -47,7 +49,9 @@
      0.05
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 3,
@@ -71,7 +75,9 @@
      0.05
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 4,
@@ -95,7 +101,9 @@
      0.01
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 5,
@@ -119,7 +127,9 @@
      0.01
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "ledger line",
+   "score": "NOT AN ARTICULATION (decided wrongly)"
   },
   {
    "n": 6,
@@ -143,7 +153,9 @@
      0.08
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 7,
@@ -167,7 +179,9 @@
      0.1
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 8,
@@ -191,7 +205,9 @@
      0.07
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 9,
@@ -215,7 +231,9 @@
      0.13
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 10,
@@ -239,7 +257,9 @@
      0.06
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 11,
@@ -263,7 +283,9 @@
      0.02
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 12,
@@ -287,7 +309,9 @@
      0.01
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 13,
@@ -311,7 +335,9 @@
      0.07
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   },
   {
    "n": 14,
@@ -335,7 +361,9 @@
      0.12
     ],
     "passes": true
-   }
+   },
+   "sean_2026_10_11": "below",
+   "score": "RIGHT"
   }
  ],
  "frame_control": {

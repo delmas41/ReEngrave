@@ -3529,3 +3529,11 @@ nothing read; a quarter rest; no staff on that side; two heads level). Articulat
 **Tiles** `out/print/2.12m-empty-bar-review/` — 14 unique marks (seed 20261012; the
 count-page records carry no PDF path, filled from the same edition's whole record; frame
 control **14 of 14 real, 1 of 14 shifted**), waiting on Sean.
+
+**Sean's answers (2026-10-11):** *"1. below 2. below 3. below 4.below 5. ledger line 6-14.
+below"* — **13 of 13 real marks right**; tile 5 (`glyph/12/0/0/7/9`, Litolff whole) is a
+LEDGER LINE the detector called `articTenutoBelow`, and the rule gave it an owner. Scored in
+`manifest.json`. This is the second tenuto-that-is-a-ledger in this item (§8 tile 2 was the
+first, also `articTenutoBelow`; r1 tiles 4 and 8 were a tie fragment and part of a `p`):
+a family-precision refusal for a tenuto box lying on a ledger line is the candidate next
+item, not built.
