@@ -22864,6 +22864,125 @@
    "ref": null,
    "staff_position": null,
    "text": null
+  },
+  {
+   "cell_id": "s0-st3-m5",
+   "cls": "stem",
+   "id": "b4352",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4583.0,
+    2719.6,
+    4587.2,
+    2874.4
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m5",
+   "cls": "stem",
+   "id": "b4353",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4513.0,
+    2735.4,
+    4517.2,
+    2879.5
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m5",
+   "cls": "stem",
+   "id": "b4354",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4446.3,
+    2748.3,
+    4449.2,
+    2888.2
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m5",
+   "cls": "stem",
+   "id": "b4355",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4143.1,
+    2751.5,
+    4146.0,
+    2890.5
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m6",
+   "cls": "stem",
+   "id": "b4356",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    5275.2,
+    2650.4,
+    5282.1,
+    2808.6
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m6",
+   "cls": "stem",
+   "id": "b4357",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4937.0,
+    2685.5,
+    4940.1,
+    2841.6
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
+  },
+  {
+   "cell_id": "s0-st3-m6",
+   "cls": "stem",
+   "id": "b4358",
+   "labeler": "sean",
+   "origin": "drawn",
+   "owner_staff": null,
+   "rect": [
+    4713.2,
+    2702.3,
+    4720.1,
+    2851.5
+   ],
+   "ref": null,
+   "staff_position": null,
+   "text": null
   }
  ],
  "cells": [

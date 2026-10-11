@@ -469,3 +469,18 @@ changed it. Not built: no rule that follows, and nothing labelled INFER is worth
 not: 13 flag curves + 1 flag end (tile 7), 3 on a numeral, 1 alto clef (tile 9). Plus one invented stroke inside a notehead (tile 10) that
 is not counted among the 25 because it lies on one of Sean's head boxes. Open, in order: the flag-curve family (14, overlaps lane 2.83's
 fence), the alto-clef stroke, the tile-10 stroke.
+
+**Hand truth corrected (Sean 2026-10-11: *"Add the stems to my hand labeled pages - I probably just missed them"*).** The seven confirmed
+stems are added to `data/hand-truth/pages/imslp317803/0.json` as `b4352`-`b4358` (all on staff 3, bars 5-6: `s0-st3-m5` x4, `s0-st3-m6` x3),
+via `store.draw` (origin `drawn`, labeler `sean`); their RECTS are the CV stroke's box that Sean judged, not boxes he drew (2.9-6.9 px wide
+against his median 7.4). 1,345 -> 1,352 boxes, 227 -> 234 stems; INVENTORY regenerated (`--check` clean). Re-scored, same two records
+(`final-base` = `40ab373a`, `f1` = `42b28f31`, both clean), `python3 -m tools.omr.hand_truth.score`:
+
+| on Sean's 234 stems | base | all four repairs |
+|---|---|---|
+| CV stems found (recall) | 175 (0.748) | **227 (0.970)** |
+| not Sean's ("invented") | 66 (precision 0.728) | **18 (precision 0.927)** |
+| heads on their right stem | 218 of 335 (0.651) | **319 of 335 (0.952)** |
+| stem direction right / wrong | 250 / 3 | 305 / 1 |
+
+The 18 are exactly the ones Sean called not-stems or that lie on a flag/numeral (section above). Heads with a stem box of Sean's: 321 -> 335 of 338.

@@ -30,6 +30,7 @@ pointing at headings no longer in the file.)*
 - Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
 - Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
 - Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 notehead ink -> 227 of 245 stem strokes real, 18 not, and `q1322` confirmed newly worse. FINDINGS 9.6; DECISIONS. Not landed.
+- Sean: add the 7 stems to his hand truth -> `b4352`-`b4358` (234 stems; INVENTORY regenerated). Re-scored base -> arm: found 175 -> 227 of 234, invented 66 -> 18, heads right 218 -> 319 of 335.
 
 ## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
 
