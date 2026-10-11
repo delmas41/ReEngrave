@@ -22,6 +22,13 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- docs: coordination record (cloud session; no code change)
+
+- Sean asked for one view of cloud vs Mac work. Found and fixed a ROADMAP number clash (2.84 claimed by both `lane-tenuto-ledger` and `lane-stem-finder`; the stem finder became 2.87) and set one landing order, which held: q883 -> crops-bar-drift -> 2.84 -> 2.87 -> 2.13b -> 2.85, all on main.
+- Sean's blind answers on 2.83 recorded on `lane-2.83-flag-tip` (`d4c327c3`: 5 right / 2 narrowed / 3 wrong); fix requested.
+- ROADMAP: START HERE status line; 2.83 row (tile results); 2.86 row PARKED (measured dead on its lane). PROJECT_BRIEF: "Where things stand (2026-10-11)" and how the work is split between Mac and cloud sessions. CLAUDE.md section 13: claim a ROADMAP number on main before building; what a cloud session can and cannot do. DECISIONS: the two coordination lessons.
+- 11 finished sessions archived (their work verified on GitHub first).
+
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
