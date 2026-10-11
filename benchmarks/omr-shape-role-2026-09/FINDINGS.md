@@ -3585,3 +3585,18 @@ the detector classed `articAccentAbove`, decided on the notehead side. So all fo
 abstentions were safe (nothing wrong written) and all four are recoverable by one rule if
 it holds: between two staves, with nothing more specific, the mark is the lower staff's.
 Not built — asked of Sean as a convention first.
+
+### 11a. The lower-staff convention (Sean: *"Yes, it's a convention - build it"*, `70e56c10`)
+
+CONVENTION CONFIRMED (DECISIONS 2026-10-11): between two staves, with nothing more specific
+to decide it, the mark is the LOWER staff's. `reconcile_articulation_twins`: an
+opposite-side contest decided by EQUAL rules now goes to the copy whose owner is below the
+mark (`lost_to_twin`, `by: lower_staff_convention`) instead of dropping both; a more
+specific rule still wins. Test changed RED-first against `28bbac74` (1 failed: both were
+dropped there), plus a control that two voices on the upper copy still beat the default on
+the lower one (passes on both trees). Articulation tests 167 of 167; fast tier on `70e56c10` **7,233 passed, 0 failed**, 12 skipped, 825 deselected, 2 xfailed (23 m 40 s, loaded machine); `check` 192 → 192.
+
+**Measured** (`b1c0061f` → `70e56c10`, clean; controls unchanged): Brahms whole — the 4
+tied pairs resolve, 4 copies `twin_owners_disagree` → decided, 4 → `lost_to_twin`; **all 4
+kept owners are the copies Sean named** (tiles 2, 3, 5, 6). Every other row identical on all
+four records; fermatas identical; two-owner marks left: 0.

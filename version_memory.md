@@ -88,6 +88,7 @@ pointing at headings no longer in the file.)*
 - Sean scored the 9 tiles (up-stem 3 right, down-stem 2 wrong); the misses are a two-voice test gap, not the stem reader (§8c). Upper-half/stem-up checked on 101 orchestral encodings: not reliable alone (§8d). Sean's "one head, stems up and down = two voices" built (`787fa6af`): 11 more Brahms marks decided, 10 blind tiles `out/print/2.12m-shared-head-review/` -- Sean 10 of 10 right; `check` 192 -> 192; fast tier 7,131 passed, 0 failed.
 - Sean's empty-bar rule built (`408398f6`): a mark between two staves is the noted staff's when the other staff's bar holds no note and a whole rest; 9 Brahms + 1 Litolff whole marks decided, 0 other rows changed; Sean 13 of 13 right (tile 5 a ledger line, not a tenuto). FINDINGS Part 12 §10.
 - Merged origin/main (`aed05e48`: 2.84, 2.87, 2.13b; merge moved 1 saved-record row, same head). One printed mark with two owners -> the loser dropped (`b1c0061f`, `reconcile_articulation_twins`, run after ARTICULATION_OWNER): 0 two-owner marks left; Brahms 2 duplicates, 4 losers, 4 opposite-side ties unowned; 6 blind tiles. FINDINGS Part 12 §11.
+- Sean confirmed the lower-staff convention (between two staves, nothing more specific -> the lower staff's), built `70e56c10` as the twin tie-breaker: the 4 Brahms ties now go to the copies Sean named. FINDINGS Part 12 §11a.
 
 ## 2026-10-10 (night) — 1.7 stems landed
 
