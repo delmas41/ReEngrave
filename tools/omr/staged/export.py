@@ -2929,6 +2929,134 @@ def _document_bar_offsets(
     return offsets, report
 
 
+class _EndingPlan:
+    """ROADMAP 2.85. The 1st/2nd endings and repeat barlines the record
+    DECIDED, and what they do to the bar numbers.
+
+    ⚠️ THE PRINT'S NUMBERING, Sean 2026-10-11: *"the 2nd ending reuses the
+    1st ending's bar numbers"* -- confirmed on Breitkopf 317803 (188 + 1 + 5
+    second-ending bars = 194, read off the print's own numerals, DECISIONS
+    2026-10-10). So every bar from the 2nd ending's first bar on is numbered
+    `k` lower than a straight count, `k` being the 1st ending's length, and
+    every later system inherits the rewind.
+
+    ⚠️⚠️ THE REFERENCE ENCODING DISAGREES: the gradus MusicXML of Brahms 1 i
+    counts straight through (its 2nd ending is `<measure number="191">`). We
+    follow the print, as ruled; a consumer pairing bars BY NUMBER against
+    that encoding sees the shift after 190.
+
+    ⚠️ IT WRITES NO MUSIC. It renames bars and adds `<barline>` marks; the
+    notehead accounting equality is untouched.
+
+    `rewind(key, i)` is the bars to subtract at system `key`, cell `i`. Inert
+    (0) where nothing was decided, and where the document numbering itself
+    was refused (`active=False`) -- a rewind on a per-part count would mean
+    a different thing in every part. The `<barline>` marks are written
+    either way: they say what the page prints, not where a bar stands.
+    """
+
+    def __init__(self) -> None:
+        self.active = False
+        self._before: Dict[Tuple[int, int], int] = {}
+        self._within: Dict[Tuple[int, int], Tuple[int, int]] = {}
+        self._left: Dict[Tuple[int, int, int], List[str]] = {}
+        self._right: Dict[Tuple[int, int, int], List[str]] = {}
+        self._style_left: set = set()
+        self._style_right: set = set()
+        self.report: Dict[str, Any] = {"endings": [], "repeats": [],
+                                       "rewound_bars": 0}
+
+    def rewind(self, key: Tuple[int, int], i: int) -> int:
+        if not self.active:
+            return 0
+        n = self._before.get(key, 0)
+        w = self._within.get(key)
+        if w is not None and i >= w[0]:
+            n += w[1]
+        return n
+
+    def number(self, key: Tuple[int, int], i: int, base: int) -> int:
+        return base + i + 1 - self.rewind(key, i)
+
+    def barlines(self, key: Tuple[int, int], i: int,
+                 indent: str = "      ") -> Tuple[List[str], List[str]]:
+        """`(left barline lines, right barline lines)` for one bar."""
+        k = (key[0], key[1], i)
+        out = []
+        for loc, items, styled, style in (
+                ("left", self._left.get(k), k in self._style_left,
+                 "heavy-light"),
+                ("right", self._right.get(k), k in self._style_right,
+                 "light-heavy")):
+            if not items and not styled:
+                out.append([])
+                continue
+            block = [f'{indent}<barline location="{loc}">']
+            if styled:
+                block.append(f"{indent}  <bar-style>{style}</bar-style>")
+            # MusicXML orders a barline's children: bar-style, ..., ending,
+            # repeat -- `items` is built in that order by `_ending_plan`.
+            block.extend(f"{indent}  {x}" for x in (items or ()))
+            block.append(f"{indent}</barline>")
+            out.append(block)
+        return out[0], out[1]
+
+
+def _ending_plan(rec: "Record", numbering: Dict[str, Any]) -> _EndingPlan:
+    """ROADMAP 2.85. Read `Q.ENDINGS` / `Q.REPEAT_BARLINE` per system, in the
+    document's own system order (`numbering["systems"]`, never re-derived).
+    Reads DECIDED verdicts only: an abstained ending leaves the bars counted
+    straight through, and `report["endings"]` lists only what was applied."""
+    plan = _EndingPlan()
+    plan.active = numbering.get("scheme") == "document"
+    plan.report["renumbered"] = plan.active
+    cumulative = 0
+    for r in numbering.get("systems", ()):
+        key = (r["page"], r["system_index"])
+        sub_key = f"system/{key[0]}/{key[1]}"
+        plan._before[key] = cumulative
+        rv = rec.verdict(Q.REPEAT_BARLINE, sub_key)
+        if rv and rv.get("outcome") == "decided":
+            for rep_ in rv.get("value") or ():
+                cell = int(rep_["cell"])
+                if rep_.get("direction") == "backward":
+                    plan._style_right.add((key[0], key[1], cell))
+                else:
+                    plan._style_left.add((key[0], key[1], cell))
+                plan.report["repeats"].append(
+                    {"system": r["system"], "cell": cell,
+                     "direction": rep_.get("direction")})
+        ev_ = rec.verdict(Q.ENDINGS, sub_key)
+        if not (ev_ and ev_.get("outcome") == "decided"):
+            continue
+        endings = list(ev_.get("value") or ())
+        for e in endings:
+            n = int(e["number"])
+            a, b = int(e["first_cell"]), int(e["last_cell"])
+            plan._left.setdefault((key[0], key[1], a), []).append(
+                f'<ending number="{n}" type="start"/>')
+            stop = "stop" if e.get("closed") else "discontinue"
+            plan._right.setdefault((key[0], key[1], b), []).append(
+                f'<ending number="{n}" type="{stop}"/>')
+        e1 = next(e for e in endings if int(e["number"]) == 1)
+        e2 = next(e for e in endings if int(e["number"]) == 2)
+        k = int(e1["last_cell"]) - int(e1["first_cell"]) + 1
+        plan._within[key] = (int(e2["first_cell"]), k)
+        cumulative += k
+        plan.report["endings"].append({
+            "system": r["system"],
+            "first": [int(e1["first_cell"]), int(e1["last_cell"])],
+            "second": [int(e2["first_cell"]), int(e2["last_cell"])],
+            "rewind": k})
+    # a repeat follows the ending inside one `<barline>` (child order)
+    for k in plan._style_right:
+        plan._right.setdefault(k, []).append('<repeat direction="backward"/>')
+    for k in plan._style_left:
+        plan._left.setdefault(k, []).append('<repeat direction="forward"/>')
+    plan.report["rewound_bars"] = cumulative if plan.active else 0
+    return plan
+
+
 def _spans_from_numbering(
         numbering: Dict[str, Any]) -> List[Tuple[Tuple[int, int], int]]:
     """The document's systems in order, each with its own bar count.
@@ -2949,7 +3077,9 @@ def _spans_from_numbering(
 
 
 def _printed_bar_number_check(rec: "Record",
-                              numbering: Dict[str, Any]) -> Dict[str, Any]:
+                              numbering: Dict[str, Any],
+                              plan: Optional[_EndingPlan] = None
+                              ) -> Dict[str, Any]:
     """ROADMAP 2.13. Per system: the ADJUDICATED printed bar number against
     the file's own cumulative count at that system's first bar -- the
     numeral's second witness.
@@ -3008,7 +3138,10 @@ def _printed_bar_number_check(rec: "Record",
                 "file_number": None, "state": "abstained",
                 "reason": "document_numbering_undetermined"})
             continue
-        file_number = int(r["offset"]) + 1
+        # ROADMAP 2.85: the number the FILE writes on this system's first
+        # bar, after any 1st-ending rewind before it.
+        file_number = int(r["offset"]) + 1 - (
+            plan.rewind((r["page"], r["system_index"]), 0) if plan else 0)
         delta = printed - file_number
         if delta == 0:
             n_agree += 1
@@ -3096,7 +3229,8 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
                     offsets: Dict[Tuple[int, int], int],
                     meters: Dict[Tuple[int, int], Any],
                     divisions: int, counters: Dict[str, int],
-                    first: bool
+                    first: bool,
+                    plan: Optional["_EndingPlan"] = None
                     ) -> Tuple[bool, Optional[Dict[str, Any]]]:
     """The bars of one system this part does not print.
 
@@ -3133,6 +3267,7 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
     """
     base = offsets.get(sys_key)
     sys_meter = meters.get(sys_key)
+    plan = plan or _EndingPlan()
     declared: Optional[Dict[str, Any]] = None
     if base is None:
         # Unreachable while `offsets` and `spans` come from one tally, and a
@@ -3152,19 +3287,24 @@ def _pad_tacet_span(lines: List[str], sys_key: Tuple[int, int], sys_bars: int,
             # `report["tacet_padding"]`.
             counters["tacet_bars_not_padded_without_meter"] += 1
             continue
-        lines.append(f'    <measure number="{base + i + 1}">')
+        lines.append(f'    <measure number="{plan.number(sys_key, i, base)}">')
         if first:
             lines.append(_legacy._mxl_attributes_block(
                 None, None, meter, divisions, "      ",
                 include_divisions=True))
             first = False
             declared = meter
+        # ROADMAP 2.85: a tacet part still carries the endings and repeats --
+        # they are the DOCUMENT's form, printed over every part.
+        _left, _right = plan.barlines(sys_key, i)
+        lines.extend(_left)
         # ⚠️ NO DIRECTIONS AND NO WEDGES, unlike the eventless branch. Those
         # come off THIS STAFF's cells and a tacet part has no staff here; a
         # mark printed in the gap belongs to whichever staff `glyph_owner`
         # gave it, which is never this one.
         lines.extend(_legacy._mxl_empty_measure(
             meter, divisions, None, "      "))
+        lines.extend(_right)
         lines.append("    </measure>")
         counters["tacet_bars_padded"] += 1
     return first, declared
@@ -3178,7 +3318,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               drops: Optional[Any] = None,
               held_bars: Optional[List[Dict[str, Any]]] = None,
               marks: Optional[Dict[str, int]] = None,
-              marked_bars: Optional[List[Dict[str, Any]]] = None) -> str:
+              marked_bars: Optional[List[Dict[str, Any]]] = None,
+              plan: Optional["_EndingPlan"] = None) -> str:
     """One `<part>`: every measure of every system this part appears on.
 
     ⚠️ `marked_bars` IS ROADMAP 2.4c, THE SAME SHAPE AS `held_bars` ONE
@@ -3243,6 +3384,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     tacet bar.
     """
     lines = [f'  <part id="{pid}">']
+    plan = plan or _EndingPlan()
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
     first = True
@@ -3264,7 +3406,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
         if maybe_run is None:
             first, _declared = _pad_tacet_span(
                 lines, sys_key, sys_bars, offsets or {}, meters or {},
-                divisions, counters, first)
+                divisions, counters, first, plan)
             # ⚠️ ROADMAP 2.8: a LEADING pad can be the only place this part
             # ever declares a `<time>`, and every later bar is read against
             # it. See `_pad_tacet_span`'s second return value.
@@ -3304,8 +3446,9 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # instead of inheriting the meter that follows it.
             meter = _meter_dict(meter_at(run.meter, i))
             number += 1
+            _here = (run.page, run.system)
             lines.append(
-                f'    <measure number="{number if base is None else base + i + 1}">')
+                f'    <measure number="{number if base is None else plan.number(_here, i, base)}">')
             # ⚠️ ROADMAP 2.1b. `condensed` joins the attributes-change test
             # so a run entering or leaving a doubled span always forces a
             # fresh `<attributes>` block -- `<transpose>` has nowhere else to
@@ -3333,6 +3476,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 # track what we KNEW rather than what we WROTE.
                 if meter is not None:
                     in_force = meter
+            # ROADMAP 2.85: an ending's start / a forward repeat, at the bar's
+            # head (after `<attributes>`); its right-hand twin closes the bar.
+            _bl_left, _bl_right = plan.barlines(_here, i)
+            lines.extend(_bl_left)
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
@@ -3387,7 +3534,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     marked_bars.append({
                         "page": run.page, "system": run.system,
                         "staff": run.staff, "cell": i,
-                        "measure": number if base is None else base + i + 1,
+                        "measure": (number if base is None
+                                    else plan.number(_here, i, base)),
                         "part": pid, "events": len(events),
                         "noteheads_and_rests": _bar_event_rows(events),
                         "ink_components": mark.get("ink_components"),
@@ -3437,7 +3585,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                         held_bars.append({
                             "page": run.page, "system": run.system,
                             "staff": run.staff, "cell": i,
-                            "measure": number if base is None else base + i + 1,
+                            "measure": (number if base is None
+                                    else plan.number(_here, i, base)),
                             "part": pid, "events": len(events),
                             "noteheads_and_rests": n_rows,
                             # ⚠️ Whether the length this bar was judged
@@ -3634,6 +3783,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 _count_directions(counters, directions)
                 lines.extend(_measure_xml(rec, run, i, events, divisions,
                                           counters, split=split))
+            lines.extend(_bl_right)
             lines.append("    </measure>")
     lines.append("  </part>")
     return "\n".join(lines)
@@ -4632,7 +4782,12 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # ⚠️ ROADMAP 2.13, RIGHT BESIDE THE NUMBERING IT CHECKS -- see that
     # function's own docstring for why this stays a report and never feeds
     # back into `offsets`/`numbering` itself.
-    numbering["printed_bar_check"] = _printed_bar_number_check(rec, numbering)
+    # ⚠️ ROADMAP 2.85, BEFORE THE CHECK: the check compares the printed
+    # numeral with the number the FILE writes, which the endings now move.
+    plan = _ending_plan(rec, numbering)
+    numbering["endings"] = plan.report
+    numbering["printed_bar_check"] = _printed_bar_number_check(
+        rec, numbering, plan)
     # ⚠️ BOTH DERIVED FROM THAT ONE TALLY, never re-counted. `spans` is the
     # document's systems in order with each one's own bar count — the tacet
     # padding's whole input — and reading it off `numbering["systems"]` is what
@@ -4694,7 +4849,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    offsets, pad, meters,
                                    drops=_drop_at_render,
                                    held_bars=held_bars, marks=held_marks,
-                                   marked_bars=marked_bars))
+                                   marked_bars=marked_bars, plan=plan))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -5379,7 +5534,10 @@ NOT_NOTATION: Dict[str, str] = {
     "timeSig": "counted as the `time` family",
     "tuplet": "counted as the `tuplet` family",
     "fingering": "a performance marking, not a notation family we export",
-    "repeatDot": "repeat barlines are a KNOWN GAP of the legacy exporter too",
+    "repeatDot": "the detector's `repeatDot` boxes are not read: repeat "
+                 "barlines come from the CV dot reader (`Q.REPEAT_DOTS` -> "
+                 "`Q.REPEAT_BARLINE`, ROADMAP 2.85), written as `<barline>` "
+                 "`<repeat>`",
     "barline": "structure; `measure_partition` decides the bars",
 }
 

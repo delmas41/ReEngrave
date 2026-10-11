@@ -22,6 +22,18 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.85 built: repeats and 1st/2nd endings (branch `lane-2.85-repeats-voltas`, not merged)
+
+- STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
+  - `volta_bracket.py` files `Q.VOLTA_BRACKET`;
+  - the numeral reader files `Q.VOLTA_NUMERAL` (Surya first, Tesseract as the fallback);
+  - `repeat_dots.py` files `Q.REPEAT_DOTS`.
+- Two new decisions in `adjudicators/repeats.py`: `Q.REPEAT_BARLINE` and `Q.ENDINGS`.
+- EXPORT: `_EndingPlan` numbers the 2nd ending with the 1st ending's numbers, the print's way, and writes `<ending>`/`<repeat>`. The 2.13 printed-number check now compares against the number the file writes.
+- Brahms A/B (one record, one tree): the drift after p10 drops by 2, as predicted.
+- 25 new tests; the export tests were run RED on origin/main first. `staged.check` 192 = base.
+- Open for Sean: whether the 1st-ending bars get a suffix (Verovio warns on duplicate numbers), and 5 blind tiles. FINDINGS `benchmarks/omr-repeats-endings-2026-10/FINDINGS.md`.
+
 ## 2026-10-11 -- crops-bar-drift landed on main
 
 - 5 crops under `out/print/bar-drift/` (Brahms 317803 pdf p10/p11, bar-number drift) and Sean's two DECISIONS lines: 1st-ending bars are uncounted (188 -> 194 -> 205); the courtesy key signature at p11 is not a bar. Crops and DECISIONS only, no code.

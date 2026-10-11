@@ -72,6 +72,13 @@ FRAME_MARGIN = "system_margin"
 #: readers sharing a frame word are declared ONE signal by
 #: `adjudicate.Evidence.correlated_groups` -- and nothing else reads this box.
 FRAME_BAR_NUMBER = "bar_number_crop"
+#: ROADMAP 2.85: the band above a system's top staff where a 1st/2nd-ending
+#: bracket is drawn; the crop inside its left hook where the numeral sits;
+#: the window beside one barline on one staff where repeat dots sit. Three
+#: frames, three crops -- the bracket and its numeral are TWO signals.
+FRAME_VOLTA = "volta_band"
+FRAME_VOLTA_NUMERAL = "volta_numeral_crop"
+FRAME_REPEAT_DOTS = "repeat_dot_window"
 
 
 def frame_cell(measure_index: int) -> str:
@@ -10190,6 +10197,240 @@ def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
                     bbox_page_px=[float(x0), float(y0), float(x1), float(y1)])
 
 
+def _page_gray(pws: Any) -> Any:
+    """The page's ORIGINAL raster as 2-D grey, or None."""
+    image = getattr(pws.page, "rgb", None)
+    if image is None:
+        return None
+    import numpy as np
+    arr = np.asarray(image)
+    if arr.ndim == 3:
+        import cv2
+        arr = cv2.cvtColor(arr, cv2.COLOR_RGB2GRAY)
+    return arr
+
+
+def gather_volta_brackets(log: Log, pws: Any) -> None:
+    """ROADMAP 2.85. Every hooked horizontal stroke above a system's top
+    staff -- a 1st/2nd-ending (volta) bracket candidate -- one row per
+    stroke on the SYSTEM subject.
+
+    ⚠️ CV, BECAUSE THE DETECTOR HAS NO VOLTA CLASS (208 classes, `repeatDot`
+    the only repeat symbol). On Brahms p10 its cell crop clips the stroke's
+    top and it boxes the 1st-ending line as an `ottavaBracket` in one cell
+    only; nothing reached the record as an ending, and the exporter counted
+    the 1st-ending bars straight through (+2 to every later bar number).
+
+    ⚠️ ONE ROW PER SYSTEM SUBJECT, READ OFF THE TOP STAFF ONLY: the bracket
+    is printed above the system (Breitkopf repeats it above the strings, a
+    second copy of the same fact, not read). Which bars it covers and which
+    ending it is are ADJUDICATE's (`adjudicate_endings`); this decides
+    nothing. A system with no candidate gets `NO_INK`, so "the reader looked
+    and found none" stays apart from "no reader ran".
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    by_system: Dict[int, List[Any]] = {}
+    for st in pws.staves:
+        by_system.setdefault(st.system_index, []).append(st)
+    gray = _page_gray(pws)
+    from .. import volta_bracket as VB
+    for sys_idx, members in sorted(by_system.items()):
+        sys_sub = R.system(p, sys_idx)
+        top = min(members, key=lambda s: s.top_y)
+        space = _spacing(top)
+        if gray is None or not space or space <= 0:
+            log.abstain(sys_sub, Q.VOLTA_BRACKET, reader=READERS.CV_VOLTA,
+                        frame=FRAME_VOLTA, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        found = VB.find_brackets(gray, top.line_ys, top.x_start, top.x_end)
+        if not found:
+            log.abstain(sys_sub, Q.VOLTA_BRACKET, reader=READERS.CV_VOLTA,
+                        frame=FRAME_VOLTA, reason=ABSTAIN.NO_INK)
+            continue
+        for k, b in enumerate(found):
+            log.observe(sys_sub, Q.VOLTA_BRACKET, b.as_value(),
+                        reader=READERS.CV_VOLTA, frame=FRAME_VOLTA,
+                        bracket=k, space=float(space))
+
+
+#: ROADMAP 2.85. Surya reads the numeral on a crop padded and doubled --
+#: measured on Brahms p10: unpadded native-size crops read "" for both
+#: brackets, padded 60 px and 2x upscaled read "1." and "2." (deterministic
+#: over repeat runs). The token cap is measured too: 8 read "" on both, 16
+#: reads both.
+_VOLTA_SURYA_PAD = 60
+_VOLTA_SURYA_SCALE = 2
+_VOLTA_SURYA_MAX_TOKENS = 16
+_VOLTA_SURYA_TIMEOUT_S = 60.0
+
+
+def gather_volta_numerals(log: Log, pws: Any, *,
+                          surya_fallback: bool = False) -> None:
+    """ROADMAP 2.85. The numeral inside each bracket's left hook, OCRed.
+
+    ⚠️ READS `Q.VOLTA_BRACKET` OFF THIS LOG, so it runs after
+    `gather_volta_brackets` (a forced GATHER edge -- `log.rows` on a quantity
+    nobody filed yet answers EMPTY, not an error).
+
+    ⚠️ SURYA FIRST, TESSERACT ONLY WHERE SURYA CANNOT RUN. Measured on
+    Breitkopf 317803: Tesseract reads this plate's bold "1" as "4" every time
+    it was asked -- the ending's "1." as "4." (conf 83), and the 2.13 bar
+    numbers 188/194 as 488/494 -- while Surya reads "1." and "2.". Tesseract
+    stays as the rung for a `--no-surya` run, under its own reader name so a
+    consumer can see which one spoke.
+
+    Four states per bracket: `READER_UNAVAILABLE`, `NO_STAFF_GEOMETRY`,
+    `NO_INK` (read nothing), or an OBSERVATION of the raw text. Whether the
+    text IS an ending number is ADJUDICATE's.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    systems = sorted({st.system_index for st in pws.staves})
+    gray = _page_gray(pws)
+    from .. import volta_bracket as VB
+    jobs: List[Tuple[int, int, Tuple[int, int, int, int]]] = []
+    for sys_idx in systems:
+        sys_sub = R.system(p, sys_idx)
+        for row in log.rows(Q.VOLTA_BRACKET, sys_sub):
+            det = row.detail or {}
+            k = int(det.get("bracket", 0))
+            space = float(det.get("space") or 0.0)
+            v = row.value or {}
+            if gray is None or space <= 0:
+                log.abstain(sys_sub, Q.VOLTA_NUMERAL, reader=READERS.CV_VOLTA,
+                            frame=FRAME_VOLTA_NUMERAL,
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY, bracket=k)
+                continue
+            b = VB.Bracket(x0=int(v["x0"]), x1=int(v["x1"]), y=int(v["y"]),
+                           thickness=int(v["thickness"]),
+                           left_hook=float(v["left_hook"]),
+                           right_hook=float(v["right_hook"]))
+            jobs.append((sys_idx, k, VB.numeral_crop_box(b, space)))
+    if not jobs:
+        return
+
+    use_surya = False
+    if surya_fallback:
+        try:
+            from ..staff_labels_surya import available as _surya_available
+            use_surya = bool(_surya_available())
+        except Exception:                                     # noqa: BLE001
+            use_surya = False
+    if use_surya:
+        import cv2
+        crops = []
+        for _sub, _k, (x0, y0, x1, y1) in jobs:
+            c = gray[max(0, y0):max(0, y1), max(0, x0):max(0, x1)]
+            c = cv2.copyMakeBorder(c, _VOLTA_SURYA_PAD, _VOLTA_SURYA_PAD,
+                                   _VOLTA_SURYA_PAD, _VOLTA_SURYA_PAD,
+                                   cv2.BORDER_CONSTANT, value=255)
+            c = cv2.resize(c, None, fx=_VOLTA_SURYA_SCALE,
+                           fy=_VOLTA_SURYA_SCALE)
+            crops.append(cv2.cvtColor(c, cv2.COLOR_GRAY2BGR))
+        try:
+            from ..staff_labels_surya import read_crops_text
+            texts = read_crops_text(crops, max_tokens=_VOLTA_SURYA_MAX_TOKENS,
+                                    crop_timeout_s=_VOLTA_SURYA_TIMEOUT_S)
+        except Exception as exc:                              # noqa: BLE001
+            for sys_idx, k, box in jobs:
+                log.abstain(R.system(p, sys_idx), Q.VOLTA_NUMERAL, reader=READERS.SURYA,
+                            frame=FRAME_VOLTA_NUMERAL,
+                            reason=ABSTAIN.READER_UNAVAILABLE, bracket=k,
+                            error=type(exc).__name__, note=str(exc)[:200])
+            return
+        for (sys_idx, k, box), text in zip(jobs, texts):
+            text = (text or "").strip()
+            if not text:
+                log.abstain(R.system(p, sys_idx), Q.VOLTA_NUMERAL, reader=READERS.SURYA,
+                            frame=FRAME_VOLTA_NUMERAL, reason=ABSTAIN.NO_INK,
+                            bracket=k, bbox_page_px=[float(v) for v in box])
+                continue
+            log.observe(R.system(p, sys_idx), Q.VOLTA_NUMERAL, text, reader=READERS.SURYA,
+                        frame=FRAME_VOLTA_NUMERAL, bracket=k,
+                        bbox_page_px=[float(v) for v in box])
+        return
+
+    try:
+        from .. import bar_number_text as BNT
+        tess_ok = BNT.available()
+    except Exception:                                         # noqa: BLE001
+        tess_ok = False
+    for sys_idx, k, box in jobs:
+        if not tess_ok:
+            log.abstain(R.system(p, sys_idx), Q.VOLTA_NUMERAL, reader=READERS.TESSERACT,
+                        frame=FRAME_VOLTA_NUMERAL,
+                        reason=ABSTAIN.READER_UNAVAILABLE, bracket=k)
+            continue
+        try:
+            found = VB.read_numeral(gray, box)
+        except Exception as exc:                              # noqa: BLE001
+            log.abstain(R.system(p, sys_idx), Q.VOLTA_NUMERAL, reader=READERS.TESSERACT,
+                        frame=FRAME_VOLTA_NUMERAL,
+                        reason=ABSTAIN.READER_UNAVAILABLE, bracket=k,
+                        error=type(exc).__name__, note=str(exc)[:200])
+            continue
+        if found is None:
+            log.abstain(R.system(p, sys_idx), Q.VOLTA_NUMERAL, reader=READERS.TESSERACT,
+                        frame=FRAME_VOLTA_NUMERAL, reason=ABSTAIN.NO_INK,
+                        bracket=k, bbox_page_px=[float(v) for v in box])
+            continue
+        text, conf = found
+        log.observe(R.system(p, sys_idx), Q.VOLTA_NUMERAL, text, reader=READERS.TESSERACT,
+                    frame=FRAME_VOLTA_NUMERAL, score=conf / 100.0, bracket=k,
+                    bbox_page_px=[float(v) for v in box])
+
+
+def gather_repeat_dots(log: Log, pws: Any, cells: Sequence[Any],
+                       local: Dict[int, Tuple[int, int]]) -> None:
+    """ROADMAP 2.85. The two dots of a repeat sign beside each barline the
+    measure extractor cut, one staff at a time, filed on the SYSTEM.
+
+    ⚠️ CV, BECAUSE THE DETECTOR MISSES THEM: on Brahms p10-11 `repeatDot`
+    fired twice, both spurious, and none of the 28 dots of the backward
+    repeat closing the 1st ending (`repeat_dots`' own docstring). Read on
+    the ORIGINAL raster (the dots sit in spaces 2 and 3, between lines that
+    must stay to place them).
+
+    `edge="end"`: dots left of the cell's RIGHT barline (`:||`); `"start"`:
+    dots right of its LEFT barline (`||:`). Which barlines ARE repeats is
+    voted across the staves by `adjudicate_repeat_barlines`. A system where
+    no staff holds a pair gets one `NO_INK` row.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    gray = _page_gray(pws)
+    from .. import repeat_dots as RD
+    staves = {st.staff_index: st for st in pws.staves}
+    found: Dict[int, int] = {}
+    systems = set()
+    binary = None if gray is None else (gray < 128).astype("uint8")
+    for c in cells:
+        key = local.get(c.staff_index)
+        st = staves.get(c.staff_index)
+        if key is None or st is None:
+            continue
+        sys_idx, st_idx = key
+        systems.add(sys_idx)
+        box = getattr(c, "bbox_page_px", None)
+        if binary is None or not box or len(box) != 4:
+            continue
+        for edge, side, bx in (("end", "left", box[2]),
+                               ("start", "right", box[0])):
+            pair = RD.find_pair(binary, st.line_ys, float(bx), side)
+            if pair is None:
+                continue
+            log.observe(R.system(p, sys_idx), Q.REPEAT_DOTS, edge,
+                        reader=READERS.CV_REPEAT_DOTS,
+                        frame=FRAME_REPEAT_DOTS, staff=st_idx,
+                        cell=int(c.measure_index), barline_x=float(bx))
+            found[sys_idx] = found.get(sys_idx, 0) + 1
+    for sys_idx in sorted(systems):
+        if found.get(sys_idx):
+            continue
+        log.abstain(R.system(p, sys_idx), Q.REPEAT_DOTS,
+                    reader=READERS.CV_REPEAT_DOTS, frame=FRAME_REPEAT_DOTS,
+                    reason=(ABSTAIN.NO_STAFF_GEOMETRY if binary is None
+                            else ABSTAIN.NO_INK))
+
+
 #: `_credit_labels`'s rung words -> the reader vocabulary. Written out rather
 #: than derived from the string, because `READERS` is a vocabulary a row is
 #: validated against and a silent `getattr` miss would file a real reading
@@ -11274,6 +11515,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # needs nothing detection produces and there is no reason to make it
         # wait.
         gather_printed_bar_numbers(log, pws)
+        # ⚠️ ROADMAP 2.85. Raster + the cut cells only, no detections. The
+        # numeral reader READS `Q.VOLTA_BRACKET`'s rows, so it is after the
+        # bracket reader -- a forced edge.
+        gather_volta_brackets(log, pws)
+        gather_volta_numerals(log, pws, surya_fallback=surya_fallback)
+        gather_repeat_dots(log, pws, cells, local)
 
         detections = gather_detections(
             log, cells, local, detector=detector,

@@ -1234,6 +1234,28 @@ class Q(_Vocab):
     #: rehearsal LETTER is not this quantity -- see the adjudicator's own
     #: `not_numeric` reason.
     PRINTED_BAR_NUMBER = "printed_bar_number"
+    #: ROADMAP 2.85. A 1st/2nd-ending (volta) bracket above a SYSTEM's top
+    #: staff: one row per bracket, value `{x0, x1, y, thickness, left_hook,
+    #: right_hook}` in page px / staff spaces (`volta_bracket.find_brackets`,
+    #: CV -- the detector has no volta class). GATHER only.
+    VOLTA_BRACKET = "volta_bracket"
+    #: ROADMAP 2.85. The OCRed STRING inside a bracket's left hook ("1.",
+    #: "2."), one row per bracket per reader, `detail["bracket"]` naming the
+    #: `VOLTA_BRACKET` row's index. Read AFTER the bracket (it reads its rows).
+    VOLTA_NUMERAL = "volta_numeral"
+    #: ROADMAP 2.85. Two repeat dots beside a barline on ONE staff, filed on
+    #: the SYSTEM with `detail{staff, cell, edge}` -- `edge="end"` is the dots
+    #: LEFT of a cell's right barline (`:||`), `"start"` RIGHT of its left one
+    #: (`||:`). CV (`repeat_dots.find_pair`): the detector's `repeatDot` class
+    #: missed all 28 dots of Brahms p10's repeat.
+    REPEAT_DOTS = "repeat_dots"
+    #: ROADMAP 2.85. VERDICT: which bars of a system are a 1st and a 2nd
+    #: ending (`adjudicate_endings`). EXPORT numbers the 2nd ending with the
+    #: 1st ending's bar numbers, the print's way (Sean, 2026-10-11).
+    ENDINGS = "endings"
+    #: ROADMAP 2.85. VERDICT: which barlines of a system are repeats, and which
+    #: way (`adjudicate_repeat_barlines`, voted across the system's staves).
+    REPEAT_BARLINE = "repeat_barline"
 
     # ── external facts (measurements, but not from THIS raster) ─────────────
     ROSTER_ENTRY = "roster_entry"            # the catalog's instrumentation
@@ -2123,6 +2145,15 @@ CLAIMS: "dict[str, str]" = {
     #: Tesseract misreads the ink -- the same nature as `DIRECTION_WORD`, one
     #: reader, no claim split.
     "PRINTED_BAR_NUMBER": CLAIM.IDENTIFICATION,
+    #: ROADMAP 2.85. A shape read off ink as "a bracket with a hook" and a
+    #: numeral/dots read off ink: each is wrong exactly when the reader
+    #: mistakes the ink -- identifications, like `PRINTED_BAR_NUMBER`.
+    "VOLTA_BRACKET": CLAIM.IDENTIFICATION,
+    "VOLTA_NUMERAL": CLAIM.IDENTIFICATION,
+    "REPEAT_DOTS": CLAIM.IDENTIFICATION,
+    #: ROADMAP 2.85. Weighings of the three rows above -- inherited error.
+    "ENDINGS": CLAIM.INTERPRETATION,
+    "REPEAT_BARLINE": CLAIM.INTERPRETATION,
     #: ⚠️ A JUDGEMENT CALL, NAMED.
     #: ⚠️ THE PDF'S OWN TEXT OBJECTS, not a reading of ink -- "the PDF's own
     #: text, if any", the FREE rung of the identity cascade. It reads no
@@ -2624,6 +2655,12 @@ class READERS(_Vocab):
     #: ORIGINAL raster beside each contested head's box (the staff lines left
     #: in: a vertical stem run is not broken by them).
     CV_HEAD_STEM_REACH = "cv_head_stem_reach"    # gather: stem run beside a contested head
+    #: ROADMAP 2.85. `volta_bracket.find_brackets` over the page's ORIGINAL
+    #: raster above a system's top staff: a hooked horizontal stroke.
+    CV_VOLTA = "cv_volta"                    # gather: 1st/2nd-ending bracket
+    #: ROADMAP 2.85. `repeat_dots.find_pair` over the ORIGINAL raster beside
+    #: each barline the measure extractor cut, one staff at a time.
+    CV_REPEAT_DOTS = "cv_repeat_dots"        # gather: repeat-sign dot pair
     #: `gather.gather_empty_bar_rest_search` -- ROADMAP 2.52. Reads the SAME
     #: `cell.image_no_staff` raster `CV_INK` et al. read (one crop, one
     #: signal, per `CV_INK`'s own entry), but only on a cell with NO
