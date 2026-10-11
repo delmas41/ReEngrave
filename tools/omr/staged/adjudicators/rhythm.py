@@ -636,6 +636,17 @@ def _to_canonical(box, frame):
     return ((x - ox) * up, (y - oy) * up, w * up, h * up)
 
 
+def _stems_connected_to_a_head(ev: Evidence, cell, stems):
+    """ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`), Sean 2026-10-11: *"All stems
+    should be connected to a notehead"*. The tests below that count STEMS (a beam
+    joins N of them; a neighbour's stem claims a stroke) do not start from a notehead,
+    so they read only the strokes `Q.STEM_HEAD_CONTACT` did not DECIDE touch none.
+    Flag unset, or the verdict absent/abstained: every stroke, exactly as before."""
+    from .stem_value import stems_connected_to_a_head
+    return stems_connected_to_a_head(
+        ev.verdict(Q.STEM_HEAD_CONTACT, subject=cell), stems)
+
+
 def _joins_n_stems(box, stems) -> int:
     """How many DIFFERENT `Q.STEM` boxes this stroke's box overlaps -- the
     signature of a genuine beamed group (drawn to span several stems), used
@@ -701,7 +712,8 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
         nframe = _cell_frame(ev, ncell)
         if nframe is None:
             continue
-        for s in ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell):
+        for s in _stems_connected_to_a_head(
+                ev, ncell, ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell)):
             box = _xywh(s)
             if box is not None:
                 neighbour_stems_page.append((st, _to_page(box, nframe)))
@@ -776,6 +788,9 @@ def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
     span several stems and a slur's bounding box coincidentally covering
     one is not evidence against that.
     """
+    # ROADMAP 2.87 (`head_contact`): the "joins >= 2 stems" override counts STEMS,
+    # and a stroke that touches no notehead is not one (Sean 2026-10-11).
+    stems = _stems_connected_to_a_head(ev, cell, stems)
     arcs = []
     for r in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
                      subject=cell):
@@ -1273,6 +1288,9 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
     there ANOTHER note's stem -- of the stroke itself, so a beam read for a
     head whose own stem was never boxed is still judged.
     """
+    # ROADMAP 2.87 (`head_contact`): "another note's stem stands at its end" counts
+    # STEMS, and a stroke that touches no notehead is not one (Sean 2026-10-11).
+    stems = _stems_connected_to_a_head(ev, cell, stems)
     ink = _beam_ink_rows(ev, cell)
     why: Dict[str, str] = {}          # stroke id -> why it is not a beam
     # ⚠️ ROADMAP 2.75, FIRST, AND WITHOUT AN INK ROW: a stroke lying through the
@@ -2522,7 +2540,10 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
                    # can be its own, and with them the value, depend on it;
                    # and the physical-mark group that says the owner holds a
                    # twin of a contest's losing copy.
-                   Q.HEAD_STEM_REACH, Q.MARK_GROUP),
+                   Q.HEAD_STEM_REACH, Q.MARK_GROUP,
+                   # ROADMAP 2.87 (`head_contact`): which strokes count as STEMS
+                   # in the beam-joins-N-stems tests.
+                   Q.STEM_HEAD_CONTACT),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -2568,7 +2589,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH, Q.MARK_GROUP),
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "beam_certain_not_joined",

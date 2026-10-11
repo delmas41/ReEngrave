@@ -174,6 +174,25 @@ def attach_tolerance_on() -> bool:
     return "attach_tolerance" in stem_finder_repairs()
 
 
+def stem_finder_repair_on(name: str) -> bool:
+    """`OMR_STEM_FINDER` names the repair `name` (default: it does not)."""
+    from ..line_detection import stem_finder_repairs
+    return name in stem_finder_repairs()
+
+
+#: How far (in the notehead box's own HEIGHTS, ~ staff spaces) a stem may stand off
+#: the nearest detected notehead and still be a stem that is CONNECTED TO A
+#: NOTEHEAD (`Q.STEM_HEAD_CONTACT`). Wider than the attach tolerance on purpose: the
+#: attach question picks a head's stem, this one only REFUSES a stroke for having no
+#: head anywhere near it, so it errs toward keeping. MEASURED, not fitted: on
+#: Brahms 317803 p0, 227 of the 229 strokes that match Sean's stems touch a
+#: detected head within 0.3 (FINDINGS hand-truth-score section 9.6); the two that do
+#: not are partial strokes that attach to no head anyway. CONVENTION (Sean
+#: 2026-10-11): every stem touches a notehead. WOULD FALSIFY IT: a real stem whose
+#: head the detector never boxed. NOT CONFIRMED beyond that page.
+STEM_CONTACT_TOLERANCE_HEADS = 0.3
+
+
 def stem_touches_head(stem: Any, head: Any) -> bool:
     """`stem` and `head` are `(x, y, w, h)` boxes. True when they share any area,
     or -- under `OMR_STEM_FINDER=attach_tolerance` -- when the stem stands within

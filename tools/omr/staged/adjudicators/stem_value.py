@@ -204,6 +204,140 @@ def _flush_word(frac: Optional[float]) -> str:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Q.STEM_HEAD_CONTACT -- does each stroke the finder calls a stem touch a head?
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _cell_heads(ev: Evidence, cell: Subject) -> List[Tuple[Subject, Tuple[float, ...]]]:
+    """Every notehead-classed detector box of this cell, `(glyph subject, xywh)`."""
+    heads = []
+    for row in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=cell):
+        boxes = ev.rows(Q.GLYPH_BOX, subject=row.subject)
+        box = _head_xywh(boxes[-1].value) if boxes else None
+        if box is not None:
+            heads.append((row.subject, box))
+    return heads
+
+
+@decision(
+    quantity=Q.STEM_HEAD_CONTACT,
+    scope=Kind.CELL,
+    # ⚠️ GATHER ROWS ONLY: the detector's own notehead boxes (kept or not -- whether
+    # a box is a head is another decision's question, and counting a refused box
+    # can only KEEP a stroke) and the cell's strokes. So it can stand anywhere in
+    # ORDER; it stands ahead of every consumer.
+    wants=(Q.STEM, Q.NOTEHEAD_CLASS, Q.GLYPH_BOX, Q.CELL_BOX),
+    subjects_from=Q.STEM,
+    reasons=("all_touch_a_head", "some_touch_no_head", "no_heads_read",
+             "no_stem"),
+    mode=Mode.ADDITIVE,
+    composed_from=(Q.STEM, Q.NOTEHEAD_CLASS, Q.GLYPH_BOX, Q.CELL_BOX),
+)
+def adjudicate_stem_head_contact(ev: Evidence) -> Ruling:
+    """ROADMAP 2.87, `OMR_STEM_FINDER=head_contact`.
+
+    CONVENTION (Sean 2026-10-11): *"All stems should be connected to a notehead"*,
+    to be used *"to verify later in the stages"*. Per `Q.STEM` row of this cell:
+    does it touch a detected notehead box (within `geometry.
+    STEM_CONTACT_TOLERANCE_HEADS` of the head's own height)? The value is the
+    list of ids that touch none. ABSTAINED where the cell has strokes and no
+    notehead box at all -- heads unread says nothing about the stroke (rule 8).
+
+    A unison head (two voices on one head: an up stem at its right, a down stem
+    at its left) keeps both stems by construction: both touch the one head.
+    WHAT WOULD FALSIFY IT: a real stem whose head the detector never boxed.
+    """
+    cell = ev.subject
+    stems = []
+    for row in ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        b = _xywh(row.value)
+        if b is not None:
+            stems.append((row, b))
+    if not stems:
+        return Ruling.abstain("no_stem")
+    heads = _cell_heads(ev, cell)
+    if not heads:
+        return Ruling.abstain("no_heads_read",
+                              stems=sorted(r.id for r, _b in stems))
+    from ..geometry import STEM_CONTACT_TOLERANCE_HEADS as TOL
+
+    def touches(sb, hb) -> bool:
+        t = TOL * hb[3]
+        return (sb[0] <= hb[0] + hb[2] + t and sb[0] + sb[2] >= hb[0] - t
+                and sb[1] <= hb[1] + hb[3] + t and sb[1] + sb[3] >= hb[1] - t)
+
+    # ⚠️ A STEM CUT BY THE CELL'S CROP HAS ITS HEAD OUTSIDE IT. The cell is padded
+    # into the neighbouring staff, so a beamed group of the staff below arrives as
+    # stems running off the crop's edge whose heads are in the OTHER cell (Brahms
+    # 317803 p1 cell/1/0/10/0: 4 such stems; refusing them dropped a real beam's
+    # eighth to a quarter). Where a stroke reaches the crop edge, contact is
+    # unknowable HERE, so it is neither met nor refused (rule 8). The edge is read
+    # off `Q.CELL_BOX` through the cell's own dual-frame box; no frame, no edge, and
+    # then NO stroke is refused for want of a head (it cannot be told from a cut one).
+    bounds = _crop_bounds(ev, cell)
+    cut: List[str] = []
+
+    def at_edge(sb) -> bool:
+        if bounds is None:
+            return True
+        e = bounds[2]
+        return sb[1] <= bounds[0] + e or sb[1] + sb[3] >= bounds[1] - e
+
+    meets, none = [], []
+    for r, sb in stems:
+        if any(touches(sb, hb) for _s, hb in heads):
+            meets.append(r.id)
+        elif at_edge(sb):
+            cut.append(r.id)
+        else:
+            none.append(r.id)
+    none.sort()
+    detail = {"meets": sorted(meets), "meets_none": none,
+              "cut_by_the_crop": sorted(cut), "heads": len(heads),
+              "crop_bounds_known": bounds is not None}
+    if none:
+        return Ruling(value=none, reason="some_touch_no_head", detail=detail)
+    return Ruling(value=none, reason="all_touch_a_head", detail=detail)
+
+
+def _crop_bounds(ev: Evidence, cell: Subject) -> Optional[Tuple[float, float, float]]:
+    """`(top, bottom, edge_margin)` of this cell's crop in canonical y, or None.
+    `Q.CELL_BOX` (page) carried through the cell's frame (`rhythm._cell_frame`)."""
+    from .rhythm import _cell_frame
+    cb = ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    frame = _cell_frame(ev, cell)
+    if not cb or frame is None:
+        return None
+    try:
+        y0, y1 = float(cb[-1].value[1]), float(cb[-1].value[3])
+    except (TypeError, ValueError, IndexError):
+        return None
+    _ox, oy, up = frame
+    return ((y0 - oy) * up, (y1 - oy) * up, CROP_EDGE_PX)
+
+
+#: A stroke end within this many canonical px of the crop's top or bottom edge is cut
+#: by it. MEASURED: on Brahms 317803 p0-1 the cut stems' ends stand within 1 px of the
+#: edge (cell/1/0/10/0: bottoms 654, 654, 654, 654 against 654.3).
+CROP_EDGE_PX = 3.0
+
+
+def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
+    """`stems` (`Q.STEM` rows) without the ones a DECIDED `Q.STEM_HEAD_CONTACT`
+    `verdict` (the cell's, read by the CONSUMER where it is declared, so `wiring` and
+    `inventory` see the read) says touch no notehead. The same sequence, unchanged,
+    unless `OMR_STEM_FINDER` names `head_contact` and the verdict is DECIDED and names
+    one: an absent or abstained verdict (heads unread) refuses nothing (rule 8)."""
+    from ..geometry import stem_finder_repair_on
+    if (verdict is None or verdict.outcome is not Outcome.DECIDED
+            or not verdict.value or not stem_finder_repair_on("head_contact")):
+        return stems
+    none = frozenset(verdict.value)
+    return tuple(s for s in stems if s.id not in none)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Q.HEAD_STEM -- the join, filed once
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -339,6 +473,7 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
                   for n, i in enumerate(ranked))
     return Ruling.narrow(cands, "two_stems", used=used,
                          stems={i: detail_of(i) for i in ranked})
+
 
 
 # ─────────────────────────────────────────────────────────────────────────────
