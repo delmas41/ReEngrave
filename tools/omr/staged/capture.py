@@ -289,6 +289,19 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "of gaps), not a ruler reading. Scoreless for the position row's reason. "
         "Consumed by `adjudicate_glyph_owner`.",
         None),
+    "VOLTA_BRACKET": (
+        RAW_INK,
+        "ROADMAP 2.85 -- a hooked horizontal stroke above a system's top "
+        "staff, `{x0, x1, y, thickness, left_hook, right_hook}` in page px "
+        "(hooks in staff spaces). Scoreless: morphology returns no "
+        "confidence. Consumed by `adjudicate_endings`.",
+        None),
+    "REPEAT_DOTS": (
+        RAW_INK,
+        "ROADMAP 2.85 -- the two dots of a repeat sign beside one barline on "
+        "one staff (page px, `detail{staff, cell, edge}`). Scoreless for the "
+        "bracket's reason. Consumed by `adjudicate_repeat_barlines`.",
+        None),
     "HEAD_STEM_REACH": (
         RELATION,
         "ROADMAP 2.58d -- which way a CONTESTED notehead's stem leaves it and "
@@ -800,6 +813,9 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.
     "CV_HEAD_STEM_REACH": ("staged/gather.py", "gather_head_stem_reach"),
+    # ⚠️ ROADMAP 2.85. Both read the page's ORIGINAL raster (`pws.page.rgb`).
+    "CV_VOLTA": ("volta_bracket.py", "find_brackets"),
+    "CV_REPEAT_DOTS": ("repeat_dots.py", "find_pair"),
     "LEDGER_FARHEAD": ("staged/gather.py", "gather_far_head_ledger_positions"),
     # ⚠️ ROADMAP 2.56b. Same function, same raster, the same crop: one more
     # reading of it, toward each candidate staff.

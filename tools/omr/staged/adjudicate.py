@@ -1176,6 +1176,13 @@ ORDER: Tuple[str, ...] = (
     # nothing here, so its position in this list is free; placed beside the
     # other text-reading decisions because it is one.
     Q.PRINTED_BAR_NUMBER,
+    # ⚠️ ROADMAP 2.85. Both read GATHER rows only (`Q.VOLTA_BRACKET`,
+    # `Q.VOLTA_NUMERAL`, `Q.REPEAT_DOTS`, `Q.CELL_BOX`, `Q.SYSTEM_STAFF_COUNT`)
+    # and nothing here reads them -- EXPORT does -- so their place is free;
+    # placed beside the bar number because all three are about where a bar
+    # stands in the document.
+    Q.REPEAT_BARLINE,
+    Q.ENDINGS,
 )
 
 

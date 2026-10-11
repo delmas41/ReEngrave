@@ -1,0 +1,25 @@
+{
+  "source": "Sean, blind, 2026-10-11",
+  "answers": {
+    "1": "It is 1 bar of a first ending",
+    "2": "Is a repeat sign - dots on the left",
+    "3": "Is the second ending (1 bar of it)",
+    "4": "Repeat dots on the right",
+    "5": "Is a double barline we need to figure out the barline because I want the same numbers as the original",
+    "1_followup": "Sorry the first ending is 2 bars"
+  },
+  "key": {
+    "1": "1st-ending bracket p10 s1 (ours: cells 1-2, 2 bars)",
+    "2": "backward repeat p10 s1",
+    "3": "2nd-ending bracket p10 s1 (ours: cell 3, 1 bar)",
+    "4": "forward repeat p3 s0",
+    "5": "CONTROL: plain double barline p11 s1 before the key change (ours: no repeat)"
+  },
+  "agree": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+  ]
+}
