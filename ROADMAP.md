@@ -17,6 +17,10 @@ re-enter.
 
 ---
 
+## START HERE — 2026-10-11 (landing order)
+
+q883 (PR #68: Sean's blind answers, rows 2.85/2.86, q883 out of hand truth) is on main. **2.84 = tenuto (`lane-tenuto-ledger`); the stem finder is 2.87.** Landing order agreed: q883 -> crops-bar-drift -> tenuto 2.84 -> stem finder 2.87 -> 2.83 -> 2.12m.
+
 ## START HERE — after 2026-10-10 (session end; main ≥ the commit naming this block)
 
 **Sean's plan for the next session:** pick up the two lanes still running at session end -- `lane-2.83-flag-tip` (2.83: the eighth's flag at the stem

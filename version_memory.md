@@ -22,6 +22,12 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- q883 landed on main (PR #68, merge `202bf59f`)
+
+- Sean's blind answers now on main: 2.78 phase 2, 2.12f r2, 2.75 chords, rhythm-leftovers-3, 2.79, 2.12m (3 right, 2 wrong of 5 decided -- not landing as built), 2.84 tenuto tiles (0 tenutos: 5 ledgers, 6 other ink); ROADMAP rows 2.85 and 2.86; box `q883` removed from `data/hand-truth/pages/imslp317803/0.json` (a staff line, not a beam).
+- Coordination: 2.84 = tenuto (`lane-tenuto-ledger`); the stem finder is renumbered 2.87. Agreed landing order: q883 -> crops-bar-drift -> tenuto 2.84 -> stem finder 2.87 -> 2.83 -> 2.12m.
+- Checks (cloud, no library/weights/skimage): answers.json and hand-truth JSON parse; hand-truth tests 54 passed, 86 failed (missing `skimage`), 1 skipped -- identical counts on bare origin/main.
+
 ## 2026-10-10 (evening) — q883 crop for Sean; blind-tile gallery
 
 - `out/print/2.82/q883-for-sean.png`: Sean's beam box `q883` redrawn in red over the 2.82 truth crop, sent to Sean to confirm it is a staff line, not a beam (truth slip; not yet removed from `data/hand-truth/pages/imslp317803/0.json`).
