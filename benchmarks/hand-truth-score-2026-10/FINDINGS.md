@@ -552,3 +552,13 @@ head `unison_two_voices` labels: nothing downstream splits it into two notes. A 
 
 **Not done / limits.** One page of truth for the collapse (tile 10 and its two siblings); the unison label has no truth on Litolff. Two heads that both touch both strokes (b_uni1) stay narrowed (the up stem belongs to the upper head, the down to the lower, but that does not follow from
 the two conventions alone). 3 of 6 collapses are on boxes that are not notes. `head_contact` is measured negative on Litolff.
+
+### 9.8 Sean's answers, round 2 (2026-10-11, `out/print/stem-finder/round2/answers.json`; raw: *"1. Y 2. Y 3. Y 4. Y 5 -8 . 1 9. 2"*)
+
+* **Unison (`unison_two_voices`), tiles 1, 2, 3, 4, 9: 5 of 5 right** -- each note has two stems, one up and one down (3 Litolff, 2 Brahms).
+  Litolff p3 labels 60 of its 70 narrowed heads a unison; Sean has now seen 3 of them (plus the agent's 2 crops), all right. The rest are
+  unsampled.
+* **One-stem controls, tiles 7, 8: 2 of 2 right** (1 stem each).
+* **`head_contact`'s two Litolff durations, tiles 5, 6: 1 beam each** -- they ARE eighths, as base decided; the arm's narrowing is WRONG on
+  both. `head_contact` is confirmed net negative on the count pages (0 gained, 2 lost) and stays OFF; its cause (a real stem whose head the
+  detector never boxed) is the standing objection to coupling `Q.STEM` to the detector (`STEM_NOTEHEAD_GATE_ENV`'s docstring).
