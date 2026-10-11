@@ -3426,3 +3426,35 @@ are an upper voice (stem up in the upper half — Sean's convention, being verif
 reference encodings), and in tile 7 the head itself carries both voices' stems. Neither
 counts as "two voices" today. Sean's beam caveat stands: a beamed group can put an up stem
 in the upper half with ONE voice, so the upper-half sign needs the beam case named first.
+
+### 8d. Sean's upper-half convention, counted on the reference encodings
+
+Sean: *"If a stem is in the upper half of a staff and the stem goes up it almost always
+because of another voice"*, with his chord exception (b) and, later, *"The beam thing will
+be an issue and breaks the rule"*. Counted by `verify_upper_half_stem_up.py` (written by a
+Sonnet agent, output `out/2.12m/upper-half-stem-up.json`, numbers re-read from the file):
+101 movement files, 30 orchestral works, 1,208,908 stemmed notes, written pitch + clef in
+force → staff position. **Control that can fail:** clef self-test passes; single-voice,
+unbeamed, non-chord notes follow the middle-line stem rule 99.57 % above / 99.70 % below.
+
+Notes above the middle line with stem UP: **28,541** (≈4 % of notes above the line).
+
+| first cause that fits | n | % |
+|---|--:|--:|
+| another voice in the bar (5,218 overlapping in time) | 5,759 | 20.2 |
+| chord with a farther note on the other side (Sean's (b)) | 6,705 | 23.5 |
+| beamed group with a farther low note (Sean's caveat) | 11,528 | 40.4 |
+| none of these (2,084 in bars where the other voice only rests; 218 next to a two-voice bar; 2,435 nothing) | 4,549 | 15.9 |
+
+So in the encodings an up stem in the upper half is NOT "almost always" another voice
+(20 %); the named causes together explain 84 % (91 % with the rest-only bars). Once beams
+and far-note chords are excluded, another voice is 56 % of what remains (76 % counting
+rest-only bars). Mirror (below middle, stem down, 33,020): two voices 14 %, chord 21 %,
+beam 38 %, unexplained 27 %. Per work it varies widely (Mozart 40 / Tchaikovsky 6 / 1812
+over 50 % two voices; Brandenburg 3 98 % beam).
+
+⚠️ Evidence about ENCODINGS (stems set by their makers' software), not the Breitkopf
+plate; transposing parts assumed to hold written pitch; beam and chord tests are by
+position only. Consequence for the two-voice test: "upper half + stem up" alone would be
+wrong far more often than right; it is a usable witness only with beams and far-note
+chords excluded first, and even then about 1 in 4 to 1 in 2 is not another voice.

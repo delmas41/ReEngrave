@@ -26,10 +26,9 @@ ORCH_DIRS = [
     "bach/brandenburg-concerto-3", "bach/brandenburg-concerto-4",
     "beach/symphony-in-e-minor",
     *["beethoven/symphony-%d" % i for i in range(1, 10)],
-    "beethoven/symphony-9-part-i", "beethoven/allegro-ma-non-troppo-un-poco-maestoso",
     "brahms/symphony-1", "brahms/symphony-2", "brahms/symphony-3", "brahms/symphony-4",
     "bruckner/symphony-5-in-b-flat-major",
-    "dvorak/symphony-9", "dvorak/symphony-9-in-e-minor-op95",
+    "dvorak/symphony-9", "dvorak/symphony-9-in-e-minor-op95",  # sym9 mvt4 (assets) dropped below as same movement as op95 mvt4
     "holst/the-planets",
     "mahler/5-rondo-finale", "mahler/adagietto", "mahler/symphony-5",
     "mozart/symphony-40-in-g-minor-k550", "mozart/symphony-41-in-c-major-jupiter",
@@ -41,6 +40,13 @@ ORCH_DIRS = [
     "ravel/bolero", "ravel/pavane", "ravel/bolero-study-reduction-340-bars",
     "rimsky-korsakov/flight-of-the-bumblebee",
 ]
+# alternative encodings of a movement already used (kept one each); documented in the report
+SAME_MOVEMENT_DROP = {
+    ("dvorak/symphony-9", "symphony-9--mvt4"),                 # = dvorak/symphony-9-in-e-minor-op95 mvt4
+    ("tchaikovsky/symphony-6", "symphony-6--mvt3"),             # = tchaikovsky-symphony-6-3-satz mvt3
+}
+# whole-movement duplicates of beethoven/symphony-9 mvt1 and mvt4 (dirs symphony-9-part-i,
+# allegro-ma-non-troppo-un-poco-maestoso) are simply not in ORCH_DIRS.
 MIN_PARTS = 3  # fewer parts => reduction/solo/piano arrangement, not an orchestral score
 
 
@@ -126,9 +132,11 @@ def parse_score(path):
         pid = part.get("id"); pname = names.get(pid, pid)
         clefs = {}  # staff -> (sign,line,oc)
         divisions = 1
+        mi = -1; multi = set(); part_start = len(notes)
         for meas in part:
             if local(meas.tag) != "measure":
                 continue
+            mi += 1
             mnum = meas.get("number")
             cursor = 0; last_on = 0; last_dur = 0
             mnotes = []  # all note dicts this measure
@@ -197,7 +205,11 @@ def parse_score(path):
             by_staff_voice = collections.defaultdict(lambda: collections.defaultdict(list))
             for (st, vo, a, b, r) in allvoices:
                 by_staff_voice[st][vo].append((a, b, r))
+            for st_, sv_ in by_staff_voice.items():
+                if sum(1 for lst in sv_.values() if any(not x[2] for x in lst)) >= 2:
+                    multi.add((st_, mi))
             for n in mnotes:
+                n["mi"] = mi
                 sv = by_staff_voice[n["staff"]]
                 other_note = False; other_overlap = False; other_rest_only = False
                 for vo, lst in sv.items():
@@ -235,6 +247,8 @@ def parse_score(path):
                     pass
             open_g.clear()
             notes.extend(mnotes)
+        for n in notes[part_start:]:
+            n["near_two_voice"] = ((n["staff"], n["mi"] - 1) in multi) or ((n["staff"], n["mi"] + 1) in multi)
     for n in notes:
         if "bg" in n:
             n["bg_pos"] = [x["pos"] for x in n["bg"]]
@@ -299,6 +313,8 @@ def main():
     pos_hist_unexp = collections.Counter()
     for d, tag, path, dups in chosen:
         base = os.path.basename(path)
+        if (d, tag) in SAME_MOVEMENT_DROP:
+            skipped_files.append((base, "alternative encoding of a movement already counted")); continue
         if tag in ("full", "sym9-full", "sym41-full", "sym6-full") or tag.endswith("-full"):
             skipped_files.append((base, "duplicate: whole-work file overlaps per-movement files")); continue
         try:
@@ -342,6 +358,10 @@ def main():
                 C[cell + "|" + cl] += 1
                 if n["other_rest_only"] and cl == "UNEXPLAINED":
                     C[cell + "|UNEXPLAINED_with_other_voice_rest_only"] += 1
+                if cl == "UNEXPLAINED" and n["near_two_voice"]:
+                    C[cell + "|UNEXPLAINED_adjacent_measure_has_two_voices"] += 1
+                if cl == "UNEXPLAINED" and not n["near_two_voice"] and not n["other_rest_only"]:
+                    C[cell + "|UNEXPLAINED_residual"] += 1
                 if cl == "UNEXPLAINED":
                     pos_hist_unexp[(side, pos)] += 1
                     unexplained.append(dict(side=side, file=base, work=d, part=n["part"], measure=n["m"], staff=n["staff"],
