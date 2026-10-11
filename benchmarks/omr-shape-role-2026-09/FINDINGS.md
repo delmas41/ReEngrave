@@ -3380,3 +3380,24 @@ columns misread as a chord stem; the 3 right owners are the upper voice's head b
 coincidence of geometry. The rule as built is not to be merged. The repair belongs in
 the two-voice test (a), not in (b): a second witness for "this staff has two voices
 here" that does not need two visibly opposite stems in one column.
+
+### 8b. Sean, again: (a) OR (b) — both rules put the mark at the stem tip
+
+Sean: *"Or long stems with notes on the other side of the staff - the previous rules I gave
+you"*. A stem pointing the unexpected way is explained by EITHER two voices (a) OR a long
+chord stem reaching notes on the other side of the staff (b); both put the mark at the
+stem's tip, and the owner is that stem's note either way. So §8a's "(b) unconfirmed, not
+to merge" over-reached: whether tiles 1, 5, 8 are (a) or (b), the rule's owner is the
+note whose stem tip the mark sits at, and Sean gives the mark to it — **3 of 3 right**.
+
+**Why 3 and 7 went wrong, from the record:** in both, the mark has a same-ink twin in the
+LOWER staff's cell (`23/1/3/4/8`, `10/0/7/5/0`) that abstained `stem_direction_unread` —
+the right note's stem was never read, so the upper staff's cell took the mark with no
+contest. Tiles 1, 5, 8 have no such twin (1: the twin decided on the notehead side, the
+loser; 5: the twin abstained `no_notehead`; 8: no twin). A twin whose stem is UNREAD is
+"cannot tell", and rule 8 says it may not be converted into the other cell's answer.
+
+Proposed repair (awaiting Sean, NOT built): `stem_tip_of_long_chord` abstains when a
+same-ink twin in another staff's cell abstained `stem_direction_unread`. On these 5 it
+keeps 1, 5, 8 and returns 3 and 7 to abstained — fitted on five examples, so it is a
+refusal, never a second decision. The real repair is reading the lower note's stem.
