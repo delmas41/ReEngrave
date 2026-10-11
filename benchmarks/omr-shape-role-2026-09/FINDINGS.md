@@ -3458,3 +3458,45 @@ plate; transposing parts assumed to hold written pitch; beam and chord tests are
 position only. Consequence for the two-voice test: "upper half + stem up" alone would be
 wrong far more often than right; it is a usable witness only with beams and far-note
 chords excluded first, and even then about 1 in 4 to 1 in 2 is not another voice.
+
+## 9. One head, stems up AND down = two voices (Sean's ruling, built `787fa6af`)
+
+Sean: *"When one note has stems going up and down it is always 2 voices"* (DECISIONS
+2026-10-10). Built in `adjudicate_articulation_owner` (STAGED, ADJUDICATE): a candidate
+head whose `Q.STEM_DIRECTION` abstained `stems_disagree` on exactly {up, down} is LIVE on
+both sides — the mark is on the stem side of the voice whose stem points at it — and is
+decided `nearest_on_notehead_side` with `stem_rule: stem_side`, `two_voice: True`,
+`shared_head: True` (no new reason word). Every other path unchanged. Tests
+`test_staged_articulation_shared_head_2026_10_10.py` (4): **2 RED against `a15e223c`**
+(abstained), 2 single-stem refusals beside them passing on both trees; the five
+articulation test files 69 of 69. `check` **192 before (base), 192 after.**
+
+**Readjudication, arm `46914018` → arm2 `787fa6af` (clean), same four records, control
+unchanged (Brahms 33,767 / 34,106; Litolff 9,414 / 9,423; p0-p3 2,866 / 3,015; p1-p4
+1,301 / 1,386):** Brahms whole **11** marks `stem_direction_unread` → decided on a shared
+head; every other row identical except the new `shared_head: False` detail key (661 Brahms,
+12 Litolff whole, 88 + 56 count pages); 0 changes on the other three records; fermatas
+identical.
+
+* **Tile 7's lower copy `glyph/10/0/7/5/0` → `glyph/10/0/7/5/5`, the note below — Sean's
+  answer.** ⚠️ Its upper-staff twin `10/0/6/5/10` is STILL decided (by §3's long-chord rule)
+  to the chord above, which Sean ruled wrong: one mark, two owners, and the wrong one is
+  not dropped. Twin de-duplication (Part 11 §6) is where it resolves.
+* Tile 3 is unchanged: its lower note has ONE up stem (no shared head); fixing it needs
+  the upper-half/stem-up witness, which §8d shows is not reliable alone.
+* The other 10 → blind tiles `out/print/2.12m-shared-head-review/` (same cutter, seed
+  20261011; frame control **10 of 10 real, 1 of 10 shifted**). Two decide at 3.2 and 3.8
+  head heights (`25/0/9/0/10`, `23/1/7/7/4`) — the "no distance bound" question of
+  Part 11 §6 again.
+
+**Sean's answers (2026-10-10):** *"1 below 2.above 3.below 4-10 below"* — **10 of 10 right**
+(our owner's page box lies on the side Sean named; scored in `manifest.json`; this checks
+the SIDE, not the exact head in a chord). Fast tier on `787fa6af`: **7,131 passed, 0
+failed**, 12 skipped, 825 deselected, 2 xfailed (10 m 0 s).
+
+Two more conventions from Sean in the same answer, recorded, NOT built:
+* *"when the other system in question has an empty measure then it has to belong to the
+  one with notes in it"* — a mark between two staves whose other staff's bar holds no
+  notes is the notes' staff's. A resolver for twin conflicts / cross-staff owners.
+* *"When there are multiple voices it will often choose whichever side it can be closest
+  to the notes it applies to"* — a TENDENCY ("often"), so INFER-grade at most.
