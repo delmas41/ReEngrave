@@ -3968,6 +3968,139 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                 "confidence": mark.score})
 
 
+#: ── ROADMAP 2.12m, one printed mark with two owners ─────────────────────────
+#:
+#: Sean (2026-10-11): *"Drop the losing owner."* A mark between two staves is
+#: detected once in each staff's padded cell, and each copy is decided on its
+#: own cell; where both decide on DIFFERENT heads the mark is written twice.
+#: The order in which a copy's rule outranks its twin's: the more specific rule
+#: was decided on more evidence about that column. CONVENTION ASSUMED / WHAT
+#: WOULD FALSIFY IT: a contest Sean gives to the lower-ranked copy / NOT
+#: CONFIRMED beyond his tiles 1 (long chord stem beat notehead side) and 7
+#: (shared head beat long chord stem) of `out/print/2.12m-review/`.
+def _twin_rank(v) -> int:
+    d = v.detail or {}
+    rule = d.get("stem_rule")
+    if rule == "other_staff_bar_empty" or d.get("shared_head"):
+        return 3                      # Sean: "has to" / "always"
+    if rule == "stem_side":
+        return 2                      # two voices (2.12f round 2)
+    if rule == "long_chord_stem":
+        return 1
+    return 0                          # the notehead-side default
+
+
+def _page_box(log: R.Log, quantity: str, sub) -> Optional[List[float]]:
+    for r in log.rows(quantity, sub):
+        bb = (r.detail or {}).get("bbox_page_px")
+        if bb and len(bb) == 4:
+            return [float(x) for x in bb]
+    return None
+
+
+def reconcile_articulation_twins(log: R.Log) -> Dict[str, int]:
+    """One printed mark, two decided owners: DROP the loser (CLAUDE.md §10 --
+    never relocate). Run by `adjudicate.run` right after
+    `Q.ARTICULATION_OWNER`. The loser's verdict is SUPERSEDED by an
+    abstention naming the winner, never overwritten.
+
+      * the two owners are ONE printed head (page boxes one ink,
+        `_boxes_are_one_ink`) -> keep the copy whose head is its own staff's
+        (no decided `glyph_owner` elsewhere), the other `duplicate_of_twin`;
+      * both owners on the SAME side of the mark -> the nearer, by more than
+        the tie tolerance, wins (`lost_to_twin`); else both
+        `twin_owners_disagree`;
+      * OPPOSITE sides -> the higher `_twin_rank` wins; equal -> both
+        `twin_owners_disagree` (rule 8: two answers is not an answer).
+
+    PAGE pixels throughout: two cells' canonical frames cannot be compared.
+    A pair without a page box on the mark or either owner is left as it was
+    and counted (`no_page_box`).
+    """
+    census: Counter = Counter()
+    done = set()
+
+    def decided(sub):
+        v = log.verdict(Q.ARTICULATION_OWNER, sub)
+        return v if v is not None and v.outcome is Outcome.DECIDED else None
+
+    def drop(v, reason, other, **detail):
+        log.record(R.Verdict(
+            id=log._next_id("vrd"), subject=v.subject,
+            quantity=Q.ARTICULATION_OWNER, outcome=Outcome.ABSTAINED,
+            value=None, decider="reconcile_articulation_twins", reason=reason,
+            considered=(v.id, other.id), basis=(v.id, other.id),
+            supersedes=v.id,
+            detail={"was": v.value, "twin": other.subject.to_key(),
+                    "was_rule": (v.detail or {}).get("stem_rule"),
+                    "same_ink_twins": (v.detail or {}).get("same_ink_twins"),
+                    **detail}))
+        census[reason] += 1
+
+    def own_staffs(v) -> bool:
+        head = R.Subject.from_key(v.value)
+        ov = log.verdict(Q.GLYPH_OWNER, head)
+        return not (ov is not None and ov.outcome is Outcome.DECIDED
+                    and ov.value and ov.value != head.at(Kind.STAFF).to_key())
+
+    for sub in log.subjects(Kind.GLYPH):
+        a = decided(sub)
+        if a is None:
+            continue
+        for tk in (a.detail or {}).get("same_ink_twins") or ():
+            pair = tuple(sorted((sub.to_key(), tk)))
+            if pair in done:
+                continue
+            done.add(pair)
+            a = decided(sub)
+            b = decided(R.Subject.from_key(tk))
+            if a is None or b is None or a.value == b.value:
+                continue
+            census["pairs"] += 1
+            mb = _page_box(log, Q.ARTICULATION_MARK, a.subject)
+            ha = _page_box(log, Q.GLYPH_BOX, R.Subject.from_key(a.value))
+            hb = _page_box(log, Q.GLYPH_BOX, R.Subject.from_key(b.value))
+            if mb is None or ha is None or hb is None:
+                census["no_page_box"] += 1
+                continue
+            if _boxes_are_one_ink(ha, hb):
+                keep, lose = sorted(
+                    (a, b), key=lambda v: (not own_staffs(v),
+                                           v.subject.to_key()))
+                drop(lose, "duplicate_of_twin", keep,
+                     winner=keep.subject.to_key())
+                continue
+            my = (mb[1] + mb[3]) / 2.0
+
+            def side(h):
+                return "below" if (h[1] + h[3]) / 2.0 > my else "above"
+
+            def gap(h):
+                return (h[1] - mb[3]) if side(h) == "below" else (mb[1] - h[3])
+            sa, sb = side(ha), side(hb)
+            if sa == sb:
+                tol = ARTIC_TIE_HEAD_HEIGHTS * max(ha[3] - ha[1], hb[3] - hb[1])
+                ga, gb = gap(ha), gap(hb)
+                if abs(ga - gb) <= tol:
+                    drop(a, "twin_owners_disagree", b, same_side=True)
+                    drop(b, "twin_owners_disagree", a, same_side=True)
+                else:
+                    win, lose = (a, b) if ga < gb else (b, a)
+                    drop(lose, "lost_to_twin", win,
+                         winner=win.subject.to_key(), by="nearer_same_side")
+                continue
+            ra, rb = _twin_rank(a), _twin_rank(b)
+            if ra == rb:
+                drop(a, "twin_owners_disagree", b, same_side=False)
+                drop(b, "twin_owners_disagree", a, same_side=False)
+            else:
+                win, lose = (a, b) if ra > rb else (b, a)
+                drop(lose, "lost_to_twin", win, winner=win.subject.to_key(),
+                     by="more_specific_rule", winner_rule=(
+                         win.detail or {}).get("stem_rule"))
+    return dict(census)
+
+
 #: ── ROADMAP 2.7, the printed in-bar accidental ──────────────────────────────
 #:
 #: How far to the RIGHT of an accidental its notehead may stand, in STAFF
