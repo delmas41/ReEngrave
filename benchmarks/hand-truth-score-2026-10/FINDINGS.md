@@ -484,3 +484,15 @@ against his median 7.4). 1,345 -> 1,352 boxes, 227 -> 234 stems; INVENTORY regen
 | stem direction right / wrong | 250 / 3 | 305 / 1 |
 
 The 18 are exactly the ones Sean called not-stems or that lie on a flag/numeral (section above). Heads with a stem box of Sean's: 321 -> 335 of 338.
+
+**CORRECTION (manager, 2026-10-11) -- tile 10 is NOT notehead ink.** Read against Sean's own hand truth, head `q1322`
+([2709, 5996, 2752, 6034]) has TWO stem boxes of his: one up from its right side ([2748, 5919, 2755, 6004]) and one down from its left
+([2709, 6015, 2716, 6157]); the arm's two strokes there (`obs:010077`, `obs:010079`) both match them (both scored found). His answer *"Is a
+notehead - not a stem"* names the boxed mark, not a stroke. So the arm's `narrowed_with_the_right_stem` is between two REAL stems on one head
+(two voices sharing it, as his boxes draw it); "newly worse, confirmed" above is withdrawn. Open question for Sean: does this one head take
+both stems?
+
+**Head contact, measured (`f1` record, Sean's 234):** of the 229 CV strokes that match his stems, 227 touch a detected notehead within 0.3
+spaces; the 2 that do not (`obs:009856`, `obs:009857`, staff 13) are partial strokes ending 0.82 and 0.33 spaces above their head (his
+heads too). Of the 18 invented, 2 touch none: tile 9's alto-clef stroke (`obs:009999`) and `obs:009052`. The other 16 (flag ink, numerals)
+touch a head, so the rule does not reach them. Every real stem reaches at least 2.27 spaces beyond its head; the invented ones 1.07-2.56.

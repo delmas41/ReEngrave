@@ -29,7 +29,7 @@ pointing at headings no longer in the file.)*
 - Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
 - Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
 - Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
-- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 notehead ink -> 227 of 245 stem strokes real, 18 not, and `q1322` confirmed newly worse. FINDINGS 9.6; DECISIONS. Not landed.
+- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 = the boxed mark is a notehead (his truth gives `q1322` two real stems; first misread as notehead ink, corrected) -> 227 of 245 stem strokes real, 18 not. FINDINGS 9.6; DECISIONS. Not landed.
 - Sean: add the 7 stems to his hand truth -> `b4352`-`b4358` (234 stems; INVENTORY regenerated). Re-scored base -> arm: found 175 -> 227 of 234, invented 66 -> 18, heads right 218 -> 319 of 335.
 
 ## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
