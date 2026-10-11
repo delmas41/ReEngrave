@@ -197,7 +197,7 @@ def stem_stroke_enabled() -> bool:
         "1", "true", "yes", "on")
 
 
-#: `OMR_STEM_FINDER` -- ROADMAP 2.84, the stem finder (Sean 2026-10-10: *"Send
+#: `OMR_STEM_FINDER` -- ROADMAP 2.87, the stem finder (Sean 2026-10-10: *"Send
 #: out an agent to handle the stem fixes"*). A comma list of the repairs that
 #: are ON, default EMPTY (so the OFF test is an ALLOW-LIST and a typo leaves the
 #: shipped reader in force). Every repair is its own name so it is priced alone:

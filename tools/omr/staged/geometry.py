@@ -147,7 +147,7 @@ def is_timesig_digit_ink(box_value: Any, timesig_box_values: Iterable[Any]
 
 
 # ---------------------------------------------------------------------------
-# Does this stem stand against this notehead?  (ROADMAP 2.84, `attach_tolerance`)
+# Does this stem stand against this notehead?  (ROADMAP 2.87, `attach_tolerance`)
 # ---------------------------------------------------------------------------
 
 #: How far (in the notehead box's own HEIGHTS, ~ staff spaces) a stem's box may

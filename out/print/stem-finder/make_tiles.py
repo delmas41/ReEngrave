@@ -1,4 +1,4 @@
-"""ROADMAP 2.84 (stem finder): BLIND review tiles for Sean. NOT product code.
+"""ROADMAP 2.87 (stem finder): BLIND review tiles for Sean. NOT product code.
 
 Nothing of ours is drawn: only the print, a big number, one plain question and red corner brackets on the SUBJECT (the
 line or the note the question is about). Which strokes to ask about is decided from the scorer's own lists

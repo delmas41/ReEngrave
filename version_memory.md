@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 — 2.84 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+## 2026-10-11 — 2.87 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
 
 - Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
 - Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.

@@ -357,7 +357,7 @@ directions and 0.25 is its middle.
   are 2.78's (a stem that is refused leaves the next vertical stroke against the head to be its stem).
 * The scorer now prints these numbers at GATHER + ADJUDICATE for any record, so the next re-gather reads them with one command.
 
-## 9. The stem finder (ROADMAP 2.84; Sean 2026-10-10, *"Send out an agent to handle the stem fixes"*)
+## 9. The stem finder (ROADMAP 2.87; Sean 2026-10-10, *"Send out an agent to handle the stem fixes"*)
 
 **Path:** shared `line_detection.detect_stems` (GATHER) for items 1, 2, 4 -- the legacy `transcribe` passes no detector boxes so only
 `thin_run` can reach it, and it is OFF -- and STAGED ADJUDICATE for item 3. **Everything is behind one allow-list flag**

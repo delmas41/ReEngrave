@@ -1,4 +1,4 @@
-"""ROADMAP 2.84, `OMR_STEM_FINDER=attach_tolerance`: a stem box standing within
+"""ROADMAP 2.87, `OMR_STEM_FINDER=attach_tolerance`: a stem box standing within
 one stem thickness of a notehead's box is that head's stem.
 
 Four readers each re-derived "does this stem touch this head" as box overlap

@@ -1,4 +1,4 @@
-"""`OMR_STEM_FINDER` (ROADMAP 2.84): the stem finder's repairs, one by one.
+"""`OMR_STEM_FINDER` (ROADMAP 2.87): the stem finder's repairs, one by one.
 
 Drawn ink on synthetic cells (SPACING 100 canonical px per staff space), so the
 tests read the real `detect_stems` chain and need no PDF, weights or LilyPond.
