@@ -3334,3 +3334,30 @@ real boxes pass, the (40, 40)-shifted box 0 of 9.**
 WHAT WOULD FALSIFY (b) as built is unchanged (§2): a decided tile Sean gives to another
 note. Tile 3 (`23/1/2/4/5`) is the one to watch — the accent stands just above the lower
 staff's up-stem note as well as below the upper chord's down-stem tip.
+
+## 8. Sean's answers on the 9 tiles (2026-10-10) — up stem 3 of 3, DOWN stem 0 of 2
+
+Sean, verbatim: *"1.. belongs to note below 2. Ledger line 3. Belongs to note below 4-9.
+Belongs to note below"*. Scored against `manifest.json` (now carries `sean_2026_10_10`
+and `score` per tile; the owner's page box vs the mark's decides "below"):
+
+| tile | ours | stem | Sean | |
+|--:|---|---|---|---|
+| 1 | decided `5/1/10/2/4`, below the mark | up | note below | **right** |
+| 5 | decided `5/1/10/4/5`, below | up | note below | **right** |
+| 8 | decided `23/1/7/9/2`, below (control, tile 6 of r2) | up | note below | **right** |
+| 3 | decided `23/1/2/4/7`, ABOVE the mark | down | note below | **WRONG** |
+| 7 | decided `10/0/6/5/4`, ABOVE the mark | down | note below | **WRONG** |
+| 4, 6, 9 | abstained `no_ledger_head_on_stem` (nearest: a down-stem chord above) | down | note below | abstention right — the head the rule would have needed is the wrong one |
+| 2 | abstained `mark_not_at_stem_tip` | down | **a ledger line**, not an articulation | abstention holds by luck — the third family-precision case after r1 tiles 4 and 8 |
+
+**Rule (b) as built is FALSIFIED for down stems** (the §2 falsifier: a decided tile Sean
+gives to another note — twice). Every down-stem case on the page (2 decided, 3 refused)
+belongs to the note BELOW, i.e. to the lower staff, never to the upper chord whose stem
+tip the mark sits under. The up-stem half (mark above the staff, chord reaching onto
+ledgers below) is 3 of 3, control included. On tile 1 Sean's answer also settles the
+two-owner pair: the lower-staff owner (this rule's) is right and the upper-staff twin
+`5/1/9/2/4` → `5/1/9/2/0` is the loser.
+
+Not changed yet: the proposed repair (restrict the rule to UP stems, so the 2 wrong
+decisions return to abstained) waits on Sean's yes; it would leave 3 decided, all right.
