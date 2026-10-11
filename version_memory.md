@@ -22,6 +22,14 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.4b hollow-head labelling batch BUILT, awaiting Sean (branch `lane-2.4b-hollow`, not merged)
+
+- STAGED + the detector; no GATHER/ADJUDICATE/EVALUATE/INFER code touched, nothing trained.
+- New `benchmarks/omr-labeling-hollow4-2026-10/` (train batch, 100 cells, 9 presses) and `benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/` (104 cells, Litolff idx 1, TEST truth): `build_batch.py`, `cut_pool.sh`, `cut_pool2.sh`, `size_the_miss.py` (controls: self-match 27/27, shifted 0/27), `count_hollow.py`, `contact_sheet.py`, `brahms0-miss.json`.
+- Findings: production hollow rows trained on hollow3 via v19-v21 (not Jurgenson v12); Brahms p0 hollow recall 27/27 at 0.25 and 0.10; the hollow2 counter-ranker failed its print check and is not used to select.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:

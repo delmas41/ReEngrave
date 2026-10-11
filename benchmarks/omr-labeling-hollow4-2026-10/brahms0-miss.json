@@ -1,0 +1,1146 @@
+{
+ "page": "imslp317803:0",
+ "truth_hollow": 27,
+ "records": {
+  "c0.25": {
+   "path": "scratch/brahms0-c0.25.json",
+   "glyphs_on_page": 1776,
+   "hollow_boxes_gathered": 64,
+   "kinds": {
+    "found_hollow": 27
+   },
+   "found_hollow_pct": 100.0,
+   "context_by_kind": {
+    "found_hollow": {
+     "dot": 27,
+     "ledger": 21,
+     "stem": 27,
+     "tie": 8,
+     "neighbour-head": 2
+    }
+   },
+   "hollow_boxes_matching_no_truth_head": 32,
+   "rows": [
+    {
+     "id": "b4213",
+     "cls": "noteheadHalfOnLine",
+     "origin": "drawn",
+     "kind": "found_hollow",
+     "rect": [
+      2230,
+      3243,
+      2275,
+      3282
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q564",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2712,
+      3242,
+      2757,
+      3285
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q568",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      3243,
+      3185,
+      3287
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q576",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3613,
+      3256,
+      3653,
+      3286
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q589",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3255,
+      4187,
+      3285
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q595",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4714,
+      3240,
+      4763,
+      3287
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q613",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      1652,
+      3742,
+      1694,
+      3780
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q616",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      1651,
+      3626,
+      1701,
+      3668
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q623",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2229,
+      3742,
+      2271,
+      3781
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q637",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2226,
+      3619,
+      2275,
+      3667
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q643",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2711,
+      3744,
+      2754,
+      3780
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q653",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2713,
+      3627,
+      2755,
+      3669
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q666",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3142,
+      3737,
+      3186,
+      3779
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q670",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      3628,
+      3187,
+      3656
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q677",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3619,
+      3743,
+      3662,
+      3784
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q687",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3621,
+      3627,
+      3667,
+      3667
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q694",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3740,
+      4189,
+      3779
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q700",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3624,
+      4193,
+      3665
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q703",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4720,
+      3735,
+      4763,
+      3774
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q711",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4720,
+      3624,
+      4760,
+      3652
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "neighbour-head",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q712",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4719,
+      3638,
+      4760,
+      3665
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "neighbour-head",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q875",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2229,
+      4719,
+      2272,
+      4753
+     ],
+     "context": [
+      "dot",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q887",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2710,
+      4718,
+      2755,
+      4754
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q894",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      4718,
+      3186,
+      4754
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q901",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3616,
+      4718,
+      3661,
+      4755
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q907",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      4714,
+      4191,
+      4756
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q913",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4719,
+      4716,
+      4764,
+      4753
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    }
+   ],
+   "class_confusion_truth_vs_read": {
+    "HalfOnLine->HalfInSpace": 9,
+    "HalfInSpace->HalfInSpace": 13,
+    "HalfOnLine->HalfOnLine": 5
+   }
+  },
+  "c0.10": {
+   "path": "scratch/brahms0-c0.10.json",
+   "glyphs_on_page": 2541,
+   "hollow_boxes_gathered": 83,
+   "kinds": {
+    "found_hollow": 27
+   },
+   "found_hollow_pct": 100.0,
+   "context_by_kind": {
+    "found_hollow": {
+     "dot": 27,
+     "ledger": 21,
+     "stem": 27,
+     "tie": 8,
+     "neighbour-head": 2
+    }
+   },
+   "hollow_boxes_matching_no_truth_head": 42,
+   "rows": [
+    {
+     "id": "b4213",
+     "cls": "noteheadHalfOnLine",
+     "origin": "drawn",
+     "kind": "found_hollow",
+     "rect": [
+      2230,
+      3243,
+      2275,
+      3282
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q564",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2712,
+      3242,
+      2757,
+      3285
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q568",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      3243,
+      3185,
+      3287
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q576",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3613,
+      3256,
+      3653,
+      3286
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q589",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3255,
+      4187,
+      3285
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q595",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4714,
+      3240,
+      4763,
+      3287
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q613",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      1652,
+      3742,
+      1694,
+      3780
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q616",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      1651,
+      3626,
+      1701,
+      3668
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q623",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2229,
+      3742,
+      2271,
+      3781
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q637",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2226,
+      3619,
+      2275,
+      3667
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q643",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2711,
+      3744,
+      2754,
+      3780
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q653",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      2713,
+      3627,
+      2755,
+      3669
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q666",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3142,
+      3737,
+      3186,
+      3779
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q670",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      3628,
+      3187,
+      3656
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q677",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3619,
+      3743,
+      3662,
+      3784
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q687",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      3621,
+      3627,
+      3667,
+      3667
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q694",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3740,
+      4189,
+      3779
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q700",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-fixed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      3624,
+      4193,
+      3665
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q703",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4720,
+      3735,
+      4763,
+      3774
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q711",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4720,
+      3624,
+      4760,
+      3652
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "neighbour-head",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q712",
+     "cls": "noteheadHalfOnLine",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4719,
+      3638,
+      4760,
+      3665
+     ],
+     "context": [
+      "dot",
+      "ledger",
+      "neighbour-head",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfOnLine",
+     "read_score": null,
+     "adjudicate": "refused"
+    },
+    {
+     "id": "q875",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2229,
+      4719,
+      2272,
+      4753
+     ],
+     "context": [
+      "dot",
+      "stem",
+      "tie"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q887",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      2710,
+      4718,
+      2755,
+      4754
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q894",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3140,
+      4718,
+      3186,
+      4754
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q901",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      3616,
+      4718,
+      3661,
+      4755
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q907",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4146,
+      4714,
+      4191,
+      4756
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    },
+    {
+     "id": "q913",
+     "cls": "noteheadHalfInSpace",
+     "origin": "prefill-confirmed",
+     "kind": "found_hollow",
+     "rect": [
+      4719,
+      4716,
+      4764,
+      4753
+     ],
+     "context": [
+      "dot",
+      "stem"
+     ],
+     "read_cls": "noteheadHalfInSpace",
+     "read_score": null,
+     "adjudicate": "kept"
+    }
+   ],
+   "class_confusion_truth_vs_read": {
+    "HalfOnLine->HalfInSpace": 8,
+    "HalfInSpace->HalfInSpace": 13,
+    "HalfOnLine->HalfOnLine": 6
+   }
+  }
+ }
+}
