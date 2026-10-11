@@ -22,9 +22,21 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (evening) — q883 crop for Sean; blind-tile gallery
+
+- `out/print/2.82/q883-for-sean.png`: Sean's beam box `q883` redrawn in red over the 2.82 truth crop, sent to Sean to confirm it is a staff line, not a beam (truth slip; not yet removed from `data/hand-truth/pages/imslp317803/0.json`).
+- The 43 waiting blind tiles (2.78, 2.12f, 2.75, rhythm-leftovers-3, 2.79) published to Sean as a private answer gallery; answers come back through the page's store and get filed into each set's answers.json.
+- Sean judged the 12 2.78 phase-2 tiles: 10 right, 2 wrong (5: 16ths written as eighths; 6: eighths written as quarters -- the stem value sided with the wrong head). `out/print/2.78-phase2-review/answers.json`; DECISIONS line.
+- Brahms bar-number drift traced (diagnosis only, no code): candidates = first-ending bars counted (p10 s1, +2) and a courtesy key after p11 s1's last barline kept as a bar (+1); Litolff = a stray barline column (p6 s1, p13-14). Question to Sean pending.
+- Sean answered the other 31 gallery tiles: 2.12f 6/6 decided right (2 and 9 first mis-scored, corrected), 3 marks are ledger lines; Sean's articulation-side convention recorded (notehead side, except two voices or a long chord stem -> stem side); 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
+- Sean: q883 is not a beam -> removed from his Brahms page (1,345 boxes); INVENTORY regenerated.
+- Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
+- Sean's 21 gallery answers (2026-10-11): 2.12m 3 right / 2 wrong of 5 decided (it picked the upper staff's stem-down chord; the accent was the lower chord's) -> not landing as built; 2.84 tenuto tiles: 0 tenutos, 5 ledgers, 6 other ink (E, beam, half note, p, slur, accent area); mirror confirmed. answers.json in both review dirs.
+
 ## 2026-10-10 (night) — 1.7 stems landed
 
 - `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
+
 
 ## 2026-10-10 (session end) — 2.82 landed; lanes 2.83 and 1.7-stems handed to the next session
 
