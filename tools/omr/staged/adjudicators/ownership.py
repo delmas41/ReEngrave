@@ -4010,8 +4010,9 @@ def reconcile_articulation_twins(log: R.Log) -> Dict[str, int]:
       * both owners on the SAME side of the mark -> the nearer, by more than
         the tie tolerance, wins (`lost_to_twin`); else both
         `twin_owners_disagree`;
-      * OPPOSITE sides -> the higher `_twin_rank` wins; equal -> both
-        `twin_owners_disagree` (rule 8: two answers is not an answer).
+      * OPPOSITE sides -> the higher `_twin_rank` wins; equal -> the copy
+        whose owner is BELOW the mark (Sean 2026-10-11, CONVENTION CONFIRMED:
+        between two staves the mark is the lower staff's).
 
     PAGE pixels throughout: two cells' canonical frames cannot be compared.
     A pair without a page box on the mark or either owner is left as it was
@@ -4091,8 +4092,11 @@ def reconcile_articulation_twins(log: R.Log) -> Dict[str, int]:
                 continue
             ra, rb = _twin_rank(a), _twin_rank(b)
             if ra == rb:
-                drop(a, "twin_owners_disagree", b, same_side=False)
-                drop(b, "twin_owners_disagree", a, same_side=False)
+                # Sean 2026-10-11, CONVENTION CONFIRMED: between two staves,
+                # with nothing more specific, the mark is the LOWER staff's.
+                win, lose = (a, b) if sa == "below" else (b, a)
+                drop(lose, "lost_to_twin", win, winner=win.subject.to_key(),
+                     by="lower_staff_convention")
             else:
                 win, lose = (a, b) if ra > rb else (b, a)
                 drop(lose, "lost_to_twin", win, winner=win.subject.to_key(),

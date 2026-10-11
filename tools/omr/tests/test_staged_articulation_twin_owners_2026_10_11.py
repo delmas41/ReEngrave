@@ -15,7 +15,8 @@ writes the mark twice. A resolved contest DROPS the loser, never relocates it
      `twin_owners_disagree`;
   3. owners on OPPOSITE sides -> the copy decided by the more specific rule wins
      (empty bar / shared head > two voices > long chord stem > notehead side);
-     equal -> both `twin_owners_disagree` (rule 8: cannot tell is not an answer).
+     equal -> the copy whose owner is BELOW the mark (Sean 2026-10-11, CONVENTION
+     CONFIRMED: between two staves the mark is the lower staff's).
      CONVENTION ASSUMED for the order: Sean's tiles 1 (long chord beat notehead
      side) and 7 (shared head beat long chord) of `out/print/2.12m-review/`.
 
@@ -113,13 +114,30 @@ class TestOneMarkTwoOwners(unittest.TestCase):
         self.assertEqual((up.outcome, lo.outcome),
                          (Outcome.ABSTAINED, Outcome.DECIDED))
 
-    def test_RED_equal_rules_on_opposite_sides_drop_both(self):
+    def test_RED_equal_rules_on_opposite_sides_the_note_below_wins(self):
+        """Sean 2026-10-11 (CONVENTION CONFIRMED): between two staves, with
+        nothing more specific, the mark is the lower staff's -- his tiles 2, 3,
+        5, 6 of `out/print/2.12m-twin-owners-review/`. RED against `28bbac74`
+        (both dropped there)."""
         log = _log({UP_HEAD: ABOVE, LO_HEAD: BELOW})
         _decide(log, UP_MARK, UP_HEAD, LO_MARK)
         _decide(log, LO_MARK, LO_HEAD, UP_MARK)
         up, lo = self._run(log)
-        self.assertEqual((up.reason, lo.reason),
-                         ("twin_owners_disagree", "twin_owners_disagree"))
+        self.assertEqual((up.outcome, lo.outcome),
+                         (Outcome.ABSTAINED, Outcome.DECIDED))
+        self.assertEqual(lo.value, LO_HEAD.to_key())
+        self.assertEqual(up.reason, "lost_to_twin")
+        self.assertEqual(up.detail["by"], "lower_staff_convention")
+
+    def test_the_convention_does_not_outrank_a_more_specific_rule(self):
+        """Two voices on the upper copy (the note ABOVE) beat the plain default
+        on the lower copy -- Sean's tile 1 of the twin-owner batch."""
+        log = _log({UP_HEAD: ABOVE, LO_HEAD: BELOW})
+        _decide(log, UP_MARK, UP_HEAD, LO_MARK, rule="stem_side")
+        _decide(log, LO_MARK, LO_HEAD, UP_MARK)
+        up, lo = self._run(log)
+        self.assertEqual((up.outcome, lo.outcome),
+                         (Outcome.DECIDED, Outcome.ABSTAINED))
 
     def test_RED_same_side_the_nearer_head_wins(self):
         far = [100.0, 390.0, 112.0, 410.0]
