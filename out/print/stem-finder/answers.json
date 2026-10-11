@@ -12,6 +12,7 @@
   "7": "N -- the end of a flag connecting with its own notehead",
   "8": "Y",
   "9": "N -- part of an alto clef",
-  "10": "is a notehead - not a stem"
+  "10": "is a notehead - not a stem",
+  "10_followup": "Tile 10 has 2 notes a 3rd apart - 2 voices. The top one has a stem going up and the bottom has a stem going down"
  }
 }

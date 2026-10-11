@@ -496,3 +496,10 @@ both stems?
 spaces; the 2 that do not (`obs:009856`, `obs:009857`, staff 13) are partial strokes ending 0.82 and 0.33 spaces above their head (his
 heads too). Of the 18 invented, 2 touch none: tile 9's alto-clef stroke (`obs:009999`) and `obs:009052`. The other 16 (flag ink, numerals)
 touch a head, so the rule does not reach them. Every real stem reaches at least 2.27 spaces beyond its head; the invented ones 1.07-2.56.
+
+**Tile 10, Sean's follow-up (2026-10-11):** *"Tile 10 has 2 notes a 3rd apart - 2 voices. The top one has a stem going up and the bottom has
+a stem going down."* His truth agrees: `q1322` (top) takes the up stem `b4311`, `q1319` (below, [2711, 6032, 2752, 6066]) the down stem
+`b4310`. The down stroke's top end (6015) sits at `q1322`'s vertical centre and inside its box, so by geometry alone it fits a two-note chord
+on one down stem just as well, which is why the arm narrows `q1322` between the two. What would decide it: every black head has exactly one
+stem (unless two voices share one head, a unison), and `q1319` has no other candidate -- so it takes the down stem and `q1322` the up one.
+Not built: CONVENTION ASSUMED (one stem per black head, unison excepted), NOT CONFIRMED; it moves 1 head on this page.
