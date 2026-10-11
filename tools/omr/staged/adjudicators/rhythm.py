@@ -371,8 +371,9 @@ def _stem_joined(beams, stems, head_box):
     """
     if head_box is None:
         return [], []
+    from ..geometry import stem_touches_head
     attached = [s for s in stems
-                if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
+                if _xywh(s) and stem_touches_head(_xywh(s), head_box)]
     if not attached:
         return [], []
     joined = []
@@ -6744,7 +6745,8 @@ def _stems_on(head_box, stems):
     stem; where none overlaps the nearest is 94 px away but for three pairs at
     1-2 px).
     """
-    return [s for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), head_box)]
+    from ..geometry import stem_touches_head
+    return [s for s in stems if _xywh(s) and stem_touches_head(_xywh(s), head_box)]
 
 
 @decision(

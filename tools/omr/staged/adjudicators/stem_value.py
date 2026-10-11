@@ -245,7 +245,8 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
         b = _xywh(row.value)
         if b is not None:
             stems.append((row, b))
-    touching = [(r, b) for r, b in stems if _overlap(b, head)]
+    from ..geometry import stem_touches_head
+    touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
         return Ruling.abstain("no_stem", used=(boxes[-1].id,))
 
