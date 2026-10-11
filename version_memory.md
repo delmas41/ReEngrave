@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 (day) — 2.83 flag-tip: Sean's blind answers recorded
+
+- `out/print/2.83-review/answers.json` (branch `lane-2.83-flag-tip`, not merged to main): arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow).
+
 ## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
 
 - `tools/omr/hand_truth/score.py` scores a record against Sean's hand-labelled page at GATHER+ADJUDICATE, with controls that fail; first score on Brahms 317803 pdf 0 in `benchmarks/hand-truth-score-2026-10/`.
