@@ -3771,9 +3771,27 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                     return True
         return False
 
+    def both_ways(h) -> bool:
+        """ONE head carrying a stem UP and a stem DOWN (`Q.STEM_DIRECTION`
+        abstained `stems_disagree` on exactly those two answers). Sean,
+        DECISIONS 2026-10-10: *"When one note has stems going up and down it is
+        always 2 voices"* -- so each side of the head is a stem side, and a mark
+        on either side is that head's (2.12m, tile 7)."""
+        v = ev.verdict(Q.STEM_DIRECTION, subject=h.subject)
+        return (v is not None and v.outcome is Outcome.ABSTAINED
+                and v.reason == "stems_disagree"
+                and set((v.detail or {}).get("answers") or ()) == {"up", "down"})
+
     rows = []                         # (gap, dx, head, side, stem, two_voice, state)
+    shared = set()                    # heads carrying both voices' stems
     for dx, h, side, gap in cands:
         sd = stem_of(h)
+        if sd is None and both_ways(h):
+            # The voice whose stem points AT the mark: its stem side.
+            shared.add(id(h))
+            rows.append((gap, dx, h, side, "up" if suffix_side == "above"
+                         else "down", True, "ok"))
+            continue
         if sd is None:
             rows.append((gap, dx, h, side, None, False, "unread"))
             continue
@@ -3869,6 +3887,7 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                 "notehead_side": "below" if sd == "up" else "above",
                 "stem_rule": "stem_side" if tv else "notehead_side",
                 "two_voice": tv,
+                "shared_head": id(head) in shared,
                 "gap_head_heights": g / nh_height,
                 "dx_canonical_px": dx,
                 "dx_notehead_widths": (dx / nh_width) if nh_width else None,
