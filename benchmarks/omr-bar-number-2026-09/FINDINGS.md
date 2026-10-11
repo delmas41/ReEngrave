@@ -188,7 +188,7 @@ STAGED. Raw data under `census-2026-10-11/`. The crops for Sean are in
 
 - **Records:** `*-mvt1-whole-20261010-night.record.json` (main `26fdb4d0`, clean tree). Brahms has 53 systems (p0-26), Litolff 31 (p1-16).
 - **Frame control:** each system's crop was re-cut from its recorded `bbox_page_px` off `preprocessing.render_page` at 600 dpi. Tesseract re-read every crop exactly as the record says: 84 of 84.
-- **Plate reading:** `plate_reading.json` is my reading of each crop with its neighbours. It is not yet Sean's. The numbers run in sequence, and each step matches a plausible system length.
+- **Plate reading:** `plate_reading.json`, first read by me off each crop with its neighbours. **Sean confirmed all 84 tiles on 2026-10-11** (*"all of those tiles are correct and match the bar numbers"*), so it is print truth for this item. The numbers run in sequence, and each step matches a plausible system length.
 
 Tesseract against the plate (decided verdicts):
 
@@ -274,6 +274,6 @@ On the base side the Tesseract misreads made the deltas noise (−40, +300, −2
 
 ### 7.5 Not done
 
-- Sean has not looked at `out/print/2.13b-bar-number/*.png` yet. The plate reading is mine.
+- Sean confirmed every tile in `out/print/2.13b-bar-number/*.png` (2026-10-11). The right/wrong counts in 7.1-7.3 therefore stand against print truth.
 - Not done: the three geometry misses, a third plate, and an overnight re-gather.
 - Brahms's 19 abstentions are clear numerals Surya returned empty on (8, 15, 29, 38, 48, 79, 87, 97, 161, 179, 188, 239, 251, 324, 330, 336, 362, 444, and 115, which is outside the box). That is coverage left on the table, not error.
