@@ -22,7 +22,12 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 -- q883 landed on main (PR #68, merge `202bf59f`)
+## 2026-10-11 -- crops-bar-drift landed on main
+
+- 5 crops under `out/print/bar-drift/` (Brahms 317803 pdf p10/p11, bar-number drift) and Sean's two DECISIONS lines: 1st-ending bars are uncounted (188 -> 194 -> 205); the courtesy key signature at p11 is not a bar. Crops and DECISIONS only, no code.
+- Next in the landing order: tenuto 2.84 (`lane-tenuto-ledger`, Mac session) -> stem finder 2.87 -> 2.83 -> 2.12m.
+
+## 2026-10-11 -- q883 landed on main (PR #68, merge `dc6f90d9`)
 
 - Sean's blind answers now on main: 2.78 phase 2, 2.12f r2, 2.75 chords, rhythm-leftovers-3, 2.79, 2.12m (3 right, 2 wrong of 5 decided -- not landing as built), 2.84 tenuto tiles (0 tenutos: 5 ledgers, 6 other ink); ROADMAP rows 2.85 and 2.86; box `q883` removed from `data/hand-truth/pages/imslp317803/0.json` (a staff line, not a beam).
 - Coordination: 2.84 = tenuto (`lane-tenuto-ledger`); the stem finder is renumbered 2.87. Agreed landing order: q883 -> crops-bar-drift -> tenuto 2.84 -> stem finder 2.87 -> 2.83 -> 2.12m.
