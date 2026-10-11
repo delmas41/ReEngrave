@@ -1,16 +1,33 @@
-Traceback (most recent call last):
-  File "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a908efc1a7f98758b/benchmarks/omr-missing-notes-2026-09/probe/l283_compare.py", line 166, in <module>
-    main()
-  File "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a908efc1a7f98758b/benchmarks/omr-missing-notes-2026-09/probe/l283_compare.py", line 100, in main
-    A = RD.load_run(a.arm)
-  File "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a908efc1a7f98758b/tools/omr/staged/readout.py", line 286, in load_run
-    return run_from_result(load_record(path), path=str(path))
-  File "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a908efc1a7f98758b/tools/omr/staged/record_io.py", line 295, in load_record
-    return expand_result(json.loads(Path(path).read_text()))
-  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1256, in read_text
-    with self.open(mode='r', encoding=encoding, errors=errors) as f:
-  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1242, in open
-    return io.open(self, mode, buffering, encoding, errors, newline,
-  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py", line 1110, in _opener
-    return self._accessor.open(self, flags, mode)
-FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm5/litolff-t.record.json'
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm5/litolff-t.record.json
+   provenance e6aa75abcf6a2d3dfaa87d8a3e29aee0e1c94dc6 dirty=False
+base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-litolff.json: 7251 verdicts
+
+heads with a standing duration verdict: base 5999  arm 5999  in both 5999 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base      0   arm   2306
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm    332
+  abstained:ambiguous:no_room                             base      0   arm    531
+  abstained:ambiguous:runs_on                             base      0   arm     76
+  abstained:occupied:head_at_this_end                     base      0   arm   3337
+  abstained:occupied:occupied                             base      0   arm    918
+  observed:flag                                           base      0   arm    171
+  observed:none                                           base      0   arm   1103
+
+duration verdicts changed (matched heads): 57 of 5999
+     10  decided:hollow_head_bare_stem{0}  ->  narrowed:head_fill_from_ink{0}
+     10  decided:head_and_marks{0}  ->  decided:hollow_head_bare_stem{0}
+      9  narrowed:head_fill_from_ink{0}  ->  decided:hollow_head_bare_stem{0}
+      8  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+      6  decided:hooks_counted{1}  ->  decided:head_and_marks{0}
+      5  narrowed:flag_ink_unread{1,2}  ->  decided:head_and_marks{0}
+      4  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      2  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+      2  decided:head_and_marks{0}  ->  decided:head_and_marks{1}
+      1  narrowed:flag_ink_unread{1,2}  ->  narrowed:head_fill_from_ink{0}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 367
+    365  narrowed beam_discounted_uncertain levels [0, 1]
+      2  decided level 1 (hooks_counted)
+  (status of those heads in the arm: {'narrowed': 365, 'kept': 2} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_litolff-t.json 57

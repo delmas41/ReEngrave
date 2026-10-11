@@ -9,7 +9,8 @@ THE SAMPLE: heads whose standing ADJUDICATE duration verdict CHANGED between bas
 random per CLASS of change so the rare classes are not drowned by the common one:
     tip      the arm decided / narrowed it by the TIP reader (`hooks_counted`, `flag_ink_unread`)
     reach    the arm attached a detector flag box to a stem only the ruler read (`head_and_marks`, level 1)
-    hollow   the 2.70 bare-stem rule (`hollow_head_bare_stem`) fired or stopped firing where the tip became readable
+    hollow_new   the 2.70 bare-stem rule (`hollow_head_bare_stem`) fires where it did not: the tip now reads EMPTY
+    hollow_lost  it stopped firing: the tip no longer reads empty
     regress  base decided a level >= 1 that the arm no longer decides (a flag lost): ALL of them are drawn, up to the cap
     other    anything else that changed
 Sean's 30 already-judged 2.81 tiles are excluded. Plus CONTROLS from his hand-truth page (Brahms pdf 0): heads his boxes show FLAGGED
@@ -17,7 +18,7 @@ Sean's 30 already-judged 2.81 tiles are excluded. Plus CONTROLS from his hand-tr
 same measure on the page shifted 1.6 head widths must fail on most tiles) are `l281_tiles.cut` / `frame_control`.
 
     python3 l283_tiles2.py --out DIR --seed 20261010 --spec brahms=ARM.json:CHANGED.json ... --spec litolff=ARM.json:CHANGED.json ...
-        --controls truth_rows.json:ARM_CONTROL_RECORD.json --plan tip=3,reach=2,hollow=2,regress=2,other=1 --n-controls 4
+        --controls truth_rows.json:ARM_CONTROL_RECORD.json --plan tip=3,reach=2,hollow_new=2,hollow_lost=1,regress=2 --n-controls 4
 """
 import argparse
 import collections
@@ -44,8 +45,10 @@ def klass(c):
     base, arm = c["base"], c["arm"]
     blv = c["base"].split("{")[1].rstrip("}") if "{" in base else ""
     alv = c["arm"].split("{")[1].rstrip("}") if "{" in arm else ""
-    if "hollow_head_bare_stem" in arm or "hollow_head_bare_stem" in base:
-        return "hollow"
+    if "hollow_head_bare_stem" in arm and "hollow_head_bare_stem" not in base:
+        return "hollow_new"     # the tip now reads empty and 2.70 decides a HALF where it did not
+    if "hollow_head_bare_stem" in base and "hollow_head_bare_stem" not in arm:
+        return "hollow_lost"    # the tip no longer reads empty: a decided half stopped being decided
     if base.startswith("decided") and blv and int(blv.split(",")[0]) >= 1 and not (arm.startswith("decided") and alv and int(alv.split(",")[0]) >= 1):
         return "regress"
     if "head_and_marks{1}" in arm or "head_and_marks{2}" in arm:
@@ -61,7 +64,7 @@ def main():
     ap.add_argument("--seed", type=int, default=20261010)
     ap.add_argument("--spec", action="append", required=True, help="movement=arm.json:changed.json (repeatable)")
     ap.add_argument("--controls", default=None, help="truth_rows.json:arm_record.json (Brahms pdf 0-1)")
-    ap.add_argument("--plan", default="tip=3,reach=2,hollow=2,regress=2,other=1")
+    ap.add_argument("--plan", default="tip=3,reach=2,hollow_new=2,hollow_lost=1,regress=2")
     ap.add_argument("--n-controls", type=int, default=4)
     a = ap.parse_args()
     out = Path(a.out)

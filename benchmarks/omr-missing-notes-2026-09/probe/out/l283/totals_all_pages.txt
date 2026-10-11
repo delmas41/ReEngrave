@@ -17,3 +17,17 @@
         29  decided level 1 (head_and_marks)
          4  narrowed flag_ink_unread levels [1, 2]
          1  decided level 2 (hooks_counted)
+== litolff: heads with a duration verdict 7285, CHANGED 67
+     15  decided:head_and_marks{0}  ->  decided:hollow_head_bare_stem{0}
+     10  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+     10  narrowed:head_fill_from_ink{0}  ->  decided:hollow_head_bare_stem{0}
+     10  decided:hollow_head_bare_stem{0}  ->  narrowed:head_fill_from_ink{0}
+      6  decided:hooks_counted{1}  ->  decided:head_and_marks{0}
+      5  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      5  narrowed:flag_ink_unread{1,2}  ->  decided:head_and_marks{0}
+      2  narrowed:flag_ink_unread{1,2}  ->  narrowed:head_fill_from_ink{0}
+      2  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+      2  decided:head_and_marks{0}  ->  decided:head_and_marks{1}
+   P (base beam_discounted_uncertain, kept) 408:
+       406  narrowed beam_discounted_uncertain levels [0, 1]
+         2  decided level 1 (hooks_counted)

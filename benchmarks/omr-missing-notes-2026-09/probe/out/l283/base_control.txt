@@ -1,0 +1,7 @@
+== git diff --stat 26fdb4d0 faf913f4 -- tools/omr/staged/gather.py tools/omr/staged/adjudicators (empty means byte-identical):
+== control: fresh base-tree record (faf913f4, clean) vs overnight verdicts, Brahms page 1
+pages [1]: fresh heads 1005, overnight verdicts 19291 (these pages), in both 1005, only fresh 0, only overnight 18286; DIFFERENT 0
+== the break (one overnight verdict perturbed): the count of different heads must move
+pages [1]: fresh heads 1005, overnight verdicts 19291 (these pages), in both 1005, only fresh 0, only overnight 18286; DIFFERENT 1
+   glyph/1/0/0/0/10 ('decided', 'head_and_marks', [1]) vs ('decided', 'head_and_marks', [1, 9])
+== NOT CONTROLLED: Litolff has no same-page control (the overnight Litolff file holds pdf pages 4,10,11,12,13,15,16 and the base re-gather pages 0-3); its base rests on the byte-identity above.
