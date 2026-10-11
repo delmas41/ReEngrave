@@ -199,8 +199,8 @@ def stem_stroke_enabled() -> bool:
 
 #: `OMR_STEM_FINDER` -- ROADMAP 2.87, the stem finder (Sean 2026-10-10: *"Send
 #: out an agent to handle the stem fixes"*). A comma list of the repairs that
-#: are ON, default EMPTY (so the OFF test is an ALLOW-LIST and a typo leaves the
-#: shipped reader in force). Every repair is its own name so it is priced alone:
+#: are ON. The shared default is EMPTY (LEGACY); STAGED passes
+#: `staged_stem_finder()` (below), ON by default since 2026-10-11. Every repair is its own name so it is priced alone:
 #:
 #:   thin_run        a run refused only for being too WIDE is searched for the
 #:                   thin stem inside it (`_thin_stem_in_run`)
@@ -215,12 +215,30 @@ def stem_stroke_enabled() -> bool:
 #: is the only caller that supplies them.
 STEM_FINDER_ENV = "OMR_STEM_FINDER"
 
+#: The STAGED default (Sean 2026-10-11: *"Land switch on"*): the five repairs his
+#: page and tiles priced (FINDINGS hand-truth-score-2026-10 sections 9.1-9.8).
+#: `head_contact` is NOT in it -- it narrowed two real eighths (round-2 tiles
+#: 5-6). The LEGACY default stays EMPTY: `detect_lines(cell)` with no
+#: `stem_finder=` reads exactly what it always read (LEGACY is frozen).
+STEM_FINDER_STAGED_DEFAULT = frozenset(
+    {"thin_run", "pair_evidence", "attach_tolerance", "refuse_owned", "one_stem_per_head"})
 
-def stem_finder_repairs() -> frozenset:
-    """The repairs named in `OMR_STEM_FINDER` (empty by default)."""
+
+def stem_finder_repairs(default: frozenset = frozenset()) -> frozenset:
+    """The repairs named in `OMR_STEM_FINDER`; `default` when it is UNSET.
+
+    Set (even to "") it is exactly the list, so `OMR_STEM_FINDER=` turns every
+    repair off for an A/B and one name prices that repair alone."""
     import os
-    raw = os.environ.get(STEM_FINDER_ENV, "")
+    raw = os.environ.get(STEM_FINDER_ENV)
+    if raw is None:
+        return frozenset(default)
     return frozenset(t.strip().lower() for t in raw.split(",") if t.strip())
+
+
+def staged_stem_finder() -> frozenset:
+    """The repairs the STAGED path runs: `OMR_STEM_FINDER`, else the staged default."""
+    return stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
 
 
 #: The empty interval (staff spaces) between the stem's columns and the heads'
@@ -1433,7 +1451,8 @@ def detect_beams(
 def detect_lines(cell, *, candidates_out: list | None = None,
                  noteheads: Sequence | None = None,
                  rescue_tall_beams: bool = False,
-                 marks: Sequence | None = None
+                 marks: Sequence | None = None,
+                 stem_finder: frozenset | None = None
                  ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
@@ -1452,7 +1471,8 @@ def detect_lines(cell, *, candidates_out: list | None = None,
     read, and any beam delta on a gated arm is this and not a beam change.
     """
     stems = detect_stems(cell, candidates_out=candidates_out,
-                         noteheads=noteheads, marks=marks)
+                         noteheads=noteheads, marks=marks,
+                         stem_finder=stem_finder)
     return {
         "stems": stems,
         "beams": detect_beams(cell, stems=stems,

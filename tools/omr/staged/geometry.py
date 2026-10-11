@@ -169,15 +169,15 @@ STEM_ATTACH_TOLERANCE_HEADS = 0.12
 
 
 def attach_tolerance_on() -> bool:
-    """`OMR_STEM_FINDER` names `attach_tolerance` (default: it does not)."""
-    from ..line_detection import stem_finder_repairs
-    return "attach_tolerance" in stem_finder_repairs()
+    """`attach_tolerance` is in the STAGED stem-finder set (ON by default)."""
+    from ..line_detection import staged_stem_finder
+    return "attach_tolerance" in staged_stem_finder()
 
 
 def stem_finder_repair_on(name: str) -> bool:
-    """`OMR_STEM_FINDER` names the repair `name` (default: it does not)."""
-    from ..line_detection import stem_finder_repairs
-    return name in stem_finder_repairs()
+    """`name` is in the STAGED stem-finder set (`OMR_STEM_FINDER`, else the staged default)."""
+    from ..line_detection import staged_stem_finder
+    return name in staged_stem_finder()
 
 
 #: How far (in the notehead box's own HEIGHTS, ~ staff spaces) a stem may stand off

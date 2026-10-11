@@ -557,8 +557,9 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
     space = half_step * 2.0
 
     try:
-        from ..line_detection import detect_lines
-        found = detect_lines(c, candidates_out=None, noteheads=None) or {}
+        from ..line_detection import detect_lines, staged_stem_finder
+        found = detect_lines(c, candidates_out=None, noteheads=None,
+                             stem_finder=staged_stem_finder()) or {}
         stems = found.get("stems") or []
     except Exception as exc:                                  # noqa: BLE001
         if log is not None and subject is not None:
@@ -3987,7 +3988,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
     which is the fault the whole split exists to remove.
     """
     try:
-        from ..line_detection import detect_lines
+        from ..line_detection import detect_lines, staged_stem_finder
     except Exception as exc:                                  # noqa: BLE001
         _stub_cv_lines(log, cells, local, "line_detection unavailable",
                        error=type(exc).__name__)
@@ -4024,7 +4025,8 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
             # always read.
             found = detect_lines(c, candidates_out=runs, noteheads=heads,
                                  rescue_tall_beams=True,
-                                 marks=_owner_marks_for_cell(detections, sub))
+                                 marks=_owner_marks_for_cell(detections, sub),
+                                 stem_finder=staged_stem_finder())
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
