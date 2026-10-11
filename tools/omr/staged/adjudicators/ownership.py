@@ -3593,6 +3593,47 @@ def _long_chord_stem_tip(ev: Evidence, head, direction: str, heads, *,
     return True, "ok", detail
 
 
+#: ── ROADMAP 2.12m, the OTHER staff's bar is empty ───────────────────────────
+#:
+#: Sean (DECISIONS 2026-10-10): *"when the other system in question has an empty
+#: measure then it has to belong to the one with notes in it"*. The other staff
+#: is the one on the mark's declared side. EMPTY IS READ, NEVER DEFAULTED (rule
+#: 8): no notehead in that bar is that staff's, AND its own cell holds the
+#: measure rest. A bar with nothing read, or only a shorter rest, is "cannot
+#: tell" -- a missed head reads exactly like an empty bar.
+ARTIC_EMPTY_BAR_REST = "restWhole"
+
+
+def _other_staff_bar(ev: Evidence, suffix_side: str, cell) -> Tuple[str, str]:
+    """`(state, staff_key)` for the bar, in the staff on the mark's declared
+    side, at this cell's bar: `empty`, `has_notes` or `no_measure_rest`.
+
+    A notehead is that staff's when a DECIDED `Q.GLYPH_OWNER` names it, or --
+    undecided -- when it is filed in that staff's cell (an open contest is not
+    proof the head is elsewhere). The measure rest counts only in that staff's
+    own cell and only if no decided owner moves it away.
+    """
+    st = cell.staff + (-1 if suffix_side == "above" else 1)
+    if st < 0:
+        return "no_measure_rest", ""
+    key = R.staff(cell.page, cell.system, st).to_key()
+    rest = False
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell.at(Kind.SYSTEM)):
+        if r.subject.cell != cell.cell or not isinstance(r.value, (list, tuple)):
+            continue
+        if (r.detail or {}).get("category") == "notehead":
+            ov = ev.verdict(Q.GLYPH_OWNER, subject=r.subject)
+            owner = (ov.value if ov is not None and ov.outcome is Outcome.DECIDED
+                     and ov.value else r.subject.at(Kind.STAFF).to_key())
+            if owner == key:
+                return "has_notes", key
+        elif (r.subject.staff == st and str(r.value[0]) == ARTIC_EMPTY_BAR_REST
+              and not _owned_by_a_different_staff(ev, r, key)):
+            rest = True
+    return ("empty" if rest else "no_measure_rest"), key
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER,
@@ -3606,7 +3647,7 @@ def _long_chord_stem_tip(ev: Evidence, head, direction: str, heads, *,
              "no_notehead", "no_side_declared", "no_evidence",
              "owned_by_another_staff", "level_with_head",
              "stem_direction_unread", "stem_contradicts_class_side",
-             "stem_tip_of_long_chord"),
+             "stem_tip_of_long_chord", "other_staff_bar_empty"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
@@ -3731,6 +3772,27 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
 
     base = {"articulation": name, "suffix_side": suffix_side,
             "same_ink_twins": twins, "detector_class": str(mark.value)}
+
+    def empty_bar_owner(row, was, ob, okey):
+        """Sean 2026-10-10: the other staff's bar is EMPTY, so the mark is this
+        staff's -- given to the head the stem reason was about."""
+        g, dx, h, side, sd, tv = row[:6]
+        return Ruling(
+            value=h.subject.to_key(), reason="other_staff_bar_empty",
+            used=(mark.id, h.id),
+            detail={"articulation": name, "suffix_side": suffix_side,
+                    "measured_side": side, "stem_direction": sd,
+                    "notehead_side": (None if sd is None else
+                                      "below" if sd == "up" else "above"),
+                    "stem_rule": "other_staff_bar_empty", "two_voice": tv,
+                    "shared_head": False, "was": was,
+                    "other_staff": okey, "other_staff_bar": ob,
+                    "gap_head_heights": g / nh_height,
+                    "dx_canonical_px": dx,
+                    "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+                    "same_ink_twins": twins,
+                    "detector_class": str(mark.value),
+                    "confidence": mark.score})
     if near_any is not None:
         base.update(nearest_head=near_any[1].subject.to_key(),
                     measured_side=near_any[2],
@@ -3835,10 +3897,16 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                             "detector_class": str(mark.value),
                             "confidence": mark.score,
                             **chord_detail})
+        ob, okey = _other_staff_bar(ev, suffix_side, cell)
+        tol0 = ARTIC_TIE_HEAD_HEIGHTS * nh_height
+        if ob == "empty" and sum(1 for r in rows if r[0] <= g + tol0) == 1:
+            return empty_bar_owner(min(rows, key=lambda r: r[0]),
+                                   "stem_contradicts_class_side", ob, okey)
         return Ruling(
             value=None, reason="stem_contradicts_class_side",
             used=(mark.id, h.id),
             detail={**base, "nearest_head": h.subject.to_key(),
+                    "other_staff_bar": ob, "other_staff": okey,
                     "measured_side": suffix_side,
                     "gap_head_heights": g / nh_height,
                     "stem_direction": sd,
@@ -3855,10 +3923,14 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     near = [r for r in live if r[0] <= live[0][0] + tol]
     if not any(r[6] == "ok" for r in near):
         g, _dx, h, _s, _sd, _tv, _st = near[0]
+        ob, okey = _other_staff_bar(ev, suffix_side, cell)
+        if ob == "empty" and len(near) == 1:
+            return empty_bar_owner(near[0], "stem_direction_unread", ob, okey)
         return Ruling(
             value=None, reason="stem_direction_unread",
             used=(mark.id, h.id),
             detail={**base, "nearest_head": h.subject.to_key(),
+                    "other_staff_bar": ob, "other_staff": okey,
                     "measured_side": suffix_side,
                     "gap_head_heights": g / nh_height,
                     "n_unread_nearest": len(near)})
