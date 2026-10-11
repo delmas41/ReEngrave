@@ -557,8 +557,9 @@ def _lowconf_rescue_witnesses(c: Any, existing: Sequence[Any],
     space = half_step * 2.0
 
     try:
-        from ..line_detection import detect_lines
-        found = detect_lines(c, candidates_out=None, noteheads=None) or {}
+        from ..line_detection import detect_lines, staged_stem_finder
+        found = detect_lines(c, candidates_out=None, noteheads=None,
+                             stem_finder=staged_stem_finder()) or {}
         stems = found.get("stems") or []
     except Exception as exc:                                  # noqa: BLE001
         if log is not None and subject is not None:
@@ -3946,6 +3947,25 @@ def _notehead_boxes_for_cell(detections: Optional[Dict[str, List[Any]]],
     return heads
 
 
+def _owner_marks_for_cell(detections: Optional[Dict[str, List[Any]]],
+                          sub) -> Optional[list]:
+    """This cell's detected clef / key / digit / accidental / flag / rest boxes,
+    `(kind, (x, y, w, h))` in CANONICAL cell coordinates, for
+    `OMR_STEM_FINDER=refuse_owned` and `pair_evidence`. `None` when no detection
+    map was supplied (those repairs then do nothing, never an empty gate)."""
+    if detections is None:
+        return None
+    from ..line_detection import mark_kind
+    out = []
+    for d in detections.get(sub.to_key()) or ():
+        kind = mark_kind(getattr(d, "smufl_name", ""))
+        if kind is not None:
+            out.append((kind, (float(d.x_canonical), float(d.y_canonical),
+                               float(d.width_canonical),
+                               float(d.height_canonical))))
+    return out
+
+
 def gather_cv_lines(log: Log, cells: Sequence[Any],
                     local: Dict[int, Tuple[int, int]],
                     detections: Optional[Dict[str, List[Any]]] = None) -> None:
@@ -3968,7 +3988,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
     which is the fault the whole split exists to remove.
     """
     try:
-        from ..line_detection import detect_lines
+        from ..line_detection import detect_lines, staged_stem_finder
     except Exception as exc:                                  # noqa: BLE001
         _stub_cv_lines(log, cells, local, "line_detection unavailable",
                        error=type(exc).__name__)
@@ -4004,7 +4024,9 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
             # callers of `detect_lines` leave it off and read exactly what they
             # always read.
             found = detect_lines(c, candidates_out=runs, noteheads=heads,
-                                 rescue_tall_beams=True)
+                                 rescue_tall_beams=True,
+                                 marks=_owner_marks_for_cell(detections, sub),
+                                 stem_finder=staged_stem_finder())
         except Exception as exc:                              # noqa: BLE001
             for quantity in (Q.BEAM_STROKE, Q.STEM):
                 log.abstain(sub, quantity, reader=READERS.CV_LINES,
