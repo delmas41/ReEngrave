@@ -3401,3 +3401,28 @@ Proposed repair (awaiting Sean, NOT built): `stem_tip_of_long_chord` abstains wh
 same-ink twin in another staff's cell abstained `stem_direction_unread`. On these 5 it
 keeps 1, 5, 8 and returns 3 and 7 to abstained — fitted on five examples, so it is a
 refusal, never a second decision. The real repair is reading the lower note's stem.
+
+### 8c. Why the lower staff lost tiles 3 and 7 — §8b's "stem never read" was WRONG
+
+Sean asked why this version did not see the lower stem. The record's rows for the four
+cells (`brahms1-breitkopf-mvt1-whole-20261009-all`, extracted once, `Q.STEM` /
+`Q.STEM_DIRECTION` / heads) say it DID — both times:
+
+* **Tile 3** (lower cell `23/1/3/4`, mark copy `/8`): the note under the accent is head
+  `/6` (position −1.18, the upper half), and its stem WAS read — `Q.STEM` [984, 106, 18,
+  274], `STEM_DIRECTION` decided **up**. The mark is above it, on the STEM side. With no
+  other voice seen in that column (`other_voice` needs a second head whose stem points the
+  other way), the candidate is marked `against` and DROPPED; the search goes on to head
+  `/9`, 5.4 head heights farther away, whose stem is unread → `stem_direction_unread`.
+  Meanwhile the upper cell's copy took the mark by 2.12m.
+* **Tile 7** (lower cell `10/0/7/5`, mark copy `/0`): the note under the accent is head
+  `/5` (position 1.04, upper half). Two stems meet it: one UP ([302, 194, 15, 291], tip at
+  the accent) and one DOWN ([179, 434, 18, 378]). `STEM_DIRECTION` abstains
+  `stems_disagree` — the head carries two voices — so the articulation decision reads
+  "unread".
+
+So the stem reader was not the fault. The fault is the TWO-VOICE TEST: both lower notes
+are an upper voice (stem up in the upper half — Sean's convention, being verified on the
+reference encodings), and in tile 7 the head itself carries both voices' stems. Neither
+counts as "two voices" today. Sean's beam caveat stands: a beamed group can put an up stem
+in the upper half with ONE voice, so the upper-half sign needs the beam case named first.
