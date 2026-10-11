@@ -13432,23 +13432,6 @@
   },
   {
    "cell_id": "s0-st8-m1",
-   "cls": "beam",
-   "id": "q883",
-   "labeler": "sean",
-   "origin": "prefill-confirmed",
-   "owner_staff": null,
-   "rect": [
-    2112.0,
-    4734.04,
-    2671.0,
-    4772.44
-   ],
-   "ref": null,
-   "staff_position": null,
-   "text": null
-  },
-  {
-   "cell_id": "s0-st8-m1",
    "cls": "slur",
    "id": "q949",
    "labeler": "sean",

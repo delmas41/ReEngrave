@@ -145,7 +145,7 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
-from ..record import ABSTAIN, Kind, Q, Scope
+from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _same_mark_centres,
@@ -1849,27 +1849,255 @@ def adjudicate_dynamic_is_not_a_dynamic(ev: Evidence) -> Ruling:
     return Ruling(value=False, reason="dynamic", used=used, detail=detail)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# §TENUTO-LEDGER — ROADMAP 2.84
+#
+# ⚠️⚠️ SEAN'S CONVENTION, 2026-10-10 (`docs/DECISIONS.md`): *"handle ledger
+# lines read as articulations - tenuto vs ledger lines. There will never be
+# another ledger line or note above a tenuto... right?"* -- after he answered
+# "Ledger line" on 2.12f round-2 tiles 1, 4 and 7. In its general form: a
+# LEDGER LINE lies between a staff and its note (a head stands ON it or
+# FARTHER from that staff in its column); an articulation outside the staff
+# lies BEYOND its note. Above the staff nothing is above a tenuto; below it
+# is mirrored (the mirror is put to Sean as a tile, not assumed silently).
+#
+# ⚠️ THE CENSUS THAT SHAPED IT (`benchmarks/omr-tenuto-ledger-2026-10/
+# FINDINGS.md`): every `articTenuto*` box on both whole movements, cropped and
+# read against the print -- 42 boxes, ~37 LEDGER LINES, 5 other ink (a word's
+# letter, a beam end, a slur, a dynamic, a half note's rim), and NO real
+# tenuto. And 23 of Brahms's 30 sat in a PADDED cell, filed on the staff
+# whose ledger it is NOT: against the filing staff the head is staffward,
+# against the head's own staff it is beyond. So "its staff" is the staff
+# that OWNS the head, `Q.GLYPH_OWNER`, which is why this decision now runs
+# after the ownership contest.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The dash-shaped class. SHAPE FROM THE CLASS, ROLE FROM THE GEOMETRY (2.12):
+#: a ledger line and a tenuto are the same stroke, and only this class's ROLE
+#: is in question here. An accent, staccatissimo or marcato is not a dash.
+TENUTO_CLASS_PREFIX = "articTenuto"
+
+#: How far STAFFWARD of the dash a head's centre may sit and still stand ON
+#: it, in spaces. ⚠️ NOT A NEW NUMBER: the measured registration scatter of a
+#: box centre on a line (`ON_A_STAFF_LINE_TOL_SPACES`). A head on its ledger
+#: is centred on it (0); a tenuto stands about half a space off its head's
+#: edge, so its head is ~0.75 space staffward -- three times this tolerance.
+HEAD_ON_THE_DASH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
+
+
+def _staff_page_geometry(ev: Evidence, staff: Subject
+                         ) -> Tuple[Optional[Any], Optional[Any], List[str]]:
+    """`(line_ys, spacing, row ids)` of ONE staff, in page pixels."""
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
+                    subject=staff)
+    spacing = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=staff)
+    if not lines or not spacing:
+        return None, None, []
+    return lines[-1].value, spacing[-1].value, [lines[-1].id, spacing[-1].id]
+
+
+#: `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD` reasons that say THIS STAFF does not own the
+#: head, or that this box duplicates another -- the ink is still a notehead,
+#: so it still stands in the dash's column. Every other `True` says the ink is
+#: not a head at all, and that head is not asked.
+_HEAD_STILL_A_HEAD = frozenset((
+    "belongs_to_a_nearer_staff", "human_other_staff",
+    "notehead_is_a_duplicate_box", "stacked_head_duplicate"))
+
+
+def _candidate_owners(ev: Evidence, head: Subject, refusal: Any = None
+                      ) -> Tuple[Tuple[str, ...], bool, Optional[str]]:
+    """`(staves that may own this head, read?, the verdict id)`.
+
+    A DECIDED `Q.GLYPH_OWNER` names one staff. No verdict at all is an
+    uncontested head, owned by the staff it is filed on -- the fallback every
+    reader of this verdict uses (`ownership._owned_elsewhere`). A NARROWED or
+    ABSTAINED contest is NOT read: its candidates (or, with none, the home
+    staff) are only asked whether they COULD make the dash a ledger, and the
+    answer is then an abstention, never a choice between them.
+    """
+    home = head.at(Kind.STAFF).to_key()
+    v = ev.verdict(Q.GLYPH_OWNER, subject=head)
+    if v is None and refusal is not None:
+        # ⚠️ ROADMAP 2.7b's refusal NAMES the staff it gives the head to
+        # (`nearer_staff_signal.near_staff`); a human's `owner:other` names
+        # none, so that head's owner is unread.
+        near = ((refusal.detail or {}).get("nearer_staff_signal") or {}).get(
+            "near_staff")
+        if refusal.reason == "belongs_to_a_nearer_staff" and near:
+            return (str(near),), True, refusal.id
+        if refusal.reason == "human_other_staff":
+            return (home,), False, refusal.id
+    if v is None:
+        return (home,), True, None
+    if v.outcome is Outcome.DECIDED and isinstance(v.value, str) and v.value:
+        return (v.value,), True, v.id
+    cands: List[str] = []
+    for c in v.candidates or ():
+        val = c[0] if isinstance(c, (list, tuple)) else (
+            c.get("value") if isinstance(c, dict) else c)
+        if isinstance(val, str) and val and val not in cands:
+            cands.append(val)
+    return (tuple(cands) or (home,)), False, v.id
+
+
+def _beyond_signed(step: float, side: int) -> float:
+    """How far OUTSIDE the band on `side` (+1 above, -1 below), in spaces;
+    negative where it is on the staffward side of that edge."""
+    if side > 0:
+        return (step - _BAND_TOP_STEP) / 2.0
+    return -step / 2.0
+
+
+def _ledger_reading(ev: Evidence, mark_box: List[float]
+                    ) -> Tuple[Optional[Ruling], Dict[str, Any]]:
+    """Is this dash a ledger of the staff that owns a head in its column?
+
+    Returns `(ruling or None, facts)`; None means nothing here condemns it.
+    Every x-overlapping notehead of the SAME CELL (the padding that holds a
+    note's rungs also holds the note, `_heads_on_the_rung`) is asked, in PAGE
+    pixels against ITS OWNER's own lines: is the dash outside that staff, and
+    does the head stand on the dash or farther out on the same side?
+    """
+    mx0, my0, mx1, my1 = [float(v) for v in mark_box]
+    cell = ev.subject.at(Kind.CELL)
+    facts: Dict[str, Any] = {"heads_in_column": 0}
+    unread: List[str] = []
+    used: List[str] = []
+    # ⚠️ THE SAME BAR ON BOTH NEIGHBOUR STAVES TOO, and in PAGE pixels, which
+    # is what makes the three cells comparable. The census's one missed rung
+    # (Brahms `glyph/24/1/2/7/20`, 2.84 crop 28) stood under a head the
+    # detector boxed only in the NEXT staff's cell of that bar: the dash was
+    # padded into one cell and its note into the other. A cell index is the
+    # bar within the system on every staff (CLAUDE.md §10), so the
+    # neighbour's cell of the same index is the same bar.
+    cells = [cell]
+    if cell.staff is not None:
+        for d in (-1, 1):
+            if cell.staff + d >= 0:
+                cells.append(Subject(Kind.CELL, page=cell.page,
+                                     system=cell.system, staff=cell.staff + d,
+                                     cell=cell.cell))
+    rows: List[Any] = []
+    for c in cells:
+        rows += ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                        subject=c)
+    for r in rows:
+        v = r.value
+        if r.subject == ev.subject or not isinstance(v, (list, tuple)) \
+                or len(v) != 5 or not _is_notehead_class(v[0]):
+            continue
+        hb = (r.detail or {}).get("bbox_page_px")
+        if not hb:
+            continue
+        hx0, hy0, hx1, hy1 = [float(t) for t in hb]
+        if min(hx1, mx1) - max(hx0, mx0) <= 0.0:
+            continue
+        nn = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=r.subject)
+        refusal = None
+        if nn is not None and nn.outcome is Outcome.DECIDED \
+                and nn.value is True:
+            if nn.reason not in _HEAD_STILL_A_HEAD:
+                continue                    # the ink is not a head
+            refusal = nn
+        facts["heads_in_column"] += 1
+        owners, read, vid = _candidate_owners(ev, r.subject, refusal)
+        for owner in owners:
+            lines, spacing, gids = _staff_page_geometry(
+                ev, Subject.from_key(owner))
+            if lines is None:
+                continue
+            m_step = _staff_step(mark_box, lines, spacing)
+            h_step = _staff_step(hb, lines, spacing)
+            if m_step is None or h_step is None:
+                continue
+            side = 1 if m_step > _BAND_TOP_STEP else (-1 if m_step < 0.0
+                                                      else 0)
+            if side == 0:
+                continue                    # inside that staff: no rung there
+            m_out = _beyond_signed(m_step, side)
+            h_out = _beyond_signed(h_step, side)
+            if h_out < m_out - HEAD_ON_THE_DASH_TOL_SPACES:
+                continue                    # the head is staffward: articulation
+            if not read:
+                unread.append(r.subject.to_key())
+                continue
+            used += [r.id] + gids + ([vid] if vid else [])
+            facts.update(
+                ledger_of_staff=owner, head=r.subject.to_key(),
+                mark_beyond_spaces=round(m_out, 4),
+                head_beyond_spaces=round(h_out, 4),
+                # ⚠️ RECORDED, NOT GATING -- see the FINDINGS: on Litolff the
+                # printed ledgers stand ~1.1 spaces apart, so 6 of its 11
+                # print-confirmed ledgers sit 0.30-0.41 off the staff's own
+                # space grid, and there is no real tenuto in the population
+                # to calibrate a refusal against (RUNG_STEP_SHIPS, again).
+                rung_offset_spaces=round(abs(m_out - round(m_out)), 4))
+            return Ruling(value=True, reason="ledger_between_staff_and_note",
+                          used=tuple(used)), facts
+    if unread:
+        facts["heads_with_unread_owner"] = unread
+        return Ruling(value=None, reason="head_owner_unread"), facts
+    return None, facts
+
+
 @decision(
     quantity=Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
     composed_from=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+                   Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE),
+           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
+           Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     subjects_from=Q.ARTICULATION_MARK,
-    reasons=_human_only_reasons(Q.ARTICULATION_IS_NOT_AN_ARTICULATION),
+    reasons=_human_only_reasons(Q.ARTICULATION_IS_NOT_AN_ARTICULATION) + (
+        "ledger_between_staff_and_note", "head_owner_unread",
+        ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
     """Is this box the detector called an articulation a symbol at all?
 
-    HUMAN WITNESS ONLY. Its consumer is `export._place_articulations`.
+    The human first (3.4g), then ROADMAP 2.84 for the dash-shaped class only:
+    a `articTenuto*` box outside the staff that owns a head in its column,
+    with that head ON it or farther out, is that staff's LEDGER LINE
+    (`ledger_between_staff_and_note`, see §TENUTO-LEDGER). Where the only
+    head that could make it one has an unread owner it ABSTAINS
+    (`head_owner_unread`); where the dash has no page box or no staff it
+    ABSTAINS (`no_staff_geometry`) -- a dash of unknown position is not
+    thereby a tenuto. Every other box decides `False`, `articulation`.
+
+    Its consumer is `export._place_articulations`, which drops a DECIDED
+    refusal by name before the owner is asked.
     """
-    _ = ev.rows(Q.ARTICULATION_MARK)       # the domain's own quantity, declared and read
+    marks = ev.rows(Q.ARTICULATION_MARK)    # the domain's own quantity, read
     detail, used = _class_detail(ev)
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    cls = str(marks[-1].value) if marks else str(detail.get("class") or "")
+    if not cls.startswith(TENUTO_CLASS_PREFIX):
+        return Ruling(value=False, reason="articulation", used=used,
+                      detail=detail)
+    box_row = _glyph_box_row(ev)
+    page_box = (box_row.detail or {}).get("bbox_page_px") if box_row else None
+    home = ev.subject.at(Kind.STAFF)
+    lines, spacing, _g = _staff_page_geometry(ev, home)
+    if not page_box or lines is None:
+        return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
+    # ⚠️ THE REASONS ARE LITERALS HERE, for the reason `_refused_by_a_human`
+    # gives: `brakes.vocabulary_gap` reads the `reason=` slot's AST, and a
+    # computed one would make the whole module unresolved.
+    ruling, facts = _ledger_reading(ev, list(page_box))
+    detail.update(facts)
+    if ruling is not None and ruling.value is True:
+        return Ruling(value=True, reason="ledger_between_staff_and_note",
+                      used=tuple(used) + tuple(ruling.used), detail=detail)
+    if ruling is not None:
+        return Ruling(value=None, reason="head_owner_unread",
+                      used=tuple(used), detail=detail)
     return Ruling(value=False, reason="articulation", used=used, detail=detail)
 
 

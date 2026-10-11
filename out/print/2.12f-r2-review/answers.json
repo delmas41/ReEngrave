@@ -1,0 +1,56 @@
+{
+ "judge": "sean",
+ "date": "2026-10-10",
+ "via": "blind-tile gallery (claude.ai artifact Xs8UKjLo9Ug1xMNBzkyuS6)",
+ "answers": {
+  "1": {
+   "sean": "Ledger line",
+   "verdict": "not_an_articulation:ledger_line (ours abstained)"
+  },
+  "2": {
+   "sean": "Connected to note below",
+   "verdict": "right (stem_side rule: mark at the stem tip, owner = note below; two voices)"
+  },
+  "3": {
+   "sean": "Connected to note below",
+   "verdict": "abstained (answer: note below)"
+  },
+  "4": {
+   "sean": "Ledger line",
+   "verdict": "not_an_articulation:ledger_line (ours abstained)"
+  },
+  "5": {
+   "sean": "Connected to note above",
+   "verdict": "narrowed (answer: note above)"
+  },
+  "6": {
+   "sean": "Connected to note below",
+   "verdict": "abstained (stem_contradicts_class_side) -- Sean: long chord stem, mark at the tip near the staff, owner = the chord below"
+  },
+  "7": {
+   "sean": "Ledger line",
+   "verdict": "not_an_articulation:ledger_line (ours narrowed)"
+  },
+  "8": {
+   "sean": "Connected to note above",
+   "verdict": "right"
+  },
+  "9": {
+   "sean": "Connected to note above",
+   "verdict": "right (stem_side rule: mark at the stem tip, owner = note above; long stem, gap 5.82 heads)"
+  },
+  "10": {
+   "sean": "Connected to note above",
+   "verdict": "right"
+  },
+  "11": {
+   "sean": "Connected to note below",
+   "verdict": "right"
+  },
+  "12": {
+   "sean": "Connected to note below",
+   "verdict": "right (control)"
+  }
+ },
+ "summary": "decided 6: 6 right (4 notehead_side, 2 stem_side); 3 bracketed marks are LEDGER LINES read as articulations (1, 4, 7); 3 abstained/narrowed where Sean names the owner (3 below, 5 above, 6 below). Corrected 2026-10-10: 2 and 9 were first mis-scored wrong (the stem_side wording was read backwards)."
+}
