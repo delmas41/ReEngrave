@@ -4242,6 +4242,14 @@ STEM_TIP_INK_ROOT_MAX_SPACES = 1.2
 STEM_TIP_INK_BIG_OUT_SPACES = 0.8
 STEM_TIP_INK_BIG_ARM_SPACES = 1.0
 STEM_TIP_INK_ROOT_BIG_SPACES = 1.6
+#: ⚠️ ROADMAP 2.83 FIX ROUND (Sean's blind tile 2, Brahms pdf 16 `glyph/16/1/10/6/5`: a DOTTED QUARTER read as a flag, the narrowing {1,2} left
+#: its answer out). A flag begins AT the tip: its root is the stem's own last row. Attached ink that begins more than this far PAST the tip is not
+#: a flag but something the stem runs into -- there the letters of an `ff` printed against the stem's end (`t_first` -0.29, a box covering 0.028
+#: square spaces of it, under `STEM_TIP_COVER_AREA_MIN`) -- or a stem whose CV box stops short of its printed end. CANNOT TELL, never a flag.
+#: MEASURED: Sean's 21 flags with a stem start 0.42-0.81 spaces in and the Litolff reads that start 0.0 .. 0.1 are untouched; 5 of 79 flag reads on
+#: the Litolff tile pages sat at the window's edge (-0.30); by eye none of the 3 stems among them looked at on the print was a clean eighth flag (a
+#: dyad's other head, a slur, a cluster). Falsified by a print-confirmed flag whose ink starts more than 0.15 spaces beyond the stem's end.
+STEM_TIP_INK_PAST_TIP_MIN_SPACES = -0.15
 #: Attached ink on the stem's LEFT beyond its own edge (square spaces): a flag hangs from one side only. A speck under this is the
 #: stem's own noise (Brahms pdf 21 `glyph/21/1/7/0/8`: a flag read `crosses_both_sides` at 0.05).
 STEM_TIP_INK_LEFT_AREA_MAX = 0.08
@@ -4456,6 +4464,9 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
     arm = float(right[:, us > STEM_TIP_INK_ARM_U_SPACES].any(axis=1).sum()) / space
     t_first = float(ts_kept[right_far.any(axis=1)].min())
     out.update(arm=round(arm, 2), t_first=round(t_first, 2))
+    if t_first < STEM_TIP_INK_PAST_TIP_MIN_SPACES:
+        out["why"] = "ink_past_the_tip"
+        return out
     thin = reach >= STEM_TIP_INK_OUT_MIN_SPACES and arm >= STEM_TIP_INK_ARM_MIN_SPACES \
         and t_first <= STEM_TIP_INK_ROOT_MAX_SPACES
     developed = reach >= STEM_TIP_INK_BIG_OUT_SPACES and arm >= STEM_TIP_INK_BIG_ARM_SPACES \
@@ -4465,6 +4476,102 @@ def stem_tip_ink(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
         return out
     out["why"] = "ink_not_flag_shaped"
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.83 FIX ROUND -- the 2.18c density window, KEPT as the SECOND witness at the tip.
+#
+# Sean judged the 2.83 tiles 2026-10-11: tiles 4 and 8 (Litolff pdf 13, one cell) are EIGHTHS the 2.18c window counted (`hooks_counted{1}`) and
+# the shape reader above could not tell (the flag's arm touches a neighbour: `runs_on`), so the head fell back to a decided quarter. The
+# coordinator's rule (CLAUDE.md rule 8): the new reader may ADD a witness, never REMOVE one. The 2.18c reading -- ink density in a window
+# 1.0 to 2.5 spaces back from the tip, 0.9 wide, against 0.30, with the mirrored left band as the background guard, and ANY detection box
+# overlapping the window making it `occupied` -- is therefore still taken, unchanged, and `_observe_stem_tip_ink` combines the two:
+#   shape True                     -> True (the shape reader's claim; unchanged)
+#   shape cannot tell, window True -> True, `witness = "window"` (what the base said, and was right on tiles 4 and 8)
+#   shape False, window True       -> a DISPUTE: a True row with `tip_disagree` -- the shape reader positively sees nothing hanging from
+#                                     the tip and the window sees a hook. ADJUDICATE NARROWS {0, the counted level} and never decides 0.
+#   shape False, window not True   -> False (as v5)
+#   shape cannot tell, window not True -> an ambiguous abstention (as v5: a base `False` there was the wrong-halves of 2.70, tile 6)
+# The end a notehead stands at (`head_at_this_end`) is a positive fact about the stem, not a cannot-tell: the window is not consulted there.
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: the window's `True` is a witness of low recall (1 of Sean's 21 flags) but not of bad precision
+# (0 of his 46 bare stems, 1 of 85 beam stems); where the shape reader is silent it is the only reading the base had. Falsified by an
+# eighth-less stem on which the window is True and the shape reader cannot tell, that Sean reads as a quarter.
+# ─────────────────────────────────────────────────────────────────────────────
+STEM_TIP_WINDOW_NEAR_SPACES = 1.0
+STEM_TIP_WINDOW_FAR_SPACES = 2.5
+STEM_TIP_WINDOW_WIDTH_SPACES = 0.9
+STEM_TIP_WINDOW_DENSE = 0.30
+STEM_TIP_WINDOW_BACKGROUND_MAX = 0.20
+STEM_TIP_WINDOW_LINE_PROBE_SPACES = 0.6
+STEM_TIP_WINDOW_LINE_ROW_FILL = 0.7
+STEM_TIP_WINDOW_LINE_ROWS_MAX_LOST = 0.5
+
+
+def stem_tip_window(img: Any, stem_x0: float, stem_x1: float, tip_y: float,
+                    into_sign: float, space: float) -> Optional[Dict[str, Any]]:
+    """The 2.18c reading, byte for byte: is a 0.9-space window 1.0 to 2.5 spaces back from the tip, to the stem's RIGHT, at least 30%
+    inked while the mirrored window on its LEFT is not (a flag hangs from one side only)? Staff and ledger line rows (ink in both probes
+    just beyond the two bands) are left out (2.73); where they take more than half the window it is declined. `None` where the raster
+    or a band falls off it. Same frame and contract as `stem_tip_ink` (canonical CELL pixels, `into_sign` +1 walks DOWN from a top tip).
+    """
+    if img is None or getattr(img, "ndim", 0) != 2 or not space or space <= 0:
+        return None
+    ink = (img == 0)
+    H, W = ink.shape
+    width = STEM_TIP_WINDOW_WIDTH_SPACES * space
+    near = STEM_TIP_WINDOW_NEAR_SPACES * space
+    far = STEM_TIP_WINDOW_FAR_SPACES * space
+    y_near, y_far = tip_y + into_sign * near, tip_y + into_sign * far
+    y0, y1 = (y_near, y_far) if y_near <= y_far else (y_far, y_near)
+    iy0w, iy1w = max(0, int(round(y0))), min(H, int(round(y1)))
+    keep_rows = None
+    lost_rows = 0
+    if iy1w > iy0w:
+        probe = STEM_TIP_WINDOW_LINE_PROBE_SPACES * space
+        lo_l, hi_l = int(round(stem_x0 - width - probe)), int(round(stem_x0 - width))
+        lo_r, hi_r = int(round(stem_x1 + width)), int(round(stem_x1 + width + probe))
+        keep_rows = []
+        for yy in range(iy0w, iy1w):
+            lft = ink[yy, max(0, lo_l):max(0, hi_l)]
+            rgt = ink[yy, max(0, lo_r):min(W, max(0, hi_r))]
+            on_line = bool(lft.size and rgt.size
+                           and lft.mean() >= STEM_TIP_WINDOW_LINE_ROW_FILL
+                           and rgt.mean() >= STEM_TIP_WINDOW_LINE_ROW_FILL)
+            if not on_line:
+                keep_rows.append(yy)
+        lost_rows = (iy1w - iy0w) - len(keep_rows)
+        if lost_rows > STEM_TIP_WINDOW_LINE_ROWS_MAX_LOST * (iy1w - iy0w) or not keep_rows:
+            return None
+
+    def frac(x0: float, x1: float) -> Optional[float]:
+        ix0, ix1 = max(0, int(round(x0))), min(W, int(round(x1)))
+        iy0, iy1 = max(0, int(round(y0))), min(H, int(round(y1)))
+        if ix1 <= ix0 or iy1 <= iy0:
+            return None
+        region = ink[iy0:iy1, ix0:ix1]
+        if keep_rows is not None and lost_rows:
+            region = ink[keep_rows, ix0:ix1]
+        return float(region.sum()) / float(region.size)
+
+    right = frac(stem_x1, stem_x1 + width)
+    left = frac(stem_x0 - width, stem_x0)
+    if right is None or left is None:
+        return None
+    found = right >= STEM_TIP_WINDOW_DENSE and left <= STEM_TIP_WINDOW_BACKGROUND_MAX
+    return {"found": bool(found), "right": round(right, 4), "left": round(left, 4),
+            "line_rows_left_out": lost_rows,
+            "window_canonical": [round(stem_x1, 2), round(y0, 2), round(stem_x1 + width, 2), round(y1, 2)]}
+
+
+def stem_tip_window_blocked(blockers: Sequence[Tuple[float, float, float, float]], stem_x1: float, tip_y: float,
+                            into_sign: float, space: float) -> bool:
+    """2.18c's own guard: does ANY box in `blockers` overlap the density window (edges trimmed 0.1 spaces)? Then the window is not read."""
+    near, far = STEM_TIP_WINDOW_NEAR_SPACES * space, STEM_TIP_WINDOW_FAR_SPACES * space
+    width = STEM_TIP_WINDOW_WIDTH_SPACES * space
+    wy0, wy1 = sorted((tip_y + into_sign * near, tip_y + into_sign * far))
+    tol = STEM_TIP_BLOCKER_TOLERANCE_SPACES * space
+    shrunk = (stem_x1 + tol, wy0 + tol, stem_x1 + width - tol, wy1 - tol)
+    return any(_rects_overlap(shrunk, b) for b in blockers)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -4845,6 +4952,13 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
     second flag reading) -- ink this record can already name is not this
     quantity's to re-claim, so a window either overlaps is ABSTAINED, never
     measured.
+
+    ROADMAP 2.83 FIX ROUND: the 2.18c density window (`stem_tip_window`, read
+    only where no box overlaps it) is the SECOND witness -- the shape reading
+    may ADD a witness, never REMOVE one (see the block above `stem_tip_window`
+    for the table: shape True; shape cannot tell + window True is a True row
+    with `witness = "window"`; shape False + window True is a DISPUTE row,
+    `tip_disagree`). The end a notehead stands at is never given to the window.
     """
     x0, y0, w, h = stem_box
     x1, y1 = x0 + w, y0 + h
@@ -4886,33 +5000,53 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
                         note="window off the raster")
             continue
         found = m.pop("found")
-        if found is None and m.get("why") == "occupied":
-            log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
-                        frame=frame, reason=ABSTAIN.OCCUPIED,
-                        stem_row_id=stem_row_id, end=end,
-                        note="a beam stroke or another detection already "
-                             "explains the ink attached to this stem tip",
-                        **m)
-            continue
-        if found is None:
-            # ROADMAP 2.83, RULE 8: ink hangs here that is not flag-shaped (or the tip cannot be read). CANNOT TELL --
-            # never filed as `False`, which the bare-stem readers take as a positive "nothing hangs from this tip".
+        # ROADMAP 2.83 FIX ROUND: the 2.18c density window is the SECOND witness (see `stem_tip_window`): read where no box overlaps it,
+        # combined with the shape reading below -- the shape reader may ADD a witness, never REMOVE one.
+        window = None
+        if not stem_tip_window_blocked(blockers, x1, tip_y, into_sign, space):
+            window = stem_tip_window(img, x0, x1, tip_y, into_sign, space)
+        window_found = None if window is None else window["found"]
+        window_detail: Dict[str, Any] = {} if window is None else {
+            "window_found": window_found, "window_right": window["right"], "window_left": window["left"]}
+        extra: Dict[str, Any] = {}
+        if found is None and not window_found:
+            if m.get("why") == "occupied":
+                log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
+                            frame=frame, reason=ABSTAIN.OCCUPIED,
+                            stem_row_id=stem_row_id, end=end,
+                            note="a beam stroke or another detection already "
+                                 "explains the ink attached to this stem tip",
+                            **m, **window_detail)
+                continue
+            # ROADMAP 2.83, RULE 8: ink hangs here that is not flag-shaped (or the tip cannot be read), and the density window does
+            # not see a hook either. CANNOT TELL -- never filed as `False`, which the bare-stem readers take as a positive
+            # "nothing hangs from this tip".
             log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
                         frame=frame, reason=ABSTAIN.AMBIGUOUS,
                         stem_row_id=stem_row_id, end=end,
                         note="ink at this tip is not flag-shaped (or the tip "
                              "is unreadable): cannot tell, not 'no flag'",
-                        **m)
+                        **m, **window_detail)
             continue
+        if found is None:
+            # the shape reader cannot tell and the window SEES a hook: the base's claim stands (Sean's tiles 4 and 8)
+            value, extra = True, {"witness": "window"}
+        elif found is False and window_found:
+            # the shape reader positively sees nothing hanging from the tip and the window sees a hook: a DISPUTE. A True row marked
+            # `tip_disagree` -- ADJUDICATE narrows {0, the counted level}, it never decides 0 and never decides the hook.
+            value, extra = True, {"witness": "disputed", "tip_disagree": True}
+        else:
+            value, extra = bool(found), {"witness": "shape"}
         hook_detail: Dict[str, Any] = {}
-        if found:
+        if value:
             counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space,
                                      head_edge=edge)
             if counted is not None:
                 hook_detail = counted
-        log.observe(sub, Q.STEM_TIP_INK, found,
+        log.observe(sub, Q.STEM_TIP_INK, value,
                     reader=READERS.CV_STEM_TIP, frame=frame,
-                    stem_row_id=stem_row_id, end=end, **m, **hook_detail)
+                    stem_row_id=stem_row_id, end=end, **m, **window_detail,
+                    **extra, **hook_detail)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

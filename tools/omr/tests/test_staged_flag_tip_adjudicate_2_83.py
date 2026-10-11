@@ -27,10 +27,10 @@ import unittest
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators, consequences  # noqa: F401
 from tools.omr.staged import record as R
-from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.staged.record import ABSTAIN, Log, Outcome, Q, READERS
 
-from tools.omr.tests.test_staged_duration import (CELL, SPACE, _flag, _staff_space,
-                                                  _stem, _stem_tip_ink)
+from tools.omr.tests.test_staged_duration import (CELL, SPACE, _beam, _flag, _notehead_ink,
+                                                  _staff_space, _stem, _stem_tip_ink)
 
 PAGE_DX, PAGE_DY = 1000.0, 900.0        # the synthetic cell's page offset (scale 1)
 
@@ -204,6 +204,133 @@ class TestAFlagBoxAttachesToAHeadWhoseStemOnlyTheRulerRead(unittest.TestCase):
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.detail["flags_attached"], 0)
+
+
+class TestADisputedTipNarrowsAndNeverDecidesZero(unittest.TestCase):
+    """⚠️ ROADMAP 2.83 FIX ROUND (Sean, 2026-10-11: tiles 4 and 8 were EIGHTHS the base counted; v5 decided a quarter). CLAUDE.md rule 8: the
+    new tip reader may ADD a witness, never REMOVE one. Where it positively reads nothing hanging from the tip but the 2.18c window (and
+    the hook counter under it) reads a hook, the two witnesses DISAGREE: the head is NARROWED between its own level 0 and the hook's
+    level, with no ordering claim -- never decided 0, and never decided as the hook."""
+
+    def _up_head_alone(self, log, *, hollow=False, box_h=16):
+        _staff_space(log)
+        _beam(log, y=2, x0=400, x1=460)               # a decoy beam far away: the beam reader READ the cell
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, box_h), reader=READERS.DETECTOR, frame="cell:0", score=0.9)
+        s = _stem(log, x=135, y=38, h=60)
+        if hollow:
+            _notehead_ink(log, g, center=0.1, ring=0.6)
+        return g, s
+
+    def test_a_DISPUTED_tip_narrows_level_0_and_the_counted_level_RED(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, tip_disagree=True, witness="disputed",
+                      hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "tip_readers_disagree")
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates), [0.5, 1.0])
+        self.assertEqual(len({c.support for c in v.candidates}), 1)        # no ordering claim
+
+    def test_a_DISPUTED_tip_with_an_uncounted_hook_still_names_level_0_and_level_1(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, tip_disagree=True, witness="disputed",
+                      hooks=None, hooks_min=1, hooks_max=2, hooks_reason="unresolved")
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(sorted(c.value["beats"] for c in v.candidates), [0.5, 1.0])
+
+    def test_a_dispute_at_the_WRONG_end_is_not_read(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="bottom", found=True, tip_disagree=True, witness="disputed",
+                      hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_CONTROL_the_same_row_WITHOUT_the_dispute_is_a_hook_and_DECIDES_the_counted_level(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, witness="window",
+                      hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "hooks_counted")
+        self.assertEqual(v.value["beats"], 0.5)
+
+    def test_CONTROL_a_clean_tip_still_decides_the_head_value(self):
+        log = Log()
+        g, s = self._up_head_alone(log)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.outcome, Outcome.DECIDED)
+        self.assertEqual(v.reason, "head_and_marks")
+        self.assertEqual(v.value["beats"], 1.0)
+
+    def test_a_DISPUTED_tip_never_lets_2_70_read_a_bare_stem_under_hollow_ink(self):
+        """2.70 needs `nothing on the stem`: a disputed tip is not that. The hollow ink is then 2.23's narrowing, never a decided half."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=True, tip_disagree=True, witness="disputed",
+                      hooks=1, hooks_min=1, hooks_max=1, hooks_reason=None)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
+    def test_POSITIVE_CONTROL_the_same_hollow_head_with_a_CLEAN_tip_is_still_decided_half(self):
+        """The control that can fail: without the dispute 2.70 fires on this exact head, so the test above is the dispute's doing."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True)
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.value["beats"], 2.0)
+
+    def test_a_hollow_reading_on_a_box_that_is_NOT_one_head_is_never_a_decided_half_RED(self):
+        """⚠️ Sean's tile 10 (Litolff pdf 15, a FILLED QUARTER read as a half) and the four blob halves: the detector boxed a cluster 2.4-4.1
+        staff spaces tall, the ink windows laid in it read half paper ('hollow'), and 2.70 decided a half over a clean tip. A box that does
+        not hold ONE head (taller than `HEAD_BOX_MAX_SPACES`) gives 2.23's narrowing -- the detector's black head is a candidate."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True, box_h=3 * 16)             # 3.0 staff spaces tall
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+        self.assertIn(1.0, [c.value["beats"] for c in v.candidates])           # Sean's quarter is inside
+
+    def test_CONTROL_a_hollow_reading_on_a_head_sized_box_is_still_a_decided_half(self):
+        """The control that can fail: the same head and ink on a 1.4-space box still decides the half 2.70 exists for."""
+        log = Log()
+        g, s = self._up_head_alone(log, hollow=True, box_h=int(1.4 * 16))
+        _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+        adjudicate.run(log)
+        v = log.verdict(Q.DURATION, g)
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+        self.assertEqual(v.value["beats"], 2.0)
+
+    def test_the_box_height_cut_is_the_documented_one(self):
+        """1.8 spaces: a 1.7-space box decides, a 1.9-space box does not (the cut is not a hair away from the 1.54 p90 nor the 2.37 wrong box)."""
+        for h_spaces, expect_half in ((1.7, True), (1.9, False)):
+            log = Log()
+            g, s = self._up_head_alone(log, hollow=True, box_h=int(round(h_spaces * 16)))
+            _stem_tip_ink(log, stem_row_id=s.id, end="top", found=False)
+            adjudicate.run(log)
+            v = log.verdict(Q.DURATION, g)
+            self.assertEqual(v.reason == "hollow_head_bare_stem", expect_half, (h_spaces, v.reason))
 
 
 if __name__ == "__main__":

@@ -39,6 +39,21 @@ from l283_tiles import head_info  # noqa: E402
 from tools.omr.staged import readout as RD  # noqa: E402
 
 JUDGED = REPO / "out" / "print" / "2.81-review" / "manifest.json"
+JUDGED_283 = REPO / "out" / "print" / "2.83-review" / "manifest.json"
+
+
+def klass_fix(c):
+    """The 2.83 FIX round's classes: what changed between the v5 arm (`base`) and the fix (`arm`)."""
+    base, arm = c["base"], c["arm"]
+    if "tip_readers_disagree" in arm:
+        return "disputed"       # the two tip witnesses disagree: narrowed, never decided 0
+    if "hollow_head_bare_stem" in base and "hollow_head_bare_stem" not in arm:
+        return "half_gone"      # a decided half the head-box gate / the dispute no longer makes
+    if "hollow_head_bare_stem" in arm and "hollow_head_bare_stem" not in base:
+        return "half_new"
+    if ("hooks_counted" in arm or "flag_ink_unread" in arm) and "hooks_counted" not in base and "flag_ink_unread" not in base:
+        return "flag_back"      # a flag the shape reader could not tell and the 2.18c window saw: restored
+    return "other"
 
 
 def klass(c):
@@ -66,11 +81,16 @@ def main():
     ap.add_argument("--controls", default=None, help="truth_rows.json:arm_record.json (Brahms pdf 0-1)")
     ap.add_argument("--plan", default="tip=3,reach=2,hollow_new=2,hollow_lost=1,regress=2")
     ap.add_argument("--n-controls", type=int, default=4)
+    ap.add_argument("--mode", choices=("v5", "fix"), default="v5",
+                    help="`fix`: classify v5-arm -> fix changes (klass_fix) and also exclude the 14 judged 2.83 tiles")
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     rng = random.Random(a.seed)
     judged = {t["hidden"]["key"] for t in json.loads(JUDGED.read_text())["tiles"] if t["kind"] == "sample"}
+    if a.mode == "fix":
+        judged |= {t["hidden"]["key"] for t in json.loads(JUDGED_283.read_text())["tiles"]}
+    klass_of = klass_fix if a.mode == "fix" else klass
     plan = {k: int(v) for k, v in (p.split("=") for p in a.plan.split(","))}
     pool = collections.defaultdict(list)
     runs = {}
@@ -83,7 +103,7 @@ def main():
             if c["key"] in judged or not c.get("box_page"):
                 continue
             c = dict(c, movement=mv, arm_record=arm)
-            pool[klass(c)].append(c)
+            pool[klass_of(c)].append(c)
     items = []
     for k, n in plan.items():
         rows = sorted(pool.get(k, []), key=lambda c: c["key"])

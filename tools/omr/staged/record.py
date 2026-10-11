@@ -601,6 +601,16 @@ class Q(_Vocab):
     #: or where a beam stroke or ANY other detection already occupies the
     #: window (a neighbour's head, an accidental, text, a slur/tie arc -- ink
     #: this record can already name is not this quantity's to claim).
+    #:
+    #: ROADMAP 2.83 FIX ROUND (Sean's tiles 4 and 8, eighths the 2.18c window
+    #: counted): the shape reader may ADD a witness, never REMOVE one. The 2.18c
+    #: density window is still read (`gather.stem_tip_window`, unchanged) as the
+    #: SECOND witness and each row says which spoke (`detail.witness`: `shape`,
+    #: `window` where the shape reader could not tell and the window saw a hook,
+    #: `disputed` where the shape reader saw NOTHING hanging and the window saw
+    #: a hook -- those rows carry `detail.tip_disagree`, and ADJUDICATE NARROWS
+    #: over them, never deciding level 0). `detail.window_found` is the window's
+    #: own answer where it was read.
     STEM_TIP_INK = "stem_tip_ink"
     #: ROADMAP 2.69 follow-up (Sean, 2026-10-09: *"a dot can not fully or
     #: mostly overlap a flag but it can touch it"*). Filed on an

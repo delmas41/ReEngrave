@@ -134,6 +134,37 @@ class TestTheFlagIsReadWhereItStands(unittest.TestCase):
         m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
         self.assertTrue(m["found"], m)
 
+    def test_ink_that_begins_PAST_the_stems_end_is_not_a_flag_RED(self):
+        """⚠️ Sean's tile 2 (Brahms pdf 16, a dotted quarter): the letters of an `ff` printed against a stem's end read as a flag (`t_first` -0.29,
+        out 1.28, arm 1.1) and the narrowing {1,2} dropped the answer. A flag's root is the stem's last row: ink right of the stem that begins 0.3 spaces
+        BEYOND it is something the stem runs into. Cannot tell, `ink_past_the_tip`."""
+        img = _paper()
+        _stem(img)
+        # a hooked mark whose top stands 6 px (0.3 spaces) above the stem's top end, attached to it, then sweeping down 2.4 spaces
+        _draw(img, STEM_X1, TOP_Y - 6, STEM_X1 + 14, TOP_Y + 12)
+        _draw(img, STEM_X1 + 8, TOP_Y + 12, STEM_X1 + 17, TOP_Y + 52)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIsNone(m["found"], m)
+        self.assertEqual(m["why"], "ink_past_the_tip", m)
+
+    def test_CONTROL_the_same_mark_starting_AT_the_tip_is_a_flag(self):
+        """The control that can fail: the identical shape with its root at the tip reads as the flag it is."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y, STEM_X1 + 14, TOP_Y + 12)
+        _draw(img, STEM_X1 + 8, TOP_Y + 12, STEM_X1 + 17, TOP_Y + 52)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertTrue(m["found"], m)
+
+    def test_CONTROL_a_rounded_tip_that_overshoots_by_0_1_spaces_is_still_a_flag(self):
+        """The cut is 0.15 spaces: the 2-px overshoot a rounded or blurred tip draws does not turn a flag into 'ink past the tip'."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y - 2, STEM_X1 + 14, TOP_Y + 12)
+        _draw(img, STEM_X1 + 8, TOP_Y + 12, STEM_X1 + 17, TOP_Y + 52)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertTrue(m["found"], m)
+
     def test_CONTROL_a_THIN_mark_1_4_spaces_from_the_tip_is_not_a_flag(self):
         """The thin class keeps its root within 1.2 spaces of the tip: a hugging mark that starts further in is not a flag."""
         img = _paper()
@@ -485,6 +516,112 @@ class TestTheObserver(unittest.TestCase):
         log = self._run(img, heads=[head])
         abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
         self.assertEqual(abst["top"].reason, ABSTAIN.OCCUPIED)
+        self.assertEqual(abst["top"].detail.get("why"), "head_at_this_end")
+
+
+def _flag_fused_to_a_beam_run(img):
+    """A flag whose arm is thick enough for the 2.18c window (0.9 spaces wide, 1.0-2.5 spaces back) to read as inked, and whose arm runs
+    on into a long bar 2.5 spaces out (a neighbour it touches): the SHAPE reader says `runs_on` -- it cannot tell -- while the window
+    sees the hook (Litolff pdf 13, Sean's tiles 4 and 8: eighths the base counted and v5 lost)."""
+    _draw(img, STEM_X1, TOP_Y, STEM_X1 + 14, TOP_Y + 12)                     # the root
+    _draw(img, STEM_X1 + 8, TOP_Y + 12, STEM_X1 + 17, TOP_Y + 52)            # a thick arm, 9 px wide
+    _draw(img, STEM_X1 + 17, TOP_Y + 46, STEM_X1 + 64, TOP_Y + 52)           # the run it touches, out to 3.2 spaces
+
+
+class TestTheTipReaderAddsAWitnessAndNeverRemovesOne(unittest.TestCase):
+    """⚠️ ROADMAP 2.83 FIX ROUND (Sean, 2026-10-11, blind tiles 4 and 8: eighths; CLAUDE.md rule 8). v5 replaced the 2.18c density window with
+    the shape reader: where the shape reader could not tell, the window's `True` (and the hook count under it) was GONE, and ADJUDICATE
+    decided a quarter. The window is still read, unchanged, as the SECOND witness: shape cannot tell + window True -> True (witness
+    `window`); shape False + window True -> a DISPUTE (`tip_disagree`) that ADJUDICATE narrows. The end a head stands at is not consulted."""
+
+    def _run(self, img, blockers=(), heads=None):
+        log = Log()
+        gather._observe_stem_tip_ink(log, SUB, "cell:0", FakeCell(img), "obs:stem-1", STEM_BOX, list(blockers), SP, heads=heads)
+        log.freeze()
+        return log
+
+    def test_the_shape_reader_alone_cannot_tell_on_a_flag_fused_to_a_run(self):
+        """The premise: without the window this tip is `runs_on` (cannot tell)."""
+        img = _paper()
+        _stem(img)
+        _flag_fused_to_a_beam_run(img)
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIsNone(m["found"], m)
+        self.assertEqual(m["why"], "runs_on", m)
+
+    def test_cannot_tell_plus_a_window_hook_is_a_TRUE_row_with_the_window_as_its_witness_RED(self):
+        img = _paper()
+        _stem(img)
+        _flag_fused_to_a_beam_run(img)
+        log = self._run(img)
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
+        self.assertEqual(rows["top"].detail["witness"], "window")
+        self.assertTrue(rows["top"].detail["window_found"])
+        self.assertIn("hooks_reason", rows["top"].detail)           # the hook counter ran under it, as 2.69 did
+
+    def test_CONTROL_cannot_tell_with_NO_window_hook_is_still_an_abstention(self):
+        """A bar running out of the tip with nothing in the window (a beam, not a flag): the same `runs_on`, no True row."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1 + 4, TOP_Y, STEM_X1 + 94, TOP_Y + 12)
+        log = self._run(img)
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertNotIn("top", rows)
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
+        self.assertEqual(abst["top"].reason, ABSTAIN.AMBIGUOUS)
+
+    def test_a_box_over_the_window_means_the_window_is_not_read_and_the_tip_stays_cannot_tell(self):
+        """2.18c's own guard stays: ANY detection box overlapping the window makes it `occupied`, so it cannot witness."""
+        img = _paper()
+        _stem(img)
+        _flag_fused_to_a_beam_run(img)
+        over_window = (STEM_X1 + 3.0, TOP_Y + 22.0, STEM_X1 + 16.0, TOP_Y + 40.0)
+        log = self._run(img, blockers=[over_window])
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertNotIn("top", rows)
+
+    def test_the_shape_reader_positively_empty_and_a_window_hook_is_a_DISPUTE_RED(self):
+        """Nothing is attached to the tip (the shape reader's `empty`), but 0.5 spaces out a detached blob fills the window: the two
+        witnesses disagree. A True row marked `tip_disagree` (the hook counter's own reading is carried), never a plain True and never False."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1 + 10, TOP_Y + 22, STEM_X1 + 18, TOP_Y + 50)           # detached: 0.5 spaces from the stem, in the window
+        m = gather.stem_tip_ink(img, STEM_X0, STEM_X1, TOP_Y, 1.0, SP)
+        self.assertIs(m["found"], False, m)                                       # the premise: positively empty
+        log = self._run(img)
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
+        self.assertTrue(rows["top"].detail.get("tip_disagree"))
+        self.assertEqual(rows["top"].detail["witness"], "disputed")
+
+    def test_CONTROL_a_clean_tip_is_still_False_and_not_disputed(self):
+        img = _paper()
+        _stem(img)
+        log = self._run(img)
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertIs(rows["top"].value, False)
+        self.assertFalse(rows["top"].detail.get("tip_disagree"))
+
+    def test_CONTROL_a_flag_the_shape_reader_reads_is_a_plain_True_row_never_a_dispute(self):
+        img = _paper()
+        _stem(img)
+        _flag_up_stem(img)
+        log = self._run(img)
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertTrue(rows["top"].value)
+        self.assertFalse(rows["top"].detail.get("tip_disagree"))
+
+    def test_the_end_a_head_stands_at_is_NOT_given_to_the_window(self):
+        """A head's own ink in the window must not become a hook: the head_at_this_end abstention stands, window or not."""
+        img = _paper()
+        _stem(img)
+        _draw(img, STEM_X1, TOP_Y - 4, STEM_X1 + 26, TOP_Y + 52)                  # a head AT the top end, 2.6 spaces of black
+        head = (STEM_X1, TOP_Y - 4, 26.0, 56.0)
+        log = self._run(img, heads=[head])
+        rows = {r.detail["end"]: r for r in log.rows(Q.STEM_TIP_INK, SUB)}
+        self.assertNotIn("top", rows)
+        abst = {a.detail["end"]: a for a in log.refusals(Q.STEM_TIP_INK, SUB)}
         self.assertEqual(abst["top"].detail.get("why"), "head_at_this_end")
 
 
