@@ -23,7 +23,7 @@ pointing at headings no longer in the file.)*
 ---
 
 
-## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (BUILT, not merged)
+## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (LANDED on main, Sean: "Yes")
 
 - Census of every 2.13 read on both acceptance movements against the plate (84 systems; frame control re-reads the record 84/84). Tesseract: Brahms 13 right / **22 wrong** of 35 decided (bold 1→4, leading 1 lost to the bracket curl, 6-space crop clips the third digit); Litolff 21 / 7.
 - `bar_number_text.read_crops_surya` (8-space crop, 60 px pad, 2x, 16 tokens) via `gather._printed_bar_numbers_surya`, filed under `READERS.SURYA`; `gather()` passes `surya=surya_fallback`. Shipped function on the real raster: Brahms 32 / 0 wrong, Litolff 27 / 0. No cascade (Tesseract where Surya is silent: 5 right / 7 wrong). No new flag; ADJUDICATE/EXPORT untouched.
