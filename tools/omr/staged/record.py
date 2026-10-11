@@ -1444,6 +1444,16 @@ class Q(_Vocab):
     #: a head is `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`'s question, which stem it touches
     #: is geometry. See `adjudicators/stem_value.py`.
     HEAD_STEM = "head_stem"
+    #: ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`), Sean 2026-10-11: *"All stems
+    #: should be connected to a notehead"* -- used *"to verify later in the
+    #: stages"*, so GATHER keeps every stroke and this ADJUDICATE verdict asks.
+    #: Filed on the CELL (a `Q.STEM` row has no subject of its own). `value` is the
+    #: list of `Q.STEM` row ids that touch NO detected notehead box in the cell;
+    #: `detail["meets"]` the ids that do. ABSTAINED where the cell has no notehead
+    #: box at all (heads unread: nothing is refused). Read by the consumers that do
+    #: not start from a notehead (the beam-joins-N-stems tests, the rest-has-a-stem
+    #: refusal) through `stem_value.stems_touching_no_head`. See `stem_value.py`.
+    STEM_HEAD_CONTACT = "stem_head_contact"
     #: ⚠️⚠️ ROADMAP 2.78 -- THE WRITTEN VALUE OF THE STEM A NOTEHEAD STANDS ON,
     #: AS IT APPLIES TO THAT HEAD (Sean, DECISIONS 2026-10-09: *"no exceptions"*,
     #: and on the 14 blind tiles of `out/print/2.78-review/`: the value belongs to
@@ -2344,6 +2354,7 @@ CLAIMS: "dict[str, str]" = {
     # ROADMAP 2.78: which stem a head stands on (an overlap, and where two
     # stems touch one box the side rule picks) and the value that stem carries.
     "HEAD_STEM": CLAIM.INTERPRETATION,
+    "STEM_HEAD_CONTACT": CLAIM.INTERPRETATION,
     "STEM_VALUE": CLAIM.INTERPRETATION,
     "TUPLET_RATIO": CLAIM.INTERPRETATION,
     "GLYPH_OWNER": CLAIM.INTERPRETATION,

@@ -808,6 +808,15 @@ REST_LINE_SHAPE_CLASSES = frozenset(("restWhole", "restHalf"))
 REST_LINE_TOUCH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
 
 
+def _stems_connected_to_a_head(ev: Evidence, cell, stems):
+    """ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`): a rest is refused for a stem,
+    and a stem is a stroke that touches a notehead (Sean 2026-10-11). Flag unset, or
+    the verdict absent/abstained: every stroke, exactly as before."""
+    from .stem_value import stems_connected_to_a_head
+    return stems_connected_to_a_head(
+        ev.verdict(Q.STEM_HEAD_CONTACT, subject=cell), stems)
+
+
 def _rest_has_a_stem_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
                              ) -> Optional[Ruling]:
     """(c): a rest never has a stem. Checked FIRST among the three
@@ -827,7 +836,8 @@ def _rest_has_a_stem_refusal(ev: Evidence, this_row, detail: Dict[str, Any]
     cell = ev.subject.at(Kind.CELL)
     if cell is None:
         return None
-    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    stems = _stems_connected_to_a_head(
+        ev, cell, ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
     joined = _stems_on(head_box, stems)
     if not joined:
         return None
@@ -887,7 +897,8 @@ def _rest_on_a_slashed_stem_refusal(ev: Evidence, this_row,
     if not sp_rows or float(sp_rows[-1].value) <= 0 \
             or bh < REST_SLASHED_MIN_HEIGHT_SPACES * float(sp_rows[-1].value):
         return None
-    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
+    stems = _stems_connected_to_a_head(
+        ev, cell, ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
     on = {s.id for s in _stems_on((bx, by, bw, bh), stems)}
     if not on:
         return None
@@ -1613,7 +1624,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH),
+           Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_is_a_duplicate_box",

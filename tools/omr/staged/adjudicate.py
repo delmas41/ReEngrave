@@ -954,6 +954,10 @@ ORDER: Tuple[str, ...] = (
     # _ledger_rungs_in_cell` reads this decision's VERDICT so a refused rung
     # is not counted in ADJUDICATE's own ladder search. The reverse order
     # would let a staff-line fragment vouch for a note.
+    # ROADMAP 2.87 (`head_contact`): GATHER rows only, ahead of its consumers
+    # (the rest-has-a-stem refusal just below, the beam-joins-N-stems tests in
+    # `duration`).
+    Q.STEM_HEAD_CONTACT,
     Q.LEDGER_IS_NOT_A_LEDGER,
     Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ⚠️ THESE DEPEND ON NOTHING, and nothing in ADJUDICATE depends on most of

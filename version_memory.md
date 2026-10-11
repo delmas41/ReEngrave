@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 -- ROADMAP 2.85 built: repeats and 1st/2nd endings (branch `lane-2.85-repeats-voltas`, not merged; next to land)
+## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
   - `volta_bracket.py` files `Q.VOLTA_BRACKET`;
@@ -33,6 +33,38 @@ pointing at headings no longer in the file.)*
 - Brahms A/B (one record, one tree): the drift after p10 drops by 2, as predicted.
 - 25 new tests; the export tests were run RED on origin/main first. `staged.check` 192 = base.
 - Sean, blind tiles 5 of 5; keep the print's numbers (no suffix on the 1st-ending bars). FINDINGS `benchmarks/omr-repeats-endings-2026-10/FINDINGS.md`.
+
+
+## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (LANDED on main, Sean: "Yes")
+
+- Census of every 2.13 read on both acceptance movements against the plate (84 systems; frame control re-reads the record 84/84). Tesseract: Brahms 13 right / **22 wrong** of 35 decided (bold 1→4, leading 1 lost to the bracket curl, 6-space crop clips the third digit); Litolff 21 / 7.
+- `bar_number_text.read_crops_surya` (8-space crop, 60 px pad, 2x, 16 tokens) via `gather._printed_bar_numbers_surya`, filed under `READERS.SURYA`; `gather()` passes `surya=surya_fallback`. Shipped function on the real raster: Brahms 32 / 0 wrong, Litolff 27 / 0. No cascade (Tesseract where Surya is silent: 5 right / 7 wrong). No new flag; ADJUDICATE/EXPORT untouched.
+- `printed_bar_check`: deltas now clean steps (Brahms −2 at 194, −3 at 215; Litolff −1 at 171, −2 at 430). Tests RED first (10/10), `check` 192 unchanged. FINDINGS `omr-bar-number-2026-09` §7; crops for Sean in `out/print/2.13b-bar-number/`.
+- Sean confirmed all 84 plate-reading tiles the same day (DECISIONS); the counts stand against print truth.
+
+## 2026-10-11 — 2.87 the stem finder LANDED on main, switch ON on STAGED
+
+- Sean: *"Land switch on"*. `219301ba`: `STEM_FINDER_STAGED_DEFAULT` = thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head; `OMR_STEM_FINDER` unset -> that set on STAGED, set -> exactly the list; LEGACY's default stays empty (frozen). `head_contact` built, OFF. Tests RED first (6 of 7).
+- Control: Brahms acceptance_quick re-gather with the env UNSET on the committed tree (clean): Q.STEM rows identical to the measured arm `f1` on pdf 0 and 1 (326, 648); base differs (358 vs 326). Sean's page: 227/234 found, 18 not stems, 320/335 heads on the right stem, 0 narrowed.
+- 2.83 trial merge on top: only `omr-missing-notes-2026-09/FINDINGS.md` conflicts (two section 18s: keep both, renumber 2.83's); code auto-merges, 153 tests pass. 2.83 must re-measure with the stem finder on.
+
+## 2026-10-11 — 2.87 round 2: `head_contact` and `one_stem_per_head` (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- STAGED ADJUDICATE only, no GATHER change. Two new names on the `OMR_STEM_FINDER` allow-list (default empty): `head_contact` -> new quantity `Q.STEM_HEAD_CONTACT` (`stem_value.adjudicate_stem_head_contact`, cell-level verdict listing the strokes that touch no notehead; a stroke cut by the crop edge is not judged), read by `rhythm._not_a_decided_arc`, `_not_the_neighbours_beam`, `_not_a_beam_by_ink` and `family_precision` rest-has-a-stem / slashed-stem; `one_stem_per_head` inside `adjudicate_head_stem` (reasons `stem_by_one_per_head`, `unison_two_voices`).
+- CONVENTION (Sean 2026-10-11): every stem touches a notehead; every black head has one stem except a unison, whose two stems go in different directions. FINDINGS `hand-truth-score-2026-10` 9.7. `staged.check` open 192 -> 192. Measured on re-adjudicated `f1` records: Sean's page heads right 319 -> 320 of 335 (`q1322` decided); `head_contact` negative on Litolff p3 (two eighths narrowed), 0 on Brahms p1.
+- Fence: `adjudicate_duration` body and `_attached_flags` untouched (lane 2.83); only the decorator's `wants`/`composed_from` gained `Q.STEM_HEAD_CONTACT`.
+
+- Round 2 (Sean, 9 tiles): unison 5/5 right, controls 2/2; tiles 5-6 eighths -> `head_contact` wrong on both, stays OFF; `one_stem_per_head` confirmed.
+
+## 2026-10-11 — 2.87 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
+- Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.
+- Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
+- Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
+- Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
+- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 = the boxed mark is a notehead (his truth gives `q1322` two real stems; first misread as notehead ink, corrected) -> 227 of 245 stem strokes real, 18 not. FINDINGS 9.6; DECISIONS. Not landed.
+- Sean: add the 7 stems to his hand truth -> `b4352`-`b4358` (234 stems; INVENTORY regenerated). Re-scored base -> arm: found 175 -> 227 of 234, invented 66 -> 18, heads right 218 -> 319 of 335.
 
 ## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
 
