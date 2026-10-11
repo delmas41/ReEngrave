@@ -356,3 +356,100 @@ directions and 0.25 is its middle.
 * The 4 found-but-not-attached heads (`adjudicate_head_stem`'s no-tolerance overlap) and the 5 heads filed on a flag's rising curve
   are 2.78's (a stem that is refused leaves the next vertical stroke against the head to be its stem).
 * The scorer now prints these numbers at GATHER + ADJUDICATE for any record, so the next re-gather reads them with one command.
+
+## 9. The stem finder (ROADMAP 2.84; Sean 2026-10-10, *"Send out an agent to handle the stem fixes"*)
+
+**Path:** shared `line_detection.detect_stems` (GATHER) for items 1, 2, 4 -- the legacy `transcribe` passes no detector boxes so only
+`thin_run` can reach it, and it is OFF -- and STAGED ADJUDICATE for item 3. **Everything is behind one allow-list flag**
+`OMR_STEM_FINDER=thin_run,pair_evidence,attach_tolerance,refuse_owned`, default EMPTY (the shipped reader; control below). Nothing is promoted: Sean
+decides. Commits on `lane-stem-finder`: `789d1a7d` (1), `4a3fc515` (2), `c13cdf56` (3), `42b28f31` (4); each carries its own tests (RED first
+and a mutation that turns it red again) and its own `CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED` block.
+
+### 9.1 The answer (Brahms 317803 pdf 0, Sean's 227 stems, scorer as in section 8; base = origin/main `40ab373a` clean, arm = `42b28f31` clean)
+
+Both records are `dirty: false` (the committed-tree re-runs `f0`/`f1` below). The first arms (`a1`-`a4`, `t2`-`t7`) were gathered from a DIRTY
+working tree while the code was being written, so they are not baselines; the final arm was re-run from the committed tree and **reproduces the
+dirty numbers exactly**, which is why the per-item rows below are quoted from the dirty arms and the totals from the clean one.
+
+| | base | all four repairs |
+|---|--:|--:|
+| Sean's stems found by the CV reader (of 227) | 173 = 0.762 | **220 = 0.969** |
+| CV stems that are not Sean's ("invented") | 68 (precision 0.720) | **25 (precision 0.899)** |
+| heads on their right stem (of 321) | 215 = 0.670 | **306 = 0.953** |
+| stem direction right / wrong / abstained | 247 / 3 / 55 | 292 / 1 / 12 |
+| heads' attach outcome | right 215, no stem found 97, wrong stem 5, found-not-attached 4 | right 306, not found 12, found-not-attached 2, narrowed-with-the-right-stem 1, wrong 0 |
+
+**Control that can fail (flag OFF):** the committed tree with the flag unset (`f0`) has Q.STEM rows IDENTICAL to base (0 differing rows on the
+page record) and identical counts on both count pages; with the flag set `f1` differs. **No stem of Sean's that base found is lost** (0 of 173).
+**Newly worse:** one head, `q1322`, was RIGHT and is now `narrowed_with_the_right_stem` (a second stem now touches it; two stems are narrowed,
+never guessed); no head is newly wrong; no direction went right to wrong.
+
+Per repair, cumulative, from the dirty arms (found / invented / heads right): base 173 / 68 / 215. `thin_run` 208 / 71 / 281. `+ pair_evidence`
+220 / 71 / 303. `thin_run + refuse_owned` (first version, a flag box owned a stroke at 0.8) 218 / 26 / 301 -- it LOST two of Sean's stems
+(`b4282`, `b4289`: the detector's flag box wraps a short flagged stem whole; crop looked at), so a flag is not an owner; final `thin_run +
+refuse_owned` 220 / 25 / 303; `+ attach_tolerance` 220 / 25 / 306. `pair_evidence` adds nothing once `refuse_owned` is on (the accidental's
+strokes are already gone), and is the narrower rule where the accidental's box is missing from the owner list.
+
+### 9.2 What each repair is, and the convention it assumes
+
+1. **`thin_run`** -- the 45 fused thirds. A run refused only for being too WIDE is searched for the stem inside it: the sorted per-column
+   extents of the run split at their widest gap (>= 0.8 sp), the columns above the gap are the stem if they form one thin band. The first
+   version ("columns as tall as the run's tallest") found 26 of 54; the probe on the 57 wide runs of the page said why: a scanned stem is
+   SLANTED, so its columns climb 4.55 -> 4.86 sp across its own width while the heads' columns stand at 2.0-2.3 -- a bimodal gap, not a plateau.
+   The gap form found 35 of 54 (208). *Assumes:* a stem is one thin stroke at the side of its head, reaching beyond the heads at one end.
+   *Would falsify:* a barline pair or clef spine standing beyond a block. The whole run is still recorded `RUN_TOO_WIDE` in `Q.VERTICAL_RUN`.
+2. **`pair_evidence`** -- the 9 PAIRED stems. A pair is condemned only where the PARTNER lies on a detector accidental/key box and this stroke
+   does not (7 of the 9 partners lie on an accidental box; the other 2 lie on a notehead box and stay with `OMR_STEM_NOTEHEAD_GATE`, 2.4a).
+3. **`attach_tolerance`** -- 4 found-but-not-attached heads. One definition (`geometry.stem_touches_head`, head box grown by 0.12 of its own
+   height ~ a stem thickness) now serves `rhythm._stems_on`, `rhythm._stem_joined`, `notehead_precision._stem_rows_on` and
+   `stem_value.adjudicate_head_stem`. Two of the four attach; the two left stand at 0.0 and 0.1 sp and are not a tolerance case. The measured
+   gaps run continuously 0 to 0.5 head heights (no empty interval), so 0.12 is a named convention, not a fit. **Not changed** (still exact
+   overlap): stem-to-beam joins, `gather._stacked_boxes_overlap`, `ownership._boxes_overlap`, `export`.
+4. **`refuse_owned`** -- the 68 invented. A stroke at least half (clef, key, time-signature numeral) or 0.8 (accidental, rest) inside a detector
+   box of that mark is the mark's, dropped BEFORE the pair rule. 68 -> 25. **What stays invented (25):** 13 strokes on a flag box (the flag's
+   rising curve: a flag box cannot be an owner, above), 8 + 1 strokes where Sean has no stem box under them (very probably real stems of the
+   ~18 he did not box -- tiles below ask him), 3 on a numeral (box missing or too small).
+
+### 9.3 Count pages at GATHER + ADJUDICATE (`acceptance_quick`, default view; base / `f0` = the flag unset / `f1` = all four)
+
+| | Brahms p1 base | f0 | f1 | Litolff p3 base | f0 | f1 |
+|---|--:|--:|--:|--:|--:|--:|
+| `Q.STEM` rows | 792 | 792 | 648 | 370 | 370 | 316 |
+| `Q.BEAM_STROKE` rows | 925 | 925 | 937 | 134 | 134 | 138 |
+| `head_stem` decided / narrowed / abstained | 582 / 6 / 417 | same | 607 / 15 / 383 | 328 / 6 / 128 | same | 373 / 7 / 82 |
+| `stem_value` decided | 54 | 54 | 82 | 80 | 80 | 119 |
+| durations decided (of which beamed) | 1,117 (474) | same | 1,131 (495) | 554 (101) | same | 553 (101) |
+| durations narrowed / abstained | 139 / 99 | same | 125 / 99 | 24 / 36 | same | 25 / 36 |
+
+The detector-class families (`class:beam`, `class:flag*`, the kept/refused counts) are IDENTICAL across all five arms on both pages: the
+repairs move the CV stem and everything downstream of it, not what the detector boxed. **Beams:** +12 / +4 CV beam strokes (the beam reader
+takes the stem set as input). **Flags and durations recovered:** Brahms +21 beamed durations decided and -14 narrowed; Litolff, where the
+duration counts barely move, gains 45 heads on a stem and 39 stem values. ⚠️ Litolff durations decided 554 -> 553 and narrowed 24 -> 25:
+one duration went from decided to narrowed; not traced to a head (the count pages have no hand truth, so none of these duration changes is
+judged against the print). The stem rows fall (792 -> 648, 370 -> 316) because `refuse_owned` removes strokes on clefs, keys and numerals.
+
+### 9.4 Item 5 -- ROADMAP 2.78 one-stem-one-value on Sean's tiles 5 and 6: NO RULE FOLLOWS; nothing changed
+
+`stem_value_from_evidence` reads the stem's LEVELS from the member nearest the stem's TIP (`stem_value._tip_order`, `levels_from`), by design
+(the beams hang at the tip). Tile 5 (Brahms p0, `glyph/0/0/12/1/1` and `/15`; Sean: 16th, we wrote an eighth): the two members read 2 levels (head 1)
+and 1 level (head 15); head 15 is the tip-nearest and decided, so its 1 won. **Head 15 is not a notehead**: the print crop shows the beam's end
+blob, a detector box at the stem's tip end; the stem (a down-stem at head 1's left edge) has no ink beyond it and the box is flush on the
+stem's RIGHT, so it also breaks the side rule for a down stem. The right fix is a notehead refusal for a box on a beam end
+(`notehead_precision`'s question, a per-box witness) and not a change to how a stem reads its levels. A stem-value rule keyed on the side rule
+does not follow: on this page 11 of the 400 joined heads stand flush on the "wrong" side (5 down/right, 6 up/left) and chords with a second
+displace a head to the other side of the stem on purpose, so "wrong side => not this stem's" is false for a chord. Tile 6 (Litolff p7,
+`glyph/7/0/0/7/4` and `/10`; Sean: eighth): **already right on the current tree** -- a page-7 gather (committed tree, flags unset) gives the
+stem value 0.5 (eighth) for both heads, `levels_from` the tip head. The tile's quarter was read from the tree before 2.82 landed; I did not find which commit
+changed it. Not built: no rule that follows, and nothing labelled INFER is worth adding on one wrong tile.
+
+### 9.5 Not done, limits, and what Sean is asked
+
+* **Not done:** the 13 flag-curve strokes; the 2 PAIRED stems whose partner is a notehead box (`OMR_STEM_NOTEHEAD_GATE`, 2.4a); 7 of Sean's stems still
+  missed (`b4083 b4090 b4117 b4131 b4162 b4167 b4320`; their cause was NOT re-derived on the final arm -- the runs record needs the detector's boxes
+  and the finder reads them); the heads found-but-not-attached at 0.0 / 0.1 sp.
+* **One page, one plate** (Breitkopf, top staves): Litolff has no hand truth yet, so 0.969 is this passage's number, not the reader's rate. The
+  count-page durations are unjudged against the print. `OMR_STEM_FINDER` is not read by the web app's LEGACY path except `thin_run`.
+* **Tiles for Sean** `out/print/stem-finder/` (10, blind: only the print, a big number, corner brackets on the subject, one question): tiles
+  1-9 "Is the red line a stem?" -- every stroke the finder now reads that Sean has no stem box under (8 + 1; if they are stems the 25 invented
+  drop to 16 and recall is untouched); tile 10 "1 stem or 2 stems?" -- the one head, `q1322`, that went from decided to narrowed. Maker:
+  `make_tiles.py` (frame control per tile, refuses a bracket that is not on ink).

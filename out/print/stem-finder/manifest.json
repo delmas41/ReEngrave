@@ -1,0 +1,146 @@
+{
+ "dpi": 600,
+ "note": "blind: nothing of ours is drawn",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4583.0,
+    2719.6,
+    4587.2,
+    2874.4
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.99,
+   "frame_control_ink_moved_max": 0.492
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4513.0,
+    2735.4,
+    4517.2,
+    2879.5
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.984,
+   "frame_control_ink_moved_max": 0.61
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4446.3,
+    2748.3,
+    4449.2,
+    2888.2
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.981,
+   "frame_control_ink_moved_max": 0.614
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4143.1,
+    2751.5,
+    4146.0,
+    2890.5
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.993,
+   "frame_control_ink_moved_max": 0.519
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    5275.2,
+    2650.4,
+    5282.1,
+    2808.6
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.91,
+   "frame_control_ink_moved_max": 0.58
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4937.0,
+    2685.5,
+    4940.1,
+    2841.6
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.989,
+   "frame_control_ink_moved_max": 0.562
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    5311.0,
+    2673.5,
+    5313.1,
+    2753.6
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.975,
+   "frame_control_ink_moved_max": 0.613
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    4713.2,
+    2702.3,
+    4720.1,
+    2851.5
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.873,
+   "frame_control_ink_moved_max": 0.528
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "kind": "line",
+   "page_box_600dpi": [
+    1277.1,
+    5996.6,
+    1293.2,
+    6133.4
+   ],
+   "question": "Is the red line a stem?",
+   "frame_control_ink_here": 0.985,
+   "frame_control_ink_moved_max": 0.648
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "kind": "head",
+   "page_box_600dpi": [
+    2709.4,
+    5996.0,
+    2752.3,
+    6034.4
+   ],
+   "question": "1 stem or 2 stems?",
+   "frame_control_ink_here": 0.914,
+   "frame_control_ink_moved_max": 0.466
+  }
+ ]
+}
