@@ -1,0 +1,155 @@
+[
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/1/10/2/13",
+  "mark_bbox_page": [
+   2091.925,
+   6267.7,
+   2147.75,
+   6297.125
+  ],
+  "class": "articAccentAbove",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/5/1/10/2/4, stem up, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "decided stem_tip_of_long_chord: owner glyph/5/1/10/2/4 (stem up, far head glyph/5/1/10/2/7 at position 12.98, tip gap 0.12 spaces, chord 3 heads)",
+  "category": "newly_decided",
+  "n": 1
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 10,
+  "subject": "glyph/10/0/0/5/22",
+  "mark_bbox_page": [
+   3467.5625,
+   480.75,
+   3519.7325,
+   487.96500000000003
+  ],
+  "class": "articTenutoBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/10/0/0/5/4, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "abstained stem_contradicts_class_side (nearest head glyph/10/0/0/5/4, stem down, long_chord_stem mark_not_at_stem_tip, far head glyph/10/0/0/5/1 at position -6.02, tip gap -3.34 spaces, chord 2 heads)",
+  "category": "refused:mark_not_at_stem_tip",
+  "n": 2
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 23,
+  "subject": "glyph/23/1/2/4/5",
+  "mark_bbox_page": [
+   2931.3775,
+   4578.84,
+   2986.8775,
+   4607.4225
+  ],
+  "class": "articAccentBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/23/1/2/4/7, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "decided stem_tip_of_long_chord: owner glyph/23/1/2/4/7 (stem down, far head glyph/23/1/2/4/12 at position -3.2, tip gap 0.41 spaces, chord 2 heads)",
+  "category": "newly_decided",
+  "n": 3
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 9,
+  "subject": "glyph/9/1/3/0/21",
+  "mark_bbox_page": [
+   1194.62890625,
+   4824.83984375,
+   1248.15625,
+   4850.849609375
+  ],
+  "class": "articAccentBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/9/1/3/0/10, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "abstained stem_contradicts_class_side (nearest head glyph/9/1/3/0/10, stem down, long_chord_stem no_ledger_head_on_stem, far head None at position None, tip gap None spaces, chord 2 heads)",
+  "category": "refused:no_ledger_head_on_stem",
+  "n": 4
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/1/10/4/12",
+  "mark_bbox_page": [
+   3013.75,
+   6249.55,
+   3069.575,
+   6279.25
+  ],
+  "class": "articAccentAbove",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/5/1/10/4/5, stem up, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "decided stem_tip_of_long_chord: owner glyph/5/1/10/4/5 (stem up, far head glyph/5/1/10/4/4 at position 10.92, tip gap 0.01 spaces, chord 3 heads)",
+  "category": "newly_decided",
+  "n": 5
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 10,
+  "subject": "glyph/10/0/6/5/7",
+  "mark_bbox_page": [
+   3628.0075,
+   2073.8575,
+   3681.9625,
+   2103.015
+  ],
+  "class": "articAccentBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/10/0/6/5/3, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "abstained stem_contradicts_class_side (nearest head glyph/10/0/6/5/3, stem down, long_chord_stem no_ledger_head_on_stem, far head None at position None, tip gap None spaces, chord 2 heads)",
+  "category": "refused:no_ledger_head_on_stem",
+  "n": 6
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 10,
+  "subject": "glyph/10/0/6/5/10",
+  "mark_bbox_page": [
+   3468.8675,
+   2043.8825,
+   3524.4575,
+   2073.3125
+  ],
+  "class": "articAccentBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/10/0/6/5/4, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "decided stem_tip_of_long_chord: owner glyph/10/0/6/5/4 (stem down, far head glyph/10/0/6/5/1 at position -4.1, tip gap 0.42 spaces, chord 2 heads)",
+  "category": "newly_decided",
+  "n": 7
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 23,
+  "subject": "glyph/23/1/7/9/4",
+  "mark_bbox_page": [
+   5138.32,
+   5653.2,
+   5192.64,
+   5683.72
+  ],
+  "class": "articAccentAbove",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/23/1/7/9/2, stem up, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "decided stem_tip_of_long_chord: owner glyph/23/1/7/9/2 (stem up, far head glyph/23/1/7/9/0 at position 13.04, tip gap 0.24 spaces, chord 2 heads)",
+  "category": "control_tile6",
+  "n": 8
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/1/10/8/15",
+  "mark_bbox_page": [
+   4808.125,
+   6494.85,
+   4863.125,
+   6526.2
+  ],
+  "class": "articAccentBelow",
+  "read_before": "abstained stem_contradicts_class_side (nearest head glyph/5/1/10/8/7, stem down, long_chord_stem None, far head None at position None, tip gap None spaces, chord None heads)",
+  "read_after": "abstained stem_contradicts_class_side (nearest head glyph/5/1/10/8/7, stem down, long_chord_stem no_ledger_head_on_stem, far head None at position None, tip gap None spaces, chord 2 heads)",
+  "category": "refused:no_ledger_head_on_stem",
+  "n": 9
+ }
+]

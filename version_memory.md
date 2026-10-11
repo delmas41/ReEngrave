@@ -25,6 +25,7 @@ pointing at headings no longer in the file.)*
 ## 2026-10-10 (night) — 2.12m built on lane: an articulation at a long chord stem's tip
 
 - `lane-2.12g-long-stem` (not merged; the brief's "2.12g" is taken, row is 2.12m): `adjudicate_articulation_owner` decides `stem_tip_of_long_chord` for Sean's 2.12f tile-6 case (a chord stem reaching a ledger head, the mark at its tip) on positive evidence only; every other `stem_contradicts_class_side` stays abstained with the failed condition named. Research on stem-side placement (Gould 2nd-hand, Dorico, LilyPond source) in FINDINGS `omr-shape-role-2026-09` Part 12. 11 RED-first tests; `check` 192 -> 192. Needs the Mac readjudication + blind tiles.
+- Measured on the Mac (base `40ab373a` vs arm `46914018`, four shared records): Brahms whole 5 of 28 `stem_contradicts_class_side` marks now decided `stem_tip_of_long_chord` (the tile-6 control among them, decided to the chord below), 0 other rows changed; control `glyph_owner` short of N of N identically in both trees (`reconcile_group_owners`); 9 blind tiles `out/print/2.12m-review/` for Sean; new `select_artic_2_12m_tiles.py`. FINDINGS Part 12 §7.
 
 ## 2026-10-10 (night) — 1.7 stems landed
 

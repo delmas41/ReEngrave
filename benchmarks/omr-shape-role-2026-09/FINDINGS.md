@@ -3262,3 +3262,75 @@ belong to?"): **every** newly decided `stem_tip_of_long_chord` mark (expected �
 up to 4 that stayed `stem_contradicts_class_side` with `long_chord_stem` =
 `no_ledger_head_on_stem` or `mark_not_at_stem_tip` (the refusals), plus tile 6
 (`glyph/23/1/7/9/4`) as the control the rule must now decide.
+
+## 7. Measured on the Mac (2026-10-10) — REACH 5 of 28, no other row moved
+
+Two clean worktrees, one tree each: BASE `origin/main` `40ab373a`, ARM
+`lane-2.12g-long-stem` `46914018`. `readjudicate_artic_side.py` then
+`compare_artic_r2.py` on four shared records (`library/_shared-records/`); outputs and
+comparisons under `out/2.12m/`. ADJUDICATE-only, so a saved record is a valid input.
+
+**Control (`glyph_owner` rebuilt == the record's own), identical in base and arm:**
+
+| record | control | marks | `stem_contradicts_class_side` (base) | → decided `stem_tip_of_long_chord` |
+|---|---|--:|--:|--:|
+| Brahms whole `…-20261009-all` (Part 11 §4's record) | 33,767 of 34,106 | 1,263 | **28** | **5** |
+| Litolff whole `…-20261009-all` | 9,414 of 9,423 | 18 | 0 | 0 |
+| Brahms `brahms1-breitkopf-p0-p3` (Sep 15) | 2,866 of 3,015 | 196 | 5 | 0 |
+| Litolff `beethoven5-p1-p4` (Sep 11) | 1,301 of 1,386 | 98 | 2 | 0 |
+
+⚠️ **The control is NOT N of N on any record**, in either tree, and was not in Part 11 §4
+either (same Brahms/Litolff whole numbers). Named on Litolff whole (`ctl_misses`, 9 rows,
+reproduced in the session): every miss is a `glyph_owner` verdict the record holds as
+`distance` / `far_no_rungs` / `stem_disagrees` / `ledger_witnesses_disagree` that the
+rebuild turns into `group_owner` (`reconcile_group_owners`, which `adjudicate.run` calls
+after GLYPH_OWNER and which reads `Q.MARK_GROUP` rows the record's own run may have
+reconciled differently), plus one `dot_follows_note` → `distance`. The shortfall is in a
+step outside the articulation chain, is identical in base and arm, and so does not
+separate them; but the rebuild is not byte-for-byte the pipeline, and a mark whose
+nearest head's owner is one of those 339 Brahms rows could read differently in a full
+re-gather. The two count-page records predate many landings (Sep 11/15) and are inputs,
+not baselines (§6b).
+
+**Every changed row, row by row (full row equality, not reason keys):** Brahms whole 1,235
+identical, 5 the expected flip, 23 the same verdict (outcome, value, every old detail
+key) with only the new `long_chord_*` detail added; **0 other changes**. Count pages: 5 and
+2 detail-only, 0 other. Litolff whole: 18 of 18 identical. Fermata owners identical on all
+four (12 Brahms whole, 178 Litolff whole, 67 Litolff p1-p4; Brahms p0-p3 holds none). `compare_artic_r2`'s
+round-2 invariant `base_abstained_became_decided` prints 5 — those ARE the 5 flips, which
+this rule exists to make; it is that script's round-2 promise, not this lane's.
+
+**Why the other 23 Brahms stayed abstained** (`detail.long_chord_stem`): `not_a_chord` 8,
+`no_ledger_head_on_stem` 6, `several_stems` 4, `two_voice` 2, `no_stem_row` 2,
+`mark_not_at_stem_tip` 1. Count pages: `two_voice` 3, `no_stem_row` 2, `not_a_chord` 2.
+
+**The 5 decided** (all accents, Brahms):
+
+| mark | stem | far head position | tip gap (spaces) | dx (head widths) | chord | same-ink twin |
+|---|---|--:|--:|--:|--:|---|
+| `glyph/5/1/10/2/13` | up | 12.98 | 0.12 | 0.22 | 3 | `5/1/9/2/4` **DECIDED to `5/1/9/2/0`** (other staff, notehead side) |
+| `glyph/5/1/10/4/12` | up | 10.92 | 0.01 | 0.24 | 3 | `5/1/9/4/7` abstained |
+| `glyph/10/0/6/5/10` | down | −4.10 | 0.42 | 0.61 | 2 | `10/0/7/5/0` abstained |
+| `glyph/23/1/2/4/5` | down | −3.20 | 0.41 | 0.50 | 2 | `23/1/3/4/8` abstained |
+| `glyph/23/1/7/9/4` (**tile 6 control**) | up | 13.04 | 0.24 | 0.38 | 2 | none |
+
+**The control decides as Sean read it:** `glyph/23/1/7/9/4` → `glyph/23/1/7/9/2`, the up
+chord below whose far head stands at 13.04 (ledgers below the staff); tip gap 0.24 spaces.
+
+⚠️ **One new two-owner mark.** `glyph/5/1/10/2/13` is now decided to the lower staff's
+chord while its twin in the upper staff's cell is decided to the upper staff's head on
+the notehead side — "one mark, two owners" 16 → 18 (the pair counts twice). The rule
+only adds a decision; it does not consult the twin. Tile 1 asks Sean which is right; the
+twin de-duplication (Part 11 §6) is where the loser would be dropped.
+
+**Tiles — `out/print/2.12m-review/`** (9; `select_artic_2_12m_tiles.py` seed 20261010,
+cut by `cut_artic_tiles.py` at 600 dpi, red corner bracket on the mark, nothing of ours
+drawn, tile number at 44 pt; question *"Which note does the mark in the brackets belong
+to, and is it above or below that note?"*; our reading only in `manifest.json`): the 4
+other newly decided, the control (tile 8), and 4 of the 7 refusals (3
+`no_ledger_head_on_stem`, 1 `mark_not_at_stem_tip`), shuffled. **Frame control: 9 of 9
+real boxes pass, the (40, 40)-shifted box 0 of 9.**
+
+WHAT WOULD FALSIFY (b) as built is unchanged (§2): a decided tile Sean gives to another
+note. Tile 3 (`23/1/2/4/5`) is the one to watch — the accent stands just above the lower
+staff's up-stem note as well as below the upper chord's down-stem tip.

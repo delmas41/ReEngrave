@@ -1,0 +1,6783 @@
+{
+ "adjudicated_on": {
+  "commit": "46914018af440895b30bde7155daabb51302c248",
+  "dirty": false
+ },
+ "articulations": [
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    5269.0625,
+    5927.03125,
+    5327.5,
+    5935.96875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "detector_class": "articTenutoBelow",
+     "gap_head_heights": 0.25961538461538464,
+     "long_chord_stem": "two_voice",
+     "measured_side": "below",
+     "nearest_head": "glyph/0/0/11/6/11",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "suffix_side": "below",
+     "two_voice": true
+    },
+    "outcome": "abstained",
+    "reason": "stem_contradicts_class_side",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 0,
+   "side": null,
+   "subject": "glyph/0/0/11/6/27",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    1994.1787109375,
+    509.8447265625,
+    2004.78125,
+    521.08984375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.27835051546391754,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/1/0/0/1/9",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/0/1/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    1995.78515625,
+    771.1171875,
+    2007.0302734375,
+    781.0771484375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.23809523809523808,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/1/0/1/1/6",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/1/1/15",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4489.892578125,
+    793.28125,
+    4499.75390625,
+    801.349609375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.48873212933540344,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 72.5,
+     "dx_notehead_widths": 0.5846774193548387,
+     "gap_head_heights": 0.9459459459459459,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/1/5/6"
+   },
+   "owner_bbox_page": [
+    4454.630859375,
+    832.7265625,
+    4491.685546875,
+    865.896484375
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/1/5/16",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1996.1064453125,
+    1204.9189453125,
+    2007.0302734375,
+    1216.1640625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6576651334762573,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.008333333333333333,
+     "gap_head_heights": 0.2653061224489796,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/2/1/16"
+   },
+   "owner_bbox_page": [
+    1982.93359375,
+    1163.1513671875,
+    2019.560546875,
+    1196.5654296875
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/2/1/13",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    3809.6015625,
+    1301.7392578125,
+    3818.1708984375,
+    1320.2490234375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/2/4/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    1998.0341796875,
+    1334.7607421875,
+    2008.63671875,
+    1344.720703125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.3465346534653465,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/1/0/3/1/9",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/3/1/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1996.7490234375,
+    1699.7138671875,
+    2006.06640625,
+    1709.3525390625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7336544990539551,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.06521739130434782,
+     "gap_head_heights": 0.4057971014492754,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/1/0/5/1/10",
+      "glyph/1/0/5/1/20"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/4/1/0"
+   },
+   "owner_bbox_page": [
+    1982.291015625,
+    1656.0185546875,
+    2021.48828125,
+    1690.7177734375
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/4/1/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1996.7490234375,
+    1699.048828125,
+    2005.7451171875,
+    1710.2939453125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 5.85,
+     "limit_canonical_px": 18.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/1/0/5/1/7",
+     "notehead_width": 24.0,
+     "same_ink_twins": [
+      "glyph/1/0/4/1/5"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/5/1/10",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1999.640625,
+    1961.5419921875,
+    2010.564453125,
+    1971.8232421875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5229557752609253,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.2916666666666667,
+     "gap_head_heights": 0.4666666666666667,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/1/0/6/1/10"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/5/1/0"
+   },
+   "owner_bbox_page": [
+    1983.576171875,
+    1925.236328125,
+    2022.130859375,
+    1952.5458984375
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/5/1/15",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1996.7490234375,
+    1696.7998046875,
+    2005.7451171875,
+    1708.6875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 5.933333333333334,
+     "limit_canonical_px": 18.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/1/0/5/1/7",
+     "notehead_width": 24.0,
+     "same_ink_twins": [
+      "glyph/1/0/4/1/5"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/5/1/20",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1999.640625,
+    1960.5107421875,
+    2010.564453125,
+    1970.7919921875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 3.395348837209302,
+     "limit_canonical_px": 89.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/1/0/6/1/20",
+     "notehead_width": 119.0,
+     "same_ink_twins": [
+      "glyph/1/0/5/1/15"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/6/1/10",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1999.9619140625,
+    2629.7138671875,
+    2009.6005859375,
+    2639.9951171875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.4465540051460266,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.012096774193548387,
+     "gap_head_heights": 0.4444444444444444,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/8/1/1"
+   },
+   "owner_bbox_page": [
+    1986.4677734375,
+    2586.982421875,
+    2024.05859375,
+    2619.4326171875
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/8/1/13",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2000.283203125,
+    2938.4013671875,
+    2012.1708984375,
+    2948.6826171875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 0.1650485436893204,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/1/0/9/1/4",
+     "same_ink_twins": [
+      "glyph/1/0/10/1/13"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/9/1/14",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2432.095703125,
+    2937.4375,
+    2440.7705078125,
+    2946.7548828125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 91.5,
+     "notehead_width": 122.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/9/1/21",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    1999.640625,
+    2938.7119140625,
+    2012.1708984375,
+    2949.314453125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 2.378640776699029,
+     "limit_canonical_px": 89.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/1/0/10/1/9",
+     "notehead_width": 119.0,
+     "same_ink_twins": [
+      "glyph/1/0/9/1/14"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/10/1/13",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2002.2109375,
+    3134.6982421875,
+    2012.4921875,
+    3144.9794921875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5454897284507751,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.012605042016806723,
+     "gap_head_heights": 0.21359223300970873,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/10/1/5"
+   },
+   "owner_bbox_page": [
+    1987.7529296875,
+    3098.7138671875,
+    2025.986328125,
+    3127.6298828125
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/10/1/17",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4498.55859375,
+    3221.845703125,
+    4508.12109375,
+    3231.70703125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 94.5,
+     "notehead_width": 126.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/10/5/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2003.8173828125,
+    3435.5419921875,
+    2014.419921875,
+    3444.5380859375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 2.0,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/1/0/11/1/13",
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/11/1/17",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2007.3515625,
+    3520.1416015625,
+    2017.9541015625,
+    3531.38671875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5841898918151855,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 0.5,
+     "dx_notehead_widths": 0.004032258064516129,
+     "gap_head_heights": 0.33663366336633666,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/0/12/1/8"
+   },
+   "owner_bbox_page": [
+    1994.5,
+    3542.310546875,
+    2031.126953125,
+    3573.796875
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/0/12/1/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    1021.900390625,
+    4907.900390625,
+    1028.439453125,
+    4911.9873046875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 66.0,
+     "notehead_width": 88.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/1/2/0/24",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    3759.5322265625,
+    4886.5908203125,
+    3771.3037109375,
+    4911.8154296875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "limit_canonical_px": 96.75,
+     "notehead_width": 129.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/1/2/4/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articAccentBelow",
+   "mark_bbox_page": [
+    1751.41455078125,
+    6182.8740234375,
+    1785.7138671875,
+    6202.14697265625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "confidence": 0.3015795648097992,
+     "detector_class": "articAccentBelow",
+     "dx_canonical_px": 27.0,
+     "dx_notehead_widths": 0.21951219512195122,
+     "gap_head_heights": 1.941747572815534,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/1/1/8/1/11"
+   },
+   "owner_bbox_page": [
+    1739.65478515625,
+    6081.93603515625,
+    1779.833984375,
+    6117.5419921875
+   ],
+   "page": 1,
+   "side": null,
+   "subject": "glyph/1/1/8/1/25",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3043.08447265625,
+    3076.36376953125,
+    3051.60205078125,
+    3082.751953125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 6.472222222222222,
+     "limit_canonical_px": 96.0,
+     "measured_side": "below",
+     "nearest_head": "glyph/2/0/10/2/0",
+     "notehead_width": 128.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/0/10/2/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    5318.390625,
+    3072.9345703125,
+    5325.3857421875,
+    3082.138671875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 77.25,
+     "notehead_width": 103.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/0/10/5/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    3012.66455078125,
+    3271.0,
+    3019.052734375,
+    3275.8671875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 3.254385964912281,
+     "limit_canonical_px": 100.5,
+     "measured_side": "above",
+     "nearest_head": "glyph/2/0/12/2/0",
+     "notehead_width": 134.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/0/12/2/18",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    968.318359375,
+    4311.09375,
+    981.099609375,
+    4331.064453125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "gap_head_heights": 5.232558139534884,
+     "limit_canonical_px": 74.25,
+     "measured_side": "below",
+     "nearest_head": "glyph/2/1/0/0/14",
+     "notehead_width": 99.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/0/0/19",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    971.513671875,
+    4759.6103515625,
+    986.2919921875,
+    4779.5810546875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "gap_head_heights": 2.6555555555555554,
+     "limit_canonical_px": 78.0,
+     "measured_side": "below",
+     "nearest_head": "glyph/2/1/2/0/22",
+     "notehead_width": 104.0,
+     "same_ink_twins": [
+      "glyph/2/1/3/0/4"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/2/0/16",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    969.5166015625,
+    4573.8828125,
+    984.6943359375,
+    4591.8564453125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.36666666666666664,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/2/1/2/0/9",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/2/0/24",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    971.9130859375,
+    4760.923828125,
+    986.2919921875,
+    4780.4951171875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "gap_head_heights": 0.3472222222222222,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/2/1/3/0/0",
+     "same_ink_twins": [
+      "glyph/2/1/2/0/16"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/3/0/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    978.703125,
+    5950.423828125,
+    989.4873046875,
+    5967.5986328125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoAbove",
+     "gap_head_heights": 0.29069767441860467,
+     "long_chord_stem": "two_voice",
+     "measured_side": "above",
+     "nearest_head": "glyph/2/1/8/0/3",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/2/1/9/0/11"
+     ],
+     "stem_direction": "down",
+     "suffix_side": "above",
+     "two_voice": true
+    },
+    "outcome": "abstained",
+    "reason": "stem_contradicts_class_side",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/8/0/14",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoAbove",
+   "mark_bbox_page": [
+    978.703125,
+    5950.7783203125,
+    990.2861328125,
+    5967.953125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "confidence": 0.47761160135269165,
+     "detector_class": "articStaccatissimoAbove",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.03431372549019608,
+     "gap_head_heights": 0.30120481927710846,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/2/1/8/0/14"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/2/1/9/0/3"
+   },
+   "owner_bbox_page": [
+    962.7265625,
+    5977.9384765625,
+    1003.466796875,
+    6011.08984375
+   ],
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/9/0/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    982.2978515625,
+    6522.5283203125,
+    993.880859375,
+    6530.916015625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 0.36470588235294116,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/2/1/10/0/5",
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 2,
+   "side": null,
+   "subject": "glyph/2/1/10/0/16",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2708.285,
+    698.0475,
+    2718.83,
+    709.425
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.30275229357798167,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/0/4/1",
+     "same_ink_twins": [
+      "glyph/3/0/1/4/3"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/0/4/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2705.51,
+    404.175,
+    2716.3325,
+    415.83
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.28440366972477066,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/0/4/0",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/0/4/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2705.51,
+    406.395,
+    2716.3325,
+    418.3275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.2018348623853211,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/0/4/0",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/0/4/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    5275.095,
+    440.805,
+    5283.42,
+    446.6325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.29769811034202576,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 54.0,
+     "dx_notehead_widths": 0.40298507462686567,
+     "gap_head_heights": 0.5714285714285714,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/0/9/0"
+   },
+   "owner_bbox_page": [
+    5276.205,
+    465.5025,
+    5312.28,
+    498.8025
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/0/9/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articTenutoBelow",
+   "mark_bbox_page": [
+    1881.2024999999999,
+    758.3,
+    1936.2475,
+    768.11
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "detector_class": "articTenutoBelow",
+     "gap_head_heights": 0.7033898305084746,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/1/2/8",
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/1/2/14",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2708.505,
+    698.6225,
+    2719.1325,
+    709.25
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.2605042016806723,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/1/4/10",
+     "same_ink_twins": [
+      "glyph/3/0/0/4/4"
+     ],
+     "suffix_side": "above",
+     "unread_in_tie": []
+    },
+    "outcome": "narrowed",
+    "reason": "heads_about_equally_near",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/1/4/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2706.325,
+    971.6675,
+    2718.315,
+    982.0225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.764705882352941,
+     "limit_canonical_px": 109.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/0/1/4/7",
+     "notehead_width": 146.0,
+     "same_ink_twins": [
+      "glyph/3/0/2/4/3"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/1/4/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2706.3425,
+    971.2025,
+    2718.275,
+    981.47
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.35,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/2/4/0",
+     "same_ink_twins": [
+      "glyph/3/0/1/4/4"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/2/4/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4458.395,
+    1197.92,
+    4468.6625,
+    1209.02
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.6744186046511628,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/2/7/1",
+     "same_ink_twins": [
+      "glyph/3/0/3/7/3"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/2/7/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    5229.585,
+    998.675,
+    5235.135,
+    1005.335
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 26.25,
+     "notehead_width": 35.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/2/9/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2708.95,
+    1230.35,
+    2719.125,
+    1241.9
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6101535558700562,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 6.5,
+     "dx_notehead_widths": 0.04710144927536232,
+     "gap_head_heights": 0.25833333333333336,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/3/4/4"
+   },
+   "owner_bbox_page": [
+    2693.55,
+    1250.425,
+    2730.95,
+    1281.5
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/3/4/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2708.95,
+    1232.55,
+    2718.85,
+    1244.1
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5165911912918091,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 6.0,
+     "dx_notehead_widths": 0.043478260869565216,
+     "gap_head_heights": 0.19166666666666668,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/3/4/4"
+   },
+   "owner_bbox_page": [
+    2693.55,
+    1250.425,
+    2730.95,
+    1281.5
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/3/4/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4458.25,
+    1198.45,
+    4468.7,
+    1208.625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.731963038444519,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 7.5,
+     "dx_notehead_widths": 0.05172413793103448,
+     "gap_head_heights": 0.28440366972477066,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/0/2/7/0"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/3/7/2"
+   },
+   "owner_bbox_page": [
+    4441.475,
+    1217.15,
+    4481.35,
+    1252.075
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/3/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4133.475,
+    1271.875,
+    4143.375,
+    1281.775
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.28238463401794434,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 8.5,
+     "dx_notehead_widths": 0.05862068965517241,
+     "gap_head_heights": 0.29357798165137616,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/3/7/5"
+   },
+   "owner_bbox_page": [
+    4117.8,
+    1290.575,
+    4154.375,
+    1320.55
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/3/7/16",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4583.675,
+    1398.925,
+    4593.575,
+    1408.825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7362855672836304,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.038461538461538464,
+     "gap_head_heights": 0.30701754385964913,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/4/8/7"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/3/8/1"
+   },
+   "owner_bbox_page": [
+    4568.55,
+    1355.475,
+    4605.675,
+    1389.3
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/3/8/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articTenutoAbove",
+   "mark_bbox_page": [
+    947.86328125,
+    1397.88330078125,
+    998.98046875,
+    1407.11279296875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "tenuto",
+     "n_candidates": 1,
+     "same_ink_twins": []
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/4/0/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2722.16,
+    1638.1175,
+    2730.7625,
+    1648.94
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/4/4/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4583.385,
+    1398.9125,
+    4593.6525,
+    1409.735
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 4.857142857142857,
+     "limit_canonical_px": 101.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/4/8/5",
+     "notehead_width": 135.0,
+     "same_ink_twins": [
+      "glyph/3/0/3/8/6"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/4/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4584.495,
+    1612.5875,
+    4594.7625,
+    1622.5774999999999
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6974679827690125,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 10.0,
+     "dx_notehead_widths": 0.07407407407407407,
+     "gap_head_heights": 0.2857142857142857,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/5/8/7"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/4/8/5"
+   },
+   "owner_bbox_page": [
+    4568.1225,
+    1570.13,
+    4605.585,
+    1603.1525
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/4/8/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4583.6625,
+    1661.4275,
+    4594.7625,
+    1672.25
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 1.7647058823529411,
+     "limit_canonical_px": 101.25,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/0/4/8/5",
+     "notehead_width": 135.0,
+     "same_ink_twins": [
+      "glyph/3/0/5/8/11"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/4/8/14",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.0675,
+    1885.13,
+    2426.555,
+    1894.8425
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 0.25892857142857145,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/5/3/3",
+     "same_ink_twins": [
+      "glyph/3/0/6/3/7"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/5/3/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2704.6775,
+    1846.5575,
+    2716.055,
+    1857.38
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6956482529640198,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 0.0,
+     "dx_notehead_widths": 0.0,
+     "gap_head_heights": 0.264,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/6/4/7"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/5/4/0"
+   },
+   "owner_bbox_page": [
+    2690.525,
+    1802.7125,
+    2730.2075,
+    1837.4
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/5/4/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4456.4525,
+    1842.1175,
+    4466.72,
+    1853.495
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6063735485076904,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.02464788732394366,
+     "gap_head_heights": 0.2833333333333333,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/6/7/2"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/5/7/2"
+   },
+   "owner_bbox_page": [
+    4440.9125,
+    1799.3825,
+    4480.3175,
+    1832.6825
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/5/7/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4584.495,
+    1613.735,
+    4594.485,
+    1622.8925
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 1.967741935483871,
+     "limit_canonical_px": 105.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/5/8/2",
+     "notehead_width": 141.0,
+     "same_ink_twins": [
+      "glyph/3/0/4/8/8"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/5/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4583.385,
+    1660.0775,
+    4594.485,
+    1671.7325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6755738854408264,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.01773049645390071,
+     "gap_head_heights": 0.5483870967741935,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/0/4/8/14"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/5/8/2"
+   },
+   "owner_bbox_page": [
+    4568.6775,
+    1690.6025,
+    4607.805,
+    1725.29
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/5/8/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.6225,
+    1884.96,
+    2427.3875,
+    1895.7825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 119.25,
+     "notehead_width": 159.0,
+     "same_ink_twins": [
+      "glyph/3/0/5/3/7"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/6/3/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2704.6775,
+    1848.0525,
+    2715.7775,
+    1858.0425
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 10.465116279069768,
+     "limit_canonical_px": 54.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/6/4/6",
+     "notehead_width": 73.0,
+     "same_ink_twins": [
+      "glyph/3/0/5/4/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/6/4/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4456.73,
+    1845.0,
+    4466.9975,
+    1853.88
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "same_ink_twins": [
+      "glyph/3/0/5/7/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/6/7/2",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4569.51,
+    1845.0,
+    4574.7825,
+    1849.44
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 77.25,
+     "notehead_width": 103.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/6/8/0",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.65,
+    2333.65,
+    2425.65,
+    2343.825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7249371409416199,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 3.0,
+     "dx_notehead_widths": 0.02,
+     "gap_head_heights": 0.25,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/8/3/8"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/7/3/5"
+   },
+   "owner_bbox_page": [
+    2401.725,
+    2293.775,
+    2440.225,
+    2325.675
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/7/3/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2706.75,
+    2297.9,
+    2717.75,
+    2309.175
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7251739501953125,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 5.0,
+     "dx_notehead_widths": 0.03676470588235294,
+     "gap_head_heights": 0.2719298245614035,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/8/4/5"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/7/4/1"
+   },
+   "owner_bbox_page": [
+    2692.175,
+    2255.55,
+    2729.575,
+    2289.375
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/7/4/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.65,
+    2334.5,
+    2425.65,
+    2344.125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 2.4285714285714284,
+     "limit_canonical_px": 99.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/8/3/3",
+     "notehead_width": 133.0,
+     "same_ink_twins": [
+      "glyph/3/0/7/3/6"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/3/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.65,
+    2495.925,
+    2425.65,
+    2507.475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.695378303527832,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.018796992481203006,
+     "gap_head_heights": 0.13690476190476192,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/9/3/13"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/8/3/3"
+   },
+   "owner_bbox_page": [
+    2402.55,
+    2456.325,
+    2439.125,
+    2489.6
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/3/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2706.75,
+    2298.475,
+    2717.475,
+    2308.925
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 4.344444444444444,
+     "limit_canonical_px": 96.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/8/4/2",
+     "notehead_width": 129.0,
+     "same_ink_twins": [
+      "glyph/3/0/7/4/5"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/4/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2708.95,
+    2453.3,
+    2720.225,
+    2464.85
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6320698261260986,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 4.5,
+     "dx_notehead_widths": 0.03488372093023256,
+     "gap_head_heights": 0.23333333333333334,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/8/4/2"
+   },
+   "owner_bbox_page": [
+    2693.55,
+    2416.45,
+    2733.15,
+    2447.525
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/4/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    3802.15,
+    2519.575,
+    3859.35,
+    2549.55
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "detector_class": "articAccentAbove",
+     "limit_canonical_px": 76.5,
+     "notehead_width": 102.0,
+     "same_ink_twins": [
+      "glyph/3/0/9/6/2"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/6/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    3802.15,
+    2538.55,
+    3857.7,
+    2550.1
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "detector_class": "articAccentAbove",
+     "limit_canonical_px": 76.5,
+     "notehead_width": 102.0,
+     "same_ink_twins": [
+      "glyph/3/0/9/6/2"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/6/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4246.225,
+    2564.4,
+    4256.95,
+    2573.2
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 129.0,
+     "notehead_width": 172.0,
+     "same_ink_twins": [
+      "glyph/3/0/9/7/3"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/8/7/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2414.0675,
+    2497.3875,
+    2425.7225,
+    2507.3775
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 2.1083333333333334,
+     "limit_canonical_px": 102.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/9/3/0",
+     "notehead_width": 137.0,
+     "same_ink_twins": [
+      "glyph/3/0/8/3/9"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/3/13",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2708.84,
+    2615.325,
+    2719.6625,
+    2627.2575
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.2542271614074707,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 8.0,
+     "dx_notehead_widths": 0.058394160583941604,
+     "gap_head_heights": 0.23333333333333334,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/4/14"
+   },
+   "owner_bbox_page": [
+    2692.19,
+    2635.0275,
+    2731.8725,
+    2665.275
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/4/21",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3497.3325,
+    2583.135,
+    3510.0975,
+    2595.345
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5091721415519714,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 11.0,
+     "dx_notehead_widths": 0.08029197080291971,
+     "gap_head_heights": 0.29914529914529914,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/5/4"
+   },
+   "owner_bbox_page": [
+    3480.96,
+    2605.0575,
+    3520.365,
+    2637.8025
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/5/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    3801.995,
+    2519.31,
+    3860.27,
+    2549.5575
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "confidence": 0.8186911344528198,
+     "detector_class": "articAccentAbove",
+     "dx_canonical_px": 31.0,
+     "dx_notehead_widths": 0.21830985915492956,
+     "gap_head_heights": 0.4,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/0/8/6/10",
+      "glyph/3/0/8/6/9"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/6/3"
+   },
+   "owner_bbox_page": [
+    3802.8275,
+    2562.8775,
+    3842.2325,
+    2596.1775
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/6/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4246.1075,
+    2563.4325,
+    4256.93,
+    2573.145
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7723015546798706,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 4.5,
+     "dx_notehead_widths": 0.03214285714285714,
+     "gap_head_heights": 0.48360655737704916,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/0/8/7/2"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/7/2"
+   },
+   "owner_bbox_page": [
+    4233.065,
+    2589.5175,
+    4272.47,
+    2622.2625
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/7/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4336.295,
+    2588.9625,
+    4346.5625,
+    2598.12
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6950554847717285,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.017857142857142856,
+     "gap_head_heights": 0.5327868852459017,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/7/0"
+   },
+   "owner_bbox_page": [
+    4321.31,
+    2616.1575,
+    4360.16,
+    2650.29
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/7/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4453.4,
+    2613.105,
+    4463.945,
+    2623.095
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6225883364677429,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.025,
+     "gap_head_heights": 0.20491803278688525,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/7/8"
+   },
+   "owner_bbox_page": [
+    4438.415,
+    2630.0325,
+    4476.9875,
+    2663.8875
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/7/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4584.2175,
+    2614.4925,
+    4595.8725,
+    2625.315
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6413880586624146,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 8.5,
+     "dx_notehead_widths": 0.059027777777777776,
+     "gap_head_heights": 0.5080645161290323,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/8/10"
+   },
+   "owner_bbox_page": [
+    4567.5675,
+    2642.7975,
+    4607.805,
+    2677.2075
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/8/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4584.495,
+    2613.9375,
+    4596.15,
+    2628.9225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.30442795157432556,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 9.5,
+     "dx_notehead_widths": 0.06597222222222222,
+     "gap_head_heights": 0.4032258064516129,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/9/8/10"
+   },
+   "owner_bbox_page": [
+    4567.5675,
+    2642.7975,
+    4607.805,
+    2677.2075
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/9/8/17",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4582.0425,
+    3010.4225,
+    4592.67,
+    3022.14
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6812892556190491,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 0.0,
+     "dx_notehead_widths": 0.0,
+     "gap_head_heights": 0.24390243902439024,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/10/8/1"
+   },
+   "owner_bbox_page": [
+    4567.3275,
+    2970.91,
+    4607.385,
+    3002.2475
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/10/8/13",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2705.65,
+    3306.925,
+    2718.025,
+    3318.475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6533464789390564,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 8.5,
+     "dx_notehead_widths": 0.05944055944055944,
+     "gap_head_heights": 0.2558139534883721,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/11/4/1"
+   },
+   "owner_bbox_page": [
+    2694.1,
+    3265.125,
+    2734.25,
+    3297.85
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/11/4/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4583.95,
+    3253.025,
+    4594.675,
+    3264.025
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.659638524055481,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.006993006993006993,
+     "gap_head_heights": 0.33064516129032256,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/11/8/7"
+   },
+   "owner_bbox_page": [
+    4569.375,
+    3207.65,
+    4608.7,
+    3241.75
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/11/8/14",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    5257.0,
+    3341.025,
+    5265.25,
+    3349.0
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 105.0,
+     "notehead_width": 140.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/11/9/17",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoBelow",
+   "mark_bbox_page": [
+    2718.85,
+    3608.725,
+    2735.35,
+    3631.0
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "confidence": 0.2532816529273987,
+     "detector_class": "articStaccatissimoBelow",
+     "dx_canonical_px": 44.5,
+     "dx_notehead_widths": 0.30689655172413793,
+     "gap_head_heights": 0.453781512605042,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/12/4/4"
+   },
+   "owner_bbox_page": [
+    2694.925,
+    3561.15,
+    2734.8,
+    3593.875
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/12/4/14",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4134.575,
+    3360.125,
+    4145.3,
+    3370.025
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.32142857142857145,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/12/7/3",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/12/7/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4582.575,
+    3548.775,
+    4592.475,
+    3559.225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7379046678543091,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 6.5,
+     "dx_notehead_widths": 0.045454545454545456,
+     "gap_head_heights": 0.4215686274509804,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/0/13/8/9"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/12/8/0"
+   },
+   "owner_bbox_page": [
+    4569.65,
+    3503.675,
+    4608.975,
+    3536.95
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/12/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2708.84,
+    3599.365,
+    2720.2175,
+    3610.1875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 3.2470588235294118,
+     "limit_canonical_px": 63.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/0/13/4/2",
+     "notehead_width": 84.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/13/4/11",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4582.83,
+    3549.415,
+    4592.5425,
+    3558.5725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 0.35398230088495575,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/0/13/8/10",
+     "same_ink_twins": [
+      "glyph/3/0/12/8/7"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/13/8/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4585.05,
+    3768.64,
+    4595.3175,
+    3779.4625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.450603187084198,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.039285714285714285,
+     "gap_head_heights": 0.34513274336283184,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/0/13/8/1"
+   },
+   "owner_bbox_page": [
+    4569.2325,
+    3724.795,
+    4608.0825,
+    3757.8175
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/0/13/8/14",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    1186.94580078125,
+    3947.576171875,
+    1195.716796875,
+    3954.4404296875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.26436781609195403,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/0/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/0/30",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    1701.025,
+    3943.0,
+    1756.575,
+    3953.175
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "detector_class": "articAccentAbove",
+     "limit_canonical_px": 105.0,
+     "notehead_width": 140.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/1/23",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2653.4,
+    4263.65,
+    2663.85,
+    4273.825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 5.300813008130081,
+     "limit_canonical_px": 111.0,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/0/3/10",
+     "notehead_width": 148.0,
+     "same_ink_twins": [
+      "glyph/3/1/1/3/2"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/3/3",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2651.75,
+    3965.825,
+    2663.85,
+    3977.375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.13821138211382114,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/3/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/3/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3744.875,
+    4031.55,
+    3756.425,
+    4041.725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7390433549880981,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 13.0,
+     "dx_notehead_widths": 0.08904109589041095,
+     "gap_head_heights": 0.2066115702479339,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/0/6/4"
+   },
+   "owner_bbox_page": [
+    3727.0,
+    4048.6,
+    3767.15,
+    4081.875
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/6/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4134.0,
+    4032.1,
+    4144.725,
+    4042.55
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7546111941337585,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 13.0,
+     "dx_notehead_widths": 0.09420289855072464,
+     "gap_head_heights": 0.21311475409836064,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/0/7/0"
+   },
+   "owner_bbox_page": [
+    4116.4,
+    4049.7,
+    4155.175,
+    4084.625
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/7/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4734.175,
+    3986.175,
+    4744.625,
+    3995.525
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7182421684265137,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.0,
+     "dx_notehead_widths": 0.013793103448275862,
+     "gap_head_heights": 0.36666666666666664,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/0/8/3"
+   },
+   "owner_bbox_page": [
+    4718.775,
+    4007.625,
+    4758.925,
+    4040.075
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4640.675,
+    3998.825,
+    4652.5,
+    4010.1
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.275,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/8/1",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4637.375,
+    4293.625,
+    4649.475,
+    4304.075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 6.308333333333334,
+     "limit_canonical_px": 108.75,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/0/8/10",
+     "notehead_width": 145.0,
+     "same_ink_twins": [
+      "glyph/3/1/1/8/10"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4537.275,
+    4018.35,
+    4546.9,
+    4029.9
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.14166666666666666,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/8/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/14",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4733.9,
+    4287.85,
+    4743.8,
+    4296.65
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 6.625,
+     "limit_canonical_px": 108.75,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/0/8/5",
+     "notehead_width": 145.0,
+     "same_ink_twins": [
+      "glyph/3/1/1/8/6"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/18",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4537.275,
+    4015.6,
+    4546.35,
+    4027.975
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.2,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/8/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/8/30",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4881.0,
+    4006.525,
+    4890.625,
+    4016.425
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.25773195876288657,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/0/9/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/0/9/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2652.85,
+    4264.425,
+    2664.125,
+    4273.225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.27906976744186046,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/1/3/0",
+     "same_ink_twins": [
+      "glyph/3/1/0/3/3"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/3/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4538.1,
+    4429.425,
+    4547.45,
+    4439.05
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.750018298625946,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 9.0,
+     "dx_notehead_widths": 0.06293706293706294,
+     "gap_head_heights": 0.5462184873949579,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/2/8/8"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/1/8/0"
+   },
+   "owner_bbox_page": [
+    4520.225,
+    4377.45,
+    4560.375,
+    4411.55
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/8/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4733.9,
+    4288.075,
+    4743.25,
+    4296.875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.3445378151260504,
+     "long_chord_stem": "no_stem_row",
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/1/8/15",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/0/8/18"
+     ],
+     "stem_direction": "up",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "abstained",
+    "reason": "stem_contradicts_class_side",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/8/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4637.375,
+    4293.85,
+    4649.2,
+    4304.025
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.5798319327731093,
+     "long_chord_stem": "no_stem_row",
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/1/8/5",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/0/8/13"
+     ],
+     "stem_direction": "up",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "abstained",
+    "reason": "stem_contradicts_class_side",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/8/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4735.825,
+    4491.575,
+    4746.55,
+    4500.65
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.7563025210084033,
+     "limit_canonical_px": 107.25,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/1/8/14",
+     "notehead_width": 143.0,
+     "same_ink_twins": [
+      "glyph/3/1/2/8/11",
+      "glyph/3/1/2/8/17"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/8/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4876.325,
+    4294.4,
+    4886.225,
+    4302.375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6786803603172302,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.01773049645390071,
+     "gap_head_heights": 0.6379310344827587,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/1/9/1"
+   },
+   "owner_bbox_page": [
+    4862.575,
+    4322.725,
+    4901.35,
+    4355.45
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/9/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4878.525,
+    4501.75,
+    4890.9,
+    4513.3
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.6724137931034484,
+     "limit_canonical_px": 105.75,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/1/9/3",
+     "notehead_width": 141.0,
+     "same_ink_twins": [
+      "glyph/3/1/2/9/6"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/1/9/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2655.3275,
+    4532.9375,
+    2666.705,
+    4543.205
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.288135593220339,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/2/3/2",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/3/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3742.4525,
+    4534.0475,
+    3752.4425,
+    4544.315
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.27049180327868855,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/2/6/14",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/6/20",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4133.935,
+    4536.545,
+    4144.48,
+    4547.645
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6093646287918091,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 14.0,
+     "dx_notehead_widths": 0.10144927536231885,
+     "gap_head_heights": 0.1885245901639344,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/7/4"
+   },
+   "owner_bbox_page": [
+    4115.8975,
+    4554.0275,
+    4154.7475,
+    4585.1075
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/7/12",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4036.5325,
+    4742.45,
+    4041.25,
+    4747.7225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.3934426229508197,
+     "limit_canonical_px": 103.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/2/7/7",
+     "notehead_width": 138.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/7/18",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4537.7675,
+    4506.2975,
+    4548.035,
+    4514.9
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6629900932312012,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.039568345323741004,
+     "gap_head_heights": 0.5967741935483871,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/8/1"
+   },
+   "owner_bbox_page": [
+    4521.6725,
+    4535.435,
+    4561.0775,
+    4570.1225
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4538.3225,
+    4429.7075,
+    4547.7575,
+    4439.1425
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 2.7983870967741935,
+     "limit_canonical_px": 104.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/2/8/1",
+     "notehead_width": 139.0,
+     "same_ink_twins": [
+      "glyph/3/1/1/8/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4659.59,
+    4741.0625,
+    4666.805,
+    4748.0
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.314516129032258,
+     "limit_canonical_px": 104.25,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/2/8/0",
+     "notehead_width": 139.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4736.18,
+    4489.37,
+    4746.725,
+    4501.025
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5678225159645081,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.017985611510791366,
+     "gap_head_heights": 0.24193548387096775,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/1/8/11"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/8/2"
+   },
+   "owner_bbox_page": [
+    4721.195,
+    4509.35,
+    4760.3225,
+    4543.76
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/11",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4641.83,
+    4504.91,
+    4652.93,
+    4517.9525
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.470012366771698,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.01079136690647482,
+     "gap_head_heights": 0.1774193548387097,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/8/6"
+   },
+   "owner_bbox_page": [
+    4628.51,
+    4524.0575,
+    4665.4175,
+    4555.1375
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/14",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4736.18,
+    4491.8675,
+    4746.725,
+    4503.8
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.43429073691368103,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.017985611510791366,
+     "gap_head_heights": 0.16129032258064516,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/1/8/11"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/8/2"
+   },
+   "owner_bbox_page": [
+    4721.195,
+    4509.35,
+    4760.3225,
+    4543.76
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/8/17",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4878.825,
+    4504.0775,
+    4890.48,
+    4512.9575
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5577216148376465,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 0.5,
+     "dx_notehead_widths": 0.0037593984962406013,
+     "gap_head_heights": 0.38317757009345793,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/1/9/9"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/2/9/0"
+   },
+   "owner_bbox_page": [
+    4866.06,
+    4524.335,
+    4902.9675,
+    4554.5825
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/2/9/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2007.23046875,
+    4660.0,
+    2013.912109375,
+    4663.64453125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 1.2685185185185186,
+     "limit_canonical_px": 94.5,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/3/2/10",
+     "notehead_width": 126.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/2/27",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2655.325,
+    4904.475,
+    2666.6,
+    4915.475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6093561053276062,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 4.0,
+     "dx_notehead_widths": 0.028368794326241134,
+     "gap_head_heights": 0.25,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/4/3/5"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/3/3/0"
+   },
+   "owner_bbox_page": [
+    2640.475,
+    4863.225,
+    2679.25,
+    4896.225
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/3/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4536.45,
+    4928.125,
+    4547.175,
+    4937.475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6826511025428772,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 3.0,
+     "dx_notehead_widths": 0.021739130434782608,
+     "gap_head_heights": 0.25,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/4/8/3"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/3/8/4"
+   },
+   "owner_bbox_page": [
+    4520.225,
+    4885.225,
+    4561.75,
+    4919.6
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/8/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4641.225,
+    4945.45,
+    4651.675,
+    4957.275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6145493984222412,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 2.0,
+     "dx_notehead_widths": 0.014492753623188406,
+     "gap_head_heights": 0.28225806451612906,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/4/8/4"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/3/8/5"
+   },
+   "owner_bbox_page": [
+    4628.025,
+    4901.175,
+    4665.975,
+    4935.825
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/8/9",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4735.55,
+    4958.375,
+    4746.825,
+    4968.275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6129432916641235,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.010869565217391304,
+     "gap_head_heights": 0.25806451612903225,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/4/8/5"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/3/8/2"
+   },
+   "owner_bbox_page": [
+    4722.35,
+    4915.75,
+    4759.2,
+    4949.575
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/8/10",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4882.925,
+    4903.375,
+    4893.375,
+    4914.925
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6254243850708008,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 9.0,
+     "dx_notehead_widths": 0.32142857142857145,
+     "gap_head_heights": 0.31521739130434784,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/4/9/4"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/3/9/0"
+   },
+   "owner_bbox_page": [
+    4866.7,
+    4863.225,
+    4904.65,
+    4895.4
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/3/9/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2654.7725,
+    5122.195,
+    2664.7625,
+    5131.9075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7318021059036255,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.040740740740740744,
+     "gap_head_heights": 0.3050847457627119,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/5/3/7"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/4/3/0"
+   },
+   "owner_bbox_page": [
+    2639.51,
+    5079.46,
+    2676.9725,
+    5112.205
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/3/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2655.3275,
+    4904.9125,
+    2666.4275,
+    4916.29
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 4.983050847457627,
+     "limit_canonical_px": 101.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/4/3/0",
+     "notehead_width": 135.0,
+     "same_ink_twins": [
+      "glyph/3/1/3/3/5"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/3/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4536.935,
+    4928.7775,
+    4547.7575,
+    4937.935
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 4,
+     "same_ink_twins": [
+      "glyph/3/1/3/8/6"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/8/3",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4641.5525,
+    4946.815,
+    4651.82,
+    4957.36
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 4,
+     "same_ink_twins": [
+      "glyph/3/1/3/8/9"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/8/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4735.9025,
+    4958.7475,
+    4747.28,
+    4969.57
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 4,
+     "same_ink_twins": [
+      "glyph/3/1/3/8/10"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/8/5",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4739.7875,
+    5164.6525,
+    4749.5,
+    5175.475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 4,
+     "same_ink_twins": [
+      "glyph/3/1/5/8/8"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/8/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4878.5475,
+    5170.2025,
+    4889.925,
+    5179.0825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "limit_canonical_px": 22.5,
+     "notehead_width": 30.0,
+     "same_ink_twins": [
+      "glyph/3/1/5/9/7"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/9/0",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4882.9875,
+    4903.8025,
+    4892.9775,
+    4914.3475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 22.5,
+     "notehead_width": 30.0,
+     "same_ink_twins": [
+      "glyph/3/1/3/9/6"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/4/9/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2653.675,
+    5392.225,
+    2665.775,
+    5402.4
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6555672287940979,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 0.5,
+     "dx_notehead_widths": 0.003472222222222222,
+     "gap_head_heights": 0.2,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/6/3/1"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/5/3/1"
+   },
+   "owner_bbox_page": [
+    2640.475,
+    5355.65,
+    2678.7,
+    5385.625
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/3/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2655.05,
+    5122.45,
+    2664.675,
+    5132.075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 3.7583333333333333,
+     "limit_canonical_px": 108.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/5/3/4",
+     "notehead_width": 144.0,
+     "same_ink_twins": [
+      "glyph/3/1/4/3/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/3/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4739.4,
+    5164.8,
+    4748.475,
+    5174.15
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.3333333333333333,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/5/8/7",
+     "same_ink_twins": [
+      "glyph/3/1/4/8/8"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/8/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4643.7,
+    5170.85,
+    4653.325,
+    5182.4
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5756406188011169,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 4.5,
+     "dx_notehead_widths": 0.03169014084507042,
+     "gap_head_heights": 0.5203252032520326,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/5/8/2"
+   },
+   "owner_bbox_page": [
+    4628.025,
+    5200.0,
+    4666.525,
+    5234.375
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/8/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4535.625,
+    5324.025,
+    4546.35,
+    5336.125
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.28374186158180237,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.007042253521126761,
+     "gap_head_heights": 0.23577235772357724,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/6/8/18"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/5/8/4"
+   },
+   "owner_bbox_page": [
+    4522.7,
+    5282.225,
+    4559.825,
+    5316.05
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/8/17",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4879.625,
+    5169.75,
+    4889.8,
+    5178.55
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6767091155052185,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.006993006993006993,
+     "gap_head_heights": 0.6386554621848739,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/4/9/0"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/5/9/1"
+   },
+   "owner_bbox_page": [
+    4864.775,
+    5199.45,
+    4904.1,
+    5233.275
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/5/9/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2653.94,
+    5393.125,
+    2664.7625,
+    5402.8375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 1,
+     "same_ink_twins": [
+      "glyph/3/1/5/3/6"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/3/1",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4643.7725,
+    5540.755,
+    4653.7625,
+    5551.3
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7073232531547546,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.007042253521126761,
+     "gap_head_heights": 0.19827586206896552,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/7/8/7"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/6/8/3"
+   },
+   "owner_bbox_page": [
+    4628.51,
+    5500.795,
+    4668.47,
+    5534.3725
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4735.9025,
+    5544.9175,
+    4744.7825,
+    5554.9075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6619500517845154,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.04929577464788732,
+     "gap_head_heights": 0.3706896551724138,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/7/8/8"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/6/8/2"
+   },
+   "owner_bbox_page": [
+    4722.305,
+    5500.24,
+    4762.265,
+    5532.985
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/8/10",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4535.825,
+    5542.975,
+    4545.26,
+    5554.9075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5303077697753906,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 10.0,
+     "dx_notehead_widths": 0.07042253521126761,
+     "gap_head_heights": 0.2672413793103448,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/7/8/4"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/6/8/0"
+   },
+   "owner_bbox_page": [
+    4524.17,
+    5502.1825,
+    4562.465,
+    5534.3725
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/8/12",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4535.5475,
+    5324.0275,
+    4546.925,
+    5335.1275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 0.23275862068965517,
+     "measured_side": "below",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/6/8/5",
+     "same_ink_twins": [
+      "glyph/3/1/5/8/17"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/8/18",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4881.6,
+    5545.75,
+    4892.7,
+    5556.0175
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7054161429405212,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.051094890510948905,
+     "gap_head_heights": 0.3252032520325203,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/7/9/3"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/6/9/0"
+   },
+   "owner_bbox_page": [
+    4866.3375,
+    5500.5175,
+    4904.0775,
+    5534.65
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/6/9/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4536.0,
+    5543.48,
+    4545.52,
+    5553.0
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 95.25,
+     "notehead_width": 127.0,
+     "same_ink_twins": [
+      "glyph/3/1/6/8/12"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/7/8/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4643.8,
+    5542.08,
+    4652.76,
+    5552.16
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 95.25,
+     "notehead_width": 127.0,
+     "same_ink_twins": [
+      "glyph/3/1/6/8/7"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/7/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4735.92,
+    5544.04,
+    4744.88,
+    5553.56
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 95.25,
+     "notehead_width": 127.0,
+     "same_ink_twins": [
+      "glyph/3/1/6/8/10"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/7/8/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4881.64,
+    5545.44,
+    4891.72,
+    5554.96
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "limit_canonical_px": 62.25,
+     "notehead_width": 83.0,
+     "same_ink_twins": [
+      "glyph/3/1/6/9/6"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/7/9/3",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    1680.7975000000001,
+    5885.3825,
+    1732.9675,
+    5913.6875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "n_candidates": 2,
+     "same_ink_twins": [
+      "glyph/3/1/9/1/6"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/1/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2655.605,
+    5917.5725,
+    2665.8725,
+    5927.285
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "n_candidates": 2,
+     "same_ink_twins": [
+      "glyph/3/1/9/3/10"
+     ]
+    },
+    "outcome": "abstained",
+    "reason": "owned_by_another_staff",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/3/8",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4642.6625,
+    5904.8075,
+    4652.6525,
+    5915.9075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6734936833381653,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.011111111111111112,
+     "gap_head_heights": 0.3173076923076923,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/9/8/4"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/8/8/1"
+   },
+   "owner_bbox_page": [
+    4627.1225,
+    5862.0725,
+    4667.36,
+    5895.65
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/8/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4643.7725,
+    6040.2275,
+    4652.375,
+    6044.945
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 5.009615384615385,
+     "limit_canonical_px": 101.25,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/8/8/1",
+     "notehead_width": 135.0,
+     "same_ink_twins": [
+      "glyph/3/1/9/8/9"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/8/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4537.2125,
+    5859.02,
+    4548.59,
+    5868.7325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6133533716201782,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.05185185185185185,
+     "gap_head_heights": 0.21153846153846154,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/8/8/2"
+   },
+   "owner_bbox_page": [
+    4526.1125,
+    5823.5,
+    4563.575,
+    5852.915
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/8/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4878.5475,
+    5904.8075,
+    4887.705,
+    5914.52
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7051340937614441,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.0072992700729927005,
+     "gap_head_heights": 0.2782608695652174,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/9/9/11"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/8/9/1"
+   },
+   "owner_bbox_page": [
+    4863.84,
+    5864.015,
+    4901.8575,
+    5895.9275
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/8/9/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    1165.208984375,
+    5897.0,
+    1219.74169921875,
+    5913.39794921875
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "detector_class": "articAccentAbove",
+     "gap_head_heights": 0.22093023255813954,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/9/0/4",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/0/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articAccentAbove",
+   "mark_bbox_page": [
+    1679.1325,
+    5897.0,
+    1734.6325,
+    5913.65
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "accent",
+     "confidence": 0.8146827816963196,
+     "detector_class": "articAccentAbove",
+     "dx_canonical_px": 24.0,
+     "dx_notehead_widths": 0.17647058823529413,
+     "gap_head_heights": 0.2672413793103448,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/8/1/8"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/1/12"
+   },
+   "owner_bbox_page": [
+    1682.4625,
+    5922.2525,
+    1717.9825,
+    5954.4425
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/1/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2655.605,
+    5916.98,
+    2665.8725,
+    5926.1375
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6570594906806946,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 6.5,
+     "dx_notehead_widths": 0.04642857142857143,
+     "gap_head_heights": 0.3902439024390244,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/8/3/8"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/3/1"
+   },
+   "owner_bbox_page": [
+    2639.51,
+    5939.4575,
+    2678.36,
+    5970.815
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/3/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3179.225,
+    5944.4525,
+    3187.2725,
+    5950.835
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.49226319789886475,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 51.5,
+     "dx_notehead_widths": 0.3678571428571429,
+     "gap_head_heights": 0.016260162601626018,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/4/2"
+   },
+   "owner_bbox_page": [
+    3149.5325,
+    5951.39,
+    3188.3825,
+    5985.5225
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/4/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4131.715,
+    6072.38,
+    4140.8725,
+    6084.035
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.27146369218826294,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 1.0,
+     "dx_notehead_widths": 0.007575757575757576,
+     "gap_head_heights": 0.6857142857142857,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/7/5"
+   },
+   "owner_bbox_page": [
+    4117.5625,
+    6104.015,
+    4155.58,
+    6137.0375
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/7/19",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4642.385,
+    5904.77,
+    4652.6525,
+    5914.4825
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 5.070796460176991,
+     "limit_canonical_px": 104.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/9/8/1",
+     "notehead_width": 139.0,
+     "same_ink_twins": [
+      "glyph/3/1/8/8/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/8/4",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4537.49,
+    6069.605,
+    4547.7575,
+    6079.04
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6969837546348572,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 10.0,
+     "dx_notehead_widths": 0.07194244604316546,
+     "gap_head_heights": 0.34513274336283184,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/8/11"
+   },
+   "owner_bbox_page": [
+    4520.5625,
+    6089.8625,
+    4559.135,
+    6120.11
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/8/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4643.7725,
+    6039.635,
+    4652.6525,
+    6047.1275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6867674589157104,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 0.5,
+     "dx_notehead_widths": 0.0035971223021582736,
+     "gap_head_heights": 0.8407079646017699,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/8/8/5"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/8/1"
+   },
+   "owner_bbox_page": [
+    4629.065,
+    6073.49,
+    4667.0825,
+    6107.0675
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/8/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4737.0125,
+    6041.5775,
+    4748.39,
+    6050.735
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6566601991653442,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 13.5,
+     "dx_notehead_widths": 0.09712230215827339,
+     "gap_head_heights": 0.34513274336283184,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/8/3"
+   },
+   "owner_bbox_page": [
+    4718.975,
+    6061.5575,
+    4758.935,
+    6092.915
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/8/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4881.045,
+    6044.3525,
+    4891.3125,
+    6053.2325
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6649612188339233,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 11.0,
+     "dx_notehead_widths": 0.08396946564885496,
+     "gap_head_heights": 0.6521739130434783,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/9/9/2"
+   },
+   "owner_bbox_page": [
+    4863.5625,
+    6074.045,
+    4902.69,
+    6107.6225
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/9/9",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4878.825,
+    5904.77,
+    4887.9825,
+    5913.65
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 5.026086956521739,
+     "limit_canonical_px": 98.25,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/9/9/2",
+     "notehead_width": 131.0,
+     "same_ink_twins": [
+      "glyph/3/1/8/9/4"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/9/9/11",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2653.94,
+    6472.3325,
+    2663.6525,
+    6482.045
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.2735849056603774,
+     "limit_canonical_px": 106.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/10/3/6",
+     "notehead_width": 142.0,
+     "same_ink_twins": [
+      "glyph/3/1/11/3/13"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/3/16",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    3748.5575,
+    6430.1525,
+    3756.8825,
+    6438.755
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.47183042764663696,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 11.5,
+     "dx_notehead_widths": 0.08455882352941177,
+     "gap_head_heights": 0.7456140350877193,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/10/6/1"
+   },
+   "owner_bbox_page": [
+    3731.9075,
+    6373.265,
+    3767.15,
+    6406.565
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/6/10",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    3629.2325,
+    6194.0,
+    3633.6725,
+    6198.1625
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 6.008771929824562,
+     "limit_canonical_px": 102.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/10/6/4",
+     "notehead_width": 136.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/6/11",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    3763.265,
+    6294.455,
+    3771.035,
+    6303.335
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 2.210526315789474,
+     "long_chord_chord_heads": 1,
+     "long_chord_stem": "not_a_chord",
+     "long_chord_stem_row": "obs:046642",
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/10/6/1",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "abstained",
+    "reason": "stem_contradicts_class_side",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/6/12",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4131.9925,
+    6403.79,
+    4144.2025,
+    6417.665
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5381226539611816,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 5.5,
+     "dx_notehead_widths": 0.041353383458646614,
+     "gap_head_heights": 0.3963963963963964,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/10/7/2"
+   },
+   "owner_bbox_page": [
+    4120.615,
+    6360.7775,
+    4158.6325,
+    6391.58
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/7/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4644.3275,
+    6506.1875,
+    4653.7625,
+    6514.235
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 4.3428571428571425,
+     "limit_canonical_px": 97.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/10/8/1",
+     "notehead_width": 130.0,
+     "same_ink_twins": [
+      "glyph/3/1/11/8/4"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4740.62,
+    6315.2675,
+    4752.275,
+    6325.2575
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6735973954200745,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 15.0,
+     "dx_notehead_widths": 0.11538461538461539,
+     "gap_head_heights": 0.29523809523809524,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/10/8/3"
+   },
+   "owner_bbox_page": [
+    4724.2475,
+    6333.86,
+    4760.3225,
+    6362.9975
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4539.71,
+    6422.3825,
+    4549.7,
+    6432.3725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6701197028160095,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.026923076923076925,
+     "gap_head_heights": 0.5619047619047619,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/11/8/8"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/10/8/0"
+   },
+   "owner_bbox_page": [
+    4524.725,
+    6373.5425,
+    4562.7425,
+    6406.01
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/6",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4642.6625,
+    6314.7125,
+    4652.6525,
+    6325.2575
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.7047619047619048,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/10/8/1",
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4737.0125,
+    6514.235,
+    4747.0025,
+    6523.9475
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 5.190476190476191,
+     "limit_canonical_px": 97.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/10/8/3",
+     "notehead_width": 130.0,
+     "same_ink_twins": [],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4521.95,
+    6194.0,
+    4527.5,
+    6197.6075
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 6.038095238095238,
+     "limit_canonical_px": 97.5,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/10/8/0",
+     "notehead_width": 130.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/8/15",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4880.49,
+    6495.365,
+    4892.4225,
+    6505.0775
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 3.6153846153846154,
+     "limit_canonical_px": 103.5,
+     "measured_side": "below",
+     "nearest_head": "glyph/3/1/10/9/9",
+     "notehead_width": 138.0,
+     "same_ink_twins": [
+      "glyph/3/1/11/9/7"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/10/9/10",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2652.83,
+    6472.2275,
+    2664.2075,
+    6481.94
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.19642857142857142,
+     "measured_side": "above",
+     "n_unread_nearest": 1,
+     "nearest_head": "glyph/3/1/11/3/5",
+     "same_ink_twins": [
+      "glyph/3/1/10/3/16"
+     ],
+     "suffix_side": "above"
+    },
+    "outcome": "abstained",
+    "reason": "stem_direction_unread",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/3/13",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatissimoBelow",
+   "mark_bbox_page": [
+    2637.29,
+    6422.0,
+    2649.7775,
+    6443.9225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccatissimo",
+     "detector_class": "articStaccatissimoBelow",
+     "gap_head_heights": 1.4196428571428572,
+     "limit_canonical_px": 102.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/11/3/5",
+     "notehead_width": 137.0,
+     "same_ink_twins": [],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/3/25",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4644.05,
+    6506.36,
+    4653.485,
+    6514.685
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6621543765068054,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 2.5,
+     "dx_notehead_widths": 0.01824817518248175,
+     "gap_head_heights": 0.6542056074766355,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [
+      "glyph/3/1/10/8/4"
+     ],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/11/8/5"
+   },
+   "owner_bbox_page": [
+    4630.4525,
+    6534.11,
+    4668.47,
+    6561.5825
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/8/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4541.0975,
+    6680.3525,
+    4548.8675,
+    6690.62
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6134435534477234,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.010948905109489052,
+     "gap_head_heights": 0.19626168224299065,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [
+      "glyph/3/1/12/8/11"
+     ],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/11/8/0"
+   },
+   "owner_bbox_page": [
+    4526.39,
+    6644.8325,
+    4562.7425,
+    6674.525
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4539.9875,
+    6422.8325,
+    4549.9775,
+    6432.8225
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 7.140186915887851,
+     "limit_canonical_px": 102.75,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/11/8/0",
+     "notehead_width": 137.0,
+     "same_ink_twins": [
+      "glyph/3/1/10/8/6"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/8/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4880.2125,
+    6495.26,
+    4892.4225,
+    6504.14
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoAbove",
+     "gap_head_heights": 0.36134453781512604,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/11/9/6",
+     "same_ink_twins": [
+      "glyph/3/1/10/9/10"
+     ],
+     "suffix_side": "above",
+     "unread_in_tie": []
+    },
+    "outcome": "narrowed",
+    "reason": "heads_about_equally_near",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/11/9/7",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    2652.3,
+    6771.45,
+    2661.925,
+    6780.25
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7922964096069336,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 0.0,
+     "dx_notehead_widths": 0.0,
+     "gap_head_heights": 0.4017857142857143,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/12/3/6"
+   },
+   "owner_bbox_page": [
+    2638.0,
+    6792.625,
+    2676.225,
+    6823.425
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/3/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4646.175,
+    6799.225,
+    4656.625,
+    6810.775
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.56036376953125,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.010416666666666666,
+     "gap_head_heights": 0.6229508196721312,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/12/8/1"
+   },
+   "owner_bbox_page": [
+    4631.875,
+    6831.675,
+    4671.75,
+    6865.775
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/8/5",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4539.2,
+    6800.325,
+    4551.575,
+    6811.05
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.5378487706184387,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 8.5,
+     "dx_notehead_widths": 0.059027777777777776,
+     "gap_head_heights": 0.2459016393442623,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/12/8/3"
+   },
+   "owner_bbox_page": [
+    4524.075,
+    6819.3,
+    4562.025,
+    6850.65
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/8/6",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4738.575,
+    6883.1,
+    4748.75,
+    6892.175
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.4487435817718506,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 3.5,
+     "dx_notehead_widths": 0.024305555555555556,
+     "gap_head_heights": 0.16393442622950818,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/12/8/2"
+   },
+   "owner_bbox_page": [
+    4724.0,
+    6845.975,
+    4761.4,
+    6877.6
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4538.375,
+    6684.0,
+    4549.375,
+    6689.775
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "detector_class": "articStaccatoBelow",
+     "gap_head_heights": 3.860655737704918,
+     "limit_canonical_px": 108.0,
+     "measured_side": "above",
+     "nearest_head": "glyph/3/1/12/8/3",
+     "notehead_width": 144.0,
+     "same_ink_twins": [
+      "glyph/3/1/11/8/7"
+     ],
+     "suffix_side": "below"
+    },
+    "outcome": "abstained",
+    "reason": "no_notehead",
+    "value": null
+   },
+   "owner_bbox_page": null,
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/8/11",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4881.0,
+    6771.45,
+    4893.375,
+    6783.275
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.7783780097961426,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 1.5,
+     "dx_notehead_widths": 0.010416666666666666,
+     "gap_head_heights": 0.28688524590163933,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/12/9/3"
+   },
+   "owner_bbox_page": [
+    4867.8,
+    6792.9,
+    4907.4,
+    6823.15
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/12/9/2",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    2650.3325,
+    7150.86,
+    2660.8775,
+    7160.5725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.42124834656715393,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 0.5,
+     "dx_notehead_widths": 0.0035460992907801418,
+     "gap_head_heights": 0.33064516129032256,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/13/3/0"
+   },
+   "owner_bbox_page": [
+    2636.18,
+    7105.0725,
+    2675.3075,
+    7139.4825
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/13/3/8",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4647.935,
+    7017.105,
+    4657.925,
+    7027.3725
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6562608480453491,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.05,
+     "gap_head_heights": 0.6470588235294118,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/13/8/1"
+   },
+   "owner_bbox_page": [
+    4631.5625,
+    7048.74,
+    4670.4125,
+    7082.04
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/13/8/4",
+   "suffix_side": "above"
+  },
+  {
+   "class": "articStaccatoBelow",
+   "mark_bbox_page": [
+    4741.4525,
+    7104.795,
+    4750.3325,
+    7113.675
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.46101126074790955,
+     "detector_class": "articStaccatoBelow",
+     "dx_canonical_px": 7.0,
+     "dx_notehead_widths": 0.05,
+     "gap_head_heights": 0.25210084033613445,
+     "measured_side": "below",
+     "notehead_side": "below",
+     "same_ink_twins": [],
+     "stem_direction": "up",
+     "stem_rule": "notehead_side",
+     "suffix_side": "below",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/13/8/2"
+   },
+   "owner_bbox_page": [
+    4725.3575,
+    7066.7775,
+    4762.5425,
+    7096.47
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/13/8/7",
+   "suffix_side": "below"
+  },
+  {
+   "class": "articStaccatoAbove",
+   "mark_bbox_page": [
+    4884.0975,
+    6990.7425,
+    4894.0875,
+    6999.345
+   ],
+   "owner": {
+    "detail": {
+     "articulation": "staccato",
+     "confidence": 0.6178504228591919,
+     "detector_class": "articStaccatoAbove",
+     "dx_canonical_px": 13.0,
+     "dx_notehead_widths": 0.09848484848484848,
+     "gap_head_heights": 0.3090909090909091,
+     "measured_side": "above",
+     "notehead_side": "above",
+     "same_ink_twins": [],
+     "stem_direction": "down",
+     "stem_rule": "notehead_side",
+     "suffix_side": "above",
+     "two_voice": false
+    },
+    "outcome": "decided",
+    "reason": "nearest_on_notehead_side",
+    "value": "glyph/3/1/13/9/3"
+   },
+   "owner_bbox_page": [
+    4867.17,
+    7008.78,
+    4903.8,
+    7039.305
+   ],
+   "page": 3,
+   "side": null,
+   "subject": "glyph/3/1/13/9/4",
+   "suffix_side": "above"
+  }
+ ],
+ "fermatas": [],
+ "gathered_on": "e282ae0c02a346db6f248d2c0c7ead69de8a84c6",
+ "label": "arm",
+ "order": [
+  "staff_group",
+  "staff_ordinal",
+  "instrument",
+  "clef",
+  "ledger_is_not_a_ledger",
+  "glyph_owner",
+  "fermata_owner",
+  "stem_direction",
+  "articulation_owner"
+ ],
+ "pdf": null,
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/brahms1-breitkopf-p0-p3.record.json",
+ "summary": {
+  "articulation": {
+   "owner:abstained/no_notehead": 62,
+   "owner:abstained/owned_by_another_staff": 8,
+   "owner:abstained/stem_contradicts_class_side": 5,
+   "owner:abstained/stem_direction_unread": 31,
+   "owner:decided/nearest_on_notehead_side": 88,
+   "owner:narrowed/heads_about_equally_near": 2
+  },
+  "control_glyph_owner": [
+   2866,
+   3015
+  ],
+  "fermata": {},
+  "fermatas": 0,
+  "info_articulation_owner_vs_saved": [
+   108,
+   196
+  ],
+  "marks": 196
+ },
+ "tree": "e282ae0c02a346db6f248d2c0c7ead69de8a84c6"
+}
