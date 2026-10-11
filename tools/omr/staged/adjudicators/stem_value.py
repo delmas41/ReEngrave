@@ -348,12 +348,15 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # ⚠️ GATHER ROWS ONLY. A notehead's box and the cell's stems are the whole
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
-    wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION),
+    wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
+             "stem_by_one_per_head", "unison_two_voices",
              "two_stems", "no_stem", "no_evidence"),
     mode=Mode.ADDITIVE,
-    composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION),
+    composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
+                   Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
 )
 def adjudicate_head_stem(ev: Evidence) -> Ruling:
     """Which stem does this notehead box stand on?
@@ -471,9 +474,120 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
                       detail=d)
     cands = tuple(Candidate(value=i, support=float(len(ranked) - n))
                   for n, i in enumerate(ranked))
+    from ..geometry import stem_finder_repair_on
+    if stem_finder_repair_on("one_stem_per_head"):
+        forced = _one_stem_per_head(ev, cell, head, stems, physical, ranked,
+                                    space)
+        if forced is not None:
+            kind, rep_id, extra = forced
+            if kind == "collapse":
+                d = detail_of(rep_id)
+                d["rivals"] = [i for i in ranked if i != rep_id]
+                d.update(extra)
+                return Ruling(value=rep_id, reason="stem_by_one_per_head",
+                              used=used, detail=d)
+            return Ruling.narrow(cands, "unison_two_voices", used=used,
+                                 stems={i: detail_of(i) for i in ranked},
+                                 **extra)
     return Ruling.narrow(cands, "two_stems", used=used,
                          stems={i: detail_of(i) for i in ranked})
 
+
+#: Another head stands at a DIFFERENT staff position (so it is a second note, not the
+#: same note boxed twice) when its centre is at least this many of the head's own
+#: heights from this head's centre. A third apart is ~1.0; a stacked duplicate box
+#: sits within a fraction of a pixel to a few.
+ONE_STEM_PER_HEAD_MIN_APART_HEADS = 0.5
+
+
+def _rep_ids_touching(stems, head, physical_of) -> Set[str]:
+    """The canonical (representative) ids of the physical stems `head` touches."""
+    from ..geometry import stem_touches_head
+    out: Set[str] = set()
+    for row, b in stems:
+        if stem_touches_head(b, head):
+            out.add(physical_of(row, b))
+    return out
+
+
+def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
+                       ranked, space):
+    """ROADMAP 2.87, `OMR_STEM_FINDER=one_stem_per_head`. For a head narrowed
+    between stems: `("collapse", stem id, detail)`, `("unison", None, detail)` or
+    `None` (today's plain narrowing).
+
+    CONVENTION (Sean 2026-10-11): every stem touches a notehead; every black
+    notehead has exactly ONE stem, unless two voices share it -- a UNISON, which
+    goes in DIFFERENT directions (*"They would go in different directions"*): an up
+    stem at the head's right and a down stem at its left, on one head with no other
+    head under the stems. WHAT WOULD FALSIFY IT: a black head that truly carries two
+    same-direction stems; a second head box that is a duplicate of this one (it must
+    stand at a different staff position to claim a stem). NOT CONFIRMED beyond tile 10
+    (Brahms 317803 pdf 0, `q1322` over `q1319`).
+
+    COLLAPSE (it FOLLOWS, so it only ever picks one of this head's OWN candidates and
+    never overturns a decided one): a candidate stem is CLAIMED when another kept
+    head, at a different staff position, touches it and touches no other stem -- that
+    head needs it. If exactly one candidate is unclaimed, this head needs it
+    (every stem touches a head) and may not take a claimed one (one stem per head).
+    UNISON: ONE head -- no other kept head at a different position touches either
+    stem -- with exactly two candidates, one pointing up at the right and one down at
+    the left -> `unison_two_voices`, both kept, NEVER collapsed. Two stems the same way
+    are not a unison: `None`. Two heads a third apart that BOTH touch both strokes (the
+    strokes merge into both) are not a unison either and not forced: `None`.
+    """
+    from ..geometry import stem_touches_head
+
+    def rep_of(row, b):
+        cluster = [(r2, b2) for r2, b2 in stems
+                   if r2 is row or _same_stem_row(b, b2)]
+        return min(cluster, key=lambda t: (-t[1][3], t[0].id))[0].id
+
+    hcy = head[1] + head[3] / 2.0
+    claimed: Dict[str, List[str]] = {}
+    shared_with_another_head = False
+    for row in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS,
+                       subject=cell):
+        k = row.subject
+        if k == ev.subject:
+            continue
+        refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=k)
+        if (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True):
+            continue
+        boxes = ev.rows(Q.GLYPH_BOX, subject=k)
+        kb = _head_xywh(boxes[-1].value) if boxes else None
+        if kb is None:
+            continue
+        if abs((kb[1] + kb[3] / 2.0) - hcy) < ONE_STEM_PER_HEAD_MIN_APART_HEADS * head[3]:
+            continue
+        theirs = _rep_ids_touching(stems, kb, rep_of)
+        if theirs & set(ranked):
+            shared_with_another_head = True
+        if len(theirs) == 1:
+            (only,) = tuple(theirs)
+            if only in ranked:
+                claimed.setdefault(only, []).append(k.to_key())
+    unclaimed = [i for i in ranked if i not in claimed]
+    if claimed and len(unclaimed) == 1:
+        return ("collapse", unclaimed[0],
+                {"claimed_by": {i: claimed[i] for i in claimed}})
+    if (not claimed and not shared_with_another_head and len(ranked) == 2
+            and space is not None):
+        hx, hy, hw, hh = head
+        need = STEM_MIN_REACH_SPACES * space
+        kinds = {}
+        for i in ranked:
+            sx, sy, sw, sh = physical[i]["box"]
+            above, below = max(0.0, hy - sy), max(0.0, (sy + sh) - (hy + hh))
+            side = _flush_word(_x_frac(physical[i]["box"], head))
+            if above >= need and below < need and side == "right":
+                kinds[i] = "up"
+            elif below >= need and above < need and side == "left":
+                kinds[i] = "down"
+        if sorted(kinds.values()) == ["down", "up"]:
+            return ("unison", None, {"voices": kinds})
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
