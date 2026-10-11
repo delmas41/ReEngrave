@@ -30,7 +30,7 @@ pointing at headings no longer in the file.)*
 - Brahms bar-number drift traced (diagnosis only, no code): candidates = first-ending bars counted (p10 s1, +2) and a courtesy key after p11 s1's last barline kept as a bar (+1); Litolff = a stray barline column (p6 s1, p13-14). Question to Sean pending.
 - Sean answered the other 31 gallery tiles: 2.12f 6/6 decided right (2 and 9 first mis-scored, corrected), 3 marks are ledger lines; Sean's articulation-side convention recorded (notehead side, except two voices or a long chord stem -> stem side); 2.75 5/5; rhythm-leftovers-3 0 wrong (2 decided, 5 narrowed with the answer); 2.79 6/7 (bar 13 contrabass wrong). `answers.json` in each set; DECISIONS lines.
 - Sean: q883 is not a beam -> removed from his Brahms page (1,345 boxes); INVENTORY regenerated.
-- Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.84, 2.85.
+- Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
 
 ## 2026-10-10 (night) — 1.7 stems landed
 
