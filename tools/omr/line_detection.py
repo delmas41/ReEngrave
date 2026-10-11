@@ -230,6 +230,37 @@ def stem_finder_repairs() -> frozenset:
 THIN_STEM_PROTRUDE_SPACES = 0.8
 
 
+def mark_kind(smufl_name: str) -> str | None:
+    """The kind of mark a detector class name is (accidental, key, clef, digit,
+    flag, rest), or None."""
+    n = str(smufl_name)
+    low = n.lower()
+    if low.startswith("accidental"):
+        return "accidental"
+    if low.startswith("key") and not low.startswith("keyboard"):
+        return "key"
+    if low.startswith("clef") or low.endswith("clef"):
+        return "clef"
+    if low.startswith("timesig"):
+        return "digit"
+    if low.startswith("flag"):
+        return "flag"
+    if low.startswith("rest"):
+        return "rest"
+    return None
+
+
+def _inside_share(stroke, mark) -> float:
+    """Share of the stroke's box area that lies inside `mark` = (x, y, w, h)."""
+    sx0, sy0 = stroke.x_canonical, stroke.y_canonical
+    sx1, sy1 = sx0 + stroke.width_canonical, sy0 + stroke.height_canonical
+    mx, my, mw, mh = mark
+    iw = min(sx1, mx + mw) - max(sx0, mx)
+    ih = min(sy1, my + mh) - max(sy0, my)
+    area = max(1, stroke.width_canonical * stroke.height_canonical)
+    return max(0.0, iw) * max(0.0, ih) / area
+
+
 def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
                       h: int, line_spacing: float, max_w: int):
     """The thin stem inside a run that is too wide to be one, or None.
@@ -591,7 +622,7 @@ def _meets_a_notehead(stroke, heads) -> bool:
 
 
 def _drop_paired_strokes(stems, line_spacing: float, gap: float,
-                         min_overlap: float, heads=None):
+                         min_overlap: float, heads=None, on_accidental=None):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
     A sharp and a natural are each built from two parallel verticals about half
@@ -659,6 +690,14 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
         for j in range(len(stems)):
             if i == j or abs(centres[i] - centres[j]) > max_dx:
                 continue
+            # OMR_STEM_FINDER=pair_evidence: the rule's premise is that the
+            # pair is an ACCIDENTAL's two strokes. Where the detector has
+            # boxed the accidental and the partner lies on it while THIS
+            # stroke does not, this stroke is the stem beside the accidental,
+            # not the accidental's second stroke: it is not condemned by it.
+            if (on_accidental is not None and on_accidental[j]
+                    and not on_accidental[i]):
+                continue
             overlap = min(bottoms[i], bottoms[j]) - max(tops[i], tops[j])
             if overlap <= 0:
                 continue
@@ -685,6 +724,7 @@ def detect_stems(
     noteheads: Sequence | None = None,
     candidates_out: list | None = None,
     stem_finder: frozenset | None = None,
+    marks: Sequence | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
 
@@ -858,6 +898,10 @@ def detect_stems(
             height_canonical=int(h),
             confidence=1.0,
         ))
+    on_acc = None
+    if "pair_evidence" in stem_finder and marks is not None:
+        on_acc = [any(k in ("accidental", "key") and _inside_share(s, b) >= 0.5
+                      for k, b in marks) for s in out]
     if drop_accidental_pairs:
         before = out
         # ⚠️ TWO CONDITIONS, AND THE DATA IS ONE OF THEM. `gate_heads` stays
@@ -869,9 +913,12 @@ def detect_stems(
             enable_notehead_gate = stem_notehead_gate_enabled()
         gate_heads = (list(noteheads) if enable_notehead_gate
                       and noteheads is not None else None)
+        # `on_accidental` is passed ONLY when `pair_evidence` built it, so the
+        # shipped call is the shipped call, argument for argument.
+        extra = {} if on_acc is None else {"on_accidental": on_acc}
         out = _drop_paired_strokes(
             out, line_spacing, accidental_pair_gap_lines,
-            accidental_pair_overlap, heads=gate_heads,
+            accidental_pair_overlap, heads=gate_heads, **extra,
         )
         # ⚠️ RE-STAMPED, NOT RE-DERIVED. The pair rule runs over the SET, so
         # whether a candidate is paired cannot be known at the moment that
@@ -1345,7 +1392,8 @@ def detect_beams(
 
 def detect_lines(cell, *, candidates_out: list | None = None,
                  noteheads: Sequence | None = None,
-                 rescue_tall_beams: bool = False
+                 rescue_tall_beams: bool = False,
+                 marks: Sequence | None = None
                  ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
@@ -1364,7 +1412,7 @@ def detect_lines(cell, *, candidates_out: list | None = None,
     read, and any beam delta on a gated arm is this and not a beam change.
     """
     stems = detect_stems(cell, candidates_out=candidates_out,
-                         noteheads=noteheads)
+                         noteheads=noteheads, marks=marks)
     return {
         "stems": stems,
         "beams": detect_beams(cell, stems=stems,

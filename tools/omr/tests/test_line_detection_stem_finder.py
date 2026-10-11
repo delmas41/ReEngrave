@@ -22,6 +22,7 @@ import numpy as np
 from tools.omr.line_detection import (
     STEM_FINDER_ENV,
     detect_stems,
+    mark_kind,
     stem_finder_repairs,
 )
 from tools.omr.types import MeasureCell
@@ -118,3 +119,45 @@ def test_flag_reaches_detect_stems(monkeypatch):
     assert len(detect_stems(cell)) == 1
 
 
+# ── pair_evidence ───────────────────────────────────────────────────────────
+
+def _stem_beside_a_sharp(img):
+    """A real stem (5 spaces) with a sharp's vertical 0.5 space to its left
+    that lies on an accidental box. Without the box the pair rule drops both."""
+    _rect(img, 400, 200, 408, 700)            # the stem
+    _rect(img, 350, 400, 357, 620)            # the sharp's vertical, 2.2 sp
+
+
+def test_pair_rule_alone_drops_the_stem_beside_a_sharp():
+    assert detect_stems(_cell(_stem_beside_a_sharp), stem_finder=OFF) == []
+
+
+def test_pair_evidence_keeps_the_stem_when_the_partner_is_on_an_accidental():
+    marks = [("accidental", (330, 380, 60, 260))]
+    out = detect_stems(_cell(_stem_beside_a_sharp), marks=marks,
+                       stem_finder=frozenset({"pair_evidence"}))
+    assert len(out) == 1 and _boxes(out)[0][0] == 400
+
+
+def test_pair_evidence_control_a_whole_sharp_is_still_dropped():
+    def paint(img):
+        _rect(img, 350, 400, 357, 620)
+        _rect(img, 375, 400, 382, 620)        # a sharp's two strokes
+    marks = [("accidental", (330, 380, 80, 260))]
+    assert detect_stems(_cell(paint), marks=marks,
+                        stem_finder=frozenset({"pair_evidence"})) == []
+
+
+def test_pair_evidence_without_boxes_is_the_shipped_pair_rule():
+    assert detect_stems(_cell(_stem_beside_a_sharp), marks=None,
+                        stem_finder=frozenset({"pair_evidence"})) == []
+
+
+
+
+def test_mark_kind_vocabulary():
+    assert mark_kind("clefG") == "clef" and mark_kind("clefCAlto") == "clef"
+    assert mark_kind("keyFlat") == "key" and mark_kind("timeSig8") == "digit"
+    assert mark_kind("flag8thDown") == "flag" and mark_kind("restWhole") == "rest"
+    assert mark_kind("accidentalSharp") == "accidental"
+    assert mark_kind("noteheadBlackInSpace") is None and mark_kind("stem") is None
