@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-10 (night) — 2.84 tenuto vs ledger line (branch `lane-tenuto-ledger`, not merged)
+
+- STAGED, ADJUDICATE: `adjudicate_articulation_is_not_an_articulation` refuses an `articTenuto*` dash that lies between a head of its bar and the staff that OWNS that head (`ledger_between_staff_and_note`), abstains where the owner is unread; moved after `Q.GLYPH_OWNER` in ORDER. Census: 42 tenuto boxes on both whole movements, 37 ledgers, 0 real tenutos. Replay base vs arm: 34 refused (all ledgers by the print), 2 abstained, 6 kept. 23 tests (RED 10 on origin/main), `check` 192. 12 blind tiles `out/print/2.84-review/`. FINDINGS `benchmarks/omr-tenuto-ledger-2026-10/`.
+
 ## 2026-10-10 (night) — 1.7 stems landed
 
 - `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
