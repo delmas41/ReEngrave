@@ -503,3 +503,52 @@ a stem going down."* His truth agrees: `q1322` (top) takes the up stem `b4311`, 
 on one down stem just as well, which is why the arm narrows `q1322` between the two. What would decide it: every black head has exactly one
 stem (unless two voices share one head, a unison), and `q1319` has no other candidate -- so it takes the down stem and `q1322` the up one.
 Not built: CONVENTION ASSUMED (one stem per black head, unison excepted), NOT CONFIRMED; it moves 1 head on this page.
+
+### 9.7 Two later-stage stem checks (Sean 2026-10-11, *"Yes"*; ROADMAP 2.87, STAGED ADJUDICATE; commits on `lane-stem-finder`)
+
+**Path: STAGED.** No GATHER change (so no re-gather): both are ADJUDICATE decisions, behind two new names on the SAME allow-list
+`OMR_STEM_FINDER` (`head_contact`, `one_stem_per_head`; default empty = the shipped reader). Measured by re-adjudicating the committed
+`f1` records on ONE tree (the repo's `rebuild_gather` + `pipeline.decide(through="adjudicate")`, `OMR_STEM_FINDER=thin_run,pair_evidence,attach_tolerance,refuse_owned` = base, plus the new name = arm).
+**Control that can fail:** with that env set the rebuild reproduces the committed records to 1 of 19,431 (Brahms) and 4 of 19,883 (Litolff) verdicts (the
+same five on every arm: `voices` / `articulation_is_not_an_articulation`, not mine); WITHOUT the env the same rebuild differs on 1,700 verdicts
+(`head_stem` 1,046) -- so the control is live. Flag-off arm: only `stem_head_contact` verdicts are new (864 / 314), nothing else differs.
+
+**CONVENTION (Sean 2026-10-11).** *"All stems should be connected to a notehead"*, used *"to verify later in the stages"*, not a GATHER refusal.
+Every black notehead has exactly ONE stem, except a UNISON -- two voices on one head -- and *"they would go in different directions"*: an up stem at
+the head's right and a down stem at its left. **WHAT WOULD FALSIFY IT:** a real stem whose head the detector never boxed (found, below, twice); a black
+head that truly carries two same-way stems; a duplicate head box.
+
+**1. `head_contact` -- `Q.STEM_HEAD_CONTACT`** (new, `stem_value.adjudicate_stem_head_contact`, ORDER ahead of `Q.LEDGER_IS_NOT_A_LEDGER`; reads GATHER rows only).
+Filed on the CELL (a `Q.STEM` row has no subject of its own, so a per-stem verdict cannot be filed per stem; `value` = the stem row ids that touch no detected
+notehead, `detail.meets` the others). Touch = within 0.3 head-heights (`geometry.STEM_CONTACT_TOLERANCE_HEADS`; wider than the 0.12 attach tolerance on purpose:
+it only refuses, so it errs toward keeping). ABSTAINED where the cell has strokes and no notehead box. **A stroke cut by the crop's edge is neither met nor refused**
+(`CROP_EDGE_PX`; no frame, no refusal): the first version refused four real stems of the next staff's beamed group that run off the cell (heads in the other cell) and
+turned a beamed eighth into a quarter (Brahms p1 `glyph/1/0/10/0/35`, crop `out/print/stem-finder/round2/crops/b_dur3.png`); that is why the rule exists. A
+unison head keeps both stems by construction (both touch it; test).
+*Consumers changed* (read only the strokes not DECIDED meets_none): `rhythm._not_a_decided_arc` (the "joins >= 2 stems" override), `rhythm._not_the_neighbours_beam`
+(the neighbour's stems), `rhythm._not_a_beam_by_ink` (stems the stroke stands on / ends on), `family_precision._rest_has_a_stem_refusal` and
+`_rest_on_a_slashed_stem_refusal`. *Left alone, and why:* every reader that STARTS from a notehead (`rhythm._stems_on`, `_stem_joined`, `notehead_precision._stem_rows_on`,
+`adjudicate_head_stem`, `Q.STEM_DIRECTION`) -- the head touches the stem by construction; `rhythm._beyond_own_stem` (no `ev`; its call is inside `adjudicate_duration`,
+fenced to lane 2.83: the same `stems` list is read at its top); `ownership` arc `s4_stem_view` (a recorded witness, never acted on); `adjudicate_duration`'s own `stems` read (fence).
+*On Sean's page* (`f1`): 3 strokes are refused, in scored cells: the 2 partial strokes that already attach to no head (`obs:009856`, `obs:009857`; real) and tile 9's alto-clef stroke
+(`obs:009999`; not a stem). The other invented strokes touch a head (flag ink, numerals), so the rule does not reach them. No duration or head-stem outcome on page 0 moves.
+*On the count pages* (arm = `head_contact` alone): **Brahms p1: 0 verdicts change.** **Litolff p3: 4 rests keep their refusal but for another reason** (`rest_has_a_stem` 14 -> 10, `rest_touches_two_staff_lines` 13 -> 17; every rest is still refused, no outcome moves),
+and **2 durations move WRONG-ward**, decided eighth -> narrowed `[0.5, 1.0]` (`glyph/2/1/10/0/1`, `/14`; `stem_value` likewise): a real stem of a beamed pair on the merging plate whose head is fused into a blob
+the detector did not box. Net on the count pages: no gain, two losses. **Not promoted; recommendation: leave OFF** until a notehead can be found in a fused blob (Litolff refuses 87 of 997 strokes, most of them real).
+
+**2. `one_stem_per_head` -- inside `adjudicate_head_stem`** (the forcing is LOCAL to the stems the head touches, and reads no other decision's verdict beyond `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+for the other head; EVALUATE is for what follows from a decided verdict, and this narrows only that decision's own candidates). Fires only where the head is already NARROWED between stems
+(`two_stems`); it only ever picks one of those candidates, never overturns a DECIDED head. *Collapse* (`stem_by_one_per_head`): a candidate stem is CLAIMED when another kept head, at a different staff position
+(>= 0.5 head heights apart; a duplicate box does not claim), touches it and no other stem; if exactly one candidate is unclaimed and another is claimed, the head takes the unclaimed one. *Unison* (`unison_two_voices`,
+still NARROWED, both candidates kept, never collapsed): ONE head -- no other kept head touches either stroke -- with exactly two candidates, one pointing up at its right and one down at its left. Two heads a third apart that both touch both
+strokes are NOT a unison (Brahms p1 `glyph/1/0/2/3/6` and `/9`, crop `b_uni1`: the first version mislabelled them; test + a mutation that turns it red). Two same-way strokes are not a unison: today's `two_stems` (negative controls, both ways).
+*Sean's page* (`f1`, scorer as section 8): **heads on their right stem 319 -> 320 of 335; narrowed 1 -> 0 (`q1322` is now DECIDED on the up stroke `obs:010077`, `q1319` keeps the down stroke); stem direction unchanged (305 right / 1 wrong / 13 abstained).**
+*Count pages:* Brahms: 4 collapses + 1 unison (of 19 narrowed), no duration moves; Litolff: 2 collapses + 60 unison readings (of 70 narrowed), no duration moves. `stem_value` follows the collapse (`ambiguous_stem` -> `lone_head`, Litolff +2 decided).
+*Crops* (`out/print/stem-finder/round2/crops/`): the 3 Brahms collapses that are two real heads a third apart (`b_q1322`, `b_col2`, `b_col3`) are the tile-10 pattern and right (the upper head takes the up stem); the 3 others (`b_col1`, `l_col1`, `l_col2`)
+land on a box that is not a note (a beam's end, a cross-staff stem) that was already kept before this change: nothing to confirm, nothing moved. The Litolff unisons I cropped (`l_uni3`, `l_uni4`) are real two-voice heads (an up stem and a down stem on one head; `l_uni2` is too fused to read); `b_uni3` is real. No Litolff hand truth, so these are blind tiles for Sean (below).
+
+**Downstream gap, NOT fixed here (the coordinator's ask):** a unison head carries two stems and keeps a NARROWED `Q.HEAD_STEM` (the verdict has one value). EXPORT and `Q.DURATION` still write ONE note for it, so the second voice's note is not written. Same for any
+head `unison_two_voices` labels: nothing downstream splits it into two notes. A later item.
+
+**Not done / limits.** One page of truth for the collapse (tile 10 and its two siblings); the unison label has no truth on Litolff. Two heads that both touch both strokes (b_uni1) stay narrowed (the up stem belongs to the upper head, the down to the lower, but that does not follow from
+the two conventions alone). 3 of 6 collapses are on boxes that are not notes. `head_contact` is measured negative on Litolff.

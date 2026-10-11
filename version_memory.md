@@ -22,6 +22,12 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 — 2.87 round 2: `head_contact` and `one_stem_per_head` (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- STAGED ADJUDICATE only, no GATHER change. Two new names on the `OMR_STEM_FINDER` allow-list (default empty): `head_contact` -> new quantity `Q.STEM_HEAD_CONTACT` (`stem_value.adjudicate_stem_head_contact`, cell-level verdict listing the strokes that touch no notehead; a stroke cut by the crop edge is not judged), read by `rhythm._not_a_decided_arc`, `_not_the_neighbours_beam`, `_not_a_beam_by_ink` and `family_precision` rest-has-a-stem / slashed-stem; `one_stem_per_head` inside `adjudicate_head_stem` (reasons `stem_by_one_per_head`, `unison_two_voices`).
+- CONVENTION (Sean 2026-10-11): every stem touches a notehead; every black head has one stem except a unison, whose two stems go in different directions. FINDINGS `hand-truth-score-2026-10` 9.7. `staged.check` open 192 -> 192. Measured on re-adjudicated `f1` records: Sean's page heads right 319 -> 320 of 335 (`q1322` decided); `head_contact` negative on Litolff p3 (two eighths narrowed), 0 on Brahms p1.
+- Fence: `adjudicate_duration` body and `_attached_flags` untouched (lane 2.83); only the decorator's `wants`/`composed_from` gained `Q.STEM_HEAD_CONTACT`.
+
 ## 2026-10-11 — 2.87 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
 
 - Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
