@@ -3361,3 +3361,22 @@ two-owner pair: the lower-staff owner (this rule's) is right and the upper-staff
 
 Not changed yet: the proposed repair (restrict the rule to UP stems, so the 2 wrong
 decisions return to abstained) waits on Sean's yes; it would leave 3 decided, all right.
+
+### 8a. Correction (Sean, same day): these are TWO VOICES, not long chord stems
+
+Sean, on §8's proposal to keep the rule for up stems only: *"I don't understand - they
+are only up stems because of multiple voices"*. So the 3 "right" tiles (1, 5, 8) were
+right for the WRONG reason: the note below carries an up stem because it is the upper of
+two voices on its staff, and the accent sits on its stem side — case (a), which round 2
+already decides, except that round 2's two-voice test (opposite stems in one column) did
+not fire on them. In tiles 1, 5 and 8 the two voices' stems stand on one vertical
+stroke, and our stem reading took that stroke for ONE long chord stem with a ledger head
+on it — exactly what (b) was built to find. Tiles 3 and 7 are the same case in the
+lower staff, where the mark's twin in the lower staff's cell abstained and the upper
+staff's cell took it by (b).
+
+**Consequence: (b) has NO confirmed instance on the plate.** All 5 decisions are two-voice
+columns misread as a chord stem; the 3 right owners are the upper voice's head by
+coincidence of geometry. The rule as built is not to be merged. The repair belongs in
+the two-voice test (a), not in (b): a second witness for "this staff has two voices
+here" that does not need two visibly opposite stems in one column.
