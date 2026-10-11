@@ -197,6 +197,93 @@ def stem_stroke_enabled() -> bool:
         "1", "true", "yes", "on")
 
 
+#: `OMR_STEM_FINDER` -- ROADMAP 2.84, the stem finder (Sean 2026-10-10: *"Send
+#: out an agent to handle the stem fixes"*). A comma list of the repairs that
+#: are ON, default EMPTY (so the OFF test is an ALLOW-LIST and a typo leaves the
+#: shipped reader in force). Every repair is its own name so it is priced alone:
+#:
+#:   thin_run        a run refused only for being too WIDE is searched for the
+#:                   thin stem inside it (`_thin_stem_in_run`)
+#:   pair_evidence   `_drop_paired_strokes` drops a pair only where a member
+#:                   lies on an ACCIDENTAL box (needs `accidentals=`)
+#:   refuse_owned    a stroke inside a clef / key / digit / accidental / flag /
+#:                   rest box is that mark's stroke, not a stem (`owners=`)
+#:
+#: PATH: shared (`detect_stems` is called by LEGACY `transcribe` through
+#: `detect_lines(cell)` and by STAGED `gather_cv_lines`); the repairs that need
+#: detector boxes (`pair_evidence`, `refuse_owned`) fire only on STAGED, which
+#: is the only caller that supplies them.
+STEM_FINDER_ENV = "OMR_STEM_FINDER"
+
+
+def stem_finder_repairs() -> frozenset:
+    """The repairs named in `OMR_STEM_FINDER` (empty by default)."""
+    import os
+    raw = os.environ.get(STEM_FINDER_ENV, "")
+    return frozenset(t.strip().lower() for t in raw.split(",") if t.strip())
+
+
+#: The empty interval (staff spaces) between the stem's columns and the heads'
+#: columns in the run's sorted column extents. Two heads a third apart are ~2 spaces of ink, so
+#: a run that is not at least this much taller than its widest non-stem column
+#: has no stem to find (the shortest stem Sean's page loses is 2.85 spaces).
+THIN_STEM_PROTRUDE_SPACES = 0.8
+
+
+def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
+                      h: int, line_spacing: float, max_w: int):
+    """The thin stem inside a run that is too wide to be one, or None.
+
+    Two heads a third apart touch (their boxes are 2 steps = 1 space apart,
+    ~2 spaces of ink) and survive the stem opening, so the stem standing at
+    their side comes out FUSED with them as one run about a space wide
+    (`benchmarks/hand-truth-score-2026-10` FINDINGS section 8.4: 45 of 54
+    missed stems). The stem is still there: it is the columns of the run that
+    are as tall as the WHOLE run, because the heads are not. Convention: a stem
+    is a single thin stroke standing at the side of its head and reaching
+    beyond the heads at one end at least.
+
+    Returns `(x0, top, width, height)` in the cell's frame, or None where the
+    run has no such columns: nothing sticks out (a block), the full-height
+    columns are wider than a stem (two stems, a barline pair), or the columns
+    are not contiguous.
+    """
+    sub = labels[y:y + h, x:x + w] == label
+    # the longest vertical run of the component in every column
+    cur = np.zeros(w, dtype=np.int32)
+    best = np.zeros(w, dtype=np.int32)
+    bend = np.zeros(w, dtype=np.int32)
+    for r in range(h):
+        cur = np.where(sub[r], cur + 1, 0)
+        upd = cur > best
+        best = np.where(upd, cur, best)
+        bend = np.where(upd, r, bend)
+    # The stem's columns and the heads' columns are two populations separated
+    # by an EMPTY INTERVAL in the sorted column extents (a slanted scan stem
+    # climbs a little across its own width, so "as tall as the tallest" is too
+    # strict): the stem columns are those above the widest gap, and the gap is
+    # the stem's protrusion beyond the fused heads.
+    order = np.sort(best)
+    gaps = np.diff(order)
+    k = int(np.argmax(gaps))
+    if gaps[k] < int(round(line_spacing * THIN_STEM_PROTRUDE_SPACES)):
+        return None                      # nothing sticks out: no stem here
+    cut = (order[k] + order[k + 1]) / 2.0
+    full = best > cut
+    cols = np.flatnonzero(full)
+    groups = np.split(cols, np.flatnonzero(np.diff(cols) > 1) + 1)
+    if len(groups) != 1:
+        return None                      # two separate tall bands: not one stem
+    band = groups[0]
+    bw = len(band)
+    if bw > max_w:
+        return None
+    tops = bend[band] - best[band] + 1
+    top = int(tops.min())
+    bot = int(bend[band].max())
+    return (x + int(band[0]), y + top, bw, bot - top + 1)
+
+
 #: `OMR_STEM_NOTEHEAD_GATE` — a vertical stroke that MEETS A DETECTED NOTEHEAD
 #: is a stem, and the pair rule may not delete it. Default OFF, so the test is
 #: an ALLOW-LIST (CLAUDE.md, *A flag's OFF test must follow its DEFAULT*).
@@ -597,6 +684,7 @@ def detect_stems(
     enable_notehead_gate: bool | None = None,
     noteheads: Sequence | None = None,
     candidates_out: list | None = None,
+    stem_finder: frozenset | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
 
@@ -702,7 +790,10 @@ def detect_stems(
     opened = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
     # Connected components
-    num, _, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
+    num, labels, stats, _ = cv2.connectedComponentsWithStats(
+        opened, connectivity=8)
+    if stem_finder is None:
+        stem_finder = stem_finder_repairs()
     out: list[LineDetection] = []
     min_h = int(round(line_spacing * min_height_lines))
     max_h = int(round(line_spacing * max_height_lines))
@@ -729,6 +820,23 @@ def detect_stems(
             continue
         if w > max_w:
             _note(x, y, w, h, area, RUN_TOO_WIDE)
+            # OMR_STEM_FINDER=thin_run: the run is refused AS A WHOLE (the
+            # record above still says so) but the thin stem fused into it is
+            # looked for and filtered like any other stroke.
+            if "thin_run" in stem_finder:
+                thin = _thin_stem_in_run(labels, i, x, y, w, h,
+                                         line_spacing, max_w)
+                if thin is not None:
+                    tx, ty, tw, th = thin
+                    if (th >= min_h and tx >= edge_margin
+                            and tx + tw <= cell_w - edge_margin
+                            and tw * th >= max(4, line_spacing * 0.5)
+                            and th / max(1, tw) >= 3.0):
+                        out.append(LineDetection(
+                            smufl_name="stem", category="stem",
+                            x_canonical=int(tx), y_canonical=int(ty),
+                            width_canonical=int(tw), height_canonical=int(th),
+                            confidence=1.0))
             continue
         # Edge filter — barlines live at the cell boundaries.
         if x < edge_margin or x + w > cell_w - edge_margin:
