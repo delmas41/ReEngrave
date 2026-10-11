@@ -10089,10 +10089,17 @@ def _label_rung_state(surya_fallback: bool, ocr_fallback: bool) -> Dict[str, Any
             "unavailable": unavailable, "errors": errors}
 
 
-def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
+def gather_printed_bar_numbers(log: Log, pws: Any, surya: bool = False) -> None:
     """ROADMAP 2.13. The small numeral an engraver prints above a SYSTEM's
-    first bar, read with Tesseract off a crop directly above the system's
-    topmost staff.
+    first bar, read off a crop directly above the system's topmost staff.
+
+    ⚠️ ROADMAP 2.13b: SURYA FIRST WHEN `surya` (the run's `--no-surya` is
+    off), on an 8-staff-space crop, filed under `READERS.SURYA`; Tesseract
+    otherwise, on its own 6-space crop, filed under `READERS.TESSERACT`,
+    byte-for-byte the reader below. Where Surya reads nothing the system is
+    `NO_INK` and Tesseract is NOT asked -- measured 5 right / 7 wrong on
+    exactly those systems (`bar_number_text`'s Surya block). Where Surya
+    cannot run, a `READER_UNAVAILABLE` row says so and Tesseract reads.
 
     ⚠️ ONE ROW PER SYSTEM, ON THE SYSTEM SUBJECT -- not per staff, because
     the numeral is printed once per system regardless of how many staves it
@@ -10100,9 +10107,8 @@ def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
     the same ordering `_system_local` uses to assign ordinal 0 -- no second
     geometry pass is needed to find it.
 
-    ⚠️ TESSERACT ONLY, NO SERVER. `bar_number_text` whitelists ASCII digits
-    and never asks for Surya, so a `--no-surya` run is unaffected by this
-    reader and never falls back -- there is nothing here to fall back FROM.
+    ⚠️ THE TESSERACT RUNG IS UNCHANGED BY 2.13b: same crop, same config,
+    same rows, so a `--no-surya` run reads exactly what it read before.
 
     ⚠️⚠️ FOUR STATES, THE SAME CONTRACT `gather_direction_words` DECLARES
     FOR ITS OWN READER:
@@ -10144,6 +10150,9 @@ def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
                         reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
                         reason=ABSTAIN.READER_UNAVAILABLE,
                         error=type(exc).__name__, note=str(exc)[:200])
+        return
+
+    if surya and _printed_bar_numbers_surya(log, pws, by_system, BNT):
         return
 
     if not BNT.available():
@@ -10210,6 +10219,80 @@ def gather_printed_bar_numbers(log: Log, pws: Any) -> None:
                     reader=READERS.TESSERACT, frame=FRAME_BAR_NUMBER,
                     score=conf / 100.0,
                     bbox_page_px=[float(x0), float(y0), float(x1), float(y1)])
+
+
+def _printed_bar_numbers_surya(log: Log, pws: Any,
+                               by_system: Dict[int, List[Any]],
+                               BNT: Any) -> bool:
+    """ROADMAP 2.13b: the Surya rung of `gather_printed_bar_numbers`.
+
+    Returns True when Surya ran (every system then has exactly one Surya
+    row: an Observation, `NO_INK`, or `NO_STAFF_GEOMETRY`), False when it
+    could not -- having filed a `READER_UNAVAILABLE` row per system first,
+    so the Tesseract rows that follow are visibly a fallback, not a choice.
+    """
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    image = getattr(pws.page, "rgb", None)
+    w = int(image.shape[1]) if image is not None else 0
+
+    def _unavailable(**detail: Any) -> bool:
+        for sys_idx in sorted(by_system):
+            log.abstain(R.system(p, sys_idx), Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.SURYA, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.READER_UNAVAILABLE, **detail)
+        return False
+
+    if not BNT.surya_available():
+        return _unavailable(note="surya is not installed here")
+
+    # The same vertical band as the Tesseract crop (0.8-6.2 spaces above the
+    # top line); only the width differs -- see `SURYA_CROP_WIDTH_SPACES`.
+    boxes: Dict[int, Optional[Tuple[int, int, int, int]]] = {}
+    for sys_idx, members in sorted(by_system.items()):
+        top = min(members, key=lambda s: s.top_y)
+        space = _spacing(top)
+        box = None
+        if image is not None and space and space > 0:
+            x0 = max(0, int(top.x_start))
+            x1 = min(w, int(top.x_start + BNT.SURYA_CROP_WIDTH_SPACES * space))
+            y1 = max(0, int(top.top_y - 0.8 * space))
+            y0 = max(0, int(top.top_y - 6.2 * space))
+            if x1 > x0 and y1 > y0:
+                box = (x0, y0, x1, y1)
+        boxes[sys_idx] = box
+
+    readable = [k for k, b in boxes.items() if b is not None]
+    try:
+        texts = BNT.read_crops_surya(
+            [image[b[1]:b[3], b[0]:b[2]]
+             for b in (boxes[k] for k in readable)]) if readable else []
+        if len(texts) != len(readable):
+            raise RuntimeError(
+                f"surya returned {len(texts)} texts for {len(readable)} crops")
+    except Exception as exc:                                  # noqa: BLE001
+        return _unavailable(error=type(exc).__name__, note=str(exc)[:200])
+
+    read = dict(zip(readable, texts))
+    for sys_idx, box in sorted(boxes.items()):
+        sys_sub = R.system(p, sys_idx)
+        if box is None:
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.SURYA, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        bbox = [float(v) for v in box]
+        text = read[sys_idx]
+        if not text:
+            log.abstain(sys_sub, Q.PRINTED_BAR_NUMBER,
+                        reader=READERS.SURYA, frame=FRAME_BAR_NUMBER,
+                        reason=ABSTAIN.NO_INK, bbox_page_px=bbox)
+            continue
+        # ⚠️ `score=None`: Surya's text path returns no confidence, and a
+        # made-up one would be read as a measurement.
+        log.observe(sys_sub, Q.PRINTED_BAR_NUMBER, text,
+                    reader=READERS.SURYA, frame=FRAME_BAR_NUMBER,
+                    score=None, bbox_page_px=bbox)
+    return True
 
 
 #: `_credit_labels`'s rung words -> the reader vocabulary. Written out rather
@@ -11291,11 +11374,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         local = gather_geometry(log, pws)
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
-        # ⚠️ ROADMAP 2.13. Pure geometry + Tesseract, no detections needed --
+        # ⚠️ ROADMAP 2.13. Pure geometry + OCR, no detections needed --
         # placed here rather than beside `gather_margin_labels` because it
         # needs nothing detection produces and there is no reason to make it
-        # wait.
-        gather_printed_bar_numbers(log, pws)
+        # wait. 2.13b: Surya first unless the run said `--no-surya`.
+        gather_printed_bar_numbers(log, pws, surya=surya_fallback)
 
         detections = gather_detections(
             log, cells, local, detector=detector,

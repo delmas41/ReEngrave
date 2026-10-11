@@ -23,6 +23,12 @@ pointing at headings no longer in the file.)*
 ---
 
 
+## 2026-10-11 — 2.13b the printed bar number: Surya first, Tesseract under `--no-surya` (BUILT, not merged)
+
+- Census of every 2.13 read on both acceptance movements against the plate (84 systems; frame control re-reads the record 84/84). Tesseract: Brahms 13 right / **22 wrong** of 35 decided (bold 1→4, leading 1 lost to the bracket curl, 6-space crop clips the third digit); Litolff 21 / 7.
+- `bar_number_text.read_crops_surya` (8-space crop, 60 px pad, 2x, 16 tokens) via `gather._printed_bar_numbers_surya`, filed under `READERS.SURYA`; `gather()` passes `surya=surya_fallback`. Shipped function on the real raster: Brahms 32 / 0 wrong, Litolff 27 / 0. No cascade (Tesseract where Surya is silent: 5 right / 7 wrong). No new flag; ADJUDICATE/EXPORT untouched.
+- `printed_bar_check`: deltas now clean steps (Brahms −2 at 194, −3 at 215; Litolff −1 at 171, −2 at 430). Tests RED first (10/10), `check` 192 unchanged. FINDINGS `omr-bar-number-2026-09` §7; crops for Sean in `out/print/2.13b-bar-number/`.
+
 ## 2026-10-11 — 2.87 the stem finder LANDED on main, switch ON on STAGED
 
 - Sean: *"Land switch on"*. `219301ba`: `STEM_FINDER_STAGED_DEFAULT` = thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head; `OMR_STEM_FINDER` unset -> that set on STAGED, set -> exactly the list; LEGACY's default stays empty (frozen). `head_contact` built, OFF. Tests RED first (6 of 7).
