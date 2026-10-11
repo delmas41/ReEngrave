@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 -- ROADMAP 2.85 built: repeats and 1st/2nd endings (branch `lane-2.85-repeats-voltas`, not merged)
+## 2026-10-11 -- ROADMAP 2.85 built: repeats and 1st/2nd endings (branch `lane-2.85-repeats-voltas`, not merged; next to land)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
   - `volta_bracket.py` files `Q.VOLTA_BRACKET`;
@@ -32,7 +32,12 @@ pointing at headings no longer in the file.)*
 - EXPORT: `_EndingPlan` numbers the 2nd ending with the 1st ending's numbers, the print's way, and writes `<ending>`/`<repeat>`. The 2.13 printed-number check now compares against the number the file writes.
 - Brahms A/B (one record, one tree): the drift after p10 drops by 2, as predicted.
 - 25 new tests; the export tests were run RED on origin/main first. `staged.check` 192 = base.
-- Open for Sean: whether the 1st-ending bars get a suffix (Verovio warns on duplicate numbers), and 5 blind tiles. FINDINGS `benchmarks/omr-repeats-endings-2026-10/FINDINGS.md`.
+- Sean, blind tiles 5 of 5; keep the print's numbers (no suffix on the 1st-ending bars). FINDINGS `benchmarks/omr-repeats-endings-2026-10/FINDINGS.md`.
+
+## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
+
+- `lane-tenuto-ledger` (`cc58e6bc`) merged (Sean: "land"). STAGED, ADJUDICATE: `adjudicate_articulation_is_not_an_articulation` refuses an `articTenuto*` dash lying between a head of its bar and the staff that OWNS that head (`ledger_between_staff_and_note`), abstains where that owner is unread; moved after `Q.GLYPH_OWNER` in ORDER. Census: 42 tenuto boxes on both whole movements, 0 real tenutos. Sean's 12 blind tiles: 0 wrong, mirror below the staff holds. 23 tests (RED 10 on origin/main). FINDINGS `benchmarks/omr-tenuto-ledger-2026-10/` §6.
+- Next in the landing order: 2.85 repeats/endings -> stem finder 2.87 -> 2.83 -> 2.12m (Sean put 2.85 after tenuto, 2026-10-11).
 
 ## 2026-10-11 -- crops-bar-drift landed on main
 
