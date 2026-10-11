@@ -356,3 +356,217 @@ directions and 0.25 is its middle.
 * The 4 found-but-not-attached heads (`adjudicate_head_stem`'s no-tolerance overlap) and the 5 heads filed on a flag's rising curve
   are 2.78's (a stem that is refused leaves the next vertical stroke against the head to be its stem).
 * The scorer now prints these numbers at GATHER + ADJUDICATE for any record, so the next re-gather reads them with one command.
+
+## 9. The stem finder (ROADMAP 2.87; Sean 2026-10-10, *"Send out an agent to handle the stem fixes"*)
+
+**Path:** shared `line_detection.detect_stems` (GATHER) for items 1, 2, 4 -- the legacy `transcribe` passes no detector boxes so only
+`thin_run` can reach it, and it is OFF -- and STAGED ADJUDICATE for item 3. **Everything is behind one allow-list flag**
+`OMR_STEM_FINDER=thin_run,pair_evidence,attach_tolerance,refuse_owned`, default EMPTY (the shipped reader; control below). Nothing is promoted: Sean
+decides. Commits on `lane-stem-finder`: `789d1a7d` (1), `4a3fc515` (2), `c13cdf56` (3), `42b28f31` (4); each carries its own tests (RED first
+and a mutation that turns it red again) and its own `CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED` block.
+
+### 9.1 The answer (Brahms 317803 pdf 0, Sean's 227 stems, scorer as in section 8; base = origin/main `40ab373a` clean, arm = `42b28f31` clean)
+
+Both records are `dirty: false` (the committed-tree re-runs `f0`/`f1` below). The first arms (`a1`-`a4`, `t2`-`t7`) were gathered from a DIRTY
+working tree while the code was being written, so they are not baselines; the final arm was re-run from the committed tree and **reproduces the
+dirty numbers exactly**, which is why the per-item rows below are quoted from the dirty arms and the totals from the clean one.
+
+| | base | all four repairs |
+|---|--:|--:|
+| Sean's stems found by the CV reader (of 227) | 173 = 0.762 | **220 = 0.969** |
+| CV stems that are not Sean's ("invented") | 68 (precision 0.720) | **25 (precision 0.899)** |
+| heads on their right stem (of 321) | 215 = 0.670 | **306 = 0.953** |
+| stem direction right / wrong / abstained | 247 / 3 / 55 | 292 / 1 / 12 |
+| heads' attach outcome | right 215, no stem found 97, wrong stem 5, found-not-attached 4 | right 306, not found 12, found-not-attached 2, narrowed-with-the-right-stem 1, wrong 0 |
+
+**Control that can fail (flag OFF):** the committed tree with the flag unset (`f0`) has Q.STEM rows IDENTICAL to base (0 differing rows on the
+page record) and identical counts on both count pages; with the flag set `f1` differs. **No stem of Sean's that base found is lost** (0 of 173).
+**Newly worse:** one head, `q1322`, was RIGHT and is now `narrowed_with_the_right_stem` (a second stem now touches it; two stems are narrowed,
+never guessed); no head is newly wrong; no direction went right to wrong.
+
+Per repair, cumulative, from the dirty arms (found / invented / heads right): base 173 / 68 / 215. `thin_run` 208 / 71 / 281. `+ pair_evidence`
+220 / 71 / 303. `thin_run + refuse_owned` (first version, a flag box owned a stroke at 0.8) 218 / 26 / 301 -- it LOST two of Sean's stems
+(`b4282`, `b4289`: the detector's flag box wraps a short flagged stem whole; crop looked at), so a flag is not an owner; final `thin_run +
+refuse_owned` 220 / 25 / 303; `+ attach_tolerance` 220 / 25 / 306. `pair_evidence` adds nothing once `refuse_owned` is on (the accidental's
+strokes are already gone), and is the narrower rule where the accidental's box is missing from the owner list.
+
+### 9.2 What each repair is, and the convention it assumes
+
+1. **`thin_run`** -- the 45 fused thirds. A run refused only for being too WIDE is searched for the stem inside it: the sorted per-column
+   extents of the run split at their widest gap (>= 0.8 sp), the columns above the gap are the stem if they form one thin band. The first
+   version ("columns as tall as the run's tallest") found 26 of 54; the probe on the 57 wide runs of the page said why: a scanned stem is
+   SLANTED, so its columns climb 4.55 -> 4.86 sp across its own width while the heads' columns stand at 2.0-2.3 -- a bimodal gap, not a plateau.
+   The gap form found 35 of 54 (208). *Assumes:* a stem is one thin stroke at the side of its head, reaching beyond the heads at one end.
+   *Would falsify:* a barline pair or clef spine standing beyond a block. The whole run is still recorded `RUN_TOO_WIDE` in `Q.VERTICAL_RUN`.
+2. **`pair_evidence`** -- the 9 PAIRED stems. A pair is condemned only where the PARTNER lies on a detector accidental/key box and this stroke
+   does not (7 of the 9 partners lie on an accidental box; the other 2 lie on a notehead box and stay with `OMR_STEM_NOTEHEAD_GATE`, 2.4a).
+3. **`attach_tolerance`** -- 4 found-but-not-attached heads. One definition (`geometry.stem_touches_head`, head box grown by 0.12 of its own
+   height ~ a stem thickness) now serves `rhythm._stems_on`, `rhythm._stem_joined`, `notehead_precision._stem_rows_on` and
+   `stem_value.adjudicate_head_stem`. Two of the four attach; the two left stand at 0.0 and 0.1 sp and are not a tolerance case. The measured
+   gaps run continuously 0 to 0.5 head heights (no empty interval), so 0.12 is a named convention, not a fit. **Not changed** (still exact
+   overlap): stem-to-beam joins, `gather._stacked_boxes_overlap`, `ownership._boxes_overlap`, `export`.
+4. **`refuse_owned`** -- the 68 invented. A stroke at least half (clef, key, time-signature numeral) or 0.8 (accidental, rest) inside a detector
+   box of that mark is the mark's, dropped BEFORE the pair rule. 68 -> 25. **What stays invented (25):** 13 strokes on a flag box (the flag's
+   rising curve: a flag box cannot be an owner, above), 8 + 1 strokes where Sean has no stem box under them (very probably real stems of the
+   ~18 he did not box -- tiles below ask him), 3 on a numeral (box missing or too small).
+
+### 9.3 Count pages at GATHER + ADJUDICATE (`acceptance_quick`, default view; base / `f0` = the flag unset / `f1` = all four)
+
+| | Brahms p1 base | f0 | f1 | Litolff p3 base | f0 | f1 |
+|---|--:|--:|--:|--:|--:|--:|
+| `Q.STEM` rows | 792 | 792 | 648 | 370 | 370 | 316 |
+| `Q.BEAM_STROKE` rows | 925 | 925 | 937 | 134 | 134 | 138 |
+| `head_stem` decided / narrowed / abstained | 582 / 6 / 417 | same | 607 / 15 / 383 | 328 / 6 / 128 | same | 373 / 7 / 82 |
+| `stem_value` decided | 54 | 54 | 82 | 80 | 80 | 119 |
+| durations decided (of which beamed) | 1,117 (474) | same | 1,131 (495) | 554 (101) | same | 553 (101) |
+| durations narrowed / abstained | 139 / 99 | same | 125 / 99 | 24 / 36 | same | 25 / 36 |
+
+The detector-class families (`class:beam`, `class:flag*`, the kept/refused counts) are IDENTICAL across all five arms on both pages: the
+repairs move the CV stem and everything downstream of it, not what the detector boxed. **Beams:** +12 / +4 CV beam strokes (the beam reader
+takes the stem set as input). **Flags and durations recovered:** Brahms +21 beamed durations decided and -14 narrowed; Litolff, where the
+duration counts barely move, gains 45 heads on a stem and 39 stem values. ⚠️ Litolff durations decided 554 -> 553 and narrowed 24 -> 25:
+one duration went from decided to narrowed; not traced to a head (the count pages have no hand truth, so none of these duration changes is
+judged against the print). The stem rows fall (792 -> 648, 370 -> 316) because `refuse_owned` removes strokes on clefs, keys and numerals.
+
+### 9.4 Item 5 -- ROADMAP 2.78 one-stem-one-value on Sean's tiles 5 and 6: NO RULE FOLLOWS; nothing changed
+
+`stem_value_from_evidence` reads the stem's LEVELS from the member nearest the stem's TIP (`stem_value._tip_order`, `levels_from`), by design
+(the beams hang at the tip). Tile 5 (Brahms p0, `glyph/0/0/12/1/1` and `/15`; Sean: 16th, we wrote an eighth): the two members read 2 levels (head 1)
+and 1 level (head 15); head 15 is the tip-nearest and decided, so its 1 won. **Head 15 is not a notehead**: the print crop shows the beam's end
+blob, a detector box at the stem's tip end; the stem (a down-stem at head 1's left edge) has no ink beyond it and the box is flush on the
+stem's RIGHT, so it also breaks the side rule for a down stem. The right fix is a notehead refusal for a box on a beam end
+(`notehead_precision`'s question, a per-box witness) and not a change to how a stem reads its levels. A stem-value rule keyed on the side rule
+does not follow: on this page 11 of the 400 joined heads stand flush on the "wrong" side (5 down/right, 6 up/left) and chords with a second
+displace a head to the other side of the stem on purpose, so "wrong side => not this stem's" is false for a chord. Tile 6 (Litolff p7,
+`glyph/7/0/0/7/4` and `/10`; Sean: eighth): **already right on the current tree** -- a page-7 gather (committed tree, flags unset) gives the
+stem value 0.5 (eighth) for both heads, `levels_from` the tip head. The tile's quarter was read from the tree before 2.82 landed; I did not find which commit
+changed it. Not built: no rule that follows, and nothing labelled INFER is worth adding on one wrong tile.
+
+### 9.5 Not done, limits, and what Sean is asked
+
+* **Not done:** the 13 flag-curve strokes; the 2 PAIRED stems whose partner is a notehead box (`OMR_STEM_NOTEHEAD_GATE`, 2.4a); 7 of Sean's stems still
+  missed (`b4083 b4090 b4117 b4131 b4162 b4167 b4320`; their cause was NOT re-derived on the final arm -- the runs record needs the detector's boxes
+  and the finder reads them); the heads found-but-not-attached at 0.0 / 0.1 sp.
+* **One page, one plate** (Breitkopf, top staves): Litolff has no hand truth yet, so 0.969 is this passage's number, not the reader's rate. The
+  count-page durations are unjudged against the print. `OMR_STEM_FINDER` is not read by the web app's LEGACY path except `thin_run`.
+* **Tiles for Sean** `out/print/stem-finder/` (10, blind: only the print, a big number, corner brackets on the subject, one question): tiles
+  1-9 "Is the red line a stem?" -- every stroke the finder now reads that Sean has no stem box under (8 + 1; if they are stems the 25 invented
+  drop to 16 and recall is untouched); tile 10 "1 stem or 2 stems?" -- the one head, `q1322`, that went from decided to narrowed. Maker:
+  `make_tiles.py` (frame control per tile, refuses a bracket that is not on ink).
+
+### 9.6 Sean's answers on the ten tiles (2026-10-11, `out/print/stem-finder/answers.json`)
+
+* **Tiles 1-6 and 8: real stems** (7 of 9). Sean's page has no stem box under them, so they were scored "invented"; they are gaps in the
+  hand truth, not reader errors. The hand-truth file is NOT edited (Sean's call, as with q883).
+* **Tile 7: not a stem** -- *"the end of a flag connecting with its own notehead"* (`obs:008812`). Same family as the 13 flag-curve strokes.
+* **Tile 9: not a stem** -- *"part of a alto clef"* (`obs:009999`, x 1277-1293 at 600 dpi). `refuse_owned` did not drop it: no detector clef
+  box covers it at the half-inside threshold (not traced yet).
+* **Tile 10 (`q1322`): the second "stem" is notehead ink** -- *"Is a notehead - not a stem"*. So the head base had RIGHT and the arm narrowed
+  is a stroke the arm invented out of a notehead: the one newly-worse head is CONFIRMED worse (narrowed, never guessed). Which repair made the
+  stroke is not traced yet.
+
+**So on Sean's page, all four repairs on:** the arm reads 245 strokes as stems; 227 are real (220 of his boxes + 7 he confirmed now) and 18 are
+not: 13 flag curves + 1 flag end (tile 7), 3 on a numeral, 1 alto clef (tile 9). Plus one invented stroke inside a notehead (tile 10) that
+is not counted among the 25 because it lies on one of Sean's head boxes. Open, in order: the flag-curve family (14, overlaps lane 2.83's
+fence), the alto-clef stroke, the tile-10 stroke.
+
+**Hand truth corrected (Sean 2026-10-11: *"Add the stems to my hand labeled pages - I probably just missed them"*).** The seven confirmed
+stems are added to `data/hand-truth/pages/imslp317803/0.json` as `b4352`-`b4358` (all on staff 3, bars 5-6: `s0-st3-m5` x4, `s0-st3-m6` x3),
+via `store.draw` (origin `drawn`, labeler `sean`); their RECTS are the CV stroke's box that Sean judged, not boxes he drew (2.9-6.9 px wide
+against his median 7.4). 1,345 -> 1,352 boxes, 227 -> 234 stems; INVENTORY regenerated (`--check` clean). Re-scored, same two records
+(`final-base` = `40ab373a`, `f1` = `42b28f31`, both clean), `python3 -m tools.omr.hand_truth.score`:
+
+| on Sean's 234 stems | base | all four repairs |
+|---|---|---|
+| CV stems found (recall) | 175 (0.748) | **227 (0.970)** |
+| not Sean's ("invented") | 66 (precision 0.728) | **18 (precision 0.927)** |
+| heads on their right stem | 218 of 335 (0.651) | **319 of 335 (0.952)** |
+| stem direction right / wrong | 250 / 3 | 305 / 1 |
+
+The 18 are exactly the ones Sean called not-stems or that lie on a flag/numeral (section above). Heads with a stem box of Sean's: 321 -> 335 of 338.
+
+**CORRECTION (manager, 2026-10-11) -- tile 10 is NOT notehead ink.** Read against Sean's own hand truth, head `q1322`
+([2709, 5996, 2752, 6034]) has TWO stem boxes of his: one up from its right side ([2748, 5919, 2755, 6004]) and one down from its left
+([2709, 6015, 2716, 6157]); the arm's two strokes there (`obs:010077`, `obs:010079`) both match them (both scored found). His answer *"Is a
+notehead - not a stem"* names the boxed mark, not a stroke. So the arm's `narrowed_with_the_right_stem` is between two REAL stems on one head
+(two voices sharing it, as his boxes draw it); "newly worse, confirmed" above is withdrawn. Open question for Sean: does this one head take
+both stems?
+
+**Head contact, measured (`f1` record, Sean's 234):** of the 229 CV strokes that match his stems, 227 touch a detected notehead within 0.3
+spaces; the 2 that do not (`obs:009856`, `obs:009857`, staff 13) are partial strokes ending 0.82 and 0.33 spaces above their head (his
+heads too). Of the 18 invented, 2 touch none: tile 9's alto-clef stroke (`obs:009999`) and `obs:009052`. The other 16 (flag ink, numerals)
+touch a head, so the rule does not reach them. Every real stem reaches at least 2.27 spaces beyond its head; the invented ones 1.07-2.56.
+
+**Tile 10, Sean's follow-up (2026-10-11):** *"Tile 10 has 2 notes a 3rd apart - 2 voices. The top one has a stem going up and the bottom has
+a stem going down."* His truth agrees: `q1322` (top) takes the up stem `b4311`, `q1319` (below, [2711, 6032, 2752, 6066]) the down stem
+`b4310`. The down stroke's top end (6015) sits at `q1322`'s vertical centre and inside its box, so by geometry alone it fits a two-note chord
+on one down stem just as well, which is why the arm narrows `q1322` between the two. What would decide it: every black head has exactly one
+stem (unless two voices share one head, a unison), and `q1319` has no other candidate -- so it takes the down stem and `q1322` the up one.
+Not built: CONVENTION ASSUMED (one stem per black head, unison excepted), NOT CONFIRMED; it moves 1 head on this page.
+
+### 9.7 Two later-stage stem checks (Sean 2026-10-11, *"Yes"*; ROADMAP 2.87, STAGED ADJUDICATE; commits on `lane-stem-finder`)
+
+**Path: STAGED.** No GATHER change (so no re-gather): both are ADJUDICATE decisions, behind two new names on the SAME allow-list
+`OMR_STEM_FINDER` (`head_contact`, `one_stem_per_head`; default empty = the shipped reader). Measured by re-adjudicating the committed
+`f1` records on ONE tree (the repo's `rebuild_gather` + `pipeline.decide(through="adjudicate")`, `OMR_STEM_FINDER=thin_run,pair_evidence,attach_tolerance,refuse_owned` = base, plus the new name = arm).
+**Control that can fail:** with that env set the rebuild reproduces the committed records to 1 of 19,431 (Brahms) and 4 of 19,883 (Litolff) verdicts (the
+same five on every arm: `voices` / `articulation_is_not_an_articulation`, not mine); WITHOUT the env the same rebuild differs on 1,700 verdicts
+(`head_stem` 1,046) -- so the control is live. Flag-off arm: only `stem_head_contact` verdicts are new (864 / 314), nothing else differs.
+
+**CONVENTION (Sean 2026-10-11).** *"All stems should be connected to a notehead"*, used *"to verify later in the stages"*, not a GATHER refusal.
+Every black notehead has exactly ONE stem, except a UNISON -- two voices on one head -- and *"they would go in different directions"*: an up stem at
+the head's right and a down stem at its left. **WHAT WOULD FALSIFY IT:** a real stem whose head the detector never boxed (found, below, twice); a black
+head that truly carries two same-way stems; a duplicate head box.
+
+**1. `head_contact` -- `Q.STEM_HEAD_CONTACT`** (new, `stem_value.adjudicate_stem_head_contact`, ORDER ahead of `Q.LEDGER_IS_NOT_A_LEDGER`; reads GATHER rows only).
+Filed on the CELL (a `Q.STEM` row has no subject of its own, so a per-stem verdict cannot be filed per stem; `value` = the stem row ids that touch no detected
+notehead, `detail.meets` the others). Touch = within 0.3 head-heights (`geometry.STEM_CONTACT_TOLERANCE_HEADS`; wider than the 0.12 attach tolerance on purpose:
+it only refuses, so it errs toward keeping). ABSTAINED where the cell has strokes and no notehead box. **A stroke cut by the crop's edge is neither met nor refused**
+(`CROP_EDGE_PX`; no frame, no refusal): the first version refused four real stems of the next staff's beamed group that run off the cell (heads in the other cell) and
+turned a beamed eighth into a quarter (Brahms p1 `glyph/1/0/10/0/35`, crop `out/print/stem-finder/round2/crops/b_dur3.png`); that is why the rule exists. A
+unison head keeps both stems by construction (both touch it; test).
+*Consumers changed* (read only the strokes not DECIDED meets_none): `rhythm._not_a_decided_arc` (the "joins >= 2 stems" override), `rhythm._not_the_neighbours_beam`
+(the neighbour's stems), `rhythm._not_a_beam_by_ink` (stems the stroke stands on / ends on), `family_precision._rest_has_a_stem_refusal` and
+`_rest_on_a_slashed_stem_refusal`. *Left alone, and why:* every reader that STARTS from a notehead (`rhythm._stems_on`, `_stem_joined`, `notehead_precision._stem_rows_on`,
+`adjudicate_head_stem`, `Q.STEM_DIRECTION`) -- the head touches the stem by construction; `rhythm._beyond_own_stem` (no `ev`; its call is inside `adjudicate_duration`,
+fenced to lane 2.83: the same `stems` list is read at its top); `ownership` arc `s4_stem_view` (a recorded witness, never acted on); `adjudicate_duration`'s own `stems` read (fence).
+*On Sean's page* (`f1`): 3 strokes are refused, in scored cells: the 2 partial strokes that already attach to no head (`obs:009856`, `obs:009857`; real) and tile 9's alto-clef stroke
+(`obs:009999`; not a stem). The other invented strokes touch a head (flag ink, numerals), so the rule does not reach them. No duration or head-stem outcome on page 0 moves.
+*On the count pages* (arm = `head_contact` alone): **Brahms p1: 0 verdicts change.** **Litolff p3: 4 rests keep their refusal but for another reason** (`rest_has_a_stem` 14 -> 10, `rest_touches_two_staff_lines` 13 -> 17; every rest is still refused, no outcome moves),
+and **2 durations move WRONG-ward**, decided eighth -> narrowed `[0.5, 1.0]` (`glyph/2/1/10/0/1`, `/14`; `stem_value` likewise): a real stem of a beamed pair on the merging plate whose head is fused into a blob
+the detector did not box. Net on the count pages: no gain, two losses. **Not promoted; recommendation: leave OFF** until a notehead can be found in a fused blob (Litolff refuses 87 of 997 strokes, most of them real).
+
+**2. `one_stem_per_head` -- inside `adjudicate_head_stem`** (the forcing is LOCAL to the stems the head touches, and reads no other decision's verdict beyond `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`
+for the other head; EVALUATE is for what follows from a decided verdict, and this narrows only that decision's own candidates). Fires only where the head is already NARROWED between stems
+(`two_stems`); it only ever picks one of those candidates, never overturns a DECIDED head. *Collapse* (`stem_by_one_per_head`): a candidate stem is CLAIMED when another kept head, at a different staff position
+(>= 0.5 head heights apart; a duplicate box does not claim), touches it and no other stem; if exactly one candidate is unclaimed and another is claimed, the head takes the unclaimed one. *Unison* (`unison_two_voices`,
+still NARROWED, both candidates kept, never collapsed): ONE head -- no other kept head touches either stroke -- with exactly two candidates, one pointing up at its right and one down at its left. Two heads a third apart that both touch both
+strokes are NOT a unison (Brahms p1 `glyph/1/0/2/3/6` and `/9`, crop `b_uni1`: the first version mislabelled them; test + a mutation that turns it red). Two same-way strokes are not a unison: today's `two_stems` (negative controls, both ways).
+*Sean's page* (`f1`, scorer as section 8): **heads on their right stem 319 -> 320 of 335; narrowed 1 -> 0 (`q1322` is now DECIDED on the up stroke `obs:010077`, `q1319` keeps the down stroke); stem direction unchanged (305 right / 1 wrong / 13 abstained).**
+*Count pages:* Brahms: 4 collapses + 1 unison (of 19 narrowed), no duration moves; Litolff: 2 collapses + 60 unison readings (of 70 narrowed), no duration moves. `stem_value` follows the collapse (`ambiguous_stem` -> `lone_head`, Litolff +2 decided).
+*Crops* (`out/print/stem-finder/round2/crops/`): the 3 Brahms collapses that are two real heads a third apart (`b_q1322`, `b_col2`, `b_col3`) are the tile-10 pattern and right (the upper head takes the up stem); the 3 others (`b_col1`, `l_col1`, `l_col2`)
+land on a box that is not a note (a beam's end, a cross-staff stem) that was already kept before this change: nothing to confirm, nothing moved. The Litolff unisons I cropped (`l_uni3`, `l_uni4`) are real two-voice heads (an up stem and a down stem on one head; `l_uni2` is too fused to read); `b_uni3` is real. No Litolff hand truth, so these are blind tiles for Sean (below).
+
+**Downstream gap, NOT fixed here (the coordinator's ask):** a unison head carries two stems and keeps a NARROWED `Q.HEAD_STEM` (the verdict has one value). EXPORT and `Q.DURATION` still write ONE note for it, so the second voice's note is not written. Same for any
+head `unison_two_voices` labels: nothing downstream splits it into two notes. A later item.
+
+**Not done / limits.** One page of truth for the collapse (tile 10 and its two siblings); the unison label has no truth on Litolff. Two heads that both touch both strokes (b_uni1) stay narrowed (the up stem belongs to the upper head, the down to the lower, but that does not follow from
+the two conventions alone). 3 of 6 collapses are on boxes that are not notes. `head_contact` is measured negative on Litolff.
+
+### 9.8 Sean's answers, round 2 (2026-10-11, `out/print/stem-finder/round2/answers.json`; raw: *"1. Y 2. Y 3. Y 4. Y 5 -8 . 1 9. 2"*)
+
+* **Unison (`unison_two_voices`), tiles 1, 2, 3, 4, 9: 5 of 5 right** -- each note has two stems, one up and one down (3 Litolff, 2 Brahms).
+  Litolff p3 labels 60 of its 70 narrowed heads a unison; Sean has now seen 3 of them (plus the agent's 2 crops), all right. The rest are
+  unsampled.
+* **One-stem controls, tiles 7, 8: 2 of 2 right** (1 stem each).
+* **`head_contact`'s two Litolff durations, tiles 5, 6: 1 beam each** -- they ARE eighths, as base decided; the arm's narrowing is WRONG on
+  both. `head_contact` is confirmed net negative on the count pages (0 gained, 2 lost) and stays OFF; its cause (a real stem whose head the
+  detector never boxed) is the standing objection to coupling `Q.STEM` to the detector (`STEM_NOTEHEAD_GATE_ENV`'s docstring).
+
+### 9.9 Switched ON on STAGED and landed (Sean 2026-10-11, *"Land switch on"*)
+
+Default (`OMR_STEM_FINDER` unset) on STAGED = `thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head`; `head_contact`
+stays OFF (9.8); LEGACY unchanged. Control that can fail: a Brahms `acceptance_quick` re-gather with the env UNSET on the committed tree
+`219301ba` (clean) holds Q.STEM rows IDENTICAL to the measured arm on pdf 0 and 1 (326 and 648 rows); the base record differs (358 vs 326).
+Scored on Sean's page: found 227 of 234 (0.970), 18 not stems (0.927), heads on their right stem 320 of 335, 0 narrowed, direction 305 right
+/ 1 wrong.

@@ -1,0 +1,311 @@
+{
+ "dpi": 600,
+ "question": "Bracketed mark: L ledger, T tenuto, N neither?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "doc": "brahms",
+   "pdf_page_index": 17,
+   "subject": "glyph/17/0/6/2/17",
+   "page_box_600dpi": [
+    2874,
+    1716,
+    2922,
+    1725
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 21.66,
+    "centroid_offset": [
+     0.01,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "doc": "brahms",
+   "pdf_page_index": 7,
+   "subject": "glyph/7/1/2/6/16",
+   "page_box_600dpi": [
+    3629,
+    4451,
+    3645,
+    4455
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 5.02,
+    "centroid_offset": [
+     0.03,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "doc": "litolff",
+   "pdf_page_index": 6,
+   "subject": "glyph/6/1/0/8/3",
+   "page_box_600dpi": [
+    1912,
+    1962,
+    1942,
+    1967
+   ],
+   "read": {
+    "census_bucket": "head_beyond"
+   },
+   "category": "head_beyond",
+   "frame_control": {
+    "ink_ratio": 56.66,
+    "centroid_offset": [
+     0.0,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "doc": "brahms",
+   "pdf_page_index": 24,
+   "subject": "glyph/24/1/3/2/15",
+   "page_box_600dpi": [
+    2417,
+    4806,
+    2479,
+    4813
+   ],
+   "read": {
+    "census_bucket": "head_beyond"
+   },
+   "category": "head_beyond",
+   "frame_control": {
+    "ink_ratio": 7.41,
+    "centroid_offset": [
+     0.0,
+     0.01
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "doc": "brahms",
+   "pdf_page_index": 10,
+   "subject": "glyph/10/0/10/4/27",
+   "page_box_600dpi": [
+    3028,
+    2826,
+    3064,
+    2831
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 3.79,
+    "centroid_offset": [
+     0.08,
+     0.09
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "doc": "brahms",
+   "pdf_page_index": 24,
+   "subject": "glyph/24/1/2/7/20",
+   "page_box_600dpi": [
+    4931,
+    4786,
+    4960,
+    4792
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 4.98,
+    "centroid_offset": [
+     0.05,
+     0.08
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "doc": "litolff",
+   "pdf_page_index": 8,
+   "subject": "glyph/8/0/7/0/6",
+   "page_box_600dpi": [
+    520,
+    1419,
+    539,
+    1423
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 4.56,
+    "centroid_offset": [
+     0.01,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "doc": "brahms",
+   "pdf_page_index": 11,
+   "subject": "glyph/11/0/5/2/16",
+   "page_box_600dpi": [
+    1875,
+    1644,
+    1928,
+    1654
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 5.61,
+    "centroid_offset": [
+     0.02,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "doc": "brahms",
+   "pdf_page_index": 25,
+   "subject": "glyph/25/1/9/8/7",
+   "page_box_600dpi": [
+    4620,
+    6505,
+    4648,
+    6509
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 9.99,
+    "centroid_offset": [
+     0.02,
+     0.0
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "doc": "brahms",
+   "pdf_page_index": 17,
+   "subject": "glyph/17/0/10/5/34",
+   "page_box_600dpi": [
+    5392,
+    2651,
+    5444,
+    2659
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 4.68,
+    "centroid_offset": [
+     0.01,
+     0.02
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "doc": "brahms",
+   "pdf_page_index": 12,
+   "subject": "glyph/12/1/9/6/10",
+   "page_box_600dpi": [
+    3694,
+    6252,
+    3757,
+    6269
+   ],
+   "read": {
+    "census_bucket": "heads_staffward_only"
+   },
+   "category": "heads_staffward_only",
+   "frame_control": {
+    "ink_ratio": 2.23,
+    "centroid_offset": [
+     0.01,
+     0.05
+    ],
+    "passes": true
+   }
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "doc": "brahms",
+   "pdf_page_index": 17,
+   "subject": "glyph/17/0/8/0/21",
+   "page_box_600dpi": [
+    948,
+    2129,
+    998,
+    2141
+   ],
+   "read": {},
+   "category": "mirror_question",
+   "frame_control": {
+    "ink_ratio": 18.22,
+    "centroid_offset": [
+     0.03,
+     0.05
+    ],
+    "passes": true
+   },
+   "question": "Below the staff: nothing under a tenuto? Y/N"
+  }
+ ],
+ "frame_control": {
+  "tiles": 12,
+  "real_box_passes": 12,
+  "SHIFTED_(40,40)px_box_passes(control, must be low)": 1
+ },
+ "_readme": "ROADMAP 2.84 blind tiles. Tiles 1-11 ask L/T/N of the bracketed mark; tile 12 asks the below-the-staff mirror (Y/N). 'read' and 'category' are hidden from Sean; 'census_crop' indexes the 42-crop census in benchmarks/omr-tenuto-ledger-2026-10/FINDINGS.md."
+}

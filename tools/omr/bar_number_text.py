@@ -7,14 +7,13 @@ bar count is a SEPARATE witness -- see
 `tools.omr.staged.export._printed_bar_number_check` -- and the two are
 compared, never merged, and never used to renumber or insert a bar.
 
-**Tesseract only, no server.** The margin-label cascade
-(`contextual._labels_for_page`) goes text-layer -> Surya -> Tesseract ->
-Vision because an instrument NAME needs a real vocabulary reader; a bar
-number is 1-4 ASCII digits, which is exactly Tesseract's own
-digit-whitelist mode and needs neither a Python 3.10 venv nor a subprocess
-server. This module never asks for Surya, so a `--no-surya` run is
-untouched by it and never needs to fall back -- there is nothing to fall
-back FROM.
+**Surya first, Tesseract under `--no-surya` (ROADMAP 2.13b).** This was
+Tesseract-only on the reasoning that 1-4 ASCII digits are exactly
+Tesseract's digit-whitelist mode. The whole-movement census refuted that:
+on Breitkopf 22 of Tesseract's 35 decided numerals were wrong (see the
+Surya block below for the figures). Surya is now asked first, on a wider
+crop; Tesseract runs only when Surya was not asked for or cannot run, and
+each files under its own reader name.
 
 **One crop per system**, cut by the caller (`tools.omr.staged.gather.
 gather_printed_bar_numbers`) directly above the system's topmost staff, from
@@ -57,6 +56,69 @@ _TESSERACT_CONFIG = f"--psm {PSM} -c tessedit_char_whitelist=0123456789"
 UPSCALE = 1
 
 _DIGITS_RE = re.compile(r"\d+")
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.13b: the Surya rung, asked FIRST when the run asks for Surya.
+#
+# ⚠️ MEASURED ON BOTH ACCEPTANCE MOVEMENTS, every system, against the print
+# (`benchmarks/omr-bar-number-2026-09/FINDINGS.md` §6). Tesseract on the
+# 6-space crop: Breitkopf 13 right / 22 WRONG of 35 decided (the bold "1"
+# read as "4", the leading "1" lost into the bracket's curl, the third digit
+# clipped); Litolff 21 right / 7 wrong. Surya on an 8-space crop with this
+# preparation: Breitkopf 34 right / 0 wrong, Litolff 27 right / 0 wrong.
+# Where Surya reads nothing the caller asks NOTHING else: Tesseract on
+# exactly those systems was 5 right / 7 wrong (CLAUDE.md rule 8).
+# Tesseract stays the `--no-surya` reader, on its own 6-space crop,
+# unchanged.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The Surya crop's width, in staff spaces right of `Staff.x_start`. A
+#: 3-digit Breitkopf numeral ends ~7 spaces in; 6 clipped it (229 read 22).
+#: Swept 6/7/8 at 2x: 23/30/34 right on Breitkopf, 2/1/0 wrong.
+SURYA_CROP_WIDTH_SPACES = 8.0
+#: White border added round the crop before Surya sees it (2.85's recipe).
+SURYA_PAD_PX = 60
+#: Upscale after padding. 3x was swept and read fewer (24 vs 34).
+SURYA_UPSCALE = 2
+#: Generation cap per crop. 8 returns empty (2.85); 32 read no more than 16.
+SURYA_MAX_TOKENS = 16
+
+
+def surya_available() -> bool:
+    """Is there a working Surya to call? Never raises."""
+    try:
+        from .staff_labels_surya import available as _available
+        return bool(_available())
+    except Exception:                                       # noqa: BLE001
+        return False
+
+
+def read_crops_surya(crops) -> list:
+    """Surya's text for each RGB crop, `""` where it read nothing.
+
+    One subprocess job for the whole list, so a page pays one dispatch.
+    Raises whatever `staff_labels_surya.read_crops_text` raises -- telling
+    "Surya failed" apart from "Surya read nothing" is the caller's job.
+    """
+    import cv2
+    import numpy as np
+
+    from . import staff_labels_surya as SL
+
+    prepared = []
+    for rgb in crops:
+        arr = np.asarray(rgb)
+        bgr = cv2.cvtColor(arr, cv2.COLOR_RGB2BGR) if arr.ndim == 3 else (
+            cv2.cvtColor(arr, cv2.COLOR_GRAY2BGR))
+        bgr = cv2.copyMakeBorder(bgr, SURYA_PAD_PX, SURYA_PAD_PX,
+                                 SURYA_PAD_PX, SURYA_PAD_PX,
+                                 cv2.BORDER_CONSTANT, value=(255, 255, 255))
+        if SURYA_UPSCALE > 1:
+            bgr = cv2.resize(bgr, None, fx=SURYA_UPSCALE, fy=SURYA_UPSCALE,
+                             interpolation=cv2.INTER_CUBIC)
+        prepared.append(bgr)
+    texts = SL.read_crops_text(prepared, max_tokens=SURYA_MAX_TOKENS)
+    return [(t or "").strip() for t in texts]
 
 
 def available() -> bool:

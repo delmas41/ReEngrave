@@ -144,3 +144,61 @@ def is_timesig_digit_ink(box_value: Any, timesig_box_values: Iterable[Any]
         if box_iou(box_value, ts_val) > TIMESIG_DIGIT_DUPLICATE_IOU_MIN:
             return True
     return False
+
+
+# ---------------------------------------------------------------------------
+# Does this stem stand against this notehead?  (ROADMAP 2.87, `attach_tolerance`)
+# ---------------------------------------------------------------------------
+
+#: How far (in the notehead box's own HEIGHTS, ~ staff spaces) a stem's box may
+#: stand off a notehead's box and still be that head's stem. A stem stands at
+#: the SIDE of its head and the two boxes are each loose by a stroke's width, so
+#: one stem thickness (~0.1 space, [L14]) of gap is the box slack, not a gap
+#: in the engraving.
+#:
+#: CONVENTION ASSUMED: a stem is flush with its head's side (CLAUDE.md section
+#: 10) -- so a stem box standing within one stem thickness of a head box is that
+#: head's. WHAT WOULD FALSIFY IT: a head whose stem lies 0.05-0.12 spaces off
+#: and is a DIFFERENT note's (two stems that close would be a chord in
+#: seconds, which share one stem). NOT CONFIRMED WITH SEAN. MEASURED, with
+#: no empty interval to put it in: on Brahms 317803 p0 the stem-to-head gaps
+#: run continuously from 0 to 0.5 head heights; the four found-but-not-attached
+#: heads stand at 0.00, 0.02, 0.02 and 0.10 spaces (FINDINGS hand-truth-score
+#: section 8.5).
+STEM_ATTACH_TOLERANCE_HEADS = 0.12
+
+
+def attach_tolerance_on() -> bool:
+    """`attach_tolerance` is in the STAGED stem-finder set (ON by default)."""
+    from ..line_detection import staged_stem_finder
+    return "attach_tolerance" in staged_stem_finder()
+
+
+def stem_finder_repair_on(name: str) -> bool:
+    """`name` is in the STAGED stem-finder set (`OMR_STEM_FINDER`, else the staged default)."""
+    from ..line_detection import staged_stem_finder
+    return name in staged_stem_finder()
+
+
+#: How far (in the notehead box's own HEIGHTS, ~ staff spaces) a stem may stand off
+#: the nearest detected notehead and still be a stem that is CONNECTED TO A
+#: NOTEHEAD (`Q.STEM_HEAD_CONTACT`). Wider than the attach tolerance on purpose: the
+#: attach question picks a head's stem, this one only REFUSES a stroke for having no
+#: head anywhere near it, so it errs toward keeping. MEASURED, not fitted: on
+#: Brahms 317803 p0, 227 of the 229 strokes that match Sean's stems touch a
+#: detected head within 0.3 (FINDINGS hand-truth-score section 9.6); the two that do
+#: not are partial strokes that attach to no head anyway. CONVENTION (Sean
+#: 2026-10-11): every stem touches a notehead. WOULD FALSIFY IT: a real stem whose
+#: head the detector never boxed. NOT CONFIRMED beyond that page.
+STEM_CONTACT_TOLERANCE_HEADS = 0.3
+
+
+def stem_touches_head(stem: Any, head: Any) -> bool:
+    """`stem` and `head` are `(x, y, w, h)` boxes. True when they share any area,
+    or -- under `OMR_STEM_FINDER=attach_tolerance` -- when the stem stands within
+    `STEM_ATTACH_TOLERANCE_HEADS` of the head's height off the head's box."""
+    tol = STEM_ATTACH_TOLERANCE_HEADS * head[3] if attach_tolerance_on() else 0.0
+    ax, ay, aw, ah = stem
+    bx, by, bw, bh = head
+    return (ax <= bx + bw + tol and ax + aw >= bx - tol
+            and ay <= by + bh + tol and ay + ah >= by - tol)

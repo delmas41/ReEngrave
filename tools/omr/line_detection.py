@@ -197,6 +197,169 @@ def stem_stroke_enabled() -> bool:
         "1", "true", "yes", "on")
 
 
+#: `OMR_STEM_FINDER` -- ROADMAP 2.87, the stem finder (Sean 2026-10-10: *"Send
+#: out an agent to handle the stem fixes"*). A comma list of the repairs that
+#: are ON. The shared default is EMPTY (LEGACY); STAGED passes
+#: `staged_stem_finder()` (below), ON by default since 2026-10-11. Every repair is its own name so it is priced alone:
+#:
+#:   thin_run        a run refused only for being too WIDE is searched for the
+#:                   thin stem inside it (`_thin_stem_in_run`)
+#:   pair_evidence   `_drop_paired_strokes` drops a pair only where a member
+#:                   lies on an ACCIDENTAL box (needs `accidentals=`)
+#:   refuse_owned    a stroke inside a clef / key / digit / accidental / flag /
+#:                   rest box is that mark's stroke, not a stem (`owners=`)
+#:
+#: PATH: shared (`detect_stems` is called by LEGACY `transcribe` through
+#: `detect_lines(cell)` and by STAGED `gather_cv_lines`); the repairs that need
+#: detector boxes (`pair_evidence`, `refuse_owned`) fire only on STAGED, which
+#: is the only caller that supplies them.
+STEM_FINDER_ENV = "OMR_STEM_FINDER"
+
+#: The STAGED default (Sean 2026-10-11: *"Land switch on"*): the five repairs his
+#: page and tiles priced (FINDINGS hand-truth-score-2026-10 sections 9.1-9.8).
+#: `head_contact` is NOT in it -- it narrowed two real eighths (round-2 tiles
+#: 5-6). The LEGACY default stays EMPTY: `detect_lines(cell)` with no
+#: `stem_finder=` reads exactly what it always read (LEGACY is frozen).
+STEM_FINDER_STAGED_DEFAULT = frozenset(
+    {"thin_run", "pair_evidence", "attach_tolerance", "refuse_owned", "one_stem_per_head"})
+
+
+def stem_finder_repairs(default: frozenset = frozenset()) -> frozenset:
+    """The repairs named in `OMR_STEM_FINDER`; `default` when it is UNSET.
+
+    Set (even to "") it is exactly the list, so `OMR_STEM_FINDER=` turns every
+    repair off for an A/B and one name prices that repair alone."""
+    import os
+    raw = os.environ.get(STEM_FINDER_ENV)
+    if raw is None:
+        return frozenset(default)
+    return frozenset(t.strip().lower() for t in raw.split(",") if t.strip())
+
+
+def staged_stem_finder() -> frozenset:
+    """The repairs the STAGED path runs: `OMR_STEM_FINDER`, else the staged default."""
+    return stem_finder_repairs(STEM_FINDER_STAGED_DEFAULT)
+
+
+#: The empty interval (staff spaces) between the stem's columns and the heads'
+#: columns in the run's sorted column extents. Two heads a third apart are ~2 spaces of ink, so
+#: a run that is not at least this much taller than its widest non-stem column
+#: has no stem to find (the shortest stem Sean's page loses is 2.85 spaces).
+THIN_STEM_PROTRUDE_SPACES = 0.8
+
+
+#: Marks whose own strokes are NOT stems, with the share of a stroke's area that
+#: must lie inside the mark's box for the stroke to be the mark's own. `kind` is
+#: spelled by the caller from the detector's class name (`mark_kind`).
+#:
+#: A stem is never drawn inside a clef, a key signature or a time-signature
+#: numeral, so a half-inside stroke there is already the mark's (the detector's
+#: boxes on a scan are loose or tight by a few pixels): 0.5. An accidental or a
+#: rest sits BESIDE a stem and its box can brush one: 0.8.
+#:
+#: A FLAG IS NOT IN THIS TABLE, and that was measured, not assumed. The
+#: detector's flag box wraps a SHORT flagged stem (2 spaces: stem, tip and
+#: curve) whole -- on Sean's Brahms page 0 a 0.8 share refused two of his real
+#: stems (b4282, b4289) -- so "inside a flag box" cannot tell the stem from the
+#: flag's rising curve. 8 curve strokes stay invented until something that CAN
+#: tell them apart (the curve does not stand at a head's side) is built.
+OWNER_MIN_SHARE = {"clef": 0.5, "key": 0.5, "digit": 0.5,
+                   "accidental": 0.8, "rest": 0.8}
+OWNER_KINDS = tuple(OWNER_MIN_SHARE)
+
+
+def mark_kind(smufl_name: str) -> str | None:
+    """The `OWNER_KINDS` a detector class name belongs to, or None."""
+    n = str(smufl_name)
+    low = n.lower()
+    if low.startswith("accidental"):
+        return "accidental"
+    if low.startswith("key") and not low.startswith("keyboard"):
+        return "key"
+    if low.startswith("clef") or low.endswith("clef"):
+        return "clef"
+    if low.startswith("timesig"):
+        return "digit"
+    if low.startswith("flag"):
+        return "flag"
+    if low.startswith("rest"):
+        return "rest"
+    return None
+
+
+def _inside_share(stroke, mark) -> float:
+    """Share of the stroke's box area that lies inside `mark` = (x, y, w, h)."""
+    sx0, sy0 = stroke.x_canonical, stroke.y_canonical
+    sx1, sy1 = sx0 + stroke.width_canonical, sy0 + stroke.height_canonical
+    mx, my, mw, mh = mark
+    iw = min(sx1, mx + mw) - max(sx0, mx)
+    ih = min(sy1, my + mh) - max(sy0, my)
+    area = max(1, stroke.width_canonical * stroke.height_canonical)
+    return max(0.0, iw) * max(0.0, ih) / area
+
+
+def _owned_by(stroke, marks, kinds) -> str | None:
+    """The kind of the first mark in `kinds` that owns `stroke`, or None."""
+    for kind, box in marks:
+        if kind in kinds and _inside_share(stroke, box) >= OWNER_MIN_SHARE[kind]:
+            return kind
+    return None
+
+
+def _thin_stem_in_run(labels: np.ndarray, label: int, x: int, y: int, w: int,
+                      h: int, line_spacing: float, max_w: int):
+    """The thin stem inside a run that is too wide to be one, or None.
+
+    Two heads a third apart touch (their boxes are 2 steps = 1 space apart,
+    ~2 spaces of ink) and survive the stem opening, so the stem standing at
+    their side comes out FUSED with them as one run about a space wide
+    (`benchmarks/hand-truth-score-2026-10` FINDINGS section 8.4: 45 of 54
+    missed stems). The stem is still there: it is the columns of the run that
+    are as tall as the WHOLE run, because the heads are not. Convention: a stem
+    is a single thin stroke standing at the side of its head and reaching
+    beyond the heads at one end at least.
+
+    Returns `(x0, top, width, height)` in the cell's frame, or None where the
+    run has no such columns: nothing sticks out (a block), the full-height
+    columns are wider than a stem (two stems, a barline pair), or the columns
+    are not contiguous.
+    """
+    sub = labels[y:y + h, x:x + w] == label
+    # the longest vertical run of the component in every column
+    cur = np.zeros(w, dtype=np.int32)
+    best = np.zeros(w, dtype=np.int32)
+    bend = np.zeros(w, dtype=np.int32)
+    for r in range(h):
+        cur = np.where(sub[r], cur + 1, 0)
+        upd = cur > best
+        best = np.where(upd, cur, best)
+        bend = np.where(upd, r, bend)
+    # The stem's columns and the heads' columns are two populations separated
+    # by an EMPTY INTERVAL in the sorted column extents (a slanted scan stem
+    # climbs a little across its own width, so "as tall as the tallest" is too
+    # strict): the stem columns are those above the widest gap, and the gap is
+    # the stem's protrusion beyond the fused heads.
+    order = np.sort(best)
+    gaps = np.diff(order)
+    k = int(np.argmax(gaps))
+    if gaps[k] < int(round(line_spacing * THIN_STEM_PROTRUDE_SPACES)):
+        return None                      # nothing sticks out: no stem here
+    cut = (order[k] + order[k + 1]) / 2.0
+    full = best > cut
+    cols = np.flatnonzero(full)
+    groups = np.split(cols, np.flatnonzero(np.diff(cols) > 1) + 1)
+    if len(groups) != 1:
+        return None                      # two separate tall bands: not one stem
+    band = groups[0]
+    bw = len(band)
+    if bw > max_w:
+        return None
+    tops = bend[band] - best[band] + 1
+    top = int(tops.min())
+    bot = int(bend[band].max())
+    return (x + int(band[0]), y + top, bw, bot - top + 1)
+
+
 #: `OMR_STEM_NOTEHEAD_GATE` — a vertical stroke that MEETS A DETECTED NOTEHEAD
 #: is a stem, and the pair rule may not delete it. Default OFF, so the test is
 #: an ALLOW-LIST (CLAUDE.md, *A flag's OFF test must follow its DEFAULT*).
@@ -504,7 +667,7 @@ def _meets_a_notehead(stroke, heads) -> bool:
 
 
 def _drop_paired_strokes(stems, line_spacing: float, gap: float,
-                         min_overlap: float, heads=None):
+                         min_overlap: float, heads=None, on_accidental=None):
     """Reject vertical strokes that come in PAIRS, which stems do not.
 
     A sharp and a natural are each built from two parallel verticals about half
@@ -572,6 +735,14 @@ def _drop_paired_strokes(stems, line_spacing: float, gap: float,
         for j in range(len(stems)):
             if i == j or abs(centres[i] - centres[j]) > max_dx:
                 continue
+            # OMR_STEM_FINDER=pair_evidence: the rule's premise is that the
+            # pair is an ACCIDENTAL's two strokes. Where the detector has
+            # boxed the accidental and the partner lies on it while THIS
+            # stroke does not, this stroke is the stem beside the accidental,
+            # not the accidental's second stroke: it is not condemned by it.
+            if (on_accidental is not None and on_accidental[j]
+                    and not on_accidental[i]):
+                continue
             overlap = min(bottoms[i], bottoms[j]) - max(tops[i], tops[j])
             if overlap <= 0:
                 continue
@@ -597,6 +768,8 @@ def detect_stems(
     enable_notehead_gate: bool | None = None,
     noteheads: Sequence | None = None,
     candidates_out: list | None = None,
+    stem_finder: frozenset | None = None,
+    marks: Sequence | None = None,
 ) -> list[LineDetection]:
     """Find stem-like vertical ink runs in `cell`.
 
@@ -702,7 +875,10 @@ def detect_stems(
     opened = cv2.morphologyEx(ink, cv2.MORPH_OPEN, kernel)
 
     # Connected components
-    num, _, stats, _ = cv2.connectedComponentsWithStats(opened, connectivity=8)
+    num, labels, stats, _ = cv2.connectedComponentsWithStats(
+        opened, connectivity=8)
+    if stem_finder is None:
+        stem_finder = stem_finder_repairs()
     out: list[LineDetection] = []
     min_h = int(round(line_spacing * min_height_lines))
     max_h = int(round(line_spacing * max_height_lines))
@@ -729,6 +905,23 @@ def detect_stems(
             continue
         if w > max_w:
             _note(x, y, w, h, area, RUN_TOO_WIDE)
+            # OMR_STEM_FINDER=thin_run: the run is refused AS A WHOLE (the
+            # record above still says so) but the thin stem fused into it is
+            # looked for and filtered like any other stroke.
+            if "thin_run" in stem_finder:
+                thin = _thin_stem_in_run(labels, i, x, y, w, h,
+                                         line_spacing, max_w)
+                if thin is not None:
+                    tx, ty, tw, th = thin
+                    if (th >= min_h and tx >= edge_margin
+                            and tx + tw <= cell_w - edge_margin
+                            and tw * th >= max(4, line_spacing * 0.5)
+                            and th / max(1, tw) >= 3.0):
+                        out.append(LineDetection(
+                            smufl_name="stem", category="stem",
+                            x_canonical=int(tx), y_canonical=int(ty),
+                            width_canonical=int(tw), height_canonical=int(th),
+                            confidence=1.0))
             continue
         # Edge filter — barlines live at the cell boundaries.
         if x < edge_margin or x + w > cell_w - edge_margin:
@@ -750,6 +943,16 @@ def detect_stems(
             height_canonical=int(h),
             confidence=1.0,
         ))
+    # OMR_STEM_FINDER=refuse_owned: a stroke that lies inside a clef, key
+    # signature, time-signature digit, accidental, flag or rest box is that
+    # mark's own stroke (1.7 stems: 65 of the 68 strokes that are not Sean's
+    # stems lie on exactly these). ONLY where the caller supplied the boxes.
+    if "refuse_owned" in stem_finder and marks is not None:
+        out = [s for s in out if _owned_by(s, marks, OWNER_KINDS) is None]
+    on_acc = None
+    if "pair_evidence" in stem_finder and marks is not None:
+        on_acc = [any(k in ("accidental", "key") and _inside_share(s, b) >= 0.5
+                      for k, b in marks) for s in out]
     if drop_accidental_pairs:
         before = out
         # ⚠️ TWO CONDITIONS, AND THE DATA IS ONE OF THEM. `gate_heads` stays
@@ -761,9 +964,12 @@ def detect_stems(
             enable_notehead_gate = stem_notehead_gate_enabled()
         gate_heads = (list(noteheads) if enable_notehead_gate
                       and noteheads is not None else None)
+        # `on_accidental` is passed ONLY when `pair_evidence` built it, so the
+        # shipped call is the shipped call, argument for argument.
+        extra = {} if on_acc is None else {"on_accidental": on_acc}
         out = _drop_paired_strokes(
             out, line_spacing, accidental_pair_gap_lines,
-            accidental_pair_overlap, heads=gate_heads,
+            accidental_pair_overlap, heads=gate_heads, **extra,
         )
         # ⚠️ RE-STAMPED, NOT RE-DERIVED. The pair rule runs over the SET, so
         # whether a candidate is paired cannot be known at the moment that
@@ -776,10 +982,17 @@ def detect_stems(
             kept_boxes = {(s.x_canonical, s.y_canonical,
                            s.width_canonical, s.height_canonical)
                           for s in out}
+            before_boxes = {(s.x_canonical, s.y_canonical,
+                             s.width_canonical, s.height_canonical)
+                            for s in before}
             for i, cand in enumerate(candidates_out):
                 if cand.outcome != RUN_ACCEPTED:
                     continue
                 if (cand.x, cand.y, cand.w, cand.h) in kept_boxes:
+                    continue
+                # a stroke `refuse_owned` removed BEFORE the pair rule never
+                # reached it: it stays as recorded, not PAIRED
+                if (cand.x, cand.y, cand.w, cand.h) not in before_boxes:
                     continue
                 candidates_out[i] = replace(cand, outcome=RUN_PAIRED)
     # ── `OMR_STEM_STROKE`: the column profile, ADDED, never substituted ──
@@ -1237,7 +1450,9 @@ def detect_beams(
 
 def detect_lines(cell, *, candidates_out: list | None = None,
                  noteheads: Sequence | None = None,
-                 rescue_tall_beams: bool = False
+                 rescue_tall_beams: bool = False,
+                 marks: Sequence | None = None,
+                 stem_finder: frozenset | None = None
                  ) -> dict[str, list[LineDetection]]:
     """Return {'stems': [...], 'beams': [...]}.
 
@@ -1256,7 +1471,8 @@ def detect_lines(cell, *, candidates_out: list | None = None,
     read, and any beam delta on a gated arm is this and not a beam change.
     """
     stems = detect_stems(cell, candidates_out=candidates_out,
-                         noteheads=noteheads)
+                         noteheads=noteheads, marks=marks,
+                         stem_finder=stem_finder)
     return {
         "stems": stems,
         "beams": detect_beams(cell, stems=stems,

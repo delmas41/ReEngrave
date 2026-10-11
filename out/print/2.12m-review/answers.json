@@ -1,0 +1,45 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "via": "blind-tile gallery Xs8UKjLo9Ug1xMNBzkyuS6",
+ "branch_of_tiles": "lane-2.12g-long-stem dcaadc57",
+ "answers": {
+  "1": {
+   "sean": "Chord below",
+   "verdict": "right (stem_tip_of_long_chord, stem up, chord below)"
+  },
+  "2": {
+   "sean": "Ledger line",
+   "verdict": "not an articulation: a LEDGER LINE (ours abstained, mark_not_at_stem_tip)"
+  },
+  "3": {
+   "sean": "Chord below",
+   "verdict": "WRONG: ours gave it to the upper staff's stem-down chord (far head above); the accent sits at the stem tip of the note below"
+  },
+  "4": {
+   "sean": "Chord below",
+   "verdict": "abstained (no_ledger_head_on_stem); answer: chord below"
+  },
+  "5": {
+   "sean": "Chord below",
+   "verdict": "right (stem up, chord below)"
+  },
+  "6": {
+   "sean": "Chord below",
+   "verdict": "abstained (no_ledger_head_on_stem); answer: chord below"
+  },
+  "7": {
+   "sean": "Chord below",
+   "verdict": "WRONG: ours gave it to the upper staff's stem-down chord (far head above, 0.42 sp); the accent sits at the stem tip of the chord below"
+  },
+  "8": {
+   "sean": "Chord below",
+   "verdict": "right (control = 2.12f tile 6)"
+  },
+  "9": {
+   "sean": "Chord below",
+   "verdict": "abstained (no_ledger_head_on_stem); answer: chord below"
+  }
+ },
+ "summary": "5 decided: 3 right (1, 5, 8), 2 WRONG (3, 7: the rule took the upper staff's stem-down chord whose tip is near the mark; the mark sits at the tip of the stem-up note BELOW, which touches it); 3 abstained where Sean says chord below (4, 6, 9); tile 2 is a ledger line, not an accent."
+}

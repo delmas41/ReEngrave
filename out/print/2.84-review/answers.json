@@ -1,0 +1,46 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "via": "blind-tile gallery Xs8UKjLo9Ug1xMNBzkyuS6",
+ "branch_of_tiles": "lane-tenuto-ledger cc58e6bc",
+ "question": "L ledger / T tenuto / N neither; tile 12 the below-the-staff mirror",
+ "answers": {
+  "1": {
+   "sean": "L"
+  },
+  "2": {
+   "sean": "N -- the E of 'espr.'"
+  },
+  "3": {
+   "sean": "L"
+  },
+  "4": {
+   "sean": "L"
+  },
+  "5": {
+   "sean": "N -- part of a beam"
+  },
+  "6": {
+   "sean": "N -- box in a weird place: a notehead on a ledger with an accent above it"
+  },
+  "7": {
+   "sean": "N -- a half note"
+  },
+  "8": {
+   "sean": "L"
+  },
+  "9": {
+   "sean": "N -- a p dynamic"
+  },
+  "10": {
+   "sean": "L"
+  },
+  "11": {
+   "sean": "N -- part of a slur"
+  },
+  "12": {
+   "sean": "mirror: 'It is a ledger line with notes under it - not a tenuto'"
+  }
+ },
+ "summary": "0 tenutos in 11: 5 ledger lines (1, 3, 4, 8, 10), 6 other ink (letter E, beam, accent area, half note, p, slur). The articTenuto class is not a tenuto anywhere Sean has looked. Tile 12: below the staff it is a ledger line with notes under it (the mirror holds)."
+}

@@ -858,7 +858,7 @@ def _stem_rows_on(box_xywh, stems) -> List[Any]:
     out = []
     for row in stems:
         box = _stem_xywh(row)
-        if box is not None and _stem_box_overlap(box, box_xywh):
+        if box is not None and _geom.stem_touches_head(box, box_xywh):
             out.append((row, box))
     return out
 
