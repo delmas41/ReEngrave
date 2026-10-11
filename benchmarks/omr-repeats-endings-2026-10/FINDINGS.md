@@ -117,12 +117,12 @@ Five tiles. The questions are in `QUESTIONS.md`. Nothing of ours is drawn on the
   - 2 = backward repeat (p10 s1)
   - 4 = forward repeat (p3 s0)
   - 5 = **CONTROL**: a plain double barline (p11 s1, before the key change), with dotted notes beside it. It must be answered "no repeat".
-- **Answers** (Sean, blind, 2026-10-11; `answers.json`): **4 of 5 agree.**
+- **Answers** (Sean, blind, 2026-10-11; `answers.json`): **5 of 5 agree** (tile 1 after a second look).
   - Tile 2: repeat sign, dots on the left. Agrees.
   - Tile 3: 2nd ending, 1 bar of it. Agrees.
   - Tile 4: dots on the right. Agrees.
   - Tile 5, the control: *"a double barline"*, so not a repeat. Agrees. He added *"we need to figure out the barline because I want the same numbers as the original"*: that is 2.86's tail, and the answer to §6 is to keep the print's numbers.
-  - Tile 1: *"1 bar of a first ending"*. **Ours says 2 bars.** On the tile the bracket spans a barline. The reference encoding (189–190) and the printed numbers (188 → 194 with 5 second-ending bars) both need 2. Asked again with the barline marked (`tile_01_question.png`); not changed until he answers.
+  - Tile 1: first answer *"1 bar of a first ending"*; asked again with the middle barline marked (`tile_01_question.png`): *"Sorry the first ending is 2 bars"*. Agrees.
 
 ## 8. Tests and checks
 
