@@ -3576,3 +3576,12 @@ different head: 0 on every record.** Every other row identical; fermatas identic
 the 4 dropped pairs. Frame control 5 of 6 real, 0 of 6 shifted — ⚠️ tile 2 FAILS it (ink
 ratio 1.42: two heads crowd the box); checked by eye, the bracket is on the accent, sent
 anyway and recorded here.
+
+**Sean's answers (2026-10-11):** *"1. above 2. below 3. below 4.below 5 and 6 below"* (scored
+in `manifest.json`). The 2 judged winners are **both right** (tile 1: two voices over
+notehead side, the note above; tile 4: the nearer same-side note). The 4 dropped pairs
+(tiles 2, 3, 5, 6): **in every one the right owner is the note BELOW the mark** — the copy
+the detector classed `articAccentAbove`, decided on the notehead side. So all four
+abstentions were safe (nothing wrong written) and all four are recoverable by one rule if
+it holds: between two staves, with nothing more specific, the mark is the lower staff's.
+Not built — asked of Sean as a convention first.
