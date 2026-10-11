@@ -562,3 +562,11 @@ the two conventions alone). 3 of 6 collapses are on boxes that are not notes. `h
 * **`head_contact`'s two Litolff durations, tiles 5, 6: 1 beam each** -- they ARE eighths, as base decided; the arm's narrowing is WRONG on
   both. `head_contact` is confirmed net negative on the count pages (0 gained, 2 lost) and stays OFF; its cause (a real stem whose head the
   detector never boxed) is the standing objection to coupling `Q.STEM` to the detector (`STEM_NOTEHEAD_GATE_ENV`'s docstring).
+
+### 9.9 Switched ON on STAGED and landed (Sean 2026-10-11, *"Land switch on"*)
+
+Default (`OMR_STEM_FINDER` unset) on STAGED = `thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head`; `head_contact`
+stays OFF (9.8); LEGACY unchanged. Control that can fail: a Brahms `acceptance_quick` re-gather with the env UNSET on the committed tree
+`219301ba` (clean) holds Q.STEM rows IDENTICAL to the measured arm on pdf 0 and 1 (326 and 648 rows); the base record differs (358 vs 326).
+Scored on Sean's page: found 227 of 234 (0.970), 18 not stems (0.927), heads on their right stem 320 of 335, 0 narrowed, direction 305 right
+/ 1 wrong.

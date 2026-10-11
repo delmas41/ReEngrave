@@ -22,6 +22,13 @@ pointing at headings no longer in the file.)*
 
 ---
 
+
+## 2026-10-11 — 2.87 the stem finder LANDED on main, switch ON on STAGED
+
+- Sean: *"Land switch on"*. `219301ba`: `STEM_FINDER_STAGED_DEFAULT` = thin_run, pair_evidence, attach_tolerance, refuse_owned, one_stem_per_head; `OMR_STEM_FINDER` unset -> that set on STAGED, set -> exactly the list; LEGACY's default stays empty (frozen). `head_contact` built, OFF. Tests RED first (6 of 7).
+- Control: Brahms acceptance_quick re-gather with the env UNSET on the committed tree (clean): Q.STEM rows identical to the measured arm `f1` on pdf 0 and 1 (326, 648); base differs (358 vs 326). Sean's page: 227/234 found, 18 not stems, 320/335 heads on the right stem, 0 narrowed.
+- 2.83 trial merge on top: only `omr-missing-notes-2026-09/FINDINGS.md` conflicts (two section 18s: keep both, renumber 2.83's); code auto-merges, 153 tests pass. 2.83 must re-measure with the stem finder on.
+
 ## 2026-10-11 — 2.87 round 2: `head_contact` and `one_stem_per_head` (branch `lane-stem-finder`, NOT merged; Sean approves landing)
 
 - STAGED ADJUDICATE only, no GATHER change. Two new names on the `OMR_STEM_FINDER` allow-list (default empty): `head_contact` -> new quantity `Q.STEM_HEAD_CONTACT` (`stem_value.adjudicate_stem_head_contact`, cell-level verdict listing the strokes that touch no notehead; a stroke cut by the crop edge is not judged), read by `rhythm._not_a_decided_arc`, `_not_the_neighbours_beam`, `_not_a_beam_by_ink` and `family_precision` rest-has-a-stem / slashed-stem; `one_stem_per_head` inside `adjudicate_head_stem` (reasons `stem_by_one_per_head`, `unison_two_voices`).
