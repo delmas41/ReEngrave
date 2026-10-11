@@ -178,3 +178,102 @@ partially compared" cases.
   join, which does not exist until EXPORT, so it is a report there
   (`_printed_bar_number_check`) rather than a `checked_by`/`implicates` pair
   on the ADJUDICATE decision. See that function's own docstring.
+
+## 7. 2.13b (2026-10-11): the whole-movement census, and the Surya rung
+
+STAGED. Raw data under `census-2026-10-11/`. The crops for Sean are in
+`out/print/2.13b-bar-number/`.
+
+### 7.1 The census: every 2.13 read on both acceptance movements
+
+- **Records:** `*-mvt1-whole-20261010-night.record.json` (main `26fdb4d0`, clean tree). Brahms has 53 systems (p0-26), Litolff 31 (p1-16).
+- **Frame control:** each system's crop was re-cut from its recorded `bbox_page_px` off `preprocessing.render_page` at 600 dpi. Tesseract re-read every crop exactly as the record says: 84 of 84.
+- **Plate reading:** `plate_reading.json`, first read by me off each crop with its neighbours. **Sean confirmed all 84 tiles on 2026-10-11** (*"all of those tiles are correct and match the bar numbers"*), so it is print truth for this item. The numbers run in sequence, and each step matches a plausible system length.
+
+Tesseract against the plate (decided verdicts):
+
+| | right | WRONG | abstained on a printed numeral | spurious (nothing printed) |
+|---|---|---|---|---|
+| Brahms (52 numerals) | 13 | **22** | 16 | 0 |
+| Litolff (28 numerals) | 21 | 5 | 2 | 2 |
+
+**The "1 read as 4" is one of three causes on Breitkopf.**
+
+1. **Bold "1" read as "4":** 149→449, 179→479, 188→488, 194→494, 421→424.
+2. **A leading "1" lost into the bracket's curl:** 106→6, 124→24, 170→10. The curl sits at the crop's lower left.
+3. **The crop clips the third digit.** On Breitkopf a 3-digit numeral ends about 7 staff spaces right of `x_start`, but the crop stops at 6. Results: 343→8, 351→5, 371→3, 434→3, 492→"493".
+
+The 2.85 FINDINGS §5 table used Tesseract's reading as "printed" at 26/0. The plate prints **492**, not 493. Its "0" delta there is really −1, the same −1 it attributes to 2.86 on every other row after p13.
+
+**Geometry misses (not a reader fault):** Brahms 7/0 and Litolff 4/0 and 14/0. On these systems the "topmost staff" is not the system's top staff, so the crop lands on notes and the numeral is outside it. Litolff 14/0's notes read "4". These are left to the staff detector.
+
+### 7.2 Surya on the same crops, and the width
+
+The arms were run on the same raster, as an offline grid: 3 widths × 2 upscales, plus 3 checks on token cap and padding. Surya is deterministic here: two identical runs gave identical text. At 60 px white padding and 16 tokens:
+
+| arm | Brahms right / wrong / abstain | Litolff right / wrong / abstain / spurious |
+|---|---|---|
+| Tesseract, 6 spaces (shipped) | 13 / 22 / 16 | 21 / 5 / 2 / 2 |
+| Tesseract, 7 spaces | 19 / 10 / 22 | 17 / 6 / 5 / 1 |
+| Tesseract, 8 spaces | 16 / 14 / 21 | 16 / 5 / 7 / 1 |
+| Surya 2x, 6 spaces | 23 / 2 / 26 | 23 / 0 / 5 / 0 |
+| Surya 3x, 6 spaces | 25 / 3 / 23 | 24 / 0 / 4 / 0 |
+| Surya 2x, 7 spaces | 30 / 1 / 20 | 26 / 0 / 2 / 0 |
+| **Surya 2x, 8 spaces** | **34 / 0 / 17** | **27 / 0 / 1 / 0** |
+| Surya 3x, 8 spaces | 24 / 2 / 25 | 26 / 0 / 2 / 0 |
+
+- **Width:** every wrong Surya read at 6 or 7 spaces is a clipped numeral (263→26, 434→43, 303→30) or the bracket curl read as "7". So 8 spaces is the width the clipping argues for, not just the best cell.
+- **Tuning caveat:** the grid was scored on the same 80 numerals it was chosen on. A third plate is where it could fail.
+- **Remaining failure at 8 spaces:** a stray stroke next to the numeral ("179 1", "413 1"). That gives two digit runs, which `bar_number_from_text` already refuses, so it abstains and never becomes a wrong number.
+- **Token cap:** 32 tokens read no more than 16. 1x upscale read fewer.
+
+**No cascade, on measurement.** Where Surya at 8 spaces was silent, Tesseract on the same systems was **5 right / 7 wrong** (Brahms 4/5, Litolff 1/2). Filling those gaps with Tesseract would turn "cannot tell" into wrong numbers (rule 8). So Tesseract is the `--no-surya` / Surya-unavailable reader only.
+
+### 7.3 What was built
+
+- **`bar_number_text`:**
+  - `surya_available()`
+  - `read_crops_surya()`: 60 px white pad, 2x INTER_CUBIC, 16 tokens, one Surya job per page.
+  - Constants: `SURYA_CROP_WIDTH_SPACES = 8.0`, `SURYA_PAD_PX`, `SURYA_UPSCALE`, `SURYA_MAX_TOKENS`.
+- **`gather.gather_printed_bar_numbers(log, pws, surya=False)`:** when `surya` is set, the new `_printed_bar_numbers_surya` runs.
+  - Every system gets exactly one `READERS.SURYA` row: an Observation (`score=None`, because Surya gives no confidence), `NO_INK`, or `NO_STAFF_GEOMETRY`.
+  - If Surya is not installed or raises, each system gets a `READER_UNAVAILABLE` row under `READERS.SURYA`, and then the Tesseract rung runs unchanged.
+- **`gather()`:** passes `surya=surya_fallback`, so the run's `--no-surya` governs it. There is no new flag.
+- **Unchanged:** ADJUDICATE and EXPORT. The 2.85 files and the stem/flag/ledger/articulation code were not touched.
+
+**Real-function proof, both movements, every system.** The shipped `gather_printed_bar_numbers` was run on the real raster, with staff geometry taken from each record's own `Q.STAFF_LINES` and `Q.STAFF_EXTENT`, then through `adjudicate.run` (`arm.py`, `arms_real_function.json`).
+
+- **Control (`surya=False`):** matches the overnight record's rows **and** verdicts exactly, 84 of 84.
+- **Surya arm:**
+  - Brahms: **32 right / 0 wrong / 19 abstained**.
+  - Litolff: **27 right / 0 wrong / 1 abstained / 0 spurious**.
+  - The sweep's 34 differs from 32 because the shipped code measures the staff space from the line positions, not from the band height.
+
+### 7.4 Against `measure_numbering.printed_bar_check`
+
+Only the `printed_bar_number` verdicts in each overnight record were swapped for the arm's, then the record was exported (`pricecheck.py`). The exporter reads nothing else of this quantity, so this is equivalent to re-gathering it.
+
+| | agree | disagree | abstained |
+|---|---|---|---|
+| Brahms base → arm | 7 → 8 | 28 → 24 | 18 → 21 |
+| Litolff base → arm | 8 → 9 | 20 → 18 | 3 → 4 |
+
+The counts barely move, and that is correct: the disagreements that remain are the FILE's. What changed is that every delta is now a clean step:
+
+- **Brahms:**
+  - 0 through system 10/1 (bar 188).
+  - **−2 from 11/0 (194)**: the 1st/2nd ending, which 2.85 fixes.
+  - **−3 from 12/0 (215)**: the courtesy key signature counted as a bar, 2.86.
+- **Litolff:**
+  - 0 through 6/1 (158).
+  - **−1 from 7/0 (171)**.
+  - **−2 from 15/0 (430)**.
+  - These are two places where the file loses a bar. Each is now located to one system boundary. They are not chased here.
+
+On the base side the Tesseract misreads made the deltas noise (−40, +300, −277…). They also produced two FALSE agrees: Brahms 22/1 "424" and 26/0 "493".
+
+### 7.5 Not done
+
+- Sean confirmed every tile in `out/print/2.13b-bar-number/*.png` (2026-10-11). The right/wrong counts in 7.1-7.3 therefore stand against print truth.
+- Not done: the three geometry misses, a third plate, and an overnight re-gather.
+- Brahms's 19 abstentions are clear numerals Surya returned empty on (8, 15, 29, 38, 48, 79, 87, 97, 161, 179, 188, 239, 251, 324, 330, 336, 362, 444, and 115, which is outside the box). That is coverage left on the table, not error.
