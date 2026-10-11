@@ -901,3 +901,92 @@ required "cuts both ways" controls), `check` unchanged, and the one real
 firing in the acceptance set is the exact page Sean's 2026-10-01 decision
 named, with the vote now recorded in the verdict's own detail rather than
 re-derived by a later lane.
+
+## 14. ROADMAP 2.86 -- a MIXED cautionary key tail, connected to the next system's key
+
+`lane-2.86-cautionary-tail`, off origin/main `40ab373a`. STAGED ADJUDICATE.
+Sean 2026-10-11: *"Yes open both"*, on the print at Brahms 317803 pdf p11
+system 1 (`out/print/bar-drift/brahms_p11_s1_right.png`, branch
+`crops-bar-drift`): a double barline, then the new key on every staff, kept
+as a bar -- +1 to every later bar number. §10d's 49 Brahms / 11 Litolff
+'mixed' tails are this item's population; 2.47b's PURE vote never touches
+them by construction.
+
+CONVENTION (CLAUDE.md §10, [C21], [C24]): a key change is printed at one bar
+on every staff of the system; a change at a system break is announced after
+the last barline of the system before it; a signature carries ONE kind of
+accidental and a change prints its cancelling naturals FIRST. WHAT WOULD
+FALSIFY IT: a tail demoted here that holds a note on the print (a real short
+bar ending in a pickup), or an edition that announces no key at the break
+while the next system's key differs (the rule would then never fire, not
+fire wrongly). Not yet confirmed on tiles.
+
+### 14a. What changed
+
+- `structure._mixed_tail_announces_next_key` (with `_staff_tail_is_key_shaped`,
+  `_trailing_cell_key_shaped_vote`, `_one_decided_system_key`), called from
+  `adjudicate_measure_partition` only where 2.47b's pure vote did NOT demote.
+  A staff votes KEY-SHAPED when its tail holds at least one key- or
+  accidental-classed flat/sharp/natural, those form ONE run (naturals left of
+  every flat/sharp, one signed kind), and everything else is clef/time class
+  or `timeSig*` digit ink; `tie`/`slur` are NEUTRAL (a staff holding only
+  them does not vote, rule 8); a notehead, rest, double/small accidental or
+  a second kind votes NO. Strictly more than half of the voting staves, as
+  2.47b.
+- CONNECT, NEVER GUESS: the strip is demoted (`cautionary_key_tail_not_a_bar`,
+  detail `key_shaped_vote`, `this_system_key`, `next_system`,
+  `next_system_key`) only when this system's and the next system's (reading
+  order, across pages) `Q.SYSTEM_KEY` each corroborate exactly ONE concert
+  key and they DIFFER. Otherwise the count stands (`read`) and
+  `detail["mixed_tail_kept"]` names why: `this_key_not_decided`,
+  `no_next_system`, `next_key_not_decided` (abstained, or 0 or 2+
+  corroborated), `next_key_unchanged`.
+- `adjudicate.ORDER`: `Q.MEASURE_PARTITION` moved from third to just after
+  `Q.SYSTEM_KEY`. Nothing between reads the partition (its consumers are
+  `Q.METER`, the rhythm decisions and EXPORT, all later). `inventory`
+  shows `system_key*` (a verdict, ordered) in its wants.
+- KEY ONLY, recorded rather than guessed: a mixed METER tail cannot be
+  connected (`Q.METER` wants `Q.MEASURE_PARTITION` -- reading the meter
+  verdict here is a cycle); a mixed CLEF tail needs a staff-to-staff map
+  across systems that ADJUDICATE does not hold at this point, and a PURE
+  clef tail is already 2.47b's.
+- DEFECT FIXED IN THE SAME VOTE: 2.47bc's duplicate-ink excuse ("a
+  notehead-classed box that is the same ink as a `timeSig*` box") was passed
+  EVERY clef and key box (`timesig_values` was built with
+  `_is_signature_glyph_class`), contradicting its own docstring,
+  `geometry.is_timesig_digit_ink`'s contract and 2.47c's NOT CONFIRMED note
+  for clef/key pairings. Now `timeSig*` only. A tail whose only "notehead" is
+  a duplicate of a key or clef box is therefore no longer demoted by the pure
+  vote on that basis. Unmeasured on real data: the probe below reports it
+  as part of the same base-vs-arm diff.
+
+### 14b. Tests, RED first
+
+`tools/omr/tests/test_staged_measure_partition_2_86.py`, 19 synthetic tests,
+fast tier. Against unmodified origin/main: **10 failed, 9 passed** -- the
+three diagnosis repros (`accidentalNatural`x2+`keyFlat`x3, `accidentalFlat`x3,
+`keyFlat`x3+`tie`), the 3-of-4 majority, the notehead-on-a-keyFlat
+duplicate, and the five `mixed_tail_kept` controls (their count already
+right there, their `why` absent) failed; the pure-key control
+(`keyNatural`x2+`keyFlat`x3), the real short bar with heads, a rest with an
+accidental, tie-only, natural-after-flats, flat+sharp, double flat, 2-of-4,
+and the notehead-on-a-timeSig control passed and still pass. After: 19/19;
+`test_staged_measure_partition_2_47b.py` 11/11. The 60 test files naming the
+partition, ORDER or structure: 1,998 passed, 3 failed -- all three in
+`test_staged_meaning.py`, failing identically on unmodified origin/main
+(`bar_number_crop`, `dynamic_anchor`; not this item). Whole fast tier
+(`-m "not slow"`): 7,059 passed, 0 failed, 57 skipped, 2 xfailed.
+`python3 -m tools.omr.staged.check`: TOTAL **192 -> 192**, and
+`open-findings.json` byte-identical before and after.
+
+### 14c. Not measured here -- the Mac run
+
+A cloud container has no records. `probe/readjudicate_2_86.py` streams a
+saved record's `Q.BARLINE_COLUMN`, tail-cell `Q.GLYPH_BOX` and saved
+`Q.SYSTEM_KEY` verdicts (inputs, not a baseline), re-decides
+`Q.MEASURE_PARTITION` per staff, and prints bars per system and the running
+total; `--tree` picks the worktree whose decision runs, so base and arm are
+one record, two trees. Verified on a synthetic record built from the tests:
+base 11 bars, arm 10 on the contested system. Expectation to check: Brahms
+p11 s1 -1, the running total from p13 on down by 1, Litolff unchanged or
+explained; every other system that moves needs its tail cropped.

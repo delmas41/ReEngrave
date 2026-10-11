@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, Tuple
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
-from ..record import Kind, Q, Scope, State, Subject
+from ..record import Kind, Outcome, Q, Scope, State, Subject
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ⚠️ ASSUMED CONSTANTS. None of these is measured. See ASSUMPTIONS.md.
@@ -133,8 +133,14 @@ def _trailing_cell_signature_vote(
     n_total = len(by_staff)
     n_signature_only = 0
     for staff_rows in by_staff.values():
+        # ROADMAP 2.86: `timeSig*` boxes ONLY, as the docstring above and
+        # `geometry.is_timesig_digit_ink`'s own contract say. Until 2.86 this
+        # list held every clef and key box too, so a notehead box lying on a
+        # `keyFlat` was excused as "the same ink" -- a pairing 2.47c's own
+        # rule (`notehead_precision`, its section comment) records as NOT
+        # CONFIRMED, and no crop has shown.
         timesig_values = [r.value for r in staff_rows
-                           if _is_signature_glyph_class(r.value[0])]
+                           if str(r.value[0]).startswith("timeSig")]
         staff_is_signature_only = True
         for r in staff_rows:
             if _is_signature_glyph_class(r.value[0]):
@@ -202,6 +208,169 @@ def _trailing_cell_is_cautionary_only(
     return (2 * n_signature_only > n_total), n_signature_only, n_total
 
 
+#: ROADMAP 2.86. Accidental-SHAPED detector classes that can stand in a key
+#: signature: the detector boxes a key's flats as `accidentalFlat` as often
+#: as `keyFlat` on the Breitkopf plate (the same widening `gather.
+#: _gather_keysig_markers` makes for the header, by SHAPE not by role). The
+#: small and double forms are left out: a key signature is never printed
+#: with either ([C21]).
+_KEY_SHAPE = {
+    "keyFlat": "flat", "accidentalFlat": "flat",
+    "keySharp": "sharp", "accidentalSharp": "sharp",
+    "keyNatural": "natural", "accidentalNatural": "natural",
+}
+
+#: ROADMAP 2.86. A tie or slur END crossing the strip after the last barline
+#: is the previous bar's arc running out to the margin: it says nothing about
+#: whether the strip is a bar, so it votes for neither reading.
+_NEUTRAL_IN_TAIL = frozenset({"tie", "slur"})
+
+
+def _staff_tail_is_key_shaped(staff_rows) -> Optional[bool]:
+    """One staff's vote for ROADMAP 2.86: is its trailing cell's ink the
+    shape of a printed key (change), with nothing a bar would hold?
+
+    True  -- every non-neutral box is a clef/time class, `timeSig*` digit
+             ink, or a member of ONE key-shaped run: naturals (the
+             cancellation) and then ONE kind of flat or sharp ([C21]: a
+             signature carries one kind, and a change prints its naturals
+             FIRST), with at least one key-shaped box.
+    False -- anything else beside it (a notehead, a rest, a second
+             accidental kind, a natural to the RIGHT of the flats): a note's
+             accidental or a real bar.
+    None  -- nothing but neutral ink (a tie/slur end): no vote (rule 8).
+    """
+    timesig_values = [r.value for r in staff_rows
+                      if str(r.value[0]).startswith("timeSig")]
+    run = []
+    n_counted = 0
+    for r in staff_rows:
+        name = str(r.value[0])
+        if name in _NEUTRAL_IN_TAIL:
+            continue
+        n_counted += 1
+        if name in _KEY_SHAPE:
+            try:
+                xc = float(r.value[1]) + float(r.value[3]) / 2.0
+            except (TypeError, ValueError, IndexError):
+                return False
+            run.append((xc, _KEY_SHAPE[name]))
+            continue
+        if _is_signature_glyph_class(name):
+            continue
+        if _geom.is_timesig_digit_ink(r.value, timesig_values):
+            continue
+        return False
+    if n_counted == 0:
+        return None
+    if not run:
+        return False
+    kinds = {k for _, k in run if k != "natural"}
+    if len(kinds) > 1:
+        return False
+    if kinds:
+        first_signed = min(x for x, k in run if k != "natural")
+        if any(k == "natural" and x > first_signed for x, k in run):
+            return False
+    return True
+
+
+def _trailing_cell_key_shaped_vote(
+    ev: Evidence, system_sub: Subject, last_cell_index: int,
+) -> Tuple[int, int]:
+    """`(n_key_shaped, n_voting)` over the system's staves, the 2.47b
+    majority's shape: a staff whose tail is empty or holds only neutral ink
+    counts in neither number."""
+    rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                    subject=system_sub)
+    by_staff: Dict[Optional[int], List] = {}
+    for r in rows:
+        if (r.subject.cell == last_cell_index
+                and isinstance(r.value, (list, tuple)) and len(r.value) == 5):
+            by_staff.setdefault(r.subject.staff, []).append(r)
+    n_yes = n_voting = 0
+    for staff_rows in by_staff.values():
+        vote = _staff_tail_is_key_shaped(staff_rows)
+        if vote is None:
+            continue
+        n_voting += 1
+        if vote:
+            n_yes += 1
+    return n_yes, n_voting
+
+
+def _one_decided_system_key(ev: Evidence, system_sub: Subject) -> Optional[int]:
+    """The ONE concert key `Q.SYSTEM_KEY` corroborated on `system_sub`, or
+    None where it abstained, is absent, or corroborated none or several (a
+    bitonal or half-misread system is not one decided key)."""
+    v = ev.verdict(Q.SYSTEM_KEY, subject=system_sub)
+    if v is None or v.outcome is not Outcome.DECIDED:
+        return None
+    value = v.value if isinstance(v.value, dict) else {}
+    corroborated = value.get("corroborated") or []
+    if len(corroborated) != 1:
+        return None
+    try:
+        return int(corroborated[0])
+    except (TypeError, ValueError):
+        return None
+
+
+def _mixed_tail_announces_next_key(
+    ev: Evidence, system_sub: Subject, last_cell_index: int,
+) -> Tuple[bool, Dict[str, object]]:
+    """ROADMAP 2.86 (Sean 2026-10-11, on Brahms 317803 pdf p11 system 1: a
+    double barline, then the new key on every staff, kept as a bar). A tail
+    2.47b's PURE vote did not demote is demoted when BOTH hold:
+
+    1. its ink is KEY-SHAPED on strictly more than half of the staves that
+       vote (`_staff_tail_is_key_shaped`; ties and slur ends neutral); and
+    2. CONNECT, NEVER GUESS -- the key changes at this boundary as an
+       ALREADY-DECIDED fact: this system's and the NEXT system's
+       `Q.SYSTEM_KEY` each corroborate ONE concert key, and they differ.
+       A change printed at the head of the next system is announced at the
+       end of this one (CLAUDE.md §10: a key change is printed at one bar on
+       every staff of the system), so the key-shaped strip IS that
+       announcement and governs no bar.
+
+    Anything short of (2) keeps today's count and says why in
+    `detail["mixed_tail_kept"]`: `this_key_not_decided`, `no_next_system`,
+    `next_key_not_decided`, `next_key_unchanged`.
+
+    ⚠️ KEY ONLY. A mixed CLEF tail is not connected: matching a staff to its
+    own staff on the next system needs a part map ADJUDICATE does not hold
+    at this point, and a pure clef tail is already 2.47b's. A mixed METER
+    tail cannot be: `Q.METER` wants `Q.MEASURE_PARTITION`, so reading the
+    meter verdict here would be a cycle.
+    """
+    n_yes, n_voting = _trailing_cell_key_shaped_vote(
+        ev, system_sub, last_cell_index)
+    detail: Dict[str, object] = {}
+    if n_voting == 0 or not (2 * n_yes > n_voting):
+        return False, detail
+    detail["key_shaped_vote"] = "%d/%d" % (n_yes, n_voting)
+    this_key = _one_decided_system_key(ev, system_sub)
+    if this_key is None:
+        detail["mixed_tail_kept"] = "this_key_not_decided"
+        return False, detail
+    later = [s for s in ev.subjects(Kind.SYSTEM) if s > system_sub]
+    if not later:
+        detail["mixed_tail_kept"] = "no_next_system"
+        return False, detail
+    next_sub = later[0]
+    next_key = _one_decided_system_key(ev, next_sub)
+    detail["this_system_key"] = this_key
+    detail["next_system"] = next_sub.to_key()
+    if next_key is None:
+        detail["mixed_tail_kept"] = "next_key_not_decided"
+        return False, detail
+    detail["next_system_key"] = next_key
+    if next_key == this_key:
+        detail["mixed_tail_kept"] = "next_key_unchanged"
+        return False, detail
+    return True, detail
+
+
 @decision(
     quantity=Q.MEASURE_PARTITION,
     checkable=Checkable.MIXED,
@@ -209,11 +378,13 @@ def _trailing_cell_is_cautionary_only(
         "cross-staff measure count agreement (measure_count_warning)",
         "a merged bar sums to a MULTIPLE of the meter; a split bar to a fraction (rhythm_sum_warning)",
     ),
-    implicates=(Q.MEASURE_PARTITION, Q.BARLINE_COLUMN, Q.SYSTEM_MEMBERSHIP, Q.DURATION),
-    composed_from=(Q.BARLINE_COLUMN, Q.GLYPH_BOX),
+    implicates=(Q.MEASURE_PARTITION, Q.BARLINE_COLUMN, Q.SYSTEM_MEMBERSHIP,
+                Q.DURATION, Q.SYSTEM_KEY),
+    composed_from=(Q.BARLINE_COLUMN, Q.GLYPH_BOX, Q.SYSTEM_KEY),
     scope=Kind.STAFF,
-    wants=(Q.BARLINE_COLUMN, Q.GLYPH_BOX),
-    reasons=("read", "no_barline", "cautionary_tail_not_a_bar"),
+    wants=(Q.BARLINE_COLUMN, Q.GLYPH_BOX, Q.SYSTEM_KEY),
+    reasons=("read", "no_barline", "cautionary_tail_not_a_bar",
+             "cautionary_key_tail_not_a_bar"),
 )
 def adjudicate_measure_partition(ev: Evidence) -> Ruling:
     rows = ev.rows(Q.BARLINE_COLUMN)
@@ -235,6 +406,20 @@ def adjudicate_measure_partition(ev: Evidence) -> Ruling:
                 used=tuple(r.id for r in rows),
                 detail={"cautionary_cell": last_cell_index,
                         "signature_only_vote": "%d/%d" % (n_sig, n_total)})
+        # ROADMAP 2.86: a MIXED tail, demoted only where the next system's
+        # decided key is the change it announces.
+        announced, mixed = _mixed_tail_announces_next_key(
+            ev, system_sub, last_cell_index)
+        if announced:
+            return Ruling(
+                value=n_cells - 1, reason="cautionary_key_tail_not_a_bar",
+                used=tuple(r.id for r in rows),
+                detail={"cautionary_cell": last_cell_index,
+                        "signature_only_vote": "%d/%d" % (n_sig, n_total),
+                        **mixed})
+        if mixed:
+            return Ruling(value=n_cells, reason="read",
+                          used=tuple(r.id for r in rows), detail=mixed)
     return Ruling(value=n_cells, reason="read", used=tuple(r.id for r in rows))
 
 

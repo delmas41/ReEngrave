@@ -901,7 +901,7 @@ ORDER: Tuple[str, ...] = (
     # structure first -- everything else is addressed in terms of it
     Q.SYSTEM_MEMBERSHIP,
     Q.STAFF_GROUP,
-    Q.MEASURE_PARTITION,
+    # (`Q.MEASURE_PARTITION` moved below `Q.SYSTEM_KEY`, ROADMAP 2.86.)
     Q.STAFF_ORDINAL,
     Q.SYSTEM_STAFF_COUNT,
     # ⚠️ IDENTITY BEFORE OWNERSHIP AND BEFORE THE CLEF. That inversion is the
@@ -932,6 +932,17 @@ ORDER: Tuple[str, ...] = (
     # -- is the fixpoint `Log.record` refuses, and it is also the majority
     # this item deliberately did not build.
     Q.SYSTEM_KEY,
+    # ⚠️ ROADMAP 2.86, AFTER `Q.SYSTEM_KEY` AND THE ORDER IS A DEPENDENCY: a
+    # MIXED cautionary tail is demoted only where the NEXT system's decided
+    # key differs from this one's, so both `Q.SYSTEM_KEY` verdicts must
+    # already be on the record. Nothing from `Q.STAFF_ORDINAL` to here reads
+    # `Q.MEASURE_PARTITION` (it was third in this list only because
+    # "structure first"); its consumers -- `Q.METER`, `Q.DURATION`'s
+    # rhythm checks, EXPORT -- all run later still. It cannot move after
+    # `Q.METER`: the meter wants the partition, which is also why a mixed
+    # METER tail is not connected (see `structure._mixed_tail_announces_
+    # next_key`).
+    Q.MEASURE_PARTITION,
     # ⚠️ ROADMAP 2.9b, AND AFTER `Q.SYSTEM_KEY` FOR ONE REASON: it tallies the
     # readings that SURVIVED the system check, so the per-part majority is
     # never built out of readings the per-system check has already condemned.
