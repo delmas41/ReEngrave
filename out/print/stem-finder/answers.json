@@ -1,0 +1,17 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "question": "tiles 1-9: is the ink between the red corners a stem? tile 10: 1 stem or 2 stems?",
+ "answers": {
+  "1": "Y",
+  "2": "Y",
+  "3": "Y",
+  "4": "Y",
+  "5": "Y",
+  "6": "Y",
+  "7": "N -- the end of a flag connecting with its own notehead",
+  "8": "Y",
+  "9": "N -- part of an alto clef",
+  "10": "is a notehead - not a stem"
+ }
+}

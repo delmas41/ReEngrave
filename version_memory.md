@@ -28,6 +28,8 @@ pointing at headings no longer in the file.)*
 - Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.
 - Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
 - Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
+- Renumbered 2.84 -> 2.87 (2.84 is the tenuto fix on main); main merged in (`6c687841`), fast tier 7168 passed.
+- Sean's tile answers (`out/print/stem-finder/answers.json`): 1-6, 8 stems (hand-truth gaps); 7 flag end, 9 alto clef, 10 notehead ink -> 227 of 245 stem strokes real, 18 not, and `q1322` confirmed newly worse. FINDINGS 9.6; DECISIONS. Not landed.
 
 ## 2026-10-11 -- 2.84 tenuto vs ledger line landed on main
 

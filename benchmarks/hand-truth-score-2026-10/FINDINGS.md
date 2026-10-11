@@ -453,3 +453,19 @@ changed it. Not built: no rule that follows, and nothing labelled INFER is worth
   1-9 "Is the red line a stem?" -- every stroke the finder now reads that Sean has no stem box under (8 + 1; if they are stems the 25 invented
   drop to 16 and recall is untouched); tile 10 "1 stem or 2 stems?" -- the one head, `q1322`, that went from decided to narrowed. Maker:
   `make_tiles.py` (frame control per tile, refuses a bracket that is not on ink).
+
+### 9.6 Sean's answers on the ten tiles (2026-10-11, `out/print/stem-finder/answers.json`)
+
+* **Tiles 1-6 and 8: real stems** (7 of 9). Sean's page has no stem box under them, so they were scored "invented"; they are gaps in the
+  hand truth, not reader errors. The hand-truth file is NOT edited (Sean's call, as with q883).
+* **Tile 7: not a stem** -- *"the end of a flag connecting with its own notehead"* (`obs:008812`). Same family as the 13 flag-curve strokes.
+* **Tile 9: not a stem** -- *"part of a alto clef"* (`obs:009999`, x 1277-1293 at 600 dpi). `refuse_owned` did not drop it: no detector clef
+  box covers it at the half-inside threshold (not traced yet).
+* **Tile 10 (`q1322`): the second "stem" is notehead ink** -- *"Is a notehead - not a stem"*. So the head base had RIGHT and the arm narrowed
+  is a stroke the arm invented out of a notehead: the one newly-worse head is CONFIRMED worse (narrowed, never guessed). Which repair made the
+  stroke is not traced yet.
+
+**So on Sean's page, all four repairs on:** the arm reads 245 strokes as stems; 227 are real (220 of his boxes + 7 he confirmed now) and 18 are
+not: 13 flag curves + 1 flag end (tile 7), 3 on a numeral, 1 alto clef (tile 9). Plus one invented stroke inside a notehead (tile 10) that
+is not counted among the 25 because it lies on one of Sean's head boxes. Open, in order: the flag-curve family (14, overlaps lane 2.83's
+fence), the alto-clef stroke, the tile-10 stroke.
