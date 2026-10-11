@@ -22,6 +22,13 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 — 2.84 the stem finder (branch `lane-stem-finder`, NOT merged; Sean approves landing)
+
+- Four stem repairs behind ONE allow-list flag `OMR_STEM_FINDER` (default empty = the shipped reader; flag-off records identical to base): `thin_run` (`789d1a7d`, the thin stem inside a run refused as too wide), `pair_evidence` (`4a3fc515`, `_drop_paired_strokes` condemns a pair only where the partner lies on an accidental box), `attach_tolerance` (`c13cdf56`, `geometry.stem_touches_head`, 0.12 of the head's height, shared by four readers), `refuse_owned` (`42b28f31`, a stroke inside a clef / key / numeral / accidental / rest box is that mark's; a FLAG is not an owner: a 0.8 share refused two real stems). Docs row in `docs/flags-2026-09.md`.
+- Sean's 227 stems, Brahms 317803 pdf 0, committed-tree arm vs clean base: found 173 -> 220 (0.969), invented 68 -> 25, heads on their right stem 215 -> 306 of 321, no base-found stem lost; one head (`q1322`) decided -> narrowed. Count pages: Brahms head_stem decided 582 -> 607, beamed durations 474 -> 495; Litolff head_stem decided 328 -> 373, durations flat.
+- Item 5 (2.78 tiles 5 and 6): NO rule follows, nothing changed -- tile 5's tip-nearest "head" is a beam-end blob (a notehead-refusal question), tile 6 is already right on the current tree. FINDINGS `hand-truth-score-2026-10` section 9; 10 blind tiles for Sean in `out/print/stem-finder/`.
+- Fast tier 7145 passed. Fence kept: `lane-2.83-flag-tip`'s flag functions untouched.
+
 ## 2026-10-10 (night) — 1.7 stems landed
 
 - `lane-1.7-stems` merged to main (`354cbb8b`, Sean: "Land stems"): the hand-truth scorer credits the CV stem reader (Q.STEM) and scores each head's stem and direction. Sean's 227 stems: 173 found (0.76), 68 invented (clefs, keys, digits, accidentals, rests), 215/321 stemmed heads get the right stem. 54 misses: 45 too wide (heads a third apart fused with the stem, `max_width_lines = 0.6`), 6 paired off with an accidental, 3 both. Measurement only, no reader changed. Fast tier on the merge (cloud): 7,036 passed, 4 failed = the same 4 as main there (`test_positional_store.py`).
