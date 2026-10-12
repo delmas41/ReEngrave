@@ -55,10 +55,12 @@ STRING_RUN = [4, 5, 6, 7]
 WINDS = ["Flauti", "Oboi", "Corni"]
 
 
-def _document(systems, clefs=None, page=0):
+def _document(systems, clefs=None, page=0, located=None):
     """`systems[i]` is a list of labels; `None` is a staff printing none.
 
-    `clefs` is `{(system, ordinal): glyph}`, observed as `Q.CLEF_GLYPH`.
+    `clefs` is `{(system, ordinal): glyph}`, observed as `Q.CLEF_GLYPH`;
+    `located` is `{(system, ordinal): name}`, observed as `Q.CLEF_LOCATED`
+    (the CV locator, a different reader from the detector).
     """
     log = Log()
     for s, names in enumerate(systems):
@@ -75,6 +77,10 @@ def _document(systems, clefs=None, page=0):
             if glyph is not None:
                 log.observe(sub, Q.CLEF_GLYPH, glyph,
                             reader=READERS.DETECTOR, frame="cell", score=0.9)
+            loc = (located or {}).get((s, i))
+            if loc is not None:
+                log.observe(sub, Q.CLEF_LOCATED, loc,
+                            reader=READERS.CV_LOCATOR, frame="cell", score=0.9)
     adjudicate.run(log)
     return log
 
@@ -372,3 +378,63 @@ class TestTheCondensedPairIsPlacedOnTheCelloSlot(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestADetectorGlyphTheLocatorContradictsIsNotAWitness(unittest.TestCase):
+    """ROADMAP 2.93. Litolff mvt 1 (`library/_shared-records/beethoven5-litolff-
+    mvt1-whole-20261011-night.record.json`): five bottom string staves were
+    held out as `staff_not_identified` while fifteen identical systems were
+    doubled. The only difference: the detector filed `clefG` on the VIOLA
+    staff (the printed C clef, mis-classed) of those five systems, which the
+    family-block rule read as "a contradicting clef" and withdrew the WHOLE
+    block for. The CV locator read `alto` on all five. Two readers disagreeing
+    is "cannot tell" -- it is not a contradiction.
+
+    ⚠️ THE CONTROLS ARE IN THE SAME CLASS: a glyph nobody contradicts, and a
+    glyph the locator AGREES with, both still withdraw the block, so this
+    cannot pass by never refusing.
+    """
+
+    SHORT = TestTheConventionLivesInInfer.SHORT
+
+    def _outcomes(self, **kw):
+        log = _document([FULL, self.SHORT], **kw)
+        _run_infer(log)
+        return [_v(log, 1, i).outcome for i in range(3, 6)], log
+
+    def test_the_glyph_alone_still_withdraws_the_block(self):
+        got, _ = self._outcomes(clefs={(1, 4): "clefG"})
+        self.assertEqual(got, [Outcome.NARROWED] * 3)
+
+    def test_a_locator_naming_the_expected_clef_overrules_the_glyph(self):
+        """RED against the unrepaired rule: the block stayed NARROWED."""
+        got, log = self._outcomes(clefs={(1, 4): "clefG"},
+                                  located={(1, 4): "alto"})
+        self.assertEqual(got, [Outcome.DECIDED] * 3)
+        foot = _v(log, 1, 5)
+        self.assertEqual(foot.detail.get("condensed_with_slot"), 7)
+        self.assertEqual(foot.detail.get("clef_glyph_overruled_by_locator"),
+                         [R.staff(0, 1, 4).to_key()])
+
+    def test_a_locator_agreeing_with_the_glyph_does_not_overrule_it(self):
+        got, _ = self._outcomes(clefs={(1, 4): "clefG"},
+                                located={(1, 4): "treble"})
+        self.assertEqual(got, [Outcome.NARROWED] * 3)
+
+    def test_a_locator_naming_a_THIRD_clef_does_not_overrule_it(self):
+        # A locator reading of bass on the viola lets the adjudicator's own
+        # constraint filter force the members below it (a different
+        # mechanism), so this pins that the INFER rule did not fire: the
+        # first member stays narrowed and the foot is not inferred.
+        got, log = self._outcomes(clefs={(1, 4): "clefG"},
+                                  located={(1, 4): "bass"})
+        self.assertEqual(got[0], Outcome.NARROWED)
+        self.assertFalse((_v(log, 1, 5).detail or {}).get("inferred"))
+
+    def test_the_overrule_does_not_launder_a_different_contradiction(self):
+        """The viola's glyph is overruled, but the FOOT staff reads treble
+        where the run expects bass and the locator is silent there: the block
+        is still withdrawn."""
+        got, _ = self._outcomes(clefs={(1, 4): "clefG", (1, 5): "clefG"},
+                                located={(1, 4): "alto"})
+        self.assertEqual(got, [Outcome.NARROWED] * 3)
