@@ -2728,3 +2728,135 @@ a box still makes the tip `occupied`, the same blob with no box still runs on). 
 outputs `probe/out/l283/`. Scratch re-gathers: base `faf913f4` clean; arm `b438cda7` clean on every stream (the Litolff non-count stream was re-run
 once: the first pass wrote no record while the disk was at 100%, and its second start was killed because probe outputs were uncommitted and the
 stamp read dirty; the third, `e6aa75ab`, is the same code).
+
+### 19.13 FIX ROUND -- Sean's 14 blind answers on `out/print/2.83-review/` (2026-10-11)
+
+Path: STAGED, GATHER + ADJUDICATE only. Sean (`out/print/2.83-review/answers.json`, recorded at `d4c327c3`): the v5 arm is **5 right (tiles 1, 3, 5, 7, 9), 2 narrowed (2, 6),
+3 WRONG (4, 8, 10)**, all 4 controls hold -- *not landing as built*. This round (a) merged origin/main (`8be6cf5f`: 2.82, 1.7-stems, **2.87 the stem finder, ON**, 2.13b) into the
+lane (`28f1bda4`; conflicts only in ROADMAP/DECISIONS/version_memory/FINDINGS -- ROADMAP keeps main's rows, the ledgers keep both sides, THIS section was 18 and is 19 because 2.82
+took 18; the code merged without a conflict and 287 of the neighbouring tests passed), (b) re-gathered **main (`8be6cf5f`), the v5 arm (`28f1bda4`) and the fix (`e9c8c202`)**, each from its
+own CLEAN checkout, GATHER+ADJUDICATE only (`probe/run_set` style: Brahms pdf 0-1 and 11, 16, 19, 20, 21 (+2, 24, 25 for the 2.81 eighths), Litolff pdf 0-3 and 4, 10-13, 15, 16), and (c) fixed
+the three wrong tiles and a fourth defect the diff found. Outputs `probe/out/l283fix/`, probes `probe/l283_{head_dump,rescore,flag_tally,hollow_boxes,hollow_quarters,box_spaces,tfirst_census}.py`.
+
+**The merged tree reproduces Sean's table** (`rescore_14_answers.txt`, same keys, his printed values, scored on the undotted value as he did): v5 = right 1, 3, 5, 7, 9; tile 2 narrowed
+{1,2} with his answer OUTSIDE it; tile 6 narrowed with it inside; wrong 4, 8, 10. Main on the merged tree reads 5 right (2, 4, 5, 8, 10), 2 narrowed-in (1, 9), 3 wrong (3, 6, 7) -- one more right
+than his note, the stem finder's doing.
+
+#### 19.13.1 Why tiles 4 and 8 (Litolff pdf 13, `glyph/13/0/2/3/0` and `/15`: two heads on ONE stem `obs:018908`) were lost -- a DECLINE became a decided quarter
+
+* The v5 shape reader did NOT read "no flag": it DECLINED (`ink_not_flag_shaped`'s sibling `runs_on`, out 2.03 spaces: the flag's arm touches a neighbour). Cannot tell, filed as an abstention (rule 8 held in the reader).
+* The hook counter stopped because `_observe_stem_tip_ink` runs `stem_tip_hooks` only under a TRUE tip reading; v5 had removed the only reading that was True there. Main read the 2.18c window
+  (density 0.4246 against 0.30) and counted `hooks=1`.
+* ADJUDICATE then had no tip evidence at all and fell through to `head_and_marks{0}`: a DECIDED quarter. The decline became an answer -- not in the reader, in the consumer that read "no row" as "nothing".
+
+#### 19.13.2 The fix for 4/8 and the other lost flags (stage: GATHER row + ADJUDICATE narrowing)
+
+The shape reader may ADD a witness and never REMOVE one. `gather.stem_tip_window` is the 2.18c window, byte for byte (1.0-2.5 spaces back, 0.9 wide, 0.30, left band <= 0.20, line rows left out,
+read only where NO detection box overlaps it), kept as the SECOND witness at the same tip, and `_observe_stem_tip_ink` combines the two in ONE row per (stem, end) (one reader, one crop, so still one
+signal in `correlated_groups`; `detail.witness` says who spoke):
+
+| shape reader | window | row |
+|---|---|---|
+| True | any | True, `witness = shape` (unchanged) |
+| cannot tell | True | **True, `witness = window`**, the hook counter run under it (what main said) |
+| False (nothing hangs) | True | **a dispute: True + `tip_disagree`** -- ADJUDICATE `_stem_tip_disputed` NARROWS {level 0, the counted level} (`tip_readers_disagree`, equal support, no ordering claim); never decides 0, never decides the hook; 2.70 reads it as "not clean" |
+| False | not True | False (as v5) |
+| cannot tell | not True | the ambiguous abstention (as v5: a clean old tip there was tile 6's wrong half) |
+
+The end a notehead stands at (`head_at_this_end`) is never given to the window: a positive fact about the stem, not a cannot-tell.
+**Result on Litolff: v5 lost 13 flags main had (12 on the seven tile pages, 1 on the count page; 6 decided eighths + 7 narrowed hook-seen) -- 11 come back (the 6 eighths decided again, 4 narrowed hook-seen,
+1 as a dispute) and 2 stay lost** (`glyph/13/0/2/0/3`, `/7`: both ends of a chord stem are heads, so the window is not consulted). On Brahms the 2 eighths v5 lost on the tile pages are back; 27 heads gain flag evidence on the Brahms
+tile pages and 8 on pdf 0-1, 17 on the Litolff tile pages, 1 on its count page (`flag_tally.txt`). Tiles 4 and 8: `decided:hooks_counted{1}`, as main.
+
+#### 19.13.3 Why tile 10 (Litolff pdf 15, `glyph/15/1/3/17/5`, a FILLED QUARTER) became a half -- not the fill reading; a head box that is not a head
+
+* The head-fill reading did not move: `Q.NOTEHEAD_INK` is identical in main and v5 (raw centre 0.4386 / ring 0.6856, net 0.4259 / 0.5628, off-line 0.2773 / 0.5668 -- all three "decisively hollow" under 2.23's
+  0.75 cut). The fill reader never called the head filled.
+* The `Q.STEM_TIP_INK` reading moved: main abstained `occupied` at BOTH ends (so 2.70, which needs "nothing on the stem", could not fire and the head stayed the detector's black quarter -- right); v5 reads the
+  true tip clean (`empty`), so 2.70 fired.
+* The fault underneath both: the detector's box is 141 x 282 px = **1.4 x 2.8 staff spaces** -- a cluster (a head, its stem, a staff line, a neighbour), not a head. The windows laid inside it read half paper
+  (centre 0.28-0.44 against a filled head's 1.0). On a merging plate this is common: **on the seven Litolff tile pages v5 decided 45 halves, 9 of them on boxes 2.7-3.95 spaces tall -- every one of the 9 filled by eye (2.67-3.95 spaces); MAIN
+  decides 5 of its 41 on boxes 2.07-3.95 tall, and on the count page 2 of 11 (`glyph/2/0/5/2/5`, 2.63, and `glyph/3/0/8/7/8`, 2.37 -- both black blobs).** The four "black blob halves" I flagged by eye on pdf 3
+  (`glyph/2/0/4/3/10`, `/3`, `3/1/4/12/3`, `3/1/7/1/4`: boxes 4.12, 2.49, 2.80, 3.18 spaces) are the SAME cause.
+
+FIX (ADJUDICATE): `HEAD_BOX_MAX_SPACES = 1.8` -- 2.70 DECIDES a half only on a box that holds one head (and whose staff space is known); taller, the head keeps 2.23's narrowing or the detector's black. 1.8 sits above the
+p90 of detector head boxes on the Litolff pages (1.54) and under the smallest wrong box seen (2.37); on the v5 records no decided half stood between 1.8 and 2.2 (the cut is in a gap, not a hair). After the fix
+every decided half on the Litolff tile pages is <= 1.58 spaces and on the count page <= 1.44 (`hollow_boxes_v5_vs_fix.txt`). CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a print-confirmed hollow head on a detector
+box taller than 1.8 spaces. Tile 10 reads `decided:head_and_marks` again (a quarter); the 4 blobs and the 2 base-decided blobs are quarters.
+
+#### 19.13.4 Two more defects the re-measure found
+
+1. **Tile 2 (Brahms pdf 16, a dotted quarter; v5 narrowed {1,2}, its answer OUT).** The letters of an `ff` printed against the stem's end read as a flag: the attached ink BEGINS 0.29 spaces PAST the stem's end
+   (`t_first` -0.29, a box covering 0.028 square spaces of it, under the 0.05 cover cut). A flag's root is the stem's last row. GATHER: attached ink that begins more than 0.15 spaces past the tip is
+   cannot-tell (`ink_past_the_tip`); 5 of 79 flag reads on the Litolff tile pages sat at the window's edge (-0.30), none of the 3 stems looked at was a clean eighth flag; Sean's 21 flags start 0.42-0.81 spaces in and are
+   untouched (rehearsal on his page: 21 of 22 flags read, 0 of 132 non-flags). Tile 2 reads `decided:head_and_marks` (the dotted quarter) again.
+2. **A hollow half note main decided and v5 turned into a decided quarter (Litolff pdf 3 `glyph/2/0/7/6/1`; found by the count-page diff, not by a tile).** In a cell the beam reader RAN in and accepted
+   nothing (`beam_evidence = reader_declined`), 2.70 decides the half over a clean tip; with the tip not read clean the head fell through to the detector's black, DECIDED over ink that reads it decisively hollow --
+   a cannot-tell written as an answer, and the new reader declines more tips than the window did. 2.23's narrowing (the detector's black, half, whole; the answer inside) now covers that cell too, on a one-head box only (a cluster
+   box keeps the detector's black as in main). **This touches heads main ALSO decides black: 33 one-head boxes on the Litolff tile pages and 4 on its count page; of the 12 looked at on the print, 9 were hollow half notes, 3 not clear.** It is the one
+   place this round WIDENS the change: 26 decided quarters on the seven Litolff pages and 3 on its count page become narrowed (answer inside), 9 on Brahms.
+
+#### 19.13.5 The re-score (Sean's 14 answers, `rescore_14_answers.txt`; `RIGHT` = his value decided, `IN` = narrowed with his value inside)
+
+| tile | his value | main | v5 arm | **fix** |
+|---|---|---|---|---|
+| 01 | dotted half | IN | RIGHT | **RIGHT** |
+| 02 | dotted quarter | RIGHT | narrowed, OUT | **RIGHT** |
+| 03 | eighth | wrong | RIGHT | **RIGHT** |
+| 04 | eighth | RIGHT | **WRONG** | **RIGHT** |
+| 05 | eighth | RIGHT | RIGHT | **RIGHT** |
+| 06 | dotted quarter | wrong | IN | **IN** |
+| 07 | eighth | wrong | RIGHT | **RIGHT** |
+| 08 | eighth | RIGHT | **WRONG** | **RIGHT** |
+| 09 | eighth | IN | RIGHT | **RIGHT** |
+| 10 | quarter | RIGHT | **WRONG** | **RIGHT** |
+| controls 1-4 | quarter, eighth, eighth, quarter | IN, RIGHT, IN, abstained | same | **same** |
+
+Gate: tiles 4, 8, 10 right; 1, 3, 5, 7, 9 stay right; 2 improved to right; 6 stays narrowed (inside); no tile worse; the controls read as main.
+
+#### 19.13.6 Re-measure on the MERGED tree -- main (`8be6cf5f`) vs the fix (`e9c8c202`), GATHER+ADJUDICATE, each from its own clean checkout
+
+* **Sean's hand-truth page (Brahms pdf 0; the corrected page, 1,346 boxes; `hand_truth_main_vs_fix.txt`).** His flagged heads (44; main on the merged tree already reads 39 of them right where the pre-merge base read 26 of 40 -- the stem finder and the corrected page both moved): main 39 right / 3 narrowed / 2 abstained ->
+  **fix 41 right / 1 / 2**; beamed (141) and bare (123) unchanged: **0 newly wrong**. Flags read at the true tip: 38 of his 44 flagged heads (none -> flag 34, flag -> flag 3, occupied -> flag 1; the other 6: 2 clean-tip misses, 2 occupied, 1 no stem, 1 ink on both sides). **Guard: false flags 0** -- the one head
+  the guard lists (`q975`, `glyph/0/0/9/2/2`, his truth says bare) is a printed eighth flag his page does not box (FINDINGS 17.9 image 16; the crop shows the curl); v5 and the fix read it the same. "10 of 40 flagged heads have no stem"
+  (19.8) no longer holds on the merged tree: the stem finder leaves 1 of his 44 without a stem.
+* **Count pages, `readout diff --arm code` (`readout_diff_*_main_vs_fix.txt`) and `l283_compare.py`.** Brahms pdf 1: **10 of 1,491 durations changed** (9 gain a decided eighth -- 8 by a counted hook, 1 by an attached flag box -- and 1 is the beamless narrowing); of the
+  2.81 population P (109 on the merged main) **6 become decided eighths, 0 quarters**. Litolff pdf 3: **9 of 1,286** (1 eighth gained; the 2 tall-box halves become quarters and the hollow ellipse `glyph/2/0/7/6/1` becomes a narrowing with the half inside; 2 halves gained, both hollow-looking;
+  3 decided quarters narrowed by the beamless rule); P = 33: **0 decided**.
+* **The seven further pages each** (`compare_main_vs_fix_{brahms_tiles,litolff_t}.txt`): Brahms pdf 11, 16, 19, 20, 21: 46 of 4,275 changed, P 714 -> **20 decided eighths** (15 `hooks_counted`, 5 `head_and_marks{1}`) + 1 narrowed {1,2}, 0 quarters;
+  Litolff pdf 4, 10-13, 15, 16: 83 of 5,999 changed, P 319 -> 3 decided eighths.
+* **Sean's six 2.81 eighths (his judged tiles 02, 04, 09, 11, 27, 29):** main 3 decided -> **6 of 6 decided eighths**; his other 14 judged tiles on these pages: unchanged, 0 newly wrong (`l283_sean_tiles.py`).
+* **The 2.70 population on Litolff changes more than the flags do** (honestly): of main's 41 decided halves on the seven pages, 18 become NARROWED (the new reader declines tips the 2.18c window called clean; 5 of 6 looked
+  at are hollow heads main had right, so these are right answers kept only as a narrowing that ranks the half first), 3 become quarters (tall boxes), and 16 heads are newly decided halves (5 of 6 looked at were hollow, 1 a black block that passed the box gate).
+  Restoring the 18 means treating the window's clean tip as a 2.70 witness again, which is exactly what made tile 6 a wrong half; NOT done, a decision for Sean.
+
+#### 19.13.7 Tests, gates, tiles
+
+Tests (RED first, each against the unrepaired v5 / the previous commit, controls passing on both): `test_staged_stem_tip_flag_2_83.py` (past-the-tip + its controls, the window witness, the dispute and a clean tip, a head AT the end never given to the window),
+`test_staged_flag_tip_adjudicate_2_83.py` (a disputed tip narrows {0, counted} with equal support and never decides 0; a disputed tip never lets 2.70 fire under hollow ink, with the clean-tip control that decides the half; the head-box cut at 1.7 / 1.9 spaces and the tall-box test;
+the beamless-cell narrowing with the clean-tip, cluster and filled-head controls). 8 fail on the v5 code in the first set and 1 more on `2fb8dae8` for the beamless rule. **Fast tier on the final head (`e9c8c202`): 7,277 passed, 11 skipped, 2 xfailed, 0 failed (16.5 min).
+`staged.check` TOTAL 192 (= main, run in its own checkout on the same machine).** New blind tiles `out/print/2.83-fix-review/` (8 changed-v5-to-fix heads at random per class, 2 controls; the 14 judged tiles excluded; slivers narrower than 1.0 space skipped): 3 flag_back (a flag the shape reader could
+not tell, the window sees), 2 half_gone (a decided half the box gate or the clean-tip rule no longer makes), 2 hollow_narrowed (the beamless rule), 1 disputed (the one in the record); readings only in `manifest.json` (answered: 19.13.8).
+Brief vs tree: the brief's "head the fill reader calls filled" -- the fill reader called tile 10 HOLLOW on all three rasters; the defect is the box; the lost flags were 13, not "~13" on one page only (12 on the tile pages + 1 on the count page); main on the merged tree is 5 right on the tiles, not 4.
+
+#### 19.13.8 Sean's answers on `out/print/2.83-fix-review/` (2026-10-11; `answers.json`, `probe/l283_fixreview_answers.py`)
+
+His words, verbatim: *"1. 4  2. 8  3. 8  4. 8  5. 8  6. 4  7. 2  8. part of an accidental  9. 4  10. dot 4"* -- shown in MANIFEST order: tile_01, tile_02, tile_03, control_1, tile_04, tile_05, tile_06, tile_07, tile_08, control_2.
+Scored on the same standing ADJUDICATE duration verdict as 19.13.5 (v5 is the manifest's "base", main shown for context):
+
+| his # | tile | his value | v5 arm -> fix | main | verdict |
+|---|---|---|---|---|---|
+| 1 | tile_01 (Litolff p3 `3/1/4/12/3`, a black blob) | quarter | decided half (wrong) -> decided quarter | right | **newly RIGHT** |
+| 2 | tile_02 (Litolff p13 `13/0/0/8/12`) | eighth | decided quarter (wrong) -> `hooks_counted{1}` | right | **newly RIGHT** |
+| 3 | tile_03 (Brahms p11 `11/0/2/0/16`) | eighth | decided quarter (wrong) -> `hooks_counted{1}` | right | **newly RIGHT** |
+| 4 | control_1 (flagged) | eighth | right -> right | right | holds |
+| 5 | tile_04 (Brahms p11 `11/0/2/0/22`) | eighth | decided quarter (wrong) -> `hooks_counted{1}` | right | **newly RIGHT** |
+| 6 | tile_05 (Litolff p4 `4/0/7/7/10`, a 3.3-space box) | quarter | decided half (wrong) -> narrowed {quarter, half, whole} | narrowed, inside | **wrong -> NARROWED, answer inside** |
+| 7 | tile_06 (Litolff p10 `10/1/4/8/7`, a hollow head) | half | decided quarter (wrong) -> narrowed {quarter, half, whole} | **decided half, right** | **wrong -> NARROWED, answer inside** (and one of main's right halves, see 19.13.6) |
+| 8 | tile_07 (Brahms p19 `19/0/9/0/15`) | **not a note: part of an accidental** | refused | refused | neutral |
+| 9 | tile_08 (Litolff p11 `11/1/8/16/3`) | quarter | decided quarter (right) -> narrowed {0,1} `tip_readers_disagree` | narrowed {1,2}, answer OUT (wrong) | **small loss against v5**, a gain against main |
+| 10 | control_2 (bare) | dotted quarter | right -> right | right | holds |
+
+**0 new wrong decisions.** Tile_07's head is refused in main, v5 and the fix by `notehead_is_not_a_notehead`, reason `belongs_to_a_nearer_staff` (the box stands 3.47 spaces from its filed staff, no ledger lines toward it, 0.83 spaces from the staff below with 3
+CV ink rows): **the refusal is right** -- the box is dropped and is not exported; the reason is true but is the geometry's reading, not the print's (it IS the nearer staff's accidental; nothing in the refusal knows it is a sharp), so the narrowing the beamless rule files on it is moot.
+The one real cost in these ten is tile_06 and its kind: 18 of main's 41 decided halves on the seven Litolff pages are now narrowed (19.13.6). With 19.13.5 the lane has 24 of Sean's answers: the fix reads 0 wrong.

@@ -51,6 +51,8 @@ def klass_fix(c):
         return "half_gone"      # a decided half the head-box gate / the dispute no longer makes
     if "hollow_head_bare_stem" in arm and "hollow_head_bare_stem" not in base:
         return "half_new"
+    if "head_fill_from_ink" in arm and "head_fill_from_ink" not in base:
+        return "hollow_narrowed"    # a hollow-reading head in a beamless cell: the detector's black is no longer DECIDED over the ink (rule 8)
     if ("hooks_counted" in arm or "flag_ink_unread" in arm) and "hooks_counted" not in base and "flag_ink_unread" not in base:
         return "flag_back"      # a flag the shape reader could not tell and the 2.18c window saw: restored
     return "other"
@@ -81,6 +83,9 @@ def main():
     ap.add_argument("--controls", default=None, help="truth_rows.json:arm_record.json (Brahms pdf 0-1)")
     ap.add_argument("--plan", default="tip=3,reach=2,hollow_new=2,hollow_lost=1,regress=2")
     ap.add_argument("--n-controls", type=int, default=4)
+    ap.add_argument("--min-width", type=float, default=0.0,
+                    help="skip changed heads whose detector box is narrower than this many staff spaces (a notehead is >= 1.0 wide, CLAUDE.md 10: "
+                         "a sliver on a barline is not a note and makes a pointless tile)")
     ap.add_argument("--mode", choices=("v5", "fix"), default="v5",
                     help="`fix`: classify v5-arm -> fix changes (klass_fix) and also exclude the 14 judged 2.83 tiles")
     a = ap.parse_args()
@@ -99,9 +104,15 @@ def main():
         arm, ch = rest.split(":", 1)
         run = RD.load_run(arm)
         runs[(mv, arm)] = run
+        space_of = {o["subject"]: float(o["value"]) for o in run.observations if o["quantity"] == "cell_staff_space"}
         for c in json.loads(Path(ch).read_text()):
             if c["key"] in judged or not c.get("box_page"):
                 continue
+            if a.min_width > 0:
+                g = run.glyphs.get(c["key"])
+                sp = space_of.get(g.cell_key) if g is not None else None
+                if g is None or not g.box_canon or not sp or (g.box_canon[2] - g.box_canon[0]) / sp < a.min_width:
+                    continue
             c = dict(c, movement=mv, arm_record=arm)
             pool[klass_of(c)].append(c)
     items = []
