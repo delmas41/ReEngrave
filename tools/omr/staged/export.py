@@ -56,7 +56,7 @@ from fractions import Fraction
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import export as _legacy
-from ..voicing import group_chords_in_measure
+from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
 # ⚠️ Imported as a bare module name, not through the dotted module path:
 # `wiring.details` matches a detail key by bare substring, and a dot followed
@@ -522,10 +522,11 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
             if not isinstance(rec.value(Q.SLOT_INDEX, _k), int):
                 held_out_runs.add(_k)
     relocated_out: Dict[str, int] = {}
+    divisi_out: Dict[str, int] = {}
     fates: Dict[str, str] = {}
     dropped = _place_notes(rec, runs, by_system=notes_dropped_by_system,
                            held_out=held_out_runs, relocated=relocated_out,
-                           fates=fates)
+                           fates=fates, divisi=divisi_out)
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -683,6 +684,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "unidentified_parts": sorted(unidentified),
         "held_out_staves": len(held_out_runs),
         "relocated_at_export": int(relocated_out.get("heads", 0)),
+        "divisi_at_export": dict(divisi_out),
         "marks_census": marks_census(rec, fates),
         "join_decided": kind,
         "join_used": used,
@@ -755,11 +757,32 @@ def _sounding_pitch(pitch: str, alteration: str) -> str:
     return f"{letter}{spelled}{octave}"
 
 
+def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
+    """ROADMAP 2.90. A head's DECIDED stem direction and stem identity, for
+    `voicing.group_chords_in_measure`'s divisi guard (STAGED export only).
+
+    ⚠️ DECIDED ONLY. `stem_direction` is `"up"`/`"down"` where
+    `Q.STEM_DIRECTION` is decided, else `None`; `stem_id` is the canonical
+    `Q.STEM` row id of `Q.HEAD_STEM` where that is decided, else `None`.
+    A narrowed or abstained verdict is "cannot tell", and `None` is how the
+    guard hears it (unknown never blocks a merge).
+    """
+    out: Dict[str, Any] = {"stem_direction": None, "stem_id": None}
+    d = rec.verdict(Q.STEM_DIRECTION, sub)
+    if d and d.get("outcome") == "decided" and d.get("value") in ("up", "down"):
+        out["stem_direction"] = d["value"]
+    h = rec.verdict(Q.HEAD_STEM, sub)
+    if h and h.get("outcome") == "decided" and h.get("value"):
+        out["stem_id"] = str(h["value"])
+    return out
+
+
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  by_system: Optional[Dict[Tuple[int, int], Any]] = None,
                  held_out: Optional[set] = None,
                  relocated: Optional[Dict[str, int]] = None,
-                 fates: Optional[Dict[str, str]] = None) -> Dict[str, int]:
+                 fates: Optional[Dict[str, str]] = None,
+                 divisi: Optional[Dict[str, int]] = None) -> Dict[str, int]:
     """Every decided note, ONCE PER PIECE OF INK.
 
     ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF): the one exception to
@@ -1204,6 +1227,16 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # shorten every untupleted note in it by a third.
             "tuplet": _tuplet_for(rec, run, cell_index, s["glyph"]),
             "glyph": sub,
+            # ⚠️⚠️ ROADMAP 2.90 -- THE HEAD'S DECIDED STEM, CARRIED. The value
+            # existed on the record (`Q.STEM_DIRECTION`, `Q.HEAD_STEM`) and
+            # nothing here read it, so `voicing.group_chords_in_measure`'s own
+            # divisi guard (opposite stem directions never merge) could not
+            # fire on this path: two voices at one x arrived at the voice split
+            # already fused into ONE chord. Only a DECIDED verdict is carried;
+            # a narrowed or abstained one is ABSENT (`None`), and absence never
+            # blocks a merge -- that is rule 8 applied to the guard, not a new
+            # guess.
+            **_stem_facts_of(rec, sub),
             # ⚠️⚠️ THE PAGE BOX, IN THE *WIDTH* FORM, AND THE TWO FRAMES HERE
             # ARE A RECORDED TRAP. `bbox` above is CANONICAL -- measured
             # inside one cell, rescaled so the staff span is constant -- and
@@ -1283,6 +1316,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             fates[sub] = "written_relocated"
         if relocated is not None:
             relocated["heads"] = relocated.get("heads", 0) + 1
+    # ⚠️ ROADMAP 2.90, AFTER relocation (a relocated head joins a chord too) and
+    # BEFORE 2.89's refusal: which bars keep the heads' decided stem directions.
+    _settle_divisi_pairs(runs, divisi)
     # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
     # a chord too. See `_chords_whose_value_would_be_voted`.
     for _det in _chords_whose_value_would_be_voted(runs):
@@ -1291,6 +1327,72 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             continue
         _drop("chord_value_undecided", _again(_sub))
     return dict(dropped)
+
+
+def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
+                         divisi: Optional[Dict[str, int]] = None) -> None:
+    """ROADMAP 2.90. Per bar: keep the heads' decided stem directions (so two
+    voices at one onset stay two events) only where the bar can then be
+    written as two voices; otherwise take them off, and the bar is exactly
+    what 2.89 left it.
+
+    ⚠️ WHY NOT ALWAYS KEEP THEM. Measured on Litolff (whole movement, 24 bars
+    with a divisi pair): splitting every pair held out five bars that were
+    written before, because the second voice then carried only the notes whose
+    stem was DECIDED down and was short -- `split_events_into_voices` puts an
+    unknown-direction event in voice 1, which is a guess about a stem we did
+    not read (rule 8). So a pair is kept apart only where (1) EVERY chord of
+    the bar has a decided direction (no event's voice is a guess) and (2) the
+    two streams `split_events_into_voices` makes carry the SAME total time (a
+    necessary condition for both to fill the bar; the meter itself is judged
+    where it is known, by `_bar_holds_out`). Otherwise the directions come off
+    the bar's heads and the chord grouping is the one 2.89 refuses on.
+
+    ⚠️ NOTHING IS DECIDED HERE. Taking the directions off is "cannot tell" kept
+    as cannot-tell; the split uses only what ADJUDICATE decided.
+    """
+    stats = divisi if divisi is not None else {}
+    for run in runs.values():
+        for cell in run.cells.values():
+            if not any(d.get("stem_direction") for d in cell.detections):
+                continue
+            # ⚠️ ONE STEM IS ONE DIRECTION (2.78: heads on one stem are one
+            # chord). `Q.STEM_DIRECTION` is decided per head from the whole
+            # group on the stem so this cannot happen on a record the reader
+            # made; if a record says it, the direction is "cannot tell" for
+            # those heads and they stay one chord rather than become two voices.
+            by_stem: Dict[str, set] = {}
+            for d in cell.detections:
+                if d.get("stem_id") and d.get("stem_direction"):
+                    by_stem.setdefault(d["stem_id"], set()).add(d["stem_direction"])
+            clash = {k for k, v in by_stem.items() if len(v) > 1}
+            if clash:
+                for d in cell.detections:
+                    if d.get("stem_id") in clash:
+                        d["stem_direction"] = None
+                stats["stems_with_two_directions_taken_off"] = (
+                    stats.get("stems_with_two_directions_taken_off", 0) + len(clash))
+            events = group_chords_in_measure(cell.detections)
+            pairs = _divisi_pairs(events)
+            if not pairs:
+                continue
+            chords = [e for e in events if e.get("kind") == "chord"]
+            reason = None
+            if any(e.get("stem_direction") not in ("up", "down") for e in chords):
+                reason = "an_undecided_direction_in_the_bar"
+            else:
+                streams = split_events_into_voices(events)
+                if len(streams) != 2 or any(not st for st in streams):
+                    reason = "a_stream_is_empty"
+                elif (sum(_event_units(e, 720) for e in streams[0])
+                      != sum(_event_units(e, 720) for e in streams[1])):
+                    reason = "streams_carry_unequal_time"
+            if reason is None:
+                stats["bars_kept_as_two_voices"] = stats.get("bars_kept_as_two_voices", 0) + 1
+                continue
+            for d in cell.detections:
+                d["stem_direction"] = None
+            stats["bars_left_fused_" + reason] = stats.get("bars_left_fused_" + reason, 0) + 1
 
 
 def _chords_whose_value_would_be_voted(
@@ -1622,6 +1724,20 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
     out: Dict[int, int] = {}
     for run in part:
         for cell_index, cell in run.cells.items():
+            # ⚠️ ROADMAP 2.90. A bar the exporter parts itself (two voices at
+            # one onset, opposite decided stems) is numbered by the SAME split
+            # `_voice_split` writes, or a slur would be paired across streams
+            # the file keeps apart.
+            if any(d.get("stem_direction") for d in cell.detections):
+                evs = _events(cell)
+                if _divisi_pairs(evs):
+                    streams = _voice_split(rec, run, cell_index, evs)
+                    if streams is not None:
+                        for number, st in enumerate(streams, start=1):
+                            for ev in st:
+                                for det in ev.get("noteheads") or ():
+                                    out[id(det)] = number
+                        continue
             v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
             if not v or v["outcome"] != "decided":
                 continue
@@ -3856,11 +3972,89 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     return "\n".join(lines)
 
 
+#: ROADMAP 2.90. `_voice_split` appends this to `why` when it wrote a bar's
+#: voices from the EXPORTER'S OWN events (two voices at one onset, opposite
+#: decided stems) rather than from `Q.VOICES`; `_measure_xml` counts it under
+#: `two_voice_bars_from_exporter_stems` and never as a refusal.
+DIVISI_FROM_EXPORTER_STEMS = "divisi_from_exporter_stems"
+
+
+def _divisi_pairs(events: Sequence[Dict[str, Any]]
+                  ) -> List[Tuple[Dict[str, Any], Dict[str, Any]]]:
+    """ROADMAP 2.90. Every (up-stem event, down-stem event) pair that stands at
+    ONE ONSET COLUMN in this bar -- the exporter's own events, after
+    `group_chords_in_measure`'s divisi guard has kept opposite-direction heads
+    apart.
+
+    ⚠️ RULE 1 OF `adjudicate_voices`, ASKED OF THE EVENTS THAT RULE NEEDS.
+    *Same beat, opposite stems, is ALWAYS two voices* (Sean, 2.21). The record
+    asked it of `Q.EVENT`'s groups, which on this path had FUSED the two voices
+    into one event (Sean's 2.89 tiles 7, 9, 10, 11: all four fused, all four two
+    voices), so the rule could not fire. "Same column" is the guard's own
+    tolerance (0.6 of a head width) widened to one whole head, so a pair the
+    guard separated is always found and a pair a head apart is not.
+    """
+    ups = [e for e in events if e.get("kind") == "chord"
+           and e.get("stem_direction") == "up"]
+    downs = [e for e in events if e.get("kind") == "chord"
+             and e.get("stem_direction") == "down"]
+    pairs = []
+    for u in ups:
+        for d in downs:
+            heads = list(u.get("noteheads") or ()) + list(d.get("noteheads") or ())
+            widths = [h["bbox"][2] for h in heads if h.get("bbox")]
+            tol = (sum(widths) / len(widths)) if widths else 30.0
+            if abs(float(u["x_position"]) - float(d["x_position"])) <= tol:
+                pairs.append((u, d))
+    return pairs
+
+
+def _parted(streams: Sequence[Sequence[Dict[str, Any]]],
+            a: Dict[str, Any], b: Dict[str, Any]) -> bool:
+    """True when `a` and `b` each stand in exactly one stream and not the same."""
+    ia = {k for k, st in enumerate(streams) if any(a is e for e in st)}
+    ib = {k for k, st in enumerate(streams) if any(b is e for e in st)}
+    return len(ia) == 1 and len(ib) == 1 and ia != ib
+
+
 def _voice_split(rec: Record, run: StaffRun, cell_index: int,
                  events: List[Dict[str, Any]],
                  why: Optional[List[str]] = None
                  ) -> Optional[List[List[Dict[str, Any]]]]:
     """This bar's events partitioned into voices, or None for one stream.
+
+    ⚠️ ROADMAP 2.90. THE RECORD'S SPLIT STANDS UNLESS THE EXPORTER SEES TWO
+    VOICES THE RECORD FUSED. Where an up-stem event and a down-stem event stand
+    at one onset (`_divisi_pairs`) the bar is two voices outright (Sean's 2.21
+    convention, rule 1), and the streams are `voicing.split_events_into_voices`
+    -- CALLED, not restated. `Q.VOICES` is kept whenever it already puts every
+    such pair in different streams; where it is one voice, abstained, or puts a
+    pair's two events in ONE stream, it was decided over a grouping that fused
+    the pair (that grouping is what this lane fixes) and cannot be right about
+    them. Nothing is guessed: the direction is a DECIDED `Q.STEM_DIRECTION` of
+    each head or the pair does not exist.
+    """
+    why = [] if why is None else why
+    recorded = _recorded_voice_split(rec, run, cell_index, events, why)
+    pairs = _divisi_pairs(events)
+    if not pairs:
+        return recorded
+    if recorded is not None and all(_parted(recorded, u, d) for u, d in pairs):
+        return recorded
+    streams = split_events_into_voices(events)
+    if len(streams) != 2 or any(not s for s in streams):
+        why.append("divisi_split_has_an_empty_stream")
+        return None
+    del why[:]                      # the recorded refusal(s) are superseded
+    why.append(DIVISI_FROM_EXPORTER_STEMS)
+    return streams
+
+
+def _recorded_voice_split(rec: Record, run: StaffRun, cell_index: int,
+                          events: List[Dict[str, Any]],
+                          why: Optional[List[str]] = None
+                          ) -> Optional[List[List[Dict[str, Any]]]]:
+    """`Q.VOICES`' own split of this bar's events (see `_voice_split`).
 
     ⚠️ THE RECORD'S DECISION, NOT A SECOND SPLIT. `adjudicate_voices` calls
     `voicing.split_events_into_voices` and records the answer as GLYPH lists;
@@ -4041,6 +4235,8 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
                                             doubled=doubled)
         return lines
     counters["two_voice_bars"] += 1
+    if DIVISI_FROM_EXPORTER_STEMS in why:
+        counters["two_voice_bars_from_exporter_stems"] += 1
     out, units = _measure_events_xml(streams[0], divisions, counters,
                                      voice=1, doubled=doubled)
     if units > 0:
