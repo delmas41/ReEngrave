@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`)
+## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`, LANDED on main 2026-10-12, Sean: "Land 2.93 once it's green")
 
 - STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
 
