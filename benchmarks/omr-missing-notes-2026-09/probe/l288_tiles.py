@@ -52,7 +52,7 @@ def with_header(crop, n):
     out = np.full((h + HDR, w, 3), 255, np.uint8)
     out[HDR:] = crop
     cv2.putText(out, str(n), (10, HDR - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.9, (0, 0, 0), 4, cv2.LINE_AA)
-    cv2.putText(out, QUESTION, (88, HDR - 18), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (60, 60, 60), 1, cv2.LINE_AA)
+    cv2.putText(out, QUESTION, (70, HDR - 18), cv2.FONT_HERSHEY_SIMPLEX, 0.42, (60, 60, 60), 1, cv2.LINE_AA)
     cv2.line(out, (0, HDR - 1), (w, HDR - 1), (200, 200, 200), 1)
     return out
 
@@ -64,28 +64,26 @@ def main():
     ap.add_argument("--arm-litolff", nargs="+", required=True)
     ap.add_argument("--arm-brahms11", default=None)
     ap.add_argument("--brahms-p0", default=None, help="arm record holding Brahms pdf 0 (controls)")
-    ap.add_argument("--n-sample", type=int, default=8)
+    ap.add_argument("--final", required=True, help="the changed heads that survive the final rule (gap 0.2)")
+    ap.add_argument("--n-kept", type=int, default=4)
+    ap.add_argument("--n-refused", type=int, default=3)
+    ap.add_argument("--n-weak", type=int, default=4)
     ap.add_argument("--seed", type=int, default=20261011)
     a = ap.parse_args()
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     rng = random.Random(a.seed)
     excl = judged_keys()
-    changed = [c for c in json.loads(Path(a.changed).read_text()) if c["arm"].startswith("decided:hollow_head_bare_stem") and c["key"] not in excl
-               and c.get("box_page") and c["status"] != "refused"]
-    changed.sort(key=lambda c: c["key"])
-    rng.shuffle(changed)
-    by_page, picked = {}, []
-    for c in changed:
-        by_page.setdefault(c["page"], []).append(c)
-    pages = sorted(by_page)
-    i = 0
-    while len(picked) < a.n_sample and any(by_page.values()):
-        p = pages[i % len(pages)]
-        if by_page[p]:
-            picked.append(by_page[p].pop())
-        i += 1
-    print("restored pool", len(changed), "drawn", len(picked))
+    allc = json.loads(Path(a.changed).read_text())
+    final = {c["key"] for c in json.loads(Path(a.final).read_text())}
+    pool_kept = sorted([c for c in allc if c["key"] in final and c["key"] not in excl and c["status"] != "refused"], key=lambda c: c["key"])
+    pool_ref = sorted([c for c in allc if c["key"] in final and c["key"] not in excl and c["status"] == "refused"], key=lambda c: c["key"])
+    pool_weak = sorted([c for c in allc if c["key"] not in final and c["key"] not in excl and c["status"] != "refused"], key=lambda c: c["key"])
+    for pool in (pool_kept, pool_ref, pool_weak):
+        rng.shuffle(pool)
+    picked = [("restored", c) for c in pool_kept[:a.n_kept]] + [("restored_refused", c) for c in pool_ref[:a.n_refused]] \
+        + [("gap_stays_narrowed", c) for c in pool_weak[:a.n_weak]]
+    print("pools: kept", len(pool_kept), "refused", len(pool_ref), "weak", len(pool_weak))
     runs = {}
     for p in a.arm_litolff:
         run = RD.load_run(p)
@@ -96,8 +94,8 @@ def main():
                 return run
         return None
     items = []
-    for c in picked:
-        items.append({"kind": "restored", "key": c["key"], "mv": "litolff", "run": litolff_run(c["key"]), "extra": {"base": c["base"], "arm": c["arm"]}})
+    for kind, c in picked:
+        items.append({"kind": kind, "key": c["key"], "mv": "litolff", "run": litolff_run(c["key"]), "extra": {"base": c["base"], "arm_first_rule": c["arm"], "h_sp": c["h_sp"], "w_sp": c["w_sp"], "ink": c["ink"]}})
     items.append({"kind": "known_half", "key": "glyph/10/1/4/8/7", "mv": "litolff", "run": litolff_run("glyph/10/1/4/8/7"),
                   "extra": {"truth": "Sean 2.83 fix tile 6: half"}})
     if a.arm_brahms11:
@@ -106,7 +104,6 @@ def main():
     if a.brahms_p0:
         r0 = RD.load_run(a.brahms_p0)
         items.append({"kind": "control_bare", "key": "glyph/0/0/11/3/12", "mv": "brahms", "run": r0, "extra": {"truth": "Sean: dotted quarter"}})
-        items.append({"kind": "control_flag", "key": "glyph/0/0/9/4/4", "mv": "brahms", "run": r0, "extra": {"truth": "Sean: eighth"}})
     order = list(range(len(items)))
     random.Random(a.seed + 2).shuffle(order)
     from tools.omr.preprocessing import render_page
