@@ -864,6 +864,16 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if s["glyph"] is None:
             continue
         is_rest = bool(rec.obs(Q.REST, sub))
+        # ⚠️ ROADMAP 2.80b. A narrow box refused `too_narrow` as a head that
+        # ADJUDICATE read, on its OWN ink, as an eighth rest (Sean, Brahms
+        # Contrabass bar 13: *"It is an 8th note rest"*) is WRITTEN AS A REST
+        # of the length EVALUATE gave it. It is no longer refused as a head:
+        # the refusal said it is not one, and that stands.
+        reinstated_rest = (not is_rest
+                           and rec.value(Q.NOTEHEAD_IS_AN_EIGHTH_REST, sub)
+                           is True)
+        if reinstated_rest:
+            is_rest = True
         if not is_rest and not rec.obs(Q.NOTEHEAD_CLASS, sub):
             continue                 # neither a notehead nor a rest
         nearer_staff_claim = False
@@ -1130,6 +1140,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         name, x, y, w, h = o["value"]
         if plan is not None:
             x, y, w, h = plan["bbox"]
+        if reinstated_rest:
+            name = "rest8th"        # what ADJUDICATE read it as, not the head
         written = float(dur.get("written") or dur.get("beats") or 0.0)
         # ⚠️ A MEASURE REST NEEDS NO NOTE VALUE, and demanding one would
         # refuse the bar the convention exists for. `<rest measure="yes"/>`

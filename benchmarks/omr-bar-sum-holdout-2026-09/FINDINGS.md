@@ -2793,13 +2793,17 @@ control), `2.79_segment_footprint.py` (which verdicts sit on a cell whose
 Branch `lane-2.80-missed-rest` off `origin/main` 2e286351, with `d04fd058`
 (2.79's held sibling) cherry-picked as the base. STAGED. Not merged.
 
-**CONVENTION ASSUMED:** a rest the detector never boxed is still printed ink in
-the bar, so a bar's shortfall is evidence about a NOTE only where the bar holds
-no ink that no standing glyph explains. **WHAT WOULD FALSIFY IT:** a tile where
+**CONVENTION CONFIRMED FOR CONTRABASS BAR 13, ASSUMED FOR THE REST:** Sean,
+blind on tile 1 (the blue mark): *"It is an 8th note rest"* (DECISIONS
+2026-10-11) -- the missed mark is an eighth rest, not a note one beam short.
+The general convention -- a rest the detector never boxed is still printed ink
+in the bar, so a bar's shortfall is evidence about a NOTE only where the bar
+holds no ink that no standing glyph explains -- stays ASSUMED until the other
+tiles are read. **WHAT WOULD FALSIFY IT:** a tile where
 Sean sees the re-read note is right while the witness called ink unexplained
 (over-refusal -- tiles 8-10 are exactly where to look), or a missed rest whose
-ink a standing glyph box covers anyway (under-refusal). **NOT CONFIRMED** --
-no tile has been judged.
+ink a standing glyph box covers anyway (under-refusal). **NOT CONFIRMED** for
+the general case -- tile 1 is the only tile judged.
 
 ### 2.80a. The case, on the record
 
@@ -2897,3 +2901,95 @@ corners = the subject, red = the bar, nothing of ours on the image;
 `manifest.json` holds our reading). Files: `consequences.py`, `gather.py`,
 `record.py`, `capture.py`, `test_staged_missed_rest_2_80.py` (+ two edited
 tests), `probe/2.80_ab.py`, `2.80_witness_rates.py`, `2.80_tiles.py`.
+
+---
+
+## 2.80b — the missed rest is READ, on its own ink (2026-10-11)
+
+Same branch `lane-2.80-missed-rest`. STAGED. Not merged. Sean, blind on tile 1
+of `out/print/2.80-review/`: *"It is an 8th note rest"* (DECISIONS 2026-10-11).
+The coordinator's ruling on how to build it: ADJUDICATE on the mark's OWN
+evidence; **a bar's shortfall is not a witness** (rule 8; two witnesses off one
+raster fall silent together -- the bar sum is made of the same readings the mark
+was refused out of); if the shape cannot tell, abstain and the bar stays held
+out. Any ranking by the shortfall would live in INFER, labelled, or nowhere --
+there is none: the shape admits one candidate (the eighth rest) here, and the
+decision declares no meter/event/duration/voice quantity (a test asserts it
+off the registry).
+
+### 2.80b-a. The pipeline
+
+* GATHER `gather_narrow_box_shape` -> `Q.NARROW_BOX_SHAPE`: one row per
+  notehead-classed box narrower than `TOO_NARROW_MIN_SPACES` (1.0, imported):
+  the ink pieces the box overlaps, plus pieces stacked against them (<= 0.25
+  space gap; staff-line erasure splits an eighth rest into a blob and a tail),
+  as width/height in spaces, the staff step of the centre, fill, whether it
+  touches the cell's edge, and the OTHER detections overlapping it. Residue is
+  excluded as a seed (a piece wider than 8 or taller than 3.5 spaces: the first
+  build let a 22 x 8 space remnant under bar 13 swallow the whole bar and every
+  box then read "claimed by another class"). No bar is read.
+* ADJUDICATE `adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+  `adjudicators/narrow_rest.py`, in `ORDER` after `Q.NOTEHEAD_IS_A_WHOLE_REST`):
+  speaks only on a box ALREADY refused `too_narrow`. `True`: width 0.9-1.6 x
+  height 1.6-2.6 spaces, <= 3 pieces, centre within 1 step of the middle line
+  (step 4), not touching the cell edge, and no standing glyph over the ink
+  (windows measured off the 107 Brahms + 17 Litolff kept `rest8th` boxes:
+  1.2-1.4 x 1.9-2.4, step median 3.9). `False`: decisively not a rest's size, or
+  a STANDING rest/notehead box already reads the ink (a duplicate box).
+  Abstain: another class (flag, beam) claims the ink, the size is in between,
+  off the middle line, or no ink to measure.
+* EVALUATE `size_reinstated_rest` (cause the verdict, `DOWNHILL` above `Q.METER`,
+  so it runs before every bar-summing rule): writes `Q.DURATION` {0.5, is_rest}
+  superseding the head reading. The length follows from the class, not the bar.
+  `_left_the_bar` and the 2.80 witness treat a reinstated box as in the bar and
+  as explaining its ink.
+* EXPORT writes a reinstated box as a rest (`class` `rest8th`); the refusal
+  `not_a_notehead` still stands -- it is not a head.
+
+### 2.80b-b. Reach (small re-gathers, `--through gather`, base vs arm from ONE record)
+
+| | Brahms p0-1 | Litolff p1-3 |
+|---|---|---|
+| `too_narrow` refusals | 243 | 20 |
+| no ink the reader can measure (`no_ink_under_box`) | 224 | 15 |
+| decided False: duplicate of a standing glyph | 5 | 1 |
+| decided False: not rest-shaped | 5 | 1 |
+| abstained: claimed by another class | 7 | 3 |
+| **decided True: eighth rest** | **2** | **0** |
+| MusicXML bars changed vs the decision off | **2** (P14 bars 13, 19) | 0 |
+| bars held out (2.8) | 98 -> 96 | 122 -> 122 |
+
+Almost all narrow boxes are crumbs the erased raster holds no rest-sized piece
+for, or sit in a merged component: the reader refuses to guess (224 of 243).
+
+**Contrabass bar 13 now adds up with no note changed:** `n2 R2 R2 R4 R2`
+(divisions 4: eighth, eighth rest, the reinstated eighth rest, quarter rest,
+eighth rest = 3.0 quarters, the 6/8 in force). Before (the 2.80 witness alone)
+the bar was held out; before 2.80, a quarter. The second reinstated rest is
+Contrabass bar 19 (`n2 n2 R2 R4 R2`, 3.0); both are print-checked below.
+
+### 2.80b-c. Tests
+
+`test_staged_narrow_rest_2_80b.py`, 20 tests, written RED (the quantity did not
+exist on the tree without it): rest-shaped refused box -> True; the same ink
+under a box refused for another reason -> abstain (positive control); a crumb,
+a head with its stem and a quarter rest's height stay refused (False); a
+barline-remnant at the cell edge, an off-middle position and an in-between size
+abstain, each with its twin that decides True; a standing rest/notehead over the
+same ink -> False, a REFUSED rest over it is no claim -> True, another class ->
+abstain; EVALUATE: the rest takes 0.5, is idempotent, a False/abstained verdict
+writes nothing, **with the rest the bar adds up and no note changes**, and
+without it the old repair is what happens (the control that makes the previous
+test mean something). `test_staged_evaluate_order` gains `size_reinstated_rest`.
+
+### 2.80b-d. Limits
+
+* Eighth rests only: the sixteenth and quarter shapes are not read here (a
+  quarter's height is decisively "not an eighth"). Narrow boxes on a MERGED
+  component abstain (`no_ink_under_box`): 224 of 243 on Brahms.
+* The windows are measured on two pages; the 2 reinstated rests are the whole
+  population there. `out/print/2.80-review-2/` holds the 2 plus controls (the
+  duplicates, three real narrow non-rests, abstentions) for Sean.
+* GATHER changed again: only a full re-gather prices it on the whole movement.
+* The bar-13 reinstatement does not make the bar-sum control a witness: the
+  bar adding up is the CONSEQUENCE checked, never the reason.

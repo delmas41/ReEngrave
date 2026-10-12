@@ -1072,6 +1072,12 @@ ORDER: Tuple[str, ...] = (
     # that should not admit it -- finds it already decided rather than having
     # to move it and rediscover `wedge_anchor`'s ORDER fault.
     Q.NOTEHEAD_IS_A_WHOLE_REST,
+    # ⚠️ ROADMAP 2.80b, AFTER BOTH REFUSALS IT READS (`Q.NOTEHEAD_IS_NOT_A_
+    # NOTEHEAD` -- the `too_narrow` verdict that makes a box a candidate --
+    # and `Q.REST_IS_NOT_A_REST`, which says whether another box already
+    # stands over the same ink) AND BEFORE `Q.DURATION`, which EVALUATE's
+    # `size_reinstated_rest` then supersedes for a reinstated rest.
+    Q.NOTEHEAD_IS_AN_EIGHTH_REST,
     Q.TUPLET_RATIO,
     Q.DURATION,
     # ⚠️ ROADMAP 2.78, AFTER `Q.DURATION` AND BEFORE `Q.EVENT`. The join reads

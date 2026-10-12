@@ -36,6 +36,20 @@ fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
 `staged.check` 192 = base. FINDINGS §2.80.
 
 ---
+---
+
+## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, NOT merged)
+
+Sean (tile 1): *"It is an 8th note rest"*. A narrow notehead-classed box refused
+`too_narrow` is read as an eighth rest where its ink says so, never off the bar:
+GATHER `gather_narrow_box_shape` (`Q.NARROW_BOX_SHAPE`) -> ADJUDICATE
+`adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+`adjudicators/narrow_rest.py`) -> EVALUATE `size_reinstated_rest` -> EXPORT
+writes a rest. Brahms p0-1: 243 `too_narrow`, 2 become rests; Contrabass bar 13
+adds up with no note changed. Litolff p1-3: 20, 0. DECISIONS line added. 20
+tests. `staged.check` 192 = base. Tiles `out/print/2.80-review-2/`. FINDINGS 2.80b.
+
+---
 
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 

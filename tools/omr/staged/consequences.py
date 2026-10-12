@@ -308,9 +308,20 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
 _LEAVES_THE_BAR = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
 
 
+def _reinstated_rest(log: Log, glyph: Subject) -> bool:
+    """ROADMAP 2.80b: ADJUDICATE read this refused-narrow box, on its own ink,
+    as an eighth rest. It is IN its bar, as a rest."""
+    v = log.verdict(Q.NOTEHEAD_IS_AN_EIGHTH_REST, glyph)
+    return (v is not None and v.outcome is Outcome.DECIDED
+            and v.value is True)
+
+
 def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     """The DECIDED verdict that took this glyph out of its bar, else None."""
+    reinstated = _reinstated_rest(log, glyph)
     for q in _LEAVES_THE_BAR:
+        if reinstated and q == Q.NOTEHEAD_IS_NOT_A_NOTEHEAD:
+            continue        # not a HEAD -- but a rest, and the bar holds it
         v = log.verdict(q, glyph)
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
             return v
@@ -598,6 +609,39 @@ def reconcile_chord_duration(log: Log, subject: Subject,
     return out
 
 
+@rule(consequence=Consequence.SIZE_REINSTATED_REST,
+      cause=Q.NOTEHEAD_IS_AN_EIGHTH_REST, effect=Q.DURATION, scope=Kind.GLYPH,
+      bound="Fires only on a glyph whose `Q.NOTEHEAD_IS_AN_EIGHTH_REST` is "
+            "DECIDED True. Writes ONE duration -- an eighth rest, 0.5 "
+            "quarters, no dots, `is_rest` -- superseding the head-reading "
+            "ADJUDICATE gave the same box. Reads no bar, no meter and no "
+            "other glyph; adds, deletes and re-pitches nothing.")
+def size_reinstated_rest(log: Log, subject: Subject,
+                         verdict: Verdict) -> List[Verdict]:
+    """A narrow box read as an eighth rest takes an eighth's length.
+
+    ⚠️ THE LENGTH FOLLOWS FROM THE CLASS, NOT FROM THE BAR. An eighth rest is
+    half a quarter whatever the meter, so this is EVALUATE (the answer
+    follows) and it consults nothing about the bar the rest stands in -- the
+    bar's sum is what the rest is then counted INTO, never what decided it
+    (CLAUDE.md §2 rule 8).
+    """
+    if verdict.outcome is not Outcome.DECIDED or verdict.value is not True:
+        return []
+    prior = log.verdict(Q.DURATION, subject)
+    if prior is not None and prior.decider == "size_reinstated_rest":
+        return []                           # already written
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 0,
+               "is_rest": True, "reinstated_rest": True},
+        decider="size_reinstated_rest", reason="eighth_rest_shape",
+        considered=(verdict.id,), basis=(verdict.id,),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.80: a bar short by a MISSED REST looks exactly like a note one beam
 # too short.
@@ -672,8 +716,9 @@ def _missed_rest_witness(log: Log, subject: Subject, *, pieces_out=None):
             and v.outcome is Outcome.DECIDED and v.value is True
             for q in _LEAVES_THE_BAR)
         whole = log.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, r.subject)
-        is_whole = (whole is not None and whole.outcome is Outcome.DECIDED
-                    and whole.value is True)
+        is_whole = ((whole is not None and whole.outcome is Outcome.DECIDED
+                     and whole.value is True)
+                    or _reinstated_rest(log, r.subject))   # ROADMAP 2.80b
         if gone and not is_whole:
             continue          # decided: not what the detector called it
         b = tuple(float(v) for v in box)
