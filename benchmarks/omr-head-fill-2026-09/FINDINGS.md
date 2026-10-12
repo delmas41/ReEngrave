@@ -1135,3 +1135,12 @@ so "narrowed stem" was the wrong picture: the vote is mostly over heads that may
 Not built: a decided-stem head winning over a stem-less one at the same x (refused with them for now), and 2.78's tile 9 follow-on.
 Cost: `test_stage_review_evidence` 'two notes where the plate has one' is now one note FEWER (the human's relabelled half is refused with the machine's
 quarter). Fast tier: see ROADMAP/version_memory. Tiles `out/print/2.89-review/` (11, blind; `manifest.json` holds the old vote).
+
+### 13.1 Are the voted chords two voices? (manager's question, 2026-10-11; read off `Q.STEM_DIRECTION` / `Q.HEAD_STEM` on the 11 tile chords)
+
+* **4 of 11 are two voices on two separate stems with OPPOSITE decided directions** (tiles 7, 9, 10, 11: one head up on its own stem, the other down on its own stem).
+* 3 have one head's direction decided and the other's abstained (tiles 2, 4, 8). 4 have no direction on any head (tiles 1, 3, 5, 6; Litolff, no stem found).
+  So at most 4 are provably two voices, none is provably one chord, and 7 cannot be told.
+* **Why the voice split never separated them:** the staged exporter's notehead dict (`_place_notes`' `_det`) carries no `stem_direction` key, so
+  `voicing.group_chords_in_measure`'s own divisi guard (opposite stem directions never merge) cannot fire on this path. The chords are merged by x
+  first, and `Q.VOICES` / `_voice_split` then assigns whole EVENTS to streams, so the two voices arrive already fused into one event. Not changed here.
