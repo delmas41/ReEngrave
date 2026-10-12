@@ -22,6 +22,9 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.88 half notes 2.83 left narrowed (branch `lane-2.88-halves`, LANDED on main 2026-10-11, Sean: "Yes")
+
+- STAGED, ADJUDICATE only (`rhythm.adjudicate_duration`): a hollow head whose stem tip the tip reader cannot tell is a half on the head's own firm reading (two rasters, ring - centre >= 0.2, head-shaped box, filed cannot-tell, no flag/beam/dispute). 17 Litolff heads narrowed -> decided half (rule reads the RAW raster firmly after Sean's 14 tiles; fast tier 7,410 passed), nothing else moves; Sean's judged halves 18/18, quarters and the 2.83 tile-6 fragment unchanged; Brahms hand truth unchanged. 13 new tests (`test_staged_hollow_tip_unread_2_88.py`, RED first on `51a01593`). 14 blind tiles `out/print/2.88-review/`. FINDINGS `omr-missing-notes-2026-09` 21.
 ## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
 
 STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so

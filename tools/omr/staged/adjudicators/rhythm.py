@@ -133,6 +133,56 @@ HEAD_FILL_HOLLOW_RING_GAP_MIN = 0.1
 HEAD_BOX_MAX_SPACES = 1.8
 
 
+#: ROADMAP 2.88 -- a hollow head whose stem tip the tip reader CANNOT TELL (not "clean", not "a flag"). A hollow head cannot carry a flag or
+#: a beam (engraving: only a filled head does), so for a head the ink reads hollow the tip is a GUARD against a false hollow reading, never
+#: evidence of the value; Sean 2026-10-09: *"a hollow note with nothing on the stem is always a half note"*. 2.83 narrowed 18 of main's 41
+#: decided Litolff halves because its shape reader cannot tell at the tip (`crosses_both_sides`, `no_room`, ...) where the old window said clean;
+#: trusting the old window made Brahms pdf 11 `glyph/11/1/10/3/10` (a fragment, not a head) a half. The head's OWN reading replaces the guard:
+#: the hollow reading must hold on at least `HEAD_HOLLOW_MIN_READINGS` of the three rasters, the box must be head-shaped (not a sliver, not a
+#: cluster), and the tip must be a cannot-tell the reader FILED (`TIP_UNREAD_REASONS`; no row at all is not a cannot-tell). A tip that reads a flag, or is disputed, still stands down.
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a print-confirmed filled head or a non-head on a head-shaped box that reads hollow on two
+#: rasters with its tip unread (FINDINGS `omr-missing-notes-2026-09` 21).
+HEAD_HOLLOW_MIN_READINGS = 2
+#: ... and the RAW raster (the one that sees the head with its lines, nothing erased) must itself read firmly hollow: centre in
+#: [`HEAD_RAW_CENTER_FLOOR`, 2.23's 0.75] and ring - centre >= `HEAD_RAW_RING_GAP_MIN`. MEASURED on Sean's 2.88 tiles (2026-10-11): the first
+#: draft (ring - centre >= 0.2 on two rasters) lost three real halves (tiles 1, 13, 14: raw gaps 0.19-0.24 but only ONE raster at 0.2) and
+#: admitted an alto clef (tile 5: raw centre 0.76 -- thirteen thousandths over the cut -- net 0.56 / off-line 0.52 hollow) and a ledger-line patch
+#: (tile 10: centre 0.07 / 0.00, an EMPTY box, not a hollow head: a head's hole is never blank, Sean's halves read 0.35-0.65). The 2.83 round-1
+#: fragment (Brahms pdf 11 `glyph/11/1/10/3/10`, raw gap 0.137) stays narrowed by the gap. THIN MARGIN, stated: the clef is out by 0.013 on one raster
+#: and by nothing else this rule reads (FINDINGS `omr-missing-notes-2026-09` 21); no other reading in the record separates it from tiles 1 / 13 / 14.
+HEAD_RAW_CENTER_FLOOR = 0.2
+HEAD_RAW_RING_GAP_MIN = 0.15
+
+
+def _raw_reads_firmly_hollow(ink_detail: Dict[str, Any]) -> bool:
+    """The `ink_raw` window pair: centre not blank (>= `HEAD_RAW_CENTER_FLOOR`), at most 2.23's `HEAD_FILL_HOLLOW_CENTER_MAX`, ring above it by
+    `HEAD_RAW_RING_GAP_MIN`. ROADMAP 2.88."""
+    reading = ink_detail.get("ink_raw")
+    windows = (reading.get("windows") if isinstance(reading, dict) else None) or {}
+    center, ring = windows.get("center"), windows.get("ring")
+    if center is None or ring is None:
+        return False
+    return HEAD_RAW_CENTER_FLOOR <= center <= HEAD_FILL_HOLLOW_CENTER_MAX and (ring - center) >= HEAD_RAW_RING_GAP_MIN
+HEAD_BOX_MIN_SPACES = 0.9
+HEAD_BOX_MAX_WIDTH_SPACES = 1.9
+TIP_UNREAD_REASONS = ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip", "occupied", "head_at_this_end")
+
+
+def _hollow_readings(ink_detail: Dict[str, Any], gap_min: float = HEAD_FILL_HOLLOW_RING_GAP_MIN) -> int:
+    """How many of the three `Q.NOTEHEAD_INK` readings (raw, staff-erased, line rows left out) are decisively hollow -- the same cut as
+    `_ink_reads_decisively_hollow` (ring - centre >= `gap_min`), counted instead of any-one."""
+    n = 0
+    for key in ("ink_raw", "ink_net", "ink_off_line"):
+        reading = ink_detail.get(key)
+        windows = (reading.get("windows") if isinstance(reading, dict) else None) or {}
+        center, ring = windows.get("center"), windows.get("ring")
+        if center is None or ring is None:
+            continue
+        if center <= HEAD_FILL_HOLLOW_CENTER_MAX and (ring - center) >= gap_min:
+            n += 1
+    return n
+
+
 def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
     """`Q.NOTEHEAD_INK.detail` says the ink disagrees with a BLACK class --
     ROADMAP 2.23. Either raster (`ink_raw`, off the UNERASED canonical
@@ -2628,6 +2678,24 @@ def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tu
                  and r.detail.get("tip_disagree"))
 
 
+def _stem_tip_unread_why(ev: Evidence, cell, own_stems, side: Optional[str]) -> Optional[str]:
+    """Why the tip reader could not tell at this head's own tip end, when that is ALL it said: the `why` of the abstention(s) filed on
+    `Q.STEM_TIP_INK` at that end for this stem, where EVERY one is in `TIP_UNREAD_REASONS` and no observation row stands there.
+    `None` otherwise (no abstention filed, an unlisted reason, or any observation row). ROADMAP 2.88."""
+    if side not in ("up", "down") or not own_stems:
+        return None
+    end = "top" if side == "up" else "bottom"
+    ids = {s.id for s in own_stems}
+    for r in ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
+            return None
+    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+            if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
+    if whys and all(w in TIP_UNREAD_REASONS for w in whys):
+        return sorted(set(whys))[0]
+    return None
+
+
 def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
     """What the stem-tip reader says about HOW MANY hooks, over the rows that
     SAW one. ROADMAP 2.69 (Sean, 2026-10-09).
@@ -3480,6 +3548,31 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 reason="hollow_head_bare_stem", used=tuple(used),
                 detail={**shared, "beam_reader": beam_reader,
                         "stem_tip_hook": False,
+                        "notehead_ink": fill_row.detail or {}})
+
+    # ⚠️⚠️ ROADMAP 2.88 (see `HEAD_HOLLOW_MIN_READINGS`): the same half, where the tip reader could not tell. The tip no longer decides
+    # anything for a hollow head; the head's own reading must be firm (two rasters, a head-shaped box).
+    if ink_hollow and own_stems and not flags and strokes_before_hollow == (0, 0, 0) and one_head_box \
+            and head_box[3] / space >= HEAD_BOX_MIN_SPACES and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES \
+            and _raw_reads_firmly_hollow(fill_row.detail or {}) \
+            and _hollow_readings(fill_row.detail or {}) >= HEAD_HOLLOW_MIN_READINGS \
+            and _beam_reader_looked(ev, cell) is not None and not _stem_tip_disputed(ev, cell, own_stems, side) \
+            and not (tip_ink_rows and any(bool(r.value) for r in tip_ink_rows)):
+        unread = _stem_tip_unread_why(ev, cell, own_stems, side)
+        if unread is not None:
+            used.append(fill_row.id)
+            t, add = 2.0, 2.0
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            return Ruling(
+                value={"beats": _scale(t, ratio, ev), "written": t,
+                       "dots": n_dots, "beam_levels": 0,
+                       "head_fill": "half"},
+                reason="hollow_head_bare_stem", used=tuple(used),
+                detail={**shared, "beam_reader": _beam_reader_looked(ev, cell),
+                        "stem_tip_hook": None, "tip_unread": unread,
+                        "hollow_readings": _hollow_readings(fill_row.detail or {}),
                         "notehead_ink": fill_row.detail or {}})
 
     # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8. 2.70 DECIDES a half in a BEAMLESS cell (the beam reader RAN and accepted nothing, so
