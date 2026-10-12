@@ -1144,3 +1144,17 @@ quarter). Fast tier: see ROADMAP/version_memory. Tiles `out/print/2.89-review/` 
 * **Why the voice split never separated them:** the staged exporter's notehead dict (`_place_notes`' `_det`) carries no `stem_direction` key, so
   `voicing.group_chords_in_measure`'s own divisi guard (opposite stem directions never merge) cannot fire on this path. The chords are merged by x
   first, and `Q.VOICES` / `_voice_split` then assigns whole EVENTS to streams, so the two voices arrive already fused into one event. Not changed here.
+
+### 13.2 Sean's answers on the 11 tiles (2026-10-11; `out/print/2.89-review/answers.json`)
+
+Verbatim: *"Tile 1 is 1 voice probably an instrument that can play chords - it is strange though. 2. 2 voices unison 3-6. One voice 7. 2 voices 8. 1 9-11. 2"*.
+ONE voice (a real chord): tiles 1, 3, 4, 5, 6, 8. TWO voices: 2 (unison), 7, 9, 10, 11.
+
+| group | tiles | stem directions (13.1) | result |
+|---|---|---|---|
+| opposite decided directions, separate stems | 7, 9, 10, 11 | up vs down | 4 of 4 two voices: the stem-direction test is right |
+| one direction decided, other abstained | 2, 4, 8 | partial | 2 is two voices (unison); 4 and 8 are one voice: partial direction does not settle it |
+| no direction on any head | 1, 3, 5, 6 | none | all 4 are ONE voice (real chords whose heads we read at different values) |
+
+So 6 of the 11 voted chords are real chords read at disagreeing values (a reading fault; refusing them is right under 2.89), and 5 are two voices the
+export fused (7, 9, 10, 11 by stem direction; 2 a unison). The voice-carry fix is NOT started; the manager asks Sean.
