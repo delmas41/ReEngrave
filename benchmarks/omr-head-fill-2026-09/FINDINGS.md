@@ -1216,3 +1216,19 @@ two voices would only hold the bar out. That is a reading fault in the other voi
 **Not built / open.** Tile 9's undecided chord (the exporter cannot say which voice it belongs to; that is an INFER question, not export). The unequal-time cases (51 Brahms bars) are
 the larger population: a second voice with an unread rest or a misread value. Blind tiles for the voices newly kept apart: `out/print/2.90-review/` (see `manifest.json`;
 our values live there only).
+
+### 14.1 Sean's answers on the 10 tiles (2026-10-11; `out/print/2.90-review/answers.json`)
+
+Verbatim: *"I'll only give one number if both values are the same. 1.8 2.8 3-5. Dot2 6. Top voice 8, 4, dot 4 bottom voice dot 2 7. Dot 4 8.2  9 top voice red box is a quarter and the lower box is around an sf. The actual bar has a 4 and 4 rest on top and a whole note rest on bottom"*. Tile 10 unanswered. Convention: one number = both voices share that value.
+
+| tile | bar written? | our values vs Sean | verdict |
+|---|---|---|---|
+| 1, 2 | yes | eighth/eighth, both right | right |
+| 3, 4, 5 | yes | dotted half both voices, right | right |
+| 8 | yes | half/half, right | right |
+| 6 | held | bottom voice is a DOTTED half, we read half | holding was right |
+| 7 | held | dotted quarter on both, our values right | held by the bar sum (the rest of the bar is not read to the meter); not checked further here |
+| 9 | held | the lower "head" is ink around an `sf`, not a note; the bar is a quarter + quarter rest over a whole rest | holding was right; an `sf` read as a notehead is a GATHER/precision miss (2.76-style): named, not fixed |
+
+Every bar the export WRITES (1, 2, 3, 4, 5, 8) is right on both voices, 6 of 6. No held bar was wrong to hold. Tiles 7/10 split-and-hold vs refuse (the label for a
+bar where the other voice is short): left as is; relabelling was not shown to be file-identical, so not done.
