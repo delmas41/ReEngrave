@@ -49,6 +49,11 @@ def _v(log, sub, q, outcome, value, reason="t", candidates=(), detail=None):
         detail=detail or {}))
 
 
+def _stem(log, sub, sid="stem:1"):
+    """A head's DECIDED `Q.HEAD_STEM`: heads sharing an id stand on one stem."""
+    return _v(log, sub, Q.HEAD_STEM, Outcome.DECIDED, sid)
+
+
 def _dv(beats, levels=0):
     return {"beats": beats, "written": beats, "dots": 0, "beam_levels": levels}
 
@@ -91,8 +96,10 @@ class _EvalBar:
         self.events.append([s.glyph])
         return s
 
-    def chord(self, n=2, cands=((0.5, 1, 2.0), (1.0, 0, 1.0))):
+    def chord(self, n=2, cands=((0.5, 1, 2.0), (1.0, 0, 1.0)), stem="stem:1"):
         ss = [self._narrowed(cands) for _ in range(n)]
+        for x in ss:
+            _stem(self.log, x, stem)
         self.events.append([s.glyph for s in ss])
         return ss
 
@@ -159,6 +166,8 @@ class TestAChordIsOneUnit(unittest.TestCase):
             b.decided(1.0)
         n1 = b._narrowed(((0.5, 1, 2.0), (1.0, 0, 1.0)))
         n2 = b._narrowed(((0.25, 2, 2.0), (2.0, 0, 1.0)))
+        _stem(b.log, n1)
+        _stem(b.log, n2)
         b.events.append([n1.glyph, n2.glyph])
         log, out = b.fire()
         self.assertEqual(out, [])
@@ -189,6 +198,22 @@ class TestAChordIsOneUnit(unittest.TestCase):
         self.assertEqual(consequences._narrowed_chords(
             log, CELL, [v for v in consequences._standing(log, CELL, Q.DURATION)]),
             [])
+
+    def test_CONTROL_heads_on_TWO_stems_are_two_voices_not_one_chord(self):
+        """Sean's hand-truth page: a grouped 'chord' whose heads print a
+        dotted quarter and a quarter. Without one decided stem the heads
+        change nothing together."""
+        b = _EvalBar()
+        for _ in range(3):
+            b.decided(1.0)
+        n1 = b._narrowed(((0.5, 1, 2.0), (1.0, 0, 1.0)))
+        n2 = b._narrowed(((0.5, 1, 2.0), (1.0, 0, 1.0)))
+        _stem(b.log, n1, "stem:1")
+        _stem(b.log, n2, "stem:2")
+        b.events.append([n1.glyph, n2.glyph])
+        log, out = b.fire()
+        self.assertEqual(out, [])
+        self.assertEqual(log.verdict(Q.DURATION, n1).outcome, Outcome.NARROWED)
 
     def test_a_single_narrowed_head_is_unchanged(self):
         """Positive control for the old path: one head, one landing."""
@@ -266,7 +291,7 @@ class _InferBar(_Bar):
         self.ink_read = ink_read
 
     def narrowed_chord(self, n=2, reason="beams_ambiguous",
-                       beats=(0.5, 1.0), sup=(2.0, 1.0)):
+                       beats=(0.5, 1.0), sup=(2.0, 1.0), stem="stem:1"):
         gs = []
         for _ in range(n):
             g = self.g
@@ -279,6 +304,7 @@ class _InferBar(_Bar):
                     Candidate({"beats": b, "written": b, "beam_levels": i},
                               support=s)
                     for i, (b, s) in enumerate(zip(beats, sup))))))
+            _stem(self.log, _sub(0, g, self.cell_idx), stem)
             gs.append(g)
         self.events.append(gs)
         return gs
@@ -381,6 +407,22 @@ class TestAChordChangesTogether(unittest.TestCase):
             inferences.solve_bare_stem_bar(log, _cell(),
                                            any_reason=True).decline,
             "event_members_admit_different_lengths")
+
+
+class TestAChordNeedsOneStemForInferToo(unittest.TestCase):
+
+    def test_heads_on_two_stems_are_declined(self):
+        b = _InferBar()
+        for _ in range(3):
+            b.decided(1.0)
+        a = b.narrowed_chord(1, stem="stem:1")[0]
+        c = b.narrowed_chord(1, stem="stem:2")[0]
+        b.events[-2:] = [[a, c]]
+        log = b.finish()
+        self.assertEqual(
+            inferences.solve_bare_stem_bar(log, _cell(),
+                                           any_reason=True).decline,
+            "chord_not_on_one_decided_stem")
 
 
 class TestSeveralColumnsJointly(unittest.TestCase):

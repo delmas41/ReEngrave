@@ -1686,7 +1686,8 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
     """
     from collections import Counter
     from .consequences import (WITNESS_CLEAR, _bar_beats_at, _is_rest,
-                               _left_the_bar, _missed_rest_witness, _standing)
+                               _left_the_bar, _missed_rest_witness,
+                               _on_one_stem, _standing)
     out = BarOutcome(proposals=[])
     notes = []
     for v in _standing(log, cell, Q.DURATION):
@@ -1769,6 +1770,9 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
             continue
         if len(narrowed) != len(ms):
             out.decline = "event_mixes_decided_and_narrowed"
+            return out
+        if any_reason and len(ms) >= 2 and not _on_one_stem(log, ms):
+            out.decline = "chord_not_on_one_decided_stem"
             return out
         opts = [tuple(sorted({_frac(c.value.get("beats")) for c in m.candidates
                               if isinstance(c.value, dict)

@@ -1045,6 +1045,8 @@ def _narrowed_units(log: Log, subject: Subject, notes):
             continue
         if len(nar) != len(ms):
             return None
+        if len(ms) >= 2 and not _on_one_stem(log, ms):
+            return None
         units.append(ms)
     if any(v.outcome is Outcome.NARROWED and not _is_rest(v)
            and v.id not in seen for v in notes):
@@ -1121,9 +1123,26 @@ def _narrowed_chords(log: Log, subject: Subject, notes) -> List[List[Verdict]]:
     for event in (grouping.value or {}).get("events", ()):
         ms = [by_glyph[g] for g in event.get("glyphs", ()) if g in by_glyph]
         if len(ms) >= 2 and all(m.outcome is Outcome.NARROWED
-                                and not _is_rest(m) for m in ms):
+                                and not _is_rest(m) for m in ms) \
+                and _on_one_stem(log, ms):
             out.append(ms)
     return out
+
+
+def _on_one_stem(log: Log, ms: Sequence[Verdict]) -> bool:
+    """Do ALL these heads stand on ONE decided stem (`Q.HEAD_STEM`)? A "chord"
+    the grouping built from x alone may be two voices (Sean's hand-truth page,
+    Brahms pdf 0, cell 0/0/6/2: one grouped event whose heads print a dotted
+    quarter and a quarter -- settling it as one value wrote one of them wrong).
+    One stem is the thing that makes the heads ONE value (2.78); no decided
+    stem, or two, and they change nothing together (rule 8). ROADMAP 2.97."""
+    ids = set()
+    for m in ms:
+        h = log.verdict(Q.HEAD_STEM, m.subject)
+        if h is None or h.outcome is not Outcome.DECIDED or not h.value:
+            return False
+        ids.add(str(h.value))
+    return len(ids) == 1
 
 
 def _common_options(ms: Sequence[Verdict]):
