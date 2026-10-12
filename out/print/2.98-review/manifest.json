@@ -1,0 +1,274 @@
+{
+ "dpi": 600,
+ "question": "Look at the REST inside the BLUE corners, in the bar inside the RED corners. Is it a whole-bar rest (one rest that stands for the whole bar)? And what meter is this bar in?",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "lit",
+   "page": 3,
+   "system": 0,
+   "staff": 6,
+   "cell": 13,
+   "part": "P7",
+   "released_by": "part2_twin",
+   "system_meter_outcome": "decided",
+   "system_meter_reason": "carried",
+   "meter_filed_at_this_bar": {
+    "numerator": 2,
+    "denominator": 4,
+    "raw": "2/4",
+    "from_cell": 0
+   },
+   "meter_segments_from_cell": [
+    0
+   ],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (the system's meter declared)",
+   "frame_control": {
+    "ratio": 13.7,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2240,
+    1229,
+    2460,
+    1433
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "lit",
+   "page": 8,
+   "system": 1,
+   "staff": 4,
+   "cell": 3,
+   "part": "P5",
+   "released_by": "part2_twin",
+   "system_meter_outcome": "decided",
+   "system_meter_reason": "carried",
+   "meter_filed_at_this_bar": {
+    "numerator": 2,
+    "denominator": 4,
+    "raw": "2/4",
+    "from_cell": 0
+   },
+   "meter_segments_from_cell": [
+    0
+   ],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (the system's meter declared)",
+   "frame_control": {
+    "ratio": 13.03,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    745,
+    2498,
+    964,
+    2702
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "page": 15,
+   "system": 0,
+   "staff": 7,
+   "cell": 14,
+   "part": "P8",
+   "released_by": "part2_twin",
+   "system_meter_outcome": "decided",
+   "system_meter_reason": "carried",
+   "meter_filed_at_this_bar": {
+    "numerator": 2,
+    "denominator": 4,
+    "raw": "2/4",
+    "from_cell": 0
+   },
+   "meter_segments_from_cell": [
+    0
+   ],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (the system's meter declared)",
+   "frame_control": {
+    "ratio": 14.11,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.06,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1807,
+    1439,
+    2023,
+    1640
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "lit",
+   "page": 16,
+   "system": 0,
+   "staff": 0,
+   "cell": 14,
+   "part": "P1",
+   "released_by": "lone_only",
+   "system_meter_outcome": "decided",
+   "system_meter_reason": "carried",
+   "meter_filed_at_this_bar": {
+    "numerator": 2,
+    "denominator": 4,
+    "raw": "2/4",
+    "from_cell": 0
+   },
+   "meter_segments_from_cell": [
+    0
+   ],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (the system's meter declared)",
+   "frame_control": {
+    "ratio": 59.07,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.01,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    2186,
+    322,
+    2406,
+    526
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "page": 6,
+   "system": 1,
+   "staff": 7,
+   "cell": 6,
+   "part": "P11",
+   "released_by": "lone",
+   "system_meter_outcome": "abstained",
+   "system_meter_reason": "carry_not_corroborated",
+   "meter_filed_at_this_bar": null,
+   "meter_segments_from_cell": [],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (CARRIED: the system's own meter did not settle)",
+   "frame_control": {
+    "ratio": 34.94,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    4154,
+    5978,
+    4761,
+    6332
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "brah",
+   "page": 11,
+   "system": 1,
+   "staff": 5,
+   "cell": 2,
+   "part": "P6",
+   "released_by": "lone",
+   "system_meter_outcome": "abstained",
+   "system_meter_reason": "carry_not_corroborated",
+   "meter_filed_at_this_bar": null,
+   "meter_segments_from_cell": [],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (CARRIED: the system's own meter did not settle)",
+   "frame_control": {
+    "ratio": 18.84,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.04,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    1836,
+    5087,
+    2277,
+    5455
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "brah",
+   "page": 15,
+   "system": 1,
+   "staff": 1,
+   "cell": 7,
+   "part": "P2",
+   "released_by": "lone",
+   "system_meter_outcome": "abstained",
+   "system_meter_reason": "carry_outweighed_by_the_bars",
+   "meter_filed_at_this_bar": null,
+   "meter_segments_from_cell": [],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (CARRIED: the system's own meter did not settle)",
+   "frame_control": {
+    "ratio": 26.54,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.03,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3417,
+    3995,
+    3903,
+    4349
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "brah",
+   "page": 22,
+   "system": 1,
+   "staff": 3,
+   "cell": 9,
+   "part": "P4",
+   "released_by": "lone",
+   "system_meter_outcome": "abstained",
+   "system_meter_reason": "carry_outweighed_by_the_bars",
+   "meter_filed_at_this_bar": null,
+   "meter_segments_from_cell": [],
+   "our_reading": "lone dotless whole rest = the bar, sized to the meter the file has in force (CARRIED: the system's own meter did not settle)",
+   "frame_control": {
+    "ratio": 33.2,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "page_box_600dpi": [
+    3767,
+    4805,
+    4308,
+    5159
+   ]
+  }
+ ]
+}

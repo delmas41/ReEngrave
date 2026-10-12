@@ -83,7 +83,8 @@ def bracket(arr, x0, y0, x1, y1, colour, arm=40, thick=6):
 
 
 def frame_control(ink, box, lines, shift=0.0):
-    x0, x1 = int(box[0]) + 40, int(box[2]) - 40
+    m = int(min(40, (box[2] - box[0]) / 4))
+    x0, x1 = int(box[0]) + m, int(box[2]) - m
     sp = float(np.mean(np.diff(lines)))
     rows = [int(round(y + shift * sp)) for y in lines]
     mids = [int(round((a + b) / 2 + shift * sp)) for a, b in zip(lines[:-1], lines[1:])]
@@ -110,7 +111,7 @@ def after_change(key, mt):
                if int(sg.get("from_cell", 0)) > 0)
 
 
-def choose(label, mt):
+def choose(label, mt, gb=None):
     base = held(label, "twin0_lone0")
     arm = held(label, "twin1_lone1") if label == "lit" else held(label, "twin0_lone1")
     out_all = sorted(k for k in base if k not in arm)
@@ -122,9 +123,22 @@ def choose(label, mt):
                [(k, "lone_only") for k in rest][:1] + \
                [(k, "lone") for k in spread(rest[1:], 0)]
     changed = [k for k in out_all if after_change(k, mt)]
+    print("brah released:", len(out_all), "right after a printed change:", len(changed))
     plain = [k for k in out_all if k not in changed]
-    return ([(k, "right_after_a_meter_change") for k in spread(changed, 2)]
-            + [(k, "lone") for k in spread(plain, 4)])
+    # No RELEASED bar sits after a printed change (those systems DECLARE their
+    # meter and EVALUATE sized them), so the change-adjacent tiles are
+    # CONTROLS: lone-looking whole-rest bars right after a segment boundary,
+    # already marked before 2.98.
+    ctl = []
+    for (page, system), boxes in sorted((gb or {}).items()):
+        for (staff, cell, _b) in boxes:
+            k = (page, system, staff, cell, "?")
+            if after_change((page, system, staff, cell, "?"), mt) and \
+                    all(x[:2] != (staff, cell) or x is _b for x in []):
+                ctl.append((page, system, staff, cell))
+    ctl = sorted(set(ctl))
+    pick = [(c + ("P?",), "control_after_a_meter_change") for c in spread(ctl, 2)]
+    return pick + [(k, "lone") for k in spread(out_all, 6)]
 
 
 def main():
@@ -145,7 +159,7 @@ def main():
         doc = load_record(RECS[mv])
         rec = doc["record"] if "record" in doc else doc
         IDX = index(rec)
-        picks = choose(mv, IDX[3])
+        picks = choose(mv, IDX[3], IDX[2])
         if not picks:
             print("nothing released on", mv)
             continue
