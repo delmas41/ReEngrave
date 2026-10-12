@@ -111,7 +111,7 @@ def after_change(key, mt):
                if int(sg.get("from_cell", 0)) > 0)
 
 
-def choose(label, mt, gb=None):
+def choose(label, mt, gb=None, lines=None):
     base = held(label, "twin0_lone0")
     arm = held(label, "twin1_lone1") if label == "lit" else held(label, "twin0_lone1")
     out_all = sorted(k for k in base if k not in arm)
@@ -133,8 +133,9 @@ def choose(label, mt, gb=None):
     for (page, system), boxes in sorted((gb or {}).items()):
         for (staff, cell, _b) in boxes:
             k = (page, system, staff, cell, "?")
-            if after_change((page, system, staff, cell, "?"), mt) and \
-                    all(x[:2] != (staff, cell) or x is _b for x in []):
+            ln = ((lines or {}).get((page, system)) or {}).get(staff)
+            inside = ln is not None and ln[0] <= (_b[1] + _b[3]) / 2 <= ln[-1]
+            if inside and after_change((page, system, staff, cell, "?"), mt):
                 ctl.append((page, system, staff, cell))
     ctl = sorted(set(ctl))
     pick = [(c + ("P?",), "control_after_a_meter_change") for c in spread(ctl, 2)]
@@ -159,7 +160,7 @@ def main():
         doc = load_record(RECS[mv])
         rec = doc["record"] if "record" in doc else doc
         IDX = index(rec)
-        picks = choose(mv, IDX[3], IDX[2])
+        picks = choose(mv, IDX[3], IDX[2], IDX[1])
         if not picks:
             print("nothing released on", mv)
             continue
