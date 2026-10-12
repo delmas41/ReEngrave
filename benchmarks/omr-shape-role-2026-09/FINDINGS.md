@@ -3129,3 +3129,474 @@ one from the second plate), none Sean judged in round 1, same style: a red corne
 the exact mark, nothing of ours drawn, one neutral question. `manifest.json` carries
 `read_before` / `read_after` / `category`, which Sean never sees. Frame control that can fail:
 **12 of 12 real boxes pass, a (40, 40)-shifted box passes 2 of 12.** They do not block landing.
+
+
+---
+
+# PART 12 — §2.12m: AN ARTICULATION AT THE TIP OF A LONG CHORD STEM IS THE CHORD'S
+
+Branch `lane-2.12g-long-stem` (off main `40ab373a`). ⚠️ The brief named this item "2.12g"; ROADMAP 2.12g is already the role-twin collapse (`6dd32d46`, done), and 2.12h–l are taken, so the row is **2.12m** (rule 10: the tree outranks the brief). The branch keeps the name it was dispatched under. STAGED, ADJUDICATE only
+(`adjudicate_articulation_owner`, `ownership.py`). **Built on the lane, not merged; not
+measured on a plate** — this container has no library, no weights and no record holding a
+single articulation (the committed engraved record `engraved-p0p2-20260930b` has 0 marks:
+base and arm both print `marks: 0`, so the cloud reach is ZERO by construction, not by
+result). The Mac measures it (§6).
+
+## 1. What Sean said
+
+DECISIONS 2026-10-10 (on the 2.12f round-2 tiles, branch `claude/roadmap-continuation-q883`):
+*"The rule of note side works well in almost every case - it doesn't when there are multiple
+voices and stems going in both directions Or if like in tile 6 the stem is very long because
+it has multiple notes and one of the notes is far away from the staff - then it will go
+closer to the notes."* Tile 6 (`out/print/2.12f-r2-review/tile_06.png`, Brahms 317803 pdf
+23, mark `glyph/23/1/7/9/4`): an accent above the staff at the tip of an UP stem whose chord
+reaches down onto ledger lines below the staff; Sean: *"Connected to note below"*. Round 2
+abstained there `stem_contradicts_class_side` (nearest head `glyph/23/1/7/9/2`, gap 2.22
+heads, stem up). Case (a), two voices, was already decided by round 2's `stem_side` rule —
+tiles 2 and 9 right (DECISIONS 2026-10-10, the manager's correction) — and is not touched.
+
+## 2. What the authorities say (research, 2026-10-10)
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED — for every point below that is
+not Sean's own sentence in §1. Sean has confirmed (a) and (b) as RULES; he has NOT confirmed
+the thresholds in §3 nor any authority's wording.
+
+| point | source | status |
+|---|---|---|
+| Single voice: notehead side; outside the staff except staccato (and tenuto) | Dorico, *Positions of articulations* (quoted in `docs/engraving-conventions.md` C51); IU JSoM *Music Notation Style Guide* ("Place on note head side, outside staff (except staccato)") | literature, agrees with Sean 2026-10-09 |
+| Two voices sharing a staff: articulation at the END OF EACH STEM, never on the notehead side, and not closer to the note than the stem end | Gould, *Behind Bars* pp. 117–118, as quoted by a reviewer in [opensheetmusicdisplay PR #1823](https://github.com/opensheetmusicdisplay/opensheetmusicdisplay/pull/1823) (SECOND-HAND: the book's text was not retrieved); Dorico help, *Positions of articulations*: "If multiple voices are active, articulations are placed at the end of the stem side of a note or chord" (search-engine extract; steinberg.help did not resolve from this container) | literature, = Sean's (a) |
+| LilyPond: a script's side is RELATIVE TO ITS STEM, opposite by default (`side-relative-direction . DOWN` for accent, staccato, tenuto, marcato, staccatissimo; `Script_interface::get_direction` = relative-dir × the stem's direction); in polyphony `\voiceOne/\voiceTwo` set `Script.direction` with the voice (`direction-polyphonic-grobs` includes `Script`) — i.e. stem side | LilyPond 2.24 source: `scm/script.scm` `default-script-alist`, `lily/script-interface.cc`, `scm/music-functions.scm` (fetched from gitlab.com/lilypond) | engine behaviour, = (a) |
+| Distance: LilyPond pads a script **0.20 staff spaces** off its support (`padding . 0.20`; fermata 0.40) and **0.25** off the staff (`Script.staff-padding`); staccato/tenuto `quantize-position #t` (into a space) | same source | engine numbers, used to DERIVE the bound in §3 |
+| x: a stem-side staccato/staccatissimo is pulled onto the STEM (`toward-stem-shift . 1.0`); accent/marcato/tenuto stay centred on the head | LilyPond `script.scm`; Dorico (C51: "stem-side staccato/staccatissimo centre on the STEM itself") | engine behaviour |
+| Fermata: own placement (above; below only for a lower voice); not an articulation here (`adjudicate_fermata_owner`) | LilyPond `fermata (direction . UP)`; C51 neighbour | unchanged |
+| Marcato: above the staff regardless of stem in a single voice | Dorico (C51 Known exceptions) | not built: a marcato on the stem side reaches this rule only with all its other conditions met |
+| **Long chord stem → stem side (Sean's (b))** | **NOT FOUND in any source searched**: LilyPond has no such exception (single voice is always `side-relative-direction DOWN`, whatever the chord's span); no Gould/Ross/Read/Stone/MOLA text on it was retrievable (searches returned only tables of contents; the Gould book itself is not online). A Ultimate Music Theory page puts an accent "in the first empty space below or above each notehead", and the MICS 2020 engraving paper centres on the notehead "above or below the stave, whichever is closest to the notehead" — the latter is the nearest literature to (b): it measures nearness to the STAFF, which for a chord running far onto ledgers is the stem end | **Sean's convention, CONFIRMED by him as a rule; the literature neither confirms nor contradicts it** |
+
+WHAT WOULD FALSIFY (b) as built: on the Brahms whole movement, a mark the rule decides at a
+long chord stem's tip that Sean, blind, gives to another note (a different chord, or the
+notehead side of the next note); or tile-6-class marks standing farther than 1 space from a
+read tip (the bound, §3).
+
+## 3. The rule built
+
+`ownership.py` `_long_chord_stem_tip` (new) and its call in `adjudicate_articulation_owner`'s
+`not live` branch (where round 2 returned `stem_contradicts_class_side`). It DECIDES
+`stem_tip_of_long_chord` (`stem_rule: long_chord_stem`) only when ALL hold, each a READ row:
+
+1. the NEAREST candidate's stem is decided and puts the mark on its stem side, single voice
+   (two voices never reach here with the mark on the stem side — round 2's `required`);
+2. exactly ONE `Q.STEM` row is attached to that head, by `rhythm._stems_on` — the attachment
+   `Q.STEM_DIRECTION` itself uses, imported, not re-derived;
+3. that stem carries ≥ 2 heads (a chord) and one of them stands on a LEDGER position on the
+   notehead side: `Q.NOTEHEAD_STAFF_POSITION` ≥ **9.5** (up stem) or ≤ **−1.5** (down) —
+   DERIVED from the grid (bottom line 8, first ledger 10; a head in the first space outside
+   the staff needs no ledger and its stem is an ordinary one);
+4. the mark's centre is BEYOND the stem's tip and its near edge within
+   **`ARTIC_STEM_TIP_MAX_GAP_SPACES = 1.0`** staff space of it (`Q.CELL_STAFF_SPACE`; overlap
+   allowed — tile 6's accent touches the tip). CONVENTION ASSUMED: twice LilyPond's largest
+   script padding plus a half-space quantum; NOT MEASURED HERE;
+5. the mark's x-centre within **one notehead width** of the stem (centred on the stem, or on
+   the head half a head from it).
+
+Any failure keeps `stem_contradicts_class_side`, with `detail.long_chord_stem` naming the
+first failed condition (`two_voice`, `no_staff_space`, `no_stem_row`, `several_stems`,
+`not_a_chord`, `no_ledger_head_on_stem`, `mark_not_at_stem_tip`) and the measurements
+under `long_chord_*` — so the Mac's readjudication counts WHY each of the 28 Brahms
+`stem_contradicts_class_side` marks (Part 11 §4) stayed abstained. The decided owner is
+the chord's head nearest the mark (the tip end), with the far head, its position, the
+tip gap in spaces and the chord size in `detail`.
+
+⚠️ The cell grid, not a per-x line reading (§10 "measure locally"): the far head's position
+is `Q.NOTEHEAD_STAFF_POSITION` (the cell's staff grid) and the unit `Q.CELL_STAFF_SPACE` —
+the cell is one bar, and the cut (9.5 against heads at 10+) is a half-step wide. A second,
+independent witness exists and is NOT read yet: `Q.FAR_HEAD_LEDGER_POSITION` (2.56, counted
+off the printed ledgers) — the ledger lanes own that reader.
+
+## 4. Tests, RED first
+
+`tools/omr/tests/test_staged_articulation_long_chord_stem_2026_10_10.py` (11 tests), run
+against the unmodified tree (`40ab373a`) first: **11 of 11 failed** — the 4 decide tests on
+`abstained != decided` (tile 6 drawn, its down-stem mirror, a mark touching the tip, a
+staccato centred on the stem), the 7 refusals on the missing `long_chord_stem` detail (their
+OUTCOME, `stem_contradicts_class_side`, already held — they are refusals beside a positive
+control, each the decided page with ONE fact changed: a far mark 2 spaces beyond the tip
+that no stem reaches; a mark below the tip; no ledger head (far head at position 9); a lone
+head; the far head's position unread; no staff space; a mark off the stem in x). After:
+11 of 11 pass; round 2's 24 (`test_staged_articulation_stem_side_2026_10_09.py`, including
+its single-head stem-side abstention) unchanged and passing.
+
+`check`: **192 before, 192 after.** Fast tier (cloud, this branch): **7,047 passed, 4 failed** — the same 4 `test_positional_store.py` failures main has here (version_memory, 1.7 stems entry); 57 skipped, 825 deselected.
+
+## 5. What is open
+
+* Reach on the plates is unknown here (cloud: 0 marks on the only committed record).
+  Upper bound on Brahms whole: the 28 `stem_contradicts_class_side` marks of Part 11 §4.
+* Long stems with the far head outside the cell's padding (> ~4 spaces) have no head row
+  to read: `no_ledger_head_on_stem`, abstained. A stem-LENGTH witness (the stem itself
+  longer than a normal 3.5-space stem + the chord's span) is the candidate second test,
+  not built — no number before the Mac counts the population.
+* Marcato on the stem side is not special-cased.
+
+## 6. What the Mac must run
+
+On the Mac, two worktrees: BASE = `origin/main` (`40ab373a` or later), ARM =
+`lane-2.12g-long-stem`. Same command in each, on each shared record (Brahms 317803
+whole movement and count pages; Litolff 984073 whole and count pages — the records Part 11
+§4 used):
+
+    python3 benchmarks/omr-shape-role-2026-09/readjudicate_artic_side.py <record> \
+        --label base --out out/2.12m/<doc>-base.json        # in the BASE tree
+    python3 benchmarks/omr-shape-role-2026-09/readjudicate_artic_side.py <record> \
+        --label arm  --out out/2.12m/<doc>-arm.json         # in the ARM tree
+    python3 benchmarks/omr-shape-role-2026-09/compare_artic_r2.py \
+        out/2.12m/<doc>-base.json out/2.12m/<doc>-arm.json
+
+The control (`glyph_owner` rebuilt == the record's) must print N of N as in Part 11 §4
+before any delta is read. EXPECTED: only `abstained/stem_contradicts_class_side` →
+`decided/stem_tip_of_long_chord` transitions; every other row identical (the rule runs only
+in that branch). Print the population first; zero is DEAD and says so.
+
+Tiles for Sean (blind, `cut_artic_tiles.py`'s style: red corner bracket on the exact mark,
+nothing of ours drawn, one neutral question — "Which note does the mark in the brackets
+belong to?"): **every** newly decided `stem_tip_of_long_chord` mark (expected ≤ 28), plus
+up to 4 that stayed `stem_contradicts_class_side` with `long_chord_stem` =
+`no_ledger_head_on_stem` or `mark_not_at_stem_tip` (the refusals), plus tile 6
+(`glyph/23/1/7/9/4`) as the control the rule must now decide.
+
+## 7. Measured on the Mac (2026-10-10) — REACH 5 of 28, no other row moved
+
+Two clean worktrees, one tree each: BASE `origin/main` `40ab373a`, ARM
+`lane-2.12g-long-stem` `46914018`. `readjudicate_artic_side.py` then
+`compare_artic_r2.py` on four shared records (`library/_shared-records/`); outputs and
+comparisons under `out/2.12m/`. ADJUDICATE-only, so a saved record is a valid input.
+
+**Control (`glyph_owner` rebuilt == the record's own), identical in base and arm:**
+
+| record | control | marks | `stem_contradicts_class_side` (base) | → decided `stem_tip_of_long_chord` |
+|---|---|--:|--:|--:|
+| Brahms whole `…-20261009-all` (Part 11 §4's record) | 33,767 of 34,106 | 1,263 | **28** | **5** |
+| Litolff whole `…-20261009-all` | 9,414 of 9,423 | 18 | 0 | 0 |
+| Brahms `brahms1-breitkopf-p0-p3` (Sep 15) | 2,866 of 3,015 | 196 | 5 | 0 |
+| Litolff `beethoven5-p1-p4` (Sep 11) | 1,301 of 1,386 | 98 | 2 | 0 |
+
+⚠️ **The control is NOT N of N on any record**, in either tree, and was not in Part 11 §4
+either (same Brahms/Litolff whole numbers). Named on Litolff whole (`ctl_misses`, 9 rows,
+reproduced in the session): every miss is a `glyph_owner` verdict the record holds as
+`distance` / `far_no_rungs` / `stem_disagrees` / `ledger_witnesses_disagree` that the
+rebuild turns into `group_owner` (`reconcile_group_owners`, which `adjudicate.run` calls
+after GLYPH_OWNER and which reads `Q.MARK_GROUP` rows the record's own run may have
+reconciled differently), plus one `dot_follows_note` → `distance`. The shortfall is in a
+step outside the articulation chain, is identical in base and arm, and so does not
+separate them; but the rebuild is not byte-for-byte the pipeline, and a mark whose
+nearest head's owner is one of those 339 Brahms rows could read differently in a full
+re-gather. The two count-page records predate many landings (Sep 11/15) and are inputs,
+not baselines (§6b).
+
+**Every changed row, row by row (full row equality, not reason keys):** Brahms whole 1,235
+identical, 5 the expected flip, 23 the same verdict (outcome, value, every old detail
+key) with only the new `long_chord_*` detail added; **0 other changes**. Count pages: 5 and
+2 detail-only, 0 other. Litolff whole: 18 of 18 identical. Fermata owners identical on all
+four (12 Brahms whole, 178 Litolff whole, 67 Litolff p1-p4; Brahms p0-p3 holds none). `compare_artic_r2`'s
+round-2 invariant `base_abstained_became_decided` prints 5 — those ARE the 5 flips, which
+this rule exists to make; it is that script's round-2 promise, not this lane's.
+
+**Why the other 23 Brahms stayed abstained** (`detail.long_chord_stem`): `not_a_chord` 8,
+`no_ledger_head_on_stem` 6, `several_stems` 4, `two_voice` 2, `no_stem_row` 2,
+`mark_not_at_stem_tip` 1. Count pages: `two_voice` 3, `no_stem_row` 2, `not_a_chord` 2.
+
+**The 5 decided** (all accents, Brahms):
+
+| mark | stem | far head position | tip gap (spaces) | dx (head widths) | chord | same-ink twin |
+|---|---|--:|--:|--:|--:|---|
+| `glyph/5/1/10/2/13` | up | 12.98 | 0.12 | 0.22 | 3 | `5/1/9/2/4` **DECIDED to `5/1/9/2/0`** (other staff, notehead side) |
+| `glyph/5/1/10/4/12` | up | 10.92 | 0.01 | 0.24 | 3 | `5/1/9/4/7` abstained |
+| `glyph/10/0/6/5/10` | down | −4.10 | 0.42 | 0.61 | 2 | `10/0/7/5/0` abstained |
+| `glyph/23/1/2/4/5` | down | −3.20 | 0.41 | 0.50 | 2 | `23/1/3/4/8` abstained |
+| `glyph/23/1/7/9/4` (**tile 6 control**) | up | 13.04 | 0.24 | 0.38 | 2 | none |
+
+**The control decides as Sean read it:** `glyph/23/1/7/9/4` → `glyph/23/1/7/9/2`, the up
+chord below whose far head stands at 13.04 (ledgers below the staff); tip gap 0.24 spaces.
+
+⚠️ **One new two-owner mark.** `glyph/5/1/10/2/13` is now decided to the lower staff's
+chord while its twin in the upper staff's cell is decided to the upper staff's head on
+the notehead side — "one mark, two owners" 16 → 18 (the pair counts twice). The rule
+only adds a decision; it does not consult the twin. Tile 1 asks Sean which is right; the
+twin de-duplication (Part 11 §6) is where the loser would be dropped.
+
+**Tiles — `out/print/2.12m-review/`** (9; `select_artic_2_12m_tiles.py` seed 20261010,
+cut by `cut_artic_tiles.py` at 600 dpi, red corner bracket on the mark, nothing of ours
+drawn, tile number at 44 pt; question *"Which note does the mark in the brackets belong
+to, and is it above or below that note?"*; our reading only in `manifest.json`): the 4
+other newly decided, the control (tile 8), and 4 of the 7 refusals (3
+`no_ledger_head_on_stem`, 1 `mark_not_at_stem_tip`), shuffled. **Frame control: 9 of 9
+real boxes pass, the (40, 40)-shifted box 0 of 9.**
+
+WHAT WOULD FALSIFY (b) as built is unchanged (§2): a decided tile Sean gives to another
+note. Tile 3 (`23/1/2/4/5`) is the one to watch — the accent stands just above the lower
+staff's up-stem note as well as below the upper chord's down-stem tip.
+
+## 8. Sean's answers on the 9 tiles (2026-10-10) — up stem 3 of 3, DOWN stem 0 of 2
+
+Sean, verbatim: *"1.. belongs to note below 2. Ledger line 3. Belongs to note below 4-9.
+Belongs to note below"*. Scored against `manifest.json` (now carries `sean_2026_10_10`
+and `score` per tile; the owner's page box vs the mark's decides "below"):
+
+| tile | ours | stem | Sean | |
+|--:|---|---|---|---|
+| 1 | decided `5/1/10/2/4`, below the mark | up | note below | **right** |
+| 5 | decided `5/1/10/4/5`, below | up | note below | **right** |
+| 8 | decided `23/1/7/9/2`, below (control, tile 6 of r2) | up | note below | **right** |
+| 3 | decided `23/1/2/4/7`, ABOVE the mark | down | note below | **WRONG** |
+| 7 | decided `10/0/6/5/4`, ABOVE the mark | down | note below | **WRONG** |
+| 4, 6, 9 | abstained `no_ledger_head_on_stem` (nearest: a down-stem chord above) | down | note below | abstention right — the head the rule would have needed is the wrong one |
+| 2 | abstained `mark_not_at_stem_tip` | down | **a ledger line**, not an articulation | abstention holds by luck — the third family-precision case after r1 tiles 4 and 8 |
+
+**Rule (b) as built is FALSIFIED for down stems** (the §2 falsifier: a decided tile Sean
+gives to another note — twice). Every down-stem case on the page (2 decided, 3 refused)
+belongs to the note BELOW, i.e. to the lower staff, never to the upper chord whose stem
+tip the mark sits under. The up-stem half (mark above the staff, chord reaching onto
+ledgers below) is 3 of 3, control included. On tile 1 Sean's answer also settles the
+two-owner pair: the lower-staff owner (this rule's) is right and the upper-staff twin
+`5/1/9/2/4` → `5/1/9/2/0` is the loser.
+
+Not changed yet: the proposed repair (restrict the rule to UP stems, so the 2 wrong
+decisions return to abstained) waits on Sean's yes; it would leave 3 decided, all right.
+
+### 8a. Correction (Sean, same day): these are TWO VOICES, not long chord stems
+
+Sean, on §8's proposal to keep the rule for up stems only: *"I don't understand - they
+are only up stems because of multiple voices"*. So the 3 "right" tiles (1, 5, 8) were
+right for the WRONG reason: the note below carries an up stem because it is the upper of
+two voices on its staff, and the accent sits on its stem side — case (a), which round 2
+already decides, except that round 2's two-voice test (opposite stems in one column) did
+not fire on them. In tiles 1, 5 and 8 the two voices' stems stand on one vertical
+stroke, and our stem reading took that stroke for ONE long chord stem with a ledger head
+on it — exactly what (b) was built to find. Tiles 3 and 7 are the same case in the
+lower staff, where the mark's twin in the lower staff's cell abstained and the upper
+staff's cell took it by (b).
+
+**Consequence: (b) has NO confirmed instance on the plate.** All 5 decisions are two-voice
+columns misread as a chord stem; the 3 right owners are the upper voice's head by
+coincidence of geometry. The rule as built is not to be merged. The repair belongs in
+the two-voice test (a), not in (b): a second witness for "this staff has two voices
+here" that does not need two visibly opposite stems in one column.
+
+### 8b. Sean, again: (a) OR (b) — both rules put the mark at the stem tip
+
+Sean: *"Or long stems with notes on the other side of the staff - the previous rules I gave
+you"*. A stem pointing the unexpected way is explained by EITHER two voices (a) OR a long
+chord stem reaching notes on the other side of the staff (b); both put the mark at the
+stem's tip, and the owner is that stem's note either way. So §8a's "(b) unconfirmed, not
+to merge" over-reached: whether tiles 1, 5, 8 are (a) or (b), the rule's owner is the
+note whose stem tip the mark sits at, and Sean gives the mark to it — **3 of 3 right**.
+
+**Why 3 and 7 went wrong, from the record:** in both, the mark has a same-ink twin in the
+LOWER staff's cell (`23/1/3/4/8`, `10/0/7/5/0`) that abstained `stem_direction_unread` —
+the right note's stem was never read, so the upper staff's cell took the mark with no
+contest. Tiles 1, 5, 8 have no such twin (1: the twin decided on the notehead side, the
+loser; 5: the twin abstained `no_notehead`; 8: no twin). A twin whose stem is UNREAD is
+"cannot tell", and rule 8 says it may not be converted into the other cell's answer.
+
+Proposed repair (awaiting Sean, NOT built): `stem_tip_of_long_chord` abstains when a
+same-ink twin in another staff's cell abstained `stem_direction_unread`. On these 5 it
+keeps 1, 5, 8 and returns 3 and 7 to abstained — fitted on five examples, so it is a
+refusal, never a second decision. The real repair is reading the lower note's stem.
+
+### 8c. Why the lower staff lost tiles 3 and 7 — §8b's "stem never read" was WRONG
+
+Sean asked why this version did not see the lower stem. The record's rows for the four
+cells (`brahms1-breitkopf-mvt1-whole-20261009-all`, extracted once, `Q.STEM` /
+`Q.STEM_DIRECTION` / heads) say it DID — both times:
+
+* **Tile 3** (lower cell `23/1/3/4`, mark copy `/8`): the note under the accent is head
+  `/6` (position −1.18, the upper half), and its stem WAS read — `Q.STEM` [984, 106, 18,
+  274], `STEM_DIRECTION` decided **up**. The mark is above it, on the STEM side. With no
+  other voice seen in that column (`other_voice` needs a second head whose stem points the
+  other way), the candidate is marked `against` and DROPPED; the search goes on to head
+  `/9`, 5.4 head heights farther away, whose stem is unread → `stem_direction_unread`.
+  Meanwhile the upper cell's copy took the mark by 2.12m.
+* **Tile 7** (lower cell `10/0/7/5`, mark copy `/0`): the note under the accent is head
+  `/5` (position 1.04, upper half). Two stems meet it: one UP ([302, 194, 15, 291], tip at
+  the accent) and one DOWN ([179, 434, 18, 378]). `STEM_DIRECTION` abstains
+  `stems_disagree` — the head carries two voices — so the articulation decision reads
+  "unread".
+
+So the stem reader was not the fault. The fault is the TWO-VOICE TEST: both lower notes
+are an upper voice (stem up in the upper half — Sean's convention, being verified on the
+reference encodings), and in tile 7 the head itself carries both voices' stems. Neither
+counts as "two voices" today. Sean's beam caveat stands: a beamed group can put an up stem
+in the upper half with ONE voice, so the upper-half sign needs the beam case named first.
+
+### 8d. Sean's upper-half convention, counted on the reference encodings
+
+Sean: *"If a stem is in the upper half of a staff and the stem goes up it almost always
+because of another voice"*, with his chord exception (b) and, later, *"The beam thing will
+be an issue and breaks the rule"*. Counted by `verify_upper_half_stem_up.py` (written by a
+Sonnet agent, output `out/2.12m/upper-half-stem-up.json`, numbers re-read from the file):
+101 movement files, 30 orchestral works, 1,208,908 stemmed notes, written pitch + clef in
+force → staff position. **Control that can fail:** clef self-test passes; single-voice,
+unbeamed, non-chord notes follow the middle-line stem rule 99.57 % above / 99.70 % below.
+
+Notes above the middle line with stem UP: **28,541** (≈4 % of notes above the line).
+
+| first cause that fits | n | % |
+|---|--:|--:|
+| another voice in the bar (5,218 overlapping in time) | 5,759 | 20.2 |
+| chord with a farther note on the other side (Sean's (b)) | 6,705 | 23.5 |
+| beamed group with a farther low note (Sean's caveat) | 11,528 | 40.4 |
+| none of these (2,084 in bars where the other voice only rests; 218 next to a two-voice bar; 2,435 nothing) | 4,549 | 15.9 |
+
+So in the encodings an up stem in the upper half is NOT "almost always" another voice
+(20 %); the named causes together explain 84 % (91 % with the rest-only bars). Once beams
+and far-note chords are excluded, another voice is 56 % of what remains (76 % counting
+rest-only bars). Mirror (below middle, stem down, 33,020): two voices 14 %, chord 21 %,
+beam 38 %, unexplained 27 %. Per work it varies widely (Mozart 40 / Tchaikovsky 6 / 1812
+over 50 % two voices; Brandenburg 3 98 % beam).
+
+⚠️ Evidence about ENCODINGS (stems set by their makers' software), not the Breitkopf
+plate; transposing parts assumed to hold written pitch; beam and chord tests are by
+position only. Consequence for the two-voice test: "upper half + stem up" alone would be
+wrong far more often than right; it is a usable witness only with beams and far-note
+chords excluded first, and even then about 1 in 4 to 1 in 2 is not another voice.
+
+## 9. One head, stems up AND down = two voices (Sean's ruling, built `787fa6af`)
+
+Sean: *"When one note has stems going up and down it is always 2 voices"* (DECISIONS
+2026-10-10). Built in `adjudicate_articulation_owner` (STAGED, ADJUDICATE): a candidate
+head whose `Q.STEM_DIRECTION` abstained `stems_disagree` on exactly {up, down} is LIVE on
+both sides — the mark is on the stem side of the voice whose stem points at it — and is
+decided `nearest_on_notehead_side` with `stem_rule: stem_side`, `two_voice: True`,
+`shared_head: True` (no new reason word). Every other path unchanged. Tests
+`test_staged_articulation_shared_head_2026_10_10.py` (4): **2 RED against `a15e223c`**
+(abstained), 2 single-stem refusals beside them passing on both trees; the five
+articulation test files 69 of 69. `check` **192 before (base), 192 after.**
+
+**Readjudication, arm `46914018` → arm2 `787fa6af` (clean), same four records, control
+unchanged (Brahms 33,767 / 34,106; Litolff 9,414 / 9,423; p0-p3 2,866 / 3,015; p1-p4
+1,301 / 1,386):** Brahms whole **11** marks `stem_direction_unread` → decided on a shared
+head; every other row identical except the new `shared_head: False` detail key (661 Brahms,
+12 Litolff whole, 88 + 56 count pages); 0 changes on the other three records; fermatas
+identical.
+
+* **Tile 7's lower copy `glyph/10/0/7/5/0` → `glyph/10/0/7/5/5`, the note below — Sean's
+  answer.** ⚠️ Its upper-staff twin `10/0/6/5/10` is STILL decided (by §3's long-chord rule)
+  to the chord above, which Sean ruled wrong: one mark, two owners, and the wrong one is
+  not dropped. Twin de-duplication (Part 11 §6) is where it resolves.
+* Tile 3 is unchanged: its lower note has ONE up stem (no shared head); fixing it needs
+  the upper-half/stem-up witness, which §8d shows is not reliable alone.
+* The other 10 → blind tiles `out/print/2.12m-shared-head-review/` (same cutter, seed
+  20261011; frame control **10 of 10 real, 1 of 10 shifted**). Two decide at 3.2 and 3.8
+  head heights (`25/0/9/0/10`, `23/1/7/7/4`) — the "no distance bound" question of
+  Part 11 §6 again.
+
+**Sean's answers (2026-10-10):** *"1 below 2.above 3.below 4-10 below"* — **10 of 10 right**
+(our owner's page box lies on the side Sean named; scored in `manifest.json`; this checks
+the SIDE, not the exact head in a chord). Fast tier on `787fa6af`: **7,131 passed, 0
+failed**, 12 skipped, 825 deselected, 2 xfailed (10 m 0 s).
+
+Two more conventions from Sean in the same answer, recorded, NOT built:
+* *"when the other system in question has an empty measure then it has to belong to the
+  one with notes in it"* — a mark between two staves whose other staff's bar holds no
+  notes is the notes' staff's. A resolver for twin conflicts / cross-staff owners.
+* *"When there are multiple voices it will often choose whichever side it can be closest
+  to the notes it applies to"* — a TENDENCY ("often"), so INFER-grade at most.
+
+## 10. The other staff's bar is empty → the mark is the noted staff's (built `408398f6`)
+
+Sean: *"when the other system in question has an empty measure then it has to belong to
+the one with notes in it"*. STAGED, ADJUDICATE, `adjudicate_articulation_owner`, reason
+`other_staff_bar_empty`. Acts only where the decision would abstain for a STEM reason
+(`stem_direction_unread`, `stem_contradicts_class_side`). The other staff is the one on
+the mark's declared side. EMPTY is read, never defaulted: no notehead in that bar is that
+staff's (a decided `Q.GLYPH_OWNER` naming it, or an undecided head filed in its cell) AND
+its own cell holds a `restWhole`. Then the mark goes to the head the stem reason was
+about, alone within the tie tolerance; otherwise the old abstention with
+`other_staff_bar` = `has_notes` / `no_measure_rest` / `empty` (tie) named.
+
+**Population first** (`probe_bars` over the saved records, before any code): Brahms whole
+10 stem-reason abstentions with an empty neighbouring bar holding a whole rest (4 with a
+twin there, 6 without), Litolff whole 1. **Measured** (arm2 `787fa6af` → arm3
+`408398f6`, clean; controls unchanged): Brahms whole **9** → decided (the 10th: two heads
+level, still abstained `empty`), Litolff whole **1**, Brahms p0-p3 3 (one the same mark as
+whole), Litolff p1-p4 2 (`4/1/7/7/2` was `stem_contradicts_class_side` in a two-voice
+column). Every other row identical but for the new detail key; fermatas identical. Still
+abstained on Brahms whole, by `other_staff_bar`: `has_notes` 96, `no_measure_rest` 13,
+`empty` 1. Tests `test_staged_articulation_empty_bar_2026_10_10.py` (7): 2 decide RED
+against `7dea977d`, 5 refusals each the decided page with one fact changed (a note there;
+nothing read; a quarter rest; no staff on that side; two heads level). Articulation tests
+76 of 76; `check` 192 → 192.
+
+**Tiles** `out/print/2.12m-empty-bar-review/` — 14 unique marks (seed 20261012; the
+count-page records carry no PDF path, filled from the same edition's whole record; frame
+control **14 of 14 real, 1 of 14 shifted**), waiting on Sean.
+
+**Sean's answers (2026-10-11):** *"1. below 2. below 3. below 4.below 5. ledger line 6-14.
+below"* — **13 of 13 real marks right**; tile 5 (`glyph/12/0/0/7/9`, Litolff whole) is a
+LEDGER LINE the detector called `articTenutoBelow`, and the rule gave it an owner. Scored in
+`manifest.json`. This is the second tenuto-that-is-a-ledger in this item (§8 tile 2 was the
+first, also `articTenutoBelow`; r1 tiles 4 and 8 were a tie fragment and part of a `p`):
+a family-precision refusal for a tenuto box lying on a ledger line is the candidate next
+item, not built.
+
+## 11. One printed mark, two owners — drop the loser (built `b1c0061f`, after merging main)
+
+Sean (2026-10-11): *"Drop the losing owner. The tenuto fix is already on main as 2.84, so
+merge main first."* Main merged at `aed05e48` (2.84 tenuto vs ledger, 2.87 stem finder,
+2.13b; conflicts only in DECISIONS / version_memory, both sides kept). **The merge's own
+effect on the saved records (arm3 `408398f6` → `aed05e48`, clean): 1 row** — Litolff p1-p4
+`glyph/4/1/7/7/2` moves from `other_staff_bar_empty` to `nearest_on_notehead_side` on the
+SAME head (2.87 now reads its stem); every other row identical on all four records.
+
+**Population first** (on arm3): Brahms whole 10 marks decided in two cells on two different
+heads; Litolff p1-p4 3; Brahms p0-p3 1; Litolff whole 0. By page box, 5 of the 14 pairs are
+the SAME printed head twice (IoU 0.28-0.96, same side), 7 Brahms pairs point to opposite
+sides of the mark — and the detector labelled the two copies differently (`…Above` in one
+cell, `…Below` in the other), with neither confidence nor gap separating Sean's tiles 1 and 7.
+
+**Built** — `ownership.reconcile_articulation_twins`, run by `adjudicate.run` right after
+`Q.ARTICULATION_OWNER` (the `reconcile_dot_owners` pattern: the loser is SUPERSEDED by an
+abstention naming the winner; nothing relocated; page pixels throughout): one printed head
+→ `duplicate_of_twin` (the copy whose head is its own staff's is kept); same side → the
+nearer by more than the tie tolerance (`lost_to_twin`), else both `twin_owners_disagree`;
+opposite sides → the more specific rule wins (empty bar / shared head > two voices > long
+chord stem > notehead side — CONVENTION ASSUMED, from tiles 1 and 7 only), equal → both
+`twin_owners_disagree`. Tests `test_staged_articulation_twin_owners_2026_10_11.py` (8): RED
+against `aed05e48` (function absent — all 8, the 2 controls included), GREEN after.
+Articulation tests 166 of 166; fast tier on `b1c0061f` **7,232 passed, 0 failed**, 12 skipped, 825 deselected, 2 xfailed (15 m 37 s); `check` 192 → 192 (both trees).
+
+**Measured** (`aed05e48` → `b1c0061f`, clean; controls unchanged): Brahms whole 14 copies
+superseded — 2 `duplicate_of_twin`, 4 `lost_to_twin` (tile 1's upper copy and tile 7's
+upper copy, both as Sean ruled; `9/1/4/1/12` to a two-voice twin; `5/1/0/5/9` to a nearer
+same-side twin), 8 `twin_owners_disagree` (4 pairs, notehead side vs notehead side on
+opposite sides: those marks are now unowned and counted). Brahms p0-p3 1 duplicate,
+Litolff p1-p4 3 duplicates, Litolff whole 0. **Decided copies left with a decided twin on a
+different head: 0 on every record.** Every other row identical; fermatas identical.
+
+**Tiles** `out/print/2.12m-twin-owners-review/` (6, seed 20261013): the 2 judged winners and
+the 4 dropped pairs. Frame control 5 of 6 real, 0 of 6 shifted — ⚠️ tile 2 FAILS it (ink
+ratio 1.42: two heads crowd the box); checked by eye, the bracket is on the accent, sent
+anyway and recorded here.
+
+**Sean's answers (2026-10-11):** *"1. above 2. below 3. below 4.below 5 and 6 below"* (scored
+in `manifest.json`). The 2 judged winners are **both right** (tile 1: two voices over
+notehead side, the note above; tile 4: the nearer same-side note). The 4 dropped pairs
+(tiles 2, 3, 5, 6): **in every one the right owner is the note BELOW the mark** — the copy
+the detector classed `articAccentAbove`, decided on the notehead side. So all four
+abstentions were safe (nothing wrong written) and all four are recoverable by one rule if
+it holds: between two staves, with nothing more specific, the mark is the lower staff's.
+Not built — asked of Sean as a convention first.
+
+### 11a. The lower-staff convention (Sean: *"Yes, it's a convention - build it"*, `70e56c10`)
+
+CONVENTION CONFIRMED (DECISIONS 2026-10-11): between two staves, with nothing more specific
+to decide it, the mark is the LOWER staff's. `reconcile_articulation_twins`: an
+opposite-side contest decided by EQUAL rules now goes to the copy whose owner is below the
+mark (`lost_to_twin`, `by: lower_staff_convention`) instead of dropping both; a more
+specific rule still wins. Test changed RED-first against `28bbac74` (1 failed: both were
+dropped there), plus a control that two voices on the upper copy still beat the default on
+the lower one (passes on both trees). Articulation tests 167 of 167; fast tier on `70e56c10` **7,233 passed, 0 failed**, 12 skipped, 825 deselected, 2 xfailed (23 m 40 s, loaded machine); `check` 192 → 192.
+
+**Measured** (`b1c0061f` → `70e56c10`, clean; controls unchanged): Brahms whole — the 4
+tied pairs resolve, 4 copies `twin_owners_disagree` → decided, 4 → `lost_to_twin`; **all 4
+kept owners are the copies Sean named** (tiles 2, 3, 5, 6). Every other row identical on all
+four records; fermatas identical; two-owner marks left: 0.

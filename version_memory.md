@@ -22,6 +22,11 @@ pointing at headings no longer in the file.)*
 
 ---
 
+
+## 2026-10-11 -- ROADMAP 2.12m articulation owners LANDED on main (Sean: "Land", after 2.83; branch `lane-2.12g-long-stem` 56f637f1)
+
+- STAGED, ADJUDICATE, `adjudicate_articulation_owner` + `reconcile_articulation_twins` (run after ARTICULATION_OWNER): a mark at a long chord stem's tip is the chord's; one notehead with a stem up AND down is two voices (a mark on either side is its); a mark between two staves is the noted staff's when the other staff's bar is empty (whole rest, no note); one printed mark decided in two cells keeps one owner -- duplicates dropped, the more specific rule wins, an equal tie goes to the LOWER staff (Sean's confirmed convention). Sean's blind tiles across the item: every real mark right since round 1. Brahms whole on the 10-09 record: +5 +11 +9 decided, 0 marks with two owners. 2.83 touched no stem-direction or ownership code. On the landing merge: `check` 192 -> 192, fast tier 7,332 passed, 0 failed. FINDINGS `omr-shape-role-2026-09` Part 12.
+
 ## 2026-10-11 -- 2.83 landed: the flag at the stem tip
 
 - `Q.STEM_TIP_INK` reads the flag's shape from the tip with the old window as a second witness; a decline never becomes 'no flag'; 2.70 halves only on a normal-sized head box. Sean's 24 tiles 0 wrong. Cost (18 Litolff halves narrowed) -> 2.88.
@@ -103,6 +108,15 @@ pointing at headings no longer in the file.)*
 - Sean: q883 is not a beam -> removed from his Brahms page (1,345 boxes); INVENTORY regenerated.
 - Bar-number drift confirmed on the print (crops on `crops-bar-drift`): Brahms 1st ending counted (+2) + key change after p11 s1's last barline kept as a bar (+1). Sean: open both -> ROADMAP 2.86 (first numbered 2.84; that id belongs to lane-tenuto-ledger), 2.85.
 - Sean's 21 gallery answers (2026-10-11): 2.12m 3 right / 2 wrong of 5 decided (it picked the upper staff's stem-down chord; the accent was the lower chord's) -> not landing as built; 2.84 tenuto tiles: 0 tenutos, 5 ledgers, 6 other ink (E, beam, half note, p, slur, accent area); mirror confirmed. answers.json in both review dirs.
+
+## 2026-10-10 (night) — 2.12m built on lane: an articulation at a long chord stem's tip
+
+- `lane-2.12g-long-stem` (not merged; the brief's "2.12g" is taken, row is 2.12m): `adjudicate_articulation_owner` decides `stem_tip_of_long_chord` for Sean's 2.12f tile-6 case (a chord stem reaching a ledger head, the mark at its tip) on positive evidence only; every other `stem_contradicts_class_side` stays abstained with the failed condition named. Research on stem-side placement (Gould 2nd-hand, Dorico, LilyPond source) in FINDINGS `omr-shape-role-2026-09` Part 12. 11 RED-first tests; `check` 192 -> 192. Needs the Mac readjudication + blind tiles.
+- Measured on the Mac (base `40ab373a` vs arm `46914018`, four shared records): Brahms whole 5 of 28 `stem_contradicts_class_side` marks now decided `stem_tip_of_long_chord` (the tile-6 control among them, decided to the chord below), 0 other rows changed; control `glyph_owner` short of N of N identically in both trees (`reconcile_group_owners`); 9 blind tiles `out/print/2.12m-review/` for Sean; new `select_artic_2_12m_tiles.py`. FINDINGS Part 12 §7.
+- Sean scored the 9 tiles (up-stem 3 right, down-stem 2 wrong); the misses are a two-voice test gap, not the stem reader (§8c). Upper-half/stem-up checked on 101 orchestral encodings: not reliable alone (§8d). Sean's "one head, stems up and down = two voices" built (`787fa6af`): 11 more Brahms marks decided, 10 blind tiles `out/print/2.12m-shared-head-review/` -- Sean 10 of 10 right; `check` 192 -> 192; fast tier 7,131 passed, 0 failed.
+- Sean's empty-bar rule built (`408398f6`): a mark between two staves is the noted staff's when the other staff's bar holds no note and a whole rest; 9 Brahms + 1 Litolff whole marks decided, 0 other rows changed; Sean 13 of 13 right (tile 5 a ledger line, not a tenuto). FINDINGS Part 12 §10.
+- Merged origin/main (`aed05e48`: 2.84, 2.87, 2.13b; merge moved 1 saved-record row, same head). One printed mark with two owners -> the loser dropped (`b1c0061f`, `reconcile_articulation_twins`, run after ARTICULATION_OWNER): 0 two-owner marks left; Brahms 2 duplicates, 4 losers, 4 opposite-side ties unowned; 6 blind tiles. FINDINGS Part 12 §11.
+- Sean confirmed the lower-staff convention (between two staves, nothing more specific -> the lower staff's), built `70e56c10` as the twin tie-breaker: the 4 Brahms ties now go to the copies Sean named. FINDINGS Part 12 §11a.
 
 ## 2026-10-10 (night) — 1.7 stems landed
 

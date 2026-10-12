@@ -1,0 +1,45 @@
+{
+ "fermata": {
+  "owner_identical": 12
+ },
+ "invariants": {
+  "VIOLATION base_abstained_became_decided": 5,
+  "decided_measured_side_equals_class": 666
+ },
+ "label": "arm",
+ "marks": 1263,
+ "moved": [],
+ "moved_owners": {
+  "n": 0,
+  "where": {}
+ },
+ "r2_by_rule_and_reason": {
+  "abstained:no_notehead": 427,
+  "abstained:owned_by_another_staff": 34,
+  "abstained:stem_contradicts_class_side": 23,
+  "abstained:stem_direction_unread": 107,
+  "decided:long_chord_stem": 5,
+  "decided:notehead_side": 651,
+  "decided:single_voice": 656,
+  "decided:stem_side": 10,
+  "decided:two_voice": 10,
+  "narrowed:heads_about_equally_near": 6
+ },
+ "transitions": {
+  "abstained/no_notehead -> abstained/no_notehead": 427,
+  "abstained/owned_by_another_staff -> abstained/owned_by_another_staff": 34,
+  "abstained/stem_contradicts_class_side -> abstained/stem_contradicts_class_side": 23,
+  "abstained/stem_contradicts_class_side -> decided/stem_tip_of_long_chord": 5,
+  "abstained/stem_direction_unread -> abstained/stem_direction_unread": 107,
+  "decided/nearest_on_notehead_side -> decided/nearest_on_notehead_side (SAME head)": 661,
+  "narrowed/heads_about_equally_near -> narrowed/heads_about_equally_near": 6
+ },
+ "twins": {
+  "   ... the two owners differ": 18,
+  "abstained": 597,
+  "abstained, a twin is DECIDED (owned via the neighbour's cell)": 277,
+  "abstained, has a same-ink twin in another cell": 397,
+  "decided": 666,
+  "decided AND a twin is decided (one mark, two owners)": 18
+ }
+}
