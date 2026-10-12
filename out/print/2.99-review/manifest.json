@@ -1,0 +1,576 @@
+{
+ "dpi": 600,
+ "question": "What is the mark inside the BLUE corners? If it is a rest, which kind (eighth, quarter, ...)? If it is not a rest, what is it (a flat, a sharp, a dot, something else)? The RED corners are only the bar it is in.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "lit",
+   "subject": "glyph/2/0/5/1/400000",
+   "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.46,
+    "height_spaces": 2.29,
+    "staff_step": 3.93,
+    "max_column_share": 0.751,
+    "mass_y": 0.461,
+    "column_profile": [
+     0.36,
+     0.38,
+     0.38,
+     0.75,
+     0.75,
+     0.59
+    ],
+    "coverage": 0.096,
+    "covered_by": [
+     "noteheadBlackOnLine"
+    ]
+   },
+   "bar_cell": [
+    2,
+    0,
+    5,
+    1
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.4,
+    "line_ratio": 4.91,
+    "line_ratio_half_off": 0.19,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    578,
+    1054,
+    813,
+    1258
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "brah",
+   "subject": "glyph/1/0/4/1/400003",
+   "tile_is_for": "decided eighth rest (bar adds up in base by cancellation, overfull now)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.236,
+    "height_spaces": 2.216,
+    "staff_step": 3.872,
+    "max_column_share": 0.721,
+    "mass_y": 0.434,
+    "column_profile": [
+     0.41,
+     0.52,
+     0.68,
+     0.72,
+     0.54,
+     0.33
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    1,
+    0,
+    4,
+    1
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.0,
+    "line_ratio": 11.12,
+    "line_ratio_half_off": 0.08,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    1762,
+    1438,
+    2556,
+    1795
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "subject": "glyph/2/1/9/5/400000",
+   "tile_is_for": "REFUSED look-alike: stem stroke (a flat?), not a rest",
+   "our_reading": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "stem_stroke_not_a_rest"
+   },
+   "ink": {
+    "width_spaces": 0.94,
+    "height_spaces": 2.57,
+    "staff_step": 3.81,
+    "max_column_share": 1.0,
+    "mass_y": 0.578,
+    "column_profile": [
+     1.0,
+     1.0,
+     0.05,
+     0.26,
+     0.34,
+     0.34
+    ],
+    "coverage": 0.012,
+    "covered_by": [
+     "ledgerLine"
+    ]
+   },
+   "bar_cell": [
+    2,
+    1,
+    9,
+    5
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.25,
+    "line_ratio": 4.37,
+    "line_ratio_half_off": 0.3,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    1139,
+    3329,
+    1402,
+    3537
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "lit",
+   "subject": "glyph/2/0/7/3/400000",
+   "tile_is_for": "decided quarter rest (its bar was held, now adds up)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "quarter",
+    "reason": "restQuarter_shape"
+   },
+   "ink": {
+    "width_spaces": 1.18,
+    "height_spaces": 2.81,
+    "staff_step": 4.43,
+    "max_column_share": 1.0,
+    "mass_y": 0.541,
+    "column_profile": [
+     0.56,
+     0.91,
+     1.0,
+     0.82,
+     0.58,
+     0.29
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    2,
+    0,
+    7,
+    3
+   ],
+   "frame_control": {
+    "line_offset_spaces": -0.7,
+    "line_ratio": 2.95,
+    "line_ratio_half_off": 0.29,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    814,
+    1367,
+    1037,
+    1575
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "subject": "glyph/1/0/9/6/400001",
+   "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.169,
+    "height_spaces": 1.978,
+    "staff_step": 3.814,
+    "max_column_share": 0.746,
+    "mass_y": 0.379,
+    "column_profile": [
+     0.31,
+     0.49,
+     0.75,
+     0.75,
+     0.5,
+     0.35
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    1,
+    0,
+    9,
+    6
+   ],
+   "frame_control": {
+    "line_offset_spaces": -0.05,
+    "line_ratio": 7.88,
+    "line_ratio_half_off": 0.11,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    4828,
+    2615,
+    5575,
+    2969
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "lit",
+   "subject": "glyph/2/0/2/5/400000",
+   "tile_is_for": "CONTROL: a standing box says accidentalDoubleSharp; the ink reads eighth rest",
+   "our_reading": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "already_read_as_a_glyph"
+   },
+   "ink": {
+    "width_spaces": 1.4,
+    "height_spaces": 2.29,
+    "staff_step": 4.05,
+    "max_column_share": 0.721,
+    "mass_y": 0.445,
+    "column_profile": [
+     0.55,
+     0.55,
+     0.58,
+     0.69,
+     0.72,
+     0.41
+    ],
+    "coverage": 0.829,
+    "covered_by": [
+     "accidentalDoubleSharp"
+    ]
+   },
+   "bar_cell": [
+    2,
+    0,
+    2,
+    5
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.3,
+    "line_ratio": 3.22,
+    "line_ratio_half_off": 0.33,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    1040,
+    597,
+    1259,
+    801
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "movement": "lit",
+   "subject": "glyph/1/0/7/0/400000",
+   "tile_is_for": "decided eighth rest (bar sums by cancellation in base; a key flat boxed as rest8th)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.26,
+    "height_spaces": 2.345,
+    "staff_step": 3.989,
+    "max_column_share": 0.785,
+    "mass_y": 0.47,
+    "column_profile": [
+     0.36,
+     0.38,
+     0.38,
+     0.7,
+     0.79,
+     0.79
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    1,
+    0,
+    7,
+    0
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.15,
+    "line_ratio": 4.12,
+    "line_ratio_half_off": 0.24,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    607,
+    2317,
+    1039,
+    2521
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "movement": "brah",
+   "subject": "glyph/1/0/2/0/400002",
+   "tile_is_for": "ABSTAINED: tall narrow ink, shape cannot tell",
+   "our_reading": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "shape_cannot_tell"
+   },
+   "ink": {
+    "width_spaces": 0.941,
+    "height_spaces": 2.802,
+    "staff_step": 4.428,
+    "max_column_share": 0.855,
+    "mass_y": 0.452,
+    "column_profile": [
+     0.72,
+     0.72,
+     0.51,
+     0.42,
+     0.85,
+     0.85
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    1,
+    0,
+    2,
+    0
+   ],
+   "frame_control": {
+    "line_offset_spaces": -0.1,
+    "line_ratio": 3.71,
+    "line_ratio_half_off": 0.26,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    557,
+    922,
+    1898,
+    1279
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "movement": "lit",
+   "subject": "glyph/3/0/4/10/400000",
+   "tile_is_for": "decided eighth rest (its bar was held, now adds up)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.38,
+    "height_spaces": 1.88,
+    "staff_step": 3.5,
+    "max_column_share": 0.867,
+    "mass_y": 0.362,
+    "column_profile": [
+     0.4,
+     0.47,
+     0.47,
+     0.87,
+     0.87,
+     0.46
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    3,
+    0,
+    4,
+    10
+   ],
+   "frame_control": {
+    "line_offset_spaces": -0.1,
+    "line_ratio": 4.75,
+    "line_ratio_half_off": 0.21,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    1949,
+    950,
+    2180,
+    1158
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "movement": "brah",
+   "subject": "glyph/1/1/3/6/400002",
+   "tile_is_for": "decided eighth rest (bar still held)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "eighth",
+    "reason": "rest8th_shape"
+   },
+   "ink": {
+    "width_spaces": 1.35,
+    "height_spaces": 1.72,
+    "staff_step": 4.34,
+    "max_column_share": 0.395,
+    "mass_y": 0.476,
+    "column_profile": [
+     0.33,
+     0.37,
+     0.4,
+     0.33,
+     0.35,
+     0.4
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    1,
+    1,
+    3,
+    6
+   ],
+   "frame_control": {
+    "line_offset_spaces": -0.3,
+    "line_ratio": 7.83,
+    "line_ratio_half_off": 0.14,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    4468,
+    4808,
+    5041,
+    5156
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "movement": "lit",
+   "subject": "glyph/3/0/9/0/400000",
+   "tile_is_for": "REFUSED look-alike: stem stroke (a flat?), first bar of a system",
+   "our_reading": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "stem_stroke_not_a_rest"
+   },
+   "ink": {
+    "width_spaces": 1.14,
+    "height_spaces": 2.67,
+    "staff_step": 4.05,
+    "max_column_share": 1.0,
+    "mass_y": 0.588,
+    "column_profile": [
+     1.0,
+     1.0,
+     0.03,
+     0.31,
+     0.31,
+     0.12
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    3,
+    0,
+    9,
+    0
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.55,
+    "line_ratio": 2.69,
+    "line_ratio_half_off": 0.3,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    304,
+    1729,
+    675,
+    1933
+   ]
+  },
+  {
+   "n": 12,
+   "file": "tile_12.png",
+   "movement": "lit",
+   "subject": "glyph/2/0/6/3/400000",
+   "tile_is_for": "decided quarter rest (the bar had no events before)",
+   "our_reading": {
+    "outcome": "decided",
+    "value": "quarter",
+    "reason": "restQuarter_shape"
+   },
+   "ink": {
+    "width_spaces": 1.19,
+    "height_spaces": 2.75,
+    "staff_step": 4.49,
+    "max_column_share": 1.0,
+    "mass_y": 0.537,
+    "column_profile": [
+     0.55,
+     1.0,
+     1.0,
+     0.98,
+     0.61,
+     0.48
+    ],
+    "coverage": 0.0,
+    "covered_by": []
+   },
+   "bar_cell": [
+    2,
+    0,
+    6,
+    3
+   ],
+   "frame_control": {
+    "line_offset_spaces": 0.45,
+    "line_ratio": 5.53,
+    "line_ratio_half_off": 0.15,
+    "passes": true
+   },
+   "page_box_600dpi": [
+    814,
+    1202,
+    1037,
+    1410
+   ]
+  }
+ ]
+}

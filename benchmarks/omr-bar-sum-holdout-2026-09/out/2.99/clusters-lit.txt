@@ -1,0 +1,82 @@
+219 clusters
+
+== rest  (120)
+  width_spaces      n=120 min=1.01 p10=1.08 med=1.21 p90=1.40 max=1.50
+  height_spaces     n=120 min=1.81 p10=2.29 med=2.86 p90=3.36 max=3.42
+  staff_step        n=120 min=2.10 p10=3.93 med=4.43 p90=4.96 max=6.92
+  max_column_share  n=120 min=0.68 p10=0.78 med=1.00 p90=1.00 max=1.00
+  mass_y            n=120 min=0.34 p10=0.45 med=0.54 p90=0.58 max=0.60
+  mass_x            -
+  fill              n=120 min=0.42 p10=0.46 med=0.54 p90=0.61 max=0.74
+  covered_by: [(('restQuarter',), 81), (('rest8th',), 17), (('ledgerLine', 'restQuarter'), 9), (('arpeggiato', 'ledgerLine', 'restQuarter'), 2)]
+
+== unboxed  (58)
+  width_spaces      n=58 min=0.51 p10=0.76 med=1.13 p90=1.49 max=2.35
+  height_spaces     n=58 min=1.27 p10=1.31 med=1.88 p90=2.75 max=3.31
+  staff_step        n=58 min=1.01 p10=1.93 med=3.90 p90=5.12 max=6.99
+  max_column_share  n=58 min=0.44 p10=0.48 med=0.90 p90=1.00 max=1.00
+  mass_y            n=58 min=0.36 p10=0.38 med=0.49 p90=0.58 max=0.63
+  mass_x            -
+  fill              n=58 min=0.28 p10=0.33 med=0.49 p90=0.58 max=0.75
+  covered_by: [((), 39), (('ledgerLine',), 8), (('noteheadBlackOnLine',), 3), (('dynamicF',), 1)]
+  verdicts: Counter({('decided', 'False', 'stem_stroke_not_a_rest'): 24, ('abstained', 'None', 'claimed_by_another_class'): 14, ('abstained', 'None', 'shape_cannot_tell'): 13, ('abstained', 'None', 'head_beside_it'): 6, ('decided', 'eighth', 'rest8th_shape'): 1})
+
+== notehead  (23)
+  width_spaces      n=23 min=0.68 p10=0.75 med=0.89 p90=0.96 max=1.53
+  height_spaces     n=23 min=1.27 p10=1.33 med=1.46 p90=2.35 max=3.49
+  staff_step        n=23 min=2.87 p10=3.04 med=5.01 p90=6.98 max=6.99
+  max_column_share  n=23 min=0.57 p10=0.72 med=0.87 p90=1.00 max=1.00
+  mass_y            n=23 min=0.41 p10=0.44 med=0.50 p90=0.61 max=0.62
+  mass_x            -
+  fill              n=23 min=0.41 p10=0.43 med=0.58 p90=0.73 max=0.79
+  covered_by: [(('noteheadHalfInSpace',), 10), (('noteheadHalfOnLine',), 3), (('ledgerLine', 'noteheadHalfInSpace'), 3), (('noteheadBlackOnLine',), 2)]
+
+== accidental  (8)
+  width_spaces      n=8 min=0.89 p10=0.89 med=1.12 p90=1.46 max=1.46
+  height_spaces     n=8 min=1.46 p10=1.46 med=2.42 p90=3.36 max=3.36
+  staff_step        n=8 min=1.18 p10=1.18 med=3.95 p90=6.12 max=6.12
+  max_column_share  n=8 min=0.72 p10=0.72 med=0.91 p90=1.00 max=1.00
+  mass_y            n=8 min=0.44 p10=0.44 med=0.47 p90=0.57 max=0.57
+  mass_x            -
+  fill              n=8 min=0.31 p10=0.31 med=0.46 p90=0.64 max=0.64
+  covered_by: [(('accidentalDoubleSharp',), 3), (('accidentalFlat',), 2), (('accidentalSharp',), 1), (('accidentalFlat', 'ledgerLine'), 1)]
+
+== covered:keyflat  (6)
+  width_spaces      n=6 min=1.01 p10=1.01 med=1.08 p90=1.08 max=1.08
+  height_spaces     n=6 min=2.36 p10=2.36 med=2.76 p90=3.24 max=3.24
+  staff_step        n=6 min=2.98 p10=2.98 med=5.42 p90=5.55 max=5.55
+  max_column_share  n=6 min=0.98 p10=0.98 med=1.00 p90=1.00 max=1.00
+  mass_y            n=6 min=0.55 p10=0.55 med=0.58 p90=0.63 max=0.63
+  mass_x            -
+  fill              n=6 min=0.42 p10=0.42 med=0.46 p90=0.54 max=0.54
+  covered_by: [(('keyFlat',), 6)]
+
+== clef  (2)
+  width_spaces      n=2 min=1.08 p10=1.08 med=1.24 p90=1.40 max=1.40
+  height_spaces     n=2 min=1.97 p10=1.97 med=2.17 p90=2.36 max=2.36
+  staff_step        n=2 min=3.49 p10=3.49 med=4.19 p90=4.88 max=4.88
+  max_column_share  n=2 min=0.87 p10=0.87 med=0.94 p90=1.00 max=1.00
+  mass_y            n=2 min=0.39 p10=0.39 med=0.47 p90=0.56 max=0.56
+  mass_x            -
+  fill              n=2 min=0.49 p10=0.49 med=0.51 p90=0.52 max=0.52
+  covered_by: [(('clefF',), 1), (('clefG', 'keyFlat'), 1)]
+
+== covered:arpeggiato+ledgerline  (1)
+  width_spaces      n=1 min=0.77 p10=0.77 med=0.77 p90=0.77 max=0.77
+  height_spaces     n=1 min=3.10 p10=3.10 med=3.10 p90=3.10 max=3.10
+  staff_step        n=1 min=4.00 p10=4.00 med=4.00 p90=4.00 max=4.00
+  max_column_share  n=1 min=0.94 p10=0.94 med=0.94 p90=0.94 max=0.94
+  mass_y            n=1 min=0.51 p10=0.51 med=0.51 p90=0.51 max=0.51
+  mass_x            -
+  fill              n=1 min=0.83 p10=0.83 med=0.83 p90=0.83 max=0.83
+  covered_by: [(('arpeggiato', 'ledgerLine'), 1)]
+
+== covered:arpeggiato  (1)
+  width_spaces      n=1 min=1.08 p10=1.08 med=1.08 p90=1.08 max=1.08
+  height_spaces     n=1 min=3.30 p10=3.30 med=3.30 p90=3.30 max=3.30
+  staff_step        n=1 min=4.96 p10=4.96 med=4.96 p90=4.96 max=4.96
+  max_column_share  n=1 min=0.91 p10=0.91 med=0.91 p90=0.91 max=0.91
+  mass_y            n=1 min=0.55 p10=0.55 med=0.55 p90=0.55 max=0.55
+  mass_x            -
+  fill              n=1 min=0.62 p10=0.62 med=0.62 p90=0.62 max=0.62
+  covered_by: [(('arpeggiato',), 1)]
