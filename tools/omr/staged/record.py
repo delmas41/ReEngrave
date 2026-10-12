@@ -757,6 +757,22 @@ class Q(_Vocab):
     #: neither.
     INK = "ink"
 
+    #: ⚠️⚠️ ROADMAP 2.80 -- THE INK A BAR HOLDS THAT IS STAFF-SIZED, WITH ITS
+    #: PAGE BOX, so a later stage can ask "is any of it left unexplained?".
+    #: One row per cell (`value` = how many pieces), the pieces in `detail.
+    #: pieces` as `[x0, y0, x1, y1, area_in_staff_spaces_squared]` in PAGE
+    #: pixels. Not `Q.INK`: its per-piece form is behind `--ink-rows` and costs
+    #: a record ~115 MB a page, and its default is a per-cell SUMMARY with no
+    #: geometry. This is the middle: only the pieces a rest, a head or a
+    #: flag could be (area >= `INK_PIECE_MIN_AREA_SP2`, not wider than a bar's
+    #: own furniture, centre inside the staff band +/- 1.5 spaces).
+    #: ⚠️ A PIECE IS NOT A MARK (staff-line erasure splits an eighth rest into
+    #: a blob and a tail) and GATHER decides nothing: EVALUATE's
+    #: `reconcile_duration` subtracts the pieces the standing glyphs explain
+    #: and asks whether anything is left (a MISSED rest), because a bar short
+    #: by one rest looks exactly like a note one beam too short.
+    CELL_INK_PIECES = "cell_ink_pieces"
+
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
     #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
@@ -2188,6 +2204,7 @@ CLAIMS: "dict[str, str]" = {
     #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
     #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
     "INK": CLAIM.MEASUREMENT,
+    "CELL_INK_PIECES": CLAIM.MEASUREMENT,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
@@ -2680,6 +2697,10 @@ class READERS(_Vocab):
     #: POSITIONED piece of ink hanging under the staff's 4th line, that the
     #: detector never boxed.
     CV_REST_SEARCH = "cv_rest_search"        # gather: whole-rest search in a boxless bar
+    #: `gather.gather_cell_ink_pieces` -- ROADMAP 2.80. The SAME erased raster
+    #: `CV_INK` reads (one crop, one signal), filed as staff-sized pieces
+    #: with page boxes for EVALUATE's missed-rest question.
+    CV_INK_PIECES = "cv_ink_pieces"
     #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
     #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
     #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a

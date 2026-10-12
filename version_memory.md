@@ -22,6 +22,21 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, NOT merged)
+
+`reconcile_duration` no longer lengthens a note to land a short bar where the bar
+holds ink no standing glyph explains (a missed rest fills the same gap; Brahms
+Contrabass bar 13 was written as a quarter where the print has a second eighth
+rest). New GATHER row `Q.CELL_INK_PIECES` (`gather_cell_ink_pieces`, reader
+`CV_INK_PIECES`) + EVALUATE `_missed_rest_witness`; a shortening is unaffected;
+no ink reading refuses (rule 8). `d04fd058` (meter in force at the bar for
+`reconcile_duration` / `reinstate_rest_between_staves`) cherry-picked as the
+base. Brahms p0-1: 1 bar changed (Contrabass 13); Litolff p1-3: 0. Does not
+fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
+`staged.check` 192 = base. FINDINGS §2.80.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:

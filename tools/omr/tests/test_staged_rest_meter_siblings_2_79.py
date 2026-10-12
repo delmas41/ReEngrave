@@ -20,6 +20,7 @@ from tools.omr.staged import consequences
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Outcome, Q, Verdict
 from tools.omr.tests import test_staged_rest_between_staves_2_45 as BETWEEN
+from tools.omr.tests.test_staged_missed_rest_2_80 import clear_ink
 
 SEGMENTED = {
     "numerator": 9, "denominator": 8, "raw": "9/8",
@@ -64,6 +65,7 @@ class TestReconcileDurationReadsTheSameMeter(unittest.TestCase):
                _dur(b, lv), reason="head_and_marks")
         _v(log, self.CELL, Q.EVENT, Outcome.DECIDED,
            {"events": [{"glyphs": [0]}, {"glyphs": [1]}, {"glyphs": [2]}]})
+        clear_ink(log, self.CELL)       # ROADMAP 2.80: the ink was read, clear
 
     def test_a_bar_under_the_returned_meter_lands_on_it_RED(self):
         log = Log()

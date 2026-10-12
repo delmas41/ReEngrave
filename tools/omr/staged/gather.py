@@ -5974,6 +5974,94 @@ def gather_ink(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The staff-sized ink of a bar, with its page box -- ROADMAP 2.80
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A piece smaller than this (staff spaces SQUARED) is speckle or a staff-line
+#: crumb, not a head/rest/flag. Measured on Brahms pdf 1 s0 staff 13 bar 5: the
+#: halves of an eighth rest are 0.48 and 0.51, speckle 0.004. 0.10 sits in the
+#: empty band between them.
+INK_PIECE_MIN_AREA_SP2 = 0.10
+#: A piece wider than this is a slur, a tie, a beam, a stave remnant -- never
+#: one symbol of a rest's or a head's size.
+INK_PIECE_MAX_WIDTH_SPACES = 8.0
+#: How far above/below the outer staff lines a piece's centre may lie and
+#: still be a candidate (rests stand inside the staff; heads, flags and
+#: ledger notes within a space or two of it).
+INK_PIECE_BAND_SPACES = 1.5
+
+
+def gather_cell_ink_pieces(log: Log, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]], *,
+                           progress: bool = False) -> None:
+    """The staff-sized pieces of ink in every cell, with their PAGE boxes.
+
+    ⚠️ ROADMAP 2.80. `reconcile_duration` lands a bar that is short by
+    lengthening a note, and a bar short by a MISSED REST looks exactly the
+    same. The witness that tells them apart is whether the bar holds ink no
+    standing glyph explains -- and that needs the ink's geometry, which
+    `Q.INK`'s default per-cell summary does not carry and its per-piece form
+    (`--ink-rows`) carries at ~115 MB a page. This files only the pieces that
+    could be a head, rest or flag (see the constants), in ONE row per cell.
+
+    ⚠️ IT DECIDES NOTHING AND NAMES NOTHING. A piece is not a mark -- staff-line
+    erasure splits an eighth rest into a blob and a tail -- so no rest shape
+    is tested here; the consumer subtracts what standing glyphs explain.
+    ⚠️ A cell that cannot supply a page frame or a staff unit is DECLINED
+    (an abstention), never defaulted: "no row" must not read as "no ink".
+    """
+    if not _ink_enabled():
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+        comps = _ink_components(c)
+        if comps is None:
+            log.abstain(sub, Q.CELL_INK_PIECES, reader=READERS.CV_INK_PIECES,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        grid = _cell_grid(c)
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        if (grid is None or len(lines) < 5 or not up
+                or not cell_box or len(cell_box) != 4):
+            log.abstain(sub, Q.CELL_INK_PIECES, reader=READERS.CV_INK_PIECES,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        spacing = grid[1] * 2.0
+        lo = lines[0] - INK_PIECE_BAND_SPACES * spacing
+        hi = lines[-1] + INK_PIECE_BAND_SPACES * spacing
+        pieces = []
+        for (x, y, w, h, area) in comps:
+            if w <= 0 or h <= 0:
+                continue
+            area_sp2 = area / (spacing * spacing)
+            if area_sp2 < INK_PIECE_MIN_AREA_SP2:
+                continue
+            if w / spacing > INK_PIECE_MAX_WIDTH_SPACES:
+                continue
+            if not (lo <= y + h / 2.0 <= hi):
+                continue
+            pieces.append([round(cell_box[0] + x / up, 1),
+                           round(cell_box[1] + y / up, 1),
+                           round(cell_box[0] + (x + w) / up, 1),
+                           round(cell_box[1] + (y + h) / up, 1),
+                           round(area_sp2, 3)])
+        log.observe(sub, Q.CELL_INK_PIECES, len(pieces),
+                    reader=READERS.CV_INK_PIECES, frame=frame,
+                    pieces=pieces,
+                    staff_space_page_px=round(spacing / up, 2))
+        if progress:
+            print(f"  gather ink pieces {sub.to_key()}: {len(pieces)}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # A targeted search for a whole rest the detector never boxed -- ROADMAP 2.52
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -11709,6 +11797,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # default -- see `INK_ENV`.
         gather_ink(log, cells, local, detections,
                   component_rows=ink_component_rows, progress=progress)
+        # ⚠️ ROADMAP 2.80, BESIDE `gather_ink` (the SAME erased raster; reads
+        # no row and no detection, so its place is kinship, not dependency).
+        gather_cell_ink_pieces(log, cells, local, detections,
+                               progress=progress)
         # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME
         # erased raster (and says so: `READERS.CV_INK`). The second witness
         # for Sean's `[C91]` -- see the function.

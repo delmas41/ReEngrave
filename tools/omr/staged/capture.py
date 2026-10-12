@@ -636,6 +636,14 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "— see KNOWN_GAPS; this is the newest gather site and it did not get "
         "one either.",
         None),
+    "CELL_INK_PIECES": (
+        RAW_INK,
+        "ROADMAP 2.80: the staff-sized connected pieces of ink in one cell "
+        "with their PAGE boxes, one row per cell -- `INK`'s middle form "
+        "(geometry without its per-piece record cost). No class and no "
+        "staff-grid position: `reconcile_duration` subtracts what standing "
+        "glyphs explain and asks whether anything is left.",
+        None),
 
     # ── values a staff-grid coordinate would say nothing about ──────────────
     "CLEF_SEED": (NOT_A_MARK, "the dossier's clef; no ink.", None),
@@ -809,6 +817,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ⚠️ ROADMAP 2.52. Also `staged/gather.py` -- reads `image_no_staff`
     # only, same reason `CV_LEDGER`/`CV_STEM_TIP`/`CV_BEAM_JOIN` do.
     "CV_REST_SEARCH": ("staged/gather.py", "gather_empty_bar_rest_search"),
+    "CV_INK_PIECES": ("staged/gather.py", "gather_cell_ink_pieces"),
     # ⚠️ ROADMAP 2.56. Reads the page's ORIGINAL raster (`pws.page.rgb`, the
     # staff lines left in -- ledger walks and the template fit need them).
     # ⚠️ ROADMAP 2.58d. Reads the page's ORIGINAL raster, like `LEDGER_FARHEAD`.
