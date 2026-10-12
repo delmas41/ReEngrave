@@ -2898,7 +2898,7 @@ with the same endpoint, 32 the same-span staves hold no DECIDED length, 3 witnes
 neighbour at its column, and where it has, the two staves' verdicts share a provenance row (`independent_groups`) and count once. Not a bug in
 those rules: the wrong instrument for this population, which is why this item adds a different one.
 
-### 20.3 What was built (all behind default-OFF allow-list flags; control arm byte-identical)
+### 20.3 What was built (flags: bar rule ON since 2026-10-11 by Sean's "Yes", ranking OFF; control arm byte-identical)
 
 * ADJUDICATE `rhythm.adjudicate_duration`, the `beam_discounted_uncertain` narrowing: where the head's own stem is decided, its tip window READS
   clean (`Q.STEM_TIP_INK` false) and no stroke this decision refused stands at the stem tip (0.6 sp along, 0.3 across -- Phase 1's probe numbers,
@@ -2994,3 +2994,4 @@ His words: *"1-4. 4 5.8 6.dot 4 7. Dot 4 8-10. 4 11-12. 8 13.4 14.dot4"*. Scored
 quarter; the 3 of 3 are not an estimate of it, and the one counter-example (tile 5) sits in the stratum where the evidence did not hold. The rate stays what 19.1 says:
 0.959 on one page it was tuned on (lower bound 0.86), 0.76-0.80 on the old tree's blind tiles. **The question of an ADJUDICATE rule that decides stays open below 95%.**
 
+Landed 2026-10-11 (Sean: "Yes"): `OMR_BARE_STEM_BAR` default ON (deny-list, separate commit), `OMR_BARE_STEM_RANK` OFF. Gates after the flip and the merge of main `feef7e9e`: `pytest -m "not slow" tools/omr/tests` 7,362 passed, 0 failed; `staged.check` TOTAL 192. Trial merge of `lane-2.80-missed-rest` onto this branch: conflicts only in ROADMAP.md and version_memory.md (docs); 295 tests across the touched suites plus the 2.80/reconcile/rest suites pass.
