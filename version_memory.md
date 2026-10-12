@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
+
+- Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
+
 ## 2026-10-11 -- ROADMAP 2.88 half notes 2.83 left narrowed (branch `lane-2.88-halves`, LANDED on main 2026-10-11, Sean: "Yes")
 
 - STAGED, ADJUDICATE only (`rhythm.adjudicate_duration`): a hollow head whose stem tip the tip reader cannot tell is a half on the head's own firm reading (two rasters, ring - centre >= 0.2, head-shaped box, filed cannot-tell, no flag/beam/dispute). 17 Litolff heads narrowed -> decided half (rule reads the RAW raster firmly after Sean's 14 tiles; fast tier 7,410 passed), nothing else moves; Sean's judged halves 18/18, quarters and the 2.83 tile-6 fragment unchanged; Brahms hand truth unchanged. 13 new tests (`test_staged_hollow_tip_unread_2_88.py`, RED first on `51a01593`). 14 blind tiles `out/print/2.88-review/`. FINDINGS `omr-missing-notes-2026-09` 21.
