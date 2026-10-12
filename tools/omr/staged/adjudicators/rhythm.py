@@ -143,14 +143,18 @@ HEAD_BOX_MAX_SPACES = 1.8
 #: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a print-confirmed filled head or a non-head on a head-shaped box that reads hollow on two
 #: rasters with its tip unread (FINDINGS `omr-missing-notes-2026-09` 21).
 HEAD_HOLLOW_MIN_READINGS = 2
+#: ... and on those readings the ring must stand at least this far above the centre (2.23's own cut is 0.1). MEASURED: the 2.83 first-round tile 6
+#: fragment (Brahms pdf 11 `glyph/11/1/10/3/10`, a dotted quarter's neighbour) reads centre 0.64-0.71 against ring 0.74-0.84, gaps 0.06-0.17, two
+#: readings over 2.23's cut; Sean's restored halves read gaps 0.24-0.47 on every raster.
+HEAD_HOLLOW_UNREAD_GAP_MIN = 0.2
 HEAD_BOX_MIN_SPACES = 0.9
 HEAD_BOX_MAX_WIDTH_SPACES = 1.9
 TIP_UNREAD_REASONS = ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip", "occupied", "head_at_this_end")
 
 
-def _hollow_readings(ink_detail: Dict[str, Any]) -> int:
+def _hollow_readings(ink_detail: Dict[str, Any], gap_min: float = HEAD_FILL_HOLLOW_RING_GAP_MIN) -> int:
     """How many of the three `Q.NOTEHEAD_INK` readings (raw, staff-erased, line rows left out) are decisively hollow -- the same cut as
-    `_ink_reads_decisively_hollow`, counted instead of any-one."""
+    `_ink_reads_decisively_hollow` (ring - centre >= `gap_min`), counted instead of any-one."""
     n = 0
     for key in ("ink_raw", "ink_net", "ink_off_line"):
         reading = ink_detail.get(key)
@@ -158,7 +162,7 @@ def _hollow_readings(ink_detail: Dict[str, Any]) -> int:
         center, ring = windows.get("center"), windows.get("ring")
         if center is None or ring is None:
             continue
-        if center <= HEAD_FILL_HOLLOW_CENTER_MAX and (ring - center) >= HEAD_FILL_HOLLOW_RING_GAP_MIN:
+        if center <= HEAD_FILL_HOLLOW_CENTER_MAX and (ring - center) >= gap_min:
             n += 1
     return n
 
@@ -3535,7 +3539,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # anything for a hollow head; the head's own reading must be firm (two rasters, a head-shaped box).
     if ink_hollow and own_stems and not flags and strokes_before_hollow == (0, 0, 0) and one_head_box \
             and head_box[3] / space >= HEAD_BOX_MIN_SPACES and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES \
-            and _hollow_readings(fill_row.detail or {}) >= HEAD_HOLLOW_MIN_READINGS \
+            and _hollow_readings(fill_row.detail or {}, HEAD_HOLLOW_UNREAD_GAP_MIN) >= HEAD_HOLLOW_MIN_READINGS \
             and _beam_reader_looked(ev, cell) is not None and not _stem_tip_disputed(ev, cell, own_stems, side) \
             and not (tip_ink_rows and any(bool(r.value) for r in tip_ink_rows)):
         unread = _stem_tip_unread_why(ev, cell, own_stems, side)
@@ -3552,7 +3556,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 reason="hollow_head_bare_stem", used=tuple(used),
                 detail={**shared, "beam_reader": _beam_reader_looked(ev, cell),
                         "stem_tip_hook": None, "tip_unread": unread,
-                        "hollow_readings": _hollow_readings(fill_row.detail or {}),
+                        "hollow_readings": _hollow_readings(fill_row.detail or {}, HEAD_HOLLOW_UNREAD_GAP_MIN),
                         "notehead_ink": fill_row.detail or {}})
 
     # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8. 2.70 DECIDES a half in a BEAMLESS cell (the beam reader RAN and accepted nothing, so

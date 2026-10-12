@@ -109,6 +109,17 @@ class TestAHollowHeadWithAnUnreadTipIsStillAHalf(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "head_fill_from_ink")
 
+    def test_a_WEAK_hollow_reading_stays_narrowed(self):
+        """Brahms pdf 11 `glyph/11/1/10/3/10` (2.83's first-round tile 6, the wrong half): centre 0.70 / ring 0.84 on two rasters is over 2.23's
+        cut (gap 0.1) and under this rule's (gap 0.2). It stays narrowed; the 0.45 / 0.85 head of the positive test is decided."""
+        log = Log()
+        g, s = self._head(log, beam="ran_empty")
+        _two_raster_ink(log, g, center=0.70, ring=0.84)
+        _unread_tip(log, s.id, "no_room")
+        v = self._verdict(log, g)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
     def test_a_SLIVER_box_stays_narrowed(self):
         log = Log()
         g, s = self._head(log, box_h=int(0.5 * SPACE) if SPACE else 6, beam="ran_empty")
