@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, BUILT, NOT merged: Sean judges the tiles)
+## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
 
 STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so
 `group_chords_in_measure`'s divisi guard fires; `_settle_divisi_pairs` keeps them only in bars where every chord has a decided direction and the two streams carry equal
