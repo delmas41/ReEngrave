@@ -1,0 +1,35 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/arm-arm5/brahms-t2.record.json
+   provenance b438cda77c1e6b8c1534a77b03dc745418553b96 dirty=False
+base (overnight verdicts, same code) /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/overnight-brahms.json: 19291 verdicts
+
+heads with a standing duration verdict: base 4169  arm 4169  in both 4169 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base      0   arm   1178
+  abstained:ambiguous:ink_not_flag_shaped                 base      0   arm    110
+  abstained:ambiguous:no_room                             base      0   arm    400
+  abstained:ambiguous:runs_on                             base      0   arm    131
+  abstained:occupied:head_at_this_end                     base      0   arm   2482
+  abstained:occupied:occupied                             base      0   arm    501
+  observed:flag                                           base      0   arm    268
+  observed:none                                           base      0   arm   1228
+
+duration verdicts changed (matched heads): 58 of 4169
+     25  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{1}
+     13  decided:head_and_marks{0}  ->  decided:head_and_marks{1}
+      9  narrowed:beam_discounted_uncertain{0,1}  ->  decided:head_and_marks{1}
+      3  decided:head_and_marks{0}  ->  decided:hooks_counted{1}
+      2  decided:hollow_head_bare_stem{0}  ->  narrowed:head_fill_from_ink{0}
+      2  narrowed:beam_discounted_uncertain{0,1}  ->  narrowed:flag_ink_unread{1,2}
+      2  narrowed:flags_disagree{1,2}  ->  decided:hooks_counted{1}
+      1  narrowed:flag_ink_unread{1,2}  ->  decided:head_and_marks{0}
+      1  narrowed:beam_discounted_uncertain{0,1}  ->  decided:hooks_counted{2}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 635
+    599  narrowed beam_discounted_uncertain levels [0, 1]
+     24  decided level 1 (hooks_counted)
+      9  decided level 1 (head_and_marks)
+      2  narrowed flag_ink_unread levels [1, 2]
+      1  decided level 2 (hooks_counted)
+  (status of those heads in the arm: {'narrowed': 601, 'kept': 34} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_brahms-t2.json 58

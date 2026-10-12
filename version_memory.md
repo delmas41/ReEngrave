@@ -109,6 +109,9 @@ pointing at headings no longer in the file.)*
 
 - 2.82: a beam's thick core on two stems counts; `one_stem` needs positive evidence; Sean's tiles 0 wrong. `ede06675`. Root cause of lost beams = the stem finder (fused columns refused too wide).
 - 2.81 measured (~0.76, below 95%) and its misses imaged; 2.83 (flag tip) and 1.7-stems (stem measurement) running at session end. ROADMAP START HERE names the next session's plan.
+## 2026-10-11 (day) — 2.83 flag-tip: Sean's blind answers recorded
+
+- `out/print/2.83-review/answers.json` (branch `lane-2.83-flag-tip`, not merged to main): arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow).
 
 ## 2026-10-10 (day) — the hand-truth scorer (1.7 D1+D2) landed
 
