@@ -139,14 +139,13 @@ HEAD_BOX_MAX_SPACES = 1.8
 #: decided Litolff halves because its shape reader cannot tell at the tip (`crosses_both_sides`, `no_room`, ...) where the old window said clean;
 #: trusting the old window made Brahms pdf 11 `glyph/11/1/10/3/10` (a fragment, not a head) a half. The head's OWN reading replaces the guard:
 #: the hollow reading must hold on at least `HEAD_HOLLOW_MIN_READINGS` of the three rasters, the box must be head-shaped (not a sliver, not a
-#: cluster), and the tip must be a cannot-tell for a reason that says the ink is somewhere ELSE (`TIP_UNREAD_REASONS`) -- never an
-#: `occupied` tip (a box lies on it) nor a head at the other end. A tip that reads a flag, or is disputed, still stands down.
+#: cluster), and the tip must be a cannot-tell the reader FILED (`TIP_UNREAD_REASONS`; no row at all is not a cannot-tell). A tip that reads a flag, or is disputed, still stands down.
 #: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a print-confirmed filled head or a non-head on a head-shaped box that reads hollow on two
 #: rasters with its tip unread (FINDINGS `omr-missing-notes-2026-09` 21).
 HEAD_HOLLOW_MIN_READINGS = 2
 HEAD_BOX_MIN_SPACES = 0.9
 HEAD_BOX_MAX_WIDTH_SPACES = 1.9
-TIP_UNREAD_REASONS = ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip")
+TIP_UNREAD_REASONS = ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip", "occupied", "head_at_this_end")
 
 
 def _hollow_readings(ink_detail: Dict[str, Any]) -> int:
@@ -2662,7 +2661,7 @@ def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tu
 def _stem_tip_unread_why(ev: Evidence, cell, own_stems, side: Optional[str]) -> Optional[str]:
     """Why the tip reader could not tell at this head's own tip end, when that is ALL it said: the `why` of the abstention(s) filed on
     `Q.STEM_TIP_INK` at that end for this stem, where EVERY one is in `TIP_UNREAD_REASONS` and no observation row stands there.
-    `None` otherwise (no abstention, an `occupied` tip, a head at the end, or any row). ROADMAP 2.88."""
+    `None` otherwise (no abstention filed, an unlisted reason, or any observation row). ROADMAP 2.88."""
     if side not in ("up", "down") or not own_stems:
         return None
     end = "top" if side == "up" else "bottom"

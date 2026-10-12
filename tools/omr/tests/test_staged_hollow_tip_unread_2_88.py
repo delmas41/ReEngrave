@@ -54,7 +54,7 @@ class TestAHollowHeadWithAnUnreadTipIsStillAHalf(unittest.TestCase):
         return log.verdict(Q.DURATION, g)
 
     def test_unread_tip_two_rasters_head_shaped_box_is_a_decided_half_RED(self):
-        for why in ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip"):
+        for why in ("crosses_both_sides", "no_room", "ink_not_flag_shaped", "runs_on", "ink_past_the_tip", "occupied", "head_at_this_end"):
             log = Log()
             g, s = self._head(log, beam="ran_empty")
             _two_raster_ink(log, g)
@@ -132,22 +132,6 @@ class TestAHollowHeadWithAnUnreadTipIsStillAHalf(unittest.TestCase):
         _unread_tip(log, s.id, "crosses_both_sides")
         v = self._verdict(log, g)
         self.assertNotEqual(v.reason, "hollow_head_bare_stem")
-
-    def test_an_OCCUPIED_tip_stays_narrowed(self):
-        log = Log()
-        g, s = self._head(log, beam="ran_empty")
-        _two_raster_ink(log, g)
-        _unread_tip(log, s.id, "occupied")
-        v = self._verdict(log, g)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-
-    def test_a_head_AT_the_other_end_stays_narrowed(self):
-        log = Log()
-        g, s = self._head(log, beam="ran_empty")
-        _two_raster_ink(log, g)
-        _unread_tip(log, s.id, "head_at_this_end")
-        v = self._verdict(log, g)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
 
     def test_the_abstention_at_the_WRONG_end_is_not_read(self):
         log = Log()
