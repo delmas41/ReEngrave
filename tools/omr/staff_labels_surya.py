@@ -550,6 +550,17 @@ def read_crops_surya(crops: list[MarginCrop], *,
     One process for every crop on the page on purpose: the model load dominates
     and is paid once.
     """
+    return [labels for labels, _between in read_crops_surya_full(
+        crops, timeout_s=timeout_s, keep_alive=keep_alive)]
+
+
+def read_crops_surya_full(crops: list[MarginCrop], *,
+                          timeout_s: float | None = None,
+                          keep_alive: bool | None = None
+                          ) -> list[tuple[dict[int, str], list[dict]]]:
+    """`(labels, between)` per crop: `read_crops_surya`'s answer plus the
+    blocks the worker found centred BETWEEN two adjacent staves (ROADMAP 2.95).
+    """
     if not crops:
         return []
     job = {"systems": [{
@@ -562,15 +573,84 @@ def read_crops_surya(crops: list[MarginCrop], *,
     payload: dict[str, Any] = _dispatch(job, timeout_s=timeout_s,
                                         keep_alive=keep_alive)
 
-    out: list[dict[int, str]] = []
+    out: list[tuple[dict[int, str], list[dict]]] = []
     for entry in payload.get("systems", []):
         if entry.get("error"):
             logger.warning("surya failed on one system: %s", entry["error"])
-            out.append({})
+            out.append(({}, []))
             continue
-        out.append({int(k): _plain_text(v)
-                    for k, v in (entry.get("labels") or {}).items()})
+        out.append(({int(k): _plain_text(v)
+                     for k, v in (entry.get("labels") or {}).items()},
+                    [dict(b, text=_plain_text(str(b.get("text", ""))))
+                     for b in (entry.get("between") or [])]))
     return out
+
+
+#: A margin text that is a crook/key in parentheses and NOTHING ELSE --
+#: `(C)`, `(Es)`, `(B)`. Same shape as `staged.adjudicators.identity.
+#: _bare_crook`, restated here because this module is READER code and may not
+#: import the staged package.
+_BARE_CROOK = re.compile(r"[\s.,;:]*\(([^)]+)\)[\s.,;:]*")
+
+
+def spread_shared_words(texts: dict[int, str], between: list[dict]
+                        ) -> tuple[dict[int, str], dict[int, str]]:
+    """Complete each half of a braced pair with the word printed between them.
+
+    ROADMAP 2.95. `(C)` / `Hr.` / `(Es)` is ONE word and two crooks: an
+    instrument word centred between two adjacent staves names both, each with
+    its own crook (convention assumed, see `benchmarks/omr-staff-identity-
+    2026-09/FINDINGS.md` section 2.95). Returns `(new_texts, shared)` where
+    `shared` maps a staff index to the word it was completed with.
+
+    Refuses (leaves both staves exactly as read) unless ALL of:
+
+    * the block is centred between two ADJACENT staves of one system (the
+      worker's own `between` report -- a word with no staff on both sides is
+      never in it);
+    * the word is a lexicon hit (`lookup`) -- an OCR fragment is not spread;
+    * BOTH flanking staves read a bare crook, OR one reads a bare crook and
+      the other already carries this very word with its crook (the worker
+      handed the word to the nearer tick). A flanking staff with any OTHER
+      text (its own full name) or none at all is a pair the word does not
+      demonstrably name, so nothing is spread;
+    * the same two staves are not claimed by two different words.
+    """
+    new = dict(texts)
+    shared: dict[int, str] = {}
+    claimed: set[int] = set()
+    for blk in between:
+        word = str(blk.get("text", "")).strip()
+        up, lo = blk.get("upper"), blk.get("lower")
+        if not word or up is None or lo is None:
+            continue
+        if _BARE_CROOK.fullmatch(word) or lookup(word) is None:
+            continue
+        if up in claimed or lo in claimed:
+            continue
+
+        def role(idx: int) -> str | None:
+            t = (texts.get(idx) or "").strip()
+            if _BARE_CROOK.fullmatch(t):
+                return "bare"
+            rest = t.replace(word, " ", 1)
+            if word in t and (not rest.strip()
+                              or _BARE_CROOK.fullmatch(rest.strip())):
+                return "has_word"
+            return None
+
+        r_up, r_lo = role(up), role(lo)
+        if r_up is None or r_lo is None or (r_up, r_lo) == ("has_word",
+                                                              "has_word"):
+            continue
+        if r_up == "bare":
+            new[up] = f"{texts[up].strip()} {word}"
+            shared[up] = word
+        if r_lo == "bare":
+            new[lo] = f"{word} {texts[lo].strip()}"
+            shared[lo] = word
+        claimed.update((up, lo))
+    return new, shared
 
 
 def read_crops_text(crops: list, *,
@@ -703,11 +783,15 @@ def read_staff_labels_surya(pws: PageWithStaves, *,
     if not crops:
         return []
 
-    per_crop = read_crops_surya(crops, timeout_s=timeout_s,
-                                keep_alive=keep_alive)
+    per_crop = read_crops_surya_full(crops, timeout_s=timeout_s,
+                                     keep_alive=keep_alive)
 
     out: list[StaffLabel] = []
-    for staves, texts in zip(staves_for_crop, per_crop):
+    for staves, (texts, between) in zip(staves_for_crop, per_crop):
+        # ROADMAP 2.95: a word printed between two braced staves that each
+        # carry only a crook names both. No flag (rule 9): it only ever fills
+        # a staff that read a bare crook.
+        texts, shared = spread_shared_words(texts, between)
         for staff in staves:
             text = texts.get(staff.staff_index)
             if not text:
@@ -721,6 +805,7 @@ def read_staff_labels_surya(pws: PageWithStaves, *,
                 y_center_px=(staff.top_y + staff.bottom_y) / 2.0,
                 confidence=hit.confidence if hit else "none",
                 alias=hit.alias if hit else "",
+                shared_word=shared.get(staff.staff_index, ""),
             ))
     return out
 

@@ -11262,7 +11262,11 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                     frame=FRAME_MARGIN,
                     reader_confidence=lab.confidence, reader_alias=lab.alias,
                     y_center_px=lab.y_center_px,
-                    rung=rung, label_tiers=dict(census))
+                    rung=rung, label_tiers=dict(census),
+                    # ROADMAP 2.95: present only where the text was completed
+                    # with the word printed between two braced staves.
+                    **({"shared_word": lab.shared_word}
+                       if getattr(lab, "shared_word", "") else {}))
 
 
 def _labels_abstain_per_staff(log: Log, cells: Sequence[Any],

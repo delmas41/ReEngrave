@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.95 a word printed between two braced staves names both (branch `lane-2.95-bracket-label`, not merged)
+
+- STAGED and LEGACY (the margin reader is shared). Brahms `(C)` / `Hr.` / `(Es)`: Surya read `Hr.` and `_surya_worker._assign` dropped it or gave it to a tick 2 px nearer, so horn staves read a bare crook no lexicon names. `_surya_worker._between` reports blocks centred within 0.15 of the gap between adjacent ticks (assignment unchanged); `staff_labels_surya.spread_shared_words` completes a bare-crook staff with the word only if it is a lexicon hit and both flanking staves are bare crooks (or one already holds it); `StaffLabel.shared_word` + `Q.MARGIN_LABEL` detail `shared_word`. No flag. Convention ASSUMED (not confirmed); the brace itself is not read. Reach: Brahms 47 staves (fresh Surya read of pdf 1-26), Litolff 0. Base vs arm re-adjudication of the 10-11 night records (identity chain, record streamed): Brahms `instrument` decided 635 -> 682, `slot_index` decided 690 -> 691, 0 decided values changed; Litolff identical; base rebuild reproduces the saved record 1,382 of 1,382. Fast tier 7,444 passed, `check` 192. FINDINGS `omr-staff-identity-2026-09` 2.95; `probe_shared_word_2_95.py`.
+
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
 - Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
