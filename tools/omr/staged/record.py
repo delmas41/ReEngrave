@@ -776,6 +776,39 @@ class Q(_Vocab):
     #: neither.
     INK = "ink"
 
+    #: ⚠️⚠️ ROADMAP 2.80 -- THE INK A BAR HOLDS THAT IS STAFF-SIZED, WITH ITS
+    #: PAGE BOX, so a later stage can ask "is any of it left unexplained?".
+    #: One row per cell (`value` = how many pieces), the pieces in `detail.
+    #: pieces` as `[x0, y0, x1, y1, area_in_staff_spaces_squared]` in PAGE
+    #: pixels. Not `Q.INK`: its per-piece form is behind `--ink-rows` and costs
+    #: a record ~115 MB a page, and its default is a per-cell SUMMARY with no
+    #: geometry. This is the middle: only the pieces a rest, a head or a
+    #: flag could be (area >= `INK_PIECE_MIN_AREA_SP2`, not wider than a bar's
+    #: own furniture, centre inside the staff band +/- 1.5 spaces).
+    #: ⚠️ A PIECE IS NOT A MARK (staff-line erasure splits an eighth rest into
+    #: a blob and a tail) and GATHER decides nothing: EVALUATE's
+    #: `reconcile_duration` subtracts the pieces the standing glyphs explain
+    #: and asks whether anything is left (a MISSED rest), because a bar short
+    #: by one rest looks exactly like a note one beam too short.
+    CELL_INK_PIECES = "cell_ink_pieces"
+
+    #: ⚠️⚠️ ROADMAP 2.80b -- WHAT THE INK UNDER A NARROW NOTEHEAD-CLASSED BOX
+    #: LOOKS LIKE. One row per notehead-classed detection narrower than
+    #: `notehead_precision.TOO_NARROW_MIN_SPACES` (a head is ~1.3 spaces wide;
+    #: Sean's Brahms Contrabass bar 13 tile 1: *"It is an 8th note rest"* --
+    #: the detector boxed an eighth rest's blob as `noteheadBlackInSpace`,
+    #: 0.67 spaces wide, and ADJUDICATE refused it `too_narrow`). `value` is
+    #: the height in staff spaces of the connected ink the box sits in; the
+    #: row measures that ink -- the pieces its box overlaps plus the pieces
+    #: stacked against them (staff-line erasure splits an eighth rest into a
+    #: blob and a tail) -- and which OTHER detections overlap it.
+    #: GATHER measures and names nothing: `adjudicate_narrow_box_is_a_rest`
+    #: weighs the shape. ⚠️ NO BAR IS CONSULTED -- a bar's length is not
+    #: evidence about what a mark IS (two witnesses off one raster fall
+    #: silent together, and a bar sum is the one that came from the same
+    #: reading).
+    NARROW_BOX_SHAPE = "narrow_box_shape"
+
     #: ⚠️⚠️ ROADMAP 3.4g-3 — IS THERE A NOTE ON THIS RUNG, READ OFF THE PAPER
     #: AND NOT OFF THE DETECTOR. One row per `ledgerLine` glyph: the ink
     #: fraction inside a NOTEHEAD-SIZED window (1.3 x 1.0 staff spaces, the
@@ -1575,6 +1608,14 @@ class Q(_Vocab):
     #: only "not found"), the same INTERPRETATION claim `Q.UNREAD_MARK` and
     #: `Q.NOTEHEAD_IS_A_WHOLE_REST` make one stage over.
     EMPTY_BAR_WHOLE_REST = "empty_bar_whole_rest"
+    #: ⚠️ ROADMAP 2.80b -- IS THIS NARROW "NOTEHEAD" AN EIGHTH REST? ADJUDICATE's
+    #: weighing of `Q.NARROW_BOX_SHAPE` on a box already refused `too_narrow`.
+    #: `True` only where the ink's own shape (an eighth rest's blob and tail:
+    #: about 1.2 x 2.2 spaces, hung on the middle of the staff) says so and no
+    #: standing glyph already owns it; `False` where it is a definite
+    #: something else; abstains where the shape cannot tell. EVALUATE's
+    #: `size_reinstated_rest` gives it its length; EXPORT writes it as a rest.
+    NOTEHEAD_IS_AN_EIGHTH_REST = "notehead_is_an_eighth_rest"
     #: Is this ink the detector CALLED a notehead actually something else --
     #: a crop-boundary sliver, a barline, a whole rest, a printed letter, a
     #: staff-line gap?
@@ -2207,6 +2248,9 @@ CLAIMS: "dict[str, str]" = {
     #: ATTRIBUTE that may be zero -- a COVERAGE claim riding on a MEASUREMENT
     #: row, which is the DETAIL-GRAIN limit `claims_unaccounted` records.
     "INK": CLAIM.MEASUREMENT,
+    "CELL_INK_PIECES": CLAIM.MEASUREMENT,
+    "NARROW_BOX_SHAPE": CLAIM.MEASUREMENT,
+    "NOTEHEAD_IS_AN_EIGHTH_REST": CLAIM.INTERPRETATION,
     #: ROADMAP 2.52: a FIT, same reason `KEYSIG_CLEF_FIT`/`KEYSIG_TEMPLATE_
     #: FIT` are -- the shape-and-position test has already weighed this
     #: cell's own components against a template (whole-rest-shaped AND
@@ -2699,6 +2743,13 @@ class READERS(_Vocab):
     #: POSITIONED piece of ink hanging under the staff's 4th line, that the
     #: detector never boxed.
     CV_REST_SEARCH = "cv_rest_search"        # gather: whole-rest search in a boxless bar
+    #: `gather.gather_cell_ink_pieces` -- ROADMAP 2.80. The SAME erased raster
+    #: `CV_INK` reads (one crop, one signal), filed as staff-sized pieces
+    #: with page boxes for EVALUATE's missed-rest question.
+    CV_INK_PIECES = "cv_ink_pieces"
+    #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
+    #: (one crop, one signal) asked what the ink under a narrow notehead box is.
+    CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
     #: `gather.gather_lowconf_rescue` -- ROADMAP 2.55. The SAME detector and
     #: weights `DETECTOR` names, re-run on ONE cell at a lower confidence
     #: floor (`RESCUE_CONF_FLOOR`), notehead/rest classes only, and ONLY on a

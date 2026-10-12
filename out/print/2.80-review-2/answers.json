@@ -1,0 +1,128 @@
+{
+ "source": "Sean, blind, 2026-10-11 (tile 1 on out/print/2.80-review/)",
+ "scored_by": "manager against manifest.json",
+ "wrong": 0,
+ "of": 10,
+ "tiles": [
+  {
+   "n": 1,
+   "glyph": "glyph/1/0/13/5/8",
+   "role": "reinstated",
+   "ours": {
+    "outcome": "decided",
+    "value": true,
+    "reason": "rest8th_shape"
+   },
+   "sean": "(tile 1 judged earlier: It is an 8th note rest)",
+   "agree": true
+  },
+  {
+   "n": 2,
+   "glyph": "glyph/1/1/12/4/4",
+   "role": "reinstated",
+   "ours": {
+    "outcome": "decided",
+    "value": true,
+    "reason": "rest8th_shape"
+   },
+   "sean": "8 rest",
+   "agree": true
+  },
+  {
+   "n": 3,
+   "glyph": "glyph/1/0/10/0/17",
+   "role": "duplicate",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "ink_already_read_as_a_glyph"
+   },
+   "sean": "Dot quarter slur to 2 16th grave notes",
+   "agree": true
+  },
+  {
+   "n": 4,
+   "glyph": "glyph/1/0/13/5/11",
+   "role": "duplicate",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "ink_already_read_as_a_glyph"
+   },
+   "sean": "8 rest",
+   "agree": true
+  },
+  {
+   "n": 5,
+   "glyph": "glyph/1/0/8/1/20",
+   "role": "duplicate",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "ink_already_read_as_a_glyph"
+   },
+   "sean": "8 rest",
+   "agree": true
+  },
+  {
+   "n": 6,
+   "glyph": "glyph/1/0/10/3/12",
+   "role": "not_rest",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "not_rest_shaped"
+   },
+   "sean": "Stray ink",
+   "agree": true
+  },
+  {
+   "n": 7,
+   "glyph": "glyph/1/0/5/0/3",
+   "role": "not_rest",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "not_rest_shaped"
+   },
+   "sean": "Aug dot",
+   "agree": true
+  },
+  {
+   "n": 8,
+   "glyph": "glyph/1/0/8/3/8",
+   "role": "not_rest",
+   "ours": {
+    "outcome": "decided",
+    "value": false,
+    "reason": "not_rest_shaped"
+   },
+   "sean": "Text arco",
+   "agree": true
+  },
+  {
+   "n": 9,
+   "glyph": "glyph/0/0/4/6/0",
+   "role": "abstained",
+   "ours": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "claimed_by_another_class"
+   },
+   "sean": "Dot 2 with a trem slash",
+   "agree": true
+  },
+  {
+   "n": 10,
+   "glyph": "glyph/1/0/9/0/43",
+   "role": "abstained",
+   "ours": {
+    "outcome": "abstained",
+    "value": null,
+    "reason": "claimed_by_another_class"
+   },
+   "sean": "Tr with squiggly trill line",
+   "agree": true
+  }
+ ]
+}

@@ -24,6 +24,7 @@ import unittest
 from tools.omr.staged import consequences
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Candidate, Log, Outcome, Q, Verdict
+from tools.omr.tests.test_staged_missed_rest_2_80 import clear_ink
 
 CELL = R.cell(0, 0, 1, 3)
 OWN_STAFF = R.staff(0, 0, 1).to_key()
@@ -60,6 +61,10 @@ def _events(log, *glyph_groups):
     """One DECIDED `Q.EVENT` for the cell: each group is one event."""
     _v(log, CELL, Q.EVENT, Outcome.DECIDED,
        {"events": [{"glyphs": list(g)} for g in glyph_groups]})
+    # ROADMAP 2.80: a lengthening lands only where the bar's ink was READ and
+    # none is left unexplained (a missed rest would fill the same gap). These
+    # tests are about the sum, not the ink: the bar is clear.
+    clear_ink(log, CELL)
 
 
 def _meter(log, num=2, den=4):

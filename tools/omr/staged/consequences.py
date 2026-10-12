@@ -170,11 +170,14 @@ def _bar_beats_at(meter: Verdict, subject: Subject) -> Optional[float]:
     fact, two answers: the overnight control `bars_add_up` read 29 overfull
     bars.
 
-    ⚠️ ONLY `size_measure_rest` ASKS HERE SO FAR. `reconcile_duration` and
-    `reinstate_rest_between_staves` still read the opening segment (the same
-    defect, a separate change: it lets `reconcile_duration` fire on bars it
-    could not fire on before, and one of those four bars is a wrong note --
-    `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` §2.79).
+    ⚠️ ALL THREE ASK HERE: `size_measure_rest`, `reconcile_duration` and
+    `reinstate_rest_between_staves`. Connecting the second is a change of its
+    own with an effect of its own: `reconcile_duration` now lands bars on the
+    RIGHT length, so it fires on bars it could not fire on before -- on
+    Brahms p0-1 four, of which the print shows three right and one wrong
+    (a missing rest read as a lengthened note; the rule's own known hazard,
+    not this helper's) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`
+    §2.79.
 
     ⚠️ `subject.cell` IS THE BAR, on a cell and on a glyph alike (a glyph's
     cell is the bar it stands in), so every rule asks with the subject it
@@ -305,9 +308,20 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
 _LEAVES_THE_BAR = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST)
 
 
+def _reinstated_rest(log: Log, glyph: Subject) -> bool:
+    """ROADMAP 2.80b: ADJUDICATE read this refused-narrow box, on its own ink,
+    as an eighth rest. It is IN its bar, as a rest."""
+    v = log.verdict(Q.NOTEHEAD_IS_AN_EIGHTH_REST, glyph)
+    return (v is not None and v.outcome is Outcome.DECIDED
+            and v.value is True)
+
+
 def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     """The DECIDED verdict that took this glyph out of its bar, else None."""
+    reinstated = _reinstated_rest(log, glyph)
     for q in _LEAVES_THE_BAR:
+        if reinstated and q == Q.NOTEHEAD_IS_NOT_A_NOTEHEAD:
+            continue        # not a HEAD -- but a rest, and the bar holds it
         v = log.verdict(q, glyph)
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
             return v
@@ -595,6 +609,163 @@ def reconcile_chord_duration(log: Log, subject: Subject,
     return out
 
 
+@rule(consequence=Consequence.SIZE_REINSTATED_REST,
+      cause=Q.NOTEHEAD_IS_AN_EIGHTH_REST, effect=Q.DURATION, scope=Kind.GLYPH,
+      bound="Fires only on a glyph whose `Q.NOTEHEAD_IS_AN_EIGHTH_REST` is "
+            "DECIDED True. Writes ONE duration -- an eighth rest, 0.5 "
+            "quarters, no dots, `is_rest` -- superseding the head-reading "
+            "ADJUDICATE gave the same box. Reads no bar, no meter and no "
+            "other glyph; adds, deletes and re-pitches nothing.")
+def size_reinstated_rest(log: Log, subject: Subject,
+                         verdict: Verdict) -> List[Verdict]:
+    """A narrow box read as an eighth rest takes an eighth's length.
+
+    ⚠️ THE LENGTH FOLLOWS FROM THE CLASS, NOT FROM THE BAR. An eighth rest is
+    half a quarter whatever the meter, so this is EVALUATE (the answer
+    follows) and it consults nothing about the bar the rest stands in -- the
+    bar's sum is what the rest is then counted INTO, never what decided it
+    (CLAUDE.md §2 rule 8).
+    """
+    if verdict.outcome is not Outcome.DECIDED or verdict.value is not True:
+        return []
+    prior = log.verdict(Q.DURATION, subject)
+    if prior is not None and prior.decider == "size_reinstated_rest":
+        return []                           # already written
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 0,
+               "is_rest": True, "reinstated_rest": True},
+        decider="size_reinstated_rest", reason="eighth_rest_shape",
+        considered=(verdict.id,), basis=(verdict.id,),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.80: a bar short by a MISSED REST looks exactly like a note one beam
+# too short.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A piece narrower than this (staff spaces) is a stem or a barline crumb --
+#: never a head, a rest or a flag half (an eighth rest's thinnest half
+#: measures 0.62; a stem 0.1-0.2).
+INK_PIECE_THIN_SPACES = 0.3
+#: A piece with at least this share of its box inside the standing glyphs'
+#: boxes is explained by them.
+INK_PIECE_EXPLAINED_SHARE = 0.5
+#: A glyph box wider than this (staff spaces) is a staff, a slur's rectangle
+#: or a hairpin -- mostly paper, so no account of the ink inside it (the same
+#: rule `gather._explaining_detections` applies, restated as a bound only).
+INK_EXPLAINER_MAX_WIDTH_SPACES = 8.0
+#: A piece at least this tall and no wider than the next constant is a
+#: barline (a staff is 4 spaces; no rest or head is taller than 3.1) -- the
+#: cell is cut at its barlines and a scan leaves 0.5-wide remnants of them.
+INK_PIECE_TALL_SPACES = 4.5
+INK_PIECE_TALL_THIN_SPACES = 0.8
+#: A piece whose BOX is larger than this (staff spaces squared) is a merge of
+#: several marks, not a rest: the largest rest piece measured is 1.25 x 2.4 =
+#: 3.0 (a quarter rest); the smallest merge worth the name is a head plus its
+#: stem, 1.3 x 3 = 3.9.
+INK_PIECE_MERGED_MIN_BOX_SP2 = 3.5
+
+#: The three answers of `_missed_rest_witness`.
+WITNESS_CLEAR = "clear"            # read, and nothing is left unexplained
+WITNESS_UNEXPLAINED = "unexplained"  # read, and ink is left that no glyph owns
+WITNESS_UNREAD = "unread"          # no ink reading for this bar (rule 8)
+
+
+def _missed_rest_witness(log: Log, subject: Subject, *, pieces_out=None):
+    """Is there ink in this bar that no STANDING glyph explains?
+
+    Returns `(answer, n_unexplained)`. A bar short by an eighth is short
+    either because a note's beam was over-read or because a REST was never
+    boxed; the first is a re-reading, the second is ink the detector missed
+    -- and ink the detector missed is still ON THE PAGE. So the test is
+    positive evidence in both directions: every staff-sized piece of ink in
+    the bar (`Q.CELL_INK_PIECES`, GATHER) minus what the glyph boxes that
+    still stand account for. Nothing left = the rest explanation is refuted
+    and the re-reading is the only one standing; anything left = a mark was
+    missed and the bar's shortfall is no longer evidence about a note.
+
+    ⚠️ WHAT EXPLAINS INK is every glyph box in the cell except one a DECIDED
+    verdict says is not what the detector called it (`not_a_notehead`,
+    `not_a_rest` -- a duplicate rest box is explained by the box it
+    duplicates). A losing copy of a cross-staff contest DOES explain: that
+    ink is real and another staff's. A box DECIDED a whole rest explains.
+    ⚠️ "UNREAD" IS NOT "CLEAR" (rule 8): no pieces row, or one with no
+    staff unit, answers `unread`. `pieces_out`, if a list, receives the
+    unexplained pieces' boxes (for a crop; nothing decides on it).
+    """
+    cell = subject.at(Kind.CELL)
+    rows = log.rows(Q.CELL_INK_PIECES, cell)
+    if not rows:
+        return WITNESS_UNREAD, None
+    detail = rows[-1].detail or {}
+    pieces = detail.get("pieces")
+    space = detail.get("staff_space_page_px")
+    if pieces is None or not space:
+        return WITNESS_UNREAD, None
+    boxes, centres = [], []
+    for r in log.rows(Q.GLYPH_BOX, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        box = (r.detail or {}).get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        gone = any(
+            (v := log.verdict(q, r.subject)) is not None
+            and v.outcome is Outcome.DECIDED and v.value is True
+            for q in _LEAVES_THE_BAR)
+        whole = log.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, r.subject)
+        is_whole = ((whole is not None and whole.outcome is Outcome.DECIDED
+                     and whole.value is True)
+                    or _reinstated_rest(log, r.subject))   # ROADMAP 2.80b
+        if gone and not is_whole:
+            continue          # decided: not what the detector called it
+        b = tuple(float(v) for v in box)
+        if (b[2] - b[0]) / float(space) > INK_EXPLAINER_MAX_WIDTH_SPACES:
+            continue
+        boxes.append(b)
+        centres.append(((b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0))
+    # A WORD the direction reader read ("pizz.") is ink somebody named.
+    for r in log.rows(Q.DIRECTION_WORD, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        box = (r.detail or {}).get("bbox_page_px")
+        if box and len(box) == 4:
+            boxes.append(tuple(float(v) for v in box))
+
+    import numpy as np
+    left = 0
+    for (x0, y0, x1, y1, _area) in pieces:
+        if (x1 - x0) / float(space) <= INK_PIECE_THIN_SPACES:
+            continue                      # a stem or a barline crumb
+        if (y1 - y0) / float(space) >= INK_PIECE_TALL_SPACES \
+                and (x1 - x0) / float(space) <= INK_PIECE_TALL_THIN_SPACES:
+            continue                      # a barline remnant at the cell edge
+        w, h = int(np.ceil(x1 - x0)), int(np.ceil(y1 - y0))
+        if w <= 0 or h <= 0:
+            continue
+        mask = np.zeros((h, w), dtype=bool)
+        for (bx0, by0, bx1, by1) in boxes:
+            ix0, iy0 = max(x0, bx0), max(y0, by0)
+            ix1, iy1 = min(x1, bx1), min(y1, by1)
+            if ix1 <= ix0 or iy1 <= iy0:
+                continue
+            mask[int(iy0 - y0):int(np.ceil(iy1 - y0)),
+                 int(ix0 - x0):int(np.ceil(ix1 - x0))] = True
+        if float(mask.mean()) >= INK_PIECE_EXPLAINED_SHARE:
+            continue
+        # A MERGED piece (a beamed group, a head with its stem and flag) is
+        # bigger than any rest, and one standing glyph's centre inside it
+        # explains it; a REST-SIZED piece must be covered by its own box.
+        if (x1 - x0) / float(space) * (y1 - y0) / float(space) \
+                > INK_PIECE_MERGED_MIN_BOX_SP2 and any(
+                    x0 <= cx <= x1 and y0 <= cy <= y1 for cx, cy in centres):
+            continue
+        left += 1
+        if pieces_out is not None:
+            pieces_out.append([x0, y0, x1, y1])
+    return (WITNESS_UNEXPLAINED if left else WITNESS_CLEAR), left
+
+
 @rule(consequence=Consequence.RECONCILE_DURATION,
       cause=Q.METER, effect=Q.DURATION, scope=Kind.CELL,
       bound="Searches only the levels a note ADMITS -- its own narrowed "
@@ -643,11 +814,12 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     exactly, NOTHING changes and the warning stands. It must never condemn the
     cheapest member.
     """
-    value = meter.value or {}
-    num, den = value.get("numerator"), value.get("denominator")
-    if not num or not den:
+    # ⚠️ ROADMAP 2.79: the meter in force at THIS bar (`_bar_beats_at`), not
+    # the opening segment of the system's verdict. In a 6/8 bar of a system
+    # that opens in 9/8 this rule was trying to land the bar on 4.5 beats.
+    expected = _bar_beats_at(meter, subject)
+    if expected is None:
         return []
-    expected = float(num) * 4.0 / float(den)
 
     # ⚠️⚠️ ROADMAP 2.22: "THE BAR" MEANS WHAT IS STILL IN IT -- 2.19's fault,
     # found again in the second EVALUATE rule that sums a cell. `_standing`
@@ -753,6 +925,21 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
 
     note, option = landings[0]
     detail = {}
+    # ⚠️⚠️ ROADMAP 2.80: A LENGTHENING IS NOT FORCED WHILE A MISSED REST WOULD
+    # FILL THE SAME GAP. A bar short by an eighth is explained equally by a
+    # note one beam too short and by an eighth rest the detector never boxed
+    # (Brahms Contrabass bar 13: the second of two eighth rests was boxed as
+    # a narrow notehead and refused, and this rule stretched the eighth note
+    # to a quarter -- a bar that adds up to the WRONG music, which the
+    # bar-sum control cannot see). The re-reading stands only where the bar
+    # holds no ink that no standing glyph explains. A SHORTENING needs no such
+    # witness: a missed rest cannot make a bar too long.
+    if float(option.get("beats") or 0.0) \
+            > float(current[note.id].get("beats") or 0.0) + 1e-9:
+        answer, left = _missed_rest_witness(log, subject)
+        if answer != WITNESS_CLEAR:
+            return []
+        detail["missed_rest_refuted_by_ink"] = True
     if set_aside:
         detail["set_aside"] = set_aside
     if fits:
@@ -1489,11 +1676,10 @@ def reinstate_rest_between_staves(log: Log, subject: Subject,
         return []          # not a cross-staff contest at all -- an ordinary
                             # off-staff refusal, untouched
 
-    value = meter.value or {}
-    num, den = value.get("numerator"), value.get("denominator")
-    if not num or not den:
+    # ⚠️ ROADMAP 2.79: the meter in force at THIS bar (`_bar_beats_at`).
+    bar_len = _bar_beats_at(meter, subject)
+    if bar_len is None:
         return []
-    bar_len = float(num) * 4.0 / float(den)
 
     own_cell = subject.at(Kind.CELL)
     own_voices = _voice_count(log, own_cell)

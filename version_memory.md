@@ -22,6 +22,35 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+`reconcile_duration` no longer lengthens a note to land a short bar where the bar
+holds ink no standing glyph explains (a missed rest fills the same gap; Brahms
+Contrabass bar 13 was written as a quarter where the print has a second eighth
+rest). New GATHER row `Q.CELL_INK_PIECES` (`gather_cell_ink_pieces`, reader
+`CV_INK_PIECES`) + EVALUATE `_missed_rest_witness`; a shortening is unaffected;
+no ink reading refuses (rule 8). `d04fd058` (meter in force at the bar for
+`reconcile_duration` / `reinstate_rest_between_staves`) cherry-picked as the
+base. Brahms p0-1: 1 bar changed (Contrabass 13); Litolff p1-3: 0. Does not
+fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
+`staged.check` 192 = base. FINDINGS §2.80.
+
+---
+---
+
+## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
+
+Sean (tile 1): *"It is an 8th note rest"*. A narrow notehead-classed box refused
+`too_narrow` is read as an eighth rest where its ink says so, never off the bar:
+GATHER `gather_narrow_box_shape` (`Q.NARROW_BOX_SHAPE`) -> ADJUDICATE
+`adjudicate_narrow_box_is_an_eighth_rest` (`Q.NOTEHEAD_IS_AN_EIGHTH_REST`,
+`adjudicators/narrow_rest.py`) -> EVALUATE `size_reinstated_rest` -> EXPORT
+writes a rest. Brahms p0-1: 243 `too_narrow`, 2 become rests; Contrabass bar 13
+adds up with no note changed. Litolff p1-3: 20, 0. DECISIONS line added. 20
+tests. `staged.check` 192 = base. Tiles `out/print/2.80-review-2/`. FINDINGS 2.80b.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.81 phase 2: a bare stem is a quarter, as a labelled likelihood settled by the bar (branch `lane-2.81-phase2`, LANDED on main 2026-10-11, Sean: "Yes")
 
 - STAGED, ADJUDICATE + INFER. `OMR_BARE_STEM_BAR` is default ON (deny-list, Sean's "Yes" after his 14 tiles: the 6 settled heads 6/6 right); `OMR_BARE_STEM_RANK` stays OFF. A control arm with both off reproduces every standing duration on the two small re-gathers.

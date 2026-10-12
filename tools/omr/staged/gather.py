@@ -6274,6 +6274,247 @@ def gather_ink(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# The staff-sized ink of a bar, with its page box -- ROADMAP 2.80
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A piece smaller than this (staff spaces SQUARED) is speckle or a staff-line
+#: crumb, not a head/rest/flag. Measured on Brahms pdf 1 s0 staff 13 bar 5: the
+#: halves of an eighth rest are 0.48 and 0.51, speckle 0.004. 0.10 sits in the
+#: empty band between them.
+INK_PIECE_MIN_AREA_SP2 = 0.10
+#: A piece wider than this is a slur, a tie, a beam, a stave remnant -- never
+#: one symbol of a rest's or a head's size.
+INK_PIECE_MAX_WIDTH_SPACES = 8.0
+#: How far above/below the outer staff lines a piece's centre may lie and
+#: still be a candidate (rests stand inside the staff; heads, flags and
+#: ledger notes within a space or two of it).
+INK_PIECE_BAND_SPACES = 1.5
+
+
+def gather_cell_ink_pieces(log: Log, cells: Sequence[Any],
+                           local: Dict[int, Tuple[int, int]],
+                           detections: Dict[str, List[Any]], *,
+                           progress: bool = False) -> None:
+    """The staff-sized pieces of ink in every cell, with their PAGE boxes.
+
+    ⚠️ ROADMAP 2.80. `reconcile_duration` lands a bar that is short by
+    lengthening a note, and a bar short by a MISSED REST looks exactly the
+    same. The witness that tells them apart is whether the bar holds ink no
+    standing glyph explains -- and that needs the ink's geometry, which
+    `Q.INK`'s default per-cell summary does not carry and its per-piece form
+    (`--ink-rows`) carries at ~115 MB a page. This files only the pieces that
+    could be a head, rest or flag (see the constants), in ONE row per cell.
+
+    ⚠️ IT DECIDES NOTHING AND NAMES NOTHING. A piece is not a mark -- staff-line
+    erasure splits an eighth rest into a blob and a tail -- so no rest shape
+    is tested here; the consumer subtracts what standing glyphs explain.
+    ⚠️ A cell that cannot supply a page frame or a staff unit is DECLINED
+    (an abstention), never defaulted: "no row" must not read as "no ink".
+    """
+    if not _ink_enabled():
+        return
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = frame_cell(c.measure_index)
+        comps = _ink_components(c)
+        if comps is None:
+            log.abstain(sub, Q.CELL_INK_PIECES, reader=READERS.CV_INK_PIECES,
+                        frame=frame, reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        grid = _cell_grid(c)
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        if (grid is None or len(lines) < 5 or not up
+                or not cell_box or len(cell_box) != 4):
+            log.abstain(sub, Q.CELL_INK_PIECES, reader=READERS.CV_INK_PIECES,
+                        frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        spacing = grid[1] * 2.0
+        lo = lines[0] - INK_PIECE_BAND_SPACES * spacing
+        hi = lines[-1] + INK_PIECE_BAND_SPACES * spacing
+        pieces = []
+        for (x, y, w, h, area) in comps:
+            if w <= 0 or h <= 0:
+                continue
+            area_sp2 = area / (spacing * spacing)
+            if area_sp2 < INK_PIECE_MIN_AREA_SP2:
+                continue
+            if w / spacing > INK_PIECE_MAX_WIDTH_SPACES:
+                continue
+            if not (lo <= y + h / 2.0 <= hi):
+                continue
+            pieces.append([round(cell_box[0] + x / up, 1),
+                           round(cell_box[1] + y / up, 1),
+                           round(cell_box[0] + (x + w) / up, 1),
+                           round(cell_box[1] + (y + h) / up, 1),
+                           round(area_sp2, 3)])
+        log.observe(sub, Q.CELL_INK_PIECES, len(pieces),
+                    reader=READERS.CV_INK_PIECES, frame=frame,
+                    pieces=pieces,
+                    staff_space_page_px=round(spacing / up, 2))
+        if progress:
+            print(f"  gather ink pieces {sub.to_key()}: {len(pieces)}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# What the ink under a NARROW notehead box looks like -- ROADMAP 2.80b
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A piece joins the ink under a narrow box when it lies within this many
+#: staff spaces of what is already joined (staff-line erasure splits an eighth
+#: rest into a blob and a tail with a hair of gap).
+NARROW_BOX_JOIN_GAP_SPACES = 0.25
+#: A piece taller than this is never joined (a stem, a beam, a slur): it is
+#: not a rest's tail, and joining it would grow the ink without limit.
+NARROW_BOX_JOIN_MAX_HEIGHT_SPACES = 3.5
+
+
+def gather_narrow_box_shape(log: Log, cells: Sequence[Any],
+                            local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *,
+                            progress: bool = False) -> None:
+    """`Q.NARROW_BOX_SHAPE` on every notehead-classed box narrower than a head.
+
+    ⚠️ ROADMAP 2.80b. Sean, tile 1 of `out/print/2.80-review/`: the narrow
+    "notehead" in Brahms Contrabass bar 13 *"is an 8th note rest"*. The
+    detector boxed only the blob of the rest (0.67 spaces wide) and called it
+    a head. This measures what that box's INK is -- the connected pieces it
+    overlaps and the pieces stacked against them, in staff spaces, with the
+    staff step of its centre (ruler, bottom line = 0) and the other
+    detections that overlap it -- and names nothing. The domain is the narrow
+    boxes only (`notehead_precision.TOO_NARROW_MIN_SPACES`, imported), so the
+    record grows by a few rows a page, not one per head.
+
+    ⚠️ NO BAR IS READ HERE OR BY THE DECISION THAT CONSUMES THIS ROW.
+    ⚠️ DECLINED, NOT DEFAULTED: no raster, staff unit or page frame is an
+    abstention, never a row that looks like "no ink".
+    """
+    if not _ink_enabled():
+        return
+    from .adjudicators.notehead_precision import TOO_NARROW_MIN_SPACES
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        narrow = []
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid and grid[1] else None
+        for gi, d in enumerate(dets):
+            if not str(d.smufl_name).lower().startswith("notehead"):
+                continue
+            if space and d.width_canonical / space < TOO_NARROW_MIN_SPACES:
+                narrow.append(gi)
+        if not narrow:
+            continue
+        frame = frame_cell(c.measure_index)
+        comps = _ink_components(c)
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        img = getattr(c, "image_no_staff", None)
+        width_px = getattr(img, "shape", (0, 0))[1] if img is not None else 0
+        for gi in narrow:
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index, gi)
+            if comps is None:
+                log.abstain(g, Q.NARROW_BOX_SHAPE,
+                            reader=READERS.CV_NARROW_BOX_SHAPE, frame=frame,
+                            reason=ABSTAIN.NO_MASK,
+                            note="cell carries no image_no_staff")
+                continue
+            if (not space or len(lines) < 5 or not up or not cell_box
+                    or len(cell_box) != 4):
+                log.abstain(g, Q.NARROW_BOX_SHAPE,
+                            reader=READERS.CV_NARROW_BOX_SHAPE, frame=frame,
+                            reason=ABSTAIN.NO_STAFF_GEOMETRY)
+                continue
+            d = dets[gi]
+            bx0, by0 = float(d.x_canonical), float(d.y_canonical)
+            bx1 = bx0 + float(d.width_canonical)
+            by1 = by0 + float(d.height_canonical)
+
+            def overlaps(x, y, w, h):
+                return (min(x + w, bx1) - max(x, bx0) > 0
+                        and min(y + h, by1) - max(y, by0) > 0)
+
+            # ⚠️ NO RESIDUE: a piece wider than any rest/head or taller than a
+            # tail can be (a staff-erasure remnant that merged a whole bar
+            # into one component) is not a seed either -- measured on Brahms
+            # p1 s0 bar 13, where one 22 x 8 space component under the box
+            # swallowed every other mark of the bar.
+            usable = [cm for cm in comps
+                      if cm[4] / (space * space) >= INK_PIECE_MIN_AREA_SP2
+                      and cm[2] / space <= INK_PIECE_MAX_WIDTH_SPACES
+                      and cm[3] / space <= NARROW_BOX_JOIN_MAX_HEIGHT_SPACES]
+            joined = [cm for cm in usable
+                      if overlaps(cm[0], cm[1], cm[2], cm[3])]
+            grew = bool(joined)
+            gap = NARROW_BOX_JOIN_GAP_SPACES * space
+            while grew:
+                grew = False
+                ux0 = min(q[0] for q in joined)
+                uy0 = min(q[1] for q in joined)
+                ux1 = max(q[0] + q[2] for q in joined)
+                uy1 = max(q[1] + q[3] for q in joined)
+                for cm in usable:
+                    if cm in joined or                             cm[3] / space > NARROW_BOX_JOIN_MAX_HEIGHT_SPACES:
+                        continue
+                    gx = max(0.0, max(cm[0], ux0) - min(cm[0] + cm[2], ux1))
+                    gy = max(0.0, max(cm[1], uy0) - min(cm[1] + cm[3], uy1))
+                    if gx <= gap and gy <= gap:
+                        joined.append(cm)
+                        grew = True
+            if not joined:
+                log.observe(g, Q.NARROW_BOX_SHAPE, 0.0,
+                            reader=READERS.CV_NARROW_BOX_SHAPE, frame=frame,
+                            n_pieces=0)
+                continue
+            ux0 = min(q[0] for q in joined)
+            uy0 = min(q[1] for q in joined)
+            ux1 = max(q[0] + q[2] for q in joined)
+            uy1 = max(q[1] + q[3] for q in joined)
+            step = (lines[-1] - (uy0 + uy1) / 2.0) / (space / 2.0)
+            area = float(sum(q[4] for q in joined))
+            others = []
+            for oi, od in enumerate(dets):
+                if oi == gi:
+                    continue
+                ox0, oy0 = float(od.x_canonical), float(od.y_canonical)
+                ox1 = ox0 + float(od.width_canonical)
+                oy1 = oy0 + float(od.height_canonical)
+                if (ox1 - ox0) / space > 8.0:
+                    continue                       # a staff / slur rectangle
+                ix = min(ux1, ox1) - max(ux0, ox0)
+                iy = min(uy1, oy1) - max(uy0, oy0)
+                if ix > 0 and iy > 0 and ix * iy >= 0.3 * min(
+                        (ux1 - ux0) * (uy1 - uy0), (ox1 - ox0) * (oy1 - oy0)):
+                    others.append({"glyph": oi, "class": str(od.smufl_name)})
+            log.observe(
+                g, Q.NARROW_BOX_SHAPE, round((uy1 - uy0) / space, 3),
+                reader=READERS.CV_NARROW_BOX_SHAPE, frame=frame,
+                n_pieces=len(joined),
+                width_spaces=round((ux1 - ux0) / space, 3),
+                height_spaces=round((uy1 - uy0) / space, 3),
+                staff_step=round(step, 3),
+                fill=round(area / float((ux1 - ux0) * (uy1 - uy0)), 3),
+                touches_cell_edge=bool(
+                    ux0 <= 2 or (width_px and ux1 >= width_px - 2)),
+                overlapping_detections=others,
+                bbox_page_px=[round(cell_box[0] + ux0 / up, 1),
+                              round(cell_box[1] + uy0 / up, 1),
+                              round(cell_box[0] + ux1 / up, 1),
+                              round(cell_box[1] + uy1 / up, 1)])
+            if progress:
+                print(f"  gather narrow-box shape {g.to_key()}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # A targeted search for a whole rest the detector never boxed -- ROADMAP 2.52
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -12009,6 +12250,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # default -- see `INK_ENV`.
         gather_ink(log, cells, local, detections,
                   component_rows=ink_component_rows, progress=progress)
+        # ⚠️ ROADMAP 2.80, BESIDE `gather_ink` (the SAME erased raster; reads
+        # no row and no detection, so its place is kinship, not dependency).
+        gather_cell_ink_pieces(log, cells, local, detections,
+                               progress=progress)
+        # ⚠️ ROADMAP 2.80b: reads `detections` and the erased raster only.
+        gather_narrow_box_shape(log, cells, local, detections,
+                                progress=progress)
         # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME
         # erased raster (and says so: `READERS.CV_INK`). The second witness
         # for Sean's `[C91]` -- see the function.
