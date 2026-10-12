@@ -3133,12 +3133,8 @@ What I could see myself (the lane's own reading, rule 7: not evidence):
   heads are the narrowed ones and their candidates (1.5 and 1.0) land the bar.
 - tiles 4 and 6: a lone whole rest in a bar -- the print agrees with the classifier.
 - tile 7: two eighth rests sit in the bar and one has no box -- agrees.
-- **tiles 10-12 (the dot): the blue dot is not this staff's augmentation dot.** It is the
-  dot of a `p` dynamic letter (10) or a note on the staff above or below the cell (11, 12).
-  `Q.AUG_DOT` rows in a cell are mostly another staff's or a letter's; the dot cause is
-  NOT a finding. A third time the same lesson (2.24): do not name a dot from a sum.
-- tile 13 (head fill): the head has the white slash of a hollow head, so the print backs
-  the arithmetic row (a half read as a quarter) -- but no record row says so.
+- tiles 10-12 (the dot): **my eye-read here was WRONG; Sean is the evidence.** I wrote that the blue dots were another staff's or a letter's. Sean: 10 is a staccato belonging to the staff above (not this staff's); 11 and 12 ARE augmentation dots. So the dot cause is real on 2 of 3 (the evidenced `D`, 54 bars released alone, is small but not spurious); the one false positive (10) is the cross-staff dot the classifier cannot yet tell from its own.
+- tile 13 (head fill): the head has the white slash of a hollow head (Sean: a half, tile 14 too).
 
 ### 2.96g. Recommended next items (not built here)
 
@@ -3154,8 +3150,11 @@ What I could see myself (the lane's own reading, rule 7: not evidence):
    as an eighth rest; the 332 remaining are ink with no box at all. A reader on the
    unexplained piece (its shape and place on the staff), checked against the same 2.80
    base rate; tiles 7 and 9 say the ink is real.
-Held back: the head fill (needs a record row of its own before it is a cause); the dot
-(tiles 10-12); beam levels (no row points at them except the doubt counters, present on 40% of bars).
+4. **The head fill (540 arithmetic-only bars; Sean: tiles 13, 14 halves read as quarter, tile 15 a quarter).**
+   2 of 3 are real, so it is a cause with print support but no record row; it needs a row of its own (2.23's
+   hollow-ink reading, on the merged Litolff plate) before it is wired. Tile 15 is the warning: the sum lands on a
+   correct quarter too.
+Held back: beam levels (no row points at them except the doubt counters, present on 40% of bars).
 
 ### 2.96h. Limits
 
@@ -3164,3 +3163,22 @@ invisible here. The ink witness is 2.80's rule restated over dicts (the base-rat
 its control). `U:`/`R:` refusal tokens are offered only for reasons that a refusal can
 wrongly make; duplicate-box and non-note refusals (clef, digit, dynamic letter) are never
 offered. K (a missed barline) is evidenced only where the cell is >= 1.6x its neighbours.
+
+### 2.96i. Sean's answers (2026-10-12, `out/print/2.96-review/answers.json`)
+
+Verbatim: *"1. dot4 , 4 2. 4 3. 4 4-6. whole note rest 7. 1st blue box is an accidental flat,t he secod blue box is a 8 rest 8-9. 8 rest 10. stacato mark belonging to the staff above 11-12. aug dots 13. 2 14. 2 15. 4"*
+
+| cause | tiles | scored |
+|---|---|---|
+| narrowed heads (N) | 1-3 | **3/3**: his values (1.5 + 1.0; 1.0; 1.0) are inside our candidates |
+| lone whole rest (W) | 4-6 | **3/3**: whole-note rest (the bar), including the Litolff meter-decided one |
+| unboxed eighth-rest ink (I:eighth) | 7-9 | **3/3** hold an eighth rest; in tile 7 the FIRST blue box is a flat, the second the rest (the ink witness boxed an accidental too) |
+| dot (D) | 10-12 | **2/3**: 11, 12 are this staff's augmentation dots; 10 is a staccato of the staff above |
+| head fill (F~, arithmetic only) | 13-15 | **2/3** halves read as quarter (13, 14); 15 a quarter, our reading right |
+
+Effect on the ranking: the three top evidenced causes (N 792, W 458, I:eighth 332, plus I:quarter 116) are
+confirmed by the print on every tile. D moves from "not a finding" to "a real but small cause with a cross-staff
+false-positive mode" (evidenced `D` alone releases 54; the 412 arithmetic-tier `D` are still unproven). The head fill
+moves from "arithmetic" to "print-supported, no record row" (2 of 3), so the order of next items is unchanged
+(narrowed heads, whole rest, unboxed rest ink) with the head fill added as item 4. The I:eighth ink box can also be a
+flat or other accidental: a shape test alone over-counts, so the reader in item 3 must use position on the staff.
