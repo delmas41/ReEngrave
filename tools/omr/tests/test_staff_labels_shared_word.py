@@ -65,7 +65,7 @@ def _blk(word="Hr.", up=5, lo=6, assigned=None):
 def test_both_staves_bare_crooks_each_take_the_word_with_their_own_crook():
     texts = {4: "K-Fag.", 5: "(C)", 6: "(Es)", 7: "Pk."}
     new, shared = sls.spread_shared_words(texts, [_blk()])
-    assert new[5] == "(C) Hr." and new[6] == "Hr. (Es)"
+    assert new[5] == "Hr. (C)" and new[6] == "Hr. (Es)"
     assert shared == {5: "Hr.", 6: "Hr."}
     # nobody else moved
     assert new[4] == "K-Fag." and new[7] == "Pk."
@@ -110,7 +110,7 @@ def test_two_words_never_claim_the_same_staves():
     texts = {5: "(C)", 6: "(Es)"}
     new, shared = sls.spread_shared_words(
         texts, [_blk(), _blk(word="Tr.")])
-    assert new[5] == "(C) Hr." and new[6] == "Hr. (Es)"
+    assert new[5] == "Hr. (C)" and new[6] == "Hr. (Es)"
 
 
 # ── through the reader ──────────────────────────────────────────────────────
@@ -141,7 +141,7 @@ def test_the_reader_names_both_horn_staves_from_one_printed_word(monkeypatch):
     monkeypatch.setattr(sls, "_dispatch", lambda *a, **k: payload)
     labs = {lab.staff_index: lab
             for lab in sls.read_staff_labels_surya(_pws(staves))}
-    assert labs[1].text == "(C) Hr." and labs[2].text == "Hr. (Es)"
+    assert labs[1].text == "Hr. (C)" and labs[2].text == "Hr. (Es)"
     assert labs[1].shared_word == labs[2].shared_word == "Hr."
     assert labs[1].instrument is not None and labs[2].instrument is not None
     assert labs[1].instrument.name == labs[2].instrument.name == "Horn"

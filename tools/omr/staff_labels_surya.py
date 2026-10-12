@@ -599,7 +599,9 @@ def spread_shared_words(texts: dict[int, str], between: list[dict]
 
     ROADMAP 2.95. `(C)` / `Hr.` / `(Es)` is ONE word and two crooks: an
     instrument word centred between two adjacent staves names both, each with
-    its own crook (convention assumed, see `benchmarks/omr-staff-identity-
+    its own crook, WORD FIRST (`Hr. (C)`, `Hr. (Es)`: `instruments.lookup`
+    reads a crook only after the word, so `(C) Hr.` would read the horn's
+    default F) (convention assumed, see `benchmarks/omr-staff-identity-
     2026-09/FINDINGS.md` section 2.95). Returns `(new_texts, shared)` where
     `shared` maps a staff index to the word it was completed with.
 
@@ -644,7 +646,7 @@ def spread_shared_words(texts: dict[int, str], between: list[dict]
                                                               "has_word"):
             continue
         if r_up == "bare":
-            new[up] = f"{texts[up].strip()} {word}"
+            new[up] = f"{word} {texts[up].strip()}"
             shared[up] = word
         if r_lo == "bare":
             new[lo] = f"{word} {texts[lo].strip()}"

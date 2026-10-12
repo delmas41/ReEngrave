@@ -750,9 +750,9 @@ left as read. A staff with its own full name, one that read nothing, a word the
 lexicon does not know (`H:`), and a crook between two other staves (`(C)` between
 Trpt. and Pk.) are all refused (tests carry each as a control).
 `StaffLabel.shared_word` and the `Q.MARGIN_LABEL` observation's `shared_word`
-detail record the completion; `text` stays the plate's own words in the plate's
-own order, `(C) Hr.` / `Hr. (Es)`, the forms the plate prints on its other
-systems. No flag (rule 9; it only fills a staff that read a bare crook).
+detail record the completion. The completed text is WORD FIRST, `Hr. (C)` /
+`Hr. (Es)` (the first cut wrote the upper staff `(C) Hr.`, the plate's own
+order; see the transposition follow-up below for why that was changed). No flag (rule 9; it only fills a staff that read a bare crook).
 
 **Reach (fresh Surya read, pages 1-26, 52 systems).** The rule completes 53
 staves in the fresh read's own labels. Replayed on the RECORD's labels (which
@@ -788,7 +788,7 @@ word to one staff and the other staff reads a bare crook is handled (the
 `has_word` branch); a word centred between two staves with the pair not both
 crook-only is left unspread. (3) `lookup("(C) Hr.")` returns fifths_offset 1 (a
 horn in F's), `lookup("Hr. (Es)")` 3: the transposition read of a crook is
-`instruments.py`'s (2.94), not touched here. (4) No whole-movement re-gather was
+`instruments.py`'s (2.94), not touched here -- see the follow-up below. (4) No whole-movement re-gather was
 run; the GATHER change is priced by a fresh Surya read of the affected pages and
 `acceptance_quick`, per the lane's fence.
 
@@ -804,3 +804,51 @@ completion. Pages 0-1 abstain `instrument` on ONE staff (`staff/0/0/5`, the
 `test_staff_labels_shared_word.py`, RED 15 of 15 on `origin/main`; one existing
 source-text test, `test_surya_worker_session`, repointed at `read_crops_surya_full`
 because the margin dispatch moved into it). `staged.check`: 192 = main.
+
+### 2.95 follow-up (2026-10-12, manager): what the crook offset does downstream
+
+**The parse.** `instruments.lookup` reads a crook only AFTER the instrument word.
+Measured: `Hr. (C)` 0, `Hr. in C` 0, `Hr. (Es)` 3, `Hr. (F)` 1, `Hr. (D)` -2 (all
+correct: C basso 0, E-flat +3, concert = written - 3); but a crook BEFORE the
+word falls through to the horn's default F, `(C) Hr.` 1 (wrong, should be 0) and
+`(Es) Hr.` 1 (wrong, should be 3), with `known=True`. The first cut of 2.95
+composed the upper staff `(C) Hr.` and so inherited that. **Changed:**
+`spread_shared_words` now writes the word first on both staves, `Hr. (C)` /
+`Hr. (Es)` (offsets 0 and 3, `resolve_label` agrees). The same fault already sits
+in the BASE record on every staff the reader itself read as `(C) Hr.` (the plate's
+own order: 43 of the record's horn labels read `(C) Hr.`, plus 1 `(C) Hr` and 1 `(Es) Hr.`) and on any such label the rule leaves
+as read (`has_word`): those stay offset 1. **Fix for 2.94 (not done, not my file):**
+parse a leading parenthetical crook `(X) <word>` exactly as the trailing one.
+
+**What each staff got before.** Base: `instrument` ABSTAINED `not_in_lexicon` (a
+bare crook resolves to no instrument, so `resolve_label` gives no name and no
+offset); `slot_index` named only by the 2.26b rule (`paired_by_bare_crook` 19,
+`paired_by_crook` 22 of these 47, one `unnamed_in_short_system`, the rest
+`full_lineup` / `forced_by_constraints`). Arm: `instrument` Horn (`label`), slot
+the same value.
+
+**What the offset reaches (Brahms night record, 691 staves, base vs arm, the key
+chain re-decided: `key_signature`, `part_key`, `clef`, and the INFER rule
+`fill_part_key`'s own census `part_key_census`, run on the same log).**
+1. `key_consensus.NO_SIGNATURE_CONVENTION` contains Horn, so
+   `inferences._staff_offset` and `header._transposition` return None for every
+   horn: the label's offset is NEVER consumed for a horn on the staged path, right
+   or wrong. The only other reader of `fifths_offset` on STAGED is
+   `effective_offset`, which falls back to the part's, also unread for horns.
+2. The 47 completed staves: `key_signature` verdict changes 0 and `clef` changes 0
+   (also 0 on every other staff); `fill_part_key` fill value changes on 1 (an
+   `declined_nothing_to_compare` staff now gets `key_from_other_systems` 0, which
+   is the part's own other systems' written key and is the dossier's C-horn value,
+   0), unchanged on the other 46. The fill is written-key tier, no offset
+   involved.
+3. STAGED export writes WRITTEN pitch (no `<transpose>` except the double bass's
+   octave), so an exported pitch can change only through the key verdict (accidental
+   spelling); key verdict changes are 0 on all 47. **Not run:** an exported-file
+   pitch comparison against the encoding (needs EVALUATE/INFER/EXPORT over the
+   whole movement, no whole-movement re-gather by the lane's fence). So the claim is
+   structural plus the verdict counts, not a scored file.
+4. The reference encoding does NOT agree with the print for the Brahms horns
+   (dossier: C Horn written 0, Eb Horn written -1, all `transposition_semitones`
+   -7 -- a modern horn-in-F edition) while the Breitkopf print shows NO signature
+   on either horn staff; the print is the umpire, and a scored comparison against
+   that encoding would charge the print, not the offset.

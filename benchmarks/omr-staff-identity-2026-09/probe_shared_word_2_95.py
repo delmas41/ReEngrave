@@ -28,6 +28,7 @@ from __future__ import annotations
 import argparse
 import collections
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -78,6 +79,8 @@ def _chain():
     from tools.omr.staged.record import Q
     adjudicate._ensure_decisions()
     chain = {Q.INSTRUMENT, Q.SLOT_INDEX, Q.PART_PARTITION}
+    if os.environ.get("KEYS"):                  # 2.95 transposition follow-up
+        chain |= {Q.KEY_SIGNATURE, Q.PART_KEY, Q.CLEF}
     todo = list(chain)
     while todo:
         spec = adjudicate.REGISTRY.get(todo.pop())
@@ -153,6 +156,13 @@ def _replay(record, probe_path, arm):
     log.freeze()
     adjudicate.run(log, order=order)
 
+    gaps = {}
+    if os.environ.get("KEYS"):
+        from tools.omr.staged import inferences
+        for g in inferences.part_key_census(log):
+            gaps[g.staff.to_key()] = {"outcome": g.outcome, "value": g.value,
+                                      "offset": (g.detail or {}).get("fifths_offset"),
+                                      "tier": (g.detail or {}).get("tier")}
     saved = {}
     for v in stream_array(record, "verdicts"):
         if v["quantity"] in (Q.INSTRUMENT, Q.SLOT_INDEX):
@@ -174,6 +184,13 @@ def _replay(record, probe_path, arm):
                 "outcome": m.outcome.value, "reason": m.reason,
                 "value": (m.value.get("name") if isinstance(m.value, dict)
                           else m.value)}
+        if os.environ.get("KEYS"):
+            row["part_key_fill"] = gaps.get(sub)
+            for q in (Q.KEY_SIGNATURE, Q.CLEF):
+                m = log.verdict(q, Subject.from_key(sub))
+                row[q] = None if m is None else {
+                    "outcome": m.outcome.value, "reason": m.reason,
+                    "value": m.value if not isinstance(m.value, dict) else str(m.value)}
         lr = log.rows(Q.MARGIN_LABEL, Subject.from_key(sub))
         row["label"] = lr[-1].value if lr else None
         staves.append(row)
