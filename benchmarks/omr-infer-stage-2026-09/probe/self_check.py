@@ -60,7 +60,10 @@ def independence_report() -> int:
     infer._ensure_rules()
     bad = 0
     print("── INDEPENDENCE ──────────────────────────────────────────────")
-    for r in infer.RULES:
+    # ROADMAP 2.81 phase 2: the rules that RAN under this environment, not every registered one -- the
+    # bare-stem bar rule reads the meter by design and is default OFF, so a run with it ON is refused a
+    # bar-fill score here and a default run is not.
+    for r in infer.enabled_rules():
         clash = infer.scoring_conflict(r, BAR_FILL_INPUTS)
         mark = "REFUSED" if clash else "ok"
         print(f"  {r.inference.value}: reads {list(r.reads)}")

@@ -712,12 +712,12 @@ Deployment: `scripts/setup-vps.sh`, `scripts/deploy.sh`,
 
 ## 13. Sessions in parallel
 
-Work in a worktree off `origin/main`; never `git checkout` a dirty file
-(`checkout-index -a` wiped a session's whole tree once); never bare
-`git stash`. Fence lanes by FUNCTION NAME before dispatch when two touch one
-file. Every lane report is a ledger: check its claims against the tree with
-one command before believing it (five of six reports in one night contained
-a claim the tree contradicted). A session ends by updating its ROADMAP line,
+Work in a worktree off `origin/main`; never `git checkout` a dirty file;
+never bare `git stash`. Fence lanes by FUNCTION NAME before dispatch when two
+touch one file. Claim a ROADMAP number by pushing its row to main before
+building. A cloud session (no weights, no library) records answers, writes
+docs and lands branches. Every lane report is a ledger: check its claims
+against the tree with one command before believing it. A session ends by updating its ROADMAP line,
 adding its entry to `version_memory.md` (and `PROJECT_BRIEF.md` where the
 state it describes moved) and, if it learned something general, a rule here
 or a DECISIONS line — not by writing a handoff.

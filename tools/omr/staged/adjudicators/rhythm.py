@@ -23,6 +23,7 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
@@ -117,6 +118,19 @@ HEAD_FILL_HOLLOW_CENTER_MAX = 0.75
 #: population (which is what §17b's crops show) and abstains on the rest,
 #: never guessing (rule 6).
 HEAD_FILL_HOLLOW_RING_GAP_MIN = 0.1
+
+#: ⚠️ ROADMAP 2.83 FIX ROUND (Sean, 2026-10-11, blind tile 10: Litolff pdf 15 `glyph/15/1/3/17/5`, a FILLED QUARTER read as a half). The
+#: ink windows `Q.NOTEHEAD_INK` lays inside a head's detector box (`center`, `ring`) assume the box holds ONE notehead. A notehead is
+#: ~1.0-1.4 staff spaces tall (CLAUDE.md 10; the detector's own boxes on the Litolff count page: p10 1.05, median 1.30, p90 1.54). On a
+#: merging plate the detector sometimes boxes a whole cluster -- a head, its stem, a staff line and a neighbour -- in one `noteheadBlack*`
+#: box 2.4-4.1 spaces tall, and the windows then read half paper: centre 0.28-0.59 against a filled head's 1.0, "decisively hollow".
+#: MEASURED: every decided half this rule made on such a box that was looked at on the print was a filled head (tile 10; the four
+#: black-blob halves of the v5 arm on Litolff pdf 3; the two tall halves the BASE already decided on pdf 3, `glyph/2/0/5/2/5` 2.63 spaces
+#: and `glyph/3/0/8/7/8` 2.37), and the genuine hollow heads looked at are 0.8-1.5 spaces. 2.70 DECIDES a half only on a box this tall or
+#: less; taller, the ink is not about one head and the head keeps 2.23's NARROWING (the detector's black, half, whole: Sean's answer inside).
+#: CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: 1.8 sits above the p90 of detector head boxes (1.54) and under the smallest wrong box seen
+#: (2.37); falsified by a print-confirmed hollow head whose detector box is taller than 1.8 spaces.
+HEAD_BOX_MAX_SPACES = 1.8
 
 
 def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
@@ -1602,6 +1616,68 @@ def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
     return out, levels
 
 
+def _flags_on_reach_stem(ev: Evidence, cell, head_box, side: str, reach_row, tol: float):
+    """The detector's flag boxes standing at the tip of the stem `Q.HEAD_STEM_REACH` read: (rows, levels). ROADMAP 2.83.
+
+    ⚠️⚠️ `_attached_flags` joins a flag to the CV stem that touches the head, so a head whose stem the CV rung never found
+    (two stacked heads fuse into one too-wide component) could not carry a flag the detector HAD boxed at its stem's tip --
+    `flags_attached` 0 and a quarter written (Sean's page, `q129`/`q132`). The ruler (`Q.HEAD_STEM_REACH`, a ruler on the page
+    raster beside THIS head, never a stroke) says which way the stem runs and where it ENDS (`down_tip_y` / `up_tip_y`, page
+    px); the stem stands on the head's side edge CLAUDE.md 10 fixes (down -> left, up -> right). That stands in for the CV stem,
+    and a flag box attaches only where it hangs off THAT tip by the CV path's own test (`gather._flag_box_hangs_off_stem`: its
+    left edge within `STEM_TIP_OWN_FLAG_X_SPACES` of the stem, its tip-side edge within `STEM_TIP_OWN_FLAG_TIP_SPACES` of the
+    tip) AND its class direction agrees with the ruler's. A refused flag is skipped, as in `_attached_flags`. No ruler row, no
+    tip, no cell unit: nothing attaches (no tip to hang a flag from is not a licence to guess one onto the head).
+    """
+    from .. import gather as _gather
+    d = reach_row.detail or {}
+    page_head = d.get("head_box_page")
+    tip_page = d.get("down_tip_y" if side == "down" else "up_tip_y")
+    if not page_head or len(page_head) < 4 or tip_page is None or tol <= 0:
+        return [], 0
+    hx, hy, hw, hh = head_box
+    px0, py0, px1, py1 = (float(v) for v in page_head[:4])
+    if px1 <= px0 or hw <= 0:
+        return [], 0
+    scale = hw / (px1 - px0)                       # canonical px per page px: one scale, both axes
+    tip = hy + (float(tip_page) - py0) * scale     # the ruler's tip, in this cell's frame
+    space = tol / STEM_JOIN_TOLERANCE_SPACES
+    if side == "down":
+        sx0, sx1 = hx - 0.1 * space, hx + 0.25 * space
+        top, bottom = hy + hh / 2.0, tip
+    else:
+        sx0, sx1 = hx + hw - 0.25 * space, hx + hw + 0.1 * space
+        top, bottom = tip, hy + hh / 2.0
+    x_slack = _gather.STEM_TIP_OWN_FLAG_X_SPACES * space
+    reach = _gather.STEM_TIP_OWN_FLAG_TIP_SPACES * space
+    boxes = _cell_boxes(ev, cell)
+    out = []
+    for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if _flag_class_direction(f.value) != side:
+            continue
+        refusal = ev.verdict(Q.FLAG_IS_NOT_A_FLAG, subject=f.subject)
+        if refusal is not None and refusal.outcome is Outcome.DECIDED \
+                and refusal.value is True:
+            continue
+        box_row = boxes.get(f.subject.to_key())
+        box = _xywh_head(box_row.value) if box_row else None
+        if box is None:
+            continue
+        bx0, by0, bw, bh = box
+        by1 = by0 + bh
+        if not (sx0 - x_slack <= bx0 <= sx1 + x_slack):
+            continue
+        if (side == "up" and abs(by0 - top) <= reach and by1 > top) \
+                or (side == "down" and abs(by1 - bottom) <= reach and by0 < bottom):
+            out.append(f)
+    levels = 0
+    for f in out:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            levels = max(levels, lv)
+    return out, levels
+
+
 def _in_augmentation_window(dot_box, head_box, max_above, max_below):
     """Does `dot_box` sit in `head_box`'s augmentation-dot window?
 
@@ -2463,11 +2539,93 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     ids = {s.id for s in own_stems}
     rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS,
                    subject=cell)
+    # ⚠️ ROADMAP 2.83 FIX ROUND: a row the two tip witnesses DISPUTE (`tip_disagree`: the shape reader sees nothing hanging, the 2.18c
+    # window sees a hook) is neither "a hook is there" nor "nothing is there" -- it is read by `_stem_tip_disputed` and NARROWS, so it
+    # is left out of this function's answer in BOTH directions (it must not decide a flag level, and it must not let 2.70 read a bare stem).
     matched = tuple(r for r in rows if r.detail.get("end") == end
-                    and r.detail.get("stem_row_id") in ids)
+                    and r.detail.get("stem_row_id") in ids
+                    and not r.detail.get("tip_disagree"))
     if not matched:
         return None, ()
     return any(bool(r.value) for r in matched), matched
+
+
+#: ROADMAP 2.81 phase 2. How close to this head's stem tip a REFUSED stroke
+#: may lie before it is "at the tip" (staff spaces, along the stem), and how
+#: far across the stem it may lie (spaces). Phase 1's PROBE definition
+#: (`benchmarks/omr-missing-notes-2026-09/probe/l281_population.py::
+#: stroke_at_tip`) -- Sean's blind tiles scored it 16/20 -- carried over
+#: unchanged and NOT CONFIRMED by Sean as a geometry.
+BARE_STEM_TIP_SPACES = 0.6
+BARE_STEM_ACROSS_SPACES = 0.3
+
+#: ROADMAP 2.81 phase 2. The RANKING's own flag, default OFF (allow-list: a
+#: typo leaves it off). ⚠️ Measured on the small re-gather's page 1 (agent-read
+#: against the print): flipping the order moves the total `reconcile_duration`
+#: (EVALUATE) sums -- it counts a narrowed note at its BEST-SUPPORTED reading --
+#: and five bars changed answer, two for the better, one a narrowed head decided
+#: wrongly and one a DECIDED dotted half re-read as a dotted quarter. That is a
+#: consumer this lane does not own (2.80), so the order ships behind a flag Sean
+#: can turn on once he has seen it; the label `bare_stem_evidence_holds` is
+#: written either way.
+BARE_STEM_RANK_ENV = "OMR_BARE_STEM_RANK"
+
+
+def bare_stem_rank_enabled() -> bool:
+    """Read the ranking flag. Only an explicit on-word is ON."""
+    return os.environ.get(BARE_STEM_RANK_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
+                           space: float) -> Optional[bool]:
+    """Did a stroke this decision REFUSED stand at this head's own stem tip?
+
+    ROADMAP 2.81 phase 2. `None` -- cannot be asked (no own stem, no side, no
+    staff-space unit, no box on a stem): the caller must treat it as "the
+    evidence does not hold", never as "no stroke there" (rule 8).
+
+    ⚠️ The population this serves is a head whose every candidate stroke was
+    refused. The refusals that are NOT at its tip (a neighbour staff's beam, a
+    far-side stroke) say nothing about the stem; the ones AT the tip are the
+    beam 2.74's ink test may have refused wrongly (17 of Phase 1's 22 misses
+    were three such beams). The tip is the stem end the head's side points to.
+    """
+    if side not in ("up", "down") or not own_stems or not space or space <= 0:
+        return None
+    boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
+    if not boxes:
+        return None
+    across = BARE_STEM_ACROSS_SPACES * space
+    reach = BARE_STEM_TIP_SPACES * space
+    x0 = min(b[0] for b in boxes) - across
+    x1 = max(b[0] + b[2] for b in boxes) + across
+    if side == "up":
+        tip = min(b[1] for b in boxes)
+    else:
+        tip = max(b[1] + b[3] for b in boxes)
+    zone = (x0, tip - reach, x1 - x0, 2.0 * reach)
+    for r in refused:
+        box = _xywh(r)
+        if box is None:
+            continue
+        if _box_gap(zone, box) <= 0:
+            return True
+    return False
+
+
+def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tuple:
+    """The rows at this head's own tip end where the shape reader and the 2.18c window DISAGREE (`tip_disagree`, filed by
+    `gather._observe_stem_tip_ink`): the shape reader positively reads nothing hanging from the tip while the window reads a hook.
+    ROADMAP 2.83 fix round (Sean's tiles 4 and 8; CLAUDE.md rule 8). `()` where there is none."""
+    if side not in ("up", "down") or not own_stems:
+        return ()
+    end = "top" if side == "up" else "bottom"
+    ids = {s.id for s in own_stems}
+    rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    return tuple(r for r in rows if r.detail.get("end") == end
+                 and r.detail.get("stem_row_id") in ids
+                 and r.detail.get("tip_disagree"))
 
 
 def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
@@ -2592,6 +2750,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
+             "tip_readers_disagree",
              "beam_certain_not_joined",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
@@ -2920,6 +3079,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         beam_evidence = "none_over_this_note"
 
     flags, flag_levels = _attached_flags(ev, cell, attached, tol)
+    # ⚠️⚠️ ROADMAP 2.83: A HEAD WHOSE STEM ONLY THE RULER READ carries the flag the detector boxed at THAT stem's tip. The CV
+    # path above joins a flag through a CV stem; with none, `_flags_on_reach_stem` stands the ruler's own stem in for it.
+    if not flags and reach_stem and head_box is not None:
+        flags, flag_levels = _flags_on_reach_stem(ev, cell, head_box, side, side_verdict, tol)
     # ⚠️⚠️ ROADMAP 2.18b, RULE 8: FLAGS THAT DISAGREE NARROW. `_attached_flags`
     # returns the MAX of its flags' levels, which is right while they agree
     # (two boxes, one glyph). Where one mark is boxed as `flag8th*` AND
@@ -3111,10 +3274,48 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
     # DECISIONS 2026-09-30), so a discount that removed its candidate
     # strokes must not narrow it toward one anyway.
+    # ⚠️⚠️ ROADMAP 2.83: A HOOK THE TIP READER SAW OUTRANKS THE DISCOUNT. This branch narrows between the head value and ONE
+    # beam level (ranking the beam level above the head's own) because every candidate stroke was refused; it sat BEFORE the
+    # stem-tip reading below, so a head whose own stem tip carries a flag the tip reader SAW never reached it (3,604 of 24,260
+    # Brahms heads stand in it, FINDINGS 17). The same rows the 2.18c block below reads, asked one block earlier, in this
+    # helper's own name so a neighbouring edit to the narrowing does not collide: where a hook IS read at this head's own
+    # tip the branch stands down and the block below DECIDES the counted level or NARROWS over the flag levels (>= 1).
+    tip_first = False
+    if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
+            and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
+        tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
     if (((discount_removed_all_marks and (own_stems or reach_stem))
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow):
+            and not flag_levels and not hollow and not tip_first):
+        # ⚠️⚠️ ROADMAP 2.81 PHASE 2 (Sean, 2026-10-10): THE RANKING. The two
+        # candidates used to be ranked EIGHTH over QUARTER unconditionally
+        # (2.0 vs 1.0) -- the opposite of what the print says for a bare
+        # stem. Phase 1 (FINDINGS `omr-missing-notes-2026-09` §17), Brahms
+        # pdf 0 against Sean's hand truth: level 0 is right for 54 of the 76
+        # judged members, and for the members whose stem is decided and whose
+        # tip window reads clean 0.86 (31/36); his blind tiles scored the
+        # stricter subset 0.80 -- BELOW his 95% bar, so this is a RANKING, a
+        # labelled likelihood, and never a decision. Where the evidence does
+        # NOT hold (no decided stem: 20/36 = 0.56; a refused stroke AT the
+        # stem's tip: the real beams 2.74 refused) nothing is claimed and the
+        # order is the one it always was. `support` is in this function's own
+        # units and is not a probability.
+        refused_here = [b for b in pre_ink if b.id in ink_dropped]
+        refused_here += list(arc_dropped) + list(neighbour_dropped)
+        refused_here += list(far_side) + list(beyond)
+        _space_rows = ev.rows(Q.CELL_STAFF_SPACE,
+                              scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        tip_zone_space = float(_space_rows[-1].value) if _space_rows else 0.0
+        _bare_tip, _bare_tip_rows = _stem_tip_flag_ink(ev, cell, own_stems,
+                                                       side)
+        _stroke_at_tip = _refused_stroke_at_tip(refused_here, own_stems, side,
+                                                tip_zone_space)
+        evidence_holds = (bool(own_stems) and _bare_tip is False
+                          and _stroke_at_tip is False)
+        quarter_first = evidence_holds and bare_stem_rank_enabled()
+        if quarter_first:
+            used.extend(r.id for r in _bare_tip_rows)
         cands = []
         for level in (0, 1):
             b = base / (2 ** level) if level else base
@@ -3122,12 +3323,22 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             for _ in range(n_dots):
                 add /= 2.0
                 t += add
+            if quarter_first:
+                sup = 2.0 if level == 0 else 1.0
+            else:
+                sup = 2.0 if level == 1 else 1.0
             cands.append(Candidate(
                 value={"beats": _scale(t, ratio, ev), "written": t,
                        "dots": n_dots, "beam_levels": level},
-                support=2.0 if level == 1 else 1.0))
+                support=sup))
         return Ruling.narrow(cands, "beam_discounted_uncertain",
-                             used=tuple(used), **shared)
+                             used=tuple(used), **shared,
+                             bare_stem_likelihood=(
+                                 "quarter_first" if quarter_first
+                                 else "not_claimed"),
+                             bare_stem_evidence_holds=evidence_holds,
+                             bare_stem_tip_window_clean=_bare_tip is False,
+                             bare_stem_refused_stroke_at_tip=_stroke_at_tip)
 
     # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
     # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,
@@ -3242,8 +3453,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # `ran_empty`, not `reader_declined`. A tremolo slash on the stem is NOT
     # a beam (ROADMAP 2.71, built apart); if the beam reader counts one as a
     # stroke this rule stands down, which is the safe direction.
+    # ⚠️ ROADMAP 2.83 FIX ROUND: only on a box that holds ONE head (`HEAD_BOX_MAX_SPACES`); a box whose size or the cell's staff space
+    # is unknown cannot be said to (rule 8) and does not decide a half either.
+    one_head_box = (head_box is not None and space is not None and space > 0
+                    and head_box[3] / space <= HEAD_BOX_MAX_SPACES)
     if ink_hollow and own_stems and not flags \
-            and strokes_before_hollow == (0, 0, 0):
+            and strokes_before_hollow == (0, 0, 0) and one_head_box:
         beam_reader = _beam_reader_looked(ev, cell)
         tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
         if tip_looked is None and beam_reader is not None:
@@ -3267,7 +3482,17 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                         "stem_tip_hook": False,
                         "notehead_ink": fill_row.detail or {}})
 
-    if beam_evidence == "none_over_this_note" and ink_hollow:
+    # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8. 2.70 DECIDES a half in a BEAMLESS cell (the beam reader RAN and accepted nothing, so
+    # `beam_evidence` reads `reader_declined`) over a tip read clean; where the tip is NOT read clean the head fell through all of this to
+    # `head_and_marks` -- the detector's black, DECIDED, over ink that reads the head decisively hollow. That was `cannot tell` written as an
+    # answer, and the new tip reader declines more tips than the 2.18c window did (Litolff pdf 3 `glyph/2/0/7/6/1`: a hollow half note main
+    # decided a half, the shape reader cannot tell, and a quarter was decided). MEASURED on the Litolff tile pages: of 32 such one-head
+    # boxes (main decides the same 33), 9 of the 12 looked at on the print were hollow heads and 3 were not clear. The same NARROWING 2.23 gives a head in a cell with beams (the detector's
+    # black, half, whole; Sean's answer inside) now also covers the beamless-and-looked cell -- only on a box that holds ONE head
+    # (`HEAD_BOX_MAX_SPACES`): a cluster box's ink windows say nothing about a head, and it keeps the detector's black as it did.
+    beamless_looked = (beam_evidence == "reader_declined" and one_head_box
+                       and _beam_reader_looked(ev, cell) is not None)
+    if (beam_evidence == "none_over_this_note" or beamless_looked) and ink_hollow:
         ink_detail = fill_row.detail or {}
         used.append(fill_row.id)
         cands = []
@@ -3294,6 +3519,32 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         return Ruling.narrow(cands, "head_fill_from_ink",
                              used=tuple(used), **shared,
                              notehead_ink=ink_detail)
+
+    # ⚠️⚠️ ROADMAP 2.83 FIX ROUND, RULE 8 (Sean's tiles 4 and 8, eighths the 2.18c window counted and the shape reader could not
+    # tell). A tip the TWO tip witnesses DISPUTE -- the shape reader positively reads nothing hanging from it, the 2.18c window (and
+    # the hook counter run under it) reads a hook -- is not a quarter and is not an eighth: the head value's own level 0 and the lowest
+    # flag level the hook allows (the count where it counted, else 1). NARROWED with NO ordering claim (equal support): the bar's
+    # arithmetic settles it (`reconcile_duration`), INFER labels it, and nothing here decides 0. Reached only where nothing else
+    # spoke for this head (no flag box, no read hook, not an ink-hollow head -- a hollow head carries no flag).
+    if beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
+        disputed = _stem_tip_disputed(ev, cell, own_stems, side)
+        if disputed:
+            used.extend(r.id for r in disputed)
+            counted, lo, _hi = _stem_tip_hook_count(disputed)
+            level = counted if counted is not None else lo
+            cands = []
+            for lv in (0, level):
+                b = base / (2 ** lv) if lv else base
+                t, add = b, b
+                for _ in range(n_dots):
+                    add /= 2.0
+                    t += add
+                cands.append(Candidate(
+                    value={"beats": _scale(t, ratio, ev), "written": t,
+                           "dots": n_dots, "beam_levels": lv},
+                    support=1.0))
+            return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
+                                 hooks_counted=counted)
 
     return Ruling(value={"beats": scaled, "written": total,
                          "dots": n_dots, "beam_levels": levels},

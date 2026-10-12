@@ -1,0 +1,162 @@
+[
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 14,
+  "subject": "glyph/14/0/6/4/10",
+  "mark_bbox_page": [
+   3066.275,
+   1901.7,
+   3121.55,
+   1929.475
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/14/0/6/4/4 (voice stem up, gap 1.98 heads), owner page box [3070.4, 1994.925, 3108.35, 2027.925]",
+  "category": "shared_head",
+  "n": 1
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 24,
+  "subject": "glyph/24/0/7/1/0",
+  "mark_bbox_page": [
+   1492.5,
+   2397.175,
+   1547.225,
+   2420.0
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/24/0/7/1/3 (voice stem down, gap 1.27 heads), owner page box [1500.2, 2315.5, 1539.25, 2351.525]",
+  "category": "shared_head",
+  "n": 2
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 13,
+  "subject": "glyph/13/1/6/10/1",
+  "mark_bbox_page": [
+   4930.3225,
+   5345.6725,
+   4984.99,
+   5375.365
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/13/1/6/10/3 (voice stem up, gap 1.89 heads), owner page box [4930.045, 5443.075, 4970.8375, 5478.8725]",
+  "category": "shared_head",
+  "n": 3
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 17,
+  "subject": "glyph/17/1/5/5/5",
+  "mark_bbox_page": [
+   5115.236328125,
+   5042.59326171875,
+   5168.09326171875,
+   5072.533203125
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/17/1/5/5/2 (voice stem up, gap 1.53 heads), owner page box [5114.86669921875, 5123.91162109375, 5153.677734375, 5157.5478515625]",
+  "category": "shared_head",
+  "n": 4
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "subject": "glyph/5/1/5/4/2",
+  "mark_bbox_page": [
+   3017.1475,
+   5059.7725,
+   3071.6475,
+   5090.8375
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/5/1/5/4/9 (voice stem up, gap 1.83 heads), owner page box [3019.6, 5151.605, 3056.115, 5185.94]",
+  "category": "shared_head",
+  "n": 5
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 22,
+  "subject": "glyph/22/1/3/8/0",
+  "mark_bbox_page": [
+   3707.3125,
+   4873.455,
+   3763.4475,
+   4903.43
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/22/1/3/8/2 (voice stem up, gap 2.06 heads), owner page box [3710.0375, 4977.55, 3754.7275, 5013.52]",
+  "category": "shared_head",
+  "n": 6
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 14,
+  "subject": "glyph/14/0/6/0/3",
+  "mark_bbox_page": [
+   1240.408203125,
+   1897.2060546875,
+   1295.673828125,
+   1927.9091796875
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/14/0/6/0/12 (voice stem up, gap 2.08 heads), owner page box [1240.0244140625, 1998.91015625, 1277.251953125, 2033.0673828125]",
+  "category": "shared_head",
+  "n": 7
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 25,
+  "subject": "glyph/25/0/9/0/10",
+  "mark_bbox_page": [
+   1068.91455078125,
+   2773.2529296875,
+   1081.11767578125,
+   2790.794921875
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/25/0/9/0/17 (voice stem up, gap 3.24 heads), owner page box [1054.0419921875, 2898.3349609375, 1113.5322265625, 2938.37646484375]",
+  "category": "shared_head",
+  "n": 8
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 17,
+  "subject": "glyph/17/1/7/5/9",
+  "mark_bbox_page": [
+   5115.60595703125,
+   5514.2666015625,
+   5171.419921875,
+   5543.09765625
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/17/1/7/5/3 (voice stem up, gap 1.73 heads), owner page box [5114.4970703125, 5603.34716796875, 5153.677734375, 5638.09228515625]",
+  "category": "shared_head",
+  "n": 9
+ },
+ {
+  "doc": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 23,
+  "subject": "glyph/23/1/7/7/4",
+  "mark_bbox_page": [
+   4122.64,
+   5662.16,
+   4176.12,
+   5689.32
+  ],
+  "read_before": "abstained/stem_direction_unread",
+  "read_after": "decided shared_head: owner glyph/23/1/7/7/8 (voice stem up, gap 3.84 heads), owner page box [4125.44, 5818.4, 4162.4, 5852.0]",
+  "category": "shared_head",
+  "n": 10
+ }
+]

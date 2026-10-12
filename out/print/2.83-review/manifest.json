@@ -1,0 +1,425 @@
+{
+ "question": "What is the printed value of the note in the red brackets?",
+ "seed": 20261010,
+ "plan": {
+  "tip": 3,
+  "reach": 2,
+  "hollow_new": 2,
+  "hollow_lost": 1,
+  "regress": 2
+ },
+ "excluded": "the 30 heads Sean judged on out/print/2.81-review (and Brahms pdf 0 from the sample: its heads are the controls)",
+ "tile_scale": "32 px per staff space on every tile (600 dpi page, normalised)",
+ "tiles": [
+  {
+   "id": "tile_01",
+   "file": "tile_01.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/21/1/3/8/20",
+    "movement": "brahms",
+    "pdf_page": 21,
+    "change_class": "hollow_new",
+    "base_reading": "narrowed:head_fill_from_ink{0}",
+    "arm_reading": "decided:hollow_head_bare_stem{0}",
+    "base_status": "refused",
+    "arm_status": "refused"
+   },
+   "window_page_px": [
+    4344,
+    4826,
+    4674,
+    5073
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.731,
+    "left": 0.753,
+    "right": 0.237
+   }
+  },
+  {
+   "id": "tile_02",
+   "file": "tile_02.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/16/1/10/6/5",
+    "movement": "brahms",
+    "pdf_page": 16,
+    "change_class": "tip",
+    "base_reading": "decided:head_and_marks{0}",
+    "arm_reading": "narrowed:flag_ink_unread{1,2}",
+    "base_status": "narrowed",
+    "arm_status": "narrowed"
+   },
+   "window_page_px": [
+    3740,
+    6155,
+    4070,
+    6409
+   ],
+   "space_px_native": 27.5,
+   "frame_control": {
+    "inside": 0.737,
+    "left": 0.225,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_03",
+   "file": "tile_03.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/15/1/8/17/2",
+    "movement": "litolff",
+    "pdf_page": 15,
+    "change_class": "reach",
+    "base_reading": "decided:head_and_marks{0}",
+    "arm_reading": "decided:head_and_marks{1}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    2119,
+    3279,
+    2311,
+    3503
+   ],
+   "space_px_native": 16.0,
+   "frame_control": {
+    "inside": 0.874,
+    "left": 0.286,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "control_1",
+   "file": "control_1.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/0/2/2",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "bare",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (Brahms pdf 0): nothing on its stem: a QUARTER",
+     "truth_id": "q49",
+     "truth_level": 0
+    },
+    "base_reading": "['narrowed+', ['beam_discounted_uncertain', [0, 1]]]",
+    "arm_reading": "['narrowed+', ['beam_discounted_uncertain', [0, 1]]]"
+   },
+   "window_page_px": [
+    2532,
+    1500,
+    2919,
+    1791
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.813,
+    "left": 0.265,
+    "right": 0.174
+   }
+  },
+  {
+   "id": "tile_04",
+   "file": "tile_04.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/13/0/2/3/0",
+    "movement": "litolff",
+    "pdf_page": 13,
+    "change_class": "regress",
+    "base_reading": "decided:hooks_counted{1}",
+    "arm_reading": "decided:head_and_marks{0}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    891,
+    682,
+    1080,
+    851
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.781,
+    "left": 0.25,
+    "right": 0.091
+   }
+  },
+  {
+   "id": "tile_05",
+   "file": "tile_05.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/19/1/0/8/0",
+    "movement": "brahms",
+    "pdf_page": 19,
+    "change_class": "reach",
+    "base_reading": "decided:head_and_marks{0}",
+    "arm_reading": "decided:head_and_marks{1}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    4807,
+    3815,
+    5134,
+    4197
+   ],
+   "space_px_native": 27.25,
+   "frame_control": {
+    "inside": 0.805,
+    "left": 0.231,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_06",
+   "file": "tile_06.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/11/1/10/3/10",
+    "movement": "brahms",
+    "pdf_page": 11,
+    "change_class": "hollow_lost",
+    "base_reading": "decided:hollow_head_bare_stem{0}",
+    "arm_reading": "narrowed:head_fill_from_ink{0}",
+    "base_status": "refused",
+    "arm_status": "refused"
+   },
+   "window_page_px": [
+    2120,
+    6311,
+    2457,
+    6563
+   ],
+   "space_px_native": 28.01,
+   "frame_control": {
+    "inside": 0.942,
+    "left": 0.243,
+    "right": 0.227
+   }
+  },
+  {
+   "id": "tile_07",
+   "file": "tile_07.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/16/0/10/3/3",
+    "movement": "litolff",
+    "pdf_page": 16,
+    "change_class": "tip",
+    "base_reading": "decided:head_and_marks{0}",
+    "arm_reading": "decided:hooks_counted{1}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    781,
+    1721,
+    970,
+    1863
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.938,
+    "left": 0.452,
+    "right": 0.438
+   }
+  },
+  {
+   "id": "tile_08",
+   "file": "tile_08.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/13/0/2/3/15",
+    "movement": "litolff",
+    "pdf_page": 13,
+    "change_class": "regress",
+    "base_reading": "decided:hooks_counted{1}",
+    "arm_reading": "decided:head_and_marks{0}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    892,
+    682,
+    1081,
+    848
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.963,
+    "left": 0.743,
+    "right": 0.799
+   }
+  },
+  {
+   "id": "control_2",
+   "file": "control_2.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/2/6/3",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "flagged",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (Brahms pdf 0): a flag is on this head's stem: an EIGHTH",
+     "truth_id": "q387",
+     "truth_level": 1
+    },
+    "base_reading": "['wrong', ['head_and_marks', 0]]",
+    "arm_reading": "['wrong', ['head_and_marks', 0]]"
+   },
+   "window_page_px": [
+    5106,
+    2113,
+    5489,
+    2561
+   ],
+   "space_px_native": 31.97,
+   "frame_control": {
+    "inside": 0.814,
+    "left": 0.101,
+    "right": 0.113
+   }
+  },
+  {
+   "id": "control_3",
+   "file": "control_3.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/9/3/3",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "flagged",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (Brahms pdf 0): a flag is on this head's stem: an EIGHTH",
+     "truth_id": "q1009",
+     "truth_level": 1
+    },
+    "base_reading": "['narrowed+', ['beam_discounted_uncertain', [0, 1]]]",
+    "arm_reading": "['narrowed+', ['beam_discounted_uncertain', [0, 1]]]"
+   },
+   "window_page_px": [
+    3288,
+    4946,
+    3675,
+    5281
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.843,
+    "left": 0.233,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "control_4",
+   "file": "control_4.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "control",
+   "hidden": {
+    "key": "glyph/0/0/7/2/1",
+    "movement": "brahms",
+    "pdf_page": 0,
+    "control": "bare",
+    "truth": {
+     "rule": "Sean's hand-truth boxes (Brahms pdf 0): nothing on its stem: a QUARTER",
+     "truth_id": "q831",
+     "truth_level": 0
+    },
+    "base_reading": "['abstained', 'refused']",
+    "arm_reading": "['abstained', 'refused']"
+   },
+   "window_page_px": [
+    2710,
+    3896,
+    3097,
+    4348
+   ],
+   "space_px_native": 32.25,
+   "frame_control": {
+    "inside": 0.749,
+    "left": 0.0,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_09",
+   "file": "tile_09.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/20/1/7/0/6",
+    "movement": "brahms",
+    "pdf_page": 20,
+    "change_class": "tip",
+    "base_reading": "narrowed:flags_disagree{1,2}",
+    "arm_reading": "decided:hooks_counted{1}",
+    "base_status": "kept",
+    "arm_status": "kept"
+   },
+   "window_page_px": [
+    829,
+    6228,
+    1158,
+    6476
+   ],
+   "space_px_native": 27.49,
+   "frame_control": {
+    "inside": 0.792,
+    "left": 0.0,
+    "right": 0.0
+   }
+  },
+  {
+   "id": "tile_10",
+   "file": "tile_10.png",
+   "question": "What is the printed value of the note in the red brackets?",
+   "kind": "sample",
+   "hidden": {
+    "key": "glyph/15/1/3/17/5",
+    "movement": "litolff",
+    "pdf_page": 15,
+    "change_class": "hollow_new",
+    "base_reading": "decided:head_and_marks{0}",
+    "arm_reading": "decided:hollow_head_bare_stem{0}",
+    "base_status": "refused",
+    "arm_status": "refused"
+   },
+   "window_page_px": [
+    2117,
+    2587,
+    2306,
+    2734
+   ],
+   "space_px_native": 15.75,
+   "frame_control": {
+    "inside": 0.641,
+    "left": 0.503,
+    "right": 0.274
+   }
+  }
+ ],
+ "frame_control": {
+  "n": 14,
+  "true_frame_inside_beats_both_neighbours": 13,
+  "wrong_frame_(page_shifted_1.6_heads)_inside_beats_both": 0,
+  "reading": "the control can fail: it must pass on the true frame and mostly fail on the shifted one"
+ }
+}

@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -1580,3 +1580,309 @@ def fill_part_key(log: Log, document: Subject) -> List[Proposal]:
             for g in part_key_census(log)
             if g.outcome in ("key_from_document_majority",
                              "key_from_other_systems")]
+
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Rule 6 -- ROADMAP 2.81 PHASE 2: a bare stem, settled only by the bar's sum
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: The `adjudicate_duration` reason this rule speaks into -- and ONLY this one.
+BARE_STEM_REASON = "beam_discounted_uncertain"
+
+#: How many unknown events one bar may hold before the rule declines. The DP
+#: below is linear in it; the cap is not for speed, it is that a bar with more
+#: than this many undecided events is a bar nobody read.
+BARE_STEM_MAX_UNKNOWNS = 24
+
+
+def _frac(x: Any):
+    from fractions import Fraction
+    return Fraction(float(x)).limit_denominator(1000)
+
+
+@dataclass
+class BarOutcome:
+    """What `solve_bare_stem_bar` found in one bar. A probe's whole surface."""
+
+    #: why the bar yielded nothing, or None when it was solved (even if no
+    #: member was forced -- see `ambiguous`)
+    decline: Optional[str] = None
+    members: int = 0            # bare-stem narrowings in the bar
+    unknowns: int = 0           # events with more than one admitted length
+    landings: int = 0           # assignments of the unknowns that land the bar
+    forced: int = 0             # bare-stem members the arithmetic forces
+    ambiguous: int = 0          # members two landings disagree about
+    tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
+    proposals: Optional[List[Proposal]] = None
+
+
+#: The `adjudicate_meter` reasons whose value IS a printed reading (or an
+#: unchanged carry of one that the bars did not overturn).
+_PRINTED_METER_REASONS = ("voted", "carried", "carried_uncontested")
+
+
+def _printed_meter_roots(log: Log, meter: Verdict, cell: Subject,
+                         _depth: int = 0) -> Optional[Tuple[str, ...]]:
+    """The printed time-signature READINGS a meter verdict ultimately used.
+
+    `None` where the meter does not reach the print by `used` alone: a reason
+    outside `_PRINTED_METER_REASONS`, a bar AT OR AFTER a printed CHANGE in its
+    system (a different reading is the evidence there, and this rule does not
+    guess which), or a chain that never reaches a template/glyph/OCR row.
+
+    ⚠️ A SYSTEM WITH A PRINTED CHANGE STILL SERVES ITS BARS BEFORE IT. Brahms
+    1's count page prints 9/8 at bar 8 and a return to 6/8 at bar 9; the first
+    draft declined every bar of that system (all 45 narrowings on the page).
+    The opening segment's evidence is the system's opening readings (or the
+    carried meter), and a bar before the change is in force under exactly that.
+    """
+    if _depth > 40 or meter.outcome is not Outcome.DECIDED \
+            or meter.reason not in _PRINTED_METER_REASONS:
+        return None
+    if _depth == 0:
+        segs = (meter.value or {}).get("segments") or ()
+        if len(segs) > 1 and cell.cell is not None \
+                and int(cell.cell) >= int(segs[1].get("from_cell") or 0):
+            return None
+    if meter.reason == "voted":
+        rows = [r for r in meter.used
+                if (log.row(r) is not None
+                    and log.row(r).quantity in (Q.METER_TEMPLATE, Q.METER_GLYPH,
+                                                Q.METER_OCR))]
+        return tuple(rows) or None
+    for r in meter.used:
+        src = log.row(r)
+        if isinstance(src, Verdict) and src.quantity == Q.METER:
+            if (src.value or {}).get("numerator") != (meter.value or {}).get(
+                    "numerator") or (src.value or {}).get(
+                        "denominator") != (meter.value or {}).get("denominator"):
+                return None
+            return _printed_meter_roots(log, src, cell, _depth + 1)
+    return None
+
+
+def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
+    """One staff's bar: which bare-stem members does the arithmetic force?
+
+    ⚠️⚠️ THE CLAIM, AND WHERE IT IS WEAK. Every DECIDED duration in the bar is
+    held fixed; every NARROWED one may take any of its OWN candidates; the bar
+    must land EXACTLY on the meter in force at it. A bare-stem member is
+    settled only if EVERY landing gives it the same length, and the bar has at
+    least one landing. It is NOT entailment: a missed note, a note the reader
+    invented, a wrong DECIDED neighbour, a second voice on the staff or a
+    mis-read meter each move the sum, and a unique landing through any of them
+    is a confident wrong answer (rule 8). That is why the verdict is labelled
+    INFERRED, why the flag is default OFF, and why the only legitimate score
+    is the print.
+
+    ⚠️ IT DOES NOT USE THE RANKING. The quarter-first order `adjudicate_
+    duration` carries where the bare-stem evidence holds is a likelihood;
+    nothing here reads `support` (rule (a) of `infer.py`). Where two landings
+    exist the member stays narrowed -- choosing between them by the prior
+    would be Sean's 0.76-0.80 laundered into an answer.
+    """
+    from collections import Counter
+    from .consequences import _bar_beats_at, _left_the_bar, _standing
+    out = BarOutcome(proposals=[])
+    notes = []
+    for v in _standing(log, cell, Q.DURATION):
+        if v.outcome not in (Outcome.DECIDED, Outcome.NARROWED):
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        notes.append(v)
+    members = [v for v in notes if v.outcome is Outcome.NARROWED
+               and v.reason == BARE_STEM_REASON]
+    out.members = len(members)
+    if not members:
+        return out
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter is None or meter.outcome is not Outcome.DECIDED:
+        out.decline = "no_decided_meter"
+        return out
+    expected = _bar_beats_at(meter, cell)
+    if expected is None:
+        out.decline = "no_meter_in_force"
+        return out
+    grouping = log.verdict(Q.EVENT, cell)
+    if grouping is None or grouping.outcome is not Outcome.DECIDED:
+        out.decline = "no_event_grouping"
+        return out
+
+    # ⚠️⚠️ THE METER MAY NOT BE THE BARS' OWN. `adjudicate_meter` weighs the
+    # carry by the bars (its verdict's `basis` holds every duration of the
+    # system), so reading its verdict would make the bar an umpire of itself
+    # -- measured on both count pages: EVERY meter verdict has `Q.DURATION` in
+    # its closure, and the first draft of this rule declined 99 of 102 Brahms
+    # members and 24 of 26 Litolff ones for exactly that. What the meter
+    # verdict USED is narrower: a `voted` meter used the template/glyph/OCR
+    # readings of the printed time signature, a `carried` one used the earlier
+    # system's meter verdict. Follow `used` to the printed readings and take
+    # THOSE as the basis; a meter that does not reach the print that way (a
+    # change, a meter derived from the bars) is declined by name.
+    roots = _printed_meter_roots(log, meter, cell)
+    if roots is None:
+        out.decline = "meter_not_from_the_print"
+        return out
+    meter_closure = set()
+    for rid in roots:
+        meter_closure |= log.closure(rid)
+    if any(v.id in meter_closure for v in members):
+        out.decline = "meter_rests_on_these_bars"
+        return out
+
+    by_glyph = {v.subject.glyph: v for v in notes}
+    fixed = _frac(0)
+    unknown_events: List[Tuple[List[Verdict], List[Any]]] = []
+    seen = set()
+    basis: List[str] = list(roots) + [grouping.id]
+    for ev in (grouping.value or {}).get("events", ()):
+        ms = [by_glyph[g] for g in ev.get("glyphs", ()) if g in by_glyph]
+        if not ms:
+            continue
+        seen.update(m.id for m in ms)
+        narrowed = [m for m in ms if m.outcome is Outcome.NARROWED]
+        if not narrowed:
+            beats = Counter(_frac(m.value.get("beats") or 0.0) for m in ms)
+            fixed = fixed + beats.most_common(1)[0][0]
+            basis.extend(m.id for m in ms)
+            continue
+        if len(narrowed) != len(ms):
+            out.decline = "event_mixes_decided_and_narrowed"
+            return out
+        opts = [tuple(sorted({_frac(c.value.get("beats")) for c in m.candidates
+                              if isinstance(c.value, dict)
+                              and c.value.get("beats") is not None}))
+                for m in ms]
+        if len(set(opts)) != 1 or not opts[0]:
+            out.decline = "event_members_admit_different_lengths"
+            return out
+        unknown_events.append((ms, list(opts[0])))
+    for v in notes:
+        if v.id in seen:
+            continue
+        if v.outcome is Outcome.NARROWED:
+            out.decline = "narrowed_note_outside_every_event"
+            return out
+        fixed = fixed + _frac(v.value.get("beats") or 0.0)
+        basis.append(v.id)
+    # the bar rests on the decided neighbours' verdicts; none of them may rest
+    # on a narrowing it is about to collapse
+    reach = set()
+    for rid in basis:
+        reach |= log.closure(rid)
+    if any(m.id in reach for m in members):
+        out.decline = "decided_neighbour_rests_on_the_narrowing"
+        return out
+
+    n = len(unknown_events)
+    out.unknowns = n
+    if n > BARE_STEM_MAX_UNKNOWNS:
+        out.decline = "too_many_unknowns"
+        return out
+    target = _frac(expected)
+    # prefix[i]: sum -> ways, using the unknowns before i, on top of `fixed`;
+    # suffix[i]: sum -> ways, using the unknowns from i on
+    prefix: List[Dict[Any, int]] = [{fixed: 1}]
+    for _ms, opts in unknown_events:
+        nxt: Dict[Any, int] = {}
+        for s_, c_ in prefix[-1].items():
+            for o in opts:
+                nxt[s_ + o] = nxt.get(s_ + o, 0) + c_
+        prefix.append(nxt)
+    out.landings = prefix[-1].get(target, 0)
+    if out.landings == 0:
+        out.decline = "bar_does_not_add_up"
+        return out
+    suffix: List[Dict[Any, int]] = [dict() for _ in range(n + 1)]
+    suffix[n] = {_frac(0): 1}
+    for i in range(n - 1, -1, -1):
+        cur: Dict[Any, int] = {}
+        for s_, c_ in suffix[i + 1].items():
+            for o in unknown_events[i][1]:
+                cur[s_ + o] = cur.get(s_ + o, 0) + c_
+        suffix[i] = cur
+    for i, (ms, opts) in enumerate(unknown_events):
+        feasible = [o for o in opts
+                    if any((target - s_ - o) in suffix[i + 1]
+                           for s_ in prefix[i])]
+        for m in ms:
+            if m.reason != BARE_STEM_REASON:
+                continue
+            if len(feasible) != 1:
+                out.ambiguous += 1
+                continue
+            # ⚠️ SEAN'S OWN CONDITION (2026-10-10): *a tip SEEN clean*. A head
+            # whose stem-tip window was occupied, held flag ink, or was never
+            # read is not that head, and a bar that "adds up" through a missed
+            # note settles it wrongly -- the one wrong decision on Sean's hand
+            # truth page (Brahms pdf 0, a flagged eighth) was exactly this: the
+            # arithmetic landed through a note nobody read, and the tip window
+            # was occupied. The 33 right ones all had a clean window.
+            if (m.detail or {}).get("bare_stem_tip_window_clean") is not True:
+                out.tip_not_clean += 1
+                continue
+            hit = [c for c in m.candidates if isinstance(c.value, dict)
+                   and c.value.get("beats") is not None
+                   and _frac(c.value["beats"]) == feasible[0]]
+            if len(hit) != 1:
+                out.ambiguous += 1
+                continue
+            out.forced += 1
+            out.proposals.append(Proposal(
+                subject=m.subject, value=hit[0].value,
+                reason="the_bars_arithmetic_forces_this_length",
+                basis=tuple(dict.fromkeys(basis)), witnesses=(),
+                detail={
+                    "expected_beats": float(target),
+                    "bar_landings": out.landings,
+                    "bar_unknown_events": n,
+                    "bare_stem_likelihood": (m.detail or {}).get(
+                        "bare_stem_likelihood"),
+                    "chosen_candidate_support": hit[0].support,
+                    # ⚠️ REPORTED, NEVER THE REASON (infer.py rule (a))
+                    "was_readers_top_candidate": bool(
+                        m.candidates and m.candidates[0].value is hit[0].value),
+                    "reads_meter": True,
+                }))
+    return out
+
+
+@rule(
+    inference=Inference.COLLAPSE_BARE_STEM_BY_BAR,
+    target=Q.DURATION,
+    reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=BARE_STEM_BAR_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration whose reason is "
+        "`beam_discounted_uncertain` to one of that reader's OWN candidates "
+        "and nothing else; only inside one staff's bar whose meter is DECIDED "
+        "and was not voted out of these bars, whose events are grouped, whose "
+        "decided notes are held fixed and whose every unknown is a narrowing "
+        "with identical candidate lengths per chord; the bar must land "
+        "EXACTLY on the meter under at least one assignment of the unknowns, "
+        "and a member is collapsed only if EVERY landing gives it the same "
+        "length, and only if that member's stem-tip window was READ clean "
+        "(Sean's condition). Where two landings disagree it declines. It "
+        "never reads `support` and never uses the bare-stem likelihood as a "
+        "reason."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is arithmetic over the bar's "
+        "other durations and the meter, which are NOT independent of the "
+        "ink being summed -- a missed note, a second voice or a mis-read "
+        "meter move the sum and the rule cannot see them. That correlation "
+        "is declared here rather than hidden behind a witness count, which "
+        "is why the verdict is labelled and the rule default OFF."),
+)
+def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
+    """A bare stem's narrowing, settled by the bar's sum alone.
+
+    See `solve_bare_stem_bar`. Roadmap 2.81 phase 2, Sean 2026-10-10: *"if it
+    is lower ... send it on to the other stages with a high likelihood of
+    being a quarter note and make sure the bar math adds up"*.
+    """
+    return solve_bare_stem_bar(log, cell).proposals or []

@@ -1,0 +1,54 @@
+READOUT DIFF at GATHER + ADJUDICATE   A=/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-base/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+                                      B=/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix2/quick-b/out/brahms1-breitkopf/brahms1-breitkopf-p1.record.json
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! PROVENANCE: the two records differ in
+!!   code      commit: A='8be6cf5f42e4ffd6b8b1274b2c3ded3e2c53a6f3'  B='e9c8c202b140a90cdd6ecf3d8e6b85a354a5691f'
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+== family (other classes): gathered A 2011 / B 2011; matched 2011 (0 in another bar); only A 0, only B 0
+   classes no export family claims: {'beam': 909, 'ledgerLine': 450, 'augmentationDot': 188, 'staff': 167, 'flag8thDown': 97, 'arpeggiato': 88, 'flag8thUp': 72, 'stem': 21} ...
+
+== family accidental: gathered A 278 / B 278; matched 278 (0 in another bar); only A 0, only B 0
+
+== family articulation: gathered A 23 / B 23; matched 23 (0 in another bar); only A 0, only B 0
+
+== family clef: gathered A 68 / B 68; matched 68 (0 in another bar); only A 0, only B 0
+
+== family dynamic: gathered A 266 / B 266; matched 266 (0 in another bar); only A 0, only B 0
+
+== family key: gathered A 64 / B 64; matched 64 (0 in another bar); only A 0, only B 0
+
+== family note: gathered A 1491 / B 1491; matched 1491 (0 in another bar); only A 0, only B 0
+   ADJUDICATE status A -> B: {'narrowed -> kept': 7}
+   ADJUDICATE duration: 10 of 1491 changed answer
+           7  narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+           2  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+           1  decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> narrowed:[{"beam_levels": 0, "beats": 2.0, "dots": 0, "head_fill": ...
+   e.g. duration: glyph/0/0/10/3/4 ~ glyph/0/0/10/3/4, glyph/0/0/11/6/14 ~ glyph/0/0/11/6/14, glyph/1/0/0/3/10 ~ glyph/1/0/0/3/10, glyph/1/0/1/1/9 ~ glyph/1/0/1/1/9, glyph/1/0/3/4/19 ~ glyph/1/0/3/4/19
+
+== family ornament: gathered A 6 / B 6; matched 6 (0 in another bar); only A 0, only B 0
+
+== family rest: gathered A 371 / B 371; matched 371 (0 in another bar); only A 0, only B 0
+
+== family slur: gathered A 317 / B 317; matched 317 (0 in another bar); only A 0, only B 0
+
+== family tie: gathered A 717 / B 717; matched 717 (0 in another bar); only A 0, only B 0
+
+== family time: gathered A 104 / B 104; matched 104 (0 in another bar); only A 0, only B 0
+
+== family wedge: gathered A 1 / B 1; matched 1 (0 in another bar); only A 0, only B 0
+
+== matched glyphs that changed (10 shown of 10)
+   glyph/0/0/10/3/4 ~ glyph/0/0/10/3/4 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/0/0/11/6/14 ~ glyph/0/0/11/6/14 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/0/0/3/10 ~ glyph/1/0/0/3/10 (iou 1.0): duration: decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/0/1/1/9 ~ glyph/1/0/1/1/9 (iou 1.0): duration: decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/0/3/4/19 ~ glyph/1/0/3/4/19 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/0/9/3/11 ~ glyph/1/0/9/3/11 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/0/10/3/4 ~ glyph/1/0/10/3/4 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/1/5/6/9 ~ glyph/1/1/5/6/9 (iou 1.0): duration: decided:{"beam_levels": 0, "beats": 1.0, "dots": 0, "written": 1.0} -> narrowed:[{"beam_levels": 0, "beats": 2.0, "dots": 0, "head_fill": ...
+   glyph/1/1/9/2/7 ~ glyph/1/1/9/2/7 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+   glyph/1/1/10/0/8 ~ glyph/1/1/10/0/8 (iou 1.0): status narrowed -> kept; duration: narrowed:[{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.... -> decided:{"beam_levels": 1, "beats": 0.5, "dots": 0, "written": 0.5}
+
+10 differences at GATHER + ADJUDICATE (glyphs in one run only + matched glyphs that changed + structural verdicts that changed).
