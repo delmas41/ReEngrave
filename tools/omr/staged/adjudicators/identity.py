@@ -108,7 +108,14 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
     # as a Contrabass, confidently and wrongly). Restating any of that here
     # would give this repo two copies of numbers it paid to measure once, and
     # the copies would drift.
-    decided = WR.decide(text, roster, hit=match)
+    # ROADMAP 2.94: the OTHER staves of this system, named by the lexicon,
+    # so a worn label (`Oh.` for `Ob.`) can be placed only in the system's
+    # own gap. Computed only when the lexicon abstained -- the one case that
+    # reads it -- because `lookup` on a non-matching string is slow.
+    named_in_system = (_names_in_system(ev, text) if match is None
+                       and roster is not None else None)
+    decided = WR.decide(text, roster, hit=match,
+                        named_in_system=named_in_system)
     used = tuple(r.id for r in labels) + tuple(r.id for r in roster_rows)
 
     if decided.kind == "vetoed":
@@ -172,6 +179,31 @@ def adjudicate_instrument(ev: Evidence) -> Ruling:
                 # collapse_slot_index_to_family_block`'s, off the
                 # REFERENCE's own instrument run, not off this field.
                 "condensed_with": match.condensed_with})
+
+
+def _names_in_system(ev: Evidence, own_text: str) -> frozenset:
+    """Canonical instrument names the lexicon gives the OTHER staves' margin
+    labels in this staff's system (ROADMAP 2.94: the system's lineup, so the
+    gap can be found).
+
+    Sibling rows are read at `SELF_AND_DESCENDANTS` of the SYSTEM, which is
+    what `_margin_texts_by_system` does for the whole document. A sibling
+    that reads nothing contributes nothing (the gap test is then looser by
+    that staff; the other two conditions in `work_roster.recover_worn` --
+    exactly one lexicon neighbour, held by name in the catalog roster --
+    still bind).
+    """
+    from ...instruments import lookup
+    system = ev.subject.at(Kind.SYSTEM)
+    names = set()
+    for r in ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=system):
+        if r.subject == ev.subject or r.subject.kind is not Kind.STAFF:
+            continue
+        hit = lookup(str(r.value))
+        if hit is not None:
+            names.add(hit.instrument.name)
+    return frozenset(names)
 
 
 def _work_roster(value):

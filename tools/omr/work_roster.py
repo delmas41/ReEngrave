@@ -400,7 +400,7 @@ def _roster_aliases(roster: WorkRoster) -> list[tuple[str, Instrument]]:
 class Decision:
     """What the roster made of one label. `kind` is the whole answer."""
 
-    kind: str    # "unchanged" | "recovered" | "disambiguated" | "vetoed"
+    kind: str    # "unchanged" | "recovered" | "recovered_worn" | "disambiguated" | "vetoed"
     match: Match | None          # the resolution to use; None means unlabelled
     reason: str = ""
     before: str = ""             # instrument name the lexicon gave, if any
@@ -412,7 +412,7 @@ class Decision:
         `recovered` and `disambiguated` name a staff and can name it wrongly;
         `vetoed` only removes a name the lexicon had already got wrong.
         """
-        return self.kind in ("recovered", "disambiguated")
+        return self.kind in ("recovered", "recovered_worn", "disambiguated")
 
 
 def recover_truncated(text: str, roster: WorkRoster) -> Match | None:
@@ -463,10 +463,62 @@ def recover_truncated(text: str, roster: WorkRoster) -> Match | None:
     return Match(inst, offset, alias, coverage=0.5, ocr_folded=False)
 
 
+_ROMAN = re.compile(r"^(?:i{1,3}|iv|v|vi{0,3})$")
+
+#: A worn label is a SHORT abbreviation (`Ob.`, `Fg.`, `Cl.`); a longer word one
+#: letter off is more likely a different word than a worn one.
+MAX_WORN_LETTERS = 4
+
+
+def recover_worn(text: str, roster: WorkRoster,
+                 named_in_system: frozenset[str]) -> Match | None:
+    """A WORN label (`Oh.` for `Ob.`) read against the roster and its system.
+
+    ROADMAP 2.94. The lexicon abstained on a short token that is exactly ONE
+    substituted letter from an alias. `instruments._OCR_FOLD` documents why
+    this is not a fold: b/h, a/u and their kin merge distinct names, and an
+    alias is GLOBAL, so a widening admitted for one score is admitted for
+    every score. The rule here widens nothing -- it names a staff only where
+    three things hold at once, two of them from other sources than the raster:
+
+    1. the token is one substitution from an alias of EXACTLY ONE instrument
+       in the WHOLE lexicon (any second instrument one letter away abstains);
+    2. the work's roster (catalog, `source_kind: catalog`) holds that
+       instrument BY NAME -- family admission is not enough, because it
+       admits the neighbours that make a near miss ambiguous;
+    3. no other staff of this system (`named_in_system`, canonical names the
+       lexicon gave the system's other labels) already carries that name --
+       the instrument is the gap in the system's own lineup.
+
+    Anything else returns None and the staff stays unnamed (rule 8).
+    """
+    if not roster.complete:
+        return None
+    known = _known_aliases()
+    cands: dict[str, tuple[str, str, Instrument]] = {}
+    for token in _tokens(text):
+        if (len(token) < 2 or len(token) > MAX_WORN_LETTERS or token in known
+                or _ROMAN.match(token)):
+            continue
+        for inst in INSTRUMENTS:
+            for alias in aliases_of(inst):
+                if (len(alias) == len(token) and " " not in alias
+                        and sum(a != b for a, b in zip(alias, token)) == 1):
+                    cands.setdefault(inst.name, (token, alias, inst))
+    if len(cands) != 1:
+        return None
+    token, alias, inst = next(iter(cands.values()))
+    if inst.name not in roster.instruments or inst.name in named_in_system:
+        return None
+    return Match(inst, inst.default_fifths_offset, alias, coverage=0.5,
+                 ocr_folded=False)
+
+
 _UNSET = object()
 
 
-def decide(text: str, roster: WorkRoster | None, *, hit: Any = _UNSET) -> Decision:
+def decide(text: str, roster: WorkRoster | None, *, hit: Any = _UNSET,
+           named_in_system: frozenset[str] | None = None) -> Decision:
     """What this label should resolve to, given the work's roster.
 
     Four outcomes, and they do not carry the same risk:
@@ -504,6 +556,16 @@ def decide(text: str, roster: WorkRoster | None, *, hit: Any = _UNSET) -> Decisi
             return Decision("unchanged", None)
         rec = recover_truncated(text, roster)
         if rec is None:
+            # ROADMAP 2.94: only where the caller can tell us the system's
+            # other names -- without them the gap cannot be checked.
+            if named_in_system is not None:
+                worn = recover_worn(text, roster, named_in_system)
+                if worn is not None:
+                    return Decision(
+                        "recovered_worn", worn,
+                        reason=(f"one letter from {worn.alias!r}; "
+                                f"{worn.instrument.name} is in the work's "
+                                f"roster and the system's gap"))
             return Decision("unchanged", None)
         return Decision("recovered", rec,
                         reason=f"tail of {rec.alias!r} in the work's roster")
