@@ -18,8 +18,10 @@ way. **In flight:** 2.83 the flag at the stem tip (Sean's tiles 5 right / 2
 narrowed / 3 wrong -- being fixed on `lane-2.83-flag-tip`), 2.12m a mark at the
 tip of a long chord stem (drop the losing owner when two staves claim a mark).
 2.86 (cautionary key after the last barline) measured DEAD and parked. **Next:**
-an overnight re-gather measuring all of today's landings together, then 2.81
-phase 2 and 2.80. ROADMAP START HERE has the order.
+an overnight re-gather measuring all of today's landings together, then 2.80.
+2.81 phase 2 landed 2026-10-11: INFER settles a bare-stem narrowing only where its
+bar adds up to the printed meter (`OMR_BARE_STEM_BAR`, ON); the quarter-first
+ranking stays off. ROADMAP START HERE has the order.
 
 **How the work is split (2026-10-11):** Mac sessions (Remote Control, the Mac
 Studio) hold the weights and the library and do every gather and measurement;

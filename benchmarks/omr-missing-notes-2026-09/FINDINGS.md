@@ -2860,3 +2860,138 @@ Scored on the same standing ADJUDICATE duration verdict as 19.13.5 (v5 is the ma
 **0 new wrong decisions.** Tile_07's head is refused in main, v5 and the fix by `notehead_is_not_a_notehead`, reason `belongs_to_a_nearer_staff` (the box stands 3.47 spaces from its filed staff, no ledger lines toward it, 0.83 spaces from the staff below with 3
 CV ink rows): **the refusal is right** -- the box is dropped and is not exported; the reason is true but is the geometry's reading, not the print's (it IS the nearer staff's accidental; nothing in the refusal knows it is a sharp), so the narrowing the beamless rule files on it is moot.
 The one real cost in these ten is tile_06 and its kind: 18 of main's 41 decided halves on the seven Litolff pages are now narrowed (19.13.6). With 19.13.5 the lane has 24 of Sean's answers: the fix reads 0 wrong.
+
+---
+
+## 20. ROADMAP 2.81 PHASE 2 -- a bare stem is a quarter, carried as a likelihood and settled by the bar (2026-10-11)
+
+Path: STAGED, through INFER on the SMALL re-gathers only (Brahms pdf 0-1, Litolff pdf 0-3; Sean runs the overnight). Lane
+`lane-2.81-phase2`, off main `2e286351` (the stem finder 2.87 and 2.82 are in it). Sean's ruling (2026-10-10, DECISIONS): below his 95% bar a bare
+stem is *"a labelled likelihood carried to INFER and settled by bar math or other evidence"*, never an ADJUDICATE decision.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED (rule 3; nobody was asked first): (1) a bar's arithmetic over its other DECIDED durations
+and the PRINTED meter settles a narrowed bare stem when every assignment of the bar's narrowings that lands the meter agrees on it -- falsified by a
+settled head whose print shows another value (a note nobody read, a second voice, a mis-read meter each move the sum); (2) "the meter" is the
+printed reading (template / glyph / OCR rows the `adjudicate_meter` verdict USED, followed through a carry) and not the verdict's wide `basis`;
+(3) Sean's condition for the head is "a tip SEEN clean" = the stem-tip window read clean. NONE of this is confirmed by Sean; the tiles below are the
+confirmation. Every number here is machine-read against Sean's boxes (one page) or my own look at crops (marked "agent-read"), not his judgement
+of the settled heads off that page.
+
+### 20.1 The population and the 0.76, re-measured on today's tree (reach first)
+
+Today's tree, small re-gather (`acceptance_quick --full`, clean `2e286351`, `probe/l281p2_score.sh`): **P = 109 Brahms (pdf 0: 62, pdf 1: 47) and 33
+Litolff (pdf 1-3)** narrowed `beam_discounted_uncertain` filled heads -- not dead. Phase 1's page-0 population was 91; the stem finder and 2.82
+moved it to **62**. Against Sean's hand-truth page (Brahms pdf 0, the Phase 1 scorer unchanged): of the 62, 49 are judged: **the plain "level 0 =
+quarter" reading is right for 47 of 49 = 0.959 (95% Wilson 0.863-0.989); by independent stem/beam/flag group 32/34 = 0.941 (0.809-0.984); tip window
+clean 44/45; clean AND no stroke at the tip 17/17.** Phase 1 on the old tree: 54/76 = 0.711, by group 0.841, strict 10/10. The two misses today are
+both FLAGGED eighths by his boxes (`glyph/0/0/9/3/3` tip window occupied, `glyph/0/0/10/3/4` a stroke at the tip), i.e. 2.83's population (Phase 1:
+5 of 22 misses were flags, 17 beamed -- the beams are what 2.87/2.82 repaired).
+**This is the PAGE the rule was tuned against and the interval's lower bound is 0.86: it does not demonstrate Sean's 95%.** His blind tiles' 0.76/0.80
+were drawn from pages on the OLD tree (Brahms pdf 1-26, Litolff 4-16), so they cannot be re-scored on today's tree without the whole-movement
+re-gather; only his page-0 answers re-score. Fresh blind tiles on today's tree (the next overnight) are the measurement that can move it.
+
+### 20.2 Why INFER settled almost nothing (`probe/l281p2_why_infer.py`: the FIRST gate each narrowed bare stem fails in the two column rules)
+
+Brahms (174 standing narrowed `beam_discounted_uncertain` durations on pdf 0-1): 8 stand in no onset column, **49 no other staff stands at its column
+with the same endpoint, 32 the same-span staves hold no DECIDED length, 3 witnesses disagree, 82 fewer than 2 INDEPENDENT witnesses**. Litolff (40):
+3 / 17 / 2 / 0 / 15, one names an unadmitted length, 2 would fire. The column rules borrow a neighbour's length; a bare stem in a sparse bar has no
+neighbour at its column, and where it has, the two staves' verdicts share a provenance row (`independent_groups`) and count once. Not a bug in
+those rules: the wrong instrument for this population, which is why this item adds a different one.
+
+### 20.3 What was built (flags: bar rule ON since 2026-10-11 by Sean's "Yes", ranking OFF; control arm byte-identical)
+
+* ADJUDICATE `rhythm.adjudicate_duration`, the `beam_discounted_uncertain` narrowing: where the head's own stem is decided, its tip window READS
+  clean (`Q.STEM_TIP_INK` false) and no stroke this decision refused stands at the stem tip (0.6 sp along, 0.3 across -- Phase 1's probe numbers,
+  unconfirmed) the QUARTER is ranked above the eighth -- **only behind `OMR_BARE_STEM_RANK`**. Details `bare_stem_evidence_holds`,
+  `bare_stem_tip_window_clean`, `bare_stem_refused_stroke_at_tip`, `bare_stem_likelihood` are written either way. It decides nothing.
+* INFER `collapse_bare_stem_by_bar` (`inferences.solve_bare_stem_bar`, flag `OMR_BARE_STEM_BAR`, registered with a `Switch`): one staff's bar,
+  decided notes held fixed, every narrowed event free over its OWN candidate lengths, the bar must land the printed meter exactly (Fractions, a DP
+  over prefix/suffix sums, no 2^n), and a `beam_discounted_uncertain` member is collapsed only where EVERY landing gives it one length AND its tip
+  window was read clean. It never reads `support`; where two landings exist it declines (choosing by the prior would launder 0.76-0.96 into an
+  answer). Declines by name: `no_decided_meter`, `meter_not_from_the_print`, `bar_does_not_add_up`, `event_mixes_decided_and_narrowed`,
+  `event_members_admit_different_lengths`, `narrowed_note_outside_every_event`, `decided_neighbour_rests_on_the_narrowing`, `too_many_unknowns`.
+  **It reads `Q.METER`, so `scoring_conflict` is non-empty: bar-fill is not a legitimate self-check for it; the print is.**
+
+**The meter had to be followed to the print.** Every real `Q.METER` verdict has `Q.DURATION` in its closure (`adjudicate_meter` composes it from the
+durations; 5 of 5 Litolff systems), so a rule that takes the verdict as its basis supersedes a row its own basis reaches -- `Log.record` would raise --
+and it is the bars umpiring themselves. The first draft declined **99 of 102 Brahms and 24 of 26 Litolff members** for exactly that. What the verdict
+USED is narrow: a `voted` meter used the template/glyph/OCR readings (12 `meter_template` rows on Litolff's opening), a `carried` one used the
+earlier system's verdict. The rule follows `used` to those rows and takes them as the basis; a meter that does not reach the print that way (a
+derived-from-bars reason, or a bar at/after a printed change) is declined. A system with a printed change still serves its bars BEFORE the change.
+
+### 20.4 Results (GATHER once, decide twice: `probe/l281p2_arm.py`)
+
+**Control (it can fail).** Re-deciding each saved GATHER on the BASE tree reproduces every standing duration (Brahms 1,862/1,862, Litolff 1,807/1,807)
+and so does the arm tree with both flags off; with every `Q.BEAM_STROKE` observation dropped the control must fail and does (517 of 1,807 differ).
+
+| arm | Brahms standing durations changed | Litolff |
+|---|---|---|
+| `OMR_BARE_STEM_BAR=1` (INFER only) | 36, all narrowed -> decided by the rule; nothing else moves | 11, all narrowed -> decided |
+| `OMR_BARE_STEM_RANK=1` (ordering only) | 49: 44 narrowed reordered, 3 narrowed -> decided, 1 decided -> narrowed, 1 decided -> decided, the last five by `reconcile_duration` | 9 reordered, no outcome moves |
+
+**Sean's hand-truth page (Brahms pdf 0), the 49 judged members -- decided right / decided wrong / still narrowed:**
+
+| | decided right | decided WRONG | still narrowed |
+|---|---|---|---|
+| base (today's tree) | 0 | 0 | 49 (47 would be right as a quarter, 2 not) |
+| `OMR_BARE_STEM_BAR=1` | **33** | **0** | 16 (14 would be right as a quarter, 2 not) |
+| first draft, no tip-clean condition | 33 | **1** | 15 |
+
+The first draft's one wrong decision was `glyph/0/0/9/3/3`: a flagged eighth the bar landed on as a quarter through a note nobody read, tip window
+OCCUPIED. Sean's own condition ("tip seen clean") refuses it, and all 33 right ones have a clean window -- **but the condition was added after seeing
+that one error, on the one page that has a truth, so it is fitted to it**: the tiles are the held-out check. Of the 33: 12 carry the quarter-first
+evidence, 21 have a clean window but a refused stroke at the tip (decided arcs' ink); all right.
+
+**Count pages (P / settled by a later stage -> after, `population-*.csv`):** Brahms pdf 1 (the count page): **47 / 2 -> 2, INFER 0** -- every bar
+there either follows the 9/8 change (33 declined `meter_not_from_the_print`) or does not add up under any assignment (12 declined
+`bar_does_not_add_up`: an unread note or a second voice in the bar; the arithmetic correctly says nothing). Litolff pdf 3 (the count page): **13 / 1
+-> 8, INFER 7**; Litolff pdf 2: 18 / 8 -> 12 (INFER 4); Brahms pdf 0: 62 / 3 -> 39 (INFER 36). The 11 Litolff decisions have NO truth page: all
+settle to a quarter; two agent-read crops (tiles 13 and 4) look like quarters, one on a merged plate I cannot call.
+
+### 20.5 The ranking has a cost nobody owns (why `OMR_BARE_STEM_RANK` ships OFF)
+
+`reconcile_duration` (EVALUATE, lane 2.80's, untouched) sums a bar counting each narrowed note at its BEST-SUPPORTED reading, so reordering the
+candidates changes the sums and with them which single re-reading "lands". On the Brahms count page five bars changed answer; agent-read against the
+print (NOT Sean's): `glyph/1/1/3/0/7` and `glyph/1/1/9/0/15` newly decided as quarters (they print as quarters); `glyph/1/0/2/6/3`, a bare-stem
+quarter, newly decided an EIGHTH (wrong; the base left it narrowed); `glyph/1/0/3/6/12`, a hollow dotted half DECIDED 3.0 by the reader, re-read
+1.5 by `reconcile_duration` (wrong; the base was right); `glyph/1/0/2/6/8` a dotted quarter the base decided 1.5 and the arm left narrowed. Net on
+that page: 2 gained, 2 wrong, 1 lost. Page 0 (the truth page): zero outcome changes. The ordering is what Sean asked for and the label is written
+either way, but it should not turn on until the consumer is told its input changed (2.80's) or Sean has seen these bars.
+
+### 20.6 Tiles for Sean (`out/print/2.81-phase2-review/`, 14, phone-sized, big number baked on)
+
+6 settled by the bar (all Litolff: Brahms settles none off the truth page), 3 still narrowed with the quarter-first evidence, 1 narrowed without it,
+and 4 controls from his hand-truth page (2 his boxes show BEAMED, 2 BARE -- one of the beamed is the head the first draft decided wrongly). He
+answers "N. 4/8/16"; `probe/l281p2_tilescore.py` scores them per group. Our reading, the stage that wrote it and the rule are in `manifest.json`
+only; the image has the print, the staff, the number and the red corner bracket. Frame control (can fail): the head's box beats its neighbours on
+14 of 14, and on **0 of 14** with the page shifted 1.6 head-widths.
+
+### 20.7 Files / gates
+
+`tools/omr/staged/adjudicators/rhythm.py` (`_refused_stroke_at_tip`, `bare_stem_rank_enabled`, the narrowing branch), `infer.py` (the enum member, the
+switch, the flag), `inferences.py` (`solve_bare_stem_bar`, `_printed_meter_roots`, `collapse_bare_stem_by_bar`), `tests/test_staged_bare_stem_2_81.py`
+(27; run RED on the unrepaired tree first: 18 failed, 1 passed), `docs/flags-2026-09.md` (two rows), probes `probe/l281p2_*.py`. What the rule leaves
+narrowed (ambiguous bars, unclean tips, bars that do not add up, the 9/8 stretch) is 2.83's flags and a missing-note problem, not a reading this item
+can make.
+
+Gates on the branch (uncommitted-tree free, run after the last code edit): `pytest -m "not slow" tools/omr/tests` **7,257 passed, 11 skipped, 2 xfailed, 0
+failed** (13:29); `python3 -m tools.omr.staged.check` TOTAL **192** (= base `2e286351`). Two existing tests needed a named change, not a loosening:
+`test_no_registered_rule_declares_the_meter` now names `collapse_bare_stem_by_bar` as the one default-OFF rule that reads the meter (and a second test
+pins the invariant over the rules enabled by default), and the INFER self-check probe looks at the rules that RAN, so a run with the flag on is refused a
+bar-fill score and a default run is not.
+
+### 20.8 Sean's 14 tiles (2026-10-11, blind) -- `out/print/2.81-phase2-review/answers.json`
+
+His words: *"1-4. 4 5.8 6.dot 4 7. Dot 4 8-10. 4 11-12. 8 13.4 14.dot4"*. Scored by `probe/l281p2_tilescore.py`:
+
+* **settled by the bar (tiles 3, 4, 8, 9, 10, 13, all Litolff): 6 of 6 decided right, 0 wrong** -- the held-out check of the tip-clean condition. n = 6, one movement, one plate:
+  an error-free 6 bounds the rate only at 0.61 (95% Wilson lower), so this supports the rule as a conservative settler, it does not prove its precision.
+* narrowed with the quarter-first evidence (tiles 1, 2, 7): 3 of 3 a quarter / dotted quarter. Narrowed without it (tile 5, `glyph/1/0/10/3/4`): an EIGHTH, i.e. the
+  old order (not claimed) was the honest one there.
+* controls 4 of 4 agree with his hand-truth boxes (tiles 11-12 eighths, 6 and 14 dotted quarters).
+
+**What these tiles do NOT measure: the bare-stem -> quarter rate.** Only 4 un-settled samples (3 + 1) were drawn, so nothing here says how often an UNSETTLED bare stem is a
+quarter; the 3 of 3 are not an estimate of it, and the one counter-example (tile 5) sits in the stratum where the evidence did not hold. The rate stays what 19.1 says:
+0.959 on one page it was tuned on (lower bound 0.86), 0.76-0.80 on the old tree's blind tiles. **The question of an ADJUDICATE rule that decides stays open below 95%.**
+
+Landed 2026-10-11 (Sean: "Yes"): `OMR_BARE_STEM_BAR` default ON (deny-list, separate commit), `OMR_BARE_STEM_RANK` OFF. Gates after the flip and the merge of main `feef7e9e`: `pytest -m "not slow" tools/omr/tests` 7,362 passed, 0 failed; `staged.check` TOTAL 192. Trial merge of `lane-2.80-missed-rest` onto this branch: conflicts only in ROADMAP.md and version_memory.md (docs); 295 tests across the touched suites plus the 2.80/reconcile/rest suites pass.
