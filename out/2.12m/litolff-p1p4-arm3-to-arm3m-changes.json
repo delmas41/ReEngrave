@@ -1,0 +1,50 @@
+[
+ [
+  "glyph/4/1/7/7/2",
+  {
+   "detail": {
+    "articulation": "staccato",
+    "confidence": 0.7626045346260071,
+    "detector_class": "articStaccatoAbove",
+    "dx_canonical_px": 15.0,
+    "dx_notehead_widths": 0.09933774834437085,
+    "gap_head_heights": 0.5827338129496403,
+    "measured_side": "above",
+    "notehead_side": "above",
+    "other_staff": "staff/4/1/6",
+    "other_staff_bar": "empty",
+    "same_ink_twins": [],
+    "shared_head": false,
+    "stem_direction": "down",
+    "stem_rule": "other_staff_bar_empty",
+    "suffix_side": "above",
+    "two_voice": true,
+    "was": "stem_contradicts_class_side"
+   },
+   "outcome": "decided",
+   "reason": "other_staff_bar_empty",
+   "value": "glyph/4/1/7/7/0"
+  },
+  {
+   "detail": {
+    "articulation": "staccato",
+    "confidence": 0.7626045346260071,
+    "detector_class": "articStaccatoAbove",
+    "dx_canonical_px": 15.0,
+    "dx_notehead_widths": 0.09933774834437085,
+    "gap_head_heights": 0.5827338129496403,
+    "measured_side": "above",
+    "notehead_side": "above",
+    "same_ink_twins": [],
+    "shared_head": false,
+    "stem_direction": "down",
+    "stem_rule": "notehead_side",
+    "suffix_side": "above",
+    "two_voice": false
+   },
+   "outcome": "decided",
+   "reason": "nearest_on_notehead_side",
+   "value": "glyph/4/1/7/7/0"
+  }
+ ]
+]

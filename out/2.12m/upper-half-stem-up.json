@@ -1,0 +1,2759 @@
+{
+ "method": "Verify Sean's claim (2026-10-10): a notehead above the middle line whose stem\ngoes up is almost always another voice.  Measurement only, over orchestral\nreference encodings in library/reference/.  See --help-less: just run it.\n\nClasses for an ANOMALOUS note (above middle & stem up, or below middle & stem down):\n  TWO_VOICES      another <voice> has a (non-rest, non-grace, non-cue) note in the\n                  same part+staff+measure  (sub-flag: overlapping in time = strict)\n  CHORD_FAR_NOTE  single voice; note is in a chord whose farthest note lies on the\n                  OPPOSITE side of the middle line by more than the nearest-side\n                  extreme of the chord\n  BEAM_GROUP      single voice, not chord-explained; note is in a beam group (beam\n                  number 1 begin..end, same part/staff/voice) holding a note on the\n                  opposite side farther from the middle line than this note\n  UNEXPLAINED     none of the above\n",
+ "files_total": 101,
+ "works_total": 30,
+ "filter": {
+  "orchestral_dirs": [
+   "bach/brandenburg-concerto-3",
+   "bach/brandenburg-concerto-4",
+   "beach/symphony-in-e-minor",
+   "beethoven/symphony-1",
+   "beethoven/symphony-2",
+   "beethoven/symphony-3",
+   "beethoven/symphony-4",
+   "beethoven/symphony-5",
+   "beethoven/symphony-6",
+   "beethoven/symphony-7",
+   "beethoven/symphony-8",
+   "beethoven/symphony-9",
+   "brahms/symphony-1",
+   "brahms/symphony-2",
+   "brahms/symphony-3",
+   "brahms/symphony-4",
+   "bruckner/symphony-5-in-b-flat-major",
+   "dvorak/symphony-9",
+   "dvorak/symphony-9-in-e-minor-op95",
+   "holst/the-planets",
+   "mahler/5-rondo-finale",
+   "mahler/adagietto",
+   "mahler/symphony-5",
+   "mozart/symphony-40-in-g-minor-k550",
+   "mozart/symphony-41-in-c-major-jupiter",
+   "tchaikovsky/1812-overture",
+   "tchaikovsky/pizzicato-ostinato",
+   "tchaikovsky/symphony-4",
+   "tchaikovsky/symphony-6",
+   "tchaikovsky/symphony-6-pathetique",
+   "tchaikovsky/tchaikovsky-symphony-6-3-satz",
+   "tchaikovsky/swan-lake",
+   "tchaikovsky/dance-of-the-sugar-plum-fairy",
+   "tchaikovsky/waltz-of-the-flowers",
+   "ravel/bolero",
+   "ravel/pavane",
+   "ravel/bolero-study-reduction-340-bars",
+   "rimsky-korsakov/flight-of-the-bumblebee"
+  ],
+  "min_parts": 3,
+  "dedupe": "per (work dir, movement tag): prefer '--gradus.mxl' over '--gradus.musicxml' over gradus-assets; *-full* whole-work files dropped; (notes,sum pos,parts) fingerprint dedupe"
+ },
+ "files": [
+  {
+   "work": "bach/brandenburg-concerto-3",
+   "file": "bach--brandenburg-concerto-3--mvt3--gradus.mxl",
+   "parts": 11,
+   "notes_used": 7457,
+   "also_present_as": []
+  },
+  {
+   "work": "bach/brandenburg-concerto-3",
+   "file": "bach--brandenburg-concerto-3--mvt1--gradus.mxl",
+   "parts": 11,
+   "notes_used": 12434,
+   "also_present_as": []
+  },
+  {
+   "work": "bach/brandenburg-concerto-3",
+   "file": "bach--brandenburg-concerto-3--mvt2--gradus.mxl",
+   "parts": 11,
+   "notes_used": 22,
+   "also_present_as": []
+  },
+  {
+   "work": "bach/brandenburg-concerto-4",
+   "file": "bach--brandenburg-concerto-4--mvt3--gradus.mxl",
+   "parts": 9,
+   "notes_used": 6361,
+   "also_present_as": []
+  },
+  {
+   "work": "bach/brandenburg-concerto-4",
+   "file": "bach--brandenburg-concerto-4--mvt2--gradus.mxl",
+   "parts": 9,
+   "notes_used": 1915,
+   "also_present_as": []
+  },
+  {
+   "work": "bach/brandenburg-concerto-4",
+   "file": "bach--brandenburg-concerto-4--mvt1--gradus.mxl",
+   "parts": 9,
+   "notes_used": 9388,
+   "also_present_as": []
+  },
+  {
+   "work": "beach/symphony-in-e-minor",
+   "file": "beach--symphony-in-e-minor--alla-siciliana-allegro-vivace-andante--gradus-assets.mxl",
+   "parts": 21,
+   "notes_used": 8069,
+   "also_present_as": []
+  },
+  {
+   "work": "beach/symphony-in-e-minor",
+   "file": "beach--symphony-in-e-minor--lento-con-molto-espressione--gradus-assets.mxl",
+   "parts": 27,
+   "notes_used": 8976,
+   "also_present_as": []
+  },
+  {
+   "work": "beach/symphony-in-e-minor",
+   "file": "beach--symphony-in-e-minor--allegro-con-fuoco--gradus-assets.mxl",
+   "parts": 25,
+   "notes_used": 20149,
+   "also_present_as": []
+  },
+  {
+   "work": "beach/symphony-in-e-minor",
+   "file": "beach--symphony-in-e-minor--allegro-di-molto--gradus-assets.mxl",
+   "parts": 24,
+   "notes_used": 23163,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-1",
+   "file": "beethoven--symphony-1--mvt3--gradus.mxl",
+   "parts": 18,
+   "notes_used": 2761,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-1",
+   "file": "beethoven--symphony-1--mvt1--gradus.mxl",
+   "parts": 18,
+   "notes_used": 11055,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-1",
+   "file": "beethoven--symphony-1--mvt4--gradus.mxl",
+   "parts": 18,
+   "notes_used": 7907,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-1",
+   "file": "beethoven--symphony-1--mvt2--gradus.mxl",
+   "parts": 18,
+   "notes_used": 5639,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-2",
+   "file": "beethoven--symphony-2--mvt3--gradus.mxl",
+   "parts": 18,
+   "notes_used": 2160,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-2",
+   "file": "beethoven--symphony-2--mvt2--gradus.mxl",
+   "parts": 15,
+   "notes_used": 8510,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-2",
+   "file": "beethoven--symphony-2--mvt4--gradus.mxl",
+   "parts": 18,
+   "notes_used": 13255,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-2",
+   "file": "beethoven--symphony-2--mvt1--gradus.mxl",
+   "parts": 18,
+   "notes_used": 16875,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-3",
+   "file": "beethoven--symphony-3--mvt3--gradus.mxl",
+   "parts": 19,
+   "notes_used": 8871,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-3",
+   "file": "beethoven--symphony-3--mvt2--gradus.mxl",
+   "parts": 19,
+   "notes_used": 8991,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-3",
+   "file": "beethoven--symphony-3--mvt1--gradus.mxl",
+   "parts": 19,
+   "notes_used": 21078,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-3",
+   "file": "beethoven--symphony-3--mvt4--gradus.mxl",
+   "parts": 19,
+   "notes_used": 16523,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-4",
+   "file": "beethoven--symphony-4--mvt3--gradus.mxl",
+   "parts": 17,
+   "notes_used": 4541,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-4",
+   "file": "beethoven--symphony-4--mvt1--gradus.mxl",
+   "parts": 17,
+   "notes_used": 12884,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-4",
+   "file": "beethoven--symphony-4--mvt4--gradus.mxl",
+   "parts": 17,
+   "notes_used": 10228,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-4",
+   "file": "beethoven--symphony-4--mvt2--gradus.mxl",
+   "parts": 17,
+   "notes_used": 6379,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-5",
+   "file": "beethoven--symphony-5--mvt3--gradus.mxl",
+   "parts": 18,
+   "notes_used": 5811,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-5",
+   "file": "beethoven--symphony-5--mvt4--gradus.mxl",
+   "parts": 23,
+   "notes_used": 22179,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-5",
+   "file": "beethoven--symphony-5--mvt1--gradus.mxl",
+   "parts": 18,
+   "notes_used": 10029,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-5",
+   "file": "beethoven--symphony-5--mvt2--gradus.mxl",
+   "parts": 18,
+   "notes_used": 7089,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-6",
+   "file": "beethoven--symphony-6--mvt3--gradus.mxl",
+   "parts": 17,
+   "notes_used": 5626,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-6",
+   "file": "beethoven--symphony-6--mvt5--gradus.mxl",
+   "parts": 19,
+   "notes_used": 12074,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-6",
+   "file": "beethoven--symphony-6--mvt2--gradus.mxl",
+   "parts": 16,
+   "notes_used": 12825,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-6",
+   "file": "beethoven--symphony-6--mvt1--gradus.mxl",
+   "parts": 15,
+   "notes_used": 12080,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-6",
+   "file": "beethoven--symphony-6--mvt4--gradus.mxl",
+   "parts": 21,
+   "notes_used": 5515,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-7",
+   "file": "beethoven--symphony-7--mvt3--gradus.mxl",
+   "parts": 18,
+   "notes_used": 12784,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-7",
+   "file": "beethoven--symphony-7--mvt2--gradus.mxl",
+   "parts": 19,
+   "notes_used": 7399,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-7",
+   "file": "beethoven--symphony-7--mvt4--gradus.mxl",
+   "parts": 18,
+   "notes_used": 18037,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-7",
+   "file": "beethoven--symphony-7--mvt1--gradus.mxl",
+   "parts": 18,
+   "notes_used": 20796,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-8",
+   "file": "beethoven--symphony-8--mvt2--gradus.mxl",
+   "parts": 15,
+   "notes_used": 5944,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-8",
+   "file": "beethoven--symphony-8--mvt4--gradus.mxl",
+   "parts": 18,
+   "notes_used": 19159,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-8",
+   "file": "beethoven--symphony-8--mvt1--gradus.mxl",
+   "parts": 18,
+   "notes_used": 13509,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-8",
+   "file": "beethoven--symphony-8--mvt3--gradus.mxl",
+   "parts": 18,
+   "notes_used": 2795,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-9",
+   "file": "beethoven--symphony-9--mvt2--gradus.mxl",
+   "parts": 23,
+   "notes_used": 16339,
+   "also_present_as": [
+    "beethoven--symphony-9--mvt2--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "beethoven/symphony-9",
+   "file": "beethoven--symphony-9--mvt1--gradus.mxl",
+   "parts": 20,
+   "notes_used": 27662,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-9",
+   "file": "beethoven--symphony-9--mvt4--gradus.mxl",
+   "parts": 36,
+   "notes_used": 47896,
+   "also_present_as": []
+  },
+  {
+   "work": "beethoven/symphony-9",
+   "file": "beethoven--symphony-9--mvt3--gradus.mxl",
+   "parts": 20,
+   "notes_used": 9052,
+   "also_present_as": [
+    "beethoven--symphony-9--mvt3--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "brahms/symphony-1",
+   "file": "brahms--symphony-1--mvt3--gradus.mxl",
+   "parts": 19,
+   "notes_used": 6127,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-1",
+   "file": "brahms--symphony-1--mvt2--gradus.mxl",
+   "parts": 20,
+   "notes_used": 4698,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-1",
+   "file": "brahms--symphony-1--mvt1--gradus.mxl",
+   "parts": 21,
+   "notes_used": 17825,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-1",
+   "file": "brahms--symphony-1--mvt4--gradus.mxl",
+   "parts": 24,
+   "notes_used": 23142,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-2",
+   "file": "brahms--symphony-2--mvt3--gradus.mxl",
+   "parts": 17,
+   "notes_used": 4866,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-2",
+   "file": "brahms--symphony-2--mvt4--gradus.mxl",
+   "parts": 24,
+   "notes_used": 20885,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-2",
+   "file": "brahms--symphony-2--mvt1--gradus.mxl",
+   "parts": 24,
+   "notes_used": 16022,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-2",
+   "file": "brahms--symphony-2--mvt2--gradus.mxl",
+   "parts": 22,
+   "notes_used": 5482,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-3",
+   "file": "brahms--symphony-3--mvt3--gradus.mxl",
+   "parts": 15,
+   "notes_used": 4373,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-3",
+   "file": "brahms--symphony-3--mvt1--gradus.mxl",
+   "parts": 24,
+   "notes_used": 12731,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-3",
+   "file": "brahms--symphony-3--mvt4--gradus.mxl",
+   "parts": 24,
+   "notes_used": 15612,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-3",
+   "file": "brahms--symphony-3--mvt2--gradus.mxl",
+   "parts": 18,
+   "notes_used": 5545,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-4",
+   "file": "brahms--symphony-4--mvt3--gradus.mxl",
+   "parts": 23,
+   "notes_used": 13522,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-4",
+   "file": "brahms--symphony-4--mvt2--gradus.mxl",
+   "parts": 20,
+   "notes_used": 7370,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-4",
+   "file": "brahms--symphony-4--mvt1--gradus.mxl",
+   "parts": 20,
+   "notes_used": 18310,
+   "also_present_as": []
+  },
+  {
+   "work": "brahms/symphony-4",
+   "file": "brahms--symphony-4--mvt4--gradus.mxl",
+   "parts": 24,
+   "notes_used": 12641,
+   "also_present_as": []
+  },
+  {
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "file": "bruckner--symphony-5-in-b-flat-major--mvt1--gradus.mxl",
+   "parts": 25,
+   "notes_used": 29957,
+   "also_present_as": []
+  },
+  {
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "file": "bruckner--symphony-5-in-b-flat-major--mvt4--gradus.mxl",
+   "parts": 25,
+   "notes_used": 20486,
+   "also_present_as": []
+  },
+  {
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "file": "bruckner--symphony-5-in-b-flat-major--mvt2--gradus.mxl",
+   "parts": 24,
+   "notes_used": 10452,
+   "also_present_as": []
+  },
+  {
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "file": "bruckner--symphony-5-in-b-flat-major--trio-im-gleichen-tempo--gradus-assets.mxl",
+   "parts": 25,
+   "notes_used": 1556,
+   "also_present_as": []
+  },
+  {
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "file": "bruckner--symphony-5-in-b-flat-major--mvt3--gradus.mxl",
+   "parts": 25,
+   "notes_used": 11194,
+   "also_present_as": []
+  },
+  {
+   "work": "dvorak/symphony-9",
+   "file": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "parts": 15,
+   "notes_used": 12323,
+   "also_present_as": [
+    "dvorak--symphony-9--mvt1--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "dvorak/symphony-9",
+   "file": "dvorak--symphony-9--mvt3--gradus.mxl",
+   "parts": 14,
+   "notes_used": 6957,
+   "also_present_as": [
+    "dvorak--symphony-9--mvt3--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "dvorak/symphony-9-in-e-minor-op95",
+   "file": "dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl",
+   "parts": 18,
+   "notes_used": 14152,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt3--gradus.mxl",
+   "parts": 64,
+   "notes_used": 7248,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt6--gradus.mxl",
+   "parts": 64,
+   "notes_used": 14788,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt5--gradus.mxl",
+   "parts": 64,
+   "notes_used": 9159,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt7--gradus.mxl",
+   "parts": 64,
+   "notes_used": 5777,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt2--gradus.mxl",
+   "parts": 64,
+   "notes_used": 4875,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt1--gradus.mxl",
+   "parts": 64,
+   "notes_used": 20485,
+   "also_present_as": []
+  },
+  {
+   "work": "holst/the-planets",
+   "file": "holst--the-planets--mvt4--gradus.mxl",
+   "parts": 64,
+   "notes_used": 26024,
+   "also_present_as": []
+  },
+  {
+   "work": "mahler/5-rondo-finale",
+   "file": "mahler--5-rondo-finale--mvt5--gradus.mxl",
+   "parts": 22,
+   "notes_used": 23847,
+   "also_present_as": []
+  },
+  {
+   "work": "mahler/adagietto",
+   "file": "mahler--adagietto--mvt4--gradus.mxl",
+   "parts": 6,
+   "notes_used": 1598,
+   "also_present_as": []
+  },
+  {
+   "work": "mahler/symphony-5",
+   "file": "mahler--symphony-5--mvt3--gradus.mxl",
+   "parts": 27,
+   "notes_used": 21264,
+   "also_present_as": []
+  },
+  {
+   "work": "mahler/symphony-5",
+   "file": "mahler--symphony-5--mvt1--gradus.mxl",
+   "parts": 25,
+   "notes_used": 12671,
+   "also_present_as": []
+  },
+  {
+   "work": "mahler/symphony-5",
+   "file": "mahler--symphony-5--mvt2--gradus.mxl",
+   "parts": 27,
+   "notes_used": 19833,
+   "also_present_as": []
+  },
+  {
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt2--gradus.mxl",
+   "parts": 11,
+   "notes_used": 4804,
+   "also_present_as": []
+  },
+  {
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt4--gradus.mxl",
+   "parts": 12,
+   "notes_used": 9689,
+   "also_present_as": []
+  },
+  {
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt1--gradus.mxl",
+   "parts": 11,
+   "notes_used": 10355,
+   "also_present_as": []
+  },
+  {
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt3--gradus.mxl",
+   "parts": 11,
+   "notes_used": 2081,
+   "also_present_as": []
+  },
+  {
+   "work": "mozart/symphony-41-in-c-major-jupiter",
+   "file": "mozart--symphony-41-in-c-major-jupiter--mvt3--gradus.mxl",
+   "parts": 17,
+   "notes_used": 2079,
+   "also_present_as": [
+    "mozart--symphony-41-in-c-major-jupiter--mvt3--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "mozart/symphony-41-in-c-major-jupiter",
+   "file": "mozart--symphony-41-in-c-major-jupiter--mvt4--gradus.mxl",
+   "parts": 17,
+   "notes_used": 13464,
+   "also_present_as": [
+    "mozart--symphony-41-in-c-major-jupiter--mvt4--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "mozart/symphony-41-in-c-major-jupiter",
+   "file": "mozart--symphony-41-in-c-major-jupiter--mvt1--gradus.mxl",
+   "parts": 17,
+   "notes_used": 12196,
+   "also_present_as": [
+    "mozart--symphony-41-in-c-major-jupiter--mvt1--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "mozart/symphony-41-in-c-major-jupiter",
+   "file": "mozart--symphony-41-in-c-major-jupiter--mvt2--gradus.mxl",
+   "parts": 17,
+   "notes_used": 5033,
+   "also_present_as": [
+    "mozart--symphony-41-in-c-major-jupiter--mvt2--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "tchaikovsky/1812-overture",
+   "file": "tchaikovsky--1812-overture--tchaikovsky-1812-overture--gradus.mxl",
+   "parts": 42,
+   "notes_used": 30737,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/pizzicato-ostinato",
+   "file": "tchaikovsky--pizzicato-ostinato--mvt3--gradus.mxl",
+   "parts": 24,
+   "notes_used": 8035,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/symphony-4",
+   "file": "tchaikovsky--symphony-4--mvt2--gradus.mxl",
+   "parts": 20,
+   "notes_used": 6297,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/symphony-4",
+   "file": "tchaikovsky--symphony-4--mvt4--gradus.mxl",
+   "parts": 25,
+   "notes_used": 28159,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/symphony-4",
+   "file": "tchaikovsky--symphony-4--mvt1--gradus.mxl",
+   "parts": 24,
+   "notes_used": 28917,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/symphony-6-pathetique",
+   "file": "tchaikovsky--symphony-6-pathetique--mvt1--gradus.musicxml",
+   "parts": 21,
+   "notes_used": 24971,
+   "also_present_as": []
+  },
+  {
+   "work": "tchaikovsky/symphony-6-pathetique",
+   "file": "tchaikovsky--symphony-6-pathetique--mvt2--gradus.mxl",
+   "parts": 16,
+   "notes_used": 9055,
+   "also_present_as": [
+    "tchaikovsky--symphony-6-pathetique--mvt2--gradus-assets.musicxml"
+   ]
+  },
+  {
+   "work": "tchaikovsky/tchaikovsky-symphony-6-3-satz",
+   "file": "tchaikovsky--tchaikovsky-symphony-6-3-satz--mvt3--gradus.mxl",
+   "parts": 26,
+   "notes_used": 27140,
+   "also_present_as": []
+  },
+  {
+   "work": "ravel/bolero",
+   "file": "ravel--bolero--ravel-bolero--gradus-assets.musicxml",
+   "parts": 41,
+   "notes_used": 5528,
+   "also_present_as": []
+  },
+  {
+   "work": "ravel/bolero-study-reduction-340-bars",
+   "file": "ravel--bolero-study-reduction-340-bars--ravel-bolero--gradus.mxl",
+   "parts": 9,
+   "notes_used": 6660,
+   "also_present_as": []
+  }
+ ],
+ "skipped_files": [
+  [
+   "dvorak--symphony-9--mvt4--gradus-assets.musicxml",
+   "alternative encoding of a movement already counted"
+  ],
+  [
+   "dvorak--symphony-9--sym9-full--gradus.musicxml",
+   "duplicate: whole-work file overlaps per-movement files"
+  ],
+  [
+   "holst--the-planets--full--gradus.mxl",
+   "duplicate: whole-work file overlaps per-movement files"
+  ],
+  [
+   "mozart--symphony-41-in-c-major-jupiter--sym41-full--gradus.mxl",
+   "duplicate: whole-work file overlaps per-movement files"
+  ],
+  [
+   "tchaikovsky--symphony-6--sym6-full--gradus.musicxml",
+   "duplicate: whole-work file overlaps per-movement files"
+  ],
+  [
+   "tchaikovsky--symphony-6--mvt3--gradus-assets.musicxml",
+   "alternative encoding of a movement already counted"
+  ],
+  [
+   "tchaikovsky--swan-lake--swan-lake--gradus-assets.mxl",
+   "only 1 part(s): reduction/solo, not orchestral"
+  ],
+  [
+   "tchaikovsky--dance-of-the-sugar-plum-fairy--dance-of-the-sugar-plum-fairy--gradus-assets.mxl",
+   "only 1 part(s): reduction/solo, not orchestral"
+  ],
+  [
+   "tchaikovsky--waltz-of-the-flowers--waltz-of-the-flowers--gradus-assets.mxl",
+   "only 1 part(s): reduction/solo, not orchestral"
+  ],
+  [
+   "ravel--pavane--ravel-pavane--gradus-assets.musicxml",
+   "only 1 part(s): reduction/solo, not orchestral"
+  ],
+  [
+   "rimsky-korsakov--flight-of-the-bumblebee--flight-of-the-bumblebee--gradus-assets.mxl",
+   "only 1 part(s): reduction/solo, not orchestral"
+  ]
+ ],
+ "pooled": {
+  "files": 101,
+  "notes_with_stem": 1208908,
+  "skipped": {
+   "stem_missing_none_double": 40280,
+   "grace": 3503,
+   "unpitched": 11500,
+   "cue": 832,
+   "no_pitched_clef(perc/tab/none)": 2281
+  },
+  "above_up": {
+   "total": 28541,
+   "BEAM_GROUP": 11528,
+   "UNEXPLAINED": 4549,
+   "UNEXPLAINED_residual": 2435,
+   "TWO_VOICES_NONOVERLAP": 541,
+   "TWO_VOICES_STRICT": 5218,
+   "CHORD_FAR_NOTE": 6705,
+   "plain": 1361,
+   "UNEXPLAINED_with_other_voice_rest_only": 2084,
+   "UNEXPLAINED_adjacent_measure_has_two_voices": 218
+  },
+  "above_down": {
+   "total": 657465,
+   "single": 653769,
+   "plain": 312727,
+   "multi": 3696
+  },
+  "below_down": {
+   "total": 33020,
+   "BEAM_GROUP": 12529,
+   "UNEXPLAINED": 8837,
+   "UNEXPLAINED_residual": 8307,
+   "TWO_VOICES_NONOVERLAP": 332,
+   "TWO_VOICES_STRICT": 4288,
+   "UNEXPLAINED_adjacent_measure_has_two_voices": 202,
+   "plain": 583,
+   "CHORD_FAR_NOTE": 7034,
+   "UNEXPLAINED_with_other_voice_rest_only": 396
+  },
+  "below_up": {
+   "total": 398554,
+   "single": 395656,
+   "plain": 195342,
+   "multi": 2898
+  },
+  "mid_up": {
+   "total": 20316,
+   "single": 19443,
+   "multi": 873,
+   "plain": 373
+  },
+  "mid_down": {
+   "total": 71012,
+   "single": 70325,
+   "plain": 39917,
+   "multi": 687
+  }
+ },
+ "per_work": {
+  "bach/brandenburg-concerto-3": {
+   "files": 3,
+   "notes_with_stem": 19913,
+   "skipped": {},
+   "above_up": {
+    "total": 790,
+    "BEAM_GROUP": 775,
+    "UNEXPLAINED": 15,
+    "UNEXPLAINED_residual": 15
+   },
+   "above_down": {
+    "total": 9745,
+    "single": 9745,
+    "plain": 533
+   },
+   "below_down": {
+    "total": 997,
+    "BEAM_GROUP": 777,
+    "UNEXPLAINED": 220,
+    "UNEXPLAINED_residual": 220
+   },
+   "below_up": {
+    "total": 6425,
+    "single": 6425,
+    "plain": 697
+   },
+   "mid_up": {
+    "total": 730,
+    "single": 730
+   },
+   "mid_down": {
+    "total": 1226,
+    "single": 1226,
+    "plain": 136
+   }
+  },
+  "bach/brandenburg-concerto-4": {
+   "files": 3,
+   "notes_with_stem": 17534,
+   "skipped": {
+    "stem_missing_none_double": 130
+   },
+   "above_up": {
+    "total": 452,
+    "BEAM_GROUP": 383,
+    "TWO_VOICES_NONOVERLAP": 20,
+    "UNEXPLAINED": 23,
+    "UNEXPLAINED_residual": 23,
+    "TWO_VOICES_STRICT": 23,
+    "CHORD_FAR_NOTE": 3
+   },
+   "above_down": {
+    "total": 10921,
+    "plain": 3461,
+    "single": 10841,
+    "multi": 80
+   },
+   "below_down": {
+    "total": 646,
+    "UNEXPLAINED": 151,
+    "UNEXPLAINED_residual": 151,
+    "BEAM_GROUP": 420,
+    "TWO_VOICES_NONOVERLAP": 40,
+    "TWO_VOICES_STRICT": 35
+   },
+   "below_up": {
+    "total": 3904,
+    "plain": 1615,
+    "single": 3862,
+    "multi": 42
+   },
+   "mid_up": {
+    "total": 397,
+    "single": 391,
+    "multi": 6
+   },
+   "mid_down": {
+    "total": 1214,
+    "plain": 566,
+    "single": 1214
+   }
+  },
+  "beach/symphony-in-e-minor": {
+   "files": 4,
+   "notes_with_stem": 57992,
+   "skipped": {
+    "grace": 287,
+    "unpitched": 48,
+    "stem_missing_none_double": 2365
+   },
+   "above_up": {
+    "total": 821,
+    "BEAM_GROUP": 258,
+    "TWO_VOICES_STRICT": 20,
+    "plain": 28,
+    "UNEXPLAINED": 113,
+    "UNEXPLAINED_residual": 109,
+    "UNEXPLAINED_with_other_voice_rest_only": 4,
+    "CHORD_FAR_NOTE": 430
+   },
+   "above_down": {
+    "total": 26819,
+    "single": 26772,
+    "plain": 16107,
+    "multi": 47
+   },
+   "below_down": {
+    "total": 1043,
+    "BEAM_GROUP": 370,
+    "UNEXPLAINED": 325,
+    "UNEXPLAINED_residual": 324,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1,
+    "plain": 36,
+    "CHORD_FAR_NOTE": 331,
+    "TWO_VOICES_STRICT": 15,
+    "TWO_VOICES_NONOVERLAP": 2
+   },
+   "below_up": {
+    "total": 24447,
+    "single": 24429,
+    "plain": 16030,
+    "multi": 18
+   },
+   "mid_up": {
+    "total": 694,
+    "single": 693,
+    "plain": 58,
+    "multi": 1
+   },
+   "mid_down": {
+    "total": 4168,
+    "single": 4166,
+    "plain": 2886,
+    "multi": 2
+   }
+  },
+  "beethoven/symphony-1": {
+   "files": 4,
+   "notes_with_stem": 26939,
+   "skipped": {
+    "grace": 36,
+    "stem_missing_none_double": 423
+   },
+   "above_up": {
+    "total": 591,
+    "UNEXPLAINED": 201,
+    "UNEXPLAINED_residual": 201,
+    "BEAM_GROUP": 302,
+    "CHORD_FAR_NOTE": 88
+   },
+   "above_down": {
+    "total": 15446,
+    "plain": 8470,
+    "single": 15446
+   },
+   "below_down": {
+    "total": 544,
+    "BEAM_GROUP": 237,
+    "UNEXPLAINED": 209,
+    "UNEXPLAINED_residual": 209,
+    "CHORD_FAR_NOTE": 98
+   },
+   "below_up": {
+    "total": 8290,
+    "plain": 4145,
+    "single": 8290
+   },
+   "mid_up": {
+    "total": 444,
+    "single": 444
+   },
+   "mid_down": {
+    "total": 1624,
+    "plain": 878,
+    "single": 1624
+   }
+  },
+  "beethoven/symphony-2": {
+   "files": 4,
+   "notes_with_stem": 39263,
+   "skipped": {
+    "stem_missing_none_double": 1537,
+    "grace": 20
+   },
+   "above_up": {
+    "total": 724,
+    "TWO_VOICES_STRICT": 16,
+    "CHORD_FAR_NOTE": 303,
+    "BEAM_GROUP": 395,
+    "UNEXPLAINED": 10,
+    "UNEXPLAINED_residual": 10
+   },
+   "above_down": {
+    "total": 22670,
+    "plain": 10333,
+    "single": 22670
+   },
+   "below_down": {
+    "total": 922,
+    "UNEXPLAINED": 252,
+    "UNEXPLAINED_residual": 252,
+    "TWO_VOICES_STRICT": 10,
+    "CHORD_FAR_NOTE": 224,
+    "BEAM_GROUP": 436
+   },
+   "below_up": {
+    "total": 11868,
+    "plain": 5209,
+    "single": 11862,
+    "multi": 6
+   },
+   "mid_up": {
+    "total": 571,
+    "single": 571
+   },
+   "mid_down": {
+    "total": 2508,
+    "plain": 1448,
+    "single": 2508
+   }
+  },
+  "beethoven/symphony-3": {
+   "files": 4,
+   "notes_with_stem": 55462,
+   "skipped": {
+    "stem_missing_none_double": 1,
+    "grace": 38
+   },
+   "above_up": {
+    "total": 972,
+    "UNEXPLAINED": 196,
+    "UNEXPLAINED_residual": 196,
+    "BEAM_GROUP": 607,
+    "CHORD_FAR_NOTE": 168,
+    "TWO_VOICES_STRICT": 1
+   },
+   "above_down": {
+    "total": 30025,
+    "plain": 16120,
+    "single": 30025
+   },
+   "below_down": {
+    "total": 1122,
+    "UNEXPLAINED": 420,
+    "UNEXPLAINED_residual": 420,
+    "CHORD_FAR_NOTE": 175,
+    "BEAM_GROUP": 525,
+    "TWO_VOICES_STRICT": 2
+   },
+   "below_up": {
+    "total": 19449,
+    "plain": 9078,
+    "single": 19446,
+    "multi": 3
+   },
+   "mid_up": {
+    "total": 876,
+    "single": 876
+   },
+   "mid_down": {
+    "total": 3018,
+    "plain": 1657,
+    "single": 3017,
+    "multi": 1
+   }
+  },
+  "beethoven/symphony-4": {
+   "files": 4,
+   "notes_with_stem": 32682,
+   "skipped": {
+    "grace": 44,
+    "stem_missing_none_double": 1350
+   },
+   "above_up": {
+    "total": 503,
+    "UNEXPLAINED": 96,
+    "UNEXPLAINED_residual": 96,
+    "CHORD_FAR_NOTE": 91,
+    "BEAM_GROUP": 316
+   },
+   "above_down": {
+    "total": 16008,
+    "plain": 9181,
+    "single": 16008
+   },
+   "below_down": {
+    "total": 785,
+    "UNEXPLAINED": 376,
+    "UNEXPLAINED_residual": 376,
+    "CHORD_FAR_NOTE": 181,
+    "BEAM_GROUP": 220,
+    "TWO_VOICES_STRICT": 8
+   },
+   "below_up": {
+    "total": 12891,
+    "plain": 6181,
+    "single": 12890,
+    "multi": 1
+   },
+   "mid_up": {
+    "total": 649,
+    "single": 649
+   },
+   "mid_down": {
+    "total": 1846,
+    "plain": 1006,
+    "single": 1846
+   }
+  },
+  "beethoven/symphony-5": {
+   "files": 4,
+   "notes_with_stem": 44076,
+   "skipped": {
+    "grace": 237,
+    "stem_missing_none_double": 1032
+   },
+   "above_up": {
+    "total": 961,
+    "CHORD_FAR_NOTE": 245,
+    "BEAM_GROUP": 360,
+    "UNEXPLAINED": 282,
+    "UNEXPLAINED_residual": 281,
+    "TWO_VOICES_STRICT": 69,
+    "TWO_VOICES_NONOVERLAP": 5,
+    "plain": 28,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1
+   },
+   "above_down": {
+    "total": 24444,
+    "plain": 13321,
+    "single": 24418,
+    "multi": 26
+   },
+   "below_down": {
+    "total": 847,
+    "UNEXPLAINED": 427,
+    "UNEXPLAINED_residual": 422,
+    "BEAM_GROUP": 201,
+    "CHORD_FAR_NOTE": 137,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 5,
+    "TWO_VOICES_STRICT": 82,
+    "plain": 8
+   },
+   "below_up": {
+    "total": 15143,
+    "plain": 8201,
+    "single": 15080,
+    "multi": 63
+   },
+   "mid_up": {
+    "total": 734,
+    "single": 712,
+    "multi": 22,
+    "plain": 1
+   },
+   "mid_down": {
+    "total": 1947,
+    "plain": 1100,
+    "single": 1944,
+    "multi": 3
+   }
+  },
+  "beethoven/symphony-6": {
+   "files": 5,
+   "notes_with_stem": 47522,
+   "skipped": {
+    "grace": 416,
+    "stem_missing_none_double": 598
+   },
+   "above_up": {
+    "total": 1004,
+    "BEAM_GROUP": 626,
+    "TWO_VOICES_STRICT": 168,
+    "CHORD_FAR_NOTE": 51,
+    "UNEXPLAINED": 156,
+    "UNEXPLAINED_residual": 156,
+    "TWO_VOICES_NONOVERLAP": 3,
+    "plain": 33
+   },
+   "above_down": {
+    "total": 22238,
+    "plain": 10428,
+    "single": 22156,
+    "multi": 82
+   },
+   "below_down": {
+    "total": 1784,
+    "UNEXPLAINED": 569,
+    "UNEXPLAINED_residual": 564,
+    "TWO_VOICES_STRICT": 445,
+    "CHORD_FAR_NOTE": 138,
+    "BEAM_GROUP": 626,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 5,
+    "TWO_VOICES_NONOVERLAP": 6,
+    "plain": 79
+   },
+   "below_up": {
+    "total": 19115,
+    "plain": 6754,
+    "single": 18817,
+    "multi": 298
+   },
+   "mid_up": {
+    "total": 1168,
+    "single": 1058,
+    "multi": 110,
+    "plain": 35
+   },
+   "mid_down": {
+    "total": 2213,
+    "plain": 1152,
+    "single": 2198,
+    "multi": 15
+   }
+  },
+  "beethoven/symphony-7": {
+   "files": 4,
+   "notes_with_stem": 58943,
+   "skipped": {
+    "grace": 669,
+    "stem_missing_none_double": 73
+   },
+   "above_up": {
+    "total": 671,
+    "CHORD_FAR_NOTE": 162,
+    "BEAM_GROUP": 482,
+    "UNEXPLAINED": 12,
+    "UNEXPLAINED_residual": 10,
+    "UNEXPLAINED_with_other_voice_rest_only": 2,
+    "TWO_VOICES_STRICT": 8,
+    "TWO_VOICES_NONOVERLAP": 7
+   },
+   "above_down": {
+    "total": 34345,
+    "plain": 17391,
+    "single": 34340,
+    "multi": 5
+   },
+   "below_down": {
+    "total": 1019,
+    "CHORD_FAR_NOTE": 311,
+    "UNEXPLAINED": 260,
+    "UNEXPLAINED_residual": 260,
+    "BEAM_GROUP": 436,
+    "TWO_VOICES_STRICT": 12
+   },
+   "below_up": {
+    "total": 19443,
+    "plain": 9406,
+    "single": 19443
+   },
+   "mid_up": {
+    "total": 734,
+    "single": 733,
+    "multi": 1
+   },
+   "mid_down": {
+    "total": 2731,
+    "plain": 1481,
+    "single": 2729,
+    "multi": 2
+   }
+  },
+  "beethoven/symphony-8": {
+   "files": 4,
+   "notes_with_stem": 40684,
+   "skipped": {
+    "stem_missing_none_double": 723,
+    "grace": 11
+   },
+   "above_up": {
+    "total": 514,
+    "BEAM_GROUP": 389,
+    "UNEXPLAINED": 54,
+    "UNEXPLAINED_residual": 54,
+    "plain": 11,
+    "CHORD_FAR_NOTE": 52,
+    "TWO_VOICES_STRICT": 15,
+    "TWO_VOICES_NONOVERLAP": 4
+   },
+   "above_down": {
+    "total": 22991,
+    "single": 22990,
+    "plain": 13659,
+    "multi": 1
+   },
+   "below_down": {
+    "total": 882,
+    "BEAM_GROUP": 466,
+    "UNEXPLAINED": 191,
+    "UNEXPLAINED_residual": 191,
+    "plain": 1,
+    "CHORD_FAR_NOTE": 219,
+    "TWO_VOICES_STRICT": 6
+   },
+   "below_up": {
+    "total": 13900,
+    "single": 13887,
+    "plain": 7073,
+    "multi": 13
+   },
+   "mid_up": {
+    "total": 533,
+    "single": 533,
+    "plain": 5
+   },
+   "mid_down": {
+    "total": 1864,
+    "single": 1864,
+    "plain": 1088
+   }
+  },
+  "beethoven/symphony-9": {
+   "files": 4,
+   "notes_with_stem": 99586,
+   "skipped": {
+    "stem_missing_none_double": 1363,
+    "grace": 279,
+    "unpitched": 833
+   },
+   "above_up": {
+    "total": 1721,
+    "CHORD_FAR_NOTE": 421,
+    "BEAM_GROUP": 1131,
+    "UNEXPLAINED": 57,
+    "UNEXPLAINED_residual": 57,
+    "TWO_VOICES_NONOVERLAP": 7,
+    "TWO_VOICES_STRICT": 105
+   },
+   "above_down": {
+    "total": 59891,
+    "plain": 34062,
+    "single": 59819,
+    "multi": 72
+   },
+   "below_down": {
+    "total": 2257,
+    "CHORD_FAR_NOTE": 326,
+    "TWO_VOICES_STRICT": 109,
+    "UNEXPLAINED": 538,
+    "UNEXPLAINED_residual": 536,
+    "BEAM_GROUP": 1279,
+    "TWO_VOICES_NONOVERLAP": 5,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 2,
+    "plain": 1,
+    "UNEXPLAINED_with_other_voice_rest_only": 1
+   },
+   "below_up": {
+    "total": 28645,
+    "plain": 16218,
+    "single": 28585,
+    "multi": 60
+   },
+   "mid_up": {
+    "total": 1135,
+    "single": 1119,
+    "multi": 16
+   },
+   "mid_down": {
+    "total": 5937,
+    "plain": 3667,
+    "single": 5913,
+    "multi": 24
+   }
+  },
+  "brahms/symphony-1": {
+   "files": 4,
+   "notes_with_stem": 51190,
+   "skipped": {
+    "stem_missing_none_double": 602
+   },
+   "above_up": {
+    "total": 670,
+    "BEAM_GROUP": 279,
+    "CHORD_FAR_NOTE": 270,
+    "UNEXPLAINED": 29,
+    "UNEXPLAINED_residual": 29,
+    "TWO_VOICES_STRICT": 92,
+    "plain": 14
+   },
+   "above_down": {
+    "total": 29308,
+    "single": 29268,
+    "plain": 16437,
+    "multi": 40
+   },
+   "below_down": {
+    "total": 1096,
+    "UNEXPLAINED": 328,
+    "UNEXPLAINED_residual": 327,
+    "BEAM_GROUP": 320,
+    "CHORD_FAR_NOTE": 389,
+    "TWO_VOICES_STRICT": 59,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1,
+    "plain": 15
+   },
+   "below_up": {
+    "total": 16539,
+    "plain": 9741,
+    "single": 16527,
+    "multi": 12
+   },
+   "mid_up": {
+    "total": 660,
+    "single": 631,
+    "multi": 29,
+    "plain": 17
+   },
+   "mid_down": {
+    "total": 2917,
+    "plain": 1774,
+    "single": 2896,
+    "multi": 21
+   }
+  },
+  "brahms/symphony-2": {
+   "files": 4,
+   "notes_with_stem": 46789,
+   "skipped": {
+    "grace": 36,
+    "stem_missing_none_double": 466
+   },
+   "above_up": {
+    "total": 421,
+    "BEAM_GROUP": 223,
+    "CHORD_FAR_NOTE": 120,
+    "UNEXPLAINED": 14,
+    "UNEXPLAINED_residual": 14,
+    "plain": 4,
+    "TWO_VOICES_STRICT": 64
+   },
+   "above_down": {
+    "total": 27434,
+    "plain": 15062,
+    "single": 27405,
+    "multi": 29
+   },
+   "below_down": {
+    "total": 887,
+    "UNEXPLAINED": 284,
+    "UNEXPLAINED_residual": 284,
+    "BEAM_GROUP": 361,
+    "CHORD_FAR_NOTE": 199,
+    "TWO_VOICES_STRICT": 43
+   },
+   "below_up": {
+    "total": 13925,
+    "plain": 9050,
+    "single": 13917,
+    "multi": 8
+   },
+   "mid_up": {
+    "total": 530,
+    "single": 514,
+    "multi": 16
+   },
+   "mid_down": {
+    "total": 3592,
+    "plain": 2308,
+    "single": 3587,
+    "multi": 5
+   }
+  },
+  "brahms/symphony-3": {
+   "files": 4,
+   "notes_with_stem": 37311,
+   "skipped": {
+    "stem_missing_none_double": 950
+   },
+   "above_up": {
+    "total": 677,
+    "BEAM_GROUP": 430,
+    "CHORD_FAR_NOTE": 172,
+    "UNEXPLAINED": 16,
+    "UNEXPLAINED_residual": 16,
+    "TWO_VOICES_STRICT": 59
+   },
+   "above_down": {
+    "total": 20251,
+    "plain": 11563,
+    "single": 20247,
+    "multi": 4
+   },
+   "below_down": {
+    "total": 757,
+    "BEAM_GROUP": 328,
+    "UNEXPLAINED": 229,
+    "UNEXPLAINED_residual": 222,
+    "CHORD_FAR_NOTE": 122,
+    "TWO_VOICES_STRICT": 78,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 7,
+    "plain": 1,
+    "UNEXPLAINED_with_other_voice_rest_only": 1
+   },
+   "below_up": {
+    "total": 12663,
+    "plain": 6951,
+    "single": 12609,
+    "multi": 54
+   },
+   "mid_up": {
+    "total": 625,
+    "single": 612,
+    "multi": 13
+   },
+   "mid_down": {
+    "total": 2338,
+    "single": 2333,
+    "plain": 1536,
+    "multi": 5
+   }
+  },
+  "brahms/symphony-4": {
+   "files": 4,
+   "notes_with_stem": 51042,
+   "skipped": {
+    "unpitched": 108,
+    "grace": 3,
+    "stem_missing_none_double": 801
+   },
+   "above_up": {
+    "total": 933,
+    "BEAM_GROUP": 520,
+    "CHORD_FAR_NOTE": 181,
+    "UNEXPLAINED": 40,
+    "UNEXPLAINED_residual": 38,
+    "TWO_VOICES_STRICT": 185,
+    "TWO_VOICES_NONOVERLAP": 7,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 2
+   },
+   "above_down": {
+    "total": 30682,
+    "single": 30622,
+    "plain": 16042,
+    "multi": 60
+   },
+   "below_down": {
+    "total": 1601,
+    "UNEXPLAINED": 429,
+    "UNEXPLAINED_residual": 423,
+    "BEAM_GROUP": 581,
+    "plain": 12,
+    "CHORD_FAR_NOTE": 369,
+    "TWO_VOICES_STRICT": 220,
+    "TWO_VOICES_NONOVERLAP": 2,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 6
+   },
+   "below_up": {
+    "total": 14046,
+    "single": 13899,
+    "plain": 7263,
+    "multi": 147
+   },
+   "mid_up": {
+    "total": 668,
+    "single": 629,
+    "multi": 39
+   },
+   "mid_down": {
+    "total": 3112,
+    "single": 3092,
+    "plain": 1821,
+    "multi": 20
+   }
+  },
+  "bruckner/symphony-5-in-b-flat-major": {
+   "files": 5,
+   "notes_with_stem": 71666,
+   "skipped": {
+    "stem_missing_none_double": 1979,
+    "grace": 6
+   },
+   "above_up": {
+    "total": 1091,
+    "BEAM_GROUP": 599,
+    "UNEXPLAINED": 40,
+    "UNEXPLAINED_residual": 39,
+    "CHORD_FAR_NOTE": 68,
+    "TWO_VOICES_STRICT": 365,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1,
+    "TWO_VOICES_NONOVERLAP": 19,
+    "plain": 5
+   },
+   "above_down": {
+    "total": 42205,
+    "plain": 22078,
+    "single": 42017,
+    "multi": 188
+   },
+   "below_down": {
+    "total": 1580,
+    "BEAM_GROUP": 880,
+    "UNEXPLAINED": 235,
+    "UNEXPLAINED_residual": 230,
+    "plain": 13,
+    "TWO_VOICES_STRICT": 344,
+    "CHORD_FAR_NOTE": 117,
+    "TWO_VOICES_NONOVERLAP": 4,
+    "UNEXPLAINED_with_other_voice_rest_only": 3,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 5
+   },
+   "below_up": {
+    "total": 21613,
+    "plain": 13878,
+    "single": 21463,
+    "multi": 150
+   },
+   "mid_up": {
+    "total": 756,
+    "single": 704,
+    "plain": 9,
+    "multi": 52
+   },
+   "mid_down": {
+    "total": 4421,
+    "plain": 3089,
+    "single": 4359,
+    "multi": 62
+   }
+  },
+  "dvorak/symphony-9": {
+   "files": 2,
+   "notes_with_stem": 19206,
+   "skipped": {
+    "grace": 20,
+    "cue": 96,
+    "no_pitched_clef(perc/tab/none)": 17,
+    "stem_missing_none_double": 74,
+    "unpitched": 82
+   },
+   "above_up": {
+    "total": 1258,
+    "plain": 220,
+    "UNEXPLAINED": 530,
+    "UNEXPLAINED_with_other_voice_rest_only": 487,
+    "UNEXPLAINED_residual": 37,
+    "CHORD_FAR_NOTE": 397,
+    "TWO_VOICES_STRICT": 225,
+    "TWO_VOICES_NONOVERLAP": 15,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 12,
+    "BEAM_GROUP": 91
+   },
+   "above_down": {
+    "total": 9745,
+    "plain": 2311,
+    "single": 9544,
+    "multi": 201
+   },
+   "below_down": {
+    "total": 1012,
+    "CHORD_FAR_NOTE": 249,
+    "TWO_VOICES_STRICT": 252,
+    "BEAM_GROUP": 94,
+    "UNEXPLAINED": 416,
+    "UNEXPLAINED_with_other_voice_rest_only": 60,
+    "plain": 65,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 22,
+    "UNEXPLAINED_residual": 338,
+    "TWO_VOICES_NONOVERLAP": 1
+   },
+   "below_up": {
+    "total": 5430,
+    "single": 5244,
+    "plain": 1761,
+    "multi": 186
+   },
+   "mid_up": {
+    "total": 588,
+    "single": 523,
+    "multi": 65,
+    "plain": 32
+   },
+   "mid_down": {
+    "total": 1173,
+    "single": 1115,
+    "plain": 313,
+    "multi": 58
+   }
+  },
+  "dvorak/symphony-9-in-e-minor-op95": {
+   "files": 1,
+   "notes_with_stem": 12818,
+   "skipped": {
+    "grace": 33,
+    "unpitched": 3,
+    "stem_missing_none_double": 1334
+   },
+   "above_up": {
+    "total": 1000,
+    "TWO_VOICES_STRICT": 239,
+    "UNEXPLAINED": 379,
+    "UNEXPLAINED_with_other_voice_rest_only": 346,
+    "TWO_VOICES_NONOVERLAP": 26,
+    "BEAM_GROUP": 78,
+    "UNEXPLAINED_residual": 33,
+    "CHORD_FAR_NOTE": 278,
+    "plain": 167,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 35
+   },
+   "above_down": {
+    "total": 6384,
+    "plain": 1493,
+    "single": 6143,
+    "multi": 241
+   },
+   "below_down": {
+    "total": 599,
+    "CHORD_FAR_NOTE": 220,
+    "TWO_VOICES_STRICT": 106,
+    "UNEXPLAINED": 147,
+    "UNEXPLAINED_residual": 137,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 10,
+    "plain": 18,
+    "UNEXPLAINED_with_other_voice_rest_only": 1,
+    "TWO_VOICES_NONOVERLAP": 9,
+    "BEAM_GROUP": 117
+   },
+   "below_up": {
+    "total": 3754,
+    "single": 3692,
+    "plain": 1304,
+    "multi": 62
+   },
+   "mid_up": {
+    "total": 407,
+    "single": 392,
+    "multi": 15,
+    "plain": 38
+   },
+   "mid_down": {
+    "total": 674,
+    "single": 646,
+    "plain": 177,
+    "multi": 28
+   }
+  },
+  "holst/the-planets": {
+   "files": 7,
+   "notes_with_stem": 86089,
+   "skipped": {
+    "no_pitched_clef(perc/tab/none)": 1987,
+    "cue": 707,
+    "unpitched": 836,
+    "grace": 31,
+    "stem_missing_none_double": 2267
+   },
+   "above_up": {
+    "total": 2486,
+    "UNEXPLAINED": 784,
+    "UNEXPLAINED_residual": 641,
+    "plain": 284,
+    "BEAM_GROUP": 865,
+    "TWO_VOICES_NONOVERLAP": 85,
+    "UNEXPLAINED_with_other_voice_rest_only": 132,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 20,
+    "CHORD_FAR_NOTE": 338,
+    "TWO_VOICES_STRICT": 414
+   },
+   "above_down": {
+    "total": 44451,
+    "plain": 22196,
+    "single": 43988,
+    "multi": 463
+   },
+   "below_down": {
+    "total": 2299,
+    "BEAM_GROUP": 1157,
+    "UNEXPLAINED": 490,
+    "UNEXPLAINED_residual": 357,
+    "plain": 92,
+    "UNEXPLAINED_with_other_voice_rest_only": 120,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 16,
+    "TWO_VOICES_NONOVERLAP": 43,
+    "CHORD_FAR_NOTE": 340,
+    "TWO_VOICES_STRICT": 269
+   },
+   "below_up": {
+    "total": 30901,
+    "single": 30646,
+    "plain": 17942,
+    "multi": 255
+   },
+   "mid_up": {
+    "total": 1050,
+    "single": 986,
+    "multi": 64,
+    "plain": 18
+   },
+   "mid_down": {
+    "total": 4902,
+    "plain": 3563,
+    "single": 4867,
+    "multi": 35
+   }
+  },
+  "mahler/5-rondo-finale": {
+   "files": 1,
+   "notes_with_stem": 21866,
+   "skipped": {
+    "grace": 137,
+    "unpitched": 209,
+    "stem_missing_none_double": 1981
+   },
+   "above_up": {
+    "total": 559,
+    "UNEXPLAINED": 160,
+    "UNEXPLAINED_residual": 85,
+    "CHORD_FAR_NOTE": 207,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 16,
+    "UNEXPLAINED_with_other_voice_rest_only": 72,
+    "plain": 59,
+    "BEAM_GROUP": 120,
+    "TWO_VOICES_STRICT": 69,
+    "TWO_VOICES_NONOVERLAP": 3
+   },
+   "above_down": {
+    "total": 10833,
+    "plain": 4186,
+    "single": 10788,
+    "multi": 45
+   },
+   "below_down": {
+    "total": 849,
+    "BEAM_GROUP": 298,
+    "TWO_VOICES_STRICT": 114,
+    "CHORD_FAR_NOTE": 233,
+    "UNEXPLAINED": 201,
+    "UNEXPLAINED_residual": 184,
+    "TWO_VOICES_NONOVERLAP": 3,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 10,
+    "plain": 18,
+    "UNEXPLAINED_with_other_voice_rest_only": 13
+   },
+   "below_up": {
+    "total": 7824,
+    "plain": 3634,
+    "single": 7746,
+    "multi": 78
+   },
+   "mid_up": {
+    "total": 521,
+    "plain": 38,
+    "single": 516,
+    "multi": 5
+   },
+   "mid_down": {
+    "total": 1280,
+    "plain": 702,
+    "single": 1265,
+    "multi": 15
+   }
+  },
+  "mahler/adagietto": {
+   "files": 1,
+   "notes_with_stem": 1406,
+   "skipped": {
+    "grace": 116,
+    "stem_missing_none_double": 192
+   },
+   "above_up": {
+    "total": 143,
+    "plain": 19,
+    "UNEXPLAINED": 62,
+    "UNEXPLAINED_with_other_voice_rest_only": 34,
+    "BEAM_GROUP": 35,
+    "CHORD_FAR_NOTE": 5,
+    "UNEXPLAINED_residual": 28,
+    "TWO_VOICES_NONOVERLAP": 2,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 2,
+    "TWO_VOICES_STRICT": 39
+   },
+   "above_down": {
+    "total": 486,
+    "plain": 263,
+    "single": 459,
+    "multi": 27
+   },
+   "below_down": {
+    "total": 130,
+    "UNEXPLAINED": 71,
+    "UNEXPLAINED_residual": 33,
+    "plain": 45,
+    "UNEXPLAINED_with_other_voice_rest_only": 37,
+    "BEAM_GROUP": 19,
+    "TWO_VOICES_NONOVERLAP": 1,
+    "CHORD_FAR_NOTE": 3,
+    "TWO_VOICES_STRICT": 36,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1
+   },
+   "below_up": {
+    "total": 549,
+    "single": 526,
+    "plain": 267,
+    "multi": 23
+   },
+   "mid_up": {
+    "total": 33,
+    "single": 27,
+    "plain": 5,
+    "multi": 6
+   },
+   "mid_down": {
+    "total": 65,
+    "single": 62,
+    "plain": 44,
+    "multi": 3
+   }
+  },
+  "mahler/symphony-5": {
+   "files": 3,
+   "notes_with_stem": 49969,
+   "skipped": {
+    "grace": 722,
+    "unpitched": 675,
+    "cue": 29,
+    "stem_missing_none_double": 3799
+   },
+   "above_up": {
+    "total": 1959,
+    "TWO_VOICES_STRICT": 343,
+    "BEAM_GROUP": 698,
+    "plain": 169,
+    "UNEXPLAINED": 340,
+    "UNEXPLAINED_residual": 115,
+    "UNEXPLAINED_with_other_voice_rest_only": 225,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 22,
+    "TWO_VOICES_NONOVERLAP": 39,
+    "CHORD_FAR_NOTE": 539
+   },
+   "above_down": {
+    "total": 23829,
+    "single": 23559,
+    "multi": 270,
+    "plain": 9844
+   },
+   "below_down": {
+    "total": 2181,
+    "TWO_VOICES_STRICT": 442,
+    "BEAM_GROUP": 693,
+    "UNEXPLAINED": 473,
+    "UNEXPLAINED_residual": 380,
+    "CHORD_FAR_NOTE": 543,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 20,
+    "plain": 67,
+    "UNEXPLAINED_with_other_voice_rest_only": 87,
+    "TWO_VOICES_NONOVERLAP": 30
+   },
+   "below_up": {
+    "total": 17650,
+    "plain": 6846,
+    "single": 17225,
+    "multi": 425
+   },
+   "mid_up": {
+    "total": 1245,
+    "single": 1145,
+    "multi": 100,
+    "plain": 61
+   },
+   "mid_down": {
+    "total": 3105,
+    "single": 3036,
+    "plain": 1457,
+    "multi": 69
+   }
+  },
+  "mozart/symphony-40-in-g-minor-k550": {
+   "files": 4,
+   "notes_with_stem": 26079,
+   "skipped": {
+    "grace": 90,
+    "stem_missing_none_double": 850
+   },
+   "above_up": {
+    "total": 2439,
+    "TWO_VOICES_STRICT": 1223,
+    "TWO_VOICES_NONOVERLAP": 81,
+    "UNEXPLAINED": 755,
+    "UNEXPLAINED_with_other_voice_rest_only": 747,
+    "plain": 289,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 90,
+    "UNEXPLAINED_residual": 8,
+    "CHORD_FAR_NOTE": 259,
+    "BEAM_GROUP": 121
+   },
+   "above_down": {
+    "total": 14543,
+    "single": 13580,
+    "multi": 963,
+    "plain": 4569
+   },
+   "below_down": {
+    "total": 948,
+    "TWO_VOICES_STRICT": 383,
+    "TWO_VOICES_NONOVERLAP": 33,
+    "UNEXPLAINED": 214,
+    "UNEXPLAINED_residual": 199,
+    "CHORD_FAR_NOTE": 210,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 15,
+    "BEAM_GROUP": 108
+   },
+   "below_up": {
+    "total": 5883,
+    "multi": 203,
+    "single": 5680,
+    "plain": 2379
+   },
+   "mid_up": {
+    "total": 520,
+    "multi": 121,
+    "single": 399,
+    "plain": 25
+   },
+   "mid_down": {
+    "total": 1746,
+    "multi": 162,
+    "single": 1584,
+    "plain": 698
+   }
+  },
+  "mozart/symphony-41-in-c-major-jupiter": {
+   "files": 4,
+   "notes_with_stem": 31679,
+   "skipped": {
+    "grace": 50,
+    "stem_missing_none_double": 1093
+   },
+   "above_up": {
+    "total": 353,
+    "BEAM_GROUP": 274,
+    "CHORD_FAR_NOTE": 55,
+    "UNEXPLAINED": 18,
+    "UNEXPLAINED_residual": 18,
+    "TWO_VOICES_STRICT": 6
+   },
+   "above_down": {
+    "total": 19566,
+    "plain": 10329,
+    "single": 19560,
+    "multi": 6
+   },
+   "below_down": {
+    "total": 486,
+    "BEAM_GROUP": 166,
+    "UNEXPLAINED": 177,
+    "UNEXPLAINED_residual": 176,
+    "TWO_VOICES_STRICT": 7,
+    "CHORD_FAR_NOTE": 136,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 1
+   },
+   "below_up": {
+    "total": 9657,
+    "plain": 4945,
+    "single": 9654,
+    "multi": 3
+   },
+   "mid_up": {
+    "total": 316,
+    "single": 315,
+    "multi": 1,
+    "plain": 1
+   },
+   "mid_down": {
+    "total": 1301,
+    "plain": 697,
+    "single": 1299,
+    "multi": 2
+   }
+  },
+  "tchaikovsky/1812-overture": {
+   "files": 1,
+   "notes_with_stem": 30311,
+   "skipped": {
+    "grace": 142,
+    "unpitched": 343,
+    "no_pitched_clef(perc/tab/none)": 277,
+    "stem_missing_none_double": 426
+   },
+   "above_up": {
+    "total": 845,
+    "CHORD_FAR_NOTE": 58,
+    "TWO_VOICES_STRICT": 326,
+    "UNEXPLAINED": 54,
+    "UNEXPLAINED_residual": 44,
+    "TWO_VOICES_NONOVERLAP": 110,
+    "BEAM_GROUP": 297,
+    "UNEXPLAINED_with_other_voice_rest_only": 10,
+    "plain": 8
+   },
+   "above_down": {
+    "total": 15632,
+    "single": 15526,
+    "multi": 106,
+    "plain": 5021
+   },
+   "below_down": {
+    "total": 919,
+    "CHORD_FAR_NOTE": 180,
+    "TWO_VOICES_STRICT": 176,
+    "UNEXPLAINED": 184,
+    "UNEXPLAINED_residual": 182,
+    "TWO_VOICES_NONOVERLAP": 15,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 2,
+    "BEAM_GROUP": 364,
+    "plain": 8
+   },
+   "below_up": {
+    "total": 10404,
+    "single": 10364,
+    "multi": 40,
+    "plain": 3937
+   },
+   "mid_up": {
+    "total": 607,
+    "single": 600,
+    "multi": 7,
+    "plain": 12
+   },
+   "mid_down": {
+    "total": 1904,
+    "single": 1894,
+    "multi": 10,
+    "plain": 819
+   }
+  },
+  "tchaikovsky/pizzicato-ostinato": {
+   "files": 1,
+   "notes_with_stem": 8035,
+   "skipped": {},
+   "above_up": {
+    "total": 116,
+    "BEAM_GROUP": 67,
+    "CHORD_FAR_NOTE": 49
+   },
+   "above_down": {
+    "total": 4224,
+    "single": 4224,
+    "plain": 1028
+   },
+   "below_down": {
+    "total": 181,
+    "UNEXPLAINED": 69,
+    "UNEXPLAINED_residual": 69,
+    "BEAM_GROUP": 34,
+    "CHORD_FAR_NOTE": 78
+   },
+   "below_up": {
+    "total": 2794,
+    "plain": 1147,
+    "single": 2794
+   },
+   "mid_up": {
+    "total": 150,
+    "single": 150
+   },
+   "mid_down": {
+    "total": 570,
+    "single": 570,
+    "plain": 253
+   }
+  },
+  "tchaikovsky/symphony-4": {
+   "files": 3,
+   "notes_with_stem": 63100,
+   "skipped": {
+    "grace": 4,
+    "stem_missing_none_double": 273
+   },
+   "above_up": {
+    "total": 478,
+    "BEAM_GROUP": 400,
+    "CHORD_FAR_NOTE": 69,
+    "UNEXPLAINED": 9,
+    "UNEXPLAINED_residual": 9
+   },
+   "above_down": {
+    "total": 37586,
+    "plain": 9880,
+    "single": 37586
+   },
+   "below_down": {
+    "total": 1183,
+    "UNEXPLAINED": 350,
+    "UNEXPLAINED_residual": 350,
+    "BEAM_GROUP": 637,
+    "CHORD_FAR_NOTE": 196
+   },
+   "below_up": {
+    "total": 19116,
+    "plain": 7044,
+    "single": 19116
+   },
+   "mid_up": {
+    "total": 1115,
+    "single": 1115
+   },
+   "mid_down": {
+    "total": 3622,
+    "plain": 1474,
+    "single": 3622
+   }
+  },
+  "tchaikovsky/symphony-6-pathetique": {
+   "files": 2,
+   "notes_with_stem": 33512,
+   "skipped": {
+    "stem_missing_none_double": 514
+   },
+   "above_up": {
+    "total": 2254,
+    "UNEXPLAINED": 75,
+    "UNEXPLAINED_residual": 44,
+    "CHORD_FAR_NOTE": 760,
+    "TWO_VOICES_NONOVERLAP": 106,
+    "TWO_VOICES_STRICT": 1065,
+    "BEAM_GROUP": 248,
+    "UNEXPLAINED_with_other_voice_rest_only": 25,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 17,
+    "plain": 23
+   },
+   "above_down": {
+    "total": 12067,
+    "single": 11351,
+    "plain": 3069,
+    "multi": 716
+   },
+   "below_down": {
+    "total": 2262,
+    "UNEXPLAINED": 317,
+    "UNEXPLAINED_residual": 209,
+    "plain": 70,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 70,
+    "CHORD_FAR_NOTE": 568,
+    "TWO_VOICES_NONOVERLAP": 136,
+    "TWO_VOICES_STRICT": 989,
+    "BEAM_GROUP": 252,
+    "UNEXPLAINED_with_other_voice_rest_only": 73
+   },
+   "below_up": {
+    "total": 13367,
+    "single": 12713,
+    "plain": 3394,
+    "multi": 654
+   },
+   "mid_up": {
+    "total": 1150,
+    "single": 983,
+    "multi": 167,
+    "plain": 18
+   },
+   "mid_down": {
+    "total": 2412,
+    "single": 2271,
+    "plain": 1337,
+    "multi": 141
+   }
+  },
+  "tchaikovsky/tchaikovsky-symphony-6-3-satz": {
+   "files": 1,
+   "notes_with_stem": 26244,
+   "skipped": {
+    "grace": 76,
+    "unpitched": 44,
+    "stem_missing_none_double": 896
+   },
+   "above_up": {
+    "total": 1135,
+    "BEAM_GROUP": 159,
+    "CHORD_FAR_NOTE": 866,
+    "TWO_VOICES_STRICT": 79,
+    "UNEXPLAINED": 29,
+    "UNEXPLAINED_residual": 29,
+    "TWO_VOICES_NONOVERLAP": 2
+   },
+   "above_down": {
+    "total": 12696,
+    "single": 12672,
+    "plain": 4290,
+    "multi": 24
+   },
+   "below_down": {
+    "total": 1202,
+    "BEAM_GROUP": 127,
+    "UNEXPLAINED": 285,
+    "UNEXPLAINED_residual": 282,
+    "CHORD_FAR_NOTE": 742,
+    "TWO_VOICES_STRICT": 46,
+    "TWO_VOICES_NONOVERLAP": 2,
+    "UNEXPLAINED_adjacent_measure_has_two_voices": 3,
+    "plain": 34
+   },
+   "below_up": {
+    "total": 8919,
+    "plain": 3252,
+    "single": 8825,
+    "multi": 94
+   },
+   "mid_up": {
+    "total": 710,
+    "single": 693,
+    "multi": 17
+   },
+   "mid_down": {
+    "total": 1582,
+    "plain": 790,
+    "single": 1578,
+    "multi": 4
+   }
+  }
+ },
+ "control": {
+  "positions_selftest": "passed",
+  "plain_single_voice_unbeamed_nonchord": {
+   "above_middle_stem_down": 312727,
+   "above_middle_stem_up": 1361,
+   "below_middle_stem_up": 195342,
+   "below_middle_stem_down": 583
+  },
+  "rule_holds_above_pct": 99.57,
+  "rule_holds_below_pct": 99.7
+ },
+ "unexplained_position_hist": {
+  "above": {
+   "1": 1219,
+   "2": 718,
+   "3": 772,
+   "4": 546,
+   "5": 528,
+   "6": 357,
+   "7": 224,
+   "8": 131,
+   "9": 38,
+   "10": 13,
+   "11": 1,
+   "12": 1,
+   "13": 1
+  },
+  "below": {
+   "-11": 6,
+   "-10": 3,
+   "-9": 42,
+   "-8": 23,
+   "-7": 69,
+   "-6": 195,
+   "-5": 287,
+   "-4": 361,
+   "-3": 736,
+   "-2": 1971,
+   "-1": 5144
+  }
+ },
+ "unexplained_sample_above": [
+  {
+   "side": "above",
+   "file": "holst--the-planets--mvt7--gradus.mxl",
+   "work": "holst/the-planets",
+   "part": "Harp 2",
+   "measure": "36",
+   "staff": 2,
+   "voice": "5",
+   "pitch": "G#5",
+   "clef": "G2",
+   "pos": 5,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl",
+   "work": "dvorak/symphony-9-in-e-minor-op95",
+   "part": "Flutes",
+   "measure": "241",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "A5",
+   "clef": "G2",
+   "pos": 6,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "beethoven--symphony-1--mvt2--gradus.mxl",
+   "work": "beethoven/symphony-1",
+   "part": "C Trumpet 1",
+   "measure": "158",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C5",
+   "clef": "G2",
+   "pos": 1,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl",
+   "work": "dvorak/symphony-9-in-e-minor-op95",
+   "part": "Bassoons",
+   "measure": "116",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "G3",
+   "clef": "F4",
+   "pos": 3,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "holst--the-planets--mvt5--gradus.mxl",
+   "work": "holst/the-planets",
+   "part": "Harp 2",
+   "measure": "111",
+   "staff": 2,
+   "voice": "5",
+   "pitch": "B3",
+   "clef": "F4",
+   "pos": 5,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "mahler--symphony-5--mvt3--gradus.mxl",
+   "work": "mahler/symphony-5",
+   "part": "Drei Klarinetten in A",
+   "measure": "14",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "D5",
+   "clef": "G2",
+   "pos": 2,
+   "chord": true,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "holst--the-planets--mvt5--gradus.mxl",
+   "work": "holst/the-planets",
+   "part": "Harp 2",
+   "measure": "107",
+   "staff": 2,
+   "voice": "5",
+   "pitch": "B3",
+   "clef": "F4",
+   "pos": 5,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "holst--the-planets--mvt7--gradus.mxl",
+   "work": "holst/the-planets",
+   "part": "Harp 2",
+   "measure": "92",
+   "staff": 2,
+   "voice": "5",
+   "pitch": "B3",
+   "clef": "F4",
+   "pos": 5,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "dvorak--symphony-9-in-e-minor-op95--mvt4--gradus.mxl",
+   "work": "dvorak/symphony-9-in-e-minor-op95",
+   "part": "A Clarinet",
+   "measure": "249",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "B5",
+   "clef": "G2",
+   "pos": 7,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "work": "dvorak/symphony-9",
+   "part": "Flauto I.",
+   "measure": "335",
+   "staff": 1,
+   "voice": "2",
+   "pitch": "G#5",
+   "clef": "G2",
+   "pos": 5,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "work": "dvorak/symphony-9",
+   "part": "Flauto I.",
+   "measure": "7",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "G5",
+   "clef": "G2",
+   "pos": 5,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "mahler--adagietto--mvt4--gradus.mxl",
+   "work": "mahler/adagietto",
+   "part": "Harfe.",
+   "measure": "9",
+   "staff": 2,
+   "voice": "1",
+   "pitch": "C4",
+   "clef": "F4",
+   "pos": 6,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt2--gradus.mxl",
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "part": "Clarinetti in B.",
+   "measure": "123",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C6",
+   "clef": "G2",
+   "pos": 8,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "above",
+   "file": "bach--brandenburg-concerto-4--mvt1--gradus.mxl",
+   "work": "bach/brandenburg-concerto-4",
+   "part": "Principal Violin",
+   "measure": "388",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "D5",
+   "clef": "G2",
+   "pos": 2,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "above",
+   "file": "mozart--symphony-40-in-g-minor-k550--mvt1--gradus.mxl",
+   "work": "mozart/symphony-40-in-g-minor-k550",
+   "part": "Fagotti.",
+   "measure": "51",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "Eb4",
+   "clef": "C4",
+   "pos": 4,
+   "chord": false,
+   "beamed": true
+  }
+ ],
+ "unexplained_sample_below": [
+  {
+   "side": "below",
+   "file": "brahms--symphony-4--mvt3--gradus.mxl",
+   "work": "brahms/symphony-4",
+   "part": "C Horn 3",
+   "measure": "232",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C4",
+   "clef": "G2",
+   "pos": -6,
+   "chord": false,
+   "beamed": false
+  },
+  {
+   "side": "below",
+   "file": "bruckner--symphony-5-in-b-flat-major--mvt2--gradus.mxl",
+   "work": "bruckner/symphony-5-in-b-flat-major",
+   "part": "Violin 1",
+   "measure": "75",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "E4",
+   "clef": "G2",
+   "pos": -4,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "mahler--symphony-5--mvt2--gradus.mxl",
+   "work": "mahler/symphony-5",
+   "part": "Violoncelle.",
+   "measure": "254",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "Cb3",
+   "clef": "F4",
+   "pos": -1,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "beethoven--symphony-6--mvt1--gradus.mxl",
+   "work": "beethoven/symphony-6",
+   "part": "Contrabass",
+   "measure": "439",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C3",
+   "clef": "F4",
+   "pos": -1,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "beethoven--symphony-7--mvt1--gradus.mxl",
+   "work": "beethoven/symphony-7",
+   "part": "Viola",
+   "measure": "92",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "B3",
+   "clef": "C3",
+   "pos": -1,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "dvorak--symphony-9--mvt1--gradus.mxl",
+   "work": "dvorak/symphony-9",
+   "part": "Trombe\nI. II. E",
+   "measure": "445",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C4",
+   "clef": "G2",
+   "pos": -6,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "brahms--symphony-3--mvt2--gradus.mxl",
+   "work": "brahms/symphony-3",
+   "part": "Violoncello",
+   "measure": "78",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "C3",
+   "clef": "F4",
+   "pos": -1,
+   "chord": false,
+   "beamed": true
+  },
+  {
+   "side": "below",
+   "file": "brahms--symphony-4--mvt2--gradus.mxl",
+   "work": "brahms/symphony-4",
+   "part": "Bassoon 2",
+   "measure": "7",
+   "staff": 1,
+   "voice": "1",
+   "pitch": "B2",
+   "clef": "F4",
+   "pos": -2,
+   "chord": false,
+   "beamed": true
+  }
+ ]
+}

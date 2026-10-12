@@ -1,0 +1,64 @@
+{
+ "judge": "sean",
+ "date": "2026-10-11",
+ "via": "cloud coordination session (tiles shown in this order: tile_01..tile_10, then control_1..control_4)",
+ "answers": {
+  "tile_01": {
+   "sean": "Dot 2",
+   "verdict": "right (arm decided hollow_head_bare_stem = half); base was narrowed"
+  },
+  "tile_02": {
+   "sean": "Dot 4",
+   "verdict": "REGRESSION to narrowed: arm narrowed {1,2} (was decided {0}, right)"
+  },
+  "tile_03": {
+   "sean": "8",
+   "verdict": "right: arm {1}; base wrong {0}"
+  },
+  "tile_04": {
+   "sean": "8",
+   "verdict": "REGRESSION, WRONG: arm decided {0}; base right (hooks_counted {1})"
+  },
+  "tile_05": {
+   "sean": "8",
+   "verdict": "right: arm {1}; base wrong {0}"
+  },
+  "tile_06": {
+   "sean": "Dot 4",
+   "verdict": "improvement: arm narrowed (head_fill_from_ink); base WRONG (decided hollow = half)"
+  },
+  "tile_07": {
+   "sean": "8",
+   "verdict": "right: arm {1}; base wrong {0}"
+  },
+  "tile_08": {
+   "sean": "8",
+   "verdict": "REGRESSION, WRONG: arm decided {0}; base right {1} (same system/cell as tile_04)"
+  },
+  "tile_09": {
+   "sean": "8",
+   "verdict": "right: arm {1}; base narrowed {1,2}"
+  },
+  "tile_10": {
+   "sean": "4",
+   "verdict": "REGRESSION, WRONG: arm decided hollow = half; Sean: filled quarter; base right"
+  },
+  "control_1": {
+   "sean": "Dot 4",
+   "verdict": "consistent with truth (quarter, no flag); control holds"
+  },
+  "control_2": {
+   "sean": "8",
+   "verdict": "truth eighth; control holds"
+  },
+  "control_3": {
+   "sean": "8",
+   "verdict": "truth eighth; control holds"
+  },
+  "control_4": {
+   "sean": "Dot 4",
+   "verdict": "consistent with truth (quarter); control holds"
+  }
+ },
+ "summary": "arm 5 right (1, 3, 5, 7, 9), 2 narrowed (2, 6), 3 wrong (4, 8, 10); base 4 right, 2 narrowed, 4 wrong. All 4 controls hold. Not landing as built: 3 new wrong decisions (two 'regress' tiles 4/8 where hooks_counted{1} was lost; one 'hollow_new' tile 10 where a filled quarter is read hollow)."
+}

@@ -1,0 +1,15 @@
+tile       sean   class                                                main |                                 v5 |                                fix
+control_1  Dot 4  control:bare           NARROWED-IN narrowed beam_discount | NARROWED-IN narrowed beam_discount | NARROWED-IN narrowed beam_discount
+control_2  8      control:flagged        RIGHT decided head_and_marks 0.5 d | RIGHT decided head_and_marks 0.5 d | RIGHT decided head_and_marks 0.5 d
+control_3  8      control:flagged        NARROWED-IN narrowed beam_discount | NARROWED-IN narrowed beam_discount | NARROWED-IN narrowed beam_discount
+control_4  Dot 4  control:bare             ABSTAINED owned_by_another_staff |   ABSTAINED owned_by_another_staff |   ABSTAINED owned_by_another_staff
+tile_01    Dot 2  hollow_new             NARROWED-IN narrowed head_fill_fro | RIGHT decided hollow_head_bare_ste | RIGHT decided hollow_head_bare_ste
+tile_02    Dot 4  tip                    RIGHT decided head_and_marks 1.0 d | NARROWED-OUT narrowed flag_ink_unr | RIGHT decided head_and_marks 1.0 d
+tile_03    8      reach                  WRONG decided head_and_marks 1.0 d | RIGHT decided head_and_marks 0.5 d | RIGHT decided head_and_marks 0.5 d
+tile_04    8      regress                RIGHT decided hooks_counted 0.5 do | WRONG decided head_and_marks 1.0 d | RIGHT decided hooks_counted 0.5 do
+tile_05    8      reach                  RIGHT decided head_and_marks 0.5 d | RIGHT decided head_and_marks 0.5 d | RIGHT decided head_and_marks 0.5 d
+tile_06    Dot 4  hollow_lost            WRONG decided hollow_head_bare_ste | NARROWED-IN narrowed head_fill_fro | NARROWED-IN narrowed head_fill_fro
+tile_07    8      tip                    WRONG decided head_and_marks 1.0 d | RIGHT decided hooks_counted 0.5 do | RIGHT decided hooks_counted 0.5 do
+tile_08    8      regress                RIGHT decided hooks_counted 0.5 do | WRONG decided head_and_marks 1.0 d | RIGHT decided hooks_counted 0.5 do
+tile_09    8      tip                    NARROWED-IN narrowed flags_disagre | RIGHT decided hooks_counted 0.5 do | RIGHT decided hooks_counted 0.5 do
+tile_10    4      hollow_new             RIGHT decided head_and_marks 1.0 d | WRONG decided hollow_head_bare_ste | RIGHT decided head_and_marks 1.0 d

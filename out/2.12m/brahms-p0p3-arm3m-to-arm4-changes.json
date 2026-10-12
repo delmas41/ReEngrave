@@ -1,0 +1,42 @@
+[
+ [
+  "glyph/3/0/3/7/3",
+  {
+   "detail": {
+    "articulation": "staccato",
+    "confidence": 0.731963038444519,
+    "detector_class": "articStaccatoAbove",
+    "dx_canonical_px": 7.5,
+    "dx_notehead_widths": 0.05172413793103448,
+    "gap_head_heights": 0.28440366972477066,
+    "measured_side": "above",
+    "notehead_side": "above",
+    "same_ink_twins": [
+     "glyph/3/0/2/7/0"
+    ],
+    "shared_head": false,
+    "stem_direction": "down",
+    "stem_rule": "notehead_side",
+    "suffix_side": "above",
+    "two_voice": false
+   },
+   "outcome": "decided",
+   "reason": "nearest_on_notehead_side",
+   "value": "glyph/3/0/3/7/2"
+  },
+  {
+   "detail": {
+    "same_ink_twins": [
+     "glyph/3/0/2/7/0"
+    ],
+    "twin": "glyph/3/0/2/7/0",
+    "was": "glyph/3/0/3/7/2",
+    "was_rule": "notehead_side",
+    "winner": "glyph/3/0/2/7/0"
+   },
+   "outcome": "abstained",
+   "reason": "duplicate_of_twin",
+   "value": null
+  }
+ ]
+]

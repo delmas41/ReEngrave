@@ -1,0 +1,27 @@
+arm  /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-fix2/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+   provenance e9c8c202b140a90cdd6ecf3d8e6b85a354a5691f dirty=False
+base /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/set-v5/quick-l/out/beethoven5-litolff/beethoven5-litolff-p3.record.json
+   provenance 28f1bda4fbba8cfb81ce7c2de228ead08e84c3b2 dirty=False
+
+heads with a standing duration verdict: base 1286  arm 1286  in both 1286 (only base 0, only arm 0); box moved > 1px in 0
+
+Q.STEM_TIP_INK census
+  abstained:ambiguous:crosses_both_sides                  base    459   arm    451
+  abstained:ambiguous:ink_not_flag_shaped                 base     74   arm     71
+  abstained:ambiguous:ink_past_the_tip                    base      0   arm      8
+  abstained:ambiguous:no_room                             base     80   arm     78
+  abstained:ambiguous:runs_on                             base     27   arm     19
+  abstained:occupied:head_at_this_end                     base    914   arm    914
+  abstained:occupied:occupied                             base    148   arm    147
+  observed:flag                                           base     33   arm     47
+  observed:none                                           base    259   arm    259
+
+duration verdicts changed (matched heads): 11 of 1286
+      6  decided:hollow_head_bare_stem{0}  ->  decided:head_and_marks{0}
+      4  decided:head_and_marks{0}  ->  narrowed:head_fill_from_ink{0}
+      1  narrowed:head_fill_from_ink{0}  ->  narrowed:flag_ink_unread{1,2}
+
+2.81 population P (base beam_discounted_uncertain, kept by ADJUDICATE): 33
+     33  narrowed beam_discounted_uncertain levels [0, 1]
+  (status of those heads in the arm: {'narrowed': 33} )
+wrote /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-roadmap-review-planning-1c065b/cd634827-21a6-485f-9387-a91cc77f44ef/scratchpad/l283/changed_v5_fix_litolff_count.json 11

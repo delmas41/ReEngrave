@@ -3489,17 +3489,165 @@ def _same_ink_twins(ev: Evidence, mark: Any) -> List[str]:
     return sorted(twins)
 
 
+#: ── ROADMAP 2.12m, the articulation at the TIP of a long chord stem ──────────
+#:
+#: Sean (DECISIONS 2026-10-10, on 2.12f tile 6): the notehead-side rule fails
+#: *"if ... the stem is very long because it has multiple notes and one of the
+#: notes is far away from the staff - then it will go closer to the notes"*. The
+#: mark then sits at the stem's TIP, on the stem side, near the staff.
+#:
+#: A head "far from the staff" is one on a LEDGER position on the notehead side:
+#: in `Q.NOTEHEAD_STAFF_POSITION`'s half-steps (top line 0, bottom line 8) the
+#: first ledger below is 10 and above is -2, so the cut is half a step inside
+#: each -- a head in the first space outside the staff (9 / -1) needs no ledger
+#: and its chord's stem is an ordinary one. DERIVED from the grid, not swept.
+ARTIC_LEDGER_POSITION_BELOW = 9.5
+ARTIC_LEDGER_POSITION_ABOVE = -1.5
+
+#: How far beyond the stem's tip the mark's NEAR edge may stand, in STAFF SPACES
+#: (`Q.CELL_STAFF_SPACE`, the cell's own unit). CONVENTION ASSUMED, NOT MEASURED:
+#: LilyPond pads a script 0.20 spaces off its support (`default-script-alist`,
+#: `padding . 0.20`) and 0.25 off the staff (`Script.staff-padding`); a small
+#: articulation is quantised into the next free space (Dorico, registry C51's
+#: neighbour). One space is twice the larger padding plus a half-space quantum
+#: and is still less than the 2-space gap at which a mark reads as unattached.
+#: WHAT WOULD FALSIFY IT: Sean's tile-6 class of marks measured on the plates
+#: (Mac readjudicate) standing beyond 1 space of a read tip.
+ARTIC_STEM_TIP_MAX_GAP_SPACES = 1.0
+
+#: The mark's x-centre within this many NOTEHEAD WIDTHS of the stem's centre.
+#: A stem-side mark is centred on the stem (staccato: Dorico, LilyPond
+#: `toward-stem-shift 1.0`) or on the head, whose centre stands half a head from
+#: its stem -- both inside one head width.
+ARTIC_STEM_TIP_MAX_DX_HEAD_WIDTHS = 1.0
+
+
+def _long_chord_stem_tip(ev: Evidence, head, direction: str, heads, *,
+                         mx: float, y0: float, y1: float, my: float,
+                         nh_width: float, cell):
+    """ROADMAP 2.12m: is this mark at the TIP of `head`'s stem, a long CHORD stem
+    reaching a ledger head on the notehead side? Returns `(ok, why, detail)`;
+    `why` names the first condition that failed (or `"ok"`).
+
+    POSITIVE EVIDENCE ONLY (CLAUDE.md rules 6 and 8): every condition is a READ
+    row -- the stem's extent (`Q.STEM`, attached exactly as `Q.STEM_DIRECTION`
+    attaches it, by `rhythm._stems_on`), each chord head's own position
+    (`Q.NOTEHEAD_STAFF_POSITION`), the unit (`Q.CELL_STAFF_SPACE`). A missing
+    row is a failed condition, never a default.
+
+    ⚠️ THE CELL'S CANONICAL FRAME, as the rest of this decision: the mark, the
+    stem and the heads were cut from ONE cell, so the tip-to-mark distance is a
+    local difference of two y values (CLAUDE.md §10). The far head's position is
+    the cell's own staff grid, which is what `Q.NOTEHEAD_STAFF_POSITION` reads.
+    """
+    # Imported here: `rhythm` imports this module at load time.
+    from . import rhythm as _rhythm
+
+    sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
+                      subject=cell)
+    space = float(sp_rows[-1].value) if sp_rows else 0.0
+    if space <= 0.0:
+        return False, "no_staff_space", {}
+    hbox = _rhythm._xywh_head(head.value)
+    stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    mine = _rhythm._stems_on(hbox, stems) if hbox else []
+    if len(mine) != 1:
+        return False, ("no_stem_row" if not mine else "several_stems"), {}
+    stem = mine[0]
+    sx, sy, sw, sh = _rhythm._xywh(stem)
+    chord = [h for h in heads if _rhythm._xywh_head(h.value) is not None
+             and _rhythm._boxes_overlap(_rhythm._xywh_head(h.value),
+                                        (sx, sy, sw, sh))]
+    detail = {"stem_row": stem.id, "chord_heads": len(chord)}
+    if len(chord) < 2:
+        return False, "not_a_chord", detail
+    far, far_pos = None, None
+    for h in chord:
+        pr = ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=h.subject)
+        if not pr:
+            continue
+        pos = float(pr[-1].value)
+        beyond = (pos >= ARTIC_LEDGER_POSITION_BELOW if direction == "up"
+                  else pos <= ARTIC_LEDGER_POSITION_ABOVE)
+        if beyond and (far_pos is None or abs(pos - 4.0) > abs(far_pos - 4.0)):
+            far, far_pos = h, pos
+    if far is None:
+        return False, "no_ledger_head_on_stem", detail
+    detail.update(far_head=far.subject.to_key(), far_head_position=far_pos)
+    # ⚠️ LARGER CANONICAL y IS LOWER: an up stem's tip is its TOP.
+    if direction == "up":
+        tip = sy
+        beyond_tip = my < tip
+        gap = tip - y1
+    else:
+        tip = sy + sh
+        beyond_tip = my > tip
+        gap = y0 - tip
+    gap_spaces = gap / space
+    dx_stem = abs(mx - (sx + sw / 2.0))
+    detail.update(tip_gap_spaces=gap_spaces,
+                  dx_stem_head_widths=(dx_stem / nh_width) if nh_width else None)
+    if (not beyond_tip or gap_spaces > ARTIC_STEM_TIP_MAX_GAP_SPACES
+            or dx_stem > ARTIC_STEM_TIP_MAX_DX_HEAD_WIDTHS * nh_width):
+        return False, "mark_not_at_stem_tip", detail
+    return True, "ok", detail
+
+
+#: ── ROADMAP 2.12m, the OTHER staff's bar is empty ───────────────────────────
+#:
+#: Sean (DECISIONS 2026-10-10): *"when the other system in question has an empty
+#: measure then it has to belong to the one with notes in it"*. The other staff
+#: is the one on the mark's declared side. EMPTY IS READ, NEVER DEFAULTED (rule
+#: 8): no notehead in that bar is that staff's, AND its own cell holds the
+#: measure rest. A bar with nothing read, or only a shorter rest, is "cannot
+#: tell" -- a missed head reads exactly like an empty bar.
+ARTIC_EMPTY_BAR_REST = "restWhole"
+
+
+def _other_staff_bar(ev: Evidence, suffix_side: str, cell) -> Tuple[str, str]:
+    """`(state, staff_key)` for the bar, in the staff on the mark's declared
+    side, at this cell's bar: `empty`, `has_notes` or `no_measure_rest`.
+
+    A notehead is that staff's when a DECIDED `Q.GLYPH_OWNER` names it, or --
+    undecided -- when it is filed in that staff's cell (an open contest is not
+    proof the head is elsewhere). The measure rest counts only in that staff's
+    own cell and only if no decided owner moves it away.
+    """
+    st = cell.staff + (-1 if suffix_side == "above" else 1)
+    if st < 0:
+        return "no_measure_rest", ""
+    key = R.staff(cell.page, cell.system, st).to_key()
+    rest = False
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=cell.at(Kind.SYSTEM)):
+        if r.subject.cell != cell.cell or not isinstance(r.value, (list, tuple)):
+            continue
+        if (r.detail or {}).get("category") == "notehead":
+            ov = ev.verdict(Q.GLYPH_OWNER, subject=r.subject)
+            owner = (ov.value if ov is not None and ov.outcome is Outcome.DECIDED
+                     and ov.value else r.subject.at(Kind.STAFF).to_key())
+            if owner == key:
+                return "has_notes", key
+        elif (r.subject.staff == st and str(r.value[0]) == ARTIC_EMPTY_BAR_REST
+              and not _owned_by_a_different_staff(ev, r, key)):
+            rest = True
+    return ("empty" if rest else "no_measure_rest"), key
+
+
 @decision(
     quantity=Q.ARTICULATION_OWNER,
     composed_from=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER,
-                   Q.STEM_DIRECTION),
+                   Q.STEM_DIRECTION, Q.STEM, Q.NOTEHEAD_STAFF_POSITION,
+                   Q.CELL_STAFF_SPACE),
     scope=Kind.GLYPH,
-    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.STEM_DIRECTION),
+    wants=(Q.ARTICULATION_MARK, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.STEM_DIRECTION,
+           Q.STEM, Q.NOTEHEAD_STAFF_POSITION, Q.CELL_STAFF_SPACE),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=("nearest_on_notehead_side", "heads_about_equally_near",
              "no_notehead", "no_side_declared", "no_evidence",
              "owned_by_another_staff", "level_with_head",
-             "stem_direction_unread", "stem_contradicts_class_side"),
+             "stem_direction_unread", "stem_contradicts_class_side",
+             "stem_tip_of_long_chord", "other_staff_bar_empty"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
@@ -3524,7 +3672,15 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     the head nearest in x (CLAUDE.md rule 8):
 
       `stem_contradicts_class_side`  every candidate's stem is read and puts the
-                                     mark on its STEM side (a single voice)
+                                     mark on its STEM side (a single voice);
+                                     `detail.long_chord_stem` names why 2.12m's
+                                     exception did not apply
+      `stem_tip_of_long_chord`       DECIDED (ROADMAP 2.12m, Sean 2026-10-10,
+                                     tile 6): that stem side IS the convention
+                                     -- the nearest candidate's stem is a chord
+                                     stem reaching a LEDGER head on the notehead
+                                     side and the mark stands at its tip
+                                     (`_long_chord_stem_tip`)
       `stem_direction_unread`        the nearest candidates' stems are unread
       `heads_about_equally_near`     NARROWED: two candidates within
                                      `ARTIC_TIE_HEAD_HEIGHTS` of one another
@@ -3616,6 +3772,27 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
 
     base = {"articulation": name, "suffix_side": suffix_side,
             "same_ink_twins": twins, "detector_class": str(mark.value)}
+
+    def empty_bar_owner(row, was, ob, okey):
+        """Sean 2026-10-10: the other staff's bar is EMPTY, so the mark is this
+        staff's -- given to the head the stem reason was about."""
+        g, dx, h, side, sd, tv = row[:6]
+        return Ruling(
+            value=h.subject.to_key(), reason="other_staff_bar_empty",
+            used=(mark.id, h.id),
+            detail={"articulation": name, "suffix_side": suffix_side,
+                    "measured_side": side, "stem_direction": sd,
+                    "notehead_side": (None if sd is None else
+                                      "below" if sd == "up" else "above"),
+                    "stem_rule": "other_staff_bar_empty", "two_voice": tv,
+                    "shared_head": False, "was": was,
+                    "other_staff": okey, "other_staff_bar": ob,
+                    "gap_head_heights": g / nh_height,
+                    "dx_canonical_px": dx,
+                    "dx_notehead_widths": (dx / nh_width) if nh_width else None,
+                    "same_ink_twins": twins,
+                    "detector_class": str(mark.value),
+                    "confidence": mark.score})
     if near_any is not None:
         base.update(nearest_head=near_any[1].subject.to_key(),
                     measured_side=near_any[2],
@@ -3656,9 +3833,27 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                     return True
         return False
 
+    def both_ways(h) -> bool:
+        """ONE head carrying a stem UP and a stem DOWN (`Q.STEM_DIRECTION`
+        abstained `stems_disagree` on exactly those two answers). Sean,
+        DECISIONS 2026-10-10: *"When one note has stems going up and down it is
+        always 2 voices"* -- so each side of the head is a stem side, and a mark
+        on either side is that head's (2.12m, tile 7)."""
+        v = ev.verdict(Q.STEM_DIRECTION, subject=h.subject)
+        return (v is not None and v.outcome is Outcome.ABSTAINED
+                and v.reason == "stems_disagree"
+                and set((v.detail or {}).get("answers") or ()) == {"up", "down"})
+
     rows = []                         # (gap, dx, head, side, stem, two_voice, state)
+    shared = set()                    # heads carrying both voices' stems
     for dx, h, side, gap in cands:
         sd = stem_of(h)
+        if sd is None and both_ways(h):
+            # The voice whose stem points AT the mark: its stem side.
+            shared.add(id(h))
+            rows.append((gap, dx, h, side, "up" if suffix_side == "above"
+                         else "down", True, "ok"))
+            continue
         if sd is None:
             rows.append((gap, dx, h, side, None, False, "unread"))
             continue
@@ -3672,15 +3867,53 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     live = sorted((r for r in rows if r[6] != "against"), key=lambda r: r[0])
     if not live:
         g, _dx, h, _s, sd, tv, _st = min(rows, key=lambda r: r[0])
+        # ⚠️ ROADMAP 2.12m (Sean, DECISIONS 2026-10-10, case (b)): the mark is
+        # on the STEM side of a single voice. Where the NEAREST candidate's stem
+        # is a long CHORD stem reaching a ledger head on the notehead side and
+        # the mark stands at that stem's TIP, the mark is the chord's. Two
+        # voices (case (a)) never reach here as "against" on the stem side --
+        # `required` above already puts their mark there. Every failed
+        # condition keeps the old abstention and is named.
+        why, chord_detail = "two_voice", {}
+        if not tv:
+            ok, why, chord_detail = _long_chord_stem_tip(
+                ev, h, sd, heads, mx=mx, y0=y0, y1=y1, my=my,
+                nh_width=nh_width, cell=cell)
+            if ok:
+                return Ruling(
+                    value=h.subject.to_key(), reason="stem_tip_of_long_chord",
+                    used=(mark.id, h.id, chord_detail["stem_row"]),
+                    detail={"articulation": name,
+                            "suffix_side": suffix_side,
+                            "measured_side": suffix_side,
+                            "stem_direction": sd,
+                            "notehead_side": "below" if sd == "up" else "above",
+                            "stem_rule": "long_chord_stem",
+                            "two_voice": False,
+                            "gap_head_heights": g / nh_height,
+                            "dx_canonical_px": _dx,
+                            "dx_notehead_widths": (_dx / nh_width) if nh_width else None,
+                            "same_ink_twins": twins,
+                            "detector_class": str(mark.value),
+                            "confidence": mark.score,
+                            **chord_detail})
+        ob, okey = _other_staff_bar(ev, suffix_side, cell)
+        tol0 = ARTIC_TIE_HEAD_HEIGHTS * nh_height
+        if ob == "empty" and sum(1 for r in rows if r[0] <= g + tol0) == 1:
+            return empty_bar_owner(min(rows, key=lambda r: r[0]),
+                                   "stem_contradicts_class_side", ob, okey)
         return Ruling(
             value=None, reason="stem_contradicts_class_side",
             used=(mark.id, h.id),
             detail={**base, "nearest_head": h.subject.to_key(),
+                    "other_staff_bar": ob, "other_staff": okey,
                     "measured_side": suffix_side,
                     "gap_head_heights": g / nh_height,
                     "stem_direction": sd,
                     "notehead_side": "below" if sd == "up" else "above",
-                    "two_voice": tv})
+                    "two_voice": tv,
+                    "long_chord_stem": why,
+                    **{f"long_chord_{k}": v for k, v in chord_detail.items()}})
 
     # Heads about as near as the nearest live one: the geometry cannot separate
     # them. A nearer head whose stem is UNREAD is among them -- it may be the
@@ -3690,10 +3923,14 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
     near = [r for r in live if r[0] <= live[0][0] + tol]
     if not any(r[6] == "ok" for r in near):
         g, _dx, h, _s, _sd, _tv, _st = near[0]
+        ob, okey = _other_staff_bar(ev, suffix_side, cell)
+        if ob == "empty" and len(near) == 1:
+            return empty_bar_owner(near[0], "stem_direction_unread", ob, okey)
         return Ruling(
             value=None, reason="stem_direction_unread",
             used=(mark.id, h.id),
             detail={**base, "nearest_head": h.subject.to_key(),
+                    "other_staff_bar": ob, "other_staff": okey,
                     "measured_side": suffix_side,
                     "gap_head_heights": g / nh_height,
                     "n_unread_nearest": len(near)})
@@ -3722,12 +3959,150 @@ def adjudicate_articulation_owner(ev: Evidence) -> Ruling:
                 "notehead_side": "below" if sd == "up" else "above",
                 "stem_rule": "stem_side" if tv else "notehead_side",
                 "two_voice": tv,
+                "shared_head": id(head) in shared,
                 "gap_head_heights": g / nh_height,
                 "dx_canonical_px": dx,
                 "dx_notehead_widths": (dx / nh_width) if nh_width else None,
                 "same_ink_twins": twins,
                 "detector_class": str(mark.value),
                 "confidence": mark.score})
+
+
+#: ── ROADMAP 2.12m, one printed mark with two owners ─────────────────────────
+#:
+#: Sean (2026-10-11): *"Drop the losing owner."* A mark between two staves is
+#: detected once in each staff's padded cell, and each copy is decided on its
+#: own cell; where both decide on DIFFERENT heads the mark is written twice.
+#: The order in which a copy's rule outranks its twin's: the more specific rule
+#: was decided on more evidence about that column. CONVENTION ASSUMED / WHAT
+#: WOULD FALSIFY IT: a contest Sean gives to the lower-ranked copy / NOT
+#: CONFIRMED beyond his tiles 1 (long chord stem beat notehead side) and 7
+#: (shared head beat long chord stem) of `out/print/2.12m-review/`.
+def _twin_rank(v) -> int:
+    d = v.detail or {}
+    rule = d.get("stem_rule")
+    if rule == "other_staff_bar_empty" or d.get("shared_head"):
+        return 3                      # Sean: "has to" / "always"
+    if rule == "stem_side":
+        return 2                      # two voices (2.12f round 2)
+    if rule == "long_chord_stem":
+        return 1
+    return 0                          # the notehead-side default
+
+
+def _page_box(log: R.Log, quantity: str, sub) -> Optional[List[float]]:
+    for r in log.rows(quantity, sub):
+        bb = (r.detail or {}).get("bbox_page_px")
+        if bb and len(bb) == 4:
+            return [float(x) for x in bb]
+    return None
+
+
+def reconcile_articulation_twins(log: R.Log) -> Dict[str, int]:
+    """One printed mark, two decided owners: DROP the loser (CLAUDE.md §10 --
+    never relocate). Run by `adjudicate.run` right after
+    `Q.ARTICULATION_OWNER`. The loser's verdict is SUPERSEDED by an
+    abstention naming the winner, never overwritten.
+
+      * the two owners are ONE printed head (page boxes one ink,
+        `_boxes_are_one_ink`) -> keep the copy whose head is its own staff's
+        (no decided `glyph_owner` elsewhere), the other `duplicate_of_twin`;
+      * both owners on the SAME side of the mark -> the nearer, by more than
+        the tie tolerance, wins (`lost_to_twin`); else both
+        `twin_owners_disagree`;
+      * OPPOSITE sides -> the higher `_twin_rank` wins; equal -> the copy
+        whose owner is BELOW the mark (Sean 2026-10-11, CONVENTION CONFIRMED:
+        between two staves the mark is the lower staff's).
+
+    PAGE pixels throughout: two cells' canonical frames cannot be compared.
+    A pair without a page box on the mark or either owner is left as it was
+    and counted (`no_page_box`).
+    """
+    census: Counter = Counter()
+    done = set()
+
+    def decided(sub):
+        v = log.verdict(Q.ARTICULATION_OWNER, sub)
+        return v if v is not None and v.outcome is Outcome.DECIDED else None
+
+    def drop(v, reason, other, **detail):
+        log.record(R.Verdict(
+            id=log._next_id("vrd"), subject=v.subject,
+            quantity=Q.ARTICULATION_OWNER, outcome=Outcome.ABSTAINED,
+            value=None, decider="reconcile_articulation_twins", reason=reason,
+            considered=(v.id, other.id), basis=(v.id, other.id),
+            supersedes=v.id,
+            detail={"was": v.value, "twin": other.subject.to_key(),
+                    "was_rule": (v.detail or {}).get("stem_rule"),
+                    "same_ink_twins": (v.detail or {}).get("same_ink_twins"),
+                    **detail}))
+        census[reason] += 1
+
+    def own_staffs(v) -> bool:
+        head = R.Subject.from_key(v.value)
+        ov = log.verdict(Q.GLYPH_OWNER, head)
+        return not (ov is not None and ov.outcome is Outcome.DECIDED
+                    and ov.value and ov.value != head.at(Kind.STAFF).to_key())
+
+    for sub in log.subjects(Kind.GLYPH):
+        a = decided(sub)
+        if a is None:
+            continue
+        for tk in (a.detail or {}).get("same_ink_twins") or ():
+            pair = tuple(sorted((sub.to_key(), tk)))
+            if pair in done:
+                continue
+            done.add(pair)
+            a = decided(sub)
+            b = decided(R.Subject.from_key(tk))
+            if a is None or b is None or a.value == b.value:
+                continue
+            census["pairs"] += 1
+            mb = _page_box(log, Q.ARTICULATION_MARK, a.subject)
+            ha = _page_box(log, Q.GLYPH_BOX, R.Subject.from_key(a.value))
+            hb = _page_box(log, Q.GLYPH_BOX, R.Subject.from_key(b.value))
+            if mb is None or ha is None or hb is None:
+                census["no_page_box"] += 1
+                continue
+            if _boxes_are_one_ink(ha, hb):
+                keep, lose = sorted(
+                    (a, b), key=lambda v: (not own_staffs(v),
+                                           v.subject.to_key()))
+                drop(lose, "duplicate_of_twin", keep,
+                     winner=keep.subject.to_key())
+                continue
+            my = (mb[1] + mb[3]) / 2.0
+
+            def side(h):
+                return "below" if (h[1] + h[3]) / 2.0 > my else "above"
+
+            def gap(h):
+                return (h[1] - mb[3]) if side(h) == "below" else (mb[1] - h[3])
+            sa, sb = side(ha), side(hb)
+            if sa == sb:
+                tol = ARTIC_TIE_HEAD_HEIGHTS * max(ha[3] - ha[1], hb[3] - hb[1])
+                ga, gb = gap(ha), gap(hb)
+                if abs(ga - gb) <= tol:
+                    drop(a, "twin_owners_disagree", b, same_side=True)
+                    drop(b, "twin_owners_disagree", a, same_side=True)
+                else:
+                    win, lose = (a, b) if ga < gb else (b, a)
+                    drop(lose, "lost_to_twin", win,
+                         winner=win.subject.to_key(), by="nearer_same_side")
+                continue
+            ra, rb = _twin_rank(a), _twin_rank(b)
+            if ra == rb:
+                # Sean 2026-10-11, CONVENTION CONFIRMED: between two staves,
+                # with nothing more specific, the mark is the LOWER staff's.
+                win, lose = (a, b) if sa == "below" else (b, a)
+                drop(lose, "lost_to_twin", win, winner=win.subject.to_key(),
+                     by="lower_staff_convention")
+            else:
+                win, lose = (a, b) if ra > rb else (b, a)
+                drop(lose, "lost_to_twin", win, winner=win.subject.to_key(),
+                     by="more_specific_rule", winner_rule=(
+                         win.detail or {}).get("stem_rule"))
+    return dict(census)
 
 
 #: ── ROADMAP 2.7, the printed in-bar accidental ──────────────────────────────
