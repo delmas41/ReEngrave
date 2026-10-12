@@ -22,6 +22,14 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.89 EXPORT stops mode-voting a chord (branch `lane-2.89-chord-export`, NOT merged; tiles for Sean)
+
+`staged/export.py`: heads of a chord whose written values disagree are refused as `chord_value_undecided` instead of being written at the mode.
+Litolff whole 49 chords/109 heads, p1-3 6/15, Brahms p1 13/29; engraved 0 (unchanged). Test `test_staged_chord_value_vote_2026_10_11.py` (RED first on the
+old tree); `test_stage_review_evidence` price test updated. `probe/2.89_tiles.py`; 11 blind tiles `out/print/2.89-review/`. FINDINGS `omr-head-fill-2026-09` Sec.13.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
 
 `reconcile_duration` no longer lengthens a note to land a short bar where the bar

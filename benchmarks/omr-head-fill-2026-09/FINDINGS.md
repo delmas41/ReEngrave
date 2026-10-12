@@ -1111,3 +1111,27 @@ marked by a corner bracket, a frame control in `manifest.json` that can fail, sh
   is `reconcile_duration`'s, after this rule.
 * No whole-movement run was made. The overnight re-gather will price the GATHER change (the slash reader) properly; the replay prices only
   the ADJUDICATE and EVALUATE changes.
+
+
+## Sec.13. 2.89 EXPORT stops mode-voting a chord (2026-10-11, STAGED export; branch `lane-2.89-chord-export`)
+
+`voicing.group_chords_in_measure` gives a chord the MODE of its heads' (beats, type, dots). Sec.12.9 left that open. Now `export._chords_whose_value_would_be_voted`
+(last step of `_place_notes`) removes every head of a chord whose written heads disagree and `_place_notes` counts each under `chord_value_undecided`;
+`Unbalanced` still holds (balanced True on every record below). Agreeing chords, and chords 2.78 settled, are untouched. No flag: base vs arm is the
+same record re-exported with the function patched to a no-op (`probe`-style scripts were scratch; `probe/2.89_tiles.py` is committed).
+
+| record | chords voted before | heads refused after | bars whose note count changed | pitched `<note>` base -> arm |
+|---|---|---|---|---|
+| Litolff whole movement (`...20261010-night`, tree has 2.78) | 49 | 109 | 18 | 5589 -> 5563 |
+| Litolff p1-3 (`acceptance_quick --full`, this tree) | 6 | 15 | 4 | 810 -> 798 |
+| Brahms p0-1 (`acceptance_quick --full`, this tree) | 13 | 29 | 2 | 563 -> 569 |
+| engraved (`acceptance --doc beethoven5-engraved`) | 0 | 0 | 0 | document block identical (DEAD on this control: no chord disagrees) |
+
+Why the notes fall by fewer than the heads (Litolff whole: 109 heads, 26 notes): 85 of the heads sat in bars the bar-sum hold-out already withheld
+(`notes_held_out_sum` 2575 -> 2490). Why Brahms rises: a bar that no longer carries the voted chord can add up and is then written.
+Stem state of the voted chords (`Q.HEAD_STEM`/`Q.STEM_VALUE`): none shares one stem with a narrowed value. Litolff: 28 no_stem, 11 lone_head+no_stem, 4 no_stem+one
+decided, 6 ambiguous/lone; Brahms: 7 lone_head, 2 lone_head+decided `stem_value_from_evidence`, 4 other. They are x-grouped heads the reader never tied to one stem,
+so "narrowed stem" was the wrong picture: the vote is mostly over heads that may be two voices, or a chord whose stem was missed (Litolff merges, Breitkopf shatters).
+Not built: a decided-stem head winning over a stem-less one at the same x (refused with them for now), and 2.78's tile 9 follow-on.
+Cost: `test_stage_review_evidence` 'two notes where the plate has one' is now one note FEWER (the human's relabelled half is refused with the machine's
+quarter). Fast tier: see ROADMAP/version_memory. Tiles `out/print/2.89-review/` (11, blind; `manifest.json` holds the old vote).
