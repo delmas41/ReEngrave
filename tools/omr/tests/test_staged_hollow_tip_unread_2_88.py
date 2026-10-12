@@ -120,6 +120,39 @@ class TestAHollowHeadWithAnUnreadTipIsStillAHalf(unittest.TestCase):
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(v.reason, "head_fill_from_ink")
 
+    def _ink_by_raster(self, log, g, raw, net, off):
+        """ONE `Q.NOTEHEAD_INK` row; each raster is a (centre, ring) pair or None (absent)."""
+        detail = {k: {"best": max(v), "best_window": "ring", "windows": {"center": v[0], "ring": v[1]}}
+                  for k, v in (("ink_raw", raw), ("ink_net", net), ("ink_off_line", off)) if v is not None}
+        return log.observe(g, Q.NOTEHEAD_INK, 0.9, reader=READERS.CV_NOTEHEAD_INK, frame="cell:0", **detail)
+
+    def _unread_verdict(self, raw, net, off):
+        log = Log()
+        g, s = self._head(log, beam="ran_empty")
+        self._ink_by_raster(log, g, raw, net, off)
+        _unread_tip(log, s.id, "crosses_both_sides")
+        return self._verdict(log, g)
+
+    def test_Sean_tiles_1_13_14_raw_firm_one_other_raster_hollow_is_a_half_RED(self):
+        """Tile 1's pattern: raw 0.62 / 0.86 (gap 0.24), net NOT hollow (ring under centre), off-line 0.62 / 0.76. The 0.2-on-two-rasters draft
+        left it narrowed; Sean: a half."""
+        v = self._unread_verdict((0.62, 0.86), (0.62, 0.58), (0.62, 0.76))
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+
+    def test_Sean_tile_5_alto_clef_raw_centre_over_the_cut_stays_narrowed_RED(self):
+        """Tile 5 (an alto clef boxed as a head): raw 0.76 / 0.80, net 0.56 / 0.75, off-line 0.52 / 0.75. The draft decided a half."""
+        v = self._unread_verdict((0.76, 0.80), (0.56, 0.75), (0.52, 0.75))
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
+    def test_Sean_tile_10_a_blank_box_is_not_a_hollow_head_RED(self):
+        """Tile 10 (ledger lines): raw centre 0.07, off-line 0.00 -- an EMPTY box. A head's hole is never blank."""
+        v = self._unread_verdict((0.07, 0.62), (0.07, 0.62), (0.0, 0.44))
+        self.assertEqual(v.reason, "head_fill_from_ink")
+
+    def test_CONTROL_the_same_head_with_a_real_hollow_raw_reading_is_a_half(self):
+        v = self._unread_verdict((0.45, 0.85), (0.45, 0.7), (0.45, 0.75))
+        self.assertEqual(v.reason, "hollow_head_bare_stem")
+
     def test_a_SLIVER_box_stays_narrowed(self):
         log = Log()
         g, s = self._head(log, box_h=int(0.5 * SPACE) if SPACE else 6, beam="ran_empty")
