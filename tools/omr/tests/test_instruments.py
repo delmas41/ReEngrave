@@ -606,20 +606,25 @@ def test_hr_and_trpt_collide_with_no_other_alias():
             assert not word_sub(other, new), f"{other!r} ({other_owner}) fires inside {new!r}"
 
 
-def test_a_trailing_key_after_hr_or_trpt_is_read_a_leading_one_is_not():
+def test_a_trailing_key_after_hr_or_trpt_is_read_a_leading_parenthetical_one_too():
     """The bare-key parser only ever looked at what comes AFTER the alias
     (`_parse_bare_key`), a pre-existing limit shared by every key-taking
     instrument in this table — `A-Klar.` resolves to Clarinet with its
     default transposition, not with a parsed one, for the identical reason.
     Adding `hr`/`trpt` inherits that limit rather than introducing it:
     trailing keys resolve exactly, leading ones fall back to the instrument's
-    positional default. Both are pinned so a future change to the parser is
-    measured against both cases, not just the one that already worked."""
+    positional default.
+
+    ROADMAP 2.94 (Sean, 2026-10-12) lifted the limit for the PARENTHETICAL
+    leading form only: `(E) Hr.` now reads as `Hr. (E)` does. A bare leading
+    letter (`E Hr.`) is still not claimed."""
     trailing = lookup("Hr. (E)")
     assert trailing.instrument.name == "Horn" and trailing.fifths_offset == -4
     leading = lookup("(E) Hr.")
     assert leading.instrument.name == "Horn"
-    assert leading.fifths_offset == leading.instrument.default_fifths_offset
+    assert leading.fifths_offset == -4
+    bare = lookup("E Hr.")
+    assert bare.fifths_offset == bare.instrument.default_fifths_offset
 
 
 # ── 2026-09-05: substring capture, plurals, and the ambiguity a Match carries ──
