@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- 2.83 landed: the flag at the stem tip
+
+- `Q.STEM_TIP_INK` reads the flag's shape from the tip with the old window as a second witness; a decline never becomes 'no flag'; 2.70 halves only on a normal-sized head box. Sean's 24 tiles 0 wrong. Cost (18 Litolff halves narrowed) -> 2.88.
+
 ## 2026-10-11 -- docs: coordination record (cloud session; no code change)
 
 - Sean asked for one view of cloud vs Mac work. Found and fixed a ROADMAP number clash (2.84 claimed by both `lane-tenuto-ledger` and `lane-stem-finder`; the stem finder became 2.87) and set one landing order, which held: q883 -> crops-bar-drift -> 2.84 -> 2.87 -> 2.13b -> 2.85, all on main.
