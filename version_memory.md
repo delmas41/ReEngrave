@@ -22,6 +22,17 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
+
+STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so
+`group_chords_in_measure`'s divisi guard fires; `_settle_divisi_pairs` keeps them only in bars where every chord has a decided direction and the two streams carry equal
+time (the unconditional version held out 5 written Litolff bars), `_voice_split` falls back to 2.21 rule 1 on the exporter's own events where `Q.VOICES` did not part a pair;
+one stem is never split. Counters `part_join.divisi_at_export`, `written.two_voice_bars_from_exporter_stems`. Reach: opposite-direction refused chords Litolff 2/49,
+Brahms 39/178. Brahms two-voice bars 1 -> 7 (pitched 6990 unchanged), Litolff 1 -> 2 (pitched 5563 -> 5551: 2 mistimed fused bars now held out); engraved DEAD, identical.
+Fast tier 7,408 passed, `check` 192. Test `test_staged_divisi_carry_2026_10_11.py` (RED first with the facts patched off: 5 fail). Probes `probe/2.90_*.py`; 10 blind tiles `out/print/2.90-review/`. FINDINGS `omr-head-fill-2026-09` Sec.14.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.89 EXPORT stops mode-voting a chord (branch `lane-2.89-chord-export`, LANDED on main 2026-10-11, Sean: "Land")
 
 `staged/export.py`: heads of a chord whose written values disagree are refused as `chord_value_undecided` instead of being written at the mode.
