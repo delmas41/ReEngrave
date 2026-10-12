@@ -1,0 +1,508 @@
+{
+ "dpi": 600,
+ "question": "What is the written value of the chord inside the RED corners (whole, half, quarter, eighth, ..., dotted or not)? If the heads are not one chord, say so.",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "document": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 4,
+   "n_heads": 4,
+   "heads": [
+    {
+     "pitch": "G3",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "D4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "Bb4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "G5",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    1.0,
+    "quarter",
+    0
+   ],
+   "frame_control": {
+    "ratio": 4.3,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.24,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.2,
+   "page_box_600dpi": [
+    822,
+    1351,
+    1238,
+    1591
+   ]
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "document": "litolff",
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 12,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "A4",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    },
+    {
+     "pitch": "F5",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    2.0,
+    "half",
+    0
+   ],
+   "frame_control": {
+    "ratio": 8.83,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.09,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    2023,
+    1063,
+    2432,
+    1299
+   ]
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "document": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 5,
+   "cell": 9,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "D5",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "D6",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    2.0,
+    "half",
+    0
+   ],
+   "frame_control": {
+    "ratio": 11.23,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.07,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.25,
+   "page_box_600dpi": [
+    1816,
+    1090,
+    2225,
+    1326
+   ]
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "document": "litolff",
+   "page": 7,
+   "system": 1,
+   "staff": 2,
+   "cell": 13,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "A4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "A5",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    2.0,
+    "half",
+    0
+   ],
+   "frame_control": {
+    "ratio": 7.33,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1985,
+    2306,
+    2394,
+    2542
+   ]
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "document": "litolff",
+   "page": 12,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "n_heads": 3,
+   "heads": [
+    {
+     "pitch": "Bb3",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    },
+    {
+     "pitch": "G4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "G#5",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    1.0,
+    "quarter",
+    0
+   ],
+   "frame_control": {
+    "ratio": 5.1,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.2,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.3,
+   "page_box_600dpi": [
+    985,
+    627,
+    1394,
+    863
+   ]
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "document": "litolff",
+   "page": 13,
+   "system": 1,
+   "staff": 9,
+   "cell": 13,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "D4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "A#4",
+     "beats": 2.0,
+     "type": "half",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    1.0,
+    "quarter",
+    0
+   ],
+   "frame_control": {
+    "ratio": 3.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.28,
+    "passes": false
+   },
+   "calibration_shift_spaces": -0.05,
+   "page_box_600dpi": [
+    1884,
+    3318,
+    2293,
+    3554
+   ]
+  },
+  {
+   "n": 7,
+   "file": "tile_07.png",
+   "document": "brahms",
+   "page": 0,
+   "system": 0,
+   "staff": 11,
+   "cell": 5,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "Eb4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "G4",
+     "beats": 1.5,
+     "type": "quarter",
+     "dots": 1
+    }
+   ],
+   "old_vote_would_have_written": [
+    1.0,
+    "quarter",
+    0
+   ],
+   "frame_control": {
+    "ratio": 5.83,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    3977,
+    5820,
+    4814,
+    6304
+   ]
+  },
+  {
+   "n": 8,
+   "file": "tile_08.png",
+   "document": "brahms",
+   "page": 0,
+   "system": 0,
+   "staff": 13,
+   "cell": 1,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "C3",
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1
+    },
+    {
+     "pitch": "Bb3",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    3.0,
+    "half",
+    1
+   ],
+   "frame_control": {
+    "ratio": 46.56,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.02,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    1976,
+    6567,
+    2807,
+    7047
+   ]
+  },
+  {
+   "n": 9,
+   "file": "tile_09.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 0,
+   "staff": 0,
+   "cell": 3,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "Ab5",
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0
+    },
+    {
+     "pitch": "Cb6",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    }
+   ],
+   "old_vote_would_have_written": [
+    0.5,
+    "eighth",
+    0
+   ],
+   "frame_control": {
+    "ratio": 6.04,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.14,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    2949,
+    412,
+    3657,
+    820
+   ]
+  },
+  {
+   "n": 10,
+   "file": "tile_10.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "Eb4",
+     "beats": 1.0,
+     "type": "quarter",
+     "dots": 0
+    },
+    {
+     "pitch": "Eb5",
+     "beats": 1.5,
+     "type": "quarter",
+     "dots": 1
+    }
+   ],
+   "old_vote_would_have_written": [
+    1.5,
+    "quarter",
+    1
+   ],
+   "frame_control": {
+    "ratio": 10.08,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.11,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.05,
+   "page_box_600dpi": [
+    4216,
+    894,
+    4964,
+    1307
+   ]
+  },
+  {
+   "n": 11,
+   "file": "tile_11.png",
+   "document": "brahms",
+   "page": 1,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "n_heads": 2,
+   "heads": [
+    {
+     "pitch": "Bb2",
+     "beats": 0.5,
+     "type": "eighth",
+     "dots": 0
+    },
+    {
+     "pitch": "Bb3",
+     "beats": 3.0,
+     "type": "half",
+     "dots": 1
+    }
+   ],
+   "old_vote_would_have_written": [
+    0.5,
+    "eighth",
+    0
+   ],
+   "frame_control": {
+    "ratio": 5.74,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.16,
+    "passes": false
+   },
+   "calibration_shift_spaces": 0.0,
+   "page_box_600dpi": [
+    2402,
+    1208,
+    3110,
+    1616
+   ]
+  }
+ ]
+}

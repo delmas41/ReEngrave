@@ -25,6 +25,24 @@ pointing at headings no longer in the file.)*
 ## 2026-10-11 -- ROADMAP 2.88 half notes 2.83 left narrowed (branch `lane-2.88-halves`, BUILT, not merged)
 
 - STAGED, ADJUDICATE only (`rhythm.adjudicate_duration`): a hollow head whose stem tip the tip reader cannot tell is a half on the head's own firm reading (two rasters, ring - centre >= 0.2, head-shaped box, filed cannot-tell, no flag/beam/dispute). 17 Litolff heads narrowed -> decided half (rule reads the RAW raster firmly after Sean's 14 tiles; fast tier 7,410 passed), nothing else moves; Sean's judged halves 18/18, quarters and the 2.83 tile-6 fragment unchanged; Brahms hand truth unchanged. 13 new tests (`test_staged_hollow_tip_unread_2_88.py`, RED first on `51a01593`). 14 blind tiles `out/print/2.88-review/`. FINDINGS `omr-missing-notes-2026-09` 21.
+## 2026-10-11 -- ROADMAP 2.90 two voices at one x are written as two voices (branch `lane-2.90-voice-carry`, LANDED on main 2026-10-11, Sean: "Land 2.90")
+
+STAGED `export.py` only (`voicing.py` untouched, LEGACY unchanged). The head dict now carries the DECIDED `Q.STEM_DIRECTION` / `Q.HEAD_STEM` id (`_stem_facts_of`), so
+`group_chords_in_measure`'s divisi guard fires; `_settle_divisi_pairs` keeps them only in bars where every chord has a decided direction and the two streams carry equal
+time (the unconditional version held out 5 written Litolff bars), `_voice_split` falls back to 2.21 rule 1 on the exporter's own events where `Q.VOICES` did not part a pair;
+one stem is never split. Counters `part_join.divisi_at_export`, `written.two_voice_bars_from_exporter_stems`. Reach: opposite-direction refused chords Litolff 2/49,
+Brahms 39/178. Brahms two-voice bars 1 -> 7 (pitched 6990 unchanged), Litolff 1 -> 2 (pitched 5563 -> 5551: 2 mistimed fused bars now held out); engraved DEAD, identical.
+Fast tier 7,408 passed, `check` 192. Test `test_staged_divisi_carry_2026_10_11.py` (RED first with the facts patched off: 5 fail). Probes `probe/2.90_*.py`; 10 blind tiles `out/print/2.90-review/`. FINDINGS `omr-head-fill-2026-09` Sec.14.
+
+---
+
+## 2026-10-11 -- ROADMAP 2.89 EXPORT stops mode-voting a chord (branch `lane-2.89-chord-export`, LANDED on main 2026-10-11, Sean: "Land")
+
+`staged/export.py`: heads of a chord whose written values disagree are refused as `chord_value_undecided` instead of being written at the mode.
+Litolff whole 49 chords/109 heads, p1-3 6/15, Brahms p1 13/29; engraved 0 (unchanged). Test `test_staged_chord_value_vote_2026_10_11.py` (RED first on the
+old tree); `test_stage_review_evidence` price test updated. Sean's 11 tiles: 6 one voice, 5 two voices (2.90 carries stem direction to EXPORT). Fast tier 7,398 passed, `check` 192. `probe/2.89_tiles.py`; 11 blind tiles `out/print/2.89-review/`. FINDINGS `omr-head-fill-2026-09` Sec.13.
+
+---
 
 ## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
 

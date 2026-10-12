@@ -948,8 +948,17 @@ class TestARelabelINSIDETheNoteheadFamily(_Case):
         quarter AND the human's half. Closing it needs either a rule that
         `is_a:<other notehead>` supersedes the head class, or one that refuses
         the machine's box — and the second is `redrawn`'s open question, which
-        nobody has decided. Out of 3.4c's scope, IN 3.4c's report."""
-        self.assertEqual(self.d.notes_after, self.d.notes_before + 1)
+        nobody has decided. Out of 3.4c's scope, IN 3.4c's report.
+
+        ⚠️ ROADMAP 2.89 CHANGED WHAT THIS PRICE IS. EXPORT no longer mode-votes
+        a chord whose heads disagree, so the machine's quarter and the human's
+        half -- one chord by x, two values -- are BOTH refused
+        (`chord_value_undecided`) and the bar carries neither: one note FEWER
+        than before the review, where it used to carry two. The human's half
+        is lost with the machine's quarter, which is the same open question
+        (a relabel should supersede the head it relabels) in its other shape.
+        """
+        self.assertEqual(self.d.notes_after, self.d.notes_before - 1)
 
 
 class TestADuplicateIsOnePieceOfInk(_Case):
