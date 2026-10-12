@@ -2651,3 +2651,18 @@ failed** (13:29); `python3 -m tools.omr.staged.check` TOTAL **192** (= base `2e2
 `test_no_registered_rule_declares_the_meter` now names `collapse_bare_stem_by_bar` as the one default-OFF rule that reads the meter (and a second test
 pins the invariant over the rules enabled by default), and the INFER self-check probe looks at the rules that RAN, so a run with the flag on is refused a
 bar-fill score and a default run is not.
+
+### 19.8 Sean's 14 tiles (2026-10-11, blind) -- `out/print/2.81-phase2-review/answers.json`
+
+His words: *"1-4. 4 5.8 6.dot 4 7. Dot 4 8-10. 4 11-12. 8 13.4 14.dot4"*. Scored by `probe/l281p2_tilescore.py`:
+
+* **settled by the bar (tiles 3, 4, 8, 9, 10, 13, all Litolff): 6 of 6 decided right, 0 wrong** -- the held-out check of the tip-clean condition. n = 6, one movement, one plate:
+  an error-free 6 bounds the rate only at 0.61 (95% Wilson lower), so this supports the rule as a conservative settler, it does not prove its precision.
+* narrowed with the quarter-first evidence (tiles 1, 2, 7): 3 of 3 a quarter / dotted quarter. Narrowed without it (tile 5, `glyph/1/0/10/3/4`): an EIGHTH, i.e. the
+  old order (not claimed) was the honest one there.
+* controls 4 of 4 agree with his hand-truth boxes (tiles 11-12 eighths, 6 and 14 dotted quarters).
+
+**What these tiles do NOT measure: the bare-stem -> quarter rate.** Only 4 un-settled samples (3 + 1) were drawn, so nothing here says how often an UNSETTLED bare stem is a
+quarter; the 3 of 3 are not an estimate of it, and the one counter-example (tile 5) sits in the stratum where the evidence did not hold. The rate stays what 19.1 says:
+0.959 on one page it was tuned on (lower bound 0.86), 0.76-0.80 on the old tree's blind tiles. **The question of an ADJUDICATE rule that decides stays open below 95%.**
+
