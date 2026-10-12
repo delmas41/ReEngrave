@@ -2670,11 +2670,10 @@ def _stem_tip_unread_why(ev: Evidence, cell, own_stems, side: Optional[str]) -> 
         return None
     end = "top" if side == "up" else "bottom"
     ids = {s.id for s in own_stems}
-    kw = dict(scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    for r in ev.rows(Q.STEM_TIP_INK, **kw):
+    for r in ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
         if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
             return None
-    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, **kw)
+    whys = [a.detail.get("why") for a in ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
             if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
     if whys and all(w in TIP_UNREAD_REASONS for w in whys):
         return sorted(set(whys))[0]
