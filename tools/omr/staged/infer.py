@@ -200,21 +200,20 @@ ALWAYS_ON = Switch("(always on)", lambda: True)
 #: The key-gap rule alone. Default ON (roadmap 2.9b).
 PART_KEY_SWITCH = Switch(PART_KEY_ENV, part_key_enabled)
 
-#: ROADMAP 2.81 PHASE 2. The bare-stem bar-math rule's OWN flag, default OFF
-#: (Sean, 2026-10-10: a bare stem is a quarter ~0.76-0.80 of the time, below
-#: his 95% bar, so it may only be settled where a bar's arithmetic forces it,
-#: and this tree has not yet shown that on a page he has judged).
+#: ROADMAP 2.81 PHASE 2. The bare-stem bar-math rule's OWN flag, default ON
+#: (Sean, 2026-10-11, "Yes": land it with the bar check switched on). Sean's blind
+#: tiles: the 6 heads it settled are 6 of 6 right (FINDINGS `omr-missing-notes-
+#: 2026-09` 20.8); his hand-truth page 33 right / 0 wrong.
 #:
-#: ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF: `OMR_BARE_STEM_BAR=` or a
-#: typo must leave the rule OFF. Written out on its own line so the AST scan in
+#: ⚠️ A DENY-LIST, BECAUSE THE DEFAULT IS ON: `OMR_BARE_STEM_BAR=` or a typo must
+#: leave the rule RUNNING. Written out on its own line so the AST scan in
 #: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
 BARE_STEM_BAR_ENV = "OMR_BARE_STEM_BAR"
 
 
 def bare_stem_bar_enabled() -> bool:
-    """Read the bare-stem flag. Only an explicit on-word is ON."""
-    return os.environ.get(BARE_STEM_BAR_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """Read the bare-stem flag. Anything but an explicit off-word is ON."""
+    return os.environ.get(BARE_STEM_BAR_ENV, "1").strip().lower() not in _OFF_WORDS
 
 
 BARE_STEM_BAR_SWITCH = Switch(BARE_STEM_BAR_ENV, bare_stem_bar_enabled)

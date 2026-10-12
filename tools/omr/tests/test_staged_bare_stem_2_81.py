@@ -574,20 +574,24 @@ class TestTheFlagAndTheLabel(unittest.TestCase):
         g = b.bare()
         return b.finish(), g
 
-    def test_default_OFF(self):
+    def test_default_ON(self):
         log, g = self._bar()
         rep = _run(log, flag=None)
-        self.assertEqual(_fired(rep), [])
+        self.assertEqual(len(_fired(rep)), 1)
         self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome,
-                         Outcome.NARROWED)
-        self.assertIn(("collapse_bare_stem_by_bar", infer.BARE_STEM_BAR_ENV),
-                      [tuple(d) for d in rep.disabled])
+                         Outcome.DECIDED)
 
-    def test_a_typo_leaves_it_off(self):
-        for word in ("", "nope", "0", "off"):
+    def test_an_explicit_off_word_turns_it_off_and_a_typo_leaves_it_on(self):
+        for word in ("0", "off", "false", "no", ""):
             log, g = self._bar()
             rep = _run(log, flag=word)
             self.assertEqual(_fired(rep), [], word)
+            self.assertIn(("collapse_bare_stem_by_bar",
+                           infer.BARE_STEM_BAR_ENV),
+                          [tuple(d) for d in rep.disabled])
+        for word in ("nope", "1", "on"):
+            log, g = self._bar()
+            self.assertEqual(len(_fired(_run(log, flag=word))), 1, word)
 
     def test_the_answer_is_a_candidate_the_reader_admitted_and_is_labelled(
             self):
@@ -608,24 +612,22 @@ class TestTheFlagAndTheLabel(unittest.TestCase):
         self.assertIn(Q.METER, r.reads)
         self.assertTrue(infer.scoring_conflict(r, [Q.METER]))
 
-    def test_it_is_the_ONE_registered_rule_that_reads_the_meter_and_it_is_OFF(
-            self):
+    def test_it_is_the_ONE_registered_rule_that_reads_the_meter(self):
         """The registry-wide invariant `test_infer_barline_rule` pins (no
         rule reads the meter, so bar-fill stays a legitimate self-check)
-        carries exactly this named exception: the rule is default OFF, so
-        every run under default settings keeps the invariant, and a run with
-        it on is one `self_check.py` must refuse to score by bar-fill."""
+        carries exactly this named exception. It is default ON since
+        2026-10-11 (Sean), so `self_check.py` looks only at the rules that RAN
+        and refuses to score a run by bar-fill while it is enabled."""
         infer._ensure_rules()
         readers = [r for r in infer.RULES if Q.METER in r.reads]
         self.assertEqual([r.inference.value for r in readers],
                          ["collapse_bare_stem_by_bar"])
-        with mock.patch.dict(os.environ, {}, clear=False):
-            os.environ.pop(infer.BARE_STEM_BAR_ENV, None)
-            self.assertFalse(readers[0].switch())
+        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0"}):
             self.assertNotIn(
                 "collapse_bare_stem_by_bar",
                 [r.inference.value for r in infer.enabled_rules()])
-        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "1"}):
+        with mock.patch.dict(os.environ, {}, clear=False):
+            os.environ.pop(infer.BARE_STEM_BAR_ENV, None)
             self.assertIn(
                 "collapse_bare_stem_by_bar",
                 [r.inference.value for r in infer.enabled_rules()])
