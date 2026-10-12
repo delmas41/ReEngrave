@@ -3011,3 +3011,29 @@ against `manifest.json`: **0 wrong of 10.**
 So the reinstated population (2) is 2 of 2 right, every control that should
 refuse refused, and nothing was decided True on a non-rest. n is small; the
 shape windows remain measured on two pages.
+
+
+## 2.98 -- a lone whole rest is the bar, in the bar the file writes (2026-10-12)
+
+PATH: STAGED. Branch `lane-2.98-whole-rest-bar`. CONVENTION (CLAUDE.md §10, Sean 2026-10-12 tiles 4-6, 3/3): a whole rest means the BAR whatever the meter. NOT CONFIRMED on the 12 new tiles (Sean has not judged them).
+
+**The blockers, shown first.** (1) Brahms: 428 held bars = one `restWhole` left at 4.0 unmarked; 403 sit on systems whose `Q.METER` abstained, so `size_measure_rest` (cause: a DECIDED meter) never fires. (2) Litolff, exact blocker (`probe/ab_2_98.py` run, inspected on the record): the bar holds TWO duration verdicts -- the `restWhole` box and a notehead-class box on the same ink (boxes overlap 0.93-1.0) with `notehead_is_not_a_notehead` decided False and `notehead_is_a_whole_rest` decided True. EXPORT refuses that second box (`ink_is_a_whole_rest`) so the file holds one rest, but 2.19's `_left_the_bar` lists only not-a-notehead / not-a-rest / owner removals, so `_standing` kept its 1.0 and the bar was "two things". (The brief said "refused `ink_is_a_whole_rest`"; the verdict is `Q.NOTEHEAD_IS_A_WHOLE_REST`, the refusal is EXPORT's.)
+
+**Stage.** (1) EXPORT: the length needed is the `<time>` in force in the exported part (`in_force`, carried across systems by `_part_xml`), which is not in the record; nothing is added to the record and nothing is decided that the file does not already say. (2) EVALUATE, because it follows from a decided verdict and sits where 2.19 put the same kind of removal. `_left_the_bar` is shared with INFER's duration rules (2.97's fence), so the set-aside is a separate helper `_whole_rest_ink_twin` used only by `size_measure_rest`: non-rest box, DECIDED True, the exporter's refusal flag on, overlapping the sized rest >= 0.8 of the smaller box. A twin elsewhere in the bar, a real head, an abstained verdict, `OMR_WHOLE_REST_INK=0` all keep the bar unsized (tests).
+
+**Base vs arm, one tree** (`out/2.98/*.json`; pre-merge tree 3fd59e2a, Litolff re-decided from its GATHER rows, base reproduces 2.96's 1,044 exactly):
+
+| | held | of bars with events | measure rests in file | notes | `bars add up` |
+|---|---|---|---|---|---|
+| Litolff base | 1,044 | 4,841 | 1,089 | 5,782 | exact 6,060, short 0, overfull 0 |
+| (2) EVALUATE only (twin fires 29) | 1,013 | | 1,120 | 5,782 | same |
+| (1) EXPORT only | 1,012 | | 1,121 | 5,782 | same |
+| both | 1,012 | | 1,121 | 5,782 | same |
+| Brahms base (export-only) | 2,553 | 5,955 | 974 | 8,198 | exact 6,988, short 0, overfull 0 |
+| Brahms (1) | 2,125 | | 1,402 | 8,198 | same |
+
+Released by part: Litolff (2) 29, (1) 30 (the 30 W bars; (1) subsumes (2) at the file; the extra one is page 16 sys 0 cell 14, whose second box is on another place in the bar and is dropped by EXPORT for a reason EVALUATE does not model -- a tile for it is in the set); Brahms (1) 428, 403 on a carried meter (`measure_rests_sized_by_a_carried_meter`). 2 more Litolff bars on a doubled staff are written, not in the held list. Notes and ordinary rests reaching the file are unchanged; the released bars were held-out events counted under `bar_does_not_add_up`, now `measure_rests_read`. Overfull stays 0: the rest takes the file's own `<time>` by construction, and `_bar_holds_out`'s lone-measure-rest equality still judges it. No released Brahms bar sits after a printed meter change (those systems declare their meter and EVALUATE sized them in 2.79), so the two change-adjacent tiles are controls, not releases. Engraved control (`acceptance --doc beethoven5-engraved`, base vs arm): identical (0 held, 432/432 add up, F1 0.951, OMR-NED 0.0806); inert there because EVALUATE already marks those rests. Brahms part (2) was not re-decided (5.9 GB record).
+
+**Tiles** `out/print/2.98-review/` (12; phone-sized, rest bracketed blue, bar red, our reading in `manifest.json` only): 1-4 Litolff released, 5-6 Brahms controls right after the 9/8 -> 6/8 change, 7-12 Brahms released (5 on a carried meter). Question: is the bracketed rest a whole-bar rest, and what meter is this bar in? NOT CONFIRMED until Sean answers.
+
+**Limit.** On a carried meter the file's `<time>` may itself be wrong (`carry_outweighed_by_the_bars`); the rest then agrees with a wrong `<time>`. The rest is the bar either way; the meter claim is a separate item.

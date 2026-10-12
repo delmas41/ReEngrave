@@ -34,6 +34,9 @@ pointing at headings no longer in the file.)*
 
 - STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
 
+## 2026-10-12 -- ROADMAP 2.98 a lone whole rest is the bar even where the meter is not read (branch `lane-2.98-whole-rest-bar`, not merged)
+STAGED. `export._lone_whole_rest_is_the_bar` (EXPORT and `lilypond.py`): a lone dotless `restWhole` is marked a measure rest and sized to the `<time>` the file has in force; `consequences._whole_rest_ink_twin`: a second box on the rest's own ink decided a whole rest no longer blocks `size_measure_rest`. Litolff held 1,044 -> 1,012, Brahms 2,553 -> 2,125, `bars add up` overfull 0, engraved control identical. Tests `test_staged_whole_rest_bar_2_98.py`, FINDINGS 2.98, 12 tiles. Tiles awaiting Sean.
+
 ## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
 
 - Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
