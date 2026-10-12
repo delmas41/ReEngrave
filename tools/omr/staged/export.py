@@ -3666,6 +3666,17 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
+            # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
+            # meter the FILE has in force (`judged`), meter verdict or not.
+            # See `_lone_whole_rest_is_the_bar` for why this is EXPORT's.
+            if events:
+                _sized = _lone_whole_rest_is_the_bar(
+                    events, meter if meter is not None else in_force)
+                if _sized is not None:
+                    events = _sized
+                    counters["measure_rests_sized_by_the_file_meter"] += 1
+                    counters["measure_rests_sized_by_a_carried_meter"] += (
+                        1 if meter is None else 0)
             # ⚠️⚠️ ROADMAP 2.8, AND IT IS DECIDED BEFORE ANYTHING IS WRITTEN.
             # A held-out bar takes `_mxl_empty_measure`, which writes the
             # bar's directions itself — so the test cannot sit after the
@@ -4522,6 +4533,54 @@ def _bar_quarters(meter: Optional[Dict[str, Any]]) -> Optional[float]:
     return float(_legacy._measure_rest_beats(meter))
 
 
+def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
+                                judged: Optional[Dict[str, Any]]
+                                ) -> Optional[List[Dict[str, Any]]]:
+    """ROADMAP 2.98: a LONE, dotless whole rest is the BAR -- the length of the
+    bar the FILE writes there -- whether or not any meter was ever READ.
+
+    STAGE: EXPORT, and the reason is in the one fact this needs. The rest's
+    length is the length of the `<time>` the exported PART has in force at this
+    bar (`judged`), and that is a property of the FILE: `in_force` is carried
+    across systems by `_part_xml` and is no `Q.METER` verdict anywhere in the
+    record. EVALUATE's `size_measure_rest` can only size from a DECIDED
+    `Q.METER` verdict, so on a system whose meter ABSTAINED it is silent --
+    and on Brahms 1/i that was 403 bars. Nothing in the record is needed that
+    EXPORT does not already hold; nothing is added to the record. Where the
+    meter IS decided and EVALUATE has already marked the rest this returns
+    None (`measure_rest` is set) and `_bar_holds_out` keeps judging it.
+
+    ⚠️ NEVER AN INVENTED METER. `judged` None (the part has declared no
+    `<time>` at all) returns None and the bar is written/held exactly as
+    before (rule 8). The length written is the one the file has already
+    declared, so the rest cannot contradict it -- the 2.79 failure mode (a
+    rest sized to a meter other than the one written at that bar) is closed by
+    construction, and `_bar_holds_out`'s lone-measure-rest equality still runs
+    on the result.
+
+    ⚠️ LONE means ONE EVENT in the bar, whose glyph class is `restWhole`, with
+    no dots. A bar that also holds a note, a half rest, a quarter rest or any
+    second event is not this rule's. Returns the bar's events with the one
+    rest marked and sized, or None.
+    """
+    if len(events) != 1:
+        return None
+    ev = events[0]
+    det = ev.get("rest") or {}
+    if (ev.get("kind") != "rest" or det.get("class") != "restWhole"
+            or det.get("measure_rest") or int(ev.get("dots") or 0)
+            or int(det.get("dots") or 0)):
+        return None
+    want_q = _bar_quarters(judged)
+    if want_q is None:
+        return None
+    new = dict(ev)
+    new["duration_beats"] = want_q
+    new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
+                   "sized_by": "file_meter_in_force_2_98"}
+    return [new]
+
+
 def _bar_holds_out(events: List[Dict[str, Any]],
                    streams: Optional[List[List[Dict[str, Any]]]],
                    divisions: int, meter: Optional[Dict[str, Any]]
@@ -5121,6 +5180,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_sum", "notes_held_out_sum",
                "bars_judged_by_a_carried_meter",
                "empty_bars_sized_by_a_carried_meter",
+               "measure_rests_sized_by_the_file_meter",
+               "measure_rests_sized_by_a_carried_meter",
                "bars_held_out_sum_on_a_doubled_staff",
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
