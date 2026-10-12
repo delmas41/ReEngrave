@@ -23,6 +23,7 @@ repair is a bounded EVALUATE consequence, not a second adjudication.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling,
@@ -2470,6 +2471,70 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     return any(bool(r.value) for r in matched), matched
 
 
+#: ROADMAP 2.81 phase 2. How close to this head's stem tip a REFUSED stroke
+#: may lie before it is "at the tip" (staff spaces, along the stem), and how
+#: far across the stem it may lie (spaces). Phase 1's PROBE definition
+#: (`benchmarks/omr-missing-notes-2026-09/probe/l281_population.py::
+#: stroke_at_tip`) -- Sean's blind tiles scored it 16/20 -- carried over
+#: unchanged and NOT CONFIRMED by Sean as a geometry.
+BARE_STEM_TIP_SPACES = 0.6
+BARE_STEM_ACROSS_SPACES = 0.3
+
+#: ROADMAP 2.81 phase 2. The RANKING's own flag, default OFF (allow-list: a
+#: typo leaves it off). ⚠️ Measured on the small re-gather's page 1 (agent-read
+#: against the print): flipping the order moves the total `reconcile_duration`
+#: (EVALUATE) sums -- it counts a narrowed note at its BEST-SUPPORTED reading --
+#: and five bars changed answer, two for the better, one a narrowed head decided
+#: wrongly and one a DECIDED dotted half re-read as a dotted quarter. That is a
+#: consumer this lane does not own (2.80), so the order ships behind a flag Sean
+#: can turn on once he has seen it; the label `bare_stem_evidence_holds` is
+#: written either way.
+BARE_STEM_RANK_ENV = "OMR_BARE_STEM_RANK"
+
+
+def bare_stem_rank_enabled() -> bool:
+    """Read the ranking flag. Only an explicit on-word is ON."""
+    return os.environ.get(BARE_STEM_RANK_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
+                           space: float) -> Optional[bool]:
+    """Did a stroke this decision REFUSED stand at this head's own stem tip?
+
+    ROADMAP 2.81 phase 2. `None` -- cannot be asked (no own stem, no side, no
+    staff-space unit, no box on a stem): the caller must treat it as "the
+    evidence does not hold", never as "no stroke there" (rule 8).
+
+    ⚠️ The population this serves is a head whose every candidate stroke was
+    refused. The refusals that are NOT at its tip (a neighbour staff's beam, a
+    far-side stroke) say nothing about the stem; the ones AT the tip are the
+    beam 2.74's ink test may have refused wrongly (17 of Phase 1's 22 misses
+    were three such beams). The tip is the stem end the head's side points to.
+    """
+    if side not in ("up", "down") or not own_stems or not space or space <= 0:
+        return None
+    boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
+    if not boxes:
+        return None
+    across = BARE_STEM_ACROSS_SPACES * space
+    reach = BARE_STEM_TIP_SPACES * space
+    x0 = min(b[0] for b in boxes) - across
+    x1 = max(b[0] + b[2] for b in boxes) + across
+    if side == "up":
+        tip = min(b[1] for b in boxes)
+    else:
+        tip = max(b[1] + b[3] for b in boxes)
+    zone = (x0, tip - reach, x1 - x0, 2.0 * reach)
+    for r in refused:
+        box = _xywh(r)
+        if box is None:
+            continue
+        if _box_gap(zone, box) <= 0:
+            return True
+    return False
+
+
 def _stem_tip_hook_count(rows) -> Tuple[Optional[int], int, int]:
     """What the stem-tip reader says about HOW MANY hooks, over the rows that
     SAW one. ROADMAP 2.69 (Sean, 2026-10-09).
@@ -3115,6 +3180,34 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
             and not flag_levels and not hollow):
+        # ⚠️⚠️ ROADMAP 2.81 PHASE 2 (Sean, 2026-10-10): THE RANKING. The two
+        # candidates used to be ranked EIGHTH over QUARTER unconditionally
+        # (2.0 vs 1.0) -- the opposite of what the print says for a bare
+        # stem. Phase 1 (FINDINGS `omr-missing-notes-2026-09` §17), Brahms
+        # pdf 0 against Sean's hand truth: level 0 is right for 54 of the 76
+        # judged members, and for the members whose stem is decided and whose
+        # tip window reads clean 0.86 (31/36); his blind tiles scored the
+        # stricter subset 0.80 -- BELOW his 95% bar, so this is a RANKING, a
+        # labelled likelihood, and never a decision. Where the evidence does
+        # NOT hold (no decided stem: 20/36 = 0.56; a refused stroke AT the
+        # stem's tip: the real beams 2.74 refused) nothing is claimed and the
+        # order is the one it always was. `support` is in this function's own
+        # units and is not a probability.
+        refused_here = [b for b in pre_ink if b.id in ink_dropped]
+        refused_here += list(arc_dropped) + list(neighbour_dropped)
+        refused_here += list(far_side) + list(beyond)
+        _space_rows = ev.rows(Q.CELL_STAFF_SPACE,
+                              scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        tip_zone_space = float(_space_rows[-1].value) if _space_rows else 0.0
+        _bare_tip, _bare_tip_rows = _stem_tip_flag_ink(ev, cell, own_stems,
+                                                       side)
+        _stroke_at_tip = _refused_stroke_at_tip(refused_here, own_stems, side,
+                                                tip_zone_space)
+        evidence_holds = (bool(own_stems) and _bare_tip is False
+                          and _stroke_at_tip is False)
+        quarter_first = evidence_holds and bare_stem_rank_enabled()
+        if quarter_first:
+            used.extend(r.id for r in _bare_tip_rows)
         cands = []
         for level in (0, 1):
             b = base / (2 ** level) if level else base
@@ -3122,12 +3215,22 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             for _ in range(n_dots):
                 add /= 2.0
                 t += add
+            if quarter_first:
+                sup = 2.0 if level == 0 else 1.0
+            else:
+                sup = 2.0 if level == 1 else 1.0
             cands.append(Candidate(
                 value={"beats": _scale(t, ratio, ev), "written": t,
                        "dots": n_dots, "beam_levels": level},
-                support=2.0 if level == 1 else 1.0))
+                support=sup))
         return Ruling.narrow(cands, "beam_discounted_uncertain",
-                             used=tuple(used), **shared)
+                             used=tuple(used), **shared,
+                             bare_stem_likelihood=(
+                                 "quarter_first" if quarter_first
+                                 else "not_claimed"),
+                             bare_stem_evidence_holds=evidence_holds,
+                             bare_stem_tip_window_clean=_bare_tip is False,
+                             bare_stem_refused_stroke_at_tip=_stroke_at_tip)
 
     # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
     # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,

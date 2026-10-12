@@ -200,6 +200,25 @@ ALWAYS_ON = Switch("(always on)", lambda: True)
 #: The key-gap rule alone. Default ON (roadmap 2.9b).
 PART_KEY_SWITCH = Switch(PART_KEY_ENV, part_key_enabled)
 
+#: ROADMAP 2.81 PHASE 2. The bare-stem bar-math rule's OWN flag, default OFF
+#: (Sean, 2026-10-10: a bare stem is a quarter ~0.76-0.80 of the time, below
+#: his 95% bar, so it may only be settled where a bar's arithmetic forces it,
+#: and this tree has not yet shown that on a page he has judged).
+#:
+#: ⚠️ AN ALLOW-LIST, BECAUSE THE DEFAULT IS OFF: `OMR_BARE_STEM_BAR=` or a
+#: typo must leave the rule OFF. Written out on its own line so the AST scan in
+#: `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+BARE_STEM_BAR_ENV = "OMR_BARE_STEM_BAR"
+
+
+def bare_stem_bar_enabled() -> bool:
+    """Read the bare-stem flag. Only an explicit on-word is ON."""
+    return os.environ.get(BARE_STEM_BAR_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+BARE_STEM_BAR_SWITCH = Switch(BARE_STEM_BAR_ENV, bare_stem_bar_enabled)
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
@@ -268,6 +287,19 @@ class Inference(str, Enum):
     #: is the distinction rule 3 protects. A rule whose ADJUDICATE side
     #: abstained on the inference's say-so would be the fixpoint instead.
     FILL_PART_KEY = "fill_part_key"
+
+    #: ROADMAP 2.81 PHASE 2. A narrowed duration of a head that stands on a
+    #: stem whose every candidate beam was refused (`beam_discounted_
+    #: uncertain`: the quarter, or ONE beam level more), collapsed to the one
+    #: reading under which the BAR'S ARITHMETIC lands on the meter.
+    #:
+    #: ⚠️⚠️ THE FIRST RULE HERE THAT READS `Q.METER`, AND IT SAYS SO: its
+    #: `reads` names it, so `scoring_conflict` is non-empty against the
+    #: bar-fill self-check and `probe/self_check.py` will refuse to score this
+    #: rule by bar-fill. The count against the PRINT (Sean's hand truth) is
+    #: the only legitimate score. The likelihood the ranking carries (a bare
+    #: stem is a quarter) is NOT the reason for any answer: the arithmetic is.
+    COLLAPSE_BARE_STEM_BY_BAR = "collapse_bare_stem_by_bar"
 
 
 #: The only prior states an inference may speak into.

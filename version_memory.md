@@ -22,6 +22,16 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-11 -- ROADMAP 2.81 phase 2: a bare stem is a quarter, as a labelled likelihood settled by the bar (branch `lane-2.81-phase2`, NOT merged)
+
+- STAGED, ADJUDICATE + INFER, all behind default-OFF allow-list flags (a control arm with both off reproduces every standing duration on the two small re-gathers).
+- ADJUDICATE `adjudicate_duration` (`beam_discounted_uncertain`): `OMR_BARE_STEM_RANK` ranks the quarter above the eighth where the head's own stem is decided, its tip window reads clean and no refused stroke stands at the tip (`_refused_stroke_at_tip`); details `bare_stem_evidence_holds` / `_tip_window_clean` / `_refused_stroke_at_tip` / `_likelihood` written either way. Decides nothing. It moves `reconcile_duration`'s sums (2.80's): five Brahms pdf 1 bars change answer, so it ships OFF.
+- INFER `collapse_bare_stem_by_bar` (`OMR_BARE_STEM_BAR`, new `Inference` member): one staff's bar, decided notes fixed, every narrowing free over its own candidates, the printed meter must be landed exactly and every landing must agree on the member, whose tip window must read clean. Follows `Q.METER`'s `used` chain to the printed template/glyph/OCR rows (the verdict's basis holds the durations). Reads `Q.METER`: bar-fill is not a legitimate score for it.
+- Sean's page (Brahms pdf 0), 49 judged members: decided right 33 / wrong 0 / narrowed 16 (base 0 / 0 / 49). Count pages: Brahms pdf 1 0 of 47, Litolff pdf 3 7 of 13.
+- Tests: `tools/omr/tests/test_staged_bare_stem_2_81.py` (27, RED on the old tree first). Docs: two rows in `docs/flags-2026-09.md`. Probes `benchmarks/omr-missing-notes-2026-09/probe/l281p2_*.py`; tiles `out/print/2.81-phase2-review/`.
+
+---
+
 ## 2026-10-11 -- ROADMAP 2.85 repeats and 1st/2nd endings LANDED on main (Sean: "land"; branch `lane-2.85-repeats-voltas`)
 
 - STAGED. Three new GATHER readers, all CV or OCR because the detector has no volta class and its `repeatDot` missed every real dot:
