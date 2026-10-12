@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
+
+- Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
+
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
 - Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
