@@ -709,3 +709,12 @@ the roster-required mechanism (3 of 12 fail, exactly the ones now
 asserting the real, roster-silent shape) → GREEN, 12/12. `pytest -m "not
 slow"`: 3,830 passed / 3 skipped, 0 failed. `check`: 247, status=ok. No
 record-scale run either time.
+
+
+## §2.94 A worn label (`Oh.` for `Ob.`) -- 2026-10-12, STAGED, ADJUDICATE only
+
+**Population** (night records 20261011, `adjudicate_instrument`, re-decided base vs arm on one tree by `readjudicate_worn_label.py`): Litolff 331 staves, 4 `not_in_lexicon` (`|`, `Fig.`, `Oh.`, `Fug.`); Brahms 691 staves, 56 (53 bare crooks `(Es)`/`(C)` = 2.26b's population, `Vel.`, `Irpt. (C)`, `Es)`).
+**Rule** (`work_roster.recover_worn`, wired in `identity.adjudicate_instrument`): short token (2-4 letters) one substituted letter from an alias of exactly one instrument lexicon-wide; the catalog roster holds that instrument by name; no other staff of the system already carries the name. Else abstain. The lexicon is not widened (`lookup("Oh.")` is still None; `_OCR_FOLD`'s own note priced b/h as a global fold and refused it).
+**Before/after:** Litolff named 200 -> 203 (`Oh.`->Oboe p11, `Fig.`->Bassoon p9, `Fug.`->Bassoon p16), `not_in_lexicon` 4 -> 1. Brahms named 635 -> 636 (`Irpt. (C)`->Trumpet p12 s1), 56 -> 55. Names changed on staves already named: 0. Not rescued: `Vel.` (one letter from `Vcl.`, but strings are held only as a family in the roster, not by name, so it abstains), `Es)`, `|`.
+**Print check** (`out/print/o294/`, label band boxed): Litolff p11 `Ob.`, p9 and p16 `Fag.`, Brahms p12 `Trpt. (C)` -- 4 of 4 right.
+**Honest limit:** the gap condition reads the system's other labels, which come off the same raster; the independent witness is the roster. Controls: `tools/omr/tests/test_staged_worn_label.py` (RED on the unrepaired tree: 3 of 8 fail).
