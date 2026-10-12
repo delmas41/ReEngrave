@@ -22,7 +22,7 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, NOT merged)
+## 2026-10-11 -- ROADMAP 2.80 a bar short by a missed rest is no evidence about a note (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
 
 `reconcile_duration` no longer lengthens a note to land a short bar where the bar
 holds ink no standing glyph explains (a missed rest fills the same gap; Brahms
@@ -38,7 +38,7 @@ fill the bar with the rest. 10 blind tiles in `out/print/2.80-review/`.
 ---
 ---
 
-## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, NOT merged)
+## 2026-10-11 -- ROADMAP 2.80b the missed rest is READ on its own ink (branch `lane-2.80-missed-rest`, LANDED on main 2026-10-11, Sean: "Yes")
 
 Sean (tile 1): *"It is an 8th note rest"*. A narrow notehead-classed box refused
 `too_narrow` is read as an eighth rest where its ink says so, never off the bar:
