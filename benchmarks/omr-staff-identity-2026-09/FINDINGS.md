@@ -852,3 +852,30 @@ chain re-decided: `key_signature`, `part_key`, `clef`, and the INFER rule
    -7 -- a modern horn-in-F edition) while the Breitkopf print shows NO signature
    on either horn staff; the print is the umpire, and a scored comparison against
    that encoding would charge the print, not the offset.
+
+### 2.95: convention CONFIRMED by Sean (2026-10-12), and the extent gap it names
+
+Sean, verbatim: *"the bracket makes them all horns"* (DECISIONS 2026-10-12). The
+brace/bracket around the staves is what makes every staff in it a horn; the word
+names the WHOLE braced group, each staff keeping its own crook. The
+`CONVENTION ASSUMED` header above is therefore CONFIRMED. The gap it exposes: the
+rule as built takes "the two staves the word sits between" as the group because
+no record reads the brace; Sean's convention says the extent is the BRACE and it
+may span more than two staves.
+
+**Measured, nothing built** (`probe_brace_waist_2_95.py`, raster at 600 dpi; a pair
+brace pinches to a cusp in the gap between its two staves, left of the thick
+bracket line; checked by eye on pdf 26 and page 1, threshold 0.4 not tuned):
+- **47 of the 47 completions sit in a pair whose brace is visible in the raster**
+  (a waist in the gap by the completed staff). Every one of the 52 Brahms systems
+  shows 2-3 waists (Fag./K-Fag., the horn pair, 1./2. Viol.); 0 systems show two
+  ADJACENT waists.
+- **No horn brace spans more than two staves in Brahms** (a three-staff brace has
+  its cusp at the middle staff, not in a gap; every horn pair here has its gap
+  waist) **or in Litolff** (31 systems, 0 pair braces: the horns are one condensed
+  `Cor.` staff). On both acceptance movements "the two staves the word sits
+  between" and "the brace" are therefore the same set; the gap bites only on a
+  score with a horn trio or quartet in one brace, none held.
+- Reading the brace (a raster fact in GATHER) and letting the word name the
+  brace's whole extent is the named next step, not done here; the probe measures,
+  it is not a reader.
