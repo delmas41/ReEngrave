@@ -1283,7 +1283,62 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             fates[sub] = "written_relocated"
         if relocated is not None:
             relocated["heads"] = relocated.get("heads", 0) + 1
+    # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
+    # a chord too. See `_chords_whose_value_would_be_voted`.
+    for _det in _chords_whose_value_would_be_voted(runs):
+        _sub = _det.get("glyph")
+        if _sub is None:
+            continue
+        _drop("chord_value_undecided", _again(_sub))
     return dict(dropped)
+
+
+def _chords_whose_value_would_be_voted(
+        runs: Dict[str, "StaffRun"]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.89. REMOVE from every cell each notehead of a chord whose
+    heads were written with DIFFERENT values, and return the removed heads.
+
+    ⚠️⚠️ `voicing.group_chords_in_measure` gives a chord ONE value, the MODE
+    of its members' (beats, type, dots) -- an argmax over a disagreement, which
+    is "cannot tell" converted into an answer (CLAUDE.md rule 8, §4c: EXPORT
+    refuses to argmax a narrowing). It was left open by 2.78: where
+    `Q.STEM_VALUE` is DECIDED, `share_stem_value` has already restated every
+    member to it (Sean: "no exceptions") and the members AGREE, so this finds
+    nothing there; where the stem value is NARROWED the heads keep their own
+    readings, and a decided whole on a stem (2.78 tile 9) was out-voted into
+    whatever its stem-mates read, or out-voted them.
+
+    ⚠️ NOTHING IS CHOSEN HERE EITHER. Every member of a disagreeing group is
+    refused, none kept as "the majority's" -- a two-against-one vote is still
+    a vote. The caller counts each under `chord_value_undecided`, so the
+    accounting equality holds and the bar the heads leave is short, which the
+    bar checks hold exactly as they hold any other unread content.
+
+    ⚠️ AGREEMENT IS ON (beats, type, dots), the same triple the vote counts, so
+    a group this leaves alone is a group the vote would have decided
+    unanimously: it changes nothing for them.
+    """
+    removed: List[Dict[str, Any]] = []
+    for run in runs.values():
+        for cell in run.cells.values():
+            if not cell.detections:
+                continue
+            doomed: List[int] = []
+            for ev in group_chords_in_measure(cell.detections):
+                heads = ev.get("noteheads") or ()
+                if len(heads) < 2:
+                    continue
+                values = {(h.get("duration_beats"), h.get("duration_type"),
+                           h.get("dots")) for h in heads}
+                if len(values) > 1:
+                    doomed.extend(id(h) for h in heads)
+            if not doomed:
+                continue
+            gone = set(doomed)
+            kept = [d for d in cell.detections if id(d) not in gone]
+            removed.extend(d for d in cell.detections if id(d) in gone)
+            cell.detections[:] = kept
+    return removed
 
 
 def marks_census(rec: Record, fates: Dict[str, str]) -> Dict[str, Any]:

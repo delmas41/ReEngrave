@@ -1111,3 +1111,50 @@ marked by a corner bracket, a frame control in `manifest.json` that can fail, sh
   is `reconcile_duration`'s, after this rule.
 * No whole-movement run was made. The overnight re-gather will price the GATHER change (the slash reader) properly; the replay prices only
   the ADJUDICATE and EVALUATE changes.
+
+
+## Sec.13. 2.89 EXPORT stops mode-voting a chord (2026-10-11, STAGED export; branch `lane-2.89-chord-export`)
+
+`voicing.group_chords_in_measure` gives a chord the MODE of its heads' (beats, type, dots). Sec.12.9 left that open. Now `export._chords_whose_value_would_be_voted`
+(last step of `_place_notes`) removes every head of a chord whose written heads disagree and `_place_notes` counts each under `chord_value_undecided`;
+`Unbalanced` still holds (balanced True on every record below). Agreeing chords, and chords 2.78 settled, are untouched. No flag: base vs arm is the
+same record re-exported with the function patched to a no-op (`probe`-style scripts were scratch; `probe/2.89_tiles.py` is committed).
+
+| record | chords voted before | heads refused after | bars whose note count changed | pitched `<note>` base -> arm |
+|---|---|---|---|---|
+| Litolff whole movement (`...20261010-night`, tree has 2.78) | 49 | 109 | 18 | 5589 -> 5563 |
+| Litolff p1-3 (`acceptance_quick --full`, this tree) | 6 | 15 | 4 | 810 -> 798 |
+| Brahms p0-1 (`acceptance_quick --full`, this tree) | 13 | 29 | 2 | 563 -> 569 |
+| engraved (`acceptance --doc beethoven5-engraved`) | 0 | 0 | 0 | document block identical (DEAD on this control: no chord disagrees) |
+
+Why the notes fall by fewer than the heads (Litolff whole: 109 heads, 26 notes): 85 of the heads sat in bars the bar-sum hold-out already withheld
+(`notes_held_out_sum` 2575 -> 2490). Why Brahms rises: a bar that no longer carries the voted chord can add up and is then written.
+Stem state of the voted chords (`Q.HEAD_STEM`/`Q.STEM_VALUE`): none shares one stem with a narrowed value. Litolff: 28 no_stem, 11 lone_head+no_stem, 4 no_stem+one
+decided, 6 ambiguous/lone; Brahms: 7 lone_head, 2 lone_head+decided `stem_value_from_evidence`, 4 other. They are x-grouped heads the reader never tied to one stem,
+so "narrowed stem" was the wrong picture: the vote is mostly over heads that may be two voices, or a chord whose stem was missed (Litolff merges, Breitkopf shatters).
+Not built: a decided-stem head winning over a stem-less one at the same x (refused with them for now), and 2.78's tile 9 follow-on.
+Cost: `test_stage_review_evidence` 'two notes where the plate has one' is now one note FEWER (the human's relabelled half is refused with the machine's
+quarter). Fast tier: see ROADMAP/version_memory. Tiles `out/print/2.89-review/` (11, blind; `manifest.json` holds the old vote).
+
+### 13.1 Are the voted chords two voices? (manager's question, 2026-10-11; read off `Q.STEM_DIRECTION` / `Q.HEAD_STEM` on the 11 tile chords)
+
+* **4 of 11 are two voices on two separate stems with OPPOSITE decided directions** (tiles 7, 9, 10, 11: one head up on its own stem, the other down on its own stem).
+* 3 have one head's direction decided and the other's abstained (tiles 2, 4, 8). 4 have no direction on any head (tiles 1, 3, 5, 6; Litolff, no stem found).
+  So at most 4 are provably two voices, none is provably one chord, and 7 cannot be told.
+* **Why the voice split never separated them:** the staged exporter's notehead dict (`_place_notes`' `_det`) carries no `stem_direction` key, so
+  `voicing.group_chords_in_measure`'s own divisi guard (opposite stem directions never merge) cannot fire on this path. The chords are merged by x
+  first, and `Q.VOICES` / `_voice_split` then assigns whole EVENTS to streams, so the two voices arrive already fused into one event. Not changed here.
+
+### 13.2 Sean's answers on the 11 tiles (2026-10-11; `out/print/2.89-review/answers.json`)
+
+Verbatim: *"Tile 1 is 1 voice probably an instrument that can play chords - it is strange though. 2. 2 voices unison 3-6. One voice 7. 2 voices 8. 1 9-11. 2"*.
+ONE voice (a real chord): tiles 1, 3, 4, 5, 6, 8. TWO voices: 2 (unison), 7, 9, 10, 11.
+
+| group | tiles | stem directions (13.1) | result |
+|---|---|---|---|
+| opposite decided directions, separate stems | 7, 9, 10, 11 | up vs down | 4 of 4 two voices: the stem-direction test is right |
+| one direction decided, other abstained | 2, 4, 8 | partial | 2 is two voices (unison); 4 and 8 are one voice: partial direction does not settle it |
+| no direction on any head | 1, 3, 5, 6 | none | all 4 are ONE voice (real chords whose heads we read at different values) |
+
+So 6 of the 11 voted chords are real chords read at disagreeing values (a reading fault; refusing them is right under 2.89), and 5 are two voices the
+export fused (7, 9, 10, 11 by stem direction; 2 a unison). The voice-carry fix is NOT started; the manager asks Sean.

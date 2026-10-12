@@ -1,0 +1,58 @@
+{
+ "1": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": "probably an instrument that can play chords - it is strange though"
+ },
+ "2": {
+  "voices": 2,
+  "is_one_chord": false,
+  "note": "2 voices, unison"
+ },
+ "3": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": ""
+ },
+ "4": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": ""
+ },
+ "5": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": ""
+ },
+ "6": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": ""
+ },
+ "7": {
+  "voices": 2,
+  "is_one_chord": false,
+  "note": ""
+ },
+ "8": {
+  "voices": 1,
+  "is_one_chord": true,
+  "note": ""
+ },
+ "9": {
+  "voices": 2,
+  "is_one_chord": false,
+  "note": ""
+ },
+ "10": {
+  "voices": 2,
+  "is_one_chord": false,
+  "note": ""
+ },
+ "11": {
+  "voices": 2,
+  "is_one_chord": false,
+  "note": ""
+ },
+ "_verbatim": "Tile 1 is 1 voice probably an instrument that can play chords - it is strange though. 2. 2 voices unison 3-6. One voice 7. 2 voices 8. 1 9-11. 2"
+}
