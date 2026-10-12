@@ -2993,3 +2993,21 @@ test mean something). `test_staged_evaluate_order` gains `size_reinstated_rest`.
 * GATHER changed again: only a full re-gather prices it on the whole movement.
 * The bar-13 reinstatement does not make the bar-sum control a witness: the
   bar adding up is the CONSEQUENCE checked, never the reason.
+
+### 2.80b-e. Sean's judgement of the tiles (2026-10-11)
+
+Blind, `out/print/2.80-review-2/` (`answers.json` holds his words and our
+reading side by side; tile 1 is the earlier *"It is an 8th note rest"*). Scored
+against `manifest.json`: **0 wrong of 10.**
+
+| tiles | our reading | Sean | |
+|---|---|---|---|
+| 1, 2 | decided True, eighth rest | 8th rest, 8 rest | right (2 of 2 reinstated) |
+| 3 | duplicate of a standing notehead, refused | dotted quarter, slur to two 16th notes | right |
+| 4, 5 | duplicate over an already-read rest8th, refused | 8 rest, 8 rest | right: the rest still stands, the second box stays refused |
+| 6, 7, 8 | real narrow non-rest, refused | stray ink, augmentation dot, text "arco" | right (3 of 3) |
+| 9, 10 | abstained (another class claims the ink) | dot-2 with a tremolo slash, trill with its squiggle | right (2 of 2) |
+
+So the reinstated population (2) is 2 of 2 right, every control that should
+refuse refused, and nothing was decided True on a non-rest. n is small; the
+shape windows remain measured on two pages.
