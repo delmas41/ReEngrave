@@ -621,7 +621,7 @@ class TestTheFlagAndTheLabel(unittest.TestCase):
         infer._ensure_rules()
         readers = [r for r in infer.RULES if Q.METER in r.reads]
         self.assertEqual([r.inference.value for r in readers],
-                         ["collapse_bare_stem_by_bar"])
+                         ["collapse_bare_stem_by_bar", "collapse_narrowed_by_bar"])
         with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0"}):
             self.assertNotIn(
                 "collapse_bare_stem_by_bar",

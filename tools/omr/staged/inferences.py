@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -1613,6 +1613,7 @@ class BarOutcome:
     landings: int = 0           # assignments of the unknowns that land the bar
     forced: int = 0             # bare-stem members the arithmetic forces
     ambiguous: int = 0          # members two landings disagree about
+    lengthening_unwitnessed: int = 0   # 2.97: forced, but longer than the reader's best and the bar's ink is not wholly explained
     tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
     proposals: Optional[List[Proposal]] = None
 
@@ -1662,7 +1663,8 @@ def _printed_meter_roots(log: Log, meter: Verdict, cell: Subject,
     return None
 
 
-def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
+def solve_bare_stem_bar(log: Log, cell: Subject, *,
+                        any_reason: bool = False) -> BarOutcome:
     """One staff's bar: which bare-stem members does the arithmetic force?
 
     ⚠️⚠️ THE CLAIM, AND WHERE IT IS WEAK. Every DECIDED duration in the bar is
@@ -1683,7 +1685,8 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     would be Sean's 0.76-0.80 laundered into an answer.
     """
     from collections import Counter
-    from .consequences import _bar_beats_at, _left_the_bar, _standing
+    from .consequences import (WITNESS_CLEAR, _bar_beats_at, _is_rest,
+                               _left_the_bar, _missed_rest_witness, _standing)
     out = BarOutcome(proposals=[])
     notes = []
     for v in _standing(log, cell, Q.DURATION):
@@ -1692,8 +1695,17 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
         if _left_the_bar(log, v.subject) is not None:
             continue
         notes.append(v)
+    # ⚠️ ROADMAP 2.97 (`any_reason`): the SAME bar arithmetic over every
+    # narrowed note of the bar, whatever refused its beams. The bare-stem rule
+    # (2.81) keeps its own reading of the word; this widening is the second
+    # rule's, and it is what `collapse_narrowed_by_bar` passes.
+    def _is_member(v):
+        if v.reason == BARE_STEM_REASON:
+            return True
+        return bool(any_reason and v.candidates and not _is_rest(v))
+
     members = [v for v in notes if v.outcome is Outcome.NARROWED
-               and v.reason == BARE_STEM_REASON]
+               and _is_member(v)]
     out.members = len(members)
     if not members:
         return out
@@ -1731,6 +1743,13 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     if any(v.id in meter_closure for v in members):
         out.decline = "meter_rests_on_these_bars"
         return out
+
+    _witness: List[str] = []
+
+    def _ink_witness(c):
+        if not _witness:
+            _witness.append(_missed_rest_witness(log, c)[0])
+        return _witness[0]
 
     by_glyph = {v.subject.glyph: v for v in notes}
     fixed = _frac(0)
@@ -1808,7 +1827,7 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
                     if any((target - s_ - o) in suffix[i + 1]
                            for s_ in prefix[i])]
         for m in ms:
-            if m.reason != BARE_STEM_REASON:
+            if not (m.outcome is Outcome.NARROWED and _is_member(m)):
                 continue
             if len(feasible) != 1:
                 out.ambiguous += 1
@@ -1820,8 +1839,26 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             # truth page (Brahms pdf 0, a flagged eighth) was exactly this: the
             # arithmetic landed through a note nobody read, and the tip window
             # was occupied. The 33 right ones all had a clean window.
-            if (m.detail or {}).get("bare_stem_tip_window_clean") is not True:
-                out.tip_not_clean += 1
+            # ⚠️ 2.97: the bare-stem rule keeps Sean's tip condition as it
+            # was. The widened rule (`any_reason`) asks for the OTHER
+            # evidence the tip window stood in for -- that no mark was missed
+            # -- instead: a head on a bare stem whose tip was not seen clean
+            # is settled only if the bar's ink is wholly explained by the
+            # standing glyphs (2.80's witness), and ANY lengthening past the
+            # reader's own best candidate needs that witness too (a missed
+            # rest or note fills the same gap: 2.80).
+            if m.reason == BARE_STEM_REASON \
+                    and (m.detail or {}).get(
+                        "bare_stem_tip_window_clean") is not True:
+                if not any_reason or _ink_witness(cell) != WITNESS_CLEAR:
+                    out.tip_not_clean += 1
+                    continue
+            top = next((c for c in m.candidates if isinstance(c.value, dict)
+                        and c.value.get("beats") is not None), None)
+            if any_reason and top is not None \
+                    and feasible[0] > _frac(top.value["beats"]) \
+                    and _ink_witness(cell) != WITNESS_CLEAR:
+                out.lengthening_unwitnessed += 1
                 continue
             hit = [c for c in m.candidates if isinstance(c.value, dict)
                    and c.value.get("beats") is not None
@@ -1886,3 +1923,46 @@ def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     being a quarter note and make sure the bar math adds up"*.
     """
     return solve_bare_stem_bar(log, cell).proposals or []
+
+
+@rule(
+    inference=Inference.COLLAPSE_NARROWED_BY_BAR,
+    target=Q.DURATION,
+    reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=NARROWED_BAR_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration -- a head, or every head of a "
+        "chord together (one stem, one value) -- to one of that reader's OWN "
+        "candidates and nothing else; only inside one staff's bar whose "
+        "meter is DECIDED and reaches the PRINTED time signature by `used` "
+        "(never a meter the bars themselves chose), whose events are grouped, "
+        "whose decided notes are held fixed, and where the bar lands EXACTLY "
+        "on the meter under at least one assignment of the narrowed events "
+        "and EVERY landing gives the member the same length. Two landings "
+        "that disagree leave it narrowed. A member whose reason is a bare "
+        "stem needs its tip seen clean (Sean's 2.81 condition) or the bar's "
+        "ink wholly explained by the standing glyphs; any lengthening past "
+        "the reader's best-supported candidate needs that ink witness too "
+        "(a missed rest or note fills the same gap, 2.80). It never reads "
+        "`support` and never overturns a DECIDED verdict."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is arithmetic over the bar's "
+        "other durations and the printed meter, which are NOT independent "
+        "of the ink being summed -- a missed note, a second voice or a "
+        "wrong decided neighbour move the sum and the rule cannot see them. "
+        "That correlation is declared here rather than hidden behind a "
+        "witness count, which is why the verdict is labelled and the rule "
+        "is gated."),
+)
+def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
+    """A narrowed head's (or chord's) value, settled by the bar's sum alone.
+
+    ROADMAP 2.97. Which stage, and why: the answer does not FOLLOW (a missed
+    rest, a spurious head or a wrong decided neighbour each move the sum), it
+    is merely BEST -- so it is INFER's, labelled, gated, and bounded to the
+    reader's own candidates. See `solve_bare_stem_bar(any_reason=True)`.
+    """
+    return solve_bare_stem_bar(log, cell, any_reason=True).proposals or []
