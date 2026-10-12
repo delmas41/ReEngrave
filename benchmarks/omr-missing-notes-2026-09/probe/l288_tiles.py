@@ -64,6 +64,7 @@ def main():
     ap.add_argument("--arm-litolff", nargs="+", required=True)
     ap.add_argument("--arm-brahms11", default=None)
     ap.add_argument("--brahms-p0", default=None, help="arm record holding Brahms pdf 0 (controls)")
+    ap.add_argument("--keys", default=None, help="kind=glyph/key,... explicit tiles (round 2): replaces the sampled pools")
     ap.add_argument("--final", required=True, help="the changed heads that survive the final rule (gap 0.2)")
     ap.add_argument("--n-kept", type=int, default=4)
     ap.add_argument("--n-refused", type=int, default=3)
@@ -94,14 +95,21 @@ def main():
                 return run
         return None
     items = []
+    if a.keys:
+        picked = []
+        by_key = {c["key"]: c for c in allc}
+        for kv in a.keys.split(","):
+            kind, key = kv.split("=", 1)
+            picked.append((kind, by_key.get(key) or {"key": key, "base": "", "arm": "", "h_sp": None, "w_sp": None, "ink": None}))
     for kind, c in picked:
         items.append({"kind": kind, "key": c["key"], "mv": "litolff", "run": litolff_run(c["key"]), "extra": {"base": c["base"], "arm_first_rule": c["arm"], "h_sp": c["h_sp"], "w_sp": c["w_sp"], "ink": c["ink"]}})
-    items.append({"kind": "known_half", "key": "glyph/10/1/4/8/7", "mv": "litolff", "run": litolff_run("glyph/10/1/4/8/7"),
-                  "extra": {"truth": "Sean 2.83 fix tile 6: half"}})
-    if a.arm_brahms11:
+    if not a.keys:
+        items.append({"kind": "known_half", "key": "glyph/10/1/4/8/7", "mv": "litolff", "run": litolff_run("glyph/10/1/4/8/7"),
+                      "extra": {"truth": "Sean 2.83 fix tile 6: half"}})
+    if a.arm_brahms11 and not a.keys:
         items.append({"kind": "brahms11_fragment", "key": "glyph/11/1/10/3/10", "mv": "brahms", "run": RD.load_run(a.arm_brahms11),
                       "extra": {"truth": "Sean 2.83 tile 6: dotted quarter; the box is not a head (refused)"}})
-    if a.brahms_p0:
+    if a.brahms_p0 and not a.keys:
         r0 = RD.load_run(a.brahms_p0)
         items.append({"kind": "control_bare", "key": "glyph/0/0/11/3/12", "mv": "brahms", "run": r0, "extra": {"truth": "Sean: dotted quarter"}})
     order = list(range(len(items)))
