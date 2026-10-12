@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`)
+
+- STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
+
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
 - Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
