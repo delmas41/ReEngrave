@@ -22,9 +22,16 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, not merged)
+## 2026-10-12 -- ROADMAP 2.94 a worn instrument label is named from the roster and the system's gap (branch `lane-2.94-worn-label`, LANDED on main 2026-10-12, Sean: "Land 2.94 with the (C) Hr. fix")
 
-`work_roster.recover_worn` + `decide(named_in_system=)` + `identity._names_in_system`: a short token one letter off exactly one alias, instrument held by name in the catalog roster and absent from the system's other labels, is named (`recovered_worn`). Lexicon unchanged. Night records: Litolff 3 staves named, Brahms 1, 0 names changed, 4 of 4 print-checked. Tests `test_staged_worn_label.py`. FINDINGS §2.94.
+`work_roster.recover_worn` + `decide(named_in_system=)` + `identity._names_in_system`: a short token one letter off exactly one alias, instrument held by name in the catalog roster and absent from the system's other labels, is named (`recovered_worn`). Lexicon unchanged. Night records: Litolff 3 staves named, Brahms 1, 0 names changed, 4 of 4 print-checked. Tests `test_staged_worn_label.py`. FINDINGS §2.94. Also `instruments.parse_leading_crook`: `(C) Hr.` -> 0, `(Es) Hr.` -> 3 (was the horn default 1; LEGACY `StaffLabel.fifths_offset` changes for those labels); Brahms key chain re-decided, 0 of 1,436 verdicts moved; `test_lookup_leading_crook.py`, `test_instruments.py` updated.
+## 2026-10-12 -- ROADMAP 2.93 the Litolff bottom string staff held out (branch `lane-2.93-bassi`, LANDED on main 2026-10-12, Sean: "Land 2.93 once it's green")
+
+- STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
+
+## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
+
+- Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.
 
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
