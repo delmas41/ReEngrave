@@ -22,6 +22,10 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.96 why bars are held out now (branch `lane-2.96-held-funnel`, not merged)
+
+- Diagnosis only, STAGED, EXPORT-only; no product code changed. `benchmarks/omr-bar-sum-holdout-2026-09/probe/held_funnel_2_96.py` (reuses 2.22's dump and its control, adds ink pieces, dot rows, cell widths, per-event verdict flags), `classify_held_2_96.py` (evidenced vs arithmetic fixes, exhaustive partition asserted to sum, wrong-meter negative control), `summarise_2_96.py`, `n_shape_2_96.py`, `tiles_2_96.py`; results in `out/2.96/`; 15 tiles in `out/print/2.96-review/`. FINDINGS 2.96, ROADMAP 2.96. Top evidenced causes: narrowed heads the bar lands (792), a lone whole rest left at 4 beats (458), unboxed rest ink (448); the dot, head-fill and beam rows are not causes without a record row. Fast tier and `check` not run (no `tools/` change).
+
 ## 2026-10-12 -- ROADMAP 2.67 a copy of the Gradus terms library for lookup (branch `claude/gradus-terms-reengraver-d5220f`)
 
 - Data only, read by no pipeline (LEGACY and STAGED unchanged). `data/musical-terms/musical-terms.json` is a byte copy of Gradus `exports/musical-terms.json` at Gradus `origin/main` `432ea81fc` (header `generated_from` `02caa85b1`, `data_dirty` false): 1,755 terms (It 791, De 400, Fr 284, En 259, La 15, Gr 6), 244 instruments, 1,661 printed in scores. `tools/omr/musical_terms.py`: `lookup(text)` -> every `Match(term, matched, via)`, exact after folding case/accents/`ß` and ignoring periods, spaces, hyphens, apostrophes; `terms()`, `by_id()`, `library()`. 5 tests (`test_musical_terms_2_67.py`), run RED with case folding removed (3 failed). Refresh = regenerate on the Gradus side and copy the file.
