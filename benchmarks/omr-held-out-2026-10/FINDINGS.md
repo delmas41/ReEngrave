@@ -86,3 +86,18 @@ lines fitted locally at the subject): all 17 pass, and the same lines shifted ha
 all 17. Eye-check: eighth rests, quarter rests, the flat refused as a stroke, the halves and the
 whole-bar rests look right; Tchaikovsky tile with three similar quarter-rest-like marks is the
 one to watch. Sean's answers are the evidence.
+
+## Sean's 17 tile answers (2026-10-12)
+
+Verbatim: *"1. 4 rest 2. 8 rest 3. 1 rest 4. 8 rest 5. Flat acc 6. 4 (part of a tuplet: 3 quarters) 7. 4 8. 4 rest 9. 1 rest 10.4 11. c for common time meter 12. 4 rest 13. C meter 14. 8 rest 15. 4 rest 16. 8 rest 17. Trem slashes"*. Per tile in `out/print/2.101-review/answers.json` (scored against `manifest.json`, which agrees with the scoring below).
+
+| rule (decider) | tiles | result |
+|---|---|---|
+| 2.99 rests from unboxed ink (`adjudicate_unboxed_ink_is_a_rest`) | 2, 4, 14, 16 eighth; 12, 15 quarter | 6 of 6 decided right |
+| 2.99 refusal (`stem_stroke_not_a_rest`) | 5 | right (a flat) |
+| 2.99 abstained (`shape_cannot_tell`) | 1, 8 | misses, not wrong: both real quarter rests |
+| 2.98 whole-bar rest | 3, 9 | 2 of 2 right |
+| 2.81 bare stem by the bar (`infer:collapse_bare_stem_by_bar`) | 7 right; **6, 10 WRONG** | decided eighth where Sean reads a quarter (6 sits in a 3-quarter tuplet, so the bar's arithmetic is not the plain meter's) |
+| 2.88 hollow-head half (`adjudicate_duration`, reason `hollow_head_bare_stem`) | **11 WRONG** (arm = base, decided half; it is the C common-time meter sign); **17 WRONG** (arm decided half, base decided quarter via `head_and_marks`; it is tremolo slashes); 13 arm right (C meter, arm narrowed via `head_fill_from_ink` where base decided half) | the class mistakes non-notes for hollow heads |
+
+Reading: the rest rules (2.98, 2.99) generalise to other publishers; 2.81 and the hollow-head rule do not yet. 2.81 settles a length by the bar without knowing about tuplets; the hollow-head rule is fed meter signs and tremolo slashes. Tile 17 is a regression the arm introduced (base was also wrong, as a quarter). Tile 11 is wrong in base too. Not fixed here (diagnosis lane, no `tools/` change).

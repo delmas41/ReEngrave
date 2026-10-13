@@ -12,6 +12,7 @@ measurement; this file is the WHEN and WHAT of each commit.
 ## 2026-10-12 -- ROADMAP 2.101 held-out check (lane-2.101-held-out)
 
 Diagnosis only, no product code. Three non-Litolff/Breitkopf scans (Dvorak 8 Novello, Schumann 2 Peters, Tchaikovsky 4 Jurgenson), base vs arm gathers; probes, FINDINGS and 17 blind tiles in `benchmarks/omr-held-out-2026-10/` and `out/print/2.101-review/`. ROADMAP 2.101 updated.
+Sean's 17 tile answers scored (answers.json, FINDINGS, DECISIONS): rests 8/8 and whole-bar rests 2/2 right; 2.81 wrong on a tuplet and a quarter; hollow-head half wrong on a C meter and tremolo slashes.
 
 ---
 
