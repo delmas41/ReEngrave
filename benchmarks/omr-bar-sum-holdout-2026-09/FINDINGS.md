@@ -3081,7 +3081,7 @@ correctly in base only by cancellation with a wrong event already there:
 * Litolff p1 s0 staves 7 and 11, bar 0: base = `rest8th` + 3 eighths = 2.0, but that `rest8th` is the key
   signature's third flat, boxed as both `keyFlat` and `rest8th` (identical box); the real rest (blue, tile 7) was
   missing. Arm: 2.5, held out, on the spurious header rest it exposes. **4 of 30 `rest8th` boxes on Litolff p1-3
-  are key flats (0 of 133 on Brahms)** -- a `rest_is_not_a_rest` refusal (2.33's family), not built here.
+  are key flats (0 of 133 on Brahms)** -- a `rest_is_not_a_rest` refusal (2.33's family), not built here: see 2.100.
 * Brahms p1 s0 staff 4 bar 1 (two rests found): the print (tile 2) is an eighth note, three eighth rests and a
   quarter rest = 3.0 in 6/8; base had a 1.0 chord (cross-staff whole heads from the padded cell) cancelling a
   missing rest; arm reads the rests the print shows and the same wrong chord leaves 4.0.

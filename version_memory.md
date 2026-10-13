@@ -34,7 +34,7 @@ pointing at headings no longer in the file.)*
 
 - STAGED INFER. `inferences.collapse_slot_index_to_family_block`: a detector `clefG` on the viola staff that the CV locator (`Q.CLEF_LOCATED`) contradicts by naming the expected clef (`alto`) is no longer "a contradicting clef"; the whole-block withdrawal stays for a lone glyph, a locator that agrees with the glyph, or names a third clef. New detail `clef_glyph_overruled_by_locator`. Night record, base vs arm: Litolff held 5 -> 0 (doubled 15 -> 20), Brahms unchanged. Tests in `test_staged_unnamed_block.py` (+5). Findings: `benchmarks/omr-staff-identity-2026-09/FINDINGS.md` section 2.93.
 
-## 2026-10-12 -- ROADMAP 2.99 eighth and quarter rests the detector never boxed are read from the ink (branch `lane-2.99-unboxed-rests`, NOT merged; Sean judges tiles)
+## 2026-10-12 -- ROADMAP 2.99 eighth and quarter rests the detector never boxed are read from the ink (branch `lane-2.99-unboxed-rests`, LANDED on main 2026-10-12, Sean: "Land 2.99"; tiles 7 of 8 decided right, tile 10 a slur end now refused, tile 6 a known miss; key-flat-as-rest: see 2.100)
 
 GATHER `gather_unboxed_rest_ink` (`Q.UNBOXED_REST_SHAPE`, ordinal 350000+) -> ADJUDICATE `adjudicate_unboxed_ink_is_a_rest` (`adjudicators/unboxed_rest.py`, no bar read) -> EVALUATE `size_unboxed_rest` -> EXPORT writes the rest; the accounting equality gained `unboxed_rests_placed`. Litolff p1-3: 16 decided, 10 bars released, held 122 -> 115; Brahms p0-1: 4 decided, 1 released. 3 bars newly overfull, explained (key-flat boxed as rest8th; cross-staff chord). 30 tests. `staged.check` 192 = base. Tiles `out/print/2.99-review/`. FINDINGS 2.99.
 
