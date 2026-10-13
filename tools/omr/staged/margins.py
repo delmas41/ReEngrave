@@ -143,6 +143,10 @@ COVERED: Dict[str, Dict[str, str]] = {
 PARTIAL: Dict[str, Dict[str, str]] = {
     "adjudicate_notehead_is_not_a_notehead": {
         "too_narrow": THRESHOLD, "is_a_dot": THRESHOLD,
+        "is_a_beam_piece": THRESHOLD,
+    },
+    "adjudicate_rest_is_not_a_rest": {
+        "rest_is_a_barline": THRESHOLD,
     },
     "adjudicate_duration": {
         "hollow_head_bare_stem": THRESHOLD, "head_fill_from_ink": THRESHOLD,

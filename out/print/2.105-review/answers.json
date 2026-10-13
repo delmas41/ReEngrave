@@ -1,0 +1,20 @@
+{
+ "judge": "sean",
+ "date": "2026-10-13",
+ "verbatim": "1. barline 2. 2 3. barline 4. 8 rest 5. 4 rest 6. beams ( 2 of them) 7. barline 8.2,2 9. 8 rest 10. barline 11. 4 12. 2",
+ "tiles": {
+  "tile_01": {"sean": "barline", "kind": "c_newly_refused_rest", "verdict": "right: refusal correct"},
+  "tile_02": {"sean": "half", "kind": "b_neither_to_one", "verdict": "right: real note now kept"},
+  "tile_03": {"sean": "barline", "kind": "c_newly_refused_rest", "verdict": "right"},
+  "tile_04": {"sean": "8 rest", "kind": "c_control_eighth_rest", "verdict": "right: control kept"},
+  "tile_05": {"sean": "4 rest", "kind": "c_control_quarter_rest", "verdict": "right: control kept"},
+  "tile_06": {"sean": "beams (2 of them)", "kind": "b_brahms_newly_kept", "verdict": "WRONG: the new ordering kept a beam box as a head; closed in this lane by the beam-piece guard"},
+  "tile_07": {"sean": "barline", "kind": "c_newly_refused_rest", "verdict": "right"},
+  "tile_08": {"sean": "2,2 (two halves)", "kind": "b_swap_new_keeper", "verdict": "right"},
+  "tile_09": {"sean": "8 rest", "kind": "c_control_eighth_rest", "verdict": "right: control kept"},
+  "tile_10": {"sean": "barline", "kind": "c_newly_refused_rest", "verdict": "right"},
+  "tile_11": {"sean": "4 (quarter)", "kind": "b_neither_to_one", "verdict": "right"},
+  "tile_12": {"sean": "2 (half)", "kind": "b_swap_new_keeper", "verdict": "right"}
+ },
+ "summary": "barline refusals 4/4; rest controls 3/3; twin fixes 4/4 real notes kept; 1 wrong (tile 6, beams kept as a head)."
+}
