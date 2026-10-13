@@ -1,5 +1,7 @@
 # omr-held-out-2026-10 -- do the 2026-10-11/12 rules generalise? (ROADMAP 2.101)
 
+See also: FINDINGS-2.102.md (the 2.102 follow-up on the gaps this check found).
+
 Diagnosis only, STAGED, no product code. Sean 2026-10-12: "Are the changes we are making
 general enough to move score reading forward or are we just messing around with specifics for
 these 2 scores?"

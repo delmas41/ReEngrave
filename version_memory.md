@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- docs-only landings: ROADMAP 2.96, ROADMAP 2.101, the inference-principles plan (`land-docs-2026-10-13`)
+
+- Sean, 2026-10-13: "Land the docs only branches." Each branch was checked docs-only first (diff of tools/, backend/, frontend/ against origin/main empty). Merges: `lane-2.96-held-funnel` `34265e13`, `lane-2.101-held-out` `cf5729cb`, `lane-infer-principles` `8560bb16`.
+- 2.96: why bars are held out (minimal-cause funnel over the 20261011-night records), findings in `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md`, probes, Sean's 15 tile answers in `out/print/2.96-review/`. 2.101: held-out check on Dvorak 8 / Schumann 2 / Tchaikovsky 4, `benchmarks/omr-held-out-2026-10/FINDINGS.md` (now linked both ways with `FINDINGS-2.102.md`), Sean's 17 answers in `out/print/2.101-review/`. Plan: `docs/plan-2026-10-12-inference-principles.md`, status header added (proposal, superseded in part by the no-hidden-guesses decision).
+- Conflicts (ROADMAP, DECISIONS, version_memory, 2.96 FINDINGS) were all append-vs-append; both sides kept, no line dropped. Only exception: ROADMAP 2.101 row, where the branch's row (Sean's answers) replaced main's older 'in flight' row, and the branch's older 2.100 row was dropped in favour of main's landed one.
+
 ## 2026-10-12 -- ROADMAP 2.101 held-out check (lane-2.101-held-out)
 
 Diagnosis only, no product code. Three non-Litolff/Breitkopf scans (Dvorak 8 Novello, Schumann 2 Peters, Tchaikovsky 4 Jurgenson), base vs arm gathers; probes, FINDINGS and 17 blind tiles in `benchmarks/omr-held-out-2026-10/` and `out/print/2.101-review/`. ROADMAP 2.101 updated.
