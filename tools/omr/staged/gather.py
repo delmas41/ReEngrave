@@ -4302,6 +4302,20 @@ STEM_TIP_LINE_MAX_THICK_SPACES = 0.45
 #: window, a neighbour's head box ending 1-5 px into it) explains none of it.
 STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 
+#: ROADMAP 2.104 (Sean 2026-10-13, 2.97 round-3 tile 3 and Brahms pdf 0 hand-truth `q1009`: a flagged eighth the tip reader
+#: abstained `occupied` on). A detection box covering the ink at a tip made it `occupied` and the SHAPE was never read: on Brahms
+#: pdf 0-1 the boxes were a mid-bar `clefF` the detector drew round the stem and its flag (score 0.31), a `ledgerLine` box over a
+#: ledger line crossing the stem near its head, a `dynamicF` and two `arpeggiato` boxes. `OMR_TIP_UNBLOCKED=1`: where the tip is
+#: `occupied` and the 2.18c window cannot say either, the SHAPE test is read ONCE MORE with the boxes set aside; only a flag-shaped
+#: reading (`found True`) is filed (witness `shape_unblocked`, with the blocked reading's `covered_area`). Any other result -- not
+#: flag-shaped, runs on, ink past the tip, nothing -- leaves the `occupied` abstention exactly as before (rule 8: never a False).
+#: ALLOW-LIST, default OFF: a typo leaves the shipped reader in force. Measured on Sean's hand-truth page (FINDINGS 2.104).
+TIP_UNBLOCKED_ENV = "OMR_TIP_UNBLOCKED"
+
+
+def tip_unblocked_enabled() -> bool:
+    return os.environ.get(TIP_UNBLOCKED_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
 
 def _tip_line_rows(right: Any, left: Any, us: Any, ul: Any, space: float
                    ) -> Tuple[Any, Optional[float]]:
@@ -5016,6 +5030,19 @@ def _observe_stem_tip_ink(log: Log, sub: Subject, frame: str, cell: Any,
         window_detail: Dict[str, Any] = {} if window is None else {
             "window_found": window_found, "window_right": window["right"], "window_left": window["left"]}
         extra: Dict[str, Any] = {}
+        if found is None and not window_found and m.get("why") == "occupied" and tip_unblocked_enabled():
+            # ROADMAP 2.104: the boxes explain the ink, but a flag-shaped reading with them set aside is still the ink's own
+            # evidence. Only `found True` is taken; anything else falls through to the unchanged `occupied` abstention below.
+            m2 = stem_tip_ink(img, x0, x1, tip_y, into_sign, space, head_edge=edge, blockers=())
+            if m2 is not None and m2.get("found") is True:
+                m2.pop("found")
+                counted = stem_tip_hooks(img, x0, x1, tip_y, into_sign, space, head_edge=edge)
+                log.observe(sub, Q.STEM_TIP_INK, True,
+                            reader=READERS.CV_STEM_TIP, frame=frame,
+                            stem_row_id=stem_row_id, end=end, **m2, **window_detail,
+                            witness="shape_unblocked", blocked_covered_area=m.get("covered_area"),
+                            **(counted or {}))
+                continue
         if found is None and not window_found:
             if m.get("why") == "occupied":
                 log.abstain(sub, Q.STEM_TIP_INK, reader=READERS.CV_STEM_TIP,
