@@ -471,3 +471,128 @@ python3 benchmarks/omr-keysig-truth-2026-09/grade_artefact.py \
 reaches a file, never as a controlled delta against the shipped artefact —
 that comparison carries detector jitter and, if run Surya-free, the absence of
 `<words>` as well.
+
+---
+
+## 2.100 -- only a clef stands before a key signature's accidentals; and the order (2026-10-12)
+
+PATH: STAGED, GATHER + ADJUDICATE (the refusal is ADJUDICATE only; no GATHER change). Branch
+`lane-2.100-key-order`, NOT merged (Sean judges the tiles first). Sean, 2026-10-12: *"When there are multiple flats
+or sharps in a key signature they always appear in a particular order (Bb, Eb, Ab, Db, etc or F#, C#, G#, etc) if
+there are key accidentals that are not in that order the bit should automatically look for those with high
+probability. And Eigth note rest would never be found before key signature flats- in fact- only clefs appear before
+key accidentals in a bar."*
+
+**CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED.** Between a system's clef and its last key
+accidental there is nothing but key accidentals; a rest or notehead box standing there, level with the signature,
+is the signature's own ink boxed under a second name. Falsified by a print with a real rest or note between a clef
+and a later accidental of the same signature (none known). Two parts were assumptions beyond Sean's sentence and are now CONFIRMED by his blind answers (below): (a) one unboxed slot between two boxed key flats is bridged (KEY-class boxes only, <= 2.8 spaces);
+(b) a REST-class box standing within 0.2 spaces of where the NEXT accidental would be (run of >= 2 slots) is that
+accidental (tile 12).
+
+### What was built (1)
+`adjudicators/key_slots.py`: the window = clef's right edge (or, with no clef boxed, a detector KEY-class box) to the
+last box of the key run, the run being `header._marker_run`'s own (slot tolerance 0.5, gap 2.0 spaces, <= 7 slots; a
+test asserts the three constants equal the header's), whose first box must stand within 2.0 spaces of the clef (the
+locator's bound), so a lone in-bar accidental never opens a window over the bar. `adjudicate_rest_is_not_a_rest`
+(`rest_in_a_key_signature_slot`) and `adjudicate_notehead_is_not_a_notehead`
+(`notehead_in_a_key_signature_slot`) refuse a box in it; the verdict cites the key rows and the clef row. Geometry
+of the header only, never the bar sum. Cell 0 only (a mid-system key CHANGE is not covered; none measured). 22
+tests, RED-first against 86c1c8c5 (the 5 refusal tests failed with `reason="rest"`/`"notehead"`, the controls
+passed): a real rest8th after the last flat stays a rest; C major with a rest after the clef; a lone in-bar
+accidental far from the clef; a rest in cell 1; a neighbour staff's padded ink; two missing slots not bridged; an
+in-bar accidental-class box not bridged to; a rest 0.4 spaces off the next slot; a notehead on the next slot.
+
+### Reach and A/B (`probe/ab_2_100.py`; one saved gather record, one tree; OFF = `key_slot_occupant` answers None)
+Small re-gathers on the tree at 54ae1fb0 + the next-slot rule; Litolff = PDF p1-3, Brahms = PDF p0-1.
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| header cells / with a key window | 53 / 35 | 41 / 30 |
+| rests refused in key slots (all `rest8th`) | **5** | 0 |
+| notes refused in key slots | 0 | 0 |
+| their bars: released / still held / left with no events | 3 / 1 / 1 | - |
+| bars held out, base -> arm | 115 -> 111 (of 840 -> 839) | 88 -> 88 |
+| **bars newly overfull** | **0** | 0 |
+| key verdicts changed | **0** | 0 |
+| accounting equality | True | True |
+
+The 5 are the four of 2.99's "4 of 30" (p1 staves 0, 7, 11; p3 s1 staff 5) plus p1 staff 10 (next-slot rule, tile
+12); staff 11 only counts through the bridge (its middle flat was never boxed). Brahms: 0 reach -- its flats shatter
+into `arpeggiato`/`tie`/`timeSig` boxes (below), never `rest`. Hand truth (Brahms pdf 0, `probe/handtruth_2_100.py`):
+0 refusals, 0 invented; the header's key-class boxes are 28, 20 overlap a truth `keyFlat`, 8 do not (extra boxes on
+the same flats), 1 truth key box missed.
+
+### What else stands in a key window and is NOT refused here
+Every non-key box in a window (`probe/ab_2_100.py` prints it): Litolff `timeSig4` 1, `timeSig1` 1, `flag8thUp` 1,
+`arpeggiato` 1, `ledgerLine` 1; Brahms `timeSig1` 1, `timeSig2` 1, `arpeggiato` 5, `tie` 1. Tile 7 (Litolff 2/1/0): the
+`timeSig4` is the third flat. The template reader files `Q.METER_TEMPLATE` [4,4] on those mid-movement headers too.
+The meter decision came out right on the system (carried 2/4), so no refusal was built (meter is another fence; a
+`timeSig` refusal in the key slots is the same rule, a small follow-up).
+
+### (2) The fixed order: reach measured, NOT built -- one question for Sean
+Reach is not zero. On the Litolff night record (20261011, 331 staves): 106 staves read a run of only 1-2 slots, 121
+abstain `disagrees_with_document`/`_system`, 152 are filled from the document's majority key; and on the 75 hand-truth
+staves (pages 1-4) the keys are ALREADY 75 of 75 right -- through that majority fill, so the output has nothing to
+gain there. What I measured as candidates, none good enough to move a key:
+* Box-centre positions against the clef's slot table (`key_signature_geometry.fit_key_signature`, the fixed-order
+  template): 137 ok / 63 no fit / 19 count-differs of 233 even with the flat's bowl as the anchor (it was 105 / 103
+  / 11 with the box centre). A veto at that false-alarm rate would break right keys.
+* The template reader as an extender (markers n < template m): right on ~15 staves, wrong on 5 (-2, -4 where 3 are
+  printed); it over-counts as well as under-counts, as its own docstring says.
+* A slot-ink probe on the erased ink pieces at the next slots (no GATHER change; `out/probe/slotprobe*.py`): slot 4 of
+  a 3-flat staff is empty 41 of 41, but the next-slot extension is right on 32 and short on 14 of 46 (never over),
+  so it confirms rather than corrects.
+Next step if wanted: a GATHER reader on the erased raster (the template reader's matcher, run only in the predicted
+next column, high prior) -- a measured `-3` instead of a majority fill; its value is provenance and key changes
+mid-movement, not today's file.
+
+
+### Sean's answers on the 13 tiles (2026-10-12; `out/print/2.100-review/answers.json`)
+Verbatim: *"Three and thirteen are time signatures. All the rest are key accidentals."* Scored against `manifest.json`:
+* REFUSED 2, 4, 5, 10, 12 = key accidentals, **5 of 5**. Tile 4 (the bridged slot) and tile 12 (a rest on the next slot)
+  CONFIRM the two assumed conventions.
+* NOT refused 1 (`flag8thUp`), 6 (`timeSig2`), 7 (`timeSig4`), 8 (`arpeggiato`), 9 and 11 (`timeSig1`) = all key
+  accidentals: **6 misses**. A key accidental is boxed under any class name; the first build refused only rests/notes.
+* The two "controls kept" were WRONG: 3 (`rest8th` 0.9 spaces past the key, Brahms) and 13 (`restQuarter` 1.3 spaces
+  past the next slot, Litolff) are time signatures. We kept a rest that is a meter digit.
+
+### Round 2 -- any class in the key slots, and a rest on the meter (same tree, one saved record per movement)
+Built (`adjudicators/key_slots.py`, `family_precision.py`, `movement.py`; no flag, no GATHER change):
+* ANY non-structural class (everything except staff/ledgerLine/stem/barline/brace/bracket/beam/clef/key/accidental) in
+  the key window is refused as what the detector called it: `adjudicate_flag_is_not_a_flag`,
+  `adjudicate_arpeggiato_is_not_an_arpeggiato`, `adjudicate_arc_is_not_an_arc` reason `in_a_key_signature_slot`, citing
+  the key rows. A `timeSig*` box in its own staff's key slots is dropped from the movement start's meter statement
+  (`meter_rows_outside_key_slots`; `Q.METER_GLYPH` cell-0 rows are read by nothing else -- the system meter's changes read
+  cells >= 1 and its opening reads the template/OCR rows).
+* A REST-class box standing in the time signature's column on the header (`rest_is_a_meter_digit`): the column is the
+  page-pixel extent of the `timeSig*` boxes of the system's OTHER staves (a meter is printed on every staff of the
+  system), excluding any that are key flats in their own staff's slots, +-0.3 spaces. Tile 13's own staff boxed no digit
+  at all; the sibling staves' boxes name where the signature stands (page x 818-848 vs 815-848). No sibling digit = no
+  column = no refusal.
+10 more tests (`test_staged_key_slots_any_class_2_100.py`), RED-first (flag, arpeggiato, rest-on-meter failed on
+88619a03; controls: a flag after the key stays, a rest 3 spaces after the digits stays, a sibling `timeSig` that is a key
+flat does not define a column that swallows a real rest, a digit after the key stays a meter statement).
+
+| | Litolff p1-3 | Brahms p0-1 |
+|---|--:|--:|
+| refused | 11: 5 `rest8th` + 1 `flag8thUp` + 1 `arpeggiato` in key slots; 4 `restQuarter` on the meter | 7: 5 `arpeggiato` + 1 `tie` in key slots; 1 `rest8th` on the meter |
+| bars of those: released / still held / left empty / unchanged | 5 / 2 / 2 / 1 (+1 no bar) | 0 / 5 / 0 / 2 |
+| bars held out, base -> arm | 115 -> 108 (of 840 -> 838) | 88 -> 88 |
+| newly overfull | 0 | 0 |
+| **meter / movement-start verdicts changed** | **0** | **0** |
+| key verdicts changed | 0 | 0 |
+| hand truth, Brahms pdf 0 | | 1 refusal (a tie where truth has no tie box), 0 rest/notehead invented |
+
+The meter is untouched: 4 `timeSig` boxes in key slots (2 each plate) leave the movement-start statement and no
+`Q.METER`/`Q.MOVEMENT_SPANS` verdict moves. NOT done and named: the template reader still reads a flat as a [4,4] on
+mid-movement headers (a GATHER reader's fault; the system meter is carried and right); a meter column needs a sibling
+staff to have boxed a digit; a rest on a mid-system printed meter change (cell >= 1) is not covered.
+Blind tiles `out/print/2.100-review-2/` (11): 6 newly refused (3 `restQuarter` meter, 2 `arpeggiato`, 1 `tie`), the Brahms
+tile 3 again, 4 controls (real rests right of the time signature, 36-233 px).
+
+### Sean's answers on `out/print/2.100-review-2/` (2026-10-12; `answers.json` beside the tiles)
+Verbatim: *"1. Barline 2.9 meter 3. Staff line under the accidentals 4. 2/4 meter 5. Key Flat (Eb) 6. 8 rest 7. 2/4 meter 8. 8 rest 9. 2/4 10. 8 rest 11. Flat key accidental"* ("2.9 meter" reads as tile 1 "Barline" and tile 2 "9 meter", a 9 time-signature digit). Scored against the manifest:
+refusals 2, 3, 4, 5, 7, 9, 11 right (7 of 7); tile 3 is a STAFF LINE under the accidentals, not a tie, so refusing it is right;
+controls 6, 8, 10 real eighth rests kept, right; **control tile 1 WRONG: the kept `restQuarter` box is a BARLINE** (pre-existing; not caused by 2.100; new candidate, not built).
+Does a refusal in the key slots count as a key accidental? No: the key count is built only from `Q.KEYSIG_MARKER` rows, filed by `gather._gather_keysig_markers` (`tools/omr/staged/gather.py:10061`) from `keySharp/keyFlat/keyNatural` boxes (`:9822`, `:10112`) and `accidental*` boxes (`_ACCIDENTAL_SHAPE`, `:9848`, `:10117`); any other class (tie, arpeggiato, rest) is skipped (`:10117`). The refusals cite rows as `used` evidence only (`family_precision.py:2205`) and write no marker. So tile 3's staff-line `tie` box cannot add a flat.

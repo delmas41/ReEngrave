@@ -601,6 +601,7 @@ Each of these has cost at least one lane and is still true.
   carry is WEIGHED by the bars, not gated. Stems: up → right, down → left; right-and-down does
   not exist (96 of 96 against print). Sean's middle-line convention is strong
   and where it looks wrong it is measuring the grid.
+- **A note is an eighth only on evidence** (Sean, 2026-10-12: *"only when we see evidence of an eigth shoulf it be called that"*): a flag or a beam read on its stem, or its stem's shared value. The bar sum never shortens a stem with no flag and no beam seen — it fails whenever anything else in the bar is wrong (2.97: 4 of 4 bare quarters made eighths).
 - **A page truth is not an encoding truth**: a clef prints per system and
   is declared once; MusicXML writes a slur at each end; Verovio draws one
   accidental per `<alter>`. Do not divide one by the other.
