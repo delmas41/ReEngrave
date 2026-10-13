@@ -1,39 +1,23 @@
 # ReEngrave — CLAUDE.md
 
-This is the SPEC: what the system is, what it is for, how to run it, and the
-rules a session works under. It is kept under 6,000 words. It restates no
-measurement — every number it needs is produced by a tool it names, and every
-history it refers to lives in a benchmark `FINDINGS.md` or in the archived
-chronicle.
+The spec: what the system is, the rules a session works under, and where
+everything else lives. It restates no measurement — every number is produced
+by a tool it names or lives in a benchmark `FINDINGS.md`. Loaded into every
+session, so it stays short; the detail is in the docs §8 indexes.
 
-**Read in this order, and nothing else before you start:**
-
-1. This file.
-2. [ROADMAP.md](ROADMAP.md) — the phases and the status of every item. Your
-   work is an item on it or it is not work.
-3. [docs/DECISIONS.md](docs/DECISIONS.md) — what has been decided, by whom,
-   why. Append-only.
-4. [docs/plan-2026-09-22-from-here-to-a-finished-score.md](docs/plan-2026-09-22-from-here-to-a-finished-score.md)
-   — the assessment that produced the roadmap, if you need the reasoning.
-
-The 850 KB chronicle this file replaced is
-[docs/chronicle-2026-09.md](docs/chronicle-2026-09.md). It is the record of
-every measurement, refusal and mistake from May to September 2026. **Read it
-by search, never front to back, and never brief a lane from it** — its
-sentences are corrected in place and a stale one reads exactly like a work
-order. `PROJECT_STATUS.md` and `NOTES.md` are frozen historical files.
-`PROJECT_BRIEF.md` (the short "what and where") and `version_memory.md` (the
-running change log) were un-frozen on 2026-10-07 (Sean, DECISIONS) and are
-updated with every commit alongside this file.
+**Read in this order before you start:** this file; [ROADMAP.md](ROADMAP.md)
+(your work is an item on it or it is not work); [docs/DECISIONS.md](docs/DECISIONS.md)
+(append-only, newest lines first — Sean's rulings outrank anything below);
+then only the §8 doc your lane needs.
 
 ---
 
 ## 1. What the product is
 
-ReEngrave reads a scanned or engraved orchestral score and produces a
-MusicXML file and a LilyPond-engraved PDF of the same music. Input is a PDF,
-normally an IMSLP edition held in the score library. Output is meant to be
-cleaned up by a musician, not re-entered.
+ReEngrave reads a scanned or engraved orchestral score (a PDF, normally an
+IMSLP edition in the score library) and produces MusicXML and a
+LilyPond-engraved PDF of the same music, to be cleaned up by a musician, not
+re-entered.
 
 **Definition of done** (plan §4): one command, a whole movement, MusicXML
 and a LilyPond PDF, in which every bar the reader could not read is MARKED
@@ -49,71 +33,44 @@ project. Ask him.
 
 ## 2. The ten rules
 
-Every session, every lane, every brief.
-
 1. **Brief from the tree, not from a document.** `git log --all -S <thing>`,
-   `ls benchmarks/`, and `python3 -m tools.omr.staged.check` before the first
-   line. A withdrawn investigation changes no code and is invisible to a code
-   search, so open the benchmark directory named after the thing.
+   `ls benchmarks/`, `python3 -m tools.omr.staged.check` before the first
+   line. A withdrawn investigation changes no code; open the benchmark
+   directory named after the thing.
 2. **Say which path.** Every claim about a mechanism names LEGACY or STAGED.
-   "Shipped" without a path is not a claim.
 3. **Ask first.** How would a human read this off the page, and which
    engraving convention governs it. One line to Sean before code. If nobody
    can be asked, write `CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT
    CONFIRMED` at the top and proceed.
 4. **One objective, three measures.** Report against the acceptance set
-   (§6). Anything a lane measures internally is a control, never a headline.
+   (`docs/measuring.md`). Anything a lane measures internally is a control.
 5. **Reach before accuracy, and print before default.** No default flips on
    agreement with our own reading. A crop is cheaper than a lane.
-6. **Connect, never guess.** A wiring change may connect a decision; it may
-   not let one guess. Guessing lives in INFER and is labelled.
-7. **A control must be able to fail.** Run it in a state where it fails
-   before trusting it where it passes. A number that is exactly another
-   number is a computation, not a measurement. **Before trusting any
-   result, ask who says it's right:** Sean, the print or the reference
-   encoding is evidence; a model's own output, or a result whose raw data
-   is gone, is not (2026-09-29).
-8. **A fallback never converts "cannot tell" into an answer** — not into
-   "same", not into "clean", not into a whole rest that means silence.
+6. **Connect, never guess.** A wiring change may connect a decision, never
+   let one guess. Guessing lives in INFER and is labelled.
+7. **A control must be able to fail.** Run it where it fails before trusting
+   it where it passes. A number that is exactly another number is a
+   computation, not a measurement. **Before trusting any result, ask who
+   says it's right:** Sean, the print or the reference encoding is evidence;
+   a model's own output, or a result whose raw data is gone, is not.
+8. **A fallback never converts "cannot tell" into an answer** — not "same",
+   not "clean", not a whole rest that means silence.
 9. **No new flag, benchmark directory, derived check or handoff without a
    roadmap item.** Findings go in the benchmark's `FINDINGS.md`; general
-   lessons become a rule here or a line in `DECISIONS.md`; nothing else is
-   restated anywhere.
+   lessons become a rule here or a DECISIONS line; nothing is restated
+   anywhere else.
 10. **The tree outranks every ledger** — a commit message, a report, a
     handoff, this file. `git merge-base --is-ancestor` settles where work is.
 
 ---
 
-## 3. Two readers, one product path
+## 3. The stage model
 
-There are two OMR pipelines in the tree.
-
-**STAGED** (`tools/omr/staged/`) is the product path (DECISIONS 2026-09-22).
-Every decision is filed against a subject on an append-only record, may
-abstain, and can be traced. It exports MusicXML and, since roadmap 3.1,
-LilyPond (`--lilypond`) and a compiled PDF (`--pdf`, roadmap 3.3). Roadmap
-3.3's first half wires `omr_engine=staged` into the web app, but `local`
-remains the web app's default engine there, and it lacks several legacy
-filters — those are Phase 3 items on the roadmap.
-
-**LEGACY** (`tools/omr/transcribe.py`, `tools/omr/export.py`,
-`tools/omr/contextual.py` and their satellites) is FROZEN: bug fixes only, no
-new mechanisms, no new flags. It is what the web app and every benchmark run
-until Phase 3 replaces them, and it is the reference reader for A/B. Its 39
-flags are frozen with it and may not be read from `tools/omr/staged/`.
-
-Shared by both: the detector (`yolo_detector.py`, the weights, weight
-routing), staff/system/barline/measure extraction (`staff_detector.py`,
-`system_grouping.py`, `measure_extractor.py`, `preprocessing.py`), the header
-readers (`staff_header.py`, `clef_*`, `key_signature_*`,
-`time_signature_locator.py`), `line_detection.py`, the direction-text and
-margin-label readers, the library, the dossiers, the fact sheet.
-
----
-
-## 4. The staged pipeline
-
-### 4a. Stages
+Two readers: **STAGED** (`tools/omr/staged/`) is the product path; **LEGACY**
+(`tools/omr/transcribe.py`, `export.py`, `contextual.py`) is FROZEN — bug
+fixes only, no new mechanisms or flags, and its flags may not be read from
+`staged/`. Shared: the detector, staff/system/measure extraction, the header
+readers, the text readers, the library (`docs/staged-internals.md` §1).
 
 | stage | question | acts when |
 |---|---|---|
@@ -123,602 +80,139 @@ margin-label readers, the library, the dossiers, the fact sheet.
 | **INFER** | what is most LIKELY, given everything at once? | the answer is best — labelled |
 | **EXPORT** | write it, and count what did not make it | always |
 
-The stage a change belongs in is decided by one question: does the answer
-FOLLOW, or is it merely BEST? EVALUATE goes silent where two answers both
-fit; INFER is the only stage allowed to choose between them, it may only
-collapse a NARROWED verdict to one of that reader's own candidates, and it
-never overturns a DECIDED one. EXPORT refuses to argmax a narrowing.
-
-### 4b. The record (`staged/record.py`)
-
-- **Subjects** form a tree: `Kind.DOCUMENT > PAGE > SYSTEM > STAFF > CELL >
-  GLYPH`. A glyph's last coordinate is an index into the detector's output
-  for that cell, so ink the detector did not fire on has no glyph subject;
-  `Q.INK` is the population beneath that (one row per connected ink
-  component, filed at an offset ordinal).
-- **Rows** are Observations (a reader saw something, with `reader`, `frame`,
-  `score` — a ruler reading has `score=None`) or Abstentions (a reader looked
-  and could not say, with a reason word). `State.READ / DECLINED / ABSENT`
-  keeps *a reader found nothing* apart from *no reader ran*, and that
-  distinction is the reason the record exists.
-- **Verdicts** are `Outcome.DECIDED / NARROWED / ABSTAINED` with a `basis`
-  (which rows) and a `reason`. `NARROWED` carries candidates and their
-  support. `Verdict.correlated` records which witnesses share provenance.
-- **Quantities** (`record.Q`) are the vocabulary. Their producers and
-  consumers are DERIVED by `gather_coverage`, `wiring` and `reach`; do not
-  type the list anywhere.
-- **Scope** (`EXACT / SELF_AND_ANCESTORS / SELF_AND_DESCENDANTS`) says where a
-  consumer looks. A quantity filed on a STAFF read by a DOCUMENT decision
-  returns nothing at `EXACT` and fails silently; `wiring --check` catches
-  the declared cases. The same silence governs ORDER inside GATHER: a reader
-  placed above the reader whose rows it reads gets an empty answer, not an
-  error, so a reader runs after every producer it reads and the forced edges
-  are DERIVED from those reads (`gather.gather`'s docstring), never counted
-  (A-GATHER-1 said three; the tree held eleven, one backwards — 2.58).
-- **Provenance**: every record is stamped with the commit and `dirty`. A
-  record from a dirty tree, or with `dirty is None`, is not a baseline.
-- **`Evidence.correlated_groups`**: rows from one reader on one crop are ONE
-  signal. A position hung off a glyph row is absorbed by that glyph's own
-  term; a second witness needs its own quantity and its own reader.
-
-### 4c. The decisions
-
-The adjudicators live in `staged/adjudicators/` (`structure.py`,
-`identity.py`, `header.py`, `clef.py`, `ownership.py`, `rhythm.py`, `text.py`,
-`notehead_precision.py`, `family_precision.py`, `movement.py`, `position.py`,
-`rest_search.py`, `unread_mark.py`), each registered by `@decision` into
-`adjudicate.REGISTRY` and run in `adjudicate.ORDER`. The count and the order
-are DERIVED, never typed here:
-
-```bash
-python3 -c "from tools.omr.staged import adjudicate; print(len(adjudicate.ORDER)); print(*adjudicate.ORDER)"
-```
-
-Each declares `wants`, `implicates`, `checked_by` and `reasons`; `inventory
---check` reports a declaration the body does not read. Stubs: none
-(`adjudicate.stubs()` is the truth, not this line).
-
-**EVALUATE** (`consequences.py`, `evaluate.py`): `restate_pitch` (position +
-clef ⇒ pitch), `respell_accidental` (key ⇒ sounding alteration),
-`move_glyph` (ownership ⇒ pitch re-derived), `size_measure_rest` (a lone
-dotless whole rest takes the BAR's length), `reconcile_duration` (a beam
-level re-read by ±1 only where exactly one re-reading lands the bar),
-`pair_word_and_dynamic` (a bar's word + its adjacent dynamic ⇒ one
-`Q.MARKING`), and the join. Rule order matters and is asserted: `move_glyph` runs after
-`respell_accidental`, which is why the sounding pitch is routed at EXPORT
-and not revised in EVALUATE.
-
-**INFER** (`infer.py`, `inferences.py`): every rule registers with a
-`Switch` that names its gate. `collapse_slot_index_to_family_block`
-(print-verified, 25 of 25) and `fill_clef_gap` are `ALWAYS_ON` — their flags
-were promoted and removed 2026-10-07 (roadmap 0.2c); the two duration rules
-(`collapse_duration_by_column`, `collapse_duration_to_barline`) gate on
-`OMR_INFER` (default ON since 2026-09-23, roadmap 2.3), the part-key rule on
-`OMR_PART_KEY`. The list is DERIVED: `infer.RULES` and each rule's
-`switch.env`, never typed here. The harness enforces: runs after EVALUATE,
-refuses an unfrozen log, writes only where the record has no answer, never
-invents a value, supersedes visibly.
-
-**EXPORT** (`staged/export.py`): MusicXML only. Reuses the legacy pure
-renderers (`_mxl_*`) over its own positions. The accounting control is an
-EQUALITY — every gathered notehead is written or counted under a named
-refusal (`duration_narrowed`, `no_pitch`, `staff_not_identified`,
-`owned_by_another_staff`, `owner_not_read`, `ink_is_a_whole_rest`) — and `to_musicxml` RAISES
-`Unbalanced` rather than returning a flag. A staff the join could not name is
-held out of the file and counted (`OMR_HOLD_OUT_UNIDENTIFIED`). A bar we read
-nothing in exports as a measure rest with `measure="yes"` withheld, because
-we read NOTHING there, not silence. `status_census` is a partition over every
-family with an `unaccounted` bucket a test requires empty; prefer it to any
-headline coverage number.
-
-### 4d. The derived checks
-
-`python3 -m tools.omr.staged.check` runs all of them and writes
-`benchmarks/acceptance/open-findings.json`. Exit 2 = a check is broken; exit
-1 = N open findings; exit 0 = clean. **N must go down.** A finding leaves the
-list when it is wired, not when it is explained; a `KNOWN_GAPS` entry is a
-reason a gap EXISTS, never a reason one is acceptable.
-
-The parts: `inventory` (declarations vs bodies), `health` (decides / abstains
-/ records), `wiring` (declared input read where it is filed), `reach` (does
-every quantity reach a live consumer), `gather_coverage` (declared vs
-gathered quantities, detector families with no quantity), `capture` (shape /
-position / raster / resolution per family), `brakes` (refusals whose premise
-may have expired), `trace` (what each stage did to one symbol; `--subject`,
-`--family`, `--empty-claims`), `conventions` (the 114-entry engraving
-registry and what reads it), `no_producer` (a parameter threaded with no
-supplier), `export_coverage` (elements the truth has and we never emit),
-`accuracy_record` (the recorded engraved figure agrees with the tree).
-
-Three blind spots, by construction: none of them sees a GATHER change
-(`readjudicate` and `reexport_arm` rebuild from a saved record — pricing a
-GATHER change needs two full re-gathers); none of them sees the DETECTOR;
-and `wiring` matches a detail key by bare name, so an unrelated module
-naming the same string reads as a consumer.
+The one question that decides a stage: **does the answer FOLLOW, or is it
+merely BEST?** EVALUATE goes silent where two answers both fit; INFER alone
+chooses between them, only among a reader's own candidates, and never
+overturns a DECIDED verdict. EXPORT refuses to argmax a narrowing and
+RAISES rather than silently dropping a notehead. Until further notice every
+test is GATHER + ADJUDICATE only (Sean, 2026-09-30). The record, the
+adjudicators, the derived checks: `docs/staged-internals.md`.
 
 ---
 
-## 5. Running things
+## 4. What the output may say (Sean, 2026-10-12/13)
 
-### 5a. Setup
-
-```bash
-cd /Users/seanjohnson/Desktop/ReEngrave
-docker compose up -d                 # web app at http://localhost, API :8000
-docker compose logs -f backend
-docker compose build backend && docker compose up -d backend   # after code changes
-```
-
-`docker compose restart` does not pick up `.env` changes; `up -d` does. Admin
-bypass of the payment gate: `ADMIN_EMAILS=you@example.com` in `backend/.env`.
-Hot-patch: `docker cp <file> reengrave-backend-1:/app/<path> && docker
-restart reengrave-backend-1`.
-
-Weights are gitignored under `omr-weights/`, mounted into the container:
-`deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt` (scan production),
-`deepscoresv2-yolov8l-imgsz2048-ft-30ep.pt` (engraved, by routing),
-`deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` (prior). Never load
-`phase-j-mix`.
-
-**A git worktree has none of the four repo-root-relative assets.** Symlink
-all four or the scan side fails while the engraved side looks healthy:
-
-```bash
-ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-surya .venv-surya
-ln -sfn /Users/seanjohnson/Desktop/ReEngrave/.venv-omrned .venv-omrned
-ln -sfn /Users/seanjohnson/Desktop/ReEngrave/tools/omr/training/data/weights tools/omr/training/data/weights
-export OMRNED_PYTHON=/Users/seanjohnson/Desktop/ReEngrave/.venv-omrned/bin/python
-```
-
-The library (`library/`, 6.4 GB) is machine-local and resolves to the main
-checkout from any worktree. A cloud container has no weights and no library
-and can only re-export or re-adjudicate a committed record. **Its clone is
-also SHALLOW** (121 commits from 2026-10-01 on the 2026-10-07 audit): `git
-log -S`, `--follow` and blame bottom out at the graft, so rule 1's brief
-needs `git fetch --unshallow origin main` (or a blobless bare fetch into the
-scratchpad) before any "when was this added" claim; "not merged" too (0.8
-found 41 such rows on main).
-
-### 5b. The staged pipeline (product path)
-
-```bash
-python3 -m tools.omr.staged score.pdf --pages 0-2 --weights omr-weights/<file>.pt --out rec.json
-python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> --musicxml out.musicxml
-python3 -m tools.omr.staged score.pdf --pages 0 --weights <...> --musicxml out.musicxml --lilypond out.ly --pdf out.pdf
-python3 -m tools.omr.staged score.pdf --pages 0-2 --weights <...> --against legacy.omr.json
-```
-
-Options: `--pages`, `--weights`, `--dpi`, `--conf`, `--imgsz`, `--out`,
-`--against`, `--musicxml`, `--lilypond`, `--pdf`, `--no-surya`, `--no-ocr`,
-`--work-id`, `--sheet`, `--no-roster`, `--movements`, `--progress`. ROADMAP
-4.2: `--movements "1:0-11,2:12.1-20"` names movement boundaries by PDF page
-(or `page.system`); a meter/key carry never crosses one, and `--musicxml`/
-`--lilypond`/`--pdf` then write one file per movement (`out-mvt1.musicxml`,
-…) — `tools.omr.staged.export` takes the same option to split an existing
-record with no re-gather. Omitted, a document is one movement, exactly as
-before this option existed. `--pdf` compiles the
-`.ly` with the `lilypond` binary (reusing `--lilypond`'s own text when both
-are given); `lilypond` absent still writes the `.ly` and exits 0. There is
-no `--dossier` and there will not be
-one: a dossier reaches the pipeline only through a human-confirmed fact
-sheet (`--sheet`, §8), so the measurement path is structurally unable to
-consume a truth file.
-
-Operational facts worth more than they look:
-- Run a long gather WITHOUT `--musicxml` and export separately: the CLI
-  imports the exporter AFTER the gather, so an edit to `export.py` mid-run
-  reaches it, while an edit to an already-imported module does not. Land
-  every edit before the run; the provenance stamp names the tree that
-  FINISHED, not the code that ran.
-- Cost on a scan: ~93 s/page with the margin-label rungs, ~20 s/page more with
-  the direction-word reader (3-36 s, 2026-10-08; it was 267 s before the
-  width-scaled token cap), which now runs on scans -- no script sets
-  `OMR_DIRECTION_TEXT_SCAN_GATE` any more. Unattended: `OMR_SURYA_KEEP_ALIVE=0`
-  so the run owns its own processes. **Never `pkill -f llama-server`** — the
-  resident server is shared with other sessions; use
-  `python3 -m tools.omr.staff_labels_surya --stop` only when nothing else is
-  reading.
-- A record with the ink layer is ~115 MB/page on Breitkopf. Roadmap 1.1
-  persists the ink summary instead.
-
-Other staged commands:
-
-```bash
-python3 -m tools.omr.staged.check                     # every derived check, one number
-python3 -m tools.omr.staged.export rec.json --out out.musicxml
-python3 -m tools.omr.staged.trace --run rec.json --subject glyph/1/0/2/4/1
-python3 -m tools.omr.staged.trace --run rec.json --family note
-python3 -m tools.omr.staged.readout show rec.json --page 3 --staff 2 --cell 4 [--through gather] [--format jsonl|csv]
-python3 -m tools.omr.staged.readout diff base.json arm.json --arm code|weights [--family note]   # GATHER+ADJUDICATE only
-python3 -m tools.omr.staged.readout html arm.json [--against base.json] --out page.html        # the print, coloured per stage
-python3 -m tools.omr.factsheet draft score.pdf --record rec.json -o sheet.json
-python3 -m tools.omr.factsheet show sheet.json
-python3 -m tools.omr.acceptance_quick --doc beethoven5-litolff [--against other.record.json]  # the SMALL re-gather (ROADMAP 1.6/1.6b): default = GATHER+ADJUDICATE only, per-family stage summary; add --full for the exported second view
-```
-
-`readout` (ROADMAP 1.5) only reads a record: it refuses one whose GATHER holds
-no glyph (a gather run without `--weights auto`) and matches two runs' symbols
-by box overlap, never by glyph index.
-
-**One command (ROADMAP 4.1, BUILT not merged):** `python3 -m tools.reengrave
-import <work_id> [--edition ID] [--movements SPEC] [--yes] [--dry-run]` ranks
-editions (`build_wishlist`'s logic), uses a held one or opens IMSLP for the
-one click and watches `~/Downloads`, then runs `tools.omr.staged` per
-movement into `out/<work_id>/`. Never defeats the download gate (§8).
-
-### 5c. The legacy pipeline (frozen; benchmarks and the web app until Phase 3)
-
-```bash
-python3 -m tools.omr.transcribe score.pdf --pages 0-4 --out out.json --overlays-dir overlays/
-python3 -m tools.omr.export out.json --format musicxml --out out.musicxml
-python3 -m tools.omr.export out.json --format lilypond --out out.ly && lilypond out.ly
-python3 -m tools.omr.training.orchestral_eval --omr-ned --record   # the engraved 11-work figure
-python3 -m tools.omr.accuracy_record --check
-```
-
-The web app: `POST /api/scores/{id}/process/omr?omr_engine=local` →
-`backend/modules/local_omr.py` → legacy `transcribe` + `to_musicxml`, capped
-by `OMR_MAX_PAGES` (5). Export: `backend/modules/export_module.py` → legacy
-`to_lilypond` → `lilypond` binary. Review: `backend/modules/claude_vision.py`
-renders MusicXML with Verovio, rasterises the PDF, diffs each pair with Claude
-Vision, and a human accepts/rejects each diff; `apply_corrections_to_musicxml`
-is a stub that adds an XML comment (roadmap 3.4 replaces it with corrections
-filed as evidence in the record). The `claude_vision` OMR engine
-(`claude_vision_omr.py`) is a secondary reader and is not on the roadmap.
+- **Nothing uncertain is ever written unmarked.** Every symbol is READ (seen
+  clearly, written plain, held to a very high bar), GUESSED (an INFER
+  collapse, a bar-sum confirmation, or any reading below the READ bar —
+  written AND flagged blue `#1F6FEB`, carrying its candidates) or UNREAD
+  (marked red, nothing invented). *"I don't want any hidden. I can't fix
+  those."*
+- **A note is an eighth only on evidence** — a flag or beam read on its
+  stem, or a value shared from it. Bar arithmetic may CONFIRM a value the
+  page already supports; it never SUPPLIES one, and never shortens a note
+  with no flag and no beam seen.
+- **The written value comes from the shape; a tuplet exists only where its
+  marking is seen.** A bar that adds up only under an unmarked tuplet
+  confirms nothing.
+- **Only a clef stands before the key accidentals**, and key accidentals
+  come in the fixed flat/sharp order; a slot out of order is a place to
+  look again, never a rest.
+- **The 95% bar is not fixed** (*"I am not tied to 95%"*): the bar for a
+  DECIDED rule is set by the cost of being wrong
+  (`docs/plan-2026-10-12-inference-principles.md`); measure it on Sean's
+  blind tiles per lane, never assume it.
 
 ---
 
-## 6. Measuring
+## 5. Page conventions every lane needs
 
-### 6a. The acceptance set and the three measures (plan §4)
+The full list with Sean's quotes and dates is `docs/page-facts.md`; the
+registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 
-| document | kind | count page |
-|---|---|---|
-| Beethoven 5 mvt 1, Litolff `984073` | scan, bitonal, MERGING plate | pdf index 3 (works row `…984073-p3`) |
-| Brahms 1 mvt 1, Breitkopf `317803` | scan, SHATTERING plate | pdf index 1 (works row `…317803-p2`) |
-| Beethoven 5 mvt 1 bars 1–24, Verovio render, 18 parts | engraved, exact page truth | page 0 |
-
-- **Engraved:** reading F1 against the page truth (`page_truth.py`,
-  `score_reading.py`) and musicdiff against the encoding (`omr_ned.py`).
-  The current engraved figure is written in exactly one place,
-  `benchmarks/omr-ned-2026-08/CURRENT.md`, generated by
-  `accuracy_record --update` and checked by `--check`.
-- **Scans, machine proxies:** notes reaching the file over gathered; bars
-  that add up to the meter in force; parts named; `held_out`; `unread_bars`.
-  Controls, never objectives — a proxy that improves while the count worsens
-  is what the count exists to catch.
-- **Scans, the count:** Sean adjudicates the fixed page against the print on
-  `benchmarks/omr-cleanup-count-2026-09/CATEGORIES.md` (unit = one
-  FIX-ACTION with a declared scope; categories `missing / wrong / spurious /
-  would-not-notice`), every two weeks, results committed under
-  `benchmarks/omr-cleanup-count-2026-09/counts/`. It is read as *what to fix
-  next*, never as *are we winning* — the moment it becomes a number to drive
-  down it will be gamed the way OMR-NED was, in the opposite direction.
-
-`python3 -m tools.omr.acceptance` (roadmap 1.3) runs all of it and writes
-`benchmarks/acceptance/current.json`.
-
-### 6b. How to A/B without fooling yourself
-
-- **Until further notice, EVERY test is GATHER + ADJUDICATE only** (Sean,
-  2026-09-30: *"I want all our tests for now to just be the first 2 stages. I
-  want to focus on the gather and identification"*), including scoring
-  against the reference: compare a head's measured STAFF POSITION with the
-  reference pitch converted through ADJUDICATE's clef -- never `Q.PITCH`
-  (EVALUATE) or the exported file.
-- **Two re-gathers** (Sean, 2026-09-30): the SMALL re-gather (the two count
-  pages, ROADMAP 1.6/1.6b) runs during the day while we work; the FULL
-  re-gather of both movements
-  (`benchmarks/acceptance/overnight/regather_20260930.sh`, `TAG=...`; compared by
-  `compare_20261009.sh`) runs
-  overnight, only as far as the stage being refined (`THROUGH=adjudicate` by
-  default; later nights add stages progressively). The acceptance numbers
-  need a through-infer full re-gather. Run the small
-  one with `python3 -m tools.omr.acceptance_quick --doc
-  <beethoven5-litolff|brahms1-breitkopf> [--against other.record.json]` — it
-  gathers from the movement's first page through the count page (never the
-  count page alone — a lone page loses the meter/key carry from earlier
-  pages and misreports the hold-out count in both directions), in minutes.
-  ITERATION ONLY: it never writes `current.json` and never substitutes for
-  the overnight run.
-- **The small re-gather's DEFAULT is GATHER+ADJUDICATE only** (ROADMAP 1.6b,
-  Sean 2026-09-30: *"I don't want to chase down where it is getting lost
-  before we refine what we are reading in the first 2 stages"* and *"for all
-  of our initial tests I want to be comparing the output of just the first
-  two stages"*): the gather itself stops `--through adjudicate` (no
-  EVALUATE/INFER/EXPORT), and the tool reports, per symbol family, gathered
-  boxes, kept vs refused (with each refusal reason and its count), noteheads'
-  owner and duration decided/narrowed/abstained by reason, staff position
-  observed/abstained, the clef decided on each staff, and meter per system
-  decided/abstained with its reason — all counted off `tools.omr.staged.
-  readout`'s own `Run`/`adjudicate_status`, never re-derived, with the
-  `readout html` page alongside it. `--against other.record.json` diffs the
-  two records at GATHER+ADJUDICATE with `readout diff`, same as before. Only
-  `--full` runs through INFER, exports a file, and additionally reports the
-  page proxies, print-vs-ours and the per-part per-bar score against the
-  reference encoding (this is what ROADMAP 1.6 always did; it is now the
-  SECOND view, for once a change looks right at the first two stages, not
-  where an initial test should start) — written to
-  `benchmarks/acceptance/quick/`.
-- **Base vs arm on ONE tree.** The committed verdicts of the shared records
-  under `library/_shared-records/` no longer reproduce on today's tree
-  (`readjudicate --control` 2,760 of 2,993); they are inputs, not baselines.
-- **A GATHER change needs two full re-gathers**; `readjudicate.py` and
-  `reexport_arm.py` are structurally blind to it and a zero from either is
-  not evidence.
-- **Give every arm its own `--tag` or work dir.** `scan_eval` caches by
-  default and a cached A/B reports "identical on every row" — the clean
-  result a flag-guarded change hopes for. The tell is wall time.
-- **The 20-row scan gate has a noise floor of about ±6 edits** and is not
-  byte-deterministic; a per-row delta under that is not a result.
-- **OMR-NED is symmetric and rewards emitting FEWER symbols.** It is the
-  engraved control only. Under `AllObjects` it pairs notes by pitch, so
-  `wrong pitch` is structurally zero and pitch errors land in `wrong note`.
-  Never quote it as the reason a note-deleting rule is safe; the evidence
-  for that is crops.
-- **A print check is a crop with a ruler**, cut from the PDF at the gather's
-  own DPI, behind a frame control that can fail, with the SUBJECT marked (a
-  corner bracket on the exact head, not a margin tick at its x). Commit
-  crops under `out/print/` — `.gitignore` excludes `benchmarks/**/crops/`.
-- **Reach before accuracy.** An arm prints its population first and exits
-  non-zero declaring itself DEAD at zero; a change that moves nothing
-  because it is inert and one that moves nothing because the page holds
-  nothing to move are the same number.
-- **A refusal test needs a positive control in the same class**, or it
-  passes by refusing everything. A new test is run RED against the
-  unrepaired tree first and the commit says so.
-- **A shared record is a snapshot of the reader that made it.** Two Litolff
-  records differ by more than a date (one holds 0 margin labels).
-
-### 6c. Tests
-
-`pytest tools/omr/tests` runs everything; `pytest -m "not slow"` is the fast
-tier (target under two minutes) derived from `tools/omr/tests/durations.json`
-— a file `durations.json` measured is fast or slow by that measurement
-alone; a file it has NOT measured (new) is fast by default UNLESS its source
-CODE (comments and docstrings do not count, since 2026-10-07) contains
-`library/`, `omr-weights` (even inside a benchmark name like
-`omr-weights-ab`), a venv or a `.pdf"` path: then the WHOLE file goes slow
-silently until it is measured — compare the passed count after a merge. Re-measure the durations with `python3 -m tools.omr.tests.measure_durations` (ROADMAP 0.4f) on a machine that has the library, weights and venvs, from a clean tree; it refuses a dirty one and leaves all-skipped files unmeasured. No new test may assert on module
-source text (`inspect.getsource`, AST walks) except the flag-direction guard
-and a gather-shape check; `check` counts the rest. Mutation batteries were
-one-off proofs; their `FINDINGS.md` stand, the scripts are being archived
-(roadmap 0.4d), and no new ones are written. Do not edit `tools/` while a
-suite is running — a source-level assertion reads the new file with the old
-line numbers and fails on correct code. pytest's reported time is test time,
-not wall time; a starved run reads exactly like a hang.
+- A whole rest means the BAR whatever the meter. A meter or key change is
+  printed on every staff at one bar; a change HOLDS until the printed
+  return — where the bars overturn a carry, a return was MISSED: label and
+  mark, never switch silently.
+- Stems: up → right, down → left. Every note on one stem shares one written
+  value; a whole note has no stem. An arc is OVER its notes, a hairpin
+  BETWEEN; of stacked arcs the nearer is the tie.
+- **The ledger lines name the owner**; there is no far note without one, so
+  "no rungs either way" is OUR failure — abstain and count it.
+- **Measure against the staff LOCALLY**, at the subject's x; a scanned staff
+  tilts and ~1 px decides a near-boundary pitch.
+- Litolff MERGES and Breitkopf SHATTERS: an ink component is not a mark.
+  A cell index restarts per system: key a bar on (page, system, cell).
+- The brace makes every staff in it one instrument; the condensed count is
+  an encoding property and cannot come from the page.
+- Two witnesses off one raster fall silent together; a second witness comes
+  from a different source (catalog, roster, a clef-free range check).
 
 ---
 
-## 7. Flags
+## 6. How a session works
 
-The full table with a verdict on every flag is
-[docs/flags-2026-09.md](docs/flags-2026-09.md). The product path reads at
-most 15. A flag is `promote` (behaviour kept, flag removed), `delete`
-(measured and refused, code removed, FINDINGS kept), `research` (behind
-`OMR_RESEARCH`, never read by the product path, with a review date), or
-`frozen` (legacy only).
+**Where.** A worktree off `origin/main`, never the main checkout; symlink
+the four root assets first (`docs/running.md` §1). Never `git checkout` a
+dirty file; never bare `git stash`. Claim a ROADMAP number by pushing its
+row to main before building; fence lanes by FUNCTION NAME when two touch one
+file.
 
-Convention while flags exist: a default-ON flag's off test is a deny-list
-(`not in ("0","","false","no","off")`); a default-OFF flag's on test is an
-allow-list (`in ("1","true","yes","on")`) — so a typo leaves the default in
-force. `test_flag_default_direction.py` derives and checks this by AST.
+**Lean lanes, one shared box** (Sean, 2026-10-13; ROADMAP "How to work"):
+at most 2–3 lane agents at a time, every lane on Sonnet; one gather at a
+time; `pytest -n 4` at most; push at every milestone; small agents for
+landings and recording. Machine time is free, context and tokens are not —
+long runs are unattended nohup scripts that write a small summary, never
+per-change whole-movement A/Bs. Never `pkill -f llama-server`. Sean runs
+the overnight re-gather; never ask about it.
 
-Detector knobs that are not flags: `OMR_IMGSZ` 512 (larger is not better —
-ultralytics letterboxes), `OMR_DPI` 300 in the web app and 600 on the CLI
-(coupled to imgsz; do not unify without measuring both families),
-`OMR_CONF_THRESHOLD` 0.25, `OMR_WEIGHTS_PATH` pins weights and disables
-routing.
+**Evidence** (Sean's rules): prove a lane cheaply — tests + one page or
+record + crops. Blind tiles go to Sean with nothing of ours drawn and his
+answers are recorded in `answers.json` and a DECISIONS line. Who says it's
+right: the print, Sean, or the reference encoding — never our own output.
+A change is proposed to Sean before dispatch; ask him one plain question,
+say what each crop colour means, no tables.
 
----
+**Landing.** Every lane report is a ledger: check its claims against the
+tree with one command before believing it. Merge main first; an `A/B` on a
+cached run or a dirty record is not a result. A session ends by updating its
+ROADMAP line, adding one entry to `version_memory.md` (and `PROJECT_BRIEF.md`
+where the state it describes moved) and, if it learned something general, a
+rule here or a DECISIONS line — not a handoff.
 
-## 8. Data the reader can use that does not come off the page
-
-- **The score library** (`library/`, catalog committed at
-  `data/score-library/catalog.json`): 289 editions across 29 publishers,
-  1,745 reference encodings, keyed on `work_id` = genre + number
-  (`beethoven--symphony-5`), never the dossier id
-  (`beethoven-sym5-mvt1`). Every fact carries `source_kind`: `catalog`
-  (from IMSLP's work page — admissible in production, does not fall silent
-  when the raster is bad), `page` (read off the plate — an OMR output, refused
-  as a second witness), `encoding` (from MusicXML — a truth file, refused in
-  any measurement path). Ingest: `python3 -m tools.library.ingest imslp
-  <pdfs>`; downloads are manual through IMSLP's JavaScript gate (do not
-  defeat it, pace requests). `verify` checks presence; nothing yet checks
-  the mirror question (54 held editions were unindexed until 09-20).
-- **Rosters** (`works` tier, `edition_instrumentation`): what a work is
-  scored for, parsed from the IMSLP page; N instruments is not N staves.
-- **Dossiers** (`data/dossiers/*.json`, 97 works, generated from MusicXML):
-  meter, bar count, written clef and key per PART. `slot_facts_for_system`
-  abstains unless part count equals staff count, i.e. on every condensed
-  conductor's page — which encoded part sits on which printed staff is a
-  property of the engraving and is not in the file.
-- **The fact sheet** (`tools/omr/factsheet.py`): auto-drafts 29–44 of ~55
-  facts from catalog + dossier + record, a human corrects the rest, and every
-  correction is recorded as a disagreement with a reader. It is the only
-  rung by which a dossier reaches the pipeline (`--sheet`), and a supplied
-  clef speaks GAPS ONLY.
-- **The conventions registry** (`tools/omr/conventions.py`, 114 entries):
-  which engraving convention each decision claims; 44 are read by nothing.
+**Tests.** `pytest -m "not slow" tools/omr/tests` is the fast tier; a new
+file whose code names `library/`, `omr-weights`, a venv or a `.pdf` goes
+slow silently until measured. Do not edit `tools/` while a suite runs.
+`python3 -m tools.omr.staged.check` — the open-findings number must go down.
 
 ---
 
-## 9. The detector, labels and weights
+## 7. The detector in one paragraph
 
-The detector is the foundation every stage stands on and the one thing no
-stage can repair: a box it never drew has no subject. Facts that govern
-design here:
-
-- **Fine-tuning on the label corpus DELETES classes — in the last layer
-  only** (re-checked against the print 2026-09-29: production and its raw
-  fine-tune differ in exactly the six `cv3.*.2` tensors and read 127 vs 0
-  beams). The fine-tune's features are kept; the base's class rows are put
-  back for every class the corpus does not teach — that is production, and
-  it reads hollow heads better than the reverse graft (option A). Test new
-  weights Sean's way: `--through adjudicate` A/B against a copy of
-  production (`benchmarks/omr-weights-ab-2026-09/`, FINDINGS §5).
-- **Never erase staff lines before the detector** (costs 7–13 reading
-  points and up to a third of the noteheads). Erase for the CV consumers,
-  bound the search for everyone else.
-- **Weights route by input domain** (`input_domain._classify_page`, a
-  measured vector-vs-raster test with an empty gap over 147 pages) —
-  legacy path only until roadmap 3.2. `image_type` in the catalog is
-  IMSLP's crowd label and reads `Typeset` on 7 of 289; never key on it.
-- **The 208-class space is spelled twice**; `class_aliases.canonicalize_names`
-  at the one place the model's names are read leaves 157 canonical names.
-  `numeral*` and `tuple*` are coarser than the fine names and are not
-  synonyms.
-- **Anything unboxed on a training cell is background.** `stem` and `staff`
-  are CV-only and cost nothing; `beam` and `ledgerLine` are consumed and a
-  fine-tune takes them to zero in one epoch. Labeled cell PNGs are not
-  regenerable; never re-run the converter on an existing version.
-- Labeling: `tools/omr/annotate/` (server at `127.0.0.1:5050`, single-symbol
-  passes with `batch_config.json`, click-to-box, `--blind` for scoring
-  passes). Pre-filled verdicts are a QUEUE, not labels (blind out-of-sample
-  0.915 under the 0.97 bar). Workflow and hotkeys: chronicle §"Hand-label
-  cells". Scan truth: hand-labeled pages (ROADMAP 1.7,
-  `data/hand-truth/README.md`).
+A box the detector never drew has no subject; no stage can repair it.
+Fine-tuning deletes classes in the last layer, so production is a grafted
+head (`docs/detector.md`); never load `phase-j-mix`; never erase staff
+lines before the detector; weights route by input domain. New weights are
+tested `--through adjudicate` against a copy of production.
 
 ---
 
-## 10. Facts about the page that are load-bearing
+## 8. Where everything else lives
 
-Each of these has cost at least one lane and is still true.
-
-- A whole rest means the BAR whatever the meter; a lone quarter rest does
-  not. A dot sits a space higher on a line note; the window is asymmetric.
-  A beam runs from the first stem it joins to the last, and a stem stands at
-  the SIDE of its head — so the outer note's centre is half a head past the
-  stroke. An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two
-  heads are at one staff position (empty interval 0.168 vs 0.435 spaces). A
-  key change, and a meter change, is printed at one bar on every staff of
-  the system (meter: Sean, 2026-09-30). A
-  cautionary meter after a system's last barline governs no bar. A meter is
-  printed at a movement's start and at every change, and a change HOLDS
-  until a printed change back — the return is always printed (Sean,
-  2026-09-28). So where the bars overturn a carried change, a printed return
-  was MISSED: label the switch and mark the bar, never switch silently. The
-  carry is WEIGHED by the bars, not gated. Stems: up → right, down → left; right-and-down does
-  not exist (96 of 96 against print). Sean's middle-line convention is strong
-  and where it looks wrong it is measuring the grid.
-- **A note is an eighth only on evidence** (Sean, 2026-10-12: *"only when we see evidence of an eigth shoulf it be called that"*): a flag or a beam read on its stem, or its stem's shared value. The bar sum never shortens a stem with no flag and no beam seen — it fails whenever anything else in the bar is wrong (2.97: 4 of 4 bare quarters made eighths). It may CONFIRM a value the ink already supports at a measured likelihood (a weak flag or a refused beam stroke), never SUPPLY one (Sean, same day).
-- **A page truth is not an encoding truth**: a clef prints per system and
-  is declared once; MusicXML writes a slur at each end; Verovio draws one
-  accidental per `<alter>`. Do not divide one by the other.
-- **Two witnesses off the same raster fall silent together**: the bars are
-  not an independent umpire over a bad meter reading; an arbiter correlated
-  with one party sides with its family (through ink, convention, frame, or
-  a shared assumption). A second witness must come from a different source
-  (`source_kind: catalog`, the roster, a clef-free range check).
-- **The measure cell is padded 4 spaces (6 where the neighbour is far)** and
-  on a conductor's page that reaches the next staff's ink; cross-staff
-  ownership is a CONTEST resolved by `glyph_owner` (ladder completeness,
-  then range, then distance), and a resolved contest DROPS the loser — it
-  never relocates it. Do not grow the pad. **The ledger lines
-  name the owner, and they are authoritative** (Sean, 2026-09-28): a note far
-  from its staff has ledger lines TOWARD its own staff and none toward the
-  other. Nearness is only a hint and never overrides them; where a ledger
-  reading disagrees with the print, the RUNG FINDING is wrong, not the rule;
-  **there is no such thing as a far note with no ledger line** (Sean,
-  2026-09-29: a head outside the staff touches the outer line, touches a
-  ledger, or has one through it; farther than one notehead always has
-  ledgers), so "no rungs found either way" is always OUR failure — a
-  missed rung, a misread head, or a note that is not far: abstain and count
-  it, and a clean empty reading at a step the owner would need refutes that
-  owner. A
-  hairpin sits UNDER its staff, so a note between a staff and the hairpin
-  beneath it belongs to that staff.
-- **Measure against the staff LOCALLY** (Sean, 2026-09-30: *"scans will shift the
-  geometry, and therefore anything that uses geometry compared to the staff
-  needs to be measuring locally instead of globally"*): a scanned staff tilts
-  and changes spacing across a system (Litolff p3: 7 px of wander, ~5% in
-  spacing), and ~1 px at the head decides a near-boundary pitch. Any position
-  relative to the staff reads the staff lines AT THE SUBJECT'S x, never a
-  staff-wide or bar-wide value (ROADMAP 2.48).
-- **A cell index restarts per system**; key a bar on (page, system, cell).
-- **A canonical cell frame cannot answer a cross-staff question**; page
-  pixels are carried beside it, DECLINED rather than defaulted.
-- **Litolff MERGES and Breitkopf SHATTERS**: ink components are not marks
-  on either plate; 46 of 180 sampled "notehead" boxes were not noteheads and
-  a third of Breitkopf's stemless heads are barlines. A notehead is ~1.3
-  staff spaces wide; the width floor costs 0 of 103 confirmed heads.
-- **The label lexicon** (`instruments.py`): aliases are GLOBAL, so a widening
-  admitted for one score is admitted for every score; cross products are
-  DERIVED; `Tp.` is Timpani in German and Trumpet in English and is
-  resolved by the page's own other labels; a bare `Basso.` reads as a bass
-  VOICE without the roster; 29 of 29 unresolved non-treble staves on the
-  scan corpus print no label at all.
-- **The condensed count cannot come from the page** (`Viola` = 1 part in one
-  edition, 2 in another); it is an encoding property. **Identity loss on the
-  staged path is PLACEMENT, never naming**: every part on both shared
-  records is already named (the part takes its name from the first staff
-  carrying one) and `OMR_HOLD_OUT_UNIDENTIFIED` gates on the SLOT. What is
-  still held out is a condensed `Violoncello e Basso` staff narrowed to two
-  slots, which is a convention decision (Sean, 2026-09-22: *the string
-  family always includes all five; four lines means the bass doubles the
-  celli or enters later*), not a reading gap.
-
----
-
-## 11. Web app internals
-
-- Auth: JWT access (8 h) + httpOnly refresh cookie (7 d); `AuthProvider`
-  wraps the app; axios auto-refreshes on 401.
-- DB: SQLite via aiosqlite at `/app/data/reengrave.db` (Docker volume `db`),
-  SQLAlchemy 2.0 async, models in `backend/database/models.py`. **No
-  migrations** — schema changes drop the DB (`docker compose down && docker
-  volume rm reengrave_db && docker compose up -d`).
-- Storage: `/app/uploads/{score_id}/…` (PDF, `{stem}.omr.json`,
-  `{stem}.musicxml`, `snippets/`), `/app/exports/`, Gradus and comparison
-  uploads under `uploads/gradus/` and `uploads/compare/`.
-- Verovio is Python bindings, not a CLI; SVG → PNG via cairosvg →
-  rsvg-convert → inkscape.
-- Payments: Vision comparison is $5/score or admin; Gradus, theory checks
-  and local OMR are free. nginx `^~ /uploads/` must precede the static regex.
-- Maestro theory layer (`theory_layer.py`, `maestro_bridge.py`) is host-side
-  Node, off by default, not in the container.
-- Frontend: React + Vite + React Query; pages under `frontend/src/pages/`;
-  `docker compose build frontend` after any change (Vite bakes env at build).
-- Known stubs: correction patching (§5c), the PDF crop in `DiffCard` (a
-  placeholder; no PDF.js or Verovio in the frontend since 3.6d). The
-  `audiveris_*` names were retired 2026-10-08 (3.6e).
-
----
-
-## 12. Where things are
+| read | when you need |
+|---|---|
+| `docs/running.md` | setup, worktree symlinks, every CLI, the small/full re-gathers, the web app, deployment |
+| `docs/staged-internals.md` | the record model, scopes, adjudicators, EVALUATE/INFER/EXPORT, the derived checks and their blind spots |
+| `docs/page-facts.md` | every engraving/plate convention with Sean's quotes and dates |
+| `docs/measuring.md` | the acceptance set, A/B rules, test tiers, flags |
+| `docs/data-sources.md` | library, rosters, dossiers, fact sheet, conventions registry |
+| `docs/detector.md` | weights, labels, fine-tuning facts, labeling UI |
+| `docs/flags-2026-09.md` | the verdict on every flag |
+| `docs/<stage>-sequence-*.md` | the order inside each stage |
+| `docs/plan-2026-09-22-from-here-to-a-finished-score.md` | why the roadmap looks as it does |
+| `docs/plan-2026-10-12-inference-principles.md` | READ/GUESSED/UNREAD and the cost-of-error bar |
+| `benchmarks/<name>/FINDINGS.md` | every measurement, one directory each |
+| `docs/chronicle-2026-09.md` | May–Sept history; search it, never brief from it |
+| `docs/claude-md-migration-2026-10-13.md` | where each line of the old 6,000-word CLAUDE.md went |
 
 ```
-tools/omr/staged/         the product pipeline (§4)
-tools/omr/                shared readers + the frozen legacy pipeline (§3)
-tools/omr/tests/          4,800+ tests; fast tier via durations.json
-tools/omr/training/       dataset prep, training, evals, head surgery
-tools/omr/annotate/       the labeling UI
-tools/library/            the score library and IMSLP provenance
-data/score-library/       committed catalog, wishlist
-data/dossiers/            97 generated per-work fact files
-data/user-labeled/        hand-labeled YOLO versions + catalog-versions.txt
-benchmarks/<name>-2026-09/FINDINGS.md   every measurement, one directory each
-benchmarks/acceptance/    open-findings.json, current.json (roadmap 1.3)
-benchmarks/omr-cleanup-count-2026-09/   CATEGORIES.md, the count artefacts
-library/                  editions + references + _shared-records (gitignored)
-omr-weights/              the checkpoints (gitignored)
-backend/, frontend/       the web app (§5c, §11)
-docs/                     DECISIONS.md, the plan, the chronicle, NEXT-*/handoff-* (historical)
+tools/omr/staged/      product pipeline     tools/omr/            shared readers + frozen legacy
+tools/omr/tests/       tests (fast tier)    tools/omr/training/   datasets, training, head surgery
+tools/omr/annotate/    labeling UI          tools/library/        score library + IMSLP provenance
+data/dossiers/         97 per-work facts    data/hand-truth/      Sean's labeled pages
+benchmarks/            FINDINGS per lane    out/print/            crops and blind tiles for Sean
+library/, omr-weights/ gitignored, machine-local       backend/, frontend/   the web app
 ```
 
-Deployment: `scripts/setup-vps.sh`, `scripts/deploy.sh`,
-`docker-compose.prod.yml` (Traefik, Let's Encrypt); 4 vCPU / 8 GB minimum.
-
----
-
-## 13. Sessions in parallel
-
-Work in a worktree off `origin/main`; never `git checkout` a dirty file;
-never bare `git stash`. Fence lanes by FUNCTION NAME before dispatch when two
-touch one file. Claim a ROADMAP number by pushing its row to main before
-building. A cloud session (no weights, no library) records answers, writes
-docs and lands branches. Every lane report is a ledger: check its claims
-against the tree with one command before believing it. A session ends by updating its ROADMAP line,
-adding its entry to `version_memory.md` (and `PROJECT_BRIEF.md` where the
-state it describes moved) and, if it learned something general, a rule here
-or a DECISIONS line — not by writing a handoff.
+`PROJECT_BRIEF.md` is the short "what and where"; `version_memory.md` the
+change log; `PROJECT_STATUS.md` and `NOTES.md` are frozen history.
