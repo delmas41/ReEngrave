@@ -2,10 +2,20 @@
 
 Each of these has cost at least one lane and is still true. Moved out of
 `CLAUDE.md` §10 on 2026-10-13 (`docs/claude-md-migration-2026-10-13.md`),
-with Sean's rulings of 2026-10-12/13 added at the end. The newest rulings
-are always the dated lines in `docs/DECISIONS.md`; where this file and a
-later DECISIONS line disagree, DECISIONS wins. The conventions registry
-(`tools/omr/conventions.py`) is the machine-readable form.
+with Sean's rulings of 2026-10-12/13 added at the end. Sean's rulings are
+the dated lines in `docs/DECISIONS.md`. How the two relate (Sean,
+2026-10-13):
+
+1. **They must never quietly disagree.** When a ruling changes or narrows a
+   fact here, this file is updated in the same commit, saying where it
+   applies.
+2. **Every ruling carries its scope**: general, or a named publisher /
+   score / kind of staff. A scoped ruling is never applied outside it.
+3. **A lane that finds the two disagreeing does not pick a winner.** It
+   stops and asks Sean (with a crop where that helps).
+
+The conventions registry (`tools/omr/conventions.py`) is the
+machine-readable form.
 
 ## 1. Rhythm and notation
 

@@ -133,6 +133,8 @@ adjudicators, the derived checks: `docs/staged-internals.md`.
 
 ## 5. Page conventions every lane needs
 
+Page facts and DECISIONS never quietly disagree: a ruling that changes a fact updates `docs/page-facts.md` in the same commit with its SCOPE (general or a named publisher/score/staff kind); a lane that finds them disagreeing stops and asks Sean, never picks a winner.
+
 The full list with Sean's quotes and dates is `docs/page-facts.md`; the
 registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 
