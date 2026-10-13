@@ -4309,12 +4309,13 @@ STEM_TIP_BLOCKER_TOLERANCE_SPACES = 0.1
 #: `occupied` and the 2.18c window cannot say either, the SHAPE test is read ONCE MORE with the boxes set aside; only a flag-shaped
 #: reading (`found True`) is filed (witness `shape_unblocked`). Any other result -- not
 #: flag-shaped, runs on, ink past the tip, nothing -- leaves the `occupied` abstention exactly as before (rule 8: never a False).
-#: ALLOW-LIST, default OFF: a typo leaves the shipped reader in force. Measured on Sean's hand-truth page (FINDINGS 2.104).
+#: DEFAULT ON since 2026-10-13 (Sean's 9/9 on `out/print/2.104-review/`: "go ahead switch on and land"); a DENY-LIST, so a typo or an
+#: empty value leaves it RUNNING and only an explicit off-word turns it off. Measured on Sean's hand-truth page (FINDINGS 2.104).
 TIP_UNBLOCKED_ENV = "OMR_TIP_UNBLOCKED"
 
 
 def tip_unblocked_enabled() -> bool:
-    return os.environ.get(TIP_UNBLOCKED_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(TIP_UNBLOCKED_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _tip_line_rows(right: Any, left: Any, us: Any, ul: Any, space: float

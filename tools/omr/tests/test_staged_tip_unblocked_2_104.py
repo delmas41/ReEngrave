@@ -3,7 +3,7 @@
 Sean, 2026-10-13 (2.97 round-3 tile 3, and his hand-truth `q1009` on Brahms pdf 0): a printed eighth flag our reader did not see,
 so the head stayed `quarter | eighth`. The tip reader's SHAPE test was never run there: a detection box (a mid-bar `clefF` the
 detector drew round the stem and its flag, a `ledgerLine`, a dynamic, an arpeggio) covered the ink, so `_observe_stem_tip_ink`
-filed `occupied` and stopped. `OMR_TIP_UNBLOCKED=1` reads the shape once more with the boxes set aside and files ONLY a flag-shaped
+filed `occupied` and stopped. `OMR_TIP_UNBLOCKED` (default ON) reads the shape once more with the boxes set aside and files ONLY a flag-shaped
 reading; every other outcome leaves the abstention exactly as it was (rule 8).
 
 RUN RED FIRST against the unrepaired reader (`gather.py` as of 2ebc61d9): the ON tests fail there (the tip stays `occupied`); the
@@ -81,11 +81,21 @@ class TestAFlagUnderABoxIsReadByItsShape(unittest.TestCase):
         self.assertIsNotNone(obs[0].detail.get("hooks"), obs[0].detail)    # the 2.69 hook count rides on it
         self.assertEqual(ab, [])
 
-    def test_OFF_the_same_tip_is_still_occupied(self):
-        """The shipped reader is the default: a typo or an unset flag changes nothing."""
+    def test_DEFAULT_unset_or_a_typo_is_ON(self):
         img = _paper()
         _up_stem_with_flag(img)
-        for env in ({"OMR_TIP_UNBLOCKED": "0"}, {"OMR_TIP_UNBLOCKED": "tru"}):
+        for env in ({"OMR_TIP_UNBLOCKED": "tru"}, {"OMR_TIP_UNBLOCKED": "1"}):
+            obs, _ = _observe(img, [OVER_FLAG], env)
+            self.assertEqual(len(obs), 1, env)
+        with mock.patch.dict(os.environ, clear=False):
+            os.environ.pop("OMR_TIP_UNBLOCKED", None)
+            self.assertTrue(gather.tip_unblocked_enabled())
+
+    def test_OFF_the_same_tip_is_still_occupied(self):
+        """An explicit off-word (default is ON since 2026-10-13) restores the shipped reader."""
+        img = _paper()
+        _up_stem_with_flag(img)
+        for env in ({"OMR_TIP_UNBLOCKED": "0"}, {"OMR_TIP_UNBLOCKED": "off"}, {"OMR_TIP_UNBLOCKED": ""}):
             obs, ab = _observe(img, [OVER_FLAG], env)
             self.assertEqual(obs, [], env)
             self.assertEqual([a.reason for a in ab], [ABSTAIN.OCCUPIED], env)
