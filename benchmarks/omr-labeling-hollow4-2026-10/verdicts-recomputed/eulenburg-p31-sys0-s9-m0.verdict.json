@@ -1,0 +1,50 @@
+{
+  "cell_id": "eulenburg-p31-sys0-s9-m0",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:22:02+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadWholeInSpace",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 453,
+        "y": 301,
+        "w": 80,
+        "h": 46
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeInSpace"
+    },
+    {
+      "id": "H1",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 472,
+        "y": 478,
+        "w": 80,
+        "h": 46
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeOnLine"
+    },
+    {
+      "id": "H2",
+      "human_class": "noteheadWholeOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 467,
+        "y": 0,
+        "w": 80,
+        "h": 46
+      },
+      "notes": "",
+      "tool_class": "noteheadWholeInSpace"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

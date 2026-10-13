@@ -1,0 +1,22 @@
+{
+  "cell_id": "tchaik5-p61-sys1-s14-m3",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:41:15+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1126,
+        "y": 655,
+        "w": 83,
+        "h": 70
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    }
+  ],
+  "inspected_passes": []
+}

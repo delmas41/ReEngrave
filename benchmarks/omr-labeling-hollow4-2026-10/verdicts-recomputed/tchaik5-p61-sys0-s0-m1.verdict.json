@@ -1,0 +1,24 @@
+{
+  "cell_id": "tchaik5-p61-sys0-s0-m1",
+  "schema_version": 2,
+  "labeled_at_utc": "2026-10-13T19:36:38+00:00",
+  "detections": [],
+  "added_detections": [
+    {
+      "id": "H0",
+      "human_class": "noteheadHalfOnLine",
+      "human_category": "notehead",
+      "bbox": {
+        "x": 1228,
+        "y": 292,
+        "w": 77,
+        "h": 65
+      },
+      "notes": "",
+      "tool_class": "noteheadHalfOnLine"
+    }
+  ],
+  "inspected_passes": [
+    "hollow noteheads (every one)"
+  ]
+}

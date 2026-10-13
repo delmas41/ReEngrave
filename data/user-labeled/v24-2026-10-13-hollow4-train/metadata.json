@@ -1,0 +1,670 @@
+{
+  "version_name": "v24-2026-10-13-hollow4-train",
+  "created_utc": "2026-10-13T19:46:37+00:00",
+  "labeler": "sean",
+  "description": "ROADMAP 2.4b hollow-head TRAIN batch: 100 Litolff-excluded cells, Sean boxes every hollow head (64 half + 26 whole); OnLine/InSpace RECOMPUTED from measured staff+ledger geometry (hollow-class-recomputed.json), not the tool tag (DECISIONS 2026-10-13). Hollow classes fully human-labelled; other classes completed by the production teacher (conf 0.25). NOT in the main catalog -- admission is Sean's call.",
+  "source": {
+    "verdicts_dir": "benchmarks/omr-labeling-hollow4-2026-10/verdicts-recomputed",
+    "detections_dir": "benchmarks/omr-labeling-hollow4-2026-10/detections",
+    "manifest": "benchmarks/omr-labeling-hollow4-2026-10/cells.json",
+    "weights_for_class_names": "tools/omr/training/data/weights/deepscoresv2-yolov8l-8shards-100ep.pt"
+  },
+  "totals": {
+    "n_cells_with_labels": 48,
+    "n_v1_cells": 0,
+    "n_v2_cells": 48,
+    "n_tp": 0,
+    "n_wrong_cat": 0,
+    "n_wrong_bbox": 0,
+    "n_fn_added": 90,
+    "n_fp_dropped": 0,
+    "n_unsure_dropped": 0,
+    "n_pending_dropped": 0,
+    "n_dropped_unknown_class": 0
+  },
+  "n_classes_in_vocab": 214,
+  "classes_used_in_this_version": [
+    "noteheadHalfInSpace",
+    "noteheadHalfOnLine",
+    "noteheadWholeInSpace",
+    "noteheadWholeOnLine"
+  ],
+  "per_cell": [
+    {
+      "cell_id": "brahms-p21-sys0-s7-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "brahms-p21-sys1-s13-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p41-sys0-s10-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p41-sys0-s4-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p41-sys0-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar1-p41-sys1-s22-m10",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar2-p31-sys0-s16-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar2-p31-sys0-s23-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar2-p31-sys0-s6-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "elgar2-p31-sys0-s7-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine",
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "elgar2-p31-sys0-s9-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys0-s4-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys0-s5-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys0-s5-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys0-s6-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys0-s9-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "eulenburg-p31-sys3-s15-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "litolff-p13-sys0-s2-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "litolff-p13-sys0-s2-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "litolff-p13-sys0-s3-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "litolff-p13-sys1-s13-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "litolff-p13-sys1-s15-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p41-sys0-s3-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p41-sys0-s8-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p41-sys0-s8-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p41-sys0-s9-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p81-sys0-s2-m7",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "mahler1-p81-sys0-s6-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s1-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s12-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s12-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s12-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s18-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s18-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeInSpace",
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s3-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 3,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s7-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "peters-p31-sys0-s8-m0",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadWholeOnLine"
+      ]
+    },
+    {
+      "cell_id": "simrock-p25-sys0-s12-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 2,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "simrock-p25-sys0-s13-m6",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "simrock-p25-sys0-s13-m8",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "simrock-p25-sys1-s15-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "simrock-p61-sys1-s25-m5",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "simrock-p61-sys1-s27-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "tchaik5-p61-sys0-s0-m1",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "tchaik5-p61-sys0-s1-m2",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "tchaik5-p61-sys1-s13-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace"
+      ]
+    },
+    {
+      "cell_id": "tchaik5-p61-sys1-s13-m4",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 4,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfInSpace",
+        "noteheadHalfOnLine"
+      ]
+    },
+    {
+      "cell_id": "tchaik5-p61-sys1-s14-m3",
+      "schema_version": 2,
+      "n_tp": 0,
+      "n_wrong_cat": 0,
+      "n_wrong_bbox": 0,
+      "n_fn_added": 1,
+      "n_fp_dropped": 0,
+      "classes_written": [
+        "noteheadHalfOnLine"
+      ]
+    }
+  ],
+  "teacher_completion": {
+    "teacher": "/Users/seanjohnson/Desktop/ReEngrave/omr-weights/deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
+    "conf": 0.25,
+    "scope": "all, minus every hollow class (human-swept)",
+    "cells": 100,
+    "cells_with_no_human_box": 52,
+    "human_boxes": 90,
+    "teacher_boxes_added": 1748,
+    "teacher_by_class": {
+      "ledgerLine": 292,
+      "noteheadBlackInSpace": 223,
+      "noteheadBlackOnLine": 195,
+      "beam": 183,
+      "tie": 128,
+      "slur": 116,
+      "dynamicF": 72,
+      "augmentationDot": 64,
+      "arpeggiato": 51,
+      "accidentalNatural": 45,
+      "accidentalSharp": 41,
+      "dynamicP": 40,
+      "rest8th": 39,
+      "accidentalFlat": 32,
+      "restWhole": 28,
+      "flag8thDown": 26,
+      "restQuarter": 25,
+      "articStaccatoAbove": 18,
+      "keyFlat": 16,
+      "clefG": 13,
+      "flag8thUp": 10,
+      "dynamicM": 8,
+      "articAccentAbove": 7,
+      "brace": 7,
+      "timeSig4": 6
+    },
+    "teacher_hollow_boxes_dropped_as_background": {
+      "noteheadHalfOnLine": 22,
+      "noteheadHalfInSpace": 29,
+      "noteheadWholeOnLine": 14,
+      "noteheadWholeInSpace": 6
+    },
+    "teacher_boxes_dropped_over_a_human_box": 16
+  }
+}
