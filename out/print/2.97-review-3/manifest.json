@@ -1,0 +1,209 @@
+{
+ "question": "Values of the bracketed notes? (e.g. 4 / 8 / 16, Dot 4 = dotted quarter)",
+ "tiles": [
+  {
+   "n": 1,
+   "file": "tile_01.png",
+   "movement": "brah",
+   "bar": [
+    4,
+    0,
+    9,
+    10
+   ],
+   "part": "eighth",
+   "settled": [
+    {
+     "subject": "glyph/4/0/9/10/0",
+     "ours": 0.75,
+     "was_candidates": [
+      1.5,
+      0.75
+     ],
+     "decider": "reconcile_duration"
+    },
+    {
+     "subject": "glyph/4/0/9/10/7",
+     "ours": 0.75,
+     "was_candidates": [
+      1.5,
+      0.75
+     ],
+     "decider": "reconcile_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 2.0,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.56,
+    "passes": false
+   }
+  },
+  {
+   "n": 2,
+   "file": "tile_02.png",
+   "movement": "lit",
+   "bar": [
+    8,
+    1,
+    1,
+    15
+   ],
+   "part": "eighth",
+   "settled": [
+    {
+     "subject": "glyph/8/1/1/15/5",
+     "ours": 0.5,
+     "was_candidates": [
+      1.0,
+      0.5
+     ],
+     "decider": "infer:collapse_narrowed_by_bar"
+    },
+    {
+     "subject": "glyph/8/1/1/15/3",
+     "ours": 0.5,
+     "was_candidates": [
+      1.0,
+      0.5
+     ],
+     "decider": "infer:collapse_narrowed_by_bar"
+    }
+   ],
+   "frame_control": {
+    "ratio": 7.07,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.07,
+    "passes": false
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "brah",
+   "bar": [
+    25,
+    0,
+    3,
+    1
+   ],
+   "part": "newheld",
+   "settled": [
+    {
+     "subject": "glyph/25/0/3/1/3",
+     "ours": "narrowed in the arm; base wrote an eighth",
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "adjudicate_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 4.65,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.17,
+    "passes": false
+   }
+  },
+  {
+   "n": 4,
+   "file": "tile_04.png",
+   "movement": "brah",
+   "bar": [
+    21,
+    1,
+    6,
+    0
+   ],
+   "part": "newheld",
+   "settled": [
+    {
+     "subject": "glyph/21/1/6/0/4",
+     "ours": "narrowed in the arm; base wrote an eighth",
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "adjudicate_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 3.9,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.25,
+    "passes": false
+   }
+  },
+  {
+   "n": 5,
+   "file": "tile_05.png",
+   "movement": "brah",
+   "bar": [
+    20,
+    1,
+    10,
+    1
+   ],
+   "part": "newheld",
+   "settled": [
+    {
+     "subject": "glyph/20/1/10/1/15",
+     "ours": "narrowed in the arm; base wrote an eighth",
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "adjudicate_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 3.64,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.2,
+    "passes": false
+   }
+  },
+  {
+   "n": 6,
+   "file": "tile_06.png",
+   "movement": "brah",
+   "bar": [
+    18,
+    0,
+    11,
+    0
+   ],
+   "part": "newheld",
+   "settled": [
+    {
+     "subject": "glyph/18/0/11/0/13",
+     "ours": "narrowed in the arm; base wrote an eighth",
+     "was_candidates": [
+      0.75,
+      1.5
+     ],
+     "decider": "adjudicate_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 3.81,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.26,
+    "passes": false
+   }
+  }
+ ]
+}

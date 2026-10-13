@@ -3295,3 +3295,23 @@ columns, 4 INFER singles); chords lost none. Hand truth pages 0-1: base wrong 12
 0/0/6/2 chord that Sean judged a dotted quarter = our value (scorer dot artefact), so true wrong = 12 = base.
 Value outside own candidates 0. Fast tier 7,592 (2 failures from 2.9x's hook tests fixed by counting
 `flag_ink_unread` as flag evidence); `check` 192.
+
+### 2.97f. The newly held bars, traced (follow-up, Sean 2026-10-13; `probe/newheld_2_97.py`)
+Litolff 11, Brahms 12 bars were written in base and held in the arm. Every one traces to ONE head:
+- Litolff 11: base's OLD single-note rule (`reconcile_duration`, not mine) had decided a narrowed head to 0.5
+  (an eighth) because it was the one landing. My evidence rule now filters `_admitted` for every bar-sum
+  settlement, so that landing no longer exists and the head stays narrowed. 6 of the 11 are narrowings with
+  reason `flag_ink_unread` (a flag was SEEN) -- FIXED by counting `flag_ink_unread` as flag evidence (the arm5
+  run predates the fix); 5 are `beam_discounted_uncertain` bare stems with no evidence of an eighth.
+- Brahms 12: 11 the same (a bare stem the old rule made an eighth), 1 (4/0/9/10) is the opposite -- the arm's
+  chord settlement took two `beams_ambiguous` heads (candidates 1.5 / 0.75, `levels_possible` evidence) to 0.75
+  and the exporter's voice-split bar check then disagrees with reconcile's single-stream sum; in base those
+  heads were unwritten, so the bar "added up" only because two notes were missing.
+So 16 bars lost a bare-stem eighth that base had written by arithmetic alone -- exactly what Sean's rule
+forbids -- not a fault in the new rules. BUT the print can show a flag our reader missed: tile 3 of
+`out/print/2.97-review-3/` (Brahms) is a flagged eighth the arm now leaves narrowed. Whether the old path should
+keep writing such eighths is Sean's call (the rule says no; the cost is these bars).
+Tiles: `out/print/2.97-review-3/` 6 tiles (2 surviving eighth settlements -- the third bar failed the frame
+control -- and 4 newly held bars), blue = the bracketed heads, ours only in manifest.json.
+Merged main (2.102): `bar_has_tuplet` is called beside the lane's own guard; main's `shortened_refused` check
+is bypassed for the widened rule (its evidence rule is `_eighth_evidence`) and kept for the bare-stem rule.
