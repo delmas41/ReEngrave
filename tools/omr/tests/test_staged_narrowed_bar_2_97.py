@@ -634,5 +634,43 @@ class TestTheHeadsAreThisStaffsOwn(unittest.TestCase):
         self.assertEqual(_fired(_run(log)), [])
 
 
+class TestATupletBarIsNotSettledByItsSum(unittest.TestCase):
+    """2.101: in a 3-quarter triplet the sum lands as an eighth."""
+
+    def _bar(self, tuplet):
+        b = _InferBar()
+        for _ in range(3):
+            b.decided(1.0)
+        b.narrowed_chord(1)
+        if tuplet:
+            from tools.omr.staged.record import READERS
+            b.log.observe(_sub(0, 9, b.cell_idx), Q.TUPLET_MARKER, "tuplet3",
+                          reader=READERS.DETECTOR, frame="cell", x0=0, x1=10,
+                          x_center=5)
+        return b.finish()
+
+    def test_a_printed_tuplet_marker_blocks_the_inference_RED(self):
+        log = self._bar(True)
+        self.assertEqual(_fired(_run(log)), [])
+        self.assertEqual(inferences.solve_bare_stem_bar(
+            log, _cell(), any_reason=True).decline, "bar_holds_tuplet_evidence")
+
+    def test_POSITIVE_CONTROL_the_same_bar_without_one_is_settled(self):
+        log = self._bar(False)
+        self.assertEqual(len(_fired(_run(log))), 1)
+
+    def test_a_tuplet_marker_blocks_the_chord_landing_in_EVALUATE(self):
+        b = _EvalBar()
+        for _ in range(3):
+            b.decided(1.0)
+        b.chord(2)
+        from tools.omr.staged.record import READERS
+        b.log.observe(R.glyph(0, 0, 1, 3, 40), Q.TUPLET_MARKER, "tuplet3",
+                      reader=READERS.DETECTOR, frame="cell", x0=0, x1=10,
+                      x_center=5)
+        log, out = b.fire()
+        self.assertEqual(out, [])
+
+
 if __name__ == "__main__":
     unittest.main()

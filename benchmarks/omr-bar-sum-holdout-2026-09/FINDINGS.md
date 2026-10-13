@@ -3106,3 +3106,10 @@ written 354 -> 277; Brahms held 2,553 -> 2,494, notes 8,198 -> 8,422, narrowed 3
 Value outside own candidates 0. Hand truth, pages 0-1: right 297 -> 299, WRONG 12 -> 13 (the 0/0/6/2 chord,
 whose candidates do not contain the derived truth). 12 tiles re-rendered (one bracket per settled event; unclean
 bars dropped). Fast tier and `check` to be re-run on the final commit.
+
+### 2.97c. Tuplet guard (manager, 2.101: a 3-quarter triplet's sum settles a quarter as an eighth)
+`consequences._bar_has_tuplet` (a gathered `Q.TUPLET_MARKER` anywhere in the cell, or a duration carrying a
+ratio): the chord unit, settle-alongside and `collapse_narrowed_by_bar` all abstain on such a bar
+(`bar_holds_tuplet_evidence`). TODO: swap for 2.102's shared `bar_has_tuplet` when it lands. Of the settled
+bars on the guarded arms: Litolff 58, Brahms 67 -- 0 hold tuplet evidence (`probe/tuplet_2_97.py`), so the guard
+changes nothing on these two scans; it is for other publishers. 3 tests (positive control included).

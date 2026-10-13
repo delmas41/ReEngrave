@@ -904,7 +904,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # of the event is narrowed and not a rest (a mixed event stays per-head,
     # exactly as before) and the option is a length every head admits.
     chord_units = _narrowed_chords(log, subject, notes)
-    if chord_units and not _bar_heads_are_clean(log, subject, notes):
+    if chord_units and (not _bar_heads_are_clean(log, subject, notes)
+                        or _bar_has_tuplet(log, subject, notes)):
         chord_units = []        # 2.97: not this staff's own heads
     in_chord = {m.id for ms in chord_units for m in ms}
     landings = []
@@ -987,7 +988,8 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # the landing already made. Two joint answers settle nothing.
     extras: list = []
     if all(m.outcome is Outcome.DECIDED for m in members) \
-            and _bar_heads_are_clean(log, subject, notes):
+            and _bar_heads_are_clean(log, subject, notes) \
+            and not _bar_has_tuplet(log, subject, notes):
         extras = _settle_alongside(log, subject, notes, current, total,
                                    expected, members, options)
     verdicts: List[Verdict] = []
@@ -1126,6 +1128,24 @@ def _box_iou(a, b) -> float:
     i = max(0.0, x1 - x0) * max(0.0, y1 - y0)
     u = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i
     return i / u if u else 0.0
+
+
+def _bar_has_tuplet(log: Log, subject: Subject, notes=()) -> bool:
+    """Does this bar carry TUPLET evidence -- a gathered `Q.TUPLET_MARKER` (digit
+    or bracket) anywhere in the cell, or a duration that already carries a
+    ratio? ROADMAP 2.97 / 2.101: in a 3-quarter triplet the bar's arithmetic
+    settles a quarter as an eighth (the sum is right, the notes are in a
+    ratio), so every bar-sum settlement of a narrowed note abstains here.
+    TODO: replace by 2.102's shared `bar_has_tuplet` when it lands."""
+    cell = subject.at(Kind.CELL)
+    if log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        return True
+    for v in notes:
+        vals = [v.value] if isinstance(v.value, dict) else \
+            [c.value for c in (v.candidates or ()) if isinstance(c.value, dict)]
+        if any(x.get("tuplet") or x.get("ratio") for x in vals):
+            return True
+    return False
 
 
 def _bar_heads_are_clean(log: Log, subject: Subject, notes) -> bool:
