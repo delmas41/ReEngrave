@@ -1833,6 +1833,48 @@ def _foreign_staccato_owner(dot_box, foreign_targets, space):
     return best
 
 
+#: Refusal reasons that name a mark which is never a note (ROADMAP 2.102).
+NOT_A_NOTE_REFUSALS = ("tremolo_slash_crosses_stem", "on_a_dynamic_letter")
+
+
+def _not_a_note_mark(ev: Evidence, refusal) -> Optional[str]:
+    """Why a head `adjudicate_notehead_is_not_a_notehead` refused is NOT A NOTE
+    AT ALL (and so has no duration), else None.
+
+    Two cases, each from the mark's own evidence: the refusal's reason names a
+    non-note mark (`NOT_A_NOTE_REFUSALS`), or a `too_narrow` box stands in the
+    COLUMN of a meter sign that a `timeSig*` box on ANOTHER staff of the same
+    system prints (a printed meter is on every staff of its system at one x --
+    CLAUDE.md §10). The column test is `|dx| < 0.5 * max(w, h)` of the head's
+    page box. CONVENTION ASSUMED / FALSIFIED BY a refused-narrow box in a meter
+    column that is a real eighth rest or a note / NOT CONFIRMED by Sean.
+    """
+    if refusal.reason in NOT_A_NOTE_REFUSALS:
+        return str(refusal.reason)
+    if refusal.reason != "too_narrow":
+        return None
+    own = ev.rows(Q.GLYPH_BOX)
+    if not own:
+        return None
+    d = own[-1].detail or {}
+    bb, xc = d.get("bbox_page_px"), d.get("x_center_page")
+    if not bb or xc is None:
+        return None
+    tol = 0.5 * max(bb[2] - bb[0], bb[3] - bb[1])
+    system = ev.subject.at(Kind.SYSTEM)
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                     subject=system):
+        sub = r.subject
+        if sub.staff == ev.subject.staff or not isinstance(
+                r.value, (list, tuple)) or not str(r.value[0]).startswith(
+                    "timeSig"):
+            continue
+        sx = (r.detail or {}).get("x_center_page")
+        if sx is not None and abs(float(sx) - float(xc)) < tol:
+            return "meter_sign_column"
+    return None
+
+
 def _refused_as_a_notehead(ev: Evidence, subject) -> bool:
     v = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=subject)
     return (v is not None and v.outcome is Outcome.DECIDED
@@ -2769,7 +2811,12 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
                    Q.HEAD_STEM_REACH, Q.MARK_GROUP,
                    # ROADMAP 2.87 (`head_contact`): which strokes count as STEMS
                    # in the beam-joins-N-stems tests.
-                   Q.STEM_HEAD_CONTACT),
+                   Q.STEM_HEAD_CONTACT,
+                   # ROADMAP 2.102: a head already REFUSED as a notehead is
+                   # never read as a hollow half, and one refused as a mark
+                   # that is not a note (a tremolo slash, a meter sign) has no
+                   # duration at all.
+                   Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -2815,7 +2862,8 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
            Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT),
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
              "tip_readers_disagree",
@@ -2823,7 +2871,7 @@ def _at_level_value(base: float, level: int, n_dots: int) -> float:
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
-             "owned_by_another_staff"),
+             "owned_by_another_staff", "not_a_note_mark"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -2891,6 +2939,23 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             return Ruling.abstain("owned_by_another_staff",
                                   owner=owner.value, twin=twin,
                                   head=str(head))
+
+    # ⚠️⚠️ ROADMAP 2.102 (b), Sean's tiles 11 and 17 (2026-10-12): A MARK THAT
+    # IS NOT A NOTE HAS NO DURATION. `adjudicate_notehead_is_not_a_notehead`
+    # (ORDER 17, long before this) had already refused both -- a C meter sign
+    # (`too_narrow`) and a tremolo slash across a stem
+    # (`tremolo_slash_crosses_stem`) -- and this decision, which did not read
+    # that verdict, read the ring-vs-centre ink of the same box as a HOLLOW
+    # head and decided a half. The refusal takes the box out of its bar, so
+    # the file never held the half, but the verdict on the record did. It is
+    # filed `not_a_note_mark` and decides nothing (rule 8).
+    refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
+    refused = (refusal is not None and refusal.outcome is Outcome.DECIDED
+               and refusal.value is True)
+    if refused:
+        why = _not_a_note_mark(ev, refusal)
+        if why is not None:
+            return Ruling.abstain("not_a_note_mark", why=why, head=str(head))
 
     base = None
     for name, beats in _HEAD_BEATS.items():
@@ -3525,7 +3590,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # is unknown cannot be said to (rule 8) and does not decide a half either.
     one_head_box = (head_box is not None and space is not None and space > 0
                     and head_box[3] / space <= HEAD_BOX_MAX_SPACES)
-    if ink_hollow and own_stems and not flags \
+    if ink_hollow and own_stems and not flags and not refused \
             and strokes_before_hollow == (0, 0, 0) and one_head_box:
         beam_reader = _beam_reader_looked(ev, cell)
         tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
@@ -3552,7 +3617,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     # ⚠️⚠️ ROADMAP 2.88 (see `HEAD_HOLLOW_MIN_READINGS`): the same half, where the tip reader could not tell. The tip no longer decides
     # anything for a hollow head; the head's own reading must be firm (two rasters, a head-shaped box).
-    if ink_hollow and own_stems and not flags and strokes_before_hollow == (0, 0, 0) and one_head_box \
+    if ink_hollow and own_stems and not flags and not refused and strokes_before_hollow == (0, 0, 0) and one_head_box \
             and head_box[3] / space >= HEAD_BOX_MIN_SPACES and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES \
             and _raw_reads_firmly_hollow(fill_row.detail or {}) \
             and _hollow_readings(fill_row.detail or {}) >= HEAD_HOLLOW_MIN_READINGS \

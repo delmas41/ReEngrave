@@ -1637,6 +1637,113 @@ def _frac(x: Any):
     return Fraction(float(x)).limit_denominator(1000)
 
 
+def bar_has_tuplet(log: Log, cell: Subject) -> Tuple[str, ...]:
+    """Does this bar PRINT a tuplet? The reasons we know, or `()`.
+
+    ROADMAP 2.102 (Sean's tiles 2026-10-12: a quarter in a 3-quarter tuplet
+    settled as an eighth). EVERY bar-sum settlement counts a tuplet note at its
+    written length -- a third too long -- so a bar that prints one is not a
+    sum the arithmetic can speak for (rule 8: the answer is "cannot tell").
+    Any bar-sum rule calls this first and declines on a non-empty answer.
+
+    ⚠️ IT ONLY SEES WHAT THE READERS SAW. `()` is "no marker was read", NOT
+    "no tuplet is printed": the detector filed no `tuplet*`/`fingering3` box
+    anywhere on Dvorak 8 pdf p4, where Sean's tile 6 is a real triplet. The
+    solver therefore also tests whether a 3:2 group would let the bar land
+    differently (`solve_bare_stem_bar`, `tuplet_possible`).
+
+    Reasons: `tuplet_marker` (a `Q.TUPLET_MARKER` row under the cell that no
+    human struck out) and `tuplet_ratio` (`adjudicate_tuplet` DECIDED a ratio
+    on the cell).
+    """
+    reasons: List[str] = []
+    for m in log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
+        refusal = log.verdict(Q.TUPLET_MARKER_IS_NOT_A_MARKER, m.subject)
+        if (refusal is not None and refusal.outcome is Outcome.DECIDED
+                and refusal.value is True):
+            continue
+        reasons.append("tuplet_marker")
+        break
+    ratio = log.verdict(Q.TUPLET_RATIO, cell)
+    if ratio is not None and ratio.outcome is Outcome.DECIDED:
+        reasons.append("tuplet_ratio")
+    return tuple(reasons)
+
+
+def _tuplet_world_lengths(seq: Sequence[Tuple[Any, ...]], *, fixed_outside: Any,
+                          target: Any, only_unknown: Any = None) -> Dict[int, set]:
+    """For each event, the lengths it can take if SOME three consecutive
+    events were a 3:2 tuplet and the bar still landed on `target`.
+
+    `seq` is the bar in time order, one tuple of admitted lengths per event
+    (a decided event has one); `fixed_outside` is whatever the bar holds that
+    is in no event. A length is reported UNSCALED (the written one), so the
+    caller compares it with the plain landing's.
+
+    `only_unknown` (the indices of events whose length is not yet known)
+    restricts the windows to three consecutive UNKNOWN events -- the shape a
+    triplet of undetermined stems has. Without it, any bar of two quarters and
+    two eighths in 3/4 has a "3:2 landing" (a quarter and two eighths read as
+    a triplet) and every ordinary bar would decline.
+    """
+    from fractions import Fraction
+    two_thirds = Fraction(2, 3)
+    out: Dict[int, set] = {}
+    n = len(seq)
+    for w in range(max(0, n - 2)):
+        if only_unknown is not None and not all(
+                i in only_unknown for i in range(w, w + 3)):
+            continue
+        scale = [two_thirds if w <= i < w + 3 else Fraction(1) for i in range(n)]
+        pre: List[set] = [{fixed_outside}]
+        for i, opts in enumerate(seq):
+            pre.append({s_ + o * scale[i] for s_ in pre[-1] for o in opts})
+        if target not in pre[-1]:
+            continue
+        suf: List[set] = [set() for _ in range(n + 1)]
+        suf[n] = {Fraction(0)}
+        for i in range(n - 1, -1, -1):
+            suf[i] = {s_ + o * scale[i] for s_ in suf[i + 1] for o in seq[i]}
+        for i, opts in enumerate(seq):
+            for o in opts:
+                if any((target - s_ - o * scale[i]) in suf[i + 1]
+                       for s_ in pre[i]):
+                    out.setdefault(i, set()).add(o)
+    return out
+
+
+def _simultaneous_heads(log: Log, cell: Subject,
+                        events: Sequence[Dict[str, Any]]) -> bool:
+    """Do two heads of DIFFERENT events stand in one column?
+
+    ROADMAP 2.102, tile 10 (Schumann 2, Peters p3): six dyads whose two heads
+    sit 3-13 px apart in x were grouped as 12 events, so the bar sum counted
+    every column twice and "landed" 6/4 on twelve eighths where the print has
+    six quarters. A voice is a sequence: two heads whose centres are less
+    than half a head apart cannot follow each other.
+    """
+    boxes = []
+    for e in events:
+        if e.get("kind") == "rest":
+            continue
+        for g in e.get("glyphs", ()):
+            rows = log.rows(Q.GLYPH_BOX, Subject(
+                Kind.GLYPH, cell.page, cell.system, cell.staff, cell.cell, g))
+            if not rows:
+                continue
+            v = rows[0].value
+            try:
+                boxes.append((float(v[1]) + float(v[3]) / 2.0, float(v[3]),
+                              id(e)))
+            except (TypeError, ValueError, IndexError):
+                continue
+    boxes.sort()
+    for (xa, wa, ea), (xb, wb, eb) in zip(boxes, boxes[1:]):
+        if ea != eb and (xb - xa) < 0.5 * min(wa, wb):
+            return True
+    return False
+
+
 @dataclass
 class BarOutcome:
     """What `solve_bare_stem_bar` found in one bar. A probe's whole surface."""
@@ -1649,6 +1756,7 @@ class BarOutcome:
     landings: int = 0           # assignments of the unknowns that land the bar
     forced: int = 0             # bare-stem members the arithmetic forces
     ambiguous: int = 0          # members two landings disagree about
+    tuplet_possible: int = 0    # members a 3:2 group would land differently (2.102)
     tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
     proposals: Optional[List[Proposal]] = None
 
@@ -1733,6 +1841,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     out.members = len(members)
     if not members:
         return out
+    # ROADMAP 2.102 (a): a bar that prints a tuplet is not a sum this
+    # arithmetic can speak for.
+    if bar_has_tuplet(log, cell):
+        out.decline = "tuplet_in_bar"
+        return out
     meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
     if meter is None or meter.outcome is not Outcome.DECIDED:
         out.decline = "no_decided_meter"
@@ -1744,6 +1857,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     grouping = log.verdict(Q.EVENT, cell)
     if grouping is None or grouping.outcome is not Outcome.DECIDED:
         out.decline = "no_event_grouping"
+        return out
+    # ROADMAP 2.102, tile 10: heads standing in one column that the grouping
+    # left as separate events are counted as successive in time.
+    if _simultaneous_heads(log, cell, (grouping.value or {}).get("events", ())):
+        out.decline = "simultaneous_heads_not_grouped"
         return out
 
     # ⚠️⚠️ THE METER MAY NOT BE THE BARS' OWN. `adjudicate_meter` weighs the
@@ -1771,6 +1889,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     by_glyph = {v.subject.glyph: v for v in notes}
     fixed = _frac(0)
     unknown_events: List[Tuple[List[Verdict], List[Any]]] = []
+    # the bar in time order, one option tuple per event (a decided event has
+    # one), and where each unknown event sits in it -- for the 3:2 test below
+    seq: List[Tuple[Any, ...]] = []
+    unknown_at: List[int] = []
+    outside = _frac(0)          # decided notes in no event
     seen = set()
     basis: List[str] = list(roots) + [grouping.id]
     for ev in (grouping.value or {}).get("events", ()):
@@ -1782,6 +1905,7 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
         if not narrowed:
             beats = Counter(_frac(m.value.get("beats") or 0.0) for m in ms)
             fixed = fixed + beats.most_common(1)[0][0]
+            seq.append((beats.most_common(1)[0][0],))
             basis.extend(m.id for m in ms)
             continue
         if len(narrowed) != len(ms):
@@ -1795,6 +1919,8 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             out.decline = "event_members_admit_different_lengths"
             return out
         unknown_events.append((ms, list(opts[0])))
+        unknown_at.append(len(seq))
+        seq.append(tuple(opts[0]))
     for v in notes:
         if v.id in seen:
             continue
@@ -1802,6 +1928,7 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             out.decline = "narrowed_note_outside_every_event"
             return out
         fixed = fixed + _frac(v.value.get("beats") or 0.0)
+        outside = outside + _frac(v.value.get("beats") or 0.0)
         basis.append(v.id)
     # the bar rests on the decided neighbours' verdicts; none of them may rest
     # on a narrowing it is about to collapse
@@ -1839,6 +1966,19 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             for o in unknown_events[i][1]:
                 cur[s_ + o] = cur.get(s_ + o, 0) + c_
         suffix[i] = cur
+    # ⚠️ ROADMAP 2.102 (a), THE TUPLET THE READERS DID NOT SEE. Dvorak 8's
+    # triplet (tile 6) has no marker anywhere on the record, so `bar_has_
+    # tuplet` is blind to it; and a 3:2 group of three EVENTS takes 2/3 of its
+    # written length. If any such window lets the bar land at all (three consecutive events whose lengths
+    # are not yet known, scaled by 2/3), the bar has two worlds and the rule
+    # declines it, as it does when the plain landings disagree.
+    tuplet_lengths = _tuplet_world_lengths(seq, fixed_outside=outside,
+                                           target=target,
+                                           only_unknown=set(unknown_at))
+    # ⚠️ THE WHOLE BAR, NOT ONE MEMBER: a triplet's three stems are one group,
+    # and leaving the one the other world happens to agree on settled would
+    # hand back a group of which a part is an answer and a part is not.
+    tuplet_world = bool(tuplet_lengths)
     for i, (ms, opts) in enumerate(unknown_events):
         feasible = [o for o in opts
                     if any((target - s_ - o) in suffix[i + 1]
@@ -1848,6 +1988,9 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
                 continue
             if len(feasible) != 1:
                 out.ambiguous += 1
+                continue
+            if tuplet_world:
+                out.tuplet_possible += 1
                 continue
             # ⚠️ SEAN'S OWN CONDITION (2026-10-10): *a tip SEEN clean*. A head
             # whose stem-tip window was occupied, held flag ink, or was never
