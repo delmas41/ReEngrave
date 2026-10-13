@@ -22,7 +22,9 @@ pointing at headings no longer in the file.)*
 
 ---
 
-## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, NOT merged, Sean judges the crops)
+## 2026-10-13 -- ROADMAP 2.103 LANDED (`land-2.103`): guessed symbols flagged in blue with their candidates; 7557 fast tests passed, check 192 open
+
+## 2026-10-12 -- ROADMAP 2.103 GUESSED is visible in the file (branch `lane-2.103-flag-guesses`, LANDED 2026-10-13: Sean "Blue reads better" / "Land"; flags coloured blue)
 
 - STAGED EXPORT. `export.guess_of` classifies each written symbol READ / GUESSED from its verdict's `decider` chain (any `infer:*`, EVALUATE `reconcile_duration`, or a pitch/accidental resting on an inferred clef/key) and carries the superseded narrowing's candidates; MusicXML gets `color` on `<note>` plus a `<notations><other-notation>` JSON carrier; LilyPond (`staged/lilypond.py`, a marked renderer over the frozen legacy one) gets `\tweak color`, a rest override and a header legend; `report["guessed"]` counts per family and per rule. No decision changed: both night records re-export byte-identical minus the flags. Tests: `tools/omr/tests/test_staged_guess_flag_2_103.py` (RED first, READ controls). FINDINGS: `benchmarks/omr-staged-export-2026-09/FINDINGS.md` §7.
 
