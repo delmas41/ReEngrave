@@ -1,0 +1,120 @@
+{
+ "item": "ROADMAP 2.103",
+ "record": "beethoven5-litolff-mvt1-whole-20261011-night",
+ "colour": "orange (#E8590C) = GUESSED; black = read",
+ "classification": {
+  "GUESSED": [
+   "infer:* (every INFER rule, duration/clef/part-key)",
+   "reconcile_duration (EVALUATE; the bar sum is the only witness)",
+   "pitch/accidental whose basis includes an inferred clef or key"
+  ],
+  "READ": [
+   "size_measure_rest (convention)",
+   "share_stem_value (stem-mate ink)",
+   "reconcile_chord_duration (stem-mate's beam count, one fit only)",
+   "size_reinstated_rest / size_unboxed_rest (rest shape)",
+   "everything adjudicated, including hollow_head_bare_stem (2.102's)"
+  ]
+ },
+ "guessed_counts_whole_record": {
+  "notes": 1329,
+  "rules": {
+   "collapse_bare_stem_by_bar": 89,
+   "collapse_duration_to_barline": 1,
+   "fill_clef_gap": 160,
+   "fill_part_key": 889,
+   "reconcile_duration": 190
+  }
+ },
+ "crops": [
+  {
+   "file": "crop0_header_legend.png",
+   "pdf_page": 1,
+   "note": "the legend line in the header"
+  },
+  {
+   "file": "crop1_p19_reconcile_duration.png",
+   "pdf_page": 19,
+   "window_px_at_150dpi": [
+    770,
+    560,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "reconcile_duration": 338
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  },
+  {
+   "file": "crop2_p32_collapse_bare_stem_by_bar.png",
+   "pdf_page": 32,
+   "window_px_at_150dpi": [
+    630,
+    1050,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "collapse_bare_stem_by_bar": 779
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  },
+  {
+   "file": "crop3_p47_fill_clef_gap.png",
+   "pdf_page": 47,
+   "window_px_at_150dpi": [
+    350,
+    0,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "fill_clef_gap": 880
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  },
+  {
+   "file": "crop4_p4_fill_part_key.png",
+   "pdf_page": 4,
+   "window_px_at_150dpi": [
+    350,
+    770,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "fill_part_key": 840
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  },
+  {
+   "file": "crop5_p5_fill_part_key.png",
+   "pdf_page": 5,
+   "window_px_at_150dpi": [
+    0,
+    1050,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "fill_part_key": 940
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  },
+  {
+   "file": "crop6_p37_reconcile_duration.png",
+   "pdf_page": 37,
+   "window_px_at_150dpi": [
+    770,
+    420,
+    420,
+    560
+   ],
+   "guessed_pixels_by_rule": {
+    "reconcile_duration": 298
+   },
+   "question": "Are the coloured notes easy to spot, and would you want to check exactly these?"
+  }
+ ]
+}
