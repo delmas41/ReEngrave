@@ -146,6 +146,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import ABSTAIN, Kind, Outcome, Q, Scope, Subject
+from . import key_slots as _key_slots
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _same_mark_centres,
@@ -1628,6 +1629,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_is_a_duplicate_box",
+                                     "rest_in_a_key_signature_slot",
                                      "rest_is_a_slashed_stem",
                                      "rest_clipped_by_crop",
                                      "rest_has_a_stem",
@@ -1692,6 +1694,16 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         return refused
     box_row = _glyph_box_row(ev)
     if box_row is not None:
+        # ROADMAP 2.100, AFTER the human and BEFORE every rest rule: nothing
+        # but a clef stands before a key signature's accidentals (Sean,
+        # 2026-10-12), so a rest-named box in the signature's slots is the
+        # signature's own ink boxed under a second name. Geometry of the
+        # header, never the bar sum (`key_slots` module docstring).
+        in_key = _key_slots.key_slot_occupant(ev, box_row)
+        if in_key is not None:
+            detail.update(in_key["detail"])
+            return Ruling(value=True, reason="rest_in_a_key_signature_slot",
+                          used=(box_row.id,) + in_key["used"], detail=detail)
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup

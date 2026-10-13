@@ -96,6 +96,7 @@ from ..record import ABSTAIN, Kind, Q, Scope
 # substring, and a dot followed by the module's first three letters reads as
 # a consumer of `Q.GLYPH_BAND_DISTANCE`'s home-staff flag that nothing is.
 from . import ownership as _ledger
+from . import key_slots as _key_slots
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
 cv_rungs = _ledger.cv_rungs           # ROADMAP 2.6d
@@ -2861,6 +2862,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      HEAD_CUT_REASON,
                                      "belongs_to_a_nearer_staff",
                                      "is_a_meter_digit",
+                                     "notehead_in_a_key_signature_slot",
                                      TIMESIG_DIGIT_DUPLICATE_REASON,
                                      DYNAMIC_LETTER_REASON,
                                      BEAM_PIECE_REASON,
@@ -3045,6 +3047,17 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                     "clef_read": clef_row.value,
                     "clef_frame": clef_row.frame,
                     "clef_symmetry": clef_row.score})
+
+    # ROADMAP 2.100: nothing but a clef stands before a key signature's
+    # accidentals (Sean, 2026-10-12). A notehead-named box in the signature's
+    # slots is a flat's bowl boxed under a second name. It needs no unit of
+    # its own beyond the cell's (`key_slots.key_slot_occupant` returns `None`
+    # without one), so it sits before the guard like `is_a_clef`.
+    in_key = _key_slots.key_slot_occupant(ev, box_row)
+    if in_key is not None:
+        return Ruling(value=True, reason="notehead_in_a_key_signature_slot",
+                      used=(box_row.id,) + in_key["used"],
+                      detail={"class": box_row.value[0], **in_key["detail"]})
 
     spacing = _cell_staff_space(ev)
     if spacing is None:
