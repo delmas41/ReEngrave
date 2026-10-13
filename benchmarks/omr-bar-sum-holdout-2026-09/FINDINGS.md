@@ -3113,3 +3113,16 @@ ratio): the chord unit, settle-alongside and `collapse_narrowed_by_bar` all abst
 (`bar_holds_tuplet_evidence`). TODO: swap for 2.102's shared `bar_has_tuplet` when it lands. Of the settled
 bars on the guarded arms: Litolff 58, Brahms 67 -- 0 hold tuplet evidence (`probe/tuplet_2_97.py`), so the guard
 changes nothing on these two scans; it is for other publishers. 3 tests (positive control included).
+
+### 2.97d. Sean's answers (2026-10-12) and what they removed
+Verbatim in `out/print/2.97-review/answers.json`, `out/print/2.97-misses/answers.json`, DECISIONS 2026-10-12.
+Scored against the manifests: **singles 1-4: 0/4** (each settled 0.5 by `reconcile_duration`; all quarters);
+**chords 5-8: 4/4** (tile 6 dotted quarter = our 1.5); **columns 9-12: 4/4**. Misses: tile 1 (chord, we said 1.5)
+**right** -- the hand-truth "miss" 0/0/6/2 was the scorer attaching a dot to one head, not our error; tile 2
+(columns) the second head is an eighth, we said a quarter -- the staff above's heads (clean-heads guard).
+Why the singles were wrong: all four were `reconcile_duration` verdicts with `settled_alongside` -- a DECIDED
+neighbour was re-read by the old single-pass arithmetic (the only landing at that moment) and the bar's narrowed
+bare stem was then settled to its best candidate because the joint search was unique. Unique arithmetic is not the
+print (a bare stem is a quarter more often than the eighth the sum asked for). REMOVED (`_settle_alongside`,
+`_narrowed_units`); the neighbour's re-read stays the old rule's, the narrowed head stays narrowed. Chords and
+columns stay.
