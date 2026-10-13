@@ -703,7 +703,7 @@ def to_lilypond(result: Dict[str, Any], *, out: Optional[str] = None
             f'  title = "{_ly_escape(work_title)}"']
     if n_guessed:
         lines.append(
-            '  subtitle = "Orange symbols are GUESSED, not read: '
+            '  subtitle = "Blue symbols are GUESSED, not read: '
             f'{n_guessed} in this file. Check these first."')
     lines += ["  tagline = ##f",
             "}", "",

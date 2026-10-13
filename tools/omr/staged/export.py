@@ -263,11 +263,11 @@ class Record:
 
 #: The colour a GUESSED note or rest is drawn in, in MusicXML (`color=` on
 #: `<note>`, a standard print-style attribute) and in LilyPond
-#: (`GUESS_COLOR_LILY`, the same orange). CONVENTION ASSUMED: orange reads
-#: against black on a phone and is distinct from the unread-bar red
-#: (`#D00000`); Sean may rename it.
-GUESS_COLOR = "#E8590C"
-GUESS_COLOR_LILY = "(rgb-color 0.91 0.35 0.05)"
+#: (`GUESS_COLOR_LILY`, the same blue). Sean 2026-10-12 ("Just blue"; orange
+#: "looks too much like red"): ONE blue for every guess, distinct from the
+#: unread-bar red (`#D00000`).
+GUESS_COLOR = "#1F6FEB"
+GUESS_COLOR_LILY = "(rgb-color 0.12 0.435 0.92)"
 
 #: EVALUATE consequences whose DECIDED duration rests on the BAR'S ARITHMETIC
 #: and not on a convention or on ink. Everything else EVALUATE writes into a

@@ -1,7 +1,7 @@
 {
  "item": "ROADMAP 2.103",
  "record": "beethoven5-litolff-mvt1-whole-20261011-night",
- "colour": "orange (#E8590C) = GUESSED; black = read",
+ "colour": "blue (#1F6FEB) = GUESSED; black = read",
  "classification": {
   "GUESSED": [
    "infer:* (every INFER rule, duration/clef/part-key)",

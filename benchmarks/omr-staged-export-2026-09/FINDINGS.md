@@ -159,13 +159,13 @@ exactly one candidate fits), `size_reinstated_rest` / `size_unboxed_rest`
 (the rest's own shape), `reinstate_rest_between_staves`, every ADJUDICATE
 decision (incl. 2.102's `hollow_head_bare_stem`, which that lane owns).
 
-**Carriers.** MusicXML: `color="#E8590C"` on `<note>` (what a person sees; a
+**Carriers.** MusicXML: `color="#1F6FEB"` on `<note>` (what a person sees; a
 standard print-style attribute) and `<notations><other-notation
 type="single">reengrave:guessed {json}</other-notation>` (what a program
 reads: rule, stage, quantity, chosen value, every candidate with support). The
 schema's own extension point, valid MusicXML 4.0, ignored by importers that do
 not know it. Verovio (Python bindings) loads it with an empty log and draws
-the notes orange; no schema file is in the repo, so schema validation was not
+the notes blue; no schema file is in the repo, so schema validation was not
 run. LilyPond: `\tweak color #guessedColor` on a note (chord: only the guessed
 heads), `\once \override Rest.color` on a rest, `guessedColor` defined and a
 header subtitle legend with the count, all only when something is guessed; a
@@ -189,3 +189,5 @@ flag; that is a display choice, not a classification one.
 
 Print check: `out/print/2.103-review/` (Litolff, six phone-sized crops + the
 header legend, `manifest.json` carries the per-crop rule mix). Pending Sean.
+
+Colour: first built orange; Sean (2026-10-12) said it looks too much like the unread red, *"Just blue"* -- ONE blue (`#1F6FEB`) for every guess, durations and inferred-key/clef pitches alike (DECISIONS). The `fill_part_key` question is answered: same colour.
