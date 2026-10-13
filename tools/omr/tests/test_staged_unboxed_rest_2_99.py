@@ -161,6 +161,27 @@ class TestTheDecision(unittest.TestCase):
         _l, v = _case(EIGHTH, mass_y=0.45)               # the twin
         self.assertEqual(v.value, "eighth")
 
+    # ── Sean's tile 10: the END OF A SLUR is not a rest ──────────────────
+    SLUR_END = dict(w=1.35, h=1.72, step=4.34, mass_y=0.476, col=0.395,
+                    profile=[0.33, 0.37, 0.4, 0.33, 0.35, 0.4])
+
+    def test_the_end_of_a_slur_is_not_an_eighth_rest_RED(self):
+        """Brahms p1 s1 staff 3 bar 6 (tile 10, Sean: *"end of slur"*): a thin
+        diagonal stroke with the size and place of an eighth rest. No ink
+        column is more than 40% of its height; the thinnest standing eighth
+        rest in 140 measured is 49%."""
+        _l, v = _case(self.SLUR_END)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "thin_stroke_not_a_rest")
+
+    def test_a_real_eighth_rest_beside_a_slur_stays_a_rest_POSITIVE_CONTROL(self):
+        """The same size and place with the blob a rest has (tallest column
+        62%): decided, and a slur box that does not cover it changes nothing."""
+        _l, v = _case(self.SLUR_END, col=0.62,
+                      profile=[0.3, 0.5, 0.62, 0.55, 0.45, 0.4],
+                      cover=0.0, by=[])
+        self.assertEqual(v.value, "eighth")
+
     # ── place ────────────────────────────────────────────────────────────
     def test_off_the_middle_of_the_staff_abstains(self):
         _l, v = _case(EIGHTH, step=1.9)

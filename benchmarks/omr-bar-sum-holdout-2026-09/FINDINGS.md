@@ -3106,3 +3106,19 @@ Eighth and quarter only. Windows from two plates and five pages; displaced rests
 27 unboxed). `consequences._missed_rest_witness` does not yet count a decided unboxed rest as explaining its
 ink (read by 2.97's `reconcile_duration`; left alone: a still-short bar keeps its lengthening refused). GATHER
 changed: only a full re-gather prices the whole movement.
+
+### 2.99 -- Sean's judgement of the 12 tiles (2026-10-12) and the repair
+
+Verbatim: *"1. 8 rest 2. 8 rest 3. flat accidental 4. 4 rest 5. 8 rest 6. 8 rest 7. 8 rest 8. nat accidental 9. 8 rest 10. end of slur 11. key flat 12. 4 rest"* (`out/print/2.99-review/answers.json`).
+Decided rests 1, 2, 4, 5, 7, 9, 12: **7 right**. Refusals 3 (flat) and 11 (key flat) right; 8 (natural) abstained, fine.
+**Tile 10 WRONG: decided eighth, it is the end of a slur** (Brahms p1 s1 staff 3 bar 6: a thin diagonal stroke ending on a head).
+Tile 6 is a real eighth rest refused `already_read_as_a_glyph` under a double-sharp box: a known MISS, not built (a standing
+accidental box where no head follows could be re-read; the 3 such Litolff boxes are all eighth-rest ink).
+
+Repair (decision only, no re-gather): the arc boxes the record holds do not reach that cluster (the nearest `tie` boxes
+end 200 px away), so the evidence is the ink itself: no ink column is more than 39.5% of its height, and the thinnest of
+the 140 standing Brahms rests is 49%. `THIN_STROKE_MAX_COLUMN_SHARE = 0.45` refuses such ink (`thin_stroke_not_a_rest`,
+False). RED-first from tile 10's numbers, positive control a rest of the same size and place with a 62% column (stays an
+eighth). Controls unchanged (standing rests read the same; 0 of 52 accidentals decided a rest). **Removed from the decided
+rests on the two count pages: 1 (Brahms, tile 10 itself, a slur end), 0 on Litolff**; so no second tile set was cut. Decided
+now: Litolff 13 eighth + 3 quarter, Brahms 3 eighth; bars released 10 / 1.

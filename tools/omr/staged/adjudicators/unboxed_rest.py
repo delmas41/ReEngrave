@@ -84,6 +84,11 @@ QUARTER_HEAD_BESIDE_DY_SPACES = 2.5
 #: Covered by standing boxes by this much or more = already read; between the
 #: two bounds = a claim this decision cannot see past.
 COVERED_SHARE = 0.5
+#: A rest has a body: the tallest ink column of the 140 standing Brahms rests
+#: is at least 49% of their height. Ink with no column above this is a thin
+#: stroke -- the END OF A SLUR (Sean, tile 10 of 2.99: Brahms p1 s1 staff 3
+#: bar 6, 0.395), a tie's tip -- whatever its size and place.
+THIN_STROKE_MAX_COLUMN_SHARE = 0.45
 TOUCHED_SHARE = 0.1
 
 @decision(
@@ -93,7 +98,8 @@ TOUCHED_SHARE = 0.1
     wants=(Q.UNBOXED_REST_SHAPE,),
     subjects_from=Q.UNBOXED_REST_SHAPE,
     reasons=("rest8th_shape", "restQuarter_shape", "already_read_as_a_glyph",
-             "stem_stroke_not_a_rest", "claimed_by_another_class",
+             "stem_stroke_not_a_rest", "thin_stroke_not_a_rest",
+             "claimed_by_another_class",
              "in_the_header", "head_beside_it", "shape_cannot_tell",
              "no_ink_reading", "no_shape_reading"),
     mode=Mode.ADDITIVE,
@@ -130,6 +136,10 @@ def adjudicate_unboxed_ink_is_a_rest(ev: Evidence) -> Ruling:
     if (col is None or not prof or len(prof) < 6 or mass_y is None
             or not d.get("n_pieces")):
         return Ruling.abstain("no_ink_reading", **detail)
+
+    if col < THIN_STROKE_MAX_COLUMN_SHARE:
+        return Ruling(value=False, reason="thin_stroke_not_a_rest",
+                      used=used, detail=detail)
 
     # A flat / natural: a full-height stroke on the LEFT and little else. (A
     # quarter rest peaks in the middle; an eighth rest has no full slice.)
