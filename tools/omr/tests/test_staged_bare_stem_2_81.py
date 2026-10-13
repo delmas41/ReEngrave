@@ -351,9 +351,12 @@ class TestTheBarsArithmeticSettlesABareStem(unittest.TestCase):
         self.assertEqual(v.detail["rule"], "collapse_bare_stem_by_bar")
         self.assertTrue(v.decider.startswith("infer:"))
 
-    def test_POSITIVE_CONTROL_the_arithmetic_can_say_EIGHTH_too(self):
-        """3 quarters + the bare stem in 7/8 (3.5 beats): the bar forces the
-        EIGHTH. A rule that always said quarter would fail here."""
+    def test_the_arithmetic_NEVER_says_EIGHTH_without_a_flag_or_beam(self):
+        """Sean 2026-10-12 (ROADMAP 2.102): *"only when we see evidence of an
+        eighth should it be called that."* 3 quarters + the bare stem in 7/8
+        (3.5 beats) forces the EIGHTH arithmetically; the rule refuses it and
+        the stem stays narrowed. (Formerly the positive control that it could
+        say eighth.)"""
         b = _Bar(7, 8)
         for _ in range(3):
             b.decided(1.0)
@@ -361,8 +364,7 @@ class TestTheBarsArithmeticSettlesABareStem(unittest.TestCase):
         log = b.finish()
         _run(log)
         v = log.verdict(Q.DURATION, _sub(0, g))
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
+        self.assertEqual(v.outcome, Outcome.NARROWED)
 
     def test_eighth_first_ranking_does_not_change_the_answer(self):
         """Nothing reads `support`: the same bar, ranked the other way, is
@@ -376,10 +378,10 @@ class TestTheBarsArithmeticSettlesABareStem(unittest.TestCase):
         self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).value["beats"],
                          1.0)
 
-    def test_two_unknowns_that_only_one_assignment_lands_are_both_settled(
+    def test_two_unknowns_forced_to_EIGHTHS_stay_narrowed(
             self):
-        """2 quarters + two bare stems in 3/4 (3.0 beats): q,q + (1.0 + 0.0)?
-        no -- 2 + a + b = 3 has a=b=0.5 as the only landing."""
+        """2 quarters + two bare stems in 3/4 (3.0 beats): the only landing is
+        a=b=0.5 -- the shorter length, which the arithmetic may not choose."""
         b = _Bar(3, 4)
         b.decided(1.0)
         b.decided(1.0)
@@ -388,8 +390,8 @@ class TestTheBarsArithmeticSettlesABareStem(unittest.TestCase):
         log = b.finish()
         _run(log)
         for g in (g1, g2):
-            self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).value["beats"],
-                             0.5)
+            self.assertEqual(log.verdict(Q.DURATION, _sub(0, g)).outcome,
+                             Outcome.NARROWED)
 
     def test_a_dotted_beat_value_is_matched_exactly(self):
         """Dotted quarter (1.5) vs dotted eighth (0.75): fractions, not floats."""

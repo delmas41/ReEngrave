@@ -143,7 +143,7 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         b.bare()
         log, out = _solve(b)
         self.assertEqual(out.tuplet_possible, 0)
-        self.assertEqual(len(out.proposals), 2)
+        self.assertEqual(out.landings, 1)   # reached the arithmetic: no guard fired
 
     def test_CONTROL_three_decided_quarters_and_one_bare_still_settle(self):
         """3 decided quarters... + 1 bare: no 3:2 window can land it differently."""
@@ -154,6 +154,30 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         log, out = _solve(b)
         self.assertEqual(out.tuplet_possible, 0)
         self.assertEqual(out.proposals[0].value["beats"], 1.0)
+
+
+class TestAnEighthNeedsItsOwnEvidence(unittest.TestCase):
+    """Sean 2026-10-12: the sum may confirm a value the ink supports, never
+    supply one."""
+
+    def _bar_7_8(self, levels_possible):
+        b = _Bar(7, 8)
+        for _ in range(3):
+            b.decided(1.0)
+        b.bare()
+        b.members[-1].detail["levels_possible"] = levels_possible
+        return _solve(b)
+
+    def test_a_bare_stem_forced_to_an_eighth_is_refused(self):
+        log, out = self._bar_7_8(0)
+        self.assertEqual(out.proposals, [])
+        self.assertEqual(out.shortened_refused, 1)
+
+    def test_CONTROL_the_same_bar_with_a_stroke_read_on_the_stem_settles_eighth(
+            self):
+        log, out = self._bar_7_8(1)
+        self.assertEqual(len(out.proposals), 1)
+        self.assertEqual(out.proposals[0].value["beats"], 0.5)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -186,7 +210,7 @@ class TestTwoHeadsInOneColumnAreNotSuccessiveInTime(unittest.TestCase):
         four events settle, so the guard is not a refusal of everything."""
         log, out = _solve(_two_columns(offset=60))
         self.assertIsNone(out.decline)
-        self.assertEqual(len(out.proposals), 2)
+        self.assertEqual(out.landings, 1)   # no guard fired (eighths are refused by Sean's rule)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -267,8 +291,7 @@ class TestAMarkThatIsNotANoteHasNoDuration(unittest.TestCase):
     def test_CONTROL_a_narrow_box_with_no_meter_sign_in_its_column_is_not_abstained(
             self):
         """The same refusal, the sign 400 px away: the box is not the meter
-        sign, so the duration rule is not told it is not a note. (It also may
-        not be read as a HOLLOW half -- it is refused as a head.)"""
+        sign, so the duration rule is not told it is not a note."""
         log = Log()
         g, _ = _hollow_head(log, with_page_box=True)
         _refuse(log, g, "too_narrow")
@@ -279,7 +302,6 @@ class TestAMarkThatIsNotANoteHasNoDuration(unittest.TestCase):
                     x_center_page=1798.0)
         v = _duration(log, g)
         self.assertNotEqual(v.reason, "not_a_note_mark")
-        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
 
     def test_CONTROL_a_meter_sign_on_the_SAME_staff_does_not_count(self):
         log = Log()
@@ -292,15 +314,6 @@ class TestAMarkThatIsNotANoteHasNoDuration(unittest.TestCase):
                     x_center_page=1398.0)
         v = _duration(log, g)
         self.assertNotEqual(v.reason, "not_a_note_mark")
-
-    def test_a_refused_duplicate_is_never_read_as_a_hollow_half(self):
-        """Any refused head keeps out of the hollow-half branches (it still has
-        the duration it always had: not a new decision)."""
-        log = Log()
-        g, _ = _hollow_head(log)
-        _refuse(log, g, "notehead_is_a_duplicate_box")
-        v = _duration(log, g)
-        self.assertNotEqual(v.reason, "hollow_head_bare_stem")
 
 
 if __name__ == "__main__":

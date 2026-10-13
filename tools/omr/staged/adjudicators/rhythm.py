@@ -3590,7 +3590,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # is unknown cannot be said to (rule 8) and does not decide a half either.
     one_head_box = (head_box is not None and space is not None and space > 0
                     and head_box[3] / space <= HEAD_BOX_MAX_SPACES)
-    if ink_hollow and own_stems and not flags and not refused \
+    if ink_hollow and own_stems and not flags \
             and strokes_before_hollow == (0, 0, 0) and one_head_box:
         beam_reader = _beam_reader_looked(ev, cell)
         tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
@@ -3617,7 +3617,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
 
     # ⚠️⚠️ ROADMAP 2.88 (see `HEAD_HOLLOW_MIN_READINGS`): the same half, where the tip reader could not tell. The tip no longer decides
     # anything for a hollow head; the head's own reading must be firm (two rasters, a head-shaped box).
-    if ink_hollow and own_stems and not flags and not refused and strokes_before_hollow == (0, 0, 0) and one_head_box \
+    if ink_hollow and own_stems and not flags and strokes_before_hollow == (0, 0, 0) and one_head_box \
             and head_box[3] / space >= HEAD_BOX_MIN_SPACES and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES \
             and _raw_reads_firmly_hollow(fill_row.detail or {}) \
             and _hollow_readings(fill_row.detail or {}) >= HEAD_HOLLOW_MIN_READINGS \

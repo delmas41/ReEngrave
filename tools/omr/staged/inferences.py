@@ -1756,6 +1756,7 @@ class BarOutcome:
     landings: int = 0           # assignments of the unknowns that land the bar
     forced: int = 0             # bare-stem members the arithmetic forces
     ambiguous: int = 0          # members two landings disagree about
+    shortened_refused: int = 0  # forced to the shorter length, refused (Sean 2026-10-12)
     tuplet_possible: int = 0    # members a 3:2 group would land differently (2.102)
     tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
     proposals: Optional[List[Proposal]] = None
@@ -2008,6 +2009,24 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             if len(hit) != 1:
                 out.ambiguous += 1
                 continue
+            # ⚠️ SEAN 2026-10-12 (CLAUDE.md §10): *"only when we see evidence of
+            # an eighth should it be called that"*, refined: the bar sum may
+            # CONFIRM a value the ink supports, never SUPPLY one. A shorter
+            # candidate (more beam levels than the longest) is settled only
+            # where the member's OWN reading holds a stroke at least that deep
+            # (`levels_certain` / `levels_possible`, refused-but-present
+            # strokes included); a bare stem is never shortened by arithmetic
+            # (tiles 6 and 10).
+            levels = int(hit[0].value.get("beam_levels") or 0)
+            floor = min(int(c.value.get("beam_levels") or 0)
+                        for c in m.candidates if isinstance(c.value, dict))
+            if levels > floor:
+                d_ = m.detail or {}
+                seen_levels = max(int(d_.get("levels_certain") or 0),
+                                  int(d_.get("levels_possible") or 0))
+                if seen_levels < levels:
+                    out.shortened_refused += 1
+                    continue
             out.forced += 1
             out.proposals.append(Proposal(
                 subject=m.subject, value=hit[0].value,

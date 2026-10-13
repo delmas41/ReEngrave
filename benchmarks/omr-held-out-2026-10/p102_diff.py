@@ -52,6 +52,9 @@ for c in cells:
 by = {}
 for r in removed:
     by[r["why"]] = by.get(r["why"], 0) + 1
+import collections  # noqa: E402
+print("   settled AFTER by beats:", dict(collections.Counter(
+    v for a in after.values() for v in a[0].values())))
 print(sys.argv[1].split("/")[-1], "settled before",
       sum(len(v[0]) for v in before.values()), "after",
       sum(len(v[0]) for v in after.values()), "removed by", by)
