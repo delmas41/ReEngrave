@@ -48,3 +48,22 @@ refused as noteheads (not exported). The 798 are mostly barline pieces on a SHAT
 sit in the column of mis-detected `timeSig*` boxes: the outcome (not a note) is right but the
 `meter_sign_column` word is positional only, and the count is large. Not run: the hand-truth scorer
 on Brahms pdf 0.
+
+## Sean's answers on the 11 tiles (2026-10-13) -- 11 of 11 right
+Verbatim: *"1. C meter 2. 4 rest 3. Barline ink 4. 2 5. 4 6. Part of a barline 7. Trem slashes 8. 4 tuplet 9. 4 10. Part of a barline 11. Part of a barline"*
+(`out/print/2.102-review/answers.json`, each tile with our reading and a verdict).
+- Refusals right (not a note): 1 (C meter), 3, 6, 10, 11 (barline pieces / ink), 7 (tremolo slashes). Tile 2, labelled
+  tremolo, is a quarter REST: "not a note" is right, the reason word `tremolo` is wrong for that mark.
+- 5, 8, 9 were eighths settled by bar arithmetic and are QUARTERS (8 in a tuplet). Narrowing them was right; tile 9, the one
+  Litolff "cost" in the numbers above, was a WRONG eighth, so that cost was a correction.
+- Control 4 (unrefused hollow head still read as a half): right (a half).
+- Caveats: the reason words are positional (3, 6, 10, 11 are barline pieces in a "meter column", not meter signs); tile 11 has
+  no entry in `manifest.json`, so its `our_reading` is null in `answers.json`.
+
+## Hand-truth gate, Brahms 317803 pdf 0 (ADJUDICATE only, origin/main 21ddeb21 vs this branch)
+Both trees re-adjudicate page 0's rows from the night-20261011 record (so the base is today's origin/main tree, not recorded
+verdicts). The hand-truth page carries NO durations (the scorer files standing only), so right/wrong cannot be scored; what can be
+said: 507 duration verdicts, base decided 422 / narrowed 75 / abstained 10 -> arm decided 421 / narrowed 73 / abstained 13.
+Exactly 3 verdicts differ, all to `abstained not_a_note_mark` (2 were narrowed `beam_discounted_uncertain`, 1 was decided
+`head_and_marks`). No verdict became decided or changed value, so no wrong can be added. Whether those 3 boxes are non-notes is
+not crop-checked here.
