@@ -111,7 +111,7 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         self.assertEqual(inferences.bar_has_tuplet(log, _cell(0, 0)), ())
         self.assertEqual(len(out.proposals), 1)
 
-    def test_a_decided_tuplet_ratio_on_the_cell_declines_it(self):
+    def test_a_decided_tuplet_ratio_is_named_by_the_helper(self):
         b = _Bar()
         for _ in range(3):
             b.decided(1.0)
@@ -123,13 +123,33 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         log, out = _solve(b)
         self.assertEqual(inferences.bar_has_tuplet(log, _cell(0, 0)),
                          ("tuplet_ratio",))
-        self.assertEqual(out.decline, "tuplet_in_bar")
 
     # ---- the tuplet the readers did NOT see (tile 6: no marker on the record)
-    def test_a_bar_a_3_2_group_would_land_differently_is_not_settled_RED(self):
+    def test_an_UNMARKED_triplet_is_never_inferred_RED(self):
+        """Sean 2026-10-13: a tuplet exists only where its 3 / bracket is seen.
+        Half + four bare stems (Dvorak 8 tile 6's shape): the plain sum forces
+        four eighths, which the no-eighth rule refuses (no stroke read), and no
+        3:2 reading is assumed to supply quarters -- nothing is settled."""
         log, out = _solve(_half_and_four_bares())
         self.assertEqual(out.proposals, [])
-        self.assertEqual(out.tuplet_possible, 4)
+        self.assertEqual(out.shortened_refused, 4)
+
+    def test_a_marker_with_a_DECIDED_ratio_does_not_decline_the_bar(self):
+        """A SEEN tuplet whose ratio was decided has its members' lengths
+        already scaled, so the sum is the bar's."""
+        b = _Bar()
+        for _ in range(3):
+            b.decided(1.0)
+        b.bare()
+        b.log.observe(_sub(0, 90), Q.TUPLET_MARKER, "3", reader=READERS.DETECTOR,
+                      frame="cell:0", score=0.9)
+        b.log.record(Verdict(
+            id=b._id(), subject=_cell(0, 0), quantity=Q.TUPLET_RATIO,
+            outcome=Outcome.DECIDED, value={"actual": 3, "normal": 2},
+            decider="adjudicate_tuplet", reason="digit"))
+        log, out = _solve(b)
+        self.assertIsNone(out.decline)
+        self.assertEqual(len(out.proposals), 1)
 
     def test_CONTROL_a_bar_with_fewer_than_three_unknowns_in_a_row_still_settles(
             self):
@@ -142,7 +162,6 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         b.bare()
         b.bare()
         log, out = _solve(b)
-        self.assertEqual(out.tuplet_possible, 0)
         self.assertEqual(out.landings, 1)   # reached the arithmetic: no guard fired
 
     def test_CONTROL_three_decided_quarters_and_one_bare_still_settle(self):
@@ -152,7 +171,6 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
             b.decided(1.0)
         b.bare()
         log, out = _solve(b)
-        self.assertEqual(out.tuplet_possible, 0)
         self.assertEqual(out.proposals[0].value["beats"], 1.0)
 
 

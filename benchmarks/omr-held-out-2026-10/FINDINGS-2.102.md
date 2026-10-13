@@ -67,3 +67,12 @@ said: 507 duration verdicts, base decided 422 / narrowed 75 / abstained 10 -> ar
 Exactly 3 verdicts differ, all to `abstained not_a_note_mark` (2 were narrowed `beam_discounted_uncertain`, 1 was decided
 `head_and_marks`). No verdict became decided or changed value, so no wrong can be added. Whether those 3 boxes are non-notes is
 not crop-checked here.
+
+## Revision 2026-10-13 (Sean: a tuplet exists only where its 3/bracket is SEEN)
+The hidden-3:2 inference is gone. `solve_bare_stem_bar` declines a bar only where a tuplet marker is
+seen and no ratio was decided (the members are then unscaled); a decided ratio sums as usual; three
+unread stems never imply a triplet. Final settlements (all written quarters, none eighth; Brahms'
+1.5 are dotted): Dvorak 16, Schumann 105, Tchaikovsky 0, Litolff 120, Brahms 29. Tile 6's Dvorak
+bar (no marker detected anywhere on the record): plain sum forces eighths, refused for lack of stroke
+evidence, so all 4 stems stay narrowed (0 settled). Its quarter reading comes from the shape (no
+flag/beam read), not from arithmetic.

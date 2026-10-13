@@ -17,23 +17,20 @@ from tools.omr.staged import inferences  # noqa: E402
 rec, log = P.load_log(sys.argv[1])
 cells = P.cells_with_members(rec)
 
-real = (inferences.bar_has_tuplet, inferences._simultaneous_heads,
-        inferences._tuplet_world_lengths)
+real = (inferences.bar_has_tuplet, inferences._simultaneous_heads)
 
 
 def run(guards):
     if guards:
-        (inferences.bar_has_tuplet, inferences._simultaneous_heads,
-         inferences._tuplet_world_lengths) = real
+        (inferences.bar_has_tuplet, inferences._simultaneous_heads) = real
     else:
         inferences.bar_has_tuplet = lambda log, cell: ()
         inferences._simultaneous_heads = lambda log, cell, events: False
-        inferences._tuplet_world_lengths = lambda seq, **kw: {}
     out = {}
     for c in cells:
         o = P.settle(log, c)
         out[c] = ({p.subject.to_key(): p.value.get("beats")
-                   for p in (o.proposals or [])}, o.decline, o.tuplet_possible)
+                   for p in (o.proposals or [])}, o.decline, 0)
     return out
 
 
@@ -44,7 +41,7 @@ for c in cells:
     b, a = before[c][0], after[c][0]
     for s, v in b.items():
         if s not in a:
-            why = after[c][1] or ("tuplet_possible" if after[c][2] else "other")
+            why = after[c][1] or "other"
             removed.append({"cell": c, "subject": s, "beats": v, "why": why})
     for s, v in a.items():
         if s not in b or b[s] != v:

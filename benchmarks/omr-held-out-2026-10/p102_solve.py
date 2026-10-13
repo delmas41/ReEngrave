@@ -23,7 +23,6 @@ from tools.omr.staged import inferences  # noqa: E402
 if os.environ.get("P102_BASELINE"):          # the rule as it was before 2.102
     inferences.bar_has_tuplet = lambda log, cell: ()
     inferences._simultaneous_heads = lambda log, cell, events: False
-    inferences._tuplet_world_lengths = lambda seq, **kw: {}
 from tools.omr.staged.record import Kind, Subject  # noqa: E402
 from tools.omr.staged.record_io import load_record  # noqa: E402
 
@@ -63,7 +62,6 @@ if __name__ == "__main__":
         tally["settled_members"] += n
         if n:
             tally["cells_settling"] += 1
-        tally["tuplet_possible"] += o.tuplet_possible
         if o.decline:
             tally["decline:" + str(o.decline)] += 1
         if len(sys.argv) > 2:

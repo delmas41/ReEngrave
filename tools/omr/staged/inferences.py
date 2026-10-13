@@ -1646,11 +1646,11 @@ def bar_has_tuplet(log: Log, cell: Subject) -> Tuple[str, ...]:
     sum the arithmetic can speak for (rule 8: the answer is "cannot tell").
     Any bar-sum rule calls this first and declines on a non-empty answer.
 
-    ⚠️ IT ONLY SEES WHAT THE READERS SAW. `()` is "no marker was read", NOT
-    "no tuplet is printed": the detector filed no `tuplet*`/`fingering3` box
-    anywhere on Dvorak 8 pdf p4, where Sean's tile 6 is a real triplet. The
-    solver therefore also tests whether a 3:2 group would let the bar land
-    differently (`solve_bare_stem_bar`, `tuplet_possible`).
+    ⚠️ IT ONLY SEES WHAT THE READERS SAW, and that is the rule (Sean
+    2026-10-13): a tuplet exists only where its printed marking (the 3 /
+    bracket) is seen; an unmarked triplet is never inferred. The detector filed
+    no `tuplet*`/`fingering3` box anywhere on Dvorak 8 pdf p4, where tile 6 is
+    a real triplet, so there this returns `()`.
 
     Reasons: `tuplet_marker` (a `Q.TUPLET_MARKER` row under the cell that no
     human struck out) and `tuplet_ratio` (`adjudicate_tuplet` DECIDED a ratio
@@ -1668,48 +1668,6 @@ def bar_has_tuplet(log: Log, cell: Subject) -> Tuple[str, ...]:
     if ratio is not None and ratio.outcome is Outcome.DECIDED:
         reasons.append("tuplet_ratio")
     return tuple(reasons)
-
-
-def _tuplet_world_lengths(seq: Sequence[Tuple[Any, ...]], *, fixed_outside: Any,
-                          target: Any, only_unknown: Any = None) -> Dict[int, set]:
-    """For each event, the lengths it can take if SOME three consecutive
-    events were a 3:2 tuplet and the bar still landed on `target`.
-
-    `seq` is the bar in time order, one tuple of admitted lengths per event
-    (a decided event has one); `fixed_outside` is whatever the bar holds that
-    is in no event. A length is reported UNSCALED (the written one), so the
-    caller compares it with the plain landing's.
-
-    `only_unknown` (the indices of events whose length is not yet known)
-    restricts the windows to three consecutive UNKNOWN events -- the shape a
-    triplet of undetermined stems has. Without it, any bar of two quarters and
-    two eighths in 3/4 has a "3:2 landing" (a quarter and two eighths read as
-    a triplet) and every ordinary bar would decline.
-    """
-    from fractions import Fraction
-    two_thirds = Fraction(2, 3)
-    out: Dict[int, set] = {}
-    n = len(seq)
-    for w in range(max(0, n - 2)):
-        if only_unknown is not None and not all(
-                i in only_unknown for i in range(w, w + 3)):
-            continue
-        scale = [two_thirds if w <= i < w + 3 else Fraction(1) for i in range(n)]
-        pre: List[set] = [{fixed_outside}]
-        for i, opts in enumerate(seq):
-            pre.append({s_ + o * scale[i] for s_ in pre[-1] for o in opts})
-        if target not in pre[-1]:
-            continue
-        suf: List[set] = [set() for _ in range(n + 1)]
-        suf[n] = {Fraction(0)}
-        for i in range(n - 1, -1, -1):
-            suf[i] = {s_ + o * scale[i] for s_ in suf[i + 1] for o in seq[i]}
-        for i, opts in enumerate(seq):
-            for o in opts:
-                if any((target - s_ - o * scale[i]) in suf[i + 1]
-                       for s_ in pre[i]):
-                    out.setdefault(i, set()).add(o)
-    return out
 
 
 def _simultaneous_heads(log: Log, cell: Subject,
@@ -1757,7 +1715,6 @@ class BarOutcome:
     forced: int = 0             # bare-stem members the arithmetic forces
     ambiguous: int = 0          # members two landings disagree about
     shortened_refused: int = 0  # forced to the shorter length, refused (Sean 2026-10-12)
-    tuplet_possible: int = 0    # members a 3:2 group would land differently (2.102)
     tip_not_clean: int = 0      # members the arithmetic forces but whose tip was not SEEN clean
     proposals: Optional[List[Proposal]] = None
 
@@ -1844,7 +1801,10 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
         return out
     # ROADMAP 2.102 (a): a bar that prints a tuplet is not a sum this
     # arithmetic can speak for.
-    if bar_has_tuplet(log, cell):
+    seen = bar_has_tuplet(log, cell)
+    if "tuplet_marker" in seen and "tuplet_ratio" not in seen:
+        # a tuplet is printed here but no ratio was decided, so the members'
+        # lengths are not scaled and the sum is not the bar's
         out.decline = "tuplet_in_bar"
         return out
     meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
@@ -1890,11 +1850,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
     by_glyph = {v.subject.glyph: v for v in notes}
     fixed = _frac(0)
     unknown_events: List[Tuple[List[Verdict], List[Any]]] = []
-    # the bar in time order, one option tuple per event (a decided event has
-    # one), and where each unknown event sits in it -- for the 3:2 test below
-    seq: List[Tuple[Any, ...]] = []
-    unknown_at: List[int] = []
-    outside = _frac(0)          # decided notes in no event
     seen = set()
     basis: List[str] = list(roots) + [grouping.id]
     for ev in (grouping.value or {}).get("events", ()):
@@ -1906,7 +1861,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
         if not narrowed:
             beats = Counter(_frac(m.value.get("beats") or 0.0) for m in ms)
             fixed = fixed + beats.most_common(1)[0][0]
-            seq.append((beats.most_common(1)[0][0],))
             basis.extend(m.id for m in ms)
             continue
         if len(narrowed) != len(ms):
@@ -1920,8 +1874,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             out.decline = "event_members_admit_different_lengths"
             return out
         unknown_events.append((ms, list(opts[0])))
-        unknown_at.append(len(seq))
-        seq.append(tuple(opts[0]))
     for v in notes:
         if v.id in seen:
             continue
@@ -1929,7 +1881,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             out.decline = "narrowed_note_outside_every_event"
             return out
         fixed = fixed + _frac(v.value.get("beats") or 0.0)
-        outside = outside + _frac(v.value.get("beats") or 0.0)
         basis.append(v.id)
     # the bar rests on the decided neighbours' verdicts; none of them may rest
     # on a narrowing it is about to collapse
@@ -1967,19 +1918,11 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
             for o in unknown_events[i][1]:
                 cur[s_ + o] = cur.get(s_ + o, 0) + c_
         suffix[i] = cur
-    # ⚠️ ROADMAP 2.102 (a), THE TUPLET THE READERS DID NOT SEE. Dvorak 8's
-    # triplet (tile 6) has no marker anywhere on the record, so `bar_has_
-    # tuplet` is blind to it; and a 3:2 group of three EVENTS takes 2/3 of its
-    # written length. If any such window lets the bar land at all (three consecutive events whose lengths
-    # are not yet known, scaled by 2/3), the bar has two worlds and the rule
-    # declines it, as it does when the plain landings disagree.
-    tuplet_lengths = _tuplet_world_lengths(seq, fixed_outside=outside,
-                                           target=target,
-                                           only_unknown=set(unknown_at))
-    # ⚠️ THE WHOLE BAR, NOT ONE MEMBER: a triplet's three stems are one group,
-    # and leaving the one the other world happens to agree on settled would
-    # hand back a group of which a part is an answer and a part is not.
-    tuplet_world = bool(tuplet_lengths)
+    # SEAN 2026-10-13: a tuplet exists only where its printed marking is SEEN
+    # (the 3 / bracket); three unread stems never imply a hidden 3:2 group. A
+    # bar that would add up only under an unmarked triplet gives no
+    # confirmation (`bar_does_not_add_up`), and the written value stays what
+    # the shape says (quarter: no flag or beam read).
     for i, (ms, opts) in enumerate(unknown_events):
         feasible = [o for o in opts
                     if any((target - s_ - o) in suffix[i + 1]
@@ -1989,9 +1932,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject) -> BarOutcome:
                 continue
             if len(feasible) != 1:
                 out.ambiguous += 1
-                continue
-            if tuplet_world:
-                out.tuplet_possible += 1
                 continue
             # ⚠️ SEAN'S OWN CONDITION (2026-10-10): *a tip SEEN clean*. A head
             # whose stem-tip window was occupied, held flag ink, or was never
