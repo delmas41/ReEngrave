@@ -286,6 +286,10 @@ class DirectionText:
     #: from the same edge (Brahms p3 staff 12, both at x 4777) -- so a join on
     #: those three fields files one reading twice (ROADMAP 2.68).
     candidate_index: int = -1
+    #: ROADMAP 2.67b: the terms-library ids a scoped lookup matched, and
+    #: whether it was a whole word outside the work's languages.
+    library: tuple[str, ...] = ()
+    other_language: bool = False
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -299,6 +303,8 @@ class DirectionText:
             "reader": self.reader,
             "dynamics": list(self.dynamics),
             "dynamic_links": [list(l[:2]) + [list(l[2])] for l in self.dynamic_links],
+            "library": list(self.library),
+            "other_language": self.other_language,
         }
 
 
@@ -1342,8 +1348,13 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
                     readers: Sequence[tuple[str, Reader]] | None = None,
                     scan_order: bool = False,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
+                    lexicon_scope: Any = None,
                     ) -> tuple[list[DirectionText], dict[str, Any]]:
     """Every direction on the page, plus a report of what happened.
+
+    `lexicon_scope` (ROADMAP 2.67b, a `direction_lexicon.LexiconScope`) lets
+    the lexicon admit terms-library words under the work's languages. The
+    STAGED gather passes one; LEGACY does not, and reads exactly as before.
 
     The report is returned rather than logged because the numbers that matter —
     how many candidates the CV proposed, how many each rung read, and how many
@@ -1375,10 +1386,12 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
     raw = _page_ink(pws.page)
     blanked = _blank_detections(raw, page_dict, spacing, config)
     erase = ((raw > 0) & (blanked == 0)).astype(np.uint8) * 255
+    if lexicon_scope is not None:
+        info["lexicon_scope"] = lexicon_scope.to_json()
     if (scan_order and len(readers) > 1
             and any(n == "tesseract" for n, _fn in readers)):
         return _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
-                               blanked, config, info)
+                               blanked, config, info, lexicon_scope=lexicon_scope)
     crops = [crop_for(pws.page, c, spacing, erase=erase) for c in candidates]
 
     # Every rung reads every crop. Running the later ones only where the first
@@ -1399,7 +1412,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
                  if index < len(texts) and texts[index]]
         if texts:
             info["n_read"] += 1
-        hits = [(name, text, lexicon_lookup(text)) for name, text in texts]
+        hits = [(name, text, lexicon_lookup(text, scope=lexicon_scope))
+                for name, text in texts]
         accepted = [(name, hit) for name, _text, hit in hits if hit is not None]
         if not accepted:
             info["rejected"].extend(text for _name, text in texts)
@@ -1425,6 +1439,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             terms=hit.terms,
             reader=winner_name,
             dynamics=hit.dynamics,
+            library=hit.library,
+            other_language=hit.other_language,
         )
 
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
@@ -1772,7 +1788,7 @@ def _give_tempo_to_the_staff_below(pws, page_dict, candidates, accepted_at) -> N
 
 
 def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
-                    blanked, config, info):
+                    blanked, config, info, lexicon_scope=None):
     """The reading order for a page that is not proven born-digital (a scan).
 
     Surya is the slow rung -- about 0.5 s a crop, and most of the candidates on
@@ -1830,7 +1846,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                     continue
                 spoke.add(i)
                 seen[i].append(text)
-                hit = lexicon_lookup(text)
+                hit = lexicon_lookup(text, scope=lexicon_scope)
                 if hit is None:
                     continue
                 c = candidates[i]
@@ -1839,7 +1855,8 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                     staff_index=c.staff_index, measure_index=c.measure_index,
                     x_page=c.x_page, text=hit.text, category=hit.category,
                     placement=c.placement, terms=hit.terms, reader=label,
-                    dynamics=hit.dynamics)
+                    dynamics=hit.dynamics, library=hit.library,
+                    other_language=hit.other_language)
                 info["by_reader"][label] = info["by_reader"].get(label, 0) + 1
 
     def read_indices(everyone):
@@ -1884,7 +1901,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                         text = list(getattr(fn, "tight", fn)([crop]))[0]
                     except Exception:                                # noqa: BLE001
                         continue
-                    hit = lexicon_lookup(text) if text else None
+                    hit = lexicon_lookup(text, scope=lexicon_scope) if text else None
                     if (hit is not None and set(d.terms) < set(hit.terms)
                             and hit.dynamics):
                         better = (name, hit, c2)
@@ -1896,6 +1913,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                 name, hit, c2 = better
                 accepted_at[i] = dataclasses.replace(
                     d, text=hit.text, terms=hit.terms, dynamics=hit.dynamics,
+                    library=hit.library, other_language=hit.other_language,
                     reader=name + "-joined")
                 candidates[i] = c2
                 kept += 1
@@ -1980,11 +1998,12 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                 text = list(getattr(fn, "tight", fn)([crop]))[0]
             except Exception:                                    # noqa: BLE001
                 continue
-            hit = lexicon_lookup(text) if text else None
+            hit = lexicon_lookup(text, scope=lexicon_scope) if text else None
             if (hit is not None and hit.dynamics
                     and set(d.terms) <= set(hit.terms)):
                 accepted_at[i] = dataclasses.replace(
                     d, text=hit.text, terms=hit.terms, dynamics=hit.dynamics,
+                    library=hit.library, other_language=hit.other_language,
                     reader=name + "-joined")
                 candidates[i] = c2
                 joined += 1
