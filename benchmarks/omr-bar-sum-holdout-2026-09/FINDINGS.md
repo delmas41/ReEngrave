@@ -3037,3 +3037,15 @@ Released by part: Litolff (2) 29, (1) 30 (the 30 W bars; (1) subsumes (2) at the
 **Tiles** `out/print/2.98-review/` (12; phone-sized, rest bracketed blue, bar red, our reading in `manifest.json` only): 1-4 Litolff released, 5-6 Brahms controls right after the 9/8 -> 6/8 change, 7-12 Brahms released (5 on a carried meter). Question: is the bracketed rest a whole-bar rest, and what meter is this bar in? NOT CONFIRMED until Sean answers.
 
 **Limit.** On a carried meter the file's `<time>` may itself be wrong (`carry_outweighed_by_the_bars`); the rest then agrees with a wrong `<time>`. The rest is the bar either way; the meter claim is a separate item.
+
+### 2.98i. Sean's answer (2026-10-12, `out/print/2.98-review/answers.json`)
+
+Verbatim: *"all of them are whole note rests"*. **12 of 12** bracketed rests are whole-bar rests (Litolff released 4/4, Brahms controls 2/2, Brahms released 6/6). No per-tile meter was given, so the meter the FILE wrote is confirmed by the print for none of them yet; see 2.98j.
+
+### 2.98j. Sean on the meter (2026-10-12)
+
+Shown full-system crops of tiles 7-12 and told the file writes 6/8 there: *"yes all 6/8"*. Tiles 7-12 are therefore confirmed whole-bar rests in a bar the print has in 6/8, equal to the `<time>` the file wrote, including the carried-meter ones (the carry was right on those six). Litolff tiles 1-4 (file: 2/4) and controls 5-6 were not asked about meter.
+
+### 2.98k. Re-run on the MERGED tree (origin/main with 2.93-2.95, `out/2.98m/`)
+
+Same harness, one tree, Litolff re-decided (twin off/on) and Brahms export-only. Litolff base moved to 1,085 held of 5,004 bars with events (main's 2.93 identifies the bottom staff, so more bars exist); the DELTAS are unchanged: (1) alone 1,085 -> 1,053 (-32), (2) alone 1,054 (twin fires 29), both 1,053; measure rests 1,139 -> 1,171; notes 5,897 and ordinary rests 797 unchanged. Brahms 2,553 -> 2,125 (-428, measure rests 974 -> 1,402; notes 8,198 and rests 2,602 unchanged). `bars add up` short=0 overfull=0 in every arm on both movements.
