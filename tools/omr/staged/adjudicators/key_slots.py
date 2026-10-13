@@ -62,6 +62,14 @@ MAX_SLOTS = 7
 #: apart two KEY-class boxes may stand with exactly one slot unboxed between.
 BRIDGE_GAP_SPACES = 2.8
 
+#: How exactly a REST-class box must stand on the next slot's x for it to be
+#: that slot's accidental, boxed only as a rest (the detector never boxed the
+#: last flat as a key class: Litolff p1 s0 staff 10, dx -0.07 spaces). The
+#: nearest real rests after a signature on the two count pages stand 0.42 and
+#: 1.32 spaces off the next slot, so 0.2 separates them; ASSUMED, NOT
+#: CONFIRMED -- blind tile 12 asks Sean.
+NEXT_SLOT_TOL_SPACES = 0.2
+
 #: `key_signature_locator.max_start_after_clef_spaces` (2.00).
 MAX_START_AFTER_CLEF_SPACES = 2.0
 
@@ -103,6 +111,11 @@ class KeySlotWindow:
     members: Tuple[str, ...]          # row ids of the key-shaped boxes
     clef: Optional[str]               # row id of the clef box, if one bounds it
     slots: int
+    #: Where the NEXT accidental would stand (its left edge) and the tolerance,
+    #: when the run's own slot pitch is measurable (two or more slots); `None`
+    #: otherwise. Used only for a rest-class box (`stands_in_the_window`).
+    next_x: Optional[float] = None
+    next_tol: float = 0.0
 
     def detail(self) -> Dict[str, Any]:
         return {"key_slot_window": [round(self.lo, 1), round(self.hi, 1)],
@@ -187,6 +200,9 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
     slots = len(centres) + (1 if bridged else 0)
     if slots > MAX_SLOTS:
         return None
+    gaps = sorted(b - a for a, b in zip(centres, centres[1:])
+                  if b - a <= 1.6 * space)
+    next_x = (centres[-1] + gaps[len(gaps) // 2]) if gaps else None
     lo = (clef.x + clef.w) if clef is not None \
         else first.x - EDGE_MARGIN_SPACES * space
     hi = max(b.x + b.w for b in chain) + EDGE_MARGIN_SPACES * space
@@ -195,7 +211,8 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
         y_lo=min(b.y for b in chain) - LEVEL_MARGIN_SPACES * space,
         y_hi=max(b.y + b.h for b in chain) + LEVEL_MARGIN_SPACES * space,
         members=tuple(b.row_id for b in chain),
-        clef=None if clef is None else clef.row_id, slots=slots)
+        clef=None if clef is None else clef.row_id, slots=slots,
+        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space)
 
 
 def is_music_class(cls: str) -> bool:
@@ -207,8 +224,12 @@ def stands_in_the_window(window: KeySlotWindow, box: KeyBox) -> bool:
     with the signature? A key-shaped or clef box never is (it IS the run)."""
     if _shape(box.cls) is not None or box.cls.startswith("clef"):
         return False
-    return (window.lo <= box.cx <= window.hi
-            and window.y_lo <= box.cy <= window.y_hi)
+    if not window.y_lo <= box.cy <= window.y_hi:
+        return False
+    if window.lo <= box.cx <= window.hi:
+        return True
+    return (box.cls.startswith("rest") and window.next_x is not None
+            and abs(box.x - window.next_x) <= window.next_tol)
 
 
 def cell_space(ev: Any, cell: Any) -> float:

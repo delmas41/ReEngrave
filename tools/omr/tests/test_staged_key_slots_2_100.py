@@ -214,6 +214,43 @@ class TestOneUnboxedSlotIsBridged(unittest.TestCase):
         self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[2]).value, False)
 
 
+class TestTheNextSlotForARest(unittest.TestCase):
+    """Litolff p1 s0 staff 10: two boxed flats and the third flat boxed ONLY
+    as a rest8th, standing exactly where the next slot would."""
+
+    def test_a_rest_on_the_next_slot_is_the_next_accidental(self):
+        log = Log()
+        g = _cell0(log, [CLEF, FLATS[0], FLATS[1],
+                         ("rest8th", 747, 585, 102, 239)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[3]).value, True)
+
+    def test_a_rest_a_slot_and_a_half_on_is_music(self):
+        """Control: 0.4 spaces off the next slot (the nearest real rest the
+        count pages hold) stays a rest."""
+        log = Log()
+        g = _cell0(log, [CLEF, FLATS[0], FLATS[1],
+                         ("rest8th", 790, 585, 102, 239)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[3]).value, False)
+
+    def test_a_notehead_on_the_next_slot_is_not_refused(self):
+        """Control: the rule is for rest classes only (a whole note stands
+        0.4 spaces off the next slot in Brahms and is music)."""
+        log = Log()
+        g = _cell0(log, [CLEF, FLATS[0], FLATS[1],
+                         ("noteheadBlackOnLine", 747, 650, 110, 100)])
+        _run(log)
+        self.assertIs(log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g[3]).value,
+                      False)
+
+    def test_a_single_flat_has_no_measurable_pitch(self):
+        log = Log()
+        g = _cell0(log, [CLEF, FLATS[0], ("rest8th", 650, 585, 102, 239)])
+        _run(log)
+        self.assertIs(log.verdict(Q.REST_IS_NOT_A_REST, g[2]).value, False)
+
+
 class TestTheKeyIsStillRead(unittest.TestCase):
 
     def test_three_flats_are_still_three_flats_with_the_rest_box_refused(self):
