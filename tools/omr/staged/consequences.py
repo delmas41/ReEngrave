@@ -216,7 +216,10 @@ def _is_rest(v: Verdict) -> bool:
       bound="Fires only on a bar whose ONLY standing duration still IN the "
             "bar (not taken out by a DECIDED not-a-notehead, not-a-rest or "
             "another-staff verdict) is ONE rest, whose glyph is `restWhole`, "
-            "with no dots, and only where the meter is DECIDED. Rewrites "
+            "with no dots, and only where the meter is DECIDED. A second, "
+            "non-rest box on that rest's own ink that ADJUDICATE decided is "
+            "a whole rest (EXPORT refuses it) is set aside like 2.19's "
+            "removals (2.98). Rewrites "
             "that one duration to the bar's length and marks it. Adds no "
             "event, deletes none, and touches no bar holding anything else.")
 def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdict]:
@@ -278,6 +281,34 @@ def size_measure_rest(log: Log, subject: Subject, meter: Verdict) -> List[Verdic
         else:
             set_aside.append(v.subject.to_key())
             cleared_by.append(why.id)
+    # ⚠️⚠️ ROADMAP 2.98: A NOTEHEAD-CLASS BOX ON THE REST'S OWN INK. The
+    # detector fires twice on 30 of Litolff's whole-rest bars: a `restWhole`
+    # box and a notehead-class box on the same ink, which ADJUDICATE decided is
+    # a whole rest (`Q.NOTEHEAD_IS_A_WHOLE_REST`). EXPORT refuses that box
+    # (`ink_is_a_whole_rest`) so the file holds ONE rest -- but 2.19's
+    # `_left_the_bar` does not know that verdict, `_standing` kept its 1.0, and
+    # the bar read as two things and was never sized. Set aside ONLY a box that
+    # (a) is not itself a rest, (b) carries that DECIDED verdict, (c) is the
+    # refusal EXPORT will really apply (`whole_rest_ink_enabled`), and (d) sits
+    # on the sized rest's own box. A box elsewhere in the bar stays, and so
+    # does an abstained or narrowed one (rule 8).
+    if len(kept) > 1:
+        rests = [v for v in kept
+                 if v.outcome is Outcome.DECIDED and _is_rest(v)]
+        if len(rests) == 1:
+            twins = []
+            for v in kept:
+                if v is rests[0]:
+                    continue
+                dup = _whole_rest_ink_twin(log, v, rests[0])
+                if dup is None:
+                    break
+                twins.append((v, dup))
+            else:
+                for v, dup in twins:
+                    kept.remove(v)
+                    set_aside.append(v.subject.to_key())
+                    cleared_by.append(dup.id)
     if len(kept) != 1:
         return []
     only = kept[0]
@@ -335,6 +366,45 @@ def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     return None
 
 
+#: How much of the smaller box the overlap must cover for two boxes to be the
+#: same ink. The 30 Litolff pairs overlap at 0.93-1.0 of the smaller box.
+TWIN_BOX_MIN_OVERLAP = 0.8
+
+
+def _page_box(log: Log, glyph: Subject) -> Optional[Tuple[float, ...]]:
+    for r in log.rows(Q.GLYPH_BOX, glyph):
+        box = (r.detail or {}).get("bbox_page_px")
+        if box and len(box) == 4:
+            return tuple(float(x) for x in box)
+    return None
+
+
+def _whole_rest_ink_twin(log: Log, standing: Verdict,
+                         rest: Verdict) -> Optional[Verdict]:
+    """ROADMAP 2.98: the DECIDED `Q.NOTEHEAD_IS_A_WHOLE_REST` verdict that
+    takes this standing, non-rest box out of the file as a second box on
+    `rest`'s own ink, else None. See `size_measure_rest`."""
+    if _is_rest(standing):
+        return None
+    wr = log.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, standing.subject)
+    if wr is None or wr.outcome is not Outcome.DECIDED or wr.value is not True:
+        return None
+    from .export import whole_rest_ink_enabled
+    if not whole_rest_ink_enabled():
+        return None            # EXPORT would write it as a note: it stands
+    a, b = _page_box(log, standing.subject), _page_box(log, rest.subject)
+    if a is None or b is None:
+        return None
+    iw = min(a[2], b[2]) - max(a[0], b[0])
+    ih = min(a[3], b[3]) - max(a[1], b[1])
+    if iw <= 0 or ih <= 0:
+        return None
+    small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
+    if small <= 0 or iw * ih / small < TWIN_BOX_MIN_OVERLAP:
+        return None
+    return wr
+
+
 def _size_measure_rest_also_reads(log: Log, subject: Subject,
                                   meter: Verdict) -> List[str]:
     """The removals `size_measure_rest` reads besides its cause (2.19),
@@ -342,7 +412,7 @@ def _size_measure_rest_also_reads(log: Log, subject: Subject,
     its last stray box has a new consequence and an unchanged meter."""
     out: List[str] = []
     for v in _standing(log, subject, Q.DURATION):
-        for q in (*_LEAVES_THE_BAR, Q.GLYPH_OWNER):
+        for q in (*_LEAVES_THE_BAR, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_A_WHOLE_REST):
             got = log.verdict(q, v.subject)
             if got is not None:
                 out.append(got.id)
@@ -637,6 +707,42 @@ def size_reinstated_rest(log: Log, subject: Subject,
         value={"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 0,
                "is_rest": True, "reinstated_rest": True},
         decider="size_reinstated_rest", reason="eighth_rest_shape",
+        considered=(verdict.id,), basis=(verdict.id,),
+        supersedes=prior.id if prior is not None else None)
+    return [log.record(out)]
+
+
+@rule(consequence=Consequence.SIZE_UNBOXED_REST,
+      cause=Q.UNBOXED_INK_IS_A_REST, effect=Q.DURATION, scope=Kind.GLYPH,
+      bound="Fires only on an unboxed-ink subject whose "
+            "`Q.UNBOXED_INK_IS_A_REST` is DECIDED `\"eighth\"` or "
+            "`\"quarter\"`. Writes ONE duration -- 0.5 or 1.0 quarters, no "
+            "dots, `is_rest`. Reads no bar, no meter and no other glyph; "
+            "adds, deletes and re-pitches nothing that ADJUDICATE did not "
+            "already read as a rest.")
+def size_unboxed_rest(log: Log, subject: Subject,
+                      verdict: Verdict) -> List[Verdict]:
+    """A rest read off unboxed ink takes its own value's length.
+
+    ROADMAP 2.99. THE LENGTH FOLLOWS FROM THE CLASS, NOT FROM THE BAR (same
+    posture as `size_reinstated_rest`): an eighth rest is half a quarter and a
+    quarter rest a quarter whatever the meter, so this is EVALUATE and it
+    consults nothing about the bar the rest stands in.
+    """
+    if verdict.outcome is not Outcome.DECIDED or verdict.value not in (
+            "eighth", "quarter"):
+        return []
+    prior = log.verdict(Q.DURATION, subject)
+    if prior is not None and prior.decider == "size_unboxed_rest":
+        return []                           # already written
+    beats = 0.5 if verdict.value == "eighth" else 1.0
+    out = Verdict(
+        id=log._next_id("vrd"), subject=subject, quantity=Q.DURATION,
+        outcome=Outcome.DECIDED,
+        value={"beats": beats, "written": beats, "dots": 0, "beam_levels": 0,
+               "is_rest": True, "unboxed_rest": True,
+               "rest_value": verdict.value},
+        decider="size_unboxed_rest", reason=f"{verdict.value}_rest_shape",
         considered=(verdict.id,), basis=(verdict.id,),
         supersedes=prior.id if prior is not None else None)
     return [log.record(out)]

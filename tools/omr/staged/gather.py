@@ -6515,6 +6515,199 @@ def gather_narrow_box_shape(log: Log, cells: Sequence[Any],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Rest-sized ink the detector never boxed -- ROADMAP 2.99
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: ⚠️ Glyph indices for unboxed-rest clusters, past the detector's ordinals,
+#: `_CV_GLYPH_BASE` (100k), `_INK_GLYPH_BASE` (200k) and
+#: `_VERTICAL_RUN_GLYPH_BASE` (300k) and BELOW the human-evidence base (400k):
+#: `test_stage_review_evidence` holds every gather base under it (the first
+#: draft used 400k and failed there). A collision would not raise; it would
+#: merge a cluster row into some other reader's subject.
+_UNBOXED_REST_GLYPH_BASE = 350_000
+
+#: The window a cluster must fall in to be a CANDIDATE (staff spaces). An
+#: eighth rest measures 1.2-1.4 x 1.9-2.4 and a quarter rest about 1 x 2.6-3,
+#: a head is ~1.3 x 1, a stem-and-head or a beam group is far taller or wider.
+#: Wider than the decision's own windows on purpose: the decision, not the
+#: gather, says what is NOT a rest.
+UNBOXED_REST_WIDTH_SPACES = (0.5, 2.4)
+UNBOXED_REST_HEIGHT_SPACES = (1.2, 3.8)
+#: A candidate's centre lies between these staff steps (bottom line = 0, top
+#: line = 8). A rest hangs in the middle of the staff; anything found past the
+#: outer lines is a letter, a dynamic or a ledger note.
+UNBOXED_REST_STEP_RANGE = (1.0, 7.0)
+#: How far right of a cluster a notehead is still reported as its neighbour.
+UNBOXED_REST_NEIGHBOUR_SPACES = 3.0
+UNBOXED_REST_HEADER_PREFIXES = ("gclef", "fclef", "cclef", "clef", "keysig",
+                                "timesig")
+
+
+def gather_unboxed_rest_ink(log: Log, cells: Sequence[Any],
+                            local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *,
+                            progress: bool = False) -> None:
+    """`Q.UNBOXED_REST_SHAPE` on every rest-sized cluster of staff-erased ink.
+
+    ⚠️ ROADMAP 2.99 (2.96's third item: 448 held bars hold eighth/quarter-rest
+    shaped ink no box accounts for). CLAUDE.md §9: *a box the detector never
+    drew has no subject* -- `gather_narrow_box_shape` (2.80b) starts from a box
+    it DID draw and refused, and 2.52 only searches a bar with no box at all.
+    This is the third population: ink in a bar that has other boxes, none of
+    them over this.
+
+    It clusters the cell's staff-sized pieces across the hair of gap staff-line
+    erasure leaves (an eighth rest is a blob and a tail), keeps the clusters in
+    a rest's size window, and MEASURES each: width, height, the local staff
+    step of its centre, the detector coverage and which classes cover it, the
+    share of its height one pixel column fills (a flat or sharp is a stem with
+    a bowl; a rest has no vertical stroke), and the nearest notehead to its
+    right (an accidental stands just left of its head). The COVERED clusters
+    are filed too, on purpose: a standing rest box over its own ink is the
+    positive control and a standing accidental box is the negative one, so the
+    decision's windows are read off ink the detector already named.
+
+    ⚠️ IT NAMES NOTHING AND CONSULTS NO BAR. CLAUDE.md §10: two witnesses off
+    one raster fall silent together, and a bar's sum is built from the same
+    reading the missing mark was lost from.
+    ⚠️ DECLINED, NOT DEFAULTED: no raster, staff unit or page frame is an
+    abstention, never a row that looks like "no ink".
+    """
+    if not _ink_enabled():
+        return
+    import numpy as np
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        sub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        dets = detections.get(sub.to_key(), ())
+        frame = frame_cell(c.measure_index)
+        comps = _ink_components(c)
+        grid = _cell_grid(c)
+        space = grid[1] * 2.0 if grid and grid[1] else None
+        lines = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        up = getattr(c, "upscale_factor", None)
+        cell_box = getattr(c, "bbox_page_px", None)
+        img = getattr(c, "image_no_staff", None)
+        if comps is None:
+            log.abstain(sub, Q.UNBOXED_REST_SHAPE,
+                        reader=READERS.CV_UNBOXED_REST_SHAPE, frame=frame,
+                        reason=ABSTAIN.NO_MASK,
+                        note="cell carries no image_no_staff")
+            continue
+        if (not space or len(lines) < 5 or not up or not cell_box
+                or len(cell_box) != 4):
+            log.abstain(sub, Q.UNBOXED_REST_SHAPE,
+                        reader=READERS.CV_UNBOXED_REST_SHAPE, frame=frame,
+                        reason=ABSTAIN.NO_STAFF_GEOMETRY)
+            continue
+        width_px = getattr(img, "shape", (0, 0))[1]
+        usable = [cm for cm in comps
+                  if cm[4] / (space * space) >= INK_PIECE_MIN_AREA_SP2
+                  and cm[2] / space <= INK_PIECE_MAX_WIDTH_SPACES
+                  and cm[3] / space <= NARROW_BOX_JOIN_MAX_HEIGHT_SPACES]
+        gap = NARROW_BOX_JOIN_GAP_SPACES * space
+        explainers = _explaining_detections(dets, space)
+        header_right = 0.0
+        for d in dets:
+            if str(d.smufl_name).lower().startswith(
+                    UNBOXED_REST_HEADER_PREFIXES):
+                header_right = max(header_right, float(d.x_canonical)
+                                   + float(d.width_canonical))
+        seen = [False] * len(usable)
+        ordinal = 0
+        for i0 in range(len(usable)):
+            if seen[i0]:
+                continue
+            seen[i0] = True
+            joined = [usable[i0]]
+            grew = True
+            while grew:
+                grew = False
+                ux0 = min(q[0] for q in joined)
+                uy0 = min(q[1] for q in joined)
+                ux1 = max(q[0] + q[2] for q in joined)
+                uy1 = max(q[1] + q[3] for q in joined)
+                for j, cm in enumerate(usable):
+                    if seen[j]:
+                        continue
+                    gx = max(0.0, max(cm[0], ux0) - min(cm[0] + cm[2], ux1))
+                    gy = max(0.0, max(cm[1], uy0) - min(cm[1] + cm[3], uy1))
+                    if gx <= gap and gy <= gap:
+                        seen[j] = True
+                        joined.append(cm)
+                        grew = True
+            ux0 = min(q[0] for q in joined)
+            uy0 = min(q[1] for q in joined)
+            ux1 = max(q[0] + q[2] for q in joined)
+            uy1 = max(q[1] + q[3] for q in joined)
+            w_sp, h_sp = (ux1 - ux0) / space, (uy1 - uy0) / space
+            if not (UNBOXED_REST_WIDTH_SPACES[0] <= w_sp
+                    <= UNBOXED_REST_WIDTH_SPACES[1]
+                    and UNBOXED_REST_HEIGHT_SPACES[0] <= h_sp
+                    <= UNBOXED_REST_HEIGHT_SPACES[1]):
+                continue
+            cy = (uy0 + uy1) / 2.0
+            step = (lines[-1] - cy) / (space / 2.0)
+            if not (UNBOXED_REST_STEP_RANGE[0] <= step
+                    <= UNBOXED_REST_STEP_RANGE[1]):
+                continue
+            box = (int(ux0), int(uy0), int(ux1 - ux0), int(uy1 - uy0))
+            cover, who = _coverage(box, explainers)
+            crop = (img[int(uy0):int(uy1), int(ux0):int(ux1)] == 0) \
+                if img is not None else None
+            max_col = mass_y = fill = profile = None
+            if crop is not None and crop.size and crop.sum() > 0:
+                colfrac = crop.sum(axis=0) / float(crop.shape[0])
+                max_col = round(float(colfrac.max()), 3)
+                ys, xs = np.nonzero(crop)
+                mass_y = round(float(ys.mean()) / crop.shape[0], 3)
+                nb = 6
+                edges = np.linspace(0, crop.shape[1], nb + 1).astype(int)
+                profile = [round(float(colfrac[edges[i]:max(edges[i] + 1,
+                                                            edges[i + 1])]
+                                       .max()), 2) for i in range(nb)]
+                fill = round(float(crop.sum()) / crop.size, 3)
+            head = None
+            for d in dets:
+                if not str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX):
+                    continue
+                dx = (float(d.x_canonical) - ux1) / space
+                if dx < -0.3 or dx > UNBOXED_REST_NEIGHBOUR_SPACES:
+                    continue
+                dy = (float(d.y_canonical) + float(d.height_canonical) / 2.0
+                      - cy) / space
+                if head is None or dx < head["dx_spaces"]:
+                    head = {"class": str(d.smufl_name),
+                            "dx_spaces": round(dx, 3),
+                            "dy_spaces": round(dy, 3)}
+            g = R.glyph(c.page_index, key[0], key[1], c.measure_index,
+                        _UNBOXED_REST_GLYPH_BASE + ordinal)
+            ordinal += 1
+            log.observe(
+                g, Q.UNBOXED_REST_SHAPE, round(h_sp, 3),
+                reader=READERS.CV_UNBOXED_REST_SHAPE, frame=frame,
+                n_pieces=len(joined), width_spaces=round(w_sp, 3),
+                height_spaces=round(h_sp, 3), staff_step=round(step, 3),
+                fill=fill, max_column_share=max_col, mass_y=mass_y,
+                column_profile=profile, coverage=round(cover, 3),
+                covered_by=list(who), right_head=head,
+                first_cell=(c.measure_index == 0),
+                left_of_header=bool(header_right and ux0 < header_right),
+                header_known=bool(header_right),
+                touches_cell_edge=bool(
+                    ux0 <= 2 or (width_px and ux1 >= width_px - 2)),
+                bbox_canonical=[int(ux0), int(uy0), int(ux1), int(uy1)],
+                bbox_page_px=[round(cell_box[0] + ux0 / up, 1),
+                              round(cell_box[1] + uy0 / up, 1),
+                              round(cell_box[0] + ux1 / up, 1),
+                              round(cell_box[1] + uy1 / up, 1)])
+            if progress:
+                print(f"  gather unboxed-rest ink {g.to_key()}")
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # A targeted search for a whole rest the detector never boxed -- ROADMAP 2.52
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -11262,7 +11455,11 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                     frame=FRAME_MARGIN,
                     reader_confidence=lab.confidence, reader_alias=lab.alias,
                     y_center_px=lab.y_center_px,
-                    rung=rung, label_tiers=dict(census))
+                    rung=rung, label_tiers=dict(census),
+                    # ROADMAP 2.95: present only where the text was completed
+                    # with the word printed between two braced staves.
+                    **({"shared_word": lab.shared_word}
+                       if getattr(lab, "shared_word", "") else {}))
 
 
 def _labels_abstain_per_staff(log: Log, cells: Sequence[Any],
@@ -11412,6 +11609,33 @@ def _scan_gate_enabled() -> bool:
         in ("1", "true", "yes", "on")
 
 
+def _direction_lexicon_scope(log: Log, roster: Any,
+                             work_id: Optional[str] = None) -> Any:
+    """ROADMAP 2.67b: the languages this work's direction words are read in.
+
+    The composer's from the work id (a CATALOG fact, `--work-id`), the
+    edition's from the instrument labels gathered so far in this document.
+    ⚠️ READS `Q.MARGIN_LABEL`, so it runs after `gather_margin_labels` --
+    which `gather()` already does, page by page. The labels are a reading of
+    the page; they can only WIDEN the languages, never narrow them, so a
+    misread label costs at most a word of noise, never a real word.
+    """
+    try:
+        from .. import direction_lexicon as DL
+    except Exception:                                         # noqa: BLE001
+        return None
+    # ⚠️ THE WORK ID STANDS WITHOUT A ROSTER. Mahler 5 is not in the
+    # catalog's works, so `--work-id mahler--symphony-5` finds no roster --
+    # and the composer is still in the id (Peters p6, 2026-10-12: the scope
+    # read `unknown_work` until this fallback).
+    work_id = ((roster.get("work_id") if isinstance(roster, dict)
+                else getattr(roster, "work_id", None)) or work_id)
+    labels = [str(r.value) for r in log.rows(
+        Q.MARGIN_LABEL, R.DOCUMENT, scope=R.Scope.SELF_AND_DESCENDANTS)
+        if r.value]
+    return DL.scope_for(work_id, labels)
+
+
 def direction_text_enabled() -> bool:
     """`OMR_DIRECTION_TEXT` -- the ONE reader of this flag (ROADMAP 2.61b);
     `pipeline.py` calls this rather than re-reading the environment. DEFAULT
@@ -11431,7 +11655,9 @@ def direction_text_enabled() -> bool:
 
 def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                            local: Dict[int, Tuple[int, int]],
-                           detections: Dict[str, List[Any]]) -> None:
+                           detections: Dict[str, List[Any]], *,
+                           roster: Any = None,
+                           work_id: Optional[str] = None) -> None:
     """The printed words inside a system -- `legato`, `Allegro con brio`.
 
     ⚠️ IT SITS BEHIND ONE OF THE THREE HARD EDGES.
@@ -11597,9 +11823,11 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                                  note="no word-shaped ink on this page")
         return
 
+    scope = _direction_lexicon_scope(log, roster, work_id)
     try:
         found, info = DT.read_directions(pws, page_dict, readers=readers,
-                                         scan_order=True)
+                                         scan_order=True,
+                                         lexicon_scope=scope)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
@@ -11685,6 +11913,13 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                         category=d.category, terms=list(d.terms),
                         winning_reader=d.reader,
                         dynamics=list(d.dynamics),
+                        # ROADMAP 2.67b: what the terms library added, and
+                        # the languages this work's words were read in.
+                        library=list(getattr(d, "library", ()) or ()),
+                        other_language=bool(getattr(d, "other_language",
+                                                    False)),
+                        lexicon_scope=(scope.to_json() if scope is not None
+                                       else None),
                         # ONE marking: the word and the dynamic it includes.
                         # The glyph subjects below are the detector's own
                         # dynamic boxes, exported once, inside this marking.
@@ -12065,6 +12300,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
            detector: Any = None, conf_threshold: float = 0.25,
            imgsz: Optional[int] = None, dossier: Any = None,
            roster: Any = None, pdf_path: Any = None,
+           work_id: Optional[str] = None,
            surya_fallback: bool = False, ocr_fallback: bool = False,
            ink_component_rows: bool = False,
            input_domain_classification: Any = None,
@@ -12257,6 +12493,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.80b: reads `detections` and the erased raster only.
         gather_narrow_box_shape(log, cells, local, detections,
                                 progress=progress)
+        # ⚠️ ROADMAP 2.99: reads `detections` and the erased raster only.
+        gather_unboxed_rest_ink(log, cells, local, detections,
+                                progress=progress)
         # ⚠️ ROADMAP 3.4g-3, BESIDE `gather_ink` because it reads the SAME
         # erased raster (and says so: `READERS.CV_INK`). The second witness
         # for Sean's `[C91]` -- see the function.
@@ -12322,7 +12561,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
-        gather_direction_words(log, pws, cells, local, detections)  # hard edge: last
+        gather_direction_words(log, pws, cells, local, detections,  # hard edge: last
+                               roster=roster, work_id=work_id)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries

@@ -795,6 +795,20 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
     return name, tuple(ids)
 
 
+def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
+    """The clef the CV LOCATOR names on this staff, or None.
+
+    ROADMAP 2.93. ONE ANSWER OR NONE, like `_clef_read_on`: a staff whose
+    locator rows name two clefs, or none, is silent here. The locator is a
+    DIFFERENT reader from the detector's `Q.CLEF_GLYPH` (shape, line and
+    symmetry on the ink rather than a box class), and it is consulted only to
+    say whether a glyph reading that CONTRADICTS the block's expected clef
+    stands alone or is itself contradicted -- never to choose a slot.
+    """
+    named = {str(o.value) for o in log.rows(Q.CLEF_LOCATED, staff) if o.value}
+    return next(iter(named)) if len(named) == 1 else None
+
+
 @rule(
     inference=Inference.COLLAPSE_SLOT_INDEX_TO_FAMILY_BLOCK,
     # ⚠️⚠️ NO FLAG (promoted 2026-10-07, roadmap 0.2c; was
@@ -920,6 +934,7 @@ def collapse_slot_index_to_family_block(log: Log,
 
         reads = [_clef_read_on(log, m.subject) for m in members]
         conflict = None
+        overruled: List[str] = []
         witnesses: List[str] = []
         for i, (name, ids) in enumerate(reads):
             if name is None:
@@ -928,6 +943,22 @@ def collapse_slot_index_to_family_block(log: Log,
             if want is None:
                 continue
             if name != want:
+                # ⚠️⚠️ ROADMAP 2.93. A DETECTOR GLYPH THE LOCATOR CONTRADICTS
+                # IS NOT A WITNESS. On Litolff the detector files `clefG` on
+                # the VIOLA staff (the printed C clef, mis-classed) of five
+                # systems; the CV locator reads `alto` there and so does
+                # `Q.CLEF`. Taking the glyph alone as "a contradicting clef"
+                # withdrew the WHOLE block -- five bottom string staves held
+                # out as `staff_not_identified` while 15 identical systems
+                # were doubled. Two readers disagreeing is "cannot tell"
+                # (rule 8): this staff speaks neither for nor against, exactly
+                # as a staff carrying two glyph names does. Where the locator
+                # does NOT name the expected clef (agrees with the glyph, names a
+                # third clef, or is silent) the contradiction stands as before.
+                located = _clef_located_on(log, members[i].subject)
+                if located == want:
+                    overruled.append(members[i].subject.to_key())
+                    continue
                 conflict = {"block_index": i, "read": name, "expected": want,
                             "staff": members[i].subject.to_key()}
                 break
@@ -960,6 +991,10 @@ def collapse_slot_index_to_family_block(log: Log,
                                                if n is not None),
                     "clefs_agreeing": len(witnesses),
                     "refuses_on_a_contradicting_clef": True,
+                    # ROADMAP 2.93: staves whose glyph contradicted the run
+                    # and was itself contradicted by the CV locator (the
+                    # locator named the EXPECTED clef) -- not witnesses.
+                    "clef_glyph_overruled_by_locator": list(overruled),
                     # ⚠️ The member this rule DECLINES, named so a reader of
                     # the record can see the condensed pair was left alone
                     # rather than missed.
@@ -1012,6 +1047,7 @@ def collapse_slot_index_to_family_block(log: Log,
                                                    if n is not None),
                         "clefs_agreeing": len(witnesses),
                         "refuses_on_a_contradicting_clef": True,
+                        "clef_glyph_overruled_by_locator": list(overruled),
                         # ⚠️ THE ONE DETAIL EXPORT READS. A staff placed here
                         # is doubled onto this slot too, an octave down,
                         # with `condensed_from` naming the source staff in

@@ -684,6 +684,10 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
         "unidentified_parts": sorted(unidentified),
         "held_out_staves": len(held_out_runs),
         "relocated_at_export": int(relocated_out.get("heads", 0)),
+        # ROADMAP 2.99: rests read off unboxed ink and placed in a bar. They
+        # are in no `notehead_class`/`rest` row, so the accounting equality
+        # adds them to its left-hand side BY NAME.
+        "unboxed_rests_placed": int(relocated_out.get("unboxed_rests", 0)),
         "divisi_at_export": dict(divisi_out),
         "marks_census": marks_census(rec, fates),
         "join_decided": kind,
@@ -1256,6 +1260,57 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             pending_relocations.append(
                 (run, cell_index, _det, s, group_of.get(sub), sub,
                  float(o.get("score") or 0.0)))
+    # ⚠️ ROADMAP 2.99. Rest-sized INK the detector never boxed that ADJUDICATE
+    # read, on its own shape and place, as an eighth or a quarter rest
+    # (`Q.UNBOXED_INK_IS_A_REST`) and EVALUATE sized (`size_unboxed_rest`) is
+    # WRITTEN AS A REST. It is not a gathered notehead, so it is outside the
+    # accounting equality on purpose (nothing was detected to count); a rest
+    # whose staff is held out, or whose bar the file does not have, is simply
+    # not written, as every rest in that position is.
+    for o in rec.obs_of(Q.UNBOXED_REST_SHAPE):
+        sub = o["subject"]
+        v = rec.verdict(Q.UNBOXED_INK_IS_A_REST, sub)
+        if (v is None or v["outcome"] != "decided"
+                or v["value"] not in ("eighth", "quarter")):
+            continue
+        s = _parse_subject(sub)
+        dur_v = rec.verdict(Q.DURATION, sub)
+        dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
+        if not isinstance(dur, dict) or not dur.get("unboxed_rest"):
+            continue
+        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if held_out and home in held_out:
+            continue
+        run = runs.get(home)
+        cell_index = s["cell"] or 0
+        if run is None or cell_index >= run.n_measures:
+            continue
+        box = (o.get("detail") or {}).get("bbox_canonical")
+        if not box or len(box) != 4:
+            continue
+        written = float(dur.get("written") or dur.get("beats") or 0.0)
+        fit = _legacy._dotted_duration_for_beats(written)
+        if fit is None:
+            continue
+        dtype, derived_dots = fit
+        cell = run.cells.setdefault(
+            cell_index, Cell(run.page, run.system, run.staff, cell_index))
+        cell.detections.append({
+            "category": "rest",
+            "class": "rest8th" if v["value"] == "eighth" else "restQuarter",
+            "bbox": [int(box[0]), int(box[1]), int(box[2] - box[0]),
+                     int(box[3] - box[1])],
+            "duration_beats": float(dur.get("beats") or written),
+            "duration_type": dtype, "dots": max(0, derived_dots),
+            "beam_levels": 0, "key_alteration": None,
+            "printed_accidental": None, "tuplet": None, "glyph": sub,
+            "bbox_page": _corners_to_wh(_page_box_of(o)),
+            "unboxed_rest": True,
+        })
+        if relocated is not None:
+            relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1
+        if fates is not None:
+            fates[sub] = "written"
     # ⚠️ ROADMAP 2.58b: THE ONE-MARK-ONE-NOTE RULE. Of the members of a group
     # that would be written, the most confident is (ties: the lowest subject),
     # and the rest are COUNTED. Replayed in record order so a cell's detection
@@ -3666,6 +3721,17 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
+            # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
+            # meter the FILE has in force (`judged`), meter verdict or not.
+            # See `_lone_whole_rest_is_the_bar` for why this is EXPORT's.
+            if events:
+                _sized = _lone_whole_rest_is_the_bar(
+                    events, meter if meter is not None else in_force)
+                if _sized is not None:
+                    events = _sized
+                    counters["measure_rests_sized_by_the_file_meter"] += 1
+                    counters["measure_rests_sized_by_a_carried_meter"] += (
+                        1 if meter is None else 0)
             # ⚠️⚠️ ROADMAP 2.8, AND IT IS DECIDED BEFORE ANYTHING IS WRITTEN.
             # A held-out bar takes `_mxl_empty_measure`, which writes the
             # bar's directions itself — so the test cannot sit after the
@@ -4522,6 +4588,54 @@ def _bar_quarters(meter: Optional[Dict[str, Any]]) -> Optional[float]:
     return float(_legacy._measure_rest_beats(meter))
 
 
+def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
+                                judged: Optional[Dict[str, Any]]
+                                ) -> Optional[List[Dict[str, Any]]]:
+    """ROADMAP 2.98: a LONE, dotless whole rest is the BAR -- the length of the
+    bar the FILE writes there -- whether or not any meter was ever READ.
+
+    STAGE: EXPORT, and the reason is in the one fact this needs. The rest's
+    length is the length of the `<time>` the exported PART has in force at this
+    bar (`judged`), and that is a property of the FILE: `in_force` is carried
+    across systems by `_part_xml` and is no `Q.METER` verdict anywhere in the
+    record. EVALUATE's `size_measure_rest` can only size from a DECIDED
+    `Q.METER` verdict, so on a system whose meter ABSTAINED it is silent --
+    and on Brahms 1/i that was 403 bars. Nothing in the record is needed that
+    EXPORT does not already hold; nothing is added to the record. Where the
+    meter IS decided and EVALUATE has already marked the rest this returns
+    None (`measure_rest` is set) and `_bar_holds_out` keeps judging it.
+
+    ⚠️ NEVER AN INVENTED METER. `judged` None (the part has declared no
+    `<time>` at all) returns None and the bar is written/held exactly as
+    before (rule 8). The length written is the one the file has already
+    declared, so the rest cannot contradict it -- the 2.79 failure mode (a
+    rest sized to a meter other than the one written at that bar) is closed by
+    construction, and `_bar_holds_out`'s lone-measure-rest equality still runs
+    on the result.
+
+    ⚠️ LONE means ONE EVENT in the bar, whose glyph class is `restWhole`, with
+    no dots. A bar that also holds a note, a half rest, a quarter rest or any
+    second event is not this rule's. Returns the bar's events with the one
+    rest marked and sized, or None.
+    """
+    if len(events) != 1:
+        return None
+    ev = events[0]
+    det = ev.get("rest") or {}
+    if (ev.get("kind") != "rest" or det.get("class") != "restWhole"
+            or det.get("measure_rest") or int(ev.get("dots") or 0)
+            or int(det.get("dots") or 0)):
+        return None
+    want_q = _bar_quarters(judged)
+    if want_q is None:
+        return None
+    new = dict(ev)
+    new["duration_beats"] = want_q
+    new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
+                   "sized_by": "file_meter_in_force_2_98"}
+    return [new]
+
+
 def _bar_holds_out(events: List[Dict[str, Any]],
                    streams: Optional[List[List[Dict[str, Any]]]],
                    divisions: int, meter: Optional[Dict[str, Any]]
@@ -5121,6 +5235,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                "bars_held_out_sum", "notes_held_out_sum",
                "bars_judged_by_a_carried_meter",
                "empty_bars_sized_by_a_carried_meter",
+               "measure_rests_sized_by_the_file_meter",
+               "measure_rests_sized_by_a_carried_meter",
                "bars_held_out_sum_on_a_doubled_staff",
                "bars_held_out_unread_mark", "notes_held_out_unread_mark",
                "bars_held_out_unread_mark_on_a_doubled_staff",
@@ -5462,6 +5578,19 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "placed_but_not_rendered": d_placed - d_written,
     }
     report["direction_words_not_written_total"] = d_decided - d_written
+    # ROADMAP 2.67b: words the reader READ and ADJUDICATE held back because
+    # their kind is never printed there (`pizz.` under a horn, `Allegro` under
+    # the oboe). They are not in any decided value, so they sit outside the
+    # balance above; they are counted here as UNREAD, by reason, never lost.
+    held_by_reason: Dict[str, int] = {}
+    for v in rec.verdicts_of(Q.DIRECTION):
+        for w in (v.get("detail") or {}).get("held_back") or ():
+            r = str(w.get("held_reason"))
+            held_by_reason[r] = held_by_reason.get(r, 0) + 1
+    report["direction_words_held_back"] = {
+        "total": sum(held_by_reason.values()),
+        "by_reason": dict(sorted(held_by_reason.items())),
+    }
     report["direction_balance"] = {
         "words_decided": d_decided,
         "placed": d_placed,
@@ -5510,6 +5639,11 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     # it existed. So `to_musicxml` raises rather than returning an unbalanced
     # report: a control nobody consults is not a control.
     events_in_log = (len(rec.obs_of(Q.NOTEHEAD_CLASS)) + len(rec.obs_of(Q.REST)))
+    # ⚠️ ROADMAP 2.99: a rest read off unboxed ink is placed in a bar and is
+    # written or counted with the bar it stands in, like any event -- but no
+    # detector row announced it, so it joins the left-hand side by name. The
+    # equality stays an equality.
+    unboxed_placed = int(report["part_join"].get("unboxed_rests_placed", 0))
     # ⚠️ A REST IN A TWO-VOICE BAR IS WRITTEN ONCE PER VOICE, and subtracting
     # the duplicate is what keeps this an EQUALITY rather than an inequality
     # that can no longer fail. The convention is the engraving's — each voice
@@ -5534,6 +5668,7 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # balance that does not count a family cannot be unbalanced by losing
         # one.
         "events_in_log": events_in_log,
+        "unboxed_rests_placed": unboxed_placed,
         "noteheads_in_log": len(rec.obs_of(Q.NOTEHEAD_CLASS)),
         "rests_in_log": len(rec.obs_of(Q.REST)),
         "events_written": written,
@@ -5544,11 +5679,13 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         # once as written -- informational, the equality is unchanged.
         "relocated_heads_written": int(
             report["part_join"].get("relocated_at_export", 0)),
-        "balanced": events_in_log == written + report["notes_not_written_total"],
+        "balanced": (events_in_log + unboxed_placed
+                     == written + report["notes_not_written_total"]),
     }
     if not report["balance"]["balanced"]:
         raise Unbalanced(
-            f"{events_in_log} noteheads+rests in the log, {written} written "
+            f"{events_in_log} noteheads+rests in the log (+{unboxed_placed} "
+            f"read off unboxed ink), {written} written "
             f"and {report['notes_not_written_total']} accounted as dropped — "
             f"the difference went nowhere. {report['notes_not_written']}")
     return xml, report

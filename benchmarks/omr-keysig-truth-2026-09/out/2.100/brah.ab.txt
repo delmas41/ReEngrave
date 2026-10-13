@@ -1,0 +1,7 @@
+REACH refused in key slots: 0
+header cells with a key window: 30 of 41
+every non-key box standing in a window: {('tie', 'other'): 1, ('arpeggiato', 'other'): 5, ('timeSig1', 'other'): 1, ('timeSig2', 'other'): 1}
+BARS of the refused glyphs: {}
+held OFF/ON: 88 88 of 294 294 balanced True True notes_not_written 1130 1130
+KEY verdicts changed: 0
+MusicXML bars changed: 0

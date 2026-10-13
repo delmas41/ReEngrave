@@ -1,0 +1,8 @@
+REACH refused in key slots: 5
+   5 ('rest8th', 'rest_in_a_key_signature_slot')
+header cells with a key window: 35 of 53
+every non-key box standing in a window: {('rest8th', 'music-class'): 5, ('timeSig4', 'other'): 1, ('ledgerLine', 'other'): 1, ('timeSig1', 'other'): 1, ('arpeggiato', 'other'): 1, ('flag8thUp', 'music-class'): 1}
+BARS of the refused glyphs: {'bar_missing_one_arm': 1, 'released': 3, 'still_held': 1}
+held OFF/ON: 115 111 of 840 839 balanced True True notes_not_written 684 675
+KEY verdicts changed: 0
+MusicXML bars changed: 3

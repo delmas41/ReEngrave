@@ -72,6 +72,7 @@ import statistics
 from typing import Any, Dict, List, Optional, Sequence
 
 from ..adjudicate import Checkable, Evidence, Ruling, decision
+from . import key_slots as _key_slots
 from ..record import DOCUMENT, Kind, Observation, Q, Scope, Subject
 
 #: "Nearly every staff" -- a meter glyph observed at CELL 0 (the system's own
@@ -295,10 +296,12 @@ def spans_from_boundaries(systems: Sequence[Subject],
     quantity=Q.MOVEMENT_SPANS,
     checkable=Checkable.UNCHECKABLE,
     composed_from=(Q.DIRECTION_WORD, Q.METER_GLYPH, Q.MARGIN_LABEL,
-                  Q.STAFF_LINES, Q.STAFF_EXTENT, Q.MOVEMENT_SPANS),
+                  Q.STAFF_LINES, Q.STAFF_EXTENT, Q.MOVEMENT_SPANS,
+                  Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
     scope=Kind.DOCUMENT,
     wants=(Q.DIRECTION_WORD, Q.METER_GLYPH, Q.MARGIN_LABEL, Q.STAFF_LINES,
-          Q.STAFF_EXTENT, Q.MOVEMENT_SPANS),
+          Q.STAFF_EXTENT, Q.MOVEMENT_SPANS, Q.GLYPH_BOX,
+          Q.CELL_STAFF_SPACE),
     reasons=("human_spans_supplied", "too_few_systems",
              "no_boundary_detected", "detected"),
 )
@@ -322,8 +325,17 @@ def adjudicate_movement_start(ev: Evidence) -> Ruling:
 
     direction_by_system = _group_by_system(
         ev.rows(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS))
+    # ROADMAP 2.100: a `timeSig*` box standing in its own staff's key slots is
+    # a key accidental (Sean 2026-10-12, tiles 6 7 9 11), not a meter statement.
     meter_by_system = _group_by_system(
-        ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS))
+        _key_slots.meter_rows_outside_key_slots(
+            ev, ev.rows(Q.METER_GLYPH, scope=Scope.SELF_AND_DESCENDANTS),
+            {r.subject.to_key(): float(r.value)
+             for r in ev.rows(Q.CELL_STAFF_SPACE,
+                              scope=Scope.SELF_AND_DESCENDANTS)
+             if r.value},
+            ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                    subject=ev.subject))[0])
     label_by_system = _group_by_system(
         ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS))
     staff_by_system = _group_by_system(
