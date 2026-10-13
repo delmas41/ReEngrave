@@ -347,3 +347,88 @@ def audit(verdicts: Iterable[Any]) -> Dict[str, Any]:
             "by_reason": {f"{d}:{r}": {"n": n, "without_margin":
                                        missing.get((d, r), 0)}
                           for (d, r), n in sorted(seen.items())}}
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# The no-decision-change proof: re-decide a saved record, compare signatures
+# ─────────────────────────────────────────────────────────────────────────────
+#
+#   python3 -m tools.omr.staged.margins redecide REC.json --out sig.json
+#   python3 -m tools.omr.staged.margins compare base.json arm.json
+#
+# Run `redecide` once in the tree under test and once in a checkout of its
+# base (`git archive origin/main tools | tar -x -C DIR`, plus this file copied
+# in), one record at a time. A signature is, per verdict in file order,
+# `(subject, quantity, decider, outcome, value, reason, candidate values)` --
+# everything a consumer can act on and nothing a margin touches.
+
+def signature(verdict: Mapping[str, Any]) -> List[Any]:
+    import json
+    return [verdict.get("subject"), verdict.get("quantity"),
+            verdict.get("decider"), verdict.get("outcome"),
+            json.dumps(verdict.get("value"), sort_keys=True, default=str),
+            verdict.get("reason"),
+            json.dumps([c.get("value") for c in verdict.get("candidates") or ()],
+                       sort_keys=True, default=str)]
+
+
+def redecide(record_path: str, out_path: str) -> Dict[str, Any]:
+    import json
+    from .review import rerun as RR
+    from .record_io import load_record
+    doc = load_record(record_path)
+    rec = doc["record"] if "record" in doc else doc
+    log, _ = RR.rebuild_gather(rec)
+    RR.run_stages(log)
+    result = RR._to_result(log, doc, None)
+    verdicts = result["record"]["verdicts"]
+    sigs = [signature(v) for v in verdicts]
+    out = {"record": record_path, "n_verdicts": len(verdicts),
+           "signatures": sigs,
+           "with_margin": sum(1 for v in verdicts if v.get("margin") is not None),
+           "audit": audit(verdicts)}
+    pathlib.Path(out_path).write_text(json.dumps(out))
+    return {k: v for k, v in out.items() if k != "signatures"}
+
+
+def compare(base_path: str, arm_path: str) -> Dict[str, Any]:
+    import json
+    a = json.loads(pathlib.Path(base_path).read_text())
+    b = json.loads(pathlib.Path(arm_path).read_text())
+    sa, sb = a["signatures"], b["signatures"]
+    differing = [i for i in range(min(len(sa), len(sb))) if sa[i] != sb[i]]
+    return {"n_base": len(sa), "n_arm": len(sb),
+            "identical": sa == sb, "n_differing": len(differing),
+            "first_differing": [{"base": sa[i], "arm": sb[i]}
+                                for i in differing[:5]],
+            "margin_base": a.get("with_margin"), "margin_arm": b.get("with_margin"),
+            "audit_base": a.get("audit"), "audit_arm": b.get("audit")}
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    import argparse
+    import json
+    ap = argparse.ArgumentParser(description="ROADMAP 2.106 margins")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("redecide")
+    r.add_argument("record")
+    r.add_argument("--out", required=True)
+    c = sub.add_parser("compare")
+    c.add_argument("base")
+    c.add_argument("arm")
+    sub.add_parser("audit-tree")
+    a = ap.parse_args(argv)
+    if a.cmd == "redecide":
+        print(json.dumps(redecide(a.record, a.out), indent=1))
+        return 0
+    if a.cmd == "compare":
+        rep = compare(a.base, a.arm)
+        print(json.dumps(rep, indent=1))
+        return 0 if rep["identical"] else 1
+    problems, notes = check_margins()
+    print("\n".join(problems + notes))
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
