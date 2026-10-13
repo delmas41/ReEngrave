@@ -22,6 +22,14 @@ pointing at headings no longer in the file.)*
 
 ---
 
+## 2026-10-12 -- ROADMAP 2.97 (branch `lane-2.97-narrowed-bars`, not merged)
+
+- `consequences.reconcile_duration`: a chord of narrowed heads on ONE decided stem is one landing unit; a landing on a decided note settles the bar's narrowed events beside it where the joint search is unique (`_narrowed_chords`, `_on_one_stem`, `_settle_alongside`).
+- `inferences.collapse_narrowed_by_bar` + flag `OMR_NARROWED_BAR` (default OFF): `solve_bare_stem_bar(any_reason=True)`. Docs row in `docs/flags-2026-09.md`.
+- Tests `test_staged_narrowed_bar_2_97.py` (29); probes under `benchmarks/omr-bar-sum-holdout-2026-09/probe/*_2_97.py`; tiles `out/print/2.97-review/`. Results and the unmet hand-truth control: FINDINGS 2.97.
+
+---
+
 ## 2026-10-12 -- overnight `20261011-night` read (main `cb73dde2`, through INFER)
 
 - Re-gather vs `20261010-night`: GATHER boxes identical; notes to file Litolff 5,589 -> 5,782, Brahms 7,189 -> 8,198; bars held out Litolff 1,064 -> 1,044, Brahms 2,755 -> 2,553; Brahms overfull 29 -> 0 (2.79). 7 staves held unidentified (crops `out/print/held-staves-20261011/`) -> 2.93/2.94/2.95; held-bar causes -> 2.96. `benchmarks/acceptance/overnight/20261011-night/SUMMARY.md`.

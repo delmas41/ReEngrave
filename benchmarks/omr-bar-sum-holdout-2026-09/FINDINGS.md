@@ -3011,3 +3011,78 @@ against `manifest.json`: **0 wrong of 10.**
 So the reinstated population (2) is 2 of 2 right, every control that should
 refuse refused, and nothing was decided True on a non-rest. n is small; the
 shape windows remain measured on two pages.
+
+## 2.97 -- narrowed notes whose own candidates land the bar are settled by the bar (2026-10-12)
+
+PATH: STAGED, ADJUDICATE->INFER re-decided from the committed night records
+(`library/_shared-records/*-whole-20261011-night.record.json`, `record_io.load_record`,
+`probe/run_2_97.py`), base vs arm on one tree shape (copies of `tools/`, differing only
+in the three staged files + env `OMR_NARROWED_BAR=1`). Branch `lane-2.97-narrowed-bars`
+off `origin/main` `3fd59e2a`. NOT merged; Sean judges the tiles first.
+
+CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: a bar adds up to the PRINTED
+meter, so a narrowed head's candidate that lands it is the likely value. Falsified by a bar
+with a missed note/rest, a second voice or a wrong decided neighbour (each moves the sum
+and the rule cannot see it). NOT CONFIRMED: Sean has not judged the 12 tiles
+(`out/print/2.97-review/`).
+
+### Why the 136 single-head bars were not landed (Litolff's 39 traced, `probe/chain_2_97.py`)
+`reconcile_duration` was not blocked; the bars are not the case it was written for.
+Each note's verdict chain: in 24 of 39 INFER's 2.81 rule had already settled the OTHER
+narrowed heads of the bar, leaving one bare stem whose tip was not seen clean (Sean's 2.81
+condition) -- the arithmetic forces it, the condition refuses it; in 10 of 39 EVALUATE's
+single pass had re-read a DECIDED neighbour (the one landing at that moment) and left the
+narrowed head consistent with the bar but unwritten (`duration_narrowed`); in 4 nothing ran.
+`reconcile_duration` does not re-run after INFER. 8 more are refused by 2.80's ink witness
+and should stay refused.
+
+### What was built, and the stage
+- EVALUATE, `reconcile_duration` (the answer FOLLOWS: same bound, unit = EVENT): a chord whose
+  EVERY head is narrowed AND stands on ONE decided `Q.HEAD_STEM` changes together (one stem,
+  one value, 2.78); and a landing made on a DECIDED note also settles the bar's narrowed
+  events only where the JOINT search (narrowed events over their own candidates x at most one
+  decided re-reading) is itself unique. Lengthening still needs 2.80's ink witness.
+- INFER, `collapse_narrowed_by_bar`, flag `OMR_NARROWED_BAR` default OFF (best, not forced):
+  2.81's solver widened (`any_reason`) to every narrowed head/chord, jointly over several
+  columns, only where every landing agrees, on a meter that reaches the PRINTED reading (never
+  a bar-chosen one); a bare stem whose tip was not clean needs the bar's ink wholly explained;
+  any lengthening past the reader's best candidate needs the same witness. Where the meter
+  verdict abstains the rule declines (Brahms ~214 bars stay held; no printed reading to use).
+
+### A/B (re-decide of the night records)
+| | before | after |
+|---|--:|--:|
+| Litolff bars_held_out_sum | 1,085 | 990 |
+| Litolff notes in file | 5,894 | 6,022 |
+| Litolff narrowed heads not written | 354 | 180 |
+| Brahms bars_held_out_sum | 2,553 | 2,459 |
+| Brahms notes in file | 8,198 | 8,555 |
+| Brahms narrowed heads not written | 3,182 | 2,976 |
+
+Bars settled by part (heads): Litolff single 38 (45) / chord 25 (52) / columns 39 (108);
+Brahms single 13 (23) / chord 89 (178) / columns 3 (6). Of the held list: released Litolff 73,
+Brahms 96; newly held 0 / 2. A settled value NOT among the head's own candidates: 0 / 0 (control,
+can fail: it counts a verdict whose value is absent from its superseded verdict's candidates).
+CAVEAT: the first Litolff base, run in the worktree, held 1,044 (notes 5,782); the copy-tree base
+holds 1,085. Both arms of the A/B above are copy-trees; the 41-bar difference between tree
+shapes is NOT explained (not a code difference).
+
+### Control: Sean's hand truth (Brahms pdf 0, `probe/truth_2_97.py`, pages 0-1 re-decide)
+Judged heads 334: base decided right 297 / WRONG 12 / narrowed 25; arm right 306 / WRONG 14 /
+narrowed 14. 11 heads moved: 9 narrowed->right, 2 narrowed->WRONG. **Wrong rose by 2 -- the
+brief's condition is NOT met.** (a) glyph 0/0/9/3/3: INFER's two-column joint lengthened both
+(6/8, truth 0.5 for this head); the ink witness was clear; a missed rest or note is the likely
+cause. (b) 0/0/6/2/2: the chord's heads share one stem, our candidates 0.75/1.5 and Sean's
+derived truth 1.0 -- the scorer assigns the dot to one head only, so this may be a scoring
+artefact; agent-read, to be cropped. An earlier draft without the one-stem condition wrote a
+chord of two voices as one value; the condition was added after seeing it, so held-out tiles
+are the real test.
+
+### Tiles
+`out/print/2.97-review/` 12 tiles (4 single, 4 chord, 4 columns; Litolff and Brahms), blue =
+the settled heads, question "values of the bracketed notes?"; ours only in `manifest.json`;
+`answers.template.json`.
+
+### Gates
+Fast tier 7,458 passed (serial; no xdist); `staged.check` 192 = main. 29 new tests
+(`test_staged_narrowed_bar_2_97.py`), RED on the unrepaired tree.
