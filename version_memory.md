@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-13 -- manager session end: START HERE written
+
+- ROADMAP START HERE (after 2026-10-13) lists what landed 10-11→10-13, Sean's new rules, the two lanes in flight (2.107, 2.4b re-assembly) and the next choices. No code.
+
 ## 2026-10-13 -- ROADMAP 2.106 steps 1-2: margins on threshold refusals + the index of Sean's judged tiles (`lane-2.106-margins-index`, NOT merged)
 
 - Step 1 (STAGED, bookkeeping, no decision changes): `tools/omr/staged/margins.py` (slack/attach helpers, registry of which reasons are threshold vs structural, the AST count of threshold returns with no margin, a record-level `audit`, and `redecide`/`compare` for the no-change proof). Margins filed on `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_notehead_is_not_a_notehead` (`too_narrow`, `is_a_dot` returns only) and `adjudicate_duration` (the three 2.70/2.88 hollow-head returns only). `Verdict.margin` is signed (>=0 cleared the cut, <0 declined short); axis, unit, declared band (None where the cut has none) and the would-be value ride in `detail` -- not `Verdict.candidates`, because an ABSTAINED verdict may not carry candidates and a dozen consumers read `candidates` as "narrowed". New check part `staged.margins` (open=0; total stays 192). Proof: Litolff 20261011-night re-decided base vs arm, 171,392 verdicts, signatures identical; threshold verdicts without a margin 504 -> 0.
