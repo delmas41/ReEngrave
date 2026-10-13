@@ -3086,3 +3086,23 @@ the settled heads, question "values of the bracketed notes?"; ours only in `mani
 ### Gates
 Fast tier 7,458 passed (serial; no xdist); `staged.check` 192 = main. 29 new tests
 (`test_staged_narrowed_bar_2_97.py`), RED on the unrepaired tree.
+
+### 2.97b. Settled bars that used another staff's head or a duplicate box (manager's check on the tiles, 2026-10-12)
+`probe/clean_2_97.py` on the first arm's settled bars (before the guard): Litolff 32 of 102 settled bars
+dirty (a head boxed twice 9 bars [chord 4, columns 5], another staff's kept box on the same ink 2, a head
+beyond 1.6 staff spaces from its own lines 23); Brahms 33 of 105 dirty (off-staff 33, another staff's box 1).
+No settled head had a DECIDED other owner (those leave the bar), so the faults are heads nobody contested:
+a neighbour staff's note inside this cell's pad. Both hand-truth misses were of this kind or near it:
+0/0/9/3 (INFER, two columns) used heads that stand on the staff ABOVE (crop `out/print/2.97-misses/tile_02`);
+0/0/6/2 (chord) is shown in `tile_01` for Sean (candidates 0.75/1.5, derived truth 1.0, unresolved).
+FIX (before anything else): `consequences._bar_heads_are_clean` -- every kept head of the bar is one box
+(IoU <= 0.3 with the others), within 1.6 spaces of THIS staff's lines, and not boxed by another staff;
+else the new paths (chord unit, settle-alongside, INFER rule) decline. 4 new tests, positive control included.
+The same check on the re-run arms finds 0 dirty settled bars on both records.
+
+Re-run with the guard (arm vs the same base): Litolff held 1,085 -> 1,015, notes 5,894 -> 5,892, narrowed not
+written 354 -> 277; Brahms held 2,553 -> 2,494, notes 8,198 -> 8,422, narrowed 3,182 -> 3,049. Bars settled
+(heads): Litolff single 27 (31) / chord 9 (18) / columns 22 (53); Brahms single 7 (13) / chord 60 (120) / columns 0.
+Value outside own candidates 0. Hand truth, pages 0-1: right 297 -> 299, WRONG 12 -> 13 (the 0/0/6/2 chord,
+whose candidates do not contain the derived truth). 12 tiles re-rendered (one bracket per settled event; unclean
+bars dropped). Fast tier and `check` to be re-run on the final commit.

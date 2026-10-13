@@ -7,45 +7,14 @@
    "movement": "lit",
    "bar": [
     11,
-    0,
-    0,
-    10
-   ],
-   "part": "single",
-   "settled": [
-    {
-     "subject": "glyph/11/0/0/10/6",
-     "ours": 1.0,
-     "was_candidates": [
-      0.5,
-      1.0
-     ],
-     "decider": "infer:collapse_narrowed_by_bar"
-    }
-   ],
-   "frame_control": {
-    "ratio": 75.0,
-    "passes": true
-   },
-   "frame_control_negative": {
-    "ratio": 0.04,
-    "passes": false
-   }
-  },
-  {
-   "n": 2,
-   "file": "tile_02.png",
-   "movement": "lit",
-   "bar": [
-    14,
     1,
-    0,
-    6
+    6,
+    15
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/14/1/0/6/2",
+     "subject": "glyph/11/1/6/15/3",
      "ours": 0.5,
      "was_candidates": [
       0.5,
@@ -55,7 +24,7 @@
     }
    ],
    "frame_control": {
-    "ratio": 29.47,
+    "ratio": 27.48,
     "passes": true
    },
    "frame_control_negative": {
@@ -64,19 +33,19 @@
    }
   },
   {
-   "n": 3,
-   "file": "tile_03.png",
+   "n": 2,
+   "file": "tile_02.png",
    "movement": "brah",
    "bar": [
-    5,
+    26,
     1,
-    11,
-    8
+    1,
+    6
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/5/1/11/8/2",
+     "subject": "glyph/26/1/1/6/0",
      "ours": 0.5,
      "was_candidates": [
       0.5,
@@ -85,7 +54,7 @@
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/5/1/11/8/6",
+     "subject": "glyph/26/1/1/6/5",
      "ours": 0.5,
      "was_candidates": [
       0.5,
@@ -95,11 +64,42 @@
     }
    ],
    "frame_control": {
-    "ratio": 5.53,
+    "ratio": 4.78,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.14,
+    "ratio": 0.17,
+    "passes": false
+   }
+  },
+  {
+   "n": 3,
+   "file": "tile_03.png",
+   "movement": "lit",
+   "bar": [
+    11,
+    1,
+    6,
+    13
+   ],
+   "part": "single",
+   "settled": [
+    {
+     "subject": "glyph/11/1/6/13/2",
+     "ours": 0.5,
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "reconcile_duration"
+    }
+   ],
+   "frame_control": {
+    "ratio": 21.33,
+    "passes": true
+   },
+   "frame_control_negative": {
+    "ratio": 0.04,
     "passes": false
    }
   },
@@ -110,36 +110,27 @@
    "bar": [
     21,
     1,
-    1,
-    7
+    6,
+    0
    ],
    "part": "single",
    "settled": [
     {
-     "subject": "glyph/21/1/1/7/0",
-     "ours": 0.75,
+     "subject": "glyph/21/1/6/0/4",
+     "ours": 0.5,
      "was_candidates": [
-      0.75,
-      1.5
-     ],
-     "decider": "reconcile_duration"
-    },
-    {
-     "subject": "glyph/21/1/1/7/2",
-     "ours": 0.75,
-     "was_candidates": [
-      0.75,
-      1.5
+      0.5,
+      1.0
      ],
      "decider": "reconcile_duration"
     }
    ],
    "frame_control": {
-    "ratio": 5.07,
+    "ratio": 3.9,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.16,
+    "ratio": 0.25,
     "passes": false
    }
   },
@@ -188,15 +179,15 @@
    "file": "tile_06.png",
    "movement": "brah",
    "bar": [
-    16,
+    19,
     0,
-    2,
-    8
+    5,
+    9
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/16/0/2/8/0",
+     "subject": "glyph/19/0/5/9/0",
      "ours": 1.5,
      "was_candidates": [
       0.75,
@@ -205,7 +196,7 @@
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/16/0/2/8/7",
+     "subject": "glyph/19/0/5/9/9",
      "ours": 1.5,
      "was_candidates": [
       0.75,
@@ -215,11 +206,11 @@
     }
    ],
    "frame_control": {
-    "ratio": 5.15,
+    "ratio": 5.69,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.16,
+    "ratio": 0.15,
     "passes": false
    }
   },
@@ -228,16 +219,16 @@
    "file": "tile_07.png",
    "movement": "brah",
    "bar": [
-    10,
-    1,
-    1,
-    7
+    16,
+    0,
+    5,
+    6
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/10/1/1/7/5",
-     "ours": 0.5,
+     "subject": "glyph/16/0/5/6/2",
+     "ours": 1.0,
      "was_candidates": [
       0.5,
       1.0
@@ -245,8 +236,8 @@
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/10/1/1/7/9",
-     "ours": 0.5,
+     "subject": "glyph/16/0/5/6/3",
+     "ours": 1.0,
      "was_candidates": [
       0.5,
       1.0
@@ -255,11 +246,11 @@
     }
    ],
    "frame_control": {
-    "ratio": 2.61,
+    "ratio": 5.78,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.32,
+    "ratio": 0.14,
     "passes": false
    }
   },
@@ -269,14 +260,14 @@
    "movement": "lit",
    "bar": [
     12,
-    0,
-    2,
+    1,
+    5,
     9
    ],
    "part": "chord",
    "settled": [
     {
-     "subject": "glyph/12/0/2/9/4",
+     "subject": "glyph/12/1/5/9/1",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -285,7 +276,7 @@
      "decider": "reconcile_duration"
     },
     {
-     "subject": "glyph/12/0/2/9/11",
+     "subject": "glyph/12/1/5/9/4",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -295,11 +286,11 @@
     }
    ],
    "frame_control": {
-    "ratio": 7.86,
+    "ratio": 4.18,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.1,
+    "ratio": 0.21,
     "passes": false
    }
   },
@@ -310,37 +301,36 @@
    "bar": [
     3,
     1,
-    0,
-    8
+    4,
+    13
    ],
    "part": "columns",
    "settled": [
     {
-     "subject": "glyph/3/1/0/8/4",
+     "subject": "glyph/3/1/4/13/0",
      "ours": 1.0,
      "was_candidates": [
-      2.0,
-      1.0,
-      4.0
+      0.5,
+      1.0
      ],
      "decider": "infer:collapse_narrowed_by_bar"
     },
     {
-     "subject": "glyph/3/1/0/8/1",
-     "ours": 0.5,
+     "subject": "glyph/3/1/4/13/2",
+     "ours": 1.0,
      "was_candidates": [
-      1.0,
-      0.5
+      0.5,
+      1.0
      ],
      "decider": "infer:collapse_narrowed_by_bar"
     }
    ],
    "frame_control": {
-    "ratio": 107268627.45,
+    "ratio": 3.05,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.15,
+    "ratio": 0.28,
     "passes": false
    }
   },
@@ -349,15 +339,15 @@
    "file": "tile_10.png",
    "movement": "lit",
    "bar": [
-    14,
-    0,
-    3,
-    9
+    15,
+    1,
+    9,
+    4
    ],
    "part": "columns",
    "settled": [
     {
-     "subject": "glyph/14/0/3/9/0",
+     "subject": "glyph/15/1/9/4/1",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -366,7 +356,16 @@
      "decider": "infer:collapse_narrowed_by_bar"
     },
     {
-     "subject": "glyph/14/0/3/9/1",
+     "subject": "glyph/15/1/9/4/2",
+     "ours": 1.0,
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "infer:collapse_narrowed_by_bar"
+    },
+    {
+     "subject": "glyph/15/1/9/4/5",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -376,28 +375,28 @@
     }
    ],
    "frame_control": {
-    "ratio": 16.92,
+    "ratio": 2.14,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.05,
+    "ratio": 0.4,
     "passes": false
    }
   },
   {
    "n": 11,
    "file": "tile_11.png",
-   "movement": "brah",
+   "movement": "lit",
    "bar": [
-    0,
-    0,
-    9,
-    2
+    15,
+    1,
+    8,
+    9
    ],
    "part": "columns",
    "settled": [
     {
-     "subject": "glyph/0/0/9/2/4",
+     "subject": "glyph/15/1/8/9/0",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -406,7 +405,7 @@
      "decider": "infer:collapse_narrowed_by_bar"
     },
     {
-     "subject": "glyph/0/0/9/2/1",
+     "subject": "glyph/15/1/8/9/1",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -416,28 +415,28 @@
     }
    ],
    "frame_control": {
-    "ratio": 13.97,
+    "ratio": 3.46,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.05,
+    "ratio": 0.27,
     "passes": false
    }
   },
   {
    "n": 12,
    "file": "tile_12.png",
-   "movement": "brah",
+   "movement": "lit",
    "bar": [
-    0,
-    0,
-    12,
-    3
+    15,
+    1,
+    4,
+    12
    ],
    "part": "columns",
    "settled": [
     {
-     "subject": "glyph/0/0/12/3/1",
+     "subject": "glyph/15/1/4/12/0",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -446,7 +445,16 @@
      "decider": "infer:collapse_narrowed_by_bar"
     },
     {
-     "subject": "glyph/0/0/12/3/2",
+     "subject": "glyph/15/1/4/12/1",
+     "ours": 1.0,
+     "was_candidates": [
+      0.5,
+      1.0
+     ],
+     "decider": "infer:collapse_narrowed_by_bar"
+    },
+    {
+     "subject": "glyph/15/1/4/12/3",
      "ours": 1.0,
      "was_candidates": [
       0.5,
@@ -456,11 +464,11 @@
     }
    ],
    "frame_control": {
-    "ratio": 16.68,
+    "ratio": 2.85,
     "passes": true
    },
    "frame_control_negative": {
-    "ratio": 0.05,
+    "ratio": 0.28,
     "passes": false
    }
   }
