@@ -6065,3 +6065,6 @@ STAGED. Merged to main after Sean's "Go ahead with both" (strict eighth-on-evide
 
 ## 2026-10-13 -- OMR_NARROWED_BAR default ON (ROADMAP 2.97)
 STAGED. Sean: "Yes, switch it on". `staged/infer.py` flag is a deny-list default ON; tests and `docs/flags-2026-09.md` updated (research -> promote pending). Litolff night record re-decided: ON 1018 held / 5994 notes, OFF 1033 held / 5916 notes.
+
+## 2026-10-13 -- ROADMAP 2.105 built (lane-2.105-not-a-note), not merged
+STAGED ADJUDICATE. (c) `family_precision._rest_is_a_barline_refusal` / reason `rest_is_a_barline` (thin tall rest-class box on a cell edge): small re-gather Litolff 15 rests newly refused, Brahms 4. (b) 2.92: `notehead_precision._head_box_excess` orders twin boxes the same way in 2.30 and 2.42 (33 of 424 stacked-duplicate slot groups had no live box): Litolff 4 groups neither->one, 2 swapped, Brahms 1; Sean's five 2.88 heads were already kept via their Half-class twin. (a) 2.91 `sf` boxed as a note diagnosed, not fixed (no letter box; no box rule separates it). 12 blind tiles `out/print/2.105-review/`. Tests `test_staged_not_a_note_2_105.py`. `benchmarks/omr-notehead-precision-2026-09/FINDINGS.md` 2.105.
