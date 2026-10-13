@@ -6029,3 +6029,6 @@ letter / `too_narrow` in a meter-sign column is `not_a_note_mark`. Tests `test_s
 
 ## 2026-10-13 -- ROADMAP 2.102 scored (lane-2.102-tuplet-meter-trem)
 Sean answered the 11 review tiles: 11 of 11 right (`out/print/2.102-review/answers.json`, `benchmarks/omr-held-out-2026-10/FINDINGS-2.102.md`, DECISIONS 2026-10-13). Not-a-note refusals right; the three bar-math eighths were quarters, so narrowing them was right. No product code changed.
+
+## 2026-10-13 -- ROADMAP 2.102 landed (lane-2.102-tuplet-meter-trem)
+Merged to main after Sean's "Yes". Merged with origin/main (2.100 half 1, 2.103); `guess_of` reads only DECIDED verdicts, so the new abstention `not_a_note_mark` raises nothing. Fast tier 7576 passed, 20 skipped, 2 xfailed; `staged.check` 192 open, status ok.
