@@ -5,14 +5,14 @@
   "tile_01": {
    "class": "restQuarter",
    "reading": "CONTROL kept: restQuarter 148 px right of the time signature (a real rest?)",
-   "sean": "1. Barline 2.9 meter",
+   "sean": "1. Barline",
    "verdict": "WRONG: kept restQuarter box is a BARLINE (pre-existing, not caused by 2.100)"
   },
   "tile_02": {
    "class": "rest8th",
    "reading": "REFUSED (tile 3 of round 1, Sean: a time signature): rest8th as meter digit",
-   "sean": null,
-   "verdict": "not answered (a repeat of round 1 tile 3, Sean: a time signature); refusal stands, not scored"
+   "sean": "2. 9 meter (verbatim '2.9 meter'; a 9 time-signature digit, per coordinator)",
+   "verdict": "right: refusal correct (a meter digit)"
   },
   "tile_03": {
    "class": "tie",
