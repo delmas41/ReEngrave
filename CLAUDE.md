@@ -162,6 +162,8 @@ registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
 
 ## 6. How a session works
 
+Check yourself against Sean's past answers first: `python3 -m tools.omr.staged.judged score REC --doc litolff|brahms`.
+
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
 the four root assets first (`docs/running.md` §1). Never `git checkout` a
 dirty file; never bare `git stash`. Claim a ROADMAP number by pushing its

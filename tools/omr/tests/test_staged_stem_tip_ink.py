@@ -64,6 +64,24 @@ def _flag_top(img):
 # Part 1 -- the pure measurement, on synthetic rasters (0 = ink)
 # ─────────────────────────────────────────────────────────────────────────────
 
+
+def setUpModule():
+    """These pin the tip reader as shipped BEFORE ROADMAP 2.104 (a covering box makes the tip `occupied`);
+    `OMR_TIP_UNBLOCKED` went default ON 2026-10-13, so they run with it off."""
+    import os
+    global _TIP_UNBLOCKED_WAS
+    _TIP_UNBLOCKED_WAS = os.environ.get("OMR_TIP_UNBLOCKED")
+    os.environ["OMR_TIP_UNBLOCKED"] = "0"
+
+
+def tearDownModule():
+    import os
+    if _TIP_UNBLOCKED_WAS is None:
+        os.environ.pop("OMR_TIP_UNBLOCKED", None)
+    else:
+        os.environ["OMR_TIP_UNBLOCKED"] = _TIP_UNBLOCKED_WAS
+
+
 class TestTheMeasurement(unittest.TestCase):
     """`gather.stem_tip_ink` -- a windowed ink-density ruler with a
     background band for contrast, no identity, no ownership."""

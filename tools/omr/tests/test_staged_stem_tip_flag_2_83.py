@@ -63,6 +63,24 @@ def _flag_down_stem(img):
     _draw(img, STEM_X1 + 11, BOTTOM_Y - 50, STEM_X1 + 16, BOTTOM_Y - 12)
 
 
+
+def setUpModule():
+    """These pin the tip reader as shipped BEFORE ROADMAP 2.104 (a covering box makes the tip `occupied`);
+    `OMR_TIP_UNBLOCKED` went default ON 2026-10-13, so they run with it off."""
+    import os
+    global _TIP_UNBLOCKED_WAS
+    _TIP_UNBLOCKED_WAS = os.environ.get("OMR_TIP_UNBLOCKED")
+    os.environ["OMR_TIP_UNBLOCKED"] = "0"
+
+
+def tearDownModule():
+    import os
+    if _TIP_UNBLOCKED_WAS is None:
+        os.environ.pop("OMR_TIP_UNBLOCKED", None)
+    else:
+        os.environ["OMR_TIP_UNBLOCKED"] = _TIP_UNBLOCKED_WAS
+
+
 class TestTheFlagIsReadWhereItStands(unittest.TestCase):
 
     def test_a_flag_whose_ink_hugs_the_tip_is_found(self):

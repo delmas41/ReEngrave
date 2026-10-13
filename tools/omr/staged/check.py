@@ -220,6 +220,19 @@ def _check_producers() -> CheckResult:
     return CheckResult("staged.producers", open=0)
 
 
+def _check_margins() -> CheckResult:
+    """ROADMAP 2.106 step 1. Every reason a margin-covered decider declares is
+    classified threshold (must file a margin) or structural (says why); a stale
+    or unclassified entry, or the audit's own positive control at zero, is a
+    finding. `margins.audit(record_verdicts)` is the record-level count of
+    threshold refusals with no margin (run it on a saved record)."""
+    from . import margins as MG
+    problems, notes = MG.check_margins()
+    return CheckResult("staged.margins", open=len(problems),
+                        broken=any("cannot fail" in p for p in problems),
+                        note="; ".join(problems[:3] or notes))
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The two informational sub-checks (plan §3 item 2 / §5 Phase 0.4d, 0.4e)
 # ─────────────────────────────────────────────────────────────────────────────
@@ -328,6 +341,7 @@ CHECKS: List[tuple] = [
     ("export_coverage", _check_export_coverage),
     ("accuracy_record", _check_accuracy_record),
     ("staged.producers", _check_producers),
+    ("staged.margins", _check_margins),
     ("source_text_tests", _check_source_text_tests),
     ("mutation_batteries_live", _check_mutation_batteries),
 ]
